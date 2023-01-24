@@ -1,0 +1,171 @@
+﻿@using Microsoft.AspNetCore.Http
+@inject IHttpContextAccessor HttpContextAccessor
+@inject Microsoft.Extensions.Localization.IStringLocalizer<EmcureNPD.Resource.Master> MasterLocalizer
+@inject Microsoft.Extensions.Localization.IStringLocalizer<EmcureNPD.Resource.Shared> SharedLocalizer
+@model EmcureNPD.Business.Models.MasterUserEntity
+@{
+    ViewData["Title"] = "User";
+}
+
+<form asp-action="UserManage" method="post">
+    <input type="hidden" asp-for="UserId" />
+    <div class="card card-outline card-primary">
+        <div class="card-header">
+            <h5 class="mb-0"><b>@MasterLocalizer["User"].Value</b></h5>
+        </div>
+        <div class="card-body">
+
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="form-group required">
+                        @Html.LabelFor(model => model.FullName,"Full Name", new { @class = "control-label" })
+                        @Html.TextBoxFor(model => model.FullName, new { @autocomplete = "off", @class = "form-control checkbox-checked", @placeholder = @SharedLocalizer["FullName"] })
+                        @Html.ValidationMessageFor(model => model.FullName, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group required">
+                        @Html.LabelFor(model => model.BusinessUnitId,@SharedLocalizer["BusinessUnit"], new { @class = "control-label" })
+                        @*<select id="BusinessUnitId" name="BusinessUnitId" class="form-control readOnlyUpdate" required></select>*@
+                        @Html.DropDownListFor(model => model.BusinessUnitId, new List<SelectListItem> { }, "--Select--", new { @class = "form-control", @multiple = "multiple" })
+                        <input type="hidden" id="hdnBusinessUnitId" value="@Model.BusinessUnitId" />
+                        @Html.ValidationMessageFor(model => model.BusinessUnitId, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+            </div>
+            <div class="row">                
+                <div class="col-md-4">
+                    <div class="form-group required">
+                        @Html.LabelFor(model => model.RegionId,@SharedLocalizer["Region"], new { @class = "control-label" })
+                        @*<select id="RegionId" name="RegionId" class="form-control" required></select>*@
+                        @Html.DropDownListFor(model => model.RegionId, new List<SelectListItem> { }, "--Select--", new { @class = "form-control", @multiple = "multiple"})
+                        <input type="hidden" id="hdnRegionId" value="@Model.RegionId" />
+                        @Html.ValidationMessageFor(model => model.RegionId, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="form-group required">
+                        @Html.LabelFor(model => model.CountryId,@SharedLocalizer["Country"], new { @class = "control-label" })
+                        @*<select id="CountryId" name="CountryId" class="form-control" required></select>*@
+                        @Html.DropDownListFor(model => model.CountryId, new List<SelectListItem> { }, "--Select--", new { @class = "form-control", @multiple = "multiple" })
+                        <input type="hidden" id="hdnCountryId" value="@Model.CountryId" />
+                        @Html.ValidationMessageFor(model => model.CountryId, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="form-group required">
+                        @Html.LabelFor(model => model.DepartmentId,"Department", new { @class = "control-label" })
+                       @* <select id="DepartmentId" name="DepartmentId" class="form-control" required></select>*@
+                        @Html.DropDownListFor(model => model.DepartmentId, new List<SelectListItem> { }, "--Select--", new { @class = "form-control", @multiple = "multiple" })
+                        <input type="hidden" id="hdnDepartmentId" value="@Model.DepartmentId" />
+                        @Html.ValidationMessageFor(model => model.DepartmentId, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="form-group required">
+                        @Html.LabelFor(model => model.EmailAddress, "Email Address",new { @class = "control-label" })
+                        @Html.TextBoxFor(model => model.EmailAddress, new { @autocomplete = "off", @class = "form-control checkbox-checked readOnlyUpdate", @placeholder = @SharedLocalizer["EmailId"] })
+                        @Html.ValidationMessageFor(model => model.EmailAddress, "", new { @class = "text-danger" })
+                        @Html.ValidationMessage("EmailExist", new { @class = "text-danger" })
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group required">
+                        @Html.LabelFor(model => model.MobileNumber, "Mobile Number",new { @class = "control-label" })
+                        @Html.TextBoxFor(model => model.MobileNumber, new { @autocomplete = "off", @class = "form-control checkbox-checked", @placeholder = @SharedLocalizer["MobileNumber"] })
+                        @Html.ValidationMessageFor(model => model.MobileNumber, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+            </div>
+            @if (Model.UserId <= 0)
+            {
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-group required">
+                            @Html.LabelFor(model => model.Password, new { @class = "control-label" })
+                            @Html.PasswordFor(model => model.Password, new { @autocomplete = "off", @id = "password1", @class = "form-control checkbox-checked", @placeholder = @SharedLocalizer["Password"], @required = "" })
+                            @Html.ValidationMessageFor(model => model.Password, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group required">
+                            @Html.LabelFor(model => model.ConfirmPassowrd, "Confirm Password", new { @class = "control-label" })
+                            @Html.PasswordFor(model => model.ConfirmPassowrd, new { @autocomplete = "off", @class = "form-control checkbox-checked", @placeholder = @SharedLocalizer["ConfirmPassword"] })
+                            @Html.ValidationMessageFor(model => model.ConfirmPassowrd, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+                </div>
+            }
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="form-group required">
+                        @Html.LabelFor(model => model.RoleId, "Role",new { @class = "control-label" })
+                        <select id="RoleId" name="RoleId" class="form-control" required></select>
+                        <input type="hidden" id="hdnRoleId" value="@Model.RoleId" />
+                        @Html.ValidationMessageFor(model => model.RoleId, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group required">
+                        @Html.LabelFor(model => model.Address, new { @class = "control-label" })
+                        @Html.TextBoxFor(model => model.Address, new { @autocomplete = "off", @class = "form-control checkbox-checked", @placeholder = @SharedLocalizer["Address"] })
+                        @Html.ValidationMessageFor(model => model.Address, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="form-group required">
+                        @Html.CheckBoxFor(model => model.IsActive, new { @class = "checkbox-checked", @checked = "checked" })
+                        @Html.Label(@SharedLocalizer["Active"])
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <button type="submit" class="btn btn-primary">@SharedLocalizer["Save"]</button>
+                        <a class="btn btn-danger ml-2" asp-action="User" asp-controller="User">@SharedLocalizer["Cancel"]</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+</form>
+@section MyScripts {
+    <link rel="stylesheet" href="~/AdminLTE/plugins/select2/css/select2.min.css" />
+    <script type="text/javascript" src="~/js/Custom/User/UserManage.js"></script>
+    <script type="text/javascript" src="~/AdminLTE/plugins/select2/js/select2.min.js"></script>
+    <script>
+    //#region Setup API Url
+        var GetUserDropDown = "@EmcureNPD.Web.Helpers.APIURLHelper.GetUserDropdown";
+        var GetDepartmentCountryByBusinessUnitURL = "@EmcureNPD.Web.Helpers.APIURLHelper.GetDepartmentCountryByBusinessUnit";
+        var GetRegionByBusinessUnitURL = "@EmcureNPD.Web.Helpers.APIURLHelper.GetRegionByBusinessUnit";
+        var GetCountryByRegionURL = "@EmcureNPD.Web.Helpers.APIURLHelper.GetCountryByRegion";
+        var GetDepartmentListURL = "@EmcureNPD.Web.Helpers.APIURLHelper.GetAllDepartment";
+        var GetAllRoleURL = "@EmcureNPD.Web.Helpers.APIURLHelper.GetAllRole";
+        // #endregion
+
+        //#region Static Messae Init
+        var EditLabel = "@SharedLocalizer["Edit"]";
+        var ErrorMessage = "@SharedLocalizer["Error"]";
+        var RecordInsertUpdate = "@SharedLocalizer["RecordInsertUpdate"]";
+        var AddLabel = "@SharedLocalizer["Add"]";
+        var UpdateLabel = "@SharedLocalizer["Update"]";
+        var errorCallBack = '@TempData[EmcureNPD.Web.Helpers.UserHelper.ErrorMessage]';
+        var CountryLabel = "@SharedLocalizer["Country"]";
+        var DepartmentLabel = "@SharedLocalizer["Department"]";
+        var RegionLabel = "@SharedLocalizer["Region"]";
+        var BusinessUnitLabel = "@SharedLocalizer["BusinessUnit"]";
+        if (errorCallBack)
+        {
+            toastr.error(errorCallBack);
+        }
+    //#endregion
+    </script>
+}

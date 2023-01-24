@@ -1,0 +1,85 @@
+﻿@using Microsoft.AspNetCore.Http
+@using EmcureNPD.Web.Controllers
+@using Microsoft.AspNetCore.Mvc.Localization
+@inject IHttpContextAccessor HttpContextAccessor
+@inject Microsoft.Extensions.Localization.IStringLocalizer<MastersController> MasterLocalizer
+@inject Microsoft.Extensions.Localization.IStringLocalizer<EmcureNPD.Resource.Shared> SharedLocalizer
+@{
+    ViewData["Title"] = @MasterLocalizer["APIListTitle"];
+}
+<div class="row">
+    <section class="col-lg-12">
+        <div class="card">
+            <div class="card-header">
+                <h3 class="card-title">
+                    <i class="far fa-list-alt mr-2"></i>@MasterLocalizer["API List"]
+                </h3>
+            </div>
+            <div class="card-body">
+                <table id="APIListTable" class="table table-bordered table-striped table-hover" style="width:100%">
+                    <thead>
+                        <tr>
+                            <th>@MasterLocalizer["PIDFNo"]</th>
+                            <th>@MasterLocalizer["ProjectName"]</th>
+                            <th>@SharedLocalizer["BrandName"]</th>
+                            <th class="text-center">@SharedLocalizer["Action"]</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        @*DeleteAPIListModel*@
+        <div id="DeleteAPIListModel" class="modal themeModal " role="dialog">
+            <div class="modal-dialog">
+                <!-- Modal content-->
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h4 class="modal-title">@SharedLocalizer["Delete"]</h4>
+                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="form-group">
+                                    @Html.Label(@SharedLocalizer["DeleteConfirm"])
+                                </div>
+                            </div>
+                        </div>
+                        @Html.Hidden("PIDFID")
+                        <div class="card-footer text-center">
+                            <button type="button" onclick="DeleteAPIList()" data-dismiss="modal" class="btn btn-primary mr-2">@SharedLocalizer["Yes"]</button>
+                            <a class="btn btn-danger" data-dismiss="modal">@SharedLocalizer["No"]</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </section>
+</div>
+@section MyScripts {
+
+    @Html.Partial("_DataTablePartial")
+    <script type="text/javascript" src="~/js/Custom/DynamicDataTable.js"></script>
+    <script type="text/javascript" src="~/js/Custom/APIList/MasterAPIList.js"></script>
+
+    <script>
+
+        //#region Setup API Url
+        var AllAPIList = "@EmcureNPD.Web.Helpers.APIURLHelper.GetAllAPIList";
+        // #endregion
+
+        //#region Static Messae Init
+        var EditLabel = "@SharedLocalizer["Edit"]";
+        var DeleteLabel = "@SharedLocalizer["Delete"]";
+        var ErrorMessage = "@SharedLocalizer["Error"]";
+        var RecordDelete = "@SharedLocalizer["RecordDelete"]";
+        var AddLabel = "@SharedLocalizer["Add"]";
+        var UpdateLabel = "@SharedLocalizer["Update"]";
+
+        //#endregion
+    </script>
+}

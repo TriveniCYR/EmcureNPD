@@ -1,0 +1,152 @@
+﻿$(document).ready(function () {
+    GetBusinessUnitList();
+    GetCountryList();
+});
+// #region Get Country List
+function GetCountryList() {
+    ajaxServiceMethod($('#hdnBaseURL').val() + AllCountry, 'GET', GetCountryListSuccess, GetCountryListError);
+}
+function GetCountryListSuccess(data) {
+    try {
+        $.each(data._object, function (index, object) {
+            $('#CountryId').append($('<option>').text(object.countryName).attr('value', object.countryId));
+            $('#CountryId').select2();
+            $('#CountryId option:eq(0)').val(0);
+            $('#CountryId').val("-");
+            $('#CountryId').trigger('change');
+        });
+    } catch (e) {
+        toastr.error('Error:' + e.message);
+    }
+}
+function GetCountryListError(x, y, z) {
+    toastr.error(ErrorMessage);
+}
+
+// #region Get BusinessUnit List
+function GetBusinessUnitList() {
+    ajaxServiceMethod($('#hdnBaseURL').val() + AllBusinessUnit, 'GET', GetBusinessUnitListSuccess, GetBusinessUnitListError);
+}
+function GetBusinessUnitListSuccess(data) {
+    try {
+        $('#BusinessUnitTable tbody').html('')
+        $.each(data._object, function (index, object) {
+            $('#BusinessUnitTable tbody').append('<tr><td>' + object.businessUnitName + '</td><td><span style="color:' + (object.isActive ? "green" : "red") + '">' + (object.isActive ? "Active" : "InActive") + '</span></td><td>  <a class="btn btn-primary" data-toggle="modal" data-target="#SaveBusinessUnitModel" data-backdrop="static" data-keyboard="false"  onclick="GetBusinessUnitById(' + object.businessUnitId + '); return false;"><i class="fa fa-fw fa-edit mr-1"></i> ' + EditLabel + '</a> <a class="btn btn-danger" data-toggle="modal" data-target="#DeleteBusinessUnitModel" data-backdrop="static" data-keyboard="false" onclick="ConfirmationDeleteBusinessUnit(' + object.businessUnitId + '); return false;"><i class="fa fa-fw fa-trash mr-1"></i> ' + DeleteLabel + '</a>  </td></tr>');
+        });
+        StaticDataTable("#BusinessUnitTable");
+    } catch (e) {
+        toastr.error('Error:' + e.message);
+    }
+}
+function GetBusinessUnitListError(x, y, z) {
+    toastr.error(ErrorMessage);
+}
+// #endregion
+
+// #region Get BusinessUnit By Id
+function GetBusinessUnitById(id) {
+    ajaxServiceMethod($('#hdnBaseURL').val() + GetBusinessUnitByIdUrl + "/" + id, 'GET', GetBusinessUnitByIdSuccess, GetBusinessUnitByIdError);
+}
+function GetBusinessUnitByIdSuccess(data) {
+    try {
+        var countryIds = data._object.countryIds.toString();
+        if (countryIds.includes(',')) { countryIds = countryIds.toString().split(','); }
+
+        $('#SaveBusinessUnitModel #CountryId').val(countryIds);
+        $('#SaveBusinessUnitModel #CountryId').trigger('change');
+        
+
+        $('#SaveBusinessUnitModel #BusinessUnitCountryMappingId').val(data._object.masterBusinessCountryMappingIds.toString());
+
+        $('#SaveBusinessUnitModel #BusinessUnitID').val(data._object.businessUnitId);
+        $('#SaveBusinessUnitModel #MasterBusinessUnitEntity_BusinessUnitName').val(data._object.businessUnitName);
+        $('#SaveBusinessUnitModel #BusinessUnitTitle').html(UpdateLabel);
+        if (!data._object.isActive) {
+            $('#SaveBusinessUnitModel #MasterBusinessUnitEntity_IsActive').prop('checked', false);
+        }
+        else {
+            $('#SaveBusinessUnitModel #MasterBusinessUnitEntity_IsActive').prop('checked', true);
+        }
+    }
+    catch (e) {
+        toastr.error('Error:' + e.message);
+    }
+}
+function GetBusinessUnitByIdError(x, y, z) {
+    toastr.error(ErrorMessage);
+}
+// #endregion
+
+// #region Insert/Update BusinessUnit
+function AddBusinessUnit() {
+    CleareBusinessUnitFields();
+    $('#SaveBusinessUnitModel #BusinessUnitTitle').html(AddLabel);
+}
+function SaveBusinessUnitForm(form) {
+    var obj = {
+        businessUnitId: $('#SaveBusinessUnitModel #BusinessUnitID').val(),
+        businessUnitName: $('#SaveBusinessUnitModel #MasterBusinessUnitEntity_BusinessUnitName').val(),
+        isActive: $('#SaveBusinessUnitModel #MasterBusinessUnitEntity_IsActive').prop('checked'),
+        countryIds: $('#CountryId').val().toString(),
+        masterBusinessCountryMappingIds: $('#SaveBusinessUnitModel #BusinessUnitCountryMappingId').val()
+    };
+    if ($(form).valid()) {
+        ajaxServiceMethod($('#hdnBaseURL').val() + SaveBusinessUnit, 'POST', SaveBusinessUnitFormSuccess, SaveBusinessUnitFormError, JSON.stringify(obj));
+    }
+    return false;
+}
+function SaveBusinessUnitFormSuccess(data) {
+    try {
+        $('#SaveBusinessUnitModel').modal('hide');
+        if (data._Success === true) {
+            CleareBusinessUnitFields();
+            toastr.success(RecordInsertUpdate);
+            GetBusinessUnitList();
+        }
+        else {
+            toastr.error(data._Message);
+        }
+    } catch (e) {
+        toastr.error('Error:' + e.message);
+    }
+}
+function SaveBusinessUnitFormError(x, y, z) {
+    toastr.error(ErrorMessage);
+}
+function CleareBusinessUnitFields() {
+    $('#SaveBusinessUnitModel #MasterBusinessUnitEntity_IsActive').prop('checked', true);
+    $('#SaveBusinessUnitModel #BusinessUnitID').val("0");
+    $('#SaveBusinessUnitModel #MasterBusinessUnitEntity_BusinessUnitName').val("");
+    $('#DeleteBusinessUnitModel #BusinessUnitID').val("0");
+    $('#SaveBusinessUnitModel #BusinessUnitCountryMappingId').val("");
+    $('#SaveBusinessUnitModel #CountryId').val("");
+    $('#SaveBusinessUnitModel #CountryId').trigger('change');
+}
+// #endregion
+
+//#region Delete BusinessUnit
+function ConfirmationDeleteBusinessUnit(id) {
+    $('#DeleteBusinessUnitModel #BusinessUnitID').val(id);
+}
+function DeleteBusinessUnit() {
+    var tempInAtiveID = $('#DeleteBusinessUnitModel #BusinessUnitID').val();
+    ajaxServiceMethod($('#hdnBaseURL').val() + DeleteBusinessUnitByIdUrl + "/" + tempInAtiveID, 'POST', DeleteBusinessUnitByIdSuccess, DeleteBusinessUnitByIdError);
+}
+function DeleteBusinessUnitByIdSuccess(data) {
+    try {
+        if (data._Success === true) {
+            CleareBusinessUnitFields();
+            toastr.success(RecordDelete);
+            GetBusinessUnitList();
+        }
+        else {
+            toastr.error(data._Message);
+        }
+    } catch (e) {
+        toastr.error('Error:' + e.message);
+    }
+}
+function DeleteBusinessUnitByIdError(x, y, z) {
+    toastr.error(ErrorMessage);
+}
+//#endregion

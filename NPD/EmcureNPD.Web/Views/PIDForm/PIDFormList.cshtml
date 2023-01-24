@@ -1,0 +1,135 @@
+﻿@using EmcureNPD.Utility.Models
+@using Microsoft.AspNetCore.Http
+@using EmcureNPD.Web.Controllers
+@using Microsoft.AspNetCore.Mvc.Localization
+@using EmcureNPD.Utility.Utility
+@inject IHttpContextAccessor HttpContextAccessor
+@inject Microsoft.Extensions.Localization.IStringLocalizer<MastersController> MasterLocalizer
+@inject Microsoft.Extensions.Localization.IStringLocalizer<EmcureNPD.Resource.Shared> SharedLocalizer
+@{
+    ViewData["Title"] = @MasterLocalizer["IPFTitle"];
+}
+<div class="row">
+    <section class="col-lg-12">
+        <div class="card">
+            <div class="card-header">
+                <h3 class="card-title">
+                    <i class="far fa-list-alt mr-2"></i>@MasterLocalizer["IPD List"]
+                </h3>
+                <div class="card-tools md-left">
+                    <div class="mybtn-group">                        
+                        @Html.Hidden("hdnAccess", (object)ViewBag.Access.Approve)
+                        @Html.Hidden("hdnEdit", (object)ViewBag.Access.Edit)
+                        @Html.Hidden("hdnAdd", (object)ViewBag.Access.Add)
+                        @if (@ViewBag.Access.Approve==true)
+                        {
+                            <a class="btn btn-success" onClick="approveRejData('A')" id="btnapprv"><i class="far fa-check mr-1"></i> @SharedLocalizer["Approve"]</a>
+                            <a class="btn btn-danger" onClick="approveRejData('R')"><i class="fas fa-redo mr-1"></i> @SharedLocalizer["Reject"]</a>
+                        }
+                        @*@if (@ViewBag.Access.Add == true || @ViewBag.Access.Edit == true)
+                        {
+                            <a class="btn btn-primary" asp-action="PIDForm" asp-route-pidfid=@UtilityHelper.Encrypt("20") asp-route-bui=@UtilityHelper.Encrypt("32")><i class="far fa-plus-square mr-1"></i> @SharedLocalizer["Add"]</a>
+                            <div class="export-btn mybtn-group"></div>
+                        }*@
+                    </div>
+                </div>
+            </div>
+            <div class="card-body">
+                <table id="IPDPIDFTable" class="table table-bordered table-striped table-hover" style="width:100%">
+                    <thead>
+                        <tr>
+                            <th class="text-center"></th>
+                            <th>@MasterLocalizer["PIDF No"]</th>
+                            <th>@MasterLocalizer["Project Name"]</th>
+                            <th>@SharedLocalizer["Brand Name"]</th>
+                            <th>@SharedLocalizer["DosageForm Name"]</th>                            
+                            <th>@SharedLocalizer["Product Packaging Type"]</th>
+                            @*<th>@SharedLocalizer["Approved Generics"]</th>*@
+                            @*<th>@SharedLocalizer["Launched Generics"]</th>*@
+                            <th>@SharedLocalizer["Created By"]</th>
+                            <th class="text-center">@SharedLocalizer["Action"]</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        @*ApproveModel*@
+        <div id="ApproveModel" class="modal themeModal" role="dialog">
+            <div class="modal-dialog">
+                <!-- Modal content-->
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h4 class="modal-title">@SharedLocalizer["Approve"]</h4>
+                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="form-group">
+                                    @Html.Label(@SharedLocalizer["ApproveConfirm"])
+                                </div>
+                            </div>
+                        </div>                        
+                        <div class="card-footer text-center">
+                            <button type="button" onclick="approveRejConfirm('A')" data-dismiss="modal" class="btn btn-primary mr-2">@SharedLocalizer["Yes"]</button>
+                            <a class="btn btn-danger" data-dismiss="modal">@SharedLocalizer["No"]</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        @*RejectModel*@
+        <div id="RejectModel" class="modal themeModal" role="dialog">
+            <div class="modal-dialog">
+                <!-- Modal content-->
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h4 class="modal-title">@SharedLocalizer["Reject"]</h4>
+                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="form-group">
+                                    @Html.Label(@SharedLocalizer["RejectConfirm"])
+                                </div>
+                            </div>
+                        </div>
+                        <div class="card-footer text-center">
+                            <button type="button" onclick="approveRejConfirm('R')" data-dismiss="modal" class="btn btn-primary mr-2">@SharedLocalizer["Yes"]</button>
+                            <a class="btn btn-danger" data-dismiss="modal">@SharedLocalizer["No"]</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </section>
+</div>
+@section MyScripts {
+    @Html.Partial("_DataTablePartial") 
+    <script type="text/javascript" src="~/js/Custom/DynamicDataTable.js"></script>
+    <script type="text/javascript" src="~/js/Custom/PIDF/MasterPIDF_IPDList.js"></script>
+    <script>
+        //#region Setup API Url
+        var AllIPDPIDF = "@EmcureNPD.Web.Helpers.APIURLHelper.GetAllIPDPIDFList";
+        var ApproveRejectIds = "@EmcureNPD.Web.Helpers.APIURLHelper.ApproveRejectIpdPidf";
+        // #endregion
+        //#region Static Messae Init
+        var EditLabel = "@SharedLocalizer["Edit"]";
+        var DeleteLabel = "@SharedLocalizer["Delete"]";
+        var ErrorMessage = "@SharedLocalizer["Error"]";
+        var RecordDelete = "@SharedLocalizer["RecordDelete"]";
+        var AddLabel = "@SharedLocalizer["Add"]";
+        var UpdateLabel = "@SharedLocalizer["Update"]";
+        //#end region
+
+        var successCallBack = '@TempData[EmcureNPD.Web.Helpers.UserHelper.SuccessMessage]';
+        if (successCallBack) {
+            toastr.success(successCallBack);
+        }
+    </script>
+}

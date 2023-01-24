@@ -1,0 +1,97 @@
+﻿@using Microsoft.AspNetCore.Http
+@using EmcureNPD.Web.Controllers
+@using Microsoft.AspNetCore.Mvc.Localization
+@inject IHttpContextAccessor HttpContextAccessor
+@inject Microsoft.Extensions.Localization.IStringLocalizer<MastersController> MasterLocalizer
+@inject Microsoft.Extensions.Localization.IStringLocalizer<EmcureNPD.Resource.Shared> SharedLocalizer
+@{
+    ViewData["Title"] = @MasterLocalizer["UserTitle"];
+}
+<div class="row">
+    <section class="col-lg-12">
+        <div class="card">
+            <div class="card-header">
+                <h3 class="card-title">
+                    <i class="far fa-list-alt mr-2"></i>@MasterLocalizer["User"]
+                </h3>
+                <div class="card-tools md-left">
+                    <div class="mybtn-group">
+                        <a class="btn btn-primary" asp-action="UserManage"><i class="far fa-plus-square mr-1"></i> @SharedLocalizer["Add"]</a>
+                        <div class="export-btn mybtn-group"></div>
+                    </div>
+                </div>
+            </div>
+            <div class="card-body">
+                <table id="UserTable" class="table table-bordered table-striped table-hover" style="width:100%">
+                    <thead>
+                        <tr>
+                            <th>@MasterLocalizer["FullName"]</th>
+                            <th>@MasterLocalizer["EmailAddress"]</th>
+                            <th>@SharedLocalizer["CreatedDate"]</th>
+                            <th class="text-center">@SharedLocalizer["Action"]</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        @*DeleteUserModel*@
+        <div id="DeleteUserModel" class="modal themeModal " role="dialog">
+            <div class="modal-dialog">
+                <!-- Modal content-->
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h4 class="modal-title">@SharedLocalizer["Delete"]</h4>
+                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="form-group">
+                                    @Html.Label(@SharedLocalizer["DeleteConfirm"])
+                                </div>
+                            </div>
+                        </div>
+                        @Html.Hidden("UserID")
+                        <div class="card-footer text-center">
+                            <button type="button" onclick="DeleteUser()" data-dismiss="modal" class="btn btn-primary mr-2">@SharedLocalizer["Yes"]</button>
+                            <a class="btn btn-danger" data-dismiss="modal">@SharedLocalizer["No"]</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </section>
+</div>
+@section MyScripts {
+
+    @Html.Partial("_DataTablePartial")
+    <script type="text/javascript" src="~/js/Custom/DynamicDataTable.js"></script>
+    <script type="text/javascript" src="~/js/Custom/User/MasterUser.js"></script>
+
+    <script>
+
+        //#region Setup API Url
+        var AllUser = "@EmcureNPD.Web.Helpers.APIURLHelper.GetAllUser";
+        var DeleteUserByIdUrl = "@EmcureNPD.Web.Helpers.APIURLHelper.DeleteUserById";
+        // #endregion
+
+        //#region Static Messae Init
+        var EditLabel = "@SharedLocalizer["Edit"]";
+        var DeleteLabel = "@SharedLocalizer["Delete"]";
+        var ErrorMessage = "@SharedLocalizer["Error"]";
+        var RecordDelete = "@SharedLocalizer["RecordDelete"]";
+        var AddLabel = "@SharedLocalizer["Add"]";
+        var UpdateLabel = "@SharedLocalizer["Update"]";
+        var successCallBack = '@TempData[EmcureNPD.Web.Helpers.UserHelper.SuccessMessage]';
+        if (successCallBack)
+        {
+            toastr.success(successCallBack);
+        }
+
+        //#endregion
+    </script>
+}

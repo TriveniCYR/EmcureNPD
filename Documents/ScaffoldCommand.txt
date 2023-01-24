@@ -1,0 +1,22 @@
+Steps for Scaffold Command
+
+1.) Rebuild Your Soluttion
+2.) Go to Tools --> Nuget Package Manager --> Package Manager Console
+3.) Select Defualt Project Data/EmcureNPD.Data.DataAccess from PMC
+4.) Run below command with -f (Forcefully)
+Scaffold-DbContext "Data Source=180.149.241.172;Initial Catalog=EmcureNPDDev;Persist Security Info=True;User ID=emcurenpddev_dbUser;pwd=emcure123!@#" Microsoft.EntityFrameworkCore.SqlServer -OutputDir "Entity" -ContextDir "DataContext" -f
+
+5.) Before Run Command copy OnConfiguring in DataContext.cs file and after run the command replace OnConfiguring method
+
+protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+        {
+            if (!optionsBuilder.IsConfigured)
+            {
+#warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see http://go.microsoft.com/fwlink/?LinkId=723263.
+                //optionsBuilder.UseSqlServer("Data Source=180.149.241.172;Initial Catalog=EmcureNPDDev;Persist Security Info=True;User ID=emcurenpddev_dbUser;pwd=emcure123!@#");
+
+                optionsBuilder.UseSqlServer(DatabaseConnection.NPDDatabaseConnection);
+            }
+        }
+
+6.) Again rebuild your solution and solve if any issue

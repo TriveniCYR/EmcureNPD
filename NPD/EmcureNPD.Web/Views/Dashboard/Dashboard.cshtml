@@ -1,0 +1,27 @@
+﻿@using Microsoft.AspNetCore.Http
+@using EmcureNPD.Web.Controllers
+@using Microsoft.AspNetCore.Mvc.Localization
+@inject IHttpContextAccessor HttpContextAccessor
+@inject Microsoft.Extensions.Localization.IStringLocalizer<EmcureNPD.Resource.Master> MasterLocalizer
+@inject Microsoft.Extensions.Localization.IStringLocalizer<EmcureNPD.Resource.Shared> SharedLocalizer
+@model EmcureNPD.Business.Models.PIDFEntity
+
+<div class="card-body">
+    <div class="col-md-3">
+        <div class="form-group required">
+            @Html.LabelFor(model => model.BusinessUnitId, "Business Unit", new { @class = "control-label" })
+            <select id="BusinessUnitId" name="BusinessUnitId" class="form-control readOnlyUpdate" required></select>
+        </div>
+    </div>
+</div>
+
+
+@section MyScripts {
+
+    @Html.Partial("_DataTablePartial")
+    <script type="text/javascript" src="~/js/Custom/Dashboard/Dashboard.js"></script>
+
+    <script>
+        var GetAllDashboard = "@EmcureNPD.Web.Helpers.APIURLHelper.GetAllDashboard";
+    </script>
+}

@@ -1,0 +1,426 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="Active" xml:space="preserve">
+    <value>Active</value>
+  </data>
+  <data name="Address" xml:space="preserve">
+    <value>Address</value>
+  </data>
+  <data name="AnalyticalName" xml:space="preserve">
+    <value>Analytical GL Name</value>
+  </data>
+  <data name="APISourcingName" xml:space="preserve">
+    <value>APISourcing Name</value>
+  </data>
+  <data name="ApprovedGenerics" xml:space="preserve">
+    <value>Approved Generics</value>
+  </data>
+  <data name="BatchSizeNumberName" xml:space="preserve">
+    <value>Batch Size Number Name</value>
+  </data>
+  <data name="BrandName" xml:space="preserve">
+    <value>Brand Name</value>
+  </data>
+  <data name="BERequirementName" xml:space="preserve">
+    <value>BE Requirement Name</value>
+  </data>
+  <data name="BusinessUnitName" xml:space="preserve">
+    <value>Business Unit Name</value>
+  </data>
+  <data name="ConfirmPassword" xml:space="preserve">
+    <value>Confirm Password</value>
+  </data>
+  <data name="CountryName" xml:space="preserve">
+    <value>Country Name</value>
+  </data>
+  <data name="Countrys" xml:space="preserve">
+    <value>Country</value>
+  </data>
+  <data name="DepartmentName" xml:space="preserve">
+    <value>Department Name</value>
+  </data>
+  <data name="DIAName" xml:space="preserve">
+    <value>DIA Name</value>
+  </data>
+  <data name="DosageFormName" xml:space="preserve">
+    <value>Dosage Form Name</value>
+  </data>
+  <data name="EmailAddress" xml:space="preserve">
+    <value>Email Address</value>
+  </data>
+  <data name="DosageForms" xml:space="preserve">
+    <value>Dosage Form</value>
+  </data>
+  <data name="ExipientName" xml:space="preserve">
+    <value>Exipient Name</value>
+  </data>
+  <data name="FormRNDDivisionName" xml:space="preserve">
+    <value>Form RND Division Name</value>
+  </data>
+  <data name="Formulation" xml:space="preserve">
+    <value>Formulation</value>
+  </data>
+  <data name="FormulationName" xml:space="preserve">
+    <value>Formulation Name</value>
+  </data>
+  <data name="FullName" xml:space="preserve">
+    <value>Full Name</value>
+  </data>
+  <data name="MobileNumber" xml:space="preserve">
+    <value>Mobile Number</value>
+  </data>
+  <data name="Oldpassword" xml:space="preserve">
+    <value>Old Password</value>
+  </data>
+  <data name="InHouses" xml:space="preserve">
+    <value>In House</value>
+  </data>
+  <data name="InLicenses" xml:space="preserve">
+    <value>In Licenses</value>
+  </data>
+  <data name="LaunchedGenerics" xml:space="preserve">
+    <value>Launched Generics</value>
+  </data>
+  <data name="MarketExtensions" xml:space="preserve">
+    <value>Market Extension / New Product</value>
+  </data>
+  <data name="MoleculeName" xml:space="preserve">
+    <value>Molecule Name</value>
+  </data>
+  <data name="OralName" xml:space="preserve">
+    <value>Oral Name</value>
+  </data>
+  <data name="PackagingTypeName" xml:space="preserve">
+    <value>Packaging Type Name</value>
+  </data>
+  <data name="Password" xml:space="preserve">
+    <value>Password</value>
+  </data>
+  <data name="PackagingTypes" xml:space="preserve">
+    <value>Product Packaging Type</value>
+  </data>
+  <data name="PIDFNO" xml:space="preserve">
+    <value>Number of Players / ANDA</value>
+  </data>
+  <data name="PlantNameName" xml:space="preserve">
+    <value>Plant Name </value>
+  </data>
+  <data name="ProductStrengthName" xml:space="preserve">
+    <value>ProductStrengthName</value>
+  </data>
+  <data name="ProductTypeName" xml:space="preserve">
+    <value>Product Type Name</value>
+  </data>
+  <data name="RFDApplicant" xml:space="preserve">
+    <value>Applicant</value>
+  </data>
+  <data name="RFDBrand" xml:space="preserve">
+    <value>Brand</value>
+  </data>
+  <data name="RFDCommercialBatchSize" xml:space="preserve">
+    <value>Commercial Batch Size</value>
+  </data>
+  <data name="RFDIndication" xml:space="preserve">
+    <value>Indication</value>
+  </data>
+  <data name="RFDInitialRevenuePotential" xml:space="preserve">
+    <value>Initial Revenue Potential</value>
+  </data>
+  <data name="RFDInnovators" xml:space="preserve">
+    <value>Innovators</value>
+  </data>
+  <data name="RFDPriceDiscounting" xml:space="preserve">
+    <value>Price Discounting</value>
+  </data>
+  <data name="RoleManagement" xml:space="preserve">
+    <value>Role Management</value>
+  </data>
+  <data name="RoleName" xml:space="preserve">
+    <value>Role Name</value>
+  </data>
+  <data name="UnitofMeasurementName" xml:space="preserve">
+    <value>Unit of Measurement Name</value>
+  </data>
+  <data name="UnitofMeasurements" xml:space="preserve">
+    <value>Unit of Measurements</value>
+  </data>
+  <data name="WorkflowName" xml:space="preserve">
+    <value>Workflow Name</value>
+  </data>
+  <data name="MarketExtenstionName" xml:space="preserve">
+    <value>Market Extenstion Name</value>
+  </data>
+  <data name="TransformName" xml:space="preserve">
+    <value>Transform  Name</value>
+  </data>
+  <data name="ExtensionApplicationName" xml:space="preserve">
+    <value>Extension Application Name</value>
+  </data>
+  <data name="ActivityTypeName" xml:space="preserve">
+    <value>Activity Type Name</value>
+  </data>
+  <data name="ExpenseRegionName" xml:space="preserve">
+    <value>Expense Region Name</value>
+  </data>
+  <data name="a" xml:space="preserve">
+    <value />
+  </data>
+  <data name="RegionName" xml:space="preserve">
+    <value>Region Name</value>
+  </data>
+  <data name="CurrencyCode" xml:space="preserve">
+    <value>Currency Code</value>
+  </data>
+  <data name="CurrencyName" xml:space="preserve">
+    <value>Currency Name</value>
+  </data>
+  <data name="CurrencySymbol" xml:space="preserve">
+    <value>Currency Symbol</value>
+  </data>
+  <data name="IPDManagement" xml:space="preserve">
+    <value>IPD Management</value>
+  </data>
+  <data name="Management" xml:space="preserve">
+    <value>Management</value>
+  </data>
+  <data name="PBFAPI" xml:space="preserve">
+    <value>PBF &amp; API</value>
+  </data>
+  <data name="PIDFCommercial" xml:space="preserve">
+    <value>PIDF Commercial</value>
+  </data>
+  <data name="FinancePIDF" xml:space="preserve">
+    <value>PIDF Finance</value>
+  </data>
+  <data name="PIDFManagement" xml:space="preserve">
+    <value>PIDF Management</value>
+  </data>
+  <data name="MarketSizeinUnitsasLaunch" xml:space="preserve">
+    <value>Market Size in Units as Launch</value>
+  </data>
+  <data name="ShelfLife" xml:space="preserve">
+    <value>Shelf Life</value>
+  </data>
+  <data name="APIIPDDetailsForm" xml:space="preserve">
+    <value>API IPD Details Form</value>
+  </data>
+  <data name="APIReq" xml:space="preserve">
+    <value>API Req</value>
+  </data>
+  <data name="APiReq(EmcureKg)" xml:space="preserve">
+    <value>Api Req (EmcureKg)</value>
+  </data>
+  <data name="CommercialBatchSize" xml:space="preserve">
+    <value>Commercial Batch Size</value>
+  </data>
+  <data name="CommercialBatchSize(Qtr)" xml:space="preserve">
+    <value>Commercial Batch Size (Qtr)</value>
+  </data>
+  <data name="CommercialDetails" xml:space="preserve">
+    <value>Commercial Details</value>
+  </data>
+  <data name="Currency" xml:space="preserve">
+    <value>Currency</value>
+  </data>
+  <data name="Development" xml:space="preserve">
+    <value>Development</value>
+  </data>
+  <data name="DrugsCategory" xml:space="preserve">
+    <value>Drugs Category</value>
+  </data>
+  <data name="Exhibit" xml:space="preserve">
+    <value>Exhibit</value>
+  </data>
+  <data name="FinalSelection" xml:space="preserve">
+    <value>Final Selection</value>
+  </data>
+  <data name="FormulationQuantity" xml:space="preserve">
+    <value>Formulation Quantity</value>
+  </data>
+  <data name="High" xml:space="preserve">
+    <value>High</value>
+  </data>
+  <data name="Low" xml:space="preserve">
+    <value>Low</value>
+  </data>
+  <data name="MarketDetailsNewPortCGIDetails" xml:space="preserve">
+    <value>Market Details (New Port / CGI Details)</value>
+  </data>
+  <data name="MarketGrowth" xml:space="preserve">
+    <value>Market Growth</value>
+  </data>
+  <data name="MarketSize" xml:space="preserve">
+    <value>Market Size</value>
+  </data>
+  <data name="MarketSizeInUnit" xml:space="preserve">
+    <value>Market Size In Unit</value>
+  </data>
+  <data name="Medium" xml:space="preserve">
+    <value>Medium</value>
+  </data>
+  <data name="PlantQC" xml:space="preserve">
+    <value>Plant QC</value>
+  </data>
+  <data name="PriceDiscounting" xml:space="preserve">
+    <value>Price Discounting</value>
+  </data>
+  <data name="PriceErosion" xml:space="preserve">
+    <value>Price Erosion</value>
+  </data>
+  <data name="ProductPackaging" xml:space="preserve">
+    <value>Product Packaging</value>
+  </data>
+  <data name="ProductPackagingType" xml:space="preserve">
+    <value>Product Packaging Type</value>
+  </data>
+  <data name="ProductStrength" xml:space="preserve">
+    <value>Product Strength</value>
+  </data>
+  <data name="ProductType" xml:space="preserve">
+    <value>ProductType</value>
+  </data>
+  <data name="ProjectName" xml:space="preserve">
+    <value>Project Name</value>
+  </data>
+  <data name="ScaleUp" xml:space="preserve">
+    <value>Scale Up</value>
+  </data>
+  <data name="SU(IMSVolume)" xml:space="preserve">
+    <value>SU (IMSVolume)</value>
+  </data>
+  <data name="SU_IMS" xml:space="preserve">
+    <value>SU_IMS</value>
+  </data>
+  <data name="Total" xml:space="preserve">
+    <value>Total</value>
+  </data>
+  <data name="TotalAPIReq" xml:space="preserve">
+    <value>Total API Req</value>
+  </data>
+  <data name="TotalAPIReq(IMSKg)" xml:space="preserve">
+    <value>Total API Req (IMSKg)</value>
+  </data>
+  <data name="FormulationDetails" xml:space="preserve">
+    <value> Formulation Details</value>
+  </data>
+  <data name="IPEvalution" xml:space="preserve">
+    <value>IP Evalution</value>
+  </data>
+</root>

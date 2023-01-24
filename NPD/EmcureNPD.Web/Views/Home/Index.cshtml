@@ -1,0 +1,520 @@
+﻿
+@model EmcureNPD.Business.Models.PIDFEntity
+@*@{
+    ViewData["Title"] = "Dashboard";
+}
+
+<div class="text-center">
+</div>*@
+
+@*@{
+    ViewData["Title"] = "Dashboard";
+}
+
+<div class="text-center">
+</div>*@
+@*
+@inject Microsoft.Extensions.Localization.IStringLocalizer<SharedResource> SharedLocalizer*@
+@{
+    ViewData["Title"] = "Dashboard";
+}
+
+<div class="content-wrapper" style="margin-left:0">
+    <!-- Content Header (Page header) -->
+    <div class="content-header" style="padding: 8px .5rem;">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-sm-2">
+                    <button type="button" class="btn btn-primary btn-sm daterange1" title="Date range">
+                        <i class="far fa-calendar-alt"></i> Date range
+                    </button>
+                </div>
+                <div class="col-sm-1">
+                    <div class="form-group required">
+                   <select id="years">
+                       <option>Select Year</option>
+                   </select>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="form-group required">
+                        @Html.LabelFor(model => model.BusinessUnitId, "Business Unit", new { @class = "control-label" })
+                        <select id="BusinessUnitId" name="BusinessUnitId" class="form-control readOnlyUpdate" required></select>
+                    </div>
+                </div>
+             @*   <div class="col-sm-9">
+                    <select name="Business Unit" id="Business">
+                        <option value="select">Select Business Unit</option>
+                        <option value="2019">Emcure</option>
+                        <option value="2020">Tilomed</option>
+                        <option value="2021">Marcan</option>
+
+                    </select>
+                </div>*@
+
+
+            </div>
+            <!-- /.row -->
+        </div>
+        <!-- /.container-fluid -->
+    </div>
+    <!-- /.content-header -->
+    <!-- Main content -->
+    <section class="content">
+        <div class="container-fluid">
+            <div id="PIDFContainer" class="row">
+               @* <div class="col-lg-3 col-md-6 col-12">
+                    <!-- small box -->
+                    <div class="small-box bg-info">
+                        <div class="inner">
+                            <h3 id="totalFinanceApproved"></h3>
+                            <p>PIDF Submitted</p>
+                        </div>
+                        <div class="icon">
+                            <i class="far fa-save"></i>
+                        </div>
+
+                    </div>
+                </div>
+                <!-- ./col -->
+                <div class="col-lg-3 col-md-6 col-12">
+                    <!-- small box -->
+                    <div class="small-box bg-success">
+                        <div class="inner">
+                            <h3 id="totalFinalApproved"></h3>
+                            <p>PIDF In progress</p>
+
+                        </div>
+                        <div class="icon">
+                            <i class="far fa-check-square"></i>
+                        </div>
+
+                    </div>
+                </div>
+                <!-- ./col -->
+                <div class="col-lg-3 col-md-6 col-12">
+                    <!-- small box -->
+                    <div class="small-box bg-warning">
+                        <div class="inner">
+                            <h3 id="totalInitial"></h3>
+                            <p>PBF In progress</p>
+                        </div>
+                        <div class="icon">
+                            <i class="fab fa-wpforms"></i>
+                        </div>
+
+                    </div>
+                </div>
+                <!-- ./col -->
+                <div class="col-lg-3 col-md-6 col-12">
+                    <!-- small box -->
+                    <div class="small-box bg-danger">
+                        <div class="inner">
+                            <h3 id="totalPartialApproved"></h3>
+                            <p>PIDF Approved</p>
+                        </div>
+                        <div class="icon">
+                            <i class="ion ion-pie-graph"></i>
+                        </div>
+
+                    </div>
+                </div>
+
+                <!-- ./col -->
+                <div class="col-lg-3 col-md-6 col-12">
+                    <!-- small box -->
+                    <div class="small-box bg-warning">
+                        <div class="inner">
+                            <h3 id="totalPartialApproved"></h3>
+                            <p>PBF Submitted</p>
+                        </div>
+                       
+
+                    </div>
+                </div>
+                <!-- ./col -->
+                <div class="col-lg-3 col-md-6 col-12">
+                    <!-- small box -->
+                    <div class="small-box bg-info">
+                        <div class="inner">
+                            <h3 id="totalPartialApproved"></h3>
+                            <p>API Submitted</p>
+                        </div>
+                       
+
+                    </div>
+                </div>
+                <!-- ./col -->
+                <div class="col-lg-3 col-md-6 col-12">
+                    <!-- small box -->
+                    <div class="small-box bg-secondary">
+                        <div class="inner">
+                            <h3 id="totalPartialApproved"></h3>
+                            <p>Medical Submitted</p>
+                        </div>
+                       
+
+                    </div>
+                </div>
+                <!-- ./col -->
+                <div class="col-lg-3 col-md-6 col-12">
+                    <!-- small box -->
+                    <div class="small-box bg-dark">
+                        <div class="inner">
+                            <h3 id="totalPartialApproved"></h3>
+                            <p>Finance Submitted</p>
+                        </div>
+                       
+
+                    </div>
+                </div>*@
+                <!-- ./col -->
+            </div>
+
+
+
+            <!-- Small boxes (Stat box) -->
+            @*<div class="row">
+            <div class="col-lg-3 col-md-6 col-12">
+
+            <div class="small-box bg-info">
+            <div class="inner">
+            <h4 class="col-sm-6" id="totalFinanceApproved"></h4>
+            <p>Dossiers Submitted</p>
+            </div>
+            <div class="icon">
+            <i class="far fa-save"></i>
+            </div>
+            </div>
+            </div>
+            <div class="col-lg-3 col-md-6 col-12">
+            <div class="small-box bg-success">
+            <div class="inner">
+            <h4 class="col-sm-6" id="totalFinalApproved"></h4>
+            <p>Projects Approved</p>
+            </div>
+            <div class="icon">
+            <i class="far fa-check-square"></i>
+            </div>
+            </div>
+            </div>
+            <div class="col-lg-3 col-md-6 col-12">
+            <div class="small-box bg-warning">
+            <div class="inner">
+            <h4 class="col-sm-6" id="totalInitial"></h4>
+            <p>DRFs Created</p>
+            </div>
+            <div class="icon">
+            <i class="fab fa-wpforms"></i>
+            </div>
+            </div>
+            </div>
+            <div class="col-lg-3 col-md-6 col-12">
+            <div class="small-box bg-danger">
+            <div class="inner">
+            <h4 class="col-sm-6" id="totalPartialApproved"></h4>
+            <p>Dossiers Pending</p>
+            </div>
+            <div class="icon">
+            <i class="ion ion-pie-graph"></i>
+            </div>
+            </div>
+            </div>
+
+            </div>*@
+            <!-- /.row -->
+            <!-- Main row -->
+            <div class="row">
+                <input id="tempstartdate" name="tempstartdate" type="hidden" />
+                <input id="tempenddate" name="tempenddate" type="hidden" />
+                <!-- Left col -->
+                <section class="col-lg-6 connectedSortable">
+                    <!-- Custom tabs (Charts with tabs)-->
+                    <div class="card">
+                        <div class="card-header">
+                            <h3 class="card-title">
+                                <i class="fas fa-chart-pie mr-1"></i> All Projects - Location Wise
+                            </h3>
+                        </div>
+                        <!-- /.card-header -->
+                        <div class="card-body">
+                            <div class="tab-content p-0">
+                                <div id="chart"></div>
+                            </div>
+                        </div>
+                        <!-- /.card-body -->
+                    </div>
+                    <!-- /.card -->
+
+                </section>
+                <!-- /.Left col -->
+                <!-- right col (We are only adding the ID to make the widgets sortable)-->
+                <section class="col-lg-6 connectedSortable">
+
+                    <!-- Map card -->
+                    <div class="card">
+                        <div class="card-header ">
+                            <h3 class="card-title">
+                                <i class="fas fa-map-marker-alt mr-1"></i> All Projects - Location Wise
+                            </h3>
+                            <!-- card tools -->
+                            <!-- /.card-tools -->
+                        </div>
+                        <div class="card-body">
+                            <div id="world-map1" style="height: 250px; width: 100%;"></div>
+                        </div>
+                        <!-- /.card-body-->
+                    </div>
+                    <!-- /.card -->
+
+                </section>
+                <!-- right col -->
+            </div>
+            <!-- /.row (main row) -->
+        </div>
+        <!-- /.container-fluid -->
+    </section>
+    <!-- /.content -->
+</div>
+<link href="~/css/daterangepicker.css" rel="stylesheet" />
+@*<script src="~/js/daterangepicker.js"></script>
+<script src="~/js/jquery.vmap.sampledata.js"></script>*@
+@section MyScripts {
+
+	@Html.Partial("_DataTablePartial")
+<script type="text/javascript" src="~/js/Custom/Dashboard/Dashboard.js"></script>
+
+<script>
+    var GetAllDashboard = "@EmcureNPD.Web.Helpers.APIURLHelper.GetAllDashboard";
+        var GetPIDFList = "@EmcureNPD.Web.Helpers.APIURLHelper.GetPIDFList";
+</script>
+}
+<script>
+    var startdate1 = null;
+    var enddate1 = null;
+    var config = {
+        type: "pie",
+        series: [{
+            value: "value",
+            color: "color",
+            text: "value",
+            stroke: "#FFFFFF",
+            strokeWidth: 2
+        }],
+        legend: {
+            values: {
+                id: "value",
+                text: "id",
+                color: "color"
+            },
+            halign: "right",
+            valign: "middle"
+        }
+    };
+    var visitorsData = [];
+    var chart = new dhx.Chart("chart", config);
+
+    $(document).ready(function () {
+        var today = new Date();
+        var dd = String(today.getDate()).padStart(2, '0');
+        var mm = String(today.getMonth() + 1).padStart(2, '0');
+        var yyyy = today.getFullYear();
+
+        //today = mm + '/' + dd + '/' + yyyy;
+        today = yyyy + '/' + mm + '/' + dd;
+
+        var d = new Date();
+        d.setDate(d.getDate() - 29);
+        var dd = String(d.getDate()).padStart(2, '0');
+        var mm = String(d.getMonth() + 1).padStart(2, '0');
+        var yyyy = d.getFullYear();
+
+        //d = mm + '/' + dd + '/' + yyyy;
+        d = yyyy + '/' + mm + '/' + dd;
+
+        startdate1 = d;
+        enddate1 = today;
+
+        $('#tempstartdate').text(d);
+        $('#tempenddate').text(today);
+
+        $.ajax({
+            type: "POST",
+            url: '@Url.Action("GetDashboardData1", "Dashboard")/',
+            dataType: "json",
+            data: { fromDate: null, toDate: null, countryName: null },
+            success: function (result) {
+                $('#totalFinanceApproved').text(result.data.dashboardTabDatas.totalFinanceApproved);
+                $('#totalFinalApproved').text(result.data.dashboardTabDatas.totalFinalApproved);
+                $('#totalInitial').text(result.data.dashboardTabDatas.totalInitial);
+                $('#totalPartialApproved').text(result.data.dashboardTabDatas.totalPartialApproved);
+                //Add chart data
+                //var chart = new dhx.Chart("chart", config);
+                chart.data.parse([{
+                    id: "DRF Created",
+                    value: result.data.dashboardTabDatas.totalInitial,
+                    color: "orange"
+                }, {
+                    id: "Dossier Pending",
+                    value: result.data.dashboardTabDatas.totalPartialApproved,
+                    color: "#dc3545"
+                }, {
+                    id: "Project Approved",
+                    value: result.data.dashboardTabDatas.totalFinalApproved,
+                    color: "#28a745"
+                }, {
+                    id: "Dossier Submitted",
+                    value: result.data.dashboardTabDatas.totalFinanceApproved,
+                    color: "#17a2b8"
+                }
+                ]);
+            }
+        });
+    });
+
+
+    // World map by jvectormap
+
+    $.getJSON('/Dashboard/GetDashboardWorldMapData', function (data) {
+        var tempd = '{' + data + '}';
+        $('#world-map1').vectorMap({
+            map: 'world_en',
+            backgroundColor: 'transparent',
+            values: JSON.parse(tempd),
+            //values: sampledata,
+            //scale: ['#ffffff', '#0154ad'],
+            scaleColors: ['#17a2b8', '#28a745', '#ffc107', '#dc3545'],
+
+            normalizeFunction: 'polynomial',
+            regionStyle: {
+                initial: {
+                    fill: 'rgba(255, 255, 255, 0.7)',
+                    'fill-opacity': 1,
+                    stroke: 'rgba(0,0,0,.2)',
+                    'stroke-width': 1,
+                    'stroke-opacity': 1
+                }
+            },
+            series: {
+                regions: [{
+                    //values: sampledata,
+                    //   scale: ['#17a2b8', '#28a745', '#ffc107', '#dc3545'],
+                    normalizeFunction: 'polynomial'
+                }]
+            },
+            onRegionLabelShow: function (e, el, code) {
+                if (typeof visitorsData[code] !== 'undefined') {
+                    el.html(el.html() + ': ' + visitorsData[code] + ' new visitors')
+                }
+            },
+            onRegionClick: function (event, code, region) {
+                var name = (region);
+                //alert(code);
+
+                //alert(startdate1);
+                var fromDate = startdate1;
+                var toDate = enddate1;
+                var countryName = name;
+
+                var data = { fromDate: fromDate, toDate: toDate, countryName: countryName }
+
+                $.ajax({
+                    type: "POST",
+                    url: '@Url.Action("GetDashboardData1", "Dashboard")/',
+                    dataType: "json",
+                    data: data,
+                    success: function (result) {
+                        //console.log(result);
+                        $('#totalFinanceApproved').text(result.data.dashboardTabDatas.totalFinanceApproved);
+                        $('#totalFinalApproved').text(result.data.dashboardTabDatas.totalFinalApproved);
+                        $('#totalInitial').text(result.data.dashboardTabDatas.totalInitial);
+                        $('#totalPartialApproved').text(result.data.dashboardTabDatas.totalPartialApproved);
+
+                        chart.data.parse([{
+                            id: "DRF Created",
+                            value: result.data.dashboardTabDatas.totalInitial,
+                            color: "orange"
+                        }, {
+                            id: "Dossier Pending",
+                            value: result.data.dashboardTabDatas.totalPartialApproved,
+                            color: "#dc3545"
+                        }, {
+                            id: "Project Approved",
+                            value: result.data.dashboardTabDatas.totalFinalApproved,
+                            color: "#28a745"
+                        }, {
+                            id: "Dossier Submitted",
+                            value: result.data.dashboardTabDatas.totalFinanceApproved,
+                            color: "#17a2b8"
+                        }
+                        ]);
+
+
+                    }
+                });
+            },
+        });
+    });
+    //}
+    var testmapdata = "";
+    $(function () {
+
+        $('.daterange1').daterangepicker({
+            ranges: {
+                Today: [moment(), moment()],
+                Yesterday: [moment().subtract(1, 'days'), moment().subtract(1, 'days')],
+                'Last 7 Days': [moment().subtract(6, 'days'), moment()],
+                'Last 30 Days': [moment().subtract(29, 'days'), moment()],
+                'This Month': [moment().startOf('month'), moment().endOf('month')],
+                'Last Month': [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')]
+            },
+            startDate: moment().subtract(29, 'days'),
+            endDate: moment()
+
+        }, function (start, end) {
+            //alert('You chose: ' + start.format('YYYY-MM-DD') + ' - ' + end.format('YYYY-MM-DD'))
+            var fromDate = start.format('YYYY-MM-DD');
+            var toDate = end.format('YYYY-MM-DD');
+            var countryName = null;
+            startdate1 = fromDate;
+            enddate1 = toDate;
+            $('#tempstartdate').text(fromDate);
+            $('#tempenddate').text(toDate);
+            var data = { fromDate: fromDate, toDate: toDate, countryName: countryName }
+            //call mvc controller
+            //console.log(data);
+            $.ajax({
+                type: "POST",
+                url: '@Url.Action("GetDashboardData1", "Dashboard")/',
+                dataType: "json",
+                data: data,
+                success: function (result) {
+                    //console.log(result);
+                    $('#totalFinanceApproved').text(result.data.dashboardTabDatas.totalFinanceApproved);
+                    $('#totalFinalApproved').text(result.data.dashboardTabDatas.totalFinalApproved);
+                    $('#totalInitial').text(result.data.dashboardTabDatas.totalInitial);
+                    $('#totalPartialApproved').text(result.data.dashboardTabDatas.totalPartialApproved);
+
+                    //var chart = new dhx.Chart("chart", config);
+                    chart.data.parse([{
+                        id: "DRF Created",
+                        value: result.data.dashboardTabDatas.totalInitial,
+                        color: "orange"
+                    }, {
+                        id: "Dossier Pending",
+                        value: result.data.dashboardTabDatas.totalPartialApproved,
+                        color: "#dc3545"
+                    }, {
+                        id: "Project Approved",
+                        value: result.data.dashboardTabDatas.totalFinalApproved,
+                        color: "#28a745"
+                    }, {
+                        id: "Dossier Submitted",
+                        value: result.data.dashboardTabDatas.totalFinanceApproved,
+                        color: "#17a2b8"
+                    }]);
+                }
+            });
+        });
+    });
+</script>

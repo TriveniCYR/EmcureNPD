@@ -1,0 +1,220 @@
+﻿using EmcureNPD.API.Filters;
+using EmcureNPD.API.Helpers.Response;
+using EmcureNPD.Business.Core.Implementation;
+using EmcureNPD.Business.Core.Interface;
+using EmcureNPD.Business.Core.ServiceImplementations;
+using EmcureNPD.Business.Models;
+using Microsoft.AspNetCore.Mvc;
+using System;
+using System.Collections.Generic;
+using System.Net;
+using System.Threading.Tasks;
+using static EmcureNPD.Utility.Enums.GeneralEnum;
+
+namespace EmcureNPD.API.Controllers.Masters
+{
+    [Route("api/[controller]")]
+    [ApiController]
+    [AuthorizeAttribute]
+    public class PIDFormController : ControllerBase
+    {
+        #region Properties
+
+        private readonly IPIDFormService _PIDFormService;
+
+        private readonly IResponseHandler<dynamic> _ObjectResponse;
+
+        #endregion Properties
+
+        #region Constructor
+
+        public PIDFormController(IPIDFormService PIDFormService, IResponseHandler<dynamic> ObjectResponse)
+        {
+            _PIDFormService = PIDFormService;
+            _ObjectResponse = ObjectResponse;
+        }
+
+        #endregion Constructor
+
+
+        /// <summary>
+        /// Description - To Get All Formulation
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        /// <response code="200">OK</response>
+        /// <response code="400">Bad Request</response>
+        /// <response code="401">Unauthorized</response>
+        /// <response code="403">Forbidden</response>
+        /// <response code="404">Not Found</response>
+        /// <response code="405">Method Not Allowed</response>
+        /// <response code="500">Internal Server</response>
+        [HttpGet, Route("GetPIDForm")]
+        public async Task<IActionResult> GetPIDForm()
+        {
+            var oFormulationList = await _PIDFormService.FillDropdown();
+
+            if (oFormulationList != null)
+                return _ObjectResponse.Create(oFormulationList, (Int32)HttpStatusCode.OK);
+            else
+                return _ObjectResponse.Create(null, (Int32)HttpStatusCode.BadRequest, "No Records found");
+        }
+        /// <summary>
+        /// Description - To Insert and Update IPD Form
+        /// </summary>
+        /// <param name="oIPD"></param>
+        /// <returns></returns>
+        /// <response code="200">OK</response>
+        /// <response code="400">Bad Request</response>
+        /// <response code="403">Forbidden</response>
+        /// <response code="404">Not Found</response>
+        /// <response code="405">Method Not Allowed</response>
+        /// <response code="500">Internal Server</response>
+        [HttpPost]
+        [Route("SaveIPDForm")]
+        public async Task<IActionResult> SaveIPDForm(PIDFormEntity ipdobj)
+        {
+            try
+            {
+                DBOperation oResponse = await _PIDFormService.AddUpdateIPD(ipdobj);
+                if (oResponse == DBOperation.Success)
+                {
+                    if(ipdobj.SaveType== "A" || ipdobj.SaveType== "R")
+                    {
+                        EntryApproveRej objApprej = new EntryApproveRej();
+                        objApprej.SaveType = ipdobj.SaveType;
+                        ApprRejPidf objList = new ApprRejPidf();
+                        objApprej.PidfIds = new List<ApprRejPidf>();
+                        objList.pidfId = ipdobj.PIDFID;
+                        objApprej.PidfIds.Add(objList);
+                        oResponse = await _PIDFormService.ApproveRejectIpdPidf(objApprej);
+                    }
+                    return _ObjectResponse.Create(true, (Int32)HttpStatusCode.OK, (ipdobj.IPDID > 0 ? "Updated Successfully" : "Inserted Successfully"));
+                }
+                else
+                    return _ObjectResponse.Create(false, (Int32)HttpStatusCode.BadRequest, (oResponse == DBOperation.NotFound ? "Record not found" : "Bad request"));
+            }
+            catch (Exception ex)
+            {
+                return _ObjectResponse.Create(false, (Int32)HttpStatusCode.InternalServerError, Convert.ToString(ex.StackTrace));
+            }
+        }
+
+        /// <summary>
+        /// Description - To Get IPD Form By Id
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        /// <response code="200">OK</response>
+        /// <response code="400">Bad Request</response>
+        /// <response code="401">Unauthorized</response>
+        /// <response code="403">Forbidden</response>
+        /// <response code="404">Not Found</response>
+        /// <response code="405">Method Not Allowed</response>
+        /// <response code="500">Internal Server</response>
+        [HttpGet, Route("GetIPDFormData/{pidfId}/{bussnessId}")]
+        public async Task<IActionResult> GetIPDFormData([FromRoute] long pidfId,int bussnessId)
+        {
+            try
+            {
+                
+                var oPIDFEntity = await _PIDFormService.GetIPDFormData(pidfId, bussnessId);
+                if (oPIDFEntity != null)
+                    return _ObjectResponse.Create(oPIDFEntity, (Int32)HttpStatusCode.OK);
+                else
+                    return _ObjectResponse.Create(null, (Int32)HttpStatusCode.BadRequest, "Record not found");
+            }
+            catch (Exception ex)
+            {
+                return _ObjectResponse.Create(false, (Int32)HttpStatusCode.InternalServerError, Convert.ToString(ex.StackTrace));
+            }
+        }
+        /// <summary>
+        /// Description - To Get All IPD PIDFList
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        /// <response code="200">OK</response>
+        /// <response code="400">Bad Request</response>
+        /// <response code="401">Unauthorized</response>
+        /// <response code="403">Forbidden</response>
+        /// <response code="404">Not Found</response>
+        /// <response code="405">Method Not Allowed</response>
+        /// <response code="500">Internal Server</response>
+        [HttpPost, Route("GetAllIPDPIDFList")]
+        public async Task<IActionResult> GetAllIPDPIDFList([FromForm] DataTableAjaxPostModel model)
+        {
+            try
+            {
+                return _ObjectResponse.CreateData(await _PIDFormService.GetAllIPDPIDFList(model), (Int32)HttpStatusCode.OK);
+            }
+            catch (Exception ex)
+            {
+                return _ObjectResponse.Create(false, (Int32)HttpStatusCode.InternalServerError, Convert.ToString(ex.StackTrace));
+            }
+        }
+
+        /// <summary>
+        /// Description - To Get All Region Base on User
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        /// <response code="200">OK</response>
+        /// <response code="400">Bad Request</response>
+        /// <response code="401">Unauthorized</response>
+        /// <response code="403">Forbidden</response>
+        /// <response code="404">Not Found</response>
+        /// <response code="405">Method Not Allowed</response>
+        /// <response code="500">Internal Server</response>
+        [HttpGet, Route("GetAllRegion/{userId}")]
+        public async Task<IActionResult> GetAllRegion(int userId)
+        {
+            try
+            {
+                var oRegionList = await _PIDFormService.GetAllRegion(userId);
+                if (oRegionList != null)
+                    return _ObjectResponse.Create(oRegionList, (Int32)HttpStatusCode.OK);
+                else
+                    return _ObjectResponse.Create(null, (Int32)HttpStatusCode.BadRequest, "No Records found");
+            }
+            catch (Exception ex)
+            {
+                return _ObjectResponse.Create(false, (Int32)HttpStatusCode.InternalServerError, Convert.ToString(ex.StackTrace));
+            }
+        }
+        [HttpGet, Route("GetCountryRefByRegionIds/{regionIds}")]
+        public async Task<IActionResult> GetCountryRefByRegionIds(string regionIds)
+        {
+            try
+            {
+                var oRegionList = await _PIDFormService.GetCountryRefByRegionIds(regionIds);
+                if (oRegionList != null)
+                    return _ObjectResponse.Create(oRegionList, (Int32)HttpStatusCode.OK);
+                else
+                    return _ObjectResponse.Create(null, (Int32)HttpStatusCode.BadRequest, "No Records found");
+            }
+            catch (Exception ex)
+            {
+                return _ObjectResponse.Create(false, (Int32)HttpStatusCode.InternalServerError, Convert.ToString(ex.StackTrace));
+            }
+        }
+        [HttpPost]
+        [Route("ApproveRejectIpdPidf")]
+        public async Task<IActionResult> ApproveRejectIpdPidf(EntryApproveRej oApprRej)
+        {
+            try
+            {
+                DBOperation oResponse = await _PIDFormService.ApproveRejectIpdPidf(oApprRej);
+                if (oResponse == DBOperation.Success)
+                    return _ObjectResponse.Create(true, (Int32)HttpStatusCode.OK, ("Save Successfully"));
+                else
+                    return _ObjectResponse.Create(false, (Int32)HttpStatusCode.BadRequest, (oResponse == DBOperation.NotFound ? "Record not found" : "Bad request"));
+            }
+            catch (Exception ex)
+            {
+                return _ObjectResponse.Create(false, (Int32)HttpStatusCode.InternalServerError, Convert.ToString(ex.StackTrace));
+            }
+        }
+
+    }
+}

@@ -1,0 +1,25 @@
+Live IP
+115.111.106.132
+
+IP: 10.21.16.13
+Username:khevna.neo
+Password: Remote!@
+
+SVN
+User: NileshJain
+Pass: Nilesh@123
+
+SQL DB
+
+Sever  : 10.21.16.13
+Database : TillomedNewLaunch
+User : Neosoft
+Pass:neo@2022
+
+----- Application Login
+Email: rahula.patil@emcure.co.in
+password: Rahul@2020/Emcure@123
+admin@emcure.com
+
+
+admin@emcure.com/Emcure@123

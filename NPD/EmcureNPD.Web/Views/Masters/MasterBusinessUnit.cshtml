@@ -1,0 +1,148 @@
+﻿@using Microsoft.AspNetCore.Http
+@using EmcureNPD.Web.Controllers
+@using Microsoft.AspNetCore.Mvc.Localization
+@inject IHttpContextAccessor HttpContextAccessor
+@inject Microsoft.Extensions.Localization.IStringLocalizer<MastersController> MasterLocalizer
+@inject Microsoft.Extensions.Localization.IStringLocalizer<EmcureNPD.Resource.Shared> SharedLocalizer
+
+@model EmcureNPD.Business.Models.MasterBusinessUnitCountryMappingEntity
+@{
+    ViewData["Title"] = @MasterLocalizer["BusinessUnitTitle"];
+}
+<div class="row">
+    <section class="col-lg-12">
+        <div class="card">
+            <div class="card-header">
+                <h3 class="card-title">
+                    <i class="far fa-list-alt mr-2"></i>@MasterLocalizer["Business Unit"]
+                </h3>
+                <div class="card-tools md-left">
+                    <div class="mybtn-group">
+                        <a class="btn btn-primary" data-toggle="modal" data-target="#SaveBusinessUnitModel" data-backdrop="static" data-keyboard="false" onclick="AddBusinessUnit();"><i class="far fa-plus-square mr-1"></i> @SharedLocalizer["Add"]</a>
+                        <div class="export-btn mybtn-group"></div>
+                    </div>
+                </div>
+            </div>
+            <div class="card-body">
+                <table id="BusinessUnitTable" class="table table-bordered table-striped table-hover" style="width:100%">
+                    <thead>
+                        <tr>
+                            <th>@MasterLocalizer["Business Unit"]</th>
+                            <th>@SharedLocalizer["Status"]</th>
+                            <th class="text-center">@SharedLocalizer["Action"]</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        @*DeleteBusinessUnitModel*@
+        <div id="DeleteBusinessUnitModel" class="modal themeModal " role="dialog">
+            <div class="modal-dialog">
+                <!-- Modal content-->
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h4 class="modal-title">@SharedLocalizer["Delete"]</h4>
+                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="form-group">
+                                    @Html.Label(@SharedLocalizer["DeleteConfirm"])
+                                </div>
+                            </div>
+                        </div>
+                        @Html.Hidden("BusinessUnitID")
+                        <div class="card-footer text-center">
+                            <button type="button" onclick="DeleteBusinessUnit()" data-dismiss="modal" class="btn btn-primary mr-2">@SharedLocalizer["Yes"]</button>
+                            <a class="btn btn-danger" data-dismiss="modal">@SharedLocalizer["No"]</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        @*AddUpdateModel*@
+        <div id="SaveBusinessUnitModel" class="modal themeModal " role="dialog">
+            <form asp-route-returnUrl="@ViewData["ReturnUrl"]" method="POST" onsubmit="return SaveBusinessUnitForm(this)">
+                <!-- Small boxes (Stat box) -->
+                <!-- Main row -->
+                <input type="hidden" id="BusinessUnitID" name="BusinessUnitID" value="0" />
+                <div class="modal-dialog">
+                    <!-- Modal content-->
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h4 class="modal-title" id="BusinessUnitTitle"></h4>
+                            <button type="button" class="close" data-dismiss="modal">&times;</button>
+                        </div>
+                        <div class="modal-body">
+                            <div class="row">
+                                <div class="col">
+                                    <div class="form-group required">
+                                        @Html.LabelFor(model =>model.MasterBusinessUnitEntity.BusinessUnitName,"Business Unit Name", new { @class = "control-label"  })
+                                        @Html.EditorFor(model=>model.MasterBusinessUnitEntity.BusinessUnitName, new { htmlAttributes = new { @autocomplete = "off", @class = "form-control checkbox-checked", @placeholder = @SharedLocalizer["Business Unit Name"] } })
+                                        @Html.ValidationMessageFor(model =>model.MasterBusinessUnitEntity.BusinessUnitName, "", new { @class = "text-danger" })
+                                    </div>
+
+                                    <div class="form-group required">
+                                        <input type="hidden" id="BusinessUnitCountryMappingId" name="BusinessUnitCountryMappingId" value="0" />
+                                        @Html.LabelFor(model => model.MasterCountryEntity.CountryName,"Region Name", new { @class = "control-label" })
+                                        @Html.DropDownListFor(model => model.CountryId, new List<SelectListItem> { }, "--Select--", new { @class = "form-control", @multiple = "multiple" })
+                                        @Html.ValidationMessageFor(model => model.CountryId, "", new { @class = "text-danger" })
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <div class="required">
+                                        @Html.CheckBoxFor(model => model.MasterBusinessUnitEntity.IsActive, new { @class = "checkbox-checked", @checked = "checked" })
+                                        @Html.Label(@SharedLocalizer["IsActive"],"Active")
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="card-footer text-center">
+                            <button type="submit" class="btn btn-primary">@SharedLocalizer["Save"]</button>
+                            <a class="btn btn-danger" data-dismiss="modal">@SharedLocalizer["Cancel"]</a>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </section>
+</div>
+@section MyScripts {
+
+    @Html.Partial("_DataTablePartial")
+    <link rel="stylesheet" href="~/AdminLTE/plugins/select2/css/select2.min.css" />
+    <script type="text/javascript" src="~/js/Custom/Masters/MasterBusinessUnit.js"></script>
+    <script type="text/javascript" src="~/AdminLTE/plugins/select2/js/select2.min.js"></script>
+    <script>
+
+        //#region Setup API Url
+        var AllBusinessUnit = "@EmcureNPD.Web.Helpers.APIURLHelper.GetAllBusinessUnit";
+        var AllCountry = "@EmcureNPD.Web.Helpers.APIURLHelper.GetAllCountry";
+        var SaveBusinessUnit = "@EmcureNPD.Web.Helpers.APIURLHelper.SaveBusinessUnit";
+        var GetBusinessUnitByIdUrl = "@EmcureNPD.Web.Helpers.APIURLHelper.GetBusinessUnitById";
+        var DeleteBusinessUnitByIdUrl = "@EmcureNPD.Web.Helpers.APIURLHelper.DeleteBusinessUnitById";
+
+        var AllBusinessUnitCountry = "@EmcureNPD.Web.Helpers.APIURLHelper.GetAllBusinessUnitCountryMapping";
+        var SaveBusinessUnitCountryMapping = "@EmcureNPD.Web.Helpers.APIURLHelper.SaveBusinessUnitCountryMapping";
+        var GetBusinessUnitCountryMappingByIdUrl = "@EmcureNPD.Web.Helpers.APIURLHelper.GetBusinessUnitCountryMappingById";
+        var DeleteBusinessUnitCountryMappingByIdUrl = "@EmcureNPD.Web.Helpers.APIURLHelper.DeleteBusinessUnitCountryMappingById";
+        // #endregion
+
+        //#region Static Messae Init
+        var EditLabel = "@SharedLocalizer["Edit"]";
+        var DeleteLabel = "@SharedLocalizer["Delete"]";
+        var ErrorMessage = "@SharedLocalizer["Error"]";
+        var RecordInsertUpdate = "@SharedLocalizer["RecordInsertUpdate"]";
+        var RecordDelete = "@SharedLocalizer["RecordDelete"]";
+        var AddLabel = "@SharedLocalizer["Add"]";
+        var UpdateLabel = "@SharedLocalizer["Update"]";
+        //#endregion
+    </script>
+}

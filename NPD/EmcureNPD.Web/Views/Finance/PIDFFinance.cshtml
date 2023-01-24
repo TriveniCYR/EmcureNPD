@@ -1,0 +1,712 @@
+﻿using Microsoft.AspNetCore.Http
+@using EmcureNPD.Web.Controllers
+@using Microsoft.AspNetCore.Http
+@using Microsoft.AspNetCore.Mvc.Localization
+@inject IHttpContextAccessor HttpContextAccessor
+@inject Microsoft.Extensions.Localization.IStringLocalizer<MastersController> MasterLocalizer
+@inject Microsoft.Extensions.Localization.IStringLocalizer<EmcureNPD.Resource.Shared> SharedLocalizer
+@using EmcureNPD.Utility.Utility
+@using EmcureNPD.Utility.Enums
+@using EmcureNPD.Business.Models
+
+@model EmcureNPD.Business.Models.PIDFEntity
+
+<div id="SaveFinanceModel">
+	<form action="FinanceForm" method="get">
+		<div class="card">
+			<div class="card-header ">
+				<h5 class="mb-0"><b>New Project Details</b></h5>
+				<div class="card-tools">
+					<button type="button" class="btn btn-tool" data-toggle="collapse" data-target="#pidfCollapse" title="Collapse">
+						<i class="fas fa-angle-double-down"></i>
+					</button>
+				</div>
+			</div>			
+		
+		
+			<div class="card-body collapse" id="pidfCollapse" style="background-color:white">
+			<input type="hidden" />
+			<div class="row">
+				<div class="col-md-3">
+					<div class="form-group required">
+						<label class="control-label">Entity</label>
+						<input type="text" id="MarketExtensionId" name="MarketExtensionId" class="form-control readOnlyUpdate" required />
+
+					</div>
+				</div>
+
+				<div class="col-md-3">
+					<div class="form-group required">
+						<label class="control-label">Product</label>
+						<input type="text" id="MarketExtensionId" name="MarketExtensionId" class="form-control readOnlyUpdate" required />
+					</div>
+				</div>
+				<div class="col-md-3">
+					<div class="form-group required">
+						<label class="control-label">Forecast Date</label>
+
+						<input type="text" id="MarketExtensionId" name="MarketExtensionId" class="form-control readOnlyUpdate" required />
+					</div>
+				</div>
+				<div class="col-md-3">
+					<div class="form-group required">
+						<label class="control-label">Currency</label>
+
+						<select id="MarketExtensionId" name="MarketExtensionId" class="form-control readOnlyUpdate" required></select>
+					</div>
+				</div>
+			</div>
+					<div class="row">
+						<div class="col-md-3">
+							<div class="form-group required">
+								<label class="control-label">Dosage Form</label>
+								<select id="MarketExtensionId" name="MarketExtensionId" class="form-control readOnlyUpdate" required></select>
+
+							</div>
+						</div>
+
+						<div class="col-md-3">
+							<div class="form-group required">
+								<label class="control-label">Manufacturing Site / Partner</label>
+								<input type="text" id="MarketExtensionId" name="MarketExtensionId" class="form-control readOnlyUpdate" required />
+							</div>
+						</div>
+						<div class="col-md-3">
+							<div class="form-group required">
+								<label class="control-label">SKUs</label>
+
+								<input type="text" id="MarketExtensionId" name="MarketExtensionId" class="form-control readOnlyUpdate" required />
+							</div>
+						</div>
+						
+					</div>
+					<div class="row">
+						<div class="col-md-3">
+							<div class="form-group required">
+								<label class="control-label">Input Values</label>
+
+								<table style="width:100%;">
+									<tr>
+										<th>MS %</th>
+										<th>Target Price Scenario</th>
+									</tr>
+									<tbody>
+										<tr>
+											<td><select id="MarketExtensionId" name="MarketExtensionId" class="form-control readOnlyUpdate" required></select></td>
+											<td><select id="MarketExtensionId" name="MarketExtensionId" class="form-control readOnlyUpdate" required></select></td>
+										</tr>
+									</tbody>
+								</table>
+							</div>
+						</div>
+					</div>
+			</div>
+		</div>
+		<div class="card">
+			<div class="card-header ">
+				<h5 class="mb-0"><b>Project Timelines</b></h5>
+				<div class="card-tools">
+					<button type="button" class="btn btn-tool" data-toggle="collapse" data-target="#TimelinesCollapse" title="Collapse">
+						<i class="fas fa-angle-double-down"></i>
+					</button>
+				</div>
+			</div>
+			
+			<div class="card-body collapse" id="TimelinesCollapse" style="background-color:white">
+				<input type="hidden" />
+				<div class="">
+					<h5 class="mb-0"><b>Project Timelines</b></h5>
+				</div>
+				<div class="row">
+					<div class="col-md-3">
+						<div class="form-group required">
+							<label class="control-label">Project Start Date</label>
+							<input type="text" id="MarketExtensionId" name="MarketExtensionId" class="form-control readOnlyUpdate" required />
+
+						</div>
+					</div>
+
+					<div class="col-md-3">
+						<div class="form-group required">
+							<label class="control-label">Batch Manufacturing</label>
+							<input type="text" id="MarketExtensionId" name="MarketExtensionId" class="form-control readOnlyUpdate" required />
+						</div>
+					</div>
+					<div class="col-md-3">
+						<div class="form-group required">
+							<label class="control-label">Expected Filling</label>
+
+							<input type="text" id="MarketExtensionId" name="MarketExtensionId" class="form-control readOnlyUpdate" required />
+						</div>
+					</div>
+					<div class="col-md-3">
+						<div class="form-group required">
+							<label class="control-label">Approval Period in Days</label>
+
+							<input type="text" id="MarketExtensionId" name="MarketExtensionId" class="form-control readOnlyUpdate" required />
+						</div>
+					</div>
+				</div>
+				<div class="row">
+					<div class="col-md-3">
+						<div class="form-group required">
+							<label class="control-label">Approval Date</label>
+							<select id="MarketExtensionId" name="MarketExtensionId" class="form-control readOnlyUpdate" required></select>
+
+						</div>
+					</div>
+
+					<div class="col-md-3">
+						<div class="form-group required">
+							<label class="control-label">Product Launch Date</label>
+							<input type="text" id="MarketExtensionId" name="MarketExtensionId" class="form-control readOnlyUpdate" required />
+						</div>
+					</div>
+					<div class="col-md-3">
+						<div class="form-group required">
+							<label class="control-label">Gestation Period in Years</label>
+
+							<input type="text" id="MarketExtensionId" name="MarketExtensionId" class="form-control readOnlyUpdate" required />
+						</div>
+					</div>
+
+				</div>
+				<div class=" ">
+					<h5 class="mb-0"><b>Commercials</b></h5>
+				</div>
+				<div class="row">
+					<div class="col-md-3">
+						<div class="form-group required">
+							<label class="control-label">Market Share Erosion rate</label>
+							<select id="MarketExtensionId" name="MarketExtensionId" class="form-control readOnlyUpdate" required></select>
+
+						</div>
+					</div>
+
+					<div class="col-md-3">
+						<div class="form-group required">
+							<label class="control-label">Price Erosion</label>
+							<input type="text" id="MarketExtensionId" name="MarketExtensionId" class="form-control readOnlyUpdate" required />
+						</div>
+					</div>
+					<div class="col-md-3">
+						<div class="form-group required">
+							<label class="control-label">Escalation in COGS</label>
+
+							<input type="text" id="MarketExtensionId" name="MarketExtensionId" class="form-control readOnlyUpdate" required />
+						</div>
+					</div>
+
+				</div>
+		</div>
+		</div>
+		<div class="card">
+			<div class="card-header ">
+				<h5 class="mb-0"><b>Finance Inputs</b></h5>
+				<div class="card-tools">
+					<button type="button" class="btn btn-tool" data-toggle="collapse" data-target="#FinanceCollapse" title="Collapse">
+						<i class="fas fa-angle-double-down"></i>
+					</button>
+				</div>
+			</div>
+
+			<div class="card-body collapse" id="FinanceCollapse" style="background-color:white">
+				<input type="hidden" />
+				<div class=" ">
+					<h5 class="mb-0"><b>Financial Assumptions</b></h5>
+				</div>
+				<div class="row">
+					<div class="col-md-3">
+						<div class="form-group required">
+							<label class="control-label">Discount Rate</label>
+							<input type="text" id="MarketExtensionId" name="MarketExtensionId" class="form-control readOnlyUpdate" required />
+
+						</div>
+					</div>
+
+					<div class="col-md-3">
+						<div class="form-group required">
+							<label class="control-label">Income tax rate</label>
+							<input type="text" id="MarketExtensionId" name="MarketExtensionId" class="form-control readOnlyUpdate" required />
+						</div>
+					</div>
+					<div class="col-md-3">
+						<div class="form-group required">
+							<label class="control-label">Opex as a % to sales</label>
+
+							<input type="text" id="MarketExtensionId" name="MarketExtensionId" class="form-control readOnlyUpdate" required />
+						</div>
+					</div>
+					<div class="col-md-3">
+						<div class="form-group required">
+							<label class="control-label">External Profit Share %</label>
+
+							<input type="text" id="MarketExtensionId" name="MarketExtensionId" class="form-control readOnlyUpdate" required />
+						</div>
+					</div>
+				</div>
+				<div class="row">
+					<div class="col-md-3">
+						<div class="form-group required">
+							<label class="control-label">Collection in Days</label>
+							<input type="text" id="MarketExtensionId" name="MarketExtensionId" class="form-control readOnlyUpdate" required />
+
+						</div>
+					</div>
+
+					<div class="col-md-3">
+						<div class="form-group required">
+							<label class="control-label">Inventory in Days</label>
+							<input type="text" id="MarketExtensionId" name="MarketExtensionId" class="form-control readOnlyUpdate" required />
+						</div>
+					</div>
+					<div class="col-md-3">
+						<div class="form-group required">
+							<label class="control-label">Creditor in Days</label>
+
+							<input type="text" id="MarketExtensionId" name="MarketExtensionId" class="form-control readOnlyUpdate" required />
+						</div>
+					</div>
+					<div class="col-md-3">
+						<div class="form-group required">
+							<label class="control-label">Marketing Allowance</label>
+
+							<input type="text" id="MarketExtensionId" name="MarketExtensionId" class="form-control readOnlyUpdate" required />
+						</div>
+					</div>
+
+				</div>
+				<div class="row">
+					<div class="col-md-3">
+						<div class="form-group required">
+							<label class="control-label">Regulatory Maintenance Cost</label>
+							<input type="text" id="MarketExtensionId" name="MarketExtensionId" class="form-control readOnlyUpdate" required />
+
+						</div>
+					</div>
+
+					<div class="col-md-3">
+						<div class="form-group required">
+							<label class="control-label">Gross to Net</label>
+							<input type="text" id="MarketExtensionId" name="MarketExtensionId" class="form-control readOnlyUpdate" required />
+						</div>
+					</div>
+					
+
+				</div>
+			</div>
+		</div>
+		<div class="card">
+			<div class="card-header ">
+				<h5 class="mb-0"><b>Deal Terms</b></h5>
+				<div class="card-tools">
+					<button type="button" class="btn btn-tool" data-toggle="collapse" data-target="#DealCollapse" title="Collapse">
+						<i class="fas fa-angle-double-down"></i>
+					</button>
+				</div>
+			</div>
+
+			<div class="card-body collapse" id="DealCollapse" style="background-color:white">
+				<input type="hidden" />
+				<table id="PIDFTable" class="table table-bordered table-striped table-hover" style="width:100%">
+					<thead>
+						<tr>
+							<th>Terms</th>
+							<th></th>
+							<th>Phase End Date</th>
+
+						</tr>
+					</thead>
+					<tbody>
+						<tr>
+							<td>
+							<div class="">
+								<div class="form-group required">
+										<label class="control-label">No of batches to be manufactured</label>
+								</div>
+							</div>
+							</td>
+							<td>
+								<div class="">
+									<div class="form-group required">
+										<input type="text" id="MarketExtensionId" name="MarketExtensionId" class="form-control readOnlyUpdate" required />
+									</div>
+								</div>
+							</td>
+							<td>
+								<div class="">
+									<div class="form-group required">
+										<input type="text" id="MarketExtensionId" name="MarketExtensionId" class="form-control readOnlyUpdate" required />
+									</div>
+								</div>
+							</td>
+						</tr>
+						<tr>
+							<td>
+								<div class="">
+									<div class="form-group required">
+										<label class="control-label">No of SKUs</label>
+									</div>
+								</div>
+							</td>
+							<td>
+								<div class="">
+									<div class="form-group required">
+										<input type="text" id="MarketExtensionId" name="MarketExtensionId" class="form-control readOnlyUpdate" required />
+									</div>
+								</div>
+							</td>
+							<td>
+								<div class="">
+									<div class="form-group required">
+										<input type="text" id="MarketExtensionId" name="MarketExtensionId" class="form-control readOnlyUpdate" required />
+									</div>
+								</div>
+							</td>
+						</tr>
+						<tr>
+							<td>
+								<div class="">
+									<div class="form-group required">
+										<label class="control-label">R&D/Analytical cost</label>
+									</div>
+								</div>
+							</td>
+							<td>
+								<div class="">
+									<div class="form-group required">
+										<input type="text" id="MarketExtensionId" name="MarketExtensionId" class="form-control readOnlyUpdate" required />
+									</div>
+								</div>
+							</td>
+							<td>
+								<div class="">
+									<div class="form-group required">
+										<input type="text" id="MarketExtensionId" name="MarketExtensionId" class="form-control readOnlyUpdate" required />
+									</div>
+								</div>
+							</td>
+						</tr>
+						<tr>
+							<td>
+								<div class="">
+									<div class="form-group required">
+										<label class="control-label">RLD sample cost</label>
+									</div>
+								</div>
+							</td>
+							<td>
+								<div class="">
+									<div class="form-group required">
+										<input type="text" id="MarketExtensionId" name="MarketExtensionId" class="form-control readOnlyUpdate" required />
+									</div>
+								</div>
+							</td>
+							<td>
+								<div class="">
+									<div class="form-group required">
+										<input type="text" id="MarketExtensionId" name="MarketExtensionId" class="form-control readOnlyUpdate" required />
+									</div>
+								</div>
+							</td>
+						</tr>
+						<tr>
+							<td>
+								<div class="">
+									<div class="form-group required">
+										<label class="control-label">Batch manufacturing cost/ API Actuals Est</label>
+									</div>
+								</div>
+							</td>
+							<td>
+								<div class="">
+									<div class="form-group required">
+										<input type="text" id="MarketExtensionId" name="MarketExtensionId" class="form-control readOnlyUpdate" required />
+									</div>
+								</div>
+							</td>
+							<td>
+								<div class="">
+									<div class="form-group required">
+										<input type="text" id="MarketExtensionId" name="MarketExtensionId" class="form-control readOnlyUpdate" required />
+									</div>
+								</div>
+							</td>
+						</tr>
+						<tr>
+							<td>
+								<div class="">
+									<div class="form-group required">
+										<label class="control-label">6 months stability cost</label>
+									</div>
+								</div>
+							</td>
+							<td>
+								<div class="">
+									<div class="form-group required">
+										<input type="text" id="MarketExtensionId" name="MarketExtensionId" class="form-control readOnlyUpdate" required />
+									</div>
+								</div>
+							</td>
+							<td>
+								<div class="">
+									<div class="form-group required">
+										<input type="text" id="MarketExtensionId" name="MarketExtensionId" class="form-control readOnlyUpdate" required />
+									</div>
+								</div>
+							</td>
+						</tr>
+						<tr>
+							<td>
+								<div class="">
+									<div class="form-group required">
+										<label class="control-label">Tech Transfer</label>
+									</div>
+								</div>
+							</td>
+							<td>
+								<div class="">
+									<div class="form-group required">
+										<input type="text" id="MarketExtensionId" name="MarketExtensionId" class="form-control readOnlyUpdate" required />
+									</div>
+								</div>
+							</td>
+							<td>
+								<div class="">
+									<div class="form-group required">
+										<input type="text" id="MarketExtensionId" name="MarketExtensionId" class="form-control readOnlyUpdate" required />
+									</div>
+								</div>
+							</td>
+						</tr>
+						<tr>
+							<td>
+								<div class="">
+									<div class="form-group required">
+										<label class="control-label">BE studies</label>
+									</div>
+								</div>
+							</td>
+							<td>
+								<div class="">
+									<div class="form-group required">
+										<input type="text" id="MarketExtensionId" name="MarketExtensionId" class="form-control readOnlyUpdate" required />
+									</div>
+								</div>
+							</td>
+							<td>
+								<div class="">
+									<div class="form-group required">
+										<input type="text" id="MarketExtensionId" name="MarketExtensionId" class="form-control readOnlyUpdate" required />
+									</div>
+								</div>
+							</td>
+						</tr>
+						<tr>
+							<td>
+								<div class="">
+									<div class="form-group required">
+										<label class="control-label">Filing fees</label>
+									</div>
+								</div>
+							</td>
+							<td>
+								<div class="">
+									<div class="form-group required">
+										<input type="text" id="MarketExtensionId" name="MarketExtensionId" class="form-control readOnlyUpdate" required />
+									</div>
+								</div>
+							</td>
+							<td>
+								<div class="">
+									<div class="form-group required">
+										<input type="text" id="MarketExtensionId" name="MarketExtensionId" class="form-control readOnlyUpdate" required />
+									</div>
+								</div>
+							</td>
+						</tr>
+						<tr>
+							<td>
+								<div class="">
+									<div class="form-group required">
+										<label class="control-label">Bio Study Cost</label>
+									</div>
+								</div>
+							</td>
+							<td>
+								<div class="">
+									<div class="form-group required">
+										<input type="text" id="MarketExtensionId" name="MarketExtensionId" class="form-control readOnlyUpdate" required />
+									</div>
+								</div>
+							</td>
+							<td>
+								<div class="">
+									<div class="form-group required">
+										<input type="text" id="MarketExtensionId" name="MarketExtensionId" class="form-control readOnlyUpdate" required />
+									</div>
+								</div>
+							</td>
+						</tr>
+						<tr>
+							<td>
+								<div class="">
+									<div class="form-group required">
+										<label class="control-label">Capex</label>
+									</div>
+								</div>
+							</td>
+							<td>
+								<div class="">
+									<div class="form-group required">
+										<input type="text" id="MarketExtensionId" name="MarketExtensionId" class="form-control readOnlyUpdate" required />
+									</div>
+								</div>
+							</td>
+							<td>
+								<div class="">
+									<div class="form-group required">
+										<input type="text" id="MarketExtensionId" name="MarketExtensionId" class="form-control readOnlyUpdate" required />
+									</div>
+								</div>
+							</td>
+						</tr>
+						<tr>
+							<td>
+								<div class="">
+									<div class="form-group required">
+										<label class="control-label">Tooling & Change Parts</label>
+									</div>
+								</div>
+							</td>
+							<td>
+								<div class="">
+									<div class="form-group required">
+										<input type="text" id="MarketExtensionId" name="MarketExtensionId" class="form-control readOnlyUpdate" required />
+									</div>
+								</div>
+							</td>
+							<td>
+								<div class="">
+									<div class="form-group required">
+										<input type="text" id="MarketExtensionId" name="MarketExtensionId" class="form-control readOnlyUpdate" required />
+									</div>
+								</div>
+							</td>
+						</tr>
+						<tr>
+							<td>
+								<div class="">
+									<div class="form-group required">
+										<label class="control-label">Total</label>
+									</div>
+								</div>
+							</td>
+							
+						</tr>
+					</tbody>
+				</table>
+			</div>
+		</div>
+
+		<div class="card">
+			<div class="card-header ">
+				<h5 class="mb-0"><b>Projections</b></h5>
+				<div class="card-tools">
+					<button type="button" class="btn btn-tool" data-toggle="collapse" data-target="#ProjectionsCollapse" title="Collapse">
+						<i class="fas fa-angle-double-down"></i>
+					</button>
+				</div>
+			</div>
+			<div class="card-body collapse" id="ProjectionsCollapse" style="background-color:white">
+				<input type="hidden" />
+			</div>
+		</div>
+
+		<div class="card">
+			<div class="card-header ">
+				<h5 class="mb-0"><b>Batch Size Coating</b></h5>
+				<div class="card-tools">
+					<button type="button" class="btn btn-tool" data-toggle="collapse" data-target="#BatchSizeCollapse" title="Collapse">
+						<i class="fas fa-angle-double-down"></i>
+					</button>
+				</div>
+			</div>
+			<div class="card-body collapse" id="BatchSizeCollapse" style="background-color:white;overflow-x:auto;">
+				<input type="hidden" />
+				<table id="PIDFTable" class="table table-bordered table-striped table-hover " style="width:100%;">
+					<thead>
+						<tr>
+							<th>#</th>
+							<th>SKU</th>
+							<th>Pack size</th>
+							<th>Brand Price</th>
+							<th>Generic List price</th>
+							<th>Net Realisation</th>
+							<th>Est MAT 2016/12 Units</th>
+							<th>Est MAT 2020/12 Units</th>
+							<th>CAGR over 2016/12 Est MAT units</th>
+							<th>Market in packs</th>
+							<th>Batch size in ltr/tabs</th>
+							<th>Batch size</th>
+							<th>Yield</th>
+							<th>Batch output</th>
+							<th>API (CAD</th>
+							<th>Excipients (CAD)</th>
+							<th>PM (CAD)</th>
+							<th>CCPC (CAD)</th>
+							<th>Freight (CAD)</th>
+							<th>Emcure COGs/pack</th>
+							<th>Action</th>
+
+						</tr>
+					</thead>
+					<tbody>
+						<tr>
+							<td>1</td>
+							<td>100mg</td>
+							<td>100</td>
+							<td>-</td>
+							<td>1.65</td>
+							<td>0.66</td>
+							<td></td>
+							<td>3,523,554</td>
+							<td></td>
+							<td>3,523,554</td>
+							<td>500,000</td>
+							
+							<td>
+								<input type="text" id="MarketExtensionId" name="MarketExtensionId" class="form-control readOnlyUpdate" required />
+							</td>
+							<td>
+								<input type="text" id="MarketExtensionId" name="MarketExtensionId" class="form-control readOnlyUpdate" required />
+							</td>
+							<td>
+								<input type="text" id="MarketExtensionId" name="MarketExtensionId" class="form-control readOnlyUpdate" required />
+							</td>
+							<td>
+								<input type="text" id="MarketExtensionId" name="MarketExtensionId" class="form-control readOnlyUpdate" required />
+							</td>
+							<td>
+								<input type="text" id="MarketExtensionId" name="MarketExtensionId" class="form-control readOnlyUpdate" required />
+							</td>
+							<td>
+								<input type="text" id="MarketExtensionId" name="MarketExtensionId" class="form-control readOnlyUpdate" required />
+							</td>
+							<td>
+								<input type="text" id="MarketExtensionId" name="MarketExtensionId" class="form-control readOnlyUpdate" required />
+							</td>
+							<td>
+								<input type="text" id="MarketExtensionId" name="MarketExtensionId" class="form-control readOnlyUpdate" required />
+							</td>
+							<td>
+								<input type="text" id="MarketExtensionId" name="MarketExtensionId" class="form-control readOnlyUpdate" required />
+							</td>
+							
+						</tr>
+					</tbody>
+				</table>
+			</div>
+		</div>
+	</form>
+</div>
