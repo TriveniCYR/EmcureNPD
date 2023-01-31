@@ -39,7 +39,7 @@ function GetUserDropdownError(x, y, z) {
 // #region Get BusinessUnit by department id
 function GetRegionByBusinessUnit() {
     $('#RegionId option').remove();
-    $('#RegionId').append($('<option>').text("--Select--").attr('value', 0));
+   /* $('#RegionId').append($('<option>').text("--Select--").attr('value', 0));*/
     if (parseInt($('#BusinessUnitId').val()) > 0) {        
         ajaxServiceMethod($('#hdnBaseURL').val() + GetRegionByBusinessUnitURL + "?BusinessUnitIds=" + $('#BusinessUnitId').val(), 'GET', GetRegionByBusinessUnitSuccess, GetRegionByBusinessUnitError);
     }
@@ -70,7 +70,7 @@ function GetRegionByBusinessUnitError(x, y, z) {
 // #region Get Country By Region
 function GetCountryByRegion() {
     $('#CountryId option').remove();   
-    $('#CountryId').append($('<option>').text("--Select--").attr('value', 0));
+   /* $('#CountryId').append($('<option>').text("--Select--").attr('value', 0));*/
         console.log($('#RegionId').val());
         ajaxServiceMethod($('#hdnBaseURL').val() + GetCountryByRegionURL + "?RegionIds=" + $('#RegionId').val(), 'GET', GetCountryByRegionSuccess, GetCountryByRegionError);
     }
