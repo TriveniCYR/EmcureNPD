@@ -443,19 +443,24 @@ namespace EmcureNPD.Business.Core.Implementation
                     await _unitOfWork.SaveChangesAsync();
                     var MedicalFile = _pidfMedicalFilerepository.GetAll().Where(x => x.PidfmedicalId == medicalModel.PidfmedicalId).ToList();
                     int i = 0;
+
                     foreach (var item in MedicalFile)
                     {
-                        PidfMedicalFile medicalFiles = new PidfMedicalFile
+                        if (i < medicalModel.FileName.Count())
                         {
-                            FileName = medicalModel.FileName[i],
-                            CreatedDate = DateTime.Now,
-                            PidfmedicalId = Convert.ToInt64(objPIDFMedical.PidfmedicalId),
-                            PidfmedicalFileId = Convert.ToInt64(item.PidfmedicalFileId),
-                            CreatedBy = (int)objPIDFMedical.CreatedBy,
-                        };
-                        _pidfMedicalFilerepository.UpdateAsync(medicalFiles);
-                        i++;
+                            PidfMedicalFile medicalFiles = new PidfMedicalFile
+                            {
+                                FileName = medicalModel.FileName[i],
+                                CreatedDate = DateTime.Now,
+                                PidfmedicalId = Convert.ToInt64(objPIDFMedical.PidfmedicalId),
+                                PidfmedicalFileId = Convert.ToInt64(item.PidfmedicalFileId),
+                                CreatedBy = (int)objPIDFMedical.CreatedBy,
+                            };
+                            _pidfMedicalFilerepository.UpdateAsync(medicalFiles);
+                            i++;
+                        }
                     }
+
                     if (i < medicalModel.FileName.Count())
                     {
                         foreach (var filename in medicalModel.FileName.Skip(i))
