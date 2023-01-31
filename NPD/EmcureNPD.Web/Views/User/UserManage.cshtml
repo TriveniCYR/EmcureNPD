@@ -38,7 +38,7 @@
                     <div class="form-group required">
                         @Html.LabelFor(model => model.RegionId,@SharedLocalizer["Region"], new { @class = "control-label" })
                         @*<select id="RegionId" name="RegionId" class="form-control" required></select>*@
-                        @Html.DropDownListFor(model => model.RegionId, new List<SelectListItem> { }, "--Select--", new { @class = "form-control", @multiple = "multiple"})
+                        @Html.DropDownListFor(model => model.RegionId, new List<SelectListItem> { }, new { @class = "form-control", @multiple = "multiple"})
                         <input type="hidden" id="hdnRegionId" value="@Model.RegionId" />
                         @Html.ValidationMessageFor(model => model.RegionId, "", new { @class = "text-danger" })
                     </div>
@@ -47,7 +47,7 @@
                     <div class="form-group required">
                         @Html.LabelFor(model => model.CountryId,@SharedLocalizer["Country"], new { @class = "control-label" })
                         @*<select id="CountryId" name="CountryId" class="form-control" required></select>*@
-                        @Html.DropDownListFor(model => model.CountryId, new List<SelectListItem> { }, "--Select--", new { @class = "form-control", @multiple = "multiple" })
+                        @Html.DropDownListFor(model => model.CountryId, new List<SelectListItem> { }, new { @class = "form-control", @multiple = "multiple" })
                         <input type="hidden" id="hdnCountryId" value="@Model.CountryId" />
                         @Html.ValidationMessageFor(model => model.CountryId, "", new { @class = "text-danger" })
                     </div>
