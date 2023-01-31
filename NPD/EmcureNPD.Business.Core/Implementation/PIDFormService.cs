@@ -459,6 +459,15 @@ namespace EmcureNPD.Business.Core.Implementation
                             _pidfMedicalFilerepository.UpdateAsync(medicalFiles);
                             i++;
                         }
+                        else
+                        {
+                            PidfMedicalFile medicalFiles = new PidfMedicalFile
+                            {
+                                PidfmedicalFileId = Convert.ToInt64(item.PidfmedicalFileId),
+                            };
+                            _pidfMedicalFilerepository.Remove(medicalFiles);
+                            i++;
+                        }
                     }
 
                     if (i < medicalModel.FileName.Count())
