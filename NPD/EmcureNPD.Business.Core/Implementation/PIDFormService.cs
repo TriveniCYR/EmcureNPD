@@ -296,8 +296,8 @@ namespace EmcureNPD.Business.Core.Implementation
                 data.CountryId = data.RegionIds;
             }
             data.MasterBusinessUnitEntities = _businessUnitService.GetAll().Result.Where(xx => xx.IsActive).ToList();
-           
-           
+
+
             Pidf objPidf = await _pidfrepository.GetAsync(pidfId);
             data.StatusId = objPidf.StatusId;
 
@@ -430,29 +430,85 @@ namespace EmcureNPD.Business.Core.Implementation
 
         public async Task<DBOperation> Medical(PIDFMedicalViewModel medicalModel)
         {
-            var medical = _mapperFactory.Get<PIDFMedicalViewModel, PidfMedical>(medicalModel);
-            medical.MedicalOpinion = medicalModel.MedicalOpinion;
-            medical.Remark = medicalModel.Remark;
-            medical.CreatedDate = DateTime.Now;
-            _pidfMedicalrepository.AddAsync(medical);
-            await _unitOfWork.SaveChangesAsync();
-
-
-            //var medicalFile = _mapperFactory.Get<PIDFMedicalViewModel, PidfMedicalFile>(medicalModel);
-            foreach (var filename in medicalModel.FileName)
+            PidfMedical objPIDFMedical;
+            PidfMedicalFile objPIDFMedicalFile;
+            PIDFMedicalViewModel oldPIDFFEntity;
+            if (medicalModel.PidfmedicalId > 0)
             {
-                PidfMedicalFile medicalFiles = new PidfMedicalFile
+                objPIDFMedical = await _pidfMedicalrepository.GetAsync(medicalModel.PidfmedicalId);
+                if (objPIDFMedical != null)
                 {
-                    FileName = filename,
-                    CreatedDate = DateTime.Now,
-                    PidfmedicalId = Convert.ToInt64(medical.PidfmedicalId),
-                    CreatedBy = (int)medical.CreatedBy,
-                };
-                _pidfMedicalFilerepository.AddAsync(medicalFiles);
-            }
-            await _unitOfWork.SaveChangesAsync();
+                    objPIDFMedical = _mapperFactory.Get<PIDFMedicalViewModel, PidfMedical>(medicalModel);
+                    _pidfMedicalrepository.UpdateAsync(objPIDFMedical);
+                    await _unitOfWork.SaveChangesAsync();
+                    var MedicalFile = _pidfMedicalFilerepository.GetAll().Where(x => x.PidfmedicalId == medicalModel.PidfmedicalId).ToList();
+                    int i = 0;
 
-            return DBOperation.Success;
+                    foreach (var item in MedicalFile)
+                    {
+                        if (i < medicalModel.FileName.Count())
+                        {
+                            PidfMedicalFile medicalFiles = new PidfMedicalFile
+                            {
+                                FileName = medicalModel.FileName[i],
+                                CreatedDate = DateTime.Now,
+                                PidfmedicalId = Convert.ToInt64(objPIDFMedical.PidfmedicalId),
+                                PidfmedicalFileId = Convert.ToInt64(item.PidfmedicalFileId),
+                                CreatedBy = (int)objPIDFMedical.CreatedBy,
+                            };
+                            _pidfMedicalFilerepository.UpdateAsync(medicalFiles);
+                            i++;
+                        }
+                    }
+
+                    if (i < medicalModel.FileName.Count())
+                    {
+                        foreach (var filename in medicalModel.FileName.Skip(i))
+                        {
+                            PidfMedicalFile medicalFiles = new PidfMedicalFile
+                            {
+                                FileName = filename,
+                                CreatedDate = DateTime.Now,
+                                PidfmedicalId = Convert.ToInt64(objPIDFMedical.PidfmedicalId),
+                                CreatedBy = (int)objPIDFMedical.CreatedBy,
+                            };
+                            _pidfMedicalFilerepository.AddAsync(medicalFiles);
+                        }
+                    }
+                    await _unitOfWork.SaveChangesAsync();
+                    return DBOperation.Success;
+                }
+                else
+                {
+                    return DBOperation.NotFound;
+                }
+            }
+            else
+            {
+                var medical = _mapperFactory.Get<PIDFMedicalViewModel, PidfMedical>(medicalModel);
+                medical.MedicalOpinion = medicalModel.MedicalOpinion;
+                medical.Remark = medicalModel.Remark;
+                medical.CreatedDate = DateTime.Now;
+                _pidfMedicalrepository.AddAsync(medical);
+                await _unitOfWork.SaveChangesAsync();
+
+
+                //var medicalFile = _mapperFactory.Get<PIDFMedicalViewModel, PidfMedicalFile>(medicalModel);
+                foreach (var filename in medicalModel.FileName)
+                {
+                    PidfMedicalFile medicalFiles = new PidfMedicalFile
+                    {
+                        FileName = filename,
+                        CreatedDate = DateTime.Now,
+                        PidfmedicalId = Convert.ToInt64(medical.PidfmedicalId),
+                        CreatedBy = (int)medical.CreatedBy,
+                    };
+                    _pidfMedicalFilerepository.AddAsync(medicalFiles);
+                }
+                await _unitOfWork.SaveChangesAsync();
+
+                return DBOperation.Success;
+            }
 
         }
 
@@ -512,6 +568,27 @@ namespace EmcureNPD.Business.Core.Implementation
                 fileUpload.ErrorMessage = "Upload Container Should Not Be Empty or Contact Admin";
                 return fileUpload.ErrorMessage;
             }
+        }
+        public async Task<PIDFMedicalViewModel> GetPIDFMedicalData(long pidfId)
+        {
+            Expression<Func<PidfMedical, bool>> expr = u => u.Pidfid == pidfId;
+            dynamic objData = (dynamic)await _pidfMedicalrepository.FindAllAsync(expr);
+            PIDFMedicalViewModel data = new PIDFMedicalViewModel();
+            if (objData != null && objData.Count > 0)
+            {
+                data = _mapperFactory.Get<PidfMedical, PIDFMedicalViewModel>(objData[0]);
+                var medicalFileData = _pidfMedicalFilerepository.GetAll().Where(x => x.PidfmedicalId == data.PidfmedicalId).ToList();
+                int i = 0;
+                data.FileName = new string[medicalFileData.Count];
+                foreach (var item in medicalFileData)
+                {
+                    data.PidfmedicalId = item.PidfmedicalId;
+                    data.PidfmedicalFileId = item.PidfmedicalFileId;
+                    data.FileName[i] = item.FileName;
+                    i++;
+                }
+            }
+            return data;
         }
     }
 }
