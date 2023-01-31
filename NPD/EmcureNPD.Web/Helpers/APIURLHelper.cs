@@ -232,7 +232,7 @@
 		public static string SavePBFRnD = "api/PBF/InsertUpdatePBF";
         public static string SaveCommercialPIDF = "api/CommercialPIDFForm/SaveCommercialPIDF";
         public static string GetPbfFormData = "api/PBF/GetPbfFormData";
-        public static string SavePBF = "api/PBF/InsertUpdatePBF";
+        public static string SavePBF = "api/PBF/InsertUpdatePBFDetails";
 
         #endregion
 
