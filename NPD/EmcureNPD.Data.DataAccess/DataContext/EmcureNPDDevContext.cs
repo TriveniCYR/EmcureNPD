@@ -98,6 +98,7 @@ namespace EmcureNPD.Data.DataAccess.DataContext
         public virtual DbSet<Pidfapidetail> Pidfapidetails { get; set; }
         public virtual DbSet<PidfproductStrength> PidfproductStrengths { get; set; }
         public virtual DbSet<RoleModulePermission> RoleModulePermissions { get; set; }
+        public virtual DbSet<MasterNotification> MasterNotifications { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {

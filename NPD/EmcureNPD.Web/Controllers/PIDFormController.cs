@@ -183,7 +183,51 @@ namespace EmcureNPD.Web.Controllers
         public IActionResult Medical(string pidfid)
         {
             ViewBag.id = pidfid;
+            PIDFMedicalViewModel oPIDForm = new();
+            try
+            {
+                string logUserId = Convert.ToString(HttpContext.Session.GetString(UserHelper.LoggedInUserId));
+                int rolId = (int)HttpContext.Session.GetInt32(UserHelper.LoggedInRoleId);
+                RolePermissionModel objPermssion = UtilityHelper.GetCntrActionAccess(Convert.ToString(RouteData.Values["controller"]), rolId);
+                if (objPermssion == null || (!objPermssion.Add && !objPermssion.Edit))
+                {
+                    return RedirectToAction("AccessRestriction", "Home");
+
+                }
+                ViewBag.Access = objPermssion;
+                pidfid = UtilityHelper.Decreypt(pidfid);
+                oPIDForm = GetModelForMedicalForm(pidfid);
+                return View(oPIDForm);
+            }
+            catch (Exception e)
+            {
+                ViewBag.errormessage = Convert.ToString(e.StackTrace);
+                return View("PIDFormList");
+            }
             return View();
+        }
+        private PIDFMedicalViewModel GetModelForMedicalForm(string pidfid)
+        {
+            PIDFMedicalViewModel oPIDForm = new();
+            try
+            {
+
+                string logUserId = Convert.ToString(HttpContext.Session.GetString(UserHelper.LoggedInUserId));
+                HttpContext.Request.Cookies.TryGetValue(UserHelper.EmcureNPDToken, out string token);
+                APIRepository objapi = new(_cofiguration);
+                HttpResponseMessage responseMessage = objapi.APICommunication(APIURLHelper.GetMedicalFormdata + "/" + pidfid, HttpMethod.Get, token).Result;
+                if (responseMessage.IsSuccessStatusCode)
+                {
+                    string jsonResponse = responseMessage.Content.ReadAsStringAsync().Result;
+                    var data = JsonConvert.DeserializeObject<APIResponseEntity<PIDFMedicalViewModel>>(jsonResponse);
+                    oPIDForm = data._object;
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+            return oPIDForm;
         }
         [HttpPost]
         public IActionResult Medical(string id, PIDFMedicalViewModel medicalEntity)

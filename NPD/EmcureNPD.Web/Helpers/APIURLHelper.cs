@@ -232,7 +232,7 @@
 		public static string SavePBFRnD = "api/PBF/InsertUpdatePBF";
         public static string SaveCommercialPIDF = "api/CommercialPIDFForm/SaveCommercialPIDF";
         public static string GetPbfFormData = "api/PBF/GetPbfFormData";
-        public static string SavePBF = "api/PBF/InsertUpdatePBF";
+        public static string SavePBF = "api/PBF/InsertUpdatePBFDetails";
 
         #endregion
 
@@ -284,6 +284,7 @@
 		public static string GetCommercialFormData = "api/CommercialPIDFForm/GetCommercialFormData";
         public static string GetAllFinalSelection = "api/CommercialPIDFForm/GetAllFinalSelection";
         public static string PIDMedicalForm = "api/PIDForm/PIDMedicalForm";
+        public static string GetMedicalFormdata = "api/PIDForm/GetPIDFMedicalFormData";
         public static string GetAPIIPDFormData = "api/PBF/GetAPIIPDFormData";
         public static string InsertUpdateAPIIPD = "api/PBF/InsertUpdateAPIIPD";
         #endregion
