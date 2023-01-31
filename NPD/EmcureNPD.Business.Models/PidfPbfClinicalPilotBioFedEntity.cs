@@ -3,9 +3,9 @@ using System.Collections.Generic;
 
 #nullable disable
 
-namespace EmcureNPD.Data.DataAccess.Entity
-{
-    public partial class PidfPbfClinicalPilotBioFedEntity
+namespace EmcureNPD.Business.Models
+{ 
+	public partial class PidfPbfClinicalPilotBioFedEntity
     {
         public int PilotBioFedid { get; set; }
         public string Fed { get; set; }

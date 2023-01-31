@@ -72,13 +72,13 @@ namespace EmcureNPD.API.Controllers.PBF
 		/// <response code="500">Internal Server</response>
 		[HttpPost]
 		[Route("InsertUpdatePBF")]
-		public async Task<IActionResult> InsertUpdatePBF(PidfPbfRnDEntity oPBF)
+		public async Task<IActionResult> InsertUpdatePBF(PidfPbfEntity pbfEntity)
 		{
 			try
 			{
-				DBOperation oResponse = await _PBFService.AddUpdatePBF(oPBF);
+				DBOperation oResponse = await _PBFService.AddUpdatePBF(pbfEntity);
 				if (oResponse == DBOperation.Success)
-					return _ObjectResponse.Create(true, (Int32)HttpStatusCode.OK, (oPBF.Pidfpbfid > 0 ? "Updated Successfully" : "Inserted Successfully"));
+					return _ObjectResponse.Create(true, (Int32)HttpStatusCode.OK, (pbfEntity.Pidfpbfid > 0 ? "Updated Successfully" : "Inserted Successfully"));
 				else
 					return _ObjectResponse.Create(false, (Int32)HttpStatusCode.BadRequest, (oResponse == DBOperation.NotFound ? "Record not found" : "Bad request"));
 			}
@@ -105,5 +105,40 @@ namespace EmcureNPD.API.Controllers.PBF
 				return _ObjectResponse.Create(false, (Int32)HttpStatusCode.InternalServerError, Convert.ToString(ex.StackTrace));
 			}
 		}
-	}
+
+
+        [HttpPost]
+        [Route("InsertUpdateAPIIPD")]
+        public async Task<IActionResult> InsertUpdateAPIIPD(PIDFAPIIPDFormEntity oAPIIPD)
+        {
+            try
+            {
+                DBOperation oResponse = await _PBFService.AddUpdateAPIIPD(oAPIIPD);
+                if (oResponse == DBOperation.Success)
+                    return _ObjectResponse.Create(true, (Int32)HttpStatusCode.OK, (oAPIIPD.APIIPDDetailsFormID > 0 ? "Updated Successfully" : "Inserted Successfully"));
+                else
+                    return _ObjectResponse.Create(false, (Int32)HttpStatusCode.BadRequest, (oResponse == DBOperation.NotFound ? "Record not found" : "Bad request"));
+            }
+            catch (Exception ex)
+            {
+                return _ObjectResponse.Create(false, (Int32)HttpStatusCode.InternalServerError, Convert.ToString(ex.StackTrace));
+            }
+        }
+        [HttpGet, Route("GetAPIIPDFormData/{pidfId}")]
+        public async Task<IActionResult> GetAPIIPDFormData([FromRoute] long pidfId)
+        {
+            try
+            {
+                var oPIDFEntity = await _PBFService.GetAPIIPDFormData(pidfId);
+                if (oPIDFEntity != null)
+                    return _ObjectResponse.Create(oPIDFEntity, (Int32)HttpStatusCode.OK);
+                else
+                    return _ObjectResponse.Create(null, (Int32)HttpStatusCode.BadRequest, "Record not found");
+            }
+            catch (Exception ex)
+            {
+                return _ObjectResponse.Create(false, (Int32)HttpStatusCode.InternalServerError, Convert.ToString(ex.StackTrace));
+            }
+        }
+    }
 }

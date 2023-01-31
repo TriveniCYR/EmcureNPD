@@ -115,6 +115,15 @@ namespace EmcureNPD.Resource.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Are you sure you want to Cancel ?.
+        /// </summary>
+        internal static string CancelConfirm {
+            get {
+                return ResourceManager.GetString("CancelConfirm", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Commercial Batch Size (Qtr).
         /// </summary>
         internal static string CommercialBatchSize_Qtr_ {

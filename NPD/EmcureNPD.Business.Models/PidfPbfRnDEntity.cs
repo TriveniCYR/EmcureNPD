@@ -21,5 +21,9 @@ namespace EmcureNPD.Business.Models
         public int? ToolingAndChangePartCostId { get; set; }
         public int? CapexAndMiscellaneousExpensesId { get; set; }
         public List<PidfProductStregthEntity> MasterStrengthEntities { get; set; }
-    }
+		public List<PidfPbfRnDExicipientExhibitEntity> ExicipientExhibitEntities { get; set; }
+		public List<PidfPbfRnDExicipientProtoypeEntity> ExicipientProtoypeEntities { get; set; }
+		public List<PidfPbfRnDExicipientScaleUpEntity> ExicipientScaleUpEntities { get; set; }	
+
+	}
 }

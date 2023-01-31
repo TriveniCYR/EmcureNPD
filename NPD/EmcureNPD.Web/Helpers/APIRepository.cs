@@ -74,5 +74,45 @@ namespace EmcureNPD.Web.Helpers
         }
 
         #endregion APICommunication - Common Method for API calling
+
+        public async Task<HttpResponseMessage> APIComm(string URL, HttpMethod invokeType, string token, HttpContent body = null)
+        {
+            HttpResponseMessage oHttpResponseMessage = new HttpResponseMessage();
+            try
+            {
+                HttpClientHandler clientHandler = new HttpClientHandler();
+                clientHandler.ServerCertificateCustomValidationCallback = (sender, cert, chain, sslPolicyErrors) => { return true; };
+                using (var client = new HttpClient(clientHandler))
+                {
+                    client.BaseAddress = new Uri(baseURL);
+                    if (!string.IsNullOrEmpty(token))
+                        client.DefaultRequestHeaders.Add("Authorization", "Bearer " + token);
+
+                    if (invokeType.Method == HttpMethod.Get.ToString())
+                    {
+                        return await client.GetAsync(URL);
+                    }
+                    else if (invokeType.Method == HttpMethod.Post.ToString())
+                    {
+                        if (body != null)
+                            return await client.PostAsync(URL, body);
+                    }
+                    else if (invokeType.Method == HttpMethod.Put.ToString())
+                    {
+                        if (body != null)
+                            return await client.PostAsync(URL, body);
+                    }
+                    else if (invokeType.Method == HttpMethod.Delete.ToString())
+                    {
+                        return await client.DeleteAsync(URL);
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                oHttpResponseMessage.StatusCode = HttpStatusCode.InternalServerError;
+            }
+            return oHttpResponseMessage;
+        }
     }
 }

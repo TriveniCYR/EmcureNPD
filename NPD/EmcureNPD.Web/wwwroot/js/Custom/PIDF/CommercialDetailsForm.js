@@ -165,6 +165,9 @@ function SetDivReadonly() {
     $("#PIDFScreen").find("input, submit, textarea, a, select").attr("disabled", "disabled");
     $("#PIDFScreen").find("button, submit, a").hide();
     $("#PIDFScreen").find("#collapseButton").show();
+    $("#PIDFScreen").find("#PIDFormcollapseButton").show();
+
+    $("#PIDFormcollapseButton").click();    
     $("#collapseButton").click();
 }
 
@@ -388,4 +391,8 @@ function NSP(variable) {
     }
     result = Nspunits * (1 + (PriceErosion / 100))
     $('#Nsp' + variable).val(result.toFixed(3));
+}
+function ShowPopUpCommercial() {
+    $("#CancelModelCommercial").find("button, submit, a").show();
+    $('#CancelModel').modal('show');
 }

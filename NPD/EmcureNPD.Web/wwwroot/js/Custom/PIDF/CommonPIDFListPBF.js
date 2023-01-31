@@ -2,6 +2,13 @@
 var objApprRejList = [];
 $(document).ready(function () {
     debugger;
+    if (SaveStatus != '' && SaveStatus != undefined) {
+        if (SaveStatus == 'Saved successfully.')
+            toastr.success(SaveStatus);
+        else
+            toastr.error(SaveStatus);
+    }
+
     InitializePIDFList();
 });
 
@@ -52,11 +59,11 @@ function InitializePIDFList() {
             "data": "Action", "name": "Action", "render": function (data, type, row, meta) {
                 var html = '';
                 html += '<a class="btn btn-primary m-1" href="/PBF/APIIPDDetailsForm?pidfid=' + row.encpidfid + '&bui=' + row.encbud + '"><i class="fa fa-fw fa-plus mr-1"></i> API IPD Details </a> ';
-                html += '<a class="btn btn-primary m-1" href="/PBF/PBFForm?pidfid=' + row.encpidfid + '&bui=' + row.encbud + '"><i class="fa fa-fw fa-plus mr-1"></i> API Rnd Details </a> ';
-                html += '<a class="btn btn-primary m-1" href="/PBF/PBFForm?pidfid=' + row.encpidfid + '&bui=' + row.encbud + '"><i class="fa fa-fw fa-plus mr-1"></i> API Charter Details </a> ';
-                html += '<a class="btn btn-primary m-1" href="/PBF/PBFForm?pidfid=' + row.encpidfid + '&bui=' + row.encbud + '"><i class="fa fa-fw fa-plus mr-1"></i> API Charter Summary </a> ';
-                html += '<a class="btn btn-primary m-1" href="/PBF/PBFForm?pidfid=' + row.encpidfid + '&bui=' + row.encbud + '"><i class="fa fa-fw fa-plus mr-1"></i> PBF Details </a> ';
-                html += '<a class="btn btn-primary m-1" href="/PBF/PBFForm?pidfid=' + row.encpidfid + '&bui=' + row.encbud + '"><i class="fa fa-fw fa-plus mr-1"></i> PBF Charter Summary </a> ';
+                html += '<a class="btn btn-primary m-1" href="/PIDF/PBFForm?pidfid=' + row.encpidfid + '&bui=' + row.encbud + '"><i class="fa fa-fw fa-plus mr-1"></i> API Rnd Details </a> ';
+                html += '<a class="btn btn-primary m-1" href="/PIDF/PBFForm?pidfid=' + row.encpidfid + '&bui=' + row.encbud + '"><i class="fa fa-fw fa-plus mr-1"></i> API Charter Details </a> ';
+                html += '<a class="btn btn-primary m-1" href="/PIDF/PBFForm?pidfid=' + row.encpidfid + '&bui=' + row.encbud + '"><i class="fa fa-fw fa-plus mr-1"></i> API Charter Summary </a> ';
+                html += '<a class="btn btn-primary m-1" href="/PIDF/PBFForm?pidfid=' + row.encpidfid + '&bui=' + row.encbud + '"><i class="fa fa-fw fa-plus mr-1"></i> PBF Details </a> ';
+                html += '<a class="btn btn-primary m-1" href="/PIDF/PBFForm?pidfid=' + row.encpidfid + '&bui=' + row.encbud + '"><i class="fa fa-fw fa-plus mr-1"></i> PBF Charter Summary </a> ';
                 return html;
             }
         }

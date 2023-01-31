@@ -13,6 +13,12 @@ namespace EmcureNPD.Business.Core.Interface
 	{
 		Task<dynamic> FillDropdown();
 		Task<PidfPbfEntity> GetPbfFormData(long pidfId, int buid, int? strengthid);
-		Task<DBOperation> AddUpdatePBF(PidfPbfRnDEntity entityPIDF);
-	}
+		Task<DBOperation> AddUpdatePBF(PidfPbfEntity pbfEntity);
+		
+		//------------Start------API_IPD_Details_Form_Entity--------------------------
+        Task<DBOperation> AddUpdateAPIIPD(PIDFAPIIPDFormEntity entityPIDF);
+
+		Task<PIDFAPIIPDFormEntity> GetAPIIPDFormData(long pidfId);
+		//------------End------API_IPD_Details_Form_Entity--------------------------
+    }
 }

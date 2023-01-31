@@ -78,6 +78,19 @@ function GetPBFDropdownSuccess(data) {
             $(data.MasterFormRNDDivisionService).each(function (index, item) {
                 $('#PbfManfFormRNDDivisionId').append('<option value="' + item.formRNDDivisionId + '">' + item.formRNDDivisionName + '</option>');
             });
+            //
+            $(data.MasterPackagingTypes).each(function (index, item) {
+                $('#PbfRndPPPackagingTypeId').append('<option value="' + item.packagingTypeId + '">' + item.packagingTypeName + '</option>');
+            });
+            $(data.MasterPackagingTypes).each(function (index, item) {
+                $('#PbfEndPSUPackagingTypeId').append('<option value="' + item.packagingTypeId + '">' + item.packagingTypeName + '</option>');
+            });
+            $(data.MasterPackagingTypes).each(function (index, item) {
+                $('#PbfRndPEPackagingTypeId').append('<option value="' + item.packagingTypeId + '">' + item.packagingTypeName + '</option>');
+            });
+            $(data.MasterCountrys).each(function (index, item) {
+                $('#PbfRFDFECountryId').append('<option value="' + item.countryId + '">' + item.countryName + '</option>');
+            });
         }
     } catch (e) {
         toastr.error('Error:' + e.message);
@@ -149,4 +162,20 @@ function SetDivReadonly() {
     $("#PIDFFormTemplate").find("button, submit, a").hide();
     $("#PIDFFormTemplate").find("#collapseButton").show();
     $("#collapseButton").click();
+}
+
+function StrengthtabClick(strengthId, pidfidval, strengthVal) {
+ 
+    $('.clsStrengthName').val(strengthVal);
+    //var textBox = document.getElementsByClassName('abc');
+    //if (stateID) {
+    //    for (var i = 0; i < textBox.length; i++) {
+    //        textBox[i].value = stateID;
+    //    }
+    //}
+
+    //selectedStrength = strengthVal;
+    ////ClearValidationForYearForm();
+    ////ClearValidationForMainForm();
+    //GetCommercialPIDFByBU(pidfidval);
 }

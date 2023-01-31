@@ -7,6 +7,11 @@ namespace EmcureNPD.Data.DataAccess.Entity
 {
     public partial class MasterBerequirement
     {
+        public MasterBerequirement()
+        {
+            PidfPbfs = new HashSet<PidfPbf>();
+        }
+
         public int BerequirementId { get; set; }
         public string BerequirementName { get; set; }
         public bool IsActive { get; set; }
@@ -14,5 +19,7 @@ namespace EmcureNPD.Data.DataAccess.Entity
         public DateTime CreatedDate { get; set; }
         public int? ModifyBy { get; set; }
         public DateTime? ModifyDate { get; set; }
+
+        public virtual ICollection<PidfPbf> PidfPbfs { get; set; }
     }
 }

@@ -35,6 +35,7 @@ namespace EmcureNPD.Business.Models
         public List<PidfProductStregthEntity> MasterStrengthEntities { get; set; }
         public PidfCommercialYearEntity PidfCommercialYear { get; set; }
         public PIDFEntity pidfEntity { get; set; }
+        public PIDFormEntity IPDFormEntity { get; set; }
         public string BusinessUnitsByUser { get; set; }
         //public virtual MasterBusinessUnit BusinessUnit { get; set; }
         //public virtual Pidf Pidf { get; set; }

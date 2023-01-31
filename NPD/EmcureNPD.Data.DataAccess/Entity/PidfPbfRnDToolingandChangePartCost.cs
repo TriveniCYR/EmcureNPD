@@ -7,6 +7,11 @@ namespace EmcureNPD.Data.DataAccess.Entity
 {
     public partial class PidfPbfRnDToolingandChangePartCost
     {
+        public PidfPbfRnDToolingandChangePartCost()
+        {
+            PidfPbfRnDs = new HashSet<PidfPbfRnD>();
+        }
+
         public int ToolingandChangePartCostId { get; set; }
         public string PrototypeDevelopment { get; set; }
         public int? TotalCost { get; set; }
@@ -17,5 +22,7 @@ namespace EmcureNPD.Data.DataAccess.Entity
         public decimal? TotalCost1 { get; set; }
         public int? CreatedBy { get; set; }
         public DateTime? CreatedDate { get; set; }
+
+        public virtual ICollection<PidfPbfRnD> PidfPbfRnDs { get; set; }
     }
 }

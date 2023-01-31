@@ -423,4 +423,55 @@
   <data name="IPEvalution" xml:space="preserve">
     <value>IP Evalution</value>
   </data>
+  <data name="ApprovedGenetics" xml:space="preserve">
+    <value>Approved Genetics</value>
+  </data>
+  <data name="Comments" xml:space="preserve">
+    <value>Comments</value>
+  </data>
+  <data name="Comments1" xml:space="preserve">
+    <value>Comments</value>
+  </data>
+  <data name="CommentsPatentSpecific" xml:space="preserve">
+    <value>Comments Patent Specific</value>
+  </data>
+  <data name="CostOfLitication" xml:space="preserve">
+    <value>Cost Of Litication</value>
+  </data>
+  <data name="Countrys1" xml:space="preserve">
+    <value>Countrys</value>
+  </data>
+  <data name="DataExclusivity" xml:space="preserve">
+    <value>Data Exclusivity</value>
+  </data>
+  <data name="ExtensionExpiryDate" xml:space="preserve">
+    <value>Extension Expiry Date</value>
+  </data>
+  <data name="FillingType" xml:space="preserve">
+    <value>Filling Type</value>
+  </data>
+  <data name="Innovators" xml:space="preserve">
+    <value>Innovators</value>
+  </data>
+  <data name="LaunchedGenetics" xml:space="preserve">
+    <value>Launched Genetics</value>
+  </data>
+  <data name="LegalStatus" xml:space="preserve">
+    <value>Legal Status</value>
+  </data>
+  <data name="MarketName" xml:space="preserve">
+    <value>Market Name</value>
+  </data>
+  <data name="OriginalExpiraDate" xml:space="preserve">
+    <value>Original Expira Date</value>
+  </data>
+  <data name="PatentNumber" xml:space="preserve">
+    <value>Patent Number</value>
+  </data>
+  <data name="PatentNumber1" xml:space="preserve">
+    <value>Patent Number</value>
+  </data>
+  <data name="Strategy" xml:space="preserve">
+    <value>Strategy</value>
+  </data>
 </root>

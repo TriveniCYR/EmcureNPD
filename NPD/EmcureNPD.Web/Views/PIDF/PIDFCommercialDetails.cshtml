@@ -9,20 +9,20 @@
 @inject Microsoft.Extensions.Localization.IStringLocalizer<EmcureNPD.Resource.Shared> SharedLocalizer
 @model EmcureNPD.Business.Models.PIDFCommercialEntity
 <div>
-
+    <div id="PIDFScreen">           
+        @{ await Html.RenderPartialAsync("~/Views/PIDF/PIDF.cshtml",Model.pidfEntity);}
+           
+         @{ await Html.RenderPartialAsync("~/Views/PIDForm/PIDForm.cshtml", Model.IPDFormEntity);}
+        </div>
     <div class="card card-outline card-primary">
 
         <div class="card-header">
             <h5 class="mb-0"><b>@MasterLocalizer["CommercialDetails"]</b></h5>
             <div class="card-tools">
-                <button type="button" class="btn btn-tool" data-card-widget="collapse" title="Collapse">
+                <button id="CommercialcollapseButton" type="button" class="btn btn-tool" data-card-widget="collapse" title="Collapse">
                     <i class="fas fa-minus"></i>
                 </button>
             </div>
-        </div>
-        <div id="PIDFScreen">           
-        @{ await Html.RenderPartialAsync("PIDF",Model.pidfEntity);}
-            <h5 class="mb-0"><b>Internal Patent Details</b></h5>
         </div>
         <div class="card-body" id="mainDivCommercial">
             <div class="row border m-2">
@@ -331,18 +331,44 @@
                 <div>
                     <div class="form-group">
                         <button type="button" class="btn btn-primary" onClick="SaveClick();">@SharedLocalizer["Save"]</button> 
-                        <a class="btn btn-danger" asp-action="PIDFCommercial" asp-controller="PIDF">@SharedLocalizer["Cancel"]</a>
+                        <a class="btn btn-danger" onclick="ShowPopUpCommercial()">@SharedLocalizer["Cancel"]</a>
                         @if (Model.StatusId != (Int32)Master_PIDFStatus.IPDCreated)
                         {
                             <button type="submit" class="btn btn-info" onClick="SaveDraftClick();">@SharedLocalizer["SaveDraft"]</button>
                         }
+                        <button class="btn btn-success" onClick="SaveApproveClick();">@SharedLocalizer["Approve"]</button>
+                        <button class="btn btn-danger" onClick="SaveRejectClick();">@SharedLocalizer["Reject"]</button>
                     </div>
                 </div>
             </div>
         </div>
     </div>
 </div>
-
+@*CancelModel*@
+<div id="CancelModelCommercial" class="modal themeModal" role="dialog">
+    <div class="modal-dialog">
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">@SharedLocalizer["Cancel"]</h4>
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="form-group">
+                            @Html.Label(@SharedLocalizer["CancelConfirm"])
+                        </div>
+                    </div>
+                </div>
+                <div class="card-footer text-center">
+                    <a asp-action="PIDFCommercial" asp-controller="PIDF" data-dismiss="modal" class="btn btn-primary mr-2">@SharedLocalizer["Yes"]</a>
+                    <a class="btn btn-danger" data-dismiss="modal">@SharedLocalizer["No"]</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
 @section MyScripts {
     @Html.Partial("_DataTablePartial")
     <link rel="stylesheet" href="~/AdminLTE/plugins/select2/css/select2.min.css" />

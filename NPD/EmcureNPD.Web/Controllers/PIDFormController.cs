@@ -15,7 +15,7 @@ using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Net.Http;
-
+using System.Net.Http.Headers;
 
 namespace EmcureNPD.Web.Controllers
 {
@@ -25,16 +25,16 @@ namespace EmcureNPD.Web.Controllers
         private readonly IConfiguration _cofiguration;
         private readonly IStringLocalizer<Errors> _stringLocalizerError;
         private readonly IStringLocalizer<Shared> _stringLocalizerShared;
-        private IHostingEnvironment _env;
+        //private IHostingEnvironment _env;
         #endregion
 
-        public PIDFormController(IConfiguration configuration, IHostingEnvironment env,
+        public PIDFormController(IConfiguration configuration,// IHostingEnvironment env,
             IStringLocalizer<Errors> stringLocalizerError, IStringLocalizer<Shared> stringLocalizerShared)
         {
             _cofiguration = configuration;
             _stringLocalizerError = stringLocalizerError;
             _stringLocalizerShared = stringLocalizerShared;
-            _env = env;
+            // _env = env;
         }
 
         //[Route("PIDForm/PIDForm")]
@@ -45,7 +45,8 @@ namespace EmcureNPD.Web.Controllers
             ModelState.Clear();
             PIDFormEntity oPIDForm = new();
             try
-            {                
+            {
+                string logUserId = Convert.ToString(HttpContext.Session.GetString(UserHelper.LoggedInUserId));
                 int rolId = (int)HttpContext.Session.GetInt32(UserHelper.LoggedInRoleId);
                 RolePermissionModel objPermssion = UtilityHelper.GetCntrActionAccess(Convert.ToString(RouteData.Values["controller"]), rolId);
                 if (objPermssion == null || (!objPermssion.Add && !objPermssion.Edit))
@@ -63,7 +64,7 @@ namespace EmcureNPD.Web.Controllers
                 else
                     bussnessId = UtilityHelper.Decreypt(bui);
 
-                oPIDForm= GetModelForPIDForm(pidfid, bussnessId);
+                oPIDForm = GetModelForIPDForm(pidfid, bussnessId);
 
                 return View(oPIDForm);
             }
@@ -76,12 +77,12 @@ namespace EmcureNPD.Web.Controllers
         }
 
         [NonAction] // Get Model for View PIDForm.cshtml 
-        private PIDFormEntity GetModelForPIDForm(string pidfid, string bussnessId)
+        private PIDFormEntity GetModelForIPDForm(string pidfid, string bussnessId)
         {
             PIDFormEntity oPIDForm = new();
             try
             {
-               
+
                 string logUserId = Convert.ToString(HttpContext.Session.GetString(UserHelper.LoggedInUserId));
                 HttpContext.Request.Cookies.TryGetValue(UserHelper.EmcureNPDToken, out string token);
                 APIRepository objapi = new(_cofiguration);
@@ -117,7 +118,7 @@ namespace EmcureNPD.Web.Controllers
                     }
                 }
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 throw ex;
             }
@@ -175,6 +176,50 @@ namespace EmcureNPD.Web.Controllers
                 TempData[UserHelper.ErrorMessage] = Convert.ToString(e.StackTrace);
                 //ModelState.Clear();
                 return View(nameof(PIDFormList));
+            }
+        }
+
+        [HttpGet]
+        public IActionResult Medical(string pidfid)
+        {
+            ViewBag.id = pidfid;
+            return View();
+        }
+        [HttpPost]
+        public IActionResult Medical(string id, PIDFMedicalViewModel medicalEntity)
+        {
+            if (ModelState.IsValid)
+            {
+                medicalEntity.Pidfid = long.Parse(UtilityHelper.Decreypt(id));
+                medicalEntity.CreatedBy = Convert.ToInt32(HttpContext.Session.GetString(UserHelper.LoggedInUserId));
+                HttpContext.Request.Cookies.TryGetValue(UserHelper.EmcureNPDToken, out string token);
+                APIRepository objapi = new(_cofiguration);
+                string x = JsonConvert.SerializeObject(medicalEntity);
+
+                var form = new MultipartFormDataContent();
+                foreach (IFormFile file in medicalEntity.File)
+                {
+                    var fileStream = file.OpenReadStream();
+                    var fileContent = new StreamContent(fileStream);
+                    fileContent.Headers.ContentType = MediaTypeHeaderValue.Parse("text/plain");
+                    form.Add(fileContent, "file", file.FileName);
+                }
+
+                form.Add(new StringContent(JsonConvert.SerializeObject(medicalEntity)), "Data");
+                //var streamContent = new StreamContent(form.ReadAsStreamAsync().Result);
+                //streamContent.Headers.ContentType = MediaTypeHeaderValue.Parse("multipart/form-data");
+                //var httpClient = new HttpClient()
+                //{
+                //    BaseAddress = new Uri("https://localhost:44368")
+                //};
+
+                //var response = httpClient.PostAsync($"/api/PIDForm/PIDMedicalForm", form).Result;
+                HttpResponseMessage responseMessage = objapi.APIComm(APIURLHelper.PIDMedicalForm, HttpMethod.Post, token, form).Result;
+                return RedirectToAction("PIDFormList");
+            }
+            else
+            {
+                return RedirectToAction("PIDFormList");
             }
         }
     }

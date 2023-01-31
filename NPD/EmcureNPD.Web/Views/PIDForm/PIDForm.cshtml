@@ -9,10 +9,16 @@
 @model EmcureNPD.Business.Models.PIDFormEntity
 
 <div id="SavePIDForm">
+    @*<h5 class="mb-0"><b>Product Identification Form</b></h5>*@
     <form asp-action="PIDForm">
         <div class="card card-outline card-primary">
             <div class="card-header">
-                <h5 class="mb-0"><b>Product Identification Form</b></h5>
+                <h5 class="mb-0"><b>Internal Patent Details</b></h5>
+                <div class="card-tools">
+                    <button id="PIDFormcollapseButton" type="button" class="btn btn-tool" data-card-widget="collapse" title="Collapse">
+                        <i class="fas fa-minus"></i>
+                    </button>
+                </div>
             </div>
             <div class="card-body" id="tabs">
                 <div class="row">         

@@ -10,6 +10,15 @@ namespace EmcureNPD.Data.DataAccess.Entity
         public PidfproductStrength()
         {
             PidfCommercials = new HashSet<PidfCommercial>();
+            PidfPbfRnDExicipientExhibits = new HashSet<PidfPbfRnDExicipientExhibit>();
+            PidfPbfRnDExicipientProtoypes = new HashSet<PidfPbfRnDExicipientProtoype>();
+            PidfPbfRnDExicipientScaleUps = new HashSet<PidfPbfRnDExicipientScaleUp>();
+            PidfPbfRnDPackagingExhibits = new HashSet<PidfPbfRnDPackagingExhibit>();
+            PidfPbfRnDPackagingPrototypes = new HashSet<PidfPbfRnDPackagingPrototype>();
+            PidfPbfRnDPackagingScaleUps = new HashSet<PidfPbfRnDPackagingScaleUp>();
+            PidfPbfRnDPlantSupportCosts = new HashSet<PidfPbfRnDPlantSupportCost>();
+            PidfPbfRnDs = new HashSet<PidfPbfRnD>();
+            PidfPbfRndProjectEstimations = new HashSet<PidfPbfRndProjectEstimation>();
         }
 
         public long PidfproductStrengthId { get; set; }
@@ -22,5 +31,14 @@ namespace EmcureNPD.Data.DataAccess.Entity
         public virtual Pidf Pidf { get; set; }
         public virtual MasterUnitofMeasurement UnitofMeasurement { get; set; }
         public virtual ICollection<PidfCommercial> PidfCommercials { get; set; }
+        public virtual ICollection<PidfPbfRnDExicipientExhibit> PidfPbfRnDExicipientExhibits { get; set; }
+        public virtual ICollection<PidfPbfRnDExicipientProtoype> PidfPbfRnDExicipientProtoypes { get; set; }
+        public virtual ICollection<PidfPbfRnDExicipientScaleUp> PidfPbfRnDExicipientScaleUps { get; set; }
+        public virtual ICollection<PidfPbfRnDPackagingExhibit> PidfPbfRnDPackagingExhibits { get; set; }
+        public virtual ICollection<PidfPbfRnDPackagingPrototype> PidfPbfRnDPackagingPrototypes { get; set; }
+        public virtual ICollection<PidfPbfRnDPackagingScaleUp> PidfPbfRnDPackagingScaleUps { get; set; }
+        public virtual ICollection<PidfPbfRnDPlantSupportCost> PidfPbfRnDPlantSupportCosts { get; set; }
+        public virtual ICollection<PidfPbfRnD> PidfPbfRnDs { get; set; }
+        public virtual ICollection<PidfPbfRndProjectEstimation> PidfPbfRndProjectEstimations { get; set; }
     }
 }

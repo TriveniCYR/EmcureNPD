@@ -113,14 +113,17 @@
 		</div>
 	</div>
 	<br>
+		@{
+			string str = "";
+		}
 	<div class="row">
 		 @*-----------------Strength---------------------*@
-            <div class="row border m-2">
+           <div class="row border m-2">
                 <div class="col-md-3">
                     @Html.Label("Strength", "Strength", new { @class = "control-label" })
                     <lable id="valmsgStrength" class="text-danger"></lable>
                 </div>
-                <div class="col-md-9">
+                <div class="col-md-9 pl-lg-5">
                     <ul class="nav nav-pills" id="ProductStrengthTabs">
                         @if (Model.MasterStrengthEntities.Count() > 0 || Model.MasterStrengthEntities != null)
                         {
@@ -128,10 +131,11 @@
 							@foreach (var _strength in Model.MasterStrengthEntities)
                             {
                                 <li class="nav-item mr-2">
-									<a class="btn btn-outline-primary" href="#tab_@_strength.Strength" onClick="StrengthtabClick('@_strength.PidfproductStrengthId','@Model.Pidfpbfid');" id="Strengthtab_@_strength.PidfproductStrengthId" >@_strength.Strength</a>
-                                </li>
-                                k = k + 1;
-                            }
+									<a class="btn btn-outline-primary" href="#tab_@_strength.Strength" onClick="StrengthtabClick('@_strength.PidfproductStrengthId','@Model.Pidfpbfid', '@_strength.Strength');" id="Strengthtab_@_strength.PidfproductStrengthId">@_strength.Strength</a>
+								</li>
+								k = k + 1;
+								str = @_strength.Strength;
+							}
                         }
                     </ul>
                 </div>
@@ -154,10 +158,17 @@
 		</div>
 			<div class="col-md-3">
 			<div class="form-group required">
-				<select id="MarketExtensionId" name="MarketExtensionId" class="form-control readOnlyUpdate" required></select>
+				<select id="MarketExtensionId" name="MarketExtensionId" class="form-control readOnlyUpdate" required>
+					<option value="select">Select</option>
+					<option value="Tablets">Tablets</option>
+					<option value="Capsules">Capsules</option>
+					<option value="Injection">Injection</option>
+				</select>
 			</div>			
 		</div>
 	</div>
+
+
 	<div >
 		<table id="PIDFTable" class="table table-bordered table-striped table-hover" style="width:100%">
 			<thead>
@@ -175,7 +186,7 @@
 				<td>
 					<div class="">
 						<div class="form-group required">									
-								<input type="text" readonly id="Strength" name="MarketExtensionId"  class="form-control readOnlyUpdate" required />
+								<input type="text" readonly id="Strength" name="MarketExtensionId" class="form-control readOnlyUpdate clsStrengthName" required />
 						</div>
 					</div>
 				</td>
@@ -226,6 +237,7 @@
 			</tbody>
 		</table>
 	</div>
+
 		<div class="card-header">
 			<h3 class="card-title">
 				API 1 Requirement
@@ -233,7 +245,6 @@
 		</div>
 		<br />
 		<div class="row">
-
 		<div class="col-md-3">
 			<div class="form-group required">
 				<label class="control-label">Market Prize (Rs/kg)</label>
@@ -348,94 +359,7 @@
 							</div>
 						</td>
 						
-					</tr>
-					<tr>
-						<td>
-							
-						</td>
-						<td>
-							<div class="">
-								<div class="form-group required">
-									@*@Html.EditorFor(model => model.pidf_IPD_PatentDetailsEntities[i].Type, new { htmlAttributes = new { @autocomplete = "off", @class = "form-control checkbox-checked", id = "pidf_IPD_PatentDetailsEntities[" + i + "].Type", @placeholder = @MasterLocalizer["Type"] } })
-									@Html.ValidationMessageFor(model => model.pidf_IPD_PatentDetailsEntities[i].Type, "", new { @class = "text-danger", id = "pidf_IPD_PatentDetailsEntities[" + i + "].ValidationType" })*@
-									<input type="text" readonly id="MarketExtensionId" name="MarketExtensionId" class="form-control readOnlyUpdate" required />
-								</div>
-							</div>
-						</td>
-						<td>
-							<div class="">
-								<div class="form-group required">
-									@*@Html.EditorFor(model => model.pidf_IPD_PatentDetailsEntities[i].Type, new { htmlAttributes = new { @autocomplete = "off", @class = "form-control checkbox-checked", id = "pidf_IPD_PatentDetailsEntities[" + i + "].Type", @placeholder = @MasterLocalizer["Type"] } })
-									@Html.ValidationMessageFor(model => model.pidf_IPD_PatentDetailsEntities[i].Type, "", new { @class = "text-danger", id = "pidf_IPD_PatentDetailsEntities[" + i + "].ValidationType" })*@
-									<input type="text"  readonly id="MarketExtensionId" name="MarketExtensionId" class="form-control readOnlyUpdate" required />
-								</div>
-							</div>
-						</td>
-						<td>
-							<div class="">
-								<div class="form-group required">
-									@*@Html.EditorFor(model => model.pidf_IPD_PatentDetailsEntities[i].Type, new { htmlAttributes = new { @autocomplete = "off", @class = "form-control checkbox-checked", id = "pidf_IPD_PatentDetailsEntities[" + i + "].Type", @placeholder = @MasterLocalizer["Type"] } })
-									@Html.ValidationMessageFor(model => model.pidf_IPD_PatentDetailsEntities[i].Type, "", new { @class = "text-danger", id = "pidf_IPD_PatentDetailsEntities[" + i + "].ValidationType" })*@
-									<input type="text" readonly  id="MarketExtensionId" name="MarketExtensionId" class="form-control readOnlyUpdate" required />
-								</div>
-							</div>
-						</td>
-						<td>
-							<div class="">
-								<div class="form-group required">
-									@*@Html.EditorFor(model => model.pidf_IPD_PatentDetailsEntities[i].Type, new { htmlAttributes = new { @autocomplete = "off", @class = "form-control checkbox-checked", id = "pidf_IPD_PatentDetailsEntities[" + i + "].Type", @placeholder = @MasterLocalizer["Type"] } })
-									@Html.ValidationMessageFor(model => model.pidf_IPD_PatentDetailsEntities[i].Type, "", new { @class = "text-danger", id = "pidf_IPD_PatentDetailsEntities[" + i + "].ValidationType" })*@
-									<input type="text" readonly id="MarketExtensionId" name="MarketExtensionId" class="form-control readOnlyUpdate" required />
-								</div>
-							</div>
-						</td>
-						<td>
-							<div class="">
-								<div class="form-group required">
-									@*@Html.EditorFor(model => model.pidf_IPD_PatentDetailsEntities[i].Type, new { htmlAttributes = new { @autocomplete = "off", @class = "form-control checkbox-checked", id = "pidf_IPD_PatentDetailsEntities[" + i + "].Type", @placeholder = @MasterLocalizer["Type"] } })
-									@Html.ValidationMessageFor(model => model.pidf_IPD_PatentDetailsEntities[i].Type, "", new { @class = "text-danger", id = "pidf_IPD_PatentDetailsEntities[" + i + "].ValidationType" })*@
-									<input type="text" readonly id="MarketExtensionId" name="MarketExtensionId" class="form-control readOnlyUpdate" required />
-								</div>
-							</div>
-						</td>
-						<td>
-							<div class="">
-								<div class="form-group required">
-									@*@Html.EditorFor(model => model.pidf_IPD_PatentDetailsEntities[i].Type, new { htmlAttributes = new { @autocomplete = "off", @class = "form-control checkbox-checked", id = "pidf_IPD_PatentDetailsEntities[" + i + "].Type", @placeholder = @MasterLocalizer["Type"] } })
-									@Html.ValidationMessageFor(model => model.pidf_IPD_PatentDetailsEntities[i].Type, "", new { @class = "text-danger", id = "pidf_IPD_PatentDetailsEntities[" + i + "].ValidationType" })*@
-									<input type="text" readonly id="MarketExtensionId" name="MarketExtensionId" class="form-control readOnlyUpdate" required />
-								</div>
-							</div>
-						</td>
-						<td>
-							<div class="">
-								<div class="form-group required">
-									@*@Html.EditorFor(model => model.pidf_IPD_PatentDetailsEntities[i].Type, new { htmlAttributes = new { @autocomplete = "off", @class = "form-control checkbox-checked", id = "pidf_IPD_PatentDetailsEntities[" + i + "].Type", @placeholder = @MasterLocalizer["Type"] } })
-									@Html.ValidationMessageFor(model => model.pidf_IPD_PatentDetailsEntities[i].Type, "", new { @class = "text-danger", id = "pidf_IPD_PatentDetailsEntities[" + i + "].ValidationType" })*@
-									<input type="text" readonly id="MarketExtensionId" name="MarketExtensionId" class="form-control readOnlyUpdate" required />
-								</div>
-							</div>
-						</td>
-						<td>
-							<div class="">
-								<div class="form-group required">
-									@*@Html.EditorFor(model => model.pidf_IPD_PatentDetailsEntities[i].Type, new { htmlAttributes = new { @autocomplete = "off", @class = "form-control checkbox-checked", id = "pidf_IPD_PatentDetailsEntities[" + i + "].Type", @placeholder = @MasterLocalizer["Type"] } })
-									@Html.ValidationMessageFor(model => model.pidf_IPD_PatentDetailsEntities[i].Type, "", new { @class = "text-danger", id = "pidf_IPD_PatentDetailsEntities[" + i + "].ValidationType" })*@
-									<input type="text" readonly id="MarketExtensionId" name="MarketExtensionId" class="form-control readOnlyUpdate" required />
-								</div>
-							</div>
-						</td>
-						<td>
-							<div class="">
-								<div class="form-group required">
-									@*@Html.EditorFor(model => model.pidf_IPD_PatentDetailsEntities[i].Type, new { htmlAttributes = new { @autocomplete = "off", @class = "form-control checkbox-checked", id = "pidf_IPD_PatentDetailsEntities[" + i + "].Type", @placeholder = @MasterLocalizer["Type"] } })
-									@Html.ValidationMessageFor(model => model.pidf_IPD_PatentDetailsEntities[i].Type, "", new { @class = "text-danger", id = "pidf_IPD_PatentDetailsEntities[" + i + "].ValidationType" })*@
-									<input type="text" readonly id="MarketExtensionId" name="MarketExtensionId" class="form-control readOnlyUpdate" required />
-								</div>
-							</div>
-						</td>
-
-					</tr>
+					</tr>					
 					<tr>
 						<td>
 							<div class="">
@@ -531,220 +455,255 @@
 				</tbody>
 			</table>
 		</div>
-	
+
+<!-- Exicipient Requirement -->
+ <div>
 			<div class="card-header">
 				<h3 class="card-title">
 					Exicipient Requirement
 				</h3>
 			</div>
-		<br />
-		<div class="card-header">
-			<h3 class="card-title">
-				Exicipient Protoype
-			</h3>
-		</div>
-		<div >
-			<table id="PIDFTable" class="table table-bordered table-striped table-hover" style="width:100%">
-				<thead>
-					<tr>
-						<th>Strength 1</th>
-						<th>Exicipient Prototype</th>
-						<th>Rs / Kg</th>
-						<th>Mg Per unit Dosage</th>
-						<th>Action</th>
-					</tr>
-				</thead>
-				<tbody>
-					<tr>
-						<td>
-
-							<div class="">
-								<div class="form-group required">
-									@*@Html.EditorFor(model => model.pidf_IPD_PatentDetailsEntities[i].PatentNumber, new { htmlAttributes = new { @autocomplete = "off",@readonly = true, @class = "form-control checkbox-checked", id = "pidf_IPD_PatentDetailsEntities[" + i + "].PatentNumber", @placeholder = @MasterLocalizer["Patent Number"]} })*@
-									<input type="text" readonly id="MarketExtensionId" name="MarketExtensionId" placeholder="250mg" class="form-control readOnlyUpdate" required />
+			<br />
+			<div class="row">
+					<div class="col-12">
+						<div class="card">
+							<div class="card-header">
+								<h3 class="card-title">Exicipient Protoype</h3>
+								<div class="card-tools">
+									<button type="button" class="btn btn-tool" data-card-widget="collapse" title="Collapse">
+										<i class="fas fa-minus"></i>
+									</button>
 								</div>
 							</div>
-						</td>
-						<td>
+							<div class="card-body">
+								<table id="ExicipientProtoypeTable" class="table table-bordered table-striped table-hover">
+									<thead>
+										<tr>
+											<th>Strength 1</th>
+											<th>Exicipient Prototype</th>
+											<th>Rs / Kg</th>
+											<th>Mg Per unit Dosage</th>											
+											<th class="text-center">@SharedLocalizer["Action"]</th>
+										</tr>
+									</thead>
+									<tbody id="ExicipientProtoypeBody">										
+										@{
+											int j = 0;
+											<tr id="ExicipientProtoypeRow_@j">
+											<td>
+													<div class="col-md">
+														<div class="form-group required">
+														<input type="text" readonly id="MarketExtensionId" name="MarketExtensionId" class="form-control readOnlyUpdate clsStrengthName" required />								
+														</div>
+													</div>
+												</td>
+												<td>
+													<div class="col-md">
+														<div class="form-group required">
+															@Html.EditorFor(model => model.ExicipientExhibitEntities[j].ExicipientPrototype, new { htmlAttributes = new { @autocomplete = "off", @class = "form-control checkbox-checked", id = "ExicipientExhibitEntities[" + j + "].ExicipientPrototype", @placeholder = @MasterLocalizer["Product Strength"] } })
+															@Html.ValidationMessageFor(model => model.ExicipientExhibitEntities[j].ExicipientPrototype, "", new { @class = "text-danger" })
+														</div>
+													</div>
+												</td>
+												<td>
+													<div class="col-md">
+														<div class="form-group required">
+															@Html.EditorFor(model => model.ExicipientExhibitEntities[j].Cost, new { htmlAttributes = new { @autocomplete = "off", @class = "form-control checkbox-checked", id = "ExicipientExhibitEntities[" + j + "].Cost", @placeholder = @MasterLocalizer["Product Strength"] } })
+															@Html.ValidationMessageFor(model => model.ExicipientExhibitEntities[j].Cost, "", new { @class = "text-danger" })
+														</div>
+													</div>
+												</td>
+												<td>
+													<div class="col-md">
+														<div class="form-group required">
+															@Html.EditorFor(model => model.ExicipientExhibitEntities[j].DosagePerUnit, new { htmlAttributes = new { @autocomplete = "off", @class = "form-control checkbox-checked", id = "ExicipientExhibitEntities[" + j + "].DosagePerUnit", @placeholder = @MasterLocalizer["Product Strength"] } })
+															@Html.ValidationMessageFor(model => model.ExicipientExhibitEntities[j].DosagePerUnit, "", new { @class = "text-danger" })
+														</div>
+													</div>
+												</td>												
+												<td>
+													<div class="col-md">
+														<div class="form-group">
+															<i class="fas fa-plus" id="addIconAPI_@j" onclick="addRowProductStrength(@j)"></i>
+															&nbsp;&nbsp;&nbsp;&nbsp;
+															<spam><i class="fas fa-trash-alt" id="deleteIconAPI_@j" onclick="deleteRowProductStrength(@j)"></i></spam>
+															@Html.HiddenFor(model => model.ExicipientExhibitEntities[j].ExicipientProtoypeId, new { id = "ExicipientExhibitEntities[" + j + "].ExicipientProtoypeId"})
+														</div>
+													</div>
+												</td>
+											</tr>
+										}
+									</tbody>
+								</table>
+							</div>
+						</div>
 
-							<div class="">
-								<div class="form-group required">
-									@*@Html.EditorFor(model => model.pidf_IPD_PatentDetailsEntities[i].PatentNumber, new { htmlAttributes = new { @autocomplete = "off",@readonly = true, @class = "form-control checkbox-checked", id = "pidf_IPD_PatentDetailsEntities[" + i + "].PatentNumber", @placeholder = @MasterLocalizer["Patent Number"]} })*@
-									<input type="text"  id="MarketExtensionId" name="MarketExtensionId"  class="form-control readOnlyUpdate" required />
+					</div>
+				</div>	
+				
+			<div class="row">
+					<div class="col-12">
+						<div class="card">
+							<div class="card-header">
+								<h3 class="card-title">Exicipient Scale Up</h3>
+								<div class="card-tools">
+									<button type="button" class="btn btn-tool" data-card-widget="collapse" title="Collapse">
+										<i class="fas fa-minus"></i>
+									</button>
 								</div>
 							</div>
-						</td>
-						<td>
+							<div class="card-body">
+								<table id="ExicipientProtoypeTable" class="table table-bordered table-striped table-hover">
+									<thead>
+										<tr>
+											<th>Strength 1</th>
+											<th>Exicipient Prototype</th>
+											<th>Rs / Kg</th>
+											<th>Mg Per unit Dosage</th>											
+											<th class="text-center">@SharedLocalizer["Action"]</th>
+										</tr>
+									</thead>
+									<tbody id="ExicipientProtoypeBody">										
+										@{
+											int m = 0;
+											<tr id="ExicipientProtoypeRow_@m">
+											<td>
+													<div class="col-md">
+														<div class="form-group required">
+														<input type="text" readonly id="MarketExtensionId" name="MarketExtensionId" class="form-control readOnlyUpdate clsStrengthName" required />								
+														</div>
+													</div>
+												</td>
+												<td>
+													<div class="col-md">
+														<div class="form-group required">
+															@Html.EditorFor(model => model.ExicipientExhibitEntities[m].ExicipientPrototype, new { htmlAttributes = new { @autocomplete = "off", @class = "form-control checkbox-checked", id = "ExicipientExhibitEntities[" + m + "].ExicipientPrototype", @placeholder = @MasterLocalizer["Product Strength"] } })
+															@Html.ValidationMessageFor(model => model.ExicipientExhibitEntities[m].ExicipientPrototype, "", new { @class = "text-danger" })
+														</div>
+													</div>
+												</td>
+												<td>
+													<div class="col-md">
+														<div class="form-group required">
+															@Html.EditorFor(model => model.ExicipientExhibitEntities[m].Cost, new { htmlAttributes = new { @autocomplete = "off", @class = "form-control checkbox-checked", id = "ExicipientExhibitEntities[" + m + "].Cost", @placeholder = @MasterLocalizer["Product Strength"] } })
+															@Html.ValidationMessageFor(model => model.ExicipientExhibitEntities[m].Cost, "", new { @class = "text-danger" })
+														</div>
+													</div>
+												</td>
+												<td>
+													<div class="col-md">
+														<div class="form-group required">
+															@Html.EditorFor(model => model.ExicipientExhibitEntities[m].DosagePerUnit, new { htmlAttributes = new { @autocomplete = "off", @class = "form-control checkbox-checked", id = "ExicipientExhibitEntities[" + m + "].DosagePerUnit", @placeholder = @MasterLocalizer["Product Strength"] } })
+															@Html.ValidationMessageFor(model => model.ExicipientExhibitEntities[m].DosagePerUnit, "", new { @class = "text-danger" })
+														</div>
+													</div>
+												</td>												
+												<td>
+													<div class="col-md">
+														<div class="form-group">
+															<i class="fas fa-plus" id="addIconAPI_@m" onclick="addRowProductStrength(@m)"></i>
+															&nbsp;&nbsp;&nbsp;&nbsp;
+															<spam><i class="fas fa-trash-alt" id="deleteIconAPI_@m" onclick="deleteRowProductStrength(@m)"></i></spam>
+															@Html.HiddenFor(model => model.ExicipientExhibitEntities[m].ExicipientProtoypeId, new { id = "ExicipientExhibitEntities[" + m + "].ExicipientProtoypeId"})
+														</div>
+													</div>
+												</td>
+											</tr>
+										}
+									</tbody>
+								</table>
+							</div>
+						</div>
 
-							<div class="">
-								<div class="form-group required">
-									@*@Html.EditorFor(model => model.pidf_IPD_PatentDetailsEntities[i].PatentNumber, new { htmlAttributes = new { @autocomplete = "off",@readonly = true, @class = "form-control checkbox-checked", id = "pidf_IPD_PatentDetailsEntities[" + i + "].PatentNumber", @placeholder = @MasterLocalizer["Patent Number"]} })*@
-									<input type="text"  id="MarketExtensionId" name="MarketExtensionId"  class="form-control readOnlyUpdate" required />
+					</div>
+				</div>	
+
+			<div class="row">
+					<div class="col-12">
+						<div class="card">
+							<div class="card-header">
+								<h3 class="card-title">Exicipient Exhibit</h3>
+								<div class="card-tools">
+									<button type="button" class="btn btn-tool" data-card-widget="collapse" title="Collapse">
+										<i class="fas fa-minus"></i>
+									</button>
 								</div>
 							</div>
-						</td>
-						<td>
-
-							<div class="">
-								<div class="form-group required">
-									@*@Html.EditorFor(model => model.pidf_IPD_PatentDetailsEntities[i].PatentNumber, new { htmlAttributes = new { @autocomplete = "off",@readonly = true, @class = "form-control checkbox-checked", id = "pidf_IPD_PatentDetailsEntities[" + i + "].PatentNumber", @placeholder = @MasterLocalizer["Patent Number"]} })*@
-									<input type="text"  id="MarketExtensionId" name="MarketExtensionId"  class="form-control readOnlyUpdate" required />
-								</div>
+							<div class="card-body">
+								<table id="ExicipientProtoypeTable" class="table table-bordered table-striped table-hover">
+									<thead>
+										<tr>
+											<th>Strength 1</th>
+											<th>Exicipient Prototype</th>
+											<th>Rs / Kg</th>
+											<th>Mg Per unit Dosage</th>											
+											<th class="text-center">@SharedLocalizer["Action"]</th>
+										</tr>
+									</thead>
+									<tbody id="ExicipientProtoypeBody">										
+										@{
+											int l = 0;
+											<tr id="ExicipientProtoypeRow_@j">
+											<td>
+													<div class="col-md">
+														<div class="form-group required">
+														<input type="text" readonly id="MarketExtensionId" name="MarketExtensionId" class="form-control readOnlyUpdate clsStrengthName" required />								
+														</div>
+													</div>
+												</td>
+												<td>
+													<div class="col-md">
+														<div class="form-group required">
+															@Html.EditorFor(model => model.ExicipientExhibitEntities[l].ExicipientPrototype, new { htmlAttributes = new { @autocomplete = "off", @class = "form-control checkbox-checked", id = "ExicipientExhibitEntities[" + l + "].ExicipientPrototype", @placeholder = @MasterLocalizer["Product Strength"] } })
+															@Html.ValidationMessageFor(model => model.ExicipientExhibitEntities[l].ExicipientPrototype, "", new { @class = "text-danger" })
+														</div>
+													</div>
+												</td>
+												<td>
+													<div class="col-md">
+														<div class="form-group required">
+															@Html.EditorFor(model => model.ExicipientExhibitEntities[l].Cost, new { htmlAttributes = new { @autocomplete = "off", @class = "form-control checkbox-checked", id = "ExicipientExhibitEntities[" + l + "].Cost", @placeholder = @MasterLocalizer["Product Strength"] } })
+															@Html.ValidationMessageFor(model => model.ExicipientExhibitEntities[l].Cost, "", new { @class = "text-danger" })
+														</div>
+													</div>
+												</td>
+												<td>
+													<div class="col-md">
+														<div class="form-group required">
+															@Html.EditorFor(model => model.ExicipientExhibitEntities[l].DosagePerUnit, new { htmlAttributes = new { @autocomplete = "off", @class = "form-control checkbox-checked", id = "ExicipientExhibitEntities[" + l + "].DosagePerUnit", @placeholder = @MasterLocalizer["Product Strength"] } })
+															@Html.ValidationMessageFor(model => model.ExicipientExhibitEntities[l].DosagePerUnit, "", new { @class = "text-danger" })
+														</div>
+													</div>
+												</td>												
+												<td>
+													<div class="col-md">
+														<div class="form-group">
+															<i class="fas fa-plus" id="addIconAPI_@j" onclick="addRowProductStrength(@j)"></i>
+															&nbsp;&nbsp;&nbsp;&nbsp;
+															<spam><i class="fas fa-trash-alt" id="deleteIconAPI_@j" onclick="deleteRowProductStrength(@j)"></i></spam>
+															@Html.HiddenFor(model => model.ExicipientExhibitEntities[j].ExicipientProtoypeId, new { id = "ExicipientExhibitEntities[" + j + "].ExicipientProtoypeId"})
+														</div>
+													</div>
+												</td>
+											</tr>
+										}
+									</tbody>
+								</table>
 							</div>
-						</td>
-						<td>
-							<div class="col-md">
-								<div class="form-group">
-									<i class="fas fa-plus"></i>
-									@*<i class="fas fa-plus" id="addIcon_@i" onclick="addRowProductStrength(@i)"></i>*@
-								</div>
-							</div>
-						</td>
-					</tr>
-				<tbody>
+						</div>
 
-			</table>
-		</div>
-			<div class="card-header">
-				<h3 class="card-title">
-					Exicipient Scale Up
-				</h3>
-			</div>
-			<div >
-				<table id="PIDFTable" class="table table-bordered table-striped table-hover" style="width:100%">
-					<thead>
-						<tr>
-							<th>Strength 1</th>
-							<th>Exicipient Prototype</th>
-							<th>Rs / Kg</th>
-							<th>Mg Per unit Dosage</th>
-							<th>Action</th>
-						</tr>
-					</thead>
-					<tbody>
-						<tr>
-							<td>
+					</div>
+					</div>
+</div>
 
-								<div class="">
-									<div class="form-group required">
-										@*@Html.EditorFor(model => model.pidf_IPD_PatentDetailsEntities[i].PatentNumber, new { htmlAttributes = new { @autocomplete = "off",@readonly = true, @class = "form-control checkbox-checked", id = "pidf_IPD_PatentDetailsEntities[" + i + "].PatentNumber", @placeholder = @MasterLocalizer["Patent Number"]} })*@
-										<input type="text" readonly id="MarketExtensionId" name="MarketExtensionId" placeholder="250mg" class="form-control readOnlyUpdate" required />
-									</div>
-								</div>
-							</td>
-							<td>
-
-								<div class="">
-									<div class="form-group required">
-										@*@Html.EditorFor(model => model.pidf_IPD_PatentDetailsEntities[i].PatentNumber, new { htmlAttributes = new { @autocomplete = "off",@readonly = true, @class = "form-control checkbox-checked", id = "pidf_IPD_PatentDetailsEntities[" + i + "].PatentNumber", @placeholder = @MasterLocalizer["Patent Number"]} })*@
-										<input type="text" id="MarketExtensionId" name="MarketExtensionId" class="form-control readOnlyUpdate" required />
-									</div>
-								</div>
-							</td>
-							<td>
-
-								<div class="">
-									<div class="form-group required">
-										@*@Html.EditorFor(model => model.pidf_IPD_PatentDetailsEntities[i].PatentNumber, new { htmlAttributes = new { @autocomplete = "off",@readonly = true, @class = "form-control checkbox-checked", id = "pidf_IPD_PatentDetailsEntities[" + i + "].PatentNumber", @placeholder = @MasterLocalizer["Patent Number"]} })*@
-										<input type="text" id="MarketExtensionId" name="MarketExtensionId" class="form-control readOnlyUpdate" required />
-									</div>
-								</div>
-							</td>
-							<td>
-
-								<div class="">
-									<div class="form-group required">
-										@*@Html.EditorFor(model => model.pidf_IPD_PatentDetailsEntities[i].PatentNumber, new { htmlAttributes = new { @autocomplete = "off",@readonly = true, @class = "form-control checkbox-checked", id = "pidf_IPD_PatentDetailsEntities[" + i + "].PatentNumber", @placeholder = @MasterLocalizer["Patent Number"]} })*@
-										<input type="text" id="MarketExtensionId" name="MarketExtensionId" class="form-control readOnlyUpdate" required />
-									</div>
-								</div>
-							</td>
-						<td>
-							<div class="col-md">
-								<div class="form-group">
-									<i class="fas fa-plus"></i>
-									@*<i class="fas fa-plus" id="addIcon_@i" onclick="addRowProductStrength(@i)"></i>*@
-								</div>
-							</div>
-						</td>
-						</tr>
-					<tbody>
-
-					</table>
-				</div>
-		<div class="card-header">
-			<h3 class="card-title">
-				Exicipient Exhibit
-			</h3>
-		</div>
-		<div >
-			<table id="PIDFTable" class="table table-bordered table-striped table-hover" style="width:100%">
-				<thead>
-					<tr>
-						<th>Strength 1</th>
-						<th>Exicipient Prototype</th>
-						<th>Rs / Kg</th>
-						<th>Mg Per unit Dosage</th>
-						<th>Action</th>
-					</tr>
-				</thead>
-				<tbody>
-					<tr>
-						<td>
-
-							<div class="">
-								<div class="form-group required">
-									@*@Html.EditorFor(model => model.pidf_IPD_PatentDetailsEntities[i].PatentNumber, new { htmlAttributes = new { @autocomplete = "off",@readonly = true, @class = "form-control checkbox-checked", id = "pidf_IPD_PatentDetailsEntities[" + i + "].PatentNumber", @placeholder = @MasterLocalizer["Patent Number"]} })*@
-									<input type="text" readonly id="MarketExtensionId" name="MarketExtensionId" placeholder="250mg" class="form-control readOnlyUpdate" required />
-								</div>
-							</div>
-						</td>
-						<td>
-
-							<div class="">
-								<div class="form-group required">
-									@*@Html.EditorFor(model => model.pidf_IPD_PatentDetailsEntities[i].PatentNumber, new { htmlAttributes = new { @autocomplete = "off",@readonly = true, @class = "form-control checkbox-checked", id = "pidf_IPD_PatentDetailsEntities[" + i + "].PatentNumber", @placeholder = @MasterLocalizer["Patent Number"]} })*@
-									<input type="text" id="MarketExtensionId" name="MarketExtensionId" class="form-control readOnlyUpdate" required />
-								</div>
-							</div>
-						</td>
-						<td>
-
-							<div class="">
-								<div class="form-group required">
-									@*@Html.EditorFor(model => model.pidf_IPD_PatentDetailsEntities[i].PatentNumber, new { htmlAttributes = new { @autocomplete = "off",@readonly = true, @class = "form-control checkbox-checked", id = "pidf_IPD_PatentDetailsEntities[" + i + "].PatentNumber", @placeholder = @MasterLocalizer["Patent Number"]} })*@
-									<input type="text" id="MarketExtensionId" name="MarketExtensionId" class="form-control readOnlyUpdate" required />
-								</div>
-							</div>
-						</td>
-						<td>
-
-							<div class="">
-								<div class="form-group required">
-									@*@Html.EditorFor(model => model.pidf_IPD_PatentDetailsEntities[i].PatentNumber, new { htmlAttributes = new { @autocomplete = "off",@readonly = true, @class = "form-control checkbox-checked", id = "pidf_IPD_PatentDetailsEntities[" + i + "].PatentNumber", @placeholder = @MasterLocalizer["Patent Number"]} })*@
-									<input type="text" id="MarketExtensionId" name="MarketExtensionId" class="form-control readOnlyUpdate" required />
-								</div>
-							</div>
-						</td>
-						<td>
-							<div class="col-md">
-								<div class="form-group">
-									<i class="fas fa-plus"></i>
-									@*<i class="fas fa-plus" id="addIcon_@i" onclick="addRowProductStrength(@i)"></i>*@
-								</div>
-							</div>
-						</td>
-					</tr>
-				<tbody>
-
-			</table>
-		</div>
-
+<!-- Total Exicipient Costs -->
+<div>
 		<div class="card-header">
 			<h3 class="card-title">
 				Total Exicipient Costs
 			</h3>
 		</div>
+
 		<div >
 			<table id="PIDFTable" class="table table-bordered table-striped table-hover" style="width:100%">
 				<thead>
@@ -799,6 +758,8 @@
 
 			</table>
 		</div>
+</div>
+<!-- Packaging Material Requirement -->
 
 		<div class="card-header">
 			<h3 class="card-title">
@@ -806,245 +767,270 @@
 			</h3>
 		</div>
 		<br />
-		<div class="card-header">
-			<h3 class="card-title">
-				Packaging Prototype
-			</h3>
-		</div>
-		<div >
-			<table id="PIDFTable" class="table table-bordered table-striped table-hover" style="width:100%">
-				<thead>
-					<tr>
-						<th>Strength 1</th>
-						<th>Packaging Type</th>
-						<th>Unit of Measurement</th>
-						<th>Rs / Unit</th>
-						<th>Quantity</th>
-						<th>Action</th>
-					</tr>
-				</thead>
-				<tbody>
-					<tr>
-						<td>
 
-							<div class="">
-								<div class="form-group required">
-									@*@Html.EditorFor(model => model.pidf_IPD_PatentDetailsEntities[i].PatentNumber, new { htmlAttributes = new { @autocomplete = "off",@readonly = true, @class = "form-control checkbox-checked", id = "pidf_IPD_PatentDetailsEntities[" + i + "].PatentNumber", @placeholder = @MasterLocalizer["Patent Number"]} })*@
-									<input type="text" readonly id="MarketExtensionId" name="MarketExtensionId" placeholder="250 mg" class="form-control readOnlyUpdate" required />
+		<div class="row">
+					<div class="col-12">
+						<div class="card">
+							<div class="card-header">
+						<h3 class="card-title">Packaging Prototype</h3>
+								<div class="card-tools">
+									<button type="button" class="btn btn-tool" data-card-widget="collapse" title="Collapse">
+										<i class="fas fa-minus"></i>
+									</button>
 								</div>
 							</div>
-						</td>
-						<td>
+							<div class="card-body">
+								<table id="ExicipientProtoypeTable" class="table table-bordered table-striped table-hover">
+									<thead>
+										<tr>
+											<th>Strength 1</th>
+											<th>Packaging Type</th>
+											<th>Unit of Measurement</th>
+											<th>Rs / Kg</th>
+											<th>Quantity</th>											
+											<th class="text-center">@SharedLocalizer["Action"]</th>
+										</tr>
+									</thead>
+									<tbody id="ExicipientProtoypeBody">										
+										@{
+											int n = 0;
+											<tr id="ExicipientProtoypeRow_@n">
+											<td>
+													<div class="col-md">
+														<div class="form-group required">
+														<input type="text" readonly id="MarketExtensionId" name="MarketExtensionId" class="form-control readOnlyUpdate clsStrengthName" required />								
+														</div>
+													</div>
+												</td>
+												<td>
+															<div class="col-md">
+																<div class="form-group required">
+																	<select id="apiSourcingData_@n" name="ExicipientExhibitEntities[@n].ExicipientProtoypeId" class="form-control readOnlyUpdate" required></select>
+																</div>
+															</div>
+														</td>
+												<td>
+													<div class="col-md">
+														<div class="form-group required">
+															@Html.EditorFor(model => model.ExicipientExhibitEntities[n].ExicipientPrototype, new { htmlAttributes = new { @autocomplete = "off", @class = "form-control checkbox-checked", id = "ExicipientExhibitEntities[" + n + "].ExicipientPrototype", @placeholder = @MasterLocalizer["Product Strength"] } })
+															@Html.ValidationMessageFor(model => model.ExicipientExhibitEntities[n].ExicipientPrototype, "", new { @class = "text-danger" })
+														</div>
+													</div>
+												</td>
+												<td>
+													<div class="col-md">
+														<div class="form-group required">
+															@Html.EditorFor(model => model.ExicipientExhibitEntities[n].Cost, new { htmlAttributes = new { @autocomplete = "off", @class = "form-control checkbox-checked", id = "ExicipientExhibitEntities[" + n + "].Cost", @placeholder = @MasterLocalizer["Product Strength"] } })
+															@Html.ValidationMessageFor(model => model.ExicipientExhibitEntities[n].Cost, "", new { @class = "text-danger" })
+														</div>
+													</div>
+												</td>
+												<td>
+													<div class="col-md">
+														<div class="form-group required">
+															@Html.EditorFor(model => model.ExicipientExhibitEntities[n].DosagePerUnit, new { htmlAttributes = new { @autocomplete = "off", @class = "form-control checkbox-checked", id = "ExicipientExhibitEntities[" + n + "].DosagePerUnit", @placeholder = @MasterLocalizer["Product Strength"] } })
+															@Html.ValidationMessageFor(model => model.ExicipientExhibitEntities[n].DosagePerUnit, "", new { @class = "text-danger" })
+														</div>
+													</div>
+												</td>												
+												<td>
+													<div class="col-md">
+														<div class="form-group">
+															<i class="fas fa-plus" id="addIconAPI_@n" onclick="addRowProductStrength(@n)"></i>
+															&nbsp;&nbsp;&nbsp;&nbsp;
+															<spam><i class="fas fa-trash-alt" id="deleteIconAPI_@n" onclick="deleteRowProductStrength(@n)"></i></spam>
+															@Html.HiddenFor(model => model.ExicipientExhibitEntities[n].ExicipientProtoypeId, new { id = "ExicipientExhibitEntities[" + n + "].ExicipientProtoypeId"})
+														</div>
+													</div>
+												</td>
+											</tr>
+										}
+									</tbody>
+								</table>
+							</div>
+						</div>
 
-							<div class="">
-								<div class="form-group required">
-									@*@Html.EditorFor(model => model.pidf_IPD_PatentDetailsEntities[i].PatentNumber, new { htmlAttributes = new { @autocomplete = "off",@readonly = true, @class = "form-control checkbox-checked", id = "pidf_IPD_PatentDetailsEntities[" + i + "].PatentNumber", @placeholder = @MasterLocalizer["Patent Number"]} })*@
-									<select id="MarketExtensionId" name="MarketExtensionId" class="form-control readOnlyUpdate" required ><</select>
+					</div>
+				</div>		
+
+		<div class="row">
+					<div class="col-12">
+						<div class="card">
+							<div class="card-header">
+						<h3 class="card-title">Packaging Scale Up</h3>
+								<div class="card-tools">
+									<button type="button" class="btn btn-tool" data-card-widget="collapse" title="Collapse">
+										<i class="fas fa-minus"></i>
+									</button>
 								</div>
 							</div>
-						</td>
-						<td>
+							<div class="card-body">
+								<table id="ExicipientProtoypeTable" class="table table-bordered table-striped table-hover">
+									<thead>
+										<tr>
+											<th>Strength 1</th>
+											<th>Packaging Type</th>
+											<th>Unit of Measurement</th>
+											<th>Rs / Kg</th>
+											<th>Quantity</th>											
+											<th class="text-center">@SharedLocalizer["Action"]</th>
+										</tr>
+									</thead>
+									<tbody id="ExicipientProtoypeBody">										
+										@{
+											int p = 0;
+											<tr id="ExicipientProtoypeRow_@p">
+											<td>
+													<div class="col-md">
+														<div class="form-group required">
+														<input type="text" readonly id="MarketExtensionId" name="MarketExtensionId" class="form-control readOnlyUpdate clsStrengthName" required />								
+														</div>
+													</div>
+												</td>
+												<td>
+															<div class="col-md">
+																<div class="form-group required">
+																	<select id="apiSourcingData_@p" name="ExicipientExhibitEntities[@p].ExicipientProtoypeId" class="form-control readOnlyUpdate" required></select>
+																</div>
+															</div>
+														</td>
+												<td>
+													<div class="col-md">
+														<div class="form-group required">
+															@Html.EditorFor(model => model.ExicipientExhibitEntities[p].ExicipientPrototype, new { htmlAttributes = new { @autocomplete = "off", @class = "form-control checkbox-checked", id = "ExicipientExhibitEntities[" + p + "].ExicipientPrototype", @placeholder = @MasterLocalizer["Product Strength"] } })
+															@Html.ValidationMessageFor(model => model.ExicipientExhibitEntities[p].ExicipientPrototype, "", new { @class = "text-danger" })
+														</div>
+													</div>
+												</td>
+												<td>
+													<div class="col-md">
+														<div class="form-group required">
+															@Html.EditorFor(model => model.ExicipientExhibitEntities[p].Cost, new { htmlAttributes = new { @autocomplete = "off", @class = "form-control checkbox-checked", id = "ExicipientExhibitEntities[" + p + "].Cost", @placeholder = @MasterLocalizer["Product Strength"] } })
+															@Html.ValidationMessageFor(model => model.ExicipientExhibitEntities[p].Cost, "", new { @class = "text-danger" })
+														</div>
+													</div>
+												</td>
+												<td>
+													<div class="col-md">
+														<div class="form-group required">
+															@Html.EditorFor(model => model.ExicipientExhibitEntities[p].DosagePerUnit, new { htmlAttributes = new { @autocomplete = "off", @class = "form-control checkbox-checked", id = "ExicipientExhibitEntities[" + p + "].DosagePerUnit", @placeholder = @MasterLocalizer["Product Strength"] } })
+															@Html.ValidationMessageFor(model => model.ExicipientExhibitEntities[p].DosagePerUnit, "", new { @class = "text-danger" })
+														</div>
+													</div>
+												</td>												
+												<td>
+													<div class="col-md">
+														<div class="form-group">
+															<i class="fas fa-plus" id="addIconAPI_@p" onclick="addRowProductStrength(@p)"></i>
+															&nbsp;&nbsp;&nbsp;&nbsp;
+															<spam><i class="fas fa-trash-alt" id="deleteIconAPI_@p" onclick="deleteRowProductStrength(@p)"></i></spam>
+															@Html.HiddenFor(model => model.ExicipientExhibitEntities[p].ExicipientProtoypeId, new { id = "ExicipientExhibitEntities[" + p + "].ExicipientProtoypeId"})
+														</div>
+													</div>
+												</td>
+											</tr>
+										}
+									</tbody>
+								</table>
+							</div>
+						</div>
 
-							<div class="">
-								<div class="form-group required">
-									@*@Html.EditorFor(model => model.pidf_IPD_PatentDetailsEntities[i].PatentNumber, new { htmlAttributes = new { @autocomplete = "off",@readonly = true, @class = "form-control checkbox-checked", id = "pidf_IPD_PatentDetailsEntities[" + i + "].PatentNumber", @placeholder = @MasterLocalizer["Patent Number"]} })*@
-									<input type="text" readonly id="MarketExtensionId" name="MarketExtensionId" class="form-control readOnlyUpdate" required />
+					</div>
+				</div>	
+		
+		<div class="row">
+					<div class="col-12">
+						<div class="card">
+							<div class="card-header">
+						<h3 class="card-title">Packaging Exhibit</h3>
+								<div class="card-tools">
+									<button type="button" class="btn btn-tool" data-card-widget="collapse" title="Collapse">
+										<i class="fas fa-minus"></i>
+									</button>
 								</div>
 							</div>
-						</td>
-						<td>
-
-							<div class="">
-								<div class="form-group required">
-									@*@Html.EditorFor(model => model.pidf_IPD_PatentDetailsEntities[i].PatentNumber, new { htmlAttributes = new { @autocomplete = "off",@readonly = true, @class = "form-control checkbox-checked", id = "pidf_IPD_PatentDetailsEntities[" + i + "].PatentNumber", @placeholder = @MasterLocalizer["Patent Number"]} })*@
-									<input type="text" readonly id="MarketExtensionId" name="MarketExtensionId" class="form-control readOnlyUpdate" required />
-								</div>
+							<div class="card-body">
+								<table id="ExicipientProtoypeTable" class="table table-bordered table-striped table-hover">
+									<thead>
+										<tr>
+											<th>Strength 1</th>
+											<th>Packaging Type</th>
+											<th>Unit of Measurement</th>
+											<th>Rs / Kg</th>
+											<th>Quantity</th>											
+											<th class="text-center">@SharedLocalizer["Action"]</th>
+										</tr>
+									</thead>
+									<tbody id="ExicipientProtoypeBody">										
+										@{
+											int r = 0;
+											<tr id="ExicipientProtoypeRow_@r">
+											<td>
+													<div class="col-md">
+														<div class="form-group required">
+														<input type="text" readonly id="MarketExtensionId" name="MarketExtensionId" class="form-control readOnlyUpdate clsStrengthName" required />								
+														</div>
+													</div>
+												</td>
+												<td>
+															<div class="col-md">
+																<div class="form-group required">
+																	<select id="apiSourcingData_@r" name="ExicipientExhibitEntities[@r].ExicipientProtoypeId" class="form-control readOnlyUpdate" required></select>
+																</div>
+															</div>
+														</td>
+												<td>
+													<div class="col-md">
+														<div class="form-group required">
+															@Html.EditorFor(model => model.ExicipientExhibitEntities[r].ExicipientPrototype, new { htmlAttributes = new { @autocomplete = "off", @class = "form-control checkbox-checked", id = "ExicipientExhibitEntities[" + r + "].ExicipientPrototype", @placeholder = @MasterLocalizer["Product Strength"] } })
+															@Html.ValidationMessageFor(model => model.ExicipientExhibitEntities[r].ExicipientPrototype, "", new { @class = "text-danger" })
+														</div>
+													</div>
+												</td>
+												<td>
+													<div class="col-md">
+														<div class="form-group required">
+															@Html.EditorFor(model => model.ExicipientExhibitEntities[r].Cost, new { htmlAttributes = new { @autocomplete = "off", @class = "form-control checkbox-checked", id = "ExicipientExhibitEntities[" + r + "].Cost", @placeholder = @MasterLocalizer["Product Strength"] } })
+															@Html.ValidationMessageFor(model => model.ExicipientExhibitEntities[r].Cost, "", new { @class = "text-danger" })
+														</div>
+													</div>
+												</td>
+												<td>
+													<div class="col-md">
+														<div class="form-group required">
+															@Html.EditorFor(model => model.ExicipientExhibitEntities[r].DosagePerUnit, new { htmlAttributes = new { @autocomplete = "off", @class = "form-control checkbox-checked", id = "ExicipientExhibitEntities[" + r + "].DosagePerUnit", @placeholder = @MasterLocalizer["Product Strength"] } })
+															@Html.ValidationMessageFor(model => model.ExicipientExhibitEntities[r].DosagePerUnit, "", new { @class = "text-danger" })
+														</div>
+													</div>
+												</td>												
+												<td>
+													<div class="col-md">
+														<div class="form-group">
+															<i class="fas fa-plus" id="addIconAPI_@r" onclick="addRowProductStrength(@r)"></i>
+															&nbsp;&nbsp;&nbsp;&nbsp;
+															<spam><i class="fas fa-trash-alt" id="deleteIconAPI_@r" onclick="deleteRowProductStrength(@r)"></i></spam>
+															@Html.HiddenFor(model => model.ExicipientExhibitEntities[r].ExicipientProtoypeId, new { id = "ExicipientExhibitEntities[" + r + "].ExicipientProtoypeId"})
+														</div>
+													</div>
+												</td>
+											</tr>
+										}
+									</tbody>
+								</table>
 							</div>
-						</td>
-						<td>
+						</div>
 
-							<div class="">
-								<div class="form-group required">
-									@*@Html.EditorFor(model => model.pidf_IPD_PatentDetailsEntities[i].PatentNumber, new { htmlAttributes = new { @autocomplete = "off",@readonly = true, @class = "form-control checkbox-checked", id = "pidf_IPD_PatentDetailsEntities[" + i + "].PatentNumber", @placeholder = @MasterLocalizer["Patent Number"]} })*@
-									<input type="text" id="MarketExtensionId" name="MarketExtensionId" class="form-control readOnlyUpdate" required />
-								</div>
-							</div>
-						</td>
-						<td>
-							<div class="col-md">
-								<div class="form-group">
-									<i class="fas fa-plus"></i>
-									@*<i class="fas fa-plus" id="addIcon_@i" onclick="addRowProductStrength(@i)"></i>*@
-								</div>
-							</div>
-						</td>
-					</tr>
-				<tbody>
+					</div>
+				</div>
 
-			</table>
-		</div>
-
-		<div class="card-header">
-			<h3 class="card-title">
-				Packaging Scale Up
-			</h3>
-		</div>
-		<div >
-			<table id="PIDFTable" class="table table-bordered table-striped table-hover" style="width:100%">
-				<thead>
-					<tr>
-						<th>Strength 1</th>
-						<th>Packaging Type</th>
-						<th>Unit of Measurement</th>
-						<th>Rs / Unit</th>
-						<th>Quantity</th>
-						<th>Action</th>
-					</tr>
-				</thead>
-				<tbody>
-					<tr>
-						<td>
-
-							<div class="">
-								<div class="form-group required">
-									@*@Html.EditorFor(model => model.pidf_IPD_PatentDetailsEntities[i].PatentNumber, new { htmlAttributes = new { @autocomplete = "off",@readonly = true, @class = "form-control checkbox-checked", id = "pidf_IPD_PatentDetailsEntities[" + i + "].PatentNumber", @placeholder = @MasterLocalizer["Patent Number"]} })*@
-									<input type="text" readonly id="MarketExtensionId" name="MarketExtensionId" placeholder="250 mg" class="form-control readOnlyUpdate" required />
-								</div>
-							</div>
-						</td>
-						<td>
-
-							<div class="">
-								<div class="form-group required">
-									@*@Html.EditorFor(model => model.pidf_IPD_PatentDetailsEntities[i].PatentNumber, new { htmlAttributes = new { @autocomplete = "off",@readonly = true, @class = "form-control checkbox-checked", id = "pidf_IPD_PatentDetailsEntities[" + i + "].PatentNumber", @placeholder = @MasterLocalizer["Patent Number"]} })*@
-									<select id="MarketExtensionId" name="MarketExtensionId" class="form-control readOnlyUpdate" required><</select>
-								</div>
-							</div>
-						</td>
-						<td>
-
-							<div class="">
-								<div class="form-group required">
-									@*@Html.EditorFor(model => model.pidf_IPD_PatentDetailsEntities[i].PatentNumber, new { htmlAttributes = new { @autocomplete = "off",@readonly = true, @class = "form-control checkbox-checked", id = "pidf_IPD_PatentDetailsEntities[" + i + "].PatentNumber", @placeholder = @MasterLocalizer["Patent Number"]} })*@
-									<input type="text" readonly id="MarketExtensionId" name="MarketExtensionId" class="form-control readOnlyUpdate" required />
-								</div>
-							</div>
-						</td>
-						<td>
-
-							<div class="">
-								<div class="form-group required">
-									@*@Html.EditorFor(model => model.pidf_IPD_PatentDetailsEntities[i].PatentNumber, new { htmlAttributes = new { @autocomplete = "off",@readonly = true, @class = "form-control checkbox-checked", id = "pidf_IPD_PatentDetailsEntities[" + i + "].PatentNumber", @placeholder = @MasterLocalizer["Patent Number"]} })*@
-									<input type="text" readonly id="MarketExtensionId" name="MarketExtensionId" class="form-control readOnlyUpdate" required />
-								</div>
-							</div>
-						</td>
-						<td>
-
-							<div class="">
-								<div class="form-group required">
-									@*@Html.EditorFor(model => model.pidf_IPD_PatentDetailsEntities[i].PatentNumber, new { htmlAttributes = new { @autocomplete = "off",@readonly = true, @class = "form-control checkbox-checked", id = "pidf_IPD_PatentDetailsEntities[" + i + "].PatentNumber", @placeholder = @MasterLocalizer["Patent Number"]} })*@
-									<input type="text" id="MarketExtensionId" name="MarketExtensionId" class="form-control readOnlyUpdate" required />
-								</div>
-							</div>
-						</td>
-						<td>
-							<div class="col-md">
-								<div class="form-group">
-									<i class="fas fa-plus"></i>
-									@*<i class="fas fa-plus" id="addIcon_@i" onclick="addRowProductStrength(@i)"></i>*@
-								</div>
-							</div>
-						</td>
-					</tr>
-				<tbody>
-
-			</table>
-		</div>
-
-		<div class="card-header">
-			<h3 class="card-title">
-				Packaging Exhibit
-			</h3>
-		</div>
-		<div >
-			<table id="PIDFTable" class="table table-bordered table-striped table-hover" style="width:100%">
-				<thead>
-					<tr>
-						<th>Strength 1</th>
-						<th>Packaging Type</th>
-						<th>Unit of Measurement</th>
-						<th>Rs / Unit</th>
-						<th>Quantity</th>
-						<th>Action</th>
-					</tr>
-				</thead>
-				<tbody>
-					<tr>
-						<td>
-
-							<div class="">
-								<div class="form-group required">
-									@*@Html.EditorFor(model => model.pidf_IPD_PatentDetailsEntities[i].PatentNumber, new { htmlAttributes = new { @autocomplete = "off",@readonly = true, @class = "form-control checkbox-checked", id = "pidf_IPD_PatentDetailsEntities[" + i + "].PatentNumber", @placeholder = @MasterLocalizer["Patent Number"]} })*@
-									<input type="text" readonly id="MarketExtensionId" name="MarketExtensionId" placeholder="250 mg" class="form-control readOnlyUpdate" required />
-								</div>
-							</div>
-						</td>
-						<td>
-
-							<div class="">
-								<div class="form-group required">
-									@*@Html.EditorFor(model => model.pidf_IPD_PatentDetailsEntities[i].PatentNumber, new { htmlAttributes = new { @autocomplete = "off",@readonly = true, @class = "form-control checkbox-checked", id = "pidf_IPD_PatentDetailsEntities[" + i + "].PatentNumber", @placeholder = @MasterLocalizer["Patent Number"]} })*@
-									<select id="MarketExtensionId" name="MarketExtensionId" class="form-control readOnlyUpdate" required><</select>
-								</div>
-							</div>
-						</td>
-						<td>
-
-							<div class="">
-								<div class="form-group required">
-									@*@Html.EditorFor(model => model.pidf_IPD_PatentDetailsEntities[i].PatentNumber, new { htmlAttributes = new { @autocomplete = "off",@readonly = true, @class = "form-control checkbox-checked", id = "pidf_IPD_PatentDetailsEntities[" + i + "].PatentNumber", @placeholder = @MasterLocalizer["Patent Number"]} })*@
-									<input type="text" readonly id="MarketExtensionId" name="MarketExtensionId" class="form-control readOnlyUpdate" required />
-								</div>
-							</div>
-						</td>
-						<td>
-
-							<div class="">
-								<div class="form-group required">
-									@*@Html.EditorFor(model => model.pidf_IPD_PatentDetailsEntities[i].PatentNumber, new { htmlAttributes = new { @autocomplete = "off",@readonly = true, @class = "form-control checkbox-checked", id = "pidf_IPD_PatentDetailsEntities[" + i + "].PatentNumber", @placeholder = @MasterLocalizer["Patent Number"]} })*@
-									<input type="text" readonly id="MarketExtensionId" name="MarketExtensionId" class="form-control readOnlyUpdate" required />
-								</div>
-							</div>
-						</td>
-						<td>
-
-							<div class="">
-								<div class="form-group required">
-									@*@Html.EditorFor(model => model.pidf_IPD_PatentDetailsEntities[i].PatentNumber, new { htmlAttributes = new { @autocomplete = "off",@readonly = true, @class = "form-control checkbox-checked", id = "pidf_IPD_PatentDetailsEntities[" + i + "].PatentNumber", @placeholder = @MasterLocalizer["Patent Number"]} })*@
-									<input type="text" id="MarketExtensionId" name="MarketExtensionId" class="form-control readOnlyUpdate" required />
-								</div>
-							</div>
-						</td>
-						<td>
-							<div class="col-md">
-								<div class="form-group">
-									<i class="fas fa-plus"></i>
-									@*<i class="fas fa-plus" id="addIcon_@i" onclick="addRowProductStrength(@i)"></i>*@
-								</div>
-							</div>
-						</td>
-					</tr>
-				<tbody>
-
-			</table>
-		</div>
+<!-- Total Packaging Costs -->
 
 		<div class="card-header">
 			<h3 class="card-title">
 				Total Packaging Costs
 			</h3>
 		</div>
+
 		<div >
 			<table id="PIDFTable" class="table table-bordered table-striped table-hover" style="width:100%">
 				<thead>
@@ -1100,11 +1086,14 @@
 			</table>
 		</div>
 
+<!-- Tooling and Change Part Cost -->
+
 		<div class="card-header">
 				<h3 class="card-title">
 				Tooling and Change Part Cost
 			</h3>
 		</div>
+
 		<div >
 			<table id="PIDFTable" class="table table-bordered table-striped table-hover" style="width:100%">
 				<thead>
@@ -1183,99 +1172,21 @@
 									<input type="text" readonly id="MarketExtensionId" name="MarketExtensionId"  class="form-control readOnlyUpdate" required />
 								</div>
 							</div>
-						</td>
-						<td>
-							<div class="col-md">
-								<div class="form-group">
-									<i class="fas fa-plus"></i>
-									@*<i class="fas fa-plus" id="addIcon_@i" onclick="addRowProductStrength(@i)"></i>*@
-								</div>
-							</div>
-						</td>
-					</tr>
-					<tr>
-						<td>
-
-							<div class="">
-								<div class="form-group required">
-									@*@Html.EditorFor(model => model.pidf_IPD_PatentDetailsEntities[i].PatentNumber, new { htmlAttributes = new { @autocomplete = "off",@readonly = true, @class = "form-control checkbox-checked", id = "pidf_IPD_PatentDetailsEntities[" + i + "].PatentNumber", @placeholder = @MasterLocalizer["Patent Number"]} })*@
-									<input type="text"  id="MarketExtensionId" name="MarketExtensionId"  class="form-control readOnlyUpdate" required />
-								</div>
-							</div>
-						</td>
-						<td>
-
-							<div class="">
-								<div class="form-group required">
-									@*@Html.EditorFor(model => model.pidf_IPD_PatentDetailsEntities[i].PatentNumber, new { htmlAttributes = new { @autocomplete = "off",@readonly = true, @class = "form-control checkbox-checked", id = "pidf_IPD_PatentDetailsEntities[" + i + "].PatentNumber", @placeholder = @MasterLocalizer["Patent Number"]} })*@
-									<input type="text" readonly id="MarketExtensionId" name="MarketExtensionId" class="form-control readOnlyUpdate" required />
-								</div>
-							</div>
-						</td>
-						<td>
-
-							<div class="">
-								<div class="form-group required">
-									@*@Html.EditorFor(model => model.pidf_IPD_PatentDetailsEntities[i].PatentNumber, new { htmlAttributes = new { @autocomplete = "off",@readonly = true, @class = "form-control checkbox-checked", id = "pidf_IPD_PatentDetailsEntities[" + i + "].PatentNumber", @placeholder = @MasterLocalizer["Patent Number"]} })*@
-									<input type="text" id="MarketExtensionId" name="MarketExtensionId" class="form-control readOnlyUpdate" required />
-								</div>
-							</div>
-						</td>
-						<td>
-
-							<div class="">
-								<div class="form-group required">
-									@*@Html.EditorFor(model => model.pidf_IPD_PatentDetailsEntities[i].PatentNumber, new { htmlAttributes = new { @autocomplete = "off",@readonly = true, @class = "form-control checkbox-checked", id = "pidf_IPD_PatentDetailsEntities[" + i + "].PatentNumber", @placeholder = @MasterLocalizer["Patent Number"]} })*@
-									<input type="text" id="MarketExtensionId" name="MarketExtensionId" class="form-control readOnlyUpdate" required />
-								</div>
-							</div>
-						</td>
-						<td>
-
-							<div class="">
-								<div class="form-group required">
-									@*@Html.EditorFor(model => model.pidf_IPD_PatentDetailsEntities[i].PatentNumber, new { htmlAttributes = new { @autocomplete = "off",@readonly = true, @class = "form-control checkbox-checked", id = "pidf_IPD_PatentDetailsEntities[" + i + "].PatentNumber", @placeholder = @MasterLocalizer["Patent Number"]} })*@
-									<input type="text"  id="MarketExtensionId" name="MarketExtensionId"  class="form-control readOnlyUpdate" required />
-								</div>
-							</div>
-						</td>
-						<td>
-
-							<div class="">
-								<div class="form-group required">
-									@*@Html.EditorFor(model => model.pidf_IPD_PatentDetailsEntities[i].PatentNumber, new { htmlAttributes = new { @autocomplete = "off",@readonly = true, @class = "form-control checkbox-checked", id = "pidf_IPD_PatentDetailsEntities[" + i + "].PatentNumber", @placeholder = @MasterLocalizer["Patent Number"]} })*@
-									<input type="text" readonly id="MarketExtensionId" name="MarketExtensionId"  class="form-control readOnlyUpdate" required />
-								</div>
-							</div>
-						</td>
-						<td>
-
-							<div class="">
-								<div class="form-group required">
-									@*@Html.EditorFor(model => model.pidf_IPD_PatentDetailsEntities[i].PatentNumber, new { htmlAttributes = new { @autocomplete = "off",@readonly = true, @class = "form-control checkbox-checked", id = "pidf_IPD_PatentDetailsEntities[" + i + "].PatentNumber", @placeholder = @MasterLocalizer["Patent Number"]} })*@
-									<input type="text" readonly id="MarketExtensionId" name="MarketExtensionId"  class="form-control readOnlyUpdate" required />
-								</div>
-							</div>
-						</td>
-						<td>
-							<div class="col-md">
-								<div class="form-group">
-									<i class="fas fa-plus"></i>
-									@*<i class="fas fa-plus" id="addIcon_@i" onclick="addRowProductStrength(@i)"></i>*@
-								</div>
-							</div>
-						</td>
-					</tr>
+						</td>						
+					</tr>					
 				<tbody>
 
 			</table>
 		</div>
+
+<!-- Capex and Miscellaneous Expenses -->
 
 		<div class="card-header">
 			<h3 class="card-title">
 				Capex and Miscellaneous Expenses
 			</h3>
 		</div>
+
 		<div >
 			<table id="PIDFTable" class="table table-bordered table-striped table-hover" style="width:100%">
 				<thead>
@@ -1334,161 +1245,104 @@
 									<input type="text" readonly id="MarketExtensionId" name="MarketExtensionId" class="form-control readOnlyUpdate" required />
 								</div>
 							</div>
-						</td>
-						
-						
-						<td>
-							<div class="col-md">
-								<div class="form-group">
-									<i class="fas fa-plus"></i>
-									@*<i class="fas fa-plus" id="addIcon_@i" onclick="addRowProductStrength(@i)"></i>*@
-								</div>
-							</div>
-						</td>
-					</tr>
-					<tr>
-						<td>
-
-							<div class="">
-								<div class="form-group required">
-									@*@Html.EditorFor(model => model.pidf_IPD_PatentDetailsEntities[i].PatentNumber, new { htmlAttributes = new { @autocomplete = "off",@readonly = true, @class = "form-control checkbox-checked", id = "pidf_IPD_PatentDetailsEntities[" + i + "].PatentNumber", @placeholder = @MasterLocalizer["Patent Number"]} })*@
-									<input type="text"  id="MarketExtensionId" name="MarketExtensionId" class="form-control readOnlyUpdate" required />
-								</div>
-							</div>
-						</td>
-						<td>
-
-							<div class="">
-								<div class="form-group required">
-									@*@Html.EditorFor(model => model.pidf_IPD_PatentDetailsEntities[i].PatentNumber, new { htmlAttributes = new { @autocomplete = "off",@readonly = true, @class = "form-control checkbox-checked", id = "pidf_IPD_PatentDetailsEntities[" + i + "].PatentNumber", @placeholder = @MasterLocalizer["Patent Number"]} })*@
-									<input type="text" id="MarketExtensionId" name="MarketExtensionId" class="form-control readOnlyUpdate" required />
-								</div>
-							</div>
-						</td>
-						<td>
-
-							<div class="">
-								<div class="form-group required">
-									@*@Html.EditorFor(model => model.pidf_IPD_PatentDetailsEntities[i].PatentNumber, new { htmlAttributes = new { @autocomplete = "off",@readonly = true, @class = "form-control checkbox-checked", id = "pidf_IPD_PatentDetailsEntities[" + i + "].PatentNumber", @placeholder = @MasterLocalizer["Patent Number"]} })*@
-									<input type="text" id="MarketExtensionId" name="MarketExtensionId" class="form-control readOnlyUpdate" required />
-								</div>
-							</div>
-						</td>
-						<td>
-
-							<div class="">
-								<div class="form-group required">
-									@*@Html.EditorFor(model => model.pidf_IPD_PatentDetailsEntities[i].PatentNumber, new { htmlAttributes = new { @autocomplete = "off",@readonly = true, @class = "form-control checkbox-checked", id = "pidf_IPD_PatentDetailsEntities[" + i + "].PatentNumber", @placeholder = @MasterLocalizer["Patent Number"]} })*@
-									<input type="text" id="MarketExtensionId" name="MarketExtensionId" class="form-control readOnlyUpdate" required />
-								</div>
-							</div>
-						</td>
-						<td>
-
-							<div class="">
-								<div class="form-group required">
-									@*@Html.EditorFor(model => model.pidf_IPD_PatentDetailsEntities[i].PatentNumber, new { htmlAttributes = new { @autocomplete = "off",@readonly = true, @class = "form-control checkbox-checked", id = "pidf_IPD_PatentDetailsEntities[" + i + "].PatentNumber", @placeholder = @MasterLocalizer["Patent Number"]} })*@
-									<input type="text" readonly id="MarketExtensionId" name="MarketExtensionId" class="form-control readOnlyUpdate" required />
-								</div>
-							</div>
-						</td>			
-						<td>
-							<div class="col-md">
-								<div class="form-group">
-									<i class="fas fa-plus"></i>
-									@*<i class="fas fa-plus" id="addIcon_@i" onclick="addRowProductStrength(@i)"></i>*@
-								</div>
-							</div>
-						</td>
-					</tr>
+						</td>						
+					</tr>					
 				<tbody>
 			</table>
 		</div>
+
+<!-- Plant Support Cost -->
+
 		<div class="card-header">
 			<h3 class="card-title">
 				Plant Support Cost
 			</h3>
 		</div>
 		<br />
+
 		<div class="row">
-
-			<div class="col-md-3">
-				<div class="form-group required">
-				<label class="control-label">Plant Utilization rate Rs/Day</label>
-				</div>
-			</div>
-				<div class="col-md-3">
-				<div class="form-group required">
-					<input type="text" id="MarketExtensionId" name="MarketExtensionId" class="form-control readOnlyUpdate" required/>
-
-				</div>
-			</div>
-		</div>
-		<div >
-			<table id="PIDFTable" class="table table-bordered table-striped table-hover" style="width:100%">
-				<thead>
-					<tr>
-						<th>Strength API 1</th>
-						<th>Scale Up</th>
-						<th>Exhibit Batch</th>
-						<th>Total Cost</th>
-						<th>Action</th>
-					</tr>
-				</thead>
-				<tbody>
-					<tr>
-						<td>
-
-							<div class="">
-								<div class="form-group required">
-									@*@Html.EditorFor(model => model.pidf_IPD_PatentDetailsEntities[i].PatentNumber, new { htmlAttributes = new { @autocomplete = "off",@readonly = true, @class = "form-control checkbox-checked", id = "pidf_IPD_PatentDetailsEntities[" + i + "].PatentNumber", @placeholder = @MasterLocalizer["Patent Number"]} })*@
-									<input type="text" readonly id="MarketExtensionId" name="MarketExtensionId" placeholder="250mg" class="form-control readOnlyUpdate" required />
+					<div class="col-12">
+						<div class="card">
+							<div class="card-header">
+								<h3 class="card-title">Plant Utilization rate Rs/Day</h3>
+								<div class="card-tools">
+									<button type="button" class="btn btn-tool" data-card-widget="collapse" title="Collapse">
+										<i class="fas fa-minus"></i>
+									</button>
 								</div>
 							</div>
-						</td>
-						<td>
-
-							<div class="">
-								<div class="form-group required">
-									@*@Html.EditorFor(model => model.pidf_IPD_PatentDetailsEntities[i].PatentNumber, new { htmlAttributes = new { @autocomplete = "off",@readonly = true, @class = "form-control checkbox-checked", id = "pidf_IPD_PatentDetailsEntities[" + i + "].PatentNumber", @placeholder = @MasterLocalizer["Patent Number"]} })*@
-									<input type="text" id="MarketExtensionId" name="MarketExtensionId" class="form-control readOnlyUpdate" required />
-								</div>
+							<div class="card-body">
+								<table id="ExicipientProtoypeTable" class="table table-bordered table-striped table-hover">
+									<thead>
+										<tr>
+											<th>Strength 1</th>
+											<th>Scale Up</th>
+											<th>Exhibit Batch</th>
+											<th>Total Cost</th>											
+											<th class="text-center">@SharedLocalizer["Action"]</th>
+										</tr>
+									</thead>
+									<tbody id="ExicipientProtoypeBody">										
+										@{
+											int s = 0;
+											<tr id="ExicipientProtoypeRow_@s">
+											<td>
+													<div class="col-md">
+														<div class="form-group required">
+														<input type="text" readonly id="MarketExtensionId" name="MarketExtensionId" class="form-control readOnlyUpdate clsStrengthName" required />								
+														</div>
+													</div>
+												</td>
+												<td>
+													<div class="col-md">
+														<div class="form-group required">
+															@Html.EditorFor(model => model.ExicipientExhibitEntities[s].ExicipientPrototype, new { htmlAttributes = new { @autocomplete = "off", @class = "form-control checkbox-checked", id = "ExicipientExhibitEntities[" + s + "].ExicipientPrototype", @placeholder = @MasterLocalizer["Product Strength"] } })
+															@Html.ValidationMessageFor(model => model.ExicipientExhibitEntities[s].ExicipientPrototype, "", new { @class = "text-danger" })
+														</div>
+													</div>
+												</td>
+												<td>
+													<div class="col-md">
+														<div class="form-group required">
+															@Html.EditorFor(model => model.ExicipientExhibitEntities[s].Cost, new { htmlAttributes = new { @autocomplete = "off", @class = "form-control checkbox-checked", id = "ExicipientExhibitEntities[" + s + "].Cost", @placeholder = @MasterLocalizer["Product Strength"] } })
+															@Html.ValidationMessageFor(model => model.ExicipientExhibitEntities[s].Cost, "", new { @class = "text-danger" })
+														</div>
+													</div>
+												</td>
+												<td>
+													<div class="col-md">
+														<div class="form-group required">
+															@Html.EditorFor(model => model.ExicipientExhibitEntities[s].DosagePerUnit, new { htmlAttributes = new { @autocomplete = "off", @class = "form-control checkbox-checked", id = "ExicipientExhibitEntities[" + s + "].DosagePerUnit", @placeholder = @MasterLocalizer["Product Strength"] } })
+															@Html.ValidationMessageFor(model => model.ExicipientExhibitEntities[s].DosagePerUnit, "", new { @class = "text-danger" })
+														</div>
+													</div>
+												</td>												
+												<td>
+													<div class="col-md">
+														<div class="form-group">
+															<i class="fas fa-plus" id="addIconAPI_@s" onclick="addRowProductStrength(@s)"></i>
+															&nbsp;&nbsp;&nbsp;&nbsp;
+															<spam><i class="fas fa-trash-alt" id="deleteIconAPI_@s" onclick="deleteRowProductStrength(@s)"></i></spam>
+															@Html.HiddenFor(model => model.ExicipientExhibitEntities[j].ExicipientProtoypeId, new { id = "ExicipientExhibitEntities[" + s + "].ExicipientProtoypeId"})
+														</div>
+													</div>
+												</td>
+											</tr>
+										}
+									</tbody>
+								</table>
 							</div>
-						</td>
-						<td>
-
-							<div class="">
-								<div class="form-group required">
-									@*@Html.EditorFor(model => model.pidf_IPD_PatentDetailsEntities[i].PatentNumber, new { htmlAttributes = new { @autocomplete = "off",@readonly = true, @class = "form-control checkbox-checked", id = "pidf_IPD_PatentDetailsEntities[" + i + "].PatentNumber", @placeholder = @MasterLocalizer["Patent Number"]} })*@
-									<input type="text" id="MarketExtensionId" name="MarketExtensionId" class="form-control readOnlyUpdate" required />
-								</div>
-							</div>
-						</td>
-						<td>
-							<div class="">
-								<div class="form-group required">
-									@*@Html.EditorFor(model => model.pidf_IPD_PatentDetailsEntities[i].PatentNumber, new { htmlAttributes = new { @autocomplete = "off",@readonly = true, @class = "form-control checkbox-checked", id = "pidf_IPD_PatentDetailsEntities[" + i + "].PatentNumber", @placeholder = @MasterLocalizer["Patent Number"]} })*@
-									<input type="text" readonly id="MarketExtensionId" name="MarketExtensionId" class="form-control readOnlyUpdate" required />
-								</div>
-							</div>
-						</td>
-						<td>
-							<div class="col-md">
-								<div class="form-group">
-									<i class="fas fa-plus"></i>
-									@*<i class="fas fa-plus" id="addIcon_@i" onclick="addRowProductStrength(@i)"></i>*@
-								</div>
-							</div>
-						</td>
-					</tr>				
-				<tbody>
-			</table>
-		</div>
+						</div>
+					</div>
+				</div>	
+		
+<div><!-- Reference Product Detail -->
 		<div class="card-header">
 				<h3 class="card-title">
 				Reference Product Detail
 			</h3>
 		</div>
+
 		<div >
 			<table id="PIDFTable" class="table table-bordered table-striped table-hover" style="width:100%">
 					<thead>
@@ -1561,7 +1415,9 @@
 					</tbody>
 				</table>
 			</div>
-
+</div>
+<!-- Man Power Cost & Project Duration -->
+<div>
 		<div class="card-header">
 			<h3 class="card-title">
 				Man Power Cost & Project Duration
@@ -2922,87 +2778,87 @@
 					</tbody>
 				</table>
 		</div>
+</div>
 
-		<div class="card-header">
-				<h3 class="card-title">
-				Filling Expenses
-			</h3>
-		</div>
-		<div >
-			<table id="PIDFTable" class="table table-bordered table-striped table-hover" style="width:100%">
-				<thead>
-					<tr>
-						<th>Region</th>
-						<th>Cost</th>
-						<th>Total Cost</th>
-						<th></th>
-						<th></th>
-						<th>Action</th>
-					</tr>
-				</thead>
-				<tbody>
-					<tr>
-						<td>
+<!-- Filling Expenses -->
 
-							<div class="">
-								<div class="form-group required">
-									@*@Html.EditorFor(model => model.pidf_IPD_PatentDetailsEntities[i].PatentNumber, new { htmlAttributes = new { @autocomplete = "off",@readonly = true, @class = "form-control checkbox-checked", id = "pidf_IPD_PatentDetailsEntities[" + i + "].PatentNumber", @placeholder = @MasterLocalizer["Patent Number"]} })*@
-									<select id="MarketExtensionId" name="MarketExtensionId" class="form-control readOnlyUpdate" required ></select>
+		<div class="row">
+					<div class="col-12">
+						<div class="card">
+							<div class="card-header">
+						<h3 class="card-title">Filling Expenses</h3>
+								<div class="card-tools">
+									<button type="button" class="btn btn-tool" data-card-widget="collapse" title="Collapse">
+										<i class="fas fa-minus"></i>
+									</button>
 								</div>
 							</div>
-						</td>
-					
-						<td>
-
-							<div class="">
-								<div class="form-group required">
-										@*@Html.EditorFor(model => model.pidf_IPD_PatentDetailsEntities[i].PatentNumber, new { htmlAttributes = new { @autocomplete = "off",@readonly = true, @class = "form-control checkbox-checked", id = "pidf_IPD_PatentDetailsEntities[" + i + "].PatentNumber", @placeholder = @MasterLocalizer["Patent Number"]} })*@
-									<input type="text" readonly  id="MarketExtensionId" name="MarketExtensionId"  class="form-control readOnlyUpdate" required />
-								</div>
+							<div class="card-body">
+								<table id="ExicipientProtoypeTable" class="table table-bordered table-striped table-hover">
+									<thead>
+										<tr>
+											<th>Region</th>
+											<th>Cost</th>
+											<th>Total Cost</th>
+											<th></th>
+											<th></th>											
+											<th class="text-center">@SharedLocalizer["Action"]</th>
+										</tr>
+									</thead>
+									<tbody id="ExicipientProtoypeBody">										
+										@{
+											int t = 0;
+											<tr id="ExicipientProtoypeRow_@t">										
+												<td>
+															<div class="col-md">
+																<div class="form-group required">
+																	<select id="apiSourcingData_@t" name="ExicipientExhibitEntities[@t].ExicipientProtoypeId" class="form-control readOnlyUpdate" required></select>
+																</div>
+															</div>
+														</td>
+												<td>
+													<div class="col-md">
+														<div class="form-group required">
+															@Html.EditorFor(model => model.ExicipientExhibitEntities[t].ExicipientPrototype, new { htmlAttributes = new { @autocomplete = "off", @class = "form-control checkbox-checked", id = "ExicipientExhibitEntities[" + t + "].ExicipientPrototype", @placeholder = @MasterLocalizer["Product Strength"] } })
+															@Html.ValidationMessageFor(model => model.ExicipientExhibitEntities[t].ExicipientPrototype, "", new { @class = "text-danger" })
+														</div>
+													</div>
+												</td>
+												<td>
+													<div class="col-md">
+														<div class="form-group required">
+															@Html.EditorFor(model => model.ExicipientExhibitEntities[t].Cost, new { htmlAttributes = new { @autocomplete = "off", @class = "form-control checkbox-checked", id = "ExicipientExhibitEntities[" + t + "].Cost", @placeholder = @MasterLocalizer["Product Strength"] } })
+															@Html.ValidationMessageFor(model => model.ExicipientExhibitEntities[t].Cost, "", new { @class = "text-danger" })
+														</div>
+													</div>
+												</td>
+												<td>
+													<div class="col-md">
+														<div class="form-group required">
+															@Html.EditorFor(model => model.ExicipientExhibitEntities[t].DosagePerUnit, new { htmlAttributes = new { @autocomplete = "off", @class = "form-control checkbox-checked", id = "ExicipientExhibitEntities[" + t + "].DosagePerUnit", @placeholder = @MasterLocalizer["Product Strength"] } })
+															@Html.ValidationMessageFor(model => model.ExicipientExhibitEntities[t].DosagePerUnit, "", new { @class = "text-danger" })
+														</div>
+													</div>
+												</td>												
+												<td>
+													<div class="col-md">
+														<div class="form-group">
+															<i class="fas fa-plus" id="addIconAPI_@t" onclick="addRowProductStrength(@t)"></i>
+															&nbsp;&nbsp;&nbsp;&nbsp;
+															<spam><i class="fas fa-trash-alt" id="deleteIconAPI_@t" onclick="deleteRowProductStrength(@t)"></i></spam>
+															@Html.HiddenFor(model => model.ExicipientExhibitEntities[t].ExicipientProtoypeId, new { id = "ExicipientExhibitEntities[" + t + "].ExicipientProtoypeId"})
+														</div>
+													</div>
+												</td>
+											</tr>
+										}
+									</tbody>
+								</table>
 							</div>
-						</td>
-						<td>
+						</div>
 
-							<div class="">
-								<div class="form-group required">
-											@*@Html.EditorFor(model => model.pidf_IPD_PatentDetailsEntities[i].PatentNumber, new { htmlAttributes = new { @autocomplete = "off",@readonly = true, @class = "form-control checkbox-checked", id = "pidf_IPD_PatentDetailsEntities[" + i + "].PatentNumber", @placeholder = @MasterLocalizer["Patent Number"]} })*@
-									<input type="text" readonly id="MarketExtensionId" name="MarketExtensionId" class="form-control readOnlyUpdate" required />
-								</div>
-							</div>
-						</td>
-						<td>
-
-							<div class="">
-
-								<div class="form-group required">
-											@*@Html.EditorFor(model => model.pidf_IPD_PatentDetailsEntities[i].PatentNumber, new { htmlAttributes = new { @autocomplete = "off",@readonly = true, @class = "form-control checkbox-checked", id = "pidf_IPD_PatentDetailsEntities[" + i + "].PatentNumber", @placeholder = @MasterLocalizer["Patent Number"]} })*@
-									<input type="text" readonly id="MarketExtensionId" name="MarketExtensionId" class="form-control readOnlyUpdate" required />
-								</div>
-							</div>
-						</td>
-						<td>
-
-							<div class="">
-								<div class="form-group required">
-											@*@Html.EditorFor(model => model.pidf_IPD_PatentDetailsEntities[i].PatentNumber, new { htmlAttributes = new { @autocomplete = "off",@readonly = true, @class = "form-control checkbox-checked", id = "pidf_IPD_PatentDetailsEntities[" + i + "].PatentNumber", @placeholder = @MasterLocalizer["Patent Number"]} })*@
-									<input type="text" readonly id="MarketExtensionId" name="MarketExtensionId" class="form-control readOnlyUpdate" required />
-								</div>
-							</div>
-						</td>
-						<td>
-							<div class="col-md">
-								<div class="form-group">
-									<i class="fas fa-plus"></i>
-									@*<i class="fas fa-plus" id="addIcon_@i" onclick="addRowProductStrength(@i)"></i>*@
-								</div>
-							</div>
-						</td>								
-						
-						<tr>
-					<tbody>
-			</table>
-		</div>
-
+					</div>
+				</div>		
 
 		<div class="card-header">
 				<h3 class="card-title">

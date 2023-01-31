@@ -7,12 +7,20 @@ namespace EmcureNPD.Data.DataAccess.Entity
 {
     public partial class PidfPbfRnDExicipientExhibit
     {
-        public int ExicipientProtoypeId { get; set; }
-        public int? StrengthId { get; set; }
-        public string ExicipientPrototype { get; set; }
+        public PidfPbfRnDExicipientExhibit()
+        {
+            PidfPbfRnDs = new HashSet<PidfPbfRnD>();
+        }
+
+        public int ExicipientExhibitId { get; set; }
+        public long StrengthId { get; set; }
+        public string ExicipientExhibit { get; set; }
         public decimal? Cost { get; set; }
         public string DosagePerUnit { get; set; }
         public bool? CreatedBy { get; set; }
         public DateTime? CreatedDate { get; set; }
+
+        public virtual PidfproductStrength Strength { get; set; }
+        public virtual ICollection<PidfPbfRnD> PidfPbfRnDs { get; set; }
     }
 }

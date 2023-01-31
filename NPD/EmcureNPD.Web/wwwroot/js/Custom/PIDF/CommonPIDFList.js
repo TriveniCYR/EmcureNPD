@@ -37,10 +37,10 @@ function InitializePIDFList() {
             "data": "dosageFormName", "name": "DosageForm Name"
         },
         {
-            "data": "CountryName", "name": "Country Name"
+            "data": "countryName", "name": "Country Name"
         },
         {
-            "data": "productPackagingName", "name": "Product Packaging Name"
+            "data": "packagingTypeName", "name": "Product Packaging Name"
         },
         {
             "data": "createdBy", "name": "Created By"

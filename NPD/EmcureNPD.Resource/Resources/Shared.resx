@@ -135,6 +135,9 @@
   <data name="Cancel" xml:space="preserve">
     <value>Cancel</value>
   </data>
+  <data name="CancelConfirm" xml:space="preserve">
+    <value>Are you sure you want to Cancel ?</value>
+  </data>
   <data name="CommercialBatchSize(Qtr)" xml:space="preserve">
     <value>Commercial Batch Size (Qtr)</value>
   </data>

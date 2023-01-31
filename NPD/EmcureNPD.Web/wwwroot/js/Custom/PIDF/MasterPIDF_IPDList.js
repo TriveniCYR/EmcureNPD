@@ -65,7 +65,7 @@ function InitializePIDFList() {
                 {
                     var html = '';
                     html += '<a class="btn btn-primary" href="/PIDForm/PIDForm?pidfid=' + row.encpidfid + '&bui=' + row.encbud + '"><i class="far fa-plus-square mr-1"></i> Add IPD</a> ';
-                    html += '<a class="btn btn-primary"><i class="far fa-plus-square mr-1"></i> Add Medical</a>';
+                    html += '<a class="btn btn-primary" href="/PIDForm/Medical?pidfid=' + row.encpidfid + '&bui=' + row.encbud + '"><i class="far fa-plus-square mr-1"></i> Add Medical</a>';
                     return html;
 
                 }

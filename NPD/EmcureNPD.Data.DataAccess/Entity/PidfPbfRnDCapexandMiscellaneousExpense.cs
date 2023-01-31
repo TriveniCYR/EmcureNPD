@@ -7,6 +7,11 @@ namespace EmcureNPD.Data.DataAccess.Entity
 {
     public partial class PidfPbfRnDCapexandMiscellaneousExpense
     {
+        public PidfPbfRnDCapexandMiscellaneousExpense()
+        {
+            PidfPbfRnDs = new HashSet<PidfPbfRnD>();
+        }
+
         public int CapexandMiscellaneousExpensesId { get; set; }
         public string Miscellaneous { get; set; }
         public string Licensing { get; set; }
@@ -15,5 +20,7 @@ namespace EmcureNPD.Data.DataAccess.Entity
         public decimal? TotalCost { get; set; }
         public int? CreatedBy { get; set; }
         public DateTime? CreatedDate { get; set; }
+
+        public virtual ICollection<PidfPbfRnD> PidfPbfRnDs { get; set; }
     }
 }

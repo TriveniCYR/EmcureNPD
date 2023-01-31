@@ -6,14 +6,18 @@ using EmcureNPD.Data.DataAccess.Core.UnitOfWork;
 using EmcureNPD.Data.DataAccess.Entity;
 using EmcureNPD.Utility.Enums;
 using EmcureNPD.Utility.Utility;
+using Microsoft.AspNetCore.Http;
 using System;
 using System.Collections.Generic;
 using System.Data.SqlClient;
+using System.IO;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Net;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Hosting;
 using static EmcureNPD.Utility.Enums.GeneralEnum;
+using Microsoft.Extensions.Configuration;
 
 namespace EmcureNPD.Business.Core.Implementation
 {
@@ -24,6 +28,7 @@ namespace EmcureNPD.Business.Core.Implementation
         private readonly IMasterBusinessUnitService _businessUnitService;
         private readonly IMasterCountryService _countryService;
         private readonly IMasterAuditLogService _auditLogService;
+        private readonly IConfiguration _configuration;
 
         private IRepository<PidfIpd> _repository { get; set; }
         private IRepository<PidfIpdPatentDetail> _ipdParentRepository { get; set; }
@@ -33,7 +38,9 @@ namespace EmcureNPD.Business.Core.Implementation
         private IRepository<PidfIpdRegion> _ipdRegionRepository { get; set; }
         private IRepository<PidfIpdCountry> _ipdCountryRepository { get; set; }
         private IRepository<Pidf> _pidfrepository { get; set; }
-        public PIDFormService(IUnitOfWork unitOfWork, IMapperFactory mapperFactory, IMasterOralService oralService, IMasterUnitofMeasurementService unitofMeasurementService, IMasterDosageFormService dosageFormService, IMasterPackagingTypeService packagingTypeService, IMasterBusinessUnitService businessUnitService, IMasterCountryService countryService, IMasterAuditLogService auditLogService)
+        private IRepository<PidfMedical> _pidfMedicalrepository { get; set; }
+        private IRepository<PidfMedicalFile> _pidfMedicalFilerepository { get; set; }
+        public PIDFormService(IUnitOfWork unitOfWork, IMapperFactory mapperFactory, IMasterOralService oralService, IMasterUnitofMeasurementService unitofMeasurementService, IMasterDosageFormService dosageFormService, IMasterPackagingTypeService packagingTypeService, IMasterBusinessUnitService businessUnitService, IMasterCountryService countryService, IMasterAuditLogService auditLogService, IConfiguration configuration)
         {
             _unitOfWork = unitOfWork;
             _mapperFactory = mapperFactory;
@@ -48,6 +55,10 @@ namespace EmcureNPD.Business.Core.Implementation
             _ipdRegionRepository = unitOfWork.GetRepository<PidfIpdRegion>();
             _ipdCountryRepository = unitOfWork.GetRepository<PidfIpdCountry>();
             _pidfrepository = unitOfWork.GetRepository<Pidf>();
+            _pidfMedicalrepository = unitOfWork.GetRepository<PidfMedical>();
+            _pidfMedicalFilerepository = unitOfWork.GetRepository<PidfMedicalFile>();
+            _configuration = configuration;
+
         }
 
         public async Task<PIDFormEntity> FillDropdown()
@@ -76,9 +87,9 @@ namespace EmcureNPD.Business.Core.Implementation
                     oldIPDFEntity.LogInId = entityIPD.LogInId;
                     oldIPDFEntity.SaveType = entityIPD.SaveType;
                     oldIPDFEntity.ProjectName = entityIPD.ProjectName;
-                   
+
                     objIPD = _mapperFactory.Get<PIDFormEntity, PidfIpd>(entityIPD);
-                    
+
                     _repository.UpdateAsync(objIPD);
 
                     await _unitOfWork.SaveChangesAsync();
@@ -151,8 +162,8 @@ namespace EmcureNPD.Business.Core.Implementation
                         }
                         await _unitOfWork.SaveChangesAsync();
 
-                    }                        
-                    
+                    }
+
                     Pidf objPidf = await _pidfrepository.GetAsync(entityIPD.PIDFID);
                     objPidf.LastStatusId = objPidf.StatusId;
                     objPidf.StatusId = Convert.ToInt32(entityIPD.StatusId);
@@ -183,7 +194,7 @@ namespace EmcureNPD.Business.Core.Implementation
                 oldIPDFEntity.ProjectName = entityIPD.ProjectName;
                 objIPD.CreatedDate = DateTime.Now;
                 _repository.AddAsync(objIPD);
-                
+
                 await _unitOfWork.SaveChangesAsync();
 
                 var id = objIPD.Ipdid;
@@ -201,7 +212,7 @@ namespace EmcureNPD.Business.Core.Implementation
                     }
                     await _unitOfWork.SaveChangesAsync();
                 }
-          
+
                 if (!string.IsNullOrEmpty(entityIPD.RegionIds))
                 {
                     var regionRemove = _ipdRegionRepository.GetAllQuery().Where(x => x.Ipdid == entityIPD.IPDID);
@@ -254,7 +265,7 @@ namespace EmcureNPD.Business.Core.Implementation
 
                 Pidf objPidf = await _pidfrepository.GetAsync(entityIPD.PIDFID);
                 objPidf.LastStatusId = objPidf.StatusId;
-                objPidf.StatusId =Convert.ToInt32(entityIPD.StatusId);
+                objPidf.StatusId = Convert.ToInt32(entityIPD.StatusId);
                 _pidfrepository.UpdateAsync(objPidf);
                 await _unitOfWork.SaveChangesAsync();
                 if (objIPD.Ipdid == 0)
@@ -267,6 +278,7 @@ namespace EmcureNPD.Business.Core.Implementation
                 return DBOperation.Success;
             }
         }
+
         public async Task<PIDFormEntity> GetIPDFormData(long pidfId, int buid)
         {
 
@@ -274,7 +286,7 @@ namespace EmcureNPD.Business.Core.Implementation
             Expression<Func<PidfIpd, bool>> expr = u => u.BusinessUnitId == buid && u.Pidfid == pidfId;
             dynamic objData = (dynamic)await _repository.FindAllAsync(expr);
             PIDFormEntity data = new PIDFormEntity();
-            if (objData != null && objData.Count>0)
+            if (objData != null && objData.Count > 0)
             {
                 data = _mapperFactory.Get<PidfIpd, PIDFormEntity>(objData[0]);
                 data.pidf_IPD_PatentDetailsEntities = _mapperFactory.GetList<PidfIpdPatentDetail, PIDF_IPD_PatentDetailsEntity>(_ipdParentRepository.GetAll().Where(x => x.Ipdid == data.IPDID).ToList());
@@ -298,9 +310,9 @@ namespace EmcureNPD.Business.Core.Implementation
             var dataUserRegion = _mapperFactory.GetList<MasterUserRegionMapping, UserRegionMappingEntity>(await _userRegionRepository.FindAllAsync(xx => xx.UserId == userId));
 
             if (dataRegion.Any())
-            {               
+            {
                 var person = (from p in dataUserRegion
-                              join m in dataRegion on p.RegionId equals m.RegionId                             
+                              join m in dataRegion on p.RegionId equals m.RegionId
                               select new
                               {
                                   RegionId = p.RegionId,
@@ -371,23 +383,23 @@ namespace EmcureNPD.Business.Core.Implementation
 
             var TotalRecord = (PIDFList != null && PIDFList.Rows.Count > 0 ? Convert.ToInt32(PIDFList.Rows[0]["TotalRecord"]) : 0);
             var TotalCount = (PIDFList != null && PIDFList.Rows.Count > 0 ? Convert.ToInt32(PIDFList.Rows[0]["TotalCount"]) : 0);
-            
+
             List<IPDPIDFListEntity> objList = PIDFList.DataTableToList<IPDPIDFListEntity>();
             for (int i = 0; i < objList.Count(); i++)
             {
                 objList[i].encpidfid = UtilityHelper.Encrypt(Convert.ToString(objList[i].PIDFID));
                 objList[i].encbud = UtilityHelper.Encrypt(Convert.ToString(objList[i].BusinessUnitId));
             }
-            
+
             DataTableResponseModel oDataTableResponseModel = new DataTableResponseModel(model.draw, TotalRecord, TotalCount, objList);
 
             return oDataTableResponseModel;
         }
         public async Task<DBOperation> ApproveRejectIpdPidf(EntryApproveRej oApprRej)
         {
-                
-                if (oApprRej!=null && oApprRej.PidfIds.Count >0)
-                {
+
+            if (oApprRej != null && oApprRej.PidfIds.Count > 0)
+            {
                 int saveTId = 0;
                 if (oApprRej.SaveType == "R")
                     saveTId = 5;
@@ -402,19 +414,104 @@ namespace EmcureNPD.Business.Core.Implementation
                     _pidfrepository.UpdateAsync(objPidf);
 
                     await _unitOfWork.SaveChangesAsync();
-                }          
-                    var isSuccess = await _auditLogService.CreateAuditLog<EntryApproveRej>(Utility.Audit.AuditActionType.Update,
-                       Utility.Enums.ModuleEnum.IPD, oApprRej, oApprRej,0);
+                }
+                var isSuccess = await _auditLogService.CreateAuditLog<EntryApproveRej>(Utility.Audit.AuditActionType.Update,
+                   Utility.Enums.ModuleEnum.IPD, oApprRej, oApprRej, 0);
 
-                    return DBOperation.Success;
+                return DBOperation.Success;
+            }
+            else
+            {
+                return DBOperation.NotFound;
+            }
+
+
+        }
+
+        public async Task<DBOperation> Medical(PIDFMedicalViewModel medicalModel)
+        {
+            var medical = _mapperFactory.Get<PIDFMedicalViewModel, PidfMedical>(medicalModel);
+            medical.MedicalOpinion = medicalModel.MedicalOpinion;
+            medical.Remark = medicalModel.Remark;
+            medical.CreatedDate = DateTime.Now;
+            _pidfMedicalrepository.AddAsync(medical);
+            await _unitOfWork.SaveChangesAsync();
+
+
+            //var medicalFile = _mapperFactory.Get<PIDFMedicalViewModel, PidfMedicalFile>(medicalModel);
+            foreach (var filename in medicalModel.FileName)
+            {
+                PidfMedicalFile medicalFiles = new PidfMedicalFile
+                {
+                    FileName = filename,
+                    CreatedDate = DateTime.Now,
+                    PidfmedicalId = Convert.ToInt64(medical.PidfmedicalId),
+                    CreatedBy = (int)medical.CreatedBy,
+                };
+                _pidfMedicalFilerepository.AddAsync(medicalFiles);
+            }
+            await _unitOfWork.SaveChangesAsync();
+
+            return DBOperation.Success;
+
+        }
+
+        public async Task FileUpload(IFormFileCollection files, string path)
+        {
+            if (files != null)
+            {
+                foreach (var file in files)
+                {
+                    string us = FileValidation(file);
+                    if (us == null)
+                    {
+                        var uniqueFileName = Path.GetFileNameWithoutExtension(file.FileName)
+                   + "_"
+                   + Guid.NewGuid().ToString().Substring(0, 4)
+                   + Path.GetExtension(file.FileName);
+                        string uploadFolder = Path.Combine(path, "Uploads\\Medical");
+                        if (!Directory.Exists(uploadFolder))
+                        {
+                            Directory.CreateDirectory(uploadFolder);
+                        }
+                        var filePath = Path.Combine(uploadFolder, uniqueFileName);
+                        using (var stream = new FileStream(filePath, FileMode.Create))
+                        {
+                            await file.CopyToAsync(stream);
+
+                        }
+                    }
+                }
+            }
+        }
+        public string FileValidation(IFormFile file)
+        {
+            PIDFMedicalViewModel fileUpload = new PIDFMedicalViewModel();
+            fileUpload.FileSize = Convert.ToInt32(_configuration.GetSection("FileUploadSettings").GetSection("MaxFileSizeMb").Value);
+            try
+            {
+                var supportedTypes = _configuration.GetSection("FileUploadSettings").GetSection("AllowedFileExtension").Value;
+                var fileTypes = supportedTypes.Split(',');
+                var fileExt = System.IO.Path.GetExtension(file.FileName).Substring(1);
+                if (!fileTypes.Contains(fileExt))
+                {
+                    fileUpload.ErrorMessage = _configuration.GetSection("FileUploadSettings").GetSection("FileNotAllowedErrorMessage").Value;
+                }
+                else if (file.Length > (fileUpload.FileSize * 1024 * 1024))
+                {
+                    fileUpload.ErrorMessage = _configuration.GetSection("FileUploadSettings").GetSection("FileSizeExceedErrorMessage").Value;
                 }
                 else
                 {
-                    return DBOperation.NotFound;
+                    fileUpload.ErrorMessage = null;
                 }
-            
-            
+                return fileUpload.ErrorMessage;
+            }
+            catch (Exception ex)
+            {
+                fileUpload.ErrorMessage = "Upload Container Should Not Be Empty or Contact Admin";
+                return fileUpload.ErrorMessage;
+            }
         }
-
     }
 }

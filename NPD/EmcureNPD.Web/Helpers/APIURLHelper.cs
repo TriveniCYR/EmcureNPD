@@ -232,12 +232,13 @@
 		public static string SavePBFRnD = "api/PBF/InsertUpdatePBF";
         public static string SaveCommercialPIDF = "api/CommercialPIDFForm/SaveCommercialPIDF";
         public static string GetPbfFormData = "api/PBF/GetPbfFormData";
+        public static string SavePBF = "api/PBF/InsertUpdatePBF";
 
-		#endregion
+        #endregion
 
 
-		#region MarketExtension
-		public static string GetAllMarketExtension = "api/MarketExtension/GetAllMarketExtension";
+        #region MarketExtension
+        public static string GetAllMarketExtension = "api/MarketExtension/GetAllMarketExtension";
         public static string SaveMarketExtension = "api/MarketExtension/InsertUpdateMarketExtension";
         public static string GetMarketExtensionById = "api/MarketExtension/GetMarketExtensionById";
         public static string DeleteMarketExtensionById = "api/MarketExtension/DeleteMarketExtension";
@@ -281,7 +282,10 @@
         public static string GetCountryRefByRegionIds = "api/PIDForm/GetCountryRefByRegionIds";
         public static string ApproveRejectIpdPidf = "api/PIDForm/ApproveRejectIpdPidf";
 		public static string GetCommercialFormData = "api/CommercialPIDFForm/GetCommercialFormData";
-        public static string GetAllFinalSelection = "api/CommercialPIDFForm/GetAllFinalSelection";        
+        public static string GetAllFinalSelection = "api/CommercialPIDFForm/GetAllFinalSelection";
+        public static string PIDMedicalForm = "api/PIDForm/PIDMedicalForm";
+        public static string GetAPIIPDFormData = "api/PBF/GetAPIIPDFormData";
+        public static string InsertUpdateAPIIPD = "api/PBF/InsertUpdateAPIIPD";
         #endregion
 
         #region API List

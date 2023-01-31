@@ -5,6 +5,7 @@ using EmcureNPD.Business.Models;
 using EmcureNPD.Data.DataAccess.Core.Repositories;
 using EmcureNPD.Data.DataAccess.Core.UnitOfWork;
 using EmcureNPD.Data.DataAccess.Entity;
+using EmcureNPD.Utility.Utility;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
@@ -41,7 +42,8 @@ namespace EmcureNPD.Business.Core.Implementation
 		private readonly IMasterFormulationService _masterFormulationService;
 		private readonly IMasterAnalyticalGLService _masterAnalyticalGLService;
 		private readonly IPidfProductStrengthService _productStrengthService;
-		private IRepository<PidfPbf> _pbfRepository { get; set; }
+        private IRepository<PidfApiIpd> _pidf_API_IPD_repository { get; set; }
+        private IRepository<PidfPbf> _pbfRepository { get; set; }
 
 		private readonly IMasterAuditLogService _auditLogService;		
 
@@ -75,7 +77,8 @@ namespace EmcureNPD.Business.Core.Implementation
 			_repository = _unitOfWork.GetRepository<Pidf>();
 			_pidfApiRepository = unitOfWork.GetRepository<Pidfapidetail>();
 			_pidfProductStrength = unitOfWork.GetRepository<PidfproductStrength>();
-			_masterDIAService = masterDium;
+            _pidf_API_IPD_repository = _unitOfWork.GetRepository<PidfApiIpd>();
+            _masterDIAService = masterDium;
 			_masterMarketExtensionService = masterMarketExtensionService;
 			_masterBERequirementService = masterBERequirementService;
 			_masterProductTypeService = masterProductTypeService;
@@ -88,7 +91,70 @@ namespace EmcureNPD.Business.Core.Implementation
 			_productStrengthService = productStrengthService;
 			_auditLogService = auditLogService;
 		}
-		public async Task<dynamic> FillDropdown()
+
+        //------------Start------API_IPD_Details_Form_Entity--------------------------
+        #region API_IPD_Details_Form_Entity 
+        public async Task<DBOperation> AddUpdateAPIIPD(PIDFAPIIPDFormEntity _oAPIIPD) 
+		{
+			var _APIIPDDBEntity = new PidfApiIpd();
+            if (_oAPIIPD.APIIPDDetailsFormID > 0) 
+			{
+				var lastApiIpd = _pidf_API_IPD_repository.Get(x => x.PidfApiIpdId == _oAPIIPD.APIIPDDetailsFormID && x.IsActive == true);
+				if(lastApiIpd != null) 
+				{
+                    lastApiIpd.FormulationQuantity = _oAPIIPD.FormulationQuantity;
+                    lastApiIpd.PlantQc = _oAPIIPD.PlantQC;
+                    lastApiIpd.Development = _oAPIIPD.Development;
+                    lastApiIpd.Total = _oAPIIPD.Total;
+                    lastApiIpd.Exhibit = _oAPIIPD.Exhibit;
+                    lastApiIpd.ScaleUp = _oAPIIPD.ScaleUp;
+					lastApiIpd.ModifyBy = (int?)_oAPIIPD.LoggedInUserId;
+					lastApiIpd.ModifyDate = DateTime.Now;
+                    _pidf_API_IPD_repository.UpdateAsync(lastApiIpd);
+                }
+				else
+				{
+					return DBOperation.NotFound;
+				}
+            }
+			else
+			{
+				_APIIPDDBEntity.Pidfid = Convert.ToInt32(_oAPIIPD.Pidfid);
+                _APIIPDDBEntity.FormulationQuantity = _oAPIIPD.FormulationQuantity;
+                _APIIPDDBEntity.PlantQc = _oAPIIPD.PlantQC;
+                _APIIPDDBEntity.Development = _oAPIIPD.Development;
+                _APIIPDDBEntity.Total = _oAPIIPD.Total;
+                _APIIPDDBEntity.Exhibit = _oAPIIPD.Exhibit;
+                _APIIPDDBEntity.ScaleUp = _oAPIIPD.ScaleUp;
+                _APIIPDDBEntity.CreatedBy = _oAPIIPD.LoggedInUserId;
+                _APIIPDDBEntity.CreatedDate = DateTime.Now;
+				_APIIPDDBEntity.IsActive = true;
+                _pidf_API_IPD_repository.AddAsync(_APIIPDDBEntity);
+            }
+			await _unitOfWork.SaveChangesAsync();
+			return DBOperation.Success;
+    }
+
+        public async Task<PIDFAPIIPDFormEntity> GetAPIIPDFormData(long pidfId)
+		{
+
+			PIDFAPIIPDFormEntity _oApiIpdData = new PIDFAPIIPDFormEntity();
+			var _oAPIIPD = await _pidf_API_IPD_repository.GetAsync(x=>x.Pidfid == pidfId);
+			if (_oAPIIPD != null)
+			{
+				_oApiIpdData.FormulationQuantity = _oAPIIPD.FormulationQuantity;
+				_oApiIpdData.APIIPDDetailsFormID = _oAPIIPD.PidfApiIpdId;
+                _oApiIpdData.PlantQC = _oAPIIPD.PlantQc;
+				_oApiIpdData.Development = _oAPIIPD.Development;
+				_oApiIpdData.Total = _oAPIIPD.Total;
+				_oApiIpdData.Exhibit = _oAPIIPD.Exhibit;
+				_oApiIpdData.ScaleUp = _oAPIIPD.ScaleUp;
+			}
+			return _oApiIpdData;
+        }
+        //------------End------API_IPD_Details_Form_Entity--------------------------
+        #endregion
+        public async Task<dynamic> FillDropdown()
 		{
 			dynamic DropdownObjects = new ExpandoObject();
 
@@ -111,7 +177,7 @@ namespace EmcureNPD.Business.Core.Implementation
 			DropdownObjects.MasterAnalyticalGLService = _masterAnalyticalGLService.GetAll().Result.Where(xx => xx.IsActive).ToList();
 			return DropdownObjects;
 		}
-		public async Task<DBOperation> AddUpdatePBF(PidfPbfRnDEntity entityPIDF)
+		public async Task<DBOperation> AddUpdatePBF(PidfPbfEntity pbfEntity)
 		{		
 				return DBOperation.Success;			
 		}

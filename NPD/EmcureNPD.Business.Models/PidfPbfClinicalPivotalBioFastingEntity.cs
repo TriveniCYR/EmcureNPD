@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 #nullable disable
 
-namespace EmcureNPD.Data.DataAccess.Entity
+namespace EmcureNPD.Business.Models
 {
     public partial class PidfPbfClinicalPivotalBioFastingEntity
     {

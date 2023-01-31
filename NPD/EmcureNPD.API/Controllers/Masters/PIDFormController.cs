@@ -4,10 +4,18 @@ using EmcureNPD.Business.Core.Implementation;
 using EmcureNPD.Business.Core.Interface;
 using EmcureNPD.Business.Core.ServiceImplementations;
 using EmcureNPD.Business.Models;
+using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Primitives;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
+using System.IO;
+using System.Linq;
 using System.Net;
+using System.Net.Http;
 using System.Threading.Tasks;
 using static EmcureNPD.Utility.Enums.GeneralEnum;
 
@@ -23,15 +31,17 @@ namespace EmcureNPD.API.Controllers.Masters
         private readonly IPIDFormService _PIDFormService;
 
         private readonly IResponseHandler<dynamic> _ObjectResponse;
+        private readonly IWebHostEnvironment _webHostEnvironment;
 
         #endregion Properties
 
         #region Constructor
 
-        public PIDFormController(IPIDFormService PIDFormService, IResponseHandler<dynamic> ObjectResponse)
+        public PIDFormController(IPIDFormService PIDFormService, IResponseHandler<dynamic> ObjectResponse, IWebHostEnvironment webHostEnvironment)
         {
             _PIDFormService = PIDFormService;
             _ObjectResponse = ObjectResponse;
+            _webHostEnvironment = webHostEnvironment;
         }
 
         #endregion Constructor
@@ -79,7 +89,7 @@ namespace EmcureNPD.API.Controllers.Masters
                 DBOperation oResponse = await _PIDFormService.AddUpdateIPD(ipdobj);
                 if (oResponse == DBOperation.Success)
                 {
-                    if(ipdobj.SaveType== "A" || ipdobj.SaveType== "R")
+                    if (ipdobj.SaveType == "A" || ipdobj.SaveType == "R")
                     {
                         EntryApproveRej objApprej = new EntryApproveRej();
                         objApprej.SaveType = ipdobj.SaveType;
@@ -113,11 +123,11 @@ namespace EmcureNPD.API.Controllers.Masters
         /// <response code="405">Method Not Allowed</response>
         /// <response code="500">Internal Server</response>
         [HttpGet, Route("GetIPDFormData/{pidfId}/{bussnessId}")]
-        public async Task<IActionResult> GetIPDFormData([FromRoute] long pidfId,int bussnessId)
+        public async Task<IActionResult> GetIPDFormData([FromRoute] long pidfId, int bussnessId)
         {
             try
             {
-                
+
                 var oPIDFEntity = await _PIDFormService.GetIPDFormData(pidfId, bussnessId);
                 if (oPIDFEntity != null)
                     return _ObjectResponse.Create(oPIDFEntity, (Int32)HttpStatusCode.OK);
@@ -205,6 +215,43 @@ namespace EmcureNPD.API.Controllers.Masters
             try
             {
                 DBOperation oResponse = await _PIDFormService.ApproveRejectIpdPidf(oApprRej);
+                if (oResponse == DBOperation.Success)
+                    return _ObjectResponse.Create(true, (Int32)HttpStatusCode.OK, ("Save Successfully"));
+                else
+                    return _ObjectResponse.Create(false, (Int32)HttpStatusCode.BadRequest, (oResponse == DBOperation.NotFound ? "Record not found" : "Bad request"));
+            }
+            catch (Exception ex)
+            {
+                return _ObjectResponse.Create(false, (Int32)HttpStatusCode.InternalServerError, Convert.ToString(ex.StackTrace));
+            }
+        }
+        [HttpPost]
+        [Route("PIDMedicalForm")]
+        [Consumes("multipart/form-data")]
+        public async Task<IActionResult> PIDMedicalForm([FromForm] IFormCollection medicalModel)
+        {
+            try
+            {
+                medicalModel.TryGetValue("Data", out StringValues Data);
+                dynamic jsonObject = JsonConvert.DeserializeObject(Data);
+                PIDFMedicalViewModel model = new PIDFMedicalViewModel();
+                model.Pidfid = jsonObject.Pidfid;
+                model.PidfmedicalId = jsonObject.PidfmedicalId;
+                model.PidfmedicalFileId = jsonObject.PidfmedicalFileId;
+                model.MedicalOpinion = jsonObject.MedicalOpinion;
+                model.Remark = jsonObject.Remark;
+                model.CreatedBy = jsonObject.CreatedBy;
+
+                var files = medicalModel.Files;
+                model.FileName = new string[files.Count];
+                for (int i = 0; i < files.Count; i++)
+                {
+                    var file = files[i];
+                    model.FileName[i] = "Medical\\" + file.FileName;
+                }
+                var path = _webHostEnvironment.WebRootPath;
+                var uploadedFile = _PIDFormService.FileUpload(files, path);
+                DBOperation oResponse = await _PIDFormService.Medical(model);
                 if (oResponse == DBOperation.Success)
                     return _ObjectResponse.Create(true, (Int32)HttpStatusCode.OK, ("Save Successfully"));
                 else
