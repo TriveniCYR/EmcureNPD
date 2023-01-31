@@ -16,6 +16,7 @@ namespace EmcureNPD.Business.Core.Interface
         Task<DBOperation> Medical(PIDFMedicalViewModel medicalModel);
         Task FileUpload(IFormFileCollection files, string path);
         public string FileValidation(IFormFile files);
+        Task<PIDFMedicalViewModel> GetPIDFMedicalData(long pidfId);
         Task<DBOperation> AddUpdateIPD(PIDFormEntity entityIPD);
         Task<PIDFormEntity> GetIPDFormData(long pidfId, int buid);
         Task<DataTableResponseModel> GetAllIPDPIDFList(DataTableAjaxPostModel model);
