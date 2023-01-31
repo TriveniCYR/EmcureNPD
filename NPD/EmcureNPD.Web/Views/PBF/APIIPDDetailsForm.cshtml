@@ -10,6 +10,7 @@
 @model EmcureNPD.Business.Models.PIDFAPIIPDFormEntity
 
 @{
+    ViewData["Title"] = @MasterLocalizer["APIIPDDetails"];
     string countryName = string.Empty;
     if (@Model.IPEvalution.CountryIds != null && @Model.IPEvalution.MasterCountries != null)
     {

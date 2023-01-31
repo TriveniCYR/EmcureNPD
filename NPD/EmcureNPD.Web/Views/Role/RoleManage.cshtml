@@ -7,7 +7,9 @@
 @inject Microsoft.Extensions.Localization.IStringLocalizer<EmcureNPD.Resource.Shared> SharedLocalizer
 
 @model EmcureNPD.Business.Models.MasterRoleEntity
-
+@{
+    ViewData["Title"] = @MasterLocalizer["RoleManage"];
+}
 <div id="SaveRoleModel">
     <form asp-action="RoleManage">
         @if (@ViewBag.IsEdit)

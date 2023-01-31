@@ -65,7 +65,7 @@
 						}
 						@if (UtilityHelper.GetMenuAccess(ModulePermissionEnum.PIDF, rolObj))
 						{
-										<li class="nav-item">
+							<li class="nav-item">
 
 											<a href="#" class="nav-link">
 												<i class="nav-icon fas fa-chart-pie"></i>
@@ -90,22 +90,11 @@
 															<a href="@Url.Action("PIDFormList","PIDForm")" class="nav-link">
 																<i class="nav-icon fas fa fa-columns"></i>
 																<p>
-													@MasterLocalizer["PIDFManagement"]
-																</p>
-															</a>
-														</li>
-									}
-									@if (UtilityHelper.GetMenuAccess(ModulePermissionEnum.Auditlogs, rolObj))
-									{
-														<li class="nav-item">
-															<a href="@Url.Action("IPDManagement","PIDF")" class="nav-link">
-																<i class="nav-icon fas fa fa-building"></i>
-																<p>
 													@MasterLocalizer["IPDManagement"]
 																</p>
 															</a>
 														</li>
-									}
+									}									
 									@if (UtilityHelper.GetMenuAccess(ModulePermissionEnum.Auditlogs, rolObj))
 									{
 														<li class="nav-item">
@@ -156,7 +145,7 @@
 															<a href="@Url.Action("AuditLogs","AuditLog")" class="nav-link">
 																<i class="nav-icon fas fa-table"></i>
 																<p>
-																	Audit logs
+													@MasterLocalizer["AuditLogs"]
 																</p>
 															</a>
 														</li>
@@ -166,47 +155,11 @@
 										</li>
 						}
 
-						@if (UtilityHelper.GetMenuAccess(ModulePermissionEnum.APIListManagement, rolObj))
-						{
-
-										<li class="nav-item">
-											<a href="#" class="nav-link">
-												<i class="nav-icon fas fa-chart-pie"></i>
-												<p>
-													API List Management
-													<i class="right fas fa-angle-left"></i>
-												</p>
-											</a>
-											<ul class="nav nav-treeview">
-									@if (UtilityHelper.GetMenuAccess(ModulePermissionEnum.APIRnd, rolObj))
-									{
-														<li class="nav-item">
-															<a href="@Url.Action("APIRnd","APIRnd")" class="nav-link">
-																<i class="nav-icon fas fa-file"></i>
-																<p>
-																	API RnD
-																</p>
-															</a>
-														</li>
-									}
-									@if (UtilityHelper.GetMenuAccess(ModulePermissionEnum.APIIpd, rolObj))
-									{
-														<li class="nav-item">
-															<a href="@Url.Action("APIIpd","APIIpd")" class="nav-link">
-																<i class="nav-icon fas fa-file"></i>
-																<p>
-																	API IPD
-																</p>
-															</a>
-														</li>
-									}
-											</ul>
-										</li>
-						}
+						
 					}					
 					@if (UtilityHelper.GetMenuAccess(ModulePermissionEnum.Dossier, rolObj))
 					{
-								<li class="nav-item">
+						<li class="nav-item">
 									<a href="#" class="nav-link">
 										<i class="nav-icon fas fa-table"></i>
 										<p>
@@ -217,7 +170,7 @@
 					}
 					@if (UtilityHelper.GetMenuAccess(ModulePermissionEnum.UserManagement, rolObj))
 					{
-								<li class="nav-item">
+						<li class="nav-item">
 									<a href="#" class="nav-link">
 										<i class="nav-icon fas fa-chart-pie"></i>
 										<p>

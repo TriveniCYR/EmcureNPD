@@ -22,15 +22,19 @@ namespace EmcureNPD.Web.Controllers
         private readonly IConfiguration _cofiguration;
         private readonly IStringLocalizer<Errors> _stringLocalizerError;
         private readonly IStringLocalizer<Shared> _stringLocalizerShared;
-        #endregion
+		private readonly IStringLocalizer<Master> _stringLocalizerMaster;
+		#endregion
 
-        public PIDFController(IConfiguration configuration,
-            IStringLocalizer<Errors> stringLocalizerError, IStringLocalizer<Shared> stringLocalizerShared)
+		public PIDFController(IConfiguration configuration, IStringLocalizer<Master> stringLocalizerMaster,
+
+			IStringLocalizer<Errors> stringLocalizerError, IStringLocalizer<Shared> stringLocalizerShared)
         {
             _cofiguration = configuration;
             _stringLocalizerError = stringLocalizerError;
             _stringLocalizerShared = stringLocalizerShared;
-        }
+            _stringLocalizerMaster = stringLocalizerMaster;
+
+		}
         public IActionResult PIDFList()
         {
             return View();
@@ -229,7 +233,8 @@ namespace EmcureNPD.Web.Controllers
 
         public IActionResult PBFAPI()
         {
-            return View();
+            ViewData["Title"] = _stringLocalizerMaster["PIDFManagement"];
+			return View();
         }
         public IActionResult PIDFFinance()
         {
