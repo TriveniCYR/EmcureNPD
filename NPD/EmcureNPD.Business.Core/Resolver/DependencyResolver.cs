@@ -60,6 +60,7 @@ namespace EmcureNPD.Business.Core.Resolver
 			
             services.AddTransient<IDashboardService, DashboardService>();
             services.AddTransient<IReminderService, ReminderService>();
+            services.AddTransient<INotificationService, NotificationService>();
             return services;
         }
     }
