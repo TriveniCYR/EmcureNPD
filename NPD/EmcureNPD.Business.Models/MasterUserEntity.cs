@@ -28,12 +28,10 @@ namespace EmcureNPD.Business.Models
                
         public int[] CountryId { get; set; }
         public int[] RegionId { get; set; }
-        //public int DepartmentIds { get; set; }
-
-        //public int BusinessUnitIds { get; set; }
-
-        //public int CountryIds { get; set; }
-        //public int RegionIds { get; set; }
+        public string DepartmentIds { get; set; }
+        public string BusinessUnitIds { get; set; }
+        public string CountryIds { get; set; }
+        public string RegionIds { get; set; }
 
         public int RoleId { get; set; }
 

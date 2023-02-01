@@ -55,7 +55,7 @@ function setNavigation() {
     var CurrentpathArr = path.split('/');
     
     $(".nav-item a").each(function () {
-        debugger;
+        
         var href = $(this).attr('href');
         if (href != '#' && href != undefined) {
             if (path.substring(0, href.length) === href) {

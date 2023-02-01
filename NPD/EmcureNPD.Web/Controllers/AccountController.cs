@@ -169,15 +169,42 @@ namespace EmcureNPD.Web.Controllers
             HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, principal, props);           
             HttpContext.Session.SetString(UserHelper.LoggedInUserId, Convert.ToString(oUserDetail.UserId));
         }
+        public IActionResult ForgotPassword()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        public IActionResult ForgotPassword(ForgotPasswordViewModel forgotPasswordViewModel)
+        {
+            if (!CheckEmailAddressExists(forgotPasswordViewModel.Email))
+            {
+                APIRepository objapi = new APIRepository(_cofiguration);
+                HttpResponseMessage responseMessage = objapi.APICommunication(APIURLHelper.ForgotPassword, HttpMethod.Post, string.Empty, new StringContent(JsonConvert.SerializeObject(forgotPasswordViewModel))).Result;
+                if (responseMessage.IsSuccessStatusCode)
+                {
+                    ViewBag.Message = _stringLocalizer["msgLinkToResetpasswordSentOnEmail"].Value;
+                }
+                else // if (responseMessage.StatusCode == HttpStatusCode.BadRequest)
+                {
+                    ViewBag.Message = _stringLocalizer["SomeErrorOccurred"].Value;
+                }
+            }
+            else
+            {
+                ViewBag.Message = _stringLocalizer["msgEmailAddressNotExistIndatabase"].Value;
+            }         
+            return View(forgotPasswordViewModel);
+        }
+        // if CheckEmailAddressExists() is false then Email Id Exist in Db
         [NonAction]
-        public bool CheckEmailAddressExists(string emailAddress)
+        public bool CheckEmailAddressExists(string EmailAddress)
         {
             bool EmailExist = true;
             try
             {
-                HttpContext.Request.Cookies.TryGetValue(UserHelper.EmcureNPDToken, out string token);
                 APIRepository objapi = new(_cofiguration);
-                HttpResponseMessage responseMessage = objapi.APICommunication(APIURLHelper.CheckEmailAddressExists + "/" + emailAddress, HttpMethod.Get, token).Result;
+                HttpResponseMessage responseMessage = objapi.APICommunication(APIURLHelper.Anonymous_CheckEmailAddressExists + "/" + EmailAddress, HttpMethod.Get, string.Empty).Result;
                 if (responseMessage.IsSuccessStatusCode)
                 {
                     string jsonResponse = responseMessage.Content.ReadAsStringAsync().Result;
@@ -191,27 +218,6 @@ namespace EmcureNPD.Web.Controllers
             {
                 throw e;
             }
-        }
-        public IActionResult ForgotPassword()
-        {
-            return View();
-        }
-
-        [HttpPost]
-        public IActionResult ForgotPassword(ForgotPasswordViewModel forgotPasswordViewModel)
-        {
-            APIRepository objapi = new APIRepository(_cofiguration);
-            HttpResponseMessage responseMessage = objapi.APICommunication(APIURLHelper.ForgotPassword, HttpMethod.Post, string.Empty, new StringContent(JsonConvert.SerializeObject(forgotPasswordViewModel))).Result;
-            if (responseMessage.IsSuccessStatusCode)
-            {
-                ViewBag.Message = _stringLocalizer["msgLinkToResetpasswordSentOnEmail"].Value;
-            }
-            else if (responseMessage.StatusCode==HttpStatusCode.BadRequest)
-            {
-                ViewBag.Message = _stringLocalizer["msgEmailAddressNotExistIndatabase"].Value;
-            }
-            ViewBag.Message = _stringLocalizer["msgSomethingwentwrong"].Value;
-            return View(forgotPasswordViewModel);
         }
         [HttpGet]
         public IActionResult ResetPassword([FromRoute] string userToken)

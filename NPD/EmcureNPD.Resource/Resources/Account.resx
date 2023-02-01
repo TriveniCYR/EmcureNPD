@@ -145,19 +145,16 @@
     <value>Login</value>
   </data>
   <data name="msgEmailAddressNotExistIndatabase" xml:space="preserve">
-    <value>Email Address you entered doen not exist in database</value>
+    <value>Entered email address is not found</value>
   </data>
   <data name="msgInvalidLink" xml:space="preserve">
     <value>Invalid Link</value>
   </data>
   <data name="msgLinkToResetpasswordSentOnEmail" xml:space="preserve">
-    <value>Link to Reset password has been sent on Email</value>
+    <value>We have send an email successfully to entered email address, please go to your mail box and follow further steps</value>
   </data>
   <data name="msgPasswordResetSuccessfully" xml:space="preserve">
     <value>Password Reset Successfully</value>
-  </data>
-  <data name="msgSomethingwentwrong" xml:space="preserve">
-    <value>Something went wrong!</value>
   </data>
   <data name="NewPassword" xml:space="preserve">
     <value>New Password</value>
@@ -179,5 +176,8 @@
   </data>
   <data name="SignSession" xml:space="preserve">
     <value>Sign in to start your session</value>
+  </data>
+  <data name="SomeErrorOccurred" xml:space="preserve">
+    <value>Some error occurred</value>
   </data>
 </root>

@@ -496,7 +496,7 @@
     <value>xaxa</value>
   </data>
   <data name="UserList" xml:space="preserve">
-    <value>User List</value>
+    <value>Users</value>
   </data>
   <data name="UserMangegment" xml:space="preserve">
     <value>User Mangegment</value>
@@ -509,5 +509,11 @@
   </data>
   <data name="UserManage" xml:space="preserve">
     <value>User Manage</value>
+  </data>
+  <data name="ChangePassword" xml:space="preserve">
+    <value>Change Password</value>
+  </data>
+  <data name="RoleList" xml:space="preserve">
+    <value>Roles</value>
   </data>
 </root>

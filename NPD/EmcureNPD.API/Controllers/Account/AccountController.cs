@@ -117,6 +117,19 @@ namespace EmcureNPD.API.Controllers.Account
             }
         }
         [AllowAnonymous]
+        [HttpGet, Route("CheckEmailAddressExists/{emailAddress}")]
+        public bool CheckEmailAddressExists([FromRoute] string emailAddress)
+        {
+            try
+            {
+                return _MasterUserService.CheckEmailAddressExists(emailAddress);
+            }
+            catch (Exception ex)
+            {
+                return false;
+            }
+        }
+        [AllowAnonymous]
         [HttpPost, Route("ResetPassword")]
         public async Task<IActionResult> ResetPassword([FromBody] MasterUserResetPasswordEntity ResetPasswordViewModel)
         {

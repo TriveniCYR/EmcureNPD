@@ -36,7 +36,9 @@ namespace EmcureNPD.Business.Core.ServiceImplementations
         private IRepository<MasterUser> _repository { get; set; }
 
         private IRepository<MasterUserBusinessUnitMapping> _masterUserBusinessUnitMappingrepository { get; set; }
-
+        private IRepository<MasterUserRegionMapping> _masterUserRegionMappingrepository { get; set; }
+        private IRepository<MasterUserCountryMapping> _masterUserCountryMappingrepository { get; set; }
+        private IRepository<MasterUserDepartmentMapping> _masterUserDepartmentMappingrepository { get; set; }
 
         private IRepository<MasterBusinessUnit> _businessUnitRepository { get; set; }
 
@@ -48,6 +50,9 @@ namespace EmcureNPD.Business.Core.ServiceImplementations
             _repository = _unitOfWork.GetRepository<MasterUser>();
             _businessUnitRepository = _unitOfWork.GetRepository<MasterBusinessUnit>();
             _masterUserBusinessUnitMappingrepository = _unitOfWork.GetRepository<MasterUserBusinessUnitMapping>();
+            _masterUserRegionMappingrepository = _unitOfWork.GetRepository<MasterUserRegionMapping>();
+            _masterUserCountryMappingrepository = _unitOfWork.GetRepository<MasterUserCountryMapping>();
+            _masterUserDepartmentMappingrepository = _unitOfWork.GetRepository<MasterUserDepartmentMapping>();
             configuration = _configuration;
         }
 
@@ -203,7 +208,15 @@ namespace EmcureNPD.Business.Core.ServiceImplementations
 
         public async Task<MasterUserEntity> GetById(int id)
         {
-            return _mapperFactory.Get<MasterUser, MasterUserEntity>(await _repository.GetAsync(id));
+            var _userEntity = new MasterUserEntity();
+            _userEntity= _mapperFactory.Get<MasterUser, MasterUserEntity>(await _repository.GetAsync(id));
+
+            _userEntity.BusinessUnitIds = string.Join(',', _masterUserBusinessUnitMappingrepository.GetAll().Where(x => x.UserId == id).Select(x => x.BusinessUnitId));
+            _userEntity.RegionIds = string.Join(',', _masterUserRegionMappingrepository.GetAll().Where(x => x.UserId == id).Select(x => x.RegionId));
+            _userEntity.CountryIds = string.Join(',', _masterUserCountryMappingrepository.GetAll().Where(x => x.UserId == id).Select(x => x.CountryId));
+            _userEntity.DepartmentIds = string.Join(',', _masterUserDepartmentMappingrepository.GetAll().Where(x => x.UserId == id).Select(x => x.DepartmentId));
+
+            return _userEntity;
         }
 
         public async Task<DBOperation> AddUpdateUser(MasterUserEntity entityUser)

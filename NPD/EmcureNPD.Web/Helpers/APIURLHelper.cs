@@ -207,6 +207,10 @@
         public static string GetCountryByRegion = "api/User/GetCountryByRegion"; 
         public static string GetDepartmentList = "api/User/GetDepartmentList";
         public static string GetBusinessUnitByUserId = "api/User/GetBusinessUnitByUserId";
+
+        // Anonymous_Access API for Forgot Passsword
+        public static string Anonymous_CheckEmailAddressExists = "api/Account/CheckEmailAddressExists";
+        
         #endregion
 
         #region Module
