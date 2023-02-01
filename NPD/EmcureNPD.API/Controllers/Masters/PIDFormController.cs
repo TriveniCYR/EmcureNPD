@@ -241,16 +241,18 @@ namespace EmcureNPD.API.Controllers.Masters
                 model.MedicalOpinion = jsonObject.MedicalOpinion;
                 model.Remark = jsonObject.Remark;
                 model.CreatedBy = jsonObject.CreatedBy;
-
                 var files = medicalModel.Files;
-                model.FileName = new string[files.Count];
-                for (int i = 0; i < files.Count; i++)
+                if (files.Count > 0)
                 {
-                    var file = files[i];
-                    model.FileName[i] = "Medical\\" + file.FileName;
+                    model.FileName = new string[files.Count];
+                    for (int i = 0; i < files.Count; i++)
+                    {
+                        var file = files[i];
+                        model.FileName[i] = "Medical\\" + file.FileName;
+                    }
+                    var path = _webHostEnvironment.WebRootPath;
+                    var uploadedFile = _PIDFormService.FileUpload(files, path);
                 }
-                var path = _webHostEnvironment.WebRootPath;
-                var uploadedFile = _PIDFormService.FileUpload(files, path);
                 DBOperation oResponse = await _PIDFormService.Medical(model);
                 if (oResponse == DBOperation.Success)
                     return _ObjectResponse.Create(true, (Int32)HttpStatusCode.OK, ("Save Successfully"));
