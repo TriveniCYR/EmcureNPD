@@ -97,7 +97,7 @@ function approveRejData(type) {
             $('#RejectModel').modal('show');
     }
     else
-        toastr.error("Select Pidf No");
+        toastr.error("Select Pidf");
 }
 function approveRejConfirm(type) {    
     if (objApprRejList != undefined && objApprRejList.length > 0) {

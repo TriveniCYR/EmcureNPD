@@ -6,6 +6,7 @@ $(document).ready(function () {
     if (uri > 0 & status != 1 & status != 2) {
         readOnlyForm();
     }    
+   
 });
 function LoadData() {
     var options = $('#productStrengthUnit_0 option');

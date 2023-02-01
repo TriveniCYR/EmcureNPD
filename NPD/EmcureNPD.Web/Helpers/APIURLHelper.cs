@@ -188,10 +188,10 @@
         #endregion
 
         #region DIA
-        public static string GetAllDIA = "api/DIA/GetAllDIA";
-        public static string SaveDIA = "api/DIA/InsertUpdateDIA";
-        public static string GetDIAById = "api/DIA/GetDIAById";
-        public static string DeleteDIAById = "api/DIA/DeleteDIA";
+        public static string GetAllDIA = "api/Dashboard/GetAllDIA";
+        public static string SaveDIA = "api/Dashboard/InsertUpdateDIA";
+        public static string GetDIAById = "api/Dashboard/GetDIAById";
+        public static string DeleteDIAById = "api/Dashboard/DeleteDIA";
         #endregion
 
         #region User

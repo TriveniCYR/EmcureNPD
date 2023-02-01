@@ -7,7 +7,9 @@
 @inject Microsoft.Extensions.Localization.IStringLocalizer<EmcureNPD.Resource.Master> MasterLocalizer
 @inject Microsoft.Extensions.Localization.IStringLocalizer<EmcureNPD.Resource.Shared> SharedLocalizer
 @model EmcureNPD.Business.Models.PIDFEntity
-
+@{
+    ViewData["Title"] = @MasterLocalizer["PIDF"];
+}
 <div id="SavePIDFModel">
 	<form asp-action="PIDF">
 
@@ -513,9 +515,9 @@
 							}
 							else
 							{
-								<a class="btn btn-primary" onClick="approveRejDeleteData('A')"><i class="far fa-plus-square mr-1"></i> @SharedLocalizer["Approve"]</a>
-								<a class="btn btn-danger" onClick="approveRejDeleteData('R')"><i class="far fa-plus-square mr-1"></i> @SharedLocalizer["Reject"]</a>
-								<a class="btn btn-danger" onClick="approveRejDeleteData('D')"><i class="far fa-plus-square mr-1"></i> @SharedLocalizer["Delete"]</a>
+								<a class="btn btn-success" onClick="approveRejDeleteData('A')"><i class="fa fa-check mr-1"></i> @SharedLocalizer["Approve"]</a>
+								<a class="btn btn-danger" onClick="approveRejDeleteData('R')"><i class="far fa fa-times mr-1"></i> @SharedLocalizer["Reject"]</a>
+								@*<a class="btn btn-danger" onClick="approveRejDeleteData('D')"><i class="far fa-plus-square mr-1"></i> @SharedLocalizer["Delete"]</a>*@
 							}
 							<a class="btn btn-danger" asp-action="PIDFList" asp-controller="PIDF">@SharedLocalizer["Cancel"]</a>
 						</div>
