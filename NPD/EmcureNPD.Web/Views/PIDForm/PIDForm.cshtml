@@ -7,7 +7,9 @@
 @inject Microsoft.Extensions.Localization.IStringLocalizer<EmcureNPD.Resource.Master> MasterLocalizer
 @inject Microsoft.Extensions.Localization.IStringLocalizer<EmcureNPD.Resource.Shared> SharedLocalizer
 @model EmcureNPD.Business.Models.PIDFormEntity
-
+@{
+    ViewData["Title"] = @MasterLocalizer["IPD"];
+}
 <div id="SavePIDForm">
     @*<h5 class="mb-0"><b>Product Identification Form</b></h5>*@
     <form asp-action="PIDForm">
@@ -266,8 +268,8 @@
                             {
                             <button type="submit" class="btn btn-info" onClick="SaveDraftClick();">@SharedLocalizer["SaveDraft"]</button>
                             }
-                            <button type="submit" class="btn btn-success" onClick="SaveApproveClick();">@SharedLocalizer["Approve"]</button>
-                            <button type="submit" class="btn btn-danger" onClick="SaveRejectClick();">@SharedLocalizer["Reject"]</button>
+                            <button type="submit" class="btn btn-success" onClick="SaveApproveClick();"><i class="fa fa-check mr-1"></i>@SharedLocalizer["Approve"]</button>
+                            <button type="submit" class="btn btn-danger" onClick="SaveRejectClick();"><i class="far fa fa-times mr-1"></i>@SharedLocalizer["Reject"]</button>
                         </div>
                     </div>
                 </div>
