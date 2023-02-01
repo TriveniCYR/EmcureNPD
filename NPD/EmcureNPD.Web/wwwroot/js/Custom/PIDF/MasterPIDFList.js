@@ -41,10 +41,43 @@ function InitializePIDFList() {
             "data": "dosageFormName", "name": "DosageForm Name"
         },
         {
-            "data": "countryName", "name": "Country Name"
+            "data": "marketExtension", "name": "Market Extension"
         },
         {
             "data": "productPackagingName", "name": "Product Packaging Name"
+        },       
+        {
+            "data": "APIName", "name": "API Name"
+        },
+        {
+            "data": "APISourcing", "name": "API Sourcing"
+        },
+        {
+            "data": "APIVendor", "name": "API Vendor"
+        },
+        {
+            "data": "brand", "name": "Brand"
+        },
+        {
+            "data": "applicant", "name": "Applicant"
+        },
+        {
+            "data": "countryName", "name": "Country Name"
+        },
+        {
+            "data": "inidication", "name": "Inidication"
+        },
+        {
+            "data": "DIA ", "name": "DIA "
+        },
+        {
+            "data": "transformFormR&DDivision", "name": "Transform Form R&D Division"
+        },
+        {
+            "data": "previousProjectCode", "name": "Previous Project Code"
+        },
+        {
+            "data": "sinkCost", "name": "Sink Cost"
         },
         {
             "data": "createdBy", "name": "Created By"
@@ -91,7 +124,7 @@ function approveRejDeleteData(type) {
             $('#DeleteModel').modal('show');
     }
     else
-        toastr.error("Select Pidf No");
+        toastr.error("Select Pidf");
 }
 function approveRejDeleteConfirm(type) {
     if (objApprRejList != undefined && objApprRejList.length > 0) {
