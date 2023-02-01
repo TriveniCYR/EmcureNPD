@@ -27,11 +27,16 @@ function GetUserDropdownSuccess(data) {
     try {
         $.each(data.BusinessUnit, function (index, object) {
             $('#BusinessUnitId').append($('<option>').text(object.businessUnitName).attr('value', object.businessUnitId));
-            $('#BusinessUnitId').select2();
-            $('#BusinessUnitId option:eq(0)').val(0);
-            $('#BusinessUnitId').val("-");
-            $('#BusinessUnitId').trigger('change');
+           
+           // $('#BusinessUnitId option:eq(0)').val(0);
+            //$('#BusinessUnitId').val("-");
+            //$('#BusinessUnitId').trigger('change');
         });
+        $('#BusinessUnitId').select2();
+        if (parseInt($('#UserId').val()) > 0) {
+            $("#BusinessUnitId").val($("#hdnBusinessUnitId").val()).trigger('change');
+        }
+        
     } catch (e) {
         toastr.error('Error:' + e.message);
     }
@@ -53,13 +58,14 @@ function GetRegionByBusinessUnitSuccess(data) {
         if (data != null) {            
             $(data.Region).each(function (index, item) {
                 $('#RegionId').append($('<option>').text(item.regionName).attr('value', item.regionId));
-                $('#RegionId').select2();
-                $('#RegionId option:eq(0)').val(0);
-                $('#RegionId').val("-"); 
-                $('#RegionId').trigger('change');
+               
+               // $('#RegionId option:eq(0)').val(0);
+               // $('#RegionId').val("-"); 
+               // $('#RegionId').trigger('change');
             });
+            $('#RegionId').select2();
             if (parseInt($('#UserId').val()) > 0) {
-                $("#RegionId").val($("#hdnRegionId").val());                
+                $("#RegionId").val($("#hdnRegionId").val()).trigger('change') ;                
             }
         }
     } catch (e) {
@@ -83,12 +89,13 @@ function GetCountryByRegionSuccess(data) {
         if (data != null) {
             $(data.Country).each(function (index, item) {
                 $('#CountryId').append($('<option>').text(item.countryName).attr('value', item.countryId));
-                $('#CountryId').select2();
-                $('#CountryId option:eq(0)').val(0);
-                $('#CountryId').val("-");
+              
+               // $('#CountryId option:eq(0)').val(0);
+              //  $('#CountryId').val("-");
             });
+            $('#CountryId').select2();
             if (parseInt($('#UserId').val()) > 0) {
-                $("#CountryId").val($("#hdnCountryId").val());
+                $("#CountryId").val($("#hdnCountryId").val()).trigger('change');
             }
         }
     } catch (e) {

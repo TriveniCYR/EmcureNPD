@@ -43,6 +43,7 @@ namespace EmcureNPD.Data.DataAccess.DataContext
         public virtual DbSet<MasterFormulation> MasterFormulations { get; set; }
         public virtual DbSet<MasterMarketExtenstion> MasterMarketExtenstions { get; set; }
         public virtual DbSet<MasterModule> MasterModules { get; set; }
+        public virtual DbSet<MasterNotification> MasterNotifications { get; set; }
         public virtual DbSet<MasterOral> MasterOrals { get; set; }
         public virtual DbSet<MasterPackagingType> MasterPackagingTypes { get; set; }
         public virtual DbSet<MasterPidfstatus> MasterPidfstatuses { get; set; }
@@ -98,13 +99,12 @@ namespace EmcureNPD.Data.DataAccess.DataContext
         public virtual DbSet<Pidfapidetail> Pidfapidetails { get; set; }
         public virtual DbSet<PidfproductStrength> PidfproductStrengths { get; set; }
         public virtual DbSet<RoleModulePermission> RoleModulePermissions { get; set; }
-        public virtual DbSet<MasterNotification> MasterNotifications { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             if (!optionsBuilder.IsConfigured)
             {
-#warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see http://go.microsoft.com/fwlink/?LinkId=723263.
+                #warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see http://go.microsoft.com/fwlink/?LinkId=723263.
                 //optionsBuilder.UseSqlServer("Data Source=180.149.241.172;Initial Catalog=EmcureNPDDev;Persist Security Info=True;User ID=emcurenpddev_dbUser;pwd=emcure123!@#");
                 optionsBuilder.UseSqlServer(DatabaseConnection.NPDDatabaseConnection);
             }
@@ -481,6 +481,21 @@ namespace EmcureNPD.Data.DataAccess.DataContext
                 entity.Property(e => e.ModifyDate).HasColumnType("datetime");
 
                 entity.Property(e => e.ModuleName).HasMaxLength(250);
+            });
+
+            modelBuilder.Entity<MasterNotification>(entity =>
+            {
+                entity.HasKey(e => e.NotificationId);
+
+                entity.ToTable("Master_Notification", "dbo");
+
+                entity.Property(e => e.CreatedDate).HasColumnType("datetime");
+
+                entity.Property(e => e.NotificationDescription).HasMaxLength(500);
+
+                entity.Property(e => e.NotificationTitle)
+                    .IsRequired()
+                    .HasMaxLength(100);
             });
 
             modelBuilder.Entity<MasterOral>(entity =>
