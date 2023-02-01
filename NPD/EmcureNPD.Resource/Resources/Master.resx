@@ -298,7 +298,7 @@
     <value>IPD Management</value>
   </data>
   <data name="Management" xml:space="preserve">
-    <value>Management</value>
+    <value>Management Approval</value>
   </data>
   <data name="PBFAPI" xml:space="preserve">
     <value>PBF &amp; API</value>
@@ -473,5 +473,41 @@
   </data>
   <data name="Strategy" xml:space="preserve">
     <value>Strategy</value>
+  </data>
+  <data name="APIIPDDetails" xml:space="preserve">
+    <value>API IPD Details</value>
+  </data>
+  <data name="APIIPDList" xml:space="preserve">
+    <value>API IPD List</value>
+  </data>
+  <data name="AuditLogs" xml:space="preserve">
+    <value>Audit Logs</value>
+  </data>
+  <data name="PBFAPIList" xml:space="preserve">
+    <value>PBFAPI List</value>
+  </data>
+  <data name="PIDFCommercialDetails" xml:space="preserve">
+    <value>PIDF Commercial Details</value>
+  </data>
+  <data name="PIDFCommercialList" xml:space="preserve">
+    <value>PIDF Commercial List</value>
+  </data>
+  <data name="saxx" xml:space="preserve">
+    <value>xaxa</value>
+  </data>
+  <data name="UserList" xml:space="preserve">
+    <value>User List</value>
+  </data>
+  <data name="UserMangegment" xml:space="preserve">
+    <value>User Mangegment</value>
+  </data>
+  <data name="CountryRegion" xml:space="preserve">
+    <value>Country Region</value>
+  </data>
+  <data name="SelectRegion" xml:space="preserve">
+    <value>Select Region</value>
+  </data>
+  <data name="UserManage" xml:space="preserve">
+    <value>User Manage</value>
   </data>
 </root>

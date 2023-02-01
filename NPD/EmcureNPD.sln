@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio Version 16
-VisualStudioVersion = 16.0.31605.320
+# Visual Studio Version 17
+VisualStudioVersion = 17.4.33103.184
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "EmcureNPD.API", "EmcureNPD.API\EmcureNPD.API.csproj", "{BE51FBBA-CF3F-4F0C-914A-1E8FDD7EB839}"
 	ProjectSection(ProjectDependencies) = postProject
@@ -47,7 +47,11 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "6.Test", "6.Test", "{CD220F
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "EmcureNPD.Utility", "EmcureNPD.Utility\EmcureNPD.Utility.csproj", "{66BEEAE5-5852-4B69-83F0-F23EEBB2C1FF}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EmcureNPD.Resource", "EmcureNPD.Resource\EmcureNPD.Resource.csproj", "{857C8321-6FBC-497E-9545-E4077D6067B8}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "EmcureNPD.Resource", "EmcureNPD.Resource\EmcureNPD.Resource.csproj", "{857C8321-6FBC-497E-9545-E4077D6067B8}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "7.Scheduler", "7.Scheduler", "{CCE436D0-0E2F-4B7F-9FB3-E139E8415A42}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EmcureNPD.Scheduler", "EmcureNPD.Scheduler\EmcureNPD.Scheduler.csproj", "{1A2AD73A-2EEA-407E-B8F1-C881ECF5E0AF}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -83,6 +87,10 @@ Global
 		{857C8321-6FBC-497E-9545-E4077D6067B8}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{857C8321-6FBC-497E-9545-E4077D6067B8}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{857C8321-6FBC-497E-9545-E4077D6067B8}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1A2AD73A-2EEA-407E-B8F1-C881ECF5E0AF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1A2AD73A-2EEA-407E-B8F1-C881ECF5E0AF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1A2AD73A-2EEA-407E-B8F1-C881ECF5E0AF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1A2AD73A-2EEA-407E-B8F1-C881ECF5E0AF}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -95,6 +103,7 @@ Global
 		{AF1C0840-1A08-479B-B920-7D0C1BF010DB} = {6CC95C96-9492-403A-870B-93D00368386C}
 		{66BEEAE5-5852-4B69-83F0-F23EEBB2C1FF} = {1C9D0179-026A-45DF-81AC-35FB3D1EE1EC}
 		{857C8321-6FBC-497E-9545-E4077D6067B8} = {1C9D0179-026A-45DF-81AC-35FB3D1EE1EC}
+		{1A2AD73A-2EEA-407E-B8F1-C881ECF5E0AF} = {CCE436D0-0E2F-4B7F-9FB3-E139E8415A42}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {89189FF5-CDD1-4388-940C-2802A48F0702}

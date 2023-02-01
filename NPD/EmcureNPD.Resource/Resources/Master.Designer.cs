@@ -106,11 +106,29 @@ namespace EmcureNPD.Resource.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to API IPD Details.
+        /// </summary>
+        public static string APIIPDDetails {
+            get {
+                return ResourceManager.GetString("APIIPDDetails", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to API IPD Details Form.
         /// </summary>
         public static string APIIPDDetailsForm {
             get {
                 return ResourceManager.GetString("APIIPDDetailsForm", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to API IPD List.
+        /// </summary>
+        public static string APIIPDList {
+            get {
+                return ResourceManager.GetString("APIIPDList", resourceCulture);
             }
         }
         
@@ -156,6 +174,15 @@ namespace EmcureNPD.Resource.Resources {
         public static string ApprovedGenetics {
             get {
                 return ResourceManager.GetString("ApprovedGenetics", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Audit Logs.
+        /// </summary>
+        public static string AuditLogs {
+            get {
+                return ResourceManager.GetString("AuditLogs", resourceCulture);
             }
         }
         
@@ -273,6 +300,15 @@ namespace EmcureNPD.Resource.Resources {
         public static string CountryName {
             get {
                 return ResourceManager.GetString("CountryName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Country Region.
+        /// </summary>
+        public static string CountryRegion {
+            get {
+                return ResourceManager.GetString("CountryRegion", resourceCulture);
             }
         }
         
@@ -619,7 +655,7 @@ namespace EmcureNPD.Resource.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Management.
+        ///   Looks up a localized string similar to Management Approval.
         /// </summary>
         public static string Management {
             get {
@@ -808,11 +844,38 @@ namespace EmcureNPD.Resource.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to PBFAPI List.
+        /// </summary>
+        public static string PBFAPIList {
+            get {
+                return ResourceManager.GetString("PBFAPIList", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to PIDF Commercial.
         /// </summary>
         public static string PIDFCommercial {
             get {
                 return ResourceManager.GetString("PIDFCommercial", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to PIDF Commercial Details.
+        /// </summary>
+        public static string PIDFCommercialDetails {
+            get {
+                return ResourceManager.GetString("PIDFCommercialDetails", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to PIDF Commercial List.
+        /// </summary>
+        public static string PIDFCommercialList {
+            get {
+                return ResourceManager.GetString("PIDFCommercialList", resourceCulture);
             }
         }
         
@@ -1024,11 +1087,29 @@ namespace EmcureNPD.Resource.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to xaxa.
+        /// </summary>
+        public static string saxx {
+            get {
+                return ResourceManager.GetString("saxx", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Scale Up.
         /// </summary>
         public static string ScaleUp {
             get {
                 return ResourceManager.GetString("ScaleUp", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Select Region.
+        /// </summary>
+        public static string SelectRegion {
+            get {
+                return ResourceManager.GetString("SelectRegion", resourceCulture);
             }
         }
         
@@ -1119,6 +1200,33 @@ namespace EmcureNPD.Resource.Resources {
         public static string UnitofMeasurements {
             get {
                 return ResourceManager.GetString("UnitofMeasurements", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to User List.
+        /// </summary>
+        public static string UserList {
+            get {
+                return ResourceManager.GetString("UserList", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to User Manage.
+        /// </summary>
+        public static string UserManage {
+            get {
+                return ResourceManager.GetString("UserManage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to User Mangegment.
+        /// </summary>
+        public static string UserMangegment {
+            get {
+                return ResourceManager.GetString("UserMangegment", resourceCulture);
             }
         }
         

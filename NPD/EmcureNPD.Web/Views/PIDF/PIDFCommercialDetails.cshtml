@@ -8,6 +8,7 @@
 @inject Microsoft.Extensions.Localization.IStringLocalizer<EmcureNPD.Resource.Master> MasterLocalizer
 @inject Microsoft.Extensions.Localization.IStringLocalizer<EmcureNPD.Resource.Shared> SharedLocalizer
 @model EmcureNPD.Business.Models.PIDFCommercialEntity
+@{ ViewData["Title"] = @MasterLocalizer["PIDFCommercialDetails"];}
 <div>
     <div id="PIDFScreen">           
         @{ await Html.RenderPartialAsync("~/Views/PIDF/PIDF.cshtml",Model.pidfEntity);}

@@ -14,6 +14,9 @@
     $('#RegionId').change(function () {
         GetCountryByRegion();
     });
+
+    $('#RegionId').css("height", "fit - content"); //height: fit - content
+    $('#CountryId').css("height", "fit - content"); //height: fit - content  
    
 });
 

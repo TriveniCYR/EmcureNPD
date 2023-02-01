@@ -1,4 +1,5 @@
-﻿$.fn.serializeObject = function () {
+﻿
+$.fn.serializeObject = function () {
     var o = {};
     var a = this.serializeArray();
     $.each(a, function () {
@@ -51,14 +52,23 @@ function setNavigation() {
     var path = window.location.pathname;
     path = path.replace(/\/$/, "");
     path = decodeURIComponent(path);
-
+    var CurrentpathArr = path.split('/');
+    
     $(".nav-item a").each(function () {
+        debugger;
         var href = $(this).attr('href');
         if (href != '#' && href != undefined) {
             if (path.substring(0, href.length) === href) {
                 $(this).addClass('active');
                 $(this).parent().parent().parent().addClass('menu-is-opening menu-open');
             }
+            /*----start----New logic added----------------*/
+            var NavPathArr = href.split('/');
+            if (CurrentpathArr[1] == NavPathArr[1]) {
+                $(this).addClass('active');
+                $(this).parent().parent().parent().addClass('menu-is-opening menu-open');
+            }
+            /*-----end---New logic added----------------*/
         }
         else {
             $(".nav-treeview .nav-item a").each(function () {
