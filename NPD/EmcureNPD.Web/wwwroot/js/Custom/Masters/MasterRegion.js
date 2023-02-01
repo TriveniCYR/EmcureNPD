@@ -31,7 +31,7 @@ function GetRegionListSuccess(data) {
     try {
         $('#RegionTable tbody').html('')
         $.each(data._object, function (index, object) {
-            $('#RegionTable tbody').append('<tr><td>' + object.regionName + '</td><td><span style="color:' + (object.isActive ? "green" : "red") + '">' + (object.isActive ? "Active" : "InActive") + '</span></td><td>  <a class="btn btn-primary" data-toggle="modal" data-target="#SaveRegionModel" data-backdrop="static" data-keyboard="false"  onclick="GetRegionById(' + object.RegionId + '); return false;"><i class="fa fa-fw fa-edit mr-1"></i> ' + EditLabel + '</a> <a class="btn btn-danger" data-toggle="modal" data-target="#DeleteRegionModel" data-backdrop="static" data-keyboard="false" onclick="ConfirmationDeleteRegion(' + object.RegionId + '); return false;"><i class="fa fa-fw fa-trash mr-1"></i> ' + DeleteLabel + '</a>  </td></tr>');
+            $('#RegionTable tbody').append('<tr><td>' + object.regionName + '</td><td><span style="color:' + (object.isActive ? "green" : "red") + '">' + (object.isActive ? "Active" : "InActive") + '</span></td><td>  <a href="" title="Edit" data-toggle="modal" data-target="#SaveRegionModel" data-backdrop="static" data-keyboard="false"  onclick="GetRegionById(' + object.RegionId + '); return false;"><i class="fa fa-fw fa-edit text-primary mr-1"></i> ' + '</a> <a href="" title="Delete" data-toggle="modal" data-target="#DeleteRegionModel" data-backdrop="static" data-keyboard="false" onclick="ConfirmationDeleteRegion(' + object.RegionId + '); return false;"><i class="fa fa-fw fa-trash text-danger mr-1"></i> ' + '</a>  </td></tr>');
         });
         StaticDataTable("#RegionTable");
     } catch (e) {

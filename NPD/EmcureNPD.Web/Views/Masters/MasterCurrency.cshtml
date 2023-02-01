@@ -7,7 +7,7 @@
 
 @model EmcureNPD.Business.Models.MasterCurrencyCountryMappingEntity
 @{
-    ViewData["Title"] = @MasterLocalizer["CurrencyTitle"];
+    ViewData["Title"] = @MasterLocalizer["Currency - Emcure NPD"];
 }
 <div class="row">
     <section class="col-lg-12">
@@ -57,7 +57,7 @@
                                 </div>
                             </div>
                         </div>
-                        @Html.Hidden("CurrencyID")
+                        @Html.Hidden("CurrencyId")
                         <div class="card-footer text-center">
                             <button type="button" onclick="DeleteCurrency()" data-dismiss="modal" class="btn btn-primary mr-2">@SharedLocalizer["Yes"]</button>
                             <a class="btn btn-danger" data-dismiss="modal">@SharedLocalizer["No"]</a>

@@ -10,7 +10,7 @@ function GetDosageFormListSuccess(data) {
     try {
         $('#DosageFormTable tbody').html('')
         $.each(data._object, function (index, object) {
-            $('#DosageFormTable tbody').append('<tr><td>' + object.dosageFormName + '</td><td><span style="color:' + (object.isActive ? "green" : "red") + '">' + (object.isActive ? "Active" : "InActive") + '</span></td><td>  <a class="btn btn-primary" data-toggle="modal" data-target="#SaveDosageFormModel" data-backdrop="static" data-keyboard="false"  onclick="GetDosageFormById(' + object.dosageFormId + '); return false;"><i class="fa fa-fw fa-edit mr-1"></i> ' + EditLabel + '</a> <a class="btn btn-danger" data-toggle="modal" data-target="#DeleteDosageFormModel" data-backdrop="static" data-keyboard="false" onclick="ConfirmationDeleteDosageForm(' + object.dosageFormId + '); return false;"><i class="fa fa-fw fa-trash mr-1"></i> ' + DeleteLabel + '</a>  </td></tr>');
+            $('#DosageFormTable tbody').append('<tr><td>' + object.dosageFormName + '</td><td><span style="color:' + (object.isActive ? "green" : "red") + '">' + (object.isActive ? "Active" : "InActive") + '</span></td><td>  <a href="" title="Edit" data-toggle="modal" data-target="#SaveDosageFormModel" data-backdrop="static" data-keyboard="false"  onclick="GetDosageFormById(' + object.dosageFormId + '); return false;"><i class="fa fa-fw fa-edit text-primary mr-1"></i> ' + '</a> <a href="" title="Delete" data-toggle="modal" data-target="#DeleteDosageFormModel" data-backdrop="static" data-keyboard="false" onclick="ConfirmationDeleteDosageForm(' + object.dosageFormId + '); return false;"><i class="fa fa-fw fa-trash text-danger mr-1"></i> ' + '</a>  </td></tr>');
         });
         StaticDataTable("#DosageFormTable");
     } catch (e) {
