@@ -446,7 +446,7 @@ namespace EmcureNPD.Business.Core.Implementation
 
                     foreach (var item in MedicalFile)
                     {
-                        if (i < medicalModel.FileName.Count())
+                        if (medicalModel.FileName!=null && i < medicalModel.FileName.Count())
                         {
                             PidfMedicalFile medicalFiles = new PidfMedicalFile
                             {
@@ -459,7 +459,7 @@ namespace EmcureNPD.Business.Core.Implementation
                             _pidfMedicalFilerepository.UpdateAsync(medicalFiles);
                             i++;
                         }
-                        else
+                        else if(medicalModel.FileName != null)
                         {
                             PidfMedicalFile medicalFiles = new PidfMedicalFile
                             {
@@ -470,7 +470,7 @@ namespace EmcureNPD.Business.Core.Implementation
                         }
                     }
 
-                    if (i < medicalModel.FileName.Count())
+                    if (medicalModel.FileName != null && i < medicalModel.FileName.Count())
                     {
                         foreach (var filename in medicalModel.FileName.Skip(i))
                         {
@@ -492,7 +492,7 @@ namespace EmcureNPD.Business.Core.Implementation
                     return DBOperation.NotFound;
                 }
             }
-            else
+            else if(medicalModel.FileName != null)
             {
                 var medical = _mapperFactory.Get<PIDFMedicalViewModel, PidfMedical>(medicalModel);
                 medical.MedicalOpinion = medicalModel.MedicalOpinion;
@@ -517,6 +517,10 @@ namespace EmcureNPD.Business.Core.Implementation
                 await _unitOfWork.SaveChangesAsync();
 
                 return DBOperation.Success;
+            }
+            else
+            {
+                return DBOperation.Error;
             }
 
         }

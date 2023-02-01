@@ -10,11 +10,11 @@
             <div class="col-md-6">
                 <P class="h3">Medical Opinion</P>
                 <div class="mt-5">
-                <label>Positive</label>
-                <input asp-for=MedicalOpinion type="radio" name="MedicalOpinion" value=1 />
-                <label>Negative</label>
-                <input asp-for=MedicalOpinion type="radio" name="MedicalOpinion" value=0 /><br />
-                <span asp-validation-for=MedicalOpinion class="text-danger"></span>
+                    <label>Positive</label>
+                    <input asp-for=MedicalOpinion type="radio" name="MedicalOpinion" value=1 />
+                    <label>Negative</label>
+                    <input asp-for=MedicalOpinion type="radio" name="MedicalOpinion" value=0 /><br />
+                    <span asp-validation-for=MedicalOpinion class="text-danger"></span>
 
                 </div>
             </div>
@@ -28,24 +28,42 @@
             </div>
             <div class="col-md-6">
                 <label>File Upload</label>
-                <input type="file" name="File"  id="File" multiple/>
+                <input type="file" name="File" id="File" multiple />
                 <span asp-validation-for=File class="text-danger"></span>
                 <button class="btn btn-primary">Browse</button> <button class="btn btn-primary">Preview</button>
+                 <ul>
+                    @{
+                        if (Model.FileName != null)
+                        {
+                            @foreach (var fileName in Model.FileName)
+                            {
+                                <li >@fileName</li>
+                            }
+                        }
+                    }
+                </ul>
             </div>
 
         </div>
         <div class="row mt-5" style="text-align:center">
             <div class="col-md-12">
                 <input type="submit" class="btn btn-primary" value=Submit />
-                <input class="btn btn-danger"  value=Cancel />
+                <input class="btn btn-danger" value=Cancel />
                 <input type="submit" class="btn btn-primary" value="Save Draft" />
             </div>
         </div>
-         <div class="row mt-5" style="text-align:center">
+        <div class="row mt-5" style="text-align:center">
             <div class="col-md-12">
-                <input type="text" asp-for=PidfmedicalId hidden/>
-                <input type="text" asp-for=PidfmedicalFileId hidden/>
+                <input type="text" asp-for=PidfmedicalId hidden />
+                <input type="text" asp-for=PidfmedicalFileId hidden />
                 @* <input type="text" asp-for=FileName hidden/>*@
+                @*<h4>Files:</h4>
+                <ul>
+                    @foreach (var fileName in Model.FileName)
+                    {
+                        <li>@fileName</li>
+                    }
+                </ul>*@
             </div>
         </div>
     </form>

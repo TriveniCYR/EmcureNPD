@@ -241,12 +241,15 @@ namespace EmcureNPD.Web.Controllers
                 string x = JsonConvert.SerializeObject(medicalEntity);
 
                 var form = new MultipartFormDataContent();
-                foreach (IFormFile file in medicalEntity.File)
+                if (medicalEntity.File !=null)
                 {
-                    var fileStream = file.OpenReadStream();
-                    var fileContent = new StreamContent(fileStream);
-                    fileContent.Headers.ContentType = MediaTypeHeaderValue.Parse("text/plain");
-                    form.Add(fileContent, "file", file.FileName);
+                    foreach (IFormFile file in medicalEntity.File)
+                    {
+                        var fileStream = file.OpenReadStream();
+                        var fileContent = new StreamContent(fileStream);
+                        fileContent.Headers.ContentType = MediaTypeHeaderValue.Parse("text/plain");
+                        form.Add(fileContent, "file", file.FileName);
+                    }
                 }
 
                 form.Add(new StringContent(JsonConvert.SerializeObject(medicalEntity)), "Data");

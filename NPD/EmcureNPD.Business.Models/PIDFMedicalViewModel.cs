@@ -23,7 +23,6 @@ namespace EmcureNPD.Business.Models
         public long PidfmedicalFileId { get; set; }
         public string[] FileName { get; set; }
         public int CreatedBy { get; set; }
-        [Required]
 
         [NotMapped]
         public List<IFormFile> File { get; set; }
