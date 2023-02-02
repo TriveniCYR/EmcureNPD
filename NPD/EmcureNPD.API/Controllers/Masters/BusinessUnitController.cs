@@ -166,13 +166,13 @@ namespace EmcureNPD.API.Controllers.Masters
         /// <response code="404">Not Found</response>
         /// <response code="405">Method Not Allowed</response>
         /// <response code="500">Internal Server</response>
-        [HttpPost("GetCountryByBusinessUnitId/{id}")]
-        public async Task<IActionResult> GetCountryByBusinessUnitId([FromRoute] int id)
+        [HttpPost("GetRegionByBusinessUnitId/{id}")]
+        public async Task<IActionResult> GetRegionByBusinessUnitId([FromRoute] int id)
         {
             try
             {
-                var oCountryEntity = await _MasterBusinessUnitService.GetCountryByBusinessUnitId(id);
-                if (oCountryEntity != null && oCountryEntity.CountryId > 0)
+                var oCountryEntity = await _MasterBusinessUnitService.GetRegionByBusinessUnitId(id);
+                if (oCountryEntity != null && oCountryEntity.RegionId > 0)
                     return _ObjectResponse.Create(oCountryEntity, (Int32)HttpStatusCode.OK);
                 else
                     return _ObjectResponse.Create(null, (Int32)HttpStatusCode.BadRequest, "Record not found");

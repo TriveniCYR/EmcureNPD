@@ -83,10 +83,10 @@
         #endregion
 
         #region BusinessUnitMapping 
-        public static string GetAllBusinessUnitCountryMapping = "api/BusinessUnitCountryMapping/GetAllBusinessUnitCountryMapping";
-        public static string SaveBusinessUnitCountryMapping = "api/BusinessUnitCountryMapping/InsertUpdateBusinessUnitCountryMapping";
-        public static string GetBusinessUnitCountryMappingById = "api/BusinessUnitCountryMapping/GetBusinessUnitCountryMappingById";
-        public static string DeleteBusinessUnitCountryMappingById = "api/BusinessUnitCountryMapping/DeleteBusinessUnitCountryMapping";
+        public static string GetAllBusinessUnitRegionMapping = "api/BusinessUnitRegionMapping/GetAllBusinessUnitRegionMapping";
+        public static string SaveBusinessUnitRegionMapping = "api/BusinessUnitRegionMapping/InsertUpdateBusinessUnitRegionMapping";
+        public static string GetBusinessUnitRegionMappingById = "api/BusinessUnitRegionMapping/GetBusinessUnitRegionMappingById";
+        public static string DeleteBusinessUnitRegionMappingById = "api/BusinessUnitRegionMapping/DeleteBusinessUnitRegionMapping";
         #endregion
 
         #region RegionMapping 

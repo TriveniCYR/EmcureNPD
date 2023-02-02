@@ -57,7 +57,7 @@
                                 </div>
                             </div>
                         </div>
-                        @Html.Hidden("CurrencyId")
+                        @Html.Hidden("CurrencyID")
                         <div class="card-footer text-center">
                             <button type="button" onclick="DeleteCurrency()" data-dismiss="modal" class="btn btn-primary mr-2">@SharedLocalizer["Yes"]</button>
                             <a class="btn btn-danger" data-dismiss="modal">@SharedLocalizer["No"]</a>
@@ -99,6 +99,13 @@
                                         @Html.LabelFor(model =>model.MasterCurrencyEntity.CurrencySymbol,"Currency Symbol", new { @class = "control-label"  })
                                         @Html.EditorFor(model=>model.MasterCurrencyEntity.CurrencySymbol, new { htmlAttributes = new { @autocomplete = "off", @class = "form-control checkbox-checked", @placeholder = @SharedLocalizer["CurrencySymbol"] } })
                                         @Html.ValidationMessageFor(model =>model.MasterCurrencyEntity.CurrencySymbol, "", new { @class = "text-danger" })
+                                    </div>
+
+                                    <div class="form-group required">
+                                        <input type="hidden" id="CurrencyCountryMappingId" name="CurrencyCountryMappingId" value="0" />
+                                        @Html.LabelFor(model => model.MasterCountryEntity.CountryName,"Country Name", new { @class = "control-label" })
+                                        @Html.DropDownListFor(model => model.CountryId, new List<SelectListItem> { }, "--Select--", new { @class = "form-control", @multiple = "multiple" })
+                                        @Html.ValidationMessageFor(model => model.CountryId, "", new { @class = "text-danger" })
                                     </div>
 
                                 </div>

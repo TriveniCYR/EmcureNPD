@@ -32,7 +32,7 @@ function GetCurrencyListSuccess(data) {
     try {
         $('#CurrencyTable tbody').html('')
         $.each(data._object, function (index, object) {
-            $('#CurrencyTable tbody').append('<tr><td>' + object.currencyName + '</td> <td>' + object.currencyCode + '</td> <td>' + object.currencySymbol + '</td> <td><span style="color:' + (object.isActive ? "green" : "red") + '">' + (object.isActive ? "Active" : "InActive") + '</span></td><td>  <a href="" title="Edit" data-toggle="modal" data-target="#SaveCurrencyModel" data-backdrop="static" data-keyboard="false"  onclick="GetCurrencyById(' + object.CurrencyId + '); return false;"><i class="fa fa-fw fa-edit text-primary mr-1"></i> ' + '</a> <a href="" title="Delete" data-toggle="modal" data-target="#DeleteCurrencyModel" data-backdrop="static" data-keyboard="false" onclick="ConfirmationDeleteCurrency(' + object.CurrencyId + '); return false;"><i class="fa fa-fw fa-trash text-danger mr-1"></i> ' + '</a>  </td></tr>');
+            $('#CurrencyTable tbody').append('<tr><td>' + object.currencyName + '</td> <td>' + object.currencyCode + '</td> <td>' + object.currencySymbol + '</td> <td><span style="color:' + (object.isActive ? "green" : "red") + '">' + (object.isActive ? "Active" : "InActive") + '</span></td><td>  <a href="" title="Edit" data-toggle="modal" data-target="#SaveCurrencyModel" data-backdrop="static" data-keyboard="false"  onclick="GetCurrencyById(' + object.currencyId + '); return false;"><i class="fa fa-fw fa-edit text-primary mr-1"></i> ' + '</a> <a href="" title="Delete" data-toggle="modal" data-target="#DeleteCurrencyModel" data-backdrop="static" data-keyboard="false" onclick="ConfirmationDeleteCurrency(' + object.currencyId + '); return false;"><i class="fa fa-fw fa-trash text-danger mr-1"></i> ' + '</a>  </td></tr>');
         });
         StaticDataTable("#CurrencyTable");
     } catch (e) {
@@ -50,16 +50,16 @@ function GetCurrencyById(id) {
 }
 function GetCurrencyByIdSuccess(data) {
     try {
-       /* var countryIds = data._object.countryIds.toString();
+        var countryIds = data._object.countryIds.toString();
         if (countryIds.includes(',')) { countryIds = countryIds.toString().split(','); }
 
-        $('#SaveCurrencyModel #CountryId').val(countryIds);*/
+        $('#SaveCurrencyModel #CountryId').val(countryIds);
         $('#SaveCurrencyModel #CountryId').trigger('change');
         
 
         $('#SaveCurrencyModel #CurrencyCountryMappingId').val(data._object.masterBusinessCountryMappingIds.toString());
 
-        $('#SaveCurrencyModel #CurrencyID').val(data._object.CurrencyId);
+        $('#SaveCurrencyModel #CurrencyID').val(data._object.currencyId);
         $('#SaveCurrencyModel #MasterCurrencyEntity_CurrencyName').val(data._object.currencyName);
         $('#SaveCurrencyModel #MasterCurrencyEntity_CurrencyCode').val(data._object.currencyCode);
         $('#SaveCurrencyModel #MasterCurrencyEntity_CurrencySymbol').val(data._object.currencySymbol);
@@ -92,7 +92,7 @@ function SaveCurrencyForm(form) {
         CurrencyCode: $('#SaveCurrencyModel #MasterCurrencyEntity_CurrencyCode').val(),
         CurrencySymbol: $('#SaveCurrencyModel #MasterCurrencyEntity_CurrencySymbol').val(),
         isActive: $('#SaveCurrencyModel #MasterCurrencyEntity_IsActive').prop('checked'),
-       // countryIds: $('#CountryId').val(),
+        countryIds: $('#CountryId').val().toString(),
         masterBusinessCountryMappingIds: $('#SaveCurrencyModel #CurrencyCountryMappingId').val()
     };
     if ($(form).valid()) {
