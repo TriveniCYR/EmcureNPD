@@ -27,8 +27,8 @@
                     <div class="form-group required">
                         @Html.LabelFor(model => model.BusinessUnitId,@SharedLocalizer["BusinessUnit"], new { @class = "control-label" })
                         @*<select id="BusinessUnitId" name="BusinessUnitId" class="form-control readOnlyUpdate" required></select>*@
-                        @Html.DropDownListFor(model => model.BusinessUnitId, new List<SelectListItem> { }, "--Select--", new { @class = "form-control", @multiple = "multiple" })
-                        <input type="hidden" id="hdnBusinessUnitId" value="@Model.BusinessUnitId" />
+                        @Html.DropDownListFor(model => model.BusinessUnitId, new List<SelectListItem> { }, new { @class = "form-control", @multiple = "multiple" })
+                        <input type="hidden" id="hdnBusinessUnitId" value="@Model.BusinessUnitIds" />
                         @Html.ValidationMessageFor(model => model.BusinessUnitId, "", new { @class = "text-danger" })
                     </div>
                 </div>
@@ -39,7 +39,7 @@
                         @Html.LabelFor(model => model.RegionId,@SharedLocalizer["Region"], new { @class = "control-label" })
                         @*<select id="RegionId" name="RegionId" class="form-control" required></select>*@
                         @Html.DropDownListFor(model => model.RegionId, new List<SelectListItem> { }, new {@placeholder =@MasterLocalizer["SelectRegion"], @class = "form-control", @multiple = "multiple"})
-                        <input type="hidden" id="hdnRegionId" value="@Model.RegionId" />
+                        <input type="hidden" id="hdnRegionId" value="@Model.RegionIds" />
                         @Html.ValidationMessageFor(model => model.RegionId, "", new { @class = "text-danger" })
                     </div>
                 </div>
@@ -48,7 +48,7 @@
                         @Html.LabelFor(model => model.CountryId,@SharedLocalizer["Country"], new { @class = "control-label" })
                         @*<select id="CountryId" name="CountryId" class="form-control" required></select>*@
                         @Html.DropDownListFor(model => model.CountryId, new List<SelectListItem> { }, new {@placeholder =@MasterLocalizer["CountryRegion"], @class = "form-control", @multiple = "multiple" })
-                        <input type="hidden" id="hdnCountryId" value="@Model.CountryId" />
+                        <input type="hidden" id="hdnCountryId" value="@Model.CountryIds" />
                         @Html.ValidationMessageFor(model => model.CountryId, "", new { @class = "text-danger" })
                     </div>
                 </div>
@@ -56,8 +56,8 @@
                     <div class="form-group required">
                         @Html.LabelFor(model => model.DepartmentId,"Department", new { @class = "control-label" })
                        @* <select id="DepartmentId" name="DepartmentId" class="form-control" required></select>*@
-                        @Html.DropDownListFor(model => model.DepartmentId, new List<SelectListItem> { }, "--Select--", new { @class = "form-control", @multiple = "multiple" })
-                        <input type="hidden" id="hdnDepartmentId" value="@Model.DepartmentId" />
+                        @Html.DropDownListFor(model => model.DepartmentId, new List<SelectListItem> { }, new { @class = "form-control", @multiple = "multiple" })
+                        <input type="hidden" id="hdnDepartmentId" value="@Model.DepartmentIds" />
                         @Html.ValidationMessageFor(model => model.DepartmentId, "", new { @class = "text-danger" })
                     </div>
                 </div>
@@ -67,7 +67,7 @@
                     <div class="form-group required">
                         @Html.LabelFor(model => model.EmailAddress, "Email Address",new { @class = "control-label" })
                         @Html.TextBoxFor(model => model.EmailAddress, new { @autocomplete = "off", @class = "form-control checkbox-checked readOnlyUpdate", @placeholder = @SharedLocalizer["EmailId"] })
-                        @Html.ValidationMessageFor(model => model.EmailAddress, "", new { @class = "text-danger" })
+                        @*@Html.ValidationMessageFor(model => model.EmailAddress, "", new { @class = "text-danger" })*@
                         @Html.ValidationMessage("EmailExist", new { @class = "text-danger" })
                     </div>
                 </div>

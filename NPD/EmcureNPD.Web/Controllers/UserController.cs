@@ -172,6 +172,7 @@ namespace EmcureNPD.Web.Controllers
         }
 
         [NonAction]
+        // if CheckEmailAddressExists() is false then Email Id Exist in Db
         public bool CheckEmailAddressExists(string EmailAddress)
         {
             bool EmailExist= true;

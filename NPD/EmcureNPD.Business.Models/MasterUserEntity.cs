@@ -28,12 +28,15 @@ namespace EmcureNPD.Business.Models
                
         public int[] CountryId { get; set; }
         public int[] RegionId { get; set; }
-        //public int DepartmentIds { get; set; }
-
-        //public int BusinessUnitIds { get; set; }
-
-        //public int CountryIds { get; set; }
-        //public int RegionIds { get; set; }
+        public string DepartmentIds { get; set; }
+        public string BusinessUnitIds { get; set; }
+        public string CountryIds { get; set; }
+        public string RegionIds { get; set; }
+        //-------Start------New Columns Added to User List------
+        public string RoleName { get; set; }
+        public string DepartmentName { get; set; }
+        public string BusinessUnitName { get; set; }
+        //-------End------New Columns Added to User List------
 
         public int RoleId { get; set; }
 
