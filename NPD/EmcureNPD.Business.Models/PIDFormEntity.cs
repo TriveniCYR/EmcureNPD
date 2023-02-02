@@ -82,6 +82,13 @@ namespace EmcureNPD.Business.Models
         public string BrandName { get; set; }
         public string ApprovedGenerics { get; set; }
         public string LaunchedGenerics { get; set; }
+        public string MarketExtension { get; set; }
+        public string Applicant { get; set; }
+        public string Inidication { get; set; }
+        public string DiaName { get; set; }
+        public string TransformFormRandDDivision { get; set; }
+        public string PreviousProjectCode { get; set; }
+        public string SinkCost { get; set; }
         public string CreatedBy { get; set; }
         public string encpidfid { get; set; }
         public string encbud { get; set; }

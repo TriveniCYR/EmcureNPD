@@ -63,10 +63,19 @@ function InitializePIDFList() {
             "data": "applicant", "name": "Applicant"
         },
         {
-            "data": "country", "name": "Country"
+            "data": "countryName", "name": "Country"
         },
         {
             "data": "diaName", "name": "diaName"
+        },
+        {
+            "data": "transformFormRandDDivision", "name": "Transform Form R&D Division"
+        },
+        {
+            "data": "previousProjectCode", "name": "Previous Project Code"
+        },
+        {
+            "data": "sinkCost", "name": "Sink Cost"
         },
         {
             "data": "createdBy", "name": "Created By"
