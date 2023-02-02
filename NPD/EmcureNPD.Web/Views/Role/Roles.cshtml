@@ -43,11 +43,11 @@
                                 <td>@Html.DisplayFor(module => item.RoleName)</td>
                                 <td>@Html.LabelFor(model => model.IsActive, item.IsActive ? "Active" : "InActive", new { @style = item.IsActive ? "color:green;" : "color:red;" })</td>
                                 <td>
-                                    <a class="btn btn-primary" asp-action="RoleManage" asp-route-roleId="@item.RoleId">
-                                        <i class="fa fa-fw fa-edit mr-1"></i>Edit
+                                    <a title="Edit" class="btn btn-primary" asp-action="RoleManage" asp-route-roleId="@item.RoleId">
+                                        <i class="fa fa-fw fa-edit mr-1"></i>
                                     </a>
 
-                                    <a class="btn btn-danger" data-toggle="modal" data-target="#DeleteRoleModel" data-backdrop="static" data-keyboard="false" onclick="ConfirmationRole(@item.RoleId); return false;"><i class="fa fa-fw fa-trash mr-1"></i>@SharedLocalizer["Delete"]</a>
+                                    <a title="Delete" class="btn btn-danger" data-toggle="modal" data-target="#DeleteRoleModel" data-backdrop="static" data-keyboard="false" onclick="ConfirmationRole(@item.RoleId); return false;"><i class="fa fa-fw fa-trash mr-1"></i></a>
                                 </td>
                             </tr>
                         }

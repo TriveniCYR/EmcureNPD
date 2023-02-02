@@ -55,17 +55,19 @@ function setNavigation() {
     var CurrentpathArr = path.split('/');
     
     $(".nav-item a").each(function () {
-        
+        var IshrefFound = false;
         var href = $(this).attr('href');
+        var NavPathArr = href.split('/');
         if (href != '#' && href != undefined) {
             if (path.substring(0, href.length) === href) {
                 $(this).addClass('active');
                 $(this).parent().parent().parent().addClass('menu-is-opening menu-open');
+                IshrefFound = true;
+                return false;
             }
-            /*----start----New logic added----------------*/
-            var NavPathArr = href.split('/');
-            if (CurrentpathArr[1] == NavPathArr[1]) {
-                $(this).addClass('active');
+            /*----start----New logic added----------------*/            
+            if (CurrentpathArr[1] == NavPathArr[1] && !IshrefFound) {
+               // $(this).addClass('active');
                 $(this).parent().parent().parent().addClass('menu-is-opening menu-open');
             }
             /*-----end---New logic added----------------*/
