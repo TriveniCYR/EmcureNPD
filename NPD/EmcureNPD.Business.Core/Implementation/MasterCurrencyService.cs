@@ -38,7 +38,7 @@ namespace EmcureNPD.Business.Core.ServiceImplementations
         public async Task<MasterCurrencyEntity> GetById(int id)
         {
             var  Currency = _mapperFactory.Get<MasterCurrency, MasterCurrencyEntity>(await _repository.GetAsync(id));
-           // Currency.CountryIds = string.Join(",", _repositoryMasterCurrencyCountryMapping.GetAllQuery().Where(x => x.CurrencyId == Currency.CurrencyId).Select(x => x.CountryId.ToString()));
+            Currency.CountryIds = string.Join(",", _repositoryMasterCurrencyCountryMapping.GetAllQuery().Where(x => x.CurrencyId == Currency.CurrencyId).Select(x => x.CountryId.ToString()));
             Currency.MasterBusinessCountryMappingIds = string.Join(",", _repositoryMasterCurrencyCountryMapping.GetAllQuery().Where(x => x.CurrencyId == Currency.CurrencyId).Select(x => x.CurrencyCountryMappingId.ToString()));
             return Currency;
         }
@@ -48,9 +48,9 @@ namespace EmcureNPD.Business.Core.ServiceImplementations
             MasterCurrency objCurrency;
             var oMasterCurrencyCountryMapping = new MasterCurrencyCountryMappingEntity(); ;
             var objMasterCurrencyCountryMapping = new MasterCurrencyCountryMapping();
-            
-        //    string[] countryList = entityCurrency.CountryIds.Split(',');
-        //    int[] countryIds = countryList.Select(int.Parse).ToArray();
+
+            string[] countryList = entityCurrency.CountryIds.Split(',');
+            int[] countryIds = countryList.Select(int.Parse).ToArray();
 
             if (entityCurrency.CurrencyId > 0)
             {
@@ -73,12 +73,12 @@ namespace EmcureNPD.Business.Core.ServiceImplementations
                         }
                         await _unitOfWork.SaveChangesAsync();
 
-                        /*foreach (var country in countryIds)
+                        foreach (var country in countryIds)
                         {
                             oMasterCurrencyCountryMapping.CountryId = country;
                             objMasterCurrencyCountryMapping = _mapperFactory.Get<MasterCurrencyCountryMappingEntity, MasterCurrencyCountryMapping>(oMasterCurrencyCountryMapping);
                             _repositoryMasterCurrencyCountryMapping.AddAsync(objMasterCurrencyCountryMapping);
-                        }*/
+                        }
                     }
                     await _unitOfWork.SaveChangesAsync();
                 }
@@ -97,12 +97,12 @@ namespace EmcureNPD.Business.Core.ServiceImplementations
                 if (objCurrency.CurrencyId != 0)
                 {
                     oMasterCurrencyCountryMapping.CurrencyId = objCurrency.CurrencyId;
-                    /*foreach (var country in countryIds)
+                    foreach (var country in countryIds)
                     {
                         oMasterCurrencyCountryMapping.CountryId = country;
                         objMasterCurrencyCountryMapping = _mapperFactory.Get<MasterCurrencyCountryMappingEntity, MasterCurrencyCountryMapping>(oMasterCurrencyCountryMapping);
                         _repositoryMasterCurrencyCountryMapping.AddAsync(objMasterCurrencyCountryMapping);
-                    }*/
+                    }
                     await _unitOfWork.SaveChangesAsync();
                 }
                 else { return DBOperation.NotFound; }

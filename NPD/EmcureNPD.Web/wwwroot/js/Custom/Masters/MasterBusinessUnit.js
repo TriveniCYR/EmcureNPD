@@ -1,25 +1,25 @@
 ﻿$(document).ready(function () {
     GetBusinessUnitList();
-    GetCountryList();
+    GetRegionList();
 });
-// #region Get Country List
-function GetCountryList() {
-    ajaxServiceMethod($('#hdnBaseURL').val() + AllCountry, 'GET', GetCountryListSuccess, GetCountryListError);
+// #region Get Region List
+function GetRegionList() {
+    ajaxServiceMethod($('#hdnBaseURL').val() + AllRegion, 'GET', GetRegionListSuccess, GetRegionListError);
 }
-function GetCountryListSuccess(data) {
+function GetRegionListSuccess(data) {
     try {
         $.each(data._object, function (index, object) {
-            $('#CountryId').append($('<option>').text(object.countryName).attr('value', object.countryId));
-            $('#CountryId').select2();
-            $('#CountryId option:eq(0)').val(0);
-            $('#CountryId').val("-");
-            $('#CountryId').trigger('change');
+            $('#RegionId').append($('<option>').text(object.regionName).attr('value', object.regionId));
+            $('#RegionId').select2();
+            $('#RegionId option:eq(0)').val(0);
+            $('#RegionId').val("-");
+            $('#RegionId').trigger('change');
         });
     } catch (e) {
         toastr.error('Error:' + e.message);
     }
 }
-function GetCountryListError(x, y, z) {
+function GetRegionListError(x, y, z) {
     toastr.error(ErrorMessage);
 }
 
@@ -49,14 +49,14 @@ function GetBusinessUnitById(id) {
 }
 function GetBusinessUnitByIdSuccess(data) {
     try {
-        var countryIds = data._object.countryIds.toString();
-        if (countryIds.includes(',')) { countryIds = countryIds.toString().split(','); }
+        var regionIds = data._object.regionIds.toString();
+        if (regionIds.includes(',')) { regionIds = regionIds.toString().split(','); }
 
-        $('#SaveBusinessUnitModel #CountryId').val(countryIds);
-        $('#SaveBusinessUnitModel #CountryId').trigger('change');
+        $('#SaveBusinessUnitModel #RegionId').val(regionIds);
+        $('#SaveBusinessUnitModel #RegionId').trigger('change');
         
 
-        $('#SaveBusinessUnitModel #BusinessUnitCountryMappingId').val(data._object.masterBusinessCountryMappingIds.toString());
+        $('#SaveBusinessUnitModel #BusinessUnitRegionMappingId').val(data._object.masterBusinessRegionMappingIds.toString());
 
         $('#SaveBusinessUnitModel #BusinessUnitID').val(data._object.businessUnitId);
         $('#SaveBusinessUnitModel #MasterBusinessUnitEntity_BusinessUnitName').val(data._object.businessUnitName);
@@ -87,8 +87,8 @@ function SaveBusinessUnitForm(form) {
         businessUnitId: $('#SaveBusinessUnitModel #BusinessUnitID').val(),
         businessUnitName: $('#SaveBusinessUnitModel #MasterBusinessUnitEntity_BusinessUnitName').val(),
         isActive: $('#SaveBusinessUnitModel #MasterBusinessUnitEntity_IsActive').prop('checked'),
-        countryIds: $('#CountryId').val().toString(),
-        masterBusinessCountryMappingIds: $('#SaveBusinessUnitModel #BusinessUnitCountryMappingId').val()
+        regionIds: $('#RegionId').val().toString(),
+        masterBusinessRegionMappingIds: $('#SaveBusinessUnitModel #BusinessUnitRegionMappingId').val()
     };
     if ($(form).valid()) {
         ajaxServiceMethod($('#hdnBaseURL').val() + SaveBusinessUnit, 'POST', SaveBusinessUnitFormSuccess, SaveBusinessUnitFormError, JSON.stringify(obj));
@@ -118,9 +118,9 @@ function CleareBusinessUnitFields() {
     $('#SaveBusinessUnitModel #BusinessUnitID').val("0");
     $('#SaveBusinessUnitModel #MasterBusinessUnitEntity_BusinessUnitName').val("");
     $('#DeleteBusinessUnitModel #BusinessUnitID').val("0");
-    $('#SaveBusinessUnitModel #BusinessUnitCountryMappingId').val("");
-    $('#SaveBusinessUnitModel #CountryId').val("");
-    $('#SaveBusinessUnitModel #CountryId').trigger('change');
+    $('#SaveBusinessUnitModel #BusinessUnitRegionMappingId').val("");
+    $('#SaveBusinessUnitModel #RegionId').val("");
+    $('#SaveBusinessUnitModel #RegionId').trigger('change');
 }
 // #endregion
 
