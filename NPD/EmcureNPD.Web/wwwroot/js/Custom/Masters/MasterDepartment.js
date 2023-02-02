@@ -64,10 +64,10 @@ function GetDepartmentByIdSuccess(data) {
         $('#SaveDepartmentModel #DepartmentTitle').html(UpdateLabel);
 
         if (!data._object.isActive) {
-            $('#SaveDepartmentModel #IsActive').prop('checked', false);
+            $('#SaveDepartmentModel #MasterDepartmentEntity_IsActive').prop('checked', false);
         }
         else {
-            $('#SaveDepartmentModel #IsActive').prop('checked', true);
+            $('#SaveDepartmentModel #MasterDepartmentEntity_IsActive').prop('checked', true);
         }
     }
     catch (e) {
