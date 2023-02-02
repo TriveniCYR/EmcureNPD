@@ -340,6 +340,15 @@ namespace EmcureNPD.Resource.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Created Date.
+        /// </summary>
+        public static string CreatedDate {
+            get {
+                return ResourceManager.GetString("CreatedDate", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Currency.
         /// </summary>
         public static string Currency {
@@ -1101,15 +1110,6 @@ namespace EmcureNPD.Resource.Resources {
         public static string RoleName {
             get {
                 return ResourceManager.GetString("RoleName", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to xaxa.
-        /// </summary>
-        public static string saxx {
-            get {
-                return ResourceManager.GetString("saxx", resourceCulture);
             }
         }
         
