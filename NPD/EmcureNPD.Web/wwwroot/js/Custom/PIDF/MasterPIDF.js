@@ -16,7 +16,7 @@ function LoadData() {
 }
 
 function GetPIDFDropdown() {
-    ajaxServiceMethod($('#hdnBaseURL').val() + GetAllPIDF, 'GET', GetPIDFDropdownSuccess, GetPIDFDropdownError);
+    ajaxServiceMethod($('#hdnBaseURL').val() + GetAllPIDF + "/" + $('#LogInId').val(), 'GET', GetPIDFDropdownSuccess, GetPIDFDropdownError);
 }
 function GetPIDFDropdownSuccess(data) {
     try {

@@ -45,10 +45,12 @@ namespace EmcureNPD.Web.Controllers
             PIDFEntity pidf;
             try
             {
-                if (PIDFId == null || PIDFId <= 0)
+				string logUserId = Convert.ToString(HttpContext.Session.GetString(UserHelper.LoggedInUserId));
+				if (PIDFId == null || PIDFId <= 0)
                 {
                     pidf = new PIDFEntity();
-                    return View(pidf);
+                    pidf.LogInId = Convert.ToInt32(logUserId);
+					return View(pidf);
                 }
                 else
                 {
@@ -57,8 +59,9 @@ namespace EmcureNPD.Web.Controllers
 					var data = GetPidfFormModel(PIDFId,out responseMessage);
 
 					if (data != null)
-                    {                        
-                        return View(data);
+                    {  
+                        data.LogInId = Convert.ToInt32(logUserId);
+						return View(data);
                     }
                     else
                     {
@@ -78,8 +81,8 @@ namespace EmcureNPD.Web.Controllers
 		private PIDFEntity GetPidfFormModel(int? PIDFId,out HttpResponseMessage responseMessage)
         {
             try
-            {
-                HttpContext.Request.Cookies.TryGetValue(UserHelper.EmcureNPDToken, out string token);
+            {				
+				HttpContext.Request.Cookies.TryGetValue(UserHelper.EmcureNPDToken, out string token);
                 APIRepository objapi = new(_cofiguration);
 
                 responseMessage = objapi.APICommunication(APIURLHelper.GetPIDFById + "/" + PIDFId, HttpMethod.Get, token).Result;

@@ -7,7 +7,7 @@ namespace EmcureNPD.Business.Core.Interface
 {
     public interface IPIDFService
     {
-        Task<dynamic> FillDropdown();
+        Task<dynamic> FillDropdown(int userid);
         Task<DataTableResponseModel> GetAllPIDFList(DataTableAjaxPostModel model);
         Task<DBOperation> AddUpdatePIDF(PIDFEntity entityPIDF);
         Task<PIDFEntity> GetById(int id);

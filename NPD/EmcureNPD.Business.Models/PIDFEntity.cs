@@ -70,6 +70,7 @@ namespace EmcureNPD.Business.Models
 		public bool InHouses { get; set; }
         public int MarketExtenstionId { get; set; }
 		public string SaveType { get; set; }
+		public int? LogInId { get; set; }
 		public List<PIDFEntity> PIDFEntities { get; set; }
         public List<PidfApiDetailEntity> pidfApiDetailEntities { get; set; }
         public List<PidfProductStregthEntity> pidfProductStregthEntities { get; set; }
