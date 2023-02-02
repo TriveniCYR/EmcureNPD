@@ -45,16 +45,7 @@ function InitializePIDFList() {
         },
         {
             "data": "productPackagingName", "name": "Product Packaging Name"
-        },       
-        {
-            "data": "APIName", "name": "API Name"
-        },
-        {
-            "data": "APISourcing", "name": "API Sourcing"
-        },
-        {
-            "data": "APIVendor", "name": "API Vendor"
-        },
+        },              
         {
             "data": "brand", "name": "Brand"
         },
