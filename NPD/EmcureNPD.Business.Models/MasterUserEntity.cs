@@ -32,6 +32,11 @@ namespace EmcureNPD.Business.Models
         public string BusinessUnitIds { get; set; }
         public string CountryIds { get; set; }
         public string RegionIds { get; set; }
+        //-------Start------New Columns Added to User List------
+        public string RoleName { get; set; }
+        public string DepartmentName { get; set; }
+        public string BusinessUnitName { get; set; }
+        //-------End------New Columns Added to User List------
 
         public int RoleId { get; set; }
 

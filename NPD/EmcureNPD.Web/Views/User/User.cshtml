@@ -5,7 +5,7 @@
 @inject Microsoft.Extensions.Localization.IStringLocalizer<MastersController> MasterLocalizer
 @inject Microsoft.Extensions.Localization.IStringLocalizer<EmcureNPD.Resource.Shared> SharedLocalizer
 @{
-    ViewData["Title"] = @SharedLocalizer["UserList"];
+    ViewData["Title"] = @MasterLocalizer["UserMangegment"];
 }
 <div class="row">
     <section class="col-lg-12">
@@ -27,6 +27,9 @@
                         <tr>
                             <th>@MasterLocalizer["FullName"]</th>
                             <th>@MasterLocalizer["EmailAddress"]</th>
+                            <th>@MasterLocalizer["RoleName"]</th>
+                            <th>@SharedLocalizer["BusinessUnitName"]</th>
+                            <th>@SharedLocalizer["DepartmentName"]</th>
                             <th>@SharedLocalizer["CreatedDate"]</th>
                             <th class="text-center">@SharedLocalizer["Action"]</th>
                         </tr>
@@ -56,7 +59,7 @@
                         </div>
                         @Html.Hidden("UserID")
                         <div class="card-footer text-center">
-                            <button type="button" onclick="DeleteUser()" data-dismiss="modal" class="btn btn-primary mr-2">@SharedLocalizer["Yes"]</button>
+                            <button id="btndel" type="button" onclick="DeleteUser()" data-dismiss="modal" class="btn btn-primary mr-2">@SharedLocalizer["Yes"]</button>
                             <a class="btn btn-danger" data-dismiss="modal">@SharedLocalizer["No"]</a>
                         </div>
                     </div>
