@@ -16,7 +16,8 @@ using System.IO;
 using Microsoft.AspNetCore.Hosting;
 using EmcureNPD.Utility.Helpers;
 using System.Net.Mail;
-
+using EmcureNPD.Utility.Utility;
+using EmcureNPD.Utility.Models;
 
 namespace EmcureNPD.Web.Controllers
 {
@@ -40,7 +41,10 @@ namespace EmcureNPD.Web.Controllers
 
         public IActionResult User()
         {
-            return View();
+			int rolId = (int)HttpContext.Session.GetInt32(UserHelper.LoggedInRoleId);
+			RolePermissionModel objPermssion = UtilityHelper.GetCntrActionAccess(Convert.ToString(RouteData.Values["controller"]), rolId);
+            ViewBag._objPermission = objPermssion;
+			return View();
         }
 
         public IActionResult UserManage(int? UserId)

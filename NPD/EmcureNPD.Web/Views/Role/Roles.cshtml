@@ -1,4 +1,5 @@
-﻿@using Microsoft.AspNetCore.Http
+﻿@using EmcureNPD.Utility.Models;
+@using Microsoft.AspNetCore.Http
 @using EmcureNPD.Web.Controllers
 @using Microsoft.AspNetCore.Mvc.Localization
 @inject IHttpContextAccessor HttpContextAccessor
@@ -9,6 +10,10 @@
 @model EmcureNPD.Business.Models.MasterRoleEntity
 @{
     ViewData["Title"] = @MasterLocalizer["RoleList"];
+    RolePermissionModel objPermssion = (RolePermissionModel)ViewBag._objPermission;
+    string IsAddAllow = (objPermssion.Add) ? "" : "display: none";
+    string IsEditAllow = (objPermssion.Edit) ? "" : "display: none";
+    string IsDeleteAllow = (objPermssion.Delete) ? "" : "display: none";
 }
 
 <div id="PlaceHolderHere"></div>
@@ -22,7 +27,7 @@
                 </h3>
                 <div class="card-tools md-left">
                     <div class="mybtn-group">
-                        <a class="btn btn-primary" asp-action="RoleManage"><i class="far fa-plus-square mr-1"></i> @SharedLocalizer["Add"]</a>
+                        <a class="btn btn-primary" style="@IsAddAllow" asp-action="RoleManage"><i class="far fa-plus-square mr-1"></i> @SharedLocalizer["Add"]</a>
                         <div class="export-btn mybtn-group"></div>
                     </div>
                 </div>
@@ -43,11 +48,11 @@
                                 <td>@Html.DisplayFor(module => item.RoleName)</td>
                                 <td>@Html.LabelFor(model => model.IsActive, item.IsActive ? "Active" : "InActive", new { @style = item.IsActive ? "color:green;" : "color:red;" })</td>
                                 <td>
-                                    <a title="Edit" class="btn btn-primary" asp-action="RoleManage" asp-route-roleId="@item.RoleId">
+                                    <a title="Edit" style="@IsEditAllow" class="btn btn-primary" asp-action="RoleManage" asp-route-roleId="@item.RoleId">
                                         <i class="fa fa-fw fa-edit mr-1"></i>
                                     </a>
 
-                                    <a title="Delete" class="btn btn-danger" data-toggle="modal" data-target="#DeleteRoleModel" data-backdrop="static" data-keyboard="false" onclick="ConfirmationRole(@item.RoleId); return false;"><i class="fa fa-fw fa-trash mr-1"></i></a>
+                                    <a title="Delete" class="btn btn-danger" style="@IsDeleteAllow" data-toggle="modal" data-target="#DeleteRoleModel" data-backdrop="static" data-keyboard="false" onclick="ConfirmationRole(@item.RoleId); return false;"><i class="fa fa-fw fa-trash mr-1"></i></a>
                                 </td>
                             </tr>
                         }

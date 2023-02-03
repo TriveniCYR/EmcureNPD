@@ -1,4 +1,5 @@
-﻿@using Microsoft.AspNetCore.Http
+﻿@using EmcureNPD.Utility.Models;
+@using Microsoft.AspNetCore.Http
 @using EmcureNPD.Web.Controllers
 @using Microsoft.AspNetCore.Mvc.Localization
 @inject IHttpContextAccessor HttpContextAccessor
@@ -6,6 +7,10 @@
 @inject Microsoft.Extensions.Localization.IStringLocalizer<EmcureNPD.Resource.Shared> SharedLocalizer
 @{
     ViewData["Title"] = @SharedLocalizer["UserMangegment"];
+    RolePermissionModel objPermssion = (RolePermissionModel)ViewBag._objPermission;
+    string IsAddAllow = (objPermssion.Add) ? "" : "display: none";
+    string IsEditAllow = (objPermssion.Edit) ? "" : "display: none";
+    string IsDeleteAllow = (objPermssion.Delete) ? "" : "display: none";
 }
 <div class="row">
     <section class="col-lg-12">
@@ -16,11 +21,11 @@
                 </h3>
                 <div class="card-tools md-left">
                     <div class="mybtn-group">
-                        <a class="btn btn-primary" asp-action="UserManage"><i class="far fa-plus-square mr-1"></i> @SharedLocalizer["Add"]</a>
+                        <a class="btn btn-primary" style="@IsAddAllow" asp-action="UserManage"><i class="far fa-plus-square mr-1"></i> @SharedLocalizer["Add"]</a>
                         <div class="export-btn mybtn-group"></div>
                     </div>
                 </div>
-            </div>
+            </div>                                                                      
             <div class="card-body">
                 <table id="UserTable" class="table table-bordered table-striped table-hover" style="width:100%">
                     <thead>
@@ -85,6 +90,10 @@
         //#region Static Messae Init
         var EditLabel = "@SharedLocalizer["Edit"]";
         var DeleteLabel = "@SharedLocalizer["Delete"]";
+
+        var IsEditAllow =   "@IsEditAllow";
+        var IsDeleteAllow = "@IsDeleteAllow";
+
         var ErrorMessage = "@SharedLocalizer["Error"]";
         var RecordDelete = "@SharedLocalizer["RecordDelete"]";
         var AddLabel = "@SharedLocalizer["Add"]";
