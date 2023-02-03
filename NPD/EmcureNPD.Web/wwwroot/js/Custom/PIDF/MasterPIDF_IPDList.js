@@ -3,6 +3,7 @@ var objApprRejList = [];
 
 $(document).ready(function () {
     InitializePIDFList();
+   
 });
 
 function InitializePIDFList() {
@@ -20,15 +21,17 @@ function InitializePIDFList() {
     var objAccess = $('#hdnAccess').val();
     var objAccessEdit = $('#hdnEdit').val();
     var objAccessAdd = $('#hdnAdd').val();
-   
+    
     var columnObject = [
         {
-           
+            className: 'dt-control',
+            orderable: false,
+            defaultContent: '',
             "data": null,
-           
             'render': function (data, type, row, meta) {
                 if (objAccess!="False") {
                     return '<input type="checkbox" id="chk_' + row.pidfid + '" name="id[]" onclick="chkClick(this,' + row.pidfid + ');" value="' + $('<div/>').text(data).html() + '">';
+                    
                 }
                 else
                     return '';
@@ -50,12 +53,30 @@ function InitializePIDFList() {
         {
             "data": "packagingTypeName", "name": "Product Packaging Name"
         },
-        //{
-        //    "data": "approvedGenerics", "name": "Approved Generics"
-        //},
-        //{
-        //    "data": "launchedGenerics", "name": "Launched Generics"
-        //},
+        {
+            "data": "approvedGenerics", "name": "Approved Generics"
+        },        
+        {
+            "data": "launchedGenerics", "name": "Launched Generics"
+        },
+        {
+            "data": "applicant", "name": "Applicant"
+        },
+        {
+            "data": "countryName", "name": "Country"
+        },
+        {
+            "data": "diaName", "name": "diaName"
+        },
+        {
+            "data": "transformFormRandDDivision", "name": "Transform Form R&D Division"
+        },
+        {
+            "data": "previousProjectCode", "name": "Previous Project Code"
+        },
+        {
+            "data": "sinkCost", "name": "Sink Cost"
+        },
         {
             "data": "createdBy", "name": "Created By"
         },  
@@ -133,3 +154,44 @@ function SaveApprRejFormError(x, y, z) {
     toastr.error(ErrorMessage);
 }
 //#endregion
+
+function format(data) {
+    // `d` is the original data object for the row
+    return (
+        '<table cellpadding="5" cellspacing="0" border="0" style="padding-left:50px;">' +
+        '<tr>' +
+        '<td>Full name:</td>' +
+        '<td>' +
+        data.dosageFormName +
+        '</td>' +
+        '</tr>' +
+        '<tr>' +
+        '<td>Extension number:</td>' +
+        '<td>' +
+        data.moleculeName +
+        '</td>' +
+        '</tr>' +
+        '<tr>' +
+        '<td>Extra info:</td>' +
+        '<td>And any further details here (images etc)...</td>' +
+        '</tr>' +
+        '</table>'
+    );
+}
+
+$('#IPDPIDFTable tbody').on('click', 'td.dt-control', function () {
+    var tr = $(this).closest('tr');
+    var row = table.row(tr);
+
+    if (row.child.isShown()) {
+        // This row is already open - close it
+        row.child.hide();
+        tr.removeClass('shown');
+    } else {
+        // Open this row
+        row.child(format(row.data())).show();
+        tr.addClass('shown');
+    }
+});
+
+

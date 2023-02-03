@@ -17,7 +17,10 @@ function InitializePIDFList() {
     };
 
     var columnObject = [ 
-        {           
+        {     
+            className: 'dt-control',
+            orderable: false,
+            defaultContent: '',
             "data": null,
             'render': function (data, type, row, meta) {
                 if (row.status == 'PIDF Created' || row.status == 'PIDF Pending Approval') {
@@ -45,19 +48,7 @@ function InitializePIDFList() {
         },
         {
             "data": "productPackagingName", "name": "Product Packaging Name"
-        },       
-        {
-            "data": "APIName", "name": "API Name"
-        },
-        {
-            "data": "APISourcing", "name": "API Sourcing"
-        },
-        {
-            "data": "APIVendor", "name": "API Vendor"
-        },
-        {
-            "data": "brand", "name": "Brand"
-        },
+        },     
         {
             "data": "applicant", "name": "Applicant"
         },
@@ -68,10 +59,10 @@ function InitializePIDFList() {
             "data": "inidication", "name": "Inidication"
         },
         {
-            "data": "DIA ", "name": "DIA "
+            "data": "diaName", "name": "DIA "
         },
         {
-            "data": "transformFormR&DDivision", "name": "Transform Form R&D Division"
+            "data": "transformFormRandDDivision", "name": "Transform Form R&D Division"
         },
         {
             "data": "previousProjectCode", "name": "Previous Project Code"
@@ -161,3 +152,18 @@ function SaveAppRejSuccess(data) {
 function SaveApprRejFormError(x, y, z) {
     toastr.error(ErrorMessage);
 }
+
+$('#PIDFTable tbody').on('click', 'td.dt-control', function () {
+    var tr = $(this).closest('tr');
+    var row = table.row(tr);
+
+    if (row.child.isShown()) {
+        // This row is already open - close it
+        row.child.hide();
+        tr.removeClass('shown');
+    } else {
+        // Open this row
+        row.child(format(row.data())).show();
+        tr.addClass('shown');
+    }
+});

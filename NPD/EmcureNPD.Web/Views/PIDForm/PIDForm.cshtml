@@ -24,11 +24,11 @@
             </div>
             <div class="card-body" id="tabs">
                 <div class="row">         
-                        <div class="col-md-3">
+                        @*<div class="col-md-3">
                             @Html.LabelFor(model => model.BusinessUnitId, "Business Unit", new { @class = "control-label" })                        
-                        </div>
-                        <div class="col-md-9">
-                            <ul class="nav nav-pills" id="businessUnitTabs">
+                        </div>*@
+                        <div class="col-md-12">
+                        <ul class="nav nav-tabs" id="businessUnitTabs">
                             @if (Model.MasterBusinessUnitEntities.Count() > 0)
                             {
                                 int k = 0;
@@ -44,7 +44,7 @@
                             </ul>
                         </div>                    
                 </div>
-               
+               <br />
                 <div class="tab-content" id="tabList">
                     <div>
                         <div class="row">

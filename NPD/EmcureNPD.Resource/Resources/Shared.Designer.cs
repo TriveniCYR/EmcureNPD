@@ -394,6 +394,15 @@ namespace EmcureNPD.Resource.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to  User Mangegment.
+        /// </summary>
+        internal static string UserMangegment {
+            get {
+                return ResourceManager.GetString("UserMangegment", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Year1.
         /// </summary>
         internal static string Year1 {

@@ -37,6 +37,8 @@ namespace EmcureNPD.Business.Core.Implementation
         private IRepository<Pidf> _repository { get; set; }
         private IRepository<Pidfapidetail> _pidfApiRepository { get; set; }
         private IRepository<PidfproductStrength> _pidfProductStrength { get; set; }
+        private IRepository<MasterUser> _masteUser { get; set; }
+        private IRepository<MasterUser> _masteCountry { get; set; }
         //Market Extension & In House
 
         public PIDFService(IUnitOfWork unitOfWork, IMapperFactory mapperFactory, IMasterOralService oralService, IMasterUnitofMeasurementService unitofMeasurementService, IMasterDosageFormService dosageFormService, IMasterPackagingTypeService packagingTypeService, IMasterBusinessUnitService businessUnitService, IMasterCountryService countryService, IMasterAPISourcingService masterAPISourcingService, IPidfApiDetailsService pidfApiDetailsService, IPidfProductStrengthService pidfProductStrengthService, IMasterDIAService masterDium, IMasterMarketExtensionService masterMarketExtensionService, IMasterAuditLogService auditLogService)
@@ -55,12 +57,14 @@ namespace EmcureNPD.Business.Core.Implementation
             _repository = _unitOfWork.GetRepository<Pidf>();
             _pidfApiRepository = unitOfWork.GetRepository<Pidfapidetail>();
             _pidfProductStrength = unitOfWork.GetRepository<PidfproductStrength>();
+            _masteUser = unitOfWork.GetRepository<MasterUser>();
+            _masteCountry = unitOfWork.GetRepository<MasterUser>();
             _masterDIAService = masterDium;
             _masterMarketExtensionService = masterMarketExtensionService;
             _auditLogService = auditLogService;
         }
 
-        public async Task<dynamic> FillDropdown()
+        public async Task<dynamic> FillDropdown(int userid)
         {
             dynamic DropdownObjects = new ExpandoObject();
 
@@ -68,17 +72,54 @@ namespace EmcureNPD.Business.Core.Implementation
             DropdownObjects.MasterUnitofMeasurements = _unitofMeasurementService.GetAll().Result.Where(xx => xx.IsActive).ToList();
             DropdownObjects.MasterDosageForms = _dosageFormService.GetAll().Result.Where(xx => xx.IsActive).ToList();
             DropdownObjects.MasterPackagingTypes = _packagingTypeService.GetAll().Result.Where(xx => xx.IsActive).ToList();
-            DropdownObjects.MasterBusinessUnits = _businessUnitService.GetAll().Result.Where(xx => xx.IsActive).ToList();
-            DropdownObjects.MasterCountrys = _countryService.GetAll().Result.Where(xx => xx.IsActive).ToList();
+            DropdownObjects.MasterBusinessUnits = GetBusinessUNitByUserId(userid).Result;
+            DropdownObjects.MasterCountrys = GetCountryByUserId(userid).Result;
             DropdownObjects.MarketExtensions = _masterMarketExtensionService.GetAll().Result.Where(xx => xx.IsActive).ToList();
             DropdownObjects.InHouses = new List<InHouseEntity> { new InHouseEntity { InHouseId = 1, InHouseName = "Yes" }, new InHouseEntity { InHouseId = 2, InHouseName = "No" } };
             DropdownObjects.MasterAPISourcing = _APISourcingService.GetAll().Result.Where(xx => xx.IsActive).ToList();
             DropdownObjects.MasterDIAs = _masterDIAService.GetAll().Result.Where(xx => xx.IsActive).ToList();
 
-
+           
             return DropdownObjects;
         }
 
+        public async Task<List<MasterBusinessUnitEntity>> GetBusinessUNitByUserId(int userid)
+        {
+            SqlParameter[] osqlParameter = {
+                new SqlParameter("@UserId", userid)
+            };
+
+            var dbresult = await _masteUser.GetDataSetBySP("stp_npd_GetBusinessUnitByUserId", System.Data.CommandType.StoredProcedure, osqlParameter);
+
+            dynamic _BUObjects = new ExpandoObject();
+            if (dbresult != null)
+            {
+                if (dbresult.Tables[0] != null && dbresult.Tables[0].Rows.Count > 0)
+                {
+                    _BUObjects = dbresult.Tables[0].DataTableToList<MasterBusinessUnitEntity>();
+                }
+            }
+            return _BUObjects;
+        }
+
+        public async Task<List<MasterCountryEntity>> GetCountryByUserId(int userid)
+        {
+            SqlParameter[] osqlParameter = {
+                new SqlParameter("@UserId", userid)
+            };
+
+            var dbresult = await _masteCountry.GetDataSetBySP("stp_npd_GetCountryByUserId", System.Data.CommandType.StoredProcedure, osqlParameter);
+
+            dynamic _CNObjects = new ExpandoObject();
+            if (dbresult != null)
+            {
+                if (dbresult.Tables[0] != null && dbresult.Tables[0].Rows.Count > 0)
+                {
+                    _CNObjects = dbresult.Tables[0].DataTableToList<MasterCountryEntity>();
+                }
+            }
+            return _CNObjects;
+        }
         public async Task<DataTableResponseModel> GetAllPIDFList(DataTableAjaxPostModel model)
         {
             string ColumnName = (model.order.Count > 0 ? model.columns[model.order[0].column].data : string.Empty);
