@@ -118,11 +118,24 @@ namespace EmcureNPD.API.Controllers.Account
         }
         [AllowAnonymous]
         [HttpGet, Route("CheckEmailAddressExists/{emailAddress}")]
-        public bool CheckEmailAddressExists([FromRoute] string emailAddress)
+        public async Task<bool> CheckEmailAddressExists([FromRoute] string emailAddress)
         {
             try
             {
-                return _MasterUserService.CheckEmailAddressExists(emailAddress);
+                return await _MasterUserService.CheckEmailAddressExists(emailAddress);
+            }
+            catch (Exception ex)
+            {
+                return false;
+            }
+        }
+        [AllowAnonymous]
+        [HttpGet, Route("IsTokenValid/{token}")]
+        public async Task<bool> IsTokenValid([FromRoute] string token)
+        {
+            try
+            {
+                return await _MasterUserService.IsTokenValid(token);
             }
             catch (Exception ex)
             {
@@ -136,8 +149,12 @@ namespace EmcureNPD.API.Controllers.Account
             try
             {
                 var resetOperation = await _MasterUserService.ResetPassword(ResetPasswordViewModel);                
-                if (resetOperation == DBOperation.Success)
+                if (resetOperation == "ResetSuccessfully")
                     return _ObjectResponse.Create(resetOperation, (Int32)HttpStatusCode.OK);
+                else if(resetOperation == "TokenExpired")
+                {
+                    return _ObjectResponse.Create(resetOperation, (Int32)HttpStatusCode.NotExtended,"TokenExpired");
+                }
                 else
                     return _ObjectResponse.Create(null, (Int32)HttpStatusCode.BadRequest, "No Records found");
 

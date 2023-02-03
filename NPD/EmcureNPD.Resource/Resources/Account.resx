@@ -154,7 +154,10 @@
     <value>We have send an email successfully to entered email address, please go to your mail box and follow further steps</value>
   </data>
   <data name="msgPasswordResetSuccessfully" xml:space="preserve">
-    <value>Password Reset Successfully</value>
+    <value>Password Reset successfully</value>
+  </data>
+  <data name="msgResetPasswordTokenExpired" xml:space="preserve">
+    <value>You link has been expired please go to forgot password page to reset your password again</value>
   </data>
   <data name="NewPassword" xml:space="preserve">
     <value>New Password</value>

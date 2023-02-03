@@ -24,12 +24,13 @@ namespace EmcureNPD.Business.Core.Interface
         Task<dynamic> GetUserDropdown();
 
         Task<dynamic> GetDepartmentCountryByBusinessUnit(int BusinessUnitId);
-        bool CheckEmailAddressExists(string emailAddress);
+        Task<bool> CheckEmailAddressExists(string emailAddress);
         Task<List<MasterBusinessUnitEntity>> GetAll();
         Task<dynamic> GetRegionByBusinessUnit(string BusinessUnitId);
         Task<dynamic> GetCountryByRegion(string RegionIds);
         Task<DBOperation> ForgotPassword(string emailAddress);
-        Task<DBOperation> ResetPassword(MasterUserResetPasswordEntity entity);
+        Task<string> ResetPassword(MasterUserResetPasswordEntity entity);
         Task<List<MasterBusinessUnitEntity>> GetBusinessUNitByUserId(int userid);
+        Task<bool> IsTokenValid(string token);
     }
 }

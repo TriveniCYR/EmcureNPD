@@ -270,11 +270,11 @@ namespace EmcureNPD.API.Controllers.Masters
         /// <response code="405">Method Not Allowed</response>
         /// <response code="500">Internal Server</response>
         [HttpGet, Route("CheckEmailAddressExists/{emailAddress}")]
-        public bool CheckEmailAddressExists([FromRoute] string emailAddress)
+        public async Task<bool> CheckEmailAddressExists([FromRoute] string emailAddress)
         {
             try
             {
-               return _MasterUserService.CheckEmailAddressExists(emailAddress);
+               return await _MasterUserService.CheckEmailAddressExists(emailAddress);
             }
             catch (Exception ex)
             {

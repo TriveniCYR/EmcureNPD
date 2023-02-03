@@ -219,15 +219,47 @@ namespace EmcureNPD.Web.Controllers
                 throw e;
             }
         }
+
+        // if CheckEmailAddressExists() is false then Email Id Exist in Db
+        [NonAction]
+        public bool CheckResetPasswordTokenExists(string token)
+        {
+            bool TokenExist=false;
+            try
+            {
+                APIRepository objapi = new(_cofiguration);
+                HttpResponseMessage responseMessage = objapi.APICommunication(APIURLHelper.Anonymous_IsTokenValid + "/" + token, HttpMethod.Get, string.Empty).Result;
+                if (responseMessage.IsSuccessStatusCode)
+                {
+                    string jsonResponse = responseMessage.Content.ReadAsStringAsync().Result;
+                    TokenExist = JsonConvert.DeserializeObject<bool>(jsonResponse);
+
+                    return TokenExist;
+                }
+                return TokenExist;
+            }
+            catch (Exception e)
+            {
+                throw e;
+            }
+        }
+
         [HttpGet]
-        public IActionResult ResetPassword([FromRoute] string userToken)
+        public IActionResult ResetPassword([FromQuery] string userToken)
         {
             MasterUserResetPasswordEntity resetPasswordEntity = new MasterUserResetPasswordEntity();
             try
             {
-                string strValue = HttpContext.Request.Query["userToken"].ToString();               
-                resetPasswordEntity.ForgotPasswordToken = strValue;
-                return View(resetPasswordEntity);
+                if (CheckResetPasswordTokenExists(userToken)) 
+                {
+                    string strValue = HttpContext.Request.Query["userToken"].ToString();
+                    resetPasswordEntity.ForgotPasswordToken = strValue;
+                    return View(resetPasswordEntity);
+                }
+                else
+                {
+                   return RedirectToAction("Login");
+                }
             }
             catch (Exception e)
             {
@@ -242,9 +274,15 @@ namespace EmcureNPD.Web.Controllers
             {
                 APIRepository objapi = new APIRepository(_cofiguration);
                 HttpResponseMessage responseMessage = objapi.APICommunication(APIURLHelper.ResetPassword, HttpMethod.Post, string.Empty, new StringContent(JsonConvert.SerializeObject(masterUserresetpassword))).Result;
-                if (responseMessage.IsSuccessStatusCode)
+                string jsonResponse = responseMessage.Content.ReadAsStringAsync().Result;
+                var data = JsonConvert.DeserializeObject<APIResponseEntity<string>>(jsonResponse);   
+                if (data._object== "ResetSuccessfully")
                 {
                     ViewBag.Message = _stringLocalizer["msgPasswordResetSuccessfully"].Value;
+                }
+                else if(data._object== "TokenExpired")
+                {
+                    ViewBag.Message = _stringLocalizer["msgResetPasswordTokenExpired"].Value;
                 }
                 else
                 {

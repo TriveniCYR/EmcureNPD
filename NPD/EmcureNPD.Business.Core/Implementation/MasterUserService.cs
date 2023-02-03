@@ -24,6 +24,7 @@ using System.IO;
 using System.IO.Pipes;
 using AutoMapper.Configuration;
 using Microsoft.Extensions.Configuration;
+using Microsoft.EntityFrameworkCore;
 
 namespace EmcureNPD.Business.Core.ServiceImplementations
 {
@@ -352,12 +353,23 @@ namespace EmcureNPD.Business.Core.ServiceImplementations
             }
             return DBOperation.Success;
         }
-        public bool CheckEmailAddressExists(string emailAddress)
+        public async Task<bool> CheckEmailAddressExists(string emailAddress)
         {
-            var isExists = _repository.GetAllQuery().Where(x => x.EmailAddress.ToLower() == emailAddress.ToLower()).FirstOrDefault();
+            var isExists = _repository.GetAllQuery().Where(x => x.EmailAddress.ToLower() == emailAddress.ToLower()).FirstOrDefaultAsync();
             if (isExists != null) return false;
             else return true;
         }
+        public async Task<bool> IsTokenValid(string token)
+        {
+            var isExists =  await _repository.GetAllQuery().AnyAsync(x => x.ForgotPasswordToken == token);
+            return isExists;
+        }
+        //public Task<bool> IsTokenExpired(string emailAddress)
+        //{
+        //    var isExists = _repository.GetAllQuery().Where(x => x.EmailAddress.ToLower() == emailAddress.ToLower()).FirstOrDefault();
+        //    if (isExists != null) return false;
+        //    else return true;
+        //}
 
         public async Task<List<MasterBusinessUnitEntity>> GetAll()
         {
@@ -382,25 +394,25 @@ namespace EmcureNPD.Business.Core.ServiceImplementations
                 strHtml= strHtml.Replace("ValidateURL", strURL);
                 strHtml= strHtml.Replace("ValidDateTime", entityUser.ForgotPasswordDateTime.Value.AddHours(1).ToString());
                 strHtml= strHtml.Replace("Name", entityUser.FullName);
-                email.SendMail(entityUser.EmailAddress, string.Empty, "Reset Password from EmcureNPD", strHtml);
+                email.SendMail(entityUser.EmailAddress, string.Empty, "Emcure NPD - Forgot Password", strHtml);
                 return DBOperation.Success;
         }
-        public async Task<DBOperation> ResetPassword(MasterUserResetPasswordEntity resetPasswordentity)
+        public async Task<string> ResetPassword(MasterUserResetPasswordEntity resetPasswordentity)
         {
             var entityUser = _repository.Get(x => x.ForgotPasswordToken == resetPasswordentity.ForgotPasswordToken);
             if (entityUser == null)
-                return DBOperation.NotFound;
+                return "TokenNotFound";
 
             if (entityUser.ForgotPasswordDateTime.Value.AddHours(1) < DateTime.Now)
             {
-                return DBOperation.Error;
+                return "TokenExpired";
             }
                 entityUser.Password = UtilityHelper.GenerateSHA256String(resetPasswordentity.Password);
                 entityUser.ForgotPasswordToken = string.Empty;
                 entityUser.ForgotPasswordDateTime = null;
                 _repository.UpdateAsync(entityUser);
                 await _unitOfWork.SaveChangesAsync();
-                return DBOperation.Success;  
+                 return "ResetSuccessfully";
         }
 
         public async Task<List<MasterBusinessUnitEntity>> GetBusinessUNitByUserId(int userid)

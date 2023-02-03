@@ -132,6 +132,9 @@
   <data name="ApproveConfirm" xml:space="preserve">
     <value>Are you sure you want to approve ?</value>
   </data>
+  <data name="BackToLogin" xml:space="preserve">
+    <value>Back To Login</value>
+  </data>
   <data name="Cancel" xml:space="preserve">
     <value>Cancel</value>
   </data>

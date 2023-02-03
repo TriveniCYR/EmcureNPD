@@ -209,8 +209,8 @@
         public static string GetBusinessUnitByUserId = "api/User/GetBusinessUnitByUserId";
 
         // Anonymous_Access API for Forgot Passsword
-        public static string Anonymous_CheckEmailAddressExists = "api/Account/CheckEmailAddressExists";
-        
+        public static string Anonymous_CheckEmailAddressExists = "api/Account/CheckEmailAddressExists"; 
+        public static string Anonymous_IsTokenValid = "api/Account/IsTokenValid"; 
         #endregion
 
         #region Module
