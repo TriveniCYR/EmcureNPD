@@ -19,7 +19,10 @@
                 </h3>
                 <div class="card-tools md-left">
                     <div class="mybtn-group">
-                        <a class="btn btn-primary" data-toggle="modal" data-target="#SaveFormulationModel" data-backdrop="static" data-keyboard="false" onclick="AddFormulation();"><i class="far fa-plus-square mr-1"></i> @SharedLocalizer["Add"]</a>
+                            @if (@ViewBag.Access.Add == true)
+                            {
+                            <a class="btn btn-primary" data-toggle="modal" data-target="#SaveFormulationModel" data-backdrop="static" data-keyboard="false" onclick="AddFormulation();"><i class="far fa-plus-square mr-1"></i> @SharedLocalizer["Add"]</a>
+                            }
                         <div class="export-btn mybtn-group"></div>
                     </div>
                 </div>
@@ -150,5 +153,7 @@
         var AddLabel = "@SharedLocalizer["Add"]";
         var UpdateLabel = "@SharedLocalizer["Update"]";
         //#endregion
+
+        var EditAccess = "@ViewBag.Access.Edit";
     </script>
 }
