@@ -2,7 +2,7 @@
 @using EmcureNPD.Web.Controllers
 @using Microsoft.AspNetCore.Mvc.Localization
 @inject IHttpContextAccessor HttpContextAccessor
-@inject Microsoft.Extensions.Localization.IStringLocalizer<MastersController> MasterLocalizer
+@inject Microsoft.Extensions.Localization.IStringLocalizer<EmcureNPD.Resource.Master> MasterLocalizer
 @inject Microsoft.Extensions.Localization.IStringLocalizer<EmcureNPD.Resource.Shared> SharedLocalizer
 @{
     ViewData["Title"] = @MasterLocalizer["PIDFCommercialList"];
@@ -15,12 +15,12 @@
                     <i class="far fa-list-alt mr-2"></i>@MasterLocalizer["PIDFCommercial"]
                 </h3>
                 <div class="card-tools md-left">
-                    <div class="mybtn-group">
+                  @*  <div class="mybtn-group">
                         <a class="btn btn-primary" onClick="approveRejDeleteData('A')"><i class="far fa-plus-square mr-1"></i> @SharedLocalizer["Approve"]</a>
                         <a class="btn btn-primary" onClick="approveRejDeleteData('R')"><i class="far fa-minus-square mr-1"></i> @SharedLocalizer["Reject"]</a>
                         <a class="btn btn-danger" onClick="approveRejDeleteData('D')"><i class="far fa-trash-square mr-1"></i> @SharedLocalizer["Delete"]</a>
                         <div class="export-btn mybtn-group"></div>
-                    </div>
+                    </div>*@
                 </div>
             </div>
             <div class="card-body">
@@ -44,82 +44,7 @@
                 </table>              
             </div>
         </div>
-        @*ApproveModel*@
-        <div id="ApproveModel" class="modal themeModal" role="dialog">
-            <div class="modal-dialog">
-                <!-- Modal content-->
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h4 class="modal-title">@SharedLocalizer["Approve"]</h4>
-                        <button type="button" class="close" data-dismiss="modal">&times;</button>
-                    </div>
-                    <div class="modal-body">
-                        <div class="row">
-                            <div class="col-md-12">
-                                <div class="form-group">
-                                    @Html.Label(@SharedLocalizer["ApproveConfirm"])
-                                </div>
-                            </div>
-                        </div>
-                        <div class="card-footer text-center">
-                            <button type="button" onclick="approveRejDeleteConfirm('A')" data-dismiss="modal" class="btn btn-primary mr-2">@SharedLocalizer["Yes"]</button>
-                            <a class="btn btn-danger" data-dismiss="modal">@SharedLocalizer["No"]</a>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-        @*RejectModel*@
-        <div id="RejectModel" class="modal themeModal" role="dialog">
-            <div class="modal-dialog">
-                <!-- Modal content-->
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h4 class="modal-title">@SharedLocalizer["Reject"]</h4>
-                        <button type="button" class="close" data-dismiss="modal">&times;</button>
-                    </div>
-                    <div class="modal-body">
-                        <div class="row">
-                            <div class="col-md-12">
-                                <div class="form-group">
-                                    @Html.Label(@SharedLocalizer["RejectConfirm"])
-                                </div>
-                            </div>
-                        </div>
-                        <div class="card-footer text-center">
-                            <button type="button" onclick="approveRejDeleteConfirm('R')" data-dismiss="modal" class="btn btn-primary mr-2">@SharedLocalizer["Yes"]</button>
-                            <a class="btn btn-danger" data-dismiss="modal">@SharedLocalizer["No"]</a>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-        @*DeletePIDFModel*@
-        <div id="DeleteModel" class="modal themeModal " role="dialog">
-            <div class="modal-dialog">
-                <!-- Modal content-->
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h4 class="modal-title">@SharedLocalizer["Delete"]</h4>
-                        <button type="button" class="close" data-dismiss="modal">&times;</button>
-                    </div>
-                    <div class="modal-body">
-                        <div class="row">
-                            <div class="col-md-12">
-                                <div class="form-group">
-                                    @Html.Label(@SharedLocalizer["DeleteConfirm"])
-                                </div>
-                            </div>
-                        </div>
-                        @Html.Hidden("PIDFID")
-                        <div class="card-footer text-center">
-                            <button type="button" onclick="approveRejDeleteConfirm('D')" data-dismiss="modal" class="btn btn-primary mr-2">@SharedLocalizer["Yes"]</button>
-                            <a class="btn btn-danger" data-dismiss="modal">@SharedLocalizer["No"]</a>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
+      
     </section>
 </div>
 @section MyScripts {

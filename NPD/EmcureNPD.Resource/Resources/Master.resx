@@ -516,4 +516,13 @@
   <data name="CreatedDate" xml:space="preserve">
     <value>Created Date</value>
   </data>
+  <data name="AddYear" xml:space="preserve">
+    <value>Add Year</value>
+  </data>
+  <data name="Revenue" xml:space="preserve">
+    <value>Revenue</value>
+  </data>
+  <data name="YearDetails" xml:space="preserve">
+    <value>Year Details</value>
+  </data>
 </root>
