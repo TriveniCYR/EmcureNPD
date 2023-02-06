@@ -254,10 +254,20 @@ namespace EmcureNPD.API.Controllers.Masters
                         var file = files[i];
                         model.FileName[i] = "Medical\\" + file.FileName;
                     }
-                    var path = _webHostEnvironment.WebRootPath;
-                    var uploadedFile = _PIDFormService.FileUpload(files, path);
+                    //var path = Path.Combine(_webHostEnvironment.WebRootPath, "Uploads\\PIDF\\Medical");
+                    //var uploadedFile = _PIDFormService.FileUpload(files, path);
                 }
-                DBOperation oResponse = await _PIDFormService.Medical(model);
+                //else{
+                //    var oPIDFEntity = await _PIDFormService.GetPIDFMedicalData(model.Pidfid);
+                //    model.FileName = new string[oPIDFEntity.FileName.Count()];
+                //    for (int i = 0; i < oPIDFEntity.FileName.Count(); i++)
+                //    {
+                //        var file = oPIDFEntity.FileName[i];
+                //        model.FileName[i] = "Medical\\" + file;
+                //    }
+                //}
+                var path = Path.Combine(_webHostEnvironment.WebRootPath, "Uploads\\PIDF\\Medical");
+                DBOperation oResponse = await _PIDFormService.Medical(model,files,path);
                 if (oResponse == DBOperation.Success)
 				{
                     _logger.LogInformation("PIDFormService db operation success and PIDMedicalForm controller completed");

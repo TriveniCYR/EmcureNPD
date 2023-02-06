@@ -428,7 +428,7 @@ namespace EmcureNPD.Business.Core.Implementation
 
         }
 
-        public async Task<DBOperation> Medical(PIDFMedicalViewModel medicalModel)
+        public async Task<DBOperation> Medical(PIDFMedicalViewModel medicalModel,IFormFileCollection files, string path)
         {
             PidfMedical objPIDFMedical;
             PidfMedicalFile objPIDFMedicalFile;
@@ -448,14 +448,26 @@ namespace EmcureNPD.Business.Core.Implementation
                     {
                         if (medicalModel.FileName!=null && i < medicalModel.FileName.Count())
                         {
+                            var uniqueFileName = Path.GetFileNameWithoutExtension(medicalModel.FileName[i])
+                               + Guid.NewGuid().ToString().Substring(0, 4)
+                               + Path.GetExtension(medicalModel.FileName[i]);
                             PidfMedicalFile medicalFiles = new PidfMedicalFile
                             {
-                                FileName = medicalModel.FileName[i],
+                                FileName = uniqueFileName,
                                 CreatedDate = DateTime.Now,
                                 PidfmedicalId = Convert.ToInt64(objPIDFMedical.PidfmedicalId),
                                 PidfmedicalFileId = Convert.ToInt64(item.PidfmedicalFileId),
                                 CreatedBy = (int)objPIDFMedical.CreatedBy,
                             };
+                            //var file = item.FileName.Substring(7);
+                            var fullPath = path + "\\" + item.FileName ;
+
+                            if (System.IO.File.Exists(fullPath))
+                            {
+                                System.IO.File.Delete(fullPath);
+                            }
+                            
+                            await FileUpload(files, path, uniqueFileName);
                             _pidfMedicalFilerepository.UpdateAsync(medicalFiles);
                             i++;
                         }
@@ -465,6 +477,13 @@ namespace EmcureNPD.Business.Core.Implementation
                             {
                                 PidfmedicalFileId = Convert.ToInt64(item.PidfmedicalFileId),
                             };
+                            //var file = item.FileName.Substring(7);
+                            var fullPath = path + "\\" + item.FileName;
+
+                            if (System.IO.File.Exists(fullPath))
+                            {
+                                System.IO.File.Delete(fullPath);
+                            }
                             _pidfMedicalFilerepository.Remove(medicalFiles);
                             i++;
                         }
@@ -474,13 +493,17 @@ namespace EmcureNPD.Business.Core.Implementation
                     {
                         foreach (var filename in medicalModel.FileName.Skip(i))
                         {
+                            var uniqueFileName = Path.GetFileNameWithoutExtension(medicalModel.FileName[i])
+                               + Guid.NewGuid().ToString().Substring(0, 4)
+                               + Path.GetExtension(medicalModel.FileName[i]);
                             PidfMedicalFile medicalFiles = new PidfMedicalFile
                             {
-                                FileName = filename,
+                                FileName = uniqueFileName,
                                 CreatedDate = DateTime.Now,
                                 PidfmedicalId = Convert.ToInt64(objPIDFMedical.PidfmedicalId),
                                 CreatedBy = (int)objPIDFMedical.CreatedBy,
                             };
+                            await FileUpload(files, path, uniqueFileName);
                             _pidfMedicalFilerepository.AddAsync(medicalFiles);
                         }
                     }
@@ -505,13 +528,17 @@ namespace EmcureNPD.Business.Core.Implementation
                 //var medicalFile = _mapperFactory.Get<PIDFMedicalViewModel, PidfMedicalFile>(medicalModel);
                 foreach (var filename in medicalModel.FileName)
                 {
+                    var uniqueFileName = Path.GetFileNameWithoutExtension(filename)
+                               + Guid.NewGuid().ToString().Substring(0, 4)
+                               + Path.GetExtension(filename);
                     PidfMedicalFile medicalFiles = new PidfMedicalFile
                     {
-                        FileName = filename,
+                        FileName = uniqueFileName,
                         CreatedDate = DateTime.Now,
                         PidfmedicalId = Convert.ToInt64(medical.PidfmedicalId),
                         CreatedBy = (int)medical.CreatedBy,
                     };
+                     FileUpload(files, path, uniqueFileName);
                     _pidfMedicalFilerepository.AddAsync(medicalFiles);
                 }
                 await _unitOfWork.SaveChangesAsync();
@@ -525,7 +552,7 @@ namespace EmcureNPD.Business.Core.Implementation
 
         }
 
-        public async Task FileUpload(IFormFileCollection files, string path)
+        public async Task FileUpload(IFormFileCollection files, string path, string uniqueFileName)
         {
             if (files != null)
             {
@@ -534,11 +561,10 @@ namespace EmcureNPD.Business.Core.Implementation
                     string us = FileValidation(file);
                     if (us == null)
                     {
-                        var uniqueFileName = Path.GetFileNameWithoutExtension(file.FileName)
-                   + "_"
-                   + Guid.NewGuid().ToString().Substring(0, 4)
-                   + Path.GetExtension(file.FileName);
-                        string uploadFolder = Path.Combine(path, "Uploads\\Medical");
+                   //     var uniqueFileName = Path.GetFileNameWithoutExtension(file.FileName)
+                   //+ Guid.NewGuid().ToString().Substring(0, 4)
+                   //+ Path.GetExtension(file.FileName);
+                        string uploadFolder = path;
                         if (!Directory.Exists(uploadFolder))
                         {
                             Directory.CreateDirectory(uploadFolder);

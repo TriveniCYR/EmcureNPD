@@ -13,8 +13,8 @@ namespace EmcureNPD.Business.Core.Interface
     public interface IPIDFormService
     {
         Task<PIDFormEntity> FillDropdown();
-        Task<DBOperation> Medical(PIDFMedicalViewModel medicalModel);
-        Task FileUpload(IFormFileCollection files, string path);
+        Task<DBOperation> Medical(PIDFMedicalViewModel medicalModel,IFormFileCollection files, string path);
+        Task FileUpload(IFormFileCollection files, string path, string uniqueFileName);
         public string FileValidation(IFormFile files);
         Task<PIDFMedicalViewModel> GetPIDFMedicalData(long pidfId);
         Task<DBOperation> AddUpdateIPD(PIDFormEntity entityIPD);
