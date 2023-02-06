@@ -97,6 +97,15 @@ namespace EmcureNPD.Resource.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Add Year.
+        /// </summary>
+        public static string AddYear {
+            get {
+                return ResourceManager.GetString("AddYear", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Analytical GL Name.
         /// </summary>
         public static string AnalyticalName {
@@ -1024,6 +1033,15 @@ namespace EmcureNPD.Resource.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Revenue.
+        /// </summary>
+        public static string Revenue {
+            get {
+                return ResourceManager.GetString("Revenue", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Applicant.
         /// </summary>
         public static string RFDApplicant {
@@ -1254,6 +1272,15 @@ namespace EmcureNPD.Resource.Resources {
         public static string WorkflowName {
             get {
                 return ResourceManager.GetString("WorkflowName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Year Details.
+        /// </summary>
+        public static string YearDetails {
+            get {
+                return ResourceManager.GetString("YearDetails", resourceCulture);
             }
         }
     }

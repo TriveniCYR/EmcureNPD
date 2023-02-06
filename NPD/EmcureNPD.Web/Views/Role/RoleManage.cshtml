@@ -48,11 +48,11 @@
                                 <tr>
                                     <th>Module</th>
                                     <th>Sub Module</th>
-                                    <th>View</th>
-                                    <th>Add</th>
-                                    <th>Edit</th>
-                                    <th>Delete</th>
-                                    <th>Approve</th>
+                                    <th> <input type="checkbox" id="chkView" class="checkbox-checked" /> View</th>
+                                    <th> <input type="checkbox" id="chkAdd" class="checkbox-checked" /> Add</th>
+                                    <th><input type="checkbox"  id="chkEdit" class="checkbox-checked" /> Edit</th>
+                                    <th><input type="checkbox"  id="chkDelete" class="checkbox-checked" /> Delete</th>
+                                    <th><input type="checkbox"  id="chkApprove" class="checkbox-checked" /> Approve</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -161,3 +161,7 @@
 
     </form>
 </div>
+@section MyScripts {
+
+    <script type="text/javascript" src="~/js/Custom/Role/RoleManage.js"></script>
+}

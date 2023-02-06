@@ -12,7 +12,7 @@ $(document).ready(function () {
     SetDivReadonly();    
     InitializeCurrencyDropdown();
     InitializeFinalSelectionDropdown();
-    
+    $("#AddYearForm").hide();
 });
 
 function InitializeCurrencyDropdown() {
@@ -129,8 +129,8 @@ function AddYearClick() {
         //entityYear['YearIndex'] = objYears.length + 1;
         objYears.push(entityYear);
         UpdateYearTable(ColumnObjUpcase);
-         ClearValidationForYearForm();
-       
+        ClearValidationForYearForm();    
+        $("#AddYearForm").hide();  
     }
 }
 function AddRow(i) {
@@ -395,4 +395,7 @@ function NSP(variable) {
 function ShowPopUpCommercial() {
     $("#CancelModelCommercial").find("button, submit, a").show();
     $('#CancelModel').modal('show');
+}
+function ShowYearForm() {
+    $("#AddYearForm").show();    
 }

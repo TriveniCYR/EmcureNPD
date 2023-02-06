@@ -51,7 +51,7 @@ function InitializePIDFList() {
         {
             "data": "Action", "name": "Action", "render": function (data, type, row, meta) {
                 var html = '';
-                html += '<a class="btn btn-primary" href="/PIDF/PIDFCommerciaLDetails?pidfid=' + row.encpidfid + '&bui=' + row.encbud + '"><i class="fa fa-fw fa-plus mr-1"></i> Add</a> ';
+                html += '<a title="Edit" class="btn btn-primary" href="/PIDF/PIDFCommerciaLDetails?pidfid=' + row.encpidfid + '&bui=' + row.encbud + '"><i class="fa fa-fw fa-edit mr-1"></i></a> ';
                 return html;
             }
         }
