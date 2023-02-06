@@ -64,17 +64,18 @@
 </div>
 
 <script>
-            updateList = function() {
-            var input = document.getElementById('File');
-            var output = document.getElementById('fileList');
-            var children = "";
+    //show selected files
+    updateList = function() {
+    var input = document.getElementById('File');
+    var output = document.getElementById('fileList');
+    var children = "";
 
-            for (var i = 0; i < input.files.length; ++i) {
-                children += '<li>' + input.files.item(i).name + '</li>';
-            }
-            output.innerHTML = children;
-        }
-
+    for (var i = 0; i < input.files.length; ++i) {
+        children += '<li>' + input.files.item(i).name + '</li>';
+    }
+    output.innerHTML = children;
+}
+ // browse files
     var selectFileButton = document.getElementById("selectFileButton");
     var fileInput = document.getElementById("File");
 
@@ -82,5 +83,4 @@
       event.preventDefault();
       fileInput.click();
     });
-
 </script>
