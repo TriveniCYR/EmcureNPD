@@ -264,7 +264,7 @@
                         <div class="form-group">
                             <button type="submit" class="btn btn-primary" onClick="SaveClick();">@SharedLocalizer["Save"]</button>
                             <a class="btn btn-danger" asp-controller="PIDForm" asp-action="PIDFormList">@SharedLocalizer["Cancel"]</a>
-                            @if (Model.StatusId !=(Int32)Master_PIDFStatus.IPDCreated)
+                            @if (Model.StatusId != (Int32)Master_PIDFStatus.IPDInProgress)
                             {
                             <button type="submit" class="btn btn-info" onClick="SaveDraftClick();">@SharedLocalizer["SaveDraft"]</button>
                             }

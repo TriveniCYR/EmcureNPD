@@ -509,7 +509,7 @@
 					<div>
 						<div class="form-group">
 							<button type="submit" class="btn btn-primary" onClick="SaveClick();">@SharedLocalizer["Save"]</button>
-							@if (Model.StatusId != (Int32)Master_PIDFStatus.PIDFCreated)
+							@if (Model.StatusId != (Int32)Master_PIDFStatus.PIDFInProgress)
 							{
 								<button type="submit" class="btn btn-info" onClick="SaveDraftClick();">@SharedLocalizer["SaveDraft"]</button>
 
