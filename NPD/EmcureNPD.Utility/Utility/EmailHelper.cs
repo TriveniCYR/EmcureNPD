@@ -19,7 +19,7 @@ namespace EmcureNPD.Utility.Helpers
             string msg = string.Empty;
 
             MailMessage message = new MailMessage();
-            MailAddress fromAddress = new MailAddress("dev.net.smtp@gmail.com");
+            MailAddress fromAddress = new MailAddress("web@emcure.co.in");
             message.From = fromAddress;
             message.To.Add(toList);
             if (ccList != null && ccList != string.Empty)
@@ -32,8 +32,8 @@ namespace EmcureNPD.Utility.Helpers
             using (SmtpClient smtpClient = new SmtpClient())
             {
                 smtpClient.Host = "mail.emcure.co.in";
-                smtpClient.Credentials = new System.Net.NetworkCredential("smtp.gmail.com", "pass123!@#");
-                smtpClient.Port = 587;//put smtp port here
+                smtpClient.Credentials = new System.Net.NetworkCredential("web@emcure.co.in", "ad@1234");
+                smtpClient.Port = 25;//put smtp port here
                 smtpClient.EnableSsl = true;
                 smtpClient.UseDefaultCredentials = true;
                 smtpClient.DeliveryMethod = SmtpDeliveryMethod.Network;

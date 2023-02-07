@@ -92,6 +92,7 @@ namespace EmcureNPD.Business.Core.Implementation
 
             Expression<Func<PidfCommercial, bool>> expr = u => u.BusinessUnitId == entitycommPIDF.BusinessUnitId && u.Pidfid == entitycommPIDF.Pidfid && u.PidfproductStrengthId == entitycommPIDF.PidfproductStrengthId;
             var objFetchData = await _commercialrepository.GetAsync(expr);
+            var OldObjpidfCommercial = objFetchData;
             if (objFetchData == null)
             {
                 var NewCommPIDF = new PidfCommercial();
@@ -107,6 +108,9 @@ namespace EmcureNPD.Business.Core.Implementation
 
                 NewCommPIDF.PidfCommercialYears = listYear;
                 _commercialrepository.AddAsync(NewCommPIDF);
+
+                var isSuccess = await _auditLogService.CreateAuditLog<PidfCommercial>(Utility.Audit.AuditActionType.Create,
+             Utility.Enums.ModuleEnum.PIDF, OldObjpidfCommercial, NewCommPIDF, 0);
             }
             else
             {
@@ -122,6 +126,8 @@ namespace EmcureNPD.Business.Core.Implementation
                 objFetchData.ModifyBy = entitycommPIDF.CreatedBy;
                 objFetchData.ModifyDate = DateTime.Now;
                 _commercialrepository.UpdateAsync(objFetchData);
+                var isSuccess = await _auditLogService.CreateAuditLog<PidfCommercial>(Utility.Audit.AuditActionType.Update,
+              Utility.Enums.ModuleEnum.PIDF, OldObjpidfCommercial, objFetchData,0);
             }
             await _unitOfWork.SaveChangesAsync();
             return DBOperation.Success;

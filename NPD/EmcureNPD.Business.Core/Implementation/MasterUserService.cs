@@ -394,7 +394,7 @@ namespace EmcureNPD.Business.Core.ServiceImplementations
                 strHtml= strHtml.Replace("ValidateURL", strURL);
                 strHtml= strHtml.Replace("ValidDateTime", entityUser.ForgotPasswordDateTime.Value.AddHours(1).ToString());
                 strHtml= strHtml.Replace("Name", entityUser.FullName);
-                email.SendMail(entityUser.EmailAddress, string.Empty, "Emcure NPD - Forgot Password", strHtml);
+                //email.SendMail(entityUser.EmailAddress, string.Empty, "Emcure NPD - Forgot Password", strHtml);
                 return DBOperation.Success;
         }
         public async Task<string> ResetPassword(MasterUserResetPasswordEntity resetPasswordentity)
