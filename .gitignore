@@ -4,3 +4,5 @@
 
 /.vs/EmcureNPD/v17/.wsuo
 /.vs
+/NPD/EmcureNPD.Web/Properties/launchSettings.json
+/NPD/EmcureNPD.API/Properties/launchSettings.json
