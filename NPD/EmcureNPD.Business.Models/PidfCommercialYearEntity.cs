@@ -32,8 +32,8 @@ namespace EmcureNPD.Business.Models
         public string NspunitsLow { get; set; }
         public string NspunitsMedium { get; set; }
         public string NspunitsHigh { get; set; }
-        public string Nsplow { get; set; }
-        public string Nspmedium { get; set; }
-        public string Nsphigh { get; set; }
+        public string NspLow { get; set; }
+        public string NspMedium { get; set; }
+        public string NspHigh { get; set; }
     }
 }
