@@ -2,119 +2,130 @@
     For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 *@
 @{
-    ViewData["Title"] = "Medical - Emcure NPD";
+	ViewData["Title"] = "Medical - Emcure NPD";
 }
 @model EmcureNPD.Business.Models.PIDFMedicalViewModel;
 
 <style>
-    .content {
-        margin: 1rem;
-        border-radius: 10px;
-        background: white;
-    }
+	.content {
+		margin: 1rem;
+		border-radius: 10px;
+		background: white;
+	}
 
-    .container-fluid.con {
-        padding: 20px;
-    }
+	.container-fluid.con {
+		padding: 20px;
+	}
 
-    .outside-buttons {
-        width: 10%;
-    }
+	.outside-buttons {
+		width: 10%;
+	}
 </style>
 <section class="pb-2">
-    <div class="content-header">
-        <div class="container-fluid">
-            <h1>Medical Details</h1>
-        </div>
-    </div>
-    <div class="content">
-        <div class="container-fluid con">
-            <h5 class="mb-4">Medical Opinion</h5>
-            <form class="row" asp-controller=PIDForm asp-action=Medical asp-route-id="@ViewBag.id" method="post" enctype="multipart/form-data">
-                <div class="col-12 mb-4">
-                    <div class="d-flex">
-                        <div class="form-check me-4">
-                            <input class="form-check-input" asp-for=MedicalOpinion type="radio" name="MedicalOpinion" value=1
-                                   id="radioPositive">
-                            <label class="m-0" for="radioPositive">
-                                Positive
-                            </label>
-                            <span asp-validation-for=MedicalOpinion class="text-danger"></span>
-                        </div>
-                        <div class="form-check">
-                            <input class="form-check-input" asp-for=MedicalOpinion type="radio" name="MedicalOpinion" value=0
-                                   id="radioNegative">
-                            <label class="m-0" for="radioNegative">
-                                Negative
-                            </label>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-12 form-group d-flex flex-column mb-4">
-                    <label for="labelRemarks" class="form-label">Remarks</label>
-                    <textarea asp-for=Remark name="Remark" id="labelRemarks" cols="15" rows="5"></textarea>
-                    <span asp-validation-for=Remark class="text-danger"></span>
-                </div>
-                <div class="col-12 form-group d-flex flex-column mb-4">
-                    <label for="File" class="form-label">File Upload</label>
-                    <input type="file" style="visibility: hidden;" name="File" id="File"
-                           class="form-control form-control-lg bg-transparent text-white" multiple>
-                </div>
-                <div class="col-12 d-flex align-items-center justify-content-left mb-4">
-                    <input type="text" asp-for=PidfmedicalId hidden />
-                    <input type="text" asp-for=PidfmedicalFileId hidden />
-                    <input type="text" asp-for=FileName hidden />
-                    <button class="btn btn-primary me-3 px-4" type="button" id="selectFileButton">Browse</button>
-                    <ul id="fileList">
-                        @{
-                            if (Model.FileName != null)
-                            {
-                                @foreach (var fileName in Model.FileName)
-                                {
-                                    <li> <a href="">@fileName </a><i class="fa fa-times close" aria-hidden="true"></i></li>
-                                }
-                            }
-                        }
-                    </ul>
-                </div>
-                <div class="col-12 d-flex align-items-center justify-content-end">
-                    <button class="btn btn-primary me-3 outside-buttons" type="submit">Submit</button>
-                    <button class="btn btn-danger me-3 outside-buttons" type="button" onclick="window.history.back();">cancel</button>
-                </div>
-            </form>
-        </div>
-    </div>
+	<div class="content-header">
+		<div class="container-fluid">
+			<h1>Medical Details</h1>
+		</div>
+	</div>
+	<div class="content">
+		<div class="container-fluid con">
+			<h5 class="mb-4">Medical Opinion</h5>
+			<form class="row" asp-controller=PIDForm asp-action=Medical asp-route-id="@ViewBag.id" method="post" enctype="multipart/form-data">
+				<div class="col-12 mb-4">
+					<div class="d-flex">
+						<div class="form-check me-4">
+							<input class="form-check-input" asp-for=MedicalOpinion type="radio" name="MedicalOpinion" value=1
+								   id="radioPositive">
+							<label class="m-0" for="radioPositive">
+								Positive
+							</label>
+							<span asp-validation-for=MedicalOpinion class="text-danger"></span>
+						</div>
+						<div class="form-check">
+							<input class="form-check-input" asp-for=MedicalOpinion type="radio" name="MedicalOpinion" value=0
+								   id="radioNegative">
+							<label class="m-0" for="radioNegative">
+								Negative
+							</label>
+						</div>
+					</div>
+				</div>
+				<div class="col-12 form-group d-flex flex-column mb-4">
+					<label for="labelRemarks" class="form-label">Remarks</label>
+					<textarea asp-for=Remark name="Remark" id="labelRemarks" cols="15" rows="5"></textarea>
+					<span asp-validation-for=Remark class="text-danger"></span>
+				</div>
+				<div class="col-12 form-group d-flex flex-column mb-4">
+					<label for="File" class="form-label">File Upload</label>
+					<input type="file" style="visibility: hidden;" name="File" id="File"
+						   class="form-control form-control-lg bg-transparent text-white" multiple>
+				</div>
+				<div class="col-12 d-flex align-items-center justify-content-left mb-4">
+					<input type="text" asp-for=PidfmedicalId hidden />
+					<input type="text" asp-for=PidfmedicalFileId hidden />
+					<button class="btn btn-primary me-3 px-4" type="button" id="selectFileButton">Browse</button>
+					<ul id="fileList">
+						@{
+							if (Model.FileName != null)
+						{
+							for (int i = 0; i < Model.FileName.Length; i++)
+							{
+								<div class="element" id="element_@i">
+										@Html.EditorFor(m => m.FileName[i], new { htmlAttributes = new {@readonly = "readonly" } })
+									<button type="button" class="btn btn-sm btn-danger" onclick="deleteElement(@i)">Delete</button>
+								</div>
+							}
+						}
+						}
+					</ul>
+				</div>
+				<div class="col-12 d-flex align-items-center justify-content-end">
+					<button class="btn btn-primary me-3 outside-buttons" type="submit">Submit</button>
+					<button class="btn btn-danger me-3 outside-buttons" type="button" onclick="window.history.back();">cancel</button>
+				</div>
+			</form>
+		</div>
+	</div>
 </section>
 
 
 
 <script>
-    // browse files
-       var selectFileButton = document.getElementById("selectFileButton");
-       var fileInput = document.getElementById("File");
+	// browse files
+	var selectFileButton = document.getElementById("selectFileButton");
+	var fileInput = document.getElementById("File");
 
-       selectFileButton.addEventListener("click", function() {
-         event.preventDefault();
-         fileInput.click();
-       });
-       // preview Files
+	selectFileButton.addEventListener("click", function () {
+		event.preventDefault();
+		fileInput.click();
+	});
+	// preview Files
 
-     function previewFile(file) {
-       window.open(URL.createObjectURL(file));
-     }
+	function previewFile(file) {
+		window.open(URL.createObjectURL(file));
+	}
 
-     const input = document.getElementById("File");
-     const fileList = document.getElementById("fileList");
-     input.addEventListener("change", () => {
-     fileList.innerHTML = "";
-       for (const file of input.files) {
-         const li = document.createElement("li");
-         const a = document.createElement("a");
-         a.textContent = file.name;
-         a.href = "#";
-         a.addEventListener("click", () => previewFile(file));
-         li.appendChild(a);
-         fileList.appendChild(li);
-       }
-     });
+	const input = document.getElementById("File");
+	const fileList = document.getElementById("fileList");
+	input.addEventListener("change", () => {
+		fileList.innerHTML = "";
+		for (const file of input.files) {
+			const li = document.createElement("li");
+			const a = document.createElement("a");
+			a.textContent = file.name;
+			a.href = "#";
+			a.addEventListener("click", () => previewFile(file));
+			li.appendChild(a);
+			fileList.appendChild(li);
+		}
+	});
+
+	//remove files
+	function deleteElement(controlId) {
+		var controlName = "FileName_" + controlId + "_";
+		$('#'+controlName).val('');
+		var divControl = "element_" + controlId;
+		var divCtrl = document.getElementById("element_" + controlId)
+		divCtrl.style.display = "none";
+	}
 </script>
