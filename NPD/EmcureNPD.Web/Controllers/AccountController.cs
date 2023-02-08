@@ -177,7 +177,7 @@ namespace EmcureNPD.Web.Controllers
         [HttpPost]
         public IActionResult ForgotPassword(ForgotPasswordViewModel forgotPasswordViewModel)
         {
-            if (!CheckEmailAddressExists(forgotPasswordViewModel.Email))
+            if (CheckEmailAddressExists(forgotPasswordViewModel.Email))
             {
                 APIRepository objapi = new APIRepository(_cofiguration);
                 HttpResponseMessage responseMessage = objapi.APICommunication(APIURLHelper.ForgotPassword, HttpMethod.Post, string.Empty, new StringContent(JsonConvert.SerializeObject(forgotPasswordViewModel))).Result;

@@ -6,3 +6,5 @@
 /.vs
 /NPD/EmcureNPD.Web/Properties/launchSettings.json
 /NPD/EmcureNPD.API/Properties/launchSettings.json
+/NPD/EmcureNPD.API/appsettings.json
+/NPD/EmcureNPD.Web/appsettings.json

@@ -126,8 +126,8 @@ namespace EmcureNPD.Business.Core.Implementation
                 objFetchData.ModifyBy = entitycommPIDF.CreatedBy;
                 objFetchData.ModifyDate = DateTime.Now;
                 _commercialrepository.UpdateAsync(objFetchData);
-                var isSuccess = await _auditLogService.CreateAuditLog<PidfCommercial>(Utility.Audit.AuditActionType.Update,
-              Utility.Enums.ModuleEnum.PIDF, OldObjpidfCommercial, objFetchData,0);
+              //  var isSuccess = await _auditLogService.CreateAuditLog<PidfCommercial>(Utility.Audit.AuditActionType.Update,
+              //Utility.Enums.ModuleEnum.PIDF, OldObjpidfCommercial, objFetchData,0);
             }
             await _unitOfWork.SaveChangesAsync();
             return DBOperation.Success;

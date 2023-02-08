@@ -152,8 +152,8 @@ function AddtblRevenueRow(year, i, columns) {
     var finalSelection = columns[9];    
     var FSSelectedText = $('#' + finalSelection).find(":selected").text();
     var ArrItem = FSSelectedText.split('/');
-    var MarketShareUnit = $("#MarketShareUnit" + ArrItem[0]).val();
-    var Nsp = $("#Nsp" + ArrItem[1]).val();
+    var MarketShareUnit = year["MarketShareUnit" + ArrItem[0]];
+    var Nsp = year["Nsp" + ArrItem[1]]; 
     var result = MarketShareUnit * Nsp;
     $('#RevenueTbody').append(`<tr id='RevenueRow` + i + `'></tr>`)
     $('#RevenueRow' + i).append('<td>Year' + (i + 1) + '</td>')

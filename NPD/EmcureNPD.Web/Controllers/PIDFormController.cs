@@ -145,9 +145,9 @@ namespace EmcureNPD.Web.Controllers
             try
             {
                 if (pidFormEntity.SaveType == "Sv")
-                    pidFormEntity.StatusId = (Int32)Master_PIDFStatus.IPDCreated;
+                    pidFormEntity.StatusId = (Int32)Master_PIDFStatus.IPDInProgress;
                 else
-                    pidFormEntity.StatusId = (Int32)Master_PIDFStatus.IPDBDPendingApproval;
+                    pidFormEntity.StatusId = (Int32)Master_PIDFStatus.IPDSubmitted;
                 pidFormEntity.CreatedBy = Convert.ToInt32(HttpContext.Session.GetString(UserHelper.LoggedInUserId));
                 HttpContext.Request.Cookies.TryGetValue(UserHelper.EmcureNPDToken, out string token);
                 APIRepository objapi = new(_cofiguration);

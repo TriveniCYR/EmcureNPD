@@ -355,9 +355,8 @@ namespace EmcureNPD.Business.Core.ServiceImplementations
         }
         public async Task<bool> CheckEmailAddressExists(string emailAddress)
         {
-            var isExists = _repository.GetAllQuery().Where(x => x.EmailAddress.ToLower() == emailAddress.ToLower()).FirstOrDefaultAsync();
-            if (isExists != null) return false;
-            else return true;
+            var isExists = await _repository.GetAllQuery().AnyAsync(x => x.EmailAddress.ToLower() == emailAddress.ToLower());
+            return isExists;
         }
         public async Task<bool> IsTokenValid(string token)
         {

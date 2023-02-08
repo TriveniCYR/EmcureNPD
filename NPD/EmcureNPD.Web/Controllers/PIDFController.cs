@@ -111,9 +111,9 @@ namespace EmcureNPD.Web.Controllers
             try
             {
 				if (pIDFEntity.SaveType == "Sv")
-					pIDFEntity.StatusId = (Int32)Master_PIDFStatus.PIDFCreated;
+					pIDFEntity.StatusId = (Int32)Master_PIDFStatus.PIDFInProgress;
 				else
-					pIDFEntity.StatusId = (Int32)Master_PIDFStatus.PIDFPendingApproval;
+					pIDFEntity.StatusId = (Int32)Master_PIDFStatus.PIDFSubmitted;
 				pIDFEntity.CreatedBy = Convert.ToInt32(HttpContext.Session.GetString(UserHelper.LoggedInUserId));
 				HttpContext.Request.Cookies.TryGetValue(UserHelper.EmcureNPDToken, out string token);
                 APIRepository objapi = new(_cofiguration);
@@ -383,9 +383,9 @@ namespace EmcureNPD.Web.Controllers
             try
             {
                 if (pbfEntity.SaveType == "Sv")
-                    pbfEntity.StatusId = (Int32)Master_PIDFStatus.PIDFCreated;
+                    pbfEntity.StatusId = (Int32)Master_PIDFStatus.PIDFInProgress;
                 else
-                    pbfEntity.StatusId = (Int32)Master_PIDFStatus.PIDFPendingApproval;
+                    pbfEntity.StatusId = (Int32)Master_PIDFStatus.PIDFSubmitted;
                 pbfEntity.CreatedBy = Convert.ToInt32(HttpContext.Session.GetString(UserHelper.LoggedInUserId));
                 HttpContext.Request.Cookies.TryGetValue(UserHelper.EmcureNPDToken, out string token);
                 APIRepository objapi = new(_cofiguration);

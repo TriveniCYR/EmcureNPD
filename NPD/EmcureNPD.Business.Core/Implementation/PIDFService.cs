@@ -158,7 +158,6 @@ namespace EmcureNPD.Business.Core.Implementation
             };
 
             var PIDFList = await _repository.GetBySP("stp_npd_Get" + ScreenName + "List", System.Data.CommandType.StoredProcedure, osqlParameter);
-
             var TotalRecord = (PIDFList != null && PIDFList.Rows.Count > 0 ? Convert.ToInt32(PIDFList.Rows[0]["TotalRecord"]) : 0);
             var TotalCount = (PIDFList != null && PIDFList.Rows.Count > 0 ? Convert.ToInt32(PIDFList.Rows[0]["TotalCount"]) : 0);
 
@@ -257,7 +256,7 @@ namespace EmcureNPD.Business.Core.Implementation
                 var id = lastPidfId.PIDFID;
                 id++;
                 objPIDF.Pidfno = "PIDF-00" + id;                
-                objPIDF.LastStatusId = (Int32)Master_PIDFStatus.PIDFCreated;
+                objPIDF.LastStatusId = (Int32)Master_PIDFStatus.PIDFInProgress;
                 await _unitOfWork.SaveChangesAsync();
 
                 _repository.UpdateAsync(objPIDF);
