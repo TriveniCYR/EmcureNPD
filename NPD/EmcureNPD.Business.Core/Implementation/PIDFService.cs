@@ -256,7 +256,7 @@ namespace EmcureNPD.Business.Core.Implementation
                 var id = lastPidfId.PIDFID;
                 id++;
                 objPIDF.Pidfno = "PIDF-00" + id;                
-                objPIDF.LastStatusId = (Int32)Master_PIDFStatus.PIDFCreated;
+                objPIDF.LastStatusId = (Int32)Master_PIDFStatus.PIDFInProgress;
                 await _unitOfWork.SaveChangesAsync();
 
                 _repository.UpdateAsync(objPIDF);
