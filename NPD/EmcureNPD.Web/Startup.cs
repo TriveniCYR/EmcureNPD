@@ -50,6 +50,8 @@ namespace EmcureNPD.Web
 
             services.AddControllersWithViews();
 
+            var mvcBuilder = services.AddControllersWithViews();
+
             //this is set for find webapp base URL
             services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
 

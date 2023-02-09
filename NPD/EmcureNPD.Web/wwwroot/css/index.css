@@ -1,29 +1,72 @@
 body {
-  font-family: "Source Sans Pro", -apple-system, BlinkMacSystemFont, "Segoe UI",
-    Roboto, "Helvetica Neue", Arial, sans-serif, "Apple Color Emoji",
-    "Segoe UI Emoji", "Segoe UI Symbol" !important;
+    font-family: "Source Sans Pro", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol" !important;
+}
+
+tbody,
+td,
+tfoot,
+th,
+thead,
+tr {
+    border: 1px solid #0000001e !important;
+}
+
+.table thead th {
+    vertical-align: middle;
+}
+
+.scrollbar::-webkit-scrollbar-track {
+    -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
+    background-color: #f5f5f5;
+}
+
+.scrollbar::-webkit-scrollbar {
+    width: 10px;
+    height: 8px;
+    background-color: #f5f5f5;
+}
+
+.scrollbar::-webkit-scrollbar-thumb {
+    background-color: #0d6efd;
+    background-image: -webkit-gradient( linear, 0 0, 0 100%, color-stop(0.5, rgba(255, 255, 255, 0.2)), color-stop(0.5, transparent), to(transparent) );
+    border-radius: 10px;
+}
+
+.dataTables_wrapper.no-footer .dataTables_scrollBody {
+    border-bottom: none;
+}
+
+.content {
+    background: white;
+    border-radius: 10px;
+    margin: 1rem;
+    padding: 20px 10px !important;
 }
 
 .brand-link {
-  padding: 9px;
+    padding: 9px;
 }
 
 .logo {
-  position: relative;
-  padding: 0 0 8px 0;
+    position: relative;
+    padding: 0 0 8px 0;
 }
 
-.logo span {
-  position: absolute;
-  font-size: 36px;
-  top: -10px;
-  letter-spacing: 2px;
-  color: #dc3545;
-}
+    .logo span {
+        position: absolute;
+        font-size: 36px;
+        top: -10px;
+        letter-spacing: 2px;
+        color: #dc3545;
+    }
 
-.logo sub {
-  bottom: -15px;
-  font-size: xx-small;
-  left: 30px;
-  word-spacing: 0px;
+    .logo sub {
+        bottom: -15px;
+        font-size: xx-small;
+        left: 30px;
+        word-spacing: 0px;
+    }
+table.dataTable tbody tr td {
+    word-wrap: break-word;
+    word-break: break-all;
 }

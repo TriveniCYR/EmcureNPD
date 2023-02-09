@@ -8,6 +8,7 @@ using EmcureNPD.Utility.Enums;
 using EmcureNPD.Utility.Utility;
 using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Data.SqlClient;
 using System.Dynamic;
 using System.Linq;
@@ -126,7 +127,7 @@ namespace EmcureNPD.Business.Core.Implementation
             string SortDir = (model.order.Count > 0 ? model.order[0].dir : string.Empty);
 
             SqlParameter[] osqlParameter = {
-                new SqlParameter("@PIDFID", 0),
+                //new SqlParameter("@PIDFID", 0),
                 new SqlParameter("@CurrentPageNumber", model.start),
                     new SqlParameter("@PageSize", model.length),
                     new SqlParameter("@SortColumn", ColumnName),
@@ -139,7 +140,7 @@ namespace EmcureNPD.Business.Core.Implementation
             var TotalRecord = (PIDFList != null && PIDFList.Rows.Count > 0 ? Convert.ToInt32(PIDFList.Rows[0]["TotalRecord"]) : 0);
             var TotalCount = (PIDFList != null && PIDFList.Rows.Count > 0 ? Convert.ToInt32(PIDFList.Rows[0]["TotalCount"]) : 0);
 
-            DataTableResponseModel oDataTableResponseModel = new DataTableResponseModel(model.draw, TotalRecord, TotalCount, PIDFList.DataTableToList<PIDFListEntity>());
+            DataTableResponseModel oDataTableResponseModel = new DataTableResponseModel(model.draw, TotalRecord, TotalCount, PIDFList);
 
             return oDataTableResponseModel;
         }

@@ -7,51 +7,57 @@
 @{
     ViewData["Title"] = @MasterLocalizer["PIDF List"];
 }
-<div class="row">
-    <section class="col-lg-12">
-        <div class="card">
-            <div class="card-header">
-                <h3 class="card-title">
-                    <i class="far fa-list-alt mr-2"></i>@MasterLocalizer["PIDF"]
-                </h3>
-                <div class="card-tools md-left">
-                    <div class="mybtn-group">
-                        <a class="btn btn-success" onClick="approveRejDeleteData('A')"><i class="fa fa-check mr-1"></i> @SharedLocalizer["Approve"]</a>
-                        <a class="btn btn-danger" onClick="approveRejDeleteData('R')"><i class="far fa fa-times mr-1"></i> @SharedLocalizer["Reject"]</a>
-                        @*<a class="btn btn-danger" onClick="approveRejDeleteData('D')"><i class="far fa fa-trash mr-1"></i> @SharedLocalizer["Delete"]</a>*@
-                        <a class="btn btn-primary" asp-action="PIDF"><i class="far fa-plus-square mr-1"></i> @SharedLocalizer["Add"]</a>
-                        <div class="export-btn mybtn-group"></div>
-                    </div>
-                </div>
-            </div>
-            <div class="card-body" style="overflow-x:auto;">
-                <table id="PIDFTable" class="table table-bordered table-striped table-hover" style="width:100%; text-align:center;">
-                    <thead>
-                        <tr>
-                            <th class="text-center"></th>
-                            <th>@MasterLocalizer["PIDF No"]</th>
-                            <th>@MasterLocalizer["Project Name"]</th>
-                            <th>@SharedLocalizer["Brand Name"]</th>
-                            <th>@SharedLocalizer["DosageForm Name"]</th>
-                            <th>@SharedLocalizer["Market Extension"]</th>
-                            <th>@SharedLocalizer["Product Packaging Type"]</th>  
-                            <th>@SharedLocalizer["Applicant"]</th>
-                            <th>@SharedLocalizer["Country Name"]</th>
-                            <th>@SharedLocalizer["Inidication"]</th>
-                            <th>@SharedLocalizer["DIA /ANDA/ ANDS"]</th>
-                            <th>@SharedLocalizer["Transform Form R&D Division"]</th>
-                            <th>@SharedLocalizer["Previous Project Code"]</th>
-                            <th>@SharedLocalizer["Sink Cost"]</th>
-                            <th>@SharedLocalizer["Created By"]</th>
-                            <th>@SharedLocalizer["Status"]</th>
-                            <th class="text-center">@SharedLocalizer["Action"]</th>                            
-                        </tr>
-                    </thead>
-                    <tbody>
-                    </tbody>
-                </table>              
-            </div>
+<div class="content-header">
+    <div class="container-fluid d-flex justify-content-between">
+        <h3>@MasterLocalizer["PIDF"]</h3>
+        <div>
+            <a class="btn btn-success" onClick="approveRejDeleteData('A')"><i class="fa fa-check-circle mr-1"></i> @SharedLocalizer["Approve"]</a>
+            <a class="btn btn-danger" onClick="approveRejDeleteData('R')"><i class="fa fa-ban mr-1"></i> @SharedLocalizer["Reject"]</a>
+            @*<a class="btn btn-danger" onClick="approveRejDeleteData('D')"><i class="far fa fa-trash mr-1"></i> @SharedLocalizer["Delete"]</a>*@
+            <a class="btn btn-primary" asp-action="PIDF"><i class="far fa-plus-square mr-1"></i> @SharedLocalizer["Add"]</a>
+            <div class="export-btn mybtn-group"></div>
         </div>
+    </div>
+</div>
+
+<div class="content py-4 overflow-auto">
+                <div class="container-fluid">
+
+        <table id="PIDFTable" class="table table-hover">
+            <thead>
+                <tr class="text-center">
+                    <th class="text-center" style="min-width:25px"></th>
+                    <th class="text-center" style="min-width:25px"></th>
+                    <th style="min-width:90px">@MasterLocalizer["PIDF No"]</th>
+                    <th style="min-width:110px">@MasterLocalizer["Project Name"]</th>
+                    <th style="min-width:110px">@SharedLocalizer["Brand Name"]</th>
+                    <th style="min-width:110px">@SharedLocalizer["Dosage Form"]</th>
+                    <th style="min-width:110px">@SharedLocalizer["Business Unit"]</th>
+                    <th style="min-width:110px">@SharedLocalizer["Oral Name"]</th>
+                    <th style="min-width:80px">@SharedLocalizer["In House"]</th>
+                    <th style="min-width:50px">@SharedLocalizer["IPD"]</th>
+                    <th style="min-width:50px">@SharedLocalizer["Commercial"]</th>
+                    <th style="min-width:50px">@SharedLocalizer["PBF"]</th>
+                    <th style="min-width:50px">@SharedLocalizer["Finance"]</th>
+                    <th style="min-width:50px">@SharedLocalizer["Management"]</th>
+                    <th style="min-width:140px">@SharedLocalizer["Market Extension"]</th>
+                    <th style="min-width:140px">@SharedLocalizer["Product Packaging"]</th>
+                    <th style="min-width:140px">@SharedLocalizer["Ref Product Brand"]</th>
+                    <th style="min-width:100px">@SharedLocalizer["Applicant"]</th>
+                    <th style="min-width:80px">@SharedLocalizer["Country"]</th>
+                    <th style="min-width:80px">@SharedLocalizer["Inidication"]</th>
+                    <th style="min-width:120px">@SharedLocalizer["DIA /ANDA/ ANDS"]</th>
+                    <th style="min-width:100px">@SharedLocalizer["Created By"]</th>
+                    <th style="min-width:100px">@SharedLocalizer["Status"]</th>
+                    <th style="min-width:80px" class="text-center">@SharedLocalizer["Action"]</th>
+                </tr>
+            </thead>
+            <tbody class="text-center">
+            </tbody>
+        </table>
+    </div>
+</div>
+
 
         @*ApproveModel*@
         <div id="ApproveModel" class="modal themeModal" role="dialog">
@@ -130,8 +136,7 @@
             </div>
         </div>
 
-    </section>
-</div>
+
 @section MyScripts {
 
     @Html.Partial("_DataTablePartial")

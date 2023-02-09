@@ -54,16 +54,14 @@
         <input type="hidden" id="hdnBaseURL" value="@Configuration.GetSection("Apiconfig")["baseurl"]" />
 
         <!-- Content Wrapper. Contains page content -->
-        <div class="content-wrapper">
             @*@Html.Partial("_BreadCrumb")*@
             <!-- Main content -->
-            <section class="content">
-                <div class="container-fluid">
+            <section class="content-wrapper pb-4">
                     @RenderBody()
-                </div><!-- /.container-fluid -->
+                <!-- /.container-fluid -->
             </section>
             <!-- /.content -->
-        </div>
+
         <!-- /.content-wrapper -->
         <footer class="main-footer">
             <strong>Copyright &copy; @DateTime.Now.Year <a href="https://www.emcure.com/">Emcure NPD</a>.</strong>

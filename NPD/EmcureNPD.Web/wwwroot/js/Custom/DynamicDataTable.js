@@ -1,17 +1,26 @@
 ﻿function IntializingDataTable(id, setDefaultOrder, ajaxObject, columnObject, rowCallBack, drawCallback) {
     var dataTableInst =
-        $('#' + id + '').DataTable({
+        $('#' + id + '').removeAttr('width').DataTable({
             order: setDefaultOrder,
+            scrollX: true,
+            scrollCollapse: true,
+            autoWidth: false,
             processing: true,
             serverSide: true,
-            stateSave: true,
+            //stateSave: true,
             orderMulti: false,
             filter: true,
             orderCellsTop: true,
             "bLengthChange": true,
             'bSortable': true,
             fixedHeader: true,
-            "pageLength": 25,
+            pageLength: 10,
+            bPaginate: false,
+            paging: true,
+            lengthMenu: [
+                [10, 25, 50, -1],
+                [10, 25, 50, 'All'],
+            ],
             dom: 'Bfrtip',
             stateSaveCallback: function (settings, data) {
                 localStorage.setItem('DataTables_' + settings.sInstance, JSON.stringify(data));
@@ -38,4 +47,6 @@
                     drawCallback();
             }
         });
+    $('body').find('.dataTables_scrollBody').addClass("scrollbar");
+    return dataTableInst;
 }
