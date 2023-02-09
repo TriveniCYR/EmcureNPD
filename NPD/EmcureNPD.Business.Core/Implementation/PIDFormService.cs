@@ -459,16 +459,26 @@ namespace EmcureNPD.Business.Core.Implementation
                                 PidfmedicalFileId = Convert.ToInt64(item.PidfmedicalFileId),
                                 CreatedBy = (int)objPIDFMedical.CreatedBy,
                             };
-                            //var file = item.FileName.Substring(7);
                             var fullPath = path + "\\" + item.FileName ;
-
-                            if (System.IO.File.Exists(fullPath))
+                            var itmFileName = "Medical\\" + item.FileName;
+							if (!medicalModel.FileName.Contains(itmFileName))
                             {
-                                System.IO.File.Delete(fullPath);
-                            }
-                            
-                            await FileUpload(files, path, uniqueFileName);
-                            _pidfMedicalFilerepository.UpdateAsync(medicalFiles);
+								if (System.IO.File.Exists(fullPath))
+								{
+									System.IO.File.Delete(fullPath);
+								}
+								PidfMedicalFile medicalFile = new PidfMedicalFile
+								{
+									PidfmedicalFileId = Convert.ToInt64(item.PidfmedicalFileId),
+								};
+								_pidfMedicalFilerepository.Remove(medicalFile);
+								if (files.Count() != 0)
+								{
+									await FileUpload(files, path, uniqueFileName);
+									_pidfMedicalFilerepository.UpdateAsync(medicalFiles);
+								}
+								
+							}
                             i++;
                         }
                         else if(medicalModel.FileName != null)
@@ -491,7 +501,7 @@ namespace EmcureNPD.Business.Core.Implementation
 
                     if (medicalModel.FileName != null && i < medicalModel.FileName.Count())
                     {
-                        foreach (var filename in medicalModel.FileName.Skip(i))
+                        foreach (var filename in i!=0?medicalModel.FileName.Skip(i): medicalModel.FileName)
                         {
                             var uniqueFileName = Path.GetFileNameWithoutExtension(medicalModel.FileName[i])
                                + Guid.NewGuid().ToString().Substring(0, 4)
@@ -503,8 +513,12 @@ namespace EmcureNPD.Business.Core.Implementation
                                 PidfmedicalId = Convert.ToInt64(objPIDFMedical.PidfmedicalId),
                                 CreatedBy = (int)objPIDFMedical.CreatedBy,
                             };
-                            await FileUpload(files, path, uniqueFileName);
-                            _pidfMedicalFilerepository.AddAsync(medicalFiles);
+                            if (files.Count() != 0)
+                            {
+                                await FileUpload(files, path, uniqueFileName);
+                                _pidfMedicalFilerepository.AddAsync(medicalFiles);
+                            }
+                            i++;
                         }
                     }
                     await _unitOfWork.SaveChangesAsync();
@@ -538,8 +552,11 @@ namespace EmcureNPD.Business.Core.Implementation
                         PidfmedicalId = Convert.ToInt64(medical.PidfmedicalId),
                         CreatedBy = (int)medical.CreatedBy,
                     };
-                     FileUpload(files, path, uniqueFileName);
-                    _pidfMedicalFilerepository.AddAsync(medicalFiles);
+                    if (files.Count() != 0)
+                    {
+                        FileUpload(files, path, uniqueFileName);
+                        _pidfMedicalFilerepository.AddAsync(medicalFiles);
+                    }
                 }
                 await _unitOfWork.SaveChangesAsync();
 
