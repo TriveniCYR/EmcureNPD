@@ -10,10 +10,13 @@
 
 <!-- Main Sidebar Container -->
 <aside class="main-sidebar sidebar-dark-primary elevation-4">
-	<!-- Brand Logo -->
-	<a href="~/Home/Index" class="brand-link custom-brand-link">
-		<img src="~/images/Emcure_logo.png" alt="Emcure NPD Logo" class="brand-image custom-brand-logo">
-	</a>
+			<!-- Brand Logo -->
+			<a href="#" class="brand-link text-decoration-none">
+				<i class="fa-solid fa-e fs-3 nav-icon brand-image text-red" style="padding: 9px 10px;"></i>
+				<div class="logo">
+					<span class="ms-2">Emcure</span><sub>Success Through Innovation</sub>
+				</div>
+			</a>
 
 	<!-- Sidebar -->
 	<div class="sidebar">
@@ -31,7 +34,7 @@
 
 		<!-- Sidebar Menu -->
 		<nav class="mt-2">
-			<ul class="nav nav-pills nav-sidebar flex-column nav-legacy nav-flat nav-child-indent" data-widget="treeview" role="menu" data-accordion="false">
+			<ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
 				<!-- Add icons to the links using the .nav-icon class
 				with font-awesome or any other icon font library -->
 				@if (Context.Session.GetString(UserHelper.LoggedInRoleId) != null)
@@ -62,6 +65,7 @@
 												</p>
 											</a>
 										</li>
+
 						}
 						@if (UtilityHelper.GetMenuAccess(ModulePermissionEnum.PIDF, rolObj))
 						{
@@ -373,6 +377,7 @@
 					}
 				}
 				}
+
 				<li class="nav-item">
 					<form asp-action="Logout" asp-controller="Account" method="post">
 						<a class="nav-link" onclick="this.parentNode.submit();" role="button">
