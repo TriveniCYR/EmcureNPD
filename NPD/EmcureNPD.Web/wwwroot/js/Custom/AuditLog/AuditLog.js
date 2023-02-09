@@ -31,7 +31,7 @@ function InitializeAuditLogList() {
         {
             "data": "Action", "name": "Action", "render": function (data, type, row, meta) {
                 var html = '';
-                html += '<button type="button" data-toggle="modal" data-target="#AuditLogViewModel" data-backdrop="static" data-keyboard="false" onclick=Viewlog(' + row.log + ') class="btn btn-primary mr-2" >View</button>';
+                html += '<button type="button" data-toggle="modal" data-target="#AuditLogViewModel" data-backdrop="static" data-keyboard="false" onclick=\'Viewlog(' + row.log + ',' + '"' + row.createdDate + '"' + ',' + '"' + row.createdBy.replace(/"/g, '&quot;') + '")\' class="btn btn-primary mr-2" >View</button>';
                 return html;
             }
         }
@@ -40,32 +40,13 @@ function InitializeAuditLogList() {
     IntializingDataTable(tableId, setDefaultOrder, ajaxObject, columnObject);
 }
 
-function Viewlog(log) {
-    items = [];
+function Viewlog(log,createdDate,createdBy) {
+    $('#bodyElement').html('')
+    $('#headerElement').html('')
+    $('#headerElement').append('<div class="col-12 mb-4"><div class="d-flex"><div class="me-4"><label for="LoggedInUser">LoggedIn User:</label><input id="LoggedInUser" readonly="readonly" value=' + createdBy + '  /><label for="createdDate">Created Date:</label><input id="createdDate" readonly="readonly" value=' + createdDate + ' /></div></div ></div > ')
     $(log).each(function (index, element) {
-        if (index == 0) {
-            items.push({
-                "id": "jstree_" + element.PropertyName, "parent": "#", "text": element.PropertyName,
-                'state': {
-                    'opened': true,
-                    'selected': true
-                },
-            });
-        }
-        else
-            items.push({ "id": "jstree_" + element.PropertyName, "parent": "#", "text": element.PropertyName });
-
-        items.push({ 'id': "jstree_eln_" + index, 'parent': "jstree_" + element.PropertyName, 'text': "" + element.NewValue });
-        items.push({ 'id': "jstree_elo_" + index, 'parent': "jstree_" + element.PropertyName, 'text': "" + element.OldValue });
-    });
-    $('#jstree').jstree("destroy");
-    $('#jstree').jstree({
-        "themes": {
-            "responsive": true
-        },
-        'core': {
-            'data': items
-
+        if (index != 0) {
+            $('#bodyElement').append('<div class="col-12 mb-4"><div class="d-flex"><div class="me-4"><label class="m-0" for="propertyName">PropertyName</label><input type="text" readonly="readonly" id="propertyName" value=' + element.PropertyName + ' /></div><div class="me-4"><label class= "m-0" for="oldValue">OldValue</label><input type="text" readonly="readonly" id="oldValue" value=' + (element.OldValue != "" ? element.OldValue : null) + ' /></div><div class="me-4"><label class="m-0" for= "newValue">NewValue</label><input type="text" readonly="readonly" id="newValue" value=' + (element.NewValue!=""?element.NewValue:null) + ' /></div></div></div>');   
         }
     })
 
