@@ -72,7 +72,7 @@
 							<li class="nav-item">
 
 											<a href="#" class="nav-link">
-												<i class="nav-icon fas fa-chart-pie"></i>
+												<i class="bi bi-files nav-icon mx-1"></i>
 												<p>
 										@MasterLocalizer["PIDFManagement"]
 													<i class="right fas fa-angle-left"></i>
@@ -147,7 +147,7 @@
 									{
 														<li class="nav-item">
 															<a href="@Url.Action("AuditLogs","AuditLog")" class="nav-link">
-																<i class="nav-icon fas fa-table"></i>
+																<i class="fa-solid fa-clock-rotate-left nav-icon"></i>
 																<p>
 													@MasterLocalizer["AuditLogs"]
 																</p>
@@ -161,7 +161,7 @@
 
 						
 					}					
-					@if (UtilityHelper.GetMenuAccess(ModulePermissionEnum.Dossier, rolObj))
+					@*@if (UtilityHelper.GetMenuAccess(ModulePermissionEnum.Dossier, rolObj))
 					{
 						<li class="nav-item">
 									<a href="#" class="nav-link">
@@ -171,12 +171,12 @@
 										</p>
 									</a>
 								</li>
-					}
+					}*@
 					@if (UtilityHelper.GetMenuAccess(ModulePermissionEnum.UserManagement, rolObj))
 					{
 						<li class="nav-item">
 									<a href="#" class="nav-link">
-										<i class="nav-icon fas fa-chart-pie"></i>
+										<i class="nav-icon fas fa-user"></i>
 										<p>
 											@SharedLocalizer["UserMangegment"]
 											<i class="right fas fa-angle-left"></i>
@@ -185,7 +185,7 @@
 									<ul class="nav nav-treeview">
 										<li class="nav-item">
 											<a href="@Url.Action("User","User")" class="nav-link">
-												<i class="nav-icon fas fa-file"></i>
+												<i class="nav-icon fas fa-users"></i>
 												<p>
 											@SharedLocalizer["UserMangegment"]
 												</p>
@@ -195,7 +195,7 @@
 								{
 												<li class="nav-item">
 													<a href="@Url.Action("Roles","Role")" class="nav-link">
-														<i class="nav-icon fas fa-file"></i>
+														<i class="nav-icon fas fa-shield"></i>
 														<p>
 												@MasterLocalizer["RoleManagement"]
 														</p>
@@ -209,7 +209,7 @@
 					{
 								<li class="nav-item">
 									<a href="#" class="nav-link">
-										<i class="nav-icon fas fa-chart-pie"></i>
+										<i class="nav-icon fas fa-database"></i>
 										<p>
 											Master Management
 											<i class="right fas fa-angle-left"></i>
@@ -376,8 +376,6 @@
 								</li>
 					}
 				}
-				}
-
 				<li class="nav-item">
 					<form asp-action="Logout" asp-controller="Account" method="post">
 						<a class="nav-link" onclick="this.parentNode.submit();" role="button">

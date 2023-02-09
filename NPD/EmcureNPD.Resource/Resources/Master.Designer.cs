@@ -1258,7 +1258,7 @@ namespace EmcureNPD.Resource.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to User Mangegment.
+        ///   Looks up a localized string similar to User Management.
         /// </summary>
         public static string UserMangegment {
             get {
