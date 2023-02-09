@@ -10,10 +10,12 @@
 @model EmcureNPD.Business.Models.PIDFCommercialEntity
 @{ ViewData["Title"] = @MasterLocalizer["PIDFCommercialDetails"];}
 <div>
-    <div id="PIDFScreen">           
-       @* @{ await Html.RenderPartialAsync("~/Views/PIDF/PIDF.cshtml",Model.pidfEntity);}
+    <div id="PIDFScreen">   
+
+          
+        @{ await Html. RenderPartialAsync("~/Views/PIDF/PIDF.cshtml",Model.pidfEntity);}
            
-         @{ await Html.RenderPartialAsync("~/Views/PIDForm/PIDForm.cshtml", Model.IPDFormEntity);}*@
+         @{ await Html.RenderPartialAsync("~/Views/PIDForm/PIDForm.cshtml", Model.IPDFormEntity);}
         </div>
     <div class="card card-outline card-primary">
 
@@ -160,8 +162,7 @@
                     <div class="col-md-3">
                         <div class="form-group required">
                             @Html.LabelFor(model => model.PackagingTypeId,@MasterLocalizer["ProductPackagingType"], new { @class = "control-label" })
-                            @Html.TextBoxFor(model => model.PackagingTypeId, new { @autocomplete = "off", @class = "form-control checkbox-checked", @placeholder = @MasterLocalizer["ProductPackagingType"] })
-                            
+                                <select id="PackagingTypeId" name="PackagingTypeId" class="form-control"></select>                           
                         </div>
                     </div>
                     <div class="col-md-3">
@@ -381,14 +382,18 @@
     </div>
 </div>
 @section MyScripts {
-    @Html.Partial("_DataTablePartial")
     <link rel="stylesheet" href="~/AdminLTE/plugins/select2/css/select2.min.css" />
     <script type="text/javascript" src="~/AdminLTE/plugins/select2/js/select2.min.js"></script>
     <script src="~/js/custom/pidf/commercialdetailsform.js"></script>
     <link href="/lib/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
     <script src="/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
 
+    @*<script type="text/javascript" src="~/js/Custom/PIDF/MasterPIDF.js"></script>
+    <script type="text/javascript" src="~/js/Custom/Masters/MasterPIDForm.js"></script>
+    <script type="text/javascript" src="~/js/Custom/PIDF/MasterPIDF_IPD.js"></script>*@
+
     <script>
+        var GetAllProductType = "@EmcureNPD.Web.Helpers.APIURLHelper.GetAllProductType";
         var GetAllCurrency = "@EmcureNPD.Web.Helpers.APIURLHelper.GetAllCurrency";
         var SaveCommercialPIDF = "@EmcureNPD.Web.Helpers.APIURLHelper.SaveCommercialPIDF";
         var GetCommercialFormData = "@EmcureNPD.Web.Helpers.APIURLHelper.GetCommercialFormData";
