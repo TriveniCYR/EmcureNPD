@@ -82,7 +82,7 @@ namespace EmcureNPD.Web.Controllers
             {
                 if (UserId <= 0)
                 {
-                    if (!CheckEmailAddressExists(masterUser.EmailAddress))
+                    if (CheckEmailAddressExists(masterUser.EmailAddress))
                     {
                         ModelState.AddModelError("EmailExist", "Email Address already exists in database.");
                         return View("UserManage", masterUser);

@@ -12,6 +12,7 @@ $(document).ready(function () {
     SetDivReadonly();    
     InitializeCurrencyDropdown();
     InitializeFinalSelectionDropdown();
+    InitializeProductTypeDropdown();
     $("#AddYearForm").hide();
 });
 
@@ -32,6 +33,23 @@ function GetCountryListError(x, y, z) {
     toastr.error(ErrorMessage);
 }
 
+function InitializeProductTypeDropdown() {
+    debugger;
+    ajaxServiceMethod($('#hdnBaseURL').val() + GetAllProductType, 'GET', GetProductTypeListSuccess, GetProductTypeListError);
+}
+function GetProductTypeListSuccess(data) {
+    console.log(data);
+    try {
+        $.each(data._object, function (index, object) {
+            $('#PackagingTypeId').append($('<option>').text(object.productTypeName).attr('value', object.productTypeId));
+        });
+    } catch (e) {
+        toastr.error('Error:' + e.message);
+    }
+}
+function GetProductTypeListError(x, y, z) {
+    toastr.error(ErrorMessage);
+}
 
 function InitializeFinalSelectionDropdown() {
      ajaxServiceMethod($('#hdnBaseURL').val() + GetAllFinalSelection, 'GET', GetFSListSuccess, GetFSListError);
@@ -106,7 +124,7 @@ function ValidateBU_Strength() {
         valMsg += ' Strength ';
     }
     if (!status) {
-        alert('Please Select : ' + valMsg);
+        toastr.error('Please Select : ' + valMsg);  
     }
     return status;
 }
@@ -178,7 +196,7 @@ function SaveClick() {
     }
 }
 function SaveDraftClick() {
-    if (ValidateMainForm() && ValidateBU_Strength()) {
+    if (ValidateBU_Strength()) {
         $.extend(objMainForm, { 'SaveType': 'SvDrf' });
         SaveCommertialPIDFForm();
     }
@@ -228,6 +246,7 @@ function SaveCommertialPIDFFormSuccess(data) {
         if (data._Success === true) {
             //window.location = "/PIDF/PIDFList";
             toastr.success(data._Message);
+            $("#AddYearForm").hide();
         }
         else {
             toastr.error(data._Message);
@@ -245,6 +264,7 @@ function BUtabClick(BUVal, pidfidval) {
     ClearValidationForYearForm();
     ClearValidationForMainForm();
     GetCommercialPIDFByBU(pidfidval);
+    $("#AddYearForm").hide();
 }
 
 
@@ -253,6 +273,7 @@ function StrengthtabClick(strengthVal, pidfidval) {
     ClearValidationForYearForm();
     ClearValidationForMainForm();
     GetCommercialPIDFByBU(pidfidval);
+    $("#AddYearForm").hide();
 }
 
 
@@ -397,5 +418,8 @@ function ShowPopUpCommercial() {
     $('#CancelModel').modal('show');
 }
 function ShowYearForm() {
-    $("#AddYearForm").show();    
+    if (ValidateBU_Strength()) {
+        $("#AddYearForm").show();  
+    }
+     
 }

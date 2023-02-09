@@ -108,9 +108,9 @@ namespace EmcureNPD.Business.Core.Implementation
 
                 NewCommPIDF.PidfCommercialYears = listYear;
                 _commercialrepository.AddAsync(NewCommPIDF);
-
-                var isSuccess = await _auditLogService.CreateAuditLog<PidfCommercial>(Utility.Audit.AuditActionType.Create,
-             Utility.Enums.ModuleEnum.PIDF, OldObjpidfCommercial, NewCommPIDF, 0);
+                await _unitOfWork.SaveChangesAsync();
+             //   var isSuccess = await _auditLogService.CreateAuditLog<PidfCommercial>(Utility.Audit.AuditActionType.Create,
+             //Utility.Enums.ModuleEnum.PIDF, OldObjpidfCommercial, NewCommPIDF, 0);
             }
             else
             {
@@ -124,12 +124,15 @@ namespace EmcureNPD.Business.Core.Implementation
                 objFetchData.PidfproductStrengthId = entitycommPIDF.PidfproductStrengthId;
                 objFetchData.MarketSizeInUnit = entitycommPIDF.MarketSizeInUnit;
                 objFetchData.ModifyBy = entitycommPIDF.CreatedBy;
+                objFetchData.MarketSizeInUnit = entitycommPIDF.MarketSizeInUnit;
+                objFetchData.ShelfLife = entitycommPIDF.ShelfLife;
                 objFetchData.ModifyDate = DateTime.Now;
                 _commercialrepository.UpdateAsync(objFetchData);
+                await _unitOfWork.SaveChangesAsync();
               //  var isSuccess = await _auditLogService.CreateAuditLog<PidfCommercial>(Utility.Audit.AuditActionType.Update,
-              //Utility.Enums.ModuleEnum.PIDF, OldObjpidfCommercial, objFetchData,0);
+              //Utility.Enums.ModuleEnum.PIDF, OldObjpidfCommercial, objFetchData, 0);
             }
-            await _unitOfWork.SaveChangesAsync();
+           
             return DBOperation.Success;
         }
         public async Task<PIDFCommercialEntity> GetCommercialFormData(long pidfId, int buid, int? strengthid)
