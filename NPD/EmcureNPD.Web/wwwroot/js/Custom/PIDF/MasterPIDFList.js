@@ -65,6 +65,11 @@ function InitializePIDFList() {
             }
         },
         {
+            "data": "medical", "name": "medical", "render": function (data, type, row, meta) {
+                return '<a class="small-button btn btn-' + (row.medical ? "success" : "danger") + '"><i class="fa ' + (row.medical ? "fa-check" : "fa-remove") + '"></i></a>';
+            }
+        },
+        {
             "data": "commercial", "name": "Commercial", "render": function (data, type, row, meta) {
                 return '<a class="small-button btn btn-' + (row.commercial ? "success" : "danger") + '"><i class="fa ' + (row.commercial ? "fa-check" : "fa-remove") + '"></i></a>';
             }
@@ -161,7 +166,7 @@ function CustomizeChildContent(d) {
         _paHTML += "<tr><td>" + value.APIName + "</td>" + "<td>" + value.APISourcingName + "</td><td>" + value.APIVendor +"</td></tr>";
     });
     return (
-        '<table><thead><tr><th>Strength</th><th>Unit</th></tr></thead><tbody>' + _psHTML + '</tbody></table><table><thead><tr><th>API Name</th><th>Sourcing Name</th><th>Vendor</th></tr></thead><tbody>' + _paHTML +'</tbody></table>'
+        '<table><thead><tr><th>Strength</th><th>Unit</th></tr></thead><tbody>' + _psHTML + '</tbody></table><div class="clearfix">&nbsp;</div><table><thead><tr><th>API Name</th><th>Sourcing Name</th><th>Vendor</th></tr></thead><tbody>' + _paHTML +'</tbody></table>'
     );
 }
 

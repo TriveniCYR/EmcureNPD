@@ -7,7 +7,7 @@
             autoWidth: false,
             processing: true,
             serverSide: true,
-            //stateSave: true,
+            stateSave: true,
             orderMulti: false,
             filter: true,
             orderCellsTop: true,
