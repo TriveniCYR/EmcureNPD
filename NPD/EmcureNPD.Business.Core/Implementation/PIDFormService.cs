@@ -480,6 +480,11 @@ namespace EmcureNPD.Business.Core.Implementation
                                         await FileUpload(files[i], path, uniqueFileName);
                                         _pidfMedicalFilerepository.UpdateAsync(medicalFiles);
                                     }
+                                    else
+                                    {
+                                        return DBOperation.Error;
+
+									}
 								}
 								
 							}
@@ -525,6 +530,10 @@ namespace EmcureNPD.Business.Core.Implementation
                                     await FileUpload(files[i], path, uniqueFileName);
                                     _pidfMedicalFilerepository.AddAsync(medicalFiles);
                                 }
+                                else
+                                {
+									return DBOperation.Error;
+								}
                             }
                             i++;
                         }
@@ -569,6 +578,10 @@ namespace EmcureNPD.Business.Core.Implementation
                             FileUpload(files[i], path, uniqueFileName);
                             _pidfMedicalFilerepository.AddAsync(medicalFiles);
                         }
+                        else
+                        {
+							return DBOperation.Error;
+						}
                     }
                     i++;
                 }
