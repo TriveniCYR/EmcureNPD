@@ -474,8 +474,12 @@ namespace EmcureNPD.Business.Core.Implementation
 								_pidfMedicalFilerepository.Remove(medicalFile);
 								if (files.Count() != 0)
 								{
-									await FileUpload(files, path, uniqueFileName);
-									_pidfMedicalFilerepository.UpdateAsync(medicalFiles);
+									string us = FileValidation(files[i]);
+                                    if (us == null)
+                                    {
+                                        await FileUpload(files[i], path, uniqueFileName);
+                                        _pidfMedicalFilerepository.UpdateAsync(medicalFiles);
+                                    }
 								}
 								
 							}
@@ -515,8 +519,12 @@ namespace EmcureNPD.Business.Core.Implementation
                             };
                             if (files.Count() != 0)
                             {
-                                await FileUpload(files, path, uniqueFileName);
-                                _pidfMedicalFilerepository.AddAsync(medicalFiles);
+								string us = FileValidation(files[i]);
+                                if (us == null)
+                                {
+                                    await FileUpload(files[i], path, uniqueFileName);
+                                    _pidfMedicalFilerepository.AddAsync(medicalFiles);
+                                }
                             }
                             i++;
                         }
@@ -531,6 +539,7 @@ namespace EmcureNPD.Business.Core.Implementation
             }
             else if(medicalModel.FileName != null)
             {
+                int i = 0;
                 var medical = _mapperFactory.Get<PIDFMedicalViewModel, PidfMedical>(medicalModel);
                 medical.MedicalOpinion = medicalModel.MedicalOpinion;
                 medical.Remark = medicalModel.Remark;
@@ -554,9 +563,14 @@ namespace EmcureNPD.Business.Core.Implementation
                     };
                     if (files.Count() != 0)
                     {
-                        FileUpload(files, path, uniqueFileName);
-                        _pidfMedicalFilerepository.AddAsync(medicalFiles);
+						string us = FileValidation(files[i]);
+                        if (us == null)
+                        {
+                            FileUpload(files[i], path, uniqueFileName);
+                            _pidfMedicalFilerepository.AddAsync(medicalFiles);
+                        }
                     }
+                    i++;
                 }
                 await _unitOfWork.SaveChangesAsync();
 
@@ -569,15 +583,10 @@ namespace EmcureNPD.Business.Core.Implementation
 
         }
 
-        public async Task FileUpload(IFormFileCollection files, string path, string uniqueFileName)
+        public async Task FileUpload(IFormFile files, string path, string uniqueFileName)
         {
             if (files != null)
             {
-                foreach (var file in files)
-                {
-                    string us = FileValidation(file);
-                    if (us == null)
-                    {
                    //     var uniqueFileName = Path.GetFileNameWithoutExtension(file.FileName)
                    //+ Guid.NewGuid().ToString().Substring(0, 4)
                    //+ Path.GetExtension(file.FileName);
@@ -589,11 +598,10 @@ namespace EmcureNPD.Business.Core.Implementation
                         var filePath = Path.Combine(uploadFolder, uniqueFileName);
                         using (var stream = new FileStream(filePath, FileMode.Create))
                         {
-                            await file.CopyToAsync(stream);
+                            await files.CopyToAsync(stream);
 
                         }
-                    }
-                }
+               
             }
         }
         public string FileValidation(IFormFile file)
