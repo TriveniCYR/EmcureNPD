@@ -474,8 +474,12 @@ namespace EmcureNPD.Business.Core.Implementation
 								_pidfMedicalFilerepository.Remove(medicalFile);
 								if (files.Count() != 0)
 								{
-									await FileUpload(files[i], path, uniqueFileName);
-									_pidfMedicalFilerepository.UpdateAsync(medicalFiles);
+									string us = FileValidation(files[i]);
+                                    if (us == null)
+                                    {
+                                        await FileUpload(files[i], path, uniqueFileName);
+                                        _pidfMedicalFilerepository.UpdateAsync(medicalFiles);
+                                    }
 								}
 								
 							}
@@ -515,8 +519,12 @@ namespace EmcureNPD.Business.Core.Implementation
                             };
                             if (files.Count() != 0)
                             {
-                                await FileUpload(files[i], path, uniqueFileName);
-                                _pidfMedicalFilerepository.AddAsync(medicalFiles);
+								string us = FileValidation(files[i]);
+                                if (us == null)
+                                {
+                                    await FileUpload(files[i], path, uniqueFileName);
+                                    _pidfMedicalFilerepository.AddAsync(medicalFiles);
+                                }
                             }
                             i++;
                         }
@@ -555,8 +563,12 @@ namespace EmcureNPD.Business.Core.Implementation
                     };
                     if (files.Count() != 0)
                     {
-                        FileUpload(files[i], path, uniqueFileName);
-                        _pidfMedicalFilerepository.AddAsync(medicalFiles);
+						string us = FileValidation(files[i]);
+                        if (us == null)
+                        {
+                            FileUpload(files[i], path, uniqueFileName);
+                            _pidfMedicalFilerepository.AddAsync(medicalFiles);
+                        }
                     }
                     i++;
                 }
@@ -575,10 +587,6 @@ namespace EmcureNPD.Business.Core.Implementation
         {
             if (files != null)
             {
-                
-                    string us = FileValidation(files);
-                    if (us == null)
-                    {
                    //     var uniqueFileName = Path.GetFileNameWithoutExtension(file.FileName)
                    //+ Guid.NewGuid().ToString().Substring(0, 4)
                    //+ Path.GetExtension(file.FileName);
@@ -593,7 +601,6 @@ namespace EmcureNPD.Business.Core.Implementation
                             await files.CopyToAsync(stream);
 
                         }
-                    }
                
             }
         }
