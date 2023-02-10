@@ -2,7 +2,6 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata;
 using EmcureNPD.Data.DataAccess.Entity;
-using EmcureNPD.Utility;
 
 #nullable disable
 
@@ -104,21 +103,20 @@ namespace EmcureNPD.Data.DataAccess.DataContext
         {
             if (!optionsBuilder.IsConfigured)
             {
-                #warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see http://go.microsoft.com/fwlink/?LinkId=723263.
-                optionsBuilder.UseSqlServer(DatabaseConnection.NPDDatabaseConnection);
+#warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see http://go.microsoft.com/fwlink/?LinkId=723263.
+                optionsBuilder.UseSqlServer("Data Source=10.21.16.38;Initial Catalog=EmcureNPDDev;Persist Security Info=True;User ID=sa;pwd=PIDF@&86W5pb");
             }
         }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            modelBuilder.HasDefaultSchema("emcurenpddev_dbUser")
-                .HasAnnotation("Relational:Collation", "SQL_Latin1_General_CP1_CI_AS");
+            modelBuilder.HasAnnotation("Relational:Collation", "SQL_Latin1_General_CP1_CI_AS");
 
             modelBuilder.Entity<MasterActivityType>(entity =>
             {
                 entity.HasKey(e => e.ActivityTypeId);
 
-                entity.ToTable("Master_ActivityType", "dbo");
+                entity.ToTable("Master_ActivityType");
 
                 entity.Property(e => e.ActivityTypeName).HasMaxLength(100);
 
@@ -132,7 +130,7 @@ namespace EmcureNPD.Data.DataAccess.DataContext
                 entity.HasKey(e => e.AnalyticalId)
                     .HasName("PK_Master_AnalyticalGL");
 
-                entity.ToTable("Master_Analytical", "dbo");
+                entity.ToTable("Master_Analytical");
 
                 entity.Property(e => e.AnalyticalName).HasMaxLength(100);
 
@@ -145,7 +143,7 @@ namespace EmcureNPD.Data.DataAccess.DataContext
             {
                 entity.HasKey(e => e.ApisourcingId);
 
-                entity.ToTable("Master_APISourcing", "dbo");
+                entity.ToTable("Master_APISourcing");
 
                 entity.Property(e => e.ApisourcingId).HasColumnName("APISourcingId");
 
@@ -162,7 +160,7 @@ namespace EmcureNPD.Data.DataAccess.DataContext
             {
                 entity.HasKey(e => e.AuditLogId);
 
-                entity.ToTable("Master_AuditLog", "dbo");
+                entity.ToTable("Master_AuditLog");
 
                 entity.Property(e => e.ActionType).HasMaxLength(20);
 
@@ -173,7 +171,7 @@ namespace EmcureNPD.Data.DataAccess.DataContext
             {
                 entity.HasKey(e => e.BatchSizeNumberId);
 
-                entity.ToTable("Master_BatchSizeNumber", "dbo");
+                entity.ToTable("Master_BatchSizeNumber");
 
                 entity.Property(e => e.BatchSizeNumberName).HasMaxLength(100);
 
@@ -186,7 +184,7 @@ namespace EmcureNPD.Data.DataAccess.DataContext
             {
                 entity.HasKey(e => e.BerequirementId);
 
-                entity.ToTable("Master_BERequirement", "dbo");
+                entity.ToTable("Master_BERequirement");
 
                 entity.Property(e => e.BerequirementId).HasColumnName("BERequirementId");
 
@@ -203,7 +201,7 @@ namespace EmcureNPD.Data.DataAccess.DataContext
             {
                 entity.HasKey(e => e.BusinessUnitId);
 
-                entity.ToTable("Master_BusinessUnit", "dbo");
+                entity.ToTable("Master_BusinessUnit");
 
                 entity.Property(e => e.BusinessUnitName).HasMaxLength(100);
 
@@ -217,7 +215,7 @@ namespace EmcureNPD.Data.DataAccess.DataContext
                 entity.HasKey(e => e.BusinessUnitCountryMappingId)
                     .HasName("PK_Master_BusinessCountryMapping");
 
-                entity.ToTable("Master_BusinessUnitRegionMapping", "dbo");
+                entity.ToTable("Master_BusinessUnitRegionMapping");
 
                 entity.Property(e => e.CreatedDate).HasColumnType("datetime");
 
@@ -238,7 +236,7 @@ namespace EmcureNPD.Data.DataAccess.DataContext
             {
                 entity.HasKey(e => e.CountryId);
 
-                entity.ToTable("Master_Country", "dbo");
+                entity.ToTable("Master_Country");
 
                 entity.Property(e => e.CountryId).HasColumnName("CountryID");
 
@@ -253,7 +251,7 @@ namespace EmcureNPD.Data.DataAccess.DataContext
             {
                 entity.HasKey(e => e.CurrencyId);
 
-                entity.ToTable("Master_Currency", "dbo");
+                entity.ToTable("Master_Currency");
 
                 entity.Property(e => e.CurrencyId).HasColumnName("CurrencyID");
 
@@ -272,7 +270,7 @@ namespace EmcureNPD.Data.DataAccess.DataContext
             {
                 entity.HasKey(e => e.CurrencyCountryMappingId);
 
-                entity.ToTable("Master_CurrencyCountryMapping", "dbo");
+                entity.ToTable("Master_CurrencyCountryMapping");
 
                 entity.Property(e => e.CreatedDate).HasColumnType("datetime");
 
@@ -293,7 +291,7 @@ namespace EmcureNPD.Data.DataAccess.DataContext
             {
                 entity.HasKey(e => e.DepartmentId);
 
-                entity.ToTable("Master_Department", "dbo");
+                entity.ToTable("Master_Department");
 
                 entity.Property(e => e.CreatedDate).HasColumnType("datetime");
 
@@ -307,7 +305,7 @@ namespace EmcureNPD.Data.DataAccess.DataContext
                 entity.HasKey(e => e.DepartmentBusinessUnitMappingId)
                     .HasName("PK_Master_BusinessBusinessUnitMapping");
 
-                entity.ToTable("Master_DepartmentBusinessUnitMapping", "dbo");
+                entity.ToTable("Master_DepartmentBusinessUnitMapping");
 
                 entity.Property(e => e.CreatedDate).HasColumnType("datetime");
 
@@ -329,7 +327,7 @@ namespace EmcureNPD.Data.DataAccess.DataContext
                 entity.HasKey(e => e.Diaid)
                     .HasName("PK_Master_DIA_ANDA_ANDS");
 
-                entity.ToTable("Master_DIA", "dbo");
+                entity.ToTable("Master_DIA");
 
                 entity.Property(e => e.Diaid).HasColumnName("DIAId");
 
@@ -346,7 +344,7 @@ namespace EmcureNPD.Data.DataAccess.DataContext
             {
                 entity.HasKey(e => e.DosageId);
 
-                entity.ToTable("Master_Dosage", "dbo");
+                entity.ToTable("Master_Dosage");
 
                 entity.Property(e => e.CreatedDate).HasColumnType("datetime");
 
@@ -359,7 +357,7 @@ namespace EmcureNPD.Data.DataAccess.DataContext
             {
                 entity.HasKey(e => e.DosageFormId);
 
-                entity.ToTable("Master_DosageForm", "dbo");
+                entity.ToTable("Master_DosageForm");
 
                 entity.Property(e => e.CreatedDate).HasColumnType("datetime");
 
@@ -373,7 +371,7 @@ namespace EmcureNPD.Data.DataAccess.DataContext
                 entity.HasKey(e => e.ExipientId)
                     .HasName("PK_Master_Exipientr");
 
-                entity.ToTable("Master_Exipient", "dbo");
+                entity.ToTable("Master_Exipient");
 
                 entity.Property(e => e.CreatedDate).HasColumnType("datetime");
 
@@ -386,7 +384,7 @@ namespace EmcureNPD.Data.DataAccess.DataContext
             {
                 entity.HasKey(e => e.ExpenseRegionId);
 
-                entity.ToTable("Master_ExpenseRegion", "dbo");
+                entity.ToTable("Master_ExpenseRegion");
 
                 entity.Property(e => e.CreatedDate).HasColumnType("datetime");
 
@@ -399,7 +397,7 @@ namespace EmcureNPD.Data.DataAccess.DataContext
             {
                 entity.HasKey(e => e.ExtensionApplicationId);
 
-                entity.ToTable("Master_ExtensionApplication", "dbo");
+                entity.ToTable("Master_ExtensionApplication");
 
                 entity.Property(e => e.CreatedDate).HasColumnType("datetime");
 
@@ -412,7 +410,7 @@ namespace EmcureNPD.Data.DataAccess.DataContext
             {
                 entity.HasKey(e => e.FinalSelectionId);
 
-                entity.ToTable("Master_FinalSelection", "dbo");
+                entity.ToTable("Master_FinalSelection");
 
                 entity.Property(e => e.FinalSelectionId).HasColumnName("FinalSelectionID");
 
@@ -428,7 +426,7 @@ namespace EmcureNPD.Data.DataAccess.DataContext
                 entity.HasKey(e => e.FormRnDdivisionId)
                     .HasName("PK_Master_RNDDivision");
 
-                entity.ToTable("Master_FormRnDDivision", "dbo");
+                entity.ToTable("Master_FormRnDDivision");
 
                 entity.Property(e => e.FormRnDdivisionId).HasColumnName("FormRnDDivisionId");
 
@@ -445,7 +443,7 @@ namespace EmcureNPD.Data.DataAccess.DataContext
             {
                 entity.HasKey(e => e.FormulationId);
 
-                entity.ToTable("Master_Formulation", "dbo");
+                entity.ToTable("Master_Formulation");
 
                 entity.Property(e => e.CreatedDate).HasColumnType("datetime");
 
@@ -458,7 +456,7 @@ namespace EmcureNPD.Data.DataAccess.DataContext
             {
                 entity.HasKey(e => e.MarketExtenstionId);
 
-                entity.ToTable("Master_MarketExtenstion", "dbo");
+                entity.ToTable("Master_MarketExtenstion");
 
                 entity.Property(e => e.CreatedDate).HasColumnType("datetime");
 
@@ -471,7 +469,7 @@ namespace EmcureNPD.Data.DataAccess.DataContext
             {
                 entity.HasKey(e => e.ModuleId);
 
-                entity.ToTable("Master_Module", "dbo");
+                entity.ToTable("Master_Module");
 
                 entity.Property(e => e.ControlName).HasMaxLength(200);
 
@@ -486,7 +484,7 @@ namespace EmcureNPD.Data.DataAccess.DataContext
             {
                 entity.HasKey(e => e.NotificationId);
 
-                entity.ToTable("Master_Notification", "dbo");
+                entity.ToTable("Master_Notification");
 
                 entity.Property(e => e.CreatedDate).HasColumnType("datetime");
 
@@ -501,7 +499,7 @@ namespace EmcureNPD.Data.DataAccess.DataContext
             {
                 entity.HasKey(e => e.OralId);
 
-                entity.ToTable("Master_Oral", "dbo");
+                entity.ToTable("Master_Oral");
 
                 entity.Property(e => e.CreatedDate).HasColumnType("datetime");
 
@@ -514,7 +512,7 @@ namespace EmcureNPD.Data.DataAccess.DataContext
             {
                 entity.HasKey(e => e.PackagingTypeId);
 
-                entity.ToTable("Master_PackagingType", "dbo");
+                entity.ToTable("Master_PackagingType");
 
                 entity.Property(e => e.CreatedDate).HasColumnType("datetime");
 
@@ -527,7 +525,7 @@ namespace EmcureNPD.Data.DataAccess.DataContext
             {
                 entity.HasKey(e => e.PidfstatusId);
 
-                entity.ToTable("Master_PIDFStatus", "dbo");
+                entity.ToTable("Master_PIDFStatus");
 
                 entity.Property(e => e.PidfstatusId)
                     .ValueGeneratedNever()
@@ -546,7 +544,7 @@ namespace EmcureNPD.Data.DataAccess.DataContext
             {
                 entity.HasKey(e => e.PlantId);
 
-                entity.ToTable("Master_Plant", "dbo");
+                entity.ToTable("Master_Plant");
 
                 entity.Property(e => e.CreatedDate).HasColumnType("datetime");
 
@@ -559,7 +557,7 @@ namespace EmcureNPD.Data.DataAccess.DataContext
             {
                 entity.HasKey(e => e.ProductStrengthId);
 
-                entity.ToTable("Master_ProductStrength", "dbo");
+                entity.ToTable("Master_ProductStrength");
 
                 entity.Property(e => e.CreatedDate).HasColumnType("datetime");
 
@@ -572,7 +570,7 @@ namespace EmcureNPD.Data.DataAccess.DataContext
             {
                 entity.HasKey(e => e.ProductTypeId);
 
-                entity.ToTable("Master_ProductType", "dbo");
+                entity.ToTable("Master_ProductType");
 
                 entity.Property(e => e.CreatedDate).HasColumnType("datetime");
 
@@ -585,7 +583,7 @@ namespace EmcureNPD.Data.DataAccess.DataContext
             {
                 entity.HasKey(e => e.RegionId);
 
-                entity.ToTable("Master_Region", "dbo");
+                entity.ToTable("Master_Region");
 
                 entity.Property(e => e.CreatedDate).HasColumnType("datetime");
 
@@ -598,7 +596,7 @@ namespace EmcureNPD.Data.DataAccess.DataContext
             {
                 entity.HasKey(e => e.RegionCountryMappingId);
 
-                entity.ToTable("Master_RegionCountryMapping", "dbo");
+                entity.ToTable("Master_RegionCountryMapping");
 
                 entity.Property(e => e.CreatedDate).HasColumnType("datetime");
 
@@ -619,7 +617,7 @@ namespace EmcureNPD.Data.DataAccess.DataContext
             {
                 entity.HasKey(e => e.RoleId);
 
-                entity.ToTable("Master_Role", "dbo");
+                entity.ToTable("Master_Role");
 
                 entity.Property(e => e.CreatedDate).HasColumnType("datetime");
 
@@ -634,7 +632,7 @@ namespace EmcureNPD.Data.DataAccess.DataContext
             {
                 entity.HasKey(e => e.SubModuleId);
 
-                entity.ToTable("Master_SubModule", "dbo");
+                entity.ToTable("Master_SubModule");
 
                 entity.Property(e => e.ControlName).HasMaxLength(200);
 
@@ -655,7 +653,7 @@ namespace EmcureNPD.Data.DataAccess.DataContext
                 entity.HasKey(e => e.TransformId)
                     .HasName("PK_Master_Transform_form");
 
-                entity.ToTable("Master_Transform", "dbo");
+                entity.ToTable("Master_Transform");
 
                 entity.Property(e => e.CreatedDate).HasColumnType("datetime");
 
@@ -668,7 +666,7 @@ namespace EmcureNPD.Data.DataAccess.DataContext
             {
                 entity.HasKey(e => e.UnitofMeasurementId);
 
-                entity.ToTable("Master_UnitofMeasurement", "dbo");
+                entity.ToTable("Master_UnitofMeasurement");
 
                 entity.Property(e => e.CreatedDate).HasColumnType("datetime");
 
@@ -681,7 +679,7 @@ namespace EmcureNPD.Data.DataAccess.DataContext
             {
                 entity.HasKey(e => e.UserId);
 
-                entity.ToTable("Master_User", "dbo");
+                entity.ToTable("Master_User");
 
                 entity.HasIndex(e => e.EmailAddress, "EmailAddress_unique")
                     .IsUnique();
@@ -729,7 +727,7 @@ namespace EmcureNPD.Data.DataAccess.DataContext
             {
                 entity.HasKey(e => e.UserBusinessUnitId);
 
-                entity.ToTable("Master_UserBusinessUnitMapping", "dbo");
+                entity.ToTable("Master_UserBusinessUnitMapping");
 
                 entity.Property(e => e.CreatedDate).HasColumnType("datetime");
 
@@ -750,7 +748,7 @@ namespace EmcureNPD.Data.DataAccess.DataContext
             {
                 entity.HasKey(e => e.UserCountryId);
 
-                entity.ToTable("Master_UserCountryMapping", "dbo");
+                entity.ToTable("Master_UserCountryMapping");
 
                 entity.Property(e => e.CreatedDate).HasColumnType("datetime");
 
@@ -771,7 +769,7 @@ namespace EmcureNPD.Data.DataAccess.DataContext
             {
                 entity.HasKey(e => e.UserDepartmentId);
 
-                entity.ToTable("Master_UserDepartmentMapping", "dbo");
+                entity.ToTable("Master_UserDepartmentMapping");
 
                 entity.Property(e => e.CreatedDate).HasColumnType("datetime");
 
@@ -792,7 +790,7 @@ namespace EmcureNPD.Data.DataAccess.DataContext
             {
                 entity.HasKey(e => e.UserRegionId);
 
-                entity.ToTable("Master_UserRegionMapping", "dbo");
+                entity.ToTable("Master_UserRegionMapping");
 
                 entity.Property(e => e.CreatedDate).HasColumnType("datetime");
 
@@ -813,7 +811,7 @@ namespace EmcureNPD.Data.DataAccess.DataContext
             {
                 entity.HasKey(e => e.WorkflowId);
 
-                entity.ToTable("Master_Workflow", "dbo");
+                entity.ToTable("Master_Workflow");
 
                 entity.Property(e => e.CreatedDate).HasColumnType("datetime");
 
@@ -824,7 +822,7 @@ namespace EmcureNPD.Data.DataAccess.DataContext
 
             modelBuilder.Entity<Pidf>(entity =>
             {
-                entity.ToTable("PIDF", "dbo");
+                entity.ToTable("PIDF");
 
                 entity.Property(e => e.Pidfid).HasColumnName("PIDFID");
 
@@ -942,29 +940,21 @@ namespace EmcureNPD.Data.DataAccess.DataContext
 
             modelBuilder.Entity<PidfApiIpd>(entity =>
             {
-                entity.ToTable("PIDF_API_IPD", "dbo");
+                entity.ToTable("PIDF_API_IPD");
 
                 entity.Property(e => e.PidfApiIpdId).HasColumnName("PIDF_API_IPD_ID");
 
                 entity.Property(e => e.CreatedDate).HasColumnType("datetime");
 
-                entity.Property(e => e.Development).HasMaxLength(200);
+                entity.Property(e => e.DrugsCategory).HasMaxLength(200);
 
-                entity.Property(e => e.Exhibit).HasMaxLength(100);
-
-                entity.Property(e => e.FormulationQuantity).HasMaxLength(200);
+                entity.Property(e => e.MarketDetailsFileName).HasMaxLength(200);
 
                 entity.Property(e => e.ModifyDate).HasColumnType("datetime");
 
                 entity.Property(e => e.Pidfid).HasColumnName("PIDFID");
 
-                entity.Property(e => e.PlantQc)
-                    .HasMaxLength(100)
-                    .HasColumnName("PlantQC");
-
-                entity.Property(e => e.ScaleUp).HasMaxLength(200);
-
-                entity.Property(e => e.Total).HasMaxLength(100);
+                entity.Property(e => e.ProductStrength).HasMaxLength(200);
 
                 entity.HasOne(d => d.BusinessUnit)
                     .WithMany(p => p.PidfApiIpds)
@@ -975,11 +965,16 @@ namespace EmcureNPD.Data.DataAccess.DataContext
                     .WithMany(p => p.PidfApiIpds)
                     .HasForeignKey(d => d.Pidfid)
                     .HasConstraintName("FK_PIDF_API_IPD_PIDFID");
+
+                entity.HasOne(d => d.ProductType)
+                    .WithMany(p => p.PidfApiIpds)
+                    .HasForeignKey(d => d.ProductTypeId)
+                    .HasConstraintName("FK_PIDF_API_IPD_ProductTypeId");
             });
 
             modelBuilder.Entity<PidfCommercial>(entity =>
             {
-                entity.ToTable("PIDF_Commercial", "dbo");
+                entity.ToTable("PIDF_Commercial");
 
                 entity.Property(e => e.PidfcommercialId).HasColumnName("PIDFCommercialId");
 
@@ -1018,7 +1013,7 @@ namespace EmcureNPD.Data.DataAccess.DataContext
 
             modelBuilder.Entity<PidfCommercialYear>(entity =>
             {
-                entity.ToTable("PIDF_Commercial_Years", "dbo");
+                entity.ToTable("PIDF_Commercial_Years");
 
                 entity.Property(e => e.PidfcommercialYearId).HasColumnName("PIDFCommercialYearId");
 
@@ -1113,7 +1108,7 @@ namespace EmcureNPD.Data.DataAccess.DataContext
                 entity.HasKey(e => e.Ipdid)
                     .HasName("PK__PIDF_IPD__54D2918E72B886FB");
 
-                entity.ToTable("PIDF_IPD", "dbo");
+                entity.ToTable("PIDF_IPD");
 
                 entity.Property(e => e.Ipdid).HasColumnName("IPDID");
 
@@ -1154,7 +1149,7 @@ namespace EmcureNPD.Data.DataAccess.DataContext
             {
                 entity.HasKey(e => e.IpdcountryId);
 
-                entity.ToTable("PIDF_IPD_Country", "dbo");
+                entity.ToTable("PIDF_IPD_Country");
 
                 entity.Property(e => e.IpdcountryId).HasColumnName("IPDCountryID");
 
@@ -1179,7 +1174,7 @@ namespace EmcureNPD.Data.DataAccess.DataContext
             {
                 entity.HasKey(e => e.PatentDetailsId);
 
-                entity.ToTable("PIDF_IPD_PatentDetails", "dbo");
+                entity.ToTable("PIDF_IPD_PatentDetails");
 
                 entity.Property(e => e.PatentDetailsId).HasColumnName("PatentDetailsID");
 
@@ -1214,7 +1209,7 @@ namespace EmcureNPD.Data.DataAccess.DataContext
             {
                 entity.HasKey(e => e.IpdregionId);
 
-                entity.ToTable("PIDF_IPD_Region", "dbo");
+                entity.ToTable("PIDF_IPD_Region");
 
                 entity.Property(e => e.IpdregionId).HasColumnName("IPDRegionID");
 
@@ -1237,7 +1232,7 @@ namespace EmcureNPD.Data.DataAccess.DataContext
 
             modelBuilder.Entity<PidfMedical>(entity =>
             {
-                entity.ToTable("PIDF_Medical", "dbo");
+                entity.ToTable("PIDF_Medical");
 
                 entity.Property(e => e.PidfmedicalId).HasColumnName("PIDFMedicalId");
 
@@ -1256,7 +1251,7 @@ namespace EmcureNPD.Data.DataAccess.DataContext
 
             modelBuilder.Entity<PidfMedicalFile>(entity =>
             {
-                entity.ToTable("PIDF_Medical_File", "dbo");
+                entity.ToTable("PIDF_Medical_File");
 
                 entity.Property(e => e.PidfmedicalFileId).HasColumnName("PIDFMedicalFileId");
 
@@ -1271,7 +1266,7 @@ namespace EmcureNPD.Data.DataAccess.DataContext
 
             modelBuilder.Entity<PidfPbf>(entity =>
             {
-                entity.ToTable("PIDF_PBF", "dbo");
+                entity.ToTable("PIDF_PBF");
 
                 entity.Property(e => e.Pidfpbfid).HasColumnName("PIDFPBFId");
 
@@ -1375,7 +1370,7 @@ namespace EmcureNPD.Data.DataAccess.DataContext
                 entity.HasKey(e => e.AnalyticalId)
                     .HasName("PK_PIDF_PBF_A");
 
-                entity.ToTable("PIDF_PBF_Analytical", "dbo");
+                entity.ToTable("PIDF_PBF_Analytical");
 
                 entity.Property(e => e.AnalyticalId).ValueGeneratedNever();
 
@@ -1389,7 +1384,7 @@ namespace EmcureNPD.Data.DataAccess.DataContext
                 entity.HasKey(e => e.PrototypeId)
                     .HasName("PK_PIDF_PBF_Exhibit");
 
-                entity.ToTable("PIDF_PBF_Analytical_Exhibit", "dbo");
+                entity.ToTable("PIDF_PBF_Analytical_Exhibit");
 
                 entity.Property(e => e.PrototypeId).ValueGeneratedNever();
 
@@ -1407,7 +1402,7 @@ namespace EmcureNPD.Data.DataAccess.DataContext
                 entity.HasKey(e => e.PrototypeId)
                     .HasName("PK_PIDF_PBF_Prototype");
 
-                entity.ToTable("PIDF_PBF_Analytical_Prototype", "dbo");
+                entity.ToTable("PIDF_PBF_Analytical_Prototype");
 
                 entity.Property(e => e.PrototypeId).ValueGeneratedNever();
 
@@ -1425,7 +1420,7 @@ namespace EmcureNPD.Data.DataAccess.DataContext
                 entity.HasKey(e => e.PrototypeId)
                     .HasName("PK_PIDF_PBF_ScaleUp");
 
-                entity.ToTable("PIDF_PBF_Analytical_ScaleUp", "dbo");
+                entity.ToTable("PIDF_PBF_Analytical_ScaleUp");
 
                 entity.Property(e => e.PrototypeId).ValueGeneratedNever();
 
@@ -1443,7 +1438,7 @@ namespace EmcureNPD.Data.DataAccess.DataContext
                 entity.HasKey(e => e.ClinicalId)
                     .HasName("PK_PIDF_PBF_C");
 
-                entity.ToTable("PIDF_PBF_Clinical", "dbo");
+                entity.ToTable("PIDF_PBF_Clinical");
 
                 entity.Property(e => e.ClinicalId).ValueGeneratedNever();
 
@@ -1457,7 +1452,7 @@ namespace EmcureNPD.Data.DataAccess.DataContext
                 entity.HasKey(e => e.PilotBioFastingId)
                     .HasName("PK_PIDF_PBF_PilotBioFasting");
 
-                entity.ToTable("PIDF_PBF_Clinical_PilotBioFasting", "dbo");
+                entity.ToTable("PIDF_PBF_Clinical_PilotBioFasting");
 
                 entity.Property(e => e.PilotBioFastingId).ValueGeneratedNever();
 
@@ -1479,7 +1474,7 @@ namespace EmcureNPD.Data.DataAccess.DataContext
                 entity.HasKey(e => e.PilotBioFedid)
                     .HasName("PK_PIDF_PBF_PilotBioFED");
 
-                entity.ToTable("PIDF_PBF_Clinical_PilotBioFED", "dbo");
+                entity.ToTable("PIDF_PBF_Clinical_PilotBioFED");
 
                 entity.Property(e => e.PilotBioFedid)
                     .ValueGeneratedNever()
@@ -1505,7 +1500,7 @@ namespace EmcureNPD.Data.DataAccess.DataContext
                 entity.HasKey(e => e.PilotBioFastingId)
                     .HasName("PK_PIDF_PBF_PivotalBioFasting");
 
-                entity.ToTable("PIDF_PBF_Clinical_PivotalBioFasting", "dbo");
+                entity.ToTable("PIDF_PBF_Clinical_PivotalBioFasting");
 
                 entity.Property(e => e.PilotBioFastingId).ValueGeneratedNever();
 
@@ -1524,7 +1519,7 @@ namespace EmcureNPD.Data.DataAccess.DataContext
 
             modelBuilder.Entity<PidfPbfRnD>(entity =>
             {
-                entity.ToTable("PIDF_PBF_RnD", "dbo");
+                entity.ToTable("PIDF_PBF_RnD");
 
                 entity.Property(e => e.PidfpbfrnDid)
                     .ValueGeneratedNever()
@@ -1614,7 +1609,7 @@ namespace EmcureNPD.Data.DataAccess.DataContext
                 entity.HasKey(e => e.CapexandMiscellaneousExpensesId)
                     .HasName("PK_Master_CapexandMiscellaneousExpenses");
 
-                entity.ToTable("PIDF_PBF_RnD_CapexandMiscellaneousExpenses", "dbo");
+                entity.ToTable("PIDF_PBF_RnD_CapexandMiscellaneousExpenses");
 
                 entity.Property(e => e.CapexandMiscellaneousExpensesId).ValueGeneratedNever();
 
@@ -1636,7 +1631,7 @@ namespace EmcureNPD.Data.DataAccess.DataContext
                 entity.HasKey(e => e.ExicipientExhibitId)
                     .HasName("PK_Master_ExicipientExhibit");
 
-                entity.ToTable("PIDF_PBF_RnD_ExicipientExhibit", "dbo");
+                entity.ToTable("PIDF_PBF_RnD_ExicipientExhibit");
 
                 entity.Property(e => e.ExicipientExhibitId).ValueGeneratedNever();
 
@@ -1660,7 +1655,7 @@ namespace EmcureNPD.Data.DataAccess.DataContext
                 entity.HasKey(e => e.ExicipientProtoypeId)
                     .HasName("PK_Master_ExicipientProtoype");
 
-                entity.ToTable("PIDF_PBF_RnD_ExicipientProtoype", "dbo");
+                entity.ToTable("PIDF_PBF_RnD_ExicipientProtoype");
 
                 entity.Property(e => e.ExicipientProtoypeId).ValueGeneratedNever();
 
@@ -1686,7 +1681,7 @@ namespace EmcureNPD.Data.DataAccess.DataContext
                 entity.HasKey(e => e.ExicipientScaleUpId)
                     .HasName("PK_Master_ExicipientScaleUp");
 
-                entity.ToTable("PIDF_PBF_RnD_ExicipientScaleUp", "dbo");
+                entity.ToTable("PIDF_PBF_RnD_ExicipientScaleUp");
 
                 entity.Property(e => e.ExicipientScaleUpId).ValueGeneratedNever();
 
@@ -1711,7 +1706,7 @@ namespace EmcureNPD.Data.DataAccess.DataContext
                 entity.HasKey(e => e.FillingExpensesId)
                     .HasName("PK_Master_FillingExpenses");
 
-                entity.ToTable("PIDF_PBF_RnD_FillingExpenses", "dbo");
+                entity.ToTable("PIDF_PBF_RnD_FillingExpenses");
 
                 entity.Property(e => e.FillingExpensesId).ValueGeneratedNever();
 
@@ -1727,7 +1722,7 @@ namespace EmcureNPD.Data.DataAccess.DataContext
                 entity.HasKey(e => e.ManPowerCostAndProjectDurationId)
                     .HasName("PK_ManPowerCostAndProjectDuration");
 
-                entity.ToTable("PIDF_PBF_RnD_ManPowerCostAndProjectDuration", "dbo");
+                entity.ToTable("PIDF_PBF_RnD_ManPowerCostAndProjectDuration");
 
                 entity.Property(e => e.ManPowerCostAndProjectDurationId).ValueGeneratedNever();
 
@@ -1771,7 +1766,7 @@ namespace EmcureNPD.Data.DataAccess.DataContext
                 entity.HasKey(e => e.PackagingExhibitId)
                     .HasName("PK_Master_PackagingExhibit");
 
-                entity.ToTable("PIDF_PBF_RnD_PackagingExhibit", "dbo");
+                entity.ToTable("PIDF_PBF_RnD_PackagingExhibit");
 
                 entity.Property(e => e.PackagingExhibitId).ValueGeneratedNever();
 
@@ -1793,7 +1788,7 @@ namespace EmcureNPD.Data.DataAccess.DataContext
                 entity.HasKey(e => e.PackagingPrototypeId)
                     .HasName("PK_Master_PackagingPrototype");
 
-                entity.ToTable("PIDF_PBF_RnD_PackagingPrototype", "dbo");
+                entity.ToTable("PIDF_PBF_RnD_PackagingPrototype");
 
                 entity.Property(e => e.PackagingPrototypeId).ValueGeneratedNever();
 
@@ -1815,7 +1810,7 @@ namespace EmcureNPD.Data.DataAccess.DataContext
                 entity.HasKey(e => e.PackagingScaleUpId)
                     .HasName("PK_Master_PackagingScaleUp");
 
-                entity.ToTable("PIDF_PBF_RnD_PackagingScaleUp", "dbo");
+                entity.ToTable("PIDF_PBF_RnD_PackagingScaleUp");
 
                 entity.Property(e => e.PackagingScaleUpId).ValueGeneratedNever();
 
@@ -1837,7 +1832,7 @@ namespace EmcureNPD.Data.DataAccess.DataContext
                 entity.HasKey(e => e.PlantSupportCostId)
                     .HasName("PK_Master_PlantSupportCost");
 
-                entity.ToTable("PIDF_PBF_RnD_PlantSupportCost", "dbo");
+                entity.ToTable("PIDF_PBF_RnD_PlantSupportCost");
 
                 entity.Property(e => e.PlantSupportCostId).ValueGeneratedNever();
 
@@ -1861,7 +1856,7 @@ namespace EmcureNPD.Data.DataAccess.DataContext
                 entity.HasKey(e => e.ToolingandChangePartCostId)
                     .HasName("PK_Master_ToolingandChangePartCost");
 
-                entity.ToTable("PIDF_PBF_RnD_ToolingandChangePartCost", "dbo");
+                entity.ToTable("PIDF_PBF_RnD_ToolingandChangePartCost");
 
                 entity.Property(e => e.ToolingandChangePartCostId).ValueGeneratedNever();
 
@@ -1886,7 +1881,7 @@ namespace EmcureNPD.Data.DataAccess.DataContext
             {
                 entity.HasKey(e => e.ProjectActivitiesId);
 
-                entity.ToTable("PIDF_PBF_Rnd_ProjectActivities", "dbo");
+                entity.ToTable("PIDF_PBF_Rnd_ProjectActivities");
 
                 entity.Property(e => e.ProjectActivitiesId).ValueGeneratedNever();
 
@@ -1897,7 +1892,7 @@ namespace EmcureNPD.Data.DataAccess.DataContext
             {
                 entity.HasKey(e => e.ProjectActivitiesId);
 
-                entity.ToTable("PIDF_PBF_Rnd_ProjectEstimation", "dbo");
+                entity.ToTable("PIDF_PBF_Rnd_ProjectEstimation");
 
                 entity.Property(e => e.ProjectActivitiesId).ValueGeneratedNever();
 
@@ -1923,7 +1918,7 @@ namespace EmcureNPD.Data.DataAccess.DataContext
                 entity.HasKey(e => e.ReferenceProductDetailId)
                     .HasName("PK_PIDF_PBF_ReferenceProductDetail");
 
-                entity.ToTable("PIDF_PBF_Rnd_ReferenceProductDetail", "dbo");
+                entity.ToTable("PIDF_PBF_Rnd_ReferenceProductDetail");
 
                 entity.Property(e => e.ReferenceProductDetailId).ValueGeneratedNever();
 
@@ -1946,7 +1941,7 @@ namespace EmcureNPD.Data.DataAccess.DataContext
             {
                 entity.HasKey(e => e.Pidfapiid);
 
-                entity.ToTable("PIDFAPIDetails", "dbo");
+                entity.ToTable("PIDFAPIDetails");
 
                 entity.Property(e => e.Pidfapiid).HasColumnName("PIDFAPIId");
 
@@ -1981,7 +1976,7 @@ namespace EmcureNPD.Data.DataAccess.DataContext
 
             modelBuilder.Entity<PidfproductStrength>(entity =>
             {
-                entity.ToTable("PIDFProductStrength", "dbo");
+                entity.ToTable("PIDFProductStrength");
 
                 entity.Property(e => e.PidfproductStrengthId).HasColumnName("PIDFProductStrengthId");
 
@@ -2010,7 +2005,7 @@ namespace EmcureNPD.Data.DataAccess.DataContext
             {
                 entity.HasKey(e => e.RoleModuleId);
 
-                entity.ToTable("RoleModulePermission", "dbo");
+                entity.ToTable("RoleModulePermission");
 
                 entity.Property(e => e.CreatedDate).HasColumnType("datetime");
 
