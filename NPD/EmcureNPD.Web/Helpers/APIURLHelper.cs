@@ -1,4 +1,6 @@
-﻿namespace EmcureNPD.Web.Helpers
+﻿using Microsoft.Extensions.Configuration;
+
+namespace EmcureNPD.Web.Helpers
 {
     public static class APIURLHelper
     {
@@ -9,7 +11,8 @@
         public static string GetByPermisionRoleUsingRoleId = "api/Role/GetByPermisionRoleUsingRoleId";
         public static string ForgotPassword = "api/Account/ForgotPassword";
         public static string ResetPassword = "api/Account/ResetPassword";
-                
+        
+        public static IConfiguration Configuration;
 
         #region Formulation 
         public static string GetAllFormulation = "api/Formulation/GetAllFormulation";

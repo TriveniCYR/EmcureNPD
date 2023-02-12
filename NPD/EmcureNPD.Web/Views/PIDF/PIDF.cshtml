@@ -167,7 +167,8 @@
 															<div class="col-md">
 																<div class="form-group">
 																	<i class="fas fa-plus" id="addIcon_@i" onclick="addRowProductStrength(@i)"></i>
-																	
+																	&nbsp;&nbsp;&nbsp;&nbsp;
+															<span><i class="fas fa-trash-alt strengthDeleteIcon" id="deleteIconAPI_@i" onclick="deleteRowProductStrength(@i)"></i></span>
 																</div>
 
 															</div>
@@ -200,7 +201,7 @@
 														<div class="form-group">
 															<i class="fas fa-plus" id="addIconAPI_@j" onclick="addRowProductStrength(@j)"></i>
 															&nbsp;&nbsp;&nbsp;&nbsp;
-															<spam><i class="fas fa-trash-alt" id="deleteIconAPI_@j" onclick="deleteRowProductStrength(@j)"></i></spam>
+															<span><i class="fas fa-trash-alt strengthDeleteIcon" id="deleteIconAPI_@j" onclick="deleteRowProductStrength(@j)"></i></span>
 															@Html.HiddenFor(model => model.pidfProductStregthEntities[j].Pidfid, new { id = "pidfProductStregthEntities[" + j + "].PidfproductStrengthId"})
 														</div>
 													</div>
@@ -269,6 +270,8 @@
 															<div class="col-md">
 																<div class="form-group">
 																	<i class="fas fa-plus" id="addIconAPI_@j" onclick="addRowApiDetails(@j)"></i>
+																	&nbsp;&nbsp;&nbsp;&nbsp;
+																	<span><i class="fas fa-trash-alt apiDeleteIcon" id="deleteIconAPI_@j" onclick="deleteRowApiDetails(@j)"></i></span>
 																</div>
 															</div>
 														</td>
@@ -308,7 +311,7 @@
 														<div class="form-group">
 															<i class="fas fa-plus" id="addIconAPI_@j"  onclick="addRowApiDetails(@j)"></i>
 															&nbsp;&nbsp;&nbsp;&nbsp;
-															<spam><i class="fas fa-trash-alt" id="deleteIconAPI_@j" onclick="deleteRowApiDetails(@j)"></i></spam>
+															<span><i class="fas fa-trash-alt apiDeleteIcon" id="deleteIconAPI_@j" onclick="deleteRowApiDetails(@j)"></i></span>
 															@Html.HiddenFor(model => model.pidfApiDetailEntities[j].Pidfid, new { id = "pidfApiDetailEntities[" + j + "].Pidfid"})
 														</div>
 													</div>

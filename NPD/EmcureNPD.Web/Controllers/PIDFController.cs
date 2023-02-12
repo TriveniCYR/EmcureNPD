@@ -23,16 +23,17 @@ namespace EmcureNPD.Web.Controllers
         private readonly IStringLocalizer<Errors> _stringLocalizerError;
         private readonly IStringLocalizer<Shared> _stringLocalizerShared;
 		private readonly IStringLocalizer<Master> _stringLocalizerMaster;
-		#endregion
+        private readonly IHelper _helper;
+        #endregion
 
-		public PIDFController(IConfiguration configuration, IStringLocalizer<Master> stringLocalizerMaster,
-
-			IStringLocalizer<Errors> stringLocalizerError, IStringLocalizer<Shared> stringLocalizerShared)
+        public PIDFController(IConfiguration configuration, IStringLocalizer<Master> stringLocalizerMaster,
+			IStringLocalizer<Errors> stringLocalizerError, IStringLocalizer<Shared> stringLocalizerShared, IHelper helper)
         {
             _cofiguration = configuration;
             _stringLocalizerError = stringLocalizerError;
             _stringLocalizerShared = stringLocalizerShared;
             _stringLocalizerMaster = stringLocalizerMaster;
+            _helper = helper;
 
 		}
         public IActionResult PIDFList()
@@ -110,13 +111,19 @@ namespace EmcureNPD.Web.Controllers
         {
             try
             {
-				if (pIDFEntity.SaveType == "Sv")
-					pIDFEntity.StatusId = (Int32)Master_PIDFStatus.PIDFInProgress;
-				else
+				if (pIDFEntity.SaveType == "submit")
 					pIDFEntity.StatusId = (Int32)Master_PIDFStatus.PIDFSubmitted;
-				pIDFEntity.CreatedBy = Convert.ToInt32(HttpContext.Session.GetString(UserHelper.LoggedInUserId));
-				HttpContext.Request.Cookies.TryGetValue(UserHelper.EmcureNPDToken, out string token);
+				else
+					pIDFEntity.StatusId = (Int32)Master_PIDFStatus.PIDFInProgress;
+
+                if (pIDFEntity.PIDFID <= 0)
+                    pIDFEntity.LastStatusId = pIDFEntity.StatusId;
+
+                pIDFEntity.CreatedBy = _helper.GetLoggedInUserId(); //Convert.ToInt32(HttpContext.Session.GetString(UserHelper.LoggedInUserId));
+
+                string token = _helper.GetToken();
                 APIRepository objapi = new(_cofiguration);
+
                 HttpResponseMessage responseMessage = objapi.APICommunication(APIURLHelper.SavePIDF, HttpMethod.Post, token, new StringContent(JsonConvert.SerializeObject(pIDFEntity))).Result;
 
                 if (responseMessage.IsSuccessStatusCode)

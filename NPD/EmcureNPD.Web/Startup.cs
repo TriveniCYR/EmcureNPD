@@ -1,5 +1,6 @@
 using EmcureNPD.Resource;
 using EmcureNPD.Web.Filters;
+using EmcureNPD.Web.Helpers;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -19,6 +20,7 @@ namespace EmcureNPD.Web
         public Startup(IConfiguration configuration)
         {
             Configuration = configuration;
+            APIURLHelper.Configuration = configuration;
         }
 
         public IConfiguration Configuration { get; }
@@ -52,10 +54,11 @@ namespace EmcureNPD.Web
 
             var mvcBuilder = services.AddControllersWithViews();
 
+            services.AddHttpContextAccessor();
+
             //this is set for find webapp base URL
             services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
-
-
+            services.AddTransient<IHelper, Helper>();
 
             services.Configure<CookiePolicyOptions>(options =>
             {

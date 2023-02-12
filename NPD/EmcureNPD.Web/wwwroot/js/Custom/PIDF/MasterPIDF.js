@@ -6,7 +6,7 @@ $(document).ready(function () {
     if (uri > 0 & status != 1 & status != 2) {
         readOnlyForm();
     }    
-   
+    SetChildRowDeleteIcon();
 });
 function LoadData() {
     var options = $('#productStrengthUnit_0 option');
@@ -87,24 +87,29 @@ function SavePIDFFormError(x, y, z) {
 }
 
 function addRowProductStrength(j) {
-    var i = parseInt(j) + 1;
     var table = $('#productStrengthBody');
-    if (i == 1) {
-        var node = $('#productStrengthRow_0').clone(true);
-        table.append(node);
-        $('#productStrengthBody tr:eq(1)').prop('id', 'productStrengthRow_' + i + '');
-    }
-    else {
-        var node = $('#productStrengthRow_' + j + '').clone(true);
-        table.append(node);
-        $('#productStrengthBody tr:eq(' + i + ')').prop('id', 'productStrengthRow_' + i + '');
-    }
-    $('#productStrengthRow_' + i + ' td:first input').prop('id', 'pidfProductStregthEntities[' + i + '].Strength');
-    $('#productStrengthRow_' + i + ' td:first input').prop('name', 'pidfProductStregthEntities[' + i + '].Strength');
-    $('#productStrengthRow_' + i + ' td:eq(1) select').prop('id', 'productStrengthUnit_' + i + '');
-    $('#productStrengthRow_' + i + ' td:eq(1) select').prop('name', 'pidfProductStregthEntities[' + i + '].UnitofMeasurementId');
-    $('#productStrengthRow_' + i + ' td:eq(2) i').prop('id', 'addIcon_' + i + '');
-    $('#productStrengthRow_' + i + ' td:eq(2) i').attr('onclick', 'addRowProductStrength(' + i + ')');
+    var node = $('#productStrengthRow_0').clone(true);
+       table.find('tr:last').after(node);
+    table.find('tr:last').find("input").val("");
+    SetChildRowDeleteIcon();
+//    var i = parseInt(j) + 1;
+//    var table = $('#productStrengthBody');
+//    if (i == 1) {
+//        var node = $('#productStrengthRow_0').clone(true);
+//        table.find('tr:last').after(node);
+//        $('#productStrengthBody tr:eq(1)').prop('id', 'productStrengthRow_' + i + '');
+//    }
+//    else {
+//        var node = $('#productStrengthRow_' + j + '').clone(true);
+//        table.append(node);
+//        $('#productStrengthBody tr:eq(' + i + ')').prop('id', 'productStrengthRow_' + i + '');
+//    }
+//    $('#productStrengthRow_' + i + ' td:first input').prop('id', 'pidfProductStregthEntities[' + i + '].Strength');
+//    $('#productStrengthRow_' + i + ' td:first input').prop('name', 'pidfProductStregthEntities[' + i + '].Strength');
+//    $('#productStrengthRow_' + i + ' td:eq(1) select').prop('id', 'productStrengthUnit_' + i + '');
+//    $('#productStrengthRow_' + i + ' td:eq(1) select').prop('name', 'pidfProductStregthEntities[' + i + '].UnitofMeasurementId');
+//    $('#productStrengthRow_' + i + ' td:eq(2) i').prop('id', 'addIcon_' + i + '');
+//    $('#productStrengthRow_' + i + ' td:eq(2) i').attr('onclick', 'addRowProductStrength(' + i + ')');
 }
 
 //#region Delete PIDF
@@ -143,72 +148,82 @@ function SaveApprRejFormError(x, y, z) {
  //#endregion
 
 //#region API Rows PIDF
-function addRowApiDetails(j) {   
-    var i = 0;
+function addRowApiDetails(j) {  
+
     var table = $('#apiDetailsBody');
+    var node = $('#apiDetailsRow_0').clone(true);
+    table.find('tr:last').after(node);
+    table.find('tr:last').find("input").val("");
+    SetChildRowDeleteIcon();
+
+    //var i = 0;
+    //var table = $('#apiDetailsBody');
     
-    var node = $('#apiDetailsRow_' + j + '').clone(true);
-    table.append(node);
+    //var node = $('#apiDetailsRow_' + j + '').clone(true);
+    //table.find('tr:last').after(node);
 
-    var rowCount = $("#apiDetailsBody tr").length;
-    //alert(rowCount);
-    $('#apiDetailsBody tr:eq(' + (rowCount) + ')').prop('id', 'apiDetailsRow_' + i + '');
-    //}
-    $('#apiDetailsRow_' + i + ' td:first input').prop('id', 'pidfApiDetailEntities[' + i + '].Apiname');
-    $('#apiDetailsRow_' + i + ' td:first input').prop('name', 'pidfApiDetailEntities[' + i + '].Apiname');
-    $('#apiDetailsRow_' + i + ' td:first input').val('');
+    //var rowCount = $("#apiDetailsBody tr").length;
+    ////alert(rowCount);
+    //$('#apiDetailsBody tr:eq(' + (rowCount) + ')').prop('id', 'apiDetailsRow_' + i + '');
+    ////}
+    //$('#apiDetailsRow_' + i + ' td:first input').prop('id', 'pidfApiDetailEntities[' + i + '].Apiname');
+    //$('#apiDetailsRow_' + i + ' td:first input').prop('name', 'pidfApiDetailEntities[' + i + '].Apiname');
+    //$('#apiDetailsRow_' + i + ' td:first input').val('');
 
-      $('#apiDetailsRow_' + j + ' td:eq(1) select').prop('id', 'apiSourcingData_' + i + '');
-      $('#apiDetailsRow_' + j + ' td:eq(1) select').prop('name', 'pidfApiDetailEntities[' + i + '].ApisourcingId');
+    //  $('#apiDetailsRow_' + j + ' td:eq(1) select').prop('id', 'apiSourcingData_' + i + '');
+    //  $('#apiDetailsRow_' + j + ' td:eq(1) select').prop('name', 'pidfApiDetailEntities[' + i + '].ApisourcingId');
 
-    $('#apiDetailsRow_' + i + ' td:eq(2) input').prop('id', 'pidfApiDetailEntities[' + i + '].Apivendor');
-    $('#apiDetailsRow_' + i + ' td:eq(2) input').prop('name', 'pidfApiDetailEntities[' + i + '].Apivendor');
-    $('#apiDetailsRow_' + i + ' td:eq(2) input').val('');
+    //$('#apiDetailsRow_' + i + ' td:eq(2) input').prop('id', 'pidfApiDetailEntities[' + i + '].Apivendor');
+    //$('#apiDetailsRow_' + i + ' td:eq(2) input').prop('name', 'pidfApiDetailEntities[' + i + '].Apivendor');
+    //$('#apiDetailsRow_' + i + ' td:eq(2) input').val('');
 
-    $('#apiDetailsRow_' + i + ' td:eq(3) i').prop('id', 'addIconAPI_' + i + '');
-    $('#apiDetailsRow_' + i + ' td:eq(3) i').attr('onclick', 'addRowApiDetails(' + i + ')');
-    $('#apiDetailsRow_' + i + ' td:eq(3) spam i').prop('id', 'deleteIconAPI_' + i + '');
-    $('#apiDetailsRow_' + i + ' td:eq(3) spam i').attr('onclick', 'deleteRowApiDetails(' + i + ')');
-    $('#apiDetailsRow_' + i + ' td:eq(3) input').prop('id', 'pidfApiDetailEntities[' + i + '].Pidfapiid');
-    $('#apiDetailsRow_' + i + ' td:eq(3) input').prop('name', 'pidfApiDetailEntities[' + i + '].Pidfapiid');
-    $('#apiDetailsRow_' + i + ' td:eq(3) input').val(0);
+    //$('#apiDetailsRow_' + i + ' td:eq(3) i').prop('id', 'addIconAPI_' + i + '');
+    //$('#apiDetailsRow_' + i + ' td:eq(3) i').attr('onclick', 'addRowApiDetails(' + i + ')');
+    //$('#apiDetailsRow_' + i + ' td:eq(3) spam i').prop('id', 'deleteIconAPI_' + i + '');
+    //$('#apiDetailsRow_' + i + ' td:eq(3) spam i').attr('onclick', 'deleteRowApiDetails(' + i + ')');
+    //$('#apiDetailsRow_' + i + ' td:eq(3) input').prop('id', 'pidfApiDetailEntities[' + i + '].Pidfapiid');
+    //$('#apiDetailsRow_' + i + ' td:eq(3) input').prop('name', 'pidfApiDetailEntities[' + i + '].Pidfapiid');
+    //$('#apiDetailsRow_' + i + ' td:eq(3) input').val(0);
+    //SetChildRowDeleteIcon();
 }
 function deleteRowApiDetails(j) {
-    $("#apiDetailsRow_" + j).remove();   
+    $("#apiDetailsRow_" + j).remove();  
+    SetChildRowDeleteIcon();
 }
  //#endregion
 
 
 //#region STR Rows
 
-function addRowProductStrength(j) {
-    var i = 0;
-    var table = $('#productStrengthBody');
+//function addRowProductStrength(j) {
+//    var i = 0;
+//    var table = $('#productStrengthBody');
 
-    var node = $('#productStrengthRow_' + j + '').clone(true);
-    table.append(node);
+//    var node = $('#productStrengthRow_' + j + '').clone(true);
+//    table.append(node);
 
-    var rowCount = $("#productStrengthBody tr").length;
-    //alert(rowCount);
-    $('#productStrengthBody tr:eq(' + (rowCount) + ')').prop('id', 'productStrengthRow_' + i + '');
-    //}
-    $('#productStrengthRow_' + i + ' td:first input').prop('id', 'pidfProductStregthEntities[' + i + '].Strength');
-    $('#productStrengthRow_' + i + ' td:first input').prop('name', 'pidfProductStregthEntities[' + i + '].Strength');
-    $('#productStrengthRow_' + i + ' td:first input').val('');
+//    var rowCount = $("#productStrengthBody tr").length;
+//    //alert(rowCount);
+//    $('#productStrengthBody tr:eq(' + (rowCount) + ')').prop('id', 'productStrengthRow_' + i + '');
+//    //}
+//    $('#productStrengthRow_' + i + ' td:first input').prop('id', 'pidfProductStregthEntities[' + i + '].Strength');
+//    $('#productStrengthRow_' + i + ' td:first input').prop('name', 'pidfProductStregthEntities[' + i + '].Strength');
+//    $('#productStrengthRow_' + i + ' td:first input').val('');
 
-    $('#productStrengthRow_' + i + ' td:eq(1) select').prop('id', 'productStrengthUnit_' + i + '');
-    $('#productStrengthRow_' + i + ' td:eq(1) select').prop('name', 'pidfProductStregthEntities[' + i + '].UnitofMeasurementId');
+//    $('#productStrengthRow_' + i + ' td:eq(1) select').prop('id', 'productStrengthUnit_' + i + '');
+//    $('#productStrengthRow_' + i + ' td:eq(1) select').prop('name', 'pidfProductStregthEntities[' + i + '].UnitofMeasurementId');
 
-    $('#productStrengthRow_' + i + ' td:eq(2) i').prop('id', 'addIconProductStrength_' + i + '');
-    $('#productStrengthRow_' + i + ' td:eq(2) i').attr('onclick', 'addRowProductStrength(' + i + ')');
-    $('#productStrengthRow_' + i + ' td:eq(2) spam i').prop('id', 'deleteIconProductStrength_' + i + '');
-    $('#productStrengthRow_' + i + ' td:eq(2) spam i').attr('onclick', 'deleteRowProductStrength(' + i + ')');
-    $('#productStrengthRow_' + i + ' td:eq(2) input').prop('id', 'pidfProductStregthEntities[' + i + '].PidfproductStrengthId');
-    $('#productStrengthRow_' + i + ' td:eq(2) input').prop('name', 'pidfProductStregthEntities[' + i + '].PidfproductStrengthId');
-    $('#productStrengthRow_' + i + ' td:eq(2) input').val(0);
-}
+//    $('#productStrengthRow_' + i + ' td:eq(2) i').prop('id', 'addIconProductStrength_' + i + '');
+//    $('#productStrengthRow_' + i + ' td:eq(2) i').attr('onclick', 'addRowProductStrength(' + i + ')');
+//    $('#productStrengthRow_' + i + ' td:eq(2) spam i').prop('id', 'deleteIconProductStrength_' + i + '');
+//    $('#productStrengthRow_' + i + ' td:eq(2) spam i').attr('onclick', 'deleteRowProductStrength(' + i + ')');
+//    $('#productStrengthRow_' + i + ' td:eq(2) input').prop('id', 'pidfProductStregthEntities[' + i + '].PidfproductStrengthId');
+//    $('#productStrengthRow_' + i + ' td:eq(2) input').prop('name', 'pidfProductStregthEntities[' + i + '].PidfproductStrengthId');
+//    $('#productStrengthRow_' + i + ' td:eq(2) input').val(0);
+//}
 function deleteRowProductStrength(j) {
     $("#productStrengthRow_" + j).remove();
+    SetChildRowDeleteIcon();
 }
 
  //#endregion
@@ -222,9 +237,36 @@ function readOnlyForm() {
 }
 
 function SaveClick() {
-    $('#SaveType').val('Sv');  
+    $('#SaveType').val('submit');  
+    SetChildRows();
 }
 
 function SaveDraftClick() {
-    $('#SaveType').val('Drf');    
+    $('#SaveType').val('draft');    
+    SetChildRows();
+}
+function SetChildRows() {
+    $.each($('#APIDetailsTable tbody tr'), function (index, value) {
+        $(this).find("td:first input").attr("name", "pidfApiDetailEntities[" + index.toString() + "].Apiname");
+        $(this).find("td:eq(1) select").attr("name", "pidfApiDetailEntities[" + index.toString() + "].ApisourcingId");
+        $(this).find("td:eq(2) input").attr("name", "pidfApiDetailEntities[" + index.toString() + "].Apivendor");
+    });
+    $.each($('#ProductStrengthTable tbody tr'), function (index, value) {
+        $(this).find("td:first input").attr("name", "pidfProductStregthEntities[" + index.toString() + "].Strength");
+        $(this).find("td:eq(1) select").attr("name", "pidfProductStregthEntities[" + index.toString() + "].UnitofMeasurementId");
+    });
+}
+function SetChildRowDeleteIcon() {
+    if ($('#APIDetailsTable tbody tr').length > 1) {
+        $('.apiDeleteIcon').show();
+    } else {
+        $('.apiDeleteIcon').hide();
+    }
+
+    if ($('#ProductStrengthTable tbody tr').length > 1) {
+        $('.strengthDeleteIcon').show();
+    } else {
+        $('.strengthDeleteIcon').hide();
+    }
+    
 }

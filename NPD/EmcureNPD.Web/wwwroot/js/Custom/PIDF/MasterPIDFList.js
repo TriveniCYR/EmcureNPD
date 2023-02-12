@@ -155,16 +155,20 @@ function InitializePIDFList() {
 /* Formatting function for row details - modify as you need */
 function CustomizeChildContent(d) {
     // `d` is the original data object for the row
-    var _productStrength = JSON.parse(d.productStrength);
-    var _productAPI = JSON.parse(d.productAPIDetail);
     var _psHTML = "";
-    $.each(_productStrength, function (index, value) {
-        _psHTML += "<tr><td>" + value.Strength + "</td>" + "<td>" + value.UnitofMeasurementName + "</td></tr>";
-    });
     var _paHTML = "";
-    $.each(_productAPI, function (index, value) {
-        _paHTML += "<tr><td>" + value.APIName + "</td>" + "<td>" + value.APISourcingName + "</td><td>" + value.APIVendor +"</td></tr>";
-    });
+    if (d.productStrength != null) {
+        var _productStrength = JSON.parse(d.productStrength);
+        $.each(_productStrength, function (index, value) {
+            _psHTML += "<tr><td>" + value.Strength + "</td>" + "<td>" + value.UnitofMeasurementName + "</td></tr>";
+        });
+    }
+    if (d.productAPIDetail != null) {
+        var _productAPI = JSON.parse(d.productAPIDetail);
+        $.each(_productAPI, function (index, value) {
+            _paHTML += "<tr><td>" + value.APIName + "</td>" + "<td>" + value.APISourcingName + "</td><td>" + value.APIVendor + "</td></tr>";
+        });
+    }
     return (
         '<table><thead><tr><th>Strength</th><th>Unit</th></tr></thead><tbody>' + _psHTML + '</tbody></table><div class="clearfix">&nbsp;</div><table><thead><tr><th>API Name</th><th>Sourcing Name</th><th>Vendor</th></tr></thead><tbody>' + _paHTML +'</tbody></table>'
     );

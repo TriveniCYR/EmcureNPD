@@ -2,7 +2,6 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata;
 using EmcureNPD.Data.DataAccess.Entity;
-using EmcureNPD.Utility;
 
 #nullable disable
 
@@ -98,14 +97,15 @@ namespace EmcureNPD.Data.DataAccess.DataContext
         public virtual DbSet<PidfPbfRndReferenceProductDetail> PidfPbfRndReferenceProductDetails { get; set; }
         public virtual DbSet<Pidfapidetail> Pidfapidetails { get; set; }
         public virtual DbSet<PidfproductStrength> PidfproductStrengths { get; set; }
+        public virtual DbSet<PidfstatusHistory> PidfstatusHistories { get; set; }
         public virtual DbSet<RoleModulePermission> RoleModulePermissions { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             if (!optionsBuilder.IsConfigured)
             {
-                #warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see http://go.microsoft.com/fwlink/?LinkId=723263.
-                optionsBuilder.UseSqlServer(DatabaseConnection.NPDDatabaseConnection);
+#warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see http://go.microsoft.com/fwlink/?LinkId=723263.
+                optionsBuilder.UseSqlServer("Data Source=180.149.241.172;Initial Catalog=EmcureNPDDev;Persist Security Info=True;User ID=emcurenpddev_dbUser;pwd=emcure123!@#");
             }
         }
 
@@ -883,11 +883,19 @@ namespace EmcureNPD.Data.DataAccess.DataContext
                     .HasMaxLength(100)
                     .HasColumnName("RFDPriceDiscounting");
 
+                entity.Property(e => e.StatusUpdatedDate).HasColumnType("datetime");
+
                 entity.HasOne(d => d.BusinessUnit)
                     .WithMany(p => p.Pidfs)
                     .HasForeignKey(d => d.BusinessUnitId)
                     .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("FK_PIDF_Master_BusinessUnit");
+
+                entity.HasOne(d => d.CreatedByNavigation)
+                    .WithMany(p => p.Pidfs)
+                    .HasForeignKey(d => d.CreatedBy)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("FK__PIDF__CreatedBy__12149A71");
 
                 entity.HasOne(d => d.Dia)
                     .WithMany(p => p.Pidfs)
@@ -925,6 +933,7 @@ namespace EmcureNPD.Data.DataAccess.DataContext
                 entity.HasOne(d => d.Rfdcountry)
                     .WithMany(p => p.Pidfs)
                     .HasForeignKey(d => d.RfdcountryId)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("FK_PIDF_Master_Country");
 
                 entity.HasOne(d => d.Status)
@@ -2004,6 +2013,29 @@ namespace EmcureNPD.Data.DataAccess.DataContext
                     .HasForeignKey(d => d.UnitofMeasurementId)
                     .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("FK_PIDFProductStrength_Master_UnitofMeasurement");
+            });
+
+            modelBuilder.Entity<PidfstatusHistory>(entity =>
+            {
+                entity.ToTable("PIDFStatusHistory", "dbo");
+
+                entity.Property(e => e.PidfstatusHistoryId).HasColumnName("PIDFStatusHistoryId");
+
+                entity.Property(e => e.CreatedDate).HasColumnType("datetime");
+
+                entity.Property(e => e.Pidfid).HasColumnName("PIDFID");
+
+                entity.HasOne(d => d.Pidf)
+                    .WithMany(p => p.PidfstatusHistories)
+                    .HasForeignKey(d => d.Pidfid)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("FK_PIDFStatusHistory_PIDF");
+
+                entity.HasOne(d => d.Status)
+                    .WithMany(p => p.PidfstatusHistories)
+                    .HasForeignKey(d => d.StatusId)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("FK_PIDFStatusHistory_Master_PIDFStatus");
             });
 
             modelBuilder.Entity<RoleModulePermission>(entity =>

@@ -11,6 +11,7 @@ namespace EmcureNPD.Data.DataAccess.Entity
         {
             PidfLastStatuses = new HashSet<Pidf>();
             PidfStatuses = new HashSet<Pidf>();
+            PidfstatusHistories = new HashSet<PidfstatusHistory>();
         }
 
         public int PidfstatusId { get; set; }
@@ -23,5 +24,6 @@ namespace EmcureNPD.Data.DataAccess.Entity
 
         public virtual ICollection<Pidf> PidfLastStatuses { get; set; }
         public virtual ICollection<Pidf> PidfStatuses { get; set; }
+        public virtual ICollection<PidfstatusHistory> PidfstatusHistories { get; set; }
     }
 }
