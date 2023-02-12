@@ -1,6 +1,7 @@
 ﻿
 $(document).ready(function () {
     SetDivReadonly();
+    $("#IsModelValid").val('');
     if (SaveStatus != '' && SaveStatus != undefined)
     {
         if (SaveStatus == 'Saved successfully.')
@@ -10,9 +11,24 @@ $(document).ready(function () {
     }
 });
 
-$(window).on("load", function () {
-    console.log("window loaded");
-});
+function InitializeProductTypeDropdown() {
+    debugger;
+    ajaxServiceMethod($('#hdnBaseURL').val() + GetAllProductType, 'GET', GetProductTypeListSuccess, GetProductTypeListError);
+}
+function GetProductTypeListSuccess(data) {
+    console.log(data);
+    try {
+        $.each(data._object, function (index, object) {
+            $('#ProductTypeId').append($('<option>').text(object.productTypeName).attr('value', object.productTypeId));
+        });
+    } catch (e) {
+        toastr.error('Error:' + e.message);
+    }
+}
+function GetProductTypeListError(x, y, z) {
+    toastr.error(ErrorMessage);
+}
+
 
 $('#btnPreview').click(function () {
     debugger;
@@ -25,9 +41,11 @@ $('#btnPreview').click(function () {
 });
 
 $('#Save').click(function () {
+    ValidateForm();
     $("#SaveType").val('Save');    
 });
 $('#SaveDraft').click(function () {
+    $("#IsModelValid").val('Valid')
     $("#SaveType").val('SaveDraft');
 });
 function SetDivReadonly() {
@@ -44,6 +62,25 @@ function SetDivReadonly() {
 function ShowPopUpAPIIPD() {
     $("#CancelModelAPIIPD").find("button, submit, a").show();
     $('#CancelModelAPIIPD').modal('show');
+}
+
+function ValidateForm() {
+    var IsInvalid = false;
+    if ($("#DrugsCategory").val() == '') {
+        $("#valmsgDrugsCategory").val('Required')
+        IsInvalid = true;
+    }
+    if ($("#ProductStrength").val() == '') {
+        $("#valmsgProductStrength").val('Required')
+        IsInvalid = true;
+    }
+    if (IsInvalid) {
+        $("#IsModelValid").val('')
+    }
+    else {
+        $("#IsModelValid").val('Valid')
+    }
+    return IsInvalid;
 }
 
 

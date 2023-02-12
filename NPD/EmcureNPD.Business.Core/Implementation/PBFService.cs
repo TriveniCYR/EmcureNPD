@@ -102,12 +102,12 @@ namespace EmcureNPD.Business.Core.Implementation
 				var lastApiIpd = _pidf_API_IPD_repository.Get(x => x.PidfApiIpdId == _oAPIIPD.APIIPDDetailsFormID && x.IsActive == true);
 				if(lastApiIpd != null) 
 				{
-                    lastApiIpd.FormulationQuantity = _oAPIIPD.FormulationQuantity;
-                    lastApiIpd.PlantQc = _oAPIIPD.PlantQC;
-                    lastApiIpd.Development = _oAPIIPD.Development;
-                    lastApiIpd.Total = _oAPIIPD.Total;
-                    lastApiIpd.Exhibit = _oAPIIPD.Exhibit;
-                    lastApiIpd.ScaleUp = _oAPIIPD.ScaleUp;
+                    //lastApiIpd.FormulationQuantity = _oAPIIPD.FormulationQuantity;
+                    //lastApiIpd.PlantQc = _oAPIIPD.PlantQC;
+                    //lastApiIpd.Development = _oAPIIPD.Development;
+                    //lastApiIpd.Total = _oAPIIPD.Total;
+                    //lastApiIpd.Exhibit = _oAPIIPD.Exhibit;
+                    //lastApiIpd.ScaleUp = _oAPIIPD.ScaleUp;
 					lastApiIpd.ModifyBy = (int?)_oAPIIPD.LoggedInUserId;
 					lastApiIpd.ModifyDate = DateTime.Now;
                     _pidf_API_IPD_repository.UpdateAsync(lastApiIpd);
@@ -119,13 +119,13 @@ namespace EmcureNPD.Business.Core.Implementation
             }
 			else
 			{
-				_APIIPDDBEntity.Pidfid = Convert.ToInt32(_oAPIIPD.Pidfid);
-                _APIIPDDBEntity.FormulationQuantity = _oAPIIPD.FormulationQuantity;
-                _APIIPDDBEntity.PlantQc = _oAPIIPD.PlantQC;
-                _APIIPDDBEntity.Development = _oAPIIPD.Development;
-                _APIIPDDBEntity.Total = _oAPIIPD.Total;
-                _APIIPDDBEntity.Exhibit = _oAPIIPD.Exhibit;
-                _APIIPDDBEntity.ScaleUp = _oAPIIPD.ScaleUp;
+				//_APIIPDDBEntity.Pidfid = Convert.ToInt32(_oAPIIPD.Pidfid);
+    //            _APIIPDDBEntity.FormulationQuantity = _oAPIIPD.FormulationQuantity;
+    //            _APIIPDDBEntity.PlantQc = _oAPIIPD.PlantQC;
+    //            _APIIPDDBEntity.Development = _oAPIIPD.Development;
+    //            _APIIPDDBEntity.Total = _oAPIIPD.Total;
+    //            _APIIPDDBEntity.Exhibit = _oAPIIPD.Exhibit;
+    //            _APIIPDDBEntity.ScaleUp = _oAPIIPD.ScaleUp;
                 _APIIPDDBEntity.CreatedBy = _oAPIIPD.LoggedInUserId;
                 _APIIPDDBEntity.CreatedDate = DateTime.Now;
 				_APIIPDDBEntity.IsActive = true;
@@ -142,13 +142,13 @@ namespace EmcureNPD.Business.Core.Implementation
 			var _oAPIIPD = await _pidf_API_IPD_repository.GetAsync(x=>x.Pidfid == pidfId);
 			if (_oAPIIPD != null)
 			{
-				_oApiIpdData.FormulationQuantity = _oAPIIPD.FormulationQuantity;
-				_oApiIpdData.APIIPDDetailsFormID = _oAPIIPD.PidfApiIpdId;
-                _oApiIpdData.PlantQC = _oAPIIPD.PlantQc;
-				_oApiIpdData.Development = _oAPIIPD.Development;
-				_oApiIpdData.Total = _oAPIIPD.Total;
-				_oApiIpdData.Exhibit = _oAPIIPD.Exhibit;
-				_oApiIpdData.ScaleUp = _oAPIIPD.ScaleUp;
+				//_oApiIpdData.FormulationQuantity = _oAPIIPD.FormulationQuantity;
+				//_oApiIpdData.APIIPDDetailsFormID = _oAPIIPD.PidfApiIpdId;
+    //            _oApiIpdData.PlantQC = _oAPIIPD.PlantQc;
+				//_oApiIpdData.Development = _oAPIIPD.Development;
+				//_oApiIpdData.Total = _oAPIIPD.Total;
+				//_oApiIpdData.Exhibit = _oAPIIPD.Exhibit;
+				//_oApiIpdData.ScaleUp = _oAPIIPD.ScaleUp;
 			}
 			return _oApiIpdData;
         }
