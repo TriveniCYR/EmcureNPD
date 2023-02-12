@@ -149,14 +149,14 @@ namespace EmcureNPD.Web
                     pattern: "{controller=Home}/{action=Index}/{id?}");
             });
 
-            var allowedOrigins = Configuration.GetSection("AllowedOrigins").Value.Split(",");
+            //var allowedOrigins = Configuration.GetSection("AllowedOrigins").Value.Split(",");
 
-            app.UseCors(builder => builder
-                                    .WithOrigins(allowedOrigins)
-                                    .AllowAnyMethod()
-                                    .AllowAnyHeader()
-                                    .AllowCredentials()
-            );
+            //app.UseCors(builder => builder
+            //                        .WithOrigins(allowedOrigins)
+            //                        .AllowAnyMethod()
+            //                        .AllowAnyHeader()
+            //                        .AllowCredentials()
+            //);
 
             // Add for Localizer
 
