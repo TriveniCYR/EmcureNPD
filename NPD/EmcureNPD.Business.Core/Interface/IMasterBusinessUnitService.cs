@@ -15,5 +15,7 @@ namespace EmcureNPD.Business.Core.Interface
 
         Task<DBOperation> DeleteBusinessUnit(int id);
         Task<MasterRegionEntity> GetRegionByBusinessUnitId(int id);
+
+        Task<dynamic> GetCountryByBusinessUnitId(int BusinessUnitId);
     }
 }

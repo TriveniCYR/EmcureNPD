@@ -148,7 +148,7 @@
 											{
 												for (int i = 0; i < Model.pidfProductStregthEntities.Count(); i++)
 												{
-													<tr id="productStrengthRow_@i">
+													<tr id="productStrengthRow_0">
 														<td>
 															<div class="col-md">
 																<div class="form-group required">
@@ -159,16 +159,16 @@
 														<td>
 															<div class="col-md">
 																<div class="form-group required">
-																	<select id="productStrengthUnit_@i" name="pidfProductStregthEntities[@i].UnitofMeasurementId" class="form-control readOnlyUpdate" required></select>
+																	<select id="productStrengthUnit_0" name="pidfProductStregthEntities[@i].UnitofMeasurementId" class="form-control readOnlyUpdate productStrengthUnit" required></select>
 																</div>
 															</div>
 														</td>
 														<td>
 															<div class="col-md">
 																<div class="form-group">
-																	<i class="fas fa-plus" id="addIcon_@i" onclick="addRowProductStrength(@i)"></i>
+																	<i class="fas fa-plus operationButton" id="addIcon_@i" onclick="addRowProductStrength(@i)"></i>
 																	&nbsp;&nbsp;&nbsp;&nbsp;
-															<span><i class="fas fa-trash-alt strengthDeleteIcon" id="deleteIconAPI_@i" onclick="deleteRowProductStrength(@i)"></i></span>
+																	<span><i class="fas fa-trash-alt strengthDeleteIcon operationButton" id="deleteIconAPI_@i" onclick="deleteRowProductStrength(@i, this)"></i></span>
 																</div>
 
 															</div>
@@ -192,7 +192,7 @@
 												<td>
 													<div class="col-md">
 														<div class="form-group required">
-															<select id="productStrengthUnit_@j" name="pidfProductStregthEntities[@j].UnitofMeasurementId" class="form-control readOnlyUpdate" required></select>
+															<select id="productStrengthUnit_@j" name="pidfProductStregthEntities[@j].UnitofMeasurementId" class="form-control readOnlyUpdate productStrengthUnit" required></select>
 														</div>
 													</div>
 												</td>
@@ -201,7 +201,7 @@
 														<div class="form-group">
 															<i class="fas fa-plus" id="addIconAPI_@j" onclick="addRowProductStrength(@j)"></i>
 															&nbsp;&nbsp;&nbsp;&nbsp;
-															<span><i class="fas fa-trash-alt strengthDeleteIcon" id="deleteIconAPI_@j" onclick="deleteRowProductStrength(@j)"></i></span>
+															<span><i class="fas fa-trash-alt strengthDeleteIcon" id="deleteIconAPI_@j" onclick="deleteRowProductStrength(@j, this)"></i></span>
 															@Html.HiddenFor(model => model.pidfProductStregthEntities[j].Pidfid, new { id = "pidfProductStregthEntities[" + j + "].PidfproductStrengthId"})
 														</div>
 													</div>
@@ -255,7 +255,7 @@
 														<td>
 															<div class="col-md">
 																<div class="form-group required">
-																	<select id="apiSourcingData_@j" name="pidfApiDetailEntities[@j].ApisourcingId" class="form-control readOnlyUpdate" required></select>
+																	<select id="apiSourcingData_0" name="pidfApiDetailEntities[@j].ApisourcingId" class="form-control readOnlyUpdate productApiSourcing" required></select>
 																</div>
 															</div>
 														</td>
@@ -271,7 +271,7 @@
 																<div class="form-group">
 																	<i class="fas fa-plus" id="addIconAPI_@j" onclick="addRowApiDetails(@j)"></i>
 																	&nbsp;&nbsp;&nbsp;&nbsp;
-																	<span><i class="fas fa-trash-alt apiDeleteIcon" id="deleteIconAPI_@j" onclick="deleteRowApiDetails(@j)"></i></span>
+																	<span><i class="fas fa-trash-alt apiDeleteIcon" id="deleteIconAPI_@j" onclick="deleteRowApiDetails(@j, this)"></i></span>
 																</div>
 															</div>
 														</td>
@@ -294,7 +294,7 @@
 												<td>
 													<div class="col-md">
 														<div class="form-group required">
-															<select id="apiSourcingData_@j" name="pidfApiDetailEntities[@j].ApisourcingId" class="form-control readOnlyUpdate" required></select>
+															<select id="apiSourcingData_@j" name="pidfApiDetailEntities[@j].ApisourcingId" class="form-control readOnlyUpdate productApiSourcing" required></select>
 														</div>
 													</div>
 												</td>
@@ -311,7 +311,7 @@
 														<div class="form-group">
 															<i class="fas fa-plus" id="addIconAPI_@j"  onclick="addRowApiDetails(@j)"></i>
 															&nbsp;&nbsp;&nbsp;&nbsp;
-															<span><i class="fas fa-trash-alt apiDeleteIcon" id="deleteIconAPI_@j" onclick="deleteRowApiDetails(@j)"></i></span>
+															<span><i class="fas fa-trash-alt apiDeleteIcon" id="deleteIconAPI_@j" onclick="deleteRowApiDetails(@j, this)"></i></span>
 															@Html.HiddenFor(model => model.pidfApiDetailEntities[j].Pidfid, new { id = "pidfApiDetailEntities[" + j + "].Pidfid"})
 														</div>
 													</div>
@@ -511,17 +511,16 @@
 				<div class="row" id="pidfButtonhide">
 					<div>
 						<div class="form-group">
-							<button type="submit" class="btn btn-primary" onClick="SaveClick();">@SharedLocalizer["Save"]</button>
-							@if (Model.StatusId != (Int32)Master_PIDFStatus.PIDFInProgress)
+							<button type="submit" class="btn btn-primary operationButton" onClick="SaveClick();">@SharedLocalizer["Submit"]</button>
+							@if (Model.StatusId == (Int32)Master_PIDFStatus.PIDFInProgress || Model.StatusId == 0)
 							{
 								<button type="submit" class="btn btn-info" onClick="SaveDraftClick();">@SharedLocalizer["SaveDraft"]</button>
-
 							}
-							else
+							@if (Model.StatusId == (Int32)Master_PIDFStatus.PIDFSubmitted)
 							{
-								<a class="btn btn-success" onClick="approveRejDeleteData('A')"><i class="fa fa-check mr-1"></i> @SharedLocalizer["Approve"]</a>
-								<a class="btn btn-danger" onClick="approveRejDeleteData('R')"><i class="far fa fa-times mr-1"></i> @SharedLocalizer["Reject"]</a>
-								@*<a class="btn btn-danger" onClick="approveRejDeleteData('D')"><i class="far fa-plus-square mr-1"></i> @SharedLocalizer["Delete"]</a>*@
+								<a class="btn btn-success operationButton" onClick="approveRejDeleteData('A')"><i class="fa fa-check mr-1"></i> @SharedLocalizer["Approve"]</a>
+								<a class="btn btn-danger operationButton" onClick="approveRejDeleteData('R')"><i class="far fa fa-times mr-1"></i> @SharedLocalizer["Reject"]</a>
+
 							}
 							<a class="btn btn-danger" asp-action="PIDFList" asp-controller="PIDF">@SharedLocalizer["Cancel"]</a>
 						</div>
@@ -542,6 +541,7 @@
 		//#region Setup API Url
 		var SavePIDF = "@EmcureNPD.Web.Helpers.APIURLHelper.SavePIDF";
 		var GetAllPIDF = "@EmcureNPD.Web.Helpers.APIURLHelper.GetPIDFDropdown";
+		var getCountryByBusinessUnitId = "@EmcureNPD.Web.Helpers.APIURLHelper.GetCountryByBusinessUnitId";
 		var ApproveRejectDeletePidf = "@EmcureNPD.Web.Helpers.APIURLHelper.ApproveRejectDeletePidf";
 		// #endregion
 

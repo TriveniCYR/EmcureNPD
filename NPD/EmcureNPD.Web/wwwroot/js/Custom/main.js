@@ -1,5 +1,4 @@
-﻿
-$.fn.serializeObject = function () {
+﻿$.fn.serializeObject = function () {
     var o = {};
     var a = this.serializeArray();
     $.each(a, function () {
@@ -53,7 +52,7 @@ function setNavigation() {
     path = path.replace(/\/$/, "");
     path = decodeURIComponent(path);
     var CurrentpathArr = path.split('/');
-    
+
     $(".nav-item a").each(function () {
         var IshrefFound = false;
         var href = $(this).attr('href');
@@ -65,9 +64,9 @@ function setNavigation() {
                 IshrefFound = true;
                 return false;
             }
-            /*----start----New logic added----------------*/            
+            /*----start----New logic added----------------*/
             if (CurrentpathArr[1] == NavPathArr[1] && !IshrefFound) {
-               // $(this).addClass('active');
+                // $(this).addClass('active');
                 $(this).parent().parent().parent().addClass('menu-is-opening menu-open');
             }
             /*-----end---New logic added----------------*/
@@ -117,8 +116,6 @@ function StaticDataTable(selector, dom, buttons) {
             'processing': '<div class="spinner"></div>'
         }
     });
-
-
 }
 function ajaxServiceMethod(url, type, successCallback, errorCallback, body, header, async, dataType, contentType) {
     if (contentType == null || contentType == undefined) {
@@ -145,9 +142,14 @@ function ajaxServiceMethod(url, type, successCallback, errorCallback, body, head
         //}
     });
 }
+function getParameterByName(name, url = window.location.href) {
+    name = name.replace(/[\[\]]/g, '\\$&');
+    var regex = new RegExp('[?&]' + name + '(=([^&#]*)|&|#|$)'),
+        results = regex.exec(url);
+    if (!results) return null;
+    if (!results[2]) return '';
+    return decodeURIComponent(results[2].replace(/\+/g, ' '));
+}
 $(document).ready(function () {
     setNavigation();
 });
-
-
-

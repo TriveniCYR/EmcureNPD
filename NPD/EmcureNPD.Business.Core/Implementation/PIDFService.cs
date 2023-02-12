@@ -38,7 +38,6 @@ namespace EmcureNPD.Business.Core.Implementation
         private readonly IHttpContextAccessor _httpContextAccessor;
         private readonly IHelper _helper;
 
-
         private IRepository<Pidf> _repository { get; set; }
         private IRepository<Pidfapidetail> _pidfApiRepository { get; set; }
         private IRepository<PidfproductStrength> _pidfProductStrength { get; set; }
@@ -75,18 +74,25 @@ namespace EmcureNPD.Business.Core.Implementation
         {
             dynamic DropdownObjects = new ExpandoObject();
 
-            DropdownObjects.MasterOrals = _oralService.GetAll().Result.Where(xx => xx.IsActive).ToList();
-            DropdownObjects.MasterUnitofMeasurements = _unitofMeasurementService.GetAll().Result.Where(xx => xx.IsActive).ToList();
-            DropdownObjects.MasterDosageForms = _dosageFormService.GetAll().Result.Where(xx => xx.IsActive).ToList();
-            DropdownObjects.MasterPackagingTypes = _packagingTypeService.GetAll().Result.Where(xx => xx.IsActive).ToList();
-            DropdownObjects.MasterBusinessUnits = GetBusinessUNitByUserId(userid).Result;
-            DropdownObjects.MasterCountrys = GetCountryByUserId(userid).Result;
-            DropdownObjects.MarketExtensions = _masterMarketExtensionService.GetAll().Result.Where(xx => xx.IsActive).ToList();
-            DropdownObjects.InHouses = new List<InHouseEntity> { new InHouseEntity { InHouseId = 1, InHouseName = "Yes" }, new InHouseEntity { InHouseId = 2, InHouseName = "No" } };
-            DropdownObjects.MasterAPISourcing = _APISourcingService.GetAll().Result.Where(xx => xx.IsActive).ToList();
-            DropdownObjects.MasterDIAs = _masterDIAService.GetAll().Result.Where(xx => xx.IsActive).ToList();
+            var loggedInUserId = _helper.GetLoggedInUser().UserId;
 
-           
+            SqlParameter[] osqlParameter = {
+                new SqlParameter("@UserId", loggedInUserId)
+            };
+
+            DataSet dsDropdownOptions = await _repository.GetDataSetBySP("SP_Fill_ddl_PIDF", System.Data.CommandType.StoredProcedure, osqlParameter);
+
+            DropdownObjects.MasterOrals = dsDropdownOptions.Tables[0];
+            DropdownObjects.MasterUnitofMeasurements = dsDropdownOptions.Tables[1];
+            DropdownObjects.MasterDosageForms = dsDropdownOptions.Tables[2];
+            DropdownObjects.MarketExtensions = dsDropdownOptions.Tables[3];
+            DropdownObjects.MasterPackagingTypes = dsDropdownOptions.Tables[4];
+            DropdownObjects.MasterBusinessUnits = dsDropdownOptions.Tables[5];
+            DropdownObjects.MasterAPISourcing = dsDropdownOptions.Tables[6];
+            DropdownObjects.MasterDIAs = dsDropdownOptions.Tables[7];
+
+            //DropdownObjects.MasterCountrys = GetCountryByUserId(userid).Result;            
+            DropdownObjects.InHouses = new List<InHouseEntity> { new InHouseEntity { InHouseId = 1, InHouseName = "Yes" }, new InHouseEntity { InHouseId = 2, InHouseName = "No" } };
             return DropdownObjects;
         }
 
@@ -127,6 +133,7 @@ namespace EmcureNPD.Business.Core.Implementation
             }
             return _CNObjects;
         }
+
         public async Task<DataTableResponseModel> GetAllPIDFList(DataTableAjaxPostModel model)
         {
             var loggedInUserId = _helper.GetLoggedInUser().UserId;
@@ -135,7 +142,7 @@ namespace EmcureNPD.Business.Core.Implementation
             string SortDir = (model.order.Count > 0 ? model.order[0].dir : string.Empty);
 
             SqlParameter[] osqlParameter = {
-                //new SqlParameter("@PIDFID", 0),
+                new SqlParameter("@UserId", loggedInUserId),
                 new SqlParameter("@CurrentPageNumber", model.start),
                     new SqlParameter("@PageSize", model.length),
                     new SqlParameter("@SortColumn", ColumnName),
@@ -152,6 +159,7 @@ namespace EmcureNPD.Business.Core.Implementation
 
             return oDataTableResponseModel;
         }
+
         public async Task<DataTableResponseModel> GetCommonPIDFList(DataTableAjaxPostModel model, string ScreenName)
         {
             string ColumnName = (model.order.Count > 0 ? model.columns[model.order[0].column].data : string.Empty);
@@ -206,7 +214,7 @@ namespace EmcureNPD.Business.Core.Implementation
 
                         var productStrengthList = _pidfProductStrength.GetAllQuery().Where(x => x.Pidfid == entityPIDF.PIDFID);
                         _pidfProductStrength.RemoveRange(productStrengthList);
-                        
+
                         await _unitOfWork.SaveChangesAsync();
 
                         await SaveChildDetails(objPIDF.Pidfid, loggedInUserId, entityPIDF.pidfApiDetailEntities, entityPIDF.pidfProductStregthEntities);
@@ -304,7 +312,7 @@ namespace EmcureNPD.Business.Core.Implementation
         public async Task<List<PIDFEntity>> GetAll()
         {
             return _mapperFactory.GetList<Pidf, PIDFEntity>(await _repository.GetAllAsync());
-        }      
+        }
 
         public async Task<DBOperation> ApproveRejectDeletePidf(EntryApproveRej oApprRej)
         {
@@ -312,28 +320,28 @@ namespace EmcureNPD.Business.Core.Implementation
             {
                 int saveTId = 0;
                 if (oApprRej.SaveType == "R")
-                    saveTId = 4;
+                    saveTId = (Int32)Master_PIDFStatus.PIDFRejected;
                 if (oApprRej.SaveType == "A")
-                    saveTId = 3;
+                    saveTId = (Int32)Master_PIDFStatus.PIDFApproved;
 
                 for (int i = 0; i < oApprRej.PidfIds.Count; i++)
                 {
                     Pidf objPidf = await _repository.GetAsync(oApprRej.PidfIds[i].pidfId);
-                    if (oApprRej.SaveType == "D")
-                    {
-                        objPidf.IsActive = false;
-                    }
-                    else
-                    {
-                        objPidf.LastStatusId = objPidf.StatusId;
-                        objPidf.StatusId = saveTId;
-                    }
+                    //if (oApprRej.SaveType == "D")
+                    //{
+                    //    objPidf.IsActive = false;
+                    //}
+                    //else
+                    //{
+                    objPidf.LastStatusId = objPidf.StatusId;
+                    objPidf.StatusId = saveTId;
+                    //}
                     _repository.UpdateAsync(objPidf);
 
                     await _unitOfWork.SaveChangesAsync();
                 }
-                var isSuccess = await _auditLogService.CreateAuditLog<EntryApproveRej>(oApprRej.SaveType == "D" ? Utility.Audit.AuditActionType.Delete : Utility.Audit.AuditActionType.Update,
-                   Utility.Enums.ModuleEnum.PIDF, oApprRej, oApprRej, 0);
+                //var isSuccess = await _auditLogService.CreateAuditLog<EntryApproveRej>(oApprRej.SaveType == "D" ? Utility.Audit.AuditActionType.Delete : Utility.Audit.AuditActionType.Update,
+                //   Utility.Enums.ModuleEnum.PIDF, oApprRej, oApprRej, 0);
 
                 return DBOperation.Success;
             }
@@ -342,6 +350,7 @@ namespace EmcureNPD.Business.Core.Implementation
                 return DBOperation.NotFound;
             }
         }
+
         //This common Function for All PIDF List Screens for ButtonClick of  Approve/Reject/Delete
         public async Task<DBOperation> CommonApproveRejectDeletePidf(EntryApproveRej oApprRej, string ScreenName)
         {
