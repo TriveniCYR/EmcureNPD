@@ -191,8 +191,13 @@ function SetDivReadonly() {
 
 function SaveClick() {
     if (ValidateMainForm() && ValidateBU_Strength()) {
-        $.extend(objMainForm, { 'SaveType': 'Sv' });
-        SaveCommertialPIDFForm();
+        if (objYears.length > 0) {
+            $.extend(objMainForm, { 'SaveType': 'Sv' });
+            SaveCommertialPIDFForm();
+        }
+        else {
+            toastr.error('No Year Data Added');
+        }        
     }
 }
 function SaveDraftClick() {

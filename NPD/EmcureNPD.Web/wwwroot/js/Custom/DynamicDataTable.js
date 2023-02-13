@@ -1,13 +1,14 @@
-﻿function IntializingDataTable(id, setDefaultOrder, ajaxObject, columnObject, rowCallBack, drawCallback) {
+﻿function IntializingDataTable(id, setDefaultOrder, ajaxObject, columnObject, fixedCols) {
     var dataTableInst =
         $('#' + id + '').removeAttr('width').DataTable({
             order: setDefaultOrder,
             scrollX: true,
             scrollCollapse: true,
+            fixedColumns: fixedCols,
             autoWidth: false,
             processing: true,
             serverSide: true,
-            stateSave: true,
+            //stateSave: true,
             orderMulti: false,
             filter: true,
             orderCellsTop: true,
@@ -37,15 +38,15 @@
                 { extend: 'colvis', className: "btn-primary" }
             ],
             "ajax": ajaxObject,
-            "fnRowCallback": rowCallBack,
+            //"fnRowCallback": rowCallBack,
             "columns": columnObject,
             initComplete: function (settings, json) {
 
             },
-            "drawCallback": function (settings) {
-                if (drawCallback != null)
-                    drawCallback();
-            }
+            //"drawCallback": function (settings) {
+            //    if (drawCallback != null)
+            //        drawCallback();
+            //}
         });
     $('body').find('.dataTables_scrollBody').addClass("scrollbar");
     return dataTableInst;

@@ -5,7 +5,7 @@ $(document).ready(function () {
 });
 
 function InitializePIDFList() {
-    var setDefaultOrder = [2, 'desc'];
+    var setDefaultOrder = [24, 'desc'];
     var ajaxObject = {
         "url": $('#hdnBaseURL').val() + AllPIDF,
         "type": "POST",
@@ -16,8 +16,8 @@ function InitializePIDFList() {
         "datatype": "json"
     };
 
-    var columnObject = [ 
-        {    
+    var columnObject = [
+        {
             className: 'dt-control',
             orderable: false,
             defaultContent: '',
@@ -27,12 +27,6 @@ function InitializePIDFList() {
             orderable: false,
             "data": null,
             'render': function (data, type, row, meta) {
-                //if (row.status == 'PIDF Created' || row.status == 'PIDF Pending Approval') {
-                //    return '<input type="checkbox" id="chk_' + row.pidfid + '" name="id[]" onclick="chkClick(this,' + row.pidfid + ');" value="' + $('<div/>').text(data).html() + '">';
-                //}
-                //else {
-                //    return '<input type="checkbox" disabled id="chk_' + row.pidfid + '" name="id[]" onclick="chkClick(this,' + row.pidfid + ');" value="' + $('<div/>').text(data).html() + '">';
-                //}
                 return '<input type="checkbox" class="ml-2 custom-list-checkbox" id="chk_' + row.pidfid + '" name="id[]" onclick="chkClick(this,' + row.pidfid + ');" value="' + $('<div/>').text(data).html() + '" ' + (row.pidfStatusID != 2 ? "disabled" : "") + '>';
             }
         },
@@ -61,7 +55,7 @@ function InitializePIDFList() {
         },
         {
             "data": "ipd", "name": "IPD", "render": function (data, type, row, meta) {
-                return '<a class="small-button btn btn-' + (row.ipd ? "success" : "danger") +'"><i class="fa ' + (row.ipd ? "fa-check" : "fa-remove") + '"></i></a>';
+                return '<a class="small-button btn btn-' + (row.ipd ? "success" : "danger") + '"><i class="fa ' + (row.ipd ? "fa-check" : "fa-remove") + '"></i></a>';
             }
         },
         {
@@ -77,6 +71,11 @@ function InitializePIDFList() {
         {
             "data": "pbf", "name": "PBF", "render": function (data, type, row, meta) {
                 return '<a class="small-button btn btn-' + (row.pbf ? "success" : "danger") + '"><i class="fa ' + (row.pbf ? "fa-check" : "fa-remove") + '"></i></a>';
+            }
+        },
+        {
+            "data": "api", "name": "api", "render": function (data, type, row, meta) {
+                return '<a class="small-button btn btn-' + (row.api ? "success" : "danger") + '"><i class="fa ' + (row.api ? "fa-check" : "fa-remove") + '"></i></a>';
             }
         },
         {
@@ -114,30 +113,35 @@ function InitializePIDFList() {
             "data": "createdBy", "name": "Created By"
         },
         {
-            "data": "status", "name": "Status"
+            "data": "createdDate", "name": "createdDate", "render": function (data, type, row, meta) {
+                return moment(data).format("DD MMM YYYY h:m");
+            }
         },
         {
-            "data": "Action", "name": "Action", "render": function (data, type, row, meta) {
+            "data": "status", "name": "Status", "render": function (data, type, row, meta) {
+                var html = '';
+                html = '<span style="background-color:' + row.statusColor + ';padding:5px;border-radius:10px;">' + data + '</span>';
+                return html;
+            }
+        },
+        {
+            "data": null, "name": "Action", "render": function (data, type, row, meta) {
                 var html = '';
                 var _PIDFForm = '/PIDF/PIDF?PIDFId=' + row.pidfid + '';
-                html += '<a class="large-font" href="' + ((row.pidfStatusID == 1 || row.pidfStatusID == 2) ? _PIDFForm : "#") +'"><i class="fa fa-fw fa-edit mr-1"></i></a>';
-                html += '<a class="ml-1 large-font" href="/PIDF/PIDF?PIDFId=' + row.pidfid + '"><i class="fa fa-fw fa-eye mr-1"></i></a>';
-                //if (row.status == 'PIDF Created' || row.status == 'PIDF Pending Approval') {
-                //    html += '<a class="btn btn-primary" href="/PIDF/PIDF?PIDFId=' + row.pidfid + '"><i class="fa fa-fw fa-edit mr-1"></i>Edit</a>';
-                //    html += '<a class="btn btn-primary disabled" href="/PIDF/PIDF?PIDFId=' + row.pidfid + '"><i class="fa fa-fw fa-edit mr-1"></i>View</a>';
-                //} else {
-                //    html += '<a class="btn btn-primary disabled" href="/PIDF/PIDF?PIDFId=' + row.pidfid + '"><i class="fa fa-fw fa-edit mr-1"></i>Edit</a>';
-                //    html += '<a class="btn btn-primary" href="/PIDF/PIDF?PIDFId=' + row.pidfid + '"><i class="fa fa-fw fa-edit mr-1"></i>View</a>';
-                //}
+                html += '<a class="large-font" style="color:' + ((row.pidfStatusID == 1 || row.pidfStatusID == 2) ? "#007bff" : "grey") + '" href="' + ((row.pidfStatusID == 1 || row.pidfStatusID == 2) ? _PIDFForm : "#") + '"><i class="fa fa-fw fa-edit mr-1"></i></a>';
+                html += '<a class="ml-1 large-font" href="/PIDF/PIDF?PIDFId=' + row.pidfid + '&IsView=1"><i class="fa fa-fw fa-eye mr-1"></i></a>';
                 return html;
             }
         },
     ];
 
-    var dataTableInst = IntializingDataTable(tableId, setDefaultOrder, ajaxObject, columnObject);
+    var dataTableInst = IntializingDataTable(tableId, setDefaultOrder, ajaxObject, columnObject, {
+        left: 3,
+        right: 2
+    });
 
     // Add event listener for opening and closing details
-    $('#' + tableId +' tbody').on('click', 'td.dt-control', function () {
+    $('#' + tableId + ' tbody').on('click', 'td.dt-control', function () {
         var tr = $(this).closest('tr');
         var row = dataTableInst.row(tr);
 
@@ -155,18 +159,29 @@ function InitializePIDFList() {
 /* Formatting function for row details - modify as you need */
 function CustomizeChildContent(d) {
     // `d` is the original data object for the row
-    var _productStrength = JSON.parse(d.productStrength);
-    var _productAPI = JSON.parse(d.productAPIDetail);
     var _psHTML = "";
-    $.each(_productStrength, function (index, value) {
-        _psHTML += "<tr><td>" + value.Strength + "</td>" + "<td>" + value.UnitofMeasurementName + "</td></tr>";
-    });
     var _paHTML = "";
-    $.each(_productAPI, function (index, value) {
-        _paHTML += "<tr><td>" + value.APIName + "</td>" + "<td>" + value.APISourcingName + "</td><td>" + value.APIVendor +"</td></tr>";
-    });
+    var _phHTML = "";
+    if (d.productStrength != null) {
+        var _productStrength = JSON.parse(d.productStrength);
+        $.each(_productStrength, function (index, value) {
+            _psHTML += "<tr><td>" + value.Strength + "</td>" + "<td>" + value.UnitofMeasurementName + "</td></tr>";
+        });
+    }
+    if (d.productAPIDetail != null) {
+        var _productAPI = JSON.parse(d.productAPIDetail);
+        $.each(_productAPI, function (index, value) {
+            _paHTML += "<tr><td>" + value.APIName + "</td>" + "<td>" + value.APISourcingName + "</td><td>" + value.APIVendor + "</td></tr>";
+        });
+    }
+    if (d.statusHistory != null) {
+        var _productStatus = JSON.parse(d.statusHistory);
+        $.each(_productStatus, function (index, value) {
+            _phHTML += "<tr><td style='background-color:" + value.StatusColor + "'>" + value.PIDFStatus + "</td>" + "<td>" + moment(value.CreatedDate).format('dddd, MMMM Do YYYY, h:mm') + "</td><td>" + value.FullName + "</td></tr>";
+        });
+    }
     return (
-        '<table><thead><tr><th>Strength</th><th>Unit</th></tr></thead><tbody>' + _psHTML + '</tbody></table><div class="clearfix">&nbsp;</div><table><thead><tr><th>API Name</th><th>Sourcing Name</th><th>Vendor</th></tr></thead><tbody>' + _paHTML +'</tbody></table>'
+        '<table class="custom-table-child"><thead><tr><th>Strength</th><th>Unit</th></tr></thead><tbody>' + _psHTML + '</tbody></table><table class="custom-table-child"><thead><tr><th>API Name</th><th>Sourcing Name</th><th>Vendor</th></tr></thead><tbody>' + _paHTML + '</tbody></table><table class="custom-table-child"><thead><tr><th>Status</th><th>Date</th><th>By</th></tr></thead><tbody>' + _phHTML + '</tbody></table>'
     );
 }
 
@@ -199,7 +214,6 @@ function approveRejDeleteConfirm(type) {
             pidfIds: objApprRejList
         };
         ajaxServiceMethod($('#hdnBaseURL').val() + ApproveRejectDeletePidf, 'POST', SaveAppRejSuccess, SaveApprRejFormError, JSON.stringify(objIds));
-
     }
     if (type == "A")
         $('#ApproveModel').modal('hide');
@@ -211,7 +225,6 @@ function approveRejDeleteConfirm(type) {
 function SaveAppRejSuccess(data) {
     try {
         if (data._Success === true) {
-
             toastr.success(data._Message);
             objApprRejList = [];
             $("#PIDFTable").dataTable().fnDestroy();

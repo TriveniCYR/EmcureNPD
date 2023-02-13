@@ -105,6 +105,8 @@ namespace EmcureNPD.API
 
             services.AddCors();
             services.AddDistributedMemoryCache();
+            
+            services.AddHttpContextAccessor();
 
             services.AddCors(options =>
             {

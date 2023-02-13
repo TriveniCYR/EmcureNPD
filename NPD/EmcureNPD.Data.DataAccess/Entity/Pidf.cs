@@ -17,6 +17,7 @@ namespace EmcureNPD.Data.DataAccess.Entity
             PidfPbfs = new HashSet<PidfPbf>();
             Pidfapidetails = new HashSet<Pidfapidetail>();
             PidfproductStrengths = new HashSet<PidfproductStrength>();
+            PidfstatusHistories = new HashSet<PidfstatusHistory>();
         }
 
         public long Pidfid { get; set; }
@@ -32,7 +33,7 @@ namespace EmcureNPD.Data.DataAccess.Entity
         public string LaunchedGenerics { get; set; }
         public string Rfdbrand { get; set; }
         public string Rfdapplicant { get; set; }
-        public int? RfdcountryId { get; set; }
+        public int RfdcountryId { get; set; }
         public string Rfdindication { get; set; }
         public string Rfdinnovators { get; set; }
         public string RfdinitialRevenuePotential { get; set; }
@@ -48,8 +49,11 @@ namespace EmcureNPD.Data.DataAccess.Entity
         public bool? InHouses { get; set; }
         public int? MarketExtenstionId { get; set; }
         public int? Diaid { get; set; }
+        public int? StatusUpdatedBy { get; set; }
+        public DateTime? StatusUpdatedDate { get; set; }
 
         public virtual MasterBusinessUnit BusinessUnit { get; set; }
+        public virtual MasterUser CreatedByNavigation { get; set; }
         public virtual MasterDium Dia { get; set; }
         public virtual MasterDosageForm DosageForm { get; set; }
         public virtual MasterPidfstatus LastStatus { get; set; }
@@ -67,5 +71,6 @@ namespace EmcureNPD.Data.DataAccess.Entity
         public virtual ICollection<PidfPbf> PidfPbfs { get; set; }
         public virtual ICollection<Pidfapidetail> Pidfapidetails { get; set; }
         public virtual ICollection<PidfproductStrength> PidfproductStrengths { get; set; }
+        public virtual ICollection<PidfstatusHistory> PidfstatusHistories { get; set; }
     }
 }

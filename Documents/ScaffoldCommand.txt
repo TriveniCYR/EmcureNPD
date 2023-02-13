@@ -4,7 +4,7 @@ Steps for Scaffold Command
 2.) Go to Tools --> Nuget Package Manager --> Package Manager Console
 3.) Select Defualt Project Data/EmcureNPD.Data.DataAccess from PMC
 4.) Run below command with -f (Forcefully)
-Scaffold-DbContext "Data Source=180.149.241.172;Initial Catalog=EmcureNPDDev;Persist Security Info=True;User ID=emcurenpddev_dbUser;pwd=emcure123!@#" Microsoft.EntityFrameworkCore.SqlServer -OutputDir "Entity" -ContextDir "DataContext" -f
+Scaffold-DbContext "Data Source=10.21.16.38;Initial Catalog=EmcureNPDDev;Persist Security Info=True;User ID=sa;pwd=PIDF@&86W5pb" Microsoft.EntityFrameworkCore.SqlServer -OutputDir "Entity" -ContextDir "DataContext" -f
 
 5.) Before Run Command copy OnConfiguring in DataContext.cs file and after run the command replace OnConfiguring method
 
@@ -20,3 +20,6 @@ protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         }
 
 6.) Again rebuild your solution and solve if any issue
+
+emcurenpd
+EmcureNPD

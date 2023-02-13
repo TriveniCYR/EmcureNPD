@@ -98,6 +98,7 @@ namespace EmcureNPD.Data.DataAccess.DataContext
         public virtual DbSet<PidfPbfRndReferenceProductDetail> PidfPbfRndReferenceProductDetails { get; set; }
         public virtual DbSet<Pidfapidetail> Pidfapidetails { get; set; }
         public virtual DbSet<PidfproductStrength> PidfproductStrengths { get; set; }
+        public virtual DbSet<PidfstatusHistory> PidfstatusHistories { get; set; }
         public virtual DbSet<RoleModulePermission> RoleModulePermissions { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
@@ -883,11 +884,19 @@ namespace EmcureNPD.Data.DataAccess.DataContext
                     .HasMaxLength(100)
                     .HasColumnName("RFDPriceDiscounting");
 
+                entity.Property(e => e.StatusUpdatedDate).HasColumnType("datetime");
+
                 entity.HasOne(d => d.BusinessUnit)
                     .WithMany(p => p.Pidfs)
                     .HasForeignKey(d => d.BusinessUnitId)
                     .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("FK_PIDF_Master_BusinessUnit");
+
+                entity.HasOne(d => d.CreatedByNavigation)
+                    .WithMany(p => p.Pidfs)
+                    .HasForeignKey(d => d.CreatedBy)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("FK__PIDF__CreatedBy__12149A71");
 
                 entity.HasOne(d => d.Dia)
                     .WithMany(p => p.Pidfs)
@@ -925,6 +934,7 @@ namespace EmcureNPD.Data.DataAccess.DataContext
                 entity.HasOne(d => d.Rfdcountry)
                     .WithMany(p => p.Pidfs)
                     .HasForeignKey(d => d.RfdcountryId)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("FK_PIDF_Master_Country");
 
                 entity.HasOne(d => d.Status)
@@ -948,23 +958,15 @@ namespace EmcureNPD.Data.DataAccess.DataContext
 
                 entity.Property(e => e.CreatedDate).HasColumnType("datetime");
 
-                entity.Property(e => e.Development).HasMaxLength(200);
+                entity.Property(e => e.DrugsCategory).HasMaxLength(200);
 
-                entity.Property(e => e.Exhibit).HasMaxLength(100);
-
-                entity.Property(e => e.FormulationQuantity).HasMaxLength(200);
+                entity.Property(e => e.MarketDetailsFileName).HasMaxLength(200);
 
                 entity.Property(e => e.ModifyDate).HasColumnType("datetime");
 
                 entity.Property(e => e.Pidfid).HasColumnName("PIDFID");
 
-                entity.Property(e => e.PlantQc)
-                    .HasMaxLength(100)
-                    .HasColumnName("PlantQC");
-
-                entity.Property(e => e.ScaleUp).HasMaxLength(200);
-
-                entity.Property(e => e.Total).HasMaxLength(100);
+                entity.Property(e => e.ProductStrength).HasMaxLength(200);
 
                 entity.HasOne(d => d.BusinessUnit)
                     .WithMany(p => p.PidfApiIpds)
@@ -975,6 +977,11 @@ namespace EmcureNPD.Data.DataAccess.DataContext
                     .WithMany(p => p.PidfApiIpds)
                     .HasForeignKey(d => d.Pidfid)
                     .HasConstraintName("FK_PIDF_API_IPD_PIDFID");
+
+                entity.HasOne(d => d.ProductType)
+                    .WithMany(p => p.PidfApiIpds)
+                    .HasForeignKey(d => d.ProductTypeId)
+                    .HasConstraintName("FK_PIDF_API_IPD_ProductTypeId");
             });
 
             modelBuilder.Entity<PidfCommercial>(entity =>
@@ -2004,6 +2011,29 @@ namespace EmcureNPD.Data.DataAccess.DataContext
                     .HasForeignKey(d => d.UnitofMeasurementId)
                     .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("FK_PIDFProductStrength_Master_UnitofMeasurement");
+            });
+
+            modelBuilder.Entity<PidfstatusHistory>(entity =>
+            {
+                entity.ToTable("PIDFStatusHistory", "dbo");
+
+                entity.Property(e => e.PidfstatusHistoryId).HasColumnName("PIDFStatusHistoryId");
+
+                entity.Property(e => e.CreatedDate).HasColumnType("datetime");
+
+                entity.Property(e => e.Pidfid).HasColumnName("PIDFID");
+
+                entity.HasOne(d => d.Pidf)
+                    .WithMany(p => p.PidfstatusHistories)
+                    .HasForeignKey(d => d.Pidfid)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("FK_PIDFStatusHistory_PIDF");
+
+                entity.HasOne(d => d.Status)
+                    .WithMany(p => p.PidfstatusHistories)
+                    .HasForeignKey(d => d.StatusId)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("FK_PIDFStatusHistory_Master_PIDFStatus");
             });
 
             modelBuilder.Entity<RoleModulePermission>(entity =>

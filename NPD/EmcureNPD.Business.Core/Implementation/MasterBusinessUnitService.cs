@@ -6,6 +6,8 @@ using EmcureNPD.Data.DataAccess.Core.UnitOfWork;
 using EmcureNPD.Data.DataAccess.Entity;
 using System;
 using System.Collections.Generic;
+using System.Data;
+using System.Data.SqlClient;
 using System.Linq;
 using System.Threading.Tasks;
 using static EmcureNPD.Utility.Enums.GeneralEnum;
@@ -19,15 +21,18 @@ namespace EmcureNPD.Business.Core.ServiceImplementations
         private IRepository<MasterBusinessUnit> _repository { get; set; }
         private IRepository<MasterBusinessUnitRegionMapping> _repositoryMasterBusinessUnitRegionMapping { get; set; }
         private IRepository<MasterRegion> _regionRepository { get; set; }
+        private readonly IHelper _helper;
 
 
-        public MasterBusinessUnitService(IUnitOfWork unitOfWork, IMapperFactory mapperFactory)
+        public MasterBusinessUnitService(IUnitOfWork unitOfWork, IMapperFactory mapperFactory, IHelper helper)
         {
             _unitOfWork = unitOfWork;
             _mapperFactory = mapperFactory;
+            _helper = helper;
             _repository = _unitOfWork.GetRepository<MasterBusinessUnit>();
             _regionRepository = _unitOfWork.GetRepository<MasterRegion>();
             _repositoryMasterBusinessUnitRegionMapping = _unitOfWork.GetRepository<MasterBusinessUnitRegionMapping>();
+
         }
 
         public async Task<List<MasterBusinessUnitEntity>> GetAll()
@@ -140,6 +145,17 @@ namespace EmcureNPD.Business.Core.ServiceImplementations
             var businessUnitRegionMapping = _repositoryMasterBusinessUnitRegionMapping.Get(x => x.BusinessUnitId == id);
             var region = _regionRepository.Get(x => x.RegionId == businessUnitRegionMapping.RegionId);
             return _mapperFactory.Get<MasterRegion, MasterRegionEntity>(region);
+        }
+
+        public async Task<dynamic> GetCountryByBusinessUnitId(int BusinessUnitId)
+        {
+            var loggedInUserId = _helper.GetLoggedInUser().UserId;
+
+            SqlParameter[] osqlParameter = {
+                new SqlParameter("@BusinessUnitId", BusinessUnitId),
+                new SqlParameter("@UserId", loggedInUserId)
+            };
+            return _repository.GetBySP("SP_GetCountryByBusinessUnit", CommandType.StoredProcedure, osqlParameter);
         }
     }
 }

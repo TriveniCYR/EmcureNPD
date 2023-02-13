@@ -219,22 +219,22 @@ namespace EmcureNPD.Web.Controllers
         {
             _IPDmodel.Pidfid = UtilityHelper.Decreypt(_IPDmodel.Pidfid);
             _IPDmodel.BusinessUnitId = UtilityHelper.Decreypt(_IPDmodel.BusinessUnitId);
-            string[] PropertyToValidate = { "FormulationQuantity", "Development", "ScaleUp", "Exhibit", "PlantQC", "Total", "MarketDetailsNewPortCGIDetails" };
-            Type type = _IPDmodel.GetType();
-            PropertyInfo[] props = type.GetProperties();
-            foreach (PropertyInfo p in props)
-            {
-                if (PropertyToValidate.Contains(p.Name))
-                {
-                    var value = p.GetValue(_IPDmodel);
-                    if (value == null)
-                    {
-                        ModelState.AddModelError(p.Name, "Required");
-                    }
-                }
-            }
+            //string[] PropertyToValidate = { "FormulationQuantity", "Development", "ScaleUp", "Exhibit", "PlantQC", "Total", "MarketDetailsNewPortCGIDetails" };
+            //Type type = _IPDmodel.GetType();
+            //PropertyInfo[] props = type.GetProperties();
+            //foreach (PropertyInfo p in props)
+            //{
+            //    if (PropertyToValidate.Contains(p.Name))
+            //    {
+            //        var value = p.GetValue(_IPDmodel);
+            //        if (value == null)
+            //        {
+            //            ModelState.AddModelError(p.Name, "Required");
+            //        }
+            //    }
+            //}
             bool IsSaveError = false;
-            if (ModelState.ErrorCount == 0 || _IPDmodel.SaveType== "SaveDraft")
+            if (_IPDmodel.SaveType== "SaveDraft")
 			{
                 //save logic
                 string logUserId = Convert.ToString(HttpContext.Session.GetString(UserHelper.LoggedInUserId));
@@ -258,18 +258,19 @@ namespace EmcureNPD.Web.Controllers
                     IsSaveError = true;
                 }
             }
-			if(ModelState.ErrorCount > 0 || IsSaveError)
-			{
-                TempData["SaveStatus"] = IsSaveError ? "Save Error Occured !" : "Some Feilds are Missing";
-                // return back with Invalid Model
-                _IPDmodel._commercialFormEntity = GetPIDFCommercialModel(_IPDmodel.Pidfid, _IPDmodel.BusinessUnitId);
-                _IPDmodel.IPEvalution = GetModelForPIDForm(_IPDmodel.Pidfid, _IPDmodel.BusinessUnitId);
-                _IPDmodel.ProjectName = _IPDmodel.IPEvalution.ProjectName;
-                _IPDmodel.IPD_PatentDetailsList = _IPDmodel.IPEvalution.pidf_IPD_PatentDetailsEntities;
-                _IPDmodel.Pidfid = UtilityHelper.Encrypt (_IPDmodel.Pidfid);
-                _IPDmodel.BusinessUnitId = UtilityHelper.Encrypt(_IPDmodel.BusinessUnitId);
-                return View(_IPDmodel);
-            }
+            //if(ModelState.ErrorCount > 0 || IsSaveError)
+            //{
+            //             TempData["SaveStatus"] = IsSaveError ? "Save Error Occured !" : "Some Feilds are Missing";
+            //             // return back with Invalid Model
+            //             _IPDmodel._commercialFormEntity = GetPIDFCommercialModel(_IPDmodel.Pidfid, _IPDmodel.BusinessUnitId);
+            //             _IPDmodel.IPEvalution = GetModelForPIDForm(_IPDmodel.Pidfid, _IPDmodel.BusinessUnitId);
+            //             _IPDmodel.ProjectName = _IPDmodel.IPEvalution.ProjectName;
+            //             _IPDmodel.IPD_PatentDetailsList = _IPDmodel.IPEvalution.pidf_IPD_PatentDetailsEntities;
+            //             _IPDmodel.Pidfid = UtilityHelper.Encrypt (_IPDmodel.Pidfid);
+            //             _IPDmodel.BusinessUnitId = UtilityHelper.Encrypt(_IPDmodel.BusinessUnitId);
+            //             return View(_IPDmodel);
+            //         }
+            TempData["SaveStatus"] = IsSaveError ? "Save Error Occured !" : "Some Feilds are Missing";
             return RedirectToAction("PBFAPI", "PIDF"); // return to PBFAPI List
         }
 

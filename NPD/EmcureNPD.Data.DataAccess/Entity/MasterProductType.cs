@@ -9,6 +9,7 @@ namespace EmcureNPD.Data.DataAccess.Entity
     {
         public MasterProductType()
         {
+            PidfApiIpds = new HashSet<PidfApiIpd>();
             PidfPbfs = new HashSet<PidfPbf>();
         }
 
@@ -20,6 +21,7 @@ namespace EmcureNPD.Data.DataAccess.Entity
         public int? ModifyBy { get; set; }
         public DateTime? ModifyDate { get; set; }
 
+        public virtual ICollection<PidfApiIpd> PidfApiIpds { get; set; }
         public virtual ICollection<PidfPbf> PidfPbfs { get; set; }
     }
 }
