@@ -25,13 +25,13 @@ function CleareRoleFields() {
 }
 
 //#region Delete Role
-function ConfirmationRole(id) {
-    alert('Test ' + id);
+function ConfirmationRole(id) {    
     $('#DeleteRoleModel #RoleID').val(id);
 }
 function DeleteRole() {
     var tempInAtiveID = $('#DeleteRoleModel #RoleID').val();
     ajaxServiceMethod($('#hdnBaseURL').val() + DeleteRoleByIdUrl + "/" + tempInAtiveID, 'POST', DeleteRoleByIdSuccess, DeleteRoleByIdError);
+    location.reload(true);
 }
 function DeleteRoleByIdSuccess(data) {
     try {
