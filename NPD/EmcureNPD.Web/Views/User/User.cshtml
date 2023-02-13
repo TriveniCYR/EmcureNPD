@@ -12,22 +12,16 @@
     string IsEditAllow = (objPermssion.Edit) ? "" : "display: none";
     string IsDeleteAllow = (objPermssion.Delete) ? "" : "display: none";
 }
-<div class="row">
-    <section class="col-lg-12">
-        <div class="card">
-            <div class="card-header">
-                <h3 class="card-title">
-                    <i class="far fa-list-alt mr-2"></i>@SharedLocalizer["UserMangegment"]
-                </h3>
-                <div class="card-tools md-left">
-                    <div class="mybtn-group">
-                        <a class="btn btn-primary" style="@IsAddAllow" asp-action="UserManage"><i class="far fa-plus-square mr-1"></i> @SharedLocalizer["Add"]</a>
-                        <div class="export-btn mybtn-group"></div>
-                    </div>
-                </div>
-            </div>                                                                      
-            <div class="card-body">
-                <table id="UserTable" class="table table-bordered table-striped table-hover" style="width:100%">
+<div class="content-header">
+    <div class="container-fluid d-flex justify-content-between">
+        <h3>@SharedLocalizer["UserMangegment"]</h3>
+        <div>
+            <a class="btn btn-primary" style="@IsAddAllow" asp-action="UserManage"><i class="far fa-plus-square mr-1"></i> @SharedLocalizer["Add"]</a>
+</div>
+    </div>
+</div>
+<div class="container-fluid overflow-auto background-white-card">
+    <table id="UserTable" class="table table-bordered table-striped table-hover" style="width:100%">
                     <thead>
                         <tr>
                             <th>@MasterLocalizer["FullName"]</th>
@@ -42,8 +36,10 @@
                     <tbody>
                     </tbody>
                 </table>
-            </div>
-        </div>
+                </div>
+
+
+
 
         @*DeleteUserModel*@
         <div id="DeleteUserModel" class="modal themeModal " role="dialog">
@@ -72,8 +68,7 @@
             </div>
         </div>
 
-    </section>
-</div>
+   
 @section MyScripts {
 
     @Html.Partial("_DataTablePartial")

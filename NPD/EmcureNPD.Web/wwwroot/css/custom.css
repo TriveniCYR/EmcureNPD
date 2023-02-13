@@ -60,6 +60,8 @@ table, th, td {
 
 .large-font {
     font-size: 20px;
+    text-decoration:none;
+    cursor:pointer;
 }
 
 .custom-list-checkbox {
@@ -77,4 +79,11 @@ table, th, td {
     float: left;
     border: none;
     margin-right: 25px;
+}
+.select2-dropdown{z-index:9999 !important;}
+.large-button{min-width:150px;}
+.card-margin{margin-right:20px;margin-bottom:20px;}
+.select2-selection--multiple {
+    overflow: hidden !important;
+    height: auto !important;
 }

@@ -18,13 +18,13 @@
         {
             <input type="hidden" asp-for="RoleId" />
         }
-        <div class="card card-outline card-primary">
-            <div class="card-header text-left">
-                <h5 class="mb-0"><b>@MasterLocalizer["RoleManagement"].Value</b></h5>
-            </div>
-            <div class="card-body">
-
-                <div class="row">
+        <div class="content-header">
+    <div class="container-fluid d-flex justify-content-between">
+                <h3>@MasterLocalizer["RoleManagement"].Value</h3>
+    </div>
+</div>
+    <div class="container-fluid overflow-auto background-white-card">
+        <div class="row">
                     <div class="col-md-12">
                         <div class="form-group required">
                             @Html.LabelFor(model => model.RoleName, new { @class = "control-label" })
@@ -148,17 +148,14 @@
                 </div>
 
                 <div class="row">
-                    <div class="col-md-12">
+                    <div class="col-12 text-end">
                         <div class="form-group">
-                            <button type="submit" class="btn btn-primary">@SharedLocalizer["Save"]</button>
-                            <a class="btn btn-danger ml-2" asp-action="Roles">@SharedLocalizer["Cancel"]</a>
+                            <button type="submit" class="btn btn-success me-3 large-button">@SharedLocalizer["Save"]</button>
+                        <a class="btn btn-danger ms-3 large-button" asp-action="Roles">@SharedLocalizer["Cancel"]</a>
                         </div>
                     </div>
                 </div>
-            </div>
         </div>
-
-
     </form>
 </div>
 @section MyScripts {

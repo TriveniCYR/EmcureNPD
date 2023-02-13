@@ -69,8 +69,8 @@ function InitializeUserList () {
             "data": "Action", "name": "Action", "render": function (data, type, row, meta) {
                 var html = '';
 
-                html += '<a title="Edit" class="btn btn-primary" style="'+IsEditAllow+'" href="/User/UserManage?UserId='+row.userId+'"><i class="fa fa-fw fa-edit mr-1"></i></a>';
-                html += '<a title="Delete" class="btn btn-danger ml-2" style="' + IsDeleteAllow +'" data-toggle="modal" data-target="#DeleteUserModel" data-backdrop="static" data-keyboard="false" onclick="ConfirmationDeleteUser(' + row.userId + '); return false;"><i class="fa fa-fw fa-trash mr-1"></i></a>';
+                html += '<a title="Edit" class="large-font" style="'+IsEditAllow+'" href="/User/UserManage?UserId='+row.userId+'"><i class="fa fa-fw fa-edit mr-1"></i></a>';
+                html += '<a title="Delete" class="large-font text-danger" style="' + IsDeleteAllow +'" data-toggle="modal" data-target="#DeleteUserModel" data-backdrop="static" data-keyboard="false" onclick="ConfirmationDeleteUser(' + row.userId + '); return false;"><i class="fa fa-fw fa-trash mr-1"></i></a>';
 
                 return html;
             }
