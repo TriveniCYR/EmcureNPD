@@ -9,19 +9,46 @@
 }
 <div class="content-header">
     <div class="container-fluid d-flex justify-content-between">
-        <h3>@MasterLocalizer["PIDF"]</h3>
+            @if (Context.Request.Query["ScreenId"] == Convert.ToString((int)EmcureNPD.Utility.Enums.PIDFScreen.PIDF))
+            {
+                <h3>@MasterLocalizer["PIDF"]</h3>
+            }else if(Context.Request.Query["ScreenId"] == Convert.ToString((int)EmcureNPD.Utility.Enums.PIDFScreen.IPD)){
+                <h3>@SharedLocalizer["IPD"]</h3>
+            }else if(Context.Request.Query["ScreenId"] == Convert.ToString((int)EmcureNPD.Utility.Enums.PIDFScreen.Medical)){
+                <h3>@SharedLocalizer["Medical"]</h3>
+        }
+        else if (Context.Request.Query["ScreenId"] == Convert.ToString((int)EmcureNPD.Utility.Enums.PIDFScreen.Commercial))
+        {
+                <h3>@SharedLocalizer["Commercial"]</h3>    
+            }else if(Context.Request.Query["ScreenId"] == Convert.ToString((int)EmcureNPD.Utility.Enums.PIDFScreen.API)){
+                <h3>@SharedLocalizer["API"]</h3>
+        }
+        else if (Context.Request.Query["ScreenId"] == Convert.ToString((int)EmcureNPD.Utility.Enums.PIDFScreen.PBF)){
+                <h3>@SharedLocalizer["PBF"]</h3>
+        }
+        else if (Context.Request.Query["ScreenId"] == Convert.ToString((int)EmcureNPD.Utility.Enums.PIDFScreen.Finance))
+        {
+                <h3>@SharedLocalizer["Finance"]</h3>   
+            }else if(Context.Request.Query["ScreenId"] == Convert.ToString((int)EmcureNPD.Utility.Enums.PIDFScreen.Management)){
+            <h3>@SharedLocalizer["Management"]</h3>
+            }
         <div>
-            <a class="btn btn-success" onClick="approveRejDeleteData('A')"><i class="fa fa-check-circle mr-1"></i> @SharedLocalizer["Approve"]</a>
-            <a class="btn btn-danger" onClick="approveRejDeleteData('R')"><i class="fa fa-ban mr-1"></i> @SharedLocalizer["Reject"]</a>
+            @if (Context.Request.Query["ScreenId"] == Convert.ToString((int)EmcureNPD.Utility.Enums.PIDFScreen.PIDF) || Context.Request.Query["ScreenId"] == Convert.ToString((int)EmcureNPD.Utility.Enums.PIDFScreen.IPD) || Context.Request.Query["ScreenId"] == Convert.ToString((int)EmcureNPD.Utility.Enums.PIDFScreen.Finance) || Context.Request.Query["ScreenId"] == Convert.ToString((int)EmcureNPD.Utility.Enums.PIDFScreen.Management))
+            {
+                <a class="btn btn-success" onClick="approveRejDeleteData('A')"><i class="fa fa-check-circle mr-1"></i> @SharedLocalizer["Approve"]</a>
+                <a class="btn btn-danger" onClick="approveRejDeleteData('R')"><i class="fa fa-ban mr-1"></i> @SharedLocalizer["Reject"]</a>
+            }
             @*<a class="btn btn-danger" onClick="approveRejDeleteData('D')"><i class="far fa fa-trash mr-1"></i> @SharedLocalizer["Delete"]</a>*@
-            <a class="btn btn-primary" asp-action="PIDF"><i class="far fa-plus-square mr-1"></i> @SharedLocalizer["Add"]</a>
+            @if (Context.Request.Query["ScreenId"] == Convert.ToString((int)EmcureNPD.Utility.Enums.PIDFScreen.PIDF))
+            {
+                <a class="btn btn-primary" asp-action="PIDF"><i class="far fa-plus-square mr-1"></i> @SharedLocalizer["Add"]</a>
+            }
             <div class="export-btn mybtn-group"></div>
         </div>
     </div>
 </div>
 
 <div class="container-fluid overflow-auto background-white-card">
-              
         <table id="PIDFTable" class="table table-hover">
             <thead>
                 <tr class="text-center">
@@ -51,7 +78,7 @@
                     <th style="min-width:100px">@SharedLocalizer["Created By"]</th>
                     <th style="min-width:100px">@SharedLocalizer["Created Date"]</th>
                     <th style="min-width:120px">@SharedLocalizer["Status"]</th>
-                    <th style="min-width:80px" class="text-center">@SharedLocalizer["Action"]</th>
+                    <th style="min-width:100px" class="text-center">@SharedLocalizer["Action"]</th>
                 </tr>
             </thead>
             <tbody class="text-center">
@@ -158,6 +185,7 @@
         var RecordDelete = "@SharedLocalizer["RecordDelete"]";
         var AddLabel = "@SharedLocalizer["Add"]";
         var UpdateLabel = "@SharedLocalizer["Update"]";
+        var _screenId = '@Context.Request.Query["ScreenId"]';
         @*var successCallBack = '@TempData[EmcureNPD.Web.Helpers.PIDFHelper.SuccessMessage]';
         if (successCallBack)
         {

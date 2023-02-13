@@ -155,6 +155,15 @@ namespace EmcureNPD.Business.Core.Implementation
             var TotalRecord = (PIDFList != null && PIDFList.Rows.Count > 0 ? Convert.ToInt32(PIDFList.Rows[0]["TotalRecord"]) : 0);
             var TotalCount = (PIDFList != null && PIDFList.Rows.Count > 0 ? Convert.ToInt32(PIDFList.Rows[0]["TotalCount"]) : 0);
 
+            PIDFList.Columns.Add("encpidfid", typeof(String));
+            PIDFList.Columns.Add("encbud", typeof(String));
+
+            for (int i = 0; i < PIDFList.Rows.Count; i++)
+            {
+                PIDFList.Rows[i]["encpidfid"] = UtilityHelper.Encrypt(Convert.ToString(PIDFList.Rows[i]["PIDFID"]));
+                PIDFList.Rows[i]["encbud"] = UtilityHelper.Encrypt(Convert.ToString(PIDFList.Rows[i]["BusinessUnitId"]));
+            }
+
             DataTableResponseModel oDataTableResponseModel = new DataTableResponseModel(model.draw, TotalRecord, TotalCount, PIDFList);
 
             return oDataTableResponseModel;
@@ -320,9 +329,35 @@ namespace EmcureNPD.Business.Core.Implementation
             {
                 int saveTId = 0;
                 if (oApprRej.SaveType == "R")
+                {
+                    if (string.IsNullOrEmpty(oApprRej.ScreenId))
+                        saveTId = (Int32)Master_PIDFStatus.PIDFRejected;
+                    else if (oApprRej.ScreenId == Convert.ToString((Int32)PIDFScreen.PIDF))
+                        saveTId = (Int32)Master_PIDFStatus.PIDFRejected;
+                    else if (oApprRej.ScreenId == Convert.ToString((Int32)PIDFScreen.IPD))
+                        saveTId = (Int32)Master_PIDFStatus.IPDRejected;
+                    else if (oApprRej.ScreenId == Convert.ToString((Int32)PIDFScreen.Finance))
+                        saveTId = (Int32)Master_PIDFStatus.FinanceRejected;
+                    else if (oApprRej.ScreenId == Convert.ToString((Int32)PIDFScreen.Management))
+                        saveTId = (Int32)Master_PIDFStatus.ManagementRejected;
+
                     saveTId = (Int32)Master_PIDFStatus.PIDFRejected;
+                }
                 if (oApprRej.SaveType == "A")
+                {
+                    if (string.IsNullOrEmpty(oApprRej.ScreenId))
+                        saveTId = (Int32)Master_PIDFStatus.PIDFApproved;
+                    else if (oApprRej.ScreenId == Convert.ToString((Int32)PIDFScreen.PIDF))
+                        saveTId = (Int32)Master_PIDFStatus.PIDFApproved;
+                    else if (oApprRej.ScreenId == Convert.ToString((Int32)PIDFScreen.IPD))
+                        saveTId = (Int32)Master_PIDFStatus.IPDApproved;
+                    else if (oApprRej.ScreenId == Convert.ToString((Int32)PIDFScreen.Finance))
+                        saveTId = (Int32)Master_PIDFStatus.FinanceApproved;
+                    else if (oApprRej.ScreenId == Convert.ToString((Int32)PIDFScreen.Management))
+                        saveTId = (Int32)Master_PIDFStatus.ManagementApproved;
+
                     saveTId = (Int32)Master_PIDFStatus.PIDFApproved;
+                }
 
                 for (int i = 0; i < oApprRej.PidfIds.Count; i++)
                 {
@@ -336,6 +371,10 @@ namespace EmcureNPD.Business.Core.Implementation
                     objPidf.LastStatusId = objPidf.StatusId;
                     objPidf.StatusId = saveTId;
                     //}
+
+                    objPidf.StatusUpdatedBy = _helper.GetLoggedInUser().UserId;
+                    objPidf.StatusUpdatedDate = DateTime.Now;
+
                     _repository.UpdateAsync(objPidf);
 
                     await _unitOfWork.SaveChangesAsync();

@@ -12,6 +12,7 @@ function GetDashboardDropdownSuccess(data) {
             $(data.MasterBusinessUnits).each(function (index, item) {
                 $('#BusinessUnitId').append('<option value="' + item.businessUnitId + '">' + item.businessUnitName + '</option>');
             });
+            ajaxServiceMethod($('#hdnBaseURL').val() + GetPIDFList + "/" + $("#BusinessUnitId").val() + "/" + $("#years").val(), 'GET', GetPIDFListSuccess);
         }
     } catch (e) {
         toastr.error('Error:' + e.message);
@@ -28,7 +29,17 @@ function GetPIDFListSuccess(data) {
     $("#PIDFContainer").html('')
     for (var i = 0; i < data.PIDFList.length;i++) {
         console.log(i)
-        $("#PIDFContainer").append("<div class='col-lg-3 col-md-6 col - 12' style='color: "+data.PIDFList[i].statusColor+";'><div class='small-box bg-info'><div class='inner'> <h3 id='totalFinanceApproved'>" + data.PIDFList[i].statusCount +"</h3><p>" + data.PIDFList[i].pidfStatus +"</p></div><div class='icon'> <i class='far fa-save'></i></div></div></div >");
+
+
+        
+
+        $("#PIDFContainer").append('<div class="col-lg-2 text-center dashboard-counters"><div class="ibox"><div class="ibox-content" style="padding:10px 10px;">\
+                <h2 class="no-margins text-primary counter" style="bacground-color:'+ data.PIDFList[i].statusColor+';">'+ data.PIDFList[i].statusCount + '</h2><h5>' + data.PIDFList[i].pidfStatus+'</h5></div></div></div>');
+
+
+
+
+    //        < div class= 'col-lg-3 col-md-6 col - 12' style = 'color: "+data.PIDFList[i].statusColor+";' > <div class='small-box bg-info'><div class='inner'> <h3 id='totalFinanceApproved'>" + data.PIDFList[i].statusCount +"</h3><p>" + data.PIDFList[i].pidfStatus +"</p></div><div class='icon'> <i class='far fa-save'></i></div></div></div > ");
     }
      
     var xValues = ["Completed", "Final Approved", "Final Rejected", "Finance Approved", "Finance Pending Approval", "Finance Rejected", "IPD Created", "IPD/BD Approved", "IPD/BD Pending Approval", "IPD/BD Rejected", "PIDF Approved", "PIDF Created", "PIDF Pending Approval","PIDF Rejected"];

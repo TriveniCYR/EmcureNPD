@@ -45,4 +45,16 @@ namespace EmcureNPD.Utility.Enums
         //FinalApproved = 13,
         //Completed = 14
     }
+
+    public enum PIDFScreen
+    {
+        PIDF = 1,
+        IPD = 2,
+        Medical = 3,
+        Commercial = 4,
+        API = 5,
+        PBF = 6,
+        Finance = 7,
+        Management = 8
+    }
 }

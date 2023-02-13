@@ -87,3 +87,10 @@ table, th, td {
     overflow: hidden !important;
     height: auto !important;
 }
+.dashboard-counters {
+    background-color: white;
+    height: 110px;
+    margin-right: 1%;
+    margin-bottom: 20px;
+    width: 19% !important;
+}

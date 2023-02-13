@@ -10,5 +10,6 @@ namespace EmcureNPD.Business.Models
     {
         public string PIDFStatus { get; set; }
         public int StatusCount { get; set; }
+        public string StatusColor { get; set; }
     }
 }

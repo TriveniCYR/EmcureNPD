@@ -81,7 +81,7 @@
 
 											<ul class="nav nav-treeview">
 												<li class="nav-item">
-													<a href="@Url.Action("PIDFList","PIDF")" class="nav-link">
+													<a href="@Url.Action("PIDFList","PIDF", new { ScreenId = Convert.ToString((int)EmcureNPD.Utility.Enums.PIDFScreen.PIDF)})" class="nav-link">
 														<i class="nav-icon fas fa-th"></i>
 														<p>
 												@MasterLocalizer["PIDFManagement"]
@@ -91,21 +91,43 @@
 									@if (UtilityHelper.GetMenuAccess(ModulePermissionEnum.IPD, rolObj))
 									{
 														<li class="nav-item">
-															<a href="@Url.Action("PIDFormList","PIDForm")" class="nav-link">
+															<a href="@Url.Action("PIDFList","PIDF", new { ScreenId = Convert.ToString((int)EmcureNPD.Utility.Enums.PIDFScreen.IPD)})" class="nav-link">
 																<i class="nav-icon fas fa fa-columns"></i>
 																<p>
 													@MasterLocalizer["IPDManagement"]
 																</p>
 															</a>
 														</li>
-									}									
-									@if (UtilityHelper.GetMenuAccess(ModulePermissionEnum.Auditlogs, rolObj))
+									}	
+									@if (UtilityHelper.GetMenuAccess(ModulePermissionEnum.Medical, rolObj))
 									{
 														<li class="nav-item">
-															<a href="@Url.Action("PIDFCommercial","PIDF")" class="nav-link">
+															<a href="@Url.Action("PIDFList","PIDF", new { ScreenId = Convert.ToString((int)EmcureNPD.Utility.Enums.PIDFScreen.Medical)})" class="nav-link">
+												<i class="nav-icon fas fa fa-plus-square"></i>
+																<p>
+													@MasterLocalizer["Medical Management"]
+																</p>
+															</a>
+														</li>
+									}	
+									@if (UtilityHelper.GetMenuAccess(ModulePermissionEnum.PIDF, rolObj))
+									{
+														<li class="nav-item">
+											<a href="@Url.Action("PIDFList","PIDF", new { ScreenId = Convert.ToString((int)EmcureNPD.Utility.Enums.PIDFScreen.Commercial)})" class="nav-link">
 																<i class="nav-icon fas fa fa-certificate"></i>
 																<p>
-													@MasterLocalizer["PIDFCommercial"]
+													@SharedLocalizer["Commercial Management"]
+																</p>
+															</a>
+														</li>
+									}
+									@if (UtilityHelper.GetMenuAccess(ModulePermissionEnum.APIListManagement, rolObj))
+									{
+														<li class="nav-item">
+											<a href="@Url.Action("PIDFList","PIDF", new { ScreenId = Convert.ToString((int)EmcureNPD.Utility.Enums.PIDFScreen.API)})" class="nav-link">
+												<i class="nav-icon fas fa fa-random"></i>
+																<p>
+													@SharedLocalizer["API Management"]
 																</p>
 															</a>
 														</li>
@@ -113,10 +135,10 @@
 									@if (UtilityHelper.GetMenuAccess(ModulePermissionEnum.PBF, rolObj) && UtilityHelper.GetMenuAccess(ModulePermissionEnum.APIListManagement, rolObj))
 									{
 														<li class="nav-item">
-															<a href="@Url.Action("PBFAPI","PIDF")" class="nav-link">
+											<a href="@Url.Action("PIDFList","PIDF", new { ScreenId = Convert.ToString((int)EmcureNPD.Utility.Enums.PIDFScreen.PBF)})" class="nav-link">
 																<i class="nav-icon fas fa fa-cube"></i>
 																<p>
-													@MasterLocalizer["PBFAPI"]
+													@SharedLocalizer["PBF Management"]
 																</p>
 															</a>
 														</li>
@@ -124,18 +146,18 @@
 									@if (UtilityHelper.GetMenuAccess(ModulePermissionEnum.Finance, rolObj))
 									{
 														<li class="nav-item">
-															<a href="@Url.Action("PIDFFinance","Finance")" class="nav-link">
+											<a href="@Url.Action("PIDFList","PIDF", new { ScreenId = Convert.ToString((int)EmcureNPD.Utility.Enums.PIDFScreen.Finance)})" class="nav-link">
 																<i class="nav-icon fas fa-coins"></i>
 																<p>
-													@MasterLocalizer["FinancePIDF"]
+													@SharedLocalizer["Finance Management"]
 																</p>
 															</a>
 														</li>
 									}
-									@if (UtilityHelper.GetMenuAccess(ModulePermissionEnum.ManagementHOD, rolObj))
+									@if (UtilityHelper.GetMenuAccess(ModulePermissionEnum.PIDF, rolObj))
 									{
 														<li class="nav-item">
-															<a href="@Url.Action("ManagementPIDF","PIDF")" class="nav-link">
+											<a href="@Url.Action("PIDFList","PIDF", new { ScreenId = Convert.ToString((int)EmcureNPD.Utility.Enums.PIDFScreen.Management)})" class="nav-link">
 																<i class="nav-icon fas fa-book"></i>
 																<p>
 													@MasterLocalizer["Management"]
