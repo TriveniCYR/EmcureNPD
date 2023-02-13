@@ -34,7 +34,7 @@ function GetPIDFListSuccess(data) {
         
 
         $("#PIDFContainer").append('<div class="col-lg-2 text-center dashboard-counters"><div class="ibox"><div class="ibox-content" style="padding:10px 10px;">\
-                <h2 class="no-margins text-primary counter" style="bacground-color:'+ data.PIDFList[i].statusColor+';">'+ data.PIDFList[i].statusCount + '</h2><h5>' + data.PIDFList[i].pidfStatus+'</h5></div></div></div>');
+                <h2 class="no-margins counter" style="color:'+ data.PIDFList[i].statusColor+';">'+ data.PIDFList[i].statusCount + '</h2><h5>' + data.PIDFList[i].pidfStatus+'</h5></div></div></div>');
 
 
 
