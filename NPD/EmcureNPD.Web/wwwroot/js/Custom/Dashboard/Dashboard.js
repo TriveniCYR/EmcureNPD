@@ -28,7 +28,7 @@ function GetPIDFListSuccess(data) {
     $("#PIDFContainer").html('')
     for (var i = 0; i < data.PIDFList.length;i++) {
         console.log(i)
-        $("#PIDFContainer").append("<div class='col-lg-3 col-md-6 col - 12'><div class='small-box bg-info'><div class='inner'> <h3 id='totalFinanceApproved'>" + data.PIDFList[i].statusCount +"</h3><p>" + data.PIDFList[i].pidfStatus +"</p></div><div class='icon'> <i class='far fa-save'></i></div></div></div >");
+        $("#PIDFContainer").append("<div class='col-lg-3 col-md-6 col - 12' style='color: "+data.PIDFList[i].statusColor+";'><div class='small-box bg-info'><div class='inner'> <h3 id='totalFinanceApproved'>" + data.PIDFList[i].statusCount +"</h3><p>" + data.PIDFList[i].pidfStatus +"</p></div><div class='icon'> <i class='far fa-save'></i></div></div></div >");
     }
      
     var xValues = ["Completed", "Final Approved", "Final Rejected", "Finance Approved", "Finance Pending Approval", "Finance Rejected", "IPD Created", "IPD/BD Approved", "IPD/BD Pending Approval", "IPD/BD Rejected", "PIDF Approved", "PIDF Created", "PIDF Pending Approval","PIDF Rejected"];
