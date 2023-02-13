@@ -1,5 +1,6 @@
 ﻿using EmcureNPD.Business.Models;
 using EmcureNPD.Data.DataAccess.Entity;
+using Microsoft.AspNetCore.Http;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -16,7 +17,7 @@ namespace EmcureNPD.Business.Core.Interface
 		Task<DBOperation> AddUpdatePBF(PidfPbfEntity pbfEntity);
 		
 		//------------Start------API_IPD_Details_Form_Entity--------------------------
-        Task<DBOperation> AddUpdateAPIIPD(PIDFAPIIPDFormEntity entityPIDF);
+        Task<DBOperation> AddUpdateAPIIPD(IFormCollection entityPIDF,string _webrootPath);
 
 		Task<PIDFAPIIPDFormEntity> GetAPIIPDFormData(long pidfId);
 		//------------End------API_IPD_Details_Form_Entity--------------------------

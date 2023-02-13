@@ -9,6 +9,9 @@ using EmcureNPD.API.Filters;
 using EmcureNPD.Business.Models;
 using static EmcureNPD.Utility.Enums.GeneralEnum;
 using EmcureNPD.Data.DataAccess.Entity;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Hosting;
+
 
 namespace EmcureNPD.API.Controllers.PBF
 {
@@ -22,16 +25,17 @@ namespace EmcureNPD.API.Controllers.PBF
 		private readonly IPBFService _PBFService;
 
 		private readonly IResponseHandler<dynamic> _ObjectResponse;
+        private readonly IWebHostEnvironment _webHostEnvironment;
+        #endregion Properties
 
-		#endregion Properties
+        #region Constructor
 
-		#region Constructor
-
-		public PBFController(IPBFService PBFService, IResponseHandler<dynamic> ObjectResponse)
+        public PBFController(IPBFService PBFService, IResponseHandler<dynamic> ObjectResponse, IWebHostEnvironment webHostEnvironment)
 		{
 			_PBFService = PBFService;
 			_ObjectResponse = ObjectResponse;
-		}
+            _webHostEnvironment= webHostEnvironment;
+        }
 
 		#endregion Constructor
 
@@ -108,14 +112,15 @@ namespace EmcureNPD.API.Controllers.PBF
 
 
         [HttpPost]
+        [Consumes("multipart/form-data")]
         [Route("InsertUpdateAPIIPD")]
-        public async Task<IActionResult> InsertUpdateAPIIPD(PIDFAPIIPDFormEntity oAPIIPD)
+        public async Task<IActionResult> InsertUpdateAPIIPD([FromForm] IFormCollection oAPIIPD)
         {
             try
             {
-                DBOperation oResponse = await _PBFService.AddUpdateAPIIPD(oAPIIPD);
+                DBOperation oResponse = await _PBFService.AddUpdateAPIIPD(oAPIIPD, _webHostEnvironment.WebRootPath);
                 if (oResponse == DBOperation.Success)
-                    return _ObjectResponse.Create(true, (Int32)HttpStatusCode.OK, (oAPIIPD.APIIPDDetailsFormID > 0 ? "Updated Successfully" : "Inserted Successfully"));
+                    return _ObjectResponse.Create(true, (Int32)HttpStatusCode.OK,"");
                 else
                     return _ObjectResponse.Create(false, (Int32)HttpStatusCode.BadRequest, (oResponse == DBOperation.NotFound ? "Record not found" : "Bad request"));
             }

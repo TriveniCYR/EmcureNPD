@@ -13,6 +13,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net.Http;
+using System.Net.Http.Headers;
 using System.Reflection;
 
 namespace EmcureNPD.Web.Controllers
@@ -218,34 +219,28 @@ namespace EmcureNPD.Web.Controllers
         public IActionResult APIIPDDetailsForm(int _APIIPDDetailsID, PIDFAPIIPDFormEntity _IPDmodel)
         {
             _IPDmodel.Pidfid = UtilityHelper.Decreypt(_IPDmodel.Pidfid);
-            _IPDmodel.BusinessUnitId = UtilityHelper.Decreypt(_IPDmodel.BusinessUnitId);
-            //string[] PropertyToValidate = { "FormulationQuantity", "Development", "ScaleUp", "Exhibit", "PlantQC", "Total", "MarketDetailsNewPortCGIDetails" };
-            //Type type = _IPDmodel.GetType();
-            //PropertyInfo[] props = type.GetProperties();
-            //foreach (PropertyInfo p in props)
-            //{
-            //    if (PropertyToValidate.Contains(p.Name))
-            //    {
-            //        var value = p.GetValue(_IPDmodel);
-            //        if (value == null)
-            //        {
-            //            ModelState.AddModelError(p.Name, "Required");
-            //        }
-            //    }
-            //}
+            _IPDmodel.BusinessUnitId = UtilityHelper.Decreypt(_IPDmodel.BusinessUnitId);        
             bool IsSaveError = false;
-            if (_IPDmodel.SaveType== "SaveDraft")
+            if (_IPDmodel.IsModelValid != "")
 			{
                 //save logic
                 string logUserId = Convert.ToString(HttpContext.Session.GetString(UserHelper.LoggedInUserId));
                 _IPDmodel.LoggedInUserId= Convert.ToInt32(logUserId);
+
+                var form = new MultipartFormDataContent();
+                var fileStream = _IPDmodel.MarketDetailsNewPortCGIDetails.OpenReadStream();
+                var fileContent = new StreamContent(fileStream);
+                fileContent.Headers.ContentType = MediaTypeHeaderValue.Parse("text/plain");
+                form.Add(fileContent, "file", _IPDmodel.MarketDetailsNewPortCGIDetails.FileName);
+                form.Add(new StringContent(JsonConvert.SerializeObject(_IPDmodel)), "Data");
 
                 HttpContext.Request.Cookies.TryGetValue(UserHelper.EmcureNPDToken, out string token);
                 APIRepository objapi = new(_cofiguration);
                
                 _IPDmodel.MarketDetailsNewPortCGIDetails = null; // set to null else it gives Error-406 while POST to API
 
-                HttpResponseMessage responseMessage = objapi.APICommunication(APIURLHelper.InsertUpdateAPIIPD, HttpMethod.Post, token, new StringContent(JsonConvert.SerializeObject(_IPDmodel))).Result;
+                //HttpResponseMessage responseMessage = objapi.APIComm(APIURLHelper.InsertUpdateAPIIPD, HttpMethod.Post, token, new StringContent(JsonConvert.SerializeObject(_IPDmodel))).Result;
+                HttpResponseMessage responseMessage = objapi.APIComm(APIURLHelper.InsertUpdateAPIIPD, HttpMethod.Post, token, form).Result;
                 if (responseMessage.IsSuccessStatusCode)
                 {
                     TempData["SaveStatus"] = Convert.ToString(_stringLocalizerShared["RecordInsertUpdate"]);
@@ -258,20 +253,19 @@ namespace EmcureNPD.Web.Controllers
                     IsSaveError = true;
                 }
             }
-            //if(ModelState.ErrorCount > 0 || IsSaveError)
-            //{
-            //             TempData["SaveStatus"] = IsSaveError ? "Save Error Occured !" : "Some Feilds are Missing";
-            //             // return back with Invalid Model
-            //             _IPDmodel._commercialFormEntity = GetPIDFCommercialModel(_IPDmodel.Pidfid, _IPDmodel.BusinessUnitId);
-            //             _IPDmodel.IPEvalution = GetModelForPIDForm(_IPDmodel.Pidfid, _IPDmodel.BusinessUnitId);
-            //             _IPDmodel.ProjectName = _IPDmodel.IPEvalution.ProjectName;
-            //             _IPDmodel.IPD_PatentDetailsList = _IPDmodel.IPEvalution.pidf_IPD_PatentDetailsEntities;
-            //             _IPDmodel.Pidfid = UtilityHelper.Encrypt (_IPDmodel.Pidfid);
-            //             _IPDmodel.BusinessUnitId = UtilityHelper.Encrypt(_IPDmodel.BusinessUnitId);
-            //             return View(_IPDmodel);
-            //         }
-            TempData["SaveStatus"] = IsSaveError ? "Save Error Occured !" : "Some Feilds are Missing";
-            return RedirectToAction("PBFAPI", "PIDF"); // return to PBFAPI List
+            if (IsSaveError)
+            {
+                TempData["SaveStatus"] = IsSaveError ? "Save Error Occured !" : "Some Feilds are Missing";
+                // return back with Invalid Model
+                _IPDmodel._commercialFormEntity = GetPIDFCommercialModel(_IPDmodel.Pidfid, _IPDmodel.BusinessUnitId);
+                _IPDmodel.IPEvalution = GetModelForPIDForm(_IPDmodel.Pidfid, _IPDmodel.BusinessUnitId);
+                _IPDmodel.ProjectName = _IPDmodel.IPEvalution.ProjectName;
+                _IPDmodel.IPD_PatentDetailsList = _IPDmodel.IPEvalution.pidf_IPD_PatentDetailsEntities;
+                _IPDmodel.Pidfid = UtilityHelper.Encrypt(_IPDmodel.Pidfid);
+                _IPDmodel.BusinessUnitId = UtilityHelper.Encrypt(_IPDmodel.BusinessUnitId);
+                return View(_IPDmodel);
+            }
+            return View(_IPDmodel);
         }
 
         [NonAction] // Get Model for View PIDForm.cshtml (IP EVolution)

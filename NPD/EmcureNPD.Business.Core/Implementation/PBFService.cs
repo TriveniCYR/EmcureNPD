@@ -1,4 +1,5 @@
-﻿using EmcureNPD.Business.Core.Interface;
+﻿using Microsoft.Extensions.Configuration;
+using EmcureNPD.Business.Core.Interface;
 using EmcureNPD.Business.Core.ModelMapper;
 using EmcureNPD.Business.Core.ServiceImplementations;
 using EmcureNPD.Business.Models;
@@ -6,15 +7,21 @@ using EmcureNPD.Data.DataAccess.Core.Repositories;
 using EmcureNPD.Data.DataAccess.Core.UnitOfWork;
 using EmcureNPD.Data.DataAccess.Entity;
 using EmcureNPD.Utility.Utility;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Primitives;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Dynamic;
+using System.IO;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Text;
+using System.Text.Json.Nodes;
 using System.Threading.Tasks;
 using static EmcureNPD.Utility.Enums.GeneralEnum;
+using Microsoft.AspNetCore.Hosting;
 
 namespace EmcureNPD.Business.Core.Implementation
 {
@@ -42,6 +49,7 @@ namespace EmcureNPD.Business.Core.Implementation
 		private readonly IMasterFormulationService _masterFormulationService;
 		private readonly IMasterAnalyticalGLService _masterAnalyticalGLService;
 		private readonly IPidfProductStrengthService _productStrengthService;
+        private readonly IConfiguration _configuration;
         private IRepository<PidfApiIpd> _pidf_API_IPD_repository { get; set; }
         private IRepository<PidfPbf> _pbfRepository { get; set; }
 
@@ -59,9 +67,9 @@ namespace EmcureNPD.Business.Core.Implementation
 			IPidfProductStrengthService pidfProductStrengthService, IMasterDIAService masterDium, IMasterMarketExtensionService masterMarketExtensionService,
 			IMasterBERequirementService masterBERequirementService, IMasterProductTypeService masterProductTypeService, IMasterPlantService masterPlantService,
 			IMasterWorkflowService masterWorkflowService, IMasterFormRNDDivisionService masterFormRNDDivisionService, IMasterFormulationService masterFormulationService,
-			IMasterAnalyticalGLService masterAnalyticalGLService, IPidfProductStrengthService productStrengthService,
-
-			IMasterAuditLogService auditLogService)
+			IMasterAnalyticalGLService masterAnalyticalGLService, IPidfProductStrengthService productStrengthService, IConfiguration configuration,
+           
+        IMasterAuditLogService auditLogService)
 		{
 			_unitOfWork = unitOfWork;
 			_mapperFactory = mapperFactory;
@@ -90,13 +98,82 @@ namespace EmcureNPD.Business.Core.Implementation
 			_pbfRepository = _unitOfWork.GetRepository<PidfPbf>();
 			_productStrengthService = productStrengthService;
 			_auditLogService = auditLogService;
-		}
+			_configuration = configuration;
+        }
+        public string FileValidation(IFormFile file)
+        {
+            PIDFMedicalViewModel fileUpload = new PIDFMedicalViewModel();
+            fileUpload.FileSize = Convert.ToInt32(_configuration.GetSection("FileUploadSettings").GetSection("MaxFileSizeMb").Value);
+            try
+            {
+                var supportedTypes = _configuration.GetSection("FileUploadSettings").GetSection("AllowedFileExtension").Value;
+                var fileTypes = supportedTypes.Split(',');
+                var fileExt = System.IO.Path.GetExtension(file.FileName).Substring(1);
+                if (!fileTypes.Contains(fileExt))
+                {
+                    fileUpload.ErrorMessage = _configuration.GetSection("FileUploadSettings").GetSection("FileNotAllowedErrorMessage").Value;
+                }
+                else if (file.Length > (fileUpload.FileSize * 1024 * 1024))
+                {
+                    fileUpload.ErrorMessage = _configuration.GetSection("FileUploadSettings").GetSection("FileSizeExceedErrorMessage").Value;
+                }
+                else
+                {
+                    fileUpload.ErrorMessage = null;
+                }
+                return fileUpload.ErrorMessage;
+            }
+            catch (Exception ex)
+            {
+                fileUpload.ErrorMessage = "Upload Container Should Not Be Empty or Contact Admin";
+                return fileUpload.ErrorMessage;
+            }
+        }
+        public async Task FileUpload(IFormFile files, string path, string uniqueFileName)
+        {
+            if (files != null)
+            {
+                string uploadFolder = path;
+                if (!Directory.Exists(uploadFolder))
+                {
+                    Directory.CreateDirectory(uploadFolder);
+                }
+                var filePath = Path.Combine(uploadFolder, uniqueFileName);
+                using (var stream = new FileStream(filePath, FileMode.Create))
+                {
+                    await files.CopyToAsync(stream);
+                }
 
+            }
+        }
         //------------Start------API_IPD_Details_Form_Entity--------------------------
         #region API_IPD_Details_Form_Entity 
-        public async Task<DBOperation> AddUpdateAPIIPD(PIDFAPIIPDFormEntity _oAPIIPD) 
+        public async Task<DBOperation> AddUpdateAPIIPD(IFormCollection _oAPIIPD_Form, string _webrootPath)
 		{
-			var _APIIPDDBEntity = new PidfApiIpd();
+            var MarketCGIFile = _oAPIIPD_Form.Files[0];
+
+            var uniqueFileName = Path.GetFileNameWithoutExtension(MarketCGIFile.FileName)
+                             + Guid.NewGuid().ToString().Substring(0, 4)
+                             + Path.GetExtension(MarketCGIFile.FileName);
+            var path = Path.Combine(_webrootPath, "Uploads\\PIDF\\APIIPD");
+            var fullPath = path + "\\" + MarketCGIFile.FileName;
+            var itmFileName = "APIIPD\\" + MarketCGIFile.FileName;
+            
+                if (System.IO.File.Exists(fullPath))
+                {
+                    System.IO.File.Delete(fullPath);
+                }
+            string ErrorMsg = FileValidation(MarketCGIFile);
+            if (ErrorMsg == null)
+            {
+                await FileUpload(MarketCGIFile, path, uniqueFileName);
+            }
+
+            _oAPIIPD_Form.TryGetValue("Data", out StringValues Data);
+            dynamic jsonObject = JsonConvert.DeserializeObject(Data);
+            var _oAPIIPD = JsonConvert.DeserializeObject<PIDFAPIIPDFormEntity>(Data);
+
+            var _APIIPDDBEntity = new PidfApiIpd();
             if (_oAPIIPD.APIIPDDetailsFormID > 0) 
 			{
 				var lastApiIpd = _pidf_API_IPD_repository.Get(x => x.PidfApiIpdId == _oAPIIPD.APIIPDDetailsFormID && x.IsActive == true);
