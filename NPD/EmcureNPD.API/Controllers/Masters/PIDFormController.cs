@@ -254,10 +254,8 @@ namespace EmcureNPD.API.Controllers.Masters
                         var file = files[i];
                         model.FileName[i] = "Medical\\" + file.FileName;
                     }
-                    //var path = Path.Combine(_webHostEnvironment.WebRootPath, "Uploads\\PIDF\\Medical");
-                    //var uploadedFile = _PIDFormService.FileUpload(files, path);
                 }
-                else
+                else if(jsonObject.FileName.HasValues)
                 {
                     model.FileName = new string[jsonObject.FileName.Count];
                     for (int i = 0; i < jsonObject.FileName.Count; i++)

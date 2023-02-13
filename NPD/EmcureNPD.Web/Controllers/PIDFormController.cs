@@ -183,7 +183,8 @@ namespace EmcureNPD.Web.Controllers
         public IActionResult Medical(string pidfid)
         {
             ViewBag.id = pidfid;
-            PIDFMedicalViewModel oPIDForm = new();
+            ViewBag.baseUrl = _cofiguration.GetSection("Apiconfig").GetSection("baseurl").Value;
+			PIDFMedicalViewModel oPIDForm = new();
             try
             {
                 string logUserId = Convert.ToString(HttpContext.Session.GetString(UserHelper.LoggedInUserId));
@@ -232,7 +233,7 @@ namespace EmcureNPD.Web.Controllers
         [HttpPost]
         public IActionResult Medical(string id, PIDFMedicalViewModel medicalEntity)
         {
-            if (ModelState.IsValid)
+			if (ModelState.IsValid)
             {
                 medicalEntity.Pidfid = long.Parse(UtilityHelper.Decreypt(id));
                 medicalEntity.CreatedBy = Convert.ToInt32(HttpContext.Session.GetString(UserHelper.LoggedInUserId));
@@ -266,8 +267,8 @@ namespace EmcureNPD.Web.Controllers
             }
             else
             {
-                return RedirectToAction("PIDFormList");
-            }
+				return View(medicalEntity);
+			}
         }
     }
 }
