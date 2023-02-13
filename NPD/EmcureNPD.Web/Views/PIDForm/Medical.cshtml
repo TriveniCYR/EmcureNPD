@@ -71,7 +71,7 @@
 							for (int i = 0; i < Model.FileName.Length; i++)
 							{
 								<div class="element" id="element_@i">
-										<a href="https://localhost:44369/Uploads/PIDF/Medical/@Model.FileName[i]" target="_blank">@Html.EditorFor(m => m.FileName[i], new { htmlAttributes = new {@readonly = "readonly" } })</a>
+										<a href="@ViewBag.baseUrl/Uploads/PIDF/Medical/@Model.FileName[i]" target="_blank">@Html.EditorFor(m => m.FileName[i], new { htmlAttributes = new {@readonly = "readonly" } })</a>
 									<button type="button" class="btn btn-sm btn-danger" onclick="deleteElement(@i)">Delete</button>
 								</div>
 							}

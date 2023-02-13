@@ -255,7 +255,7 @@ namespace EmcureNPD.API.Controllers.Masters
                         model.FileName[i] = "Medical\\" + file.FileName;
                     }
                 }
-                else
+                else if(jsonObject.FileName.HasValues)
                 {
                     model.FileName = new string[jsonObject.FileName.Count];
                     for (int i = 0; i < jsonObject.FileName.Count; i++)
