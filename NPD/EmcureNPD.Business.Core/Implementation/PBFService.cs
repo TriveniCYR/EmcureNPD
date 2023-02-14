@@ -171,21 +171,27 @@ namespace EmcureNPD.Business.Core.Implementation
 
             _oAPIIPD_Form.TryGetValue("Data", out StringValues Data);
             dynamic jsonObject = JsonConvert.DeserializeObject(Data);
-            var _oAPIIPD = JsonConvert.DeserializeObject<PIDFAPIIPDFormEntity>(Data);
+			jsonObject.MarketDetailsNewPortCGIDetails = null;
+            PIDFAPIIPDFormEntity _oAPIIPD = JsonConvert.DeserializeObject<PIDFAPIIPDFormEntity>(jsonObject);
 
             var _APIIPDDBEntity = new PidfApiIpd();
             if (_oAPIIPD.APIIPDDetailsFormID > 0) 
 			{
-				var lastApiIpd = _pidf_API_IPD_repository.Get(x => x.PidfApiIpdId == _oAPIIPD.APIIPDDetailsFormID && x.IsActive == true);
+				var lastApiIpd = _pidf_API_IPD_repository.GetAll().First(x => x.PidfApiIpdId == _oAPIIPD.APIIPDDetailsFormID && x.IsActive == true);
 				if(lastApiIpd != null) 
 				{
-                    //lastApiIpd.FormulationQuantity = _oAPIIPD.FormulationQuantity;
-                    //lastApiIpd.PlantQc = _oAPIIPD.PlantQC;
-                    //lastApiIpd.Development = _oAPIIPD.Development;
-                    //lastApiIpd.Total = _oAPIIPD.Total;
-                    //lastApiIpd.Exhibit = _oAPIIPD.Exhibit;
-                    //lastApiIpd.ScaleUp = _oAPIIPD.ScaleUp;
-					lastApiIpd.ModifyBy = (int?)_oAPIIPD.LoggedInUserId;
+					//lastApiIpd.FormulationQuantity = _oAPIIPD.FormulationQuantity;
+					//lastApiIpd.PlantQc = _oAPIIPD.PlantQC;
+					//lastApiIpd.Development = _oAPIIPD.Development;
+					//lastApiIpd.Total = _oAPIIPD.Total;
+					//lastApiIpd.Exhibit = _oAPIIPD.Exhibit;
+					//lastApiIpd.ScaleUp = _oAPIIPD.ScaleUp;
+
+					lastApiIpd.DrugsCategory = _oAPIIPD.DrugsCategory;
+					lastApiIpd.ProductTypeId = _oAPIIPD.ProductTypeId;
+                    lastApiIpd.ProductStrength = _oAPIIPD.ProductStrength;
+
+                    lastApiIpd.ModifyBy = (int?)_oAPIIPD.LoggedInUserId;
 					lastApiIpd.ModifyDate = DateTime.Now;
                     _pidf_API_IPD_repository.UpdateAsync(lastApiIpd);
                 }
@@ -196,13 +202,20 @@ namespace EmcureNPD.Business.Core.Implementation
             }
 			else
 			{
-				//_APIIPDDBEntity.Pidfid = Convert.ToInt32(_oAPIIPD.Pidfid);
-    //            _APIIPDDBEntity.FormulationQuantity = _oAPIIPD.FormulationQuantity;
-    //            _APIIPDDBEntity.PlantQc = _oAPIIPD.PlantQC;
-    //            _APIIPDDBEntity.Development = _oAPIIPD.Development;
-    //            _APIIPDDBEntity.Total = _oAPIIPD.Total;
-    //            _APIIPDDBEntity.Exhibit = _oAPIIPD.Exhibit;
-    //            _APIIPDDBEntity.ScaleUp = _oAPIIPD.ScaleUp;
+                //_APIIPDDBEntity.Pidfid = Convert.ToInt32(_oAPIIPD.Pidfid);
+                //            _APIIPDDBEntity.FormulationQuantity = _oAPIIPD.FormulationQuantity;
+                //            _APIIPDDBEntity.PlantQc = _oAPIIPD.PlantQC;
+                //            _APIIPDDBEntity.Development = _oAPIIPD.Development;
+                //            _APIIPDDBEntity.Total = _oAPIIPD.Total;
+                //            _APIIPDDBEntity.Exhibit = _oAPIIPD.Exhibit;
+                //            _APIIPDDBEntity.ScaleUp = _oAPIIPD.ScaleUp;
+
+
+
+                _APIIPDDBEntity.DrugsCategory = _oAPIIPD.DrugsCategory;
+                _APIIPDDBEntity.ProductTypeId = _oAPIIPD.ProductTypeId;
+                _APIIPDDBEntity.ProductStrength = _oAPIIPD.ProductStrength;
+
                 _APIIPDDBEntity.CreatedBy = _oAPIIPD.LoggedInUserId;
                 _APIIPDDBEntity.CreatedDate = DateTime.Now;
 				_APIIPDDBEntity.IsActive = true;

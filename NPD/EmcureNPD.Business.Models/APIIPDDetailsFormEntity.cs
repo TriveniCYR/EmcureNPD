@@ -19,7 +19,7 @@ namespace EmcureNPD.Business.Models
         public string ProjectName { get; set; }
         public string BusinessUnitId { get; set; }
         public IFormFile MarketDetailsNewPortCGIDetails { get; set; }
-        public string ProductTypeId { get; set; }
+        public int ProductTypeId { get; set; }
         public string DrugsCategory { get; set; }
         public string ProductStrength { get; set; }
         public int LoggedInUserId { get; set; }
