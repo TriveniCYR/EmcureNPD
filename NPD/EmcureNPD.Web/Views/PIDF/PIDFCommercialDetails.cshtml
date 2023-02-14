@@ -341,7 +341,7 @@
                 <div>
                     <div class="form-group">
                         <button type="button" class="btn btn-primary" onClick="SaveClick();">@SharedLocalizer["Submit"]</button>
-                        <a class="btn btn-danger" href="/PIDF/PIDFCommercial">@SharedLocalizer["Cancel"]</a>
+                        <button class="btn btn-danger" type="button" onclick="window.history.back();">@SharedLocalizer["Cancel"]</button>
                         <button type="submit" class="btn btn-info" onClick="SaveDraftClick();">@SharedLocalizer["SaveDraft"]</button>
                      
                         @*  @if (Model.StatusId != (Int32)Master_PIDFStatus.IPDInProgress)
