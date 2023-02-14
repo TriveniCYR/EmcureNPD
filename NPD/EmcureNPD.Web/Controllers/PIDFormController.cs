@@ -158,8 +158,8 @@ namespace EmcureNPD.Web.Controllers
                 {
                     TempData[UserHelper.SuccessMessage] = Convert.ToString(_stringLocalizerShared["RecordInsertUpdate"]);
                     ModelState.Clear();
-                    return RedirectToAction(nameof(PIDFormList));
-                }
+					return RedirectToAction("PIDFList", "PIDF", new { ScreenId = 2 });
+				}
                 else
                 {
                     TempData[UserHelper.ErrorMessage] = Convert.ToString(responseMessage.Content.ReadAsStringAsync().Result);
