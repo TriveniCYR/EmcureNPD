@@ -126,6 +126,12 @@
                         @Html.LabelFor(model => model.IsActive)
                     </div>
                 </div>
+                <div class="col-3">
+                    <div class="form-group required">
+                        @Html.CheckBoxFor(model => model.IsManagement, new { @class = "checkbox-checked", @checked = "checked" })
+                        @Html.LabelFor(model => model.IsManagement)
+                    </div>
+                </div>
             </div>
             <div class="row">
                 <div class="col-12 mb-4 text-end">

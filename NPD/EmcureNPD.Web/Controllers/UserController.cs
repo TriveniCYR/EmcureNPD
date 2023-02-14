@@ -49,6 +49,7 @@ namespace EmcureNPD.Web.Controllers
 
         public IActionResult UserManage(int? UserId)
         {
+            
             MasterUserEntity masterUser;
             if (UserId == null || UserId <= 0)
             {
@@ -80,6 +81,8 @@ namespace EmcureNPD.Web.Controllers
         {
             try
             {
+                string logUserId = Convert.ToString(HttpContext.Session.GetString(UserHelper.LoggedInUserId));
+                masterUser.LoggedUserId = int.Parse(logUserId);
                 if (UserId <= 0)
                 {
                     if (CheckEmailAddressExists(masterUser.EmailAddress))

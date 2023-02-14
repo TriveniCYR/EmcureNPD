@@ -169,10 +169,14 @@ namespace EmcureNPD.Business.Core.Implementation
                 await FileUpload(MarketCGIFile, path, uniqueFileName);
             }
 
+			PIDFAPIIPDFormEntity _oAPIIPD = new PIDFAPIIPDFormEntity();
             _oAPIIPD_Form.TryGetValue("Data", out StringValues Data);
             dynamic jsonObject = JsonConvert.DeserializeObject(Data);
-			jsonObject.MarketDetailsNewPortCGIDetails = null;
-            PIDFAPIIPDFormEntity _oAPIIPD = JsonConvert.DeserializeObject<PIDFAPIIPDFormEntity>(jsonObject);
+            _oAPIIPD.APIIPDDetailsFormID = jsonObject.APIIPDDetailsFormID;
+            _oAPIIPD.MarketDetailsFileName = jsonObject.MarketDetailsFileName;
+            _oAPIIPD.DrugsCategory = jsonObject.DrugsCategory;
+            _oAPIIPD.ProductStrength = jsonObject.ProductStrength;
+            _oAPIIPD.ProductTypeId = jsonObject.ProductTypeId;
 
             var _APIIPDDBEntity = new PidfApiIpd();
             if (_oAPIIPD.APIIPDDetailsFormID > 0) 

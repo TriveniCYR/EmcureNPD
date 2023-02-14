@@ -5,6 +5,7 @@ using EmcureNPD.Business.Models;
 using EmcureNPD.Resource;
 using EmcureNPD.Utility.Helpers;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Localization;
@@ -65,26 +66,14 @@ namespace EmcureNPD.API.Controllers.Masters
             {
                 DBOperation oResponse = await _MasterUserService.AddUpdateUser(oUser);
                 if (oResponse == DBOperation.Success)
-                {
-                    return _ObjectResponse.Create(true, (Int32)HttpStatusCode.OK, (oUser.UserId > 0 ? "Updated Successfully" : "Inserted Successfully"));
+                {                  
                     if (oUser.UserId <= 0)
                     {
                         EmailHelper email = new EmailHelper();
-                        string mailbody = string.Empty;
-
-                        string TemplatePath = string.Empty;
-                        TemplatePath = _env.ContentRootPath + _configuration.GetSection("MailTemplate:UserEmailTemplate").Value;
-
-                        using (StreamReader reader = new StreamReader(TemplatePath))
-                        {
-                            mailbody = reader.ReadToEnd();
-                        }
-                        mailbody.Replace("{UserName}", oUser.FullName);
-                        mailbody.Replace("{Email}", oUser.EmailAddress);
-                        mailbody.Replace("{Password}", oUser.ConfirmPassowrd);
-                        string body = mailbody;
-                        email.SendMail(oUser.EmailAddress, "", "User", body);
+                        string strHtml = "";// Email template need to be here
+                        email.SendMail(oUser.EmailAddress, string.Empty, "Emcure NPD - User Registration Done", strHtml);
                     }
+                    return _ObjectResponse.Create(true, (Int32)HttpStatusCode.OK, (oUser.UserId > 0 ? "Updated Successfully" : "Inserted Successfully"));
                 }
                 else
                     return _ObjectResponse.Create(false, (Int32)HttpStatusCode.BadRequest, (oResponse == DBOperation.NotFound ? "Record not found" : "Bad request"));

@@ -21,8 +21,10 @@ namespace EmcureNPD.Business.Models
         
         [Display(Name = "Active", ResourceType = typeof(Master))]
         public bool IsActive { get; set; }
+        [Display(Name = "Management")]
+        public bool IsManagement { get; set; }
 
-         public int[] DepartmentId { get; set; }
+        public int[] DepartmentId { get; set; }
                
         public int[] BusinessUnitId { get; set; }
                
@@ -69,8 +71,7 @@ namespace EmcureNPD.Business.Models
         [Display(Name = "Address", ResourceType = typeof(Master))]
         //[Required(ErrorMessageResourceType = typeof(Validation), ErrorMessageResourceName = "Required")]
         public string Address { get; set; }
-
-
+        public int LoggedUserId { get; set; }
         public DateTime CreatedDate { get; set; }
 
         //public List<MasterUserEntity> Users { get; set; }
