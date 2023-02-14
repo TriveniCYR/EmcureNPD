@@ -263,7 +263,7 @@ namespace EmcureNPD.Web.Controllers
 
                 //var response = httpClient.PostAsync($"/api/PIDForm/PIDMedicalForm", form).Result;
                 HttpResponseMessage responseMessage = objapi.APIComm(APIURLHelper.PIDMedicalForm, HttpMethod.Post, token, form).Result;
-                return RedirectToAction("PIDFormList");
+                return RedirectToAction("PIDFList", "PIDF", new { ScreenId = 3 });
             }
             else
             {
