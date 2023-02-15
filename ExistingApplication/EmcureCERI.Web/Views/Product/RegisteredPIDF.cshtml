@@ -1,0 +1,272 @@
+﻿@inject Microsoft.Extensions.Localization.IStringLocalizer<SharedResource> SharedLocalizer
+@{
+    ViewData["Title"] = "RegisteredPIDF";
+}
+<!-- For Gred pages CSS  -->
+<link rel="stylesheet" href="~/plugins/datatables-bs4/css/dataTables.bootstrap4.min.css">
+<link rel="stylesheet" href="~/plugins/datatables-responsive/css/responsive.bootstrap4.min.css">
+<link rel="stylesheet" href="~/plugins/datatables-buttons/css/buttons.bootstrap4.min.css">
+<section class="section">
+    <div class="container-fluid">
+        <h4>
+            @SharedLocalizer["Registered PIDF List"].Value
+        </h4>
+        <div class="text-center addRecordBtnContainer">
+            <a class="btn btn-default" onclick="PopupForm('@Url.Action("PIDFAddOrEdit","Product")');"><i class="fa fa-plus"></i> @SharedLocalizer["Add New DRF"].Value</a>
+            <a class="btn btn-default" href="@Url.Action("PIDF","Product")"><i class="fa fa-plus"></i> @SharedLocalizer["Add New PIDF"].Value</a>
+            @*<a class="btn btn-default" onclick="PopupForm('@Url.Action("AddPIDF","Product")');"><i class="fa fa-plus"></i> @SharedLocalizer["Add New PIDF"].Value</a>*@*
+        </div>
+        <div class="tableContainer clearfix">
+            <div class="table-responsive">
+                <table id="addPatientTableId" class="table stripe row-border order-column" style="width:100%">
+                    <thead>
+                        <tr>
+                            <th style="width: 50px;">@SharedLocalizer["Product Id"].Value</th>
+                            <th>@SharedLocalizer["Product Name"].Value</th>
+                            <th>@SharedLocalizer["Percentage (%)"].Value</th>
+                            <th>@SharedLocalizer["Region"].Value</th>
+                            <th>@SharedLocalizer["Country"].Value</th>
+                            <th>@SharedLocalizer["Status"].Value</th>
+                            <th>@SharedLocalizer["Stage"].Value</th>
+                            <th>@SharedLocalizer["Start Date"].Value</th>
+                            <th>@SharedLocalizer["End Date"].Value</th>
+                            @*<th style="width: 120px;">@SharedLocalizer["Consent Form"].Value</th>
+                                <th style="width: 120px;">@SharedLocalizer["Baseline Form"].Value</th>*@
+                            <th style="width:50px;">@SharedLocalizer["Action"].Value</th>
+                        </tr>
+                    </thead>
+                </table>
+            </div>
+        </div>
+
+
+        <div id="patientViewModal" class="modal themeModal " role="dialog">
+            <div class="modal-dialog">
+                <!-- Modal content-->
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                        <h4 class="modal-title"></h4>
+                    </div>
+                    <div class="modal-body">
+                        <p></p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        @await Html.PartialAsync("../Pdf/_PdfConsentForm")
+    </div>
+</section>
+
+<!-- DataTables  & Plugins -->
+<script src="~/plugins/datatables/jquery.dataTables.min.js"></script>
+<script src="~/plugins/datatables-bs4/js/dataTables.bootstrap4.min.js"></script>
+<script src="~/plugins/datatables-responsive/js/dataTables.responsive.min.js"></script>
+<script src="~/plugins/datatables-responsive/js/responsive.bootstrap4.min.js"></script>
+<script src="~/plugins/datatables-buttons/js/dataTables.buttons.min.js"></script>
+<script src="~/plugins/datatables-buttons/js/buttons.bootstrap4.min.js"></script>
+<script src="~/plugins/jszip/jszip.min.js"></script>
+<script src="~/plugins/pdfmake/pdfmake.min.js"></script>
+<script src="~/plugins/pdfmake/vfs_fonts.js"></script>
+<script src="~/plugins/datatables-buttons/js/buttons.html5.min.js"></script>
+<script src="~/plugins/datatables-buttons/js/buttons.print.min.js"></script>
+<script src="~/plugins/datatables-buttons/js/buttons.colVis.min.js"></script>
+<script src="https://cdn.datatables.net/fixedcolumns/3.3.2/js/dataTables.fixedColumns.min.js"></script>
+
+@section Scripts {
+    <script>
+        var Popup, dataTable, getPrescriber;
+        $(document).ready(function () {
+
+            var dataTable = $('#addPatientTableId').DataTable({
+                responsive: true,
+                language: {
+                    "emptyTable": "@SharedLocalizer["No data available in table"].Value",
+                    "info": "@SharedLocalizer["Showing _START_ to _END_ of _TOTAL_ entries"].Value",
+                    "infoEmpty":"@SharedLocalizer["Showing 0 to 0 of 0 entries"].Value",
+                    "infoFiltered":"@SharedLocalizer["(filtered from _MAX_ total entries)"].Value",
+                    "lengthMenu":"@SharedLocalizer["Show _MENU_ entries"].Value",
+                    "loadingRecords": "@SharedLocalizer["Loading..."].Value",
+                    "processing": "@SharedLocalizer["Processing..."].Value",
+                    "search": "@SharedLocalizer["Search"].Value",
+                    "zeroRecords":"@SharedLocalizer["No matching records found"].Value",
+                    "paginate": {
+                        "first":"@SharedLocalizer["First"].Value",
+                        "last":"@SharedLocalizer["Last"].Value",
+                        "next": "@SharedLocalizer["Next"].Value",
+                        "previous":"@SharedLocalizer["Previous"].Value"
+                    },
+                }
+            });
+
+            getPrescriber = function () {
+               // $('#loaderContainer').show();
+                $.ajax({
+                    type: "GET",
+                    url: '@Url.Action("GetPIDF", "Product")/',
+                    contentType: "application/json; charset=utf-8",
+                    dataType: "json",
+                    success: function (response) {
+                        $('#loaderContainer').hide();
+                        var jsonObject = response.data;
+                        var result = jsonObject.map(function (item) {
+                            var result = [];
+                            result.push(item.ProductId);
+                            result.push(item.ProductName);
+                            result.push(item.Strengths);
+                            result.push(item.Region);
+                            result.push(item.Country);
+                            result.push("On Track");
+                            result.push("");
+                            result.push("");
+                            result.push("");
+
+                           @*if (item.CStatus != "Pending") {
+                                if (item.IsConsentFcheckByAdmin) {
+                                    result.push("<a data-toggle='tooltip' title='@SharedLocalizer["Approved"].Value' class='btn btn-success btn-sm'> <span class='glyphicon glyphicon-ok' aria-hidden='true'></span> </a >");
+                                } else {
+                                    result.push("<a title='@SharedLocalizer["Rejected"].Value' class='btn btn-danger btn-sm'> <span class='glyphicon glyphicon-remove' aria-hidden='true'></span></a >");
+                                }
+                            } else {
+                                result.push("");
+                            }
+                            if (item.BStatus != "Pending") {
+                                if (item.IsBaselineDataByAdmin) {
+                                    result.push("<a data-toggle='tooltip' title='@SharedLocalizer["Approved"].Value' class='btn btn-success btn-sm'> <span class='glyphicon glyphicon-ok' aria-hidden='true'></span> </a >");
+                                } else {
+                                    result.push("<a title='@SharedLocalizer["Rejected"].Value' class='btn btn-danger btn-sm'> <span class='glyphicon glyphicon-remove' aria-hidden='true'></span></a >");
+                                }
+                            } else {
+                                result.push("");
+                            }*@
+
+                          //  result.push("<a class='btn btn-default btn-sm'  title='@SharedLocalizer["View Details"].Value' href='@Url.Action("InformedConsentForm", "Prescriber")/" + item.Id + "' ><span class='glyphicon glyphicon-list-alt'></span></a >");
+                             result.push("<a class='btn btn-info btn-sm custTblBtn'  title='@SharedLocalizer["Edit"].Value' href='@Url.Action("PIDFAddOrEdit", "Product")' ><span class='glyphicon glyphicon-pencil' aria-hidden='true'></span></a >");
+                            return result;
+                        });
+                        dataTable.clear();
+                        dataTable.rows.add(result); // add to DataTable instance
+                        dataTable.draw(); // always redraw
+                    },
+                    failure: function () {
+                        $("#addPatientTableId").append('@SharedLocalizer["Error when fetching data please contact administrator"].Value');
+                    }
+                });
+            }
+            getPrescriber();
+        });
+
+        var specialElementHandlers = {
+            // element with id of "bypass" - jQuery style selector
+            '.no-export': function (element, renderer) {
+                // true = "handled elsewhere, bypass text extraction"
+                return true;
+            }
+        };
+
+        function PopupForm(url) {
+            $.get(url)
+                .done(function (response) {
+                    $('#patientViewModal .modal-title').html('@SharedLocalizer[" Add New PIDF "].Value');
+                    $('#patientViewModal .modal-body').html(response);
+                    $('#patientViewModal').modal('show');
+                });
+        }
+
+        function SubmitForm(form) {
+            $.validator.unobtrusive.parse(form);
+            if ($(form).valid()) {
+                $.ajax({
+                    type : "POST",
+                    url : form.action,
+                    data : $(form).serialize(),
+                    success: function (result) {
+                        if (result.success === "success") {
+                            console.log(result.data);
+                            var value = result.data;
+                            //debugger;
+                            //alert(value.Id);
+                            $('#firstName').html(value.FirstName);
+                            $('#lastName').html(value.LastName);
+                            if (value.RfirstName == null || value.RfirstName == "") {
+                                $('#rfirstName').html('@SharedLocalizer["Non Applicable"].Value');
+                            } else {
+                                $('#rfirstName').html(value.RfirstName);
+                            }
+                            if (value.RejectionReason == null || value.RejectionReason == "") {
+                                $('#dobId').html('');
+                            } else {
+                                $('#dobId').html(value.RejectionReason);
+                            }
+                            if (value.RlastName == null || value.RlastName == "") {
+                                $('#rlastName').html('@SharedLocalizer["Non Applicable"].Value');
+                            } else {
+                                $('#rlastName').html(value.RlastName);
+                            }
+                            $('#date').text(value.Point1Date);
+                            if (value.Point1) {
+                                $('#point1').html('@SharedLocalizer["Ok"].Value');
+                            }
+                            if (value.Point2) {
+                                $('#point2').html('@SharedLocalizer["Ok"].Value');
+                            }
+                            if (value.Point3) {
+                                $('#point3').html('@SharedLocalizer["Ok"].Value');
+                            }
+                            if (value.Point4) {
+                                $('#point4').html('@SharedLocalizer["Ok"].Value');
+                            }
+                            if (value.Point5) {
+                                $('#point5').html('@SharedLocalizer["Ok"].Value');
+                            }
+                            if (value.Point6) {
+                                $('#point6').html('@SharedLocalizer["Ok"].Value');
+                            }
+                            if (value.Point7) {
+                                $('#point7').html('@SharedLocalizer["Ok"].Value');
+                            }
+                             uploadPDF(value.Id)
+                           // exportPDF("informed-consent-form", "InformedConsentForm.pdf");
+                            $('#patientViewModal').modal('hide');
+                            //dataTable.ajax.reload();
+                            getPrescriber();
+
+                           // openCommonModal('successModal modal-sm', '@Html.Raw(SharedLocalizer["Success"].Value)', '@Html.Raw(SharedLocalizer["Record has been added successfully."].Value)', false);
+                        }
+                    }
+                });
+            }
+            return false;
+    }
+
+     @*function uploadPDF(id) {
+
+         var url = "/Prescriber/PatientUploadDocument/" + id;
+            $.get(url)
+                .done(function (response) {
+                    $('#patientViewModal .modal-title').html('@SharedLocalizer["Informed Consent Form Upload"].Value');
+                    $('#patientViewModal .modal-body').html(response);
+                    $('#patientViewModal').modal('show');
+                });
+        }*@
+
+
+        @*function Download(id) {
+            if (id != null) {
+                 var getUrl = '@Url.Action("DownloadById", "FileUpload")/' + id;
+             $.ajax({
+                type: "GET",
+                url: '@Url.Action("DownloadById", "FileUpload")/' + id,
+                 success: function (data)
+                 {
+                    window.location = getUrl;
+                 }
+            });
+            }
+        }*@
+    </script>
+}
+
+
+
+

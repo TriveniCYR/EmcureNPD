@@ -1,0 +1,1531 @@
+﻿@inject Microsoft.Extensions.Localization.IStringLocalizer<SharedResource> SharedLocalizer
+@model EmcureCERI.Web.Models.DRFViewModels.MilestoneModel
+
+@{
+    //Layout = null;
+}
+<!--link href="~/css/main.css" rel="stylesheet" /-->
+@*<!DOCTYPE html>
+
+    <p>welcome on detail page</p>
+    <a class="btn btn-default" href="@Url.Action("DRFList","DRF")"><i class="fa fa-plus"></i> @SharedLocalizer["Back To List"].Value</a>
+    <<p>@ViewBag.DRFProductID</p>
+    <p>@ViewBag.DRFProductName</p>
+    <p>@ViewBag.DRFAPIName</p>*@
+
+
+
+
+
+<div class="content-wrapper pt-3">
+    <!-- Main content -->
+    <section class="content">
+        <div class="container-fluid">
+            <!-- Small boxes (Stat box) -->
+            <!-- Main row -->
+            <div class="row">
+                <section class="col-lg-12 connectedSortable">
+                    <!-- Custom tabs (Charts with tabs)-->
+                    <div class="card">
+                        <div class="card-header">
+                            <h3 class="card-title">
+                                <i class="far fa-edit"></i> Project : @ViewBag.DRFProductID
+                            </h3>
+                            <div class="card-tools">
+                                <ul class="nav nav-pills ml-auto">
+                                    <li class="nav-item mr-3">
+                                        <a class="btn btn-outline-primary" href="@Url.Action("DRFList","DRF")"><i class="far fa-list-alt mr-1"></i>Project List</a>
+                                    </li>
+                                    <li class="nav-item mr-3">
+                                        <a class="btn btn-outline-primary" href="@Url.Action("DRFShowDetails","DRF")?id=@ViewBag.DRFProductID"><i class="far fa-list-alt mr-1"></i>Project Details</a>
+                                    </li>
+                                    <li class="nav-item mr-3">
+                                        <a class="btn btn-outline-primary" href="@Url.Action("Index","GanttNew")"><i class="fas fa-project-diagram mr-2"></i>Gantt Chart</a>
+                                    </li>
+                                    <li class="nav-item mr-3">
+                                        <a class="btn btn-outline-primary" href="@Url.Action("DRFFileManager","DRF")"><i class="fas fa-project-diagram mr-2"></i>File Manager</a>
+                                    </li>
+
+
+                                </ul>
+                            </div>
+                        </div>
+                        <!-- /.card-header -->
+                        <div class="card-body">
+
+                            <div class="row">
+                                @*<div class="row row-refine">*@
+                                <div class="col-md-4 row">
+                                    <div class="col-md-6 text-right">@Html.Label("Product ID") :</div>
+                                    <div class="col-md-6">@ViewBag.DRFProductID</div>
+
+                                </div>
+                                <div class="col-md-4 row">
+                                    <div class="col-md-6 text-right">@Html.Label("Product Name") :</div>
+                                    <div class="col-md-6">@ViewBag.DRFProductName</div>
+                                </div>
+                                <div class="col-md-4 row">
+                                    <div class="col-md-6 text-right">@Html.Label("Strength") :</div>
+                                    <div class="col-md-6">@ViewBag.DRFStrength</div>
+
+                                </div>
+
+
+                                @*</div>*@
+                            </div>
+
+
+
+                            <div class="row">
+                                <div class="col-md-4 row">
+                                    <div class="col-md-6 text-right">@Html.Label("Module Name") :</div>
+                                    <div class="col-md-6">@ViewBag.DRFModuleName</div>
+
+                                </div>
+                                <div class="col-md-4 row">
+                                    <div class="col-md-6 text-right">@Html.Label("API Name") :</div>
+                                    <div class="col-md-6">@ViewBag.DRFAPIName</div>
+                                </div>
+                                <div class="col-md-4 row">
+                                    <div class="col-md-6 text-right">@Html.Label("API Volume") :</div>
+                                    <div class="col-md-6">@ViewBag.DRFAPIVolume</div>
+                                </div>
+
+                            </div>
+
+
+                            <div class="row">
+                                <div class="col-md-4 row">
+                                    <div class="col-md-6 text-right">@Html.Label("API Vendor") :</div>
+                                    <div class="col-md-6">@ViewBag.DRFAPIVendor</div>
+                                </div>
+                                <div class="col-md-4 row">
+                                    <div class="col-md-6 text-right">@Html.Label("Register Plant") :</div>
+                                    <div class="col-md-6">@ViewBag.DRFRegisterPlant</div>
+                                </div>
+                                <div class="col-md-4 row">
+                                    <div class="col-md-6 text-right">@Html.Label("Registration Date") :</div>
+                                    <div class="col-md-6">@ViewBag.DRFRegistrationDate</div>
+                                </div>
+
+                            </div>
+
+
+
+                            <div class="row">
+                                <div class="col-md-4 row">
+                                    <div class="col-md-6 text-right">@Html.Label("ReRegistration Date") :</div>
+                                    <div class="col-md-6">@ViewBag.DRFReRegistrationDate</div>
+                                </div>
+                                <div class="col-md-4 row">
+                                    <div class="col-md-6 text-right">@Html.Label("Therapeutic Category") :</div>
+                                    <div class="col-md-6">@ViewBag.DRFTherapeuticCategory</div>
+                                </div>
+                                <div class="col-md-4 row">
+                                    <div class="col-md-6 text-right">@Html.Label("Product Manufactured") :</div>
+                                    <div class="col-md-6">@ViewBag.DRFManufacturingPlant</div>
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <div class="col-md-4 row">
+                                    <div class="col-md-6 text-right">@Html.Label("Formulation") :</div>
+                                    <div class="col-md-6">@ViewBag.DRFFormulation</div>
+                                </div>
+                                <div class="col-md-4 row">
+                                    <div class="col-md-6 text-right">@Html.Label("Dossier Template") :</div>
+                                    <div class="col-md-6">@ViewBag.DRFDossierTemplate</div>
+                                </div>
+                                <div class="col-md-4 row">
+                                    <div class="col-md-6 text-right">@Html.Label("Drug Category") :</div>
+                                    <div class="col-md-6">@ViewBag.DRFDrugCategory</div>
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <div class="col-md-4 row">
+                                    <div class="col-md-6 text-right">@Html.Label("Submission Checklist") :</div>
+                                    <div class="col-md-6">@ViewBag.DRFSubmissionChecklist</div>
+                                </div>
+                                <div class="col-md-4 row">
+                                    <div class="col-md-6 text-right">@Html.Label("Continent") :</div>
+                                    <div class="col-md-6">@ViewBag.DRFContinent</div>
+                                </div>
+                                <div class="col-md-4 row">
+                                    <div class="col-md-6 text-right">@Html.Label("Country") :</div>
+                                    <div class="col-md-6">@ViewBag.DRFCountry</div>
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <div class="col-md-12 text-center">
+                                    <div class="icheck-primary d-inline">
+                                        @if (@ViewBag.DRFWHOPQ == true)
+                                        {
+                                            @Html.CheckBox("WHO-PQ (World Health Organization Filing)", true, new { @disabled = "disabled", @class = "mr-4" })
+                                        }
+                                        else
+                                        {
+                                            @Html.CheckBox("WHO-PQ (World Health Organization Filing)", false, new { @disabled = "disabled", @class = "mr-4" })
+                                        }
+                                        @Html.Label("WHO-PQ (World Health Organization Filing)")
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- /.card-body -->
+                        </div>
+                        <!-- /.card -->
+                    </div>
+                </section>
+
+                <section class="col-lg-12 connectedSortable">
+                    <!-- Custom tabs (Charts with tabs)-->
+                    <div class="card">
+                        <div class="card-header">
+                            <h3 class="card-title">
+                                <i class="far fa-edit"></i> Attached PIDF Details
+                            </h3>
+
+                        </div>
+                        <!-- /.card-header -->
+                        <div class="card-body">
+                            <table id="PIDFTable" class="table table-bordered table-striped table-hover" style="width:100%;">
+                                <thead>
+                                    <tr>
+                                        <th>@SharedLocalizer["Id"].Value</th>
+                                        <th>@SharedLocalizer["Project Name"].Value</th>
+                                        <th>@SharedLocalizer["Strength"].Value</th>
+                                        <th>@SharedLocalizer["Patent Status"].Value</th>
+                                        <th>@SharedLocalizer["Continent"].Value</th>
+                                        <th>@SharedLocalizer["Country"].Value</th>
+                                        <th>@SharedLocalizer["Packing"].Value</th>
+                                        <th>@SharedLocalizer["Batch Size (In pack)"].Value</th>
+                                        <th>@SharedLocalizer["Pack Size"].Value</th>
+                                        <th>@SharedLocalizer["Cogs"].Value</th>
+                                        <th>@SharedLocalizer["Freight"].Value</th>
+                                        <th>@SharedLocalizer["Total CIF Cost"].Value</th>
+                                        <th>@SharedLocalizer["CIF Price Per Unit"].Value</th>
+                                        <th>@SharedLocalizer["CIF Price Per Pack"].Value</th>
+                                        <th>@SharedLocalizer["Profit Per Pack"].Value</th>
+                                        <th>@SharedLocalizer["Percent Cont"].Value</th>
+                                        <th>@SharedLocalizer["Contribution 3 yr"].Value</th>
+                                        <th>@SharedLocalizer["Cost of 3 Batches"].Value</th>
+                                        <th>@SharedLocalizer["R&D Cost"].Value</th>
+                                        <th>@SharedLocalizer["Filing Cost"].Value</th>
+                                        <th>@SharedLocalizer["Stability Cost"].Value</th>
+                                        <th>@SharedLocalizer["Total Invest"].Value</th>
+                                        <th>@SharedLocalizer["ROI"].Value</th>
+                                        @*<th>@SharedLocalizer["Project Status"].Value</th>*@
+
+                                    </tr>
+                                </thead>
+                            </table>
+
+
+                            <!-- /.card-body -->
+                        </div>
+                        <!-- /.card -->
+
+
+                    </div>
+                </section>
+
+
+
+                <section class="col-lg-12 connectedSortable">
+                    <!-- Custom tabs (Charts with tabs)-->
+                    <div class="card">
+                        <div class="card-header">
+                            <h3 class="card-title">
+                                <i class="far fa-edit"></i> Tasks
+                            </h3>
+                            <button type="button" onclick="AddTaskSubTask()" style="float:right" class="btn btn-primary mr-2">@SharedLocalizer["Add Milestones"].Value</button>
+                            @*<a style='cursor:pointer; color:blue;float:right' onclick="AddTaskSubTask()">@SharedLocalizer["Add Milestones"].Value</a>*@
+                        </div>
+                        <!-- /.card-header -->
+
+                        <div class="card-body">
+                            <table id="Milestones" class="table" style="width:100%;"></table>
+
+
+                            <!-- /.card-body -->
+                        </div>
+
+                        <!-- /.card -->
+
+
+                    </div>
+                </section>
+
+            </div>
+            <!-- /.row (main row) -->
+        </div>
+        <!-- /.container-fluid -->
+        @*UpdateModel*@
+        <div id="UpdateModel" class="modal themeModal " role="dialog">
+            <form asp-route-returnUrl="@ViewData["ReturnUrl"]" method="POST" onsubmit="return SubmitForm(this)">
+                @*<div class="card-body">*@
+
+
+                <div class="modal-dialog">
+                    <!-- Modal content-->
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h4 class="modal-title">@SharedLocalizer["Update"].Value</h4>
+                            <button type="button" class="close" data-dismiss="modal">&times;</button>
+                        </div>
+                        <div class="modal-body">
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <div class="form-group required">
+                                        @Html.LabelFor(o=>o.DRFTaskSubTaskEditModel.DRFEditTaskName, new { @class = "control-label" })
+                                        @Html.EditorFor(o=>o.DRFTaskSubTaskEditModel.DRFEditTaskName, new { htmlAttributes = new { @autocomplete = "off", @class = "form-control" } })
+                                        @Html.ValidationMessageFor(o=>o.DRFTaskSubTaskEditModel.DRFEditTaskName, "", new { @class = "text-danger" })
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <div class="form-group required">
+                                        @Html.LabelFor(o=>o.DRFTaskSubTaskEditModel.DRFEditEmpID, new { @class = "control-label" })
+                                        @Html.DropDownListFor(o=>o.DRFTaskSubTaskEditModel.DRFEditEmpID, new SelectList(string.Empty, "Value", "Text"), "Please select option", htmlAttributes: new { @class = "form-control input-sm f-s-15 bg-eff4f55c w100per", id = "TaskOwner" })
+                                        @Html.ValidationMessageFor(o=>o.DRFTaskSubTaskEditModel.DRFEditEmpID, "", new { @class = "text-danger" })
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <div class="form-group required">
+                                        @Html.LabelFor(o=>o.DRFTaskSubTaskEditModel.DRFEditStartDate, new { @class = "control-label" })
+                                        <div class="input-group date" id="startDate" data-target-input="nearest">
+
+                                            @Html.TextBoxFor(o=>o.DRFTaskSubTaskEditModel.DRFEditStartDate, new { @class = "form-control datetimepicker-input", autocomplete = "off" })
+                                            <div class="input-group-append" data-target="#DRFEditStartDate" data-toggle="datetimepicker">
+                                                <div class="input-group-text"><i class="fa fa-calendar"></i></div>
+                                            </div><br>
+
+                                        </div>
+                                        @Html.ValidationMessageFor(o=>o.DRFTaskSubTaskEditModel.DRFEditStartDate, "", new { @class = "text-danger" })
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <div class="form-group required">
+                                        @Html.LabelFor(o=>o.DRFTaskSubTaskEditModel.DRFEditEndDate, new { @class = "control-label" })
+                                        <div class="input-group date" id="endDate" data-target-input="nearest">
+
+                                            @Html.TextBoxFor(o=>o.DRFTaskSubTaskEditModel.DRFEditEndDate, new { @class = "form-control datetimepicker-input", autocomplete = "off" })
+                                            <div class="input-group-append" data-target="#DRFEditEndDate" data-toggle="datetimepicker">
+                                                <div class="input-group-text"><i class="fa fa-calendar"></i></div>
+                                            </div><br>
+
+                                        </div>
+                                        @Html.ValidationMessageFor(o=>o.DRFTaskSubTaskEditModel.DRFEditEndDate, "", new { @class = "text-danger" })
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <div class="form-group required">
+                                        @Html.LabelFor(o=>o.DRFTaskSubTaskEditModel.DRFEditPriorityID, new { @class = "control-label" })
+                                        @Html.DropDownListFor(o=>o.DRFTaskSubTaskEditModel.DRFEditPriorityID, new SelectList(string.Empty, "Value", "Text"), "Please select option", htmlAttributes: new { @class = "form-control input-sm f-s-15 bg-eff4f55c w100per", id = "TaskPriority" })
+                                        @Html.ValidationMessageFor(o=>o.DRFTaskSubTaskEditModel.DRFEditPriorityID, "", new { @class = "text-danger" })
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <div class="form-group required">
+                                        @Html.LabelFor(o=>o.DRFTaskSubTaskEditModel.DRFEditTaskStatusID, new { @class = "control-label" })
+                                        @Html.DropDownListFor(o=>o.DRFTaskSubTaskEditModel.DRFEditTaskStatusID, new SelectList(string.Empty, "Value", "Text"), "Please select option", htmlAttributes: new { @class = "form-control input-sm f-s-15 bg-eff4f55c w100per", id = "TaskStatus" , onchange = "setPercentage(this.value,0)"})
+                                        @Html.ValidationMessageFor(o=>o.DRFTaskSubTaskEditModel.DRFEditTaskStatusID, "", new { @class = "text-danger" })
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <div class="form-group required">
+                                        @Html.LabelFor(o => o.DRFTaskSubTaskEditModel.DRFEditTaskDuration, new { @class = "control-label" })
+                                        @Html.EditorFor(o => o.DRFTaskSubTaskEditModel.DRFEditTaskDuration, new { htmlAttributes = new { @autocomplete = "off", @class = "form-control", @readonly= "readonly" }})@*disabled = "disabled"*@
+                                        @Html.ValidationMessageFor(o=>o.DRFTaskSubTaskEditModel.DRFEditTaskDuration, "", new { @class = "text-danger" })
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <div class="form-group required">
+                                        @Html.LabelFor(o=>o.DRFTaskSubTaskEditModel.DRFEditTotalPercentage, new { @class = "control-label" })
+                                        @Html.EditorFor(o=>o.DRFTaskSubTaskEditModel.DRFEditTotalPercentage, new { htmlAttributes = new { @autocomplete = "off", @class = "form-control disabledPercentage", id = "TaskPercentage", @min = 0, @max = 100 } })
+                                        @Html.ValidationMessageFor(o=>o.DRFTaskSubTaskEditModel.DRFEditTotalPercentage, "", new { @class = "text-danger" })
+                                    </div>
+                                </div>
+                            </div>
+                            @Html.HiddenFor(o=>o.DRFTaskSubTaskEditModel.DRFEditProjectTaskMappingID)
+                            @Html.Hidden("RedirectTo", Url.Action("DRFList", "DRF"))
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <button type="submit" class="btn btn-primary mr-2">@SharedLocalizer["Save"].Value</button>
+                                    <a class="btn btn-primary" onclick="HideUpdateModel()">@SharedLocalizer["Cancel"].Value</a>
+                                </div>
+                            </div>
+
+
+                        </div>
+
+
+                    </div>
+                </div>
+
+
+                @*</div>*@
+
+
+                @*<div class="card-footer text-center">
+                    <button type="submit" class="btn btn-primary mr-2 attachedDisabled">@SharedLocalizer["Save"].Value</button>
+                    <a class="btn btn-primary" asp-area="" asp-controller="DRF" asp-action="DRFShowDetails">@SharedLocalizer["Cancel"].Value</a>
+                </div>*@
+            </form>
+        </div>
+
+
+        @*DeleteModel*@
+        <div id="DeleteModel" class="modal themeModal " role="dialog">
+            @*<form asp-route-returnUrl="@ViewData["ReturnUrl"]" method="POST" onsubmit="return SubmitForm(this)">*@
+            <div class="modal-dialog">
+                <!-- Modal content-->
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h4 class="modal-title">@SharedLocalizer["Delete"].Value</h4>
+                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="form-group">
+                                    @Html.Label("Are you shure you want to delete this step ?")
+                                </div>
+                            </div>
+                        </div>
+                        @Html.Hidden("StepIDForDelete")
+                        @Html.Hidden("DeleteRedirectTo", Url.Action("DRFList", "DRF"))
+                        <div class="row">
+                            <div class="col-md-12">
+                                <button type="button" onclick="DeleteTaskSubTask()" class="btn btn-primary mr-2">@SharedLocalizer["Yes"].Value</button>
+                                <a class="btn btn-primary" onclick="HideDeleteModel()">@SharedLocalizer["No"].Value</a>
+                            </div>
+                        </div>
+
+
+                    </div>
+
+
+                </div>
+            </div>
+
+            @*</form>*@
+        </div>
+
+        @*AddModel*@
+        <div id="AddModel" class="modal themeModal " role="dialog">
+
+
+            <div class="modal-dialog">
+                <!-- Modal content-->
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h4 class="modal-title">@SharedLocalizer["Add Milestones"].Value</h4>
+                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="form-group">
+                                    <button type="button" onclick="ShowAddTaskForm()" class="btn btn-primary mr-2">@SharedLocalizer["Add Task"].Value</button>
+                                    <button type="button" onclick="ShowAddSubTaskForm()" class="btn btn-primary mr-2">@SharedLocalizer["Add Sub Task"].Value</button>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+
+                </div>
+            </div>
+
+
+        </div>
+
+        @*AddTaskModel*@
+        <div id="AddTaskModel" class="modal themeModal " role="dialog">
+            <form method="POST" onsubmit="return AddTaskForm(this)">
+
+                <div class="modal-dialog">
+                    <!-- Modal content-->
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h4 class="modal-title">@SharedLocalizer["Add Task"].Value</h4>
+                            <button type="button" class="close" data-dismiss="modal">&times;</button>
+                        </div>
+                        <div class="modal-body">
+
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <div class="form-group required">
+                                        @Html.LabelFor(t => t.DRFTaskAddModel.DRFAddTaskName, new { @class = "control-label" })
+                                        @Html.EditorFor(t => t.DRFTaskAddModel.DRFAddTaskName, new { htmlAttributes = new { @autocomplete = "off", @class = "form-control" } })
+                                        @Html.ValidationMessageFor(t => t.DRFTaskAddModel.DRFAddTaskName, "", new { @class = "text-danger" })
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <div class="form-group required">
+                                        @Html.LabelFor(t => t.DRFTaskAddModel.DRFAddTaskEmpID, new { @class = "control-label" })
+                                        @Html.DropDownListFor(t => t.DRFTaskAddModel.DRFAddTaskEmpID, new SelectList(string.Empty, "Value", "Text"), "Please select option", htmlAttributes: new { @class = "form-control input-sm f-s-15 bg-eff4f55c w100per", id = "AddTaskOwner" })
+                                        @Html.ValidationMessageFor(t => t.DRFTaskAddModel.DRFAddTaskEmpID, "", new { @class = "text-danger" })
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <div class="form-group required">
+                                        @Html.LabelFor(t => t.DRFTaskAddModel.DRFAddTaskStartDate, new { @class = "control-label" })
+                                        <div class="input-group date" id="addTaskStartDate" data-target-input="nearest">
+
+                                            @Html.TextBoxFor(t => t.DRFTaskAddModel.DRFAddTaskStartDate, new { @class = "form-control datetimepicker-input", autocomplete = "off" })
+                                            <div class="input-group-append" data-toggle="datetimepicker">
+                                                <div class="input-group-text"><i class="fa fa-calendar"></i></div>
+                                            </div><br>
+
+                                        </div>
+                                        @Html.ValidationMessageFor(t => t.DRFTaskAddModel.DRFAddTaskStartDate, "", new { @class = "text-danger" })
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <div class="form-group required">
+                                        @Html.LabelFor(t => t.DRFTaskAddModel.DRFAddTaskEndDate, new { @class = "control-label" })
+                                        <div class="input-group date" id="addTaskEndDate" data-target-input="nearest">
+
+                                            @Html.TextBoxFor(t => t.DRFTaskAddModel.DRFAddTaskEndDate, new { @class = "form-control datetimepicker-input", autocomplete = "off" })
+                                            <div class="input-group-append" data-toggle="datetimepicker">
+                                                <div class="input-group-text"><i class="fa fa-calendar"></i></div>
+                                            </div><br>
+
+                                        </div>
+                                        @Html.ValidationMessageFor(t => t.DRFTaskAddModel.DRFAddTaskEndDate, "", new { @class = "text-danger" })
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <div class="form-group required">
+                                        @Html.LabelFor(t => t.DRFTaskAddModel.DRFAddTaskPriorityID, new { @class = "control-label" })
+                                        @Html.DropDownListFor(t => t.DRFTaskAddModel.DRFAddTaskPriorityID, new SelectList(string.Empty, "Value", "Text"), "Please select option", htmlAttributes: new { @class = "form-control input-sm f-s-15 bg-eff4f55c w100per", id = "AddTaskPriority" })
+                                        @Html.ValidationMessageFor(t => t.DRFTaskAddModel.DRFAddTaskPriorityID, "", new { @class = "text-danger" })
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <div class="form-group required">
+                                        @Html.LabelFor(t => t.DRFTaskAddModel.DRFAddTaskTaskStatusID, new { @class = "control-label" })
+                                        @Html.DropDownListFor(t => t.DRFTaskAddModel.DRFAddTaskTaskStatusID, new SelectList(string.Empty, "Value", "Text"), "Please select option", htmlAttributes: new { @class = "form-control input-sm f-s-15 bg-eff4f55c w100per", id = "AddTaskStatus" , onchange = "setPercentage(this.value,1)"})
+                                        @Html.ValidationMessageFor(t => t.DRFTaskAddModel.DRFAddTaskTaskStatusID, "", new { @class = "text-danger" })
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <div class="form-group required">
+                                        @Html.LabelFor(t => t.DRFTaskAddModel.DRFAddTaskTaskDuration, new { @class = "control-label" })
+                                        @Html.EditorFor(t => t.DRFTaskAddModel.DRFAddTaskTaskDuration, new { htmlAttributes = new { @autocomplete = "off", @class = "form-control", id = "AddTaskDuration", @readonly = "readonly" } })@*disabled = "disabled"*@
+                                        @Html.ValidationMessageFor(t => t.DRFTaskAddModel.DRFAddTaskTaskDuration, "", new { @class = "text-danger" })
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <div class="form-group required">
+                                        @Html.LabelFor(t => t.DRFTaskAddModel.DRFAddTaskTotalPercentage, new { @class = "control-label" })
+                                        @Html.EditorFor(t => t.DRFTaskAddModel.DRFAddTaskTotalPercentage, new { htmlAttributes = new { @autocomplete = "off", @class = "form-control disabledTaskPercentage", id = "AddTaskPercentage", @min = 0, @max = 100 } })
+                                        @Html.ValidationMessageFor(t => t.DRFTaskAddModel.DRFAddTaskTotalPercentage, "", new { @class = "text-danger" })
+                                    </div>
+                                </div>
+                            </div>
+
+                            @Html.Hidden("AddTaskRedirectTo", Url.Action("DRFList", "DRF"))
+                            @Html.HiddenFor(t => t.DRFTaskAddModel.DRFAddTaskDRFID)
+
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <button type="submit" class="btn btn-primary mr-2">@SharedLocalizer["Save"].Value</button>
+                                    <a class="btn btn-primary" onclick="HideAddTaskModel()">@SharedLocalizer["Cancel"].Value</a>
+                                </div>
+                            </div>
+
+
+                        </div>
+
+
+                    </div>
+                </div>
+
+
+
+            </form>
+        </div>
+
+        @*AddSubTaskModel*@
+        <div id="AddSubTaskModel" class="modal themeModal " role="dialog">
+            <form id="SubTaskForm" method="POST" onsubmit="return AddSubTaskForm(this)">
+
+                <div class="modal-dialog">
+                    <!-- Modal content-->
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h4 class="modal-title">@SharedLocalizer["Add Sub Task"].Value</h4>
+                            <button type="button" class="close" data-dismiss="modal">&times;</button>
+                        </div>
+                        <div class="modal-body">
+
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <div class="form-group required">
+                                       
+                                        @Html.LabelFor(s => s.DRFSubTaskAddModel.DRFAddSubTaskTaskID, new { @class = "control-label" })
+                                        @Html.DropDownListFor(s => s.DRFSubTaskAddModel.DRFAddSubTaskTaskID, new SelectList(string.Empty, "Value", "Text"), "Please select option", htmlAttributes: new { @class = "form-control input-sm f-s-15 bg-eff4f55c w100per", id = "AddSubTaskofTask" })
+                                        @Html.ValidationMessageFor(s => s.DRFSubTaskAddModel.DRFAddSubTaskTaskID, "", new { @class = "text-danger" })
+
+
+                                    </div>
+                                </div>
+                            </div>
+
+
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <div class="form-group required">
+                                        @Html.LabelFor(s => s.DRFSubTaskAddModel.DRFAddSubTaskName, new { @class = "control-label" })
+                                        @Html.EditorFor(s => s.DRFSubTaskAddModel.DRFAddSubTaskName, new { htmlAttributes = new { @autocomplete = "off", @class = "form-control" } })
+                                        @Html.ValidationMessageFor(s => s.DRFSubTaskAddModel.DRFAddSubTaskName, "", new { @class = "text-danger" })
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <div class="form-group required">
+                                        @Html.LabelFor(s => s.DRFSubTaskAddModel.DRFAddSubTaskEmpID, new { @class = "control-label" })
+                                        @Html.DropDownListFor(s => s.DRFSubTaskAddModel.DRFAddSubTaskEmpID, new SelectList(string.Empty, "Value", "Text"), "Please select option", htmlAttributes: new { @class = "form-control input-sm f-s-15 bg-eff4f55c w100per", id = "AddSubTaskOwner" })
+                                        @Html.ValidationMessageFor(s => s.DRFSubTaskAddModel.DRFAddSubTaskEmpID, "", new { @class = "text-danger" })
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <div class="form-group required">
+                                        @Html.LabelFor(s => s.DRFSubTaskAddModel.DRFAddSubTaskStartDate, new { @class = "control-label" })
+                                        <div class="input-group date" id="addSubTaskStartDate" data-target-input="nearest">
+
+                                            @Html.TextBoxFor(s => s.DRFSubTaskAddModel.DRFAddSubTaskStartDate, new { @class = "form-control datetimepicker-input", autocomplete = "off" })
+                                            <div class="input-group-append" data-toggle="datetimepicker">
+                                                <div class="input-group-text"><i class="fa fa-calendar"></i></div>
+                                            </div><br>
+
+                                        </div>
+                                        @Html.ValidationMessageFor(s => s.DRFSubTaskAddModel.DRFAddSubTaskStartDate, "", new { @class = "text-danger" })
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <div class="form-group required">
+                                        @Html.LabelFor(s => s.DRFSubTaskAddModel.DRFAddSubTaskEndDate, new { @class = "control-label" })
+                                        <div class="input-group date" id="addSubTaskEndDate" data-target-input="nearest">
+
+                                            @Html.TextBoxFor(s => s.DRFSubTaskAddModel.DRFAddSubTaskEndDate, new { @class = "form-control datetimepicker-input", autocomplete = "off" })
+                                            <div class="input-group-append" data-toggle="datetimepicker">
+                                                <div class="input-group-text"><i class="fa fa-calendar"></i></div>
+                                            </div><br>
+
+                                        </div>
+                                        @Html.ValidationMessageFor(s => s.DRFSubTaskAddModel.DRFAddSubTaskEndDate, "", new { @class = "text-danger" })
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <div class="form-group required">
+                                        @Html.LabelFor(s => s.DRFSubTaskAddModel.DRFAddSubTaskTaskPriorityID, new { @class = "control-label" })
+                                        @Html.DropDownListFor(s => s.DRFSubTaskAddModel.DRFAddSubTaskTaskPriorityID, new SelectList(string.Empty, "Value", "Text"), "Please select option", htmlAttributes: new { @class = "form-control input-sm f-s-15 bg-eff4f55c w100per", id = "AddSubTaskPriority" })
+                                        @Html.ValidationMessageFor(s => s.DRFSubTaskAddModel.DRFAddSubTaskTaskPriorityID, "", new { @class = "text-danger" })
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <div class="form-group required">
+                                        @Html.LabelFor(s => s.DRFSubTaskAddModel.DRFAddSubTaskTaskStatusID, new { @class = "control-label" })
+                                        @Html.DropDownListFor(s => s.DRFSubTaskAddModel.DRFAddSubTaskTaskStatusID, new SelectList(string.Empty, "Value", "Text"), "Please select option", htmlAttributes: new { @class = "form-control input-sm f-s-15 bg-eff4f55c w100per", id = "AddSubTaskStatus", onchange = "setPercentage(this.value,2)" })
+                                        @Html.ValidationMessageFor(s => s.DRFSubTaskAddModel.DRFAddSubTaskTaskStatusID, "", new { @class = "text-danger" })
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <div class="form-group required">
+                                        @Html.LabelFor(s => s.DRFSubTaskAddModel.DRFAddSubTaskTaskDuration, new { @class = "control-label" })
+                                        @Html.EditorFor(s => s.DRFSubTaskAddModel.DRFAddSubTaskTaskDuration, new { htmlAttributes = new { @autocomplete = "off", @class = "form-control", id = "AddSubTaskDuration", @readonly = "readonly" } })@*disabled = "disabled"*@
+                                        @Html.ValidationMessageFor(s => s.DRFSubTaskAddModel.DRFAddSubTaskTaskDuration, "", new { @class = "text-danger" })
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <div class="form-group required">
+                                        @Html.LabelFor(s => s.DRFSubTaskAddModel.DRFAddSubTaskTotalPercentage, new { @class = "control-label" })
+                                        @Html.EditorFor(s => s.DRFSubTaskAddModel.DRFAddSubTaskTotalPercentage, new { htmlAttributes = new { @autocomplete = "off", @class = "form-control disabledSubTaskPercentage", id = "AddSubTaskPercentage", @min = 0, @max = 100 } })
+                                        @Html.ValidationMessageFor(s => s.DRFSubTaskAddModel.DRFAddSubTaskTotalPercentage, "", new { @class = "text-danger" })
+                                    </div>
+                                </div>
+                            </div>
+
+                            @Html.Hidden("AddSubTaskRedirectTo", Url.Action("DRFList", "DRF"))
+                            @Html.HiddenFor(s => s.DRFSubTaskAddModel.DRFAddSubTaskDRFID)
+
+
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <button type="submit" class="btn btn-primary mr-2">@SharedLocalizer["Save"].Value</button>
+                                    <a class="btn btn-primary" onclick="HideAddSubTaskModel()">@SharedLocalizer["Cancel"].Value</a>
+                                </div>
+                            </div>
+
+
+                        </div>
+
+
+                    </div>
+                </div>
+            </form>
+        </div>
+
+    </section>
+<!-- /.content -->
+</div>
+
+
+
+
+
+<script src="~/dist/js/jquery.treegrid.min.js"></script>
+<script src="~/dist/js/bootstrap-table.min.js"></script>
+<script src="~/dist/js/bootstrap-table-treegrid.min.js"></script>
+<script>
+        var dataTable, getPIDFList;
+
+        $(document).ready(function () {
+
+
+            var dataTable = $('#PIDFTable').DataTable({
+                responsive: true,
+                lengthChange: true,
+                autoWidth: true,
+                paging: false,
+                searching: false,
+                sort: false,
+                "bInfo": false,
+                columnDefs: [
+                    { responsivePriority: 1, targets: -5 },
+                    { responsivePriority: 1, targets: -3 },
+                    { responsivePriority: 100, targets: -4 }
+                ],
+
+                language: {
+                    "emptyTable": "@SharedLocalizer["No data available in table"].Value",
+                    "info": "@SharedLocalizer["Showing _START_ to _END_ of _TOTAL_ entries"].Value",
+                    "infoEmpty":"@SharedLocalizer["Showing 0 to 0 of 0 entries"].Value",
+                    "infoFiltered":"@SharedLocalizer["(filtered from _MAX_ total entries)"].Value",
+                    "lengthMenu":"@SharedLocalizer["Show _MENU_ entries"].Value",
+                    "loadingRecords": "@SharedLocalizer["Loading..."].Value",
+                    "processing": "@SharedLocalizer["Processing..."].Value",
+                    "search": "@SharedLocalizer["Search"].Value",
+                    "zeroRecords":"@SharedLocalizer["No matching records found"].Value",
+                    "paginate": {
+                        "first":"@SharedLocalizer["First"].Value",
+                        "last":"@SharedLocalizer["Last"].Value",
+                        "next": "@SharedLocalizer["Next"].Value",
+                        "previous":"@SharedLocalizer["Previous"].Value"
+                    },
+                }
+            });
+
+            getPIDFList = function () {
+                //$('#loaderContainer').show();
+                var data = {
+                    "DRFID":@ViewBag.DRFID,
+                    "CountryID":@ViewBag.DRFCountryID
+                };
+
+               // console.log(data);
+
+                               $.ajax({
+                    type: "POST",
+                    url: '@Url.Action("AttachedPIDFDetails", "DRF")/',
+                    //contentType: "application/json; charset=utf-8",
+                    dataType: "json",
+                    data:data,
+                    success: function (response) {
+                        //$('#loaderContainer').hide();
+                        var jsonObject = response.data;
+
+                        //console.log(jsonObject);
+
+                        var result = jsonObject.map(function (item) {
+                            var result = [];
+
+                            result.push(item.pidfNo);
+                            result.push(item.projectorProductName);
+                            result.push(item.strengths);
+                            result.push(item.patentStatus);
+                            result.push(item.continentName);
+                            result.push(item.countryName);
+                            result.push(item.packing);
+                            result.push(item.batchSize);
+                            result.push(item.packSize);
+                            result.push(item.cogs);
+                            result.push(item.freight);
+                            result.push(item.totalCIFCost);
+                            result.push(item.cifPricePerUnit);
+                            result.push(item.cifPricePerPack);
+                            result.push(item.profitPerPack);
+                            result.push(item.percentCont);
+                            result.push(item.contributionThreeYear);
+                            result.push(item.costofThreeBatches);
+                            result.push(item.randDCost);
+                            result.push(item.filingCost);
+                            result.push(item.stabilityCost);
+                            result.push(item.totalInvest);
+                            result.push(item.roi);
+                            //result.push(item.PidfStatus);
+                            return result;
+                        });
+                        dataTable.clear();
+                        dataTable.rows.add(result); // add to DataTable instance
+                        dataTable.draw();
+                    },
+                    failure: function () {
+                        $("#PIDFTable").append('@SharedLocalizer["Error when fetching data please contact administrator"].Value');
+                    }
+                });
+            }
+            getPIDFList();
+
+        });
+
+
+    // milestoren data table
+
+    var $table = $('#Milestones')
+    $(function () {
+
+            $table.bootstrapTable({
+                //url: '../dist/js/treegrid.json',
+            url: 'GetDRFTaskSubTask?DRFID=@ViewBag.DRFID',
+            idField: 'projectTaskMappingID',
+            columns: [
+            {
+                field: 'taskName',
+                title: 'Task'
+            }, {
+                field: 'empName',
+                title: 'Task Owner'
+            }, {
+                field: 'taskStatus',
+                title: 'Status',
+                //sortable: true,
+                align: 'center',
+                },
+             {
+                field: 'priority',
+                title: 'Priority',
+                align: 'center',
+            },
+                {
+                field: 'startDate',
+                title: 'Start date'
+            }, {
+                field: 'endDate',
+                title: 'End date'
+            }, {
+                field: 'duration',
+                title: 'Duration'
+            }, {
+                field: 'totalPercentage',
+                title: 'Completed %'
+            }, {
+                field: 'modifiedDate',
+                title: 'Updated date'
+            }
+                , {
+                field: 'action',
+                title: 'Action'
+                    }
+                ],
+            treeShowField: 'taskName',
+            parentIdField: 'parentID',
+                onPostBody: function () {
+                var columns = $table.bootstrapTable('getOptions').columns;
+                if (columns && columns[0][1].visible) {
+                    $table.treegrid({
+                        treeColumn: 0,
+                        onChange: function () {
+                            
+                            $table.bootstrapTable('resetView');
+                        }
+                    })
+                }
+            }
+        });
+
+        $('.fixed-table-loading').hide();
+    });
+
+
+    $(function () {
+
+        $('#DRFTaskSubTaskEditModel_DRFEditStartDate').datetimepicker({
+                format: 'DD-MM-YYYY'
+        });
+        $('#startDate .fa-calendar').click(function () {
+            $("#DRFTaskSubTaskEditModel_DRFEditStartDate").focus();
+        });
+
+
+        $('#DRFTaskSubTaskEditModel_DRFEditEndDate').datetimepicker({
+            format: 'DD-MM-YYYY'
+        });
+        $('#endDate .fa-calendar').click(function () {
+            $("#DRFTaskSubTaskEditModel_DRFEditEndDate").focus();
+        });
+
+
+          $('#DRFTaskAddModel_DRFAddTaskStartDate').datetimepicker({
+                format: 'DD-MM-YYYY'
+        });
+        $('#addTaskStartDate .fa-calendar').click(function () {
+            $("#DRFTaskAddModel_DRFAddTaskStartDate").focus();
+        });
+
+
+        $('#DRFTaskAddModel_DRFAddTaskEndDate').datetimepicker({
+            format: 'DD-MM-YYYY'
+        });
+        $('#addTaskEndDate .fa-calendar').click(function () {
+            $("#DRFTaskAddModel_DRFAddTaskEndDate").focus();
+        });
+
+         $('#DRFSubTaskAddModel_DRFAddSubTaskStartDate').datetimepicker({
+                format: 'DD-MM-YYYY'
+        });
+        $('#addSubTaskStartDate .fa-calendar').click(function () {
+            $("#DRFSubTaskAddModel_DRFAddSubTaskStartDate").focus();
+        });
+
+
+        $('#DRFSubTaskAddModel_DRFAddSubTaskEndDate').datetimepicker({
+            format: 'DD-MM-YYYY'
+        });
+        $('#addSubTaskEndDate .fa-calendar').click(function () {
+            $("#DRFSubTaskAddModel_DRFAddSubTaskEndDate").focus();
+        });
+
+
+        $("#DRFTaskSubTaskEditModel_DRFEditStartDate").on("dp.change", function (e) {
+           // console.log(e.date);
+             var tempMinDate = new Date(e.date);
+            //console.log(tempMinDate);
+            var setminDate = new Date(tempMinDate);
+            setminDate.setDate(tempMinDate.getDate() + 1);
+            //console.log(setminDate);
+             $('#DRFTaskSubTaskEditModel_DRFEditEndDate').data("DateTimePicker").minDate(setminDate);
+             $('#DRFTaskSubTaskEditModel_DRFEditTaskDuration').val(calculateDaysDifference($("#DRFTaskSubTaskEditModel_DRFEditStartDate").val(), $('#DRFTaskSubTaskEditModel_DRFEditEndDate').val()));
+       });
+        $("#DRFTaskSubTaskEditModel_DRFEditEndDate").on("dp.change", function (e) {
+
+             // console.log(e.date);
+             var tempMaxDate = new Date(e.date);
+            //console.log(tempMaxDate);
+            var setmaxDate = new Date(tempMaxDate);
+            setmaxDate.setDate(setmaxDate.getDate() - 1);
+            //console.log(setminDate);
+
+           $('#DRFTaskSubTaskEditModel_DRFEditStartDate').data("DateTimePicker").maxDate(setmaxDate);
+           $('#DRFTaskSubTaskEditModel_DRFEditTaskDuration').val(calculateDaysDifference($("#DRFTaskSubTaskEditModel_DRFEditStartDate").val(), $('#DRFTaskSubTaskEditModel_DRFEditEndDate').val()));
+
+       });
+
+
+        $("#DRFTaskAddModel_DRFAddTaskStartDate").on("dp.change", function (e) {
+           // console.log(e.date);
+             var tempMinDate = new Date(e.date);
+            //console.log(tempMinDate);
+            var setminDate = new Date(tempMinDate);
+            setminDate.setDate(tempMinDate.getDate() + 1);
+            //console.log(setminDate);
+           $('#DRFTaskAddModel_DRFAddTaskEndDate').data("DateTimePicker").minDate(setminDate);
+           $('#AddTaskDuration').val(calculateDaysDifference($("#DRFTaskAddModel_DRFAddTaskStartDate").val(), $('#DRFTaskAddModel_DRFAddTaskEndDate').val()));
+       });
+        $("#DRFTaskAddModel_DRFAddTaskEndDate").on("dp.change", function (e) {
+            // console.log(e.date);
+             var tempMaxDate = new Date(e.date);
+            //console.log(tempMaxDate);
+            var setmaxDate = new Date(tempMaxDate);
+            setmaxDate.setDate(setmaxDate.getDate() - 1);
+            //console.log(setminDate);
+           $('#DRFTaskAddModel_DRFAddTaskStartDate  ').data("DateTimePicker").maxDate(setmaxDate);
+           $('#AddTaskDuration').val(calculateDaysDifference($("#DRFTaskAddModel_DRFAddTaskStartDate").val(), $('#DRFTaskAddModel_DRFAddTaskEndDate').val()));
+       });
+
+
+        $("#DRFSubTaskAddModel_DRFAddSubTaskStartDate").on("dp.change", function (e) {
+           // console.log(e.date);
+             var tempMinDate = new Date(e.date);
+            //console.log(tempMinDate);
+            var setminDate = new Date(tempMinDate);
+            setminDate.setDate(tempMinDate.getDate() + 1);
+            //console.log(setminDate);
+           $('#DRFSubTaskAddModel_DRFAddSubTaskEndDate').data("DateTimePicker").minDate(setminDate);
+           $('#AddSubTaskDuration').val(calculateDaysDifference($("#DRFSubTaskAddModel_DRFAddSubTaskStartDate").val(), $('#DRFSubTaskAddModel_DRFAddSubTaskEndDate').val()));
+
+       });
+        $("#DRFSubTaskAddModel_DRFAddSubTaskEndDate").on("dp.change", function (e) {
+            // console.log(e.date);
+             var tempMaxDate = new Date(e.date);
+            //console.log(tempMaxDate);
+            var setmaxDate = new Date(tempMaxDate);
+            setmaxDate.setDate(setmaxDate.getDate() - 1);
+            //console.log(setminDate);
+           $('#DRFSubTaskAddModel_DRFAddSubTaskStartDate').data("DateTimePicker").maxDate(setmaxDate);
+           $('#AddSubTaskDuration').val(calculateDaysDifference($("#DRFSubTaskAddModel_DRFAddSubTaskStartDate").val(), $('#DRFSubTaskAddModel_DRFAddSubTaskEndDate').val()));
+
+       });
+
+
+    });
+
+    function calculateDaysDifference(start,end) {
+    var d1 = start;
+    var d2 = end;
+        var oneDay = 24 * 60 * 60 * 1000;
+        //console.log(d1);
+         //console.log(d2);
+    var diff = 0;
+    if (d1 && d2) {
+
+        var startDate = new Date(d1.split('-')[2]+'-'+d1.split('-')[1]+'-'+d1.split('-')[0]);
+        var endDate = new Date(d2.split('-')[2] + '-' + d2.split('-')[1] + '-' + d2.split('-')[0]);
+
+        //console.log(startDate);
+        //console.log(endDate);
+        diff = Math.round(Math.abs((endDate.getTime() - startDate.getTime()) / (oneDay)));
+        console.log(diff);
+        }
+        return diff;
+   
+    }
+
+    $('#DRFTaskSubTaskEditModel_DRFEditTaskDuration').on('keypress', function () {
+              var charCode = window.event.keyCode;
+                if (charCode > 31 && (charCode < 48 || charCode > 57)) {
+                    return false;
+              }
+                return true;
+            });
+
+    
+     $('#TaskPercentage').on('keypress', function () {
+              var charCode = window.event.keyCode;
+                if (charCode > 31 && (charCode < 48 || charCode > 57)) {
+                    return false;
+              }
+                return true;
+            });
+
+    function HideUpdateModel() {
+        $('#UpdateModel').modal('hide');
+    }
+
+    function Delete(ProjectMappingID) {
+        $('#DeleteModel').modal('show');
+        document.getElementById('StepIDForDelete').value=ProjectMappingID
+    }
+
+    function HideDeleteModel() {
+        $('#DeleteModel').modal('hide');
+    }
+
+
+    function DeleteTaskSubTask() {
+        var tempInAtiveID = $('#StepIDForDelete').val();
+
+        var data = {
+            "ProjectMappingID":tempInAtiveID
+        };
+       // var url = //$("#DeleteRedirectTo").val();
+        var drfID = '@ViewBag.DRFProductID';
+        var url = "/DRF/DRFShowDetails?Id=" + drfID;
+       
+         $.ajax({
+                    type: "POST",
+                    url : '@Url.Action("DeleteDRFTaskSubTaskDetails", "DRF")/', 
+                    //contentType: "application/json; charset=utf-8",
+                    dataType: "json",
+                    data: data,
+                    success: function (response) {
+                        //console.log(response);
+                        if (response.data === "success") {
+                            $('#DeleteModel').modal('hide');
+                            openCommonModal('successModal modal-sm', '@Html.Raw(SharedLocalizer["Success"].Value)', '@Html.Raw(SharedLocalizer["Record has been Deleted successfully."].Value)', true);
+                            setTimeout(function(){ location.href = url; }, 2000);
+
+                        }
+                        else {
+                            openCommonModal('alertModal modal-sm', '@SharedLocalizer["Error"].Value', result.message, false);
+                        }
+
+                    },
+                    failure: function () {
+
+                    }
+                });
+
+
+
+
+
+
+
+    }
+
+
+
+    function Edit(ProjectMappingID) {
+        $('#UpdateModel').modal('show');
+
+        //console.log(ProjectMappingID);
+
+        var data = {
+            "ProjectMappingID":ProjectMappingID
+        };
+           $.ajax({
+                    type: "POST",
+                    url: '@Url.Action("GetDRFTaskSubTaskDetailsForEdit", "DRF")/',
+                    //contentType: "application/json; charset=utf-8",
+                    dataType: "json",
+                    data: data,
+                    success: function (response) {
+                       // console.log(response);
+                        $("#DRFTaskSubTaskEditModel_DRFEditProjectTaskMappingID").val(response.data.drfEditProjectTaskMappingID);
+                        $('#DRFTaskSubTaskEditModel_DRFEditTaskName').val(response.data.drfEditTaskName);
+
+                      
+                        $('#TaskOwner').empty().append(
+								"<option value=''>Please select option</option>"
+							);
+                        $.each(response.data.taskOwner, function (i, List) {
+                    $("#TaskOwner").append('<option value="' + List.empID + '">' +
+                         List.empName + '</option>');
+                    });
+
+                        $('#TaskOwner option[value="' + response.data.drfEditEmpID + '"]').attr("selected", true); 
+
+                         $('#TaskPriority').empty().append(
+								"<option value=''>Please select option</option>"
+                        );
+
+                        $.each(response.data.priority, function (i, List) {
+                    $("#TaskPriority").append('<option value="' + List.priorityID + '">' +
+                         List.priorityName + '</option>');
+                    });
+                    $('#TaskPriority option[value="' + response.data.drfEditPriorityID + '"]').attr("selected", true);
+
+                         $('#TaskStatus').empty().append(
+								"<option value=''>Please select option</option>"
+                        );
+                        $.each(response.data.projectStatus, function (i, List) {
+                    $("#TaskStatus").append('<option value="' + List.projectStatusID + '">' +
+                         List.status + '</option>');
+                    });
+                    $('#TaskStatus option[value="' + response.data.drfEditTaskStatusID + '"]').attr("selected", true);
+
+                        var tempstartDate = response.data.drfEditStartDate.split('T')[0];
+                        var tempendDate = response.data.drfEditEndDate.split('T')[0];
+
+                        $("#DRFTaskSubTaskEditModel_DRFEditStartDate").val(tempstartDate.split('-')[2]+'-'+tempstartDate.split('-')[1]+'-'+tempstartDate.split('-')[0]);
+                        $("#DRFTaskSubTaskEditModel_DRFEditEndDate").val(tempendDate.split('-')[2] + '-' + tempendDate.split('-')[1] + '-' + tempendDate.split('-')[0]);
+
+                        $("#DRFTaskSubTaskEditModel_DRFEditTaskDuration").val(response.data.drfEditTaskDuration);
+                       
+
+                        if (response.data.drfEditTaskStatusID == 1) {
+                            $(".disabledPercentage").prop("readOnly", true);
+                            $("#TaskPercentage").val(response.data.drfEditTotalPercentage);
+                        } else if (response.data.drfEditTaskStatusID == 11) {
+                             $(".disabledPercentage").prop("readOnly", false);
+                             $("#TaskPercentage").val(response.data.drfEditTotalPercentage);
+                        }
+                        else if (response.data.drfEditTaskStatusID == 8) {
+                            $(".disabledPercentage").prop("readOnly", true);
+                             $("#TaskPercentage").val(response.data.drfEditTotalPercentage);
+                        }
+
+
+                    },
+                    failure: function () {
+
+                    }
+                });
+
+    }
+
+    function SubmitForm(form) {
+           // $("#DRFTaskSubTaskEditModel_DRFEditTaskDuration").attr("value",$("#DRFTaskSubTaskEditModel_DRFEditTaskDuration").val());
+
+        console.log($(form).serialize());
+        // var url = $("#RedirectTo").val();
+         var drfID = '@ViewBag.DRFProductID';
+        var url = "/DRF/DRFShowDetails?Id=" + drfID;
+         //console.log("Submit function call");
+            $.validator.unobtrusive.parse(form);
+            if ($(form).valid()) {
+                $.ajax({
+                    type : "POST",
+                    url : '@Url.Action("UpdateDRFTaskSubTaskDetails", "DRF")/', 
+                    data : $(form).serialize(),
+                    success: function (result) {
+                        //console.log(result);
+                        if (result.data === "success") {
+                            openCommonModal('successModal modal-sm', '@Html.Raw(SharedLocalizer["Success"].Value)', '@Html.Raw(SharedLocalizer["Record has been updated successfully."].Value)', true);
+                            setTimeout(function(){ location.href = url; }, 2000);
+
+                        }
+                        else {
+                            openCommonModal('alertModal modal-sm', '@SharedLocalizer["Error"].Value', result.message, false);
+                        }
+                    }
+                });
+            }
+            return false;
+    }
+
+
+
+    //function SaveTaskSubTask() {
+    //    $('#UpdateModel').modal('hide');
+    //}
+    function CloseTaskSubTask() {
+        $('#UpdateModel').modal('hide');
+    }
+
+
+    function AddTaskSubTask() {
+        $('#AddModel').modal('show');
+    }
+
+     $('#AddTaskDuration').on('keypress', function () {
+              var charCode = window.event.keyCode;
+                if (charCode > 31 && (charCode < 48 || charCode > 57)) {
+                    return false;
+              }
+                return true;
+            });
+
+    
+     $('#AddTaskPercentage').on('keypress', function () {
+              var charCode = window.event.keyCode;
+                if (charCode > 31 && (charCode < 48 || charCode > 57)) {
+                    return false;
+              }
+                return true;
+            });
+
+
+
+
+    function ShowAddTaskForm() {
+        $('#AddTaskModel').modal('show');
+        $('#DRFTaskAddModel_DRFAddTaskDRFID').val(@ViewBag.DRFID);
+         $.ajax({
+                    type: "POST",
+                    url: '@Url.Action("GetDropdownsForAddDRFTask", "DRF")/',
+                    //contentType: "application/json; charset=utf-8",
+                    dataType: "json",
+                   // data: data,
+                    success: function (response) {
+                        //console.log(response);
+
+                      $('#AddTaskOwner').empty().append(
+								"<option value=''>Please select option</option>"
+                        );
+                        
+                    $.each(response.data.taskOwner, function (i, List) {
+                    $("#AddTaskOwner").append('<option value="' + List.empID + '">' +
+                         List.empName + '</option>');
+                    });
+
+                     $('#AddTaskPriority').empty().append(
+								"<option value=''>Please select option</option>"
+                        );
+
+                        $.each(response.data.priority, function (i, List) {
+                    $("#AddTaskPriority").append('<option value="' + List.priorityID + '">' +
+                         List.priorityName + '</option>');
+                        });
+
+                  $('#AddTaskStatus').empty().append(
+								"<option value=''>Please select option</option>"
+                        );
+
+                        $.each(response.data.projectStatus, function (i, List) {
+                    $("#AddTaskStatus").append('<option value="' + List.projectStatusID + '">' +
+                         List.status + '</option>');
+                    });
+                  
+
+
+                    },
+                    failure: function () {
+
+                    }
+                });
+
+
+
+
+    }
+
+    function HideAddTaskModel() {
+        $('#AddTaskModel').modal('hide');
+    }
+
+
+    function AddTaskForm(form) {
+        //var url= $("#AddTaskRedirectTo").val();
+        var drfID = '@ViewBag.DRFProductID';
+        var url = "/DRF/DRFShowDetails?Id=" + drfID;
+         console.log("Add Task Submit function call");
+            $.validator.unobtrusive.parse(form);
+            if ($(form).valid()) {
+                $.ajax({
+                    type : "POST",
+                    url : '@Url.Action("AddDRFTaskDetails", "DRF")/', 
+                    data : $(form).serialize(),
+                    success: function (result) {
+                       // console.log(result);
+                        if (result.data === "success") {
+                            openCommonModal('successModal modal-sm', '@Html.Raw(SharedLocalizer["Success"].Value)', '@Html.Raw(SharedLocalizer["Record has been added successfully."].Value)', true);
+                            setTimeout(function(){ location.href = url; }, 2000);
+                        }
+                        else {
+                            openCommonModal('alertModal modal-sm', '@SharedLocalizer["Error"].Value', result.message, false);
+                        }
+                    }
+                });
+            }
+            return false;
+    }
+
+
+     $('#AddSubTaskDuration').on('keypress', function () {
+              var charCode = window.event.keyCode;
+                if (charCode > 31 && (charCode < 48 || charCode > 57)) {
+                    return false;
+              }
+                return true;
+            });
+
+    
+     $('#AddSubTaskPercentage').on('keypress', function () {
+              var charCode = window.event.keyCode;
+                if (charCode > 31 && (charCode < 48 || charCode > 57)) {
+                    return false;
+              }
+                return true;
+            });
+
+
+
+
+    function ShowAddSubTaskForm() {
+        $('#AddSubTaskModel').modal('show');
+         $('#DRFSubTaskAddModel_DRFAddSubTaskDRFID').val(@ViewBag.DRFID);
+         $.ajax({
+                    type: "POST",
+                    @*url: '@Url.Action("GetDropdownsForAddSubTask", "DRF")/',*@
+                    url: "/DRF/GetDropdownsForAddSubTask?Id="+@ViewBag.DRFID,
+                    //contentType: "application/json; charset=utf-8",
+                    dataType: "json",
+                   // data: data,
+                    success: function (response) {
+                        //console.log(response);
+
+                        $('#AddSubTaskofTask').empty().append(
+								"<option value=''>Please select option</option>"
+                        );
+                        
+                    $.each(response.data.mainTaskList, function (i, List) {
+                    $("#AddSubTaskofTask").append('<option value="' + List.mainTaskID + '">' +
+                         List.mainTaskName + '</option>');
+                    });
+
+                      $('#AddSubTaskOwner').empty().append(
+								"<option value=''>Please select option</option>"
+                        );
+                        
+                    $.each(response.data.taskOwner, function (i, List) {
+                    $("#AddSubTaskOwner").append('<option value="' + List.empID + '">' +
+                         List.empName + '</option>');
+                    });
+
+                     $('#AddSubTaskPriority').empty().append(
+								"<option value=''>Please select option</option>"
+                        );
+
+                        $.each(response.data.priority, function (i, List) {
+                    $("#AddSubTaskPriority").append('<option value="' + List.priorityID + '">' +
+                         List.priorityName + '</option>');
+                        });
+
+                  $('#AddSubTaskStatus').empty().append(
+								"<option value=''>Please select option</option>"
+                        );
+
+                        $.each(response.data.projectStatus, function (i, List) {
+                    $("#AddSubTaskStatus").append('<option value="' + List.projectStatusID + '">' +
+                         List.status + '</option>');
+                    });
+                  
+
+
+                    },
+                    failure: function () {
+
+                    }
+                });
+
+
+
+
+    }
+    function HideAddSubTaskModel() {
+        $('#AddSubTaskModel').modal('hide');
+    }
+
+     function AddSubTaskForm(form) {
+        //var url= $("#AddSubTaskRedirectTo").val();
+         var drfID = '@ViewBag.DRFProductID';
+        var url = "/DRF/DRFShowDetails?Id=" + drfID;
+         console.log("Add Sub Task Submit function call");
+            $.validator.unobtrusive.parse(form);
+            if ($(form).valid()) {
+                $.ajax({
+                    type : "POST",
+                    url : '@Url.Action("AddDRFSubTaskDetails", "DRF")/', 
+                    data : $(form).serialize(),
+                    success: function (result) {
+                        //console.log(result);
+                        if (result.data === "success") {
+                            openCommonModal('successModal modal-sm', '@Html.Raw(SharedLocalizer["Success"].Value)', '@Html.Raw(SharedLocalizer["Record has been added successfully."].Value)', true);
+                            setTimeout(function(){ location.href = url; }, 2000);
+                        }
+                        else {
+                            openCommonModal('alertModal modal-sm', '@SharedLocalizer["Error"].Value', result.message, false);
+                        }
+                    }
+                });
+            }
+            return false;
+    }
+
+
+
+
+    function setPercentage(statusID, idx) {
+        if (statusID == 1) {
+            //Completed Status
+            if (idx == 2) {
+                $(".disabledSubTaskPercentage").prop("readOnly", true);
+                $('#AddSubTaskPercentage').val('100');
+            } else if (idx == 1) {
+                $(".disabledTaskPercentage").prop("readOnly", true);
+                $('#AddTaskPercentage').val('100');
+            }
+            else if (idx == 0) {
+                $(".disabledPercentage").prop("readOnly", true);
+                $('#TaskPercentage').val('100');
+            }
+        }
+        else if (statusID == 11) {
+            //InProgress status
+            if (idx == 2) {
+                $(".disabledSubTaskPercentage").prop("readOnly", false);
+                $('#AddSubTaskPercentage').val('0');
+            } else if (idx == 1) {
+                $(".disabledTaskPercentage").prop("readOnly", false);
+                $('#AddTaskPercentage').val('0');
+            }
+            else if (idx == 0) {
+                $(".disabledPercentage").prop("readOnly", false);
+                $('#TaskPercentage').val('0');
+            }
+        }
+        else if (statusID == 8) {
+            //Initial status
+            if (idx == 2) {
+                $(".disabledSubTaskPercentage").prop("readOnly", true);
+                $('#AddSubTaskPercentage').val('0');
+            } else if (idx == 1) {
+                $(".disabledTaskPercentage").prop("readOnly", true);
+                $('#AddTaskPercentage').val('0');
+            }
+            else if (idx == 0) {
+                $(".disabledPercentage").prop("readOnly", true);
+                $('#TaskPercentage').val('0');
+            }
+        }
+        else {
+            if (idx == 2) {
+                $(".disabledSubTaskPercentage").prop("readOnly", false);
+                $('#AddSubTaskPercentage').val('0');
+            } else if (idx == 1) {
+                $(".disabledTaskPercentage").prop("readOnly", false);
+                $('#AddTaskPercentage').val('0');
+            }
+            else if (idx == 0) {
+                $(".disabledPercentage").prop("readOnly", false);
+                $('#TaskPercentage').val('0');
+            }
+        }
+    }
+</script>
+
+
+
+
+
+
+
+

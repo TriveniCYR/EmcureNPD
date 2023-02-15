@@ -1,0 +1,159 @@
+﻿@using Microsoft.Extensions.Localization
+@inject IStringLocalizer<SharedResource> SharedLocalizer
+@model EmcureCERI.Web.Models.RegisteredPatientViewModel
+@{
+    ViewData["Title"] = @SharedLocalizer["Registered Patients"].Value;
+}
+<section class="section">
+    <div class="container-fluid">
+        <h4>@SharedLocalizer["Registered Patients List"].Value</h4>
+        <br>
+        <div class="tabsContainer tblContainer">
+            <ul class="nav nav-pills toptabs small priscriberTabs" style="position: relative;">
+                <li>
+                    @SharedLocalizer["Filter By Prescriber"].Value
+                </li>
+                <li>
+                    @Html.DropDownListFor(model => model.Prescriber, new SelectList(Model.PrescriberList, "Value", "Text", ViewBag.Selected), htmlAttributes: new { @class = "form-control input-sm", id = "prescriberDropdown" })
+                </li>
+                <li style="right: 5px;position: absolute;"> <a class='pull-right input-sm' style="cursor:pointer;padding-top: 5px;" onclick="callExcel(0);"><span class='glyphicon glyphicon-download-alt'></span> &nbsp;&nbsp; @SharedLocalizer["Download All Patient Data"].Value</a></li>
+            </ul>
+            <div class="tab-content">
+                <div class="table-responsive tab-pane  active">
+                    <table id="addPatientTableId" class="table stripe row-border order-column" style="width:100%">
+                        <thead>
+                            <tr>
+                                <th style="width: 80px;">@SharedLocalizer["Patient Id"].Value</th>
+                                <th>@SharedLocalizer["First Name"].Value</th>
+                                <th>@SharedLocalizer["Last Name"].Value</th>
+                                <th style="width: 120px;">@SharedLocalizer["Status"].Value</th>
+                                <th style="width: 120px;">@SharedLocalizer["Consent Form"].Value</th>
+                                <th style="width: 120px;">@SharedLocalizer["Baseline Form"].Value</th>
+                                <th style="width:50px;">@SharedLocalizer["Action"].Value</th>
+                            </tr>
+                        </thead>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div id="patientViewModal" class="modal themeModal " role="dialog">
+        <div class="modal-dialog">
+            <!-- Modal content-->
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <h4 class="modal-title"></h4>
+                </div>
+                <div class="modal-body">
+                    <p></p>
+                </div>
+            </div>
+        </div>
+        @await Html.PartialAsync("../Pdf/_PdfConsentForm")
+    </div>
+</section>
+@section Scripts {
+    <script>
+        var Popup, dataTable;
+        var getPrescriber;
+
+        $(document).ready(function () {
+
+            $('#prescriberDropdown').on('change', function () {
+                getPrescriber($(this).find(":selected").val());
+            });
+            if ($.fn.DataTable.isDataTable('#addPatientTableId')) {
+                $('#addPatientTableId').dataTable().fnDestroy();
+                $('#addPatientTableId').dataTable().empty();
+            }
+
+            var itm = $("#addPatientTableId_filter input")
+
+            itm.unbind();
+            itm.keyup(function (e) {
+                if (e.keyCode == 13) {
+                    dataTable.search(this.value).draw();
+                }
+            });
+
+            getPrescriber = function (id) {
+                dataTable = $('#addPatientTableId').DataTable(
+                    {
+                        "serverSide": true,
+                        "destroy": true,
+                        "processing": true,
+                        "ajax":
+                        {
+                            url: "/Admin/GetPatientList?prescriberId=" + id,
+                            method: "POST"
+                        },
+                        "columns": [
+                            { "data": "UniqueId", "name": "UniqueId", "autoWidth": true },
+                            { "data": "FirstName", "name": "FirstName", "autoWidth": true },
+                            { "data": "LastName", "name": "LastName", "autoWidth": true },
+                            { "data": "FStatus", "name": "FStatus", "autoWidth": true },
+                            { "data": "CStatus", "name": "FStatus", "autoWidth": true },
+                            { "data": "BStatus", "name": "FStatus", "autoWidth": true },
+                            { "data": "Action", "name": "Action", "autoWidth": true }
+                        ]
+                    }
+                );
+            }
+
+            getPrescriber($('#prescriberDropdown').find(":selected").val());
+
+        });
+
+
+        var specialElementHandlers = {
+            // element with id of "bypass" - jQuery style selector
+            '.no-export': function (element, renderer) {
+                // true = "handled elsewhere, bypass text extraction"
+                return true;
+            }
+        };
+
+        function callExcel(id) {
+            $('#loaderContainer').show();
+            $.get('@Url.Action("PatientDetailsExport", "Prescriber")/' + id)
+                .done(function (response) {
+                    $('#loaderContainer').hide();
+                    window.location = '/Prescriber/ExcelDownload?fileName=' + response.data;
+                });
+        }
+
+        function PopupForm(url) {
+            $.get(url)
+                .done(function (response) {
+                    $('#patientViewModal .modal-title').html('@SharedLocalizer["Informed Consent Form"].Value');
+                    $('#patientViewModal .modal-body').html(response);
+                    $('#patientViewModal').modal('show');
+                });
+        }
+
+        function PopupFormDoc(url) {
+            $.get(url)
+                .done(function (response) {
+                    $('#patientViewModal .modal-title').html('@SharedLocalizer["Informed Consent Form Upload"].Value');
+                    $('#patientViewModal .modal-body').html(response);
+                    $('#patientViewModal').modal('show');
+                });
+        }
+
+        function Download(id) {
+            if (id != null) {
+                 var getUrl = '@Url.Action("DownloadById", "FileUpload")/' + id;
+             $.ajax({
+                type: "GET",
+                url: '@Url.Action("DownloadById", "FileUpload")/' + id,
+                 success: function (data)
+                 {
+                    window.location = getUrl;
+                 }
+            });
+            }
+        }
+
+    </script>
+}

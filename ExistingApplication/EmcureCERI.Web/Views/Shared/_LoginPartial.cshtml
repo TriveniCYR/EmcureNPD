@@ -1,0 +1,330 @@
+@using Microsoft.AspNetCore.Identity
+@using EmcureCERI.Web.Models
+@using Microsoft.AspNetCore.Http;
+@inject Microsoft.Extensions.Localization.IStringLocalizer<SharedResource> SharedLocalizer
+@inject SignInManager<ApplicationUser> SignInManager
+@inject UserManager<ApplicationUser> UserManager
+
+
+
+
+
+<div id="ShowAllNotificationViewModal" class="modal themeModal " role="dialog">
+    <div class="modal-dialog modal-lg">
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title"><i class="fa fa-bell mr-1 color-primary bell-ringing"></i> All Notification</h5>
+                <button type="button" class="close" onclick="HideAllNotification()">&times;</button>
+            </div>
+            <div class="modal-body pt5">
+                <div id="showAllNotification">
+
+                </div>
+
+            </div>
+            <div class="modal-footer text-center">
+                <button type="button" class="btn btn-danger" onclick="HideAllNotification()" title="Close">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+@if (SignInManager.IsSignedIn(User))
+{
+    <ul class="navbar-nav ml-auto right-menu">
+        <form asp-area="" asp-controller="Account" asp-action="Logout" style="display: contents;" method="post" id="logoutForm" class="navbar-right">
+
+            @*@if (User.IsInRole("Line Manager") || User.IsInRole("HOD Of Dossier") || User.IsInRole("Prescriber") || User.IsInRole("Senior Project Manager"))
+                {*@
+            @*<li class="nav-item dropdown">
+                    <a class="nav-link" data-toggle="dropdown" href="#">
+                        <i class="fas fa-book-medical"></i>
+                    </a>
+                    <div class="dropdown-menu dropdown-menu-lg dropdown-menu-right">
+                        @Html.ActionLink("Report View", "Reports", "Reports", null, new { @class = "dropdown-item" })
+                        <div class="dropdown-divider "></div>
+                        @Html.ActionLink("Molecule TimeLine Reports", "TimelineReports", "Reports", null, new { @class = "dropdown-item" })
+                    </div>
+
+                </li>*@
+
+            <li class="nav-item dropdown">
+                <a class="nav-link" data-toggle="dropdown" href="#" title="Masters">
+                    <i class="fas fa-cogs"></i>
+                </a>
+                <div class="dropdown-menu dropdown-menu-lg dropdown-menu-right ">
+                    <div class="master-dropdown">
+                        @Html.ActionLink("Master Formulation", "Master_Formulation", "Masters", null, new { @class = "dropdown-item" })
+                        <div class="dropdown-divider "></div>
+                        @Html.ActionLink("Master ProductManufacture", "Master_ProductManufacture", "Masters", null, new { @class = "dropdown-item" })
+
+                        <div class="dropdown-divider "></div>
+                        @Html.ActionLink("Master PackSize", "Master_PackSize", "Masters", null, new { @class = "dropdown-item" })
+
+                        <div class="dropdown-divider "></div>
+                        @Html.ActionLink("Master PackStyle", "Master_PackStyle", "Masters", null, new { @class = "dropdown-item" })
+
+                        <div class="dropdown-divider "></div>
+                        @Html.ActionLink("Master Strength", "Master_Strength", "Masters", null, new { @class = "dropdown-item" })
+
+                        <div class="dropdown-divider "></div>
+                        @Html.ActionLink("Master Modeofshipment", "Master_Modeofshipment", "Masters", null, new { @class = "dropdown-item" })
+
+                        <div class="dropdown-divider "></div>
+                        @Html.ActionLink("Master ModeofFeesPayment", "Master_ModeofFeesPayment", "Masters", null, new { @class = "dropdown-item" })
+
+                        <div class="dropdown-divider "></div>
+                        @Html.ActionLink("Master Incoterms", "Master_Incoterms", "Masters", null, new { @class = "dropdown-item" })
+
+                        <div class="dropdown-divider "></div>
+                        @Html.ActionLink("Master DossierTemplate", "Master_DossierTemplate", "Masters", null, new { @class = "dropdown-item" })
+
+                        <div class="dropdown-divider "></div>
+                        @Html.ActionLink("Master APISite", "Master_APISite", "Masters", null, new { @class = "dropdown-item" })
+
+                        <div class="dropdown-divider "></div>
+                        @Html.ActionLink("Master ManufacturingSite", "Master_ManufacturingSite", "Masters", null, new { @class = "dropdown-item" })
+
+                        <div class="dropdown-divider "></div>
+                        @Html.ActionLink(" Master ArtworkType", "Master_ArtworkType", "Masters", null, new { @class = "dropdown-item" })
+
+                        <div class="dropdown-divider "></div>
+                        @Html.ActionLink("Master GMPAvailability", "Master_GMPAvailability", "Masters", null, new { @class = "dropdown-item" })
+                        <div class="dropdown-divider "></div>
+                        @if (User.IsInRole("Prescriber"))
+                        {
+                            @Html.ActionLink("Master Product", "Index", "ProductMasterData", null, new { @class = "dropdown-item" })
+                            <div class="dropdown-divider "></div>
+                        }
+                        @if (User.IsInRole("Admin") || User.IsInRole("Prescriber"))
+                        {
+                            @Html.ActionLink("DRF Enabled/Disabled", "DRFEnableDisabledList", "Masters", null, new { @class = "dropdown-item" })
+                            <div class="dropdown-divider "></div>
+                        }
+
+                    </div>
+
+                    @*@Html.ActionLink("Product Master Data Upload", "Index", "UploadProductMasterData", null, new { @class = "dropdown-item" })*@
+                    @*<div class="dropdown-divider "></div>*@
+                </div>
+            </li>
+            @*}*@
+            <!-- Messages Dropdown Menu -->
+            @*<li class="nav-item dropdown">
+                    <a class="nav-link" data-toggle="dropdown" href="#" title="Notification">
+                        <i class="far fa-bell"></i>
+                        <span id="totalcount" class="badge badge-danger navbar-badge"></span>
+                    </a>
+                    <div class="dropdown-menu dropdown-menu-lg dropdown-menu-right">
+                        <div id="shownotification" style="height: 300px; overflow-y: scroll;">
+                        </div>
+                        <a href="#" class="dropdown-item dropdown-footer">See All Messages</a>
+                    </div>
+                </li>*@
+
+            <li class="nav-item dropdown">
+                <a onclick="NotificationClicked();" class="nav-link" data-toggle="dropdown" href="#">
+                    <i class="far fa-bell"></i>
+                    <span id="totalcount" class="badge badge-danger navbar-badge"></span>
+                </a>
+                <div class="dropdown-menu dropdown-menu-lg dropdown-menu-right">
+                    <div id="shownotification" style="max-height: 300px; overflow-y: scroll;">
+                    </div>
+                    <div style="padding:10px;" class="text-center">
+                        <a onclick="ShowAllNotification()" style="cursor:pointer">See All Messages</a>
+                    </div>
+                </div>
+            </li>
+            <li class="nav-item dropdown">
+                <a class="nav-link" data-toggle="dropdown" href="#" title="User">
+                    <i class="far fa-user"></i>
+                </a>
+                <div class="dropdown-menu dropdown-menu-lg dropdown-menu-right">
+                    <span class="dropdown-item dropdown-header">@Context.Session.GetString("CurrentUserName")</span>
+                    <div class="dropdown-divider"></div>
+                    <a asp-area="" class="dropdown-item" asp-controller="Manage" asp-action="Index">
+                        <i class="fas fa-id-badge mr-2"></i> @SharedLocalizer["Manage Profile"].Value
+                    </a>
+                    <div class="dropdown-divider "></div>
+                    <a asp-area="" class="dropdown-item" asp-controller="Manage" asp-action="contactdetails">
+                        <i class="fas fa-envelope mr-2"></i> @SharedLocalizer["Contact Details"].Value
+                    </a>
+                    <div class="dropdown-divider "></div>
+                    <a class="dropdown-item" href="javascript:void(0);" onclick="document.getElementById('logoutForm').submit()" type="submit">
+                        <i class="fas fa-sign-out-alt mr-2"></i> @SharedLocalizer["Logout"].Value
+                    </a>
+                    <div class="dropdown-divider"></div>
+
+                </div>
+            </li>
+
+            <li class="nav-item">
+                <a class="nav-link fullscreen" data-widget="fullscreen" href="#" role="button" title="Expand Screen">
+                    <i class="fas fa-expand-arrows-alt"></i>
+                </a>
+            </li>
+
+        </form>
+    </ul>
+}
+else
+{
+    <ul class="navbar-nav ml-auto">
+        <li><a asp-area="" asp-controller="Account" asp-action="Register">@SharedLocalizer["Register"].Value</a></li>
+        <li><a asp-area="" asp-controller="Account" asp-action="Login">@SharedLocalizer["Log in"].Value</a></li>
+    </ul>
+}
+
+
+<script>
+    $(document).ready(function () {
+
+        $('#ShowAllNitificationViewModal').hide();
+        $.ajax({
+            type : "POST",
+            url: '@Url.Action("GetNotification", "RealtimeNotification")/',
+            dataType: "json",
+            success: function (result) {
+                $("#totalcount").html(result.data.top5realtimeNotificationModels.length);
+
+
+                if ($('#totalcount').text() == 0) {
+
+					$('#totalcount').hide();
+				}
+
+                    var _binddatas = '';
+                    result.data.top5uPrealtimeNotificationModels.forEach(function (item) {
+                        //_binddatas += "<div><a href='#' class='dropdown-item'>" +
+                        _binddatas += "<div><a href='#' class='dropdown-item'>" +
+                            "<div class='media'>" +
+                            "<div class='media-body'>" +
+                            "<h3 class='dropdown-item-title'>" +
+                            item.userName +
+                            "<span class='float-right text-sm text-warning'><i class='fas fa-star'></i></span>" +
+                            "</h3>" +
+                            "<p class='text-sm'>" + item.userMessage + "</p>" +
+                            "<p class='text-sm text-muted'><i class='far fa-clock mr-1'></i>" + item.messageTime + "</p>" +
+                            "</div>" +
+                            "</div>" +
+                            "</a ></div>" +
+                            "<div class='dropdown-divider'></div>"
+                    })
+                    $("#shownotification").html(_binddatas);
+
+                var _allData='';
+                result.data.realtimeNotificationModels.forEach(function (item) {
+                   // _allData += "<div><a href='#' class='dropdown-item'>" +
+                    _allData += "<div>" +
+                        "<div class='media'>" +
+                        "<div class='media-body'>" +
+                        "<h3 class='dropdown-item-title'>" +
+                        item.userName +
+                        "<span class='float-right text-sm text-warning'><i class='fas fa-star'></i></span>" +
+                        "</h3>" +
+                        "<p class='text-sm'>" + item.userMessage + "</p>" +
+                        "<p class='text-sm text-muted'><i class='far fa-clock mr-1'></i>" + item.messageTime + "</p>" +
+                        "</div>" +
+                        "</div>" +
+                        "</a ></div>" +
+                        "<div class='dropdown-divider'></div>"
+                })
+                $("#showAllNotification").html(_allData);
+
+            }
+        });
+
+
+
+    });
+
+    function ShowAllNotification() {
+             $('#ShowAllNotificationViewModal').show();
+    }
+
+    function HideAllNotification() {
+        $('#ShowAllNotificationViewModal').hide();
+    }
+
+
+    function clicked(projectid) {
+
+        $("#totalcount").empty();
+
+        $.ajax({
+            type: "POST",
+            url: '/RealtimeNotification/UpdateViewNotification?ProjectID=' + projectid,
+            contentType: "application/json; charset=utf-8",
+            dataType: "json",
+
+            success: function (response) {
+
+            },
+            failure: function () {
+
+            }
+        });
+    }
+
+    function NotificationClicked() {
+        $("#totalcount").empty();
+
+		$.ajax({
+			type: "POST",
+			url: '/RealtimeNotification/UpdateAllNotification',
+			contentType: "application/json; charset=utf-8",
+			dataType: "json",
+
+			success: function (response) {
+
+			},
+			failure: function () {
+
+			}
+		});
+	}
+
+    //let totlcont = document.getElementById('totalcount');
+    //totlcont = totlcont.nodeValue;
+    //if (totlcont == null) {
+    //    $("#totalcount").hide();
+    //    alert(totlcont);
+    //}
+    //else {
+    //     $("#totalcount").show();
+    //}
+
+
+</script>
+
+@*<script>
+    $(document).ready(function () {
+        $.ajax({
+            type : "POST",
+            url: '@Url.Action("GetNotification", "RealtimeNotification")/',
+            dataType: "json",
+            success: function (result) {
+                $("#totalcount").html(result.data.length);
+                var _binddatas='';
+                result.data.forEach(function (item) {
+                    _binddatas += "<div><a href='#' class='dropdown-item'>" +
+                        "<div class='media'>" +
+                        "<div class='media-body'>" +
+                        "<h3 class='dropdown-item-title'>" +
+                        item.userName +
+                        "<span class='float-right text-sm text-warning'><i class='fas fa-star'></i></span>" +
+                        "</h3>" +
+                        "<p class='text-sm'>" + item.userMessage + "</p>" +
+                        "<p class='text-sm text-muted'><i class='far fa-clock mr-1'></i>" + item.messageTime + "</p>" +
+                        "</div>" +
+                        "</div>" +
+                        "</a ></div>" +
+                        "<div class='dropdown-divider'></div>"
+                })
+                $("#shownotification").html(_binddatas);
+            }
+        });
+    });
+</script>*@

@@ -1,0 +1,613 @@
+﻿@using Microsoft.AspNetCore.Http
+@inject IHttpContextAccessor HttpContextAccessor
+@inject Microsoft.Extensions.Localization.IStringLocalizer<SharedResource> SharedLocalizer
+@model EmcureCERI.Web.Models.MasterProductDataModel
+@{
+
+    ViewData["Title"] = "Product Data";
+}
+<link rel="stylesheet" href="~/plugins/select2/css/select2.min.css">
+<link rel="stylesheet" href="~/plugins/select2-bootstrap4-theme/select2-bootstrap4.min.css">
+<script src="~/plugins/select2/js/select2.full.min.js"></script>
+
+<style>
+    .select2-container .select2-selection--single {
+        height: 37px !important;
+    }
+     
+</style>
+
+<div class="content-wrapper">
+    <section class="content pt-5">
+        <div class="container-fluid">
+            <div class="row">
+                <section class="col-lg-12">
+                    <!-- Custom tabs (Charts with tabs)-->
+                    <div class="card">
+                        <div class="card-header">
+                            <h3 class="card-title">
+                                <i class="far fa-list-alt mr-2"></i>Master Product Data List
+                            </h3>
+                            <div class="card-tools md-left">
+                                <div class="mybtn-group">
+                                    <a class="btn btn-primary" onclick="ShowAddModel()"><i class="far fa-plus-square mr-1"></i> Add</a>
+                                    <div class="export-btn mybtn-group"></div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="card-body">
+                            <table id="ProductMasterDataTable" class="table table-bordered table-striped table-hover" style="width:100%">
+                                <thead>
+                                    <tr>
+                                        <th>@SharedLocalizer["Id"].Value</th>
+                                        <th>@SharedLocalizer["Generic Name"].Value</th>
+                                        <th>@SharedLocalizer["Brand Name"].Value</th>
+                                        <th>@SharedLocalizer["Formulation"].Value</th>
+                                        <th>@SharedLocalizer["Strength"].Value</th>
+                                        <th>@SharedLocalizer["Pack Style"].Value</th>
+                                        <th>@SharedLocalizer["Pack Size"].Value</th>
+                                        <th>@SharedLocalizer["Plant"].Value</th>
+                                        <th>@SharedLocalizer["Status"].Value</th>
+                                        <th class="text-center">@SharedLocalizer["Action"].Value</th>
+                                    </tr>
+                                </thead>
+                            </table>
+                        </div>
+                    </div>
+
+                    @*DeleteModel*@
+                    <div id="DeleteModel" class="modal themeModal " role="dialog">
+                        @*<form asp-route-returnUrl="@ViewData["ReturnUrl"]" method="POST" onsubmit="return SubmitForm(this)">*@
+                        <div class="modal-dialog">
+                            <!-- Modal content-->
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h4 class="modal-title">@SharedLocalizer["Delete"].Value</h4>
+                                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                </div>
+                                <div class="modal-body">
+                                    <div class="row">
+                                        <div class="col-md-12">
+                                            <div class="form-group">
+                                                @Html.Label("Are you shure you want to delete this Product Manufacture ?")
+                                            </div>
+                                        </div>
+                                    </div>
+                                    @Html.Hidden("UPID")
+                                    <div class="row">
+                                        <div class="col-md-12">
+                                            <button type="button" onclick="DeleteIDModel()" class="btn btn-primary mr-2">@SharedLocalizer["Yes"].Value</button>
+                                            <a class="btn btn-primary" onclick="HideDeleteModel()">@SharedLocalizer["No"].Value</a>
+                                        </div>
+                                    </div>
+
+
+                                </div>
+
+
+                            </div>
+                        </div>
+
+                        @*</form>*@
+                    </div>
+
+                    @*AddModel*@
+                    <div id="AddModel" class="modal themeModal" role="dialog">
+                        <form method="POST" onsubmit="return SubmitProductManufactureForm(this)">    
+                            
+                            @Html.Hidden("FormName")
+                            @Html.Hidden("Strength")
+                            @Html.Hidden("PackStyle")
+                            @Html.Hidden("PackSize")
+                            @Html.Hidden("PlantName")
+                            <!-- Small boxes (Stat box) -->
+                            <!-- Main row -->
+                            <div class="modal-dialog modal-lg">
+                                <!-- Modal content-->
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h4 class="modal-title">@SharedLocalizer["Add"].Value</h4>
+                                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                    </div>
+                                    <div class="modal-body">
+                                        <div class="row">
+                                            <div class="col-md-6">
+                                                <div class="form-group required">
+                                                    @Html.LabelFor(model => model.GenericName, new { @class = "control-label" })
+                                                    @Html.EditorFor(model => model.GenericName, new { htmlAttributes = new { @autocomplete = "off", @class = "form-control checkbox-checked", @placeholder = "Generic Name" } })
+                                                    @Html.ValidationMessageFor(model => model.GenericName, "", new { @class = "text-danger" })
+                                                </div>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <div class="form-group">
+                                                    @Html.LabelFor(model => model.BrandName, new { @class = "control-label" })
+                                                    @Html.EditorFor(model => model.BrandName, new { htmlAttributes = new { @autocomplete = "off", @class = "form-control checkbox-checked", @placeholder = "Brand Name" } })
+                                                    @Html.ValidationMessageFor(model => model.BrandName, "", new { @class = "text-danger" })
+                                                </div>
+                                            </div>                                            
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-md-6">
+                                                <div class="form-group required">
+                                                    @Html.LabelFor(model => model.FormulationID, new { @class = "control-label" })
+                                                    @Html.DropDownListFor(model => model.FormulationID, new SelectList(string.Empty, "Value", "Text"), "Please select option", htmlAttributes: new { @class = "form-control select2", id = "FormulationID" })
+                                                    @Html.ValidationMessageFor(model => model.FormulationID, "", new { @class = "text-danger" })
+                                                </div>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <div class="form-group required">
+                                                    @Html.LabelFor(model => model.StrengthID, new { @class = "control-label" })
+                                                    @Html.DropDownListFor(model => model.StrengthID, new SelectList(string.Empty, "Value", "Text"), "Please select option", htmlAttributes: new { @class = "form-control select2", id = "StrengthID" })
+                                                    @Html.ValidationMessageFor(model => model.StrengthID, "", new { @class = "text-danger" })
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-md-6">
+                                                <div class="form-group required">
+                                                    @Html.LabelFor(model => model.PackStyleID, new { @class = "control-label" })
+                                                    @Html.DropDownListFor(model => model.PackStyleID, new SelectList(string.Empty, "Value", "Text"), "Please select option", htmlAttributes: new { @class = "form-control select2", id = "PackStyleID" })
+                                                    @Html.ValidationMessageFor(model => model.PackStyleID, "", new { @class = "text-danger" })
+                                                </div>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <div class="form-group required">
+                                                    @Html.LabelFor(model => model.PackSizeID, new { @class = "control-label" })
+                                                    @Html.DropDownListFor(model => model.PackSizeID, new SelectList(string.Empty, "Value", "Text"), "Please select option", htmlAttributes: new { @class = "form-control select2", id = "PackSizeID" })
+                                                    @Html.ValidationMessageFor(model => model.PackSizeID, "", new { @class = "text-danger" })
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row">                                            
+                                            <div class="col-md-6">
+                                                <div class="form-group required">
+                                                    @Html.LabelFor(model => model.PlantID, new { @class = "control-label" })
+                                                    @Html.DropDownListFor(model => model.PlantID, new SelectList(string.Empty, "Value", "Text"), "Please select option", htmlAttributes: new { @class = "form-control select2", id = "PlantID" })
+                                                    @Html.ValidationMessageFor(model => model.PlantID, "", new { @class = "text-danger" })
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-md-12">
+                                                <div class=" required">
+                                                    @Html.CheckBoxFor(model => model.IsActive, new { @class = "checkbox-checked" })
+                                                    @Html.Label("IsActive")
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="card-footer text-center">
+                                        <button type="submit" class="btn btn-primary">@SharedLocalizer["Save"].Value</button>
+                                        <a class="btn btn-danger" onclick="HideAddModel()">@SharedLocalizer["Cancel"].Value</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+
+                    @*UpdateModel*@
+                    <div id="UpdateModel" class="modal themeModal " role="dialog">
+                        <form asp-route-returnUrl="@ViewData["ReturnUrl"]" method="POST" onsubmit="return UpdateProductManufactureForm(this)">
+                            <!-- Small boxes (Stat box) -->
+                            <!-- Main row -->
+                            @Html.Hidden("UPID")                                                                                                                                
+                            @Html.Hidden("FormName")
+                            @Html.Hidden("Strength")
+                            @Html.Hidden("PackStyle")
+                            @Html.Hidden("PackSize")
+                            @Html.Hidden("PlantName")
+                            <div class="modal-dialog modal-lg">
+                                <!-- Modal content-->
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h4 class="modal-title">@SharedLocalizer["Update"].Value</h4>
+                                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                    </div>
+                                    <div class="modal-body">
+                                        <div class="row">
+                                            <div class="col-md-6">
+                                                <div class="form-group required">
+                                                    @Html.LabelFor(model => model.GenericName, new { @class = "control-label" })
+                                                    @Html.EditorFor(model => model.GenericName, new { htmlAttributes = new { @autocomplete = "off", @class = "form-control checkbox-checked", @placeholder = "Generic Name" } })
+                                                    @Html.ValidationMessageFor(model => model.GenericName, "", new { @class = "text-danger" })
+                                                </div>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <div class="form-group">
+                                                    @Html.LabelFor(model => model.BrandName, new { @class = "control-label" })
+                                                    @Html.EditorFor(model => model.BrandName, new { htmlAttributes = new { @autocomplete = "off", @class = "form-control checkbox-checked", @placeholder = "Brand Name" } })
+                                                    @Html.ValidationMessageFor(model => model.BrandName, "", new { @class = "text-danger" })
+                                                </div>
+                                            </div>                                           
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-md-6">
+                                                <div class="form-group required">
+                                                    @Html.LabelFor(model => model.FormulationID, new { @class = "control-label" })
+                                                    @Html.DropDownListFor(model => model.FormulationID, new SelectList(string.Empty, "Value", "Text"), "Please select option", htmlAttributes: new { @class = "form-control select2", id = "FormulationID" })
+                                                    @Html.ValidationMessageFor(model => model.FormulationID, "", new { @class = "text-danger" })
+                                                </div>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <div class="form-group required">
+                                                    @Html.LabelFor(model => model.StrengthID, new { @class = "control-label" })
+                                                    @Html.DropDownListFor(model => model.StrengthID, new SelectList(string.Empty, "Value", "Text"), "Please select option", htmlAttributes: new { @class = "form-control select2", id = "StrengthID" })
+                                                    @Html.ValidationMessageFor(model => model.StrengthID, "", new { @class = "text-danger" })
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-md-6">
+                                                <div class="form-group required">
+                                                    @Html.LabelFor(model => model.PackStyleID, new { @class = "control-label" })
+                                                    @Html.DropDownListFor(model => model.PackStyleID, new SelectList(string.Empty, "Value", "Text"), "Please select option", htmlAttributes: new { @class = "form-control select2", id = "PackStyleID" })
+                                                    @Html.ValidationMessageFor(model => model.PackStyleID, "", new { @class = "text-danger" })
+                                                </div>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <div class="form-group required">
+                                                    @Html.LabelFor(model => model.PackSizeID, new { @class = "control-label" })
+                                                    @Html.DropDownListFor(model => model.PackSizeID, new SelectList(string.Empty, "Value", "Text"), "Please select option", htmlAttributes: new { @class = "form-control select2", id = "PackSizeID" })
+                                                    @Html.ValidationMessageFor(model => model.PackSizeID, "", new { @class = "text-danger" })
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-md-6">
+                                                <div class="form-group required">
+                                                    @Html.LabelFor(model => model.PlantID, new { @class = "control-label" })
+                                                    @Html.DropDownListFor(model => model.PlantID, new SelectList(string.Empty, "Value", "Text"), "Please select option", htmlAttributes: new { @class = "form-control select2", id = "PlantID" })
+                                                    @Html.ValidationMessageFor(model => model.PlantID, "", new { @class = "text-danger" })
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="row">
+                                            <div class="col-md-12">
+                                                <div class="required">
+                                                    @Html.CheckBoxFor(model => model.IsActive, new { @class = "checkbox-checked" })
+                                                    @Html.Label("IsActive")
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="card-footer text-center">
+                                        <button type="submit" class="btn btn-primary">@SharedLocalizer["Update"].Value</button>
+                                        <a class="btn btn-danger" onclick="HideUpdateModel()">@SharedLocalizer["Cancel"].Value</a>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </form>
+                    </div>
+                </section>
+            </div>
+        </div>
+    </section>
+</div>
+
+<script>
+    //var dataTable, getList;
+    
+    $(document).ready(function () {        
+        $('.select2').select2();             
+        $('#loading').show();
+
+        $.ajax({
+            type: 'POST',
+            url: '@Url.Action("GetDropdownForInitializationForm", "DRFInitialization")/',            
+            dataType: 'json',
+            success: function (response) {
+                $('#loading').hide();
+
+                $('#AddModel #FormulationID').empty().append("<option value=''>Please select option</option>");
+                $('#UpdateModel #FormulationID').empty().append("<option value=''>Please select option</option>");
+                $.each(response.data.formList, function (i, formulation) {
+                    $("#AddModel #FormulationID").append('<option value="' + formulation.id + '">' + formulation.formulation + '</option>');
+                    $("#UpdateModel #FormulationID").append('<option value="' + formulation.id + '">' + formulation.formulation + '</option>');
+
+                });
+              
+                $('#AddModel #StrengthID').empty().append("<option value=''>Please select option</option>");
+                $('#UpdateModel #StrengthID').empty().append("<option value=''>Please select option</option>");
+                $.each(response.data.strengthList, function (i, strength) {
+                    $("#AddModel #StrengthID").append('<option value="' + strength.id + '">' + strength.strength + '</option>');
+                    $("#UpdateModel #StrengthID").append('<option value="' + strength.id + '">' + strength.strength + '</option>');
+                });
+
+                $('#AddModel #PackSizeID').empty().append("<option value=''>Please select option</option>");
+                $('#UpdateModel #PackSizeID').empty().append("<option value=''>Please select option</option>");
+                $.each(response.data.packSizeList, function (i, packSize) {
+                    $("#AddModel #PackSizeID").append('<option value="' + packSize.id + '">' + packSize.packSize + '</option>');
+                    $("#UpdateModel #PackSizeID").append('<option value="' + packSize.id + '">' + packSize.packSize + '</option>');
+                });
+
+                $('#AddModel #PackStyleID').empty().append("<option value=''>Please select option</option>");
+                $('#UpdateModel #PackStyleID').empty().append("<option value=''>Please select option</option>");
+                $.each(response.data.packStyleList, function (i, plantStyle) {
+                    $("#AddModel #PackStyleID").append('<option value="' + plantStyle.id + '">' + plantStyle.packStyle + '</option>');
+                    $("#UpdateModel #PackStyleID").append('<option value="' + plantStyle.id + '">' + plantStyle.packStyle + '</option>');
+                });
+
+                $('#AddModel #PlantID').empty().append("<option value=''>Please select option</option>");
+                $('#UpdateModel #PlantID').empty().append("<option value=''>Please select option</option>");
+                $.each(response.data.plantList, function (i, plant) {
+                    $("#AddModel #PlantID").append('<option value="' + plant.id + '">' + plant.productManufacture + '</option>');
+                    $("#UpdateModel #PlantID").append('<option value="' + plant.id + '">' + plant.productManufacture + '</option>');
+                });
+            },
+            error: function (ex) {
+                //alert('Failed to retrieve country.' + ex);
+            }
+        });
+
+            var dataTable = $('#ProductMasterDataTable').DataTable({
+                responsive: true,
+                lengthChange: true,
+                autoWidth: true,
+                dom: 'Bfrtip',
+                buttons: [
+                    {
+                        extend: 'excel', text: '<i class="far fa-file-excel"></i> Export In Excel ', className: "btn-primary", exportOptions: {
+                            columns: ':visible'
+                        }
+                    },
+                    {extend: 'colvis', className:"btn-primary" }
+                 ],
+
+                language: {
+                    "emptyTable": "@SharedLocalizer["No data available in table"].Value",
+                    "info": "@SharedLocalizer["Showing _START_ to _END_ of _TOTAL_ entries"].Value",
+                    "infoEmpty":"@SharedLocalizer["Showing 0 to 0 of 0 entries"].Value",
+                    "infoFiltered":"@SharedLocalizer["(filtered from _MAX_ total entries)"].Value",
+                    "lengthMenu":"@SharedLocalizer["Show _MENU_ entries"].Value",
+                    "loadingRecords": "@SharedLocalizer["Loading..."].Value",
+                    "processing": "@SharedLocalizer["Processing..."].Value",
+                    "search": "@SharedLocalizer["Search"].Value",
+                    "zeroRecords":"@SharedLocalizer["No matching records found"].Value",
+                    "paginate": {
+                        "first":"@SharedLocalizer["First"].Value",
+                        "last":"@SharedLocalizer["Last"].Value",
+                        "next": "@SharedLocalizer["Next"].Value",
+                        "previous":"@SharedLocalizer["Previous"].Value"
+                    },
+                }
+            });
+
+            getList = function () {
+                $.ajax({
+                    type: "POST",
+                    url: '@Url.Action("AllProductMasterDataList", "ProductMasterData")/',
+                    contentType: "application/json; charset=utf-8",
+                    dataType: "json",
+                    success: function (response) {
+                        $('#loading').hide();
+                        //console.log(response);
+                        var jsonObject = response.data;
+                        var result = jsonObject.map(function (item) {
+                            var result = [];
+                            result.push(item.upid);
+                            result.push(item.genericName);
+                            result.push(item.brandName);
+                            result.push(item.formName);
+                            result.push(item.strength);
+                            result.push(item.packStyle);
+                            result.push(item.packSize);
+                            result.push(item.plantName);
+                            if (item.isActive == true) {
+                                result.push("<span style='color:green'> Active </span>");
+                            }
+                            else {
+                                result.push("<span style='color:red'>InActive</span>");
+                            }
+                            result.push("<div class='text-center'><a href='javascript:void(0)' class='btn btn-primary btn-sm ttip' title='EDIT' onclick=Edit('" + item.upid+ "')><i class='fa fa-edit'></i></a></div> ");
+                            return result;
+                        });
+                        dataTable.clear();
+                        dataTable.rows.add(result); // add to DataTable instance
+                        dataTable.draw().buttons().container().appendTo('.export-btn'); // always redraw
+                    },
+                    failure: function () {
+                        $("#ProductMasterDataTable").append('@SharedLocalizer["Error when fetching data please contact administrator"].Value');
+                    }
+                });
+            }
+            getList();
+            $(".buttons-excel").removeClass("btn-secondary");
+            $(".buttons-collection").removeClass("btn-secondary");
+
+        });
+
+    function Edit(ID) {
+        var data = {
+            "UPID":ID
+        };
+        $.ajax({
+            type: "POST",
+            url : '@Url.Action("GetSingleMasterProductData", "ProductMasterData")/',
+            //contentType: "application/json; charset=utf-8",
+            dataType: "json",
+            data: data,
+            success: function (response) {
+                //console.log(response.data);
+                $('#UpdateModel #UPID').val(response.data[0].upid);
+                $('#UpdateModel #GenericName').val(response.data[0].genericName);
+                $('#UpdateModel #BrandName').val(response.data[0].brandName);
+                
+                $('#UpdateModel #FormName').val(response.data[0].formName);
+                $('#UpdateModel #FormulationID option[value="' + response.data[0].formulationID + '"]').attr("selected", true);
+                $('#UpdateModel #FormulationID').select2('destroy').select2();
+
+                $('#UpdateModel #Strength').val(response.data[0].strength);
+                $('#UpdateModel #StrengthID option[value="' + response.data[0].strengthID + '"]').attr("selected", true);
+                $('#UpdateModel #StrengthID').select2('destroy').select2();
+
+                $('#UpdateModel #PackStyle').val(response.data[0].packStyle);
+                $('#UpdateModel #PackStyleID option[value="' + response.data[0].packStyleID + '"]').attr("selected", true);
+                $('#UpdateModel #PackStyleID').select2('destroy').select2();
+
+                $('#UpdateModel #PackSize').val(response.data[0].packSize);
+                $('#UpdateModel #PackSizeID option[value="' + response.data[0].packSizeID + '"]').attr("selected", true);
+                $('#UpdateModel #PackSizeID').select2('destroy').select2();
+
+                $('#UpdateModel #PlantName').val(response.data[0].plantName);
+                $('#UpdateModel #PlantID option[value="' + response.data[0].plantID + '"]').attr("selected", true);
+                $('#UpdateModel #PlantID').select2('destroy').select2();
+
+                var userrole = '@HttpContextAccessor.HttpContext.Session.GetString("CurrentUserRole")';
+                if (userrole != 'Prescriber') {
+                    $('#UpdateModel #IsActive').attr('disabled', true);
+                }
+                if (response.data[0].isActive == false && userrole =='Prescriber') {
+                    $('#UpdateModel #IsActive').removeAttr('checked');
+                }
+                else {
+                    $('#UpdateModel #IsActive').attr('checked', true);
+                }
+                $('#UpdateModel').modal('show');
+            },
+            failure: function () {
+
+            }
+        });
+    }
+
+    function Delete(ID) {
+        
+        $('#DeleteModel').modal('show');       
+        $('#DeleteModel #UPID').val(ID);
+    }
+
+    @*function DeleteIDModel() {
+        $('#DeleteModel').modal('hide');
+         var tempInAtiveID = $('#DeleteModel #ProductManufactureID').val();
+        var data = {
+            "ProductManufactureID":tempInAtiveID
+        };
+       var url = "/Masters/Master_ProductManufacture";
+         $('#loading').show();
+         $.ajax({
+                    type: "POST",
+                    url : '@Url.Action("DeleteProductManufacture", "Masters")/',
+                    //contentType: "application/json; charset=utf-8",
+                    dataType: "json",
+                    data: data,
+                    success: function (response) {
+                        //console.log(response);
+                         $('#loading').hide();
+                        if (response.data === "success") {
+                            $('#DeleteModel').modal('hide');
+                            openCommonModal('successModal modal-sm', '@Html.Raw(SharedLocalizer["Success"].Value)', '@Html.Raw(SharedLocalizer["Record has been Deleted successfully."].Value)', true);
+                            setTimeout(function(){ location.href = url; }, 2000);
+
+                        }
+                        else {
+                            openCommonModal('alertModal modal-sm', '@SharedLocalizer["Error"].Value', response.message, false);
+                        }
+
+                    },
+                    failure: function () {
+
+                    }
+                });
+    }*@
+
+    function HideDeleteModel() {
+        $('#DeleteModel').modal('hide');
+    }
+
+    function ShowAddModel() {
+        $('#AddModel').modal('show');
+
+        $('#AddModel #FormulationID').select2({
+            dropdownParent: $('#AddModel')
+        });
+        $('#AddModel #StrengthID').select2({
+            dropdownParent: $('#AddModel')
+        });
+        $('#AddModel #PackStyleID').select2({
+            dropdownParent: $('#AddModel')
+        });
+        $('#AddModel #PackSizeID').select2({
+            dropdownParent: $('#AddModel')
+        });
+        $('#AddModel #PlantID').select2({
+            dropdownParent: $('#AddModel')
+        });
+    }
+
+    function HideAddModel() {
+         $('#AddModel').modal('hide');
+    }
+
+    function HideUpdateModel() {
+        $('#UpdateModel').modal('hide');        
+    }
+    $(".checkbox-checked").attr('checked', true);
+
+    function SubmitProductManufactureForm(form) {       
+        var url = "/ProductMasterData/Index";
+        $('#AddModel #FormName').val($("#AddModel #FormulationID option:selected").text());
+        $('#AddModel #Strength').val($("#AddModel #StrengthID option:selected").text());
+        $('#AddModel #PackStyle').val($("#AddModel #PackStyleID option:selected").text());
+        $('#AddModel #PackSize').val($("#AddModel #PackSizeID option:selected").text());
+        $('#AddModel #PlantName').val($("#AddModel #PlantID option:selected").text());
+
+         $.validator.unobtrusive.parse(form);
+        if ($(form).valid()) {
+                $('#loading').show();
+                $.ajax({
+                    type : "POST",
+                    url : '@Url.Action("InsertMasterProductData", "ProductMasterData")/',//form.action,
+                    data : $(form).serialize(),
+                    success: function (result) {
+                        //console.log(result);
+                        $('#loading').hide();
+                         $('#AddModel').modal('hide');
+                        if (result.data === "success") {
+                            openCommonModal('successModal modal-sm', '@Html.Raw(SharedLocalizer["Success"].Value)', '@Html.Raw(SharedLocalizer["Record has been added successfully."].Value)', true);
+                            setTimeout(function(){ location.href = url; }, 2000);
+                        }
+                        else {
+                            openCommonModal('alertModal modal-sm', '@SharedLocalizer["Error"].Value', result.message, false);
+                        }
+                    }
+                });
+            }
+            return false;
+    }
+
+    function UpdateProductManufactureForm(form) {
+        var url = "/ProductMasterData/Index";
+        //console.log($('#UpdateModel #UPID').val());
+        $('#UpdateModel #FormName').val($("#UpdateModel #FormulationID option:selected").text());
+        $('#UpdateModel #Strength').val($("#UpdateModel #StrengthID option:selected").text());
+        $('#UpdateModel #PackStyle').val($("#UpdateModel #PackStyleID option:selected").text());
+        $('#UpdateModel #PackSize').val($("#UpdateModel #PackSizeID option:selected").text());
+        $('#UpdateModel #PlantName').val($("#UpdateModel #PlantID option:selected").text());
+
+        $.validator.unobtrusive.parse(form);
+        if ($(form).valid()) {
+            $('#loading').show();
+            $.ajax({
+                type : "POST",
+                url : '@Url.Action("UpdateMasterProductData", "ProductMasterData")/',//form.action,
+                data : $(form).serialize(),
+                success: function (result) {
+                    //console.log(result);
+                    $('#loading').hide();
+                    if (result.data === "success") {
+                        $('#UpdateModel').modal('hide');
+                        openCommonModal('successModal modal-sm', '@Html.Raw(SharedLocalizer["Success"].Value)', '@Html.Raw(SharedLocalizer["Record has been updated successfully."].Value)', true);
+                        setTimeout(function(){ location.href = url; }, 2000);
+                    }
+                    else {
+                        openCommonModal('alertModal modal-sm', '@SharedLocalizer["Error"].Value', result.message, false);
+                    }
+                }
+            });
+        }
+        return false;
+    }
+
+</script>

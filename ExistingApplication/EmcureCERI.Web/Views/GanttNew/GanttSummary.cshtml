@@ -1,0 +1,168 @@
+﻿@{
+    ViewData["Title"] = "Gantt View";
+}
+<link href="~/css/GanttSite.css" rel="stylesheet" type="text/css" />
+<script src="~/codebase/dhtmlxgantt.js"></script>
+<link rel="stylesheet" href="~/codebase/dhtmlxgantt.css" type="text/css" />
+<script src="~/Scripts/summarymain.js"></script>
+
+<style>
+    .gantt_task_progress {
+        text-align: left;
+        padding-left: 10px;
+        box-sizing: border-box;
+        color: white;
+        font-weight: bold;
+        /* background-color: rgba(33,33,33,0.17);*/
+        /*background-color:orangered;*/
+    }
+
+    .gantt_task_content {
+        padding-left: 30px;
+    }
+
+    /*.gantt_task_progress {
+        background-color: #46ad51;
+    }*/
+    .task-no-progress {
+        background: #3db9d3;
+    }
+
+        .task-no-progress .gantt_task_progress {
+            background-color: #3db9d3;
+        }
+
+    .task-in-progress {
+        background-color: #3db9d3;
+    }
+
+        .task-in-progress .gantt_task_progress {
+            background-color: #3db9d3;
+        }
+
+    .task-full-progress {
+        background-color: gray;
+    }
+
+        .task-full-progress .gantt_task_progress {
+            background-color: gray;
+        }
+
+
+
+    /*new code added on date 10/03/2021*/
+    /* .gantt_task_line.gantt_dependent_task {
+        background-color: #65c16f;
+        border: 1px solid #3c9445;
+    }*/
+
+    /* .gantt_task_line.gantt_dependent_task .gantt_task_progress {
+            background-color: #46ad51;
+        }*/
+
+    /*.hide_project_progress_drag .gantt_task_progress_drag {
+        visibility: hidden;
+    }*/
+
+    /*.gantt_task_cell.week_end {
+        background-color: #EFF5FD;
+    }
+
+    .gantt_task_row.gantt_selected .gantt_task_cell.week_end {
+        background-color: #F8EC9C;
+    }*/
+    /*end of new code*/
+
+
+
+
+    .gantt_side_content {
+        margin-bottom: 7px;
+    }
+
+    .gantt_task_link .gantt_link_arrow {
+        margin-top: -12px
+    }
+
+    .gantt_side_content.gantt_right {
+        bottom: 0;
+    }
+
+    .gantt_tooltip {
+        font-size: 13px;
+        line-height: 16px;
+        z-index: 999999;
+    }
+
+    .gantt_custom_button {
+        float: right;
+    }
+
+    .gantt_cal_lsection > label {
+        width: 100%;
+    }
+    .gantt_task .gantt_task_scale .gantt_scale_cell {
+    color:#333;
+    }
+    .gantt_task .gantt_task_scale .gantt_scale_cell {
+    color:#333;
+    }
+    html, body {
+        height: 100%;
+        padding: 0;
+        margin: 0;
+        overflow: auto;
+    }
+</style>
+
+<div class="content-wrapper pt-3">
+    <section class="content">
+        <div class="container-fluid">
+
+            <div class="row">
+                <section class="col-lg-12 connectedSortable">
+                    <!-- Custom tabs (Charts with tabs)-->
+                    <div class="card">
+                        <div class="card-header">
+                            <h3 class="card-title">
+                                <i class="fas fa-project-diagram mr-2"></i>@ViewBag.GanttSummaryPageTitle
+                            </h3>
+                            <div class="card-tools md-left">
+                                <div class="mybtn-group">
+                                    @*<a class="btn btn-outline-primary" href="/DRFInitialization/ProjectList"><i class="far fa-list-alt mr-1"></i> Dossier List</a>*@
+                                    <a class="btn btn-primary" href=@ViewBag.SummaryPageURL><i class="far fa-list-alt mr-1"></i>@ViewBag.ButtonSummaryPage</a>
+                                    <button class="btn btn-primary" onclick="javascript:window.history.back();"><i class="fas fa-undo mr-1"></i> Back</button>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="card-body" style="padding:0;">
+                            <div class="card " style="box-shadow:none;">
+                                <div class="card-body">
+                                    <div class="row">
+                                        <form class="gantt_control col-md-12">
+                                            <input type="radio" id="scale1" class="gantt_radio" name="scale" value="day">
+                                            <label for="scale1">Day scale</label>
+
+                                            <input type="radio" id="scale2" class="gantt_radio" name="scale" value="week">
+                                            <label for="scale2">Week scale</label>
+
+                                            <input type="radio" id="scale3" class="gantt_radio" name="scale" value="month">
+                                            <label for="scale3">Month scale</label>
+
+                                            <input type="radio" id="scale5" class="gantt_radio" name="scale" value="year" checked>
+                                            <label for="scale5">Year scale</label>
+                                            <button type="button" class="btn float-right p-0" data-card-widget="maximize">
+                                                <i class="fas fa-expand"></i>
+                                            </button>
+                                        </form>
+                                        <div id="ganttContainer" style="height:480px; width:100%;"></div>
+                                    </div>
+                                </div>
+                                </div>
+                            </div>
+                            </div>
+</section>
+            </div>
+        </div>
+    </section>
+</div>

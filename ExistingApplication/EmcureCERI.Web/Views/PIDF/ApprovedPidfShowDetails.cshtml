@@ -1,0 +1,2245 @@
+﻿@inject Microsoft.Extensions.Localization.IStringLocalizer<SharedResource> SharedLocalizer
+@model EmcureCERI.Web.Models.PIDFPViewModels.PIDFNewVM
+@{
+    ViewData["Title"] = "PIDF Show Details";
+}
+
+
+<div class="content-wrapper pt-3">
+    <!-- Main content -->
+    <section class="content">
+        <div class="container-fluid">
+            <!-- Small boxes (Stat box) -->
+            <!-- Main row -->
+            <div class="row">
+                <section class="col-lg-12 ">
+                    <!-- Custom tabs (Charts with tabs)-->
+                    <div class="card">
+                        <div class="card-header">
+                            <h3 class="card-title">
+                                <i class="far fa-plus-square mr-2"></i> PIDF
+                            </h3>
+                            <div class="card-tools md-left">
+                                <div class="mybtn-group">
+                                        <a class="btn btn-primary" href="@Url.Action("PIDFList","PIDF")"><i class="fas fa-list mr-1"></i>Project List</a>
+                                 
+                                        <a class="btn btn-primary" href="@Url.Action("PIDFStrengthList","PIDF")"><i class="far fa-list-alt mr-1"></i>PIDF List</a>
+                                   
+                                        <a class="btn btn-primary" href="@Url.Action("Index","GanttNew")"><i class="fas fa-project-diagram mr-2"></i>Gantt Chart</a>
+                                   
+                                        <a class="btn btn-primary" href="@Url.Action("PIDFNew","PIDF")"><i class="far fa-plus-square mr-1"></i> Create New PIDF</a>
+                                   
+                                        <button class="btn btn-primary" onclick="javascript:window.history.back();"><i class="fas fa-undo mr-1"></i> Back</button>
+                                   
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="card-body">
+                            <div>
+                                <div class="row mt-2">
+                                    <div class="col-sm-12 col-md-12 col-lg-7">
+                                        <table class="table table-bordered">
+                                            <tr>
+                                                <td width="30%"><strong>Product Name</strong></td>
+                                                <td><div class="col-sm-9" id="pidf_ProjectorProductName"></div></td>
+                                            </tr>
+                                            <tr>
+                                                <td width="30%"><strong>Product Type</strong></td>
+                                                <td><div class="col-sm-9" id="pidf_ProductTypeName"></div></td>
+                                            </tr>
+                                            <tr>
+                                                <td width="30%"><strong>Plant Name</strong></td>
+                                                <td><div class="col-sm-9" id="pidf_PlantName"></div></td>
+                                            </tr>
+                                            <tr>
+                                                <td width="30%"><label>Formulation</label></td>
+                                                <td><div class="col-sm-9" id="pidf_FormulationName"></div></td>
+                                            </tr>
+                                            <tr>
+                                                <td width="30%"><label>Work Flow</label></td>
+                                                <td><div class="col-sm-9" id="pidf_WorkflowName"></div></td>
+                                            </tr>
+                                        </table>
+
+                                    </div>
+                                    <div class="col-sm-12 col-md-12 col-lg-5">
+                                        <style>
+                                            #myTable tbody {
+                                                display: block;
+                                                overflow-y: auto;
+                                                table-layout: fixed;
+                                                max-height: 200px;
+                                            }
+                                        </style>
+                                        <table id="myTable" class="table order-list table-bordered" style="width:100%">
+                                            <thead>
+                                                <tr>
+                                                    <th width="30%">Strength</th>
+                                                    <th>Unit</th>
+                                                </tr>
+                                            </thead>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+
+                            @*Remaining code here*@
+
+                            <div class="row mt-1">
+                                <div class="col-sm-12">
+                                    <div class="card  card-primary card-outline card-outline-tabs nav-fill nav-pills">
+                                        <div class="card-header p-0">
+                                            <ul class="nav nav-tabs" id="custom-tabs-one-tab" role="tablist">
+                                                <li class="pt-2 px-3">
+                                                    <h3 class="card-title"><i class="fas fa-globe mr-2"></i>Region</h3>
+                                                </li>
+                                                <li class="nav-item">
+                                                    <a class="nav-link active" id="CIS-tab" data-toggle="pill" href="#CIS" role="tab" aria-controls="CIS" aria-selected="true">CIS</a>
+                                                </li>
+                                                <li class="nav-item">
+                                                    <a class="nav-link" id="LATAM-tab" data-toggle="pill" href="#LATAM" role="tab" aria-controls="LATAM" aria-selected="false">LATAM</a>
+                                                </li>
+                                                <li class="nav-item">
+                                                    <a class="nav-link" id="ASIA-tab" data-toggle="pill" href="#ASIA" role="tab" aria-controls="ASIA" aria-selected="false">ASIA</a>
+                                                </li>
+                                                <li class="nav-item">
+                                                    <a class="nav-link" id="AFRICA-tab" data-toggle="pill" href="#AFRICA" role="tab" aria-controls="AFRICA" aria-selected="false">AFRICA</a>
+                                                </li>
+                                                <li class="nav-item">
+                                                    <a class="nav-link" id="MENA-tab" data-toggle="pill" href="#MENA" role="tab" aria-controls="MENA" aria-selected="false">MENA</a>
+                                                </li>
+                                                <div class="card-tools">
+                                                    <button type="button" class="btn btn-tool p-0 mr-3 ml-3" data-card-widget="maximize">
+                                                        <i class="fas fa-expand"></i>
+                                                    </button>
+                                                    <button type="button" class="btn btn-tool" data-card-widget="collapse">
+                                                        <i class="fas fa-minus"></i>
+                                                    </button>
+                                                </div>
+                                            </ul>
+                                        </div>
+                                        <div class="card-body">
+                                            <div class="tab-content" id="custom-tabs-one-tabContent">
+
+                                                <div class="tab-pane fade show active" id="CIS" role="tabpanel" aria-labelledby="CIS-tab">
+                                                    <h4 class="text-divider"><span>CIS</span></h4>
+                                                    <form method="post" name="CISCountryCreate" id="CISCountryCreate">
+
+                                                        <div class="row mt-5 mb-3">
+                                                            <div class="table-responsive">
+                                                                <table id="CISPIDFTable" class="table CISorder-list table-striped table-bordered dt-responsive nowrap" style="width:100%">
+                                                                    <thead>
+                                                                        <tr>
+                                                                            <th>Country</th>
+                                                                            <th>Strength</th>
+                                                                            <th>Pack Size</th>
+                                                                            <th>Packing</th>
+                                                                            <th>1st Year CIF Price/Pack</th>
+                                                                            <th>1st Year Qty.</th>
+                                                                            <th>1st Year Volume</th>
+                                                                            <th>2nd Year CIF Price/Pack</th>
+                                                                            <th>2nd Year Qty.</th>
+                                                                            <th>2nd Year Volume</th>
+                                                                            <th>3rd Year CIF Price/Pack</th>
+                                                                            <th>3rd Year Qty.</th>
+                                                                            <th>3rd Year Volume</th>
+                                                                            <th>Batch Size</th>
+                                                                            <th>Currency</th>
+                                                                            <th>1st Year COGS</th>
+                                                                            <th>2nd Year COGS</th>
+                                                                            <th>3rd Year COGS</th>
+                                                                            <th>Freight</th>
+                                                                            <th>Total CIF Cost</th>
+                                                                            <th>3 Year Contribution</th>
+                                                                            <th>Cost of 3 Batches</th>
+                                                                            <th>Analytical Cost</th>
+                                                                            <th>BECost</th>
+                                                                            <th>RLD Cost</th>
+                                                                            <th>R&D Cost</th>
+                                                                            <th>Filing Cost</th>
+                                                                            <th>Stability Cost</th>
+                                                                            <th>Total Invest</th>
+                                                                            <th>Other Cost</th>
+                                                                            <th>API Source</th>
+                                                                            <th>ROI</th>
+                                                                        </tr>
+                                                                    </thead>
+                                                                </table>
+                                                            </div>
+                                                        </div>
+                                                    </form>
+                                                </div>
+
+                                                <div class="tab-pane fade" id="LATAM" role="tabpanel" aria-labelledby="LATAM-tab">
+                                                    <h4 class="text-divider"><span>LATAM</span></h4>
+                                                    <form method="post" name="LATAMCountryCreate" id="LATAMCountryCreate">
+
+                                                        <div class="row mt-5 mb-3">
+                                                            <div class="table-responsive">
+                                                                <table id="LATAMPIDFTable" class="table LATAMorder-list table-striped table-bordered dt-responsive nowrap" style="width:100%">
+                                                                    <thead>
+                                                                        <tr>
+                                                                            <th>Country</th>
+                                                                            <th>Strength</th>
+                                                                            <th>Pack Size</th>
+                                                                            <th>Packing</th>
+                                                                            <th>1st Year CIF Price/Pack</th>
+                                                                            <th>1st Year Qty.</th>
+                                                                            <th>1st Year Volume</th>
+                                                                            <th>2nd Year CIF Price/Pack</th>
+                                                                            <th>2nd Year Qty.</th>
+                                                                            <th>2nd Year Volume</th>
+                                                                            <th>3rd Year CIF Price/Pack</th>
+                                                                            <th>3rd Year Qty.</th>
+                                                                            <th>3rd Year Volume</th>
+                                                                            <th>Batch Size</th>
+                                                                            <th>Currency</th>
+                                                                            <th>1st Year COGS</th>
+                                                                            <th>2nd Year COGS</th>
+                                                                            <th>3rd Year COGS</th>
+                                                                            <th>Freight</th>
+                                                                            <th>Total CIF Cost</th>
+                                                                            <th>3 Year Contribution</th>
+                                                                            <th>Cost of 3 Batches</th>
+                                                                            <th>Analytical Cost</th>
+                                                                            <th>BECost</th>
+                                                                            <th>RLD Cost</th>
+                                                                            <th>R&D Cost</th>
+                                                                            <th>Filing Cost</th>
+                                                                            <th>Stability Cost</th>
+                                                                            <th>Total Invest</th>
+                                                                            <th>Other Cost</th>
+                                                                            <th>API Source</th>
+                                                                            <th>ROI</th>
+                                                                        </tr>
+                                                                    </thead>
+                                                                </table>
+                                                            </div>
+                                                        </div>
+                                                    </form>
+                                                </div>
+
+                                                <div class="tab-pane fade" id="ASIA" role="tabpanel" aria-labelledby="ASIA-tab">
+                                                    <h4 class="text-divider"><span>ASIA</span></h4>
+                                                    <form method="post" name="ASIACountryCreate" id="ASIACountryCreate">
+
+                                                        <div class="row mt-5 mb-3">
+                                                            <div class="table-responsive">
+                                                                <table id="ASIAPIDFTable" class="table ASIAorder-list table-striped table-bordered dt-responsive nowrap" style="width:100%">
+                                                                    <thead>
+                                                                        <tr>
+                                                                            <th>Country</th>
+                                                                            <th>Strength</th>
+                                                                            <th>Pack Size</th>
+                                                                            <th>Packing</th>
+                                                                            <th>1st Year CIF Price/Pack</th>
+                                                                            <th>1st Year Qty.</th>
+                                                                            <th>1st Year Volume</th>
+                                                                            <th>2nd Year CIF Price/Pack</th>
+                                                                            <th>2nd Year Qty.</th>
+                                                                            <th>2nd Year Volume</th>
+                                                                            <th>3rd Year CIF Price/Pack</th>
+                                                                            <th>3rd Year Qty.</th>
+                                                                            <th>3rd Year Volume</th>
+                                                                            <th>Batch Size</th>
+                                                                            <th>Currency</th>
+                                                                            <th>1st Year COGS</th>
+                                                                            <th>2nd Year COGS</th>
+                                                                            <th>3rd Year COGS</th>
+                                                                            <th>Freight</th>
+                                                                            <th>Total CIF Cost</th>
+                                                                            <th>3 Year Contribution</th>
+                                                                            <th>Cost of 3 Batches</th>
+                                                                            <th>Analytical Cost</th>
+                                                                            <th>BECost</th>
+                                                                            <th>RLD Cost</th>
+                                                                            <th>R&D Cost</th>
+                                                                            <th>Filing Cost</th>
+                                                                            <th>Stability Cost</th>
+                                                                            <th>Total Invest</th>
+                                                                            <th>Other Cost</th>
+                                                                            <th>API Source</th>
+                                                                            <th>ROI</th>
+                                                                        </tr>
+                                                                    </thead>
+                                                                </table>
+                                                            </div>
+                                                        </div>
+
+                                                    </form>
+                                                </div>
+                                                <div class="tab-pane fade" id="AFRICA" role="tabpanel" aria-labelledby="AFRICA-tab">
+                                                    <h4 class="text-divider"><span>AFRICA</span></h4>
+                                                    <form method="post" name="AFRICACountryCreate" id="AFRICACountryCreate">
+
+                                                        <div class="row mt-5 mb-3">
+                                                            <div class="table-responsive">
+                                                                <table id="AFRICAPIDFTable" class="table AFRICAorder-list table-striped table-bordered dt-responsive nowrap" style="width:100%">
+                                                                    <thead>
+                                                                        <tr>
+                                                                            <th>Country</th>
+                                                                            <th>Strength</th>
+                                                                            <th>Pack Size</th>
+                                                                            <th>Packing</th>
+                                                                            <th>1st Year CIF Price/Pack</th>
+                                                                            <th>1st Year Qty.</th>
+                                                                            <th>1st Year Volume</th>
+                                                                            <th>2nd Year CIF Price/Pack</th>
+                                                                            <th>2nd Year Qty.</th>
+                                                                            <th>2nd Year Volume</th>
+                                                                            <th>3rd Year CIF Price/Pack</th>
+                                                                            <th>3rd Year Qty.</th>
+                                                                            <th>3rd Year Volume</th>
+                                                                            <th>Batch Size</th>
+                                                                            <th>Currency</th>
+                                                                            <th>1st Year COGS</th>
+                                                                            <th>2nd Year COGS</th>
+                                                                            <th>3rd Year COGS</th>
+                                                                            <th>Freight</th>
+                                                                            <th>Total CIF Cost</th>
+                                                                            <th>3 Year Contribution</th>
+                                                                            <th>Cost of 3 Batches</th>
+                                                                            <th>Analytical Cost</th>
+                                                                            <th>BECost</th>
+                                                                            <th>RLD Cost</th>
+                                                                            <th>R&D Cost</th>
+                                                                            <th>Filing Cost</th>
+                                                                            <th>Stability Cost</th>
+                                                                            <th>Total Invest</th>
+                                                                            <th>Other Cost</th>
+                                                                            <th>API Source</th>
+                                                                            <th>ROI</th>
+                                                                        </tr>
+                                                                    </thead>
+                                                                </table>
+                                                            </div>
+                                                        </div>
+
+                                                    </form>
+                                                </div>
+                                                <div class="tab-pane fade" id="MENA" role="tabpanel" aria-labelledby="MENA-tab">
+                                                    <h4 class="text-divider"><span>MENA</span></h4>
+                                                    <form method="post" name="MENACountryCreate" id="MENACountryCreate">
+
+                                                        <div class="row mt-5 mb-3">
+                                                            <div class="table-responsive">
+                                                                <table id="MENAPIDFTable" class="table MENAorder-list table-striped table-bordered dt-responsive nowrap" style="width:100%">
+                                                                    <thead>
+                                                                        <tr>
+                                                                            <th>Country</th>
+                                                                            <th>Strength</th>
+                                                                            <th>Pack Size</th>
+                                                                            <th>Packing</th>
+                                                                            <th>1st Year CIF Price/Pack</th>
+                                                                            <th>1st Year Qty.</th>
+                                                                            <th>1st Year Volume</th>
+                                                                            <th>2nd Year CIF Price/Pack</th>
+                                                                            <th>2nd Year Qty.</th>
+                                                                            <th>2nd Year Volume</th>
+                                                                            <th>3rd Year CIF Price/Pack</th>
+                                                                            <th>3rd Year Qty.</th>
+                                                                            <th>3rd Year Volume</th>
+                                                                            <th>Batch Size</th>
+                                                                            <th>Currency</th>
+                                                                            <th>1st Year COGS</th>
+                                                                            <th>2nd Year COGS</th>
+                                                                            <th>3rd Year COGS</th>
+                                                                            <th>Freight</th>
+                                                                            <th>Total CIF Cost</th>
+                                                                            <th>3 Year Contribution</th>
+                                                                            <th>Cost of 3 Batches</th>
+                                                                            <th>Analytical Cost</th>
+                                                                            <th>BECost</th>
+                                                                            <th>RLD Cost</th>
+                                                                            <th>R&D Cost</th>
+                                                                            <th>Filing Cost</th>
+                                                                            <th>Stability Cost</th>
+                                                                            <th>Total Invest</th>
+                                                                            <th>Other Cost</th>
+                                                                            <th>API Source</th>
+                                                                            <th>ROI</th>
+                                                                        </tr>
+                                                                    </thead>
+                                                                </table>
+                                                            </div>
+                                                        </div>
+
+                                                    </form>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            @*DRF List below*@
+
+                            <div class="row mt-1">
+                                <section class="col-lg-12">
+                                    <!-- Custom tabs (Charts with tabs)-->
+                                    <div class="card">
+                                        <div class="card-header p-2 pt-2">
+                                            <h3 class="card-title">
+                                                <i class="far fa-list-alt mr-2"></i> Dossier List
+                                            </h3>
+                                            <div class="card-tools">
+                                                <button type="button" class="btn btn-tool p-0 mr-3 ml-3" data-card-widget="maximize">
+                                                    <i class="fas fa-expand"></i>
+                                                </button>
+                                                <button type="button" class="btn btn-tool" data-card-widget="collapse">
+                                                    <i class="fas fa-minus"></i>
+                                                </button>
+                                            </div>
+                                        </div>
+                                        <div class="card-body " id="tablelistdata">
+                                            <div class="table-responsive">
+                                                <table id="DRFTable" class="table table-bordered table-striped table-hover" style="width:100%">
+                                                    <thead>
+                                                        <tr>
+                                                            <th>@SharedLocalizer["Id"].Value</th>
+                                                            <th>@SharedLocalizer["DRF No"].Value</th>
+                                                            <th>@SharedLocalizer["Project Name"].Value</th>
+                                                            <th>@SharedLocalizer["Country"].Value</th>
+                                                            <th>@SharedLocalizer["Generic Name"].Value</th>
+                                                            <th>@SharedLocalizer["Brand Name"].Value</th>
+                                                            <th>@SharedLocalizer["Order Frequency"].Value</th>
+                                                            <th>@SharedLocalizer["Strength"].Value</th>
+                                                            <th>@SharedLocalizer["Pack Size"].Value</th>
+                                                            <th>@SharedLocalizer["Pack Style"].Value</th>
+                                                            <th>@SharedLocalizer["Form"].Value</th>
+                                                            <th>@SharedLocalizer["Plant"].Value</th>
+                                                            <th>@SharedLocalizer["Incoterms"].Value</th>
+                                                            <th>@SharedLocalizer["MA Holder"].Value</th>
+                                                            <th>@SharedLocalizer["Dossier to be sent"].Value</th>
+                                                            <th>@SharedLocalizer["Project Manager"].Value</th>
+                                                            <th>@SharedLocalizer["Dossier Template"].Value</th>
+                                                            <th>@SharedLocalizer["Status"].Value</th>
+
+                                                        </tr>
+                                                    </thead>
+                                                </table>
+                                            </div>
+                                        </div>
+
+                                    </div>
+                                </section>
+                            </div>
+
+                            @*Upload file details*@
+                            <section class="col-lg-12">
+                                <div class="card mt-1">
+                                    <div class="card-header mb-1">
+                                        <h3 class="card-title" for="exampleInputFile"><i class="fas fa-file-alt mr-3"></i>Uploaded Files</h3>
+                                    </div>
+                                    <div class="row p-3">
+                                        <div class="col-sm-12 ">
+                                            <table class="table fileorder-list table-bordered mr-3 ">
+                                                <thead>
+                                                    <tr>
+                                                        <th>Files</th>
+                                                    </tr>
+                                                </thead>
+                                            </table>
+                                        </div>
+                                    </div>
+                                </div>
+                            </section>
+
+                            @*Show Milestones below*@
+                            <div class="row">
+                                <section class="col-lg-12">
+                                    <!-- Custom tabs (Charts with tabs)-->
+                                    <div class="card">
+                                        <div class="card-header">
+                                            <h3 class="card-title">
+                                                <i class="far fa-edit"></i> Tasks
+                                            </h3>
+                                            <div class="card-tools md-left">
+                                                <div class="mybtn-group">
+                                                    <input type="hidden" name="CurrentUserRole" id="CurrentUserRole" value="@ViewBag.CurrentUserRolePIDF" />
+                                                    @if (User.IsInRole("Prescriber") || User.IsInRole("Regulatory Manager") || User.IsInRole("Senior Project Manager"))
+                                                    {
+                                                        <button type="button" onclick="AddTaskSubTask()" class="btn btn-primary">@SharedLocalizer["Add Milestones"].Value</button>
+                                                    }
+                                                    <button type="button" class="btn btn-tool p-0 mr-3 ml-3" data-card-widget="maximize">
+                                                        <i class="fas fa-expand"></i>
+                                                    </button>
+                                                    <button type="button" class="btn btn-tool" data-card-widget="collapse">
+                                                        <i class="fas fa-minus"></i>
+                                                    </button>
+                                                </div>
+                                            </div>
+                                            @*<a style='cursor:pointer; color:blue;float:right' onclick="AddTaskSubTask()">@SharedLocalizer["Add Milestones"].Value</a>*@
+                                        </div>
+                                        <!-- /.card-header -->
+
+                                        <div class="card-body">
+
+                                            <div class="row shorting_btns" style="margin-bottom:10px;">
+                                                <div class="mybtn-group taskTabs">
+                                                        <a class="btn btn-primary status_filter active" href="Javascript:void(0)" onclick="applyFilter(0)"><i class="far fa-list-alt mr-1"></i>All</a>
+                                                        
+                                                        <a class="btn  btn-primary status_filter" href="Javascript:void(0)" onclick="applyFilter(1)"><i class="far fa-list-alt mr-1"></i>Monthly</a>
+                                                   
+                                                        <a class="btn btn-primary status_filter" href="Javascript:void(0)" onclick="applyFilter(2)"><i class="far fa-list-alt mr-1"></i>Quarterly</a>
+                                                    
+                                                        <a class="btn btn-primary status_filter" href="Javascript:void(0)" onclick="applyFilter(3)"><i class="far fa-list-alt mr-1"></i>Half Yearly</a>
+                                                  
+                                                        <a class="btn btn-primary status_filter" href="Javascript:void(0)" onclick="applyFilter(4)"><i class="far fa-list-alt mr-1"></i>Annualy</a>
+                                                    
+                                                </div>
+                                            </div>
+
+                                            <div class="table-responsive">
+                                                <table id="Milestones" class="table" style="width:100%;"></table>
+                                            </div>
+
+                                            <!-- /.card-body -->
+                                        </div>
+
+                                        <!-- /.card -->
+
+
+                                    </div>
+                                </section>
+                            </div>
+
+
+                        </div>
+
+                    </div>
+                </section>
+            </div>
+        </div>
+
+        @*UpdateModel*@
+        <div id="UpdateModel" class="modal themeModal " role="dialog">
+            <form asp-route-returnUrl="@ViewData["ReturnUrl"]" method="POST" onsubmit="return SubmitForm(this)">
+                @*<div class="card-body">*@
+                <div class="modal-dialog modal-lg">
+                    <!-- Modal content-->
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h4 class="modal-title">@SharedLocalizer["Update Task"].Value</h4>
+                            <button type="button" class="close" data-dismiss="modal">&times;</button>
+                        </div>
+                        <div class="modal-body">
+                            <div class="row">
+                                <div class="col-sm-6">
+                                    <div class="form-group required">
+                                        @Html.LabelFor(o => o.DRFTaskSubTaskEditModel.DRFEditTaskName, new { @class = "control-label" })
+                                        @Html.EditorFor(o => o.DRFTaskSubTaskEditModel.DRFEditTaskName, new { htmlAttributes = new { @autocomplete = "off", @class = "form-control" } })
+                                        @Html.ValidationMessageFor(o => o.DRFTaskSubTaskEditModel.DRFEditTaskName, "", new { @class = "text-danger" })
+                                    </div>
+                                    <div class="form-group required">
+                                        @Html.LabelFor(o => o.DRFTaskSubTaskEditModel.DRFEditStartDate, new { @class = "control-label" })
+                                        <div class="input-group date" id="startDate" data-target-input="nearest">
+
+                                            @Html.TextBoxFor(o => o.DRFTaskSubTaskEditModel.DRFEditStartDate, new { @class = "form-control datetimepicker-input", autocomplete = "off", @readonly = "readonly" })
+                                            <div class="input-group-append" data-target="#DRFEditStartDate" data-toggle="datetimepicker">
+                                                <div class="input-group-text"><i class="fa fa-calendar"></i></div>
+                                            </div><br>
+
+                                        </div>
+                                        @Html.ValidationMessageFor(o => o.DRFTaskSubTaskEditModel.DRFEditStartDate, "", new { @class = "text-danger" })
+                                    </div>
+                                    <div class="form-group required">
+                                        @Html.LabelFor(o => o.DRFTaskSubTaskEditModel.DRFEditPriorityID, new { @class = "control-label" })
+                                        @Html.DropDownListFor(o => o.DRFTaskSubTaskEditModel.DRFEditPriorityID, new SelectList(string.Empty, "Value", "Text"), "Please select option", htmlAttributes: new { @class = "form-control input-sm f-s-15 bg-eff4f55c w100per", id = "TaskPriority" })
+                                        @Html.ValidationMessageFor(o => o.DRFTaskSubTaskEditModel.DRFEditPriorityID, "", new { @class = "text-danger" })
+                                    </div>
+                                    <div class="form-group required">
+                                        @Html.LabelFor(o => o.DRFTaskSubTaskEditModel.DRFEditTaskDuration, new { @class = "control-label" })
+                                        @Html.EditorFor(o => o.DRFTaskSubTaskEditModel.DRFEditTaskDuration, new { htmlAttributes = new { @autocomplete = "off", @class = "form-control", @readonly = "readonly" } })@*disabled = "disabled"*@
+                                        @Html.ValidationMessageFor(o => o.DRFTaskSubTaskEditModel.DRFEditTaskDuration, "", new { @class = "text-danger" })
+                                    </div>
+
+                                </div>
+                                <div class="col-sm-6">
+                                    <div class="form-group required">
+                                        @Html.LabelFor(o => o.DRFTaskSubTaskEditModel.DRFEditEmpID, new { @class = "control-label" })
+                                        @Html.DropDownListFor(o => o.DRFTaskSubTaskEditModel.DRFEditEmpID, new SelectList(string.Empty, "Value", "Text"), "Please select option", htmlAttributes: new { @class = "form-control input-sm f-s-15 bg-eff4f55c w100per", id = "TaskOwner" })
+                                        @Html.ValidationMessageFor(o => o.DRFTaskSubTaskEditModel.DRFEditEmpID, "", new { @class = "text-danger" })
+                                    </div>
+                                    <div class="form-group required">
+                                        @Html.LabelFor(o => o.DRFTaskSubTaskEditModel.DRFEditEndDate, new { @class = "control-label" })
+                                        <div class="input-group date" id="endDate" data-target-input="nearest">
+
+                                            @Html.TextBoxFor(o => o.DRFTaskSubTaskEditModel.DRFEditEndDate, new { @class = "form-control datetimepicker-input", autocomplete = "off", @readonly = "readonly" })
+                                            <div class="input-group-append" data-target="#DRFEditEndDate" data-toggle="datetimepicker">
+                                                <div class="input-group-text"><i class="fa fa-calendar"></i></div>
+                                            </div><br>
+
+                                        </div>
+                                        @Html.ValidationMessageFor(o => o.DRFTaskSubTaskEditModel.DRFEditEndDate, "", new { @class = "text-danger" })
+                                    </div>
+                                    <div class="form-group required">
+                                        @Html.LabelFor(o => o.DRFTaskSubTaskEditModel.DRFEditTaskStatusID, new { @class = "control-label" })
+                                        @Html.DropDownListFor(o => o.DRFTaskSubTaskEditModel.DRFEditTaskStatusID, new SelectList(string.Empty, "Value", "Text"), "Please select option", htmlAttributes: new { @class = "form-control input-sm f-s-15 bg-eff4f55c w100per", id = "TaskStatus", onchange = "setPercentage(this.value,0)" })
+                                        @Html.ValidationMessageFor(o => o.DRFTaskSubTaskEditModel.DRFEditTaskStatusID, "", new { @class = "text-danger" })
+                                    </div>
+                                    <div class="form-group required">
+                                        @Html.LabelFor(o => o.DRFTaskSubTaskEditModel.DRFEditTotalPercentage, new { @class = "control-label" })
+                                        @Html.EditorFor(o => o.DRFTaskSubTaskEditModel.DRFEditTotalPercentage, new { htmlAttributes = new { @autocomplete = "off", @class = "form-control disabledPercentage", id = "TaskPercentage", @min = 0, @max = 100 } })
+                                        @Html.ValidationMessageFor(o => o.DRFTaskSubTaskEditModel.DRFEditTotalPercentage, "", new { @class = "text-danger" })
+                                    </div>
+
+                                </div>
+                            </div>
+
+                            @Html.HiddenFor(o => o.DRFTaskSubTaskEditModel.DRFEditProjectTaskMappingID)
+                            @Html.Hidden("RedirectTo", Url.Action("DRFList", "DRF"))
+
+
+
+                        </div>
+                        <div class="modal-footer">
+                            <button type="submit" class="btn btn-primary">@SharedLocalizer["Save"].Value</button>
+                            <a class="btn btn-danger" onclick="HideUpdateModel()">@SharedLocalizer["Cancel"].Value</a>
+                        </div>
+
+                    </div>
+                </div>
+
+
+                @*</div>*@
+
+
+                @*<div class="card-footer text-center">
+                        <button type="submit" class="btn btn-primary mr-2 attachedDisabled">@SharedLocalizer["Save"].Value</button>
+                        <a class="btn btn-primary" asp-area="" asp-controller="DRF" asp-action="DRFShowDetails">@SharedLocalizer["Cancel"].Value</a>
+                    </div>*@
+            </form>
+        </div>
+
+        @*DeleteModel*@
+        <div id="DeleteModel" class="modal themeModal " role="dialog">
+            @*<form asp-route-returnUrl="@ViewData["ReturnUrl"]" method="POST" onsubmit="return SubmitForm(this)">*@
+            <div class="modal-dialog">
+                <!-- Modal content-->
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h4 class="modal-title">@SharedLocalizer["Delete"].Value</h4>
+                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="form-group">
+                                    @Html.Label("Are you shure you want to delete this step ?")
+                                </div>
+                            </div>
+                        </div>
+                        @Html.Hidden("StepIDForDelete")
+                        @Html.Hidden("DeleteRedirectTo", Url.Action("DRFList", "DRF"))
+
+
+
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" onclick="DeleteTaskSubTask()" class="btn btn-primary">@SharedLocalizer["Yes"].Value</button>
+                        <a class="btn btn-danger" onclick="HideDeleteModel()">@SharedLocalizer["No"].Value</a>
+                    </div>
+
+                </div>
+            </div>
+
+            @*</form>*@
+        </div>
+
+        @*AddModel*@
+        <div id="AddModel" class="modal themeModal " role="dialog">
+
+
+            <div class="modal-dialog">
+                <!-- Modal content-->
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h4 class="modal-title">@SharedLocalizer["Add Milestones"].Value</h4>
+                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    </div>
+                    <div class="modal-body mx-auto text-center">
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="form-group">
+                                    <button type="button" onclick="ShowAddTaskForm()" class="btn btn-primary ">@SharedLocalizer["Add Task"].Value</button>
+                                    <button type="button" onclick="ShowAddSubTaskForm()" class="btn btn-primary ">@SharedLocalizer["Add Sub Task"].Value</button>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+
+                </div>
+            </div>
+
+
+        </div>
+
+        @*AddTaskModel*@
+        <div id="AddTaskModel" class="modal themeModal " role="dialog">
+            <form method="POST" onsubmit="return AddTaskForm(this)">
+
+                <div class="modal-dialog modal-lg">
+                    <!-- Modal content-->
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h4 class="modal-title">@SharedLocalizer["Add Task"].Value</h4>
+                            <button type="button" class="close" data-dismiss="modal">&times;</button>
+                        </div>
+                        <div class="modal-body p-4">
+                            <div class="row">
+                                <div class="col-sm-6">
+                                    <div class="form-group required">
+                                        @Html.LabelFor(t => t.DRFTaskAddModel.DRFAddTaskName, new { @class = "control-label" })
+                                        @Html.EditorFor(t => t.DRFTaskAddModel.DRFAddTaskName, new { htmlAttributes = new { @autocomplete = "off", @class = "form-control" } })
+                                        @Html.ValidationMessageFor(t => t.DRFTaskAddModel.DRFAddTaskName, "", new { @class = "text-danger" })
+                                    </div>
+                                    <div class="form-group required">
+                                        @Html.LabelFor(t => t.DRFTaskAddModel.DRFAddTaskStartDate, new { @class = "control-label" })
+                                        <div class="input-group date" id="addTaskStartDate" data-target-input="nearest">
+
+                                            @Html.TextBoxFor(t => t.DRFTaskAddModel.DRFAddTaskStartDate, new { @class = "form-control datetimepicker-input", autocomplete = "off" })
+                                            <div class="input-group-append" data-toggle="datetimepicker">
+                                                <div class="input-group-text"><i class="fa fa-calendar"></i></div>
+                                            </div><br>
+
+                                        </div>
+                                        @Html.ValidationMessageFor(t => t.DRFTaskAddModel.DRFAddTaskStartDate, "", new { @class = "text-danger" })
+                                    </div>
+                                    <div class="form-group required">
+                                        @Html.LabelFor(t => t.DRFTaskAddModel.DRFAddTaskPriorityID, new { @class = "control-label" })
+                                        @Html.DropDownListFor(t => t.DRFTaskAddModel.DRFAddTaskPriorityID, new SelectList(string.Empty, "Value", "Text"), "Please select option", htmlAttributes: new { @class = "form-control input-sm f-s-15 bg-eff4f55c w100per", id = "AddTaskPriority" })
+                                        @Html.ValidationMessageFor(t => t.DRFTaskAddModel.DRFAddTaskPriorityID, "", new { @class = "text-danger" })
+                                    </div>
+                                    <div class="form-group required">
+                                        @Html.LabelFor(t => t.DRFTaskAddModel.DRFAddTaskTaskDuration, new { @class = "control-label" })
+                                        @Html.EditorFor(t => t.DRFTaskAddModel.DRFAddTaskTaskDuration, new { htmlAttributes = new { @autocomplete = "off", @class = "form-control", id = "AddTaskDuration", @readonly = "readonly" } })@*disabled = "disabled"*@
+                                        @Html.ValidationMessageFor(t => t.DRFTaskAddModel.DRFAddTaskTaskDuration, "", new { @class = "text-danger" })
+                                    </div>
+
+                                </div>
+                                <div class="col-sm-6">
+                                    <div class="form-group required">
+                                        @Html.LabelFor(t => t.DRFTaskAddModel.DRFAddTaskEmpID, new { @class = "control-label" })
+                                        @Html.DropDownListFor(t => t.DRFTaskAddModel.DRFAddTaskEmpID, new SelectList(string.Empty, "Value", "Text"), "Please select option", htmlAttributes: new { @class = "form-control input-sm f-s-15 bg-eff4f55c w100per", id = "AddTaskOwner" })
+                                        @Html.ValidationMessageFor(t => t.DRFTaskAddModel.DRFAddTaskEmpID, "", new { @class = "text-danger" })
+                                    </div>
+                                    <div class="form-group required">
+                                        @Html.LabelFor(t => t.DRFTaskAddModel.DRFAddTaskEndDate, new { @class = "control-label" })
+                                        <div class="input-group date" id="addTaskEndDate" data-target-input="nearest">
+
+                                            @Html.TextBoxFor(t => t.DRFTaskAddModel.DRFAddTaskEndDate, new { @class = "form-control datetimepicker-input", autocomplete = "off" })
+                                            <div class="input-group-append" data-toggle="datetimepicker">
+                                                <div class="input-group-text"><i class="fa fa-calendar"></i></div>
+                                            </div><br>
+
+                                        </div>
+                                        @Html.ValidationMessageFor(t => t.DRFTaskAddModel.DRFAddTaskEndDate, "", new { @class = "text-danger" })
+                                    </div>
+                                    <div class="form-group required">
+                                        @Html.LabelFor(t => t.DRFTaskAddModel.DRFAddTaskTaskStatusID, new { @class = "control-label" })
+                                        @Html.DropDownListFor(t => t.DRFTaskAddModel.DRFAddTaskTaskStatusID, new SelectList(string.Empty, "Value", "Text"), "Please select option", htmlAttributes: new { @class = "form-control input-sm f-s-15 bg-eff4f55c w100per", id = "AddTaskStatus", onchange = "setPercentage(this.value,1)" })
+                                        @Html.ValidationMessageFor(t => t.DRFTaskAddModel.DRFAddTaskTaskStatusID, "", new { @class = "text-danger" })
+                                    </div>
+                                    <div class="form-group required">
+                                        @Html.LabelFor(t => t.DRFTaskAddModel.DRFAddTaskTotalPercentage, new { @class = "control-label" })
+                                        @Html.EditorFor(t => t.DRFTaskAddModel.DRFAddTaskTotalPercentage, new { htmlAttributes = new { @autocomplete = "off", @class = "form-control disabledTaskPercentage", id = "AddTaskPercentage", @min = 0, @max = 100 } })
+                                        @Html.ValidationMessageFor(t => t.DRFTaskAddModel.DRFAddTaskTotalPercentage, "", new { @class = "text-danger" })
+                                    </div>
+
+                                </div>
+                            </div>
+
+
+                            @Html.Hidden("AddTaskRedirectTo", Url.Action("DRFList", "DRF"))
+                            @Html.HiddenFor(t => t.DRFTaskAddModel.DRFAddTaskDRFID)
+
+                        </div>
+                        <div class="modal-footer">
+                            <button type="submit" class="btn btn-primary ">@SharedLocalizer["Save"].Value</button>
+                            <a class="btn btn-danger" onclick="HideAddTaskModel()">@SharedLocalizer["Cancel"].Value</a>
+                        </div>
+
+                    </div>
+                </div>
+
+
+
+            </form>
+        </div>
+
+        @*AddSubTaskModel*@
+        <div id="AddSubTaskModel" class="modal themeModal " role="dialog">
+            <form id="SubTaskForm" method="POST" onsubmit="return AddSubTaskForm(this)">
+
+                <div class="modal-dialog modal-lg">
+                    <!-- Modal content-->
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h4 class="modal-title">@SharedLocalizer["Add Sub Task"].Value</h4>
+                            <button type="button" class="close" data-dismiss="modal">&times;</button>
+                        </div>
+                        <div class="modal-body">
+                            <div class="row">
+                                <div class="col-sm-6">
+                                    <div class="form-group required">
+                                        @Html.LabelFor(s => s.DRFSubTaskAddModel.DRFAddSubTaskTaskID, new { @class = "control-label" })
+                                        @Html.DropDownListFor(s => s.DRFSubTaskAddModel.DRFAddSubTaskTaskID, new SelectList(string.Empty, "Value", "Text"), "Please select option", htmlAttributes: new { @class = "form-control input-sm f-s-15 bg-eff4f55c w100per", id = "AddSubTaskofTask" })
+                                        @Html.ValidationMessageFor(s => s.DRFSubTaskAddModel.DRFAddSubTaskTaskID, "", new { @class = "text-danger" })
+                                    </div>
+                                    <div class="form-group required">
+                                        @Html.LabelFor(s => s.DRFSubTaskAddModel.DRFAddSubTaskEmpID, new { @class = "control-label" })
+                                        @Html.DropDownListFor(s => s.DRFSubTaskAddModel.DRFAddSubTaskEmpID, new SelectList(string.Empty, "Value", "Text"), "Please select option", htmlAttributes: new { @class = "form-control input-sm f-s-15 bg-eff4f55c w100per", id = "AddSubTaskOwner" })
+                                        @Html.ValidationMessageFor(s => s.DRFSubTaskAddModel.DRFAddSubTaskEmpID, "", new { @class = "text-danger" })
+                                    </div>
+                                    <div class="form-group required">
+                                        @Html.LabelFor(s => s.DRFSubTaskAddModel.DRFAddSubTaskEndDate, new { @class = "control-label" })
+                                        <div class="input-group date" id="addSubTaskEndDate" data-target-input="nearest">
+
+                                            @Html.TextBoxFor(s => s.DRFSubTaskAddModel.DRFAddSubTaskEndDate, new { @class = "form-control datetimepicker-input", autocomplete = "off" })
+                                            <div class="input-group-append" data-toggle="datetimepicker">
+                                                <div class="input-group-text"><i class="fa fa-calendar"></i></div>
+                                            </div><br>
+
+                                        </div>
+                                        @Html.ValidationMessageFor(s => s.DRFSubTaskAddModel.DRFAddSubTaskEndDate, "", new { @class = "text-danger" })
+                                    </div>
+                                    <div class="form-group required">
+                                        @Html.LabelFor(s => s.DRFSubTaskAddModel.DRFAddSubTaskTaskStatusID, new { @class = "control-label" })
+                                        @Html.DropDownListFor(s => s.DRFSubTaskAddModel.DRFAddSubTaskTaskStatusID, new SelectList(string.Empty, "Value", "Text"), "Please select option", htmlAttributes: new { @class = "form-control input-sm f-s-15 bg-eff4f55c w100per", id = "AddSubTaskStatus", onchange = "setPercentage(this.value,2)" })
+                                        @Html.ValidationMessageFor(s => s.DRFSubTaskAddModel.DRFAddSubTaskTaskStatusID, "", new { @class = "text-danger" })
+                                    </div>
+                                    <div class="form-group required">
+                                        @Html.LabelFor(s => s.DRFSubTaskAddModel.DRFAddSubTaskTotalPercentage, new { @class = "control-label" })
+                                        @Html.EditorFor(s => s.DRFSubTaskAddModel.DRFAddSubTaskTotalPercentage, new { htmlAttributes = new { @autocomplete = "off", @class = "form-control disabledSubTaskPercentage", id = "AddSubTaskPercentage", @min = 0, @max = 100 } })
+                                        @Html.ValidationMessageFor(s => s.DRFSubTaskAddModel.DRFAddSubTaskTotalPercentage, "", new { @class = "text-danger" })
+                                    </div>
+
+                                </div>
+                                <div class="col-sm-6">
+                                    <div class="form-group required">
+                                        @Html.LabelFor(s => s.DRFSubTaskAddModel.DRFAddSubTaskName, new { @class = "control-label" })
+                                        @Html.EditorFor(s => s.DRFSubTaskAddModel.DRFAddSubTaskName, new { htmlAttributes = new { @autocomplete = "off", @class = "form-control" } })
+                                        @Html.ValidationMessageFor(s => s.DRFSubTaskAddModel.DRFAddSubTaskName, "", new { @class = "text-danger" })
+                                    </div>
+                                    <div class="form-group required">
+                                        @Html.LabelFor(s => s.DRFSubTaskAddModel.DRFAddSubTaskStartDate, new { @class = "control-label" })
+                                        <div class="input-group date" id="addSubTaskStartDate" data-target-input="nearest">
+
+                                            @Html.TextBoxFor(s => s.DRFSubTaskAddModel.DRFAddSubTaskStartDate, new { @class = "form-control datetimepicker-input", autocomplete = "off" })
+                                            <div class="input-group-append" data-toggle="datetimepicker">
+                                                <div class="input-group-text"><i class="fa fa-calendar"></i></div>
+                                            </div><br>
+
+                                        </div>
+                                        @Html.ValidationMessageFor(s => s.DRFSubTaskAddModel.DRFAddSubTaskStartDate, "", new { @class = "text-danger" })
+                                    </div>
+                                    <div class="form-group required">
+                                        @Html.LabelFor(s => s.DRFSubTaskAddModel.DRFAddSubTaskTaskPriorityID, new { @class = "control-label" })
+                                        @Html.DropDownListFor(s => s.DRFSubTaskAddModel.DRFAddSubTaskTaskPriorityID, new SelectList(string.Empty, "Value", "Text"), "Please select option", htmlAttributes: new { @class = "form-control input-sm f-s-15 bg-eff4f55c w100per", id = "AddSubTaskPriority" })
+                                        @Html.ValidationMessageFor(s => s.DRFSubTaskAddModel.DRFAddSubTaskTaskPriorityID, "", new { @class = "text-danger" })
+                                    </div>
+                                    <div class="form-group required">
+                                        @Html.LabelFor(s => s.DRFSubTaskAddModel.DRFAddSubTaskTaskDuration, new { @class = "control-label" })
+                                        @Html.EditorFor(s => s.DRFSubTaskAddModel.DRFAddSubTaskTaskDuration, new { htmlAttributes = new { @autocomplete = "off", @class = "form-control", id = "AddSubTaskDuration", @readonly = "readonly" } })@*disabled = "disabled"*@
+                                        @Html.ValidationMessageFor(s => s.DRFSubTaskAddModel.DRFAddSubTaskTaskDuration, "", new { @class = "text-danger" })
+                                    </div>
+                                    <div></div>
+                                </div>
+                            </div>
+
+                            @Html.Hidden("AddSubTaskRedirectTo", Url.Action("DRFList", "DRF"))
+                            @Html.HiddenFor(s => s.DRFSubTaskAddModel.DRFAddSubTaskDRFID)
+
+                        </div>
+                        <div class="modal-footer">
+                            <button type="submit" class="btn btn-primary">@SharedLocalizer["Save"].Value</button>
+                            <a class="btn btn-danger" onclick="HideAddSubTaskModel()">@SharedLocalizer["Cancel"].Value</a>
+                        </div>
+
+                    </div>
+                </div>
+            </form>
+        </div>
+
+    </section>
+
+</div>
+
+<script src="~/dist/js/jquery.treegrid.min.js"></script>
+<script src="~/dist/js/bootstrap-table.min.js"></script>
+<script src="~/dist/js/bootstrap-table-treegrid.min.js"></script>
+
+
+<script>
+    var PIDFInitializationID = '@ViewBag.PIDFShowDetailsPIDFID';
+
+    $('#loading').show();
+    $("#tablelistdata").parent().hide();
+    var dataTableMENA,dataTableAFRICA,dataTableASIA,dataTableLATAM,dataTableCIS,dataTable;
+
+    $(document).ready(function () {
+        var dataTableMENA = $('#MENAPIDFTable').DataTable({
+            responsive: false,
+            lengthChange: true,
+            autoWidth: true,
+            paging: false,
+            searching: false,
+            sort: false,
+            "bInfo": false,
+            columnDefs: [
+                { responsivePriority: 1, targets: -5 },
+                { responsivePriority: 1, targets: -3 },
+                { responsivePriority: 100, targets: -4 }
+            ],
+            //  buttons: [
+            //    {
+            //        extend: 'excel', text: '<i class="far fa-file-excel"></i>', className: "btn-primary", exportOptions: {
+            //            columns: ':visible'
+            //        }
+            //    },
+            //    {
+            //        extend: 'colvis', text: '<i class="fas fa-list"></i> Select Fields', className: "btn-primary"
+            //    }
+            //],
+            language: {
+                "emptyTable": "@SharedLocalizer["No data available in table"].Value",
+                "info": "@SharedLocalizer["Showing _START_ to _END_ of _TOTAL_ entries"].Value",
+                "infoEmpty": "@SharedLocalizer["Showing 0 to 0 of 0 entries"].Value",
+                "infoFiltered": "@SharedLocalizer["(filtered from _MAX_ total entries)"].Value",
+                "lengthMenu": "@SharedLocalizer["Show _MENU_ entries"].Value",
+                "loadingRecords": "@SharedLocalizer["Loading..."].Value",
+                "processing": "@SharedLocalizer["Processing..."].Value",
+                "search": "@SharedLocalizer["Search"].Value",
+                "zeroRecords": "@SharedLocalizer["No matching records found"].Value",
+                "paginate": {
+                    "first": "@SharedLocalizer["First"].Value",
+                    "last": "@SharedLocalizer["Last"].Value",
+                    "next": "@SharedLocalizer["Next"].Value",
+                    "previous": "@SharedLocalizer["Previous"].Value"
+                },
+            }
+        });
+
+        var dataTableAFRICA = $('#AFRICAPIDFTable').DataTable({
+            responsive: false,
+            lengthChange: true,
+            autoWidth: true,
+            paging: false,
+            searching: false,
+            sort: false,
+            "bInfo": false,
+            columnDefs: [
+                { responsivePriority: 1, targets: -5 },
+                { responsivePriority: 1, targets: -3 },
+                { responsivePriority: 100, targets: -4 }
+            ],
+            //  buttons: [
+            //    {
+            //        extend: 'excel', text: '<i class="far fa-file-excel"></i>', className: "btn-primary", exportOptions: {
+            //            columns: ':visible'
+            //        }
+            //    },
+            //    {
+            //        extend: 'colvis', text: '<i class="fas fa-list"></i> Select Fields', className: "btn-primary"
+            //    }
+            //],
+            language: {
+                "emptyTable": "@SharedLocalizer["No data available in table"].Value",
+                "info": "@SharedLocalizer["Showing _START_ to _END_ of _TOTAL_ entries"].Value",
+                "infoEmpty": "@SharedLocalizer["Showing 0 to 0 of 0 entries"].Value",
+                "infoFiltered": "@SharedLocalizer["(filtered from _MAX_ total entries)"].Value",
+                "lengthMenu": "@SharedLocalizer["Show _MENU_ entries"].Value",
+                "loadingRecords": "@SharedLocalizer["Loading..."].Value",
+                "processing": "@SharedLocalizer["Processing..."].Value",
+                "search": "@SharedLocalizer["Search"].Value",
+                "zeroRecords": "@SharedLocalizer["No matching records found"].Value",
+                "paginate": {
+                    "first": "@SharedLocalizer["First"].Value",
+                    "last": "@SharedLocalizer["Last"].Value",
+                    "next": "@SharedLocalizer["Next"].Value",
+                    "previous": "@SharedLocalizer["Previous"].Value"
+                },
+            }
+        });
+
+        var dataTableASIA = $('#ASIAPIDFTable').DataTable({
+            responsive: false,
+            lengthChange: true,
+            autoWidth: true,
+            paging: false,
+            searching: false,
+            sort: false,
+            "bInfo": false,
+            columnDefs: [
+                { responsivePriority: 1, targets: -5 },
+                { responsivePriority: 1, targets: -3 },
+                { responsivePriority: 100, targets: -4 }
+            ],
+            //  buttons: [
+            //    {
+            //        extend: 'excel', text: '<i class="far fa-file-excel"></i>', className: "btn-primary", exportOptions: {
+            //            columns: ':visible'
+            //        }
+            //    },
+            //    {
+            //        extend: 'colvis', text: '<i class="fas fa-list"></i> Select Fields', className: "btn-primary"
+            //    }
+            //],
+            language: {
+                "emptyTable": "@SharedLocalizer["No data available in table"].Value",
+                "info": "@SharedLocalizer["Showing _START_ to _END_ of _TOTAL_ entries"].Value",
+                "infoEmpty": "@SharedLocalizer["Showing 0 to 0 of 0 entries"].Value",
+                "infoFiltered": "@SharedLocalizer["(filtered from _MAX_ total entries)"].Value",
+                "lengthMenu": "@SharedLocalizer["Show _MENU_ entries"].Value",
+                "loadingRecords": "@SharedLocalizer["Loading..."].Value",
+                "processing": "@SharedLocalizer["Processing..."].Value",
+                "search": "@SharedLocalizer["Search"].Value",
+                "zeroRecords": "@SharedLocalizer["No matching records found"].Value",
+                "paginate": {
+                    "first": "@SharedLocalizer["First"].Value",
+                    "last": "@SharedLocalizer["Last"].Value",
+                    "next": "@SharedLocalizer["Next"].Value",
+                    "previous": "@SharedLocalizer["Previous"].Value"
+                },
+            }
+        });
+        var dataTableLATAM = $('#LATAMPIDFTable').DataTable({
+            responsive: false,
+            lengthChange: true,
+            autoWidth: true,
+            paging: false,
+            searching: false,
+            sort: false,
+            "bInfo": false,
+            columnDefs: [
+                { responsivePriority: 1, targets: -5 },
+                { responsivePriority: 1, targets: -3 },
+                { responsivePriority: 100, targets: -4 }
+            ],
+            //  buttons: [
+            //    {
+            //        extend: 'excel', text: '<i class="far fa-file-excel"></i>', className: "btn-primary", exportOptions: {
+            //            columns: ':visible'
+            //        }
+            //    },
+            //    {
+            //        extend: 'colvis', text: '<i class="fas fa-list"></i> Select Fields', className: "btn-primary"
+            //    }
+            //],
+            language: {
+                "emptyTable": "@SharedLocalizer["No data available in table"].Value",
+                "info": "@SharedLocalizer["Showing _START_ to _END_ of _TOTAL_ entries"].Value",
+                "infoEmpty": "@SharedLocalizer["Showing 0 to 0 of 0 entries"].Value",
+                "infoFiltered": "@SharedLocalizer["(filtered from _MAX_ total entries)"].Value",
+                "lengthMenu": "@SharedLocalizer["Show _MENU_ entries"].Value",
+                "loadingRecords": "@SharedLocalizer["Loading..."].Value",
+                "processing": "@SharedLocalizer["Processing..."].Value",
+                "search": "@SharedLocalizer["Search"].Value",
+                "zeroRecords": "@SharedLocalizer["No matching records found"].Value",
+                "paginate": {
+                    "first": "@SharedLocalizer["First"].Value",
+                    "last": "@SharedLocalizer["Last"].Value",
+                    "next": "@SharedLocalizer["Next"].Value",
+                    "previous": "@SharedLocalizer["Previous"].Value"
+                },
+            }
+           });
+        var dataTableCIS = $('#CISPIDFTable').DataTable({
+            responsive: false,
+            lengthChange: true,
+            autoWidth: true,
+            paging: false,
+            searching: false,
+            sort: false,
+            "bInfo": false,
+            columnDefs: [
+                { responsivePriority: 1, targets: -5 },
+                { responsivePriority: 1, targets: -3 },
+                { responsivePriority: 100, targets: -4 }
+            ],
+            //  buttons: [
+            //    {
+            //        extend: 'excel', text: '<i class="far fa-file-excel"></i>', className: "btn-primary", exportOptions: {
+            //            columns: ':visible'
+            //        }
+            //    },
+            //    {
+            //        extend: 'colvis', text: '<i class="fas fa-list"></i> Select Fields', className: "btn-primary"
+            //    }
+            //],
+            language: {
+                "emptyTable": "@SharedLocalizer["No data available in table"].Value",
+                "info": "@SharedLocalizer["Showing _START_ to _END_ of _TOTAL_ entries"].Value",
+                "infoEmpty": "@SharedLocalizer["Showing 0 to 0 of 0 entries"].Value",
+                "infoFiltered": "@SharedLocalizer["(filtered from _MAX_ total entries)"].Value",
+                "lengthMenu": "@SharedLocalizer["Show _MENU_ entries"].Value",
+                "loadingRecords": "@SharedLocalizer["Loading..."].Value",
+                "processing": "@SharedLocalizer["Processing..."].Value",
+                "search": "@SharedLocalizer["Search"].Value",
+                "zeroRecords": "@SharedLocalizer["No matching records found"].Value",
+                "paginate": {
+                    "first": "@SharedLocalizer["First"].Value",
+                    "last": "@SharedLocalizer["Last"].Value",
+                    "next": "@SharedLocalizer["Next"].Value",
+                    "previous": "@SharedLocalizer["Previous"].Value"
+                },
+            }
+               });
+
+        var dataTable = $('#DRFTable').DataTable({
+                responsive: true,
+                lengthChange: true,
+                autoWidth: true,
+                //dom: 'Bfrtip',
+                columnDefs: [
+                    { responsivePriority: 1, targets: -5 },
+                    { responsivePriority: 1000, targets: 5 },
+                    { responsivePriority: 1, targets: -3 },
+                    { responsivePriority: 100, targets: -4 }
+                ],      
+                language: {
+                    "emptyTable": "@SharedLocalizer["No data available in table"].Value",
+                    "info": "@SharedLocalizer["Showing _START_ to _END_ of _TOTAL_ entries"].Value",
+                    "infoEmpty":"@SharedLocalizer["Showing 0 to 0 of 0 entries"].Value",
+                    "infoFiltered":"@SharedLocalizer["(filtered from _MAX_ total entries)"].Value",
+                    "lengthMenu":"@SharedLocalizer["Show _MENU_ entries"].Value",
+                    "loadingRecords": "@SharedLocalizer["Loading..."].Value",
+                    "processing": "@SharedLocalizer["Processing..."].Value",
+                    "search": "@SharedLocalizer["Search"].Value",
+                    "zeroRecords":"@SharedLocalizer["No matching records found"].Value",
+                    "paginate": {
+                        "first":"@SharedLocalizer["First"].Value",
+                        "last":"@SharedLocalizer["Last"].Value",
+                        "next": "@SharedLocalizer["Next"].Value",
+                        "previous":"@SharedLocalizer["Previous"].Value"
+                    },
+                }
+
+            });
+
+         $.ajax({
+            type: "POST",
+            url: '@Url.Action("GetPIDFDetailsForAddCountryDetails", "PIDF")/PidfID?=@ViewBag.PIDFShowDetailsPIDFID',
+            //contentType: "application/json; charset=utf-8",
+            dataType: "json",
+            success: function (response) {
+                console.log(response);
+                $('#loading').hide();
+                $('#pidf_ProjectorProductName').text(response.data.projectorProductName);
+                $('#pidf_ProductTypeName').text(response.data.productName);
+                $('#pidf_PlantName').text(response.data.plantName);
+                $('#pidf_FormulationName').text(response.data.formulationName);
+                $('#pidf_WorkflowName').text(response.data.workflowName);
+
+                //Add pidfstrength
+                $.each(response.strengthlist, function (i, List) {
+                    //console.log(List);
+                    var newRow = $("<tr>");
+                    var cols = "";
+
+                    cols += '<td>' + List.pidfStrength + '</td>';
+                    cols += '<td>' + List.unitName + ' </td>';
+                    newRow.append(cols);
+                    $("table.order-list").append(newRow);
+
+                });
+
+                var MENAjsonObject = response.menaCountryDetails;
+                        var result = MENAjsonObject.map(function (item) {
+                            var result = [];
+                            result.push(item.countryName);
+                            result.push(item.pidfStrength);
+                            result.push(item.packSizeName);
+                            result.push(item.packingName);
+                            result.push(item.cifPricePerPack1);
+                            result.push(item.qtyOneyear);
+                            result.push(item.volOneyear);
+                             result.push(item.cifPricePerPack2);
+                            result.push(item.qtyTwoyear);
+                            result.push(item.volTwoyear);
+                            result.push(item.cifPricePerPack3);
+                            result.push(item.qtyThreeyear);
+                            result.push(item.volThreeyear);
+                            result.push(item.batchSize);
+                            result.push(item.currencyName);
+                            result.push(item.cogS1);
+                            result.push(item.cogS2);
+                            result.push(item.cogS3);
+                            result.push(item.freight);
+                            result.push(item.totalCIFCost);
+                            result.push(item.contributionThreeYear);
+                            result.push(item.costofThreeBatches);
+                            result.push(item.analyticalCost);
+                            result.push(item.beCost);
+                            result.push(item.rldCost);
+                            result.push(item.randDCost);
+                            result.push(item.filingCost);
+                            result.push(item.stabilityCost);
+                            result.push(item.totalInvest);
+                            result.push(item.otherCost);
+                            result.push(item.apiSource);
+                            result.push(item.roi);
+
+                            return result;
+                        });
+                        dataTableMENA.clear();
+                        dataTableMENA.rows.add(result); // add to DataTable instance
+                dataTableMENA.draw();
+
+                var AFRICAjsonObject = response.africaCountryDetails;
+                        var result = AFRICAjsonObject.map(function (item) {
+                            var result = [];
+                            result.push(item.countryName);
+                            result.push(item.pidfStrength);
+                            result.push(item.packSizeName);
+                            result.push(item.packingName);
+                            result.push(item.cifPricePerPack1);
+                            result.push(item.qtyOneyear);
+                            result.push(item.volOneyear);
+                             result.push(item.cifPricePerPack2);
+                            result.push(item.qtyTwoyear);
+                            result.push(item.volTwoyear);
+                            result.push(item.cifPricePerPack3);
+                            result.push(item.qtyThreeyear);
+                            result.push(item.volThreeyear);
+                            result.push(item.batchSize);
+                            result.push(item.currencyName);
+                            result.push(item.cogS1);
+                            result.push(item.cogS2);
+                            result.push(item.cogS3);
+                            result.push(item.freight);
+                            result.push(item.totalCIFCost);
+                            result.push(item.contributionThreeYear);
+                            result.push(item.costofThreeBatches);
+                            result.push(item.analyticalCost);
+                            result.push(item.beCost);
+                            result.push(item.rldCost);
+                            result.push(item.randDCost);
+                            result.push(item.filingCost);
+                            result.push(item.stabilityCost);
+                            result.push(item.totalInvest);
+                            result.push(item.otherCost);
+                            result.push(item.apiSource);
+                            result.push(item.roi);
+
+                            return result;
+                        });
+                        dataTableAFRICA.clear();
+                        dataTableAFRICA.rows.add(result); // add to DataTable instance
+                        dataTableAFRICA.draw();
+
+                var ASIAjsonObject = response.asiaCountryDetails;
+                        var result = ASIAjsonObject.map(function (item) {
+                            var result = [];
+                            result.push(item.countryName);
+                            result.push(item.pidfStrength);
+                            result.push(item.packSizeName);
+                            result.push(item.packingName);
+                            result.push(item.cifPricePerPack1);
+                            result.push(item.qtyOneyear);
+                            result.push(item.volOneyear);
+                             result.push(item.cifPricePerPack2);
+                            result.push(item.qtyTwoyear);
+                            result.push(item.volTwoyear);
+                            result.push(item.cifPricePerPack3);
+                            result.push(item.qtyThreeyear);
+                            result.push(item.volThreeyear);
+                            result.push(item.batchSize);
+                            result.push(item.currencyName);
+                            result.push(item.cogS1);
+                            result.push(item.cogS2);
+                            result.push(item.cogS3);
+                            result.push(item.freight);
+                            result.push(item.totalCIFCost);
+                            result.push(item.contributionThreeYear);
+                            result.push(item.costofThreeBatches);
+                            result.push(item.analyticalCost);
+                            result.push(item.beCost);
+                            result.push(item.rldCost);
+                            result.push(item.randDCost);
+                            result.push(item.filingCost);
+                            result.push(item.stabilityCost);
+                            result.push(item.totalInvest);
+                            result.push(item.otherCost);
+                            result.push(item.apiSource);
+                            result.push(item.roi);
+
+                            return result;
+                        });
+                        dataTableASIA.clear();
+                        dataTableASIA.rows.add(result); // add to DataTable instance
+                        dataTableASIA.draw();
+
+                 var LATAMjsonObject = response.latamCountryDetails;
+                        var result = LATAMjsonObject.map(function (item) {
+                            var result = [];
+                            result.push(item.countryName);
+                            result.push(item.pidfStrength);
+                            result.push(item.packSizeName);
+                            result.push(item.packingName);
+                            result.push(item.cifPricePerPack1);
+                            result.push(item.qtyOneyear);
+                            result.push(item.volOneyear);
+                             result.push(item.cifPricePerPack2);
+                            result.push(item.qtyTwoyear);
+                            result.push(item.volTwoyear);
+                            result.push(item.cifPricePerPack3);
+                            result.push(item.qtyThreeyear);
+                            result.push(item.volThreeyear);
+                            result.push(item.batchSize);
+                            result.push(item.currencyName);
+                            result.push(item.cogS1);
+                            result.push(item.cogS2);
+                            result.push(item.cogS3);
+                            result.push(item.freight);
+                            result.push(item.totalCIFCost);
+                            result.push(item.contributionThreeYear);
+                            result.push(item.costofThreeBatches);
+                            result.push(item.analyticalCost);
+                            result.push(item.beCost);
+                            result.push(item.rldCost);
+                            result.push(item.randDCost);
+                            result.push(item.filingCost);
+                            result.push(item.stabilityCost);
+                            result.push(item.totalInvest);
+                            result.push(item.otherCost);
+                            result.push(item.apiSource);
+                            result.push(item.roi);
+
+                            return result;
+                        });
+                        dataTableLATAM.clear();
+                        dataTableLATAM.rows.add(result); // add to DataTable instance
+                dataTableLATAM.draw();
+
+                 var CISjsonObject = response.cisCountryDetails;
+                        var result = CISjsonObject.map(function (item) {
+                            var result = [];
+                            result.push(item.countryName);
+                            result.push(item.pidfStrength);
+                            result.push(item.packSizeName);
+                            result.push(item.packingName);
+                            result.push(item.cifPricePerPack1);
+                            result.push(item.qtyOneyear);
+                            result.push(item.volOneyear);
+                             result.push(item.cifPricePerPack2);
+                            result.push(item.qtyTwoyear);
+                            result.push(item.volTwoyear);
+                            result.push(item.cifPricePerPack3);
+                            result.push(item.qtyThreeyear);
+                            result.push(item.volThreeyear);
+                            result.push(item.batchSize);
+                            result.push(item.currencyName);
+                            result.push(item.cogS1);
+                            result.push(item.cogS2);
+                            result.push(item.cogS3);
+                            result.push(item.freight);
+                            result.push(item.totalCIFCost);
+                            result.push(item.contributionThreeYear);
+                            result.push(item.costofThreeBatches);
+                            result.push(item.analyticalCost);
+                            result.push(item.beCost);
+                            result.push(item.rldCost);
+                            result.push(item.randDCost);
+                            result.push(item.filingCost);
+                            result.push(item.stabilityCost);
+                            result.push(item.totalInvest);
+                            result.push(item.otherCost);
+                            result.push(item.apiSource);
+                            result.push(item.roi);
+
+                            return result;
+                        });
+                        dataTableCIS.clear();
+                        dataTableCIS.rows.add(result); // add to DataTable instance
+                dataTableCIS.draw();
+
+
+                  if (response.uploadfilelist!=null) {
+                            $.each(response.uploadfilelist, function (i, List) {
+                                var newRow = $("<tr>");
+                                var cols = "";
+                                cols += '<td><a href="' + List.saveFilePath + '" download="'+ List.saveFileName + '" target="_blank">' + List.saveFileName + '</td>';
+                                newRow.append(cols);
+                                $("table.fileorder-list").append(newRow);
+
+                            });
+
+                        }
+                        else {
+                            var newRow = $("<tr>");
+                                var cols = "";
+                                cols += '<td>Data not available</td>';
+                                newRow.append(cols);
+                                $("table.fileorder-list").append(newRow);
+                        }
+
+            },
+            failure: function () {
+
+            }
+        });
+
+        var pidfID = '@ViewBag.PIDFShowDetailsPIDFID';
+
+        applyFilter(0);
+        $.ajax({
+                    type: "POST",
+                    url: '@Url.Action("GetDRFList", "PIDF")/PidfID?=' + pidfID,
+                    contentType: "application/json; charset=utf-8",
+                    dataType: "json",
+            success: function (response) {
+                if (response.data.length <= 0) {
+                    //alert(response.data.length);
+                    $("#tablelistdata").parent().hide();
+                }
+                else {
+
+                    $("#tablelistdata").parent().show();
+                    $('#loading').hide();
+                    var jsonObject = response.data;
+                    //console.log(jsonObject);
+                    var result = jsonObject.map(function (item) {
+                        var result = [];
+                        var setUrl = "/DRFInitialization/DRFShowDetails?Id=" + item.initializationID;
+                        result.push(item.initializationID);
+                        result.push('<a href="' + setUrl + '" >' + item.drfNo + '</a>');
+                        result.push(item.projectName)
+                        result.push(item.countryName);
+                        result.push(item.genericName);
+                        result.push(item.brandName);
+                        result.push(item.orderFrequency);
+                        result.push(item.strengthName);
+                        result.push(item.packSizeName);
+                        result.push(item.packStyleName);
+                        result.push(item.formName);
+                        result.push(item.plantName);
+                        result.push(item.incotermsName);
+                        result.push(item.maHolder);
+                        result.push(item.nameDossierSend);
+                        result.push("Rahul Patil");
+                        result.push(item.dossierTemplate);
+                        result.push(item.status);
+
+                        return result;
+
+                    });
+                    dataTable.clear();
+                    dataTable.rows.add(result); // add to DataTable instance
+                    dataTable.draw().buttons().container().appendTo('.export-btn'); // always redraw
+                }
+                        },
+                    failure: function () {
+                        $("#DRFTable").append('@SharedLocalizer["Error when fetching data please contact administrator"].Value');
+                                   }
+                               });
+
+
+
+
+        //alert('call apply filter');
+        //applyFilter(0);
+        //getDRFList();
+    });
+
+    function convertDDMMYYY(tempDate) {
+        return tempDate.split('-')[2] + '-' + tempDate.split('-')[1] + '-' + tempDate.split('-')[0];
+    }
+
+     // milestoren data table
+
+
+
+
+    $(function () {
+
+        $('#DRFTaskSubTaskEditModel_DRFEditStartDate').datetimepicker({
+                format: 'DD-MM-YYYY'
+        });
+        $('#startDate .fa-calendar').click(function () {
+            $("#DRFTaskSubTaskEditModel_DRFEditStartDate").focus();
+        });
+
+
+        $('#DRFTaskSubTaskEditModel_DRFEditEndDate').datetimepicker({
+            format: 'DD-MM-YYYY'
+        });
+        $('#endDate .fa-calendar').click(function () {
+            $("#DRFTaskSubTaskEditModel_DRFEditEndDate").focus();
+        });
+
+
+          $('#DRFTaskAddModel_DRFAddTaskStartDate').datetimepicker({
+                format: 'DD-MM-YYYY'
+        });
+        $('#addTaskStartDate .fa-calendar').click(function () {
+            $("#DRFTaskAddModel_DRFAddTaskStartDate").focus();
+        });
+
+
+        $('#DRFTaskAddModel_DRFAddTaskEndDate').datetimepicker({
+            format: 'DD-MM-YYYY'
+        });
+        $('#addTaskEndDate .fa-calendar').click(function () {
+            $("#DRFTaskAddModel_DRFAddTaskEndDate").focus();
+        });
+
+         $('#DRFSubTaskAddModel_DRFAddSubTaskStartDate').datetimepicker({
+                format: 'DD-MM-YYYY'
+        });
+        $('#addSubTaskStartDate .fa-calendar').click(function () {
+            $("#DRFSubTaskAddModel_DRFAddSubTaskStartDate").focus();
+        });
+
+
+        $('#DRFSubTaskAddModel_DRFAddSubTaskEndDate').datetimepicker({
+            format: 'DD-MM-YYYY'
+        });
+        $('#addSubTaskEndDate .fa-calendar').click(function () {
+            $("#DRFSubTaskAddModel_DRFAddSubTaskEndDate").focus();
+        });
+
+
+        $("#DRFTaskSubTaskEditModel_DRFEditStartDate").on("dp.change", function (e) {
+           // console.log(e.date);
+             var tempMinDate = new Date(e.date);
+            //console.log(tempMinDate);
+            var setminDate = new Date(tempMinDate);
+            setminDate.setDate(tempMinDate.getDate() + 1);
+            //console.log(setminDate);
+             $('#DRFTaskSubTaskEditModel_DRFEditEndDate').data("DateTimePicker").minDate(setminDate);
+             $('#DRFTaskSubTaskEditModel_DRFEditTaskDuration').val(calculateDaysDifference($("#DRFTaskSubTaskEditModel_DRFEditStartDate").val(), $('#DRFTaskSubTaskEditModel_DRFEditEndDate').val()));
+       });
+        $("#DRFTaskSubTaskEditModel_DRFEditEndDate").on("dp.change", function (e) {
+
+             // console.log(e.date);
+             var tempMaxDate = new Date(e.date);
+            //console.log(tempMaxDate);
+            var setmaxDate = new Date(tempMaxDate);
+            setmaxDate.setDate(setmaxDate.getDate() - 1);
+            //console.log(setminDate);
+
+           $('#DRFTaskSubTaskEditModel_DRFEditStartDate').data("DateTimePicker").maxDate(setmaxDate);
+           $('#DRFTaskSubTaskEditModel_DRFEditTaskDuration').val(calculateDaysDifference($("#DRFTaskSubTaskEditModel_DRFEditStartDate").val(), $('#DRFTaskSubTaskEditModel_DRFEditEndDate').val()));
+
+       });
+
+
+        $("#DRFTaskAddModel_DRFAddTaskStartDate").on("dp.change", function (e) {
+           // console.log(e.date);
+             var tempMinDate = new Date(e.date);
+            //console.log(tempMinDate);
+            var setminDate = new Date(tempMinDate);
+            setminDate.setDate(tempMinDate.getDate() + 1);
+            //console.log(setminDate);
+           $('#DRFTaskAddModel_DRFAddTaskEndDate').data("DateTimePicker").minDate(setminDate);
+           $('#AddTaskDuration').val(calculateDaysDifference($("#DRFTaskAddModel_DRFAddTaskStartDate").val(), $('#DRFTaskAddModel_DRFAddTaskEndDate').val()));
+       });
+        $("#DRFTaskAddModel_DRFAddTaskEndDate").on("dp.change", function (e) {
+            // console.log(e.date);
+             var tempMaxDate = new Date(e.date);
+            //console.log(tempMaxDate);
+            var setmaxDate = new Date(tempMaxDate);
+            setmaxDate.setDate(setmaxDate.getDate() - 1);
+            //console.log(setminDate);
+           $('#DRFTaskAddModel_DRFAddTaskStartDate  ').data("DateTimePicker").maxDate(setmaxDate);
+           $('#AddTaskDuration').val(calculateDaysDifference($("#DRFTaskAddModel_DRFAddTaskStartDate").val(), $('#DRFTaskAddModel_DRFAddTaskEndDate').val()));
+       });
+
+
+        $("#DRFSubTaskAddModel_DRFAddSubTaskStartDate").on("dp.change", function (e) {
+           // console.log(e.date);
+             var tempMinDate = new Date(e.date);
+            //console.log(tempMinDate);
+            var setminDate = new Date(tempMinDate);
+            setminDate.setDate(tempMinDate.getDate() + 1);
+            //console.log(setminDate);
+           $('#DRFSubTaskAddModel_DRFAddSubTaskEndDate').data("DateTimePicker").minDate(setminDate);
+           $('#AddSubTaskDuration').val(calculateDaysDifference($("#DRFSubTaskAddModel_DRFAddSubTaskStartDate").val(), $('#DRFSubTaskAddModel_DRFAddSubTaskEndDate').val()));
+
+       });
+        $("#DRFSubTaskAddModel_DRFAddSubTaskEndDate").on("dp.change", function (e) {
+            // console.log(e.date);
+             var tempMaxDate = new Date(e.date);
+            //console.log(tempMaxDate);
+            var setmaxDate = new Date(tempMaxDate);
+            setmaxDate.setDate(setmaxDate.getDate() - 1);
+            //console.log(setminDate);
+           $('#DRFSubTaskAddModel_DRFAddSubTaskStartDate').data("DateTimePicker").maxDate(setmaxDate);
+           $('#AddSubTaskDuration').val(calculateDaysDifference($("#DRFSubTaskAddModel_DRFAddSubTaskStartDate").val(), $('#DRFSubTaskAddModel_DRFAddSubTaskEndDate').val()));
+
+       });
+
+
+    });
+
+    function calculateDaysDifference(start,end) {
+    var d1 = start;
+    var d2 = end;
+        var oneDay = 24 * 60 * 60 * 1000;
+        //console.log(d1);
+         //console.log(d2);
+    var diff = 0;
+    if (d1 && d2) {
+
+        var startDate = new Date(d1.split('-')[2]+'-'+d1.split('-')[1]+'-'+d1.split('-')[0]);
+        var endDate = new Date(d2.split('-')[2] + '-' + d2.split('-')[1] + '-' + d2.split('-')[0]);
+
+        //console.log(startDate);
+        //console.log(endDate);
+        diff = Math.round(Math.abs((endDate.getTime() - startDate.getTime()) / (oneDay)));
+        console.log(diff);
+        }
+        return diff;
+
+    }
+
+    $('#DRFTaskSubTaskEditModel_DRFEditTaskDuration').on('keypress', function () {
+              var charCode = window.event.keyCode;
+                if (charCode > 31 && (charCode < 48 || charCode > 57)) {
+                    return false;
+              }
+                return true;
+            });
+
+
+     $('#TaskPercentage').on('keypress', function () {
+              var charCode = window.event.keyCode;
+                if (charCode > 31 && (charCode < 48 || charCode > 57)) {
+                    return false;
+              }
+                return true;
+            });
+
+    function HideUpdateModel() {
+        $('#UpdateModel').modal('hide');
+    }
+
+    function Delete(ProjectMappingID) {
+        $('#DeleteModel').modal('show');
+        document.getElementById('StepIDForDelete').value=ProjectMappingID
+    }
+
+    function HideDeleteModel() {
+        $('#DeleteModel').modal('hide');
+    }
+
+
+    function DeleteTaskSubTask() {
+        var tempInAtiveID = $('#StepIDForDelete').val();
+
+        var data = {
+            "ProjectMappingID":tempInAtiveID
+        };
+       // var url = //$("#DeleteRedirectTo").val();
+        var drfID = @ViewBag.PIDFShowDetailsPIDFID;//PIDFInitializationID;
+        var url = "/PIDF/ApprovedPIDFShowDetails?Id=" + drfID;
+         $('#loading').show();
+         $.ajax({
+                    type: "POST",
+                    url : '@Url.Action("DeleteDRFTaskSubTaskDetails", "DRF")/',
+                    //contentType: "application/json; charset=utf-8",
+                    dataType: "json",
+                    data: data,
+                    success: function (response) {
+                        //console.log(response);
+                         $('#loading').hide();
+                        if (response.data === "success") {
+                            $('#DeleteModel').modal('hide');
+                            openCommonModal('successModal modal-sm', '@Html.Raw(SharedLocalizer["Success"].Value)', '@Html.Raw(SharedLocalizer["Record has been Deleted successfully."].Value)', true);
+                            setTimeout(function(){ location.href = url; }, 2000);
+
+                        }
+                        else {
+                            openCommonModal('alertModal modal-sm', '@SharedLocalizer["Error"].Value', result.message, false);
+                        }
+
+                    },
+                    failure: function () {
+
+                    }
+                });
+    }
+
+
+
+    function Edit(ProjectMappingID) {
+        $('#UpdateModel').modal('show');
+
+        //console.log(ProjectMappingID);
+
+        var data = {
+            "ProjectMappingID":ProjectMappingID
+        };
+         $('#loading').show();
+           $.ajax({
+                    type: "POST",
+                    url: '@Url.Action("GetDRFTaskSubTaskDetailsForEdit", "DRF")/',
+                    //contentType: "application/json; charset=utf-8",
+                    dataType: "json",
+                    data: data,
+                    success: function (response) {
+                       // console.log(response);
+                         $('#loading').hide();
+                        $("#DRFTaskSubTaskEditModel_DRFEditProjectTaskMappingID").val(response.data.drfEditProjectTaskMappingID);
+                        $('#DRFTaskSubTaskEditModel_DRFEditTaskName').val(response.data.drfEditTaskName);
+
+
+                        $('#TaskOwner').empty().append(
+								"<option value=''>Please select option</option>"
+							);
+                        $.each(response.data.taskOwner, function (i, List) {
+                    $("#TaskOwner").append('<option value="' + List.empID + '">' +
+                         List.empName + '</option>');
+                    });
+
+                        $('#TaskOwner option[value="' + response.data.drfEditEmpID + '"]').attr("selected", true);
+
+                         $('#TaskPriority').empty().append(
+								"<option value=''>Please select option</option>"
+                        );
+
+                        $.each(response.data.priority, function (i, List) {
+                    $("#TaskPriority").append('<option value="' + List.priorityID + '">' +
+                         List.priorityName + '</option>');
+                    });
+                    $('#TaskPriority option[value="' + response.data.drfEditPriorityID + '"]').attr("selected", true);
+
+                         $('#TaskStatus').empty().append(
+								"<option value=''>Please select option</option>"
+                        );
+                        $.each(response.data.projectStatus, function (i, List) {
+                    $("#TaskStatus").append('<option value="' + List.projectStatusID + '">' +
+                         List.status + '</option>');
+                    });
+                    $('#TaskStatus option[value="' + response.data.drfEditTaskStatusID + '"]').attr("selected", true);
+
+                        var tempstartDate = response.data.drfEditStartDate.split('T')[0];
+                        var tempendDate = response.data.drfEditEndDate.split('T')[0];
+
+                        $("#DRFTaskSubTaskEditModel_DRFEditStartDate").val(tempstartDate.split('-')[2]+'-'+tempstartDate.split('-')[1]+'-'+tempstartDate.split('-')[0]);
+                        $("#DRFTaskSubTaskEditModel_DRFEditEndDate").val(tempendDate.split('-')[2] + '-' + tempendDate.split('-')[1] + '-' + tempendDate.split('-')[0]);
+
+                        $("#DRFTaskSubTaskEditModel_DRFEditTaskDuration").val(response.data.drfEditTaskDuration);
+
+
+                        if (response.data.drfEditTaskStatusID == 1) {
+                            $(".disabledPercentage").prop("readOnly", true);
+                            $("#TaskPercentage").val(response.data.drfEditTotalPercentage);
+                        } else if (response.data.drfEditTaskStatusID == 11) {
+                             $(".disabledPercentage").prop("readOnly", false);
+                             $("#TaskPercentage").val(response.data.drfEditTotalPercentage);
+                        }
+                        else if (response.data.drfEditTaskStatusID == 8) {
+                            $(".disabledPercentage").prop("readOnly", true);
+                             $("#TaskPercentage").val(response.data.drfEditTotalPercentage);
+                        }
+
+
+
+
+
+                    },
+                    failure: function () {
+
+                    }
+                });
+
+    }
+
+    function SubmitForm(form) {
+           // $("#DRFTaskSubTaskEditModel_DRFEditTaskDuration").attr("value",$("#DRFTaskSubTaskEditModel_DRFEditTaskDuration").val());
+       // console.log($(form).serialize());
+        // var url = $("#RedirectTo").val();
+        var drfID = @ViewBag.PIDFShowDetailsPIDFID;// PIDFInitializationID;
+        var url = "/PIDF/ApprovedPIDFShowDetails?Id=" + drfID;
+         //console.log("Submit function call");
+            $.validator.unobtrusive.parse(form);
+        if ($(form).valid()) {
+            $('#loading').show();
+                $.ajax({
+                    type : "POST",
+                    url : '@Url.Action("UpdateDRFTaskSubTaskDetails", "DRF")/',
+                    data : $(form).serialize(),
+                    success: function (result) {
+                        $('#loading').hide();
+                        //console.log(result);
+                        if (result.data === "success") {
+                            openCommonModal('successModal modal-sm', '@Html.Raw(SharedLocalizer["Success"].Value)', '@Html.Raw(SharedLocalizer["Record has been updated successfully."].Value)', true);
+                            setTimeout(function () { location.href = url; }, 2000);
+                        }
+                        else {
+                            openCommonModal('alertModal modal-sm', '@SharedLocalizer["Error"].Value', result.message, false);
+                        }
+                    }
+                });
+            }
+            return false;
+    }
+
+    function CloseTaskSubTask() {
+        $('#UpdateModel').modal('hide');
+    }
+
+
+    function AddTaskSubTask() {
+        $('#AddModel').modal('show');
+    }
+
+     $('#AddTaskDuration').on('keypress', function () {
+              var charCode = window.event.keyCode;
+                if (charCode > 31 && (charCode < 48 || charCode > 57)) {
+                    return false;
+              }
+                return true;
+            });
+
+
+     $('#AddTaskPercentage').on('keypress', function () {
+              var charCode = window.event.keyCode;
+                if (charCode > 31 && (charCode < 48 || charCode > 57)) {
+                    return false;
+              }
+                return true;
+            });
+
+
+
+
+    function ShowAddTaskForm() {
+        $('#AddTaskModel').modal('show');
+        $('#DRFTaskAddModel_DRFAddTaskDRFID').val(PIDFInitializationID);
+         $('#loading').show();
+         $.ajax({
+                    type: "POST",
+                    url: '@Url.Action("GetDropdownsForAddDRFTask", "DRF")/',
+                    //contentType: "application/json; charset=utf-8",
+                    dataType: "json",
+                   // data: data,
+                    success: function (response) {
+                        //console.log(response);
+                         $('#loading').hide();
+                      $('#AddTaskOwner').empty().append(
+								"<option value=''>Please select option</option>"
+                        );
+
+                    $.each(response.data.taskOwner, function (i, List) {
+                    $("#AddTaskOwner").append('<option value="' + List.empID + '">' +
+                         List.empName + '</option>');
+                    });
+
+                     $('#AddTaskPriority').empty().append(
+								"<option value=''>Please select option</option>"
+                        );
+
+                        $.each(response.data.priority, function (i, List) {
+                    $("#AddTaskPriority").append('<option value="' + List.priorityID + '">' +
+                         List.priorityName + '</option>');
+                        });
+
+                  $('#AddTaskStatus').empty().append(
+								"<option value=''>Please select option</option>"
+                        );
+
+                        $.each(response.data.projectStatus, function (i, List) {
+                    $("#AddTaskStatus").append('<option value="' + List.projectStatusID + '">' +
+                         List.status + '</option>');
+                    });
+
+
+
+                    },
+                    failure: function () {
+
+                    }
+                });
+
+
+
+
+    }
+
+    function HideAddTaskModel() {
+        $('#AddTaskModel').modal('hide');
+    }
+
+
+    function AddTaskForm(form) {
+        //var url= $("#AddTaskRedirectTo").val();
+        var drfID = @ViewBag.PIDFShowDetailsPIDFID;// PIDFInitializationID;
+        var url = "/PIDF/ApprovedPIDFShowDetails?Id=" + drfID;
+         //console.log("Add Task Submit function call");
+
+            $.validator.unobtrusive.parse(form);
+        if ($(form).valid()) {
+                $('#loading').show();
+                $.ajax({
+                    type : "POST",
+                    url : '@Url.Action("AddPIDFTaskDetails", "PIDF")/',
+                    data : $(form).serialize(),
+                    success: function (result) {
+                       // console.log(result);
+                         $('#loading').hide();
+                        if (result.data === "success") {
+                            openCommonModal('successModal modal-sm', '@Html.Raw(SharedLocalizer["Success"].Value)', '@Html.Raw(SharedLocalizer["Record has been added successfully."].Value)', true);
+                            setTimeout(function(){ location.href = url; }, 2000);
+                        }
+                        else {
+                            openCommonModal('alertModal modal-sm', '@SharedLocalizer["Error"].Value', result.message, false);
+                        }
+                    }
+                });
+            }
+            return false;
+    }
+
+
+     $('#AddSubTaskDuration').on('keypress', function () {
+              var charCode = window.event.keyCode;
+                if (charCode > 31 && (charCode < 48 || charCode > 57)) {
+                    return false;
+              }
+                return true;
+            });
+
+
+     $('#AddSubTaskPercentage').on('keypress', function () {
+              var charCode = window.event.keyCode;
+                if (charCode > 31 && (charCode < 48 || charCode > 57)) {
+                    return false;
+              }
+                return true;
+            });
+
+
+
+    function ShowAddSubTaskForm() {
+        $('#AddSubTaskModel').modal('show');
+        $('#DRFSubTaskAddModel_DRFAddSubTaskDRFID').val(PIDFInitializationID);
+         $('#loading').show();
+         $.ajax({
+                    type: "POST",
+                    //url: '@Url.Action("GetDropdownsForAddSubTask", "DRF")/Id?=' + PIDFInitializationID,
+                    url: "/DRF/GetDropdownsForAddSubTask?Id="+PIDFInitializationID,
+                    //contentType: "application/json; charset=utf-8",
+                    dataType: "json",
+                   // data: data,
+                    success: function (response) {
+                        //console.log(response);
+                         $('#loading').hide();
+                        $('#AddSubTaskofTask').empty().append(
+								"<option value=''>Please select option</option>"
+                        );
+
+                    $.each(response.data.mainTaskList, function (i, List) {
+                    $("#AddSubTaskofTask").append('<option value="' + List.mainTaskID + '">' +
+                         List.mainTaskName + '</option>');
+                    });
+
+                      $('#AddSubTaskOwner').empty().append(
+								"<option value=''>Please select option</option>"
+                        );
+
+                    $.each(response.data.taskOwner, function (i, List) {
+                    $("#AddSubTaskOwner").append('<option value="' + List.empID + '">' +
+                         List.empName + '</option>');
+                    });
+
+                     $('#AddSubTaskPriority').empty().append(
+								"<option value=''>Please select option</option>"
+                        );
+
+                        $.each(response.data.priority, function (i, List) {
+                    $("#AddSubTaskPriority").append('<option value="' + List.priorityID + '">' +
+                         List.priorityName + '</option>');
+                        });
+
+                  $('#AddSubTaskStatus').empty().append(
+								"<option value=''>Please select option</option>"
+                        );
+
+                        $.each(response.data.projectStatus, function (i, List) {
+                    $("#AddSubTaskStatus").append('<option value="' + List.projectStatusID + '">' +
+                         List.status + '</option>');
+                    });
+
+
+
+                    },
+                    failure: function () {
+
+                    }
+                });
+
+    }
+    function HideAddSubTaskModel() {
+        $('#AddSubTaskModel').modal('hide');
+    }
+
+    function AddSubTaskForm(form) {
+
+        //var url= $("#AddSubTaskRedirectTo").val();
+        var drfID = '@ViewBag.PIDFShowDetailsPIDFID';// PIDFInitializationID;
+        var url = "/PIDF/ApprovedPIDFShowDetails?Id=" + drfID;
+            $.validator.unobtrusive.parse(form);
+        if ($(form).valid()) {
+                 $('#loading').show();
+                $.ajax({
+                    type : "POST",
+                    url : '@Url.Action("AddPIDFSubTaskDetails", "PIDF")/',
+                    data : $(form).serialize(),
+                    success: function (result) {
+                        //console.log(result);
+                         $('#loading').hide();
+                        if (result.data === "success") {
+                            openCommonModal('successModal modal-sm', '@Html.Raw(SharedLocalizer["Success"].Value)', '@Html.Raw(SharedLocalizer["Record has been added successfully."].Value)', true);
+                            setTimeout(function(){ location.href = url; }, 2000);
+                        }
+                        else {
+                            openCommonModal('alertModal modal-sm', '@SharedLocalizer["Error"].Value', result.message, false);
+                        }
+                    }
+                });
+            }
+            return false;
+    }
+
+    function setPercentage(statusID, idx) {
+        if (statusID == 1) {
+            //Completed Status
+            if (idx == 2) {
+                $(".disabledSubTaskPercentage").prop("readOnly", true);
+                $('#AddSubTaskPercentage').val('100');
+            } else if (idx == 1) {
+                $(".disabledTaskPercentage").prop("readOnly", true);
+                $('#AddTaskPercentage').val('100');
+            }
+            else if (idx == 0) {
+                $(".disabledPercentage").prop("readOnly", true);
+                $('#TaskPercentage').val('100');
+            }
+        }
+        else if (statusID == 11) {
+            //InProgress status
+            if (idx == 2) {
+                $(".disabledSubTaskPercentage").prop("readOnly", false);
+                $('#AddSubTaskPercentage').val('0');
+            } else if (idx == 1) {
+                $(".disabledTaskPercentage").prop("readOnly", false);
+                $('#AddTaskPercentage').val('0');
+            }
+            else if (idx == 0) {
+                $(".disabledPercentage").prop("readOnly", false);
+                $('#TaskPercentage').val('0');
+            }
+        }
+        else if (statusID == 8) {
+            //Initial status
+            if (idx == 2) {
+                $(".disabledSubTaskPercentage").prop("readOnly", true);
+                $('#AddSubTaskPercentage').val('0');
+            } else if (idx == 1) {
+                $(".disabledTaskPercentage").prop("readOnly", true);
+                $('#AddTaskPercentage').val('0');
+            }
+            else if (idx == 0) {
+                $(".disabledPercentage").prop("readOnly", true);
+                $('#TaskPercentage').val('0');
+            }
+        }
+        else {
+            if (idx == 2) {
+                $(".disabledSubTaskPercentage").prop("readOnly", false);
+                $('#AddSubTaskPercentage').val('0');
+            } else if (idx == 1) {
+                $(".disabledTaskPercentage").prop("readOnly", false);
+                $('#AddTaskPercentage').val('0');
+            }
+            else if (idx == 0) {
+                $(".disabledPercentage").prop("readOnly", false);
+                $('#TaskPercentage').val('0');
+            }
+        }
+    }
+
+    $('.status_filter').on('click', function () {
+        $('.taskTabs .active').removeClass('active');
+        $(this).addClass('active');
+    });
+    function applyFilter(filterID)
+    {
+        
+        $('.taskTabs .active').removeClass('active');
+        $(this).addClass('active');
+
+        $('#Milestones').bootstrapTable('destroy');
+         // $('#Milestones').bootstrapTable();
+        // $('#Milestones').bootstrapTable('clear');
+       // $('#Milestones').bootstrapTable.clear();
+       //alert(filterID);
+        //var tempaction = '@ViewBag.ActionName';
+        //alert(tempaction);
+        var drfMergedID =  '@ViewBag.PIDFShowDetailsPIDFID' + '-' + filterID + '-' + '@ViewBag.ActionName';
+       //alert(drfMergedID);
+
+         var $table = $('#Milestones')
+                                $(function () {
+
+                                        $table.bootstrapTable({
+                                            //url: '../dist/js/treegrid.json',
+                                       // url: 'GetDRFTaskSubTask?DRFID=@ViewBag.DRFID',
+                                          url:"/PIDF/GetPIDFTaskSubTask?PidfID=" +drfMergedID,
+                                        idField: 'projectTaskMappingID',
+                                        columns: [
+                                        {
+                                            field: 'taskName',
+                                            title: 'Task'
+                                        }, {
+                                            field: 'empName',
+                                            title: 'Task Owner'
+                                        }, {
+                                            field: 'taskStatus',
+                                            title: 'Status',
+                                            //sortable: true,
+                                            align: 'center',
+                                            },
+                                         {
+                                            field: 'priority',
+                                            title: 'Priority',
+                                            align: 'center',
+                                        },
+                                            {
+                                            field: 'startDate',
+                                            title: 'Start date'
+                                        }, {
+                                            field: 'endDate',
+                                            title: 'End date'
+                                        }, {
+                                            field: 'duration',
+                                            title: 'Duration'
+                                        }, {
+                                            field: 'totalPercentage',
+                                            title: 'Completed %'
+                                        }, {
+                                            field: 'modifiedDate',
+                                            title: 'Updated date'
+                                        }
+
+                                                    , {
+                                                             field: 'action',
+                                                    title: 'Action'
+                                                        }
+
+                                            ],
+                                        treeShowField: 'taskName',
+                                        parentIdField: 'parentID',
+                                            onPostBody: function () {
+                                                
+
+                                                var columns = $table.bootstrapTable('getOptions').columns;
+                                                
+                                                if (columns && columns[0][1].visible) {
+                                                    $table.treegrid({
+                                                        treeColumn: 0,
+                                                        onChange: function () {
+                                                            $table.bootstrapTable('resetView');
+                                                        }
+                                                    })
+                                                }
+                                                if ($('#CurrentUserRole').val() == 'Prescriber' || $('#CurrentUserRole').val() == 'Regulatory Manager') {
+
+                                                    $table.bootstrapTable('showColumn', 'action');
+                                                } else {
+                                                    $table.bootstrapTable('hideColumn', 'action')
+                                                }
+
+
+                                                 }
+                                             });
+
+                                    $('.fixed-table-loading').hide();
+                                });
+
+         @*var $table = $('#Milestones')
+        $(function () {
+
+                $table.bootstrapTable({
+                    //url: '../dist/js/treegrid.json',
+                // url: 'GetDRFTaskSubTask?DRFID=@ViewBag.DRFID',
+                    url:"/PIDF/GetPIDFTaskSubTask?PidfID=" +drfMergedID,
+                idField: 'projectTaskMappingID',
+                columns: [
+                {
+                    field: 'taskName',
+                    title: 'Task'
+                }, {
+                    field: 'empName',
+                    title: 'Task Owner'
+                }, {
+                    field: 'taskStatus',
+                    title: 'Status',
+                    //sortable: true,
+                    align: 'center',
+                    },
+                    {
+                    field: 'priority',
+                    title: 'Priority',
+                    align: 'center',
+                },
+                    {
+                    field: 'startDate',
+                    title: 'Start date'
+                }, {
+                    field: 'endDate',
+                    title: 'End date'
+                }, {
+                    field: 'duration',
+                    title: 'Duration'
+                }, {
+                    field: 'totalPercentage',
+                    title: 'Completed %'
+                }, {
+                    field: 'modifiedDate',
+                    title: 'Updated date'
+                }
+                    , {
+                    field: 'action',
+                    title: 'Action'
+                        }
+                    ],
+                treeShowField: 'taskName',
+                parentIdField: 'parentID',
+                    onPostBody: function () {
+                    var columns = $table.bootstrapTable('getOptions').columns;
+                    if (columns && columns[0][1].visible) {
+                        $table.treegrid({
+                            treeColumn: 0,
+                            onChange: function () {
+
+                                $table.bootstrapTable('resetView');
+                            }
+                        })
+                    }
+                        if ($('#CurrentUserRole').val() == 'Prescriber' || $('#CurrentUserRole').val() == 'Regulatory Manager' || $('#CurrentUserRole').val() == 'Senior Project Manager') {
+
+                        $table.bootstrapTable('showColumn', 'action');
+                    } else {
+                        $table.bootstrapTable('hideColumn', 'action')
+                    }
+                }
+            });
+
+            $('.fixed-table-loading').hide();
+        });*@
+
+
+    }
+
+    function getDRFList() {
+        //alert('Drflist');
+    }
+
+</script>

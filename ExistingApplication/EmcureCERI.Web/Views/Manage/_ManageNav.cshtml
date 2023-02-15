@@ -1,0 +1,16 @@
+﻿@using EmcureCERI.Web.Views.Manage
+@inject Microsoft.AspNetCore.Identity.SignInManager<ApplicationUser> SignInManager
+@inject Microsoft.Extensions.Localization.IStringLocalizer<SharedResource> SharedLocalizer
+@{
+    var hasExternalLogins = (await SignInManager.GetExternalAuthenticationSchemesAsync()).Any();
+}
+
+<li class="nav-item mr-1 @ManageNavPages.IndexNavClass(ViewContext)"><a class="btn btn-primary" asp-action="Index"><i class="fas fa-user mr-2"></i>@SharedLocalizer["Profile"].Value</a></li>
+<li class="nav-item mr-1 @ManageNavPages.ChangePasswordNavClass(ViewContext)"><a class="btn btn-primary" asp-action="ChangePassword"><i class="fas fa-key mr-2"></i>@SharedLocalizer["Password"].Value</a></li>
+<li id="contactdetails" class="nav-item mr-1  @ManageNavPages.ContactDetailsNavClass(ViewContext)"><a class="btn btn-primary" asp-action="ContactDetails"><i class="fas fa-envelope mr-2"></i>@SharedLocalizer["Contact Details"].Value</a></li>
+<li class="nav-item @ManageNavPages.SecurityQuestionNavClass(ViewContext)"><a class="btn btn-primary" asp-action="SecurityQuestion"><i class="fas fa-question mr-2"></i>@SharedLocalizer["Security Question"].Value</a></li>
+@*@if (hasExternalLogins)
+    {
+        <li class="@ManageNavPages.ExternalLoginsNavClass(ViewContext)"><a asp-action="ExternalLogins">External logins</a></li>
+    }
+    <li class="@ManageNavPages.TwoFactorAuthenticationNavClass(ViewContext)"><a asp-action="TwoFactorAuthentication">Two-factor authentication</a></li>*@

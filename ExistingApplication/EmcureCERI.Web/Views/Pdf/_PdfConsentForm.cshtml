@@ -1,0 +1,42 @@
+﻿@using Microsoft.Extensions.Localization
+@inject IStringLocalizer<SharedResource> SharedLocalizer
+<div hidden id="informed-consent-form" style="font-size:12px; width:100%;">
+    <p style="text-align:center;font-size:20px;"><b>@SharedLocalizer["Informed Consent Form"].Value</b></p>
+    <p><b>@SharedLocalizer["Study Title"].Value</b> : <lable>@SharedLocalizer["Cidofovir Exposure Registry Information"].Value</lable></p>
+    <p style="text-align:center; margin-bottom:0;"><b>@SharedLocalizer["Documentation of the Informed Consent"].Value</b></p>
+    <table class="table table-bordered table-striped" style="font-size:10px; width:100%; margin-bottom:0;" cellspacing="0" cellpadding="5">
+        <tbody>
+            <tr>
+                <td width="70" style="width:150px; max-width:150px;">@SharedLocalizer["Sr.No."].Value</td>
+                <td>@SharedLocalizer["Description"].Value&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
+                <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
+            </tr>
+            <tr><td>(i)</td><td>@Html.Raw(SharedLocalizer["I confirm that I have read and understood the information sheet dated <lable id='date'></lable> for the above study and have had the opportunity to ask questions."].Value)</td><td id="point1"></td></tr>
+            <tr><td>(ii)</td><td>@SharedLocalizer["I understand that my participation in the Study is voluntary and that I am free to withdraw at any time, without giving any reason, without my medical care or legal rights being affected."].Value</td><td id="point2"></td></tr>
+            <tr><td>(iii)</td><td>@SharedLocalizer["I understand that all attempts will be made to protect my privacy and my family’s privacy. I understand that my personal information will be protected and saved in the Cidofovir Exposure Registry using a code."].Value</td><td id="point3"></td></tr>
+            <tr><td>(iv)</td><td>@SharedLocalizer["I understand that the Sponsor of the Cidofovir Exposure Registry, others working on the Sponsor’s behalf, the Institutional Review Board and the regulatory authorities will not need my permission to look at my health records both in respect of the current study and any further research that may be conducted in relation to it, even if I withdraw from the trial. I agree to this access. However, I understand that my identity will not be revealed in any information released to third parties or published."].Value</td><td id="point4"></td></tr>
+            <tr><td>(v)</td><td>@SharedLocalizer["I understand that I may not personally benefit from participating in the Cidofovir Exposure Registry."].Value</td><td id="point5"></td></tr>
+            <tr><td>(vi)</td><td>@SharedLocalizer["I agree not to restrict the use of any data or results that arise from this study provided such a use is only for scientific purpose(s)"].Value</td><td id="point6"></td></tr>
+            <tr><td>(vii)</td><td>@SharedLocalizer["I agree to take part in the above study."].Value</td><td id="point7"></td></tr>
+        </tbody>
+    </table>
+    <p style="font-family:Arial;">@SharedLocalizer["I have read the above informationand it is presented in a language that I understand well. By signing this consent form, I attest that the information given in this document has been clearly explained to me and understood well by me. I have been told that I will be given a signed copy of thisform. I hereby willingly confirm that I wish to take part in this study."].Value</p>
+    <p style="font-family:Arial; margin-bottom:0px;"><b>@SharedLocalizer["Name of the patient"].Value</b></p>
+    <table style="text-align:left; width:100%; border: 1px solid #ddd; font-family:Arial; font-size:10px;" id="clientInfoFilter" cellspacing="0" cellpadding="5">
+        <tbody>
+            <tr><td style="text-align:left; border-bottom: 1px solid #ddd; border-right: 1px solid #ddd;">@SharedLocalizer["First Name"].Value</td><td style="border-bottom: 1px solid #ddd;">@SharedLocalizer["Last Name"].Value</td></tr>
+            <tr><td style="text-align:left; border-bottom: 1px solid #ddd; border-right: 1px solid #ddd;" id="firstName"></td><td style="border-bottom: 1px solid #ddd;" id="lastName"></td></tr>
+        </tbody>
+    </table>
+    <p style="font-family:Arial; margin-bottom:0px;"><b>@SharedLocalizer["Date of Birth"].Value</b> - <lable id="dobId"></lable></p>
+    <p style="font-family:Arial; margin-bottom:0px;"><b>@SharedLocalizer["Name of the legal representative, if applicable"].Value</b></p>
+    <table style="text-align:left; width:100%; border: 1px solid #ddd; font-family:Arial; font-size:10px;" id="clientInfoFilter" cellspacing="0" cellpadding="5">
+        <tbody>
+            <tr><td style="text-align:left; border-bottom: 1px solid #ddd; border-right: 1px solid #ddd;">@SharedLocalizer["First Name"].Value</td><td style="border-bottom: 1px solid #ddd;">@SharedLocalizer["Last Name"].Value</td></tr>
+            <tr><td style="text-align:left; border-bottom: 1px solid #ddd; border-right: 1px solid #ddd;" id="rfirstName"></td><td style="border-bottom: 1px solid #ddd;" id="rlastName"></td></tr>
+        </tbody>
+    </table>
+    <p>@SharedLocalizer["Signature of the patient/legal representative confirming that he/she understood the content of the consent form"].Value</p>
+    <lable>@SharedLocalizer["Signature"].Value ______________________   &nbsp;&nbsp;&nbsp;</lable>  @SharedLocalizer["Date"].Value _______________
+</div>
+

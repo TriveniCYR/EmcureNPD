@@ -1,0 +1,87 @@
+﻿@inject Microsoft.Extensions.Localization.IStringLocalizer<SharedResource> SharedLocalizer
+@model EmcureCERI.Web.Models.PrescriberViewModels.PatientViewModel
+@{
+    ViewData["Title"] = "PatientUploadDocument";
+    Layout = null;
+}
+@Html.HiddenFor(model => model.Id)
+<div class="row">
+    <div class="col-sm-12">
+        <div class="form-group">
+            <input type="file" id="FileUploadCity" name="files" class="hide" placeholder='Choose a file...' accept="application/docx" />
+            <div class="input-group input-file" name="Fichier1">
+                <input type="text" id="FileUploadCityDummy" class="form-control input-sm" placeholder='@SharedLocalizer["Select File"].Value' readonly />
+                <span class="input-group-btn" style="font-size:inherit;">
+                    <button class="btn btn-default btn-sm" type="button" id="triggerFileUpload">@SharedLocalizer["Browse"].Value</button>
+                </span>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="row">
+    <div class="col-sm-12 text-center">
+        <input type="button" id="btnUploadCity" value='@SharedLocalizer["Upload"].Value' class="btn btn-primary" />
+        <button type="button" class="btn btn-dark" data-dismiss="modal">@SharedLocalizer["Cancel"].Value</button>
+    </div>
+</div>
+
+<script>
+    $(document).ready(function () {
+        $('#btnUploadCity').click(function () {
+            if (window.FormData !== undefined) {
+                var fileUpload = $("#FileUploadCity").get(0);
+                var files = fileUpload.files;
+                // Create FormData object
+                var fileData = new FormData();
+                // Looping over all files and add it to FormData object
+                for (var i = 0; i < files.length; i++) {
+                    fileData.append(files[i].name, files[i]);
+                }
+                // Adding one more key to FormData object
+                var id = $('#Id').val();
+                //alert(id);
+                fileData.append('patientID', id);
+                $('#loaderContainer').show();
+                $.ajax({
+                    url: '/Prescriber/UploadFilesCity',
+                    type: "POST",
+                    contentType: false, // Not to set any content header
+                    processData: false, // Not to process data
+                    data: fileData,
+                    success: function (response) {
+                        $('#loaderContainer').hide();
+                        if (response.data === "success") {
+                            $('#patientViewModal').modal('hide');
+                            openCommonModal('successModal modal-sm', '@Html.Raw(SharedLocalizer["Success"].Value)', response.message, false);
+                            location.reload();
+                        } else {
+                            if (response.data === "info") {
+                                openCommonModal('alertModal modal-sm', '@SharedLocalizer["Alert"].Value', response.message, false);
+                            } else {
+                                if (response.data === "error") {
+                                    openCommonModal('alertModal modal-sm', '@SharedLocalizer["Error"].Value', response.message, false);
+                                }
+                            }
+                        }
+                    },
+                    error: function (err) {
+                        $('#loaderContainer').hide();
+                        alert(err.statusText);
+                    }
+                });
+            } else {
+                alert("FormData is not supported.");
+            }
+            // Checking whether FormData is available in browser
+        });
+    });
+
+    $('#triggerFileUpload').on('click', function () {
+        $('#FileUploadCity').trigger('click');
+    });
+
+    document.getElementById('FileUploadCity').onchange = function () {
+        $('#FileUploadCityDummy').val(this.files[0].name);
+    };
+
+</script>

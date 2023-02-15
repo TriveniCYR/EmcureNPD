@@ -1,0 +1,34 @@
+﻿@using Microsoft.AspNetCore.Builder
+@using Microsoft.AspNetCore.Http.Features
+@using Microsoft.AspNetCore.Localization
+@using Microsoft.AspNetCore.Mvc.Localization
+@using Microsoft.Extensions.Options
+
+@inject IViewLocalizer Localizer
+@inject IOptions<RequestLocalizationOptions> LocOptions
+
+@{
+    var requestCulture = Context.Features.Get<IRequestCultureFeature>();
+    var cultureItems = LocOptions.Value.SupportedUICultures.Select(c => new SelectListItem { Value = c.Name, Text = c.DisplayName }).ToList();
+    var returnUrl = string.IsNullOrEmpty(Context.Request.Path) ? "~/" : $"~{Context.Request.Path.Value}";
+}
+
+<form id="selectLanguage" asp-controller="Home"
+      asp-action="SetLanguage" asp-route-returnUrl="@returnUrl"
+      method="post" class="form-horizontal" role="form">
+    <select class="langSelector" data-width="fit" name="culture" onchange="this.form.submit();" asp-for="@requestCulture.RequestCulture.UICulture.Name">
+        <option data-content="<img src='/images/flags/Dutch.png' />Dutch" value="nl-BE">Dutch</option>
+        <option data-content="<img src='/images/flags/ENG.png' />English" value="en-GB">English</option>
+        <option data-content="<img src='/images/flags/French.png' />French" value="fr-FR">French</option>
+        @*<option data-content="<img src='/images/flags/German.png' />German" value="de-DE">German</option>
+        <option data-content="<img src='/images/flags/Spanish.png' />Spanish" value="es-ES">Spanish</option>*@
+    </select>
+
+    @*<select name="culture" onchange="this.form.submit();" asp-for="@requestCulture.RequestCulture.UICulture.Name">
+            @foreach (var item in cultureItems)
+            {
+                <option data-content='<img src="/images/flags/ENG.png" />@item.Text' value="@item.Value">@item.Text</option>
+            }
+        </select>*@
+    @*<select class="form-control" name="culture" onchange="this.form.submit();" asp-for="@requestCulture.RequestCulture.UICulture.Name" asp-items="cultureItems"></select>*@
+</form>

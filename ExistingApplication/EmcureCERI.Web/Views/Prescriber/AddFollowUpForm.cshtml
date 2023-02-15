@@ -1,0 +1,27 @@
+﻿@model EmcureCERI.Web.Models.PrescriberViewModels.AddFollowUpFormVM
+@inject Microsoft.Extensions.Localization.IStringLocalizer<SharedResource> SharedLocalizer
+@{
+    Layout = null;
+}
+
+@using (Html.BeginForm("AddFollowUpForm", "Prescriber", FormMethod.Post, new { onsubmit = "return SubmitFormFollowUpForm(this)" }))
+{
+    @Html.HiddenFor(model => model.Id)
+    <div class="row">
+        <div class="col-sm-12">
+            <div class="form-group">
+                @Html.LabelFor(model => model.FollowUpFormName, htmlAttributes: new { @class = "control-label" })
+                @Html.TextAreaFor(model => model.FollowUpFormName, new { @class = "form-control input-sm", @rows = 4 })
+                @Html.ValidationMessageFor(model => model.FollowUpFormName, "", new { @class = "text-danger" })
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-sm-12 text-center">
+            <div class="form-group">
+                <input type="submit" value="@SharedLocalizer["Save"].Value" class="btn btn-default btn-sm" />
+                <button type="button" class="btn btn-default btn-sm" data-dismiss="modal">@SharedLocalizer["Cancel"].Value</button>
+            </div>
+        </div>
+    </div>
+}

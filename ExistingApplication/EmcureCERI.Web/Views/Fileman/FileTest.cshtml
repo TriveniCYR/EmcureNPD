@@ -1,0 +1,380 @@
+﻿@inject Microsoft.Extensions.Localization.IStringLocalizer<SharedResource> SharedLocalizer
+@{
+    ViewData["Title"] = "File Manager";
+}
+<div class="content-wrapper pt-3">
+    <section class="content">
+        <div class="container-fluid">
+
+            <div class="row">
+                <section class="col-lg-12">
+                    <!-- Custom tabs (Charts with tabs)-->
+                    <div class="card">
+                        <div class="card-header">
+                            <h3 class="card-title">
+                                <i class="far fa-plus-square mr-2"></i> Project :@ViewBag.TempProject
+                            </h3>
+                            <div class="card-tools">
+                                <ul class="nav nav-pills ml-auto">
+                                    <li class="nav-item mr-3 d-none">
+                                        <a class="btn btn-primary" href="/DRFInitialization/ProjectList"><i class="far fa-list-alt mr-1"></i> Project List</a>
+                                    </li>
+                                    <li class="nav-item mr-3">
+                                        <button class="btn btn-primary" onclick="javascript:window.history.back();"><i class="fas fa-undo mr-1"></i> Back</button>
+                                    </li>
+                                    <button type="button" class="btn btn-tool p-0 mr-3 expand1" data-card-widget="maximize">
+                                        <i class="fas fa-expand"></i>
+                                    </button>
+
+                                    <button type="button" class="btn btn-tool" data-card-widget="collapse">
+                                        <i class="fas fa-minus"></i>
+                                    </button>
+                                </ul>
+                            </div>
+                        </div>
+                        <div class="card-body">
+                            <div class="row">
+                                <iframe style="width:100%; height:590px; border:1px solid silver" src="/lib/fileman/index.html?integration=custom&noselect=true">This feature requires IFRAME support</iframe>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+            </div>
+
+            <div class="row">
+                <section class="col-lg-12">
+
+                    <div class="card">
+                        <div class="card-header">
+                            <h3 class="card-title">
+                                <i class="far fa-check-square mr-2"></i> Check List
+                            </h3>
+                            <div class="card-tools">
+                                <button type="button" class="btn btn-tool p-0 mr-3 expand1" data-card-widget="maximize">
+                                    <i class="fas fa-expand"></i>
+                                </button>
+
+                                <button type="button" class="btn btn-tool" data-card-widget="collapse">
+                                    <i class="fas fa-minus"></i>
+                                </button>
+                            </div>
+                        </div>
+                        <!-- /.card-header -->
+
+                        <div class="card-body">
+                            <div class="row">
+
+                                <div class="col-sm-12">
+                                    @*<table id="CheckList" class="table table-bordered table-hover" style="width:100%">
+            <thead>
+                <tr>
+
+                    <th style="width:80%">@SharedLocalizer["Name"].Value</th>
+                    <th class="text-center">#</th>
+                </tr>
+            </thead>
+        </table>*@
+                                    <table id="CheckList" class="table table-bordered" cellspacing="0" width="100%"></table>
+                                </div>
+
+                            </div>
+
+                        </div>
+
+                        <div class="card-footer text-center hideButtons">
+                            <button name="submit" id="updateCheckList" onclick="updateCheckList()" type="submit" class="btn btn-primary mr-3">Update</button>
+                            @*<a class="btn btn-primary" href="@Url.Action("PIDFStrengthList","PIDF")"><i class="far  mr-1"></i>Cancel</a>*@
+
+                            <button class="btn btn-primary mr-3" onclick="javascript:window.history.back();"> Cancle</button>
+                        </div>
+
+                        <!-- /.card -->
+                    </div>
+                </section>
+
+            </div>
+
+
+        </div>
+    </section>
+</div>
+<style>
+     .treegrid-control span {
+            cursor: pointer;
+        padding: 0px 5px;
+        display: block;
+        box-shadow: 0 0 1px #999;
+        width: 20px;
+        height: 25px;
+    }
+
+    .treegrid-control-open span {
+        cursor: pointer;
+        padding: 0px 7px;
+        display: block;
+        box-shadow: 0 0 1px #999;
+        width: 20px;
+        height: 25px;
+    }
+</style>
+<script src='~/js/dataTables.treeGrid.js'></script>
+<script>
+      var columns = [
+            {
+                       
+                title: '#',
+                target: 0,
+                className: 'treegrid-control',
+                data: function (item) {
+                    if (item.children) {
+                        return '<span>+</span>';
+                    }
+                    else {
+
+                    return '';
+                    }
+                }
+                  
+            },
+            {
+                title: 'Name',
+                target: 1,
+                data: function (item) {
+                    return item.name;
+                }
+                    
+            },
+            {
+                title: '#',
+                target: 2,
+                data: function (item) {
+                    return item.action;
+                }
+            }
+            
+        ];
+
+
+      $(document).ready(function () {
+           
+            var table = $('#CheckList').DataTable({
+                columns: columns,
+                ordering: false,
+                searching: false,
+                paging: false,
+                info: false,
+               // dom: 'Bfrtip',
+               //buttons: [
+               //     {
+               //         extend: 'excel', text: '<i class="far fa-file-excel"></i> Export In Excel ', className: "btn-primary", exportOptions: {
+               //             columns: ':visible'
+               //         }
+               //     },
+               //     {extend: 'colvis', className:"btn-primary" }
+               //  ],
+              
+               // lengthChange: false,
+                columnDefs: [
+                    { className: 'text-center', targets: [0, 2] },
+                    { width: "20px", targets: [0,2] }
+                ],
+               // initComplete: function () {
+               //     this
+               //         .api()
+               //         .column(8)
+               //         .search(regEx, true, false,true)
+               //         .draw()
+               // },
+                ajax: '/FileManager/GetGeneralCheckList?DRFID=@ViewBag.FileDRFID',//,
+                treeGrid: {
+                    'left': 10,
+                    'expandIcon': '<span>+</span>',
+                    'collapseIcon': '<span>-</span>'
+                }
+
+                
+            });
+
+        // console.log("HII"+table.rows().count()); 
+
+          
+         
+            //table.buttons().container()
+            //    .appendTo('.export-btn');
+            //$('.status_filter').on('click', function () {
+            //    $('.pidfTabs .active').removeClass('active');
+            //    $(this).addClass('active');
+            //    var term = $(this).data('status');
+            //    var regExp = "^" + term + "$";
+            //    table.columns(8).search(regExp, true, false,true).draw();
+
+            //});
+
+            //$(".buttons-excel").removeClass("btn-secondary");
+            //$(".buttons-collection").removeClass("btn-secondary");
+
+           setTimeout(function () {
+        $('#CheckList tbody tr td span').trigger('click');
+        //var rowcount = $("tr[parent-index='0']").length;
+      //  var rowcount = $("#CheckList tbody tr").length;
+
+       //  var rowcount = $('#CheckList').dataTable();
+            console.log(table.rows().count());
+            if (table.rows().count() >=1) {
+                  $('.hideButtons').show();
+            } else {
+                  $('.hideButtons').hide();
+            }
+    }, 2000);
+        
+        });
+
+
+
+
+
+      @*var dataTable = $('#CheckList').DataTable({
+                responsive: true,
+             retrieve: true,
+             paging: true,
+                searching: true,
+                sort: false,
+          "bInfo": false,
+          columnDefs: [
+   
+    { className: 'text-center', targets: [1] },
+  ],
+                language: {
+                    "emptyTable": "@SharedLocalizer["No data available in table"].Value",
+                    "info": "@SharedLocalizer["Showing _START_ to _END_ of _TOTAL_ entries"].Value",
+                    "infoEmpty":"@SharedLocalizer["Showing 0 to 0 of 0 entries"].Value",
+                    "infoFiltered":"@SharedLocalizer["(filtered from _MAX_ total entries)"].Value",
+                    "lengthMenu":"@SharedLocalizer["Show _MENU_ entries"].Value",
+                    "loadingRecords": "@SharedLocalizer["Loading..."].Value",
+                    "processing": "@SharedLocalizer["Processing..."].Value",
+                    "search": "@SharedLocalizer["Search"].Value",
+                    "zeroRecords":"@SharedLocalizer["No matching records found"].Value",
+                    "paginate": {
+                        "first":"@SharedLocalizer["First"].Value",
+                        "last":"@SharedLocalizer["Last"].Value",
+                        "next": "@SharedLocalizer["Next"].Value",
+                        "previous":"@SharedLocalizer["Previous"].Value"
+                    },
+                }
+
+            });
+
+    console.log(@ViewBag.FileDRFID);
+            $.ajax({
+                    type: "POST",
+                    //url: '@Url.Action("GetDRFInitializationList", "DRFInitialization")/',
+                     url :'/FileManager/GetGeneralCheckList?DRFID=@ViewBag.FileDRFID',
+                    contentType: "application/json; charset=utf-8",
+                    dataType: "json",
+                    success: function (response) {
+                         $('#loading').hide();
+
+                        console.log(response);
+
+                        var jsonObject = response.data;
+                        console.log(jsonObject);
+                        var result = jsonObject.map(function (item) {
+                          
+                            var result = [];
+                          
+                            result.push(item.name);
+
+                            if(item.isChecked==true){
+                             result.push("<input class='alignCentre' checked='checked' type='checkbox' onclick='InsertRemoveCheckedId(" + item.transactionID + ")' >");
+                                checkedArrayList.push(item.transactionID);
+                            }
+                            else
+                            {
+                            result.push("<input class='alignCentre' type='checkbox' onclick='InsertRemoveCheckedId(" + item.transactionID + ")' >");
+                            }
+                            return result;
+                            console.log(checkedArrayList);
+                        });
+                        dataTable.clear();
+                        dataTable.rows.add(result); // add to DataTable instance
+                        dataTable.draw();
+                        //dataTable.draw().buttons().container().appendTo('.export-btn'); // always redraw
+                        //$('.alignCentre').parent().addClass('text-center');
+                        },
+                    failure: function () {
+                        $("#CheckList").append('@SharedLocalizer["Error when fetching data please contact administrator"].Value');
+                                   }
+            });
+
+*@
+
+
+   
+
+
+
+    var checkedArrayList = [];
+        function InsertRemoveCheckedId(CheckedUncheckedID) {
+
+
+           if ($.inArray(CheckedUncheckedID, checkedArrayList) == -1) {
+               checkedArrayList.push(CheckedUncheckedID);
+
+               console.log(checkedArrayList);
+
+                  
+               // $('#MultipleDRFInitialApproval_InitializationIDList').val(JSON.stringify(checkedArrayList));
+                }
+                else {
+                    for(var i = 0; i < checkedArrayList.length; i++)
+                    {
+                        if (checkedArrayList[i] == CheckedUncheckedID)
+                        {
+                             checkedArrayList.splice(i, 1);
+                        }
+                    }
+               console.log(checkedArrayList);
+
+             
+
+              // $('#MultipleDRFInitialApproval_InitializationIDList').val(JSON.stringify(checkedArrayList));
+                }
+        }
+
+
+    function updateCheckList() {
+         var data = {
+                DRFID: @ViewBag.FileDRFID,
+                CheckedIDList : JSON.stringify(checkedArrayList)
+        };
+
+        console.log(data);
+
+         $.ajax({
+					type: "POST",
+					url: '@Url.Action("UpdateCheckList", "FileManager")/',
+					dataType: "json",
+					data: data,
+                success: function (response) {
+
+                        if (response.data == 'success') {
+							openCommonModal('successModal modal-sm', '@Html.Raw(SharedLocalizer["Success"].Value)', '@Html.Raw(SharedLocalizer["Check list updated successfully."].Value)', true);
+						}
+						else {
+                            openCommonModal('alertModal modal-sm', '@SharedLocalizer["Error"].Value', response.data, false);
+							}
+				        },
+				    failure: function () {
+
+				    }
+		    });
+
+
+
+    }
+
+
+
+  
+
+</script>

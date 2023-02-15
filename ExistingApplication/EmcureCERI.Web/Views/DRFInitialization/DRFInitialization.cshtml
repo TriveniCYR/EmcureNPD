@@ -1,0 +1,3415 @@
+﻿@inject Microsoft.Extensions.Localization.IStringLocalizer<SharedResource> SharedLocalizer
+@model EmcureCERI.Web.Models.DRFViewModels.DRFInitialization
+@using EmcureCERI.Web.Classes
+
+@{
+    ViewData["Title"] = "DRFInitialization";
+}
+<link rel="stylesheet" href="~/plugins/select2/css/select2.min.css">
+<link rel="stylesheet" href="~/plugins/select2-bootstrap4-theme/select2-bootstrap4.min.css">
+<script src="~/plugins/select2/js/select2.full.min.js"></script>
+<script src="~/lib/jquery-validation/dist/jquery.validate.js"></script>
+<script src="~/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.min.js"></script>
+
+<style>
+    .select2-container .select2-selection--single{
+        height:37px !important;
+    }
+    
+    label#MAHolder-error, label#CurrencyID-error, label#FeesToBePaidByID-error, label#RegistrationFees_error, label#ModeOfFeesPayment-error, label#ProposedMarketingStatusID-error, label#ModeOfShipment-error, label#ShippingPort-error, label#Incoterms-error, label#MarketSize-error, label#ThreeYearCAGR-error, label#NumberOfCurrentPlayer-error, label#ExpectedMarketValueGrowth-error, label#InnovatorBrand-error, label#InnavotorName-error, label#FirstBrand-error, label#FirstYearForecastUnitsPacks-error, label#SecondYearForecastUnitsPacks-error, label#ThirdYearForecastUnitsPacks-error, label#FirstYearForecastCIF-error, label#SecondYearForecastCIF-error, label#ThirdYearForecastCIF-error, label#FirstYearForecastValue-error, label#SecondYearForecastValue-error, label#ThirdYearForecastValue-error, label#OrderFrequency-error, label#NameDossierSend-error, label#EmailDossierSend-error, label#AddressDossierSend-error {
+        display: none !important;
+    }
+</style>
+<div class="content-wrapper pt-3">
+    <!-- Main content -->
+    <section class="content">
+        <div class="container-fluid" style="position: relative;">
+            <form id="drfinitializaion" asp-route-returnUrl="@ViewData["ReturnUrl"]" method="POST" onsubmit="return SubmitInitializationForm(this)">            
+                <!-- Small boxes (Stat box) -->
+                <!-- Main row -->
+                <div class="row">
+                    <section class="col-lg-12">
+                        <!-- Custom tabs (Charts with tabs)-->
+                        <div class="card">
+                            <div class="card-header">
+                                <h3 class="card-title">
+                                    <i class="far fa-plus-square mr-2"></i> Product Details
+                                </h3>
+                                <div class="card-tools">
+                                    <div class="nav-item dropdown pull-right hidedraft">
+                                        <a class="nav-link" data-toggle="dropdown" href="#" title="Total Draft Count">
+                                            <i style=" color: rgba(0,0,0,.5);" class="fas fa-file-signature"></i>
+                                            <span id="totaldraftcount" class="badge badge-danger navbar-badge"></span>
+                                        </a>
+                                        <div class="dropdown-menu dropdown-menu-lg dropdown-menu-right">
+                                            <div id="showalldraftdata" style="max-height: 300px; overflow-y: auto;">
+                                            </div>
+                                          
+                                        </div>
+                                    </div>
+                                    <button type="button" class="btn btn-primary quote-blue" onclick="javascript:window.history.back();"><i class="fas fa-undo mr-1"></i> Back</button>
+                                </div>
+                            </div>
+                            <!-- /.card-header -->
+                            <div class="card-body">
+                                <div class="row">
+                                    <div class="col-md-3">
+                                        <!-- text input -->
+                                        <div class="form-group required">
+                                            @Html.LabelFor(model => model.CompanyID, new { @class = "control-label" })
+                                            @Html.DropDownListFor(model => model.CompanyID, new SelectList(string.Empty, "Value", "Text"), "Please select option", htmlAttributes: new { @class = "form-control select2", id = "CompanyID" })
+                                            @Html.ValidationMessageFor(model => model.CompanyID, "", new { @class = "text-danger" })
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <!-- text input -->
+                                        <div class="form-group required">
+                                            @Html.LabelFor(model => model.CountryID, new { @class = "control-label" })
+                                            @Html.DropDownListFor(model => model.CountryID, new SelectList(string.Empty, "Value", "Text"), "Please select option", htmlAttributes: new { @class = "form-control select2", id = "Country", onchange = "saveCountry(this.value)" })
+                                            @Html.ValidationMessageFor(model => model.CountryID, "", new { @class = "text-danger" })
+                                        </div>
+                                    </div>
+                                    <div class="col-md-5">
+                                        <div class="form-group required serch-icons"> 
+
+                                            @Html.LabelFor(model => model.GenericName, new { @class = "control-label" }) 
+                                            @Html.EditorFor(model => model.GenericName, new { htmlAttributes = new { @autocomplete = "off", @class = "form-control", @placeholder = "Generic Name" } })
+                                            <i class="fa fa-search"></i>
+                                            @Html.ValidationMessageFor(model => model.GenericName, "", new { @class = "text-danger" })
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="row">
+                                    <div class="col-md-3">
+                                        <!-- text input -->
+                                        <div class="form-group">
+                                            @Html.LabelFor(model => model.BrandName, new { @class = "control-label" })
+                                            @Html.EditorFor(model => model.BrandName, new { htmlAttributes = new { @autocomplete = "off", @class = "form-control", @placeholder = "Brand Name"} })
+                                            @Html.ValidationMessageFor(model => model.BrandName, "", new { @class = "text-danger" })
+                                        </div>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <div class="form-group">
+                                            @Html.LabelFor(model => model.TreadmarkApprovedInternal, new { @class = "control-label" })
+                                            <br>
+                                            <div class="icheck-primary d-inline mr-5">
+                                                @Html.RadioButton("TreadmarkApprovedInternal", true, false, htmlAttributes: new { id = "RadioYes" })
+                                                <label for="RadioYes">
+                                                    Yes
+                                                </label>
+                                            </div>
+
+                                            <div class="icheck-primary d-inline mr-5">
+                                                @Html.RadioButton("TreadmarkApprovedInternal", false, true, htmlAttributes: new { id = "RadioNo" })
+                                                <label for="RadioNo">
+                                                    No
+                                                </label>
+                                            </div>
+                                            @Html.ValidationMessageFor(model => model.TreadmarkApprovedInternal, "", new { @class = "text-danger" })
+                                        </div>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <!-- text input -->
+
+                                        <div class="form-group">
+                                            @Html.LabelFor(model => model.TreadmarkSuggestedInternal, new { @class = "control-label" })
+                                            @Html.EditorFor(model => model.TreadmarkSuggestedInternal, new { htmlAttributes = new { @autocomplete = "off", @class = "form-control", @placeholder = "Trademark suggested" } })
+                                            @Html.ValidationMessageFor(model => model.TreadmarkSuggestedInternal, "", new { @class = "text-danger" })
+                                        </div>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <!-- text input -->
+                                        <div class="form-group">
+                                            @Html.LabelFor(model => model.TreadmarkOwnerInternal, new { @class = "control-label" })
+                                            @Html.EditorFor(model => model.TreadmarkOwnerInternal, new { htmlAttributes = new { @autocomplete = "off", @class = "form-control", @placeholder = "Trademark owner" } })
+                                            @Html.ValidationMessageFor(model => model.TreadmarkOwnerInternal, "", new { @class = "text-danger" })
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="row">
+                                    <div class="col-md-3">
+                                        <!-- text input -->
+                                        <div class="form-group required">
+                                            @Html.LabelFor(model => model.Form, new { @class = "control-label" })
+                                            @Html.DropDownListFor(model => model.Form, new SelectList(string.Empty, "Value", "Text"), "Please select option", htmlAttributes: new { @class = "form-control select2", id = "Form" })
+                                            @Html.ValidationMessageFor(model => model.Form, "", new { @class = "text-danger" })
+                                        </div>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <div class="form-group required">
+                                            @Html.LabelFor(model => model.Strength, new { @class = "control-label" })
+                                            @Html.DropDownListFor(model => model.Strength, new SelectList(string.Empty, "Value", "Text"), "Please select option", htmlAttributes: new { @class = "form-control select2", id = "Strength" })
+                                            @Html.ValidationMessageFor(model => model.Strength, "", new { @class = "text-danger" })
+                                        </div>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <!-- text input -->
+                                        <div class="form-group required">
+                                            @Html.LabelFor(model => model.PackSize, new { @class = "control-label" })
+                                            @Html.DropDownListFor(model => model.PackSize, new SelectList(string.Empty, "Value", "Text"), "Please select option", htmlAttributes: new { @class = "form-control select2", id = "PackSize" })
+                                            @Html.ValidationMessageFor(model => model.PackSize, "", new { @class = "text-danger" })
+                                        </div>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <!-- text input -->
+                                        <div class="form-group required">
+                                            @Html.LabelFor(model => model.PackStyle, new { @class = "control-label" })
+                                            @Html.DropDownListFor(model => model.PackStyle, new SelectList(string.Empty, "Value", "Text"), "Please select option", htmlAttributes: new { @class = "form-control select2", id = "PackStyle" })
+                                            @Html.ValidationMessageFor(model => model.PackStyle, "", new { @class = "text-danger" })
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="row">
+                                    <div class="col-md-3">
+                                        <!-- text input -->
+                                        <div class="form-group">
+                                            @Html.LabelFor(model => model.Plant, new { @class = "control-label" })
+                                            @Html.DropDownListFor(model => model.Plant, new SelectList(string.Empty, "Value", "Text"), "Please select option", htmlAttributes: new { @class = "form-control select2", id = "Plant" })
+                                            @Html.ValidationMessageFor(model => model.Plant, "", new { @class = "text-danger" })
+                                        </div>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <!-- text input -->
+                                        <div class="form-group required">
+                                            @Html.LabelFor(model => model.ProductTypeID, new { @class = "control-label" })
+                                            @Html.DropDownListFor(model => model.ProductTypeID, new SelectList(string.Empty, "Value", "Text"), "Please select option", htmlAttributes: new { @class = "form-control select2", id = "ProductType", @onchange = "SetValidation()" })
+                                            @Html.ValidationMessageFor(model => model.ProductTypeID, "", new { @class = "text-danger" })
+                                        </div>
+                                    </div>
+                                    <div class="col-md-3" style="display:none">
+                                        <!-- text input -->
+                                        <div class="form-group required">
+                                            @Html.LabelFor(model => model.DossierTemplateID, new { @class = "control-label" })
+                                            @Html.DropDownListFor(model => model.DossierTemplateID, new SelectList(string.Empty, "Value", "Text"), "Please select option", htmlAttributes: new { @class = "form-control select2", id = "DossierTemplate" })
+                                            @Html.ValidationMessageFor(model => model.DossierTemplateID, "", new { @class = "text-danger" })
+                                        </div>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <div class="form-group">
+                                            @Html.LabelFor(model => model.IsSamples_Required, new { @class = "control-label" })
+                                            <br>
+                                            <div class="icheck-primary d-inline mr-5">
+                                                @Html.RadioButton("IsSamples_Required", true, false, htmlAttributes: new { id = "RadioSampleYes" })
+                                                <label for="RadioSampleYes">
+                                                    Yes
+                                                </label>
+                                            </div>
+                                            <div class="icheck-primary d-inline mr-5">
+                                                @Html.RadioButton("IsSamples_Required", false, true, htmlAttributes: new { id = "RadioSampleNo" })
+                                                <label for="RadioSampleNo">
+                                                    No
+                                                </label>
+                                            </div>
+                                            @Html.ValidationMessageFor(model => model.IsSamples_Required, "", new { @class = "text-danger" })
+                                        </div>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <div class="form-group">
+                                            @Html.LabelFor(model => model.Samples_Required, new { @class = "control-label" })
+                                            @Html.EditorFor(model => model.Samples_Required, new { htmlAttributes = new { @autocomplete = "off", @class = "form-control", @placeholder = "Samples", @disabled = "disable"} })
+                                            @*@Html.ValidationMessageFor(model => model.Samples_Required, "", new { @class = "text-danger" })*@
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-sm-12">
+                                        <div class="form-group">
+                                            @Html.LabelFor(model => model.Remark, new { @class = "control-label" })
+                                            @Html.TextAreaFor(model => model.Remark, new { @class = "form-control", @placeholder = "Remark" })
+                                            @*@Html.ValidationMessageFor(model => model.Remark, "", new { @class = "text-danger" })*@
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- /.card-body -->
+                        </div>
+                        <!-- /.card -->
+                    </section>
+                </div>
+
+                <div class="row" style="display:none">
+                    <section class="col-md-12">
+                        <!-- Custom tabs (Charts with tabs)-->
+                        <div class="card">
+                            <div class="card-header">
+                                <h3 class="card-title">
+                                    <i class="far fa-plus-square mr-2"></i> PIDF
+                                </h3>
+                            </div>
+                            <!-- /.card-header -->
+                            <div class="card-body">
+                                <div class="row">
+                                    <div class="col-md-3">
+                                        <div class="form-group required">
+                                            @Html.Label("Do you want to attached PIDF ?")<br>
+                                            <div class="icheck-primary d-inline mr-5">
+                                                @Html.RadioButton("AttachedPIDF", "Yes", false, htmlAttributes: new { @class = "ShowHide_PIDFLink", id = "AttachedPIDFYes" })
+                                                <label for="AttachedPIDFYes">
+                                                    Yes
+                                                </label>
+                                            </div>
+                                            <div class="icheck-primary d-inline mr-5">
+                                                @Html.RadioButton("AttachedPIDF", "No", true, htmlAttributes: new { @class = "ShowHide_PIDFLink", id = "AttachedPIDFNo" })
+                                                <label for="AttachedPIDFNo">
+                                                    No
+                                                </label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <div class="form-group required">
+                                            <label></label><br>
+                                            <span class="showlink"><a class="btn btn-outline-primary" onclick="ShowAttachedPIDFForm()" style="cursor:pointer"><i class="fas fa-paperclip mr-2"></i>@SharedLocalizer["Attached PIDF"].Value</a></span>
+                                            <small class="text-danger" id="AttachedPIDF_Error"></small>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- /.card-body -->
+                        </div>
+                        <!-- /.card -->
+                    </section>
+                </div>
+
+
+                <div class="row">
+                    <section class="col-lg-12">
+                        <!-- Custom tabs (Charts with tabs)-->
+                        <div class="card">
+                            <div class="card-header">
+                                <h3 class="card-title">
+                                    <i class="far fa-plus-square mr-2"></i> Regulated Details
+                                </h3>
+                            </div>
+                            <!-- /.card-header -->
+                            <div class="card-body">
+                                <div class="row">
+                                    <div class="col-md-1">
+                                        <!-- text input -->
+                                        <div class="form-group required forsetvalidation">
+                                            @Html.LabelFor(model => model.CurrencyID, new { @class = "control-label" })<br />
+                                            @Html.DropDownListFor(model => model.CurrencyID, new SelectList(string.Empty, "Value", "Text"), "Please select option", htmlAttributes: new { @class = "form-control select2" })
+                                            @Html.ValidationMessageFor(model => model.CurrencyID, "", new { @class = "text-danger" })
+                                            @*<span class="text-danger" id="CurrencyID_Error"></span>*@
+                                        </div>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <div class="form-group required forsetvalidation">
+                                            @Html.LabelFor(model => model.FeesToBePaidByID, new { @class = "control-label" })
+                                            @Html.DropDownListFor(model => model.FeesToBePaidByID, new SelectList(string.Empty, "Value", "Text"), "Please select option", htmlAttributes: new { @class = "form-control select2", id = "FeesToBePaidByID", @onchange = "SetFeeValidation()" })                                            
+                                            @Html.ValidationMessageFor(model => model.FeesToBePaidByID, "", new { @class = "text-danger" })
+                                            @*<span class="text-danger" id="FeesToBePaidByID_Error"></span>*@
+                                        </div>
+
+                                    </div>
+                                    <div class="col-md-2">
+                                        <!-- text input -->
+                                        <div class="form-group feevalidation">
+                                            @Html.LabelFor(model => model.RegistrationFees, new { @class = "control-label" })
+                                            @Html.EditorFor(model => model.RegistrationFees, new { htmlAttributes = new { @autocomplete = "off", @class = "form-control focusout checkNum", @placeholder = "Registration Fee", onkeypress = "return isNumber(event)" } })
+                                            @*@Html.ValidationMessageFor(model => model.RegistrationFees, "", new { @class = "text-danger" })*@
+                                            <span class="text-danger" id="RegistrationFees_Error"></span>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <!-- text input -->
+                                        <div class="form-group required forsetvalidation">
+                                            @Html.LabelFor(model => model.ModeOfFeesPayment, new { @class = "control-label" })
+                                            @Html.DropDownListFor(model => model.ModeOfFeesPayment, new SelectList(string.Empty, "Value", "Text"), "Please select option", htmlAttributes: new { @class = "form-control select2", id = "ModeOfFeesPayment" })
+                                            @Html.ValidationMessageFor(model => model.ModeOfFeesPayment, "", new { @class = "text-danger" })
+                                            @*<span class="text-danger" id="ModeOfFeesPayment_Error"></span>*@
+                                        </div>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <!-- text input -->
+                                        <div class="form-group required forsetvalidation">
+                                            @Html.LabelFor(model => model.MAHolder, new { @class = "control-label" })
+                                            @Html.EditorFor(model => model.MAHolder, new { htmlAttributes = new { @autocomplete = "off", @class = "form-control", @placeholder = "MA Holder" } })
+                                            @Html.ValidationMessageFor(model => model.MAHolder, "", new { @class = "text-danger" })
+                                            @*<span class="text-danger" id="MAHolder_Error"></span>*@
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-3">
+                                        <!-- text input -->
+                                        <div class="form-group required forsetvalidation">
+                                            @Html.LabelFor(model => model.ProposedMarketingStatusID, new { @class = "control-label" })<br />
+                                            @Html.DropDownListFor(model => model.ProposedMarketingStatusID, new SelectList(string.Empty, "Value", "Text"), "Please select option", htmlAttributes: new { @class = "form-control select2", id = "ProposedMarketingStatusID" })
+                                            @Html.ValidationMessageFor(model => model.ProposedMarketingStatusID, "", new { @class = "text-danger" })
+                                            @*<span class="text-danger" id="ProposedMarketingStatusID_Error"></span>*@
+                                        </div>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <div class="form-group required forsetvalidation">
+                                            @Html.LabelFor(model => model.ShippingPort, new { @class = "control-label" })
+                                            @Html.EditorFor(model => model.ShippingPort, new { htmlAttributes = new { @autocomplete = "off", @class = "form-control", @placeholder = "Destination Port" } })
+                                            @Html.ValidationMessageFor(model => model.ShippingPort, "", new { @class = "text-danger" })
+                                            @*<span class="text-danger" id="ShippingPort_Error"></span>*@
+                                        </div>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <!-- text input -->
+                                        <div class="form-group required forsetvalidation">
+                                            @Html.LabelFor(model => model.ModeOfShipment, new { @class = "control-label" })
+                                            @Html.DropDownListFor(model => model.ModeOfShipment, new SelectList(string.Empty, "Value", "Text"), "Please select option", htmlAttributes: new { @class = "form-control select2", id = "ModeOfShipment" })
+                                            @Html.ValidationMessageFor(model => model.ModeOfShipment, "", new { @class = "text-danger" })
+                                            @*<span class="text-danger" id="ModeOfShipment_Error"></span>*@
+                                        </div>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <!-- text input -->
+                                        <div class="form-group required forsetvalidation">
+                                            @Html.LabelFor(model => model.Incoterms, new { @class = "control-label" })
+                                            @Html.DropDownListFor(model => model.Incoterms, new SelectList(string.Empty, "Value", "Text"), "Please select option", htmlAttributes: new { @class = "form-control select2", id = "Incoterms" })
+                                            @Html.ValidationMessageFor(model => model.Incoterms, "", new { @class = "text-danger" })
+                                            @*<span class="text-danger" id="Incoterms_Error"></span>*@
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="row">
+                                    <div class="col-md-3">
+                                        <!-- text input -->
+                                        <div class="form-group">
+                                            @Html.LabelFor(model => model.DossierSubmittedToMOHBy, new { @class = "control-label" })
+                                            @Html.EditorFor(model => model.DossierSubmittedToMOHBy, new { htmlAttributes = new { @autocomplete = "off", @class = "form-control", @placeholder = "Dossier submitted to MoH by"} })
+                                            @Html.ValidationMessageFor(model => model.DossierSubmittedToMOHBy, "", new { @class = "text-danger" })
+                                        </div>
+                                    </div>
+                                    <div class="col-md-3" style="display:none">
+                                        <div class="form-group">
+                                            @Html.LabelFor(model => model.OwnerOfRegistration, new { @class = "control-label" })
+                                            @Html.EditorFor(model => model.OwnerOfRegistration, new { htmlAttributes = new { @autocomplete = "off", @class = "form-control", @placeholder = "Owner of registration" } })
+                                            @Html.ValidationMessageFor(model => model.OwnerOfRegistration, "", new { @class = "text-danger" })
+                                        </div>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <div class="form-group required forsetvalidation">
+                                            @Html.LabelFor(model => model.AvailabilityofCDA, new { @class = "control-label" })
+                                            <br>
+                                            <div class="icheck-primary d-inline mr-5">
+                                                @Html.RadioButton("AvailabilityofCDA", true, false, htmlAttributes: new { id = "AvailabilityOfCDAYes" })
+                                                <label for="AvailabilityOfCDAYes">
+                                                    Yes
+                                                </label>
+                                            </div>
+                                            <div class="icheck-primary d-inline mr-5">
+                                                @Html.RadioButton("AvailabilityofCDA", false, true, htmlAttributes: new { id = "AvailabilityOfCDANo" })
+                                                <label for="AvailabilityOfCDANo">
+                                                    No
+                                                </label>
+                                            </div>
+                                            @Html.ValidationMessageFor(model => model.AvailabilityofCDA, "", new { @class = "text-danger" })
+                                        </div>
+                                    </div>
+
+                                    <div class="col-md-3">
+                                        <div class="form-group required forsetvalidation">
+                                            @Html.LabelFor(model => model.TSExcecuted, new { @class = "control-label" })
+                                            <br>
+                                            <div class="icheck-primary d-inline mr-5">
+                                                @Html.RadioButton("TSExcecuted", true, false, htmlAttributes: new { id = "TSExcecutedYes" })
+                                                <label for="TSExcecutedYes">
+                                                    Yes
+                                                </label>
+                                            </div>
+                                            <div class="icheck-primary d-inline mr-5">
+                                                @Html.RadioButton("TSExcecuted", false, true, htmlAttributes: new { id = "TSExcecutedNo" })
+                                                <label for="TSExcecutedNo">
+                                                    No
+                                                </label>
+                                            </div>
+                                            @Html.ValidationMessageFor(model => model.TSExcecuted, "", new { @class = "text-danger" })
+                                            @*<span class="text-danger" id="TSExcecuted_Error"></span>*@
+                                        </div>
+                                    </div>
+
+                                    <div class="col-md-3">
+                                        <div class="form-group required forsetvalidation">
+                                            @Html.LabelFor(model => model.DAExcecuted, new { @class = "control-label" })
+                                            <br>
+                                            <div class="icheck-primary d-inline mr-5">
+                                                @Html.RadioButton("DAExcecuted", true, false, htmlAttributes: new { id = "DAExcecutedYes" })
+                                                <label for="DAExcecutedYes">
+                                                    Yes
+                                                </label>
+                                            </div>
+                                            <div class="icheck-primary d-inline mr-5">
+                                                @Html.RadioButton("DAExcecuted", false, true, htmlAttributes: new { id = "DAExcecutedNo" })
+                                                <label for="DAExcecutedNo">
+                                                    No
+                                                </label>
+                                            </div>
+                                            @Html.ValidationMessageFor(model => model.DAExcecuted, "", new { @class = "text-danger" })
+                                        </div>
+                                    </div>
+                                    <div class="col-md-3"></div>
+                                </div>
+
+                            </div>
+                            <!-- /.card-body -->
+                        </div>
+                        <!-- /.card -->
+                    </section>
+                </div>
+
+
+                <div class="row">
+                    <section class="col-lg-12">
+                        <!-- Custom tabs (Charts with tabs)-->
+                        <div class="card">
+                            <div class="card-header">
+                                <h3 class="card-title">
+                                    <i class="far fa-plus-square mr-2"></i> Market Details
+                                </h3>
+                            </div>
+                            <!-- /.card-header -->
+                            <div class="card-body">
+                                <div class="row">
+                                    <div class="col-md-3">
+                                        <!-- text input -->
+                                        <div class="form-group required forsetvalidation">
+                                            @Html.LabelFor(model => model.MarketSize, new { @class = "control-label" })
+                                            @Html.EditorFor(model => model.MarketSize, new { htmlAttributes = new { @autocomplete = "off", @class = "form-control checkNum", @placeholder = " Market size (USD)", onkeypress = "return isNumber(event)" } })
+                                            @Html.ValidationMessageFor(model => model.MarketSize, "", new { @class = "text-danger" })
+                                            @*<span class="text-danger" id="MarketSize_Error"></span>*@
+                                        </div>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <div class="form-group required forsetvalidation">
+                                            @Html.LabelFor(model => model.ThreeYearCAGR, new { @class = "control-label" })
+                                            @Html.EditorFor(model => model.ThreeYearCAGR, new { htmlAttributes = new { @autocomplete = "off", @class = "form-control", @placeholder = "3 Yr. CAGR" } })
+                                            @Html.ValidationMessageFor(model => model.ThreeYearCAGR, "", new { @class = "text-danger" })
+                                            @*<span class="text-danger" id="ThreeYearCAGR_Error"></span>*@
+                                        </div>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <!-- text input -->
+                                        <div class="form-group required forsetvalidation">
+                                            @Html.LabelFor(model => model.NumberOfCurrentPlayer, new { @class = "control-label" })
+                                            @Html.EditorFor(model => model.NumberOfCurrentPlayer, new { htmlAttributes = new { @autocomplete = "off", @class = "form-control", @placeholder = "Number of current players", @min = 0 } })
+                                            @Html.ValidationMessageFor(model => model.NumberOfCurrentPlayer, "", new { @class = "text-danger" })
+                                            @*<span class="text-danger" id="NumberOfCurrentPlayer_Error"></span>*@
+                                        </div>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <!-- text input -->
+                                        <div class="form-group required forsetvalidation">
+                                            @Html.LabelFor(model => model.ExpectedMarketValueGrowth, new { @class = "control-label" })
+                                            @Html.EditorFor(model => model.ExpectedMarketValueGrowth, new { htmlAttributes = new { @autocomplete = "off", @class = "form-control checkNum", @placeholder = "Expected Mkt. value growth", onkeypress = "return isNumber(event)" } })
+                                            @Html.ValidationMessageFor(model => model.ExpectedMarketValueGrowth, "", new { @class = "text-danger" })
+                                            @*<span class="text-danger" id="ExpectedMarketValueGrowth_Error"></span>*@
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="row">
+                                    <div class="col-md-3">
+                                        <!-- text input -->
+                                        <div class="form-group required forsetvalidation">
+                                            @Html.LabelFor(model => model.InnovatorBrand, new { @class = "control-label" })
+                                            @Html.EditorFor(model => model.InnovatorBrand, new { htmlAttributes = new { @autocomplete = "off", @class = "form-control", @placeholder = "Innovator brand"} })
+                                            @Html.ValidationMessageFor(model => model.InnovatorBrand, "", new { @class = "text-danger" })
+                                            @*<span class="text-danger" id="InnovatorBrand_Error"></span>*@
+                                        </div>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <div class="form-group required forsetvalidation">
+                                            @Html.LabelFor(model => model.InnavotorName, new { @class = "control-label" })
+                                            @Html.EditorFor(model => model.InnavotorName, new { htmlAttributes = new { @autocomplete = "off", @class = "form-control", @placeholder = "Innovator name" } })
+                                            @Html.ValidationMessageFor(model => model.InnavotorName, "", new { @class = "text-danger" })
+                                            @*<span class="text-danger" id="InnavotorName_Error"></span>*@
+                                        </div>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <!-- text input -->
+                                        <div class="form-group required forsetvalidation">
+                                            @Html.LabelFor(model => model.FirstBrand, new { @class = "control-label" })
+                                            @Html.EditorFor(model => model.FirstBrand, new { htmlAttributes = new { @autocomplete = "off", @class = "form-control", @placeholder = "Top brand" } })
+                                            @Html.ValidationMessageFor(model => model.FirstBrand, "", new { @class = "text-danger" })
+                                            @*<span class="text-danger" id="FirstBrand_Error"></span>*@
+                                        </div>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <!-- text input -->
+                                        <div class="form-group">
+                                            @Html.LabelFor(model => model.MSFirstBrand, new { @class = "control-label" })
+                                            @Html.EditorFor(model => model.MSFirstBrand, new { htmlAttributes = new { @autocomplete = "off", @class = "form-control", @placeholder = "MS top brand" } })
+                                            @Html.ValidationMessageFor(model => model.MSFirstBrand, "", new { @class = "text-danger" })
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-3">
+                                        <!-- text input -->
+                                        <div class="form-group">
+                                            @Html.LabelFor(model => model.SecondBrand, new { @class = "control-label" })
+                                            @Html.EditorFor(model => model.SecondBrand, new { htmlAttributes = new { @autocomplete = "off", @class = "form-control", @placeholder = "2nd brand" } })
+                                            @Html.ValidationMessageFor(model => model.SecondBrand, "", new { @class = "text-danger" })
+                                        </div>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <div class="form-group">
+                                            @Html.LabelFor(model => model.MSSecondBrand, new { @class = "control-label" })
+                                            @Html.EditorFor(model => model.MSSecondBrand, new { htmlAttributes = new { @autocomplete = "off", @class = "form-control", @placeholder = "MS 2nd brand" } })
+                                            @Html.ValidationMessageFor(model => model.MSSecondBrand, "", new { @class = "text-danger" })
+                                        </div>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <!-- text input -->
+                                        <div class="form-group">
+                                            @Html.LabelFor(model => model.ThirdBrand, new { @class = "control-label" })
+                                            @Html.EditorFor(model => model.ThirdBrand, new { htmlAttributes = new { @autocomplete = "off", @class = "form-control", @placeholder = "3rd brand" } })
+                                            @Html.ValidationMessageFor(model => model.ThirdBrand, "", new { @class = "text-danger" })
+                                        </div>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <!-- text input -->
+                                        <div class="form-group">
+                                            @Html.LabelFor(model => model.MSThirdBrand, new { @class = "control-label" })
+                                            @Html.EditorFor(model => model.MSThirdBrand, new { htmlAttributes = new { @autocomplete = "off", @class = "form-control", @placeholder = "MS 3rd brand" } })
+                                            @Html.ValidationMessageFor(model => model.MSThirdBrand, "", new { @class = "text-danger" })
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="row">
+                                    <div class="col-md-3">
+                                        <!-- text input -->
+                                        <div class="form-group">
+                                            @Html.LabelFor(model => model.Partner, new { @class = "control-label" })
+                                            @Html.EditorFor(model => model.Partner, new { htmlAttributes = new { @autocomplete = "off", @class = "form-control", @placeholder = "Partner or potential partner"} })
+                                            @Html.ValidationMessageFor(model => model.Partner, "", new { @class = "text-danger" })
+                                        </div>
+                                    </div>
+                                    <div class="col-md-3"></div>
+                                    <div class="col-md-3"></div>
+                                    <div class="col-md-3"></div>
+                                </div>
+                            </div>
+                            <!-- /.card-body -->
+                        </div>
+                        <!-- /.card -->
+                    </section>
+                </div>
+
+
+                <div class="row">
+                    <section class="col-lg-12">
+                        <!-- Custom tabs (Charts with tabs)-->
+                        <div class="card">
+                            <div class="card-header">
+                                <h3 class="card-title">
+                                    <i class="far fa-plus-square mr-2"></i> Value in USD only
+                                </h3>
+                            </div>
+                            <!-- /.card-header -->
+                            <div class="card-body">
+                                <div class="row">
+                                    <div class="col-md-3  d-none d-md-block">
+                                        <!-- text input -->
+                                        <div class="form-group">
+                                            <label>Value in USD only</label>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-3  d-none d-md-block">
+                                        <div class="form-group text-center">
+                                            <label>Year 1</label>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-3  d-none d-md-block">
+                                        <div class="form-group text-center">
+                                            <label>Year 2</label>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-3  d-none d-md-block">
+                                        <div class="form-group text-center">
+                                            <label>Year 3</label>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-3">
+                                        <!-- text input -->
+                                        <div class="form-group required forsetvalidation">
+                                            <label class="control-label">Forecast Units (Packs)</label>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <div class="form-group ">
+                                            @Html.EditorFor(model => model.FirstYearForecastUnitsPacks, new { htmlAttributes = new { @autocomplete = "off", @class = "form-control checkNum", @placeholder = "Year 1", onkeypress = "return isNumber(event)" } })
+                                            @Html.ValidationMessageFor(model => model.FirstYearForecastUnitsPacks, "", new { @class = "text-danger" })
+                                            @*<span class="text-danger" id="FirstYearForecastUnitsPacks_Error"></span>*@
+                                        </div>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <div class="form-group ">
+                                            @Html.EditorFor(model => model.SecondYearForecastUnitsPacks, new { htmlAttributes = new { @autocomplete = "off", @class = "form-control checkNum", @placeholder = "Year 2", onkeypress = "return isNumber(event)" } })
+                                            @Html.ValidationMessageFor(model => model.SecondYearForecastUnitsPacks, "", new { @class = "text-danger" })
+                                            @*<span class="text-danger" id="SecondYearForecastUnitsPacks_Error"></span>*@
+                                        </div>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <div class="form-group ">
+                                            @Html.EditorFor(model => model.ThirdYearForecastUnitsPacks, new { htmlAttributes = new { @autocomplete = "off", @class = "form-control checkNum", @placeholder = "Year 3", onkeypress = "return isNumber(event)" } })
+                                            @Html.ValidationMessageFor(model => model.ThirdYearForecastUnitsPacks, "", new { @class = "text-danger" })
+                                            @*<span class="text-danger" id="ThirdYearForecastUnitsPacks_Error"></span>*@
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="row">
+                                    <div class="col-md-3">
+                                        <!-- text input -->
+                                        <div class="form-group required forsetvalidation">
+                                            <label class="control-label">Forecast CIF (for Emcure) ($)</label>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <div class="form-group">
+                                            @Html.EditorFor(model => model.FirstYearForecastCIF, new { htmlAttributes = new { @autocomplete = "off", @class = "form-control checkNum", @placeholder = "Year 1", onkeypress = "return isNumber(event)" } })
+                                            @Html.ValidationMessageFor(model => model.FirstYearForecastCIF, "", new { @class = "text-danger" })
+                                            @*<span class="text-danger" id="FirstYearForecastCIF_Error"></span>*@
+                                        </div>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <div class="form-group">
+                                            @Html.EditorFor(model => model.SecondYearForecastCIF, new { htmlAttributes = new { @autocomplete = "off", @class = "form-control checkNum", @placeholder = "Year 2", onkeypress = "return isNumber(event)" } })
+                                            @Html.ValidationMessageFor(model => model.SecondYearForecastCIF, "", new { @class = "text-danger" })
+                                            @*<span class="text-danger" id="SecondYearForecastCIF_Error"></span>*@
+                                        </div>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <div class="form-group">
+                                            @Html.EditorFor(model => model.ThirdYearForecastCIF, new { htmlAttributes = new { @autocomplete = "off", @class = "form-control checkNum", @placeholder = "Year 3", onkeypress = "return isNumber(event)" } })
+                                            @Html.ValidationMessageFor(model => model.ThirdYearForecastCIF, "", new { @class = "text-danger" })
+                                            @*<span class="text-danger" id="ThirdYearForecastCIF_Error"></span>*@
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-3">
+                                        <!-- text input -->
+                                        <div class="form-group required forsetvalidation">
+                                            <label class="control-label">Forecast Value (Emcure) ($)</label>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <div class="form-group">
+                                            @Html.EditorFor(model => model.FirstYearForecastValue, new { htmlAttributes = new { @autocomplete = "off", @class = "form-control", @placeholder = "Year 1", @readonly = true } })
+                                            @Html.ValidationMessageFor(model => model.FirstYearForecastValue, "", new { @class = "text-danger" })
+                                            @*<span class="text-danger" id="FirstYearForecastValue_Error"></span>*@
+                                        </div>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <div class="form-group">
+                                            @Html.EditorFor(model => model.SecondYearForecastValue, new { htmlAttributes = new { @autocomplete = "off", @class = "form-control", @placeholder = "Year 2", @readonly = true } })
+                                            @Html.ValidationMessageFor(model => model.SecondYearForecastValue, "", new { @class = "text-danger" })
+                                            @*<span class="text-danger" id="SecondYearForecastValue_Error"></span>*@
+                                        </div>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <div class="form-group">
+                                            @Html.EditorFor(model => model.ThirdYearForecastValue, new { htmlAttributes = new { @autocomplete = "off", @class = "form-control ", @placeholder = "Year 3", @readonly = true } })
+                                            @Html.ValidationMessageFor(model => model.ThirdYearForecastValue, "", new { @class = "text-danger" })
+                                            @*<span class="text-danger" id="ThirdYearForecastValue_Error"></span>*@
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-3">
+                                        <!-- text input -->
+                                        <div class="form-group">
+                                            <label class="control-label">API Quantity (in Kg)</label>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <div class="form-group">
+                                            @Html.EditorFor(model => model.FirstYearAPIQuantity, new { htmlAttributes = new { @autocomplete = "off", @class = "form-control ", @placeholder = "Year 1" } })
+                                            @Html.ValidationMessageFor(model => model.FirstYearAPIQuantity, "", new { @class = "text-danger" })
+                                        </div>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <div class="form-group">
+                                            @Html.EditorFor(model => model.SecondYearAPIQuantity, new { htmlAttributes = new { @autocomplete = "off", @class = "form-control ", @placeholder = "Year 2" } })
+                                            @Html.ValidationMessageFor(model => model.SecondYearAPIQuantity, "", new { @class = "text-danger" })
+                                        </div>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <div class="form-group">
+                                            @Html.EditorFor(model => model.ThirdYearAPIQuantity, new { htmlAttributes = new { @autocomplete = "off", @class = "form-control ", @placeholder = "Year 3" } })
+                                            @Html.ValidationMessageFor(model => model.ThirdYearAPIQuantity, "", new { @class = "text-danger" })
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-3">
+                                        <!-- text input -->
+                                        <div class="form-group">
+                                            <label class="control-label">Forecast Price to patient (for our brand) ($)</label>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <div class="form-group">
+                                            @Html.EditorFor(model => model.FirstYearForecastPriceToPatient, new { htmlAttributes = new { @autocomplete = "off", @class = "form-control checkNum", @placeholder = "Year 1", onkeypress = "return isNumber(event)" } })
+                                            @Html.ValidationMessageFor(model => model.FirstYearForecastPriceToPatient, "", new { @class = "text-danger" })
+                                        </div>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <div class="form-group">
+                                            @Html.EditorFor(model => model.SecondYearForecastPriceToPatient, new { htmlAttributes = new { @autocomplete = "off", @class = "form-control checkNum", @placeholder = "Year 2", onkeypress = "return isNumber(event)" } })
+                                            @Html.ValidationMessageFor(model => model.SecondYearForecastPriceToPatient, "", new { @class = "text-danger" })
+                                        </div>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <div class="form-group">
+                                            @Html.EditorFor(model => model.ThirdYearForecastPriceToPatient, new { htmlAttributes = new { @autocomplete = "off", @class = "form-control checkNum", @placeholder = "Year 3", onkeypress = "return isNumber(event)" } })
+                                            @Html.ValidationMessageFor(model => model.ThirdYearForecastPriceToPatient, "", new { @class = "text-danger" })
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-3">
+                                        <!-- text input -->
+                                        <div class="form-group required forsetvalidation">
+                                            <label class="control-label">Order Frequency</label>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <div class="form-group">
+                                            @Html.DropDownListFor(model => model.OrderFrequency, new SelectList(string.Empty, "Value", "Text"), "Please select option", htmlAttributes: new { @class = "form-control select2", id = "OrderFrequency" })
+                                            @Html.ValidationMessageFor(model => model.OrderFrequency, "", new { @class = "text-danger" })
+                                            @*<span class="text-danger" id="OrderFrequency_Error"></span>*@
+                                        </div>
+                                    </div>
+                                    <div class="col-md-3"></div>
+                                    <div class="col-md-3"></div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-3">
+                                        <!-- text input -->
+                                        <div class="form-group">
+                                            <label class="control-label">No. of Shipments</label>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <div class="form-group">
+                                            @Html.EditorFor(model => model.NoofShipmnets, new { htmlAttributes = new { @autocomplete = "off", @class = "form-control checkNumOnly", @placeholder = "No. of Shipments", onkeypress = "return isNumberOnly(event)" } })
+                                            @Html.ValidationMessageFor(model => model.NoofShipmnets, "", new { @class = "text-danger" })
+                                        </div>
+                                    </div>
+                                    <div class="col-md-3"></div>
+                                    <div class="col-md-3"></div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-3">
+                                        <!-- text input -->
+                                        <div class="form-group required forsetvalidation">
+                                            @Html.LabelFor(model => model.NameDossierSend, new { @class = "control-label" })
+                                            @Html.EditorFor(model => model.NameDossierSend, new { htmlAttributes = new { @autocomplete = "off", @class = "form-control", @placeholder = "Name to whom dossier to be sent" } })
+                                            @Html.ValidationMessageFor(model => model.NameDossierSend, "", new { @class = "text-danger" })
+                                            @*<span class="text-danger" id="NameDossierSend_Error"></span>*@
+                                        </div>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <!-- text input -->
+                                        <div class="form-group required forsetvalidation">
+                                            @Html.LabelFor(model => model.EmailDossierSend, new { @class = "control-label" })
+                                            @Html.EditorFor(model => model.EmailDossierSend, new { htmlAttributes = new { @autocomplete = "off", @class = "form-control", @placeholder = "Email-ID to whom dossier to be sent" } })
+                                            @Html.ValidationMessageFor(model => model.EmailDossierSend, "", new { @class = "text-danger" })
+                                            @*<span class="text-danger" id="EmailDossierSend_Error"></span>*@
+                                        </div>
+                                    </div>
+                                    <div class="col-md-2">
+                                        <div class="form-group">
+                                            <label class="control-label">Country Code</label>
+                                            @*@Html.LabelFor(model => model.ConuntryMobileCode, new { @class = "control-label" })*@
+                                            @Html.DropDownListFor(model => model.ConuntryMobileCode, new SelectList(string.Empty, "Value", "Text"), "Please select option", htmlAttributes: new { @class = "form-control select2", id = "ConuntryMobileCode" })
+                                            @Html.ValidationMessageFor(model => model.ConuntryMobileCode, "", new { @class = "text-danger" })
+                                        </div>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <!-- text input -->
+                                        <div class="form-group">
+                                            @Html.LabelFor(model => model.PhoneDossierSend, new { @class = "control-label" })
+                                            @Html.EditorFor(model => model.PhoneDossierSend, new { htmlAttributes = new { @autocomplete = "off", @class = "form-control", @placeholder = "Phone number to whom dossier to be sent", maxlength = "15" } })
+                                            @Html.ValidationMessageFor(model => model.PhoneDossierSend, "", new { @class = "text-danger" })
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-3">
+                                        <div class="form-group required forsetvalidation">
+                                            @Html.LabelFor(model => model.AddressDossierSend, new { @class = "control-label" })
+                                            @Html.TextAreaFor(model => model.AddressDossierSend, new { @class = "form-control", @placeholder = "Address to whom dossier to be sent" })
+                                            @Html.ValidationMessageFor(model => model.AddressDossierSend, "", new { @class = "text-danger" })
+                                            @*<span class="text-danger" id="AddressDossierSend_Error"></span>*@
+                                        </div>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <div class="form-group">
+                                            @Html.LabelFor(model => model.StrategyAlignment, new { @class = "control-label" })
+                                            <br>
+                                            <div class="icheck-primary d-inline mr-5">
+                                                @Html.RadioButton("StrategyAlignment", true, false, htmlAttributes: new { id = "RadioAliYes" })
+                                                <label for="RadioAliYes">
+                                                    Yes
+                                                </label>
+                                            </div>
+                                            <div class="icheck-primary d-inline mr-5">
+                                                @Html.RadioButton("StrategyAlignment", false, true, htmlAttributes: new { id = "RadioAliNo" })
+                                                <label for="RadioAliNo">
+                                                    No
+                                                </label>
+                                            </div>
+                                            @Html.ValidationMessageFor(model => model.StrategyAlignment, "", new { @class = "text-danger" })
+                                        </div>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <div class="form-group">
+                                            @Html.LabelFor(model => model.ExceptionExplained, new { @class = "control-label" })
+                                            @Html.EditorFor(model => model.ExceptionExplained, new { htmlAttributes = new { @autocomplete = "off", @class = "form-control", @placeholder = "Exception explained", id = "ExceptionExplained" } })
+                                            <small class="text-danger" id="ExceptionExplained_Error"></small>
+                                            @*@Html.ValidationMessageFor(model => model.ExceptionExplained, "", new { @class = "text-danger" })*@
+                                        </div>
+                                    </div>
+
+                                </div>
+
+                            </div>
+                            <!-- /.card-body -->
+                        </div>
+                        <!-- /.card -->
+                        @Html.Hidden("RedirectTo", Url.Action("Index", "DRFInitialization"))
+                        @Html.Hidden("PIDFID")
+                        @Html.Hidden("FeesToBePaidBy")
+                        @Html.Hidden("UpdateRemark")
+                    <div class="card-footer text-center mb-3">                        
+                        <button type="submit" class="btn btn-primary">Submit</button>
+                        <button type="button" class="btn btn-primary " onclick="SaveAsDraft()">Save as Draft</button>
+                        <a class="btn btn-danger" asp-area="" asp-controller="DRFInitialization" asp-action="Index">@SharedLocalizer["Cancel"].Value</a>                        
+                    </div>
+                    </section>
+                </div>
+                <!-- /.row (main row) -->
+                <div id="AttachedPIDFViewModal" class="modal themeModal " role="dialog">
+                    <div class="modal-dialog modal-lg">
+                        <!-- Modal content-->
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title">@SharedLocalizer["Attached PIDF"].Value</h5>
+                                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                            </div>
+                            <div class="modal-body">
+                                <p></p>
+                                <div class="tableContainer clearfix">
+                                    <div class="table-responsive">
+                                        <table id="AttachedPRDFTable" class="table table-striped table-bordered order-column" style="width:100%">
+                                            <thead>
+                                                <tr>
+                                                    <th>&nbsp;</th>
+                                                    <th>@SharedLocalizer["PIDF ID"].Value</th>
+                                                    <th>@SharedLocalizer["Project Name"].Value</th>
+                                                    <th>@SharedLocalizer["Continent"].Value</th>
+                                                    <th>@SharedLocalizer["Country"].Value</th>
+                                                    <th>@SharedLocalizer["Strength"].Value</th>
+                                                    <th>@SharedLocalizer["PackSize"].Value</th>
+                                                    <th>@SharedLocalizer["Packing"].Value</th>
+                                                </tr>
+                                            </thead>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="modal-footer text-center">
+                                <button type="button" class="btn btn-primary" onclick="SaveAttachedPIDF()">@SharedLocalizer["Save"].Value</button>
+                                <button type="button" class="btn btn-danger" onclick="HideAttachedPIDF()" title="Cancel">Cancel</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+        <!-- /.container-fluid -->
+    </section>
+    <!-- /.content -->
+</div>
+
+
+<script type="text/javascript">
+    $("#NoofShipmnets").val(2);
+    $("#NoofShipmnets").text(2);
+    var ProductMasterGenericNameList = [];
+
+    var defaultFormulationList = [];
+    var defaultStrengthList = [];
+    var defaultPackSizeList = [];
+    var defaultPackStyleList = [];
+    var defaultPlantNameList = [];
+
+    function isNumber(evt) {
+
+    evt = (evt) ? evt : window.event;
+    var charCode = (evt.which) ? evt.which : evt.keyCode;
+    if (charCode != 46 && charCode != 45 &&charCode > 31 && (charCode < 48 || charCode > 57)) {
+        return false;
+    }
+    return true;
+    }
+
+    function isNumberOnly(evt) {
+        evt = (evt) ? evt : window.event;
+        var charCode = (evt.which) ? evt.which : evt.keyCode;
+        if (charCode > 31 && (charCode < 48 || charCode > 57)) {
+            return false;
+        }
+        return true;
+    }
+
+    $(function () {
+
+        parseFloat($("#FirstYearForecastPriceToPatient").val(0)).toFixed(2);
+        parseFloat($('#SecondYearForecastPriceToPatient').val(0)).toFixed(2);
+        parseFloat($('#ThirdYearForecastPriceToPatient').val(0)).toFixed(2);
+        parseFloat($("#FirstYearAPIQuantity").val(0)).toFixed(4);
+        parseFloat($('#SecondYearAPIQuantity').val(0)).toFixed(4);
+        parseFloat($('#ThirdYearAPIQuantity').val(0)).toFixed(4);
+              
+
+        $('input:radio[id="RadioYes"]').change(function () {
+            if ($(this).val() === 'True') {
+                $("#TreadmarkApprovedInternal").val(true);
+                
+            }
+        });
+
+        $('input:radio[id="RadioNo"]').change(function () {
+            if ($(this).val() === 'False') {
+                $("#TreadmarkApprovedInternal").val(false);
+                
+            }
+        });
+
+        
+            $('input:radio[id="RadioSampleYes"]').change(function () {
+                if ($(this).val() === 'True') {                    
+                    $("#Samples_Required").attr("disabled", false);
+                    $("#Samples_Required").val('');
+                }
+            });
+
+        $('input:radio[id="RadioSampleNo"]').change(function () {
+            if ($(this).val() === 'False') {                
+                $("#Samples_Required").val('');
+                $("#Samples_Required").attr("disabled", true);
+            }
+        });
+
+        $('input:radio[id="AvailabilityOfCDAYes"]').change(function () {
+            if ($(this).val() === 'True') {
+               
+            }
+        });
+
+        $('input:radio[id="AvailabilityOfCDANo"]').change(function () {
+            if ($(this).val() === 'False') {
+                
+            }
+        });
+
+        
+        $('input:radio[id="TSExcecutedYes"]').change(function () {
+            if ($(this).val() === 'True') {
+               
+            }
+        });
+
+        $('input:radio[id="TSExcecutedNo"]').change(function () {
+            if ($(this).val() === 'False') {
+               
+            }
+        });
+        
+        $('input:radio[id="DAExcecutedYes"]').change(function () {
+            if ($(this).val() === 'True') {                
+            }
+        });
+
+        $('input:radio[id="DAExcecutedNo"]').change(function () {
+            if ($(this).val() === 'False') {                
+            }
+        });
+
+        
+        $('input:radio[id="RadioAliYes"]').change(function () {
+            if ($(this).val() === 'True') {
+                $("#ExceptionExplained").val('');
+                $("#ExceptionExplained").attr("disabled", true);
+                //localStorage.StrategyAlignment = true;
+            }
+        });
+
+        $('input:radio[id="RadioAliNo"]').change(function () {
+            if ($(this).val() === 'False') {
+                $("#ExceptionExplained").attr("disabled", false);
+                $("#ExceptionExplained").val('');
+                //localStorage.StrategyAlignment = false;
+            }
+        });
+    });
+
+    function removeComma(str) {
+        var num = str.replace(/,/g, '');
+        return num;
+    }
+
+	$('.checkNum').focusout(function () {
+		if ($(this).val() == null || $(this).val() == "" || $(this).val() == undefined) {
+			$(this).val(0.00);
+		}
+		var num = $(this).val().replace(/,/g, '');
+		$(this).val(Number.parseFloat(num).toFixed(2));
+    });
+
+    $('.checkNumOnly').focusout(function () {
+        if ($(this).val() == null || $(this).val() == "" || $(this).val() == undefined) {
+            $(this).val(0);
+        }
+        var num = $(this).val().replace(/,/g, '');
+        $(this).val(num);
+    });
+
+	function checkNum(val) {
+		if (val == null || val == "" || val == undefined) {
+            val = 0.00;
+		}
+		var num = val.replace(/,/g, '');
+		return Number.parseFloat(num).toFixed(2);
+	}
+
+    $(document).ready(function () {
+        $('#loading').show();
+        $('.select2').select2()
+        $(".showlink").hide();
+
+        $("#MarketSize").focusout(function () {
+            if ($(this).val() == null || $(this).val() == "" || $(this).val() == undefined) {
+                $(this).val(0.00);
+            }
+            $("#MarketSize").val(Number.parseFloat($("#MarketSize").val()).toFixed(2));
+        });
+        $("#ExpectedMarketValueGrowth").focusout(function () {
+            if ($(this).val() == null || $(this).val() == "" || $(this).val() == undefined) {
+                $(this).val(0.00);
+            }
+            $("#ExpectedMarketValueGrowth").val(Number.parseFloat($("#ExpectedMarketValueGrowth").val()).toFixed(2));
+        });
+        $("#ExpectedMarketValueGrowth").focusout(function () {
+            if ($(this).val() == null || $(this).val() == "" || $(this).val() == undefined) {
+                $(this).val(0.00);
+            }
+            $("#ExpectedMarketValueGrowth").val(Number.parseFloat($("#ExpectedMarketValueGrowth").val()).toFixed(2));
+        });
+        $("#FirstYearForecastUnitsPacks").focusout(function () {
+            if ($(this).val() == null || $(this).val() == "" || $(this).val() == undefined ) {
+                $(this).val(0.00);
+            }
+			$("#FirstYearForecastUnitsPacks").val(Number.parseFloat($("#FirstYearForecastUnitsPacks").val().replace(/,/g, '')||0).toFixed(2));
+        });
+        $("#SecondYearForecastUnitsPacks").focusout(function () {
+            if ($(this).val() == null || $(this).val() == "" || $(this).val() == undefined) {
+                $(this).val(0.00);
+            }
+            $("#SecondYearForecastUnitsPacks").val(Number.parseFloat($("#SecondYearForecastUnitsPacks").val()).toFixed(2));
+        });
+        $("#ThirdYearForecastUnitsPacks").focusout(function () {
+            if ($(this).val() == null || $(this).val() == "" || $(this).val() == undefined) {
+                $(this).val(0.00);
+            }
+            $("#ThirdYearForecastUnitsPacks").val(Number.parseFloat($("#ThirdYearForecastUnitsPacks").val()).toFixed(2));
+        });
+        $("#FirstYearForecastPriceToPatient").focusout(function () {
+            if ($(this).val() == null || $(this).val() == "" || $(this).val() == undefined) {
+                $(this).val(0.00);
+            }
+            $("#FirstYearForecastPriceToPatient").val(Number.parseFloat($("#FirstYearForecastPriceToPatient").val()).toFixed(2));
+	    });
+        $("#SecondYearForecastPriceToPatient").focusout(function () {
+            if ($(this).val() == null || $(this).val() == "" || $(this).val() == undefined) {
+                $(this).val(0.00);
+            }
+            $("#SecondYearForecastPriceToPatient").val(Number.parseFloat($("#SecondYearForecastPriceToPatient").val()).toFixed(2));
+        });
+        $("#ThirdYearForecastPriceToPatient").focusout(function () {
+            if ($(this).val() == null || $(this).val() == "" || $(this).val() == undefined) {
+                $(this).val(0.00);
+            }
+            $("#ThirdYearForecastPriceToPatient").val(Number.parseFloat($("#ThirdYearForecastPriceToPatient").val()).toFixed(2));
+        });
+         $("#FirstYearAPIQuantity").focusout(function () {
+            if ($(this).val() == null || $(this).val() == "" || $(this).val() == undefined) {
+                $(this).val(0.0000);
+            }
+            $("#FirstYearAPIQuantity").val(Number.parseFloat($("#FirstYearAPIQuantity").val()).toFixed(4));
+	    });
+        $("#SecondYearAPIQuantity").focusout(function () {
+            if ($(this).val() == null || $(this).val() == "" || $(this).val() == undefined) {
+                $(this).val(0.0000);
+            }
+            $("#SecondYearAPIQuantity").val(Number.parseFloat($("#SecondYearAPIQuantity").val()).toFixed(4));
+        });
+        $("#ThirdYearAPIQuantity").focusout(function () {
+            if ($(this).val() == null || $(this).val() == "" || $(this).val() == undefined) {
+                $(this).val(0.0000);
+            }
+            $("#ThirdYearAPIQuantity").val(Number.parseFloat($("#ThirdYearAPIQuantity").val()).toFixed(4));
+        });
+        $("#FirstYearForecastCIF").focusout(function () {
+            if ($(this).val() == null || $(this).val() == "" || $(this).val() == undefined) {
+                $(this).val(0.00);
+            }
+            $("#FirstYearForecastCIF").val(Number.parseFloat($("#FirstYearForecastCIF").val()).toFixed(2));
+        });
+        $("#SecondYearForecastCIF").focusout(function () {
+            if ($(this).val() == null || $(this).val() == "" || $(this).val() == undefined) {
+                $(this).val(0.00);
+            }
+            $("#SecondYearForecastCIF").val(Number.parseFloat($("#SecondYearForecastCIF").val()).toFixed(2));
+        });
+        $("#ThirdYearForecastCIF").focusout(function () {
+            if ($(this).val() == null || $(this).val() == "" || $(this).val() == undefined) {
+                $(this).val(0.00);
+            }
+            $("#ThirdYearForecastCIF").val(Number.parseFloat($("#ThirdYearForecastCIF").val()).toFixed(2));
+        });
+        $("#FirstYearForecastValue").focusout(function () {
+            if ($(this).val() == null || $(this).val() == "" || $(this).val() == undefined) {
+                $(this).val(0.00);
+            }
+            $("#FirstYearForecastValue").val(Number.parseFloat($("#FirstYearForecastValue").val()).toFixed(2));
+        });
+        $("#SecondYearForecastValue").focusout(function () {
+            if ($(this).val() == null || $(this).val() == "" || $(this).val() == undefined) {
+                $(this).val(0.00);
+            }
+            $("#SecondYearForecastValue").val(Number.parseFloat($("#SecondYearForecastValue").val()).toFixed(2));
+        });
+        $("#ThirdYearForecastValue").focusout(function () {
+            if ($(this).val() == null || $(this).val() == "" || $(this).val() == undefined) {
+                $(this).val(0.00);
+            }
+            $("#ThirdYearForecastValue").val(Number.parseFloat($("#ThirdYearForecastValue").val()).toFixed(2));
+        });
+
+        $("#GenericName").focusout(function () {
+            var temGenericName = $("#GenericName").val();
+            //localStorage.GenericName = temGenericName;
+            if (temGenericName.length > 0) {
+                alert(temGenericName);
+                GetProductMasterRelatedDropdownData(temGenericName);
+            }
+            else {
+                $('#Form').empty().append("<option value=''>Please select option</option>");
+                //alert('formulation');
+                $.each(defaultFormulationList, function (i, formulationlist) {
+                    $("#Form").append('<option value="' + formulationlist.id + '">' +
+                        formulationlist.formulation + '</option>');
+                });
+
+                $('#Strength').empty().append("<option value=''>Please select option</option>");
+
+                $.each(defaultStrengthList, function (i, strengthlist) {
+                    $("#Strength").append('<option value="' + strengthlist.id + '">' +
+                        strengthlist.strength + '</option>');
+                });
+
+                $('#PackSize').empty().append("<option value=''>Please select option</option>");
+
+                $.each(defaultPackSizeList, function (i, packsizelist) {
+                    $("#PackSize").append('<option value="' + packsizelist.id + '">' +
+                        packsizelist.packSize + '</option>');
+                });
+                $('#PackStyle').empty().append("<option value=''>Please select option</option>");
+
+                $.each(defaultPackStyleList, function (i, packStylelist) {
+                    $("#PackStyle").append('<option value="' + packStylelist.id + '">' +
+                        packStylelist.packStyle + '</option>');
+                });
+
+                $('#Plant').empty().append("<option value=''>Please select option</option>");
+
+                $.each(defaultPlantNameList, function (i, plantlist) {
+                    $("#Plant").append('<option value="' + plantlist.id + '">' +
+                        plantlist.productManufacture + '</option>');
+                });
+            }
+        });
+
+        $("#GenericName").change(function () {
+           
+            var temGenericName = $("#GenericName").val();
+            //localStorage.GenericName = temGenericName;
+            if (temGenericName.length > 0) {
+                //alert(temGenericName);
+                GetProductMasterRelatedDropdownData(temGenericName);
+            }
+            else {
+                $('#Form').empty().append("<option value=''>Please select option</option>");
+                //alert('formulation');
+                $.each(defaultFormulationList, function (i, formulationlist) {
+                    $("#Form").append('<option value="' + formulationlist.id + '">' +
+                        formulationlist.formulation + '</option>');
+                });
+
+                $('#Strength').empty().append("<option value=''>Please select option</option>");
+
+                $.each(defaultStrengthList, function (i, strengthlist) {
+                    $("#Strength").append('<option value="' + strengthlist.id + '">' +
+                        strengthlist.strength + '</option>');
+                });
+
+                $('#PackSize').empty().append("<option value=''>Please select option</option>");
+
+                $.each(defaultPackSizeList, function (i, packsizelist) {
+                    $("#PackSize").append('<option value="' + packsizelist.id + '">' +
+                        packsizelist.packSize + '</option>');
+                });
+                $('#PackStyle').empty().append("<option value=''>Please select option</option>");
+
+                $.each(defaultPackStyleList, function (i, packStylelist) {
+                    $("#PackStyle").append('<option value="' + packStylelist.id + '">' +
+                        packStylelist.packStyle + '</option>');
+                });
+
+                $('#Plant').empty().append("<option value=''>Please select option</option>");
+
+                $.each(defaultPlantNameList, function (i, plantlist) {
+                    $("#Plant").append('<option value="' + plantlist.id + '">' +
+                        plantlist.productManufacture + '</option>');
+                });
+            }
+        });
+
+        $('#GenericName').on('autocompleteselect', function (e, ui) {
+           
+            var temGenericName = ui.item.value;
+            //localStorage.GenericName = temGenericName;
+            if (temGenericName.length > 0) {
+                //alert(temGenericName);
+                GetProductMasterRelatedDropdownData(temGenericName);
+            }
+            else {
+                $('#Form').empty().append("<option value=''>Please select option</option>");
+                //alert('formulation');
+                $.each(defaultFormulationList, function (i, formulationlist) {
+                    $("#Form").append('<option value="' + formulationlist.id + '">' +
+                        formulationlist.formulation + '</option>');
+                });
+
+                $('#Strength').empty().append("<option value=''>Please select option</option>");
+
+                $.each(defaultStrengthList, function (i, strengthlist) {
+                    $("#Strength").append('<option value="' + strengthlist.id + '">' +
+                        strengthlist.strength + '</option>');
+                });
+
+                $('#PackSize').empty().append("<option value=''>Please select option</option>");
+
+                $.each(defaultPackSizeList, function (i, packsizelist) {
+                    $("#PackSize").append('<option value="' + packsizelist.id + '">' +
+                        packsizelist.packSize + '</option>');
+                });
+                $('#PackStyle').empty().append("<option value=''>Please select option</option>");
+
+                $.each(defaultPackStyleList, function (i, packStylelist) {
+                    $("#PackStyle").append('<option value="' + packStylelist.id + '">' +
+                        packStylelist.packStyle + '</option>');
+                });
+
+                $('#Plant').empty().append("<option value=''>Please select option</option>");
+
+                $.each(defaultPlantNameList, function (i, plantlist) {
+                    $("#Plant").append('<option value="' + plantlist.id + '">' +
+                        plantlist.productManufacture + '</option>');
+                });
+            }
+            //$('#tagsname').html('You selected: ' + ui.item.value);
+        });
+
+        $("#GenericName").keyup(function () {
+            var temGenericName = $("#GenericName").val();
+            //localStorage.GenericName = temGenericName;
+            if (temGenericName.length > 0) {
+                //alert(temGenericName);
+                GetProductMasterRelatedDropdownData(temGenericName);
+            }
+            else {
+                $('#Form').empty().append("<option value=''>Please select option</option>");
+                //alert('formulation');
+                $.each(defaultFormulationList, function (i, formulationlist) {
+                    $("#Form").append('<option value="' + formulationlist.id + '">' +
+                        formulationlist.formulation + '</option>');
+                });
+
+                $('#Strength').empty().append("<option value=''>Please select option</option>");
+
+                $.each(defaultStrengthList, function (i, strengthlist) {
+                    $("#Strength").append('<option value="' + strengthlist.id + '">' +
+                        strengthlist.strength + '</option>');
+                });
+
+                $('#PackSize').empty().append("<option value=''>Please select option</option>");
+
+                $.each(defaultPackSizeList, function (i, packsizelist) {
+                    $("#PackSize").append('<option value="' + packsizelist.id + '">' +
+                        packsizelist.packSize + '</option>');
+                });
+                $('#PackStyle').empty().append("<option value=''>Please select option</option>");
+
+                $.each(defaultPackStyleList, function (i, packStylelist) {
+                    $("#PackStyle").append('<option value="' + packStylelist.id + '">' +
+                        packStylelist.packStyle + '</option>');
+                });
+
+                $('#Plant').empty().append("<option value=''>Please select option</option>");
+
+                $.each(defaultPlantNameList, function (i, plantlist) {
+                    $("#Plant").append('<option value="' + plantlist.id + '">' +
+                        plantlist.productManufacture + '</option>');
+                });
+            }
+        });
+
+        $.ajax({
+                type: 'POST',
+                url: '@Url.Action("GetDropdownForInitializationForm")', // we are calling json method
+                dataType: 'json',
+                success: function (response) {
+                    console.log(response);
+                    $('#loading').hide();
+                    $('#CompanyID').empty().append("<option value=''>Please select option</option>");
+                    $.each(response.data.companyLists, function (i, company) {
+                        $("#CompanyID").append('<option value="' + company.companyID + '">' + company.companyName + '</option>');
+                    });
+
+                    $('#Country').empty().append("<option value=''>Please select option</option>");
+                    $.each(response.data.countryLists, function (i, country) {
+                        $("#Country").append('<option value="' + country.id + '">' + country.country + '</option>');                        
+                    });
+
+                    $('#Form').empty().append("<option value=''>Please select option</option>");
+                    $.each(response.data.formList, function (i, formulation) {                        
+                        $("#Form").append('<option value="' + formulation.id + '">' + formulation.formulation + '</option>');                        
+                        var tempForm = { id: formulation.id, formulation: formulation.formulation };
+                        defaultFormulationList.push(tempForm);
+                    });
+
+                    $('#Strength').empty().append("<option value=''>Please select option</option>");
+                    $.each(response.data.strengthList, function (i, strength) {
+                        $("#Strength").append('<option value="' + strength.id + '">' + strength.strength + '</option>');
+                        var tempStrength = { id: strength.id, strength: strength.strength };
+                        defaultStrengthList.push(tempStrength);
+                    });
+
+                    $('#PackSize').empty().append("<option value=''>Please select option</option>");
+                    $.each(response.data.packSizeList, function (i, packSize) {
+                        $("#PackSize").append('<option value="' + packSize.id + '">' + packSize.packSize + '</option>');
+                        var tempPacksize = { id: packSize.id, packSize: packSize.packSize };
+                        defaultPackSizeList.push(tempPacksize);
+                    });
+
+                    $('#PackStyle').empty().append("<option value=''>Please select option</option>");
+                    $.each(response.data.packStyleList, function (i, plantStyle) {
+                        $("#PackStyle").append('<option value="' + plantStyle.id + '">' + plantStyle.packStyle + '</option>');
+                        var tempPackstyle = { id: plantStyle.id, packStyle: plantStyle.packStyle };
+                        defaultPackStyleList.push(tempPackstyle);
+                    });
+
+                    $('#Plant').empty().append("<option value=''>Please select option</option>");
+                    $.each(response.data.plantList, function (i, plant) {
+                        $("#Plant").append('<option value="' + plant.id + '">' + plant.productManufacture + '</option>');
+                        var tempPlant = { id: plant.id, productManufacture: plant.productManufacture };
+                        defaultPlantNameList.push(tempPlant);
+                    });
+
+                    $('#ModeOfFeesPayment').empty().append("<option value=''>Please select option</option>");
+                    $.each(response.data.modeofFeesPaymentList, function (i, modeOfFeesPayment) {
+                        $("#ModeOfFeesPayment").append('<option value="' + modeOfFeesPayment.id + '">' + modeOfFeesPayment.modeofFeesPayment + '</option>');                        
+                    });
+
+                    $('#Incoterms').empty().append("<option value=''>Please select option</option>");
+                    $.each(response.data.incotermsList, function (i, incoterms) {
+                        $("#Incoterms").append('<option value="' + incoterms.id + '">' + incoterms.incoterms + '</option>');                       
+                    });
+
+                    $('#ModeOfShipment').empty().append("<option value=''>Please select option</option>");
+                    $.each(response.data.modeOfShipmentList, function (i, modeofshipment) {                        
+                            $("#ModeOfShipment").append('<option value="' + modeofshipment.id + '">' + modeofshipment.modeofshipment + '</option>');                       
+                    });
+
+					$('#OrderFrequency').empty().append("<option value=''>Please select option</option>");
+                    $.each(response.data.orderFrequencyList, function (i, OrderFrequency) {
+                        $("#OrderFrequency").append('<option value="' + OrderFrequency.id + '">' + OrderFrequency.orderfrequency + '</option>');                       
+					});
+
+					$('#ConuntryMobileCode').empty().append("<option value=''>Select Code</option>"	);
+                    $.each(response.data.countryMobileCodeLists, function (i, mobilelist) {
+                        $("#ConuntryMobileCode").append('<option value="' + mobilelist.phonecode + '">' + mobilelist.code + '</option>');                        
+					});
+
+                    $('#DossierTemplate').empty().append("<option value=''>Please select option</option>");
+                    $.each(response.data.dossierTemplateList, function (i, dossierTemplate) {
+                        $("#DossierTemplate").append('<option value="' + dossierTemplate.id + '">' + dossierTemplate.dossierTemplate + '</option>');
+                    });
+
+                    $('#CurrencyID').empty().append("<option value=''>select</option>");
+                    $.each(response.data.currencyList, function (i, list) {
+                        $("#CurrencyID").append('<option value="' + list.currencyID + '">' + list.currency + '</option>');                       
+                    });
+
+                    $('#FeesToBePaidByID').empty().append("<option value=''>Please select option</option>");
+                    $("#FeesToBePaidByID").append('<option value="' + 1 + '">Emcure</option>');
+                    $("#FeesToBePaidByID").append('<option value="' + 2 + '">Third Party</option>');
+                    
+                    //MarketingStatus old name
+                    $('#ProposedMarketingStatusID').empty().append("<option value=''>Select Business Type</option>");
+                    $.each(response.data.marketingStatusList, function (i, list) {
+                        $("#ProposedMarketingStatusID").append('<option value="' + list.id + '">' + list.marketingStatus + '</option>');                       
+                    });
+
+                    $('#ProductType').empty().append("<option value=''>Select Product Type </option>");
+                    $.each(response.data.productTypeList, function (i, list) {
+                        $("#ProductType").append('<option value="' + list.id + '">' + list.productType + '</option>');                       
+                    });
+
+                    //existing product master generic name bind
+                    $.each(response.data.allProductDataList, function (i, list) {
+                        ProductMasterGenericNameList.push(list.genericName);
+                    });
+                    //console.log(ProductMasterGenericNameList);
+                    if (ProductMasterGenericNameList.length > 0) {
+                        $("#GenericName").autocomplete({
+                            source: ProductMasterGenericNameList,
+                            select: function (e, i) {
+                                $("#GenericName").val(i.item.val);
+                            },
+                            minLength: 1
+                        });
+                    }
+                },
+                error: function (ex) {
+                    //alert('Failed to retrieve country.' + ex);
+                }
+        });
+
+        GetAllDraftData();
+       
+    });
+
+    function GetProductMasterRelatedDropdownData(genericName) {
+        $.ajax({
+            type: 'POST',
+            url: '@Url.Action("GetAllProductMasterListByGenericName", "DRFInitialization")?GenericName='+ genericName,
+            datatye: 'json',
+            success: function (response) {
+                
+                if (response.data.allFormulationList.length == 0 && response.data.allStrengthList.length == 0 && response.data.allPackSizeList.length == 0 && response.data.allPackstyleList.length == 0 && response.data.allPlantList.length == 0) {
+                    $('#Form').empty().append("<option value=''>Please select option</option>");
+                    $.each(defaultFormulationList, function (i, formulationlist) {
+                        $("#Form").append('<option value="' + formulationlist.id + '">' + formulationlist.formulation + '</option>');
+                    });
+
+                    $('#Strength').empty().append("<option value=''>Please select option</option>");
+                    $.each(defaultStrengthList, function (i, strengthlist) {
+                        $("#Strength").append('<option value="' + strengthlist.id + '">' + strengthlist.strength + '</option>');
+                    });
+
+                    $('#PackSize').empty().append("<option value=''>Please select option</option>");
+                    $.each(defaultPackSizeList, function (i, packsizelist) {
+                        $("#PackSize").append('<option value="' + packsizelist.id + '">' + packsizelist.packSize + '</option>');
+                    });
+                    $('#PackStyle').empty().append("<option value=''>Please select option</option>");
+                    $.each(defaultPackStyleList, function (i, packStylelist) {
+                        $("#PackStyle").append('<option value="' + packStylelist.id + '">' + packStylelist.packStyle + '</option>');
+                    });
+
+                    $('#Plant').empty().append("<option value=''>Please select option</option>");
+                    $.each(defaultPlantNameList, function (i, plantlist) {
+                        $("#Plant").append('<option value="' + plantlist.id + '">' + plantlist.productManufacture + '</option>');
+                    });
+                }
+                else {
+                    if (response.data.allFormulationList.length > 0) {
+                        $('#Form').empty().append("<option value=''>Please select option</option>");
+                        $.each(response.data.allFormulationList, function (i, formulationlist) {
+                            $("#Form").append('<option value="' + formulationlist.dId + '">' + formulationlist.dName + '</option>');
+                        });
+                    }
+                    else {
+                        $('#Form').empty().append("<option value=''>Please select option</option>");
+                        $.each(defaultFormulationList, function (i, formulationlist) {
+                            $("#Form").append('<option value="' + formulationlist.id + '">' + formulationlist.formulation + '</option>');
+                        });
+
+                    }
+
+                    if (response.data.allStrengthList.length > 0) {
+                        $('#Strength').empty().append("<option value=''>Please select option</option>");
+                        $.each(response.data.allStrengthList, function (i, strengthlist) {
+                            $("#Strength").append('<option value="' + strengthlist.dId + '">' + strengthlist.dName + '</option>');
+                        });
+                    }
+                    else {
+                        $('#Strength').empty().append("<option value=''>Please select option</option>");
+                        $.each(defaultStrengthList, function (i, strengthlist) {
+                            $("#Strength").append('<option value="' + strengthlist.id + '">' + strengthlist.strength + '</option>');
+                        });
+                    }
+
+                    if (response.data.allPackSizeList.length > 0) {
+                        $('#PackSize').empty().append("<option value=''>Please select option</option>");
+                        $.each(response.data.allPackSizeList, function (i, packsizelist) {
+                            $("#PackSize").append('<option value="' + packsizelist.dId + '">' + packsizelist.dName + '</option>');
+                        });
+                    }
+                    else {
+                        $('#PackSize').empty().append("<option value=''>Please select option</option>");
+                        $.each(defaultPackSizeList, function (i, packsizelist) {
+                            $("#PackSize").append('<option value="' + packsizelist.id + '">' + packsizelist.packSize + '</option>');
+                        });
+                    }
+
+                    if (response.data.allPackstyleList.length > 0) {
+                        $('#PackStyle').empty().append("<option value=''>Please select option</option>");
+                        $.each(response.data.allPackstyleList, function (i, packStylelist) {
+                            $("#PackStyle").append('<option value="' + packStylelist.dId + '">' + packStylelist.dName + '</option>');
+                        });
+                    }
+                    else {
+                        $('#PackStyle').empty().append("<option value=''>Please select option</option>");
+
+                        $.each(defaultPackStyleList, function (i, packStylelist) {
+                            $("#PackStyle").append('<option value="' + packStylelist.id + '">' + packStylelist.packStyle + '</option>');
+                        });
+                    }
+
+                    if (response.data.allPlantList.length > 0) {
+                        $('#Plant').empty().append("<option value=''>Please select option</option>");
+                        $.each(response.data.allPlantList, function (i, plantlist) {
+                            $("#Plant").append('<option value="' + plantlist.dId + '">' + plantlist.dName + '</option>');
+                        });
+                    }
+                    else {
+                        $('#Plant').empty().append("<option value=''>Please select option</option>");
+                        $.each(defaultPlantNameList, function (i, plantlist) {
+                            $("#Plant").append('<option value="' + plantlist.id + '">' + plantlist.productManufacture + '</option>');
+                        });
+                    }
+                }
+            },
+            failure: function () {
+
+            }
+        });
+    }
+
+    var CountryID = 0;
+    function saveCountry(CID){
+        CountryID = CID;        
+    }
+        
+
+    function CancelDetails() {localStorage.clear();setTimeout(function () { location.href = "/DRFInitialization/Index"; }, 1000);}
+
+    function ShowAttachedPIDFForm() {
+          if (CountryID == null || CountryID == 0 || CountryID == undefined) {
+             openCommonModal('alertModal modal-sm', '@SharedLocalizer["Error"].Value', 'Please select Country', false);
+             return false;
+         }
+        $('#AttachedPIDFViewModal').modal('show');
+
+         var dataTable = $('#AttachedPRDFTable').DataTable({
+             responsive: true,
+             retrieve: true,
+             paging: false,
+                searching: false,
+                sort: false,
+                "bInfo": false,
+                language: {
+                    "emptyTable": "@SharedLocalizer["No data available in table"].Value",
+                    "info": "@SharedLocalizer["Showing _START_ to _END_ of _TOTAL_ entries"].Value",
+                    "infoEmpty":"@SharedLocalizer["Showing 0 to 0 of 0 entries"].Value",
+                    "infoFiltered":"@SharedLocalizer["(filtered from _MAX_ total entries)"].Value",
+                    "lengthMenu":"@SharedLocalizer["Show _MENU_ entries"].Value",
+                    "loadingRecords": "@SharedLocalizer["Loading..."].Value",
+                    "processing": "@SharedLocalizer["Processing..."].Value",
+                    "search": "@SharedLocalizer["Search"].Value",
+                    "zeroRecords":"@SharedLocalizer["No matching records found"].Value",
+                    "paginate": {
+                        "first":"@SharedLocalizer["First"].Value",
+                        "last":"@SharedLocalizer["Last"].Value",
+                        "next": "@SharedLocalizer["Next"].Value",
+                        "previous":"@SharedLocalizer["Previous"].Value"
+                    },
+                }
+            });
+
+        var data = {
+            "CountryID": parseInt(CountryID)
+        }
+
+         $('#loading').show();
+        //console.log(data);
+          $.ajax({
+                    type: "POST",
+                    url: '@Url.Action("GetPIDFListForAttached", "DRFInitialization")/',
+                    //contentType: "application/json; charset=utf-8",
+                    dataType: "json",
+                    data: data,
+                    success: function (response) {
+                       // console.log(response);
+                         $('#loading').hide();
+                         var jsonObject = response.data;
+                        var result = jsonObject.map(function (item) {
+                            var result = [];
+                            result.push("<input class='getIndex'onclick='SetValue(" + item.id +")' type='radio' name='SetPIDFID' id='SetPIDFID'>");
+                            result.push(item.productId);
+                            result.push(item.productName);
+                            result.push(item.region);
+                            result.push(item.country);
+                            result.push(item.strength);
+                            result.push(item.packSize);
+                            result.push(item.packing);
+                            return result;
+                        });
+
+                         dataTable.clear();
+                        dataTable.rows.add(result); // add to DataTable instance
+                        dataTable.draw();
+                    },
+                    failure: function () {
+                         $("#AttachedPRDFTable").append('@SharedLocalizer["Error when fetching data please contact administrator"].Value');
+                    }
+                });
+    }
+
+    var selectedRow = 0;
+    function SetValue(value) {selectedRow = value; document.getElementById('PIDFID').value = selectedRow;}
+
+    function HideAttachedPIDF() {selectedRow = 0; $('#AttachedPIDFViewModal').modal('hide');}
+
+    function SaveAttachedPIDF() {
+
+        if (selectedRow == 0 || selectedRow == null || selectedRow == undefined) {
+            openCommonModal('alertModal modal-sm', '@SharedLocalizer["Error"].Value', 'Please select atleast one PIDF', false);
+            return;
+        }
+        else {
+             $('#AttachedPIDFViewModal').modal('hide');
+        }
+
+    }
+
+    $('.ShowHide_PIDFLink').click(function() {
+
+      var radio_value = $(this).val();
+
+        if (radio_value == 'Yes') {
+            $(".showlink").show();
+
+        }
+        else {
+            $(".showlink").hide();
+            selectedRow = null;
+            document.getElementById('PIDFID').value = selectedRow
+             $('#AttachedPIDF_Error').empty();
+        }
+});
+
+    function SubmitInitializationForm(form) {
+         var indexurl = $("#RedirectTo").val();
+
+         //localStorage.clear();
+
+         $('#UpdateRemark').val('NULL');
+
+         //console.log($('input[name="AttachedPIDF"]:checked').val());
+         //console.log($('#PIDFID').val());
+         //alert('submit');
+          if ($('input[name="AttachedPIDF"]:checked').val() == 'Yes' && ($('#PIDFID').val()==null || $('#PIDFID').val()==0 || $('#PIDFID').val()==undefined )) {
+              $('#AttachedPIDF_Error').empty().append("Attached atleast one PIDF");
+              //alert('apidf')
+            return false;
+            }
+            else {
+                $('#AttachedPIDF_Error').empty();
+         }
+
+
+		 //if ($('[id="RadioAliYes"]:checked').val() === 'True' && ($('#ExceptionExplained').val() == '' || $('#ExceptionExplained').val() == null || $('#ExceptionExplained').val() == undefined)) {
+			// $('#ExceptionExplained_Error').text('The Exception Explained field is required');
+			// return false;
+   //      }
+
+         if ($('[id="RadioAliNo"]:checked').val() === 'True' && ($('#ExceptionExplained').val() == '' || $('#ExceptionExplained').val() == null || $('#ExceptionExplained').val() == undefined)) {
+             $('#ExceptionExplained_Error').text('The Exception Explained field is required');
+             //alert('raioali')
+             return false;
+         }
+
+		 //if ($('#Plant').val() == null || $('#Plant').val() == '' || $('#Plant').val() == undefined) {
+			// $('#Plant').val(0);
+   //      }
+		 //if ($('#RegistrationFees').val() == null || $('#RegistrationFees').val() == '' || $('#RegistrationFees').val() == undefined) {
+			// $('#RegistrationFees').val(0.00);
+		 //}
+
+         $('#FeesToBePaidBy').val($("#FeesToBePaidByID option:selected").text());
+         //check validation if product type is NON-ARV
+         if ($("#ProductType option:selected").text() == 'NON ARV' || $("#ProductType").val() == 0 ) {
+             //alert('NON ARV');
+
+             //if ($('#FeesToBePaidByID').val() == null || $('#FeesToBePaidByID').val() == '' || $('#FeesToBePaidByID').val() == undefined || $('#FeesToBePaidByID').val() == 0) {
+             //    $('#FeesToBePaidByID_Error').empty().append("Fees to be paid by field is required.");
+             //    return false;
+             //}
+             //else {
+             //    $('#FeesToBePaidByID_Error').empty();
+             //}
+             //RegistrationFees
+             if (($('#RegistrationFees').val() == null || $('#RegistrationFees').val() == undefined || $('#RegistrationFees').val() == '') && $("#FeesToBePaidByID option:selected").text() == 'Emcure') {
+                 $('#RegistrationFees_Error').empty().append("Registration Fee is required.");
+                 return false;
+             }
+             else {
+                 $('#RegistrationFees_Error').empty();
+             }
+
+             //if ($('#ModeOfFeesPayment').val() == null || $('#ModeOfFeesPayment').val() == '' || $('#ModeOfFeesPayment').val() == undefined || $('#ModeOfFeesPayment').val() == 0) {
+             //    $('#ModeOfFeesPayment_Error').empty().append("Mode of Payment field is required.");
+             //    return false;
+             //}
+             //else {
+             //    $('#ModeOfFeesPayment_Error').empty();
+             //}
+             //if ($('#CurrencyID').val() == null || $('#CurrencyID').val() == '' || $('#CurrencyID').val() == undefined || $('#CurrencyID').val() == 0) {
+             //    $('#CurrencyID_Error').empty().append("Currency field is required.");
+             //    return false;
+             //}
+             //else {
+             //    $('#CurrencyID_Error').empty();
+             //}
+
+             //if ($('#MAHolder').val() == null || $('#MAHolder').val() == '' || $('#MAHolder').val() == undefined) {
+             //    $('#MAHolder_Error').empty().append("MA Holder field is required.");
+             //    return false;
+             //}
+             //else {
+             //    $('#MAHolder_Error').empty();
+             //}
+             //if ($('#MarketingStatus').val() == null || $('#MarketingStatus').val() == '' || $('#MarketingStatus').val() == undefined || $('#MarketingStatus').val() == 0) {
+             //    $('#ProposedMarketingStatusID_Error').empty().append("Business Type field is required.");
+             //    return false;
+             //}
+             //else {
+             //    $('#ProposedMarketingStatusID_Error').empty();
+             //}
+
+             //if ($('#ShippingPort').val() == null || $('#ShippingPort').val() == '' || $('#ShippingPort').val() == undefined) {
+             //    $('#ShippingPort_Error').empty().append("Destination Port field is required.");
+             //    return false;
+             //}
+             //else {
+             //    $('#ShippingPort_Error').empty();
+             //}
+             //if ($('#Modeofshipment').val() == null || $('#Modeofshipment').val() == '' || $('#Modeofshipment').val() == undefined || $('#Modeofshipment').val() == 0) {
+             //    $('#ModeOfShipment_Error').empty().append("Mode of Shipment field is required.");
+             //    return false;
+             //}
+             //else {
+             //    $('#ModeOfShipment_Error').empty();
+             //}
+             //if ($('#Incoterms').val() == null || $('#Incoterms').val() == '' || $('#Incoterms').val() == undefined || $('#Incoterms').val() == 0) {
+             //    $('#Incoterms_Error').empty().append("Incoterms field is required.");
+             //    return false;
+             //}
+             //else {
+             //    $('#Incoterms_Error').empty();
+             //}
+             //if ($('#MarketSize').val() == null || $('#MarketSize').val() == '' || $('#MarketSize').val() == undefined) {
+             //    $('#MarketSize_Error').empty().append("Incoterms field is required.");
+             //    return false;
+             //}
+             //else {
+             //    $('#MarketSize_Error').empty();
+             //}
+             //if ($('#ThreeYearCAGR').val() == null || $('#ThreeYearCAGR').val() == '' || $('#ThreeYearCAGR').val() == undefined) {
+             //    $('#ThreeYearCAGR_Error').empty().append("3 Year CAGR field is required.");
+             //    return false;
+             //}
+             //else {
+             //    $('#ThreeYearCAGR_Error').empty();
+             //}
+             //if ($('#NumberOfCurrentPlayer').val() == null || $('#NumberOfCurrentPlayer').val() == '' || $('#NumberOfCurrentPlayer').val() == undefined) {
+             //    $('#NumberOfCurrentPlayer_Error').empty().append("Number of current players field is required.");
+             //    return false;
+             //}
+             //else {
+             //    $('#NumberOfCurrentPlayer_Error').empty();
+             //}
+             //if ($('#ExpectedMarketValueGrowth').val() == null || $('#ExpectedMarketValueGrowth').val() == '' || $('#ExpectedMarketValueGrowth').val() == undefined) {
+             //    $('#ExpectedMarketValueGrowth_Error').empty().append("Expected Mkt. value growth(%) field is required.");
+             //    return false;
+             //}
+             //else {
+             //    $('#ExpectedMarketValueGrowth_Error').empty();
+             //}
+             //if ($('#InnovatorBrand').val() == null || $('#InnovatorBrand').val() == '' || $('#InnovatorBrand').val() == undefined) {
+             //    $('#InnovatorBrand_Error').empty().append("Innovator Brand field is required.");
+             //    return false;
+             //}
+             //else {
+             //    $('#InnovatorBrand_Error').empty();
+             //}
+             //if ($('#InnavotorName').val() == null || $('#InnavotorName').val() == '' || $('#InnavotorName').val() == undefined) {
+             //    $('#InnavotorName_Error').empty().append("Innovator Name field is required.");
+             //    return false;
+             //}
+             //else {
+             //    $('#InnavotorName_Error').empty();
+             //}
+             //if ($('#FirstBrand').val() == null || $('#FirstBrand').val() == '' || $('#FirstBrand').val() == undefined) {
+             //    $('#FirstBrand_Error').empty().append("First Brand field is required.");
+             //    return false;
+             //}
+             //else {
+             //    $('#FirstBrand_Error').empty();
+             //}
+             //if ($('#FirstYearForecastUnitsPacks').val() == null || $('#FirstYearForecastUnitsPacks').val() == '' || $('#FirstYearForecastUnitsPacks').val() == undefined) {
+             //    $('#FirstYearForecastUnitsPacks_Error').empty().append("First Year Forecast Units Packs field is required.");
+             //    return false;
+             //}
+             //else {
+             //    $('#FirstYearForecastUnitsPacks_Error').empty();
+             //}
+             //if ($('#SecondYearForecastUnitsPacks').val() == null || $('#SecondYearForecastUnitsPacks').val() == '' || $('#SecondYearForecastUnitsPacks').val() == undefined) {
+             //    $('#SecondYearForecastUnitsPacks_Error').empty().append("Second Year Forecast Units Packs field is required.");
+             //    return false;
+             //}
+             //else {
+             //    $('#SecondYearForecastUnitsPacks_Error').empty();
+             //}
+             //if ($('#ThirdYearForecastUnitsPacks').val() == null || $('#ThirdYearForecastUnitsPacks').val() == '' || $('#ThirdYearForecastUnitsPacks').val() == undefined) {
+             //    $('#ThirdYearForecastUnitsPacks_Error').empty().append("Third Year Forecast Units Packs field is required.");
+             //    return false;
+             //}
+             //else {
+             //    $('#ThirdYearForecastUnitsPacks_Error').empty();
+             //}
+             //if ($('#FirstYearForecastCIF').val() == null || $('#FirstYearForecastCIF').val() == '' || $('#FirstYearForecastCIF').val() == undefined) {
+             //    $('#FirstYearForecastCIF_Error').empty().append("First Year Forecast CIF field is required.");
+             //    return false;
+             //}
+             //else {
+             //    $('#FirstYearForecastCIF_Error').empty();
+             //}
+             //if ($('#SecondYearForecastCIF').val() == null || $('#SecondYearForecastCIF').val() == '' || $('#SecondYearForecastCIF').val() == undefined) {
+             //    $('#SecondYearForecastCIF_Error').empty().append("Second Year Forecast CIF  field is required.");
+             //    return false;
+             //}
+             //else {
+             //    $('#SecondYearForecastCIF_Error').empty();
+             //}
+             //if ($('#ThirdYearForecastCIF').val() == null || $('#ThirdYearForecastCIF').val() == '' || $('#ThirdYearForecastCIF').val() == undefined) {
+             //    $('#ThirdYearForecastCIF_Error').empty().append("Third Year Forecast CIF  field is required.");
+             //    return false;
+             //}
+             //else {
+             //    $('#ThirdYearForecastCIF_Error').empty();
+             //}
+             //if ($('#FirstYearForecastValue').val() == null || $('#FirstYearForecastValue').val() == '' || $('#FirstYearForecastValue').val() == undefined) {
+             //    $('#FirstYearForecastValue_Error').empty().append("First Year Forecast Value   field is required.");
+             //    return false;
+             //}
+             //else {
+             //    $('#FirstYearForecastValue_Error').empty();
+             //}
+             //if ($('#SecondYearForecastValue').val() == null || $('#SecondYearForecastValue').val() == '' || $('#SecondYearForecastValue').val() == undefined) {
+             //    $('#SecondYearForecastValue_Error').empty().append("Second Year Forecast Value   field is required.");
+             //    return false;
+             //}
+             //else {
+             //    $('#SecondYearForecastValue_Error').empty();
+             //}
+             //if ($('#ThirdYearForecastValue').val() == null || $('#ThirdYearForecastValue').val() == '' || $('#ThirdYearForecastValue').val() == undefined) {
+             //    $('#ThirdYearForecastValue_Error').empty().append("Third Year Forecast Value   field is required.");
+             //    return false;
+             //}
+             //else {
+             //    $('#ThirdYearForecastValue_Error').empty();
+             //}
+             //if ($('#OrderFrequency').val() == null || $('#OrderFrequency').val() == '' || $('#OrderFrequency').val() == undefined || $('#OrderFrequency').val() == 0) {
+             //    $('#OrderFrequency_Error').empty().append("Order Frequency Value   field is required.");
+             //    return false;
+             //}
+             //else {
+             //    $('#OrderFrequency_Error').empty();
+             //}
+             //if ($('#NameDossierSend').val() == null || $('#NameDossierSend').val() == '' || $('#NameDossierSend').val() == undefined) {
+             //    $('#NameDossierSend_Error').empty().append("Name to whom dossier to be sent field is required.");
+             //    return false;
+             //}
+             //else {
+             //    $('#NameDossierSend_Error').empty();
+             //}
+             //if ($('#EmailDossierSend').val() == null || $('#EmailDossierSend').val() == '' || $('#EmailDossierSend').val() == undefined) {
+             //    $('#EmailDossierSend_Error').empty().append("Email field is required.");
+             //    return false;
+             //}
+             //else {
+             //    $('#EmailDossierSend_Error').empty();
+             //}
+             //if ($('#AddressDossierSend').val() == null || $('#AddressDossierSend').val() == '' || $('#AddressDossierSend').val() == undefined) {
+             //    $('#AddressDossierSend_Error').empty().append("Address to whom dossier to be sent field is required.");
+             //    return false;
+             //}
+             //else {
+             //    $('#AddressDossierSend_Error').empty();
+             //}
+
+         }
+         else {
+             //$('#CurrencyID_Error').empty();
+             //$('#FeesToBePaidByID_Error').empty();
+             $('#RegistrationFees_Error').empty();
+             //$('#ModeOfFeesPayment_Error').empty();
+             //$('#MAHolder_Error').empty();
+             //$('#ProposedMarketingStatusID_Error').empty();
+             //$('#ShippingPort_Error').empty();
+             //$('#ModeOfShipment_Error').empty();
+             //$('#Incoterms_Error').empty();
+             //$('#MarketSize_Error').empty();
+             //$('#ThreeYearCAGR_Error').empty();
+             //$('#NumberOfCurrentPlayer_Error').empty();
+             //$('#ExpectedMarketValueGrowth_Error').empty();
+             //$('#InnovatorBrand_Error').empty();
+             //$('#InnavotorName_Error').empty();
+             //$('#FirstBrand_Error').empty();
+             //$('#FirstYearForecastUnitsPacks_Error').empty();
+             //$('#SecondYearForecastUnitsPacks_Error').empty();
+             //$('#ThirdYearForecastUnitsPacks_Error').empty();
+             //$('#FirstYearForecastCIF_Error').empty();
+             //$('#SecondYearForecastCIF_Error').empty();
+             //$('#ThirdYearForecastCIF_Error').empty();
+             //$('#FirstYearForecastValue_Error').empty();
+             //$('#SecondYearForecastValue_Error').empty();
+             //$('#ThirdYearForecastValue_Error').empty();
+             //$('#OrderFrequency_Error').empty();
+             //$('#NameDossierSend_Error').empty();
+             //$('#EmailDossierSend_Error').empty();
+             //$('#AddressDossierSend_Error').empty();
+
+             if ($('#FeesToBePaidByID').val() == null || $('#FeesToBePaidByID').val() == '' || $('#FeesToBePaidByID').val() == undefined) {
+                 $('#FeesToBePaidByID').val(0);
+             }
+
+             if ($('#ProposedMarketingStatusID').val() == null || $('#ProposedMarketingStatusID').val() == '' || $('#ProposedMarketingStatusID').val() == undefined) {
+                 $('#ProposedMarketingStatusID').val(0);
+             }
+
+             if ($('#ModeOfFeesPayment').val() == null || $('#ModeOfFeesPayment').val() == '' || $('#ModeOfFeesPayment').val() == undefined) {
+                 $('#ModeOfFeesPayment').val(0);
+             }
+
+             if ($('#ModeOfShipment').val() == null || $('#ModeOfShipment').val() == '' || $('#ModeOfShipment').val() == undefined) {
+                 $('#ModeOfShipment').val(0);
+             }
+             if ($('#CurrencyID').val() == null || $('#CurrencyID').val() == '' || $('#CurrencyID').val() == undefined) {
+                 $('#CurrencyID').val(0);
+             }
+             if ($('#Incoterms').val() == null || $('#Incoterms').val() == '' || $('#Incoterms').val() == undefined) {
+                 $('#Incoterms').val(0);
+             }
+             if ($('#OrderFrequency').val() == null || $('#OrderFrequency').val() == '' || $('#OrderFrequency').val() == undefined) {
+                 $('#OrderFrequency').val(0);
+             }
+
+             if ($('#MarketSize').val() == null || $('#MarketSize').val() == '' || $('#MarketSize').val() == undefined) {
+                 $('#MarketSize').val(0.00);
+             }
+             if ($('#ThreeYearCAGR').val() == null || $('#ThreeYearCAGR').val() == '' || $('#ThreeYearCAGR').val() == undefined) {
+                 $('#ThreeYearCAGR').val(0.00);
+             }
+
+             if ($('#NumberOfCurrentPlayer').val() == null || $('#NumberOfCurrentPlayer').val() == '' || $('#NumberOfCurrentPlayer').val() == undefined) {
+                 $('#NumberOfCurrentPlayer').val(0.00);
+             }
+
+             if ($('#ExpectedMarketValueGrowth').val() == null || $('#ExpectedMarketValueGrowth').val() == '' || $('#ExpectedMarketValueGrowth').val() == undefined) {
+                 $('#ExpectedMarketValueGrowth').val(0.00);
+             }
+             if ($('#FirstYearForecastUnitsPacks').val() == null || $('#FirstYearForecastUnitsPacks').val() == '' || $('#FirstYearForecastUnitsPacks').val() == undefined) {
+                 $('#FirstYearForecastUnitsPacks').val(0.00);
+             }
+             if ($('#SecondYearForecastUnitsPacks').val() == null || $('#SecondYearForecastUnitsPacks').val() == '' || $('#SecondYearForecastUnitsPacks').val() == undefined) {
+                 $('#SecondYearForecastUnitsPacks').val(0.00);
+             }
+             if ($('#ThirdYearForecastUnitsPacks').val() == null || $('#ThirdYearForecastUnitsPacks').val() == '' || $('#ThirdYearForecastUnitsPacks').val() == undefined) {
+                 $('#ThirdYearForecastUnitsPacks').val(0.00);
+             }
+             if ($('#FirstYearForecastCIF').val() == null || $('#FirstYearForecastCIF').val() == '' || $('#FirstYearForecastCIF').val() == undefined) {
+                 $('#FirstYearForecastCIF').val(0.00);
+             }
+             if ($('#SecondYearForecastCIF').val() == null || $('#SecondYearForecastCIF').val() == '' || $('#SecondYearForecastCIF').val() == undefined) {
+                 $('#SecondYearForecastCIF').val(0.00);
+             }
+             if ($('#ThirdYearForecastCIF').val() == null || $('#ThirdYearForecastCIF').val() == '' || $('#ThirdYearForecastCIF').val() == undefined) {
+                 $('#ThirdYearForecastCIF').val(0.00);
+             }
+             if ($('#FirstYearForecastValue').val() == null || $('#FirstYearForecastValue').val() == '' || $('#FirstYearForecastValue').val() == undefined) {
+                 $('#FirstYearForecastValue').val(0.00);
+             }
+             if ($('#SecondYearForecastValue').val() == null || $('#SecondYearForecastValue').val() == '' || $('#SecondYearForecastValue').val() == undefined) {
+                 $('#SecondYearForecastValue').val(0.00);
+             }
+             if ($('#ThirdYearForecastValue').val() == null || $('#ThirdYearForecastValue').val() == '' || $('#ThirdYearForecastValue').val() == undefined) {
+                 $('#ThirdYearForecastValue').val(0.00);
+             }
+
+            // var form1 = $('#drfinitializaion').get(0);
+            // $(form1).validate().settings.ignore = "*";
+         }
+         //alert($(form).valid());
+         //END OF CHECK VALIDATION FOR NON-ARV
+
+        //DELETE DRAFT DATA
+        $.ajax({
+            type: "POST",
+            url: '@Url.Action("DeleteDraft_DRFInitializationDetails", "DRFInitialization")/',//form.action,
+            data: { DraftID:tempUpdateDraftID},
+            success: function (result) {
+                //console.log(result);
+                    $('#loading').hide();
+                @*if (result.data === "success") {
+					
+                   // openCommonModal('successModal modal-sm', 'Draft Deleted Successfully', '@Html.Raw(SharedLocalizer["DRF created successfully."].Value)', true);
+                   // setTimeout(function () { location.href = indexurl; }, 2000);
+                }
+                else {
+					
+                   // openCommonModal('alertModal modal-sm', '@SharedLocalizer["Error"].Value', result.message, false);
+                }*@
+            }
+        });
+        //END OF DELETE DRAFT DATA
+
+         $.validator.unobtrusive.parse(form);
+         if ($(form).valid()) {
+             $('#loading').show();
+                $.ajax({
+                    type : "POST",
+                    url : '@Url.Action("InsertDRFInitializationDetails", "DRFInitialization")/',//form.action,
+                    data : $(form).serialize(),
+                    success: function (result) {
+                        //console.log(result);
+                        $('#loading').hide();
+						
+                        if (result.data === "success") {
+                           
+                            openCommonModal('successModal modal-sm', '@Html.Raw(SharedLocalizer["Success"].Value)', '@Html.Raw(SharedLocalizer["DRF created successfully."].Value)', true);
+                            setTimeout(function () { location.href = indexurl; }, 2000);
+                        }
+                        else {
+						
+                            openCommonModal('alertModal modal-sm', '@SharedLocalizer["Error"].Value', result.message, false);
+                        }
+                    }
+                });
+            }
+            return false;
+    }
+
+    function SaveAsDraft() {
+
+        if ($('#CompanyID').val() == null || $('#CompanyID').val() == '' || $('#CompanyID').val() == undefined || $('#CompanyID').val() == 0) {
+            openCommonModal('alertModal modal-sm', 'Warning', '"Company field is required.', false);
+            return false;
+        }
+        if ($('#Country').val() == null || $('#Country').val() == '' || $('#Country').val() == undefined || $('#Country').val() == 0) {
+            openCommonModal('alertModal modal-sm', 'Warning', '"Country field is required.', false);
+            return false;
+        }
+        if ($('#GenericName').val() == null || $('#GenericName').val() == '' || $('#GenericName').val() == undefined) {
+            openCommonModal('alertModal modal-sm', 'Warning', '"Generic Name field is required.', false);
+            return false;
+        }
+        if ($('#Form').val() == null || $('#Form').val() == '' || $('#Form').val() == undefined || $('#Form').val() == 0) {
+            openCommonModal('alertModal modal-sm', 'Warning', '"Formulation field is required.', false);
+            return false;
+        }
+        if ($('#Strength').val() == null || $('#Strength').val() == '' || $('#Strength').val() == undefined || $('#Strength').val() == 0) {
+            openCommonModal('alertModal modal-sm', 'Warning', '"Strength field is required.', false);
+            return false;
+        }
+        if ($('#PackSize').val() == null || $('#PackSize').val() == '' || $('#PackSize').val() == undefined || $('#PackSize').val() == 0) {
+            openCommonModal('alertModal modal-sm', 'Warning', '"PackSize field is required.', false);
+            return false;
+        }
+        if ($('#PackStyle').val() == null || $('#PackStyle').val() == '' || $('#PackStyle').val() == undefined || $('#PackStyle').val() == 0) {
+            openCommonModal('alertModal modal-sm', 'Warning', '"PackStyle field is required.', false);
+            return false;
+        }
+        if ($('#Plant').val() == null || $('#Plant').val() == '' || $('#Plant').val() == undefined || $('#Plant').val() == 0) {
+            openCommonModal('alertModal modal-sm', 'Warning', '"Plant field is required.', false);
+            return false;
+        }
+        if ($('#ProductType').val() == null || $('#ProductType').val() == '' || $('#ProductType').val() == undefined || $('#PlProductTypeant').val() == 0) {
+            openCommonModal('alertModal modal-sm', 'Warning', '"ProductType field is required.', false);
+            return false;
+        }
+
+        var tempCompanyID = $('#CompanyID').val();
+        var tempCountryID = $('#Country').val();
+        var tempCountryName = $("#Country option:selected").text();// $('#Country').text();
+        var tempGenericName = $('#GenericName').val();
+        var tempBrandName = $('#BrandName').val();
+               
+        var isTreadmarkApprovedInternal = $('#RadioYes:checked').val() ? true : false;
+        var tempTreadmarkApprovedInternal = isTreadmarkApprovedInternal;// $("#TreadmarkApprovedInternal").val();
+        var tempTreadmarkSuggestedInternal = $("#TreadmarkSuggestedInternal").val();
+        var tempTreadmarkOwnerInternal = $("#TreadmarkOwnerInternal").val();
+
+        var tempForm = $("#Form").val();
+        var tempFormulationName = $("#Form option:selected").text();// $("#Form").text();
+        var tempStrength = $("#Strength").val();
+        var tempStrengthName = $("#Strength option:selected").text();// $("#Strength").text();
+        var tempPackSize = $("#PackSize").val();
+        var tempPackSizeName = $("#PackSize option:selected").text();//$("#PackSize").text();
+        var tempPackStyle = $("#PackStyle").val();
+        var tempPackStyleName = $("#PackStyle option:selected").text();//$("#PackStyle").text();
+        var tempPlant = $("#Plant").val();
+        var tempProductTypeID = $("#ProductType").val();
+        var tempDossierTemplateID = $("#DossierTemplateID").val();
+
+        var isSampleRequiredChecked = $('#RadioSampleYes:checked').val() ? true : false;
+        var tempIsSamples_Required = isSampleRequiredChecked;
+
+        var tempSamples_Required = $("#Samples_Required").val();
+        var tempRemark = $("#Remark").val();
+        var tempCurrencyID = $("#CurrencyID").val();
+        var tempFeesToBePaidByID = $("#FeesToBePaidByID").val();
+        var tempRegistrationFees = $("#RegistrationFees").val();
+        var tempModeOfFeesPayment = $("#ModeOfFeesPayment").val();
+        var tempMAHolder = $("#MAHolder").val();
+        var tempProposedMarketingStatusID = $("#ProposedMarketingStatusID").val();
+        var tempShippingPort = $("#ShippingPort").val();
+        var tempModeOfShipment = $("#ModeOfShipment").val();
+        var tempIncoterms = $("#Incoterms").val();
+        var tempDossierSubmittedToMOHBy = $("#DossierSubmittedToMOHBy").val();
+        var tempOwnerOfRegistration = $("#OwnerOfRegistration").val();
+
+        var isAvailabilityofCDAChecked = $('#AvailabilityOfCDAYes:checked').val() ? true : false;
+        var tempAvailabilityofCDA = isAvailabilityofCDAChecked
+
+        var isTSExcecutedChecked = $('#TSExcecutedYes:checked').val() ? true : false;
+        var tempTSExcecuted = isTSExcecutedChecked;
+
+        var isDAExcecutedChecked = $('#DAExcecutedYes:checked').val() ? true : false;
+        var tempDAExcecuted = isDAExcecutedChecked;
+
+        var tempMarketSize = $("#MarketSize").val();
+        var tempThreeYearCAGR = $("#ThreeYearCAGR").val();
+        var tempNumberOfCurrentPlayer = $("#NumberOfCurrentPlayer").val();
+        var tempExpectedMarketValueGrowth = $("#ExpectedMarketValueGrowth").val();
+        var tempInnovatorBrand = $("#InnovatorBrand").val();
+        var tempInnavotorName = $("#InnavotorName").val();
+        var tempFirstBrand = $("#FirstBrand").val();
+        var tempMSFirstBrand = $("#MSFirstBrand").val();
+        var tempSecondBrand = $("#SecondBrand").val();
+        var tempMSSecondBrand = $("#MSSecondBrand").val();
+        var tempThirdBrand = $("#ThirdBrand").val();
+        var tempMSThirdBrand = $("#MSThirdBrand").val();
+        var tempPartner = $("#Partner").val();
+        var tempFirstYearForecastUnitsPacks = $("#FirstYearForecastUnitsPacks").val();
+        var tempSecondYearForecastUnitsPacks = $("#SecondYearForecastUnitsPacks").val();
+        var tempThirdYearForecastUnitsPacks = $("#ThirdYearForecastUnitsPacks").val();
+
+        var tempFirstYearForecastCIF = $("#FirstYearForecastCIF").val();
+        var tempSecondYearForecastCIF = $("#SecondYearForecastCIF").val();
+        var tempThirdYearForecastCIF = $("#ThirdYearForecastCIF").val();
+        var tempFirstYearForecastValue = $("#FirstYearForecastValue").val();
+        var tempSecondYearForecastValue = $("#SecondYearForecastValue").val();
+        var tempThirdYearForecastValue = $("#ThirdYearForecastValue").val();
+        var tempFirstYearForecastPriceToPatient = $("#FirstYearForecastPriceToPatient").val();
+        var tempSecondYearForecastPriceToPatient = $("#SecondYearForecastPriceToPatient").val();
+        var tempThirdYearForecastPriceToPatient = $("#ThirdYearForecastPriceToPatient").val();
+        var tempFirstYearAPIQuantity = $("#FirstYearAPIQuantity").val();
+        var tempSecondYearAPIQuantity = $("#SecondYearAPIQuantity").val();
+        var tempThirdYearAPIQuantity = $("#ThirdYearAPIQuantity").val();
+        var tempOrderFrequency = $("#OrderFrequency").val();
+        var tempNoofShipmnets = $("#NoofShipmnets").val();
+        var tempNameDossierSend = $("#NameDossierSend").val();
+        var tempEmailDossierSend = $("#EmailDossierSend").val();
+        var tempConuntryMobileCode = $("#ConuntryMobileCode").val();
+        var tempPhoneDossierSend = $("#PhoneDossierSend").val();
+        var tempAddressDossierSend = $("#AddressDossierSend").val();
+
+        var isStrategyAlignmentChecked = $('#RadioAliYes:checked').val() ? true : false;
+        var tempStrategyAlignment = isStrategyAlignmentChecked;
+
+        var tempExceptionExplained = $("#ExceptionExplained").val();
+
+        var tempdraftdata = {
+            DraftID: tempUpdateDraftID,
+            CompanyID : tempCompanyID,
+            CountryID: tempCountryID, CountryName: tempCountryName,
+            GenericName: tempGenericName, BrandName: tempBrandName,
+            TreadmarkApprovedInternal: tempTreadmarkApprovedInternal,
+            TreadmarkSuggestedInternal: tempTreadmarkSuggestedInternal,
+            TreadmarkOwnerInternal: tempTreadmarkOwnerInternal,
+            Form: tempForm,
+            FormulationName : tempFormulationName,
+            Strength: tempStrength,
+            StrengthName: tempStrengthName,
+            PackSize: tempPackSize,
+            PackSizeName: tempPackSizeName,
+            PackStyle: tempPackStyle,
+            PackStyleName: tempPackStyleName,
+            Plant: tempPlant,
+            ProductTypeID: tempProductTypeID,
+            CurrencyID: tempCurrencyID,
+            RegistrationFees: tempRegistrationFees,
+            FeesToBePaidByID: tempFeesToBePaidByID,
+            ModeOfFeesPayment: tempModeOfFeesPayment,
+            MAHolder: tempMAHolder,
+            ProposedMarketingStatusID: tempProposedMarketingStatusID,
+            ShippingPort: tempShippingPort,
+            ModeOfShipment: tempModeOfShipment,
+            Incoterms: tempIncoterms,
+            DossierSubmittedToMOHBy: tempDossierSubmittedToMOHBy,
+            AvailabilityofCDA: tempAvailabilityofCDA,
+            TSExcecuted: tempTSExcecuted,
+            DAExcecuted: tempDAExcecuted,
+            MarketSize: tempMarketSize,
+            ThreeYearCAGR: tempThreeYearCAGR,
+            NumberOfCurrentPlayer: tempNumberOfCurrentPlayer,
+            ExpectedMarketValueGrowth: tempExpectedMarketValueGrowth,
+            InnovatorBrand: tempInnovatorBrand,
+            InnavotorName: tempInnavotorName,
+            FirstBrand: tempFirstBrand,
+            MSFirstBrand: tempMSFirstBrand,
+            SecondBrand: tempSecondBrand,
+            MSSecondBrand: tempMSSecondBrand,
+            ThirdBrand: tempThirdBrand,
+            MSThirdBrand: tempMSThirdBrand,
+            Partner: tempPartner,
+            FirstYearForecastUnitsPacks: tempFirstYearForecastUnitsPacks,
+            SecondYearForecastUnitsPacks: tempSecondYearForecastUnitsPacks,
+            ThirdYearForecastUnitsPacks: tempThirdYearForecastUnitsPacks,
+
+            FirstYearForecastCIF: tempFirstYearForecastCIF,
+            SecondYearForecastCIF: tempSecondYearForecastCIF,
+            ThirdYearForecastCIF: tempThirdYearForecastCIF,
+
+            FirstYearForecastValue: tempFirstYearForecastValue,
+            SecondYearForecastValue: tempSecondYearForecastValue,
+            ThirdYearForecastValue: tempThirdYearForecastValue,
+
+            FirstYearForecastPriceToPatient: tempFirstYearForecastPriceToPatient,
+            SecondYearForecastPriceToPatient: tempSecondYearForecastPriceToPatient,
+            ThirdYearForecastPriceToPatient: tempThirdYearForecastPriceToPatient,
+
+            FirstYearAPIQuantity: tempFirstYearAPIQuantity,
+            SecondYearAPIQuantity: tempSecondYearAPIQuantity,
+            ThirdYearAPIQuantity: tempThirdYearAPIQuantity,
+
+            OrderFrequencyID: tempOrderFrequency,
+            NameDossierSend: tempNameDossierSend,
+            AddressDossierSend: tempAddressDossierSend,
+            EmailDossierSend: tempEmailDossierSend,
+            ConuntryMobileCode: tempConuntryMobileCode,
+            PhoneDossierSend: '+' + tempConuntryMobileCode + ' ' + tempPhoneDossierSend,
+            StrategyAlignment: tempStrategyAlignment,
+            ExceptionExplained: tempExceptionExplained,
+            IsSamples_Required: tempIsSamples_Required,
+            Samples_Required: tempSamples_Required,
+            Remark: tempRemark,
+            NoofShipmnets: tempNoofShipmnets,
+            IsActive: 1,
+            CreatedBy: 1,
+            CreatedDate: ''
+
+        };
+        var samepageurl = "/DRFInitialization/DRFInitialization";
+        $.ajax({
+            type : "POST",
+            url : '@Url.Action("InsertDraft_DRFInitializationDetails", "DRFInitialization")/',//form.action,
+            data: tempdraftdata,
+            success: function (result) {
+                //console.log(result);
+                   // $('#loading').hide();
+                if (result.data === "success") {
+                    openCommonModal('successModal modal-sm', '@Html.Raw(SharedLocalizer["Success"].Value)', '@Html.Raw(SharedLocalizer["Data Drafted successfully."].Value)', true);
+                    setTimeout(function () { location.href = samepageurl; }, 1000);
+                }
+                else {
+                    openCommonModal('alertModal modal-sm', '@SharedLocalizer["Error"].Value', result.message, false);
+                }
+            }
+        });
+
+    }
+
+    function RemoveValidation() {
+        $('#MAHolder-error').empty();
+        //$('#MAHolder').rules('remove', 'required')
+        $('#CurrencyID-error').empty();
+        //$('#CurrencyID').rules('remove', 'required')
+        $('#FeesToBePaidByID-error').empty();
+        //$('#FeesToBePaidByID').rules('remove', 'required')
+        $('#RegistrationFees_Error').empty();
+        //$('#RegistrationFees').rules('remove', 'required')
+        $('#RegistrationFees_Error').empty();
+        $('#ModeOfFeesPayment-error').empty();
+        //$('#ModeOfFeesPayment').rules('remove', 'required')
+        $('#ProposedMarketingStatusID-error').empty();
+        //$('#ProposedMarketingStatusID').rules('remove', 'required')
+        $('#ModeOfShipment-error').empty();
+        //$('#ModeOfShipment').rules('remove', 'required')
+        $('#ShippingPort-error').empty();
+        //$('#ShippingPort').rules('remove', 'required')
+        $('#Incoterms-error').empty();
+        //$('#Incoterms').rules('remove', 'required')
+        $('#MarketSize-error').empty();
+        //$('#MarketSize').rules('remove', 'required')
+        $('#ThreeYearCAGR-error').empty();
+        //$('#ThreeYearCAGR').rules('remove', 'required')
+        $('#NumberOfCurrentPlayer-error').empty();
+        //$('#NumberOfCurrentPlayer').rules('remove', 'required')
+        $('#ExpectedMarketValueGrowth-error').empty();
+        //$('#ExpectedMarketValueGrowth').rules('remove', 'required')
+        $('#InnovatorBrand-error').empty();
+        //$('#InnovatorBrand').rules('remove', 'required')
+        $('#InnavotorName-error').empty();
+        //$('#InnavotorName').rules('remove', 'required')
+        $('#FirstBrand-error').empty();
+        //$('#FirstBrand').rules('remove', 'required')
+        $('#FirstYearForecastUnitsPacks-error').empty();
+        //$('#FirstYearForecastUnitsPacks').rules('remove', 'required')
+        $('#SecondYearForecastUnitsPacks-error').empty();
+        //$('#SecondYearForecastUnitsPacks').rules('remove', 'required')
+        $('#ThirdYearForecastUnitsPacks-error').empty();
+        //$('#ThirdYearForecastUnitsPacks').rules('remove', 'required')
+        $('#FirstYearForecastCIF-error').empty();
+        //$('#FirstYearForecastCIF').rules('remove', 'required')
+        $('#SecondYearForecastCIF-error').empty();
+        //$('#SecondYearForecastCIF').rules('remove', 'required')
+        $('#ThirdYearForecastCIF-error').empty();
+        //$('#ThirdYearForecastCIF').rules('remove', 'required')
+        $('#FirstYearForecastValue-error').empty();
+       // $('#FirstYearForecastValue').rules('remove', 'required')
+        $('#SecondYearForecastValue-error').empty();
+        //$('#SecondYearForecastValue').rules('remove', 'required')
+        $('#ThirdYearForecastValue-error').empty();
+        //$('#ThirdYearForecastValue').rules('remove', 'required')
+        $('#OrderFrequency-error').empty();
+        //$('#OrderFrequency').rules('remove', 'required')
+        $('#NameDossierSend-error').empty();
+        //$('#NameDossierSend').rules('remove', 'required')
+        $('#EmailDossierSend-error').empty();
+        //$('#EmailDossierSend').rules('remove', 'required')
+        $('#AddressDossierSend-error').empty();
+        //$('#AddressDossierSend').rules('remove', 'required')
+
+
+        //$('#').empty();
+
+        setParameterValidation(false);
+
+
+        //var form1 = $('#drfinitializaion').get(0);
+        //$(form1).validate().settings.ignore = "*";
+
+        $("#drfinitializaion").removeData("validator").removeData("unobtrusiveValidation");
+
+       //$.validator.unobtrusive.parse("#drfinitializaion");
+    }
+
+    function setParameterValidation(isTrue) {
+        $('#MAHolder').attr('data-val', isTrue);
+       // $('#MAHolder').attr('data-val-required', isTrue);
+
+        $('#CurrencyID').attr('data-val', isTrue);
+       // $('#CurrencyID').attr('data-val-required', isTrue);
+
+        $('#FeesToBePaidByID').attr('data-val', isTrue);
+        //$('#FeesToBePaidByID').attr('data-val-required', isTrue);
+
+        $('#RegistrationFees').attr('data-val', isTrue);
+       // $('#RegistrationFees').attr('data-val-required', isTrue);
+
+        $('#ModeOfFeesPayment').attr('data-val', isTrue);
+       // $('#ModeOfFeesPayment').attr('data-val-required', isTrue);
+
+        //$('#MarketingStatus').attr('data-val', isTrue);
+        //$('#MarketingStatus').attr('data-val-required', isTrue);
+
+        $('#ShippingPort').attr('data-val', isTrue);
+       // $('#ShippingPort').attr('data-val-required', isTrue);
+
+        $('#ModeOfShipment').attr('data-val', isTrue);
+       // $('#ModeOfShipment').attr('data-val-required', isTrue);
+
+        $('#Incoterms').attr('data-val', isTrue);
+        //$('#Incoterms').attr('data-val-required', isTrue);
+
+        $('#AvailabilityofCDA').attr('data-val', isTrue);
+        //$('#AvailabilityofCDA').attr('data-val-required', isTrue);
+
+        $('#TSExcecuted').attr('data-val', isTrue);
+       // $('#TSExcecuted').attr('data-val-required', isTrue);
+
+        $('#DAExcecuted').attr('data-val', isTrue);
+       // $('#DAExcecuted').attr('data-val-required', isTrue);
+
+        $('#MarketSize').attr('data-val', isTrue);
+       // $('#MarketSize').attr('data-val-required', isTrue);
+
+        $('#ThreeYearCAGR').attr('data-val', isTrue);
+        //$('#ThreeYearCAGR').attr('data-val-required', isTrue);
+
+        $('#NumberOfCurrentPlayer').attr('data-val', isTrue);
+       // $('#NumberOfCurrentPlayer').attr('data-val-required', isTrue);
+
+        $('#ExpectedMarketValueGrowth').attr('data-val', isTrue);
+       // $('#ExpectedMarketValueGrowth').attr('data-val-required', isTrue);
+
+        $('#InnovatorBrand').attr('data-val', isTrue);
+       // $('#InnovatorBrand').attr('data-val-required', isTrue);
+
+        $('#InnavotorName').attr('data-val', isTrue);
+        //$('#InnavotorName').attr('data-val-required', isTrue);
+
+        $('#FirstBrand').attr('data-val', isTrue);
+        //$('#FirstBrand').attr('data-val-required', isTrue);
+
+        $('#FirstYearForecastUnitsPacks').attr('data-val', isTrue);
+        //$('#FirstYearForecastUnitsPacks').attr('data-val-required', isTrue);
+
+        $('#SecondYearForecastUnitsPacks').attr('data-val', isTrue);
+        //$('#SecondYearForecastUnitsPacks').attr('data-val-required', isTrue);
+
+        $('#ThirdYearForecastUnitsPacks').attr('data-val', isTrue);
+        //$('#ThirdYearForecastUnitsPacks').attr('data-val-required', isTrue);
+
+        $('#FirstYearForecastCIF').attr('data-val', isTrue);
+        //$('#FirstYearForecastCIF').attr('data-val-required', isTrue);
+
+        $('#SecondYearForecastCIF').attr('data-val', isTrue);
+        //$('#SecondYearForecastCIF').attr('data-val-required', isTrue);
+
+        $('#ThirdYearForecastCIF').attr('data-val', isTrue);
+       // $('#ThirdYearForecastCIF').attr('data-val-required', isTrue);
+
+        $('#FirstYearForecastValue').attr('data-val', isTrue);
+        //$('#FirstYearForecastValue').attr('data-val-required', isTrue);
+
+        $('#SecondYearForecastValue').attr('data-val', isTrue);
+        //$('#SecondYearForecastValue').attr('data-val-required', isTrue);
+
+        $('#ThirdYearForecastValue').attr('data-val', isTrue);
+        //$('#ThirdYearForecastValue').attr('data-val-required', isTrue);
+
+        $('#OrderFrequency').attr('data-val', isTrue);
+        //$('#OrderFrequency').attr('data-val-required', isTrue);
+
+        $('#NameDossierSend').attr('data-val', isTrue);
+        //$('#NameDossierSend').attr('data-val-required', isTrue);
+
+        $('#EmailDossierSend').attr('data-val', isTrue);
+        //$('#EmailDossierSend').attr('data-val-required', isTrue);
+
+        $('#AddressDossierSend').attr('data-val', isTrue);
+        //$('#AddressDossierSend').attr('data-val-required', isTrue);
+
+        $('#ProposedMarketingStatusID').attr('data-val', isTrue);
+        //$('#ProposedMarketingStatusID').attr('data-val-required', isTrue);
+
+
+
+        //var form1 = $('#drfinitializaion').get(0);
+        //$(form1).validate().settings.ignore = "*";
+       // //$(form1).removeData('validate');
+    }
+
+    $("#FirstYearForecastUnitsPacks").change(function () {
+        if ($(this).val() == "") {
+            $(this).val(0.00);
+        }
+        if ($('#FirstYearForecastCIF').val() == "") {
+            var setZero = 0.00;
+            $('#FirstYearForecastCIF').val(setZero.toFixed(2));
+        }
+		var ForecastCIF = parseFloat($('#FirstYearForecastCIF').val().replace(/,/g, '') || 0);
+		var ForecastValue = ForecastCIF * $(this).val().replace(/,/g, '');
+
+        $('#FirstYearForecastValue').val(ForecastValue.toFixed(2))
+
+    })
+
+    $("#FirstYearForecastCIF").change(function () {
+        if ($(this).val() == "") {
+            $(this).val(0.00);
+        }
+        if ($('#FirstYearForecastUnitsPacks').val() == "") {
+            var setZero = 0.00;
+            $('#FirstYearForecastUnitsPacks').val(setZero.toFixed(2));
+        }
+		var ForecastUnitsPacks = parseFloat($('#FirstYearForecastUnitsPacks').val().replace(/,/g, '') || 0);
+		var ForecastValue = ForecastUnitsPacks * $(this).val().replace(/,/g, '');
+
+        $('#FirstYearForecastValue').val(ForecastValue.toFixed(2))
+
+    })
+
+    $("#SecondYearForecastUnitsPacks").change(function () {
+        if ($(this).val() == "") {
+            $(this).val(0.00);
+        }
+        if ($('#SecondYearForecastCIF').val() == "") {
+            var setZero = 0.00;
+            $('#SecondYearForecastCIF').val(setZero.toFixed(2));
+        }
+		var ForecastCIF = parseFloat($('#SecondYearForecastCIF').val().replace(/,/g, '') || 0);
+		var ForecastValue = ForecastCIF * $(this).val().replace(/,/g, '');
+
+        $('#SecondYearForecastValue').val(ForecastValue.toFixed(2))
+
+    })
+
+    $("#SecondYearForecastCIF").change(function () {
+        if ($(this).val() == "") {
+            $(this).val(0.00);
+        }
+        if ($('#SecondYearForecastUnitsPacks').val() == "") {
+            var setZero = 0.00;
+            $('#SecondYearForecastUnitsPacks').val(setZero.toFixed(2));
+        }
+		var ForecastUnitsPacks = parseFloat($('#SecondYearForecastUnitsPacks').val().replace(/,/g, '') || 0);
+		var ForecastValue = ForecastUnitsPacks * $(this).val().replace(/,/g, '');
+
+        $('#SecondYearForecastValue').val(ForecastValue.toFixed(2))
+
+    })
+
+    $("#ThirdYearForecastUnitsPacks").change(function () {
+        if ($(this).val() == "") {
+            $(this).val(0.00);
+        }
+        if ($('#ThirdYearForecastCIF').val() == "") {
+            var setZero = 0.00;
+            $('#ThirdYearForecastCIF').val(setZero.toFixed(2));
+        }
+		var ForecastCIF = parseFloat($('#ThirdYearForecastCIF').val().replace(/,/g, '') || 0);
+		var ForecastValue = ForecastCIF * $(this).val().replace(/,/g, '');
+
+        $('#ThirdYearForecastValue').val(ForecastValue.toFixed(2))
+
+    })
+
+    $("#ThirdYearForecastCIF").change(function () {
+        if ($(this).val() == "") {
+            $(this).val(0.00);
+        }
+        if ($('#ThirdYearForecastUnitsPacks').val() == "") {
+            var setZero = 0.00;
+            $('#ThirdYearForecastUnitsPacks').val(setZero.toFixed(2));
+        }
+		var ForecastUnitsPacks = parseFloat($('#ThirdYearForecastUnitsPacks').val().replace(/,/g, '') || 0);
+		var ForecastValue = ForecastUnitsPacks * $(this).val().replace(/,/g, '');
+
+        $('#ThirdYearForecastValue').val(ForecastValue.toFixed(2))
+    })
+
+    function SetFeeValidation() {
+        localStorage.FeesToBePaidByID = $("#FeesToBePaidByID").val();
+        if($("#FeesToBePaidByID option:selected").text() == 'Emcure'){$('.feevalidation').addClass('required');}
+        else {$('.feevalidation').removeClass('required');}
+    }
+
+    function SetValidation() {
+
+        if ($("#ProductType option:selected").text() == 'ARV') {
+            localStorage.ProductTypeID = $("#ProductType").val();
+            $('.forsetvalidation').removeClass('required');
+            RemoveValidation();
+        }
+        else {
+            localStorage.ProductTypeID = $("#ProductType").val();
+            $('.forsetvalidation').addClass('required');
+
+            setParameterValidation(true);
+
+            $("#drfinitializaion").validate({
+                ignore: ":hidden"
+            });
+            //final works
+            $("#MAHolder").rules("add", {
+                required: true,
+                messages: {
+                    required: "The MAHolder field is required."
+                }
+            });
+
+            $("#CurrencyID").rules("add", {
+                required: true,
+                messages: {
+                    required: "The Currency field is required."
+                }
+            });
+
+            $("#FeesToBePaidByID").rules("add", {
+                required: true,
+                messages: {
+                    required: "The Fees to be paid by field is required."
+                }
+            });
+
+            $("#RegistrationFees").rules("add", {
+                required: true,
+                messages: {
+                    required: "The Registration Fee field is required."
+                }
+            });
+
+            $("#ModeOfFeesPayment").rules("add", {
+                required: true,
+                messages: {
+                    required: "The Mode of Fees payment field is required."
+                }
+            });
+
+            $("#ProposedMarketingStatusID").rules("add", {
+                required: true,
+                messages: {
+                    required: "The Business type field is required."
+                }
+            });
+
+            $("#ModeOfShipment").rules("add", {
+                required: true,
+                messages: {
+                    required: "The Mode of shipment field is required."
+                }
+            });
+
+            $("#ShippingPort").rules("add", {
+                required: true,
+                messages: {
+                    required: "The Destination port field is required."
+                }
+            });
+
+            $("#Incoterms").rules("add", {
+                required: true,
+                messages: {
+                    required: "The Incoterms field is required."
+                }
+            });
+
+            $("#MarketSize").rules("add", {
+                required: true,
+                messages: {
+                    required: "The Current /Proposed Market Size field is required."
+                }
+            });
+            $("#ThreeYearCAGR").rules("add", {
+                required: true,
+                messages: {
+                    required: "The 3 Yr. CAGR field is required."
+                }
+            });
+
+            $("#NumberOfCurrentPlayer").rules("add", {
+                required: true,
+                messages: {
+                    required: "The Number of current players field is required."
+                }
+            });
+
+            $("#ExpectedMarketValueGrowth").rules("add", {
+                required: true,
+                messages: {
+                    required: "The Expected Mkt. value growth field is required."
+                }
+            });
+
+            $("#InnovatorBrand").rules("add", {
+                required: true,
+                messages: {
+                    required: "The Innovator brand field is required."
+                }
+            });
+
+            $("#InnavotorName").rules("add", {
+                required: true,
+                messages: {
+                    required: "The Innovator Name field is required."
+                }
+            });
+
+            $("#FirstBrand").rules("add", {
+                required: true,
+                messages: {
+                    required: "The Top brand field is required."
+                }
+            });
+
+            $("#FirstYearForecastUnitsPacks").rules("add", {
+                required: true,
+                messages: {
+                    required: "The  1 Year Forecast Units (Packs)  field is required."
+                }
+            });
+
+            $("#SecondYearForecastUnitsPacks").rules("add", {
+                required: true,
+                messages: {
+                    required: "The 2 Year Forecast Units (Packs)  field is required."
+                }
+            });
+
+            $("#ThirdYearForecastUnitsPacks").rules("add", {
+                required: true,
+                messages: {
+                    required: "The 3 Year Forecast Units (Packs)  field is required."
+                }
+            });
+
+            $("#FirstYearForecastCIF").rules("add", {
+                required: true,
+                messages: {
+                    required: "The 1 Year Forecast CIF (for Emcure) field is required."
+                }
+            });
+
+            $("#SecondYearForecastCIF").rules("add", {
+                required: true,
+                messages: {
+                    required: "The 2 Year Forecast CIF (for Emcure) field is required."
+                }
+            });
+
+            $("#ThirdYearForecastCIF").rules("add", {
+                required: true,
+                messages: {
+                    required: "The 3 Year Forecast CIF (for Emcure) field is required."
+                }
+            });
+
+            $("#FirstYearForecastValue").rules("add", {
+                required: true,
+                messages: {
+                    required: "The 1 Year Forecast Value (Emcure)  field is required."
+                }
+            });
+
+            $("#SecondYearForecastValue").rules("add", {
+                required: true,
+                messages: {
+                    required: "The 2 Year Forecast Value (Emcure)  field is required."
+                }
+            });
+
+            $("#ThirdYearForecastValue").rules("add", {
+                required: true,
+                messages: {
+                    required: "The 3 Year Forecast Value (Emcure) field is required."
+                }
+            });
+
+            $("#OrderFrequency").rules("add", {
+                required: true,
+                messages: {
+                    required: "The Order Frequency field is required."
+                }
+            });
+
+            $("#NameDossierSend").rules("add", {
+                required: true,
+                messages: {
+                    required: "The Name to whom dossier to be sent field is required."
+                }
+            });
+
+            $("#EmailDossierSend").rules("add", {
+                required: true,
+                messages: {
+                    required: "The Email field is required."
+                }
+            });
+
+            $("#AddressDossierSend").rules("add", {
+                required: true,
+                messages: {
+                    required: "The Address to whom dossier to be sent field is required."
+                }
+            });
+            //$('#MAHolder').rules('add', { required: true });
+
+
+        }
+    }
+
+    function SetValidationAfterDaftDataLoad() {
+
+        if (localStorage.ProductTypeID == 1) {
+            $('.forsetvalidation').removeClass('required');
+            RemoveValidation();
+        }
+        else {
+            $('.forsetvalidation').addClass('required');
+
+            setParameterValidation(true);
+
+            $("#drfinitializaion").validate({
+                ignore: ":hidden"
+            });
+            //final works
+            $("#MAHolder").rules("add", {
+                required: true,
+                messages: {
+                    required: "The MAHolder field is required."
+                }
+            });
+
+            $("#CurrencyID").rules("add", {
+                required: true,
+                messages: {
+                    required: "The Currency field is required."
+                }
+            });
+
+            $("#FeesToBePaidByID").rules("add", {
+                required: true,
+                messages: {
+                    required: "The Fees to be paid by field is required."
+                }
+            });
+
+            $("#RegistrationFees").rules("add", {
+                required: true,
+                messages: {
+                    required: "The Registration Fee field is required."
+                }
+            });
+
+            $("#ModeOfFeesPayment").rules("add", {
+                required: true,
+                messages: {
+                    required: "The Mode of Fees payment field is required."
+                }
+            });
+
+            $("#ProposedMarketingStatusID").rules("add", {
+                required: true,
+                messages: {
+                    required: "The Business type field is required."
+                }
+            });
+
+            $("#ModeOfShipment").rules("add", {
+                required: true,
+                messages: {
+                    required: "The Mode of shipment field is required."
+                }
+            });
+
+            $("#ShippingPort").rules("add", {
+                required: true,
+                messages: {
+                    required: "The Destination port field is required."
+                }
+            });
+
+            $("#Incoterms").rules("add", {
+                required: true,
+                messages: {
+                    required: "The Incoterms field is required."
+                }
+            });
+
+            $("#MarketSize").rules("add", {
+                required: true,
+                messages: {
+                    required: "The Current /Proposed Market Size field is required."
+                }
+            });
+            $("#ThreeYearCAGR").rules("add", {
+                required: true,
+                messages: {
+                    required: "The 3 Yr. CAGR field is required."
+                }
+            });
+
+            $("#NumberOfCurrentPlayer").rules("add", {
+                required: true,
+                messages: {
+                    required: "The Number of current players field is required."
+                }
+            });
+
+            $("#ExpectedMarketValueGrowth").rules("add", {
+                required: true,
+                messages: {
+                    required: "The Expected Mkt. value growth field is required."
+                }
+            });
+
+            $("#InnovatorBrand").rules("add", {
+                required: true,
+                messages: {
+                    required: "The Innovator brand field is required."
+                }
+            });
+
+            $("#InnavotorName").rules("add", {
+                required: true,
+                messages: {
+                    required: "The Innovator Name field is required."
+                }
+            });
+
+            $("#FirstBrand").rules("add", {
+                required: true,
+                messages: {
+                    required: "The Top brand field is required."
+                }
+            });
+
+            $("#FirstYearForecastUnitsPacks").rules("add", {
+                required: true,
+                messages: {
+                    required: "The  1 Year Forecast Units (Packs)  field is required."
+                }
+            });
+
+            $("#SecondYearForecastUnitsPacks").rules("add", {
+                required: true,
+                messages: {
+                    required: "The 2 Year Forecast Units (Packs)  field is required."
+                }
+            });
+
+            $("#ThirdYearForecastUnitsPacks").rules("add", {
+                required: true,
+                messages: {
+                    required: "The 3 Year Forecast Units (Packs)  field is required."
+                }
+            });
+
+            $("#FirstYearForecastCIF").rules("add", {
+                required: true,
+                messages: {
+                    required: "The 1 Year Forecast CIF (for Emcure) field is required."
+                }
+            });
+
+            $("#SecondYearForecastCIF").rules("add", {
+                required: true,
+                messages: {
+                    required: "The 2 Year Forecast CIF (for Emcure) field is required."
+                }
+            });
+
+            $("#ThirdYearForecastCIF").rules("add", {
+                required: true,
+                messages: {
+                    required: "The 3 Year Forecast CIF (for Emcure) field is required."
+                }
+            });
+
+            $("#FirstYearForecastValue").rules("add", {
+                required: true,
+                messages: {
+                    required: "The 1 Year Forecast Value (Emcure)  field is required."
+                }
+            });
+
+            $("#SecondYearForecastValue").rules("add", {
+                required: true,
+                messages: {
+                    required: "The 2 Year Forecast Value (Emcure)  field is required."
+                }
+            });
+
+            $("#ThirdYearForecastValue").rules("add", {
+                required: true,
+                messages: {
+                    required: "The 3 Year Forecast Value (Emcure) field is required."
+                }
+            });
+
+            $("#OrderFrequency").rules("add", {
+                required: true,
+                messages: {
+                    required: "The Order Frequency field is required."
+                }
+            });
+
+            $("#NameDossierSend").rules("add", {
+                required: true,
+                messages: {
+                    required: "The Name to whom dossier to be sent field is required."
+                }
+            });
+
+            $("#EmailDossierSend").rules("add", {
+                required: true,
+                messages: {
+                    required: "The Email field is required."
+                }
+            });
+
+            $("#AddressDossierSend").rules("add", {
+                required: true,
+                messages: {
+                    required: "The Address to whom dossier to be sent field is required."
+                }
+            });
+            //$('#MAHolder').rules('add', { required: true });
+
+
+        }
+    }
+
+    function SetDropdownDataByProductMaster() {
+        var temGenericName = $("#GenericName").val();
+        if (temGenericName.length > 0) {
+            //alert(temGenericName);
+            GetProductMasterRelatedDropdownData(temGenericName);
+        }
+        else {
+            $('#Form').empty().append("<option value=''>Please select option</option>");
+            $.each(defaultFormulationList, function (i, formulationlist) {
+                $("#Form").append('<option value="' + formulationlist.id + '">' + formulationlist.formulation + '</option>');
+            });
+
+            $('#Strength').empty().append("<option value=''>Please select option</option>");
+            $.each(defaultStrengthList, function (i, strengthlist) {
+                $("#Strength").append('<option value="' + strengthlist.id + '">' + strengthlist.strength + '</option>');
+            });
+
+            $('#PackSize').empty().append("<option value=''>Please select option</option>");
+            $.each(defaultPackSizeList, function (i, packsizelist) {
+                $("#PackSize").append('<option value="' + packsizelist.id + '">' + packsizelist.packSize + '</option>');
+            });
+
+            $('#PackStyle').empty().append("<option value=''>Please select option</option>");
+            $.each(defaultPackStyleList, function (i, packStylelist) {
+                $("#PackStyle").append('<option value="' + packStylelist.id + '">' + packStylelist.packStyle + '</option>');
+            });
+
+            $('#Plant').empty().append("<option value=''>Please select option</option>");
+            $.each(defaultPlantNameList, function (i, plantlist) {
+                $("#Plant").append('<option value="' + plantlist.id + '">' + plantlist.productManufacture + '</option>');
+            });
+        }
+    }
+
+    function ClearControlValues() {
+        console.log('clear');
+        $('#Country option[value=""]').attr("selected", true);
+    }
+    var tempDraftID;
+    var tempUpdateDraftID;
+    function loadDraftData(draftID) {
+        tempDraftID = draftID;
+        //alert(tempDraftID);
+
+        var tempdata = { DraftID: tempDraftID}
+        $.ajax({
+            type: "POST",
+            url: '@Url.Action("GetDraft_DRFInitializationDetails", "DRFInitialization")/',
+            //contentType: "application/json; charset=utf-8",
+            dataType: "json",
+            data: tempdata,
+            success: function (response) {
+                console.log(response.data);
+                tempUpdateDraftID = response.data.draftdata.draftID;
+
+                //console.log(tempUpdateDraftID);
+                //SetValidationAfterDaftDataLoad();
+                //ClearControlValues();
+
+               //$('#Country option[value="' + response.data.draftdata.countryID + '"]').attr("selected", true);
+                $('#CompanyID').val(response.data.draftdata.companyID);
+                $('#CompanyID').select2('destroy').select2();
+
+                $('#Country').val(response.data.draftdata.countryID);
+               $('#Country').select2('destroy').select2();
+
+                $('#GenericName').val(response.data.draftdata.genericName);
+                $('#BrandName').val(response.data.draftdata.brandName);
+
+                if (response.data.draftdata.treadmarkApprovedInternal == true) {                    
+                    $("#RadioYes").prop("checked", true);
+                }
+                else {                   
+                    $("#RadioNo").prop("checked", true);
+                }
+                $('#TreadmarkSuggestedInternal').val(response.data.draftdata.treadmarkSuggestedInternal);
+                $('#TreadmarkOwnerInternal').val(response.data.draftdata.treadmarkOwnerInternal);
+
+               // $('#Form option[value="' + response.data.draftdata.form + '"]').attr("selected", true);
+                $('#Form').val(response.data.draftdata.form);
+                $('#Form').select2('destroy').select2();
+
+                //$('#Strength option[value="' + response.data.draftdata.strength + '"]').attr("selected", true);
+                $('#Strength').val(response.data.draftdata.strength);
+                $('#Strength').select2('destroy').select2();
+
+                //$('#PackSize option[value="' + response.data.draftdata.packSize + '"]').attr("selected", true);
+                $('#PackSize').val(response.data.draftdata.packSize);
+                $('#PackSize').select2('destroy').select2();
+
+                //$('#PackStyle option[value="' + response.data.draftdata.packStyle + '"]').attr("selected", true);
+                $('#PackStyle').val(response.data.draftdata.packStyle );
+                $('#PackStyle').select2('destroy').select2();
+
+                //$('#Plant option[value="' + response.data.draftdata.plant + '"]').attr("selected", true);
+                $('#Plant').val(response.data.draftdata.plant);
+                $('#Plant').select2('destroy').select2();
+
+                //$('#ProductType option[value="' + response.data.draftdata.productTypeId + '"]').attr("selected", true);
+                $('#ProductType').val(response.data.draftdata.productTypeId);
+                $('#ProductType').select2('destroy').select2();
+
+                if (response.data.draftdata.isSamples_Required == true) {
+                    //$('#RadioSampleYes').attr("checked", true);
+                    $("#RadioSampleYes").prop("checked", true);
+                    //$('#RadioSampleNo').attr("checked", false);
+                    $('#Samples_Required').val(response.data.draftdata.samples_Required);
+                    $('#Samples_Required').attr("disabled", false);
+                }
+                else {                    
+                    $("#RadioSampleNo").prop("checked", true);
+                    $('#Samples_Required').val('');
+                    $('#Samples_Required').attr("disabled", true);
+                }
+                $('#Remark').val(response.data.draftdata.remark);
+
+                //$('#CurrencyID option[value="' + response.data.draftdata.currencyID + '"]').attr("selected", true);           
+                $('#CurrencyID').val(response.data.draftdata.currencyID);
+                $('#CurrencyID').select2('destroy').select2();
+
+                //$('#FeesToBePaidByID option[value="' + response.data.draftdata.feesToBePaidByID + '"]').attr("selected", true);
+                $('#FeesToBePaidByID').val(response.data.draftdata.feesToBePaidByID);
+                $('#FeesToBePaidByID').select2('destroy').select2();
+
+                if (response.data.draftdata.registrationFees != null) {
+                    $('#RegistrationFees').val(response.data.draftdata.registrationFees.toFixed(2));
+                }
+                //$('#ModeOfFeesPayment option[value="' + response.data.draftdata.modeOfFeesPayment + '"]').attr("selected", true);
+                $('#ModeOfFeesPayment').val(response.data.draftdata.modeOfFeesPayment);
+                $('#ModeOfFeesPayment').select2('destroy').select2();
+
+                $('#MAHolder').val(response.data.draftdata.maHolder);
+
+                //$('#ProposedMarketingStatusID option[value="' + response.data.draftdata.proposedMarketingStatusID + '"]').attr("selected", true);
+                $('#ProposedMarketingStatusID').val(response.data.draftdata.proposedMarketingStatusID);
+                $('#ProposedMarketingStatusID').select2('destroy').select2();
+
+                $('#ShippingPort').val(response.data.draftdata.shippingPort);
+
+                //$('#ModeOfShipment option[value="' + response.data.draftdata.modeOfShipment + '"]').attr("selected", true);
+                $('#ModeOfShipment').val(response.data.draftdata.modeOfShipment);
+                $('#ModeOfShipment').select2('destroy').select2();
+
+                //$('#Incoterms option[value="' + response.data.draftdata.incoterms + '"]').attr("selected", true);
+                $('#Incoterms').val(response.data.draftdata.incoterms);
+                $('#Incoterms').select2('destroy').select2();
+
+                $('#DossierSubmittedToMOHBy').val(response.data.draftdata.dossierSubmittedToMOHBy);
+                $('#OwnerOfRegistration').val(response.data.draftdata.ownerOfRegistration);
+
+                if (response.data.draftdata.availabilityofCDA == true) {
+                    //$('#AvailabilityOfCDAYes').attr("checked", true);
+                    $("#AvailabilityOfCDAYes").prop("checked", true);
+                }
+                else {
+                    $("#AvailabilityOfCDANo").prop("checked", true);
+                }
+
+                if (response.data.draftdata.tsExcecuted == true) {
+                    //$('#TSExcecutedYes').attr("checked", true);
+                    $("#TSExcecutedYes").prop("checked", true);
+                }
+                else {
+                    $("#TSExcecutedNo").prop("checked", true);
+                }
+
+                if (response.data.draftdata.daExcecuted == true) {
+                    //$('#DAExcecutedYes').attr("checked", true);
+                    $("#DAExcecutedYes").prop("checked", true);
+                }
+                else {
+                    $("#DAExcecutedNo").prop("checked", true);
+                }
+
+                if (response.data.draftdata.marketSize != null) {
+                    $('#MarketSize').val(response.data.draftdata.marketSize.toFixed(2));
+                }
+
+                $('#ThreeYearCAGR').val(response.data.draftdata.threeYearCAGR);
+                $('#NumberOfCurrentPlayer').val(response.data.draftdata.numberOfCurrentPlayer);
+                if (response.data.draftdata.expectedMarketValueGrowth != null) {
+                    $('#ExpectedMarketValueGrowth').val(response.data.draftdata.expectedMarketValueGrowth.toFixed(2));
+                }
+
+                $('#InnovatorBrand').val(response.data.draftdata.innovatorBrand);
+                $('#InnavotorName').val(response.data.draftdata.innavotorName);
+                $('#FirstBrand').val(response.data.draftdata.firstBrand);
+                $('#MSFirstBrand').val(response.data.draftdata.msFirstBrand);
+                $('#SecondBrand').val(response.data.draftdata.secondBrand);
+                $('#MSSecondBrand').val(response.data.draftdata.msSecondBrand);
+                $('#ThirdBrand').val(response.data.draftdata.thirdBrand);
+                $('#MSThirdBrand').val(response.data.draftdata.msThirdBrand);
+                $('#Partner').val(response.data.draftdata.partner);
+
+                if (response.data.draftdata.firstYearForecastUnitsPacks != null) {
+                    $('#FirstYearForecastUnitsPacks').val(response.data.draftdata.firstYearForecastUnitsPacks.toFixed(2));
+                }
+                if (response.data.draftdata.secondYearForecastUnitsPacks != null) {
+                    $('#SecondYearForecastUnitsPacks').val(response.data.draftdata.secondYearForecastUnitsPacks.toFixed(2));
+                }
+
+                if (response.data.draftdata.thirdYearForecastUnitsPacks != null) {
+                    $('#ThirdYearForecastUnitsPacks').val(response.data.draftdata.thirdYearForecastUnitsPacks.toFixed(2));
+                }
+                if (response.data.draftdata.firstYearForecastCIF != null) {
+                    $('#FirstYearForecastCIF').val(response.data.draftdata.firstYearForecastCIF.toFixed(2));
+                }
+                if (response.data.draftdata.secondYearForecastCIF != null) {
+                    $('#SecondYearForecastCIF').val(response.data.draftdata.secondYearForecastCIF.toFixed(2));
+                }
+                if (response.data.draftdata.thirdYearForecastCIF != null) {
+                    $('#ThirdYearForecastCIF').val(response.data.draftdata.thirdYearForecastCIF.toFixed(2));
+                }
+                if (response.data.draftdata.firstYearForecastValue != null) {
+                    $('#FirstYearForecastValue').val(response.data.draftdata.firstYearForecastValue.toFixed(2));
+                }
+                if (response.data.draftdata.secondYearForecastValue != null) {
+                    $('#SecondYearForecastValue').val(response.data.draftdata.secondYearForecastValue.toFixed(2));
+                }
+                if (response.data.draftdata.thirdYearForecastValue != null) {
+                    $('#ThirdYearForecastValue').val(response.data.draftdata.thirdYearForecastValue.toFixed(2));
+                }
+
+                if (response.data.draftdata.firstYearForecastPriceToPatient != null) {
+                    $('#FirstYearForecastPriceToPatient').val(response.data.draftdata.firstYearForecastPriceToPatient.toFixed(2));
+                }
+                if (response.data.draftdata.secondYearForecastPriceToPatient != null) {
+                    $('#SecondYearForecastPriceToPatient').val(response.data.draftdata.secondYearForecastPriceToPatient.toFixed(2));
+                }
+                if (response.data.draftdata.thirdYearForecastPriceToPatient != null) {
+                    $('#ThirdYearForecastPriceToPatient').val(response.data.draftdata.thirdYearForecastPriceToPatient.toFixed(2));
+                }
+                if (response.data.draftdata.firstYearAPIQuantity != null) {
+                    $('#FirstYearAPIQuantity').val(response.data.draftdata.firstYearAPIQuantity.toFixed(2));
+                }
+                if (response.data.draftdata.secondYearAPIQuantity != null) {
+                    $('#SecondYearAPIQuantity').val(response.data.draftdata.secondYearAPIQuantity.toFixed(2));
+                }
+                if (response.data.draftdata.thirdYearAPIQuantity != null) {
+                    $('#ThirdYearAPIQuantity').val(response.data.draftdata.thirdYearAPIQuantity.toFixed(2));
+                }
+
+                //$('#OrderFrequency option[value="' + response.data.draftdata.orderFrequencyID + '"]').attr("selected", true);
+                $('#OrderFrequency').val(response.data.draftdata.orderFrequencyID);
+                $('#OrderFrequency').select2('destroy').select2();
+
+                $('#NoofShipmnets').val(response.data.draftdata.noofShipmnets);
+                $('#NameDossierSend').val(response.data.draftdata.nameDossierSend);
+                $('#EmailDossierSend').val(response.data.draftdata.emailDossierSend);
+
+                if (response.data.draftdata.phoneDossierSend) {
+                    var pluscountryCode = response.data.draftdata.phoneDossierSend.split(' ')[0];
+                    var countryCode = pluscountryCode.split('+')[1];
+                    $("#ConuntryMobileCode option:contains(" + countryCode + ")").attr('selected', 'selected');
+                    $('#ConuntryMobileCode').select2('destroy').select2();
+                    $('#PhoneDossierSend').val(response.data.draftdata.phoneDossierSend.split(' ')[1]);
+                }
+
+                //var pluscountryCode = response.data.draftdata.phoneDossierSend.split(' ')[0];
+                //var countryCode = pluscountryCode.split('+')[1];
+                ////$('#ConuntryMobileCode option[value="' + countryCode + '"]').attr("selected", true);
+                //$("#ConuntryMobileCode option:contains(" + countryCode + ")").attr('selected', 'selected');
+                //$('#ConuntryMobileCode').select2('destroy').select2();
+                //$('#PhoneDossierSend').val(response.data.draftdata.phoneDossierSend.split(' ')[1]);
+
+                $('#AddressDossierSend').val(response.data.draftdata.addressDossierSend);
+
+                if (response.data.draftdata.strategyAlignment == true) {
+                    //$('#RadioAliYes').attr("checked", true);
+                    $("#RadioAliYes").prop("checked", true);
+                }
+                else {
+                    $("#RadioAliNo").prop("checked", true);
+                }
+                $('#ExceptionExplained').val(response.data.draftdata.exceptionExplained);
+
+                SetValidation();
+
+
+
+            },
+            failure: function () {
+
+            }
+        });
+    }
+    
+    function GetAllDraftData() {
+        $.ajax({
+            type : "POST",
+            url: '@Url.Action("GetAll_Draft_DRFInitializationData", "DRFInitialization")/',
+            dataType: "json",
+            success: function (result) {
+                //console.log(result);
+                //alert(result.data.alldraftdata.length);
+                if (result.data.alldraftdata.length > 0) {
+                    $(".hidedraft").show();
+                   // $("#totalcount").innerHTML(result.data.alldraftdata.length);
+                    $("#totaldraftcount").html(result.data.alldraftdata.length);
+                    var _binddatas = '';
+                    result.data.alldraftdata.forEach(function (item) {
+                        //_binddatas += "<div><a id=" + item.draftID + " href='#' class='dropdown-item'>" +
+                        _binddatas += "<div><a id=" + item.draftID + " href='#' class='dropdown-item'  onclick=" + '"loadDraftData(' + item.draftID + ')"' + ">" +
+                            "<div class='media'>" +
+                            "<div class='media-body'>" +
+                            "<h3 class='dropdown-item-title'>" +
+                            item.genericName +
+                            //"<span class='float-right text-sm text-warning'><i class='fas fa-star'></i></span>" +
+                            "</h3>" +
+                            "<p class='text-sm'>" + item.countryName + "</p>" +
+                            //"<p class='text-sm text-muted'><i class='far fa-clock mr-1'></i>" + item.strength + "</p>" +
+                            "</div>" +
+                            "</div>" +
+                            "</a ></div>" +
+                            "<div class='dropdown-divider'></div>"
+                    })
+                    $("#showalldraftdata").html(_binddatas);
+                }
+                else {
+                    $(".hidedraft").hide();
+                }
+                
+            }
+        });
+    }
+</script>

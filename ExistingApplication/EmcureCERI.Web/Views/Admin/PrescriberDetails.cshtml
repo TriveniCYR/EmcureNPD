@@ -1,0 +1,120 @@
+﻿@using Microsoft.Extensions.Localization
+@inject IStringLocalizer<SharedResource> SharedLocalizer
+@model EmcureCERI.Web.Models.AdminViewModels.PrescriberViewModel
+@{
+    Layout = null;
+}
+
+<div class="row">
+    <div class="col-sm-6">
+        <div class="form-group">
+            @Html.LabelFor(model => model.FirstName, new { @class = "control-label" })
+            <div class="dummyInputBox">
+                @Html.DisplayFor(model => model.FirstName)
+            </div>
+        </div>
+    </div>
+    <div class="col-sm-6">
+        <div class="form-group">
+            @Html.LabelFor(model => model.LastName, new { @class = "control-label" })
+            <div class="dummyInputBox">
+                @Html.DisplayFor(model => model.LastName)
+            </div>
+        </div>
+    </div>
+</div>
+<div class="row">
+    <div class="col-sm-6">
+        <div class="form-group">
+            @Html.LabelFor(model => model.Email, new { @class = "control-label" })
+            <div class="dummyInputBox">
+                @Html.DisplayFor(model => model.Email)
+            </div>
+        </div>
+    </div>
+    <div class="col-sm-6">
+        <div class="form-group">
+            @Html.LabelFor(model => model.UniqueId, new { @class = "control-label" })
+            <div class="dummyInputBox">
+                @Html.DisplayFor(model => model.UniqueId)
+            </div>
+        </div>
+    </div>
+</div>
+<div class="row">
+    <div class="col-sm-6">
+        <div class="form-group">
+            @Html.LabelFor(model => model.GMCGpHCNumber, new { @class = "control-label" })
+            <div class="dummyInputBox">
+                @Html.DisplayFor(model => model.GMCGpHCNumber)
+            </div>
+        </div>
+    </div>
+    <div class="col-sm-6">
+        <div class="form-group">
+            @Html.LabelFor(model => model.TelNo, new { @class = "control-label" })
+            <div class="dummyInputBox">
+                @Html.DisplayFor(model => model.TelNo)
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-sm-6">
+        <div class="form-group">
+            @Html.LabelFor(model => model.IsDoctorPharmacist, new { @class = "control-label" })
+            <div class="dummyInputBox">
+                @Html.DisplayFor(model => model.IsDoctorPharmacist)
+            </div>
+        </div>
+    </div>
+    @if (Model.IsHide)
+    {
+        <div class="col-sm-6">
+            <div class="form-group">
+                @Html.LabelFor(model => model.Specialization, new { @class = "control-label" })
+                <div class="dummyInputBox">
+                    @Html.DisplayFor(model => model.Specialization)
+                </div>
+            </div>
+        </div>
+    }
+</div>
+
+<div class="row">
+    <div class="col-sm-6">
+        <div class="form-group">
+            @Html.LabelFor(model => model.HospitalAddress, new { @class = "control-label" })
+            <div class="dummyInputBox">
+                @Html.DisplayFor(model => model.HospitalAddress)
+            </div>
+        </div>
+    </div>
+    <div class="col-sm-6">
+        <div class="form-group">
+            @Html.LabelFor(model => model.ContactAddress, new { @class = "control-label" })
+            <div class="dummyInputBox">
+                @Html.DisplayFor(model => model.ContactAddress)
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-sm-12 text-center" style="margin-top:15px;">
+        <button class="btn btn-default btn-sm" id="perscriberDetails">@SharedLocalizer["Download"].Value</button>
+        <button type="button" class="btn btn-default btn-small btn-sm" data-dismiss="modal" aria-hidden="true">@SharedLocalizer["Close"].Value</button>
+    </div>
+</div>
+
+<script>
+    $("#perscriberDetails").click(function () {
+        exportPDF("hcp-detail-form", "HealthcareProfessional.pdf");
+    });
+    var specialElementHandlers = { '.no-export': function (element, renderer) { return true; } };
+</script>
+
+@await Html.PartialAsync("../Pdf/_HCPDetailsForm", Model)
+
+

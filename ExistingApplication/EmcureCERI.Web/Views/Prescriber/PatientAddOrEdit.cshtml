@@ -1,0 +1,359 @@
+﻿@inject Microsoft.Extensions.Localization.IStringLocalizer<SharedResource> SharedLocalizer
+@model EmcureCERI.Web.Models.PrescriberViewModels.PatientViewModel
+@{
+
+    Layout = null;
+}
+<style type="text/css">
+    .field-validation-error {
+        color: #ff0000;
+        display: block;
+    }
+</style>
+@using (Html.BeginForm("PatientAddOrEdit", "Prescriber", FormMethod.Post, new { onsubmit = "return SubmitForm(this)" })) 
+{
+    @Html.AntiForgeryToken()
+    <div class="row">
+        <div class="col-sm-4">
+            <label>Date</label>
+            <div class='input-group' id="Point1DatePicker">
+                @Html.TextBoxFor(model => model.Point1Date, new { @class = "form-control input-sm" })
+                <span class="input-group-addon" id="openDatePicker">
+                    <span class="glyphicon glyphicon-calendar"></span>
+                </span>
+            </div>
+            @Html.ValidationMessageFor(model => model.Point1Date, "", new { @class = "text-danger" })
+        </div>
+    </div>
+    <p><label>@SharedLocalizer["Documentation of the Informed Consent"]</label></p>
+
+    <ul class="list-group">
+        <li class="list-group-item">
+            <div class="flex-container">
+                <div class="listSrNo">(i)</div>
+                <div class="listContent" style="flex-grow: 8">
+                    @SharedLocalizer["Print the patient information sheet and informed consent form  "].Value
+                    @*<label class="dispDate">DD-MM-YYYY</label> @SharedLocalizer["for the above study and have had the opportunity to ask questions."].Value
+                        @Html.ValidationMessageFor(model => model.Point1)*@
+                    @Html.ActionLink("Download", "Getpaintemnt_infosheet", "Prescriber")
+                </div>
+                @*<div class="listCcheckbox">
+                        <div class="checkbox">
+                            <label>
+                                @Html.CheckBoxFor(model => model.Point1)
+                                <span class="cr"><i class="cr-icon glyphicon glyphicon-ok"></i></span>
+                            </label>
+                        </div>
+                    </div>*@
+            </div>
+        </li>
+
+        <li class="list-group-item">
+            <div class="flex-container">
+                <div class="listSrNo">(ii)</div>
+                <div class="listContent" style="flex-grow: 8">
+                    @SharedLocalizer["insert prescriber’s name and contact number on page 1 "].Value
+                    @*@Html.ValidationMessageFor(model => model.Point2)*@
+                </div>
+                @*<div class="listCcheckbox">
+                        <div class="checkbox">
+                            <label>
+                                @Html.CheckBoxFor(model => model.Point2)
+                                <span class="cr"><i class="cr-icon glyphicon glyphicon-ok"></i></span>
+                            </label>
+                        </div>
+                    </div>*@
+            </div>
+        </li>
+        <li class="list-group-item">
+            <div class="flex-container">
+                <div class="listSrNo">(iii)</div>
+                <div class="listContent" style="flex-grow: 8">
+                    @SharedLocalizer["insert patient’s name on page 8 and, if applicable, the name of the guardian "].Value
+                    @*@Html.ValidationMessageFor(model => model.Point3)*@
+                </div>
+                @*<div class="listCcheckbox">
+                        <div class="checkbox">
+                            <label>
+                                @Html.CheckBoxFor(model => model.Point3)
+                                <span class="cr"><i class="cr-icon glyphicon glyphicon-ok"></i></span>
+                            </label>
+                        </div>
+                    </div>*@
+            </div>
+        </li>
+        <li class="list-group-item">
+            <div class="flex-container">
+                <div class="listSrNo">(iv)</div>
+                <div class="listContent" style="flex-grow: 8">
+                    @SharedLocalizer["Ask patient or guardian to read the patient information sheet and then sign it at the bottom of each page where indicated and also in the box on page 8 "].Value
+                    @*@Html.ValidationMessageFor(model => model.Point4)*@
+                </div>
+                @*<div class="listCcheckbox">
+                        <div class="checkbox">
+                            <label>
+                                @Html.CheckBoxFor(model => model.Point4)
+                                <span class="cr"><i class="cr-icon glyphicon glyphicon-ok"></i></span>
+                            </label>
+                        </div>
+                    </div>*@
+            </div>
+        </li>
+        <li class="list-group-item">
+            <div class="flex-container">
+                <div class="listSrNo">(v)</div>
+                <div class="listContent" style="flex-grow: 8">
+                    @SharedLocalizer["scan the document and upload it using the upload button at the bottom of this page"].Value
+                    @*@Html.ValidationMessageFor(model => model.Point5)*@
+                </div>
+                @*<div class="listCcheckbox">
+                        <div class="checkbox">
+                            <label>
+                                @Html.CheckBoxFor(model => model.Point5)
+                                <span class="cr"><i class="cr-icon glyphicon glyphicon-ok"></i></span>
+                            </label>
+                        </div>
+                    </div>*@
+            </div>
+        </li>
+        @*<li class="list-group-item">
+                <div class="flex-container">
+                    <div class="listSrNo">(vi)</div>
+                    <div class="listContent" style="flex-grow: 8">
+                        @SharedLocalizer["I agree not to restrict the use of any data or results that arise from this study provided such a use is only for scientific purpose(s)"].Value
+                        @Html.ValidationMessageFor(model => model.Point6)
+                    </div>
+                    <div class="listCcheckbox">
+                        <div class="checkbox">
+                            <label>
+                                @Html.CheckBoxFor(model => model.Point6)
+                                <span class="cr"><i class="cr-icon glyphicon glyphicon-ok"></i></span>
+                            </label>
+                        </div>
+                    </div>
+                </div>
+            </li>
+            <li class="list-group-item">
+                <div class="flex-container">
+                    <div class="listSrNo">(vii)</div>
+                    <div class="listContent" style="flex-grow: 8">
+                        @SharedLocalizer["I agree to take part in the above study."].Value
+                        @Html.ValidationMessageFor(model => model.Point7)
+                    </div>
+                    <div class="listCcheckbox">
+                        <div class="checkbox">
+                            <label>
+                                @Html.CheckBoxFor(model => model.Point7)
+                                <span class="cr"><i class="cr-icon glyphicon glyphicon-ok"></i></span>
+                            </label>
+                        </div>
+                    </div>
+                </div>
+            </li>*@
+    </ul>
+    @*<p>@SharedLocalizer["I have read the above informationand it is presented in a language that I understand well. By signing this consent form, I attest that the information given in this document has been clearly explained to me and understood well by me. I have been told that I will be given a signed copy of thisform. I hereby willingly confirm that I wish to take part in this study."].Value</p>*@
+    <br />
+
+
+
+    <p><label>@SharedLocalizer["Name of the patient"].Value</label></p>
+    <div class="row">
+        <div class="col-sm-6">
+            <div class="form-group">
+                @Html.LabelFor(model => model.FirstName, new { @class = "control-label" })
+                @Html.EditorFor(model => model.FirstName, new { htmlAttributes = new { @class = "form-control input-sm" } })
+                @Html.ValidationMessageFor(model => model.FirstName, "", new { @class = "text-danger" })
+            </div>
+        </div>
+        <div class="col-sm-6">
+            <div class="form-group">
+                @Html.LabelFor(model => model.LastName, new { @class = "control-label" })
+                @Html.EditorFor(model => model.LastName, new { htmlAttributes = new { @class = "form-control input-sm" } })
+                @Html.ValidationMessageFor(model => model.LastName, "", new { @class = "text-danger" })
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-sm-6">
+            <label>@SharedLocalizer["Date of Birth"].Value</label>
+            <div class='input-group' id="DateOfBirthPicker">
+                @Html.TextBoxFor(model => model.DateOfBirth, new { @class = "form-control input-sm" })
+                <span class="input-group-addon" id="openDatePicker">
+                    <span class="glyphicon glyphicon-calendar"></span>
+                </span>
+            </div>
+            @Html.ValidationMessageFor(model => model.DateOfBirth, "", new { @class = "text-danger" })
+        </div>
+        <div class="col-sm-6">
+            <div class="form-group">
+                @Html.Label(@SharedLocalizer["Age"].Value)
+                <div class="dummyInputBox" id="calcAge"></div>
+            </div>
+        </div>
+    </div>
+    <br />
+    <p><label>@SharedLocalizer["Name of the legal representative, if applicable"].Value</label></p>
+    <div class="row">
+        <div class="col-sm-6">
+            <div class="form-group">
+                @Html.LabelFor(model => model.RFirstName, new { @class = "control-label" })
+                @Html.EditorFor(model => model.RFirstName, new { htmlAttributes = new { @class = "form-control input-sm" } })
+                @Html.ValidationMessageFor(model => model.RFirstName, "", new { @class = "text-danger" })
+            </div>
+        </div>
+        <div class="col-sm-6">
+            <div class="form-group">
+                @Html.LabelFor(model => model.RLastName, new { @class = "control-label" })
+                @Html.EditorFor(model => model.RLastName, new { htmlAttributes = new { @class = "form-control input-sm" } })
+                @Html.ValidationMessageFor(model => model.RLastName, "", new { @class = "text-danger" })
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-sm-12 text-center">
+            <br /><br />
+            @*<button  name="submit" class="btn btn-default btn-sm" onclick="uploadPDF1()">@SharedLocalizer["Informed Consent Form Upload"].Value</button>*@
+            <button name="submit" class="btn btn-default btn-sm">@SharedLocalizer["Informed Consent Form Upload"].Value</button>
+        </div>
+    </div>
+    <script type="text/javascript">
+
+
+    function uploadPDF(id) {
+        
+            var url = "/Prescriber/PatientUploadDocument/"+ id;
+            $.get(url)
+                .done(function (response) {
+                    $('#patientViewModal .modal-title').html('@SharedLocalizer["Informed Consent Form Upload"].Value');
+                    $('#patientViewModal .modal-body').html(response);
+                    $('#patientViewModal').modal('show');
+                });
+        }
+
+        $(function () {
+            $('#Point1DatePicker').datetimepicker({
+                maxDate: moment(),
+                format: 'DD-MM-YYYY'
+            });
+        });
+        $('#Point1DatePicker').on('dp.change', function (e) {
+            $('.dispDate').text($('#Point1Date').val());
+        })
+
+        $(function () {
+            $('#DateOfBirthPicker').datetimepicker({
+                maxDate: moment(),
+                format: 'DD-MM-YYYY'
+            });
+        });
+        $('#DateOfBirthPicker').on('dp.change', function (e) {
+            $('#calcAge').html(getAge(changeDateFormat($('#DateOfBirth').val())));
+        })
+
+        // extend jquery range validator to work for required checkboxes
+        var defaultRangeValidator = $.validator.methods.range;
+        $.validator.methods.range = function (value, element, param) {
+            if (element.type === 'checkbox') {
+                // if it's a checkbox return true if it is checked
+                return element.checked;
+            } else {
+                // otherwise run the default validation function
+                return defaultRangeValidator.call(this, value, element, param);
+            }
+        }
+
+        function changeDateFormat(inputDate) {  // expects Y-m-d
+            var splitDate = inputDate.split('-');
+            if (splitDate.count == 0) {
+                return null;
+            }
+
+            var day = splitDate[0];
+            var month = splitDate[1];
+            var year = splitDate[2];
+
+            return month + '\\' + day + '\\' + year;
+        }
+
+        // ************************************
+        function getAge(dateString) {
+            var now = new Date();
+            var today = new Date(now.getYear(), now.getMonth(), now.getDate());
+
+            var yearNow = now.getYear();
+            var monthNow = now.getMonth();
+            var dateNow = now.getDate();
+
+            var dob = new Date(dateString.substring(6, 10),
+                dateString.substring(0, 2) - 1,
+                dateString.substring(3, 5)
+            );
+           // alert("dob " + dob);
+            var yearDob = dob.getYear();
+            var monthDob = dob.getMonth();
+            var dateDob = dob.getDate();
+            var age = {};
+            var ageString = "";
+            var yearString = "";
+            var monthString = "";
+            var dayString = "";
+
+
+            yearAge = yearNow - yearDob;
+
+            if (monthNow >= monthDob)
+                var monthAge = monthNow - monthDob;
+            else {
+                yearAge--;
+                var monthAge = 12 + monthNow - monthDob;
+            }
+
+            if (dateNow >= dateDob)
+                var dateAge = dateNow - dateDob;
+            else {
+                monthAge--;
+                var dateAge = 31 + dateNow - dateDob;
+
+                if (monthAge < 0) {
+                    monthAge = 11;
+                    yearAge--;
+                }
+            }
+
+            age = {
+                years: yearAge,
+                months: monthAge,
+                days: dateAge
+            };
+
+            if (age.years > 1) yearString = " years";
+            else yearString = " year";
+            if (age.months > 1) monthString = " months";
+            else monthString = " month";
+            if (age.days > 1) dayString = " days";
+            else dayString = " day";
+
+
+            if ((age.years > 0) && (age.months > 0) && (age.days > 0))
+                ageString = age.years + yearString + ", " + age.months + monthString + ", and " + age.days + dayString + " old.";
+            else if ((age.years == 0) && (age.months == 0) && (age.days > 0))
+                ageString = "Only " + age.days + dayString + " old!";
+            else if ((age.years > 0) && (age.months == 0) && (age.days == 0))
+                ageString = age.years + yearString + " old. Happy Birthday!!";
+            else if ((age.years > 0) && (age.months > 0) && (age.days == 0))
+                ageString = age.years + yearString + " and " + age.months + monthString + " old.";
+            else if ((age.years == 0) && (age.months > 0) && (age.days > 0))
+                ageString = age.months + monthString + " and " + age.days + dayString + " old.";
+            else if ((age.years > 0) && (age.months == 0) && (age.days > 0))
+                ageString = age.years + yearString + " and " + age.days + dayString + " old.";
+            else if ((age.years == 0) && (age.months > 0) && (age.days == 0))
+                ageString = age.months + monthString + " old.";
+            else ageString = "Oops! Could not calculate age!";
+
+            return ageString;
+        }
+    </script>
+}
+
+
