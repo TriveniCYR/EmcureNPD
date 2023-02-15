@@ -134,7 +134,7 @@ namespace EmcureNPD.API.Controllers.PBF
         {
             try
             {
-                var oPIDFEntity = await _PBFService.GetAPIIPDFormData(pidfId);
+                var oPIDFEntity = await _PBFService.GetAPIIPDFormData(pidfId, _webHostEnvironment.WebRootPath);
                 if (oPIDFEntity != null)
                     return _ObjectResponse.Create(oPIDFEntity, (Int32)HttpStatusCode.OK);
                 else

@@ -22,6 +22,7 @@ using System.Text.Json.Nodes;
 using System.Threading.Tasks;
 using static EmcureNPD.Utility.Enums.GeneralEnum;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http.Internal;
 
 namespace EmcureNPD.Business.Core.Implementation
 {
@@ -150,34 +151,41 @@ namespace EmcureNPD.Business.Core.Implementation
         #region API_IPD_Details_Form_Entity 
         public async Task<DBOperation> AddUpdateAPIIPD(IFormCollection _oAPIIPD_Form, string _webrootPath)
 		{
-            var MarketCGIFile = _oAPIIPD_Form.Files[0];
+			bool hasFile = true;
+			string uniqueFileName = "";
+			string ErrorMsg = "";
+           var path = Path.Combine(_webrootPath, "Uploads\\PIDF\\APIIPD");
 
-            var uniqueFileName = Path.GetFileNameWithoutExtension(MarketCGIFile.FileName)
-                             + Guid.NewGuid().ToString().Substring(0, 4)
-                             + Path.GetExtension(MarketCGIFile.FileName);
-            var path = Path.Combine(_webrootPath, "Uploads\\PIDF\\APIIPD");
-            var fullPath = path + "\\" + MarketCGIFile.FileName;
-            var itmFileName = "APIIPD\\" + MarketCGIFile.FileName;
-            
-                if (System.IO.File.Exists(fullPath))
-                {
-                    System.IO.File.Delete(fullPath);
-                }
-            string ErrorMsg = FileValidation(MarketCGIFile);
-            if (ErrorMsg == null)
-            {
-                await FileUpload(MarketCGIFile, path, uniqueFileName);
-            }
+            if (_oAPIIPD_Form.Files == null || _oAPIIPD_Form.Files.Count <= 0)
+				hasFile = false;
+
+			if (hasFile)
+			{
+              var  MarketCGIFile = _oAPIIPD_Form.Files[0];
+				 uniqueFileName = Path.GetFileNameWithoutExtension(MarketCGIFile.FileName)
+								 + Guid.NewGuid().ToString().Substring(0, 4)
+								 + Path.GetExtension(MarketCGIFile.FileName);
+				
+				var fullPath = path + "\\" + MarketCGIFile.FileName;
+				var itmFileName = "APIIPD\\" + MarketCGIFile.FileName;
+
+				if (System.IO.File.Exists(fullPath))
+				{
+					System.IO.File.Delete(fullPath);
+				}
+				ErrorMsg = FileValidation(MarketCGIFile);
+			}
 
 			PIDFAPIIPDFormEntity _oAPIIPD = new PIDFAPIIPDFormEntity();
             _oAPIIPD_Form.TryGetValue("Data", out StringValues Data);
             dynamic jsonObject = JsonConvert.DeserializeObject(Data);
             _oAPIIPD.APIIPDDetailsFormID = jsonObject.APIIPDDetailsFormID;
-            _oAPIIPD.MarketDetailsFileName = jsonObject.MarketDetailsFileName;
+			_oAPIIPD.MarketDetailsFileName = uniqueFileName;
             _oAPIIPD.DrugsCategory = jsonObject.DrugsCategory;
             _oAPIIPD.ProductStrength = jsonObject.ProductStrength;
             _oAPIIPD.ProductTypeId = jsonObject.ProductTypeId;
-
+            _oAPIIPD.Pidfid = jsonObject.Pidfid;
+			_oAPIIPD.LoggedInUserId = jsonObject.LoggedInUserId;
             var _APIIPDDBEntity = new PidfApiIpd();
             if (_oAPIIPD.APIIPDDetailsFormID > 0) 
 			{
@@ -191,11 +199,22 @@ namespace EmcureNPD.Business.Core.Implementation
 					//lastApiIpd.Exhibit = _oAPIIPD.Exhibit;
 					//lastApiIpd.ScaleUp = _oAPIIPD.ScaleUp;
 
-					lastApiIpd.DrugsCategory = _oAPIIPD.DrugsCategory;
+					var exsistingFilePath = path + "\\" + lastApiIpd.MarketDetailsFileName;
+                    if (System.IO.File.Exists(exsistingFilePath))
+                    {
+                        System.IO.File.Delete(exsistingFilePath);
+                    }
+                    if (ErrorMsg == null && hasFile)
+                    {
+                        var MarketCGIFile = _oAPIIPD_Form.Files[0];
+                        await FileUpload(MarketCGIFile, path, uniqueFileName);
+                    }
+                    lastApiIpd.DrugsCategory = _oAPIIPD.DrugsCategory;
 					lastApiIpd.ProductTypeId = _oAPIIPD.ProductTypeId;
                     lastApiIpd.ProductStrength = _oAPIIPD.ProductStrength;
-
-                    lastApiIpd.ModifyBy = (int?)_oAPIIPD.LoggedInUserId;
+					lastApiIpd.MarketDetailsFileName = _oAPIIPD.MarketDetailsFileName;
+                    lastApiIpd.Pidfid = long.Parse(_oAPIIPD.Pidfid);
+                    lastApiIpd.ModifyBy = _oAPIIPD.LoggedInUserId;
 					lastApiIpd.ModifyDate = DateTime.Now;
                     _pidf_API_IPD_repository.UpdateAsync(lastApiIpd);
                 }
@@ -214,12 +233,17 @@ namespace EmcureNPD.Business.Core.Implementation
                 //            _APIIPDDBEntity.Exhibit = _oAPIIPD.Exhibit;
                 //            _APIIPDDBEntity.ScaleUp = _oAPIIPD.ScaleUp;
 
-
+                if (ErrorMsg == null && hasFile)
+                {
+                    var MarketCGIFile = _oAPIIPD_Form.Files[0];
+                    await FileUpload(MarketCGIFile, path, uniqueFileName);
+                }
 
                 _APIIPDDBEntity.DrugsCategory = _oAPIIPD.DrugsCategory;
                 _APIIPDDBEntity.ProductTypeId = _oAPIIPD.ProductTypeId;
                 _APIIPDDBEntity.ProductStrength = _oAPIIPD.ProductStrength;
-
+                _APIIPDDBEntity.MarketDetailsFileName = _oAPIIPD.MarketDetailsFileName;
+                _APIIPDDBEntity.Pidfid = long.Parse(_oAPIIPD.Pidfid);
                 _APIIPDDBEntity.CreatedBy = _oAPIIPD.LoggedInUserId;
                 _APIIPDDBEntity.CreatedDate = DateTime.Now;
 				_APIIPDDBEntity.IsActive = true;
@@ -229,21 +253,31 @@ namespace EmcureNPD.Business.Core.Implementation
 			return DBOperation.Success;
     }
 
-        public async Task<PIDFAPIIPDFormEntity> GetAPIIPDFormData(long pidfId)
+        public async Task<PIDFAPIIPDFormEntity> GetAPIIPDFormData(long pidfId, string _webrootPath)
 		{
 
 			PIDFAPIIPDFormEntity _oApiIpdData = new PIDFAPIIPDFormEntity();
 			var _oAPIIPD = await _pidf_API_IPD_repository.GetAsync(x=>x.Pidfid == pidfId);
 			if (_oAPIIPD != null)
 			{
-				//_oApiIpdData.FormulationQuantity = _oAPIIPD.FormulationQuantity;
-				//_oApiIpdData.APIIPDDetailsFormID = _oAPIIPD.PidfApiIpdId;
-    //            _oApiIpdData.PlantQC = _oAPIIPD.PlantQc;
-				//_oApiIpdData.Development = _oAPIIPD.Development;
-				//_oApiIpdData.Total = _oAPIIPD.Total;
-				//_oApiIpdData.Exhibit = _oAPIIPD.Exhibit;
-				//_oApiIpdData.ScaleUp = _oAPIIPD.ScaleUp;
-			}
+                //_oApiIpdData.FormulationQuantity = _oAPIIPD.FormulationQuantity;
+                //_oApiIpdData.APIIPDDetailsFormID = _oAPIIPD.PidfApiIpdId;
+                // _oApiIpdData.PlantQC = _oAPIIPD.PlantQc;
+                //_oApiIpdData.Development = _oAPIIPD.Development;
+                //_oApiIpdData.Total = _oAPIIPD.Total;
+                //_oApiIpdData.Exhibit = _oAPIIPD.Exhibit;
+                //_oApiIpdData.ScaleUp = _oAPIIPD.ScaleUp;
+
+                var path = Path.Combine(_webrootPath, "Uploads\\PIDF\\APIIPD");
+                var fullPath = path + "\\" + _oAPIIPD.MarketDetailsFileName;
+
+                _oApiIpdData.DrugsCategory = _oAPIIPD.DrugsCategory;
+                _oApiIpdData.ProductTypeId = (int)_oAPIIPD.ProductTypeId;
+                _oApiIpdData.APIIPDDetailsFormID = _oAPIIPD.PidfApiIpdId;
+                _oApiIpdData.ProductStrength = _oAPIIPD.ProductStrength;
+                _oApiIpdData.MarketDetailsFileName = fullPath;
+				_oApiIpdData.Pidfid = _oAPIIPD.Pidfid.ToString();
+            }
 			return _oApiIpdData;
         }
         //------------End------API_IPD_Details_Form_Entity--------------------------

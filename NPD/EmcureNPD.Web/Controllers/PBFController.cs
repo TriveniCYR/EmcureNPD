@@ -210,7 +210,7 @@ namespace EmcureNPD.Web.Controllers
             catch (Exception e)
             {
                 ViewBag.errormessage = Convert.ToString(e.StackTrace);
-                return View("Login");
+                return RedirectToAction("Login","Account");
             }
         }
 
@@ -228,10 +228,14 @@ namespace EmcureNPD.Web.Controllers
                 _IPDmodel.LoggedInUserId= Convert.ToInt32(logUserId);
 
                 var form = new MultipartFormDataContent();
-                var fileStream = _IPDmodel.MarketDetailsNewPortCGIDetails.OpenReadStream();
-                var fileContent = new StreamContent(fileStream);
-                fileContent.Headers.ContentType = MediaTypeHeaderValue.Parse("text/plain");
-                form.Add(fileContent, "file", _IPDmodel.MarketDetailsNewPortCGIDetails.FileName);
+                if (_IPDmodel.MarketDetailsNewPortCGIDetails != null)
+                {
+                    var fileStream = _IPDmodel.MarketDetailsNewPortCGIDetails.OpenReadStream();
+                    var fileContent = new StreamContent(fileStream);
+                    fileContent.Headers.ContentType = MediaTypeHeaderValue.Parse("text/plain");
+                    form.Add(fileContent, "file", _IPDmodel.MarketDetailsNewPortCGIDetails.FileName);
+                }               
+
                 form.Add(new StringContent(JsonConvert.SerializeObject(_IPDmodel)), "Data");
 
                 HttpContext.Request.Cookies.TryGetValue(UserHelper.EmcureNPDToken, out string token);
@@ -246,7 +250,8 @@ namespace EmcureNPD.Web.Controllers
                     TempData["SaveStatus"] = Convert.ToString(_stringLocalizerShared["RecordInsertUpdate"]);
                     ModelState.Clear();
                     IsSaveError = false;
-                    return RedirectToAction("PBFAPI", "PIDF"); // return to PBFAPI List
+                    return RedirectToAction("APIIPDDetailsForm", 
+                        new { pidfid = UtilityHelper.Encrypt(_IPDmodel.Pidfid), bui = UtilityHelper.Encrypt(_IPDmodel.BusinessUnitId) }); // return to PBFAPI List
                 }
                 else
                 {
@@ -254,8 +259,8 @@ namespace EmcureNPD.Web.Controllers
                 }
             }
             if (IsSaveError)
-            {
-                TempData["SaveStatus"] = IsSaveError ? "Save Error Occured !" : "Some Feilds are Missing";
+                TempData["SaveStatus"] = "Save Error Occured !";
+
                 // return back with Invalid Model
                 _IPDmodel._commercialFormEntity = GetPIDFCommercialModel(_IPDmodel.Pidfid, _IPDmodel.BusinessUnitId);
                 _IPDmodel.IPEvalution = GetModelForPIDForm(_IPDmodel.Pidfid, _IPDmodel.BusinessUnitId);
@@ -264,8 +269,7 @@ namespace EmcureNPD.Web.Controllers
                 _IPDmodel.Pidfid = UtilityHelper.Encrypt(_IPDmodel.Pidfid);
                 _IPDmodel.BusinessUnitId = UtilityHelper.Encrypt(_IPDmodel.BusinessUnitId);
                 return View(_IPDmodel);
-            }
-            return View(_IPDmodel);
+            
         }
 
         [NonAction] // Get Model for View PIDForm.cshtml (IP EVolution)

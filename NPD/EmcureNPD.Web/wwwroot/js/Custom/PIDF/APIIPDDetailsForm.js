@@ -1,17 +1,20 @@
 ﻿
+
 $(document).ready(function () {
     debugger;
     SetDivReadonly();
     $("#IsModelValid").val('');
-    if (SaveStatus != '' && SaveStatus != undefined)
-    {
+    if (SaveStatus != '' && SaveStatus != undefined) {
         if (SaveStatus == 'Saved successfully.')
             toastr.success(SaveStatus);
         else
             toastr.error(SaveStatus);
     }
     InitializeProductTypeDropdown();
+
 });
+
+
 
 function InitializeProductTypeDropdown() {
     debugger;
@@ -37,6 +40,7 @@ $('#btnPreview').click(function () {
     var reader = new FileReader();
     reader.onload = function () {
         $("#imgPreviewMarketdetails").attr("src", reader.result);
+        $("#imgPreviewMarketdetails").val(DBProductTypeId);
     }
     reader.readAsDataURL($input[0].files[0]);
 });

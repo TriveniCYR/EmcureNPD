@@ -49,13 +49,29 @@ function getCookie(name) {
 }
 function setNavigation() {
     var path = window.location.pathname;
+    var currenthref = window.location.href;
     path = path.replace(/\/$/, "");
     path = decodeURIComponent(path);
     var CurrentpathArr = path.split('/');
 
+    if (path == `/PIDF/PIDFList`) {
+        $(".nav-item a").each(function () {
+            var IshrefFound = false;
+            var href = $(this).attr('href');
+            if (currenthref.split('?')[1] == href.split('?')[1]) {
+                $(this).addClass('active');
+                $(this).parent().parent().parent().addClass('menu-is-opening menu-open');
+                IshrefFound = true;
+                return false;
+            }
+        }
+        )};
     $(".nav-item a").each(function () {
         var IshrefFound = false;
         var href = $(this).attr('href');
+        if (href==undefined) {
+            return;
+        }
         var NavPathArr = href.split('/');
         if (href != '#' && href != undefined) {
             if (path.substring(0, href.length) === href) {

@@ -71,7 +71,7 @@
 						{
 							<li class="nav-item">
 
-											<a href="#" class="nav-link">
+											<a id="parentPIDF" href="#" class="nav-link">
 												<i class="bi bi-files nav-icon mx-1"></i>
 												<p>
 										@MasterLocalizer["PIDFManagement"]
@@ -81,7 +81,7 @@
 
 											<ul class="nav nav-treeview">
 												<li class="nav-item">
-													<a href="@Url.Action("PIDFList","PIDF", new { ScreenId = Convert.ToString((int)EmcureNPD.Utility.Enums.PIDFScreen.PIDF)})" class="nav-link">
+										<a id="PIDF" href="@Url.Action("PIDFList","PIDF", new { ScreenId = Convert.ToString((int)EmcureNPD.Utility.Enums.PIDFScreen.PIDF)})" class="nav-link">
 														<i class="nav-icon fas fa-th"></i>
 														<p>
 												@MasterLocalizer["PIDFManagement"]
@@ -91,7 +91,7 @@
 									@if (UtilityHelper.GetMenuAccess(ModulePermissionEnum.IPD, rolObj))
 									{
 														<li class="nav-item">
-															<a href="@Url.Action("PIDFList","PIDF", new { ScreenId = Convert.ToString((int)EmcureNPD.Utility.Enums.PIDFScreen.IPD)})" class="nav-link">
+											<a id="IPD" href="@Url.Action("PIDFList","PIDF", new { ScreenId = Convert.ToString((int)EmcureNPD.Utility.Enums.PIDFScreen.IPD)})" class="nav-link">
 																<i class="nav-icon fas fa fa-columns"></i>
 																<p>
 													@MasterLocalizer["IPDManagement"]
@@ -102,7 +102,7 @@
 									@if (UtilityHelper.GetMenuAccess(ModulePermissionEnum.Medical, rolObj))
 									{
 														<li class="nav-item">
-															<a href="@Url.Action("PIDFList","PIDF", new { ScreenId = Convert.ToString((int)EmcureNPD.Utility.Enums.PIDFScreen.Medical)})" class="nav-link">
+											<a id="Medical" href="@Url.Action("PIDFList","PIDF", new { ScreenId = Convert.ToString((int)EmcureNPD.Utility.Enums.PIDFScreen.Medical)})" class="nav-link">
 												<i class="nav-icon fas fa fa-plus-square"></i>
 																<p>
 													@MasterLocalizer["Medical Management"]
@@ -113,7 +113,7 @@
 									@if (UtilityHelper.GetMenuAccess(ModulePermissionEnum.PIDF, rolObj))
 									{
 														<li class="nav-item">
-											<a href="@Url.Action("PIDFList","PIDF", new { ScreenId = Convert.ToString((int)EmcureNPD.Utility.Enums.PIDFScreen.Commercial)})" class="nav-link">
+											<a id="Commercial" href="@Url.Action("PIDFList","PIDF", new { ScreenId = Convert.ToString((int)EmcureNPD.Utility.Enums.PIDFScreen.Commercial)})" class="nav-link">
 																<i class="nav-icon fas fa fa-certificate"></i>
 																<p>
 													@SharedLocalizer["Commercial Management"]

@@ -64,7 +64,7 @@
                     </div>
                     <div class="col-md-7">
                         <div class="form-group required">
-                            <img height="100" width="300" id="imgPreviewMarketdetails" />
+                            <img height="100" width="300" src="@Model.MarketDetailsFileName" id="imgPreviewMarketdetails" />
                         </div>
                     </div>
                    
@@ -76,6 +76,7 @@
                     <div class="col-md-3">
                         <div class="form-group required">
                             @Html.LabelFor(model => model.ProductTypeId,@MasterLocalizer["ProductType"], new { @class = "control-label" })
+                            @*@Html.DropDownListFor(model=>model.ProductTypeId, new List<SelectListItem> { }, new { @class = "control-label" })*@
                             <select id="ProductTypeId" name="ProductTypeId" class="form-control"></select>
                         </div>
                     </div>
@@ -271,9 +272,11 @@
     <script src="/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <script src="~/js/custom/pidf/apiipddetailsform.js"></script>
     <script>
-        var SaveStatus= "@TempData["SaveStatus"]";
+        var SaveStatus = "@TempData["SaveStatus"]";
         var ErrorMessage = "@SharedLocalizer["Error"]";
         var GetAllProductType = "@EmcureNPD.Web.Helpers.APIURLHelper.GetAllProductType";
+        var DBProductTypeId = "@Model.ProductTypeId";
+        
         document.addEventListener("DOMContentLoaded", function () {
             var tabList = [].slice.call(document.querySelectorAll("#mainDivCommercial a"));
             var tabs = $('#tabList');
