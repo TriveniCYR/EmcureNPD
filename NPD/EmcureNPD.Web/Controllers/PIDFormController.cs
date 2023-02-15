@@ -205,7 +205,6 @@ namespace EmcureNPD.Web.Controllers
                 ViewBag.errormessage = Convert.ToString(e.StackTrace);
                 return View("PIDFormList");
             }
-            return View();
         }
         private PIDFMedicalViewModel GetModelForMedicalForm(string pidfid)
         {
@@ -263,10 +262,10 @@ namespace EmcureNPD.Web.Controllers
 
                 //var response = httpClient.PostAsync($"/api/PIDForm/PIDMedicalForm", form).Result;
                 HttpResponseMessage responseMessage = objapi.APIComm(APIURLHelper.PIDMedicalForm, HttpMethod.Post, token, form).Result;
-                return RedirectToAction("PIDFList", "PIDF", new { ScreenId = 3 });
-            }
-            else
-            {
+                    return RedirectToAction("PIDFList", "PIDF", new { ScreenId = 3 });
+                }
+                else
+                {
 				return View(medicalEntity);
 			}
         }

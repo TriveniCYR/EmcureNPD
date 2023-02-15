@@ -33,6 +33,7 @@ namespace EmcureNPD.Data.DataAccess.Entity
         public int? DeletedBy { get; set; }
         public string ForgotPasswordToken { get; set; }
         public DateTime? ForgotPasswordDateTime { get; set; }
+        public bool? IsManagement { get; set; }
 
         public virtual MasterRole Role { get; set; }
         public virtual ICollection<MasterUserBusinessUnitMapping> MasterUserBusinessUnitMappings { get; set; }

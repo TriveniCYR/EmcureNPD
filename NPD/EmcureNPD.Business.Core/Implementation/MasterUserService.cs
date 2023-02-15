@@ -44,7 +44,7 @@ namespace EmcureNPD.Business.Core.ServiceImplementations
         private IRepository<MasterBusinessUnit> _businessUnitRepository { get; set; }
 
         public MasterUserService(IUnitOfWork unitOfWork, IMapperFactory mapperFactory, IStringLocalizer<Errors> stringLocalizerError,
-                                 Microsoft.Extensions.Configuration.IConfiguration _configuration   )
+                                 Microsoft.Extensions.Configuration.IConfiguration _configuration)
         {
             _unitOfWork = unitOfWork;
             _mapperFactory = mapperFactory;
@@ -223,6 +223,7 @@ namespace EmcureNPD.Business.Core.ServiceImplementations
         public async Task<DBOperation> AddUpdateUser(MasterUserEntity entityUser)
         {
             MasterUser objUser;
+            var LoggedUserId = entityUser.LoggedUserId;
             if (entityUser.UserId > 0)
             {
                 objUser = _repository.Get(entityUser.UserId);
@@ -233,8 +234,9 @@ namespace EmcureNPD.Business.Core.ServiceImplementations
                     objUser.RoleId = entityUser.RoleId;
                     objUser.Address = entityUser.Address;
                     objUser.IsActive = entityUser.IsActive;
-                    //objUser.DepartmentId = entityUser.DepartmentId;
-                    //objUser.CountryId = entityUser.CountryId;
+                    objUser.IsManagement = entityUser.IsManagement;
+                    objUser.ModifyBy = LoggedUserId;
+                    objUser.ModifyDate = DateTime.Now;
 
                     SqlParameter[] osqlParameter = {
                 new SqlParameter("@UserId", entityUser.UserId)
@@ -255,7 +257,8 @@ namespace EmcureNPD.Business.Core.ServiceImplementations
             {
                 objUser = _mapperFactory.Get<MasterUserEntity, MasterUser>(entityUser);
                 objUser = FillMappingData(entityUser, objUser);
-
+                objUser.CreatedBy = LoggedUserId;
+                objUser.CreatedDate = DateTime.Now;
                 _repository.AddAsync(objUser);
             }
 

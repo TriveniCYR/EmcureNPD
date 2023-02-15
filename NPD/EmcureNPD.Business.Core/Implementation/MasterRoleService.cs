@@ -4,6 +4,7 @@ using EmcureNPD.Business.Models;
 using EmcureNPD.Data.DataAccess.Core.Repositories;
 using EmcureNPD.Data.DataAccess.Core.UnitOfWork;
 using EmcureNPD.Data.DataAccess.Entity;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -19,25 +20,28 @@ namespace EmcureNPD.Business.Core.Implementation
         private readonly IRoleModulePermission _roleModulePermission;
 
 
-
         public MasterRoleService(IUnitOfWork unitOfWork, IMapperFactory mapperFactory, IRoleModulePermission roleModulePermission)
         {
             _unitOfWork = unitOfWork;
             _mapperFactory = mapperFactory;
             _roleModulePermission = roleModulePermission;
             _repository = _unitOfWork.GetRepository<MasterRole>();
+           
         }
 
         public async Task<DBOperation> AddUpdateRole(MasterRoleEntity masterRoleEntity)
         {
             MasterRole objRole;
+            var LoggedUserId = masterRoleEntity.LoggedUserId;
             List<RoleModulePermissionEntity> objRolePermissions;
-            if (masterRoleEntity.RoleId > 0)
+            if (masterRoleEntity.RoleId > 0) //Update existing user
             {
                 objRole = _repository.Get(masterRoleEntity.RoleId);
                 if (objRole != null)
                 {
                     objRole = _mapperFactory.Get<MasterRoleEntity, MasterRole>(masterRoleEntity);
+                    objRole.ModifyBy = LoggedUserId;
+                    objRole.ModifyDate = DateTime.Now;
                     _repository.UpdateAsync(objRole);
                 }
                 else
@@ -45,9 +49,11 @@ namespace EmcureNPD.Business.Core.Implementation
                     return DBOperation.NotFound;
                 }
             }
-            else
+            else //add new user
             {
                 objRole = _mapperFactory.Get<MasterRoleEntity, MasterRole>(masterRoleEntity);
+                objRole.CreatedBy = LoggedUserId;
+                objRole.CreatedDate = DateTime.Now;
                 _repository.AddAsync(objRole);
             }
 

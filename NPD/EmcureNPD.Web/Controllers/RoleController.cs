@@ -108,7 +108,8 @@ namespace EmcureNPD.Web.Controllers
             try
             {
 
-
+                string logUserId = Convert.ToString(HttpContext.Session.GetString(UserHelper.LoggedInUserId));
+                masterRole.LoggedUserId = int.Parse(logUserId);
                 HttpContext.Request.Cookies.TryGetValue(UserHelper.EmcureNPDToken, out string token);
                 APIRepository objapi = new(_cofiguration);
                 HttpResponseMessage responseMessage = objapi.APICommunication(APIURLHelper.SaveRole, HttpMethod.Post, token, new StringContent(JsonConvert.SerializeObject(masterRole))).Result;
