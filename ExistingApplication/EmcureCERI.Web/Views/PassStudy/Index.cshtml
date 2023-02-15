@@ -1,0 +1,37 @@
+﻿@using Microsoft.Extensions.Localization
+@inject IStringLocalizer<SharedResource> SharedLocalizer
+@{
+    ViewData["Title"] = "PASS " + @SharedLocalizer["Study"].Value;
+}
+<section class="privacyPolicy">
+    <div class="container text-center">
+        <h2>PASS @SharedLocalizer["Study"].Value</h2>
+        <div class="divider">
+            <span><i class="glyphicon glyphicon-certificate"></i></span>
+        </div>
+    </div>
+    <div class="container-fluid">
+        @Html.Raw(SharedLocalizer["<p>Tillomed are conducting a non-interventional Post Authorisation Safety Study for the safety of Cidofovir through a patient registry in the United Kingdom, Germany, Belgium and Spain.</p>"].Value)
+        @Html.Raw(SharedLocalizer["<p>The purpose of the information in PASS’s is to evaluate the safety and benefit-risk profile of a medicine and support regulatory decision-making. They aim to:</p>"].Value)
+        <ul>
+            <li>@SharedLocalizer["Identify, characterise or quantify a safety hazard;"].Value</li>
+            <li>@SharedLocalizer["Confirm the safety profile of a medicine, or;"].Value</li>
+            <li>@SharedLocalizer["Measure the effectiveness of risk-management measures."].Value</li>
+        </ul>
+        @Html.Raw(SharedLocalizer["<p>PASSs can either be <b>clinical trials</b> or <b>non-interventional studies</b>.</p>"].Value)
+        <br />
+        @Html.Raw(SharedLocalizer["<p>The European medicinces agency has requested Tillomed to implement a non-interventional PASS Study for the additional monitoring of Cidofovir through an exposure registry the United Kingdom, Germany, Belgium and Spain</p>"].Value)
+        @Html.Raw(SharedLocalizer["<p>The objectives of the study are:</p>"].Value)
+        <ul>
+            <li>@SharedLocalizer["To identify the indications and patient populations for Cidofovir use."].Value</li>
+            <li>@SharedLocalizer["To evaluate patterns and incidence of the occurrence of adverse events in patients who are being treated for the indication authorized for Cidofovir as against any other indication for which it may be prescribed."].Value</li>
+            <li>@SharedLocalizer["To assess patient outcome following treatment in specified indication."].Value</li>
+        </ul>
+        <br />
+        @Html.Raw(SharedLocalizer["<p>This study will allow identification of new safety information pertaining to cidofovir usage.</p>"].Value)
+        @*@Html.Raw(SharedLocalizer["<p>Should you be interested in participating in the Cidofovir Exposure Registry, please visit the website <a href='https://www.cidofovir.com' target='_blank'>www.cidofovir.com</a>.</p>"].Value)*@
+        @Html.Raw(SharedLocalizer["<p>Should you be interested,<a href='https://www.cidofovir.com/Account/Login' target='_blank'>Please Click here</a>.</p>"].Value)
+        @*@Html.Raw(SharedLocalizer["<p>For any further information on how your data may be stored or used, please <a href='https://www.cidofovir.com/Home/ContactUs'>contact us</a> and we will be happy to provide you further information.</p>"].Value)*@
+        @Html.Raw(SharedLocalizer["<p>For information about how your data may be used or stored,<a href='https://www.cidofovir.com/Home/Privacy'>Please Click here</a></p>"].Value)
+    </div>
+</section>

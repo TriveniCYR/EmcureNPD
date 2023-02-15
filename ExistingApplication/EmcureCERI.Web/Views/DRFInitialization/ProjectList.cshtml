@@ -1,0 +1,140 @@
+﻿@inject Microsoft.Extensions.Localization.IStringLocalizer<SharedResource> SharedLocalizer
+@{
+    ViewData["Title"] = "ProjectList";
+}
+<style>
+	table.dataTable.dtr-inline.collapsed > tbody > tr[role="row"] > td.dtr-control:before, table.dataTable.dtr-inline.collapsed > tbody > tr[role="row"] > th.dtr-control:before {
+		top: 24px;
+	}
+</style>
+
+<div class="content-wrapper">
+    <section class="content pt-3">
+        <div class="container-fluid">
+            <div class="row">
+                <section class="col-lg-12">
+                    <!-- Custom tabs (Charts with tabs)-->
+                    <div class="card">
+                        <div class="card-header">
+                            <h3 class="card-title">
+                                <i class="far fa-copy mr-2"></i> Dossier List
+                            </h3>
+                            <div class="card-tools md-left">
+                                <div class="mybtn-group">
+                                        <a class="btn btn-primary" href="@Url.Action("GanttSummary","GanttNew")"><i class="fas fa-project-diagram mr-2"></i>Dossier Gantt Chart</a>
+                                    
+                                        <a class="btn btn-primary" href="@Url.Action("ProjectList","DRFInitialization")"><i class="far fa-copy mr-1"></i>Dossier List</a>
+                                    
+                                        <a class="btn btn-primary" href="@Url.Action("Index","DRFInitialization")"><i class="far fa-list-alt mr-1"></i>DRF</a>
+                                    
+                                        <a class="btn btn-primary" href="@Url.Action("DRFInitialization","DRFInitialization")"><i class="far fa-plus-square mr-1"></i> Create New DRF</a>
+                                    
+                                        <div class="export-btn mybtn-group"></div>
+                                    
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="card-body">
+                            <div class="table-responsive">
+                                <table id="DRFTable" class="table table-bordered table-striped table-hover dt-responsive nowrap" width="100%">
+                                    <thead>
+                                        <tr>
+                                            <th>@SharedLocalizer["Id"].Value</th>
+                                            <th>@SharedLocalizer["Dossier No"].Value</th>
+                                            <th>@SharedLocalizer["Project Name"].Value</th>
+                                            <th>@SharedLocalizer["Country"].Value</th>
+                                            <th>@SharedLocalizer["Generic Name"].Value</th>
+                                            <th>@SharedLocalizer["Brand Name"].Value</th>
+                                            <th>@SharedLocalizer["Order Frequency"].Value</th>
+                                            <th>@SharedLocalizer["Strength"].Value</th>
+                                            <th>@SharedLocalizer["Pack Size"].Value</th>
+                                            <th>@SharedLocalizer["Pack Style"].Value</th>
+                                            <th>@SharedLocalizer["Form"].Value</th>
+                                            <th>@SharedLocalizer["Plant"].Value</th>
+                                            <th>@SharedLocalizer["Incoterms"].Value</th>
+                                            <th>@SharedLocalizer["MA Holder"].Value</th>
+                                            <th>@SharedLocalizer["Dossier to be sent"].Value</th>
+                                            <th>@SharedLocalizer["Project Manager"].Value</th>
+                                            <th>@SharedLocalizer["Dossier Template"].Value</th>
+                                            <th>@SharedLocalizer["Status"].Value</th>
+                                            <th>@SharedLocalizer["Final Approved"].Value</th>
+
+                                        </tr>
+                                    </thead>
+                                </table>
+                            </div>
+                            
+
+                        </div>
+
+                    </div>
+                </section>
+            </div>
+
+
+        </div>
+    </section>
+
+</div>
+
+
+@section Scripts {
+    <script>           
+
+
+        $(document).ready(function () {
+            var dataTable = $('#DRFTable').DataTable({
+               @* order: [[1, "desc"]], *@
+                order: [],
+                ajax: "@Url.Action("GetFinalApprovedProjectList", "DRFInitialization")/",
+                responsive: true,
+                columnDefs: [					
+                    { responsivePriority: 1, targets: 0 },
+					{ responsivePriority: 2, targets: 5 },
+                    { responsivePriority: 3, targets: -4 },                     
+                     { responsivePriority: 4, targets: -1 }									
+					
+                ],
+                "dom": 'Bfrtip',
+                "buttons": [
+                    {
+                        "extend": 'excel', "text": '<i class="far fa-file-excel mr-1"></i> Export In Excel ', "className": "btn-primary", "exportOptions": {
+                            "columns": ':visible'
+                        }
+                    },
+                    { "extend": 'colvis', "className": "btn-primary" }
+                ],
+                columns: [
+                    { "data": "initializationID" },					
+                    { "data": "drfNo" },
+                    { "data": "projectName" },
+                    { "data": "countryName" },
+                    { "data": "genericName" },
+                    { "data": "brandName" },
+                    { "data": "orderFrequency" },
+                    { "data": "strengthName" },
+                    { "data": "packSizeName" },
+                    { "data": "packStyleName" },
+                    { "data": "formName" },
+                    { "data": "plantName" },
+                    { "data": "incotermsName" },
+                    { "data": "maHolder" },
+                    { "data": "nameDossierSend" },
+                    { "data": "projectManager" },
+                    { "data": "dossierTemplate" },
+                    { "data": "status" },
+					{ "data": "final_Approved_Date" }
+					
+                ]
+            });
+            dataTable.draw().buttons().container().appendTo('.export-btn');
+            $(".buttons-excel").removeClass("btn-secondary");
+            $(".buttons-collection").removeClass("btn-secondary");
+        });
+
+
+    </script>
+}
+
+

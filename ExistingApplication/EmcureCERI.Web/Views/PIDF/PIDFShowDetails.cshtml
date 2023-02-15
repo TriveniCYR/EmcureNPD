@@ -1,0 +1,923 @@
+﻿@inject Microsoft.Extensions.Localization.IStringLocalizer<SharedResource> SharedLocalizer
+@model EmcureCERI.Web.Models.PIDFPViewModels.PIDFNewVM
+
+@{
+    ViewData["Title"] = "PIDF Show Details";
+}
+
+
+    <div class="content-wrapper pt-3">
+        <!-- Main content -->
+        <section class="content">
+            <div class="container-fluid">
+                <!-- Small boxes (Stat box) -->
+                <!-- Main row -->
+                <div class="row">
+                    <section class="col-lg-12 ">
+                        <!-- Custom tabs (Charts with tabs)-->
+                        <div class="card">
+                            <div class="card-header">
+                                <h3 class="card-title">
+                                    <i class="far fa-plus-square mr-2"></i> PIDF
+                                </h3>
+                                <div class="card-tools md-left">
+                                    <div class="mybtn-group">
+                                            <a class="btn btn-primary" href="@Url.Action("PIDFList","PIDF")"><i class="far fa-list-alt mr-1"></i>Project List</a>
+                                            <a class="btn btn-primary" href="@Url.Action("PIDFStrengthList","PIDF")"><i class="far fa-list-alt mr-1"></i>PIDF List</a>
+                                            <a class="btn btn-primary" href="@Url.Action("Index","GanttNew")"><i class="fas fa-project-diagram mr-2"></i>Gantt Chart</a>
+                                            <a class="btn btn-primary" href="@Url.Action("PIDFNew","PIDF")"><i class="far fa-plus-square mr-1"></i> Create New PIDF</a>
+                                            <button class="btn btn-primary" onclick="javascript:window.history.back();"><i class="fas fa-undo mr-1"></i> Back</button>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="card-body">
+                                <div>
+                                    <div class="row mt-2">
+                                        <div class="col-sm-7">
+                                            <table class="table table-bordered">
+                                                <tr>
+                                                    <td width="30%"><strong>Product Name</strong></td>
+                                                    <td><div class="col-sm-9" id="pidf_ProjectorProductName"></div></td>
+                                                </tr>
+                                                <tr>
+                                                    <td width="30%"><strong>Product Type</strong></td>
+                                                    <td><div class="col-sm-9" id="pidf_ProductTypeName"></div></td>
+                                                </tr>
+                                                <tr>
+                                                    <td width="30%"><strong>Plant Name</strong></td>
+                                                    <td><div class="col-sm-9" id="pidf_PlantName"></div></td>
+                                                </tr>
+                                                <tr>
+                                                    <td width="30%"><label>Formulation</label></td>
+                                                    <td><div class="col-sm-9" id="pidf_FormulationName"></div></td>
+                                                </tr>
+                                                <tr>
+                                                    <td width="30%"><label>Work Flow</label></td>
+                                                    <td><div class="col-sm-9" id="pidf_WorkflowName"></div></td>
+                                                </tr>
+                                            </table>
+                                        </div>
+                                        <div class="col-sm-5" style="height:205px; overflow:auto;">
+                                            <table id="myTables" class="table order-list table-bordered" style="width:100%">
+                                                <thead>
+                                                    <tr>
+                                                        <th width="30%">Strength</th>
+                                                        <th>Unit</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody></tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+
+
+                                </div>
+
+                                @*Remaining code here*@
+
+                                <div class="row mt-1">
+                                    <div class="col-sm-12">
+                                        <div class="card  card-primary card-outline card-outline-tabs nav-fill nav-pills">
+                                            <div class="card-header p-0 ">
+                                                <ul class="nav nav-tabs" id="custom-tabs-one-tab" role="tablist">
+                                                    <li class="pt-2 px-3">
+                                                        <h3 class="card-title"><i class="fas fa-globe mr-2"></i>Region</h3>
+                                                    </li>
+                                                    <li class="nav-item">
+                                                        <a class="nav-link active" id="CIS-tab" data-toggle="pill" href="#CIS" role="tab" aria-controls="CIS" aria-selected="true">CIS</a>
+                                                    </li>
+                                                    <li class="nav-item">
+                                                        <a class="nav-link" id="LATAM-tab" data-toggle="pill" href="#LATAM" role="tab" aria-controls="LATAM" aria-selected="false">LATAM</a>
+                                                    </li>
+                                                    <li class="nav-item">
+                                                        <a class="nav-link" id="ASIA-tab" data-toggle="pill" href="#ASIA" role="tab" aria-controls="ASIA" aria-selected="false">ASIA</a>
+                                                    </li>
+                                                    <li class="nav-item">
+                                                        <a class="nav-link" id="AFRICA-tab" data-toggle="pill" href="#AFRICA" role="tab" aria-controls="AFRICA" aria-selected="false">AFRICA</a>
+                                                    </li>
+                                                    <li class="nav-item">
+                                                        <a class="nav-link" id="MENA-tab" data-toggle="pill" href="#MENA" role="tab" aria-controls="MENA" aria-selected="false">MENA</a>
+                                                    </li>
+                                                    <div class="card-tools">
+                                                        <button type="button" class="btn btn-tool p-0 mr-3 ml-3" data-card-widget="maximize">
+                                                            <i class="fas fa-expand"></i>
+                                                        </button>
+                                                        <button type="button" class="btn btn-tool" data-card-widget="collapse">
+                                                            <i class="fas fa-minus"></i>
+                                                        </button>
+                                                    </div>
+                                                </ul>
+                                            </div>
+                                            <div class="card-body">
+                                                <div class="tab-content" id="custom-tabs-one-tabContent">
+
+                                                    <div class="tab-pane fade show active" id="CIS" role="tabpanel" aria-labelledby="CIS-tab">
+                                                        <h4 class="text-divider"><span>CIS</span></h4>
+                                                        <form method="post" name="CISCountryCreate" id="CISCountryCreate">
+
+                                                            <div class="row mt-5 mb-3">
+                                                                <div class="table-responsive">
+                                                                    <table id="CISPIDFTable" class="table CISorder-list table-striped table-bordered dt-responsive nowrap" style="width:100%">
+                                                                        <thead>
+                                                                            <tr>
+                                                                                <th>Country</th>
+                                                                                <th>Strength</th>
+                                                                                <th>Pack Size</th>
+                                                                                <th>Packing</th>
+                                                                                <th>1st Year CIF Price/Pack</th>
+                                                                                <th>1st Year Qty.</th>
+                                                                                <th>1st Year Volume</th>
+                                                                                <th>2nd Year CIF Price/Pack</th>
+                                                                                <th>2nd Year Qty.</th>
+                                                                                <th>2nd Year Volume</th>
+                                                                                <th>3rd Year CIF Price/Pack</th>
+                                                                                <th>3rd Year Qty.</th>
+                                                                                <th>3rd Year Volume</th>
+                                                                                <th>Batch Size</th>
+                                                                                <th>Currency</th>
+                                                                                <th>1st Year COGS</th>
+                                                                                <th>2nd Year COGS</th>
+                                                                                <th>3rd Year COGS</th>
+                                                                                <th>Freight</th>
+                                                                                <th>Total CIF Cost</th>
+                                                                                <th>3 Year Contribution</th>
+                                                                                <th>Cost of 3 Batches</th>
+                                                                                <th>Analytical Cost</th>
+                                                                                <th>BECost</th>
+                                                                                <th>RLD Cost</th>
+                                                                                <th>R&D Cost</th>
+                                                                                <th>Filing Cost</th>
+                                                                                <th>Stability Cost</th>
+                                                                                <th>Total Invest</th>
+                                                                                <th>Other Cost</th>
+                                                                                <th>API Source</th>
+                                                                                <th>ROI</th>
+                                                                            </tr>
+                                                                        </thead>
+                                                                    </table>
+                                                                </div>
+                                                            </div>
+                                                        </form>
+                                                    </div>
+
+                                                    <div class="tab-pane fade" id="LATAM" role="tabpanel" aria-labelledby="LATAM-tab">
+                                                        <h4 class="text-divider"><span>LATAM</span></h4>
+                                                        <form method="post" name="LATAMCountryCreate" id="LATAMCountryCreate">
+
+                                                            <div class="row mt-5 mb-3">
+                                                                <div class="table-responsive">
+                                                                    <table id="LATAMPIDFTable" class="table LATAMorder-list table-striped table-bordered dt-responsive nowrap" style="width:100%">
+                                                                        <thead>
+                                                                            <tr>
+                                                                                <th>Country</th>
+                                                                                <th>Strength</th>
+                                                                                <th>Pack Size</th>
+                                                                                <th>Packing</th>
+                                                                                <th>1st Year CIF Price/Pack</th>
+                                                                                <th>1st Year Qty.</th>
+                                                                                <th>1st Year Volume</th>
+                                                                                <th>2nd Year CIF Price/Pack</th>
+                                                                                <th>2nd Year Qty.</th>
+                                                                                <th>2nd Year Volume</th>
+                                                                                <th>3rd Year CIF Price/Pack</th>
+                                                                                <th>3rd Year Qty.</th>
+                                                                                <th>3rd Year Volume</th>
+                                                                                <th>Batch Size</th>
+                                                                                <th>Currency</th>
+                                                                                <th>1st Year COGS</th>
+                                                                                <th>2nd Year COGS</th>
+                                                                                <th>3rd Year COGS</th>
+                                                                                <th>Freight</th>
+                                                                                <th>Total CIF Cost</th>
+                                                                                <th>3 Year Contribution</th>
+                                                                                <th>Cost of 3 Batches</th>
+                                                                                <th>Analytical Cost</th>
+                                                                                <th>BECost</th>
+                                                                                <th>RLD Cost</th>
+                                                                                <th>R&D Cost</th>
+                                                                                <th>Filing Cost</th>
+                                                                                <th>Stability Cost</th>
+                                                                                <th>Total Invest</th>
+                                                                                <th>Other Cost</th>
+                                                                                <th>API Source</th>
+                                                                                <th>ROI</th>
+                                                                            </tr>
+                                                                        </thead>
+                                                                    </table>
+                                                                </div>
+                                                            </div>
+                                                        </form>
+                                                    </div>
+
+                                                    <div class="tab-pane fade" id="ASIA" role="tabpanel" aria-labelledby="ASIA-tab">
+                                                        <h4 class="text-divider"><span>ASIA</span></h4>
+                                                        <form method="post" name="ASIACountryCreate" id="ASIACountryCreate">
+
+                                                            <div class="row mt-5 mb-3">
+                                                                <div class="table-responsive">
+                                                                    <table id="ASIAPIDFTable" class="table ASIAorder-list table-striped table-bordered dt-responsive nowrap" style="width:100%">
+                                                                        <thead>
+                                                                            <tr>
+                                                                                <th>Country</th>
+                                                                                <th>Strength</th>
+                                                                                <th>Pack Size</th>
+                                                                                <th>Packing</th>
+                                                                                <th>1st Year CIF Price/Pack</th>
+                                                                                <th>1st Year Qty.</th>
+                                                                                <th>1st Year Volume</th>
+                                                                                <th>2nd Year CIF Price/Pack</th>
+                                                                                <th>2nd Year Qty.</th>
+                                                                                <th>2nd Year Volume</th>
+                                                                                <th>3rd Year CIF Price/Pack</th>
+                                                                                <th>3rd Year Qty.</th>
+                                                                                <th>3rd Year Volume</th>
+                                                                                <th>Batch Size</th>
+                                                                                <th>Currency</th>
+                                                                                <th>1st Year COGS</th>
+                                                                                <th>2nd Year COGS</th>
+                                                                                <th>3rd Year COGS</th>
+                                                                                <th>Freight</th>
+                                                                                <th>Total CIF Cost</th>
+                                                                                <th>3 Year Contribution</th>
+                                                                                <th>Cost of 3 Batches</th>
+                                                                                <th>Analytical Cost</th>
+                                                                                <th>BECost</th>
+                                                                                <th>RLD Cost</th>
+                                                                                <th>R&D Cost</th>
+                                                                                <th>Filing Cost</th>
+                                                                                <th>Stability Cost</th>
+                                                                                <th>Total Invest</th>
+                                                                                <th>Other Cost</th>
+                                                                                <th>API Source</th>
+                                                                                <th>ROI</th>
+                                                                            </tr>
+                                                                        </thead>
+                                                                    </table>
+                                                                </div>
+                                                            </div>
+
+                                                        </form>
+                                                    </div>
+                                                    <div class="tab-pane fade" id="AFRICA" role="tabpanel" aria-labelledby="AFRICA-tab">
+                                                        <h4 class="text-divider"><span>AFRICA</span></h4>
+                                                        <form method="post" name="AFRICACountryCreate" id="AFRICACountryCreate">
+
+                                                            <div class="row mt-5 mb-3">
+                                                                <div class="table-responsive">
+                                                                    <table id="AFRICAPIDFTable" class="table AFRICAorder-list table-striped table-bordered dt-responsive nowrap" style="width:100%">
+                                                                        <thead>
+                                                                            <tr>
+                                                                                <th>Country</th>
+                                                                                <th>Strength</th>
+                                                                                <th>Pack Size</th>
+                                                                                <th>Packing</th>
+                                                                                <th>1st Year CIF Price/Pack</th>
+                                                                                <th>1st Year Qty.</th>
+                                                                                <th>1st Year Volume</th>
+                                                                                <th>2nd Year CIF Price/Pack</th>
+                                                                                <th>2nd Year Qty.</th>
+                                                                                <th>2nd Year Volume</th>
+                                                                                <th>3rd Year CIF Price/Pack</th>
+                                                                                <th>3rd Year Qty.</th>
+                                                                                <th>3rd Year Volume</th>
+                                                                                <th>Batch Size</th>
+                                                                                <th>Currency</th>
+                                                                                <th>1st Year COGS</th>
+                                                                                <th>2nd Year COGS</th>
+                                                                                <th>3rd Year COGS</th>
+                                                                                <th>Freight</th>
+                                                                                <th>Total CIF Cost</th>
+                                                                                <th>3 Year Contribution</th>
+                                                                                <th>Cost of 3 Batches</th>
+                                                                                <th>Analytical Cost</th>
+                                                                                <th>BECost</th>
+                                                                                <th>RLD Cost</th>
+                                                                                <th>R&D Cost</th>
+                                                                                <th>Filing Cost</th>
+                                                                                <th>Stability Cost</th>
+                                                                                <th>Total Invest</th>
+                                                                                <th>Other Cost</th>
+                                                                                <th>API Source</th>
+                                                                                <th>ROI</th>
+                                                                            </tr>
+                                                                        </thead>
+                                                                    </table>
+                                                                </div>
+                                                            </div>
+
+                                                        </form>
+                                                    </div>
+                                                    <div class="tab-pane fade" id="MENA" role="tabpanel" aria-labelledby="MENA-tab">
+                                                        <h4 class="text-divider"><span>MENA</span></h4>
+                                                        <form method="post" name="MENACountryCreate" id="MENACountryCreate">
+
+                                                            <div class="row mt-5 mb-3">
+                                                                <div class="table-responsive">
+                                                                    <table id="MENAPIDFTable" class="table MENAorder-list table-striped table-bordered dt-responsive nowrap" style="width:100%">
+                                                                        <thead>
+                                                                            <tr>
+                                                                                <th>Country</th>
+                                                                                <th>Strength</th>
+                                                                                <th>Pack Size</th>
+                                                                                <th>Packing</th>
+                                                                                <th>1st Year CIF Price/Pack</th>
+                                                                                <th>1st Year Qty.</th>
+                                                                                <th>1st Year Volume</th>
+                                                                                <th>2nd Year CIF Price/Pack</th>
+                                                                                <th>2nd Year Qty.</th>
+                                                                                <th>2nd Year Volume</th>
+                                                                                <th>3rd Year CIF Price/Pack</th>
+                                                                                <th>3rd Year Qty.</th>
+                                                                                <th>3rd Year Volume</th>
+                                                                                <th>Batch Size</th>
+                                                                                <th>Currency</th>
+                                                                                <th>1st Year COGS</th>
+                                                                                <th>2nd Year COGS</th>
+                                                                                <th>3rd Year COGS</th>
+                                                                                <th>Freight</th>
+                                                                                <th>Total CIF Cost</th>
+                                                                                <th>3 Year Contribution</th>
+                                                                                <th>Cost of 3 Batches</th>
+                                                                                <th>Analytical Cost</th>
+                                                                                <th>BECost</th>
+                                                                                <th>RLD Cost</th>
+                                                                                <th>R&D Cost</th>
+                                                                                <th>Filing Cost</th>
+                                                                                <th>Stability Cost</th>
+                                                                                <th>Total Invest</th>
+                                                                                <th>Other Cost</th>
+                                                                                <th>API Source</th>
+                                                                                <th>ROI</th>
+                                                                            </tr>
+                                                                        </thead>
+                                                                    </table>
+                                                                </div>
+                                                            </div>
+
+                                                        </form>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+
+                                @*<div class="row p-3">
+
+            <div class="col-sm-7 ">
+                <table class="table fileorder-list table-bordered mr-3 ">
+                    <thead>
+                        <tr>
+                            <th>Uploaded Files</th>
+                        </tr>
+                    </thead>
+                </table>
+            </div>
+        </div>*@
+                                <div class="card mt-2">
+                                    <div class="card-header mb-3">
+                                        <h3 class="card-title" for="exampleInputFile"><i class="fas fa-file-alt mr-3"></i>Uploaded Files</h3>
+                                    </div>
+                                    <div class="row p-3">
+                                        <div class="col-sm-12 ">
+                                            <table class="table fileorder-list table-bordered mr-3 ">
+                                                <thead>
+                                                    <tr>
+                                                        <th>Files</th>
+                                                    </tr>
+                                                </thead>
+                                            </table>
+                                        </div>
+                                    </div>
+                                </div>
+
+
+                            </div>
+
+                        </div>
+                    </section>
+                </div>
+            </div>
+        </section>
+
+    </div>
+
+
+<script>
+    $('#loading').show();
+    console.log(@ViewBag.PIDFShowDetailsPIDFID);
+      var dataTableMENA,dataTableAFRICA,dataTableASIA,dataTableLATAM,dataTableCIS;
+     
+    $(document).ready(function () {
+        var dataTableMENA = $('#MENAPIDFTable').DataTable({
+            responsive: false,
+            lengthChange: true,
+            autoWidth: true,
+            paging: false,
+            searching: false,
+            sort: false,
+            "bInfo": false,
+            columnDefs: [
+                { responsivePriority: 1, targets: -5 },
+                { responsivePriority: 1, targets: -3 },
+                { responsivePriority: 100, targets: -4 }
+            ],
+            //  buttons: [
+            //    {
+            //        extend: 'excel', text: '<i class="far fa-file-excel"></i>', className: "btn-primary", exportOptions: {
+            //            columns: ':visible'
+            //        }
+            //    },
+            //    {
+            //        extend: 'colvis', text: '<i class="fas fa-list"></i> Select Fields', className: "btn-primary"
+            //    }
+            //],
+            language: {
+                "emptyTable": "@SharedLocalizer["No data available in table"].Value",
+                "info": "@SharedLocalizer["Showing _START_ to _END_ of _TOTAL_ entries"].Value",
+                "infoEmpty": "@SharedLocalizer["Showing 0 to 0 of 0 entries"].Value",
+                "infoFiltered": "@SharedLocalizer["(filtered from _MAX_ total entries)"].Value",
+                "lengthMenu": "@SharedLocalizer["Show _MENU_ entries"].Value",
+                "loadingRecords": "@SharedLocalizer["Loading..."].Value",
+                "processing": "@SharedLocalizer["Processing..."].Value",
+                "search": "@SharedLocalizer["Search"].Value",
+                "zeroRecords": "@SharedLocalizer["No matching records found"].Value",
+                "paginate": {
+                    "first": "@SharedLocalizer["First"].Value",
+                    "last": "@SharedLocalizer["Last"].Value",
+                    "next": "@SharedLocalizer["Next"].Value",
+                    "previous": "@SharedLocalizer["Previous"].Value"
+                },
+            }
+        });
+
+           var dataTableAFRICA = $('#AFRICAPIDFTable').DataTable({
+            responsive: false,
+            lengthChange: true,
+            autoWidth: true,
+            paging: false,
+            searching: false,
+            sort: false,
+            "bInfo": false,
+            columnDefs: [
+                { responsivePriority: 1, targets: -5 },
+                { responsivePriority: 1, targets: -3 },
+                { responsivePriority: 100, targets: -4 }
+            ],
+            //  buttons: [
+            //    {
+            //        extend: 'excel', text: '<i class="far fa-file-excel"></i>', className: "btn-primary", exportOptions: {
+            //            columns: ':visible'
+            //        }
+            //    },
+            //    {
+            //        extend: 'colvis', text: '<i class="fas fa-list"></i> Select Fields', className: "btn-primary"
+            //    }
+            //],
+            language: {
+                "emptyTable": "@SharedLocalizer["No data available in table"].Value",
+                "info": "@SharedLocalizer["Showing _START_ to _END_ of _TOTAL_ entries"].Value",
+                "infoEmpty": "@SharedLocalizer["Showing 0 to 0 of 0 entries"].Value",
+                "infoFiltered": "@SharedLocalizer["(filtered from _MAX_ total entries)"].Value",
+                "lengthMenu": "@SharedLocalizer["Show _MENU_ entries"].Value",
+                "loadingRecords": "@SharedLocalizer["Loading..."].Value",
+                "processing": "@SharedLocalizer["Processing..."].Value",
+                "search": "@SharedLocalizer["Search"].Value",
+                "zeroRecords": "@SharedLocalizer["No matching records found"].Value",
+                "paginate": {
+                    "first": "@SharedLocalizer["First"].Value",
+                    "last": "@SharedLocalizer["Last"].Value",
+                    "next": "@SharedLocalizer["Next"].Value",
+                    "previous": "@SharedLocalizer["Previous"].Value"
+                },
+            }
+        });
+
+         var dataTableASIA = $('#ASIAPIDFTable').DataTable({
+            responsive: false,
+            lengthChange: true,
+            autoWidth: true,
+            paging: false,
+            searching: false,
+            sort: false,
+            "bInfo": false,
+            columnDefs: [
+                { responsivePriority: 1, targets: -5 },
+                { responsivePriority: 1, targets: -3 },
+                { responsivePriority: 100, targets: -4 }
+            ],
+            //  buttons: [
+            //    {
+            //        extend: 'excel', text: '<i class="far fa-file-excel"></i>', className: "btn-primary", exportOptions: {
+            //            columns: ':visible'
+            //        }
+            //    },
+            //    {
+            //        extend: 'colvis', text: '<i class="fas fa-list"></i> Select Fields', className: "btn-primary"
+            //    }
+            //],
+            language: {
+                "emptyTable": "@SharedLocalizer["No data available in table"].Value",
+                "info": "@SharedLocalizer["Showing _START_ to _END_ of _TOTAL_ entries"].Value",
+                "infoEmpty": "@SharedLocalizer["Showing 0 to 0 of 0 entries"].Value",
+                "infoFiltered": "@SharedLocalizer["(filtered from _MAX_ total entries)"].Value",
+                "lengthMenu": "@SharedLocalizer["Show _MENU_ entries"].Value",
+                "loadingRecords": "@SharedLocalizer["Loading..."].Value",
+                "processing": "@SharedLocalizer["Processing..."].Value",
+                "search": "@SharedLocalizer["Search"].Value",
+                "zeroRecords": "@SharedLocalizer["No matching records found"].Value",
+                "paginate": {
+                    "first": "@SharedLocalizer["First"].Value",
+                    "last": "@SharedLocalizer["Last"].Value",
+                    "next": "@SharedLocalizer["Next"].Value",
+                    "previous": "@SharedLocalizer["Previous"].Value"
+                },
+            }
+        });
+           var dataTableLATAM = $('#LATAMPIDFTable').DataTable({
+            responsive: false,
+            lengthChange: true,
+            autoWidth: true,
+            paging: false,
+            searching: false,
+            sort: false,
+            "bInfo": false,
+            columnDefs: [
+                { responsivePriority: 1, targets: -5 },
+                { responsivePriority: 1, targets: -3 },
+                { responsivePriority: 100, targets: -4 }
+            ],
+            //  buttons: [
+            //    {
+            //        extend: 'excel', text: '<i class="far fa-file-excel"></i>', className: "btn-primary", exportOptions: {
+            //            columns: ':visible'
+            //        }
+            //    },
+            //    {
+            //        extend: 'colvis', text: '<i class="fas fa-list"></i> Select Fields', className: "btn-primary"
+            //    }
+            //],
+            language: {
+                "emptyTable": "@SharedLocalizer["No data available in table"].Value",
+                "info": "@SharedLocalizer["Showing _START_ to _END_ of _TOTAL_ entries"].Value",
+                "infoEmpty": "@SharedLocalizer["Showing 0 to 0 of 0 entries"].Value",
+                "infoFiltered": "@SharedLocalizer["(filtered from _MAX_ total entries)"].Value",
+                "lengthMenu": "@SharedLocalizer["Show _MENU_ entries"].Value",
+                "loadingRecords": "@SharedLocalizer["Loading..."].Value",
+                "processing": "@SharedLocalizer["Processing..."].Value",
+                "search": "@SharedLocalizer["Search"].Value",
+                "zeroRecords": "@SharedLocalizer["No matching records found"].Value",
+                "paginate": {
+                    "first": "@SharedLocalizer["First"].Value",
+                    "last": "@SharedLocalizer["Last"].Value",
+                    "next": "@SharedLocalizer["Next"].Value",
+                    "previous": "@SharedLocalizer["Previous"].Value"
+                },
+            }
+           });
+               var dataTableCIS = $('#CISPIDFTable').DataTable({
+            responsive: false,
+            lengthChange: true,
+            autoWidth: true,
+            paging: false,
+            searching: false,
+            sort: false,
+            "bInfo": false,
+            columnDefs: [
+                { responsivePriority: 1, targets: -5 },
+                { responsivePriority: 1, targets: -3 },
+                { responsivePriority: 100, targets: -4 }
+            ],
+            //  buttons: [
+            //    {
+            //        extend: 'excel', text: '<i class="far fa-file-excel"></i>', className: "btn-primary", exportOptions: {
+            //            columns: ':visible'
+            //        }
+            //    },
+            //    {
+            //        extend: 'colvis', text: '<i class="fas fa-list"></i> Select Fields', className: "btn-primary"
+            //    }
+            //],
+            language: {
+                "emptyTable": "@SharedLocalizer["No data available in table"].Value",
+                "info": "@SharedLocalizer["Showing _START_ to _END_ of _TOTAL_ entries"].Value",
+                "infoEmpty": "@SharedLocalizer["Showing 0 to 0 of 0 entries"].Value",
+                "infoFiltered": "@SharedLocalizer["(filtered from _MAX_ total entries)"].Value",
+                "lengthMenu": "@SharedLocalizer["Show _MENU_ entries"].Value",
+                "loadingRecords": "@SharedLocalizer["Loading..."].Value",
+                "processing": "@SharedLocalizer["Processing..."].Value",
+                "search": "@SharedLocalizer["Search"].Value",
+                "zeroRecords": "@SharedLocalizer["No matching records found"].Value",
+                "paginate": {
+                    "first": "@SharedLocalizer["First"].Value",
+                    "last": "@SharedLocalizer["Last"].Value",
+                    "next": "@SharedLocalizer["Next"].Value",
+                    "previous": "@SharedLocalizer["Previous"].Value"
+                },
+            }
+        });
+         $.ajax({
+            type: "POST",
+            url: '@Url.Action("GetPIDFDetailsForAddCountryDetails", "PIDF")/PidfID?=@ViewBag.PIDFShowDetailsPIDFID',
+            //contentType: "application/json; charset=utf-8",
+            dataType: "json",
+            success: function (response) {
+                console.log(response);
+                $('#loading').hide();
+                $('#pidf_ProjectorProductName').text(response.data.projectorProductName);
+                $('#pidf_ProductTypeName').text(response.data.productName);
+                $('#pidf_PlantName').text(response.data.plantName);
+                $('#pidf_FormulationName').text(response.data.formulationName);
+                $('#pidf_WorkflowName').text(response.data.workflowName);
+
+                //Add pidfstrength
+                $.each(response.strengthlist, function (i, List) {
+                    //console.log(List);
+                    var newRow = $("<tr>");
+                    var cols = "";
+
+                    cols += '<td>' + List.pidfStrength + '</td>';
+                    cols += '<td>' + List.unitName + ' </td>';
+                    newRow.append(cols);
+                    $("table.order-list").append(newRow);
+
+                });
+
+                var MENAjsonObject = response.menaCountryDetails;
+                        var result = MENAjsonObject.map(function (item) {
+                            var result = [];
+                            result.push(item.countryName);
+                            result.push(item.pidfStrength);
+                            result.push(item.packSizeName);
+                            result.push(item.packingName);
+                            result.push(item.cifPricePerPack1);
+                            result.push(item.qtyOneyear);
+                            result.push(item.volOneyear);
+                             result.push(item.cifPricePerPack2);
+                            result.push(item.qtyTwoyear);
+                            result.push(item.volTwoyear);
+                            result.push(item.cifPricePerPack3);
+                            result.push(item.qtyThreeyear);
+                            result.push(item.volThreeyear);
+                            result.push(item.batchSize);
+                            result.push(item.currencyName);
+                            result.push(item.cogS1);
+                            result.push(item.cogS2);
+                            result.push(item.cogS3);
+                            result.push(item.freight);
+                            result.push(item.totalCIFCost);
+                            result.push(item.contributionThreeYear);
+                            result.push(item.costofThreeBatches);
+                            result.push(item.analyticalCost);
+                            result.push(item.beCost);
+                            result.push(item.rldCost);
+                            result.push(item.randDCost);
+                            result.push(item.filingCost);
+                            result.push(item.stabilityCost);
+                            result.push(item.totalInvest);
+                            result.push(item.otherCost);
+                            result.push(item.apiSource);
+                            result.push(item.roi);
+                           
+                            return result;
+                        });
+                        dataTableMENA.clear();
+                        dataTableMENA.rows.add(result); // add to DataTable instance
+                dataTableMENA.draw();
+
+                var AFRICAjsonObject = response.africaCountryDetails;
+                        var result = AFRICAjsonObject.map(function (item) {
+                            var result = [];
+                            result.push(item.countryName);
+                            result.push(item.pidfStrength);
+                            result.push(item.packSizeName);
+                            result.push(item.packingName);
+                            result.push(item.cifPricePerPack1);
+                            result.push(item.qtyOneyear);
+                            result.push(item.volOneyear);
+                             result.push(item.cifPricePerPack2);
+                            result.push(item.qtyTwoyear);
+                            result.push(item.volTwoyear);
+                            result.push(item.cifPricePerPack3);
+                            result.push(item.qtyThreeyear);
+                            result.push(item.volThreeyear);
+                            result.push(item.batchSize);
+                            result.push(item.currencyName);
+                            result.push(item.cogS1);
+                            result.push(item.cogS2);
+                            result.push(item.cogS3);
+                            result.push(item.freight);
+                            result.push(item.totalCIFCost);
+                            result.push(item.contributionThreeYear);
+                            result.push(item.costofThreeBatches);
+                            result.push(item.analyticalCost);
+                            result.push(item.beCost);
+                            result.push(item.rldCost);
+                            result.push(item.randDCost);
+                            result.push(item.filingCost);
+                            result.push(item.stabilityCost);
+                            result.push(item.totalInvest);
+                            result.push(item.otherCost);
+                            result.push(item.apiSource);
+                            result.push(item.roi);
+                           
+                            return result;
+                        });
+                        dataTableAFRICA.clear();
+                        dataTableAFRICA.rows.add(result); // add to DataTable instance
+                        dataTableAFRICA.draw();
+
+                var ASIAjsonObject = response.asiaCountryDetails;
+                        var result = ASIAjsonObject.map(function (item) {
+                            var result = [];
+                            result.push(item.countryName);
+                            result.push(item.pidfStrength);
+                            result.push(item.packSizeName);
+                            result.push(item.packingName);
+                            result.push(item.cifPricePerPack1);
+                            result.push(item.qtyOneyear);
+                            result.push(item.volOneyear);
+                             result.push(item.cifPricePerPack2);
+                            result.push(item.qtyTwoyear);
+                            result.push(item.volTwoyear);
+                            result.push(item.cifPricePerPack3);
+                            result.push(item.qtyThreeyear);
+                            result.push(item.volThreeyear);
+                            result.push(item.batchSize);
+                            result.push(item.currencyName);
+                            result.push(item.cogS1);
+                            result.push(item.cogS2);
+                            result.push(item.cogS3);
+                            result.push(item.freight);
+                            result.push(item.totalCIFCost);
+                            result.push(item.contributionThreeYear);
+                            result.push(item.costofThreeBatches);
+                            result.push(item.analyticalCost);
+                            result.push(item.beCost);
+                            result.push(item.rldCost);
+                            result.push(item.randDCost);
+                            result.push(item.filingCost);
+                            result.push(item.stabilityCost);
+                            result.push(item.totalInvest);
+                            result.push(item.otherCost);
+                            result.push(item.apiSource);
+                            result.push(item.roi);
+                           
+                            return result;
+                        });
+                        dataTableASIA.clear();
+                        dataTableASIA.rows.add(result); // add to DataTable instance
+                        dataTableASIA.draw();
+
+                 var LATAMjsonObject = response.latamCountryDetails;
+                        var result = LATAMjsonObject.map(function (item) {
+                            var result = [];
+                            result.push(item.countryName);
+                            result.push(item.pidfStrength);
+                            result.push(item.packSizeName);
+                            result.push(item.packingName);
+                            result.push(item.cifPricePerPack1);
+                            result.push(item.qtyOneyear);
+                            result.push(item.volOneyear);
+                             result.push(item.cifPricePerPack2);
+                            result.push(item.qtyTwoyear);
+                            result.push(item.volTwoyear);
+                            result.push(item.cifPricePerPack3);
+                            result.push(item.qtyThreeyear);
+                            result.push(item.volThreeyear);
+                            result.push(item.batchSize);
+                            result.push(item.currencyName);
+                            result.push(item.cogS1);
+                            result.push(item.cogS2);
+                            result.push(item.cogS3);
+                            result.push(item.freight);
+                            result.push(item.totalCIFCost);
+                            result.push(item.contributionThreeYear);
+                            result.push(item.costofThreeBatches);
+                            result.push(item.analyticalCost);
+                            result.push(item.beCost);
+                            result.push(item.rldCost);
+                            result.push(item.randDCost);
+                            result.push(item.filingCost);
+                            result.push(item.stabilityCost);
+                            result.push(item.totalInvest);
+                            result.push(item.otherCost);
+                            result.push(item.apiSource);
+                            result.push(item.roi);
+                           
+                            return result;
+                        });
+                        dataTableLATAM.clear();
+                        dataTableLATAM.rows.add(result); // add to DataTable instance
+                dataTableLATAM.draw();
+
+                 var CISjsonObject = response.cisCountryDetails;
+                        var result = CISjsonObject.map(function (item) {
+                            var result = [];
+                            result.push(item.countryName);
+                            result.push(item.pidfStrength);
+                            result.push(item.packSizeName);
+                            result.push(item.packingName);
+                            result.push(item.cifPricePerPack1);
+                            result.push(item.qtyOneyear);
+                            result.push(item.volOneyear);
+                             result.push(item.cifPricePerPack2);
+                            result.push(item.qtyTwoyear);
+                            result.push(item.volTwoyear);
+                            result.push(item.cifPricePerPack3);
+                            result.push(item.qtyThreeyear);
+                            result.push(item.volThreeyear);
+                            result.push(item.batchSize);
+                            result.push(item.currencyName);
+                            result.push(item.cogS1);
+                            result.push(item.cogS2);
+                            result.push(item.cogS3);
+                            result.push(item.freight);
+                            result.push(item.totalCIFCost);
+                            result.push(item.contributionThreeYear);
+                            result.push(item.costofThreeBatches);
+                            result.push(item.analyticalCost);
+                            result.push(item.beCost);
+                            result.push(item.rldCost);
+                            result.push(item.randDCost);
+                            result.push(item.filingCost);
+                            result.push(item.stabilityCost);
+                            result.push(item.totalInvest);
+                            result.push(item.otherCost);
+                            result.push(item.apiSource);
+                            result.push(item.roi);
+                           
+                            return result;
+                        });
+                        dataTableCIS.clear();
+                        dataTableCIS.rows.add(result); // add to DataTable instance
+                        dataTableCIS.draw();
+
+                 if (response.uploadfilelist!=null) {
+                            $.each(response.uploadfilelist, function (i, List) {
+                                var newRow = $("<tr>");
+                                var cols = "";
+                                cols += '<td><a href="' + List.saveFilePath + '" download="'+ List.saveFileName + '" target="_blank">' + List.saveFileName + '</td>';
+                                newRow.append(cols);
+                                $("table.fileorder-list").append(newRow);
+
+                            });
+
+                        }
+                        else {
+                            var newRow = $("<tr>");
+                                var cols = "";
+                                cols += '<td>Data not available</td>';
+                                newRow.append(cols);
+                                $("table.fileorder-list").append(newRow);
+                        }
+
+
+            },
+            failure: function () {
+
+            }
+        });
+
+
+    });
+
+
+
+         @*$.ajax({
+                    type: "POST",
+                    url: "/PIDF/GetCountryDetails?PidfID=@ViewBag.PIDFShowDetailsPIDFID&CountryID=0&StrengthID=0",
+                    //contentType: "application/json; charset=utf-8",
+                    dataType: "json",
+                    success: function (response) {
+
+                        if (response.uploadfilelist!=null) {
+                            $.each(response.uploadfilelist, function (i, List) {
+                                var newRow = $("<tr>");
+                                var cols = "";
+                                cols += '<td><a href="' + List.saveFilePath + 'download="download" target="_blank">' + List.saveFileName + '</td>';
+                                newRow.append(cols);
+                                $("table.fileorder-list").append(newRow);
+
+                            });
+
+                        }
+                        else {
+                            var newRow = $("<tr>");
+                                var cols = "";
+                                cols += '<td>Data not available</td>';
+                                newRow.append(cols);
+                                $("table.fileorder-list").append(newRow);
+                        }
+                           
+
+                       
+                    },
+                    failure: function () {
+
+                    }
+                });*@
+      
+</script>

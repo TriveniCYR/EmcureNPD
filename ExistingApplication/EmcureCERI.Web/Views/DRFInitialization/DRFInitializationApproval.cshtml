@@ -1,0 +1,985 @@
+﻿@inject Microsoft.Extensions.Localization.IStringLocalizer<SharedResource> SharedLocalizer
+@model EmcureCERI.Web.Models.DRFViewModels.DRFInitialApproval
+
+@{
+    ViewData["Title"] = "DRFInitialization";
+}
+
+<div class="content-wrapper pt-3">
+
+
+    <!-- Main content -->
+    <section class="content">
+        <div class="container-fluid">
+            <!-- Small boxes (Stat box) -->
+            <!-- Main row -->
+            <div class="row">
+                <section class="col-lg-12">
+                    <!-- Custom tabs (Charts with tabs)-->
+                    <div class="card">
+                        <div class="card-header">
+                            <h3 class="card-title">
+                                <i class="far fa-plus-square mr-2"></i> DRF - Product Basics
+                            </h3>
+                            <div class="card-tools">
+                                <a class="btn btn-primary" href="@Url.Action("DRFInitializationUpdation","DRFInitialization")"><i class="far fa-list-alt mr-1"></i>Edit</a>
+                                <button class="btn btn-outline-primary btn-sm mr-3" onclick="javascript:window.history.back();"><i class="fas fa-undo mr-1"></i> Back</button>
+
+                                <button type="button" class="btn btn-tool  p-0 mr-3" style="line-height:15px;" data-card-widget="maximize">
+                                    <i class="fas fa-expand"></i>
+                                </button>
+                                <button type="button" class="btn btn-tool" data-card-widget="collapse">
+                                    <i class="fas fa-minus"></i>
+                                </button>
+                            </div>
+                        </div>
+                        <!-- /.card-header -->
+                        <div class="card-body">
+                            <div class="min-max direct-chat-messages">
+                                <h4 class="text-divider"><span>Product Details</span></h4>
+
+                                <div class="row">
+                                    <div class="col-sm-4 row">
+                                        <label class="col-sm-6 text-right">Country : </label>
+                                        <div class="col-sm-6">
+                                            @ViewBag.IniCountry
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-4 row">
+                                        <label class="col-sm-6 text-right">Generic Name : </label>
+                                        <div class="col-sm-6">@ViewBag.IniGenericName</div>
+                                    </div>
+                                    <div class="col-sm-4 row">
+                                        <!-- text input -->
+                                        <label class="col-sm-6 text-right">Brand Name : </label>
+                                        <div class="col-sm-6">
+                                            @ViewBag.IniBrandName
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="row">
+
+                                    <div class="col-sm-4 row">
+                                        <label class="col-sm-6 text-right">Trademark Approved : </label>
+                                        <div class="col-sm-6">
+                                            @if (@ViewBag.IniTreadmarkApprovedInternal == true)
+                                            {
+                                                <label>Yes</label>
+                                            }
+                                            else
+                                            {
+                                                <label>No</label>
+                                            }
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-4 row">
+                                        <!-- text input -->
+                                        <label class="col-sm-6 text-right">Trademark Suggested : </label>
+                                        <div class="col-sm-6">
+                                            @ViewBag.IniTreadmarkSuggestedInternal
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-4 row">
+                                        <!-- text input -->
+                                        <label class="col-sm-6 text-right">Trademark : </label>
+                                        <div class="col-sm-6">
+                                            @ViewBag.IniTreadmarkOwnerInternal
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="row">
+
+                                    <div class="col-sm-4 row">
+                                        <!-- text input -->
+                                        <label class="col-sm-6 text-right">Form : </label>
+                                        <div class="col-sm-6">
+                                            @ViewBag.IniForm
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-4 row">
+                                        <label class="col-sm-6 text-right">Strength : </label>
+                                        <div class="col-sm-6">@ViewBag.IniStrength</div>
+                                    </div>
+                                    <div class="col-sm-4 row">
+                                        <!-- text input -->
+                                        <label class="col-sm-6 text-right">Pack Size/s : </label>
+                                        <div class="col-sm-6">
+                                            @ViewBag.IniPackSize
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="row">
+
+                                    <div class="col-sm-4 row">
+                                        <!-- text input -->
+                                        <label class="col-sm-6 text-right">Pack Style : </label>
+                                        <div class="col-sm-6">
+                                            @ViewBag.IniPackStyle
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-4 row">
+                                        <!-- text input -->
+                                        <label class="col-sm-6 text-right">Plant : </label>
+                                        <div class="col-sm-6">
+                                            @ViewBag.IniPlant
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-4 row">
+                                        <!-- text input -->
+                                        <label class="col-sm-6 text-right">Product Type:</label>
+                                        <div class="col-sm-6">
+                                            @ViewBag.IniProductType
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="row">
+                                    <div class="col-sm-4 row">
+                                        <!-- text input -->
+                                        <label class="col-sm-6 text-right">Samples Required : </label>
+                                        <div class="col-sm-6">
+                                            @ViewBag.IniSamplesRequired
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-sm-4 row">
+                                        <label class="col-sm-6 text-right">Remark:</label>
+                                    </div>
+                                    <div class="col-sm-3">
+                                        @ViewBag.IniRemark
+                                    </div>
+                                </div>
+
+                                <h4 class="text-divider d-none"><span>PIDF Details</span></h4>
+                                <div class="row d-none">
+                                    <div class="col-sm-4 row ">
+                                        <!-- text input -->
+                                        <label class="col-sm-6 text-right">PIDF Attached : </label>
+                                        <div class="col-sm-6">
+                                            @if (@ViewBag.IniAttachedPIDF == true)
+                                            {
+                                                @Html.Label("Yes")
+                                            }
+                                            else
+                                            {
+                                                @Html.Label("No")
+                                            }
+                                        </div>
+                                    </div>
+
+                                </div>
+
+                                <div class="row d-none">
+
+                                    <div class="col-sm-12 table-responsive ">
+                                        <table id="PIDFTable" class="table table-bordered table-striped table-hover" style="width:100%;">
+                                            <thead>
+                                                <tr>
+                                                    <th>@SharedLocalizer["Id"].Value</th>
+                                                    <th>@SharedLocalizer["Project Name"].Value</th>
+                                                    <th>@SharedLocalizer["Strength"].Value</th>
+                                                    <th>@SharedLocalizer["Patent Status"].Value</th>
+                                                    <th>@SharedLocalizer["Continent"].Value</th>
+                                                    <th>@SharedLocalizer["Country"].Value</th>
+                                                    <th>@SharedLocalizer["Packing"].Value</th>
+                                                    <th>@SharedLocalizer["Batch Size (In pack)"].Value</th>
+                                                    <th>@SharedLocalizer["Pack Size"].Value</th>
+                                                    <th>@SharedLocalizer["Cogs"].Value</th>
+                                                    <th>@SharedLocalizer["Freight($)"].Value</th>
+                                                    <th>@SharedLocalizer["Total CIF Cost($)"].Value</th>
+                                                    <th>@SharedLocalizer["CIF Price Per Unit($)"].Value</th>
+                                                    <th>@SharedLocalizer["Profit Per Pack"].Value</th>
+                                                    <th>@SharedLocalizer["CIF Price Per Pack($)"].Value</th>
+                                                    <th>@SharedLocalizer["Percent Cont"].Value</th>
+                                                    <th>@SharedLocalizer["Contribution 3 yr"].Value</th>
+                                                    <th>@SharedLocalizer["Cost of 3 Batches"].Value</th>
+                                                    <th>@SharedLocalizer["R&D Cost($)"].Value</th>
+                                                    <th>@SharedLocalizer["Filing Cost($)"].Value</th>
+                                                    <th>@SharedLocalizer["Stability Cost($)"].Value</th>
+                                                    <th>@SharedLocalizer["Total Invest($)"].Value</th>
+                                                    <th>@SharedLocalizer["ROI"].Value</th>
+                                                    @*<th>@SharedLocalizer["Project Status"].Value</th>*@
+
+                                                </tr>
+                                            </thead>
+                                        </table>
+                                    </div>
+                                </div>
+
+                                <h4 class="text-divider"><span>Regulated Details</span></h4>
+
+                                <div class="row">
+                                    <div class="col-sm-4 row">
+                                        <!-- text input -->
+                                        <label class="col-sm-6 text-right">Currency:</label>
+                                        <div class="col-sm-6">
+                                            @ViewBag.IniCurrency
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-4 row">
+                                        <label class="col-sm-6 text-right">Fees to be Paid by:</label>
+                                        <div class="col-sm-6">
+                                            @ViewBag.IniFeesToBePaidBy
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-4 row">
+                                        <!-- text input -->
+                                        <label class="col-sm-6 text-right">Registration Fee ($):</label>
+                                        <div class="col-sm-6">
+                                            @ViewBag.IniRegistrationFees
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="row">
+                                    <div class="col-sm-4 row">
+                                        <!-- text input -->
+                                        <label class="col-sm-6 text-right">Mode of Fees Payment:</label>
+                                        <div class="col-sm-6">
+                                            @ViewBag.IniModeOfFeesPayment
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-4 row">
+                                        <!-- text input -->
+                                        <label class="col-sm-6 text-right">MA Holder:</label>
+                                        <div class="col-sm-6">
+                                            @ViewBag.IniMAHolder
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-4 row">
+                                        <!-- text input -->
+                                        <label class="col-sm-6 text-right">Business Type:</label>
+                                        <div class="col-sm-6">
+                                            @ViewBag.IniProposedMarketingStatus
+                                        </div>
+                                    </div>
+
+
+                                </div>
+
+                                <div class="row">
+                                    <div class="col-sm-4 row">
+                                        <label class="col-sm-6 text-right">Shipping Port:</label>
+                                        <div class="col-sm-6">
+                                            @ViewBag.IniShippingPort
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-4 row">
+                                        <!-- text input -->
+                                        <label class="col-sm-6 text-right">Mode of Shipment:</label>
+                                        <div class="col-sm-6">
+                                            @ViewBag.IniModeOfShipment
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-4 row">
+                                        <!-- text input -->
+                                        <label class="col-sm-6 text-right">Incoterms:</label>
+                                        <div class="col-sm-6">
+                                            @ViewBag.IniIncoterms
+                                        </div>
+                                    </div>
+
+                                </div>
+
+                                <div class="row">
+                                    <div class="col-sm-4 row">
+                                        <!-- text input -->
+                                        <label class="col-sm-6 text-right">Dossier submitted to MoH by:</label>
+                                        <div class="col-sm-6">
+                                            @ViewBag.IniDossierSubmittedToMOHBy
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-4 row">
+                                        <label class="col-sm-6 text-right">Owner of Registration:</label>
+                                        <div class="col-sm-6">
+                                            @ViewBag.IniOwnerOfRegistration
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-4 row">
+                                        <label class="col-sm-6 text-right">CDA Excecuted:</label>
+                                        <div class="col-sm-6">
+                                            @if (@ViewBag.IniAvailabilityofCDA == true)
+                                            {
+                                                @Html.Label("Yes")
+                                            }
+                                            else
+                                            {
+                                                @Html.Label("No")
+                                            }
+                                        </div>
+                                    </div>                                   
+                                </div>
+                                <div class="row">
+                                    <div class="col-sm-4 row">
+                                        <label class="col-sm-6 text-right">TS Excecuted:</label>
+                                        <div class="col-sm-6">
+                                            @if (@ViewBag.IniTSExcecuted == true)
+                                            {
+                                                @Html.Label("Yes")
+                                            }
+                                            else
+                                            {
+                                                @Html.Label("No")
+                                            }
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-4 row">
+                                        <label class="col-sm-6 text-right">DA Excecuted:</label>
+                                        <div class="col-sm-6">
+                                            @if (@ViewBag.IniDAExcecuted == true)
+                                            {
+                                                @Html.Label("Yes")
+                                            }
+                                            else
+                                            {
+                                                @Html.Label("No")
+                                            }
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <h4 class="text-divider"><span>Market Details</span></h4>
+                                <div class="row">
+                                    <div class="col-sm-4 row">
+                                        <!-- text input -->
+                                        <label class="col-sm-6 text-right">Current /Proposed Market Size</label>
+                                        <div class="col-sm-6">
+                                            @ViewBag.IniMarketSize
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-4 row">
+                                        <label class="col-sm-6 text-right">3 Yr. CAGR:</label>
+                                        <div class="col-sm-6">
+                                            @ViewBag.IniThreeYearCAGR
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-4 row">
+                                        <!-- text input -->
+                                        <label class="col-sm-6 text-right">Number of Current Players:</label>
+                                        <div class="col-sm-6">
+                                            @ViewBag.IniNumberOfCurrentPlayer
+                                        </div>
+                                    </div>
+
+                                </div>
+
+                                <div class="row">
+                                    <div class="col-sm-4 row">
+                                        <!-- text input -->
+                                        <label class="col-sm-6 text-right">Expected Mkt. Value Growth(%):</label>
+                                        <div class="col-sm-6">
+                                            @ViewBag.IniExpectedMarketValueGrowth
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-4 row">
+                                        <!-- text input -->
+                                        <label class="col-sm-6 text-right">Innovator Brand:</label>
+                                        <div class="col-sm-6">
+                                            @ViewBag.IniInnovatorBrand
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-4 row">
+                                        <label class="col-sm-6 text-right">Innovator Name:</label>
+                                        <div class="col-sm-6">
+                                            @ViewBag.IniInnavotorName
+                                        </div>
+                                    </div>
+
+                                </div>
+                                <div class="row">
+                                    <div class="col-sm-4 row">
+                                        <!-- text input -->
+                                        <label class="col-sm-6 text-right">Top Brand:</label>
+                                        <div class="col-sm-6">
+                                            @ViewBag.IniFirstBrand
+
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-4 row">
+                                        <!-- text input -->
+                                        <label class="col-sm-6 text-right">MS Top Brand:</label>
+                                        <div class="col-sm-6">
+                                            @ViewBag.IniMSFirstBrand
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-4 row">
+                                        <!-- text input -->
+                                        <label class="col-sm-6 text-right">2nd Brand:</label>
+                                        <div class="col-sm-6">
+                                            @ViewBag.IniSecondBrand
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-sm-4 row">
+                                        <label class="col-sm-6 text-right">MS 2nd Brand:</label>
+                                        <div class="col-sm-6">
+                                            @ViewBag.IniMSSecondBrand
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-4 row">
+                                        <!-- text input -->
+                                        <label class="col-sm-6 text-right">3rd Brand:</label>
+                                        <div class="col-sm-6">
+                                            @ViewBag.IniThirdBrand
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-4 row">
+                                        <!-- text input -->
+                                        <label class="col-sm-6 text-right">MS 3rd Brand:</label>
+                                        <div class="col-sm-6">
+                                            @ViewBag.IniMSThirdBrand
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="row">
+                                    <div class="col-sm-4 row">
+                                        <!-- text input -->
+                                        <label class="col-sm-6 text-right">Partner or Potential Partner:</label>
+                                        <div class="col-sm-6">
+                                            @ViewBag.IniPartner
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-4"></div>
+                                    <div class="col-sm-4"></div>
+                                </div>
+
+
+
+                                <h4 class="text-divider"><span>Value in USD only</span></h4>
+                                <div class="row">
+                                    <div class="col-sm-3">
+                                        <!-- text input -->
+                                        <div class="form-group">
+                                            <label>Value in USD only</label>
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-3">
+                                        <div class="form-group text-center">
+                                            <label>Year 1</label>
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-3">
+                                        <div class="form-group text-center">
+                                            <label>Year 2</label>
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-3">
+                                        <div class="form-group text-center">
+                                            <label>Year 3</label>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-sm-3">
+                                        <!-- text input -->
+                                        <div class="form-group">
+                                            <label>Forecast Units (Packs) ($):</label>
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-3">
+                                        <div class="form-group ">
+                                            @ViewBag.IniFirstYearForecastUnitsPacks
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-3">
+                                        <div class="form-group">
+                                            @ViewBag.IniSecondYearForecastUnitsPacks
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-3">
+                                        <div class="form-group">
+                                            @ViewBag.IniThirdYearForecastUnitsPacks
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="row">
+                                    <div class="col-sm-3">
+                                        <!-- text input -->
+                                        <div class="form-group">
+                                            <label>Forecast CIF (for Emcure) ($):</label>
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-3">
+                                        <div class="form-group">
+                                            @ViewBag.IniFirstYearForecastCIF
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-3">
+                                        <div class="form-group">
+                                            @ViewBag.IniSecondYearForecastCIF
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-3">
+                                        <div class="form-group">
+                                            @ViewBag.IniThirdYearForecastCIF
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-sm-3">
+                                        <!-- text input -->
+                                        <div class="form-group">
+                                            <label>Forecast Value (Emcure) ($):</label>
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-3">
+                                        <div class="form-group">
+                                            @ViewBag.IniFirstYearForecastValue
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-3">
+                                        <div class="form-group">
+                                            @ViewBag.IniSecondYearForecastValue
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-3">
+                                        <div class="form-group">
+                                            @ViewBag.IniThirdYearForecastValue
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-sm-3">
+                                        <!-- text input -->
+                                        <div class="form-group">
+                                            <label>Forecast Price to patient (for our brand)($):</label>
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-3">
+                                        <div class="form-group">
+                                            @ViewBag.IniFirstYearForecastPriceToPatient
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-3">
+                                        <div class="form-group">
+                                            @ViewBag.IniSecondYearForecastPriceToPatient
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-3">
+                                        <div class="form-group">
+                                            @ViewBag.IniThirdYearForecastPriceToPatient
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-sm-3">
+                                        <!-- text input -->
+                                        <div class="form-group">
+                                            <label>Order Frequency:</label>
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-3">
+                                        <div class="form-group">
+                                            @ViewBag.IniOrderFrequency
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-3"></div>
+                                    <div class="col-sm-3"></div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-sm-3">
+                                        <!-- text input -->
+                                        <div class="form-group">
+                                            <label>No. of Shipments:</label>
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-3">
+                                        <div class="form-group">
+                                            @ViewBag.DetNoofShipments
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-3"></div>
+                                    <div class="col-sm-3"></div>
+                                </div>
+                                <hr />
+                                <div class="row">
+                                    <div class="col-sm-3 ">
+                                        <label>Name to whom dossier to be sent:</label>
+                                    </div>
+                                    <div class="col-sm-3">
+                                        @ViewBag.IniNameDossierSend
+                                    </div>
+                                    <div class="col-sm-3 ">
+                                        <label>Address to whom dossier to be sent:</label>
+
+                                    </div>
+                                    <div class="col-sm-3">
+                                        @ViewBag.IniAddressDossierSend
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-sm-3 ">
+                                        <label>Email to whom dossier to be sent:</label>
+                                    </div>
+                                    <div class="col-sm-3">
+                                        @ViewBag.IniEmailDossierSend
+                                    </div>
+                                    <div class="col-sm-3 ">
+                                        <label>Phone Number to whom dossier to be sent:</label>
+
+                                    </div>
+                                    <div class="col-sm-3">
+                                        @ViewBag.IniPhoneDossierSend
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-sm-3 ">
+                                        <label>Strategy Alignment:</label>
+
+                                    </div>
+                                    <div class="col-sm-3">
+                                        @if (@ViewBag.IniStrategyAlignment == true)
+                                        {
+                                            <label>Yes</label>
+                                        }
+                                        else
+                                        {
+                                            <label>No</label>
+                                        }
+                                    </div>
+                                    <div class="col-sm-3">
+                                        <label>Exception Explained:</label>
+
+                                    </div>
+                                    <div class="col-sm-3">
+                                        @ViewBag.IniExceptionExplained
+                                    </div>
+                                </div>                               
+
+                            </div>
+                        </div>
+                        <!-- /.card-body -->
+                    </div>
+                    <!-- /.card -->
+
+                </section>
+
+            </div>
+
+            <div class="row">
+                <section class="col-lg-12">
+                    <!-- Custom tabs (Charts with tabs)-->
+                    <div class="card">
+                        <div class="card-header">
+                            <h3 class="card-title">
+                                <i class="far fa-plus-square mr-2"></i> Approval Summary Table
+                            </h3>
+                        </div>
+                        <!-- /.card-header -->
+                      
+                        <div class="card-body">
+                            <table class="table table-bordered">
+                                <tr>
+                                    <th>Responsible</th>
+                                    <th>Name</th>
+                                    <th>Date</th>
+                                </tr>
+                                <tr>
+                                    <td><strong>Dossier raised by</strong></td>
+                                    <td><div id="DossierCreatedName"></div></td>
+                                    <td><div id="DossierCreatedDateTime"></div></td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Dossier checked by Country Manager</strong></td>
+                                    <td><div id="CountryManagerApprovalName"></div></td>
+                                    <td><div id="CountryManagerApprovalDateTime"></div></td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Dossier checked by HO </strong></td>
+                                    <td><div id="LineManagerApprovalName"></div></td>
+                                    <td><div id="LineManagerApprovalDateTime"></div></td>
+                                </tr>
+                                <tr>
+                                    <td><strong>HOD DRF Approval</strong></td>
+                                    <td><div id="HODofDossierApprovalName"></div></td>
+                                    <td><div id="HODofDossierApprovalDateTime"></div></td>
+                                </tr>
+                                <tr>
+                                    <td><strong>HOD dossier prep. Approval</strong></td>
+                                    <td><div id="HODofDossierApprovalName1"></div></td>
+                                    <td><div id="HODofDossierApprovalDateTime1"></div></td>
+                                </tr>
+
+
+                            </table>
+
+                        </div>
+                            </div>
+                           
+                       
+                        <!-- /.card-body -->
+                  
+                    <!-- /.card -->
+
+                </section>
+            </div>
+
+
+
+
+            <div class="row">
+                <section class="col-lg-12">
+                    <!-- Custom tabs (Charts with tabs)-->
+                    <div class="card">
+                        <div class="card-header">
+                            <h3 class="card-title">
+                                <i class="far fa-plus-square mr-2"></i> Approval
+                            </h3>
+                        </div>
+                        <!-- /.card-header -->
+                        <form method="post" name="Approval" onsubmit="return SubmitInitialApprovalForm(this)">
+                            <div class="card-body">
+                                @Html.HiddenFor(Model => Model.InitializationID)
+                                <div class="row">
+                                    <div class="col-sm-3">
+                                        <!-- text input -->
+                                        <label>Do you want to approve this DRF<span style="color:red">*</span> :</label>
+                                    </div>
+                                    <div class="col-sm-3 row">
+                                        <div class="form-group text-center">
+                                            <div class="form-group required">
+                                                <div class="icheck-primary d-inline mr-5">
+                                                    @Html.RadioButton("InitialApproval", true, true, htmlAttributes: new { @class = "radiobuttons", id = "Approved" , @onchange ="CheckRadioBox()"})
+                                                    <label for="Approved">
+                                                        Approved
+                                                    </label>
+                                                </div>
+
+                                                <div class="icheck-primary d-inline">
+                                                    @Html.RadioButton("InitialApproval", false, false, htmlAttributes: new { @class = "radiobuttons", id = "Rejected" , @onchange ="CheckRadioBox()"})
+
+                                                    <label for="Rejected">
+                                                        Rejected
+                                                    </label>
+                                                </div>
+                                                @Html.ValidationMessageFor(model => model.InitialApproval, "", new { @class = "text-danger" })
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-1">
+                                        <label>Comment :</label>                                       
+                                    </div>
+                                    <div class="col-sm-5">
+                                        <div class="form-group">
+                                            @Html.TextAreaFor(model => model.Comment, new { @class = "form-control",@readonly=true })
+                                            <small class="text-danger" id="Comment_Error"></small>
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </div>
+                            <div class="card-footer text-center mb-3">
+                                @if (User.IsInRole("Prescriber") || User.IsInRole("Initial Approval"))
+                                {
+                                    <button type="submit" class="btn btn-primary mr-3">@SharedLocalizer["Save"].Value</button>
+                                }                                                                
+                                <a class="btn btn-primary" asp-area="" asp-controller="DRFInitialization" asp-action="Index">@SharedLocalizer["Cancel"].Value</a>
+                            </div>
+                        </form>
+                        <!-- /.card-body -->
+                    </div>
+                    <!-- /.card -->
+
+                </section>
+            </div>
+
+
+
+            <!-- /.row (main row) -->
+        </div>
+        <!-- /.container-fluid -->
+    </section>
+    <!-- /.content -->
+</div>
+
+<script type="text/javascript">
+    $(function () {
+        $(".btn-tool").on("click", ".fa-expand", function () {
+            $('.min-max').removeClass('direct-chat-messages');
+        });
+        $(".btn-tool").on("click", ".fa-compress", function () {
+            $('.min-max').addClass('direct-chat-messages');
+        });
+    });
+
+    var dataTable, getPIDFList;
+
+    $(document).ready(function () {
+        $('#loading').show();
+
+        var dataTable = $('#PIDFTable').DataTable({
+            responsive: false,
+            lengthChange: false,
+            autoWidth: false,
+            paging: false,
+            searching: false,
+            sort: false,
+            "bInfo": false,
+            columnDefs: [
+                { responsivePriority: 1, targets: -5 },
+                { responsivePriority: 1, targets: -3 },
+                { responsivePriority: 100, targets: -4 }
+            ],
+
+            language: {
+                "emptyTable": "@SharedLocalizer["No data available in table"].Value",
+                "info": "@SharedLocalizer["Showing _START_ to _END_ of _TOTAL_ entries"].Value",
+                "infoEmpty":"@SharedLocalizer["Showing 0 to 0 of 0 entries"].Value",
+                "infoFiltered":"@SharedLocalizer["(filtered from _MAX_ total entries)"].Value",
+                "lengthMenu":"@SharedLocalizer["Show _MENU_ entries"].Value",
+                "loadingRecords": "@SharedLocalizer["Loading..."].Value",
+                "processing": "@SharedLocalizer["Processing..."].Value",
+                "search": "@SharedLocalizer["Search"].Value",
+                "zeroRecords":"@SharedLocalizer["No matching records found"].Value",
+                "paginate": {
+                    "first":"@SharedLocalizer["First"].Value",
+                    "last":"@SharedLocalizer["Last"].Value",
+                    "next": "@SharedLocalizer["Next"].Value",
+                    "previous":"@SharedLocalizer["Previous"].Value"
+                },
+            }
+        });
+
+        getPIDFList = function () {           
+            var data = {"DRFID":@ViewBag.IniInitializationID,"CountryID":@ViewBag.IniCountryID };
+              
+
+            $.ajax({
+                type: "POST",
+                url: '@Url.Action("AttachedPIDFDetails", "DRFInitialization")/',
+                //contentType: "application/json; charset=utf-8",
+                dataType: "json",
+                data:data,
+                success: function (response) {
+                    $('#loading').hide();
+                    var jsonObject = response.data;
+
+                    //console.log(jsonObject);
+
+                    var result = jsonObject.map(function (item) {
+                        var result = [];
+
+                        result.push(item.pidfNo);
+                        result.push(item.projectorProductName);
+                        result.push(item.strengths);
+                        result.push(item.patentStatus);
+                        result.push(item.continentName);
+                        result.push(item.countryName);
+                        result.push(item.packing);
+                        result.push(item.batchSize);
+                        result.push(item.packSize);
+                        result.push(item.cogs);
+                        result.push(item.freight);
+                        result.push(item.totalCIFCost);
+                        result.push(item.cifPricePerUnit);
+                        result.push(item.cifPricePerPack);
+                        result.push(item.profitPerPack);
+                        result.push(item.percentCont);
+                        result.push(item.contributionThreeYear);
+                        result.push(item.costofThreeBatches);
+                        result.push(item.randDCost);
+                        result.push(item.filingCost);
+                        result.push(item.stabilityCost);
+                        result.push(item.totalInvest);
+                        result.push(item.roi);
+                        //result.push(item.PidfStatus);
+                        return result;
+                    });
+                    dataTable.clear();
+                    dataTable.rows.add(result); // add to DataTable instance
+                    dataTable.draw();
+                },
+                failure: function () {
+                    $("#PIDFTable").append('@SharedLocalizer["Error when fetching data please contact administrator"].Value');
+                }
+            });
+        }
+        getPIDFList();
+        var data = {InitializationID:'@ViewBag.IniInitializationID'};
+
+        $.ajax({
+            type: "POST",
+            url: '@Url.Action("GetFilledIPMANSCMRADetails", "DRFInitialization")/',
+            //contentType: "application/json; charset=utf-8",
+            dataType: "json",
+            data: data,
+            success: function (response) {
+                //console.log(response);
+                    //Approval Summary table
+                $('#DossierCreatedName').text(response.data.drfApprovalDetails.drfCreatedName);
+                $('#DossierCreatedDateTime').text(convertDDMMYYY(response.data.drfApprovalDetails.drfCreatedDate.split('T')[0]) );
+
+                $('#CountryManagerApprovalName').text(response.data.drfApprovalDetails.cmApprovalName);
+                $('#CountryManagerApprovalDateTime').text(convertDDMMYYY(response.data.drfApprovalDetails.cmCreatedDate.split('T')[0]) );
+
+                $('#LineManagerApprovalName').text(response.data.drfApprovalDetails.lmApprovalName);
+                $('#LineManagerApprovalDateTime').text(convertDDMMYYY(response.data.drfApprovalDetails.lmCreatedDate.split('T')[0]) );
+
+                $('#HODofDossierApprovalName').text(response.data.drfApprovalDetails.hodApprovalName);
+                $('#HODofDossierApprovalDateTime').text(convertDDMMYYY(response.data.drfApprovalDetails.hodCreatedDate.split('T')[0]) );
+          
+            },
+            failure: function () {
+
+            }
+        }); 
+    });
+
+
+    function convertDDMMYYY(tempDate) {
+        return tempDate.split('-')[2] + '-' + tempDate.split('-')[1] + '-' + tempDate.split('-')[0];
+    }
+
+    function SubmitInitialApprovalForm(form) {
+        if ($('[id="Rejected"]:checked').val() === 'False' && ($('#Comment').val() == '' || $('#Comment').val() == null || $('#Comment').val() == undefined )) {
+			$('#Comment_Error').text('The Comment field is required');
+			return false;
+		}
+
+        var url= "/DRFInitialization/Index";
+        $.validator.unobtrusive.parse(form);
+        $('#InitializationID').val(@ViewBag.IniInitializationID);
+         
+        if ($(form).valid()) {
+            $('#loading').show();
+            $.ajax({
+                type : "POST",
+                url : '@Url.Action("UpdateDRFInitialApproval", "DRFInitialization")/',//form.action,
+                data : $(form).serialize(),
+                success: function (result) {
+                    //console.log(result);
+                    $('#loading').hide();
+                    if (result.data === "success") {
+                        openCommonModal('successModal modal-sm', '@Html.Raw(SharedLocalizer["Success"].Value)', '@Html.Raw(SharedLocalizer["DRF data submitted."].Value)', true);
+                        setTimeout(function(){ location.href = url; }, 2000);
+                    }
+                    else {
+                        openCommonModal('alertModal modal-sm', '@SharedLocalizer["Error"].Value', 'Something went wrong.', false);
+                    }
+                }
+            });
+        }
+        return false;
+    }
+
+    function CheckRadioBox() {
+		var data = $("input[name='InitialApproval']:checked").val();
+
+		if (data == 'True') {
+            $('#Comment').prop("readonly", true);
+            $('#Comment_Error').empty();
+		}
+		else {
+            $('#Comment').prop("readonly", false);
+		}
+		}
+
+</script>
+

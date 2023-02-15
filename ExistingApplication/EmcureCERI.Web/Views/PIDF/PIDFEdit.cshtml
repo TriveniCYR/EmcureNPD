@@ -1,0 +1,986 @@
+﻿@inject Microsoft.Extensions.Localization.IStringLocalizer<SharedResource> SharedLocalizer
+
+@model EmcureCERI.Web.Models.PIDFPViewModels.clsPidfCountryDetailsNewUpdateModel
+
+@{
+    ViewData["Title"] = @SharedLocalizer[" Add PIDF"].Value;
+}
+
+<link rel="stylesheet" href="~/plugins/datatables-bs4/css/dataTables.bootstrap4.min.css">
+<link rel="stylesheet" href="~/plugins/datatables-responsive/css/responsive.bootstrap4.min.css">
+<link rel="stylesheet" href="~/plugins/datatables-buttons/css/buttons.bootstrap4.min.css">
+<script src="~/plugins/bs-custom-file-input/bs-custom-file-input.min.js"></script>
+
+<!--script src="~/lib/bootstrap-datetimepicker/js/moment-with-locales.js"></!--script>
+<script-- src="~/lib/jquery/dist/jquery.js"></script-->
+<script src="~/lib/bootstrap-datetimepicker/js/bootstrap-datetimepicker.js"></script>
+<!--link href="~/css/main.css" rel="stylesheet" />-->
+<style>
+    select[readonly] option, select[readonly] optgroup {
+        display: none;
+    }
+</style>
+
+<div class="content-wrapper pt-3">
+    <!-- Main content -->
+    <section class="content">
+        <div class="container-fluid">
+            <!-- Small boxes (Stat box) -->
+            <!-- Main row -->
+            <div class="row">
+                <section class="col-lg-12 ">
+                    <!-- Custom tabs (Charts with tabs)-->
+                    <div class="card">
+                        <div class="card-header">
+                            <h3 class="card-title">
+                                <i class="far fa-plus-square mr-2"></i> Product Identification Form
+                            </h3>
+                            <div class="card-tools">
+                                <ul class="nav nav-pills ml-auto">
+                                    <li class="nav-item mr-3">
+                                        <a class="btn btn-outline-primary" href="@Url.Action("PIDFList","PIDF")"><i class="far fa-list-alt mr-1"></i>Project List</a>
+                                    </li>
+                                    <li class="nav-item mr-3">
+                                        <a class="btn btn-outline-primary" href="@Url.Action("PIDFStrengthList","PIDF")"><i class="far fa-list-alt mr-1"></i>PIDF List</a>
+                                    </li>
+                                    <li class="nav-item mr-3">
+                                        <a class="btn btn-outline-primary" href="@Url.Action("PIDFNew","PIDF")"><i class="far fa-plus-square mr-1"></i> Create New PIDF</a>
+                                    </li>
+                                    <li class="nav-item mr-3">
+                                        <button class="btn btn-outline-primary" onclick="javascript:window.history.back();"><i class="fas fa-undo mr-1"></i> Back</button>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+
+                        <div class="row"><div class="col-sm-6 ml-3"><strong>Note : </strong> <small>@SharedLocalizer["All fields are mandatory"].Value</small></div></div>
+                        <div class="card-body">
+                            <div>
+                                <div class="row mt-3">                                   
+                                    <div class="col-sm-7">
+                                        <table class="table table-bordered">
+                                            <tr>
+                                                <td width="30%"><strong>Product Name</strong></td>
+                                                <td><div class="col-sm-9" id="pidf_ProjectorProductName"></div></td>
+                                            </tr>
+                                            <tr>
+                                                <td width="30%"><strong>Product Type</strong></td>
+                                                <td><div class="col-sm-9" id="pidf_ProductTypeName"></div></td>
+                                            </tr>
+                                            <tr>
+                                                <td width="30%"><strong>Plant Name</strong></td>
+                                                <td><div class="col-sm-9" id="pidf_PlantName"></div></td>
+                                            </tr>
+                                            <tr>
+                                                <td width="30%"><label>Formulation</label></td>
+                                                <td><div class="col-sm-9" id="pidf_FormulationName"></div></td>
+                                            </tr>
+                                            <tr>
+                                                <td width="30%"><label>Work Flow</label></td>
+                                                <td><div class="col-sm-9" id="pidf_WorkflowName"></div></td>
+                                            </tr>
+
+                                        </table>
+
+                                    </div>
+                                    <div class="col-sm-5">
+                                        <style>
+                                            #myTable tbody {
+                                                display: block;
+                                                overflow-y: auto;
+                                                table-layout: fixed;
+                                                max-height: 200px;
+                                            }
+                                        </style>
+                                        <table id="myTable" class="table order-list table-bordered" style="width:100%">
+                                            <thead>
+                                                <tr>
+                                                    <th width="30%">Strength</th>
+                                                    <th>Unit</th>
+                                                </tr>
+                                            </thead>
+                                        </table>
+                                    </div>
+                                </div>
+                                @*<hr />*@
+                                @*<div class="row">
+                                    <table id="myTable" class="table order-list table-bordered" style="width:100%">
+                                        <thead>
+                                            <tr>
+                                                <th>Strength</th>
+                                                <th>Unit</th>
+                                            </tr>
+                                        </thead>
+                                    </table>
+                                </div>*@
+                            </div>                           
+                            @*Remaining code here*@
+                            <div class="row mt-4">
+                                <div class="col-sm-12">
+                                    <div class="card  card-primary card-outline card-outline-tabs nav-fill nav-pills">                                       
+                                        <div class="card-body">                                            
+                                            <h4 class="text-divider"><span id="IPD_Name">CIS</span></h4>
+                                            <form method="post" name="CISCountryUpdate" id="CISCountryUpdate" onsubmit="return UpdateCountryData(this)">
+
+                                                @Html.HiddenFor(p => p.PidfID)
+                                                @Html.HiddenFor(p => p.PidfNo)
+                                                @Html.HiddenFor(p => p.PidfDetailID)
+                                                @Html.HiddenFor(p => p.ContinentID)
+                                                @Html.HiddenFor(p => p.ContinentName)
+                                                @Html.HiddenFor(p => p.CountryName)
+                                                @Html.HiddenFor(p => p.PackSizeName)
+                                                @Html.HiddenFor(p => p.PackingName)
+                                                @Html.HiddenFor(p => p.PidfStrength)
+                                                @Html.HiddenFor(p => p.uploadedfilesdetails)                                               
+
+                                                <div id="cisCountryRow" class="row">
+                                                    <div class="col-md-3">
+                                                        <div class="form-group required">
+                                                            @Html.LabelFor(p => p.CountryID, new { @class = "control-label" })
+                                                            @Html.DropDownListFor(p => p.CountryID, new SelectList(string.Empty, "Value", "Text"), "Please Select Option", htmlAttributes: new { @class = "form-control input-sm f-s-15 bg-eff4f55c w100per" })
+                                                            @Html.ValidationMessageFor(p => p.CountryID, "", new { @class = "text-danger" })
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-3">
+                                                        <div class="form-group required">
+                                                            @Html.LabelFor(p => p.StrengthID, new { @class = "control-label" })
+                                                            @Html.DropDownListFor(p => p.StrengthID, new SelectList(string.Empty, "Value", "Text"), "Please Select Option", htmlAttributes: new { @class = "form-control input-sm f-s-15 bg-eff4f55c w100per" })
+                                                            @Html.ValidationMessageFor(p => p.StrengthID, "", new { @class = "text-danger" })
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-3">
+                                                        <div class="form-group required">
+                                                            @Html.LabelFor(p => p.PackSizeID, new { @class = "control-label" })
+                                                            @Html.DropDownListFor(p => p.PackSizeID, new SelectList(string.Empty, "Value", "Text"), "Please Select Option", htmlAttributes: new { @class = "form-control input-sm f-s-15 bg-eff4f55c w100per" })
+                                                            @Html.ValidationMessageFor(p => p.PackSizeID, "", new { @class = "text-danger" })
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-3">
+                                                        <div class="form-group required">
+                                                            @Html.LabelFor(p => p.PackingID, new { @class = "control-label" })
+                                                            @Html.DropDownListFor(p => p.PackingID, new SelectList(string.Empty, "Value", "Text"), "Please Select Option", htmlAttributes: new { @class = "form-control input-sm f-s-15 bg-eff4f55c w100per" })
+                                                            @Html.ValidationMessageFor(p => p.PackingID, "", new { @class = "text-danger" })
+                                                        </div>
+                                                    </div>
+
+                                                </div>
+                                                <div id="cisCifRow" class="row mt-4">
+                                                    <table id="example2" class="table table-bordered">
+                                                        <thead>
+                                                            <tr>
+                                                                <th scope="col">#</th>
+                                                                <th scope="col">CIF Price Per Pack(in USD)</th>
+                                                                <th scope="col">Quantity</th>
+                                                                <th scope="col">Volume</th>
+                                                            </tr>
+                                                        </thead>
+                                                        <tbody>
+                                                            <tr>
+                                                                <th scope="row">Year 1</th>
+                                                                <td>
+                                                                    @Html.EditorFor(p => p.CIFPricePerPack1, new { htmlAttributes = new { @autocomplete = "off", @class = "form-control", @placeholder = "Enter CIF Price/Pack", id = "IPD_ciscifpriceperpack1", onchange = @"CIS_ChangeCIFPricePerPack1()", onkeyup = @"CIS_ChangeCIFPricePerPack1()" } })
+                                                                    @Html.ValidationMessageFor(p => p.CIFPricePerPack1, "", new { @class = "text -danger" })
+                                                                </td>
+                                                                <td>
+                                                                    @Html.EditorFor(p => p.QtyOneyear, new { htmlAttributes = new { @autocomplete = "off", @class = "form-control", @placeholder = "Enter Quantity", id = "IPD_cisquantity1", onchange = @"CIS_Year1Calculation()", onkeyup = @"CIS_Year1Calculation()" } })
+                                                                    @Html.ValidationMessageFor(p => p.QtyOneyear, "", new { @class = "text -danger" })
+                                                                </td>
+                                                                <td>
+                                                                    @Html.EditorFor(p => p.VolOneyear, new { htmlAttributes = new { @autocomplete = "off", @class = "form-control", @placeholder = "Enter Volume", id = "IPD_cisvolume1", @readonly = "readonly" } })
+                                                                    @Html.ValidationMessageFor(p => p.VolOneyear, "", new { @class = "text -danger" })
+                                                                </td>
+                                                            </tr>
+                                                            <tr>
+                                                                <th scope="row">Year 2</th>
+                                                                <td>
+                                                                    @Html.EditorFor(p => p.CIFPricePerPack2, new { htmlAttributes = new { @autocomplete = "off", @class = "form-control", @placeholder = "Enter CIF Price/Pack", id = "IPD_ciscifpriceperpack2", onchange = @"CIS_ChangeCIFPricePerPack2()", onkeyup = "CIS_ChangeCIFPricePerPack2()" } })
+                                                                    @Html.ValidationMessageFor(p => p.CIFPricePerPack2, "", new { @class = "text -danger" })
+                                                                </td>
+                                                                <td>
+                                                                    @Html.EditorFor(p => p.QtyTwoyear, new { htmlAttributes = new { @autocomplete = "off", @class = "form-control", @placeholder = "Enter Quantity", id = "IPD_cisquantity2", onchange = @"CIS_Year2Calculation()", onkeyup = "CIS_Year2Calculation()" } })
+                                                                    @Html.ValidationMessageFor(p => p.QtyTwoyear, "", new { @class = "text -danger" })
+
+                                                                </td>
+                                                                <td>
+                                                                    @Html.EditorFor(p => p.VolTwoyear, new { htmlAttributes = new { @autocomplete = "off", @class = "form-control", @placeholder = "Enter Volume", id = "IPD_cisvolume2", @readonly = "readonly" } })
+                                                                    @Html.ValidationMessageFor(p => p.VolTwoyear, "", new { @class = "text -danger" })
+                                                                </td>
+                                                            </tr>
+                                                            <tr>
+                                                                <th scope="row">Year 3</th>
+                                                                <td>
+                                                                    @Html.EditorFor(p => p.CIFPricePerPack3, new { htmlAttributes = new { @autocomplete = "off", @class = "form-control", @placeholder = "Enter CIF Price/Pack", id = "IPD_ciscifpriceperpack3", onchange = @"CIS_ChangeCIFPricePerPack3()", onkeyup = @"CIS_ChangeCIFPricePerPack3()" } })
+                                                                    @Html.ValidationMessageFor(p => p.CIFPricePerPack3, "", new { @class = "text -danger" })
+
+                                                                </td>
+                                                                <td>
+                                                                    @Html.EditorFor(p => p.QtyThreeyear, new { htmlAttributes = new { @autocomplete = "off", @class = "form-control", @placeholder = "Enter Quantity", id = "IPD_cisquantity3", onchange = @"CIS_Year3Calculation()", onkeyup = @"CIS_Year3Calculation()" } })
+                                                                    @Html.ValidationMessageFor(p => p.QtyThreeyear, "", new { @class = "text -danger" })
+
+                                                                </td>
+                                                                <td>
+                                                                    @Html.EditorFor(p => p.VolThreeyear, new { htmlAttributes = new { @autocomplete = "off", @class = "form-control", @placeholder = "Enter Volume", id = "IPD_cisvolume3", @readonly = "readonly" } })
+                                                                    @Html.ValidationMessageFor(p => p.VolThreeyear, "", new { @class = "text -danger" })
+                                                                </td>
+                                                            </tr>
+                                                        </tbody>
+                                                    </table>
+                                                </div>
+                                                @*Financial Details*@
+                                                <div class="card mt-3">
+                                                    <div class="card-header">
+                                                        <h3 class="card-title">Other Financial Details</h3>
+                                                    </div>
+                                                    <div class="">
+                                                        <div class="card-body">
+                                                            <div class="row">
+                                                                <div class="col-md-3">
+
+                                                                    <div class="form-group required">
+                                                                        @Html.LabelFor(p => p.BatchSize, new { @class = "control-label" })
+                                                                        @Html.EditorFor(p => p.BatchSize, new { htmlAttributes = new { @autocomplete = "off", @class = "form-control", @placeholder = "Enter Batch size eg. 100" } })
+                                                                        @Html.ValidationMessageFor(p => p.BatchSize, "", new { @class = "text-danger" })
+                                                                    </div>
+                                                                </div>
+                                                                @*<div class="col-md-4">
+                            <div class="form-group">
+                                <label>Currency</label>
+                                <select class="form-control select2bs4" name="Country" id="cmbCurrency" style="width: 100%;">
+                                    <option value="0">Please Select Currency</option>
+                                </select>
+                                <small class="text-danger" id="cmbCurrency_error"></small>
+                            </div>
+                        </div>*@
+                                                                <div class="col-md-3">
+                                                                    <div class="form-group required">
+                                                                        @Html.LabelFor(p => p.COGS, new { @class = "control-label" })
+                                                                        @Html.EditorFor(p => p.COGS, new { htmlAttributes = new { @autocomplete = "off", @class = "form-control", @placeholder = "Enter COGS eg. 100", onchange = @"Changecogs()", onkeyup = @"Changecogs()" } })
+                                                                        @Html.ValidationMessageFor(p => p.COGS, "", new { @class = "text-danger" })
+                                                                    </div>
+                                                                </div>
+                                                                <div class="col-md-3">
+                                                                    <div class="form-group required">
+                                                                        @Html.LabelFor(p => p.Freight, new { @class = "control-label" })
+                                                                        @Html.EditorFor(p => p.Freight, new { htmlAttributes = new { @autocomplete = "off", @class = "form-control", @placeholder = "Freight", onchange = @"Changecogs()", onkeyup = @"Changecogs()" } })
+                                                                        @Html.ValidationMessageFor(p => p.Freight, "", new { @class = "text-danger" })
+                                                                    </div>
+                                                                </div>
+                                                                <div class="col-md-3">
+                                                                    <div class="form-group required">
+                                                                        @Html.LabelFor(p => p.TotalCIFCost, new { @class = "control-label" })
+                                                                        @Html.EditorFor(p => p.TotalCIFCost, new { htmlAttributes = new { @autocomplete = "off", @class = "form-control", @placeholder = "Total CIF Cost", @readonly = "readonly" } })
+                                                                        @Html.ValidationMessageFor(p => p.TotalCIFCost, "", new { @class = "text-danger" })
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                            <div class="row">
+                                                                <div class="col-md-3">
+                                                                    <div class="form-group required">
+                                                                        @Html.LabelFor(p => p.CostofThreeBatches, new { @class = "control-label" })
+                                                                        @Html.EditorFor(p => p.CostofThreeBatches, new { htmlAttributes = new { @autocomplete = "off", @class = "form-control", @placeholder = "Cost of 3 Batches", onchange = @"CalculateTotalInvestment()", onkeyup = @"CalculateTotalInvestment()" } })
+                                                                        @Html.ValidationMessageFor(p => p.CostofThreeBatches, "", new { @class = "text-danger" })
+                                                                    </div>
+                                                                </div>
+                                                                <div class="col-md-3">
+                                                                    <div class="form-group required">
+                                                                        @Html.LabelFor(p => p.AnalyticalCost, new { @class = "control-label" })
+                                                                        @Html.EditorFor(p => p.AnalyticalCost, new { htmlAttributes = new { @autocomplete = "off", @class = "form-control", @placeholder = "Analytical Cost", onchange = @"CalculateTotalInvestment()", onkeyup = @"CalculateTotalInvestment()" } })
+                                                                        @Html.ValidationMessageFor(p => p.AnalyticalCost, "", new { @class = "text-danger" })
+                                                                    </div>
+                                                                </div>
+                                                                <div class="col-md-3">
+                                                                    <div class="form-group required">
+                                                                        @Html.LabelFor(p => p.BECost, new { @class = "control-label" })
+                                                                        @Html.EditorFor(p => p.BECost, new { htmlAttributes = new { @autocomplete = "off", @class = "form-control", @placeholder = "Enter BE Cost", onchange = @"CalculateTotalInvestment()", onkeyup = @"CalculateTotalInvestment()" } })
+                                                                        @Html.ValidationMessageFor(p => p.BECost, "", new { @class = "text-danger" })
+                                                                    </div>
+                                                                </div>
+                                                                <div class="col-md-3">
+                                                                    <div class="form-group required">
+                                                                        @Html.LabelFor(p => p.RLDCost, new { @class = "control-label" })
+                                                                        @Html.EditorFor(p => p.RLDCost, new { htmlAttributes = new { @autocomplete = "off", @class = "form-control", @placeholder = "Enter RLD Cost", onchange = @"CalculateTotalInvestment()", onkeyup = @"CalculateTotalInvestment()" } })
+                                                                        @Html.ValidationMessageFor(p => p.RLDCost, "", new { @class = "text-danger" })
+                                                                    </div>
+                                                                </div>
+                                                                @*<div class="col-md-3">
+                            <div class="form-group required">
+                                @Html.LabelFor(p => p.CIFPricePerUnit, new { @class = "control-label" })
+                                @Html.EditorFor(p => p.CIFPricePerUnit, new { htmlAttributes = new { @autocomplete = "off", @class = "form-control", @placeholder = "CIF Price for Per Unit" } })
+                                @Html.ValidationMessageFor(p => p.CIFPricePerUnit, "", new { @class = "text-danger" })
+                            </div>
+                        </div>*@
+                                                                @*<div class="col-md-3">
+                            <div class="form-group">
+                               @Html.LabelFor(p => p.PercentCont, new { @class = "control-label" })
+                                @Html.EditorFor(p => p.PercentCont, new { htmlAttributes = new { @autocomplete = "off", @class = "form-control", @placeholder = "% Count" } })
+                                @Html.ValidationMessageFor(p => p.PercentCont, "", new { @class = "text-danger" })
+                            </div>
+                        </div>*@
+                                                            </div>
+                                                            @*<div class="row mt-4">
+                    <div class="col-md-3">
+                        <div class="form-group required">
+                            @Html.LabelFor(p => p.ContributionThreeYear, new { @class = "control-label" })
+                            @Html.EditorFor(p => p.ContributionThreeYear, new { htmlAttributes = new { @autocomplete = "off", @class = "form-control", @placeholder = "Contribution (3 Years)" } })
+                            @Html.ValidationMessageFor(p => p.ContributionThreeYear, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+
+
+                                                                    </div>*@
+
+                                                            <div class="row ">
+                                                                <div class="col-md-3">
+                                                                    <div class="form-group required">
+                                                                        @Html.LabelFor(p => p.RandDCost, new { @class = "control-label" })
+                                                                        @Html.EditorFor(p => p.RandDCost, new { htmlAttributes = new { @autocomplete = "off", @class = "form-control", @placeholder = "Enter R&D Cost", onchange = @"CalculateTotalInvestment()", onkeyup = @"CalculateTotalInvestment()" } })
+                                                                        @Html.ValidationMessageFor(p => p.RandDCost, "", new { @class = "text-danger" })
+                                                                    </div>
+                                                                </div>
+                                                                <div class="col-md-3">
+                                                                    <div class="form-group required">
+                                                                        @Html.LabelFor(p => p.FilingCost, new { @class = "control-label" })
+                                                                        @Html.EditorFor(p => p.FilingCost, new { htmlAttributes = new { @autocomplete = "off", @class = "form-control", @placeholder = "Enter Filing Cost", onchange = @"CalculateTotalInvestment()", onkeyup = @"CalculateTotalInvestment()" } })
+                                                                        @Html.ValidationMessageFor(p => p.FilingCost, "", new { @class = "text-danger" })
+                                                                    </div>
+                                                                </div>
+                                                                <div class="col-md-3">
+                                                                    <div class="form-group required">
+                                                                        @Html.LabelFor(p => p.StabilityCost, new { @class = "control-label" })
+                                                                        @Html.EditorFor(p => p.StabilityCost, new { htmlAttributes = new { @autocomplete = "off", @class = "form-control", @placeholder = "Enter Stability Cost", onchange = @"CalculateTotalInvestment()", onkeyup = @"CalculateTotalInvestment()" } })
+                                                                        @Html.ValidationMessageFor(p => p.StabilityCost, "", new { @class = "text-danger" })
+                                                                    </div>
+                                                                </div>
+                                                                <div class="col-md-3">
+                                                                    <div class="form-group required">
+                                                                        @Html.LabelFor(p => p.OtherCost, new { @class = "control-label" })
+                                                                        @Html.EditorFor(p => p.OtherCost, new { htmlAttributes = new { @autocomplete = "off", @class = "form-control", @placeholder = "Enter Other Cost", onchange = @"CalculateTotalInvestment()", onkeyup = @"CalculateTotalInvestment()" } })
+                                                                        @Html.ValidationMessageFor(p => p.OtherCost, "", new { @class = "text-danger" })
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                            <div class="row ">
+                                                                <div class="col-md-3">
+                                                                    <div class="form-group required">
+                                                                        @Html.LabelFor(p => p.TotalInvest, new { @class = "control-label" })
+                                                                        @Html.EditorFor(p => p.TotalInvest, new { htmlAttributes = new { @autocomplete = "off", @class = "form-control", @placeholder = "Total Invest", @readonly = "readonly" } })
+                                                                        @Html.ValidationMessageFor(p => p.TotalInvest, "", new { @class = "text-danger" })
+
+                                                                    </div>
+                                                                </div>
+
+                                                                <div class="col-md-3">
+                                                                    <div class="form-group required">
+                                                                        @Html.LabelFor(p => p.APISource, new { @class = "control-label" })
+                                                                        @Html.EditorFor(p => p.APISource, new { htmlAttributes = new { @autocomplete = "off", @class = "form-control", @placeholder = "Enter API Source" } })
+                                                                        @Html.ValidationMessageFor(p => p.APISource, "", new { @class = "text-danger" })
+                                                                    </div>
+                                                                </div>
+                                                                <div class="col-md-3">
+                                                                    <div class="form-group required">
+                                                                        @if (User.IsInRole("Prescriber") || User.IsInRole("ROI Manager"))
+                                                                        {
+                                                                            @Html.LabelFor(p => p.ROI, new { @class = "control-label" })
+                                                                            @Html.EditorFor(p => p.ROI, new { htmlAttributes = new { @autocomplete = "off", @class = "form-control", @placeholder = "Enter ROI" } })
+                                                                            @Html.ValidationMessageFor(p => p.ROI, "", new { @class = "text-danger" })
+                                                                        }
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                                <div class="card mt-3">
+                                                    <div class="card-header mb-3">
+                                                        <h3 class="card-title" for="exampleInputFile"><i class="fas fa-file-alt mr-3"></i> File inputs</h3>
+                                                    </div>
+                                                    <div class="row p-3">
+                                                        <div class="col-sm-5">
+                                                            <div class="form-group ml-">
+                                                                <label for="exampleInputFile" class="d-none">File inputs</label>
+                                                                <div class="input-group">
+                                                                    <div class="custom-file">
+                                                                        <input type="file" class="custom-file-input" file-module="UploadFile" id="UploadFile" name="UploadFile" multiple>
+                                                                        <label id="chooseFile" class="custom-file-label" for="exampleInputFile" style="overflow:hidden">Choose File</label>
+                                                                        <small class="text-danger" id="UploadFile_error"></small>
+                                                                    </div>
+                                                                    <div class="input-group-append">
+                                                                        <button type="button" class="input-group-text" id="btnUpload">Upload Files</button>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-sm-7 ">
+                                                            <table class="table fileorder-list table-bordered mr-3 ">
+                                                                <thead>
+                                                                    <tr>
+                                                                        <th>Files</th>
+                                                                        <th style="width:60px;">Action</th>
+                                                                    </tr>
+                                                                </thead>                                                                
+                                                            </table>
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                                <div class="card-footer text-center" style="margin: 10px -20px -20px;">
+                                                    <button type="submit" id="cisCountrySubmit" class="btn btn-primary">Submit</button>
+                                                </div>
+                                            </form>                                           
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+
+                    </div>
+                </section>
+            </div>
+        </div>
+    </section>
+
+</div>
+
+
+
+
+@section Scripts {
+    <script src="~/plugins/datatables/jquery.dataTables.min.js"></script>
+    <script src="~/plugins/datatables-bs4/js/dataTables.bootstrap4.min.js"></script>
+    <script src="~/plugins/datatables-responsive/js/dataTables.responsive.min.js"></script>
+    <script src="~/plugins/datatables-responsive/js/responsive.bootstrap4.min.js"></script>
+    <script src="~/plugins/datatables-buttons/js/dataTables.buttons.min.js"></script>
+
+
+    <script src="~/plugins/bs-custom-file-input/bs-custom-file-input.min.js"></script>
+
+    <script>
+         $(function () {
+            bsCustomFileInput.init();
+        });
+
+        var counter = 1;
+
+        $('#PidfID').val('@ViewBag.PIDFEditPIDFID');
+
+        $("#IPD_ciscifpriceperpack1").focusout(function () {if ($(this).val() == null || $(this).val() == "" || $(this).val() == undefined) {
+                $(this).val(0.00);
+            } $("#IPD_ciscifpriceperpack1").val(Number.parseFloat($("#IPD_ciscifpriceperpack1").val()).toFixed(2)); });
+        $("#IPD_ciscifpriceperpack2").focusout(function () {if ($(this).val() == null || $(this).val() == "" || $(this).val() == undefined) {
+                $(this).val(0.00);
+            } $("#IPD_ciscifpriceperpack2").val(Number.parseFloat($("#IPD_ciscifpriceperpack2").val()).toFixed(2)); });
+        $("#IPD_ciscifpriceperpack3").focusout(function () { if ($(this).val() == null || $(this).val() == "" || $(this).val() == undefined) {
+                $(this).val(0.00);
+            }$("#IPD_ciscifpriceperpack3").val(Number.parseFloat($("#IPD_ciscifpriceperpack3").val()).toFixed(2)); });
+
+        $("#IPD_cisquantity1").focusout(function () { if ($(this).val() == null || $(this).val() == "" || $(this).val() == undefined) {
+                $(this).val(0.00);
+            }$("#IPD_cisquantity1").val(Number.parseFloat($("#IPD_cisquantity1").val()).toFixed(2));});
+        $("#IPD_cisquantity2").focusout(function () { if ($(this).val() == null || $(this).val() == "" || $(this).val() == undefined) {
+                $(this).val(0.00);
+            }$("#IPD_cisquantity2").val(Number.parseFloat($("#IPD_cisquantity2").val()).toFixed(2));});
+        $("#IPD_cisquantity3").focusout(function () {if ($(this).val() == null || $(this).val() == "" || $(this).val() == undefined) {
+                $(this).val(0.00);
+            } $("#IPD_cisquantity3").val(Number.parseFloat($("#IPD_cisquantity3").val()).toFixed(2)); });
+
+        $("#IPD_cisvolume1").focusout(function () { if ($(this).val() == null || $(this).val() == "" || $(this).val() == undefined) {
+                $(this).val(0.00);
+            } $("#IPD_cisvolume1").val(Number.parseFloat($("#IPD_cisvolume1").val()).toFixed(2)); });
+        $("#IPD_cisvolume2").focusout(function () { if ($(this).val() == null || $(this).val() == "" || $(this).val() == undefined) {
+                $(this).val(0.00);
+            } $("#IPD_cisvolume2").val(Number.parseFloat($("#IPD_cisvolume2").val()).toFixed(2)); });
+        $("#IPD_cisvolume3").focusout(function () { if ($(this).val() == null || $(this).val() == "" || $(this).val() == undefined) {
+                $(this).val(0.00);
+            } $("#IPD_cisvolume3").val(Number.parseFloat($("#IPD_cisvolume3").val()).toFixed(2)); });
+
+        $("#COGS").focusout(function () {
+            if ($(this).val() == null || $(this).val() == undefined || $(this).val() == "") {
+                $(this).val(0.00);
+            }
+            $("#COGS").val(Number.parseFloat($("#COGS").val()).toFixed(2));
+        });
+        $("#Freight").focusout(function () {
+            if ($(this).val() == null || $(this).val() == undefined || $(this).val() == "") {
+                $(this).val(0.00);
+            }
+            $("#Freight").val(Number.parseFloat($("#Freight").val()).toFixed(2));
+        });
+        $("#TotalCIFCost").focusout(function () { if ($(this).val() == null || $(this).val() == undefined || $(this).val() == "") {
+                $(this).val(0.00);
+        }
+            $("#TotalCIFCost").val(Number.parseFloat($("#TotalCIFCost").val()).toFixed(2));
+        });
+
+        $("#CostofThreeBatches").focusout(function () {
+            if ($(this).val() == null || $(this).val() == undefined || $(this).val() == "") {
+                $(this).val(0.00);
+            }
+            $("#CostofThreeBatches").val(Number.parseFloat($("#CostofThreeBatches").val()).toFixed(2));
+        });
+        $("#AnalyticalCost").focusout(function () {
+            if ($(this).val() == null || $(this).val() == undefined || $(this).val() == "") {
+                $(this).val(0.00);
+            }
+            $("#AnalyticalCost").val(Number.parseFloat($("#AnalyticalCost").val()).toFixed(2));
+        });
+        $("#BECost").focusout(function () {
+            if ($(this).val() == null || $(this).val() == undefined || $(this).val() == "") {
+                $(this).val(0.00);
+            }
+            $("#BECost").val(Number.parseFloat($("#BECost").val()).toFixed(2));
+        });
+        $("#RLDCost").focusout(function () {
+            if ($(this).val() == null || $(this).val() == undefined || $(this).val() == "") {
+                $(this).val(0.00);
+            }
+            $("#RLDCost").val(Number.parseFloat($("#RLDCost").val()).toFixed(2));
+        });
+
+        $("#RandDCost").focusout(function () {
+            if ($(this).val() == null || $(this).val() == undefined || $(this).val() == "") {
+                $(this).val(0.00);
+            }
+            $("#RandDCost").val(Number.parseFloat($("#RandDCost").val()).toFixed(2));
+        });
+        $("#FilingCost").focusout(function () {
+            if ($(this).val() == null || $(this).val() == undefined || $(this).val() == "") {
+                $(this).val(0.00);
+            }
+            $("#FilingCost").val(Number.parseFloat($("#FilingCost").val()).toFixed(2));
+        });
+        $("#StabilityCost").focusout(function () {
+            if ($(this).val() == null || $(this).val() == undefined || $(this).val() == "") {
+                $(this).val(0.00);
+            }
+            $("#StabilityCost").val(Number.parseFloat($("#StabilityCost").val()).toFixed(2));
+        });
+        $("#OtherCost").focusout(function () {
+            if ($(this).val() == null || $(this).val() == undefined || $(this).val() == "") {
+                $(this).val(0.00);
+            }
+
+            $("#OtherCost").val(Number.parseFloat($("#OtherCost").val()).toFixed(2));
+        });
+        $("#TotalInvest").focusout(function () { if ($(this).val() == null || $(this).val() == "" || $(this).val() == undefined) {
+                $(this).val(0.00);
+            } $("#TotalInvest").val(Number.parseFloat($("#TotalInvest").val()).toFixed(2)); });
+        $("#ROI").focusout(function () { if ($(this).val() == null || $(this).val() == "" || $(this).val() == undefined) {
+                $(this).val(0.00);
+            } $("#ROI").val(Number.parseFloat($("#ROI").val()).toFixed(2)); });
+
+
+        //$(function () {
+        //    bsCustomFileInput.init();
+        //});
+		//var dataTable;
+       // var JsonListArray = [];
+        var JSONUploadedFilesList = [];
+
+        //Code added by Yogesh
+        var defaultValue = "<option value='0'>Please Select Option</option>";
+        $.ajax({
+            type: "POST",
+            url: '@Url.Action("GetDropdownsForPIDFAddDetails", "PIDF")/',
+            //contentType: "application/json; charset=utf-8",
+            dataType: "json",
+            //data: data,
+            success: function (response) {
+                $('#loading').hide();
+
+                $('#PackSizeID').empty();
+                $('#PackSizeID').empty().append( defaultValue);
+                $.each(response.data.clsPidfCountryDetailsNew.clsPackSizes, function (i, List) {
+                    $("#PackSizeID").append('<option value="' + List.packSizeID + '">' +
+                        List.packSizeName + '</option>');
+                });
+
+                $('#PackingID').empty();
+                $('#PackingID').empty().append(
+                    defaultValue
+                );
+                $.each(response.data.clsPidfCountryDetailsNew.clsPackings, function (i, List) {
+
+                    $("#PackingID").append('<option value="' + List.packingID + '">' +
+                        List.packingName + '</option>');
+                });
+
+                $.ajax({
+                    type: "POST",
+                    url: "/PIDF/GetCountryDetails?PidfID=@ViewBag.PIDFEditPIDFID&CountryID=@ViewBag.PIDFEditCountryID&StrengthID=@ViewBag.PIDFStrengthID",
+                    //contentType: "application/json; charset=utf-8",
+                    dataType: "json",
+                    // data: @ViewBag.PIDFEditPIDFID,
+                    success: function (response) {
+                        $('#loading').hide();
+                        $('#pidf_ProjectorProductName').text(response.data.projectorProductName);
+                        $('#pidf_ProductTypeName').text(response.data.productName);
+                        $('#pidf_PlantName').text(response.data.plantName);
+                        $('#pidf_FormulationName').text(response.data.formulationName);
+                        $('#pidf_WorkflowName').text(response.data.workflowName);
+                        //Add pidfstrength
+                        $.each(response.strengthlist, function (i, List) {
+                            var newRow = $("<tr>");
+                            var cols = "";
+                            cols += '<td>' + List.pidfStrength + '</td>';
+                            cols += '<td>' + List.unitName + ' </td>';
+                            newRow.append(cols);
+                            $("table.order-list").append(newRow);
+                        });
+
+                        $('#StrengthID').empty();
+                        $('#StrengthID').empty().append(defaultValue);
+                        $.each(response.strengthlist, function (i, List) {
+                            var tempstrength = List.pidfStrength + ' ' + List.unitName;
+                            $("#StrengthID").append('<option value="' + List.id + '">' +
+                                tempstrength + '</option>');
+                        });
+
+
+                        //For Country Details
+                        //For CIS
+                        $('#CountryID').empty();
+                        $('#CountryID').empty().append(
+                            defaultValue
+                        );
+                        $.each(response.allCountryList, function (i, List) {
+                            $("#CountryID").append('<option value="' + List.countryID + '">' +
+                                List.countryName + '</option>');
+                        });
+
+                        //ADD FILLED COUNTRY DETAILS
+
+
+                        // DETAILS ADD INTO TABLE
+                        if (response.cisCountryDetails != null) {
+                            $('#ContinentID').val(response.cisCountryDetails.continentID);
+                            $('#ContinentName').val(response.cisCountryDetails.continentName);
+
+                            //$('#CountryID').val(response.cisCountryDetails.countryID);
+                            $('#CountryName').val(response.cisCountryDetails.countryName);
+                            //$('#IPD_Name').val(response.cisCountryDetails.countryName);
+                            document.getElementById("IPD_Name").textContent = response.cisCountryDetails.continentName;
+                            
+                            $('#PidfDetailID').val(response.cisCountryDetails.pidfDetailID);
+                            $('#PidfNo').val(response.cisCountryDetails.pidfNo);
+
+                            $('#CountryID option[value="' + response.cisCountryDetails.countryID + '"]').attr("selected", true);
+                            $('#CountryID').attr("readonly", true);
+                            $('#StrengthID option[value="' + response.cisCountryDetails.strengthID + '"]').attr("selected", true);
+                            $('#StrengthID').attr("readonly", true);
+                            $('#PackSizeID option[value="' + response.cisCountryDetails.packSizeID + '"]').attr("selected", true);
+                            $('#PackSizeID').attr("readonly", true);
+                            $('#PackingID option[value="' + response.cisCountryDetails.packingID + '"]').attr("selected", true);
+                            $('#PackingID').attr("readonly", true);
+
+                            //$("#PackingID option:selected").text();
+                            $('#PackingName').val($("#PackingID option:selected").text());
+                            //$('#PackSizeID').val(response.cisCountryDetails.packSizeID);
+                            $('#PackSizeName').val($("#PackSizeID option:selected").text());
+                            $('#PidfStrength').val($("#StrengthID option:selected").text());
+
+                            $('#IPD_ciscifpriceperpack1').val(response.cisCountryDetails.cifPricePerPack1.toFixed(2));
+                            $('#IPD_ciscifpriceperpack2').val(response.cisCountryDetails.cifPricePerPack2.toFixed(2));
+                            $('#IPD_ciscifpriceperpack3').val(response.cisCountryDetails.cifPricePerPack3.toFixed(2));
+
+                            $('#IPD_cisquantity1').val(response.cisCountryDetails.qtyOneyear.toFixed(2));
+                            $('#IPD_cisquantity2').val(response.cisCountryDetails.qtyTwoyear.toFixed(2));
+                            $('#IPD_cisquantity3').val(response.cisCountryDetails.qtyThreeyear.toFixed(2));
+
+                            $('#IPD_cisvolume1').val(response.cisCountryDetails.volOneyear.toFixed(2));
+                            $('#IPD_cisvolume2').val(response.cisCountryDetails.volTwoyear.toFixed(2));
+                            $('#IPD_cisvolume3').val(response.cisCountryDetails.volThreeyear.toFixed(2));
+
+                            $('#BatchSize').val(response.cisCountryDetails.batchSize);
+                            $('#COGS').val(response.cisCountryDetails.cogs.toFixed(2));
+
+                            $('#Freight').val(response.cisCountryDetails.freight.toFixed(2));
+                            $('#TotalCIFCost').val(response.cisCountryDetails.totalCIFCost.toFixed(2));
+                            $('#CIFPricePerUnit').val(response.cisCountryDetails.cifPricePerUnit.toFixed(2));
+                            $('#PercentCont').val(response.cisCountryDetails.percentCont.toFixed(2));
+                            $('#ContributionThreeYear').val(response.cisCountryDetails.contributionThreeYear.toFixed(2));
+                            $('#CostofThreeBatches').val(response.cisCountryDetails.costofThreeBatches.toFixed(2));
+                            $('#AnalyticalCost').val(response.cisCountryDetails.analyticalCost.toFixed(2));
+                            $('#BECost').val(response.cisCountryDetails.beCost.toFixed(2));
+                            $('#RLDCost').val(response.cisCountryDetails.rldCost.toFixed(2));
+                            $('#RandDCost').val(response.cisCountryDetails.randDCost.toFixed(2));
+                            $('#FilingCost').val(response.cisCountryDetails.filingCost.toFixed(2));
+                            $('#StabilityCost').val(response.cisCountryDetails.stabilityCost.toFixed(2));
+                            $('#TotalInvest').val(response.cisCountryDetails.totalInvest.toFixed(2));
+                            $('#OtherCost').val(response.cisCountryDetails.otherCost.toFixed(2));
+                            $('#APISource').val(response.cisCountryDetails.apiSource);
+                            $('#ROI').val(response.cisCountryDetails.roi.toFixed(2));
+
+
+                            //Add upload files
+                            $.each(response.uploadfilelist, function (i, List) {
+                                var newRow = $("<tr id='" + counter + "'>");
+                                var cols = "";
+                                cols += '<td><a href="' + List.saveFilePath + '" download="'+ List.saveFileName + '" target="_blank">' + List.saveFileName +'</td>';
+                                cols += '<td><button type="button" class="ibtnDel btn btn-sm btn-danger"><i class="far fa-trash-alt"></i></button></td>';
+                                newRow.append(cols);
+                                $("table.fileorder-list").append(newRow);
+
+                                var temp = {
+                                    "CounterID": counter,
+                                    "SaveFilePath": List.saveFilePath,
+                                    "SaveFileName": List.saveFileName
+                                };
+                                JSONUploadedFilesList.push(temp);
+                                counter++;
+                            });
+                           // console.log(JSONUploadedFilesList);
+
+                        }
+                    },
+                    failure: function () {
+
+                    }
+                });
+            },
+            failure: function () {
+                $('#cmbsPlant').empty().append(
+                    defaultValue
+                );
+                $('#cmbsPlant').val(0);
+            }
+        });
+
+        $("table.fileorder-list").on("click", ".ibtnDel", function (event) {
+            var get_id = $(this).parent().parent().attr('id');
+            //console.log(get_id);
+            $(this).closest("tr").remove();
+            for (var i = 0; i < JSONUploadedFilesList.length; i++) {
+                if (JSONUploadedFilesList[i].CounterID == get_id) {
+                    JSONUploadedFilesList.splice(i, 1);
+                }
+            }
+            
+           // console.log(JSONUploadedFilesList);
+        });
+        //end of yogesh code
+
+
+		function Changecogs() {
+            var cogs = parseFloat($('#COGS').val() == "" || $('#COGS').val() == null ? 0 : $('#COGS').val());
+            var Freight1 = parseFloat($('#Freight').val() == "" || $('#Freight').val() == null ? 0 : $('#Freight').val());
+			//var Freight = parseFloat(cogs * (5 / 100)).toFixed(2);
+            var Freight = parseFloat(cogs * (Freight1 / 100)).toFixed(2);
+			//$('#Freight').val(Freight);
+
+			var TotalCIFCost = parseInt(cogs) + parseFloat(Freight1);
+            $('#TotalCIFCost').val(TotalCIFCost);
+        }
+
+        function CalculateTotalInvestment() {
+            var costofthreebatch = parseFloat($('#CostofThreeBatches').val() == "" || $('#CostofThreeBatches').val() == null ? 0.00 : $('#CostofThreeBatches').val());
+            var anyalyticalcost = parseFloat($('#AnalyticalCost').val() == "" || $('#AnalyticalCost').val() == null ? 0.00 : $('#AnalyticalCost').val());
+            var becost = parseFloat($('#BECost').val() == "" || $('#BECost').val() == null ? 0.00 : $('#BECost').val());
+            var rldcost = parseFloat($('#RLDCost').val() == "" || $('#RLDCost').val() == null ? 0.00 : $('#RLDCost').val());
+            var randcost = parseFloat($('#RandDCost').val() == "" || $('#RandDCost').val() == null ? 0.00 : $('#RandDCost').val());
+            var fillingcost = parseFloat($('#FilingCost').val() == "" || $('#FilingCost').val() == null ? 0.00 : $('#FilingCost').val());
+            var stabilitycost = parseFloat($('#StabilityCost').val() == "" || $('#StabilityCost').val() == null ? 0.00 : $('#StabilityCost').val());
+            var analyticalcost = parseFloat($('#AnalyticalCost').val() == "" || $('#AnalyticalCost').val() == null ? 0.00 : $('#AnalyticalCost').val());
+            var becost = parseFloat($('#BECost').val() == "" || $('#BECost').val() == null ? 0.00 : $('#BECost').val());
+           
+            //alert($('#OtherCost').val());
+            var othercost = parseFloat($('#OtherCost').val() == "" || $('#OtherCost').val() == null ? 0.00 : $('#OtherCost').val());
+
+            //var TotalCost = parseFloat(costofthreebatch) + parseFloat(anyalyticalcost) + parseFloat(becost) + parseFloat(rldcost) + parseFloat(randcost) + parseFloat(fillingcost) + parseFloat(stabilitycost) + parseFloat(othercost);
+            var TotalCost = parseFloat(costofthreebatch) + parseFloat(analyticalcost) + parseFloat(becost) + parseFloat(rldcost) + parseFloat(randcost) + parseFloat(fillingcost) + parseFloat(stabilitycost) + parseFloat(othercost);
+            $('#TotalInvest').val(TotalCost);
+        }
+
+		function CIS_ChangeCIFPricePerPack1() {
+            var CIFPricePerPack = parseFloat($('#IPD_ciscifpriceperpack1').val() == "" || $('#IPD_ciscifpriceperpack1').val() == null ? 0 : $('#IPD_ciscifpriceperpack1').val());
+            var PackSize = parseInt($('#IPD_cisquantity1').val() == "" || $('#IPD_cisquantity1').val() == null ? 0 : $('#IPD_cisquantity1').val());
+
+			var CIFPricePerUnit = parseFloat(CIFPricePerPack) * parseFloat(PackSize);
+			CIFPricePerUnit = parseFloat(CIFPricePerUnit == "Infinity" ? 0 : CIFPricePerUnit).toFixed(2);
+			//$('#IPD_cifpriceperunit').val(CIFPricePerUnit);
+
+            //var ProfitPerPack = parseFloat($('#IPD_ciscifpriceperpack1').val() == "" || $('#IPD_ciscifpriceperpack1').val() == null ? 0 : $('#IPD_ciscifpriceperpack1').val()) - parseFloat($('#IPD_totalcifcost').val() == "" || $('#IPD_totalcifcost').val() == null ? 0 : $('#IPD_totalcifcost').val());
+            //var CIFPerPack = parseFloat($('#IPD_ciscifpriceperpack1').val() == "" || $('#IPD_ciscifpriceperpack1').val() == null ? 0 : $('#IPD_ciscifpriceperpack1').val());
+			//var TotalCIFCost = parseFloat((parseFloat(ProfitPerPack) / parseFloat(CIFPerPack)) * 100).toFixed(2);
+            $('#IPD_cisvolume1').val(CIFPricePerUnit);
+        }
+
+        function CIS_Year1Calculation() {
+            var Quantity1 = parseInt($('#IPD_cisquantity1').val() == "" || $('#IPD_cisquantity1').val() == null ? 0 : $('#IPD_cisquantity1').val());
+            var CIFPricePerPack = parseFloat($('#IPD_ciscifpriceperpack1').val() == "" || $('#IPD_ciscifpriceperpack1').val() == null ? 0 : $('#IPD_ciscifpriceperpack1').val());
+			var Volume1 = parseInt(CIFPricePerPack * Quantity1);
+			//var TotalCIFcost = parseFloat($('#IPD_totalcifcost').val() == "" || $('#IPD_totalcifcost').val() == null ? 0 : $('#IPD_totalcifcost').val());
+			//var COGS1 = parseInt(TotalCIFcost * Quantity1);
+			//var Contri1 = parseInt(Volume1) - parseInt(COGS1);
+
+            $('#IPD_cisvolume1').val(Volume1);
+           // $('#IPD_ciscogs1').val(COGS1);
+            //$('#IPD_ciscontri1').val(Contri1);
+
+			//var TotalContribution = parseInt($('#IPD_contri1').val() == "" || $('#IPD_contri1').val() == null ? 0 : $('#IPD_contri1').val()) +
+			//	parseInt($('#IPD_contri2').val() == "" || $('#IPD_contri2').val() == null ? 0 : $('#IPD_contri2').val()) +
+			//	parseInt($('#IPD_contri3').val() == "" || $('#IPD_contri3').val() == null ? 0 : $('#IPD_contri3').val());
+			//$('#IPD_contribution').val(TotalContribution);
+        }
+
+        function CIS_ChangeCIFPricePerPack2() {
+            var CIFPricePerPack = parseFloat($('#IPD_ciscifpriceperpack2').val() == "" || $('#IPD_ciscifpriceperpack2').val() == null ? 0 : $('#IPD_ciscifpriceperpack2').val());
+            var PackSize = parseInt($('#IPD_cisquantity2').val() == "" || $('#IPD_cisquantity2').val() == null ? 0 : $('#IPD_cisquantity2').val());
+
+            var CIFPricePerUnit = parseFloat(CIFPricePerPack) * parseFloat(PackSize);
+            CIFPricePerUnit = parseFloat(CIFPricePerUnit == "Infinity" ? 0 : CIFPricePerUnit).toFixed(2);
+            //$('#IPD_cifpriceperunit').val(CIFPricePerUnit);
+
+            //var ProfitPerPack = parseFloat($('#IPD_ciscifpriceperpack1').val() == "" || $('#IPD_ciscifpriceperpack1').val() == null ? 0 : $('#IPD_ciscifpriceperpack1').val()) - parseFloat($('#IPD_totalcifcost').val() == "" || $('#IPD_totalcifcost').val() == null ? 0 : $('#IPD_totalcifcost').val());
+            //var CIFPerPack = parseFloat($('#IPD_ciscifpriceperpack1').val() == "" || $('#IPD_ciscifpriceperpack1').val() == null ? 0 : $('#IPD_ciscifpriceperpack1').val());
+            //var TotalCIFCost = parseFloat((parseFloat(ProfitPerPack) / parseFloat(CIFPerPack)) * 100).toFixed(2);
+            $('#IPD_cisvolume2').val(CIFPricePerUnit);
+        }
+
+        function CIS_Year2Calculation() {
+            var Quantity2 = parseInt($('#IPD_cisquantity2').val() == "" || $('#IPD_cisquantity2').val() == null ? 0 : $('#IPD_cisquantity2').val());
+            var CIFPricePerPack = parseFloat($('#IPD_ciscifpriceperpack2').val() == "" || $('#IPD_ciscifpriceperpack2').val() == null ? 0 : $('#IPD_ciscifpriceperpack2').val());
+			var Volume2 = parseInt(CIFPricePerPack * Quantity2);
+			//var TotalCIFcost = parseFloat($('#IPD_totalcifcost').val() == "" || $('#IPD_totalcifcost').val() == null ? 0 : $('#IPD_totalcifcost').val());
+			//var COGS2 = parseInt(TotalCIFcost * Quantity2);
+			//var Contri2 = parseInt(Volume2) - parseInt(COGS2);
+
+            $('#IPD_cisvolume2').val(Volume2);
+			//$('#IPD_cogs2').val(COGS2);
+			//$('#IPD_contri2').val(Contri2);
+
+			//var TotalContribution = parseInt($('#IPD_contri1').val() == "" || $('#IPD_contri1').val() == null ? 0 : $('#IPD_contri1').val()) +
+			//	parseInt($('#IPD_contri2').val() == "" || $('#IPD_contri2').val() == null ? 0 : $('#IPD_contri2').val()) +
+			//	parseInt($('#IPD_contri3').val() == "" || $('#IPD_contri3').val() == null ? 0 : $('#IPD_contri3').val());
+			//$('#IPD_contribution').val(TotalContribution);
+        }
+
+        function CIS_ChangeCIFPricePerPack3() {
+            var CIFPricePerPack = parseFloat($('#IPD_ciscifpriceperpack3').val() == "" || $('#IPD_ciscifpriceperpack3').val() == null ? 0 : $('#IPD_ciscifpriceperpack3').val());
+            var PackSize = parseInt($('#IPD_cisquantity3').val() == "" || $('#IPD_cisquantity3').val() == null ? 0 : $('#IPD_cisquantity3').val());
+
+            var CIFPricePerUnit = parseFloat(CIFPricePerPack) * parseFloat(PackSize);
+            CIFPricePerUnit = parseFloat(CIFPricePerUnit == "Infinity" ? 0 : CIFPricePerUnit).toFixed(2);
+            //$('#IPD_cifpriceperunit').val(CIFPricePerUnit);
+
+            //var ProfitPerPack = parseFloat($('#IPD_ciscifpriceperpack1').val() == "" || $('#IPD_ciscifpriceperpack1').val() == null ? 0 : $('#IPD_ciscifpriceperpack1').val()) - parseFloat($('#IPD_totalcifcost').val() == "" || $('#IPD_totalcifcost').val() == null ? 0 : $('#IPD_totalcifcost').val());
+            //var CIFPerPack = parseFloat($('#IPD_ciscifpriceperpack1').val() == "" || $('#IPD_ciscifpriceperpack1').val() == null ? 0 : $('#IPD_ciscifpriceperpack1').val());
+            //var TotalCIFCost = parseFloat((parseFloat(ProfitPerPack) / parseFloat(CIFPerPack)) * 100).toFixed(2);
+            $('#IPD_cisvolume3').val(CIFPricePerUnit);
+        }
+
+        function CIS_Year3Calculation() {
+            var Quantity3 = parseInt($('#IPD_cisquantity3').val() == "" || $('#IPD_cisquantity3').val() == null ? 0 : $('#IPD_cisquantity3').val());
+            var CIFPricePerPack = parseFloat($('#IPD_ciscifpriceperpack3').val() == "" || $('#IPD_ciscifpriceperpack3').val() == null ? 0 : $('#IPD_ciscifpriceperpack3').val());
+			var Volume3 = parseInt(CIFPricePerPack * Quantity3);
+			//var TotalCIFcost = parseFloat($('#IPD_totalcifcost').val() == "" || $('#IPD_totalcifcost').val() == null ? 0 : $('#IPD_totalcifcost').val());
+			//var COGS3 = parseInt(TotalCIFcost * Quantity3);
+			//var Contri3 = parseInt(Volume3) - parseInt(COGS3);
+
+            $('#IPD_cisvolume3').val(Volume3);
+			//$('#IPD_cogs3').val(COGS3);
+			//$('#IPD_contri3').val(Contri3);
+
+			//var TotalContribution = parseInt($('#IPD_contri1').val() == "" || $('#IPD_contri1').val() == null ? 0 : $('#IPD_contri1').val()) +
+			//	parseInt($('#IPD_contri2').val() == "" || $('#IPD_contri2').val() == null ? 0 : $('#IPD_contri2').val()) +
+			//	parseInt($('#IPD_contri3').val() == "" || $('#IPD_contri3').val() == null ? 0 : $('#IPD_contri3').val());
+			//$('#IPD_contribution').val(TotalContribution);
+        }
+
+		function CalculateTotalInvest() {
+			var CostOf3batches = parseInt($('#IPD_costof3batches').val() == "" || $('#IPD_costof3batches').val() == null ? 0 : $('#IPD_costof3batches').val());
+			var StabilityCost = parseInt($('#IPD_stabilitycost').val() == "" || $('#IPD_stabilitycost').val() == null ? 0 : $('#IPD_stabilitycost').val());
+
+			var TotalInvest = CostOf3batches + StabilityCost;
+			$('#IPD_totalinvest').val(TotalInvest);
+        }
+
+        function UpdateCountryData(form) {
+            var url = '@Url.Action("PIDFCountryWiseList", "PIDF")?ID=@ViewBag.PIDFEditPIDFID';
+
+            $('#PidfID').val(@ViewBag.CountryPidfID);            
+            $('#uploadedfilesdetails').val(JSON.stringify(JSONUploadedFilesList));
+            $.validator.unobtrusive.parse(form);
+            if ($(form).valid()) {
+                 $('#loading').show();
+                $.ajax({
+                    type : "POST",
+                    url: '@Url.Action("UpdatePidfCountryDetails", "PIDF")/',
+                    //contentType: "application/json; charset=utf-8",
+                    //dataType: 'json',
+                    data: $(form).serialize(),
+                    success: function (result) {
+                         $('#loading').hide();
+                        if (result.data === "success") {
+
+                            openCommonModal('successModal modal-sm', '@Html.Raw(SharedLocalizer["Success"].Value)', '@Html.Raw(SharedLocalizer["Countries data updated successfully."].Value)', true);
+                            setTimeout(function () { location.href = url; }, 2000);
+                        }
+                        else {
+                            openCommonModal('alertModal modal-sm', '@SharedLocalizer["Error"].Value', result.message, false);
+                        }
+                    }
+                });
+            }
+            return false;
+        }
+
+		$("#btnUpload").click(function () {
+        var fileUpload = $("#UploadFile").get(0);
+        var files = fileUpload.files;
+        var data = new FormData();
+        for (var i = 0; i < files.length ; i++) {
+            data.append(files[i].name, files[i]);
+            }           
+        $.ajax({
+            type: "POST",
+            url: "/PIDF/UploadFiles",
+            contentType: false,
+            processData: false,
+            data: data,
+            success: function (result) {                
+                   if (result.success ===true) {
+                       openCommonModal('successModal modal-sm', '@Html.Raw(SharedLocalizer["Success"].Value)', result.msg, true);
+                       $.each(result.fileDetails, function (i, List) {                          
+                           var temp = {
+                               "CounterID": counter,
+                               "SaveFilePath": List.saveFilePath,
+                               "SaveFileName": List.saveFileName
+                           };
+                           JSONUploadedFilesList.push(temp);
+
+                           var newRow = $("<tr id='" + counter + "'>");
+                           var cols = "";                           
+                           cols += '<td><a href="' + List.saveFilePath + '" download="'+ List.saveFileName + '" target="_blank">' + List.saveFileName + '</td>';
+                           cols += '<td><button type="button" class="ibtnDel btn btn-sm btn-danger"><i class="far fa-trash-alt"></i></button></td>';
+                           newRow.append(cols);
+                           $("table.fileorder-list").append(newRow);
+
+                           counter++;
+                           
+                       });
+
+                       $('#chooseFile').text('Choose File');  
+                       $('#UploadFile').val(''); 
+                                             
+                    }
+                    else {
+                       openCommonModal('alertModal modal-sm', '@SharedLocalizer["Error"].Value', result.msg, false);
+                      $('#chooseFile').text('Choose File');  
+                       $('#UploadFile').val(''); 
+                      
+                    }
+            },
+            error: function () {
+              
+                 openCommonModal('alertModal modal-sm', '@SharedLocalizer["Error"].Value', "There was error uploading files!", false);
+                $('#chooseFile').text('Choose File');  
+                       $('#UploadFile').val(''); 
+                
+            }
+        });
+    });
+
+    </script>
+}

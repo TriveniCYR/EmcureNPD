@@ -1,0 +1,363 @@
+﻿@inject Microsoft.Extensions.Localization.IStringLocalizer<SharedResource> SharedLocalizer
+@model EmcureCERI.Web.Models.IndexPageModel
+
+@{
+    ViewData["Title"] = "Reports View";
+
+}
+
+<style>
+    .treegrid-control span {
+        cursor: pointer;
+        padding: 0px 5px;
+        display: block;
+        box-shadow: 0 0 1px #999;
+        width: 20px;
+        height: 25px;
+    }
+
+    .treegrid-control-open span {
+        cursor: pointer;
+        padding: 0px 7px;
+        display: block;
+        box-shadow: 0 0 1px #999;
+        width: 20px;
+        height: 25px;
+    }
+</style>
+
+<div class="content-wrapper">
+    <section class="content pt-3">
+        <div class="container-fluid">
+            <div class="row">
+                <section class="col-lg-12">
+                    <!-- Custom tabs (Charts with tabs)-->
+                    <div class="card">
+                        <div class="card-header">
+                            <h3 class="card-title">
+                                <i class="fas fa-list mr-2"></i> Report List
+                            </h3>
+                            <div class="card-tools md-left">
+                                <div class="mybtn-group">
+                                    @*<li class="nav-item mr-3">
+                                            <button class="btn btn-primary" href="@Url.Action("Dashboard","Dashboard")"><i class="fas fa-undo mr-1"></i> Back</button>
+                                        </li>*@
+                                    <div class="export-btn mybtn-group"></div>
+                                    <a class="btn btn-primary" href="@Url.Action("Index","Dashboard")"><i class="fas fa-undo mr-1"></i>Back</a>
+
+                                    @*<li class="nav-item mr-3">
+                                            <a class="btn btn-primary" href="@Url.Action("PIDFNew","PIDF")"><i class="far fa-plus-square mr-1"></i> Create New PIDF</a>
+                                        </li>*@
+
+
+
+
+                                </div>
+                            </div>
+                        </div>
+                        <div class="card-body report-scroll">
+                            <div class="row">
+                                <div class="col-lg-4 col-md-12 zindexupper">
+                                    <div class="row">
+                                        <div class="col-md-6 col-sm-12 col-xs-12 form-group">
+                                            <label for="country">Molecule</label>
+                                            @Html.DropDownListFor(m => m.CommonVModel.InitializationID, new SelectList(string.Empty, "Value", "Text"), "Select", htmlAttributes: new { @class = "form-control input-sm f-s-15 bg-eff4f55c w100per molecule_filter ", id = "cmbMolecule" })
+                                            @Html.ValidationMessageFor(m => m.CommonVModel.InitializationID, "", new { @class = "text-danger" })
+                                        </div>
+                                        <div class="col-md-6 col-sm-12 col-xs-12 form-group" style="display:none;">
+                                            <label for="molecule">Status</label>
+                                            @Html.DropDownListFor(m => m.CommonVModel.StatusID, new SelectList(string.Empty, "Value", "Text"), "Select", htmlAttributes: new { @class = "form-control input-sm f-s-15 bg-eff4f55c w100per country_filter", id = "cmbStatus" })
+                                            @Html.ValidationMessageFor(m => m.CommonVModel.StatusID, "", new { @class = "text-danger" })
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="table-responsive match-filter">
+                                <table id="MoleculeTable" class="table table-bordered" cellspacing="0" width="100%"></table>
+                            </div>
+
+                        </div>
+                    </div>
+                </section>
+            </div>
+        </div>
+    </section>
+
+</div>
+<script src='~/js/dataTables.treeGrid.js'></script>
+
+@section Scripts {
+    <script>
+
+
+
+
+
+        var defaultValue = "<option value=''>Select</option>";
+        $.ajax({
+            type: "POST",
+            url: '@Url.Action("GetDropdownsForReports", "Reports")/',
+            //contentType: "application/json; charset=utf-8",
+            dataType: "json",
+            //data: data,
+            success: function (response) {
+                //debugger
+                //console.log(response);
+
+                $('#cmbStatus').empty();
+                $('#cmbStatus').empty().append(
+                    defaultValue
+                );
+                $.each(response.data.statusList, function (i, List) {
+                    $("#cmbStatus").append('<option value="' + List.statusID + '">' +
+                        List.status + '</option>');
+                });
+
+                $('#cmbMolecule').empty();
+                $('#cmbMolecule').empty().append(
+                    defaultValue
+                );
+                $.each(response.data.moleculeList, function (i, List) {
+                    $("#cmbMolecule").append('<option value="' + List.initializationID + '">' +
+                        List.genericName + '</option>');
+                });
+            },
+            failure: function () {
+                $('#cmbStatus').empty().append(
+                    defaultValue
+                );
+                $('#cmbStatus').val("");
+
+                $('#cmbMolecule').empty().append(
+                    defaultValue
+                );
+                $('#cmbMolecule').val("");
+            }
+        });
+
+       
+        var columns = [
+      
+
+            {
+                title: 'SrNo',
+                target: 0,
+                data: function (item) {
+                    return item.srNo;
+                }
+                
+            },
+
+            {
+                title: 'DRF No.',
+                target: 1,
+                data: function (item) {
+                    return item.drfno;
+                    console.log(item)
+                }
+               
+            },
+    
+            {
+                title: 'DRF',
+                target: 2,
+                data: function (item) {
+                    return item.genericName;
+                }
+
+            },
+           {
+                title: 'Status ',
+                target: 3,
+                data: function (item) {
+                    return item.project_Status;
+                }
+
+            },
+
+            {
+                title: 'Forecast Units 1year',
+                target: 4,
+                data: function (item) {
+                    return item.fcastunit;
+                }
+            },
+            {
+                title: 'Country',
+                target: 5,
+                data: function (item) {
+                    return item.country;
+                }
+
+            },
+
+            {
+                title: 'Mode Of Shipment',
+                target: 6,
+                data: function (item) {
+                    return item.mos;
+                }
+            },
+
+            {
+                title: 'Gross wt/pack(kg)',
+                target: 7,
+                data: function (item) {
+                    return item.grossWeight;
+                }
+            },
+
+            {
+                title: 'Packs/Shipper',
+                target: 8,
+                data: function (item) {
+                    return item.packorShipper;
+                }
+            },
+
+            {
+                title: 'Total Shipper',
+                target: 9,
+                data: function (item) {
+                    return item.totalShipper;
+                }
+            },
+            {
+                title: 'Length(mm)',
+                target: 10,
+                data: function (item) {
+                    return item.mLength;
+                }
+            },
+            {
+                title: 'Width(mm)',
+                target: 11,
+                data: function (item) {
+                    return item.mWidth;
+                }
+            },
+            {
+                title: 'Height(mm)',
+                target: 12,
+                data: function (item) {
+                    return item.mHeight;
+                }
+            },
+          
+            {
+                title: 'Total Vol Wt',
+                target: 13,
+                data: function (item) {
+                    return item.total_vol_wt;
+                }
+            },
+
+            {
+                title: 'Total Gr. Wt',
+                target: 14,
+                data: function (item) {
+                    return item.totalGr_Wt;
+                }
+            },
+
+
+            {
+                title: 'Total CBM',
+                target: 15,
+                data: function (item) {
+                    return item.totalCBM;
+                }
+            },
+
+
+         
+        ];
+        //console.log(data);
+        $(document).ready(function () {
+            //var StatusId = 19;
+            // var regEx = "^" + StatusId + "$";
+            var table = $('#MoleculeTable').DataTable({
+                columns: columns,
+                dom: 'Bfrtip',
+                buttons: [
+                    {
+                        extend: 'excel', text: '<i class="far fa-file-excel"></i> Export In Excel ', className: "btn-primary", exportOptions: {
+                            columns: ':visible'
+                        }
+                    },
+                    { extend: 'colvis', className: "btn-primary" }
+                ],
+
+                lengthChange: false,
+                //columnDefs: [
+                //    {
+                //        visible: false,
+                //        targets: 8
+                //    }
+
+                //],
+                //initComplete: function () {
+                //    this
+                //        .api()
+                //        .column(8)
+                //        .search(regEx, true, false,true)
+                //        .draw()
+                //},
+                ajax: '/Reports/GetManufacturingDetailsReports',
+                treeGrid: {
+                    'left': 10,
+                    'expandIcon': '<span>+<\/span>',
+                    'collapseIcon': '<span>-<\/span>'
+                }
+
+            });
+
+            $('.molecule_filter').on('change', function () {
+                var term = $('#cmbMolecule').find(":selected").text();
+
+               // alert(term);
+                if (term == "Please Select Option") {
+
+                    table.columns(2).search("", true, false, true).draw();
+                }
+                else {
+                    var regExp = "^" + term + "$";
+
+                    table.columns(2).search(regExp, true, false, true).draw();
+                }
+
+            });
+
+            $('.country_filter').on('change', function () {
+                var term = $('#cmbStatus').find(":selected").text();
+                // alert(term);
+                if (term == "Please Select Option") {
+
+                    table.columns(7).search("", true, false, true).draw();
+                }
+                else {
+                    var regExp = "(^|,)" + term + "(,|$)";
+
+                    table.columns(7).search(regExp, true, false, true).draw();
+                }
+
+            });
+            table.buttons().container()
+                .appendTo('.export-btn');
+
+            //$('.status_filter').on('click', function () {
+            //    var term = $(this).data('status');
+            //    var regExp = "^" + term + "$";
+            //    table.columns(8).search(regExp, true, false,true).draw();
+
+            //});
+
+            $(".buttons-excel").removeClass("btn-secondary");
+            $(".buttons-collection").removeClass("btn-secondary");
+
+        });
+
+
+    </script>
+}
+

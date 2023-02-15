@@ -1,0 +1,11 @@
+﻿@inject Microsoft.Extensions.Localization.IStringLocalizer<SharedResource> SharedLocalizer
+@{
+    ViewData["Title"] = @SharedLocalizer["Confirm email"].Value;
+}
+
+<h2>@ViewData["Title"]</h2>
+<div>
+    <p>
+        @SharedLocalizer["Thank you for confirming your email."].Value
+    </p>
+</div>

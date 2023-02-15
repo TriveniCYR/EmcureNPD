@@ -1,0 +1,496 @@
+﻿@using Microsoft.Extensions.Localization
+@inject IStringLocalizer<SharedResource> SharedLocalizer
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - Emcure DossierMgmt</title>
+    <link rel="shortcut icon" href="~/dist/img/favicon.ico" type="image/x-icon">
+
+    <environment include="Development">
+        @*<link href="~/lib/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet" />
+        <link rel="stylesheet" href="https://ajax.aspnetcdn.com/ajax/bootstrap/3.3.7/css/bootstrap.min.css" />
+        <link rel="stylesheet" href="~/lib/jquery-data-table/css/jquery.dataTables.min.css" />
+        <link href="~/lib/jquery-ui/jquery-ui.css" rel="stylesheet" />*@
+        <!--Added by Nimesh Parekh -->
+        <!-- Google Font: Source Sans Pro -->
+
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
+        <!-- Font Awesome -->
+        <link rel="stylesheet" href="~/plugins/fontawesome-free/css/all.min.css">
+
+        <!-- Ionicons -->
+        <link rel="stylesheet" href="https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css">
+        <!-- Tempusdominus Bootstrap 4 -->
+        <link rel="stylesheet" href="~/plugins/tempusdominus-bootstrap-4/css/tempusdominus-bootstrap-4.min.css">
+        <!-- iCheck -->
+        <link rel="stylesheet" href="~/plugins/icheck-bootstrap/icheck-bootstrap.min.css">
+        <!-- JQVMap -->
+        <link rel="stylesheet" href="~/plugins/jqvmap/jqvmap.min.css">
+        <!-- Theme style -->
+        <link rel="stylesheet" href="~/dist/css/adminlte.min.css">
+        <link rel="stylesheet" href="~/dist/css/custome.css">
+        <!-- overlayScrollbars -->
+        <link rel="stylesheet" href="~/plugins/overlayScrollbars/css/OverlayScrollbars.min.css">
+        <!-- Daterange picker -->
+        @*<link rel="stylesheet" href="~/plugins/daterangepicker/daterangepicker.css">*@
+        <!-- summernote -->
+        <link rel="stylesheet" href="~/plugins/summernote/summernote-bs4.min.css">
+        <link rel="stylesheet" href="~/codebase/suite.css?v=7.0.0">
+
+
+
+        <link rel="stylesheet" href="~/plugins/datatables-bs4/css/dataTables.bootstrap4.min.css">
+        <link rel="stylesheet" href="~/plugins/datatables-responsive/css/responsive.bootstrap4.min.css">
+        <link rel="stylesheet" href="~/plugins/datatables-buttons/css/buttons.bootstrap4.min.css">
+        <link href="~/lib/bootstrap-datetimepicker/css/bootstrap-datetimepicker.css" rel="stylesheet" />
+
+        <!--link rel="stylesheet" href="~/css/site.css" /--->
+        <link rel="stylesheet" href="~/common/treegrid.css?v=7.0.0">
+        <link rel="stylesheet" href="~/plugins/toastr/toastr.css" />
+        <!--<script src="~/js/toastr.js"></script>
+    <script src="~/lib/signalr/signalr.js"></script>
+    <script src="~/js/notification.js"></script>-->
+
+
+    </environment>
+    <environment exclude="Development">
+        @*<link href="~/lib/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet" />
+        <link rel="stylesheet" href="https://ajax.aspnetcdn.com/ajax/bootstrap/3.3.7/css/bootstrap.min.css" />
+        <link rel="stylesheet" href="~/lib/jquery-data-table/css/jquery.dataTables.min.css" />
+         <link href="~/lib/jquery-ui/jquery-ui.css" rel="stylesheet" />*@
+
+        <!--link rel="stylesheet" href="~/css/site.css" />-->
+        <!--Added by Nimesh Parekh -->
+        <!-- Google Font: Source Sans Pro -->
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
+        <!-- Font Awesome -->
+        <link rel="stylesheet" href="~/plugins/fontawesome-free/css/all.min.css">
+        <!-- Ionicons -->
+        <link rel="stylesheet" href="https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css">
+        <!-- Tempusdominus Bootstrap 4 -->
+        <link rel="stylesheet" href="~/plugins/tempusdominus-bootstrap-4/css/tempusdominus-bootstrap-4.min.css">
+        <!-- iCheck -->
+        <link rel="stylesheet" href="~/plugins/icheck-bootstrap/icheck-bootstrap.min.css">
+        <!-- JQVMap -->
+        <link rel="stylesheet" href="~/plugins/jqvmap/jqvmap.min.css">
+        <!-- Theme style -->
+        <link rel="stylesheet" href="~/dist/css/adminlte.min.css">
+        <link rel="stylesheet" href="~/dist/css/custome.css">
+        <!-- overlayScrollbars -->
+        <link rel="stylesheet" href="~/plugins/overlayScrollbars/css/OverlayScrollbars.min.css">
+        <!-- Daterange picker -->
+        @*<link rel="stylesheet" href="~/plugins/daterangepicker/daterangepicker.css">*@
+        <!-- summernote -->
+        <link rel="stylesheet" href="~/plugins/summernote/summernote-bs4.min.css">
+        <link rel="stylesheet" href="~/codebase/suite.css?v=7.0.0">
+
+
+
+        <link rel="stylesheet" href="~/plugins/datatables-bs4/css/dataTables.bootstrap4.min.css">
+        <link rel="stylesheet" href="~/plugins/datatables-responsive/css/responsive.bootstrap4.min.css">
+        <link rel="stylesheet" href="~/plugins/datatables-buttons/css/buttons.bootstrap4.min.css">
+        <link href="~/lib/bootstrap-datetimepicker/css/bootstrap-datetimepicker.css" rel="stylesheet" />
+
+        <link rel="stylesheet" href="~/common/treegrid.css?v=7.0.0">
+        <link rel="stylesheet" href="~/plugins/toastr/toastr.css" />
+        
+
+
+    </environment>
+    <style type="text/css">
+
+        #nav ul {
+            display: none;
+        }
+
+        #nav li:hover > ul {
+            display: block;
+        }
+    </style>
+    <environment include="Development">
+        <!-- jQuery -->
+        <script src="~/plugins/jquery/jquery.min.js"></script>
+        <!-- jQuery UI 1.11.4 -->
+        <script src="~/plugins/jquery-ui/jquery-ui.min.js"></script>
+        <!-- Resolve conflict in jQuery UI tooltip with Bootstrap tooltip -->
+        <script>
+            $.widget.bridge('uibutton', $.ui.button);
+        </script>
+        <!-- Bootstrap 4 -->
+        <script src="~/plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
+        <!-- ChartJS -->
+        <!-- Sparkline -->
+        <script src="~/plugins/sparklines/sparkline.js"></script>
+        <!-- JQVMap -->
+        <script src="~/plugins/jqvmap/jquery.vmap.min.js"></script>
+        <script src="~/plugins/jqvmap/maps/jquery.vmap.world.js"></script>
+        <!-- jQuery Knob Chart -->
+        <script src="~/plugins/jquery-knob/jquery.knob.min.js"></script>
+        <!-- daterangepicker -->
+        <script src="~/plugins/moment/moment.min.js"></script>
+
+        <!-- Tempusdominus Bootstrap 4 -->
+        <script src="~/plugins/tempusdominus-bootstrap-4/js/tempusdominus-bootstrap-4.min.js"></script>
+        <!-- Summernote -->
+        <script src="~/plugins/summernote/summernote-bs4.min.js"></script>
+        <!-- overlayScrollbars -->
+        <script src="~/plugins/overlayScrollbars/js/jquery.overlayScrollbars.min.js"></script>
+        <!-- AdminLTE App -->
+        <script src="~/dist/js/adminlte.js"></script>
+        <!-- AdminLTE for demo purposes -->
+        <script src="~/dist/js/demo.js"></script>
+        <!--script src="~/dist/js/dataTables.treeGrid.js"></!script -->
+        <!-- AdminLTE dashboard demo (This is only for demo purposes) -->
+        <!--script src="~/dist/js/pages/dashboard.js"></script-->
+        <script type="text/javascript" src="~/codebase/suite.js?v=7.0.0"></script>
+
+        <!--
+    <script src="~/lib/jquery/dist/jquery.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.js"></script>
+    <script src="~/lib/jquery-data-table/js/jquery.dataTables.min.js"></script>
+    <script src="~/lib/jquery-ui/jquery-ui.js"></script>-->
+        <script src="~/lib/jquery-validation/dist/jquery.validate.min.js"></script>
+        <script src="~/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.min.js"></script>
+
+        <script src="~/lib/bootstrap-select/bootstrap-select.min.js"></script>
+        <!--<script src="~/js/custom/jspdf.min.js"></script>
+    <script src="~/js/custom/exportPDF.js"></script>-->
+        <script src="~/lib/bootstrap-datetimepicker/js/moment-with-locales.js"></script>
+        <script src="~/lib/bootstrap-datetimepicker/js/bootstrap-datetimepicker.js"></script>
+        <script src="~/js/site.js" asp-append-version="true"></script>
+
+
+        <!-- DataTables  & Plugins -->
+        <script src="~/plugins/datatables/jquery.dataTables.min.js"></script>
+        <script src="~/plugins/datatables-bs4/js/dataTables.bootstrap4.min.js"></script>
+        <script src="~/plugins/datatables-responsive/js/dataTables.responsive.min.js"></script>
+        <script src="~/plugins/datatables-responsive/js/responsive.bootstrap4.min.js"></script>
+        <script src="~/plugins/datatables-buttons/js/dataTables.buttons.min.js"></script>
+        <script src="~/plugins/datatables-buttons/js/buttons.bootstrap4.min.js"></script>
+        <script src="~/plugins/jszip/jszip.min.js"></script>
+        <script src="~/plugins/pdfmake/pdfmake.min.js"></script>
+        <script src="~/plugins/pdfmake/vfs_fonts.js"></script>
+        <script src="~/plugins/datatables-buttons/js/buttons.html5.min.js"></script>
+        <script src="~/plugins/datatables-buttons/js/buttons.print.min.js"></script>
+        <script src="~/plugins/datatables-buttons/js/buttons.colVis.min.js"></script>
+        <script src="~/dist/js/dataTables.fixedColumns.min.js"></script>
+        <script type="text/javascript" src="~/common/dataset.js?v=7.0.0"></script>
+        <script src="~/js/toastr.js"></script>
+        <script src="~/lib/signalr/signalr.js"></script>
+        <script src="~/js/notification.js"></script>
+        @*<script src="~/plugins/daterangepicker/daterangepicker.js"></script>*@
+
+    </environment>
+    <environment exclude="Development">
+        <!-- jQuery -->
+        <script src="~/plugins/jquery/jquery.min.js"></script>
+        <!-- jQuery UI 1.11.4 -->
+        <script src="~/plugins/jquery-ui/jquery-ui.min.js"></script>
+        <!-- Resolve conflict in jQuery UI tooltip with Bootstrap tooltip -->
+        <script>
+            $.widget.bridge('uibutton', $.ui.button);
+        </script>
+        <!-- Bootstrap 4 -->
+        <script src="~/plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
+        <!-- ChartJS -->
+        <!-- Sparkline -->
+        <script src="~/plugins/sparklines/sparkline.js"></script>
+        <!-- JQVMap -->
+        <script src="~/plugins/jqvmap/jquery.vmap.min.js"></script>
+        <script src="~/plugins/jqvmap/maps/jquery.vmap.world.js"></script>
+        <!-- jQuery Knob Chart -->
+        <script src="~/plugins/jquery-knob/jquery.knob.min.js"></script>
+        <!-- daterangepicker -->
+        <script src="~/plugins/moment/moment.min.js"></script>
+        <!-- Tempusdominus Bootstrap 4 -->
+        <script src="~/plugins/tempusdominus-bootstrap-4/js/tempusdominus-bootstrap-4.min.js"></script>
+        <!-- Summernote -->
+        <script src="~/plugins/summernote/summernote-bs4.min.js"></script>
+        <!-- overlayScrollbars -->
+        <script src="~/plugins/overlayScrollbars/js/jquery.overlayScrollbars.min.js"></script>
+        <!-- AdminLTE App -->
+        <script src="~/dist/js/adminlte.js"></script>
+        <!-- AdminLTE for demo purposes -->
+        <script src="~/dist/js/demo.js"></script>
+        <script src="~/dist/js/dataTables.treeGrid.js"></script>
+
+        <!-- AdminLTE dashboard demo (This is only for demo purposes) -->
+        <script src="~/dist/js/pages/dashboard.js"></script>
+        <script type="text/javascript" src="~/codebase/suite.js?v=7.0.0"></script>
+
+        <!--
+    <script src="~/lib/jquery/dist/jquery.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.js"></script>
+    <script src="~/lib/jquery-data-table/js/jquery.dataTables.min.js"></script>
+    <script src="~/lib/jquery-ui/jquery-ui.js"></script>-->
+        <script src="~/lib/jquery-validation/dist/jquery.validate.min.js"></script>
+        <script src="~/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.min.js"></script>
+        <!--
+        <script src="~/lib/bootstrap-select/bootstrap-select.min.js"></script>
+    <script src="~/js/custom/jspdf.min.js"></script>
+    <script src="~/js/custom/exportPDF.js"></script>-->
+        <script src="~/lib/bootstrap-datetimepicker/js/moment-with-locales.js"></script>
+        <script src="~/lib/bootstrap-datetimepicker/js/bootstrap-datetimepicker.js"></script>
+        <script src="~/js/site.js" asp-append-version="true"></script>
+
+        <!-- DataTables  & Plugins -->
+        <script src="~/plugins/datatables/jquery.dataTables.min.js"></script>
+        <script src="~/plugins/datatables-bs4/js/dataTables.bootstrap4.min.js"></script>
+        <script src="~/plugins/datatables-responsive/js/dataTables.responsive.min.js"></script>
+        <script src="~/plugins/datatables-responsive/js/responsive.bootstrap4.min.js"></script>
+        <script src="~/plugins/datatables-buttons/js/dataTables.buttons.min.js"></script>
+        <script src="~/plugins/datatables-buttons/js/buttons.bootstrap4.min.js"></script>
+        <script src="~/plugins/jszip/jszip.min.js"></script>
+        <script src="~/plugins/pdfmake/pdfmake.min.js"></script>
+        <script src="~/plugins/pdfmake/vfs_fonts.js"></script>
+        <script src="~/plugins/datatables-buttons/js/buttons.html5.min.js"></script>
+        <script src="~/plugins/datatables-buttons/js/buttons.print.min.js"></script>
+        <script src="~/plugins/datatables-buttons/js/buttons.colVis.min.js"></script>
+        <script src="~/dist/js/dataTables.fixedColumns.min.js"></script>
+        <script type="text/javascript" src="~/common/dataset.js?v=7.0.0"></script>
+
+        <script src="~/js/toastr.js"></script>
+        <script src="~/lib/signalr/signalr.js"></script>
+        <script src="~/js/notification.js"></script>
+
+        @*<script src="~/plugins/daterangepicker/daterangepicker.js"></script>*@
+
+    </environment>
+
+    <script>
+        $(window).on('load', function () { $('#loading').hide();});
+
+        $(function () {
+            $('.ttip').tooltip()
+        });
+
+        @*
+            Disable inspect element and view source
+        document.onkeydown = function (e) {
+            if (e.keyCode == 123) {
+                return false;
+            }
+            if (e.ctrlKey && e.shiftKey && e.keyCode == 'I'.charCodeAt(0)) {
+                return false;
+            }
+            if (e.ctrlKey && e.shiftKey && e.keyCode == 'J'.charCodeAt(0)) {
+                return false;
+            }
+            if (e.ctrlKey && e.keyCode == 'U'.charCodeAt(0)) {
+                return false;
+            }
+
+            if (e.ctrlKey && e.shiftKey && e.keyCode == 'C'.charCodeAt(0)) {
+                return false;
+            }
+        }*@
+    
+        
+
+    </script>
+    <style>
+        #loading {
+            width: 100%;
+            height: 100%;
+            top: 0;
+            left: 0;
+            position: fixed;
+            display: block;
+            opacity: 0.7;
+            background-color: #fff;
+            z-index: 99;
+            text-align: center;
+        }
+
+        #loading-image {
+            position: absolute;
+            top: 40%;
+            left: 45%;
+            z-index: 100;
+        }
+    </style>
+</head>
+
+@*<body class="hold-transition layout-fixed sidebar-mini" oncontextmenu="return false"> disable right click *@
+<body class="hold-transition layout-fixed sidebar-mini">
+    <div id="loading">
+        <img id="loading-image" src="~/images/emcure_loader.gif" alt="Loading..." />
+    </div>
+    <div class="wrapper">
+        <nav class="main-header navbar navbar-expand-md navbar-white navbar-light">
+            <a href="/Dashboard" class="navbar-brand">
+                <img src="~/images/Emcure_Success-150.png" style="width:150px" />
+            </a>
+            <button class="navbar-toggler float-right collapsed" type="button" data-toggle="collapse" data-target="#navbarTogglerDemo01" aria-controls="navbarTogglerDemo01" aria-expanded="false" aria-label="Toggle navigation">
+                <span></span>
+                <span></span>
+                <span></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarTogglerDemo01">
+                <ul class="navbar-nav">
+                    @if (!User.Identity.IsAuthenticated)
+                    {
+                        @*<li class="@((ViewContext.RouteData.Values["Controller"].ToString() == "Home" && ViewContext.RouteData.Values["Action"].ToString() == "Index") ? "active" : "")"><a asp-area="" asp-controller="Home" asp-action="Index">@SharedLocalizer["Home"].Value</a></li>
+                    <li class="@((ViewContext.RouteData.Values["Controller"].ToString() == "Home" && ViewContext.RouteData.Values["Action"].ToString() == "AboutUs") ? "active" : "")"><a asp-area="" asp-controller="Home" asp-action="AboutUs">@SharedLocalizer["About Us"].Value</a></li>
+                    <li class="@(ViewContext.RouteData.Values["Controller"].ToString() == "PassStudy" ? "active" : "")"><a asp-area="" asp-controller="PassStudy" asp-action="Index">PASS @SharedLocalizer["Study"].Value</a></li>*@
+                        @*<li class="nav-item d-none d-sm-inline-block @(ViewContext.RouteData.Values["Action"].ToString() == "Login" ? "active" : "")  @(ViewContext.RouteData.Values["Action"].ToString() == "ForgotPassword" ? "active" : "")   @(ViewContext.RouteData.Values["Action"].ToString() == "Register" ? "active" : "")">
+                        <a class="nav-link" asp-area="" asp-controller="Account" asp-action="Login">@SharedLocalizer["Login"].Value</a>
+                    </li>*@
+                    }
+                    @if (User.IsInRole("Admin"))
+                    {
+
+                        <li class="nav-item  @(ViewContext.RouteData.Values["Action"].ToString() == "Register" ? "active" : "")">
+                            <a class="nav-link" asp-area="" asp-controller="Account" asp-action="Register">@SharedLocalizer[" User Registration"].Value</a>
+                        </li>
+                    }
+                    @*@if (User.IsInRole("Prescriber"))*@
+                    @if (User.Identity.IsAuthenticated)
+                    {
+                        <li class="nav-item  ">
+                            <a href="/Dashboard" class="nav-link"><i class="fas fa-home"></i></a>
+                        </li>
+
+                        <li class="nav-item  @(ViewContext.RouteData.Values["Action"].ToString() == "ProjectList" ? "active" : "")">
+                            <a class="nav-link" asp-area="" asp-controller="DRFInitialization" asp-action="ProjectList">Dossier</a>
+                        </li>
+                        <li class="nav-item  @(ViewContext.RouteData.Values["Action"].ToString() == "PIDFList" ? "active" : "")">
+                            <a class="nav-link" asp-area="" asp-controller="PIDF" asp-action="PIDFList">Projects</a>
+                        </li>
+                        @*<li class="nav-item d-none d-sm-inline-block @(ViewContext.RouteData.Values["Action"].ToString() == "Reports" ? "active" : "")">
+                        <a class="nav-link" asp-area="" asp-controller="Reports" asp-action="Reports">Report View</a>
+                    </li>*@
+                        <li class="nav-item  dropdown reportsMenu">
+                            <a class="nav-link" data-toggle="dropdown" href="javascript:void(0)">
+                                Reports
+                            </a>
+                            <div class="dropdown-menu dropdown-menu-lg dropdown-menu-right">
+                                @Html.ActionLink("Report View", "Reports", "Reports", null, new { @class = "dropdown-item" })
+                                @Html.ActionLink("Manufacturing Report", "ManufacturingReports", "Reports", null, new { @class = "dropdown-item" })
+                                <div class="dropdown-divider "></div>
+                                @Html.ActionLink("Molecule TimeLine Reports", "TimelineReports", "Reports", null, new { @class = "dropdown-item" })
+                                @if (User.IsInRole("Admin") || User.IsInRole("Prescriber"))
+                                {
+                                    <div class="dropdown-divider "></div>
+                                    @Html.ActionLink("DRF List", "DRFList", "Reports", null, new { @class = "dropdown-item" })
+                                }
+
+                            </div>
+
+                        </li>
+
+
+                    }
+                    @*@if (User.IsInRole("Approvers") || User.IsInRole("Sr. Vice President-Emerging Market") || User.IsInRole("President – Commercial") || User.IsInRole("General Manager - Finance") || User.IsInRole("President – Research & Development"))
+                {
+                    <li class="nav-item d-none d-sm-inline-block ">
+                        <a href="/Dashboard" class="nav-link"><i class="fas fa-home"></i></a>
+                    </li>
+                    <li class="nav-item d-none d-sm-inline-block @(ViewContext.RouteData.Values["Action"].ToString() == "ProjectList" ? "active" : "")">
+                        <a class="nav-link" asp-area="" asp-controller="DRFInitialization" asp-action="ProjectList">Dossier</a>
+                    </li>
+                    <li class="nav-item d-none d-sm-inline-block @(ViewContext.RouteData.Values["Action"].ToString() == "PIDFList" ? "active" : "")">
+                        <a class="nav-link" asp-area="" asp-controller="PIDF" asp-action="PIDFList">Projects</a>
+                    </li>
+
+                    <li class="nav-item d-none d-sm-inline-block @(ViewContext.RouteData.Values["Action"].ToString() == "PIDFApproval" ? "active" : "")">
+                        <a class="nav-link" asp-area="" asp-controller="PIDFApproval" asp-action="Index">PIDFApproval</a>
+                    </li>
+                }*@
+
+                    @*<li class="@(ViewContext.RouteData.Values["Action"].ToString() == "ContactUs" ? "active" : "") "><a asp-area="" asp-controller="Home" asp-action="ContactUs">@SharedLocalizer["Contact Us"].Value</a></li>*@
+                    @*<li class="@(ViewContext.RouteData.Values["Action"].ToString() == "ContactUs" ? "active" : "") "><a asp-area="" asp-controller="Home" asp-action="ContactUs">@SharedLocalizer["Contact Us"].Value</a></li>*@
+                    @*<li class="@((ViewContext.RouteData.Values["Controller"].ToString() == "Home" && ViewContext.RouteData.Values["Action"].ToString() == "Privacy") ? "active" : "")">
+                <a asp-area="" asp-controller="Home" asp-action="Privacy">@SharedLocalizer["Privacy Policy"].Value</a> </li>*@
+                    @*<li>
+                    <a class="dropdown-toggle" data-toggle="dropdown" href="#">
+                        <span class="navTxt">@SharedLocalizer["Privacy Policy"].Value</span>
+                        <span class="triangle-bottomright hidden-xs"></span>
+                        <span class="caret visible-xs"></span>
+                    </a>
+                    <ul class="dropdown-menu">
+                        <li><a asp-area="" asp-controller="Home" asp-action="PrivacyPolicyforPatients">@SharedLocalizer["Privacy Policy for Patients"].Value</a></li>
+                        <li><a asp-area="" asp-controller="Home" asp-action="PrivacyPolicyforGuardians">@SharedLocalizer["Privacy Policy for Guardians"].Value</a></li>
+                        <li><a asp-area="" asp-controller="Home" asp-action="PrivacyPolicyforPrescribes">@SharedLocalizer["Privacy Policy for Prescribes"].Value</a></li>
+                        <li><a asp-area="" asp-controller="Home" asp-action="PrivacyPolicyforAdverseEvents">@SharedLocalizer["Privacy Policy for AdverseEvents"].Value</a></li>
+                        <li><a asp-area="" asp-controller="Home" asp-action="PrivacyPolicyforQueries">@SharedLocalizer["Privacy Policy for Queries"].Value</a></li>
+                    </ul>
+                </li>*@
+
+                </ul>
+                </div>
+                @if (User.Identity.IsAuthenticated)
+                {
+                    <partial name="_LoginPartial" />
+                }
+
+
+                @*}*@
+
+
+        </nav>
+
+        <partial name="_CookieConsentPartial" />
+
+        <div class="content">
+            @RenderBody()
+        </div>
+
+        <footer class="main-footer">
+           <strong> Copyright &copy;<script>document.write(new Date().getFullYear())</script> Design and Developed for <a href="https://emcure.com">Emcure</a>.</strong>
+        </footer>
+    </div>
+
+    <!--Common Modal For alert, success and Confirmation-->
+
+    <div id="commonModal" class="modal" tabindex="-1" role="dialog">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title"></h4>
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true"><span aria-hidden="true">&times;</span></button>
+
+                </div>
+                <div class="modal-body">
+                    <div class="row" style="margin-top:-60px">
+                        <div class="f-modal-icon f-modal-error animate">
+                            <span class="f-modal-x-mark">
+                                <span class="f-modal-line f-modal-left animateXLeft"></span>
+                                <span class="f-modal-line f-modal-right animateXRight"></span>
+                            </span>
+                            <div class="f-modal-placeholder"></div>
+                            <div class="f-modal-fix"></div>
+                        </div>
+                        <div class="f-modal-icon f-modal-warning scaleWarning">
+                            <span class="f-modal-body pulseWarningIns"></span>
+                            <span class="f-modal-dot pulseWarningIns"></span>
+                        </div>
+                        <div class="f-modal-icon f-modal-success animate">
+                            <span class="f-modal-line f-modal-tip animateSuccessTip"></span>
+                            <span class="f-modal-line f-modal-long animateSuccessLong"></span>
+                            <div class="f-modal-placeholder"></div>
+                            <div class="f-modal-fix"></div>
+                        </div>
+                    </div>
+                    <p></p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">@SharedLocalizer["OK"].Value</button>
+                </div>
+                <div class="modal-footer confirmFooter">
+                    <button type="button" class="btn btn-default" data-dismiss="modal" id="ok">@SharedLocalizer["Confirm"].Value</button>
+                    <button type="button" class="btn btn-default" data-dismiss="modal">@SharedLocalizer["Cancel"].Value</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+
+
+    @RenderSection("Scripts", required: false)
+
+</body>
+</html>

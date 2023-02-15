@@ -1,0 +1,31 @@
+﻿<form asp-controller="FileUpload" asp-action="UploadFile" method="post" enctype="multipart/form-data">
+    <div class="row">
+        <div class="col-sm-6">
+            <input type="file" name="file" />
+        </div>
+        <div class="col-sm-6">
+            <button type="submit">Upload File</button>
+        </div>
+    </div>
+</form>
+<form asp-controller="FileUpload" asp-action="UploadFiles" method="post" enctype="multipart/form-data">
+    <div class="row">
+        <div class="col-sm-6">
+            <input type="file" name="files" multiple />
+        </div>
+        <div class="col-sm-6">
+            <button type="submit">Upload Files</button>
+        </div>
+    </div>
+</form>
+<form asp-controller="FileUpload" asp-action="UploadFileViaModel" method="post" enctype="multipart/form-data">
+    <div class="row">
+        <input type="text" name="PatientId" />
+        <div class="col-sm-6">
+            <input type="file" name="FileToUpload" />
+        </div>
+        <div class="col-sm-6">
+            <button type="submit">Upload File (model)</button>
+        </div>
+    </div>
+</form>

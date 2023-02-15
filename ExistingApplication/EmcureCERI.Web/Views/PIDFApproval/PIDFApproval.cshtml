@@ -1,0 +1,462 @@
+﻿@inject Microsoft.Extensions.Localization.IStringLocalizer<SharedResource> SharedLocalizer
+@{
+    ViewData["Title"] = "PIDFApproval";
+}
+@model int
+
+<div class="content-wrapper pt-3">
+    <!-- Main content -->
+    <section class="content">
+        <div class="container-fluid">
+            <!-- Small boxes (Stat box) -->
+            <!-- Main row -->
+            <div class="row">
+                <section class="col-lg-12 connectedSortable">
+                    <!-- Custom tabs (Charts with tabs)-->
+                    <div class="card">
+                        <div class="card-header">
+                            <h3 class="card-title">
+                                <i class="far fa-plus-square mr-2"></i> Acamprosate EC Tabs
+                            </h3>
+                            <div class="card-tools md-left">
+                                <div class="mybtn-group">
+                                    @*<li class="nav-item mr-3">
+                                <a class="btn btn-outline-primary" href="@Url.Action("PIDFList","PIDF")"><i class="fas fa-pills mr-1"></i>Project List</a>
+                            </li>
+                            <li class="nav-item mr-3">
+                                <a class="btn btn-outline-primary" href="@Url.Action("PIDFStrengthList","PIDF")"><i class="far fa-list-alt mr-1"></i>PIDF List</a>
+                            </li>
+                            <li class="nav-item mr-3">
+                                <a class="btn btn-outline-primary" href="@Url.Action("Index","GanttNew")"><i class="fas fa-project-diagram mr-2"></i>Gantt Chart</a>
+                            </li>
+                            <li class="nav-item mr-3">
+                                <a class="btn btn-outline-primary" href="@Url.Action("PIDFNew","PIDF")"><i class="far fa-plus-square mr-1"></i> Create New PIDF</a>
+                            </li>*@
+                                        <button class="btn btn-primary" onclick="javascript:window.history.back();"><i class="fas fa-undo mr-1"></i> Back</button>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- /.card-header -->
+                        <div class="card-body">
+
+                            <div class="table-responsive">
+
+                                <table border="0" cellspacing="0" class="table table-bordered table-hover table-striped">
+                                    <colgroup span="36" width="107"></colgroup>
+                                    <thead>
+                                        <tr>
+                                            <th rowspan="2" class="text-center">Project Name</th>
+                                            <th rowspan="2" class="text-center">Strengths</th>
+                                            <th rowspan="2" class="text-center">Country</th>
+                                            @*<th rowspan="2" class="text-center">Patent status</th>*@
+                                            <th rowspan="2" class="text-center">Packing</th>
+                                            <th rowspan="2" class="text-center">Batch Size (in pack)</th>
+                                            <th rowspan="2" class="text-center">Pack Size</th>
+                                            <th rowspan="2" class="text-center">COGS</th>
+                                            <th rowspan="2" class="text-center">Freight (5% on COGS)</th>
+                                            <th rowspan="2" class="text-center"> Total CIF Cost </th>
+                                            <th rowspan="2" class="text-center">CIF Price Per Unit</th>
+                                            <th rowspan="2" class="text-center"> CIF Price Per Pack </th>
+                                            <th rowspan="2" class="text-center"> Profit per Pack </th>
+                                            <th class="text-center"> </th>
+                                            <th colspan="12" class="text-center"> Volume </th>
+                                            <th rowspan="2" class="text-center">Contribution (3 yrs)</th>
+                                            <th rowspan="2" class="text-center">Cost of 3 Batches</th>
+                                            <th rowspan="2" class="text-center">Analytical Cost</th>
+                                            <th rowspan="2" class="text-center">BE Cost</th>
+                                            <th rowspan="2" class="text-center">RLD Cost</th>
+                                            <th rowspan="2" class="text-center">R&D Cost</th>
+                                            <th rowspan="2" class="text-center">Filing Cost</th>
+                                            <th rowspan="2" class="text-center">Stability Cost</th>
+                                            <th rowspan="2" class="text-center">Total Invest.</th>
+                                            <th rowspan="2" class="text-center">ROI</th>
+                                        </tr>
+
+                                        <tr>
+                                            <th class="text-center">% Cont</th>
+                                            <th class="text-center"> Qty Yr 1 </th>
+                                            <th class="text-center"> Qty Yr 2 </th>
+                                            <th class="text-center"> Qty Yr 3 </th>
+                                            <th class="text-center"> Val Yr 1 </th>
+                                            <th class="text-center"> Val Yr 2 </th>
+                                            <th class="text-center"> Val Yr 3 </th>
+                                            <th class="text-center"> COGS 1 </th>
+                                            <th class="text-center"> COGS 2 </th>
+                                            <th class="text-center"> COGS 3 </th>
+                                            <th class="text-center"> Contri 1 </th>
+                                            <th class="text-center"> Contri 2 </th>
+                                            <th class="text-center"> Contri 3 </th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="TableData">
+                                    </tbody>
+                                    <tfoot id="TableDataFooter">
+                                    </tfoot>
+
+                                </table>
+                            </div>
+
+
+
+                        </div>
+                        <!-- /.card-body -->
+                    </div>
+                    <!-- /.card -->
+
+                </section>
+                <section class="col-lg-12">
+                    <div class="card mt-1">
+                        <div class="card-header mb-1">
+                            <h3 class="card-title" for="exampleInputFile"><i class="fas fa-file-alt mr-3"></i>Uploaded Files</h3>
+                        </div>
+                        <div class="row p-3">
+                            <div class="col-sm-12 ">
+                                <table class="table fileorder-list table-bordered mr-3 ">
+                                    <thead>
+                                        <tr>
+                                            <th>Files</th>
+                                        </tr>
+                                    </thead>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+                <section class="col-lg-12 connectedSortable">
+                    <!-- Custom tabs (Charts with tabs)-->
+                    <div class="card">
+                        <div class="card-header">
+                            <h3 class="card-title">
+                                <i class="far fa-plus-square mr-2"></i> PIDF Approval
+                            </h3>
+                            <!--div class="card-tools">
+                    <ul class="nav nav-pills ml-auto">
+                        <li class="nav-item mr-3">
+                            <a class="btn btn-outline-primary" href="drf.html"><i class="far fa-list-alt mr-1"></i> Project List</a>
+                        </li>
+
+                        <li class="nav-item">
+                            <a class="btn btn-primary" href="drf-create.html"><i class="far fa-plus-square mr-1"></i> Create new Project</a>
+                        </li>
+                    </ul>
+                </div-->
+                        </div>
+                        <!-- /.card-header -->
+                        <div class="card-body">
+                            <div class="row">
+                                <div class="col-sm-3 text-right">
+                                    <label for="check_approval">Approve the project :</label>
+                                </div>
+                                <div class="col-sm-3 row">
+                                    <div class="col-sm-6">
+                                        <div class="icheck-primary d-inline mr-5">
+                                            <input class="radiobuttons" id="Approve" onchange="CheckRadioBox()" name="approval_status" checked type="radio" value="Approve">
+                                            <label for="Approve">
+                                                Approve
+                                            </label>
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-6">
+                                        <div class="icheck-primary d-inline mr-5">
+                                            <input class="radiobuttons" id="Reject" onchange="CheckRadioBox()" name="approval_status" type="radio" value="Reject">
+                                            <label for="Reject">
+                                                Reject
+                                            </label>
+                                        </div>
+                                    </div>
+
+                                </div>
+                                <div class="col-sm-6">
+                                    <div class="form-group">
+                                        <label for="Comment" class="float-left mr-2">Comment :</label>
+                                        <textarea style="width:70%" class="form-control" rows="3" id="Comment" placeholder="Enter Comment"></textarea>
+                                        <small class="text-danger" id="Comment_error"></small>
+                                    </div>
+                                </div>
+
+                            </div>
+                            <!-- /.card-body -->
+                        </div>
+                        <div class="card-footer text-center">
+                            <button name="submit" id="ApprovelSubmitBtn" onclick="SubmitRemark()" type="button" class="btn btn-primary mr-3">Submit</button>
+                            @*<button type="button" href="@Url.Action("PIDFStrengthList","PIDF")" class="btn btn-primary">Cancel</button>*@
+                            <a class="btn btn-primary" href="@Url.Action("PIDFStrengthList","PIDF")"><i class="far  mr-1"></i>Cancel</a>
+                        </div>
+                    </div>
+                    <!-- /.card -->
+
+                </section>
+
+
+            </div>
+            <!-- /.row (main row) -->
+        </div>
+        <!-- /.container-fluid -->
+    </section>
+    <!-- /.content -->
+</div>
+
+@section Scripts {
+    <script>
+		var PidfID = 0;
+		var PIDFNo = "";
+		var StatusFromUser = 0;
+		var RemarkFromUser = "";
+
+		$(document).ready(function () {
+			var id = @Model;
+            if (id != 0) {
+				GetTableData(id);
+			}
+			else {
+                BindTableData([], []);
+			}
+		});
+
+		function CheckRadioBox() {
+			var data = $("input[name='approval_status']:checked").val();
+
+			if (data == 'Approve') {
+				$('#Comment').prop("disabled", true);
+			}
+			else {
+                $('#Comment').prop("disabled", false);
+			}
+		}
+
+		function SubmitRemark() {
+			var status = $("input[name='approval_status']:checked").val();
+
+			if (status == 'Reject') {
+				if ($('#Comment').val() == null || $('#Comment').val() == "") {
+					$('#Comment_error').empty().append("The 'Comment' field is required.");
+					return false;
+				}
+				else {
+					$('#Comment_error').empty();
+				}
+			}
+
+
+            var data = {
+				pidfID: PidfID,
+				pIDFNo: PIDFNo,
+				userID: 0,
+				pidfStatusID: status == 'Approve'? 12 : 10,
+				approvalRemark: $('#Comment').val()
+			};
+            var url = '@Url.Action("PIDFStrengthList", "PIDF")';
+            $('#loading').show();
+            $.ajax({
+					type: "POST",
+					url: '@Url.Action("UpdateApprovalPIDFStatusAsync", "PIDFApproval")/',
+					dataType: "json",
+					data: data,
+                success: function (response) {
+                    $('#loading').hide();
+							if (response.data == 'success') {
+								@*openCommonModal('successModal modal-sm', '@Html.Raw(SharedLocalizer["Success"].Value)', '@Html.Raw(SharedLocalizer["PIDF Approved successfully."].Value)', true);*@
+                                openCommonModal('successModal modal-sm', '@Html.Raw(SharedLocalizer["Success"].Value)', response.message, true);
+                                setTimeout(function () { location.href = url; }, 2000);
+
+									//alert('Status updated successfully.');
+									//location.reload();
+								}
+							else {
+                                openCommonModal('alertModal modal-sm', '@SharedLocalizer["Error"].Value', response.data, false);
+									//alert('Status not updated successfully.');
+									//location.reload();
+								}
+				            },
+				            failure: function () {
+
+				    	    }
+				    });
+		}
+
+		function GetTableData(id) {
+			var data = {
+				PidfID: parseInt(id),
+				userID: 0,
+				StatusId: 0
+			};
+			$.ajax({
+					type: "POST",
+					url: '@Url.Action("GetPIDFDetailedApprovalList", "PIDFApproval")/',
+					dataType: "json",
+					data: data,
+				success: function (response) {
+				    	    if (response.data.PIDFDetail.length > 0) {
+								BindTableData(response.data.PIDFHeader[0], response.data.PIDFDetail);
+								PidfID = response.data.PIDFHeader[0].PidfID;
+								PIDFNo = response.data.PIDFHeader[0].PIDFNo;
+								RemarkFromUser = response.data.PIDFHeader[0].RemarkFromUser;
+								StatusFromUser = response.data.PIDFHeader[0].StatusFromUser;
+				    	    }
+				    	    else {
+				    	    	BindTableData([], []);
+							}
+
+                     if (response.data.uploadfilelist!=null) {
+                         $.each(response.data.uploadfilelist, function (i, List) {
+                             console.log(List);
+                                var newRow = $("<tr>");
+                                var cols = "";
+                                cols += '<td><a href="' + List.SaveFilePath + '" download="download" target="_blank">' + List.SaveFileName + '</td>';
+                                newRow.append(cols);
+                                $("table.fileorder-list").append(newRow);
+
+                            });
+
+                        }
+                        else {
+                            var newRow = $("<tr>");
+                                var cols = "";
+                                cols += '<td>Data not available</td>';
+                                newRow.append(cols);
+                                $("table.fileorder-list").append(newRow);
+                        }
+
+
+
+							$('#Comment').prop("disabled", true);
+							if (StatusFromUser != 0 && StatusFromUser != null) {
+								if (StatusFromUser == 9) {
+									$("#Approve").prop("checked", true);
+								}
+								else if (StatusFromUser == 10) {
+									$("#Reject").prop("checked", true);
+								}
+								$('#Comment').val(RemarkFromUser);
+								$("input[name='approval_status']").prop("disabled", true);
+								$('#ApprovelSubmitBtn').prop("disabled", true);
+							}
+							else {
+								$("input[name='approval_status']").prop("disabled", false);
+								$('#ApprovelSubmitBtn').prop("disabled", false);
+							}
+				    	},
+				    failure: function () {
+                        BindTableData([], []);
+				    	}
+				    });
+		}
+
+		function BindTableData(HeaderData, DetailsData) {
+			if (DetailsData.length > 0) {
+				$('#TableData').empty();
+				var TotalVal1 = 0;
+				var TotalVal2 = 0;
+				var TotalVal3 = 0;
+				var TotalCogs1 = 0;
+				var TotalCogs2 = 0;
+				var TotalCogs3 = 0;
+				var TotalContri1 = 0;
+				var TotalContri2 = 0;
+				var TotalContri3 = 0;
+				var TotalContribution = 0;
+				var TotalCO3B = 0;
+				var TotalRandD = 0;
+				var TotalFiling = 0;
+				var TotalStability = 0;
+				var TotalInv = 0;
+
+				for (var i = 0; i < DetailsData.length; i++) {
+
+					TotalVal1 += parseFloat(DetailsData[i].VolOneyear);
+					TotalVal2 += parseFloat(DetailsData[i].VolTwoyear);
+					TotalVal3 += parseFloat(DetailsData[i].VolThreeyear);
+
+					TotalCogs1 += parseFloat(DetailsData[i].COGS1);
+					TotalCogs2 += parseFloat(DetailsData[i].COGS2);
+					TotalCogs3 += parseFloat(DetailsData[i].COGS3);
+
+					TotalContri1 += parseFloat(DetailsData[i].ContriOne);
+					TotalContri2 += parseFloat(DetailsData[i].ContriTwo);
+					TotalContri3 += parseFloat(DetailsData[i].ContriThree);
+
+					TotalContribution += parseFloat(DetailsData[i].ContributionThreeYear);
+					TotalCO3B += parseFloat(DetailsData[i].CostofThreeBatches);
+					TotalRandD += parseFloat(DetailsData[i].RandDCost);
+					TotalFiling += parseFloat(DetailsData[i].FilingCost);
+					TotalStability += parseFloat(DetailsData[i].StabilityCost);
+					TotalInv += parseFloat(DetailsData[i].TotalInvest);
+
+                    $('#TableData').append(
+                        '<tr>'
+                             +'<td>'+(i == 0 ? HeaderData.ProjectorProductName : '')+'</td>'
+						//+ '<td>' + (i == 0 ? DetailsData[i].StrengthName : '') + '</td>'
+                        + '<td>' + DetailsData[i].StrengthName + '</td>'
+                             +'<td>'+DetailsData[i].CountryName+'</td>'
+                            /* +'<td></td>'*/
+                             +'<td>'+DetailsData[i].PackingName+'</td>'
+                             +'<td>'+DetailsData[i].BatchSize+'</td>'
+                             +'<td>'+DetailsData[i].PackSizeName+'</td>'
+                             +'<td>'+DetailsData[i].COGS+'</td>'
+                             +'<td>'+DetailsData[i].Freight+'</td>'
+                             +'<td>'+DetailsData[i].TotalCIFCost+'</td>'
+                             +'<td>'+DetailsData[i].CIFPricePerUnit+'</td>'
+                             +'<td>'+DetailsData[i].CIFPricePerPack+'</td>'
+                             +'<td>'+DetailsData[i].ProfitPerPack+'</td>'
+                             +'<td></td>'
+                             +'<td>'+DetailsData[i].QtyOneyear+'</td>'
+                             +'<td>'+DetailsData[i].QtyTwoyear+'</td>'
+                             +'<td>'+DetailsData[i].QtyThreeyear+'</td>'
+                             +'<td>'+DetailsData[i].VolOneyear+'</td>'
+                             +'<td>'+DetailsData[i].VolTwoyear+'</td>'
+                             +'<td>'+DetailsData[i].VolThreeyear+'</td>'
+                             +'<td>'+DetailsData[i].COGS1+'</td>'
+                             +'<td>'+DetailsData[i].COGS2+'</td>'
+                             +'<td>'+DetailsData[i].COGS3+'</td>'
+                             +'<td>'+DetailsData[i].ContriOne+'</td>'
+                             +'<td>'+DetailsData[i].ContriTwo+'</td>'
+                             +'<td>'+DetailsData[i].ContriThree+'</td>'
+                             +'<td>'+DetailsData[i].ContributionThreeYear+'</td>'
+                             +'<td>'+DetailsData[i].CostofThreeBatches+'</td>'
+                             +'<td>'+DetailsData[i].AnalyticalCost+'</td>'
+                             +'<td>'+DetailsData[i].BECost+'</td>'
+                             +'<td>'+DetailsData[i].RLDCost+'</td>'
+                             +'<td>'+DetailsData[i].RandDCost+'</td>'
+                             +'<td>'+DetailsData[i].FilingCost+'</td>'
+                             +'<td>'+DetailsData[i].StabilityCost+'</td>'
+                             +'<td>'+DetailsData[i].TotalInvest+'</td>'
+                             +'<td>'+DetailsData[i].ROI+'</td>'
+                        +'</tr>'
+				    );
+				}
+
+				$('#TableDataFooter').empty().append(
+                    '<tr>'
+                        +'<th colspan="16" class="text-right">Total</th>'
+                        +'<th>'+TotalVal1+'</th>'
+                        +'<th>'+TotalVal2+'</th>'
+                        +'<th>'+TotalVal3+'</th>'
+                        +'<th>'+TotalCogs1+'</th>'
+                        +'<th>'+TotalCogs2+'</th>'
+                        +'<th>'+TotalCogs3+'</th>'
+                        +'<th>'+TotalContri1+'</th>'
+                        +'<th>'+TotalContri2+'</th>'
+                        +'<th>'+TotalContri3+'</th>'
+                        +'<th>'+TotalContribution+'</th>'
+                        +'<th>'+TotalCO3B+'</th>'
+                        +'<th> - </th>'
+                        +'<th> - </th>'
+                        +'<th> - </th>'
+                        +'<th>'+TotalRandD+'</th>'
+                        +'<th>'+TotalFiling+'</th>'
+                        +'<th>'+TotalStability+'</th>'
+                        +'<th>'+TotalInv+'</th>'
+                        +'<th></th>'
+                    +'</tr>'
+				);
+			}
+			else {
+				$('#TableData').empty().append(
+                    '<tr>'
+                        +'<th colspan="36">Data Not Found.</th>'
+                    +'</tr>'
+				);
+			}
+		}
+    </script>
+}

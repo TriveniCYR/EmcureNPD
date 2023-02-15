@@ -1,0 +1,15 @@
+D:\E Drive\Nilesh_Jain\Clients\Emcure_Pharma\NeoSOFTRepo\NPD\EmcureNPD\ExistingApplication\EmcureCERI.Business.Contract\bin\Debug\netcoreapp2.1\EmcureCERI.Business.Contract.deps.json
+D:\E Drive\Nilesh_Jain\Clients\Emcure_Pharma\NeoSOFTRepo\NPD\EmcureNPD\ExistingApplication\EmcureCERI.Business.Contract\bin\Debug\netcoreapp2.1\EmcureCERI.Business.Contract.dll
+D:\E Drive\Nilesh_Jain\Clients\Emcure_Pharma\NeoSOFTRepo\NPD\EmcureNPD\ExistingApplication\EmcureCERI.Business.Contract\bin\Debug\netcoreapp2.1\EmcureCERI.Business.Contract.pdb
+D:\E Drive\Nilesh_Jain\Clients\Emcure_Pharma\NeoSOFTRepo\NPD\EmcureNPD\ExistingApplication\EmcureCERI.Business.Contract\bin\Debug\netcoreapp2.1\EmcureCERI.Business.Models.dll
+D:\E Drive\Nilesh_Jain\Clients\Emcure_Pharma\NeoSOFTRepo\NPD\EmcureNPD\ExistingApplication\EmcureCERI.Business.Contract\bin\Debug\netcoreapp2.1\EmcureCERI.Data.DataAccess.dll
+D:\E Drive\Nilesh_Jain\Clients\Emcure_Pharma\NeoSOFTRepo\NPD\EmcureNPD\ExistingApplication\EmcureCERI.Business.Contract\bin\Debug\netcoreapp2.1\EmcureCERI.Business.Models.pdb
+D:\E Drive\Nilesh_Jain\Clients\Emcure_Pharma\NeoSOFTRepo\NPD\EmcureNPD\ExistingApplication\EmcureCERI.Business.Contract\bin\Debug\netcoreapp2.1\EmcureCERI.Data.DataAccess.pdb
+D:\E Drive\Nilesh_Jain\Clients\Emcure_Pharma\NeoSOFTRepo\NPD\EmcureNPD\ExistingApplication\EmcureCERI.Business.Contract\obj\Debug\netcoreapp2.1\EmcureCERI.Business.Contract.csproj.AssemblyReference.cache
+D:\E Drive\Nilesh_Jain\Clients\Emcure_Pharma\NeoSOFTRepo\NPD\EmcureNPD\ExistingApplication\EmcureCERI.Business.Contract\obj\Debug\netcoreapp2.1\EmcureCERI.Business.Contract.GeneratedMSBuildEditorConfig.editorconfig
+D:\E Drive\Nilesh_Jain\Clients\Emcure_Pharma\NeoSOFTRepo\NPD\EmcureNPD\ExistingApplication\EmcureCERI.Business.Contract\obj\Debug\netcoreapp2.1\EmcureCERI.Business.Contract.AssemblyInfoInputs.cache
+D:\E Drive\Nilesh_Jain\Clients\Emcure_Pharma\NeoSOFTRepo\NPD\EmcureNPD\ExistingApplication\EmcureCERI.Business.Contract\obj\Debug\netcoreapp2.1\EmcureCERI.Business.Contract.AssemblyInfo.cs
+D:\E Drive\Nilesh_Jain\Clients\Emcure_Pharma\NeoSOFTRepo\NPD\EmcureNPD\ExistingApplication\EmcureCERI.Business.Contract\obj\Debug\netcoreapp2.1\EmcureCERI.Business.Contract.csproj.CoreCompileInputs.cache
+D:\E Drive\Nilesh_Jain\Clients\Emcure_Pharma\NeoSOFTRepo\NPD\EmcureNPD\ExistingApplication\EmcureCERI.Business.Contract\obj\Debug\netcoreapp2.1\EmcureCERI.Business.Contract.csproj.CopyComplete
+D:\E Drive\Nilesh_Jain\Clients\Emcure_Pharma\NeoSOFTRepo\NPD\EmcureNPD\ExistingApplication\EmcureCERI.Business.Contract\obj\Debug\netcoreapp2.1\EmcureCERI.Business.Contract.dll
+D:\E Drive\Nilesh_Jain\Clients\Emcure_Pharma\NeoSOFTRepo\NPD\EmcureNPD\ExistingApplication\EmcureCERI.Business.Contract\obj\Debug\netcoreapp2.1\EmcureCERI.Business.Contract.pdb

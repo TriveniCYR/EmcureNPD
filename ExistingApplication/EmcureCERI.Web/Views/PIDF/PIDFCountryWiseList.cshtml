@@ -1,0 +1,589 @@
+﻿@using Microsoft.AspNetCore.Http
+@inject IHttpContextAccessor HttpContextAccessor
+@inject Microsoft.Extensions.Localization.IStringLocalizer<SharedResource> SharedLocalizer
+@{
+    ViewData["Title"] = "PIDF Countrywise List";
+}
+
+<style>
+
+
+    .treegrid-control span {
+        cursor: pointer;
+        padding: 0px 5px;
+        display: block;
+        box-shadow: 0 0 1px #999;
+        width: 20px;
+        height: 25px;
+    }
+
+    .treegrid-control-open span {
+        cursor: pointer;
+        padding: 0px 7px;
+        display: block;
+        box-shadow: 0 0 1px #999;
+        width: 20px;
+        height: 25px;
+    }
+</style>
+
+
+
+<div class="content-wrapper">
+    <section class="content pt-3">
+        <div class="container-fluid">
+            <div class="row">
+                <section class="col-lg-12">
+                    <!-- Custom tabs (Charts with tabs)-->
+                    <div class="card">
+                        <div class="card-header">
+                            <h3 class="card-title">
+                                <i class="far fa-list-alt mr-2"></i> PIDF Countrywise List
+                            </h3>
+                            <div class="card-tools md-left">
+                                <div class="mybtn-group">
+                                   
+                                        <a class="btn btn-primary" href="@Url.Action("PIDFList","PIDF")"><i class="fas fa-list mr-1"></i>Project List</a>
+                                  
+                                        <a class="btn btn-primary" href="@Url.Action("PIDFStrengthList","PIDF")"><i class="far fa-list-alt mr-1"></i>PIDF List</a>
+                                    
+                                        <a class="btn btn-primary" href="@Url.Action("PIDFNew","PIDF")"><i class="far fa-plus-square mr-1"></i> Create New PIDF</a>
+                                    
+                                        @*<a class="btn btn-primary"><i class="far fa-file-excel mr-1"></i> Export to Excel</a>*@
+                                        <button class="btn btn-primary" id="btnExport"><i class="far fa-file-excel mr-1"></i> Export to Excel</button>
+                                        @*<div class="export-btn"></div>*@
+                                    
+                                        <button class="btn btn-primary" onclick="javascript:window.history.back();"><i class="fas fa-undo mr-1"></i> Back</button>
+                                    
+                                </div>
+                            </div>
+                        </div>
+                        <div class="card-body">
+                            @*<table id="PIDFCountrywiseTable" class="table" style="width:100%;"></table>*@
+                            <div class="table-responsive">
+                                <table id="PIDFCountrywiseTable" class="table table-bordered" cellspacing="0" width="100%"></table>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+            </div>
+        </div>
+    </section>
+
+
+    <section class="col-lg-12 " id="ShowInitialApproval">
+        <!-- Custom tabs (Charts with tabs)-->
+        <div class="card">
+            <div class="card-header">
+                <h3 class="card-title">
+                    <i class="far fa-plus-square mr-2"></i> PIDF Initial Approval
+                </h3>
+            </div>
+            <!-- /.card-header -->
+            <div class="card-body">
+                <div class="row p-1">
+                    <div class="col-sm-12 ml-3 ">
+                        <label for="check_approval ">Approve the Project :</label>
+                        <div class="icheck-primary d-inline mr-5 pl-2">
+                            <input class="radiobuttons" id="Approve" onchange="CheckRadioBox()" name="approval_status" checked type="radio" value="Approve">
+                            <label for="Approve">
+                                Approve
+                            </label>
+                        </div>
+                    </div>
+                    @*<div class="col-sm-3 ">
+
+
+
+                        </div>*@
+                </div>
+
+                <div class="row p-3">
+                    <div class="col-sm-5">
+                        <div class="form-group ml-">
+                            <label for="exampleInputFile" class="d-none">File inputs</label>
+                            <div class="input-group">
+                                <div class="custom-file">
+                                    <input type="file" class="custom-file-input" file-module="UploadFile" id="UploadFile" name="UploadFile" multiple>
+                                    <label id="chooseFile" class="custom-file-label" for="exampleInputFile" style="overflow:hidden">Choose File</label>
+
+                                </div>
+                                <div class="input-group-append">
+                                    <button type="button" class="input-group-text" id="btnUpload">Upload Files</button>
+                                </div>
+                                <small class="text-danger" id="UploadFile_error"></small>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-sm-7 ">
+                        <table class="table fileorder-list table-bordered mr-3 ">
+                            <thead>
+                                <tr>
+                                    <th>Files</th>
+                                    <th style="width:60px;">Action</th>
+                                </tr>
+                            </thead>
+                        </table>
+                    </div>
+                </div>
+                <!-- /.card-body -->
+            </div>
+            <div class="card-footer text-center">
+                <button name="submit" id="ApprovelSubmitBtn" onclick="SubmitRemark()" type="submit" class="btn btn-primary mr-3">Submit</button>
+                <a class="btn btn-primary" id="cancelbtn" href="@Url.Action("PIDFStrengthList","PIDF")"><i class="far  mr-1"></i>Cancel</a>
+            </div>
+        </div>
+        <!-- /.card -->
+    </section>
+</div>
+
+@*<script src="~/dist/js/jquery.treegrid.min.js"></script>
+    <script src="~/dist/js/bootstrap-table.min.js"></script>
+    <script src="~/dist/js/bootstrap-table-treegrid.min.js"></script>*@
+<script src="~/plugins/bs-custom-file-input/bs-custom-file-input.min.js"></script>
+<script src='~/js/dataTables.treeGrid.js'></script>
+
+<script src="~/js/xlsx.core.min.js"></script>
+<script src="~/js/FileSaver.js"></script>
+<script src="~/js/jhxlsx.js"></script>
+
+@section Scripts {
+    <script>
+        $(function () {
+            bsCustomFileInput.init();
+        });
+        $('#ShowInitialApproval').hide();
+         var currentRole = '@HttpContextAccessor.HttpContext.Session.GetString("CurrentUserRole")';
+    //console.log(currentRole);
+
+
+        var PidfID = '@ViewBag.PIDFCountryListPIDFID';
+        var columns = [
+            {
+                title: '',
+                target: 0,
+                className: 'treegrid-control',
+                data: function (item) {
+                    if (item.children) {
+                        return '<span>+<\/span>';
+                    }
+                    return '';
+                }
+            },
+            //{
+            //    title: 'Action',
+            //    target: 17,
+            //    data: function (item) {
+            //        return item.action;
+            //    }
+            //},
+            {
+                title: 'PIDF No',
+                target: 1,
+                data: function (item) {
+                    if (item.pidfNo)
+                        return item.pidfNo;
+                    else
+                        return item.action;
+                }
+            },
+
+            {
+                title: 'Product / Region',
+                target: 2,
+                data: function (item) {
+                    return item.projectorProductName;
+                }
+            },
+
+            {
+                title: 'Country',
+                target: 3,
+                data: function (item) {
+                    return item.countryName;
+                }
+            },
+            {
+                title: 'Pack Size',
+                target: 4,
+                data: function (item) {
+                    return item.packSizeName;
+                }
+            },
+            {
+                title: 'Packing',
+                target: 5,
+                data: function (item) {
+                    return item.packingName;
+                }
+            },
+            {
+                title: 'Strength',
+                target: 6,
+                data: function (item) {
+                    return item.pidfStrength;
+                }
+            },
+            {
+                title: '1st Year CIFPrice PerPack',
+                target: 7,
+                data: function (item) {
+                    return item.cifPricePerPack1;
+                }
+            },{
+                title: '2nd Year CIFPrice PerPack',
+                target: 8,
+                data: function (item) {
+                    return item.cifPricePerPack2;
+                }
+            },{
+                title: '3rd Year CIFPrice PerPack',
+                target: 9,
+                data: function (item) {
+                    return item.cifPricePerPack3;
+                }
+            },{
+                title: '1st Year Quantity',
+                target: 10,
+                data: function (item) {
+                    return item.qtyOneyear;
+                }
+            },{
+                title: '2nd Year Quantity',
+                target: 11,
+                data: function (item) {
+                    return item.qtyTwoyear;
+                }
+            },{
+                title: '3rd Year Quantity',
+                target: 13,
+                data: function (item) {
+                    return item.qtyThreeyear;
+                }
+            },{
+                title: '1st Year Volume',
+                target: 14,
+                data: function (item) {
+                    return item.volOneyear;
+                }
+            },{
+                title: '2nd Year Volume',
+                target: 15,
+                data: function (item) {
+                    return item.volTwoyear;
+                }
+            },{
+                title: '3rd Year Volume',
+                target: 16,
+                data: function (item) {
+                    return item.volThreeyear;
+                }
+            }
+
+        ];
+
+        $(document).ready(function () {
+            //var StatusId = 19;
+            // var regEx = "^" + StatusId + "$";
+            var table = $('#PIDFCountrywiseTable').DataTable({
+                columns: columns,
+               // dom: 'Bfrtip',
+               //buttons: [
+               //     {
+               //         extend: 'excel', text: '<i class="far fa-file-excel"></i> Export In Excel ', className: "btn-primary", exportOptions: {
+               //             columns: ':visible'
+               //         }
+               //     },
+               //     {extend: 'colvis', className:"btn-primary" }
+               //  ],
+
+                lengthChange: false,
+                //columnDefs: [
+                //    {
+                //        visible: false,
+                //        targets: 8
+                //    }
+
+                //],
+                //initComplete: function () {
+                //    this
+                //        .api()
+                //        .column(8)
+                //        .search(regEx, true, false,true)
+                //        .draw()
+                //},
+                ajax: '/PIDF/GetPIDFCountrywiseList?ID='+@ViewBag.PIDFCountryListPIDFID,
+                treeGrid: {
+                    'left': 10,
+                    'expandIcon': '<span>+<\/span>',
+                    'collapseIcon': '<span>-<\/span>'
+                }
+            });
+
+
+            //table.buttons().container()
+            //    .appendTo('.export-btn');
+
+            //$('.status_filter').on('click', function () {
+            //    var term = $(this).data('status');
+            //    var regExp = "^" + term + "$";
+            //    table.columns(8).search(regExp, true, false,true).draw();
+
+            //});
+
+            //$(".buttons-excel").removeClass("btn-secondary");
+            //$(".buttons-collection").removeClass("btn-secondary");
+        });
+
+
+        function SubmitRemark() {
+
+			var status = $("input[name='approval_status']:checked").val();
+
+            //var data = @ViewBag.PIDFCountryListPIDFID;
+            var data = {
+                pidfID: @ViewBag.PIDFCountryListPIDFID,
+                pIDFNo: 0,
+                userID: 0,
+                pidfStatusID:9,
+                approvalRemark: 'test'
+            };
+            //alert(data);
+
+			var url = '@Url.Action("PIDFStrengthList", "PIDF")';
+            $.ajax({
+					type: "POST",
+					url: '@Url.Action("UpdatePidfInitialApproval", "PIDF")/',
+					dataType: "json",
+					data: data,
+                success: function (response) {
+
+                        if (response.data == 'success') {
+                            var filedata = {
+                                "PidfID":@ViewBag.PIDFCountryListPIDFID,
+                                "uploadedfilesdetails":JSON.stringify(JSONUploadedFilesList)
+                            };
+                            $.ajax({
+                                type: "POST",
+                                url: '@Url.Action("UpdatePidfUploadFileDetails", "PIDF")/',
+                                dataType: "json",
+                                data: filedata,
+                                success: function (response) {
+
+
+                                   }, failure: function () {
+
+                                    }
+                                });
+
+							openCommonModal('successModal modal-sm', '@Html.Raw(SharedLocalizer["Success"].Value)', '@Html.Raw(SharedLocalizer["Initial approved successfully."].Value)', true);
+							setTimeout(function () { location.href = url; }, 2000);
+						}
+						else {
+                            openCommonModal('alertModal modal-sm', '@SharedLocalizer["Error"].Value', response.data, false);
+							}
+				        },
+				    failure: function () {
+
+				    }
+		    });
+		}
+        var JSONUploadedFilesList = [];
+          var counter = 1;
+
+        $.ajax({
+                    type: "POST",
+                    url: "/PIDF/GetCountryDetails?PidfID=@ViewBag.PIDFCountryListPIDFID&CountryID=0&StrengthID=0",
+                    //contentType: "application/json; charset=utf-8",
+                    dataType: "json",
+                    success: function (response) {
+                       // console.log('Call getcountrydetails method');
+                        //console.log(response.data.pidfStatusID);
+                        if (response.data.pidfStatusID==12) {
+                             $('#ShowInitialApproval').hide();
+                        }
+                        if (response.data.pidfStatusID == 12 || response.data.pidfStatusID == 15 || response.data.pidfStatusID == 16 || response.data.pidfStatusID == 26 || response.data.pidfStatusID == 27) {
+                            $('#ApprovelSubmitBtn').hide();
+                            $('#cancelbtn').hide();
+                        }
+
+                            $.each(response.uploadfilelist, function (i, List) {
+                                var newRow = $("<tr id='" + counter + "'>");
+                                var cols = "";
+                                cols += '<td><a href="' + List.saveFilePath + '" download="'+ List.saveFileName + '" target="_blank">' + List.saveFileName +'</td>';
+                                cols += '<td><button type="button" class="ibtnDel btn btn-sm btn-danger"><i class="far fa-trash-alt"></i></button></td>';
+                                newRow.append(cols);
+                                $("table.fileorder-list").append(newRow);
+
+                                var temp = {
+                                    "CounterID": counter,
+                                    "SaveFilePath": List.saveFilePath,
+                                    "SaveFileName": List.saveFileName
+                                };
+                                JSONUploadedFilesList.push(temp);
+                                counter++;
+                            });
+                           // console.log(JSONUploadedFilesList);
+
+                    },
+                    failure: function () {
+
+                    }
+        });
+
+        $("table.fileorder-list").on("click", ".ibtnDel", function (event) {
+            var get_id = $(this).parent().parent().attr('id');
+            //console.log(get_id);
+            $(this).closest("tr").remove();
+            for (var i = 0; i < JSONUploadedFilesList.length; i++) {
+                if (JSONUploadedFilesList[i].CounterID == get_id) {
+                    JSONUploadedFilesList.splice(i, 1);
+                }
+            }
+
+           // console.log(JSONUploadedFilesList);
+        });
+
+        $("#btnUpload").click(function () {
+        var fileUpload = $("#UploadFile").get(0);
+        var files = fileUpload.files;
+        var data = new FormData();
+        for (var i = 0; i < files.length ; i++) {
+            data.append(files[i].name, files[i]);
+            }
+        $.ajax({
+            type: "POST",
+            url: "/PIDF/UploadFiles",
+            contentType: false,
+            processData: false,
+            data: data,
+            success: function (result) {
+                   if (result.success ===true) {
+                       openCommonModal('successModal modal-sm', '@Html.Raw(SharedLocalizer["Success"].Value)', result.msg, true);
+                       $.each(result.fileDetails, function (i, List) {
+                           var temp = {
+                               "CounterID": counter,
+                               "SaveFilePath": List.saveFilePath,
+                               "SaveFileName": List.saveFileName
+                           };
+                           JSONUploadedFilesList.push(temp);
+                           var newRow = $("<tr id='" + counter + "'>");
+                           var cols = "";
+                           cols += '<td><a href="' + List.saveFilePath + '" download="'+ List.saveFileName + '" target="_blank">' + List.saveFileName + '</td>';
+                           cols += '<td><button type="button" class="ibtnDel btn btn-sm btn-danger"><i class="far fa-trash-alt"></i></button></td>';
+                           newRow.append(cols);
+                           $("table.fileorder-list").append(newRow);
+
+                           counter++;
+
+                       });
+                       $('#chooseFile').text('Choose File');
+                       $('#UploadFile').val('');
+
+                    }
+                    else {
+                       openCommonModal('alertModal modal-sm', '@SharedLocalizer["Error"].Value', result.msg, false);
+                        $('#chooseFile').text('Choose File');
+                       $('#UploadFile').val('');
+                    }
+            },
+            error: function () {
+                 openCommonModal('alertModal modal-sm', '@SharedLocalizer["Error"].Value', "There was error uploading files!", false);
+                 $('#chooseFile').text('Choose File');
+                       $('#UploadFile').val('');
+            }
+        });
+    });
+
+
+        setTimeout(function () {
+            $('#PIDFCountrywiseTable tbody tr td span').trigger('click');
+
+            var rowcount = $("tr[parent-index='0']").length;
+            //console.log(rowcount);
+            if (rowcount >= 1) {
+
+                if (currentRole == "ProjectManager" || currentRole == "Senior Project Manager" || currentRole == "Prescriber") {
+                    //console.log(currentRole);
+                    $('#ShowInitialApproval').show();
+                } else {
+                    $("#ShowInitialApproval").hide();
+                }
+            //$('#PIDFCountrywiseTable tbody tr td span').trigger('click');
+            } else {
+                 $("#ShowInitialApproval").hide();
+            }
+        }, 1000);
+
+        $("#btnExport").click(function (e) {
+
+            $.ajax({
+                type: "POST",
+                url: "/PIDF/GetAllCountryDetails?PidfID=@ViewBag.PIDFCountryListPIDFID",
+                //contentType: "application/json; charset=utf-8",
+                dataType: "json",
+                success: function (response) {
+
+                    var result = response.data;
+                    var data = [[{ "text": "Pidf No" }, { "text": "Region" }, { "text": "Country Name" }, { "text": "Pack Size" }, { "text": "Packing" }, { "text": "Strength" }, { "text": "1st Year CIF Price/Pack" }, { "text": "2nd Year CIF Price/Pack" }, { "text": "3rd Year CIF Price/Pack" }, { "text": "1st Year Qty" }, { "text": "2nd Year Qty" }, { "text": "3rd Year Qty" }, { "text": "1st Year Volume" }, { "text": "2nd Year Volume" }, { "text": "3rd Year Volume" }]];
+                    for (var index = 0; index < result.length; index++) {                       
+                        var tempdata = [
+                            {
+                                'text': result[index].pidfNo
+                            }, {
+                                'text': result[index].continentName
+                            }, {
+                                'text': result[index].countryName
+                            }, {
+                                'text': result[index].packSizeName
+                            }, {
+                                'text': result[index].packingName
+                            }, {
+                                'text': result[index].pidfStrength
+                            }, {
+                                'text': result[index].cifPricePerPack1
+                            }, {
+                                'text': result[index].cifPricePerPack2
+                            }, {
+                                'text': result[index].cifPricePerPack3
+                            }, {
+                                'text': result[index].qtyOneyear
+                            }, {
+                                'text': result[index].qtyTwoyear
+                            }, {
+                                'text': result[index].qtyThreeyear
+                            }, {
+                                'text': result[index].volOneyear
+                            }, {
+                                'text': result[index].volTwoyear
+                            }, {
+                                'text': result[index].volThreeyear
+                            }
+                        ];
+                        data.push(tempdata);
+                    }
+                   
+                    var tableData = [
+                        {
+                            "sheetName": "Sheet1",
+                            "data": data                           
+                        }
+                    ];                   
+                    var options = {
+                        fileName: "PIDF Country Details List"
+                    };
+                    Jhxlsx.export(tableData, options);
+                },
+                failure: function () {
+
+                }
+            });
+
+
+
+
+        });
+
+    </script>
+}
+

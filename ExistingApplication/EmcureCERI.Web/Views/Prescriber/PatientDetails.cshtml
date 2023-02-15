@@ -1,0 +1,32 @@
+﻿@using Microsoft.Extensions.Localization
+@inject IStringLocalizer<SharedResource> SharedLocalizer
+@{
+    ViewData["Title"] = @SharedLocalizer["Patient Details"].Value;
+}
+<section class="section">
+    <div class="container-fluid">
+        <h4></h4>
+        <div class="tabsContainer">
+            <ul class="nav nav-pills toptabs">
+                <li class="active"><a asp-area="" asp-controller="Prescriber" asp-action="InformedConsentForm">@SharedLocalizer["Informed Consent Form"].Value</a></li>
+                <li><a asp-area="" asp-controller="Prescriber" asp-action="BaselineDataForm">@SharedLocalizer["Baseline Data Form"].Value</a></li>
+                <li><a asp-area="" asp-controller="Prescriber" asp-action="FollowUpForm">@SharedLocalizer["Follow Up Form"].Value</a></li>
+            </ul>
+            <div class="tab-content tab-content col-md-12">
+                <div class="table-responsive tab-pane ">
+                    <table id="" class="table stripe row-border order-column" style="width:100%">
+                        <thead>
+                            <tr>
+                                <th>@SharedLocalizer["First Name"].Value</th>
+                                <th>@SharedLocalizer["Last Name"].Value</th>
+                                <th>@SharedLocalizer["Doctor/Pharmacist"].Value</th>
+                                <th>@SharedLocalizer["Email"].Value</th>
+                                <th>@SharedLocalizer["Contact No"].Value</th>
+                                <th style="min-width: 90px;">@SharedLocalizer["Action"].Value</th>
+                        </thead>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>

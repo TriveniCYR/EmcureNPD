@@ -1,0 +1,47 @@
+﻿@inject Microsoft.Extensions.Localization.IStringLocalizer<SharedResource> SharedLocalizer
+@{
+    ViewData["Title"] = "DRFFileManager";
+}
+<div class="content-wrapper pt-3">
+    <section class="content">
+        <div class="container-fluid">
+
+            <div class="row">
+                <section class="col-lg-12 connectedSortable">
+                    <!-- Custom tabs (Charts with tabs)-->
+                    <div class="card">
+                        <div class="card-header">
+                            <h3 class="card-title">
+                                <i class="far fa-plus-square mr-2"></i> Project ID : @ViewBag.filemid
+                            </h3>
+                            <div class="card-tools">
+                                <ul class="nav nav-pills ml-auto">
+                                    <li class="nav-item mr-3 d-none">
+                                        <a class="btn btn-outline-primary" href="/DRF/DRFList"><i class="far fa-list-alt mr-1"></i> Project List</a>
+                                    </li>
+                                    <li class="nav-item mr-3">
+                                        <a class="btn btn-outline-primary" href="@Url.Action("DRFShowDetails","DRF")?id=@ViewBag.DRFProductID"><i class="far fa-list-alt mr-1"></i>Project Details</a>
+                                    </li> 
+                                    <li class="nav-item mr-3 ">
+                                        <a class="btn btn-outline-primary" href="/GanttNew"><i class="far fa-list-alt mr-1"></i> Gantt Chart</a>
+                                    </li>
+
+                                    <li class="nav-item mr-3">
+                                        <button class="btn btn-outline-primary" onclick="javascript:window.history.back();"><i class="fas fa-undo mr-1"></i> Back</button>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                        <div class="card-body">
+                            <div class="row">
+                                <iframe scrolling="no" src="http://localhost:8081/?ProjectID=@ViewBag.filemid" height="540"  style="width:100%; border: 1px solid #ddd; overflow: hidden;"  title="Iframe Example"></iframe>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+            </div>
+        </div>
+    </section>
+</div>
+
+

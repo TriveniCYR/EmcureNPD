@@ -1,0 +1,2133 @@
+﻿@inject Microsoft.Extensions.Localization.IStringLocalizer<SharedResource> SharedLocalizer
+@model EmcureCERI.Data.DataAccess.Entities.FollowUpFormMaster
+@{
+    ViewData["Title"] = @SharedLocalizer["Follow Details"].Value;
+}
+<style type="text/css">
+    .field-validation-error {
+        color: #ff0000;
+        display: block;
+    }
+</style>
+<section class="section">
+    <div class="container-fluid">
+        <h4>@ViewBag.PatientName</h4>
+        <div class="tabsContainer">
+            <ul class="nav nav-pills toptabs">
+                <li><a asp-area="" asp-controller="Prescriber" asp-action="InformedConsentForm" asp-route-id="@ViewBag.patientid">@SharedLocalizer["Informed Consent Form"].Value</a></li>
+                <li><a asp-area="" asp-controller="Prescriber" asp-action="BaselineDataForm" asp-route-id="@ViewBag.patientid">@SharedLocalizer["Baseline Data Form"].Value</a></li>
+                <li class="active"><a asp-area="" asp-controller="Prescriber" asp-action="FollowUpForm" asp-route-id="@ViewBag.patientid">@SharedLocalizer["Follow Up Form"].Value</a></li>
+            </ul>
+            <div class="tab-content clearfix">
+                <div class="leftTabButtonContainer">
+                    <ul class="nav nav-pills nav-stacked" id="myTab">
+                        <li class="active"><a href="#aeData" data-toggle="tab"><div id="tab1Id" class="@(Model.Fufquest1Navigation.IsFulFill == true ? "checkboxActiveDummy" : "checkboxEmptyDummy")"></div>@SharedLocalizer["Adverse Events"].Value</a></li>
+                        <li><a href="#rliData" data-toggle="tab"><div id="tab2Id" class="@(Model.Fufquest2Navigation.IsFulFill == true ? "checkboxActiveDummy" : "checkboxEmptyDummy")"></div>@SharedLocalizer["Relevant Laboratory Investigations"].Value</a></li>
+                        <li><a href="#poData" data-toggle="tab"><div id="tab3Id" class="@(Model.Fufquest3Navigation.IsFulFill == true ? "checkboxActiveDummy" : "checkboxEmptyDummy")"></div>@SharedLocalizer["Patient Outcome"].Value</a></li>
+                        <li><a href="#caData" data-toggle="tab"><div id="tab4Id" class="@(Model.Fufquest4Navigation.IsFulFill == true ? "checkboxActiveDummy" : "checkboxEmptyDummy")"></div>@SharedLocalizer["Cidofovir Administration"].Value</a></li>
+                        <li><a href="#mhData" data-toggle="tab"><div id="tab5Id" class="@(Model.Fufquest5Navigation.IsFulFill == true ? "checkboxActiveDummy" : "checkboxEmptyDummy")"></div>@SharedLocalizer["Medical History"].Value</a></li>
+                        <li><a href="#cmcmData" data-toggle="tab"><div id="tab6Id" class="@(Model.Fufquest6Navigation.IsFulFill == true ? "checkboxActiveDummy" : "checkboxEmptyDummy")"></div>@SharedLocalizer["Medical Conditions And Medications"].Value</a></li>
+                        <li><a href="#psoData" data-toggle="tab"><div id="tab7Id" class="@(Model.Fufquest7Navigation.IsFulFill == true ? "checkboxActiveDummy" : "checkboxEmptyDummy")"></div>@SharedLocalizer["Prescriber’s Sign Off"].Value</a></li>
+                    </ul>
+                    <ul hidden>
+                        <li>@Html.CheckBoxFor(x => x.Fufquest1Navigation.IsFulFill)</li>
+                        <li>@Html.CheckBoxFor(x => x.Fufquest2Navigation.IsFulFill)</li>
+                        <li>@Html.CheckBoxFor(x => x.Fufquest3Navigation.IsFulFill)</li>
+                        <li>@Html.CheckBoxFor(x => x.Fufquest4Navigation.IsFulFill)</li>
+                        <li>@Html.CheckBoxFor(x => x.Fufquest5Navigation.IsFulFill)</li>
+                        <li>@Html.CheckBoxFor(x => x.Fufquest6Navigation.IsFulFill)</li>
+                        <li>@Html.CheckBoxFor(x => x.Fufquest7Navigation.IsFulFill)</li>
+                    </ul>
+                </div>
+                <div class="rightTabContainer">
+                    <div class="tab-content">
+                        <div class="tab-pane active" id="aeData">
+
+                            <div class="panel-group custInFormPanel" id="accordianAdverseEvents">
+                                <div class="panel panel-default">
+                                    <div class="panel-heading">
+                                        <h4 class="panel-title">
+                                            <a data-toggle="collapse" class="collapsed" data-parent="#accordianAdverseEvents" href="#adverseEvents0">@SharedLocalizer["Adverse Events"].Value.ToUpper()</a>
+                                        </h4>
+                                    </div>
+                                    <div id="adverseEvents0" class="panel-collapse collapse in" aria-expanded="true">
+                                        <div class="panel-body">
+                                            <div class="row">
+                                                <div class="col-sm-12">
+                                                    <label>@SharedLocalizer["Patient experienced any AEs"].Value</label>
+                                                    <div class="row">
+                                                        <div class="col-sm-3 col-xs-6">
+                                                            <div class="radio">
+                                                                <label>
+                                                                    @Html.RadioButtonFor(model => model.Fufquest1Navigation.Pexperienced, true, new { @class = "spouseClass", disabled = "disabled" })
+                                                                    <span class="cr"><i class="cr-icon glyphicon glyphicon-ok"></i></span>
+                                                                    @SharedLocalizer["Yes"].Value
+                                                                </label>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-sm-3 col-xs-6">
+                                                            <div class="radio">
+                                                                <label>
+                                                                    @Html.RadioButtonFor(model => model.Fufquest1Navigation.Pexperienced, false, new { @class = "spouseClass", disabled = "disabled" })
+                                                                    <span class="cr"><i class="cr-icon glyphicon glyphicon-ok"></i></span>
+                                                                    @SharedLocalizer["No"].Value
+                                                                </label>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div id="adverseEventContainer" row-count="0">
+                                                <div class="meiacalHistoryBox" id="adverseE1">
+                                                    <div class="mediacalBoxTitle">@SharedLocalizer["Adverse Events"].Value 1</div>
+                                                    <div class="row">
+                                                        <div class="col-sm-4">
+                                                            <div class="form-group">
+                                                                <label>@Html.Raw(SharedLocalizer["Event Term <small>(Diagnosis if known)</small>"].Value)</label>
+                                                                <div class="outputBox">@Model.Fufquest1Navigation.EventTerm1</div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-sm-4">
+                                                            <label>@SharedLocalizer["Start Date"].Value</label>
+                                                            <div class="outputBox">@(Model.Fufquest1Navigation.StartDate1.HasValue ? Model.Fufquest1Navigation.StartDate1.Value.ToShortDateString() : string.Empty)</div>
+                                                        </div>
+                                                        <div class="col-sm-4">
+                                                            <label>@SharedLocalizer["Stop Date"].Value</label>
+                                                            <div class="outputBox">@(Model.Fufquest1Navigation.StopDate1.HasValue ? Model.Fufquest1Navigation.StopDate1.Value.ToShortDateString() : string.Empty)</div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="row">
+                                                        <div class="col-sm-4">
+                                                            <div class="form-group">
+                                                                <label>@SharedLocalizer["SAE"].Value</label>
+                                                                <div class="outputBox">@Model.Fufquest1Navigation.SaeId1</div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-sm-4">
+                                                            <div class="form-group">
+                                                                <label>@SharedLocalizer["Con-comitant Medication given"].Value</label>
+                                                                <div class="outputBox">@Model.Fufquest1Navigation.ComMedId1</div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-sm-4">
+                                                            <div class="form-group">
+                                                                <label>@SharedLocalizer["Study Drug Action"].Value</label>
+                                                                <div class="dummyInputBox">@ViewBag.SelectedstudyDrug1</div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="row">
+                                                        <div class="col-sm-4">
+                                                            <div class="form-group">
+                                                                <label>@SharedLocalizer["Outcome"].Value</label>
+                                                                <div class="dummyInputBox">@ViewBag.SelectedOutcome1</div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-sm-4">
+                                                            <div class="form-group">
+                                                                <label>@SharedLocalizer["Relationship to Study Drug"].Value</label>
+                                                                <div class="dummyInputBox">@ViewBag.SelectedRelaStudyDrug1</div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                                <div class="meiacalHistoryBox" id="adverseE2">
+                                                    <div class="mediacalBoxTitle">@SharedLocalizer["Adverse Events"].Value 2</div>
+                                                    <div class="row">
+                                                        <div class="col-sm-4">
+                                                            <div class="form-group">
+                                                                <label>@Html.Raw(SharedLocalizer["Event Term <small>(Diagnosis if known)</small>"].Value)</label>
+                                                                <div class="outputBox">@Model.Fufquest1Navigation.EventTerm2</div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-sm-4">
+                                                            <label>@SharedLocalizer["Start Date"].Value</label>
+                                                            <div class="outputBox">@(Model.Fufquest1Navigation.StartDate2.HasValue ? Model.Fufquest1Navigation.StartDate2.Value.ToShortDateString() : string.Empty)</div>
+                                                        </div>
+                                                        <div class="col-sm-4">
+                                                            <label>@SharedLocalizer["Stop Date"].Value</label>
+                                                            <div class="outputBox">@(Model.Fufquest1Navigation.StopDate2.HasValue ? Model.Fufquest1Navigation.StopDate2.Value.ToShortDateString() : string.Empty)</div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="row">
+                                                        <div class="col-sm-4">
+                                                            <div class="form-group">
+                                                                <label>@SharedLocalizer["SAE"].Value</label>
+                                                                <div class="outputBox">@Model.Fufquest1Navigation.SaeId2</div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-sm-4">
+                                                            <div class="form-group">
+                                                                <label>@SharedLocalizer["Con-comitant Medication given"].Value</label>
+                                                                <div class="outputBox">@Model.Fufquest1Navigation.ComMedId2</div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-sm-4">
+                                                            <div class="form-group">
+                                                                <label>@SharedLocalizer["Study Drug Action"].Value</label>
+                                                                <div class="dummyInputBox">@ViewBag.SelectedstudyDrug2</div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="row">
+                                                        <div class="col-sm-4">
+                                                            <div class="form-group">
+                                                                <label>@SharedLocalizer["Outcome"].Value</label>
+                                                                <div class="dummyInputBox">@ViewBag.SelectedOutcome2</div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-sm-4">
+                                                            <div class="form-group">
+                                                                <label>@SharedLocalizer["Relationship to Study Drug"].Value</label>
+                                                                <div class="dummyInputBox">@ViewBag.SelectedRelaStudyDrug2</div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                                <div class="meiacalHistoryBox" id="adverseE3">
+                                                    <div class="mediacalBoxTitle">@SharedLocalizer["Adverse Events"].Value 3</div>
+                                                    <div class="row">
+                                                        <div class="col-sm-4">
+                                                            <div class="form-group">
+                                                                <label>@Html.Raw(SharedLocalizer["Event Term <small>(Diagnosis if known)</small>"].Value)</label>
+                                                                <div class="outputBox">@Model.Fufquest1Navigation.EventTerm3</div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-sm-4">
+                                                            <label>@SharedLocalizer["Start Date"].Value</label>
+                                                            <div class="outputBox">@(Model.Fufquest1Navigation.StartDate3.HasValue ? Model.Fufquest1Navigation.StartDate3.Value.ToShortDateString() : string.Empty)</div>
+                                                        </div>
+                                                        <div class="col-sm-4">
+                                                            <label>@SharedLocalizer["Stop Date"].Value</label>
+                                                            <div class="outputBox">@(Model.Fufquest1Navigation.StopDate3.HasValue ? Model.Fufquest1Navigation.StopDate3.Value.ToShortDateString() : string.Empty)</div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="row">
+                                                        <div class="col-sm-4">
+                                                            <div class="form-group">
+                                                                <label>@SharedLocalizer["SAE"].Value</label>
+                                                                <div class="outputBox">@Model.Fufquest1Navigation.SaeId3</div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-sm-4">
+                                                            <div class="form-group">
+                                                                <label>@SharedLocalizer["Con-comitant Medication given"].Value</label>
+                                                                <div class="outputBox">@Model.Fufquest1Navigation.ComMedId3</div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-sm-4">
+                                                            <div class="form-group">
+                                                                <label>@SharedLocalizer["Study Drug Action"].Value</label>
+                                                                <div class="dummyInputBox">@ViewBag.SelectedstudyDrug3</div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="row">
+                                                        <div class="col-sm-4">
+                                                            <div class="form-group">
+                                                                <label>@SharedLocalizer["Outcome"].Value</label>
+                                                                <div class="dummyInputBox">@ViewBag.SelectedOutcome3</div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-sm-4">
+                                                            <div class="form-group">
+                                                                <label>@SharedLocalizer["Relationship to Study Drug"].Value</label>
+                                                                <div class="dummyInputBox">@ViewBag.SelectedRelaStudyDrug3</div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                                <div class="meiacalHistoryBox" id="adverseE4">
+                                                    <div class="mediacalBoxTitle">@SharedLocalizer["Adverse Events"].Value 4</div>
+                                                    <div class="row">
+                                                        <div class="col-sm-4">
+                                                            <div class="form-group">
+                                                                <label>@Html.Raw(SharedLocalizer["Event Term <small>(Diagnosis if known)</small>"].Value)</label>
+                                                                <div class="outputBox">@Model.Fufquest1Navigation.EventTerm4</div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-sm-4">
+                                                            <label>@SharedLocalizer["Start Date"].Value</label>
+                                                            <div class="outputBox">@(Model.Fufquest1Navigation.StartDate4.HasValue ? Model.Fufquest1Navigation.StartDate4.Value.ToShortDateString() : string.Empty)</div>
+                                                        </div>
+                                                        <div class="col-sm-4">
+                                                            <label>@SharedLocalizer["Stop Date"].Value</label>
+                                                            <div class="outputBox">@(Model.Fufquest1Navigation.StopDate4.HasValue ? Model.Fufquest1Navigation.StopDate4.Value.ToShortDateString() : string.Empty)</div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="row">
+                                                        <div class="col-sm-4">
+                                                            <div class="form-group">
+                                                                <label>@SharedLocalizer["SAE"].Value</label>
+                                                                <div class="outputBox">@Model.Fufquest1Navigation.SaeId4</div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-sm-4">
+                                                            <div class="form-group">
+                                                                <label>@SharedLocalizer["Con-comitant Medication given"].Value</label>
+                                                                <div class="outputBox">@Model.Fufquest1Navigation.ComMedId4</div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-sm-4">
+                                                            <div class="form-group">
+                                                                <label>@SharedLocalizer["Study Drug Action"].Value</label>
+                                                                <div class="dummyInputBox">@ViewBag.SelectedstudyDrug4</div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="row">
+                                                        <div class="col-sm-4">
+                                                            <div class="form-group">
+                                                                <label>@SharedLocalizer["Outcome"].Value</label>
+                                                                <div class="dummyInputBox">@ViewBag.SelectedOutcome4</div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-sm-4">
+                                                            <div class="form-group">
+                                                                <label>@SharedLocalizer["Relationship to Study Drug"].Value</label>
+                                                                <div class="dummyInputBox">@ViewBag.SelectedRelaStudyDrug4</div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                                <div class="meiacalHistoryBox" id="adverseE5">
+                                                    <div class="mediacalBoxTitle">@SharedLocalizer["Adverse Events"].Value 5</div>
+                                                    <div class="row">
+                                                        <div class="col-sm-4">
+                                                            <div class="form-group">
+                                                                <label>@Html.Raw(SharedLocalizer["Event Term <small>(Diagnosis if known)</small>"].Value)</label>
+                                                                <div class="outputBox">@Model.Fufquest1Navigation.EventTerm5</div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-sm-4">
+                                                            <label>@SharedLocalizer["Start Date"].Value</label>
+                                                            <div class="outputBox">@(Model.Fufquest1Navigation.StartDate5.HasValue ? Model.Fufquest1Navigation.StartDate5.Value.ToShortDateString() : string.Empty)</div>
+                                                        </div>
+                                                        <div class="col-sm-4">
+                                                            <label>@SharedLocalizer["Stop Date"].Value</label>
+                                                            <div class="outputBox">@(Model.Fufquest1Navigation.StopDate5.HasValue ? Model.Fufquest1Navigation.StopDate5.Value.ToShortDateString() : string.Empty)</div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="row">
+                                                        <div class="col-sm-4">
+                                                            <div class="form-group">
+                                                                <label>@SharedLocalizer["SAE"].Value</label>
+                                                                <div class="outputBox">@Model.Fufquest1Navigation.SaeId5</div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-sm-4">
+                                                            <div class="form-group">
+                                                                <label>@SharedLocalizer["Con-comitant Medication given"].Value</label>
+                                                                <div class="outputBox">@Model.Fufquest1Navigation.ComMedId5</div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-sm-4">
+                                                            <div class="form-group">
+                                                                <label>@SharedLocalizer["Study Drug Action"].Value</label>
+                                                                <div class="dummyInputBox">@ViewBag.SelectedstudyDrug5</div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="row">
+                                                        <div class="col-sm-4">
+                                                            <div class="form-group">
+                                                                <label>@SharedLocalizer["Outcome"].Value</label>
+                                                                <div class="dummyInputBox">@ViewBag.SelectedOutcome5</div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-sm-4">
+                                                            <div class="form-group">
+                                                                <label>@SharedLocalizer["Relationship to Study Drug"].Value</label>
+                                                                <div class="dummyInputBox">@ViewBag.SelectedRelaStudyDrug5</div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                                <div class="meiacalHistoryBox" id="adverseE6">
+                                                    <div class="mediacalBoxTitle">@SharedLocalizer["Adverse Events"].Value 6</div>
+                                                    <div class="row">
+                                                        <div class="col-sm-4">
+                                                            <div class="form-group">
+                                                                <label>@Html.Raw(SharedLocalizer["Event Term <small>(Diagnosis if known)</small>"].Value)</label>
+                                                                <div class="outputBox">@Model.Fufquest1Navigation.EventTerm6</div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-sm-4">
+                                                            <label>@SharedLocalizer["Start Date"].Value</label>
+                                                            <div class="outputBox">@(Model.Fufquest1Navigation.StartDate6.HasValue ? Model.Fufquest1Navigation.StartDate6.Value.ToShortDateString() : string.Empty)</div>
+                                                        </div>
+                                                        <div class="col-sm-4">
+                                                            <label>@SharedLocalizer["Stop Date"].Value</label>
+                                                            <div class="outputBox">@(Model.Fufquest1Navigation.StopDate6.HasValue ? Model.Fufquest1Navigation.StopDate6.Value.ToShortDateString() : string.Empty)</div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="row">
+                                                        <div class="col-sm-4">
+                                                            <div class="form-group">
+                                                                <label>@SharedLocalizer["SAE"].Value</label>
+                                                                <div class="outputBox">@Model.Fufquest1Navigation.SaeId6</div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-sm-4">
+                                                            <div class="form-group">
+                                                                <label>@SharedLocalizer["Con-comitant Medication given"].Value</label>
+                                                                <div class="outputBox">@Model.Fufquest1Navigation.ComMedId6</div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-sm-4">
+                                                            <div class="form-group">
+                                                                <label>@SharedLocalizer["Study Drug Action"].Value</label>
+                                                                <div class="dummyInputBox">@ViewBag.SelectedstudyDrug6</div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="row">
+                                                        <div class="col-sm-4">
+                                                            <div class="form-group">
+                                                                <label>@SharedLocalizer["Outcome"].Value</label>
+                                                                <div class="dummyInputBox">@ViewBag.SelectedOutcome6</div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-sm-4">
+                                                            <div class="form-group">
+                                                                <label>@SharedLocalizer["Relationship to Study Drug"].Value</label>
+                                                                <div class="dummyInputBox">@ViewBag.SelectedRelaStudyDrug6</div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-sm-12">
+                                                    <div class="form-group">
+                                                        <label>@SharedLocalizer["Has the patient been diagnosed with any malignancy since initiation of Cidofovir injection"].Value</label>
+                                                        <div class="row">
+                                                            <div class="col-sm-3 col-xs-6">
+                                                                <div class="radio">
+                                                                    <label>
+                                                                        @Html.RadioButtonFor(model => model.Fufquest1Navigation.CidofovirInjection, true, new { @class = "spouseClass", disabled = "disabled" })
+                                                                        <span class="cr"><i class="cr-icon glyphicon glyphicon-ok"></i></span>
+                                                                        @SharedLocalizer["Yes"].Value
+                                                                    </label>
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-sm-3 col-xs-6">
+                                                                <div class="radio">
+                                                                    <label>
+                                                                        @Html.RadioButtonFor(model => model.Fufquest1Navigation.CidofovirInjection, false, new { @class = "spouseClass", disabled = "disabled" })
+                                                                        <span class="cr"><i class="cr-icon glyphicon glyphicon-ok"></i></span>
+                                                                        @SharedLocalizer["No"].Value
+                                                                    </label>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="col-sm-12" id="specifyId">
+                                                    <div class="form-group">
+                                                        <label>@SharedLocalizer["If yes, please specify"].Value</label>
+                                                        <div class="outputBox">@Model.Fufquest1Navigation.Specify</div>
+                                                    </div>
+                                                </div>
+                                                <div class="col-sm-12">
+                                                    <div class="form-group">
+                                                        <label>@SharedLocalizer["AE details"].Value</label>
+                                                        <div class="outputBox">@Model.Fufquest1Navigation.Aedetails</div>
+                                                    </div>
+                                                </div>
+                                                <div class="col-sm-12">
+                                                    <div class="form-group">
+                                                        <label>
+                                                            @Html.Raw(SharedLocalizer["I have reviewed all the AEs experienced, including outcome, seriousness, action taken with the medication and relationship with study drug and confirm that, to the best of my knowledge, it accurately reflects the study information obtained for this participant."].Value)
+                                                        </label>
+                                                    </div>
+                                                </div>
+                                                <div class="col-sm-4">
+                                                    <div class="form-group">
+                                                        <label>@SharedLocalizer["Prescriber’s Name"].Value</label>
+                                                        <div class="outputBox">@Model.Fufquest1Navigation.PrescriberName</div>
+                                                    </div>
+                                                </div>
+                                                <div class="col-sm-4">
+                                                    <label>@SharedLocalizer["Date"].Value</label>
+                                                    <div class="outputBox">@(Model.Fufquest1Navigation.Date.HasValue ? Model.Fufquest1Navigation.Date.Value.ToShortDateString() : string.Empty)</div>
+                                                </div>
+                                            </div>
+
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+
+                        <div class="tab-pane" id="rliData">
+
+                            <div class="panel-group custInFormPanel" id="accordianRliData">
+                                <div class="panel panel-default">
+                                    <div class="panel-heading">
+                                        <h4 class="panel-title">
+                                            <a data-toggle="collapse" class="collapsed" data-parent="#accordianRliData" href="#rliData0">@SharedLocalizer["Baseline investigations"].Value.ToUpper()</a>
+                                        </h4>
+                                    </div>
+                                    <div id="rliData0" class="panel-collapse collapse in" aria-expanded="true">
+                                        <div class="panel-body">
+                                            <table class="table table-bordered">
+                                                <thead>
+                                                    <tr>
+                                                        <th>@SharedLocalizer["Specification"].Value</th>
+                                                        <th>@SharedLocalizer["Abnormal parameters, if any"].Value</th>
+                                                        <th>@SharedLocalizer["Comments"].Value</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    <tr>
+                                                        <td>@SharedLocalizer["Haematology"].Value</td>
+                                                        <td><div class="outputBox">@Model.Fufquest2Navigation.BhaematologyA</div></td>
+                                                        <td><div class="outputBox">@Model.Fufquest2Navigation.BhaematologyC</div></td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>@SharedLocalizer["Biochemistry"].Value</td>
+                                                        <td><div class="outputBox">@Model.Fufquest2Navigation.BbiochemistryA</div></td>
+                                                        <td><div class="outputBox">@Model.Fufquest2Navigation.BbiochemistryC</div></td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>@SharedLocalizer["Urea"].Value</td>
+                                                        <td><div class="outputBox">@Model.Fufquest2Navigation.BureaA</div></td>
+                                                        <td><div class="outputBox">@Model.Fufquest2Navigation.BureaC</div></td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>@SharedLocalizer["Creatinine"].Value</td>
+                                                        <td><div class="outputBox">@Model.Fufquest2Navigation.BcreatinineA</div></td>
+                                                        <td><div class="outputBox">@Model.Fufquest2Navigation.BcreatinineC</div></td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>@SharedLocalizer["Phosphate"].Value</td>
+                                                        <td><div class="outputBox">@Model.Fufquest2Navigation.BphosphateA</div></td>
+                                                        <td><div class="outputBox">@Model.Fufquest2Navigation.BphosphateC</div></td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>@SharedLocalizer["Uric acid"].Value</td>
+                                                        <td><div class="outputBox">@Model.Fufquest2Navigation.BuricAcidA</div></td>
+                                                        <td><div class="outputBox">@Model.Fufquest2Navigation.BuricAcidC</div></td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>@SharedLocalizer["Bicarbonate"].Value</td>
+                                                        <td><div class="outputBox">@Model.Fufquest2Navigation.BbicarbonateA</div></td>
+                                                        <td><div class="outputBox">@Model.Fufquest2Navigation.BbicarbonateC</div></td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>@SharedLocalizer["Urine analysis (including glycosuria)"].Value</td>
+                                                        <td><div class="outputBox">@Model.Fufquest2Navigation.BurineAnalysisA</div></td>
+                                                        <td><div class="outputBox">@Model.Fufquest2Navigation.BurineAnalysisC</div></td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>@SharedLocalizer["Serology"].Value</td>
+                                                        <td><div class="outputBox">@Model.Fufquest2Navigation.BserologyA</div></td>
+                                                        <td><div class="outputBox">@Model.Fufquest2Navigation.BserologyC</div></td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>@SharedLocalizer["Others (Specify)"].Value @Model.Fufquest2Navigation.BothersSpecify</td>
+                                                        <td><div class="outputBox">@Model.Fufquest2Navigation.BothersSpecifyA</div></td>
+                                                        <td><div class="outputBox">@Model.Fufquest2Navigation.BothersSpecifyC</div></td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>@SharedLocalizer["Comments"].Value</td>
+                                                        <td colspan="2"><div class="outputBox">@Model.Fufquest2Navigation.Bcomments</div></td>
+                                                    </tr>
+                                                </tbody>
+                                            </table>
+                                            <div class="row">
+                                                <div class="col-sm-4">
+                                                    <label>@SharedLocalizer["Date of Assessment"].Value</label>
+                                                    <div class="outputBox">@(Model.Fufquest2Navigation.Bdoa.HasValue ? Model.Fufquest2Navigation.Bdoa.Value.ToShortDateString() : string.Empty)</div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="panel panel-default">
+                                    <div class="panel-heading">
+                                        <h4 class="panel-title">
+                                            <a data-toggle="collapse" class="collapsed" data-parent="#accordianRliData" href="#rliData1">@SharedLocalizer["Follow up investigations"].Value.ToUpper()</a>
+                                        </h4>
+                                    </div>
+                                    <div id="rliData1" class="panel-collapse collapse" aria-expanded="false">
+                                        <div class="panel-body">
+                                            <table class="table table-bordered">
+                                                <thead>
+                                                    <tr>
+                                                        <th>@SharedLocalizer["Specification"].Value</th>
+                                                        <th>@SharedLocalizer["Abnormal parameters, if any"].Value</th>
+                                                        <th>@SharedLocalizer["Comments"].Value</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    <tr>
+                                                        <td>@SharedLocalizer["Haematology"].Value</td>
+                                                        <td><div class="outputBox">@Model.Fufquest2Navigation.FhaematologyA</div></td>
+                                                        <td><div class="outputBox">@Model.Fufquest2Navigation.FhaematologyC</div></td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>@SharedLocalizer["Biochemistry"].Value</td>
+                                                        <td><div class="outputBox">@Model.Fufquest2Navigation.FbiochemistryA</div></td>
+                                                        <td><div class="outputBox">@Model.Fufquest2Navigation.FbiochemistryC</div></td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>@SharedLocalizer["Urea"].Value</td>
+                                                        <td><div class="outputBox">@Model.Fufquest2Navigation.FureaA</div></td>
+                                                        <td><div class="outputBox">@Model.Fufquest2Navigation.FureaC</div></td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>@SharedLocalizer["Creatinine"].Value</td>
+                                                        <td><div class="outputBox">@Model.Fufquest2Navigation.FcreatinineA</div></td>
+                                                        <td><div class="outputBox">@Model.Fufquest2Navigation.FcreatinineC</div></td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>@SharedLocalizer["Phosphate"].Value</td>
+                                                        <td><div class="outputBox">@Model.Fufquest2Navigation.FphosphateA</div></td>
+                                                        <td><div class="outputBox">@Model.Fufquest2Navigation.FphosphateC</div></td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>@SharedLocalizer["Uric acid"].Value</td>
+                                                        <td><div class="outputBox">@Model.Fufquest2Navigation.FuricAcidA</div></td>
+                                                        <td><div class="outputBox">@Model.Fufquest2Navigation.FuricAcidC</div></td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>@SharedLocalizer["Bicarbonate"].Value</td>
+                                                        <td><div class="outputBox">@Model.Fufquest2Navigation.FbicarbonateA</div></td>
+                                                        <td><div class="outputBox">@Model.Fufquest2Navigation.FbicarbonateC</div></td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>@SharedLocalizer["Urine analysis (including glycosuria)"].Value</td>
+                                                        <td><div class="outputBox">@Model.Fufquest2Navigation.FurineAnalysisA</div></td>
+                                                        <td><div class="outputBox">@Model.Fufquest2Navigation.FurineAnalysisC</div></td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>@SharedLocalizer["Serology"].Value</td>
+                                                        <td><div class="outputBox">@Model.Fufquest2Navigation.FserologyA</div></td>
+                                                        <td><div class="outputBox">@Model.Fufquest2Navigation.FserologyC</div></td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>@SharedLocalizer["Others (Specify)"].Value @Model.Fufquest2Navigation.FothersSpecify</td>
+                                                        <td><div class="outputBox">@Model.Fufquest2Navigation.FothersSpecifyA</div></td>
+                                                        <td><div class="outputBox">@Model.Fufquest2Navigation.FothersSpecifyC</div></td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>@SharedLocalizer["Comments"].Value</td>
+                                                        <td colspan="2"><div class="outputBox">@Model.Fufquest2Navigation.Fcomments</div></td>
+                                                    </tr>
+                                                </tbody>
+                                            </table>
+                                            <div class="row">
+                                                <div class="col-sm-4">
+                                                    <label>@SharedLocalizer["Date of Assessment"].Value</label>
+                                                    <div class="outputBox">@(Model.Fufquest2Navigation.Fdoa.HasValue ? Model.Fufquest2Navigation.Fdoa.Value.ToShortDateString() : string.Empty)</div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="tab-pane" id="poData">
+                            <div class="panel-group custInFormPanel" id="accordianPoData">
+                                <div class="panel panel-default">
+                                    <div class="panel-heading">
+                                        <h4 class="panel-title">
+                                            <a data-toggle="collapse" class="collapsed" data-parent="#accordianPoData" href="#poData0">@SharedLocalizer["Patient Outcome"].Value.ToUpper()</a>
+                                        </h4>
+                                    </div>
+                                    <div id="poData0" class="panel-collapse collapse in" aria-expanded="true">
+                                        <div class="panel-body">
+                                            <label>@SharedLocalizer["Please specify the patient’s outcome at this visit"].Value</label>
+                                            <div class="checkbox">
+                                                <label>
+                                                    @if (Model.Fufquest3Navigation.TreatmentD == true)
+                                                    {
+                                                        <span class="cr"><i class="cr-icon glyphicon glyphicon-ok"></i></span>
+                                                    }
+                                                    else
+                                                    {
+                                                        <span class="cr"><i class="cr-icon glyphicon"></i></span>
+                                                    }
+                                                    @SharedLocalizer["Treatment discontinued due to AE/SAE"].Value
+                                                </label>
+                                            </div>
+                                            <div class="checkbox">
+                                                <label>
+                                                    @if (Model.Fufquest3Navigation.Underlying == true)
+                                                    {
+                                                        <span class="cr"><i class="cr-icon glyphicon glyphicon-ok"></i></span>
+                                                    }
+                                                    else
+                                                    {
+                                                        <span class="cr"><i class="cr-icon glyphicon"></i></span>
+                                                    }
+                                                    @SharedLocalizer["Underlying illness resolved"].Value
+                                                </label>
+                                            </div>
+                                            <div class="checkbox">
+                                                <label>
+                                                    @if (Model.Fufquest3Navigation.TreatmentR == true)
+                                                    {
+                                                        <span class="cr"><i class="cr-icon glyphicon glyphicon-ok"></i></span>
+                                                    }
+                                                    else
+                                                    {
+                                                        <span class="cr"><i class="cr-icon glyphicon"></i></span>
+                                                    }
+                                                    @SharedLocalizer["Treatment regimen complete"].Value
+                                                </label>
+                                            </div>
+                                            <div class="checkbox">
+                                                <label>
+                                                    @if (Model.Fufquest3Navigation.Dop == true)
+                                                    {
+                                                        <span class="cr"><i class="cr-icon glyphicon glyphicon-ok"></i></span>
+                                                    }
+                                                    else
+                                                    {
+                                                        <span class="cr"><i class="cr-icon glyphicon"></i></span>
+                                                    }
+                                                    @SharedLocalizer["Death of patient"].Value
+                                                </label>
+                                            </div>
+                                            <div class="checkbox">
+                                                <label>
+                                                    @if (Model.Fufquest3Navigation.LostFollowUp == true)
+                                                    {
+                                                        <span class="cr"><i class="cr-icon glyphicon glyphicon-ok"></i></span>
+                                                    }
+                                                    else
+                                                    {
+                                                        <span class="cr"><i class="cr-icon glyphicon"></i></span>
+                                                    }
+                                                    @SharedLocalizer["Lost to follow-up"].Value
+                                                </label>
+                                            </div>
+                                            <div class="checkbox">
+                                                <label>
+                                                    @if (Model.Fufquest3Navigation.Therapy == true)
+                                                    {
+                                                        <span class="cr"><i class="cr-icon glyphicon glyphicon-ok"></i></span>
+                                                    }
+                                                    else
+                                                    {
+                                                        <span class="cr"><i class="cr-icon glyphicon"></i></span>
+                                                    }
+                                                    @SharedLocalizer["Therapy to continue"].Value
+                                                </label>
+                                            </div>
+                                            <div class="checkbox">
+                                                <label>
+                                                    @if (Model.Fufquest3Navigation.Withdrawal == true)
+                                                    {
+                                                        <span class="cr"><i class="cr-icon glyphicon glyphicon-ok"></i></span>
+                                                    }
+                                                    else
+                                                    {
+                                                        <span class="cr"><i class="cr-icon glyphicon"></i></span>
+                                                    }
+                                                    @SharedLocalizer["Withdrawal"].Value
+                                                </label>
+                                            </div>
+                                            <div class="form-group">
+                                                <label>@SharedLocalizer["Please specify the reason"].Value</label>
+                                                <div class="dummyInputBox">@Model.Fufquest3Navigation.WithdrawalReason</div>
+                                            </div>
+
+                                            <div class="checkbox">
+                                                <label>
+                                                    @if (Model.Fufquest3Navigation.DropOut == true)
+                                                    {
+                                                        <span class="cr"><i class="cr-icon glyphicon glyphicon-ok"></i></span>
+                                                    }
+                                                    else
+                                                    {
+                                                        <span class="cr"><i class="cr-icon glyphicon"></i></span>
+                                                    }
+                                                    @SharedLocalizer["Drop out"].Value
+                                                </label>
+                                            </div>
+                                            <div class="checkbox">
+                                                <label>
+                                                    @if (Model.Fufquest3Navigation.OtherOutcomes == true)
+                                                    {
+                                                        <span class="cr"><i class="cr-icon glyphicon glyphicon-ok"></i></span>
+                                                    }
+                                                    else
+                                                    {
+                                                        <span class="cr"><i class="cr-icon glyphicon"></i></span>
+                                                    }
+                                                    @SharedLocalizer["Other outcomes"].Value
+                                                </label>
+                                            </div>
+                                            <div class="form-group">
+                                                <label>@SharedLocalizer["Please specify"].Value</label>
+                                                <div class="dummyInputBox">@Model.Fufquest3Navigation.OtherOutcomesSpecify</div>
+                                            </div>
+
+                                            <div class="row">
+                                                <div class="col-sm-4">
+                                                    <label>@SharedLocalizer["Date of Assessment"].Value</label>
+                                                    <div class="dummyInputBox">@Model.Fufquest3Navigation.Doa</div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="tab-pane" id="caData">
+                            <div class="panel-group custInFormPanel" id="accordianCaData">
+                                <div class="panel panel-default">
+                                    <div class="panel-heading">
+                                        <h4 class="panel-title">
+                                            <a data-toggle="collapse" class="collapsed" data-parent="#accordianCaData" href="#caDataa0">@SharedLocalizer["Cidofovir Administration"].Value.ToUpper()</a>
+                                        </h4>
+                                    </div>
+                                    <div id="caData0" class="panel-collapse collapse in" aria-expanded="true">
+                                        <div class="panel-body">
+                                            <label>@SharedLocalizer["Please state if any changes in treatment regimen were made with regards to the following"].Value</label>
+                                            <div class="row">
+                                                <div class="col-sm-4">
+                                                    <div class="form-group">
+                                                        <label>@SharedLocalizer["Indication"].Value</label>
+                                                        <div class="dummyInputBox">@Model.Fufquest4Navigation.Indication</div>
+                                                    </div>
+                                                </div>
+                                                <div class="col-sm-4">
+                                                    <div class="form-group">
+                                                        <label>@Html.Raw(SharedLocalizer["Dose <small>(including units)</small>"])</label>
+                                                        <div class="dummyInputBox">@Model.Fufquest4Navigation.Dose</div>
+                                                    </div>
+                                                </div>
+                                                <div class="col-sm-4">
+                                                    <div class="form-group">
+                                                        <label>@SharedLocalizer["Frequency of administration"].Value</label>
+                                                        <div class="dummyInputBox">@Model.Fufquest4Navigation.Frequency</div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-sm-4">
+                                                    <div class="form-group">
+                                                        <label>@SharedLocalizer["Route of administration"].Value</label>
+                                                        <div class="dummyInputBox">@Model.Fufquest4Navigation.Route</div>
+                                                    </div>
+                                                </div>
+                                                <div class="col-sm-8">
+                                                    <div class="form-group">
+                                                        <label>@SharedLocalizer["Remarks"].Value</label>
+                                                        <div class="dummyInputBox">@Model.Fufquest4Navigation.Remarks</div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <br />
+                                            <label>@SharedLocalizer["Please provide details regarding the final treatment regimen"].Value</label>
+                                            <div class="row">
+                                                <div class="col-sm-4">
+                                                    <div class="form-group">
+                                                        <label>@SharedLocalizer["Total Dose Administered"].Value</label>
+                                                        <div class="dummyInputBox">@Model.Fufquest4Navigation.TotalDose</div>
+                                                    </div>
+                                                </div>
+                                                <div class="col-sm-4">
+                                                    <label>@SharedLocalizer["Start Date"].Value</label>
+                                                    <div class="outputBox">@(Model.Fufquest4Navigation.DotstartDate.HasValue ? Model.Fufquest4Navigation.DotstartDate.Value.ToShortDateString() : string.Empty)</div>
+                                                </div>
+                                                <div class="col-sm-4">
+                                                    <label>@SharedLocalizer["Stop Date"].Value</label>
+                                                    <div class="outputBox">@(Model.Fufquest4Navigation.DotstopDate.HasValue ? Model.Fufquest4Navigation.DotstopDate.Value.ToShortDateString() : string.Empty)</div>
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-sm-4">
+                                                    <div class="form-group">
+                                                        <label>@SharedLocalizer["Total duration of treatment"].Value</label>
+                                                        <div class="dummyInputBox">@Model.Fufquest4Navigation.TotalTreatment</div>
+                                                    </div>
+                                                </div>
+                                                <div class="col-sm-8">
+                                                    <div class="form-group">
+                                                        <label>>@SharedLocalizer["Remarks"].Value</label>
+                                                        <div class="dummyInputBox">@Model.Fufquest4Navigation.Tremarks</div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="tab-pane" id="mhData">
+                            <div class="panel-group custInFormPanel" id="accordianMhData">
+                                <div class="panel panel-default">
+                                    <div class="panel-heading">
+                                        <h4 class="panel-title">
+                                            <a data-toggle="collapse" class="collapsed" data-parent="#accordianRliData" href="#mhData0">@SharedLocalizer["Medical History"].Value.ToUpper()</a>
+                                        </h4>
+                                    </div>
+                                    <div id="mhData0" class="panel-collapse collapse in" aria-expanded="true">
+                                        <div class="panel-body">
+                                            <div class="row">
+                                                <div class="col-sm-6">
+                                                    <label>@SharedLocalizer["Did the patient have had any relevant Medical History?"].Value</label>
+                                                </div>
+                                                <div class="col-sm-6">
+                                                    <div class="row">
+                                                        <div class="col-sm-6">
+                                                            <div class="radio">
+                                                                <label>
+                                                                    @Html.RadioButtonFor(model => model.Fufquest5Navigation.MedicalHistory, true, new { @class = "spouseClass", disabled = "disabled" })
+                                                                    <span class="cr"><i class="cr-icon glyphicon glyphicon-ok"></i></span>
+                                                                    @SharedLocalizer["Yes"].Value
+                                                                </label>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-sm-6">
+                                                            <div class="radio">
+                                                                <label>
+                                                                    @Html.RadioButtonFor(model => model.Fufquest5Navigation.MedicalHistory, false, new { @class = "spouseClass", disabled = "disabled" })
+                                                                    <span class="cr"><i class="cr-icon glyphicon glyphicon-ok"></i></span>
+                                                                    @SharedLocalizer["No"].Value
+                                                                </label>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div id="mediacalHistoryContainer" row-count="0">
+                                                <div class="meiacalHistoryBox" id="medicalH1">
+                                                    <div class="mediacalBoxTitle">@SharedLocalizer["Medical History"].Value 1</div>
+                                                    <div class="row">
+                                                        <div class="col-sm-12">
+                                                            <div class="form-group">
+                                                                <label>@SharedLocalizer["Please specify any significant/major illness, medical conditions or surgery in the past or at present."].Value</label>
+                                                                <div class="dummyInputBox">@Model.Fufquest5Navigation.C1condition</div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-sm-4">
+                                                            <label>@SharedLocalizer["Start Date"].Value</label>
+                                                            <div class="outputBox">@(Model.Fufquest5Navigation.C1startDate.HasValue ? Model.Fufquest5Navigation.C1startDate.Value.ToShortDateString() : string.Empty)</div>
+                                                        </div>
+                                                        @if (Model.Fufquest5Navigation.C1ongoing ?? false)
+                                                        {
+                                                            <div class="col-sm-4">
+                                                                <label>@SharedLocalizer["Or tick if Ongoing?"].Value</label>
+                                                                <div class="checkbox" style="margin-top: 5px;">
+                                                                    <label>
+                                                                        <span class="cr"><i class="cr-icon glyphicon glyphicon-ok"></i></span>
+                                                                    </label>
+                                                                </div>
+                                                            </div>
+                                                        }
+                                                        else
+                                                        {
+                                                            <div class="col-sm-4">
+                                                                <label>@SharedLocalizer["Stop Date"].Value</label>
+                                                                <div class="outputBox">@(Model.Fufquest5Navigation.C1stopDate.HasValue ? Model.Fufquest5Navigation.C1stopDate.Value.ToShortDateString() : string.Empty)</div>
+                                                            </div>
+                                                        }
+                                                    </div>
+                                                </div>
+                                                <div class="meiacalHistoryBox" id="medicalH2">
+                                                    <div class="mediacalBoxTitle">@SharedLocalizer["Medical History"].Value 2</div>
+                                                    <div class="row">
+                                                        <div class="col-sm-12">
+                                                            <div class="form-group">
+                                                                <label>@SharedLocalizer["Please specify any significant/major illness, medical conditions or surgery in the past or at present."].Value</label>
+                                                                <div class="dummyInputBox">@Model.Fufquest5Navigation.C2condition</div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-sm-4">
+                                                            <label>@SharedLocalizer["Start Date"].Value</label>
+                                                            <div class="outputBox">@(Model.Fufquest5Navigation.C2startDate.HasValue ? Model.Fufquest5Navigation.C2startDate.Value.ToShortDateString() : string.Empty)</div>
+                                                        </div>
+                                                        @if (Model.Fufquest5Navigation.C2ongoing ?? false)
+                                                        {
+                                                            <div class="col-sm-4">
+                                                                <label>@SharedLocalizer["Or tick if Ongoing?"].Value</label>
+                                                                <div class="checkbox" style="margin-top: 5px;">
+                                                                    <label>
+                                                                        <span class="cr"><i class="cr-icon glyphicon glyphicon-ok"></i></span>
+                                                                    </label>
+                                                                </div>
+                                                            </div>
+                                                        }
+                                                        else
+                                                        {
+                                                            <div class="col-sm-4">
+                                                                <label>@SharedLocalizer["Stop Date"].Value</label>
+                                                                <div class="outputBox">@(Model.Fufquest5Navigation.C2stopDate.HasValue ? Model.Fufquest5Navigation.C2stopDate.Value.ToShortDateString() : string.Empty)</div>
+                                                            </div>
+                                                        }
+                                                    </div>
+                                                </div>
+                                                <div class="meiacalHistoryBox" id="medicalH3">
+                                                    <div class="mediacalBoxTitle">@SharedLocalizer["Medical History"].Value 3</div>
+                                                    <div class="row">
+                                                        <div class="col-sm-12">
+                                                            <div class="form-group">
+                                                                <label>@SharedLocalizer["Please specify any significant/major illness, medical conditions or surgery in the past or at present."].Value</label>
+                                                                <div class="dummyInputBox">@Model.Fufquest5Navigation.C3condition</div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-sm-4">
+                                                            <label>@SharedLocalizer["Start Date"].Value</label>
+                                                            <div class="outputBox">@(Model.Fufquest5Navigation.C3startDate.HasValue ? Model.Fufquest5Navigation.C3startDate.Value.ToShortDateString() : string.Empty)</div>
+                                                        </div>
+                                                        @if (Model.Fufquest5Navigation.C3ongoing ?? false)
+                                                        {
+                                                            <div class="col-sm-4">
+                                                                <label>@SharedLocalizer["Or tick if Ongoing?"].Value</label>
+                                                                <div class="checkbox" style="margin-top: 5px;">
+                                                                    <label>
+                                                                        <span class="cr"><i class="cr-icon glyphicon glyphicon-ok"></i></span>
+                                                                    </label>
+                                                                </div>
+                                                            </div>
+                                                        }
+                                                        else
+                                                        {
+                                                            <div class="col-sm-4">
+                                                                <label>@SharedLocalizer["Stop Date"].Value</label>
+                                                                <div class="outputBox">@(Model.Fufquest5Navigation.C3stopDate.HasValue ? Model.Fufquest5Navigation.C3stopDate.Value.ToShortDateString() : string.Empty)</div>
+                                                            </div>
+                                                        }
+                                                    </div>
+                                                </div>
+                                                <div class="meiacalHistoryBox" id="medicalH4">
+                                                    <div class="mediacalBoxTitle">@SharedLocalizer["Medical History"].Value 4</div>
+                                                    <div class="row">
+                                                        <div class="col-sm-12">
+                                                            <div class="form-group">
+                                                                <label>@SharedLocalizer["Please specify any significant/major illness, medical conditions or surgery in the past or at present."].Value</label>
+                                                                <div class="dummyInputBox">@Model.Fufquest5Navigation.C4condition</div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-sm-4">
+                                                            <label>@SharedLocalizer["Start Date"].Value</label>
+                                                            <div class="outputBox">@(Model.Fufquest5Navigation.C4startDate.HasValue ? Model.Fufquest5Navigation.C4startDate.Value.ToShortDateString() : string.Empty)</div>
+                                                        </div>
+                                                        @if (Model.Fufquest5Navigation.C4ongoing ?? false)
+                                                        {
+                                                            <div class="col-sm-4">
+                                                                <label>@SharedLocalizer["Or tick if Ongoing?"].Value</label>
+                                                                <div class="checkbox" style="margin-top: 5px;">
+                                                                    <label>
+                                                                        <span class="cr"><i class="cr-icon glyphicon glyphicon-ok"></i></span>
+                                                                    </label>
+                                                                </div>
+                                                            </div>
+                                                        }
+                                                        else
+                                                        {
+                                                            <div class="col-sm-4">
+                                                                <label>@SharedLocalizer["Stop Date"].Value</label>
+                                                                <div class="outputBox">@(Model.Fufquest5Navigation.C4stopDate.HasValue ? Model.Fufquest5Navigation.C4stopDate.Value.ToShortDateString() : string.Empty)</div>
+                                                            </div>
+                                                        }
+                                                    </div>
+                                                </div>
+                                                <div class="meiacalHistoryBox" id="medicalH5">
+                                                    <div class="mediacalBoxTitle">@SharedLocalizer["Medical History"].Value 5</div>
+                                                    <div class="row">
+                                                        <div class="col-sm-12">
+                                                            <div class="form-group">
+                                                                <label>@SharedLocalizer["Please specify any significant/major illness, medical conditions or surgery in the past or at present."].Value</label>
+                                                                <div class="dummyInputBox">@Model.Fufquest5Navigation.C5condition</div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-sm-4">
+                                                            <label>@SharedLocalizer["Start Date"].Value</label>
+                                                            <div class="outputBox">@(Model.Fufquest5Navigation.C5startDate.HasValue ? Model.Fufquest5Navigation.C5startDate.Value.ToShortDateString() : string.Empty)</div>
+                                                        </div>
+                                                        @if (Model.Fufquest5Navigation.C5ongoing ?? false)
+                                                        {
+                                                            <div class="col-sm-4">
+                                                                <label>@SharedLocalizer["Or tick if Ongoing?"].Value</label>
+                                                                <div class="checkbox" style="margin-top: 5px;">
+                                                                    <label>
+                                                                        <span class="cr"><i class="cr-icon glyphicon glyphicon-ok"></i></span>
+                                                                    </label>
+                                                                </div>
+                                                            </div>
+                                                        }
+                                                        else
+                                                        {
+                                                            <div class="col-sm-4">
+                                                                <label>@SharedLocalizer["Stop Date"].Value</label>
+                                                                <div class="outputBox">@(Model.Fufquest5Navigation.C5stopDate.HasValue ? Model.Fufquest5Navigation.C5stopDate.Value.ToShortDateString() : string.Empty)</div>
+                                                            </div>
+                                                        }
+                                                    </div>
+                                                </div>
+                                                <div class="meiacalHistoryBox" id="medicalH6">
+                                                    <div class="mediacalBoxTitle">@SharedLocalizer["Medical History"].Value 6</div>
+                                                    <div class="row">
+                                                        <div class="col-sm-12">
+                                                            <div class="form-group">
+                                                                <label>@SharedLocalizer["Please specify any significant/major illness, medical conditions or surgery in the past or at present."].Value</label>
+                                                                <div class="dummyInputBox">@Model.Fufquest5Navigation.C6condition</div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-sm-4">
+                                                            <label>@SharedLocalizer["Start Date"].Value</label>
+                                                            <div class="outputBox">@(Model.Fufquest5Navigation.C6startDate.HasValue ? Model.Fufquest5Navigation.C6startDate.Value.ToShortDateString() : string.Empty)</div>
+                                                        </div>
+                                                        @if (Model.Fufquest5Navigation.C6ongoing ?? false)
+                                                        {
+                                                            <div class="col-sm-4">
+                                                                <label>@SharedLocalizer["Or tick if Ongoing?"].Value</label>
+                                                                <div class="checkbox" style="margin-top: 5px;">
+                                                                    <label>
+                                                                        <span class="cr"><i class="cr-icon glyphicon glyphicon-ok"></i></span>
+                                                                    </label>
+                                                                </div>
+                                                            </div>
+                                                        }
+                                                        else
+                                                        {
+                                                            <div class="col-sm-4">
+                                                                <label>@SharedLocalizer["Stop Date"].Value</label>
+                                                                <div class="outputBox">@(Model.Fufquest5Navigation.C6stopDate.HasValue ? Model.Fufquest5Navigation.C6stopDate.Value.ToShortDateString() : string.Empty)</div>
+                                                            </div>
+                                                        }
+                                                    </div>
+                                                </div>
+                                                <div class="meiacalHistoryBox" id="medicalH7">
+                                                    <div class="mediacalBoxTitle">@SharedLocalizer["Medical History"].Value 7</div>
+                                                    <div class="row">
+                                                        <div class="col-sm-12">
+                                                            <div class="form-group">
+                                                                <label>@SharedLocalizer["Please specify any significant/major illness, medical conditions or surgery in the past or at present."].Value</label>
+                                                                <div class="dummyInputBox">@Model.Fufquest5Navigation.C7condition</div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-sm-4">
+                                                            <label>@SharedLocalizer["Start Date"].Value</label>
+                                                            <div class="outputBox">@(Model.Fufquest5Navigation.C7startDate.HasValue ? Model.Fufquest5Navigation.C7startDate.Value.ToShortDateString() : string.Empty)</div>
+                                                        </div>
+                                                        @if (Model.Fufquest5Navigation.C7ongoing ?? false)
+                                                        {
+                                                            <div class="col-sm-4">
+                                                                <label>@SharedLocalizer["Or tick if Ongoing?"].Value</label>
+                                                                <div class="checkbox" style="margin-top: 5px;">
+                                                                    <label>
+                                                                        <span class="cr"><i class="cr-icon glyphicon glyphicon-ok"></i></span>
+                                                                    </label>
+                                                                </div>
+                                                            </div>
+                                                        }
+                                                        else
+                                                        {
+                                                            <div class="col-sm-4">
+                                                                <label>@SharedLocalizer["Stop Date"].Value</label>
+                                                                <div class="outputBox">@(Model.Fufquest5Navigation.C7stopDate.HasValue ? Model.Fufquest5Navigation.C7stopDate.Value.ToShortDateString() : string.Empty)</div>
+                                                            </div>
+                                                        }
+                                                    </div>
+                                                </div>
+                                                <div class="meiacalHistoryBox" id="medicalH8">
+                                                    <div class="mediacalBoxTitle">@SharedLocalizer["Medical History"].Value 8</div>
+                                                    <div class="row">
+                                                        <div class="col-sm-12">
+                                                            <div class="form-group">
+                                                                <label>@SharedLocalizer["Please specify any significant/major illness, medical conditions or surgery in the past or at present."].Value</label>
+                                                                <div class="dummyInputBox">@Model.Fufquest5Navigation.C8condition</div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-sm-4">
+                                                            <label>@SharedLocalizer["Start Date"].Value</label>
+                                                            <div class="outputBox">@(Model.Fufquest5Navigation.C8startDate.HasValue ? Model.Fufquest5Navigation.C8startDate.Value.ToShortDateString() : string.Empty)</div>
+                                                        </div>
+                                                        @if (Model.Fufquest5Navigation.C8ongoing ?? false)
+                                                        {
+                                                            <div class="col-sm-4">
+                                                                <label>@SharedLocalizer["Or tick if Ongoing?"].Value</label>
+                                                                <div class="checkbox" style="margin-top: 5px;">
+                                                                    <label>
+                                                                        <span class="cr"><i class="cr-icon glyphicon glyphicon-ok"></i></span>
+                                                                    </label>
+                                                                </div>
+                                                            </div>
+                                                        }
+                                                        else
+                                                        {
+                                                            <div class="col-sm-4">
+                                                                <label>@SharedLocalizer["Stop Date"].Value</label>
+                                                                <div class="outputBox">@(Model.Fufquest5Navigation.C8stopDate.HasValue ? Model.Fufquest5Navigation.C8stopDate.Value.ToShortDateString() : string.Empty)</div>
+                                                            </div>
+                                                        }
+                                                    </div>
+                                                </div>
+                                                <div class="meiacalHistoryBox" id="medicalH9">
+                                                    <div class="mediacalBoxTitle">@SharedLocalizer["Medical History"].Value 9</div>
+                                                    <div class="row">
+                                                        <div class="col-sm-12">
+                                                            <div class="form-group">
+                                                                <label>@SharedLocalizer["Please specify any significant/major illness, medical conditions or surgery in the past or at present."].Value</label>
+                                                                <div class="dummyInputBox">@Model.Fufquest5Navigation.C9condition</div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-sm-4">
+                                                            <label>@SharedLocalizer["Start Date"].Value</label>
+                                                            <div class="outputBox">@(Model.Fufquest5Navigation.C9startDate.HasValue ? Model.Fufquest5Navigation.C9startDate.Value.ToShortDateString() : string.Empty)</div>
+                                                        </div>
+                                                        @if (Model.Fufquest5Navigation.C9ongoing ?? false)
+                                                        {
+                                                            <div class="col-sm-4">
+                                                                <label>@SharedLocalizer["Or tick if Ongoing?"].Value</label>
+                                                                <div class="checkbox" style="margin-top: 5px;">
+                                                                    <label>
+                                                                        <span class="cr"><i class="cr-icon glyphicon glyphicon-ok"></i></span>
+                                                                    </label>
+                                                                </div>
+                                                            </div>
+                                                        }
+                                                        else
+                                                        {
+                                                            <div class="col-sm-4">
+                                                                <label>@SharedLocalizer["Stop Date"].Value</label>
+                                                                <div class="outputBox">@(Model.Fufquest5Navigation.C9stopDate.HasValue ? Model.Fufquest5Navigation.C9stopDate.Value.ToShortDateString() : string.Empty)</div>
+                                                            </div>
+                                                        }
+                                                    </div>
+                                                </div>
+                                                <div class="meiacalHistoryBox" id="medicalH10">
+                                                    <div class="mediacalBoxTitle">@SharedLocalizer["Medical History"].Value 10</div>
+                                                    <div class="row">
+                                                        <div class="col-sm-12">
+                                                            <div class="form-group">
+                                                                <label>@SharedLocalizer["Please specify any significant/major illness, medical conditions or surgery in the past or at present."].Value</label>
+                                                                <div class="dummyInputBox">@Model.Fufquest5Navigation.C10condition</div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-sm-4">
+                                                            <label>@SharedLocalizer["Start Date"].Value</label>
+                                                            <div class="outputBox">@(Model.Fufquest5Navigation.C10startDate.HasValue ? Model.Fufquest5Navigation.C10startDate.Value.ToShortDateString() : string.Empty)</div>
+                                                        </div>
+                                                        @if (Model.Fufquest5Navigation.C10ongoing ?? false)
+                                                        {
+                                                            <div class="col-sm-4">
+                                                                <label>@SharedLocalizer["Or tick if Ongoing?"].Value</label>
+                                                                <div class="checkbox" style="margin-top: 5px;">
+                                                                    <label>
+                                                                        <span class="cr"><i class="cr-icon glyphicon glyphicon-ok"></i></span>
+                                                                    </label>
+                                                                </div>
+                                                            </div>
+                                                        }
+                                                        else
+                                                        {
+                                                            <div class="col-sm-4">
+                                                                <label>@SharedLocalizer["Stop Date"].Value</label>
+                                                                <div class="outputBox">@(Model.Fufquest5Navigation.C10stopDate.HasValue ? Model.Fufquest5Navigation.C10stopDate.Value.ToShortDateString() : string.Empty)</div>
+                                                            </div>
+                                                        }
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <div class="form-group">
+                                                <label>@SharedLocalizer["Comments"].Value</label>
+                                                <div class="outputBox">@Model.Fufquest5Navigation.Comments</div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-sm-4">
+                                                    <label>@SharedLocalizer["Date of Assessment"].Value</label>
+                                                    <div class="outputBox">@(Model.Fufquest5Navigation.Doa.HasValue ? Model.Fufquest5Navigation.Doa.Value.ToShortDateString() : string.Empty)</div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="tab-pane" id="cmcmData">
+                            <div class="panel-group custInFormPanel" id="accordiancmcmData">
+                                <div class="panel panel-default">
+                                    <div class="panel-heading">
+                                        <h4 class="panel-title">
+                                            <a data-toggle="collapse" class="collapsed" data-parent="#accordiancmcmData" href="#cmcmData0">@Html.Raw(SharedLocalizer["Concurrent Medical Conditions And Medications"].Value.ToUpper())</a>
+                                        </h4>
+                                    </div>
+                                    <div id="cmcmData0" class="panel-collapse collapse in" aria-expanded="true">
+                                        <div class="panel-body">
+                                            <div class="row">
+                                                <div class="col-sm-8">
+                                                    <label>@SharedLocalizer["Has the participant taken any concomitant medications at this follow-up"].Value</label>
+                                                </div>
+                                                <div class="col-sm-4">
+                                                    <div class="row">
+                                                        <div class="col-sm-6">
+                                                            <div class="radio">
+                                                                <label>
+                                                                    @Html.RadioButtonFor(model => model.Fufquest6Navigation.Medications, true, new { @class = "spouseClass", disabled = "disabled" })
+                                                                    <span class="cr"><i class="cr-icon glyphicon glyphicon-ok"></i></span>
+                                                                    @SharedLocalizer["Yes"].Value
+                                                                </label>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-sm-6">
+                                                            <div class="radio">
+                                                                <label>
+                                                                    @Html.RadioButtonFor(model => model.Fufquest6Navigation.Medications, false, new { @class = "spouseClass", disabled = "disabled" })
+                                                                    <span class="cr"><i class="cr-icon glyphicon glyphicon-ok"></i></span>
+                                                                    @SharedLocalizer["No"].Value
+                                                                </label>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div id="medicationsScreeningContainer" row-count="0">
+                                                <div class="meiacalHistoryBox" id="medical1">
+                                                    <div class="mediacalBoxTitle">@SharedLocalizer["Medications"].Value 1</div>
+                                                    <div class="row">
+                                                        <div class="col-sm-4">
+                                                            <label>@Html.Raw(SharedLocalizer["Medication <small>(Record Generic or trade name)</small>"].Value)</label>
+                                                            <div class="dummyInputBox">@Model.Fufquest6Navigation.M1medication</div>
+                                                        </div>
+                                                        <div class="col-sm-4">
+                                                            <label>@Html.Raw(SharedLocalizer["Reason for use <small>(Medical History diagnosis or other reason, e.g. Prophylaxis)</small>"].Value)</label>
+                                                            <div class="dummyInputBox">@Model.Fufquest6Navigation.M1indication</div>
+                                                        </div>
+                                                        <div class="col-sm-4">
+                                                            <label>@SharedLocalizer["Dosage and units"].Value</label>
+                                                            <div class="dummyInputBox">@Model.Fufquest6Navigation.M1dosageUnits</div>
+                                                        </div>
+                                                        <div class="col-sm-4">
+                                                            <label>@SharedLocalizer["Frequency"].Value</label>
+                                                            <div class="dummyInputBox">@Model.Fufquest6Navigation.M1frequency</div>
+                                                        </div>
+                                                        <div class="col-sm-4">
+                                                            <label>@SharedLocalizer["Route"].Value</label>
+                                                            <div class="dummyInputBox">@Model.Fufquest6Navigation.M1route</div>
+                                                        </div>
+                                                        <div class="col-sm-4">
+                                                            <label>@SharedLocalizer["Start Date"].Value</label>
+                                                            <div class="outputBox">@(Model.Fufquest6Navigation.M1startDate.HasValue ? Model.Fufquest6Navigation.M1startDate.Value.ToShortDateString() : string.Empty)</div>
+                                                        </div>
+                                                        @if (Model.Fufquest6Navigation.M1ongoing ?? false)
+                                                        {
+                                                            <div class="col-sm-4">
+                                                                <label>@SharedLocalizer["Or tick if Ongoing?"].Value</label>
+                                                                <div class="checkbox" style="margin-top: 5px;">
+                                                                    <label>
+                                                                        <span class="cr"><i class="cr-icon glyphicon glyphicon-ok"></i></span>
+                                                                    </label>
+                                                                </div>
+                                                            </div>
+                                                        }
+                                                        else
+                                                        {
+                                                            <div class="col-sm-4">
+                                                                <label>@SharedLocalizer["Stop Date"].Value</label>
+                                                                <div class="outputBox">@(Model.Fufquest6Navigation.M1stopDate.HasValue ? Model.Fufquest6Navigation.M1stopDate.Value.ToShortDateString() : string.Empty)</div>
+                                                            </div>
+                                                        }
+                                                    </div>
+                                                </div>
+                                                <div class="meiacalHistoryBox" id="medical2">
+                                                    <div class="mediacalBoxTitle">@SharedLocalizer["Medications"].Value 2</div>
+                                                    <div class="row">
+                                                        <div class="col-sm-4">
+                                                            <label>@Html.Raw(SharedLocalizer["Medication <small>(Record Generic or trade name)</small>"].Value)</label>
+                                                            <div class="dummyInputBox">@Model.Fufquest6Navigation.M2medication</div>
+                                                        </div>
+                                                        <div class="col-sm-4">
+                                                            <label>@Html.Raw(SharedLocalizer["Reason for use <small>(Medical History diagnosis or other reason, e.g. Prophylaxis)</small>"].Value)</label>
+                                                            <div class="dummyInputBox">@Model.Fufquest6Navigation.M2indication</div>
+                                                        </div>
+                                                        <div class="col-sm-4">
+                                                            <label>@SharedLocalizer["Dosage and units"].Value</label>
+                                                            <div class="dummyInputBox">@Model.Fufquest6Navigation.M2dosageUnits</div>
+                                                        </div>
+                                                        <div class="col-sm-4">
+                                                            <label>@SharedLocalizer["Frequency"].Value</label>
+                                                            <div class="dummyInputBox">@Model.Fufquest6Navigation.M2frequency</div>
+                                                        </div>
+                                                        <div class="col-sm-4">
+                                                            <label>@SharedLocalizer["Route"].Value</label>
+                                                            <div class="dummyInputBox">@Model.Fufquest6Navigation.M2route</div>
+                                                        </div>
+                                                        <div class="col-sm-4">
+                                                            <label>@SharedLocalizer["Start Date"].Value</label>
+                                                            <div class="outputBox">@(Model.Fufquest6Navigation.M2startDate.HasValue ? Model.Fufquest6Navigation.M2startDate.Value.ToShortDateString() : string.Empty)</div>
+                                                        </div>
+                                                        @if (Model.Fufquest6Navigation.M2ongoing ?? false)
+                                                        {
+                                                            <div class="col-sm-4">
+                                                                <label>@SharedLocalizer["Or tick if Ongoing?"].Value</label>
+                                                                <div class="checkbox" style="margin-top: 5px;">
+                                                                    <label>
+                                                                        <span class="cr"><i class="cr-icon glyphicon glyphicon-ok"></i></span>
+                                                                    </label>
+                                                                </div>
+                                                            </div>
+                                                        }
+                                                        else
+                                                        {
+                                                            <div class="col-sm-4">
+                                                                <label>@SharedLocalizer["Stop Date"].Value</label>
+                                                                <div class="outputBox">@(Model.Fufquest6Navigation.M2stopDate.HasValue ? Model.Fufquest6Navigation.M2stopDate.Value.ToShortDateString() : string.Empty)</div>
+                                                            </div>
+                                                        }
+                                                    </div>
+                                                </div>
+                                                <div class="meiacalHistoryBox" id="medical3">
+                                                    <div class="mediacalBoxTitle">@SharedLocalizer["Medications"].Value 3</div>
+                                                    <div class="row">
+                                                        <div class="col-sm-4">
+                                                            <label>@Html.Raw(SharedLocalizer["Medication <small>(Record Generic or trade name)</small>"].Value)</label>
+                                                            <div class="dummyInputBox">@Model.Fufquest6Navigation.M3medication</div>
+                                                        </div>
+                                                        <div class="col-sm-4">
+                                                            <label>@Html.Raw(SharedLocalizer["Reason for use <small>(Medical History diagnosis or other reason, e.g. Prophylaxis)</small>"].Value)</label>
+                                                            <div class="dummyInputBox">@Model.Fufquest6Navigation.M3indication</div>
+                                                        </div>
+                                                        <div class="col-sm-4">
+                                                            <label>@SharedLocalizer["Dosage and units"].Value</label>
+                                                            <div class="dummyInputBox">@Model.Fufquest6Navigation.M3dosageUnits</div>
+                                                        </div>
+                                                        <div class="col-sm-4">
+                                                            <label>@SharedLocalizer["Frequency"].Value</label>
+                                                            <div class="dummyInputBox">@Model.Fufquest6Navigation.M3frequency</div>
+                                                        </div>
+                                                        <div class="col-sm-4">
+                                                            <label>@SharedLocalizer["Route"].Value</label>
+                                                            <div class="dummyInputBox">@Model.Fufquest6Navigation.M3route</div>
+                                                        </div>
+                                                        <div class="col-sm-4">
+                                                            <label>@SharedLocalizer["Start Date"].Value</label>
+                                                            <div class="outputBox">@(Model.Fufquest6Navigation.M3startDate.HasValue ? Model.Fufquest6Navigation.M3startDate.Value.ToShortDateString() : string.Empty)</div>
+                                                        </div>
+                                                        @if (Model.Fufquest6Navigation.M3ongoing ?? false)
+                                                        {
+                                                            <div class="col-sm-4">
+                                                                <label>@SharedLocalizer["Or tick if Ongoing?"].Value</label>
+                                                                <div class="checkbox" style="margin-top: 5px;">
+                                                                    <label>
+                                                                        <span class="cr"><i class="cr-icon glyphicon glyphicon-ok"></i></span>
+                                                                    </label>
+                                                                </div>
+                                                            </div>
+                                                        }
+                                                        else
+                                                        {
+                                                            <div class="col-sm-4">
+                                                                <label>@SharedLocalizer["Stop Date"].Value</label>
+                                                                <div class="outputBox">@(Model.Fufquest6Navigation.M3stopDate.HasValue ? Model.Fufquest6Navigation.M3stopDate.Value.ToShortDateString() : string.Empty)</div>
+                                                            </div>
+                                                        }
+                                                    </div>
+                                                </div>
+                                                <div class="meiacalHistoryBox" id="medical4">
+                                                    <div class="mediacalBoxTitle">@SharedLocalizer["Medications"].Value 4</div>
+                                                    <div class="row">
+                                                        <div class="col-sm-4">
+                                                            <label>@Html.Raw(SharedLocalizer["Medication <small>(Record Generic or trade name)</small>"].Value)</label>
+                                                            <div class="dummyInputBox">@Model.Fufquest6Navigation.M4medication</div>
+                                                        </div>
+                                                        <div class="col-sm-4">
+                                                            <label>@Html.Raw(SharedLocalizer["Reason for use <small>(Medical History diagnosis or other reason, e.g. Prophylaxis)</small>"].Value)</label>
+                                                            <div class="dummyInputBox">@Model.Fufquest6Navigation.M4indication</div>
+                                                        </div>
+                                                        <div class="col-sm-4">
+                                                            <label>@SharedLocalizer["Dosage and units"].Value</label>
+                                                            <div class="dummyInputBox">@Model.Fufquest6Navigation.M4dosageUnits</div>
+                                                        </div>
+                                                        <div class="col-sm-4">
+                                                            <label>@SharedLocalizer["Frequency"].Value</label>
+                                                            <div class="dummyInputBox">@Model.Fufquest6Navigation.M4frequency</div>
+                                                        </div>
+                                                        <div class="col-sm-4">
+                                                            <label>@SharedLocalizer["Route"].Value</label>
+                                                            <div class="dummyInputBox">@Model.Fufquest6Navigation.M4route</div>
+                                                        </div>
+                                                        <div class="col-sm-4">
+                                                            <label>@SharedLocalizer["Start Date"].Value</label>
+                                                            <div class="outputBox">@(Model.Fufquest6Navigation.M4startDate.HasValue ? Model.Fufquest6Navigation.M4startDate.Value.ToShortDateString() : string.Empty)</div>
+                                                        </div>
+                                                        @if (Model.Fufquest6Navigation.M4ongoing ?? false)
+                                                        {
+                                                            <div class="col-sm-4">
+                                                                <label>@SharedLocalizer["Or tick if Ongoing?"].Value</label>
+                                                                <div class="checkbox" style="margin-top: 5px;">
+                                                                    <label>
+                                                                        <span class="cr"><i class="cr-icon glyphicon glyphicon-ok"></i></span>
+                                                                    </label>
+                                                                </div>
+                                                            </div>
+                                                        }
+                                                        else
+                                                        {
+                                                            <div class="col-sm-4">
+                                                                <label>@SharedLocalizer["Stop Date"].Value</label>
+                                                                <div class="outputBox">@(Model.Fufquest6Navigation.M4stopDate.HasValue ? Model.Fufquest6Navigation.M4stopDate.Value.ToShortDateString() : string.Empty)</div>
+                                                            </div>
+                                                        }
+                                                    </div>
+                                                </div>
+                                                <div class="meiacalHistoryBox" id="medical5">
+                                                    <div class="mediacalBoxTitle">@SharedLocalizer["Medications"].Value 5</div>
+                                                    <div class="row">
+                                                        <div class="col-sm-4">
+                                                            <label>@Html.Raw(SharedLocalizer["Medication <small>(Record Generic or trade name)</small>"].Value)</label>
+                                                            <div class="dummyInputBox">@Model.Fufquest6Navigation.M5medication</div>
+                                                        </div>
+                                                        <div class="col-sm-4">
+                                                            <label>@Html.Raw(SharedLocalizer["Reason for use <small>(Medical History diagnosis or other reason, e.g. Prophylaxis)</small>"].Value)</label>
+                                                            <div class="dummyInputBox">@Model.Fufquest6Navigation.M5indication</div>
+                                                        </div>
+                                                        <div class="col-sm-4">
+                                                            <label>@SharedLocalizer["Dosage and units"].Value</label>
+                                                            <div class="dummyInputBox">@Model.Fufquest6Navigation.M5dosageUnits</div>
+                                                        </div>
+                                                        <div class="col-sm-4">
+                                                            <label>@SharedLocalizer["Frequency"].Value</label>
+                                                            <div class="dummyInputBox">@Model.Fufquest6Navigation.M5frequency</div>
+                                                        </div>
+                                                        <div class="col-sm-4">
+                                                            <label>@SharedLocalizer["Route"].Value</label>
+                                                            <div class="dummyInputBox">@Model.Fufquest6Navigation.M5route</div>
+                                                        </div>
+                                                        <div class="col-sm-4">
+                                                            <label>@SharedLocalizer["Start Date"].Value</label>
+                                                            <div class="outputBox">@(Model.Fufquest6Navigation.M5startDate.HasValue ? Model.Fufquest6Navigation.M5startDate.Value.ToShortDateString() : string.Empty)</div>
+                                                        </div>
+                                                        @if (Model.Fufquest6Navigation.M5ongoing ?? false)
+                                                        {
+                                                            <div class="col-sm-4">
+                                                                <label>@SharedLocalizer["Or tick if Ongoing?"].Value</label>
+                                                                <div class="checkbox" style="margin-top: 5px;">
+                                                                    <label>
+                                                                        <span class="cr"><i class="cr-icon glyphicon glyphicon-ok"></i></span>
+                                                                    </label>
+                                                                </div>
+                                                            </div>
+                                                        }
+                                                        else
+                                                        {
+                                                            <div class="col-sm-4">
+                                                                <label>@SharedLocalizer["Stop Date"].Value</label>
+                                                                <div class="outputBox">@(Model.Fufquest6Navigation.M5stopDate.HasValue ? Model.Fufquest6Navigation.M5stopDate.Value.ToShortDateString() : string.Empty)</div>
+                                                            </div>
+                                                        }
+                                                    </div>
+                                                </div>
+                                                <div class="meiacalHistoryBox" id="medical6">
+                                                    <div class="mediacalBoxTitle">@SharedLocalizer["Medications"].Value 6</div>
+                                                    <div class="row">
+                                                        <div class="col-sm-4">
+                                                            <label>@Html.Raw(SharedLocalizer["Medication <small>(Record Generic or trade name)</small>"].Value)</label>
+                                                            <div class="dummyInputBox">@Model.Fufquest6Navigation.M6medication</div>
+                                                        </div>
+                                                        <div class="col-sm-4">
+                                                            <label>@Html.Raw(SharedLocalizer["Reason for use <small>(Medical History diagnosis or other reason, e.g. Prophylaxis)</small>"].Value)</label>
+                                                            <div class="dummyInputBox">@Model.Fufquest6Navigation.M6indication</div>
+                                                        </div>
+                                                        <div class="col-sm-4">
+                                                            <label>@SharedLocalizer["Dosage and units"].Value</label>
+                                                            <div class="dummyInputBox">@Model.Fufquest6Navigation.M6dosageUnits</div>
+                                                        </div>
+                                                        <div class="col-sm-4">
+                                                            <label>@SharedLocalizer["Frequency"].Value</label>
+                                                            <div class="dummyInputBox">@Model.Fufquest6Navigation.M6frequency</div>
+                                                        </div>
+                                                        <div class="col-sm-4">
+                                                            <label>@SharedLocalizer["Route"].Value</label>
+                                                            <div class="dummyInputBox">@Model.Fufquest6Navigation.M6route</div>
+                                                        </div>
+                                                        <div class="col-sm-4">
+                                                            <label>@SharedLocalizer["Start Date"].Value</label>
+                                                            <div class="outputBox">@(Model.Fufquest6Navigation.M6startDate.HasValue ? Model.Fufquest6Navigation.M6startDate.Value.ToShortDateString() : string.Empty)</div>
+                                                        </div>
+                                                        @if (Model.Fufquest6Navigation.M6ongoing ?? false)
+                                                        {
+                                                            <div class="col-sm-4">
+                                                                <label>@SharedLocalizer["Or tick if Ongoing?"].Value</label>
+                                                                <div class="checkbox" style="margin-top: 5px;">
+                                                                    <label>
+                                                                        <span class="cr"><i class="cr-icon glyphicon glyphicon-ok"></i></span>
+                                                                    </label>
+                                                                </div>
+                                                            </div>
+                                                        }
+                                                        else
+                                                        {
+                                                            <div class="col-sm-4">
+                                                                <label>@SharedLocalizer["Stop Date"].Value</label>
+                                                                <div class="outputBox">@(Model.Fufquest6Navigation.M6stopDate.HasValue ? Model.Fufquest6Navigation.M6stopDate.Value.ToShortDateString() : string.Empty)</div>
+                                                            </div>
+                                                        }
+                                                    </div>
+                                                </div>
+                                                <div class="meiacalHistoryBox" id="medical7">
+                                                    <div class="mediacalBoxTitle">@SharedLocalizer["Medications"].Value 7</div>
+                                                    <div class="row">
+                                                        <div class="col-sm-4">
+                                                            <label>@Html.Raw(SharedLocalizer["Medication <small>(Record Generic or trade name)</small>"].Value)</label>
+                                                            <div class="dummyInputBox">@Model.Fufquest6Navigation.M7medication</div>
+                                                        </div>
+                                                        <div class="col-sm-4">
+                                                            <label>@Html.Raw(SharedLocalizer["Reason for use <small>(Medical History diagnosis or other reason, e.g. Prophylaxis)</small>"].Value)</label>
+                                                            <div class="dummyInputBox">@Model.Fufquest6Navigation.M7indication</div>
+                                                        </div>
+                                                        <div class="col-sm-4">
+                                                            <label>@SharedLocalizer["Dosage and units"].Value</label>
+                                                            <div class="dummyInputBox">@Model.Fufquest6Navigation.M7dosageUnits</div>
+                                                        </div>
+                                                        <div class="col-sm-4">
+                                                            <label>@SharedLocalizer["Frequency"].Value</label>
+                                                            <div class="dummyInputBox">@Model.Fufquest6Navigation.M7frequency</div>
+                                                        </div>
+                                                        <div class="col-sm-4">
+                                                            <label>@SharedLocalizer["Route"].Value</label>
+                                                            <div class="dummyInputBox">@Model.Fufquest6Navigation.M7route</div>
+                                                        </div>
+                                                        <div class="col-sm-4">
+                                                            <label>@SharedLocalizer["Start Date"].Value</label>
+                                                            <div class="outputBox">@(Model.Fufquest6Navigation.M7startDate.HasValue ? Model.Fufquest6Navigation.M7startDate.Value.ToShortDateString() : string.Empty)</div>
+                                                        </div>
+                                                        @if (Model.Fufquest6Navigation.M7ongoing ?? false)
+                                                        {
+                                                            <div class="col-sm-4">
+                                                                <label>@SharedLocalizer["Or tick if Ongoing?"].Value</label>
+                                                                <div class="checkbox" style="margin-top: 5px;">
+                                                                    <label>
+                                                                        <span class="cr"><i class="cr-icon glyphicon glyphicon-ok"></i></span>
+                                                                    </label>
+                                                                </div>
+                                                            </div>
+                                                        }
+                                                        else
+                                                        {
+                                                            <div class="col-sm-4">
+                                                                <label>@SharedLocalizer["Stop Date"].Value</label>
+                                                                <div class="outputBox">@(Model.Fufquest6Navigation.M7stopDate.HasValue ? Model.Fufquest6Navigation.M7stopDate.Value.ToShortDateString() : string.Empty)</div>
+                                                            </div>
+                                                        }
+                                                    </div>
+                                                </div>
+                                                <div class="meiacalHistoryBox" id="medical8">
+                                                    <div class="mediacalBoxTitle">@SharedLocalizer["Medications"].Value 8</div>
+                                                    <div class="row">
+                                                        <div class="col-sm-4">
+                                                            <label>@Html.Raw(SharedLocalizer["Medication <small>(Record Generic or trade name)</small>"].Value)</label>
+                                                            <div class="dummyInputBox">@Model.Fufquest6Navigation.M8medication</div>
+                                                        </div>
+                                                        <div class="col-sm-4">
+                                                            <label>@Html.Raw(SharedLocalizer["Reason for use <small>(Medical History diagnosis or other reason, e.g. Prophylaxis)</small>"].Value)</label>
+                                                            <div class="dummyInputBox">@Model.Fufquest6Navigation.M8indication</div>
+                                                        </div>
+                                                        <div class="col-sm-4">
+                                                            <label>@SharedLocalizer["Dosage and units"].Value</label>
+                                                            <div class="dummyInputBox">@Model.Fufquest6Navigation.M8dosageUnits</div>
+                                                        </div>
+                                                        <div class="col-sm-4">
+                                                            <label>@SharedLocalizer["Frequency"].Value</label>
+                                                            <div class="dummyInputBox">@Model.Fufquest6Navigation.M8frequency</div>
+                                                        </div>
+                                                        <div class="col-sm-4">
+                                                            <label>@SharedLocalizer["Route"].Value</label>
+                                                            <div class="dummyInputBox">@Model.Fufquest6Navigation.M8route</div>
+                                                        </div>
+                                                        <div class="col-sm-4">
+                                                            <label>@SharedLocalizer["Start Date"].Value</label>
+                                                            <div class="outputBox">@(Model.Fufquest6Navigation.M8startDate.HasValue ? Model.Fufquest6Navigation.M8startDate.Value.ToShortDateString() : string.Empty)</div>
+                                                        </div>
+                                                        @if (Model.Fufquest6Navigation.M8ongoing ?? false)
+                                                        {
+                                                            <div class="col-sm-4">
+                                                                <label>@SharedLocalizer["Or tick if Ongoing?"].Value</label>
+                                                                <div class="checkbox" style="margin-top: 5px;">
+                                                                    <label>
+                                                                        <span class="cr"><i class="cr-icon glyphicon glyphicon-ok"></i></span>
+                                                                    </label>
+                                                                </div>
+                                                            </div>
+                                                        }
+                                                        else
+                                                        {
+                                                            <div class="col-sm-4">
+                                                                <label>@SharedLocalizer["Stop Date"].Value</label>
+                                                                <div class="outputBox">@(Model.Fufquest6Navigation.M8stopDate.HasValue ? Model.Fufquest6Navigation.M8stopDate.Value.ToShortDateString() : string.Empty)</div>
+                                                            </div>
+                                                        }
+                                                    </div>
+                                                </div>
+                                                <div class="meiacalHistoryBox" id="medical9">
+                                                    <div class="mediacalBoxTitle">@SharedLocalizer["Medications"].Value 9</div>
+                                                    <div class="row">
+                                                        <div class="col-sm-4">
+                                                            <label>@Html.Raw(SharedLocalizer["Medication <small>(Record Generic or trade name)</small>"].Value)</label>
+                                                            <div class="dummyInputBox">@Model.Fufquest6Navigation.M9medication</div>
+                                                        </div>
+                                                        <div class="col-sm-4">
+                                                            <label>@Html.Raw(SharedLocalizer["Reason for use <small>(Medical History diagnosis or other reason, e.g. Prophylaxis)</small>"].Value)</label>
+                                                            <div class="dummyInputBox">@Model.Fufquest6Navigation.M9indication</div>
+                                                        </div>
+                                                        <div class="col-sm-4">
+                                                            <label>@SharedLocalizer["Dosage and units"].Value</label>
+                                                            <div class="dummyInputBox">@Model.Fufquest6Navigation.M9dosageUnits</div>
+                                                        </div>
+                                                        <div class="col-sm-4">
+                                                            <label>@SharedLocalizer["Frequency"].Value</label>
+                                                            <div class="dummyInputBox">@Model.Fufquest6Navigation.M9frequency</div>
+                                                        </div>
+                                                        <div class="col-sm-4">
+                                                            <label>@SharedLocalizer["Route"].Value</label>
+                                                            <div class="dummyInputBox">@Model.Fufquest6Navigation.M9route</div>
+                                                        </div>
+                                                        <div class="col-sm-4">
+                                                            <label>@SharedLocalizer["Start Date"].Value</label>
+                                                            <div class="outputBox">@(Model.Fufquest6Navigation.M9startDate.HasValue ? Model.Fufquest6Navigation.M9startDate.Value.ToShortDateString() : string.Empty)</div>
+                                                        </div>
+                                                        @if (Model.Fufquest6Navigation.M9ongoing ?? false)
+                                                        {
+                                                            <div class="col-sm-4">
+                                                                <label>@SharedLocalizer["Or tick if Ongoing?"].Value</label>
+                                                                <div class="checkbox" style="margin-top: 5px;">
+                                                                    <label>
+                                                                        <span class="cr"><i class="cr-icon glyphicon glyphicon-ok"></i></span>
+                                                                    </label>
+                                                                </div>
+                                                            </div>
+                                                        }
+                                                        else
+                                                        {
+                                                            <div class="col-sm-4">
+                                                                <label>@SharedLocalizer["Stop Date"].Value</label>
+                                                                <div class="outputBox">@(Model.Fufquest6Navigation.M9stopDate.HasValue ? Model.Fufquest6Navigation.M9stopDate.Value.ToShortDateString() : string.Empty)</div>
+                                                            </div>
+                                                        }
+                                                    </div>
+                                                </div>
+                                                <div class="meiacalHistoryBox" id="medical10">
+                                                    <div class="mediacalBoxTitle">@SharedLocalizer["Medications"].Value 10</div>
+                                                    <div class="row">
+                                                        <div class="col-sm-4">
+                                                            <label>@Html.Raw(SharedLocalizer["Medication <small>(Record Generic or trade name)</small>"].Value)</label>
+                                                            <div class="dummyInputBox">@Model.Fufquest6Navigation.M10medication</div>
+                                                        </div>
+                                                        <div class="col-sm-4">
+                                                            <label>@Html.Raw(SharedLocalizer["Reason for use <small>(Medical History diagnosis or other reason, e.g. Prophylaxis)</small>"].Value)</label>
+                                                            <div class="dummyInputBox">@Model.Fufquest6Navigation.M10indication</div>
+                                                        </div>
+                                                        <div class="col-sm-4">
+                                                            <label>@SharedLocalizer["Dosage and units"].Value</label>
+                                                            <div class="dummyInputBox">@Model.Fufquest6Navigation.M10dosageUnits</div>
+                                                        </div>
+                                                        <div class="col-sm-4">
+                                                            <label>@SharedLocalizer["Frequency"].Value</label>
+                                                            <div class="dummyInputBox">@Model.Fufquest6Navigation.M10frequency</div>
+                                                        </div>
+                                                        <div class="col-sm-4">
+                                                            <label>@SharedLocalizer["Route"].Value</label>
+                                                            <div class="dummyInputBox">@Model.Fufquest6Navigation.M10route</div>
+                                                        </div>
+                                                        <div class="col-sm-4">
+                                                            <label>@SharedLocalizer["Start Date"].Value</label>
+                                                            <div class="outputBox">@(Model.Fufquest6Navigation.M10startDate.HasValue ? Model.Fufquest6Navigation.M10startDate.Value.ToShortDateString() : string.Empty)</div>
+                                                        </div>
+                                                        @if (Model.Fufquest6Navigation.M10ongoing ?? false)
+                                                        {
+                                                            <div class="col-sm-4">
+                                                                <label>@SharedLocalizer["Or tick if Ongoing?"].Value</label>
+                                                                <div class="checkbox" style="margin-top: 5px;">
+                                                                    <label>
+                                                                        <span class="cr"><i class="cr-icon glyphicon glyphicon-ok"></i></span>
+                                                                    </label>
+                                                                </div>
+                                                            </div>
+                                                        }
+                                                        else
+                                                        {
+                                                            <div class="col-sm-4">
+                                                                <label>@SharedLocalizer["Stop Date"].Value</label>
+                                                                <div class="outputBox">@(Model.Fufquest6Navigation.M10stopDate.HasValue ? Model.Fufquest6Navigation.M10stopDate.Value.ToShortDateString() : string.Empty)</div>
+                                                            </div>
+                                                        }
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="form-group">
+                                                <label>@SharedLocalizer["Comments"].Value</label>
+                                                <div class="dummyInputBox">@Model.Fufquest6Navigation.Comments</div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-sm-4">
+                                                    <label>@SharedLocalizer["Date of Assessment"].Value</label>
+                                                    <div class="outputBox">@(Model.Fufquest6Navigation.Doa.HasValue ? Model.Fufquest6Navigation.Doa.Value.ToShortDateString() : string.Empty)</div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="tab-pane" id="psoData">
+                            <div class="panel-group custInFormPanel" id="accordianpsoData">
+                                <div class="panel panel-default">
+                                    <div class="panel-heading">
+                                        <h4 class="panel-title">
+                                            <a data-toggle="collapse" class="collapsed" data-parent="#accordianpsoData" href="#psoData0">@SharedLocalizer["Prescriber’s Sign Off"].Value.ToUpper()</a>
+                                        </h4>
+                                    </div>
+                                    <div id="psoData0" class="panel-collapse collapse in" aria-expanded="true">
+                                        <div class="panel-body">
+                                            <div class="row">
+                                                <div class="col-sm-12">
+                                                    <div class="form-group">
+                                                        <label>@SharedLocalizer["Prescriber’s Statement"].Value</label>
+                                                        <div class="dummyInputBox">@Model.Fufquest7Navigation.Statement</div>
+                                                    </div>
+                                                </div>
+                                                <div class="col-sm-12">
+                                                    <div class="checkbox">
+                                                        <div class="form-group">
+                                                            <label>
+                                                                @if (Model.Fufquest7Navigation.ConfirmFuf == true)
+                                                                {
+                                                                    <span class="cr"><i class="cr-icon glyphicon glyphicon-ok"></i></span>
+                                                                }
+                                                                else
+                                                                {
+                                                                    <span class="cr"><i class="cr-icon glyphicon"></i></span>
+                                                                }
+                                                                @Html.Raw(SharedLocalizer["I have reviewed this Follow-up Form and confirm that, to the best of my knowledge, it accurately reflects the study information obtained for this patient."].Value)
+                                                            </label>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-sm-6">
+                                                    <div class="form-group">
+                                                        <label>@SharedLocalizer["Prescriber’s Name"].Value</label>
+                                                        <div class="dummyInputBox">@ViewBag.Name</div>
+                                                    </div>
+                                                </div>
+                                                <div class="col-sm-6">
+                                                    <div class="form-group">
+                                                        <label>@SharedLocalizer["Prescribers Email Id"].Value</label>
+                                                        <div class="dummyInputBox">@ViewBag.Email</div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-sm-6">
+                                                    <div class="form-group">
+                                                        <label>@SharedLocalizer["Registration Number"].Value</label>
+                                                        <div class="dummyInputBox">@ViewBag.RegistrationNumber</div>
+                                                    </div>
+                                                </div>
+                                                <div class="col-sm-6">
+                                                    <div class="form-group">
+                                                        <label>@SharedLocalizer["Telephone Number"].Value</label>
+                                                        <div class="dummyInputBox">@ViewBag.TelephoneNumber</div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-sm-6">
+                                                    <div class="form-group">
+                                                        <label>@SharedLocalizer["Hospital Address"].Value</label>
+                                                        <div class="dummyInputBox">@ViewBag.HospitalAddress</div>
+                                                    </div>
+                                                </div>
+                                                <div class="col-sm-6">
+                                                    <div class="form-group">
+                                                        <label>@SharedLocalizer["Contact Address"].Value</label>
+                                                        <div class="dummyInputBox">@ViewBag.ContactAddress</div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-sm-6">
+                                                    <label>@SharedLocalizer["Date of Acceptance"].Value</label>
+                                                    <div class="outputBox">@(Model.Fufquest7Navigation.Doa.HasValue ? Model.Fufquest7Navigation.Doa.Value.ToShortDateString() : string.Empty)</div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <br />
+                    <br />
+                    <br />
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+@section Scripts {
+    <script type="text/javascript">
+
+         $(document).ready(function () {
+
+             if ('@Model.Fufquest1Navigation.CidofovirInjection' == 'True') {
+                $('#specifyId').show();
+            } else {
+                $('#specifyId').hide();
+            }
+
+
+            if ('@Model.Fufquest1Navigation.Pexperienced' == 'False') {
+                $('#adverseEventContainer').hide();
+            }
+
+            if ('@Model.Fufquest5Navigation.MedicalHistory' == 'False') {
+                $('#mediacalHistoryContainer').hide();
+            }
+
+            if ('@Model.Fufquest6Navigation.Medications' == 'False') {
+                $('#medicationsScreeningContainer').hide();
+            }
+
+
+            if ('@Model.Fufquest1Navigation.EventTerm1' != ''|| '@Model.Fufquest1Navigation.StartDate1' != ''|| '@Model.Fufquest1Navigation.StopDate1' != '') {
+
+            } else {
+                $('#adverseE1').hide();
+             }
+             if ('@Model.Fufquest1Navigation.EventTerm2' != ''|| '@Model.Fufquest1Navigation.StartDate2' != ''|| '@Model.Fufquest1Navigation.StopDate2' != '') {
+
+            } else {
+                 $('#adverseE2').hide();
+             }
+             if ('@Model.Fufquest1Navigation.EventTerm3' != '' || '@Model.Fufquest1Navigation.StartDate3' != '' || '@Model.Fufquest1Navigation.StopDate3' != '') {
+
+             } else {
+                 $('#adverseE3').hide();
+            }
+             if ('@Model.Fufquest1Navigation.EventTerm4' != ''|| '@Model.Fufquest1Navigation.StartDate4' != ''|| '@Model.Fufquest1Navigation.StopDate4' != '') {
+
+            } else {
+                 $('#adverseE4').hide();
+             }
+             if ('@Model.Fufquest1Navigation.EventTerm5' != ''|| '@Model.Fufquest1Navigation.StartDate5' != ''|| '@Model.Fufquest1Navigation.StopDate5' != '') {
+
+            } else {
+                 $('#adverseE5').hide();
+             }
+             if ('@Model.Fufquest1Navigation.EventTerm6' != ''|| '@Model.Fufquest1Navigation.StartDate6' != ''|| '@Model.Fufquest1Navigation.StopDate6' != '') {
+
+            } else {
+                 $('#adverseE6').hide();
+            }
+
+
+
+            if ('@Model.Fufquest5Navigation.C1condition' != ''|| '@Model.Fufquest5Navigation.C1startDate' != ''|| '@Model.Fufquest5Navigation.C1stopDate' != '') {
+
+            } else {
+                $('#medicalH1').hide();
+            }
+             if ('@Model.Fufquest5Navigation.C2condition' != ''|| '@Model.Fufquest5Navigation.C2startDate' != ''|| '@Model.Fufquest5Navigation.C2stopDate' != '') {
+
+            } else {
+                $('#medicalH2').hide();
+             }
+              if ('@Model.Fufquest5Navigation.C3condition' != ''|| '@Model.Fufquest5Navigation.C3startDate' != ''|| '@Model.Fufquest5Navigation.C3stopDate' != '') {
+
+            } else {
+                $('#medicalH3').hide();
+             }
+              if ('@Model.Fufquest5Navigation.C4condition' != ''|| '@Model.Fufquest5Navigation.C4startDate' != ''|| '@Model.Fufquest5Navigation.C4stopDate' != '') {
+
+            } else {
+                $('#medicalH4').hide();
+             }
+              if ('@Model.Fufquest5Navigation.C5condition' != ''|| '@Model.Fufquest5Navigation.C5startDate' != ''|| '@Model.Fufquest5Navigation.C5stopDate' != '') {
+
+            } else {
+                $('#medicalH5').hide();
+             }
+             if ('@Model.Fufquest5Navigation.C6condition' != ''|| '@Model.Fufquest5Navigation.C6startDate' != ''|| '@Model.Fufquest5Navigation.C6stopDate' != '') {
+
+            } else {
+                $('#medicalH6').hide();
+            }
+             if ('@Model.Fufquest5Navigation.C7condition' != ''|| '@Model.Fufquest5Navigation.C7startDate' != ''|| '@Model.Fufquest5Navigation.C7stopDate' != '') {
+
+            } else {
+                $('#medicalH7').hide();
+             }
+              if ('@Model.Fufquest5Navigation.C8condition' != ''|| '@Model.Fufquest5Navigation.C8startDate' != ''|| '@Model.Fufquest5Navigation.C8stopDate' != '') {
+
+            } else {
+                $('#medicalH8').hide();
+             }
+              if ('@Model.Fufquest5Navigation.C9condition' != ''|| '@Model.Fufquest5Navigation.C9startDate' != ''|| '@Model.Fufquest5Navigation.C9stopDate' != '') {
+
+            } else {
+                $('#medicalH9').hide();
+             }
+              if ('@Model.Fufquest5Navigation.C10condition' != ''|| '@Model.Fufquest5Navigation.C10startDate' != ''|| '@Model.Fufquest5Navigation.C10stopDate' != '') {
+
+            } else {
+                $('#medicalH10').hide();
+            }
+
+
+            if ('@Model.Fufquest6Navigation.M1medication' != ''
+                || '@Model.Fufquest6Navigation.M1indication' != ''
+                || '@Model.Fufquest6Navigation.M1dosageUnits' != ''
+                || '@Model.Fufquest6Navigation.M1frequency' != ''
+                || '@Model.Fufquest6Navigation.M1route' != ''
+                || '@Model.Fufquest6Navigation.M1startDate' != ''
+                || '@Model.Fufquest6Navigation.M1stopDate' != ''
+            ) {
+
+            } else {
+                $('#medical1').hide();
+            }
+
+
+            if ('@Model.Fufquest6Navigation.M2medication' != ''
+                || '@Model.Fufquest6Navigation.M2indication' != ''
+                || '@Model.Fufquest6Navigation.M2dosageUnits' != ''
+                || '@Model.Fufquest6Navigation.M2frequency' != ''
+                || '@Model.Fufquest6Navigation.M2route' != ''
+                || '@Model.Fufquest6Navigation.M2startDate' != ''
+                || '@Model.Fufquest6Navigation.M2stopDate' != ''
+            ) {
+
+            } else {
+                $('#medical2').hide();
+            }
+
+            if ('@Model.Fufquest6Navigation.M3medication' != ''
+                || '@Model.Fufquest6Navigation.M3indication' != ''
+                || '@Model.Fufquest6Navigation.M3dosageUnits' != ''
+                || '@Model.Fufquest6Navigation.M3frequency' != ''
+                || '@Model.Fufquest6Navigation.M3route' != ''
+                || '@Model.Fufquest6Navigation.M3startDate' != ''
+                || '@Model.Fufquest6Navigation.M3stopDate' != ''
+            ) {
+
+            } else {
+                $('#medical3').hide();
+            }
+
+
+            if ('@Model.Fufquest6Navigation.M4medication' != ''
+                || '@Model.Fufquest6Navigation.M4indication' != ''
+                || '@Model.Fufquest6Navigation.M4dosageUnits' != ''
+                || '@Model.Fufquest6Navigation.M4frequency' != ''
+                || '@Model.Fufquest6Navigation.M4route' != ''
+                || '@Model.Fufquest6Navigation.M4startDate' != ''
+                || '@Model.Fufquest6Navigation.M4stopDate' != ''
+            ) {
+
+            } else {
+                $('#medical4').hide();
+            }
+
+            if ('@Model.Fufquest6Navigation.M5medication' != ''
+                || '@Model.Fufquest6Navigation.M5indication' != ''
+                || '@Model.Fufquest6Navigation.M5dosageUnits' != ''
+                || '@Model.Fufquest6Navigation.M5frequency' != ''
+                || '@Model.Fufquest6Navigation.M5route' != ''
+                || '@Model.Fufquest6Navigation.M5startDate' != ''
+                || '@Model.Fufquest6Navigation.M5stopDate' != ''
+            ) {
+
+            } else {
+                $('#medical5').hide();
+            }
+
+
+            if ('@Model.Fufquest6Navigation.M6medication' != ''
+                || '@Model.Fufquest6Navigation.M6indication' != ''
+                || '@Model.Fufquest6Navigation.M6dosageUnits' != ''
+                || '@Model.Fufquest6Navigation.M6frequency' != ''
+                || '@Model.Fufquest6Navigation.M6route' != ''
+                || '@Model.Fufquest6Navigation.M6startDate' != ''
+                || '@Model.Fufquest6Navigation.M6stopDate' != ''
+            ) {
+
+            } else {
+                $('#medical6').hide();
+            }
+
+            if ('@Model.Fufquest6Navigation.M7medication' != ''
+                || '@Model.Fufquest6Navigation.M7indication' != ''
+                || '@Model.Fufquest6Navigation.M7dosageUnits' != ''
+                || '@Model.Fufquest6Navigation.M7frequency' != ''
+                || '@Model.Fufquest6Navigation.M7route' != ''
+                || '@Model.Fufquest6Navigation.M7startDate' != ''
+                || '@Model.Fufquest6Navigation.M7stopDate' != ''
+            ) {
+
+            } else {
+                $('#medical7').hide();
+            }
+
+            if ('@Model.Fufquest6Navigation.M8medication' != ''
+                || '@Model.Fufquest6Navigation.M8indication' != ''
+                || '@Model.Fufquest6Navigation.M8dosageUnits' != ''
+                || '@Model.Fufquest6Navigation.M8frequency' != ''
+                || '@Model.Fufquest6Navigation.M8route' != ''
+                || '@Model.Fufquest6Navigation.M8startDate' != ''
+                || '@Model.Fufquest6Navigation.M8stopDate' != ''
+            ) {
+
+            } else {
+                $('#medical8').hide();
+            }
+
+            if ('@Model.Fufquest6Navigation.M9medication' != ''
+                || '@Model.Fufquest6Navigation.M9indication' != ''
+                || '@Model.Fufquest6Navigation.M9dosageUnits' != ''
+                || '@Model.Fufquest6Navigation.M9frequency' != ''
+                || '@Model.Fufquest6Navigation.M9route' != ''
+                || '@Model.Fufquest6Navigation.M9startDate' != ''
+                || '@Model.Fufquest6Navigation.M9stopDate' != ''
+            ) {
+
+            } else {
+                $('#medical9').hide();
+            }
+
+
+            if ('@Model.Fufquest6Navigation.M10medication' != ''
+                || '@Model.Fufquest6Navigation.M10indication' != ''
+                || '@Model.Fufquest6Navigation.M10dosageUnits' != ''
+                || '@Model.Fufquest6Navigation.M10frequency' != ''
+                || '@Model.Fufquest6Navigation.M10route' != ''
+                || '@Model.Fufquest6Navigation.M10startDate' != ''
+                || '@Model.Fufquest6Navigation.M10stopDate' != ''
+            ) {
+
+            } else {
+                $('#medical10').hide();
+            }
+             });
+    </script>
+}
+<style>
+    .custInFormPanel .collapse[aria-expanded="false"] {
+        display: block;
+        overflow: hidden;
+        height: 0;
+    }
+
+    #mediacalHistoryContainer[row-count="0"] #removeLastMediaclHistory, #mediacalHistoryContainer[row-count="9"] #addMediaclHistory, #medicationsScreeningContainer[row-count="0"] #removeLastMedication, #medicationsScreeningContainer[row-count="9"] #addMedication, #adverseEventContainer[row-count="5"] #addAdverseEvents, #adverseEventContainer[row-count="0"] #removeAdverseEvents {
+        display: none;
+    }
+</style>
+

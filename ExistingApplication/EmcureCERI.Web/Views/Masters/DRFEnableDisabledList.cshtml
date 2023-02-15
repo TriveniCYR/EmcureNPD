@@ -1,0 +1,266 @@
+﻿@inject Microsoft.Extensions.Localization.IStringLocalizer<SharedResource> SharedLocalizer
+
+@{
+    ViewData["Title"] = "Reports View";
+
+}
+
+<style>
+    .treegrid-control span {
+        cursor: pointer;
+        padding: 0px 5px;
+        display: block;
+        box-shadow: 0 0 1px #999;
+        width: 20px;
+        height: 25px;
+    }
+
+    .treegrid-control-open span {
+        cursor: pointer;
+        padding: 0px 7px;
+        display: block;
+        box-shadow: 0 0 1px #999;
+        width: 20px;
+        height: 25px;
+    }
+</style>
+
+<div class="content-wrapper">
+    <section class="content pt-3">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-lg-12">
+                    <!-- Custom tabs (Charts with tabs)-->
+                    <div class="card">
+                        <div class="card-header">
+                            <h3 class="card-title">
+                                <i class="fas fa-list mr-2"></i> DRF List
+                            </h3>
+                            <div class="card-tools md-left">
+                                <div class="mybtn-group">
+                                    <a class="btn btn-primary" href="@Url.Action("Index","Dashboard")"><i class="fas fa-undo mr-1"></i>Back</a>
+                                    <div class="export-btn mybtn-group"></div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="card-body report-scroll">
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <div class="table-responsive">
+                                        <table id="TimelineMoleculeTable" class="table table-bordered" cellspacing="0" width="100%"></table>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+</div>
+@*AddModel*@
+<div id="AddModel" class="modal themeModal " role="dialog">
+    <form method="POST" onsubmit="return SubmitDRFForm(this)">
+        <!-- Small boxes (Stat box) -->
+        <!-- Main row -->
+        <div class="modal-dialog">
+            <!-- Modal content-->
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 id="modelHeaderName" class="modal-title"></h4>
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                </div>
+                <div class="modal-body">
+                    <p id="modelMessageDescription"></p>
+                </div>
+                <div class="card-footer text-center">
+                    <button type="submit" class="btn btn-primary ">Yes</button>
+                    <a class="btn btn-danger" onclick="HideAddModel()">No</a>
+
+                </div>
+
+
+            </div>
+        </div>
+    </form>
+</div>
+<script src='~/js/dataTables.treeGrid.js'></script>
+
+@section Scripts {
+    <script>
+        var isdrfenabled;
+        var drfid;
+        var temptrue = "true";
+        var tempfalse = "false";
+        function ShowAddModel(data,tempdrfid) {
+            
+            drfid = tempdrfid;
+            if (data === true) {
+                //alert(data);
+                isdrfenabled = "true";                
+                var temphead = document.getElementById("modelHeaderName");
+                temphead.innerHTML = "Active DRF";
+
+                var tempdesc = document.getElementById("modelMessageDescription");
+                tempdesc.innerHTML = "Are you sure to Active DRF?";
+            }
+            else {
+                isdrfenabled = "false";
+                var temphead = document.getElementById("modelHeaderName");
+                temphead.innerHTML = "In Active DRF";
+                var tempdesc = document.getElementById("modelMessageDescription");
+                tempdesc.innerHTML = "Are you sure to In Active DRF?";
+            }
+           // alert(isdrfenabled);
+            $('#AddModel').modal('show');
+        }
+
+        function HideAddModel() {
+            $('#AddModel').modal('hide');
+        }
+
+        var columns = [
+
+            {
+                title: 'SrNo',
+                target: 1,
+                data: function (item) {
+                    return item.srNo;
+                }
+
+            },
+            {
+                title: 'DRF No.',
+                target: 2,
+                data: function (item) {
+                    return item.drfNo;
+                }
+
+            },
+            {
+                title: 'DRF',
+                target: 3,
+                data: function (item) {
+                    return item.genericName;
+                }
+
+            },
+
+            {
+                title: 'Region',
+                target: 4,
+                data: function (item) {
+                    return item.region;
+                }
+
+            },
+
+            {
+                title: 'Country',
+                target: 5,
+                data: function (item) {
+                    return item.country;
+                }
+
+            },
+            {
+                title: 'Pharmaceutical<br>Form',
+                target: 6,
+                data: function (item) {
+                    return item.pharmaceutical_Form;
+                }
+            },
+            {
+                title: 'Strength',
+                target: 7,
+                data: function (item) {
+                    return item.strength_Name;
+                }
+            },
+            {
+                title: 'Status',
+                target: 8,
+                data: function (item) {
+                    return item.status;
+                }
+            },
+            {
+                title: 'Action',
+                target: 9,
+                data: function (item) {
+                    if (item.isActive === 'false') {
+                        return '<a  class="btn btn-primary btn-sm" onclick="ShowAddModel(' + true + ',' + item.initializationID +')" data-toggle="tooltip" title="Active" ><i class="fas fa-eye"></i></a>';
+                    }
+                    else {
+                        return '<a class="btn btn-primary btn-sm" onclick="ShowAddModel(' + false + ',' + item.initializationID +')" data-toggle="tooltip" title="In Active" ><i class="fas fa-eye"></i></a>';
+                    }
+
+                }
+            },
+
+
+        ];
+
+        $(document).ready(function () {
+
+            var table = $('#TimelineMoleculeTable').DataTable({
+                columns: columns,
+                dom: 'Bfrtip',
+                buttons: [
+                    {
+                        extend: 'excel', text: '<i class="far fa-file-excel"></i> Export In Excel ', className: "btn-primary", exportOptions: {
+                            columns: ':visible'
+                        }
+                    },
+                    { extend: 'colvis', className: "btn-primary" }
+                ],
+
+                lengthChange: false,
+                ajax: '/Masters/GetAllDRFList',
+                treeGrid: {
+                    'left': 10,
+                    'expandIcon': '<span>+<\/span>',
+                    'collapseIcon': '<span>-<\/span>'
+                }
+
+            });
+            table.buttons().container()
+                .appendTo('.export-btn');
+
+            $(".buttons-excel").removeClass("btn-secondary");
+            $(".buttons-collection").removeClass("btn-secondary");
+
+        });
+
+        function SubmitDRFForm(form) {
+            var url = "/Masters/GetAllDRFList";
+         $.validator.unobtrusive.parse(form);
+        if ($(form).valid()) {
+            $('#loading').show();
+            var tempdata = { DRFID: drfid, isDRFActive: isdrfenabled };
+                $.ajax({
+                    type : "POST",
+                    url : '@Url.Action("UpdateDRFEnabledDisabled", "Masters")/',//form.action,
+                    data: tempdata,
+                    success: function (result) {
+                        //console.log(result);
+                        $('#loading').hide();
+                         $('#AddModel').modal('hide');
+                        if (result.data === "success") {
+                            openCommonModal('successModal modal-sm', '@Html.Raw(SharedLocalizer["Success"].Value)', 'Record has been updated successfully.', true);
+                            /* setTimeout(function () { location.href = url; }, 2000);*/
+                            setTimeout(function () { location.reload(); }, 2000);
+                        }
+                        else {
+                            openCommonModal('alertModal modal-sm', '@SharedLocalizer["Error"].Value', result.message, false);
+                        }
+                    }
+                });
+            }
+            return false;
+    }
+
+    </script>
+}
+

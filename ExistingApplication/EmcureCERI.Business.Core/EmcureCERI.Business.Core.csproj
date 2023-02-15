@@ -1,0 +1,20 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup Label="Globals">
+    <SccProjectName>SAK</SccProjectName>
+    <SccProvider>SAK</SccProvider>
+    <SccAuxPath>SAK</SccAuxPath>
+    <SccLocalPath>SAK</SccLocalPath>
+  </PropertyGroup>
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp2.1</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\EmcureCERI.Business.Contract\EmcureCERI.Business.Contract.csproj" />
+    <ProjectReference Include="..\EmcureCERI.Business.Models\EmcureCERI.Business.Models.csproj" />
+    <ProjectReference Include="..\EmcureCERI.Data.Repository\EmcureCERI.Data.Repository.csproj" />
+  </ItemGroup>
+
+</Project>

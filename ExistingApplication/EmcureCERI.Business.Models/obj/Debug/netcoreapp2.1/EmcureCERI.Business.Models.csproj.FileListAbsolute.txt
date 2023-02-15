@@ -1,0 +1,13 @@
+D:\E Drive\Nilesh_Jain\Clients\Emcure_Pharma\NeoSOFTRepo\NPD\EmcureNPD\ExistingApplication\EmcureCERI.Business.Models\bin\Debug\netcoreapp2.1\EmcureCERI.Business.Models.deps.json
+D:\E Drive\Nilesh_Jain\Clients\Emcure_Pharma\NeoSOFTRepo\NPD\EmcureNPD\ExistingApplication\EmcureCERI.Business.Models\bin\Debug\netcoreapp2.1\EmcureCERI.Business.Models.dll
+D:\E Drive\Nilesh_Jain\Clients\Emcure_Pharma\NeoSOFTRepo\NPD\EmcureNPD\ExistingApplication\EmcureCERI.Business.Models\bin\Debug\netcoreapp2.1\EmcureCERI.Business.Models.pdb
+D:\E Drive\Nilesh_Jain\Clients\Emcure_Pharma\NeoSOFTRepo\NPD\EmcureNPD\ExistingApplication\EmcureCERI.Business.Models\bin\Debug\netcoreapp2.1\EmcureCERI.Data.DataAccess.dll
+D:\E Drive\Nilesh_Jain\Clients\Emcure_Pharma\NeoSOFTRepo\NPD\EmcureNPD\ExistingApplication\EmcureCERI.Business.Models\bin\Debug\netcoreapp2.1\EmcureCERI.Data.DataAccess.pdb
+D:\E Drive\Nilesh_Jain\Clients\Emcure_Pharma\NeoSOFTRepo\NPD\EmcureNPD\ExistingApplication\EmcureCERI.Business.Models\obj\Debug\netcoreapp2.1\EmcureCERI.Business.Models.csproj.AssemblyReference.cache
+D:\E Drive\Nilesh_Jain\Clients\Emcure_Pharma\NeoSOFTRepo\NPD\EmcureNPD\ExistingApplication\EmcureCERI.Business.Models\obj\Debug\netcoreapp2.1\EmcureCERI.Business.Models.GeneratedMSBuildEditorConfig.editorconfig
+D:\E Drive\Nilesh_Jain\Clients\Emcure_Pharma\NeoSOFTRepo\NPD\EmcureNPD\ExistingApplication\EmcureCERI.Business.Models\obj\Debug\netcoreapp2.1\EmcureCERI.Business.Models.AssemblyInfoInputs.cache
+D:\E Drive\Nilesh_Jain\Clients\Emcure_Pharma\NeoSOFTRepo\NPD\EmcureNPD\ExistingApplication\EmcureCERI.Business.Models\obj\Debug\netcoreapp2.1\EmcureCERI.Business.Models.AssemblyInfo.cs
+D:\E Drive\Nilesh_Jain\Clients\Emcure_Pharma\NeoSOFTRepo\NPD\EmcureNPD\ExistingApplication\EmcureCERI.Business.Models\obj\Debug\netcoreapp2.1\EmcureCERI.Business.Models.csproj.CoreCompileInputs.cache
+D:\E Drive\Nilesh_Jain\Clients\Emcure_Pharma\NeoSOFTRepo\NPD\EmcureNPD\ExistingApplication\EmcureCERI.Business.Models\obj\Debug\netcoreapp2.1\EmcureCERI.Business.Models.csproj.CopyComplete
+D:\E Drive\Nilesh_Jain\Clients\Emcure_Pharma\NeoSOFTRepo\NPD\EmcureNPD\ExistingApplication\EmcureCERI.Business.Models\obj\Debug\netcoreapp2.1\EmcureCERI.Business.Models.dll
+D:\E Drive\Nilesh_Jain\Clients\Emcure_Pharma\NeoSOFTRepo\NPD\EmcureNPD\ExistingApplication\EmcureCERI.Business.Models\obj\Debug\netcoreapp2.1\EmcureCERI.Business.Models.pdb

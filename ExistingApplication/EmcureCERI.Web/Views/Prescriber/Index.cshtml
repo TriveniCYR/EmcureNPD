@@ -1,0 +1,9 @@
+﻿@using Microsoft.AspNetCore.Identity
+@using EmcureCERI.Web.Models
+@using Microsoft.AspNetCore.Http;
+@inject Microsoft.Extensions.Localization.IStringLocalizer<SharedResource> SharedLocalizer
+@inject SignInManager<ApplicationUser> SignInManager
+@inject UserManager<ApplicationUser> UserManager
+@{
+    ViewData["Title"] = @SharedLocalizer["Prescriber Index"].Value;
+}

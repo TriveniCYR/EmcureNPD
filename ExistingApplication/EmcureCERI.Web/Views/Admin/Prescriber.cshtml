@@ -1,0 +1,262 @@
+﻿@using Microsoft.Extensions.Localization
+@inject IStringLocalizer<SharedResource> SharedLocalizer
+@model EmcureCERI.Web.Models.AdminViewModels.PrescriberViewModel
+@{
+    ViewData["Title"] = "Prescriber";
+}
+<section class="section">
+    <div class="container-fluid">
+        <h4>@SharedLocalizer["Prescriber's List"].Value</h4>
+        <div class="card  card-primary card-outline card-outline-tabs nav-fill nav-pills">
+            <div class="card-header p-0 pt-1">
+                <ul id="tabUL" class="nav nav-tabs">
+                    <li class="nav-item active"><a href="javascript:void(0)" class="nav-link" data-toggle="tab" onClick="getPrescriber(1)">@SharedLocalizer["New Requested"].Value</a></li>
+                    <li class="nav-item"><a href="javascript:void(0)" class="nav-link" data-toggle="tab" onClick="getPrescriber(2)">@SharedLocalizer["Approved"].Value</a></li>
+                    <li class="nav-item"><a href="javascript:void(0)" class="nav-link" data-toggle="tab" onClick="getPrescriber(3)">@SharedLocalizer["Deactivated"].Value</a></li>
+                    <li class="nav-item"><a href="javascript:void(0)" class="nav-link" data-toggle="tab" onClick="getPrescriber(4)">@SharedLocalizer["Rejected"].Value</a></li>
+                </ul>
+            </div>
+            <div>
+                <div class="card-body">
+                    <div class="table-responsive tab-pane  active">
+                        <table id="prescriberTableId" class="table stripe row-border order-column" style="width:100%">
+                            <thead>
+                                <tr>
+                                    <th style="width: 50px;">@SharedLocalizer["Id"].Value</th>
+                                    <th style="width: 100px;">@SharedLocalizer["First Name"].Value</th>
+                                    <th style="width: 100px;">@SharedLocalizer["Last Name"].Value</th>
+                                    <th style="width: 100px;">@SharedLocalizer["HCP"].Value</th>
+                                    <th>@SharedLocalizer["Email"].Value</th>
+                                    <th style="width: 90px;">@SharedLocalizer["Contact No"].Value</th>
+                                    <th style="width: 150px;">@SharedLocalizer["Action"].Value</th>
+                                </tr>
+                            </thead>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<input type="text" hidden id="currentTab" />
+<div id="prescriberViewModal" class="modal themeModal " role="dialog">
+    <div class="modal-dialog">
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">@SharedLocalizer["View Prescriber Details"].Value</h4>
+            </div>
+            <div class="modal-body">
+                <p>@SharedLocalizer["Some text in the modal."].Value</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+<script>
+        var Popup;
+        var getPrescriber;
+        var Activated;
+        var Approved;
+        var Deactivated;
+        var Rejected;
+
+        function PopupForm(url) {
+            $.get(url)
+                .done(function (response) {
+                    $('#prescriberViewModal .modal-dialog').removeClass('modal-sm');
+                    $('#prescriberViewModal .modal-title').html('@SharedLocalizer["View Prescriber"].Value');
+                    $('#prescriberViewModal .modal-body').html(response);
+                    $('#prescriberViewModal').modal('show');
+                });
+        }
+
+
+
+
+    function SubmitFormReject(form) {
+                $.validator.unobtrusive.parse(form);
+                if ($(form).valid()) {
+                    $.ajax({
+                        type: "POST",
+                        url: form.action,
+                        data: $(form).serialize(),
+                        success: function (result) {
+                            if (result.success === "success") {
+                                $('#prescriberViewModal').modal('hide');
+                                if ($('#currentTab').val() == 1) {
+                                    getPrescriber(1);
+                                }
+                                if ($('#currentTab').val() == 2) {
+                                    getPrescriber(2);
+                                }
+                                if ($('#currentTab').val() == 3) {
+                                    getPrescriber(3);
+                                }
+                                openCommonModal('successModal modal-sm', '@Html.Raw(SharedLocalizer["Success"].Value)', '@Html.Raw(SharedLocalizer["Record has been Rejected successfully."].Value)', false);
+                            }
+                        },
+                        error: function (err) {
+                            openCommonModal('alertModal modal-sm', '@Html.Raw(SharedLocalizer["Error"].Value)', err.statusText, false);
+                        }
+                    });
+                }
+                return false;
+            }
+
+
+    function SubmitFormDeactivate(form) {
+        $.validator.unobtrusive.parse(form);
+        if ($(form).valid()) {
+            $.ajax({
+                type: "POST",
+                url: form.action,
+                data: $(form).serialize(),
+                success: function (result) {
+                    if (result.success === "success") {
+                        $('#prescriberViewModal').modal('hide');
+                        if ($('#currentTab').val() == 1) {
+                            getPrescriber(1);
+                        }
+                        if ($('#currentTab').val() == 2) {
+                            getPrescriber(2);
+                        }
+                        if ($('#currentTab').val() == 3) {
+                            getPrescriber(3);
+                        }
+                        openCommonModal('successModal modal-sm', '@Html.Raw(SharedLocalizer["Success"].Value)', '@Html.Raw(SharedLocalizer["Record has been Deactivated successfully."].Value)', false);
+                    }
+                },
+                error: function (err) {
+                    openCommonModal('alertModal modal-sm', '@SharedLocalizer["Error"].Value', err.statusText, false);
+                }
+            });
+        }
+        return false;
+    }
+
+
+        $(document).ready(function () {
+            var dataTable = $('#prescriberTableId').DataTable({
+                responsive: true,
+                language: {
+                    "emptyTable": "@SharedLocalizer["No data available in table"].Value",
+                    "info": "@SharedLocalizer["Showing _START_ to _END_ of _TOTAL_ entries"].Value",
+                    "infoEmpty":"@SharedLocalizer["Showing 0 to 0 of 0 entries"].Value",
+                    "infoFiltered":"@SharedLocalizer["(filtered from _MAX_ total entries)"].Value",
+                    "lengthMenu":"@SharedLocalizer["Show _MENU_ entries"].Value",
+                    "loadingRecords": "@SharedLocalizer["Loading..."].Value",
+                    "processing": "@SharedLocalizer["Processing..."].Value",
+                    "search": "@SharedLocalizer["Search"].Value",
+                    "zeroRecords":"@SharedLocalizer["No matching records found"].Value",
+                    "paginate": {
+                        "first":"@SharedLocalizer["First"].Value",
+                        "last":"@SharedLocalizer["Last"].Value",
+                        "next": "@SharedLocalizer["Next"].Value",
+                        "previous":"@SharedLocalizer["Previous"].Value"
+                    },
+                }
+            });
+
+            getPrescriber = function (id) {
+                $('#loaderContainer').show();
+                $.ajax({
+                    type: "POST",
+                    url: '@Url.Action("GetAllRequestedPrescriber", "Admin")/' + id,
+                    contentType: "application/json; charset=utf-8",
+                    dataType: "json",
+                    success: function (response) {
+                        $('#loaderContainer').hide();
+                        var jsonObject = response.data;
+                        var result = jsonObject.map(function (item) {
+                            var result = [];
+                            result.push(item.UniqueId);
+                            result.push(item.FirstName);
+                            result.push(item.LastName);
+                            result.push(item.IsDoctorPharmacist);
+                            result.push(item.Email);
+                            result.push(item.TelNo);
+                            if (response.ids == 1) {
+                                result.push("<a data-toggle='tooltip' title='@SharedLocalizer["Approve"].Value' class='btn btn-success btn-sm' onclick=Approved(" + item.Id + ',' + 1 + ")><span class='glyphicon glyphicon-ok' aria-hidden='true'></span> </a>  <a title='@SharedLocalizer["Reject"].Value' class='btn btn-danger btn-sm' onclick=Rejected(" + item.Id + ',' + 1 + ") > <span class='glyphicon glyphicon-remove' aria-hidden='true'></span></a >  <a title='@SharedLocalizer["View"].Value' class='btn btn-info btn-sm' onclick=PopupForm('@Url.Action("PrescriberDetails", "Admin")/" + item.Id + "')> <span class='glyphicon glyphicon-eye-open' aria-hidden='true'> </span> </a>");
+                            }
+                            if (response.ids == 2) {
+                                result.push("<a data-toggle='tooltip' title='@SharedLocalizer["Deactivate"].Value' class='btn btn-warning btn-sm' onclick=Deactivated(" + item.Id + ',' + 2 + ")><span class='glyphicon glyphicon-ban-circle' aria-hidden='true'></span> </a>  <a title='@SharedLocalizer["Reject"].Value' class='btn btn-danger btn-sm' onclick=Rejected(" + item.Id + ',' + 2 + ") > <span class='glyphicon glyphicon-remove' aria-hidden='true'></span></a >  <a title='@SharedLocalizer["View"].Value' class='btn btn-info btn-sm' onclick=PopupForm('@Url.Action("PrescriberDetails", "Admin")/" + item.Id + "')> <span class='glyphicon glyphicon-eye-open' aria-hidden='true'> </span> </a> <a title='@SharedLocalizer["Patient List"].Value' class='btn btn-default btn-sm' href='@Url.Action("RegisteredPatients", "Admin")/" + item.Id +  "'><span class='glyphicon glyphicon-tasks' aria-hidden='true'></span></a>");
+                            }
+                            if (response.ids == 3) {
+                                result.push("<a data-toggle='tooltip' title='@SharedLocalizer["Activate"].Value' class='btn btn-success btn-sm' onclick=Activated(" + item.Id + ")><span class='glyphicon glyphicon-ok' aria-hidden='true'></span> </a>  <a title='@SharedLocalizer["Reject"].Value' class='btn btn-danger btn-sm' onclick=Rejected(" + item.Id + ',' + 3 + ") > <span class='glyphicon glyphicon-remove' aria-hidden='true'></span></a >  <a title='@SharedLocalizer["View"].Value' class='btn btn-info btn-sm' onclick=PopupForm('@Url.Action("PrescriberDetails", "Admin")/" + item.Id + "')> <span class='glyphicon glyphicon-eye-open' aria-hidden='true'> </span> </a> <a title='@SharedLocalizer["Patient List"].Value' class='btn btn-default btn-sm' href='@Url.Action("RegisteredPatients", "Admin")/" + item.Id +  "'><span class='glyphicon glyphicon-tasks' aria-hidden='true'></span></a>");
+                            }
+                            if (response.ids == 4) {
+                                result.push("<a data-toggle='tooltip' title='@SharedLocalizer["Approve"].Value' class='btn btn-success btn-sm' onclick=Approved(" + item.Id + ',' + 2 + ")><span class='glyphicon glyphicon-ok' aria-hidden='true'></span> </a>  <a title='@SharedLocalizer["View"].Value' class='btn btn-info btn-sm' onclick=PopupForm('@Url.Action("PrescriberDetails", "Admin")/" + item.Id + "')> <span class='glyphicon glyphicon-eye-open' aria-hidden='true'> </span> </a> <a title='@SharedLocalizer["Patient List"].Value' class='btn btn-default btn-sm' href='@Url.Action("RegisteredPatients", "Admin")/" + item.Id +  "'><span class='glyphicon glyphicon-tasks' aria-hidden='true'></span></a>");
+                            }
+                            return result;
+                        });
+                        dataTable.clear();
+                        dataTable.rows.add(result); // add to DataTable instance
+                        dataTable.draw(); // always redraw
+                    },
+                    failure: function () {
+                        $("#PrescriberTableId").append('@SharedLocalizer["Error when fetching data please contact administrator"].Value');
+                    }
+                });
+            }
+
+            Activated = function (id, tab) {
+                $.ajax({
+                    type: "POST",
+                    url: '@Url.Action("ActivatedPrescriber", "Admin")/' + id,
+                    success: function (data) {
+                        if (data.success) {
+                            getPrescriber(3);
+                            openCommonModal('successModal modal-sm', '@Html.Raw(SharedLocalizer["Success"].Value)','@Html.Raw(SharedLocalizer["Record has been Approved successfully."].Value)', false);
+                        }
+                    }
+                });
+            }
+
+            Approved = function (id, tab) {
+                $.ajax({
+                    type: "POST",
+                    url: '@Url.Action("ApprovedPrescriber", "Admin")/' + id,
+                    success: function (data) {
+                        if (data.success) {
+                            if (tab == 1) {
+                                getPrescriber(1);
+                            }
+                            if (tab == 2) {
+                                getPrescriber(4);
+                            }
+                            openCommonModal('successModal modal-sm', '@Html.Raw(SharedLocalizer["Success"].Value)', '@Html.Raw(SharedLocalizer["Record has been Approved successfully."].Value)', false);
+                        }
+                    }
+                });
+            }
+
+            Deactivated = function (id, tab) {
+                $('#currentTab').val(tab);
+                var url = "/Admin/DeactivatedPrescriber/" + id;
+                $.get(url)
+                    .done(function (response) {
+                        $('#prescriberViewModal .modal-dialog').addClass('modal-sm');
+                        $('#prescriberViewModal .modal-title').html('@Html.Raw(SharedLocalizer["Deactivate Prescriber"].Value)');
+                        $('#prescriberViewModal .modal-body').html(response);
+                        $('#prescriberViewModal').modal('show');
+                    });
+            }
+
+            Rejected = function (id, tab) {
+                $('#currentTab').val(tab);
+                var url = "/Admin/RejectedPrescriber/" + id;
+                $.get(url)
+                    .done(function (response) {
+                        $('#prescriberViewModal .modal-dialog').addClass('modal-sm');
+                        $('#prescriberViewModal .modal-title').html('@Html.Raw(SharedLocalizer["Reject Prescriber"].Value)');
+                        $('#prescriberViewModal .modal-body').html(response);
+                        $('#prescriberViewModal').modal('show');
+                    });
+            }
+            $('#tabUL').find('li.active a').trigger('click');
+        });
+</script>
+}

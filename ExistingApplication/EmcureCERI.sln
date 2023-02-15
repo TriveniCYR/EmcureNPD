@@ -1,0 +1,85 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.29613.14
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "2.Business", "2.Business", "{C7142225-B2A6-4E35-8223-116F26DCFA3A}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "3.Data", "3.Data", "{A93C5BD2-1237-43EB-BB43-49236B504A50}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "4.Test", "4.Test", "{5FFB9C9E-6711-4BA0-9BEF-D80856C33671}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "EmcureCERI.Business.Contract", "EmcureCERI.Business.Contract\EmcureCERI.Business.Contract.csproj", "{CB3ACC26-34A3-46C4-8B9F-BD4679E00B25}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "EmcureCERI.Business.Core", "EmcureCERI.Business.Core\EmcureCERI.Business.Core.csproj", "{9008146C-9A03-4C6A-90EF-C2C3918C3284}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "EmcureCERI.Business.Models", "EmcureCERI.Business.Models\EmcureCERI.Business.Models.csproj", "{FB4587B8-9C84-4C92-807B-74A4AE7D54C1}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "EmcureCERI.Data.DataAccess", "EmcureCERI.Data.DataAccess\EmcureCERI.Data.DataAccess.csproj", "{AF372646-F1EF-464B-819C-44077C2669FD}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "EmcureCERI.Data.Repository", "EmcureCERI.Data.Repository\EmcureCERI.Data.Repository.csproj", "{C97F22BB-B7A2-47ED-B36B-CDE4E6DDE017}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "1.Client", "1.Client", "{A44BB78F-5B25-4D53-AFB8-52AB572816C1}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "EmcureCERI.Web", "EmcureCERI.Web\EmcureCERI.Web.csproj", "{2D3EBCAF-F2E0-481B-A942-49B1E0B7053B}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Scheduler", "Scheduler", "{471143B0-7A6C-4C64-9670-7E5FB650D4D4}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "EmcureCERI.ConsoleApp", "EmcureCERI.ConsoleApp\EmcureCERI.ConsoleApp.csproj", "{83B94D26-50C3-4A19-8BA0-0FC0EC7F1578}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{E42CF47E-E815-4E2B-8014-D3A89C8501EC}"
+	ProjectSection(SolutionItems) = preProject
+		.editorconfig = .editorconfig
+	EndProjectSection
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{CB3ACC26-34A3-46C4-8B9F-BD4679E00B25}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CB3ACC26-34A3-46C4-8B9F-BD4679E00B25}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CB3ACC26-34A3-46C4-8B9F-BD4679E00B25}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CB3ACC26-34A3-46C4-8B9F-BD4679E00B25}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9008146C-9A03-4C6A-90EF-C2C3918C3284}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9008146C-9A03-4C6A-90EF-C2C3918C3284}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9008146C-9A03-4C6A-90EF-C2C3918C3284}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9008146C-9A03-4C6A-90EF-C2C3918C3284}.Release|Any CPU.Build.0 = Release|Any CPU
+		{FB4587B8-9C84-4C92-807B-74A4AE7D54C1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FB4587B8-9C84-4C92-807B-74A4AE7D54C1}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FB4587B8-9C84-4C92-807B-74A4AE7D54C1}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FB4587B8-9C84-4C92-807B-74A4AE7D54C1}.Release|Any CPU.Build.0 = Release|Any CPU
+		{AF372646-F1EF-464B-819C-44077C2669FD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{AF372646-F1EF-464B-819C-44077C2669FD}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{AF372646-F1EF-464B-819C-44077C2669FD}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{AF372646-F1EF-464B-819C-44077C2669FD}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C97F22BB-B7A2-47ED-B36B-CDE4E6DDE017}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C97F22BB-B7A2-47ED-B36B-CDE4E6DDE017}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C97F22BB-B7A2-47ED-B36B-CDE4E6DDE017}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C97F22BB-B7A2-47ED-B36B-CDE4E6DDE017}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2D3EBCAF-F2E0-481B-A942-49B1E0B7053B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2D3EBCAF-F2E0-481B-A942-49B1E0B7053B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2D3EBCAF-F2E0-481B-A942-49B1E0B7053B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2D3EBCAF-F2E0-481B-A942-49B1E0B7053B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{83B94D26-50C3-4A19-8BA0-0FC0EC7F1578}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{83B94D26-50C3-4A19-8BA0-0FC0EC7F1578}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{83B94D26-50C3-4A19-8BA0-0FC0EC7F1578}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{83B94D26-50C3-4A19-8BA0-0FC0EC7F1578}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{CB3ACC26-34A3-46C4-8B9F-BD4679E00B25} = {C7142225-B2A6-4E35-8223-116F26DCFA3A}
+		{9008146C-9A03-4C6A-90EF-C2C3918C3284} = {C7142225-B2A6-4E35-8223-116F26DCFA3A}
+		{FB4587B8-9C84-4C92-807B-74A4AE7D54C1} = {C7142225-B2A6-4E35-8223-116F26DCFA3A}
+		{AF372646-F1EF-464B-819C-44077C2669FD} = {A93C5BD2-1237-43EB-BB43-49236B504A50}
+		{C97F22BB-B7A2-47ED-B36B-CDE4E6DDE017} = {A93C5BD2-1237-43EB-BB43-49236B504A50}
+		{2D3EBCAF-F2E0-481B-A942-49B1E0B7053B} = {A44BB78F-5B25-4D53-AFB8-52AB572816C1}
+		{83B94D26-50C3-4A19-8BA0-0FC0EC7F1578} = {471143B0-7A6C-4C64-9670-7E5FB650D4D4}
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {E3E25296-2A89-4D3C-A3C1-056EAB70793C}
+	EndGlobalSection
+EndGlobal

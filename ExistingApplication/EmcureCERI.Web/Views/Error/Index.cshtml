@@ -1,0 +1,5 @@
+﻿@inject Microsoft.Extensions.Localization.IStringLocalizer<SharedResource> SharedLocalizer
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<p>@SharedLocalizer["We're sorry, page you're looking for is, sadly, not here."].Value</p>

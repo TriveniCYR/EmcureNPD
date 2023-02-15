@@ -1,0 +1,233 @@
+﻿@inject Microsoft.Extensions.Localization.IStringLocalizer<SharedResource> SharedLocalizer
+@{
+    ViewData["Title"] = @SharedLocalizer["Registered Patients"].Value;
+}
+<section class="section">
+    <div class="container-fluid">
+        <h4>
+            @SharedLocalizer["Registered Patients List"].Value
+        </h4>
+        <div class="tableContainer clearfix">
+            <div class="table-responsive">
+                <table id="addPatientTableId" class="table stripe row-border order-column" style="width:100%">
+                    <thead>
+                        <tr>
+                            <th style="width: 50px;">@SharedLocalizer["Patient Id"].Value</th>
+                            <th>@SharedLocalizer["First Name"].Value</th>
+                            <th>@SharedLocalizer["Last Name"].Value</th>
+                            <th>@SharedLocalizer["Status"].Value</th>
+                            <th style="width: 120px;">@SharedLocalizer["Consent Form"].Value</th>
+                            <th style="width: 120px;">@SharedLocalizer["Baseline Form"].Value</th>
+                            <th style="width:50px;">@SharedLocalizer["Action"].Value</th>
+                        </tr>
+                    </thead>
+                </table>
+            </div>
+        </div>
+        <div class="text-right addRecordBtnContainer">
+            <a class="btn btn-default" onclick="PopupForm('@Url.Action("PatientAddOrEdit","Prescriber")');"><i class="fa fa-plus"></i> @SharedLocalizer["Add Patient"].Value</a>
+        </div>
+
+        <div id="patientViewModal" class="modal themeModal " role="dialog">
+            <div class="modal-dialog">
+                <!-- Modal content-->
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                        <h4 class="modal-title"></h4>
+                    </div>
+                    <div class="modal-body">
+                        <p></p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        @await Html.PartialAsync("../Pdf/_PdfConsentForm")
+    </div>
+</section>
+@section Scripts {
+<script>
+        var Popup, dataTable, getPrescriber;
+        $(document).ready(function () {
+
+            var dataTable = $('#addPatientTableId').DataTable({
+                responsive: true,
+                language: {
+                    "emptyTable": "@SharedLocalizer["No data available in table"].Value",
+                    "info": "@SharedLocalizer["Showing _START_ to _END_ of _TOTAL_ entries"].Value",
+                    "infoEmpty":"@SharedLocalizer["Showing 0 to 0 of 0 entries"].Value",
+                    "infoFiltered":"@SharedLocalizer["(filtered from _MAX_ total entries)"].Value",
+                    "lengthMenu":"@SharedLocalizer["Show _MENU_ entries"].Value",
+                    "loadingRecords": "@SharedLocalizer["Loading..."].Value",
+                    "processing": "@SharedLocalizer["Processing..."].Value",
+                    "search": "@SharedLocalizer["Search"].Value",
+                    "zeroRecords":"@SharedLocalizer["No matching records found"].Value",
+                    "paginate": {
+                        "first":"@SharedLocalizer["First"].Value",
+                        "last":"@SharedLocalizer["Last"].Value",
+                        "next": "@SharedLocalizer["Next"].Value",
+                        "previous":"@SharedLocalizer["Previous"].Value"
+                    },
+                }
+            });
+
+            getPrescriber = function () {
+                $('#loaderContainer').show();
+                $.ajax({
+                    type: "GET",
+                    url: '@Url.Action("GetPatient", "Prescriber")/',
+                    contentType: "application/json; charset=utf-8",
+                    dataType: "json",
+                    success: function (response) {
+                        $('#loaderContainer').hide();
+                        var jsonObject = response.data;
+                        var result = jsonObject.map(function (item) {
+                            var result = [];
+                            result.push(item.UniqueId);
+                            result.push(item.FirstName);
+                            result.push(item.LastName);
+                            result.push(item.FStatus);
+                            if (item.CStatus != "Pending") {
+                                if (item.IsConsentFcheckByAdmin) {
+                                    result.push("<a data-toggle='tooltip' title='@SharedLocalizer["Approved"].Value' class='btn btn-success btn-sm'> <span class='glyphicon glyphicon-ok' aria-hidden='true'></span> </a >");
+                                } else {
+                                    result.push("<a title='@SharedLocalizer["Rejected"].Value' class='btn btn-danger btn-sm'> <span class='glyphicon glyphicon-remove' aria-hidden='true'></span></a >");
+                                }
+                            } else {
+                                result.push("");
+                            }
+                            if (item.BStatus != "Pending") {
+                                if (item.IsBaselineDataByAdmin) {
+                                    result.push("<a data-toggle='tooltip' title='@SharedLocalizer["Approved"].Value' class='btn btn-success btn-sm'> <span class='glyphicon glyphicon-ok' aria-hidden='true'></span> </a >");
+                                } else {
+                                    result.push("<a title='@SharedLocalizer["Rejected"].Value' class='btn btn-danger btn-sm'> <span class='glyphicon glyphicon-remove' aria-hidden='true'></span></a >");
+                                }
+                            } else {
+                                result.push("");
+                            }
+                           
+                            result.push("<a class='btn btn-default btn-sm'  title='@SharedLocalizer["View Details"].Value' href='@Url.Action("InformedConsentForm", "Prescriber")/" + item.Id + "' ><span class='glyphicon glyphicon-list-alt'></span></a >");
+                            return result;
+                        });
+                        dataTable.clear();
+                        dataTable.rows.add(result); // add to DataTable instance
+                        dataTable.draw(); // always redraw
+                    },
+                    failure: function () {
+                        $("#addPatientTableId").append('@SharedLocalizer["Error when fetching data please contact administrator"].Value');
+                    }
+                });
+            }
+            getPrescriber();
+        });
+
+        var specialElementHandlers = {
+            // element with id of "bypass" - jQuery style selector
+            '.no-export': function (element, renderer) {
+                // true = "handled elsewhere, bypass text extraction"
+                return true;
+            }
+        };
+
+        function PopupForm(url) {
+            $.get(url)
+                .done(function (response) {
+                    $('#patientViewModal .modal-title').html('@SharedLocalizer["Informed Consent Form"].Value');
+                    $('#patientViewModal .modal-body').html(response);
+                    $('#patientViewModal').modal('show');
+                });
+        }
+
+        function SubmitForm(form) {
+            $.validator.unobtrusive.parse(form);
+            if ($(form).valid()) {
+                $.ajax({
+                    type : "POST",
+                    url : form.action,
+                    data : $(form).serialize(),
+                    success: function (result) {
+                        if (result.success === "success") {
+                            console.log(result.data);
+                            var value = result.data;
+                            //debugger;
+                            //alert(value.Id);
+                            $('#firstName').html(value.FirstName);
+                            $('#lastName').html(value.LastName);
+                            if (value.RfirstName == null || value.RfirstName == "") {
+                                $('#rfirstName').html('@SharedLocalizer["Non Applicable"].Value');
+                            } else {
+                                $('#rfirstName').html(value.RfirstName);
+                            }
+                            if (value.RejectionReason == null || value.RejectionReason == "") {
+                                $('#dobId').html('');
+                            } else {
+                                $('#dobId').html(value.RejectionReason);
+                            }
+                            if (value.RlastName == null || value.RlastName == "") {
+                                $('#rlastName').html('@SharedLocalizer["Non Applicable"].Value');
+                            } else {
+                                $('#rlastName').html(value.RlastName);
+                            }
+                            $('#date').text(value.Point1Date);
+                            if (value.Point1) {
+                                $('#point1').html('@SharedLocalizer["Ok"].Value');
+                            }
+                            if (value.Point2) {
+                                $('#point2').html('@SharedLocalizer["Ok"].Value');
+                            }
+                            if (value.Point3) {
+                                $('#point3').html('@SharedLocalizer["Ok"].Value');
+                            }
+                            if (value.Point4) {
+                                $('#point4').html('@SharedLocalizer["Ok"].Value');
+                            }
+                            if (value.Point5) {
+                                $('#point5').html('@SharedLocalizer["Ok"].Value');
+                            }
+                            if (value.Point6) {
+                                $('#point6').html('@SharedLocalizer["Ok"].Value');
+                            }
+                            if (value.Point7) {
+                                $('#point7').html('@SharedLocalizer["Ok"].Value');
+                            }
+                             uploadPDF(value.Id)
+                           // exportPDF("informed-consent-form", "InformedConsentForm.pdf");
+                            $('#patientViewModal').modal('hide');
+                            //dataTable.ajax.reload();
+                            getPrescriber();
+                           
+                           // openCommonModal('successModal modal-sm', '@Html.Raw(SharedLocalizer["Success"].Value)', '@Html.Raw(SharedLocalizer["Record has been added successfully."].Value)', false);
+                        }
+                    }
+                });
+            }
+            return false;
+    }
+
+     @*function uploadPDF(id) {
+        
+         var url = "/Prescriber/PatientUploadDocument/" + id;
+            $.get(url)
+                .done(function (response) {
+                    $('#patientViewModal .modal-title').html('@SharedLocalizer["Informed Consent Form Upload"].Value');
+                    $('#patientViewModal .modal-body').html(response);
+                    $('#patientViewModal').modal('show');
+                });
+        }*@
+
+
+        @*function Download(id) {
+            if (id != null) {
+                 var getUrl = '@Url.Action("DownloadById", "FileUpload")/' + id;
+             $.ajax({
+                type: "GET",
+                url: '@Url.Action("DownloadById", "FileUpload")/' + id,
+                 success: function (data)
+                 {
+                    window.location = getUrl;
+                 }
+            });
+            }
+        }*@
+</script>
+}

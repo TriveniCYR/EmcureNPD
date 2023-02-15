@@ -1,0 +1,201 @@
+﻿@inject Microsoft.Extensions.Localization.IStringLocalizer<SharedResource> SharedLocalizer
+@{
+    ViewData["Title"] = @SharedLocalizer["All Patient"].Value;
+}
+<section class="section">
+    <div class="container-fluid">
+        <h4>
+            Patients List
+        </h4>
+        <div class="tableContainer clearfix">
+            <div class="table-responsive">
+                <table id="AddPatientTableId" class="table stripe row-border order-column" style="width:100%">
+                    <thead>
+                        <tr>
+                            <th>@SharedLocalizer["First Name"].Value</th>
+                            <th>@SharedLocalizer["Last Name"].Value</th>
+                            <th>@SharedLocalizer["Status"].Value</th>
+                            <th>@SharedLocalizer["Action"].Value</th>
+                        </tr>
+                    </thead>
+                </table>
+            </div>
+        </div>
+        <div class="text-right addRecordBtnContainer">
+            <a class="btn btn-default" onclick="PopupForm('@Url.Action("PatientAddOrEdit","Prescriber")');"><i class="fa fa-plus"></i> @SharedLocalizer["Add Patient"].Value</a>
+        </div>
+
+        <div id="patientViewModal" class="modal themeModal " role="dialog">
+            <div class="modal-dialog">
+                <!-- Modal content-->
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                        <h4 class="modal-title"></h4>
+                    </div>
+                    <div class="modal-body">
+                        <p></p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div hidden id="informed-consent-form" style="font-size:14px; width:100%;">
+            <p style="text-align:center;font-size:22px;"><b>@SharedLocalizer["Informed Consent Form"].Value</b></p>
+            <p><b>@SharedLocalizer["Study Title"].Value</b>: @SharedLocalizer["Cidofovir Exposure Registry Information"].Value</p>
+            <p style="text-align:center; margin-bottom:0;"><b>@SharedLocalizer["Documentation of the Informed Consent"].Value</b></p>
+            <table class="table table-bordered table-striped" style="font-size:11px; width:100%; margin-bottom:0;" cellspacing="0" cellpadding="5">
+                <tbody>
+                    <tr>
+                        <td width="70" style="width:150px; max-width:150px;">@SharedLocalizer["Sr.No."].Value</td>
+                        <td>@SharedLocalizer["Description"].Value&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
+                        <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
+                    </tr>
+                    <tr><td>(i)</td><td>@Html.Raw(SharedLocalizer["I confirm that I have read and understood the information sheet dated <lable id='date'></lable> for the above study and have had the opportunity to ask questions."].Value)</td><td>@SharedLocalizer["Ok"].Value</td></tr>
+                    <tr><td>(ii)</td><td>@SharedLocalizer["I understand that my participation in the Study is voluntary and that I am free to withdraw at any time, without giving any reason, without my medical care or legal rights being affected."].Value</td><td>@SharedLocalizer["Ok"].Value</td></tr>
+                    <tr><td>(iii)</td><td>@SharedLocalizer["I understand that all attempts will be made to protect my privacy and my family’s privacy. I understand that my personal information will be protected and saved in the Cidofovir Exposure Registry using a code."].Value</td><td>@SharedLocalizer["Ok"].Value</td></tr>
+                    <tr><td>(iv)</td><td>@SharedLocalizer["I understand that the Sponsor of the Cidofovir Exposure Registry, others working on the Sponsor’s behalf, the Institutional Review Board and the regulatory authorities will not need my permission to look at my health records both in respect of the current study and any further research that may be conducted in relation to it, even if I withdraw from the trial. I agree to this access. However, I understand that my identity will not be revealed in any information released to third parties or published."].Value</td><td>@SharedLocalizer["Ok"].Value</td></tr>
+                    <tr><td>(v)</td><td>@SharedLocalizer["I understand that I may not personally benefit from participating in the Cidofovir Exposure Registry."].Value</td><td>@SharedLocalizer["Ok"].Value</td></tr>
+                    <tr><td>(vi)</td><td>@SharedLocalizer["I agree not to restrict the use of any data or results that arise from this study provided such a use is only for scientific purpose(s)"].Value</td><td>@SharedLocalizer["Ok"].Value</td></tr>
+                    <tr><td>(vii)</td><td>@SharedLocalizer["I agree to take part in the above study."].Value</td><td>@SharedLocalizer["Ok"].Value</td></tr>
+                </tbody>
+            </table>
+            <p style="font-family:Arial;">@SharedLocalizer["I have read the above informationand it is presented in a language that I understand well. By signing this consent form, I attest that the information given in this document has been clearly explained to me and understood well by me. I have been told that I will be given a signed copy of thisform. I hereby willingly confirm that I wish to take part in this study."].Value</p>
+
+            <p style="font-family:Arial; margin-bottom:0px;"><b>@SharedLocalizer["Name of the patient"].Value</b></p>
+            <table style="text-align:left; width:100%; border: 1px solid #ddd; font-family:Arial; font-size:11px;" id="clientInfoFilter" cellspacing="0" cellpadding="5">
+                <tbody>
+                    <tr><td style="text-align:left; border-bottom: 1px solid #ddd; border-right: 1px solid #ddd;">@SharedLocalizer["First Name"].Value</td><td style="border-bottom: 1px solid #ddd;"> @SharedLocalizer["Last Name"].Value</td></tr>
+                    <tr><td style="text-align:left; border-bottom: 1px solid #ddd; border-right: 1px solid #ddd;" id="firstName"></td><td style="border-bottom: 1px solid #ddd;" id="lastName"></td></tr>
+                </tbody>
+            </table>
+            <p style="font-family:Arial; margin-bottom:0px;"><b>@SharedLocalizer["Name of the legal representative, if applicable"].Value</b></p>
+            <table style="text-align:left; width:100%; border: 1px solid #ddd; font-family:Arial; font-size:11px;" id="clientInfoFilter" cellspacing="0" cellpadding="5">
+                <tbody>
+                    <tr><td style="text-align:left; border-bottom: 1px solid #ddd; border-right: 1px solid #ddd;">@SharedLocalizer["First Name"].Value</td><td style="border-bottom: 1px solid #ddd;">@SharedLocalizer["Last Name"].Value</td></tr>
+                    <tr><td style="text-align:left; border-bottom: 1px solid #ddd; border-right: 1px solid #ddd;" id="rfirstName"></td><td style="border-bottom: 1px solid #ddd;" id="rlastName"></td></tr>
+                </tbody>
+            </table>
+            <p>@SharedLocalizer["Signatureof the patient/legal representative confirming that he/she understood the content of the consent form"].Value</p>
+            <lable>@SharedLocalizer["Signature"].Value ______________________   &nbsp;&nbsp;&nbsp;</lable>  @SharedLocalizer["Date"].Value _______________
+        </div>
+    </div>
+</section>
+@section Scripts {
+    <script>
+        var Popup, dataTable;
+        $(document).ready(function () {
+            dataTable = $("#AddPatientTableId").DataTable({
+                "ajax": {
+                    "url": "/Prescriber/GetPatient",
+                    "type": "GET",
+                    "datatype": "json/application"
+                },
+                "columns": [
+                    { "data": "FirstName" },
+                    { "data": "LastName" },
+                    { "data": "Status" },
+                    {
+                        "data": "Id" , "render": function (data) {
+                            return "<a title='@SharedLocalizer["Upload Document"].Value' class='btn btn-default btn-sm' onclick=PopupFormDoc('@Url.Action("PatientUploadDocument", "Prescriber")/" + data + "')><span class='glyphicon glyphicon-level-up'></span> </a> <a class='btn btn-default btn-sm'  title='@SharedLocalizer["View Details"].Value' href='@Url.Action("PatientDetails", "Prescriber")/" + data + "' ><span class='glyphicon glyphicon-list-alt'></span></a >";
+                    },
+                        "orderable": false,
+                        "searchable":false,
+                        "width": "150px",
+                        "className": "text-center"
+					}
+
+                ],
+                language: {
+                    "emptyTable": "@SharedLocalizer["No data available in table"].Value",
+                    "info": "@SharedLocalizer["Showing _START_ to _END_ of _TOTAL_ entries"].Value",
+                    "infoEmpty":"@SharedLocalizer["Showing 0 to 0 of 0 entries"].Value",
+                    "infoFiltered":"@SharedLocalizer["(filtered from _MAX_ total entries)"].Value",
+                    "lengthMenu":"@SharedLocalizer["Show _MENU_ entries"].Value",
+                    "loadingRecords": "@SharedLocalizer["Loading..."].Value",
+                    "processing": "@SharedLocalizer["Processing..."].Value",
+                    "search": "@SharedLocalizer["Search"].Value",
+                    "zeroRecords":"@SharedLocalizer["No matching records found"].Value",
+                    "paginate": {
+                        "first":"@SharedLocalizer["First"].Value",
+                        "last":"@SharedLocalizer["Last"].Value",
+                        "next": "@SharedLocalizer["Next"].Value",
+                        "previous":"@SharedLocalizer["Previous"].Value"
+                    },
+                },
+                //"language": {
+                //    "emptyTable" : "No data found, Please click on <b>Add Patient</b> Button"
+                //},
+                "scrollY": "70vh",
+                "scrollX": true,
+                "scrollCollapse": true,
+                "paging": false
+            });
+        });
+
+        var specialElementHandlers = {
+            // element with id of "bypass" - jQuery style selector
+            '.no-export': function (element, renderer) {
+                // true = "handled elsewhere, bypass text extraction"
+                return true;
+            }
+        };
+
+        function PopupForm(url) {
+            $.get(url)
+                .done(function (response) {
+                    $('#patientViewModal .modal-title').html('Informed Consent Form');
+                    $('#patientViewModal .modal-body').html(response);
+                    $('#patientViewModal').modal('show');
+                });
+        }
+
+        function PopupFormDoc(url) {
+            $.get(url)
+                .done(function (response) {
+                    $('#patientViewModal .modal-title').html('Informed Consent Form Upload');
+                    $('#patientViewModal .modal-body').html(response);
+                    $('#patientViewModal').modal('show');
+                });
+        }
+
+        function SubmitForm(form) {
+            $.validator.unobtrusive.parse(form);
+            if ($(form).valid()) {
+
+
+                $.ajax({
+                    type : "POST",
+                    url : form.action,
+                    data : $(form).serialize(),
+                    success: function (result) {
+                        if (result.success === "success") {
+                            var value = result.data;
+                            $('#firstName').html(value.FirstName);
+                            $('#lastName').html(value.LastName);
+                            exportPDF("informed-consent-form", "InformedConsentForm.pdf");
+                            $('#patientViewModal').modal('hide');
+                            dataTable.ajax.reload();
+                            openCommonModal('successModal modal-sm', '@Html.Raw(SharedLocalizer["Success"].Value)', '@Html.Raw(SharedLocalizer["Record has been added successfully."].Value)', false);
+                        }
+                    }
+                });
+            }
+            return false;
+        }
+
+        function Download(id) {
+            if (id != null) {
+                 var getUrl = '@Url.Action("DownloadById", "FileUpload")/' + id;
+             $.ajax({
+                type: "GET",
+                url: '@Url.Action("DownloadById", "FileUpload")/' + id,
+                 success: function (data)
+                 {
+                    window.location = getUrl;
+                 }
+            });
+            }
+        }
+    </script>
+}

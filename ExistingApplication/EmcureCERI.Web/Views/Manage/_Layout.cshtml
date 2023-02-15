@@ -1,0 +1,55 @@
+﻿@inject Microsoft.Extensions.Localization.IStringLocalizer<SharedResource> SharedLocalizer
+@{
+    Layout = "/Views/Shared/_Layout.cshtml";
+}
+
+<div class="content-wrapper pt-3">
+
+
+    <!-- Main content -->
+    <section class="content">
+        <div class="container-fluid">
+            <!-- Small boxes (Stat box) -->
+            <!-- Main row -->
+            <div class="row">
+             
+                <section class="col-lg-8 offset-lg-2 col-md-12 ">
+                    <!-- Custom tabs (Charts with tabs)-->
+                    <div class="card">
+                        <div class="card-header">
+                            <h3 class="card-title">
+                                <i class="fas fa-user mr-2"></i> @SharedLocalizer["Manage your account"].Value
+                            </h3>
+                            <div class="card-tools md-left">
+
+                                <ul class="nav nav-pills ml-auto profile-tab">
+                                    @await Html.PartialAsync("_ManageNav")
+                                </ul>
+                            </div>
+                        </div>
+                        <!-- /.card-header -->
+                        <div class="card-body">
+                            <p>@SharedLocalizer["Change your account settings"].Value</p>
+                            @RenderBody()
+                        </div>
+                        <!-- /.card-body -->
+                    </div>
+                    <!-- /.card -->
+
+                </section>
+                <section class="col-lg-2"></section>
+
+            </div>
+            <!-- /.row (main row) -->
+        </div>
+        <!-- /.container-fluid -->
+    </section>
+    <!-- /.content -->
+</div>
+
+
+
+@section Scripts {
+    @RenderSection("Scripts", required: false)
+}
+

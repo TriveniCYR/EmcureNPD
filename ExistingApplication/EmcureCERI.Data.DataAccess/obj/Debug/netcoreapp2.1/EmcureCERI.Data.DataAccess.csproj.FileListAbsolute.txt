@@ -1,0 +1,13 @@
+D:\E Drive\Nilesh_Jain\Clients\Emcure_Pharma\NeoSOFTRepo\NPD\EmcureNPD\ExistingApplication\EmcureCERI.Data.DataAccess\bin\Debug\netcoreapp2.1\EmcureCERI.Data.DataAccess.deps.json
+D:\E Drive\Nilesh_Jain\Clients\Emcure_Pharma\NeoSOFTRepo\NPD\EmcureNPD\ExistingApplication\EmcureCERI.Data.DataAccess\bin\Debug\netcoreapp2.1\EmcureCERI.Data.DataAccess.runtimeconfig.json
+D:\E Drive\Nilesh_Jain\Clients\Emcure_Pharma\NeoSOFTRepo\NPD\EmcureNPD\ExistingApplication\EmcureCERI.Data.DataAccess\bin\Debug\netcoreapp2.1\EmcureCERI.Data.DataAccess.runtimeconfig.dev.json
+D:\E Drive\Nilesh_Jain\Clients\Emcure_Pharma\NeoSOFTRepo\NPD\EmcureNPD\ExistingApplication\EmcureCERI.Data.DataAccess\bin\Debug\netcoreapp2.1\EmcureCERI.Data.DataAccess.dll
+D:\E Drive\Nilesh_Jain\Clients\Emcure_Pharma\NeoSOFTRepo\NPD\EmcureNPD\ExistingApplication\EmcureCERI.Data.DataAccess\bin\Debug\netcoreapp2.1\EmcureCERI.Data.DataAccess.pdb
+D:\E Drive\Nilesh_Jain\Clients\Emcure_Pharma\NeoSOFTRepo\NPD\EmcureNPD\ExistingApplication\EmcureCERI.Data.DataAccess\obj\Debug\netcoreapp2.1\EmcureCERI.Data.DataAccess.GeneratedMSBuildEditorConfig.editorconfig
+D:\E Drive\Nilesh_Jain\Clients\Emcure_Pharma\NeoSOFTRepo\NPD\EmcureNPD\ExistingApplication\EmcureCERI.Data.DataAccess\obj\Debug\netcoreapp2.1\EmcureCERI.Data.DataAccess.AssemblyInfoInputs.cache
+D:\E Drive\Nilesh_Jain\Clients\Emcure_Pharma\NeoSOFTRepo\NPD\EmcureNPD\ExistingApplication\EmcureCERI.Data.DataAccess\obj\Debug\netcoreapp2.1\EmcureCERI.Data.DataAccess.AssemblyInfo.cs
+D:\E Drive\Nilesh_Jain\Clients\Emcure_Pharma\NeoSOFTRepo\NPD\EmcureNPD\ExistingApplication\EmcureCERI.Data.DataAccess\obj\Debug\netcoreapp2.1\EmcureCERI.Data.DataAccess.csproj.CoreCompileInputs.cache
+D:\E Drive\Nilesh_Jain\Clients\Emcure_Pharma\NeoSOFTRepo\NPD\EmcureNPD\ExistingApplication\EmcureCERI.Data.DataAccess\obj\Debug\netcoreapp2.1\EmcureCERI.Data.DataAccess.dll
+D:\E Drive\Nilesh_Jain\Clients\Emcure_Pharma\NeoSOFTRepo\NPD\EmcureNPD\ExistingApplication\EmcureCERI.Data.DataAccess\obj\Debug\netcoreapp2.1\EmcureCERI.Data.DataAccess.pdb
+D:\E Drive\Nilesh_Jain\Clients\Emcure_Pharma\NeoSOFTRepo\NPD\EmcureNPD\ExistingApplication\EmcureCERI.Data.DataAccess\obj\Debug\netcoreapp2.1\EmcureCERI.Data.DataAccess.genruntimeconfig.cache
+D:\E Drive\Nilesh_Jain\Clients\Emcure_Pharma\NeoSOFTRepo\NPD\EmcureNPD\ExistingApplication\EmcureCERI.Data.DataAccess\obj\Debug\netcoreapp2.1\EmcureCERI.Data.DataAccess.csproj.AssemblyReference.cache

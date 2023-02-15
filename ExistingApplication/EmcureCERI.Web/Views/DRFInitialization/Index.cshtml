@@ -1,0 +1,876 @@
+﻿@using Microsoft.AspNetCore.Http
+@inject IHttpContextAccessor HttpContextAccessor
+@inject Microsoft.Extensions.Localization.IStringLocalizer<SharedResource> SharedLocalizer
+@model EmcureCERI.Web.Models.DRFViewModels.MultipleDRF
+@{
+	ViewData["Title"] = "Initialization List";
+}
+<!-- For Gred pages CSS  -->
+<div class="content-wrapper">
+	<section class="content pt-3">
+		<div class="container-fluid">
+			<div class="row">
+				<section class="col-lg-12">
+					<!-- Custom tabs (Charts with tabs)-->
+					<div class="card">
+						<div class="card-header">
+							<h3 class="card-title">
+								<i class="far fa-list-alt mr-2"></i>DRF List
+							</h3>
+							<div class="card-tools md-left">
+                                <div class="mybtn-group">
+                                    <a class="btn btn-primary" href="@Url.Action("ProjectList","DRFInitialization")"><i class="far fa-copy mr-1"></i>Dossier List</a>
+
+                                    <a class="btn btn-primary" href="@Url.Action("Index","DRFInitialization")"><i class="far fa-list-alt mr-1"></i>DRF</a>
+
+                                    <a class="btn btn-primary" href="@Url.Action("DRFInitialization","DRFInitialization")"><i class="far fa-plus-square mr-1"></i> Create New DRF</a>
+                                                                       
+                                    </div>
+                                    <div class="export-btn mybtn-group"></div>
+                                </div>
+						</div>
+						<div class="card-body">
+							<div class="row shorting_btns" style="margin-bottom:10px;">
+                                <div class="mybtn-group drf mb-md-10">
+                                    <a class="btn btn-primary status_filter initial" href="Javascript:void(0)" data-status="8"><i class="far fa-list-alt mr-1"></i>Pending with Country Manager</a>
+                                    <a class="btn btn-primary status_filter linemanager" href="Javascript:void(0)" data-status="22|28"><i class="far fa-list-alt mr-1"></i>Pending with Region Manager</a>
+
+                                    <a class="btn  btn-primary status_filter hod" href="Javascript:void(0)" data-status="23|29"><i class="far fa-list-alt mr-1"></i>Pending with HOD</a>
+
+                                    <a class="btn  btn-primary status_filter" href="Javascript:void(0)" data-status="13|24"><i class="far fa-list-alt mr-1"></i>Pending Completion</a>
+
+                                    <a class="btn  btn-primary status_filter" href="Javascript:void(0)" data-status="14"><i class="far fa-list-alt mr-1"></i>Pending Finance</a>
+
+                                    <a class="btn  btn-primary status_filter" href="Javascript:void(0)" data-status="15"><i class="far fa-list-alt mr-1"></i>Pending Final</a>
+                                                                        
+                                    <a class="btn btn-primary status_filter " href="Javascript:void(0)" data-status="25"><i class="far fa-list-alt mr-1"></i>Creation Rejected</a>
+                                    <a class="btn btn-primary status_filter " href="Javascript:void(0)" data-status="18"><i class="far fa-list-alt mr-1"></i>Finance Rejected</a>
+                                    <a class="btn btn-primary status_filter " href="Javascript:void(0)" data-status="17"><i class="far fa-list-alt mr-1"></i>Final Rejected</a>
+
+                                </div>
+
+
+								<div class="table-responsive">
+									<table id="InitializationTable" class="table table-bordered table-striped table-hover " style="width:100%">
+										<thead>
+											<tr>
+												<th>&nbsp;</th>
+												<th>@SharedLocalizer["Id"].Value</th>
+												<th>@SharedLocalizer["Region"].Value</th>
+												<th>@SharedLocalizer["Country"].Value</th>
+												<th>@SharedLocalizer["Product Name"].Value</th>
+												<th>@SharedLocalizer["1st Year Forcast CIF ($) "].Value</th>
+												<th>@SharedLocalizer["2nd Year Forcast CIF ($)"].Value</th>
+												<th>@SharedLocalizer["3rd Year Forcast CIF ($)"].Value</th>
+												<th>@SharedLocalizer["1st Year Forecast Value ($)"].Value</th>
+												<th>@SharedLocalizer["2nd Year Forecast Value ($)"].Value</th>
+												<th>@SharedLocalizer["3rd Year Forecast Value ($)"].Value</th>
+
+												<th>@SharedLocalizer["IP Details Filled"].Value</th>
+													<th>@SharedLocalizer["Manufacturing Details Filled"].Value</th>
+													<th>@SharedLocalizer["SCM Details Filled"].Value</th>
+													<th>@SharedLocalizer["Requisite RA Filled"].Value</th>
+													<th>@SharedLocalizer["Medical Details Filled"].Value</th>
+													<th>@SharedLocalizer["HOD Approved"].Value</th>
+
+												<th>@SharedLocalizer["MA Holder"].Value</th>
+												@*<th>@SharedLocalizer["Brand Name"].Value</th>
+													<th>@SharedLocalizer["Order Frequency"].Value</th>
+													<th>@SharedLocalizer["Name to whom dossier to be sent"].Value</th>*@
+												<th>@SharedLocalizer["Status"].Value</th>
+												<th style="display:none;">@SharedLocalizer["StatusID"].Value</th>
+												<th>@SharedLocalizer["Comment"].Value</th>
+												<th>@SharedLocalizer["Action"].Value</th>
+											</tr>
+										</thead>
+									</table>
+								</div>
+							</div>
+
+						</div>
+					</div>
+				</section>
+			</div>
+
+
+			<div class="row MultipleDRF">
+				<section class="col-lg-12">
+					<!-- Custom tabs (Charts with tabs)-->
+					<div class="card">
+						<div class="card-header">
+							<h3 class="card-title">
+								<i class="far fa-plus-square mr-2"></i> Multiple DRF Approved / Reject
+							</h3>
+						</div>
+						<!-- /.card-header -->
+						<form method="post" name="Approval" onsubmit="return SubmitInitialApprovalForm(this)">
+							<div class="card-body">
+
+								@Html.HiddenFor(Model => Model.MultipleDRFInitialApproval.InitializationIDList)
+								<div class="row">
+									<div class="col-sm-3">
+										<!-- text input -->
+										<label>Do you want to approve this DRF<span style="color:red">*</span> :</label>
+									</div>
+									<div class="col-sm-3 row">
+										<div class="form-group text-center">
+											<div class="form-group required">
+												<div class="icheck-primary d-inline mr-5">
+													@*@Html.RadioButtonFor(model => model.SubmissionChecklist, "General", new { id = "General" })*@
+													@Html.RadioButtonFor(Model => Model.MultipleDRFInitialApproval.InitialApproval, true, htmlAttributes: new { @class = "radiobuttons radio-checked", id = "Approved", @onchange = "InitialCheckRadioBox()" })
+													<label for="Approved">
+														Approved
+													</label>
+												</div>
+
+												<div class="icheck-primary d-inline">
+													@*@Html.RadioButtonFor(model => model.SubmissionChecklist, "NationalFormat", new { id = "NationalFormat" })*@
+													@Html.RadioButtonFor(Model => Model.MultipleDRFInitialApproval.InitialApproval, false, htmlAttributes: new { @class = "radiobuttons", id = "Rejected", @onchange = "InitialCheckRadioBox()" })
+
+													<label for="Rejected">
+														Rejected
+													</label>
+												</div>
+												@Html.ValidationMessageFor(model => model.MultipleDRFInitialApproval.InitialApproval, "", new { @class = "text-danger" })
+											</div>
+										</div>
+									</div>
+									<div class="col-sm-1">
+										<label>Comment :</label>
+										@*@Html.LabelFor(model => model.Comment, new { @class = "control-label"  })*@
+									</div>
+									<div class="col-sm-5">
+										<div class="form-group">
+											@*<textarea name="comment" class="form-control" rows="3"></textarea>*@
+											@Html.TextAreaFor(model => model.MultipleDRFInitialApproval.Comment, new { @class = "form-control", @readonly = true })
+											@*@Html.ValidationMessageFor(model => model.MultipleDRFInitialApproval.Comment, "", new { @class = "text-danger" })*@
+											<small class="text-danger" id="MultipleDRFInitialApproval_Comment_Error"></small>
+										</div>
+									</div>
+								</div>
+
+							</div>
+							<div class="card-footer text-center mb-3">
+								@if (User.IsInRole("Prescriber") || User.IsInRole("HOD Of Dossier"))
+								{
+									<button type="submit" class="btn btn-primary mr-3">@SharedLocalizer["Save"].Value</button>
+								}
+								@*<button type="button" class="btn btn-primary">Reset</button>*@
+								<a class="btn btn-primary" asp-area="" asp-controller="DRFInitialization" asp-action="Index">@SharedLocalizer["Cancel"].Value</a>
+							</div>
+						</form>
+						<!-- /.card-body -->
+					</div>
+					<!-- /.card -->
+
+				</section>
+			</div>
+
+			<div class="row MultipleFinalDRF">
+				<section class="col-lg-12">
+					<!-- Custom tabs (Charts with tabs)-->
+					<div class="card">
+						<div class="card-header">
+							<h3 class="card-title">
+								<i class="far fa-plus-square mr-2"></i> Multiple DRF Final Approved / Reject
+							</h3>
+						</div>
+						<!-- /.card-header -->
+						<form method="post" name="Approval" onsubmit="return SubmitFinalApprovalForm(this)">
+							<div class="card-body">
+
+								@Html.HiddenFor(Model => Model.MultipleDRFFinalApproval.InitializationIDList)
+								<div class="row">
+									<div class="col-sm-3">
+										<!-- text input -->
+										<label>Do you want to approve this DRF<span style="color:red">*</span> :</label>
+									</div>
+									<div class="col-sm-3 row">
+										<div class="form-group text-center">
+											<div class="form-group required">
+												<div class="icheck-primary d-inline mr-5">
+													@*@Html.RadioButtonFor(model => model.SubmissionChecklist, "General", new { id = "General" })*@
+													@Html.RadioButtonFor(Model => Model.MultipleDRFFinalApproval.ApprovedReject, true, htmlAttributes: new { @class = "radiobuttons radio-checked", id = "FinalApproved", @onchange = "FinalCheckRadioBox()" })
+													<label for="FinalApproved">
+														Approved
+													</label>
+												</div>
+
+												<div class="icheck-primary d-inline">
+													@*@Html.RadioButtonFor(model => model.SubmissionChecklist, "NationalFormat", new { id = "NationalFormat" })*@
+													@Html.RadioButtonFor(Model => Model.MultipleDRFFinalApproval.ApprovedReject, false, htmlAttributes: new { @class = "radiobuttons", id = "FinalRejected", @onchange = "FinalCheckRadioBox()" })
+
+													<label for="FinalRejected">
+														Rejected
+													</label>
+												</div>
+												@Html.ValidationMessageFor(model => model.MultipleDRFFinalApproval.ApprovedReject, "", new { @class = "text-danger" })
+											</div>
+										</div>
+									</div>
+									<div class="col-sm-1">
+										<label>Comment :</label>
+										@*@Html.LabelFor(model => model.Comment, new { @class = "control-label"  })*@
+									</div>
+									<div class="col-sm-5">
+										<div class="form-group">
+											@*<textarea name="comment" class="form-control" rows="3"></textarea>*@
+											@Html.TextAreaFor(model => model.MultipleDRFFinalApproval.Comment, new { @class = "form-control", @readonly = true })
+											@*  @Html.ValidationMessageFor(model => model.MultipleDRFFinalApproval.Comment, "", new { @class = "text-danger" })*@
+											<small class="text-danger" id="MultipleDRFFinalApproval_Comment_Error"></small>
+										</div>
+									</div>
+								</div>
+
+							</div>
+							<div class="card-footer text-center mb-3">
+								@if (User.IsInRole("Prescriber") || User.IsInRole("HOD Of Dossier"))
+								{
+									<button type="submit" class="btn btn-primary mr-3">@SharedLocalizer["Save"].Value</button>
+								}
+								@*<button type="button" class="btn btn-primary">Reset</button>*@
+								<a class="btn btn-primary" asp-area="" asp-controller="DRFInitialization" asp-action="Index">@SharedLocalizer["Cancel"].Value</a>
+							</div>
+						</form>
+						<!-- /.card-body -->
+					</div>
+					<!-- /.card -->
+
+				</section>
+			</div>
+
+
+		</div>
+	</section>
+
+</div>
+@section Scripts {
+	<script>
+
+         var currentRole = '@HttpContextAccessor.HttpContext.Session.GetString("CurrentUserRole")';
+
+        //console.log(currentRole);
+
+        var dataTable, getInitializationList;
+        var key = 8;
+        $(document).ready(function () {
+            $('.MultipleDRF').hide();
+            $('.MultipleFinalDRF').hide();
+             $('#loading').show();
+            $(".radio-checked").attr('checked', true);
+           
+            if (currentRole == 'Country Manager') {
+                key = 8;//initial
+                $('.initial').addClass('active');
+            }
+            else if (currentRole == 'Line Manager') {
+               // key = 22;//approved by country manager
+                key = '22|28';//approved by country manager
+                $('.linemanager').addClass('active');
+            } else if (currentRole == 'HOD Of Dossier') {
+                key = '23|29';//approved by line manager               
+                $('.hod').addClass('active');
+            }
+            else {
+                key = 8;//initial                  
+                $('.initial').addClass('active');
+            }
+           
+            var regEx = "^" + key + "$";
+           
+            
+            var dataTable = $('#InitializationTable').DataTable({
+                //responsive: false,
+                //lengthChange: true,
+                //autoWidth: true,
+                dom: 'Bfrtip',
+                //columnDefs: [
+                //    {
+                //        visible: false,
+                //        targets: 13
+                //    }
+                //],.column(22)
+                initComplete: function () {
+                    this
+                        .api()
+                        .column(22)
+                        .search(regEx, true, false,true)
+                        .draw()
+                },
+
+                //columnDefs: [
+                //    { responsivePriority: 1, targets: -1 },
+                //    { responsivePriority: 1, targets: -3 },
+                //    { responsivePriority: 1, targets: -4 },
+                //    { responsivePriority: 1, targets: -7 },
+                //    { responsivePriority: 1, targets: -10 },
+                //    //{ responsivePriority: 1, targets: -3 },
+                //    //{ responsivePriority: 100, targets: -4 }
+                //],
+
+                buttons: [
+                    {
+                        extend: 'excel', text: '<i class="far fa-file-excel"></i> Export In Excel ', className: "btn-primary", exportOptions: {
+                            columns: ':visible'
+                        }
+                    },
+                    {extend: 'colvis', className:"btn-primary" }
+                 ],
+
+                language: {
+                    "emptyTable": "@SharedLocalizer["No data available in table"].Value",
+                    "info": "@SharedLocalizer["Showing _START_ to _END_ of _TOTAL_ entries"].Value",
+                    "infoEmpty":"@SharedLocalizer["Showing 0 to 0 of 0 entries"].Value",
+                    "infoFiltered":"@SharedLocalizer["(filtered from _MAX_ total entries)"].Value",
+                    "lengthMenu":"@SharedLocalizer["Show _MENU_ entries"].Value",
+                    "loadingRecords": "@SharedLocalizer["Loading..."].Value",
+                    "processing": "@SharedLocalizer["Processing..."].Value",
+                    "search": "@SharedLocalizer["Search"].Value",
+                    "zeroRecords":"@SharedLocalizer["No matching records found"].Value",
+                    "paginate": {
+                        "first":"@SharedLocalizer["First"].Value",
+                        "last":"@SharedLocalizer["Last"].Value",
+                        "next": "@SharedLocalizer["Next"].Value",
+                        "previous":"@SharedLocalizer["Previous"].Value"
+                    },
+                }
+
+            });
+           //// dataTable.column(18).visible(false);
+          
+
+            
+            //dataTable.column(11).visible(false);
+            //dataTable.column(12).visible(false);
+            //dataTable.column(13).visible(false);
+            //dataTable.column(14).visible(false);
+            //dataTable.column(15).visible(false);
+            //dataTable.column(16).visible(false);           
+            //dataTable.column(19).visible(false);
+            //dataTable.column(20).visible(false);
+
+            getInitializationList = function () {
+                //$('#loaderContainer').show();
+
+               // console.log("Function call");
+                $.ajax({
+                    type: "POST",
+                    url: '@Url.Action("GetDRFInitializationList", "DRFInitialization")/',
+                    contentType: "application/json; charset=utf-8",
+                    dataType: "json",
+                    success: function (response) {
+                         $('#loading').hide();
+
+                       //console.log(response);
+                        //var setUrl = "/DRFInitialization/DRFInitializationApproval";
+
+                        //var IDarr = [];
+                        //if (response.raiDsForUpdate != null && response.raiDsForUpdate != undefined && response.raiDsForUpdate != "" && response.raiDsForUpdate.length != 0) {
+                        //    for (var i = 0; i < response.raiDsForUpdate.length; i++) {
+                        //        IDarr.push(response.raiDsForUpdate[i].initializationID);
+                        //     }
+                        //}
+                        //console.log(IDarr);
+
+                        var jsonObject = response.data;
+                        //console.log(jsonObject);
+                        var result = jsonObject.map(function (item) {
+                           // console.log(item);
+                            var setUrl = "/DRFInitialization/DRFInitializationApproval?ID=" + item.initializationID;
+                            var setDetailUrl = "/DRFInitialization/DRFAddDetails?ID=" + item.initializationID;
+                            var setDetailUrlFinance = "/DRFInitialization/DRFAddFinanceDetails?ID=" + item.initializationID;
+                            var setDetailUrlFinal = "/DRFInitialization/DRFFinalApproval?ID=" + item.initializationID;
+                            var setUpdateURL = "/DRFInitialization/DRFUpdateDetails?ID=" + item.initializationID;;
+							var setRejectionDetailsURL = "/DRFInitialization/RejectionDetails?ID=" + item.initializationID;;
+                            var setDRFapprovalURL = "/DRFInitialization/DRFApproval?ID=" + item.initializationID;
+                            var setInitializationUpdationURL="/DRFInitialization/DRFInitializationUpdation?ID=" + item.initializationID;
+                            var result = [];
+                            //if (currentRole == "Initial Approval" ||currentRole == "Final Approval"||currentRole == "Prescriber") {
+                            //    //if (item.statusID == 8 && (currentRole == "Initial Approval"||currentRole == "Prescriber")) {
+                            //    //    result.push("<input type='checkbox' onclick='InsertRemoveCheckedId(" + item.initializationID + ")' >");
+                            //    //}
+                            //     if (item.statusID == 24 && (currentRole == "Initial Approval"||currentRole == "Prescriber")) {
+                            //        result.push("<input type='checkbox' onclick='InsertRemoveCheckedId(" + item.initializationID + ")' >");
+                            //    }
+                            //    else if (item.statusID == 15 && (currentRole == "Final Approval"||currentRole == "Prescriber")) {
+                            //        result.push("<input type='checkbox' onclick='InsertFinalRemoveCheckedId(" + item.initializationID + ")' >");
+                            //    }
+                            //    else {
+                            //        result.push("");
+                            //    }
+                            //}
+
+                            //else {
+                            //    result.push("");
+                            //}
+
+                            if (currentRole == "HOD Of Dossier" || currentRole == "Prescriber") {
+                                //if (item.statusID == 8 && (currentRole == "Initial Approval"||currentRole == "Prescriber")) {
+                                //    result.push("<input type='checkbox' onclick='InsertRemoveCheckedId(" + item.initializationID + ")' >");
+                                //}
+                                var checkedID = "checkedID_" + item.initializationID;
+                                 if (item.statusID == 23 && (currentRole == "HOD Of Dossier"||currentRole == "Prescriber")) {
+                                    result.push("<input  id='"+checkedID+"' type='checkbox' onclick='InsertRemoveCheckedId(" + item.initializationID + ")' >");
+                                }
+                                else if (item.statusID == 15 && (currentRole == "HOD Of Dossier"||currentRole == "Prescriber")) {
+                                    result.push("<input id='"+checkedID+"' type='checkbox' onclick='InsertFinalRemoveCheckedId(" + item.initializationID + ")' >");
+                                }
+                                else {
+                                    result.push("");
+                                }
+                            }
+
+                            else {
+                                result.push("");
+                            }
+                            result.push(item.initializationID);
+                            result.push(item.continent);
+                            result.push(item.countryName);
+                            result.push(item.genericName);//product name
+                            result.push(item.firstYearForecastCIF);
+                            result.push(item.secondYearForecastCIF);
+                            result.push(item.thirdYearForecastCIF);
+                            result.push(item.firstYearForecastValue);
+                            result.push(item.secondYearForecastValue);
+                            result.push(item.thirdYearForecastValue);                            
+                            if (item.ipFilled == 'YES') {
+								result.push('<i style="color:green;margin: 0 auto;display: table;" class="fa fa-check-circle" aria-hidden="true"></i>');
+                            }
+                            else {
+								result.push('<i style="color:red;margin: 0 auto;display: table;" class="fa fa-times-circle" aria-hidden="true"></i>');
+                            }
+                            // result.push(item.ipFilled);
+							if (item.manufacturingFilled == 'YES') {
+								result.push('<i style="color:green;margin: 0 auto;display: table;" class="fa fa-check-circle" aria-hidden="true"></i>');
+							}
+							else {
+								result.push('<i style="color:red;margin: 0 auto;display: table;" class="fa fa-times-circle" aria-hidden="true"></i>');
+							}
+							//result.push(item.manufacturingFilled);
+							if (item.scmFilled == 'YES') {
+								result.push('<i style="color:green;margin: 0 auto;display: table;" class="fa fa-check-circle" aria-hidden="true"></i>');
+							}
+							else {
+								result.push('<i style="color:red;margin: 0 auto;display: table;" class="fa fa-times-circle" aria-hidden="true"></i>');
+							}
+							//result.push(item.scmFilled);
+							if (item.raFilled == 'YES') {
+								result.push('<i style="color:green;margin: 0 auto;display: table;" class="fa fa-check-circle" aria-hidden="true"></i>');
+							}
+							else {
+								result.push('<i style="color:red;margin: 0 auto;display: table;" class="fa fa-times-circle" aria-hidden="true"></i>');
+							}
+							//result.push(item.raFilled);
+							if (item.medicalFilled == 'YES') {
+								result.push('<i style="color:green;margin: 0 auto;display: table;" class="fa fa-check-circle" aria-hidden="true"></i>');
+							}
+							else {
+								result.push('<i style="color:red;margin: 0 auto;display: table;" class="fa fa-times-circle" aria-hidden="true"></i>');
+							}
+                            //result.push(item.medicalFilled);
+
+							result.push(item.hoD_Approved_Before);
+
+                            result.push(item.maHolder);
+
+                            //result.push(item.brandName);
+                            //result.push(item.orderFrequency);
+                            //result.push(item.nameDossierSend);
+                            if (item.status == 'Initial') {
+                                  result.push('Creation');
+                            }
+                            //else if (item.status == 'Initial Approved')
+                            //{
+                            //    //result.push('Creation Approved');
+                            //    result.push('HOD Approved');
+                            //}
+                            else if (item.status == 'Rejected')
+                            {
+                                result.push('Creation Rejected');
+                            }
+                            else if (item.status == 'Partial Approved')
+                            {
+                                result.push('Completion Pending');
+                            }
+                                else if (item.status == 'HOD of Dossier Approved')
+                            {
+                                result.push('Approved by HOD');
+                            }
+                            else {
+                                 result.push(item.status);
+                            }
+
+                            result.push(item.statusID);
+                          
+							result.push(item.initialApproveRejectComment);
+
+                            if (item.statusID == 8) {
+                                // result.push('<div class="btn-group" role="group" aria-label="Button group with nested"><a class="btn btn-primary btn-sm" href="' + setDRFapprovalURL + '" data-toggle="tooltip" title="Country Manager Approval"><i class="fas fa-check-circle"></i></a> &nbsp; <a class="btn btn-primary btn-sm" href="' + setInitializationUpdationURL + '" data-toggle="tooltip" title="Update Creation" ><i class="fas fa-edit"></i></a></div>');
+                               result.push('<a class="btn btn-primary btn-sm" href="' + setDRFapprovalURL + '" data-toggle="tooltip" title="Country Manager Approval"><i class="fas fa-check-circle"></i></a>');
+                            }
+                            else if (item.statusID == 22 || item.statusID == 28) {
+                               // result.push('<div class="btn-group" role="group" aria-label="Button group with nested"><a class="btn btn-primary btn-sm" href="' + setDRFapprovalURL + '" data-toggle="tooltip" title="Line Manager Approval"><i class="fas fa-check-circle"></i></a> &nbsp; <a class="btn btn-primary btn-sm" href="' + setInitializationUpdationURL + '" data-toggle="tooltip" title="Update Creation" ><i class="fas fa-edit"></i></a></div>');
+
+                              // result.push('<div class="btn-group" role="group" aria-label="Button group with nested">< a class= "btn btn-primary btn-sm" href = "' + setDRFapprovalURL + '" data - toggle="tooltip" title = "Region Manager Approval" > <i class="fas fa-check-circle"></i></a > & nbsp; <a class="btn btn-primary btn-sm" href="' + setInitializationUpdationURL + '" data-toggle="tooltip" title="Update Creation" ><i class="fas fa-edit"></i></a></div > ');
+                               result.push('<a class="btn btn-primary btn-sm" href="' + setDRFapprovalURL + '" data-toggle="tooltip" title="Region Manager Approval"><i class="fas fa-check-circle"></i></a>');
+                            }
+                            else if (item.statusID == 23 || item.statusID == 29) {
+                                // result.push('<div class="btn-group" role="group" aria-label="Button group with nested"><a class="btn btn-primary btn-sm" href="' + setDRFapprovalURL + '" data-toggle="tooltip" title="HOD of Dossier Approval"><i class="fas fa-check-circle"></i></a> &nbsp; <a class="btn btn-primary btn-sm" href="' + setInitializationUpdationURL + '" data-toggle="tooltip" title="Update Creation" ><i class="fas fa-edit"></i></a></div>');
+                           result.push('<a class="btn btn-primary btn-sm" href="' + setDRFapprovalURL + '" data-toggle="tooltip" title="HOD of Dossier Approval"><i class="fas fa-check-circle"></i></a>');
+
+                           }
+                            else if (item.statusID == 24) {
+                               // result.push('<a class="btn btn-primary btn-sm" href="' + setUrl + '" data-toggle="tooltip" title="Initial Approval"><i class="fas fa-check-circle"></i></a>');
+								result.push('<a class="btn btn-primary btn-sm" href="' + setDetailUrl + '" data-toggle="tooltip" title="Fill-Up DRF"><i class="fas fa-plus-circle mr-1"></i></a>');
+                            }
+                            //else if (item.statusID == 12 ) {
+                            //    result.push('<a class="btn btn-primary btn-sm" href="' + setDetailUrl + '" data-toggle="tooltip" title="Fill-Up DRF" ><i class="fas fa-plus-circle mr-1"></i></a>');
+                            //}
+							else if (item.statusID == 13 ) {
+                                //if (IDarr.find(x => x === item.initializationID)) {
+                                result.push('<div class="btn-group" role="group" aria-label="Button group with nested"><a class="btn btn-primary btn-sm" href="' + setDetailUrl + '" data-toggle="tooltip" title="Fill-Up DRF" ><i class="fas fa-plus-circle"></i></a>&nbsp;<a class="btn btn-primary btn-sm" href="' + setUpdateURL + '" data-toggle="tooltip" title="Update DRF"><i class="fas fa-edit"></i></a></div>');
+                                //}
+                                //else {
+                                //    result.push('<a href="' + setDetailUrl + '" >Fill-Up DRF</a>');
+                                //}
+                            }
+                            else if (item.statusID == 14 && item.overallbusinesscase == false) {
+                                if (currentRole == "Finance Manager" || currentRole == "FinanceTeam" || currentRole == "Prescriber") {
+                                    result.push("");                                    
+                                }
+                                else {                                    
+                                    result.push('<a class="btn btn-primary btn-sm" href="' + setUpdateURL + '" data-toggle="tooltip" title="Update" ><i class="fas fa-edit"></i></a>');
+                                }
+                            }
+                            else if (item.statusID == 14 && item.overallbusinesscase == null) {
+                                if (currentRole == "Finance Manager" || currentRole == "FinanceTeam" || currentRole == "Prescriber") {
+                                    //result.push('<div class="btn-group" role="group" aria-label="Button group with nested"><a class="btn btn-primary btn-sm" href="' + setDetailUrlFinance + '" data-toggle="tooltip" title="Finance Approval" ><i class="fas fa-donate"></i></a></div>');
+                                    result.push('<div class="btn-group" role="group" aria-label="Button group with nested"><a class="btn btn-primary btn-sm" href="' + setDetailUrlFinance + '" data-toggle="tooltip" title="Finance Approval" ><i class="fas fa-donate"></i></a> &nbsp; <a class="btn btn-primary btn-sm" href="' + setUpdateURL + '" data-toggle="tooltip" title="Update DRF" ><i class="fas fa-edit"></i></a></div>');
+                                }
+                                else {
+                                    result.push('<div class="btn-group" role="group" aria-label="Button group with nested"><a class="btn btn-primary btn-sm" href="' + setDetailUrlFinance + '" data-toggle="tooltip" title="Finance Approval" ><i class="fas fa-donate"></i></a></div>');
+
+                                    //result.push('<div class="btn-group" role="group" aria-label="Button group with nested"><a class="btn btn-primary btn-sm" href="' + setDetailUrlFinance + '" data-toggle="tooltip" title="Finance Approval" ><i class="fas fa-donate"></i></a> &nbsp; <a class="btn btn-primary btn-sm" href="' + setUpdateURL + '" data-toggle="tooltip" title="Update DRF" ><i class="fas fa-edit"></i></a></div>');
+                                }
+                            }
+                            else if (item.statusID == 15) {
+                                if (currentRole == "Finance Manager" || currentRole == "FinanceTeam" || currentRole == "Prescriber") {
+                                result.push('<div class="btn-group" role="group" aria-label="Button group with nested"><a class="btn btn-primary btn-sm" href="' + setDetailUrlFinal + '" data-toggle="tooltip" title="Final Approval" ><i class="fas fa-check-double"></i></a></div>');
+                                } else {
+                                result.push('<div class="btn-group" role="group" aria-label="Button group with nested"><a class="btn btn-primary btn-sm" href="' + setDetailUrlFinal + '" data-toggle="tooltip" title="Final Approval" ><i class="fas fa-check-double"></i></a> &nbsp; <a class="btn btn-primary btn-sm" href="' + setUpdateURL + '" data-toggle="tooltip" title="Update DRF" ><i class="fas fa-edit"></i></a></div>');
+                                }
+                            }
+							else if (item.statusID == 25 || item.statusID == 17 || item.statusID == 18 ) {
+								
+								result.push('<a class="btn btn-primary btn-sm" href="' + setRejectionDetailsURL + '" data-toggle="tooltip" title="View" ><i class="fas fa-eye"></i></a>');
+								
+							}
+
+                            else {
+                                result.push("");
+                            }
+
+
+                            return result;
+                        });
+                        //console.log(result);
+                        dataTable.clear();
+                        dataTable.rows.add(result); // add to DataTable instance
+                        dataTable.draw().buttons().container().appendTo('.export-btn'); // always redraw
+
+                        dataTable.column(11).visible(false);
+                        dataTable.column(12).visible(false);
+                        dataTable.column(13).visible(false);
+                        dataTable.column(14).visible(false);
+                        dataTable.column(15).visible(false);
+                        dataTable.column(16).visible(false);
+                        dataTable.column(19).visible(false);
+                        dataTable.column(20).visible(false);
+
+                        var regEx = "^" + key + "$";                       
+                        dataTable.columns(19).search(regEx, true, false, true).draw();
+
+                        $('.status_filter').on('click', function () {
+                            $('.status_filter.active').not(this).removeClass('active');
+                            //$('.drfTabs .active').removeClass('active');
+                            $(this).addClass('active');
+
+                            $(this).parent().parent().siblings().removeClass('active');
+                            //dataTable.columns(8).search($(this).data('status')).draw();
+                            var term = $(this).data('status');
+                            var regExp = "^" + term + "$";
+							//alert(regExp);
+                            //dataTable.columns(18).search(regExp, true, false, true).draw();
+                           dataTable.columns(19).search(regExp, true, false, true).draw();
+
+                            if (term == '13|24') {
+                               
+								dataTable.column(11).visible(true);
+								dataTable.column(12).visible(true);
+								dataTable.column(13).visible(true);
+								dataTable.column(14).visible(true);
+                                dataTable.column(15).visible(true);
+                                dataTable.column(16).visible(true);
+
+								dataTable.column(5).visible(false);
+								dataTable.column(6).visible(false);
+								dataTable.column(7).visible(false);
+								dataTable.column(8).visible(false);
+								dataTable.column(9).visible(false);
+								dataTable.column(10).visible(false);
+								dataTable.column(20).visible(false);
+							}
+                            else {
+
+								if (term == 25 || term == 18 || term == 17 ) {
+                                    dataTable.column(20).visible(true);
+									dataTable.column(5).visible(false);
+									dataTable.column(6).visible(false);
+									dataTable.column(7).visible(false);
+									dataTable.column(8).visible(false);
+									dataTable.column(9).visible(false);
+									dataTable.column(10).visible(false);
+                                }
+                                else {
+                                    dataTable.column(20).visible(false);
+									dataTable.column(5).visible(true);
+									dataTable.column(6).visible(true);
+									dataTable.column(7).visible(true);
+									dataTable.column(8).visible(true);
+									dataTable.column(9).visible(true);
+									dataTable.column(10).visible(true);
+								}
+								
+								dataTable.column(11).visible(false);
+								dataTable.column(12).visible(false);
+								dataTable.column(13).visible(false);
+								dataTable.column(14).visible(false);
+                                dataTable.column(15).visible(false);
+                                dataTable.column(16).visible(false);
+
+								//dataTable.column(5).visible(true);
+								//dataTable.column(6).visible(true);
+								//dataTable.column(7).visible(true);
+								//dataTable.column(8).visible(true);
+								//dataTable.column(9).visible(true);
+								//dataTable.column(10).visible(true);
+							}
+
+                            if (term == 23) {
+                                
+                                //final approval
+                                $('.MultipleFinalDRF').hide();
+
+                               for (var i = 0; i < checkedFinalArrayList.length; i++) {
+                                    $('#checkedID_' + checkedFinalArrayList[i]).prop('checked', false);
+                                 }
+                                checkedFinalArrayList = [];
+
+                                //hod approval
+                                if (checkedArrayList.length == 0) {
+                                    $('.MultipleDRF').hide();
+                                }
+                                else {
+                                     $('.MultipleDRF').show();
+                                }
+
+                            }
+                            else {
+                                $('.MultipleDRF').hide();
+                            }
+
+                            if (term == 15) {
+                                //hod approval
+                                $('.MultipleDRF').hide();
+
+                                for (var i = 0; i < checkedArrayList.length; i++) {
+                                    $('#checkedID_' + checkedArrayList[i]).prop('checked', false);
+                                 }
+                                checkedArrayList = [];
+
+                                //final approval
+                                if (checkedFinalArrayList.length == 0) {
+                                    $('.MultipleFinalDRF').hide();
+                                }
+                                else {
+                                      $('.MultipleFinalDRF').show();
+                                }
+
+                            }
+                            else {
+                                $('.MultipleFinalDRF').hide();
+                            }
+
+                        });
+                        },
+                    failure: function () {
+                        $("#InitializationTable").append('@SharedLocalizer["Error when fetching data please contact administrator"].Value');
+                                   }
+                               });
+
+            }
+            getInitializationList();
+
+            $(".buttons-excel").removeClass("btn-secondary");
+            $(".buttons-collection").removeClass("btn-secondary");
+
+        });
+
+        var checkedArrayList = [];
+        function InsertRemoveCheckedId(CheckedUncheckedID) {
+
+
+           if ($.inArray(CheckedUncheckedID, checkedArrayList) == -1) {
+                checkedArrayList.push(CheckedUncheckedID);
+               //console.log(checkedArrayList);
+
+                   if (checkedArrayList.length == 0) {
+                       $('.MultipleDRF').hide();
+                   }
+                   else {
+                        $('.MultipleDRF').show();
+                 }
+                $('#MultipleDRFInitialApproval_InitializationIDList').val(JSON.stringify(checkedArrayList));
+                }
+                else {
+                    for(var i = 0; i < checkedArrayList.length; i++)
+                    {
+                        if (checkedArrayList[i] == CheckedUncheckedID)
+                        {
+                             checkedArrayList.splice(i, 1);
+                        }
+                    }
+               //console.log(checkedArrayList);
+
+               if (checkedArrayList.length == 0) {
+                       $('.MultipleDRF').hide();
+                   }
+                   else {
+                        $('.MultipleDRF').show();
+               }
+
+               $('#MultipleDRFInitialApproval_InitializationIDList').val(JSON.stringify(checkedArrayList));
+                }
+        }
+
+        function SubmitInitialApprovalForm(form) {
+            if ($('[id="Rejected"]:checked').val() === 'False' && ($('#MultipleDRFInitialApproval_Comment').val() == '' || $('#MultipleDRFInitialApproval_Comment').val() == null || $('#MultipleDRFInitialApproval_Comment').val() == undefined )) {
+			    $('#MultipleDRFInitialApproval_Comment_Error').text('The Comment field is required');
+			    return false;
+		    }
+
+
+            var url= "/DRFInitialization/Index";
+            $.validator.unobtrusive.parse(form);
+            if ($(form).valid()) {
+                $('#loading').show();
+                $.ajax({
+                    type : "POST",
+                    url : '@Url.Action("UpdateMultipleDRFInitialApproval", "DRFInitialization")/',//form.action,
+                    data : $(form).serialize(),
+                    success: function (result) {                        
+                         $('#loading').hide();
+                        if (result.data === "success") {                            
+                            openCommonModal('successModal modal-sm', '@Html.Raw(SharedLocalizer["Success"].Value)', '@Html.Raw(SharedLocalizer["DRF details submitted"].Value)', true);
+                            setTimeout(function(){ location.href = url; }, 2000);
+                        }
+                        else {
+                            openCommonModal('alertModal modal-sm', '@SharedLocalizer["Error"].Value', 'Please fill all mendatory values', false);
+                        }
+                    }
+                });
+            }
+            return false;
+        }
+
+
+        var checkedFinalArrayList = [];
+        function InsertFinalRemoveCheckedId(CheckedUncheckedID) {
+
+            if ($.inArray(CheckedUncheckedID, checkedFinalArrayList) == -1) {
+                checkedFinalArrayList.push(CheckedUncheckedID);               
+
+                if (checkedFinalArrayList.length == 0) {
+                    $('.MultipleFinalDRF').hide();
+                }
+                else {
+                    $('.MultipleFinalDRF').show();
+                }
+                $('#MultipleDRFFinalApproval_InitializationIDList').val(JSON.stringify(checkedFinalArrayList));
+            }
+            else {
+                for(var i = 0; i < checkedFinalArrayList.length; i++)
+                {
+                    if (checkedFinalArrayList[i] == CheckedUncheckedID)
+                    {
+                            checkedFinalArrayList.splice(i, 1);
+                    }
+                }
+               
+               if (checkedFinalArrayList.length == 0) {
+                       $('.MultipleDRF').hide();
+                   }
+                   else {
+                        $('.MultipleDRF').show();
+               }
+
+               $('#MultipleDRFFinalApproval_InitializationIDList').val(JSON.stringify(checkedFinalArrayList));
+            }
+        }
+
+
+
+        function SubmitFinalApprovalForm(form) {
+            if ($('[id="FinalRejected"]:checked').val() === 'False' && ($('#MultipleDRFFinalApproval_Comment').val() == '' || $('#MultipleDRFFinalApproval_Comment').val() == null || $('#MultipleDRFFinalApproval_Comment').val() == undefined )) {
+			    $('#MultipleDRFFinalApproval_Comment_Error').text('The Comment field is required');
+		        return false;
+		    }
+
+            var url= "/DRFInitialization/Index";
+            $.validator.unobtrusive.parse(form);
+            if ($(form).valid()) {
+                $('#loading').show();
+                $.ajax({
+                    type : "POST",
+                    url : '@Url.Action("UpdateMultipleDRFFinalApproval", "DRFInitialization")/',//form.action,
+                    data : $(form).serialize(),
+                    success: function (result) {
+                        $('#loading').hide();
+                        if (result.data === "success") {
+                            openCommonModal('successModal modal-sm', '@Html.Raw(SharedLocalizer["Success"].Value)', '@Html.Raw(SharedLocalizer["Final details submitted"].Value)', true);
+                            setTimeout(function(){ location.href = url; }, 2000);
+                        }
+                        else {
+                            openCommonModal('alertModal modal-sm', '@SharedLocalizer["Error"].Value', 'Please fill all mendatory values', false);
+                        }
+                    }
+                });
+            }
+            return false;
+        }
+
+        function InitialCheckRadioBox() {
+			var data = $("input[name='MultipleDRFInitialApproval.InitialApproval']:checked").val();            
+			if (data == 'True') {
+                $('#MultipleDRFInitialApproval_Comment').prop("readonly", true);
+                $('#MultipleDRFInitialApproval_Comment_Error').empty();
+			}
+			else {
+                $('#MultipleDRFInitialApproval_Comment').prop("readonly", false);
+			}
+		}
+
+        function FinalCheckRadioBox() {
+			var data = $("input[name='MultipleDRFFinalApproval.ApprovedReject']:checked").val();
+
+			if (data == 'True') {
+                $('#MultipleDRFFinalApproval_Comment').prop("readonly", true);
+                $('#MultipleDRFFinalApproval_Comment_Error').empty();
+			}
+			else {
+                $('#MultipleDRFFinalApproval_Comment').prop("readonly", false);
+			}
+		}
+
+	</script>
+}
