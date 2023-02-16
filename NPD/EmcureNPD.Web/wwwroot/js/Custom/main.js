@@ -53,7 +53,6 @@ function setNavigation() {
     path = path.replace(/\/$/, "");
     path = decodeURIComponent(path);
     var CurrentpathArr = path.split('/');
-
     if (path == `/PIDF/PIDFList`) {
         $(".nav-item a").each(function () {
             var IshrefFound = false;
@@ -65,7 +64,12 @@ function setNavigation() {
                 return false;
             }
         }
-        )};
+        )
+    };
+    if (path.includes('PIDF') || path.includes('PBF') || path.includes('Audit')) {
+        $('#parentPIDF').addClass('menu-is-opening menu-open');        
+    }
+
     $(".nav-item a").each(function () {
         var IshrefFound = false;
         var href = $(this).attr('href');
