@@ -260,6 +260,7 @@ namespace EmcureNPD.Business.Core.ServiceImplementations
                 objUser.CreatedBy = LoggedUserId;
                 objUser.CreatedDate = DateTime.Now;
                 _repository.AddAsync(objUser);
+                SendUserCreateMail(entityUser, LoggedUserId);
             }
 
             await _unitOfWork.SaveChangesAsync();
@@ -269,7 +270,23 @@ namespace EmcureNPD.Business.Core.ServiceImplementations
 
             return DBOperation.Success;
         }
-
+        public void SendUserCreateMail(MasterUserEntity entityUser, int LoggedUserId)
+        {
+            EmailHelper email = new EmailHelper();
+            string WebURL = configuration.GetSection("Apiconfig").GetSection("EmcureNPDWebUrl").Value;
+            string strHtml = System.IO.File.ReadAllText(@"wwwroot\Uploads\HTMLTemplates\UserCreated.html");
+            var LoggedInUserDetails = _repository.Get(LoggedUserId);
+            if (LoggedInUserDetails!=null)
+            {
+                strHtml = strHtml.Replace("{CreatedByFullName}", LoggedInUserDetails.FullName);
+                strHtml = strHtml.Replace("{CreatedByEmail}", LoggedInUserDetails.EmailAddress);
+            }            
+            strHtml = strHtml.Replace("{FullName}", entityUser.FullName);            
+            strHtml = strHtml.Replace("{Email}", entityUser.EmailAddress);
+            strHtml = strHtml.Replace("{Password}", entityUser.ConfirmPassowrd);
+            strHtml = strHtml.Replace("{ApplicationLoginURL}", WebURL);
+            email.SendMail(entityUser.EmailAddress, string.Empty, "Emcure NPD - User Created", strHtml);
+        } 
         private MasterUser FillMappingData(MasterUserEntity entityUser, MasterUser objUser)
         {
             if (entityUser.BusinessUnitId != null)
@@ -381,7 +398,7 @@ namespace EmcureNPD.Business.Core.ServiceImplementations
         public async Task<DBOperation> ForgotPassword(string emailAddress)
         {
             EmailHelper email = new EmailHelper();
-            string baseURL = configuration.GetSection("Apiconfig").GetSection("baseurl").Value;
+            string baseURL = configuration.GetSection("Apiconfig").GetSection("EmcureNPDWebUrl").Value;
             var entityUser = _repository.Get(x => x.EmailAddress == emailAddress);
             if (entityUser == null)
                 return DBOperation.NotFound;
