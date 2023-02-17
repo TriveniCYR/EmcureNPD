@@ -81,6 +81,7 @@ namespace EmcureNPD.Web.Controllers
         {
             try
             {
+                masterUser.StringPassword = masterUser.Password;                
                 string logUserId = Convert.ToString(HttpContext.Session.GetString(UserHelper.LoggedInUserId));
                 masterUser.LoggedUserId = int.Parse(logUserId);
                 if (UserId <= 0)
