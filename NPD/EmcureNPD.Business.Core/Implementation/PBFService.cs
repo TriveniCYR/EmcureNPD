@@ -23,6 +23,7 @@ using System.Threading.Tasks;
 using static EmcureNPD.Utility.Enums.GeneralEnum;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http.Internal;
+using AutoMapper.Configuration;
 
 namespace EmcureNPD.Business.Core.Implementation
 {
@@ -50,7 +51,7 @@ namespace EmcureNPD.Business.Core.Implementation
 		private readonly IMasterFormulationService _masterFormulationService;
 		private readonly IMasterAnalyticalGLService _masterAnalyticalGLService;
 		private readonly IPidfProductStrengthService _productStrengthService;
-        private readonly IConfiguration _configuration;
+        private readonly Microsoft.Extensions.Configuration.IConfiguration _configuration;
         private IRepository<PidfApiIpd> _pidf_API_IPD_repository { get; set; }
         private IRepository<PidfPbf> _pbfRepository { get; set; }
 
@@ -68,7 +69,7 @@ namespace EmcureNPD.Business.Core.Implementation
 			IPidfProductStrengthService pidfProductStrengthService, IMasterDIAService masterDium, IMasterMarketExtensionService masterMarketExtensionService,
 			IMasterBERequirementService masterBERequirementService, IMasterProductTypeService masterProductTypeService, IMasterPlantService masterPlantService,
 			IMasterWorkflowService masterWorkflowService, IMasterFormRNDDivisionService masterFormRNDDivisionService, IMasterFormulationService masterFormulationService,
-			IMasterAnalyticalGLService masterAnalyticalGLService, IPidfProductStrengthService productStrengthService, IConfiguration configuration,
+			IMasterAnalyticalGLService masterAnalyticalGLService, IPidfProductStrengthService productStrengthService, Microsoft.Extensions.Configuration.IConfiguration configuration,
            
         IMasterAuditLogService auditLogService)
 		{
@@ -151,15 +152,23 @@ namespace EmcureNPD.Business.Core.Implementation
         #region API_IPD_Details_Form_Entity 
         public async Task<DBOperation> AddUpdateAPIIPD(IFormCollection _oAPIIPD_Form, string _webrootPath)
 		{
-			bool hasFile = true;
+			bool hasNewUploadFile = true;
 			string uniqueFileName = "";
 			string ErrorMsg = "";
-           var path = Path.Combine(_webrootPath, "Uploads\\PIDF\\APIIPD");
 
-            if (_oAPIIPD_Form.Files == null || _oAPIIPD_Form.Files.Count <= 0)
-				hasFile = false;
+            _oAPIIPD_Form.TryGetValue("Data", out StringValues Data);
+            dynamic jsonObject = JsonConvert.DeserializeObject(Data);
+            var path = Path.Combine(_webrootPath, "Uploads\\PIDF\\APIIPD");
 
-			if (hasFile)
+		bool IskeepLastFile=(jsonObject.MarketDetailsFileName==null || jsonObject.MarketDetailsFileName == "") ? false : true;	
+
+            if ((_oAPIIPD_Form.Files == null || _oAPIIPD_Form.Files.Count <= 0))
+			hasNewUploadFile = false;
+            else
+				IskeepLastFile = false;
+
+
+            if (hasNewUploadFile)
 			{
               var  MarketCGIFile = _oAPIIPD_Form.Files[0];
 				 uniqueFileName = Path.GetFileNameWithoutExtension(MarketCGIFile.FileName)
@@ -169,16 +178,12 @@ namespace EmcureNPD.Business.Core.Implementation
 				var fullPath = path + "\\" + MarketCGIFile.FileName;
 				var itmFileName = "APIIPD\\" + MarketCGIFile.FileName;
 
-				if (System.IO.File.Exists(fullPath))
-				{
-					System.IO.File.Delete(fullPath);
-				}
+				
 				ErrorMsg = FileValidation(MarketCGIFile);
 			}
 
 			PIDFAPIIPDFormEntity _oAPIIPD = new PIDFAPIIPDFormEntity();
-            _oAPIIPD_Form.TryGetValue("Data", out StringValues Data);
-            dynamic jsonObject = JsonConvert.DeserializeObject(Data);
+           
             _oAPIIPD.APIIPDDetailsFormID = jsonObject.APIIPDDetailsFormID;
 			_oAPIIPD.MarketDetailsFileName = uniqueFileName;
             _oAPIIPD.DrugsCategory = jsonObject.DrugsCategory;
@@ -198,21 +203,25 @@ namespace EmcureNPD.Business.Core.Implementation
 					//lastApiIpd.Total = _oAPIIPD.Total;
 					//lastApiIpd.Exhibit = _oAPIIPD.Exhibit;
 					//lastApiIpd.ScaleUp = _oAPIIPD.ScaleUp;
+					if (!IskeepLastFile)
+					{
+                        var exsistingFilePath = path + "\\" + lastApiIpd.MarketDetailsFileName;
+                        if (System.IO.File.Exists(exsistingFilePath))
+                        {
+                            System.IO.File.Delete(exsistingFilePath);
+                        }
+                        if (ErrorMsg == null && hasNewUploadFile)
+                        {
+                            var MarketCGIFile = _oAPIIPD_Form.Files[0];
+                            await FileUpload(MarketCGIFile, path, uniqueFileName);
+                        }
+                        lastApiIpd.MarketDetailsFileName = _oAPIIPD.MarketDetailsFileName;
+                    }					
 
-					var exsistingFilePath = path + "\\" + lastApiIpd.MarketDetailsFileName;
-                    if (System.IO.File.Exists(exsistingFilePath))
-                    {
-                        System.IO.File.Delete(exsistingFilePath);
-                    }
-                    if (ErrorMsg == null && hasFile)
-                    {
-                        var MarketCGIFile = _oAPIIPD_Form.Files[0];
-                        await FileUpload(MarketCGIFile, path, uniqueFileName);
-                    }
                     lastApiIpd.DrugsCategory = _oAPIIPD.DrugsCategory;
 					lastApiIpd.ProductTypeId = _oAPIIPD.ProductTypeId;
                     lastApiIpd.ProductStrength = _oAPIIPD.ProductStrength;
-					lastApiIpd.MarketDetailsFileName = _oAPIIPD.MarketDetailsFileName;
+					
                     lastApiIpd.Pidfid = long.Parse(_oAPIIPD.Pidfid);
                     lastApiIpd.ModifyBy = _oAPIIPD.LoggedInUserId;
 					lastApiIpd.ModifyDate = DateTime.Now;
@@ -233,7 +242,7 @@ namespace EmcureNPD.Business.Core.Implementation
                 //            _APIIPDDBEntity.Exhibit = _oAPIIPD.Exhibit;
                 //            _APIIPDDBEntity.ScaleUp = _oAPIIPD.ScaleUp;
 
-                if (ErrorMsg == null && hasFile)
+                if (ErrorMsg == null && hasNewUploadFile)
                 {
                     var MarketCGIFile = _oAPIIPD_Form.Files[0];
                     await FileUpload(MarketCGIFile, path, uniqueFileName);
@@ -260,16 +269,16 @@ namespace EmcureNPD.Business.Core.Implementation
 			var _oAPIIPD = await _pidf_API_IPD_repository.GetAsync(x=>x.Pidfid == pidfId);
 			if (_oAPIIPD != null)
 			{
-                //_oApiIpdData.FormulationQuantity = _oAPIIPD.FormulationQuantity;
-                //_oApiIpdData.APIIPDDetailsFormID = _oAPIIPD.PidfApiIpdId;
-                // _oApiIpdData.PlantQC = _oAPIIPD.PlantQc;
-                //_oApiIpdData.Development = _oAPIIPD.Development;
-                //_oApiIpdData.Total = _oAPIIPD.Total;
-                //_oApiIpdData.Exhibit = _oAPIIPD.Exhibit;
-                //_oApiIpdData.ScaleUp = _oAPIIPD.ScaleUp;
-
-                var path = Path.Combine(_webrootPath, "Uploads\\PIDF\\APIIPD");
-                var fullPath = path + "\\" + _oAPIIPD.MarketDetailsFileName;
+				//_oApiIpdData.FormulationQuantity = _oAPIIPD.FormulationQuantity;
+				//_oApiIpdData.APIIPDDetailsFormID = _oAPIIPD.PidfApiIpdId;
+				// _oApiIpdData.PlantQC = _oAPIIPD.PlantQc;
+				//_oApiIpdData.Development = _oAPIIPD.Development;
+				//_oApiIpdData.Total = _oAPIIPD.Total;
+				//_oApiIpdData.Exhibit = _oAPIIPD.Exhibit;
+				//_oApiIpdData.ScaleUp = _oAPIIPD.ScaleUp;
+                string baseURL = _configuration.GetSection("Apiconfig").GetSection("EmcureNPDAPIUrl").Value; //https://localhost:44362/
+                var path = Path.Combine(baseURL, "Uploads/PIDF/APIIPD");
+                var fullPath = path + "/" + _oAPIIPD.MarketDetailsFileName;
 
                 _oApiIpdData.DrugsCategory = _oAPIIPD.DrugsCategory;
                 _oApiIpdData.ProductTypeId = (int)_oAPIIPD.ProductTypeId;

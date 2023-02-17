@@ -67,13 +67,7 @@ namespace EmcureNPD.API.Controllers.Masters
                 DBOperation oResponse = await _MasterUserService.AddUpdateUser(oUser);
                 if (oResponse == DBOperation.Success)
                 {                  
-                    if (oUser.UserId <= 0)
-                    {
-                        EmailHelper email = new EmailHelper();
-                        string strHtml = "";// Email template need to be here
-                        email.SendMail(oUser.EmailAddress, string.Empty, "Emcure NPD - User Registration Done", strHtml);
-                    }
-                    return _ObjectResponse.Create(true, (Int32)HttpStatusCode.OK, (oUser.UserId > 0 ? "Updated Successfully" : "Inserted Successfully"));
+                   return _ObjectResponse.Create(true, (Int32)HttpStatusCode.OK, (oUser.UserId > 0 ? "Updated Successfully" : "Inserted Successfully"));
                 }
                 else
                     return _ObjectResponse.Create(false, (Int32)HttpStatusCode.BadRequest, (oResponse == DBOperation.NotFound ? "Record not found" : "Bad request"));

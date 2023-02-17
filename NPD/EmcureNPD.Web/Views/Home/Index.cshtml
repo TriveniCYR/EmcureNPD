@@ -21,7 +21,7 @@
 		</div>
 		<div class="col-md-3">
 			<div class="form-group required">
-				<label class="m-0" for="years">Year</label>
+				<label class="m-1" for="years">Year</label>
 				<select id="years" name="years" class="form-control readOnlyUpdate" required></select>
 			</div>
 		</div>
@@ -32,17 +32,113 @@
 	</div>
 	<div class="clearfix">&nbsp;</div>
 	<div class="row">
-		<div class="col-6 background-white-card">
+		<section class="col-lg-6">
+			<div class="card">
+				<div class="card-header">
+					<h3 class="card-title">
+						<i class="fas fa-chart-pie"></i> All Projects - Location Wise
+					</h3>
+				</div>
+				<div class="card-body">
+					<div class="tab-content p-0">
+						<canvas id="chart" style="height: 400px; width: 100%;"></canvas>
+					</div>
+				</div>
+			</div>
+
+		</section>
+		<section class="col-lg-6">
+			<div class="card">
+				<div class="card-header ">
+					<h3 class="card-title">
+						<i class="fas fa-map-marker-alt"></i> All Projects - Location Wise
+					</h3>
+				</div>
+				<div class="card-body">
+					<div id="map" style="height: 400px; width: 100%;"></div>
+				</div>
+			</div>
+
+		</section>
+
+
+		@*<div class="col-6 background-white-card">
 			<canvas id="chart" width="200" height="200"></canvas>
 		</div>
+		<div class="col-6 background-white-card">
+			<h3>
+				<i class="fas fa-map-marker-alt mr-1"></i> All Projects - Location Wise
+			</h3>
+			<div id="map" style="height: 400px; width: 100%;"></div>
+		</div>*@
 	</div>
 </div>
 
 @section MyScripts {
 	<script type="text/javascript" src="~/js/Custom/Dashboard/Dashboard.js"></script>
-
+	<link href="~/adminlte/plugins/jquery-jvectormap-2.0.5.css" rel="stylesheet" />
+	<script src="~/adminlte/plugins/jquery-jvectormap-2.0.5.min.js"></script>
+	<script type="text/javascript" src="~/AdminLTE/plugins/jqvmap/maps/jquery.vmap.world.js"></script>
+	<script src="~/adminlte/plugins/jquery-jvectormap-world-mill-en.js"></script>
 	<script>
 		var GetAllDashboard = "@EmcureNPD.Web.Helpers.APIURLHelper.GetAllDashboard";
 		var GetPIDFList = "@EmcureNPD.Web.Helpers.APIURLHelper.GetPIDFList";
+
+		$(document).ready(function () {
+			$(function () {
+				var markers = [];
+				var map = $('#map').vectorMap({
+					map: 'world_mill_en',
+					scaleColors: ['#C8EEFF', '#0071A4'],
+					normalizeFunction: 'polynomial',
+					hoverOpacity: 0.7,
+					hoverColor: false,
+					regionStyle: {
+						initial: {
+							fill: '#d2d6de',
+							stroke: '#000000',
+							"stroke-width": .5,
+							"stroke-opacity": 1
+						},
+						hover: {
+							fill: '#A0D1DC'
+						}
+					},
+					backgroundColor: "transparent",
+					markerStyle: {
+						initial: {
+							fill: '#eb3434',
+							stroke: '#383f47'
+						}
+					},
+					series: {
+						markers: markers
+					},
+					onMarkerClick: function (event, index) {
+						var markerData = markers[index];
+						$('#BusinessUnitId').val(markerData.bUnitId);
+						$('#BusinessUnitId').change();
+					}
+				}).vectorMap('get', 'mapObject');
+
+				$.ajax({
+					url: $('#hdnBaseURL').val() + GetAllDashboard,
+					type: 'GET',
+					success: function (data) {
+						$.each(data.MasterBusinessUnits, function (index, markerData) {
+							var marker = {
+								latLng: [markerData.latitude, markerData.longitude],
+								name: markerData.businessUnitName,
+								bUnitId: markerData.businessUnitId
+							};
+							markers.push(marker);
+						});
+						map.addMarkers(markers);
+						// refresh the map
+						map.updateSize();
+					}
+				});
+			});
+		});
 	</script>
 }

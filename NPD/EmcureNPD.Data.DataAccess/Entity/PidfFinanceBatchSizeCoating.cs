@@ -9,7 +9,6 @@ namespace EmcureNPD.Data.DataAccess.Entity
     {
         public int PidffinaceBatchSizeCoatingId { get; set; }
         public int? PidffinaceId { get; set; }
-        public int? Pidfid { get; set; }
         public int? Batchsize { get; set; }
         public int? Yield { get; set; }
         public int? Batchoutput { get; set; }
