@@ -32,15 +32,45 @@
 	</div>
 	<div class="clearfix">&nbsp;</div>
 	<div class="row">
-		<div class="col-6 background-white-card">
+		<section class="col-lg-6">
+			<div class="card">
+				<div class="card-header">
+					<h3 class="card-title">
+						<i class="fas fa-chart-pie"></i> All Projects - Location Wise
+					</h3>
+				</div>
+				<div class="card-body">
+					<div class="tab-content p-0">
+						<canvas id="chart" style="height: 400px; width: 100%;"></canvas>
+					</div>
+				</div>
+			</div>
+
+		</section>
+		<section class="col-lg-6">
+			<div class="card">
+				<div class="card-header ">
+					<h3 class="card-title">
+						<i class="fas fa-map-marker-alt"></i> All Projects - Location Wise
+					</h3>
+				</div>
+				<div class="card-body">
+					<div id="map" style="height: 400px; width: 100%;"></div>
+				</div>
+			</div>
+
+		</section>
+
+
+		@*<div class="col-6 background-white-card">
 			<canvas id="chart" width="200" height="200"></canvas>
 		</div>
 		<div class="col-6 background-white-card">
-			<h3 class="card-title">
+			<h3>
 				<i class="fas fa-map-marker-alt mr-1"></i> All Projects - Location Wise
 			</h3>
-			<div id="map" style="width: 600px; height: 400px"></div>
-		</div>
+			<div id="map" style="height: 400px; width: 100%;"></div>
+		</div>*@
 	</div>
 </div>
 
@@ -63,9 +93,21 @@
 					normalizeFunction: 'polynomial',
 					hoverOpacity: 0.7,
 					hoverColor: false,
+					regionStyle: {
+						initial: {
+							fill: '#d2d6de',
+							stroke: '#000000',
+							"stroke-width": .5,
+							"stroke-opacity": 1
+						},
+						hover: {
+							fill: '#A0D1DC'
+						}
+					},
+					backgroundColor: "transparent",
 					markerStyle: {
 						initial: {
-							fill: '#F8E23B',
+							fill: '#eb3434',
 							stroke: '#383f47'
 						}
 					},
