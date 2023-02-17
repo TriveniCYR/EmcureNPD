@@ -283,7 +283,7 @@ namespace EmcureNPD.Business.Core.ServiceImplementations
             }            
             strHtml = strHtml.Replace("{FullName}", entityUser.FullName);            
             strHtml = strHtml.Replace("{Email}", entityUser.EmailAddress);
-            strHtml = strHtml.Replace("{Password}", entityUser.ConfirmPassowrd);
+            strHtml = strHtml.Replace("{Password}", entityUser.StringPassword);
             strHtml = strHtml.Replace("{ApplicationLoginURL}", WebURL);
             email.SendMail(entityUser.EmailAddress, string.Empty, "Emcure NPD - User Created", strHtml);
         } 
