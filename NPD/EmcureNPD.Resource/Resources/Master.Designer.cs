@@ -142,6 +142,15 @@ namespace EmcureNPD.Resource.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to API Market Price.
+        /// </summary>
+        public static string APIMarketPrice {
+            get {
+                return ResourceManager.GetString("APIMarketPrice", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to API Req.
         /// </summary>
         public static string APIReq {
@@ -160,11 +169,38 @@ namespace EmcureNPD.Resource.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to API Rnd Details.
+        /// </summary>
+        public static string APIRndDetails {
+            get {
+                return ResourceManager.GetString("APIRndDetails", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to API Rnd Details Form.
+        /// </summary>
+        public static string APIRndDetailsForm {
+            get {
+                return ResourceManager.GetString("APIRndDetailsForm", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to APISourcing Name.
         /// </summary>
         public static string APISourcingName {
             get {
                 return ResourceManager.GetString("APISourcingName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to API Target RMC+CCPC.
+        /// </summary>
+        public static string APITargetRMC_CCPC {
+            get {
+                return ResourceManager.GetString("APITargetRMC_CCPC", resourceCulture);
             }
         }
         
@@ -583,6 +619,15 @@ namespace EmcureNPD.Resource.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Formulation Quantity Required KG/Gm Stage.
+        /// </summary>
+        public static string FormulationQuantityRequiredKG_GmStage {
+            get {
+                return ResourceManager.GetString("FormulationQuantityRequiredKG/GmStage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Full Name.
         /// </summary>
         public static string FullName {
@@ -723,6 +768,15 @@ namespace EmcureNPD.Resource.Resources {
         public static string MarketGrowth {
             get {
                 return ResourceManager.GetString("MarketGrowth", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Market ID.
+        /// </summary>
+        public static string MarketID {
+            get {
+                return ResourceManager.GetString("MarketID", resourceCulture);
             }
         }
         
@@ -1155,6 +1209,15 @@ namespace EmcureNPD.Resource.Resources {
         public static string ShelfLife {
             get {
                 return ResourceManager.GetString("ShelfLife", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Sponsor Business Partner.
+        /// </summary>
+        public static string SponsorBusinessPartner {
+            get {
+                return ResourceManager.GetString("SponsorBusinessPartner", resourceCulture);
             }
         }
         

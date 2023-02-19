@@ -53,6 +53,7 @@ namespace EmcureNPD.Business.Core.Implementation
 		private readonly IPidfProductStrengthService _productStrengthService;
         private readonly Microsoft.Extensions.Configuration.IConfiguration _configuration;
         private IRepository<PidfApiIpd> _pidf_API_IPD_repository { get; set; }
+        private IRepository<PidfApiRnD> _pidf_API_RnD_repository { get; set; }
         private IRepository<PidfPbf> _pbfRepository { get; set; }
 
 		private readonly IMasterAuditLogService _auditLogService;		
@@ -88,6 +89,7 @@ namespace EmcureNPD.Business.Core.Implementation
 			_pidfApiRepository = unitOfWork.GetRepository<Pidfapidetail>();
 			_pidfProductStrength = unitOfWork.GetRepository<PidfproductStrength>();
             _pidf_API_IPD_repository = _unitOfWork.GetRepository<PidfApiIpd>();
+            _pidf_API_RnD_repository = _unitOfWork.GetRepository<PidfApiRnD>();
             _masterDIAService = masterDium;
 			_masterMarketExtensionService = masterMarketExtensionService;
 			_masterBERequirementService = masterBERequirementService;
@@ -291,6 +293,98 @@ namespace EmcureNPD.Business.Core.Implementation
         }
         //------------End------API_IPD_Details_Form_Entity--------------------------
         #endregion
+
+        public async Task<PIDFAPIRnDFormEntity> GetAPIRnDFormData(long pidfId, string _webrootPath)
+        {
+
+            PIDFAPIRnDFormEntity _oApiRnDData = new PIDFAPIRnDFormEntity();
+            var _oAPIRnD = await _pidf_API_RnD_repository.GetAsync(x => x.Pidfid == pidfId);
+            var _oAPIIpd = await _pidf_API_IPD_repository.GetAsync(x => x.Pidfid == pidfId);
+            if (_oAPIRnD != null)
+            {
+                _oApiRnDData.PIDFAPIRnDFormID = _oAPIRnD.PidfApiRnDId;
+                _oApiRnDData.Pidfid = _oAPIRnD.Pidfid.ToString();
+
+                _oApiRnDData.PlantQC = _oAPIRnD.PlantQc;
+				_oApiRnDData.Development = _oAPIRnD.Development;
+				_oApiRnDData.Total = _oAPIRnD.Total;
+				_oApiRnDData.Exhibit = _oAPIRnD.Exhibit;
+                _oApiRnDData.ScaleUp = _oAPIRnD.ScaleUp;				
+                _oApiRnDData.MarketID = _oAPIRnD.MarketExtenstionId;
+                _oApiRnDData.SponsorBusinessPartner = _oAPIRnD.SponsorBusinessPartner;
+                _oApiRnDData.APIMarketPrice = _oAPIRnD.ApimarketPrice;
+                _oApiRnDData.APITargetRMC_CCPC = _oAPIRnD.ApitargetRmcCcpc;             
+
+
+            }
+            if (_oAPIIpd != null)
+            {
+                string baseURL = _configuration.GetSection("Apiconfig").GetSection("EmcureNPDAPIUrl").Value;
+                var path = Path.Combine(baseURL, "Uploads/PIDF/APIIPD");
+                var fullPath = path + "/" + _oAPIIpd.MarketDetailsFileName;
+
+                _oApiRnDData.DrugsCategory = _oAPIIpd.DrugsCategory;
+                _oApiRnDData.ProductTypeId = (int)_oAPIIpd.ProductTypeId;
+                _oApiRnDData.ProductStrength = _oAPIIpd.ProductStrength;
+                _oApiRnDData.MarketDetailsFileName = fullPath;
+                var _objProductType = await _masterProductTypeService.GetById((int)_oAPIIpd.ProductTypeId);
+                if (_objProductType != null)
+                    _oApiRnDData.ProductType = _objProductType.ProductTypeName;
+
+            }
+            return _oApiRnDData;
+        }
+        public async Task<DBOperation> AddUpdateAPIRnD(PIDFAPIRnDFormEntity _oAPIRnD)
+        {   
+            //PIDFAPIIPDFormEntity _exsistingAPIRnD = new PIDFAPIIPDFormEntity();
+            if (_oAPIRnD.PIDFAPIRnDFormID > 0)
+            {
+                var lastApiIpd = _pidf_API_RnD_repository.GetAll().First(x => x.PidfApiRnDId == _oAPIRnD.PIDFAPIRnDFormID && x.IsActive == true);
+                if (lastApiIpd != null)
+                {                  
+                    lastApiIpd.PlantQc = _oAPIRnD.PlantQC;
+                    lastApiIpd.Development = _oAPIRnD.Development;
+                    lastApiIpd.Total = _oAPIRnD.Total;
+                    lastApiIpd.Exhibit = _oAPIRnD.Exhibit;
+                    lastApiIpd.ScaleUp = _oAPIRnD.ScaleUp;
+                    lastApiIpd.MarketExtenstionId= _oAPIRnD.MarketID;
+                    lastApiIpd.SponsorBusinessPartner= _oAPIRnD.SponsorBusinessPartner;
+                    lastApiIpd.ApimarketPrice= _oAPIRnD.APIMarketPrice;
+                    lastApiIpd.ApitargetRmcCcpc= _oAPIRnD.APITargetRMC_CCPC;
+                    lastApiIpd.Pidfid = long.Parse(_oAPIRnD.Pidfid);
+                    lastApiIpd.ModifyBy = _oAPIRnD.LoggedInUserId;
+                    lastApiIpd.ModifyDate = DateTime.Now;
+                    _pidf_API_RnD_repository.UpdateAsync(lastApiIpd);
+                }
+                else
+                {
+                    return DBOperation.NotFound;
+                }
+            }
+            else
+            {
+                var _oDBApiRnd = new PidfApiRnD();
+
+                _oDBApiRnd.PlantQc = _oAPIRnD.PlantQC;
+                _oDBApiRnd.Development = _oAPIRnD.Development;
+                _oDBApiRnd.Total = _oAPIRnD.Total;
+                _oDBApiRnd.Exhibit = _oAPIRnD.Exhibit;
+                _oDBApiRnd.ScaleUp = _oAPIRnD.ScaleUp;
+                _oDBApiRnd.MarketExtenstionId = _oAPIRnD.MarketID;
+                _oDBApiRnd.SponsorBusinessPartner = _oAPIRnD.SponsorBusinessPartner;
+                _oDBApiRnd.ApimarketPrice = _oAPIRnD.APIMarketPrice;
+                _oDBApiRnd.ApitargetRmcCcpc = _oAPIRnD.APITargetRMC_CCPC;
+                _oDBApiRnd.Pidfid = long.Parse(_oAPIRnD.Pidfid);              
+
+                _oDBApiRnd.CreatedBy = _oAPIRnD.LoggedInUserId;
+                _oDBApiRnd.CreatedDate = DateTime.Now;
+                _oDBApiRnd.IsActive = true;
+                _pidf_API_RnD_repository.AddAsync(_oDBApiRnd);
+            }
+            await _unitOfWork.SaveChangesAsync();
+            return DBOperation.Success;
+        }
+
         public async Task<dynamic> FillDropdown()
 		{
 			dynamic DropdownObjects = new ExpandoObject();

@@ -128,7 +128,8 @@ namespace EmcureNPD.API.Controllers.PBF
             {
                 return _ObjectResponse.Create(false, (Int32)HttpStatusCode.InternalServerError, Convert.ToString(ex.StackTrace));
             }
-        }
+        }        
+
         [HttpGet, Route("GetAPIIPDFormData/{pidfId}")]
         public async Task<IActionResult> GetAPIIPDFormData([FromRoute] long pidfId)
         {
@@ -145,5 +146,43 @@ namespace EmcureNPD.API.Controllers.PBF
                 return _ObjectResponse.Create(false, (Int32)HttpStatusCode.InternalServerError, Convert.ToString(ex.StackTrace));
             }
         }
+
+
+        [HttpGet, Route("GetAPIRnDFormData/{pidfId}")]
+        public async Task<IActionResult> GetAPIRnDFormData([FromRoute] long pidfId)
+        {
+            try
+            {
+                var oPIDFEntity = await _PBFService.GetAPIRnDFormData(pidfId, _webHostEnvironment.WebRootPath);
+                if (oPIDFEntity != null)
+                    return _ObjectResponse.Create(oPIDFEntity, (Int32)HttpStatusCode.OK);
+                else
+                    return _ObjectResponse.Create(null, (Int32)HttpStatusCode.BadRequest, "Record not found");
+            }
+            catch (Exception ex)
+            {
+                return _ObjectResponse.Create(false, (Int32)HttpStatusCode.InternalServerError, Convert.ToString(ex.StackTrace));
+            }
+        }
+
+        [HttpPost]
+        [Route("InsertUpdateAPIRnD")]
+        public async Task<IActionResult> InsertUpdateAPIRnD(PIDFAPIRnDFormEntity oAPIRnD)
+        {
+            try
+            {
+                DBOperation oResponse = await _PBFService.AddUpdateAPIRnD(oAPIRnD);
+                if (oResponse == DBOperation.Success)
+                    return _ObjectResponse.Create(true, (Int32)HttpStatusCode.OK, "Record Insert Successfully");
+                else
+                    return _ObjectResponse.Create(false, (Int32)HttpStatusCode.BadRequest, (oResponse == DBOperation.NotFound ? "Record not found" : "Bad request"));
+            }
+            catch (Exception ex)
+            {
+                return _ObjectResponse.Create(false, (Int32)HttpStatusCode.InternalServerError, Convert.ToString(ex.StackTrace));
+            }
+        }
+
+
     }
 }

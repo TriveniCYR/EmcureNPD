@@ -10,11 +10,8 @@ $(document).ready(function () {
         else
             toastr.error(SaveStatus);
     }
-    InitializeProductTypeDropdown();
-      
+    InitializeProductTypeDropdown();      
 });
-
-
 
 function InitializeProductTypeDropdown() {
     debugger;

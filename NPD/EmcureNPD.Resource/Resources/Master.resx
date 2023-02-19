@@ -525,4 +525,25 @@
   <data name="YearDetails" xml:space="preserve">
     <value>Year Details</value>
   </data>
+  <data name="APIMarketPrice" xml:space="preserve">
+    <value>API Market Price</value>
+  </data>
+  <data name="APIRndDetails" xml:space="preserve">
+    <value>API Rnd Details</value>
+  </data>
+  <data name="APIRndDetailsForm" xml:space="preserve">
+    <value>API Rnd Details Form</value>
+  </data>
+  <data name="APITargetRMC_CCPC" xml:space="preserve">
+    <value>API Target RMC+CCPC</value>
+  </data>
+  <data name="FormulationQuantityRequiredKG/GmStage" xml:space="preserve">
+    <value>Formulation Quantity Required KG/Gm Stage</value>
+  </data>
+  <data name="MarketID" xml:space="preserve">
+    <value>Market ID</value>
+  </data>
+  <data name="SponsorBusinessPartner" xml:space="preserve">
+    <value>Sponsor Business Partner</value>
+  </data>
 </root>

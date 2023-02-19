@@ -64,6 +64,7 @@ namespace EmcureNPD.Data.DataAccess.DataContext
         public virtual DbSet<MasterWorkflow> MasterWorkflows { get; set; }
         public virtual DbSet<Pidf> Pidfs { get; set; }
         public virtual DbSet<PidfApiIpd> PidfApiIpds { get; set; }
+        public virtual DbSet<PidfApiRnD> PidfApiRnDs { get; set; }
         public virtual DbSet<PidfCommercial> PidfCommercials { get; set; }
         public virtual DbSet<PidfCommercialYear> PidfCommercialYears { get; set; }
         public virtual DbSet<PidfFinance> PidfFinances { get; set; }
@@ -989,6 +990,53 @@ namespace EmcureNPD.Data.DataAccess.DataContext
                     .HasConstraintName("FK_PIDF_API_IPD_ProductTypeId");
             });
 
+            modelBuilder.Entity<PidfApiRnD>(entity =>
+            {
+                entity.ToTable("PIDF_API_RnD");
+
+                entity.Property(e => e.PidfApiRnDId).HasColumnName("PIDF_API_RnD_ID");
+
+                entity.Property(e => e.ApimarketPrice)
+                    .HasMaxLength(100)
+                    .HasColumnName("APIMarketPrice");
+
+                entity.Property(e => e.ApitargetRmcCcpc)
+                    .HasMaxLength(100)
+                    .HasColumnName("APITargetRMC_CCPC");
+
+                entity.Property(e => e.CreatedDate).HasColumnType("datetime");
+
+                entity.Property(e => e.Development).HasMaxLength(100);
+
+                entity.Property(e => e.Exhibit).HasMaxLength(100);
+
+                entity.Property(e => e.ModifyDate).HasColumnType("datetime");
+
+                entity.Property(e => e.Pidfid).HasColumnName("PIDFID");
+
+                entity.Property(e => e.PlantQc)
+                    .HasMaxLength(100)
+                    .HasColumnName("PlantQC");
+
+                entity.Property(e => e.ScaleUp).HasMaxLength(100);
+
+                entity.Property(e => e.SponsorBusinessPartner).HasMaxLength(100);
+
+                entity.Property(e => e.Total).HasMaxLength(100);
+
+                entity.HasOne(d => d.MarketExtenstion)
+                    .WithMany(p => p.PidfApiRnDs)
+                    .HasForeignKey(d => d.MarketExtenstionId)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("FK_PIDF_API_RnD_MarketExtenstionId");
+
+                entity.HasOne(d => d.Pidf)
+                    .WithMany(p => p.PidfApiRnDs)
+                    .HasForeignKey(d => d.Pidfid)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("FK_PIDF_API_RnD_PIDFID");
+            });
+
             modelBuilder.Entity<PidfCommercial>(entity =>
             {
                 entity.ToTable("PIDF_Commercial");
@@ -1268,8 +1316,6 @@ namespace EmcureNPD.Data.DataAccess.DataContext
                 entity.Property(e => e.FreightCad).HasColumnName("Freight_CAD");
 
                 entity.Property(e => e.PidffinaceId).HasColumnName("PIDFFinaceId");
-
-                entity.Property(e => e.Pidfid).HasColumnName("PIDFId");
 
                 entity.Property(e => e.PmCad).HasColumnName("PM_CAD");
             });
