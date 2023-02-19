@@ -19,5 +19,7 @@ namespace EmcureNPD.Business.Models
         public DateTime CreatedDate { get; set; }
         public string RegionIds { get; set; } 
         public string MasterBusinessRegionMappingIds { get; set; }
-    }
+		public float? Latitude { get; set; }
+		public float? Longitude { get; set; }
+	}
 }
