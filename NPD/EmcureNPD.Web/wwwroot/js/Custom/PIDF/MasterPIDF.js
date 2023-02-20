@@ -24,10 +24,10 @@ $(document).ready(function () {
 function GetCountryByBusinessUnitSuccess(data) {
     try {
         $('#RFDCountryId options').remove();
-        var _emptyOption = '<option value="">-- Select --</option>';
-        $('#RFDCountryId').append(_emptyOption);
-        if (data != null && data.length > 0) {
-            $(data).each(function (index, item) {
+        if (data._object != null && data._object.length > 0) {
+            var _emptyOption = '<option value="">-- Select --</option>';
+            $('#RFDCountryId').append(_emptyOption);
+            $(data._object).each(function (index, item) {
                 $('#RFDCountryId').append('<option value="' + item.countryId + '">' + item.countryName + '</option>');
             });
         }

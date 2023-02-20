@@ -155,7 +155,8 @@ namespace EmcureNPD.Business.Core.ServiceImplementations
                 new SqlParameter("@BusinessUnitId", BusinessUnitId),
                 new SqlParameter("@UserId", loggedInUserId)
             };
-            return _repository.GetBySP("SP_GetCountryByBusinessUnit", CommandType.StoredProcedure, osqlParameter);
+            var _businessUnit = await _repository.GetBySP("SP_GetCountryByBusinessUnit", CommandType.StoredProcedure, osqlParameter);
+            return _businessUnit;
         }
     }
 }

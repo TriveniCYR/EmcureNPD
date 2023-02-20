@@ -196,7 +196,7 @@ namespace EmcureNPD.API.Controllers.Masters
         /// <response code="404">Not Found</response>
         /// <response code="405">Method Not Allowed</response>
         /// <response code="500">Internal Server</response>
-        [HttpGet("GetCountryByBusinessUnitId/{id}")]
+        [HttpGet("GetCountryByBusinessUnitId/{BusinessUnitId}")]
         public async Task<IActionResult> GetCountryByBusinessUnitId([FromRoute] int BusinessUnitId)
         {
             try
