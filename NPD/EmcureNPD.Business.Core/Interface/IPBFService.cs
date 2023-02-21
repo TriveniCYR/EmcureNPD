@@ -25,7 +25,7 @@ namespace EmcureNPD.Business.Core.Interface
 		Task<DBOperation> AddUpdateAPIRnD(PIDFAPIRnDFormEntity _oAPIRnD);
 
     }
-		Task<PidfPbfAnalyticalEntity> GetPBFAnalyticalReadonlyData(long pidfid);
+		//Task<PidfPbfAnalyticalEntity> GetPBFAnalyticalReadonlyData(long pidfid);
 		//------------End------API_IPD_Details_Form_Entity--------------------------
-	}
+	//}
 }
