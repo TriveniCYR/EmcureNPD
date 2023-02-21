@@ -81,7 +81,7 @@
 						<div class="col-md-12">
 							<div class="form-group required">
 								@Html.LabelFor(model => model.UnitofMeasurementName,"Unit of measurement Name", new { @class = "control-label" })
-								@Html.EditorFor(model => model.UnitofMeasurementName, new { htmlAttributes = new { @autocomplete = "off", @class = "form-control checkbox-checked", @placeholder = @SharedLocalizer["Unitof Measurement Name"] } })
+								@Html.EditorFor(model => model.UnitofMeasurementName, new { htmlAttributes = new { @autocomplete = "off", @class = "form-control checkbox-checked", @placeholder = @SharedLocalizer["Unit of measurement name"] } })
 								@Html.ValidationMessageFor(model => model.UnitofMeasurementName, "", new { @class = "text-danger" })
 							</div>
 						</div>

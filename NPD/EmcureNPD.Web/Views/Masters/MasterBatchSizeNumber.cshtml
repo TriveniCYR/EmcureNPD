@@ -16,7 +16,7 @@
 }
 <div class="content-header">
 	<div class="container-fluid d-flex justify-content-between">
-		<h3>@MasterLocalizer["BatchSize Number"]</h3>
+		<h3>@MasterLocalizer["Batch Size Number"]</h3>
 		<div>
 			<a style="@IsAddAllow" class="btn btn-primary" data-toggle="modal" data-target="#SaveBatchSizeNumberModel" data-backdrop="static" data-keyboard="false" onclick="AddBatchSizeNumber();"><i class="far fa-plus-square mr-1"></i> @SharedLocalizer["Add"]</a>
 		</div>
@@ -26,7 +26,7 @@
 	<table id="BatchSizeNumberTable" class="table table-bordered table-striped table-hover" style="width:100%">
 		<thead>
 			<tr>
-				<th>@MasterLocalizer["BatchSize Number"]</th>
+				<th>@MasterLocalizer["Batch Size Number"]</th>
 				<th>@SharedLocalizer["Status"]</th>
 				<th class="text-center">@SharedLocalizer["Action"]</th>
 			</tr>
@@ -80,8 +80,8 @@
 					<div class="row">
 						<div class="col-md-12">
 							<div class="form-group required">
-								@Html.LabelFor(model => model.BatchSizeNumberName, "BatchSize Number Name", new { @class = "control-label" })
-								@Html.EditorFor(model => model.BatchSizeNumberName, new { htmlAttributes = new { @autocomplete = "off", @class = "form-control checkbox-checked", @placeholder = @SharedLocalizer["BatchSize Number Name"] } })
+								@Html.LabelFor(model => model.BatchSizeNumberName, "Batch Size Number Name", new { @class = "control-label" })
+								@Html.EditorFor(model => model.BatchSizeNumberName, new { htmlAttributes = new { @autocomplete = "off", @class = "form-control checkbox-checked", @placeholder = @SharedLocalizer["Batch Size Number Name"] } })
 								@Html.ValidationMessageFor(model => model.BatchSizeNumberName, "", new { @class = "text-danger" })
 							</div>
 						</div>
@@ -124,8 +124,8 @@
 		var ErrorMessage = "@SharedLocalizer["Error"]";
 		var RecordInsertUpdate = "@SharedLocalizer["RecordInsertUpdate"]";
 		var RecordDelete = "@SharedLocalizer["RecordDelete"]";
-		var AddLabel = "@SharedLocalizer["Add BatchSize Number"]";
-		var UpdateLabel = "@SharedLocalizer["Edit BatchSize Number"]";
+		var AddLabel = "@SharedLocalizer["Add Batch Size Number"]";
+		var UpdateLabel = "@SharedLocalizer["Edit Batch Size Number"]";
 			//#endregion
 	</script>
 }
