@@ -10,7 +10,8 @@ namespace EmcureNPD.Business.Models
 
         [Required(ErrorMessageResourceType = typeof(Validation), ErrorMessageResourceName = "Required")]
         [Display(Name = "FormulationName", ResourceType = typeof(Master))]
-        public string FormulationName { get; set; }
+		[RegularExpression(@"^(?!\s*$).+", ErrorMessage = "The field cannot contain only spaces.")]
+		public string FormulationName { get; set; }
 
         [Display(Name = "Active", ResourceType = typeof(Master))]
         public bool IsActive { get; set; }

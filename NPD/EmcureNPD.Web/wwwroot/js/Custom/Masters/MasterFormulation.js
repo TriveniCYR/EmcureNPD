@@ -30,6 +30,7 @@ function GetFormulationById(id) {
 }
 function GetFormulationByIdSuccess(data) {
     try {
+        CleareFormulationFields();
         $('#SaveFormulationModel #FormulationID').val(data._object.formulationId);
         $('#SaveFormulationModel #FormulationName').val(data._object.formulationName);
         $('#SaveFormulationModel #FormulationTitle').html(UpdateLabel);
@@ -84,6 +85,12 @@ function CleareFormulationFields() {
     $('#SaveFormulationModel #FormulationID').val("0");
     $('#SaveFormulationModel #FormulationName').val("");
     $('#DeleteFormulationModel #FormulationID').val("0");
+    var validationMessages = document.querySelectorAll(".field-validation-error");
+
+    // Loop through the messages and clear them
+    for (var i = 0; i < validationMessages.length; i++) {
+        validationMessages[i].textContent = "";
+    }
 }
 // #endregion
 

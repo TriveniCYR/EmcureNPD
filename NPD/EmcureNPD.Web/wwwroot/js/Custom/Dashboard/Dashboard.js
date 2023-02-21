@@ -2,7 +2,6 @@
     GetDashboardDropdown();
     GetFinanacialYear();
 });
-
 function GetDashboardDropdown() {
     ajaxServiceMethod($('#hdnBaseURL').val() + GetAllDashboard, 'GET', GetDashboardDropdownSuccess);
 }

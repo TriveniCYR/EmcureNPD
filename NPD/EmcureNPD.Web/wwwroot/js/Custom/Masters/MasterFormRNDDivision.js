@@ -28,6 +28,7 @@ function GetFormRNDDivisionById(id) {
 }
 function GetFormRNDDivisionByIdSuccess(data) {
     try {
+        CleareFormRNDDivisionFields();
         $('#SaveFormRNDDivisionModel #FormRNDDivisionID').val(data._object.formRNDDivisionId);
         $('#SaveFormRNDDivisionModel #FormRNDDivisionName').val(data._object.formRNDDivisionName);
         $('#SaveFormRNDDivisionModel #FormRNDDivisionTitle').html(UpdateLabel);
@@ -82,6 +83,12 @@ function CleareFormRNDDivisionFields() {
     $('#SaveFormRNDDivisionModel #FormRNDDivisionID').val("0");
     $('#SaveFormRNDDivisionModel #FormRNDDivisionName').val("");
     $('#DeleteFormRNDDivisionModel #FormRNDDivisionID').val("0");
+    var validationMessages = document.querySelectorAll(".field-validation-error");
+
+    // Loop through the messages and clear them
+    for (var i = 0; i < validationMessages.length; i++) {
+        validationMessages[i].textContent = "";
+    }
 }
 // #endregion
 

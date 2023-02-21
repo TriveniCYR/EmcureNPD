@@ -21,6 +21,12 @@ namespace EmcureNPD.Data.DataAccess.DataContext
 
         public virtual DbSet<MasterActivityType> MasterActivityTypes { get; set; }
         public virtual DbSet<MasterAnalytical> MasterAnalyticals { get; set; }
+        public virtual DbSet<MasterApiCharterAnalyticalDepartment> MasterApiCharterAnalyticalDepartments { get; set; }
+        public virtual DbSet<MasterApiCharterCapitalOtherExpenditure> MasterApiCharterCapitalOtherExpenditures { get; set; }
+        public virtual DbSet<MasterApiCharterHeadwiseBudget> MasterApiCharterHeadwiseBudgets { get; set; }
+        public virtual DbSet<MasterApiCharterManhourEstimate> MasterApiCharterManhourEstimates { get; set; }
+        public virtual DbSet<MasterApiCharterPrddepartment> MasterApiCharterPrddepartments { get; set; }
+        public virtual DbSet<MasterApiCharterTimelineInMonth> MasterApiCharterTimelineInMonths { get; set; }
         public virtual DbSet<MasterApisourcing> MasterApisourcings { get; set; }
         public virtual DbSet<MasterAuditLog> MasterAuditLogs { get; set; }
         public virtual DbSet<MasterBatchSizeNumber> MasterBatchSizeNumbers { get; set; }
@@ -63,7 +69,15 @@ namespace EmcureNPD.Data.DataAccess.DataContext
         public virtual DbSet<MasterUserRegionMapping> MasterUserRegionMappings { get; set; }
         public virtual DbSet<MasterWorkflow> MasterWorkflows { get; set; }
         public virtual DbSet<Pidf> Pidfs { get; set; }
+        public virtual DbSet<PidfApiCharter> PidfApiCharters { get; set; }
+        public virtual DbSet<PidfApiCharterAnalyticalDepartment> PidfApiCharterAnalyticalDepartments { get; set; }
+        public virtual DbSet<PidfApiCharterCapitalOtherExpenditure> PidfApiCharterCapitalOtherExpenditures { get; set; }
+        public virtual DbSet<PidfApiCharterHeadwiseBudget> PidfApiCharterHeadwiseBudgets { get; set; }
+        public virtual DbSet<PidfApiCharterManhourEstimate> PidfApiCharterManhourEstimates { get; set; }
+        public virtual DbSet<PidfApiCharterPrddepartment> PidfApiCharterPrddepartments { get; set; }
+        public virtual DbSet<PidfApiCharterTimelineInMonth> PidfApiCharterTimelineInMonths { get; set; }
         public virtual DbSet<PidfApiIpd> PidfApiIpds { get; set; }
+        public virtual DbSet<PidfApiRnD> PidfApiRnDs { get; set; }
         public virtual DbSet<PidfCommercial> PidfCommercials { get; set; }
         public virtual DbSet<PidfCommercialYear> PidfCommercialYears { get; set; }
         public virtual DbSet<PidfFinance> PidfFinances { get; set; }
@@ -111,7 +125,6 @@ namespace EmcureNPD.Data.DataAccess.DataContext
                 optionsBuilder.UseSqlServer(DatabaseConnection.NPDDatabaseConnection);
             }
         }
-
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.HasAnnotation("Relational:Collation", "SQL_Latin1_General_CP1_CI_AS");
@@ -141,6 +154,77 @@ namespace EmcureNPD.Data.DataAccess.DataContext
                 entity.Property(e => e.CreatedDate).HasColumnType("datetime");
 
                 entity.Property(e => e.ModifyDate).HasColumnType("datetime");
+            });
+
+            modelBuilder.Entity<MasterApiCharterAnalyticalDepartment>(entity =>
+            {
+                entity.ToTable("Master_API_Charter_AnalyticalDepartment");
+
+                entity.Property(e => e.MasterApiCharterAnalyticalDepartmentId).HasColumnName("Master_API_Charter_AnalyticalDepartmentId");
+
+                entity.Property(e => e.Name)
+                    .IsRequired()
+                    .HasMaxLength(100);
+            });
+
+            modelBuilder.Entity<MasterApiCharterCapitalOtherExpenditure>(entity =>
+            {
+                entity.ToTable("Master_API_Charter_CapitalOtherExpenditure");
+
+                entity.Property(e => e.MasterApiCharterCapitalOtherExpenditureId).HasColumnName("Master_API_Charter_CapitalOtherExpenditureId");
+
+                entity.Property(e => e.Name)
+                    .IsRequired()
+                    .HasMaxLength(100);
+            });
+
+            modelBuilder.Entity<MasterApiCharterHeadwiseBudget>(entity =>
+            {
+                entity.ToTable("Master_API_Charter_HeadwiseBudget");
+
+                entity.Property(e => e.MasterApiCharterHeadwiseBudgetId).HasColumnName("Master_API_Charter_HeadwiseBudgetId");
+
+                entity.Property(e => e.Name)
+                    .IsRequired()
+                    .HasMaxLength(100);
+            });
+
+            modelBuilder.Entity<MasterApiCharterManhourEstimate>(entity =>
+            {
+                entity.HasKey(e => e.MasterApiCharterManhourEstimatesId);
+
+                entity.ToTable("Master_API_Charter_ManhourEstimates");
+
+                entity.Property(e => e.MasterApiCharterManhourEstimatesId).HasColumnName("Master_API_Charter_ManhourEstimatesId");
+
+                entity.Property(e => e.Name)
+                    .IsRequired()
+                    .HasMaxLength(100);
+            });
+
+            modelBuilder.Entity<MasterApiCharterPrddepartment>(entity =>
+            {
+                entity.ToTable("Master_API_Charter_PRDDepartment");
+
+                entity.Property(e => e.MasterApiCharterPrddepartmentId).HasColumnName("Master_API_Charter_PRDDepartmentId");
+
+                entity.Property(e => e.Name)
+                    .IsRequired()
+                    .HasMaxLength(100);
+            });
+
+            modelBuilder.Entity<MasterApiCharterTimelineInMonth>(entity =>
+            {
+                entity.HasKey(e => e.MasterApiCharterTimelineInMonthsId)
+                    .HasName("PK_PIDF_API_Charter_TimelineInMonths");
+
+                entity.ToTable("Master_API_Charter_TimelineInMonths");
+
+                entity.Property(e => e.MasterApiCharterTimelineInMonthsId).HasColumnName("Master_API_Charter_TimelineInMonthsId");
+
+                entity.Property(e => e.Name)
+                    .IsRequired()
+                    .HasMaxLength(100);
             });
 
             modelBuilder.Entity<MasterApisourcing>(entity =>
@@ -955,6 +1039,176 @@ namespace EmcureNPD.Data.DataAccess.DataContext
                     .HasConstraintName("FK_PIDF_Master_UnitofMeasurement");
             });
 
+            modelBuilder.Entity<PidfApiCharter>(entity =>
+            {
+                entity.ToTable("PIDF_API_Charter");
+
+                entity.Property(e => e.PidfApiCharterId).HasColumnName("PIDF_API_CharterId");
+
+                entity.Property(e => e.ApigroupLeader)
+                    .IsRequired()
+                    .HasMaxLength(100)
+                    .HasColumnName("APIGroupLeader");
+
+                entity.Property(e => e.CreatedDate).HasColumnType("datetime");
+
+                entity.Property(e => e.ModifyDate).HasColumnType("datetime");
+
+                entity.Property(e => e.Pidfid).HasColumnName("PIDFId");
+            });
+
+            modelBuilder.Entity<PidfApiCharterAnalyticalDepartment>(entity =>
+            {
+                entity.HasNoKey();
+
+                entity.ToTable("PIDF_API_Charter_AnalyticalDepartment");
+
+                entity.Property(e => e.AnalyticalDepartmentAmtvalue)
+                    .HasMaxLength(100)
+                    .HasColumnName("AnalyticalDepartmentAMTValue");
+
+                entity.Property(e => e.AnalyticalDepartmentAmvvalue)
+                    .HasMaxLength(100)
+                    .HasColumnName("AnalyticalDepartmentAMVValue");
+
+                entity.Property(e => e.AnalyticalDepartmentArdvalue)
+                    .HasMaxLength(100)
+                    .HasColumnName("AnalyticalDepartmentARDValue");
+
+                entity.Property(e => e.AnalyticalDepartmentImpurityValue).HasMaxLength(100);
+
+                entity.Property(e => e.AnalyticalDepartmentStabilityValue).HasMaxLength(100);
+
+                entity.Property(e => e.CreatedDate).HasColumnType("datetime");
+
+                entity.Property(e => e.ModifyDate).HasColumnType("datetime");
+
+                entity.Property(e => e.PidfApiCharterAnalyticalDepartmentId)
+                    .ValueGeneratedOnAdd()
+                    .HasColumnName("PIDF_API_Charter_AnalyticalDepartmentId");
+
+                entity.Property(e => e.PidfApiCharterId).HasColumnName("PIDF_API_CharterId");
+
+                entity.Property(e => e.Pidfid).HasColumnName("PIDFId");
+            });
+
+            modelBuilder.Entity<PidfApiCharterCapitalOtherExpenditure>(entity =>
+            {
+                entity.HasNoKey();
+
+                entity.ToTable("PIDF_API_Charter_CapitalOtherExpenditure");
+
+                entity.Property(e => e.CapitalOtherExpenditureAmountValue).HasMaxLength(100);
+
+                entity.Property(e => e.CapitalOtherExpenditureRemarkValue).HasMaxLength(100);
+
+                entity.Property(e => e.CreatedDate).HasColumnType("datetime");
+
+                entity.Property(e => e.ModifyDate).HasColumnType("datetime");
+
+                entity.Property(e => e.PidfApiCharterCapitalOtherExpenditureId)
+                    .ValueGeneratedOnAdd()
+                    .HasColumnName("PIDF_API_Charter_CapitalOtherExpenditureId");
+
+                entity.Property(e => e.PidfApiCharterId).HasColumnName("PIDF_API_CharterId");
+
+                entity.Property(e => e.Pidfid).HasColumnName("PIDFId");
+            });
+
+            modelBuilder.Entity<PidfApiCharterHeadwiseBudget>(entity =>
+            {
+                entity.HasNoKey();
+
+                entity.ToTable("PIDF_API_Charter_HeadwiseBudget");
+
+                entity.Property(e => e.CreatedDate).HasColumnType("datetime");
+
+                entity.Property(e => e.HeadwiseBudgetValue).HasMaxLength(100);
+
+                entity.Property(e => e.ModifyDate).HasColumnType("datetime");
+
+                entity.Property(e => e.PidfApiCharterHeadwiseBudgetId)
+                    .ValueGeneratedOnAdd()
+                    .HasColumnName("PIDF_API_Charter_HeadwiseBudgetId");
+
+                entity.Property(e => e.PidfApiCharterId).HasColumnName("PIDF_API_CharterId");
+
+                entity.Property(e => e.Pidfid).HasColumnName("PIDFId");
+            });
+
+            modelBuilder.Entity<PidfApiCharterManhourEstimate>(entity =>
+            {
+                entity.HasNoKey();
+
+                entity.ToTable("PIDF_API_Charter_ManhourEstimates");
+
+                entity.Property(e => e.CreatedDate).HasColumnType("datetime");
+
+                entity.Property(e => e.ManhourEstimatesCostValue).HasMaxLength(100);
+
+                entity.Property(e => e.ManhourEstimatesHoursValue).HasMaxLength(100);
+
+                entity.Property(e => e.ManhourEstimatesMonthsValue).HasMaxLength(100);
+
+                entity.Property(e => e.ManhourEstimatesNoOfEmployeeValue).HasMaxLength(100);
+
+                entity.Property(e => e.ModifyDate).HasColumnType("datetime");
+
+                entity.Property(e => e.PidfApiCharterId).HasColumnName("PIDF_API_CharterId");
+
+                entity.Property(e => e.PidfApiCharterManhourEstimatesId)
+                    .ValueGeneratedOnAdd()
+                    .HasColumnName("PIDF_API_Charter_ManhourEstimatesId");
+
+                entity.Property(e => e.Pidfid).HasColumnName("PIDFId");
+            });
+
+            modelBuilder.Entity<PidfApiCharterPrddepartment>(entity =>
+            {
+                entity.HasNoKey();
+
+                entity.ToTable("PIDF_API_Charter_PRDDepartment");
+
+                entity.Property(e => e.CreatedDate).HasColumnType("datetime");
+
+                entity.Property(e => e.ModifyDate).HasColumnType("datetime");
+
+                entity.Property(e => e.PidfApiCharterId).HasColumnName("PIDF_API_CharterId");
+
+                entity.Property(e => e.PidfApiCharterPrddepartmentId)
+                    .ValueGeneratedOnAdd()
+                    .HasColumnName("PIDF_API_Charter_PRDDepartmentId");
+
+                entity.Property(e => e.Pidfid).HasColumnName("PIDFId");
+
+                entity.Property(e => e.PrddepartmentId).HasColumnName("PRDDepartmentId");
+
+                entity.Property(e => e.PrddepartmentRawMaterialValue)
+                    .HasMaxLength(100)
+                    .HasColumnName("PRDDepartmentRawMaterialValue");
+            });
+
+            modelBuilder.Entity<PidfApiCharterTimelineInMonth>(entity =>
+            {
+                entity.HasNoKey();
+
+                entity.ToTable("PIDF_API_Charter_TimelineInMonths");
+
+                entity.Property(e => e.CreatedDate).HasColumnType("datetime");
+
+                entity.Property(e => e.ModifyDate).HasColumnType("datetime");
+
+                entity.Property(e => e.PidfApiCharterId).HasColumnName("PIDF_API_CharterId");
+
+                entity.Property(e => e.PidfApiCharterTimelineInMonthsId)
+                    .ValueGeneratedOnAdd()
+                    .HasColumnName("PIDF_API_Charter_TimelineInMonthsId");
+
+                entity.Property(e => e.Pidfid).HasColumnName("PIDFId");
+
+                entity.Property(e => e.TimelineInMonthsValue).HasMaxLength(100);
+            });
+
             modelBuilder.Entity<PidfApiIpd>(entity =>
             {
                 entity.ToTable("PIDF_API_IPD");
@@ -987,6 +1241,53 @@ namespace EmcureNPD.Data.DataAccess.DataContext
                     .WithMany(p => p.PidfApiIpds)
                     .HasForeignKey(d => d.ProductTypeId)
                     .HasConstraintName("FK_PIDF_API_IPD_ProductTypeId");
+            });
+
+            modelBuilder.Entity<PidfApiRnD>(entity =>
+            {
+                entity.ToTable("PIDF_API_RnD");
+
+                entity.Property(e => e.PidfApiRnDId).HasColumnName("PIDF_API_RnD_ID");
+
+                entity.Property(e => e.ApimarketPrice)
+                    .HasMaxLength(100)
+                    .HasColumnName("APIMarketPrice");
+
+                entity.Property(e => e.ApitargetRmcCcpc)
+                    .HasMaxLength(100)
+                    .HasColumnName("APITargetRMC_CCPC");
+
+                entity.Property(e => e.CreatedDate).HasColumnType("datetime");
+
+                entity.Property(e => e.Development).HasMaxLength(100);
+
+                entity.Property(e => e.Exhibit).HasMaxLength(100);
+
+                entity.Property(e => e.ModifyDate).HasColumnType("datetime");
+
+                entity.Property(e => e.Pidfid).HasColumnName("PIDFID");
+
+                entity.Property(e => e.PlantQc)
+                    .HasMaxLength(100)
+                    .HasColumnName("PlantQC");
+
+                entity.Property(e => e.ScaleUp).HasMaxLength(100);
+
+                entity.Property(e => e.SponsorBusinessPartner).HasMaxLength(100);
+
+                entity.Property(e => e.Total).HasMaxLength(100);
+
+                entity.HasOne(d => d.MarketExtenstion)
+                    .WithMany(p => p.PidfApiRnDs)
+                    .HasForeignKey(d => d.MarketExtenstionId)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("FK_PIDF_API_RnD_MarketExtenstionId");
+
+                entity.HasOne(d => d.Pidf)
+                    .WithMany(p => p.PidfApiRnDs)
+                    .HasForeignKey(d => d.Pidfid)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("FK_PIDF_API_RnD_PIDFID");
             });
 
             modelBuilder.Entity<PidfCommercial>(entity =>
@@ -1123,7 +1424,7 @@ namespace EmcureNPD.Data.DataAccess.DataContext
             modelBuilder.Entity<PidfFinance>(entity =>
             {
                 entity.HasKey(e => e.PidffinaceId)
-                    .HasName("PK__PIDF_Fin__985A8F5626D521A6");
+                    .HasName("PK_PIDF_Finance_1");
 
                 entity.ToTable("PIDF_Finance");
 
@@ -1165,6 +1466,8 @@ namespace EmcureNPD.Data.DataAccess.DataContext
 
                 entity.Property(e => e.Currency).HasMaxLength(20);
 
+                entity.Property(e => e.DeletedDate).HasColumnType("datetime");
+
                 entity.Property(e => e.DiscountRate).HasColumnType("numeric(18, 2)");
 
                 entity.Property(e => e.Entity).HasMaxLength(70);
@@ -1181,11 +1484,15 @@ namespace EmcureNPD.Data.DataAccess.DataContext
 
                 entity.Property(e => e.Incometaxrate).HasColumnType("numeric(18, 2)");
 
+                entity.Property(e => e.IsDeleted).HasDefaultValueSql("((0))");
+
                 entity.Property(e => e.ManufacturingSiteOrPartner).HasMaxLength(70);
 
                 entity.Property(e => e.MarketShareErosionrate).HasColumnType("numeric(18, 2)");
 
                 entity.Property(e => e.MarketingAllowance).HasColumnType("numeric(18, 2)");
+
+                entity.Property(e => e.ModifyDate).HasColumnType("datetime");
 
                 entity.Property(e => e.Mspersentage).HasColumnName("MSPersentage");
 
@@ -1268,8 +1575,6 @@ namespace EmcureNPD.Data.DataAccess.DataContext
                 entity.Property(e => e.FreightCad).HasColumnName("Freight_CAD");
 
                 entity.Property(e => e.PidffinaceId).HasColumnName("PIDFFinaceId");
-
-                entity.Property(e => e.Pidfid).HasColumnName("PIDFId");
 
                 entity.Property(e => e.PmCad).HasColumnName("PM_CAD");
             });

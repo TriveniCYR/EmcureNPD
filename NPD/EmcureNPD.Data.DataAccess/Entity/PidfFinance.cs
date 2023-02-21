@@ -8,7 +8,7 @@ namespace EmcureNPD.Data.DataAccess.Entity
     public partial class PidfFinance
     {
         public int PidffinaceId { get; set; }
-        public int? Pidfid { get; set; }
+        public int Pidfid { get; set; }
         public string Entity { get; set; }
         public string Product { get; set; }
         public DateTime? ForecastDate { get; set; }
@@ -64,5 +64,8 @@ namespace EmcureNPD.Data.DataAccess.Entity
         public decimal? Total { get; set; }
         public DateTime CreatedDate { get; set; }
         public int? CreatedBy { get; set; }
+        public DateTime? ModifyDate { get; set; }
+        public bool? IsDeleted { get; set; }
+        public DateTime? DeletedDate { get; set; }
     }
 }

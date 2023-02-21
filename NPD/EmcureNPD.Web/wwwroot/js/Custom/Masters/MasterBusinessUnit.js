@@ -49,6 +49,7 @@ function GetBusinessUnitById(id) {
 }
 function GetBusinessUnitByIdSuccess(data) {
     try {
+        CleareBusinessUnitFields()
         var regionIds = data._object.regionIds.toString();
         if (regionIds.includes(',')) { regionIds = regionIds.toString().split(','); }
 
@@ -121,6 +122,12 @@ function CleareBusinessUnitFields() {
     $('#SaveBusinessUnitModel #BusinessUnitRegionMappingId').val("");
     $('#SaveBusinessUnitModel #RegionId').val("");
     $('#SaveBusinessUnitModel #RegionId').trigger('change');
+    var validationMessages = document.querySelectorAll(".field-validation-error");
+
+    // Loop through the messages and clear them
+    for (var i = 0; i < validationMessages.length; i++) {
+        validationMessages[i].textContent = "";
+    }
 }
 // #endregion
 

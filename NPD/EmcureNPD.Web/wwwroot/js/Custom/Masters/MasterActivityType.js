@@ -28,6 +28,7 @@ function GetActivityTypeById(id) {
 }
 function GetActivityTypeByIdSuccess(data) {
     try {
+        CleareActivityTypeFields();
         $('#SaveActivityTypeModel #ActivityTypeId').val(data._object.activityTypeId);
         $('#SaveActivityTypeModel #ActivityTypeName').val(data._object.activityTypeName);
         $('#SaveActivityTypeModel #ActivityTypeTitle').html(UpdateLabel);
@@ -82,6 +83,12 @@ function CleareActivityTypeFields() {
     $('#SaveActivityTypeModel #ActivityTypeId').val("0");
     $('#SaveActivityTypeModel #ActivityTypeName').val("");
     $('#DeleteActivityTypeModel #ActivityTypeId').val("0");
+    var validationMessages = document.querySelectorAll(".field-validation-error");
+
+    // Loop through the messages and clear them
+    for (var i = 0; i < validationMessages.length; i++) {
+        validationMessages[i].textContent = "";
+    }
 }
 // #endregion
 

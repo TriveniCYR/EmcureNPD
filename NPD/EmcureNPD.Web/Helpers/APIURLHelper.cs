@@ -298,6 +298,8 @@ namespace EmcureNPD.Web.Helpers
         public static string GetMedicalFormdata = "api/PIDForm/GetPIDFMedicalFormData";
         public static string GetAPIIPDFormData = "api/PBF/GetAPIIPDFormData";
         public static string InsertUpdateAPIIPD = "api/PBF/InsertUpdateAPIIPD";
+        public static string GetAPIRnDFormData = "api/PBF/GetAPIRnDFormData";
+        public static string InsertUpdateAPIRnD = "api/PBF/InsertUpdateAPIRnD"; 
         #endregion
 
         #region API List

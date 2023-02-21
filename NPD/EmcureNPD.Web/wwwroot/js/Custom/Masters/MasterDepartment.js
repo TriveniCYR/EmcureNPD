@@ -51,6 +51,7 @@ function GetDepartmentById(id) {
 }
 function GetDepartmentByIdSuccess(data) {
     try {
+        CleareDepartmentFields();
         var businessUnitIds = data._object.businessUnitIds.toString();
         if (businessUnitIds.includes(',')) { businessUnitIds = businessUnitIds.toString().split(','); }
 
@@ -123,6 +124,12 @@ function CleareDepartmentFields() {
     $('#SaveDepartmentModel #DepartmentBusinessMappingId').val("");
     $('#SaveDepartmentModel #DepartmentBusinessUnitMappingId').val("");
     $('#SaveDepartmentModel #DepartmentBusinessUnitMappingId').trigger('change');
+    var validationMessages = document.querySelectorAll(".field-validation-error");
+
+    // Loop through the messages and clear them
+    for (var i = 0; i < validationMessages.length; i++) {
+        validationMessages[i].textContent = "";
+    }
 }
 // #endregion
 

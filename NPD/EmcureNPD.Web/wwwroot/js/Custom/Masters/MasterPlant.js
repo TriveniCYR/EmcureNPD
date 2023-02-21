@@ -28,6 +28,7 @@ function GetPlantById(id) {
 }
 function GetPlantByIdSuccess(data) {
     try {
+        ClearePlantFields();
         $('#SavePlantModel #PlantID').val(data._object.plantId);
         $('#SavePlantModel #PlantNameName').val(data._object.plantNameName);
         $('#SavePlantModel #PlantTitle').html(UpdateLabel);
@@ -82,6 +83,12 @@ function ClearePlantFields() {
     $('#SavePlantModel #PlantID').val("0");
     $('#SavePlantModel #PlantNameName').val("");
     $('#DeletePlantModel #PlantID').val("0");
+    var validationMessages = document.querySelectorAll(".field-validation-error");
+
+    // Loop through the messages and clear them
+    for (var i = 0; i < validationMessages.length; i++) {
+        validationMessages[i].textContent = "";
+    }
 }
 // #endregion
 

@@ -23,6 +23,7 @@ using System.Threading.Tasks;
 using static EmcureNPD.Utility.Enums.GeneralEnum;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http.Internal;
+using AutoMapper.Configuration;
 
 namespace EmcureNPD.Business.Core.Implementation
 {
@@ -50,8 +51,9 @@ namespace EmcureNPD.Business.Core.Implementation
 		private readonly IMasterFormulationService _masterFormulationService;
 		private readonly IMasterAnalyticalGLService _masterAnalyticalGLService;
 		private readonly IPidfProductStrengthService _productStrengthService;
-        private readonly IConfiguration _configuration;
+        private readonly Microsoft.Extensions.Configuration.IConfiguration _configuration;
         private IRepository<PidfApiIpd> _pidf_API_IPD_repository { get; set; }
+        private IRepository<PidfApiRnD> _pidf_API_RnD_repository { get; set; }
         private IRepository<PidfPbf> _pbfRepository { get; set; }
 
 		private readonly IMasterAuditLogService _auditLogService;		
@@ -68,7 +70,7 @@ namespace EmcureNPD.Business.Core.Implementation
 			IPidfProductStrengthService pidfProductStrengthService, IMasterDIAService masterDium, IMasterMarketExtensionService masterMarketExtensionService,
 			IMasterBERequirementService masterBERequirementService, IMasterProductTypeService masterProductTypeService, IMasterPlantService masterPlantService,
 			IMasterWorkflowService masterWorkflowService, IMasterFormRNDDivisionService masterFormRNDDivisionService, IMasterFormulationService masterFormulationService,
-			IMasterAnalyticalGLService masterAnalyticalGLService, IPidfProductStrengthService productStrengthService, IConfiguration configuration,
+			IMasterAnalyticalGLService masterAnalyticalGLService, IPidfProductStrengthService productStrengthService, Microsoft.Extensions.Configuration.IConfiguration configuration,
            
         IMasterAuditLogService auditLogService)
 		{
@@ -87,6 +89,7 @@ namespace EmcureNPD.Business.Core.Implementation
 			_pidfApiRepository = unitOfWork.GetRepository<Pidfapidetail>();
 			_pidfProductStrength = unitOfWork.GetRepository<PidfproductStrength>();
             _pidf_API_IPD_repository = _unitOfWork.GetRepository<PidfApiIpd>();
+            _pidf_API_RnD_repository = _unitOfWork.GetRepository<PidfApiRnD>();
             _masterDIAService = masterDium;
 			_masterMarketExtensionService = masterMarketExtensionService;
 			_masterBERequirementService = masterBERequirementService;
@@ -151,15 +154,23 @@ namespace EmcureNPD.Business.Core.Implementation
         #region API_IPD_Details_Form_Entity 
         public async Task<DBOperation> AddUpdateAPIIPD(IFormCollection _oAPIIPD_Form, string _webrootPath)
 		{
-			bool hasFile = true;
+			bool hasNewUploadFile = true;
 			string uniqueFileName = "";
 			string ErrorMsg = "";
-           var path = Path.Combine(_webrootPath, "Uploads\\PIDF\\APIIPD");
 
-            if (_oAPIIPD_Form.Files == null || _oAPIIPD_Form.Files.Count <= 0)
-				hasFile = false;
+            _oAPIIPD_Form.TryGetValue("Data", out StringValues Data);
+            dynamic jsonObject = JsonConvert.DeserializeObject(Data);
+            var path = Path.Combine(_webrootPath, "Uploads\\PIDF\\APIIPD");
 
-			if (hasFile)
+		bool IskeepLastFile=(jsonObject.MarketDetailsFileName==null || jsonObject.MarketDetailsFileName == "") ? false : true;	
+
+            if ((_oAPIIPD_Form.Files == null || _oAPIIPD_Form.Files.Count <= 0))
+			hasNewUploadFile = false;
+            else
+				IskeepLastFile = false;
+
+
+            if (hasNewUploadFile)
 			{
               var  MarketCGIFile = _oAPIIPD_Form.Files[0];
 				 uniqueFileName = Path.GetFileNameWithoutExtension(MarketCGIFile.FileName)
@@ -169,16 +180,12 @@ namespace EmcureNPD.Business.Core.Implementation
 				var fullPath = path + "\\" + MarketCGIFile.FileName;
 				var itmFileName = "APIIPD\\" + MarketCGIFile.FileName;
 
-				if (System.IO.File.Exists(fullPath))
-				{
-					System.IO.File.Delete(fullPath);
-				}
+				
 				ErrorMsg = FileValidation(MarketCGIFile);
 			}
 
 			PIDFAPIIPDFormEntity _oAPIIPD = new PIDFAPIIPDFormEntity();
-            _oAPIIPD_Form.TryGetValue("Data", out StringValues Data);
-            dynamic jsonObject = JsonConvert.DeserializeObject(Data);
+           
             _oAPIIPD.APIIPDDetailsFormID = jsonObject.APIIPDDetailsFormID;
 			_oAPIIPD.MarketDetailsFileName = uniqueFileName;
             _oAPIIPD.DrugsCategory = jsonObject.DrugsCategory;
@@ -198,21 +205,25 @@ namespace EmcureNPD.Business.Core.Implementation
 					//lastApiIpd.Total = _oAPIIPD.Total;
 					//lastApiIpd.Exhibit = _oAPIIPD.Exhibit;
 					//lastApiIpd.ScaleUp = _oAPIIPD.ScaleUp;
+					if (!IskeepLastFile)
+					{
+                        var exsistingFilePath = path + "\\" + lastApiIpd.MarketDetailsFileName;
+                        if (System.IO.File.Exists(exsistingFilePath))
+                        {
+                            System.IO.File.Delete(exsistingFilePath);
+                        }
+                        if (ErrorMsg == null && hasNewUploadFile)
+                        {
+                            var MarketCGIFile = _oAPIIPD_Form.Files[0];
+                            await FileUpload(MarketCGIFile, path, uniqueFileName);
+                        }
+                        lastApiIpd.MarketDetailsFileName = _oAPIIPD.MarketDetailsFileName;
+                    }					
 
-					var exsistingFilePath = path + "\\" + lastApiIpd.MarketDetailsFileName;
-                    if (System.IO.File.Exists(exsistingFilePath))
-                    {
-                        System.IO.File.Delete(exsistingFilePath);
-                    }
-                    if (ErrorMsg == null && hasFile)
-                    {
-                        var MarketCGIFile = _oAPIIPD_Form.Files[0];
-                        await FileUpload(MarketCGIFile, path, uniqueFileName);
-                    }
                     lastApiIpd.DrugsCategory = _oAPIIPD.DrugsCategory;
 					lastApiIpd.ProductTypeId = _oAPIIPD.ProductTypeId;
                     lastApiIpd.ProductStrength = _oAPIIPD.ProductStrength;
-					lastApiIpd.MarketDetailsFileName = _oAPIIPD.MarketDetailsFileName;
+					
                     lastApiIpd.Pidfid = long.Parse(_oAPIIPD.Pidfid);
                     lastApiIpd.ModifyBy = _oAPIIPD.LoggedInUserId;
 					lastApiIpd.ModifyDate = DateTime.Now;
@@ -233,7 +244,7 @@ namespace EmcureNPD.Business.Core.Implementation
                 //            _APIIPDDBEntity.Exhibit = _oAPIIPD.Exhibit;
                 //            _APIIPDDBEntity.ScaleUp = _oAPIIPD.ScaleUp;
 
-                if (ErrorMsg == null && hasFile)
+                if (ErrorMsg == null && hasNewUploadFile)
                 {
                     var MarketCGIFile = _oAPIIPD_Form.Files[0];
                     await FileUpload(MarketCGIFile, path, uniqueFileName);
@@ -260,16 +271,16 @@ namespace EmcureNPD.Business.Core.Implementation
 			var _oAPIIPD = await _pidf_API_IPD_repository.GetAsync(x=>x.Pidfid == pidfId);
 			if (_oAPIIPD != null)
 			{
-                //_oApiIpdData.FormulationQuantity = _oAPIIPD.FormulationQuantity;
-                //_oApiIpdData.APIIPDDetailsFormID = _oAPIIPD.PidfApiIpdId;
-                // _oApiIpdData.PlantQC = _oAPIIPD.PlantQc;
-                //_oApiIpdData.Development = _oAPIIPD.Development;
-                //_oApiIpdData.Total = _oAPIIPD.Total;
-                //_oApiIpdData.Exhibit = _oAPIIPD.Exhibit;
-                //_oApiIpdData.ScaleUp = _oAPIIPD.ScaleUp;
-
-                var path = Path.Combine(_webrootPath, "Uploads\\PIDF\\APIIPD");
-                var fullPath = path + "\\" + _oAPIIPD.MarketDetailsFileName;
+				//_oApiIpdData.FormulationQuantity = _oAPIIPD.FormulationQuantity;
+				//_oApiIpdData.APIIPDDetailsFormID = _oAPIIPD.PidfApiIpdId;
+				// _oApiIpdData.PlantQC = _oAPIIPD.PlantQc;
+				//_oApiIpdData.Development = _oAPIIPD.Development;
+				//_oApiIpdData.Total = _oAPIIPD.Total;
+				//_oApiIpdData.Exhibit = _oAPIIPD.Exhibit;
+				//_oApiIpdData.ScaleUp = _oAPIIPD.ScaleUp;
+                string baseURL = _configuration.GetSection("Apiconfig").GetSection("EmcureNPDAPIUrl").Value; //https://localhost:44362/
+                var path = Path.Combine(baseURL, "Uploads/PIDF/APIIPD");
+                var fullPath = path + "/" + _oAPIIPD.MarketDetailsFileName;
 
                 _oApiIpdData.DrugsCategory = _oAPIIPD.DrugsCategory;
                 _oApiIpdData.ProductTypeId = (int)_oAPIIPD.ProductTypeId;
@@ -282,6 +293,98 @@ namespace EmcureNPD.Business.Core.Implementation
         }
         //------------End------API_IPD_Details_Form_Entity--------------------------
         #endregion
+
+        public async Task<PIDFAPIRnDFormEntity> GetAPIRnDFormData(long pidfId, string _webrootPath)
+        {
+
+            PIDFAPIRnDFormEntity _oApiRnDData = new PIDFAPIRnDFormEntity();
+            var _oAPIRnD = await _pidf_API_RnD_repository.GetAsync(x => x.Pidfid == pidfId);
+            var _oAPIIpd = await _pidf_API_IPD_repository.GetAsync(x => x.Pidfid == pidfId);
+            if (_oAPIRnD != null)
+            {
+                _oApiRnDData.PIDFAPIRnDFormID = _oAPIRnD.PidfApiRnDId;
+                _oApiRnDData.Pidfid = _oAPIRnD.Pidfid.ToString();
+
+                _oApiRnDData.PlantQC = _oAPIRnD.PlantQc;
+				_oApiRnDData.Development = _oAPIRnD.Development;
+				_oApiRnDData.Total = _oAPIRnD.Total;
+				_oApiRnDData.Exhibit = _oAPIRnD.Exhibit;
+                _oApiRnDData.ScaleUp = _oAPIRnD.ScaleUp;				
+                _oApiRnDData.MarketID = _oAPIRnD.MarketExtenstionId;
+                _oApiRnDData.SponsorBusinessPartner = _oAPIRnD.SponsorBusinessPartner;
+                _oApiRnDData.APIMarketPrice = _oAPIRnD.ApimarketPrice;
+                _oApiRnDData.APITargetRMC_CCPC = _oAPIRnD.ApitargetRmcCcpc;             
+
+
+            }
+            if (_oAPIIpd != null)
+            {
+                string baseURL = _configuration.GetSection("Apiconfig").GetSection("EmcureNPDAPIUrl").Value;
+                var path = Path.Combine(baseURL, "Uploads/PIDF/APIIPD");
+                var fullPath = path + "/" + _oAPIIpd.MarketDetailsFileName;
+
+                _oApiRnDData.DrugsCategory = _oAPIIpd.DrugsCategory;
+                _oApiRnDData.ProductTypeId = (int)_oAPIIpd.ProductTypeId;
+                _oApiRnDData.ProductStrength = _oAPIIpd.ProductStrength;
+                _oApiRnDData.MarketDetailsFileName = fullPath;
+                var _objProductType = await _masterProductTypeService.GetById((int)_oAPIIpd.ProductTypeId);
+                if (_objProductType != null)
+                    _oApiRnDData.ProductType = _objProductType.ProductTypeName;
+
+            }
+            return _oApiRnDData;
+        }
+        public async Task<DBOperation> AddUpdateAPIRnD(PIDFAPIRnDFormEntity _oAPIRnD)
+        {   
+            //PIDFAPIIPDFormEntity _exsistingAPIRnD = new PIDFAPIIPDFormEntity();
+            if (_oAPIRnD.PIDFAPIRnDFormID > 0)
+            {
+                var lastApiIpd = _pidf_API_RnD_repository.GetAll().First(x => x.PidfApiRnDId == _oAPIRnD.PIDFAPIRnDFormID && x.IsActive == true);
+                if (lastApiIpd != null)
+                {                  
+                    lastApiIpd.PlantQc = _oAPIRnD.PlantQC;
+                    lastApiIpd.Development = _oAPIRnD.Development;
+                    lastApiIpd.Total = _oAPIRnD.Total;
+                    lastApiIpd.Exhibit = _oAPIRnD.Exhibit;
+                    lastApiIpd.ScaleUp = _oAPIRnD.ScaleUp;
+                    lastApiIpd.MarketExtenstionId= _oAPIRnD.MarketID;
+                    lastApiIpd.SponsorBusinessPartner= _oAPIRnD.SponsorBusinessPartner;
+                    lastApiIpd.ApimarketPrice= _oAPIRnD.APIMarketPrice;
+                    lastApiIpd.ApitargetRmcCcpc= _oAPIRnD.APITargetRMC_CCPC;
+                    lastApiIpd.Pidfid = long.Parse(_oAPIRnD.Pidfid);
+                    lastApiIpd.ModifyBy = _oAPIRnD.LoggedInUserId;
+                    lastApiIpd.ModifyDate = DateTime.Now;
+                    _pidf_API_RnD_repository.UpdateAsync(lastApiIpd);
+                }
+                else
+                {
+                    return DBOperation.NotFound;
+                }
+            }
+            else
+            {
+                var _oDBApiRnd = new PidfApiRnD();
+
+                _oDBApiRnd.PlantQc = _oAPIRnD.PlantQC;
+                _oDBApiRnd.Development = _oAPIRnD.Development;
+                _oDBApiRnd.Total = _oAPIRnD.Total;
+                _oDBApiRnd.Exhibit = _oAPIRnD.Exhibit;
+                _oDBApiRnd.ScaleUp = _oAPIRnD.ScaleUp;
+                _oDBApiRnd.MarketExtenstionId = _oAPIRnD.MarketID;
+                _oDBApiRnd.SponsorBusinessPartner = _oAPIRnD.SponsorBusinessPartner;
+                _oDBApiRnd.ApimarketPrice = _oAPIRnD.APIMarketPrice;
+                _oDBApiRnd.ApitargetRmcCcpc = _oAPIRnD.APITargetRMC_CCPC;
+                _oDBApiRnd.Pidfid = long.Parse(_oAPIRnD.Pidfid);              
+
+                _oDBApiRnd.CreatedBy = _oAPIRnD.LoggedInUserId;
+                _oDBApiRnd.CreatedDate = DateTime.Now;
+                _oDBApiRnd.IsActive = true;
+                _pidf_API_RnD_repository.AddAsync(_oDBApiRnd);
+            }
+            await _unitOfWork.SaveChangesAsync();
+            return DBOperation.Success;
+        }
+
         public async Task<dynamic> FillDropdown()
 		{
 			dynamic DropdownObjects = new ExpandoObject();

@@ -28,6 +28,7 @@ function GetDosageFormById(id) {
 }
 function GetDosageFormByIdSuccess(data) {
     try {
+        CleareDosageFormFields();
         $('#SaveDosageFormModel #DosageFormID').val(data._object.dosageFormId);
         $('#SaveDosageFormModel #DosageFormName').val(data._object.dosageFormName);
         $('#SaveDosageFormModel #DosageFormTitle').html(UpdateLabel);
@@ -82,6 +83,12 @@ function CleareDosageFormFields() {
     $('#SaveDosageFormModel #DosageFormID').val("0");
     $('#SaveDosageFormModel #DosageFormName').val("");
     $('#DeleteDosageFormModel #DosageFormID').val("0");
+    var validationMessages = document.querySelectorAll(".field-validation-error");
+
+    // Loop through the messages and clear them
+    for (var i = 0; i < validationMessages.length; i++) {
+        validationMessages[i].textContent = "";
+    }
 }
 // #endregion
 

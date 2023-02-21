@@ -10,6 +10,7 @@ namespace EmcureNPD.Data.DataAccess.Entity
         public Pidf()
         {
             PidfApiIpds = new HashSet<PidfApiIpd>();
+            PidfApiRnDs = new HashSet<PidfApiRnD>();
             PidfCommercials = new HashSet<PidfCommercial>();
             PidfIpds = new HashSet<PidfIpd>();
             PidfMedicals = new HashSet<PidfMedical>();
@@ -64,6 +65,7 @@ namespace EmcureNPD.Data.DataAccess.Entity
         public virtual MasterPidfstatus Status { get; set; }
         public virtual MasterUnitofMeasurement UnitofMeasurement { get; set; }
         public virtual ICollection<PidfApiIpd> PidfApiIpds { get; set; }
+        public virtual ICollection<PidfApiRnD> PidfApiRnDs { get; set; }
         public virtual ICollection<PidfCommercial> PidfCommercials { get; set; }
         public virtual ICollection<PidfIpd> PidfIpds { get; set; }
         public virtual ICollection<PidfMedical> PidfMedicals { get; set; }

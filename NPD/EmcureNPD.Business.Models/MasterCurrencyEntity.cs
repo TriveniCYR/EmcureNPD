@@ -13,13 +13,14 @@ namespace EmcureNPD.Business.Models
         public int CurrencyId { get; set; }
         [Required(ErrorMessageResourceType = typeof(Validation), ErrorMessageResourceName = "Required")]
         [Display(Name = "CurrencyName", ResourceType = typeof(Master))]
-        public string CurrencyName { get; set; }
+		[RegularExpression(@"^(?!\s*$).+", ErrorMessage = "The field cannot contain only spaces.")]
+		public string CurrencyName { get; set; }
         [Display(Name = "Active", ResourceType = typeof(Master))]
-
-        public string CurrencyCode { get; set; }
+		[RegularExpression(@"^(?!\s*$).+", ErrorMessage = "The field cannot contain only spaces.")]
+		public string CurrencyCode { get; set; }
         [Display(Name = "Active", ResourceType = typeof(Master))]
-
-        public string CurrencySymbol { get; set; }
+		[RegularExpression(@"^(?!\s*$).+", ErrorMessage = "The field cannot contain only spaces.")]
+		public string CurrencySymbol { get; set; }
         [Display(Name = "Active", ResourceType = typeof(Master))]
         public bool IsActive { get; set; }
         public DateTime CreatedDate { get; set; }

@@ -28,6 +28,7 @@ function GetBERequirementById(id) {
 }
 function GetBERequirementByIdSuccess(data) {
     try {
+        CleareBERequirementFields();
         $('#SaveBERequirementModel #BERequirementID').val(data._object.beRequirementId);
         $('#SaveBERequirementModel #BERequirementName').val(data._object.beRequirementName);
         $('#SaveBERequirementModel #BERequirementTitle').html(UpdateLabel);
@@ -82,6 +83,12 @@ function CleareBERequirementFields() {
     $('#SaveBERequirementModel #BERequirementID').val("0");
     $('#SaveBERequirementModel #BERequirementName').val("");
     $('#DeleteBERequirementModel #BERequirementID').val("0");
+    var validationMessages = document.querySelectorAll(".field-validation-error");
+
+    // Loop through the messages and clear them
+    for (var i = 0; i < validationMessages.length; i++) {
+        validationMessages[i].textContent = "";
+    }
 }
 // #endregion
 

@@ -10,11 +10,8 @@ $(document).ready(function () {
         else
             toastr.error(SaveStatus);
     }
-    InitializeProductTypeDropdown();
-
+    InitializeProductTypeDropdown();      
 });
-
-
 
 function InitializeProductTypeDropdown() {
     debugger;
@@ -25,6 +22,10 @@ function GetProductTypeListSuccess(data) {
         $.each(data._object, function (index, object) {
             $('#ProductTypeId').append($('<option>').text(object.productTypeName).attr('value', object.productTypeId));
         });
+
+        if ($("#APIIPDDetailsFormID").val()>0) {
+            $("#ProductTypeId").val(DBProductTypeId);  
+        }
     } catch (e) {
         toastr.error('Error:' + e.message);
     }
@@ -34,16 +35,33 @@ function GetProductTypeListError(x, y, z) {
 }
 
 
-$('#btnPreview').click(function () {
+$('#MarketDetailsNewPortCGIDetails').change(function () {
     debugger;
     var $input = $("#MarketDetailsNewPortCGIDetails");
     var reader = new FileReader();
     reader.onload = function () {
-        $("#imgPreviewMarketdetails").attr("src", reader.result);
-        $("#imgPreviewMarketdetails").val(DBProductTypeId);
+        $("#imgPreviewMarketdetails").attr("src", reader.result);        
     }
-    reader.readAsDataURL($input[0].files[0]);
+    reader.readAsDataURL($input[0].files[0]);    
+    $("#MarketDetailsFileName").val('');
 });
+$('#imgPreviewMarketdetails').click(function () {
+    var ImageUrl = $('#MarketDetailsFileName').val();   
+    if (ImageUrl == "" || ImageUrl == undefined) {
+
+    }
+    else {
+        var win = window.open(ImageUrl, '');
+        if (win) {
+            //Browser has allowed it to be opened
+            win.focus();
+        } else {
+            //Browser has blocked it
+            alert('Please allow popups for this website');
+        }
+    }
+});
+
 
 $('#Save').click(function () {
     ValidateForm();
@@ -101,7 +119,16 @@ function ValidateForm() {
     return IsInvalid;
 }
 
-
+function OpenImageInNewTab(url,FileName) {
+    var win = window.open(url, FileName);
+    if (win) {
+        //Browser has allowed it to be opened
+        win.focus();
+    } else {
+        //Browser has blocked it
+        alert('Please allow popups for this website');
+    }
+}
 
 
 

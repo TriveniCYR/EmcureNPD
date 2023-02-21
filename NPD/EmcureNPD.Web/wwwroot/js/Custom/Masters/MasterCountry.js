@@ -28,6 +28,7 @@ function GetCountryById(id) {
 }
 function GetCountryByIdSuccess(data) {
     try {
+        CleareCountryFields();
         $('#SaveCountryModel #CountryID').val(data._object.countryId);
         $('#SaveCountryModel #CountryName').val(data._object.countryName);
         $('#SaveCountryModel #CountryTitle').html(UpdateLabel);
@@ -82,6 +83,12 @@ function CleareCountryFields() {
     $('#SaveCountryModel #CountryID').val("0");
     $('#SaveCountryModel #CountryName').val("");
     $('#DeleteCountryModel #CountryID').val("0");
+    var validationMessages = document.querySelectorAll(".field-validation-error");
+
+    // Loop through the messages and clear them
+    for (var i = 0; i < validationMessages.length; i++) {
+        validationMessages[i].textContent = "";
+    }
 }
 // #endregion
 
