@@ -1,0 +1,234 @@
+﻿@using Microsoft.AspNetCore.Http
+@using EmcureNPD.Web.Controllers
+@using Microsoft.AspNetCore.Mvc.Localization
+@using EmcureNPD.Utility.Utility;
+@using EmcureNPD.Utility.Enums
+@inject IHttpContextAccessor HttpContextAccessor
+@inject Microsoft.Extensions.Localization.IStringLocalizer<EmcureNPD.Resource.Master> MasterLocalizer
+@inject Microsoft.Extensions.Localization.IStringLocalizer<EmcureNPD.Resource.Shared> SharedLocalizer
+@model EmcureNPD.Business.Models.PidfPbfAnalyticalEntity
+@{
+    ViewData["Title"] = "PBFAnaLytical";
+}
+
+
+<div class="card" style="width:100%">
+    <div class="card-body" style="background-color:white">
+        <form asp-action="PBFAnalyticalForm" asp-controller="PBF" enctype="multipart/form-data" method="post">
+            <input type="hidden" asp-for="AnalyticalPIDFID" />
+            <input type="hidden" asp-for="AnalyticalBusinessUnitId" />
+            <input type="hidden" asp-for="StrengthId" />
+
+            <div class="card-header">
+                <h5 class="mb-0"><b>General</b></h5>
+            </div>
+            <br>
+            <div class="card-body">
+                <div class="row">
+
+                    <div class="col-md-3">
+                        <div class="form-group required">
+                            @Html.LabelFor(model => model.ProjectName,@MasterLocalizer["ProjectName"], new { @class = "control-label" })
+                            @Html.TextBoxFor(model => model.ProjectName, new {@readonly = "readonly", @class = "form-control", @placeholder = @MasterLocalizer["ProjectName"] })
+                        </div>
+                    </div>
+
+                    <div class="col-md-3">
+                        <div class="form-group">
+                             <label class="control-label">Strength</label>
+                             <div id="strengthlbl">
+
+                             </div>                               
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="form-group required">
+                            @Html.LabelFor(model => model.SAPProjectProjectCode,"SAP Code / Project Code", new { @class = "control-label" })
+                            @Html.TextBoxFor(model => model.SAPProjectProjectCode,"sap code", new {@readonly = "readonly", @class = "form-control", @placeholder = @MasterLocalizer["ProjectName"] })
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="form-group required">
+                            @Html.LabelFor(model => model.ImprintingEmbossingCodes,"Imprinting Embossing Codes", new { @class = "control-label" })
+                            @Html.TextBoxFor(model => model.ImprintingEmbossingCodes,"Imprinting code", new {@readonly = "readonly", @class = "form-control", @placeholder = @MasterLocalizer["ProjectName"] })
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row">
+
+                    <div class="col-md-3">
+                        <div class="form-group required">
+                            @Html.LabelFor(model => model.TotalExpenses,"Total Expenses", new { @class = "control-label" })
+                            @Html.TextBoxFor(model => model.TotalExpenses,"Total Expenses", new { @class = "form-control", @placeholder = @MasterLocalizer["ProjectName"] })
+                        </div>
+                    </div>
+
+                    <div class="col-md-3">
+                        <div class="form-group required">
+                            @Html.LabelFor(model => model.ProjectComplexity,"Project Complexity", new { @class = "control-label" })
+                            @Html.TextBoxFor(model => model.ProjectComplexity,"Project Complexity", new { @class = "form-control", @placeholder = @MasterLocalizer["ProjectName"] })
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="form-group required">
+                            @Html.LabelFor(model => model.AnalyticalProductTypeId, "Product Type", new { @class = "control-label" })
+                            <select id="AnalyticalProductTypeId" name="AnalyticalProductTypeId" class="form-control readOnlyUpdate" required></select>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="form-group required">
+                            <label class="control-label">Test Licence Availability</label>
+
+                            <div stylle="display: inline-block;" id ="licence">
+                                <input type="checkbox" value="AHD" name=AnalyticalLicence>AHD
+                                <input type="checkbox" value="BHS" name=AnalyticalLicence>BHS
+                                <input type="checkbox" value="HNJ" name=AnalyticalLicence>HNJ
+                                <input type="checkbox" value="LYO" name=AnalyticalLicence>LYO Cycle
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+
+                    <div class="col-md-3">
+                        <div class="form-group required">
+                            <label class="control-label">Budget and Timeline Submission Date</label>
+                            <input type="text" id="BudgetTimelineDate" name="MarketExtensionId" class="form-control readOnlyUpdate" required />
+                        </div>
+                    </div>
+
+                    <div class="col-md-3">
+                        <div class="form-group required">
+                            @Html.LabelFor(model => model.AnalyticalFormulationGLId, "Formulation GL", new { @class = "control-label" })
+                            <select id="AnalyticalFormulationGLId" name="AnalyticalFormulationGLId" class="form-control readOnlyUpdate" required></select>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="form-group required">
+                            @Html.LabelFor(model => model.AnalyticalAnalyticalGLId, "Analytical GL", new { @class = "control-label" })
+                            <select id="AnalyticalAnalyticalGLId" name="AnalyticalAnalyticalGLId" class="form-control readOnlyUpdate" required></select>
+                        </div>
+                    </div>
+
+                </div>
+                <br />
+                <div class="row">
+
+                   <div class="col-md-12">
+                        <div class="form-group">
+                             <label class="control-label">Strength</label>
+                            <ul class="nav nav-pills" id="StrengthTabs">
+
+                                @*@if (@Model !=null && @Model.ProductStrength != null)
+                                {
+                                    @if (@Model.ProductStrength.Count > 0)
+                                    {
+                                        int k = 0;
+                                        @foreach (var strenght in @Model.ProductStrength)
+                                        {
+                                            <li class="nav-item mr-2">
+                                                <a class="btn btn-outline-primary" href="@strenght.ProductStrengthId" id="tab_@strenght.ProductStrengthId"> @strenght.ProductStrengthName</a>
+                                            </li>
+                                            k = k + 1;
+                                        }
+                                    }
+                                }*@
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                <br />
+                <div class="card-header">
+                    <h5 class="mb-0"><b>Analytical Activities</b></h5>
+                </div>
+                <br />
+                <div class="card-header">
+                    <h5 class="mb-0"><b>Prototype</b></h5>
+                </div>
+                <br />
+                <div>
+                    <table id="PIDFTable1" class="table table-bordered table-striped table-hover" style="width:100%">
+                        <thead>
+                            <tr>
+                                <th>Test Type</th>
+                                <th>Number of tests</th>
+                                <th>Prototype Development</th>
+                                <th>Rs /test</th>
+                                <th>Prototype Cost</th>
+                                <th>Action</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>
+
+                                    <div class="">
+                                        <div class="form-group required">
+                                            @*@Html.EditorFor(model => model.pidf_IPD_PatentDetailsEntities[i].PatentNumber, new { htmlAttributes = new { @autocomplete = "off",@readonly = true, @class = "form-control checkbox-checked", id = "pidf_IPD_PatentDetailsEntities[" + i + "].PatentNumber", @placeholder = @MasterLocalizer["Patent Number"]} })*@
+
+                                            <select id="MarketExtensionId" name="MarketExtensionId" class="form-control readOnlyUpdate"><</select>
+                                        </div>
+                                    </div>
+                                </td>
+                                <td>
+
+                                    <div class="">
+                                        <div class="form-group required">
+                                            @*@Html.EditorFor(model => model.pidf_IPD_PatentDetailsEntities[i].PatentNumber, new { htmlAttributes = new { @autocomplete = "off",@readonly = true, @class = "form-control checkbox-checked", id = "pidf_IPD_PatentDetailsEntities[" + i + "].PatentNumber", @placeholder = @MasterLocalizer["Patent Number"]} })*@
+                                            <input type="text" id="MarketExtensionId" name="MarketExtensionId" class="form-control readOnlyUpdate" />
+                                        </div>
+                                    </div>
+                                </td>
+                                <td>
+
+                                    <div class="">
+                                        <div class="form-group required">
+                                            @*@Html.EditorFor(model => model.pidf_IPD_PatentDetailsEntities[i].PatentNumber, new { htmlAttributes = new { @autocomplete = "off",@readonly = true, @class = "form-control checkbox-checked", id = "pidf_IPD_PatentDetailsEntities[" + i + "].PatentNumber", @placeholder = @MasterLocalizer["Patent Number"]} })*@
+                                            <input type="text" disabled id="MarketExtensionId" name="MarketExtensionId" class="form-control readOnlyUpdate" />
+                                        </div>
+                                    </div>
+                                </td>
+                                <td>
+
+                                    <div class="">
+                                        <div class="form-group required">
+                                            @*@Html.EditorFor(model => model.pidf_IPD_PatentDetailsEntities[i].PatentNumber, new { htmlAttributes = new { @autocomplete = "off",@readonly = true, @class = "form-control checkbox-checked", id = "pidf_IPD_PatentDetailsEntities[" + i + "].PatentNumber", @placeholder = @MasterLocalizer["Patent Number"]} })*@
+                                            <input type="text" id="MarketExtensionId" name="MarketExtensionId" class="form-control readOnlyUpdate" />
+                                        </div>
+                                    </div>
+                                </td>
+                                <td>
+
+                                    <div class="">
+                                        <div class="form-group required">
+                                            @*@Html.EditorFor(model => model.pidf_IPD_PatentDetailsEntities[i].PatentNumber, new { htmlAttributes = new { @autocomplete = "off",@readonly = true, @class = "form-control checkbox-checked", id = "pidf_IPD_PatentDetailsEntities[" + i + "].PatentNumber", @placeholder = @MasterLocalizer["Patent Number"]} })*@
+                                            <input type="text" id="MarketExtensionId" name="MarketExtensionId" class="form-control readOnlyUpdate" />
+                                        </div>
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="col-md">
+                                        <div class="form-group">
+                                            <i class="fas fa-plus"></i>
+                                            @*<i class="fas fa-plus" id="addIcon_@i" onclick="addRowProductStrength(@i)"></i>*@
+                                        </div>
+                                    </div>
+                                </td>
+                            </tr>
+                        <tbody>
+
+                    </table>
+                </div>
+                <div class="form-group">
+                    <button type="submit" id="Save" class="btn btn-primary">@SharedLocalizer["Submit"]</button>
+                </div>
+            </div>
+        </form>
+
+    </div>
+</div>
+@section MyScripts{
+
+@*<script type="text/javascript" src="~/js/Custom/PBF/Analytical/PBFAnalytical.js"></script>*@
+}

@@ -1,5 +1,6 @@
 ﻿using EmcureNPD.Business.Models;
 using EmcureNPD.Resource;
+using EmcureNPD.Utility.Enums;
 using EmcureNPD.Utility.Models;
 using EmcureNPD.Utility.Utility;
 using EmcureNPD.Web.Helpers;
@@ -24,21 +25,40 @@ namespace EmcureNPD.Web.Controllers
 		private readonly IConfiguration _cofiguration;
 		private readonly IStringLocalizer<Errors> _stringLocalizerError;
 		private readonly IStringLocalizer<Shared> _stringLocalizerShared;
-		#endregion
-		public PBFController(IConfiguration configuration,
-			IStringLocalizer<Errors> stringLocalizerError, IStringLocalizer<Shared> stringLocalizerShared)
+        private readonly IHelper _helper;
+        #endregion
+        public PBFController(IConfiguration configuration,
+			IStringLocalizer<Errors> stringLocalizerError, IStringLocalizer<Shared> stringLocalizerShared,IHelper helper)
 		{
 			_cofiguration = configuration;
 			_stringLocalizerError = stringLocalizerError;
 			_stringLocalizerShared = stringLocalizerShared;
-		}
+            _helper = helper;
+        }
 		[HttpGet]
 		public IActionResult PBFRnDForm(string pidfid, string bui)
 		{			
 			return View();
 		}
-        public IActionResult PBFAnalyticalForm(string pidfid, string bui)
+        [HttpGet]
+        public IActionResult PBFAnaLyticalForm(string pidfid, string bui)
         {
+            //MasterProductStrengthEntity p = new MasterProductStrengthEntity();
+            //p.ProductStrengthId = 1;
+            //p.ProductStrengthName = "PCTMOL 250";
+            //MasterProductStrengthEntity p2 = new MasterProductStrengthEntity();
+            //p2.ProductStrengthId = 1;
+            //p2.ProductStrengthName = "PCTMOL 250";
+            //List<MasterProductStrengthEntity> Pn = new List<MasterProductStrengthEntity>();
+            //Pn.Add(p);
+            //Pn.Add(p2);
+            //PidfPbfAnalyticalEntity PnEntity= new ();
+            //PnEntity.ProjectName = "Prashant";
+            //PnEntity.ProductStrength = Pn;
+            //PnEntity.SAPProjectProjectCode = "Fill From DB";
+            //PnEntity.ImprintingEmbossingCodes = "Fill From DB";
+
+
             return View();
         }
         public IActionResult PBFClinicalForm(string pidfid, string bui)
@@ -409,7 +429,43 @@ namespace EmcureNPD.Web.Controllers
         }
         #endregion
 
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public IActionResult PBFAnaLyticalForm(int PIDFId, PidfPbfAnalyticalEntity pIDFEntity)
+        {
+            try
+            {
+                if (pIDFEntity.SaveType == "submit")
+                    pIDFEntity.StatusId = (Int32)Master_PIDFStatus.PIDFSubmitted;
+                else
+                    pIDFEntity.StatusId = (Int32)Master_PIDFStatus.PIDFInProgress;
 
+                if (pIDFEntity.AnalyticalPIDFID <= 0)
+                    pIDFEntity.LastStatusId = pIDFEntity.StatusId;
+
+                pIDFEntity.CreatedBy = _helper.GetLoggedInUserId(); //Convert.ToInt32(HttpContext.Session.GetString(UserHelper.LoggedInUserId));
+
+                string token = _helper.GetToken();
+                APIRepository objapi = new(_cofiguration);
+
+                HttpResponseMessage responseMessage = objapi.APICommunication(APIURLHelper.SavePBFAnatical, HttpMethod.Post, token, new StringContent(JsonConvert.SerializeObject(pIDFEntity))).Result;
+
+                if (responseMessage.IsSuccessStatusCode)
+                {
+                    string jsonResponse = responseMessage.Content.ReadAsStringAsync().Result;
+                    ModelState.Clear();
+                    return RedirectToAction(nameof(PBFForm));
+                }
+            }
+            catch (Exception e)
+            {
+                ViewBag.errormessage = Convert.ToString(e.StackTrace);
+                ModelState.Clear();
+                return View(nameof(PBFForm));
+            }
+            ModelState.Clear();
+            return RedirectToAction(nameof(PBFForm));
+        }
 
 
     }

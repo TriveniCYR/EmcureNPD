@@ -181,6 +181,7 @@ namespace EmcureNPD.Web.Helpers
         public static string SaveProductStrength = "api/ProductStrength/InsertUpdateProductStrength";
         public static string GetProductStrengthById = "api/ProductStrength/GetProductStrengthById";
         public static string DeleteProductStrengthById = "api/ProductStrength/DeleteProductStrength";
+
         #endregion
 
         #region BERequirement
@@ -240,6 +241,9 @@ namespace EmcureNPD.Web.Helpers
         public static string SaveCommercialPIDF = "api/CommercialPIDFForm/SaveCommercialPIDF";
         public static string GetPbfFormData = "api/PBF/GetPbfFormData";
         public static string SavePBF = "api/PBF/InsertUpdatePBFDetails";
+        public static string SavePBFAnatical = "api/PBF/PBFAnaLytical";
+        public static string GetPBFReadonlyDataByPIDFId = "api/PBF/GetPBFAnalyticalReadonlyData";
+
 
         #endregion
 

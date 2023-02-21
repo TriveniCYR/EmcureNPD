@@ -20,6 +20,7 @@ namespace EmcureNPD.Business.Core.Interface
         Task<DBOperation> AddUpdateAPIIPD(IFormCollection entityPIDF,string _webrootPath);
 
 		Task<PIDFAPIIPDFormEntity> GetAPIIPDFormData(long pidfId, string _webrootPath);
+		Task<PidfPbfAnalyticalEntity> GetPBFAnalyticalReadonlyData(long pidfid);
 		//------------End------API_IPD_Details_Form_Entity--------------------------
-    }
+	}
 }

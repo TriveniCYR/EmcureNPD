@@ -13,7 +13,8 @@
 
 <div id="SavePIDFModel">
     <form action="PBFForm" method="get">
-
+        <input type="hidden" asp-for="Pidfid" />	
+         <input type="hidden" asp-for="BusinessUnitId" />	
         <div class="card">
             <div id="PIDFFormTemplate">
                 @{
@@ -255,6 +256,7 @@
                     <div class="tab col-md-3">
                         <li class="nav-item mr-2" style="list-style-type: none;">
                             <a class="btn btn-outline-primary" onclick="openPBFForm(event, 'RnD')">RnD</a>
+                            @*<a class="btn btn-outline-primary" onclick="tabClick('PBFAnalyticalForm','','')">Analytical</a>*@
                             <a class="btn btn-outline-primary" onclick="openPBFForm(event, 'Analytical')">Analytical</a>
                             <a class="btn btn-outline-primary" onclick="openPBFForm(event, 'Clinical')">Clinical</a>
                         </li>
@@ -294,12 +296,15 @@
                     }                       
                     </div>
                     
-                   @* <div id="Analytical" class="tabcontent">
-                    @Html.Partial("~/Views/PIDF/PBFRnDForm.cshtml", new PidfPbfEntity())
-                        @Html.Partial("~/Views/PIDF/PBFAnalyticalForm.cshtml",new PIDFEntity())
+                    <div id="Analytical" class="tabcontent">
+                    @Html.Partial("~/Views/PBF/PBFAnalyticalForm.cshtml", new PidfPbfAnalyticalEntity())
+                     @*@{
+                    await Html.RenderPartialAsync("~/Views/PBF/PBFAnalyticalForm.cshtml",Model.pidfPbfAnalyticalEntity);
+                     } *@  
+                     @*@Html.Partial("~/Views/PIDF/PBFAnalyticalForm.cshtml",new PIDFEntity())*@
                     </div>
 
-                    <div id="Clinical" class="tabcontent">
+                    @*<div id="Clinical" class="tabcontent">
                         @Html.Partial("~/Views/PIDF/PBFClinicalForm.cshtml",new PIDFEntity())
                     </div>*@
                     @*</section>*@
@@ -315,7 +320,7 @@
     @Html.Partial("_DataTablePartial")
     <script type="text/javascript" src="~/js/Custom/DynamicDataTable.js"></script>
     <script type="text/javascript" src="~/js/Custom/PIDF/PBFForm.js"></script>
-
+@*    <script type="text/javascript" src="~/js/Custom/PBF/Analytical/PBFAnalytical.js"></script>*@
     <link rel="stylesheet" href="~/AdminLTE/plugins/select2/css/select2.min.css" />
     <script type="text/javascript" src="~/AdminLTE/plugins/select2/js/select2.min.js"></script>
     <link href="/lib/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
@@ -340,6 +345,7 @@
         //#region Setup API Url
         var PFBAPIPIDFList = "@EmcureNPD.Web.Helpers.APIURLHelper.GetPFBAPIPIDFList";
         var GetAllPBF = "@EmcureNPD.Web.Helpers.APIURLHelper.GetPBFDropdown";
+        var GetPBFReadonlyDataByPIDFId = "@EmcureNPD.Web.Helpers.APIURLHelper.GetPBFReadonlyDataByPIDFId";
         // #endregion
 
         //#region Static Messae Init

@@ -17,5 +17,6 @@ namespace EmcureNPD.Business.Models
         [Display(Name = "Active", ResourceType = typeof(Master))]
         public bool IsActive { get; set; }
         public DateTime CreatedDate { get; set; }
+
     }
 }
