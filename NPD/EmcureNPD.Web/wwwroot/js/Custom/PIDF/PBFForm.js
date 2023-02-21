@@ -1,8 +1,22 @@
-﻿
+﻿var SelectedBUValue = 0;
+var SelectedstrengthValue = 0;
+var selected = new Array();
 $(document).ready(function () {   
     GetPBFDropdown();
     SetDivReadonly();    
     hideForms();
+    GetProductStrengthById($('#Pidfid').val());
+
+    $("#licence input[type=checkbox]:checked").each(function () {
+        selected.push(this.value);
+    });
+    $("input[name='AnalyticalLicence']:checked").each(function () {
+        selected.push($(this).val());
+    });
+    //Display the selected CheckBox values.
+    if (selected.length > 0) {
+        alert("Selected values: " + selected.join(","));
+    }
 });
 function GetPBFDropdown() {
     ajaxServiceMethod($('#hdnBaseURL').val() + GetAllPBF, 'GET', GetPBFDropdownSuccess, GetPBFDropdownError);
@@ -62,13 +76,7 @@ function GetPBFDropdownSuccess(data) {
             });
             $(data.MasterAnalyticalGLService).each(function (index, item) {
                 $('#PbfRndAnalyticalId').append('<option value="' + item.analyticalId + '">' + item.analyticalName + '</option>');
-            });
-            $(data.MasterFormulationService).each(function (index, item) {
-                $('#PbfAnalFormulationId').append('<option value="' + item.formulationId + '">' + item.formulationName + '</option>');
-            });
-            $(data.MasterAnalyticalGLService).each(function (index, item) {
-                $('#PbfAnalAnalyticalId').append('<option value="' + item.analyticalId + '">' + item.analyticalName + '</option>');
-            });
+            });           
             $(data.MasterFormulationService).each(function (index, item) {
                 $('#PbfClinicalFormulationId').append('<option value="' + item.formulationId + '">' + item.formulationName + '</option>');
             });
@@ -90,6 +98,15 @@ function GetPBFDropdownSuccess(data) {
             });
             $(data.MasterCountrys).each(function (index, item) {
                 $('#PbfRFDFECountryId').append('<option value="' + item.countryId + '">' + item.countryName + '</option>');
+            });
+            $(data.MasterProductType).each(function (index, item) {
+                $('#AnalyticalProductTypeId').append('<option value="' + item.productTypeId + '">' + item.productTypeName + '</option>');
+            });            
+            $(data.MasterFormulationService).each(function (index, item) {
+                $('#AnalyticalFormulationGLId').append('<option value="' + item.formulationId + '">' + item.formulationName + '</option>');
+            });           
+            $(data.MasterAnalyticalGLService).each(function (index, item) {
+                $('#AnalyticalAnalyticalGLId').append('<option value="' + item.analyticalId + '">' + item.analyticalName + '</option>');
             });
         }
     } catch (e) {
@@ -126,10 +143,11 @@ function SavePIDFFormError(x, y, z) {
 }
 
 function tabClick(action, val, pidfidval) {
+    debugger;
     if (action == 'PBFRnDForm')
         var url = "/PBF/PBFRnDForm?pidfid=" + pidfidval + "&bui=" + val;
     if (action == 'PBFAnalyticalForm')
-        var url = "/PBF/PBFAnalyticalForm?pidfid=" + pidfidval + "&bui=" + val;
+        var url = "/PBF/PBFAnalyticalForm?pidfid=" + $('#Pidfid').val() + "&bui=" + $('#BusinessUnitId').val() ;
     if (action == 'PBFClinicalForm')
         var url = "/PBF/PBFClinicalForm?pidfid=" + pidfidval + "&bui=" + val;
     window.location.href = url;
@@ -179,3 +197,44 @@ function StrengthtabClick(strengthId, pidfidval, strengthVal) {
     ////ClearValidationForMainForm();
     //GetCommercialPIDFByBU(pidfidval);
 }
+function BUtabClick(BUVal, pidfidval) {
+    SelectedBUValue = BUVal;
+    $("#AnalyticalBusinessUnitId").val(SelectedBUValue);   
+    $("#AnalyticalPIDFID").val($('#Pidfid').val());
+}
+// #region Get ProductStrength By Id
+function GetProductStrengthById(id) {
+    alert('PIDFID = '+id);
+    ajaxServiceMethod($('#hdnBaseURL').val() + GetPBFReadonlyDataByPIDFId + "/" + id, 'GET', GetProductStrengthByIdSuccess, GetProductStrengthByIdError);
+}
+function GetProductStrengthByIdSuccess(data) {
+    debugger;
+    try {
+        $('#ProjectName').val(data._object.projectName);
+        $('#SAPProjectProjectCode').val(data._object.sapProjectProjectCode);
+        $('#ImprintingEmbossingCodes').val(data._object.imprintingEmbossingCodes);        
+        $(data._object.productStrength).each(function (index, item) {
+            $('#strengthlbl').append('<label class="form-control readOnlyUpdate">' + item.strength + '</label>');
+            $('#StrengthTabs').append("<li>  <a class='btn btn-outline-primary' id=" + item.pidfproductStrengthId + " onclick='StrengthtabClick(" + item.pidfproductStrengthId + ");'>" + item.strength + "</a></li>");         
+        });
+    }
+    catch (e) {
+        toastr.error('Error:' + e.message);
+    }
+}
+function GetProductStrengthByIdError(x, y, z) {
+    toastr.error(ErrorMessage);
+}
+function StrengthtabClick(strengthVal) {
+    SelectedstrengthValue = strengthVal;
+    //$("#AnalyticalBusinessUnitId").val(SelectedBUValue);
+    $("#StrengthId").val(SelectedstrengthValue);
+    alert(SelectedstrengthValue);
+
+    //GetCommercialPIDFByBU(pidfidval);
+    //$("#AddYearForm").hide();
+}
+
+// #endregion
+
+

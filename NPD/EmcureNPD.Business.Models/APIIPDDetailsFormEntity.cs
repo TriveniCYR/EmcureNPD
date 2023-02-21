@@ -9,8 +9,7 @@ using System.Text;
 using System.Threading.Tasks;
 
 namespace EmcureNPD.Business.Models
-{
-    
+{    
     public class PIDFAPIIPDFormEntity
     {
         public long APIIPDDetailsFormID { get; set; }        

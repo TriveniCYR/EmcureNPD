@@ -50,6 +50,7 @@ function GetCurrencyById(id) {
 }
 function GetCurrencyByIdSuccess(data) {
     try {
+        CleareCurrencyFields();
         var countryIds = data._object.countryIds.toString();
         if (countryIds.includes(',')) { countryIds = countryIds.toString().split(','); }
 
@@ -128,6 +129,12 @@ function CleareCurrencyFields() {
     $('#SaveCurrencyModel #CurrencyCountryMappingId').val("");
     $('#SaveCurrencyModel #CountryId').val("");
     $('#SaveCurrencyModel #CountryId').trigger('change');
+    var validationMessages = document.querySelectorAll(".field-validation-error");
+
+    // Loop through the messages and clear them
+    for (var i = 0; i < validationMessages.length; i++) {
+        validationMessages[i].textContent = "";
+    }
 }
 // #endregion
 

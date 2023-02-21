@@ -28,6 +28,7 @@ function GetUnitofMeasurementById(id) {
 }
 function GetUnitofMeasurementByIdSuccess(data) {
     try {
+        CleareUnitofMeasurementFields();
         $('#SaveUnitofMeasurementModel #UnitofMeasurementID').val(data._object.unitofMeasurementId);
         $('#SaveUnitofMeasurementModel #UnitofMeasurementName').val(data._object.unitofMeasurementName);
         $('#SaveUnitofMeasurementModel #UnitofMeasurementTitle').html(UpdateLabel);
@@ -82,6 +83,12 @@ function CleareUnitofMeasurementFields() {
     $('#SaveUnitofMeasurementModel #UnitofMeasurementID').val("0");
     $('#SaveUnitofMeasurementModel #UnitofMeasurementName').val("");
     $('#DeleteUnitofMeasurementModel #UnitofMeasurementID').val("0");
+    var validationMessages = document.querySelectorAll(".field-validation-error");
+
+    // Loop through the messages and clear them
+    for (var i = 0; i < validationMessages.length; i++) {
+        validationMessages[i].textContent = "";
+    }
 }
 // #endregion
 

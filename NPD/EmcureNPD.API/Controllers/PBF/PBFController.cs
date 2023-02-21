@@ -23,19 +23,20 @@ namespace EmcureNPD.API.Controllers.PBF
 		#region Properties
 
 		private readonly IPBFService _PBFService;
-
+		private readonly IPidfProductStrengthService _IPidfProductStrengthService;
 		private readonly IResponseHandler<dynamic> _ObjectResponse;
         private readonly IWebHostEnvironment _webHostEnvironment;
         #endregion Properties
 
         #region Constructor
 
-        public PBFController(IPBFService PBFService, IResponseHandler<dynamic> ObjectResponse, IWebHostEnvironment webHostEnvironment)
+        public PBFController(IPBFService PBFService, IResponseHandler<dynamic> ObjectResponse, IWebHostEnvironment webHostEnvironment, IPidfProductStrengthService IPidfProductStrengthService)
 		{
 			_PBFService = PBFService;
 			_ObjectResponse = ObjectResponse;
             _webHostEnvironment= webHostEnvironment;
-        }
+			_IPidfProductStrengthService = IPidfProductStrengthService;
+		}
 
 		#endregion Constructor
 
@@ -185,4 +186,22 @@ namespace EmcureNPD.API.Controllers.PBF
 
 
     }
+
+		//[HttpGet, Route("GetPBFAnalyticalReadonlyData/{pidfId}")]
+		//public async Task<IActionResult> GetPBFAnalyticalReadonlyData([FromRoute] long pidfId)
+		//{
+  //          try
+  //          {
+  //              var oPIDFEntity = await _PBFService.GetPBFAnalyticalReadonlyData(pidfId);
+  //              if (oPIDFEntity != null)
+  //                  return _ObjectResponse.Create(oPIDFEntity, (Int32)HttpStatusCode.OK);
+  //              else
+  //                  return _ObjectResponse.Create(null, (Int32)HttpStatusCode.BadRequest, "Record not found");
+  //          }
+  //          catch (Exception ex)
+  //          {
+  //              return _ObjectResponse.Create(false, (Int32)HttpStatusCode.InternalServerError, Convert.ToString(ex.StackTrace));
+  //          }
+  //      }
+	//}
 }

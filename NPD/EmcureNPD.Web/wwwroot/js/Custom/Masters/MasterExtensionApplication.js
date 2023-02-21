@@ -28,6 +28,7 @@ function GetExtensionApplicationById(id) {
 }
 function GetExtensionApplicationByIdSuccess(data) {
     try {
+        CleareExtensionApplicationFields();
         $('#SaveExtensionApplicationModel #ExtensionApplicationId').val(data._object.extensionApplicationId);
         $('#SaveExtensionApplicationModel #ExtensionApplicationName').val(data._object.extensionApplicationName);
         $('#SaveExtensionApplicationModel #ExtensionApplicationTitle').html(UpdateLabel);
@@ -82,6 +83,12 @@ function CleareExtensionApplicationFields() {
     $('#SaveExtensionApplicationModel #ExtensionApplicationId').val("0");
     $('#SaveExtensionApplicationModel #ExtensionApplicationName').val("");
     $('#DeleteExtensionApplicationModel #ExtensionApplicationId').val("0");
+    var validationMessages = document.querySelectorAll(".field-validation-error");
+
+    // Loop through the messages and clear them
+    for (var i = 0; i < validationMessages.length; i++) {
+        validationMessages[i].textContent = "";
+    }
 }
 // #endregion
 

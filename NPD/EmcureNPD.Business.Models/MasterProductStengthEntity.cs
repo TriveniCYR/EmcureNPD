@@ -13,9 +13,11 @@ namespace EmcureNPD.Business.Models
         public int ProductStrengthId { get; set; }
         [Required(ErrorMessageResourceType = typeof(Validation), ErrorMessageResourceName = "Required")]
         [Display(Name = "ProductStrengthName", ResourceType = typeof(Master))]
-        public string ProductStrengthName { get; set; }
+		[RegularExpression(@"^(?!\s*$).+", ErrorMessage = "The field cannot contain only spaces.")]
+		public string ProductStrengthName { get; set; }
         [Display(Name = "Active", ResourceType = typeof(Master))]
         public bool IsActive { get; set; }
         public DateTime CreatedDate { get; set; }
+
     }
 }

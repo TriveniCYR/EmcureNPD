@@ -28,6 +28,7 @@ function GetOralById(id) {
 }
 function GetOralByIdSuccess(data) {
     try {
+        CleareOralFields();
         $('#SaveOralModel #OralID').val(data._object.oralId);
         $('#SaveOralModel #OralName').val(data._object.oralName);
         $('#SaveOralModel #OralTitle').html(UpdateLabel);
@@ -82,6 +83,12 @@ function CleareOralFields() {
     $('#SaveOralModel #OralID').val("0");
     $('#SaveOralModel #OralName').val("");
     $('#DeleteOralModel #OralID').val("0");
+    var validationMessages = document.querySelectorAll(".field-validation-error");
+
+    // Loop through the messages and clear them
+    for (var i = 0; i < validationMessages.length; i++) {
+        validationMessages[i].textContent = "";
+    }
 }
 // #endregion
 

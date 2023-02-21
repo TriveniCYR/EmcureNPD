@@ -440,5 +440,16 @@ namespace EmcureNPD.Business.Core.Implementation
 
 			return data;
 		}
-	}
+
+        public async Task<PidfPbfAnalyticalEntity> GetPBFAnalyticalReadonlyData(long pidfid)
+        {
+			PidfPbfAnalyticalEntity PAE = new PidfPbfAnalyticalEntity();		
+			PAE.ProductStrength = _pidfProductStrengthService.GetAll().Result.Where(x => x.Pidfid == pidfid).ToList();
+			var objpidf = _repository.GetAll().Where(x => x.Pidfid == pidfid).FirstOrDefault();
+			PAE.ProjectName = objpidf.MoleculeName;
+			PAE.SAPProjectProjectCode = "Need to discuss";
+			PAE.ImprintingEmbossingCodes = "Need to discuss";
+			return PAE;
+		}
+    }
 }

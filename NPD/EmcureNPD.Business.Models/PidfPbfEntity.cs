@@ -35,6 +35,8 @@ namespace EmcureNPD.Business.Models
         public string SaveType { get; set; }
         public List<MasterBusinessUnitEntity> MasterBusinessUnitEntities { get; set; }		
 		public PIDFEntity pidfEntity { get; set; }
-		public PidfPbfRnDEntity pidfPbfRndEntity { get; set; }		
-	}
+		public PidfPbfRnDEntity pidfPbfRndEntity { get; set; }
+        public PidfPbfAnalyticalEntity pidfPbfAnalyticalEntity { get; set; }
+        public PidfPbfAnalyticalFormEntity pidfPbfAnalyticalFormEntity { get; set; }
+    }
 }

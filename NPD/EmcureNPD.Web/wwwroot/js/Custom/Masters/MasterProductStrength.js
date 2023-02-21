@@ -28,6 +28,7 @@ function GetProductStrengthById(id) {
 }
 function GetProductStrengthByIdSuccess(data) {
     try {
+        CleareProductStrengthFields();
         $('#SaveProductStrengthModel #ProductStrengthID').val(data._object.productStrengthId);
         $('#SaveProductStrengthModel #ProductStrengthName').val(data._object.productStrengthName);
         $('#SaveProductStrengthModel #ProductStrengthTitle').html(UpdateLabel);
@@ -82,6 +83,12 @@ function CleareProductStrengthFields() {
     $('#SaveProductStrengthModel #ProductStrengthID').val("0");
     $('#SaveProductStrengthModel #ProductStrengthName').val("");
     $('#DeleteProductStrengthModel #ProductStrengthID').val("0");
+    var validationMessages = document.querySelectorAll(".field-validation-error");
+
+    // Loop through the messages and clear them
+    for (var i = 0; i < validationMessages.length; i++) {
+        validationMessages[i].textContent = "";
+    }
 }
 // #endregion
 

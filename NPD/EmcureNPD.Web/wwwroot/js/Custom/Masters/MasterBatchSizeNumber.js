@@ -28,6 +28,7 @@ function GetBatchSizeNumberById(id) {
 }
 function GetBatchSizeNumberByIdSuccess(data) {
     try {
+        CleareBatchSizeNumberFields();
         $('#SaveBatchSizeNumberModel #BatchSizeNumberID').val(data._object.batchSizeNumberId);
         $('#SaveBatchSizeNumberModel #BatchSizeNumberName').val(data._object.batchSizeNumberName);
         $('#SaveBatchSizeNumberModel #BatchSizeNumberTitle').html(UpdateLabel);
@@ -82,6 +83,12 @@ function CleareBatchSizeNumberFields() {
     $('#SaveBatchSizeNumberModel #BatchSizeNumberID').val("0");
     $('#SaveBatchSizeNumberModel #BatchSizeNumberName').val("");
     $('#DeleteBatchSizeNumberModel #BatchSizeNumberID').val("0");
+    var validationMessages = document.querySelectorAll(".field-validation-error");
+
+    // Loop through the messages and clear them
+    for (var i = 0; i < validationMessages.length; i++) {
+        validationMessages[i].textContent = "";
+    }
 }
 // #endregion
 
