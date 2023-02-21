@@ -28,6 +28,7 @@ function GetAnalyticalGLById(id) {
 }
 function GetAnalyticalGLByIdSuccess(data) {
     try {
+        CleareAnalyticalGLFields();
         $('#SaveAnalyticalGLModel #AnalyticalID').val(data._object.analyticalId);
         $('#SaveAnalyticalGLModel #AnalyticalName').val(data._object.analyticalName);
         $('#SaveAnalyticalGLModel #AnalyticalGLTitle').html(UpdateLabel);
@@ -82,6 +83,12 @@ function CleareAnalyticalGLFields() {
     $('#SaveAnalyticalGLModel #AnalyticalID').val("0");
     $('#SaveAnalyticalGLModel #AnalyticalName').val("");
     $('#DeleteAnalyticalGLModel #AnalyticalID').val("0");
+    var validationMessages = document.querySelectorAll(".field-validation-error");
+
+    // Loop through the messages and clear them
+    for (var i = 0; i < validationMessages.length; i++) {
+        validationMessages[i].textContent = "";
+    }
 }
 // #endregion
 

@@ -28,6 +28,7 @@ function GetPackagingTypeById(id) {
 }
 function GetPackagingTypeByIdSuccess(data) {
     try {
+        ClearePackagingTypeFields();
         $('#SavePackagingTypeModel #PackagingTypeID').val(data._object.packagingTypeId);
         $('#SavePackagingTypeModel #PackagingTypeName').val(data._object.packagingTypeName);
         $('#SavePackagingTypeModel #PackagingTypeTitle').html(UpdateLabel);
@@ -82,6 +83,12 @@ function ClearePackagingTypeFields() {
     $('#SavePackagingTypeModel #PackagingTypeID').val("0");
     $('#SavePackagingTypeModel #PackagingTypeName').val("");
     $('#DeletePackagingTypeModel #PackagingTypeID').val("0");
+    var validationMessages = document.querySelectorAll(".field-validation-error");
+
+    // Loop through the messages and clear them
+    for (var i = 0; i < validationMessages.length; i++) {
+        validationMessages[i].textContent = "";
+    }
 }
 // #endregion
 

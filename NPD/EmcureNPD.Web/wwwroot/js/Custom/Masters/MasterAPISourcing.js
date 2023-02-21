@@ -28,6 +28,7 @@ function GetAPISourcingById(id) {
 }
 function GetAPISourcingByIdSuccess(data) {
     try {
+        CleareAPISourcingFields();
         $('#SaveAPISourcingModel #APISourcingID').val(data._object.apiSourcingId);
         $('#SaveAPISourcingModel #APISourcingName').val(data._object.apiSourcingName);
         $('#SaveAPISourcingModel #APISourcingTitle').html(UpdateLabel);
@@ -82,6 +83,12 @@ function CleareAPISourcingFields() {
     $('#SaveAPISourcingModel #APISourcingID').val("0");
     $('#SaveAPISourcingModel #APISourcingName').val("");
     $('#DeleteAPISourcingModel #APISourcingID').val("0");
+    var validationMessages = document.querySelectorAll(".field-validation-error");
+
+    // Loop through the messages and clear them
+    for (var i = 0; i < validationMessages.length; i++) {
+        validationMessages[i].textContent = "";
+    }
 }
 // #endregion
 

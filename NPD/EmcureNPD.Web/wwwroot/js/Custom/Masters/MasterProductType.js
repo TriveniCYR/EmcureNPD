@@ -28,6 +28,7 @@ function GetProductTypeById(id) {
 }
 function GetProductTypeByIdSuccess(data) {
     try {
+        CleareProductTypeFields();
         $('#SaveProductTypeModel #ProductTypeID').val(data._object.productTypeId);
         $('#SaveProductTypeModel #ProductTypeName').val(data._object.productTypeName);
         $('#SaveProductTypeModel #ProductTypeTitle').html(UpdateLabel);
@@ -82,6 +83,12 @@ function CleareProductTypeFields() {
     $('#SaveProductTypeModel #ProductTypeID').val("0");
     $('#SaveProductTypeModel #ProductTypeName').val("");
     $('#DeleteProductTypeModel #ProductTypeID').val("0");
+    var validationMessages = document.querySelectorAll(".field-validation-error");
+
+    // Loop through the messages and clear them
+    for (var i = 0; i < validationMessages.length; i++) {
+        validationMessages[i].textContent = "";
+    }
 }
 // #endregion
 

@@ -28,6 +28,7 @@ function GetFillingExpenseById(id) {
 }
 function GetFillingExpenseByIdSuccess(data) {
     try {
+        CleareFillingExpenseFields();
         $('#SaveFillingExpenseModel #ExpenseRegionId').val(data._object.expenseRegionId);
         $('#SaveFillingExpenseModel #ExpenseRegionName').val(data._object.expenseRegionName);
         $('#SaveFillingExpenseModel #FillingExpenseTitle').html(UpdateLabel);
@@ -82,6 +83,12 @@ function CleareFillingExpenseFields() {
     $('#SaveFillingExpenseModel #ExpenseRegionId').val("0");
     $('#SaveFillingExpenseModel #ExpenseRegionName').val("");
     $('#DeleteFillingExpenseModel #ExpenseRegionId').val("0");
+    var validationMessages = document.querySelectorAll(".field-validation-error");
+
+    // Loop through the messages and clear them
+    for (var i = 0; i < validationMessages.length; i++) {
+        validationMessages[i].textContent = "";
+    }
 }
 // #endregion
 

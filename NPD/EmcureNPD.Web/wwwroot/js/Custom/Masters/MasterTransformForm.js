@@ -28,6 +28,7 @@ function GetTransformById(id) {
 }
 function GetTransformByIdSuccess(data) {
     try {
+        CleareTransformFields();
         $('#SaveTransformModel #TransformId').val(data._object.transformId);
         $('#SaveTransformModel #TransformName').val(data._object.transformName);
         $('#SaveTransformModel #TransformTitle').html(UpdateLabel);
@@ -82,6 +83,12 @@ function CleareTransformFields() {
     $('#SaveTransformModel #TransformId').val("0");
     $('#SaveTransformModel #TransformName').val("");
     $('#DeleteTransformModel #TransformId').val("0");
+    var validationMessages = document.querySelectorAll(".field-validation-error");
+
+    // Loop through the messages and clear them
+    for (var i = 0; i < validationMessages.length; i++) {
+        validationMessages[i].textContent = "";
+    }
 }
 // #endregion
 

@@ -28,6 +28,7 @@ function GetWorkflowById(id) {
 }
 function GetWorkflowByIdSuccess(data) {
     try {
+        CleareWorkflowFields();
         $('#SaveWorkflowModel #WorkflowID').val(data._object.workflowId);
         $('#SaveWorkflowModel #WorkflowName').val(data._object.workflowName);
         $('#SaveWorkflowModel #WorkflowTitle').html(UpdateLabel);
@@ -82,6 +83,12 @@ function CleareWorkflowFields() {
     $('#SaveWorkflowModel #WorkflowID').val("0");
     $('#SaveWorkflowModel #WorkflowName').val("");
     $('#DeleteWorkflowModel #WorkflowID').val("0");
+    var validationMessages = document.querySelectorAll(".field-validation-error");
+
+    // Loop through the messages and clear them
+    for (var i = 0; i < validationMessages.length; i++) {
+        validationMessages[i].textContent = "";
+    }
 }
 // #endregion
 

@@ -28,6 +28,7 @@ function GetDIAById(id) {
 }
 function GetDIAByIdSuccess(data) {
     try {
+        CleareDIAFields();
         $('#SaveDIAModel #DIAID').val(data._object.diaId);
         $('#SaveDIAModel #DIAName').val(data._object.diaName);
         $('#SaveDIAModel #DIATitle').html(UpdateLabel);
@@ -82,6 +83,12 @@ function CleareDIAFields() {
     $('#SaveDIAModel #DIAID').val("0");
     $('#SaveDIAModel #DIAName').val("");
     $('#DeleteDIAModel #DIAID').val("0");
+    var validationMessages = document.querySelectorAll(".field-validation-error");
+
+    // Loop through the messages and clear them
+    for (var i = 0; i < validationMessages.length; i++) {
+        validationMessages[i].textContent = "";
+    }
 }
 // #endregion
 

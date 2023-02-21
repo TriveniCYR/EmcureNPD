@@ -28,6 +28,7 @@ function GetExipientById(id) {
 }
 function GetExipientByIdSuccess(data) {
     try {
+        CleareExipientFields();
         $('#SaveExipientModel #ExipientID').val(data._object.exipientId);
         $('#SaveExipientModel #ExipientName').val(data._object.exipientName);
         $('#SaveExipientModel #ExipientTitle').html(UpdateLabel);
@@ -82,6 +83,12 @@ function CleareExipientFields() {
     $('#SaveExipientModel #ExipientID').val("0");
     $('#SaveExipientModel #ExipientName').val("");
     $('#DeleteExipientModel #ExipientID').val("0");
+    var validationMessages = document.querySelectorAll(".field-validation-error");
+
+    // Loop through the messages and clear them
+    for (var i = 0; i < validationMessages.length; i++) {
+        validationMessages[i].textContent = "";
+    }
 }
 // #endregion
 
