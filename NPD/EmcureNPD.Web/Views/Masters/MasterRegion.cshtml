@@ -88,7 +88,7 @@
 							<div class="form-group required">
 								<input type="hidden" id="RegionCountryMappingId" name="RegionCountryMappingId" value="0" />
 								@Html.LabelFor(model => model.MasterCountryEntity.CountryName,"Country Name", new { @class = "control-label" })
-								@Html.DropDownListFor(model => model.CountryId, new List<SelectListItem> { }, "--Select--", new { @class = "form-control", @multiple = "multiple" })
+								@Html.DropDownListFor(model => model.CountryId, new List<SelectListItem> { }, new { @class = "form-control", @multiple = "multiple" })
 								@Html.ValidationMessageFor(model => model.CountryId, "", new { @class = "text-danger" })
 							</div>
 						</div>
