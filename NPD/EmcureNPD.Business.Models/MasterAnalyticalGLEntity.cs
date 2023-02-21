@@ -9,7 +9,8 @@ namespace EmcureNPD.Business.Models
         public int AnalyticalId { get; set; }
         [Required(ErrorMessageResourceType = typeof(Validation), ErrorMessageResourceName = "Required")]
         [Display(Name = "AnalyticalName", ResourceType = typeof(Master))]
-        public string AnalyticalName { get; set; }
+		[RegularExpression(@"^(?!\s*$).+", ErrorMessage = "The field cannot contain only spaces.")]
+		public string AnalyticalName { get; set; }
         [Display(Name = "Active", ResourceType = typeof(Master))]
         public bool IsActive { get; set; }
         public DateTime CreatedDate { get; set; }
