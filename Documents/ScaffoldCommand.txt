@@ -6,7 +6,7 @@ Steps for Scaffold Command
 4.) Run below command with -f (Forcefully)
 Scaffold-DbContext "Data Source=10.21.16.38;Initial Catalog=EmcureNPDDev;Persist Security Info=True;User ID=sa;pwd=PIDF@&86W5pb" Microsoft.EntityFrameworkCore.SqlServer -OutputDir "Entity" -ContextDir "DataContext" -f
 
-5.) Before Run Command copy OnConfiguring in DataContext.cs file and after run the command replace OnConfiguring method
+5.) Before Run Command copy and Replace OnConfiguring in EmcureNPDDevContext.cs file and after run the command replace OnConfiguring method
 
 protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
@@ -24,7 +24,8 @@ protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
 emcurenpd
 EmcureNPD
 
-------------------------------
+7.)-----------Reset--Previous Method--------------------------
+
    protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             if (!optionsBuilder.IsConfigured)
