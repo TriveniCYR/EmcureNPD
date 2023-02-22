@@ -18,7 +18,6 @@ namespace EmcureNPD.Data.DataAccess.Entity
         public string Exhibit { get; set; }
         public string PlantQc { get; set; }
         public string Total { get; set; }
-        public bool IsActive { get; set; }
         public DateTime CreatedDate { get; set; }
         public int CreatedBy { get; set; }
         public DateTime? ModifyDate { get; set; }

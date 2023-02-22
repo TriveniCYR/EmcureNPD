@@ -23,9 +23,6 @@ namespace EmcureNPD.Business.Core.Interface
         //------------End------API_IPD_Details_Form_Entity--------------------------
         Task<PIDFAPIRnDFormEntity> GetAPIRnDFormData(long pidfId, string _webrootPath);
 		Task<DBOperation> AddUpdateAPIRnD(PIDFAPIRnDFormEntity _oAPIRnD);
-
-    }
-		//Task<PidfPbfAnalyticalEntity> GetPBFAnalyticalReadonlyData(long pidfid);
-		//------------End------API_IPD_Details_Form_Entity--------------------------
-	//}
+		Task<PidfPbfAnalyticalEntity> GetPBFAnalyticalReadonlyData(long pidfid);
+	}	
 }

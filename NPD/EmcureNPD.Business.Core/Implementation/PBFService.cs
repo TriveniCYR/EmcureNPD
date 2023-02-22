@@ -196,7 +196,7 @@ namespace EmcureNPD.Business.Core.Implementation
             var _APIIPDDBEntity = new PidfApiIpd();
             if (_oAPIIPD.APIIPDDetailsFormID > 0) 
 			{
-				var lastApiIpd = _pidf_API_IPD_repository.GetAll().First(x => x.PidfApiIpdId == _oAPIIPD.APIIPDDetailsFormID && x.IsActive == true);
+				var lastApiIpd = _pidf_API_IPD_repository.GetAll().First(x => x.PidfApiIpdId == _oAPIIPD.APIIPDDetailsFormID);
 				if(lastApiIpd != null) 
 				{
 					//lastApiIpd.FormulationQuantity = _oAPIIPD.FormulationQuantity;
@@ -257,7 +257,6 @@ namespace EmcureNPD.Business.Core.Implementation
                 _APIIPDDBEntity.Pidfid = long.Parse(_oAPIIPD.Pidfid);
                 _APIIPDDBEntity.CreatedBy = _oAPIIPD.LoggedInUserId;
                 _APIIPDDBEntity.CreatedDate = DateTime.Now;
-				_APIIPDDBEntity.IsActive = true;
                 _pidf_API_IPD_repository.AddAsync(_APIIPDDBEntity);
             }
 			await _unitOfWork.SaveChangesAsync();
@@ -339,7 +338,7 @@ namespace EmcureNPD.Business.Core.Implementation
             //PIDFAPIIPDFormEntity _exsistingAPIRnD = new PIDFAPIIPDFormEntity();
             if (_oAPIRnD.PIDFAPIRnDFormID > 0)
             {
-                var lastApiIpd = _pidf_API_RnD_repository.GetAll().First(x => x.PidfApiRnDId == _oAPIRnD.PIDFAPIRnDFormID && x.IsActive == true);
+                var lastApiIpd = _pidf_API_RnD_repository.GetAll().First(x => x.PidfApiRnDId == _oAPIRnD.PIDFAPIRnDFormID);
                 if (lastApiIpd != null)
                 {                  
                     lastApiIpd.PlantQc = _oAPIRnD.PlantQC;
@@ -378,7 +377,6 @@ namespace EmcureNPD.Business.Core.Implementation
 
                 _oDBApiRnd.CreatedBy = _oAPIRnD.LoggedInUserId;
                 _oDBApiRnd.CreatedDate = DateTime.Now;
-                _oDBApiRnd.IsActive = true;
                 _pidf_API_RnD_repository.AddAsync(_oDBApiRnd);
             }
             await _unitOfWork.SaveChangesAsync();
@@ -420,11 +418,11 @@ namespace EmcureNPD.Business.Core.Implementation
 			Expression<Func<PidfPbf, bool>> expr;
 			if (strengthid != null)
 			{
-				expr = u => u.BusinessUnitId == buid && u.Pidfid == pidfId && u.PidfproductStrengthId == strengthid;
+				expr = u => u.Pidfid == pidfId;
 			}
 			else
 			{
-				expr = u => u.BusinessUnitId == buid && u.Pidfid == pidfId;
+				expr = u => u.Pidfid == pidfId;
 			}
 			//var data = _mapperFactory.Get<Pidfipd, PIDFormEntity>(await _repository.GetAsync(id));
 

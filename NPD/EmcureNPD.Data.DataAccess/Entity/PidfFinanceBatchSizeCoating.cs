@@ -9,6 +9,7 @@ namespace EmcureNPD.Data.DataAccess.Entity
     {
         public int PidffinaceBatchSizeCoatingId { get; set; }
         public int PidffinaceId { get; set; }
+        public int? BusinessUnitId { get; set; }
         public int? Batchsize { get; set; }
         public int? Yield { get; set; }
         public int? Batchoutput { get; set; }
@@ -20,5 +21,7 @@ namespace EmcureNPD.Data.DataAccess.Entity
         public int? EmcureCogsPack { get; set; }
         public DateTime CreatedDate { get; set; }
         public int? CreatedBy { get; set; }
+
+        public virtual PidfFinance Pidffinace { get; set; }
     }
 }

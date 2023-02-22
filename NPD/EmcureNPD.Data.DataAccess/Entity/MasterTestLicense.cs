@@ -5,10 +5,10 @@ using System.Collections.Generic;
 
 namespace EmcureNPD.Data.DataAccess.Entity
 {
-    public partial class MasterProductStrength
+    public partial class MasterTestLicense
     {
-        public int ProductStrengthId { get; set; }
-        public string ProductStrengthName { get; set; }
+        public int TestLicenseId { get; set; }
+        public string TestLicenseName { get; set; }
         public bool IsActive { get; set; }
         public int? CreatedBy { get; set; }
         public DateTime CreatedDate { get; set; }

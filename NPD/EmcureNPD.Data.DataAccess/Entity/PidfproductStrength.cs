@@ -10,6 +10,8 @@ namespace EmcureNPD.Data.DataAccess.Entity
         public PidfproductStrength()
         {
             PidfCommercials = new HashSet<PidfCommercial>();
+            PidfPbfAnalyticalCosts = new HashSet<PidfPbfAnalyticalCost>();
+            PidfPbfAnalyticalExhibits = new HashSet<PidfPbfAnalyticalExhibit>();
             PidfPbfRnDExicipientExhibits = new HashSet<PidfPbfRnDExicipientExhibit>();
             PidfPbfRnDExicipientProtoypes = new HashSet<PidfPbfRnDExicipientProtoype>();
             PidfPbfRnDExicipientScaleUps = new HashSet<PidfPbfRnDExicipientScaleUp>();
@@ -31,6 +33,8 @@ namespace EmcureNPD.Data.DataAccess.Entity
         public virtual Pidf Pidf { get; set; }
         public virtual MasterUnitofMeasurement UnitofMeasurement { get; set; }
         public virtual ICollection<PidfCommercial> PidfCommercials { get; set; }
+        public virtual ICollection<PidfPbfAnalyticalCost> PidfPbfAnalyticalCosts { get; set; }
+        public virtual ICollection<PidfPbfAnalyticalExhibit> PidfPbfAnalyticalExhibits { get; set; }
         public virtual ICollection<PidfPbfRnDExicipientExhibit> PidfPbfRnDExicipientExhibits { get; set; }
         public virtual ICollection<PidfPbfRnDExicipientProtoype> PidfPbfRnDExicipientProtoypes { get; set; }
         public virtual ICollection<PidfPbfRnDExicipientScaleUp> PidfPbfRnDExicipientScaleUps { get; set; }
