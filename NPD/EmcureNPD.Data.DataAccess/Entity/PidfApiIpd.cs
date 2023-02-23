@@ -13,7 +13,6 @@ namespace EmcureNPD.Data.DataAccess.Entity
         public int? ProductTypeId { get; set; }
         public string DrugsCategory { get; set; }
         public string ProductStrength { get; set; }
-        public bool IsActive { get; set; }
         public DateTime CreatedDate { get; set; }
         public int CreatedBy { get; set; }
         public DateTime? ModifyDate { get; set; }
