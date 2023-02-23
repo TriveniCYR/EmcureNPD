@@ -3,6 +3,7 @@ using EmcureNPD.Web.Helpers;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 using System.Net.Http;
 
@@ -38,5 +39,11 @@ namespace EmcureNPD.Web.Controllers
                 return View();
             //}
         }
-    }
+		public ActionResult AuditLogPartialView(DateTime createdDate, string createdBy,string log)
+		{
+            ViewBag.log = JsonConvert.DeserializeObject(log);
+		    var Model = new AuditLogEntity { CreatedDate = createdDate, CreatedBy = createdBy };
+			return PartialView("_AuditLogPartialView", Model);
+		}
+	}
 }
