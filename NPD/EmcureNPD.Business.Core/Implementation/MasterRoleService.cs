@@ -101,7 +101,11 @@ namespace EmcureNPD.Business.Core.Implementation
         {
             return _mapperFactory.GetList<MasterRole, MasterRoleEntity>(await _repository.GetAllAsync());
         }
-
+        public async Task<List<MasterRoleEntity>> GetActiveRole()
+        {
+            var ActiveRole = await _repository.GetAllAsync();
+            return _mapperFactory.GetList<MasterRole, MasterRoleEntity>(ActiveRole.Where(x=>x.IsActive==true).ToList());
+        }
         public async Task<MasterRoleEntity> GetById(int id)
         {
             return _mapperFactory.Get<MasterRole, MasterRoleEntity>(await _repository.GetAsync(id));
