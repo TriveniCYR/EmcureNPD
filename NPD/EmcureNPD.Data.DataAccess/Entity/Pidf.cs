@@ -9,11 +9,13 @@ namespace EmcureNPD.Data.DataAccess.Entity
     {
         public Pidf()
         {
+            PidfApiCharters = new HashSet<PidfApiCharter>();
             PidfApiIpds = new HashSet<PidfApiIpd>();
             PidfApiRnDs = new HashSet<PidfApiRnD>();
             PidfCommercials = new HashSet<PidfCommercial>();
             PidfIpds = new HashSet<PidfIpd>();
             PidfMedicals = new HashSet<PidfMedical>();
+            PidfPbfAnalyticals = new HashSet<PidfPbfAnalytical>();
             PidfPbfRnDs = new HashSet<PidfPbfRnD>();
             PidfPbfs = new HashSet<PidfPbf>();
             Pidfapidetails = new HashSet<Pidfapidetail>();
@@ -64,11 +66,13 @@ namespace EmcureNPD.Data.DataAccess.Entity
         public virtual MasterCountry Rfdcountry { get; set; }
         public virtual MasterPidfstatus Status { get; set; }
         public virtual MasterUnitofMeasurement UnitofMeasurement { get; set; }
+        public virtual ICollection<PidfApiCharter> PidfApiCharters { get; set; }
         public virtual ICollection<PidfApiIpd> PidfApiIpds { get; set; }
         public virtual ICollection<PidfApiRnD> PidfApiRnDs { get; set; }
         public virtual ICollection<PidfCommercial> PidfCommercials { get; set; }
         public virtual ICollection<PidfIpd> PidfIpds { get; set; }
         public virtual ICollection<PidfMedical> PidfMedicals { get; set; }
+        public virtual ICollection<PidfPbfAnalytical> PidfPbfAnalyticals { get; set; }
         public virtual ICollection<PidfPbfRnD> PidfPbfRnDs { get; set; }
         public virtual ICollection<PidfPbf> PidfPbfs { get; set; }
         public virtual ICollection<Pidfapidetail> Pidfapidetails { get; set; }

@@ -7,8 +7,8 @@ namespace EmcureNPD.Data.DataAccess.Entity
 {
     public partial class PidfApiCharterAnalyticalDepartment
     {
-        public int PidfApiCharterAnalyticalDepartmentId { get; set; }
-        public int PidfApiCharterId { get; set; }
+        public long PidfApiCharterAnalyticalDepartmentId { get; set; }
+        public long PidfApiCharterId { get; set; }
         public long Pidfid { get; set; }
         public int? AnalyticalDepartmentId { get; set; }
         public string AnalyticalDepartmentArdvalue { get; set; }
@@ -20,5 +20,7 @@ namespace EmcureNPD.Data.DataAccess.Entity
         public DateTime CreatedDate { get; set; }
         public int? ModifyBy { get; set; }
         public DateTime? ModifyDate { get; set; }
+
+        public virtual PidfApiCharter PidfApiCharter { get; set; }
     }
 }

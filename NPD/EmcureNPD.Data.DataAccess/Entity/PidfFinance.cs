@@ -7,12 +7,17 @@ namespace EmcureNPD.Data.DataAccess.Entity
 {
     public partial class PidfFinance
     {
+        public PidfFinance()
+        {
+            PidfFinanceBatchSizeCoatings = new HashSet<PidfFinanceBatchSizeCoating>();
+        }
+
         public int PidffinaceId { get; set; }
-        public int Pidfid { get; set; }
+        public long Pidfid { get; set; }
         public string Entity { get; set; }
         public string Product { get; set; }
         public DateTime? ForecastDate { get; set; }
-        public string Currency { get; set; }
+        public int Currencyid { get; set; }
         public int? DosageFrom { get; set; }
         public string ManufacturingSiteOrPartner { get; set; }
         public string Skus { get; set; }
@@ -27,6 +32,7 @@ namespace EmcureNPD.Data.DataAccess.Entity
         public int? GestationPeriodinYears { get; set; }
         public decimal? MarketShareErosionrate { get; set; }
         public decimal? PriceErosion { get; set; }
+        public string EscalationinCogs { get; set; }
         public decimal? DiscountRate { get; set; }
         public decimal? Incometaxrate { get; set; }
         public int? Opexasapercenttosale { get; set; }
@@ -67,5 +73,7 @@ namespace EmcureNPD.Data.DataAccess.Entity
         public DateTime? ModifyDate { get; set; }
         public bool? IsDeleted { get; set; }
         public DateTime? DeletedDate { get; set; }
+
+        public virtual ICollection<PidfFinanceBatchSizeCoating> PidfFinanceBatchSizeCoatings { get; set; }
     }
 }

@@ -183,7 +183,84 @@ namespace EmcureNPD.Web.Controllers
 			}
 		}
 
-        #region APIIPD Details Form _KD  
+        #region API Details Form _KD  
+        [HttpGet]
+        public IActionResult APICharterDetailsForm(string pidfid, string bui)
+        {
+            ModelState.Clear();
+            var _APICharterDetailsForm = new PIDFAPICharterFormEntity();
+            try
+            {
+                int rolId = (int)HttpContext.Session.GetInt32(UserHelper.LoggedInRoleId);
+                RolePermissionModel objPermssion = UtilityHelper.GetCntrActionAccess(Convert.ToString(RouteData.Values["controller"]), rolId);
+                if (objPermssion == null || (!objPermssion.Add && !objPermssion.Edit))
+                {
+                    return RedirectToAction("AccessRestriction", "Home");
+                }
+                ViewBag.Access = objPermssion;
+                pidfid = UtilityHelper.Decreypt(pidfid);
+                string bussnessId = "";
+                if (string.IsNullOrEmpty(bui))
+                {
+                    bussnessId = Convert.ToString(HttpContext.Session.GetInt32(UserHelper.LoggedInBusId));
+                }
+                else
+                    bussnessId = UtilityHelper.Decreypt(bui);
+
+                HttpContext.Request.Cookies.TryGetValue(UserHelper.EmcureNPDToken, out string token);
+                APIRepository objapi = new(_cofiguration);
+                HttpResponseMessage responseMessage = objapi.APICommunication(APIURLHelper.GetAPICharterFormData + "/" + pidfid, HttpMethod.Get, token).Result;
+                if (responseMessage.IsSuccessStatusCode)
+                {
+                    string jsonResponse = responseMessage.Content.ReadAsStringAsync().Result;
+                    var data = JsonConvert.DeserializeObject<APIResponseEntity<PIDFAPICharterFormEntity>>(jsonResponse);
+                    _APICharterDetailsForm = data._object;
+                }
+                return View(_APICharterDetailsForm);
+            }
+            catch (Exception e)
+            {
+                ViewBag.errormessage = Convert.ToString(e.StackTrace);
+                return RedirectToAction("Login", "Account");
+            }
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public IActionResult APICharterDetailsForm(PIDFAPICharterFormEntity _Chartermodel)
+        {
+            _Chartermodel.Pidfid = UtilityHelper.Decreypt(_Chartermodel.Pidfid);
+            _Chartermodel.BusinessUnitId = UtilityHelper.Decreypt(_Chartermodel.BusinessUnitId);
+            bool IsSaveError = false;
+            if (_Chartermodel.IsModelValid != "")
+            {
+                //save logic
+                string logUserId = Convert.ToString(HttpContext.Session.GetString(UserHelper.LoggedInUserId));
+                _Chartermodel.LoggedInUserId = Convert.ToInt32(logUserId);
+                HttpContext.Request.Cookies.TryGetValue(UserHelper.EmcureNPDToken, out string token);
+                APIRepository objapi = new(_cofiguration);
+                HttpResponseMessage responseMessage = objapi.APICommunication(APIURLHelper.InsertUpdateAPICharter, HttpMethod.Post, token, new StringContent(JsonConvert.SerializeObject(_Chartermodel))).Result;
+
+                if (responseMessage.IsSuccessStatusCode)
+                {
+                    TempData["SaveStatus"] = Convert.ToString(_stringLocalizerShared["RecordInsertUpdate"]);
+                    ModelState.Clear();
+                    IsSaveError = false;
+                    return RedirectToAction("APICharterDetailsForm",
+                        new { pidfid = UtilityHelper.Encrypt(_Chartermodel.Pidfid), bui = UtilityHelper.Encrypt(_Chartermodel.BusinessUnitId) }); // return to PBFAPI List
+                }
+                else
+                {
+                    IsSaveError = true;
+                }
+            }
+            if (IsSaveError)
+                TempData["SaveStatus"] = "Save Error Occured !";
+
+            return View(_Chartermodel);
+
+        }
+
 
         [HttpGet]
         public IActionResult APIRndDetailsForm(string pidfid, string bui)
