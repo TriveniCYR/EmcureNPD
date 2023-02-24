@@ -438,6 +438,7 @@ namespace EmcureNPD.Business.Core.Implementation
 				objPIDFMedical = await _pidfMedicalrepository.GetAsync(medicalModel.PidfmedicalId);
 				if (objPIDFMedical != null)
 				{
+					oldPIDFFEntity = _mapperFactory.Get<PidfMedical, PIDFMedicalViewModel>(objPIDFMedical);
 					objPIDFMedical = _mapperFactory.Get<PIDFMedicalViewModel, PidfMedical>(medicalModel);
 					_pidfMedicalrepository.UpdateAsync(objPIDFMedical);
 					await _unitOfWork.SaveChangesAsync();
@@ -539,6 +540,8 @@ namespace EmcureNPD.Business.Core.Implementation
 						}
 					}
 					await _unitOfWork.SaveChangesAsync();
+					var isSuccess = await _auditLogService.CreateAuditLog<PIDFMedicalViewModel>(medicalModel.PidfmedicalId > 0 ? Utility.Audit.AuditActionType.Update : Utility.Audit.AuditActionType.Create,
+						   Utility.Enums.ModuleEnum.Medical, oldPIDFFEntity, medicalModel, Convert.ToInt32(objPIDFMedical.PidfmedicalId));
 					return DBOperation.Success;
 				}
 				else
