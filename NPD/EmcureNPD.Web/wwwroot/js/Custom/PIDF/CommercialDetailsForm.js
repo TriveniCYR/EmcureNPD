@@ -1,13 +1,13 @@
 ﻿var objYears = [];
 var objMainForm = {};
-var ColumnObjUpcase = ['PackagingTypeId', 'CommercialBatchSize', 'PriceDiscounting', 'TotalApireq', 'Apireq', 'Suimsvolume', 'MarketGrowth', 'MarketSize', 'PriceErosion', 'FinalSelectionId'];
+var ColumnObjUpcase = ['PackagingTypeId1', 'CommercialBatchSize', 'PriceDiscounting', 'TotalApireq', 'Apireq', 'Suimsvolume', 'MarketGrowth', 'MarketSize', 'PriceErosion', 'FinalSelectionId'];
 /*var ColumnObjLowcase = ['packagingTypeId', 'commercialBatchSize', 'priceDiscounting', 'totalApireq', 'apireq', 'suimsvolume', 'marketGrowth', 'marketSize', 'priceErosion', 'finalSelectionId'];*/
 var SelectedBUValue = 0;
 var selectedStrength = 0;
 var UserwiseBusinessUnit;
 
 $(document).ready(function () {
-
+    debugger;
     UserwiseBusinessUnit = UserWiseBUList.split(',');
     SetDivReadonly();    
     InitializeCurrencyDropdown();
@@ -24,7 +24,6 @@ function IsViewMode() {
 }
 
 function InitializeCurrencyDropdown() {
-    debugger;
     ajaxServiceMethod($('#hdnBaseURL').val() + GetAllCurrency, 'GET', GetCountryListSuccess, GetCountryListError);
 }
 function GetCountryListSuccess(data) {
@@ -41,14 +40,14 @@ function GetCountryListError(x, y, z) {
 }
 
 function InitializeProductTypeDropdown() {
-    debugger;
+   
     ajaxServiceMethod($('#hdnBaseURL').val() + GetAllProductType, 'GET', GetProductTypeListSuccess, GetProductTypeListError);
 }
 function GetProductTypeListSuccess(data) {
-    console.log(data);
+    console.log(data._object);
     try {
         $.each(data._object, function (index, object) {
-            $('#PackagingTypeId').append($('<option>').text(object.productTypeName).attr('value', object.productTypeId));
+            $('#PackagingTypeId1').append($('<option>').text(object.productTypeName).attr('value', object.productTypeId));
         });
     } catch (e) {
         toastr.error('Error:' + e.message);
@@ -342,8 +341,8 @@ function UpdateFormData(objectForm) {
 }
 
 function ResetYearForm() {
-    $("#AddYearForm").find("input,textarea").val('');
-    $("#AddYearForm").find("select").val('1');
+   // $("#AddYearForm").find("input,textarea").val('');
+   // $("#AddYearForm").find("select").val('1');
 }
 function ResetMainFormForm() {
     $("#MarketSizeInUnit").val('');
@@ -437,6 +436,7 @@ function ShowPopUpCommercial() {
 function ShowYearForm() {
     if (ValidateBU_Strength()) {
         $("#AddYearForm").show();  
+
     }
      
 }

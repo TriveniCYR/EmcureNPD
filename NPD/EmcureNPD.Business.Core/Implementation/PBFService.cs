@@ -307,7 +307,7 @@ namespace EmcureNPD.Business.Core.Implementation
                     _CharterObjects = dbresult.Tables[0].DataTableToList<TimelineInMonths>();
                 }
             }
-            _oCharterEntity.timelineInMonths = _CharterObjects;
+            //_oCharterEntity.timelineInMonths = _CharterObjects;
             return _oCharterEntity;
         }
         public async Task<DBOperation> AddUpdateAPICharter(PIDFAPICharterFormEntity _oAPIRnD)
