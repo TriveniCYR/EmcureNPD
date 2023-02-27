@@ -129,4 +129,13 @@
 		var divCtrl = document.getElementById("element_" + controlId)
 		divCtrl.style.display = "none";
 	}
+
+	var errorCallBack = '@TempData[EmcureNPD.Web.Helpers.UserHelper.ErrorMessage]';
+	if (errorCallBack) {
+		toastr.error(errorCallBack);
+	}
+	var successCallBack = '@TempData[EmcureNPD.Web.Helpers.UserHelper.SuccessMessage]';
+	if (successCallBack) {
+		toastr.success(successCallBack);
+	}
 </script>
