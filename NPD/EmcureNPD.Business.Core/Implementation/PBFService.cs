@@ -25,6 +25,7 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http.Internal;
 using AutoMapper.Configuration;
 using System.Data.SqlClient;
+using EmcureNPD.Utility.Enums;
 
 namespace EmcureNPD.Business.Core.Implementation
 {
@@ -202,12 +203,6 @@ namespace EmcureNPD.Business.Core.Implementation
 				var lastApiIpd = _pidf_API_IPD_repository.GetAll().First(x => x.PidfApiIpdId == _oAPIIPD.APIIPDDetailsFormID);
 				if(lastApiIpd != null) 
 				{
-					//lastApiIpd.FormulationQuantity = _oAPIIPD.FormulationQuantity;
-					//lastApiIpd.PlantQc = _oAPIIPD.PlantQC;
-					//lastApiIpd.Development = _oAPIIPD.Development;
-					//lastApiIpd.Total = _oAPIIPD.Total;
-					//lastApiIpd.Exhibit = _oAPIIPD.Exhibit;
-					//lastApiIpd.ScaleUp = _oAPIIPD.ScaleUp;
 					if (!IskeepLastFile)
 					{
                         var exsistingFilePath = path + "\\" + lastApiIpd.MarketDetailsFileName;
@@ -239,14 +234,6 @@ namespace EmcureNPD.Business.Core.Implementation
             }
 			else
 			{
-                //_APIIPDDBEntity.Pidfid = Convert.ToInt32(_oAPIIPD.Pidfid);
-                //            _APIIPDDBEntity.FormulationQuantity = _oAPIIPD.FormulationQuantity;
-                //            _APIIPDDBEntity.PlantQc = _oAPIIPD.PlantQC;
-                //            _APIIPDDBEntity.Development = _oAPIIPD.Development;
-                //            _APIIPDDBEntity.Total = _oAPIIPD.Total;
-                //            _APIIPDDBEntity.Exhibit = _oAPIIPD.Exhibit;
-                //            _APIIPDDBEntity.ScaleUp = _oAPIIPD.ScaleUp;
-
                 if (ErrorMsg == null && hasNewUploadFile)
                 {
                     var MarketCGIFile = _oAPIIPD_Form.Files[0];
@@ -263,7 +250,9 @@ namespace EmcureNPD.Business.Core.Implementation
                 _pidf_API_IPD_repository.AddAsync(_APIIPDDBEntity);
             }
 			await _unitOfWork.SaveChangesAsync();
-			return DBOperation.Success;
+            var _StatusID = (_oAPIIPD.SaveType == "Save") ? Master_PIDFStatus.APISubmitted : Master_PIDFStatus.APIInProgress;
+            await _auditLogService.UpdatePIDFStatusCommon(long.Parse(_oAPIIPD.Pidfid), (int)_StatusID, _oAPIIPD.LoggedInUserId);
+            return DBOperation.Success;
     }
 
         public async Task<PIDFAPIIPDFormEntity> GetAPIIPDFormData(long pidfId, string _webrootPath)
@@ -358,6 +347,8 @@ namespace EmcureNPD.Business.Core.Implementation
                 //Implement PIDF staurs change
             }
             await _unitOfWork.SaveChangesAsync();
+            var _StatusID = (_oAPIRnD.SaveType == "Save") ? Master_PIDFStatus.APISubmitted : Master_PIDFStatus.APISubmitted;
+            await _auditLogService.UpdatePIDFStatusCommon(long.Parse(_oAPIRnD.Pidfid), (int)_StatusID, _oAPIRnD.LoggedInUserId);
             return DBOperation.Success;
         }
         public async Task<PIDFAPIRnDFormEntity> GetAPIRnDFormData(long pidfId, string _webrootPath)
@@ -447,6 +438,8 @@ namespace EmcureNPD.Business.Core.Implementation
                 _pidf_API_RnD_repository.AddAsync(_oDBApiRnd);
             }
             await _unitOfWork.SaveChangesAsync();
+            var _StatusID = (_oAPIRnD.SaveType == "Save") ? Master_PIDFStatus.APISubmitted : Master_PIDFStatus.APISubmitted;
+            await _auditLogService.UpdatePIDFStatusCommon(long.Parse(_oAPIRnD.Pidfid), (int)_StatusID, _oAPIRnD.LoggedInUserId);
             return DBOperation.Success;
         }
 
