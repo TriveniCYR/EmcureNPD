@@ -109,8 +109,6 @@ namespace EmcureNPD.Business.Core.Implementation
                 NewCommPIDF.PidfCommercialYears = listYear;
                 _commercialrepository.AddAsync(NewCommPIDF);
                 await _unitOfWork.SaveChangesAsync();
-                var isSuccess = await _auditLogService.CreateAuditLog<PidfCommercial>(Utility.Audit.AuditActionType.Create,
-             Utility.Enums.ModuleEnum.PIDF, OldObjpidfCommercial, NewCommPIDF, 0);
             }
             else
             {
@@ -132,7 +130,9 @@ namespace EmcureNPD.Business.Core.Implementation
               //  var isSuccess = await _auditLogService.CreateAuditLog<PidfCommercial>(Utility.Audit.AuditActionType.Update,
               //Utility.Enums.ModuleEnum.PIDF, OldObjpidfCommercial, objFetchData, 0);
             }
-           
+            var _StatusID = (entitycommPIDF.SaveType == "Sv") ? Master_PIDFStatus.CommercialSubmitted : Master_PIDFStatus.CommercialInProgress;
+            await _auditLogService.UpdatePIDFStatusCommon(entitycommPIDF.Pidfid, (int)_StatusID, entitycommPIDF.CreatedBy);
+
             return DBOperation.Success;
         }
         public async Task<PIDFCommercialEntity> GetCommercialFormData(long pidfId, int buid, int? strengthid)

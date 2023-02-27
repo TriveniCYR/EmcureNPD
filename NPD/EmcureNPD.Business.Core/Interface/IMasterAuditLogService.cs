@@ -1,4 +1,5 @@
 ﻿using EmcureNPD.Business.Models;
+using EmcureNPD.Data.DataAccess.Entity;
 using EmcureNPD.Utility.Audit;
 using EmcureNPD.Utility.Enums;
 using System.Collections.Generic;
@@ -17,6 +18,8 @@ namespace EmcureNPD.Business.Core.Interface
 
         Task<IEnumerable<MasterAuditLogWrapperEntity<AuditLog>>> GetByModuleId(int id, int moduleId);
         Task<DataTableResponseModel> GetAll(DataTableAjaxPostModel model);
+        //Common method to Update PIDF Status
+        Task<DBOperation> UpdatePIDFStatusCommon(long PidfId,int StatusId,int StatusUpdatedBy);
 
     }
 }
