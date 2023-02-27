@@ -201,7 +201,8 @@ namespace EmcureNPD.Business.Core.Implementation
             if (_oAPIIPD.APIIPDDetailsFormID > 0) 
 			{
 				var lastApiIpd = _pidf_API_IPD_repository.GetAll().First(x => x.PidfApiIpdId == _oAPIIPD.APIIPDDetailsFormID);
-				if(lastApiIpd != null) 
+                var OldObjAPIIPD = lastApiIpd;
+                if (lastApiIpd != null) 
 				{
 					if (!IskeepLastFile)
 					{
@@ -226,6 +227,9 @@ namespace EmcureNPD.Business.Core.Implementation
                     lastApiIpd.ModifyBy = _oAPIIPD.LoggedInUserId;
 					lastApiIpd.ModifyDate = DateTime.Now;
                     _pidf_API_IPD_repository.UpdateAsync(lastApiIpd);
+
+                    var isSuccess = await _auditLogService.CreateAuditLog<PidfApiIpd>(Utility.Audit.AuditActionType.Update,
+                Utility.Enums.ModuleEnum.PBF, OldObjAPIIPD, lastApiIpd,0);
                 }
 				else
 				{
@@ -312,6 +316,7 @@ namespace EmcureNPD.Business.Core.Implementation
             if (_oAPIRnD.PIDFAPICharterFormID > 0)
             {
                 var lastApiCharter = _pidf_API_Charter_repository.GetAll().First(x => x.PidfApiCharterId == _oAPIRnD.PIDFAPICharterFormID);
+                var OldObjAPICharter = lastApiCharter;
                 if (lastApiCharter != null)
                 {
                     _oAPIRnD.ManHourRates = (Convert.ToString(_oAPIRnD.ManHourRates)=="")? "0":_oAPIRnD.ManHourRates;
@@ -323,13 +328,14 @@ namespace EmcureNPD.Business.Core.Implementation
                     lastApiCharter.ModifyBy = _oAPIRnD.LoggedInUserId;
                     lastApiCharter.ModifyDate = DateTime.Now;
                     _pidf_API_Charter_repository.UpdateAsync(lastApiCharter);
+                    //Implement AuditLog
+                    var isSuccess = await _auditLogService.CreateAuditLog<PidfApiCharter>(Utility.Audit.AuditActionType.Update,
+                    Utility.Enums.ModuleEnum.PBF, OldObjAPICharter, lastApiCharter, 0);
                 }
                 else
                 {
                     return DBOperation.NotFound;
-                }
-                //Implement AuditLog
-                //Implement PIDF staurs change
+                }              
             }
             else
             {
@@ -396,22 +402,26 @@ namespace EmcureNPD.Business.Core.Implementation
             //PIDFAPIIPDFormEntity _exsistingAPIRnD = new PIDFAPIIPDFormEntity();
             if (_oAPIRnD.PIDFAPIRnDFormID > 0)
             {
-                var lastApiIpd = _pidf_API_RnD_repository.GetAll().First(x => x.PidfApiRnDId == _oAPIRnD.PIDFAPIRnDFormID);
-                if (lastApiIpd != null)
+                var lastApiRnD = _pidf_API_RnD_repository.GetAll().First(x => x.PidfApiRnDId == _oAPIRnD.PIDFAPIRnDFormID);
+                var OldObjAPiIPD = lastApiRnD;
+                if (lastApiRnD != null)
                 {                  
-                    lastApiIpd.PlantQc = _oAPIRnD.PlantQC;
-                    lastApiIpd.Development = _oAPIRnD.Development;
-                    lastApiIpd.Total = _oAPIRnD.Total;
-                    lastApiIpd.Exhibit = _oAPIRnD.Exhibit;
-                    lastApiIpd.ScaleUp = _oAPIRnD.ScaleUp;
-                    lastApiIpd.MarketExtenstionId= _oAPIRnD.MarketID;
-                    lastApiIpd.SponsorBusinessPartner= _oAPIRnD.SponsorBusinessPartner;
-                    lastApiIpd.ApimarketPrice= _oAPIRnD.APIMarketPrice;
-                    lastApiIpd.ApitargetRmcCcpc= _oAPIRnD.APITargetRMC_CCPC;
-                    lastApiIpd.Pidfid = long.Parse(_oAPIRnD.Pidfid);
-                    lastApiIpd.ModifyBy = _oAPIRnD.LoggedInUserId;
-                    lastApiIpd.ModifyDate = DateTime.Now;
-                    _pidf_API_RnD_repository.UpdateAsync(lastApiIpd);
+                    lastApiRnD.PlantQc = _oAPIRnD.PlantQC;
+                    lastApiRnD.Development = _oAPIRnD.Development;
+                    lastApiRnD.Total = _oAPIRnD.Total;
+                    lastApiRnD.Exhibit = _oAPIRnD.Exhibit;
+                    lastApiRnD.ScaleUp = _oAPIRnD.ScaleUp;
+                    lastApiRnD.MarketExtenstionId= _oAPIRnD.MarketID;
+                    lastApiRnD.SponsorBusinessPartner= _oAPIRnD.SponsorBusinessPartner;
+                    lastApiRnD.ApimarketPrice= _oAPIRnD.APIMarketPrice;
+                    lastApiRnD.ApitargetRmcCcpc= _oAPIRnD.APITargetRMC_CCPC;
+                    lastApiRnD.Pidfid = long.Parse(_oAPIRnD.Pidfid);
+                    lastApiRnD.ModifyBy = _oAPIRnD.LoggedInUserId;
+                    lastApiRnD.ModifyDate = DateTime.Now;
+                    _pidf_API_RnD_repository.UpdateAsync(lastApiRnD);
+
+                    var isSuccess = await _auditLogService.CreateAuditLog<PidfApiRnD>(Utility.Audit.AuditActionType.Update,
+                 Utility.Enums.ModuleEnum.PBF, OldObjAPiIPD, lastApiRnD, 0);
                 }
                 else
                 {
