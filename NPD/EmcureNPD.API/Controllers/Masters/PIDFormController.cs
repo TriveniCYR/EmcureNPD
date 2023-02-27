@@ -17,6 +17,7 @@ using System.IO;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
+using System.Text.Json.Nodes;
 using System.Threading.Tasks;
 using static EmcureNPD.Utility.Enums.GeneralEnum;
 
@@ -257,13 +258,17 @@ namespace EmcureNPD.API.Controllers.Masters
                 }
                 else if(jsonObject.FileName.HasValues)
                 {
-                    model.FileName = new string[jsonObject.FileName.Count];
-                    for (int i = 0; i < jsonObject.FileName.Count; i++)
+                    object[] myarray = jsonObject.FileName.ToObject<object[]>();
+					int count = myarray.Count(s => s != null);
+                    model.FileName = new string[count];
+                    int i = 0;
+                    foreach (var item in myarray)
                     {
-                        if (jsonObject.FileName[i] != null)
+						if (item != null)
                         {
-							var file = jsonObject.FileName[i];
+							var file = item.ToString();
 							model.FileName[i] = "Medical\\" + file;
+                            i++;
 						}
                     }
                 }

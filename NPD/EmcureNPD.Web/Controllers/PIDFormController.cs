@@ -158,8 +158,8 @@ namespace EmcureNPD.Web.Controllers
                 {
                     TempData[UserHelper.SuccessMessage] = Convert.ToString(_stringLocalizerShared["RecordInsertUpdate"]);
                     ModelState.Clear();
-					return RedirectToAction("PIDFList", "PIDF", new { ScreenId = 2 });
-				}
+                    return RedirectToAction("PIDFList", "PIDF", new { ScreenId = 2 });
+                }
                 else
                 {
                     TempData[UserHelper.ErrorMessage] = Convert.ToString(responseMessage.Content.ReadAsStringAsync().Result);
@@ -184,7 +184,7 @@ namespace EmcureNPD.Web.Controllers
         {
             ViewBag.id = pidfid;
             ViewBag.baseUrl = _cofiguration.GetSection("Apiconfig").GetSection("baseurl").Value;
-			PIDFMedicalViewModel oPIDForm = new();
+            PIDFMedicalViewModel oPIDForm = new();
             try
             {
                 string logUserId = Convert.ToString(HttpContext.Session.GetString(UserHelper.LoggedInUserId));
@@ -232,7 +232,7 @@ namespace EmcureNPD.Web.Controllers
         [HttpPost]
         public IActionResult Medical(string id, PIDFMedicalViewModel medicalEntity)
         {
-			if (ModelState.IsValid)
+            if (ModelState.IsValid)
             {
                 medicalEntity.Pidfid = long.Parse(UtilityHelper.Decreypt(id));
                 medicalEntity.CreatedBy = Convert.ToInt32(HttpContext.Session.GetString(UserHelper.LoggedInUserId));
@@ -241,7 +241,7 @@ namespace EmcureNPD.Web.Controllers
                 string x = JsonConvert.SerializeObject(medicalEntity);
 
                 var form = new MultipartFormDataContent();
-                if (medicalEntity.File !=null)
+                if (medicalEntity.File != null)
                 {
                     foreach (IFormFile file in medicalEntity.File)
                     {
@@ -262,12 +262,23 @@ namespace EmcureNPD.Web.Controllers
 
                 //var response = httpClient.PostAsync($"/api/PIDForm/PIDMedicalForm", form).Result;
                 HttpResponseMessage responseMessage = objapi.APIComm(APIURLHelper.PIDMedicalForm, HttpMethod.Post, token, form).Result;
-                    return RedirectToAction("PIDFList", "PIDF", new { ScreenId = 3 });
+                if (responseMessage.IsSuccessStatusCode)
+                {
+                    TempData[UserHelper.SuccessMessage] = Convert.ToString(_stringLocalizerShared["RecordInsertUpdate"]);
+                    ModelState.Clear();
+					return RedirectToAction("PIDFList", "PIDF", new { ScreenId = 3 });
                 }
                 else
                 {
-				return View(medicalEntity);
-			}
+                    TempData[UserHelper.ErrorMessage] = Convert.ToString(responseMessage.Content.ReadAsStringAsync().Result);
+					ModelState.Clear();
+					return RedirectToAction("Medical", "PIDForm", new { pidfid =id});
+                }
+            }
+            else
+            {
+                return View(medicalEntity);
+            }
         }
     }
 }
