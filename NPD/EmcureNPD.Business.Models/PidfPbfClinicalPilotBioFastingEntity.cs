@@ -14,6 +14,6 @@ namespace EmcureNPD.Business.Models
         public decimal? DocCostandStudy { get; set; }
         public decimal? TotalCost { get; set; }
         public int? CreatedBy { get; set; }
-        public DateTime? CreatedDate { get; set; }
+        public DateTime? CreatedDate { get; set; } 
     }
 }

@@ -1,19 +1,18 @@
-﻿using EmcureNPD.Resource.Resources;
-using System;
+﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
 namespace EmcureNPD.Business.Models
 {
-    public partial class PidfPbfAnalyticalEntity
+    public class PidfPbfClinicalEntity
     {
-        public long PBFAnalyticalID { get; set; }
-        public long AnalyticalPIDFID { get; set; }       
+        public long PBFClinicalID { get; set; }
+        
+        public long ClinicalPIDFID { get; set; }
         public string PIDFNO { get; set; }
-        public int AnalyticalBusinessUnitId { get; set; }
+        public int ClinicalBusinessUnitId { get; set; }
         public string ProjectName { get; set; }
 
         public string SAPProjectProjectCode { get; set; }
@@ -24,12 +23,12 @@ namespace EmcureNPD.Business.Models
 
         public string ProjectComplexity { get; set; }
 
-        public int AnalyticalProductTypeId { get; set; }
+        public int ClinicalProductTypeId { get; set; }
         public int StrengthId { get; set; }
         public DateTime? BudgetTimelineSubmissionDate { get; set; }
-        public int AnalyticalFormulationGLId { get; set; }
-        public int AnalyticalAnalyticalGLId { get; set; }
-        public string AnalyticalLicence { get; set; }
+        public int ClinicalFormulationGLId { get; set; }
+        public int ClinicalAnalyticalGLId { get; set; }
+        public string ClinicalLicence { get; set; }
         public bool IsActive { get; set; }
         public DateTime CreatedDate { get; set; }
         public int? CreatedBy { get; set; }
@@ -41,11 +40,11 @@ namespace EmcureNPD.Business.Models
         public int LastStatusId { get; set; }
         public string SaveType { get; set; }
         public int? LogInId { get; set; }
-        public List<PidfPbfAnalyticalExhibitEntity> AnalyticalExhibitEntities { get; set; }
-        public List<PidfPbfAnalyticalPrototypeEntity> AnalyticalPrototypeEntities { get; set; }
-        public List<PidfPbfAnalyticalScaleUpEntity> AnalyticalScaleUpEntities { get; set; }  
-        public PidfPbfAnalyticalCostEntity pidfPbfAnalyticalCost{ get; set; }
+        public List<PidfPbfClinicalPilotBioFastingEntity> pidfpbfClinicalpilotBioFastingEntity { get; set; }
+        public List<PidfPbfClinicalPilotBioFedEntity> pidfpbfClinicalPilotBioFedEntity { get; set; }
+        public List<PidfPbfClinicalPivotalBioFastingEntity> pidfpbfClinicalPivotalBioFastingEntity { get; set; }
+        public List<PidfPbfClinicalPivotalBioFedEntity> pidfpbfClinicalPivotalBioFedEntity { get; set; }
+        public PidfPbfClinicalCostEntity pidfPbfClinicalCost { get; set; }
         public List<PidfProductStregthEntity> ProductStrength { get; set; }
     }
-    
 }

@@ -121,16 +121,18 @@ namespace EmcureNPD.Data.DataAccess.DataContext
         public virtual DbSet<PidfstatusHistory> PidfstatusHistories { get; set; }
         public virtual DbSet<RoleModulePermission> RoleModulePermissions { get; set; }
 
-		protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-		{
-			if (!optionsBuilder.IsConfigured)
-			{
-#warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see http://go.microsoft.com/fwlink/?LinkId=723263.
-				optionsBuilder.UseSqlServer(DatabaseConnection.NPDDatabaseConnection);
-			}
-		}
+        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+        {
+            if (!optionsBuilder.IsConfigured)
+            {
+                #warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see http://go.microsoft.com/fwlink/?LinkId=723263.
+                //optionsBuilder.UseSqlServer("Data Source=10.21.16.38;Initial Catalog=EmcureNPDDev;Persist Security Info=True;User ID=sa;pwd=PIDF@&86W5pb");
 
-		protected override void OnModelCreating(ModelBuilder modelBuilder)
+                optionsBuilder.UseSqlServer(DatabaseConnection.NPDDatabaseConnection);
+            }
+        }
+
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.HasAnnotation("Relational:Collation", "SQL_Latin1_General_CP1_CI_AS");
 
@@ -2053,16 +2055,16 @@ namespace EmcureNPD.Data.DataAccess.DataContext
 
             modelBuilder.Entity<PidfPbfClinical>(entity =>
             {
-                entity.HasKey(e => e.ClinicalId)
+                entity.HasKey(e => e.PbfclinicalId)
                     .HasName("PK_PIDF_PBF_C");
 
                 entity.ToTable("PIDF_PBF_Clinical");
 
-                entity.Property(e => e.ClinicalId).ValueGeneratedNever();
+                entity.Property(e => e.PbfclinicalId).ValueGeneratedNever();
 
-                entity.Property(e => e.PilotBioFedid).HasColumnName("PilotBioFEDId");
+                //entity.Property(e => e.PilotBioFedid).HasColumnName("PilotBioFEDId");
 
-                entity.Property(e => e.PivotalBioFedid).HasColumnName("PivotalBioFEDId");
+                //entity.Property(e => e.PivotalBioFedid).HasColumnName("PivotalBioFEDId");
             });
 
             modelBuilder.Entity<PidfPbfClinicalPilotBioFasting>(entity =>
@@ -2115,12 +2117,12 @@ namespace EmcureNPD.Data.DataAccess.DataContext
 
             modelBuilder.Entity<PidfPbfClinicalPivotalBioFasting>(entity =>
             {
-                entity.HasKey(e => e.PilotBioFastingId)
+                entity.HasKey(e => e.PivotalBioFastingId)
                     .HasName("PK_PIDF_PBF_PivotalBioFasting");
 
                 entity.ToTable("PIDF_PBF_Clinical_PivotalBioFasting");
 
-                entity.Property(e => e.PilotBioFastingId).ValueGeneratedNever();
+                entity.Property(e => e.PivotalBioFastingId).ValueGeneratedNever();
 
                 entity.Property(e => e.ClinicalCostandVol)
                     .HasColumnType("decimal(18, 0)")
