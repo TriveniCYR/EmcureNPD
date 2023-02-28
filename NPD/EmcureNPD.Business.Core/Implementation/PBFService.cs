@@ -60,6 +60,7 @@ namespace EmcureNPD.Business.Core.Implementation
         private IRepository<PidfApiIpd> _pidf_API_IPD_repository { get; set; }
         private IRepository<PidfApiRnD> _pidf_API_RnD_repository { get; set; }
         private IRepository<PidfApiCharter> _pidf_API_Charter_repository { get; set; }
+        private IRepository<PidfApiCharterTimelineInMonth> _pidf_API_TimelineInMonth_repository { get; set; }
         private IRepository<PidfPbf> _pbfRepository { get; set; }
 
         private readonly IMasterAuditLogService _auditLogService;
@@ -108,6 +109,7 @@ namespace EmcureNPD.Business.Core.Implementation
             _pidf_API_IPD_repository = _unitOfWork.GetRepository<PidfApiIpd>();
             _pidf_API_RnD_repository = _unitOfWork.GetRepository<PidfApiRnD>();
             _pidf_API_Charter_repository= _unitOfWork.GetRepository<PidfApiCharter>();
+            _pidf_API_TimelineInMonth_repository= _unitOfWork.GetRepository<PidfApiCharterTimelineInMonth>();
             _masterDIAService = masterDium;
             _masterMarketExtensionService = masterMarketExtensionService;
             _masterBERequirementService = masterBERequirementService;
@@ -311,7 +313,7 @@ namespace EmcureNPD.Business.Core.Implementation
         #endregion
 
 
-        public async Task<PIDFAPICharterFormEntity>  GetAPICharterFormData(long pidfId)
+        public async Task<PIDFAPICharterFormEntity> GetAPICharterFormData(long pidfId)
         {
             PIDFAPICharterFormEntity _oCharterEntity = new PIDFAPICharterFormEntity();
             SqlParameter[] osqlParameter = {
@@ -320,33 +322,78 @@ namespace EmcureNPD.Business.Core.Implementation
             var dbresult = await _pidf_API_Charter_repository.GetDataSetBySP("stp_npd_GetPIDFAPICharterData", 
                 System.Data.CommandType.StoredProcedure, osqlParameter);
 
-            dynamic _CharterObjects = new ExpandoObject();
+            // dynamic _CharterObjects = new ExpandoObject();
+            List<CharterObject> _CharterObjects = new List<CharterObject>();
             if (dbresult != null)
             {
                 if (dbresult.Tables[0] != null && dbresult.Tables[0].Rows.Count > 0)
                 {
-                    _CharterObjects = dbresult.Tables[0].DataTableToList<TimelineInMonths>();
+                     _CharterObjects = dbresult.Tables[0].DataTableToList<CharterObject>();
+                    _oCharterEntity.TimelineInMonths = dbresult.Tables[1].DataTableToList<TimelineInMonths>();
+                    _oCharterEntity.ManhourEstimates = dbresult.Tables[2].DataTableToList<ManhourEstimates>();
                 }
             }
-            //_oCharterEntity.timelineInMonths = _CharterObjects;
+
+            if (_CharterObjects.Count > 0)
+            {
+                _oCharterEntity.APIGroupLeader = _CharterObjects[0].APIGroupLeader;
+                _oCharterEntity.ManHourRates = Convert.ToString(_CharterObjects[0].ManHourRates);
+                _oCharterEntity.PIDFAPICharterFormID = _CharterObjects[0].PIDF_API_CharterId;
+                _oCharterEntity.ProjectComplexityId = _CharterObjects[0].ProjectComplexityId;
+            }
+
             return _oCharterEntity;
         }
-        public async Task<DBOperation> AddUpdateAPICharter(PIDFAPICharterFormEntity _oAPIRnD)
+        private List<DM> FillObjData<VM,DM>(List<VM> _vmObj)
+        {
+            var _objPidfApiCharterTimelineInMonth = new List<DM>();
+            foreach (var obj in _vmObj)
+            {
+                var _objTimelineInMonths = _mapperFactory.Get<VM, DM>(obj);
+                _objPidfApiCharterTimelineInMonth.Add(_objTimelineInMonths);
+            }
+            return _objPidfApiCharterTimelineInMonth;
+        }
+        public void RemoveChildDataAPICharter(long APICharterId)
+        {
+            PIDFAPICharterFormEntity _oCharterEntity = new PIDFAPICharterFormEntity();
+            SqlParameter[] osqlParameter = {
+                new SqlParameter("@PIDFAPICharterId", APICharterId)
+            };
+            var dbresult =  _pidf_API_Charter_repository.GetDataSetBySP("stp_npd_RemoveChildDataAPICharter",
+                System.Data.CommandType.StoredProcedure, osqlParameter);           
+        }
+        public async Task<DBOperation> AddUpdateAPICharter(PIDFAPICharterFormEntity _oAPICharter)
         {
             //PIDFAPIIPDFormEntity _exsistingAPIRnD = new PIDFAPIIPDFormEntity();
-            if (_oAPIRnD.PIDFAPICharterFormID > 0)
+            //var _objPidfApiCharterTimelineInMonth = new List<PidfApiCharterTimelineInMonth>();
+            //foreach (var obj in _oAPICharter.TimelineInMonths)
+            //{
+            //    var _objTimelineInMonths = _mapperFactory.Get<TimelineInMonths, PidfApiCharterTimelineInMonth>(obj);
+            //    _objPidfApiCharterTimelineInMonth.Add(_objTimelineInMonths);
+            //}
+            var _objPidfApiCharterTimelineInMonth = FillObjData<TimelineInMonths, PidfApiCharterTimelineInMonth>(_oAPICharter.TimelineInMonths);
+            var _objPidfApiCharterManhourEstimates = FillObjData<ManhourEstimates, PidfApiCharterManhourEstimate>(_oAPICharter.ManhourEstimates);
+
+            if (_oAPICharter.PIDFAPICharterFormID > 0)
             {
-                var lastApiCharter = _pidf_API_Charter_repository.GetAll().First(x => x.PidfApiCharterId == _oAPIRnD.PIDFAPICharterFormID);
+                var lastApiCharter = _pidf_API_Charter_repository.GetAll().First(x => x.PidfApiCharterId == _oAPICharter.PIDFAPICharterFormID);
                 var OldObjAPICharter = lastApiCharter;
                 if (lastApiCharter != null)
                 {
-                    _oAPIRnD.ManHourRates = (Convert.ToString(_oAPIRnD.ManHourRates)=="")? "0":_oAPIRnD.ManHourRates;
-                    lastApiCharter.ManHourRates = int.Parse(_oAPIRnD.ManHourRates);
-                    lastApiCharter.ApigroupLeader = _oAPIRnD.APIGroupLeader;
-                    lastApiCharter.ProjectComplexityId = _oAPIRnD.ProjectComplexityId;
+                    RemoveChildDataAPICharter(_oAPICharter.PIDFAPICharterFormID); // Remove child table data
+                    lastApiCharter.PidfApiCharterTimelineInMonths = _objPidfApiCharterTimelineInMonth;
+                    lastApiCharter.PidfApiCharterManhourEstimates = _objPidfApiCharterManhourEstimates;
+
+
+
+                    _oAPICharter.ManHourRates = (Convert.ToString(_oAPICharter.ManHourRates)=="")? "0":_oAPICharter.ManHourRates;
+                    lastApiCharter.ManHourRates = int.Parse(_oAPICharter.ManHourRates);
+                    lastApiCharter.ApigroupLeader = _oAPICharter.APIGroupLeader;
+                    lastApiCharter.ProjectComplexityId = _oAPICharter.ProjectComplexityId;
                     
-                    lastApiCharter.Pidfid = long.Parse(_oAPIRnD.Pidfid);
-                    lastApiCharter.ModifyBy = _oAPIRnD.LoggedInUserId;
+                    lastApiCharter.Pidfid = long.Parse(_oAPICharter.Pidfid);
+                    lastApiCharter.ModifyBy = _oAPICharter.LoggedInUserId;
                     lastApiCharter.ModifyDate = DateTime.Now;
                     _pidf_API_Charter_repository.UpdateAsync(lastApiCharter);
                     //Implement AuditLog
@@ -360,22 +407,25 @@ namespace EmcureNPD.Business.Core.Implementation
             }
             else
             {
-                var _oDBApiCharter = new PidfApiCharter();
+                var _oDBApiCharter = new PidfApiCharter();              
 
-                _oAPIRnD.ManHourRates = (Convert.ToString(_oAPIRnD.ManHourRates) == "") ? "0" : _oAPIRnD.ManHourRates;
-                _oDBApiCharter.ManHourRates = int.Parse(_oAPIRnD.ManHourRates);
-                _oDBApiCharter.ApigroupLeader = _oAPIRnD.APIGroupLeader;
-                _oDBApiCharter.ProjectComplexityId = _oAPIRnD.ProjectComplexityId;                
-                _oDBApiCharter.Pidfid = long.Parse(_oAPIRnD.Pidfid);
+                _oDBApiCharter.PidfApiCharterTimelineInMonths = _objPidfApiCharterTimelineInMonth;
+                _oDBApiCharter.PidfApiCharterManhourEstimates = _objPidfApiCharterManhourEstimates;
 
-                _oDBApiCharter.CreatedBy = _oAPIRnD.LoggedInUserId;
+                _oAPICharter.ManHourRates = (Convert.ToString(_oAPICharter.ManHourRates) == "" || _oAPICharter.ManHourRates==null) ? "0" : _oAPICharter.ManHourRates;
+                _oDBApiCharter.ManHourRates = int.Parse(_oAPICharter.ManHourRates);
+                _oDBApiCharter.ApigroupLeader = _oAPICharter.APIGroupLeader;
+                _oDBApiCharter.ProjectComplexityId = _oAPICharter.ProjectComplexityId;                
+                _oDBApiCharter.Pidfid = long.Parse(_oAPICharter.Pidfid);
+
+                _oDBApiCharter.CreatedBy = _oAPICharter.LoggedInUserId;
                 _oDBApiCharter.CreatedDate = DateTime.Now;
                  _pidf_API_Charter_repository.AddAsync(_oDBApiCharter);
                 //Implement PIDF staurs change
             }
             await _unitOfWork.SaveChangesAsync();
-            var _StatusID = (_oAPIRnD.SaveType == "Save") ? Master_PIDFStatus.APISubmitted : Master_PIDFStatus.APISubmitted;
-            await _auditLogService.UpdatePIDFStatusCommon(long.Parse(_oAPIRnD.Pidfid), (int)_StatusID, _oAPIRnD.LoggedInUserId);
+            var _StatusID = (_oAPICharter.SaveType == "Save") ? Master_PIDFStatus.APISubmitted : Master_PIDFStatus.APISubmitted;
+            await _auditLogService.UpdatePIDFStatusCommon(long.Parse(_oAPICharter.Pidfid), (int)_StatusID, _oAPICharter.LoggedInUserId);
             return DBOperation.Success;
         }
         public async Task<PIDFAPIRnDFormEntity> GetAPIRnDFormData(long pidfId, string _webrootPath)

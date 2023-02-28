@@ -1220,8 +1220,6 @@ namespace EmcureNPD.Data.DataAccess.DataContext
 
                 entity.Property(e => e.PidfApiCharterManhourEstimatesId).HasColumnName("PIDF_API_Charter_ManhourEstimatesId");
 
-                entity.Property(e => e.CreatedDate).HasColumnType("datetime");
-
                 entity.Property(e => e.ManhourEstimatesCostValue).HasMaxLength(100);
 
                 entity.Property(e => e.ManhourEstimatesHoursValue).HasMaxLength(100);
@@ -1230,11 +1228,7 @@ namespace EmcureNPD.Data.DataAccess.DataContext
 
                 entity.Property(e => e.ManhourEstimatesNoOfEmployeeValue).HasMaxLength(100);
 
-                entity.Property(e => e.ModifyDate).HasColumnType("datetime");
-
                 entity.Property(e => e.PidfApiCharterId).HasColumnName("PIDF_API_CharterId");
-
-                entity.Property(e => e.Pidfid).HasColumnName("PIDFId");
 
                 entity.HasOne(d => d.PidfApiCharter)
                     .WithMany(p => p.PidfApiCharterManhourEstimates)
@@ -1279,13 +1273,7 @@ namespace EmcureNPD.Data.DataAccess.DataContext
 
                 entity.Property(e => e.PidfApiCharterTimelineInMonthsId).HasColumnName("PIDF_API_Charter_TimelineInMonthsId");
 
-                entity.Property(e => e.CreatedDate).HasColumnType("datetime");
-
-                entity.Property(e => e.ModifyDate).HasColumnType("datetime");
-
                 entity.Property(e => e.PidfApiCharterId).HasColumnName("PIDF_API_CharterId");
-
-                entity.Property(e => e.Pidfid).HasColumnName("PIDFId");
 
                 entity.Property(e => e.TimelineInMonthsValue).HasMaxLength(100);
 
