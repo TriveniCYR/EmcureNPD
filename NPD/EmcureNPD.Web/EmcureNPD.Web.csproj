@@ -40,6 +40,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\EmcureNPD.Business.Models\EmcureNPD.Business.Models.csproj" />
+    <ProjectReference Include="..\EmcureNPD.Data.DataAccess\EmcureNPD.Data.DataAccess.csproj" />
     <ProjectReference Include="..\EmcureNPD.Resource\EmcureNPD.Resource.csproj" />
     <ProjectReference Include="..\EmcureNPD.Utility\EmcureNPD.Utility.csproj" />
   </ItemGroup>
