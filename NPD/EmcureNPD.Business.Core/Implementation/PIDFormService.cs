@@ -450,7 +450,7 @@ namespace EmcureNPD.Business.Core.Implementation
 						}
 						else
 						{
-							return DBOperation.Error;
+							return DBOperation.InvalidFile;
 						}
 					}
 					else if (files.Count() == 0 && medicalModel.FileName.Length != 0)
@@ -501,7 +501,7 @@ namespace EmcureNPD.Business.Core.Implementation
 									}
 									else
 									{
-										return DBOperation.Error;
+										return DBOperation.InvalidFile;
 
 									}
 								}
@@ -551,7 +551,7 @@ namespace EmcureNPD.Business.Core.Implementation
 								}
 								else
 								{
-									return DBOperation.Error;
+									return DBOperation.InvalidFile;
 								}
 							}
 							i++;
@@ -590,7 +590,7 @@ namespace EmcureNPD.Business.Core.Implementation
 					}
 					else
 					{
-						return DBOperation.Error;
+						return DBOperation.InvalidFile;
 					}
 				}
 				else if (files.Count() == 0 && medicalModel.FileName != null)
@@ -628,7 +628,7 @@ namespace EmcureNPD.Business.Core.Implementation
 							}
 							else
 							{
-								return DBOperation.Error;
+								return DBOperation.InvalidFile;
 							}
 						}
 						i++;

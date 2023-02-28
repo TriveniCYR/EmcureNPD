@@ -279,6 +279,11 @@ namespace EmcureNPD.API.Controllers.Masters
                     _logger.LogInformation("PIDFormService db operation success and PIDMedicalForm controller completed");
                     return _ObjectResponse.Create(true, (Int32)HttpStatusCode.OK, ("Save Successfully"));
                 }
+                else if(oResponse == DBOperation.InvalidFile)
+                {
+                    _logger.LogInformation("PIDFormService db operation failed and PIDMedicalForm controller ended");
+                    return _ObjectResponse.Create(false, (Int32)HttpStatusCode.BadRequest, (oResponse == DBOperation.InvalidFile ? "File not supported" : "Bad request"));
+                }
 				else
 				{
                     _logger.LogInformation("PIDFormService db operation failed and PIDMedicalForm controller ended");

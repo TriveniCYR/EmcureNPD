@@ -189,7 +189,7 @@ namespace EmcureNPD.Web.Controllers
             {
                 string logUserId = Convert.ToString(HttpContext.Session.GetString(UserHelper.LoggedInUserId));
                 int rolId = (int)HttpContext.Session.GetInt32(UserHelper.LoggedInRoleId);
-                RolePermissionModel objPermssion = UtilityHelper.GetCntrActionAccess(Convert.ToString(RouteData.Values["controller"]), rolId);
+                RolePermissionModel objPermssion = UtilityHelper.GetCntrActionAccess(Convert.ToString(this.ControllerContext.ActionDescriptor.ActionName), rolId);
                 if (objPermssion == null || (!objPermssion.Add && !objPermssion.Edit))
                 {
                     return RedirectToAction("AccessRestriction", "Home");
