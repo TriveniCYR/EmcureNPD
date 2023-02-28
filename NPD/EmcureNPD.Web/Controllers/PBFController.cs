@@ -192,7 +192,7 @@ namespace EmcureNPD.Web.Controllers
         public IActionResult APICharterDetailsForm(string pidfid, string bui)
         {
             ModelState.Clear();
-            var _APIRnDDetailsForm = new PIDFAPIRnDFormEntity();
+            var _APICharterDetailsForm = new PIDFAPICharterFormEntity();
             try
             {
                 int rolId = (int)HttpContext.Session.GetInt32(UserHelper.LoggedInRoleId);
@@ -211,24 +211,16 @@ namespace EmcureNPD.Web.Controllers
                 else
                     bussnessId = UtilityHelper.Decreypt(bui);
 
-
                 HttpContext.Request.Cookies.TryGetValue(UserHelper.EmcureNPDToken, out string token);
                 APIRepository objapi = new(_cofiguration);
-                HttpResponseMessage responseMessage = objapi.APICommunication(APIURLHelper.GetAPIRnDFormData + "/" + pidfid, HttpMethod.Get, token).Result;
+                HttpResponseMessage responseMessage = objapi.APICommunication(APIURLHelper.GetAPICharterFormData + "/" + pidfid, HttpMethod.Get, token).Result;
                 if (responseMessage.IsSuccessStatusCode)
                 {
                     string jsonResponse = responseMessage.Content.ReadAsStringAsync().Result;
-                    var data = JsonConvert.DeserializeObject<APIResponseEntity<PIDFAPIRnDFormEntity>>(jsonResponse);
-                    _APIRnDDetailsForm = data._object;
+                    var data = JsonConvert.DeserializeObject<APIResponseEntity<PIDFAPICharterFormEntity>>(jsonResponse);
+                    _APICharterDetailsForm = data._object;
                 }
-
-                _APIRnDDetailsForm.IPEvalution = GetModelForPIDForm(pidfid, bussnessId);
-                _APIRnDDetailsForm._commercialFormEntity = GetPIDFCommercialModel(pidfid, bussnessId);
-                _APIRnDDetailsForm.ProjectName = _APIRnDDetailsForm.IPEvalution.ProjectName;
-                _APIRnDDetailsForm.IPD_PatentDetailsList = _APIRnDDetailsForm.IPEvalution.pidf_IPD_PatentDetailsEntities;
-                _APIRnDDetailsForm.Pidfid = UtilityHelper.Encrypt(pidfid);
-                _APIRnDDetailsForm.BusinessUnitId = UtilityHelper.Encrypt(bussnessId);
-                return View(_APIRnDDetailsForm);
+                return View(_APICharterDetailsForm);
             }
             catch (Exception e)
             {
@@ -239,27 +231,27 @@ namespace EmcureNPD.Web.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult APICharterDetailsForm(int _APIRnDDetailsID, PIDFAPIRnDFormEntity _RnDmodel)
+        public IActionResult APICharterDetailsForm(PIDFAPICharterFormEntity _Chartermodel)
         {
-            _RnDmodel.Pidfid = UtilityHelper.Decreypt(_RnDmodel.Pidfid);
-            _RnDmodel.BusinessUnitId = UtilityHelper.Decreypt(_RnDmodel.BusinessUnitId);
+            _Chartermodel.Pidfid = UtilityHelper.Decreypt(_Chartermodel.Pidfid);
+            _Chartermodel.BusinessUnitId = UtilityHelper.Decreypt(_Chartermodel.BusinessUnitId);
             bool IsSaveError = false;
-            if (_RnDmodel.IsModelValid != "")
+            if (_Chartermodel.IsModelValid != "")
             {
                 //save logic
                 string logUserId = Convert.ToString(HttpContext.Session.GetString(UserHelper.LoggedInUserId));
-                _RnDmodel.LoggedInUserId = Convert.ToInt32(logUserId);
+                _Chartermodel.LoggedInUserId = Convert.ToInt32(logUserId);
                 HttpContext.Request.Cookies.TryGetValue(UserHelper.EmcureNPDToken, out string token);
                 APIRepository objapi = new(_cofiguration);
-                HttpResponseMessage responseMessage = objapi.APICommunication(APIURLHelper.InsertUpdateAPIRnD, HttpMethod.Post, token, new StringContent(JsonConvert.SerializeObject(_RnDmodel))).Result;
+                HttpResponseMessage responseMessage = objapi.APICommunication(APIURLHelper.InsertUpdateAPICharter, HttpMethod.Post, token, new StringContent(JsonConvert.SerializeObject(_Chartermodel))).Result;
 
                 if (responseMessage.IsSuccessStatusCode)
                 {
                     TempData["SaveStatus"] = Convert.ToString(_stringLocalizerShared["RecordInsertUpdate"]);
                     ModelState.Clear();
                     IsSaveError = false;
-                    return RedirectToAction("APIRndDetailsForm",
-                        new { pidfid = UtilityHelper.Encrypt(_RnDmodel.Pidfid), bui = UtilityHelper.Encrypt(_RnDmodel.BusinessUnitId) }); // return to PBFAPI List
+                    return RedirectToAction("APICharterDetailsForm",
+                        new { pidfid = UtilityHelper.Encrypt(_Chartermodel.Pidfid), bui = UtilityHelper.Encrypt(_Chartermodel.BusinessUnitId) }); // return to PBFAPI List
                 }
                 else
                 {
@@ -269,14 +261,7 @@ namespace EmcureNPD.Web.Controllers
             if (IsSaveError)
                 TempData["SaveStatus"] = "Save Error Occured !";
 
-            // return back with Invalid Model
-            _RnDmodel._commercialFormEntity = GetPIDFCommercialModel(_RnDmodel.Pidfid, _RnDmodel.BusinessUnitId);
-            _RnDmodel.IPEvalution = GetModelForPIDForm(_RnDmodel.Pidfid, _RnDmodel.BusinessUnitId);
-            _RnDmodel.ProjectName = _RnDmodel.IPEvalution.ProjectName;
-            _RnDmodel.IPD_PatentDetailsList = _RnDmodel.IPEvalution.pidf_IPD_PatentDetailsEntities;
-            _RnDmodel.Pidfid = UtilityHelper.Encrypt(_RnDmodel.Pidfid);
-            _RnDmodel.BusinessUnitId = UtilityHelper.Encrypt(_RnDmodel.BusinessUnitId);
-            return View(_RnDmodel);
+            return View(_Chartermodel);
 
         }
 

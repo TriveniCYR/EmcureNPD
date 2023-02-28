@@ -1,0 +1,74 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@model EmcureNPD.Business.Models.AuditLogEntity
+<div class="container-fluid background-white-card">
+	<form class="row">
+		<div class="col-6 mb-4 text-center">
+			<input type="text" class="form-control" disabled value=@Model.CreatedBy>
+		</div>
+		<div class="col-6 mb-4 text-center">
+			<input type="text" class="form-control" disabled value=@Model.CreatedDate>
+		</div>
+		@{
+			int i = 1;
+			foreach (var logs in @ViewBag.log)
+			{
+				if (logs["Values"] != null)
+				{
+					<div class="px-4">
+						<div class="accordion accordion-flush mb-4" id="accordionChild@(i)">
+							<div class="accordion-item">
+								<h3 class="accordion-header" id="flush-headingChild@(i)">
+									<button class="accordion-button collapsed fw-bold bg-gradient-primary text-white"
+									type="button" data-toggle="collapse" data-target="#flush-collapseChild@(i)"
+									aria-expanded="false" aria-controls="flush-collapseChild@(i)">
+										@logs.PropertyName
+									</button>
+								</h3>
+								@{
+									foreach (var values in @logs.Values)
+									{
+										<div id="flush-collapseChild@(i)" class="accordion-collapse collapse border border-top-0"
+						 		aria-labelledby="flush-headingChild@(i)" data-parent="#accordionChild@(i)">
+											<div class="accordion-body row">
+												<div class="mb-4 col-4">
+													<label for="propertyName" class="form-label">Property Name</label>
+													<input type="text" class="form-control" id="propertyName" disabled value="@(values.DisplayName == null || values.DisplayName == " " ? values.PropertyName : values.DisplayName)">
+												</div>
+												<div class="mb-4 col-4">
+													<label for="oldValue" class="form-label">Old Value</label>
+													<input type="text" class="form-control" id="oldValue" disabled value="@(values.OldValue !=" " ? (values.OldValue == "True" ? "Yes" : (values.OldValue == "False" ? "No" : values.OldValue)) : "" )">
+												</div>
+												<div class="mb-4 col-4">
+													<label for="newValue" class="form-label">New Value</label>
+													<input type="text" class="form-control" id="newValue" disabled value="@(values.NewValue !=" " ? (values.NewValue == "True" ? "Yes" : (values.NewValue == "False" ? "No" : values.NewValue)) : "" )">
+												</div>
+											</div>
+										</div>
+									}
+								}
+							</div>
+						</div>
+					</div>
+					i++;
+				}
+				else
+				{
+					<div class="col-4 mb-4">
+						<label for="propertyName" class="form-label">Property Name</label>
+						<input type="text" class="form-control" id="propertyName" disabled value="@(logs.DisplayName == null || logs.DisplayName == " " ? logs.PropertyName : logs.DisplayName)">
+					</div>
+					<div class="col-4 mb-4">
+						<label for="oldValue" class="form-label">Old Value</label>
+						<input type="text" class="form-control" id="oldValue" disabled value="@(logs.OldValue !=" " ? (logs.OldValue == "True" ? "Yes" : (logs.OldValue == "False" ? "No" : logs.OldValue)) : "" )">
+					</div>
+					<div class="col-4 mb-4">
+						<label for="newValue" class="form-label">New Value</label>
+						<input type="text" class="form-control" id="newValue" disabled value="@(logs.NewValue !=" " ? (logs.NewValue == "True" ? "Yes" : (logs.NewValue == "False" ? "No" : logs.NewValue)) : "" )">
+					</div>
+				}
+			}
+		}
+	</form>
+</div>

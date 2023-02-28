@@ -151,7 +151,7 @@ namespace EmcureNPD.Web.Controllers
         }
 
         [HttpGet]
-        public IActionResult PIDFCommerciaLDetails(string pidfid, string bui)
+        public IActionResult PIDFCommerciaLDetails(string pidfid, string bui, int? IsView )
         {
             ModelState.Clear();
             PIDFCommercialEntity oPIDForm = new();
@@ -166,12 +166,13 @@ namespace EmcureNPD.Web.Controllers
                 }
                 ViewBag.Access = objPermssion;
                 oPIDForm = GetPIDFCommercialModel(pidfid, bui);
+                oPIDForm.IsView = (IsView == null) ? 0 : (int)IsView;
                 return View(oPIDForm);
             }
             catch (Exception e)
             {
                 ViewBag.errormessage = Convert.ToString(e.StackTrace);
-                return View("~/Views/Account/ogin");
+                return View("~/Views/Account/Login");
             }
         }
 

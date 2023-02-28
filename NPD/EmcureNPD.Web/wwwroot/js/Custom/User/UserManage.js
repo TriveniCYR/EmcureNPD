@@ -137,7 +137,7 @@ function GetDepartmentListError(x, y, z) {
 //#endregion
 // #region GetDepartmentList
 function GetAllRoleList() {
-    ajaxServiceMethod($('#hdnBaseURL').val() + GetAllRoleURL, 'GET', GetAllRoleListSuccess, GetAllRoleListError);
+    ajaxServiceMethod($('#hdnBaseURL').val() + GetAllActiveRoleURL, 'GET', GetAllRoleListSuccess, GetAllRoleListError);
 }
 function GetAllRoleListSuccess(data) {
     try {
@@ -158,6 +158,9 @@ function GetAllRoleListError(x, y, z) {
 }
 //#endregion
 
-
+function TrimSpace(id) {
+    var ctrlValue = $(id).val()
+    $(id).val($.trim(ctrlValue));
+}
 
 

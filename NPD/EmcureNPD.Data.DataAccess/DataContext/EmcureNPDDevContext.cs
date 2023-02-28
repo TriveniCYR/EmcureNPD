@@ -132,7 +132,7 @@ namespace EmcureNPD.Data.DataAccess.DataContext
             }
         }
 
-        protected override void OnModelCreating(ModelBuilder modelBuilder)
+		protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.HasAnnotation("Relational:Collation", "SQL_Latin1_General_CP1_CI_AS");
 
@@ -169,9 +169,25 @@ namespace EmcureNPD.Data.DataAccess.DataContext
 
                 entity.Property(e => e.MasterApiCharterAnalyticalDepartmentId).HasColumnName("Master_API_Charter_AnalyticalDepartmentId");
 
+                entity.Property(e => e.Amt)
+                    .HasMaxLength(100)
+                    .HasColumnName("AMT");
+
+                entity.Property(e => e.Amv)
+                    .HasMaxLength(100)
+                    .HasColumnName("AMV");
+
+                entity.Property(e => e.Ard)
+                    .HasMaxLength(100)
+                    .HasColumnName("ARD");
+
+                entity.Property(e => e.Impurity).HasMaxLength(100);
+
                 entity.Property(e => e.Name)
                     .IsRequired()
                     .HasMaxLength(100);
+
+                entity.Property(e => e.Stability).HasMaxLength(100);
             });
 
             modelBuilder.Entity<MasterApiCharterCapitalOtherExpenditure>(entity =>
@@ -232,6 +248,8 @@ namespace EmcureNPD.Data.DataAccess.DataContext
                 entity.Property(e => e.Name)
                     .IsRequired()
                     .HasMaxLength(100);
+
+                entity.Property(e => e.NameValue).HasMaxLength(100);
             });
 
             modelBuilder.Entity<MasterApisourcing>(entity =>

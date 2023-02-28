@@ -94,9 +94,10 @@
 
     <script>
 
+
         //#region Setup API Url
 
-        var DeleteRoleByIdUrl = "@EmcureNPD.Web.Helpers.APIURLHelper.DeleteRoleById";
+        var DeleteRoleByIdUrl= "@EmcureNPD.Web.Helpers.APIURLHelper.DeleteRoleById";
         // #endregion
 
         //#region Static Label Init
@@ -105,7 +106,10 @@
         var ErrorMessage = "@SharedLocalizer["Error"]";
         var RecordDelete = "@SharedLocalizer["RecordDelete"]";
 
-        //#endregion
+        var StatusMessage = '@TempData["StatusMessage"]';
+
+
+                //#endregion
     </script>
 
 }

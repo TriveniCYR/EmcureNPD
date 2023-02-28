@@ -29,7 +29,6 @@ namespace EmcureNPD.Business.Core.Implementation
 		private readonly IMasterCountryService _countryService;
 		private readonly IMasterAuditLogService _auditLogService;
 		private readonly IConfiguration _configuration;
-
 		private IRepository<PidfIpd> _repository { get; set; }
 		private IRepository<PidfIpdPatentDetail> _ipdParentRepository { get; set; }
 		private IRepository<MasterRegion> _regionRepository { get; set; }
@@ -438,15 +437,35 @@ namespace EmcureNPD.Business.Core.Implementation
 				objPIDFMedical = await _pidfMedicalrepository.GetAsync(medicalModel.PidfmedicalId);
 				if (objPIDFMedical != null)
 				{
-					objPIDFMedical = _mapperFactory.Get<PIDFMedicalViewModel, PidfMedical>(medicalModel);
-					_pidfMedicalrepository.UpdateAsync(objPIDFMedical);
-					await _unitOfWork.SaveChangesAsync();
-					var MedicalFile = _pidfMedicalFilerepository.GetAll().Where(x => x.PidfmedicalId == medicalModel.PidfmedicalId).ToList();
 					int i = 0;
-
+					oldPIDFFEntity = _mapperFactory.Get<PidfMedical, PIDFMedicalViewModel>(objPIDFMedical);
+					objPIDFMedical = _mapperFactory.Get<PIDFMedicalViewModel, PidfMedical>(medicalModel);
+					if (files.Count() != 0)
+					{
+						string us = FileValidation(files[i]);
+						if (us == null)
+						{
+							_pidfMedicalrepository.UpdateAsync(objPIDFMedical);
+							await _unitOfWork.SaveChangesAsync();
+						}
+						else
+						{
+							return DBOperation.Error;
+						}
+					}
+					else if (files.Count() == 0 && medicalModel.FileName.Length != 0)
+					{
+						_pidfMedicalrepository.UpdateAsync(objPIDFMedical);
+						await _unitOfWork.SaveChangesAsync();
+					}
+					else
+					{
+						return DBOperation.Error;
+					}
+					var MedicalFile = _pidfMedicalFilerepository.GetAll().Where(x => x.PidfmedicalId == medicalModel.PidfmedicalId).ToList();
 					foreach (var item in MedicalFile)
 					{
-						if (medicalModel.FileName != null && i < medicalModel.FileName.Count())
+						if (medicalModel.FileName.Length != 0 && i < medicalModel.FileName.Count())
 						{
 							var uniqueFileName = Path.GetFileNameWithoutExtension(medicalModel.FileName[i])
 							   + Guid.NewGuid().ToString().Substring(0, 4)
@@ -490,7 +509,7 @@ namespace EmcureNPD.Business.Core.Implementation
 							}
 							i++;
 						}
-						else if (medicalModel.FileName != null)
+						else if (medicalModel.FileName.Length != 0)
 						{
 							PidfMedicalFile medicalFiles = new PidfMedicalFile
 							{
@@ -508,7 +527,7 @@ namespace EmcureNPD.Business.Core.Implementation
 						}
 					}
 
-					if (medicalModel.FileName != null && i < medicalModel.FileName.Count())
+					if (medicalModel.FileName.Length != 0 && i < medicalModel.FileName.Count())
 					{
 						foreach (var filename in i != 0 ? medicalModel.FileName.Skip(i) : medicalModel.FileName)
 						{
@@ -539,6 +558,8 @@ namespace EmcureNPD.Business.Core.Implementation
 						}
 					}
 					await _unitOfWork.SaveChangesAsync();
+					var isSuccess = await _auditLogService.CreateAuditLog<PIDFMedicalViewModel>(medicalModel.PidfmedicalId > 0 ? Utility.Audit.AuditActionType.Update : Utility.Audit.AuditActionType.Create,
+						   Utility.Enums.ModuleEnum.Medical, oldPIDFFEntity, medicalModel, Convert.ToInt32(objPIDFMedical.PidfmedicalId));
 					return DBOperation.Success;
 				}
 				else
@@ -546,19 +567,39 @@ namespace EmcureNPD.Business.Core.Implementation
 					return DBOperation.NotFound;
 				}
 			}
-			else if(medicalModel.PidfmedicalId == 0)
+			else if (medicalModel.PidfmedicalId == 0)
 			{
 				int i = 0;
 				var medical = _mapperFactory.Get<PIDFMedicalViewModel, PidfMedical>(medicalModel);
 				medical.MedicalOpinion = medicalModel.MedicalOpinion;
 				medical.Remark = medicalModel.Remark;
 				medical.CreatedDate = DateTime.Now;
-				_pidfMedicalrepository.AddAsync(medical);
-				await _unitOfWork.SaveChangesAsync();
-
+				if (files.Count() != 0)
+				{
+					string us = FileValidation(files[i]);
+					if (us == null)
+					{
+						_pidfMedicalrepository.AddAsync(medical);
+						await _unitOfWork.SaveChangesAsync();
+					}
+					else
+					{
+						return DBOperation.Error;
+					}
+				}
+				else if (files.Count() == 0 && medicalModel.FileName != null)
+				{
+					_pidfMedicalrepository.AddAsync(medical);
+					await _unitOfWork.SaveChangesAsync();
+				}
+				else
+				{
+					return DBOperation.Error;
+				}
 
 				//var medicalFile = _mapperFactory.Get<PIDFMedicalViewModel, PidfMedicalFile>(medicalModel);
 				if (medicalModel.FileName != null)
+				{
 					foreach (var filename in medicalModel.FileName)
 					{
 						var uniqueFileName = Path.GetFileNameWithoutExtension(filename)
@@ -586,6 +627,7 @@ namespace EmcureNPD.Business.Core.Implementation
 						}
 						i++;
 					}
+				}
 				await _unitOfWork.SaveChangesAsync();
 
 				return DBOperation.Success;

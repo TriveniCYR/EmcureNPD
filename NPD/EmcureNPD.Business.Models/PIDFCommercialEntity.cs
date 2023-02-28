@@ -14,7 +14,7 @@ namespace EmcureNPD.Business.Models
         public int BusinessUnitId { get; set; }
         public long PidfproductStrengthId { get; set; }
 
-      
+        public int IsView { get; set; }
         public string MarketSizeInUnit { get; set; }
         
         public string ShelfLife { get; set; }

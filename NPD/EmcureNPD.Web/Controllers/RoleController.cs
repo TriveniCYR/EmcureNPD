@@ -1,10 +1,12 @@
 ﻿using EmcureNPD.Business.Models;
+using EmcureNPD.Resource;
 using EmcureNPD.Utility.Models;
 using EmcureNPD.Utility.Utility;
 using EmcureNPD.Web.Helpers;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Localization;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
@@ -18,12 +20,14 @@ namespace EmcureNPD.Web.Controllers
 
         #region Properties
         private readonly IConfiguration _cofiguration;
+        private readonly IStringLocalizer<Shared> _stringLocalizerShared;
         #endregion
 
 
-        public RoleController(IConfiguration configuration)
+        public RoleController(IConfiguration configuration, IStringLocalizer<Shared> stringLocalizerShared)
         {
             _cofiguration = configuration;
+            _stringLocalizerShared = stringLocalizerShared;
         }
 
         public IActionResult Roles()
@@ -116,7 +120,8 @@ namespace EmcureNPD.Web.Controllers
 
                 if (responseMessage.IsSuccessStatusCode)
                 {
-                    if(masterRole.RoleId>0)
+                    TempData["StatusMessage"] = "Saved Successfully";
+                    if (masterRole.RoleId > 0)
                     {
                         UtilityHelper.RemoveModuleRole(masterRole.RoleId);
 
@@ -125,14 +130,18 @@ namespace EmcureNPD.Web.Controllers
                         {
                             string rolJson = resRoles.Content.ReadAsStringAsync().Result;
                             var data = JsonConvert.DeserializeObject<APIResponseEntity<IEnumerable<RolePermissionModel>>>(rolJson);
-                            UtilityHelper.AddModuleRole(masterRole.RoleId, data._object);                          
+                            UtilityHelper.AddModuleRole(masterRole.RoleId, data._object);
+
                         }
+
                     }
 
                     string jsonResponse = responseMessage.Content.ReadAsStringAsync().Result;
                     ModelState.Clear();
                     return RedirectToAction(nameof(Roles));
                 }
+                else
+                    TempData["StatusMessage"] = "Some Eror Occured";
 
 
             }

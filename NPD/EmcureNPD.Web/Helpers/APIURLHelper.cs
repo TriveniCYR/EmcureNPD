@@ -108,6 +108,7 @@ namespace EmcureNPD.Web.Helpers
 
         #region Role Management
         public static string GetAllRole = "api/Role/GetAllRole";
+        public static string GetAllActiveRole = "api/Role/GetAllActiveRole";
         public static string GetRoleById = "api/Role/GetRoleById";
         public static string SaveRole = "api/Role/InsertUpdateRole";
         public static string DeleteRoleById = "api/Role/DeleteRole";
@@ -299,7 +300,9 @@ namespace EmcureNPD.Web.Helpers
         public static string GetAPIIPDFormData = "api/PBF/GetAPIIPDFormData";
         public static string InsertUpdateAPIIPD = "api/PBF/InsertUpdateAPIIPD";
         public static string GetAPIRnDFormData = "api/PBF/GetAPIRnDFormData";
-        public static string InsertUpdateAPIRnD = "api/PBF/InsertUpdateAPIRnD"; 
+        public static string InsertUpdateAPIRnD = "api/PBF/InsertUpdateAPIRnD";
+        public static string GetAPICharterFormData = "api/PBF/GetAPICharterFormData";
+        public static string InsertUpdateAPICharter = "api/PBF/InsertUpdateAPICharter";
         #endregion
 
         #region API List
