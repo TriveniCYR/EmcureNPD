@@ -160,15 +160,72 @@ namespace EmcureNPD.Business.Core.Implementation
 				var result = data.Get<string>("Success").Trim();
 				if (result.Split('-')[0] == "success")
 				{
-                    PidfFinance newFinanceEntity =await _repository.GetAsync(Convert.ToInt32(result.Split('-')[1])); 
+					PidfFinance newFinanceEntity = new PidfFinance();//await _repository.GetAsync(Convert.ToInt32(result.Split('-')[1])); 
+                    newFinanceEntity.PidffinaceId = entityPidfFinance.PidffinaceId;
+                    newFinanceEntity.Pidfid = Convert.ToInt32(entityPidfFinance.Pidfid);
+                    newFinanceEntity.Entity = entityPidfFinance.Entity;
+                    newFinanceEntity.Product = entityPidfFinance.Product;
+                    newFinanceEntity.ForecastDate = entityPidfFinance.ForecastDate;
+                    newFinanceEntity.Currencyid = entityPidfFinance.Currencyid;
+                    newFinanceEntity.DosageFrom = entityPidfFinance.DosageFrom;
+                    newFinanceEntity.ManufacturingSiteOrPartner = entityPidfFinance.ManufacturingSiteOrPartner;
+                    newFinanceEntity.Skus = entityPidfFinance.Skus;
+                    newFinanceEntity.Mspersentage = entityPidfFinance.Mspersentage;
+                    newFinanceEntity.TargetPriceScenario = entityPidfFinance.TargetPriceScenario;
+                    newFinanceEntity.ProjectStartDate = entityPidfFinance.ProjectStartDate;
+                    newFinanceEntity.BatchManufacturing = entityPidfFinance.BatchManufacturing;
+                    newFinanceEntity.ExpectedFilling = entityPidfFinance.ExpectedFilling;
+                    newFinanceEntity.ApprovalPeriodinDays = entityPidfFinance.ApprovalPeriodinDays;
+                    newFinanceEntity.ApprovalDate = entityPidfFinance.ApprovalDate;
+                    newFinanceEntity.ProductLaunchDate = entityPidfFinance.ProductLaunchDate;
+                    newFinanceEntity.GestationPeriodinYears = entityPidfFinance.GestationPeriodinYears;
+                    newFinanceEntity.MarketShareErosionrate = entityPidfFinance.MarketShareErosionrate;
+                    newFinanceEntity.PriceErosion = entityPidfFinance.PriceErosion;
+                    newFinanceEntity.DiscountRate = entityPidfFinance.DiscountRate;
+                    newFinanceEntity.Incometaxrate = entityPidfFinance.Incometaxrate;
+                    newFinanceEntity.Opexasapercenttosale = entityPidfFinance.Opexasapercenttosale;
+                    newFinanceEntity.ExternalProfitSharepercent = entityPidfFinance.ExternalProfitSharepercent;
+                    newFinanceEntity.CollectioninDays = entityPidfFinance.CollectioninDays;
+                    newFinanceEntity.InventoryinDays = entityPidfFinance.InventoryinDays;
+                    newFinanceEntity.CreditorinDays = entityPidfFinance.CreditorinDays;
+                    newFinanceEntity.MarketingAllowance = entityPidfFinance.MarketingAllowance;
+                    newFinanceEntity.RegulatoryMaintenanceCost = entityPidfFinance.RegulatoryMaintenanceCost;
+                    newFinanceEntity.GrosstoNet = entityPidfFinance.GrosstoNet;
+                    newFinanceEntity.Noofbatchestobemanufactured = entityPidfFinance.Noofbatchestobemanufactured;
+                    newFinanceEntity.NoofbatchestobemanufacturedPhaseEndDate = entityPidfFinance.NoofbatchestobemanufacturedPhaseEndDate;
+                    newFinanceEntity.NoSkus = entityPidfFinance.NoSkus;
+                    newFinanceEntity.NoSkusPhaseEndDate = entityPidfFinance.NoSkusPhaseEndDate;
+                    newFinanceEntity.RandDanalyticalcost = entityPidfFinance.RandDanalyticalcost;
+                    newFinanceEntity.RandDanalyticalcostPhaseEndDate = entityPidfFinance.RandDanalyticalcostPhaseEndDate;
+                    newFinanceEntity.Rldsamplecost = entityPidfFinance.Rldsamplecost;
+                    newFinanceEntity.RldsamplecostPhaseEndDate = entityPidfFinance.RldsamplecostPhaseEndDate;
+                    newFinanceEntity.BatchmanufacturingcostOrApiactualsEst = entityPidfFinance.BatchmanufacturingcostOrApiactualsEst;
+                    newFinanceEntity.BatchmanufacturingcostOrApiactualsEstPhaseEndDate = entityPidfFinance.BatchmanufacturingcostOrApiactualsEstPhaseEndDate;
+                    newFinanceEntity.Sixmonthsstabilitycost = entityPidfFinance.Sixmonthsstabilitycost;
+                    newFinanceEntity.SixmonthsstabilitycostPhaseEndDate = entityPidfFinance.SixmonthsstabilitycostPhaseEndDate;
+                    newFinanceEntity.TechTransfer = entityPidfFinance.TechTransfer;
+                    newFinanceEntity.TechTransferPhaseEndDate = entityPidfFinance.TechTransferPhaseEndDate;
+                    newFinanceEntity.Bestudies = entityPidfFinance.Bestudies;
+                    newFinanceEntity.BestudiesPhaseEndDate = entityPidfFinance.BestudiesPhaseEndDate;
+                    newFinanceEntity.Filingfees = entityPidfFinance.Filingfees;
+                    newFinanceEntity.FilingfeesPhaseEndDate = entityPidfFinance.FilingfeesPhaseEndDate;
+                    newFinanceEntity.BioStuddyCost = entityPidfFinance.BioStuddyCost;
+                    newFinanceEntity.BioStuddyCostPhaseEndDate = entityPidfFinance.BioStuddyCostPhaseEndDate;
+                    newFinanceEntity.Capex = entityPidfFinance.Capex;
+                    newFinanceEntity.CapexPhaseEndDate = entityPidfFinance.CapexPhaseEndDate;
+                    newFinanceEntity.ToolingAndChangeParts = entityPidfFinance.ToolingAndChangeParts;
+                    newFinanceEntity.ToolingAndChangePartsPhaseEndDate = entityPidfFinance.ToolingAndChangePartsPhaseEndDate;
+                    newFinanceEntity.Total = entityPidfFinance.Total;
+                    newFinanceEntity.CreatedDate = Convert.ToDateTime(entityPidfFinance.CreatedDate);
+                    newFinanceEntity.CreatedBy = entityPidfFinance.CreatedBy;
                     List<PidfFinanceBatchSizeCoating> ls = new List<PidfFinanceBatchSizeCoating>();
-					if (entityPidfFinance.lsPidfFinanceBatchSizeCoating.Count > 0)
+                    var PidffinaceId = entityPidfFinance.PidffinaceId > 0 ? entityPidfFinance.PidffinaceId : Convert.ToInt32(result.Split('-')[1]);
+                    if (entityPidfFinance.lsPidfFinanceBatchSizeCoating.Count > 0)
 					{
-						var PidffinaceId = entityPidfFinance.PidffinaceId > 0 ? entityPidfFinance.PidffinaceId :Convert.ToInt32(result.Split('-')[1]);
                         await AddUpdatePidfFinanceBatchSizeCoating(entityPidfFinance.lsPidfFinanceBatchSizeCoating,Convert.ToInt32(entityPidfFinance.CreatedBy),PidffinaceId);
 					}
 					//*Audit log//
-                   var isAuditSuccess=await _auditLogService.CreateAuditLog<PidfFinance>(Convert.ToInt32(entityPidfFinance.Pidfid) > 0 ? Utility.Audit.AuditActionType.Update : Utility.Audit.AuditActionType.Create,
+                   var isAuditSuccess=await _auditLogService.CreateAuditLog<PidfFinance>(Convert.ToInt32(PidffinaceId) > 0 ? Utility.Audit.AuditActionType.Update : Utility.Audit.AuditActionType.Create,
                                       Utility.Enums.ModuleEnum.Finance, _previousFinanceEntity, newFinanceEntity, Convert.ToInt32(entityPidfFinance.Pidfid));
 					//*Status update start//
 					try
