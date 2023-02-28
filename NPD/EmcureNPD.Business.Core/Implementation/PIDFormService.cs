@@ -557,6 +557,12 @@ namespace EmcureNPD.Business.Core.Implementation
 							i++;
 						}
 					}
+					//status update in PIDF
+					Pidf objPidf = await _pidfrepository.GetAsync(medicalModel.Pidfid);
+					objPidf.StatusId = 9;
+					objPidf.StatusUpdatedDate = DateTime.Now;
+					_pidfrepository.UpdateAsync(objPidf);
+
 					await _unitOfWork.SaveChangesAsync();
 					var isSuccess = await _auditLogService.CreateAuditLog<PIDFMedicalViewModel>(medicalModel.PidfmedicalId > 0 ? Utility.Audit.AuditActionType.Update : Utility.Audit.AuditActionType.Create,
 						   Utility.Enums.ModuleEnum.Medical, oldPIDFFEntity, medicalModel, Convert.ToInt32(objPIDFMedical.PidfmedicalId));
@@ -628,6 +634,11 @@ namespace EmcureNPD.Business.Core.Implementation
 						i++;
 					}
 				}
+				//status update in PIDF
+				Pidf objPidf = await _pidfrepository.GetAsync(medicalModel.Pidfid);
+				objPidf.StatusId = 9;
+				objPidf.StatusUpdatedDate = DateTime.Now;
+				_pidfrepository.UpdateAsync(objPidf);
 				await _unitOfWork.SaveChangesAsync();
 
 				return DBOperation.Success;

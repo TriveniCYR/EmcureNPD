@@ -67,15 +67,15 @@
 					<ul id="fileList">
 						@{
 							if (Model.FileName != null)
-						{
-							for (int i = 0; i < Model.FileName.Length; i++)
 							{
-								<div class="element" id="element_@i">
+								for (int i = 0; i < Model.FileName.Length; i++)
+								{
+									<div class="element" id="element_@i">
 										<a href="@ViewBag.baseUrl/Uploads/PIDF/Medical/@Model.FileName[i]" target="_blank">@Html.EditorFor(m => m.FileName[i], new { htmlAttributes = new {@readonly = "readonly" } })</a>
-									<button type="button" class="btn btn-sm btn-danger" onclick="deleteElement(@i)">Delete</button>
-								</div>
+										<button type="button" class="btn btn-sm btn-danger" onclick="deleteElement(@i)">Delete</button>
+									</div>
+								}
 							}
-						}
 						}
 					</ul>
 				</div>
@@ -89,53 +89,55 @@
 	</div>
 </section>
 
+@section MyScripts {
+	<script src="/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+	<script>
 
+		// browse files
+		var selectFileButton = document.getElementById("selectFileButton");
+		var fileInput = document.getElementById("File");
 
-<script>
-	// browse files
-	var selectFileButton = document.getElementById("selectFileButton");
-	var fileInput = document.getElementById("File");
+		selectFileButton.addEventListener("click", function () {
+			event.preventDefault();
+			fileInput.click();
+		});
+		// preview Files
 
-	selectFileButton.addEventListener("click", function () {
-		event.preventDefault();
-		fileInput.click();
-	});
-	// preview Files
-
-	function previewFile(file) {
-		window.open(URL.createObjectURL(file));
-	}
-
-	const input = document.getElementById("File");
-	const fileList = document.getElementById("fileList");
-	input.addEventListener("change", () => {
-		fileList.innerHTML = "";
-		for (const file of input.files) {
-			const li = document.createElement("li");
-			const a = document.createElement("a");
-			a.textContent = file.name;
-			a.href = "#";
-			a.addEventListener("click", () => previewFile(file));
-			li.appendChild(a);
-			fileList.appendChild(li);
+		function previewFile(file) {
+			window.open(URL.createObjectURL(file));
 		}
-	});
 
-	//remove files
-	function deleteElement(controlId) {
-		var controlName = "FileName_" + controlId + "_";
-		$('#'+controlName).val('');
-		var divControl = "element_" + controlId;
-		var divCtrl = document.getElementById("element_" + controlId)
-		divCtrl.style.display = "none";
-	}
+		const input = document.getElementById("File");
+		const fileList = document.getElementById("fileList");
+		input.addEventListener("change", () => {
+			fileList.innerHTML = "";
+			for (const file of input.files) {
+				const li = document.createElement("li");
+				const a = document.createElement("a");
+				a.textContent = file.name;
+				a.href = "#";
+				a.addEventListener("click", () => previewFile(file));
+				li.appendChild(a);
+				fileList.appendChild(li);
+			}
+		});
 
-	var errorCallBack = '@TempData[EmcureNPD.Web.Helpers.UserHelper.ErrorMessage]';
-	if (errorCallBack) {
-		toastr.error(errorCallBack);
-	}
-	var successCallBack = '@TempData[EmcureNPD.Web.Helpers.UserHelper.SuccessMessage]';
-	if (successCallBack) {
-		toastr.success(successCallBack);
-	}
-</script>
+		//remove files
+		function deleteElement(controlId) {
+			var controlName = "FileName_" + controlId + "_";
+			$('#' + controlName).val('');
+			var divControl = "element_" + controlId;
+			var divCtrl = document.getElementById("element_" + controlId)
+			divCtrl.style.display = "none";
+		}
+
+		var errorCallBack = '@TempData[EmcureNPD.Web.Helpers.UserHelper.ErrorMessage]';
+		if (errorCallBack) {
+			toastr.error(errorCallBack);
+		}
+		var successCallBack = '@TempData[EmcureNPD.Web.Helpers.UserHelper.SuccessMessage]';
+		if (successCallBack) {
+			toastr.success(successCallBack);
+		}
+	</script>
+}
