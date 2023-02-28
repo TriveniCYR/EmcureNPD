@@ -6,7 +6,7 @@
 @inject IHttpContextAccessor HttpContextAccessor
 @inject Microsoft.Extensions.Localization.IStringLocalizer<EmcureNPD.Resource.Master> MasterLocalizer
 @inject Microsoft.Extensions.Localization.IStringLocalizer<EmcureNPD.Resource.Shared> SharedLocalizer
-@model EmcureNPD.Business.Models.PidfPbfAnalyticalEntity
+@model EmcureNPD.Business.Models.PidfPbfEntity
 @{
     ViewData["Title"] = "PBFAnaLytical";
 }
@@ -14,221 +14,635 @@
 
 <div class="card" style="width:100%">
     <div class="card-body" style="background-color:white">
-        <form asp-action="PBFAnalyticalForm" asp-controller="PBF" enctype="multipart/form-data" method="post">
-            <input type="hidden" asp-for="AnalyticalPIDFID" />
-            <input type="hidden" asp-for="AnalyticalBusinessUnitId" />
-            <input type="hidden" asp-for="StrengthId" />
+        @*<form asp-action="PBFAnalyticalForm" asp-controller="PBF" enctype="multipart/form-data" method="post">*@
+        <input type="hidden" asp-for="pidfPbfAnalyticalEntity.AnalyticalPIDFID" />
+        <input type="hidden" asp-for="pidfPbfAnalyticalEntity.AnalyticalBusinessUnitId" />
+        <input type="hidden" asp-for="pidfPbfAnalyticalEntity.StrengthId" />
+        <input type="hidden" asp-for="pidfPbfAnalyticalEntity.AnalyticalLicence" />
 
-            <div class="card-header">
-                <h5 class="mb-0"><b>General</b></h5>
+        <div class="card-header">
+            <h5 class="mb-0"><b>General</b></h5>
+        </div>
+        <br>
+        <div class="card-body">
+            <div class="row">
+
+                <div class="col-md-3">
+                    <div class="form-group required">
+                        @Html.LabelFor(model => model.pidfPbfAnalyticalEntity.ProjectName,@MasterLocalizer["ProjectName"], new { @class = "control-label" })
+                        @Html.TextBoxFor(model => model.pidfPbfAnalyticalEntity.ProjectName, new {@readonly = "readonly", @class = "form-control", @placeholder = @MasterLocalizer["ProjectName"],@required="required" })
+                    </div>
+                </div>
+
+                <div class="col-md-3">
+                    <div class="form-group">
+                        <label class="control-label">Strength</label>
+                        <div style="display: -webkit-inline-box;" id="strengthlblAnalytical">
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="form-group required">
+                        @Html.LabelFor(model => model.pidfPbfAnalyticalEntity.SAPProjectProjectCode,"SAP Code / Project Code", new { @class = "control-label" })
+                        @Html.TextBoxFor(model => model.pidfPbfAnalyticalEntity.SAPProjectProjectCode, new {@readonly = "readonly", @class = "form-control", @placeholder = "SAP Code / Project Code" ,@required="required"})
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="form-group required">
+                        @Html.LabelFor(model => model.pidfPbfAnalyticalEntity.ImprintingEmbossingCodes,"Imprinting Embossing Codes", new { @class = "control-label" })
+                        @Html.TextBoxFor(model => model.pidfPbfAnalyticalEntity.ImprintingEmbossingCodes, new {@readonly = "readonly", @class = "form-control", @placeholder = "Imprinting Embossing Codes",@required="required" })
+                    </div>
+                </div>
             </div>
-            <br>
-            <div class="card-body">
-                <div class="row">
 
-                    <div class="col-md-3">
-                        <div class="form-group required">
-                            @Html.LabelFor(model => model.ProjectName,@MasterLocalizer["ProjectName"], new { @class = "control-label" })
-                            @Html.TextBoxFor(model => model.ProjectName, new {@readonly = "readonly", @class = "form-control", @placeholder = @MasterLocalizer["ProjectName"] })
-                        </div>
-                    </div>
+            <div class="row">
 
-                    <div class="col-md-3">
-                        <div class="form-group">
-                             <label class="control-label">Strength</label>
-                             <div id="strengthlbl">
-
-                             </div>                               
-                        </div>
-                    </div>
-                    <div class="col-md-3">
-                        <div class="form-group required">
-                            @Html.LabelFor(model => model.SAPProjectProjectCode,"SAP Code / Project Code", new { @class = "control-label" })
-                            @Html.TextBoxFor(model => model.SAPProjectProjectCode,"sap code", new {@readonly = "readonly", @class = "form-control", @placeholder = @MasterLocalizer["ProjectName"] })
-                        </div>
-                    </div>
-                    <div class="col-md-3">
-                        <div class="form-group required">
-                            @Html.LabelFor(model => model.ImprintingEmbossingCodes,"Imprinting Embossing Codes", new { @class = "control-label" })
-                            @Html.TextBoxFor(model => model.ImprintingEmbossingCodes,"Imprinting code", new {@readonly = "readonly", @class = "form-control", @placeholder = @MasterLocalizer["ProjectName"] })
-                        </div>
+                <div class="col-md-3">
+                    <div class="form-group required">
+                        @Html.LabelFor(model => model.pidfPbfAnalyticalEntity.TotalExpenses,"Total Expenses", new { @class = "control-label" })
+                        @Html.TextBoxFor(model => model.pidfPbfAnalyticalEntity.TotalExpenses, new { @class = "form-control", @placeholder = "Total Expenses",@required="required" })
                     </div>
                 </div>
 
-                <div class="row">
-
-                    <div class="col-md-3">
-                        <div class="form-group required">
-                            @Html.LabelFor(model => model.TotalExpenses,"Total Expenses", new { @class = "control-label" })
-                            @Html.TextBoxFor(model => model.TotalExpenses,"Total Expenses", new { @class = "form-control", @placeholder = @MasterLocalizer["ProjectName"] })
-                        </div>
+                <div class="col-md-3">
+                    <div class="form-group required">
+                        @Html.LabelFor(model => model.pidfPbfAnalyticalEntity.ProjectComplexity,"Project Complexity", new { @class = "control-label" })
+                        @Html.TextBoxFor(model => model.pidfPbfAnalyticalEntity.ProjectComplexity, new { @class = "form-control", @placeholder = "Project Complexity" ,@required="required"})
                     </div>
-
-                    <div class="col-md-3">
-                        <div class="form-group required">
-                            @Html.LabelFor(model => model.ProjectComplexity,"Project Complexity", new { @class = "control-label" })
-                            @Html.TextBoxFor(model => model.ProjectComplexity,"Project Complexity", new { @class = "form-control", @placeholder = @MasterLocalizer["ProjectName"] })
-                        </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="form-group required">
+                        @Html.LabelFor(model => model.pidfPbfAnalyticalEntity.AnalyticalProductTypeId, "Product Type", new { @class = "control-label" })
+                        <select id="AnalyticalProductTypeId" name="pidfPbfAnalyticalEntity.AnalyticalProductTypeId" class="form-control readOnlyUpdate" required></select>
                     </div>
-                    <div class="col-md-3">
-                        <div class="form-group required">
-                            @Html.LabelFor(model => model.AnalyticalProductTypeId, "Product Type", new { @class = "control-label" })
-                            <select id="AnalyticalProductTypeId" name="AnalyticalProductTypeId" class="form-control readOnlyUpdate" required></select>
-                        </div>
-                    </div>
-                    <div class="col-md-3">
-                        <div class="form-group required">
-                            <label class="control-label">Test Licence Availability</label>
+                </div>
+                <div class="col-md-3">
+                    <div class="form-group required">
+                        <label class="control-label">Test Licence Availability</label>
 
-                            <div stylle="display: inline-block;" id ="licence">
-                                <input type="checkbox" value="AHD" name=AnalyticalLicence>AHD
-                                <input type="checkbox" value="BHS" name=AnalyticalLicence>BHS
-                                <input type="checkbox" value="HNJ" name=AnalyticalLicence>HNJ
-                                <input type="checkbox" value="LYO" name=AnalyticalLicence>LYO Cycle
-                            </div>
+                        <div stylle="display: inline-block;" id="Analyticallicence">
+                            @* <input type="checkbox" value="AHD" name=AnalyticalLicence>AHD
+                            <input type="checkbox" value="BHS" name=AnalyticalLicence>BHS
+                            <input type="checkbox" value="HNJ" name=AnalyticalLicence>HNJ
+                            <input type="checkbox" value="LYO" name=AnalyticalLicence>LYO Cycle*@
                         </div>
                     </div>
                 </div>
-                <div class="row">
+            </div>
+            <div class="row">
 
-                    <div class="col-md-3">
-                        <div class="form-group required">
-                            <label class="control-label">Budget and Timeline Submission Date</label>
-                            <input type="text" id="BudgetTimelineDate" name="MarketExtensionId" class="form-control readOnlyUpdate" required />
-                        </div>
+                <div class="col-md-3">
+                    <div class="form-group required">
+                        <label class="control-label">Budget and Timeline Submission Date</label>
+                        @Html.TextBoxFor(@modal=> modal.pidfPbfAnalyticalEntity.BudgetTimelineSubmissionDate,"{0:yyyy-MM-dd}",new{@type="date",@class="form-control readOnlyUpdate",@required="required"})
                     </div>
-
-                    <div class="col-md-3">
-                        <div class="form-group required">
-                            @Html.LabelFor(model => model.AnalyticalFormulationGLId, "Formulation GL", new { @class = "control-label" })
-                            <select id="AnalyticalFormulationGLId" name="AnalyticalFormulationGLId" class="form-control readOnlyUpdate" required></select>
-                        </div>
-                    </div>
-                    <div class="col-md-3">
-                        <div class="form-group required">
-                            @Html.LabelFor(model => model.AnalyticalAnalyticalGLId, "Analytical GL", new { @class = "control-label" })
-                            <select id="AnalyticalAnalyticalGLId" name="AnalyticalAnalyticalGLId" class="form-control readOnlyUpdate" required></select>
-                        </div>
-                    </div>
-
                 </div>
-                <br />
-                <div class="row">
 
-                   <div class="col-md-12">
-                        <div class="form-group">
-                             <label class="control-label">Strength</label>
-                            <ul class="nav nav-pills" id="StrengthTabs">
+                <div class="col-md-3">
+                    <div class="form-group required">
+                        @Html.LabelFor(model => model.pidfPbfAnalyticalEntity.AnalyticalFormulationGLId, "Formulation GL", new { @class = "control-label" })
+                        <select id="AnalyticalFormulationGLId" name="pidfPbfAnalyticalEntity.AnalyticalFormulationGLId" class="form-control readOnlyUpdate" required></select>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="form-group required">
+                        @Html.LabelFor(model => model.pidfPbfAnalyticalEntity.AnalyticalAnalyticalGLId, "Analytical GL", new { @class = "control-label" })
+                        <select id="AnalyticalAnalyticalGLId" name="pidfPbfAnalyticalEntity.AnalyticalAnalyticalGLId" class="form-control readOnlyUpdate" required></select>
+                    </div>
+                </div>
 
-                                @*@if (@Model !=null && @Model.ProductStrength != null)
+            </div>
+            <br />
+            <div class="row border m-2">
+                <div class="col-md-3">
+                    @Html.Label("Strength", "Strength", new { @class = "control-label" })
+                </div>
+                <div class="col-md-9 pl-lg-5">
+                    <div class="form-group required">
+                       
+                        <ul class="nav nav-pills" id="StrengthTabsAnalytical">
+
+                            @*@if (@Model !=null && @Model.ProductStrength != null)
+                            {
+                            @if (@Model.ProductStrength.Count > 0)
+                            {
+                            int k = 0;
+                            @foreach (var strenght in @Model.ProductStrength)
+                            {
+                            <li class="nav-item mr-2">
+                            <a class="btn btn-outline-primary" href="@strenght.ProductStrengthId" id="tab_@strenght.ProductStrengthId"> @strenght.ProductStrengthName</a>
+                            </li>
+                            k = k + 1;
+                            }
+                            }
+                            }*@
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <br />
+            <div class="card-header">
+                <h5 class="mb-0"><b>Analytical Activities</b></h5>
+            </div>
+            <br />
+            @*//Prototype Section Start*@
+            <div class="card-header">
+                <h5 class="mb-0"><b>Prototype</b></h5>
+            </div>
+            <br />
+            <div>
+                <table id="PrototypeTable" class="table table-bordered table-striped table-hover" style="width:100%">
+                    <thead>
+                        <tr>
+                            <th>Test Type</th>
+                            <th>Number of tests</th>
+                            <th>Prototype Development</th>
+                            <th>Rs /test</th>
+                            <th>Prototype Cost</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody id="PrototypeTableBody">
+                        @if (Model.pidfPbfAnalyticalEntity != null)
+                        {
+                            if (Model.pidfPbfAnalyticalEntity.AnalyticalPrototypeEntities != null && Model.pidfPbfAnalyticalEntity.AnalyticalPrototypeEntities.Count() > 0)
+                            {
+                                for (int j = 0; j < Model.pidfPbfAnalyticalEntity.AnalyticalPrototypeEntities.Count(); j++)
                                 {
-                                    @if (@Model.ProductStrength.Count > 0)
-                                    {
-                                        int k = 0;
-                                        @foreach (var strenght in @Model.ProductStrength)
-                                        {
-                                            <li class="nav-item mr-2">
-                                                <a class="btn btn-outline-primary" href="@strenght.ProductStrengthId" id="tab_@strenght.ProductStrengthId"> @strenght.ProductStrengthName</a>
-                                            </li>
-                                            k = k + 1;
-                                        }
-                                    }
-                                }*@
-                            </ul>
-                        </div>
-                    </div>
-                </div>
-                <br />
-                <div class="card-header">
-                    <h5 class="mb-0"><b>Analytical Activities</b></h5>
-                </div>
-                <br />
-                <div class="card-header">
-                    <h5 class="mb-0"><b>Prototype</b></h5>
-                </div>
-                <br />
-                <div>
-                    <table id="PIDFTable1" class="table table-bordered table-striped table-hover" style="width:100%">
-                        <thead>
-                            <tr>
-                                <th>Test Type</th>
-                                <th>Number of tests</th>
-                                <th>Prototype Development</th>
-                                <th>Rs /test</th>
-                                <th>Prototype Cost</th>
-                                <th>Action</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr>
+                                    <tr id="PrototypeTableRow_@j">
+                                        <td>
+                                            <div class="col-md">
+                                                <div class="form-group required">
+                                                    <select id="AnalyticalPrototypeTestTypeId" name="pidfPbfAnalyticalEntity.AnalyticalPrototypeEntities.TestTypeId" class="form-control readOnlyUpdate" required></select>
+
+                                                </div>
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <div class="col-md">
+                                                @Html.EditorFor(model => model.pidfPbfAnalyticalEntity.AnalyticalPrototypeEntities[j].Numberoftests, new { htmlAttributes = new { @autocomplete = "off", @class = "form-control checkbox-checked", @placeholder = "No Of Tests",@required="required" } })
+                                                @Html.ValidationMessageFor(model => model.pidfPbfAnalyticalEntity.AnalyticalPrototypeEntities[j].Numberoftests, "", new { @class = "text-danger" })
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <div class="col-md">
+                                                <div class="form-group required">
+                                                    @Html.EditorFor(model => model.pidfPbfAnalyticalEntity.AnalyticalPrototypeEntities[j].PrototypeDevelopment, new { htmlAttributes = new { @autocomplete = "off", @class = "form-control checkbox-checked", @placeholder = "Prototype Development",@required="required" } })
+                                                    @Html.ValidationMessageFor(model => model.pidfPbfAnalyticalEntity.AnalyticalPrototypeEntities[j].PrototypeDevelopment, "", new { @class = "text-danger" })
+                                                </div>
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <div class="col-md">
+                                                <div class="form-group required">
+                                                    @Html.EditorFor(model => model.pidfPbfAnalyticalEntity.AnalyticalPrototypeEntities[j].Cost, new { htmlAttributes = new { @autocomplete = "off", @class = "form-control checkbox-checked", @placeholder = "Cost" ,@required="required"} })
+                                                    @Html.ValidationMessageFor(model => model.pidfPbfAnalyticalEntity.AnalyticalPrototypeEntities[j].Cost, "", new { @class = "text-danger" })
+                                                </div>
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <div class="col-md">
+                                                <div class="form-group required">
+                                                    @Html.EditorFor(model => model.pidfPbfAnalyticalEntity.AnalyticalPrototypeEntities[j].PrototypeCost, new { htmlAttributes = new { @autocomplete = "off", @class = "form-control checkbox-checked", @placeholder = "Prototype Cost" ,@required="required"} })
+                                                    @Html.ValidationMessageFor(model => model.pidfPbfAnalyticalEntity.AnalyticalPrototypeEntities[j].PrototypeCost, "", new { @class = "text-danger" })
+                                                </div>
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <div class="col-md">
+                                                <div class="form-group">
+                                                    <i class="fas fa-plus" id="PrototypeaddIcon_@j" onclick="PrototypeaddRow(@j)"></i>
+                                                    &nbsp;&nbsp;&nbsp;&nbsp;
+                                                    <span><i class="fas fa-trash-alt PrototypeDeleteIcon" id="PrototypedeleteIco_@j" onclick="PrototypedeleteRow(@j, this)"></i></span>
+                                                    @Html.HiddenFor(model => model.pidfPbfAnalyticalEntity.AnalyticalPrototypeEntities[j].StrengthId, new { id = "pidfPbfAnalyticalEntity.AnalyticalPrototypeEntities[" + j + "].StrengthId"})
+                                                </div>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                }
+                            }
+                        }
+                        else
+                        {
+                            int j = 0;
+                            <tr id="PrototypeTableRow_@j">
                                 <td>
-
-                                    <div class="">
+                                    <div class="col-md">
                                         <div class="form-group required">
-                                            @*@Html.EditorFor(model => model.pidf_IPD_PatentDetailsEntities[i].PatentNumber, new { htmlAttributes = new { @autocomplete = "off",@readonly = true, @class = "form-control checkbox-checked", id = "pidf_IPD_PatentDetailsEntities[" + i + "].PatentNumber", @placeholder = @MasterLocalizer["Patent Number"]} })*@
+                                            <select id="AnalyticalPrototypeTestTypeId" name="pidfPbfAnalyticalEntity.AnalyticalPrototypeEntities[@j].TestTypeId" class="form-control readOnlyUpdate" required></select>
 
-                                            <select id="MarketExtensionId" name="MarketExtensionId" class="form-control readOnlyUpdate"><</select>
                                         </div>
                                     </div>
                                 </td>
                                 <td>
-
-                                    <div class="">
+                                    <div class="col-md">
+                                        @Html.EditorFor(model => model.pidfPbfAnalyticalEntity.AnalyticalPrototypeEntities[j].Numberoftests, new { htmlAttributes = new { @autocomplete = "off", @class = "form-control checkbox-checked", @placeholder = "No Of Tests" ,@required="required"} })
+                                        @Html.ValidationMessageFor(model => model.pidfPbfAnalyticalEntity.AnalyticalPrototypeEntities[j].Numberoftests, "", new { @class = "text-danger" })
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="col-md">
                                         <div class="form-group required">
-                                            @*@Html.EditorFor(model => model.pidf_IPD_PatentDetailsEntities[i].PatentNumber, new { htmlAttributes = new { @autocomplete = "off",@readonly = true, @class = "form-control checkbox-checked", id = "pidf_IPD_PatentDetailsEntities[" + i + "].PatentNumber", @placeholder = @MasterLocalizer["Patent Number"]} })*@
-                                            <input type="text" id="MarketExtensionId" name="MarketExtensionId" class="form-control readOnlyUpdate" />
+                                            @Html.EditorFor(model => model.pidfPbfAnalyticalEntity.AnalyticalPrototypeEntities[j].PrototypeDevelopment, new { htmlAttributes = new { @autocomplete = "off", @class = "form-control checkbox-checked", @placeholder = "Prototype Development" ,@required="required"} })
+                                            @Html.ValidationMessageFor(model => model.pidfPbfAnalyticalEntity.AnalyticalPrototypeEntities[j].PrototypeDevelopment, "", new { @class = "text-danger" })
                                         </div>
                                     </div>
                                 </td>
                                 <td>
-
-                                    <div class="">
+                                    <div class="col-md">
                                         <div class="form-group required">
-                                            @*@Html.EditorFor(model => model.pidf_IPD_PatentDetailsEntities[i].PatentNumber, new { htmlAttributes = new { @autocomplete = "off",@readonly = true, @class = "form-control checkbox-checked", id = "pidf_IPD_PatentDetailsEntities[" + i + "].PatentNumber", @placeholder = @MasterLocalizer["Patent Number"]} })*@
-                                            <input type="text" disabled id="MarketExtensionId" name="MarketExtensionId" class="form-control readOnlyUpdate" />
+                                            @Html.EditorFor(model => model.pidfPbfAnalyticalEntity.AnalyticalPrototypeEntities[j].Cost, new { htmlAttributes = new { @autocomplete = "off", @class = "form-control checkbox-checked", @placeholder = "Cost" ,@required="required"} })
+                                            @Html.ValidationMessageFor(model => model.pidfPbfAnalyticalEntity.AnalyticalPrototypeEntities[j].Cost, "", new { @class = "text-danger" })
                                         </div>
                                     </div>
                                 </td>
                                 <td>
-
-                                    <div class="">
+                                    <div class="col-md">
                                         <div class="form-group required">
-                                            @*@Html.EditorFor(model => model.pidf_IPD_PatentDetailsEntities[i].PatentNumber, new { htmlAttributes = new { @autocomplete = "off",@readonly = true, @class = "form-control checkbox-checked", id = "pidf_IPD_PatentDetailsEntities[" + i + "].PatentNumber", @placeholder = @MasterLocalizer["Patent Number"]} })*@
-                                            <input type="text" id="MarketExtensionId" name="MarketExtensionId" class="form-control readOnlyUpdate" />
-                                        </div>
-                                    </div>
-                                </td>
-                                <td>
-
-                                    <div class="">
-                                        <div class="form-group required">
-                                            @*@Html.EditorFor(model => model.pidf_IPD_PatentDetailsEntities[i].PatentNumber, new { htmlAttributes = new { @autocomplete = "off",@readonly = true, @class = "form-control checkbox-checked", id = "pidf_IPD_PatentDetailsEntities[" + i + "].PatentNumber", @placeholder = @MasterLocalizer["Patent Number"]} })*@
-                                            <input type="text" id="MarketExtensionId" name="MarketExtensionId" class="form-control readOnlyUpdate" />
+                                            @Html.EditorFor(model => model.pidfPbfAnalyticalEntity.AnalyticalPrototypeEntities[j].PrototypeCost, new { htmlAttributes = new { @autocomplete = "off", @class = "form-control checkbox-checked", @placeholder = "Prototype Cost" ,@required="required"} })
+                                            @Html.ValidationMessageFor(model => model.pidfPbfAnalyticalEntity.AnalyticalPrototypeEntities[j].PrototypeCost, "", new { @class = "text-danger" })
                                         </div>
                                     </div>
                                 </td>
                                 <td>
                                     <div class="col-md">
                                         <div class="form-group">
-                                            <i class="fas fa-plus"></i>
-                                            @*<i class="fas fa-plus" id="addIcon_@i" onclick="addRowProductStrength(@i)"></i>*@
+                                            <i class="fas fa-plus" id="PrototypeaddIcon_@j" onclick="PrototypeaddRow(@j)"></i>
+                                            &nbsp;&nbsp;&nbsp;&nbsp;
+                                            <span><i class="fas fa-trash-alt PrototypeDeleteIcon" id="PrototypedeleteIcon_@j" onclick="PrototypedeleteRow(@j, this)"></i></span>
+                                            @Html.HiddenFor(model => model.pidfPbfAnalyticalEntity.AnalyticalPrototypeEntities[j].StrengthId, new { id = "pidfPbfAnalyticalEntity.AnalyticalPrototypeEntities[" + j + "].StrengthId",Value = 43})
+
                                         </div>
                                     </div>
                                 </td>
                             </tr>
-                        <tbody>
+                        }
+                    </tbody>
 
-                    </table>
+                </table>
+            </div>
+            @*//Prototype Section End*@
+            <br />
+            @*//Exhibit Section Start*@
+            <div class="card-header">
+                <h5 class="mb-0"><b>Exhibit</b></h5>
+            </div>
+            <br />
+            <div>
+                <table id="ExhibitTable" class="table table-bordered table-striped table-hover" style="width:100%">
+                    <thead>
+                        <tr>
+                            <th>Test Type</th>
+                            <th>Number of tests</th>
+                            <th>Prototype Development</th>
+                            <th>Rs /test</th>
+                            <th>Prototype Cost</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody id="ExhibitTableBody">
+                        @if (Model.pidfPbfAnalyticalEntity != null)
+                        {
+                            if (Model.pidfPbfAnalyticalEntity.AnalyticalExhibitEntities != null && Model.pidfPbfAnalyticalEntity.AnalyticalExhibitEntities.Count() > 0)
+                            {
+                                for (int j = 0; j < Model.pidfPbfAnalyticalEntity.AnalyticalExhibitEntities.Count(); j++)
+                                {
+                                    <tr id="ExhibitTableRow_@j">
+                                        <td>
+                                            <div class="col-md">
+                                                <div class="form-group required">
+                                                    <select id="AnalyticalExhibitTestTypeId" name="pidfPbfAnalyticalEntity.AnalyticalExhibitEntities.TestTypeId" class="form-control readOnlyUpdate" required ></select>
+
+                                                </div>
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <div class="col-md">
+                                                @Html.EditorFor(model => model.pidfPbfAnalyticalEntity.AnalyticalExhibitEntities[j].Numberoftests, new { htmlAttributes = new { @autocomplete = "off", @class = "form-control checkbox-checked", @placeholder = "No Of Tests",@required="required" } })
+                                                @Html.ValidationMessageFor(model => model.pidfPbfAnalyticalEntity.AnalyticalExhibitEntities[j].Numberoftests, "", new { @class = "text-danger" })
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <div class="col-md">
+                                                <div class="form-group required">
+                                                    @Html.EditorFor(model => model.pidfPbfAnalyticalEntity.AnalyticalExhibitEntities[j].PrototypeDevelopment, new { htmlAttributes = new { @autocomplete = "off", @class = "form-control checkbox-checked", @placeholder = "Prototype Development" ,@required="required"} })
+                                                    @Html.ValidationMessageFor(model => model.pidfPbfAnalyticalEntity.AnalyticalExhibitEntities[j].PrototypeDevelopment, "", new { @class = "text-danger" })
+                                                </div>
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <div class="col-md">
+                                                <div class="form-group required">
+                                                    @Html.EditorFor(model => model.pidfPbfAnalyticalEntity.AnalyticalExhibitEntities[j].Cost, new { htmlAttributes = new { @autocomplete = "off", @class = "form-control checkbox-checked", @placeholder = "Cost" ,@required="required"} })
+                                                    @Html.ValidationMessageFor(model => model.pidfPbfAnalyticalEntity.AnalyticalExhibitEntities[j].Cost, "", new { @class = "text-danger" })
+                                                </div>
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <div class="col-md">
+                                                <div class="form-group required">
+                                                    @Html.EditorFor(model => model.pidfPbfAnalyticalEntity.AnalyticalExhibitEntities[j].PrototypeCost, new { htmlAttributes = new { @autocomplete = "off", @class = "form-control checkbox-checked", @placeholder = "Prototype Cost" ,@required="required"} })
+                                                    @Html.ValidationMessageFor(model => model.pidfPbfAnalyticalEntity.AnalyticalExhibitEntities[j].PrototypeCost, "", new { @class = "text-danger" })
+                                                </div>
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <div class="col-md">
+                                                <div class="form-group">
+                                                    <i class="fas fa-plus" id="ExhibitaddIcon_@j" onclick="ExhibitaddRow(@j)"></i>
+                                                    &nbsp;&nbsp;&nbsp;&nbsp;
+                                                    <span><i class="fas fa-trash-alt ExhibitDeleteIcon" id="ExhibitdeleteIco_@j" onclick="ExhibitdeleteRow(@j, this)"></i></span>
+                                                    @Html.HiddenFor(model => model.pidfPbfAnalyticalEntity.AnalyticalExhibitEntities[j].StrengthId, new { id = "pidfPbfAnalyticalEntity.AnalyticalExhibitEntities[" + j + "].StrengthId"})
+
+                                                </div>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                }
+                            }
+                        }
+                        else
+                        {
+                            int j = 0;
+                            <tr id="ExhibitTableRow_@j">
+                                <td>
+                                    <div class="col-md">
+                                        <div class="form-group required">
+                                            <select id="AnalyticalExhibitTestTypeId" name="pidfPbfAnalyticalEntity.AnalyticalExhibitEntities[@j].TestTypeId" class="form-control readOnlyUpdate" required></select>
+
+                                        </div>
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="col-md">
+                                        @Html.EditorFor(model => model.pidfPbfAnalyticalEntity.AnalyticalExhibitEntities[j].Numberoftests, new { htmlAttributes = new { @autocomplete = "off", @class = "form-control checkbox-checked", @placeholder = "No Of Tests" ,@required="required"} })
+                                        @Html.ValidationMessageFor(model => model.pidfPbfAnalyticalEntity.AnalyticalExhibitEntities[j].Numberoftests, "", new { @class = "text-danger" })
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="col-md">
+                                        <div class="form-group required">
+                                            @Html.EditorFor(model => model.pidfPbfAnalyticalEntity.AnalyticalExhibitEntities[j].PrototypeDevelopment, new { htmlAttributes = new { @autocomplete = "off", @class = "form-control checkbox-checked", @placeholder = "Prototype Development" ,@required="required"} })
+                                            @Html.ValidationMessageFor(model => model.pidfPbfAnalyticalEntity.AnalyticalExhibitEntities[j].PrototypeDevelopment, "", new { @class = "text-danger" })
+                                        </div>
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="col-md">
+                                        <div class="form-group required">
+                                            @Html.EditorFor(model => model.pidfPbfAnalyticalEntity.AnalyticalExhibitEntities[j].Cost, new { htmlAttributes = new { @autocomplete = "off", @class = "form-control checkbox-checked", @placeholder = "Cost" ,@required="required"} })
+                                            @Html.ValidationMessageFor(model => model.pidfPbfAnalyticalEntity.AnalyticalExhibitEntities[j].Cost, "", new { @class = "text-danger" })
+                                        </div>
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="col-md">
+                                        <div class="form-group required">
+                                            @Html.EditorFor(model => model.pidfPbfAnalyticalEntity.AnalyticalExhibitEntities[j].PrototypeCost, new { htmlAttributes = new { @autocomplete = "off", @class = "form-control checkbox-checked", @placeholder = "Prototype Cost" ,@required="required"} })
+                                            @Html.ValidationMessageFor(model => model.pidfPbfAnalyticalEntity.AnalyticalExhibitEntities[j].PrototypeCost, "", new { @class = "text-danger" })
+                                        </div>
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="col-md">
+                                        <div class="form-group">
+                                            <i class="fas fa-plus" id="ExhibitaddIcon_@j" onclick="ExhibitaddRow(@j)"></i>
+                                            &nbsp;&nbsp;&nbsp;&nbsp;
+                                            <span><i class="fas fa-trash-alt ExhibitDeleteIcon" id="ExhibitdeleteIcon_@j" onclick="ExhibitdeleteRow(@j, this)"></i></span>
+                                            @Html.HiddenFor(model => model.pidfPbfAnalyticalEntity.AnalyticalExhibitEntities[j].StrengthId, new { id = "pidfPbfAnalyticalEntity.AnalyticalExhibitEntities[" + j + "].StrengthId"})
+
+                                        </div>
+                                    </div>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+
+                </table>
+            </div>
+            @*//Exhibit Section End*@
+
+            <br />
+            @*//ScaleUp Section Start*@
+            <div class="card-header">
+                <h5 class="mb-0"><b>ScaleUp</b></h5>
+            </div>
+            <br />
+            <div>
+                <table id="ScaleUpTable" class="table table-bordered table-striped table-hover" style="width:100%">
+                    <thead>
+                        <tr>
+                            <th>Test Type</th>
+                            <th>Number of tests</th>
+                            <th>ScaleUp Development</th>
+                            <th>Rs /test</th>
+                            <th>ScaleUp Cost</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody id="ScaleUpTableBody">
+                        @if (Model.pidfPbfAnalyticalEntity != null)
+                        {
+                            if (Model.pidfPbfAnalyticalEntity.AnalyticalScaleUpEntities != null && Model.pidfPbfAnalyticalEntity.AnalyticalScaleUpEntities.Count() > 0)
+                            {
+                                for (int j = 0; j < Model.pidfPbfAnalyticalEntity.AnalyticalScaleUpEntities.Count(); j++)
+                                {
+                                    <tr id="ScaleUpTableRow_@j">
+                                        <td>
+                                            <div class="col-md">
+                                                <div class="form-group required">
+                                                    <select id="AnalyticalScaleUpTestTypeId" name="pidfPbfAnalyticalEntity.AnalyticalScaleUpEntities.TestTypeId" class="form-control readOnlyUpdate" required></select>
+
+                                                </div>
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <div class="col-md">
+                                                @Html.EditorFor(model => model.pidfPbfAnalyticalEntity.AnalyticalScaleUpEntities[j].Numberoftests, new { htmlAttributes = new { @autocomplete = "off", @class = "form-control checkbox-checked", @placeholder = "No Of Tests" ,@required="required"} })
+                                                @Html.ValidationMessageFor(model => model.pidfPbfAnalyticalEntity.AnalyticalScaleUpEntities[j].Numberoftests, "", new { @class = "text-danger" })
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <div class="col-md">
+                                                <div class="form-group required">
+                                                    @Html.EditorFor(model => model.pidfPbfAnalyticalEntity.AnalyticalScaleUpEntities[j].PrototypeDevelopment, new { htmlAttributes = new { @autocomplete = "off", @class = "form-control checkbox-checked", @placeholder = "Prototype Development" ,@required="required"} })
+                                                    @Html.ValidationMessageFor(model => model.pidfPbfAnalyticalEntity.AnalyticalScaleUpEntities[j].PrototypeDevelopment, "", new { @class = "text-danger" })
+                                                </div>
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <div class="col-md">
+                                                <div class="form-group required">
+                                                    @Html.EditorFor(model => model.pidfPbfAnalyticalEntity.AnalyticalScaleUpEntities[j].Cost, new { htmlAttributes = new { @autocomplete = "off", @class = "form-control checkbox-checked", @placeholder = "Cost" ,@required="required"} })
+                                                    @Html.ValidationMessageFor(model => model.pidfPbfAnalyticalEntity.AnalyticalScaleUpEntities[j].Cost, "", new { @class = "text-danger" })
+                                                </div>
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <div class="col-md">
+                                                <div class="form-group required">
+                                                    @Html.EditorFor(model => model.pidfPbfAnalyticalEntity.AnalyticalScaleUpEntities[j].PrototypeCost, new { htmlAttributes = new { @autocomplete = "off", @class = "form-control checkbox-checked", @placeholder = "Prototype Cost" ,@required="required"} })
+                                                    @Html.ValidationMessageFor(model => model.pidfPbfAnalyticalEntity.AnalyticalScaleUpEntities[j].PrototypeCost, "", new { @class = "text-danger" })
+                                                </div>
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <div class="col-md">
+                                                <div class="form-group">
+                                                    <i class="fas fa-plus" id="ScaleUpaddIcon_@j" onclick="ScaleUpaddRow(@j)"></i>
+                                                    &nbsp;&nbsp;&nbsp;&nbsp;
+                                                    <span><i class="fas fa-trash-alt ScaleUpDeleteIcon" id="ScaleUpdeleteIco_@j" onclick="ScaleUpdeleteRow(@j, this)"></i></span>
+                                                    @Html.HiddenFor(model => model.pidfPbfAnalyticalEntity.AnalyticalScaleUpEntities[j].StrengthId, new { id = "pidfPbfAnalyticalEntity.AnalyticalScaleUpEntities[" + j + "].StrengthId"})
+
+                                                </div>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                }
+                            }
+                        }
+                        else
+                        {
+                            int j = 0;
+                            <tr id="ScaleUpTableRow_@j">
+                                <td>
+                                    <div class="col-md">
+                                        <div class="form-group required">
+                                            <select id="AnalyticalScaleUpTestTypeId" name="pidfPbfAnalyticalEntity.AnalyticalScaleUpEntities[@j].TestTypeId" class="form-control readOnlyUpdate" required></select>
+
+                                        </div>
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="col-md">
+                                        @Html.EditorFor(model => model.pidfPbfAnalyticalEntity.AnalyticalScaleUpEntities[j].Numberoftests, new { htmlAttributes = new { @autocomplete = "off", @class = "form-control checkbox-checked", @placeholder = "No Of Tests",@required="required" } })
+                                        @Html.ValidationMessageFor(model => model.pidfPbfAnalyticalEntity.AnalyticalScaleUpEntities[j].Numberoftests, "", new { @class = "text-danger" })
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="col-md">
+                                        <div class="form-group required">
+                                            @Html.EditorFor(model => model.pidfPbfAnalyticalEntity.AnalyticalScaleUpEntities[j].PrototypeDevelopment, new { htmlAttributes = new { @autocomplete = "off", @class = "form-control checkbox-checked", @placeholder = "Prototype Development",@required="required" } })
+                                            @Html.ValidationMessageFor(model => model.pidfPbfAnalyticalEntity.AnalyticalScaleUpEntities[j].PrototypeDevelopment, "", new { @class = "text-danger" })
+                                        </div>
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="col-md">
+                                        <div class="form-group required">
+                                            @Html.EditorFor(model => model.pidfPbfAnalyticalEntity.AnalyticalScaleUpEntities[j].Cost, new { htmlAttributes = new { @autocomplete = "off", @class = "form-control checkbox-checked", @placeholder = "Cost" ,@required="required"} })
+                                            @Html.ValidationMessageFor(model => model.pidfPbfAnalyticalEntity.AnalyticalScaleUpEntities[j].Cost, "", new { @class = "text-danger" })
+                                        </div>
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="col-md">
+                                        <div class="form-group required">
+                                            @Html.EditorFor(model => model.pidfPbfAnalyticalEntity.AnalyticalScaleUpEntities[j].PrototypeCost, new { htmlAttributes = new { @autocomplete = "off", @class = "form-control checkbox-checked", @placeholder = "Prototype Cost" ,@required="required"} })
+                                            @Html.ValidationMessageFor(model => model.pidfPbfAnalyticalEntity.AnalyticalScaleUpEntities[j].PrototypeCost, "", new { @class = "text-danger" })
+                                        </div>
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="col-md">
+                                        <div class="form-group">
+                                            <i class="fas fa-plus" id="ScaleUpaddIcon_@j" onclick="ScaleUpaddRow(@j)"></i>
+                                            &nbsp;&nbsp;&nbsp;&nbsp;
+                                            <span><i class="fas fa-trash-alt ScaleUpDeleteIcon" id="ScaleUpdeleteIcon_@j" onclick="ScaleUpdeleteRow(@j, this)"></i></span>
+                                            @Html.HiddenFor(model => model.pidfPbfAnalyticalEntity.AnalyticalScaleUpEntities[j].StrengthId, new { id = "pidfPbfAnalyticalEntity.AnalyticalScaleUpEntities[" + j + "].StrengthId"})
+
+                                        </div>
+                                    </div>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+
+                </table>
+            </div>
+            @*//ScaleUp Section End*@
+            <br />
+            @*//Total Cost Section Start*@
+
+            <div class="card-header">
+                <h5 class="mb-0"><b>AWV Cost</b></h5>
+            </div>
+            <br />
+
+            <div class="row">
+
+                <div class="col-md-3">
+                    <div class="form-group required">
+                        @Html.LabelFor(model => model.pidfPbfAnalyticalEntity.pidfPbfAnalyticalCost.TotalAWVCost, "Total AWV Cost", new { @class = "control-label" })
+                        @Html.TextBoxFor(model => model.pidfPbfAnalyticalEntity.pidfPbfAnalyticalCost.TotalAWVCost, new { @class = "form-control", @placeholder = "Total AWV Cost" ,@required="required"})
+
+                    </div>
                 </div>
-                <div class="form-group">
-                    <button type="submit" id="Save" class="btn btn-primary">@SharedLocalizer["Submit"]</button>
+
+                <div class="col-md-9">
+                    <div class="form-group required">
+                        @Html.LabelFor(model => model.pidfPbfAnalyticalEntity.pidfPbfAnalyticalCost.Remark, "Remark", new { @class = "control-label" })
+
+                        @Html.TextAreaFor(model => model.pidfPbfAnalyticalEntity.pidfPbfAnalyticalCost.Remark, new { @class = "form-control", @placeholder = "Remark" ,@required="required"})
+                    </div>
                 </div>
             </div>
-        </form>
+            <br />
+            <div class="card-header">
+                <h5 class="mb-0"><b>Total Cost</b></h5>
+            </div>
+            <br />
+            <table id="CostTable" class="table table-bordered table-striped table-hover" style="width:100%">
+                <thead>
+                    <tr>
+                        <th>Total Prototype Cost</th>
+                        <th>Total ScaleUp Cost</th>
+                        <th>Total Exhibit Cost</th>
+                        <th>Total AWV Cost</th>
+                        <th>Total Cost</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>
+                            <div class="form-group required">
+                                @*@Html.LabelFor(model => model.pidfPbfAnalyticalEntity.pidfPbfAnalyticalCost.TotalPrototypeCost, "Total Prototype Cost", new { @class = "control-label" })*@
+                                @Html.TextBoxFor(model => model.pidfPbfAnalyticalEntity.pidfPbfAnalyticalCost.TotalPrototypeCost, new {@readonly = "readonly", @class = "form-control", @placeholder = "Total Prototype Cost" })
+                            </div>
+                        </td>
+                        <td>
+                            <div class="form-group required">
+                                @*@Html.LabelFor(model => model.pidfPbfAnalyticalEntity.pidfPbfAnalyticalCost.TotalScaleUpCost, "Total ScaleUp Cost", new { @class = "control-label" })*@
+                                @Html.TextBoxFor(model => model.pidfPbfAnalyticalEntity.pidfPbfAnalyticalCost.TotalScaleUpCost, new {@readonly = "readonly", @class = "form-control", @placeholder = "Total ScaleUp Cost" })
+                            </div>
+                        </td>
+                        <td>
+                            <div class="form-group required">
+                                @*@Html.LabelFor(model => model.pidfPbfAnalyticalEntity.pidfPbfAnalyticalCost.TotalExhibitCost, "Total Exhibit Cost", new { @class = "control-label" })*@
+                                @Html.TextBoxFor(model => model.pidfPbfAnalyticalEntity.pidfPbfAnalyticalCost.TotalExhibitCost, new { @readonly = "readonly", @class = "form-control", @placeholder = "Total Exhibit Cost" })
+                            </div>
+                        </td>
+                        <td>
+                            <div class="form-group required">
+
+                                @*@Html.LabelFor(model => model.pidfPbfAnalyticalEntity.pidfPbfAnalyticalCost.TotalAWVCost, "Total AWV Cost", new { @class = "control-label" })*@
+                                <input type="text" id="txtAWVCost" class="form-control required" placeholder="Total AWV Cost" disabled="disabled" />
+                                @*@Html.TextBoxFor(model => model.pidfPbfAnalyticalEntity.pidfPbfAnalyticalCost.TotalAWVCost, new {@readonly = "readonly", @class = "form-control", @placeholder = "Total AWV Cost" })*@
+                            </div>
+                        </td>
+                        <td>
+                            <div class="form-group required">
+                                @*@Html.LabelFor(model => model.pidfPbfAnalyticalEntity.pidfPbfAnalyticalCost.TotalCost, "Total Cost", new { @class = "control-label" })*@
+                                @Html.TextBoxFor(model => model.pidfPbfAnalyticalEntity.pidfPbfAnalyticalCost.TotalCost, new {@readonly = "readonly", @class = "form-control", @placeholder = "Total Cost" })
+                            </div>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+
+            @*//Total Cost Section End*@
+        </div>
+        @* </form>*@
 
     </div>
 </div>
-@section MyScripts{
-
-@*<script type="text/javascript" src="~/js/Custom/PBF/Analytical/PBFAnalytical.js"></script>*@
-}

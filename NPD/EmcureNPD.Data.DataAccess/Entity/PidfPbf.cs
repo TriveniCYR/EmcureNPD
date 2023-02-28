@@ -10,6 +10,7 @@ namespace EmcureNPD.Data.DataAccess.Entity
         public PidfPbf()
         {
             PidfPbfAnalyticals = new HashSet<PidfPbfAnalytical>();
+            PidfPbfClinicals = new HashSet<PidfPbfClinical>();
         }
 
         public long Pidfpbfid { get; set; }
@@ -47,5 +48,6 @@ namespace EmcureNPD.Data.DataAccess.Entity
         public virtual MasterProductType ProductType { get; set; }
         public virtual MasterWorkflow Workflow { get; set; }
         public virtual ICollection<PidfPbfAnalytical> PidfPbfAnalyticals { get; set; }
+        public virtual ICollection<PidfPbfClinical> PidfPbfClinicals { get; set; }
     }
 }

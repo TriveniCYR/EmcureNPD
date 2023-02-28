@@ -11,6 +11,8 @@ namespace EmcureNPD.Data.DataAccess.Entity
         {
             PidfPbfAnalyticalCosts = new HashSet<PidfPbfAnalyticalCost>();
             PidfPbfAnalyticalExhibits = new HashSet<PidfPbfAnalyticalExhibit>();
+            PidfPbfAnalyticalPrototypes = new HashSet<PidfPbfAnalyticalPrototype>();
+            PidfPbfAnalyticalScaleUps = new HashSet<PidfPbfAnalyticalScaleUp>();
         }
 
         public long PbfanalyticalId { get; set; }
@@ -19,10 +21,11 @@ namespace EmcureNPD.Data.DataAccess.Entity
         public int BusinessUnitId { get; set; }
         public double? TotalExpense { get; set; }
         public string ProjectComplexity { get; set; }
-        public string ProductType { get; set; }
+        public int ProductTypeId { get; set; }
         public string TestLicenseAvailability { get; set; }
         public DateTime? BudgetTimelineSubmissionDate { get; set; }
         public int? FormulationId { get; set; }
+        public long StrengthId { get; set; }
         public int? AnalyticalId { get; set; }
         public DateTime CreatedDate { get; set; }
         public int? CreatedBy { get; set; }
@@ -30,7 +33,11 @@ namespace EmcureNPD.Data.DataAccess.Entity
         public virtual MasterBusinessUnit BusinessUnit { get; set; }
         public virtual PidfPbf Pbf { get; set; }
         public virtual Pidf Pidf { get; set; }
+        public virtual MasterProductType ProductType { get; set; }
+        public virtual PidfproductStrength Strength { get; set; }
         public virtual ICollection<PidfPbfAnalyticalCost> PidfPbfAnalyticalCosts { get; set; }
         public virtual ICollection<PidfPbfAnalyticalExhibit> PidfPbfAnalyticalExhibits { get; set; }
+        public virtual ICollection<PidfPbfAnalyticalPrototype> PidfPbfAnalyticalPrototypes { get; set; }
+        public virtual ICollection<PidfPbfAnalyticalScaleUp> PidfPbfAnalyticalScaleUps { get; set; }
     }
 }

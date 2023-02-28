@@ -12,9 +12,8 @@
 
 
 <div id="SavePIDFModel">
-    <form action="PBFForm" method="get">
-        <input type="hidden" asp-for="Pidfid" />	
-         <input type="hidden" asp-for="BusinessUnitId" />	
+
+    
         <div class="card">
             <div id="PIDFFormTemplate">
                 @{
@@ -52,29 +51,33 @@
                 </div>
             </div>
         </div>
+    <form asp-action="PBF" asp-controller="PBF" method="post">
+        <input type="hidden" asp-for="Pidfid" />
+        <input type="hidden" asp-for="BusinessUnitId" />
+        <input type="hidden" asp-for="SaveType" />
 
         <div class="card-body" style="background-color:white">
             <input type="hidden" />
             <div class="row">
                 <div class="col-md-3">
                     <div class="form-group required">
-                        <label class="control-label">Project Name</label>
-                        <input type="text" id="MarketExtensionId" name="MarketExtensionId" class="form-control readOnlyUpdate" required />
-
+                        @Html.LabelFor(model => model.ProjectName,@MasterLocalizer["ProjectName"], new { @class = "control-label" })
+                        @Html.TextBoxFor(model => model.ProjectName, new {@class = "form-control", @placeholder = @MasterLocalizer["ProjectName"] ,@required="required"})
                     </div>
                 </div>
 
                 <div class="col-md-3">
                     <div class="form-group required">
-                        <label class="control-label">Market</label>
-                        <input type="text" id="MarketExtensionId" name="MarketExtensionId" class="form-control readOnlyUpdate" required />
+                        @Html.LabelFor(model => model.Market,@MasterLocalizer["Market"], new { @class = "control-label" })
+                        @Html.TextBoxFor(model => model.Market, new {@class = "form-control", @placeholder = @MasterLocalizer["Market"] ,@required="required"})
+
                     </div>
                 </div>
                 <div class="col-md-3">
                     <div class="form-group required">
-                        <label class="control-label">Business Rationable</label>
+                        @Html.LabelFor(model => model.BusinessRelationable,@MasterLocalizer["BusinessRationable"], new { @class = "control-label" })
+                        @Html.TextBoxFor(model => model.BusinessRelationable, new {@class = "form-control", @placeholder = @MasterLocalizer["BusinessRationable"] ,@required="required"})
 
-                        <input type="text" id="MarketExtensionId" name="MarketExtensionId" class="form-control readOnlyUpdate" required />
                     </div>
                 </div>
                 <div class="col-md-3">
@@ -88,8 +91,10 @@
             <div class="row">
                 <div class="col-md-3">
                     <div class="form-group required">
-                        <label class="control-label">No. of  Approved ANDAs</label>
-                        <input type="text" id="MarketExtensionId" name="MarketExtensionId" class="form-control readOnlyUpdate" required />
+
+                        @Html.LabelFor(model => model.NumberOfApprovedAnda,"No. of  Approved ANDAs", new { @class = "control-label" })
+                        @Html.TextBoxFor(model => model.NumberOfApprovedAnda, new {@class = "form-control", @placeholder = "No. of  Approved ANDAs" ,@required="required"})
+
                     </div>
                 </div>
 
@@ -122,14 +127,16 @@
 
                 <div class="col-md-3">
                     <div class="form-group required">
-                        <label class="control-label">Patent Status</label>
-                        <input type="text" id="MarketExtensionId" name="MarketExtensionId" class="form-control readOnlyUpdate" required />
+                        @Html.LabelFor(model => model.PatentStatus,"Patent Status", new { @class = "control-label" })
+                        @Html.TextBoxFor(model => model.PatentStatus, new {@class = "form-control", @placeholder = "Patent Status" ,@required="required"})
+
                     </div>
                 </div>
                 <div class="col-md-3">
                     <div class="form-group required">
-                        <label class="control-label">Sponsor / Business Partner</label>
-                        <input type="text" id="MarketExtensionId" name="MarketExtensionId" class="form-control readOnlyUpdate" required />
+                        @Html.LabelFor(model => model.SponsorBusinessPartner,"Sponsor / Business Partner", new { @class = "control-label" })
+                        @Html.TextBoxFor(model => model.SponsorBusinessPartner, new {@class = "form-control", @placeholder = "Sponsor / Business Partner" ,@required="required"})
+
                     </div>
                 </div>
 
@@ -149,28 +156,30 @@
 
                     <div class="col-md-3">
                         <div class="form-group required">
-                            <label class="control-label">Project Initiation Date</label>
-                            <input type="text" id="MarketExtensionId" name="MarketExtensionId" class="form-control readOnlyUpdate" required />
+                            @Html.LabelFor(model => model.ProjectInitiationDate,"Project Initiation Date", new { @class = "control-label" })
+                            @Html.TextBoxFor(@modal=> modal.ProjectInitiationDate,"{0:yyyy-MM-dd}",new{@type="date",@class="form-control readOnlyUpdate", @placeholder = "Project Initiation Date",@required="required"})
                         </div>
                     </div>
                     <div class="col-md-3">
                         <div class="form-group required">
-                            <label class="control-label">R&D Head</label>
-                            <input type="text" id="MarketExtensionId" name="MarketExtensionId" class="form-control readOnlyUpdate" required />
+                            @Html.LabelFor(model => model.RnDhead,"R&D Head", new { @class = "control-label" })
+                            @Html.TextBoxFor(model => model.RnDhead, new {@class = "form-control", @placeholder = "R&D Head",@required="required" })
                         </div>
                     </div>
                     <div class="col-md-3">
                         <div class="form-group required">
-                            <label class="control-label">Project Manager</label>
-                            <input type="text" id="MarketExtensionId" name="MarketExtensionId" class="form-control readOnlyUpdate" required />
+                            @Html.LabelFor(model => model.ProjectManager,"Project Manager", new { @class = "control-label" })
+                            @Html.TextBoxFor(model => model.ProjectManager, new {@class = "form-control", @placeholder = "Project Manager" ,@required="required"})
+
                         </div>
                     </div>
                 </div>
                 <div class="row">
                     <div class="col-md-3">
                         <div class="form-group required">
-                            <label class="control-label">Dosage</label>
-                            <input type="text" id="MarketExtensionId" name="MarketExtensionId" class="form-control readOnlyUpdate" required />
+                            @Html.LabelFor(model => model.Dosage,"Dosage", new { @class = "control-label" })
+                            @Html.TextBoxFor(model => model.Dosage, new {@class = "form-control", @placeholder = "Dosage" ,@required="required"})
+
                         </div>
                     </div>
 
@@ -196,29 +205,30 @@
 
                 <div class="col-md-3">
                     <div class="form-group required">
-                        <label class="control-label">Brand</label>
-                        <input type="text" id="MarketExtensionId" name="MarketExtensionId" class="form-control readOnlyUpdate" required />
+                        @Html.LabelFor(model => model.pidfEntity.BrandName,"Brand", new { @class = "control-label" })
+                        @Html.TextBoxFor(model => model.pidfEntity.BrandName, new {@class = "form-control", @placeholder = "Brand" ,@required="required"})
 
                     </div>
                 </div>
 
                 <div class="col-md-3">
                     <div class="form-group required">
-                        <label class="control-label">Applicant</label>
-                        <input type="text" id="MarketExtensionId" name="MarketExtensionId" class="form-control readOnlyUpdate" required />
+
+                        @Html.LabelFor(model => model.pidfEntity.RFDApplicant,"Applicant", new { @class = "control-label" })
+                        @Html.TextBoxFor(model => model.pidfEntity.RFDApplicant, new {@class = "form-control", @placeholder = "Applicant" ,@required="required"})
+
                     </div>
                 </div>
                 <div class="col-md-3">
                     <div class="form-group required">
-                        @Html.LabelFor(model => model.BusinessUnitId, "Country", new { @class = "control-label" })
+                        @Html.LabelFor(model => model.pidfEntity.RFDCountryId, "Country", new { @class = "control-label" })
                         <select id="PbfRFDCountryId" name="RFDCountryId" class="form-control readOnlyUpdate" required></select>
                     </div>
                 </div>
                 <div class="col-md-3">
                     <div class="form-group required">
-                        <label class="control-label">Indication</label>
-
-                        <input type="text" id="MarketExtensionId" name="MarketExtensionId" class="form-control readOnlyUpdate" required />
+                        @Html.LabelFor(model => model.pidfEntity.RFDIndication,"Indication", new { @class = "control-label" })
+                        @Html.TextBoxFor(model => model.pidfEntity.RFDIndication, new {@class = "form-control", @placeholder = "Indication",@required="required" })
                     </div>
                 </div>
             </div>
@@ -227,32 +237,32 @@
             <div class="card-body">
                 <div class="row ">
                     <div class="col col-lg-2">
-                    @Html.LabelFor(model => model.BusinessUnitId, "Business Unit", new { @class = "control-label" })
-                    <lable id="valmsgBusinessUnitId" class="text-danger"></lable>
-                </div>
-                    <div class="col-md-9">
-                    <ul class="nav nav-pills" id="businessUnitTabs">
-                        @if (Model.MasterBusinessUnitEntities.Count() > 0)
-                        {
-                            int k = 0;
-                            @foreach (var businessUnit in Model.MasterBusinessUnitEntities)
+                        @Html.LabelFor(model => model.BusinessUnitId, "Business Unit", new { @class = "control-label" })
+                        <lable id="valmsgBusinessUnitId" class="text-danger"></lable>
+                    </div>
+                    <div class="col-md-9 form-group required">
+                        <ul class="nav nav-pills" id="businessUnitTabs">
+                            @if (Model.MasterBusinessUnitEntities.Count() > 0)
                             {
-                                <li class="nav-item mr-2">
-                                    <a class="btn btn-outline-primary" href="#tab_@businessUnit.BusinessUnitName" onClick="BUtabClick('@businessUnit.BusinessUnitId','@Model.Pidfid');" id="BUtab_@businessUnit.BusinessUnitId">@businessUnit.BusinessUnitName</a>
-                                </li>
-                                k = k + 1;
+                                int k = 0;
+                                @foreach (var businessUnit in Model.MasterBusinessUnitEntities)
+                                {
+                                    <li class="nav-item mr-2">
+                                        <a class="btn btn-outline-primary" href="#tab_@businessUnit.BusinessUnitName" onClick="BUtabClick('@businessUnit.BusinessUnitId','@Model.Pidfid');" id="BUtab_@businessUnit.BusinessUnitId">@businessUnit.BusinessUnitName</a>
+                                    </li>
+                                    k = k + 1;
+                                }
                             }
-                        }
-                    </ul>
+                        </ul>
+                    </div>
                 </div>
-                </div>           
                 <br />
                 <div class="row ">
                     <div class="col col-lg-2">
                         @Html.LabelFor(model => model.BusinessUnitId, "Department", new { @class = "control-label" })
                         <lable id="valmsgBusinessUnitId" class="text-danger"></lable>
                     </div>
-
+                    <br />
                     <div class="tab col-md-3">
                         <li class="nav-item mr-2" style="list-style-type: none;">
                             <a class="btn btn-outline-primary" onclick="openPBFForm(event, 'RnD')">RnD</a>
@@ -260,67 +270,74 @@
                             <a class="btn btn-outline-primary" onclick="openPBFForm(event, 'Analytical')">Analytical</a>
                             <a class="btn btn-outline-primary" onclick="openPBFForm(event, 'Clinical')">Clinical</a>
                         </li>
-                        
-                        @*<div class="form-group required">
-                            <button class="tablinks" style="height: 50px;
-							width: 100px;
-							background-color: cornflowerblue;
-							border: none;
-							border-radius: 7px;
-							color: white;" onclick="openPBFForm(event, 'RnD')">
-                                RnD
-                            </button>
 
-                            <button class="tablinks" style="height: 50px;
-							width: 100px;
-							background-color: cornflowerblue;
-							border: none;
-							border-radius: 7px;
-							color: white;" onclick="openPBFForm(event, 'Analytical')">
-                                Analytical
-                            </button>
-                            <button class="tablinks" style="height: 50px;
-							width: 100px;
-							background-color: cornflowerblue;
-							border: none;
-							border-radius: 7px;
-							color: white;" onclick="openPBFForm(event, 'Clinical')">
-                                Clinical
-                            </button>
+                        @*<div class="form-group required">
+                        <button class="tablinks" style="height: 50px;
+                        width: 100px;
+                        background-color: cornflowerblue;
+                        border: none;
+                        border-radius: 7px;
+                        color: white;" onclick="openPBFForm(event, 'RnD')">
+                        RnD
+                        </button>
+
+                        <button class="tablinks" style="height: 50px;
+                        width: 100px;
+                        background-color: cornflowerblue;
+                        border: none;
+                        border-radius: 7px;
+                        color: white;" onclick="openPBFForm(event, 'Analytical')">
+                        Analytical
+                        </button>
+                        <button class="tablinks" style="height: 50px;
+                        width: 100px;
+                        background-color: cornflowerblue;
+                        border: none;
+                        border-radius: 7px;
+                        color: white;" onclick="openPBFForm(event, 'Clinical')">
+                        Clinical
+                        </button>
                         </div>*@
                     </div>
                     <br />
                     <div id="RnD" class="tabcontent">
-                    @{
-                    await Html.RenderPartialAsync("PBFRnDForm", Model.pidfPbfRndEntity);
-                    }                       
+                        @{
+                            await Html.RenderPartialAsync("PBFRnDForm", Model.pidfPbfRndEntity);
+                        }
                     </div>
-                    
+
                     <div id="Analytical" class="tabcontent">
-                    @Html.Partial("~/Views/PBF/PBFAnalyticalForm.cshtml", new PidfPbfAnalyticalEntity())
-                     @*@{
-                    await Html.RenderPartialAsync("~/Views/PBF/PBFAnalyticalForm.cshtml",Model.pidfPbfAnalyticalEntity);
-                     } *@  
-                     @*@Html.Partial("~/Views/PIDF/PBFAnalyticalForm.cshtml",new PIDFEntity())*@
+                        @{
+                            await Html.RenderPartialAsync("~/Views/PBF/PBFAnalyticalForm.cshtml", new PidfPbfEntity());
+                        }
                     </div>
 
-                    @*<div id="Clinical" class="tabcontent">
-                        @Html.Partial("~/Views/PIDF/PBFClinicalForm.cshtml",new PIDFEntity())
-                    </div>*@
+                    <div id="Clinical" class="tabcontent">
+                        @{
+                            await Html.RenderPartialAsync("~/Views/PBF/PBFClinicalForm.cshtml", new PidfPbfEntity());
+                        }
+                    </div>
                     @*</section>*@
+                    <div class="form-group">
+                        <button type="submit" id="Save" class="btn btn-primary" onclick="SaveClick();" >@SharedLocalizer["Submit"]</button>
+                        <button type="submit" class="btn btn-info" onClick="SaveDraftClick();">@SharedLocalizer["SaveDraft"]</button>
+                        <a class="btn btn-danger" asp-action="PIDFList" asp-controller="PIDF">@SharedLocalizer["Cancel"]</a>
 
+                    </div>
                 </div>
+
             </div>
+
         </div>
-        <br />
     </form>
+    <br />
 </div>
 @section MyScripts {
 
     @Html.Partial("_DataTablePartial")
     <script type="text/javascript" src="~/js/Custom/DynamicDataTable.js"></script>
     <script type="text/javascript" src="~/js/Custom/PIDF/PBFForm.js"></script>
-@*    <script type="text/javascript" src="~/js/Custom/PBF/Analytical/PBFAnalytical.js"></script>*@
+    @*    <script type="text/javascript" src="~/js/Custom/PBF/Analytical/PBFAnalytical.js"></script>*@
     <link rel="stylesheet" href="~/AdminLTE/plugins/select2/css/select2.min.css" />
     <script type="text/javascript" src="~/AdminLTE/plugins/select2/js/select2.min.js"></script>
     <link href="/lib/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">

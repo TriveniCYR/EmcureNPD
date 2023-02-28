@@ -22,6 +22,7 @@ namespace EmcureNPD.Data.DataAccess.Entity
         public int? ModifyBy { get; set; }
         public DateTime? ModifyDate { get; set; }
         public string StatusColor { get; set; }
+        public bool? IsDashboard { get; set; }
 
         public virtual ICollection<Pidf> PidfLastStatuses { get; set; }
         public virtual ICollection<Pidf> PidfStatuses { get; set; }

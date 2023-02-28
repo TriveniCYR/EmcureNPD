@@ -232,6 +232,22 @@ namespace EmcureNPD.API.Controllers.PBF
 				return _ObjectResponse.Create(false, (Int32)HttpStatusCode.InternalServerError, Convert.ToString(ex.StackTrace));
 			}
 		}
-
-	}	
+        [HttpPost]
+        [Route("InsertUpdatePBFDetails")]
+        public async Task<IActionResult> InsertUpdatePBFDetails(PidfPbfEntity pbfEntity)
+        {
+            try
+            {
+                DBOperation oResponse = await _PBFService.AddUpdatePBFDetails(pbfEntity);
+                if (oResponse == DBOperation.Success)
+                    return _ObjectResponse.Create(true, (Int32)HttpStatusCode.OK, (pbfEntity.Pidfpbfid > 0 ? "Updated Successfully" : "Inserted Successfully"));
+                else
+                    return _ObjectResponse.Create(false, (Int32)HttpStatusCode.BadRequest, (oResponse == DBOperation.NotFound ? "Record not found" : "Bad request"));
+            }
+            catch (Exception ex)
+            {
+                return _ObjectResponse.Create(false, (Int32)HttpStatusCode.InternalServerError, Convert.ToString(ex.StackTrace));
+            }
+        }
+    }	
 }

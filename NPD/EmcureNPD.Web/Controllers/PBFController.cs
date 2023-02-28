@@ -35,7 +35,11 @@ namespace EmcureNPD.Web.Controllers
 			_stringLocalizerShared = stringLocalizerShared;
             _helper = helper;
         }
-		[HttpGet]
+        public IActionResult PIDFList()
+        {
+            return View();
+        }
+        [HttpGet]
 		public IActionResult PBFRnDForm(string pidfid, string bui)
 		{			
 			return View();
@@ -600,42 +604,36 @@ namespace EmcureNPD.Web.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult PBFAnaLyticalForm(int PIDFId, PidfPbfAnalyticalEntity pIDFEntity)
+        public IActionResult PBF(int PIDFId, PidfPbfEntity pbfEntity)
         {
             try
             {
-                if (pIDFEntity.SaveType == "submit")
-                    pIDFEntity.StatusId = (Int32)Master_PIDFStatus.PIDFSubmitted;
+                if (pbfEntity.SaveType == "Sv")
+                    pbfEntity.StatusId = (Int32)Master_PIDFStatus.PIDFInProgress;
                 else
-                    pIDFEntity.StatusId = (Int32)Master_PIDFStatus.PIDFInProgress;
-
-                if (pIDFEntity.AnalyticalPIDFID <= 0)
-                    pIDFEntity.LastStatusId = pIDFEntity.StatusId;
-
-                pIDFEntity.CreatedBy = _helper.GetLoggedInUserId(); //Convert.ToInt32(HttpContext.Session.GetString(UserHelper.LoggedInUserId));
-
-                string token = _helper.GetToken();
+                    pbfEntity.StatusId = (Int32)Master_PIDFStatus.PIDFSubmitted;
+                pbfEntity.CreatedBy = Convert.ToInt32(HttpContext.Session.GetString(UserHelper.LoggedInUserId));
+                HttpContext.Request.Cookies.TryGetValue(UserHelper.EmcureNPDToken, out string token);
                 APIRepository objapi = new(_cofiguration);
-
-                HttpResponseMessage responseMessage = objapi.APICommunication(APIURLHelper.SavePBFAnatical, HttpMethod.Post, token, new StringContent(JsonConvert.SerializeObject(pIDFEntity))).Result;
+                HttpResponseMessage responseMessage = objapi.APICommunication(APIURLHelper.SavePBF, HttpMethod.Post, token, new StringContent(JsonConvert.SerializeObject(pbfEntity))).Result;
 
                 if (responseMessage.IsSuccessStatusCode)
                 {
                     string jsonResponse = responseMessage.Content.ReadAsStringAsync().Result;
                     ModelState.Clear();
-                    return RedirectToAction(nameof(PBFForm));
+                    return RedirectToAction("PIDF/PIDFList?ScreenId=6");
                 }
             }
             catch (Exception e)
             {
                 ViewBag.errormessage = Convert.ToString(e.StackTrace);
                 ModelState.Clear();
-                return View(nameof(PBFForm));
+                return RedirectToAction("PIDF/PIDFList?ScreenId=6");
             }
             ModelState.Clear();
-            return RedirectToAction(nameof(PBFForm));
+            return RedirectToAction("PIDF/PIDFList?ScreenId=6");
         }
-
-
     }
+
+
 }

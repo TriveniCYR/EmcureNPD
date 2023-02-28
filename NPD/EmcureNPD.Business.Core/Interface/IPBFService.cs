@@ -28,5 +28,9 @@ namespace EmcureNPD.Business.Core.Interface
         Task<DBOperation> AddUpdateAPICharter(PIDFAPICharterFormEntity _oAPICharter);
         Task<DBOperation> AddUpdateAPIRnD(PIDFAPIRnDFormEntity _oAPIRnD);
 		Task<PidfPbfAnalyticalEntity> GetPBFAnalyticalReadonlyData(long pidfid);
-	}	
+
+        // ---------------------------PBFDetails----------------------------
+        Task<DBOperation> AddUpdatePBFDetails(PidfPbfEntity pbfEntity);
+
+    }	
 }

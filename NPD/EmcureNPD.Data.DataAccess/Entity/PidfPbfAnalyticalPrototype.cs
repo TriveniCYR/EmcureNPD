@@ -17,5 +17,9 @@ namespace EmcureNPD.Data.DataAccess.Entity
         public decimal? PrototypeCost { get; set; }
         public int CreatedBy { get; set; }
         public DateTime CreatedDate { get; set; }
+
+        public virtual PidfPbfAnalytical Pbfanalytical { get; set; }
+        public virtual PidfproductStrength Strength { get; set; }
+        public virtual MasterTestType TestType { get; set; }
     }
 }

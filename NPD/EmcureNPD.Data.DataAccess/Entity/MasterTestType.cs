@@ -10,6 +10,8 @@ namespace EmcureNPD.Data.DataAccess.Entity
         public MasterTestType()
         {
             PidfPbfAnalyticalExhibits = new HashSet<PidfPbfAnalyticalExhibit>();
+            PidfPbfAnalyticalPrototypes = new HashSet<PidfPbfAnalyticalPrototype>();
+            PidfPbfAnalyticalScaleUps = new HashSet<PidfPbfAnalyticalScaleUp>();
         }
 
         public int TestTypeId { get; set; }
@@ -21,5 +23,7 @@ namespace EmcureNPD.Data.DataAccess.Entity
         public DateTime? ModifyDate { get; set; }
 
         public virtual ICollection<PidfPbfAnalyticalExhibit> PidfPbfAnalyticalExhibits { get; set; }
+        public virtual ICollection<PidfPbfAnalyticalPrototype> PidfPbfAnalyticalPrototypes { get; set; }
+        public virtual ICollection<PidfPbfAnalyticalScaleUp> PidfPbfAnalyticalScaleUps { get; set; }
     }
 }

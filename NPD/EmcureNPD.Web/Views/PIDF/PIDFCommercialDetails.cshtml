@@ -163,7 +163,7 @@
                     <div class="col-md-3">
                         <div class="form-group required">
                             @Html.LabelFor(model => model.PackagingTypeId,@MasterLocalizer["ProductPackagingType"], new { @class = "control-label" })
-                                <select id="PackagingTypeId" name="PackagingTypeId" class="form-control"></select>                           
+                                <select id="PackagingTypeId1" name="PackagingTypeId1" class="form-control"></select>                           
                         </div>
                     </div>
                     <div class="col-md-3">
@@ -213,7 +213,14 @@
                             <lable id="valmsgSuimsvolume" class="text-danger"></lable>
                         </div>
                     </div>
+                    <div class="col-md-3">
+                        <div class="form-group required">
+                                @Html.LabelFor(model => model.FreeOfCost,@MasterLocalizer["FreeOfCost"], new { @class = "control-label" })
 
+                                @Html.TextBoxFor(model => model.FreeOfCost, new { @autocomplete = "off", @class = "form-control checkbox-checked", @placeholder = @MasterLocalizer["FreeOfCost"] })
+                                <lable id="valmsgFreeOfCost" class="text-danger"></lable>
+                        </div>
+                    </div>
                     <div class="col-md-3">
                         <div class="form-group required">
                             @Html.LabelFor(model => model.MarketGrowth,@MasterLocalizer["MarketGrowth"], new { @class = "control-label" })
@@ -241,7 +248,6 @@
                             <select id="FinalSelectionId" name="FinalSelectionId" class="form-control" required></select>                            
                         </div>
                     </div>
-                    <div class="col-md-3"></div>
                     <div class="col-md-3 border">
                         <h3 class="card-title font-weight-bold">Market Share % </h3>
                         <table class="table table-bordered">

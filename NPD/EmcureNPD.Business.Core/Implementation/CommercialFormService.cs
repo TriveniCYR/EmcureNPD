@@ -74,10 +74,6 @@ namespace EmcureNPD.Business.Core.Implementation
         }
         public async Task<DBOperation> AddUpdateCommercialPIDF(PIDFCommercialEntity entitycommPIDF)
         {
-            //if (entitycommPIDF.SaveType== "Sv")  //Save Final
-            // else if (entitycommPIDF.SaveType == "SvDrf") // Save as Draft
-
-
             var listYear = new List<PidfCommercialYear>();
             int i = 1;
             foreach (var year in entitycommPIDF.PidfCommercialYears)

@@ -34,7 +34,7 @@ namespace EmcureNPD.Business.Models
         //public HeadwiseBudget headwiseBudget { get; set; }
         //public ManhourEstimates manhourEstimates { get; set; }
         //public PRDDepartment pRDDepartment { get; set; }
-        public List<TimelineInMonths> timelineInMonths { get; set; }
+        public TimelineInMonths TimelineInMonths { get; set; }
     }
 
     #region Child Table Class
@@ -82,6 +82,14 @@ namespace EmcureNPD.Business.Models
         public string Name { get; set; }
         public string Value { get; set; }
         public string NameValue { get; set; }
+
+        public string FeasibilityStudy { get; set; }
+        public string Development      { get; set; }
+        public string Scaleup          { get; set; }
+        public string Validation       { get; set; }
+        public string Stability        { get; set; }
+        public string Filing           { get; set; }
+        public string Total            { get; set; }
     }
     #endregion
 }
