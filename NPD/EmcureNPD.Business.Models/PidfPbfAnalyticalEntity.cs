@@ -25,6 +25,7 @@ namespace EmcureNPD.Business.Models
         public string ProjectComplexity { get; set; }
 
         public int AnalyticalProductTypeId { get; set; }
+        [Required(ErrorMessageResourceType = typeof(Validation), ErrorMessageResourceName = "Required")]      
         public int StrengthId { get; set; }
         public DateTime? BudgetTimelineSubmissionDate { get; set; }
         public int AnalyticalFormulationGLId { get; set; }
@@ -39,7 +40,7 @@ namespace EmcureNPD.Business.Models
         public int StatusId { get; set; }
 
         public int LastStatusId { get; set; }
-        public string SaveType { get; set; }
+      
         public int? LogInId { get; set; }
         public List<PidfPbfAnalyticalExhibitEntity> AnalyticalExhibitEntities { get; set; }
         public List<PidfPbfAnalyticalPrototypeEntity> AnalyticalPrototypeEntities { get; set; }

@@ -30,7 +30,7 @@ namespace EmcureNPD.Business.Core.Interface
 		Task<PidfPbfAnalyticalEntity> GetPBFAnalyticalReadonlyData(long pidfid);
 
         // ---------------------------PBFDetails----------------------------
-        Task<DBOperation> AddUpdatePBFDetails(PidfPbfEntity pbfEntity);
+        Task<DBOperation> AddUpdatePBFDetails(PidfPbfFormEntity pbfEntity);
 
     }	
 }

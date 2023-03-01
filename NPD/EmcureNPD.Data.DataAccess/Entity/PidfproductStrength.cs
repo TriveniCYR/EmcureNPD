@@ -15,6 +15,7 @@ namespace EmcureNPD.Data.DataAccess.Entity
             PidfPbfAnalyticalPrototypes = new HashSet<PidfPbfAnalyticalPrototype>();
             PidfPbfAnalyticalScaleUps = new HashSet<PidfPbfAnalyticalScaleUp>();
             PidfPbfAnalyticals = new HashSet<PidfPbfAnalytical>();
+            PidfPbfClinicalCosts = new HashSet<PidfPbfClinicalCost>();
             PidfPbfClinicalPilotBioFastings = new HashSet<PidfPbfClinicalPilotBioFasting>();
             PidfPbfClinicalPilotBioFeds = new HashSet<PidfPbfClinicalPilotBioFed>();
             PidfPbfClinicalPivotalBioFastings = new HashSet<PidfPbfClinicalPivotalBioFasting>();
@@ -46,6 +47,7 @@ namespace EmcureNPD.Data.DataAccess.Entity
         public virtual ICollection<PidfPbfAnalyticalPrototype> PidfPbfAnalyticalPrototypes { get; set; }
         public virtual ICollection<PidfPbfAnalyticalScaleUp> PidfPbfAnalyticalScaleUps { get; set; }
         public virtual ICollection<PidfPbfAnalytical> PidfPbfAnalyticals { get; set; }
+        public virtual ICollection<PidfPbfClinicalCost> PidfPbfClinicalCosts { get; set; }
         public virtual ICollection<PidfPbfClinicalPilotBioFasting> PidfPbfClinicalPilotBioFastings { get; set; }
         public virtual ICollection<PidfPbfClinicalPilotBioFed> PidfPbfClinicalPilotBioFeds { get; set; }
         public virtual ICollection<PidfPbfClinicalPivotalBioFasting> PidfPbfClinicalPivotalBioFastings { get; set; }
