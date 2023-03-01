@@ -66,12 +66,12 @@ body {
 }
 
 .accordion-button::after {
-  background-image: url("../img/double_arrow.png");
-  background-size: 25px;
+    background-image: url("../images/double_arrow.png");
+    background-size: 25px;
 }
 
 .accordion-button:not(.collapsed)::after {
-  background-image: url("../img/double_arrow.png");
+  background-image: url("../images/double_arrow.png");
   background-size: 25px;
 }
 

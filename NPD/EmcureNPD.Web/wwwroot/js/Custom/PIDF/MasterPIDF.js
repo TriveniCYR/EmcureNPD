@@ -1,6 +1,7 @@
 ﻿var objApprRejList = [];
+var _mode = 0;
 $(document).ready(function () {
-    var _mode = getParameterByName("IsView");
+    _mode = getParameterByName("IsView");
     if (_mode == 1) {
         readOnlyForm();
     }
@@ -30,6 +31,15 @@ function GetCountryByBusinessUnitSuccess(data) {
             $(data._object).each(function (index, item) {
                 $('#RFDCountryId').append('<option value="' + item.countryId + '">' + item.countryName + '</option>');
             });
+
+            try {
+                if (parseInt(getParameterByName("PIDFId")) > 0) {
+                    $('#RFDCountryId').val($('#hdnRFDCountryId').val());
+                }
+            } catch (e) {
+
+            }
+
         }
     }
     catch (e) {
@@ -61,6 +71,8 @@ function GetPIDFDropdownSuccess(data) {
             $('#BusinessUnitId').append(_emptyOption);
             $('#MarketExtenstionId').append(_emptyOption);
             $('#Diaid').append(_emptyOption);
+            $('.productStrengthUnit').append(_emptyOption);
+            $('.productApiSourcing').append(_emptyOption);
 
             $(data.MasterOrals).each(function (index, item) {
                 $('#OralId').append('<option value="' + item.oralId + '">' + item.oralName + '</option>');
@@ -93,6 +105,28 @@ function GetPIDFDropdownSuccess(data) {
             $(data.MasterDIAs).each(function (index, item) {
                 $('#Diaid').append('<option value="' + item.diaId + '">' + item.diaName + '</option>');
             });
+
+            try {
+                if (parseInt(getParameterByName("PIDFId")) > 0) {
+                    $('#OralId').val($('#hdnOralId').val());
+                    $('#UnitofMeasurementId').val($('#hdnUnitofMeasurementId').val());
+                    $('#DosageFormId').val($('#hdnDosageFormId').val());
+                    $('#PackagingTypeId').val($('#hdnPackagingTypeId').val());
+                    $('#BusinessUnitId').val($('#hdnBusinessUnitId').val()).trigger("change");
+                    $('#MarketExtenstionId').val($('#hdnMarketExtenstionId').val());
+                    $('#Diaid').val($('#hdnDiaid').val());
+                    $('#InhouseDropdownId').val($('#hdnInhouseDropdownId').val());
+
+                    $(".productStrengthUnit").each(function () {
+                        $(this).val($(this).prev("#hdnProductStrengthUnit").val());
+                    });
+                    $(".productApiSourcing").each(function () {
+                        $(this).val($(this).prev("#hdnAPISourcing").val());
+                    });
+                }
+            } catch (e) {
+
+            }
         }
     } catch (e) {
         toastr.error('Error:' + e.message);
@@ -111,9 +145,9 @@ function SavePIDFForm(form) {
 }
 function SavePIDFFormSuccess(data) {
     try {
-        $('#SavePIDFModel').modal('hide');
+        //$('#SavePIDFModel').modal('hide');
         if (data._Success === true) {
-            window.location = "/PIDF/PIDFList";
+            window.location = "/PIDF/PIDFList?ScreenId=1";
             toastr.success(RecordInsertUpdate);
         }
         else {
@@ -183,7 +217,7 @@ function deleteRowApiDetails(j, element) {
 
 function readOnlyForm() {
     $('input').attr('readonly', true).attr('disabled', true);
-    $('button').attr('readonly', true).attr('disabled', true);
+    //$('button').attr('readonly', true).attr('disabled', true);
     $('select').attr('readonly', true).attr('disabled', true).trigger("change");
     $('.operationButton').hide();
 }
@@ -208,13 +242,13 @@ function SetChildRows() {
     });
 }
 function SetChildRowDeleteIcon() {
-    if ($('#APIDetailsTable tbody tr').length > 1) {
+    if ($('#APIDetailsTable tbody tr').length > 1 && _mode != 1) {
         $('.apiDeleteIcon').show();
     } else {
         $('.apiDeleteIcon').hide();
     }
 
-    if ($('#ProductStrengthTable tbody tr').length > 1) {
+    if ($('#ProductStrengthTable tbody tr').length > 1 && _mode != 1) {
         $('.strengthDeleteIcon').show();
     } else {
         $('.strengthDeleteIcon').hide();

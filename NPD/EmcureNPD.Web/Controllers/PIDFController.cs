@@ -125,28 +125,34 @@ namespace EmcureNPD.Web.Controllers
                 if (pIDFEntity.PIDFID <= 0)
                     pIDFEntity.LastStatusId = pIDFEntity.StatusId;
 
-                pIDFEntity.CreatedBy = _helper.GetLoggedInUserId(); //Convert.ToInt32(HttpContext.Session.GetString(UserHelper.LoggedInUserId));
+                //pIDFEntity.CreatedBy = _helper.GetLoggedInUserId(); //Convert.ToInt32(HttpContext.Session.GetString(UserHelper.LoggedInUserId));
 
                 string token = _helper.GetToken();
                 APIRepository objapi = new(_cofiguration);
 
                 HttpResponseMessage responseMessage = objapi.APICommunication(APIURLHelper.SavePIDF, HttpMethod.Post, token, new StringContent(JsonConvert.SerializeObject(pIDFEntity))).Result;
 
+                string jsonResponse = responseMessage.Content.ReadAsStringAsync().Result;
+                ModelState.Clear();
+                var data = JsonConvert.DeserializeObject<APIResponseEntity<dynamic>>(jsonResponse);
                 if (responseMessage.IsSuccessStatusCode)
                 {
-                    string jsonResponse = responseMessage.Content.ReadAsStringAsync().Result;
-                    ModelState.Clear();
-                    return RedirectToAction(nameof(PIDFList));
+                    TempData[EmcureNPD.Web.Helpers.UserHelper.SuccessMessage] = data._Message;
+                    return RedirectToAction(nameof(PIDFList), new { ScreenId = (int)PIDFScreen.PIDF });
                 }
+                else
+                {
+                    ViewBag.errormessage = Convert.ToString(data._Message);
+                    return View(pIDFEntity);
+                }
+                
             }
             catch (Exception e)
             {
                 ViewBag.errormessage = Convert.ToString(e.StackTrace);
                 ModelState.Clear();
-                return View(nameof(PIDFList));
+                return View(pIDFEntity);
             }
-            ModelState.Clear();
-            return RedirectToAction(nameof(PIDFList));
         }
 
         public IActionResult PIDFCommercial()

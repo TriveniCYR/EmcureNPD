@@ -5,7 +5,7 @@ $(document).ready(function () {
 });
 
 function InitializePIDFList() {
-    var setDefaultOrder = [24, 'desc'];
+    var setDefaultOrder = [23, 'desc'];
     var ajaxObject = {
         "url": $('#hdnBaseURL').val() + AllPIDF,
         "type": "POST",
@@ -107,11 +107,11 @@ function InitializePIDFList() {
                 return '<a class="small-button btn btn-' + (row.finance ? "success" : "danger") + '"><i class="fa ' + (row.finance ? "fa-check" : "fa-remove") + '"></i></a>';
             }
         },
-        {
-            "data": "management", "name": "Management", "render": function (data, type, row, meta) {
-                return '<a class="small-button btn btn-' + (row.management ? "success" : "danger") + '"><i class="fa ' + (row.management ? "fa-check" : "fa-remove") + '"></i></a>';
-            }
-        },
+        //{
+        //    "data": "management", "name": "Management", "render": function (data, type, row, meta) {
+        //        return '<a class="small-button btn btn-' + (row.management ? "success" : "danger") + '"><i class="fa ' + (row.management ? "fa-check" : "fa-remove") + '"></i></a>';
+        //    }
+        //},
         {
             "data": "marketExtension", "name": "Market Extension"
         },

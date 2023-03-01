@@ -74,10 +74,10 @@ namespace EmcureNPD.Business.Models
         public string RFDCommercialBatchSize { get; set; }
 
         public bool IsActive { get; set; }
-        public DateTime CreatedDate { get; set; }
-        public int? CreatedBy { get; set; }
-        public DateTime? ModifyDate { get; set; }
-		public int? ModifyBy { get; set; }
+  //      public DateTime CreatedDate { get; set; }
+  //      public int? CreatedBy { get; set; }
+  //      public DateTime? ModifyDate { get; set; }
+		//public int? ModifyBy { get; set; }
 		
         public int StatusId { get; set; }
         

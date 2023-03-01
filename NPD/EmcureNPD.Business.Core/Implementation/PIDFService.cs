@@ -213,6 +213,12 @@ namespace EmcureNPD.Business.Core.Implementation
                         PIDFEntity _previousPIDFEntity = _mapperFactory.Get<Pidf, PIDFEntity>(objPIDF);
 
                         objPIDF = _mapperFactory.Get<PIDFEntity, Pidf>(entityPIDF);
+
+                        objPIDF.ModifyBy = loggedInUserId;
+                        objPIDF.ModifyDate = DateTime.Now;
+                        objPIDF.StatusUpdatedBy = loggedInUserId;
+                        objPIDF.StatusUpdatedDate = DateTime.Now;
+
                         _repository.UpdateAsync(objPIDF);
 
                         await _unitOfWork.SaveChangesAsync();
