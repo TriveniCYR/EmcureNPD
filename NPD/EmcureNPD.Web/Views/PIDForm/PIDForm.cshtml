@@ -7,7 +7,9 @@
 @inject Microsoft.Extensions.Localization.IStringLocalizer<EmcureNPD.Resource.Master> MasterLocalizer
 @inject Microsoft.Extensions.Localization.IStringLocalizer<EmcureNPD.Resource.Shared> SharedLocalizer
 @model EmcureNPD.Business.Models.PIDFormEntity
-
+@{
+    ViewData["Title"] = @MasterLocalizer["IPD"];
+}
 <div id="SavePIDForm">
     @*<h5 class="mb-0"><b>Product Identification Form</b></h5>*@
     <form asp-action="PIDForm">
@@ -22,11 +24,11 @@
             </div>
             <div class="card-body" id="tabs">
                 <div class="row">         
-                        <div class="col-md-3">
+                        @*<div class="col-md-3">
                             @Html.LabelFor(model => model.BusinessUnitId, "Business Unit", new { @class = "control-label" })                        
-                        </div>
-                        <div class="col-md-9">
-                            <ul class="nav nav-pills" id="businessUnitTabs">
+                        </div>*@
+                        <div class="col-md-12">
+                        <ul class="nav nav-tabs" id="businessUnitTabs">
                             @if (Model.MasterBusinessUnitEntities.Count() > 0)
                             {
                                 int k = 0;
@@ -42,7 +44,7 @@
                             </ul>
                         </div>                    
                 </div>
-               
+               <br />
                 <div class="tab-content" id="tabList">
                     <div>
                         <div class="row">
@@ -261,13 +263,14 @@
                     <div>
                         <div class="form-group">
                             <button type="submit" class="btn btn-primary" onClick="SaveClick();">@SharedLocalizer["Save"]</button>
-                            <a class="btn btn-danger" asp-controller="PIDForm" asp-action="PIDFormList">@SharedLocalizer["Cancel"]</a>
-                            @if (Model.StatusId !=(Int32)Master_PIDFStatus.IPDCreated)
+                            <input class="btn btn-danger" value="Cancel" type="button" title="Cancel" onclick="location.href='@Url.Action("PIDFList", "PIDF", new { ScreenId = 2 })'" />
+                            @*<button class="btn btn-danger" type="button" onclick="window.history.back();">@SharedLocalizer["Cancel"]</button>*@
+                            @if (Model.StatusId != (Int32)Master_PIDFStatus.IPDInProgress)
                             {
                             <button type="submit" class="btn btn-info" onClick="SaveDraftClick();">@SharedLocalizer["SaveDraft"]</button>
                             }
-                            <button type="submit" class="btn btn-success" onClick="SaveApproveClick();">@SharedLocalizer["Approve"]</button>
-                            <button type="submit" class="btn btn-danger" onClick="SaveRejectClick();">@SharedLocalizer["Reject"]</button>
+                            <button type="submit" class="btn btn-success" onClick="SaveApproveClick();"><i class="fa fa-check mr-1"></i>@SharedLocalizer["Approve"]</button>
+                            <button type="submit" class="btn btn-danger" onClick="SaveRejectClick();"><i class="far fa fa-times mr-1"></i>@SharedLocalizer["Reject"]</button>
                         </div>
                     </div>
                 </div>

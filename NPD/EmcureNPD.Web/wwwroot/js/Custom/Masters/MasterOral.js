@@ -10,7 +10,7 @@ function GetOralListSuccess(data) {
     try {
         $('#OralTable tbody').html('')
         $.each(data._object, function (index, object) {
-            $('#OralTable tbody').append('<tr><td>' + object.oralName + '</td><td><span style="color:' + (object.isActive ? "green" : "red") + '">' + (object.isActive ? "Active" : "InActive") + '</span></td><td>  <a class="btn btn-primary" data-toggle="modal" data-target="#SaveOralModel" data-backdrop="static" data-keyboard="false"  onclick="GetOralById(' + object.oralId + '); return false;"><i class="fa fa-fw fa-edit mr-1"></i> ' + EditLabel + '</a> <a class="btn btn-danger" data-toggle="modal" data-target="#DeleteOralModel" data-backdrop="static" data-keyboard="false" onclick="ConfirmationDeleteOral(' + object.oralId + '); return false;"><i class="fa fa-fw fa-trash mr-1"></i> ' + DeleteLabel + '</a>  </td></tr>');
+            $('#OralTable tbody').append('<tr><td>' + object.oralName + '</td><td><span style="color:' + (object.isActive ? "green" : "red") + '">' + (object.isActive ? "Active" : "InActive") + '</span></td><td>  <a class="large-font" style="' + IsEditAllow + '" href="" title="Edit" data-toggle="modal" data-target="#SaveOralModel" data-backdrop="static" data-keyboard="false"  onclick="GetOralById(' + object.oralId + '); return false;"><i class="fa fa-fw fa-edit mr-1"></i> ' + '</a> <a class="large-font text-danger" style="' + IsDeleteAllow +'" href="" title="Delete" data-toggle="modal" data-target="#DeleteOralModel" data-backdrop="static" data-keyboard="false" onclick="ConfirmationDeleteOral(' + object.oralId + '); return false;"><i class="fa fa-fw fa-trash mr-1"></i> ' + '</a>  </td></tr>');
         });
         StaticDataTable("#OralTable");
     } catch (e) {
@@ -28,6 +28,7 @@ function GetOralById(id) {
 }
 function GetOralByIdSuccess(data) {
     try {
+        CleareOralFields();
         $('#SaveOralModel #OralID').val(data._object.oralId);
         $('#SaveOralModel #OralName').val(data._object.oralName);
         $('#SaveOralModel #OralTitle').html(UpdateLabel);
@@ -82,6 +83,12 @@ function CleareOralFields() {
     $('#SaveOralModel #OralID').val("0");
     $('#SaveOralModel #OralName').val("");
     $('#DeleteOralModel #OralID').val("0");
+    var validationMessages = document.querySelectorAll(".field-validation-error");
+
+    // Loop through the messages and clear them
+    for (var i = 0; i < validationMessages.length; i++) {
+        validationMessages[i].textContent = "";
+    }
 }
 // #endregion
 

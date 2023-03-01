@@ -1,4 +1,5 @@
 using EmcureNPD.API.Filter;
+using EmcureNPD.API.Helpers;
 using EmcureNPD.API.Helpers.Response;
 using EmcureNPD.API.Middlewares;
 using EmcureNPD.Business.Core.Resolver;
@@ -13,7 +14,9 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.FileProviders;
 using Microsoft.Extensions.Hosting;
+using Microsoft.Extensions.Options;
 using Microsoft.OpenApi.Models;
+using Newtonsoft.Json.Serialization;
 using System.IO;
 
 namespace EmcureNPD.API
@@ -35,7 +38,11 @@ namespace EmcureNPD.API
             services.AddControllers(options =>
             {
                 options.Filters.Add(typeof(ExceptionFilter));
-            });
+            }).AddJsonOptions(options =>
+            {
+                options.JsonSerializerOptions.WriteIndented = true;
+            }).AddNewtonsoftJson();
+
             services.AddResource();
             services.AddSwaggerGen(c =>
             {
@@ -99,6 +106,9 @@ namespace EmcureNPD.API
 
             services.AddCors();
             services.AddDistributedMemoryCache();
+            
+            services.AddHttpContextAccessor();
+
             services.AddSignalR();
             services.AddCors(options =>
             {

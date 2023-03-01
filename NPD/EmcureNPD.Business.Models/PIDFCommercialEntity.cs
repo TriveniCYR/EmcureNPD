@@ -14,10 +14,9 @@ namespace EmcureNPD.Business.Models
         public int BusinessUnitId { get; set; }
         public long PidfproductStrengthId { get; set; }
 
-        [Required(ErrorMessageResourceType = typeof(Validation), ErrorMessageResourceName = "Required")]
-        [ReadOnly(true)]
+        public int IsView { get; set; }
         public string MarketSizeInUnit { get; set; }
-        [Required(ErrorMessageResourceType = typeof(Validation), ErrorMessageResourceName = "Required")]
+        
         public string ShelfLife { get; set; }
         public DateTime CreatedDate { get; set; }
         public int CreatedBy { get; set; }

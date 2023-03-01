@@ -5,6 +5,7 @@ using EmcureNPD.Business.Models;
 using EmcureNPD.Resource;
 using EmcureNPD.Utility.Helpers;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Localization;
@@ -65,26 +66,8 @@ namespace EmcureNPD.API.Controllers.Masters
             {
                 DBOperation oResponse = await _MasterUserService.AddUpdateUser(oUser);
                 if (oResponse == DBOperation.Success)
-                {
-                    return _ObjectResponse.Create(true, (Int32)HttpStatusCode.OK, (oUser.UserId > 0 ? "Updated Successfully" : "Inserted Successfully"));
-                    if (oUser.UserId <= 0)
-                    {
-                        EmailHelper email = new EmailHelper();
-                        string mailbody = string.Empty;
-
-                        string TemplatePath = string.Empty;
-                        TemplatePath = _env.ContentRootPath + _configuration.GetSection("MailTemplate:UserEmailTemplate").Value;
-
-                        using (StreamReader reader = new StreamReader(TemplatePath))
-                        {
-                            mailbody = reader.ReadToEnd();
-                        }
-                        mailbody.Replace("{UserName}", oUser.FullName);
-                        mailbody.Replace("{Email}", oUser.EmailAddress);
-                        mailbody.Replace("{Password}", oUser.ConfirmPassowrd);
-                        string body = mailbody;
-                        email.SendMail(oUser.EmailAddress, "", "User", body);
-                    }
+                {                  
+                   return _ObjectResponse.Create(true, (Int32)HttpStatusCode.OK, (oUser.UserId > 0 ? "Updated Successfully" : "Inserted Successfully"));
                 }
                 else
                     return _ObjectResponse.Create(false, (Int32)HttpStatusCode.BadRequest, (oResponse == DBOperation.NotFound ? "Record not found" : "Bad request"));
@@ -270,11 +253,11 @@ namespace EmcureNPD.API.Controllers.Masters
         /// <response code="405">Method Not Allowed</response>
         /// <response code="500">Internal Server</response>
         [HttpGet, Route("CheckEmailAddressExists/{emailAddress}")]
-        public bool CheckEmailAddressExists([FromRoute] string emailAddress)
+        public async Task<bool> CheckEmailAddressExists([FromRoute] string emailAddress)
         {
             try
             {
-               return _MasterUserService.CheckEmailAddressExists(emailAddress);
+               return await _MasterUserService.CheckEmailAddressExists(emailAddress);
             }
             catch (Exception ex)
             {

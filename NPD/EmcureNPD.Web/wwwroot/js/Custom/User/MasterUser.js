@@ -48,6 +48,15 @@ function InitializeUserList () {
             "data": "emailAddress", "name": "Email Address"
         },
         {
+            "data": "roleName", "name": "Role Name"
+        },
+        {
+            "data": "businessUnitName", "name": "Business Unit Name"
+        },
+        {
+            "data": "departmentName", "name": "Department Name"
+        },
+        {
             "data": "createdDate", "name": "createdDate", "render": function (data, type, row, meta) {
                 if (data != 0) {
                     return "<span>" + CustomDateFormat(row.createdDate, 2) + "</span>";
@@ -60,8 +69,8 @@ function InitializeUserList () {
             "data": "Action", "name": "Action", "render": function (data, type, row, meta) {
                 var html = '';
 
-                html += '<a class="btn btn-primary" href="/User/UserManage?UserId='+row.userId+'"><i class="fa fa-fw fa-edit mr-1"></i>Edit</a>';
-                html += '<a class="btn btn-danger ml-2" data-toggle="modal" data-target="#DeleteUserModel" data-backdrop="static" data-keyboard="false" onclick="ConfirmationDeleteUser(' + row.userId + '); return false;"><i class="fa fa-fw fa-trash mr-1"></i>Delete</a>';
+                html += '<a title="Edit" class="large-font" style="'+IsEditAllow+'" href="/User/UserManage?UserId='+row.userId+'"><i class="fa fa-fw fa-edit mr-1"></i></a>';
+                html += '<a title="Delete" class="large-font text-danger" style="' + IsDeleteAllow +'" data-toggle="modal" data-target="#DeleteUserModel" data-backdrop="static" data-keyboard="false" onclick="ConfirmationDeleteUser(' + row.userId + '); return false;"><i class="fa fa-fw fa-trash mr-1"></i></a>';
 
                 return html;
             }

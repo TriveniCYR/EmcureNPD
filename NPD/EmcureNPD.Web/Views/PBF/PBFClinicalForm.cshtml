@@ -1,0 +1,779 @@
+﻿@using Microsoft.AspNetCore.Http
+@using EmcureNPD.Web.Controllers
+@using Microsoft.AspNetCore.Mvc.Localization
+@using EmcureNPD.Utility.Utility;
+@using EmcureNPD.Utility.Enums
+@inject IHttpContextAccessor HttpContextAccessor
+@inject Microsoft.Extensions.Localization.IStringLocalizer<EmcureNPD.Resource.Master> MasterLocalizer
+@inject Microsoft.Extensions.Localization.IStringLocalizer<EmcureNPD.Resource.Shared> SharedLocalizer
+@model EmcureNPD.Business.Models.PidfPbfEntity
+@{
+    ViewData["Title"] = "PBFClinical";
+}
+
+
+<div class="card" style="width:100%">
+    <div class="card-body" style="background-color:white">
+        @*<form asp-action="PBFClinicalForm" asp-controller="PBF" enctype="multipart/form-data" method="post">*@
+        <input type="hidden" asp-for="pidfPbfClinicalEntity.ClinicalPIDFID" />
+        <input type="hidden" asp-for="pidfPbfClinicalEntity.ClinicalBusinessUnitId" />
+        <input type="hidden" asp-for="pidfPbfClinicalEntity.StrengthId" />
+
+        <div class="card-header">
+            <h5 class="mb-0"><b>General</b></h5>
+        </div>
+        <br>
+        <div class="card-body">
+            <div class="row">
+
+                <div class="col-md-3">
+                    <div class="form-group required">
+                        @Html.LabelFor(model => model.pidfPbfClinicalEntity.ProjectName,@MasterLocalizer["ProjectName"], new { @class = "control-label" })
+                        @Html.TextBoxFor(model => model.pidfPbfClinicalEntity.ProjectName, new {@readonly = "readonly", @class = "form-control", @placeholder = @MasterLocalizer["ProjectName"],@required="required" })
+                    </div>
+                </div>
+
+                <div class="col-md-3">
+                    <div class="form-group">
+                        <label class="control-label">Strength</label>
+                        <div style="display: -webkit-inline-box;" id="strengthlblClinical">
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="form-group required">
+                        @Html.LabelFor(model => model.pidfPbfClinicalEntity.SAPProjectProjectCode,"SAP Code / Project Code", new { @class = "control-label" })
+                        @Html.TextBoxFor(model => model.pidfPbfClinicalEntity.SAPProjectProjectCode, new {@readonly = "readonly", @class = "form-control", @placeholder = "SAP Code / Project Code" ,@required="required"})
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="form-group required">
+                        @Html.LabelFor(model => model.pidfPbfClinicalEntity.ImprintingEmbossingCodes,"Imprinting Embossing Codes", new { @class = "control-label" })
+                        @Html.TextBoxFor(model => model.pidfPbfClinicalEntity.ImprintingEmbossingCodes, new {@readonly = "readonly", @class = "form-control", @placeholder = "Imprinting Embossing Codes",@required="required" })
+                    </div>
+                </div>
+            </div>
+           
+            <div class="row">
+
+                <div class="col-md-3">
+                    <div class="form-group required">
+                        @Html.LabelFor(model => model.pidfPbfClinicalEntity.TotalExpenses,"Total Expenses", new { @class = "control-label" })
+                        @Html.TextBoxFor(model => model.pidfPbfClinicalEntity.TotalExpenses, new { @class = "form-control", @placeholder = "Total Expenses",@required="required" })
+                    </div>
+                </div>
+
+                <div class="col-md-3">
+                    <div class="form-group required">
+                        @Html.LabelFor(model => model.pidfPbfClinicalEntity.ProjectComplexity,"Project Complexity", new { @class = "control-label" })
+                        @Html.TextBoxFor(model => model.pidfPbfClinicalEntity.ProjectComplexity, new { @class = "form-control", @placeholder = "Project Complexity" ,@required="required"})
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="form-group required">
+                        @Html.LabelFor(model => model.pidfPbfClinicalEntity.ClinicalProductTypeId, "Product Type", new { @class = "control-label" })
+                        <select id="ClinicalProductTypeId" name="pidfPbfClinicalEntity.ClinicalProductTypeId" class="form-control readOnlyUpdate" required></select>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="form-group required">
+                        <label class="control-label">Test Licence Availability</label>
+
+                        <div stylle="display: inline-block;" id="Clinicallicence">
+                            @* <input type="checkbox" value="AHD" name=ClinicalLicence>AHD
+                            <input type="checkbox" value="BHS" name=ClinicalLicence>BHS
+                            <input type="checkbox" value="HNJ" name=ClinicalLicence>HNJ
+                            <input type="checkbox" value="LYO" name=ClinicalLicence>LYO Cycle*@
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+
+                <div class="col-md-3">
+                    <div class="form-group required">
+                        <label class="control-label">Budget and Timeline Submission Date</label>
+                        @Html.TextBoxFor(@modal=> modal.pidfPbfClinicalEntity.BudgetTimelineSubmissionDate,"{0:yyyy-MM-dd}",new{@type="date",@class="form-control readOnlyUpdate",@required="required"})
+                    </div>
+                </div>
+
+                <div class="col-md-3">
+                    <div class="form-group required">
+                        @Html.LabelFor(model => model.pidfPbfClinicalEntity.ClinicalFormulationGLId, "Formulation GL", new { @class = "control-label" })
+                        <select id="ClinicalFormulationGLId" name="pidfPbfClinicalEntity.ClinicalFormulationGLId" class="form-control readOnlyUpdate" required></select>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="form-group required">
+                        @Html.LabelFor(model => model.pidfPbfClinicalEntity.ClinicalAnalyticalGLId, "Analytical GL", new { @class = "control-label" })
+                        <select id="ClinicalAnalyticalGLId" name="pidfPbfClinicalEntity.ClinicalAnalyticalGLId" class="form-control readOnlyUpdate" required></select>
+                    </div>
+                </div>
+
+            </div>
+            <br />
+           <div class="row border m-2">
+                <div class="col-md-3">
+                    @Html.Label("Strength", "Strength", new { @class = "control-label" })
+                </div>
+                <div class="col-md-9 pl-lg-5">
+                    <div class="form-group required">                        
+                        <ul class="nav nav-pills" id="StrengthTabsClinical">
+
+                            @*@if (@Model !=null && @Model.ProductStrength != null)
+                            {
+                            @if (@Model.ProductStrength.Count > 0)
+                            {
+                            int k = 0;
+                            @foreach (var strenght in @Model.ProductStrength)
+                            {
+                            <li class="nav-item mr-2">
+                            <a class="btn btn-outline-primary" href="@strenght.ProductStrengthId" id="tab_@strenght.ProductStrengthId"> @strenght.ProductStrengthName</a>
+                            </li>
+                            k = k + 1;
+                            }
+                            }
+                            }*@
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <br />
+           
+            <div class="card-header">
+                <h5 class="mb-0"><b>Clinical Activities</b></h5>
+            </div>
+            <br />
+            @*//Pilot Bio Fasting Section Start*@
+            <div class="card-header">
+                <h5 class="mb-0"><b>Pilot Bio Fasting</b></h5>
+            </div>
+            <br />
+            <div>
+                <table id="PilotBioFastingTable" class="table table-bordered table-striped table-hover" style="width:100%">
+                    <thead>
+                        <tr>
+                            <th>Fasting</th>
+                            <th>Number of Volunteers</th>
+                            <th>Clinical Cost / VOlt</th>
+                            <th>Doc Cost /Study</th>
+                            <th>Total Cost</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody id="PilotBioFastingTableBody">
+                        @if (Model.pidfPbfClinicalEntity != null)
+                        {
+                            if (Model.pidfPbfClinicalEntity.pidfpbfClinicalpilotBioFastingEntity != null && Model.pidfPbfClinicalEntity.pidfpbfClinicalpilotBioFastingEntity.Count() > 0)
+                            {
+                                for (int j = 0; j < Model.pidfPbfClinicalEntity.pidfpbfClinicalpilotBioFastingEntity.Count(); j++)
+                                {
+                                    <tr id="PilotBioFastingTableRow_@j">
+                                        <td>
+                                            <div class="col-md">
+                                                <div class="form-group required">
+                                                    @Html.EditorFor(model => model.pidfPbfClinicalEntity.pidfpbfClinicalpilotBioFastingEntity[j].Fasting, new { htmlAttributes = new { @autocomplete = "off", @class = "form-control checkbox-checked", @placeholder = "Fasting",@required="required" } })
+                                                    @Html.ValidationMessageFor(model => model.pidfPbfClinicalEntity.pidfpbfClinicalpilotBioFastingEntity[j].Fasting, "", new { @class = "text-danger" })
+
+                                                </div>
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <div class="col-md">
+                                                @Html.EditorFor(model => model.pidfPbfClinicalEntity.pidfpbfClinicalpilotBioFastingEntity[j].NumberofVolunteers, new { htmlAttributes = new { @autocomplete = "off", @class = "form-control checkbox-checked", @placeholder = "No Of Volunteers",@required="required" } })
+                                                @Html.ValidationMessageFor(model => model.pidfPbfClinicalEntity.pidfpbfClinicalpilotBioFastingEntity[j].NumberofVolunteers, "", new { @class = "text-danger" })
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <div class="col-md">
+                                                <div class="form-group required">
+                                                    @Html.EditorFor(model => model.pidfPbfClinicalEntity.pidfpbfClinicalpilotBioFastingEntity[j].ClinicalCostandVol, new { htmlAttributes = new { @autocomplete = "off", @class = "form-control checkbox-checked", @placeholder = "Clinical Cost / VOl",@required="required" } })
+                                                    @Html.ValidationMessageFor(model => model.pidfPbfClinicalEntity.pidfpbfClinicalpilotBioFastingEntity[j].ClinicalCostandVol, "", new { @class = "text-danger" })
+                                                </div>
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <div class="col-md">
+                                                <div class="form-group required">
+                                                    @Html.EditorFor(model => model.pidfPbfClinicalEntity.pidfpbfClinicalpilotBioFastingEntity[j].DocCostandStudy, new { htmlAttributes = new { @autocomplete = "off", @class = "form-control checkbox-checked", @placeholder = "Doc Cost /Study" ,@required="required"} })
+                                                    @Html.ValidationMessageFor(model => model.pidfPbfClinicalEntity.pidfpbfClinicalpilotBioFastingEntity[j].DocCostandStudy, "", new { @class = "text-danger" })
+                                                </div>
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <div class="col-md">
+                                                <div class="form-group required">
+                                                    @Html.EditorFor(model => model.pidfPbfClinicalEntity.pidfpbfClinicalpilotBioFastingEntity[j].TotalCost, new { htmlAttributes = new { @autocomplete = "off", @class = "form-control checkbox-checked", @placeholder = "Total Cost" ,@required="required"} })
+                                                    @Html.ValidationMessageFor(model => model.pidfPbfClinicalEntity.pidfpbfClinicalpilotBioFastingEntity[j].TotalCost, "", new { @class = "text-danger" })
+                                                </div>
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <div class="col-md">
+                                                <div class="form-group">
+                                                    <i class="fas fa-plus" id="PilotBioFastingaddIcon_@j" onclick="PilotBioFastingaddRow(@j)"></i>
+                                                    &nbsp;&nbsp;&nbsp;&nbsp;
+                                                    <span><i class="fas fa-trash-alt PilotBioFastingDeleteIcon" id="PilotBioFastingdeleteIco_@j" onclick="PilotBioFastingdeleteRow(@j, this)"></i></span>
+                                                    @*@Html.HiddenFor(model => model.pidfPbfClinicalEntity.pidfpbfClinicalpilotBioFastingEntity[j].StrengthId, new { id = "pidfPbfClinicalEntity.pidfpbfClinicalpilotBioFastingEntity[" + j + "].StrengthId"})*@
+                                                </div>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                }
+                            }
+                        }
+                        else
+                        {
+                            int j = 0;
+                            <tr id="PilotBioFastingTableRow_@j">
+                                <td>
+                                    <div class="col-md">
+                                        <div class="form-group required">
+                                            @Html.EditorFor(model => model.pidfPbfClinicalEntity.pidfpbfClinicalpilotBioFastingEntity[j].Fasting, new { htmlAttributes = new { @autocomplete = "off", @class = "form-control checkbox-checked", @placeholder = "Fasting",@required="required" } })
+                                            @Html.ValidationMessageFor(model => model.pidfPbfClinicalEntity.pidfpbfClinicalpilotBioFastingEntity[j].Fasting, "", new { @class = "text-danger" })
+
+                                        </div>
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="col-md">
+                                        @Html.EditorFor(model => model.pidfPbfClinicalEntity.pidfpbfClinicalpilotBioFastingEntity[j].NumberofVolunteers, new { htmlAttributes = new { @autocomplete = "off", @class = "form-control checkbox-checked", @placeholder = "No Of Volunteers",@required="required" } })
+                                        @Html.ValidationMessageFor(model => model.pidfPbfClinicalEntity.pidfpbfClinicalpilotBioFastingEntity[j].NumberofVolunteers, "", new { @class = "text-danger" })
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="col-md">
+                                        <div class="form-group required">
+                                            @Html.EditorFor(model => model.pidfPbfClinicalEntity.pidfpbfClinicalpilotBioFastingEntity[j].ClinicalCostandVol, new { htmlAttributes = new { @autocomplete = "off", @class = "form-control checkbox-checked", @placeholder = "Clinical Cost / VOl",@required="required" } })
+                                            @Html.ValidationMessageFor(model => model.pidfPbfClinicalEntity.pidfpbfClinicalpilotBioFastingEntity[j].ClinicalCostandVol, "", new { @class = "text-danger" })
+                                        </div>
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="col-md">
+                                        <div class="form-group required">
+                                            @Html.EditorFor(model => model.pidfPbfClinicalEntity.pidfpbfClinicalpilotBioFastingEntity[j].DocCostandStudy, new { htmlAttributes = new { @autocomplete = "off", @class = "form-control checkbox-checked", @placeholder = "Doc Cost /Study" ,@required="required"} })
+                                            @Html.ValidationMessageFor(model => model.pidfPbfClinicalEntity.pidfpbfClinicalpilotBioFastingEntity[j].DocCostandStudy, "", new { @class = "text-danger" })
+                                        </div>
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="col-md">
+                                        <div class="form-group required">
+                                            @Html.EditorFor(model => model.pidfPbfClinicalEntity.pidfpbfClinicalpilotBioFastingEntity[j].TotalCost, new { htmlAttributes = new { @autocomplete = "off", @class = "form-control checkbox-checked", @placeholder = "Total Cost" ,@required="required"} })
+                                            @Html.ValidationMessageFor(model => model.pidfPbfClinicalEntity.pidfpbfClinicalpilotBioFastingEntity[j].TotalCost, "", new { @class = "text-danger" })
+                                        </div>
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="col-md">
+                                        <div class="form-group">
+                                            <i class="fas fa-plus" id="PilotBioFastingaddIcon_@j" onclick="PilotBioFastingaddRow(@j)"></i>
+                                            &nbsp;&nbsp;&nbsp;&nbsp;
+                                            <span><i class="fas fa-trash-alt PilotBioFastingDeleteIcon" id="PilotBioFastingdeleteIco_@j" onclick="PilotBioFastingdeleteRow(@j, this)"></i></span>
+                                            @*@Html.HiddenFor(model => model.pidfPbfClinicalEntity.pidfpbfClinicalpilotBioFastingEntity[j].StrengthId, new { id = "pidfPbfClinicalEntity.pidfpbfClinicalpilotBioFastingEntity[" + j + "].StrengthId"})*@
+                                        </div>
+                                    </div>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+
+                </table>
+            </div>
+            @*//Pilot Bio Fasting Section End*@
+            <br />
+            @*//Pilot Bio Fed Section Start*@
+            <div class="card-header">
+                <h5 class="mb-0"><b>Pilot Bio FED</b></h5>
+            </div>
+            <br />
+            <div>
+                <table id="PilotBioFEDTable" class="table table-bordered table-striped table-hover" style="width:100%">
+                    <thead>
+                        <tr>
+                            <th>Fasting</th>
+                            <th>Number of Volunteers</th>
+                            <th>Clinical Cost / VOlt</th>
+                            <th>Doc Cost /Study</th>
+                            <th>Total Cost</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody id="PilotBioFEDTableBody">
+                        @if (Model.pidfPbfClinicalEntity != null)
+                        {
+                            if (Model.pidfPbfClinicalEntity.pidfpbfClinicalPilotBioFedEntity != null && Model.pidfPbfClinicalEntity.pidfpbfClinicalPilotBioFedEntity.Count() > 0)
+                            {
+                                for (int j = 0; j < Model.pidfPbfClinicalEntity.pidfpbfClinicalPilotBioFedEntity.Count(); j++)
+                                {
+                                    <tr id="PilotBioFEDTableRow_@j">
+                                        <td>
+                                            <div class="col-md">
+                                                <div class="form-group required">
+                                                    @Html.EditorFor(model => model.pidfPbfClinicalEntity.pidfpbfClinicalPilotBioFedEntity[j].Fed, new { htmlAttributes = new { @autocomplete = "off", @class = "form-control checkbox-checked", @placeholder = "Fed",@required="required" } })
+                                                    @Html.ValidationMessageFor(model => model.pidfPbfClinicalEntity.pidfpbfClinicalPilotBioFedEntity[j].Fed, "", new { @class = "text-danger" })
+
+                                                </div>
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <div class="col-md">
+                                                @Html.EditorFor(model => model.pidfPbfClinicalEntity.pidfpbfClinicalPilotBioFedEntity[j].NumberofVolunteers, new { htmlAttributes = new { @autocomplete = "off", @class = "form-control checkbox-checked", @placeholder = "No Of Volunteers",@required="required" } })
+                                                @Html.ValidationMessageFor(model => model.pidfPbfClinicalEntity.pidfpbfClinicalPilotBioFedEntity[j].NumberofVolunteers, "", new { @class = "text-danger" })
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <div class="col-md">
+                                                <div class="form-group required">
+                                                    @Html.EditorFor(model => model.pidfPbfClinicalEntity.pidfpbfClinicalPilotBioFedEntity[j].ClinicalCostandVol, new { htmlAttributes = new { @autocomplete = "off", @class = "form-control checkbox-checked", @placeholder = "Clinical Cost / VOl",@required="required" } })
+                                                    @Html.ValidationMessageFor(model => model.pidfPbfClinicalEntity.pidfpbfClinicalPilotBioFedEntity[j].ClinicalCostandVol, "", new { @class = "text-danger" })
+                                                </div>
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <div class="col-md">
+                                                <div class="form-group required">
+                                                    @Html.EditorFor(model => model.pidfPbfClinicalEntity.pidfpbfClinicalPilotBioFedEntity[j].DocCostandStudy, new { htmlAttributes = new { @autocomplete = "off", @class = "form-control checkbox-checked", @placeholder = "Doc Cost /Study" ,@required="required"} })
+                                                    @Html.ValidationMessageFor(model => model.pidfPbfClinicalEntity.pidfpbfClinicalPilotBioFedEntity[j].DocCostandStudy, "", new { @class = "text-danger" })
+                                                </div>
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <div class="col-md">
+                                                <div class="form-group required">
+                                                    @Html.EditorFor(model => model.pidfPbfClinicalEntity.pidfpbfClinicalPilotBioFedEntity[j].TotalCost, new { htmlAttributes = new { @autocomplete = "off", @class = "form-control checkbox-checked", @placeholder = "Total Cost" ,@required="required"} })
+                                                    @Html.ValidationMessageFor(model => model.pidfPbfClinicalEntity.pidfpbfClinicalPilotBioFedEntity[j].TotalCost, "", new { @class = "text-danger" })
+                                                </div>
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <div class="col-md">
+                                                <div class="form-group">
+                                                    <i class="fas fa-plus" id="PilotBioFEDaddIcon_@j" onclick="PilotBioFEDaddRow(@j)"></i>
+                                                    &nbsp;&nbsp;&nbsp;&nbsp;
+                                                    <span><i class="fas fa-trash-alt PilotBioFEDDeleteIcon" id="PilotBioFEDdeleteIco_@j" onclick="PilotBioFEDdeleteRow(@j, this)"></i></span>
+                                                    @*@Html.HiddenFor(model => model.pidfPbfClinicalEntity.pidfpbfClinicalPilotBioFedEntity[j].StrengthId, new { id = "pidfPbfClinicalEntity.pidfpbfClinicalPilotBioFedEntity[" + j + "].StrengthId"})*@
+                                                </div>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                }
+                            }
+                        }
+                        else
+                        {
+                            int j = 0;
+                            <tr id="PilotBioFEDTableRow_@j">
+                                <td>
+                                    <div class="col-md">
+                                        <div class="form-group required">
+                                            @Html.EditorFor(model => model.pidfPbfClinicalEntity.pidfpbfClinicalPilotBioFedEntity[j].Fed, new { htmlAttributes = new { @autocomplete = "off", @class = "form-control checkbox-checked", @placeholder = "Fed",@required="required" } })
+                                            @Html.ValidationMessageFor(model => model.pidfPbfClinicalEntity.pidfpbfClinicalPilotBioFedEntity[j].Fed, "", new { @class = "text-danger" })
+
+                                        </div>
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="col-md">
+                                        @Html.EditorFor(model => model.pidfPbfClinicalEntity.pidfpbfClinicalPilotBioFedEntity[j].NumberofVolunteers, new { htmlAttributes = new { @autocomplete = "off", @class = "form-control checkbox-checked", @placeholder = "No Of Volunteers",@required="required" } })
+                                        @Html.ValidationMessageFor(model => model.pidfPbfClinicalEntity.pidfpbfClinicalPilotBioFedEntity[j].NumberofVolunteers, "", new { @class = "text-danger" })
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="col-md">
+                                        <div class="form-group required">
+                                            @Html.EditorFor(model => model.pidfPbfClinicalEntity.pidfpbfClinicalPilotBioFedEntity[j].ClinicalCostandVol, new { htmlAttributes = new { @autocomplete = "off", @class = "form-control checkbox-checked", @placeholder = "Clinical Cost / VOl",@required="required" } })
+                                            @Html.ValidationMessageFor(model => model.pidfPbfClinicalEntity.pidfpbfClinicalPilotBioFedEntity[j].ClinicalCostandVol, "", new { @class = "text-danger" })
+                                        </div>
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="col-md">
+                                        <div class="form-group required">
+                                            @Html.EditorFor(model => model.pidfPbfClinicalEntity.pidfpbfClinicalPilotBioFedEntity[j].DocCostandStudy, new { htmlAttributes = new { @autocomplete = "off", @class = "form-control checkbox-checked", @placeholder = "Doc Cost /Study" ,@required="required"} })
+                                            @Html.ValidationMessageFor(model => model.pidfPbfClinicalEntity.pidfpbfClinicalPilotBioFedEntity[j].DocCostandStudy, "", new { @class = "text-danger" })
+                                        </div>
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="col-md">
+                                        <div class="form-group required">
+                                            @Html.EditorFor(model => model.pidfPbfClinicalEntity.pidfpbfClinicalPilotBioFedEntity[j].TotalCost, new { htmlAttributes = new { @autocomplete = "off", @class = "form-control checkbox-checked", @placeholder = "Total Cost" ,@required="required"} })
+                                            @Html.ValidationMessageFor(model => model.pidfPbfClinicalEntity.pidfpbfClinicalPilotBioFedEntity[j].TotalCost, "", new { @class = "text-danger" })
+                                        </div>
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="col-md">
+                                        <div class="form-group">
+                                            <i class="fas fa-plus" id="PilotBioFEDaddIcon_@j" onclick="PilotBioFEDaddRow(@j)"></i>
+                                            &nbsp;&nbsp;&nbsp;&nbsp;
+                                            <span><i class="fas fa-trash-alt PilotBioFEDDeleteIcon" id="PilotBioFEDdeleteIco_@j" onclick="PilotBioFEDdeleteRow(@j, this)"></i></span>
+                                            @*@Html.HiddenFor(model => model.pidfPbfClinicalEntity.pidfpbfClinicalPilotBioFedEntity[j].StrengthId, new { id = "pidfPbfClinicalEntity.pidfpbfClinicalPilotBioFedEntity[" + j + "].StrengthId"})*@
+                                        </div>
+                                    </div>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+
+                </table>
+            </div>
+            @*//Pilot Bio Fed Section End*@
+
+            <br />
+
+            @*//Pivotal Bio Fasting Section Start*@
+            <div class="card-header">
+                <h5 class="mb-0"><b>Pivotal Bio Fasting</b></h5>
+            </div>
+            <br />
+            <div>
+                <table id="PivotalBioFastingTable" class="table table-bordered table-striped table-hover" style="width:100%">
+                    <thead>
+                        <tr>
+                            <th>Fasting</th>
+                            <th>Number of Volunteers</th>
+                            <th>Clinical Cost / VOlt</th>
+                            <th>Doc Cost /Study</th>
+                            <th>Total Cost</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody id="PivotalBioFastingTableBody">
+                        @if (Model.pidfPbfClinicalEntity != null)
+                        {
+                            if (Model.pidfPbfClinicalEntity.pidfpbfClinicalPivotalBioFastingEntity != null && Model.pidfPbfClinicalEntity.pidfpbfClinicalPivotalBioFastingEntity.Count() > 0)
+                            {
+                                for (int j = 0; j < Model.pidfPbfClinicalEntity.pidfpbfClinicalPivotalBioFastingEntity.Count(); j++)
+                                {
+                                    <tr id="PivotalBioFastingTableRow_@j">
+                                        <td>
+                                            <div class="col-md">
+                                                <div class="form-group required">
+                                                    @Html.EditorFor(model => model.pidfPbfClinicalEntity.pidfpbfClinicalPivotalBioFastingEntity[j].Fasting, new { htmlAttributes = new { @autocomplete = "off", @class = "form-control checkbox-checked", @placeholder = "Fasting",@required="required" } })
+                                                    @Html.ValidationMessageFor(model => model.pidfPbfClinicalEntity.pidfpbfClinicalPivotalBioFastingEntity[j].Fasting, "", new { @class = "text-danger" })
+
+                                                </div>
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <div class="col-md">
+                                                @Html.EditorFor(model => model.pidfPbfClinicalEntity.pidfpbfClinicalPivotalBioFastingEntity[j].NumberofVolunteers, new { htmlAttributes = new { @autocomplete = "off", @class = "form-control checkbox-checked", @placeholder = "No Of Volunteers",@required="required" } })
+                                                @Html.ValidationMessageFor(model => model.pidfPbfClinicalEntity.pidfpbfClinicalPivotalBioFastingEntity[j].NumberofVolunteers, "", new { @class = "text-danger" })
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <div class="col-md">
+                                                <div class="form-group required">
+                                                    @Html.EditorFor(model => model.pidfPbfClinicalEntity.pidfpbfClinicalPivotalBioFastingEntity[j].ClinicalCostandVol, new { htmlAttributes = new { @autocomplete = "off", @class = "form-control checkbox-checked", @placeholder = "Clinical Cost / VOl",@required="required" } })
+                                                    @Html.ValidationMessageFor(model => model.pidfPbfClinicalEntity.pidfpbfClinicalPivotalBioFastingEntity[j].ClinicalCostandVol, "", new { @class = "text-danger" })
+                                                </div>
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <div class="col-md">
+                                                <div class="form-group required">
+                                                    @Html.EditorFor(model => model.pidfPbfClinicalEntity.pidfpbfClinicalPivotalBioFastingEntity[j].DocCostandStudy, new { htmlAttributes = new { @autocomplete = "off", @class = "form-control checkbox-checked", @placeholder = "Doc Cost /Study" ,@required="required"} })
+                                                    @Html.ValidationMessageFor(model => model.pidfPbfClinicalEntity.pidfpbfClinicalPivotalBioFastingEntity[j].DocCostandStudy, "", new { @class = "text-danger" })
+                                                </div>
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <div class="col-md">
+                                                <div class="form-group required">
+                                                    @Html.EditorFor(model => model.pidfPbfClinicalEntity.pidfpbfClinicalPivotalBioFastingEntity[j].TotalCost, new { htmlAttributes = new { @autocomplete = "off", @class = "form-control checkbox-checked", @placeholder = "Total Cost" ,@required="required"} })
+                                                    @Html.ValidationMessageFor(model => model.pidfPbfClinicalEntity.pidfpbfClinicalPivotalBioFastingEntity[j].TotalCost, "", new { @class = "text-danger" })
+                                                </div>
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <div class="col-md">
+                                                <div class="form-group">
+                                                    <i class="fas fa-plus" id="PivotalBioFastingaddIcon_@j" onclick="PivotalBioFastingaddRow(@j)"></i>
+                                                    &nbsp;&nbsp;&nbsp;&nbsp;
+                                                    <span><i class="fas fa-trash-alt PivotalBioFastingDeleteIcon" id="PivotalBioFastingdeleteIco_@j" onclick="PivotalBioFastingdeleteRow(@j, this)"></i></span>
+                                                    @*@Html.HiddenFor(model => model.pidfPbfClinicalEntity.pidfpbfClinicalPivotalBioFastingEntity[j].StrengthId, new { id = "pidfPbfClinicalEntity.pidfpbfClinicalPivotalBioFastingEntity[" + j + "].StrengthId"})*@
+                                                </div>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                }
+                            }
+                        }
+                        else
+                        {
+                            int j = 0;
+                            <tr id="PivotalBioFastingTableRow_@j">
+                                <td>
+                                    <div class="col-md">
+                                        <div class="form-group required">
+                                            @Html.EditorFor(model => model.pidfPbfClinicalEntity.pidfpbfClinicalPivotalBioFastingEntity[j].Fasting, new { htmlAttributes = new { @autocomplete = "off", @class = "form-control checkbox-checked", @placeholder = "Fasting",@required="required" } })
+                                            @Html.ValidationMessageFor(model => model.pidfPbfClinicalEntity.pidfpbfClinicalPivotalBioFastingEntity[j].Fasting, "", new { @class = "text-danger" })
+
+                                        </div>
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="col-md">
+                                        @Html.EditorFor(model => model.pidfPbfClinicalEntity.pidfpbfClinicalPivotalBioFastingEntity[j].NumberofVolunteers, new { htmlAttributes = new { @autocomplete = "off", @class = "form-control checkbox-checked", @placeholder = "No Of Volunteers",@required="required" } })
+                                        @Html.ValidationMessageFor(model => model.pidfPbfClinicalEntity.pidfpbfClinicalPivotalBioFastingEntity[j].NumberofVolunteers, "", new { @class = "text-danger" })
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="col-md">
+                                        <div class="form-group required">
+                                            @Html.EditorFor(model => model.pidfPbfClinicalEntity.pidfpbfClinicalPivotalBioFastingEntity[j].ClinicalCostandVol, new { htmlAttributes = new { @autocomplete = "off", @class = "form-control checkbox-checked", @placeholder = "Clinical Cost / VOl",@required="required" } })
+                                            @Html.ValidationMessageFor(model => model.pidfPbfClinicalEntity.pidfpbfClinicalPivotalBioFastingEntity[j].ClinicalCostandVol, "", new { @class = "text-danger" })
+                                        </div>
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="col-md">
+                                        <div class="form-group required">
+                                            @Html.EditorFor(model => model.pidfPbfClinicalEntity.pidfpbfClinicalPivotalBioFastingEntity[j].DocCostandStudy, new { htmlAttributes = new { @autocomplete = "off", @class = "form-control checkbox-checked", @placeholder = "Doc Cost /Study" ,@required="required"} })
+                                            @Html.ValidationMessageFor(model => model.pidfPbfClinicalEntity.pidfpbfClinicalPivotalBioFastingEntity[j].DocCostandStudy, "", new { @class = "text-danger" })
+                                        </div>
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="col-md">
+                                        <div class="form-group required">
+                                            @Html.EditorFor(model => model.pidfPbfClinicalEntity.pidfpbfClinicalPivotalBioFastingEntity[j].TotalCost, new { htmlAttributes = new { @autocomplete = "off", @class = "form-control checkbox-checked", @placeholder = "Total Cost" ,@required="required"} })
+                                            @Html.ValidationMessageFor(model => model.pidfPbfClinicalEntity.pidfpbfClinicalPivotalBioFastingEntity[j].TotalCost, "", new { @class = "text-danger" })
+                                        </div>
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="col-md">
+                                        <div class="form-group">
+                                            <i class="fas fa-plus" id="PivotalBioFastingaddIcon_@j" onclick="PivotalBioFastingaddRow(@j)"></i>
+                                            &nbsp;&nbsp;&nbsp;&nbsp;
+                                            <span><i class="fas fa-trash-alt PivotalBioFastingDeleteIcon" id="PivotalBioFastingdeleteIco_@j" onclick="PivotalBioFastingdeleteRow(@j, this)"></i></span>
+                                            @*@Html.HiddenFor(model => model.pidfPbfClinicalEntity.pidfpbfClinicalPivotalBioFastingEntity[j].StrengthId, new { id = "pidfPbfClinicalEntity.pidfpbfClinicalPivotalBioFastingEntity[" + j + "].StrengthId"})*@
+                                        </div>
+                                    </div>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+
+                </table>
+            </div>
+            @*//Pivotal Bio Fasting Section End*@
+
+            <br />
+            @*//Pivotal Bio Fed Section Start*@
+            <div class="card-header">
+                <h5 class="mb-0"><b>Pivotal Bio FED</b></h5>
+            </div>
+            <br />
+            <div>
+                <table id="PivotalBioFEDTable" class="table table-bordered table-striped table-hover" style="width:100%">
+                    <thead>
+                        <tr>
+                            <th>Fasting</th>
+                            <th>Number of Volunteers</th>
+                            <th>Clinical Cost / VOlt</th>
+                            <th>Doc Cost /Study</th>
+                            <th>Total Cost</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody id="PivotalBioFEDTableBody">
+                        @if (Model.pidfPbfClinicalEntity != null)
+                        {
+                            if (Model.pidfPbfClinicalEntity.pidfpbfClinicalPivotalBioFedEntity != null && Model.pidfPbfClinicalEntity.pidfpbfClinicalPivotalBioFedEntity.Count() > 0)
+                            {
+                                for (int j = 0; j < Model.pidfPbfClinicalEntity.pidfpbfClinicalPivotalBioFedEntity.Count(); j++)
+                                {
+                                    <tr id="PivotalBioFEDTableRow_@j">
+                                        <td>
+                                            <div class="col-md">
+                                                <div class="form-group required">
+                                                    @Html.EditorFor(model => model.pidfPbfClinicalEntity.pidfpbfClinicalPivotalBioFedEntity[j].Fed, new { htmlAttributes = new { @autocomplete = "off", @class = "form-control checkbox-checked", @placeholder = "Fed",@required="required" } })
+                                                    @Html.ValidationMessageFor(model => model.pidfPbfClinicalEntity.pidfpbfClinicalPivotalBioFedEntity[j].Fed, "", new { @class = "text-danger" })
+
+                                                </div>
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <div class="col-md">
+                                                @Html.EditorFor(model => model.pidfPbfClinicalEntity.pidfpbfClinicalPivotalBioFedEntity[j].NumberofVolunteers, new { htmlAttributes = new { @autocomplete = "off", @class = "form-control checkbox-checked", @placeholder = "No Of Volunteers",@required="required" } })
+                                                @Html.ValidationMessageFor(model => model.pidfPbfClinicalEntity.pidfpbfClinicalPivotalBioFedEntity[j].NumberofVolunteers, "", new { @class = "text-danger" })
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <div class="col-md">
+                                                <div class="form-group required">
+                                                    @Html.EditorFor(model => model.pidfPbfClinicalEntity.pidfpbfClinicalPivotalBioFedEntity[j].ClinicalCostandVol, new { htmlAttributes = new { @autocomplete = "off", @class = "form-control checkbox-checked", @placeholder = "Clinical Cost / VOl",@required="required" } })
+                                                    @Html.ValidationMessageFor(model => model.pidfPbfClinicalEntity.pidfpbfClinicalPivotalBioFedEntity[j].ClinicalCostandVol, "", new { @class = "text-danger" })
+                                                </div>
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <div class="col-md">
+                                                <div class="form-group required">
+                                                    @Html.EditorFor(model => model.pidfPbfClinicalEntity.pidfpbfClinicalPivotalBioFedEntity[j].DocCostandStudy, new { htmlAttributes = new { @autocomplete = "off", @class = "form-control checkbox-checked", @placeholder = "Doc Cost /Study" ,@required="required"} })
+                                                    @Html.ValidationMessageFor(model => model.pidfPbfClinicalEntity.pidfpbfClinicalPivotalBioFedEntity[j].DocCostandStudy, "", new { @class = "text-danger" })
+                                                </div>
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <div class="col-md">
+                                                <div class="form-group required">
+                                                    @Html.EditorFor(model => model.pidfPbfClinicalEntity.pidfpbfClinicalPivotalBioFedEntity[j].TotalCost, new { htmlAttributes = new { @autocomplete = "off", @class = "form-control checkbox-checked", @placeholder = "Total Cost" ,@required="required"} })
+                                                    @Html.ValidationMessageFor(model => model.pidfPbfClinicalEntity.pidfpbfClinicalPivotalBioFedEntity[j].TotalCost, "", new { @class = "text-danger" })
+                                                </div>
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <div class="col-md">
+                                                <div class="form-group">
+                                                    <i class="fas fa-plus" id="PivotalBioFEDaddIcon_@j" onclick="PivotalBioFEDaddRow(@j)"></i>
+                                                    &nbsp;&nbsp;&nbsp;&nbsp;
+                                                    <span><i class="fas fa-trash-alt PivotalBioFEDDeleteIcon" id="PivotalBioFEDdeleteIco_@j" onclick="PivotalBioFEDdeleteRow(@j, this)"></i></span>
+                                                    @*@Html.HiddenFor(model => model.pidfPbfClinicalEntity.pidfpbfClinicalPivotalBioFedEntity[j].StrengthId, new { id = "pidfPbfClinicalEntity.pidfpbfClinicalPivotalBioFedEntity[" + j + "].StrengthId"})*@
+                                                </div>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                }
+                            }
+                        }
+                        else
+                        {
+                            int j = 0;
+                            <tr id="PivotalBioFEDTableRow_@j">
+                                <td>
+                                    <div class="col-md">
+                                        <div class="form-group required">
+                                            @Html.EditorFor(model => model.pidfPbfClinicalEntity.pidfpbfClinicalPivotalBioFedEntity[j].Fed, new { htmlAttributes = new { @autocomplete = "off", @class = "form-control checkbox-checked", @placeholder = "Fed",@required="required" } })
+                                            @Html.ValidationMessageFor(model => model.pidfPbfClinicalEntity.pidfpbfClinicalPivotalBioFedEntity[j].Fed, "", new { @class = "text-danger" })
+
+                                        </div>
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="col-md">
+                                        @Html.EditorFor(model => model.pidfPbfClinicalEntity.pidfpbfClinicalPivotalBioFedEntity[j].NumberofVolunteers, new { htmlAttributes = new { @autocomplete = "off", @class = "form-control checkbox-checked", @placeholder = "No Of Volunteers",@required="required" } })
+                                        @Html.ValidationMessageFor(model => model.pidfPbfClinicalEntity.pidfpbfClinicalPivotalBioFedEntity[j].NumberofVolunteers, "", new { @class = "text-danger" })
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="col-md">
+                                        <div class="form-group required">
+                                            @Html.EditorFor(model => model.pidfPbfClinicalEntity.pidfpbfClinicalPivotalBioFedEntity[j].ClinicalCostandVol, new { htmlAttributes = new { @autocomplete = "off", @class = "form-control checkbox-checked", @placeholder = "Clinical Cost / VOl",@required="required" } })
+                                            @Html.ValidationMessageFor(model => model.pidfPbfClinicalEntity.pidfpbfClinicalPivotalBioFedEntity[j].ClinicalCostandVol, "", new { @class = "text-danger" })
+                                        </div>
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="col-md">
+                                        <div class="form-group required">
+                                            @Html.EditorFor(model => model.pidfPbfClinicalEntity.pidfpbfClinicalPivotalBioFedEntity[j].DocCostandStudy, new { htmlAttributes = new { @autocomplete = "off", @class = "form-control checkbox-checked", @placeholder = "Doc Cost /Study" ,@required="required"} })
+                                            @Html.ValidationMessageFor(model => model.pidfPbfClinicalEntity.pidfpbfClinicalPivotalBioFedEntity[j].DocCostandStudy, "", new { @class = "text-danger" })
+                                        </div>
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="col-md">
+                                        <div class="form-group required">
+                                            @Html.EditorFor(model => model.pidfPbfClinicalEntity.pidfpbfClinicalPivotalBioFedEntity[j].TotalCost, new { htmlAttributes = new { @autocomplete = "off", @class = "form-control checkbox-checked", @placeholder = "Total Cost" ,@required="required"} })
+                                            @Html.ValidationMessageFor(model => model.pidfPbfClinicalEntity.pidfpbfClinicalPivotalBioFedEntity[j].TotalCost, "", new { @class = "text-danger" })
+                                        </div>
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="col-md">
+                                        <div class="form-group">
+                                            <i class="fas fa-plus" id="PivotalBioFEDaddIcon_@j" onclick="PivotalBioFEDaddRow(@j)"></i>
+                                            &nbsp;&nbsp;&nbsp;&nbsp;
+                                            <span><i class="fas fa-trash-alt PivotalBioFEDDeleteIcon" id="PivotalBioFEDdeleteIco_@j" onclick="PivotalBioFEDdeleteRow(@j, this)"></i></span>
+                                            @*@Html.HiddenFor(model => model.pidfPbfClinicalEntity.pidfpbfClinicalPivotalBioFedEntity[j].StrengthId, new { id = "pidfPbfClinicalEntity.pidfpbfClinicalPivotalBioFedEntity[" + j + "].StrengthId"})*@
+                                        </div>
+                                    </div>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+
+                </table>
+            </div>
+            @*//Pivotal Bio Fed Section End*@
+            <br />
+            @*//Total Cost Section Start*@           
+            <br />
+
+            @*<div class="row">
+
+            <div class="col-md-3">
+            <div class="form-group required">
+            @Html.LabelFor(model => model.pidfPbfClinicalEntity.pidfPbfClinicalCost.TotalAWVCost, "Total AWV Cost", new { @class = "control-label" })
+            @Html.TextBoxFor(model => model.pidfPbfClinicalEntity.pidfPbfClinicalCost.TotalAWVCost, new { @class = "form-control", @placeholder = "Total AWV Cost" ,@required="required"})
+
+            </div>
+            </div>
+
+            <div class="col-md-9">
+            <div class="form-group required">
+            @Html.LabelFor(model => model.pidfPbfClinicalEntity.pidfPbfClinicalCost.Remark, "Remark", new { @class = "control-label" })
+
+            @Html.TextAreaFor(model => model.pidfPbfClinicalEntity.pidfPbfClinicalCost.Remark, new { @class = "form-control", @placeholder = "Remark" ,@required="required"})
+            </div>
+            </div>
+            </div>*@
+            <br />
+            <div class="card-header">
+                <h5 class="mb-0"><b>Total Cost</b></h5>
+            </div>
+            <br />
+            <table id="CostTable" class="table table-bordered table-striped table-hover" style="width:100%">
+                <thead>
+                    <tr>
+                        <th>Total Pilot Fasting Cost</th>
+                        <th>Total Pilot FED Cost</th>
+                        <th>Total Pivotal Fasting Cost</th>
+                        <th>Total Pivotal FED Cost</th>
+                        <th>Total Cost</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>
+                            <div class="form-group required">
+                                @Html.TextBoxFor(model => model.pidfPbfClinicalEntity.pidfPbfClinicalCost.TotalPilotFastingCost, new {@readonly = "readonly", @class = "form-control", @placeholder = "Total Pilot Fasting Cost" })
+                            </div>
+                        </td>
+                        <td>
+                            <div class="form-group required">
+                                @Html.TextBoxFor(model => model.pidfPbfClinicalEntity.pidfPbfClinicalCost.TotalPilotFEDCost, new {@readonly = "readonly", @class = "form-control", @placeholder = "Total Pilot FED Cost" })
+                            </div>
+                        </td>
+                        <td>
+                            <div class="form-group required">
+                                @Html.TextBoxFor(model => model.pidfPbfClinicalEntity.pidfPbfClinicalCost.TotalPivotalFastingCost, new { @readonly = "readonly", @class = "form-control", @placeholder = "Total Pivotal Fasting Cost" })
+                            </div>
+                        </td>
+                        <td>
+                            <div class="form-group required">
+
+                                @Html.TextBoxFor(model => model.pidfPbfClinicalEntity.pidfPbfClinicalCost.TotalPivotalFEDCost, new {@readonly = "readonly", @class = "form-control", @placeholder = "Total Pivotal FED Cost" })
+                            </div>
+                        </td>
+                        <td>
+                            <div class="form-group required">
+                                @Html.TextBoxFor(model => model.pidfPbfClinicalEntity.pidfPbfClinicalCost.TotalCost, new {@readonly = "readonly", @class = "form-control", @placeholder = "Total Cost" })
+                            </div>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+
+            @*//Total Cost Section End*@
+        </div>
+        @* </form>*@
+
+    </div>
+</div>

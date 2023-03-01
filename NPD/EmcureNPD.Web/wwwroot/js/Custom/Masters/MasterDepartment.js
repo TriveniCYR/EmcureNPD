@@ -33,7 +33,7 @@ function GetDepartmentListSuccess(data) {
     try {
         $('#DepartmentTable tbody').html('')
         $.each(data._object, function (index, object) {
-            $('#DepartmentTable tbody').append('<tr><td>' + object.departmentName + '</td><td><span style="color:' + (object.isActive ? "green" : "red") + '">' + (object.isActive ? "Active" : "InActive") + '</span></td><td>  <a class="btn btn-primary" data-toggle="modal" data-target="#SaveDepartmentModel" data-backdrop="static" data-keyboard="false"  onclick="GetDepartmentById(' + object.departmentId + '); return false;"><i class="fa fa-fw fa-edit mr-1"></i> ' + EditLabel + '</a> <a class="btn btn-danger" data-toggle="modal" data-target="#DeleteDepartmentModel" data-backdrop="static" data-keyboard="false" onclick="ConfirmationDeleteDepartment(' + object.departmentId + '); return false;"><i class="fa fa-fw fa-trash mr-1"></i> ' + DeleteLabel + '</a>  </td></tr>');
+            $('#DepartmentTable tbody').append('<tr><td>' + object.departmentName + '</td><td><span style="color:' + (object.isActive ? "green" : "red") + '">' + (object.isActive ? "Active" : "InActive") + '</span></td><td>  <a class="large-font" style="' + IsEditAllow + '" href="" title="Edit" data-toggle="modal" data-target="#SaveDepartmentModel" data-backdrop="static" data-keyboard="false"  onclick="GetDepartmentById(' + object.departmentId + '); return false;"><i class="fa fa-fw fa-edit mr-1"></i> ' + '</a> <a class="large-font text-danger" style="' + IsDeleteAllow +'" href="" title="Delete" data-toggle="modal" data-target="#DeleteDepartmentModel" data-backdrop="static" data-keyboard="false" onclick="ConfirmationDeleteDepartment(' + object.departmentId + '); return false;"><i class="fa fa-fw fa-trash mr-1"></i> ' + '</a>  </td></tr>');
         });
         StaticDataTable("#DepartmentTable");
     } catch (e) {
@@ -51,6 +51,7 @@ function GetDepartmentById(id) {
 }
 function GetDepartmentByIdSuccess(data) {
     try {
+        CleareDepartmentFields();
         var businessUnitIds = data._object.businessUnitIds.toString();
         if (businessUnitIds.includes(',')) { businessUnitIds = businessUnitIds.toString().split(','); }
 
@@ -64,10 +65,10 @@ function GetDepartmentByIdSuccess(data) {
         $('#SaveDepartmentModel #DepartmentTitle').html(UpdateLabel);
 
         if (!data._object.isActive) {
-            $('#SaveDepartmentModel #IsActive').prop('checked', false);
+            $('#SaveDepartmentModel #MasterDepartmentEntity_IsActive').prop('checked', false);
         }
         else {
-            $('#SaveDepartmentModel #IsActive').prop('checked', true);
+            $('#SaveDepartmentModel #MasterDepartmentEntity_IsActive').prop('checked', true);
         }
     }
     catch (e) {
@@ -123,6 +124,12 @@ function CleareDepartmentFields() {
     $('#SaveDepartmentModel #DepartmentBusinessMappingId').val("");
     $('#SaveDepartmentModel #DepartmentBusinessUnitMappingId').val("");
     $('#SaveDepartmentModel #DepartmentBusinessUnitMappingId').trigger('change');
+    var validationMessages = document.querySelectorAll(".field-validation-error");
+
+    // Loop through the messages and clear them
+    for (var i = 0; i < validationMessages.length; i++) {
+        validationMessages[i].textContent = "";
+    }
 }
 // #endregion
 

@@ -10,7 +10,7 @@ function GetFillingExpenseListSuccess(data) {
     try {
         $('#FillingExpenseTable tbody').html('')
         $.each(data._object, function (index, object) {
-            $('#FillingExpenseTable tbody').append('<tr><td>' + object.expenseRegionName + '</td><td><span style="color:' + (object.isActive ? "green" : "red") + '">' + (object.isActive ? "Active" : "InActive") + '</span></td><td>  <a class="btn btn-primary" data-toggle="modal" data-target="#SaveFillingExpenseModel" data-backdrop="static" data-keyboard="false"  onclick="GetFillingExpenseById(' + object.expenseRegionId + '); return false;"><i class="fa fa-fw fa-edit mr-1"></i> ' + EditLabel + '</a> <a class="btn btn-danger" data-toggle="modal" data-target="#DeleteFillingExpenseModel" data-backdrop="static" data-keyboard="false" onclick="ConfirmationDeleteFillingExpense(' + object.expenseRegionId + '); return false;"><i class="fa fa-fw fa-trash mr-1"></i> ' + DeleteLabel + '</a>  </td></tr>');
+            $('#FillingExpenseTable tbody').append('<tr><td>' + object.expenseRegionName + '</td><td><span style="color:' + (object.isActive ? "green" : "red") + '">' + (object.isActive ? "Active" : "InActive") + '</span></td><td>  <a class="large-font" style="' + IsEditAllow + '" href="" title="Edit" data-toggle="modal" data-target="#SaveFillingExpenseModel" data-backdrop="static" data-keyboard="false"  onclick="GetFillingExpenseById(' + object.expenseRegionId + '); return false;"><i class="fa fa-fw fa-edit mr-1"></i> ' + '</a> <a class="large-font text-danger" style="' + IsDeleteAllow +'" href="" title="Delete" data-toggle="modal" data-target="#DeleteFillingExpenseModel" data-backdrop="static" data-keyboard="false" onclick="ConfirmationDeleteFillingExpense(' + object.expenseRegionId + '); return false;"><i class="fa fa-fw fa-trash mr-1"></i> ' + '</a>  </td></tr>');
         });
         StaticDataTable("#FillingExpenseTable");
     } catch (e) {
@@ -28,6 +28,7 @@ function GetFillingExpenseById(id) {
 }
 function GetFillingExpenseByIdSuccess(data) {
     try {
+        CleareFillingExpenseFields();
         $('#SaveFillingExpenseModel #ExpenseRegionId').val(data._object.expenseRegionId);
         $('#SaveFillingExpenseModel #ExpenseRegionName').val(data._object.expenseRegionName);
         $('#SaveFillingExpenseModel #FillingExpenseTitle').html(UpdateLabel);
@@ -82,6 +83,12 @@ function CleareFillingExpenseFields() {
     $('#SaveFillingExpenseModel #ExpenseRegionId').val("0");
     $('#SaveFillingExpenseModel #ExpenseRegionName').val("");
     $('#DeleteFillingExpenseModel #ExpenseRegionId').val("0");
+    var validationMessages = document.querySelectorAll(".field-validation-error");
+
+    // Loop through the messages and clear them
+    for (var i = 0; i < validationMessages.length; i++) {
+        validationMessages[i].textContent = "";
+    }
 }
 // #endregion
 

@@ -1,22 +1,29 @@
 ﻿var objYears = [];
 var objMainForm = {};
-var ColumnObjUpcase = ['PackagingTypeId', 'CommercialBatchSize', 'PriceDiscounting', 'TotalApireq', 'Apireq', 'Suimsvolume', 'MarketGrowth', 'MarketSize', 'PriceErosion', 'FinalSelectionId'];
+var ColumnObjUpcase = ['PackagingTypeId1', 'CommercialBatchSize', 'PriceDiscounting', 'TotalApireq', 'Apireq', 'Suimsvolume', 'MarketGrowth', 'MarketSize', 'PriceErosion', 'FinalSelectionId'];
 /*var ColumnObjLowcase = ['packagingTypeId', 'commercialBatchSize', 'priceDiscounting', 'totalApireq', 'apireq', 'suimsvolume', 'marketGrowth', 'marketSize', 'priceErosion', 'finalSelectionId'];*/
 var SelectedBUValue = 0;
 var selectedStrength = 0;
 var UserwiseBusinessUnit;
 
 $(document).ready(function () {
-
+    debugger;
     UserwiseBusinessUnit = UserWiseBUList.split(',');
     SetDivReadonly();    
     InitializeCurrencyDropdown();
     InitializeFinalSelectionDropdown();
-    
+    InitializeProductTypeDropdown();
+    $("#AddYearForm").hide();
+    IsViewMode();
 });
 
+function IsViewMode() {
+    if ($("#IsView").val() == '1') {
+        SetCommercialFormReadonly();
+    }
+}
+
 function InitializeCurrencyDropdown() {
-    debugger;
     ajaxServiceMethod($('#hdnBaseURL').val() + GetAllCurrency, 'GET', GetCountryListSuccess, GetCountryListError);
 }
 function GetCountryListSuccess(data) {
@@ -32,6 +39,23 @@ function GetCountryListError(x, y, z) {
     toastr.error(ErrorMessage);
 }
 
+function InitializeProductTypeDropdown() {
+   
+    ajaxServiceMethod($('#hdnBaseURL').val() + GetAllProductType, 'GET', GetProductTypeListSuccess, GetProductTypeListError);
+}
+function GetProductTypeListSuccess(data) {
+    console.log(data._object);
+    try {
+        $.each(data._object, function (index, object) {
+            $('#PackagingTypeId1').append($('<option>').text(object.productTypeName).attr('value', object.productTypeId));
+        });
+    } catch (e) {
+        toastr.error('Error:' + e.message);
+    }
+}
+function GetProductTypeListError(x, y, z) {
+    toastr.error(ErrorMessage);
+}
 
 function InitializeFinalSelectionDropdown() {
      ajaxServiceMethod($('#hdnBaseURL').val() + GetAllFinalSelection, 'GET', GetFSListSuccess, GetFSListError);
@@ -106,7 +130,7 @@ function ValidateBU_Strength() {
         valMsg += ' Strength ';
     }
     if (!status) {
-        alert('Please Select : ' + valMsg);
+        toastr.error('Please Select : ' + valMsg);  
     }
     return status;
 }
@@ -129,8 +153,8 @@ function AddYearClick() {
         //entityYear['YearIndex'] = objYears.length + 1;
         objYears.push(entityYear);
         UpdateYearTable(ColumnObjUpcase);
-         ClearValidationForYearForm();
-       
+        ClearValidationForYearForm();    
+        $("#AddYearForm").hide();  
     }
 }
 function AddRow(i) {
@@ -152,8 +176,8 @@ function AddtblRevenueRow(year, i, columns) {
     var finalSelection = columns[9];    
     var FSSelectedText = $('#' + finalSelection).find(":selected").text();
     var ArrItem = FSSelectedText.split('/');
-    var MarketShareUnit = $("#MarketShareUnit" + ArrItem[0]).val();
-    var Nsp = $("#Nsp" + ArrItem[1]).val();
+    var MarketShareUnit = year["MarketShareUnit" + ArrItem[0]];
+    var Nsp = year["Nsp" + ArrItem[1]]; 
     var result = MarketShareUnit * Nsp;
     $('#RevenueTbody').append(`<tr id='RevenueRow` + i + `'></tr>`)
     $('#RevenueRow' + i).append('<td>Year' + (i + 1) + '</td>')
@@ -173,12 +197,17 @@ function SetDivReadonly() {
 
 function SaveClick() {
     if (ValidateMainForm() && ValidateBU_Strength()) {
-        $.extend(objMainForm, { 'SaveType': 'Sv' });
-        SaveCommertialPIDFForm();
+        if (objYears.length > 0) {
+            $.extend(objMainForm, { 'SaveType': 'Sv' });
+            SaveCommertialPIDFForm();
+        }
+        else {
+            toastr.error('No Year Data Added');
+        }        
     }
 }
 function SaveDraftClick() {
-    if (ValidateMainForm() && ValidateBU_Strength()) {
+    if (ValidateBU_Strength()) {
         $.extend(objMainForm, { 'SaveType': 'SvDrf' });
         SaveCommertialPIDFForm();
     }
@@ -228,6 +257,7 @@ function SaveCommertialPIDFFormSuccess(data) {
         if (data._Success === true) {
             //window.location = "/PIDF/PIDFList";
             toastr.success(data._Message);
+            $("#AddYearForm").hide();
         }
         else {
             toastr.error(data._Message);
@@ -245,6 +275,7 @@ function BUtabClick(BUVal, pidfidval) {
     ClearValidationForYearForm();
     ClearValidationForMainForm();
     GetCommercialPIDFByBU(pidfidval);
+    $("#AddYearForm").hide();
 }
 
 
@@ -253,6 +284,7 @@ function StrengthtabClick(strengthVal, pidfidval) {
     ClearValidationForYearForm();
     ClearValidationForMainForm();
     GetCommercialPIDFByBU(pidfidval);
+    $("#AddYearForm").hide();
 }
 
 
@@ -309,20 +341,25 @@ function UpdateFormData(objectForm) {
 }
 
 function ResetYearForm() {
-    $("#AddYearForm").find("input,textarea").val('');
-    $("#AddYearForm").find("select").val('1');
+   // $("#AddYearForm").find("input,textarea").val('');
+   // $("#AddYearForm").find("select").val('1');
 }
 function ResetMainFormForm() {
     $("#MarketSizeInUnit").val('');
     $("#ShelfLife").val('');
 }
-
+function SetCommercialFormReadonly() {
+    $("#mainDivCommercial").find("input, button, submit, textarea, select").prop('disabled', true);
+    $("[id^='deleteIconAddyear']").hide();
+    $("#btnCommercialCancel").prop('disabled', false);
+    
+}
 function SetDisableForOtherUserBU() {
     var BU_VALUE = SelectedBUValue;
     var status = UserwiseBusinessUnit.indexOf(BU_VALUE);
-    if (status == -1) {
-        $("#mainDivCommercial").find("input, button, submit, textarea, select").prop('disabled', true);
-        $("[id^='deleteIconAddyear']").hide();
+    var IsViewInMode =  ($("#IsView").val() == '1')
+    if (status == -1 || IsViewInMode) {
+        SetCommercialFormReadonly();
     }
     else {
         $("#mainDivCommercial").find("input, button, submit, textarea, select").prop('disabled', false);
@@ -395,4 +432,11 @@ function NSP(variable) {
 function ShowPopUpCommercial() {
     $("#CancelModelCommercial").find("button, submit, a").show();
     $('#CancelModel').modal('show');
+}
+function ShowYearForm() {
+    if (ValidateBU_Strength()) {
+        $("#AddYearForm").show();  
+
+    }
+     
 }

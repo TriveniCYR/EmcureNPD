@@ -15,7 +15,8 @@ namespace EmcureNPD.Data.DataAccess.Entity
             PidfApiIpds = new HashSet<PidfApiIpd>();
             PidfCommercials = new HashSet<PidfCommercial>();
             PidfIpds = new HashSet<PidfIpd>();
-            PidfPbfs = new HashSet<PidfPbf>();
+            PidfPbfAnalyticals = new HashSet<PidfPbfAnalytical>();
+            PidfPbfClinicals = new HashSet<PidfPbfClinical>();
             Pidfs = new HashSet<Pidf>();
         }
 
@@ -26,6 +27,8 @@ namespace EmcureNPD.Data.DataAccess.Entity
         public DateTime CreatedDate { get; set; }
         public int? ModifyBy { get; set; }
         public DateTime? ModifyDate { get; set; }
+        public float? Latitude { get; set; }
+        public float? Longitude { get; set; }
 
         public virtual ICollection<MasterBusinessUnitRegionMapping> MasterBusinessUnitRegionMappings { get; set; }
         public virtual ICollection<MasterDepartmentBusinessUnitMapping> MasterDepartmentBusinessUnitMappings { get; set; }
@@ -33,7 +36,8 @@ namespace EmcureNPD.Data.DataAccess.Entity
         public virtual ICollection<PidfApiIpd> PidfApiIpds { get; set; }
         public virtual ICollection<PidfCommercial> PidfCommercials { get; set; }
         public virtual ICollection<PidfIpd> PidfIpds { get; set; }
-        public virtual ICollection<PidfPbf> PidfPbfs { get; set; }
+        public virtual ICollection<PidfPbfAnalytical> PidfPbfAnalyticals { get; set; }
+        public virtual ICollection<PidfPbfClinical> PidfPbfClinicals { get; set; }
         public virtual ICollection<Pidf> Pidfs { get; set; }
     }
 }

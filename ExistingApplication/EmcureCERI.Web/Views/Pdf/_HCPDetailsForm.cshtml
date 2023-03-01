@@ -1,0 +1,51 @@
+﻿@using Microsoft.Extensions.Localization
+@inject IStringLocalizer<SharedResource> SharedLocalizer
+@model EmcureCERI.Web.Models.AdminViewModels.PrescriberViewModel
+<div hidden id="hcp-detail-form" style="font-size:14px; width:100%;">
+    <p style="text-align:center;font-size:22px;"><b>@SharedLocalizer["Healthcare Professional Details"].Value</b></p>
+    <table class="table table-bordered table-striped" style="font-size:10px; width:100%; margin-bottom:0;" cellspacing="0" cellpadding="7">
+        <tbody>
+            <tr style="background-color:#fff;">
+                <td style="background-color:#fff;">@SharedLocalizer["First Name"].Value</td>
+                <td style="background-color:#fff;">@Model.FirstName</td>
+            </tr>
+            <tr>
+                <td>@SharedLocalizer["Last Name"].Value</td>
+                <td>@Model.LastName</td>
+            </tr>
+            <tr>
+                <td>@SharedLocalizer["Email"].Value</td>
+                <td>@Model.Email</td>
+            </tr>
+            <tr>
+                <td>@SharedLocalizer["HCP Registration Number"].Value</td>
+                <td>@Model.GMCGpHCNumber</td>
+            </tr>
+            <tr>
+                <td>@SharedLocalizer["Telephone"].Value</td>
+                <td>@Model.TelNo</td>
+            </tr>
+            <tr>
+                <td>@SharedLocalizer["HCP Id"].Value</td>
+                <td>@Model.UniqueId</td>
+            </tr>
+            <tr>
+                <td>@SharedLocalizer["Doctor/Pharmacist"].Value</td>
+                <td>@Model.IsDoctorPharmacist</td>
+            </tr>
+            <tr>
+                <td>@SharedLocalizer["Specialisation"].Value</td>
+                <td>@Model.Specialization</td>
+            </tr>
+            <tr>
+                <td>@SharedLocalizer["Contact Address"].Value</td>
+                <td>@Model.ContactAddress</td>
+            </tr>
+            <tr>
+                <td>@SharedLocalizer["Hospital Address"].Value</td>
+                <td>@Model.HospitalAddress</td>
+            </tr>
+        </tbody>
+    </table>
+</div>
+

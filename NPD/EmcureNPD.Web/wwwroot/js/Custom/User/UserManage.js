@@ -1,4 +1,6 @@
-﻿$(document).ready(function () {
+﻿
+
+$(document).ready(function () {
     //GetUserDropdown();
     GetBusinessUnitList();
     GetDepartmentList();
@@ -15,8 +17,8 @@
         GetCountryByRegion();
     });
 
-    $('#RegionId').css("height", "fit - content"); //height: fit - content
-    $('#CountryId').css("height", "fit - content"); //height: fit - content  
+   // $('#RegionId').css("height", "fit - content"); //height: fit - content
+   // $('#CountryId').css("height", "fit - content"); //height: fit - content  
    
 });
 
@@ -33,10 +35,12 @@ function GetUserDropdownSuccess(data) {
             //$('#BusinessUnitId').trigger('change');
         });
         $('#BusinessUnitId').select2();
+        $('#RegionId').select2();
+        $('#CountryId').select2();
         if (parseInt($('#UserId').val()) > 0) {
-            $("#BusinessUnitId").val($("#hdnBusinessUnitId").val()).trigger('change');
+            $("#BusinessUnitId").val($("#hdnBusinessUnitId").val().split(',')).trigger('change');
         }
-        
+       
     } catch (e) {
         toastr.error('Error:' + e.message);
     }
@@ -44,7 +48,7 @@ function GetUserDropdownSuccess(data) {
 function GetUserDropdownError(x, y, z) {
     toastr.error(ErrorMessage);
 }
-// #region Get BusinessUnit by department id
+// #region Get BusinessUnit by Business unit id
 function GetRegionByBusinessUnit() {
     $('#RegionId option').remove();
    /* $('#RegionId').append($('<option>').text("--Select--").attr('value', 0));*/
@@ -64,8 +68,8 @@ function GetRegionByBusinessUnitSuccess(data) {
                // $('#RegionId').trigger('change');
             });
             $('#RegionId').select2();
-            if (parseInt($('#UserId').val()) > 0) {
-                $("#RegionId").val($("#hdnRegionId").val()).trigger('change') ;                
+            if (parseInt($('#UserId').val()) > 0 ) {              
+                $("#RegionId").val($("#hdnRegionId").val().split(',')).trigger('change') ;                
             }
         }
     } catch (e) {
@@ -94,8 +98,8 @@ function GetCountryByRegionSuccess(data) {
               //  $('#CountryId').val("-");
             });
             $('#CountryId').select2();
-            if (parseInt($('#UserId').val()) > 0) {
-                $("#CountryId").val($("#hdnCountryId").val()).trigger('change');
+            if (parseInt($('#UserId').val()) > 0) {               
+                $("#CountryId").val($("#hdnCountryId").val().split(',')).trigger('change');
             }
         }
     } catch (e) {
@@ -115,12 +119,13 @@ function GetDepartmentListSuccess(data) {
         if (data != null)
             $(data._object).each(function (index, item) {
                 $('#DepartmentId').append($('<option>').text(item.departmentName).attr('value', item.departmentId));
-                $('#DepartmentId').select2();
-                $('#DepartmentId option:eq(0)').val(0);
-                $('#DepartmentId').val("-");
+                
+                //$('#DepartmentId option:eq(0)').val(0);
+                //$('#DepartmentId').val("-");
             });
+        $('#DepartmentId').select2();
         if (parseInt($('#UserId').val()) > 0) {
-            $("#DepartmentId").val($("#hdnDepartmentId").val());
+            $("#DepartmentId").val($("#hdnDepartmentId").val().split(',')).trigger('change');
         }
         } catch (e) {
         toastr.error('Error:' + e.message);
@@ -132,7 +137,7 @@ function GetDepartmentListError(x, y, z) {
 //#endregion
 // #region GetDepartmentList
 function GetAllRoleList() {
-    ajaxServiceMethod($('#hdnBaseURL').val() + GetAllRoleURL, 'GET', GetAllRoleListSuccess, GetAllRoleListError);
+    ajaxServiceMethod($('#hdnBaseURL').val() + GetAllActiveRoleURL, 'GET', GetAllRoleListSuccess, GetAllRoleListError);
 }
 function GetAllRoleListSuccess(data) {
     try {
@@ -141,6 +146,9 @@ function GetAllRoleListSuccess(data) {
         $(data._object).each(function (index, item) {
             $('#RoleId').append('<option value="' + item.roleId + '">' + item.roleName + '</option>');
         });
+        if (parseInt($('#UserId').val()) > 0) {
+            $("#RoleId").val($("#hdnRoleId").val());
+        }
     } catch (e) {
         toastr.error('Error:' + e.message);
     }
@@ -150,6 +158,9 @@ function GetAllRoleListError(x, y, z) {
 }
 //#endregion
 
-
+function TrimSpace(id) {
+    var ctrlValue = $(id).val()
+    $(id).val($.trim(ctrlValue));
+}
 
 

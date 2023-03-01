@@ -10,10 +10,13 @@
 
 <!-- Main Sidebar Container -->
 <aside class="main-sidebar sidebar-dark-primary elevation-4">
-	<!-- Brand Logo -->
-	<a href="~/Home/Index" class="brand-link custom-brand-link">
-		<img src="~/images/Emcure_logo.png" alt="Emcure NPD Logo" class="brand-image custom-brand-logo">
-	</a>
+			<!-- Brand Logo -->
+			<a href="#" class="brand-link text-decoration-none">
+				<i class="fa-solid fa-e fs-3 nav-icon brand-image text-red" style="padding: 9px 10px;"></i>
+				<div class="logo">
+					<span class="ms-2">Emcure</span><sub>Success Through Innovation</sub>
+				</div>
+			</a>
 
 	<!-- Sidebar -->
 	<div class="sidebar">
@@ -31,10 +34,10 @@
 
 		<!-- Sidebar Menu -->
 		<nav class="mt-2">
-			<ul class="nav nav-pills nav-sidebar flex-column nav-legacy nav-flat nav-child-indent" data-widget="treeview" role="menu" data-accordion="false">
+			<ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
 				<!-- Add icons to the links using the .nav-icon class
 				with font-awesome or any other icon font library -->
-				@if (Context.Session.GetString(UserHelper.LoggedInRoleId) != null)
+				@if (Context.Session.GetInt32(UserHelper.LoggedInRoleId) != null)
 				{
 					int rolId = (int)Context.Session.GetInt32(UserHelper.LoggedInRoleId);
 					dynamic rolObj = UtilityHelper.GetModuleRole<dynamic>(rolId);
@@ -55,20 +58,21 @@
 						@if (UtilityHelper.GetMenuAccess(ModulePermissionEnum.Dashboard, rolObj))
 						{
 										<li class="nav-item menu-open">
-											<a href="~/Dashboard/Dashboard" class="nav-link">
+											<a href="~/Home/Index" class="nav-link">
 												<i class="nav-icon fas fa-tachometer-alt"></i>
 												<p>
 													Dashboard
 												</p>
 											</a>
 										</li>
+
 						}
 						@if (UtilityHelper.GetMenuAccess(ModulePermissionEnum.PIDF, rolObj))
 						{
 							<li class="nav-item">
 
-											<a href="#" class="nav-link">
-												<i class="nav-icon fas fa-chart-pie"></i>
+											<a id="parentPIDF" href="#" class="nav-link">
+												<i class="bi bi-files nav-icon mx-1"></i>
 												<p>
 										@MasterLocalizer["PIDFManagement"]
 													<i class="right fas fa-angle-left"></i>
@@ -77,7 +81,7 @@
 
 											<ul class="nav nav-treeview">
 												<li class="nav-item">
-													<a href="@Url.Action("PIDFList","PIDF")" class="nav-link">
+										<a id="PIDF" href="@Url.Action("PIDFList","PIDF", new { ScreenId = Convert.ToString((int)EmcureNPD.Utility.Enums.PIDFScreen.PIDF)})" class="nav-link">
 														<i class="nav-icon fas fa-th"></i>
 														<p>
 												@MasterLocalizer["PIDFManagement"]
@@ -87,21 +91,43 @@
 									@if (UtilityHelper.GetMenuAccess(ModulePermissionEnum.IPD, rolObj))
 									{
 														<li class="nav-item">
-															<a href="@Url.Action("PIDFormList","PIDForm")" class="nav-link">
+											<a id="IPD" href="@Url.Action("PIDFList","PIDF", new { ScreenId = Convert.ToString((int)EmcureNPD.Utility.Enums.PIDFScreen.IPD)})" class="nav-link">
 																<i class="nav-icon fas fa fa-columns"></i>
 																<p>
 													@MasterLocalizer["IPDManagement"]
 																</p>
 															</a>
 														</li>
-									}									
-									@if (UtilityHelper.GetMenuAccess(ModulePermissionEnum.Auditlogs, rolObj))
+									}	
+									@if (UtilityHelper.GetMenuAccess(ModulePermissionEnum.Medical, rolObj))
 									{
 														<li class="nav-item">
-															<a href="@Url.Action("PIDFCommercial","PIDF")" class="nav-link">
+											<a id="Medical" href="@Url.Action("PIDFList","PIDF", new { ScreenId = Convert.ToString((int)EmcureNPD.Utility.Enums.PIDFScreen.Medical)})" class="nav-link">
+												<i class="nav-icon fas fa fa-plus-square"></i>
+																<p>
+													@MasterLocalizer["Medical Management"]
+																</p>
+															</a>
+														</li>
+									}	
+									@if (UtilityHelper.GetMenuAccess(ModulePermissionEnum.PIDF, rolObj))
+									{
+														<li class="nav-item">
+											<a id="Commercial" href="@Url.Action("PIDFList","PIDF", new { ScreenId = Convert.ToString((int)EmcureNPD.Utility.Enums.PIDFScreen.Commercial)})" class="nav-link">
 																<i class="nav-icon fas fa fa-certificate"></i>
 																<p>
-													@MasterLocalizer["PIDFCommercial"]
+													@SharedLocalizer["Commercial Management"]
+																</p>
+															</a>
+														</li>
+									}
+									@if (UtilityHelper.GetMenuAccess(ModulePermissionEnum.APIListManagement, rolObj))
+									{
+														<li class="nav-item">
+											<a href="@Url.Action("PIDFList","PIDF", new { ScreenId = Convert.ToString((int)EmcureNPD.Utility.Enums.PIDFScreen.API)})" class="nav-link">
+												<i class="nav-icon fas fa fa-random"></i>
+																<p>
+													@SharedLocalizer["API Management"]
 																</p>
 															</a>
 														</li>
@@ -109,10 +135,10 @@
 									@if (UtilityHelper.GetMenuAccess(ModulePermissionEnum.PBF, rolObj) && UtilityHelper.GetMenuAccess(ModulePermissionEnum.APIListManagement, rolObj))
 									{
 														<li class="nav-item">
-															<a href="@Url.Action("PBFAPI","PIDF")" class="nav-link">
+											<a href="@Url.Action("PIDFList","PIDF", new { ScreenId = Convert.ToString((int)EmcureNPD.Utility.Enums.PIDFScreen.PBF)})" class="nav-link">
 																<i class="nav-icon fas fa fa-cube"></i>
 																<p>
-													@MasterLocalizer["PBFAPI"]
+													@SharedLocalizer["PBF Management"]
 																</p>
 															</a>
 														</li>
@@ -120,18 +146,18 @@
 									@if (UtilityHelper.GetMenuAccess(ModulePermissionEnum.Finance, rolObj))
 									{
 														<li class="nav-item">
-															<a href="@Url.Action("PIDFFinance","Finance")" class="nav-link">
-																<i class="nav-icon fas fa-credit-card"></i>
+											<a href="@Url.Action("PIDFList","PIDF", new { ScreenId = Convert.ToString((int)EmcureNPD.Utility.Enums.PIDFScreen.Finance)})" class="nav-link">
+																<i class="nav-icon fas fa-coins"></i>
 																<p>
-													@MasterLocalizer["FinancePIDF"]
+													@SharedLocalizer["Finance Management"]
 																</p>
 															</a>
 														</li>
 									}
-									@if (UtilityHelper.GetMenuAccess(ModulePermissionEnum.ManagementHOD, rolObj))
+									@if (UtilityHelper.GetMenuAccess(ModulePermissionEnum.PIDF, rolObj))
 									{
 														<li class="nav-item">
-															<a href="@Url.Action("ManagementPIDF","PIDF")" class="nav-link">
+											<a href="@Url.Action("PIDFList","PIDF", new { ScreenId = Convert.ToString((int)EmcureNPD.Utility.Enums.PIDFScreen.Management)})" class="nav-link">
 																<i class="nav-icon fas fa-book"></i>
 																<p>
 													@MasterLocalizer["Management"]
@@ -143,7 +169,7 @@
 									{
 														<li class="nav-item">
 															<a href="@Url.Action("AuditLogs","AuditLog")" class="nav-link">
-																<i class="nav-icon fas fa-table"></i>
+																<i class="fa-solid fa-clock-rotate-left nav-icon"></i>
 																<p>
 													@MasterLocalizer["AuditLogs"]
 																</p>
@@ -157,7 +183,7 @@
 
 						
 					}					
-					@if (UtilityHelper.GetMenuAccess(ModulePermissionEnum.Dossier, rolObj))
+					@*@if (UtilityHelper.GetMenuAccess(ModulePermissionEnum.Dossier, rolObj))
 					{
 						<li class="nav-item">
 									<a href="#" class="nav-link">
@@ -167,23 +193,23 @@
 										</p>
 									</a>
 								</li>
-					}
+					}*@
 					@if (UtilityHelper.GetMenuAccess(ModulePermissionEnum.UserManagement, rolObj))
 					{
 						<li class="nav-item">
 									<a href="#" class="nav-link">
-										<i class="nav-icon fas fa-chart-pie"></i>
+										<i class="nav-icon fas fa-user"></i>
 										<p>
-											User Management
+											@SharedLocalizer["UserMangegment"]
 											<i class="right fas fa-angle-left"></i>
 										</p>
 									</a>
 									<ul class="nav nav-treeview">
 										<li class="nav-item">
 											<a href="@Url.Action("User","User")" class="nav-link">
-												<i class="nav-icon fas fa-file"></i>
+												<i class="nav-icon fas fa-users"></i>
 												<p>
-													User Management
+											@SharedLocalizer["UserMangegment"]
 												</p>
 											</a>
 										</li>
@@ -191,9 +217,9 @@
 								{
 												<li class="nav-item">
 													<a href="@Url.Action("Roles","Role")" class="nav-link">
-														<i class="nav-icon fas fa-file"></i>
+														<i class="nav-icon fas fa-shield"></i>
 														<p>
-															Role Management
+												@MasterLocalizer["RoleManagement"]
 														</p>
 													</a>
 												</li>
@@ -205,7 +231,7 @@
 					{
 								<li class="nav-item">
 									<a href="#" class="nav-link">
-										<i class="nav-icon fas fa-chart-pie"></i>
+										<i class="nav-icon fas fa-database"></i>
 										<p>
 											Master Management
 											<i class="right fas fa-angle-left"></i>
@@ -214,19 +240,31 @@
 									<ul class="nav nav-treeview">
 										<li class="nav-item">
 											<a href="@Url.Action("MasterBusinessUnit", "Masters")" class="nav-link">
-												<i class="far fa-circle nav-icon text-danger"></i>
+												<i class="far fa-circle nav-icon text-info"></i>
 												<p>Business Unit</p>
 											</a>
 										</li>
 										<li class="nav-item">
 											<a href="@Url.Action("MasterRegion", "Masters")" class="nav-link">
-												<i class="far fa-circle nav-icon text-danger"></i>
+												<i class="far fa-circle nav-icon text-info"></i>
 												<p>Region</p>
 											</a>
 										</li>
 										<li class="nav-item">
+											<a href="@Url.Action("MasterCountry", "Masters")" class="nav-link">
+												<i class="far fa-circle nav-icon text-info"></i>
+												<p>Country</p>
+											</a>
+										</li>
+										<li class="nav-item">
+											<a href="@Url.Action("MasterDepartment", "Masters")" class="nav-link">
+												<i class="far fa-circle nav-icon text-info"></i>
+												<p>Department</p>
+											</a>
+										</li>
+										<li class="nav-item">
 											<a href="@Url.Action("MasterCurrency", "Masters")" class="nav-link">
-												<i class="far fa-circle nav-icon text-danger"></i>
+												<i class="far fa-circle nav-icon text-info"></i>
 												<p>Currency</p>
 											</a>
 										</li>
@@ -261,12 +299,6 @@
 											</a>
 										</li>
 										<li class="nav-item">
-											<a href="@Url.Action("MasterDepartment", "Masters")" class="nav-link">
-												<i class="far fa-circle nav-icon text-info"></i>
-												<p>Department</p>
-											</a>
-										</li>
-										<li class="nav-item">
 											<a href="@Url.Action("MasterDosageForm", "Masters")" class="nav-link">
 												<i class="far fa-circle nav-icon text-info"></i>
 												<p>Dosage Form</p>
@@ -296,12 +328,7 @@
 												<p>Exicipient</p>
 											</a>
 										</li>
-										<li class="nav-item">
-											<a href="@Url.Action("MasterCountry", "Masters")" class="nav-link">
-												<i class="far fa-circle nav-icon text-info"></i>
-												<p>Country</p>
-											</a>
-										</li>
+										
 										<li class="nav-item">
 											<a href="@Url.Action("MasterFormRNDDivision", "Masters")" class="nav-link">
 												<i class="far fa-circle nav-icon text-info"></i>
@@ -371,7 +398,6 @@
 									</ul>
 								</li>
 					}
-				}
 				}
 				<li class="nav-item">
 					<form asp-action="Logout" asp-controller="Account" method="post">

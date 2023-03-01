@@ -10,7 +10,7 @@ function GetExtensionApplicationListSuccess(data) {
     try {
         $('#ExtensionApplicationTable tbody').html('')
         $.each(data._object, function (index, object) {
-            $('#ExtensionApplicationTable tbody').append('<tr><td>' + object.extensionApplicationName + '</td><td><span style="color:' + (object.isActive ? "green" : "red") + '">' + (object.isActive ? "Active" : "InActive") + '</span></td><td>  <a class="btn btn-primary" data-toggle="modal" data-target="#SaveExtensionApplicationModel" data-backdrop="static" data-keyboard="false"  onclick="GetExtensionApplicationById(' + object.extensionApplicationId + '); return false;"><i class="fa fa-fw fa-edit mr-1"></i> ' + EditLabel + '</a> <a class="btn btn-danger" data-toggle="modal" data-target="#DeleteExtensionApplicationModel" data-backdrop="static" data-keyboard="false" onclick="ConfirmationDeleteExtensionApplication(' + object.extensionApplicationId + '); return false;"><i class="fa fa-fw fa-trash mr-1"></i> ' + DeleteLabel + '</a>  </td></tr>');
+            $('#ExtensionApplicationTable tbody').append('<tr><td>' + object.extensionApplicationName + '</td><td><span style="color:' + (object.isActive ? "green" : "red") + '">' + (object.isActive ? "Active" : "InActive") + '</span></td><td>  <a class="large-font" style="' + IsEditAllow + '" href="" title="Edit" data-toggle="modal" data-target="#SaveExtensionApplicationModel" data-backdrop="static" data-keyboard="false"  onclick="GetExtensionApplicationById(' + object.extensionApplicationId + '); return false;"><i class="fa fa-fw fa-edit mr-1"></i> ' + '</a> <a class="large-font text-danger" style="' + IsDeleteAllow +'" href="" title="Delete" data-toggle="modal" data-target="#DeleteExtensionApplicationModel" data-backdrop="static" data-keyboard="false" onclick="ConfirmationDeleteExtensionApplication(' + object.extensionApplicationId + '); return false;"><i class="fa fa-fw fa-trash mr-1"></i> ' + '</a>  </td></tr>');
         });
         StaticDataTable("#ExtensionApplicationTable");
     } catch (e) {
@@ -28,6 +28,7 @@ function GetExtensionApplicationById(id) {
 }
 function GetExtensionApplicationByIdSuccess(data) {
     try {
+        CleareExtensionApplicationFields();
         $('#SaveExtensionApplicationModel #ExtensionApplicationId').val(data._object.extensionApplicationId);
         $('#SaveExtensionApplicationModel #ExtensionApplicationName').val(data._object.extensionApplicationName);
         $('#SaveExtensionApplicationModel #ExtensionApplicationTitle').html(UpdateLabel);
@@ -82,6 +83,12 @@ function CleareExtensionApplicationFields() {
     $('#SaveExtensionApplicationModel #ExtensionApplicationId').val("0");
     $('#SaveExtensionApplicationModel #ExtensionApplicationName').val("");
     $('#DeleteExtensionApplicationModel #ExtensionApplicationId').val("0");
+    var validationMessages = document.querySelectorAll(".field-validation-error");
+
+    // Loop through the messages and clear them
+    for (var i = 0; i < validationMessages.length; i++) {
+        validationMessages[i].textContent = "";
+    }
 }
 // #endregion
 

@@ -1,0 +1,1773 @@
+﻿
+@inject Microsoft.Extensions.Localization.IStringLocalizer<SharedResource> SharedLocalizer
+@model EmcureCERI.Web.Models.DRFViewModels.MilestoneModel
+
+@{
+	ViewData["Title"] = "DRFShowDetails";
+
+}
+<div class="content-wrapper pt-3">
+
+
+	<!-- Main content -->
+	<section class="content">
+		<div class="container-fluid">
+			<!-- Small boxes (Stat box) -->
+			<!-- Main row -->
+			<div class="row">
+				<section class="col-lg-12">
+					<!-- Custom tabs (Charts with tabs)-->
+					<div class="card">
+						<div class="card-header">
+							<h3 class="card-title">
+								<i class="fas fa-capsules mr-2"></i> Dossier Details
+							</h3>
+							<div class="card-tools">
+
+								<button class="btn btn-outline-primary mr-3" onclick="javascript:window.history.back();"><i class="fas fa-undo mr-1"></i> Back</button>
+								<button type="button" class="btn btn-tool expand1 p-0 mr-3" data-card-widget="maximize">
+									<i class="fas fa-expand"></i>
+								</button>
+								<button type="button" class="btn btn-tool" data-card-widget="collapse">
+									<i class="fas fa-minus"></i>
+								</button>
+							</div>
+
+						</div>
+						<!-- /.card-header -->
+
+						<div class="card-body">
+                            <div class="min-max direct-chat-messages">
+
+                                <div class="row">
+                                    <div class="col-sm-4 row">
+                                        <label class="col-sm-6  text-right">Country:</label>
+                                        <div class="col-sm-6" id="DRFInitialization_CountryID"></div>
+                                    </div>
+                                    <div class="col-sm-4 row">
+                                        <label class="col-sm-6 text-right">Generic Name:</label>
+                                        <div class="col-sm-6" id="DRFInitialization_GenericName"></div>
+                                    </div>
+                                    <div class="col-sm-4 row">
+                                        <!-- text input -->
+                                        <label class="col-sm-6 text-right">Brand Name:</label>
+                                        <div class="col-sm-6" id="DRFInitialization_BrandName"></div>
+                                    </div>
+                                </div>
+                                <div class="row">
+
+                                    <div class="col-sm-4 row">
+                                        <label class="col-sm-6 text-right">Trademark Approved:</label>
+                                        <div class="col-sm-6" id="DRFInitialization_TreadmarkApprovedInternal"></div>
+                                    </div>
+                                    <div class="col-sm-4 row">
+                                        <!-- text input -->
+                                        <label class="col-sm-6 text-right">Trademark suggested:</label>
+                                        <div class="col-sm-6" id="DRFInitialization_TreadmarkSuggestedInternal"></div>
+                                    </div>
+                                    <div class="col-sm-4 row">
+                                        <!-- text input -->
+                                        <label class="col-sm-6 text-right">Trademark:</label>
+                                        <div class="col-sm-6" id="DRFInitialization_TreadmarkOwnerInternal"></div>
+                                    </div>
+                                </div>
+
+                                <div class="row">
+
+                                    <div class="col-sm-4 row">
+                                        <!-- text input -->
+                                        <label class="col-sm-6 text-right">Form:</label>
+                                        <div class="col-sm-6" id="DRFInitialization_Form"></div>
+                                    </div>
+                                    <div class="col-sm-4 row">
+                                        <label class="col-sm-6 text-right">Strength:</label>
+                                        <div class="col-sm-6" id="DRFInitialization_Strength"></div>
+                                    </div>
+                                    <div class="col-sm-4 row">
+                                        <!-- text input -->
+                                        <label class="col-sm-6 text-right">Pack Size/s:</label>
+                                        <div class="col-sm-6" id="DRFInitialization_PackSize"></div>
+                                    </div>
+                                </div>
+
+                                <div class="row">
+
+                                    <div class="col-sm-4 row">
+                                        <!-- text input -->
+                                        <label class="col-sm-6 text-right">Pack Style:</label>
+                                        <div class="col-sm-6" id="DRFInitialization_PackStyle"></div>
+                                    </div>
+                                    <div class="col-sm-4 row">
+                                        <!-- text input -->
+                                        <label class="col-sm-6 text-right">Plant:</label>
+                                        <div class="col-sm-6" id="DRFInitialization_Plant"></div>
+                                    </div>
+                                    <div class="col-sm-4 row">
+                                        <!-- text input -->
+                                        <label class="col-sm-6 text-right">Product Type:</label>
+                                        <div class="col-sm-6" id="DRFInitialization_ProductType"></div>
+                                    </div>
+                                </div>
+
+                                <div class="row">
+                                    <div class="col-sm-4 row">
+                                        <!-- text input -->
+                                        <label class="col-sm-6 text-right">Samples Required:</label>
+                                        <div class="col-sm-6" id="DRFInitialization_Samples_Required"></div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-sm-4 row">
+                                        <label class="col-sm-6 text-right">Remark:</label>
+                                    </div>
+                                    <div class="col-sm-6" id="DRFInitialization_Remark"></div>
+                                </div>
+
+                                <h4 class="text-divider"><span>PIDF Details</span></h4>
+                                <div class="row">
+                                    <div class="col-sm-4 row ">
+                                        <!-- text input -->
+                                        <label class="col-sm-6 text-right">PIDF Attached : </label>
+                                        <div class="col-sm-6" id="DRFInitialization_AttachedPIDF"></div>
+                                    </div>
+
+                                </div>
+
+                                <div class="row">
+
+                                    <div class="col-sm-12 table-responsive">
+                                        <table id="PIDFTable" class="table table-bordered table-striped table-hover" style="width:100%;">
+                                            <thead>
+                                                <tr>
+                                                    <th>@SharedLocalizer["Id"].Value</th>
+                                                    <th>@SharedLocalizer["Project Name"].Value</th>
+                                                    <th>@SharedLocalizer["Strength"].Value</th>
+                                                    <th>@SharedLocalizer["Patent Status"].Value</th>
+                                                    <th>@SharedLocalizer["Continent"].Value</th>
+                                                    <th>@SharedLocalizer["Country"].Value</th>
+                                                    <th>@SharedLocalizer["Packing"].Value</th>
+                                                    <th>@SharedLocalizer["Batch Size (In pack)"].Value</th>
+                                                    <th>@SharedLocalizer["Pack Size"].Value</th>
+                                                    <th>@SharedLocalizer["Cogs"].Value</th>
+                                                    <th>@SharedLocalizer["Freight($)"].Value</th>
+                                                    <th>@SharedLocalizer["Total CIF Cost($)"].Value</th>
+                                                    <th>@SharedLocalizer["CIF Price Per Unit($)"].Value</th>
+                                                    <th>@SharedLocalizer["CIF Price Per Pack($)"].Value</th>
+                                                    <th>@SharedLocalizer["Profit Per Pack"].Value</th>
+                                                    <th>@SharedLocalizer["Percent Cont"].Value</th>
+                                                    <th>@SharedLocalizer["Contribution 3 yr"].Value</th>
+                                                    <th>@SharedLocalizer["Cost of 3 Batches"].Value</th>
+                                                    <th>@SharedLocalizer["R&D Cost($)"].Value</th>
+                                                    <th>@SharedLocalizer["Filing Cost($)"].Value</th>
+                                                    <th>@SharedLocalizer["Stability Cost($)"].Value</th>
+                                                    <th>@SharedLocalizer["Total Invest($)"].Value</th>
+                                                    <th>@SharedLocalizer["ROI"].Value</th>
+                                                    @*<th>@SharedLocalizer["Project Status"].Value</th>*@
+
+                                                </tr>
+                                            </thead>
+                                        </table>
+                                    </div>
+                                </div>
+
+
+
+                                <h3 class="text-divider"><span>Regulated Details</span></h3>
+
+
+                                <div class="row">
+                                    <div class="col-sm-4 row">
+                                        <!-- text input -->
+                                        <label class="col-sm-6 text-right">Currency:</label>
+                                        <div class="col-sm-6" id="DRFInitialization_Currency"></div>
+                                    </div>
+                                    <div class="col-sm-4 row">
+                                        <label class="col-sm-6 text-right">Fees to be Paid by:</label>
+                                        <div class="col-sm-6" id="DRFInitialization_FeesToBePaidBy"></div>
+                                    </div>
+                                    <div class="col-sm-4 row">
+                                        <!-- text input -->
+                                        <label class="col-sm-6 text-right">Registration Fee($):</label>
+                                        <div class="col-sm-6" id="DRFInitialization_RegistrationFees"></div>
+                                    </div>
+
+
+
+                                </div>
+
+                                <div class="row">
+                                    <div class="col-sm-4 row">
+                                        <!-- text input -->
+                                        <label class="col-sm-6 text-right">Mode of Fees Payment:</label>
+                                        <div class="col-sm-6" id="DRFInitialization_ModeOfFeesPayment"></div>
+                                    </div>
+                                    <div class="col-sm-4 row">
+                                        <!-- text input -->
+                                        <label class="col-sm-6 text-right">MA Holder:</label>
+                                        <div class="col-sm-6" id="DRFInitialization_MAHolder"></div>
+                                    </div>
+                                    <div class="col-sm-4 row">
+                                        <!-- text input -->
+                                        <label class="col-sm-6 text-right">Business Type:</label>
+                                        <div class="col-sm-6" id="DRFInitialization_ProposedMarketingStatus"></div>
+                                    </div>
+
+
+                                </div>
+
+                                <div class="row">
+                                    <div class="col-sm-4 row">
+                                        <label class="col-sm-6 text-right">Shipping Port:</label>
+                                        <div class="col-sm-6" id="DRFInitialization_ShippingPort"></div>
+                                    </div>
+                                    <div class="col-sm-4 row">
+                                        <!-- text input -->
+                                        <label class="col-sm-6 text-right">Mode of Shipment:</label>
+                                        <div class="col-sm-6" id="DRFInitialization_ModeOfShipment"></div>
+                                    </div>
+                                    <div class="col-sm-4 row">
+                                        <!-- text input -->
+                                        <label class="col-sm-6 text-right">Incoterms:</label>
+                                        <div class="col-sm-6" id="DRFInitialization_Incoterms"></div>
+                                    </div>
+
+                                </div>
+
+                                <div class="row">
+                                    <div class="col-sm-4 row">
+                                        <!-- text input -->
+                                        <label class="col-sm-6 text-right">Dossier submitted to MoH by:</label>
+                                        <div class="col-sm-6" id="DRFInitialization_DossierSubmittedToMOHBy"></div>
+                                    </div>
+                                    <div class="col-sm-4 row">
+                                        <label class="col-sm-6 text-right">Owner of Registration:</label>
+                                        <div class="col-sm-6" id="DRFInitialization_OwnerOfRegistration"></div>
+                                    </div>
+                                    <div class="col-sm-4 row">
+                                        <label class="col-sm-6 text-right">CDA Excecuted:</label>
+                                        <div class="col-sm-6" id="DRFInitialization_AvailabilityofCDA"></div>
+                                    </div>                                   
+                                </div>
+
+                                <div class="row">
+
+                                    <div class="col-sm-4 row">
+                                        <label class="col-sm-6 text-right">TS Excecuted:</label>
+                                        <div class="col-sm-6" id="DRFInitialization_TSExcecuted"></div>
+                                    </div>
+                                    <div class="col-sm-4 row">
+                                        <label class="col-sm-6 text-right">DA Excecuted:</label>
+                                        <div class="col-sm-6" id="DRFInitialization_DAExcecuted"></div>
+                                    </div>                                   
+                                </div>
+
+
+                                <h3 class="text-divider"><span>Market Details</span></h3>
+                                <div class="row">
+                                    <div class="col-sm-4 row">
+                                        <!-- text input -->
+                                        <label class="col-sm-6 text-right">Current /Proposed Market Size:</label>
+                                        <div class="col-sm-6" id="DRFInitialization_MarketSize"></div>
+                                    </div>
+                                    <div class="col-sm-4 row">
+                                        <label class="col-sm-6 text-right">3 Yr. CAGR:</label>
+                                        <div class="col-sm-6" id="DRFInitialization_ThreeYearCAGR"></div>
+                                    </div>
+                                    <div class="col-sm-4 row">
+                                        <!-- text input -->
+                                        <label class="col-sm-6 text-right">Number of Current Players:</label>
+                                        <div class="col-sm-6" id="DRFInitialization_NumberOfCurrentPlayer"></div>
+                                    </div>
+
+                                </div>
+
+                                <div class="row">
+                                    <div class="col-sm-4 row">
+                                        <!-- text input -->
+                                        <label class="col-sm-6 text-right">Expected Mkt. Value Growth(%):</label>
+                                        <div class="col-sm-6" id="DRFInitialization_ExpectedMarketValueGrowth"></div>
+                                    </div>
+                                    <div class="col-sm-4 row">
+                                        <!-- text input -->
+                                        <label class="col-sm-6 text-right">Innovator Brand:</label>
+                                        <div class="col-sm-6" id="DRFInitialization_InnovatorBrand"></div>
+                                    </div>
+                                    <div class="col-sm-4 row">
+                                        <label class="col-sm-6 text-right">Innovator Name:</label>
+                                        <div class="col-sm-6" id="DRFInitialization_InnavotorName"></div>
+                                    </div>
+
+                                </div>
+                                <div class="row">
+                                    <div class="col-sm-4 row">
+                                        <!-- text input -->
+                                        <label class="col-sm-6 text-right">Top Brand:</label>
+                                        <div class="col-sm-6" id="DRFInitialization_FirstBrand"></div>
+                                    </div>
+                                    <div class="col-sm-4 row">
+                                        <!-- text input -->
+                                        <label class="col-sm-6 text-right">MS Top Brand:</label>
+                                        <div class="col-sm-6" id="DRFInitialization_MSFirstBrand"></div>
+                                    </div>
+                                    <div class="col-sm-4 row">
+                                        <!-- text input -->
+                                        <label class="col-sm-6 text-right">2nd Brand:</label>
+                                        <div class="col-sm-6" id="DRFInitialization_SecondBrand"></div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-sm-4 row">
+                                        <label class="col-sm-6 text-right">MS 2nd Brand:</label>
+                                        <div class="col-sm-6" id="DRFInitialization_MSSecondBrand"></div>
+                                    </div>
+                                    <div class="col-sm-4 row">
+                                        <!-- text input -->
+                                        <label class="col-sm-6 text-right">3rd Brand:</label>
+                                        <div class="col-sm-6" id="DRFInitialization_ThirdBrand"></div>
+                                    </div>
+                                    <div class="col-sm-4 row">
+                                        <!-- text input -->
+                                        <label class="col-sm-6 text-right">MS 3rd Brand:</label>
+                                        <div class="col-sm-6" id="DRFInitialization_MSThirdBrand"></div>
+                                    </div>
+                                </div>
+
+                                <div class="row">
+                                    <div class="col-sm-4 row">
+                                        <!-- text input -->
+                                        <label class="col-sm-6 text-right">Partner or Potential Partner:</label>
+                                        <div class="col-sm-6" id="DRFInitialization_Partner"></div>
+                                    </div>
+                                    <div class="col-sm-4"></div>
+                                    <div class="col-sm-4"></div>
+                                </div>
+
+
+
+                                <h3 class="text-divider"><span>Value in USD only</span></h3>
+                                <div class="row">
+                                    <div class="col-sm-3">
+                                        <!-- text input -->
+                                        <div class="form-group">
+                                            <label>Value in USD only</label>
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-3">
+                                        <div class="form-group text-center">
+                                            <label>Year 1</label>
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-3">
+                                        <div class="form-group text-center">
+                                            <label>Year 2</label>
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-3">
+                                        <div class="form-group text-center">
+                                            <label>Year 3</label>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-sm-3">
+                                        <!-- text input -->
+                                        <div class="form-group">
+                                            <label>Forecast Units (Packs) ($):</label>
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-3">
+                                        <div class="form-group " id="DRFInitialization_FirstYearForecastUnitsPacks"></div>
+                                    </div>
+                                    <div class="col-sm-3">
+                                        <div class="form-group" id="DRFInitialization_SecondYearForecastUnitsPacks"></div>
+                                    </div>
+                                    <div class="col-sm-3">
+                                        <div class="form-group" id="DRFInitialization_ThirdYearForecastUnitsPacks"></div>
+                                    </div>
+                                </div>
+
+                                <div class="row">
+                                    <div class="col-sm-3">
+                                        <!-- text input -->
+                                        <div class="form-group">
+                                            <label>Forecast CIF (for Emcure) ($):</label>
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-3">
+                                        <div class="form-group" id="DRFInitialization_FirstYearForecastCIF"></div>
+                                    </div>
+                                    <div class="col-sm-3">
+                                        <div class="form-group" id="DRFInitialization_SecondYearForecastCIF"></div>
+                                    </div>
+                                    <div class="col-sm-3">
+                                        <div class="form-group" id="DRFInitialization_ThirdYearForecastCIF"></div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-sm-3">
+                                        <!-- text input -->
+                                        <div class="form-group">
+                                            <label>Forecast Value (Emcure) ($):</label>
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-3">
+                                        <div class="form-group" id="DRFInitialization_FirstYearForecastValue"></div>
+                                    </div>
+                                    <div class="col-sm-3">
+                                        <div class="form-group" id="DRFInitialization_SecondYearForecastValue"></div>
+                                    </div>
+                                    <div class="col-sm-3">
+                                        <div class="form-group" id="DRFInitialization_ThirdYearForecastValue"></div>
+                                    </div>
+                                </div>
+
+                                <div class="row">
+                                    <div class="col-sm-3">
+                                        <!-- text input -->
+                                        <div class="form-group">
+                                            <label>Forecast Price to patient (for our brand)($):</label>
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-3">
+                                        <div class="form-group" id="DRFInitialization_FirstYearForecastPriceToPatient"></div>
+                                    </div>
+                                    <div class="col-sm-3">
+                                        <div class="form-group" id="DRFInitialization_SecondYearForecastPriceToPatient"></div>
+                                    </div>
+                                    <div class="col-sm-3">
+                                        <div class="form-group" id="DRFInitialization_ThirdYearForecastPriceToPatient"></div>
+                                    </div>
+                                </div>
+
+                                <div class="row">
+                                    <div class="col-sm-3">
+                                        <!-- text input -->
+                                        <div class="form-group">
+                                            <label>Order Frequency:</label>
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-3">
+                                        <div class="form-group" id="DRFInitialization_OrderFrequency"></div>
+                                    </div>
+                                    <div class="col-sm-3"></div>
+                                    <div class="col-sm-3"></div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-sm-3">
+                                        <!-- text input -->
+                                        <div class="form-group">
+                                            <label>No. of Shipments:</label>
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-3">
+                                        <div class="form-group" id="DRFInitialization_NoofShipments"></div>
+                                    </div>
+                                    <div class="col-sm-3"></div>
+                                    <div class="col-sm-3"></div>
+                                </div>
+
+                                <hr />
+                                <div class="row">
+                                    <div class="col-sm-3 ">
+                                        <label>Name to whom dossier to be sent:</label>
+                                    </div>
+                                    <div class="col-sm-3" id="DRFInitialization_NameDossierSend"></div>
+                                    <div class="col-sm-3 ">
+                                        <label>Address to whom dossier to be sent:</label>
+
+                                    </div>
+                                    <div class="col-sm-3" id="DRFInitialization_AddressDossierSend"></div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-sm-3 ">
+                                        <label>Email to whom dossier to be sent:</label>
+                                    </div>
+                                    <div class="col-sm-3" id="DRFInitialization_EmailDossierSend"></div>
+                                    <div class="col-sm-3 ">
+                                        <label>Phone Number to whom dossier to be sent:</label>
+
+                                    </div>
+                                    <div class="col-sm-3" id="DRFInitialization_PhoneDossierSend"></div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-sm-3 ">
+                                        <label>Strategy Alignment:</label>
+
+                                    </div>
+                                    <div class="col-sm-3" id="DRFInitialization_StrategyAlignment"></div>
+                                    <div class="col-sm-3">
+                                        <label>Exception Explained:</label>
+
+                                    </div>
+                                    <div class="col-sm-3" id="DRFInitialization_ExceptionExplained"></div>
+                                </div>
+                                
+                                <h3 class="text-divider" style="display:none"><span>Approval Details</span></h3>
+                                <div class="row" style="display:none">
+                                    <div class="col-sm-3">
+                                        <!-- text input -->
+                                        <label>Do you want to approve this DRF :</label>
+
+                                    </div>
+                                    <div class="col-sm-3 row">
+                                        <div class="form-group text-center">
+                                            <div class="form-group">
+                                                <div class="icheck-primary d-inline mr-5">
+                                                    <label for="Approved">
+                                                        Approved
+                                                    </label>
+                                                </div>
+
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-1">
+                                        <label>Comment :</label>
+
+                                    </div>
+                                    <div class="col-sm-5">
+                                        <div class="form-group" id="DRFInitialization_Comment"></div>
+                                    </div>
+                                </div>
+
+
+
+                            </div>
+							<!-- /.card-body -->
+						</div>
+						<!-- /.card -->
+					</div>
+				</section>
+
+			</div>
+
+			<div class="row">
+				<section class="col-lg-12">
+					<!-- Custom tabs (Charts with tabs)-->
+					<div class="card">
+						<div class="card-header">
+							<h3 class="card-title">
+								<i class="far fa-plus-square mr-2"></i> Approval Summary Table
+							</h3>
+						</div>
+						<!-- /.card-header -->
+
+						<div class="card-body">
+							<table class="table table-bordered">
+								<tr>
+									<th>Responsible</th>
+									<th>Name</th>
+									<th>Date</th>
+								</tr>
+								<tr>
+									<td><strong>Dossier raised by</strong></td>
+									<td><div id="DossierCreatedName"></div></td>
+									<td><div id="DossierCreatedDateTime"></div></td>
+								</tr>
+								<tr>
+									<td><strong>Dossier checked by Country Manager</strong></td>
+									<td><div id="CountryManagerApprovalName"></div></td>
+									<td><div id="CountryManagerApprovalDateTime"></div></td>
+								</tr>
+								<tr>
+									<td><strong>Dossier checked by HO</strong></td>
+									<td><div id="LineManagerApprovalName"></div></td>
+									<td><div id="LineManagerApprovalDateTime"></div></td>
+								</tr>
+								<tr>
+									<td><strong>HOD DRF Approval</strong></td>
+									<td><div id="HODofDossierApprovalName"></div></td>
+									<td><div id="HODofDossierApprovalDateTime"></div></td>
+								</tr>
+								<tr>
+									<td><strong>HOD dossier prep. Approval</strong></td>
+									<td><div id="HODofDossierApprovalName1"></div></td>
+									<td><div id="HODofDossierApprovalDateTime1"></div></td>
+								</tr>
+
+
+							</table>
+
+						</div>
+					</div>
+
+
+					<!-- /.card-body -->
+					<!-- /.card -->
+
+				</section>
+			</div>
+
+			<div class="card  card-primary card-outline card-outline-tabs nav-fill nav-pills">
+				<div class="card-header p-0 pt-1 border-bottom-0">
+					<ul class="nav nav-tabs" id="custom-tabs-three-tab" role="tablist">
+						<li class="nav-item ">
+							<a class="nav-link active" id="custom-tabs-three-home-tab" data-toggle="pill" href="#custom-tabs-three-home" role="tab" aria-controls="custom-tabs-three-home" aria-selected="true">IP Details</a>
+						</li>
+						<li class="nav-item">
+							<a class="nav-link" id="custom-tabs-three-profile-tab" data-toggle="pill" href="#custom-tabs-three-profile" role="tab" aria-controls="custom-tabs-three-profile" aria-selected="false">Manufacturing Details</a>
+						</li>
+						<li class="nav-item ">
+							<a class="nav-link" id="custom-tabs-three-messages-tab" data-toggle="pill" href="#custom-tabs-three-messages" role="tab" aria-controls="custom-tabs-three-messages" aria-selected="false">SCM Details</a>
+						</li>
+						<li class="nav-item">
+							<a class="nav-link" id="custom-tabs-three-settings-tab" data-toggle="pill" href="#custom-tabs-three-settings" role="tab" aria-controls="custom-tabs-three-settings" aria-selected="false">Requisite RA Information</a>
+						</li>
+						<li class="nav-item">
+							<a class="nav-link" id="custom-tabs-three-medical-tab" data-toggle="pill" href="#custom-tabs-three-medical" role="tab" aria-controls="custom-tabs-three-medical" aria-selected="false">Medical Details</a>
+						</li>
+						<div class="card-tools">
+							<button type="button" class="btn btn-tool p-0 mr-3 ml-3" data-card-widget="maximize">
+								<i class="fas fa-expand"></i>
+							</button>
+							<button type="button" class="btn btn-tool" data-card-widget="collapse">
+								<i class="fas fa-minus"></i>
+							</button>
+						</div>
+					</ul>
+
+				</div>
+				<div class="card-body">
+					<div class="tab-content " id="custom-tabs-three-tabContent">
+						<div class="tab-pane fade show active " id="custom-tabs-three-home" role="tabpanel" aria-labelledby="custom-tabs-three-home-tab">
+							<h4 class="text-divider"><span>IP Details</span></h4>
+							<form method="post" name="ipdetails">
+								<div class="row">
+									<div class="col-sm-12">
+										<div class="row">
+											<div class="col-sm-4 row">
+												<!-- text input -->
+												<label class="col-sm-6  text-right">Project Name:</label>
+												<div class="col-sm-6" id="DRFIPModel_ProjectName"></div>
+
+											</div>
+											<div class="col-sm-4 row">
+												<label class="col-sm-6  text-right">Markets:</label>
+												<div class="col-sm-6" id="DRFIPModel_Markets"></div>
+
+											</div>
+											<div class="col-sm-4 row">
+												<label class="col-sm-6  text-right">No. of Approved ANDAs:</label>
+												<div class="col-sm-6" id="DRFIPModel_NumbersOfApprovedANDA"></div>
+											</div>
+										</div>
+										<div class="row">
+											<div class="col-sm-4 row">
+												<label class="col-sm-6  text-right">Patent Status:</label>
+												<div class="col-sm-6" id="DRFIPModel_PatentStatus"></div>
+											</div>
+
+											<div class="col-sm-4 row">
+												<label class="col-sm-6  text-right">Legal Status:</label>
+												<div class="col-sm-6" id="DRFIPModel_LegalStatus"></div>
+											</div>
+											<div class="col-sm-4 row">
+												<label class="col-sm-6  text-right">No. of Approved Generics:</label>
+												<div class="col-sm-6" id="DRFIPModel_NumbersOfApprovedGeneric"></div>
+											</div>
+										</div>
+										<div class="row">
+											<div class="col-sm-4 row">
+												<label class="col-sm-6  text-right">Type of Filing:</label>
+												<div class="col-sm-6" id="DRFIPModel_TypeOfFiling"></div>
+											</div>
+											<div class="col-sm-4 row">
+												<label class="col-sm-6  text-right">Cost of Litigation ($):</label>
+												<div class="col-sm-6" id="DRFIPModel_CostofLitigation"></div>
+											</div>
+											<div class="col-sm-4 row">
+												<label class="col-sm-6  text-right">IPD Comments:</label>
+												<div class="col-sm-6" id="DRFIPModel_IPDComments"></div>
+											</div>
+										</div>
+									</div>
+								</div>
+								<h4 class="text-divider"><span>IP Details</span></h4>
+								<div class="row">
+									<table id="myTable" class=" table order-list table-bordered" style="width:100%">
+										<thead>
+											<tr>
+												<th>Patent Numbers</th>
+												<th>Original Expiry Date</th>
+												<th>Type</th>
+												<th>Extension Application</th>
+												<th>Extn. Expiry Date</th>
+												<th>Comment</th>
+												<th>Strategy</th>
+											</tr>
+										</thead>
+
+									</table>
+								</div>
+							</form>
+						</div>
+						<div class="tab-pane fade" id="custom-tabs-three-profile" role="tabpanel" aria-labelledby="custom-tabs-three-profile-tab">
+							<h4 class="text-divider"><span>Manufacturing Details</span></h4>
+							<form method="post" name="ManufacturingDetails">
+								<div class="row">
+									<div class="col-sm-4 row">
+										<label class="col-sm-6  text-right">Manufacturing Site:</label>
+										<div class="col-sm-6" id="DRFManufacturingModel_DPDManufacturingSiteName"></div>
+									</div>
+									<div class="col-sm-4 row">
+										<label class="col-sm-6  text-right">Name of the Manufacturing<br> site:</label>
+										<div class="col-sm-6" id="DRFManufacturingModel_ManufacturingSiteName"></div>
+									</div>									
+									<div class="col-sm-4 row">
+										<label class="col-sm-6  text-right">Batch Size For Drug Product:</label>
+										<div class="col-sm-6" id="DRFManufacturingModel_Batchsize"></div>
+									</div>
+								</div>
+								<div class="row">								
+
+									<div class="col-sm-4 row">
+										<label class="col-sm-6  text-right">FG Lead Time (days):</label>
+										<div class="col-sm-6" id="DRFManufacturingModel_Leadtime"></div>
+									</div>
+									<div class="col-sm-4 row">
+										<label class="col-sm-6  text-right">Artwork Type:</label>
+										<div class="col-sm-6" id="DRFManufacturingModel_DPDArtworkTypeName"></div>
+									</div>									
+									<div class="col-sm-4 row">
+										<label class="col-sm-6  text-right">Tentative Artwork Lead Time (days)</label>
+										<div class="col-sm-6" id="DRFManufacturingModel_Tentative_Artwork_Lead_Time"></div>
+									</div>
+
+								</div>
+								<div class="row" style="display:none">
+									<div class="col-sm-4 row">
+										<label class="col-sm-6  text-right">Cost/Unit EXW (Commercial):</label>
+										<div class="col-sm-6" id="DRFManufacturingModel_UnitEXW"></div>
+									</div>
+
+								</div>
+
+								<div class="row">
+									<div class="col-sm-12">
+										<table id="MTT" class="table order-listAPI table-bordered" style="width:100%">
+											<thead>
+												<tr>
+													<th>API</th>
+													<th>API Site</th>
+												</tr>
+											</thead>
+											<tbody>
+											</tbody>
+										</table>
+									</div>
+								</div>
+								<div class="row">									
+									<div class="col-sm-12">
+										<label>Remark:</label>
+										<span id="DRFManufacturingModel_Remark"></span>
+									</div>
+								</div>
+							</form>
+						</div>
+						<div class="tab-pane fade" id="custom-tabs-three-messages" role="tabpanel" aria-labelledby="custom-tabs-three-messages-tab">
+							<h4 class="text-divider"><span>SCM Details</span></h4>
+							<form method="post" name="ManufacturingDetails">
+								<div class="row">
+									<div class="col-sm-4 row">
+										<label class="col-sm-6  text-right">Freight Cost Per Pack ($):</label>
+										<div class="col-sm-6" id="DRFSCMModel_FreightCost"></div>
+									</div>
+									<div class="col-sm-4 row">
+										<label class="col-sm-6  text-right">Tentative Shipment:</label>
+										<div class="col-sm-6" id="DRFSCMModel_TentativeShipmente"></div>
+									</div>
+									<div class="col-sm-4 row">
+										<label class="col-sm-6  text-right">Tentative Destination:</label>
+										<div class="col-sm-6" id="DRFSCMModel_TentativeDestination"></div>
+									</div>
+								</div>
+							</form>
+						</div>
+						<div class="tab-pane fade" id="custom-tabs-three-settings" role="tabpanel" aria-labelledby="custom-tabs-three-settings-tab">
+							<h4 class="text-divider"><span>Requisite RA Information</span></h4>
+							<form method="post" name="RequisiteRAInformation">
+								<div class="row">
+									<div class="col-sm-4 row">
+										<label class="col-sm-6  text-right">Zone Stability Data:</label>
+										<div class="col-sm-6" id="DRFRAModel_ACCZoneIIIvbdata"></div>
+									</div>
+									<div class="col-sm-4 row">
+										<label class="col-sm-6  text-right">Process Validtion Report and Protocol Availability:</label>
+										<div class="col-sm-6" id="DRFRAModel_ProtocolAvailability"></div>
+									</div>
+									<div class="col-sm-4 row">
+										<label class="col-sm-6  text-right">COPP Availability:</label>
+										<div class="col-sm-6" id="DRFRAModel_COPPAvailability"></div>
+									</div>
+
+								</div>
+
+								<div class="row">
+									<div class="col-sm-4 row">
+										<label class="col-sm-6  text-right">GMP Availability:</label>
+										<div class="col-sm-6" id="DRFRAModel_GMPAvailability"></div>
+									</div>
+									<div class="col-sm-4 row">
+										<label class="col-sm-6  text-right">Manufacturing License:</label>
+										<div class="col-sm-6" id="DRFRAModel_MfgLicense"></div>
+									</div>
+									<div class="col-sm-4 row" style="display:none">
+										<label class="col-sm-6  text-right">Plant Inspection Required:</label>
+										<div class="col-sm-6" id="DRFRAModel_PlantInspection"></div>
+									</div>
+								</div>
+
+								<div class="row">
+									<div class="col-sm-4 row">
+										<label class="col-sm-6  text-right">Validation Batches Undertaken:</label>
+										<div class="col-sm-6" id="DRFRAModel_ValidationBatches"></div>
+									</div>
+									<div class="col-sm-4 row">
+										<label class="col-sm-6  text-right">COA Availability:</label>
+										<div class="col-sm-6" id="DRFRAModel_COAAvailability"></div>
+									</div>
+									<div class="col-sm-4 row" style="display:none">
+										<label class="col-sm-6  text-right">BE Availabililty:</label>
+										<div class="col-sm-6" id="DRFRAModel_BEAvailability"></div>
+									</div>
+								</div>
+								<div class="row">
+									<div class="col-sm-4 row">
+										<label class="col-sm-6  text-right">API DMF Status And Requirement:</label>
+										<div class="col-sm-6" id="DRFRAModel_APIDMFstatus"></div>
+									</div>
+									<div class="col-sm-4 row">
+										<label class="col-sm-6  text-right">Plant Approval Required:</label>
+										<div class="col-sm-6" id="DRFRAModel_PlantApproval"></div>
+									</div>
+									<div class="col-sm-4 row">
+										<label class="col-sm-6  text-right">If Yes, How:</label>
+										<div class="col-sm-6" id="DRFRAModel_PlantApprovalIfYes"></div>
+									</div>
+								</div>
+								<div class="row">
+									<div class="col-sm-4 row">
+										<label class="col-sm-6  text-right">Registration Validity:</label>
+										<div class="col-sm-6" id="DRFRAModel_RegistrationValidity"></div>
+									</div>
+									<div class="col-sm-4 row">
+										<label class="col-sm-6  text-right">Time For Dossier Preparation (Days):</label>
+										<div class="col-sm-6" id="DRFRAModel_Timefordossierpreparation"></div>
+									</div>
+									<div class="col-sm-4 row">
+										<label class="col-sm-6  text-right">AMV:</label>
+										<div class="col-sm-6" id="DRFRAModel_AMV"></div>
+									</div>
+								</div>
+								<div class="row">
+									<div class="col-sm-4 row">
+										<label class="col-sm-6  text-right">PDR:</label>
+										<div class="col-sm-6" id="DRFRAModel_PDR"></div>
+									</div>
+									<div class="col-sm-4 row">
+										<label class="col-sm-6  text-right">Samples Availability:</label>
+										<div class="col-sm-6" id="DRFRAModel_SamplesAvailability"></div>
+									</div>
+									<div class="col-sm-4 row">
+										<label class="col-sm-6  text-right">Import Permit:</label>
+										<div class="col-sm-6" id="DRFRAModel_ImportPermit"></div>
+									</div>
+								</div>
+								<div class="row">
+									<div class="col-sm-4 row">
+										<label class="col-sm-6  text-right">Brand Name Approval:</label>
+										<div class="col-sm-6" id="DRFRAModel_BrandNameApproval"></div>
+									</div>
+									<div class="col-sm-4 row" style="display:none">
+										<label class="col-sm-6  text-right">Availability Of CDA:</label>
+										<div class="col-sm-6" id="DRFRAModel_AvailabilityofCDA"></div>
+									</div>
+									<div class="col-sm-4 row">
+										<label class="col-sm-6  text-right">Currency:</label>
+										<div class="col-sm-6" id="DRFRAModel_CurrencyID"></div>
+									</div>
+									<div class="col-sm-4 row">
+										<label class="col-sm-6  text-right">Product Registration Fee($):</label>
+										<div class="col-sm-6" id="DRFRAModel_ProductRegistrationFee"></div>
+									</div>
+								</div>
+								<div class="row">
+									<div class="col-sm-4 row">
+										<label class="col-sm-6  text-right">Consultant Cost ($):</label>
+										<div class="col-sm-6" id="DRFRAModel_ConsultantCost"></div>
+									</div>
+
+									<div class="col-sm-4 row">
+										<label class="col-sm-6  text-right">Legalization Cost ($):</label>
+										<div class="col-sm-6" id="DRFRAModel_LegalizationCost"></div>
+									</div>
+									<div class="col-sm-4 row">
+										<label class="col-sm-6  text-right">Translation Cost ($):</label>
+										<div class="col-sm-6" id="DRFRAModel_TranslationCost"></div>
+									</div>
+								</div>
+								<div class="row">
+									<div class="col-sm-4 row">
+										<label class="col-sm-6  text-right">Other Cost ($):</label>
+										<div class="col-sm-6" id="DRFRAModel_OtherCost"></div>
+									</div>
+									<div class="col-sm-4 row">
+										<label class="col-sm-6  text-right">Comparative Dissolution Profile Data:</label>
+										<div class="col-sm-6" id="DRFRAModel_ComparativeDissolutionProfileData"></div>
+									</div>
+									<div class="col-sm-4 row">
+										<label class="col-sm-3  text-right">Additional Remarks:</label>
+										<div class="col-sm-9" id="DRFRAModel_Remarks"></div>
+									</div>
+								</div>
+							</form>
+						</div>
+						<div class="tab-pane fade" id="custom-tabs-three-medical" role="tabpanel" aria-labelledby="custom-tabs-three-medical-tab">
+							<h4 class="text-divider"><span>Medical Details</span></h4>
+							<form method="post" name="MedicalDetails">
+								<div class="row">
+									<div class="col-sm-4 row">
+										<label class="col-sm-6  text-right">BE/CT/In-Vitro BE Available:</label>
+										<div class="col-sm-6" id="DRFMedicalModel_BeCtVitroAvailable"></div>
+									</div>
+									<div class="col-sm-4 row">
+										<label class="col-sm-6  text-right">Possibility of Bio Waiver:</label>
+										<div class="col-sm-6" id="DRFMedicalModel_BioWaiver"></div>
+									</div>
+									<div class="col-sm-4 row">
+										<label class="col-sm-6  text-right">Possibility of CT Waiver:</label>
+										<div class="col-sm-6" id="DRFMedicalModel_CTWaiver"></div>
+									</div>
+								</div>
+								<div class="row">
+									<div class="col-sm-4 row">
+										<label class="col-sm-6  text-right">BE Cost ($):</label>
+										<div class="col-sm-6" id="DRFMedicalModel_BECost"></div>
+									</div>
+									<div class="col-sm-4 row">
+										<label class="col-sm-6  text-right">Bio Cost ($):</label>
+										<div class="col-sm-6" id="DRFMedicalModel_BioCost"></div>
+									</div>
+									<div class="col-sm-4 row">
+										<label class="col-sm-6  text-right">CT Cost ($):</label>
+										<div class="col-sm-6" id="DRFMedicalModel_CTCost"></div>
+									</div>
+								</div>
+							</form>
+						</div>
+
+
+					</div>
+				</div>
+				<!-- /.card -->
+			</div>
+
+
+
+			<div class="row">
+				<section class="col-lg-12">
+					<!-- Custom tabs (Charts with tabs)-->
+					<div class="card">
+						<div class="card-header">
+							<h3 class="card-title">
+								<i class="fas fa-credit-card mr-2"></i> Finance Details
+							</h3>
+							<div class="card-tools">
+								<button type="button" class="btn btn-tool p-0 mr-3" data-card-widget="maximize">
+									<i class="fas fa-expand"></i>
+								</button>
+								<button type="button" class="btn btn-tool" data-card-widget="collapse">
+									<i class="fas fa-minus"></i>
+								</button>
+							</div>
+						</div>
+						<!-- /.card-header -->
+
+						<div class="card-body">
+							<table class="table table-bordered">
+								<thead>
+									<tr>
+										<th>Value in USD only</th>
+										<th class="text-center">Year 1</th>
+										<th class="text-center">Year 2</th>
+										<th class="text-center">Year 3</th>
+										<th class="text-center">Total</th>
+									</tr>
+								</thead>
+								<tbody>
+									<tr>
+										<td class="font-weight-bold">Forecast Units (Packs) ($)</td>
+										<td id="DRFInitializationFinance_FirstYearForecastUnitsPacks" class="text-center"></td>
+										<td id="DRFInitializationFinance_SecondYearForecastUnitsPacks" class="text-center"></td>
+										<td id="DRFInitializationFinance_ThirdYearForecastUnitsPacks" class="text-center"></td>
+										<td id="DRFInitializationFinance_TotalForecastUnitsPacks" class="text-center"></td>
+									</tr>
+
+									<tr>
+										<td class="font-weight-bold">Forecast CIF (for Emcure) ($)</td>
+										<td class="text-center" id="DRFInitializationFinance_FirstYearForecastCIF"></td>
+										<td class="text-center" id="DRFInitializationFinance_SecondYearForecastCIF"></td>
+										<td class="text-center" id="DRFInitializationFinance_ThirdYearForecastCIF"></td>
+										<td class="text-center" id="DRFInitializationFinance_TotalForecastCIF"></td>
+									</tr>
+									<tr>
+										<td class="font-weight-bold">Forecast Value (Emcure) ($)</td>
+										<td class="text-center" id="DRFInitializationFinance_FirstYearForecastValue"></td>
+										<td class="text-center" id="DRFInitializationFinance_SecondYearForecastValue"></td>
+										<td class="text-center" id="DRFInitializationFinance_ThirdYearForecastValue"></td>
+										<td class="text-center" id="DRFInitializationFinance_TotalForecastValue"></td>
+									</tr>
+									<tr>
+										<td class="font-weight-bold">Forecast Price to patient (for our brand)($)</td>
+										<td class="text-center" id="DRFInitializationFinance_FirstYearForecastPriceToPatient"></td>
+										<td class="text-center" id="DRFInitializationFinance_SecondYearForecastPriceToPatient"></td>
+										<td class="text-center" id="DRFInitializationFinance_ThirdYearForecastPriceToPatient"></td>
+										<td class="text-center" id="DRFInitializationFinance_TotalForecastPriceToPatient"></td>
+									</tr>
+									<tr>
+										<td class="font-weight-bold">Freight ($)</td>
+										<td class="text-center" id="DRFFinanceApproval_Freight"></td>
+										<td class="text-center" id="DRFFinanceApproval_FreightYearTwo"></td>
+										<td class="text-center" id="DRFFinanceApproval_FreightYearThree"></td>
+										<td class="text-center" id="DRFFinanceModel_TotalFreight"></td>
+									</tr>
+
+									<tr>
+										<td class="font-weight-bold">Ex Works (USD) ($)</td>
+										<td class="text-center" id="DRFFinanceApproval_Exworks"></td>
+										<td class="text-center" id="DRFFinanceApproval_ExworksYearTwo"></td>
+										<td class="text-center" id="DRFFinanceApproval_ExworksYearThree"></td>
+										<td class="text-center" id="DRFFinanceModel_TotalExworks"></td>
+									</tr>
+									<tr>
+										<td class="font-weight-bold">GC Minimum ($)</td>
+										<td class="text-center" id="DRFFinanceApproval_GCMinimum"></td>
+										<td class="text-center" id="DRFFinanceApproval_GCMinimumYearTwo"></td>
+										<td class="text-center" id="DRFFinanceApproval_GCMinimumYearThree"></td>
+										<td class="text-center" id="DRFFinanceModel_TotalGCMinimum"></td>
+									</tr>
+									<tr>
+										<td class="border-white1" colspan="2"></td>
+										<td class="font-weight-bold text-right" colspan="2">Total Contribution ($)</td>
+										<td class="text-center" id="DRFFinanceApproval_TotalContribution"></td>
+									</tr>
+									<tr>
+										<td class="border-white1" colspan="2"></td>
+										<td class="font-weight-bold text-right" colspan="2">Total Percentage</td>
+										<td class="text-center" id="DRFInitialization_totalPercentage1">
+											<label id="DRFInitialization_totalPercentage"></label>(%)
+										</td>
+									</tr>
+									<tr>
+										<td class="border-white1" colspan="2"></td>
+										<td class="font-weight-bold text-right" colspan="2">Expenses ($)</td>
+										<td class="text-center" id="DRFFinanceApproval_Expenses"></td>
+									</tr>
+									<tr>
+										<td class="border-white1" colspan="2"></td>
+										<td class="font-weight-bold text-right" colspan="2">Litigation Cost ($)</td>
+										<td class="text-center" id="DRFFinanceApproval_LitigationCost"></td>
+									</tr>
+									<tr>
+										<td class="border-white1" colspan="2"></td>
+										<td class="font-weight-bold text-right" colspan="2">Freight cost per pack ($)</td>
+										<td class="text-center" id="DRFFinanceApproval_FreightCost"></td>
+									</tr>
+									<tr>
+										<td class="border-white1" colspan="2"></td>
+										<td class="font-weight-bold text-right" colspan="2">Product Registration Fee (from Basics)($)</td>
+										<td class="text-center" id="DRFFinanceApproval_RegistrationCost"></td>
+									</tr>
+									<tr>
+										<td class="border-white1" colspan="2"></td>
+										<td class="font-weight-bold text-right" colspan="2">Consultant Cost ($)</td>
+										<td class="text-center" id="DRFFinanceApproval_ConsultantCost"></td>
+									</tr>
+									<tr>
+										<td class="border-white1" colspan="2"></td>
+										<td class="font-weight-bold text-right" colspan="2">Legalization Cost ($)</td>
+										<td class="text-center" id="DRFFinanceApproval_LegalizationCost"></td>
+									</tr>
+									<tr>
+										<td class="border-white1" colspan="2"></td>
+										<td class="font-weight-bold text-right" colspan="2">Translation Cost ($)</td>
+										<td class="text-center" id="DRFFinanceApproval_TranslationCost"></td>
+									</tr>
+									<tr>
+										<td class="border-white1" colspan="2"></td>
+										<td class="font-weight-bold text-right" colspan="2">Other Cost ($)</td>
+										<td class="text-center" id="DRFFinanceApproval_OtherCost"></td>
+									</tr>
+									<tr>
+										<td class="border-white1" colspan="2"></td>
+										<td class="font-weight-bold text-right" colspan="2">BE/CT/In-Vitro BE Available Cost ($)</td>
+										<td class="text-center" id="DRFFinanceApproval_BECost"></td>
+									</tr>
+									<tr>
+										<td class="border-white1" colspan="2"></td>
+										<td class="font-weight-bold text-right" colspan="2">Bio Waiver Cost ($)</td>
+										<td class="text-center" id="DRFFinanceApproval_BioCost"></td>
+									</tr>
+									<tr>
+										<td class="border-white1" colspan="2"></td>
+										<td class="font-weight-bold text-right" colspan="2">CT Waiver Cost ($)</td>
+										<td class="text-center" id="DRFFinanceApproval_CTCost"></td>
+									</tr>									
+									<tr>
+										<td class="border-white1" colspan="2"></td>
+										<td class="font-weight-bold text-right" colspan="2">Net Contribution ($)</td>
+										<td class="text-center" id="DRFFinanceApproval_NetContribution"></td>
+									</tr>
+									<tr>
+										<td class="border-white1" colspan="2"></td>
+										<td class="font-weight-bold text-right" colspan="2">Net Profit (%)</td>
+										<td class="text-center" id="DRFInitialization_netPercentage1">
+											<label id="DRFInitialization_netPercentage"></label>(%)
+										</td>
+									</tr>
+									<tr>
+										<td class="border-white1" colspan="2"></td>
+										<td class="border font-weight-bold text-right" colspan="2">Is Overall Business Case Fine</td>
+										<td class="text-center" id="DRFFinanceApproval_IsOverallBusinessCaseFine"></td>
+									</tr>
+								</tbody>
+							</table>
+
+
+						</div>
+						<!-- /.card -->
+					</div>
+				</section>
+
+			</div>
+
+			<div class="row">
+				<section class="col-lg-12">
+					<!-- Custom tabs (Charts with tabs)-->
+					<div class="card">
+						<div class="card-header">
+							<h3 class="card-title">
+								<i class="far fa-check-square mr-2"></i> Final Details
+							</h3>
+							<div class="card-tools">
+								<button type="button" class="btn btn-tool p-0 mr-3" data-card-widget="maximize">
+									<i class="fas fa-expand"></i>
+								</button>
+								<button type="button" class="btn btn-tool" data-card-widget="collapse">
+									<i class="fas fa-minus"></i>
+								</button>
+							</div>
+						</div>
+						<!-- /.card-header -->
+
+						<div class="card-body">
+							<div class="row">
+								<div class="col-sm-3">
+									<!-- text input -->
+									<label>Do you want to approve this DRF :</label>
+
+								</div>
+								<div class="col-sm-3 row">
+									<div class="form-group text-center">
+										<div class="form-group">
+											<div class="icheck-primary d-inline mr-5">
+												<label for="Approved">
+													Approved
+												</label>
+											</div>
+
+										</div>
+									</div>
+								</div>
+								<div class="col-sm-1">
+									<label>Comment :</label>
+								</div>
+								<div class="col-sm-5">
+									<div class="form-group" id="DRFFinalApproval_Comment"></div>
+								</div>
+
+							</div>
+
+						</div>
+						<!-- /.card -->
+					</div>
+				</section>
+			</div>
+			<!-- /.row (main row) -->
+		</div>
+		<!-- /.container-fluid -->
+	</section>
+	<!-- /.content -->
+</div>
+
+<script src="~/dist/js/jquery.treegrid.min.js"></script>
+<script src="~/dist/js/bootstrap-table.min.js"></script>
+<script src="~/dist/js/bootstrap-table-treegrid.min.js"></script>
+
+<script>
+
+    $(function () {
+        $(".btn-tool").on("click", ".fa-expand", function () {
+            $('.min-max').removeClass('direct-chat-messages');
+        });
+        $(".btn-tool").on("click", ".fa-compress", function () {
+            $('.min-max').addClass('direct-chat-messages');
+        });
+     });
+
+    var PIDFInitializationID = 0;
+    var PIDFCountryID = 0;
+    $(document).ready(function () {
+        $('#loading').show();
+
+        var data = {InitializationID:'@ViewBag.DRFShowDetailsInitializationID'};
+        $.ajax({
+            type: "POST",
+            url: '@Url.Action("GetFilledIPMANSCMRADetails", "DRFInitialization")/',
+            //contentType: "application/json; charset=utf-8",
+            dataType: "json",
+            data: data,
+            success: function (response) {                       
+				//Approval Summary table
+                $('#DossierCreatedName').text(response.data.drfApprovalDetails.drfCreatedName);
+                $('#DossierCreatedDateTime').text(convertDDMMYYY(response.data.drfApprovalDetails.drfCreatedDate.split('T')[0]) );
+
+                $('#CountryManagerApprovalName').text(response.data.drfApprovalDetails.cmApprovalName);
+                $('#CountryManagerApprovalDateTime').text(convertDDMMYYY(response.data.drfApprovalDetails.cmCreatedDate.split('T')[0]) );
+
+                $('#LineManagerApprovalName').text(response.data.drfApprovalDetails.lmApprovalName);
+                $('#LineManagerApprovalDateTime').text(convertDDMMYYY(response.data.drfApprovalDetails.lmCreatedDate.split('T')[0]) );
+
+                $('#HODofDossierApprovalName').text(response.data.drfApprovalDetails.hodApprovalName);
+                $('#HODofDossierApprovalDateTime').text(convertDDMMYYY(response.data.drfApprovalDetails.hodCreatedDate.split('T')[0]));
+
+				$('#HODofDossierApprovalName1').text(response.data.finalApprovalList.finalApprovalName);
+                $('#HODofDossierApprovalDateTime1').text(convertDDMMYYY(response.data.finalApprovalList.finalCreatedDate.split('T')[0]) );
+
+                //Initialization Details
+                PIDFInitializationID = response.data.initializationDetails.initializationID;
+                PIDFCountryID = response.data.initializationDetails.countryID;
+                $('#CountryID').val(response.data.initializationDetails.countryID);
+                $('#DRFInitialization_CountryID').text(response.data.initializationDetails.country);
+                $('#DRFInitialization_GenericName').text(response.data.initializationDetails.genericName);
+                $('#DRFInitialization_BrandName').text(response.data.initializationDetails.brandName);
+                if (response.data.initializationDetails.treadmarkApprovedInternal == true) {
+                    $('#DRFInitialization_TreadmarkApprovedInternal').text("Yes");
+                }
+                else {
+                    $('#DRFInitialization_TreadmarkApprovedInternal').text("No");
+                }
+                $('#DRFInitialization_TreadmarkSuggestedInternal').text(response.data.initializationDetails.treadmarkSuggestedInternal);
+                $('#DRFInitialization_TreadmarkOwnerInternal').text(response.data.initializationDetails.treadmarkOwnerInternal);
+                $('#DRFInitialization_Form').text(response.data.initializationDetails.form);
+                $('#DRFInitialization_Strength').text(response.data.initializationDetails.strength);
+                $('#DRFInitialization_PackSize').text(response.data.initializationDetails.packSize);
+                $('#DRFInitialization_PackStyle').text(response.data.initializationDetails.packStyle);
+                $('#DRFInitialization_Plant').text(response.data.initializationDetails.plant);
+                $('#DRFInitialization_ProductType').text(response.data.initializationDetails.productType);
+                $('#DossierTemplateID').val(response.data.initializationDetails.dossierTemplateID);
+				$('#DRFInitialization_Currency').text(response.data.initializationDetails.currency);
+
+				if (response.data.initializationDetails.registrationFees != null) {
+					$('#DRFInitialization_RegistrationFees').text(response.data.initializationDetails.registrationFees.toFixed(2));
+				}
+                $('#DRFInitialization_FeesToBePaidBy').text(response.data.initializationDetails.feesToBePaidBy);
+                $('#DRFInitialization_ModeOfFeesPayment').text(response.data.initializationDetails.modeOfFeesPayment);
+                $('#DRFInitialization_MAHolder').text(response.data.initializationDetails.maHolder);
+                $('#DRFInitialization_ProposedMarketingStatus').text(response.data.initializationDetails.proposedMarketingStatus);
+                $('#DRFInitialization_ShippingPort').text(response.data.initializationDetails.shippingPort);
+                $('#DRFInitialization_ModeOfShipment').text(response.data.initializationDetails.modeOfShipment);
+                $('#DRFInitialization_Incoterms').text(response.data.initializationDetails.incoterms);
+                $('#DRFInitialization_DossierSubmittedToMOHBy').text(response.data.initializationDetails.dossierSubmittedToMOHBy);
+                $('#DRFInitialization_OwnerOfRegistration').text(response.data.initializationDetails.ownerOfRegistration);
+
+                if (response.data.initializationDetails.availabilityofCDA == true) {
+                    $('#DRFInitialization_AvailabilityofCDA').text("Yes");
+                }
+                else {
+                    $('#DRFInitialization_AvailabilityofCDA').text("No");
+                }
+				if (response.data.initializationDetails.tsExcecuted == true) {
+					$('#DRFInitialization_TSExcecuted').text("Yes");
+				}
+				else {
+					$('#DRFInitialization_TSExcecuted').text("No");
+				}
+
+				if (response.data.initializationDetails.daExcecuted == true) {
+					$('#DRFInitialization_DAExcecuted').text("Yes");
+				}
+				else {
+					$('#DRFInitialization_DAExcecuted').text("No");
+				}
+
+                $('#DRFInitialization_MarketSize').text(response.data.initializationDetails.marketSize.toFixed(2));
+                $('#DRFInitialization_ThreeYearCAGR').text(response.data.initializationDetails.threeYearCAGR);
+                $('#DRFInitialization_NumberOfCurrentPlayer').text(response.data.initializationDetails.numberOfCurrentPlayer);
+                $('#DRFInitialization_ExpectedMarketValueGrowth').text(response.data.initializationDetails.expectedMarketValueGrowth.toFixed(2));
+                $('#DRFInitialization_InnovatorBrand').text(response.data.initializationDetails.innovatorBrand);
+                $('#DRFInitialization_InnavotorName').text(response.data.initializationDetails.innavotorName);
+                $('#DRFInitialization_FirstBrand').text(response.data.initializationDetails.firstBrand);
+                $('#DRFInitialization_MSFirstBrand').text(response.data.initializationDetails.msFirstBrand);
+                $('#DRFInitialization_SecondBrand').text(response.data.initializationDetails.secondBrand);
+                $('#DRFInitialization_MSSecondBrand').text(response.data.initializationDetails.msSecondBrand);
+                $('#DRFInitialization_ThirdBrand').text(response.data.initializationDetails.thirdBrand);
+                $('#DRFInitialization_MSThirdBrand').text(response.data.initializationDetails.msThirdBrand);
+                $('#DRFInitialization_Partner').text(response.data.initializationDetails.partner);
+                $('#DRFInitialization_FirstYearForecastUnitsPacks').text(response.data.initializationDetails.firstYearForecastUnitsPacks.toFixed(2));
+                $('#DRFInitialization_SecondYearForecastUnitsPacks').text(response.data.initializationDetails.secondYearForecastUnitsPacks.toFixed(2));
+                $('#DRFInitialization_ThirdYearForecastUnitsPacks').text(response.data.initializationDetails.thirdYearForecastUnitsPacks.toFixed(2));
+                $('#DRFInitialization_FirstYearForecastPriceToPatient').text(response.data.initializationDetails.firstYearForecastPriceToPatient.toFixed(2));
+                $('#DRFInitialization_SecondYearForecastPriceToPatient').text(response.data.initializationDetails.secondYearForecastPriceToPatient.toFixed(2));
+                $('#DRFInitialization_ThirdYearForecastPriceToPatient').text(response.data.initializationDetails.thirdYearForecastPriceToPatient.toFixed(2));
+                $('#DRFInitialization_FirstYearForecastCIF').text(response.data.initializationDetails.firstYearForecastCIF.toFixed(2));
+                $('#DRFInitialization_SecondYearForecastCIF').text(response.data.initializationDetails.secondYearForecastCIF.toFixed(2));
+                $('#DRFInitialization_ThirdYearForecastCIF').text(response.data.initializationDetails.thirdYearForecastCIF.toFixed(2));
+                $('#DRFInitialization_FirstYearForecastValue').text(response.data.initializationDetails.firstYearForecastValue.toFixed(2));
+                $('#DRFInitialization_SecondYearForecastValue').text(response.data.initializationDetails.secondYearForecastValue.toFixed(2));
+                $('#DRFInitialization_ThirdYearForecastValue').text(response.data.initializationDetails.thirdYearForecastValue.toFixed(2));
+                $('#DRFInitialization_OrderFrequency').text(response.data.initializationDetails.orderFrequency);
+                $('#DRFInitialization_NoofShipments').text(response.data.initializationDetails.noofShipmnets);
+                $('#DRFInitialization_NameDossierSend').text(response.data.initializationDetails.nameDossierSend);
+			    $('#DRFInitialization_EmailDossierSend').text(response.data.initializationDetails.emailDossierSend);
+			    $('#DRFInitialization_PhoneDossierSend').text(response.data.initializationDetails.phoneDossierSend);
+                $('#DRFInitialization_AddressDossierSend').text(response.data.initializationDetails.addressDossierSend);
+                if (response.data.initializationDetails.strategyAlignment == true) {
+                    $('#DRFInitialization_StrategyAlignment').text("Yes");
+                }
+                else {
+                    $('#DRFInitialization_StrategyAlignment').text("No");
+                }
+                $('#DRFInitialization_ExceptionExplained').text(response.data.initializationDetails.exceptionExplained);
+                $('#DRFInitialization_Comment').text(response.data.initializationDetails.initialApproveRejectComment);
+                        
+                var testfpath = "/FileManager?folderpath=" + response.data.initializationDetails.drfNo.split("-")[0] + "-" + response.data.initializationDetails.drfNo.split("-")[1] + "-" + response.data.ipHeaderList[0].projectName;//response.data.initializationDetails.country
+                $('#FPathName').attr('href',  testfpath);
+
+
+				$('#DRFInitialization_Remark').text(response.data.initializationDetails.remark);
+				if (response.data.initializationDetails.isSamples_Required == true) {
+                    $('#DRFInitialization_Samples_Required').text(response.data.initializationDetails.samples_Required);
+                }
+                else {
+                    $('#DRFInitialization_Samples_Required').text("No");
+                }
+
+                $('#DRFInitializationFinance_FirstYearForecastUnitsPacks').text(response.data.initializationDetails.firstYearForecastUnitsPacks.toFixed(2));
+                $('#DRFInitializationFinance_SecondYearForecastUnitsPacks').text(response.data.initializationDetails.secondYearForecastUnitsPacks.toFixed(2));
+                $('#DRFInitializationFinance_ThirdYearForecastUnitsPacks').text(response.data.initializationDetails.thirdYearForecastUnitsPacks.toFixed(2));
+                $('#DRFInitializationFinance_FirstYearForecastPriceToPatient').text(response.data.initializationDetails.firstYearForecastPriceToPatient.toFixed(2));
+                $('#DRFInitializationFinance_SecondYearForecastPriceToPatient').text(response.data.initializationDetails.secondYearForecastPriceToPatient.toFixed(2));
+                $('#DRFInitializationFinance_ThirdYearForecastPriceToPatient').text(response.data.initializationDetails.thirdYearForecastPriceToPatient.toFixed(2));
+                $('#DRFInitializationFinance_FirstYearForecastCIF').text(response.data.initializationDetails.firstYearForecastCIF.toFixed(2));
+                $('#DRFInitializationFinance_SecondYearForecastCIF').text(response.data.initializationDetails.secondYearForecastCIF.toFixed(2));
+                $('#DRFInitializationFinance_ThirdYearForecastCIF').text(response.data.initializationDetails.thirdYearForecastCIF.toFixed(2));
+                $('#DRFInitializationFinance_FirstYearForecastValue').text(response.data.initializationDetails.firstYearForecastValue.toFixed(2));
+                $('#DRFInitializationFinance_SecondYearForecastValue').text(response.data.initializationDetails.secondYearForecastValue.toFixed(2));
+                $('#DRFInitializationFinance_ThirdYearForecastValue').text(response.data.initializationDetails.thirdYearForecastValue.toFixed(2));
+
+                var TotalForecastUnitsPacks = (response.data.initializationDetails.firstYearForecastUnitsPacks + response.data.initializationDetails.secondYearForecastUnitsPacks + response.data.initializationDetails.thirdYearForecastUnitsPacks).toFixed(2);
+                var TotalForecastPriceToPatient = (response.data.initializationDetails.firstYearForecastPriceToPatient + response.data.initializationDetails.secondYearForecastPriceToPatient + response.data.initializationDetails.thirdYearForecastPriceToPatient).toFixed(2);
+                var TotalForecastCIF = (response.data.initializationDetails.firstYearForecastCIF + response.data.initializationDetails.secondYearForecastCIF + response.data.initializationDetails.thirdYearForecastCIF).toFixed(2);
+                var TotalForecastValue = (response.data.initializationDetails.firstYearForecastValue + response.data.initializationDetails.secondYearForecastValue + response.data.initializationDetails.thirdYearForecastValue).toFixed(2);
+
+                $('#DRFInitializationFinance_TotalForecastUnitsPacks').text(TotalForecastUnitsPacks);
+                $('#DRFInitializationFinance_TotalForecastPriceToPatient').text(TotalForecastPriceToPatient);
+                $('#DRFInitializationFinance_TotalForecastCIF').text(TotalForecastCIF);
+                $('#DRFInitializationFinance_TotalForecastValue').text(TotalForecastValue);
+
+                //IPHeader
+                $('#ProjectName').val(response.data.ipHeaderList[0].projectName);
+                $('#DRFIPModel_ProjectName').text(response.data.ipHeaderList[0].projectName);
+
+                $('#DRFIPModel_Markets').text(response.data.ipHeaderList[0].markets);
+                $('#DRFIPModel_NumbersOfApprovedANDA').text(response.data.ipHeaderList[0].numbersOfApprovedANDA);
+                $('#DRFIPModel_PatentStatus').text(response.data.ipHeaderList[0].patentStatus);
+                $('#DRFIPModel_LegalStatus').text(response.data.ipHeaderList[0].legalStatus);
+                $('#DRFIPModel_NumbersOfApprovedGeneric').text(response.data.ipHeaderList[0].numbersOfApprovedGeneric);
+                $('#DRFIPModel_TypeOfFiling').text(response.data.ipHeaderList[0].typeOfFiling);
+                $('#DRFIPModel_CostofLitigation').text(response.data.ipHeaderList[0].costofLitigation);
+                $('#DRFIPModel_IPDComments').text(response.data.ipHeaderList[0].ipdComments);
+
+                //IPDetails
+
+                $.each(response.data.ipDetailsList, function (i, List) {
+                        var newRow = $("<tr>");
+                        var cols = "";
+
+                        cols += '<td>'+ List.patentNumbers+'</td>';
+                        cols += '<td>'+List.originalExpiryDate+' </td>';
+                        cols += '<td>'+List.type+'</td>';
+                        cols += '<td>'+List.extensionApplication+'</td>';
+                        cols += '<td>'+List.extnExpiryDate+' </td>';
+                        cols += '<td>'+List.comment+'</td>';
+                        cols += '<td>'+List.strategy+'</td>';
+                        newRow.append(cols);
+                        $("table.order-list").append(newRow);
+                });
+
+                //Marketing Details
+
+                $('#DRFManufacturingModel_ManufacturingSiteName').text(response.data.manufacturingList[0].manufacturingSiteName);
+                $('#DRFManufacturingModel_DPDManufacturingSiteName').text(response.data.manufacturingList[0].dpdManufacturingSiteName);
+                $('#DRFManufacturingModel_APISiteName').text(response.data.manufacturingList[0].apiSiteName);
+                $('#DRFManufacturingModel_DPDAPISiteName').text(response.data.manufacturingList[0].dpdapiSiteName);
+                $('#DRFManufacturingModel_Batchsize').text(response.data.manufacturingList[0].batchsize);
+                $('#DRFManufacturingModel_Leadtime').text(response.data.manufacturingList[0].leadtime);
+                $('#DRFManufacturingModel_UnitEXW').text(response.data.manufacturingList[0].unitEXW);
+                $('#DRFManufacturingModel_DPDArtworkTypeName').text(response.data.manufacturingList[0].dpdArtworkTypeName);
+                       
+				$('#DRFManufacturingModel_Tentative_Artwork_Lead_Time').text(response.data.manufacturingList[0].tentative_Artwork_Lead_Time);
+				$('#DRFManufacturingModel_Remark').text(response.data.manufacturingList[0].remark);
+
+				if (response.data.manufacturingAPIList.length > 0) {
+					var counter = 1;
+
+					$.each(response.data.manufacturingAPIList, function (i, List) {
+						var cols = '';
+						var newRow = $("<tr id='" + counter + "'>");
+						cols += '<td><div class="col-sm-6">' + List.apiSite + '</div>';
+						cols += '<td><div class="col-sm-6">' + List.apiSiteName + '</div>';
+						newRow.append(cols);
+						$("table.order-listAPI").append(newRow);
+						counter++;
+					});
+				}
+                //SCM Details
+
+                $('#DRFSCMModel_FreightCost').text(response.data.scmList[0].freightCost.toFixed(2));
+                $('#DRFSCMModel_TentativeShipmente').text(convertDDMMYYY(response.data.scmList[0].tentativeShipmente.split('T')[0]));
+                $('#DRFSCMModel_TentativeDestination').text(convertDDMMYYY(response.data.scmList[0].tentativeDestination.split('T')[0]));
+
+                //RA Details
+
+                if (response.data.raList[0].acc == true && response.data.raList[0].zoneII == true && response.data.raList[0].ivbdata == true) {
+                    $('#DRFRAModel_ACCZoneIIIvbdata').text("ACC ,ZoneII ,Ivbdata");
+                }
+                else if (response.data.raList[0].acc == true && response.data.raList[0].zoneII == true && response.data.raList[0].ivbdata == false) {
+                    $('#DRFRAModel_ACCZoneIIIvbdata').text("ACC ,ZoneII");
+                }
+                else if (response.data.raList[0].acc == true && response.data.raList[0].zoneII == false && response.data.raList[0].ivbdata == true) {
+                    $('#DRFRAModel_ACCZoneIIIvbdata').text("ACC ,Ivbdata");
+                }
+                else if (response.data.raList[0].acc == false && response.data.raList[0].zoneII == true && response.data.raList[0].ivbdata == true) {
+                    $('#DRFRAModel_ACCZoneIIIvbdata').text("ZoneII ,Ivbdata");
+                }
+                else if (response.data.raList[0].acc == true && response.data.raList[0].zoneII == false && response.data.raList[0].ivbdata == false) {
+                    $('#DRFRAModel_ACCZoneIIIvbdata').text("ACC");
+                }
+                else if (response.data.raList[0].acc == false && response.data.raList[0].zoneII == true && response.data.raList[0].ivbdata == false) {
+                    $('#DRFRAModel_ACCZoneIIIvbdata').text("ZoneII");
+                }
+                else if (response.data.raList[0].acc == false && response.data.raList[0].zoneII == false && response.data.raList[0].ivbdata == true) {
+                    $('#DRFRAModel_ACCZoneIIIvbdata').text("Ivbdata");
+                }
+                else {
+                    $('#DRFRAModel_ACCZoneIIIvbdata').text("-");
+                }
+
+                if (response.data.raList[0].protocolAvailability == true) {
+                    $('#DRFRAModel_ProtocolAvailability').text("Yes");
+                }
+                else {
+                    $('#DRFRAModel_ProtocolAvailability').text("No");
+                }
+
+                if (response.data.raList[0].coppAvailability == true) {
+                    $('#DRFRAModel_COPPAvailability').text("Yes");
+                }
+                else {
+                    $('#DRFRAModel_COPPAvailability').text("No");
+                }
+
+                $('#DRFRAModel_GMPAvailability').text(response.data.raList[0].gmpAvailability);
+                                          
+                if (response.data.raList[0].mfgLicense == true) {
+                    $('#DRFRAModel_MfgLicense').text("Yes");
+                }
+                else {
+                        $('#DRFRAModel_MfgLicense').text("No");
+                }
+
+                if (response.data.raList[0].plantInspection == true) {
+                    $('#DRFRAModel_PlantInspection').text("Yes");
+                }
+                else {
+                        $('#DRFRAModel_PlantInspection').text("No");
+                }
+
+
+                $('#DRFRAModel_ValidationBatches').text(response.data.raList[0].validationBatches);
+
+                if (response.data.raList[0].coaAvailability == true) {
+                    $('#DRFRAModel_COAAvailability').text("Yes");
+                }
+                else {
+                        $('#DRFRAModel_COAAvailability').text("No");
+                }
+
+                if (response.data.raList[0].beAvailability == true) {
+                    $('#DRFRAModel_BEAvailability').text("Yes");
+                }
+                else {
+                        $('#DRFRAModel_BEAvailability').text("No");
+                }
+
+				if (response.data.raList[0].apidmFstatus == true) {
+					$('#DRFRAModel_APIDMFstatus').text("Yes");					
+				}
+				else {
+					$('#DRFRAModel_APIDMFstatus').text("No");					
+				}
+                if (response.data.raList[0].plantApproval == true) {
+                    $('#DRFRAModel_PlantApproval').text("Yes");
+                    $('#DRFRAModel_PlantApprovalIfYes').text(response.data.raList[0].plantApprovalIfYes);
+                }
+                else {
+                    $('#DRFRAModel_PlantApproval').text("No");
+                    $('#DRFRAModel_PlantApprovalIfYes').text("-");
+                }
+
+                $('#DRFRAModel_RegistrationValidity').text(response.data.raList[0].registrationValidity);
+                $('#DRFRAModel_Timefordossierpreparation').text(response.data.raList[0].timefordossierpreparation);
+
+                $('#DRFRAModel_AMV').text(response.data.raList[0].amv);
+
+                if (response.data.raList[0].pdr == true) {
+                    $('#DRFRAModel_PDR').text("Yes");
+                }
+                else {
+                    $('#DRFRAModel_PDR').text("No");
+                }
+
+                if (response.data.raList[0].samplesAvailability == true) {
+                    $('#DRFRAModel_SamplesAvailability').text("Yes");
+                }
+                else {
+                    $('#DRFRAModel_SamplesAvailability').text("No");
+                }
+
+                if (response.data.raList[0].importPermit == true) {
+                    $('#DRFRAModel_ImportPermit').text("Yes");
+                }
+                else {
+                    $('#DRFRAModel_ImportPermit').text("No");
+                }
+                        
+                $('#DRFRAModel_BrandNameApproval').text(response.data.raList[0].brandNameApproval);
+
+                if (response.data.raList[0].availabilityofCDA == true) {
+                    $('#DRFRAModel_AvailabilityofCDA').text("Yes");
+                }
+                else {
+                    $('#DRFRAModel_AvailabilityofCDA').text("No");
+                }
+
+                $('#DRFRAModel_CurrencyID').text(response.data.raList[0].currency);
+
+                $('#DRFRAModel_ProductRegistrationFee').text(response.data.raList[0].productRegistrationFee.toFixed(2));
+
+                $('#DRFRAModel_ComparativeDissolutionProfileData').text(response.data.raList[0].comparativeDissolutionProfileData);
+
+				$('#DRFRAModel_Remarks').text(response.data.raList[0].remarks);
+				$('#DRFRAModel_ConsultantCost').text(response.data.raList[0].consultantCost.toFixed(2));
+				$('#DRFRAModel_LegalizationCost').text(response.data.raList[0].legalizationCost.toFixed(2));
+				$('#DRFRAModel_TranslationCost').text(response.data.raList[0].translationCost.toFixed(2));
+				$('#DRFRAModel_OtherCost').text(response.data.raList[0].otherCost.toFixed(2));
+
+
+                //Medical Details
+
+				if (response.data.medicalList.length > 0) {
+
+					if (response.data.medicalList[0].beCtVitroAvailable == true) {
+						$('#DRFMedicalModel_BeCtVitroAvailable').text("Yes");
+						$('#DRFMedicalModel_BECost').text(response.data.medicalList[0].beCost.toFixed(2));
+					}
+					else {
+						$('#DRFMedicalModel_BeCtVitroAvailable').text("No");
+						$('#DRFMedicalModel_BECost').text('-');
+					}
+
+
+					if (response.data.medicalList[0].bioWaiver == true) {
+						$('#DRFMedicalModel_BioWaiver').text("Yes");
+						$('#DRFMedicalModel_BioCost').text(response.data.medicalList[0].bioCost.toFixed(2));
+					}
+					else {
+						$('#DRFMedicalModel_BioWaiver').text("No");
+						$('#DRFMedicalModel_BioCost').text('-');
+					}
+
+					if (response.data.medicalList[0].ctWaiver == true) {
+						$('#DRFMedicalModel_CTWaiver').text("Yes");
+						$('#DRFMedicalModel_CTCost').text(response.data.medicalList[0].ctCost.toFixed(2));
+					}
+					else {
+						$('#DRFMedicalModel_CTWaiver').text("No");
+						$('#DRFMedicalModel_CTCost').text('-');
+					}
+				}
+
+                //Finance Details
+                if (response.data.financeDetails.overallbusinesscase == true) {
+                $('#DRFFinanceApproval_IsOverallBusinessCaseFine').text("Yes");
+                }
+                else {
+                        $('#DRFFinanceApproval_IsOverallBusinessCaseFine').text("No");
+                }
+                $('#DRFFinanceApproval_GCMinimum').text(response.data.financeDetails.gCminimum.toFixed(2));
+                $('#DRFFinanceApproval_GCMinimumYearTwo').text(response.data.financeDetails.gCminimumYearTwo.toFixed(2));
+                $('#DRFFinanceApproval_GCMinimumYearThree').text(response.data.financeDetails.gCminimumYearThree.toFixed(2));
+
+                $('#DRFFinanceApproval_Exworks').text(response.data.financeDetails.exworks.toFixed(2));
+                $('#DRFFinanceApproval_ExworksYearTwo').text(response.data.financeDetails.exworksYearTwo.toFixed(2));
+                $('#DRFFinanceApproval_ExworksYearThree').text(response.data.financeDetails.exworksYearThree.toFixed(2));
+
+                $('#DRFFinanceApproval_Freight').text(response.data.financeDetails.freight.toFixed(2));
+                $('#DRFFinanceApproval_FreightYearTwo').text(response.data.financeDetails.freightYearTwo.toFixed(2));
+                $('#DRFFinanceApproval_FreightYearThree').text(response.data.financeDetails.freightYearThree.toFixed(2));
+
+				$('#DRFFinanceApproval_Expenses').text(response.data.financeDetails.expenses.toFixed(2));
+				$('#DRFFinanceApproval_LitigationCost').text(response.data.financeDetails.litigationCost.toFixed(2));
+				$('#DRFFinanceApproval_FreightCost').text(response.data.financeDetails.freightCost.toFixed(2));
+				$('#DRFFinanceApproval_RegistrationCost').text(response.data.financeDetails.registrationCost.toFixed(2));
+				$('#DRFFinanceApproval_ConsultantCost').text(response.data.financeDetails.consultantCost.toFixed(2));
+				$('#DRFFinanceApproval_LegalizationCost').text(response.data.financeDetails.legalizationCost.toFixed(2));
+				$('#DRFFinanceApproval_TranslationCost').text(response.data.financeDetails.translationCost.toFixed(2));
+				$('#DRFFinanceApproval_OtherCost').text(response.data.financeDetails.otherCost.toFixed(2));
+				$('#DRFFinanceApproval_BECost').text(response.data.financeDetails.beCost.toFixed(2));
+				$('#DRFFinanceApproval_BioCost').text(response.data.financeDetails.bioCost.toFixed(2));
+				$('#DRFFinanceApproval_CTCost').text(response.data.financeDetails.ctCost.toFixed(2));
+                $('#DRFFinanceApproval_FilingCost').text(response.data.financeDetails.filingCost.toFixed(2));
+                $('#DRFFinanceApproval_TotalContribution').text(response.data.financeDetails.totalContribution.toFixed(2));
+				$('#DRFInitialization_totalPercentage').text(response.data.financeDetails.totalPercentage.toFixed(2));
+                $('#DRFFinanceApproval_NetContribution').text(response.data.financeDetails.netContribution.toFixed(2));
+				$('#DRFInitialization_netPercentage').text(response.data.financeDetails.netPercentage.toFixed(2));
+
+                $('#DRFFinanceModel_TotalGCMinimum').text(response.data.financeDetails.totalContribution.toFixed(2));
+
+                var totalExworks = (response.data.financeDetails.exworks + response.data.financeDetails.exworksYearTwo + response.data.financeDetails.exworksYearThree).toFixed(2);
+                $('#DRFFinanceModel_TotalExworks').empty().text(totalExworks);
+
+                var totalFreight = (response.data.financeDetails.freight + response.data.financeDetails.freightYearTwo + response.data.financeDetails.freightYearThree).toFixed(2);
+                $('#DRFFinanceModel_TotalFreight').empty().text(totalFreight);
+
+                //Final Details
+
+                $('#DRFFinalApproval_Comment').text(response.data.finalApprovalDetails.comment);
+
+                getPIDFList();
+            },
+            failure: function () {
+
+            }
+        });
+
+        var dataTable, getPIDFList;
+
+         var dataTable = $('#PIDFTable').DataTable({
+			 responsive: false,
+			 lengthChange: false,
+			 autoWidth: false,
+                paging: false,
+                searching: false,
+                sort: false,
+                "bInfo": false,
+                columnDefs: [
+                    { responsivePriority: 1, targets: -5 },
+                    { responsivePriority: 1, targets: -3 },
+                    { responsivePriority: 100, targets: -4 }
+                ],
+
+                language: {
+                    "emptyTable": "@SharedLocalizer["No data available in table"].Value",
+                    "info": "@SharedLocalizer["Showing _START_ to _END_ of _TOTAL_ entries"].Value",
+                    "infoEmpty":"@SharedLocalizer["Showing 0 to 0 of 0 entries"].Value",
+                    "infoFiltered":"@SharedLocalizer["(filtered from _MAX_ total entries)"].Value",
+                    "lengthMenu":"@SharedLocalizer["Show _MENU_ entries"].Value",
+                    "loadingRecords": "@SharedLocalizer["Loading..."].Value",
+                    "processing": "@SharedLocalizer["Processing..."].Value",
+                    "search": "@SharedLocalizer["Search"].Value",
+                    "zeroRecords":"@SharedLocalizer["No matching records found"].Value",
+                    "paginate": {
+                        "first":"@SharedLocalizer["First"].Value",
+                        "last":"@SharedLocalizer["Last"].Value",
+                        "next": "@SharedLocalizer["Next"].Value",
+                        "previous":"@SharedLocalizer["Previous"].Value"
+                    },
+                }
+            });
+
+            getPIDFList = function () {
+                //$('#loaderContainer').show();
+                var data = {
+                    "DRFID":PIDFInitializationID,
+                    "CountryID":PIDFCountryID
+                };
+                               
+                $.ajax({
+                    type: "POST",
+                    url: '@Url.Action("AttachedPIDFDetails", "DRFInitialization")/',
+                    //contentType: "application/json; charset=utf-8",
+                    dataType: "json",
+                    data:data,
+                    success: function (response) {
+                        $('#loading').hide();
+                        var jsonObject = response.data;
+                                                
+                        if (jsonObject.length!=0 ) {
+                            $('#DRFInitialization_AttachedPIDF').text("Yes");
+                        }
+                        else {
+                            $('#DRFInitialization_AttachedPIDF').text("No");
+                        }
+
+                        var result = jsonObject.map(function (item) {
+                            var result = [];
+
+                            result.push(item.pidfNo);
+                            result.push(item.projectorProductName);
+                            result.push(item.strengths);
+                            result.push(item.patentStatus);
+                            result.push(item.continentName);
+                            result.push(item.countryName);
+                            result.push(item.packing);
+                            result.push(item.batchSize);
+                            result.push(item.packSize);
+                            result.push(item.cogs);
+                            result.push(item.freight);
+                            result.push(item.totalCIFCost);
+                            result.push(item.cifPricePerUnit);
+                            result.push(item.cifPricePerPack);
+                            result.push(item.profitPerPack);
+                            result.push(item.percentCont);
+                            result.push(item.contributionThreeYear);
+                            result.push(item.costofThreeBatches);
+                            result.push(item.randDCost);
+                            result.push(item.filingCost);
+                            result.push(item.stabilityCost);
+                            result.push(item.totalInvest);
+                            result.push(item.roi);
+                            //result.push(item.PidfStatus);
+                            return result;
+                        });
+                        dataTable.clear();
+                        dataTable.rows.add(result); // add to DataTable instance
+                        dataTable.draw();
+                    },
+                    failure: function () {
+                        $("#PIDFTable").append('@SharedLocalizer["Error when fetching data please contact administrator"].Value');
+                    }
+                });
+            }
+
+    });
+
+    function convertDDMMYYY(tempDate) {
+        return tempDate.split('-')[2] + '-' + tempDate.split('-')[1] + '-' + tempDate.split('-')[0];
+    }
+
+
+</script>
+

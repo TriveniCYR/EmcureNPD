@@ -1,0 +1,49 @@
+﻿@inject Microsoft.Extensions.Localization.IStringLocalizer<SharedResource> SharedLocalizer
+@{
+    ViewData["Title"] = @SharedLocalizer["Access denied"].Value;
+}
+
+
+
+
+
+<div class="content-wrapper pt-3">
+
+
+    <!-- Main content -->
+    <section class="content">
+        <div class="container-fluid">
+            <!-- Small boxes (Stat box) -->
+            <!-- Main row -->
+            <div class="row">
+                <section class="col-lg-2"></section>
+                <section class="col-lg-8">
+                    <!-- Custom tabs (Charts with tabs)-->
+                    <div class="card">
+                        <div class="card-header">
+                            <h3 class="card-title text-danger">
+                                <i class="fas fa-user mr-2"></i> @ViewData["Title"]
+                            </h3>
+                            <div class="card-tools">
+                                        <button class="btn btn-primary btn-sm" onclick="javascript:window.history.back();"><i class="fas fa-undo mr-1"></i> Back</button>
+                            </div>
+
+                        </div>
+                        <!-- /.card-header -->
+                        <div class="card-body">
+                            <p class="text-danger">@SharedLocalizer["You do not have access to this resource."].Value</p>
+                        </div>
+                        <!-- /.card-body -->
+                    </div>
+                    <!-- /.card -->
+
+                </section>
+                <section class="col-lg-2"></section>
+
+            </div>
+            <!-- /.row (main row) -->
+        </div>
+        <!-- /.container-fluid -->
+    </section>
+    <!-- /.content -->
+</div>

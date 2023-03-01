@@ -4,6 +4,7 @@ using EmcureNPD.Business.Models;
 using EmcureNPD.Data.DataAccess.Core.Repositories;
 using EmcureNPD.Data.DataAccess.Core.UnitOfWork;
 using EmcureNPD.Data.DataAccess.Entity;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -17,45 +18,53 @@ namespace EmcureNPD.Business.Core.Implementation
         private readonly IMapperFactory _mapperFactory;
         private IRepository<MasterRole> _repository { get; set; }
         private readonly IRoleModulePermission _roleModulePermission;
+        private readonly IMasterAuditLogService _auditLogService;
 
-
-
-        public MasterRoleService(IUnitOfWork unitOfWork, IMapperFactory mapperFactory, IRoleModulePermission roleModulePermission)
+        public MasterRoleService(IUnitOfWork unitOfWork, IMasterAuditLogService auditLogService,
+                                IMapperFactory mapperFactory, IRoleModulePermission roleModulePermission)
         {
             _unitOfWork = unitOfWork;
             _mapperFactory = mapperFactory;
             _roleModulePermission = roleModulePermission;
             _repository = _unitOfWork.GetRepository<MasterRole>();
+            _auditLogService = auditLogService;
         }
 
         public async Task<DBOperation> AddUpdateRole(MasterRoleEntity masterRoleEntity)
         {
             MasterRole objRole;
-            List<RoleModulePermissionEntity> objRolePermissions;
-            if (masterRoleEntity.RoleId > 0)
+            var LoggedUserId = masterRoleEntity.LoggedUserId;
+            if (masterRoleEntity.RoleId > 0) //Update existing user
             {
                 objRole = _repository.Get(masterRoleEntity.RoleId);
+                var OldObjRole = objRole;
                 if (objRole != null)
                 {
                     objRole = _mapperFactory.Get<MasterRoleEntity, MasterRole>(masterRoleEntity);
+                    objRole.ModifyBy = LoggedUserId;
+                    objRole.ModifyDate = DateTime.Now;
                     _repository.UpdateAsync(objRole);
+                    await _unitOfWork.SaveChangesAsync();
+
+                    var isSuccess = await _auditLogService.CreateAuditLog<MasterRole>(Utility.Audit.AuditActionType.Update,
+                        Utility.Enums.ModuleEnum.RoleManagement, OldObjRole, objRole,0);
                 }
                 else
                 {
                     return DBOperation.NotFound;
                 }
             }
-            else
+            else //add new user
             {
                 objRole = _mapperFactory.Get<MasterRoleEntity, MasterRole>(masterRoleEntity);
+                objRole.CreatedBy = LoggedUserId;
+                objRole.CreatedDate = DateTime.Now;
                 _repository.AddAsync(objRole);
-            }
-
-            await _unitOfWork.SaveChangesAsync();
+                await _unitOfWork.SaveChangesAsync();
+            }          
 
             if (objRole.RoleId == 0)
                 return DBOperation.Error;
-
 
             #region Add Module Permsson
 
@@ -71,8 +80,6 @@ namespace EmcureNPD.Business.Core.Implementation
             }
 
             #endregion
-
-
 
             return DBOperation.Success;
         }
@@ -95,7 +102,11 @@ namespace EmcureNPD.Business.Core.Implementation
         {
             return _mapperFactory.GetList<MasterRole, MasterRoleEntity>(await _repository.GetAllAsync());
         }
-
+        public async Task<List<MasterRoleEntity>> GetActiveRole()
+        {
+            var ActiveRole = await _repository.GetAllAsync();
+            return _mapperFactory.GetList<MasterRole, MasterRoleEntity>(ActiveRole.Where(x=>x.IsActive==true).ToList());
+        }
         public async Task<MasterRoleEntity> GetById(int id)
         {
             return _mapperFactory.Get<MasterRole, MasterRoleEntity>(await _repository.GetAsync(id));

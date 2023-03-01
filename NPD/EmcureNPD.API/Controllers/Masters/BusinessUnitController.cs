@@ -155,6 +155,36 @@ namespace EmcureNPD.API.Controllers.Masters
         }
 
         /// <summary>
+        /// Description - Get Region By Business Id
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        /// <response code="200">OK</response>
+        /// <response code="400">Bad Request</response>
+        /// <response code="401">Unauthorized</response>
+        /// <response code="403">Forbidden</response>
+        /// <response code="404">Not Found</response>
+        /// <response code="405">Method Not Allowed</response>
+        /// <response code="500">Internal Server</response>
+        [HttpPost("GetRegionByBusinessUnitId/{id}")]
+        public async Task<IActionResult> GetRegionByBusinessUnitId([FromRoute] int id)
+        {
+            try
+            {
+                var oCountryEntity = await _MasterBusinessUnitService.GetRegionByBusinessUnitId(id);
+                if (oCountryEntity != null && oCountryEntity.RegionId > 0)
+                    return _ObjectResponse.Create(oCountryEntity, (Int32)HttpStatusCode.OK);
+                else
+                    return _ObjectResponse.Create(null, (Int32)HttpStatusCode.BadRequest, "Record not found");
+            }
+            catch (Exception ex)
+            {
+                return _ObjectResponse.Create(false, (Int32)HttpStatusCode.InternalServerError, Convert.ToString(ex.StackTrace));
+            }
+        }
+
+
+        /// <summary>
         /// Description - Get Country By Business Id
         /// </summary>
         /// <param name="id"></param>
@@ -166,13 +196,13 @@ namespace EmcureNPD.API.Controllers.Masters
         /// <response code="404">Not Found</response>
         /// <response code="405">Method Not Allowed</response>
         /// <response code="500">Internal Server</response>
-        [HttpPost("GetCountryByBusinessUnitId/{id}")]
-        public async Task<IActionResult> GetCountryByBusinessUnitId([FromRoute] int id)
+        [HttpGet("GetCountryByBusinessUnitId/{BusinessUnitId}")]
+        public async Task<IActionResult> GetCountryByBusinessUnitId([FromRoute] int BusinessUnitId)
         {
             try
             {
-                var oCountryEntity = await _MasterBusinessUnitService.GetCountryByBusinessUnitId(id);
-                if (oCountryEntity != null && oCountryEntity.CountryId > 0)
+                var oCountryEntity = await _MasterBusinessUnitService.GetCountryByBusinessUnitId(BusinessUnitId);
+                if (oCountryEntity != null)
                     return _ObjectResponse.Create(oCountryEntity, (Int32)HttpStatusCode.OK);
                 else
                     return _ObjectResponse.Create(null, (Int32)HttpStatusCode.BadRequest, "Record not found");

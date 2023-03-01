@@ -23,6 +23,7 @@ namespace EmcureNPD.Web
         public Startup(IConfiguration configuration)
         {
             Configuration = configuration;
+            APIURLHelper.Configuration = configuration;
         }
 
         public IConfiguration Configuration { get; }
@@ -53,10 +54,13 @@ namespace EmcureNPD.Web
 
             services.AddControllersWithViews();
 
+            var mvcBuilder = services.AddControllersWithViews();
+
+            services.AddHttpContextAccessor();
+
             //this is set for find webapp base URL
             services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
-
-
+            services.AddTransient<IHelper, Helper>();
 
             services.Configure<CookiePolicyOptions>(options =>
             {
@@ -151,14 +155,14 @@ namespace EmcureNPD.Web
                     pattern: "{controller=Home}/{action=Index}/{id?}");
             });
 
-            var allowedOrigins = Configuration.GetSection("AllowedOrigins").Value.Split(",");
+            //var allowedOrigins = Configuration.GetSection("AllowedOrigins").Value.Split(",");
 
-            app.UseCors(builder => builder
-                                    .WithOrigins(allowedOrigins)
-                                    .AllowAnyMethod()
-                                    .AllowAnyHeader()
-                                    .AllowCredentials()
-            );
+            //app.UseCors(builder => builder
+            //                        .WithOrigins(allowedOrigins)
+            //                        .AllowAnyMethod()
+            //                        .AllowAnyHeader()
+            //                        .AllowCredentials()
+            //);
 
             // Add for Localizer
 

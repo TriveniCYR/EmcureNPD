@@ -1,0 +1,28 @@
+﻿@using Microsoft.Extensions.Localization
+@inject IStringLocalizer<SharedResource> SharedLocalizer
+@model EmcureCERI.Web.Models.PrescriberViewModels.ReasonViewModel
+@{
+    Layout = null;
+}
+
+@using (Html.BeginForm("RejectedPrescriber", "Admin", FormMethod.Post, new { onsubmit = "return SubmitFormReject(this)" }))
+{
+    @Html.HiddenFor(model => model.Id)
+    <div class="row">
+        <div class="col-sm-12">
+            <div class="form-group">
+                @Html.LabelFor(model => model.Reason, htmlAttributes: new { @class = "control-label" })
+                @Html.TextAreaFor(model => model.Reason, new { @class = "form-control input-sm", @rows = 4 })
+                @Html.ValidationMessageFor(model => model.Reason, "", new { @class = "text-danger" })
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-sm-12 text-center">
+            <div class="form-group">
+                <input type="submit" value="@SharedLocalizer["Save"].Value" class="btn btn-default btn-sm" />
+                <button type="button" class="btn btn-default btn-sm" data-dismiss="modal">@SharedLocalizer["Cancel"].Value</button>
+            </div>
+        </div>
+    </div>
+}

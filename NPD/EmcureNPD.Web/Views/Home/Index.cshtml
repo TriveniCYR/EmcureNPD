@@ -1,7 +1,10 @@
-﻿@model EmcureNPD.Business.Models.PIDFEntity
-@*@{
-    ViewData["Title"] = "Dashboard";
-}
+﻿@using Microsoft.AspNetCore.Http
+@using EmcureNPD.Web.Controllers
+@using Microsoft.AspNetCore.Mvc.Localization
+@inject IHttpContextAccessor HttpContextAccessor
+@inject Microsoft.Extensions.Localization.IStringLocalizer<EmcureNPD.Resource.Master> MasterLocalizer
+@inject Microsoft.Extensions.Localization.IStringLocalizer<EmcureNPD.Resource.Shared> SharedLocalizer
+@model EmcureNPD.Business.Models.PIDFEntity
 
 <div class="text-center">
 </div>*@
@@ -245,40 +248,34 @@
                     </div>
                     <!-- /.card -->
 
-                </section>
-                <!-- /.Left col -->
-                <!-- right col (We are only adding the ID to make the widgets sortable)-->
-                <section class="col-lg-6 connectedSortable">
+		</section>
+		<section class="col-lg-6">
+			<div class="card">
+				<div class="card-header ">
+					<h3 class="card-title">
+						<i class="fas fa-map-marker-alt"></i> All Projects - Location Wise
+					</h3>
+				</div>
+				<div class="card-body">
+					<div id="map" style="height: 400px; width: 100%;"></div>
+				</div>
+			</div>
 
-                    <!-- Map card -->
-                    <div class="card">
-                        <div class="card-header ">
-                            <h3 class="card-title">
-                                <i class="fas fa-map-marker-alt mr-1"></i> All Projects - Location Wise
-                            </h3>
-                            <!-- card tools -->
-                            <!-- /.card-tools -->
-                        </div>
-                        <div class="card-body">
-                            <div id="world-map1" style="height: 250px; width: 100%;"></div>
-                        </div>
-                        <!-- /.card-body-->
-                    </div>
-                    <!-- /.card -->
+		</section>
 
-                </section>
-                <!-- right col -->
-            </div>
-            <!-- /.row (main row) -->
-        </div>
-        <!-- /.container-fluid -->
-    </section>
-    <!-- /.content -->
+
+		@*<div class="col-6 background-white-card">
+			<canvas id="chart" width="200" height="200"></canvas>
+		</div>
+		<div class="col-6 background-white-card">
+			<h3>
+				<i class="fas fa-map-marker-alt mr-1"></i> All Projects - Location Wise
+			</h3>
+			<div id="map" style="height: 400px; width: 100%;"></div>
+		</div>*@
+	</div>
 </div>
-<link href="~/css/daterangepicker.css" rel="stylesheet" />
-@*<script src="~/js/daterangepicker.js"></script>
-<script src="~/js/jquery.vmap.sampledata.js"></script>*@
-<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.js"></script>
+
 @section MyScripts {
 
     @Html.Partial("_DataTablePartial")
@@ -318,208 +315,61 @@
     var visitorsData = [];
     var chart = new dhx.Chart("chart", config);
 
-    $(document).ready(function () {
-        var today = new Date();
-        var dd = String(today.getDate()).padStart(2, '0');
-        var mm = String(today.getMonth() + 1).padStart(2, '0');
-        var yyyy = today.getFullYear();
+		$(document).ready(function () {
+			$(function () {
+				var markers = [];
+				var map = $('#map').vectorMap({
+					map: 'world_mill_en',
+					scaleColors: ['#C8EEFF', '#0071A4'],
+					normalizeFunction: 'polynomial',
+					hoverOpacity: 0.7,
+					hoverColor: false,
+					regionStyle: {
+						initial: {
+							fill: '#d2d6de',
+							stroke: '#000000',
+							"stroke-width": .5,
+							"stroke-opacity": 1
+						},
+						hover: {
+							fill: '#A0D1DC'
+						}
+					},
+					backgroundColor: "transparent",
+					markerStyle: {
+						initial: {
+							fill: '#eb3434',
+							stroke: '#383f47'
+						}
+					},
+					series: {
+						markers: markers
+					},
+					onMarkerClick: function (event, index) {
+						var markerData = markers[index];
+						$('#BusinessUnitId').val(markerData.bUnitId);
+						$('#BusinessUnitId').change();
+					}
+				}).vectorMap('get', 'mapObject');
 
-        //today = mm + '/' + dd + '/' + yyyy;
-        today = yyyy + '/' + mm + '/' + dd;
-
-        var d = new Date();
-        d.setDate(d.getDate() - 29);
-        var dd = String(d.getDate()).padStart(2, '0');
-        var mm = String(d.getMonth() + 1).padStart(2, '0');
-        var yyyy = d.getFullYear();
-
-        //d = mm + '/' + dd + '/' + yyyy;
-        d = yyyy + '/' + mm + '/' + dd;
-
-        startdate1 = d;
-        enddate1 = today;
-
-        $('#tempstartdate').text(d);
-        $('#tempenddate').text(today);
-
-        $.ajax({
-            type: "POST",
-            url: '@Url.Action("GetDashboardData1", "Dashboard")/',
-            dataType: "json",
-            data: { fromDate: null, toDate: null, countryName: null },
-            success: function (result) {
-                $('#totalFinanceApproved').text(result.data.dashboardTabDatas.totalFinanceApproved);
-                $('#totalFinalApproved').text(result.data.dashboardTabDatas.totalFinalApproved);
-                $('#totalInitial').text(result.data.dashboardTabDatas.totalInitial);
-                $('#totalPartialApproved').text(result.data.dashboardTabDatas.totalPartialApproved);
-                //Add chart data
-                //var chart = new dhx.Chart("chart", config);
-                chart.data.parse([{
-                    id: "DRF Created",
-                    value: result.data.dashboardTabDatas.totalInitial,
-                    color: "orange"
-                }, {
-                    id: "Dossier Pending",
-                    value: result.data.dashboardTabDatas.totalPartialApproved,
-                    color: "#dc3545"
-                }, {
-                    id: "Project Approved",
-                    value: result.data.dashboardTabDatas.totalFinalApproved,
-                    color: "#28a745"
-                }, {
-                    id: "Dossier Submitted",
-                    value: result.data.dashboardTabDatas.totalFinanceApproved,
-                    color: "#17a2b8"
-                }
-                ]);
-            }
-        });
-    });
-
-
-    // World map by jvectormap
-
-    $.getJSON('/Dashboard/GetDashboardWorldMapData', function (data) {
-        var tempd = '{' + data + '}';
-        $('#world-map1').vectorMap({
-            map: 'world_en',
-            backgroundColor: 'transparent',
-            values: JSON.parse(tempd),
-            //values: sampledata,
-            //scale: ['#ffffff', '#0154ad'],
-            scaleColors: ['#17a2b8', '#28a745', '#ffc107', '#dc3545'],
-
-            normalizeFunction: 'polynomial',
-            regionStyle: {
-                initial: {
-                    fill: 'rgba(255, 255, 255, 0.7)',
-                    'fill-opacity': 1,
-                    stroke: 'rgba(0,0,0,.2)',
-                    'stroke-width': 1,
-                    'stroke-opacity': 1
-                }
-            },
-            series: {
-                regions: [{
-                    //values: sampledata,
-                    //   scale: ['#17a2b8', '#28a745', '#ffc107', '#dc3545'],
-                    normalizeFunction: 'polynomial'
-                }]
-            },
-            onRegionLabelShow: function (e, el, code) {
-                if (typeof visitorsData[code] !== 'undefined') {
-                    el.html(el.html() + ': ' + visitorsData[code] + ' new visitors')
-                }
-            },
-            onRegionClick: function (event, code, region) {
-                var name = (region);
-                //alert(code);
-
-                //alert(startdate1);
-                var fromDate = startdate1;
-                var toDate = enddate1;
-                var countryName = name;
-
-                var data = { fromDate: fromDate, toDate: toDate, countryName: countryName }
-
-                $.ajax({
-                    type: "POST",
-                    url: '@Url.Action("GetDashboardData1", "Dashboard")/',
-                    dataType: "json",
-                    data: data,
-                    success: function (result) {
-                        //console.log(result);
-                        $('#totalFinanceApproved').text(result.data.dashboardTabDatas.totalFinanceApproved);
-                        $('#totalFinalApproved').text(result.data.dashboardTabDatas.totalFinalApproved);
-                        $('#totalInitial').text(result.data.dashboardTabDatas.totalInitial);
-                        $('#totalPartialApproved').text(result.data.dashboardTabDatas.totalPartialApproved);
-
-                        chart.data.parse([{
-                            id: "DRF Created",
-                            value: result.data.dashboardTabDatas.totalInitial,
-                            color: "orange"
-                        }, {
-                            id: "Dossier Pending",
-                            value: result.data.dashboardTabDatas.totalPartialApproved,
-                            color: "#dc3545"
-                        }, {
-                            id: "Project Approved",
-                            value: result.data.dashboardTabDatas.totalFinalApproved,
-                            color: "#28a745"
-                        }, {
-                            id: "Dossier Submitted",
-                            value: result.data.dashboardTabDatas.totalFinanceApproved,
-                            color: "#17a2b8"
-                        }
-                        ]);
-
-
-                    }
-                });
-            },
-        });
-    });
-    //}
-    var testmapdata = "";
-    $(function () {
-
-        $('.daterange1').daterangepicker({
-            ranges: {
-                Today: [moment(), moment()],
-                Yesterday: [moment().subtract(1, 'days'), moment().subtract(1, 'days')],
-                'Last 7 Days': [moment().subtract(6, 'days'), moment()],
-                'Last 30 Days': [moment().subtract(29, 'days'), moment()],
-                'This Month': [moment().startOf('month'), moment().endOf('month')],
-                'Last Month': [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')]
-            },
-            startDate: moment().subtract(29, 'days'),
-            endDate: moment()
-
-        }, function (start, end) {
-            //alert('You chose: ' + start.format('YYYY-MM-DD') + ' - ' + end.format('YYYY-MM-DD'))
-            var fromDate = start.format('YYYY-MM-DD');
-            var toDate = end.format('YYYY-MM-DD');
-            var countryName = null;
-            startdate1 = fromDate;
-            enddate1 = toDate;
-            $('#tempstartdate').text(fromDate);
-            $('#tempenddate').text(toDate);
-            var data = { fromDate: fromDate, toDate: toDate, countryName: countryName }
-            //call mvc controller
-            //console.log(data);
-            $.ajax({
-                type: "POST",
-                url: '@Url.Action("GetDashboardData1", "Dashboard")/',
-                dataType: "json",
-                data: data,
-                success: function (result) {
-                    //console.log(result);
-                    $('#totalFinanceApproved').text(result.data.dashboardTabDatas.totalFinanceApproved);
-                    $('#totalFinalApproved').text(result.data.dashboardTabDatas.totalFinalApproved);
-                    $('#totalInitial').text(result.data.dashboardTabDatas.totalInitial);
-                    $('#totalPartialApproved').text(result.data.dashboardTabDatas.totalPartialApproved);
-
-                    //var chart = new dhx.Chart("chart", config);
-                    chart.data.parse([{
-                        id: "DRF Created",
-                        value: result.data.dashboardTabDatas.totalInitial,
-                        color: "orange"
-                    }, {
-                        id: "Dossier Pending",
-                        value: result.data.dashboardTabDatas.totalPartialApproved,
-                        color: "#dc3545"
-                    }, {
-                        id: "Project Approved",
-                        value: result.data.dashboardTabDatas.totalFinalApproved,
-                        color: "#28a745"
-                    }, {
-                        id: "Dossier Submitted",
-                        value: result.data.dashboardTabDatas.totalFinanceApproved,
-                        color: "#17a2b8"
-                    }]);
-                }
-            });
-        });
-    });
-</script>*@
-
+				$.ajax({
+					url: $('#hdnBaseURL').val() + GetAllDashboard,
+					type: 'GET',
+					success: function (data) {
+						$.each(data.MasterBusinessUnits, function (index, markerData) {
+							var marker = {
+								latLng: [markerData.latitude, markerData.longitude],
+								name: markerData.businessUnitName,
+								bUnitId: markerData.businessUnitId
+							};
+							markers.push(marker);
+						});
+						map.addMarkers(markers);
+						// refresh the map
+						map.updateSize();
+					}
+				});
+			});
+		});
+	</script>
+}

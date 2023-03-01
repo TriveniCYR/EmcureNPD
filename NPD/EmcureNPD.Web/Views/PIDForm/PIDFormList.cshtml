@@ -7,7 +7,7 @@
 @inject Microsoft.Extensions.Localization.IStringLocalizer<MastersController> MasterLocalizer
 @inject Microsoft.Extensions.Localization.IStringLocalizer<EmcureNPD.Resource.Shared> SharedLocalizer
 @{
-    ViewData["Title"] = @MasterLocalizer["IPFTitle"];
+    ViewData["Title"] = @MasterLocalizer["IPD List"];
 }
 <div class="row">
     <section class="col-lg-12">
@@ -23,8 +23,8 @@
                         @Html.Hidden("hdnAdd", (object)ViewBag.Access.Add)
                         @if (@ViewBag.Access.Approve==true)
                         {
-                            <a class="btn btn-success" onClick="approveRejData('A')" id="btnapprv"><i class="far fa-check mr-1"></i> @SharedLocalizer["Approve"]</a>
-                            <a class="btn btn-danger" onClick="approveRejData('R')"><i class="fas fa-redo mr-1"></i> @SharedLocalizer["Reject"]</a>
+                            <a class="btn btn-success" onClick="approveRejData('A')" id="btnapprv"><i class="fa fa-check mr-1"></i> @SharedLocalizer["Approve"]</a>
+                            <a class="btn btn-danger" onClick="approveRejData('R')"><i class="far fa fa-times mr-1"></i> @SharedLocalizer["Reject"]</a>
                         }
                         @*@if (@ViewBag.Access.Add == true || @ViewBag.Access.Edit == true)
                         {
@@ -34,7 +34,8 @@
                     </div>
                 </div>
             </div>
-            <div class="card-body">
+            <div class="card-body" style="overflow-x:auto;">
+               
                 <table id="IPDPIDFTable" class="table table-bordered table-striped table-hover" style="width:100%">
                     <thead>
                         <tr>
@@ -42,10 +43,16 @@
                             <th>@MasterLocalizer["PIDF No"]</th>
                             <th>@MasterLocalizer["Project Name"]</th>
                             <th>@SharedLocalizer["Brand Name"]</th>
-                            <th>@SharedLocalizer["DosageForm Name"]</th>                            
-                            <th>@SharedLocalizer["Product Packaging Type"]</th>
-                            @*<th>@SharedLocalizer["Approved Generics"]</th>*@
-                            @*<th>@SharedLocalizer["Launched Generics"]</th>*@
+                            <th>@SharedLocalizer["DosageForm Name"]</th>                             
+                            <th>@SharedLocalizer["Product Packaging Type"]</th>     
+                            <th>@SharedLocalizer["Approved Generics"]</th>
+                            <th>@SharedLocalizer["Launched Generics"]</th>
+                            <th>@SharedLocalizer["Applicant"]</th>
+                            <th>@SharedLocalizer["Country Name"]</th>
+                            <th>@SharedLocalizer["DIA /ANDA/ ANDS"]</th>
+                            <th>@SharedLocalizer["Transform Form R&D Division"]</th>
+                            <th>@SharedLocalizer["Previous Project Code"]</th>
+                            <th>@SharedLocalizer["Sink Cost"]</th>
                             <th>@SharedLocalizer["Created By"]</th>
                             <th class="text-center">@SharedLocalizer["Action"]</th>
                         </tr>
@@ -132,4 +139,5 @@
             toastr.success(successCallBack);
         }
     </script>
+   
 }

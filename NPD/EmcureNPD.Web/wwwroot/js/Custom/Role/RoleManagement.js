@@ -1,18 +1,14 @@
 ﻿$(document).ready(function () {
     SetupRoleTable();
 
-    //var placeHolderElement = $("#PlaceHolderHere");
-
-    //$('button[data-toggle="modal"]').click(function (event) {
-    //    var url = $(this).data('url');
-    //    $.get(url).done(function (data) {
-    //        placeHolderElement.html(data);
-    //        placeHolderElement.find('.modal').modal('show');
-    //        console.log(data);
-
-    //    });
-
-    //});
+    if (StatusMessage != '') {
+        if (StatusMessage.includes('uccessful')) {
+            toastr.success(StatusMessage);
+        }
+        else {
+            toastr.error(StatusMessage);
+        }
+    }
 
 
 });
@@ -25,13 +21,13 @@ function CleareRoleFields() {
 }
 
 //#region Delete Role
-function ConfirmationRole(id) {
-    alert('Test ' + id);
+function ConfirmationRole(id) {    
     $('#DeleteRoleModel #RoleID').val(id);
 }
 function DeleteRole() {
     var tempInAtiveID = $('#DeleteRoleModel #RoleID').val();
     ajaxServiceMethod($('#hdnBaseURL').val() + DeleteRoleByIdUrl + "/" + tempInAtiveID, 'POST', DeleteRoleByIdSuccess, DeleteRoleByIdError);
+    
 }
 function DeleteRoleByIdSuccess(data) {
     try {
@@ -45,8 +41,10 @@ function DeleteRoleByIdSuccess(data) {
     } catch (e) {
         toastr.error('Error:' + e.message);
     }
+    location.reload(true);
 }
 function DeleteRoleByIdError(x, y, z) {
     toastr.error(ErrorMessage);
+    location.reload(true);
 }
 //#endregion

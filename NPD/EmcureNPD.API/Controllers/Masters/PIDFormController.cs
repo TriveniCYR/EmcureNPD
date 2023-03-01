@@ -7,6 +7,7 @@ using EmcureNPD.Business.Models;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Primitives;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
@@ -16,6 +17,7 @@ using System.IO;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
+using System.Text.Json.Nodes;
 using System.Threading.Tasks;
 using static EmcureNPD.Utility.Enums.GeneralEnum;
 
@@ -32,16 +34,18 @@ namespace EmcureNPD.API.Controllers.Masters
 
         private readonly IResponseHandler<dynamic> _ObjectResponse;
         private readonly IWebHostEnvironment _webHostEnvironment;
+        private readonly ILogger<PIDFormController> _logger;
 
         #endregion Properties
 
         #region Constructor
 
-        public PIDFormController(IPIDFormService PIDFormService, IResponseHandler<dynamic> ObjectResponse, IWebHostEnvironment webHostEnvironment)
+        public PIDFormController(IPIDFormService PIDFormService, IResponseHandler<dynamic> ObjectResponse, IWebHostEnvironment webHostEnvironment, ILogger<PIDFormController> logger)
         {
             _PIDFormService = PIDFormService;
             _ObjectResponse = ObjectResponse;
             _webHostEnvironment = webHostEnvironment;
+            _logger = logger;
         }
 
         #endregion Constructor
@@ -232,6 +236,7 @@ namespace EmcureNPD.API.Controllers.Masters
         {
             try
             {
+                _logger.LogInformation("PIDMedicalForm controller started");
                 medicalModel.TryGetValue("Data", out StringValues Data);
                 dynamic jsonObject = JsonConvert.DeserializeObject(Data);
                 PIDFMedicalViewModel model = new PIDFMedicalViewModel();
@@ -250,17 +255,44 @@ namespace EmcureNPD.API.Controllers.Masters
                         var file = files[i];
                         model.FileName[i] = "Medical\\" + file.FileName;
                     }
-                    var path = _webHostEnvironment.WebRootPath;
-                    var uploadedFile = _PIDFormService.FileUpload(files, path);
                 }
-                DBOperation oResponse = await _PIDFormService.Medical(model);
+                else if(jsonObject.FileName.HasValues)
+                {
+                    object[] myarray = jsonObject.FileName.ToObject<object[]>();
+					int count = myarray.Count(s => s != null);
+                    model.FileName = new string[count];
+                    int i = 0;
+                    foreach (var item in myarray)
+                    {
+						if (item != null)
+                        {
+							var file = item.ToString();
+							model.FileName[i] = "Medical\\" + file;
+                            i++;
+						}
+                    }
+                }
+                var path = Path.Combine(_webHostEnvironment.WebRootPath, "Uploads\\PIDF\\Medical");
+                DBOperation oResponse = await _PIDFormService.Medical(model,files,path);
                 if (oResponse == DBOperation.Success)
+				{
+                    _logger.LogInformation("PIDFormService db operation success and PIDMedicalForm controller completed");
                     return _ObjectResponse.Create(true, (Int32)HttpStatusCode.OK, ("Save Successfully"));
-                else
+                }
+                else if(oResponse == DBOperation.InvalidFile)
+                {
+                    _logger.LogInformation("PIDFormService db operation failed and PIDMedicalForm controller ended");
+                    return _ObjectResponse.Create(false, (Int32)HttpStatusCode.BadRequest, (oResponse == DBOperation.InvalidFile ? "File not supported" : "Bad request"));
+                }
+				else
+				{
+                    _logger.LogInformation("PIDFormService db operation failed and PIDMedicalForm controller ended");
                     return _ObjectResponse.Create(false, (Int32)HttpStatusCode.BadRequest, (oResponse == DBOperation.NotFound ? "Record not found" : "Bad request"));
+                }
             }
             catch (Exception ex)
             {
+                _logger.LogInformation("Exception occured in PIDMedicalForm controller ended");
                 return _ObjectResponse.Create(false, (Int32)HttpStatusCode.InternalServerError, Convert.ToString(ex.StackTrace));
             }
         }
@@ -269,14 +301,23 @@ namespace EmcureNPD.API.Controllers.Masters
         {
             try
             {
+                _logger.LogInformation("GetPIDFMedicalFormData controller started");
                 var oPIDFEntity = await _PIDFormService.GetPIDFMedicalData(pidfId);
                 if (oPIDFEntity != null)
+				{
+                    _logger.LogInformation("_PIDFormService GetPIDFMedicalData succeeded and GetPIDFMedicalFormData controller completed");
                     return _ObjectResponse.Create(oPIDFEntity, (Int32)HttpStatusCode.OK);
-                else
+                }
+				else
+				{
+                    _logger.LogInformation("_PIDFormService GetPIDFMedicalData failed and GetPIDFMedicalFormData controller ended");
                     return _ObjectResponse.Create(null, (Int32)HttpStatusCode.BadRequest, "Record not found");
+                }
+                    
             }
             catch (Exception ex)
             {
+                _logger.LogInformation("Exception occured in GetPIDFMedicalFormData controller ended");
                 return _ObjectResponse.Create(false, (Int32)HttpStatusCode.InternalServerError, Convert.ToString(ex.StackTrace));
             }
         }

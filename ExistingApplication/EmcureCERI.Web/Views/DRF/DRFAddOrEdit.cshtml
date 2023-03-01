@@ -1,0 +1,675 @@
+﻿@inject Microsoft.Extensions.Localization.IStringLocalizer<SharedResource> SharedLocalizer
+@model EmcureCERI.Web.Models.DRFViewModels.DRFViewModel
+@{
+    ViewData["Title"] = "Add DRF";
+}
+
+
+
+
+<div class="content-wrapper pt-5">
+    <section class="content">
+        <div class="container-fluid">
+
+            <div class="row">
+                <section class="col-lg-12 connectedSortable">
+                    <!-- Custom tabs (Charts with tabs)-->
+                    <div class="card">
+                        <div class="card-header">
+                            <h3 class="card-title">
+                                <i class="far fa-plus-square mr-2"></i> Dossier Request Form
+                            </h3>
+                            <div class="card-tools">
+                                <ul class="nav nav-pills ml-auto">
+                                    <li class="nav-item mr-3">
+                                        <a class="btn btn-outline-primary" href="/DRF/DRFList"><i class="far fa-list-alt mr-1"></i> Project List</a>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+
+                        
+                            
+                        <form asp-route-returnUrl="@ViewData["ReturnUrl"]" method="POST" onsubmit="return SubmitForm(this)">
+                            <div class="card-body">
+                                <div class="row">
+                                    <div class="col-md-3">
+                                        <div class="form-group required">
+                                            @Html.LabelFor(model => model.ProductName, new { @class = "control-label" })
+                                            @Html.EditorFor(model => model.ProductName, new { htmlAttributes = new { @autocomplete = "off", @class = "form-control", @placeholder = "Product Name" } })
+                                            @Html.ValidationMessageFor(model => model.ProductName, "", new { @class = "text-danger" })
+                                        </div>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <div class="form-group required">
+                                            @Html.LabelFor(model => model.APIName, new { @class = "control-label" })
+                                            @Html.EditorFor(model => model.APIName, new { htmlAttributes = new { @class = "form-control", autocomplete = "off", @placeholder = "API Name" } })
+                                            @Html.ValidationMessageFor(model => model.APIName, "", new { @class = "text-danger" })
+                                        </div>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <div class="form-group required">
+                                            @Html.LabelFor(model => model.APIVendor, new { @class = "control-label" })
+                                            @Html.EditorFor(model => model.APIVendor, new { htmlAttributes = new { @class = "form-control", autocomplete = "off", @placeholder = "API Vendor" } })
+                                            @Html.ValidationMessageFor(model => model.APIVendor, "", new { @class = "text-danger" })
+                                        </div>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <div class="form-group required">
+                                            @Html.LabelFor(model => model.APIVolume, new { @class = "control-label" })
+                                            @Html.EditorFor(model => model.APIVolume, new { htmlAttributes = new { @class = "form-control", autocomplete = "off", @placeholder = "API Volume" } })
+                                            @Html.ValidationMessageFor(model => model.APIVolume, "", new { @class = "text-danger" })
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-3">
+                                        <div class="form-group required">
+                                            @Html.LabelFor(model => model.Strength, new { @class = "control-label" })
+                                            @Html.EditorFor(model => model.Strength, new { htmlAttributes = new { @class = "form-control", autocomplete = "off", @placeholder = "Strength" } })
+                                            @Html.ValidationMessageFor(model => model.Strength, "", new { @class = "text-danger" })
+                                        </div>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <div class="form-group required">
+                                            @Html.LabelFor(model => model.ModuleName, new { @class = "control-label" })
+                                            @Html.EditorFor(model => model.ModuleName, new { htmlAttributes = new { @class = "form-control", autocomplete = "off", @placeholder = "Module Name" } })
+                                            @Html.ValidationMessageFor(model => model.ModuleName, "", new { @class = "text-danger" })
+                                        </div>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <div class="form-group required">
+                                            @Html.LabelFor(model => model.RegistrationDate, new { @class = "control-label" })
+                                            <div class="input-group date" id="reservationdate" data-target-input="nearest">
+
+                                                @Html.TextBoxFor(model => model.RegistrationDate, new { @class = "form-control ", autocomplete = "off" })
+                                                <div class="input-group-append" data-target="#RegistrationDate" data-toggle="datetimepicker">
+                                                    <div class="input-group-text"><i class="fa fa-calendar"></i></div>
+                                                </div><br>
+
+                                            </div>
+                                            @Html.ValidationMessageFor(model => model.RegistrationDate, "", new { @class = "text-danger" })
+
+                                        </div>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <div class="form-group required">
+                                            @Html.LabelFor(model => model.ReRegistrationDate, new { @class = "control-label" })
+                                            <div class="input-group date" id="reregistrationdate" data-target-input="nearest">
+
+                                                @Html.TextBoxFor(model => model.ReRegistrationDate, new { @class = "form-control ", autocomplete = "off" })
+                                                <div class="input-group-append" data-target="#ReRegistrationDate" data-toggle="datetimepicker">
+                                                    <div class="input-group-text"><i class="fa fa-calendar"></i></div>
+                                                </div><br>
+                                            </div>
+                                            @Html.ValidationMessageFor(model => model.ReRegistrationDate, "", new { @class = "text-danger" })
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="row">
+                                    <div class="col-md-3">
+                                        <div class="form-group required">
+                                            @Html.LabelFor(model => model.RegisterPlant, new { @class = "control-label" })
+                                            @Html.EditorFor(model => model.RegisterPlant, new { htmlAttributes = new { @class = "form-control", autocomplete = "off" } })
+                                            @Html.ValidationMessageFor(model => model.RegisterPlant, "", new { @class = "text-danger" })
+                                        </div>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <div class="form-group required">
+                                            @Html.LabelFor(model => model.TherapeuticCategoryID, new { @class = "control-label" })
+                                            @Html.DropDownListFor(model => model.TherapeuticCategoryID, new SelectList(ViewBag.TherapeuticCategoryList, "Value", "Text", ViewBag.TherapeuticCategoryList), htmlAttributes: new { @class = "form-control input-sm f-s-15 bg-eff4f55c w100per", id = "TherapeuticCategory" })
+                                            @Html.ValidationMessageFor(model => model.TherapeuticCategoryID, "", new { @class = "text-danger" })
+                                        </div>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <div class="form-group required">
+                                            @Html.LabelFor(model => model.ProductManufactureID, new { @class = "control-label" })
+                                            @Html.DropDownListFor(model => model.ProductManufactureID, new SelectList(ViewBag.ProductManufactureList, "Value", "Text", ViewBag.ProductManufactureList), htmlAttributes: new { @class = "form-control input-sm f-s-15 bg-eff4f55c w100per", id = "ProductManufacture" })
+                                            @Html.ValidationMessageFor(model => model.ProductManufactureID, "", new { @class = "text-danger" })
+                                        </div>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <div class="form-group required">
+                                            @Html.LabelFor(model => model.FormulationID, new { @class = "control-label" })
+                                            @Html.DropDownListFor(model => model.FormulationID, new SelectList(ViewBag.FormulationList, "Value", "Text", ViewBag.FormulationList), htmlAttributes: new { @class = "form-control input-sm f-s-15 bg-eff4f55c w100per", id = "Formulation" })
+                                            @Html.ValidationMessageFor(model => model.FormulationID, "", new { @class = "text-danger" })
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="row">
+                                    <div class="col-md-3">
+                                        <div class="form-group required">
+                                            @Html.LabelFor(model => model.DossierTemplateID, new { @class = "control-label" })
+                                            @Html.DropDownListFor(model => model.DossierTemplateID, new SelectList(ViewBag.DossierTemplateList, "Value", "Text", ViewBag.DossierTemplateList), htmlAttributes: new { @class = "form-control input-sm f-s-15 bg-eff4f55c w100per", id = "DossierTemplate" })
+                                            @Html.ValidationMessageFor(model => model.DossierTemplateID, "", new { @class = "text-danger" })
+                                        </div>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <div class="form-group required">
+                                            @Html.LabelFor(model => model.DrugCategoryID, new { @class = "control-label" })
+                                            @Html.DropDownListFor(model => model.DrugCategoryID, new SelectList(ViewBag.DrugCategoryList, "Value", "Text", ViewBag.DrugCategoryList), htmlAttributes: new { @class = "form-control input-sm f-s-15 bg-eff4f55c w100per", id = "DrugCategory" })
+                                            @Html.ValidationMessageFor(model => model.DrugCategoryID, "", new { @class = "text-danger" })
+                                        </div>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <div class="form-group required">
+                                            @Html.LabelFor(model => model.SubmissionChecklist, new { @class = "control-label" })
+                                            <br>
+                                            <div class="icheck-primary d-inline mr-5">
+                                                @*@Html.RadioButtonFor(model => model.SubmissionChecklist, "General", new { id = "General" })*@
+                                                @Html.RadioButton("SubmissionChecklist", "General", true, htmlAttributes: new { @class = "radiobuttons", id = "General" })
+                                                <label for="General">
+                                                    General
+                                                </label>
+                                            </div>
+
+                                            <div class="icheck-primary d-inline">
+                                                @*@Html.RadioButtonFor(model => model.SubmissionChecklist, "NationalFormat", new { id = "NationalFormat" })*@
+                                                @Html.RadioButton("SubmissionChecklist", "NationalFormat", false, htmlAttributes: new { @class = "radiobuttons", id = "NationalFormat" })
+
+                                                <label for="NationalFormat">
+                                                    National Format
+                                                </label>
+                                            </div>
+                                            @Html.ValidationMessageFor(model => model.SubmissionChecklist, "", new { @class = "text-danger" })
+                                        </div>
+                                    </div>
+
+                                    <div class="col-md-3">
+                                        <div class="form-group required">
+                                            <label>&nbsp;</label><br>
+                                            <div class="icheck-primary d-inline">
+                                                @Html.CheckBoxFor(model => model.WHOPQ, new { @class = "" })
+                                                @Html.LabelFor(model => model.WHOPQ)
+
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="row">
+                                    <div class="col-md-3">
+                                        <div class="form-group required">
+                                            @Html.LabelFor(model => model.ContinentID, new { @class = "control-label" })
+                                            @Html.DropDownListFor(model => model.ContinentID, new SelectList(ViewBag.ContinentList, "Value", "Text", ViewBag.ContinentList), htmlAttributes: new { @class = "form-control input-sm f-s-15 bg-eff4f55c w100per", id = "Continent", onchange = "getCountry(this.value)" })
+                                            @Html.ValidationMessageFor(model => model.ContinentID, "", new { @class = "text-danger" })
+                                        </div>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <div class="form-group required">
+                                            @Html.LabelFor(model => model.CountryID, new { @class = "control-label" })
+                                            @Html.DropDownListFor(model => model.CountryID, new SelectList(string.Empty, "Value", "Text"), "Please select option", htmlAttributes: new { @class = "form-control input-sm f-s-15 bg-eff4f55c w100per", id = "Country", onchange = "saveCountry(this.value)" })
+                                            @Html.ValidationMessageFor(model => model.CountryID, "", new { @class = "text-danger" })
+                                        </div>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <div class="form-group required">
+                                            @Html.Label("Do you want to attached PIDF ?")<br>
+
+                                            <div class="icheck-primary d-inline mr-5">
+                                                @Html.RadioButton("AttachedPIDF", "Yes", false, htmlAttributes: new { @class = "radiobuttons", id = "RadioYes" })
+                                                <label for="RadioYes">
+                                                    Yes
+                                                </label>
+                                            </div>
+
+                                            <div class="icheck-primary d-inline mr-5">
+                                                @Html.RadioButton("AttachedPIDF", "No", true, htmlAttributes: new { @class = "radiobuttons", id = "RadioNo" })
+                                                <label for="RadioNo">
+                                                    No
+                                                </label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <div class="form-group required">
+                                            <label></label><br>
+                                            <span class="showlink"><a class="btn btn-outline-primary" onclick="PopupForm()" style="cursor:pointer"><i class="fas fa-paperclip mr-2"></i>@SharedLocalizer["Attached PIDF"].Value</a></span>
+                                        </div>
+                                    </div>
+
+                                </div>
+
+
+
+
+                                @Html.Hidden("PIDFID")
+                                @Html.Hidden("RedirectTo", Url.Action("DRFList", "DRF"))
+                                @Html.HiddenFor(model => model.RegistrationFeesArray)
+                                <div class="row">
+                                    <div class="col-md-12 text-center">
+                                        <div class="form-group required">
+                                            <label class="control-label mr-2">@SharedLocalizer["Registration Fees"].Value</label>
+                                            <a class="btn btn-outline-primary" onclick="PopupRegistrationFees()" style="cursor:pointer"><i class="fas fa-file-invoice mr-2"></i>Click Here</a>
+
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </div>
+
+
+                            <div id="AttachedPIDFViewModal" class="modal themeModal " role="dialog">
+                                <div class="modal-dialog">
+                                    <!-- Modal content-->
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <h5 class="modal-title">@SharedLocalizer["Attached PIDF"].Value</h5>
+                                            <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                        </div>
+                                        <div class="modal-body">
+                                            <p></p>
+
+                                            <div class="tableContainer clearfix">
+                                                <div class="table-responsive">
+                                                    <table id="AttachedPRDFTable" class="table stripe row-border order-column" style="width:100%">
+                                                        <thead>
+                                                            <tr>
+                                                                <th>&nbsp;</th>
+                                                                <th>@SharedLocalizer["PIDF ID"].Value</th>
+                                                                <th>@SharedLocalizer["Project Name"].Value</th>
+                                                                <th>@SharedLocalizer["Continent"].Value</th>
+                                                                <th>@SharedLocalizer["Country"].Value</th>
+                                                                @*<th style="display:none">@SharedLocalizer["Id"].Value</th>*@
+
+
+                                                            </tr>
+                                                        </thead>
+                                                    </table>
+                                                </div>
+                                            </div>
+                                            <button type="button" class="btn btn-default AttachedPIDFDisabled" onclick="SaveAttachedPIDF()">@SharedLocalizer["Save"].Value</button>&nbsp;
+                                            <button cl type="button" class="btn btn-danger" onclick="closeAttachedPIDF()" title="Cancel">Cancel</button>
+
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div id="RegistrationFeesViewModal" class="modal themeModal " role="dialog">
+                                <div class="modal-dialog">
+                                    <!-- Modal content-->
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <h5 class="modal-title">@SharedLocalizer["Registration Fees"].Value</h5>
+                                            <button type="button" class="close align-self-right" data-dismiss="modal">&times;</button>
+                                        </div>
+                                        
+
+                                        <div class="modal-body">
+                                            <p></p>
+
+                                            <div class="tableContainer clearfix">
+                                                <div class="table-responsive">
+                                                    <table id="RegistrationFeesTable" class="table stripe row-border order-column" style="width:100%">
+                                                        <thead>
+                                                            <tr>
+                                                                <th>@SharedLocalizer["ID"].Value</th>
+                                                                <th>@SharedLocalizer["Name"].Value</th>
+                                                                <th>@SharedLocalizer["Value in %"].Value</th>
+                                                            </tr>
+                                                        </thead>
+                                                    </table>
+                                                </div>
+                                            </div>
+                                            <button type="button" name="submit" class="btn btn-default RegistrationFeesDisabled" onclick="SaveRegistrationFees()">@SharedLocalizer["Save"].Value</button>&nbsp;
+                                            <button type="button" class="btn btn-danger" onclick="CloseRegistrationFees()" title="Cancel">@SharedLocalizer["Cancel"].Value</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+
+
+                            <div class="card-footer text-center">
+                                <button type="submit" class="btn btn-primary mr-2 attachedDisabled">@SharedLocalizer["Save"].Value</button>
+                                <a class="btn btn-primary" asp-area="" asp-controller="DRF" asp-action="DRFList">@SharedLocalizer["Cancel"].Value</a>
+                            </div>
+                        </form>
+                    </div>
+                </section>
+            </div>
+        </div>
+    </section>
+
+</div>
+            <script type="text/javascript">
+
+                $(document).ready(function () {
+                    if (valueArray.length == 0) {
+                        $(".attachedDisabled").prop("disabled", true);
+                    }
+                    else {
+                        $(".attachedDisabled").prop("disabled", false);
+                    }
+
+                });
+
+        $(".showlink").hide();
+    $(function () {
+        $('#RegistrationDate').datetimepicker({
+                format: 'DD-MM-YYYY'
+        });
+        $('#reservationdate .fa-calendar').click(function () {
+            $("#RegistrationDate").focus();
+        });
+
+
+        $('#ReRegistrationDate').datetimepicker({
+            format: 'DD-MM-YYYY'
+        });
+        $('#reregistrationdate .fa-calendar').click(function () {
+            $("#ReRegistrationDate").focus();
+        });
+    });
+
+    var CountryID = 0;
+    function saveCountry(CID){
+        console.log(CID);
+        CountryID = CID;
+    }
+
+    function PopupForm() {
+        $('#AttachedPIDFViewModal').modal('show');
+
+            $(".AttachedPIDFDisabled").prop("disabled", true);
+
+         var dataTable = $('#AttachedPRDFTable').DataTable({
+             responsive: true,
+             retrieve: true,
+             paging: false,
+                searching: false,
+                sort: false,
+                "bInfo": false,
+                language: {
+                    "emptyTable": "@SharedLocalizer["No data available in table"].Value",
+                    "info": "@SharedLocalizer["Showing _START_ to _END_ of _TOTAL_ entries"].Value",
+                    "infoEmpty":"@SharedLocalizer["Showing 0 to 0 of 0 entries"].Value",
+                    "infoFiltered":"@SharedLocalizer["(filtered from _MAX_ total entries)"].Value",
+                    "lengthMenu":"@SharedLocalizer["Show _MENU_ entries"].Value",
+                    "loadingRecords": "@SharedLocalizer["Loading..."].Value",
+                    "processing": "@SharedLocalizer["Processing..."].Value",
+                    "search": "@SharedLocalizer["Search"].Value",
+                    "zeroRecords":"@SharedLocalizer["No matching records found"].Value",
+                    "paginate": {
+                        "first":"@SharedLocalizer["First"].Value",
+                        "last":"@SharedLocalizer["Last"].Value",
+                        "next": "@SharedLocalizer["Next"].Value",
+                        "previous":"@SharedLocalizer["Previous"].Value"
+                    },
+                }
+            });
+
+        var data = {
+            "CountryID": parseInt(CountryID)
+        }
+
+        console.log(data);
+          $.ajax({
+                    type: "POST",
+                    url: '@Url.Action("GetPIDFListForAttached", "DRF")/',
+                    //contentType: "application/json; charset=utf-8",
+                    dataType: "json",
+                    data: data,
+                    success: function (response) {
+                       // console.log(response);
+
+                         var jsonObject = response.data;
+                        var result = jsonObject.map(function (item) {
+                            var result = [];
+                            result.push("<input class='getIndex'onclick='SetValue(" + item.id +")' type='radio' name='SetPIDFID' id='SetPIDFID'>");
+                            result.push(item.productId);
+                            result.push(item.productName);
+                            result.push(item.region);
+                            result.push(item.country);
+                            return result;
+                        });
+
+                         dataTable.clear();
+                        dataTable.rows.add(result); // add to DataTable instance
+                        dataTable.draw();
+                    },
+                    failure: function () {
+                         $("#AttachedPRDFTable").append('@SharedLocalizer["Error when fetching data please contact administrator"].Value');
+                    }
+                });
+
+
+
+
+    }
+
+
+    var selectedRow = 0;
+     var valueArray = [];
+    function SetValue(value) {
+        selectedRow = value;
+        document.getElementById('PIDFID').value=selectedRow
+         $(".AttachedPIDFDisabled").prop("disabled", false);
+        console.log(selectedRow);
+    }
+
+    function closeAttachedPIDF() {
+        selectedRow = 0;
+         $('#AttachedPIDFViewModal').modal('hide');
+        console.log(selectedRow);
+    }
+
+    function SaveAttachedPIDF() {
+       // $(".attachedDisabled").prop("disabled", false);
+        $('#AttachedPIDFViewModal').modal('hide');
+        return false;
+      //   console.log(selectedRow);
+    }
+
+    function SaveRegistrationFees() {
+        valueArray = [];
+         var table = $('#RegistrationFeesTable').DataTable();
+        var data = table.rows().data();
+        data.each(function (value, index) {
+            var temp = {
+                ID: $('#primaryKey_' + index).text(),
+                Value :$('#txt_' + index).val()
+            };
+            valueArray.push(temp);
+            // console.log(`For index ${index}, data value is ${value}`);
+         });
+
+        var calculated_total_sum = 0
+
+        for (var i = 0; i < valueArray.length; i++)
+        {
+            if (valueArray[i].Value == null || valueArray[i].Value == "" || valueArray[i].Value == undefined) {
+                openCommonModal('alertModal modal-sm', '@SharedLocalizer["Error"].Value', 'Please Enter numeric in value (%) Field. Note: Percentage should be number and it can be between 0 to 100', false);
+                return false;
+
+            }
+            else {
+                calculated_total_sum = calculated_total_sum + parseInt(valueArray[i].Value);
+            }
+        }
+
+        if (calculated_total_sum == 100) {
+
+            document.getElementById('RegistrationFeesArray').value = JSON.stringify(valueArray);
+            $('#RegistrationFeesViewModal').modal('hide');
+            $(".attachedDisabled").prop("disabled", false);
+
+        }
+        else {
+            openCommonModal('alertModal modal-sm', '@SharedLocalizer["Error"].Value', 'Addition of all must be 100 percent(%)', false);
+            return false;
+        }
+
+
+    }
+
+    function CloseRegistrationFees() {
+         $('#RegistrationFeesViewModal').modal('hide');
+    }
+
+    function getCountry(continentID) {
+        var data = { "ContinentID": continentID };
+
+        console.log(JSON.stringify(data));
+
+         $("#Country").empty();
+            $.ajax({
+                type: 'POST',
+                url: '@Url.Action("GetCountryList")', // we are calling json method
+                dataType: 'json',
+                data: data,
+                success: function (response) {
+
+                    $.each(response, function (i, country) {
+                    $("#Country").append('<option value="' + country.value + '">' +
+                         country.text + '</option>');
+                    });
+                },
+                error: function (ex) {
+                    alert('Failed to retrieve country.' + ex);
+                }
+            });
+    }
+
+
+$('.radiobuttons').click(function() {
+
+      var radio_value = $(this).val();
+
+        if (radio_value == 'Yes') {
+            $(".showlink").show();
+            $(".attachedDisabled").prop("disabled", true);
+        }
+        else {
+            $(".showlink").hide();
+            selectedRow = null;
+            console.log(valueArray);
+            if (valueArray.length == 0) {
+                 $(".attachedDisabled").prop("disabled", true);
+            }
+            else {
+                 $(".attachedDisabled").prop("disabled", false);
+            }
+
+
+        }
+
+});
+
+    function SubmitForm(form) {
+        var url= $("#RedirectTo").val();
+            $.validator.unobtrusive.parse(form);
+            if ($(form).valid()) {
+                $.ajax({
+                    type : "POST",
+                    url : form.action,
+                    data : $(form).serialize(),
+                    success: function (result) {
+                        console.log(result);
+                        if (result.data === "success") {
+                            openCommonModal('successModal modal-sm', '@Html.Raw(SharedLocalizer["Success"].Value)', '@Html.Raw(SharedLocalizer["Record has been added successfully."].Value)', true);
+                            setTimeout(function(){ location.href = url; }, 2000);
+
+                        }
+                        else {
+                            openCommonModal('alertModal modal-sm', '@SharedLocalizer["Error"].Value', result.message, false);
+                        }
+                    }
+                });
+            }
+            return false;
+    }
+
+     function PopupRegistrationFees() {
+
+        $('#RegistrationFeesViewModal').modal('show');
+
+         if (valueArray.length == 0) {
+
+             var dataTable = $('#RegistrationFeesTable').DataTable({
+                 responsive: true,
+                 retrieve: true,
+                 paging: false,
+                 searching: false,
+                 sort: false,
+                 "bInfo" : false,
+                 language: {
+                     "emptyTable": "@SharedLocalizer["No data available in table"].Value",
+                     "info": "@SharedLocalizer["Showing _START_ to _END_ of _TOTAL_ entries"].Value",
+                     "infoEmpty": "@SharedLocalizer["Showing 0 to 0 of 0 entries"].Value",
+                     "infoFiltered": "@SharedLocalizer["(filtered from _MAX_ total entries)"].Value",
+                     "lengthMenu": "@SharedLocalizer["Show _MENU_ entries"].Value",
+                     "loadingRecords": "@SharedLocalizer["Loading..."].Value",
+                     "processing": "@SharedLocalizer["Processing..."].Value",
+                     "search": "@SharedLocalizer["Search"].Value",
+                     "zeroRecords": "@SharedLocalizer["No matching records found"].Value",
+                     "paginate": {
+                         "first": "@SharedLocalizer["First"].Value",
+                         "last": "@SharedLocalizer["Last"].Value",
+                         "next": "@SharedLocalizer["Next"].Value",
+                         "previous": "@SharedLocalizer["Previous"].Value"
+                     },
+                 }
+             });
+
+
+
+             $.ajax({
+                 type: "POST",
+                 url: '@Url.Action("GetRegistrationFees", "DRF")/',
+                 contentType: "application/json; charset=utf-8",
+                 dataType: "json",
+                 success: function (response) {
+                     var idx = 0;
+                     var jsonObject = response.data;
+                     var result = jsonObject.map(function (item) {
+                         var result = [];
+                         result.push("<Label id='primaryKey_" + idx + "' value=" + item.Id + ">"+item.Id+"</Label>")
+                         result.push(item.Name);
+
+                         result.push("<input id='txt_" + idx + "' style='text-align:right; border: revert;' value=" + item.Percentage + " maxlength='3' type='text'/>");
+                         idx++;
+                         return result;
+                     });
+
+                     dataTable.clear();
+                     dataTable.rows.add(result);
+                     dataTable.draw();
+                 },
+                 failure: function () {
+                     $("#RegistrationFeesTable").append('@SharedLocalizer["Error when fetching data please contact administrator"].Value');
+                 }
+             });
+
+         }
+         else {
+
+         }
+    }
+
+
+          $('#RegistrationFeesTable').on('keypress', ' tbody tr td input', function () {
+              var charCode = window.event.keyCode;
+                if (charCode > 31 && (charCode < 48 || charCode > 57)) {
+                    return false;
+              }
+                return true;
+            });
+
+            </script>
+
+
+            <style type="text/css">
+                .dateicon {
+                    position: relative;
+                }
+
+                    .dateicon span {
+                        position: absolute;
+                        top: 10px;
+                        right: 1px;
+                    }
+            </style>

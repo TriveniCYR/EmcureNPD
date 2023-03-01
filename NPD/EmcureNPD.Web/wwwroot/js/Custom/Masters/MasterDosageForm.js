@@ -10,7 +10,7 @@ function GetDosageFormListSuccess(data) {
     try {
         $('#DosageFormTable tbody').html('')
         $.each(data._object, function (index, object) {
-            $('#DosageFormTable tbody').append('<tr><td>' + object.dosageFormName + '</td><td><span style="color:' + (object.isActive ? "green" : "red") + '">' + (object.isActive ? "Active" : "InActive") + '</span></td><td>  <a class="btn btn-primary" data-toggle="modal" data-target="#SaveDosageFormModel" data-backdrop="static" data-keyboard="false"  onclick="GetDosageFormById(' + object.dosageFormId + '); return false;"><i class="fa fa-fw fa-edit mr-1"></i> ' + EditLabel + '</a> <a class="btn btn-danger" data-toggle="modal" data-target="#DeleteDosageFormModel" data-backdrop="static" data-keyboard="false" onclick="ConfirmationDeleteDosageForm(' + object.dosageFormId + '); return false;"><i class="fa fa-fw fa-trash mr-1"></i> ' + DeleteLabel + '</a>  </td></tr>');
+            $('#DosageFormTable tbody').append('<tr><td>' + object.dosageFormName + '</td><td><span style="color:' + (object.isActive ? "green" : "red") + '">' + (object.isActive ? "Active" : "InActive") + '</span></td><td>  <a class="large-font" style="' + IsEditAllow + '" href="" title="Edit" data-toggle="modal" data-target="#SaveDosageFormModel" data-backdrop="static" data-keyboard="false"  onclick="GetDosageFormById(' + object.dosageFormId + '); return false;"><i class="fa fa-fw fa-edit mr-1"></i> ' + '</a> <a class="large-font text-danger" style="' + IsDeleteAllow +'" href="" title="Delete" data-toggle="modal" data-target="#DeleteDosageFormModel" data-backdrop="static" data-keyboard="false" onclick="ConfirmationDeleteDosageForm(' + object.dosageFormId + '); return false;"><i class="fa fa-fw fa-trash mr-1"></i> ' + '</a>  </td></tr>');
         });
         StaticDataTable("#DosageFormTable");
     } catch (e) {
@@ -28,6 +28,7 @@ function GetDosageFormById(id) {
 }
 function GetDosageFormByIdSuccess(data) {
     try {
+        CleareDosageFormFields();
         $('#SaveDosageFormModel #DosageFormID').val(data._object.dosageFormId);
         $('#SaveDosageFormModel #DosageFormName').val(data._object.dosageFormName);
         $('#SaveDosageFormModel #DosageFormTitle').html(UpdateLabel);
@@ -82,6 +83,12 @@ function CleareDosageFormFields() {
     $('#SaveDosageFormModel #DosageFormID').val("0");
     $('#SaveDosageFormModel #DosageFormName').val("");
     $('#DeleteDosageFormModel #DosageFormID').val("0");
+    var validationMessages = document.querySelectorAll(".field-validation-error");
+
+    // Loop through the messages and clear them
+    for (var i = 0; i < validationMessages.length; i++) {
+        validationMessages[i].textContent = "";
+    }
 }
 // #endregion
 

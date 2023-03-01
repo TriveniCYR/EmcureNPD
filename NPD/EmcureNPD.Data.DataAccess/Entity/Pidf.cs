@@ -9,14 +9,19 @@ namespace EmcureNPD.Data.DataAccess.Entity
     {
         public Pidf()
         {
+            PidfApiCharters = new HashSet<PidfApiCharter>();
             PidfApiIpds = new HashSet<PidfApiIpd>();
+            PidfApiRnDs = new HashSet<PidfApiRnD>();
             PidfCommercials = new HashSet<PidfCommercial>();
             PidfIpds = new HashSet<PidfIpd>();
             PidfMedicals = new HashSet<PidfMedical>();
+            PidfPbfAnalyticals = new HashSet<PidfPbfAnalytical>();
+            PidfPbfClinicals = new HashSet<PidfPbfClinical>();
             PidfPbfRnDs = new HashSet<PidfPbfRnD>();
             PidfPbfs = new HashSet<PidfPbf>();
             Pidfapidetails = new HashSet<Pidfapidetail>();
             PidfproductStrengths = new HashSet<PidfproductStrength>();
+            PidfstatusHistories = new HashSet<PidfstatusHistory>();
         }
 
         public long Pidfid { get; set; }
@@ -32,7 +37,7 @@ namespace EmcureNPD.Data.DataAccess.Entity
         public string LaunchedGenerics { get; set; }
         public string Rfdbrand { get; set; }
         public string Rfdapplicant { get; set; }
-        public int? RfdcountryId { get; set; }
+        public int RfdcountryId { get; set; }
         public string Rfdindication { get; set; }
         public string Rfdinnovators { get; set; }
         public string RfdinitialRevenuePotential { get; set; }
@@ -48,8 +53,11 @@ namespace EmcureNPD.Data.DataAccess.Entity
         public bool? InHouses { get; set; }
         public int? MarketExtenstionId { get; set; }
         public int? Diaid { get; set; }
+        public int? StatusUpdatedBy { get; set; }
+        public DateTime? StatusUpdatedDate { get; set; }
 
         public virtual MasterBusinessUnit BusinessUnit { get; set; }
+        public virtual MasterUser CreatedByNavigation { get; set; }
         public virtual MasterDium Dia { get; set; }
         public virtual MasterDosageForm DosageForm { get; set; }
         public virtual MasterPidfstatus LastStatus { get; set; }
@@ -59,13 +67,18 @@ namespace EmcureNPD.Data.DataAccess.Entity
         public virtual MasterCountry Rfdcountry { get; set; }
         public virtual MasterPidfstatus Status { get; set; }
         public virtual MasterUnitofMeasurement UnitofMeasurement { get; set; }
+        public virtual ICollection<PidfApiCharter> PidfApiCharters { get; set; }
         public virtual ICollection<PidfApiIpd> PidfApiIpds { get; set; }
+        public virtual ICollection<PidfApiRnD> PidfApiRnDs { get; set; }
         public virtual ICollection<PidfCommercial> PidfCommercials { get; set; }
         public virtual ICollection<PidfIpd> PidfIpds { get; set; }
         public virtual ICollection<PidfMedical> PidfMedicals { get; set; }
+        public virtual ICollection<PidfPbfAnalytical> PidfPbfAnalyticals { get; set; }
+        public virtual ICollection<PidfPbfClinical> PidfPbfClinicals { get; set; }
         public virtual ICollection<PidfPbfRnD> PidfPbfRnDs { get; set; }
         public virtual ICollection<PidfPbf> PidfPbfs { get; set; }
         public virtual ICollection<Pidfapidetail> Pidfapidetails { get; set; }
         public virtual ICollection<PidfproductStrength> PidfproductStrengths { get; set; }
+        public virtual ICollection<PidfstatusHistory> PidfstatusHistories { get; set; }
     }
 }

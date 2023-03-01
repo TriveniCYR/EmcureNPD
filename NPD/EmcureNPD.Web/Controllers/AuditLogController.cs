@@ -1,8 +1,12 @@
 ﻿using EmcureNPD.Business.Models;
+using EmcureNPD.Utility.Models;
+using EmcureNPD.Utility.Utility;
 using EmcureNPD.Web.Helpers;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 using System.Net.Http;
 
@@ -35,8 +39,20 @@ namespace EmcureNPD.Web.Controllers
             //}
             //else
             //{
-                return View();
+            int rolId = (int)HttpContext.Session.GetInt32(UserHelper.LoggedInRoleId);
+            RolePermissionModel objPermssion = UtilityHelper.GetCntrActionAccess(Convert.ToString(RouteData.Values["controller"]), rolId);
+            if (objPermssion == null || !objPermssion.View)
+            {
+                return RedirectToAction("AccessRestriction", "Home");
+            }
+            return View();
             //}
         }
-    }
+		public ActionResult AuditLogPartialView(DateTime createdDate, string createdBy,string log)
+		{
+            ViewBag.log = JsonConvert.DeserializeObject(log);
+		    var Model = new AuditLogEntity { CreatedDate = createdDate, CreatedBy = createdBy };
+			return PartialView("_AuditLogPartialView", Model);
+		}
+	}
 }

@@ -10,7 +10,7 @@ function GetDIAListSuccess(data) {
     try {
         $('#DIATable tbody').html('')
         $.each(data._object, function (index, object) {
-            $('#DIATable tbody').append('<tr><td>' + object.diaName + '</td><td><span style="color:' + (object.isActive ? "green" : "red") + '">' + (object.isActive ? "Active" : "InActive") + '</span></td><td>  <a class="btn btn-primary" data-toggle="modal" data-target="#SaveDIAModel" data-backdrop="static" data-keyboard="false"  onclick="GetDIAById(' + object.diaId + '); return false;"><i class="fa fa-fw fa-edit mr-1"></i> ' + EditLabel + '</a> <a class="btn btn-danger" data-toggle="modal" data-target="#DeleteDIAModel" data-backdrop="static" data-keyboard="false" onclick="ConfirmationDeleteDIA(' + object.diaId + '); return false;"><i class="fa fa-fw fa-trash mr-1"></i> ' + DeleteLabel + '</a>  </td></tr>');
+            $('#DIATable tbody').append('<tr><td>' + object.diaName + '</td><td><span style="color:' + (object.isActive ? "green" : "red") + '">' + (object.isActive ? "Active" : "InActive") + '</span></td><td>  <a class="large-font" style="' + IsEditAllow + '" href="" title="Edit" data-toggle="modal" data-target="#SaveDIAModel" data-backdrop="static" data-keyboard="false"  onclick="GetDIAById(' + object.diaId + '); return false;"><i class="fa fa-fw fa-edit mr-1"></i> ' + '</a> <a class="large-font text-danger" style="' + IsDeleteAllow +'" href="" title="Delete" data-toggle="modal" data-target="#DeleteDIAModel" data-backdrop="static" data-keyboard="false" onclick="ConfirmationDeleteDIA(' + object.diaId + '); return false;"><i class="fa fa-fw fa-trash mr-1"></i> ' + '</a>  </td></tr>');
         });
         StaticDataTable("#DIATable");
     } catch (e) {
@@ -28,6 +28,7 @@ function GetDIAById(id) {
 }
 function GetDIAByIdSuccess(data) {
     try {
+        CleareDIAFields();
         $('#SaveDIAModel #DIAID').val(data._object.diaId);
         $('#SaveDIAModel #DIAName').val(data._object.diaName);
         $('#SaveDIAModel #DIATitle').html(UpdateLabel);
@@ -82,6 +83,12 @@ function CleareDIAFields() {
     $('#SaveDIAModel #DIAID').val("0");
     $('#SaveDIAModel #DIAName').val("");
     $('#DeleteDIAModel #DIAID').val("0");
+    var validationMessages = document.querySelectorAll(".field-validation-error");
+
+    // Loop through the messages and clear them
+    for (var i = 0; i < validationMessages.length; i++) {
+        validationMessages[i].textContent = "";
+    }
 }
 // #endregion
 

@@ -10,7 +10,7 @@ function GetWorkflowListSuccess(data) {
     try {
         $('#WorkflowTable tbody').html('')
         $.each(data._object, function (index, object) {
-            $('#WorkflowTable tbody').append('<tr><td>' + object.workflowName + '</td><td><span style="color:' + (object.isActive ? "green" : "red") + '">' + (object.isActive ? "Active" : "InActive") + '</span></td><td>  <a class="btn btn-primary" data-toggle="modal" data-target="#SaveWorkflowModel" data-backdrop="static" data-keyboard="false"  onclick="GetWorkflowById(' + object.workflowId + '); return false;"><i class="fa fa-fw fa-edit mr-1"></i> ' + EditLabel + '</a> <a class="btn btn-danger" data-toggle="modal" data-target="#DeleteWorkflowModel" data-backdrop="static" data-keyboard="false" onclick="ConfirmationDeleteWorkflow(' + object.workflowId + '); return false;"><i class="fa fa-fw fa-trash mr-1"></i> ' + DeleteLabel + '</a>  </td></tr>');
+            $('#WorkflowTable tbody').append('<tr><td>' + object.workflowName + '</td><td><span style="color:' + (object.isActive ? "green" : "red") + '">' + (object.isActive ? "Active" : "InActive") + '</span></td><td>  <a class="large-font" style="' + IsEditAllow + '" href="" title="Edit" data-toggle="modal" data-target="#SaveWorkflowModel" data-backdrop="static" data-keyboard="false"  onclick="GetWorkflowById(' + object.workflowId + '); return false;"><i class="fa fa-fw fa-edit mr-1"></i> ' + '</a> <a class="large-font text-danger" style="' + IsDeleteAllow +'" href="" title="Delete" data-toggle="modal" data-target="#DeleteWorkflowModel" data-backdrop="static" data-keyboard="false" onclick="ConfirmationDeleteWorkflow(' + object.workflowId + '); return false;"><i class="fa fa-fw fa-trash mr-1"></i> ' + '</a>  </td></tr>');
         });
         StaticDataTable("#WorkflowTable");
     } catch (e) {
@@ -28,6 +28,7 @@ function GetWorkflowById(id) {
 }
 function GetWorkflowByIdSuccess(data) {
     try {
+        CleareWorkflowFields();
         $('#SaveWorkflowModel #WorkflowID').val(data._object.workflowId);
         $('#SaveWorkflowModel #WorkflowName').val(data._object.workflowName);
         $('#SaveWorkflowModel #WorkflowTitle').html(UpdateLabel);
@@ -82,6 +83,12 @@ function CleareWorkflowFields() {
     $('#SaveWorkflowModel #WorkflowID').val("0");
     $('#SaveWorkflowModel #WorkflowName').val("");
     $('#DeleteWorkflowModel #WorkflowID').val("0");
+    var validationMessages = document.querySelectorAll(".field-validation-error");
+
+    // Loop through the messages and clear them
+    for (var i = 0; i < validationMessages.length; i++) {
+        validationMessages[i].textContent = "";
+    }
 }
 // #endregion
 

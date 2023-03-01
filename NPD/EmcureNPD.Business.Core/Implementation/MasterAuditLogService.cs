@@ -25,6 +25,7 @@ namespace EmcureNPD.Business.Core.Implementation
         private IRepository<MasterAuditLog> _repository { get; set; }
         private IRepository<MasterModule> _moduleRepository { get; set; }
         private IRepository<MasterUser> _userRepository { get; set; }
+        private IRepository<Pidf> _pidfrepository { get; set; }
         public MasterAuditLogService(IUnitOfWork unitOfWork, IMapperFactory mapperFactory)
         {
             _unitOfWork = unitOfWork;
@@ -32,8 +33,10 @@ namespace EmcureNPD.Business.Core.Implementation
             _repository = _unitOfWork.GetRepository<MasterAuditLog>();
             _moduleRepository = _unitOfWork.GetRepository<MasterModule>();
             _userRepository = _unitOfWork.GetRepository<MasterUser>();
+            _pidfrepository = unitOfWork.GetRepository<Pidf>();
         }
-        public async Task<DBOperation> CreateAuditLog<TResult>(AuditActionType auditActionType, ModuleEnum moduleEnum, TResult Old, TResult New, int? PrimaryId) where TResult : new()
+        public async Task<DBOperation> CreateAuditLog<TResult>(AuditActionType auditActionType,  
+            ModuleEnum moduleEnum, TResult Old, TResult New, int? PrimaryId) where TResult : new()
         {
             MasterAuditLog objAuditLog;
             var entityAuditLog = new MasterAuditLogEntity
@@ -55,7 +58,20 @@ namespace EmcureNPD.Business.Core.Implementation
             }
             return DBOperation.Success;
         }
-
+        public async Task<DBOperation> UpdatePIDFStatusCommon(long PidfId, int StatusId, int StatusUpdatedBy)
+        {
+           var _objExistingPIDF=  _pidfrepository.Get(x=>x.Pidfid== PidfId);
+            if (_objExistingPIDF != null)
+            {
+                _objExistingPIDF.LastStatusId = _objExistingPIDF.StatusId;
+                _objExistingPIDF.StatusId = StatusId;               
+                _objExistingPIDF.StatusUpdatedBy = StatusUpdatedBy;
+                _objExistingPIDF.StatusUpdatedDate= DateTime.Now;
+                _pidfrepository.UpdateAsync(_objExistingPIDF);
+            }
+            await _unitOfWork.SaveChangesAsync();
+            return DBOperation.Success;
+        }
         public Task<List<MasterAuditLogEntity>> GetAllAuditLog()
         {
             throw new NotImplementedException();

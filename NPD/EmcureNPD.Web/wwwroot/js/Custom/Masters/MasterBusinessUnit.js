@@ -1,25 +1,25 @@
 ﻿$(document).ready(function () {
     GetBusinessUnitList();
-    GetCountryList();
+    GetRegionList();
 });
-// #region Get Country List
-function GetCountryList() {
-    ajaxServiceMethod($('#hdnBaseURL').val() + AllCountry, 'GET', GetCountryListSuccess, GetCountryListError);
+// #region Get Region List
+function GetRegionList() {
+    ajaxServiceMethod($('#hdnBaseURL').val() + AllRegion, 'GET', GetRegionListSuccess, GetRegionListError);
 }
-function GetCountryListSuccess(data) {
+function GetRegionListSuccess(data) {
     try {
         $.each(data._object, function (index, object) {
-            $('#CountryId').append($('<option>').text(object.countryName).attr('value', object.countryId));
-            $('#CountryId').select2();
-            $('#CountryId option:eq(0)').val(0);
-            $('#CountryId').val("-");
-            $('#CountryId').trigger('change');
+            $('#RegionId').append($('<option>').text(object.regionName).attr('value', object.regionId));
+            $('#RegionId').select2();
+            $('#RegionId option:eq(0)').val(0);
+            $('#RegionId').val("-");
+            $('#RegionId').trigger('change');
         });
     } catch (e) {
         toastr.error('Error:' + e.message);
     }
 }
-function GetCountryListError(x, y, z) {
+function GetRegionListError(x, y, z) {
     toastr.error(ErrorMessage);
 }
 
@@ -31,7 +31,7 @@ function GetBusinessUnitListSuccess(data) {
     try {
         $('#BusinessUnitTable tbody').html('')
         $.each(data._object, function (index, object) {
-            $('#BusinessUnitTable tbody').append('<tr><td>' + object.businessUnitName + '</td><td><span style="color:' + (object.isActive ? "green" : "red") + '">' + (object.isActive ? "Active" : "InActive") + '</span></td><td>  <a class="btn btn-primary" data-toggle="modal" data-target="#SaveBusinessUnitModel" data-backdrop="static" data-keyboard="false"  onclick="GetBusinessUnitById(' + object.businessUnitId + '); return false;"><i class="fa fa-fw fa-edit mr-1"></i> ' + EditLabel + '</a> <a class="btn btn-danger" data-toggle="modal" data-target="#DeleteBusinessUnitModel" data-backdrop="static" data-keyboard="false" onclick="ConfirmationDeleteBusinessUnit(' + object.businessUnitId + '); return false;"><i class="fa fa-fw fa-trash mr-1"></i> ' + DeleteLabel + '</a>  </td></tr>');
+            $('#BusinessUnitTable tbody').append('<tr><td>' + object.businessUnitName + '</td><td><span style="color:' + (object.isActive ? "green" : "red") + '">' + (object.isActive ? "Active" : "InActive") + '</span></td><td>  <a class="large-font" style="' + IsEditAllow + '" href="" title="Edit" data-toggle="modal" data-target="#SaveBusinessUnitModel" data-backdrop="static" data-keyboard="false"  onclick="GetBusinessUnitById(' + object.businessUnitId + '); return false;"><i class="fa fa-fw fa-edit mr-1"></i> ' + '</a><a class="large-font text-danger" style="' + IsDeleteAllow +'" href="" title="Delete" data-toggle="modal" data-target="#DeleteBusinessUnitModel" data-backdrop="static" data-keyboard="false" onclick="ConfirmationDeleteBusinessUnit(' + object.businessUnitId + '); return false;"><i class="fa fa-fw fa-trash mr-1"></i> ' + '</a>  </td></tr>');
         });
         StaticDataTable("#BusinessUnitTable");
     } catch (e) {
@@ -49,14 +49,15 @@ function GetBusinessUnitById(id) {
 }
 function GetBusinessUnitByIdSuccess(data) {
     try {
-        var countryIds = data._object.countryIds.toString();
-        if (countryIds.includes(',')) { countryIds = countryIds.toString().split(','); }
+        CleareBusinessUnitFields()
+        var regionIds = data._object.regionIds.toString();
+        if (regionIds.includes(',')) { regionIds = regionIds.toString().split(','); }
 
-        $('#SaveBusinessUnitModel #CountryId').val(countryIds);
-        $('#SaveBusinessUnitModel #CountryId').trigger('change');
+        $('#SaveBusinessUnitModel #RegionId').val(regionIds);
+        $('#SaveBusinessUnitModel #RegionId').trigger('change');
         
 
-        $('#SaveBusinessUnitModel #BusinessUnitCountryMappingId').val(data._object.masterBusinessCountryMappingIds.toString());
+        $('#SaveBusinessUnitModel #BusinessUnitRegionMappingId').val(data._object.masterBusinessRegionMappingIds.toString());
 
         $('#SaveBusinessUnitModel #BusinessUnitID').val(data._object.businessUnitId);
         $('#SaveBusinessUnitModel #MasterBusinessUnitEntity_BusinessUnitName').val(data._object.businessUnitName);
@@ -87,8 +88,8 @@ function SaveBusinessUnitForm(form) {
         businessUnitId: $('#SaveBusinessUnitModel #BusinessUnitID').val(),
         businessUnitName: $('#SaveBusinessUnitModel #MasterBusinessUnitEntity_BusinessUnitName').val(),
         isActive: $('#SaveBusinessUnitModel #MasterBusinessUnitEntity_IsActive').prop('checked'),
-        countryIds: $('#CountryId').val().toString(),
-        masterBusinessCountryMappingIds: $('#SaveBusinessUnitModel #BusinessUnitCountryMappingId').val()
+        regionIds: $('#RegionId').val().toString(),
+        masterBusinessRegionMappingIds: $('#SaveBusinessUnitModel #BusinessUnitRegionMappingId').val()
     };
     if ($(form).valid()) {
         ajaxServiceMethod($('#hdnBaseURL').val() + SaveBusinessUnit, 'POST', SaveBusinessUnitFormSuccess, SaveBusinessUnitFormError, JSON.stringify(obj));
@@ -118,9 +119,15 @@ function CleareBusinessUnitFields() {
     $('#SaveBusinessUnitModel #BusinessUnitID').val("0");
     $('#SaveBusinessUnitModel #MasterBusinessUnitEntity_BusinessUnitName').val("");
     $('#DeleteBusinessUnitModel #BusinessUnitID').val("0");
-    $('#SaveBusinessUnitModel #BusinessUnitCountryMappingId').val("");
-    $('#SaveBusinessUnitModel #CountryId').val("");
-    $('#SaveBusinessUnitModel #CountryId').trigger('change');
+    $('#SaveBusinessUnitModel #BusinessUnitRegionMappingId').val("");
+    $('#SaveBusinessUnitModel #RegionId').val("");
+    $('#SaveBusinessUnitModel #RegionId').trigger('change');
+    var validationMessages = document.querySelectorAll(".field-validation-error");
+
+    // Loop through the messages and clear them
+    for (var i = 0; i < validationMessages.length; i++) {
+        validationMessages[i].textContent = "";
+    }
 }
 // #endregion
 

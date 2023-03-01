@@ -1,0 +1,322 @@
+﻿@inject Microsoft.Extensions.Localization.IStringLocalizer<SharedResource> SharedLocalizer
+@{
+    ViewData["Title"] = "PIDF Strength List";
+}
+
+
+
+<style>
+    .treegrid-control span {
+        cursor: pointer;
+        padding: 0px 5px;
+        display: block;
+        box-shadow: 0 0 1px #999;
+        width: 20px;
+        height: 25px;
+    }
+
+    .treegrid-control-open span {
+        cursor: pointer;
+        padding: 0px 7px;
+        display: block;
+        box-shadow: 0 0 1px #999;
+        width: 20px;
+        height: 25px;
+    }
+</style>
+
+
+<div class="content-wrapper">
+    <section class="content pt-3">
+        <div class="container-fluid">
+            <div class="row">
+                <section class="col-lg-12">
+                    <!-- Custom tabs (Charts with tabs)-->
+                    <div class="card">
+                        <div class="card-header">
+                            <h3 class="card-title">
+                                <i class="far fa-list-alt mr-2"></i> PIDF Strength List
+                            </h3>
+                            <div class="card-tools md-left">
+                                <div class="mybtn-group">
+                                    <a class="btn btn-primary" href="@Url.Action("PIDFList","PIDF")"><i class="fas fa-list mr-1"></i>Project List</a>
+
+
+                                    <a class="btn btn-primary" href="@Url.Action("PIDFStrengthList","PIDF")"><i class="far fa-list-alt mr-1"></i>PIDF List</a>
+
+
+                                    <a class="btn btn-primary" href="@Url.Action("PIDFNew","PIDF")"><i class="far fa-plus-square mr-1"></i> Create New PIDF</a>
+
+                                </div>
+                                <div class="export-btn mybtn-group"></div>
+                                <div class="mybtn-group">
+                                    <button class="btn btn-primary" onclick="javascript:window.history.back();"><i class="fas fa-undo mr-1"></i> Back</button>
+
+                                </div>
+                            </div>
+                        </div>
+                        <div class="card-body">
+                            <div class="row">
+                                <div class="mybtn-group">
+                                        <a class="btn  btn-primary status_filter active" href="Javascript:void(0)" data-status="19"><i class="far fa-plus-square mr-1"></i>Creation</a>
+                                  
+                                        <a class="btn  btn-primary status_filter" href="Javascript:void(0)" data-status="20"><i class="fa fa-check mr-1"></i>Completion</a>
+                                  
+                                        <a class="btn  btn-primary status_filter" href="Javascript:void(0)" data-status="12"><i class="far fa-list-alt mr-1"></i>Pending Emerging Market Approval</a>
+                                 
+
+                                    @*<li class="nav-item mr-2">
+                                        <a class="btn btn-sm btn-primary status_filter" href="Javascript:void(0)" data-status="13"><i class="far fa-list-alt mr-1"></i>Partial Approved</a>
+                                    </li>*@
+                             
+                                        <a class="btn  btn-primary status_filter" href="Javascript:void(0)" data-status="26"><i class="far fa-list-alt mr-1"></i>Pending Finance Approval</a>
+                                   
+                                        <a class="btn  btn-primary status_filter" href="Javascript:void(0)" data-status="15"><i class="far fa-list-alt mr-1"></i>Pending Commercial Approval</a>
+                                   
+                                        <a class="btn  btn-primary status_filter" href="Javascript:void(0)" data-status="27"><i class="far fa-clock"></i> Pending Final Approval</a>
+                                   
+                                        <a class="btn  btn-primary status_filter" href="Javascript:void(0)" data-status="10"><i class="fa fa-ban mr-1"></i>Reject</a>
+                                   
+                                        <a class="btn  btn-primary status_filter" href="Javascript:void(0)" data-status="16"><i class="far fa-list-alt mr-1"></i>Final Approved</a>
+                                
+
+                                </div>
+                            </div>
+
+                            <div class="table-responsive mt10">
+                                <table id="PIDFStrengthTable" class="table table-bordered" cellspacing="0" width="100%"></table>
+                            </div>
+
+
+
+
+
+                            @*<table id="PIDFStrengthTable" class="table" style="width:100%;"></table>*@
+                        </div>
+
+                    </div>
+                </section>
+            </div>
+
+
+        </div>
+    </section>
+
+</div>
+
+
+@*<script src="~/dist/js/jquery.treegrid.min.js"></script>
+    <script src="~/dist/js/bootstrap-table.min.js"></script>
+
+    <script src="~/dist/js/bootstrap-table-treegrid.min.js"></script>*@
+
+<script src='~/js/dataTables.treeGrid.js'></script>
+
+
+
+@section Scripts {
+    <script>
+
+      
+        var columns = [
+            {
+                       
+                title: '',
+                target: 0,
+                className: 'treegrid-control',
+                data: function (item) {
+                    if (item.children) {
+                        return '<span>+<\/span>';
+                    }
+                   
+                    return '';
+                }
+                  
+            },
+            {
+                title: 'PIDF No',
+                target: 1,
+                data: function (item) {
+                    return item.pidfNo;
+                }
+                    
+            },
+            {
+                title: 'Product / Strength',
+                target: 2,
+                data: function (item) {
+                    return item.projectorProductName;
+                }
+                   
+            },
+            {
+                title: 'Product Type',
+                target: 3,
+                data: function (item) {
+                    return item.productName;
+                }
+            },
+            {
+                title: 'Plant Name',
+                target: 4,
+                data: function (item) {
+                    return item.plantName;
+                }
+            },
+            {
+                title: 'Formulation Name',
+                target: 5,
+                data: function (item) {
+                    return item.formulationName;
+                }
+            },
+            {
+                title: 'Status',
+                target: 6,
+                data: function (item) {
+                    return item.status;
+                }
+            },
+            {
+                title: 'Action',
+                target: 7,
+                data: function (item) {
+                    return item.action;
+                }
+            }
+            ,
+            {
+                title: 'StatusID',
+                target: 8,
+                data: function (item) {
+                    return item.statusID;
+                }
+            }
+        ];
+
+        $(document).ready(function () {
+            var StatusId = 19;
+             var regEx = "^" + StatusId + "$";
+            var table = $('#PIDFStrengthTable').DataTable({
+                columns: columns,
+                dom: 'Bfrtip',
+               buttons: [
+                    {
+                        extend: 'excel', text: '<i class="far fa-file-excel"></i> Export In Excel ', className: "btn-primary", exportOptions: {
+                            columns: ':visible'
+                        }
+                    },
+                    {extend: 'colvis', className:"btn-primary" }
+                 ],
+              
+                lengthChange: false,
+                columnDefs: [
+                    {
+                        visible: false,
+                        targets: 8
+                    }
+                      
+                ],
+                initComplete: function () {
+                    this
+                        .api()
+                        .column(8)
+                        .search(regEx, true, false,true)
+                        .draw()
+                },
+                ajax: '/PIDF/GetPIDFStrengthList',
+                treeGrid: {
+                    'left': 10,
+                    'expandIcon': '<span>+<\/span>',
+                    'collapseIcon': '<span>-<\/span>'
+                }
+                
+            });
+
+         
+            table.buttons().container()
+                .appendTo('.export-btn');
+            $('.status_filter').on('click', function () {
+               $(this).addClass('active');
+                $('.status_filter').not(this).removeClass('active');
+                //$('.pidfTabs .active').removeClass('active');
+                //$(this).addClass('active');
+                var term = $(this).data('status');
+                var regExp = "^" + term + "$";
+                table.columns(8).search(regExp, true, false,true).draw();
+
+            });
+
+            $(".buttons-excel").removeClass("btn-secondary");
+            $(".buttons-collection").removeClass("btn-secondary");
+        
+        });
+
+
+
+
+
+
+                //var $table = $('#PIDFStrengthTable')
+                //$(function () {
+
+                //    $table.bootstrapTable({
+
+                //        url: "/PIDF/GetPIDFStrengthList",
+                //        idField: 'pidfid',
+                //        columns: [
+                //            {
+                //                field: 'pidfNo',
+                //                title: 'PIDF No'
+                //            }, {
+                //                field: 'projectorProductName',
+                //                title: 'Product / Strength'
+                //            }
+                //            , {
+                //                field: 'productName',
+                //                title: 'Product Type'
+                //            }
+                //            , {
+                //                field: 'plantName',
+                //                title: 'Plant Name'
+                //            }
+                //            , {
+                //                field: 'formulationName',
+                //                title: 'Formulation Name'
+                //            }
+                //            , {
+                //                field: 'status',
+                //                title: 'Status'
+                //            }
+                //            , {
+                //                field: 'action',
+                //                title: 'Action'
+                //            }
+                //        ],
+                //        treeShowField: 'projectorProductName',
+                //        parentIdField: 'parentID',
+                //        onPostBody: function () {
+                //            var columns = $table.bootstrapTable('getOptions').columns;
+                //            if (columns && columns[0][1].visible) {
+                //                $table.treegrid({
+                //                    treeColumn: 0,
+                //                    onChange: function () {
+                //                        $table.bootstrapTable('resetView');
+                //                    }
+                //                })
+                //            }
+                //        }
+                //    });
+
+                //    $('.fixed-table-loading').hide();
+                //});
+
+                ////function SearchByStatus(status) {
+                ////        var rows = $("#PIDFStrengthTable").find("tr").hide();
+                ////        rows.filter(":contains('Creation')").show();
+
+                ////    console.log(rows);
+                ////}
+    </script>
+}
+

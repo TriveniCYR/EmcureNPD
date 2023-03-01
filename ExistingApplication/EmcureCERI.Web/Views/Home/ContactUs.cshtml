@@ -1,0 +1,127 @@
+﻿@using Microsoft.Extensions.Localization
+@inject IStringLocalizer<SharedResource> SharedLocalizer
+@model EmcureCERI.Web.Models.ContactVM
+@{
+
+    ViewData["Title"] = @SharedLocalizer["Contact Us"].Value;
+}
+<main class="main">
+    <section class="our-services" style="padding-top: 55px;">
+        <div class="container text-center">
+            <h2>@SharedLocalizer["Contact Us"].Value</h2>
+            <p>@SharedLocalizer["For more information about Cidofovir or Tillomed, please do not hesitate to contact us."].Value</p>
+            <div class="divider">
+                <span><i class="glyphicon glyphicon-certificate"></i></span>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact Form starts -->
+    <section id="contact-page-form" class="contact-page-form">
+        <div class="container-fluid" style="padding: 0 30px;">
+            <div class="row">
+                <div class="appoinment-form">
+                    <div class="col-xs-12 col-sm-6 col-md-8 col-lg-8">
+                        @using (Html.BeginForm("ContactUs", "Home", FormMethod.Post, new { onsubmit = "return SubmitFormRejectBLForm(this)" }))
+                        {
+                            <div class="col-sm-12">
+                                <br />
+                                <p>@SharedLocalizer["We will be pleased to answer any questions or queries you may have."].Value</p>
+                                <br />
+                            </div>
+                            <div class="col-sm-6">
+                                <div class="form-group">
+                                    @Html.TextBoxFor(model => model.Name, new { @class = "form-control input-sm", @placeholder = "Name:" })
+                                    @Html.ValidationMessageFor(model => model.Name, "", new { @class = "text-danger" })
+                                </div>
+                            </div>
+                            <div class="col-sm-6">
+                                <div class="form-group">
+                                    @Html.TextBoxFor(model => model.Email, new { @class = "form-control input-sm", @placeholder = "E-mail:" })
+                                    @Html.ValidationMessageFor(model => model.Email, "", new { @class = "text-danger" })
+                                </div>
+                            </div>
+
+                            <div class="col-xs-12">
+                                <div class="form-group">
+                                    @Html.TextAreaFor(model => model.Query, new { @class = "form-control input-sm", @rows = 3, @cols = 50, @placeholder = "Your questions or queries..." })
+                                    @Html.ValidationMessageFor(model => model.Query, "", new { @class = "text-danger" })
+                                </div>
+                            </div>
+
+                            <div class="col-xs-12">
+                                <div class="form-group">
+                                    <button type="submit" class="btn btn-default btn-sm" name="signup">@SharedLocalizer["Send"].Value</button>
+                                </div>
+                            </div>
+                        }
+                    </div>
+                    <div class="col-xs-12 col-sm-6 col-md-4 col-lg-4">
+                        <div class="address-details">
+                            <h4>@SharedLocalizer["Contact Information"].Value</h4>
+                            <br />
+                            <ul>
+                                <li>
+                                    <i class="glyphicon glyphicon-earphone"></i>
+                                    <span>
+                                        <a href="tel:+441480402400">
+                                            +441480 402400
+                                        </a>
+                                    </span>
+                                </li>
+                                <li>
+                                    <i class="glyphicon glyphicon-envelope"></i> <span>
+                                        <a href="mailto:PVUK@tillomed.co.uk">
+                                            PVUK@tillomed.co.uk
+                                        </a>
+                                    </span>
+                                </li>
+                            </ul>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <section>
+        <div class="container-fluid">
+            <div class="about" style="padding-top:0;">
+                <div class="about-premedi" style="padding-top:0;">
+                    <div class="open-hours-details">
+                        <h4 style="margin-top: 0; margin-left: 0;">@SharedLocalizer["Pharmacovigilance"].Value</h4>
+                        <div class="row">
+                            <ul class="col-xs-12">
+                                <li>@SharedLocalizer["Patients should always ask their doctors for medical advice about adverse events."].Value</li>
+                                <li>
+                                    @SharedLocalizer["You may report an adverse event related to Tillomed products by calling"].Value
+                                    <a href="tel:+441480 402400">
+                                        +441480 402400
+                                    </a> or
+                                    <a href="mailto:PVUK@tillomed.co.uk">
+                                        PVUK@tillomed.co.uk
+                                    </a>
+                                </li>
+                                <li>
+                                    @SharedLocalizer["For any urgent safety issues regarding Cidofovir out of office hours, please contact our out of office number(s) below:"].Value  
+                                    <br />
+                                    <a href="tel:+44 (0) 7753 606357">
+                                        +44(0)7753 606357
+                                    </a>
+                                    or
+                                    <a href="tel:+44 (0) 7901 556042">
+                                        +44 (0) 7901 556042
+                                    </a>
+                                </li>
+                                <li>
+                                    @Html.Raw(SharedLocalizer["If you prefer, you may contact the medicines and healthcare agency  (MHRA) directly. The MHRA has established a reporting service known as the yellow card scheme where healthcare professionals and patients can report serious problems they suspect may be associated with the drugs and medical devices they prescribe, dispense, or use. Visit <a href='https://yellowcard.mhra.gov.uk' target='_blank'>https://yellowcard.mhra.gov.uk</a> for further information."].Value)
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- Contact Form ends -->
+</main>

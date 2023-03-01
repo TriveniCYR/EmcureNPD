@@ -1,0 +1,450 @@
+﻿@using Microsoft.AspNetCore.Http
+@inject IHttpContextAccessor HttpContextAccessor
+@inject Microsoft.Extensions.Localization.IStringLocalizer<SharedResource> SharedLocalizer
+@model EmcureCERI.Web.Models.MasterModel.GMPAvailabilityMaster
+@{
+
+    ViewData["Title"] = "GMPAvailability";
+}
+
+<div class="content-wrapper">
+    <section class="content pt-5">
+        <div class="container-fluid">
+            <div class="row">
+                <section class="col-lg-12">
+                    <!-- Custom tabs (Charts with tabs)-->
+                    <div class="card">
+                        <div class="card-header">
+                            <h3 class="card-title">
+                                <i class="far fa-list-alt mr-2"></i>GMP Availability List
+                            </h3>
+                            <div class="card-tools md-left">
+                                <div class="mybtn-group">
+                                    <a class="btn btn-primary" onclick="ShowAddModel()"><i class="far fa-plus-square mr-1"></i> Add</a>
+                                    <div class="export-btn mybtn-group"></div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="card-body">
+                            <table id="GMPAvailabilityTable" class="table table-bordered table-striped table-hover" style="width:100%">
+                                <thead>
+                                    <tr>
+                                        <th>@SharedLocalizer["Id"].Value</th>
+                                        <th>@SharedLocalizer["GMP Availability"].Value</th>
+                                        <th>@SharedLocalizer["Status"].Value</th>
+                                        <th class="text-center">@SharedLocalizer["Action"].Value</th>
+                                    </tr>
+                                </thead>
+                            </table>
+
+
+                        </div>
+
+                    </div>
+
+                    @*DeleteModel*@
+                    <div id="DeleteModel" class="modal themeModal " role="dialog">
+                        @*<form asp-route-returnUrl="@ViewData["ReturnUrl"]" method="POST" onsubmit="return SubmitForm(this)">*@
+                        <div class="modal-dialog">
+                            <!-- Modal content-->
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h4 class="modal-title">@SharedLocalizer["Delete"].Value</h4>
+                                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                </div>
+                                <div class="modal-body">
+                                    <div class="row">
+                                        <div class="col-md-12">
+                                            <div class="form-group">
+                                                @Html.Label("Are you shure you want to delete this GMP Availability ?")
+                                            </div>
+                                        </div>
+                                    </div>
+                                    @Html.Hidden("GMPAvailabilityID")
+                                    <div class="row">
+                                        <div class="col-md-12">
+                                            <button type="button" onclick="DeleteIDModel()" class="btn btn-primary mr-2">@SharedLocalizer["Yes"].Value</button>
+                                            <a class="btn btn-primary" onclick="HideDeleteModel()">@SharedLocalizer["No"].Value</a>
+                                        </div>
+                                    </div>
+
+
+                                </div>
+
+
+                            </div>
+                        </div>
+
+                        @*</form>*@
+                    </div>
+
+                    @*AddModel*@
+                    <div id="AddModel" class="modal themeModal " role="dialog">
+                        <form method="POST" onsubmit="return SubmitGMPAvailabilityForm(this)">
+                            <!-- Small boxes (Stat box) -->
+                            <!-- Main row -->
+                            <div class="modal-dialog">
+                                <!-- Modal content-->
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h4 class="modal-title">@SharedLocalizer["Add"].Value</h4>
+                                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                    </div>
+                                    <div class="modal-body">
+                                        <div class="row">
+                                            <div class="col-md-12">
+                                                <div class="form-group required">
+                                                    @Html.LabelFor(model => model.GMPAvailability, new { @class = "control-label" })
+                                                    @Html.EditorFor(model => model.GMPAvailability, new { htmlAttributes = new { @autocomplete = "off", @class = "form-control checkbox-checked", @placeholder = "GMP Availability Name" } })
+                                                    @Html.ValidationMessageFor(model => model.GMPAvailability, "", new { @class = "text-danger" })
+                                                </div>
+                                            </div>
+
+                                        </div>
+                                        <div class="row">
+
+                                            <div class="col-md-12">
+                                                <div class="required">
+                                                    @Html.CheckBoxFor(model => model.IsActive, new { @class = "checkbox-checked" })
+                                                    @Html.Label("IsActive")
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="card-footer text-center">
+                                        <button type="submit" class="btn btn-primary">@SharedLocalizer["Save"].Value</button>
+                                        <a class="btn btn-danger" onclick="HideAddModel()">@SharedLocalizer["Cancel"].Value</a>
+
+                                    </div>
+
+
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+
+                    @*UpdateModel*@
+                    <div id="UpdateModel" class="modal themeModal " role="dialog">
+                        <form asp-route-returnUrl="@ViewData["ReturnUrl"]" method="POST" onsubmit="return UpdateGMPAvailabilityForm(this)">
+                            <!-- Small boxes (Stat box) -->
+                            <!-- Main row -->
+                            @Html.Hidden("GMPAvailabilityID")
+                            <div class="modal-dialog">
+                                <!-- Modal content-->
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h4 class="modal-title">@SharedLocalizer["Update"].Value</h4>
+                                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                    </div>
+                                    <div class="modal-body">
+                                        <div class="row">
+                                            <div class="col-md-12">
+                                                <div class="form-group required">
+                                                    @Html.LabelFor(model => model.GMPAvailability, new { @class = "control-label" })
+                                                    @Html.EditorFor(model => model.GMPAvailability, new { htmlAttributes = new { @autocomplete = "off", @class = "form-control checkbox-checked", @placeholder = "GMP Availability Name" } })
+                                                    @Html.ValidationMessageFor(model => model.GMPAvailability, "", new { @class = "text-danger" })
+                                                </div>
+                                            </div>
+
+                                        </div>
+
+                                        <div class="row">
+
+                                            <div class="col-md-12">
+                                                <div class=" required">
+                                                    @Html.CheckBoxFor(model => model.IsActive, new { @class = "checkbox-checked" })
+                                                    @Html.Label("IsActive")
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="card-footer text-center">
+                                        <button type="submit" class="btn btn-primary">@SharedLocalizer["Update"].Value</button>
+                                        <a class="btn btn-danger" onclick="HideUpdateModel()">@SharedLocalizer["Cancel"].Value</a>
+
+
+
+                                    </div>
+
+
+                                </div>
+                            </div>
+
+                        </form>
+                    </div>
+                </section>
+            </div>
+
+        </div>
+    </section>
+
+</div>
+
+<script>
+    //var dataTable, getList;
+
+        $(document).ready(function () {
+            $(".checkbox-checked").attr('checked',true);
+             $('#loading').show();
+
+            var dataTable = $('#GMPAvailabilityTable').DataTable({
+                responsive: true,
+                lengthChange: true,
+                autoWidth: true,
+                dom: 'Bfrtip',
+                //columnDefs: [
+                //    {
+                //        visible: false,
+                //        targets: 8
+                //    }
+                //],
+                //initComplete: function () {
+                //    this
+                //        .api()
+                //        .column(8)
+                //        .search(8)
+                //        .draw()
+                //},
+
+                buttons: [
+                    {
+                        extend: 'excel', text: '<i class="far fa-file-excel"></i> Export In Excel ', className: "btn-primary", exportOptions: {
+                            columns: ':visible'
+                        }
+                    },
+                    {extend: 'colvis', className:"btn-primary" }
+                 ],
+
+                language: {
+                    "emptyTable": "@SharedLocalizer["No data available in table"].Value",
+                    "info": "@SharedLocalizer["Showing _START_ to _END_ of _TOTAL_ entries"].Value",
+                    "infoEmpty":"@SharedLocalizer["Showing 0 to 0 of 0 entries"].Value",
+                    "infoFiltered":"@SharedLocalizer["(filtered from _MAX_ total entries)"].Value",
+                    "lengthMenu":"@SharedLocalizer["Show _MENU_ entries"].Value",
+                    "loadingRecords": "@SharedLocalizer["Loading..."].Value",
+                    "processing": "@SharedLocalizer["Processing..."].Value",
+                    "search": "@SharedLocalizer["Search"].Value",
+                    "zeroRecords":"@SharedLocalizer["No matching records found"].Value",
+                    "paginate": {
+                        "first":"@SharedLocalizer["First"].Value",
+                        "last":"@SharedLocalizer["Last"].Value",
+                        "next": "@SharedLocalizer["Next"].Value",
+                        "previous":"@SharedLocalizer["Previous"].Value"
+                    },
+                }
+
+            });
+
+            getList = function () {
+
+                    $.ajax({
+                    type: "POST",
+                    url: '@Url.Action("GMPAvailabilityList", "Masters")/',
+                    contentType: "application/json; charset=utf-8",
+                    dataType: "json",
+                    success: function (response) {
+                         $('#loading').hide();
+
+                        //console.log(response);
+                        console.log(response.data);
+                        var jsonObject = response.data;
+                        var result = jsonObject.map(function (item) {
+                             var result = [];
+
+                            result.push(item.gmpAvailabilityID);
+                            result.push(item.gmpAvailability);
+                            if (item.isActive == true) {
+                                result.push("<span style='color:green'> Active </span>");
+                            }
+
+                            else {
+                                result.push("<span style='color:red'>InActive</span>");
+                            }
+
+                            //result.push("<div class='btn-group'><a href='javascript:void(0)' class='btn btn-primary btn-sm ttip' title='EDIT' onclick=Edit('" + item.gmpAvailabilityID+ "')><i class='fa fa-edit'></i></a><a href='javascript:void(0)' class='btn btn-danger btn-sm ttip' title='DELETE' onclick=Delete('" + item.gmpAvailabilityID + "')><i class='fa fa-trash-alt'></i></a></div> ");
+                                result.push("<div class='text-center'><a href='javascript:void(0)' class='btn btn-primary btn-sm ttip' title='EDIT' onclick=Edit('" + item.gmpAvailabilityID+ "')><i class='fa fa-edit'></i></a></div> ");
+                            return result;
+                        });
+                        dataTable.clear();
+                        dataTable.rows.add(result); // add to DataTable instance
+                        dataTable.draw().buttons().container().appendTo('.export-btn'); // always redraw
+
+                        //$('.status_filter').on('click', function () {
+
+                        //    dataTable.columns(8).search($(this).data('status')).draw();
+                        //});
+                        },
+                    failure: function () {
+                        $("#GMPAvailabilityTable").append('@SharedLocalizer["Error when fetching data please contact administrator"].Value');
+                                   }
+                               });
+
+            }
+            getList();
+
+            $(".buttons-excel").removeClass("btn-secondary");
+            $(".buttons-collection").removeClass("btn-secondary");
+
+        });
+
+    function Edit(ID) {
+        console.log("Edit : " + ID);
+        var data = {
+            "GMPAvailabilityID":ID
+        };
+        $.ajax({
+                    type: "POST",
+                    url : '@Url.Action("GetSingleGMPAvailabilityRecord", "Masters")/',
+                    //contentType: "application/json; charset=utf-8",
+                    dataType: "json",
+                    data: data,
+            success: function (response) {
+               // console.log(response.data[0].id);
+                $('#UpdateModel #GMPAvailabilityID').val(response.data[0].gmpAvailabilityID);
+                $('#UpdateModel #GMPAvailability').val(response.data[0].gmpAvailability);
+
+                 var userrole = '@HttpContextAccessor.HttpContext.Session.GetString("CurrentUserRole")';
+                if (userrole != 'Prescriber') {
+                    $('#UpdateModel #IsActive').attr('disabled', true);
+                }
+
+                if (response.data[0].isActive == false && userrole =='Prescriber') {
+                    $('#UpdateModel #IsActive').removeAttr('checked');
+                }
+                else {
+                    $('#UpdateModel #IsActive').attr('checked', true);
+                    //$('#UpdateModel #IsActive').attr('disabled', true);
+                }
+
+                //if (response.data[0].isActive == false) {
+                //    $('#UpdateModel #IsActive').removeAttr('checked');
+                //}
+                //else {
+                //     $('#UpdateModel #IsActive').attr('checked',true);
+                //}
+
+                 $('#UpdateModel').modal('show');
+
+                    },
+                    failure: function () {
+
+                    }
+                });
+    }
+
+    function Delete(ID) {
+        console.log("Delete : " + ID);
+        $('#DeleteModel').modal('show');
+        //document.getElementById('FormulationID').value=ID
+         $('#DeleteModel #GMPAvailabilityID').val(ID);
+    }
+
+    function DeleteIDModel() {
+        $('#DeleteModel').modal('hide');
+         var tempInAtiveID = $('#DeleteModel #GMPAvailabilityID').val();
+        var data = {
+            "GMPAvailabilityID":tempInAtiveID
+        };
+       var url = "/Masters/Master_GMPAvailability";
+         $('#loading').show();
+         $.ajax({
+                    type: "POST",
+                    url : '@Url.Action("DeleteGMPAvailability", "Masters")/',
+                    //contentType: "application/json; charset=utf-8",
+                    dataType: "json",
+                    data: data,
+                    success: function (response) {
+                        //console.log(response);
+                         $('#loading').hide();
+                        if (response.data === "success") {
+                            $('#DeleteModel').modal('hide');
+                            openCommonModal('successModal modal-sm', '@Html.Raw(SharedLocalizer["Success"].Value)', '@Html.Raw(SharedLocalizer["Record has been Deleted successfully."].Value)', true);
+                            setTimeout(function(){ location.href = url; }, 2000);
+
+                        }
+                        else {
+                            openCommonModal('alertModal modal-sm', '@SharedLocalizer["Error"].Value', response.message, false);
+                        }
+
+                    },
+                    failure: function () {
+
+                    }
+                });
+    }
+
+      function HideDeleteModel() {
+        $('#DeleteModel').modal('hide');
+    }
+
+
+    function ShowAddModel() {
+         $('#AddModel').modal('show');
+    }
+
+    function HideAddModel() {
+         $('#AddModel').modal('hide');
+    }
+
+    function HideUpdateModel() {
+        $('#UpdateModel').modal('hide');
+    }
+     $(".checkbox-checked").attr('checked',true);
+    function SubmitGMPAvailabilityForm(form) {
+        console.log('add save called');
+        var url = "/Masters/Master_GMPAvailability";
+         $.validator.unobtrusive.parse(form);
+        if ($(form).valid()) {
+                $('#loading').show();
+                $.ajax({
+                    type : "POST",
+                    url : '@Url.Action("InsertGMPAvailability", "Masters")/',//form.action,
+                    data : $(form).serialize(),
+                    success: function (result) {
+                        //console.log(result);
+                        $('#loading').hide();
+                         $('#AddModel').modal('hide');
+                        if (result.data === "success") {
+                            openCommonModal('successModal modal-sm', '@Html.Raw(SharedLocalizer["Success"].Value)', '@Html.Raw(SharedLocalizer["Record has been added successfully."].Value)', true);
+                            setTimeout(function(){ location.href = url; }, 2000);
+
+                        }
+                        else {
+                            openCommonModal('alertModal modal-sm', '@SharedLocalizer["Error"].Value', result.message, false);
+                        }
+                    }
+                });
+            }
+            return false;
+    }
+
+     function UpdateGMPAvailabilityForm(form) {
+        var url = "/Masters/Master_GMPAvailability";
+         $.validator.unobtrusive.parse(form);
+        if ($(form).valid()) {
+
+                 $('#loading').show();
+                $.ajax({
+                    type : "POST",
+                    url : '@Url.Action("UpdateGMPAvailability", "Masters")/',//form.action,
+                    data : $(form).serialize(),
+                    success: function (result) {
+                        //console.log(result);
+                         $('#loading').hide();
+                        if (result.data === "success") {
+                              $('#UpdateModel').modal('hide');
+                            openCommonModal('successModal modal-sm', '@Html.Raw(SharedLocalizer["Success"].Value)', '@Html.Raw(SharedLocalizer["Record has been updated successfully."].Value)', true);
+                            setTimeout(function(){ location.href = url; }, 2000);
+
+                        }
+                        else {
+                            openCommonModal('alertModal modal-sm', '@SharedLocalizer["Error"].Value', result.message, false);
+                        }
+                    }
+                });
+            }
+            return false;
+    }
+
+
+</script>

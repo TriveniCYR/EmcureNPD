@@ -6,6 +6,8 @@ using EmcureNPD.Data.DataAccess.Core.UnitOfWork;
 using EmcureNPD.Data.DataAccess.Entity;
 using System;
 using System.Collections.Generic;
+using System.Data;
+using System.Data.SqlClient;
 using System.Linq;
 using System.Threading.Tasks;
 using static EmcureNPD.Utility.Enums.GeneralEnum;
@@ -17,17 +19,20 @@ namespace EmcureNPD.Business.Core.ServiceImplementations
         private readonly IUnitOfWork _unitOfWork;
         private readonly IMapperFactory _mapperFactory;
         private IRepository<MasterBusinessUnit> _repository { get; set; }
-        private IRepository<MasterBusinessUnitCountryMapping> _repositoryMasterBusinessUnitCountryMapping { get; set; }
-        private IRepository<MasterCountry> _countryRepository { get; set; }
+        private IRepository<MasterBusinessUnitRegionMapping> _repositoryMasterBusinessUnitRegionMapping { get; set; }
+        private IRepository<MasterRegion> _regionRepository { get; set; }
+        private readonly IHelper _helper;
 
 
-        public MasterBusinessUnitService(IUnitOfWork unitOfWork, IMapperFactory mapperFactory)
+        public MasterBusinessUnitService(IUnitOfWork unitOfWork, IMapperFactory mapperFactory, IHelper helper)
         {
             _unitOfWork = unitOfWork;
             _mapperFactory = mapperFactory;
+            _helper = helper;
             _repository = _unitOfWork.GetRepository<MasterBusinessUnit>();
-            _countryRepository = _unitOfWork.GetRepository<MasterCountry>();
-            _repositoryMasterBusinessUnitCountryMapping = _unitOfWork.GetRepository<MasterBusinessUnitCountryMapping>();
+            _regionRepository = _unitOfWork.GetRepository<MasterRegion>();
+            _repositoryMasterBusinessUnitRegionMapping = _unitOfWork.GetRepository<MasterBusinessUnitRegionMapping>();
+
         }
 
         public async Task<List<MasterBusinessUnitEntity>> GetAll()
@@ -38,19 +43,19 @@ namespace EmcureNPD.Business.Core.ServiceImplementations
         public async Task<MasterBusinessUnitEntity> GetById(int id)
         {
             var  businessUnit = _mapperFactory.Get<MasterBusinessUnit, MasterBusinessUnitEntity>(await _repository.GetAsync(id));
-            businessUnit.CountryIds = string.Join(",", _repositoryMasterBusinessUnitCountryMapping.GetAllQuery().Where(x => x.BusinessUnitId == businessUnit.BusinessUnitId).Select(x => x.CountryId.ToString()));
-            businessUnit.MasterBusinessCountryMappingIds = string.Join(",", _repositoryMasterBusinessUnitCountryMapping.GetAllQuery().Where(x => x.BusinessUnitId == businessUnit.BusinessUnitId).Select(x => x.BusinessUnitCountryMappingId.ToString()));
+            businessUnit.RegionIds = string.Join(",", _repositoryMasterBusinessUnitRegionMapping.GetAllQuery().Where(x => x.BusinessUnitId == businessUnit.BusinessUnitId).Select(x => x.RegionId.ToString()));
+            businessUnit.MasterBusinessRegionMappingIds = string.Join(",", _repositoryMasterBusinessUnitRegionMapping.GetAllQuery().Where(x => x.BusinessUnitId == businessUnit.BusinessUnitId).Select(x => x.BusinessUnitCountryMappingId.ToString()));
             return businessUnit;
         }
 
         public async Task<DBOperation> AddUpdateBusinessUnit(MasterBusinessUnitEntity entityBusinessUnit)
         {
             MasterBusinessUnit objBusinessUnit;
-            var oMasterBusinessUnitCountryMapping = new MasterBusinessUnitCountryMappingEntity(); ;
-            var objMasterBusinessUnitCountryMapping = new MasterBusinessUnitCountryMapping();
+            var oMasterBusinessUnitRegionMapping = new MasterBusinessUnitRegionMappingEntity(); ;
+            var objMasterBusinessUnitRegionMapping = new MasterBusinessUnitRegionMapping();
             
-            string[] countryList = entityBusinessUnit.CountryIds.Split(',');
-            int[] countryIds = countryList.Select(int.Parse).ToArray();
+            string[] regionList = entityBusinessUnit.RegionIds.Split(',');
+            int[] regionIds = regionList.Select(int.Parse).ToArray();
 
             if (entityBusinessUnit.BusinessUnitId > 0)
             {
@@ -62,22 +67,22 @@ namespace EmcureNPD.Business.Core.ServiceImplementations
 
                     await _unitOfWork.SaveChangesAsync();
 
-                    oMasterBusinessUnitCountryMapping.BusinessUnitId = entityBusinessUnit.BusinessUnitId;
+                    oMasterBusinessUnitRegionMapping.BusinessUnitId = entityBusinessUnit.BusinessUnitId;
 
-                    if (entityBusinessUnit.MasterBusinessCountryMappingIds != null || entityBusinessUnit.MasterBusinessCountryMappingIds != "")
+                    if (entityBusinessUnit.MasterBusinessRegionMappingIds != null || entityBusinessUnit.MasterBusinessRegionMappingIds != "")
                     {
-                        var entityBusinessUnitCountry = _repositoryMasterBusinessUnitCountryMapping.GetAllQuery().Where(x => entityBusinessUnit.MasterBusinessCountryMappingIds.Split(',', StringSplitOptions.None).Contains(x.BusinessUnitCountryMappingId.ToString()));
+                        var entityBusinessUnitCountry = _repositoryMasterBusinessUnitRegionMapping.GetAllQuery().Where(x => entityBusinessUnit.MasterBusinessRegionMappingIds.Split(',', StringSplitOptions.None).Contains(x.BusinessUnitCountryMappingId.ToString()));
                         foreach (var item in entityBusinessUnitCountry)
                         {
-                            _repositoryMasterBusinessUnitCountryMapping.Remove(item);
+                            _repositoryMasterBusinessUnitRegionMapping.Remove(item);
                         }
                         await _unitOfWork.SaveChangesAsync();
 
-                        foreach (var country in countryIds)
+                        foreach (var region in regionIds)
                         {
-                            oMasterBusinessUnitCountryMapping.CountryId = country;
-                            objMasterBusinessUnitCountryMapping = _mapperFactory.Get<MasterBusinessUnitCountryMappingEntity, MasterBusinessUnitCountryMapping>(oMasterBusinessUnitCountryMapping);
-                            _repositoryMasterBusinessUnitCountryMapping.AddAsync(objMasterBusinessUnitCountryMapping);
+                            oMasterBusinessUnitRegionMapping.RegionId = region;
+                            objMasterBusinessUnitRegionMapping = _mapperFactory.Get<MasterBusinessUnitRegionMappingEntity, MasterBusinessUnitRegionMapping>(oMasterBusinessUnitRegionMapping);
+                            _repositoryMasterBusinessUnitRegionMapping.AddAsync(objMasterBusinessUnitRegionMapping);
                         }
                     }
                     await _unitOfWork.SaveChangesAsync();
@@ -96,12 +101,12 @@ namespace EmcureNPD.Business.Core.ServiceImplementations
 
                 if (objBusinessUnit.BusinessUnitId != 0)
                 {
-                    oMasterBusinessUnitCountryMapping.BusinessUnitId = objBusinessUnit.BusinessUnitId;
-                    foreach (var country in countryIds)
+                    oMasterBusinessUnitRegionMapping.BusinessUnitId = objBusinessUnit.BusinessUnitId;
+                    foreach (var region in regionIds)
                     {
-                        oMasterBusinessUnitCountryMapping.CountryId = country;
-                        objMasterBusinessUnitCountryMapping = _mapperFactory.Get<MasterBusinessUnitCountryMappingEntity, MasterBusinessUnitCountryMapping>(oMasterBusinessUnitCountryMapping);
-                        _repositoryMasterBusinessUnitCountryMapping.AddAsync(objMasterBusinessUnitCountryMapping);
+                        oMasterBusinessUnitRegionMapping.RegionId = region;
+                        objMasterBusinessUnitRegionMapping = _mapperFactory.Get<MasterBusinessUnitRegionMappingEntity, MasterBusinessUnitRegionMapping>(oMasterBusinessUnitRegionMapping);
+                        _repositoryMasterBusinessUnitRegionMapping.AddAsync(objMasterBusinessUnitRegionMapping);
                     }
                     await _unitOfWork.SaveChangesAsync();
                 }
@@ -118,16 +123,16 @@ namespace EmcureNPD.Business.Core.ServiceImplementations
         public async Task<DBOperation> DeleteBusinessUnit(int id)
         {
             var entityBusinessUnit = _repository.Get(x => x.BusinessUnitId == id);
-            var entityBusinessUnitCountryMapping = _repositoryMasterBusinessUnitCountryMapping.GetAllQuery().Where(x => x.BusinessUnitId == id);
+            var entityBusinessUnitRegionMapping = _repositoryMasterBusinessUnitRegionMapping.GetAllQuery().Where(x => x.BusinessUnitId == id);
             if (entityBusinessUnit == null)
                 return DBOperation.NotFound;
 
-            if (entityBusinessUnitCountryMapping == null)
+            if (entityBusinessUnitRegionMapping == null)
                 return DBOperation.NotFound;
 
-            foreach (var item in entityBusinessUnitCountryMapping)
+            foreach (var item in entityBusinessUnitRegionMapping)
             {
-                _repositoryMasterBusinessUnitCountryMapping.Remove(item);
+                _repositoryMasterBusinessUnitRegionMapping.Remove(item);
             }
             _repository.Remove(entityBusinessUnit);
 
@@ -135,11 +140,23 @@ namespace EmcureNPD.Business.Core.ServiceImplementations
 
             return DBOperation.Success;
         }
-        public async Task<MasterCountryEntity> GetCountryByBusinessUnitId(int id)
+        public async Task<MasterRegionEntity> GetRegionByBusinessUnitId(int id)
         {
-            var businessUnitCountryMapping = _repositoryMasterBusinessUnitCountryMapping.Get(x => x.BusinessUnitId == id);
-            var country = _countryRepository.Get(x => x.CountryId == businessUnitCountryMapping.CountryId);
-            return _mapperFactory.Get<MasterCountry, MasterCountryEntity>(country);
+            var businessUnitRegionMapping = _repositoryMasterBusinessUnitRegionMapping.Get(x => x.BusinessUnitId == id);
+            var region = _regionRepository.Get(x => x.RegionId == businessUnitRegionMapping.RegionId);
+            return _mapperFactory.Get<MasterRegion, MasterRegionEntity>(region);
+        }
+
+        public async Task<dynamic> GetCountryByBusinessUnitId(int BusinessUnitId)
+        {
+            var loggedInUserId = _helper.GetLoggedInUser().UserId;
+
+            SqlParameter[] osqlParameter = {
+                new SqlParameter("@BusinessUnitId", BusinessUnitId),
+                new SqlParameter("@UserId", loggedInUserId)
+            };
+            var _businessUnit = await _repository.GetBySP("SP_GetCountryByBusinessUnit", CommandType.StoredProcedure, osqlParameter);
+            return _businessUnit;
         }
     }
 }

@@ -1,4 +1,6 @@
-﻿namespace EmcureNPD.Web.Helpers
+﻿using Microsoft.Extensions.Configuration;
+
+namespace EmcureNPD.Web.Helpers
 {
     public static class APIURLHelper
     {
@@ -9,7 +11,8 @@
         public static string GetByPermisionRoleUsingRoleId = "api/Role/GetByPermisionRoleUsingRoleId";
         public static string ForgotPassword = "api/Account/ForgotPassword";
         public static string ResetPassword = "api/Account/ResetPassword";
-                
+        
+        public static IConfiguration Configuration;
 
         #region Formulation 
         public static string GetAllFormulation = "api/Formulation/GetAllFormulation";
@@ -83,10 +86,10 @@
         #endregion
 
         #region BusinessUnitMapping 
-        public static string GetAllBusinessUnitCountryMapping = "api/BusinessUnitCountryMapping/GetAllBusinessUnitCountryMapping";
-        public static string SaveBusinessUnitCountryMapping = "api/BusinessUnitCountryMapping/InsertUpdateBusinessUnitCountryMapping";
-        public static string GetBusinessUnitCountryMappingById = "api/BusinessUnitCountryMapping/GetBusinessUnitCountryMappingById";
-        public static string DeleteBusinessUnitCountryMappingById = "api/BusinessUnitCountryMapping/DeleteBusinessUnitCountryMapping";
+        public static string GetAllBusinessUnitRegionMapping = "api/BusinessUnitRegionMapping/GetAllBusinessUnitRegionMapping";
+        public static string SaveBusinessUnitRegionMapping = "api/BusinessUnitRegionMapping/InsertUpdateBusinessUnitRegionMapping";
+        public static string GetBusinessUnitRegionMappingById = "api/BusinessUnitRegionMapping/GetBusinessUnitRegionMappingById";
+        public static string DeleteBusinessUnitRegionMappingById = "api/BusinessUnitRegionMapping/DeleteBusinessUnitRegionMapping";
         #endregion
 
         #region RegionMapping 
@@ -105,6 +108,7 @@
 
         #region Role Management
         public static string GetAllRole = "api/Role/GetAllRole";
+        public static string GetAllActiveRole = "api/Role/GetAllActiveRole";
         public static string GetRoleById = "api/Role/GetRoleById";
         public static string SaveRole = "api/Role/InsertUpdateRole";
         public static string DeleteRoleById = "api/Role/DeleteRole";
@@ -178,6 +182,7 @@
         public static string SaveProductStrength = "api/ProductStrength/InsertUpdateProductStrength";
         public static string GetProductStrengthById = "api/ProductStrength/GetProductStrengthById";
         public static string DeleteProductStrengthById = "api/ProductStrength/DeleteProductStrength";
+
         #endregion
 
         #region BERequirement
@@ -188,10 +193,10 @@
         #endregion
 
         #region DIA
-        public static string GetAllDIA = "api/DIA/GetAllDIA";
-        public static string SaveDIA = "api/DIA/InsertUpdateDIA";
-        public static string GetDIAById = "api/DIA/GetDIAById";
-        public static string DeleteDIAById = "api/DIA/DeleteDIA";
+        public static string GetAllDIA = "api/Dashboard/GetAllDIA";
+        public static string SaveDIA = "api/Dashboard/InsertUpdateDIA";
+        public static string GetDIAById = "api/Dashboard/GetDIAById";
+        public static string DeleteDIAById = "api/Dashboard/DeleteDIA";
         #endregion
 
         #region User
@@ -207,6 +212,10 @@
         public static string GetCountryByRegion = "api/User/GetCountryByRegion"; 
         public static string GetDepartmentList = "api/User/GetDepartmentList";
         public static string GetBusinessUnitByUserId = "api/User/GetBusinessUnitByUserId";
+
+        // Anonymous_Access API for Forgot Passsword
+        public static string Anonymous_CheckEmailAddressExists = "api/Account/CheckEmailAddressExists"; 
+        public static string Anonymous_IsTokenValid = "api/Account/IsTokenValid"; 
         #endregion
 
         #region Module
@@ -233,12 +242,15 @@
         public static string SaveCommercialPIDF = "api/CommercialPIDFForm/SaveCommercialPIDF";
         public static string GetPbfFormData = "api/PBF/GetPbfFormData";
         public static string SavePBF = "api/PBF/InsertUpdatePBFDetails";
+        public static string SavePBFAnatical = "api/PBF/PBFAnaLytical";
+        public static string GetPBFReadonlyDataByPIDFId = "api/PBF/GetPBFAnalyticalReadonlyData";
+		
 
-        #endregion
+		#endregion
 
 
-        #region MarketExtension
-        public static string GetAllMarketExtension = "api/MarketExtension/GetAllMarketExtension";
+		#region MarketExtension
+		public static string GetAllMarketExtension = "api/MarketExtension/GetAllMarketExtension";
         public static string SaveMarketExtension = "api/MarketExtension/InsertUpdateMarketExtension";
         public static string GetMarketExtensionById = "api/MarketExtension/GetMarketExtensionById";
         public static string DeleteMarketExtensionById = "api/MarketExtension/DeleteMarketExtension";
@@ -287,6 +299,10 @@
         public static string GetMedicalFormdata = "api/PIDForm/GetPIDFMedicalFormData";
         public static string GetAPIIPDFormData = "api/PBF/GetAPIIPDFormData";
         public static string InsertUpdateAPIIPD = "api/PBF/InsertUpdateAPIIPD";
+        public static string GetAPIRnDFormData = "api/PBF/GetAPIRnDFormData";
+        public static string InsertUpdateAPIRnD = "api/PBF/InsertUpdateAPIRnD";
+        public static string GetAPICharterFormData = "api/PBF/GetAPICharterFormData";
+        public static string InsertUpdateAPICharter = "api/PBF/InsertUpdateAPICharter";
         #endregion
 
         #region API List
@@ -302,5 +318,11 @@
         public static string GetAllNotification = "api/Notification/GetAllNotification";
         #endregion
 
+        #region PIDFFinance
+        public static string AddUpdatePidfFinance = "api/PidfFinance/AddUpdatePidfFinance";
+        public static string AddUpdatePidfFinanceBatchSizeCoating = "api/PidfFinance/AddUpdatePidfFinanceBatchSizeCoating";
+        public static string GetPidfFinance = "api/PidfFinance/GetPidfFinance";
+        public static string GetFinanceBatchSizeCoating = "api/PidfFinance/GetFinanceBatchSizeCoating";
+        #endregion
     }
 }

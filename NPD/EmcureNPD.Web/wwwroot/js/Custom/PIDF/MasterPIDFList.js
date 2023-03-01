@@ -5,7 +5,7 @@ $(document).ready(function () {
 });
 
 function InitializePIDFList() {
-    var setDefaultOrder = [0, 'asc'];
+    var setDefaultOrder = [24, 'desc'];
     var ajaxObject = {
         "url": $('#hdnBaseURL').val() + AllPIDF,
         "type": "POST",
@@ -16,20 +16,46 @@ function InitializePIDFList() {
         "datatype": "json"
     };
 
-    var columnObject = [ 
-        {           
+    var columnObject = [
+        {
+            className: 'dt-control',
+            orderable: false,
+            defaultContent: '',
+            "data": null
+        },
+        {
+            orderable: false,
             "data": null,
             'render': function (data, type, row, meta) {
-                if (row.status == 'PIDF Created' || row.status == 'PIDF Pending Approval') {
-                    return '<input type="checkbox" id="chk_' + row.pidfid + '" name="id[]" onclick="chkClick(this,' + row.pidfid + ');" value="' + $('<div/>').text(data).html() + '">';
-                }
-                else {
-                    return '<input type="checkbox" disabled id="chk_' + row.pidfid + '" name="id[]" onclick="chkClick(this,' + row.pidfid + ');" value="' + $('<div/>').text(data).html() + '">';
+                if (_screenId == "1" || _screenId == "2" || _screenId == "7" || _screenId == "8") {
+
+                    var _flag = false;
+                    if (_screenId == "1") {
+                        if (row.pidfStatusID == 2) {
+                            _flag = true;
+                        }
+                    } else if (_screenId == "2") {
+                        if (row.pidfStatusID == 6) {
+                            _flag = true;
+                        }
+                    } else if (_screenId == "7") {
+                        if (row.pidfStatusID == 17) {
+                            _flag = true;
+                        }
+                    }
+                    else if (_screenId == "8") {
+                        if (row.pidfStatusID == 18) {
+                            _flag = true;
+                        }
+                    }
+                    return '<input type="checkbox" class="ml-2 custom-list-checkbox" id="chk_' + row.pidfid + '" name="id[]" onclick="chkClick(this,' + row.pidfid + ');" value="' + $('<div/>').text(data).html() + '" ' + (_flag ? "" : "disabled") + '>';
+                } else {
+                    return "";
                 }
             }
         },
         {
-            "data": "pidfno", "name": "PIDF No"
+            "data": "pidfNo", "name": "PIDF No"
         },
         {
             "data": "moleculeName", "name": "Project Name"
@@ -38,37 +64,200 @@ function InitializePIDFList() {
             "data": "brandName", "name": "Brand Name"
         },
         {
-            "data": "dosageFormName", "name": "DosageForm Name"
+            "data": "dosageFormName", "name": "Dosage Form"
+        },
+        {
+            "data": "businessUnitName", "name": "Dosage Form"
+        },
+        {
+            "data": "oralName", "name": "Dosage Form"
+        },
+        {
+            "data": "inHouses", "name": "Dosage Form", "render": function (data, type, row, meta) {
+                return (data ? "Yes" : "No");
+            }
+        },
+        {
+            "data": "ipd", "name": "IPD", "render": function (data, type, row, meta) {
+                return '<a class="small-button btn btn-' + (row.ipd ? "success" : "danger") + '"><i class="fa ' + (row.ipd ? "fa-check" : "fa-remove") + '"></i></a>';
+            }
+        },
+        {
+            "data": "medical", "name": "medical", "render": function (data, type, row, meta) {
+                return '<a class="small-button btn btn-' + (row.medical ? "success" : "danger") + '"><i class="fa ' + (row.medical ? "fa-check" : "fa-remove") + '"></i></a>';
+            }
+        },
+        {
+            "data": "commercial", "name": "Commercial", "render": function (data, type, row, meta) {
+                return '<a class="small-button btn btn-' + (row.commercial ? "success" : "danger") + '"><i class="fa ' + (row.commercial ? "fa-check" : "fa-remove") + '"></i></a>';
+            }
+        },
+        {
+            "data": "pbf", "name": "PBF", "render": function (data, type, row, meta) {
+                return '<a class="small-button btn btn-' + (row.pbf ? "success" : "danger") + '"><i class="fa ' + (row.pbf ? "fa-check" : "fa-remove") + '"></i></a>';
+            }
+        },
+        {
+            "data": "api", "name": "api", "render": function (data, type, row, meta) {
+                return '<a class="small-button btn btn-' + (row.api ? "success" : "danger") + '"><i class="fa ' + (row.api ? "fa-check" : "fa-remove") + '"></i></a>';
+            }
+        },
+        {
+            "data": "finance", "name": "Finance", "render": function (data, type, row, meta) {
+                return '<a class="small-button btn btn-' + (row.finance ? "success" : "danger") + '"><i class="fa ' + (row.finance ? "fa-check" : "fa-remove") + '"></i></a>';
+            }
+        },
+        {
+            "data": "management", "name": "Management", "render": function (data, type, row, meta) {
+                return '<a class="small-button btn btn-' + (row.management ? "success" : "danger") + '"><i class="fa ' + (row.management ? "fa-check" : "fa-remove") + '"></i></a>';
+            }
+        },
+        {
+            "data": "marketExtension", "name": "Market Extension"
+        },
+        {
+            "data": "productPackagingName", "name": "Product Packaging"
+        },
+        {
+            "data": "rfdBrand", "name": "RFDBrand"
+        },
+        {
+            "data": "applicant", "name": "Applicant"
         },
         {
             "data": "countryName", "name": "Country Name"
         },
         {
-            "data": "productPackagingName", "name": "Product Packaging Name"
+            "data": "inidication", "name": "Inidication"
+        },
+        {
+            "data": "diaName", "name": "DIA "
         },
         {
             "data": "createdBy", "name": "Created By"
         },
-        
         {
-            "data": "status", "name": "Status"
+            "data": "createdDate", "name": "createdDate", "render": function (data, type, row, meta) {
+                return moment(data).format("DD MMM YYYY h:m");
+            }
         },
         {
-            "data": "Action", "name": "Action", "render": function (data, type, row, meta) {
+            "data": "status", "name": "Status", "render": function (data, type, row, meta) {
                 var html = '';
-                if (row.status == 'PIDF Created' || row.status == 'PIDF Pending Approval') {
-                    html += '<a class="btn btn-primary" href="/PIDF/PIDF?PIDFId=' + row.pidfid + '"><i class="fa fa-fw fa-edit mr-1"></i>Edit</a>';
-                    html += '<a class="btn btn-primary disabled" href="/PIDF/PIDF?PIDFId=' + row.pidfid + '"><i class="fa fa-fw fa-edit mr-1"></i>View</a>';
-                } else {
-                    html += '<a class="btn btn-primary disabled" href="/PIDF/PIDF?PIDFId=' + row.pidfid + '"><i class="fa fa-fw fa-edit mr-1"></i>Edit</a>';
-                    html += '<a class="btn btn-primary" href="/PIDF/PIDF?PIDFId=' + row.pidfid + '"><i class="fa fa-fw fa-edit mr-1"></i>View</a>';
+                html = '<span style="background-color:' + row.statusColor + ';padding:5px;border-radius:10px;">' + data + '</span>';
+                return html;
+            }
+        },
+        {
+            "data": null, "name": "Action", "render": function (data, type, row, meta) {
+                var html = '';
+                if (_screenId == "1") {
+                    var _PIDFForm = '/PIDF/PIDF?PIDFId=' + row.pidfid;
+                    var _enable = (row.pidfStatusID == 1 || row.pidfStatusID == 2);
+                    html += '<a class="large-font" style="color:' + (_enable ? "#007bff" : "grey") + '" href="' + (_enable ? _PIDFForm : "#") + '"><i class="fa fa-fw fa-edit mr-1"></i></a>';
+                    html += '<a class="ml-1 large-font" href="' + _PIDFForm + '&IsView=1"><i class="fa fa-fw fa-eye mr-1"></i></a>';
+                } else if (_screenId == "2") {
+                    var _IPDForm = '/PIDForm/PIDForm?pidfid=' + row.encpidfid + '&bui=' + row.encbud;
+                    var _enable = (row.pidfStatusID == 3 || row.pidfStatusID == 5 || row.pidfStatusID == 6);
+                    html += '<a class="large-font" style="color:' + (_enable ? "#007bff" : "grey") + '" href="' + (_enable ? _IPDForm : "#") + '"><i class="fa fa-fw fa-edit mr-1"></i></a>';
+                    html += '<a class="ml-1 large-font" href="' + _IPDForm + '&IsView=1"><i class="fa fa-fw fa-eye mr-1"></i></a>';
+
+                } else if (_screenId == "3") {
+                    var _MedicalForm = '/PIDForm/Medical?pidfid=' + row.encpidfid + '&bui=' + row.encbud;
+                    var _enable = (row.pidfStatusID == 3 || row.pidfStatusID == 5 || row.pidfStatusID == 6 || row.pidfStatusID == 7);
+                    html += '<a class="large-font" style="color:' + (_enable ? "#007bff" : "grey") + '" href="' + (_enable ? _MedicalForm : "#") + '"><i class="fa fa-fw fa-edit mr-1"></i></a>';
+                    html += '<a class="ml-1 large-font" href="' + _MedicalForm + '&IsView=1"><i class="fa fa-fw fa-eye mr-1"></i></a>';
+                } else if (_screenId == "4") {
+                    var _CommercialForm = '/PIDF/PIDFCommerciaLDetails?pidfid=' + row.encpidfid + '&bui=' + row.encbud;
+                    var _enable = (row.pidfStatusID == 7 || row.pidfStatusID == 10 || row.pidfStatusID == 11 || row.pidfStatusID == 12 || row.pidfStatusID == 13 || row.pidfStatusID == 14 || row.pidfStatusID == 15);
+                    html += '<a class="large-font" style="color:' + (_enable ? "#007bff" : "grey") + '" href="' + (_enable ? _CommercialForm : "#") + '"><i class="fa fa-fw fa-edit mr-1"></i></a>';
+                    html += '<a class="ml-1 large-font" href="' + _CommercialForm + '&IsView=1"><i class="fa fa-fw fa-eye mr-1"></i></a>';
+
+                } else if (_screenId == "5") {
+                    var _APIForm = '/PBF/';
+                    var _APIQS = '?pidfid=' + row.encpidfid + '&bui=' + row.encbud;
+                    var _enable = (row.pidfStatusID == 7 || row.pidfStatusID == 10 || row.pidfStatusID == 11 || row.pidfStatusID == 12 || row.pidfStatusID == 13 || row.pidfStatusID == 14 || row.pidfStatusID == 15);
+                    html += '<a class="large-font" title="IPD" style="color:' + (_enable ? "#007bff" : "grey") + '" href="' + (_enable ? _APIForm + "APIIPDDetailsForm" + _APIQS : "#") + '"><i class="fa fa-fw fa-columns mr-1"></i></a>';
+                    html += '<a class="large-font" title="RnD" style="color:' + (_enable ? "#007bff" : "grey") + '" href="' + (_enable ? _APIForm + "APIRndDetailsForm" + _APIQS : "#") + '"><i class="fa fa-fw fa-flask mr-1"></i></a>';
+                    html += '<a class="large-font" title="Charter" style="color:' + (_enable ? "#007bff" : "grey") + '" href="' + (_enable ? _APIForm + "APICharterDetailsForm" + _APIQS : "#") + '"><i class="fa fa-fw fa-map-marker mr-1"></i></a>';
+                    html += '<a class="large-font" title="Charter Summary" style="color:' + (_enable ? "#007bff" : "grey") + '" href="' + (_enable ? _APIForm + "APICharterSummaryDetailsForm" + _APIQS : "#") + '"><i class="fa fa-fw fa-chart-line mr-1"></i></a>';
+                } else if (_screenId == "6") {
+                    var _PBFForm = '/PIDF/';
+                    var _PBFQS = '?pidfid=' + row.encpidfid + '&bui=' + row.encbud;
+                    var _enable = (row.pidfStatusID == 7 || row.pidfStatusID == 10 || row.pidfStatusID == 11 || row.pidfStatusID == 12 || row.pidfStatusID == 13 || row.pidfStatusID == 14 || row.pidfStatusID == 15);
+                    html += '<a class="large-font" title="Edit" style="color:' + (_enable ? "#007bff" : "grey") + '" href="' + (_enable ? _PBFForm + "PBFForm" + _PBFQS : "#") + '"><i class="fa fa-fw fa-edit mr-1"></i></a>';
+                    html += '<a class="large-font" title="View" style="color:' + (_enable ? "#007bff" : "grey") + '" href="' + (_enable ? _PBFForm + "PBFForm" + _PBFQS : "#") + '"><i class="fa fa-fw fa-eye mr-1"></i></a>';
+                    html += '<a class="large-font" title="Charter Summary" style="color:' + (_enable ? "#007bff" : "grey") + '" href="' + (_enable ? _PBFForm + "PBFForm" + _PBFQS : "#") + '"><i class="fa fa-fw fa-chart-line mr-1"></i></a>';
+                } else if (_screenId == "7") {
+                    var _FinanceForm = '/Finance/PIDFFinance?pidfid=' + row.encpidfid + '&bui=' + row.encbud;
+                    var _enable = (row.pidfStatusID == 7 || row.pidfStatusID == 10 || row.pidfStatusID == 11 || row.pidfStatusID == 12 || row.pidfStatusID == 13 || row.pidfStatusID == 14 || row.pidfStatusID == 15 || row.pidfStatusID == 16 || row.pidfStatusID == 17);
+                    html += '<a class="large-font" title="Edit" style="color:' + (_enable ? "#007bff" : "grey") + '" href="' + (_enable ? _FinanceForm : "#") + '"><i class="fa fa-fw fa-edit mr-1"></i></a>';
+                    html += '<a class="large-font" title="View" style="color:' + (_enable ? "#007bff" : "grey") + '" href="' + (_enable ? _FinanceForm + "&IsView=1" : "#") + '"><i class="fa fa-fw fa-eye mr-1"></i></a>';
+                } else if (_screenId == "8") {
+                    var _ManagementForm = '/Finance/PIDFManagementApproval?pidfid=' + row.encpidfid + '&bui=' + row.encbud;
+                    var _enable = true; //(row.pidfStatusID == 18 || row.pidfStatusID == 20);
+                    html += '<a class="large-font" title="View" style="color:' + (_enable ? "#007bff" : "grey") + '" href="' + (_enable ? _ManagementForm + "&IsView=1" : "#") + '"><i class="fa fa-fw fa-eye mr-1"></i></a>';
                 }
                 return html;
             }
         },
     ];
 
-    IntializingDataTable(tableId, setDefaultOrder, ajaxObject, columnObject);
+    var dataTableInst = IntializingDataTable(tableId, setDefaultOrder, ajaxObject, columnObject, {
+        left: 3,
+        right: 2
+    });
+
+    // Add event listener for opening and closing details
+    $('#' + tableId + ' tbody').on('click', 'td.dt-control', function () {
+        var tr = $(this).closest('tr');
+        var row = dataTableInst.row(tr);
+
+        if (row.child.isShown()) {
+            // This row is already open - close it
+            row.child.hide();
+            tr.removeClass('shown');
+        } else {
+            // Open this row
+            row.child(CustomizeChildContent(row.data())).show();
+            tr.addClass('shown');
+        }
+    });
+}
+/* Formatting function for row details - modify as you need */
+function CustomizeChildContent(d) {
+    // `d` is the original data object for the row
+    var _psHTML = "";
+    var _paHTML = "";
+    var _phHTML = "";
+    try {
+        if (d != null && d != undefined) {
+            if (d.productStrength != null && d.productStrength != undefined) {
+                var _productStrength = JSON.parse(d.productStrength);
+                $.each(_productStrength, function (index, value) {
+                    _psHTML += "<tr><td>" + value.Strength + "</td>" + "<td>" + value.UnitofMeasurementName + "</td></tr>";
+                });
+            }
+            if (d.productAPIDetail != null && d.productAPIDetail != undefined) {
+                var _productAPI = JSON.parse(d.productAPIDetail);
+                $.each(_productAPI, function (index, value) {
+                    _paHTML += "<tr><td>" + value.APIName + "</td>" + "<td>" + value.APISourcingName + "</td><td>" + value.APIVendor + "</td></tr>";
+                });
+            }
+            if (d.statusHistory != null && d.statusHistory != undefined) {
+                var _productStatus = JSON.parse(d.statusHistory);
+                $.each(_productStatus, function (index, value) {
+                    _phHTML += "<tr><td style='background-color:" + value.StatusColor + "'>" + value.PIDFStatus + "</td>" + "<td>" + moment(value.CreatedDate).format('dddd, MMMM Do YYYY, h:mm') + "</td><td>" + value.FullName + "</td></tr>";
+                });
+            }
+        }
+    } catch (e) {
+
+    }
+    
+    return (
+        '<table class="custom-table-child"><thead><tr><th>Strength</th><th>Unit</th></tr></thead><tbody>' + _psHTML + '</tbody></table><table class="custom-table-child"><thead><tr><th>API Name</th><th>Sourcing Name</th><th>Vendor</th></tr></thead><tbody>' + _paHTML + '</tbody></table><table class="custom-table-child"><thead><tr><th>Status</th><th>Date</th><th>By</th></tr></thead><tbody>' + _phHTML + '</tbody></table>'
+    );
 }
 
 function chkClick(cb, pidfId) {
@@ -91,16 +280,16 @@ function approveRejDeleteData(type) {
             $('#DeleteModel').modal('show');
     }
     else
-        toastr.error("Select Pidf No");
+        toastr.error("Select Pidf");
 }
 function approveRejDeleteConfirm(type) {
     if (objApprRejList != undefined && objApprRejList.length > 0) {
         var objIds = {
             saveType: type,
-            pidfIds: objApprRejList
+            pidfIds: objApprRejList,
+            screenId: _screenId
         };
         ajaxServiceMethod($('#hdnBaseURL').val() + ApproveRejectDeletePidf, 'POST', SaveAppRejSuccess, SaveApprRejFormError, JSON.stringify(objIds));
-
     }
     if (type == "A")
         $('#ApproveModel').modal('hide');
@@ -112,7 +301,6 @@ function approveRejDeleteConfirm(type) {
 function SaveAppRejSuccess(data) {
     try {
         if (data._Success === true) {
-
             toastr.success(data._Message);
             objApprRejList = [];
             $("#PIDFTable").dataTable().fnDestroy();

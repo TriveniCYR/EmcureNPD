@@ -47,12 +47,12 @@ namespace EmcureNPD.API.Controllers.Masters
         /// <response code="404">Not Found</response>
         /// <response code="405">Method Not Allowed</response>
         /// <response code="500">Internal Server</response>
-        [HttpGet, Route("FillDropdown")]
-        public async Task<IActionResult> FillDropdown()
+        [HttpGet, Route("FillDropdown/{userId}")]
+        public async Task<IActionResult> FillDropdown(int userid)
         {
             try
             {
-                return _ObjectResponse.CreateData(await _PIDFService.FillDropdown(), (Int32)HttpStatusCode.OK);
+                return _ObjectResponse.CreateData(await _PIDFService.FillDropdown(userid), (Int32)HttpStatusCode.OK);
             }
             catch (Exception e)
             {

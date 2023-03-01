@@ -74,10 +74,6 @@ namespace EmcureNPD.Business.Core.Implementation
         }
         public async Task<DBOperation> AddUpdateCommercialPIDF(PIDFCommercialEntity entitycommPIDF)
         {
-            //if (entitycommPIDF.SaveType== "Sv")  //Save Final
-            // else if (entitycommPIDF.SaveType == "SvDrf") // Save as Draft
-
-
             var listYear = new List<PidfCommercialYear>();
             int i = 1;
             foreach (var year in entitycommPIDF.PidfCommercialYears)
@@ -92,6 +88,7 @@ namespace EmcureNPD.Business.Core.Implementation
 
             Expression<Func<PidfCommercial, bool>> expr = u => u.BusinessUnitId == entitycommPIDF.BusinessUnitId && u.Pidfid == entitycommPIDF.Pidfid && u.PidfproductStrengthId == entitycommPIDF.PidfproductStrengthId;
             var objFetchData = await _commercialrepository.GetAsync(expr);
+            var OldObjpidfCommercial = objFetchData;
             if (objFetchData == null)
             {
                 var NewCommPIDF = new PidfCommercial();
@@ -107,6 +104,7 @@ namespace EmcureNPD.Business.Core.Implementation
 
                 NewCommPIDF.PidfCommercialYears = listYear;
                 _commercialrepository.AddAsync(NewCommPIDF);
+                await _unitOfWork.SaveChangesAsync();
             }
             else
             {
@@ -120,10 +118,17 @@ namespace EmcureNPD.Business.Core.Implementation
                 objFetchData.PidfproductStrengthId = entitycommPIDF.PidfproductStrengthId;
                 objFetchData.MarketSizeInUnit = entitycommPIDF.MarketSizeInUnit;
                 objFetchData.ModifyBy = entitycommPIDF.CreatedBy;
+                objFetchData.MarketSizeInUnit = entitycommPIDF.MarketSizeInUnit;
+                objFetchData.ShelfLife = entitycommPIDF.ShelfLife;
                 objFetchData.ModifyDate = DateTime.Now;
                 _commercialrepository.UpdateAsync(objFetchData);
+                await _unitOfWork.SaveChangesAsync();
+              //  var isSuccess = await _auditLogService.CreateAuditLog<PidfCommercial>(Utility.Audit.AuditActionType.Update,
+              //Utility.Enums.ModuleEnum.PIDF, OldObjpidfCommercial, objFetchData, 0);
             }
-            await _unitOfWork.SaveChangesAsync();
+            var _StatusID = (entitycommPIDF.SaveType == "Sv") ? Master_PIDFStatus.CommercialSubmitted : Master_PIDFStatus.CommercialInProgress;
+            await _auditLogService.UpdatePIDFStatusCommon(entitycommPIDF.Pidfid, (int)_StatusID, entitycommPIDF.CreatedBy);
+
             return DBOperation.Success;
         }
         public async Task<PIDFCommercialEntity> GetCommercialFormData(long pidfId, int buid, int? strengthid)

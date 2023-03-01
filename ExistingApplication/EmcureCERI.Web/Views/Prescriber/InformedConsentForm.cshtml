@@ -1,0 +1,296 @@
+﻿@inject Microsoft.Extensions.Localization.IStringLocalizer<SharedResource> SharedLocalizer
+@model EmcureCERI.Web.Models.PrescriberViewModels.PatientViewModel
+@{
+    ViewData["Title"] = @SharedLocalizer["Informed Consent Form"].Value;
+}
+<section class="section">
+    <div class="container-fluid">
+        <h4>@Model.FirstName @Model.LastName</h4>
+        <div class="tabsContainer">
+            <ul class="nav nav-pills toptabs">
+                <li class="active"><a asp-area="" asp-controller="Prescriber" asp-action="InformedConsentForm" asp-route-id="@ViewBag.patientid">@SharedLocalizer["Informed Consent Form"].Value</a></li>
+                <li><a asp-area="" asp-controller="Prescriber" asp-action="BaselineDataForm" asp-route-id="@ViewBag.patientid">@SharedLocalizer["Baseline Data Form"].Value</a></li>
+                <li><a asp-area="" asp-controller="Prescriber" asp-action="FollowUpForm" asp-route-id="@ViewBag.patientid">@SharedLocalizer["Follow Up Form"].Value</a></li>
+            </ul>
+            <div class="tab-content tab-content col-md-12" style="background-color:#fff">
+                <div class="tab-pane  active" style="padding-top:15px;">
+                    @if (User.IsInRole("Admin"))
+                    {
+                        <embed src="@Url.Content(Model.PdfName)" type="application/pdf" width="100%" height="600px" />
+                        <div class="text-center">
+                            <button class="btn btn-default" onclick="acceptPatient()">@SharedLocalizer["Accept"].Value</button>
+                            <button class="btn btn-default" onclick="rejectPatient()">@SharedLocalizer["Reject"].Value</button>
+                        </div>
+                    }
+                    else
+                    {
+                        @if (!Model.IsConsentFcheckByHcp)
+                        {
+                            @await Html.PartialAsync("../Pdf/_PdfConsentForm")
+                            <h4>@SharedLocalizer["Study Title"].Value : @SharedLocalizer["Cidofovir Exposure Registry Information"].Value</h4>
+                            <div class="panel-group">
+                                <div class="panel panel-default grayPannel">
+                                    <div class="panel-heading">
+                                        <h4 class="panel-title">
+                                            <a data-toggle="collapse" href="#collapse1">@SharedLocalizer["Documentation of the Informed Consent"].Value</a>
+                                        </h4>
+                                    </div>
+                                    <div id="collapse1" class="panel-collapse collapse">
+                                        <div class="panel-body">
+                                            <ul class="list-group">
+                                                <li class="list-group-item">
+                                                    <div class="flex-container">
+                                                        <div class="listSrNo">(i)</div>
+                                                        <div class="listContent" style="flex-grow: 8">
+                                                            @SharedLocalizer["I confirm that I have read and understood the information sheet dated"].Value
+                                                            <label class="dispDate">@Model.Point1Date.ToShortDateString()</label> @SharedLocalizer["for the above study and have had the opportunity to ask questions."].Value
+                                                        </div>
+                                                        <div class="listCcheckbox">
+                                                            <div class="checkbox">
+                                                                <label>
+                                                                    @Html.CheckBoxFor(model => model.Point1)
+                                                                    <span class="cr"><i class="cr-icon glyphicon glyphicon-ok"></i></span>
+                                                                </label>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </li>
+                                                <li class="list-group-item">
+                                                    <div class="flex-container">
+                                                        <div class="listSrNo">(ii)</div>
+                                                        <div class="listContent" style="flex-grow: 8">
+                                                            @SharedLocalizer["I understand that my participation in the Study is voluntary and that I am free to withdrawat any time, withoutgiving any reason, without my medical care or legal rights being affected."].Value
+                                                        </div>
+                                                        <div class="listCcheckbox">
+                                                            <div class="checkbox">
+                                                                <label>
+                                                                    @Html.CheckBoxFor(model => model.Point2)
+                                                                    <span class="cr"><i class="cr-icon glyphicon glyphicon-ok"></i></span>
+                                                                </label>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </li>
+                                                <li class="list-group-item">
+                                                    <div class="flex-container">
+                                                        <div class="listSrNo">(iii)</div>
+                                                        <div class="listContent" style="flex-grow: 8">
+                                                            @SharedLocalizer["I understand that all attempts will be made to protect my privacy and my family’s privacy. I understand that my personal information will be protected and saved in the Cidofovir Exposure Registryusingacode."].Value
+                                                        </div>
+                                                        <div class="listCcheckbox">
+                                                            <div class="checkbox">
+                                                                <label>
+                                                                    @Html.CheckBoxFor(model => model.Point3)
+                                                                    <span class="cr"><i class="cr-icon glyphicon glyphicon-ok"></i></span>
+                                                                </label>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </li>
+                                                <li class="list-group-item">
+                                                    <div class="flex-container">
+                                                        <div class="listSrNo">(iv)</div>
+                                                        <div class="listContent" style="flex-grow: 8">
+                                                            @SharedLocalizer["I understand that the Sponsor of the Cidofovir Exposure Registry, others working on theSponsor’s behalf, the Institutional Review Board and the regulatory authorities will not need my permission to look at my health records both in respect of the current study and any further research that may be conducted in relation to it, even if I withdraw from the trial. I agree to this access. However, I understand that my identity will not berevealed in any information released to third parties orpublished."].Value
+                                                        </div>
+                                                        <div class="listCcheckbox">
+                                                            <div class="checkbox">
+                                                                <label>
+                                                                    @Html.CheckBoxFor(model => model.Point4)
+                                                                    <span class="cr"><i class="cr-icon glyphicon glyphicon-ok"></i></span>
+                                                                </label>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </li>
+                                                <li class="list-group-item">
+                                                    <div class="flex-container">
+                                                        <div class="listSrNo">(v)</div>
+                                                        <div class="listContent" style="flex-grow: 8">
+                                                            @SharedLocalizer["I understand that I may not personally benefit from participating inthe Cidofovir Exposure Registry."].Value
+                                                        </div>
+                                                        <div class="listCcheckbox">
+                                                            <div class="checkbox">
+                                                                <label>
+                                                                    @Html.CheckBoxFor(model => model.Point5)
+                                                                    <span class="cr"><i class="cr-icon glyphicon glyphicon-ok"></i></span>
+                                                                </label>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </li>
+                                                <li class="list-group-item">
+                                                    <div class="flex-container">
+                                                        <div class="listSrNo">(vi)</div>
+                                                        <div class="listContent" style="flex-grow: 8">
+                                                            @SharedLocalizer["I agree not to restrict the use of any data or results that arise from this study provided such a use is only for scientific purpose(s)"].Value
+                                                        </div>
+                                                        <div class="listCcheckbox">
+                                                            <div class="checkbox">
+                                                                <label>
+                                                                    @Html.CheckBoxFor(model => model.Point6)
+                                                                    <span class="cr"><i class="cr-icon glyphicon glyphicon-ok"></i></span>
+                                                                </label>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </li>
+                                                <li class="list-group-item">
+                                                    <div class="flex-container">
+                                                        <div class="listSrNo">(vii)</div>
+                                                        <div class="listContent" style="flex-grow: 8">
+                                                            @SharedLocalizer["I agree to take part in the above study."].Value
+                                                        </div>
+                                                        <div class="listCcheckbox">
+                                                            <div class="checkbox">
+                                                                <label>
+                                                                    @Html.CheckBoxFor(model => model.Point7)
+                                                                    <span class="cr"><i class="cr-icon glyphicon glyphicon-ok"></i></span>
+                                                                </label>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </li>
+                                            </ul>
+                                            <p>@SharedLocalizer["I have read the above informationand it is presented in a language that I understand well. By signing this consent form, I attest that the information given in this document has been clearly explained to me and understood well by me. I have been told that I will be given a signed copy of thisform. I hereby willingly confirm that I wish to take part in this study."].Value</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-sm-4">
+                                    <p><label>@SharedLocalizer["Name of the patient"].Value</label></p>
+                                    <h4> @Html.DisplayFor(model => model.FirstName) @Html.DisplayFor(model => model.LastName)</h4>
+                                </div>
+                                <div class="col-sm-4">
+                                    <p><label>@SharedLocalizer["Date of Birth"].Value</label></p>
+                                    <h4> @Model.DateOfBirth.ToShortDateString()</h4>
+                                </div>
+                                <div class="col-sm-4">
+                                    <p><label>@SharedLocalizer["Name of the Guardians, if applicable"].Value</label></p>
+                                    <h4> @Html.DisplayFor(model => model.RFirstName) @Html.DisplayFor(model => model.RLastName)</h4>
+                                </div>
+                            </div>
+                            <div class="text-center">
+                                @*<button class="btn btn-default" id="downloadPDF">@SharedLocalizer["Download"].Value</button>
+                    <button class="btn btn-default" onclick="uploadPDF()">@SharedLocalizer["Upload Signed Form"].Value</button>*@
+                            </div>
+                        }
+                        else
+                        {
+                            @* <iframe class="doc" src="@Url.Content(Model.PdfName)&embedded=true" width="100%" height="600px"></iframe>*@
+                            @*<embed src="@Url.Content(Model.PdfName)" type="application/pdf" width="100%" height="600px" />*@
+                            <iframe src="@Url.Content(Model.PdfName)"  type="application/docx" width="100%" height="600px"></iframe>
+
+                        }
+                    }
+                    <br />
+                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+                <div id="patientViewModal" class="modal themeModal " role="dialog">
+                    <div class="modal-dialog">
+                        <!-- Modal content-->
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                <h4 class="modal-title"></h4>
+                            </div>
+                            <div class="modal-body">
+                                <p></p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                @section Scripts {
+                <script>
+                    $(document).ready(function () {
+                        $("#downloadPDF").click(function () { exportPDF("informed-consent-form", "InformedConsentForm.pdf"); });
+                    });
+                        var specialElementHandlers = {'.no-export': function (element, renderer) {return true;}};
+                        $('#firstName').html("@Model.FirstName");
+                        $('#lastName').html("@Model.LastName");
+                        if ("@Model.RFirstName" == null || "@Model.RFirstName" == "") { $('#rfirstName').html("NA"); } else { $('#rfirstName').html("@Model.RFirstName"); }
+                        if ("@Model.DateOfBirth" == null || "@Model.DateOfBirth" == "") { $('#dobId').html(""); } else { $('#dobId').html("@Model.DateOfBirth.ToShortDateString()");}
+                        if ("@Model.RLastName" == null || "@Model.RLastName" == "") { $('#rlastName').html("NA"); } else { $('#rlastName').html("@Model.RLastName"); }
+                        $('#date').text("@Model.Point1Date");
+                        if ("@Model.Point1" == "True") { $('#point1').html('@SharedLocalizer["Ok"].Value'); }
+                        if ("@Model.Point2" == "True") { $('#point2').html('@SharedLocalizer["Ok"].Value'); }
+                        if ("@Model.Point3" == "True") { $('#point3').html('@SharedLocalizer["Ok"].Value'); }
+                        if ("@Model.Point4" == "True") { $('#point4').html('@SharedLocalizer["Ok"].Value'); }
+                        if ("@Model.Point5" == "True") { $('#point5').html('@SharedLocalizer["Ok"].Value'); }
+                        if ("@Model.Point6" == "True") { $('#point6').html('@SharedLocalizer["Ok"].Value'); }
+                        if ("@Model.Point7" == "True") { $('#point7').html('@SharedLocalizer["Ok"].Value'); }
+
+                        function PopupFormDoc(url) {
+                            //alert("Hello");
+                            $.get(url)
+                                .done(function (response) {
+                                    $('#patientViewModal .modal-title').html('@SharedLocalizer["Informed Consent Form Upload"].Value');
+                                    $('#patientViewModal .modal-body').html(response);
+                                    $('#patientViewModal').modal('show');
+                                });
+                        }
+
+                        function uploadPDF() {
+                            var url = "/Prescriber/PatientUploadDocument/"+@Model.Id;
+                            $.get(url)
+                                .done(function (response) {
+                                    $('#patientViewModal .modal-title').html('@SharedLocalizer["Informed Consent Form Upload"].Value');
+                                    $('#patientViewModal .modal-body').html(response);
+                                    $('#patientViewModal').modal('show');
+                                });
+                        }
+
+                        function SubmitForm(form) {
+                            $.validator.unobtrusive.parse(form);
+                            if ($(form).valid()) {
+                                $.ajax({
+                                    type: "POST",
+                                    url: form.action,
+                                    data: $(form).serialize(),
+                                    success: function (result) {
+                                        if (result.success === "success") {
+                                            $('#patientViewModal').modal('hide');
+                                            openCommonModal('successModal modal-sm', '@Html.Raw(SharedLocalizer["Success"].Value)','@Html.Raw(SharedLocalizer["The Patient is Not Approved for Cidofovir Study."].Value)', false);
+                                        }
+                                    },
+                                    error: function (err) {
+                                        openCommonModal('alertModal modal-sm', '@SharedLocalizer["Error"].Value', err.statusText, false);
+                                    }
+                                });
+                            }
+                            return false;
+                        }
+
+
+                    function acceptPatient() {
+                        //alert("Hello");
+                        $.ajax({
+                            type: "GET",
+                            url: "/Prescriber/AcceptICForm/" +@Model.Id,
+                            dataType: "json",
+                            success: function (data) {
+                                if (data.success) {
+                                    openCommonModal("successModal modal-sm", "@Html.Raw(SharedLocalizer["Success"].Value)", "@Html.Raw(SharedLocalizer["Informed Consent Form is Approved Please go ahead and Approve the Baseline Data Form to Successfully Register a Patient for Cidofovir Exposure Study."].Value)", false);
+                                }
+                            },
+                            error: function (err) {
+                                openCommonModal('alertModal modal-sm', "@SharedLocalizer["Error"].Value", err.statusText, false);
+                            }
+                        });
+                    }
+                        function rejectPatient() {
+                            var url = "/Prescriber/RejectICForm/" +@Model.Id;
+                            $.get(url)
+                                .done(function (response) {
+                                    $('#patientViewModal .modal-title').html('@SharedLocalizer["Reject Patient"].Value');
+                                    $('#patientViewModal .modal-body').html(response);
+                                    $('#patientViewModal').modal('show');
+                                });
+                        }
+                </script>
+                }

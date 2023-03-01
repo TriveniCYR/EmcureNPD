@@ -31,8 +31,8 @@ namespace EmcureNPD.Utility.Helpers
 
             using (SmtpClient smtpClient = new SmtpClient())
             {
-                smtpClient.Host = "mail.emcure.co.in";
-                smtpClient.Credentials = new System.Net.NetworkCredential("smtp.gmail.com", "pass123!@#");
+                smtpClient.Host = "smtp.gmail.com";
+                smtpClient.Credentials = new System.Net.NetworkCredential("dev.net.smtp@gmail.com", "pass123!@#");
                 smtpClient.Port = 587;//put smtp port here
                 smtpClient.EnableSsl = true;
                 smtpClient.UseDefaultCredentials = true;

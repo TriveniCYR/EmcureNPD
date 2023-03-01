@@ -31,7 +31,7 @@ function InitializeAuditLogList() {
         {
             "data": "Action", "name": "Action", "render": function (data, type, row, meta) {
                 var html = '';
-                html += '<button type="button" data-toggle="modal" data-target="#AuditLogViewModel" data-backdrop="static" data-keyboard="false" onclick=Viewlog(' + row.log + ') class="btn btn-primary mr-2" >View</button>';
+                html += '<button type="button" data-toggle="modal" data-target="#AuditLogViewModel" data-backdrop="static" data-keyboard="false" onclick=\'Viewlog(' + row.log + ',' + '"' + row.createdDate + '"' + ',' + '"' + row.createdBy + '")\' class="btn btn-primary mr-2" >View</button>';
                 return html;
             }
         }
@@ -40,33 +40,24 @@ function InitializeAuditLogList() {
     IntializingDataTable(tableId, setDefaultOrder, ajaxObject, columnObject);
 }
 
-function Viewlog(log) {
-    items = [];
-    $(log).each(function (index, element) {
-        if (index == 0) {
-            items.push({
-                "id": "jstree_" + element.PropertyName, "parent": "#", "text": element.PropertyName,
-                'state': {
-                    'opened': true,
-                    'selected': true
-                },
-            });
-        }
-        else
-            items.push({ "id": "jstree_" + element.PropertyName, "parent": "#", "text": element.PropertyName });
-
-        items.push({ 'id': "jstree_eln_" + index, 'parent': "jstree_" + element.PropertyName, 'text': "" + element.NewValue });
-        items.push({ 'id': "jstree_elo_" + index, 'parent': "jstree_" + element.PropertyName, 'text': "" + element.OldValue });
-    });
-    $('#jstree').jstree("destroy");
-    $('#jstree').jstree({
-        "themes": {
-            "responsive": true
+function Viewlog(log, createdDate, createdBy) {
+    const date = new Date(createdDate);
+    const day = date.getDate().toString().padStart(2, '0');
+    const month = (date.getMonth() + 1).toString().padStart(2, '0');
+    const year = date.getFullYear().toString().slice(-2);
+    log = JSON.stringify(log);
+  
+    $.ajax({
+        url: "/AuditLog/AuditLogPartialView",
+        type: "POST",
+        data: { CreatedDate: createdDate, CreatedBy: createdBy, log: log },
+        success: function (result) {
+            $("#AuditLogViewModel").find(".modal-body").html(result);
+            $("#AuditLogViewModel").modal('show');
         },
-        'core': {
-            'data': items
-
+        error: function (xhr, textStatus, errorThrown) {
+            console.log("Error: " + textStatus + " - " + errorThrown);
         }
-    })
+    });
 
 }

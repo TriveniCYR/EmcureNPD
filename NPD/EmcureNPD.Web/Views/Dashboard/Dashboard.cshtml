@@ -6,22 +6,45 @@
 @inject Microsoft.Extensions.Localization.IStringLocalizer<EmcureNPD.Resource.Shared> SharedLocalizer
 @model EmcureNPD.Business.Models.PIDFEntity
 
-<div class="card-body">
-    <div class="col-md-3">
-        <div class="form-group required">
-            @Html.LabelFor(model => model.BusinessUnitId, "Business Unit", new { @class = "control-label" })
-            <select id="BusinessUnitId" name="BusinessUnitId" class="form-control readOnlyUpdate" required></select>
-        </div>
-    </div>
-</div>
-
+<div class="content-header">
+    <div class="container-fluid d-flex justify-content-between">
+		<h3>@SharedLocalizer["Dashboard"]</h3>
+		</div>
+		</div>
+		<div class="container-fluid overflow-auto">
+			<div class="row">
+		<div class="col-md-3">
+			<div class="form-group required">
+				@Html.LabelFor(model => model.BusinessUnitId, "Business Unit", new { @class = "control-label" })
+				<select id="BusinessUnitId" name="BusinessUnitId" class="form-control readOnlyUpdate" required></select>
+			</div>
+		</div>
+		<div class="col-md-3">
+			<div class="form-group required">
+				<label class="m-0" for="years">Year</label>
+				<select id="years" name="years" class="form-control readOnlyUpdate" required></select>
+			</div>
+		</div>
+			</div>
+			<div class="clearfix">&nbsp;</div>
+			
+		<div id="PIDFContainer" class="row">
+		</div>
+		<div class="clearfix">&nbsp;</div>
+		<div class="row">
+		<div class="col-6 background-white-card">
+			<canvas id="chart" width="200" height="200"></canvas>
+			</div>
+		</div>
+			</div>
 
 @section MyScripts {
 
-    @Html.Partial("_DataTablePartial")
-    <script type="text/javascript" src="~/js/Custom/Dashboard/Dashboard.js"></script>
+	@Html.Partial("_DataTablePartial")
+	<script type="text/javascript" src="~/js/Custom/Dashboard/Dashboard.js"></script>
 
-    <script>
-        var GetAllDashboard = "@EmcureNPD.Web.Helpers.APIURLHelper.GetAllDashboard";
-    </script>
+	<script>
+		var GetAllDashboard = "@EmcureNPD.Web.Helpers.APIURLHelper.GetAllDashboard";
+		var GetPIDFList = "@EmcureNPD.Web.Helpers.APIURLHelper.GetPIDFList";
+	</script>
 }

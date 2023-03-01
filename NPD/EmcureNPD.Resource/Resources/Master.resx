@@ -492,14 +492,11 @@
   <data name="PIDFCommercialList" xml:space="preserve">
     <value>PIDF Commercial List</value>
   </data>
-  <data name="saxx" xml:space="preserve">
-    <value>xaxa</value>
-  </data>
   <data name="UserList" xml:space="preserve">
-    <value>User List</value>
+    <value>Users</value>
   </data>
   <data name="UserMangegment" xml:space="preserve">
-    <value>User Mangegment</value>
+    <value>User Management</value>
   </data>
   <data name="CountryRegion" xml:space="preserve">
     <value>Country Region</value>
@@ -509,5 +506,68 @@
   </data>
   <data name="UserManage" xml:space="preserve">
     <value>User Manage</value>
+  </data>
+  <data name="ChangePassword" xml:space="preserve">
+    <value>Change Password</value>
+  </data>
+  <data name="RoleList" xml:space="preserve">
+    <value>Roles</value>
+  </data>
+  <data name="CreatedDate" xml:space="preserve">
+    <value>Created Date</value>
+  </data>
+  <data name="AddYear" xml:space="preserve">
+    <value>Add Year</value>
+  </data>
+  <data name="Revenue" xml:space="preserve">
+    <value>Revenue</value>
+  </data>
+  <data name="YearDetails" xml:space="preserve">
+    <value>Year Details</value>
+  </data>
+  <data name="APIMarketPrice" xml:space="preserve">
+    <value>API Market Price</value>
+  </data>
+  <data name="APIRndDetails" xml:space="preserve">
+    <value>API Rnd Details</value>
+  </data>
+  <data name="APIRndDetailsForm" xml:space="preserve">
+    <value>API Rnd Details Form</value>
+  </data>
+  <data name="APITargetRMC_CCPC" xml:space="preserve">
+    <value>API Target RMC+CCPC</value>
+  </data>
+  <data name="FormulationQuantityRequiredKG/GmStage" xml:space="preserve">
+    <value>Formulation Quantity Required KG/Gm Stage</value>
+  </data>
+  <data name="MarketID" xml:space="preserve">
+    <value>Market ID</value>
+  </data>
+  <data name="SponsorBusinessPartner" xml:space="preserve">
+    <value>Sponsor Business Partner</value>
+  </data>
+  <data name="APICharterDetails" xml:space="preserve">
+    <value>API Charter Details</value>
+  </data>
+  <data name="APICharterDetailsForm" xml:space="preserve">
+    <value>API Charter Details Form</value>
+  </data>
+  <data name="APIGroupLeader" xml:space="preserve">
+    <value>API Group Leader</value>
+  </data>
+  <data name="Market" xml:space="preserve">
+    <value>Market</value>
+  </data>
+  <data name="ProjectComplexity" xml:space="preserve">
+    <value>Project Complexity</value>
+  </data>
+  <data name="ProjectEndDate" xml:space="preserve">
+    <value>Project End Date</value>
+  </data>
+  <data name="ProjectInitiationDate" xml:space="preserve">
+    <value>Project Initiation Date</value>
+  </data>
+  <data name="FreeOfCost" xml:space="preserve">
+    <value>Free Of Cost</value>
   </data>
 </root>

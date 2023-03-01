@@ -1,0 +1,161 @@
+﻿@model EmcureCERI.Web.Models.ManageViewModels.SQViewModel
+@inject Microsoft.Extensions.Localization.IStringLocalizer<SharedResource> SharedLocalizer
+@{
+    ViewData["Title"] = @SharedLocalizer["Security Question"].Value;
+    ViewData.AddActivePage(ManageNavPages.SecurityQuestion);
+}
+<style>
+    .assigneeView .custNavBar + .container {
+        background-color: #fff !important;
+    }
+</style>
+<h4>@ViewData["Title"]</h4>
+@Html.Partial("_StatusMessage", Model.StatusMessage)
+<form action="/Manage/SecurityQuestion" method="post" novalidate="novalidate">
+    
+        @Html.AntiForgeryToken()
+        @Html.Label(SharedLocalizer["Authentication Security Question"].Value)
+        <div class="row">
+            <div class="col-sm-6">
+                <div class="form-group">
+                    @*@Html.LabelFor(x => Model.Question1, htmlAttributes: new { @class = "control-label" })*@
+                    @Html.DropDownListFor(x => Model.Question1, new SelectList(Model.Question1s, "Value", "Text", ViewBag.SelectedQ1), htmlAttributes: new { @class = "form-control input-sm", id = "Question1" })
+                    @Html.ValidationMessageFor(x => Model.Question1, "", new { @class = "text-danger" })
+                </div>
+            </div>
+            <div class="col-sm-6">
+                <div class="form-group">
+                    @*@Html.LabelFor(model => model.Answer1, new { @class = "control-label" })*@
+                    @Html.EditorFor(model => model.Answer1, new { htmlAttributes = new { @class = "form-control input-sm" } })
+                    @Html.ValidationMessageFor(model => model.Answer1, "", new { @class = "text-danger" })
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-sm-6">
+                <div class="form-group">
+                    @*@Html.LabelFor(x => Model.Question2, htmlAttributes: new { @class = "control-label" })*@
+                    @Html.DropDownListFor(x => Model.Question2, new SelectList(Model.Question2s, "Value", "Text", ViewBag.SelectedQ2), htmlAttributes: new { @class = "form-control input-sm", id = "Question2" })
+                    @Html.ValidationMessageFor(x => Model.Question2, "", new { @class = "text-danger" })
+                </div>
+            </div>
+            <div class="col-sm-6">
+                <div class="form-group">
+                    @*@Html.LabelFor(model => model.Answer2, new { @class = "control-label" })*@
+                    @Html.EditorFor(model => model.Answer2, new { htmlAttributes = new { @class = "form-control input-sm" } })
+                    @Html.ValidationMessageFor(model => model.Answer2, "", new { @class = "text-danger" })
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-sm-6">
+                <div class="form-group">
+                    @*@Html.LabelFor(x => Model.Question3, htmlAttributes: new { @class = "control-label" })*@
+                    @Html.DropDownListFor(x => Model.Question3, new SelectList(Model.Question3s, "Value", "Text", ViewBag.SelectedQ3), htmlAttributes: new { @class = "form-control input-sm", id = "Question3" })
+                    @Html.ValidationMessageFor(x => Model.Question3, "", new { @class = "text-danger" })
+                </div>
+            </div>
+            <div class="col-sm-6">
+                <div class="form-group">
+                    @*@Html.LabelFor(model => model.Answer3, new { @class = "control-label" })*@
+                    @Html.EditorFor(model => model.Answer3, new { htmlAttributes = new { @class = "form-control input-sm" } })
+                    @Html.ValidationMessageFor(model => model.Answer3, "", new { @class = "text-danger" })
+                </div>
+            </div>
+        </div>
+
+        </div>
+        <div class="card-footer text-center">
+            <button type="submit" class="btn btn-primary">@SharedLocalizer["Save"].Value</button>
+        </div>
+    </form>
+
+    @section Scripts {
+        @await Html.PartialAsync("_ValidationScriptsPartial")
+        <script>
+            $(document).ready(function () {
+                var question1Selected = $('#Question1').children("option:selected").val();
+                var question2Selected = $('#Question2').children("option:selected").val();
+                var question3Selected = $('#Question3').children("option:selected").val();
+
+                if (question1Selected != "") {
+                    $("#Question2 option[value=" + question1Selected + "]").hide();
+                    $("#Question3 option[value=" + question1Selected + "]").hide();
+                }
+
+                if (question2Selected != "") {
+                    $("#Question1 option[value=" + question2Selected + "]").hide();
+                    $("#Question3 option[value=" + question2Selected + "]").hide();
+                }
+
+                if (question3Selected != "") {
+                    $("#Question1 option[value=" + question3Selected + "]").hide();
+                    $("#Question2 option[value=" + question3Selected + "]").hide();
+                }
+            });
+
+            $('#Question1').on('change', function () {
+                $("#Question2 option").each(function () {
+                    $(this).show();
+                });
+                $("#Question3 option").each(function () {
+                    $(this).show();
+                });
+
+                if (this.value != "") {
+                    $("#Question2 option[value=" + this.value + "]").hide();
+                    $("#Question3 option[value=" + this.value + "]").hide();
+                }
+                var question2Selected = $('#Question2').children("option:selected").val();
+                var question3Selected = $('#Question3').children("option:selected").val();
+
+                if (question3Selected != "")
+                    $("#Question2 option[value=" + question3Selected + "]").hide();
+
+                if (question2Selected != "")
+                    $("#Question3 option[value=" + question2Selected + "]").hide();
+            });
+            $('#Question2').on('change', function () {
+
+                $("#Question1 option").each(function () {
+                    $(this).show();
+                });
+                $("#Question3 option").each(function () {
+                    $(this).show();
+                });
+                if (this.value != "") {
+                    $("#Question1 option[value=" + this.value + "]").hide();
+                    $("#Question3 option[value=" + this.value + "]").hide();
+                }
+                var question1Selected = $('#Question1').children("option:selected").val();
+                var question3Selected = $('#Question3').children("option:selected").val();
+
+                if (question3Selected != "")
+                    $("#Question1 option[value=" + question3Selected + "]").hide();
+
+                if (question1Selected != "")
+                    $("#Question3 option[value=" + question1Selected + "]").hide();
+            });
+            $('#Question3').on('change', function () {
+                $("#Question1 option").each(function () {
+                    $(this).show();
+                });
+                $("#Question2 option").each(function () {
+                    $(this).show();
+                });
+
+                if (this.value != "") {
+                    $("#Question1 option[value=" + this.value + "]").hide();
+                    $("#Question2 option[value=" + this.value + "]").hide();
+                }
+                var question2Selected = $('#Question2').children("option:selected").val();
+                var question1Selected = $('#Question1').children("option:selected").val();
+
+                if (question1Selected != "")
+                    $("#Question2 option[value=" + question1Selected + "]").hide();
+
+                if (question2Selected != "")
+                    $("#Question1 option[value=" + question2Selected + "]").hide();
+            });
+        </script>
+    }

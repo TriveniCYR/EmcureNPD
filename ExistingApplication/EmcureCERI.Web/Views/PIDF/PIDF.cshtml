@@ -1,0 +1,1069 @@
+﻿@inject Microsoft.Extensions.Localization.IStringLocalizer<SharedResource> SharedLocalizer
+@model EmcureCERI.Web.Models.PIDFPViewModels.PIDFViewModel
+
+@{
+	ViewData["Title"] = @SharedLocalizer[" Add PIDF"].Value;
+}
+
+<link rel="stylesheet" href="~/plugins/datatables-bs4/css/dataTables.bootstrap4.min.css">
+<link rel="stylesheet" href="~/plugins/datatables-responsive/css/responsive.bootstrap4.min.css">
+<link rel="stylesheet" href="~/plugins/datatables-buttons/css/buttons.bootstrap4.min.css">
+
+<!--script src="~/lib/bootstrap-datetimepicker/js/moment-with-locales.js"></!--script>
+<script-- src="~/lib/jquery/dist/jquery.js"></script-->
+<script src="~/lib/bootstrap-datetimepicker/js/bootstrap-datetimepicker.js"></script>
+<!--link href="~/css/main.css" rel="stylesheet" />-->
+
+<div class="content-wrapper pt-5">
+	<!-- Main content -->
+	<section class="content">
+		<div class="container-fluid">
+			<!-- Small boxes (Stat box) -->
+			<!-- Main row -->
+			<div class="row">
+				<section class="col-lg-12 ">
+					<!-- Custom tabs (Charts with tabs)-->
+					<div class="card">
+						<div class="card-header">
+							<h3 class="card-title">
+								<i class="far fa-plus-square mr-2"></i> Product Identification Form
+							</h3>
+							<div class="card-tools">
+								<ul class="nav nav-pills ml-auto">
+									<li class="nav-item mr-3">
+										<a class="btn btn-outline-primary" href="/PIDF/PIDFList"><i class="far fa-list-alt mr-1"></i> Project List</a>
+									</li>
+
+									<li class="nav-item">
+										<a class="btn btn-primary" href="/PIDF/PIDF"><i class="far fa-plus-square mr-1"></i> Create New Project</a>
+									</li>
+								</ul>
+							</div>
+						</div>
+
+						@*<form asp-route-returnUrl="@ViewData["ReturnUrl"]" method="POST">*@
+						@*@using (Html.BeginForm("AdverseEvent", "Prescriber", FormMethod.Post, new { onsubmit = "return SubmitForm(this)" }))
+							{*@
+						@*<div asp-validation-summary="All" class="text-danger m-t-10 m-b-10"></div>*@
+						<div class="row"><div class="col-sm-6 ml-3"><strong>Note : </strong> <small>@SharedLocalizer["All fields are mandatory"].Value</small></div></div>
+						<div class="card-body">
+							<div class="row mt-3">
+								<div class="col-sm-6">
+									<div class="form-group">
+										<label>Product Name</label>
+										<input type="text" placeholder="Product Name" class="form-control" id="ProductName" name="ProductName" />
+										<small class="text-danger" id="ProductName_error"></small>
+									</div>
+								</div>
+								<div class="col-sm-6">
+									<div class="form-group">
+										<label>Strengths</label>
+										<input type="text" placeholder="Strengths" class="form-control" id="Strengths" name="Strengths" />
+										<small class="text-danger" id="Strengths_error"></small>
+									</div>
+								</div>
+							</div>
+
+							<div class="row mt-5">
+								<div class="col-sm-12">
+									<table id="PIDFTable" class="table table-striped table-bordered dt-responsive nowrap" style="width:100%">
+										<thead>
+											<tr>
+												<th>Region</th>
+												<th>Country</th>
+												<th>Packing</th>
+												<th>Batch size</th>
+												<th>Pack size</th>
+												<th>COGS</th>
+												<th>CIF Price Per Pack</th>
+												<th>Freight</th>
+												<th>Total CIF cost</th>
+												<th>CIF Price Per Unit</th>
+												<th>% Count</th>
+												<th>Contribution (3 yrs)</th>
+												<th>Cost of 3 batches</th>
+												<th>Analytical Cost</th>
+												<th>BE cost</th>
+												<th>RLD cost</th>
+												<th>R&D cost</th>
+												<th>Filing cost</th>
+												<th>Stability cost</th>
+												<th>Total Invest</th>
+												<th>ROI</th>
+												@*<th>Action</th>*@
+											</tr>
+										</thead>
+									</table>
+								</div>
+							</div>
+							<div class="card card-primary mt-4">
+								<div class="card-header">
+									<h3 class="card-title">ADD PIDF WITH COUNTRY</h3>
+								</div>
+								<!-- /.card-header -->
+								<!-- SELECT2 EXAMPLE -->
+								<div class="">
+
+									<!-- /.card-header -->
+									<div class="card-body">
+										<div class="row">
+											<div class="col-md-6">
+												<div class="form-group">
+													<label>Region</label>
+													<select class="form-control select2bs4" onchange="GetCountryList()" name="Region" id="IPD_region" style="width: 100%;">
+														<option value="0">Please select Region</option>
+													</select>
+													<small class="text-danger" id="IPD_region_error"></small>
+												</div>
+											</div>
+											<div class="col-md-6">
+												<!-- /.form-group -->
+												<div class="form-group">
+													<label>Country</label>
+													<select class="form-control select2bs4" name="Country" id="IPD_country" style="width: 100%;">
+														<option value="0">Please select Country</option>
+													</select>
+													<small class="text-danger" id="IPD_country_error"></small>
+												</div>
+												<!-- /.form-group -->
+											</div>
+											<!-- /.col -->
+										</div>
+
+										<h3 class="text-divider"><span>INSERT PIDF DEATILS</span></h3>
+										<div class="row">
+											<div class="col-md-3">
+												<div class="form-group">
+													<label>Packing</label>
+													<select class="form-control select2bs4" name="Packing" id="IPD_packing" style="width: 100%;">
+														<option value="0">Please select Packing</option>
+													</select>
+													<small class="text-danger" id="IPD_packing_error"></small>
+												</div>
+											</div>
+											<div class="col-md-2">
+												<div class="form-group">
+													<label>Batch size(in pack)</label>
+													<input type="number" min="0" placeholder="Enter Batch size eg. 100" class="form-control" name="Batch_size" id="IPD_batchsizeinpack" />
+													<small class="text-danger" id="IPD_batchsizeinpack_error"></small>
+												</div>
+											</div>
+											<div class="col-md-2">
+												<div class="form-group">
+													<label>Pack size</label>
+													<input type="number" min="0" placeholder="Enter Pack size eg. 100" class="form-control" name="Pack_size" id="IPD_packsize" />
+													<small class="text-danger" id="IPD_packsize_error"></small>
+												</div>
+											</div>
+											<div class="col-md-2">
+												<div class="form-group">
+													<label>COGS</label>
+													<input type="number" min="0" placeholder="Enter COGS eg. 100" class="form-control" onkeyup="Changecogs()" onchange="Changecogs()" name="COGS" id="IPD_cogs" />
+													<small class="text-danger" id="IPD_cogs_error"></small>
+												</div>
+											</div>
+											<div class="col-md-2">
+												<div class="form-group">
+													<label>CIF Price Per Pack</label>
+													<input type="number" min="0" onkeyup="ChangeCIFPricePerPack()" onchange="ChangeCIFPricePerPack()" placeholder="Enter CIF Price Per Pack eg. 50" class="form-control" name="CIF_Price_Per_Pack" id="IPD_cifpriceperpack" />
+													<small class="text-danger" id="IPD_cifpriceperpack_error"></small>
+												</div>
+											</div>
+										</div>
+										<!-- /.row -->
+										<div class="row">
+											<div class="col-md-3">
+												<div class="form-group">
+													<div class="form-group">
+														<label>Freight (5% on COGS)</label>
+														<input type="number" min="0" readonly class="form-control" name="Freight" id="IPD_freight" />
+													</div>
+												</div>
+											</div>
+											<div class="col-md-2">
+												<div class="form-group">
+													<label>Total CIF cost</label>
+													<input type="text" readonly class="form-control" name="Total_CIF_cost" id="IPD_totalcifcost" />
+												</div>
+											</div>
+											<div class="col-md-2">
+												<div class="form-group">
+													<label>CIF Price Per Unit</label>
+													<input type="text" readonly class="form-control" name="CIF_Price_Per_Unit" id="IPD_cifpriceperunit" />
+												</div>
+											</div>
+											<div class="col-md-2">
+												<div class="form-group">
+													<label>% Count</label>
+													<input type="text" readonly class="form-control" name="Count" id="IPD_count" />
+												</div>
+											</div>
+											@*<div class="col-md-2">
+							<div class="form-group">
+								<label>CIF Price Per Pack</label>
+								<input type="text" readonly class="form-control" name="CIF_Price_Per_Pack" id="IPD_cifpriceperpack" />
+							</div>
+						</div>*@
+										</div>
+										<!-- /.row -->
+										<div class="row mt-4">
+											<table id="example2" class="table table-bordered">
+												<thead>
+													<tr>
+														<th scope="col">#</th>
+														<th scope="col">Quantity</th>
+														<th scope="col">Volume</th>
+														<th scope="col">COGS</th>
+														<th scope="col">Contri</th>
+													</tr>
+												</thead>
+												<tbody>
+													<tr>
+														<th scope="row">Year 1</th>
+														<td>
+															<input type="number" min="0" onkeyup="Year1Calculation()" onchange="Year1Calculation()" placeholder="Enter Quantity" class="form-control" name="Quantity1" id="IPD_quantity1" />
+															<small class="text-danger" id="IPD_quantity1_error"></small>
+														</td>
+														<td>
+															<input type="number" min="0" readonly placeholder="Volume" class="form-control" name="Volume1" id="IPD_volume1" />
+														</td>
+														<td>
+															<input type="number" min="0" readonly placeholder="COGS" class="form-control" name="COGS1" id="IPD_cogs1" />
+														</td>
+														<td>
+															<input type="number" min="0" readonly placeholder="Contri" class="form-control" name="Contri1" id="IPD_contri1" />
+														</td>
+													</tr>
+													<tr>
+														<th scope="row">Year 2</th>
+														<td>
+															<input type="number" min="0" onkeyup="Year2Calculation()" onchange="Year2Calculation()" placeholder="Enter Quantity" class="form-control" name="Quantity2" id="IPD_quantity2" />
+															<small class="text-danger" id="IPD_quantity2_error"></small>
+														</td>
+														<td>
+															<input type="number" min="0" readonly placeholder="Volume" class="form-control" name="Volume2" id="IPD_volume2" />
+														</td>
+														<td>
+															<input type="number" min="0" readonly placeholder="COGS" class="form-control" name="COGS2" id="IPD_cogs2" />
+														</td>
+														<td>
+															<input type="number" min="0" readonly placeholder="Contri" class="form-control" name="Contri2" id="IPD_contri2" />
+														</td>
+													</tr>
+													<tr>
+														<th scope="row">Year 3</th>
+														<td>
+															<input type="number" min="0" onkeyup="Year3Calculation()" onchange="Year3Calculation()" placeholder="Enter Quantity" class="form-control" name="Quantity3" id="IPD_quantity3" />
+															<small class="text-danger" id="IPD_quantity3_error"></small>
+														</td>
+														<td>
+															<input type="number" min="0" readonly placeholder="Volume" class="form-control" name="Volume3" id="IPD_volume3" />
+														</td>
+														<td>
+															<input type="number" min="0" readonly placeholder="COGS" class="form-control" name="COGS3" id="IPD_cogs3" />
+														</td>
+														<td>
+															<input type="number" min="0" readonly placeholder="Contri" class="form-control" name="Contri3" id="IPD_contri3" />
+														</td>
+													</tr>
+												</tbody>
+											</table>
+										</div>
+
+										<div class="row mt-4">
+											<div class="col-md-3">
+												<div class="form-group">
+													<label>Contribution (3 yrs)</label>
+													<input type="text" readonly class="form-control" name="Contribution" id="IPD_contribution" />
+												</div>
+											</div>
+											<div class="col-md-3">
+												<div class="form-group">
+													<label>Cost of 3 batches</label>
+													<input type="number" min="0" onkeyup="CalculateTotalInvest()" onchange="CalculateTotalInvest()" placeholder="Cost of 3 batches" class="form-control" name="Cost_of_3_batches" id="IPD_costof3batches" />
+													<small class="text-danger" id="IPD_costof3batches_error"></small>
+												</div>
+											</div>
+											<div class="col-md-3">
+												<div class="form-group">
+													<label>Analytical Cost</label>
+													<input type="number" min="0" placeholder="Analytical Cost" class="form-control" name="Analytical_Cost" id="IPD_analyticalcost" />
+													<small class="text-danger" id="IPD_analyticalcost_error"></small>
+												</div>
+											</div>
+											<div class="col-md-3">
+												<div class="form-group">
+													<label>BE cost</label>
+													<input type="number" min="0" placeholder="BE cost" class="form-control" name="BE_cost" id="IPD_becost" />
+													<small class="text-danger" id="IPD_becost_error"></small>
+												</div>
+											</div>
+										</div>
+
+										<div class="row mt-2">
+											<div class="col-md-3">
+												<div class="form-group">
+													<label>RLD cost</label>
+													<input type="number" min="0" placeholder="RLD cost" class="form-control" name="RLD_cost" id="IPD_rldcost" />
+													<small class="text-danger" id="IPD_rldcost_error"></small>
+												</div>
+											</div>
+											<div class="col-md-3">
+												<div class="form-group">
+													<label>R&D cost</label>
+													<input type="number" min="0" placeholder="R&D cost" class="form-control" name="RnD_cost" id="IPD_rndcost" />
+													<small class="text-danger" id="IPD_rndcost_error"></small>
+												</div>
+											</div>
+											<div class="col-md-3">
+												<div class="form-group">
+													<label>Filing cost</label>
+													<input type="number" min="0" placeholder="Filing cost" class="form-control" name="Filing_cost" id="IPD_filingcost" />
+													<small class="text-danger" id="IPD_filingcost_error"></small>
+												</div>
+											</div>
+											<div class="col-md-3">
+												<div class="form-group">
+													<label>Stability cost</label>
+													<input type="number" min="0" onkeyup="CalculateTotalInvest()" onchange="CalculateTotalInvest()" placeholder="Stability cost" class="form-control" name="Stability_cost" id="IPD_stabilitycost" />
+													<small class="text-danger" id="IPD_stabilitycost_error"></small>
+												</div>
+											</div>
+										</div>
+										<div class="row mt-2">
+											<div class="col-md-3">
+												<div class="form-group">
+													<label>Total Invest</label>
+													<input type="number" min="0" readonly class="form-control" name="Total_Invest" id="IPD_totalinvest" />
+												</div>
+											</div>
+											<div class="col-md-3">
+												<div class="form-group">
+													<label>ROI</label>
+													<input type="number" min="0" placeholder="ROI" class="form-control" name="ROI" id="IPD_roi" />
+													<small class="text-danger" id="IPD_roi_error"></small>
+												</div>
+											</div>
+
+										</div>
+									</div>
+									<!-- /.card-body -->
+									<div class="card-footer">
+										<button type="button" class="btn btn-primary" onclick="AddNew()">Add New</button>
+									</div>
+								</div>
+
+							</div>
+
+
+							<div class="row mt-3">
+								<div class="col-sm-6">
+									<div class="form-group">
+										<label>Upload File</label>
+										<input type="file" file-module="UploadFile" placeholder="Upload File" class="form-control" id="UploadFile" name="UploadFile" multiple />
+									
+										<small class="text-danger" id="UploadFile_error"></small>
+									</div>
+								</div>
+								<div class="col-sm-6">
+									<input type="button" id="btnUpload" value="Upload Files" />
+								</div>
+							</div>
+
+
+
+						</div>
+						<div class="card-footer">
+							<button type="submit" class="btn btn-primary mr-3" onclick="SubmitForm()">Submit</button>
+							<a class="btn btn-primary" asp-area="" asp-controller="DRF" asp-action="DRFList">@SharedLocalizer["Cancel"].Value</a>
+						</div>
+
+						<!-- /.card-body -->
+						@*}*@
+
+						<!-- /.card -->
+
+					</div>
+				</section>
+
+			</div>
+			<!-- /.row (main row) -->
+			<!-- /.container-fluid -->
+	</section>
+	<!-- /.content -->
+</div>
+
+@*</form>*@
+
+
+@section Scripts {
+	<script src="~/plugins/datatables/jquery.dataTables.min.js"></script>
+	<script src="~/plugins/datatables-bs4/js/dataTables.bootstrap4.min.js"></script>
+	<script src="~/plugins/datatables-responsive/js/dataTables.responsive.min.js"></script>
+	<script src="~/plugins/datatables-responsive/js/responsive.bootstrap4.min.js"></script>
+	<script src="~/plugins/datatables-buttons/js/dataTables.buttons.min.js"></script>
+
+	<script>
+		var dataTable;
+        var JsonListArray = [];
+        var JSONUploadedFilesList = [];
+		$(document).ready(function () {
+			dataTable = $('#PIDFTable').DataTable({
+				responsive: true,
+				autoWidth: true,
+				paging: false,
+				bFilter: false,
+				bInfo: false
+			});
+
+			GetRegionList();
+			GetPackingList();
+		});
+		$(function () {
+			//Initialize Select2 Elements
+			$('.select2').select2()
+
+			//Initialize Select2 Elements
+			$('.select2bs4').select2({
+				theme: 'bootstrap4'
+			});
+		});
+
+		function GetRegionList() {
+			var data = {};
+			var defaultValue = "<option value='0'>Please select Region</option>";
+			$.ajax({
+					type: "POST",
+					url: '@Url.Action("GetRegionList", "PIDF")/',
+					//contentType: "application/json; charset=utf-8",
+					dataType: "json",
+					data: data,
+					success: function (response) {
+						$('#IPD_region').empty();
+						if (response.data.length > 0) {
+							$('#IPD_region').empty().append(
+								defaultValue
+							);
+							for (var i = 0; i < response.data.length; i++) {
+								$('#IPD_region').append(
+									"<option value='" + response.data[i].Id + "'>" + response.data[i].Continent + "</option>"
+								);
+							}
+						}
+						else {
+							$('#IPD_region').empty().append(
+								defaultValue
+							);
+						}
+						$('#IPD_region').val(0);
+					},
+				failure: function () {
+					$('#IPD_region').empty().append(
+								defaultValue
+					);
+					$('#IPD_region').val(0);
+				}
+				});
+		}
+
+		function GetCountryList() {
+			var data = {
+				id: parseInt($('#IPD_region option:selected').val())
+			};
+			var defaultValue = "<option value='0'>Please select Country</option>";
+			$.ajax({
+					type: "POST",
+					url: '@Url.Action("GetCountryList", "PIDF")/',
+					dataType: "json",
+					data: data,
+				success: function (response) {
+
+						$('#IPD_country').empty();
+						if (response.data.length > 0) {
+							$('#IPD_country').empty().append(
+								defaultValue
+							);
+							for (var i = 0; i < response.data.length; i++) {
+								$('#IPD_country').append(
+									"<option value='" + response.data[i].Id + "'>" + response.data[i].Country + "</option>"
+								);
+							}
+						}
+						else {
+							$('#IPD_country').empty().append(
+								defaultValue
+							);
+						}
+						$('#IPD_country').val(0);
+					},
+				failure: function () {
+						$('#IPD_country').empty().append(
+								defaultValue
+					);
+					$('#IPD_country').val(0);
+					}
+				});
+		}
+
+		function GetPackingList() {
+			var data = {};
+			var defaultValue = "<option value='0'>Please select Packing</option>";
+			$.ajax({
+					type: "POST",
+					url: '@Url.Action("GetPackingList", "PIDF")/',
+					dataType: "json",
+					data: data,
+					success: function (response) {
+						$('#IPD_packing').empty();
+						if (response.data.length > 0) {
+							$('#IPD_packing').empty().append(
+								defaultValue
+							);
+							for (var i = 0; i < response.data.length; i++) {
+								$('#IPD_packing').append(
+									"<option value='" + response.data[i].Id + "'>" + response.data[i].PackingName + "</option>"
+								);
+							}
+						}
+						else {
+							$('#IPD_packing').empty().append(
+								defaultValue
+							);
+						}
+						$('#IPD_packing').val(0);
+				},
+				failure: function () {
+						$('#IPD_packing').empty().append(
+								defaultValue
+					);
+					$('#IPD_packing').val(0);
+					}
+				});
+		}
+
+		function SubmitForm() {
+			var isValid = true;
+
+			if ($('#ProductName').val() == null || $('#ProductName').val() == "") {
+				$('#ProductName_error').empty().append("The 'Product Name' field is required.");
+				isValid = false;
+			}
+			else {
+				$('#ProductName_error').empty();
+			}
+
+			if ($('#Strengths').val() == null || $('#Strengths').val() == "") {
+				$('#Strengths_error').empty().append("The 'Strengths' field is required.");
+				isValid = false;
+			}
+			else {
+				$('#Strengths_error').empty();
+			}
+
+            //if (document.getElementById('UploadFile').files.length == 0) {
+            //    $('#UploadFile_error').empty().append("Please select file.");
+            //    isValid = false;
+            //}
+            //else {
+            //    $('#UploadFile_error').empty();
+            //}
+
+			if (isValid) {
+				var data = {
+					"PidfID": 0,
+					"PIDFNo": "",
+					"PidfDate": GetDate(),
+					"ProjectorProductID": 0,
+					"ProjectorProductName": $('#ProductName').val(),
+					"Strengths": $('#Strengths').val(),
+					"PidfStatusID": 1,
+					"PidfStatus": "Pending Approval",
+					"ApprovedById1": 0,
+					"ApprovedByDate1": GetDate(),
+					"ApprovedById2": 0,
+					"ApprovedByDate2": GetDate(),
+					"ApprovedById3": 0,
+					"ApprovedByDate3": GetDate(),
+					"ApprovedById4": 0,
+					"ApprovedByDate4": GetDate(),
+					"PidfLastStatusID": 1,
+					"PidfLastStatus": "Pending Approval",
+					"IsActive": true,
+					"Createdby": 0,
+					"CreatedDate": GetDate(),
+					"Modifiedby": 0,
+					"ModifiedDate": GetDate(),
+                    "objPIDF_CountryDetails": JsonListArray,
+					"uploadedfilesdetails":JSONUploadedFilesList
+				};
+
+				$.ajax({
+					type: "POST",
+					url: '@Url.Action("AddPIDFDetails", "PIDF")/',
+					dataType: "json",
+					data: data,
+					success: function (response) {
+                        if (response.data == 'success') {
+
+							if (window.confirm('PIDF submited Successfully.'))
+													{
+														location.reload();
+													}
+													else
+													{
+														clearPreviousFormData();
+													}
+
+
+                            @*if (document.getElementById('UploadFile').files.length != 0) {
+										var data = new FormData();
+										//jQuery.each(jQuery('#UploadFile')[0].files, function(i, file) {
+										//	data.append('file-'+i, file);
+										//});
+                                data = jQuery('#UploadFile')[0].files;
+
+                                console.log(data);
+								jQuery.ajax({
+										url: '@Url.Action("UploadFile", "PIDF")/',
+										data: data,
+										cache: false,
+										contentType: false,
+										processData: false,
+										method: 'POST',
+										type: 'POST', // For jQuery < 1.9
+										success: function(data){
+                                            alert(data);
+
+											
+
+										}
+									});
+
+
+                            }*@
+
+
+								
+						}
+						else {
+							alert('PIDF not submited Successfully.');
+						}
+					},
+					failure: function () {
+                         @*$("#AttachedPRDFTable").append('@SharedLocalizer["Error when fetching data please contact administrator"].Value');*@
+					}
+				});
+			}
+		}
+
+		function GetDate() {
+			var today = new Date();
+			var dd = String(today.getDate()).padStart(2, '0');
+			var mm = String(today.getMonth() + 1).padStart(2, '0'); //January is 0!
+			var yyyy = today.getFullYear();
+
+			today = yyyy + '-' + mm + '-' + dd;
+			return today;
+		}
+
+		function AddNew() {
+			var isValid = true;
+			if ($('#IPD_region option:selected').val() == 0) {
+				$('#IPD_region_error').empty().append("The 'Region' field is required.");
+				isValid = false;
+			}
+			else {
+				$('#IPD_region_error').empty();
+			}
+
+			if ($('#IPD_country option:selected').val() == 0) {
+				$('#IPD_country_error').empty().append("The 'Country' field is required.");
+				isValid = false;
+			}
+			else {
+				$('#IPD_country_error').empty();
+			}
+
+			if ($('#IPD_packing option:selected').val() == 0) {
+				$('#IPD_packing_error').empty().append("The 'Packing' field is required.");
+				isValid = false;
+			}
+			else {
+				$('#IPD_packing_error').empty();
+			}
+
+			if ($('#IPD_batchsizeinpack').val() == null || $('#IPD_batchsizeinpack').val() == "") {
+				$('#IPD_batchsizeinpack_error').empty().append("The 'Batch size(in pack)' field is required.");
+				isValid = false;
+			}
+			else {
+				$('#IPD_batchsizeinpack_error').empty();
+			}
+
+			if ($('#IPD_packsize').val() == null || $('#IPD_packsize').val() == "") {
+				$('#IPD_packsize_error').empty().append("The 'Pack size' field is required.");
+				isValid = false;
+			}
+			else {
+				$('#IPD_packsize_error').empty();
+			}
+
+			if ($('#IPD_cogs').val() == null || $('#IPD_cogs').val() == "") {
+				$('#IPD_cogs_error').empty().append("The 'COGS' field is required.");
+				isValid = false;
+			}
+			else {
+				$('#IPD_cogs_error').empty();
+			}
+
+			if ($('#IPD_cifpriceperpack').val() == null || $('#IPD_cifpriceperpack').val() == "") {
+				$('#IPD_cifpriceperpack_error').empty().append("The 'CIF Price Per Pack' field is required.");
+				isValid = false;
+			}
+			else {
+				$('#IPD_cifpriceperpack_error').empty();
+			}
+
+			if ($('#IPD_quantity1').val() == null || $('#IPD_quantity1').val() == "") {
+				$('#IPD_quantity1_error').empty().append("The 'Quantity' field is required.");
+				isValid = false;
+			}
+			else {
+				$('#IPD_quantity1_error').empty();
+			}
+
+			if ($('#IPD_quantity2').val() == null || $('#IPD_quantity2').val() == "") {
+				$('#IPD_quantity2_error').empty().append("The 'Quantity' field is required.");
+				isValid = false;
+			}
+			else {
+				$('#IPD_quantity2_error').empty();
+			}
+
+			if ($('#IPD_quantity3').val() == null || $('#IPD_quantity3').val() == "") {
+				$('#IPD_quantity3_error').empty().append("The 'Quantity' field is required.");
+				isValid = false;
+			}
+			else {
+				$('#IPD_quantity3_error').empty();
+			}
+
+			if ($('#IPD_costof3batches').val() == null || $('#IPD_costof3batches').val() == "") {
+				$('#IPD_costof3batches_error').empty().append("The 'Cost of 3 batches' field is required.");
+				isValid = false;
+			}
+			else {
+				$('#IPD_costof3batches_error').empty();
+			}
+
+			if ($('#IPD_analyticalcost').val() == null || $('#IPD_analyticalcost').val() == "") {
+				$('#IPD_analyticalcost_error').empty().append("The 'Analytical Cost' field is required.");
+				isValid = false;
+			}
+			else {
+				$('#IPD_analyticalcost_error').empty();
+			}
+
+			if ($('#IPD_becost').val() == null || $('#IPD_becost').val() == "") {
+				$('#IPD_becost_error').empty().append("The 'BE cost' field is required.");
+				isValid = false;
+			}
+			else {
+				$('#IPD_becost_error').empty();
+			}
+
+			if ($('#IPD_rldcost').val() == null || $('#IPD_rldcost').val() == "") {
+				$('#IPD_rldcost_error').empty().append("The 'RLD cost' field is required.");
+				isValid = false;
+			}
+			else {
+				$('#IPD_rldcost_error').empty();
+			}
+
+			if ($('#IPD_rndcost').val() == null || $('#IPD_rndcost').val() == "") {
+				$('#IPD_rndcost_error').empty().append("The 'R&D cost' field is required.");
+				isValid = false;
+			}
+			else {
+				$('#IPD_rndcost_error').empty();
+			}
+
+			if ($('#IPD_filingcost').val() == null || $('#IPD_filingcost').val() == "") {
+				$('#IPD_filingcost_error').empty().append("The 'Filing cost' field is required.");
+				isValid = false;
+			}
+			else {
+				$('#IPD_filingcost_error').empty();
+			}
+
+			if ($('#IPD_stabilitycost').val() == null || $('#IPD_stabilitycost').val() == "") {
+				$('#IPD_stabilitycost_error').empty().append("The 'Stability cost' field is required.");
+				isValid = false;
+			}
+			else {
+				$('#IPD_stabilitycost_error').empty();
+			}
+
+			if ($('#IPD_roi').val() == null || $('#IPD_roi').val() == "") {
+				$('#IPD_roi_error').empty().append("The 'ROI' field is required.");
+				isValid = false;
+			}
+			else {
+				$('#IPD_roi_error').empty();
+			}
+
+			if (isValid) {
+				var data = {
+					"PidfDetailID": 0,
+					"PidfID": 0,
+					"PidfNo": "",
+					"ContinentID": $('#IPD_region option:selected').val(),
+					"ContinentName": $('#IPD_region option:selected').text(),
+					"CountryID": $('#IPD_country option:selected').val(),
+					"CountryName": $('#IPD_country option:selected').text(),
+					"PatentStatusID": 0,
+					"PatentStatus": "",
+					"PackingID": $('#IPD_packing option:selected').val(),
+					"PackingName": $('#IPD_packing option:selected').text(),
+					"BatchSize": $('#IPD_batchsizeinpack').val(),
+					"PackSize": $('#IPD_packsize').val(),
+					"COGS": $('#IPD_cogs').val(),
+					"Freight": $('#IPD_freight').val(),
+					"TotalCIFCost": $('#IPD_totalcifcost').val(),
+					"CIFPricePerUnit": $('#IPD_cifpriceperunit').val(),
+					"CIFPricePerPack": $('#IPD_cifpriceperpack').val(),
+					"ProfitPerPack": 1,
+					"PercentCont": $('#IPD_count').val(),
+					"QtyOneyear": $('#IPD_quantity1').val(),
+					"QtyTwoyear": $('#IPD_quantity2').val(),
+					"QtyThreeyear": $('#IPD_quantity3').val(),
+					"VolOneyear": $('#IPD_volume1').val(),
+					"VolTwoyear": $('#IPD_volume2').val(),
+					"VolThreeyear": $('#IPD_volume3').val(),
+					"ContriOne": $('#IPD_contri1').val(),
+					"ContriTwo": $('#IPD_contri2').val(),
+					"ContriThree": $('#IPD_contri3').val(),
+					"COGS1": $('#IPD_cogs1').val(),
+					"COGS2": $('#IPD_cogs2').val(),
+					"COGS3": $('#IPD_cogs3').val(),
+					"ContributionThreeYear": $('#IPD_contribution').val(),
+					"CostofThreeBatches": $('#IPD_costof3batches').val(),
+					"RandDCost": $('#IPD_rndcost').val(),
+					"FilingCost": $('#IPD_filingcost').val(),
+					"StabilityCost": $('#IPD_stabilitycost').val(),
+					"TotalInvest": $('#IPD_totalinvest').val(),
+					"ROI": $('#IPD_roi').val(),
+					"RejectionReason": "",
+					"AnalyticalCost": $('#IPD_analyticalcost').val(),
+					"BECost": $('#IPD_becost').val(),
+					"RLDCost": $('#IPD_rldcost').val(),
+					"IsActive": true,
+					"Createdby": 0,
+					"CreatedDate": GetDate(),
+					"Modifiedby": 0,
+					"ModifiedDate": GetDate()
+				}
+				JsonListArray.push(data);
+				InsertDataIntoTable();
+			}
+		}
+
+		function InsertDataIntoTable() {
+			var jsonObject = JsonListArray;
+			var result = jsonObject.map(function (item) {
+				var result = [];
+				result.push(item.ContinentName);
+				result.push(item.CountryName);
+				result.push(item.PackingName);
+				result.push(item.BatchSize);
+				result.push(item.PackSize);
+				result.push(item.COGS);
+				result.push(item.CIFPricePerPack);
+				result.push(item.Freight);
+				result.push(item.TotalCIFCost);
+				result.push(item.CIFPricePerUnit);
+				result.push(item.PercentCont);
+				result.push(item.ContributionThreeYear);
+				result.push(item.CostofThreeBatches);
+				result.push(item.AnalyticalCost);
+				result.push(item.BECost);
+				result.push(item.RLDCost);
+				result.push(item.RandDCost);
+				result.push(item.FilingCost);
+				result.push(item.StabilityCost);
+				result.push(item.TotalInvest);
+				result.push(item.ROI);
+				return result;
+			});
+			dataTable.clear();
+			dataTable.rows.add(result); // add to DataTable instance
+			dataTable.draw().buttons().container().appendTo('#PIDFTable_wrapper .col-md-6:eq(0)'); // always redraw
+			clearPreviousData();
+		}
+
+		function clearPreviousFormData() {
+			$('#ProductName').val('');
+			$('#Strengths').val('');
+			clearPreviousData();
+		}
+
+		function clearPreviousData() {
+			$('#IPD_region').val(0);
+			$('#IPD_country').val(0);
+			$('#IPD_packing').val(0);
+			$('#IPD_batchsizeinpack').val('');
+			$('#IPD_packsize').val('');
+			$('#IPD_cogs').val('');
+			$('#IPD_freight').val('');
+			$('#IPD_totalcifcost').val('');
+			$('#IPD_cifpriceperunit').val('');
+			$('#IPD_cifpriceperpack').val('');
+			$('#IPD_count').val('');
+			$('#IPD_quantity1').val('');
+			$('#IPD_quantity2').val('');
+			$('#IPD_quantity3').val('');
+			$('#IPD_volume1').val('');
+			$('#IPD_volume2').val('');
+			$('#IPD_volume3').val('');
+			$('#IPD_contri1').val('');
+			$('#IPD_contri2').val('');
+			$('#IPD_contri3').val('');
+			$('#IPD_cogs1').val('');
+			$('#IPD_cogs2').val('');
+			$('#IPD_cogs3').val('');
+			$('#IPD_contribution').val('');
+			$('#IPD_costof3batches').val('');
+			$('#IPD_rndcost').val('');
+			$('#IPD_filingcost').val('');
+			$('#IPD_stabilitycost').val('');
+			$('#IPD_totalinvest').val('');
+			$('#IPD_roi').val('');
+			$('#IPD_analyticalcost').val('');
+			$('#IPD_becost').val('');
+			$('#IPD_rldcost').val('');
+		}
+
+		function Changecogs() {
+			var cogs = parseFloat($('#IPD_cogs').val() == "" || $('#IPD_cogs').val() == null ? 0 : $('#IPD_cogs').val());
+			var Freight = parseFloat(cogs * (5 / 100)).toFixed(2);
+			$('#IPD_freight').val(Freight);
+
+			var TotalCIFCost = parseInt(cogs) + parseFloat(Freight);
+			$('#IPD_totalcifcost').val(TotalCIFCost);
+		}
+
+		function ChangeCIFPricePerPack() {
+			var CIFPricePerPack = parseFloat($('#IPD_cifpriceperpack').val() == "" || $('#IPD_cifpriceperpack').val() == null ? 0 : $('#IPD_cifpriceperpack').val());
+			var PackSize = parseInt($('#IPD_packsize').val() == "" || $('#IPD_packsize').val() == null ? 0 : $('#IPD_packsize').val());
+
+			var CIFPricePerUnit = parseFloat(CIFPricePerPack) / parseFloat(PackSize);
+			CIFPricePerUnit = parseFloat(CIFPricePerUnit == "Infinity" ? 0 : CIFPricePerUnit).toFixed(2);
+			$('#IPD_cifpriceperunit').val(CIFPricePerUnit);
+
+			var ProfitPerPack = parseFloat($('#IPD_cifpriceperpack').val() == "" || $('#IPD_cifpriceperpack').val() == null ? 0 : $('#IPD_cifpriceperpack').val()) - parseFloat($('#IPD_totalcifcost').val() == "" || $('#IPD_totalcifcost').val() == null ? 0 : $('#IPD_totalcifcost').val());
+			var CIFPerPack = parseFloat($('#IPD_cifpriceperpack').val() == "" || $('#IPD_cifpriceperpack').val() == null ? 0 : $('#IPD_cifpriceperpack').val());
+			var TotalCIFCost = parseFloat((parseFloat(ProfitPerPack) / parseFloat(CIFPerPack)) * 100).toFixed(2);
+			$('#IPD_count').val(TotalCIFCost);
+		}
+
+		function Year1Calculation() {
+			var Quantity1 = parseInt($('#IPD_quantity1').val() == "" || $('#IPD_quantity1').val() == null ? 0 : $('#IPD_quantity1').val());
+			var CIFPricePerPack = parseFloat($('#IPD_cifpriceperpack').val() == "" || $('#IPD_cifpriceperpack').val() == null ? 0 : $('#IPD_cifpriceperpack').val());
+			var Volume1 = parseInt(CIFPricePerPack * Quantity1);
+			var TotalCIFcost = parseFloat($('#IPD_totalcifcost').val() == "" || $('#IPD_totalcifcost').val() == null ? 0 : $('#IPD_totalcifcost').val());
+			var COGS1 = parseInt(TotalCIFcost * Quantity1);
+			var Contri1 = parseInt(Volume1) - parseInt(COGS1);
+
+			$('#IPD_volume1').val(Volume1);
+			$('#IPD_cogs1').val(COGS1);
+			$('#IPD_contri1').val(Contri1);
+
+			var TotalContribution = parseInt($('#IPD_contri1').val() == "" || $('#IPD_contri1').val() == null ? 0 : $('#IPD_contri1').val()) +
+				parseInt($('#IPD_contri2').val() == "" || $('#IPD_contri2').val() == null ? 0 : $('#IPD_contri2').val()) +
+				parseInt($('#IPD_contri3').val() == "" || $('#IPD_contri3').val() == null ? 0 : $('#IPD_contri3').val());
+			$('#IPD_contribution').val(TotalContribution);
+		}
+
+		function Year2Calculation() {
+			var Quantity2 = parseInt($('#IPD_quantity2').val() == "" || $('#IPD_quantity2').val() == null ? 0 : $('#IPD_quantity2').val());
+			var CIFPricePerPack = parseFloat($('#IPD_cifpriceperpack').val() == "" || $('#IPD_cifpriceperpack').val() == null ? 0 : $('#IPD_cifpriceperpack').val());
+			var Volume2 = parseInt(CIFPricePerPack * Quantity2);
+			var TotalCIFcost = parseFloat($('#IPD_totalcifcost').val() == "" || $('#IPD_totalcifcost').val() == null ? 0 : $('#IPD_totalcifcost').val());
+			var COGS2 = parseInt(TotalCIFcost * Quantity2);
+			var Contri2 = parseInt(Volume2) - parseInt(COGS2);
+
+			$('#IPD_volume2').val(Volume2);
+			$('#IPD_cogs2').val(COGS2);
+			$('#IPD_contri2').val(Contri2);
+
+			var TotalContribution = parseInt($('#IPD_contri1').val() == "" || $('#IPD_contri1').val() == null ? 0 : $('#IPD_contri1').val()) +
+				parseInt($('#IPD_contri2').val() == "" || $('#IPD_contri2').val() == null ? 0 : $('#IPD_contri2').val()) +
+				parseInt($('#IPD_contri3').val() == "" || $('#IPD_contri3').val() == null ? 0 : $('#IPD_contri3').val());
+			$('#IPD_contribution').val(TotalContribution);
+		}
+
+		function Year3Calculation() {
+			var Quantity3 = parseInt($('#IPD_quantity3').val() == "" || $('#IPD_quantity3').val() == null ? 0 : $('#IPD_quantity3').val());
+			var CIFPricePerPack = parseFloat($('#IPD_cifpriceperpack').val() == "" || $('#IPD_cifpriceperpack').val() == null ? 0 : $('#IPD_cifpriceperpack').val());
+			var Volume3 = parseInt(CIFPricePerPack * Quantity3);
+			var TotalCIFcost = parseFloat($('#IPD_totalcifcost').val() == "" || $('#IPD_totalcifcost').val() == null ? 0 : $('#IPD_totalcifcost').val());
+			var COGS3 = parseInt(TotalCIFcost * Quantity3);
+			var Contri3 = parseInt(Volume3) - parseInt(COGS3);
+
+			$('#IPD_volume3').val(Volume3);
+			$('#IPD_cogs3').val(COGS3);
+			$('#IPD_contri3').val(Contri3);
+
+			var TotalContribution = parseInt($('#IPD_contri1').val() == "" || $('#IPD_contri1').val() == null ? 0 : $('#IPD_contri1').val()) +
+				parseInt($('#IPD_contri2').val() == "" || $('#IPD_contri2').val() == null ? 0 : $('#IPD_contri2').val()) +
+				parseInt($('#IPD_contri3').val() == "" || $('#IPD_contri3').val() == null ? 0 : $('#IPD_contri3').val());
+			$('#IPD_contribution').val(TotalContribution);
+		}
+
+		function CalculateTotalInvest() {
+			var CostOf3batches = parseInt($('#IPD_costof3batches').val() == "" || $('#IPD_costof3batches').val() == null ? 0 : $('#IPD_costof3batches').val());
+			var StabilityCost = parseInt($('#IPD_stabilitycost').val() == "" || $('#IPD_stabilitycost').val() == null ? 0 : $('#IPD_stabilitycost').val());
+
+			var TotalInvest = CostOf3batches + StabilityCost;
+			$('#IPD_totalinvest').val(TotalInvest);
+		}
+
+		$("#btnUpload").click(function () {
+        var fileUpload = $("#UploadFile").get(0);
+        var files = fileUpload.files;
+        var data = new FormData();
+        for (var i = 0; i < files.length ; i++) {
+            data.append(files[i].name, files[i]);
+        }
+        $.ajax({
+            type: "POST",
+            url: "/PIDF/UploadFiles",
+            contentType: false,
+            processData: false,
+            data: data,
+            success: function (result) {
+                //alert(data.msg);
+                console.log(result);
+                   if (result.success ===true) {
+                       openCommonModal('successModal modal-sm', '@Html.Raw(SharedLocalizer["Success"].Value)', result.msg, true);
+                       $.each(result.fileDetails, function (i,List) {
+                           var temp = {
+                               "SaveFilePath": List.saveFilePath,
+                               "SaveFileName": List.saveFileName
+                           };
+                           JSONUploadedFilesList.push(temp);
+                       });
+                       //console.log(JSONUploadedFilesList);
+                    }
+                    else {
+                        openCommonModal('alertModal modal-sm', '@SharedLocalizer["Error"].Value', result.msg, false);
+                    }        
+            },
+            error: function () {
+                alert("There was error uploading files!");
+            }
+        });
+    }); 
+
+	</script>
+}

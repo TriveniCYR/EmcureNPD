@@ -10,7 +10,7 @@ function GetPackagingTypeListSuccess(data) {
     try {
         $('#PackagingTypeTable tbody').html('')
         $.each(data._object, function (index, object) {
-            $('#PackagingTypeTable tbody').append('<tr><td>' + object.packagingTypeName + '</td><td><span style="color:' + (object.isActive ? "green" : "red") + '">' + (object.isActive ? "Active" : "InActive") + '</span></td><td>  <a class="btn btn-primary" data-toggle="modal" data-target="#SavePackagingTypeModel" data-backdrop="static" data-keyboard="false"  onclick="GetPackagingTypeById(' + object.packagingTypeId + '); return false;"><i class="fa fa-fw fa-edit mr-1"></i> ' + EditLabel + '</a> <a class="btn btn-danger" data-toggle="modal" data-target="#DeletePackagingTypeModel" data-backdrop="static" data-keyboard="false" onclick="ConfirmationDeletePackagingType(' + object.packagingTypeId + '); return false;"><i class="fa fa-fw fa-trash mr-1"></i> ' + DeleteLabel + '</a>  </td></tr>');
+            $('#PackagingTypeTable tbody').append('<tr><td>' + object.packagingTypeName + '</td><td><span style="color:' + (object.isActive ? "green" : "red") + '">' + (object.isActive ? "Active" : "InActive") + '</span></td><td>  <a class="large-font" style="' + IsEditAllow + '" href="" title="Edit" data-toggle="modal" data-target="#SavePackagingTypeModel" data-backdrop="static" data-keyboard="false"  onclick="GetPackagingTypeById(' + object.packagingTypeId + '); return false;"><i class="fa fa-fw fa-edit mr-1"></i> ' + '</a> <a class="large-font text-danger" style="' + IsDeleteAllow +'" href="" title="Delete" data-toggle="modal" data-target="#DeletePackagingTypeModel" data-backdrop="static" data-keyboard="false" onclick="ConfirmationDeletePackagingType(' + object.packagingTypeId + '); return false;"><i class="fa fa-fw fa-trash mr-1"></i> ' + '</a>  </td></tr>');
         });
         StaticDataTable("#PackagingTypeTable");
     } catch (e) {
@@ -28,6 +28,7 @@ function GetPackagingTypeById(id) {
 }
 function GetPackagingTypeByIdSuccess(data) {
     try {
+        ClearePackagingTypeFields();
         $('#SavePackagingTypeModel #PackagingTypeID').val(data._object.packagingTypeId);
         $('#SavePackagingTypeModel #PackagingTypeName').val(data._object.packagingTypeName);
         $('#SavePackagingTypeModel #PackagingTypeTitle').html(UpdateLabel);
@@ -82,6 +83,12 @@ function ClearePackagingTypeFields() {
     $('#SavePackagingTypeModel #PackagingTypeID').val("0");
     $('#SavePackagingTypeModel #PackagingTypeName').val("");
     $('#DeletePackagingTypeModel #PackagingTypeID').val("0");
+    var validationMessages = document.querySelectorAll(".field-validation-error");
+
+    // Loop through the messages and clear them
+    for (var i = 0; i < validationMessages.length; i++) {
+        validationMessages[i].textContent = "";
+    }
 }
 // #endregion
 

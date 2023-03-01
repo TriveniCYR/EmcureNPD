@@ -1,0 +1,189 @@
+﻿@inject Microsoft.Extensions.Localization.IStringLocalizer<SharedResource> SharedLocalizer
+@{
+    ViewData["Title"] = "DRFList";
+}
+<!-- For Gred pages CSS  -->
+<div class="content-wrapper">
+    <section class="content pt-3">
+        <div class="container-fluid">
+            <div class="row">
+                <section class="col-lg-12">
+                    <!-- Custom tabs (Charts with tabs)-->
+                    <div class="card">
+                        <div class="card-header">
+                            <h3 class="card-title">
+                                <i class="far fa-list-alt mr-2"></i> Project List
+                            </h3>
+                            <div class="card-tools">
+                                <ul class="nav nav-pills ml-auto">
+                                    <li class="nav-item mr-3">
+                                        <a class="btn btn-primary" href="@Url.Action("GanttSummary","GanttNew")"><i class="fas fa-project-diagram mr-2"></i>Project Gantt Chart</a>
+                                    </li>
+                                    <li class="nav-item mr-3">
+                                        <div class="export-btn"></div>
+                                    </li>
+                                    <li class="nav-item mr-3 d-none">
+                                        <a class="btn btn-primary" href="@Url.Action("DRFList","DRF")"><i class="fas fa-project-diagram mr-2"></i>Project Gantt Chart</a>
+                                    </li>
+                                    <li class="nav-item  d-none">
+                                        <a class="btn btn-outline-primary" href="@Url.Action("DRFAddOrEdit","DRF")"><i class="far fa-plus-square mr-1"></i>New Project</a>
+                                    </li>
+
+                                </ul>
+                            </div>
+                        </div>
+                        <div class="card-body">
+                                <table id="DRFTable" class="table table-bordered table-striped table-hover" style="width:100%">
+                                    <thead>
+                                        <tr>
+                                            <th>@SharedLocalizer["Id"].Value</th>
+                                            <th>@SharedLocalizer["Project Name"].Value</th>
+                                            <th>@SharedLocalizer["Strength"].Value</th>
+                                            <th>@SharedLocalizer["Module Name"].Value</th>
+                                            <th>@SharedLocalizer["Formulation"].Value</th>
+                                            <th>@SharedLocalizer["Continent"].Value</th>
+                                            <th>@SharedLocalizer["Country"].Value</th>
+                                            <th>@SharedLocalizer["Registration Date"].Value</th>
+                                            <th>@SharedLocalizer["Re Registration Date"].Value</th>
+                                            <th>@SharedLocalizer["Dossier Filling Date"].Value</th>
+                                            <th>@SharedLocalizer["Register Plant"].Value</th>
+                                            <th>@SharedLocalizer["Manufacturing Plant"].Value</th>
+                                            <th>@SharedLocalizer["Percentage"].Value</th>
+                                            <th>@SharedLocalizer["Project Manager"].Value</th>
+                                            <th>@SharedLocalizer["Project Status"].Value</th>
+                                            <th>@SharedLocalizer["Project Milestone"].Value</th>
+                                            <th>@SharedLocalizer["Complication Date"].Value</th>
+                                        </tr>
+                                    </thead>
+                                </table>
+                            
+                        </div>
+                       
+                    </div>
+                </section>
+            </div>
+
+
+        </div>
+    </section>
+
+</div>
+
+@section Scripts {
+    <script>
+        var dataTable, getDRFList;
+
+        $(document).ready(function () {
+
+
+            var dataTable = $('#DRFTable').DataTable({
+                responsive: true,
+                lengthChange: true,
+                autoWidth: true,
+                dom: 'Bfrtip',
+                columnDefs: [
+                    { responsivePriority: 1, targets: -5 },
+                    { responsivePriority: 1000, targets: 5 },
+                    { responsivePriority: 1, targets: -3 },
+                    { responsivePriority: 100, targets: -4 }
+                ],
+
+                buttons: [
+                    {
+                        extend: 'excel', text: '<i class="far fa-file-excel"></i> Export In Excel ', className: "btn-primary", exportOptions: {
+                            columns: ':visible'
+                        }
+ },
+                    {extend: 'colvis', className:"btn-primary" }
+                 ],
+               
+
+                language: {
+                    "emptyTable": "@SharedLocalizer["No data available in table"].Value",
+                    "info": "@SharedLocalizer["Showing _START_ to _END_ of _TOTAL_ entries"].Value",
+                    "infoEmpty":"@SharedLocalizer["Showing 0 to 0 of 0 entries"].Value",
+                    "infoFiltered":"@SharedLocalizer["(filtered from _MAX_ total entries)"].Value",
+                    "lengthMenu":"@SharedLocalizer["Show _MENU_ entries"].Value",
+                    "loadingRecords": "@SharedLocalizer["Loading..."].Value",
+                    "processing": "@SharedLocalizer["Processing..."].Value",
+                    "search": "@SharedLocalizer["Search"].Value",
+                    "zeroRecords":"@SharedLocalizer["No matching records found"].Value",
+                    "paginate": {
+                        "first":"@SharedLocalizer["First"].Value",
+                        "last":"@SharedLocalizer["Last"].Value",
+                        "next": "@SharedLocalizer["Next"].Value",
+                        "previous":"@SharedLocalizer["Previous"].Value"
+                    },
+                }
+
+            });
+            
+            getDRFList = function () {
+                //$('#loaderContainer').show();
+                               $.ajax({
+                    type: "GET",
+                    url: '@Url.Action("GetDRF", "DRF")/',
+                    contentType: "application/json; charset=utf-8",
+                    dataType: "json",
+
+                    success: function (response) {
+                        //$('#loaderContainer').hide();
+                        var jsonObject = response.data;
+                        var result = jsonObject.map(function (item) {
+                            var result = [];
+                            //var setUrl = @Url.Action("DRFShowDetails", "DRF")/+item.ProductId;
+                            var setUrl = "/DRF/DRFShowDetails?Id=" + item.ProductId;
+                            //result.push(item.ProductId);
+                            result.push('<a href="' + setUrl+ '" >'+item.ProductId+'</a>');
+                            //result.push(item.ProductName);
+                            result.push('<a href="'+ setUrl+'">'+item.ProductName+'</a>');
+                            result.push(item.Strength);
+                            result.push(item.ModuleName);
+                            result.push(item.Formulation);
+                            result.push(item.Continent);
+                            result.push(item.Country);
+                            result.push(item.RegistrationDate);
+                            result.push(item.ReRegistrationDate);
+                            result.push(item.DossierFillingDate);
+                            result.push(item.RegisterPlant);
+                            result.push(item.ManufacturingPlant);
+                            result.push('<div class="progress"><div class="progress-bar" role="progressbar" aria-valuenow="30" aria-valuemin="0" aria-valuemax="100" style="width:30%">30%</div></div>');
+                            result.push(item.ProjectManager);
+                            result.push(item.ProjectStatus);
+                            result.push("");
+                            result.push("");
+                            
+
+                            return result;
+                        });
+                        dataTable.clear();
+                        dataTable.rows.add(result); // add to DataTable instance
+                        dataTable.draw().buttons().container().appendTo('.export-btn'); // always redraw
+                        },
+                    failure: function () {
+                        $("#DRFTable").append('@SharedLocalizer["Error when fetching data please contact administrator"].Value');
+                                   }
+                               });
+
+            }
+            getDRFList();
+            
+            $(".buttons-excel").removeClass("btn-secondary");
+            $(".buttons-collection").removeClass("btn-secondary");
+
+        });
+
+      
+
+        /*$('#DRFTable').on('dblclick', ' tbody tr', function () {
+            var drfTable = $('#DRFTable').DataTable();
+            var data = drfTable.row(this).data();
+           location.href = "/DRF/DRFShowDetails?Id=" + data[0];
+    } );*/
+
+      
+
+
+    </script>
+}
+

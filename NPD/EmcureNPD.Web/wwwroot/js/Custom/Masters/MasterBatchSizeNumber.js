@@ -10,7 +10,7 @@ function GetBatchSizeNumberListSuccess(data) {
     try {
         $('#BatchSizeNumberTable tbody').html('')
         $.each(data._object, function (index, object) {
-            $('#BatchSizeNumberTable tbody').append('<tr><td>' + object.batchSizeNumberName + '</td><td><span style="color:' + (object.isActive ? "green" : "red") + '">' + (object.isActive ? "Active" : "InActive") + '</span></td><td>  <a class="btn btn-primary" data-toggle="modal" data-target="#SaveBatchSizeNumberModel" data-backdrop="static" data-keyboard="false"  onclick="GetBatchSizeNumberById(' + object.batchSizeNumberId + '); return false;"><i class="fa fa-fw fa-edit mr-1"></i> ' + EditLabel + '</a> <a class="btn btn-danger" data-toggle="modal" data-target="#DeleteBatchSizeNumberModel" data-backdrop="static" data-keyboard="false" onclick="ConfirmationDeleteBatchSizeNumber(' + object.batchSizeNumberId + '); return false;"><i class="fa fa-fw fa-trash mr-1"></i> ' + DeleteLabel + '</a>  </td></tr>');
+            $('#BatchSizeNumberTable tbody').append('<tr><td>' + object.batchSizeNumberName + '</td><td><span style="color:' + (object.isActive ? "green" : "red") + '">' + (object.isActive ? "Active" : "InActive") + '</span></td><td>  <a class="large-font" style="' + IsEditAllow + '" href="" title="Edit" data-toggle="modal" data-target="#SaveBatchSizeNumberModel" data-backdrop="static" data-keyboard="false"  onclick="GetBatchSizeNumberById(' + object.batchSizeNumberId + '); return false;"><i class="fa fa-fw fa-edit mr-1"></i> ' + '</a> <a class="large-font text-danger" style="' + IsDeleteAllow +'" href="" title="Delete" data-toggle="modal" data-target="#DeleteBatchSizeNumberModel" data-backdrop="static" data-keyboard="false" onclick="ConfirmationDeleteBatchSizeNumber(' + object.batchSizeNumberId + '); return false;"><i class="fa fa-fw fa-trash mr-1"></i> ' + '</a>  </td></tr>');
         });
         StaticDataTable("#BatchSizeNumberTable");
     } catch (e) {
@@ -28,6 +28,7 @@ function GetBatchSizeNumberById(id) {
 }
 function GetBatchSizeNumberByIdSuccess(data) {
     try {
+        CleareBatchSizeNumberFields();
         $('#SaveBatchSizeNumberModel #BatchSizeNumberID').val(data._object.batchSizeNumberId);
         $('#SaveBatchSizeNumberModel #BatchSizeNumberName').val(data._object.batchSizeNumberName);
         $('#SaveBatchSizeNumberModel #BatchSizeNumberTitle').html(UpdateLabel);
@@ -82,6 +83,12 @@ function CleareBatchSizeNumberFields() {
     $('#SaveBatchSizeNumberModel #BatchSizeNumberID').val("0");
     $('#SaveBatchSizeNumberModel #BatchSizeNumberName').val("");
     $('#DeleteBatchSizeNumberModel #BatchSizeNumberID').val("0");
+    var validationMessages = document.querySelectorAll(".field-validation-error");
+
+    // Loop through the messages and clear them
+    for (var i = 0; i < validationMessages.length; i++) {
+        validationMessages[i].textContent = "";
+    }
 }
 // #endregion
 

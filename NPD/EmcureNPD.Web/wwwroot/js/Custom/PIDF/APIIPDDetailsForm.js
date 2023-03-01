@@ -1,33 +1,74 @@
 ﻿
+
 $(document).ready(function () {
+    debugger;
     SetDivReadonly();
-    if (SaveStatus != '' && SaveStatus != undefined)
-    {
+    $("#IsModelValid").val('');
+    if (SaveStatus != '' && SaveStatus != undefined) {
         if (SaveStatus == 'Saved successfully.')
             toastr.success(SaveStatus);
         else
             toastr.error(SaveStatus);
     }
+    InitializeProductTypeDropdown();      
 });
 
-$(window).on("load", function () {
-    console.log("window loaded");
-});
+function InitializeProductTypeDropdown() {
+    debugger;
+    ajaxServiceMethod($('#hdnBaseURL').val() + GetAllProductType, 'GET', GetProductTypeListSuccess, GetProductTypeListError);
+}
+function GetProductTypeListSuccess(data) {  
+    try {
+        $.each(data._object, function (index, object) {
+            $('#ProductTypeId').append($('<option>').text(object.productTypeName).attr('value', object.productTypeId));
+        });
 
-$('#btnPreview').click(function () {
+        if ($("#APIIPDDetailsFormID").val()>0) {
+            $("#ProductTypeId").val(DBProductTypeId);  
+        }
+    } catch (e) {
+        toastr.error('Error:' + e.message);
+    }
+}
+function GetProductTypeListError(x, y, z) {
+    toastr.error(ErrorMessage);
+}
+
+
+$('#MarketDetailsNewPortCGIDetails').change(function () {
     debugger;
     var $input = $("#MarketDetailsNewPortCGIDetails");
     var reader = new FileReader();
     reader.onload = function () {
-        $("#imgPreviewMarketdetails").attr("src", reader.result);
+        $("#imgPreviewMarketdetails").attr("src", reader.result);        
     }
-    reader.readAsDataURL($input[0].files[0]);
+    reader.readAsDataURL($input[0].files[0]);    
+    $("#MarketDetailsFileName").val('');
+});
+$('#imgPreviewMarketdetails').click(function () {
+    var ImageUrl = $('#MarketDetailsFileName').val();   
+    if (ImageUrl == "" || ImageUrl == undefined) {
+
+    }
+    else {
+        var win = window.open(ImageUrl, '');
+        if (win) {
+            //Browser has allowed it to be opened
+            win.focus();
+        } else {
+            //Browser has blocked it
+            alert('Please allow popups for this website');
+        }
+    }
 });
 
+
 $('#Save').click(function () {
+    ValidateForm();
     $("#SaveType").val('Save');    
 });
 $('#SaveDraft').click(function () {
+    $("#IsModelValid").val('Valid')
     $("#SaveType").val('SaveDraft');
 });
 function SetDivReadonly() {
@@ -46,7 +87,48 @@ function ShowPopUpAPIIPD() {
     $('#CancelModelAPIIPD').modal('show');
 }
 
+function ValidateForm() {
+    var IsInvalid = false;
+    if ($("#MarketDetailsNewPortCGIDetails")[0].files.length <= 0) {
+        $("#valmsgMarketDetailsNewPortCGIDetails").text('Required')
+        IsInvalid = true;
+    }
+    else {
+        $("#valmsgMarketDetailsNewPortCGIDetails").text('')
+    }
+    if ($("#DrugsCategory").val() == '') {
+        $("#valmsgDrugsCategory").text('Required')
+        IsInvalid = true;
+    }
+    else {
+        $("#valmsgDrugsCategory").text('')
+    }
+    if ($("#ProductStrength").val() == '') {
+        $("#valmsgProductStrength").text('Required')
+        IsInvalid = true;
+    }
+    else {
+        $("#valmsgProductStrength").text('')
+    }
+    if (IsInvalid) {
+        $("#IsModelValid").val('')
+    }
+    else {
+        $("#IsModelValid").val('Valid')
+    }
+    return IsInvalid;
+}
 
+function OpenImageInNewTab(url,FileName) {
+    var win = window.open(url, FileName);
+    if (win) {
+        //Browser has allowed it to be opened
+        win.focus();
+    } else {
+        //Browser has blocked it
+        alert('Please allow popups for this website');
+    }
+}
 
 
 

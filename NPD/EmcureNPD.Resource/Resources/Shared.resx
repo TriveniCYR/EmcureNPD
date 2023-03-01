@@ -123,6 +123,9 @@
   <data name="Add" xml:space="preserve">
     <value>Add</value>
   </data>
+  <data name="Address" xml:space="preserve">
+    <value>Address</value>
+  </data>
   <data name="APiReq(EmcureKg)" xml:space="preserve">
     <value>APi Req (Emcure Kg)</value>
   </data>
@@ -132,6 +135,12 @@
   <data name="ApproveConfirm" xml:space="preserve">
     <value>Are you sure you want to approve ?</value>
   </data>
+  <data name="BackToLogin" xml:space="preserve">
+    <value>Back To Login</value>
+  </data>
+  <data name="BusinessUnit" xml:space="preserve">
+    <value>Business Unit</value>
+  </data>
   <data name="Cancel" xml:space="preserve">
     <value>Cancel</value>
   </data>
@@ -140,6 +149,9 @@
   </data>
   <data name="CommercialBatchSize(Qtr)" xml:space="preserve">
     <value>Commercial Batch Size (Qtr)</value>
+  </data>
+  <data name="ConfirmPassword" xml:space="preserve">
+    <value>Confirm Password</value>
   </data>
   <data name="CurrencyCode" xml:space="preserve">
     <value>Currency Code</value>
@@ -156,8 +168,14 @@
   <data name="DeleteConfirm" xml:space="preserve">
     <value>Are you sure you want to delete ?</value>
   </data>
+  <data name="Department" xml:space="preserve">
+    <value>Department</value>
+  </data>
   <data name="Edit" xml:space="preserve">
     <value>Edit</value>
+  </data>
+  <data name="EmailAddress" xml:space="preserve">
+    <value>Email Address</value>
   </data>
   <data name="Error" xml:space="preserve">
     <value>Some error occurred</value>
@@ -173,6 +191,9 @@
   </data>
   <data name="MarketSize" xml:space="preserve">
     <value>Market Size</value>
+  </data>
+  <data name="MobileNumber" xml:space="preserve">
+    <value>Mobile Number</value>
   </data>
   <data name="No" xml:space="preserve">
     <value>No</value>
@@ -201,6 +222,9 @@
   <data name="RejectConfirm" xml:space="preserve">
     <value>Are you sure you want to reject ?</value>
   </data>
+  <data name="Role" xml:space="preserve">
+    <value>Role</value>
+  </data>
   <data name="Save" xml:space="preserve">
     <value>Save</value>
   </data>
@@ -224,6 +248,12 @@
   </data>
   <data name="Update" xml:space="preserve">
     <value>Update</value>
+  </data>
+  <data name="UserList" xml:space="preserve">
+    <value>User List</value>
+  </data>
+  <data name="UserMangegment" xml:space="preserve">
+    <value>User Management</value>
   </data>
   <data name="Year1" xml:space="preserve">
     <value>Year1</value>

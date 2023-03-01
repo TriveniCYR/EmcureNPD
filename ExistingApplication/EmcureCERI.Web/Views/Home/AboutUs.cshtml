@@ -1,0 +1,29 @@
+﻿@using Microsoft.Extensions.Localization
+@inject IStringLocalizer<SharedResource> SharedLocalizer
+@{
+    ViewData["Title"] = SharedLocalizer["About Us"].Value;
+}
+<section id="about" class="about">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6 text-center fadeIn wow" data-wow-duration="1s">
+                <img src="~/images/appoinment1.png" class="img-responsive hidden-xs" />
+            </div>
+            <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6">
+                <div class="about-premedi">
+                    <h4 class="premedi-story">@SharedLocalizer["Welcome to"].Value</h4>
+                    <h3 class="about-head">@SharedLocalizer["Cidofovir Exposure Registry of Tillomed Laboratories Limited."].Value</h3>
+                    <p style="font-size:16px;">
+                        @SharedLocalizer["Tillomed is a European Pharmaceutical company with headquarters in the UK and affiliates in France, Spain, Germany, and Italy."].Value
+                    </p>
+                    <p style="font-size:16px;">
+                        @SharedLocalizer["Tillomed specialises in the licensing and marketing of generic pharmaceuticals which meet genuine needs and deliver effective, high-quality, sustainable healthcare."].Value
+                    </p>
+                    <p style="font-size:16px;">
+                        @SharedLocalizer["Tillomed is owned by Emcure Pharmaceuticals Limited."].Value
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>

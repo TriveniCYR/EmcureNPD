@@ -10,8 +10,10 @@
 @model EmcureNPD.Business.Models.PIDFCommercialEntity
 @{ ViewData["Title"] = @MasterLocalizer["PIDFCommercialDetails"];}
 <div>
-    <div id="PIDFScreen">           
-        @{ await Html.RenderPartialAsync("~/Views/PIDF/PIDF.cshtml",Model.pidfEntity);}
+    <div id="PIDFScreen">   
+
+          
+        @{ await Html. RenderPartialAsync("~/Views/PIDF/PIDF.cshtml",Model.pidfEntity);}
            
          @{ await Html.RenderPartialAsync("~/Views/PIDForm/PIDForm.cshtml", Model.IPDFormEntity);}
         </div>
@@ -90,6 +92,21 @@
                     </div>
                 </div>
             </div>
+            <div class="row">
+                <div class="col-md-5">
+                    <table class="table table-bordered">
+                        <thead>
+                            <tr>
+                                <th colspan="3">
+                                    @MasterLocalizer["Revenue"]
+                                </th>
+                            </tr>
+                        </thead>
+                        <tbody id="RevenueTbody">
+                        </tbody>
+                    </table>
+                </div>
+            </div>
             @*-----------------Strength---------------------*@
             <div class="row border m-2">
                 <div class="col-md-3">
@@ -121,8 +138,9 @@
                         @Html.TextBoxFor(model => model.MarketSizeInUnit, new { @autocomplete = "off",  @class = "form-control checkbox-checked", @placeholder = @MasterLocalizer["MarketSizeInUnit"] })
                         <lable id="valmsgMarketSizeInUnit" class="text-danger"></lable>
                     </div>
-                </div>
+                </div> 
                 <input type="hidden" id="Pidfid" value=@Model.Pidfid />
+                 <input type="hidden" id="IsView" value=@Model.IsView />
                 <input type="hidden" id="SaveType" />
                 <input type="hidden" id="LoggedInUserId" value=@UtilityHelper.Encrypt(Convert.ToString(@Model.CreatedBy)) />
                 <div class="col-md-4">
@@ -132,29 +150,20 @@
                         <lable id="valmsgShelfLife" class="text-danger"></lable>
                     </div>
                 </div>
-            </div>
-            <div class="row">
-                <div class="col-md-5">
-                    <table class="table table-bordered">
-                        <thead>
-                            <tr>
-                                <th colspan="3" >
-                                    Revenue
-                                </th>
-                            </tr>
-                        </thead>
-                        <tbody id="RevenueTbody">
-                        </tbody>
-                    </table>
+                 <div class="col-md-2"></div>
+                 <div class="col-md-2">
+                    <button type="button" class="btn btn-primary mt-4" value="AddYear" onClick="ShowYearForm()">@MasterLocalizer["AddYear"]</button>
                 </div>
             </div>
-            <form id="AddYearForm">
+          
+            <div class="" id="dvYearForm">
+                @*<h4>@MasterLocalizer["AddYear"]</h4>*@
+                <form id="AddYearForm" >
                 <div class="row">
                     <div class="col-md-3">
                         <div class="form-group required">
                             @Html.LabelFor(model => model.PackagingTypeId,@MasterLocalizer["ProductPackagingType"], new { @class = "control-label" })
-                            @Html.TextBoxFor(model => model.PackagingTypeId, new { @autocomplete = "off", @class = "form-control checkbox-checked", @placeholder = @MasterLocalizer["ProductPackagingType"] })
-                            
+                                <select id="PackagingTypeId1" name="PackagingTypeId1" class="form-control"></select>                           
                         </div>
                     </div>
                     <div class="col-md-3">
@@ -204,7 +213,14 @@
                             <lable id="valmsgSuimsvolume" class="text-danger"></lable>
                         </div>
                     </div>
+                    <div class="col-md-3">
+                        <div class="form-group required">
+                                @Html.LabelFor(model => model.FreeOfCost,@MasterLocalizer["FreeOfCost"], new { @class = "control-label" })
 
+                                @Html.TextBoxFor(model => model.FreeOfCost, new { @autocomplete = "off", @class = "form-control checkbox-checked", @placeholder = @MasterLocalizer["FreeOfCost"] })
+                                <lable id="valmsgFreeOfCost" class="text-danger"></lable>
+                        </div>
+                    </div>
                     <div class="col-md-3">
                         <div class="form-group required">
                             @Html.LabelFor(model => model.MarketGrowth,@MasterLocalizer["MarketGrowth"], new { @class = "control-label" })
@@ -232,7 +248,6 @@
                             <select id="FinalSelectionId" name="FinalSelectionId" class="form-control" required></select>                            
                         </div>
                     </div>
-                    <div class="col-md-3"></div>
                     <div class="col-md-3 border">
                         <h3 class="card-title font-weight-bold">Market Share % </h3>
                         <table class="table table-bordered">
@@ -323,22 +338,26 @@
                     <div class="col-md-10"></div>
                     <div class="col-md-2">
                         <div class="form-group required">
-                            <button type="button" class="btn btn-primary" value="AddYear" onClick="AddYearClick()">Add Year</button>
+                          <button type="button" class="btn btn-primary" value="AddYear" onClick="AddYearClick()">@SharedLocalizer["Save"]</button>
                         </div>
                     </div>
                 </div>
-            </form>
+            </form>               
+            </div>
             <div class="row">
                 <div>
                     <div class="form-group">
-                        <button type="button" class="btn btn-primary" onClick="SaveClick();">@SharedLocalizer["Save"]</button> 
-                        <a class="btn btn-danger" onclick="ShowPopUpCommercial()">@SharedLocalizer["Cancel"]</a>
-                        @if (Model.StatusId != (Int32)Master_PIDFStatus.IPDCreated)
+                        <button type="button" class="btn btn-primary" onClick="SaveClick();">@SharedLocalizer["Submit"]</button>
+                        <input class="btn btn-danger" value="Cancel" id="btnCommercialCancel" type="button" title=@SharedLocalizer["Cancel"] onclick="location.href='@Url.Action("PIDFList", "PIDF", new { ScreenId = 4 })'" />
+                        @*<button class="btn btn-danger" type="button" onclick="window.history.back();">@SharedLocalizer["Cancel"]</button>*@
+                        <button type="submit" class="btn btn-info" onClick="SaveDraftClick();">@SharedLocalizer["SaveDraft"]</button>
+                     
+                        @*  @if (Model.StatusId != (Int32)Master_PIDFStatus.IPDInProgress)
                         {
                             <button type="submit" class="btn btn-info" onClick="SaveDraftClick();">@SharedLocalizer["SaveDraft"]</button>
                         }
                         <button class="btn btn-success" onClick="SaveApproveClick();">@SharedLocalizer["Approve"]</button>
-                        <button class="btn btn-danger" onClick="SaveRejectClick();">@SharedLocalizer["Reject"]</button>
+                        <button class="btn btn-danger" onClick="SaveRejectClick();">@SharedLocalizer["Reject"]</button>*@
                     </div>
                 </div>
             </div>
@@ -371,14 +390,18 @@
     </div>
 </div>
 @section MyScripts {
-    @Html.Partial("_DataTablePartial")
     <link rel="stylesheet" href="~/AdminLTE/plugins/select2/css/select2.min.css" />
     <script type="text/javascript" src="~/AdminLTE/plugins/select2/js/select2.min.js"></script>
     <script src="~/js/custom/pidf/commercialdetailsform.js"></script>
     <link href="/lib/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
     <script src="/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
 
+    @*<script type="text/javascript" src="~/js/Custom/PIDF/MasterPIDF.js"></script>
+    <script type="text/javascript" src="~/js/Custom/Masters/MasterPIDForm.js"></script>
+    <script type="text/javascript" src="~/js/Custom/PIDF/MasterPIDF_IPD.js"></script>*@
+
     <script>
+        var GetAllProductType = "@EmcureNPD.Web.Helpers.APIURLHelper.GetAllProductType";
         var GetAllCurrency = "@EmcureNPD.Web.Helpers.APIURLHelper.GetAllCurrency";
         var SaveCommercialPIDF = "@EmcureNPD.Web.Helpers.APIURLHelper.SaveCommercialPIDF";
         var GetCommercialFormData = "@EmcureNPD.Web.Helpers.APIURLHelper.GetCommercialFormData";

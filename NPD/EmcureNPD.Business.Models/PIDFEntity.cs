@@ -9,10 +9,20 @@ namespace EmcureNPD.Business.Models
     {
         public long PIDFID { get; set; }        
         public string PIDFNO { get; set; }
+
+        [Required(ErrorMessageResourceType = typeof(Validation), ErrorMessageResourceName = "Required")]
+        //[Display(Name = "Oral", ResourceType = typeof(Master))]
         public int OralId { get; set; }
         public int UnitofMeasurementId { get; set; }
+
+        [Required(ErrorMessageResourceType = typeof(Validation), ErrorMessageResourceName = "Required")]
+        //[Display(Name = "DosageForm", ResourceType = typeof(Master))]
         public int DosageFormId { get; set; }
+
         public int PackagingTypeId { get; set; }
+
+        [Required(ErrorMessageResourceType = typeof(Validation), ErrorMessageResourceName = "Required")]
+        //[Display(Name = "BusinessUnit", ResourceType = typeof(Master))]
         public int BusinessUnitId { get; set; }
 
         [Required(ErrorMessageResourceType = typeof(Validation), ErrorMessageResourceName = "Required")]
@@ -38,6 +48,9 @@ namespace EmcureNPD.Business.Models
         [Required(ErrorMessageResourceType = typeof(Validation), ErrorMessageResourceName = "Required")]
         [Display(Name = "RFDApplicant", ResourceType = typeof(Master))]
         public string RFDApplicant { get; set; }
+
+        [Required(ErrorMessageResourceType = typeof(Validation), ErrorMessageResourceName = "Required")]
+        //[Display(Name = "RFDCountry", ResourceType = typeof(Master))]
         public int RFDCountryId { get; set; }
 
         [Required(ErrorMessageResourceType = typeof(Validation), ErrorMessageResourceName = "Required")]
@@ -59,17 +72,26 @@ namespace EmcureNPD.Business.Models
         [Required(ErrorMessageResourceType = typeof(Validation), ErrorMessageResourceName = "Required")]
         [Display(Name = "RFDCommercialBatchSize", ResourceType = typeof(Master))]
         public string RFDCommercialBatchSize { get; set; }
+
         public bool IsActive { get; set; }
         public DateTime CreatedDate { get; set; }
         public int? CreatedBy { get; set; }
         public DateTime? ModifyDate { get; set; }
 		public int? ModifyBy { get; set; }
-		public int StatusId { get; set; }
+		
+        public int StatusId { get; set; }
+        
         public int Diaid { get; set; }
+        
         public int LastStatusId { get; set; }
 		public bool InHouses { get; set; }
+
+        [Required(ErrorMessageResourceType = typeof(Validation), ErrorMessageResourceName = "Required")]
+        //[Display(Name = "MarketExtension", ResourceType = typeof(Master))]
         public int MarketExtenstionId { get; set; }
-		public string SaveType { get; set; }
+		
+        public string SaveType { get; set; }
+		public int? LogInId { get; set; }
 		public List<PIDFEntity> PIDFEntities { get; set; }
         public List<PidfApiDetailEntity> pidfApiDetailEntities { get; set; }
         public List<PidfProductStregthEntity> pidfProductStregthEntities { get; set; }

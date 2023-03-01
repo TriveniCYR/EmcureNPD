@@ -10,7 +10,7 @@ function GetBERequirementListSuccess(data) {
     try {
         $('#BERequirementTable tbody').html('')
         $.each(data._object, function (index, object) {
-            $('#BERequirementTable tbody').append('<tr><td>' + object.beRequirementName + '</td><td><span style="color:' + (object.isActive ? "green" : "red") + '">' + (object.isActive ? "Active" : "InActive") + '</span></td><td>  <a class="btn btn-primary" data-toggle="modal" data-target="#SaveBERequirementModel" data-backdrop="static" data-keyboard="false"  onclick="GetBERequirementById(' + object.beRequirementId + '); return false;"><i class="fa fa-fw fa-edit mr-1"></i> ' + EditLabel + '</a> <a class="btn btn-danger" data-toggle="modal" data-target="#DeleteBERequirementModel" data-backdrop="static" data-keyboard="false" onclick="ConfirmationDeleteBERequirement(' + object.beRequirementId + '); return false;"><i class="fa fa-fw fa-trash mr-1"></i> ' + DeleteLabel + '</a>  </td></tr>');
+            $('#BERequirementTable tbody').append('<tr><td>' + object.beRequirementName + '</td><td><span style="color:' + (object.isActive ? "green" : "red") + '">' + (object.isActive ? "Active" : "InActive") + '</span></td><td>  <a class="large-font" style="' + IsEditAllow + '" href="" title="Edit" data-toggle="modal" data-target="#SaveBERequirementModel" data-backdrop="static" data-keyboard="false"  onclick="GetBERequirementById(' + object.beRequirementId + '); return false;"><i class="fa fa-fw fa-edit mr-1"></i> ' + '</a> <a class="large-font text-danger" style="' + IsDeleteAllow +'" href="" title="Delete" data-toggle="modal" data-target="#DeleteBERequirementModel" data-backdrop="static" data-keyboard="false" onclick="ConfirmationDeleteBERequirement(' + object.beRequirementId + '); return false;"><i class="fa fa-fw fa-trash mr-1"></i> ' + '</a>  </td></tr>');
         });
         StaticDataTable("#BERequirementTable");
     } catch (e) {
@@ -28,6 +28,7 @@ function GetBERequirementById(id) {
 }
 function GetBERequirementByIdSuccess(data) {
     try {
+        CleareBERequirementFields();
         $('#SaveBERequirementModel #BERequirementID').val(data._object.beRequirementId);
         $('#SaveBERequirementModel #BERequirementName').val(data._object.beRequirementName);
         $('#SaveBERequirementModel #BERequirementTitle').html(UpdateLabel);
@@ -82,6 +83,12 @@ function CleareBERequirementFields() {
     $('#SaveBERequirementModel #BERequirementID').val("0");
     $('#SaveBERequirementModel #BERequirementName').val("");
     $('#DeleteBERequirementModel #BERequirementID').val("0");
+    var validationMessages = document.querySelectorAll(".field-validation-error");
+
+    // Loop through the messages and clear them
+    for (var i = 0; i < validationMessages.length; i++) {
+        validationMessages[i].textContent = "";
+    }
 }
 // #endregion
 

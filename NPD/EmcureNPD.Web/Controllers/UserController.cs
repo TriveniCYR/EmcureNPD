@@ -16,7 +16,8 @@ using System.IO;
 using Microsoft.AspNetCore.Hosting;
 using EmcureNPD.Utility.Helpers;
 using System.Net.Mail;
-
+using EmcureNPD.Utility.Utility;
+using EmcureNPD.Utility.Models;
 
 namespace EmcureNPD.Web.Controllers
 {
@@ -40,11 +41,15 @@ namespace EmcureNPD.Web.Controllers
 
         public IActionResult User()
         {
-            return View();
+			int rolId = (int)HttpContext.Session.GetInt32(UserHelper.LoggedInRoleId);
+			RolePermissionModel objPermssion = UtilityHelper.GetCntrActionAccess(Convert.ToString(RouteData.Values["controller"]), rolId);
+            ViewBag._objPermission = objPermssion;
+			return View();
         }
 
         public IActionResult UserManage(int? UserId)
         {
+            
             MasterUserEntity masterUser;
             if (UserId == null || UserId <= 0)
             {
@@ -76,9 +81,12 @@ namespace EmcureNPD.Web.Controllers
         {
             try
             {
+                masterUser.StringPassword = masterUser.Password;                
+                string logUserId = Convert.ToString(HttpContext.Session.GetString(UserHelper.LoggedInUserId));
+                masterUser.LoggedUserId = int.Parse(logUserId);
                 if (UserId <= 0)
                 {
-                    if (!CheckEmailAddressExists(masterUser.EmailAddress))
+                    if (CheckEmailAddressExists(masterUser.EmailAddress))
                     {
                         ModelState.AddModelError("EmailExist", "Email Address already exists in database.");
                         return View("UserManage", masterUser);
@@ -172,6 +180,7 @@ namespace EmcureNPD.Web.Controllers
         }
 
         [NonAction]
+        // if CheckEmailAddressExists() is false then Email Id Exist in Db
         public bool CheckEmailAddressExists(string EmailAddress)
         {
             bool EmailExist= true;

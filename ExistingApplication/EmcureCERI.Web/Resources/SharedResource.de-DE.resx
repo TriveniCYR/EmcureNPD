@@ -1,0 +1,2610 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="# Use in Indication, Posology and method and administration, contraindicated conditions, use in Special Population unapproved in the label" xml:space="preserve">
+    <value># Verwendung in Indikation, Dosierung und Art und Verwaltung, kontra Bedingungen den Einsatz in speziellen Population nicht genehmigte in dem Etikett</value>
+  </data>
+  <data name="1 g probenecid" xml:space="preserve">
+    <value>1 g Probenecid</value>
+  </data>
+  <data name="2 g probenecid" xml:space="preserve">
+    <value>2 g Probenecid</value>
+  </data>
+  <data name="2 hours after end of cidofovir" xml:space="preserve">
+    <value>2 Stunden nach dem Ende der Cidofovir</value>
+  </data>
+  <data name="3 hours before start of cidofovir" xml:space="preserve">
+    <value>3 Stunden vor Beginn der Cidofovir</value>
+  </data>
+  <data name="4 g probenecid" xml:space="preserve">
+    <value>4 g Probenecid</value>
+  </data>
+  <data name="8 hours after end of cidofovir" xml:space="preserve">
+    <value>8 Stunden nach Ende der Cidofovir</value>
+  </data>
+  <data name="&lt;b&gt;If you are allergic&lt;/b&gt; to cidofovir or any of the other ingredients of this medicine (listed in section 6)." xml:space="preserve">
+    <value>&lt;b&gt;Wenn Sie allergisch&lt;/b&gt; zu Cidofovir oder einen der sonstigen Bestandteile dieses Arzneimittels sind (siehe Abschnitt 6).</value>
+  </data>
+  <data name="&lt;b&gt;If you cannot take the medicine probenecid&lt;/b&gt; because of a serious allergy to probenecid or other sulfa-containing medicines (e.g. sulfamethoxazole)." xml:space="preserve">
+    <value>&lt;b&gt;Wenn Sie das Medikament Probenecid nicht nehmen&lt;/b&gt; wegen einer schweren Allergie gegen Probenecid oder andere Sulfonamide-haltige Arzneimittel (zB Sulfamethoxazol).</value>
+  </data>
+  <data name="&lt;b&gt;If you have diabetes mellitus.&lt;/b&gt;Cidofovir should be used with caution in diabetic patients due to the potential increased risk of developing low pressure in the eye &lt;i&gt;(ocular hypotony)&lt;/i&gt;." xml:space="preserve">
+    <value>&lt;b&gt;Wenn Sie Diabetes mellitus.&lt;/b&gt; Cidofovir sollte die Entwicklung von Unterdruck im Auge &lt;i&gt;(okulare Bulbushypotonie)&lt;/i&gt; wegen des möglichen erhöhten Risiko mit Vorsicht bei Patienten mit Diabetes eingesetzt werden.</value>
+  </data>
+  <data name="&lt;b&gt;If you have ever had kidney disease.&lt;/b&gt;" xml:space="preserve">
+    <value>&lt;b&gt;Wenn Sie jemals eine Nierenerkrankung haben.&lt;/b&gt;</value>
+  </data>
+  <data name="&lt;b&gt;Induction treatment&lt;/b&gt; Dose of cidofovir is 5 mg/kg body weight intravenous infusion at a constant rate over 1 hour) once weekly for two consecutive weeks." xml:space="preserve">
+    <value>&lt;b&gt;Induktionsbehandlung&lt;/b&gt; Cidofovir-Dosis beträgt 5 mg / kg Körpergewicht als intravenöse Infusion mit einer konstanten Rate über 1 Stunde) einmal pro Woche für zwei Wochen in Folge.</value>
+  </data>
+  <data name="&lt;b&gt;Kidney damage is the major side effect of cidofovir treatment.&lt;/b&gt; Therefore, your doctor may need to monitor carefully, particularly if you already have kidney problems or are on haemodialysis." xml:space="preserve">
+    <value>&lt;b&gt;Nierenschäden ist die wichtigste Nebenwirkung von Cidofovir Behandlung.&lt;/b&gt; Daher kann Ihr Arzt sorgfältig überwachen müssen, vor allem, wenn Sie bereits Nierenprobleme haben oder sind auf der Hämodialyse.</value>
+  </data>
+  <data name="&lt;b&gt;Maintenance treatment&lt;/b&gt; Beginning two weeks after the completion of induction treatment, the recommended maintenance dose of cidofovir is 5 mg/kg body weight intravenous infusion at a constant rate over 1 hour) administered once every two weeks." xml:space="preserve">
+    <value>&lt;b&gt;Wartung Behandlung&lt;/b&gt; Beginnend zwei Wochen nach der Beendigung der Induktionstherapie, die empfohlene Erhaltungsdosis von Cidofovir beträgt 5 mg / kg Körpergewicht als intravenöse Infusion mit einer konstanten Rate über 1 Stunde) verabreichte einmal alle zwei Wochen.</value>
+  </data>
+  <data name="&lt;p class='FaqTitle'&gt;&lt;i class='glyphicon glyphicon-hand-right'&gt;&lt;/i&gt; Children&lt;/p&gt;" xml:space="preserve">
+    <value>&lt;p class = 'FaqTitle'&gt; &lt;i class = 'glyphicon glyphicon-Hand-right'&gt;&lt;/i&gt; Kinder&lt;/p&gt;</value>
+  </data>
+  <data name="&lt;p class='FaqTitle'&gt;&lt;i class='glyphicon glyphicon-hand-right'&gt;&lt;/i&gt; Cidofovir 75 mg/ml concentrate for solution for infusion contains sodium&lt;/p&gt;" xml:space="preserve">
+    <value>&lt;p class = 'FaqTitle'&gt; &lt;i class = 'glyphicon glyphicon-Hand-right'&gt;&lt;/i&gt; Cidofovir 75 mg / ml für die Lösung Infusionskonzentrat enthält Natrium&lt;/p&gt;</value>
+  </data>
+  <data name="&lt;p class='FaqTitle'&gt;&lt;i class='glyphicon glyphicon-hand-right'&gt;&lt;/i&gt; Cidofovir with food and drink&lt;/p&gt;" xml:space="preserve">
+    <value>&lt;p class = 'FaqTitle'&gt; &lt;i class = 'glyphicon glyphicon-Hand-right'&gt;&lt;/i&gt; Cidofovir mit Nahrungsmitteln und Getränken&lt;/p&gt;</value>
+  </data>
+  <data name="&lt;p class='FaqTitle'&gt;&lt;i class='glyphicon glyphicon-hand-right'&gt;&lt;/i&gt; Common side effects&lt;/p&gt;" xml:space="preserve">
+    <value>&lt;p class = 'FaqTitle'&gt; &lt;i class = 'glyphicon glyphicon-Hand-right'&gt;&lt;/i&gt; Häufige Nebenwirkungen&lt;/p&gt;</value>
+  </data>
+  <data name="&lt;p class='FaqTitle'&gt;&lt;i class='glyphicon glyphicon-hand-right'&gt;&lt;/i&gt; Do not use cidofovir&lt;/p&gt;" xml:space="preserve">
+    <value>&lt;p class = 'FaqTitle'&gt; &lt;i class = 'glyphicon glyphicon-Hand-right'&gt;&lt;/i&gt; Do not Cidofovir verwenden&lt;/p&gt;</value>
+  </data>
+  <data name="&lt;p class='FaqTitle'&gt;&lt;i class='glyphicon glyphicon-hand-right'&gt;&lt;/i&gt; Dose in adults&lt;/p&gt;" xml:space="preserve">
+    <value>&lt;p class = 'FaqTitle'&gt; &lt;i class = 'glyphicon glyphicon-Hand-right'&gt;&lt;/i&gt; Dosierung bei Erwachsenen&lt;/p&gt;</value>
+  </data>
+  <data name="&lt;p class='FaqTitle'&gt;&lt;i class='glyphicon glyphicon-hand-right'&gt;&lt;/i&gt; Driving and using machines&lt;/p&gt;" xml:space="preserve">
+    <value>&lt;p class = 'FaqTitle'&gt; &lt;i class = 'glyphicon glyphicon-Hand-right'&gt;&lt;/i&gt; Fahren und Bedienen von Maschinen&lt;/p&gt;</value>
+  </data>
+  <data name="&lt;p class='FaqTitle'&gt;&lt;i class='glyphicon glyphicon-hand-right'&gt;&lt;/i&gt; How IV fluids are given before cidofovir&lt;/p&gt;" xml:space="preserve">
+    <value>&lt;p class = 'FaqTitle'&gt; &lt;i class = 'glyphicon glyphicon-Hand-right'&gt;&lt;/i&gt; Wie Infusionen vor Cidofovir gegeben werden&lt;/p&gt;</value>
+  </data>
+  <data name="&lt;p class='FaqTitle'&gt;&lt;i class='glyphicon glyphicon-hand-right'&gt;&lt;/i&gt; How to take probenecid with cidofovir&lt;/p&gt;" xml:space="preserve">
+    <value>&lt;p class = 'FaqTitle'&gt; &lt;i class = 'glyphicon glyphicon-Hand-right'&gt;&lt;/i&gt; Wie mit Cidofovir Probenecid nehmen&lt;/p&gt;</value>
+  </data>
+  <data name="&lt;p class='FaqTitle'&gt;&lt;i class='glyphicon glyphicon-hand-right'&gt;&lt;/i&gt; If you use more cidofovir than you should&lt;/p&gt;" xml:space="preserve">
+    <value>&lt;p class = 'FaqTitle'&gt; &lt;i class = 'glyphicon glyphicon-Hand-right'&gt;&lt;/i&gt; Wenn Sie mehr Cidofovir, als Sie sollten&lt;/p&gt;</value>
+  </data>
+  <data name="&lt;p class='FaqTitle'&gt;&lt;i class='glyphicon glyphicon-hand-right'&gt;&lt;/i&gt; Possible side effects of taking probenecid&lt;/p&gt;" xml:space="preserve">
+    <value>&lt;p class = 'FaqTitle'&gt; &lt;i class = 'glyphicon glyphicon-Hand-right'&gt;&lt;/i&gt; Mögliche Nebenwirkungen von Probenecid unter&lt;/p&gt;</value>
+  </data>
+  <data name="&lt;p class='FaqTitle'&gt;&lt;i class='glyphicon glyphicon-hand-right'&gt;&lt;/i&gt; Pregnancy and breast-feeding&lt;/p&gt;" xml:space="preserve">
+    <value>&lt;p class = 'FaqTitle'&gt; &lt;i class = 'glyphicon glyphicon-Hand-right'&gt;&lt;/i&gt; Schwangerschaft und Stillzeit&lt;/p&gt;</value>
+  </data>
+  <data name="&lt;p class='FaqTitle'&gt;&lt;i class='glyphicon glyphicon-hand-right'&gt;&lt;/i&gt; Very common side effects&lt;/p&gt;" xml:space="preserve">
+    <value>&lt;p class = 'FaqTitle'&gt; &lt;i class = 'glyphicon glyphicon-Hand-right'&gt;&lt;/i&gt; Sehr häufige Nebenwirkungen&lt;/p&gt;</value>
+  </data>
+  <data name="&lt;p class='FaqTitle'&gt;&lt;i class='glyphicon glyphicon-hand-right'&gt;&lt;/i&gt; Warnings and precautions&lt;/p&gt;" xml:space="preserve">
+    <value>&lt;p class = 'FaqTitle'&gt; &lt;i class = 'glyphicon glyphicon-Hand-right'&gt;&lt;/i&gt; Warnungen und Vorsichtsmaßnahmen&lt;/p&gt;</value>
+  </data>
+  <data name="&lt;p class='FaqTitle'&gt;&lt;i class='glyphicon glyphicon-hand-right'&gt;&lt;/i&gt; What is CMV retinitis?&lt;/p&gt;" xml:space="preserve">
+    <value>&lt;p class = 'FaqTitle'&gt; &lt;i class = 'glyphicon glyphicon-Hand-right'&gt;&lt;/i&gt; Was ist CMV-Retinitis?&lt;/p&gt;</value>
+  </data>
+  <data name="&lt;p&gt;&lt;b&gt;Cidofovir is used to treat an eye infection called CMV retinitis in patients with AIDS (Acquired Immunodeficiency Syndrome).&lt;/b&gt;  Cidofovir will not cure CMV retinitis but may improve your condition by delaying progression of the disease.&lt;/p&gt;" xml:space="preserve">
+    <value>&lt;p&gt;&lt;b&gt;Cidofovir wird verwendet, eine Augeninfektion bei Patienten zu behandeln. Genannt CMV-Retinitis mit AIDS (Acquired Immunodeficiency Syndrome)&lt;/b&gt; Cidofovir nicht CMV-Retinitis heilt, sondern kann Ihren Zustand verbessern, indem das Fortschreiten der Krankheit zu verzögern.&lt;/p&gt;</value>
+  </data>
+  <data name="&lt;p&gt;&lt;b&gt;Cidofovir is used to treat an eye infection called CMV retinitis in patients with AIDS (Acquired Immunodeficiency Syndrome).&lt;/b&gt;  Cidofovir will not cure CMV retinitis but may improve your condition by delaying progression of the disease.&lt;/p&gt;&quot;" xml:space="preserve">
+    <value>&lt;p&gt;&lt;b&gt;Cidofovir wird verwendet, eine Augeninfektion bei Patienten zu behandeln. Genannt CMV-Retinitis mit AIDS (Acquired Immunodeficiency Syndrome)&lt;/b&gt; Cidofovir nicht CMV-Retinitis heilt, sondern kann Ihren Zustand verbessern, indem das Fortschreiten der Krankheit zu verzögern.&lt;/p&gt;“</value>
+  </data>
+  <data name="&lt;p&gt;&lt;b&gt;Common side effects possibly related to probenecid&lt;/b&gt;&lt;/p&gt;" xml:space="preserve">
+    <value>&lt;p&gt;&lt;b&gt;Häufige Nebenwirkungen, die möglicherweise auf Probenecid Zusammenhang&lt;/b&gt;&lt;/p&gt;</value>
+  </data>
+  <data name="&lt;p&gt;&lt;b&gt;During treatment with cidofovir you should receive regular follow-up eye examinations&lt;/b&gt; for possible eye irritation, inflammation or swelling. &lt;b&gt;If you get pain, redness or itching of the eye or changes in your vision, tell your doctor promptly.&lt;/b&gt;&lt;/p&gt;" xml:space="preserve">
+    <value>&lt;p&gt;&lt;b&gt;Während der Behandlung mit Cidofovir sollten Sie regelmäßige Follow-up Augenuntersuchungen&lt;/b&gt; für mögliche Augenreizungen, Entzündungen oder Schwellungen erhalten. &lt;b&gt;Wenn Sie Schmerzen, Rötung oder Juckreiz des Auges oder Veränderungen in Ihrer Vision bekommen, informieren Sie Ihren Arzt sofort.&lt;/b&gt;&lt;/p&gt;</value>
+  </data>
+  <data name="&lt;p&gt;&lt;b&gt;Food should be taken&lt;/b&gt; before you are given cidofovir. Your doctor may instruct you to drink plenty of fluids before receiving cidofovir.&lt;/p&gt;" xml:space="preserve">
+    <value>&lt;p&gt;&lt;b&gt;Lebensmittel sollten&lt;/b&gt; genommen werden, bevor Sie Cidofovir gegeben sind. Ihr Arzt kann anweisen, Sie viel Flüssigkeit zu trinken, bevor Cidofovir erhalten.&lt;/p&gt;</value>
+  </data>
+  <data name="&lt;p&gt;&lt;b&gt;In general, women with HIV should not breast-feed&lt;/b&gt; in order to avoid passing HIV to their infant through the milk.&lt;/p&gt;" xml:space="preserve">
+    <value>&lt;p&gt;&lt;b&gt;In der Regel Frauen mit HIV sollte nicht stillen&lt;/b&gt;, um HIV zu ihrem Säuglinge durch die Milch zu vermeiden vorbei.&lt;/p&gt;</value>
+  </data>
+  <data name="&lt;p&gt;&lt;b&gt;It is very important to tell your doctor if you are receiving other medicines that may damage your kidneys.&lt;/b&gt;&lt;/p&gt;" xml:space="preserve">
+    <value>&lt;p&gt;&lt;b&gt;Es ist sehr wichtig, Ihren Arzt, wenn Sie andere Arzneimittel erhalten, die Ihre Nieren schädigen kann.&lt;/b&gt;&lt;/p&gt;</value>
+  </data>
+  <data name="&lt;p&gt;&lt;b&gt;Normal saline is given to lower the risk of kidney damage.&lt;/b&gt; You should receive a total of one litre of 0.9% (normal) saline solution intravenously (as a drip into a vein) before each cidofovir dose. The saline solution should be infused over a 1 hour period immediately before the cidofovir. If you can tolerate the additional fluid load, your doctor may administer a second litre of fluid. If administered, the second litre of saline should be given either at the start of the cidofovir or immediately afterwards, and infused over a 1 to 3 hour period. Your doctor may also tell you to drink plenty of fluids.&lt;/p&gt;" xml:space="preserve">
+    <value>&lt;p&gt;&lt;b&gt;Physiologische Kochsalzlösung gegeben, das Risiko von Nierenschäden zu senken.&lt;/b&gt; Sie sollten insgesamt einen Liter 0,9% (normal) Salzlösung intravenös erhalten (als Tropf in eine Vene) vor jeder Cidofovir Dosis. Die Salzlösung sollte einen Zeitraum von 1 Stunde unmittelbar vor der Cidofovir infundiert werden. Wenn Sie die zusätzliche Flüssigkeitsbelastung tolerieren können, kann Ihr Arzt einen zweiten Liter Flüssigkeit verabreichen. Wenn verabreicht, soll der zweite Liter Kochsalzlösung gegeben werden, entweder zu Beginn des Cidofovir oder unmittelbar danach, und über eine 1 bis 3 Stunden infundiert. Ihr Arzt kann Ihnen auch sagen, Sie viel Flüssigkeit zu trinken.&lt;/p&gt;</value>
+  </data>
+  <data name="&lt;p&gt;&lt;b&gt;Tell your doctor or pharmacist if you are taking, have recently taken or might take any other medicines,&lt;/b&gt; including medicines obtained without a prescription, as these may interact with cidofovir or probenecid.&lt;/p&gt;" xml:space="preserve">
+    <value>&lt;p&gt;&lt;b&gt;Informieren Sie Ihren Arzt oder Apotheker, wenn Sie einnehmen, vor kurzem eingenommen haben oder beabsichtigen andere Arzneimittel einnehmen,&lt;/b&gt; um nicht verschreibungspflichtige Arzneimittel handelt, da diese mit Cidofovir oder Probenecid in Wechselwirkung treten können.&lt;/p&gt;</value>
+  </data>
+  <data name="&lt;p&gt;&lt;b&gt;To lower the risk of kidney damage, probenecid tablets and intravenous fluids (saline solution) must be given on the day of each cidofovir&lt;/b&gt; (See sub-sections “How to take probenecid with cidofovir” and “How IV fluids are given before cidofovir” below.)&lt;/p&gt;" xml:space="preserve">
+    <value>&lt;p&gt;&lt;b&gt;Um das Risiko von Nierenschäden, Probenecid-Tabletten und Infusionen (Kochsalzlösung) senken muss am Tag jeden Cidofovir&lt;/b&gt; (Siehe Unterabschnitte gegeben werden: „Wie Probenecid mit Cidofovir nehmen“ und „Wie Infusionen vor Cidofovir gegeben sind“ weiter unten.)&lt;/p&gt;</value>
+  </data>
+  <data name="&lt;p&gt;&lt;b&gt;Very common side effects possibly related to probenecid" xml:space="preserve">
+    <value>&lt;p&gt;&lt;b&gt;Sehr häufige Nebenwirkungen, die möglicherweise auf Probenecid bezogen</value>
+  </data>
+  <data name="&lt;p&gt;&lt;b&gt;Very common side effects possibly related to probenecid&lt;/b&gt;&lt;/p&gt;" xml:space="preserve">
+    <value>&lt;p&gt;&lt;b&gt;Sehr häufige Nebenwirkungen, die möglicherweise auf Probenecid Zusammenhang&lt;/b&gt;&lt;/p&gt;</value>
+  </data>
+  <data name="&lt;p&gt;&lt;b&gt;You should not be given cidofovir if you are breast-feeding.&lt;/b&gt; It is not known whether cidofovir is passed on to the baby in human milk. Because many medicines are passed through to human milk, nursing mothers should stop cidofovir or stop breast-feeding if they continue to receive cidofovir.&lt;/p&gt;" xml:space="preserve">
+    <value>&lt;p&gt;&lt;b&gt;Sie sollten nicht Cidofovir gegeben, wenn Sie stillen.&lt;/b&gt; Es ist nicht bekannt, ob Cidofovir auf das Baby in die Muttermilch übergeben wird. Da viele Medikamente bis hin zur Muttermilch übergeben werden, stillende Mütter sollten Cidofovir oder stoppen abstillen, wenn sie weiterhin Cidofovir erhalten.&lt;/p&gt;</value>
+  </data>
+  <data name="&lt;p&gt;&lt;b&gt;You should not be given cidofovir if you are pregnant.&lt;/b&gt; If you become pregnant while receiving this medication, you must inform your doctor immediately. Cidofovir has been shown to cause damage in unborn animals and should not be used during pregnancy unless the potential benefits justify the risks to the foetus. &lt;b&gt;If you could get pregnant, you must use an effective method of contraception&lt;/b&gt; to stop you getting pregnant during treatment with cidofovir and for 1 month afterwards.&lt;/p&gt;" xml:space="preserve">
+    <value>&lt;p&gt;&lt;b&gt;Sie sollten nicht Cidofovir gegeben werden, wenn Sie schwanger sind.&lt;/b&gt; Wenn Sie schwanger werden, während Sie diese Medikamente erhalten Sie unverzüglich Ihren Arzt informieren müssen. Cidofovir hat sich gezeigt, Schäden bei ungeborenen Tieren verursachen und sollte nicht während der Schwangerschaft verwendet werden, wenn der mögliche Nutzen die Risiken für den Fötus rechtfertigen. &lt;b&gt;Wenn Sie schwanger werden könnten, müssen Sie eine wirksame Verhütungsmethode anwenden&lt;/b&gt; stoppen Sie während der Behandlung mit Cidofovir und 1 Monat später schwanger zu werden.&lt;/p&gt;</value>
+  </data>
+  <data name="&lt;p&gt;&lt;i&gt;(These can affect 1 to 10 users in 100)&lt;/i&gt;&lt;/p&gt;" xml:space="preserve">
+    <value>&lt;p&gt;&lt;i&gt;(Diese können bei 1 bis 10 betreffen in 100)&lt;/i&gt;&lt;/p&gt;</value>
+  </data>
+  <data name="&lt;p&gt;&lt;i&gt;(These can affect more than 1 user in 10)&lt;/i&gt;&lt;/p&gt;" xml:space="preserve">
+    <value>&lt;p&gt;&lt;i&gt;(Diese können bei mehr als 1 von 10 Patienten)&lt;/i&gt;&lt;/p&gt;</value>
+  </data>
+  <data name="&lt;p&gt;&lt;i&gt;&lt;b&gt;Dose adjustment&lt;/b&gt;&lt;/i&gt;&lt;/p&gt;" xml:space="preserve">
+    <value>&lt;p&gt;&lt;i&gt;&lt;b&gt;Dosisanpassung&lt;/b&gt;&lt;/i&gt;&lt;/p&gt;</value>
+  </data>
+  <data name="&lt;p&gt;&lt;i&gt;&lt;b&gt;Maintenance treatment&lt;/b&gt;&lt;/i&gt;&lt;/p&gt;" xml:space="preserve">
+    <value>&lt;p&gt;&lt;i&gt;&lt;b&gt;Wartung Behandlung&lt;/b&gt;&lt;/i&gt;&lt;/p&gt;</value>
+  </data>
+  <data name="&lt;p&gt;&lt;i&gt;&lt;b&gt;Starting (induction) treatment&lt;/b&gt;&lt;/i&gt;&lt;/p&gt;" xml:space="preserve">
+    <value>&lt;p&gt;&lt;i&gt;&lt;b&gt;Starten (Induktion) Behandlung&lt;/b&gt;&lt;/i&gt;&lt;/p&gt;</value>
+  </data>
+  <data name="&lt;p&gt;Additional reactions reported from post-marketing experience include kidney failure, damage to kidney tubule cells, inflammation of the pancreas and hearing impairment.&lt;/p&gt;" xml:space="preserve">
+    <value>&lt;p&gt;Weitere berichteten Reaktionen aus der Post-Marketing-Erfahrung gehören Nierenversagen, Schäden an den Zellen der Nierenkanälchen, Entzündung der Bauchspeicheldrüse und Hörstörungen.&lt;/p&gt;</value>
+  </data>
+  <data name="&lt;p&gt;Any pain, redness or itching of the eye or changes in your vision should be promptly reported to your doctor so that your treatment can be reviewed.&lt;/p&gt;" xml:space="preserve">
+    <value>&lt;p&gt;Jeder Schmerz, Rötung oder Juckreiz des Auges oder Änderungen in Ihrer Vision umgehend mit Ihrem Arzt gemeldet werden sollte, so dass Ihre Behandlung überprüft werden kann.&lt;/p&gt;</value>
+  </data>
+  <data name="&lt;p&gt;Beginning two weeks after completion of induction treatment, the recommended maintenance dose of cidofovir in patients with normal kidney function is 5 mg per kg of body weight given once every two weeks.&lt;/p&gt;" xml:space="preserve">
+    <value>&lt;p&gt;Beginnend zwei Wochen nach Abschluss der Induktionsbehandlung, die empfohlene Erhaltungsdosis von Cidofovir bei Patienten mit normaler Nierenfunktion beträgt 5 mg pro kg Körpergewicht einmal alle zwei Wochen.&lt;/p&gt;</value>
+  </data>
+  <data name="&lt;p&gt;Cidofovir 75 mg/ml concentrate for solution for infusion &lt;b&gt;is given by intravenous infusion (a drip into a vein)&lt;/b&gt;. It must &lt;b&gt;not&lt;/b&gt; be administered by other methods including intraocular injection (direct injection into the eye) or topically (on the skin). Cidofovir must be given by a doctor or nurse with appropriate experience in treating people with AIDS. The doctor or nurse will transfer the appropriate dose of cidofovir from the vial to an infusion bag containing 100 ml 0.9% (normal) saline solution. The entire volume of the bag will be infused into your vein at a constant rate over a period of 1 hour using a standard infusion pump. The recommended dose, frequency of use, or rate of infusion must not be exceeded. At the end of this leaflet, there is further information for healthcare professionals on how to administer cidofovir.&lt;/p&gt;" xml:space="preserve">
+    <value>&lt;p&gt;Cidofovir 75 mg / ml für die Herstellung einer Infusionslösung konzentriert &lt;b&gt;wird durch intravenöse Infusion (Tropfinfusion in eine Vene)&lt;/b&gt; gegeben. Es muss &lt;b&gt;nicht&lt;/b&gt; durch andere Verfahren, einschließlich intraokulare Injektion (direkte Injektion in das Auge) oder topisch (auf der Haut) verabreicht werden. Cidofovir muss bei der Behandlung von Menschen mit AIDS durch einen Arzt oder eine Krankenschwester mit entsprechender Erfahrung gegeben werden. Der Arzt wird die geeignete Dosis von Cidofovir aus der Ampulle in einen Infusionsbeutel überträgt 100 ml 0,9% (normale) Salzlösung enthält. Das gesamte Volumen des Beutels wird über einen Zeitraum von 1 Stunde bei einer konstanten Geschwindigkeit in der Vene infundiert werden, um eine Standard-Infusionspumpe. Die empfohlene Dosis, die Häufigkeit der Nutzung oder Infusionsrate nicht überschritten werden darf. Am Ende dieser Broschüre,</value>
+  </data>
+  <data name="&lt;p&gt;Cidofovir caused reduced testes weight and low sperm count (hypospermia) in animals. Although not observed in human studies of cidofovir, such changes may occur in humans and cause infertility. &lt;b&gt;Men should practice barrier birth control methods during and for 3 months after treatment with cidofovir.&lt;/b&gt;&lt;/p&gt;" xml:space="preserve">
+    <value>&lt;p&gt;Cidofovir verursacht Gewichtsreduzierung der Hoden und niedrige Spermienzahl (Hypospermie) bei Tieren. Obwohl nicht in Studien am Menschen von Cidofovir beobachtet, können solche Veränderungen beim Menschen auftreten und zur Unfruchtbarkeit führen. &lt;b&gt;Männer sollten Barriere Verhütungsmethoden während und 3 Monate nach der Behandlung mit Cidofovir üben.&lt;/b&gt;&lt;/p&gt;</value>
+  </data>
+  <data name="&lt;p&gt;Cidofovir has not been studied in children. Therefore, &lt;b&gt;this medicine should not be used in children.&lt;/b&gt;&lt;/p&gt;" xml:space="preserve">
+    <value>&lt;p&gt;Cidofovir wird nicht bei Kindern untersucht. Daher &lt;b&gt;dieses Medikament bei Kindern nicht angewendet werden sollte.&lt;/b&gt;&lt;/p&gt;</value>
+  </data>
+  <data name="&lt;p&gt;Cidofovir is an antiviral medicine which blocks the replication of CMV by interfering with viral DNA production.&lt;/p&gt;" xml:space="preserve">
+    <value>&lt;p&gt;Cidofovir ist ein antivirales Medikament, das blockiert die Replikation von CMV durch virale DNA-Synthese stören.&lt;/p&gt;</value>
+  </data>
+  <data name="&lt;p&gt;Cidofovir is not used for the treatment of HIV infection. Cidofovir will not stop you passing HIV infection onto other people so &lt;b&gt;you should continue to take precautions to avoid infecting others.&lt;/b&gt;&lt;/p&gt;" xml:space="preserve">
+    <value>&lt;p&gt;Cidofovir ist für die Behandlung von HIV-Infektionen nicht verwendet. Cidofovir wird nicht aufhören, vorbei Sie HIV-Infektion auf andere Menschen so &lt;b&gt;Sie sollten auch weiterhin Vorkehrungen zu treffen, andere zu vermeiden infizieren.&lt;/b&gt;&lt;/p&gt;</value>
+  </data>
+  <data name="&lt;p&gt;Cidofovir may cause short-term side effects such as fatigue or weakness. If you drive or operate machinery, discuss this with your doctor to get advice about stopping these activities based upon your disease and your tolerance of the medicine.&lt;/p&gt;" xml:space="preserve">
+    <value>&lt;p&gt;Cidofovir kann dazu führen, kurzfristige Nebenwirkungen wie Müdigkeit oder Schwäche. Wenn Sie Auto fahren oder Maschinen bedienen, sprechen Sie mit Ihrem Arzt um Rat zu bekommen über diese Aktivitäten auf der Grundlage Ihre Krankheit und Ihre Toleranz der Medizin zu stoppen.&lt;/p&gt;</value>
+  </data>
+  <data name="&lt;p&gt;Cidofovir must be administered by a healthcare professional (doctor or nurse) in a hospital setting.&lt;/p&gt;" xml:space="preserve">
+    <value>&lt;p&gt;Cidofovir muss professionell (Arzt oder eine Krankenschwester) in einem Krankenhaus von einem Arzt verabreicht werden.&lt;/p&gt;</value>
+  </data>
+  <data name="&lt;p&gt;CMV retinitis is an eye infection caused by a virus named cytomegalovirus (CMV). CMV attacks the retina of the eye and may cause loss of vision, and eventually lead to blindness. Patients with AIDS are at high risk of developing CMV retinitis or other forms of CMV disease such as colitis (an inflammatory bowel disease). Treatment for CMV retinitis is necessary to reduce the potential for blindness.&lt;/p&gt;" xml:space="preserve">
+    <value>&lt;p&gt;CMV-Retinitis ist eine Augeninfektion durch einen Virus namens Cytomegalovirus (CMV) verursacht. CMV greift die Netzhaut des Auges und kann Sehverlust verursachen und schließlich zur Erblindung führen. Patienten mit AIDS sind ein hohes Risiko der Entwicklung von CMV-Retinitis oder andere Formen der CMV-Erkrankung wie Colitis (eine entzündliche Darmerkrankung). Die Behandlung von CMV-Retinitis ist notwendig, das Potenzial für eine Erblindung zu verringern.&lt;/p&gt;</value>
+  </data>
+  <data name="&lt;p&gt;For any further information on how your data may be stored or used, please &lt;a href='https://www.cidofovir.com/Home/ContactUs'&gt;contact us&lt;/a&gt; and we will be happy to provide you further information.&lt;/p&gt;" xml:space="preserve">
+    <value>&lt;p&gt;Für weitere Informationen darüber, wie Sie Ihre Daten können gespeichert oder verwendet werden, nehmen Sie bitte &lt;a uns href='https://www.cidofovir.com/Home/ContactUs'&gt; Kontakt &lt;/a&gt; und wir werden glücklich sein, Sie weitere Informationen.&lt;/p&gt;</value>
+  </data>
+  <data name="&lt;p&gt;For further information please do not hesitate to &lt;a href='https://www.cidofovir.com/Home/ContactUs'&gt;&lt;b&gt;contact us&lt;/b&gt;&lt;/a&gt;  or speak to your &lt;b&gt;doctor&lt;/b&gt;.&lt;/p&gt;" xml:space="preserve">
+    <value>&lt;p&gt;Für weitere Informationen wenden Sie sich bitte href='https://www.cidofovir.com/Home/ContactUs'&gt; an &lt;a &lt;b&gt;kontaktieren Sie uns&lt;/b&gt; &lt;/a&gt; oder sprechen Sie mit Ihrem &lt;b &gt; Arzt&lt;/b&gt;.&lt;/p&gt;</value>
+  </data>
+  <data name="&lt;p&gt;headache, weakness/fatigue, chills and allergic reactions.&lt;/p&gt;" xml:space="preserve">
+    <value>&lt;p&gt;Kopfschmerzen, Schwäche / Müdigkeit, Schüttelfrost und allergische Reaktionen.&lt;/p&gt;</value>
+  </data>
+  <data name="&lt;p&gt;If any of these apply to you, talk to your doctor. &lt;b&gt;You are not to be given cidofovir.&lt;/b&gt;&lt;/p&gt;" xml:space="preserve">
+    <value>&lt;p&gt;Wenn einer dieser Punkte auf Sie zutrifft, mit Ihrem Arzt sprechen. &lt;b&gt;Sie sind nicht Cidofovir gegeben werden.&lt;/b&gt;&lt;/p&gt;</value>
+  </data>
+  <data name="&lt;p&gt;If you have accidentally been given more cidofovir than prescribed for you, tell your doctor immediately.&lt;/p&gt;" xml:space="preserve">
+    <value>&lt;p&gt;Wenn Sie versehentlich mehr Cidofovir als vorgeschrieben für Sie, informieren Sie Ihren Arzt sofort erhalten haben.&lt;/p&gt;</value>
+  </data>
+  <data name="&lt;p&gt;If you have any further questions on the use of this medicine, ask your doctor or pharmacist or nurse.&lt;/p&gt;" xml:space="preserve">
+    <value>&lt;p&gt;Wenn Sie weitere Fragen haben über die Verwendung des Arzneimittels haben, fragen Sie Ihren Arzt oder Apotheker oder eine Krankenschwester.&lt;/p&gt;</value>
+  </data>
+  <data name="&lt;p&gt;If you have kidney problems, cidofovir may not be appropriate treatment for you. Samples of your urine and/or blood will be taken before each infusion of cidofovir and used for testing kidney function. For patients with evidence of decreased kidney function, your cidofovir dose may be interrupted or stopped depending on your individual case.&lt;/p&gt;" xml:space="preserve">
+    <value>&lt;p&gt;Wenn Sie Probleme mit den Nieren haben, Cidofovir nicht geeignete Behandlung für Sie sein. Proben von Urin und / oder Blut werden vor jeder Infusion von Cidofovir und für die Prüfung der Nierenfunktion verwendet, genommen werden. Bei Patienten mit Anzeichen einer verminderten Nierenfunktion, kann Ihre Cidofovir-Dosis je nach Einzelfall unterbrochen oder gestoppt werden.&lt;/p&gt;</value>
+  </data>
+  <data name="&lt;p&gt;Inflammation of the eye, reduced pressure in the eyes, difficult or laboured breathing, shortness of breath, diarrhoea and chills.&lt;/p&gt;" xml:space="preserve">
+    <value>&lt;p&gt;Entzündung des Auges, verminderter Druck in den Augen, schwer oder Atemnot, Kurzatmigkeit, Durchfall und Schüttelfrost.&lt;/p&gt;</value>
+  </data>
+  <data name="&lt;p&gt;Like all medicines, this medicine can cause side effects, although not everybody gets them.&lt;/p&gt;" xml:space="preserve">
+    <value>&lt;p&gt;Wie alle Arzneimittel, das für ein Medikament kann Nebenwirkungen haben, die aber nicht bei jedem auftreten.&lt;/p&gt;</value>
+  </data>
+  <data name="&lt;p&gt;low white blood cell counts, headache, nausea, vomiting, protein in the urine, increase in blood creatinine (a measure of kidney function), hair loss, rash, weakness/fatigue and fever.&lt;/p&gt;" xml:space="preserve">
+    <value>&lt;p&gt;geringe Anzahl weißer Blutkörperchen, Kopfschmerzen, Übelkeit, Erbrechen, Eiweiß im Urin, Anstieg des Serum-Kreatinin (ein Maß für die Nierenfunktion), Haarausfall, Hautausschlag, Schwäche / Müdigkeit und Fieber.&lt;/p&gt;</value>
+  </data>
+  <data name="&lt;p&gt;nausea, vomiting, rash and fever.&lt;/p&gt;" xml:space="preserve">
+    <value>&lt;p&gt;Übelkeit, Erbrechen, Hautausschlag und Fieber.&lt;/p&gt;</value>
+  </data>
+  <data name="&lt;p&gt;PASS can either be &lt;b&gt;clinical trials&lt;/b&gt; or &lt;b&gt;non-interventional studies&lt;/b&gt;.&lt;/p&gt;" xml:space="preserve">
+    <value>&lt;p&gt;PASS kann entweder &lt;b&gt;klinische Studien&lt;/b&gt; oder &lt;b&gt;Nicht-interventionelle Studien&lt;/b&gt;.&lt;/p&gt;</value>
+  </data>
+  <data name="&lt;p&gt;PASSs can either be &lt;b&gt;clinical trials&lt;/b&gt; or &lt;b&gt;non-interventional studies&lt;/b&gt;.&lt;/p&gt;" xml:space="preserve">
+    <value>&lt;p&gt;passs kann entweder &lt;b&gt;klinische Studien&lt;/b&gt; oder &lt;b&gt;Nicht-interventionelle Studien&lt;/b&gt;.&lt;/p&gt;</value>
+  </data>
+  <data name="&lt;p&gt;Probenecid is only taken on the same day that Cidofovir is given.&lt;/p&gt;" xml:space="preserve">
+    <value>&lt;p&gt;Probenecid ist nur noch am selben Tag genommen, dass Cidofovir gegeben ist.&lt;/p&gt;</value>
+  </data>
+  <data name="&lt;p&gt;Probenecid may also cause other side effects including loss of appetite, sore gums, flushing, hair loss, dizziness, reduced red blood cell count and increased frequency of passing water (urinating). Allergic reactions, with skin inflammation, itching, hives and, rarely, severe allergic reactions, and serious skin reaction have occurred. There have been reports of reduced white blood counts, liver toxicity, kidney toxicity and destruction of red blood cells. Reductions in blood cell and platelet counts have also occurred.&lt;/p&gt;" xml:space="preserve">
+    <value>&lt;p&gt;Probenecid kann auch andere Nebenwirkungen verursacht, einschließlich Appetitlosigkeit, wundes Zahnfleisch, Spülung, Haarausfall, Schwindel, verminderte Anzahl roten Blutkörperchen und erhöhte Häufigkeit Wasser vorbei (Urinieren). Allergische Reaktionen, mit Entzündungen der Haut, Juckreiz, Nesselsucht und selten schweren allergischen Reaktionen, und schweren Hautreaktionen aufgetreten ist. Es gibt Berichte über reduziertes weißes Blutbild, Lebertoxizität, Nierentoxizität und Zerstörung von roten Blutkörperchen gewesen. Verringerungen der Blutzellen und Blutplättchen haben auch aufgetreten.&lt;/p&gt;</value>
+  </data>
+  <data name="&lt;p&gt;Probenecid may interact with other medicines commonly used in the treatment of AIDS and AIDS-related illnesses, such as zidovudine (AZT). If you are taking zidovudine, you should discuss with your doctor whether to temporarily stop taking zidovudine or decrease the dose of zidovudine by 50% on days when cidofovir and probenecid are given.&lt;/p&gt;" xml:space="preserve">
+    <value>&lt;p&gt;Probenecid kann mit anderen Medikamenten, die üblicherweise bei der Behandlung von AIDS und AIDS-Erkrankungen, wie Zidovudin (AZT) in Wechselwirkung treten. Wenn Sie Zidovudin einnehmen, sollten Sie mit Ihrem Arzt besprechen, ob vorübergehend Zidovudin zu stoppen oder die Dosis von Zidovudin um 50% an den Tagen ab, wenn Cidofovir und Probenecid gegeben werden.&lt;/p&gt;</value>
+  </data>
+  <data name="&lt;p&gt;Probenecid tablets are given to lower the risk of kidney damage. You must take 3 doses of probenecid tablets orally on the same day as cidofovir as shown in the following table:&lt;/p&gt;" xml:space="preserve">
+    <value>&lt;p&gt;Probenecid-Tabletten gegeben werden, das Risiko von Nierenschäden zu senken. Sie müssen 3 Dosen von Probenecid Tabletten oral am selben Tag wie Cidofovir, wie in der folgenden Tabelle dargestellt:&lt;/p&gt;</value>
+  </data>
+  <data name="&lt;p&gt;Should you be interested in participating in the Cidofovir Exposure Registry, please visit the website &lt;a href='https://www.cidofovir.com' target='_blank'&gt;www.cidofovir.com&lt;/a&gt;.&lt;/p&gt;" xml:space="preserve">
+    <value>&lt;p&gt;Wenn Sie an einer Teilnahme an der Cidofovir Exposure Registry interessiert sein, besuchen Sie bitte die Website &lt;a href='https://www.cidofovir.com' target='_blank'&gt; www.cidofovir.com &lt;/a&gt;.&lt;/p&gt;</value>
+  </data>
+  <data name="&lt;p&gt;Talk to your doctor or pharmacist or nurse before using cidofovir.&lt;/p&gt;" xml:space="preserve">
+    <value>&lt;p&gt;Sprechen Sie mit Ihrem Arzt oder Apotheker oder eine Krankenschwester vor Cidofovir verwendet wird.&lt;/p&gt;</value>
+  </data>
+  <data name="&lt;p&gt;The dose you will need is calculated based on your body weight." xml:space="preserve">
+    <value>&lt;p&gt;Die Dosis benötigen wird Sie auf der Grundlage Ihres Körpergewicht berechnet.</value>
+  </data>
+  <data name="&lt;p&gt;The dose you will need is calculated based on your body weight.&lt;/p&gt;" xml:space="preserve">
+    <value>&lt;p&gt;Die Dosis benötigen Sie wird basierend auf dem Körpergewicht.&lt;/p&gt;</value>
+  </data>
+  <data name="&lt;p&gt;The European medicinces agency has requested Tillomed to implement a non-interventional PASS Study for the additional monitoring of Cidofovir through an exposure registry the United Kingdom, Germany, Belgium and Spain&lt;/p&gt;" xml:space="preserve">
+    <value>&lt;p&gt;Die Europäische medicinces Agentur hat Tillomed fordert, eine nicht-interventionelle PASS-Studie für die zusätzliche Überwachung von Cidofovir durch ein Belichtungsregister im Vereinigten Königreich, Deutschland, Belgien und Spanien&lt;/p&gt; zu implementieren</value>
+  </data>
+  <data name="&lt;p&gt;The most common side effect observed with cidofovir is damage to the kidneys.&lt;/p&gt;" xml:space="preserve">
+    <value>&lt;p&gt;Die häufigste Nebenwirkung von Cidofovir beobachtete Schädigung der Nieren.&lt;/p&gt;</value>
+  </data>
+  <data name="&lt;p&gt;The objectives of the study are:&lt;/p&gt;" xml:space="preserve">
+    <value>&lt;p&gt;Die Ziele der Studie sind:&lt;/p&gt;</value>
+  </data>
+  <data name="&lt;p&gt;The potential for interactions between cidofovir and anti-HIV protease inhibitors has not been studied.&lt;/p&gt;" xml:space="preserve">
+    <value>&lt;p&gt;Das Potenzial für Wechselwirkungen zwischen Cidofovir und anti-HIV-Protease-Inhibitoren wird nicht untersucht.&lt;/p&gt;</value>
+  </data>
+  <data name="&lt;p&gt;The purpose of the information in PASS’s is to evaluate the safety and benefit-risk profile of a medicine and support regulatory decision-making. They aim to:&lt;/p&gt;" xml:space="preserve">
+    <value>&lt;p&gt;Der Zweck der Informationen in PASS ist, um die Sicherheit und Nutzen-Risikoprofil eines Arzneimittels zu bewerten und regulatorischen Entscheidungsfindung unterstützen. Sie zielen darauf ab:&lt;/p&gt;</value>
+  </data>
+  <data name="&lt;p&gt;The recommended dose of cidofovir in patients with normal kidney function is 5 mg per kg of body weight given once weekly for two consecutive weeks.&lt;/p&gt;" xml:space="preserve">
+    <value>&lt;p&gt;Die empfohlene Dosis von Cidofovir bei Patienten mit normaler Nierenfunktion beträgt 5 mg pro kg Körpergewicht für zwei aufeinander folgende Wochen einmal wöchentlich gegeben.&lt;/p&gt;</value>
+  </data>
+  <data name="&lt;p&gt;The safety and efficacy of cidofovir has not been demonstrated in diseases other than CMV retinitis in patients with AIDS.&lt;/p&gt;" xml:space="preserve">
+    <value>&lt;p&gt;Die Sicherheit und Wirksamkeit von Cidofovir sind bei anderen Erkrankungen als CMV-Retinitis bei Patienten mit AIDS.&lt;/p&gt; nicht nachgewiesen</value>
+  </data>
+  <data name="&lt;p&gt;Therefore, before giving you probenecid your doctor should consult the current prescribing information regarding the safety of probenecid. &lt;b&gt;You should also read the probenecid package leaflet.&lt;/b&gt;&lt;/p&gt;" xml:space="preserve">
+    <value>&lt;p&gt;Deshalb, bevor geben Sie Probenecid sollte Ihr Arzt die aktuellen Verschreibungsinformationen in Bezug auf die Sicherheit von Probenecid konsultieren. &lt;b&gt;Sie sollten auch die Probenecid Packungsbeilage lesen.&lt;/b&gt;&lt;/p&gt;</value>
+  </data>
+  <data name="&lt;p&gt;These include :&lt;/p&gt;" xml:space="preserve">
+    <value>&lt;p&gt;Dazu gehören:&lt;/p&gt;</value>
+  </data>
+  <data name="&lt;p&gt;These include:&lt;/p&gt;" xml:space="preserve">
+    <value>&lt;p&gt;Dazu gehören:&lt;/p&gt;</value>
+  </data>
+  <data name="&lt;p&gt;These medicines must be stopped &lt;b&gt;at least 7 days&lt;/b&gt; before taking cidofovir.&lt;/p&gt;" xml:space="preserve">
+    <value>&lt;p&gt;Diese Medikamente gestoppt werden muss &lt;b&gt;mindestens 7 Tage&lt;/b&gt; vor Cidofovir nehmen.&lt;/p&gt;</value>
+  </data>
+  <data name="&lt;p&gt;These side effects usually disappear when treatment with cidofovir is stopped. &lt;b&gt;If any of the side effects gets serious, or if you notice any side effects not listed in this leaflet, please tell your doctor or pharmacist immediately.&lt;/b&gt;&lt;/p&gt;" xml:space="preserve">
+    <value>&lt;p&gt;Diese Nebenwirkungen verschwinden in der Regel, wenn die Behandlung mit Cidofovir gestoppt wird. &lt;b&gt;Wenn eine der Nebenwirkungen erheblich beeinträchtigt oder wenn Sie Nebenwirkungen bemerken, die nicht in dieser Packungsbeilage aufgeführt sind, informieren Sie bitte Ihren Arzt oder Apotheker sofort.&lt;/b&gt;&lt;/p&gt;</value>
+  </data>
+  <data name="&lt;p&gt;This medicine contains 2.5 mmol (or 57 mg) sodium per vial which should be taken into consideration if you are on a controlled sodium diet.&lt;/p&gt;" xml:space="preserve">
+    <value>&lt;p&gt;Dieses Arzneimittel enthält 2,5 mmol (oder 57 mg) Natrium pro Ampulle, die in Betracht gezogen werden sollte, wenn Sie auf einer natriumarmen Diät sind.&lt;/p&gt;</value>
+  </data>
+  <data name="&lt;p&gt;This study will allow identification of new safety information pertaining to cidofovir usage.&lt;/p&gt;" xml:space="preserve">
+    <value>&lt;p&gt;Diese Studie wird Identifizierung neuer Sicherheitsinformation ermöglicht Cidofovir Nutzung betreffen.&lt;/p&gt;</value>
+  </data>
+  <data name="&lt;p&gt;Tillomed are conducting a non-interventional Post Authorisation Safety Study for the safety of Cidofovir through a patient registry in the United Kingdom, Germany, Belgium and Spain.&lt;/p&gt;" xml:space="preserve">
+    <value>&lt;p&gt;Tillomed sind für die Sicherheit von Cidofovir durch ein Patientenregister im Vereinigten Königreich, Deutschland, Belgien und Spanien eine nicht-interventionelle nach der Zulassung Sicherheitsstudie durchgeführt wird.&lt;/p&gt;</value>
+  </data>
+  <data name="&lt;p&gt;To reduce the risk of nausea and/or vomiting associated with taking probenecid, you should eat food before each dose. Your doctor might instruct you to take other medicines such as anti-emetics (anti sickness medicines), antihistamines and/or paracetamol to decrease the side effects of probenecid.&lt;/p&gt;" xml:space="preserve">
+    <value>&lt;p&gt;Um das Risiko von Übelkeit und / oder Erbrechen zu reduzieren mit der Einnahme von Probenecid, sollen Sie essen vor jeder Dosis. Ihr Arzt könnte anweisen Sie andere Medikamente einnehmen, wie Antiemetika (anti Krankheit Medikamente), Antihistaminika und / oder Paracetamol die Nebenwirkungen von Probenecid zu verringern.&lt;/p&gt;</value>
+  </data>
+  <data name="Aamphotericin B (for fungal infection)" xml:space="preserve">
+    <value>Aamphotericin B (für Pilzinfektion)</value>
+  </data>
+  <data name="Abnormal parameters, if any" xml:space="preserve">
+    <value>Abnormal Parameter, falls vorhanden</value>
+  </data>
+  <data name="About" xml:space="preserve">
+    <value>Über</value>
+  </data>
+  <data name="About Us" xml:space="preserve">
+    <value>Über uns</value>
+  </data>
+  <data name="Accept" xml:space="preserve">
+    <value>Akzeptieren</value>
+  </data>
+  <data name="Accept Patient" xml:space="preserve">
+    <value>akzeptieren Patienten</value>
+  </data>
+  <data name="Access and obtain a copy of your data on request; require the organisation to change incorrect or incomplete data;" xml:space="preserve">
+    <value>Zugang und eine Kopie Ihrer Daten erhalten Sie auf Anfrage; erfordern die Organisation fehlerhafte oder unvollständige Daten zu ändern;</value>
+  </data>
+  <data name="Access denied" xml:space="preserve">
+    <value>Zugriff verweigert</value>
+  </data>
+  <data name="Action" xml:space="preserve">
+    <value>Aktion</value>
+  </data>
+  <data name="Activate" xml:space="preserve">
+    <value>aktivieren Sie</value>
+  </data>
+  <data name="Add Follow Up Form" xml:space="preserve">
+    <value>Folgeformular hinzufügen</value>
+  </data>
+  <data name="Add More" xml:space="preserve">
+    <value>hinzufügen</value>
+  </data>
+  <data name="Add Patient" xml:space="preserve">
+    <value>In Patienten</value>
+  </data>
+  <data name="Add Prescriber" xml:space="preserve">
+    <value>In Prescriber</value>
+  </data>
+  <data name="Adefovir (for HBV infection)" xml:space="preserve">
+    <value>Adefovir (für HBV-Infektion)</value>
+  </data>
+  <data name="Adresse de contact" xml:space="preserve">
+    <value>Adresse de Kontakt</value>
+  </data>
+  <data name="Adverse Events" xml:space="preserve">
+    <value>Nebenwirkungen</value>
+  </data>
+  <data name="AE details" xml:space="preserve">
+    <value>AE Details</value>
+  </data>
+  <data name="All fields are mandatory to enable us to contact you and to verify your registration status with the GMC/GPHC/HCP Registration Number" xml:space="preserve">
+    <value>Alle Felder sind Pflichtfelder, damit wir mit Ihnen Kontakt aufnehmen und Ihren Registrierungsstatus mit der GMC / GPhC / HCP Registrierungsnummer überprüfen</value>
+  </data>
+  <data name="All Patient" xml:space="preserve">
+    <value>alle Patienten</value>
+  </data>
+  <data name="All Rights Reserved." xml:space="preserve">
+    <value>Alle Rechte vorbehalten.</value>
+  </data>
+  <data name="answer" xml:space="preserve">
+    <value>Antworten</value>
+  </data>
+  <data name="Approve" xml:space="preserve">
+    <value>Genehmigen</value>
+  </data>
+  <data name="Approved" xml:space="preserve">
+    <value>Genehmigt</value>
+  </data>
+  <data name="Approved Indication" xml:space="preserve">
+    <value>Zugelassene Indikation</value>
+  </data>
+  <data name="Are you sure?" xml:space="preserve">
+    <value>Bist du sicher?</value>
+  </data>
+  <data name="As a data subject, you have a number of rights. You can:" xml:space="preserve">
+    <value>Als betroffene Person, haben Sie eine Reihe von Rechten. Sie können:</value>
+  </data>
+  <data name="Automated decision-making." xml:space="preserve">
+    <value>Automatisierte Entscheidungsfindung.</value>
+  </data>
+  <data name="Back to Login" xml:space="preserve">
+    <value>Zurück zur Anmeldung</value>
+  </data>
+  <data name="Baseline Data Form" xml:space="preserve">
+    <value>Baseline-Datenformular</value>
+  </data>
+  <data name="Baseline Form" xml:space="preserve">
+    <value>Baseline-Formular</value>
+  </data>
+  <data name="Baseline Form View" xml:space="preserve">
+    <value>Baseline Formularansicht</value>
+  </data>
+  <data name="Baseline investigations" xml:space="preserve">
+    <value>Grundlagenermittlung</value>
+  </data>
+  <data name="Bicarbonate" xml:space="preserve">
+    <value>Bikarbonat</value>
+  </data>
+  <data name="Biochemistry" xml:space="preserve">
+    <value>Biochemie</value>
+  </data>
+  <data name="BLH1" xml:space="preserve">
+    <value>INFORMIERT ZUSTIMMUNG UND ZULASSUNGS</value>
+  </data>
+  <data name="BLH2" xml:space="preserve">
+    <value>DEMOGRAFISCHE DATEN</value>
+  </data>
+  <data name="BLH3" xml:space="preserve">
+    <value>BEHANDLUNG INIT DETAILS</value>
+  </data>
+  <data name="BLH4" xml:space="preserve">
+    <value>Verschreiber'S SIGN OFF</value>
+  </data>
+  <data name="BS1" xml:space="preserve">
+    <value>INFORMIERT ZUSTIMMUNG</value>
+  </data>
+  <data name="BS2" xml:space="preserve">
+    <value>EINSCHLUSSKRITERIEN</value>
+  </data>
+  <data name="BS3" xml:space="preserve">
+    <value>DEMOGRAFISCHE DATEN</value>
+  </data>
+  <data name="BS4" xml:space="preserve">
+    <value>KRANKENGESCHICHTE</value>
+  </data>
+  <data name="BS5" xml:space="preserve">
+    <value>Begleitmedikationen</value>
+  </data>
+  <data name="BS6" xml:space="preserve">
+    <value>Laboruntersuchungen</value>
+  </data>
+  <data name="BS7" xml:space="preserve">
+    <value>Cidofovir BEHANDLUNGSEINLEITUN DETAILS</value>
+  </data>
+  <data name="BS8" xml:space="preserve">
+    <value>Verschreiber'S SIGN OFF</value>
+  </data>
+  <data name="BST1" xml:space="preserve">
+    <value>Informierte Einwilligung gegeben</value>
+  </data>
+  <data name="BST10" xml:space="preserve">
+    <value>Behandlung von CMV-Retinitis bei Erwachsenen mit erworbener Immunschwäche (AIDS) und ohne Störung der Nierenfunktion. Es sollte nur verwendet werden, wenn andere Arzneimittel als ungeeignet angesehen werden.</value>
+  </data>
+  <data name="BST11" xml:space="preserve">
+    <value>Weitere Hinweise, bitte angeben: (Off-label)</value>
+  </data>
+  <data name="BST12" xml:space="preserve">
+    <value>Gegenanzeigen</value>
+  </data>
+  <data name="BST13" xml:space="preserve">
+    <value>Überempfindlichkeit gegen den Cidofovir oder einen der sonstigen Bestandteile (Natriumhydroxid und Salzsäure)</value>
+  </data>
+  <data name="BST14" xml:space="preserve">
+    <value>Patienten nicht in der Lage zu Probenecid oder andere Sulfonamide enthalten Medikamente erhalten</value>
+  </data>
+  <data name="BST15" xml:space="preserve">
+    <value>Patienten mit Niereninsuffizienz</value>
+  </data>
+  <data name="BST16" xml:space="preserve">
+    <value>Die gleichzeitige Verabreichung von Cidofovir und anderen potentiell nephrotoxischen Wirkstoffen</value>
+  </data>
+  <data name="BST17" xml:space="preserve">
+    <value>Direkte intraokulare Injektion</value>
+  </data>
+  <data name="BST18" xml:space="preserve">
+    <value>Dosierung und Art der Verabreichung</value>
+  </data>
+  <data name="BST19" xml:space="preserve">
+    <value>Induktionsbehandlungsdosis von Cidofovir beträgt 5 mg / kg Körpergewicht als intravenöse Infusion mit einer konstanten Rate über 1 Stunde) einmal pro Woche für zwei Wochen in Folge.</value>
+  </data>
+  <data name="BST2" xml:space="preserve">
+    <value>Datum der Teilnehmer / Patient-Proxy unterzeichnete schriftliche Einverständniserklärung</value>
+  </data>
+  <data name="BST20" xml:space="preserve">
+    <value>Wartungsbehandlung Beginnend zwei Wochen nach der Beendigung der Induktionstherapie, die empfohlene Erhaltungsdosis von Cidofovir beträgt 5 mg / kg Körpergewicht als intravenöse Infusion mit einer konstanten Rate über 1 Stunde) verabreichte einmal alle zwei Wochen.</value>
+  </data>
+  <data name="BST21" xml:space="preserve">
+    <value>Verwenden Sie bei speziellen Patienten</value>
+  </data>
+  <data name="BST22" xml:space="preserve">
+    <value>Kinder und Jugendliche (&lt;18 Jahre)</value>
+  </data>
+  <data name="BST23" xml:space="preserve">
+    <value>Ältere Patienten (&gt; 60 Jahre)</value>
+  </data>
+  <data name="BST24" xml:space="preserve">
+    <value>Schwangere und stillende Frauen, Frauen im gebärfähigen mit Empfängnisverhütung Potenzial nicht</value>
+  </data>
+  <data name="BST25" xml:space="preserve">
+    <value>Falls das Land des Patienten ist Deutschland keine weiteren sollte die Datenerfassung erfolgen danach. off-label behandeln # Keine weiteren Angaben sollen Patienten gesammelt werden, in der Registrierung mit deutschem Recht zu erfüllen.</value>
+  </data>
+  <data name="BST26" xml:space="preserve">
+    <value># Verwendung in Indikation, Dosierung und Art und Verwaltung, kontra Bedingungen den Einsatz in speziellen Population nicht genehmigte in dem Etikett</value>
+  </data>
+  <data name="BST27" xml:space="preserve">
+    <value>Datum der Bewertung</value>
+  </data>
+  <data name="BST28" xml:space="preserve">
+    <value>Geburtsdatum</value>
+  </data>
+  <data name="BST29" xml:space="preserve">
+    <value>Sex</value>
+  </data>
+  <data name="BST3" xml:space="preserve">
+    <value>Land</value>
+  </data>
+  <data name="BST30" xml:space="preserve">
+    <value>Hatte der Patient alle relevanten Krankengeschichte hatte?</value>
+  </data>
+  <data name="BST31" xml:space="preserve">
+    <value>Krankengeschichte</value>
+  </data>
+  <data name="BST32" xml:space="preserve">
+    <value>Bitte geben Sie eine signifikante / schwere Krankheit, Erkrankungen oder Operationen in der Vergangenheit oder gegenwärtig.</value>
+  </data>
+  <data name="BST33" xml:space="preserve">
+    <value>Anfangsdatum</value>
+  </data>
+  <data name="BST34" xml:space="preserve">
+    <value>Stop-Datum</value>
+  </data>
+  <data name="BST35" xml:space="preserve">
+    <value>Oder ankreuzen, wenn Laufende?</value>
+  </data>
+  <data name="BST36" xml:space="preserve">
+    <value>Ist der Patient keine Begleitmedikation beim Screening zu nehmen?</value>
+  </data>
+  <data name="BST37" xml:space="preserve">
+    <value>Medikamente</value>
+  </data>
+  <data name="BST38" xml:space="preserve">
+    <value>Medikation</value>
+  </data>
+  <data name="BST39" xml:space="preserve">
+    <value>Indikation</value>
+  </data>
+  <data name="BST4" xml:space="preserve">
+    <value>Folgende Kriterien müssen beantwortet werden JA für Teilnehmer in die Studie aufgenommen werden. Falls ein des Kriteriums NEIN ist, wird nicht der Patient sein zur Teilnahme an der Studie teilzunehmen</value>
+  </data>
+  <data name="BST40" xml:space="preserve">
+    <value>Dosierung und Einheiten</value>
+  </data>
+  <data name="BST41" xml:space="preserve">
+    <value>Frequenz</value>
+  </data>
+  <data name="BST42" xml:space="preserve">
+    <value>Route</value>
+  </data>
+  <data name="BST43" xml:space="preserve">
+    <value>Anfangsdatum</value>
+  </data>
+  <data name="BST44" xml:space="preserve">
+    <value>Stop-Datum</value>
+  </data>
+  <data name="BST45" xml:space="preserve">
+    <value>Oder ankreuzen, wenn auf bei der Screening-Visite gehen</value>
+  </data>
+  <data name="BST46" xml:space="preserve">
+    <value>Spezifikation</value>
+  </data>
+  <data name="BST47" xml:space="preserve">
+    <value>Abnormal Parameter, falls vorhanden</value>
+  </data>
+  <data name="BST48" xml:space="preserve">
+    <value>Bemerkungen</value>
+  </data>
+  <data name="BST49" xml:space="preserve">
+    <value>Hämatologie</value>
+  </data>
+  <data name="BST5" xml:space="preserve">
+    <value>Ist der Patient Emcure entblößten Cidofovir 75mg / mlconcentrate für Infusionslösung?</value>
+  </data>
+  <data name="BST50" xml:space="preserve">
+    <value>Biochemie</value>
+  </data>
+  <data name="BST51" xml:space="preserve">
+    <value>Harnstoff</value>
+  </data>
+  <data name="BST52" xml:space="preserve">
+    <value>Creatinin</value>
+  </data>
+  <data name="BST53" xml:space="preserve">
+    <value>Phosphat</value>
+  </data>
+  <data name="BST54" xml:space="preserve">
+    <value>Harnsäure</value>
+  </data>
+  <data name="BST55" xml:space="preserve">
+    <value>Bikarbonat</value>
+  </data>
+  <data name="BST56" xml:space="preserve">
+    <value>Urinanalyse (einschließlich Glukosurie)</value>
+  </data>
+  <data name="BST57" xml:space="preserve">
+    <value>Serologie</value>
+  </data>
+  <data name="BST58" xml:space="preserve">
+    <value>Andere (bitte angeben)</value>
+  </data>
+  <data name="BST59" xml:space="preserve">
+    <value>Bemerkungen</value>
+  </data>
+  <data name="BST6" xml:space="preserve">
+    <value>Ist der Patient oder die Patienten-Proxy (in Fall, dass der Patient nicht einwilligungs) bereit geschrieben Informierte Einwilligung zur Verfügung zu stellen?</value>
+  </data>
+  <data name="BST60" xml:space="preserve">
+    <value>Bitte geben Sie die folgenden Details in Bezug auf das Behandlungsschema bestimmt</value>
+  </data>
+  <data name="BST61" xml:space="preserve">
+    <value>Indikation</value>
+  </data>
+  <data name="BST62" xml:space="preserve">
+    <value>Dosis (einschließlich Einheiten)</value>
+  </data>
+  <data name="BST63" xml:space="preserve">
+    <value>Häufigkeit der Verabreichung</value>
+  </data>
+  <data name="BST64" xml:space="preserve">
+    <value>Art der Verabreichung (IV, intraokular, topisch, etc.)</value>
+  </data>
+  <data name="BST65" xml:space="preserve">
+    <value>Bemerkungen</value>
+  </data>
+  <data name="BST66" xml:space="preserve">
+    <value>Prescriber Erklärung des</value>
+  </data>
+  <data name="BST67" xml:space="preserve">
+    <value>Ich habe dieses Basisdatenformular überprüft und bestätige, dass, nach bestem Wissen und Gewissen, es genau die Studie gegebenen Informationen für diese Patienten erhalten.</value>
+  </data>
+  <data name="BST68" xml:space="preserve">
+    <value>Prescriber Name</value>
+  </data>
+  <data name="BST69" xml:space="preserve">
+    <value>Der verschreibende Arzt Email Id</value>
+  </data>
+  <data name="BST7" xml:space="preserve">
+    <value>Kriterien für die als ‚Off-Label-Use‘ Klassifizierung</value>
+  </data>
+  <data name="BST70" xml:space="preserve">
+    <value>Registrationsnummer</value>
+  </data>
+  <data name="BST71" xml:space="preserve">
+    <value>Telefonnummer</value>
+  </data>
+  <data name="BST72" xml:space="preserve">
+    <value>Krankenhaus Adresse</value>
+  </data>
+  <data name="BST73" xml:space="preserve">
+    <value>Kontakt Anschrift</value>
+  </data>
+  <data name="BST74" xml:space="preserve">
+    <value>Datum der Annahme</value>
+  </data>
+  <data name="BST8" xml:space="preserve">
+    <value>Ist der Patient Emcure der 75mg Cidofovir ausgesetzt / ml Infusionslösung unter einer der folgenden Bedingungen konzentrieren</value>
+  </data>
+  <data name="BST9" xml:space="preserve">
+    <value>Zugelassene Indikation</value>
+  </data>
+  <data name="Cancel" xml:space="preserve">
+    <value>Stornieren</value>
+  </data>
+  <data name="Change password" xml:space="preserve">
+    <value>Ändere das Passwort</value>
+  </data>
+  <data name="Change your account settings" xml:space="preserve">
+    <value>Ändern Sie Ihre Kontoeinstellungen</value>
+  </data>
+  <data name="Changer le mot de passe" xml:space="preserve">
+    <value>Changer le mot de passe</value>
+  </data>
+  <data name="Children" xml:space="preserve">
+    <value>Kinder</value>
+  </data>
+  <data name="Cidofovir 75 mg/ml concentrate for solution for infusion contains sodium" xml:space="preserve">
+    <value>Cidofovir 75 mg / ml für Lösungskonzentrat zur Infusion Natrium enthält</value>
+  </data>
+  <data name="Cidofovir Administration" xml:space="preserve">
+    <value>Cidofovir Verwaltung</value>
+  </data>
+  <data name="Cidofovir caused reduced testes weight and low sperm count (hypospermia) in animals. Although not observed in human studies of cidofovir, such changes may occur in humans and cause infertility. &lt;b&gt;Men should practice barrier birth control methods during and for 3 months after treatment with cidofovir.&lt;/b&gt;&lt;/p&gt;" xml:space="preserve">
+    <value>Cidofovir verursacht Gewichtsreduzierung der Hoden und niedrige Spermienzahl (Hypospermie) bei Tieren. Obwohl nicht in Studien am Menschen von Cidofovir beobachtet, können solche Veränderungen beim Menschen auftreten und zur Unfruchtbarkeit führen. &lt;b&gt;Männer sollten Barriere Verhütungsmethoden während und 3 Monate nach der Behandlung mit Cidofovir üben.&lt;/b&gt;&lt;/p&gt;</value>
+  </data>
+  <data name="Cidofovir Exposure Registry Information" xml:space="preserve">
+    <value>Cidofovir Exposure Registry Informationen</value>
+  </data>
+  <data name="Cidofovir Exposure Registry of Emcure Pharma UK Ltd." xml:space="preserve">
+    <value>Cidofovir Exposure Registry von Emcure Pharma UK Ltd.</value>
+  </data>
+  <data name="Cidofovir is an injectable antiviral medication primarily used as a treatment of CMV retinitis in adults with acquired immunodeficiency syndrome (AIDS) and without renal dysfunction." xml:space="preserve">
+    <value>Cidofovir ist ein injizierbare Antivirusmedikament in erster Linie zur Behandlung von CMV-Retinitis bei Erwachsenen mit erworbener Immunschwäche (AIDS) und ohne Störung der Nierenfunktion verwendet wird.</value>
+  </data>
+  <data name="Cidofovir is not used for the treatment of HIV infection. Cidofovir will not stop you passing HIV infection onto other people so &lt;b&gt;you should continue to take precautions to avoid infecting others.&lt;/b&gt;&lt;/p&gt;" xml:space="preserve">
+    <value>Cidofovir ist nicht für die Behandlung von HIV-Infektionen verwendet. Cidofovir wird nicht aufhören, vorbei Sie HIV-Infektion auf andere Menschen so &lt;b&gt;Sie sollten auch weiterhin Vorkehrungen zu treffen, andere zu vermeiden infizieren.&lt;/b&gt;&lt;/p&gt;</value>
+  </data>
+  <data name="Cidofovir with food and drink" xml:space="preserve">
+    <value>Cidofovir mit Nahrungsmitteln und Getränken</value>
+  </data>
+  <data name="Close" xml:space="preserve">
+    <value>Schließen</value>
+  </data>
+  <data name="CMV retinitis is an eye infection caused by a virus named cytomegalovirus (CMV). CMV attacks the retina of the eye and may cause loss of vision, and eventually lead to blindness. Patients with AIDS are at high risk of developing CMV retinitis or other forms of CMV disease such as colitis (an inflammatory bowel disease). Treatment for CMV retinitis is necessary to reduce the potential for blindness.&lt;/p&gt;" xml:space="preserve">
+    <value>CMV-Retinitis ist ein Auge verursacht eine Infektion durch ein Virus namens Cytomegalovirus (CMV). CMV greift die Netzhaut des Auges und kann Sehverlust verursachen und schließlich zur Erblindung führen. Patienten mit AIDS sind ein hohes Risiko der Entwicklung von CMV-Retinitis oder andere Formen der CMV-Erkrankung wie Colitis (eine entzündliche Darmerkrankung). Die Behandlung von CMV-Retinitis ist notwendig, das Potenzial für eine Erblindung zu verringern.&lt;/p&gt;</value>
+  </data>
+  <data name="Comments" xml:space="preserve">
+    <value>Bemerkungen</value>
+  </data>
+  <data name="Common side effects" xml:space="preserve">
+    <value>Häufige Nebenwirkungen</value>
+  </data>
+  <data name="Con-comitant Medication given" xml:space="preserve">
+    <value>Con-comitant Medikamente gegeben</value>
+  </data>
+  <data name="Concomitant administration of cidofovir and other potentially nephrotoxic agents" xml:space="preserve">
+    <value>Die gleichzeitige Verabreichung von Cidofovir und anderen potentiell nephrotoxischen Wirkstoffen</value>
+  </data>
+  <data name="CONCOMITANT MEDICATIONS" xml:space="preserve">
+    <value>Begleitmedikationen</value>
+  </data>
+  <data name="CONCURRENT MEDICAL CONDITIONS AND \n MEDICATIONS" xml:space="preserve">
+    <value>CONCURRENT Erkrankungen und \ n MEDIKAMENTE</value>
+  </data>
+  <data name="Confirm" xml:space="preserve">
+    <value>Bestätigen</value>
+  </data>
+  <data name="Confirm email" xml:space="preserve">
+    <value>Bestätigungs-E-Mail</value>
+  </data>
+  <data name="Confirm password" xml:space="preserve">
+    <value>Passwort bestätigen</value>
+  </data>
+  <data name="Confirm the safety profile of a medicine, or;" xml:space="preserve">
+    <value>Bestätigt das Sicherheitsprofil eines Arzneimittels, oder;</value>
+  </data>
+  <data name="Consent Form" xml:space="preserve">
+    <value>Einverständniserklärung</value>
+  </data>
+  <data name="Contact" xml:space="preserve">
+    <value>Kontakt</value>
+  </data>
+  <data name="Contact Address" xml:space="preserve">
+    <value>Kontakt Anschrift</value>
+  </data>
+  <data name="Contact Information" xml:space="preserve">
+    <value>Kontaktinformation</value>
+  </data>
+  <data name="Contact No" xml:space="preserve">
+    <value>Kontakt Nein</value>
+  </data>
+  <data name="Contact Us" xml:space="preserve">
+    <value>Kontaktiere Uns</value>
+  </data>
+  <data name="Contactez nous" xml:space="preserve">
+    <value>Contactez nous</value>
+  </data>
+  <data name="Contraindications" xml:space="preserve">
+    <value>Gegenanzeigen</value>
+  </data>
+  <data name="Copyright" xml:space="preserve">
+    <value>Urheberrechte ©</value>
+  </data>
+  <data name="Country" xml:space="preserve">
+    <value>Land</value>
+  </data>
+  <data name="Creatinine" xml:space="preserve">
+    <value>Creatinin</value>
+  </data>
+  <data name="Criteria for classifying as ‘Off-label Use’" xml:space="preserve">
+    <value>Kriterien für die als ‚Off-Label-Use‘ Klassifizierung</value>
+  </data>
+  <data name="Date" xml:space="preserve">
+    <value>Datum</value>
+  </data>
+  <data name="Date of Acceptance" xml:space="preserve">
+    <value>Datum der Annahme</value>
+  </data>
+  <data name="Date of Assessment" xml:space="preserve">
+    <value>Datum der Bewertung</value>
+  </data>
+  <data name="Date of Birth" xml:space="preserve">
+    <value>Geburtsdatum</value>
+  </data>
+  <data name="Date participant/patient proxy signed written consent form" xml:space="preserve">
+    <value>Datum der Teilnehmer / Patient-Proxy unterzeichnete schriftliche Einverständniserklärung</value>
+  </data>
+  <data name="Date participant/patient proxy signed written consent form1" xml:space="preserve">
+    <value>Datum der Teilnehmer / Patient-Proxy unterzeichnete schriftliche Zustimmung form1</value>
+  </data>
+  <data name="Deactivate" xml:space="preserve">
+    <value>Deaktivieren</value>
+  </data>
+  <data name="Deactivated" xml:space="preserve">
+    <value>deaktiviert</value>
+  </data>
+  <data name="Death of patient" xml:space="preserve">
+    <value>Der Tod von Patienten</value>
+  </data>
+  <data name="Declined" xml:space="preserve">
+    <value>Abgelehnt</value>
+  </data>
+  <data name="Delete" xml:space="preserve">
+    <value>Löschen</value>
+  </data>
+  <data name="Deleted" xml:space="preserve">
+    <value>gelöscht</value>
+  </data>
+  <data name="Description" xml:space="preserve">
+    <value>Beschreibung</value>
+  </data>
+  <data name="Did the patient have had any relevant Medical History?" xml:space="preserve">
+    <value>Hatte der Patient alle relevanten Krankengeschichte hatte?</value>
+  </data>
+  <data name="Direct intraocular injection" xml:space="preserve">
+    <value>Direkte intraokulare Injektion</value>
+  </data>
+  <data name="Do not use cidofovir" xml:space="preserve">
+    <value>Verwenden Sie keine Cidofovir</value>
+  </data>
+  <data name="Doctor" xml:space="preserve">
+    <value>Arzt</value>
+  </data>
+  <data name="Doctor or Pharmacist" xml:space="preserve">
+    <value>Arzt oder Apotheker</value>
+  </data>
+  <data name="Doctor/Pharmacist" xml:space="preserve">
+    <value>Arzt / Apotheker</value>
+  </data>
+  <data name="Documentation of the Informed Consent" xml:space="preserve">
+    <value>Dokumentation der Zustimmung nach Inkenntnissetzung</value>
+  </data>
+  <data name="Don't have access to your authenticator device ? You can" xml:space="preserve">
+    <value>Kein Zugriff auf Ihr Authenticator Gerät? Sie können</value>
+  </data>
+  <data name="Dosage and units" xml:space="preserve">
+    <value>Dosierung und Einheiten</value>
+  </data>
+  <data name="Dose" xml:space="preserve">
+    <value>Dosis</value>
+  </data>
+  <data name="Dose &lt;small&gt;(including units)&lt;/small&gt;" xml:space="preserve">
+    <value>Dose &lt;small&gt;(einschließlich Einheiten)&lt;/small&gt;</value>
+  </data>
+  <data name="Dose adjustment" xml:space="preserve">
+    <value>Dosierungsanpassung</value>
+  </data>
+  <data name="Dose in adults" xml:space="preserve">
+    <value>Dosierung bei Erwachsenen</value>
+  </data>
+  <data name="Download" xml:space="preserve">
+    <value>Herunterladen</value>
+  </data>
+  <data name="Download All Patient Data" xml:space="preserve">
+    <value>Download Alle Patientendaten</value>
+  </data>
+  <data name="Driving and using machines" xml:space="preserve">
+    <value>Fahren und Bedienen von Maschinen</value>
+  </data>
+  <data name="Drop out" xml:space="preserve">
+    <value>Aussteigen</value>
+  </data>
+  <data name="Edit" xml:space="preserve">
+    <value>Bearbeiten</value>
+  </data>
+  <data name="Elderly population (&amp;gt; 60 years of age)" xml:space="preserve">
+    <value>Ältere Bevölkerung (&amp; gt; 60 Jahre)</value>
+  </data>
+  <data name="Email" xml:space="preserve">
+    <value>Email</value>
+  </data>
+  <data name="Enquiries relating to product availability where there are no pharmacovigilance consequences, referred to as product enquiry-related personal data &lt;b&gt;(hyperlink to specific policy)&lt;/b&gt;" xml:space="preserve">
+    <value>Anfragen in Bezug auf die Produktverfügbarkeit, wo es keine Pharmakovigilanz Folgen, die als Produktanfrage bezogenen persönlichen Daten &lt;b&gt;(Hyperlink zu bestimmten Politik)&lt;/b&gt;</value>
+  </data>
+  <data name="Error" xml:space="preserve">
+    <value>Error</value>
+  </data>
+  <data name="Error when fetching data please contact administrator" xml:space="preserve">
+    <value>Fehler beim Abrufen von Daten bitte Administrator kontaktieren</value>
+  </data>
+  <data name="Event Term &lt;small&gt;(Diagnosis if known)&lt;/small&gt;" xml:space="preserve">
+    <value>Event Term &lt;small&gt;(Diagnosis if known)&lt;/small&gt;</value>
+  </data>
+  <data name="FAQs" xml:space="preserve">
+    <value>Häufig gestellte Fragen</value>
+  </data>
+  <data name="Female" xml:space="preserve">
+    <value>Weiblich</value>
+  </data>
+  <data name="Femelle" xml:space="preserve">
+    <value>femelle</value>
+  </data>
+  <data name="Filter By Prescriber" xml:space="preserve">
+    <value>Filtern nach Prescriber</value>
+  </data>
+  <data name="First Name" xml:space="preserve">
+    <value>Vorname</value>
+  </data>
+  <data name="FLH1" xml:space="preserve">
+    <value>Nebenwirkungen</value>
+  </data>
+  <data name="FLH2" xml:space="preserve">
+    <value>Relevante Laboruntersuchungen</value>
+  </data>
+  <data name="FLH3" xml:space="preserve">
+    <value>Patient Outcome</value>
+  </data>
+  <data name="FLH4" xml:space="preserve">
+    <value>Cidofovir Verwaltung</value>
+  </data>
+  <data name="FLH5" xml:space="preserve">
+    <value>Krankengeschichte</value>
+  </data>
+  <data name="FLH6" xml:space="preserve">
+    <value>Erkrankungen und Medikamente</value>
+  </data>
+  <data name="FLH7" xml:space="preserve">
+    <value>Prescriber des Sign-Off</value>
+  </data>
+  <data name="Follow Details" xml:space="preserve">
+    <value>Folgen Sie Einzelheiten</value>
+  </data>
+  <data name="Follow Up Form" xml:space="preserve">
+    <value>Follow-up-Formular</value>
+  </data>
+  <data name="Follow up investigations" xml:space="preserve">
+    <value>Follow-up-Untersuchungen</value>
+  </data>
+  <data name="For any urgent safety issues regarding Cidofovir out of office hours, please contact our out of office number(s) below:" xml:space="preserve">
+    <value>Für dringende Fragen Sicherheit Cidofovir außerhalb der Bürozeiten haben, wenden Sie sich bitte unsere außerhalb der Büronummer (n) unter:</value>
+  </data>
+  <data name="For more information about Cidofovir or Tillomed, please do not hesitate to contact us." xml:space="preserve">
+    <value>Weitere Informationen zu Cidofovir oder Tillomed, zögern Sie bitte nicht uns zu kontaktieren.</value>
+  </data>
+  <data name="for the above study and have had the opportunity to ask questions." xml:space="preserve">
+    <value>Für die oben stehende Studie und hat die Möglichkeit, Fragen zu stellen hat.</value>
+  </data>
+  <data name="Forgot Password" xml:space="preserve">
+    <value>Passwort vergessen</value>
+  </data>
+  <data name="Forgot password confirmation" xml:space="preserve">
+    <value>Passwort vergessen Bestätigung</value>
+  </data>
+  <data name="Forgot your password?" xml:space="preserve">
+    <value>Haben Sie Ihr Passwort vergessen?</value>
+  </data>
+  <data name="Foscarnet (for viral infection)" xml:space="preserve">
+    <value>Foscarnet (für die virale Infektion)</value>
+  </data>
+  <data name="Frequency" xml:space="preserve">
+    <value>Frequenz</value>
+  </data>
+  <data name="Frequency of administration" xml:space="preserve">
+    <value>Häufigkeit der Verabreichung</value>
+  </data>
+  <data name="FS1" xml:space="preserve">
+    <value>Nebenwirkungen</value>
+  </data>
+  <data name="FS2" xml:space="preserve">
+    <value>Grundlagenermittlung</value>
+  </data>
+  <data name="FS3" xml:space="preserve">
+    <value>Follow Up Untersuchungen</value>
+  </data>
+  <data name="FS4" xml:space="preserve">
+    <value>Patient Outcome</value>
+  </data>
+  <data name="FS5" xml:space="preserve">
+    <value>Cidofovir Verwaltung</value>
+  </data>
+  <data name="FS6" xml:space="preserve">
+    <value>Krankengeschichte</value>
+  </data>
+  <data name="FS7" xml:space="preserve">
+    <value>Concurrent Erkrankungen und Medikamente</value>
+  </data>
+  <data name="FS8" xml:space="preserve">
+    <value>Prescriber Zeichen des Off</value>
+  </data>
+  <data name="FST1" xml:space="preserve">
+    <value>Patienten erfahren alle AEs</value>
+  </data>
+  <data name="FST10" xml:space="preserve">
+    <value>Beziehung Drug Study</value>
+  </data>
+  <data name="FST100" xml:space="preserve">
+    <value>Der verschreibende Arzt Email Id</value>
+  </data>
+  <data name="FST101" xml:space="preserve">
+    <value>Registrationsnummer</value>
+  </data>
+  <data name="FST102" xml:space="preserve">
+    <value>Telefonnummer</value>
+  </data>
+  <data name="FST103" xml:space="preserve">
+    <value>Krankenhaus Adresse</value>
+  </data>
+  <data name="FST104" xml:space="preserve">
+    <value>Kontakt Anschrift</value>
+  </data>
+  <data name="FST105" xml:space="preserve">
+    <value>Datum der Annahme</value>
+  </data>
+  <data name="FST106" xml:space="preserve">
+    <value>sparen</value>
+  </data>
+  <data name="FST107" xml:space="preserve">
+    <value />
+  </data>
+  <data name="FST108" xml:space="preserve">
+    <value />
+  </data>
+  <data name="FST11" xml:space="preserve">
+    <value>Hat der Patient mit jeder Bösartigkeit seit Beginn der Cidofovir Injektion diagnostiziert</value>
+  </data>
+  <data name="FST12" xml:space="preserve">
+    <value>AE Details</value>
+  </data>
+  <data name="FST13" xml:space="preserve">
+    <value>Ich habe alles AEs Bewertung erfuhr, einschließlich Ergebnis, Ernst, ergriffenen Maßnahmen mit dem Medikamente und Beziehung mit der Studienmedikation und bestätigen nach dem besten Wissen und Gewissen, es spiegelt genau die Studie Informationen für diesen Teilnehmer erhalten.</value>
+  </data>
+  <data name="FST14" xml:space="preserve">
+    <value>Prescriber Name</value>
+  </data>
+  <data name="FST15" xml:space="preserve">
+    <value>Datum</value>
+  </data>
+  <data name="FST16" xml:space="preserve">
+    <value>Spezifikation</value>
+  </data>
+  <data name="FST17" xml:space="preserve">
+    <value>Abnormal Parameter, falls vorhanden</value>
+  </data>
+  <data name="FST18" xml:space="preserve">
+    <value>Bemerkungen</value>
+  </data>
+  <data name="FST19" xml:space="preserve">
+    <value>Hämatologie</value>
+  </data>
+  <data name="FST2" xml:space="preserve">
+    <value>Nebenwirkungen</value>
+  </data>
+  <data name="FST20" xml:space="preserve">
+    <value>Biochemie</value>
+  </data>
+  <data name="FST21" xml:space="preserve">
+    <value>Harnstoff</value>
+  </data>
+  <data name="FST22" xml:space="preserve">
+    <value>Creatinin</value>
+  </data>
+  <data name="FST23" xml:space="preserve">
+    <value>Phosphat</value>
+  </data>
+  <data name="FST24" xml:space="preserve">
+    <value>Harnsäure</value>
+  </data>
+  <data name="FST25" xml:space="preserve">
+    <value>Bikarbonat</value>
+  </data>
+  <data name="FST26" xml:space="preserve">
+    <value>Urinanalyse (einschließlich Glukosurie)</value>
+  </data>
+  <data name="FST27" xml:space="preserve">
+    <value>Serologie</value>
+  </data>
+  <data name="FST28" xml:space="preserve">
+    <value>Andere (bitte angeben)</value>
+  </data>
+  <data name="FST29" xml:space="preserve">
+    <value>Bemerkungen</value>
+  </data>
+  <data name="FST3" xml:space="preserve">
+    <value>Ereigniszeit (Diagnosis falls bekannt)</value>
+  </data>
+  <data name="FST30" xml:space="preserve">
+    <value>Datum der Bewertung</value>
+  </data>
+  <data name="FST31" xml:space="preserve">
+    <value>Spezifikation</value>
+  </data>
+  <data name="FST32" xml:space="preserve">
+    <value>Abnormal Parameter, falls vorhanden</value>
+  </data>
+  <data name="FST33" xml:space="preserve">
+    <value>Bemerkungen</value>
+  </data>
+  <data name="FST34" xml:space="preserve">
+    <value>Hämatologie</value>
+  </data>
+  <data name="FST35" xml:space="preserve">
+    <value>Biochemie</value>
+  </data>
+  <data name="FST36" xml:space="preserve">
+    <value>Harnstoff</value>
+  </data>
+  <data name="FST37" xml:space="preserve">
+    <value>Creatinin</value>
+  </data>
+  <data name="FST38" xml:space="preserve">
+    <value>Phosphat</value>
+  </data>
+  <data name="FST39" xml:space="preserve">
+    <value>Harnsäure</value>
+  </data>
+  <data name="FST4" xml:space="preserve">
+    <value>Anfangsdatum</value>
+  </data>
+  <data name="FST40" xml:space="preserve">
+    <value>Bikarbonat</value>
+  </data>
+  <data name="FST41" xml:space="preserve">
+    <value>Urinanalyse (einschließlich Glukosurie)</value>
+  </data>
+  <data name="FST42" xml:space="preserve">
+    <value>Serologie</value>
+  </data>
+  <data name="FST43" xml:space="preserve">
+    <value>Andere (bitte angeben)</value>
+  </data>
+  <data name="FST44" xml:space="preserve">
+    <value>Bemerkungen</value>
+  </data>
+  <data name="FST45" xml:space="preserve">
+    <value>Datum der Bewertung</value>
+  </data>
+  <data name="FST46" xml:space="preserve">
+    <value>Bitte geben Sie das Ergebnis des Patienten bei diesem Besuch</value>
+  </data>
+  <data name="FST47" xml:space="preserve">
+    <value>Behandlung abgebrochen aufgrund AE / SAE</value>
+  </data>
+  <data name="FST48" xml:space="preserve">
+    <value>Grunderkrankung behoben</value>
+  </data>
+  <data name="FST49" xml:space="preserve">
+    <value>Behandlungsschema komplett</value>
+  </data>
+  <data name="FST5" xml:space="preserve">
+    <value>Stop-Datum</value>
+  </data>
+  <data name="FST50" xml:space="preserve">
+    <value>Der Tod von Patienten</value>
+  </data>
+  <data name="FST51" xml:space="preserve">
+    <value>Lost to follow-up</value>
+  </data>
+  <data name="FST52" xml:space="preserve">
+    <value>Therapie fortsetzen</value>
+  </data>
+  <data name="FST53" xml:space="preserve">
+    <value>Rückzug</value>
+  </data>
+  <data name="FST54" xml:space="preserve">
+    <value>Bitte geben Sie den Grund</value>
+  </data>
+  <data name="FST55" xml:space="preserve">
+    <value>Aussteigen</value>
+  </data>
+  <data name="FST56" xml:space="preserve">
+    <value>Weitere Ergebnisse</value>
+  </data>
+  <data name="FST57" xml:space="preserve">
+    <value>Bitte geben Sie</value>
+  </data>
+  <data name="FST58" xml:space="preserve">
+    <value>Datum der Bewertung</value>
+  </data>
+  <data name="FST59" xml:space="preserve">
+    <value>Geben Sie bitte, ob Änderungen in Behandlungsschema in Bezug auf die folgenden gemacht wurden</value>
+  </data>
+  <data name="FST6" xml:space="preserve">
+    <value>SAE</value>
+  </data>
+  <data name="FST60" xml:space="preserve">
+    <value>Indikation</value>
+  </data>
+  <data name="FST61" xml:space="preserve">
+    <value>Dosis (einschließlich Einheiten)</value>
+  </data>
+  <data name="FST62" xml:space="preserve">
+    <value>Häufigkeit der Verabreichung</value>
+  </data>
+  <data name="FST63" xml:space="preserve">
+    <value>Verabreichungsro</value>
+  </data>
+  <data name="FST64" xml:space="preserve">
+    <value>Bemerkungen</value>
+  </data>
+  <data name="FST65" xml:space="preserve">
+    <value>Bitte geben Sie Einzelheiten über das endgültige Behandlungsschema</value>
+  </data>
+  <data name="FST66" xml:space="preserve">
+    <value>Gesamtdosis</value>
+  </data>
+  <data name="FST67" xml:space="preserve">
+    <value>Anfangsdatum</value>
+  </data>
+  <data name="FST68" xml:space="preserve">
+    <value>Stop-Datum</value>
+  </data>
+  <data name="FST69" xml:space="preserve">
+    <value>Gesamtdauer der Behandlung</value>
+  </data>
+  <data name="FST7" xml:space="preserve">
+    <value>Con-comitant Medikamente gegeben</value>
+  </data>
+  <data name="FST70" xml:space="preserve">
+    <value>Bemerkungen</value>
+  </data>
+  <data name="FST71" xml:space="preserve">
+    <value>Hatte der Patient alle relevanten Krankengeschichte hatte?</value>
+  </data>
+  <data name="FST72" xml:space="preserve">
+    <value>Krankengeschichte</value>
+  </data>
+  <data name="FST73" xml:space="preserve">
+    <value>Bitte geben Sie eine signifikante / schwere Krankheit, Erkrankungen oder Operationen in der Vergangenheit oder gegenwärtig.</value>
+  </data>
+  <data name="FST74" xml:space="preserve">
+    <value>Anfangsdatum</value>
+  </data>
+  <data name="FST75" xml:space="preserve">
+    <value>Stop-Datum</value>
+  </data>
+  <data name="FST76" xml:space="preserve">
+    <value>Oder ankreuzen, wenn Laufende?</value>
+  </data>
+  <data name="FST77" xml:space="preserve">
+    <value>Bemerkungen</value>
+  </data>
+  <data name="FST78" xml:space="preserve">
+    <value>hinzufügen</value>
+  </data>
+  <data name="FST79" xml:space="preserve">
+    <value>sparen</value>
+  </data>
+  <data name="FST8" xml:space="preserve">
+    <value>Studie Drogenaktions</value>
+  </data>
+  <data name="FST80" xml:space="preserve">
+    <value>Datum der Bewertung</value>
+  </data>
+  <data name="FST81" xml:space="preserve">
+    <value>Hat der Teilnehmer keine Begleitmedikation bei diesem Follow-up genommen</value>
+  </data>
+  <data name="FST82" xml:space="preserve">
+    <value>Ja</value>
+  </data>
+  <data name="FST83" xml:space="preserve">
+    <value>Nein</value>
+  </data>
+  <data name="FST84" xml:space="preserve">
+    <value>Medikamente</value>
+  </data>
+  <data name="FST85" xml:space="preserve">
+    <value>Medikamente (Record Generika oder Handelsname)</value>
+  </data>
+  <data name="FST86" xml:space="preserve">
+    <value>Grund für den Einsatz (Anamnese Diagnose oder aus anderen Gründen, zB Prophylaxis)</value>
+  </data>
+  <data name="FST87" xml:space="preserve">
+    <value>Dosierung und Einheiten</value>
+  </data>
+  <data name="FST88" xml:space="preserve">
+    <value>Route</value>
+  </data>
+  <data name="FST89" xml:space="preserve">
+    <value>Frequenz</value>
+  </data>
+  <data name="FST9" xml:space="preserve">
+    <value>Ergebnis</value>
+  </data>
+  <data name="FST90" xml:space="preserve">
+    <value>Anfangsdatum</value>
+  </data>
+  <data name="FST91" xml:space="preserve">
+    <value>Stop-Datum</value>
+  </data>
+  <data name="FST92" xml:space="preserve">
+    <value>Oder ankreuzen, wenn auf bei der Screening-Visite gehen</value>
+  </data>
+  <data name="FST93" xml:space="preserve">
+    <value>Bemerkungen</value>
+  </data>
+  <data name="FST94" xml:space="preserve">
+    <value>Datum der Bewertung</value>
+  </data>
+  <data name="FST95" xml:space="preserve">
+    <value>hinzufügen</value>
+  </data>
+  <data name="FST96" xml:space="preserve">
+    <value>sparen</value>
+  </data>
+  <data name="FST97" xml:space="preserve">
+    <value>Prescriber Erklärung des</value>
+  </data>
+  <data name="FST98" xml:space="preserve">
+    <value>Ich überprüft habe dieses Follow-up-Formular aus und bestätigen Sie, daß nach bestem Wissen und Gewissen, es spiegelt genau die Studie Informationen für diese Patienten erhalten.</value>
+  </data>
+  <data name="FST99" xml:space="preserve">
+    <value>Prescriber Name</value>
+  </data>
+  <data name="Gender" xml:space="preserve">
+    <value>Geschlecht</value>
+  </data>
+  <data name="GMC/GpHC Number" xml:space="preserve">
+    <value>GMC / GPhC Nummer</value>
+  </data>
+  <data name="Haematology" xml:space="preserve">
+    <value>Hämatologie</value>
+  </data>
+  <data name="Has the participant taken any concomitant medications at this follow-up" xml:space="preserve">
+    <value>Hat der Teilnehmer keine Begleitmedikation bei diesem Follow-up genommen</value>
+  </data>
+  <data name="Has the patient been diagnosed with any malignancy since initiation of Cidofovir injection" xml:space="preserve">
+    <value>Hat der Patient mit jeder Bösartigkeit seit Beginn der Cidofovir Injektion diagnostiziert</value>
+  </data>
+  <data name="HCP" xml:space="preserve">
+    <value>HCP</value>
+  </data>
+  <data name="HCP Id" xml:space="preserve">
+    <value>HCP Id</value>
+  </data>
+  <data name="Healthcare Professional Details" xml:space="preserve">
+    <value>Healthcare Professional Angaben</value>
+  </data>
+  <data name="Healthcare Professionals" xml:space="preserve">
+    <value>Medizinische Fachkräfte</value>
+  </data>
+  <data name="Hello" xml:space="preserve">
+    <value>Hallo</value>
+  </data>
+  <data name="Home" xml:space="preserve">
+    <value>Zuhause</value>
+  </data>
+  <data name="Home Page" xml:space="preserve">
+    <value>Startseite</value>
+  </data>
+  <data name="Hospital Address" xml:space="preserve">
+    <value>Krankenhaus Adresse</value>
+  </data>
+  <data name="How does the organisation protect data?" xml:space="preserve">
+    <value>Wie schützt die Organisation Daten?</value>
+  </data>
+  <data name="How IV fluids are given before Cidofovir" xml:space="preserve">
+    <value>Wie IV Flüssigkeiten werden vor Cidofovir gegeben</value>
+  </data>
+  <data name="How to take Probenecid with Cidofovir" xml:space="preserve">
+    <value>Wie nehmen Probenecid mit Cidofovir</value>
+  </data>
+  <data name="How to use Cidofovir?" xml:space="preserve">
+    <value>Wie Cidofovir zu benutzen?</value>
+  </data>
+  <data name="Hypersensitivity to the Cidofovir or to any of the excipients (Sodium hydroxide and hydrochloric acid)" xml:space="preserve">
+    <value>Überempfindlichkeit gegen den Cidofovir oder einen der sonstigen Bestandteile (Natriumhydroxid und Salzsäure)</value>
+  </data>
+  <data name="I agree not to restrict the use of any data or results that arise from this study provided such a use is only for scientific purpose(s)" xml:space="preserve">
+    <value>Ich stimme nicht die Verwendung von Daten oder Ergebnisse zu beschränken, die von diesem Studium entstanden sind, sofern diese eine Verwendung ist nur für wissenschaftliche Zwecke (e)</value>
+  </data>
+  <data name="I agree to take part in the above study." xml:space="preserve">
+    <value>Ich bin damit einverstanden Teil in der obigen Studie.</value>
+  </data>
+  <data name="I confirm that I have read and understood the information sheet dated" xml:space="preserve">
+    <value>Ich bestätige, dass ich gelesen und verstanden haben das Informationsblatt datiert</value>
+  </data>
+  <data name="I confirm that I have read and understood the information sheet dated &lt;lable id='date'&gt;&lt;/lable&gt; for the above study and have had the opportunity to ask questions." xml:space="preserve">
+    <value>Ich bestätige, dass ich gelesen und verstanden haben das Informationsblatt vom &lt;lable id='date'&gt;&lt;/lable&gt; für die oben genannte Studie und haben die Möglichkeit, Fragen zu stellen hatte.</value>
+  </data>
+  <data name="I have read the above informationand it is presented in a language that I understand well. By signing this consent form, I attest that the information given in this document has been clearly explained to me and understood well by me. I have been told that I will be given a signed copy of thisform. I hereby willingly confirm that I wish to take part in this study." xml:space="preserve">
+    <value>Ich habe die oben informationand las es in einer Sprache präsentiert, die ich gut verstehen. Mit der Unterzeichnung dieser Einverständniserklärung, bezeugen ich, dass die Informationen in diesem Dokument wurden mir klar erklärt und auch von mir verstanden. Ich habe gesagt, dass ich ein signiertes Exemplar von thisform gegeben werden. Hiermit bestätige ich gerne, dass ich wünschte, an dieser Studie teilzunehmen.</value>
+  </data>
+  <data name="I have reviewed all the AEs experienced, including outcome, seriousness, action taken with the medication and relationship with study drug and confirm that, to the best of my knowledge, it accurately reflects the study information obtained for this participant." xml:space="preserve">
+    <value>Ich habe alles AEs Bewertung erfuhr, einschließlich Ergebnis, Ernst, ergriffene Maßnahmen mit dem Medikamente und Beziehung mit der Studienmedikation und bestätigt nach dem besten Wissen und Gewissen, es genau die Studie Informationen für diesen Teilnehmer erhalten widerspiegelt.</value>
+  </data>
+  <data name="I have reviewed this Baseline Data Form and confirm that, to the best of my knowledge, it accurately reflects the study information obtained for this patient." xml:space="preserve">
+    <value>Ich habe dieses Basisdatenformular überprüft und bestätige, dass, nach bestem Wissen und Gewissen, es genau die Studie gegebenen Informationen für diese Patienten erhalten.</value>
+  </data>
+  <data name="I have reviewed this Follow-up Form and confirm that, to the best of my knowledge, it accurately reflects the study information obtained for this patient." xml:space="preserve">
+    <value>Ich überprüft habe dieses Follow-up-Formular aus und bestätigen Sie, daß nach bestem Wissen und Gewissen, es spiegelt genau die Studie Informationen für diese Patienten erhalten.</value>
+  </data>
+  <data name="I understand that all attempts will be made to protect my privacy and my family’s privacy. I understand that my personal information will be protected and saved in the Cidofovir Exposure Registry using a code." xml:space="preserve">
+    <value>Ich verstehe, dass alle Versuche werden gemacht, um meine Privatsphäre und meine Familie Schutz der Privatsphäre. Ich verstehe, dass meine persönlichen Daten werden in der Cidofovir Exposure Registry geschützt und gespeichert werden, um einen Code.</value>
+  </data>
+  <data name="I understand that all attempts will be made to protect my privacy and my family’s privacy. I understand that my personal information will be protected and saved in the Cidofovir Exposure Registryusingacode." xml:space="preserve">
+    <value>Ich verstehe, dass alle Versuche werden gemacht, um meine Privatsphäre und meine Familie Schutz der Privatsphäre. Ich verstehe, dass meine persönlichen Daten werden in der Cidofovir Exposure Registryusingacode geschützt und gespeichert werden.</value>
+  </data>
+  <data name="I understand that I may not personally benefit from participating in the Cidofovir Exposure Registry." xml:space="preserve">
+    <value>Ich verstehe, dass ich von der Teilnahme an der Cidofovir Exposure Registry nicht persönlich profitieren kann.</value>
+  </data>
+  <data name="I understand that I may not personally benefit from participating inthe Cidofovir Exposure Registry." xml:space="preserve">
+    <value>Ich verstehe, dass ich von der Teilnahme inder Cidofovir Exposure Registry nicht persönlich profitieren können.</value>
+  </data>
+  <data name="I understand that my participation in the Study is voluntary and that I am free to withdraw at any time, without giving any reason, without my medical care or legal rights being affected." xml:space="preserve">
+    <value>Ich verstehe, dass meine Teilnahme an der Studie freiwillig ist und dass ich bin frei, jederzeit zu widerrufen, ohne Angabe von Gründen, ohne meine medizinischen Versorgung oder Rechte beeinträchtigt zu werden.</value>
+  </data>
+  <data name="I understand that my participation in the Study is voluntary and that I am free to withdrawat any time, withoutgiving any reason, without my medical care or legal rights being affected." xml:space="preserve">
+    <value>Ich verstehe, dass meine Teilnahme an der Studie freiwillig ist und dass ich bin frei, jederzeit withdrawat, withoutgiving keinen Grund, ohne meine medizinische Versorgung oder Rechte beeinträchtigt zu werden.</value>
+  </data>
+  <data name="I understand that the Sponsor of the Cidofovir Exposure Registry, others working on the Sponsor’s behalf, the Institutional Review Board and the regulatory authorities will not need my permission to look at my health records both in respect of the current study and any further research that may be conducted in relation to it, even if I withdraw from the trial. I agree to this access. However, I understand that my identity will not be revealed in any information released to third parties or published." xml:space="preserve">
+    <value>Ich verstehe, dass der Sponsor der Cidofovir Exposure Registry, andere arbeiten im Auftrag des Sponsors, die Institutional Review Board und die Regulierungsbehörde nicht meine Erlaubnis brauchen meine Krankenakten suchen sowohl in Bezug auf die aktuellen Studie und jede weitere Forschung, die möglicherweise wird in Bezug auf die es durchgeführt, auch wenn ich aus der Studie zurückziehen. Ich bin damit einverstanden, diesen Zugang. Ich verstehe aber, dass meine Identität nicht in den Informationen an Dritte weitergegeben oder veröffentlicht veröffentlicht enthüllt werden.</value>
+  </data>
+  <data name="I understand that the Sponsor of the Cidofovir Exposure Registry, others working on theSponsor’s behalf, the Institutional Review Board and the regulatory authorities will not need my permission to look at my health records both in respect of the current study and any further research that may be conducted in relation to it, even if I withdraw from the trial. I agree to this access. However, I understand that my identity will not berevealed in any information released to third parties orpublished." xml:space="preserve">
+    <value>Ich verstehe, dass der Sponsor der Cidofovir Exposure Registry, andere arbeiten an theSponsor im Namen der Institutional Review Board und die Regulierungsbehörden nicht meine Erlaubnis brauchen meine Krankenakten suchen sowohl in Bezug auf die aktuelle Studie und jede weitere Forschung, die sein kann, in Bezug auf die es durchgeführt, auch wenn ich aus der Studie zurückziehen. Ich bin damit einverstanden, diesen Zugang. Ich verstehe aber, dass meine Identität nicht in den Informationen berevealed wird orpublished an Dritte weitergegeben.</value>
+  </data>
+  <data name="ID" xml:space="preserve">
+    <value>ICH WÜRDE</value>
+  </data>
+  <data name="Identify, characterise or quantify a safety hazard;" xml:space="preserve">
+    <value>Identifizierung, Charakterisierung oder ein Sicherheitsrisiko zu quantifizieren;</value>
+  </data>
+  <data name="If any follow ups are conducted with your registered patient, please proceed to fill out the follow up form accordingly, which is available on the website. If you have entered any incorrect information in the follow up form, you will have the option to edit the data, upon approval from the lead sponsor. Multiple follow up forms will be available for completion for as many follow ups conducted with your registered patient(s)." xml:space="preserve">
+    <value>Sollte Follow-ups mit Ihrem registrierten Patienten durchgeführt werden, gehen Sie bitte das Follow-up-Formular entsprechend ausfüllen, die auf der Website zur Verfügung steht. Wenn Sie falsche Informationen in der Follow-up-Formular eingegeben haben, werden Sie die Möglichkeit haben, die Daten zu bearbeiten, auf die Zustimmung der Hauptsponsor. Mehrere Follow-up-Formulare werden für die Fertigstellung für so viele Follow-ups mit Ihrem registrierten Patienten (n) durchgeführt zur Verfügung.</value>
+  </data>
+  <data name="If yes, please specify" xml:space="preserve">
+    <value>Falls ja, bitte spezifizieren</value>
+  </data>
+  <data name="If you do not provide your personal data, the organisation may not be able to deal with your report or enquiry effectively, or at all." xml:space="preserve">
+    <value>Wenn Sie nicht Ihre persönlichen Daten zur Verfügung stellen, kann die Organisation nicht in der Lage sein, mit Ihrem Bericht oder Untersuchung zu behandeln effektiv oder überhaupt nicht.</value>
+  </data>
+  <data name="If you have entered any incorrect information in the baseline data form, you will have the option to edit the data, upon approval from the lead sponsor." xml:space="preserve">
+    <value>Wenn Sie falsche Informationen in der Basisdaten-Formular eingegeben haben, werden Sie die Möglichkeit haben, die Daten zu bearbeiten, auf die Zustimmung der Hauptsponsor.</value>
+  </data>
+  <data name="If you have queries or concerns regarding the registration process, please do not hesitate to contact us at" xml:space="preserve">
+    <value>Wenn Sie Fragen oder Bedenken hinsichtlich der Registrierung haben, zögern Sie bitte nicht uns zu kontaktieren an</value>
+  </data>
+  <data name="If you prefer, you may contact the medicines and healthcare agency  (MHRA) directly. The MHRA has established a reporting service known as the yellow card scheme where healthcare professionals and patients can report serious problems they suspect may be associated with the drugs and medical devices they prescribe, dispense, or use. Visit" xml:space="preserve">
+    <value>Wenn Sie möchten, können Sie das Arzneimittel und Gesundheitsbehörde (MHRA) direkt in Verbindung. Die MHRA hat einen Reporting-Service, wie das gelbe Kartensystem bekannt etabliert, wo medizinisches Fachpersonal und Patienten schwerwiegende Probleme melden können sie vermuten, kann mit den Medikamenten und medizinischen Geräten zugeordnet werden, die sie verschreiben, verzichtet werden kann, oder verwenden. Besuch</value>
+  </data>
+  <data name="If you use more cidofovir than you should" xml:space="preserve">
+    <value>Wenn Sie als mehr Cidofovir verwenden, sollten Sie</value>
+  </data>
+  <data name="If you would like to exercise any of these rights, please contact the Company Secretary by emailing &lt;a href='mailto:companysecretary@tillomed.co.uk' target='_blank'&gt;companysecretary@tillomed.co.uk.&lt;/a&gt; If you believe that the organisation has not complied with your data protection rights, you can complain to the Information Commissioner." xml:space="preserve">
+    <value>Wenn Sie eines dieser Rechte ausüben möchten, nutzen Sie bitte die Company Secretary kontaktieren E - Mail an &lt;a href='mailto: companysecretary@tillomed.co.uk 'target='_blank'&gt; companysecretary@tillomed.co.uk. &lt;/a&gt; Wenn Sie glauben , dass die Organisation mit Ihren Datenschutzrechte nicht eingehalten werden , können Sie die Information Commissioner beschweren.</value>
+  </data>
+  <data name="If you would like to exercise any of these rights, please contact the Company Secretary by emailing &lt;a href='mailto:companysecretary@tillomed.co.uk' target='_blank'&gt;companysecretary@tillomed.co.uk.&lt;/a&gt; If you believe that the organisation has not complied with your data protection rights, you can complain to the Information Commissioner.&quot;" xml:space="preserve">
+    <value>Wenn Sie eines dieser Rechte ausüben möchten, nutzen Sie bitte die Company Secretary kontaktieren E - Mail an &lt;a href='mailto: companysecretary@tillomed.co.uk 'target='_blank'&gt; companysecretary@tillomed.co.uk. &lt;/a&gt; Wenn Sie glauben , dass die Organisation mit Ihren Datenschutzrechte nicht eingehalten werden , können Sie die Information Commissioner beschweren.“</value>
+  </data>
+  <data name="In case the country of the patient is Germany no further data collection should take place thereafter. No further data should be collected on patients treated off-label# within the registry to comply with German Law." xml:space="preserve">
+    <value>Falls das Land des Patienten ist Deutschland keine weiteren sollte die Datenerfassung erfolgen danach. off-label behandeln # Keine weiteren Angaben sollen Patienten gesammelt werden, in der Registrierung mit deutschem Recht zu erfüllen.</value>
+  </data>
+  <data name="INCLUSION CRITERIA" xml:space="preserve">
+    <value>EINSCHLUSSKRITERIEN</value>
+  </data>
+  <data name="Indication" xml:space="preserve">
+    <value>Indikation</value>
+  </data>
+  <data name="INFORMED CONSENT" xml:space="preserve">
+    <value>INFORMIERT ZUSTIMMUNG</value>
+  </data>
+  <data name="Informed Consent Form" xml:space="preserve">
+    <value>Einwilligungserklärung</value>
+  </data>
+  <data name="Informed Consent Given" xml:space="preserve">
+    <value>Informierte Einwilligung gegeben</value>
+  </data>
+  <data name="Instructions" xml:space="preserve">
+    <value>Anleitung</value>
+  </data>
+  <data name="Is the patient exposed to Emcure’s Cidofovir 75mg/ml concentrate for solution for infusion under any of the following conditions" xml:space="preserve">
+    <value>Ist der Patient Emcure der 75mg Cidofovir ausgesetzt / ml Infusionslösung unter einer der folgenden Bedingungen konzentrieren</value>
+  </data>
+  <data name="Is the patient exposed to Emcure’s Cidofovir 75mg/mlconcentrate for solution for infusion?" xml:space="preserve">
+    <value>Ist der Patient Emcure entblößten Cidofovir 75mg / mlconcentrate für Infusionslösung?</value>
+  </data>
+  <data name="Is the patient or patient proxy (in event the patient is  unable to consent) willing to provide written informedconsent?" xml:space="preserve">
+    <value>Ist der Patient oder die Patienten-Proxy (in Fall, dass der Patient nicht einwilligungs) bereit geschrieben Informierte Einwilligung zur Verfügung zu stellen?</value>
+  </data>
+  <data name="Is the patient taking any concomitant medications at screening?" xml:space="preserve">
+    <value>Ist der Patient keine Begleitmedikation beim Screening zu nehmen?</value>
+  </data>
+  <data name="LABORATORY INVESTIGATIONS" xml:space="preserve">
+    <value>Laboruntersuchungen</value>
+  </data>
+  <data name="Last Name" xml:space="preserve">
+    <value>Nachname</value>
+  </data>
+  <data name="Log in" xml:space="preserve">
+    <value>Einloggen</value>
+  </data>
+  <data name="log in with a recovery code" xml:space="preserve">
+    <value>melden Sie sich mit einem Wiederherstellungscode</value>
+  </data>
+  <data name="Login" xml:space="preserve">
+    <value>Anmeldung</value>
+  </data>
+  <data name="Logout" xml:space="preserve">
+    <value>Ausloggen</value>
+  </data>
+  <data name="Lost to follow-up" xml:space="preserve">
+    <value>Lost to follow-up</value>
+  </data>
+  <data name="Male" xml:space="preserve">
+    <value>Männlich</value>
+  </data>
+  <data name="Manage Profile" xml:space="preserve">
+    <value>Profil verwalten</value>
+  </data>
+  <data name="Manage your account" xml:space="preserve">
+    <value>Verwalte Dein Konto</value>
+  </data>
+  <data name="Measure the effectiveness of risk-management measures." xml:space="preserve">
+    <value>Messen Sie die Wirksamkeit der Maßnahmen des Risikomanagements.</value>
+  </data>
+  <data name="Medical Conditions And Medical Conditions And Medications" xml:space="preserve">
+    <value>Erkrankungen und Erkrankungen und Medikamente</value>
+  </data>
+  <data name="Medical enquiries about products where there are no pharmacovigilance consequences, referred to as &lt;b&gt;medical enquiry-related personal data (hyperlink to specific policy)&lt;/b&gt;" xml:space="preserve">
+    <value>Medizinische Anfragen zu Produkten, wo es keine Pharmakovigilanz Folgen, die als &lt;b&gt;medizinisches Untersuchung im Zusammenhang mit personenbezogenen Daten (Hyperlink zu bestimmten Politik)&lt;/b&gt;</value>
+  </data>
+  <data name="Medical History" xml:space="preserve">
+    <value>Krankengeschichte</value>
+  </data>
+  <data name="Medication" xml:space="preserve">
+    <value>Medikation</value>
+  </data>
+  <data name="Medication &lt;small&gt;(Record Generic or trade name)&lt;/small&gt;" xml:space="preserve">
+    <value>Medikamente &lt;small&gt;(Record Generika oder Handelsname)&lt;/small&gt;</value>
+  </data>
+  <data name="Medications" xml:space="preserve">
+    <value>Medikamente</value>
+  </data>
+  <data name="Modifiez vos paramètres de compte" xml:space="preserve">
+    <value>Modifiez vos paramètres de compte</value>
+  </data>
+  <data name="Médecin ou pharmacien" xml:space="preserve">
+    <value>Médecin ou pharmacien</value>
+  </data>
+  <data name="Name" xml:space="preserve">
+    <value>Name</value>
+  </data>
+  <data name="Name of the legal representative, if applicable" xml:space="preserve">
+    <value>Name des gesetzlichen Vertreters, falls zutreffend</value>
+  </data>
+  <data name="Name of the patient" xml:space="preserve">
+    <value>Name des Patienten</value>
+  </data>
+  <data name="Navigation" xml:space="preserve">
+    <value>Navigation</value>
+  </data>
+  <data name="New Requested" xml:space="preserve">
+    <value>New Gewünscht</value>
+  </data>
+  <data name="No" xml:space="preserve">
+    <value>Nein</value>
+  </data>
+  <data name="No decisions are based solely on automated data processing." xml:space="preserve">
+    <value>Keine Entscheidungen basieren ausschließlich auf eine automatisierte Datenverarbeitung.</value>
+  </data>
+  <data name="Non Applicable" xml:space="preserve">
+    <value>Nicht anwendbar</value>
+  </data>
+  <data name="Object to the processing of your data where the organisation is relying on its legitimate interests as the legal ground for processing." xml:space="preserve">
+    <value>Objekt der Verarbeitung Ihrer Daten, bei denen die Organisation auf ihren berechtigten Interessen als Rechtsgrund für die Verarbeitung zu verlassen.</value>
+  </data>
+  <data name="Off-label" xml:space="preserve">
+    <value>Off-label</value>
+  </data>
+  <data name="OK" xml:space="preserve">
+    <value>OK</value>
+  </data>
+  <data name="On-label" xml:space="preserve">
+    <value>On-Label</value>
+  </data>
+  <data name="Once approved, a Prescribers Reference ID will be generated and assigned to yourself via email from the lead sponsor, allowing you to proceed to fill out the baseline data form accordingly, which is available to you on the website." xml:space="preserve">
+    <value>Nach der Genehmigung wird eine Prescribers Referenz-ID generiert und an sich selbst per E-Mail aus dem Hauptsponsor zugeordnet werden, so dass Sie die Basisdaten Form entsprechend auszufüllen, um fortzufahren, die auf der Website zur Verfügung steht.</value>
+  </data>
+  <data name="Once the informed consent form has been completed and signed by the patient, please proceed to upload a scanned copy of the document, and we request you to shred the physical copy for privacy purposes, unless otherwise stated as per your organisations’ privacy procedures." xml:space="preserve">
+    <value>Sobald die Einwilligungserklärung abgeschlossen ist und vom Patienten unterschrieben, gehen Sie bitte eine gescannte Kopie des Dokuments zu laden, und wir fordern Sie die physische Kopie für Datenschutzgründen zerkleinern, wenn nicht anders als pro Ihre Organisationen Privatsphäre Verfahren angegeben.</value>
+  </data>
+  <data name="Once you delete, it can not be retrieved." xml:space="preserve">
+    <value>Sobald Sie löschen, kann es nicht mehr abgerufen werden.</value>
+  </data>
+  <data name="Once you deleted it can not be retrieved." xml:space="preserve">
+    <value>Sobald Sie es gelöscht wird, kann nicht mehr abgerufen werden.</value>
+  </data>
+  <data name="or" xml:space="preserve">
+    <value>oder</value>
+  </data>
+  <data name="Or tick if on going at Screening Visit" xml:space="preserve">
+    <value>Oder ankreuzen, wenn auf bei der Screening-Visite gehen</value>
+  </data>
+  <data name="Or tick if Ongoing?" xml:space="preserve">
+    <value>Oder ankreuzen, wenn Laufende?</value>
+  </data>
+  <data name="Other Indication, please specify:&lt;small&gt;(Off-label)&lt;/small&gt;" xml:space="preserve">
+    <value>Weitere Hinweise, bitte angeben: &lt;small&gt;(Off-label)&lt;/small&gt;</value>
+  </data>
+  <data name="Other medicines and cidofovir" xml:space="preserve">
+    <value>Andere Arzneimittel und Cidofovir</value>
+  </data>
+  <data name="Other outcomes" xml:space="preserve">
+    <value>Weitere Ergebnisse</value>
+  </data>
+  <data name="Other Specialization" xml:space="preserve">
+    <value>Weitere Spezialisierung</value>
+  </data>
+  <data name="Others (Specify)" xml:space="preserve">
+    <value>Andere (bitte angeben)</value>
+  </data>
+  <data name="Our Latest News" xml:space="preserve">
+    <value>Unsere neuesten Nachrichten</value>
+  </data>
+  <data name="Outcome" xml:space="preserve">
+    <value>Ergebnis</value>
+  </data>
+  <data name="Pass Study" xml:space="preserve">
+    <value>Pass-Studie</value>
+  </data>
+  <data name="Password" xml:space="preserve">
+    <value>Passwort</value>
+  </data>
+  <data name="Patient Details" xml:space="preserve">
+    <value>Patientendaten</value>
+  </data>
+  <data name="Patient experienced any AEs" xml:space="preserve">
+    <value>Patienten erfahren alle AEs</value>
+  </data>
+  <data name="Patient Feedback" xml:space="preserve">
+    <value>Patienten-Feedback</value>
+  </data>
+  <data name="Patient Id" xml:space="preserve">
+    <value>Patienten ID</value>
+  </data>
+  <data name="Patient List" xml:space="preserve">
+    <value>Patientenliste</value>
+  </data>
+  <data name="Patient Outcome" xml:space="preserve">
+    <value>Patient Outcome</value>
+  </data>
+  <data name="Patients should always ask their doctors for medical advice about adverse events." xml:space="preserve">
+    <value>Die Patienten sollten immer ihren Arzt für die medizinische Beratung über Nebenwirkungen fragen.</value>
+  </data>
+  <data name="Patients unable to receive probenecid or other sulfa containing medication" xml:space="preserve">
+    <value>Patienten nicht in der Lage zu Probenecid oder andere Sulfonamide enthalten Medikamente erhalten</value>
+  </data>
+  <data name="Patients with renal insufficiency" xml:space="preserve">
+    <value>Patienten mit Niereninsuffizienz</value>
+  </data>
+  <data name="Pediatric population (&amp;lt; 18 years of age)" xml:space="preserve">
+    <value>Kinder und Jugendliche (&amp; lt; 18 Jahre alt)</value>
+  </data>
+  <data name="Pharmacist" xml:space="preserve">
+    <value>Apotheker</value>
+  </data>
+  <data name="Pharmacovigilance" xml:space="preserve">
+    <value>Pharmakovigilanz</value>
+  </data>
+  <data name="Phosphate" xml:space="preserve">
+    <value>Phosphat</value>
+  </data>
+  <data name="Please check your email to reset your password." xml:space="preserve">
+    <value>Bitte überprüfen Sie Ihre E-Mail Ihr Passwort zurücksetzen können.</value>
+  </data>
+  <data name="Please enter exactly 10 digits" xml:space="preserve">
+    <value>Bitte geben Sie genau 10 Stellen</value>
+  </data>
+  <data name="Please fill required fields, in every section." xml:space="preserve">
+    <value>Bitte füllen erforderlichen Felder aus, in jedem Abschnitt.</value>
+  </data>
+  <data name="Please provide details regarding the final treatment regimen" xml:space="preserve">
+    <value>Bitte geben Sie Einzelheiten über das endgültige Behandlungsschema</value>
+  </data>
+  <data name="Please provide the following details regarding the intended treatment regimen" xml:space="preserve">
+    <value>Bitte geben Sie die folgenden Details in Bezug auf das Behandlungsschema bestimmt</value>
+  </data>
+  <data name="Please see below instructions on how to register patients for the study" xml:space="preserve">
+    <value>Nachfolgend finden Sie Anweisungen, wie Sie registrieren Patienten für die Studie</value>
+  </data>
+  <data name="Please select Specialization" xml:space="preserve">
+    <value>Bitte wählen Sie Spezialisierung</value>
+  </data>
+  <data name="Please specify" xml:space="preserve">
+    <value>Bitte geben Sie</value>
+  </data>
+  <data name="Please specify any significant/major illness, medical conditions or surgery in the past or at present." xml:space="preserve">
+    <value>Bitte geben Sie eine signifikante / schwere Krankheit, Erkrankungen oder Operationen in der Vergangenheit oder gegenwärtig.</value>
+  </data>
+  <data name="Please specify the patient’s outcome at this visit" xml:space="preserve">
+    <value>Bitte geben Sie das Ergebnis des Patienten bei diesem Besuch</value>
+  </data>
+  <data name="Please state if any changes in treatment regimen were made with regards to the following" xml:space="preserve">
+    <value>Geben Sie bitte, ob Änderungen in Behandlungsschema in Bezug auf die folgenden gemacht wurden</value>
+  </data>
+  <data name="Posology and Method of administration" xml:space="preserve">
+    <value>Dosierung und Art der Verabreichung</value>
+  </data>
+  <data name="Possible side effects" xml:space="preserve">
+    <value>Mögliche Nebenwirkungen</value>
+  </data>
+  <data name="Possible side effects of taking probenecid" xml:space="preserve">
+    <value>Mögliche Nebenwirkungen von Probenecid Einnahme</value>
+  </data>
+  <data name="Pregnancy and breast-feeding" xml:space="preserve">
+    <value>Schwangerschaft und Stillzeit</value>
+  </data>
+  <data name="Pregnant and Lactating Females, Females of child-bearing potential not using contraception" xml:space="preserve">
+    <value>Schwangere und stillende Frauen, Frauen im gebärfähigen mit Empfängnisverhütung Potenzial nicht</value>
+  </data>
+  <data name="Prescriber" xml:space="preserve">
+    <value>Verschreiber</value>
+  </data>
+  <data name="Prescriber Index" xml:space="preserve">
+    <value>Prescriber Index</value>
+  </data>
+  <data name="Prescriber's List" xml:space="preserve">
+    <value>Prescriber der Liste</value>
+  </data>
+  <data name="Prescribers Email Id" xml:space="preserve">
+    <value>Der verschreibende Arzt Email Id</value>
+  </data>
+  <data name="Prescriber’s Name" xml:space="preserve">
+    <value>Prescriber Name</value>
+  </data>
+  <data name="Prescriber’s Statement" xml:space="preserve">
+    <value>Prescriber Erklärung des</value>
+  </data>
+  <data name="Print Form" xml:space="preserve">
+    <value>Formular drucken</value>
+  </data>
+  <data name="Privacy notice" xml:space="preserve">
+    <value>Datenschutzerklärung</value>
+  </data>
+  <data name="Privacy Policy" xml:space="preserve">
+    <value>Datenschutz-Bestimmungen</value>
+  </data>
+  <data name="Probenecid tablets are given to lower the risk of kidney damage. You must take 3 doses of probenecid tablets orally on the same day as cidofovir as shown in the following table:&lt;/p&gt;" xml:space="preserve">
+    <value>Probenecid-Tabletten gegeben werden, das Risiko von Nierenschäden zu senken. Sie müssen 3 Dosen von Probenecid Tabletten oral am selben Tag wie Cidofovir, wie in der folgenden Tabelle dargestellt:&lt;/p&gt;</value>
+  </data>
+  <data name="Profile" xml:space="preserve">
+    <value>Profil</value>
+  </data>
+  <data name="Prénom" xml:space="preserve">
+    <value>Prénom</value>
+  </data>
+  <data name="Reason for use &lt;small&gt;(Medical History diagnosis or other reason, e.g. Prophylaxis)&lt;/small&gt;" xml:space="preserve">
+    <value>Grund für die Verwendung &lt;small&gt;(Anamnese Diagnose oder aus anderen Gründen, zB Prophylaxis)&lt;/small&gt;</value>
+  </data>
+  <data name="Record has been added successfully." xml:space="preserve">
+    <value>Die Bilanz wurde erfolgreich hinzugefügt.</value>
+  </data>
+  <data name="Record has been Approved successfully." xml:space="preserve">
+    <value>Die Bilanz wurde erfolgreich genehmigt.</value>
+  </data>
+  <data name="Record has been Deactivated successfully." xml:space="preserve">
+    <value>Der Datensatz wurde erfolgreich deaktiviert.</value>
+  </data>
+  <data name="Record has been deleted successfully." xml:space="preserve">
+    <value>Der Datensatz wurde erfolgreich gelöscht.</value>
+  </data>
+  <data name="Record has been Rejected successfully." xml:space="preserve">
+    <value>Die Bilanz wurde erfolgreich abgelehnt.</value>
+  </data>
+  <data name="Register" xml:space="preserve">
+    <value>Registrieren</value>
+  </data>
+  <data name="Registered Patients" xml:space="preserve">
+    <value>Registrierte Patienten</value>
+  </data>
+  <data name="Registered Patients List" xml:space="preserve">
+    <value>Registrierte Patientenliste</value>
+  </data>
+  <data name="Registration Number" xml:space="preserve">
+    <value>Registrationsnummer</value>
+  </data>
+  <data name="Registry Information" xml:space="preserve">
+    <value>Registry Informationen</value>
+  </data>
+  <data name="Reject" xml:space="preserve">
+    <value>Ablehnen</value>
+  </data>
+  <data name="Rejected" xml:space="preserve">
+    <value>Abgelehnt</value>
+  </data>
+  <data name="Relationship to Study Drug" xml:space="preserve">
+    <value>Beziehung Drug Study</value>
+  </data>
+  <data name="Relevant Laboratory Investigations" xml:space="preserve">
+    <value>Relevante Laboruntersuchungen</value>
+  </data>
+  <data name="Remarks" xml:space="preserve">
+    <value>Bemerkungen</value>
+  </data>
+  <data name="Remember me" xml:space="preserve">
+    <value>Erinnere dich an mich</value>
+  </data>
+  <data name="Remove Last" xml:space="preserve">
+    <value>entfernen Last</value>
+  </data>
+  <data name="Reports of adverse effects potentially arising from consumption of products referred to as &lt;b&gt;PV-related personal data (hyperlink to specific policy)&lt;/b&gt;" xml:space="preserve">
+    <value>Berichte über Nebenwirkungen möglicherweise durch den Verzehr von Produkten entstehen, die als &lt;b&gt;PV-bezogenen persönliche Daten (Hyperlink zu bestimmten Politik)&lt;/b&gt;</value>
+  </data>
+  <data name="Reports of potential product quality defects where there are no pharmacovigilance consequences, referred to as &lt;b&gt;product quality complaint-related personal data (hyperlink to specific policy)&lt;/b&gt;" xml:space="preserve">
+    <value>Berichte über mögliche Produktqualitätsmängel, wo es keine Pharmakovigilanz Folgen, die als &lt;b&gt;Produktqualität Beschwerde bezogenen persönliche Daten (Hyperlink zu bestimmten Politik)&lt;/b&gt;</value>
+  </data>
+  <data name="Require the organisation to delete or stop processing your data, for example where the data is no longer necessary for the purposes of processing; and" xml:space="preserve">
+    <value>Erfordern die Organisation zu löschen oder zu verhindern, dass Ihre Datenverarbeitung, zum Beispiel, wo die Daten nicht mehr für die Zwecke der Verarbeitung erforderlich sind; und</value>
+  </data>
+  <data name="Reset" xml:space="preserve">
+    <value>rücksetzen</value>
+  </data>
+  <data name="Reset password confirmation" xml:space="preserve">
+    <value>Reset Passwortbestätigung</value>
+  </data>
+  <data name="Route" xml:space="preserve">
+    <value>Route</value>
+  </data>
+  <data name="Route of administration &lt;small&gt;(IV, Intraocular, Topical, etc.)&lt;/small&gt;" xml:space="preserve">
+    <value>Verabreichungsro &lt;small&gt;(IV, intraokulare, Topical usw.)&lt;/small&gt;</value>
+  </data>
+  <data name="SAE" xml:space="preserve">
+    <value>SAE</value>
+  </data>
+  <data name="Save" xml:space="preserve">
+    <value>sparen</value>
+  </data>
+  <data name="Security Question" xml:space="preserve">
+    <value>Sicherheitsfrage</value>
+  </data>
+  <data name="Send" xml:space="preserve">
+    <value>Senden</value>
+  </data>
+  <data name="Serology" xml:space="preserve">
+    <value>Serologie</value>
+  </data>
+  <data name="Sex" xml:space="preserve">
+    <value>Sex</value>
+  </data>
+  <data name="Signature" xml:space="preserve">
+    <value>Unterschrift</value>
+  </data>
+  <data name="Signature of the patient/legal representative confirming that he/she understood the content of the consent form" xml:space="preserve">
+    <value>Unterschrift des Patienten / gesetzlichen Vertreter bestätigt, dass er / sie den Inhalt der Einwilligungserklärung verstanden</value>
+  </data>
+  <data name="Signatureof the patient/legal representative confirming that he/she understood the content of the consent form" xml:space="preserve">
+    <value>Signatureof der Patient / die er gesetzliche Vertreter bestätigt / verstand sie den Inhalt der Einwilligungserklärung</value>
+  </data>
+  <data name="Some text in the modal." xml:space="preserve">
+    <value>Text in der modal.</value>
+  </data>
+  <data name="Specialisation" xml:space="preserve">
+    <value>Spezialisierung</value>
+  </data>
+  <data name="Specialization" xml:space="preserve">
+    <value>Spezialisierung</value>
+  </data>
+  <data name="Specification" xml:space="preserve">
+    <value>Spezifikation</value>
+  </data>
+  <data name="Sr. No." xml:space="preserve">
+    <value>Sr. Nr</value>
+  </data>
+  <data name="Sr.No." xml:space="preserve">
+    <value>Sr.Nr.</value>
+  </data>
+  <data name="Start Date" xml:space="preserve">
+    <value>Anfangsdatum</value>
+  </data>
+  <data name="Status" xml:space="preserve">
+    <value>Status</value>
+  </data>
+  <data name="Stop Date" xml:space="preserve">
+    <value>Stop-Datum</value>
+  </data>
+  <data name="Study Drug Action" xml:space="preserve">
+    <value>Studie Drogenaktions</value>
+  </data>
+  <data name="Study Title" xml:space="preserve">
+    <value>Studientitel</value>
+  </data>
+  <data name="Success" xml:space="preserve">
+    <value>Erfolg</value>
+  </data>
+  <data name="Telephone" xml:space="preserve">
+    <value>Telefon</value>
+  </data>
+  <data name="Telephone Number" xml:space="preserve">
+    <value>Telefonnummer</value>
+  </data>
+  <data name="Tenofovir containing medicines, used to treat HIV-1 infection and/or chronic hepatitis B infection aminoglycosides, pentamidine or vancomycin (for bacterial infections)" xml:space="preserve">
+    <value>Tenofovir haltigen Arzneimitteln, verwendete HIV-1-Infektion und / oder chronische Hepatitis-B-Infektion Aminoglykoside, Pentamidin oder Vancomycin (für bakterielle Infektionen) zu behandeln</value>
+  </data>
+  <data name="Tenofovir containing medicines, used to treat HIV-1 infection and/or chronic hepatitis B infectionaminoglycosides, pentamidine or vancomycin (for bacterial infections)" xml:space="preserve">
+    <value>Tenofovir haltigen Arzneimitteln, verwendete HIV-1-Infektion und / oder chronischen Hepatitis-B-infectionaminoglycosides, Pentamidin oder Vancomycin (für bakterielle Infektionen) zu behandeln</value>
+  </data>
+  <data name="Thank you for confirming your email." xml:space="preserve">
+    <value>Vielen Dank für Ihre E-Mail-Bestätigung.</value>
+  </data>
+  <data name="Thank you for your interest in the Cidofovir registry study. If you would like to participate in the study, please click on the ‘register’ link and fill the details as requested." xml:space="preserve">
+    <value>Vielen Dank für Ihr Interesse an der Cidofovir Registerstudie. Wenn Sie an der Studie teilnehmen möchten, klicken Sie bitte auf den ‚Register‘ Link und füllen Sie die Details wie gewünscht.</value>
+  </data>
+  <data name="Thank you registering your interest in Tillomed’s Cidofovir Exposure Registry Study" xml:space="preserve">
+    <value>Vielen Dank, dass Sie Ihr Interesse an Tillomed der Cidofovir Exposure Registry Studie Registrierung</value>
+  </data>
+  <data name="The data controller will be the holder of the marketing authorisation for the relevant product: Tillomed Laboratories Limited (UK), Tillomed Pharma GMBH (Germany or Belgium), Laboratorios Tillomed Spain (Spain)." xml:space="preserve">
+    <value>Tillomed Laboratories Limited (UK), Tillomed Pharma GMBH (Deutschland oder Belgien), Laboratorios Tillomed Spanien (Spanien): Der Daten-Controller wird für das jeweilige Produkt der Inhaber der Genehmigung für das Inverkehrbringen sein.</value>
+  </data>
+  <data name="The following criteria MUST be answered YES for participant to be included in the study. In case any of the criterion is NO, the patient will not be eligible to participate in the study" xml:space="preserve">
+    <value>Folgende Kriterien müssen beantwortet werden JA für Teilnehmer in die Studie aufgenommen werden. Falls ein des Kriteriums NEIN ist, wird nicht der Patient sein zur Teilnahme an der Studie teilzunehmen</value>
+  </data>
+  <data name="The lead sponsor will review the informed consent form accordingly and either approve or reject the patient registration which will be notified to you via email. Rejection will occur in the case of any incomplete information provided and we will prompt you to provide the missing information." xml:space="preserve">
+    <value>Der Hauptsponsor wird die Einwilligungserklärung entsprechend überprüft und entweder genehmigen oder die Patientenregistrierung abzulehnen, die per E-Mail an Sie benachrichtigt. Ablehnung tritt im Falle einer unvollständigen Informationen und wir werden Sie aufgefordert, die fehlenden Informationen zu liefern.</value>
+  </data>
+  <data name="The organisation collects and processes personal data relating to:" xml:space="preserve">
+    <value>Die Organisation sammelt und verarbeitet personenbezogene Daten in Bezug auf:</value>
+  </data>
+  <data name="The organisation is committed to being transparent about how it collects and uses that data and to meeting its data protection obligations." xml:space="preserve">
+    <value>Die Organisation hat sich verpflichtet, transparent darüber, wie es speichert und verwendet diese Daten und ihre Datenschutzverpflichtungen zu erfüllen.</value>
+  </data>
+  <data name="The organisation takes the security of your data seriously. The organisation has internal policies and controls in place to try to ensure that your data is not lost, accidentally destroyed, misused or disclosed, and is not accessed except by its employees in the performance of their duties." xml:space="preserve">
+    <value>Die Organisation nimmt die Sicherheit Ihrer Daten ernst. Die Organisation verfügt über interne Richtlinien und Kontrollen zu versuchen, Ihre Daten, um sicherzustellen, dass nicht verloren, versehentlich zerstört, missbräuchlich verwendet oder offen gelegt und sind nicht außer bei der Erfüllung ihrer Aufgaben von den Mitarbeitern abgerufen.</value>
+  </data>
+  <data name="The password and confirmation password do not match." xml:space="preserve">
+    <value>Das Passwort und Bestätigung Passwort stimmt nicht überein.</value>
+  </data>
+  <data name="The {0} must be at least {2} and at max {1} characters long." xml:space="preserve">
+    <value>Die {0} muss mindestens {2} und bei max {1} Zeichen lang.</value>
+  </data>
+  <data name="Therapy to continue" xml:space="preserve">
+    <value>Therapie fortsetzen</value>
+  </data>
+  <data name="This account has been locked out, please try again later." xml:space="preserve">
+    <value>Dieses Konto wird gesperrt wurde, bitte versuchen Sie es später noch einmal.</value>
+  </data>
+  <data name="This is an observational/non-interventional, multi-centre, multi-national, Cidofovir Exposure Registry based, cohort study with prospective patient enrolment and follow-up. This registry will spread across UK, France, Germany and Spain. The aim of this registry is to collect safety data in patients being prescribed Emcure’s Cidofovir formulation (Cidofovir Emcure Pharma 75 mg/ml Concentrate for Solution for Infusion). The information collected in this registry will be used to understand the pattern of side effects of Cidofovir use and the medical condition for which Cidofovir is being prescribed by you. This is a long term exposure study which would enable to identify new safety information of Cidofovir." xml:space="preserve">
+    <value>Dies ist eine Beobachtungs / nicht-interventionellen, multizentrischen, multinationalen, Cidofovir Exposure Registry basiert, Kohortenstudie mit potenziellen Patientenaufnahme und Follow-up. Diese Registrierung wird in Großbritannien, Frankreich, Deutschland und Spanien verbreiten. Das Ziel dieser Registrierung ist, Sicherheitsdaten von Patienten zu sammeln Cidofovir verschrieben Formulierung des Emcure (Cidofovir Emcure Pharma 75 mg / ml Konzentrat zur Herstellung einer Infusionslösung). Die Informationen in diesem Register gesammelt werden das Muster der Nebenwirkungen von Cidofovir Verwendung und dem medizinischen Zustandes, für die Cidofovir von Ihnen vorgeschrieben wird, verstehen verwendet werden. Dies ist eine langfristige Exposition Studie, die neuen Sicherheitsinformationen von Cidofovir zu identifizieren ermöglichen würde.</value>
+  </data>
+  <data name="Tillomed group of companies (each referred to in this privacy notice as ‘organisation‘) collect and process personal data belonging to a number of categories of individuals." xml:space="preserve">
+    <value>Tillomed Unternehmensgruppe (jeweils in dieser Datenschutzerklärung als ‚Organisation‘ bezeichnet) sammeln und zu verarbeiten personenbezogene Daten, die zu einer Reihe von Kategorien von Individuen.</value>
+  </data>
+  <data name="Tillomed is a European Pharmaceutical company with headquarters in the UK and subsidiaries in France, Spain, Germany, Italy and MENA." xml:space="preserve">
+    <value>Tillomed ist ein europäisches Pharmaunternehmen mit Sitz in Großbritannien und Niederlassungen in Frankreich, Spanien, Deutschland, Italien und MENA.</value>
+  </data>
+  <data name="Tillomed is owned by Emcure Pharma UK Ltd. one of India's leading pharmaceutical companies." xml:space="preserve">
+    <value>Tillomed wird von Emcure Pharma UK Ltd ist einer der führenden indischen Pharmaunternehmen gehören.</value>
+  </data>
+  <data name="Tillomed specialises in the licensing and marketing of generic pharmaceuticals which meet genuine needs and deliver effective, high-quality, sustainable healthcare." xml:space="preserve">
+    <value>Tillomed ist spezialisiert auf die Lizenzierung und Vermarktung von Generika, die echte Bedürfnisse zu erfüllen und liefern effektive, qualitativ hochwertige, nachhaltige Gesundheitsversorgung.</value>
+  </data>
+  <data name="Time" xml:space="preserve">
+    <value>Zeit</value>
+  </data>
+  <data name="To assess patient outcome following treatment in specified indication." xml:space="preserve">
+    <value>nach der Behandlung Patienten-Ergebnis in der angegebenen Indikation zu beurteilen.</value>
+  </data>
+  <data name="To evaluate patterns and incidence of the occurrence of adverse events in patients who are being treated for the indication authorized for Cidofovir as against any other indication for which it may be prescribed." xml:space="preserve">
+    <value>Um Muster und Häufigkeit des Auftretens von Nebenwirkungen bei Patienten zu bewerten, die für die Indikation für Cidofovir gegenüber jeder anderen Indikation autorisiert behandelt werden, für die es vorgeschrieben werden kann.</value>
+  </data>
+  <data name="To identify the indications and patient populations for Cidofovir use." xml:space="preserve">
+    <value>Um die Indikationen und Patientenpopulationen für Cidofovir Verwendung zu identifizieren.</value>
+  </data>
+  <data name="Total" xml:space="preserve">
+    <value>Gesamt</value>
+  </data>
+  <data name="Total Dose Administered" xml:space="preserve">
+    <value>Gesamtdosis</value>
+  </data>
+  <data name="Total duration of treatment" xml:space="preserve">
+    <value>Gesamtdauer der Behandlung</value>
+  </data>
+  <data name="Treatment discontinued due to AE/SAE" xml:space="preserve">
+    <value>Behandlung abgebrochen aufgrund AE / SAE</value>
+  </data>
+  <data name="Treatment Init Details" xml:space="preserve">
+    <value>Behandlung Init Details</value>
+  </data>
+  <data name="Treatment of CMV retinitis in adults with acquired immunodeficiency syndrome (AIDS) and without renal dysfunction. It should be used only when other medicinal products are considered unsuitable." xml:space="preserve">
+    <value>Behandlung von CMV-Retinitis bei Erwachsenen mit erworbener Immunschwäche (AIDS) und ohne Störung der Nierenfunktion. Es sollte nur verwendet werden, wenn andere Arzneimittel als ungeeignet angesehen werden.</value>
+  </data>
+  <data name="Treatment regimen complete" xml:space="preserve">
+    <value>Behandlungsschema komplett</value>
+  </data>
+  <data name="Underlying illness resolved" xml:space="preserve">
+    <value>Grunderkrankung behoben</value>
+  </data>
+  <data name="Update password" xml:space="preserve">
+    <value>Passwort erneuern</value>
+  </data>
+  <data name="Upload Document" xml:space="preserve">
+    <value>Dokument hochladen</value>
+  </data>
+  <data name="Upon receiving approval from the lead sponsor for your successful HCP registration via email, when you are prescribing a patient with Cidofovir, please present them with the synopsis provided in the packaging of Tillomed Cidofovir detailing the rationale and objectives for this study. If patient is willing to participate in the study, please proceed to present them with the informed consent form for their completion and signature, which is available on the website." xml:space="preserve">
+    <value>Nach dem Empfang Genehmigung der Hauptsponsor für Ihre erfolgreiche HCP Anmeldung per E-Mail, wenn Sie einen Patienten mit Cidofovir verschreiben Bitte legen Sie sie mit der Synopse in der Verpackung von Tillomed Cidofovir detailliert die Gründe und Ziele für diese Studie. Wenn der Patient bereit ist, an der Studie teilzunehmen, gehen Sie sie mit der Einwilligungserklärung für ihren Abschluss und Unterschrift zu präsentieren, die auf der Website zur Verfügung steht.</value>
+  </data>
+  <data name="Upon successful uploading and approval of the baseline data form from lead sponsor via email, your patient will be successfully registered onto the study and will be assigned and Patient Reference ID." xml:space="preserve">
+    <value>Nach dem erfolgreichen Hochladen und Genehmigung der Basisdaten Form von Hauptsponsor per E-Mail, wird Ihre Patienten erfolgreich auf die Studie registriert und werden zugewiesen und Patienten-Referenz-ID werden.</value>
+  </data>
+  <data name="Urea" xml:space="preserve">
+    <value>Harnstoff</value>
+  </data>
+  <data name="Uric acid" xml:space="preserve">
+    <value>Harnsäure</value>
+  </data>
+  <data name="Urine analysis (including glycosuria)" xml:space="preserve">
+    <value>Urinanalyse (einschließlich Glukosurie)</value>
+  </data>
+  <data name="Use in Special Populations" xml:space="preserve">
+    <value>Verwenden Sie bei speziellen Patienten</value>
+  </data>
+  <data name="Verification Code" xml:space="preserve">
+    <value>Verifizierungs-Schlüssel</value>
+  </data>
+  <data name="Very common side effects" xml:space="preserve">
+    <value>Sehr häufige Nebenwirkungen</value>
+  </data>
+  <data name="View" xml:space="preserve">
+    <value>Aussicht</value>
+  </data>
+  <data name="View Details" xml:space="preserve">
+    <value>Details anzeigen</value>
+  </data>
+  <data name="View Prescriber" xml:space="preserve">
+    <value>Ansicht Prescriber</value>
+  </data>
+  <data name="View Prescriber Details" xml:space="preserve">
+    <value>Ansicht Prescriber Einzelheiten</value>
+  </data>
+  <data name="Warnings and precautions" xml:space="preserve">
+    <value>Warnungen und Vorsichtsmaßnahmen</value>
+  </data>
+  <data name="WE CARE ABOUT YOUR &lt;span&gt;HEALTH&lt;/span&gt;" xml:space="preserve">
+    <value>Wir sorgen für Ihre &lt;span&gt;Gesundheit&lt;/span&gt;</value>
+  </data>
+  <data name="We will be pleased to answer any questions or queries you may have." xml:space="preserve">
+    <value>Wir freuen uns jederzeit bei Fragen zu beantworten, die Sie haben.</value>
+  </data>
+  <data name="We're sorry, page you're looking for is, sadly, not here." xml:space="preserve">
+    <value>Leider Seite Sie suchen ist leider nicht hier.</value>
+  </data>
+  <data name="Welcome to" xml:space="preserve">
+    <value>Willkommen zu</value>
+  </data>
+  <data name="Welcome to the &lt;span&gt;Cidofovir&lt;/span&gt; Exposure Registry of Emcure Pharma UK Ltd." xml:space="preserve">
+    <value>Willkommen in der &lt;span&gt;Cidofovir&lt;/span&gt; Exposure Registry von Emcure Pharma UK Ltd.</value>
+  </data>
+  <data name="What Cidofovir is and what it is used for?" xml:space="preserve">
+    <value>Was Cidofovir ist und was es für wird verwendet?</value>
+  </data>
+  <data name="What if you do not provide personal data?" xml:space="preserve">
+    <value>Was passiert, wenn Sie persönliche Daten nicht zur Verfügung stellen?</value>
+  </data>
+  <data name="What information the organisation collects?" xml:space="preserve">
+    <value>Welche Informationen sammelt die Organisation?</value>
+  </data>
+  <data name="What is CMV retinitis?" xml:space="preserve">
+    <value>Was ist CMV-Retinitis?</value>
+  </data>
+  <data name="What you need to know before you use Cidofovir" xml:space="preserve">
+    <value>Was Sie wissen müssen, bevor Sie Cidofovir verwenden</value>
+  </data>
+  <data name="Where the information comes from?" xml:space="preserve">
+    <value>Wo die Informationen stammen aus?</value>
+  </data>
+  <data name="Where the organisation engages third parties to process personal data on its behalf, they do so on the basis of written instructions, are under a duty of confidentiality and are obliged to implement appropriate technical and organisational measures to ensure the security of data." xml:space="preserve">
+    <value>Wenn die Organisation Dritter engages personenbezogenen Daten in seinem Auftrag zu verarbeiten, sie sind so auf der Grundlage von schriftlichen Anweisungen, unter einer Geheimhaltungspflicht und sind verpflichtet, geeignete technische und organisatorische Maßnahmen zu ergreifen, um die Sicherheit der Daten zu gewährleisten.</value>
+  </data>
+  <data name="Who your data will be disclosed to?" xml:space="preserve">
+    <value>Wer Ihre Daten werden offenbart?</value>
+  </data>
+  <data name="Why your data is processed, where we store it and for how long we retain it?" xml:space="preserve">
+    <value>Warum Ihre Daten verarbeitet werden, wo wir sie speichern und wie lange wir es behalten?</value>
+  </data>
+  <data name="Withdrawal" xml:space="preserve">
+    <value>Rückzug</value>
+  </data>
+  <data name="Yes" xml:space="preserve">
+    <value>Ja</value>
+  </data>
+  <data name="You can access more information using the links above to pages which explain:" xml:space="preserve">
+    <value>Sie können mehr Informationen Zugriff auf die Links oben auf Seiten verwendet, die erklären:</value>
+  </data>
+  <data name="You do not have access to this resource." xml:space="preserve">
+    <value>Sie haben keinen Zugriff auf diese Ressource.</value>
+  </data>
+  <data name="You have requested to login with a recovery code. This login will not be remembered until you provide an authenticator app code at login or disable 2FA and login again." xml:space="preserve">
+    <value>Sie haben angefordert, mit einem Wiederherstellungscode anmelden. Dieses Login wird nicht gespeichert, bis Sie einen Authenticator App-Code bei der Anmeldung zur Verfügung stellen oder 2FA deaktivieren und wieder anmelden.</value>
+  </data>
+  <data name="You have successfully signed out." xml:space="preserve">
+    <value>Sie haben sich erfolgreich abgemeldet.</value>
+  </data>
+  <data name="You may report an adverse event related to Tillomed products by calling" xml:space="preserve">
+    <value>Sie können ein unerwünschtes Ereignis zu Tillomed Produkte im Zusammenhang berichten durch den Aufruf</value>
+  </data>
+  <data name="Your login is protected with an authenticator app. Enter your authenticator code below." xml:space="preserve">
+    <value>Ihr Login ist mit einem Authenticator App geschützt. Geben Sie Ihren Authenticator-Code unten.</value>
+  </data>
+  <data name="Your password has been reset" xml:space="preserve">
+    <value>Dein Passwort wurde zurück gesetzt</value>
+  </data>
+  <data name="Your password has been reset." xml:space="preserve">
+    <value>Dein Passwort wurde zurück gesetzt.</value>
+  </data>
+  <data name="Your rights" xml:space="preserve">
+    <value>Deine Rechte</value>
+  </data>
+  <data name="Study" xml:space="preserve">
+    <value>Studie</value>
+  </data>
+  <data name="Please select Question" xml:space="preserve">
+    <value>Bitte wählen Sie Frage</value>
+  </data>
+  <data name="Please select Specialisation" xml:space="preserve">
+    <value>Bitte wählen Sie Spezialisierung</value>
+  </data>
+  <data name="Baseline Data Form is verified and approved." xml:space="preserve">
+    <value>Baseline-Datenformular überprüft und genehmigt.</value>
+  </data>
+  <data name="Cidofovir Treatment Initiation Details" xml:space="preserve">
+    <value>Cidofovir BEHANDLUNGSEINLEITUN Einzelheiten</value>
+  </data>
+  <data name="Con-comitant Medication given1" xml:space="preserve">
+    <value>Con-comitant Medikamente gegeben</value>
+  </data>
+  <data name="Demographic Data" xml:space="preserve">
+    <value>Demografische Daten</value>
+  </data>
+  <data name="Informed Consent and Eligibility" xml:space="preserve">
+    <value>Einwilligungserklärung und Teilnahmeberechtigung</value>
+  </data>
+  <data name="Informed Consent Form is verified and approved." xml:space="preserve">
+    <value>Einwilligungserklärung überprüft und genehmigt.</value>
+  </data>
+  <data name="Must be between {2} and {1} characters long." xml:space="preserve">
+    <value>Muss zwischen {2} und {1} Zeichen lang sein.</value>
+  </data>
+  <data name="Other Indication, please specify" xml:space="preserve">
+    <value>Weitere Hinweise, bitte angeben</value>
+  </data>
+  <data name="Please verify and approve Baseline Data Form to register a patient." xml:space="preserve">
+    <value>Bitte überprüfen und genehmigen Basisdaten Formular, um einen Patienten zu registrieren.</value>
+  </data>
+  <data name="Please verify and approve Informed Consent Form to register a patient." xml:space="preserve">
+    <value>Bitte überprüfen und Einwilligungserklärung genehmigen, einen Patienten zu registrieren.</value>
+  </data>
+  <data name="Prescriber Name" xml:space="preserve">
+    <value>prescriber Namen</value>
+  </data>
+  <data name="Prescriber’s Sign Off" xml:space="preserve">
+    <value>Prescriber-Zeichen aus</value>
+  </data>
+  <data name="Reason for use" xml:space="preserve">
+    <value>Grund für den Einsatz</value>
+  </data>
+  <data name="Required Date Participant" xml:space="preserve">
+    <value>Erforderlich Datum Teilnehmer</value>
+  </data>
+  <data name="Terms and Conditions" xml:space="preserve">
+    <value>Geschäftsbedingungen</value>
+  </data>
+  <data name="The Date of Assessment field is required." xml:space="preserve">
+    <value>Das Datum der Beurteilung ist erforderlich.</value>
+  </data>
+  <data name="The Date of Birth field is required." xml:space="preserve">
+    <value>Das Geburtsdatum ist erforderlich.</value>
+  </data>
+  <data name="The Dosage and units field is required." xml:space="preserve">
+    <value>Die Dosierung und Einheiten ist erforderlich.</value>
+  </data>
+  <data name="The Frequency field is required." xml:space="preserve">
+    <value>Die Frequenz ist erforderlich.</value>
+  </data>
+  <data name="The Indication field is required." xml:space="preserve">
+    <value>Die Anzeige ist erforderlich.</value>
+  </data>
+  <data name="The Medical Condition field is required." xml:space="preserve">
+    <value>Der medizinische Zustand ist erforderlich.</value>
+  </data>
+  <data name="The Medication field is required." xml:space="preserve">
+    <value>Das Medikament ist erforderlich.</value>
+  </data>
+  <data name="The Reason for use field is required." xml:space="preserve">
+    <value>Der Grund für die Verwendung ist erforderlich.</value>
+  </data>
+  <data name="The Remarks field is required." xml:space="preserve">
+    <value>Die Bemerkungen ist erforderlich.</value>
+  </data>
+  <data name="The Route field is required." xml:space="preserve">
+    <value>Die Strecke ist erforderlich.</value>
+  </data>
+  <data name="The Start Date field is required." xml:space="preserve">
+    <value>Das Startdatum ist erforderlich.</value>
+  </data>
+  <data name="The Stop Date field is required." xml:space="preserve">
+    <value>Das Stop-Datum ist erforderlich.</value>
+  </data>
+  <data name="The Total Dose Administered field is required." xml:space="preserve">
+    <value>Die Gesamtdosis ist erforderlich.</value>
+  </data>
+  <data name="The Total duration of treatment field is required." xml:space="preserve">
+    <value>Die Gesamtdauer der Behandlung ist erforderlich.</value>
+  </data>
+  <data name="You gotta tick the box" xml:space="preserve">
+    <value>Du musst das Kästchen ankreuzen</value>
+  </data>
+  <data name="You gotta tick the box!" xml:space="preserve">
+    <value>Du musst das Kästchen ankreuzen!</value>
+  </data>
+  <data name="All Prescriber" xml:space="preserve">
+    <value>Alle Prescriber</value>
+  </data>
+  <data name="Saved Successfully" xml:space="preserve">
+    <value>Erfolgreich Gespeichert</value>
+  </data>
+  <data name="Updated Successfully" xml:space="preserve">
+    <value>Erfolgreich Geupdated</value>
+  </data>
+  <data name="Activated Successfully" xml:space="preserve">
+    <value>aktiviert erfolgreich</value>
+  </data>
+  <data name="Approved Successfully" xml:space="preserve">
+    <value>Erfolgreich genehmigt</value>
+  </data>
+  <data name="Authentication Security Question" xml:space="preserve">
+    <value>Authentifizierung Sicherheitsfrage</value>
+  </data>
+  <data name="Confirm new password" xml:space="preserve">
+    <value>Bestätige neues Passwort</value>
+  </data>
+  <data name="Cover Letter" xml:space="preserve">
+    <value>Motivationsschreiben</value>
+  </data>
+  <data name="Current password" xml:space="preserve">
+    <value>Derzeitiges Passwort</value>
+  </data>
+  <data name="Deactivated Successfully" xml:space="preserve">
+    <value>Erfolgreich deaktiviert</value>
+  </data>
+  <data name="Deleted Successfully" xml:space="preserve">
+    <value>Erfolgreich gelöscht</value>
+  </data>
+  <data name="Manage your account1" xml:space="preserve">
+    <value>Verwalte Dein Konto</value>
+  </data>
+  <data name="New password" xml:space="preserve">
+    <value>Neues Kennwort</value>
+  </data>
+  <data name="Partially Approved" xml:space="preserve">
+    <value>teilweise genehmigt</value>
+  </data>
+  <data name="Partially Rejected" xml:space="preserve">
+    <value>teilweise abgelehnt</value>
+  </data>
+  <data name="Pending Approval" xml:space="preserve">
+    <value>Ausstehende Genehmigung</value>
+  </data>
+  <data name="Prescriber’s Guide" xml:space="preserve">
+    <value>Prescriber Guide</value>
+  </data>
+  <data name="Product" xml:space="preserve">
+    <value>Produkt</value>
+  </data>
+  <data name="Protocol Synopsis" xml:space="preserve">
+    <value>Protokoll Synopsis</value>
+  </data>
+  <data name="Question" xml:space="preserve">
+    <value>Frage</value>
+  </data>
+  <data name="Regular Error" xml:space="preserve">
+    <value>Regelmäßige Fehler</value>
+  </data>
+  <data name="Rejected Successfully" xml:space="preserve">
+    <value>abgelehnt Erfolgreich</value>
+  </data>
+  <data name="The new password and confirmation password do not match." xml:space="preserve">
+    <value>Das neue Passwort und Bestätigung Passwort stimmt nicht überein.</value>
+  </data>
+  <data name="The {0} must be at least {2} characters long." xml:space="preserve">
+    <value>Die {0} muss mindestens {2} Zeichen lang sein.</value>
+  </data>
+  <data name="Username" xml:space="preserve">
+    <value>Nutzername</value>
+  </data>
+  <data name="Your credentials for the Tillomed portal" xml:space="preserve">
+    <value>Ihre Anmeldeinformationen für das Tillomed Portal</value>
+  </data>
+  <data name="Medical Conditions And Medications" xml:space="preserve">
+    <value>Medizinische Bedingungen und Medikamente</value>
+  </data>
+  <data name="The Email field is required." xml:space="preserve">
+    <value>Das E-Mail-Feld muss ausgefüllt werden.</value>
+  </data>
+  <data name="The Password field is required." xml:space="preserve">
+    <value>Das Feld Passwort ist erforderlich.</value>
+  </data>
+  <data name="Reason for Deactivation" xml:space="preserve">
+    <value>Grund für die Deaktivierung</value>
+  </data>
+  <data name="Deactivate Prescriber" xml:space="preserve">
+    <value>Grund für die Deaktivierung</value>
+  </data>
+  <data name="Reject Prescriber" xml:space="preserve">
+    <value>Verweis ablehnen</value>
+  </data>
+  <data name="HCP Registration Number" xml:space="preserve">
+    <value>HCP-Registrierungsnummer</value>
+  </data>
+  <data name="Invalid Number" xml:space="preserve">
+    <value>Ungültige Nummer</value>
+  </data>
+  <data name="The '{0}' field is not a valid email address." xml:space="preserve">
+    <value>Das Feld "{0}" ist keine gültige E-Mail-Adresse.</value>
+  </data>
+  <data name="The {0} field is required." xml:space="preserve">
+    <value>Das Feld {0} ist erforderlich.</value>
+  </data>
+  <data name="Use letters only please" xml:space="preserve">
+    <value>Verwenden Sie bitte nur Buchstaben</value>
+  </data>
+  <data name="Other Specialisation" xml:space="preserve">
+    <value>Andere Spezialisierung</value>
+  </data>
+  <data name="The '{0}' field is required." xml:space="preserve">
+    <value>Das Feld "{0}" ist erforderlich.</value>
+  </data>
+  <data name="Download Details" xml:space="preserve">
+    <value>Details herunterladen</value>
+  </data>
+  <data name="Upload Signed Form" xml:space="preserve">
+    <value>Signiertes Formular hochladen</value>
+  </data>
+  <data name="Is the patient or patient proxy (in event the patient is unable to consent) willing to provide written informed consent?" xml:space="preserve">
+    <value>Ist der Patient oder Patientenvertreter (falls der Patient nicht einverstanden ist) bereit, eine schriftliche Einverständniserklärung abzugeben?</value>
+  </data>
+  <data name="Please select the file to upload" xml:space="preserve">
+    <value>Bitte wählen Sie die hochzuladende Datei aus</value>
+  </data>
+  <data name="Informed Consent Form Upload" xml:space="preserve">
+    <value>Informiertes Einverständnisformular hochladen</value>
+  </data>
+  <data name="Browse" xml:space="preserve">
+    <value>Durchsuche</value>
+  </data>
+  <data name="Reason for Rejection" xml:space="preserve">
+    <value>Grund für die Ablehnung</value>
+  </data>
+  <data name="Reject Patient" xml:space="preserve">
+    <value>Patienten ablehnen</value>
+  </data>
+  <data name="Select File" xml:space="preserve">
+    <value>Datei aussuchen</value>
+  </data>
+  <data name="Upload" xml:space="preserve">
+    <value>Hochladen</value>
+  </data>
+  <data name="The Patient is Not Approved for Cidofovir Study." xml:space="preserve">
+    <value>Der Patient ist nicht für die Cidofovir-Studie zugelassen.</value>
+  </data>
+  <data name="Informed Consent Form is Approved Please go ahead and Approve the Baseline Data Form to Successfully Register a Patient for Cidofovir Exposure Study." xml:space="preserve">
+    <value>Informiertes Einwilligungsformular wird genehmigt Bitte genehmigen Sie das Basisdatenformular, um einen Patienten erfolgreich für die Cidofovir-Expositionsstudie zu registrieren.</value>
+  </data>
+  <data name="(filtered from _MAX_ total entries)" xml:space="preserve">
+    <value>(Gefiltert aus _MAX_ Gesamt Einträge)</value>
+  </data>
+  <data name="Age" xml:space="preserve">
+    <value>Alter</value>
+  </data>
+  <data name="Baseline Data" xml:space="preserve">
+    <value>Basisdaten</value>
+  </data>
+  <data name="Baseline Data Form are Modified" xml:space="preserve">
+    <value>Baseline-Datenformular sind Modified</value>
+  </data>
+  <data name="Cidofovir Therapy Dates" xml:space="preserve">
+    <value>Cidofovir-Therapie Termine</value>
+  </data>
+  <data name="Details" xml:space="preserve">
+    <value>Einzelheiten</value>
+  </data>
+  <data name="DOB" xml:space="preserve">
+    <value>DOB</value>
+  </data>
+  <data name="Dose (including units)" xml:space="preserve">
+    <value>Dosis (einschließlich Einheiten)</value>
+  </data>
+  <data name="Event Term (Diagnosis if known)" xml:space="preserve">
+    <value>Ereigniszeit (Diagnosis falls bekannt)</value>
+  </data>
+  <data name="File Extension Is InValid - Only Upload PDF File" xml:space="preserve">
+    <value>Dateierweiterung ist ungültig - Nur hochladen PDF-Datei</value>
+  </data>
+  <data name="File Not Selected" xml:space="preserve">
+    <value>Datei nicht ausgewählt</value>
+  </data>
+  <data name="First" xml:space="preserve">
+    <value>Zuerst</value>
+  </data>
+  <data name="Follow Up Date" xml:space="preserve">
+    <value>Follow-up-Termin</value>
+  </data>
+  <data name="HCP Name" xml:space="preserve">
+    <value>HCP-Name</value>
+  </data>
+  <data name="Informed Consent Form and Baseline Data Form are verified" xml:space="preserve">
+    <value>Einwilligungserklärung und Basisdatenformular werden überprüft</value>
+  </data>
+  <data name="Laboratory Investigations (If Any)" xml:space="preserve">
+    <value>Laboruntersuchungen (falls vorhanden)</value>
+  </data>
+  <data name="Last" xml:space="preserve">
+    <value>Zuletzt</value>
+  </data>
+  <data name="Loading..." xml:space="preserve">
+    <value>Wird geladen...</value>
+  </data>
+  <data name="Medical History (Illnesses, Conditions, Surgery)" xml:space="preserve">
+    <value>Medizingeschichte (Krankheiten, Bedingungen, Chirurgie)</value>
+  </data>
+  <data name="Medication (Record Generic or trade name)" xml:space="preserve">
+    <value>Medikamente (Record Generika oder Handelsname)</value>
+  </data>
+  <data name="Next" xml:space="preserve">
+    <value>Nächster</value>
+  </data>
+  <data name="No data available in table" xml:space="preserve">
+    <value>Keine Daten in der Tabelle verfügbar</value>
+  </data>
+  <data name="No matching records found" xml:space="preserve">
+    <value>Keine übereinstimmenden Aufzeichnungen gefunden</value>
+  </data>
+  <data name="Patient Not Selected" xml:space="preserve">
+    <value>Patient nicht ausgewählt</value>
+  </data>
+  <data name="Please" xml:space="preserve">
+    <value>Bitte</value>
+  </data>
+  <data name="Prescribers Reference ID" xml:space="preserve">
+    <value>Der verschreibende Arzt Referenz-ID</value>
+  </data>
+  <data name="Previous" xml:space="preserve">
+    <value>Bisherige</value>
+  </data>
+  <data name="Processing..." xml:space="preserve">
+    <value>Wird bearbeitet...</value>
+  </data>
+  <data name="Reason for use (Medical History diagnosis or other reason, e.g. Prophylaxis)" xml:space="preserve">
+    <value>Grund für den Einsatz (Anamnese Diagnose oder aus anderen Gründen, zB Prophylaxis)</value>
+  </data>
+  <data name="Route of administration (IV, Intraocular, Topical, etc.)" xml:space="preserve">
+    <value>Art der Verabreichung (IV, intraokular, topisch, etc.)</value>
+  </data>
+  <data name="Search" xml:space="preserve">
+    <value>Suche</value>
+  </data>
+  <data name="Server Side Validation Fail" xml:space="preserve">
+    <value>Server Side Validierung Fehler</value>
+  </data>
+  <data name="Show _MENU_ entries" xml:space="preserve">
+    <value>Zeigen _MENU_ Einträge</value>
+  </data>
+  <data name="Showing 0 to 0 of 0 entries" xml:space="preserve">
+    <value>Zeige 0 bis 0 von 0 Einträge</value>
+  </data>
+  <data name="Showing _START_ to _END_ of _TOTAL_ entries" xml:space="preserve">
+    <value>Zeige _start_ bis _END_ von _TOTAL_ Einträge</value>
+  </data>
+  <data name="Some error occure please contact to admin." xml:space="preserve">
+    <value>Einige Fehler occure bitte den Server-Betreiber kontaktieren.</value>
+  </data>
+  <data name="Please specify the reason" xml:space="preserve">
+    <value>Bitte geben Sie den Grund an</value>
+  </data>
+  <data name="Concurrent Medical Conditions And Medications" xml:space="preserve">
+    <value>Gleichzeitige Erkrankungen und Medikamente</value>
+  </data>
+  <data name="Follow Up Form Name" xml:space="preserve">
+    <value>Name des Folgeformulars</value>
+  </data>
+  <data name="Best Regards" xml:space="preserve">
+    <value>Freundliche Grüße</value>
+  </data>
+  <data name="Dear" xml:space="preserve">
+    <value>Sehr Geehrter</value>
+  </data>
+  <data name="Go To Portal" xml:space="preserve">
+    <value>Gehe zum Portal</value>
+  </data>
+  <data name="please contact" xml:space="preserve">
+    <value>kontaktieren Sie bitte</value>
+  </data>
+  <data name="Team" xml:space="preserve">
+    <value>Mannschaft</value>
+  </data>
+  <data name="User Name" xml:space="preserve">
+    <value>Nutzername</value>
+  </data>
+  <data name="You have any questions" xml:space="preserve">
+    <value>Hast du irgendwelche Fragen</value>
+  </data>
+  <data name="Thank you for Adding of Follow Up From" xml:space="preserve">
+    <value>Vielen Dank für das Hinzufügen von Follow-up von</value>
+  </data>
+  <data name="Thank you for Submission of Baseline Data Form" xml:space="preserve">
+    <value>Vielen Dank für die Übermittlung des Basisdatenformulars</value>
+  </data>
+  <data name="Thank you for Submission of Informed Consent Form" xml:space="preserve">
+    <value>Vielen Dank für die Einreichung des Formulars mit Einverständniserklärung</value>
+  </data>
+  <data name="Your Patient's" xml:space="preserve">
+    <value>Ihres Patienten</value>
+  </data>
+</root>

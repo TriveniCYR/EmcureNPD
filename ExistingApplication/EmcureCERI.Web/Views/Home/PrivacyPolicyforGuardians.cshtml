@@ -1,0 +1,78 @@
+﻿@inject Microsoft.Extensions.Localization.IStringLocalizer<SharedResource> SharedLocalizer
+
+@{
+    ViewData["Title"] = @SharedLocalizer["Privacy Policy for Guardians"].Value;
+}
+
+<section class="privacyPolicy">
+    <div class="container text-center">
+        <h2>@SharedLocalizer["Privacy Policy for Guardians"].Value</h2>
+        <div class="divider">
+            <span><i class="glyphicon glyphicon-certificate"></i></span>
+        </div>
+    </div>
+    <div class="container-fluid">
+        <h4>@SharedLocalizer["Cidofovir Exposure Study - privacy notice for guardians"].Value</h4>
+        <p>@SharedLocalizer["Tillomed Laboratories Limited, on behalf of the joint data controllers, will collect and process personal data belonging to guardians of patients treated with Tillomed’s Cidofovir 75mg/ml concentrate for solution for intravenous infusion who take part in the Cidofovir Exposure Study."].Value</p>
+        <p>@SharedLocalizer["The joint data controllers are Tillomed Laboratories Limited, Tillomed Pharma GmbH and Laboratorios Tillomed Spain SLU."].Value</p>
+        <br />
+        <p>@SharedLocalizer["In this privacy notice Tillomed Laboratories Limited is referred to as ‘organisation’."].Value</p>
+        <br />
+        <p>@SharedLocalizer["The organisation is committed to being transparent about how it collects and uses data and to meeting its data protection obligations.In this privacy notice Tillomed Laboratories Limited is referred to as ‘organisation’."].Value</p>
+        <br />
+        <h4>@SharedLocalizer["Below is a table which explains:"].Value </h4>
+        <ul>
+            <li>@Html.Raw(SharedLocalizer["what information the organisation collects"])</li>
+            <li>@Html.Raw(SharedLocalizer["where the information comes from"])</li>
+            <li>@Html.Raw(SharedLocalizer["why your data is processed, where we store it and for how long we retain it"])</li>
+            <li>@Html.Raw(SharedLocalizer["who your data will be disclosed to"])</li>
+        </ul>
+        <br />
+        <h4>@SharedLocalizer["How does the organisation protect data?"].Value</h4>
+
+        <br />
+        <p>@SharedLocalizer["The organisation takes the security of your data seriously. The organisation has internal policies and controls in place to try to ensure that your data is not lost, accidentally destroyed, misused or disclosed, and is not accessed except by its employees in the performance of their duties. "].Value</p>
+        <br />
+        <p>@SharedLocalizer["Where the organisation engages third parties to process personal data on its behalf, they do so on the basis of written instructions, are under a duty of confidentiality and are obliged to implement appropriate technical and organisational measures to ensure the security of data."].Value</p>
+
+        <br />
+        <h4>@SharedLocalizer["Your rights"].Value</h4>
+        <p>@SharedLocalizer["As a data subject, you have a number of rights. You can:"].Value</p>
+        <ul>
+            <li>@Html.Raw(SharedLocalizer["Access and obtain a copy of your data on request; require the organisation to change incorrect or incomplete data;"])</li>
+            <li>@Html.Raw(SharedLocalizer["Require the organisation to delete or stop processing your data, for example where the data is no longer necessary for the purposes of processing; and"])</li>
+            <li>@Html.Raw(SharedLocalizer["Object to the processing of your data where the organisation is relying on its legitimate interests as the legal ground for processing."])</li>
+        </ul>
+        <p>@SharedLocalizer["If you would like to exercise any of these rights, please contact the Company Secretary by emailing <a href='mailto:companysecretary@tillomed.co.uk' target='_blank'>companysecretary@tillomed.co.uk.</a> If you believe that the organisation has not complied with your data protection rights, you can complain to the Information Commissioner."].Value</p>
+        <p>@SharedLocalizer["What if you do not provide personal data?"].Value</p>
+        <p>@SharedLocalizer["If you do not provide your personal data, the organisation may not be able to deal with your report or enquiry effectively, or at all."].Value</p>
+        <p>@SharedLocalizer["Automated decision-making."].Value</p>
+        <p>@SharedLocalizer["No decisions are based solely on automated data processing."].Value</p> 
+
+        <br />
+        <table border="1">
+            <tr>
+                <th>  </th>
+                <th><b>@SharedLocalizer["Data collected by the organisation"].Value </b></th>
+                <th><b>@SharedLocalizer["Data collected by the organisation"].Value </b></th>
+                <th><b>@SharedLocalizer["Data collected by the organisation"].Value </b></th>
+                <th><b>@SharedLocalizer["Data collected by the organisation"].Value </b></th>
+                <th><b>@SharedLocalizer["Data collected by the organisation"].Value </b></th>
+                <th><b>@SharedLocalizer["Data collected by the organisation"].Value </b></th>
+                <th><b>@SharedLocalizer["Data collected by the organisation"].Value </b></th>
+                <th><b>@SharedLocalizer["Data collected by the organisation"].Value </b></th>
+            </tr>
+            <tr>
+                <td>@SharedLocalizer["Identifying details"].Value </td>
+                <td>@SharedLocalizer["Your name and, possibly, in the event of the patient suffering an adverse reaction, contact details"].Value </td>
+                <td>@SharedLocalizer["The data you provide to the patient’s prescriber will be passed to the organisation."].Value </td>
+                <td>@SharedLocalizer["To enable patient for whom you are responsible to participate in the Cidofovir Exposure Study"].Value </td>
+                <td>@SharedLocalizer["Article 6 (1) (f) – it is in the organisation’s legitimate interests to retain information about you for the purpose of recording the consent you give on behalf of a patient to participation in the Cidofovir Exposure Study.The personal data will be kept confidential with access limited to the organisation’s staff who work on the study, or support them. It will not be used for any purpose other than that listed under ‘Why data is processed’. On balance, the organisation’s legitimate interests are not overridden by your interests or fundamental rights and freedoms which require protection of personal data."].Value </td>
+                <td>@SharedLocalizer["In an electronic database in the EU controlled by the organisation"].Value </td>
+                <td>@SharedLocalizer["Life of the marketing authorisation for Cidofovir 75mg/ml plus 10 years."].Value </td>
+                <td>@SharedLocalizer["Data will be deleted at the end of the retention period."].Value </td>
+                <td>@SharedLocalizer["1.The organisation’s drug safety monitoring consultant. 2.The organisation’s IT support provider may view your data while correcting technical issues with the Cidofovir Exposure Study Registry.3. In the event the patient suffers an adverse reaction and provided you consent to the release of your name and contact details, to the organisation and/or its pharmacovigilance provider."].Value </td>
+            </tr>
+        </table>
+    </div>
+</section>

@@ -1,17 +1,27 @@
-﻿function IntializingDataTable(id, setDefaultOrder, ajaxObject, columnObject, rowCallBack, drawCallback) {
+﻿function IntializingDataTable(id, setDefaultOrder, ajaxObject, columnObject, fixedCols) {
     var dataTableInst =
-        $('#' + id + '').DataTable({
+        $('#' + id + '').removeAttr('width').DataTable({
             order: setDefaultOrder,
+            scrollX: true,
+            scrollCollapse: true,
+            fixedColumns: fixedCols,
+            autoWidth: false,
             processing: true,
             serverSide: true,
-            stateSave: true,
+            //stateSave: true,
             orderMulti: false,
             filter: true,
             orderCellsTop: true,
             "bLengthChange": true,
             'bSortable': true,
             fixedHeader: true,
-            "pageLength": 25,
+            pageLength: 10,
+            bPaginate: false,
+            paging: true,
+            lengthMenu: [
+                [10, 25, 50, -1],
+                [10, 25, 50, 'All'],
+            ],
             dom: 'Bfrtip',
             stateSaveCallback: function (settings, data) {
                 localStorage.setItem('DataTables_' + settings.sInstance, JSON.stringify(data));
@@ -28,14 +38,16 @@
                 { extend: 'colvis', className: "btn-primary" }
             ],
             "ajax": ajaxObject,
-            "fnRowCallback": rowCallBack,
+            //"fnRowCallback": rowCallBack,
             "columns": columnObject,
             initComplete: function (settings, json) {
 
             },
-            "drawCallback": function (settings) {
-                if (drawCallback != null)
-                    drawCallback();
-            }
+            //"drawCallback": function (settings) {
+            //    if (drawCallback != null)
+            //        drawCallback();
+            //}
         });
+    $('body').find('.dataTables_scrollBody').addClass("scrollbar");
+    return dataTableInst;
 }

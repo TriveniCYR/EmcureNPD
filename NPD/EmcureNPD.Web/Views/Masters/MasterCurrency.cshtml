@@ -1,4 +1,5 @@
-﻿@using Microsoft.AspNetCore.Http
+﻿@using EmcureNPD.Utility.Models
+@using Microsoft.AspNetCore.Http
 @using EmcureNPD.Web.Controllers
 @using Microsoft.AspNetCore.Mvc.Localization
 @inject IHttpContextAccessor HttpContextAccessor
@@ -7,38 +8,36 @@
 
 @model EmcureNPD.Business.Models.MasterCurrencyCountryMappingEntity
 @{
-    ViewData["Title"] = @MasterLocalizer["CurrencyTitle"];
+    ViewData["Title"] = @MasterLocalizer["Currency - Emcure NPD"];
+    RolePermissionModel objPermssion = (RolePermissionModel)ViewBag.Access;
+    string IsAddAllow = (objPermssion.Add) ? "" : "display: none";
+    string IsEditAllow = (objPermssion.Edit) ? "" : "display: none";
+    string IsDeleteAllow = (objPermssion.Delete) ? "" : "display: none";
 }
-<div class="row">
-    <section class="col-lg-12">
-        <div class="card">
-            <div class="card-header">
-                <h3 class="card-title">
-                    <i class="far fa-list-alt mr-2"></i>@MasterLocalizer["Currency"]
-                </h3>
-                <div class="card-tools md-left">
-                    <div class="mybtn-group">
-                        <a class="btn btn-primary" data-toggle="modal" data-target="#SaveCurrencyModel" data-backdrop="static" data-keyboard="false" onclick="AddCurrency();"><i class="far fa-plus-square mr-1"></i> @SharedLocalizer["Add"]</a>
-                        <div class="export-btn mybtn-group"></div>
-                    </div>
-                </div>
-            </div>
-            <div class="card-body">
-                <table id="CurrencyTable" class="table table-bordered table-striped table-hover" style="width:100%">
-                    <thead>
-                        <tr>
-                            <th>@MasterLocalizer["Currency"]</th>
-                            <th>@SharedLocalizer["CurrencyCode"]</th>
-                            <th>@SharedLocalizer["CurrencySymbol"]</th>
-                            <th>@SharedLocalizer["Status"]</th>
-                            <th class="text-center">@SharedLocalizer["Action"]</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                    </tbody>
-                </table>
-            </div>
+<div class="content-header">
+    <div class="container-fluid d-flex justify-content-between">
+        <h3>@MasterLocalizer["Currency"]</h3>
+        <div>
+            <a class="btn btn-primary" data-toggle="modal" data-target="#SaveCurrencyModel" data-backdrop="static" data-keyboard="false" onclick="AddCurrency();"><i class="far fa-plus-square mr-1"></i> @SharedLocalizer["Add"]</a>
         </div>
+    </div>
+</div>
+<div class="container-fluid overflow-auto background-white-card">
+                <table id="CurrencyTable" class="table table-bordered table-striped table-hover" style="width:100%">
+        <thead>
+            <tr>
+                <th>@MasterLocalizer["Currency"]</th>
+                <th>@SharedLocalizer["CurrencyCode"]</th>
+                <th>@SharedLocalizer["CurrencySymbol"]</th>
+                <th>@SharedLocalizer["Status"]</th>
+                <th class="text-center">@SharedLocalizer["Action"]</th>
+            </tr>
+        </thead>
+        <tbody>
+        </tbody>
+    </table>
+</div>
+
 
         @*DeleteCurrencyModel*@
         <div id="DeleteCurrencyModel" class="modal themeModal " role="dialog">
@@ -95,10 +94,17 @@
                                         @Html.ValidationMessageFor(model =>model.MasterCurrencyEntity.CurrencyCode, "", new { @class = "text-danger" })
                                     </div>
 
-                                     <div class="form-group required">
+                                    <div class="form-group required">
                                         @Html.LabelFor(model =>model.MasterCurrencyEntity.CurrencySymbol,"Currency Symbol", new { @class = "control-label"  })
                                         @Html.EditorFor(model=>model.MasterCurrencyEntity.CurrencySymbol, new { htmlAttributes = new { @autocomplete = "off", @class = "form-control checkbox-checked", @placeholder = @SharedLocalizer["CurrencySymbol"] } })
                                         @Html.ValidationMessageFor(model =>model.MasterCurrencyEntity.CurrencySymbol, "", new { @class = "text-danger" })
+                                    </div>
+
+                                    <div class="form-group required">
+                                        <input type="hidden" id="CurrencyCountryMappingId" name="CurrencyCountryMappingId" value="0" />
+                                        @Html.LabelFor(model => model.MasterCountryEntity.CountryName,"Country Name", new { @class = "control-label" })
+                                        @Html.DropDownListFor(model => model.CountryId, new List<SelectListItem> { }, new { @class = "form-control", @multiple = "multiple" })
+                                        @Html.ValidationMessageFor(model => model.CountryId, "", new { @class = "text-danger" })
                                     </div>
 
                                 </div>
@@ -112,45 +118,44 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="card-footer text-center">
-                            <button type="submit" class="btn btn-primary">@SharedLocalizer["Save"]</button>
-                            <a class="btn btn-danger" data-dismiss="modal">@SharedLocalizer["Cancel"]</a>
-                        </div>
+                <div class="card-footer text-end card-margin">
+                    <button type="submit" class="btn btn-success me-3 large-button">@SharedLocalizer["Save"]</button>
+                    <a class="btn btn-danger ms-3 large-button" data-dismiss="modal">@SharedLocalizer["Cancel"]</a>
+                </div>
                     </div>
                 </div>
             </form>
         </div>
-    </section>
-</div>
 @section MyScripts {
 
     @Html.Partial("_DataTablePartial")
-    <link rel="stylesheet" href="~/AdminLTE/plugins/select2/css/select2.min.css" />
-    <script type="text/javascript" src="~/js/Custom/Masters/MasterCurrency.js"></script>
-    <script type="text/javascript" src="~/AdminLTE/plugins/select2/js/select2.min.js"></script>
-    <script>
+<link rel="stylesheet" href="~/AdminLTE/plugins/select2/css/select2.min.css" />
+<script type="text/javascript" src="~/js/Custom/Masters/MasterCurrency.js"></script>
+<script type="text/javascript" src="~/AdminLTE/plugins/select2/js/select2.min.js"></script>
+<script>
 
-        //#region Setup API Url
-        var AllCurrency = "@EmcureNPD.Web.Helpers.APIURLHelper.GetAllCurrency";
-        var AllCountry = "@EmcureNPD.Web.Helpers.APIURLHelper.GetAllCountry";
-        var SaveCurrency = "@EmcureNPD.Web.Helpers.APIURLHelper.SaveCurrency";
-        var GetCurrencyByIdUrl = "@EmcureNPD.Web.Helpers.APIURLHelper.GetCurrencyById";
-        var DeleteCurrencyByIdUrl = "@EmcureNPD.Web.Helpers.APIURLHelper.DeleteCurrencyById";
+    //#region Setup API Url
+    var AllCurrency = "@EmcureNPD.Web.Helpers.APIURLHelper.GetAllCurrency";
+    var AllCountry = "@EmcureNPD.Web.Helpers.APIURLHelper.GetAllCountry";
+    var SaveCurrency = "@EmcureNPD.Web.Helpers.APIURLHelper.SaveCurrency";
+    var GetCurrencyByIdUrl = "@EmcureNPD.Web.Helpers.APIURLHelper.GetCurrencyById";
+    var DeleteCurrencyByIdUrl = "@EmcureNPD.Web.Helpers.APIURLHelper.DeleteCurrencyById";
 
-        var AllCurrencyCountry = "@EmcureNPD.Web.Helpers.APIURLHelper.GetAllCurrencyCountryMapping";
-        var SaveCurrencyCountryMapping = "@EmcureNPD.Web.Helpers.APIURLHelper.SaveCurrencyCountryMapping";
-        var GetCurrencyCountryMappingByIdUrl = "@EmcureNPD.Web.Helpers.APIURLHelper.GetCurrencyCountryMappingById";
-        var DeleteCurrencyCountryMappingByIdUrl = "@EmcureNPD.Web.Helpers.APIURLHelper.DeleteCurrencyCountryMappingById";
-        // #endregion
-
-        //#region Static Messae Init
-        var EditLabel = "@SharedLocalizer["Edit"]";
-        var DeleteLabel = "@SharedLocalizer["Delete"]";
-        var ErrorMessage = "@SharedLocalizer["Error"]";
-        var RecordInsertUpdate = "@SharedLocalizer["RecordInsertUpdate"]";
-        var RecordDelete = "@SharedLocalizer["RecordDelete"]";
-        var AddLabel = "@SharedLocalizer["Add"]";
-        var UpdateLabel = "@SharedLocalizer["Update"]";
-        //#endregion
-    </script>
+    var AllCurrencyCountry = "@EmcureNPD.Web.Helpers.APIURLHelper.GetAllCurrencyCountryMapping";
+    var SaveCurrencyCountryMapping = "@EmcureNPD.Web.Helpers.APIURLHelper.SaveCurrencyCountryMapping";
+    var GetCurrencyCountryMappingByIdUrl = "@EmcureNPD.Web.Helpers.APIURLHelper.GetCurrencyCountryMappingById";
+    var DeleteCurrencyCountryMappingByIdUrl = "@EmcureNPD.Web.Helpers.APIURLHelper.DeleteCurrencyCountryMappingById";
+    // #endregion
+     var IsEditAllow =   "@IsEditAllow";
+        var IsDeleteAllow = "@IsDeleteAllow";
+    //#region Static Messae Init
+    var EditLabel = "@SharedLocalizer["Edit"]";
+    var DeleteLabel = "@SharedLocalizer["Delete"]";
+    var ErrorMessage = "@SharedLocalizer["Error"]";
+    var RecordInsertUpdate = "@SharedLocalizer["RecordInsertUpdate"]";
+    var RecordDelete = "@SharedLocalizer["RecordDelete"]";
+        var AddLabel = "@SharedLocalizer["Add Currency"]";
+        var UpdateLabel = "@SharedLocalizer["Edit Currency"]";
+    //#endregion
+</script>
 }

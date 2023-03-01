@@ -1,0 +1,231 @@
+﻿@inject Microsoft.Extensions.Localization.IStringLocalizer<SharedResource> SharedLocalizer
+@{
+    ViewData["Title"] = "PIDFList";
+}
+<div class="content-wrapper">
+    <section class="content pt-5">
+        <div class="container-fluid">
+            <div class="row">
+                <section class="col-lg-12">
+                    <!-- Custom tabs (Charts with tabs)-->
+                    <div class="card">
+                        <div class="card-header">
+                            <h3 class="card-title">
+                                <i class="far fa-list-alt mr-2"></i> PIDF List
+                            </h3>
+                            <div class="card-tools md-left">
+                                <div class="mybtn-group">
+                                        <a class="btn btn-primary" href="@Url.Action("PIDFList","PIDF")"><i class="far fa-list-alt mr-1"></i>PIDF List</a>
+
+                                        <a class="btn btn-outline-primary" href="@Url.Action("PIDF","PIDF")"><i class="far fa-plus-square mr-1"></i> Create New Project</a>
+                                        <div class="export-btn"></div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="card-body">
+                            <button type="button" onclick="getPIDFList(0,0,20)" class="btn btn-outline-primary mr-3">Pending Approval</button>
+                            <button type="button" onclick="getPIDFList(0,0,16)" class="btn btn-outline-primary mr-3">Approved PIDF</button>
+                            <button type="button" onclick="getPIDFList(0,0,10)" class="btn btn-outline-primary mr-3">Rejected PIDF</button>
+
+                            <select id="dropdown1">
+                                <option>Select</option>
+                                <option value="Pending Approval">
+                                    Pending Approval
+                                </option>
+                                <option value="2">2</option>
+                            </select>
+                            <table id="PIDFTable" class="table table-bordered table-striped table-hover" style="width:100%;">
+                                <thead>
+                                    <tr>
+                                        <th>@SharedLocalizer["Id"].Value</th>
+                                        <th>@SharedLocalizer["Project Name"].Value</th>
+                                        <th>@SharedLocalizer["Strength"].Value</th>
+                                        @*<th>@SharedLocalizer["Patent Status"].Value</th>
+                                        <th>@SharedLocalizer["Continent"].Value</th>
+                                        <th>@SharedLocalizer["Country"].Value</th>
+                                        <th>@SharedLocalizer["Packing"].Value</th>
+                                        <th>@SharedLocalizer["Batch Size (In pack)"].Value</th>
+                                        <th>@SharedLocalizer["Pack Size"].Value</th>
+                                        <th>@SharedLocalizer["Cogs"].Value</th>
+                                        <th>@SharedLocalizer["Freight"].Value</th>
+                                        <th>@SharedLocalizer["Total CIF Cost"].Value</th>
+                                        <th>@SharedLocalizer["CIF Price Per Unit"].Value</th>
+                                        <th>@SharedLocalizer["CIF Price Per Pack"].Value</th>
+                                        <th>@SharedLocalizer["Profit Per Pack"].Value</th>
+                                        <th>@SharedLocalizer["Percent Cont"].Value</th>
+                                        <th>@SharedLocalizer["Qty yr 1"].Value</th>
+                                        <th>@SharedLocalizer["Qty yr 2"].Value</th>
+                                        <th>@SharedLocalizer["Qty yr 3"].Value</th>
+                                        <th>@SharedLocalizer["Val yr 1"].Value</th>
+                                        <th>@SharedLocalizer["Val yr 2"].Value</th>
+                                        <th>@SharedLocalizer["Val yr 3"].Value</th>
+                                        <th>@SharedLocalizer["COGS yr 1"].Value</th>
+                                        <th>@SharedLocalizer["COGS yr 2"].Value</th>
+                                        <th>@SharedLocalizer["COGS yr 3"].Value</th>
+                                        <th>@SharedLocalizer["Contri yr 1"].Value</th>
+                                        <th>@SharedLocalizer["Contri yr 2"].Value</th>
+                                        <th>@SharedLocalizer["Contri yr 3"].Value</th>
+                                        <th>@SharedLocalizer["Contribution 3 yr"].Value</th>
+                                        <th>@SharedLocalizer["Cost of 3 Batches"].Value</th>
+                                        <th>@SharedLocalizer["R&D Cost"].Value</th>
+                                        <th>@SharedLocalizer["Filing Cost"].Value</th>
+                                        <th>@SharedLocalizer["Stability Cost"].Value</th>
+                                        <th>@SharedLocalizer["Total Invest"].Value</th>
+                                        <th>@SharedLocalizer["ROI"].Value</th>*@
+                                        <th>@SharedLocalizer["Project Status"].Value</th>
+
+                                    </tr>
+                                </thead>
+                            </table>
+                        </div>
+
+                    </div>
+                </section>
+            </div>
+
+
+        </div>
+    </section>
+
+</div>
+
+@section Scripts {
+    <script>
+
+        var dataTable, getPIDFList;
+
+        $(document).ready(function () {
+
+
+            var dataTable = $('#PIDFTable').DataTable({
+                responsive: true,
+                lengthChange: true,
+                autoWidth: true,
+                columnDefs: [
+
+                    { responsivePriority: 1, targets: -1 }
+                ],
+
+                buttons: [
+                    {
+                        extend: 'excel', text: '<i class="far fa-file-excel"></i>', className: "btn-primary", exportOptions: {
+                            columns: ':visible'
+                        }
+                    },
+                    {
+                        extend: 'colvis', text: '<i class="fas fa-list"></i> Select Fields', className: "btn-primary"
+                    }
+                ],
+                language: {
+                    "emptyTable": "@SharedLocalizer["No data available in table"].Value",
+                    "info": "@SharedLocalizer["Showing _START_ to _END_ of _TOTAL_ entries"].Value",
+                    "infoEmpty":"@SharedLocalizer["Showing 0 to 0 of 0 entries"].Value",
+                    "infoFiltered":"@SharedLocalizer["(filtered from _MAX_ total entries)"].Value",
+                    "lengthMenu":"@SharedLocalizer["Show _MENU_ entries"].Value",
+                    "loadingRecords": "@SharedLocalizer["Loading..."].Value",
+                    "processing": "@SharedLocalizer["Processing..."].Value",
+                    "search": "@SharedLocalizer["Search"].Value",
+                    "zeroRecords":"@SharedLocalizer["No matching records found"].Value",
+                    "paginate": {
+                        "first":"@SharedLocalizer["First"].Value",
+                        "last":"@SharedLocalizer["Last"].Value",
+                        "next": "@SharedLocalizer["Next"].Value",
+                        "previous":"@SharedLocalizer["Previous"].Value"
+                    },
+                }
+            });
+
+            getPIDFList = function (PidfID, userID, StatusId) {
+				var data = {
+					PidfID: parseInt(PidfID),
+					userID: parseInt(userID),
+                    StatusId:parseInt(StatusId)
+				};
+                console.log(data);
+                  $.ajax({
+                    type: "POST",
+					url: '@Url.Action("GetPIDFApprovalList", "PIDFApproval")/',
+					dataType: "json",
+					data: data,
+                    success: function (response) {
+                        //$('#loaderContainer').hide();
+						var jsonObject = response.data;
+                        var result = jsonObject.map(function (item) {
+                            var setUrl = "/PIDFApproval/PIDFApproval/" + item.PidfID;
+                            var result = [];
+                            //result.push(item.PidfNo);
+                            //result.push(item.ProjectorProductName);
+
+                            result.push(item.PIDFNo);
+                            //result.push(item.ProductName);
+                            result.push('<a href="' + setUrl + '">' + item.ProjectorProductName + '</a>');
+                            result.push(item.Strengths);
+                            //result.push(item.PatentStatus);
+                            //result.push(item.ContinentName);
+                            //result.push(item.CountryName);
+                            //result.push(item.Packing);
+                            //result.push(item.BatchSize);
+                            //result.push(item.PackSize);
+                            //result.push(item.Cogs);
+                            //result.push(item.Freight);
+                            //result.push(item.TotalCIFCost);
+                            //result.push(item.CIFPricePerUnit);
+                            //result.push(item.CIFPricePerPack);
+                            //result.push(item.ProfitPerPack);
+                            //result.push(item.PercentCont);
+                            //result.push(item.QtyOneyear);
+                            //result.push(item.QtyTwoyear);
+                            //result.push(item.QtyThreeyear);
+                            //result.push(item.VolOneyear);
+                            //result.push(item.VolTwoyear);
+                            //result.push(item.VolThreeyear);
+                            //result.push(item.Cogs1);
+                            //result.push(item.Cogs2);
+                            //result.push(item.Cogs3);
+                            //result.push(item.ContriOne);
+                            //result.push(item.ContriTwo);
+                            //result.push(item.ContriThree);
+                            //result.push(item.ContributionThreeYear);
+                            //result.push(item.CostofThreeBatches);
+                            //result.push(item.RandDCost);
+                            //result.push(item.FilingCost);
+                            //result.push(item.StabilityCost);
+                            //result.push(item.TotalInvest);
+                            //result.push(item.Roi);
+                            result.push(item.PidfStatus);
+                            return result;
+                        });
+                        dataTable.clear();
+                        dataTable.rows.add(result); // add to DataTable instance
+                        dataTable.draw().buttons().container().appendTo('.export-btn'); // always redraw
+                    },
+                    failure: function () {
+                        $("#PIDFTable").append('@SharedLocalizer["Error when fetching data please contact administrator"].Value');
+                    }
+                });
+
+            }
+
+            getPIDFList(0,0,20);
+            $('#dropdown1').on('change', function () {
+                alert("Hii");
+                getPIDFList.columns(37).search(this.value).draw();
+            });
+            $(".buttons-excel").removeClass("btn-secondary");
+            $(".buttons-collection").removeClass("btn-secondary");
+        });
+
+
+
+    //   $('#PIDFTable').on('click', ' tbody tr', function () {
+    //        var drfTable = $('#PIDFTable').DataTable();
+    //        var data = drfTable.row(this).data();
+    //       location.href = "/DRF/DRFShowDetails?Id=" + data[0];
+    //} );
+
+
+
+
+    </script>
+}
+

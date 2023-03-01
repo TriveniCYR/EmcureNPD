@@ -11,13 +11,11 @@
     Layout = "~/Views/Shared/_LoginLayout.cshtml";
 }
 
-<div class="login-box">
-    <div class="card card-outline card-primary">
-        <div class="card-header text-center">
-            <h3 class="mb-0"><b>@Localizer["Login"].Value</b></h3>
-        </div>
-        <div class="card-body">
-            <p class="login-box-msg">@Localizer["SignSession"]</p>
+<div class="login-card d-flex flex-column justify-content-center align-items-center">
+    <div class="card">
+            <h2 class="login-card-title m-0 text-center">@Localizer["Login"].Value</h2>
+        <div class="card-body login-card-body">
+            <p class="login-card-msg text-center mb-3">@Localizer["SignSession"]</p>
             <form asp-route-returnurl="@ViewData["ReturnUrl"]" method="post">
                 @if (ViewBag.errormessage != null)
                 {
@@ -47,28 +45,25 @@
                     </div>
                     @*<span asp-validation-for="Password" class="text-danger"></span>*@
                 </div>
-
-              
-
                 <div class="row">
-                    <div class="col-8">
-                        <div class="icheck-primary">
+                    <div class="col-7">
+                       @* <div class="icheck-primary">
                             <input type="checkbox" id="remember">
                             <label for="remember">
                                 @Localizer["RememberMe"]
                             </label>
-                        </div>
+                        </div>*@
+                        <p class="mb-1">
+                            <a href="@Url.Action("ForgotPassword","Account")">@Localizer["Forgot Password"]</a>
+                        </p>
                     </div>
                     <!-- /.col -->
-                    <div class="col-4">
-                        <button type="submit" class="btn btn-primary btn-block">@Localizer["Login"]</button>
+                    <div class="col-5">
+                        <button type="submit" class="btn btn-primary btn-block w-100">@Localizer["Login"]</button>
                     </div>
                     <!-- /.col -->
                 </div>
             </form>
-            <p class="mb-1">
-                <a href="@Url.Action("ForgotPassword","Account")">@Localizer["Forgot Password"]</a>
-            </p>
         </div>
     </div>
 </div>

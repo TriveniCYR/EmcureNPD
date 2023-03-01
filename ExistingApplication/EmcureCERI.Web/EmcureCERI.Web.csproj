@@ -1,0 +1,118 @@
+﻿<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <PropertyGroup>
+    <PublishWithAspNetCoreTargetManifest>false</PublishWithAspNetCoreTargetManifest>
+  </PropertyGroup>  
+  
+  <PropertyGroup Label="Globals">
+    <SccProjectName>SAK</SccProjectName>
+    <SccProvider>SAK</SccProvider>
+    <SccAuxPath>SAK</SccAuxPath>
+    <SccLocalPath>SAK</SccLocalPath>
+  </PropertyGroup>
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp2.1</TargetFramework>
+    <UserSecretsId>aspnet-EmcureCERI.Web-34A67878-2160-4FFA-B690-45FFAF237090</UserSecretsId>
+    <ApplicationIcon />
+    <OutputType>Exe</OutputType>
+    <StartupObject>EmcureCERI.Web.Program</StartupObject>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Remove=".config\**" />
+    <Content Remove=".config\**" />
+    <EmbeddedResource Remove=".config\**" />
+    <None Remove=".config\**" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Remove="Data\Migrations\20200205050551_05022020onlocal.cs" />
+    <Compile Remove="Data\Migrations\20200205050551_05022020onlocal.Designer.cs" />
+    <Compile Remove="Data\Migrations\20200205061038_05022020LocalConnect.cs" />
+    <Compile Remove="Data\Migrations\20200205061038_05022020LocalConnect.Designer.cs" />
+    <Compile Remove="Data\Migrations\20200205061741_05022020Rahulmigration.cs" />
+    <Compile Remove="Data\Migrations\20200205061741_05022020Rahulmigration.Designer.cs" />
+    <Compile Remove="Data\Migrations\20200207061339_Comments_Doa.cs" />
+    <Compile Remove="Data\Migrations\20200207061339_Comments_Doa.Designer.cs" />
+    <Compile Remove="Data\Migrations\20200207063206_addComments_ADO.cs" />
+    <Compile Remove="Data\Migrations\20200207063206_addComments_ADO.Designer.cs" />
+    <Compile Remove="Data\Migrations\20200207112515_AddcommenADOR.cs" />
+    <Compile Remove="Data\Migrations\20200207112515_AddcommenADOR.Designer.cs" />
+    <Compile Remove="Data\Migrations\20200207112812_AddcommenADOR.cs" />
+    <Compile Remove="Data\Migrations\20200207112812_AddcommenADOR.Designer.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="EPPlus" Version="4.5.2.1" />
+    <PackageReference Include="Microsoft.AspNetCore" Version="2.1.1" />
+    <PackageReference Include="Microsoft.AspNetCore.All" Version="2.0.5" />
+    <PackageReference Include="Microsoft.AspNetCore.App" />
+    <PackageReference Include="Microsoft.AspNetCore.Mvc" Version="2.1.1" />
+    <PackageReference Include="Microsoft.AspNetCore.Razor.Design" Version="2.1.2" PrivateAssets="All" />
+    <PackageReference Include="Microsoft.AspNetCore.StaticFiles" Version="2.1.1" />
+    <PackageReference Include="Microsoft.Office.Interop.Word" Version="15.0.4797.1003" />
+    <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="2.1.10" PrivateAssets="All" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore" Version="2.1.14" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="2.1.14" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer.Design" Version="1.1.6" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="2.1.14" PrivateAssets="All" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <DotNetCliToolReference Include="Microsoft.EntityFrameworkCore.Tools.DotNet" Version="2.0.1" />
+    <DotNetCliToolReference Include="Microsoft.Extensions.SecretManager.Tools" Version="2.0.0" />
+    <DotNetCliToolReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Tools" Version="2.0.2" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\EmcureCERI.Business.Contract\EmcureCERI.Business.Contract.csproj" />
+    <ProjectReference Include="..\EmcureCERI.Business.Core\EmcureCERI.Business.Core.csproj" />
+    <ProjectReference Include="..\EmcureCERI.Business.Models\EmcureCERI.Business.Models.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Update="Views\Pdf\_HCPDetailsForm.cshtml">
+      <Pack>$(IncludeRazorContentInPack)</Pack>
+    </Content>
+    <Content Update="Views\Prescriber\PatientAddOrEdit1.cshtml">
+      <Pack>$(IncludeRazorContentInPack)</Pack>
+    </Content>
+    <Content Update="Views\Pdf\_PdfConsentForm.cshtml">
+      <Pack>$(IncludeRazorContentInPack)</Pack>
+    </Content>
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Models\FileUpload\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="wwwroot\doc\Dutch\Bijlage 1.2 Handleiding voor Voorschrijvers.pdf" />
+    <None Include="wwwroot\doc\Dutch\Bijlage 1.6 Protocolsamenvatting.pdf" />
+    <None Include="wwwroot\doc\Dutch\Cidofovir Patiëntenbijsluiter.pdf" />
+    <None Include="wwwroot\doc\Dutch\Cidofovir UK SmPC.pdf" />
+    <None Include="wwwroot\doc\Dutch\VOORBLAD.pdf" />
+    <None Include="wwwroot\doc\English\Annex 1.2 Prescribers Guide1.pdf" />
+    <None Include="wwwroot\doc\English\Annex 1.6 Protocol Synopsis1.pdf" />
+    <None Include="wwwroot\doc\English\Cidofovir Patient Information Leaflet.pdf" />
+    <None Include="wwwroot\doc\English\Cidofovir UK SmPC.pdf" />
+    <None Include="wwwroot\doc\English\COVER LETTER1.pdf" />
+    <None Include="wwwroot\doc\French\Annexe 1.2 Guide des Prescripteurs.pdf" />
+    <None Include="wwwroot\doc\French\Annexe 1.6 Synopsis du Protocole.pdf" />
+    <None Include="wwwroot\doc\French\Cidofovir Information Patient Feuillet.pdf" />
+    <None Include="wwwroot\doc\French\Cidofovir UK SmPC.pdf" />
+    <None Include="wwwroot\doc\French\LETTRE DE MOTIVATION.pdf" />
+    <None Include="wwwroot\doc\German\Anhang 1.2 Vermittlerhandbuch.pdf" />
+    <None Include="wwwroot\doc\German\Anhang 1.6 Protokollzusammenfassung.pdf" />
+    <None Include="wwwroot\doc\German\Cidofovir UK SmPC.pdf" />
+    <None Include="wwwroot\doc\German\Cidofovir-Patienteninformationsblatt.pdf" />
+    <None Include="wwwroot\doc\German\MOTIVATIONSSCHREIBEN.pdf" />
+    <None Include="wwwroot\doc\Spanish\Anexo 1.2 Guía para Prescriptores1.pdf" />
+    <None Include="wwwroot\doc\Spanish\Anexo 1.6 Sinopsis del Protocolo1.pdf" />
+    <None Include="wwwroot\doc\Spanish\CARTA DE PRESENTACIÓN1.pdf" />
+    <None Include="wwwroot\doc\Spanish\Cidofovir UK SmPC.pdf" />
+    <None Include="wwwroot\doc\Spanish\Folleto de Información para el paciente de cidofovir.pdf" />
+  </ItemGroup>
+
+</Project>

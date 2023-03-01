@@ -10,7 +10,7 @@ function GetPlantListSuccess(data) {
     try {
         $('#PlantTable tbody').html('')
         $.each(data._object, function (index, object) {
-            $('#PlantTable tbody').append('<tr><td>' + object.plantNameName + '</td><td><span style="color:' + (object.isActive ? "green" : "red") + '">' + (object.isActive ? "Active" : "InActive") + '</span></td><td>  <a class="btn btn-primary" data-toggle="modal" data-target="#SavePlantModel" data-backdrop="static" data-keyboard="false"  onclick="GetPlantById(' + object.plantId + '); return false;"><i class="fa fa-fw fa-edit mr-1"></i> ' + EditLabel + '</a> <a class="btn btn-danger" data-toggle="modal" data-target="#DeletePlantModel" data-backdrop="static" data-keyboard="false" onclick="ConfirmationDeletePlant(' + object.plantId + '); return false;"><i class="fa fa-fw fa-trash mr-1"></i> ' + DeleteLabel + '</a>  </td></tr>');
+            $('#PlantTable tbody').append('<tr><td>' + object.plantNameName + '</td><td><span style="color:' + (object.isActive ? "green" : "red") + '">' + (object.isActive ? "Active" : "InActive") + '</span></td><td>  <a class="large-font" style="' + IsEditAllow + '" href="" title="Edit" data-toggle="modal" data-target="#SavePlantModel" data-backdrop="static" data-keyboard="false"  onclick="GetPlantById(' + object.plantId + '); return false;"><i class="fa fa-fw fa-edit mr-1"></i> ' + '</a> <a class="large-font text-danger" style="' + IsDeleteAllow +'" href="" title="Delete" data-toggle="modal" data-target="#DeletePlantModel" data-backdrop="static" data-keyboard="false" onclick="ConfirmationDeletePlant(' + object.plantId + '); return false;"><i class="fa fa-fw fa-trash mr-1"></i> ' + '</a>  </td></tr>');
         });
         StaticDataTable("#PlantTable");
     } catch (e) {
@@ -28,6 +28,7 @@ function GetPlantById(id) {
 }
 function GetPlantByIdSuccess(data) {
     try {
+        ClearePlantFields();
         $('#SavePlantModel #PlantID').val(data._object.plantId);
         $('#SavePlantModel #PlantNameName').val(data._object.plantNameName);
         $('#SavePlantModel #PlantTitle').html(UpdateLabel);
@@ -82,6 +83,12 @@ function ClearePlantFields() {
     $('#SavePlantModel #PlantID').val("0");
     $('#SavePlantModel #PlantNameName').val("");
     $('#DeletePlantModel #PlantID').val("0");
+    var validationMessages = document.querySelectorAll(".field-validation-error");
+
+    // Loop through the messages and clear them
+    for (var i = 0; i < validationMessages.length; i++) {
+        validationMessages[i].textContent = "";
+    }
 }
 // #endregion
 

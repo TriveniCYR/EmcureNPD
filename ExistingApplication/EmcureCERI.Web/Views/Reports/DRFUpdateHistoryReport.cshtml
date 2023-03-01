@@ -1,0 +1,186 @@
+﻿@inject Microsoft.Extensions.Localization.IStringLocalizer<SharedResource> SharedLocalizer
+@model EmcureCERI.Web.Models.IndexPageModel
+
+@{
+    ViewData["Title"] = "Reports View";
+
+}
+
+<style>
+    .treegrid-control span {
+        cursor: pointer;
+        padding: 0px 5px;
+        display: block;
+        box-shadow: 0 0 1px #999;
+        width: 20px;
+        height: 25px;
+    }
+
+    .treegrid-control-open span {
+        cursor: pointer;
+        padding: 0px 7px;
+        display: block;
+        box-shadow: 0 0 1px #999;
+        width: 20px;
+        height: 25px;
+    }
+</style>
+
+<div class="content-wrapper">
+    <section class="content pt-3">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-lg-12">
+                    <!-- Custom tabs (Charts with tabs)-->
+                    <div class="card">
+                        <div class="card-header">
+                            <h3 class="card-title">
+                                <i class="fas fa-list mr-2"></i> DRF List
+                            </h3>
+                            <div class="card-tools md-left">
+                                <div class="mybtn-group">
+                                    <a class="btn btn-primary" href="@Url.Action("Index","Dashboard")"><i class="fas fa-undo mr-1"></i>Back</a>
+                                    <div class="export-btn mybtn-group"></div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="card-body report-scroll">                            
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <div class="table-responsive">
+                                        <table id="TimelineMoleculeTable" class="table table-bordered" cellspacing="0" width="100%"></table>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+</div>
+<script src='~/js/dataTables.treeGrid.js'></script>
+
+@section Scripts {
+    <script>            
+
+
+        var columns = [           
+
+            {
+                title: 'SrNo',
+                target: 0,
+                data: function (item) {
+                    return item.srNo;
+                }
+
+            },
+            {
+                title: 'DRF No.',
+                target: 1,
+                data: function (item) {
+                    return item.drfNo;
+                }
+
+            },
+            {
+                title: 'DRF',
+                target: 2,
+                data: function (item) {
+                    return item.genericName;
+                }
+
+            },
+
+          {
+                title: 'Description',
+                target: 3,
+                data: function (item) {
+                    return item.histroyDescription;
+                }
+
+            },
+
+            {
+                title: 'User Name',
+                target: 4,
+                data: function (item) {
+                    return item.userName;
+                }
+
+            },
+            {
+                title: 'DRF Date',
+                target: 5,
+                data: function (item) {
+                    return formatDateToDDMMMYYYY(item.drfDate) + ' ' + formatTime(item.drfDate);
+                }
+            },          
+            
+
+        ];
+
+        $(document).ready(function () {            
+            var table = $('#TimelineMoleculeTable').DataTable({
+                columns: columns,
+                dom: 'Bfrtip',
+                buttons: [
+                    {
+                        extend: 'excel', text: '<i class="far fa-file-excel"></i> Export In Excel ', className: "btn-primary", exportOptions: {
+                            columns: ':visible'
+                        }
+                    },
+                    { extend: 'colvis', className: "btn-primary" }
+                ],
+
+                lengthChange: false,                
+                ajax: '/Reports/GetDRFUpdateHistoryDetails',
+                treeGrid: {
+                    'left': 10,
+                    'expandIcon': '<span>+<\/span>',
+                    'collapseIcon': '<span>-<\/span>'
+                }
+            });            
+            table.buttons().container()
+                .appendTo('.export-btn');
+
+            $(".buttons-excel").removeClass("btn-secondary");
+            $(".buttons-collection").removeClass("btn-secondary");
+
+        });
+
+        function formatDateToDDMMMYYYY(date) {
+            const months = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+            let current_datetime = new Date(date);
+
+            var tempday = '';
+            var tempmonth = '';
+            if (current_datetime.getDate() < 10) {
+                tempday = '0' + current_datetime.getDate();
+            }
+            else {
+                tempday = current_datetime.getDate();
+            }
+            let formatted_date = tempday + "-" + months[current_datetime.getMonth()] + "-" + current_datetime.getFullYear();
+            return formatted_date;
+        }
+
+        function formatTime(date) {
+            let data = new Date(date)
+            let hrs = data.getHours()
+            let mins = data.getMinutes()
+            let secs = data.getSeconds();
+            if (hrs <= 9)
+                hrs = '0' + hrs
+            if (mins < 10)
+                mins = '0' + mins
+            if (secs < 10)
+                secs = '0' + secs
+            const postTime = hrs + ':' + mins + ':' + secs
+            return postTime
+        }
+
+    </script>
+}
+

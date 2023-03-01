@@ -13,7 +13,7 @@ namespace EmcureNPD.Business.Models
         }
 
         public int RoleId { get; set; }
-
+        public int LoggedUserId { get; set; }
         [Required(ErrorMessageResourceType = typeof(Validation), ErrorMessageResourceName = "Required")]
         [Display(Name = "RoleName", ResourceType = typeof(Master))]
         public string RoleName { get; set; }

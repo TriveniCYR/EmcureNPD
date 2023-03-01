@@ -10,7 +10,7 @@ function GetActivityTypeListSuccess(data) {
     try {
         $('#ActivityTypeTable tbody').html('')
         $.each(data._object, function (index, object) {
-            $('#ActivityTypeTable tbody').append('<tr><td>' + object.activityTypeName + '</td><td><span style="color:' + (object.isActive ? "green" : "red") + '">' + (object.isActive ? "Active" : "InActive") + '</span></td><td>  <a class="btn btn-primary" data-toggle="modal" data-target="#SaveActivityTypeModel" data-backdrop="static" data-keyboard="false"  onclick="GetActivityTypeById(' + object.activityTypeId + '); return false;"><i class="fa fa-fw fa-edit mr-1"></i> ' + EditLabel + '</a> <a class="btn btn-danger" data-toggle="modal" data-target="#DeleteActivityTypeModel" data-backdrop="static" data-keyboard="false" onclick="ConfirmationDeleteActivityType(' + object.activityTypeId + '); return false;"><i class="fa fa-fw fa-trash mr-1"></i> ' + DeleteLabel + '</a>  </td></tr>');
+            $('#ActivityTypeTable tbody').append('<tr><td>' + object.activityTypeName + '</td><td><span style="color:' + (object.isActive ? "green" : "red") + '">' + (object.isActive ? "Active" : "InActive") + '</span></td><td>  <a class="large-font" style="' + IsEditAllow + '" href="" title="Edit" data-toggle="modal" data-target="#SaveActivityTypeModel" data-backdrop="static" data-keyboard="false"  onclick="GetActivityTypeById(' + object.activityTypeId + '); return false;"><i class="fa fa-fw fa-edit mr-1"></i> ' + '</a> <a class="large-font text-danger" style="' + IsDeleteAllow +'" href="" title="Delete" data-toggle="modal" data-target="#DeleteActivityTypeModel" data-backdrop="static" data-keyboard="false" onclick="ConfirmationDeleteActivityType(' + object.activityTypeId + '); return false;"><i class="fa fa-fw fa-trash mr-1"></i> ' + '</a>  </td></tr>');
         });
         StaticDataTable("#ActivityTypeTable");
     } catch (e) {
@@ -28,6 +28,7 @@ function GetActivityTypeById(id) {
 }
 function GetActivityTypeByIdSuccess(data) {
     try {
+        CleareActivityTypeFields();
         $('#SaveActivityTypeModel #ActivityTypeId').val(data._object.activityTypeId);
         $('#SaveActivityTypeModel #ActivityTypeName').val(data._object.activityTypeName);
         $('#SaveActivityTypeModel #ActivityTypeTitle').html(UpdateLabel);
@@ -82,6 +83,12 @@ function CleareActivityTypeFields() {
     $('#SaveActivityTypeModel #ActivityTypeId').val("0");
     $('#SaveActivityTypeModel #ActivityTypeName').val("");
     $('#DeleteActivityTypeModel #ActivityTypeId').val("0");
+    var validationMessages = document.querySelectorAll(".field-validation-error");
+
+    // Loop through the messages and clear them
+    for (var i = 0; i < validationMessages.length; i++) {
+        validationMessages[i].textContent = "";
+    }
 }
 // #endregion
 

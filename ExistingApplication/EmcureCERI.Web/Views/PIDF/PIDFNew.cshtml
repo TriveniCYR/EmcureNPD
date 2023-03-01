@@ -1,0 +1,415 @@
+﻿@inject Microsoft.Extensions.Localization.IStringLocalizer<SharedResource> SharedLocalizer
+@model EmcureCERI.Web.Models.PIDFPViewModels.PidfHeaderNew
+
+@{
+    ViewData["Title"] = @SharedLocalizer[" Add PIDF"].Value;
+}
+
+<link rel="stylesheet" href="~/plugins/datatables-bs4/css/dataTables.bootstrap4.min.css">
+<link rel="stylesheet" href="~/plugins/datatables-responsive/css/responsive.bootstrap4.min.css">
+<link rel="stylesheet" href="~/plugins/datatables-buttons/css/buttons.bootstrap4.min.css">
+<script src="~/plugins/bs-custom-file-input/bs-custom-file-input.min.js"></script>
+
+<!--script src="~/lib/bootstrap-datetimepicker/js/moment-with-locales.js"></!--script>
+<script-- src="~/lib/jquery/dist/jquery.js"></script-->
+<script src="~/lib/bootstrap-datetimepicker/js/bootstrap-datetimepicker.js"></script>
+<!--link href="~/css/main.css" rel="stylesheet" />-->
+
+<div class="content-wrapper pt-3">
+    <!-- Main content -->
+    <section class="content">
+        <div class="container-fluid">
+            <!-- Small boxes (Stat box) -->
+            <!-- Main row -->
+            <div class="row">
+                <section class="col-lg-12 ">
+                    <!-- Custom tabs (Charts with tabs)-->
+                    <div class="card">
+                        <div class="card-header">
+                            <h3 class="card-title">
+                                <i class="far fa-plus-square mr-2"></i>Product Identification Form
+                            </h3>
+                            <div class="card-tools md-left">
+                                <div class="mybtn-group">
+                                        <a class="btn btn-primary" href="@Url.Action("PIDFList","PIDF")"><i class="far fa-list-alt mr-1"></i>Project List</a>
+                                   
+                                        <a class="btn btn-primary" href="@Url.Action("PIDFStrengthList","PIDF")"><i class="far fa-list-alt mr-1"></i>PIDF List</a>
+                                   
+                                        <a class="btn btn-primary" href="@Url.Action("PIDFNew","PIDF")"><i class="far fa-plus-square mr-1"></i> Create New PIDF</a>
+                                   
+                                        <button class="btn btn-primary" onclick="javascript:window.history.back();"><i class="fas fa-undo mr-1"></i> Back</button>
+                                   
+                                </div>
+                            </div>
+                        </div>
+
+                        
+                            <div class="card-body">
+
+                                <div>
+                                    <div class="row"><div class="col-sm-6"><strong>Note : </strong> @SharedLocalizer["All fields are mandatory"].Value</div></div>
+                                    <form method="post" name="initialPidfCreate" id="initialPidfCreate" onsubmit="return CreatePIDF(this)">
+                                        @Html.HiddenFor(m => m.PidfStrengthList)
+                                        <div class="row mt-3">
+                                            <div class="col-lg-3 col-md-12">
+                                                <div class="form-group required">
+                                                    @Html.LabelFor(m => m.ProjectorProductName, new { @class = "control-label" })
+                                                    @Html.EditorFor(m => m.ProjectorProductName, new { htmlAttributes = new { @autocomplete = "off", @class = "form-control", @placeholder = "Product Name" } })
+                                                    @Html.ValidationMessageFor(m => m.ProjectorProductName, "", new { @class = "text-danger" })
+                                                </div>
+                                            </div>
+                                            <div class="col-lg-3 col-md-12">
+                                                <div class="form-group required">
+                                                    @Html.LabelFor(m => m.ProductID, new { @class = "control-label" })
+                                                    @Html.DropDownListFor(m => m.ProductID, new SelectList(string.Empty, "Value", "Text"), "Please select option", htmlAttributes: new { @class = "form-control input-sm f-s-15 bg-eff4f55c w100per", id = "cmbsProduct" })
+                                                    @Html.ValidationMessageFor(m => m.ProductID, "", new { @class = "text-danger" })
+                                                </div>
+                                            </div>
+                                            <div class="col-lg-3 col-md-12">
+                                                <div class="form-group required">
+                                                    @Html.LabelFor(m => m.PlantID, new { @class = "control-label" })
+                                                    @Html.DropDownListFor(m => m.PlantID, new SelectList(string.Empty, "Value", "Text"), "Please select option", htmlAttributes: new { @class = "form-control input-sm f-s-15 bg-eff4f55c w100per", id = "cmbsPlant" })
+                                                    @Html.ValidationMessageFor(m => m.PlantID, "", new { @class = "text-danger" })
+                                                </div>
+
+                                            </div>
+                                            <div class="col-lg-3 col-md-12">
+                                                <div class="form-group required">
+                                                    @Html.LabelFor(m => m.WorkflowID, new { @class = "control-label" })
+                                                    @Html.DropDownListFor(m => m.WorkflowID, new SelectList(string.Empty, "Value", "Text"), "Please Select Option", htmlAttributes: new { @class = "form-control input-sm f-s-15 bg-eff4f55c w100per", id = "cmbWorkflow" })
+                                                    @Html.ValidationMessageFor(m => m.WorkflowID, "", new { @class = "text-danger" })
+                                                </div>
+                                            </div>
+                                            <div class="col-lg-3 col-md-12">
+                                                <div class="form-group required">
+                                                    @Html.LabelFor(m => m.FormulationID, new { @class = "control-label" })
+                                                    @Html.DropDownListFor(m => m.FormulationID, new SelectList(string.Empty, "Value", "Text"), "Please Select Option", htmlAttributes: new { @class = "form-control input-sm f-s-15 bg-eff4f55c w100per", id = "cmbFormulation" })
+                                                    @Html.ValidationMessageFor(m => m.FormulationID, "", new { @class = "text-danger" })
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-lg-6 col-md-12">
+                                                <div class="table-responsive">
+                                                    <table id="myTable" class=" table order-list table-bordered" style="width:100%; min-width:500px;">
+                                                        <thead>
+                                                            <tr>
+                                                                <th>Strength</th>
+                                                                <th>Unit</th>
+                                                                <th class="ActionColumn">Action</th>
+                                                            </tr>
+                                                        </thead>
+                                                        <tbody>
+                                                            <tr id="mainRow">
+                                                                <td>
+                                                                    <input type="text" name="Strength[]" id="Strength" placeholder="Enter Strength" class="form-control" onkeypress="return isNumber(event)" autocomplete="off" />
+                                                                    <small class="text-danger" id="IPD_Strength_Error"></small>
+                                                                </td>
+                                                                <td>
+                                                                    <div class=" date table-borderless table-sm" data-target-input="nearest">
+                                                                        <SELECT class="form-control input-sm f-s-15 bg-eff4f55c w100per" id="cmbUOM" name="cmbUOM">
+                                                                            <OPTION value="">Please Select Option</OPTION>
+                                                                        </SELECT>
+                                                                        @*</SELECT><p type="text" class=error id='countryID_0_2_Error'>*@
+                                                                    </div>
+                                                                    <small class="text-danger" id="IPD_cmbUOM_Error"></small>
+                                                                </td>
+                                                                <td><a class="deleteRow "></a><button class="btn btn-primary btn-sm" id="addrow" type="button"><i class="fas fa-plus"></i></button></td>
+                                                            </tr>
+                                                        </tbody>
+                                                    </table>
+                                                </div>
+                                            </div>
+
+                                        </div>
+
+                                        <small class="text-danger" id="IPD_initialPidfSubmit_Error"></small>
+                                        <div class="card-footer text-center" style="margin:20px -20px -20px;">
+                                            <button type="submit" id="initialPidfSubmit" class="btn btn-primary ">Submit</button>
+                                            @*<button id="initialPidfCancel" class="btn btn-primary mr-3" href="@Url.Action("PIDFList","PIDF")">Cancel</button>*@
+                                            <a class="btn btn-danger" href="@Url.Action("PIDFList","PIDF")"><i class="far  mr-1"></i>Cancel</a>
+                                        </div>
+                                    </form>
+                                </div>                     
+
+
+                            </div>
+                                   
+
+                    </div>
+                </section>
+
+            </div>
+            <!-- /.row (main row) -->
+            <!-- /.container-fluid -->
+        </div>
+    </section>
+    <!-- /.content -->
+</div>
+
+
+
+
+@section Scripts {
+    <script src="~/plugins/datatables/jquery.dataTables.min.js"></script>
+    <script src="~/plugins/datatables-bs4/js/dataTables.bootstrap4.min.js"></script>
+    <script src="~/plugins/datatables-responsive/js/dataTables.responsive.min.js"></script>
+    <script src="~/plugins/datatables-responsive/js/responsive.bootstrap4.min.js"></script>
+    <script src="~/plugins/datatables-buttons/js/dataTables.buttons.min.js"></script>
+
+    <script>
+        
+        var counter = 1;
+        var detailsArray = [];
+        $(function () {
+            bsCustomFileInput.init();
+        });
+		var dataTable;
+        var JsonListArray = [];
+        var JSONUploadedFilesList = [];
+		//$(document).ready(function () {
+		//	dataTable = $('#PIDFTable').DataTable({
+		//		responsive: true,
+		//		autoWidth: true,
+		//		paging: false,
+		//		bFilter: false,
+		//		bInfo: false
+		//	});
+		//});
+		//$(function () {
+		//	//Initialize Select2 Elements
+		//	$('.select2').select2()
+
+		//	//Initialize Select2 Elements
+		//	$('.select2bs4').select2({
+		//		theme: 'bootstrap4'
+		//	});
+  //      });
+        //Code added by Yogesh
+        var defaultValue = "<option value=''>Please Select Option</option>";
+        $.ajax({
+            type: "POST",
+            url: '@Url.Action("GetDropdownsForPIDFAddDetails", "PIDF")/',
+            //contentType: "application/json; charset=utf-8",
+            dataType: "json",
+            //data: data,
+            success: function (response) {
+
+            $('#loading').hide();
+                $('#cmbsPlant').empty();
+                $('#cmbsPlant').empty().append(
+                    defaultValue
+                );
+                $.each(response.data.clsPidfHeaderNew.plantList, function (i, List) {
+                    $("#cmbsPlant").append('<option value="' + List.plantID + '">' +
+                        List.plantName + '</option>');
+                });
+
+                $('#cmbsProduct').empty();
+                $('#cmbsProduct').empty().append(
+                    defaultValue
+                );
+                $.each(response.data.clsPidfHeaderNew.productList, function (i, List) {
+                    $("#cmbsProduct").append('<option value="' + List.productID + '">' +
+                        List.productName + '</option>');
+                });                
+
+                $('#cmbUOM').empty();
+                $('#cmbUOM').empty().append(
+                    defaultValue
+                );
+                $.each(response.data.clsPidfHeaderNew.unitList, function (i, List) {
+                    $("#cmbUOM").append('<option value="' + List.unitID + '">' +
+                        List.unitName + '</option>');
+                });
+
+                $('#cmbFormulation').empty();
+                $('#cmbFormulation').empty().append(
+                    defaultValue
+                );
+                $.each(response.data.clsPidfHeaderNew.formulationList, function (i, List) {
+                    $("#cmbFormulation").append('<option value="' + List.formulationID + '">' +
+                        List.formulationName + '</option>');
+                });
+
+                $('#cmbWorkflow').empty();
+                $('#cmbWorkflow').empty().append(
+                    defaultValue
+                );
+                $.each(response.data.clsPidfHeaderNew.workflowList, function (i, List) {
+                    $("#cmbWorkflow").append('<option value="' + List.workflowID + '">' +
+                        List.workflowName + '</option>');
+                });
+            },
+            failure: function () {
+                $('#cmbsPlant').empty().append(
+                    defaultValue
+                );
+                $('#cmbsPlant').val(0);
+            }
+        });
+
+        //end of yogesh code
+        function isNumber(evt) {              evt = (evt) ? evt : window.event;            var charCode = (evt.which) ? evt.which : evt.keyCode;             if (charCode != 43 && charCode != 46 && charCode > 31 && (charCode < 48 || charCode > 57)) {                return false;            }            return true;        }
+        function isNumberKey(evt, obj) {
+
+            var charCode = (evt.which) ? evt.which : event.keyCode
+            var value = obj.value;
+            var dotcontains = value.indexOf(".") != -1;
+            if (dotcontains)
+                if (charCode == 46) return false;
+            if (charCode == 46) return true;
+            if (charCode > 31 && (charCode < 48 || charCode > 57))
+                return false;
+            return true;
+        }
+
+        function checkDec(el) {
+            var ex = /^[0-9]+\.?[0-9]*$/;
+            if (ex.test(el.value) == false) {
+                el.value = el.value.substring(0, el.value.length - 1);
+            }
+        }
+
+		function GetDate() {
+			var today = new Date();
+			var dd = String(today.getDate()).padStart(2, '0');
+			var mm = String(today.getMonth() + 1).padStart(2, '0'); //January is 0!
+			var yyyy = today.getFullYear();
+
+			today = yyyy + '-' + mm + '-' + dd;
+			return today;
+		}
+
+        function CreatePIDF(form) {
+            var isValid = true;            
+
+            if (detailsArray.length == 0) {
+                $('#IPD_initialPidfSubmit_Error').empty().append("Filled atleast one record");
+                return false;
+            }
+            else {
+                $('#IPD_initialPidfSubmit_Error').empty();
+            }
+
+            //if ($('#ProductName').val() == null || $('#ProductName').val() == "") {
+            //    $('#ProductName_error').empty().append("The 'Product Name' field is required.");
+            //    isValid = false;
+            //}
+            //else {
+            //    $('#ProductName_error').empty();
+            //}
+
+            $('#PidfStrengthList').val(JSON.stringify(detailsArray));
+            $.validator.unobtrusive.parse(form);
+           var url = '@Url.Action("PIDFStrengthList", "PIDF")';            
+            if ($(form).valid()) {
+                 $('#loading').show();
+                $.ajax({
+                    type : "POST",
+                    url : '@Url.Action("InsertInitialPIDFDetails", "PIDF")/',
+                    //contentType: "application/json; charset=utf-8",
+                    //dataType: 'json',
+                    data: $(form).serialize(),
+                    success: function (result) {                        
+                         $('#loading').hide();
+                        if (result.data === "success") {
+                            openCommonModal('successModal modal-sm', '@Html.Raw(SharedLocalizer["Success"].Value)', '@Html.Raw(SharedLocalizer["PIDF created successfully."].Value)', true);
+                            setTimeout(function () { location.href = url; }, 2000);
+                            //location.reload();
+                        }
+                        else {
+                            openCommonModal('alertModal modal-sm', '@SharedLocalizer["Error"].Value', result.message, false);
+                        }
+                    }
+                });
+            }
+            return false;
+        }
+
+        $("#addrow").on("click", function () {
+            var isValid = true;
+
+            if ($('#Strength').val() == null || $('#Strength').val() == "" || $('#Strength').val() == undefined) {
+                isValid = false;
+                $('#IPD_Strength_Error').empty().append("The 'Strength' field is required.");
+            }
+            else {
+                $('#IPD_Strength_Error').empty();
+            }
+           // alert($('#cmbUOM').val());
+            if ($('#cmbUOM').val() == null || $('#cmbUOM').val() == "" || $('#cmbUOM').val() == undefined) {
+                isValid = false;
+                $('#IPD_cmbUOM_Error').empty().append("The 'Unit' field is required.");
+            }
+            else {
+                $('#IPD_cmbUOM_Error').empty();
+            }
+
+
+            if (isValid) {
+
+
+               // console.log($('#Strength').val());
+
+                var tempStrength = $('#Strength').val();
+                var tempcmbUOMid = $('#cmbUOM').val();
+                var tempcmbUOM = $("#cmbUOM option:selected").text(); //$('#cmbUOM').OptionSelecttext();
+
+                var newRow = $("<tr id='" + counter + "'>");
+                var cols = "";
+
+               // console.log($('#cmbUOM').text);
+                cols += '<td><input type="text" class="form-control" value="' + tempStrength + '" readonly/></td>';
+                cols += '<td><input type="text" class="form-control" value="' + tempcmbUOM + '" readonly/></td>';
+                cols += '<td><button type="button" class="ibtnDel btn btn-sm btn-danger"><i class="far fa-trash-alt"></i></button></td>';
+                newRow.append(cols);
+                $("table.order-list").append(newRow);
+
+
+                var temp = {
+                    CounterID: counter,
+                    Strength: tempStrength,
+                    UOMid: tempcmbUOMid
+                };
+                //console.log(temp);
+                detailsArray.push(temp);
+
+                //console.log(detailsArray);
+
+                counter++;
+                clearRow();
+            }
+        });
+
+        function clearRow() {
+            $('#Strength').val("");
+            $('#cmbUOM').val("");
+
+        }
+
+        $("table.order-list").on("click", ".ibtnDel", function (event) {
+            var get_id = $(this).parent().parent().attr('id');           
+            $(this).closest("tr").remove();
+            for (var i = 0; i < detailsArray.length; i++) {
+                if (detailsArray[i].CounterID == get_id) {
+                    detailsArray.splice(i, 1);
+                }
+            }           
+        });
+        		
+		function clearPreviousData() {
+            $('#cmbFormulation').val(0);
+            $('#cmbsPlant').val(0);
+            $('#cmbsProduct').val(0);
+            $('#ProjectorProductName').val('');
+			//$('#IPD_packsize').val('');
+            detailsArray = [];
+            //$('#myTable tr').remove();
+            $("#myTable").find("tr:gt(1)").remove();
+		}
+
+		
+
+    </script>
+}

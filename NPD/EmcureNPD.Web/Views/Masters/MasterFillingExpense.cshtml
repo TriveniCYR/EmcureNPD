@@ -1,4 +1,5 @@
-﻿@using Microsoft.AspNetCore.Http
+﻿@using EmcureNPD.Utility.Models
+@using Microsoft.AspNetCore.Http
 @using EmcureNPD.Web.Controllers
 @using Microsoft.AspNetCore.Mvc.Localization
 @inject IHttpContextAccessor HttpContextAccessor
@@ -7,128 +8,124 @@
 
 @model EmcureNPD.Business.Models.MasterFillingExpenseEntity
 @{
-    ViewData["Title"] = @MasterLocalizer["FillingExpenseTitle"];
+	ViewData["Title"] = @MasterLocalizer["Filling Expense - Emcure NPD"];
+	RolePermissionModel objPermssion = (RolePermissionModel)ViewBag.Access;
+	string IsAddAllow = (objPermssion.Add) ? "" : "display: none";
+	string IsEditAllow = (objPermssion.Edit) ? "" : "display: none";
+	string IsDeleteAllow = (objPermssion.Delete) ? "" : "display: none";
 }
-<div class="row">
-    <section class="col-lg-12">
-        <div class="card">
-            <div class="card-header">
-                <h3 class="card-title">
-                    <i class="far fa-list-alt mr-2"></i>@MasterLocalizer["FillingExpense"]
-                </h3>
-                <div class="card-tools md-left">
-                    <div class="mybtn-group">
-                        <a class="btn btn-primary" data-toggle="modal" data-target="#SaveFillingExpenseModel" data-backdrop="static" data-keyboard="false" onclick="AddFillingExpense();"><i class="far fa-plus-square mr-1"></i> @SharedLocalizer["Add"]</a>
-                        <div class="export-btn mybtn-group"></div>
-                    </div>
-                </div>
-            </div>
-            <div class="card-body">
-                <table id="FillingExpenseTable" class="table table-bordered table-striped table-hover" style="width:100%">
-                    <thead>
-                        <tr>
-                            <th>@MasterLocalizer["FillingExpense"]</th>
-                            <th>@SharedLocalizer["Status"]</th>
-                            <th class="text-center">@SharedLocalizer["Action"]</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                    </tbody>
-                </table>
-            </div>
-        </div>
+<div class="content-header">
+	<div class="container-fluid d-flex justify-content-between">
+		<h3>@MasterLocalizer["Filling Expense"]</h3>
+		<div>
+			<a style="@IsAddAllow" class="btn btn-primary" data-toggle="modal" data-target="#SaveFillingExpenseModel" data-backdrop="static" data-keyboard="false" onclick="AddFillingExpense();"><i class="far fa-plus-square mr-1"></i> @SharedLocalizer["Add"]</a>
+		</div>
+	</div>
+</div>
+<div class="container-fluid overflow-auto background-white-card">
+	<table id="FillingExpenseTable" class="table table-bordered table-striped table-hover" style="width:100%">
+		<thead>
+			<tr>
+				<th>@MasterLocalizer["Filling Expense"]</th>
+				<th>@SharedLocalizer["Status"]</th>
+				<th class="text-center">@SharedLocalizer["Action"]</th>
+			</tr>
+		</thead>
+		<tbody>
+		</tbody>
+	</table>
+</div>
 
-        @*DeleteFillingExpenseModel*@
-        <div id="DeleteFillingExpenseModel" class="modal themeModal " role="dialog">
-            <div class="modal-dialog">
-                <!-- Modal content-->
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h4 class="modal-title">@SharedLocalizer["Delete"]</h4>
-                        <button type="button" class="close" data-dismiss="modal">&times;</button>
-                    </div>
-                    <div class="modal-body">
-                        <div class="row">
-                            <div class="col-md-12">
-                                <div class="form-group">
-                                    @Html.Label(@SharedLocalizer["DeleteConfirm"])
-                                </div>
-                            </div>
-                        </div>
-                        @Html.Hidden("ExpenseRegionId")
-                        <div class="card-footer text-center">
-                            <button type="button" onclick="DeleteFillingExpense()" data-dismiss="modal" class="btn btn-primary mr-2">@SharedLocalizer["Yes"]</button>
-                            <a class="btn btn-danger" data-dismiss="modal">@SharedLocalizer["No"]</a>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
+@*DeleteFillingExpenseModel*@
+<div id="DeleteFillingExpenseModel" class="modal themeModal " role="dialog">
+	<div class="modal-dialog">
+		<!-- Modal content-->
+		<div class="modal-content">
+			<div class="modal-header">
+				<h4 class="modal-title">@SharedLocalizer["Delete"]</h4>
+				<button type="button" class="close" data-dismiss="modal">&times;</button>
+			</div>
+			<div class="modal-body">
+				<div class="row">
+					<div class="col-md-12">
+						<div class="form-group">
+							@Html.Label(@SharedLocalizer["DeleteConfirm"])
+						</div>
+					</div>
+				</div>
+				@Html.Hidden("ExpenseRegionId")
+				<div class="card-footer text-center">
+					<button type="button" onclick="DeleteFillingExpense()" data-dismiss="modal" class="btn btn-primary mr-2">@SharedLocalizer["Yes"]</button>
+					<a class="btn btn-danger" data-dismiss="modal">@SharedLocalizer["No"]</a>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
 
-        @*AddUpdateModel*@
-        <div id="SaveFillingExpenseModel" class="modal themeModal " role="dialog">
-            <form asp-route-returnUrl="@ViewData["ReturnUrl"]" method="POST" onsubmit="return SaveFillingExpenseForm(this)">
-                <!-- Small boxes (Stat box) -->
-                <!-- Main row -->
-                <input type="hidden" id="ExpenseRegionId" name="ExpenseRegionId" value="0" />
-                <div class="modal-dialog">
-                    <!-- Modal content-->
-                    <div class="modal-content">
-                        <div class="modal-header">
-                            <h4 class="modal-title" id="FillingExpenseTitle"></h4>
-                            <button type="button" class="close" data-dismiss="modal">&times;</button>
-                        </div>
-                        <div class="modal-body">
-                            <div class="row">
-                                <div class="col-md-12">
-                                    <div class="form-group required">
-                                        @Html.LabelFor(model => model.ExpenseRegionName, "Filling Expense Name", new { @class = "control-label" })
-                                        @Html.EditorFor(model => model.ExpenseRegionName, new { htmlAttributes = new { @autocomplete = "off", @class = "form-control checkbox-checked", @placeholder = @SharedLocalizer["Filling Expense Name"] } })
-                                        @Html.ValidationMessageFor(model => model.ExpenseRegionName, "", new { @class = "text-danger" })
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="row">
-                                <div class="col-md-12">
-                                    <div class="required">
-                                        @Html.CheckBoxFor(model => model.IsActive, new { @class = "checkbox-checked", @checked = "checked" })
-                                        @Html.Label(@SharedLocalizer["IsActive"], "Active")
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="card-footer text-center">
-                            <button type="submit" class="btn btn-primary">@SharedLocalizer["Save"]</button>
-                            <a class="btn btn-danger" data-dismiss="modal">@SharedLocalizer["Cancel"]</a>
-                        </div>
-                    </div>
-                </div>
-            </form>
-        </div>
-    </section>
+@*AddUpdateModel*@
+<div id="SaveFillingExpenseModel" class="modal themeModal " role="dialog">
+	<form asp-route-returnUrl="@ViewData["ReturnUrl"]" method="POST" onsubmit="return SaveFillingExpenseForm(this)">
+		<!-- Small boxes (Stat box) -->
+		<!-- Main row -->
+		<input type="hidden" id="ExpenseRegionId" name="ExpenseRegionId" value="0" />
+		<div class="modal-dialog">
+			<!-- Modal content-->
+			<div class="modal-content">
+				<div class="modal-header">
+					<h4 class="modal-title" id="FillingExpenseTitle"></h4>
+					<button type="button" class="close" data-dismiss="modal">&times;</button>
+				</div>
+				<div class="modal-body">
+					<div class="row">
+						<div class="col-md-12">
+							<div class="form-group required">
+								@Html.LabelFor(model => model.ExpenseRegionName, "Filling Expense Name", new { @class = "control-label" })
+								@Html.EditorFor(model => model.ExpenseRegionName, new { htmlAttributes = new { @autocomplete = "off", @class = "form-control checkbox-checked", @placeholder = @SharedLocalizer["Filling Expense Name"] } })
+								@Html.ValidationMessageFor(model => model.ExpenseRegionName, "", new { @class = "text-danger" })
+							</div>
+						</div>
+					</div>
+					<div class="row">
+						<div class="col-md-12">
+							<div class="required">
+								@Html.CheckBoxFor(model => model.IsActive, new { @class = "checkbox-checked", @checked = "checked" })
+								@Html.Label(@SharedLocalizer["IsActive"], "Active")
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="card-footer text-end card-margin">
+					<button type="submit" class="btn btn-success me-3 large-button">@SharedLocalizer["Save"]</button>
+					<a class="btn btn-danger ms-3 large-button" data-dismiss="modal">@SharedLocalizer["Cancel"]</a>
+				</div>
+			</div>
+		</div>
+	</form>
 </div>
 @section MyScripts {
 
-    @Html.Partial("_DataTablePartial")
+	@Html.Partial("_DataTablePartial")
 
-    <script type="text/javascript" src="~/js/Custom/Masters/MasterFillingExpense.js"></script>
-    <script>
+	<script type="text/javascript" src="~/js/Custom/Masters/MasterFillingExpense.js"></script>
+	<script>
 
-        //#region Setup API Url
-        var AllFillingExpense = "@EmcureNPD.Web.Helpers.APIURLHelper.GetAllFillingExpense";
-        var SaveFillingExpense = "@EmcureNPD.Web.Helpers.APIURLHelper.SaveFillingExpense";
-        var GetFillingExpenseByIdUrl = "@EmcureNPD.Web.Helpers.APIURLHelper.GetFillingExpenseById";
-        var DeleteFillingExpenseByIdUrl = "@EmcureNPD.Web.Helpers.APIURLHelper.DeleteFillingExpenseById";
-        // #endregion
-
-        //#region Static Messae Init
-        var EditLabel = "@SharedLocalizer["Edit"]";
-        var DeleteLabel = "@SharedLocalizer["Delete"]";
-        var ErrorMessage = "@SharedLocalizer["Error"]";
-        var RecordInsertUpdate = "@SharedLocalizer["RecordInsertUpdate"]";
-        var RecordDelete = "@SharedLocalizer["RecordDelete"]";
-        var AddLabel = "@SharedLocalizer["Add"]";
-        var UpdateLabel = "@SharedLocalizer["Update"]";
-        //#endregion
-    </script>
+		//#region Setup API Url
+		var AllFillingExpense = "@EmcureNPD.Web.Helpers.APIURLHelper.GetAllFillingExpense";
+		var SaveFillingExpense = "@EmcureNPD.Web.Helpers.APIURLHelper.SaveFillingExpense";
+		var GetFillingExpenseByIdUrl = "@EmcureNPD.Web.Helpers.APIURLHelper.GetFillingExpenseById";
+		var DeleteFillingExpenseByIdUrl = "@EmcureNPD.Web.Helpers.APIURLHelper.DeleteFillingExpenseById";
+		// #endregion
+		var IsEditAllow = "@IsEditAllow";
+		var IsDeleteAllow = "@IsDeleteAllow";
+		//#region Static Messae Init
+		var EditLabel = "@SharedLocalizer["Edit"]";
+		var DeleteLabel = "@SharedLocalizer["Delete"]";
+		var ErrorMessage = "@SharedLocalizer["Error"]";
+		var RecordInsertUpdate = "@SharedLocalizer["RecordInsertUpdate"]";
+		var RecordDelete = "@SharedLocalizer["RecordDelete"]";
+		var AddLabel = "@SharedLocalizer["Add Filling Expense"]";
+		var UpdateLabel = "@SharedLocalizer["Edit Filling Expense"]";
+				//#endregion
+	</script>
 }

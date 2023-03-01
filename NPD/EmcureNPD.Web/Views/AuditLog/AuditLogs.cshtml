@@ -6,64 +6,62 @@
 @inject Microsoft.Extensions.Localization.IStringLocalizer<EmcureNPD.Resource.Shared> SharedLocalizer
 @model EmcureNPD.Business.Models.AuditLogEntity
 @{
-    ViewData["Title"] = @MasterLocalizer["AuditLog"];
+	ViewData["Title"] = @MasterLocalizer["AuditLog"];
 }
 <div class="row">
-    <section class="col-lg-12">
-        <div class="card">
-            <div class="card-header">
-                <h3 class="card-title">
-                    <i class="far fa-list-alt mr-2"></i>@MasterLocalizer["Audit Log"]
-                </h3>
-            </div>
-            <div class="card-body">
-                <table id="AuditLogTable" class="table table-bordered table-striped table-hover" style="width:100%">
-                    <thead>
-                        <tr>
-                            <th>@MasterLocalizer["Module Name"]</th>
-                            <th>@MasterLocalizer["Action Type"]</th>
-                            <th>@MasterLocalizer["Created Date"]</th>
-                            <th>@MasterLocalizer["Created By"]</th>
-                            <th class="text-center">@SharedLocalizer["Action"]</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                    </tbody>
-                </table>
-            </div>
-        </div>
-
-        @*AuditLogModel*@
-        <div id="AuditLogViewModel" class="modal themeModal " role="dialog">
-            <div class="modal-dialog">
-                <!-- Modal content-->
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h4 class="modal-title">@SharedLocalizer["Audit Log"]</h4>
-                        <button type="button" class="close" data-dismiss="modal">&times;</button>
-                    </div>
-                    <div class="modal-body">
-                        <div id="jstree"></div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
+	<section class="col-lg-12">
+		<div class="card">
+			<div class="card-header">
+				<h3 class="card-title">
+					<i class="far fa-list-alt mr-2"></i>@MasterLocalizer["Audit Log"]
+				</h3>
+			</div>
+			<div class="card-body">
+				<table id="AuditLogTable" class="table table-bordered table-striped table-hover" style="width:100%">
+					<thead>
+						<tr>
+							<th>@MasterLocalizer["Module Name"]</th>
+							<th>@MasterLocalizer["Action Type"]</th>
+							<th>@MasterLocalizer["Created Date"]</th>
+							<th>@MasterLocalizer["Created By"]</th>
+							<th class="text-center">@SharedLocalizer["Action"]</th>
+						</tr>
+					</thead>
+					<tbody>
+					</tbody>
+				</table>
+			</div>
+		</div>
+		@*AuditLogModel*@
+		<div id="AuditLogViewModel" class="modal themeModal" role="dialog">
+			<div class="modal-dialog modal-xl">
+				<!-- Modal content-->
+				<div class="modal-content">
+					<div class="modal-header">
+						<h3 class="modal-title">@SharedLocalizer["Audit Log"]</h3>
+						<button type="button" class="close" data-dismiss="modal">&times;</button>
+					</div>
+					<div class="modal-body">
+					</div>
+				</div>
+			</div>
+			</div>
+	</section>
 </div>
 @section MyScripts {
 
-    @Html.Partial("_DataTablePartial")
-    <script type="text/javascript" src="~/js/Custom/DynamicDataTable.js"></script>
-    <script type="text/javascript" src="~/js/Custom/AuditLog/AuditLog.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jstree/3.2.1/jstree.min.js"></script>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jstree/3.2.1/themes/default/style.min.css" />
-    <script>
-        //#region Static Label
-        var AllAuditLog = "@EmcureNPD.Web.Helpers.APIURLHelper.GetAllAuditlog";
-        var DeleteLabel = "@SharedLocalizer["Delete"]";
-        var ErrorMessage = "@SharedLocalizer["Error"]";
-        var RecordDelete = "@SharedLocalizer["RecordDelete"]";
-                //#endregion
-    </script>
+	@Html.Partial("_DataTablePartial")
+	<script type="text/javascript" src="~/js/Custom/DynamicDataTable.js"></script>
+	<script type="text/javascript" src="~/js/Custom/AuditLog/AuditLog.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/jstree/3.2.1/jstree.min.js"></script>
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jstree/3.2.1/themes/default/style.min.css" />
+	<script>
+		//#region Static Label
+		var AllAuditLog = "@EmcureNPD.Web.Helpers.APIURLHelper.GetAllAuditlog";
+		var DeleteLabel = "@SharedLocalizer["Delete"]";
+		var ErrorMessage = "@SharedLocalizer["Error"]";
+		var RecordDelete = "@SharedLocalizer["RecordDelete"]";
+																	//#endregion
+	</script>
 
 }

@@ -10,7 +10,7 @@ function GetFormRNDDivisionListSuccess(data) {
     try {
         $('#FormRNDDivisionTable tbody').html('')
         $.each(data._object, function (index, object) {
-            $('#FormRNDDivisionTable tbody').append('<tr><td>' + object.formRNDDivisionName + '</td><td><span style="color:' + (object.isActive ? "green" : "red") + '">' + (object.isActive ? "Active" : "InActive") + '</span></td><td>  <a class="btn btn-primary" data-toggle="modal" data-target="#SaveFormRNDDivisionModel" data-backdrop="static" data-keyboard="false"  onclick="GetFormRNDDivisionById(' + object.formRNDDivisionId + '); return false;"><i class="fa fa-fw fa-edit mr-1"></i> ' + EditLabel + '</a> <a class="btn btn-danger" data-toggle="modal" data-target="#DeleteFormRNDDivisionModel" data-backdrop="static" data-keyboard="false" onclick="ConfirmationDeleteFormRNDDivision(' + object.formRNDDivisionId + '); return false;"><i class="fa fa-fw fa-trash mr-1"></i> ' + DeleteLabel + '</a>  </td></tr>');
+            $('#FormRNDDivisionTable tbody').append('<tr><td>' + object.formRNDDivisionName + '</td><td><span style="color:' + (object.isActive ? "green" : "red") + '">' + (object.isActive ? "Active" : "InActive") + '</span></td><td>  <a class="large-font" style="' + IsEditAllow + '" href="" title="Edit" data-toggle="modal" data-target="#SaveFormRNDDivisionModel" data-backdrop="static" data-keyboard="false"  onclick="GetFormRNDDivisionById(' + object.formRNDDivisionId + '); return false;"><i class="fa fa-fw fa-edit mr-1"></i> ' + '</a> <a class="large-font text-danger" style="' + IsDeleteAllow +'" href="" title="Delete" data-toggle="modal" data-target="#DeleteFormRNDDivisionModel" data-backdrop="static" data-keyboard="false" onclick="ConfirmationDeleteFormRNDDivision(' + object.formRNDDivisionId + '); return false;"><i class="fa fa-fw fa-trash mr-1"></i> ' + '</a>  </td></tr>');
         });
         StaticDataTable("#FormRNDDivisionTable");
     } catch (e) {
@@ -28,6 +28,7 @@ function GetFormRNDDivisionById(id) {
 }
 function GetFormRNDDivisionByIdSuccess(data) {
     try {
+        CleareFormRNDDivisionFields();
         $('#SaveFormRNDDivisionModel #FormRNDDivisionID').val(data._object.formRNDDivisionId);
         $('#SaveFormRNDDivisionModel #FormRNDDivisionName').val(data._object.formRNDDivisionName);
         $('#SaveFormRNDDivisionModel #FormRNDDivisionTitle').html(UpdateLabel);
@@ -82,6 +83,12 @@ function CleareFormRNDDivisionFields() {
     $('#SaveFormRNDDivisionModel #FormRNDDivisionID').val("0");
     $('#SaveFormRNDDivisionModel #FormRNDDivisionName').val("");
     $('#DeleteFormRNDDivisionModel #FormRNDDivisionID').val("0");
+    var validationMessages = document.querySelectorAll(".field-validation-error");
+
+    // Loop through the messages and clear them
+    for (var i = 0; i < validationMessages.length; i++) {
+        validationMessages[i].textContent = "";
+    }
 }
 // #endregion
 

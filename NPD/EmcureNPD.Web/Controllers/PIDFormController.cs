@@ -145,9 +145,9 @@ namespace EmcureNPD.Web.Controllers
             try
             {
                 if (pidFormEntity.SaveType == "Sv")
-                    pidFormEntity.StatusId = (Int32)Master_PIDFStatus.IPDCreated;
+                    pidFormEntity.StatusId = (Int32)Master_PIDFStatus.IPDInProgress;
                 else
-                    pidFormEntity.StatusId = (Int32)Master_PIDFStatus.IPDBDPendingApproval;
+                    pidFormEntity.StatusId = (Int32)Master_PIDFStatus.IPDSubmitted;
                 pidFormEntity.CreatedBy = Convert.ToInt32(HttpContext.Session.GetString(UserHelper.LoggedInUserId));
                 HttpContext.Request.Cookies.TryGetValue(UserHelper.EmcureNPDToken, out string token);
                 APIRepository objapi = new(_cofiguration);
@@ -158,7 +158,7 @@ namespace EmcureNPD.Web.Controllers
                 {
                     TempData[UserHelper.SuccessMessage] = Convert.ToString(_stringLocalizerShared["RecordInsertUpdate"]);
                     ModelState.Clear();
-                    return RedirectToAction(nameof(PIDFormList));
+                    return RedirectToAction("PIDFList", "PIDF", new { ScreenId = 2 });
                 }
                 else
                 {
@@ -183,12 +183,13 @@ namespace EmcureNPD.Web.Controllers
         public IActionResult Medical(string pidfid)
         {
             ViewBag.id = pidfid;
+            ViewBag.baseUrl = _cofiguration.GetSection("Apiconfig").GetSection("baseurl").Value;
             PIDFMedicalViewModel oPIDForm = new();
             try
             {
                 string logUserId = Convert.ToString(HttpContext.Session.GetString(UserHelper.LoggedInUserId));
                 int rolId = (int)HttpContext.Session.GetInt32(UserHelper.LoggedInRoleId);
-                RolePermissionModel objPermssion = UtilityHelper.GetCntrActionAccess(Convert.ToString(RouteData.Values["controller"]), rolId);
+                RolePermissionModel objPermssion = UtilityHelper.GetCntrActionAccess(Convert.ToString(this.ControllerContext.ActionDescriptor.ActionName), rolId);
                 if (objPermssion == null || (!objPermssion.Add && !objPermssion.Edit))
                 {
                     return RedirectToAction("AccessRestriction", "Home");
@@ -204,7 +205,6 @@ namespace EmcureNPD.Web.Controllers
                 ViewBag.errormessage = Convert.ToString(e.StackTrace);
                 return View("PIDFormList");
             }
-            return View();
         }
         private PIDFMedicalViewModel GetModelForMedicalForm(string pidfid)
         {
@@ -241,7 +241,7 @@ namespace EmcureNPD.Web.Controllers
                 string x = JsonConvert.SerializeObject(medicalEntity);
 
                 var form = new MultipartFormDataContent();
-                if (medicalEntity.File !=null)
+                if (medicalEntity.File != null)
                 {
                     foreach (IFormFile file in medicalEntity.File)
                     {
@@ -262,11 +262,21 @@ namespace EmcureNPD.Web.Controllers
 
                 //var response = httpClient.PostAsync($"/api/PIDForm/PIDMedicalForm", form).Result;
                 HttpResponseMessage responseMessage = objapi.APIComm(APIURLHelper.PIDMedicalForm, HttpMethod.Post, token, form).Result;
-                return RedirectToAction("PIDFormList");
+                if (responseMessage.IsSuccessStatusCode)
+                {
+                    TempData[UserHelper.SuccessMessage] = Convert.ToString(_stringLocalizerShared["RecordInsertUpdate"]);
+					return RedirectToAction("PIDFList", "PIDF", new { ScreenId = 3 });
+                }
+                else
+                {
+					TempData[UserHelper.ErrorMessage] = Convert.ToString(responseMessage.Content.ReadAsStringAsync().Result);
+					ModelState.Clear();
+					return RedirectToAction("Medical", "PIDForm", new { pidfid = id });
+				}
             }
             else
             {
-                return RedirectToAction("PIDFormList");
+                return View(medicalEntity);
             }
         }
     }

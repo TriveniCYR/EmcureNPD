@@ -1,0 +1,344 @@
+﻿@inject Microsoft.Extensions.Localization.IStringLocalizer<SharedResource> SharedLocalizer
+@model RegisterViewModel
+@{
+	ViewData["Title"] = @SharedLocalizer["Register"].Value;
+
+}
+
+
+
+<div class="content-wrapper pt-3">
+	<section class="content">
+		<div class="container-fluid">
+
+			<div class="row">
+				<section class="col-lg-12 connectedSortable">
+					<!-- Custom tabs (Charts with tabs)-->
+					<div class="card">
+						<div class="card-header">
+							<h3 class="card-title">
+								<i class="far fa-plus-square mr-2"></i> @ViewData["Title"]
+							</h3>
+
+						</div>
+						<form asp-route-returnUrl="@ViewData["ReturnUrl"]" method="post">
+							<div class="card-body">
+								
+								@*if (@ViewData["SuccessMessage"] != null)
+			{*@
+								<h4 style="color:green;">@ViewData["SuccessMessage"]</h4>
+								@*}*@
+							<div class="appoinment-form fadeIn wow" data-wow-duration="1s">
+
+								<p><b>Note : </b> <small>@SharedLocalizer["All fields are mandatory to enable us to contact you and to verify your registration status with the GMC/GPHC/HCP Registration Number"].Value</small></p>
+
+								@*<div asp-validation-summary="All" class="text-danger"></div>*@
+								<div class="row">
+									<div class="col-sm-4">
+										<div class="form-group">
+											@Html.LabelFor(model => model.FirstName, new { @class = "control-label" })
+											@Html.EditorFor(model => model.FirstName, new { htmlAttributes = new { @class = "form-control input-sm" } })
+											@Html.ValidationMessageFor(model => model.FirstName, "", new { @class = "text-danger" })
+										</div>
+									</div>
+									<div class="col-sm-4">
+										<div class="form-group">
+											@Html.LabelFor(model => model.LastName, new { @class = "control-label" })
+											@Html.EditorFor(model => model.LastName, new { htmlAttributes = new { @class = "form-control input-sm" } })
+											@Html.ValidationMessageFor(model => model.LastName, "", new { @class = "text-danger" })
+										</div>
+									</div>
+									<div class="col-sm-4">
+										<div class="form-group">
+											@Html.LabelFor(model => model.Email, new { @class = "control-label" })
+											@Html.EditorFor(model => model.Email, new { htmlAttributes = new { @class = "form-control input-sm" } })
+											@Html.ValidationMessageFor(model => model.Email, "", new { @class = "text-danger" })
+										</div>
+									</div>
+								</div>
+								<div class="row">
+
+									<div class="col-sm-4">
+										<div class="form-group">
+											@Html.LabelFor(x => x.DepartmentID, new { @class = "control-label" })
+											@Html.DropDownListFor(x => Model.DepartmentID, new SelectList(Model.Departments, "Value", "Text", ViewBag.Department), htmlAttributes: new { @class = "form-control input-sm", id = "Department" })
+											@Html.ValidationMessageFor(x => Model.DepartmentID, "", new { @class = "text-danger" })
+
+										</div>
+									</div>
+									<div class="col-sm-4">
+										<div class="form-group">
+											@Html.LabelFor(x => Model.GeographyId, htmlAttributes: new { @class = "control-label" })
+											@Html.DropDownListFor(x => Model.GeographyId, new SelectList(Model.Geographys, "Value", "Text", ViewBag.Geography), htmlAttributes: new { @class = "form-control input-sm", id = "Geography",onchange = "getCountry(this.value)" })
+											@Html.ValidationMessageFor(x => Model.GeographyId, "", new { @class = "text-danger" })
+										</div>
+									</div>
+									<div class="col-sm-4">
+										<div class="form-group">
+											@*@Html.LabelFor(x => Model.CountryId, htmlAttributes: new { @class = "control-label" })
+		@Html.DropDownListFor(x => Model.CountryId, new SelectList(Model.Countries, "Value", "Text", ViewBag.Country), htmlAttributes: new { @class = "form-control input-sm", id = "Country" })
+		@Html.ValidationMessageFor(x => Model.CountryId, "", new { @class = "text-danger" })*@
+											@Html.LabelFor(x => Model.CountryId, htmlAttributes: new { @class = "control-label" })
+											@Html.DropDownListFor(x => Model.CountryId, new SelectList(string.Empty, "Value", "Text"), "Please select option", htmlAttributes: new { @class = "form-control input-sm",id = "Country" })
+											@Html.ValidationMessageFor(x => Model.CountryId, "", new { @class = "text-danger" })
+										</div>
+									</div>
+
+								</div>
+								<div class="row">
+
+									<div class="col-sm-4">
+										<div class="form-group">
+											@Html.LabelFor(x => Model.Specialization, htmlAttributes: new { @class = "control-label" })
+											@Html.DropDownListFor(x => Model.Specialization, new SelectList(Model.Specializations, "Value", "Text", ViewBag.Selected), htmlAttributes: new { @class = "form-control input-sm", id = "Specialization" })
+											@Html.ValidationMessageFor(x => x.Specialization, "", new { @class = "text-danger" })
+										</div>
+									</div>
+									<div class="col-sm-4">
+										<div class="form-group">
+											@Html.LabelFor(model => model.Password, new { @class = "control-label" })
+											@Html.EditorFor(model => model.Password, new { htmlAttributes = new { @class = "form-control input-sm" } })
+											@Html.ValidationMessageFor(model => model.Password, "", new { @class = "text-danger" })
+										</div>
+									</div>
+									<div class="col-sm-4">
+										<div class="form-group">
+											@Html.LabelFor(model => model.ConfirmPassword, new { @class = "control-label" })
+											@Html.EditorFor(model => model.ConfirmPassword, new { htmlAttributes = new { @class = "form-control input-sm" } })
+											@Html.ValidationMessageFor(model => model.ConfirmPassword, "", new { @class = "text-danger" })
+										</div>
+									</div>
+
+								</div>
+
+								<div class="row">
+									<div class="col-sm-4">
+										<div class="form-group">
+											@Html.LabelFor(model => model.ContactAddress, htmlAttributes: new { @class = "control-label" })
+											@Html.TextAreaFor(model => model.ContactAddress, new { @class = "form-control input-sm", @rows = 2 })
+											@Html.ValidationMessageFor(model => model.ContactAddress, "", new { @class = "text-danger" })
+										</div>
+									</div>
+									<div class="col-sm-4">
+										<div class="form-group">
+											@Html.LabelFor(model => model.TelephoneNumber, new { @class = "control-label" })
+											@Html.EditorFor(model => model.TelephoneNumber, new { htmlAttributes = new { @class = "form-control input-sm" } })
+											@Html.ValidationMessageFor(model => model.TelephoneNumber, "", new { @class = "text-danger" })
+										</div>
+									</div>
+								</div>
+
+								<br />
+								@SharedLocalizer["Authentication Security Question"].Value
+								<div class="row">
+									<div class="col-sm-6">
+										<div class="form-group">
+											@Html.DropDownListFor(x => Model.Question1, new SelectList(Model.Question1s, "Value", "Text", ViewBag.SelectedQ1), htmlAttributes: new { @class = "form-control input-sm", id = "Question1" })
+											@Html.ValidationMessageFor(x => Model.Question1, "", new { @class = "text-danger" })
+										</div>
+									</div>
+									<div class="col-sm-6">
+										<div class="form-group">
+											@Html.EditorFor(model => model.Answer1, new { htmlAttributes = new { @class = "form-control input-sm" } })
+											@Html.ValidationMessageFor(model => model.Answer1, "", new { @class = "text-danger" })
+										</div>
+									</div>
+								</div>
+								<div class="row">
+									<div class="col-sm-6">
+										<div class="form-group">
+											@Html.DropDownListFor(x => Model.Question2, new SelectList(Model.Question2s, "Value", "Text", ViewBag.SelectedQ2), htmlAttributes: new { @class = "form-control input-sm", id = "Question2" })
+											@Html.ValidationMessageFor(x => Model.Question2, "", new { @class = "text-danger" })
+										</div>
+									</div>
+									<div class="col-sm-6">
+										<div class="form-group">
+											@Html.EditorFor(model => model.Answer2, new { htmlAttributes = new { @class = "form-control input-sm" } })
+											@Html.ValidationMessageFor(model => model.Answer2, "", new { @class = "text-danger" })
+										</div>
+									</div>
+								</div>
+								<div class="row">
+									<div class="col-sm-6">
+										<div class="form-group">
+											@Html.DropDownListFor(x => Model.Question3, new SelectList(Model.Question3s, "Value", "Text", ViewBag.SelectedQ3), htmlAttributes: new { @class = "form-control input-sm", id = "Question3" })
+											@Html.ValidationMessageFor(x => Model.Question3, "", new { @class = "text-danger" })
+										</div>
+									</div>
+									<div class="col-sm-6">
+										<div class="form-group">
+											@Html.EditorFor(model => model.Answer3, new { htmlAttributes = new { @class = "form-control input-sm" } })
+											@Html.ValidationMessageFor(model => model.Answer3, "", new { @class = "text-danger" })
+										</div>
+									</div>
+								</div>
+
+								<br />
+								<br />
+
+
+
+							</div>
+
+							</div>
+							<div class="card-footer text-center">
+								<button type="submit" class="btn btn-primary ">@SharedLocalizer["Register"].Value</button>
+
+							</div>
+						</form>
+					</div>
+				</section>
+			</div>
+		</div>
+	</section>
+</div>
+
+
+
+@section Scripts {
+	@await Html.PartialAsync("_ValidationScriptsPartial")
+
+	<script>
+		$("#OtherSpecializationBox").hide();
+
+		$("input[name='IsDoctorPharmacist']").on("change", function () {
+			if ($(this).val() == "True") {
+				$("#SpecializationBox").show(400);
+			} else {
+				$("#SpecializationBox").hide(400);
+			}
+		});
+		$("#Specialization").change(function () {
+			if ($(this).val() === "0") {
+				$("#OtherSpecializationBox").show();
+
+			} else {
+				$("#OtherSpecializationBox").hide();
+			}
+		});
+
+		$('#Question1').on('change', function () {
+			$("#Question2 option").each(function () {
+				$(this).show();
+			});
+			$("#Question3 option").each(function () {
+				$(this).show();
+			});
+
+			if (this.value != "") {
+				$("#Question2 option[value=" + this.value + "]").hide();
+				$("#Question3 option[value=" + this.value + "]").hide();
+			}
+			var question2Selected = $('#Question2').children("option:selected").val();
+			var question3Selected = $('#Question3').children("option:selected").val();
+
+			if (question3Selected != "")
+				$("#Question2 option[value=" + question3Selected + "]").hide();
+
+			if (question2Selected != "")
+				$("#Question3 option[value=" + question2Selected + "]").hide();
+		});
+
+		$('#Question2').on('change', function () {
+
+			$("#Question1 option").each(function () {
+				$(this).show();
+			});
+			$("#Question3 option").each(function () {
+				$(this).show();
+			});
+			if (this.value != "") {
+				$("#Question1 option[value=" + this.value + "]").hide();
+				$("#Question3 option[value=" + this.value + "]").hide();
+			}
+			var question1Selected = $('#Question1').children("option:selected").val();
+			var question3Selected = $('#Question3').children("option:selected").val();
+
+			if (question3Selected != "")
+				$("#Question1 option[value=" + question3Selected + "]").hide();
+
+			if (question1Selected != "")
+				$("#Question3 option[value=" + question1Selected + "]").hide();
+		});
+
+		$('#Question3').on('change', function () {
+			$("#Question1 option").each(function () {
+				$(this).show();
+			});
+			$("#Question2 option").each(function () {
+				$(this).show();
+			});
+
+			if (this.value != "") {
+				$("#Question1 option[value=" + this.value + "]").hide();
+				$("#Question2 option[value=" + this.value + "]").hide();
+			}
+			var question2Selected = $('#Question2').children("option:selected").val();
+			var question1Selected = $('#Question1').children("option:selected").val();
+
+			if (question1Selected != "")
+				$("#Question2 option[value=" + question1Selected + "]").hide();
+
+			if (question2Selected != "")
+				$("#Question1 option[value=" + question2Selected + "]").hide();
+        });
+
+        $(document).ready(function () {
+
+			 $.ajax({
+                type: 'POST',
+                url: '@Url.Action("GetDropdownForRegisterForm")', // we are calling json method
+                dataType: 'json',
+                success: function (response) {
+                    console.log(response);
+                    
+                     $('#Country').empty().append(
+								"<option value=''>Please select option</option>"
+                        );
+
+                    $.each(response.data.countryLists, function (i, country) {
+                    $("#Country").append('<option value="' + country.id + '">' +
+                         country.country + '</option>');
+                    });
+
+
+                },
+                error: function (ex) {
+                    //alert('Failed to retrieve country.' + ex);
+                }
+            });
+
+
+
+        });
+
+        function getCountry(RegionID) {
+
+			 $.ajax({
+                type: 'POST',
+                url: '@Url.Action("GetRegionwiseCountry")?RegionID='+RegionID, // we are calling json method
+                dataType: 'json',
+                success: function (response) {
+                    console.log(response);
+                    
+                     $('#Country').empty().append(
+								"<option value=''>Please select option</option>"
+                        );
+
+                    $.each(response.data.countryLists, function (i, country) {
+                    $("#Country").append('<option value="' + country.id + '">' +
+                         country.country + '</option>');
+                    });
+
+
+                },
+                error: function (ex) {
+                    //alert('Failed to retrieve country.' + ex);
+                }
+            });
+
+        }
+
+
+	</script>
+}

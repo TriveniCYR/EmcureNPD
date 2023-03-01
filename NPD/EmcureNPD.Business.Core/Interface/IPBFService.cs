@@ -1,5 +1,6 @@
 ﻿using EmcureNPD.Business.Models;
 using EmcureNPD.Data.DataAccess.Entity;
+using Microsoft.AspNetCore.Http;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -16,9 +17,20 @@ namespace EmcureNPD.Business.Core.Interface
 		Task<DBOperation> AddUpdatePBF(PidfPbfEntity pbfEntity);
 		
 		//------------Start------API_IPD_Details_Form_Entity--------------------------
-        Task<DBOperation> AddUpdateAPIIPD(PIDFAPIIPDFormEntity entityPIDF);
+        Task<DBOperation> AddUpdateAPIIPD(IFormCollection entityPIDF,string _webrootPath);
 
-		Task<PIDFAPIIPDFormEntity> GetAPIIPDFormData(long pidfId);
-		//------------End------API_IPD_Details_Form_Entity--------------------------
-    }
+		Task<PIDFAPIIPDFormEntity> GetAPIIPDFormData(long pidfId, string _webrootPath);
+        //------------End------API_IPD_Details_Form_Entity--------------------------
+        Task<PIDFAPIRnDFormEntity> GetAPIRnDFormData(long pidfId, string _webrootPath);
+
+        //Task<DBOperation> AddUpdateAPIRnD(PIDFAPICharterFormEntity _oAPICharter);
+        Task<PIDFAPICharterFormEntity> GetAPICharterFormData(long pidfId);
+        Task<DBOperation> AddUpdateAPICharter(PIDFAPICharterFormEntity _oAPICharter);
+        Task<DBOperation> AddUpdateAPIRnD(PIDFAPIRnDFormEntity _oAPIRnD);
+		Task<PidfPbfAnalyticalEntity> GetPBFAnalyticalReadonlyData(long pidfid);
+
+        // ---------------------------PBFDetails----------------------------
+        Task<DBOperation> AddUpdatePBFDetails(PidfPbfEntity pbfEntity);
+
+    }	
 }

@@ -7,10 +7,14 @@ namespace EmcureNPD.Data.DataAccess.Entity
 {
     public partial class PidfPbf
     {
+        public PidfPbf()
+        {
+            PidfPbfAnalyticals = new HashSet<PidfPbfAnalytical>();
+            PidfPbfClinicals = new HashSet<PidfPbfClinical>();
+        }
+
         public long Pidfpbfid { get; set; }
         public long Pidfid { get; set; }
-        public int BusinessUnitId { get; set; }
-        public int PidfproductStrengthId { get; set; }
         public string ProjectName { get; set; }
         public string Market { get; set; }
         public string BusinessRelationable { get; set; }
@@ -27,20 +31,23 @@ namespace EmcureNPD.Data.DataAccess.Entity
         public string RnDhead { get; set; }
         public string ProjectManager { get; set; }
         public int PackagingTypeId { get; set; }
+        public string DosageFormulationDetail { get; set; }
+        public int? ManufacturingId { get; set; }
         public DateTime CreatedDate { get; set; }
         public int CreatedBy { get; set; }
         public DateTime? ModifyDate { get; set; }
         public int? ModifyBy { get; set; }
 
         public virtual MasterBerequirement Berequirement { get; set; }
-        public virtual MasterBusinessUnit BusinessUnit { get; set; }
         public virtual MasterDosage Dosage { get; set; }
         public virtual MasterFormRnDdivision FormRnDdivision { get; set; }
+        public virtual MasterManufacturing Manufacturing { get; set; }
         public virtual MasterPackagingType PackagingType { get; set; }
         public virtual Pidf Pidf { get; set; }
-        public virtual MasterProductStrength PidfproductStrength { get; set; }
         public virtual MasterPlant Plant { get; set; }
         public virtual MasterProductType ProductType { get; set; }
         public virtual MasterWorkflow Workflow { get; set; }
+        public virtual ICollection<PidfPbfAnalytical> PidfPbfAnalyticals { get; set; }
+        public virtual ICollection<PidfPbfClinical> PidfPbfClinicals { get; set; }
     }
 }

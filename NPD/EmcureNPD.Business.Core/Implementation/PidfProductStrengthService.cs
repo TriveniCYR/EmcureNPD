@@ -33,6 +33,13 @@ namespace EmcureNPD.Business.Core.Implementation
         public async Task<PidfProductStregthEntity> GetById(int id)
         {
             return _mapperFactory.Get<PidfproductStrength, PidfProductStregthEntity>(await _repository.GetAsync(id));
+        }     
+
+        public async Task<List<PidfProductStregthEntity>> GetStrengthByPIDFId(long pidfid)
+        {
+            var objpidf = await _repository.GetAllAsync();
+            var objpidfId = objpidf.Where(x => x.Pidfid == pidfid).ToList();
+            return _mapperFactory.GetList<PidfproductStrength, PidfProductStregthEntity>(objpidfId);
         }
     }
 }

@@ -1,5 +1,4 @@
-﻿
-$.fn.serializeObject = function () {
+﻿$.fn.serializeObject = function () {
     var o = {};
     var a = this.serializeArray();
     $.each(a, function () {
@@ -50,21 +49,44 @@ function getCookie(name) {
 }
 function setNavigation() {
     var path = window.location.pathname;
+    var currenthref = window.location.href;
     path = path.replace(/\/$/, "");
     path = decodeURIComponent(path);
     var CurrentpathArr = path.split('/');
-    
+    if (path == `/PIDF/PIDFList`) {
+        $(".nav-item a").each(function () {
+            var IshrefFound = false;
+            var href = $(this).attr('href');
+            if (currenthref.split('?')[1] == href.split('?')[1]) {
+                $(this).addClass('active');
+                $(this).parent().parent().parent().addClass('menu-is-opening menu-open');
+                IshrefFound = true;
+                return false;
+            }
+        }
+        )
+    };
+    if (path.includes('PIDF') || path.includes('PBF') || path.includes('Audit')) {
+        $('#parentPIDF').addClass('menu-is-opening menu-open');        
+    }
+
     $(".nav-item a").each(function () {
+        var IshrefFound = false;
         var href = $(this).attr('href');
+        if (href==undefined) {
+            return;
+        }
+        var NavPathArr = href.split('/');
         if (href != '#' && href != undefined) {
             if (path.substring(0, href.length) === href) {
                 $(this).addClass('active');
                 $(this).parent().parent().parent().addClass('menu-is-opening menu-open');
+                IshrefFound = true;
+                return false;
             }
             /*----start----New logic added----------------*/
-            var NavPathArr = href.split('/');
-            if (CurrentpathArr[1] == NavPathArr[1]) {
-                $(this).addClass('active');
+            if (CurrentpathArr[1] == NavPathArr[1] && !IshrefFound) {
+                // $(this).addClass('active');
                 $(this).parent().parent().parent().addClass('menu-is-opening menu-open');
             }
             /*-----end---New logic added----------------*/
@@ -114,8 +136,6 @@ function StaticDataTable(selector, dom, buttons) {
             'processing': '<div class="spinner"></div>'
         }
     });
-
-
 }
 function ajaxServiceMethod(url, type, successCallback, errorCallback, body, header, async, dataType, contentType) {
     if (contentType == null || contentType == undefined) {
@@ -142,9 +162,14 @@ function ajaxServiceMethod(url, type, successCallback, errorCallback, body, head
         //}
     });
 }
+function getParameterByName(name, url = window.location.href) {
+    name = name.replace(/[\[\]]/g, '\\$&');
+    var regex = new RegExp('[?&]' + name + '(=([^&#]*)|&|#|$)'),
+        results = regex.exec(url);
+    if (!results) return null;
+    if (!results[2]) return '';
+    return decodeURIComponent(results[2].replace(/\+/g, ' '));
+}
 $(document).ready(function () {
     setNavigation();
 });
-
-
-
