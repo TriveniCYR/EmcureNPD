@@ -297,5 +297,6 @@
         public static string GetAllDashboard = "api/Dashboard/FillDropdown";        
         public static string GetPIDFList = "api/Dashboard/GetPIDFByYearAndBusinessUnit";        
         #endregion
+        public static string GetAllNotification = "api/Notification/GetAll";
     }
 }
