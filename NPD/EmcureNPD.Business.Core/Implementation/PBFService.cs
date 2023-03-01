@@ -254,8 +254,8 @@ namespace EmcureNPD.Business.Core.Implementation
                     lastApiIpd.ModifyDate = DateTime.Now;
                     _pidf_API_IPD_repository.UpdateAsync(lastApiIpd);
 
-                    var isSuccess = await _auditLogService.CreateAuditLog<PidfApiIpd>(Utility.Audit.AuditActionType.Update,
-                Utility.Enums.ModuleEnum.PBF, OldObjAPIIPD, lastApiIpd,0);
+                //    var isSuccess = await _auditLogService.CreateAuditLog<PidfApiIpd>(Utility.Audit.AuditActionType.Update,
+                //Utility.Enums.ModuleEnum.PBF, OldObjAPIIPD, lastApiIpd,0);
                 }
                 else
                 {
@@ -334,6 +334,7 @@ namespace EmcureNPD.Business.Core.Implementation
                      _CharterObjects = dbresult.Tables[0].DataTableToList<CharterObject>();
                     _oCharterEntity.TimelineInMonths = dbresult.Tables[1].DataTableToList<TimelineInMonths>();
                     _oCharterEntity.ManhourEstimates = dbresult.Tables[2].DataTableToList<ManhourEstimates>();
+                    _oCharterEntity.AnalyticalDepartment = dbresult.Tables[3].DataTableToList<AnalyticalDepartment>();
                 }
             }
 
@@ -367,16 +368,10 @@ namespace EmcureNPD.Business.Core.Implementation
                 System.Data.CommandType.StoredProcedure, osqlParameter);           
         }
         public async Task<DBOperation> AddUpdateAPICharter(PIDFAPICharterFormEntity _oAPICharter)
-        {
-            //PIDFAPIIPDFormEntity _exsistingAPIRnD = new PIDFAPIIPDFormEntity();
-            //var _objPidfApiCharterTimelineInMonth = new List<PidfApiCharterTimelineInMonth>();
-            //foreach (var obj in _oAPICharter.TimelineInMonths)
-            //{
-            //    var _objTimelineInMonths = _mapperFactory.Get<TimelineInMonths, PidfApiCharterTimelineInMonth>(obj);
-            //    _objPidfApiCharterTimelineInMonth.Add(_objTimelineInMonths);
-            //}
+        {           
             var _objPidfApiCharterTimelineInMonth = FillObjData<TimelineInMonths, PidfApiCharterTimelineInMonth>(_oAPICharter.TimelineInMonths);
             var _objPidfApiCharterManhourEstimates = FillObjData<ManhourEstimates, PidfApiCharterManhourEstimate>(_oAPICharter.ManhourEstimates);
+            var _objPidfApiCharterAnalyticalDepartment = FillObjData<AnalyticalDepartment, PidfApiCharterAnalyticalDepartment>(_oAPICharter.AnalyticalDepartment);
 
             if (_oAPICharter.PIDFAPICharterFormID > 0)
             {
@@ -384,18 +379,25 @@ namespace EmcureNPD.Business.Core.Implementation
                 var OldObjAPICharter = lastApiCharter;
                 if (lastApiCharter != null)
                 {
-                    _oAPIRnD.ManHourRates = (Convert.ToString(_oAPIRnD.ManHourRates)=="")? "0":_oAPIRnD.ManHourRates;
-                    lastApiCharter.ManHourRates = int.Parse(_oAPIRnD.ManHourRates);
-                    lastApiCharter.ApigroupLeader = _oAPIRnD.APIGroupLeader;
-                    lastApiCharter.ProjectComplexityId = _oAPIRnD.ProjectComplexityId;
+                    RemoveChildDataAPICharter(_oAPICharter.PIDFAPICharterFormID); // Remove child table data
+                    lastApiCharter.PidfApiCharterTimelineInMonths = _objPidfApiCharterTimelineInMonth;
+                    lastApiCharter.PidfApiCharterManhourEstimates = _objPidfApiCharterManhourEstimates;
+                    lastApiCharter.PidfApiCharterAnalyticalDepartments = _objPidfApiCharterAnalyticalDepartment;
                     
-                    lastApiCharter.Pidfid = long.Parse(_oAPIRnD.Pidfid);
-                    lastApiCharter.ModifyBy = _oAPIRnD.LoggedInUserId;
+
+
+                    _oAPICharter.ManHourRates = (Convert.ToString(_oAPICharter.ManHourRates) == "" || _oAPICharter.ManHourRates == null) ? "0" : _oAPICharter.ManHourRates;
+                    lastApiCharter.ManHourRates = int.Parse(_oAPICharter.ManHourRates);
+                    lastApiCharter.ApigroupLeader = _oAPICharter.APIGroupLeader;
+                    lastApiCharter.ProjectComplexityId = _oAPICharter.ProjectComplexityId;
+                    
+                    lastApiCharter.Pidfid = long.Parse(_oAPICharter.Pidfid);
+                    lastApiCharter.ModifyBy = _oAPICharter.LoggedInUserId;
                     lastApiCharter.ModifyDate = DateTime.Now;
                     _pidf_API_Charter_repository.UpdateAsync(lastApiCharter);
                     //Implement AuditLog
-                    var isSuccess = await _auditLogService.CreateAuditLog<PidfApiCharter>(Utility.Audit.AuditActionType.Update,
-                    Utility.Enums.ModuleEnum.PBF, OldObjAPICharter, lastApiCharter, 0);
+                    //var isSuccess = await _auditLogService.CreateAuditLog<PidfApiCharter>(Utility.Audit.AuditActionType.Update,
+                    //Utility.Enums.ModuleEnum.PBF, OldObjAPICharter, lastApiCharter, 0);
                 }
                 else
                 {
@@ -418,8 +420,8 @@ namespace EmcureNPD.Business.Core.Implementation
                 //Implement PIDF staurs change
             }
             await _unitOfWork.SaveChangesAsync();
-            var _StatusID = (_oAPIRnD.SaveType == "Save") ? Master_PIDFStatus.APISubmitted : Master_PIDFStatus.APISubmitted;
-            await _auditLogService.UpdatePIDFStatusCommon(long.Parse(_oAPIRnD.Pidfid), (int)_StatusID, _oAPIRnD.LoggedInUserId);
+            var _StatusID = (_oAPICharter.SaveType == "Save") ? Master_PIDFStatus.APISubmitted : Master_PIDFStatus.APIInProgress;
+            await _auditLogService.UpdatePIDFStatusCommon(long.Parse(_oAPICharter.Pidfid), (int)_StatusID, _oAPICharter.LoggedInUserId);
             return DBOperation.Success;
         }
         public async Task<PIDFAPIRnDFormEntity> GetAPIRnDFormData(long pidfId, string _webrootPath)
@@ -640,6 +642,8 @@ namespace EmcureNPD.Business.Core.Implementation
 
 
             }
+
+
         }
         // t
         private async Task<bool> SaveChildDetails(long Pidfpbfid, int loggedInUserId, PidfPbfAnalyticalEntity analyticalEntites, PidfPbfClinicalEntity clinicalEntites, PidfPbfRnDEntity rnDEntites)
