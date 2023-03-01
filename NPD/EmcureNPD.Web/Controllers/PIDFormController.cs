@@ -12,6 +12,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Localization;
 using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
 using System.Net.Http;
@@ -190,7 +191,7 @@ namespace EmcureNPD.Web.Controllers
                 string logUserId = Convert.ToString(HttpContext.Session.GetString(UserHelper.LoggedInUserId));
                 int rolId = (int)HttpContext.Session.GetInt32(UserHelper.LoggedInRoleId);
                 RolePermissionModel objPermssion = UtilityHelper.GetCntrActionAccess(Convert.ToString(this.ControllerContext.ActionDescriptor.ActionName), rolId);
-                if (objPermssion == null || (!objPermssion.Add && !objPermssion.Edit))
+                if (objPermssion == null || !objPermssion.View)
                 {
                     return RedirectToAction("AccessRestriction", "Home");
 
@@ -270,7 +271,15 @@ namespace EmcureNPD.Web.Controllers
                 else
                 {
 					TempData[UserHelper.ErrorMessage] = Convert.ToString(responseMessage.Content.ReadAsStringAsync().Result);
-					ModelState.Clear();
+                    var errorMessage = TempData[UserHelper.ErrorMessage];
+
+                    // Cast the value to a string and parse the JSON to a JObject
+                    var errorMessageJson = errorMessage as string;
+                    var errorMessageObj = JObject.Parse(errorMessageJson);
+
+                    // Get the value of _Message from the JObject
+                    TempData[UserHelper.ErrorMessage] = errorMessageObj["_Message"].ToString();
+                    ModelState.Clear();
 					return RedirectToAction("Medical", "PIDForm", new { pidfid = id });
 				}
             }
