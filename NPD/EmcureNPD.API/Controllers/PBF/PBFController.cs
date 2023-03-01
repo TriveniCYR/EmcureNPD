@@ -166,11 +166,11 @@ namespace EmcureNPD.API.Controllers.PBF
         }
         [HttpPost]
         [Route("InsertUpdateAPICharter")]
-        public async Task<IActionResult> InsertUpdateAPICharter(PIDFAPICharterFormEntity oAPIRnD)
+        public async Task<IActionResult> InsertUpdateAPICharter(PIDFAPICharterFormEntity oAPICharter)
         {
             try
             {
-                DBOperation oResponse = await _PBFService.AddUpdateAPICharter(oAPIRnD);
+                DBOperation oResponse = await _PBFService.AddUpdateAPICharter(oAPICharter);
                 if (oResponse == DBOperation.Success)
                     return _ObjectResponse.Create(true, (Int32)HttpStatusCode.OK, "Record Insert Successfully");
                 else

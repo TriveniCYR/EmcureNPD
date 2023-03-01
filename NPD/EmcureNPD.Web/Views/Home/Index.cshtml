@@ -5,13 +5,15 @@
 @inject Microsoft.Extensions.Localization.IStringLocalizer<EmcureNPD.Resource.Master> MasterLocalizer
 @inject Microsoft.Extensions.Localization.IStringLocalizer<EmcureNPD.Resource.Shared> SharedLocalizer
 @model EmcureNPD.Business.Models.PIDFEntity
-
+@{
+	ViewData["Title"] = @SharedLocalizer["Dashboard"];
+}
 <div class="content-header">
 	<div class="container-fluid d-flex justify-content-between">
 		<h3>@SharedLocalizer["Dashboard"]</h3>
 	</div>
 </div>
-<div class="container-fluid overflow-auto">
+<div class="container-fluid overflow-auto background-white-card">
 	<div class="row">
 		<div class="col-md-3">
 			<div class="form-group required">
@@ -34,14 +36,14 @@
 	<div class="row">
 		<section class="col-lg-6">
 			<div class="card">
-				<div class="card-header">
+				<div class="card-header bg-primary">
 					<h3 class="card-title">
-						<i class="fas fa-chart-pie"></i> All Projects - Location Wise
+						<i class="fas fa-chart-pie"></i> Status Wise
 					</h3>
 				</div>
 				<div class="card-body">
 					<div class="tab-content p-0">
-						<canvas id="chart" style="height: 400px; width: 100%;"></canvas>
+						<canvas id="cPIDFChart" width="300" height="300" style="height: 300px; width: 100%;"></canvas>
 					</div>
 				</div>
 			</div>
@@ -49,13 +51,13 @@
 		</section>
 		<section class="col-lg-6">
 			<div class="card">
-				<div class="card-header ">
+				<div class="card-header bg-primary">
 					<h3 class="card-title">
-						<i class="fas fa-map-marker-alt"></i> All Projects - Location Wise
+						<i class="fas fa-map-marker-alt"></i> Location Wise
 					</h3>
 				</div>
 				<div class="card-body">
-					<div id="map" style="height: 400px; width: 100%;"></div>
+					<div id="cPIDFMap" width="300" height="300" style="height: 400px; width: 100%;"></div>
 				</div>
 			</div>
 
@@ -80,65 +82,15 @@
 	<script src="~/adminlte/plugins/jquery-jvectormap-2.0.5.min.js"></script>
 	<script type="text/javascript" src="~/AdminLTE/plugins/jqvmap/maps/jquery.vmap.world.js"></script>
 	<script src="~/adminlte/plugins/jquery-jvectormap-world-mill-en.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.js">
+	</script>
+
 	<script>
 		var GetAllDashboard = "@EmcureNPD.Web.Helpers.APIURLHelper.GetAllDashboard";
 		var GetPIDFList = "@EmcureNPD.Web.Helpers.APIURLHelper.GetPIDFList";
 
 		$(document).ready(function () {
-			$(function () {
-				var markers = [];
-				var map = $('#map').vectorMap({
-					map: 'world_mill_en',
-					scaleColors: ['#C8EEFF', '#0071A4'],
-					normalizeFunction: 'polynomial',
-					hoverOpacity: 0.7,
-					hoverColor: false,
-					regionStyle: {
-						initial: {
-							fill: '#d2d6de',
-							stroke: '#000000',
-							"stroke-width": .5,
-							"stroke-opacity": 1
-						},
-						hover: {
-							fill: '#A0D1DC'
-						}
-					},
-					backgroundColor: "transparent",
-					markerStyle: {
-						initial: {
-							fill: '#eb3434',
-							stroke: '#383f47'
-						}
-					},
-					series: {
-						markers: markers
-					},
-					onMarkerClick: function (event, index) {
-						var markerData = markers[index];
-						$('#BusinessUnitId').val(markerData.bUnitId);
-						$('#BusinessUnitId').change();
-					}
-				}).vectorMap('get', 'mapObject');
-
-				$.ajax({
-					url: $('#hdnBaseURL').val() + GetAllDashboard,
-					type: 'GET',
-					success: function (data) {
-						$.each(data.MasterBusinessUnits, function (index, markerData) {
-							var marker = {
-								latLng: [markerData.latitude, markerData.longitude],
-								name: markerData.businessUnitName,
-								bUnitId: markerData.businessUnitId
-							};
-							markers.push(marker);
-						});
-						map.addMarkers(markers);
-						// refresh the map
-						map.updateSize();
-					}
-				});
-			});
+			
 		});
 	</script>
 }

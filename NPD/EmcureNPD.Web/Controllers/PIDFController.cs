@@ -40,6 +40,10 @@ namespace EmcureNPD.Web.Controllers
 
         public IActionResult PIDFList()
         {
+            if (TempData.ContainsKey(UserHelper.SuccessMessage))
+            {
+                TempData[UserHelper.SuccessMessage] = TempData[UserHelper.SuccessMessage];
+            }
             return View();
         }
 

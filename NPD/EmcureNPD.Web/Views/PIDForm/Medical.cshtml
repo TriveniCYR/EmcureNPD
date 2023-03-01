@@ -1,8 +1,13 @@
-﻿@*
+﻿@using EmcureNPD.Utility.Models
+@*
     For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 *@
 @{
 	ViewData["Title"] = "Medical - Emcure NPD";
+	RolePermissionModel objPermssion = (RolePermissionModel)ViewBag.Access;
+	string IsAddAllow = (objPermssion.Add) ? "" : "display: none";
+	string IsEditAllow = (objPermssion.Edit) ? "" : "display: none";
+	string IsDeleteAllow = (objPermssion.Delete) ? "" : "display: none";
 }
 @model EmcureNPD.Business.Models.PIDFMedicalViewModel;
 
@@ -57,7 +62,7 @@
 				</div>
 				<div class="col-12 form-group d-flex flex-column mb-4">
 					<label for="File" class="form-label">File Upload</label>
-					<input type="file" style="visibility: hidden;" name="File" id="File"
+					<input  @(!objPermssion.Edit ? "read-only" : "") type="file" style="visibility: hidden;" name="File" id="File"
 						   class="form-control form-control-lg bg-transparent text-white" multiple>
 				</div>
 				<div class="col-12 d-flex align-items-center justify-content-left mb-4">
@@ -80,7 +85,7 @@
 					</ul>
 				</div>
 				<div class="col-12 d-flex align-items-center justify-content-end">
-					<button class="btn btn-success me-3 outside-buttons" type="submit">Submit</button>
+					<button  @((!objPermssion.Edit || !objPermssion.Add) ? "disabled" : "") class="btn btn-success me-3 outside-buttons" type="submit">Submit</button>
 					<input class="btn btn-danger me-3 outside-buttons" value="Cancel" type="button" title="Cancel" onclick="location.href='@Url.Action("PIDFList", "PIDF", new { ScreenId = 3 })'" />
 					@*<button class="btn btn-danger me-3 outside-buttons" type="button" onclick="window.history.back();">cancel</button>*@
 				</div>
@@ -135,9 +140,9 @@
 		if (errorCallBack) {
 			toastr.error(errorCallBack);
 		}
-		var successCallBack = '@TempData[EmcureNPD.Web.Helpers.UserHelper.SuccessMessage]';
-		if (successCallBack) {
-			toastr.success(successCallBack);
-		}
+		//var successCallBack = '@TempData[EmcureNPD.Web.Helpers.UserHelper.SuccessMessage]';
+		//if (successCallBack) {
+		//	toastr.success(successCallBack);
+		//}
 	</script>
 }

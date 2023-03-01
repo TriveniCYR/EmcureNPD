@@ -34,16 +34,16 @@ function InitializePIDFList() {
                         if (row.pidfStatusID == 2) {
                             _flag = true;
                         }
-                    } else if (_screenId = "2") {
+                    } else if (_screenId == "2") {
                         if (row.pidfStatusID == 6) {
                             _flag = true;
                         }
-                    } else if (_screenId = "7") {
+                    } else if (_screenId == "7") {
                         if (row.pidfStatusID == 17) {
                             _flag = true;
                         }
                     }
-                    else if (_screenId = "8") {
+                    else if (_screenId == "8") {
                         if (row.pidfStatusID == 18) {
                             _flag = true;
                         }
@@ -194,8 +194,8 @@ function InitializePIDFList() {
                     html += '<a class="large-font" title="Edit" style="color:' + (_enable ? "#007bff" : "grey") + '" href="' + (_enable ? _FinanceForm : "#") + '"><i class="fa fa-fw fa-edit mr-1"></i></a>';
                     html += '<a class="large-font" title="View" style="color:' + (_enable ? "#007bff" : "grey") + '" href="' + (_enable ? _FinanceForm + "&IsView=1" : "#") + '"><i class="fa fa-fw fa-eye mr-1"></i></a>';
                 } else if (_screenId == "8") {
-                    var _ManagementForm = '/Finance/PIDFFinance?pidfid=' + row.encpidfid + '&bui=' + row.encbud;
-                    var _enable = (row.pidfStatusID == 18 || row.pidfStatusID == 20);
+                    var _ManagementForm = '/Finance/PIDFManagementApproval?pidfid=' + row.encpidfid + '&bui=' + row.encbud;
+                    var _enable = true; //(row.pidfStatusID == 18 || row.pidfStatusID == 20);
                     html += '<a class="large-font" title="View" style="color:' + (_enable ? "#007bff" : "grey") + '" href="' + (_enable ? _ManagementForm + "&IsView=1" : "#") + '"><i class="fa fa-fw fa-eye mr-1"></i></a>';
                 }
                 return html;

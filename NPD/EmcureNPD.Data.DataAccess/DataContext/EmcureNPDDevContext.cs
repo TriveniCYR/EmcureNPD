@@ -620,6 +620,18 @@ namespace EmcureNPD.Data.DataAccess.DataContext
                 entity.Property(e => e.NotificationTitle)
                     .IsRequired()
                     .HasMaxLength(100);
+
+                entity.Property(e => e.Pidfid).HasColumnName("PIDFId");
+
+                entity.HasOne(d => d.Pidf)
+                    .WithMany(p => p.MasterNotifications)
+                    .HasForeignKey(d => d.Pidfid)
+                    .HasConstraintName("FK_Master_Notification_PIDF");
+
+                entity.HasOne(d => d.Status)
+                    .WithMany(p => p.MasterNotifications)
+                    .HasForeignKey(d => d.StatusId)
+                    .HasConstraintName("FK_Master_Notification_Master_PIDFStatus");
             });
 
             modelBuilder.Entity<MasterOral>(entity =>

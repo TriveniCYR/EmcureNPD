@@ -311,7 +311,19 @@ namespace EmcureNPD.Web.Helpers
 
         #region Dashboard
         public static string GetAllDashboard = "api/Dashboard/FillDropdown";        
-        public static string GetPIDFList = "api/Dashboard/GetPIDFByYearAndBusinessUnit";        
+        public static string GetPIDFList = "api/Dashboard/GetPIDFByYearAndBusinessUnit";
+        #endregion
+
+        #region Notification
+        public static string GetAllNotification = "api/Notification/GetAllNotification";
+        #endregion
+
+        #region PIDFFinance
+        public static string AddUpdatePidfFinance = "api/PidfFinance/AddUpdatePidfFinance";
+        public static string AddUpdatePidfFinanceBatchSizeCoating = "api/PidfFinance/AddUpdatePidfFinanceBatchSizeCoating";
+        public static string GetPidfFinance = "api/PidfFinance/GetPidfFinance";
+        public static string GetFinanceBatchSizeCoating = "api/PidfFinance/GetFinanceBatchSizeCoating";
+        public static string GetProjectNameAndStrength = "api/ManagementApproval/GetProjectNameAndStrength";
         #endregion
     }
 }

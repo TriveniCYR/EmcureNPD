@@ -1,28 +1,29 @@
-﻿var ControlsToValidate = ['Development', 'ScaleUp', 'Exhibit', 'PlantQC', 'Total', 'SponsorBusinessPartner', 'APIMarketPrice', 'APITargetRMC_CCPC'];
+﻿var ControlsToValidate = ['APIGroupLeader'];
+var DivsToValidate = ['dvTimelineInMonths','dvManhourEstimates'];
+
 
 $(document).ready(function () {
     debugger;
-    SetDivReadonly();
+  //  SetDivReadonly();
     $("#IsModelValid").val('');
     if (SaveStatus != '' && SaveStatus != undefined) {
         if (SaveStatus == 'Saved successfully.')
             toastr.success(SaveStatus);
         else
             toastr.error(SaveStatus);
-    }      
+    }
 });
 
 
 
 $('#Save').click(function () {
     ValidateForm();
-    $("#SaveType").val('Save');    
+    $("#SaveType").val('Save');
 });
 $('#SaveDraft').click(function () {
     $("#IsModelValid").val('Valid')
     $("#SaveType").val('SaveDraft');
 });
-
 
 function ValidateForm() {
     var ArrofInvalid = []
@@ -37,13 +38,27 @@ function ValidateForm() {
             $('#valmsg' + kv).text('');
         }
     });
+    /*------------------- TimelineInMonthsValue--------------------*/
+    $.each(ControlsToValidate, function (index, value) {
+        $("#" + value +" :input[type=text]").each(function () {
+            var ControlID = $(this).attr('id');
+            if ($("#" + ControlID).val() == '') {
+                $(this).next().text('Required');
+                //IsValid = false;
+                ArrofInvalid.push(ControlID);
+            }
+            else {
+                $(this).next().text('');
+            }
+        });
+    });
     var IsValid = (ArrofInvalid.length == 0) ? true : false;
     if (!IsValid) {
         toastr.error('Some fields are missing !');
         $("#IsModelValid").val('')
     }
     else {
-        $("#IsModelValid").val('Valid')       
+        $("#IsModelValid").val('Valid')
     }
     return IsValid;
 }
@@ -84,6 +99,6 @@ function ValidateForm() {
 
 
 
-  
+
 
 
