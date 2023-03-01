@@ -8,8 +8,8 @@ namespace EmcureNPD.Business.Models
 {
     public class MasterNotificationEntity
     {
-        public long PIDFId { get; set; }
-        public int StatusId { get; set; }
+        public long? PIDFId { get; set; }
+        public int? StatusId { get; set; }
         public string NotificationTitle { get; set; }
         public string NotificationDescription { get; set; }
         public DateTime CreatedDate { get; set; }

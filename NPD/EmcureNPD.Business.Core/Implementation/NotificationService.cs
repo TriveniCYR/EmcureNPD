@@ -91,16 +91,6 @@ namespace EmcureNPD.Business.Core.Implementation {
 
         public async Task<DBOperation> UpdateNotification(long notificationId, string notificationTitle, string notificationDescription, int loggedinUserId)
         {
-            //MasterNotification objMasterNotification;
-            //objMasterNotification = await _repository.GetAsync(notificationId);
-            //objMasterNotification.NotificationTitle = notificationTitle;
-            //objMasterNotification.NotificationDescription = notificationDescription;
-            //objMasterNotification.CreatedDate = createdDate;
-            //objMasterNotification.CreatedBy = loggedinUserId;
-            //_repository.UpdateAsync(objMasterNotification);
-            //await _unitOfWork.SaveChangesAsync();
-            //return DBOperation.Success;
-
             var _objExistingNotf = _repository.Get(x => x.NotificationId == notificationId);
             if (_objExistingNotf != null)
             {
