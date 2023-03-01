@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 
 namespace EmcureNPD.Business.Core.Interface {
     public interface INotificationService {
-        Task<DataTableResponseModel> GetAll(DataTableAjaxPostModel model);
+        Task<DataTableResponseModel> GetAll();
+        void dbChangeNotification(object sender, System.Data.SqlClient.SqlNotificationEventArgs e);
     }
 }

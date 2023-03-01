@@ -220,6 +220,8 @@ namespace EmcureNPD.Web.Controllers
                     var data = JsonConvert.DeserializeObject<APIResponseEntity<PIDFAPICharterFormEntity>>(jsonResponse);
                     _APICharterDetailsForm = data._object;
                 }
+                _APICharterDetailsForm.Pidfid = UtilityHelper.Encrypt(pidfid);
+                _APICharterDetailsForm.BusinessUnitId = UtilityHelper.Encrypt(bussnessId);
                 return View(_APICharterDetailsForm);
             }
             catch (Exception e)
@@ -229,8 +231,8 @@ namespace EmcureNPD.Web.Controllers
             }
         }
 
-        [HttpPost]
-        [ValidateAntiForgeryToken]
+        [HttpPost]  
+        [ValidateAntiForgeryToken]                 
         public IActionResult APICharterDetailsForm(PIDFAPICharterFormEntity _Chartermodel)
         {
             _Chartermodel.Pidfid = UtilityHelper.Decreypt(_Chartermodel.Pidfid);

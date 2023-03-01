@@ -6332,7 +6332,7 @@ var PidafId=Context.Request.Query["pidfid"];
             </div>
 		</div>
 			<div class="form-group btn-group dv-controls" role="group">  
-            @if (ViewBag.Access.Add == true)
+            @if(ViewBag.Access.Add == true)
             {
                 <button type="submit" id="btnSaveDraft" class="btn btn-primary" onclick="SaveDraftClick();"><i class="fab fa-firstdraft"></i> Save as Draft</button>
                 <button type="submit"  id="btnSave" class="btn btn-success operationButton" onclick="SaveClick();"><i class="fa fa-save"></i> Submit</button>
