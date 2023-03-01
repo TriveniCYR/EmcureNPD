@@ -98,6 +98,7 @@ namespace EmcureNPD.Data.DataAccess.DataContext
         public virtual DbSet<PidfPbfAnalyticalPrototype> PidfPbfAnalyticalPrototypes { get; set; }
         public virtual DbSet<PidfPbfAnalyticalScaleUp> PidfPbfAnalyticalScaleUps { get; set; }
         public virtual DbSet<PidfPbfClinical> PidfPbfClinicals { get; set; }
+        public virtual DbSet<PidfPbfClinicalCost> PidfPbfClinicalCosts { get; set; }
         public virtual DbSet<PidfPbfClinicalPilotBioFasting> PidfPbfClinicalPilotBioFastings { get; set; }
         public virtual DbSet<PidfPbfClinicalPilotBioFed> PidfPbfClinicalPilotBioFeds { get; set; }
         public virtual DbSet<PidfPbfClinicalPivotalBioFasting> PidfPbfClinicalPivotalBioFastings { get; set; }
@@ -619,6 +620,18 @@ namespace EmcureNPD.Data.DataAccess.DataContext
                 entity.Property(e => e.NotificationTitle)
                     .IsRequired()
                     .HasMaxLength(100);
+
+                entity.Property(e => e.Pidfid).HasColumnName("PIDFId");
+
+                entity.HasOne(d => d.Pidf)
+                    .WithMany(p => p.MasterNotifications)
+                    .HasForeignKey(d => d.Pidfid)
+                    .HasConstraintName("FK_Master_Notification_PIDF");
+
+                entity.HasOne(d => d.Status)
+                    .WithMany(p => p.MasterNotifications)
+                    .HasForeignKey(d => d.StatusId)
+                    .HasConstraintName("FK_Master_Notification_Master_PIDFStatus");
             });
 
             modelBuilder.Entity<MasterOral>(entity =>
@@ -2112,11 +2125,13 @@ namespace EmcureNPD.Data.DataAccess.DataContext
                 entity.HasOne(d => d.Pbfanalytical)
                     .WithMany(p => p.PidfPbfAnalyticalCosts)
                     .HasForeignKey(d => d.PbfanalyticalId)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("FK_PIDF_PBF_Analytical_Cost_PIDF_PBF_Analytical_Cost");
 
                 entity.HasOne(d => d.Strength)
                     .WithMany(p => p.PidfPbfAnalyticalCosts)
                     .HasForeignKey(d => d.StrengthId)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("FK_PIDF_PBF_Analytical_Cost_PIDFProductStrength");
             });
 
@@ -2152,6 +2167,7 @@ namespace EmcureNPD.Data.DataAccess.DataContext
                 entity.HasOne(d => d.TestType)
                     .WithMany(p => p.PidfPbfAnalyticalExhibits)
                     .HasForeignKey(d => d.TestTypeId)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("FK_PIDF_PBF_Analytical_Exhibit_Master_TestType");
             });
 
@@ -2187,6 +2203,7 @@ namespace EmcureNPD.Data.DataAccess.DataContext
                 entity.HasOne(d => d.TestType)
                     .WithMany(p => p.PidfPbfAnalyticalPrototypes)
                     .HasForeignKey(d => d.TestTypeId)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("FK_PIDF_PBF_Analytical_Prototype_Master_TestType");
             });
 
@@ -2276,6 +2293,35 @@ namespace EmcureNPD.Data.DataAccess.DataContext
                     .HasForeignKey(d => d.StrengthId)
                     .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("FK_PIDF_PBF_Clinical_PIDFProductStrength");
+            });
+
+            modelBuilder.Entity<PidfPbfClinicalCost>(entity =>
+            {
+                entity.HasKey(e => e.PbfclinicalCostId);
+
+                entity.ToTable("PIDF_PBF_Clinical_Cost", "dbo");
+
+                entity.Property(e => e.PbfclinicalCostId).HasColumnName("PBFClinicalCostId");
+
+                entity.Property(e => e.CreatedDate).HasColumnType("datetime");
+
+                entity.Property(e => e.PbfclinicalId).HasColumnName("PBFClinicalId");
+
+                entity.Property(e => e.TotalPilotFedcost).HasColumnName("TotalPilotFEDCost");
+
+                entity.Property(e => e.TotalPivotalFedcost).HasColumnName("TotalPivotalFEDCost");
+
+                entity.HasOne(d => d.Pbfclinical)
+                    .WithMany(p => p.PidfPbfClinicalCosts)
+                    .HasForeignKey(d => d.PbfclinicalId)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("FK_PIDF_PBF_Clinical_Cost_PIDF_PBF_Clinical_Cost");
+
+                entity.HasOne(d => d.Strength)
+                    .WithMany(p => p.PidfPbfClinicalCosts)
+                    .HasForeignKey(d => d.StrengthId)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("FK_PIDF_PBF_Clinical_Cost_PIDFProductStrength");
             });
 
             modelBuilder.Entity<PidfPbfClinicalPilotBioFasting>(entity =>

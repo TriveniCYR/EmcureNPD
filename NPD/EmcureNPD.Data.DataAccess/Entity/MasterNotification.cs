@@ -8,9 +8,14 @@ namespace EmcureNPD.Data.DataAccess.Entity
     public partial class MasterNotification
     {
         public long NotificationId { get; set; }
+        public long? Pidfid { get; set; }
+        public int? StatusId { get; set; }
         public string NotificationTitle { get; set; }
         public string NotificationDescription { get; set; }
         public DateTime CreatedDate { get; set; }
         public int CreatedBy { get; set; }
+
+        public virtual Pidf Pidf { get; set; }
+        public virtual MasterPidfstatus Status { get; set; }
     }
 }

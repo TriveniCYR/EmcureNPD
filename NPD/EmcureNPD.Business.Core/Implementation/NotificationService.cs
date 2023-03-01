@@ -5,6 +5,8 @@ using EmcureNPD.Data.DataAccess.Core.Repositories;
 using EmcureNPD.Data.DataAccess.Core.UnitOfWork;
 using EmcureNPD.Data.DataAccess.Entity;
 using EmcureNPD.Resource;
+using EmcureNPD.Utility.Audit;
+using EmcureNPD.Utility.Enums;
 using EmcureNPD.Utility.Helpers;
 using EmcureNPD.Utility.Utility;
 using Microsoft.Extensions.Localization;
@@ -12,8 +14,10 @@ using System;
 using System.Collections.Generic;
 using System.Data.SqlClient;
 using System.Linq;
+using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
+using static EmcureNPD.Utility.Enums.GeneralEnum;
 
 namespace EmcureNPD.Business.Core.Implementation {
     public class NotificationService : INotificationService {
@@ -64,5 +68,50 @@ namespace EmcureNPD.Business.Core.Implementation {
             NotificationHub.Show();
         }
 
+        public async Task<DBOperation> CreateNotification(long pidfId, int statusid, string notificationTitle, string notificationDescription, int loggedinUserId)
+        {
+            MasterNotification objNotification;
+            var notification = new MasterNotificationEntity
+            {
+                PIDFId = pidfId,
+                StatusId = statusid,
+                NotificationTitle = notificationTitle,
+                NotificationDescription = notificationDescription,
+                CreatedDate = DateTime.Now,
+                CreatedBy = loggedinUserId,
+            };
+            objNotification = _mapperFactory.Get<MasterNotificationEntity, MasterNotification>(notification);
+            _repository.AddAsync(objNotification);
+
+            await _unitOfWork.SaveChangesAsync();
+            if (objNotification.NotificationId == 0)
+                return DBOperation.Error;
+            return DBOperation.Success;
+        }
+
+        public async Task<DBOperation> UpdateNotification(long notificationId, string notificationTitle, string notificationDescription, int loggedinUserId)
+        {
+            //MasterNotification objMasterNotification;
+            //objMasterNotification = await _repository.GetAsync(notificationId);
+            //objMasterNotification.NotificationTitle = notificationTitle;
+            //objMasterNotification.NotificationDescription = notificationDescription;
+            //objMasterNotification.CreatedDate = createdDate;
+            //objMasterNotification.CreatedBy = loggedinUserId;
+            //_repository.UpdateAsync(objMasterNotification);
+            //await _unitOfWork.SaveChangesAsync();
+            //return DBOperation.Success;
+
+            var _objExistingNotf = _repository.Get(x => x.NotificationId == notificationId);
+            if (_objExistingNotf != null)
+            {
+                _objExistingNotf.NotificationTitle = notificationTitle;
+                _objExistingNotf.NotificationDescription = notificationDescription;
+                _objExistingNotf.CreatedDate = DateTime.Now;
+                _objExistingNotf.CreatedBy = loggedinUserId;
+                _repository.UpdateAsync(_objExistingNotf);
+            }
+            await _unitOfWork.SaveChangesAsync();
+            return DBOperation.Success;
+        }
     }
 }
