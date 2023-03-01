@@ -1,5 +1,5 @@
-﻿var ControlsToValidate = ['APIGroupLeader'];
-var DivsToValidate = ['dvTimelineInMonths','dvManhourEstimates'];
+﻿var ControlsToValidate = ['APIGroupLeader','ManHourRates'];
+var DivsToValidate = ['dvTimelineInMonths', 'dvManhourEstimates','dvAnalyticalDepartment'];
 
 
 $(document).ready(function () {
@@ -39,7 +39,7 @@ function ValidateForm() {
         }
     });
     /*------------------- TimelineInMonthsValue--------------------*/
-    $.each(ControlsToValidate, function (index, value) {
+    $.each(DivsToValidate, function (index, value) {
         $("#" + value +" :input[type=text]").each(function () {
             var ControlID = $(this).attr('id');
             if ($("#" + ControlID).val() == '') {

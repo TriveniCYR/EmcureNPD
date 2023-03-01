@@ -251,8 +251,8 @@ namespace EmcureNPD.Business.Core.Implementation
                     lastApiIpd.ModifyDate = DateTime.Now;
                     _pidf_API_IPD_repository.UpdateAsync(lastApiIpd);
 
-                    var isSuccess = await _auditLogService.CreateAuditLog<PidfApiIpd>(Utility.Audit.AuditActionType.Update,
-                Utility.Enums.ModuleEnum.PBF, OldObjAPIIPD, lastApiIpd,0);
+                //    var isSuccess = await _auditLogService.CreateAuditLog<PidfApiIpd>(Utility.Audit.AuditActionType.Update,
+                //Utility.Enums.ModuleEnum.PBF, OldObjAPIIPD, lastApiIpd,0);
                 }
                 else
                 {
@@ -331,6 +331,7 @@ namespace EmcureNPD.Business.Core.Implementation
                      _CharterObjects = dbresult.Tables[0].DataTableToList<CharterObject>();
                     _oCharterEntity.TimelineInMonths = dbresult.Tables[1].DataTableToList<TimelineInMonths>();
                     _oCharterEntity.ManhourEstimates = dbresult.Tables[2].DataTableToList<ManhourEstimates>();
+                    _oCharterEntity.AnalyticalDepartment = dbresult.Tables[3].DataTableToList<AnalyticalDepartment>();
                 }
             }
 
@@ -364,16 +365,10 @@ namespace EmcureNPD.Business.Core.Implementation
                 System.Data.CommandType.StoredProcedure, osqlParameter);           
         }
         public async Task<DBOperation> AddUpdateAPICharter(PIDFAPICharterFormEntity _oAPICharter)
-        {
-            //PIDFAPIIPDFormEntity _exsistingAPIRnD = new PIDFAPIIPDFormEntity();
-            //var _objPidfApiCharterTimelineInMonth = new List<PidfApiCharterTimelineInMonth>();
-            //foreach (var obj in _oAPICharter.TimelineInMonths)
-            //{
-            //    var _objTimelineInMonths = _mapperFactory.Get<TimelineInMonths, PidfApiCharterTimelineInMonth>(obj);
-            //    _objPidfApiCharterTimelineInMonth.Add(_objTimelineInMonths);
-            //}
+        {           
             var _objPidfApiCharterTimelineInMonth = FillObjData<TimelineInMonths, PidfApiCharterTimelineInMonth>(_oAPICharter.TimelineInMonths);
             var _objPidfApiCharterManhourEstimates = FillObjData<ManhourEstimates, PidfApiCharterManhourEstimate>(_oAPICharter.ManhourEstimates);
+            var _objPidfApiCharterAnalyticalDepartment = FillObjData<AnalyticalDepartment, PidfApiCharterAnalyticalDepartment>(_oAPICharter.AnalyticalDepartment);
 
             if (_oAPICharter.PIDFAPICharterFormID > 0)
             {
@@ -384,10 +379,11 @@ namespace EmcureNPD.Business.Core.Implementation
                     RemoveChildDataAPICharter(_oAPICharter.PIDFAPICharterFormID); // Remove child table data
                     lastApiCharter.PidfApiCharterTimelineInMonths = _objPidfApiCharterTimelineInMonth;
                     lastApiCharter.PidfApiCharterManhourEstimates = _objPidfApiCharterManhourEstimates;
+                    lastApiCharter.PidfApiCharterAnalyticalDepartments = _objPidfApiCharterAnalyticalDepartment;
+                    
 
 
-
-                    _oAPICharter.ManHourRates = (Convert.ToString(_oAPICharter.ManHourRates)=="")? "0":_oAPICharter.ManHourRates;
+                    _oAPICharter.ManHourRates = (Convert.ToString(_oAPICharter.ManHourRates) == "" || _oAPICharter.ManHourRates == null) ? "0" : _oAPICharter.ManHourRates;
                     lastApiCharter.ManHourRates = int.Parse(_oAPICharter.ManHourRates);
                     lastApiCharter.ApigroupLeader = _oAPICharter.APIGroupLeader;
                     lastApiCharter.ProjectComplexityId = _oAPICharter.ProjectComplexityId;
@@ -397,8 +393,8 @@ namespace EmcureNPD.Business.Core.Implementation
                     lastApiCharter.ModifyDate = DateTime.Now;
                     _pidf_API_Charter_repository.UpdateAsync(lastApiCharter);
                     //Implement AuditLog
-                    var isSuccess = await _auditLogService.CreateAuditLog<PidfApiCharter>(Utility.Audit.AuditActionType.Update,
-                    Utility.Enums.ModuleEnum.PBF, OldObjAPICharter, lastApiCharter, 0);
+                    //var isSuccess = await _auditLogService.CreateAuditLog<PidfApiCharter>(Utility.Audit.AuditActionType.Update,
+                    //Utility.Enums.ModuleEnum.PBF, OldObjAPICharter, lastApiCharter, 0);
                 }
                 else
                 {
@@ -424,7 +420,7 @@ namespace EmcureNPD.Business.Core.Implementation
                 //Implement PIDF staurs change
             }
             await _unitOfWork.SaveChangesAsync();
-            var _StatusID = (_oAPICharter.SaveType == "Save") ? Master_PIDFStatus.APISubmitted : Master_PIDFStatus.APISubmitted;
+            var _StatusID = (_oAPICharter.SaveType == "Save") ? Master_PIDFStatus.APISubmitted : Master_PIDFStatus.APIInProgress;
             await _auditLogService.UpdatePIDFStatusCommon(long.Parse(_oAPICharter.Pidfid), (int)_StatusID, _oAPICharter.LoggedInUserId);
             return DBOperation.Success;
         }
@@ -491,8 +487,8 @@ namespace EmcureNPD.Business.Core.Implementation
                     lastApiRnD.ModifyDate = DateTime.Now;
                     _pidf_API_RnD_repository.UpdateAsync(lastApiRnD);
 
-                    var isSuccess = await _auditLogService.CreateAuditLog<PidfApiRnD>(Utility.Audit.AuditActionType.Update,
-                 Utility.Enums.ModuleEnum.PBF, OldObjAPiIPD, lastApiRnD, 0);
+                 //   var isSuccess = await _auditLogService.CreateAuditLog<PidfApiRnD>(Utility.Audit.AuditActionType.Update,
+                 //Utility.Enums.ModuleEnum.PBF, OldObjAPiIPD, lastApiRnD, 0);
                 }
                 else
                 {
@@ -519,7 +515,7 @@ namespace EmcureNPD.Business.Core.Implementation
                 _pidf_API_RnD_repository.AddAsync(_oDBApiRnd);
             }
             await _unitOfWork.SaveChangesAsync();
-            var _StatusID = (_oAPIRnD.SaveType == "Save") ? Master_PIDFStatus.APISubmitted : Master_PIDFStatus.APISubmitted;
+            var _StatusID = (_oAPIRnD.SaveType == "Save") ? Master_PIDFStatus.APISubmitted : Master_PIDFStatus.APIInProgress;
             await _auditLogService.UpdatePIDFStatusCommon(long.Parse(_oAPIRnD.Pidfid), (int)_StatusID, _oAPIRnD.LoggedInUserId);
             return DBOperation.Success;
         }
