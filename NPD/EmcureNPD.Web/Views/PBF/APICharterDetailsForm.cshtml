@@ -20,8 +20,10 @@
         <div class="card-body">
             <form asp-action="APICharterDetailsForm" asp-controller="PBF" method="post">
                 <input type="hidden" asp-for="Pidfid" />
+                <input type="hidden" asp-for="BusinessUnitId" />
                 <input type="hidden" asp-for="PIDFAPICharterFormID" />
                 <input type="hidden" asp-for="SaveType" />
+                <input asp-for="IsModelValid" style="visibility: hidden;" />
                 <div class="row">
                     <div class="col-md-5">
                         <table class="table">
@@ -64,6 +66,7 @@
                                 </td>
                                 <td>
                                     @Html.TextBoxFor(model => model.APIGroupLeader, new { @class = "form-control" })
+                                    <label class="text-danger" id="valmsgAPIGroupLeader" style="display:contents"></label>
                                 </td>
                             </tr>
                             <tr>
@@ -80,27 +83,68 @@
                 </div>
                 <div class="row">
                     @*--------Start----Timeline IN Months-------------*@
-                    <div class="col-md-4">
-                       
+                    <div class="col-md-4" id="dvTimelineInMonths">
+                        @if (Model.TimelineInMonths != null)
+                        {
                             <table class="table">
-                            <tr>
-                                <td>
-                                    @Html.LabelFor(model => model.TimelineInMonths.FeasibilityStudy,@MasterLocalizer["FeasibilityStudy"], new { @class = "control-label" })
-                                </td>
-                                <td>
-                                    @Html.TextBoxFor(model => model.TimelineInMonths.FeasibilityStudy, new { @class = "form-control" , @placeholder="" })
-                                </td>
-                            </tr>
+                                @for (int i = 0; i < Model.TimelineInMonths.Count; i++)
+                                {
+                                    <tr>
+                                        <td>
+                                            <input type="hidden" asp-for="@Model.TimelineInMonths[i].TimelineInMonthsId" />
+                                            <label class="control-label">@Model.TimelineInMonths[i].Name </label>
+                                        </td>
+                                        <td>
+                                            @Html.TextBoxFor(model => model.TimelineInMonths[i].TimelineInMonthsValue, new { @class = "form-control" , @placeholder="" })
+                                            <label class="text-danger" style="display:contents" ></label>                                            
+                                        </td>
+                                    </tr>
+                                }
                             </table>
-                       
+                        }
                     </div>
                     <div class="col-md-8"></div>
                     @*--------End----Timeline IN Months-------------*@
                 </div>
-
+                <div class="row">
+                    @*--------Start----Timeline IN Months-------------*@
+                    <div class="col-md-4" id="dvManhourEstimates">
+                        @if (Model.ManhourEstimates != null)
+                        {
+                            <table class="table">
+                                @for (int i = 0; i < Model.ManhourEstimates.Count; i++)
+                                {
+                                    <tr>
+                                        <td>
+                                            <input type="hidden" asp-for="@Model.ManhourEstimates[i].ManhourEstimatesId" />
+                                            <label class="control-label">@Model.ManhourEstimates[i].Name </label>
+                                        </td>
+                                        <td>
+                                            @Html.TextBoxFor(model => model.ManhourEstimates[i].NoOfEmployee, new { @class = "form-control" , @placeholder="" })
+                                            <label class="text-danger" style="display:contents"></label>
+                                        </td>
+                                        <td>
+                                            @Html.TextBoxFor(model => model.ManhourEstimates[i].Months, new { @class = "form-control" , @placeholder="" })
+                                            <label class="text-danger" style="display:contents"></label>
+                                        </td>
+                                        <td>
+                                            @Html.TextBoxFor(model => model.ManhourEstimates[i].Hours, new { @class = "form-control" , @placeholder="" })
+                                            <label class="text-danger" style="display:contents"></label>
+                                        </td>
+                                        <td>
+                                            @Html.TextBoxFor(model => model.ManhourEstimates[i].Cost, new { @class = "form-control" , @placeholder="" })
+                                            <label class="text-danger" style="display:contents"></label>
+                                        </td>
+                                    </tr>
+                                }
+                            </table>
+                        }
+                    </div>
+                    <div class="col-md-8"></div>
+                    @*--------End----Timeline IN Months-------------*@
+                </div>
                 <div class="row">
                     <div>
-
                         <div class="form-group">
                             <button type="submit" id="Save" class="btn btn-primary">@SharedLocalizer["Submit"]</button>
                             <a class="btn btn-danger" asp-action="PIDFList" asp-controller="PIDF" asp-route-ScreenId="5">@SharedLocalizer["Cancel"]</a>

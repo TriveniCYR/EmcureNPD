@@ -5,259 +5,59 @@
 @inject Microsoft.Extensions.Localization.IStringLocalizer<EmcureNPD.Resource.Master> MasterLocalizer
 @inject Microsoft.Extensions.Localization.IStringLocalizer<EmcureNPD.Resource.Shared> SharedLocalizer
 @model EmcureNPD.Business.Models.PIDFEntity
-
-<div class="text-center">
-</div>*@
-
-@*@{
-    ViewData["Title"] = "Dashboard";
-}
-
-<div class="text-center">
-</div>*@
-@*
-@inject Microsoft.Extensions.Localization.IStringLocalizer<SharedResource> SharedLocalizer*@
 @{
-    ViewData["Title"] = "Dashboard";
+	ViewData["Title"] = @SharedLocalizer["Dashboard"];
 }
+<div class="content-header">
+	<div class="container-fluid d-flex justify-content-between">
+		<h3>@SharedLocalizer["Dashboard"]</h3>
+	</div>
+</div>
+<div class="container-fluid overflow-auto background-white-card">
+	<div class="row">
+		<div class="col-md-3">
+			<div class="form-group required">
+				@Html.LabelFor(model => model.BusinessUnitId, "Business Unit", new { @class = "control-label" })
+				<select id="BusinessUnitId" name="BusinessUnitId" class="form-control readOnlyUpdate" required></select>
+			</div>
+		</div>
+		<div class="col-md-3">
+			<div class="form-group required">
+				<label class="m-1" for="years">Year</label>
+				<select id="years" name="years" class="form-control readOnlyUpdate" required></select>
+			</div>
+		</div>
+	</div>
+	<div class="clearfix">&nbsp;</div>
 
-<div class="content-wrapper" style="margin-left:0">
-    <!-- Content Header (Page header) -->
-    <div class="content-header" style="padding: 8px .5rem;">
-        <div class="container-fluid">
-            <div class="row">
-                <div class="col-sm-2">
-                    <button type="button" class="btn btn-primary btn-sm daterange1" title="Date range">
-                        <i class="far fa-calendar-alt"></i> Date range
-                    </button>
-                </div>
-                <div class="col-sm-1">
-                    <div class="form-group required">
-                        <select id="years">
-                            <option>Select Year</option>
-                        </select>
-                    </div>
-                </div>
-                <div class="col-md-3">
-                    <div class="form-group required">
-                        @Html.LabelFor(model => model.BusinessUnitId, "Business Unit", new { @class = "control-label" })
-                        <select id="BusinessUnitId" name="BusinessUnitId" class="form-control readOnlyUpdate" required></select>
-                    </div>
-                </div>
-                @*   <div class="col-sm-9">
-                <select name="Business Unit" id="Business">
-                <option value="select">Select Business Unit</option>
-                <option value="2019">Emcure</option>
-                <option value="2020">Tilomed</option>
-                <option value="2021">Marcan</option>
-
-                </select>
-                </div>*@
-
-
-            </div>
-            <!-- /.row -->
-        </div>
-        <!-- /.container-fluid -->
-    </div>
-    <!-- /.content-header -->
-    <!-- Main content -->
-    <section class="content">
-        <div class="container-fluid">
-            <div id="PIDFContainer" class="row">
-                @* <div class="col-lg-3 col-md-6 col-12">
-                <!-- small box -->
-                <div class="small-box bg-info">
-                <div class="inner">
-                <h3 id="totalFinanceApproved"></h3>
-                <p>PIDF Submitted</p>
-                </div>
-                <div class="icon">
-                <i class="far fa-save"></i>
-                </div>
-
-                </div>
-                </div>
-                <!-- ./col -->
-                <div class="col-lg-3 col-md-6 col-12">
-                <!-- small box -->
-                <div class="small-box bg-success">
-                <div class="inner">
-                <h3 id="totalFinalApproved"></h3>
-                <p>PIDF In progress</p>
-
-                </div>
-                <div class="icon">
-                <i class="far fa-check-square"></i>
-                </div>
-
-                </div>
-                </div>
-                <!-- ./col -->
-                <div class="col-lg-3 col-md-6 col-12">
-                <!-- small box -->
-                <div class="small-box bg-warning">
-                <div class="inner">
-                <h3 id="totalInitial"></h3>
-                <p>PBF In progress</p>
-                </div>
-                <div class="icon">
-                <i class="fab fa-wpforms"></i>
-                </div>
-
-                </div>
-                </div>
-                <!-- ./col -->
-                <div class="col-lg-3 col-md-6 col-12">
-                <!-- small box -->
-                <div class="small-box bg-danger">
-                <div class="inner">
-                <h3 id="totalPartialApproved"></h3>
-                <p>PIDF Approved</p>
-                </div>
-                <div class="icon">
-                <i class="ion ion-pie-graph"></i>
-                </div>
-
-                </div>
-                </div>
-
-                <!-- ./col -->
-                <div class="col-lg-3 col-md-6 col-12">
-                <!-- small box -->
-                <div class="small-box bg-warning">
-                <div class="inner">
-                <h3 id="totalPartialApproved"></h3>
-                <p>PBF Submitted</p>
-                </div>
-
-
-                </div>
-                </div>
-                <!-- ./col -->
-                <div class="col-lg-3 col-md-6 col-12">
-                <!-- small box -->
-                <div class="small-box bg-info">
-                <div class="inner">
-                <h3 id="totalPartialApproved"></h3>
-                <p>API Submitted</p>
-                </div>
-
-
-                </div>
-                </div>
-                <!-- ./col -->
-                <div class="col-lg-3 col-md-6 col-12">
-                <!-- small box -->
-                <div class="small-box bg-secondary">
-                <div class="inner">
-                <h3 id="totalPartialApproved"></h3>
-                <p>Medical Submitted</p>
-                </div>
-
-
-                </div>
-                </div>
-                <!-- ./col -->
-                <div class="col-lg-3 col-md-6 col-12">
-                <!-- small box -->
-                <div class="small-box bg-dark">
-                <div class="inner">
-                <h3 id="totalPartialApproved"></h3>
-                <p>Finance Submitted</p>
-                </div>
-
-
-                </div>
-                </div>*@
-                <!-- ./col -->
-            </div>
-
-
-
-            <!-- Small boxes (Stat box) -->
-            @*<div class="row">
-            <div class="col-lg-3 col-md-6 col-12">
-
-            <div class="small-box bg-info">
-            <div class="inner">
-            <h4 class="col-sm-6" id="totalFinanceApproved"></h4>
-            <p>Dossiers Submitted</p>
-            </div>
-            <div class="icon">
-            <i class="far fa-save"></i>
-            </div>
-            </div>
-            </div>
-            <div class="col-lg-3 col-md-6 col-12">
-            <div class="small-box bg-success">
-            <div class="inner">
-            <h4 class="col-sm-6" id="totalFinalApproved"></h4>
-            <p>Projects Approved</p>
-            </div>
-            <div class="icon">
-            <i class="far fa-check-square"></i>
-            </div>
-            </div>
-            </div>
-            <div class="col-lg-3 col-md-6 col-12">
-            <div class="small-box bg-warning">
-            <div class="inner">
-            <h4 class="col-sm-6" id="totalInitial"></h4>
-            <p>DRFs Created</p>
-            </div>
-            <div class="icon">
-            <i class="fab fa-wpforms"></i>
-            </div>
-            </div>
-            </div>
-            <div class="col-lg-3 col-md-6 col-12">
-            <div class="small-box bg-danger">
-            <div class="inner">
-            <h4 class="col-sm-6" id="totalPartialApproved"></h4>
-            <p>Dossiers Pending</p>
-            </div>
-            <div class="icon">
-            <i class="ion ion-pie-graph"></i>
-            </div>
-            </div>
-            </div>
-
-            </div>*@
-            <!-- /.row -->
-            <!-- Main row -->
-            <div class="row">
-                <input id="tempstartdate" name="tempstartdate" type="hidden" />
-                <input id="tempenddate" name="tempenddate" type="hidden" />
-                <!-- Left col -->
-                <section class="col-lg-6 connectedSortable">
-                    <!-- Custom tabs (Charts with tabs)-->
-                    <div class="card">
-                        <div class="card-header">
-                            <h3 class="card-title">
-                                <i class="fas fa-chart-pie mr-1"></i> All Projects - Location Wise
-                            </h3>
-                        </div>
-                        <!-- /.card-header -->
-                        <div class="card-body">
-                            <div class="tab-content p-0">
-                                <canvas id="chart"></canvas>
-                            </div>
-                        </div>
-                        <!-- /.card-body -->
-                    </div>
-                    <!-- /.card -->
+	<div id="PIDFContainer" class="row">
+	</div>
+	<div class="clearfix">&nbsp;</div>
+	<div class="row">
+		<section class="col-lg-6">
+			<div class="card">
+				<div class="card-header bg-primary">
+					<h3 class="card-title">
+						<i class="fas fa-chart-pie"></i> Status Wise
+					</h3>
+				</div>
+				<div class="card-body">
+					<div class="tab-content p-0">
+						<canvas id="cPIDFChart" width="300" height="300" style="height: 300px; width: 100%;"></canvas>
+					</div>
+				</div>
+			</div>
 
 		</section>
 		<section class="col-lg-6">
 			<div class="card">
-				<div class="card-header ">
+				<div class="card-header bg-primary">
 					<h3 class="card-title">
-						<i class="fas fa-map-marker-alt"></i> All Projects - Location Wise
+						<i class="fas fa-map-marker-alt"></i> Location Wise
 					</h3>
 				</div>
 				<div class="card-body">
-					<div id="map" style="height: 400px; width: 100%;"></div>
+					<div id="cPIDFMap" width="300" height="300" style="height: 400px; width: 100%;"></div>
 				</div>
 			</div>
 
@@ -277,99 +77,20 @@
 </div>
 
 @section MyScripts {
+	<script type="text/javascript" src="~/js/Custom/Dashboard/Dashboard.js"></script>
+	<link href="~/adminlte/plugins/jquery-jvectormap-2.0.5.css" rel="stylesheet" />
+	<script src="~/adminlte/plugins/jquery-jvectormap-2.0.5.min.js"></script>
+	<script type="text/javascript" src="~/AdminLTE/plugins/jqvmap/maps/jquery.vmap.world.js"></script>
+	<script src="~/adminlte/plugins/jquery-jvectormap-world-mill-en.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.js">
+	</script>
 
-    @Html.Partial("_DataTablePartial")
-    <script type="text/javascript" src="~/js/Custom/Dashboard/Dashboard.js"></script>
-
-    <script>
-        var GetAllDashboard = "@EmcureNPD.Web.Helpers.APIURLHelper.GetAllDashboard";
-        var GetPIDFList = "@EmcureNPD.Web.Helpers.APIURLHelper.GetPIDFList";
-        var GetAllNotificationURL = "@EmcureNPD.Web.Helpers.APIURLHelper.GetAllNotification";
-    </script>
-}
-
-
-
-@*<script>
-    var startdate1 = null;
-    var enddate1 = null;
-    var config = {
-        type: "pie",
-        series: [{
-            value: "value",
-            color: "color",
-            text: "value",
-            stroke: "#FFFFFF",
-            strokeWidth: 2
-        }],
-        legend: {
-            values: {
-                id: "value",
-                text: "id",
-                color: "color"
-            },
-            halign: "right",
-            valign: "middle"
-        }
-    };
-    var visitorsData = [];
-    var chart = new dhx.Chart("chart", config);
+	<script>
+		var GetAllDashboard = "@EmcureNPD.Web.Helpers.APIURLHelper.GetAllDashboard";
+		var GetPIDFList = "@EmcureNPD.Web.Helpers.APIURLHelper.GetPIDFList";
 
 		$(document).ready(function () {
-			$(function () {
-				var markers = [];
-				var map = $('#map').vectorMap({
-					map: 'world_mill_en',
-					scaleColors: ['#C8EEFF', '#0071A4'],
-					normalizeFunction: 'polynomial',
-					hoverOpacity: 0.7,
-					hoverColor: false,
-					regionStyle: {
-						initial: {
-							fill: '#d2d6de',
-							stroke: '#000000',
-							"stroke-width": .5,
-							"stroke-opacity": 1
-						},
-						hover: {
-							fill: '#A0D1DC'
-						}
-					},
-					backgroundColor: "transparent",
-					markerStyle: {
-						initial: {
-							fill: '#eb3434',
-							stroke: '#383f47'
-						}
-					},
-					series: {
-						markers: markers
-					},
-					onMarkerClick: function (event, index) {
-						var markerData = markers[index];
-						$('#BusinessUnitId').val(markerData.bUnitId);
-						$('#BusinessUnitId').change();
-					}
-				}).vectorMap('get', 'mapObject');
-
-				$.ajax({
-					url: $('#hdnBaseURL').val() + GetAllDashboard,
-					type: 'GET',
-					success: function (data) {
-						$.each(data.MasterBusinessUnits, function (index, markerData) {
-							var marker = {
-								latLng: [markerData.latitude, markerData.longitude],
-								name: markerData.businessUnitName,
-								bUnitId: markerData.businessUnitId
-							};
-							markers.push(marker);
-						});
-						map.addMarkers(markers);
-						// refresh the map
-						map.updateSize();
-					}
-				});
-			});
+			
 		});
 	</script>
 }

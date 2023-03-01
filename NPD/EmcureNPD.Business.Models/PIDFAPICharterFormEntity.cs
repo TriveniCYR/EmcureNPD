@@ -28,13 +28,10 @@ namespace EmcureNPD.Business.Models
         //public List<PIDF_IPD_PatentDetailsEntity> IPD_PatentDetailsList { get; set; }
         [Required]
         public string IsModelValid { get; set; }
-        //-------------------Child Table--------------------------  
-        //public List<CapitalOtherExpenditure> capitalOtherExpenditures { get; set; }
-        //public AnalyticalDepartment analyticalDepartment { get; set; }
-        //public HeadwiseBudget headwiseBudget { get; set; }
-        //public ManhourEstimates manhourEstimates { get; set; }
-        //public PRDDepartment pRDDepartment { get; set; }
-        public TimelineInMonths TimelineInMonths { get; set; }
+        //-------------------Child Table-------------------------- 
+       
+        public List<TimelineInMonths> TimelineInMonths { get; set; }
+        public List<ManhourEstimates> ManhourEstimates { get; set; }
     }
 
     #region Child Table Class
@@ -64,6 +61,7 @@ namespace EmcureNPD.Business.Models
     public class ManhourEstimates
     {
         public long PIDFAPICharterID { get; set; }
+        public int? ManhourEstimatesId { get; set; }
         public string Name { get; set; }
         public string NoOfEmployee { get; set; }
         public string Months { get; set; }
@@ -78,18 +76,17 @@ namespace EmcureNPD.Business.Models
     }
     public class TimelineInMonths
     {
-        public long PIDFAPICharterID { get; set; }
+        public long PidfApiCharterId { get; set; }
+        public int? TimelineInMonthsId { get; set; }
         public string Name { get; set; }
-        public string Value { get; set; }
-        public string NameValue { get; set; }
-
-        public string FeasibilityStudy { get; set; }
-        public string Development      { get; set; }
-        public string Scaleup          { get; set; }
-        public string Validation       { get; set; }
-        public string Stability        { get; set; }
-        public string Filing           { get; set; }
-        public string Total            { get; set; }
+        public string TimelineInMonthsValue { get; set; }
+    }
+    public class CharterObject
+    {
+        public long PIDF_API_CharterId { get; set; }
+        public int ProjectComplexityId { get; set; }
+        public string APIGroupLeader { get; set; }
+        public int ManHourRates { get; set; }
     }
     #endregion
 }

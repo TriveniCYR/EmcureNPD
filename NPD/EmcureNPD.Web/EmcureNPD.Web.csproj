@@ -18,10 +18,19 @@
 
   <ItemGroup>
     <Content Remove="appsettings.json" />
+    <Content Remove="Views\Dashboard\Dashboard.cshtml" />
   </ItemGroup>
 
   <ItemGroup>
     <None Remove="Controllers\PIDFController.cs~RF1039b31b.TMP" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <_WebToolingArtifacts Remove="Properties\launchSettings.json" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Include="Properties\launchSettings.json" />
   </ItemGroup>
 
   <ItemGroup>
@@ -44,6 +53,10 @@
     <ProjectReference Include="..\EmcureNPD.Data.DataAccess\EmcureNPD.Data.DataAccess.csproj" />
     <ProjectReference Include="..\EmcureNPD.Resource\EmcureNPD.Resource.csproj" />
     <ProjectReference Include="..\EmcureNPD.Utility\EmcureNPD.Utility.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Views\Dashboard\" />
   </ItemGroup>
 
 </Project>
