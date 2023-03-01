@@ -11,13 +11,13 @@ namespace EmcureNPD.Business.Models
         public int PBFClinicalCostId { get; set; }
         public int PBFClinicalId { get; set; }
         public int StrengthId { get; set; }      
-        public decimal? TotalPilotFastingCost { get; set; }
-        public decimal? TotalPilotFEDCost { get; set; }
-        public decimal? TotalPivotalFastingCost { get; set; }
-        public decimal? TotalPivotalFEDCost { get; set; }        
-        public decimal? TotalCost { get; set; }
-        public int? CreatedBy { get; set; }
-        public DateTime? CreatedDate { get; set; }
+        public double? TotalPilotFastingCost { get; set; }
+        public double? TotalPilotFEDCost { get; set; }
+        public double? TotalPivotalFastingCost { get; set; }
+        public double? TotalPivotalFEDCost { get; set; }        
+        public double? TotalCost { get; set; }
+        public int CreatedBy { get; set; }
+        public DateTime CreatedDate { get; set; }
 
     }
 }

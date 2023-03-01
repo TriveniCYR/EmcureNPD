@@ -234,10 +234,11 @@ namespace EmcureNPD.API.Controllers.PBF
 		}
         [HttpPost]
         [Route("InsertUpdatePBFDetails")]
-        public async Task<IActionResult> InsertUpdatePBFDetails(PidfPbfEntity pbfEntity)
+        public async Task<IActionResult> InsertUpdatePBFDetails(PidfPbfFormEntity pbfEntity)
         {
             try
             {
+                
                 DBOperation oResponse = await _PBFService.AddUpdatePBFDetails(pbfEntity);
                 if (oResponse == DBOperation.Success)
                     return _ObjectResponse.Create(true, (Int32)HttpStatusCode.OK, (pbfEntity.Pidfpbfid > 0 ? "Updated Successfully" : "Inserted Successfully"));

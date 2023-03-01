@@ -8,8 +8,8 @@ namespace EmcureNPD.Data.DataAccess.Entity
     public partial class PidfPbfAnalyticalCost
     {
         public long PbfanalyticalCostId { get; set; }
-        public long? PbfanalyticalId { get; set; }
-        public long? StrengthId { get; set; }
+        public long PbfanalyticalId { get; set; }
+        public long StrengthId { get; set; }
         public double? TotalAmvcost { get; set; }
         public string Remark { get; set; }
         public double? TotalPrototypeCost { get; set; }

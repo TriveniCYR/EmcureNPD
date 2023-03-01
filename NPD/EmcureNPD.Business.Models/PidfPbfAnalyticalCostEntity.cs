@@ -11,12 +11,12 @@ namespace EmcureNPD.Business.Models
         public int PBFAnalyticalCostId { get; set; }
         public int PBFAnalyticalId { get; set; }
         public int StrengthId { get; set; }
-        public decimal? TotalAWVCost { get; set; }
+        public double? TotalAWVCost { get; set; }
         public string Remark { get; set; }
-        public decimal? TotalPrototypeCost { get; set; }
-        public decimal? TotalExhibitCost { get; set; }
-        public decimal? TotalScaleUpCost { get; set; }
-        public decimal? TotalCost { get; set; }
+        public double? TotalPrototypeCost { get; set; }
+        public double? TotalExhibitCost { get; set; }
+        public double? TotalScaleUpCost { get; set; }
+        public double? TotalCost { get; set; }
         public int? CreatedBy { get; set; }
         public DateTime? CreatedDate { get; set; }
 

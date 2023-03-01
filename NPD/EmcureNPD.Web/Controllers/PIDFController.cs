@@ -292,7 +292,7 @@ namespace EmcureNPD.Web.Controllers
         public IActionResult PBFForm(string pidfid, string bui)
         {
             ModelState.Clear();
-            PidfPbfEntity oPIDForm = new();
+            PidfPbfFormEntity oPIDForm = new();
             try
             {
                 int rolId = (int)HttpContext.Session.GetInt32(UserHelper.LoggedInRoleId);
@@ -313,9 +313,9 @@ namespace EmcureNPD.Web.Controllers
         }
 
         [NonAction]
-        private PidfPbfEntity GetPIDFPbfModel(string pidfid, string bui)
+        private PidfPbfFormEntity GetPIDFPbfModel(string pidfid, string bui)
         {
-            PidfPbfEntity oPIDForm = new();
+            PidfPbfFormEntity oPIDForm = new();
             pidfid = UtilityHelper.Decreypt(pidfid);
             string logUserId = Convert.ToString(HttpContext.Session.GetString(UserHelper.LoggedInUserId));
             HttpResponseMessage resMsg;
@@ -328,7 +328,7 @@ namespace EmcureNPD.Web.Controllers
             if (responseMessage.IsSuccessStatusCode)
             {
                 string jsonResponse = responseMessage.Content.ReadAsStringAsync().Result;
-                var data = JsonConvert.DeserializeObject<APIResponseEntity<PidfPbfEntity>>(jsonResponse);
+                var data = JsonConvert.DeserializeObject<APIResponseEntity<PidfPbfFormEntity>>(jsonResponse);
                 oPIDForm = data._object;
                 oPIDForm.Pidfid = Convert.ToInt64(pidfid);
                 oPIDForm.CreatedBy = Convert.ToInt32(logUserId);
@@ -342,9 +342,9 @@ namespace EmcureNPD.Web.Controllers
                     var retPIDF = JsonConvert.DeserializeObject<APIResponseEntity<PIDFEntity>>(jsnRs);
                 }
             }
-            oPIDForm.pidfEntity = _pidfEntity;
+            //oPIDForm.pidfEntity = _pidfEntity;
 
-            oPIDForm.BusinessUnitId = oPIDForm.pidfEntity.BusinessUnitId;
+            //oPIDForm.BusinessUnitId = oPIDForm.pidfEntity.BusinessUnitId;
             return oPIDForm;
         }
 
@@ -394,37 +394,6 @@ namespace EmcureNPD.Web.Controllers
             }
             return oPIDForm;
         }
-
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public IActionResult PBF(int PIDFId, PidfPbfEntity pbfEntity)
-        {
-            try
-            {
-                if (pbfEntity.SaveType == "Sv")
-                    pbfEntity.StatusId = (Int32)Master_PIDFStatus.PIDFInProgress;
-                else
-                    pbfEntity.StatusId = (Int32)Master_PIDFStatus.PIDFSubmitted;
-                pbfEntity.CreatedBy = Convert.ToInt32(HttpContext.Session.GetString(UserHelper.LoggedInUserId));
-                HttpContext.Request.Cookies.TryGetValue(UserHelper.EmcureNPDToken, out string token);
-                APIRepository objapi = new(_cofiguration);
-                HttpResponseMessage responseMessage = objapi.APICommunication(APIURLHelper.SavePBF, HttpMethod.Post, token, new StringContent(JsonConvert.SerializeObject(pbfEntity))).Result;
-
-                if (responseMessage.IsSuccessStatusCode)
-                {
-                    string jsonResponse = responseMessage.Content.ReadAsStringAsync().Result;
-                    ModelState.Clear();
-                    return RedirectToAction(nameof(PIDFList));
-                }
-            }
-            catch (Exception e)
-            {
-                ViewBag.errormessage = Convert.ToString(e.StackTrace);
-                ModelState.Clear();
-                return View(nameof(PIDFList));
-            }
-            ModelState.Clear();
-            return RedirectToAction(nameof(PIDFList));
-        }
+        
     }
 }

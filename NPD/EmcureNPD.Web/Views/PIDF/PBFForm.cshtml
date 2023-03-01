@@ -8,16 +8,14 @@
 @using EmcureNPD.Utility.Enums
 @using EmcureNPD.Business.Models
 
-@model EmcureNPD.Business.Models.PidfPbfEntity
+@model EmcureNPD.Business.Models.PidfPbfFormEntity
 
 
 <div id="SavePIDFModel">
-
-    
         <div class="card">
             <div id="PIDFFormTemplate">
                 @{
-                    await Html.RenderPartialAsync("PIDF", Model.pidfEntity);
+                    await Html.RenderPartialAsync("PIDF", new PIDFEntity());
                 }
             </div>
         </div>
@@ -54,8 +52,7 @@
     <form asp-action="PBF" asp-controller="PBF" method="post">
         <input type="hidden" asp-for="Pidfid" />
         <input type="hidden" asp-for="BusinessUnitId" />
-        <input type="hidden" asp-for="SaveType" />
-
+         <input type="hidden" asp-for="SaveSubmitType" />        
         <div class="card-body" style="background-color:white">
             <input type="hidden" />
             <div class="row">
@@ -63,6 +60,7 @@
                     <div class="form-group required">
                         @Html.LabelFor(model => model.ProjectName,@MasterLocalizer["ProjectName"], new { @class = "control-label" })
                         @Html.TextBoxFor(model => model.ProjectName, new {@class = "form-control", @placeholder = @MasterLocalizer["ProjectName"] ,@required="required"})
+                        
                     </div>
                 </div>
 
@@ -121,7 +119,7 @@
                 <div class="col-md-3">
                     <div class="form-group required">
                         @Html.LabelFor(model => model.DosageId, "Dosage", new { @class = "control-label" })
-                        <select id="PbfDosageFormId" name="DosageFormId" class="form-control readOnlyUpdate" required></select>
+                        <select id="PbfDosageFormId" name="DosageId" class="form-control readOnlyUpdate" required></select>
                     </div>
                 </div>
 
@@ -198,7 +196,7 @@
                 </div>
             </div>
 
-            <div class="card-header">
+           @* <div class="card-header">
                 <h3 class="card-title">Reference Product Detail</h3>
             </div>
             <div class="row">
@@ -231,7 +229,7 @@
                         @Html.TextBoxFor(model => model.pidfEntity.RFDIndication, new {@class = "form-control", @placeholder = "Indication",@required="required" })
                     </div>
                 </div>
-            </div>
+            </div>*@
         </div>
         <div class="card" style="background-color:white;">
             <div class="card-body">
@@ -308,20 +306,21 @@
 
                     <div id="Analytical" class="tabcontent">
                         @{
-                            await Html.RenderPartialAsync("~/Views/PBF/PBFAnalyticalForm.cshtml", new PidfPbfEntity());
+                            await Html.RenderPartialAsync("~/Views/PBF/PBFAnalyticalForm.cshtml", new PidfPbfFormEntity());
                         }
                     </div>
 
                     <div id="Clinical" class="tabcontent">
                         @{
-                            await Html.RenderPartialAsync("~/Views/PBF/PBFClinicalForm.cshtml", new PidfPbfEntity());
+                            await Html.RenderPartialAsync("~/Views/PBF/PBFClinicalForm.cshtml", new PidfPbfFormEntity());
                         }
                     </div>
+                    <br />
                     @*</section>*@
                     <div class="form-group">
-                        <button type="submit" id="Save" class="btn btn-primary" onclick="SaveClick();" >@SharedLocalizer["Submit"]</button>
-                        <button type="submit" class="btn btn-info" onClick="SaveDraftClick();">@SharedLocalizer["SaveDraft"]</button>
-                        <a class="btn btn-danger" asp-action="PIDFList" asp-controller="PIDF">@SharedLocalizer["Cancel"]</a>
+                        <button type="submit" class="btn btn-primary operationButton" onclick="SaveClick();" >@SharedLocalizer["Submit"]</button>
+                        <button type="submit" class="btn btn-info operationButton" onClick="SaveDraftClick();">@SharedLocalizer["SaveDraft"]</button>
+                        <a class="btn btn-danger operationButton" asp-action="PIDFList" asp-controller="PIDF" asp-route-ScreenId="6">@SharedLocalizer["Cancel"]</a>
 
                     </div>
                 </div>
