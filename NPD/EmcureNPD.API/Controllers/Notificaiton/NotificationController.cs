@@ -10,6 +10,7 @@ using EmcureNPD.Business.Models;
 using System.Net;
 using System.Threading.Tasks;
 using System;
+using Microsoft.AspNetCore.SignalR;
 
 namespace EmcureNPD.API.Controllers.Notificaiton {
     [Route("api/[controller]")]
@@ -45,9 +46,9 @@ namespace EmcureNPD.API.Controllers.Notificaiton {
         /// <response code="405">Method Not Allowed</response>
         /// <response code="500">Internal Server</response>
         [HttpPost, Route("GetAllNotification")]
-        public async Task<IActionResult> GetAllNotification([FromForm] DataTableAjaxPostModel model) {
+        public async Task<IActionResult> GetAllNotification() {
             try {
-                return _ObjectResponse.CreateData(await _NotificationService.GetAll(model), (Int32)HttpStatusCode.OK);
+                return _ObjectResponse.CreateData(await _NotificationService.GetAll(), (Int32)HttpStatusCode.OK);
             } catch (Exception ex) {
                 return _ObjectResponse.Create(false, (Int32)HttpStatusCode.InternalServerError, Convert.ToString(ex.StackTrace));
             }

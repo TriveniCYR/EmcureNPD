@@ -1,5 +1,4 @@
-﻿
-@model EmcureNPD.Business.Models.PIDFEntity
+﻿@model EmcureNPD.Business.Models.PIDFEntity
 @*@{
     ViewData["Title"] = "Dashboard";
 }
@@ -31,9 +30,9 @@
                 </div>
                 <div class="col-sm-1">
                     <div class="form-group required">
-                   <select id="years">
-                       <option>Select Year</option>
-                   </select>
+                        <select id="years">
+                            <option>Select Year</option>
+                        </select>
                     </div>
                 </div>
                 <div class="col-md-3">
@@ -42,14 +41,14 @@
                         <select id="BusinessUnitId" name="BusinessUnitId" class="form-control readOnlyUpdate" required></select>
                     </div>
                 </div>
-             @*   <div class="col-sm-9">
-                    <select name="Business Unit" id="Business">
-                        <option value="select">Select Business Unit</option>
-                        <option value="2019">Emcure</option>
-                        <option value="2020">Tilomed</option>
-                        <option value="2021">Marcan</option>
+                @*   <div class="col-sm-9">
+                <select name="Business Unit" id="Business">
+                <option value="select">Select Business Unit</option>
+                <option value="2019">Emcure</option>
+                <option value="2020">Tilomed</option>
+                <option value="2021">Marcan</option>
 
-                    </select>
+                </select>
                 </div>*@
 
 
@@ -63,110 +62,110 @@
     <section class="content">
         <div class="container-fluid">
             <div id="PIDFContainer" class="row">
-               @* <div class="col-lg-3 col-md-6 col-12">
-                    <!-- small box -->
-                    <div class="small-box bg-info">
-                        <div class="inner">
-                            <h3 id="totalFinanceApproved"></h3>
-                            <p>PIDF Submitted</p>
-                        </div>
-                        <div class="icon">
-                            <i class="far fa-save"></i>
-                        </div>
+                @* <div class="col-lg-3 col-md-6 col-12">
+                <!-- small box -->
+                <div class="small-box bg-info">
+                <div class="inner">
+                <h3 id="totalFinanceApproved"></h3>
+                <p>PIDF Submitted</p>
+                </div>
+                <div class="icon">
+                <i class="far fa-save"></i>
+                </div>
 
-                    </div>
+                </div>
                 </div>
                 <!-- ./col -->
                 <div class="col-lg-3 col-md-6 col-12">
-                    <!-- small box -->
-                    <div class="small-box bg-success">
-                        <div class="inner">
-                            <h3 id="totalFinalApproved"></h3>
-                            <p>PIDF In progress</p>
+                <!-- small box -->
+                <div class="small-box bg-success">
+                <div class="inner">
+                <h3 id="totalFinalApproved"></h3>
+                <p>PIDF In progress</p>
 
-                        </div>
-                        <div class="icon">
-                            <i class="far fa-check-square"></i>
-                        </div>
+                </div>
+                <div class="icon">
+                <i class="far fa-check-square"></i>
+                </div>
 
-                    </div>
+                </div>
                 </div>
                 <!-- ./col -->
                 <div class="col-lg-3 col-md-6 col-12">
-                    <!-- small box -->
-                    <div class="small-box bg-warning">
-                        <div class="inner">
-                            <h3 id="totalInitial"></h3>
-                            <p>PBF In progress</p>
-                        </div>
-                        <div class="icon">
-                            <i class="fab fa-wpforms"></i>
-                        </div>
+                <!-- small box -->
+                <div class="small-box bg-warning">
+                <div class="inner">
+                <h3 id="totalInitial"></h3>
+                <p>PBF In progress</p>
+                </div>
+                <div class="icon">
+                <i class="fab fa-wpforms"></i>
+                </div>
 
-                    </div>
+                </div>
                 </div>
                 <!-- ./col -->
                 <div class="col-lg-3 col-md-6 col-12">
-                    <!-- small box -->
-                    <div class="small-box bg-danger">
-                        <div class="inner">
-                            <h3 id="totalPartialApproved"></h3>
-                            <p>PIDF Approved</p>
-                        </div>
-                        <div class="icon">
-                            <i class="ion ion-pie-graph"></i>
-                        </div>
+                <!-- small box -->
+                <div class="small-box bg-danger">
+                <div class="inner">
+                <h3 id="totalPartialApproved"></h3>
+                <p>PIDF Approved</p>
+                </div>
+                <div class="icon">
+                <i class="ion ion-pie-graph"></i>
+                </div>
 
-                    </div>
+                </div>
                 </div>
 
                 <!-- ./col -->
                 <div class="col-lg-3 col-md-6 col-12">
-                    <!-- small box -->
-                    <div class="small-box bg-warning">
-                        <div class="inner">
-                            <h3 id="totalPartialApproved"></h3>
-                            <p>PBF Submitted</p>
-                        </div>
-                       
+                <!-- small box -->
+                <div class="small-box bg-warning">
+                <div class="inner">
+                <h3 id="totalPartialApproved"></h3>
+                <p>PBF Submitted</p>
+                </div>
 
-                    </div>
+
+                </div>
                 </div>
                 <!-- ./col -->
                 <div class="col-lg-3 col-md-6 col-12">
-                    <!-- small box -->
-                    <div class="small-box bg-info">
-                        <div class="inner">
-                            <h3 id="totalPartialApproved"></h3>
-                            <p>API Submitted</p>
-                        </div>
-                       
+                <!-- small box -->
+                <div class="small-box bg-info">
+                <div class="inner">
+                <h3 id="totalPartialApproved"></h3>
+                <p>API Submitted</p>
+                </div>
 
-                    </div>
+
+                </div>
                 </div>
                 <!-- ./col -->
                 <div class="col-lg-3 col-md-6 col-12">
-                    <!-- small box -->
-                    <div class="small-box bg-secondary">
-                        <div class="inner">
-                            <h3 id="totalPartialApproved"></h3>
-                            <p>Medical Submitted</p>
-                        </div>
-                       
+                <!-- small box -->
+                <div class="small-box bg-secondary">
+                <div class="inner">
+                <h3 id="totalPartialApproved"></h3>
+                <p>Medical Submitted</p>
+                </div>
 
-                    </div>
+
+                </div>
                 </div>
                 <!-- ./col -->
                 <div class="col-lg-3 col-md-6 col-12">
-                    <!-- small box -->
-                    <div class="small-box bg-dark">
-                        <div class="inner">
-                            <h3 id="totalPartialApproved"></h3>
-                            <p>Finance Submitted</p>
-                        </div>
-                       
+                <!-- small box -->
+                <div class="small-box bg-dark">
+                <div class="inner">
+                <h3 id="totalPartialApproved"></h3>
+                <p>Finance Submitted</p>
+                </div>
 
-                    </div>
+
+                </div>
                 </div>*@
                 <!-- ./col -->
             </div>
@@ -282,13 +281,14 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.js"></script>
 @section MyScripts {
 
-	@Html.Partial("_DataTablePartial")
-<script type="text/javascript" src="~/js/Custom/Dashboard/Dashboard.js"></script>
+    @Html.Partial("_DataTablePartial")
+    <script type="text/javascript" src="~/js/Custom/Dashboard/Dashboard.js"></script>
 
-<script>
-    var GetAllDashboard = "@EmcureNPD.Web.Helpers.APIURLHelper.GetAllDashboard";
+    <script>
+        var GetAllDashboard = "@EmcureNPD.Web.Helpers.APIURLHelper.GetAllDashboard";
         var GetPIDFList = "@EmcureNPD.Web.Helpers.APIURLHelper.GetPIDFList";
-</script>
+        var GetAllNotificationURL = "@EmcureNPD.Web.Helpers.APIURLHelper.GetAllNotification";
+    </script>
 }
 
 

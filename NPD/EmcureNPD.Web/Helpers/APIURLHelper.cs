@@ -295,8 +295,12 @@
 
         #region Dashboard
         public static string GetAllDashboard = "api/Dashboard/FillDropdown";        
-        public static string GetPIDFList = "api/Dashboard/GetPIDFByYearAndBusinessUnit";        
+        public static string GetPIDFList = "api/Dashboard/GetPIDFByYearAndBusinessUnit";
         #endregion
-        public static string GetAllNotification = "api/Notification/GetAll";
+
+        #region Notification
+        public static string GetAllNotification = "api/Notification/GetAllNotification";
+        #endregion
+
     }
 }

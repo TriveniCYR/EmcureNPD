@@ -4,6 +4,7 @@ using EmcureNPD.API.Middlewares;
 using EmcureNPD.Business.Core.Resolver;
 using EmcureNPD.Resource;
 using EmcureNPD.Utility;
+using EmcureNPD.Utility.Helpers;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
@@ -98,7 +99,7 @@ namespace EmcureNPD.API
 
             services.AddCors();
             services.AddDistributedMemoryCache();
-
+            services.AddSignalR();
             services.AddCors(options =>
             {
                 options.AddPolicy("AllowAllOrigins",
@@ -149,7 +150,6 @@ namespace EmcureNPD.API
             // custom jwt auth middleware
             app.UseMiddleware<JwtMiddleware>();
             //.UseMiddleware<ExceptionMiddleware>();
-
 
 
             app.UseEndpoints(endpoints =>
