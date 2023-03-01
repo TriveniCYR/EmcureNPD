@@ -231,7 +231,7 @@
                 <div>
 
                     <div class="form-group">
-                            <button type="submit" id="Save" class="btn btn-primary">@SharedLocalizer["Submit"]</button>
+                            <button style="visibility: hidden;" type="submit" id="Save" class="btn btn-primary">@SharedLocalizer["Submit"]</button>
                             <a class="btn btn-danger" asp-action="PIDFList" asp-controller="PIDF" 
                             asp-route-ScreenId="@Convert.ToString((int)EmcureNPD.Utility.Enums.PIDFScreen.API)">@SharedLocalizer["Cancel"]</a>
 

@@ -1,4 +1,5 @@
 using EmcureNPD.Resource;
+using EmcureNPD.Utility.Helpers;
 using EmcureNPD.Web.Filters;
 using EmcureNPD.Web.Helpers;
 using Microsoft.AspNetCore.Authentication.Cookies;
@@ -12,6 +13,8 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using System;
+using Microsoft.AspNetCore.SignalR;
+
 
 namespace EmcureNPD.Web
 {
@@ -38,7 +41,6 @@ namespace EmcureNPD.Web
             {
                 options.IdleTimeout = TimeSpan.FromMinutes(240);
             });
-
             services.AddCors();
             services.AddDistributedMemoryCache();
             services.AddSingleton<ITempDataProvider, CookieTempDataProvider>();
@@ -142,6 +144,10 @@ namespace EmcureNPD.Web
             app.UseAuthentication();
             app.UseAuthorization();
 
+            //app.UseEndpoints(routes =>
+            //{
+            //    routes.MapHub<NotificationHub>("/notificationHub");
+            //});
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllerRoute(
@@ -162,11 +168,7 @@ namespace EmcureNPD.Web
 
             app.UseRequestLocalization();
 
-            //app.UseSignalR(routes =>
-            //{
-            //    routes.MapHub<NotificationHub>("/NotificationHub");
-            //});
-
+           
             //app.Use(async (context, next) =>
             //{
             //    string CurrentUserIDSession = context.Session.GetString("CurrentUserID");
