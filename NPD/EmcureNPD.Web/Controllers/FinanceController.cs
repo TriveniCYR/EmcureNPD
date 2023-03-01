@@ -153,9 +153,66 @@ namespace EmcureNPD.Web.Controllers
 			}
 			return View();
 		}
-		public IActionResult PIDFFinanceList()
+		public IActionResult PIDFManagementApproval()
 		{
-			return View();
+            var pidfid = Request.Query["pidfid"];
+			if (pidfid != "")
+			{
+				ProjectsModel model = new ProjectsModel();
+				List<ProjectNameModel> ListProjectName = new List<ProjectNameModel>();
+				List<ProjectStrength> ListprojectStrengths = new List<ProjectStrength>();
+                List<Manager> Listmanager = new List<Manager>();
+                HttpResponseMessage responseMessage = new HttpResponseMessage();
+				HttpContext.Request.Cookies.TryGetValue(UserHelper.EmcureNPDToken, out string token);
+				APIRepository objapi = new(_cofiguration);
+
+				responseMessage = objapi.APICommunication(APIURLHelper.GetProjectNameAndStrength + "/" + pidfid, HttpMethod.Get, token).Result;
+
+				if (responseMessage.IsSuccessStatusCode)
+				{
+					string jsonResponse = responseMessage.Content.ReadAsStringAsync().Result;
+                    var data = JsonConvert.DeserializeObject<ProjectsView>(jsonResponse);
+					if(data.table.Count > 0)
+					{
+						foreach (var item in data.table)
+						{
+                           ListProjectName.Add(new ProjectNameModel
+                            {
+                                ProjectName = item.projectName
+
+                            });
+                        }
+						model.lsProjectName = ListProjectName;
+
+                    }
+					if(data.table1.Count>0)
+					{
+                        foreach (var item in data.table1)
+                        {
+                          ListprojectStrengths.Add(new ProjectStrength
+                            {
+                                Strength = item.strength
+
+                            });
+                        }
+						model.lsProjectStrength = ListprojectStrengths;
+                    }
+                    if (data.table2.Count > 0)
+                    {
+                        foreach (var item in data.table2)
+                        {
+                            Listmanager.Add(new Manager
+                            {
+                                ManagerName = item.managerName
+
+                            });
+                        }
+						model.lsManager = Listmanager;
+                    }
+					return View(model);
+                }
+			}
+               return View();
 		}
 
 
@@ -194,7 +251,7 @@ namespace EmcureNPD.Web.Controllers
 				{
 
 					string jsonResponse = responseMessage.Content.ReadAsStringAsync().Result;
-					var data = JsonConvert.DeserializeObject<ChildRoot>(jsonResponse);// JsonConvert.DeserializeObject<List<PidfFinanceBatchSizeCoating>>(jsonResponse).ToList();
+					var data = JsonConvert.DeserializeObject<ChildRoot>(jsonResponse);
 					return data.table;
 
 				}
