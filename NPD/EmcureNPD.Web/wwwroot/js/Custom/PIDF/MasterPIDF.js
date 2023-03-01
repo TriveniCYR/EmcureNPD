@@ -20,6 +20,10 @@ $(document).ready(function () {
             }
         }
     });
+    $('#InhouseDropdownId').change(function (e) {
+        var _selected = ($(this).val() == "1" ? true : false);
+        $('#InHouses').prop("checked", _selected).val(_selected);
+    });
 });
 
 function GetCountryByBusinessUnitSuccess(data) {
@@ -115,7 +119,7 @@ function GetPIDFDropdownSuccess(data) {
                     $('#BusinessUnitId').val($('#hdnBusinessUnitId').val()).trigger("change");
                     $('#MarketExtenstionId').val($('#hdnMarketExtenstionId').val());
                     $('#Diaid').val($('#hdnDiaid').val());
-                    $('#InhouseDropdownId').val($('#hdnInhouseDropdownId').val());
+                    $('#InhouseDropdownId').val($('#hdnInhouseDropdownId').val()).trigger("change");
 
                     $(".productStrengthUnit").each(function () {
                         $(this).val($(this).prev("#hdnProductStrengthUnit").val());

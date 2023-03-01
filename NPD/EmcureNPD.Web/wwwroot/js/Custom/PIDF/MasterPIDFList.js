@@ -160,7 +160,10 @@ function InitializePIDFList() {
                     var _IPDForm = '/PIDForm/PIDForm?pidfid=' + row.encpidfid + '&bui=' + row.encbud;
                     var _enable = (row.pidfStatusID == 3 || row.pidfStatusID == 5 || row.pidfStatusID == 6);
                     html += '<a class="large-font" style="color:' + (_enable ? "#007bff" : "grey") + '" href="' + (_enable ? _IPDForm : "#") + '"><i class="fa fa-fw fa-edit mr-1"></i></a>';
-                    html += '<a class="ml-1 large-font" href="' + _IPDForm + '&IsView=1"><i class="fa fa-fw fa-eye mr-1"></i></a>';
+
+                    var _enableView = (row.pidfStatusID == 1 || row.pidfStatusID == 2 || row.pidfStatusID == 3 || row.pidfStatusID == 4);
+
+                    html += '<a class="ml-1 large-font" style="color:' + (!_enableView ? "#007bff" : "grey") + '" href="' + (!_enableView ? _IPDForm : "#")  + '&IsView=1"><i class="fa fa-fw fa-eye mr-1"></i></a>';
 
                 } else if (_screenId == "3") {
                     var _MedicalForm = '/PIDForm/Medical?pidfid=' + row.encpidfid + '&bui=' + row.encbud;

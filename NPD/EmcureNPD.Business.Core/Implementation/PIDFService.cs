@@ -223,13 +223,18 @@ namespace EmcureNPD.Business.Core.Implementation
 
                         await _unitOfWork.SaveChangesAsync();
 
-                        var apiDetailsList = _pidfApiRepository.GetAllQuery().Where(x => x.Pidfid == entityPIDF.PIDFID);
-                        _pidfApiRepository.RemoveRange(apiDetailsList);
-
+                        var apiDetailsList = _pidfApiRepository.GetAllQuery().Where(x => x.Pidfid == entityPIDF.PIDFID).ToList();
+                        foreach (var item in apiDetailsList)
+                        {
+                            _pidfApiRepository.Remove(item);
+                        }
                         await _unitOfWork.SaveChangesAsync();
 
-                        var productStrengthList = _pidfProductStrength.GetAllQuery().Where(x => x.Pidfid == entityPIDF.PIDFID);
-                        _pidfProductStrength.RemoveRange(productStrengthList);
+                        var productStrengthList = _pidfProductStrength.GetAllQuery().Where(x => x.Pidfid == entityPIDF.PIDFID).ToList();
+                        foreach (var item in productStrengthList)
+                        {
+                            _pidfProductStrength.Remove(item);
+                        }
 
                         await _unitOfWork.SaveChangesAsync();
 

@@ -22,7 +22,7 @@ namespace EmcureNPD.Data.DataAccess.Entity
         public int BusinessUnitId { get; set; }
         public double? TotalExpense { get; set; }
         public string ProjectComplexity { get; set; }
-        public int? ProductTypeId { get; set; }
+        public int ProductTypeId { get; set; }
         public string TestLicenseAvailability { get; set; }
         public DateTime? BudgetTimelineSubmissionDate { get; set; }
         public int? FormulationId { get; set; }

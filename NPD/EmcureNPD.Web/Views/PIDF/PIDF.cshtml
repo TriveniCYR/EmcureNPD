@@ -99,7 +99,8 @@
 					<div class="col-md-3">
 						<div class="form-group required">
 							<label class="control-label">In house</label> <span class="text-danger">*</span>
-							<input type="hidden" id="hdnInhouseDropdownId" value="@(Model.InHouses ? "1" : "2")" />
+							<input type="hidden" id="hdnInhouseDropdownId" value="@(Model.InHouses ? "1" : "2")" checked="@(Model.InHouses ? "checked" : "")" />
+							<input type="checkbox" id="InHouses" name="InHouses" value="@(Model.InHouses)" style="display:none;" />
 							<select id="InhouseDropdownId" name="InhouseDropdownId" class="form-control readOnlyUpdate" required></select>
 						</div>
 					</div>

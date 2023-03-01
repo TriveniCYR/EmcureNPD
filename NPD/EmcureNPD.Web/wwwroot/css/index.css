@@ -137,7 +137,7 @@ tr {
 }
 
 .nav.nav-tabs .nav-item {
-  width: calc(100% / 5);
+  width: calc(100% / 10);
   text-align: center;
 }
 

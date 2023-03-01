@@ -16,6 +16,7 @@ using System.Net.Http;
 
 namespace EmcureNPD.Web.Controllers
 {
+    [ViewComponent]
     public class PIDFController : BaseController
     {
         #region Properties
