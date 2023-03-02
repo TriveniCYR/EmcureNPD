@@ -59,8 +59,34 @@ namespace EmcureNPD.Business.Core.Implementation {
             sqlDependency.OnChange += new OnChangeEventHandler(dbChangeNotification);
             return oDataTableResponseModel;
         }
+		public async Task<DataTableResponseModel> GetFilteredNotifications(string ColumnName, string SortDir, int start,int length)
+		{
+			
+			var model = new DataTableAjaxPostModel();
+			model.start = start;
+			model.length = length;
 
-        public void dbChangeNotification(object sender, SqlNotificationEventArgs e) {
+			SqlParameter[] osqlParameter = {
+				new SqlParameter("@NotificationId", 0),
+				new SqlParameter("@CurrentPageNumber", model.start),
+					new SqlParameter("@PageSize", model.length),
+					new SqlParameter("@SortColumn", ColumnName),
+					new SqlParameter("@SortDirection", SortDir),
+					new SqlParameter("@SearchText", "")
+			};
+
+			var NotificationList = await _repository.GetBySP("stp_npd_GetNotificationList", System.Data.CommandType.StoredProcedure, osqlParameter);
+
+			var TotalRecord = (NotificationList != null && NotificationList.Rows.Count > 0 ? Convert.ToInt32(NotificationList.Rows[0]["TotalRecord"]) : 0);
+			var TotalCount = (NotificationList != null && NotificationList.Rows.Count > 0 ? Convert.ToInt32(NotificationList.Rows[0]["TotalCount"]) : 0);
+
+			DataTableResponseModel oDataTableResponseModel = new DataTableResponseModel(model.draw, TotalRecord, TotalCount, NotificationList.DataTableToList<MasterNotification>());
+
+			SqlDependency sqlDependency = new SqlDependency();
+			sqlDependency.OnChange += new OnChangeEventHandler(dbChangeNotification);
+			return oDataTableResponseModel;
+		}
+		public void dbChangeNotification(object sender, SqlNotificationEventArgs e) {
             NotificationHub.Show();
         }
 

@@ -316,10 +316,11 @@ namespace EmcureNPD.Web.Helpers
 
         #region Notification
         public static string GetAllNotification = "api/Notification/GetAllNotification";
-        #endregion
+		public static string GetFilteredNotifications = "api/Notification/GetFilteredNotifications";
+		#endregion
 
-        #region PIDFFinance
-        public static string AddUpdatePidfFinance = "api/PidfFinance/AddUpdatePidfFinance";
+		#region PIDFFinance
+		public static string AddUpdatePidfFinance = "api/PidfFinance/AddUpdatePidfFinance";
         public static string AddUpdatePidfFinanceBatchSizeCoating = "api/PidfFinance/AddUpdatePidfFinanceBatchSizeCoating";
         public static string GetPidfFinance = "api/PidfFinance/GetPidfFinance";
         public static string GetFinanceBatchSizeCoating = "api/PidfFinance/GetFinanceBatchSizeCoating";

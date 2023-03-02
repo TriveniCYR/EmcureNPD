@@ -120,9 +120,13 @@
 
 	@await RenderSectionAsync("Scripts", required: false)
 	@await RenderSectionAsync("MyScripts", required: false)
+
+	<script>
+		const GetFilteredNotifications = "@EmcureNPD.Web.Helpers.APIURLHelper.GetFilteredNotifications";
+	</script>
     
     <script type="text/javascript" src="~/lib/signalr/signalr.js"></script>
-    @*<script type="text/javascript" src="~/js/Custom/Notification/Notification.js"></script>*@
+    <script type="text/javascript" src="~/js/Custom/Notification/Notification.js"></script>
    
 
 </body>

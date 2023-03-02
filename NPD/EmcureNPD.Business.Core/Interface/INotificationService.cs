@@ -8,6 +8,8 @@ using System.Threading.Tasks;
 namespace EmcureNPD.Business.Core.Interface {
     public interface INotificationService {
         Task<DataTableResponseModel> GetAll();
-        void dbChangeNotification(object sender, System.Data.SqlClient.SqlNotificationEventArgs e);
+        Task<DataTableResponseModel> GetFilteredNotifications(string ColumnName, string SortDir, int start, int length);
+
+		void dbChangeNotification(object sender, System.Data.SqlClient.SqlNotificationEventArgs e);
     }
 }
