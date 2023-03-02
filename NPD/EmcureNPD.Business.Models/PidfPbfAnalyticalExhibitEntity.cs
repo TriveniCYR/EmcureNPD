@@ -10,7 +10,7 @@ namespace EmcureNPD.Business.Models
         public int ExhibitId { get; set; }
         public int PBFAnalyticalId { get; set; }
         public int StrengthId { get; set; }
-        public int? TestTypeId { get; set; }
+        public int TestTypeId { get; set; }
         public int? Numberoftests { get; set; }
         public string PrototypeDevelopment { get; set; }
         public decimal? Cost { get; set; }
