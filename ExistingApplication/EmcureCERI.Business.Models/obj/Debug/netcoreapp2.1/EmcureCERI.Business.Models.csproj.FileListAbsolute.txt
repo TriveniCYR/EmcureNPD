@@ -11,3 +11,16 @@ D:\E Drive\Nilesh_Jain\Clients\Emcure_Pharma\NeoSOFTRepo\NPD\EmcureNPD\ExistingA
 D:\E Drive\Nilesh_Jain\Clients\Emcure_Pharma\NeoSOFTRepo\NPD\EmcureNPD\ExistingApplication\EmcureCERI.Business.Models\obj\Debug\netcoreapp2.1\EmcureCERI.Business.Models.csproj.CopyComplete
 D:\E Drive\Nilesh_Jain\Clients\Emcure_Pharma\NeoSOFTRepo\NPD\EmcureNPD\ExistingApplication\EmcureCERI.Business.Models\obj\Debug\netcoreapp2.1\EmcureCERI.Business.Models.dll
 D:\E Drive\Nilesh_Jain\Clients\Emcure_Pharma\NeoSOFTRepo\NPD\EmcureNPD\ExistingApplication\EmcureCERI.Business.Models\obj\Debug\netcoreapp2.1\EmcureCERI.Business.Models.pdb
+C:\Users\user\Desktop\Latest Emcure\ExistingApplication\EmcureCERI.Business.Models\bin\Debug\netcoreapp2.1\EmcureCERI.Business.Models.deps.json
+C:\Users\user\Desktop\Latest Emcure\ExistingApplication\EmcureCERI.Business.Models\bin\Debug\netcoreapp2.1\EmcureCERI.Business.Models.dll
+C:\Users\user\Desktop\Latest Emcure\ExistingApplication\EmcureCERI.Business.Models\bin\Debug\netcoreapp2.1\EmcureCERI.Business.Models.pdb
+C:\Users\user\Desktop\Latest Emcure\ExistingApplication\EmcureCERI.Business.Models\bin\Debug\netcoreapp2.1\EmcureCERI.Data.DataAccess.dll
+C:\Users\user\Desktop\Latest Emcure\ExistingApplication\EmcureCERI.Business.Models\bin\Debug\netcoreapp2.1\EmcureCERI.Data.DataAccess.pdb
+C:\Users\user\Desktop\Latest Emcure\ExistingApplication\EmcureCERI.Business.Models\obj\Debug\netcoreapp2.1\EmcureCERI.Business.Models.csproj.AssemblyReference.cache
+C:\Users\user\Desktop\Latest Emcure\ExistingApplication\EmcureCERI.Business.Models\obj\Debug\netcoreapp2.1\EmcureCERI.Business.Models.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\user\Desktop\Latest Emcure\ExistingApplication\EmcureCERI.Business.Models\obj\Debug\netcoreapp2.1\EmcureCERI.Business.Models.AssemblyInfoInputs.cache
+C:\Users\user\Desktop\Latest Emcure\ExistingApplication\EmcureCERI.Business.Models\obj\Debug\netcoreapp2.1\EmcureCERI.Business.Models.AssemblyInfo.cs
+C:\Users\user\Desktop\Latest Emcure\ExistingApplication\EmcureCERI.Business.Models\obj\Debug\netcoreapp2.1\EmcureCERI.Business.Models.csproj.CoreCompileInputs.cache
+C:\Users\user\Desktop\Latest Emcure\ExistingApplication\EmcureCERI.Business.Models\obj\Debug\netcoreapp2.1\EmcureCERI.Business.Models.csproj.CopyComplete
+C:\Users\user\Desktop\Latest Emcure\ExistingApplication\EmcureCERI.Business.Models\obj\Debug\netcoreapp2.1\EmcureCERI.Business.Models.dll
+C:\Users\user\Desktop\Latest Emcure\ExistingApplication\EmcureCERI.Business.Models\obj\Debug\netcoreapp2.1\EmcureCERI.Business.Models.pdb

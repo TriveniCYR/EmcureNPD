@@ -43,7 +43,7 @@ namespace EmcureNPD.Schedule.Services.Implementations {
         public void SendReminderAPI(UserSessionEntity oUserDetail) {
             try {
                 var token = oUserDetail.UserToken;
-                HttpResponseMessage responseMessage = apiService.APICommunication(APIURLHelper.SendReminder, HttpMethod.Post,token).Result;
+                HttpResponseMessage responseMessage = apiService.APICommunication(APIURLHelper.SendReminder, HttpMethod.Post,null).Result;
                 if (responseMessage.IsSuccessStatusCode) {
                     string jsonResponse = responseMessage.Content.ReadAsStringAsync().Result;
                 }
