@@ -11,3 +11,16 @@ D:\E Drive\Nilesh_Jain\Clients\Emcure_Pharma\NeoSOFTRepo\NPD\EmcureNPD\ExistingA
 D:\E Drive\Nilesh_Jain\Clients\Emcure_Pharma\NeoSOFTRepo\NPD\EmcureNPD\ExistingApplication\EmcureCERI.Data.DataAccess\obj\Debug\netcoreapp2.1\EmcureCERI.Data.DataAccess.pdb
 D:\E Drive\Nilesh_Jain\Clients\Emcure_Pharma\NeoSOFTRepo\NPD\EmcureNPD\ExistingApplication\EmcureCERI.Data.DataAccess\obj\Debug\netcoreapp2.1\EmcureCERI.Data.DataAccess.genruntimeconfig.cache
 D:\E Drive\Nilesh_Jain\Clients\Emcure_Pharma\NeoSOFTRepo\NPD\EmcureNPD\ExistingApplication\EmcureCERI.Data.DataAccess\obj\Debug\netcoreapp2.1\EmcureCERI.Data.DataAccess.csproj.AssemblyReference.cache
+C:\Users\user\Desktop\Latest Emcure\ExistingApplication\EmcureCERI.Data.DataAccess\bin\Debug\netcoreapp2.1\EmcureCERI.Data.DataAccess.deps.json
+C:\Users\user\Desktop\Latest Emcure\ExistingApplication\EmcureCERI.Data.DataAccess\bin\Debug\netcoreapp2.1\EmcureCERI.Data.DataAccess.runtimeconfig.json
+C:\Users\user\Desktop\Latest Emcure\ExistingApplication\EmcureCERI.Data.DataAccess\bin\Debug\netcoreapp2.1\EmcureCERI.Data.DataAccess.runtimeconfig.dev.json
+C:\Users\user\Desktop\Latest Emcure\ExistingApplication\EmcureCERI.Data.DataAccess\bin\Debug\netcoreapp2.1\EmcureCERI.Data.DataAccess.dll
+C:\Users\user\Desktop\Latest Emcure\ExistingApplication\EmcureCERI.Data.DataAccess\bin\Debug\netcoreapp2.1\EmcureCERI.Data.DataAccess.pdb
+C:\Users\user\Desktop\Latest Emcure\ExistingApplication\EmcureCERI.Data.DataAccess\obj\Debug\netcoreapp2.1\EmcureCERI.Data.DataAccess.csproj.AssemblyReference.cache
+C:\Users\user\Desktop\Latest Emcure\ExistingApplication\EmcureCERI.Data.DataAccess\obj\Debug\netcoreapp2.1\EmcureCERI.Data.DataAccess.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\user\Desktop\Latest Emcure\ExistingApplication\EmcureCERI.Data.DataAccess\obj\Debug\netcoreapp2.1\EmcureCERI.Data.DataAccess.AssemblyInfoInputs.cache
+C:\Users\user\Desktop\Latest Emcure\ExistingApplication\EmcureCERI.Data.DataAccess\obj\Debug\netcoreapp2.1\EmcureCERI.Data.DataAccess.AssemblyInfo.cs
+C:\Users\user\Desktop\Latest Emcure\ExistingApplication\EmcureCERI.Data.DataAccess\obj\Debug\netcoreapp2.1\EmcureCERI.Data.DataAccess.csproj.CoreCompileInputs.cache
+C:\Users\user\Desktop\Latest Emcure\ExistingApplication\EmcureCERI.Data.DataAccess\obj\Debug\netcoreapp2.1\EmcureCERI.Data.DataAccess.dll
+C:\Users\user\Desktop\Latest Emcure\ExistingApplication\EmcureCERI.Data.DataAccess\obj\Debug\netcoreapp2.1\EmcureCERI.Data.DataAccess.pdb
+C:\Users\user\Desktop\Latest Emcure\ExistingApplication\EmcureCERI.Data.DataAccess\obj\Debug\netcoreapp2.1\EmcureCERI.Data.DataAccess.genruntimeconfig.cache

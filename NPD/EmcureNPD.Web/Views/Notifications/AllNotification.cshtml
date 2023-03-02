@@ -1,0 +1,52 @@
+﻿@using EmcureNPD.Business.Models
+@model EmcureNPD.Business.Models.DataTableResponseModel
+@{
+    int i = 0;
+}
+<section class="content-wrapper p-3 pb-4">
+    <div class="content-header">
+        <div class="container-fluid d-flex justify-content-between">
+            <h3>All Notifications</h3>
+            <div>
+               
+            </div>
+        </div>
+    </div>
+    <div class="container-fluid overflow-auto background-white-card">
+        <table id="AllNotificationTable" class="table dataTable table-bordered table-striped table-hover">
+            <thead>
+                <tr class="text-center">
+                    <th>#</th>
+                    <th>Title</th>
+                    <th>Descriptions</th>
+                    <th>Created On</th>
+                    @*<th>Action</th>*@
+                </tr>
+            </thead>
+            <tbody class="text-center">
+                @foreach (var item in Model.Data) 
+                {
+                    i++;
+                    <tr>
+                        <td>@i</td>
+                        <td>@item.notificationTitle</td>
+                        <td>@item.notificationDescription</td>
+                        <td>@item.createdDate.ToString("dd/MM/yyy")</td>
+                       @* <td>
+                            <i class="fa-solid fa-clock-rotate-left me-2"></i>
+                            <i class="fa-solid fa-circle-plus"></i>
+                        </td>*@
+                    </tr>
+                   
+                }
+             
+            </tbody>
+        </table>
+    </div>
+</section>
+@section MyScripts {
+
+    @Html.Partial("_DataTablePartial")
+    <script type="text/javascript" src="~/js/Custom/DynamicDataTable.js"></script>
+<script src="~/js/custom/notification/allnotifications.js"></script>
+}

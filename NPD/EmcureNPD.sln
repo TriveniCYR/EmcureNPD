@@ -51,7 +51,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "EmcureNPD.Resource", "Emcur
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "7.Scheduler", "7.Scheduler", "{CCE436D0-0E2F-4B7F-9FB3-E139E8415A42}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EmcureNPD.Scheduler", "EmcureNPD.Scheduler\EmcureNPD.Scheduler.csproj", "{1A2AD73A-2EEA-407E-B8F1-C881ECF5E0AF}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "EmcureNPD.Scheduler", "EmcureNPD.Scheduler\EmcureNPD.Scheduler.csproj", "{1A2AD73A-2EEA-407E-B8F1-C881ECF5E0AF}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

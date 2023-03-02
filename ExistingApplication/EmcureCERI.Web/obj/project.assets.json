@@ -16586,46 +16586,42 @@
     ]
   },
   "packageFolders": {
-    "C:\\Users\\user\\.nuget\\packages\\": {},
-    "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder": {}
+    "C:\\Users\\user\\.nuget\\packages\\": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "D:\\E Drive\\Nilesh_Jain\\Clients\\Emcure_Pharma\\NeoSOFTRepo\\NPD\\EmcureNPD\\ExistingApplication\\EmcureCERI.Web\\EmcureCERI.Web.csproj",
+      "projectUniqueName": "C:\\Users\\user\\Desktop\\Latest Emcure\\ExistingApplication\\EmcureCERI.Web\\EmcureCERI.Web.csproj",
       "projectName": "EmcureCERI.Web",
-      "projectPath": "D:\\E Drive\\Nilesh_Jain\\Clients\\Emcure_Pharma\\NeoSOFTRepo\\NPD\\EmcureNPD\\ExistingApplication\\EmcureCERI.Web\\EmcureCERI.Web.csproj",
+      "projectPath": "C:\\Users\\user\\Desktop\\Latest Emcure\\ExistingApplication\\EmcureCERI.Web\\EmcureCERI.Web.csproj",
       "packagesPath": "C:\\Users\\user\\.nuget\\packages\\",
-      "outputPath": "D:\\E Drive\\Nilesh_Jain\\Clients\\Emcure_Pharma\\NeoSOFTRepo\\NPD\\EmcureNPD\\ExistingApplication\\EmcureCERI.Web\\obj\\",
+      "outputPath": "C:\\Users\\user\\Desktop\\Latest Emcure\\ExistingApplication\\EmcureCERI.Web\\obj\\",
       "projectStyle": "PackageReference",
-      "fallbackFolders": [
-        "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"
-      ],
       "configFilePaths": [
         "C:\\Users\\user\\AppData\\Roaming\\NuGet\\NuGet.Config",
-        "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
-        "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config",
-        "C:\\Program Files (x86)\\NuGet\\Config\\Xamarin.Offline.config"
+        "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
       ],
       "originalTargetFrameworks": [
         "netcoreapp2.1"
       ],
       "sources": {
         "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
-        "https://api.nuget.org/v3/index.json": {}
+        "C:\\Users\\user\\Desktop\\sampleNugetPackage": {},
+        "https://api.nuget.org/v3/index.json": {},
+        "https://pkgs.dev.azure.com/COERAJ/NugetDemo/_packaging/TestFeed1/nuget/v3/index.json": {}
       },
       "frameworks": {
         "netcoreapp2.1": {
           "targetAlias": "netcoreapp2.1",
           "projectReferences": {
-            "D:\\E Drive\\Nilesh_Jain\\Clients\\Emcure_Pharma\\NeoSOFTRepo\\NPD\\EmcureNPD\\ExistingApplication\\EmcureCERI.Business.Contract\\EmcureCERI.Business.Contract.csproj": {
-              "projectPath": "D:\\E Drive\\Nilesh_Jain\\Clients\\Emcure_Pharma\\NeoSOFTRepo\\NPD\\EmcureNPD\\ExistingApplication\\EmcureCERI.Business.Contract\\EmcureCERI.Business.Contract.csproj"
+            "C:\\Users\\user\\Desktop\\Latest Emcure\\ExistingApplication\\EmcureCERI.Business.Contract\\EmcureCERI.Business.Contract.csproj": {
+              "projectPath": "C:\\Users\\user\\Desktop\\Latest Emcure\\ExistingApplication\\EmcureCERI.Business.Contract\\EmcureCERI.Business.Contract.csproj"
             },
-            "D:\\E Drive\\Nilesh_Jain\\Clients\\Emcure_Pharma\\NeoSOFTRepo\\NPD\\EmcureNPD\\ExistingApplication\\EmcureCERI.Business.Core\\EmcureCERI.Business.Core.csproj": {
-              "projectPath": "D:\\E Drive\\Nilesh_Jain\\Clients\\Emcure_Pharma\\NeoSOFTRepo\\NPD\\EmcureNPD\\ExistingApplication\\EmcureCERI.Business.Core\\EmcureCERI.Business.Core.csproj"
+            "C:\\Users\\user\\Desktop\\Latest Emcure\\ExistingApplication\\EmcureCERI.Business.Core\\EmcureCERI.Business.Core.csproj": {
+              "projectPath": "C:\\Users\\user\\Desktop\\Latest Emcure\\ExistingApplication\\EmcureCERI.Business.Core\\EmcureCERI.Business.Core.csproj"
             },
-            "D:\\E Drive\\Nilesh_Jain\\Clients\\Emcure_Pharma\\NeoSOFTRepo\\NPD\\EmcureNPD\\ExistingApplication\\EmcureCERI.Business.Models\\EmcureCERI.Business.Models.csproj": {
-              "projectPath": "D:\\E Drive\\Nilesh_Jain\\Clients\\Emcure_Pharma\\NeoSOFTRepo\\NPD\\EmcureNPD\\ExistingApplication\\EmcureCERI.Business.Models\\EmcureCERI.Business.Models.csproj"
+            "C:\\Users\\user\\Desktop\\Latest Emcure\\ExistingApplication\\EmcureCERI.Business.Models\\EmcureCERI.Business.Models.csproj": {
+              "projectPath": "C:\\Users\\user\\Desktop\\Latest Emcure\\ExistingApplication\\EmcureCERI.Business.Models\\EmcureCERI.Business.Models.csproj"
             }
           }
         }
@@ -16715,7 +16711,7 @@
         ],
         "assetTargetFallback": true,
         "warn": true,
-        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\6.0.402\\RuntimeIdentifierGraph.json"
+        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\7.0.201\\RuntimeIdentifierGraph.json"
       }
     }
   },
