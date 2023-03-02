@@ -11,3 +11,16 @@ D:\E Drive\Nilesh_Jain\Clients\Emcure_Pharma\NeoSOFTRepo\NPD\EmcureNPD\ExistingA
 D:\E Drive\Nilesh_Jain\Clients\Emcure_Pharma\NeoSOFTRepo\NPD\EmcureNPD\ExistingApplication\EmcureCERI.Data.Repository\obj\Debug\netcoreapp2.1\EmcureCERI.Data.Repository.csproj.CopyComplete
 D:\E Drive\Nilesh_Jain\Clients\Emcure_Pharma\NeoSOFTRepo\NPD\EmcureNPD\ExistingApplication\EmcureCERI.Data.Repository\obj\Debug\netcoreapp2.1\EmcureCERI.Data.Repository.dll
 D:\E Drive\Nilesh_Jain\Clients\Emcure_Pharma\NeoSOFTRepo\NPD\EmcureNPD\ExistingApplication\EmcureCERI.Data.Repository\obj\Debug\netcoreapp2.1\EmcureCERI.Data.Repository.pdb
+C:\Users\user\Desktop\Latest Emcure\ExistingApplication\EmcureCERI.Data.Repository\bin\Debug\netcoreapp2.1\EmcureCERI.Data.Repository.deps.json
+C:\Users\user\Desktop\Latest Emcure\ExistingApplication\EmcureCERI.Data.Repository\bin\Debug\netcoreapp2.1\EmcureCERI.Data.Repository.dll
+C:\Users\user\Desktop\Latest Emcure\ExistingApplication\EmcureCERI.Data.Repository\bin\Debug\netcoreapp2.1\EmcureCERI.Data.Repository.pdb
+C:\Users\user\Desktop\Latest Emcure\ExistingApplication\EmcureCERI.Data.Repository\bin\Debug\netcoreapp2.1\EmcureCERI.Data.DataAccess.dll
+C:\Users\user\Desktop\Latest Emcure\ExistingApplication\EmcureCERI.Data.Repository\bin\Debug\netcoreapp2.1\EmcureCERI.Data.DataAccess.pdb
+C:\Users\user\Desktop\Latest Emcure\ExistingApplication\EmcureCERI.Data.Repository\obj\Debug\netcoreapp2.1\EmcureCERI.Data.Repository.csproj.AssemblyReference.cache
+C:\Users\user\Desktop\Latest Emcure\ExistingApplication\EmcureCERI.Data.Repository\obj\Debug\netcoreapp2.1\EmcureCERI.Data.Repository.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\user\Desktop\Latest Emcure\ExistingApplication\EmcureCERI.Data.Repository\obj\Debug\netcoreapp2.1\EmcureCERI.Data.Repository.AssemblyInfoInputs.cache
+C:\Users\user\Desktop\Latest Emcure\ExistingApplication\EmcureCERI.Data.Repository\obj\Debug\netcoreapp2.1\EmcureCERI.Data.Repository.AssemblyInfo.cs
+C:\Users\user\Desktop\Latest Emcure\ExistingApplication\EmcureCERI.Data.Repository\obj\Debug\netcoreapp2.1\EmcureCERI.Data.Repository.csproj.CoreCompileInputs.cache
+C:\Users\user\Desktop\Latest Emcure\ExistingApplication\EmcureCERI.Data.Repository\obj\Debug\netcoreapp2.1\EmcureCERI.Data.Repository.csproj.CopyComplete
+C:\Users\user\Desktop\Latest Emcure\ExistingApplication\EmcureCERI.Data.Repository\obj\Debug\netcoreapp2.1\EmcureCERI.Data.Repository.dll
+C:\Users\user\Desktop\Latest Emcure\ExistingApplication\EmcureCERI.Data.Repository\obj\Debug\netcoreapp2.1\EmcureCERI.Data.Repository.pdb

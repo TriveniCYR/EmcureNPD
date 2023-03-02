@@ -1,32 +1,31 @@
-﻿//$(document).ready(function () { GetAllNotifications(); });
-//function GetAllNotifications() {
-//    ajaxServiceMethod($('#hdnBaseURL').val() + GetFilteredNotifications + '/CreatedDate/DESC/0/4', 'GET', GetAllNotificationListSuccess, GetAllNotificationListError);
-//}
-//function GetAllNotificationListSuccess(data) {
-//    try {
-//        let html = '';
-//        let rowcount = 1;
-//        $("#notificationCounter").html(html);
-//        if (data != null) {
-//            $('#NotificationNo').html(data.recordsTotal);
-//            $('#NotificationCount').html(data.recordsTotal + " Notifications");
-//            for (var i = 0; i < data.recordsFiltered; i++) {
-//                /*<span class="badge badge-secondary"><i class="fas fa-envelope mr-1"></i>${rowcount} <b>${data.data[i].notificationTitle}</b></span>*/
-//                html += `<a href="#" class="dropdown-item">
-//                    <b>${rowcount}</b>:<span class="badge badge-secondary"><i class="fas fa-envelope mr-1"></i>${data.data[i].notificationDescription}</span>
-//                    <span class="float-right text-muted text-sm">${timeDiffrance(data.data[i].createdDate)}</span>
-//                </a>`
-//                rowcount++;
-//            }
-//            $("#notificationCounter").html(html);
-//        }
-//    } catch (e) {
-//        toastr.error('Error:' + e.message);
-//    }
-//}
-//function GetAllNotificationListError(x, y, z) {
-//    toastr.error(ErrorMessage);
-//}
+﻿$(document).ready(function () { GetAllNotifications(); });
+function GetAllNotifications() {
+    ajaxServiceMethod($('#hdnBaseURL').val() + GetFilteredNotifications + '/CreatedDate/DESC/0/4', 'GET', GetAllNotificationListSuccess, GetAllNotificationListError);
+}
+function GetAllNotificationListSuccess(data) {
+    try {
+        let elehtml = '';
+        let rowcount = 1;
+        if (data != null) {
+            $('#NotificationNo').html(data.recordsTotal);
+            $('#NotificationCount').html(data.recordsTotal + " Notifications");
+            for (var i = 0; i < data.recordsFiltered; i++) {
+                /*<span class="badge badge-secondary"><i class="fas fa-envelope mr-1"></i>${rowcount} <b>${data.data[i].notificationTitle}</b></span>*/
+                elehtml += `<a href="#" class="dropdown-item" style="background-color:${data.data[i].statusColor}">
+                    <b>${rowcount}</b>:<span class="badge badge-secondary"><i class="fas fa-envelope mr-1"></i>${data.data[i].notificationTitle}</span>
+                    <span class="float-right text-muted text-sm">${timeDiffrance(data.data[i].createdDate)}</span>
+                </a>`
+                rowcount++;
+            }
+            $("#notificationCounter").html(elehtml);
+        }
+    } catch (e) {
+        toastr.error('Error:' + e.message);
+    }
+}
+function GetAllNotificationListError(x, y, z) {
+    toastr.error(ErrorMessage);
+}
 
 
 //var signalRServer = $.connection.signalRServer;
