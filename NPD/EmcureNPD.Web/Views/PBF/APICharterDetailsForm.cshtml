@@ -87,9 +87,11 @@
                     <div class="col-md-4" id="dvTimelineInMonths">
                         @if (Model.TimelineInMonths != null)
                         {
+                            
                             <table class="table">
                                 @for (int i = 0; i < Model.TimelineInMonths.Count; i++)
                                 {
+                                    String IsReadOnly = (i == 5) ? "readonly" : "";
                                     <tr>
                                         <td>
                                             <input type="hidden" asp-for="@Model.TimelineInMonths[i].TimelineInMonthsId" />
@@ -97,7 +99,7 @@
                                             <label class="control-label">@Model.TimelineInMonths[i].Name </label>
                                         </td>
                                         <td>
-                                            @Html.TextBoxFor(model => model.TimelineInMonths[i].TimelineInMonthsValue, new { @class = "form-control" , @placeholder="" })
+                                            @Html.TextBoxFor(model => model.TimelineInMonths[i].TimelineInMonthsValue, new {@readonly = IsReadOnly, @class = "form-control" , @placeholder="" })
                                             <label class="text-danger" style="display:contents"></label>
                                         </td>
                                     </tr>
@@ -146,6 +148,8 @@
                                 </thead>
                                 @for (int i = 0; i < Model.AnalyticalDepartment.Count; i++)
                                 {
+                                   String IsReadOnly = (i == 5) ? "readonly" : "";
+                                   String IsARDReadOnly = (i == 3) ? "readonly" : "";
                                     <tr>
                                         <td>
                                             <input type="hidden" asp-for="@Model.AnalyticalDepartment[i].AnalyticalDepartmentId" />
@@ -153,7 +157,7 @@
                                             <label class="control-label">@Model.AnalyticalDepartment[i].Name </label>
                                         </td>
                                         <td>
-                                            @Html.TextBoxFor(model => model.AnalyticalDepartment[i].AnalyticalDepartmentARDValue, new { @class = "form-control" , @placeholder="" })
+                                            @Html.TextBoxFor(model => model.AnalyticalDepartment[i].AnalyticalDepartmentARDValue, new {@readonly = IsARDReadOnly, @class = "form-control" , @placeholder="" })
                                             <label class="text-danger" style="display:contents"></label>
                                         </td>
                                         <td>
@@ -169,7 +173,7 @@
                                             <label class="text-danger" style="display:contents"></label>
                                         </td>
                                         <td>
-                                            @Html.TextBoxFor(model => model.AnalyticalDepartment[i].AnalyticalDepartmentAMTValue, new { @class = "form-control" , @placeholder="" })
+                                            @Html.TextBoxFor(model => model.AnalyticalDepartment[i].AnalyticalDepartmentAMTValue, new {@readonly = IsReadOnly, @class = "form-control" , @placeholder="" })
                                             <label class="text-danger" style="display:contents"></label>
                                         </td>
                                     </tr>
@@ -179,35 +183,29 @@
                     </div>
                     @*--------End----AnalyticalDepartment-------------*@
                 </div>
-
                 <div class="row">
-                    @*--------Start----ManhourEstimates-------------*@
-                    <div class="col-md-12" id="dvManhourEstimates">
-                        @if (Model.ManhourEstimates != null)
+                    @*--------Start----PRDDepartment-------------*@
+                    <div class="col-md-12" id="dvPRDDepartment">
+                        @if (Model.PRDDepartment != null)
                         {
                             <table class="table">
-                                @for (int i = 0; i < Model.ManhourEstimates.Count; i++)
+                                <thead>
+                                    <tr class="text-center">
+                                        <th>@MasterLocalizer["PRDDepartments"]</th>
+                                        <th>@MasterLocalizer["RawMaterialCost"]</th>
+                                    </tr>
+                                </thead>
+                                @for (int i = 0; i < Model.PRDDepartment.Count; i++)
                                 {
+                                    String IsReadOnly = (i==7) ? "readonly" : "";
                                     <tr>
                                         <td>
-                                            <input type="hidden" asp-for="@Model.ManhourEstimates[i].ManhourEstimatesId" />
-                                            <input type="hidden" asp-for="@Model.ManhourEstimates[i].Name" />
-                                            <label class="control-label">@Model.ManhourEstimates[i].Name </label>
+                                            <input type="hidden" asp-for="@Model.PRDDepartment[i].PRDDepartmentId" />
+                                            <input type="hidden" asp-for="@Model.PRDDepartment[i].Name" />
+                                            <label class="control-label">@Model.PRDDepartment[i].Name </label>
                                         </td>
                                         <td>
-                                            @Html.TextBoxFor(model => model.ManhourEstimates[i].ManhourEstimatesNoOfEmployeeValue, new { @class = "form-control" , @placeholder="" })
-                                            <label class="text-danger" style="display:contents"></label>
-                                        </td>
-                                        <td>
-                                            @Html.TextBoxFor(model => model.ManhourEstimates[i].ManhourEstimatesMonthsValue, new { @class = "form-control" , @placeholder="" })
-                                            <label class="text-danger" style="display:contents"></label>
-                                        </td>
-                                        <td>
-                                            @Html.TextBoxFor(model => model.ManhourEstimates[i].ManhourEstimatesHoursValue, new { @class = "form-control" , @placeholder="" })
-                                            <label class="text-danger" style="display:contents"></label>
-                                        </td>
-                                        <td>
-                                            @Html.TextBoxFor(model => model.ManhourEstimates[i].ManhourEstimatesCostValue, new { @class = "form-control" , @placeholder="" })
+                                            @Html.TextBoxFor(model => model.PRDDepartment[i].PRDDepartmentRawMaterialValue, new {@readonly = IsReadOnly, @class = "form-control" , @placeholder="" })
                                             <label class="text-danger" style="display:contents"></label>
                                         </td>
                                     </tr>
@@ -215,7 +213,7 @@
                             </table>
                         }
                     </div>
-                    @*--------End----ManhourEstimates-------------*@
+                    @*--------End----PRDDepartment-------------*@
                 </div>
                 <div class="row">
                     @*--------Start----CapitalOtherExpenditure-------------*@
@@ -223,6 +221,13 @@
                         @if (Model.CapitalOtherExpenditure != null)
                         {
                             <table class="table">
+                                <thead>
+                                    <tr class="text-center">
+                                        <th>@MasterLocalizer["CapitalOtherExpenditure"]</th>
+                                        <th>@MasterLocalizer["Amount"]</th>
+                                        <th>@MasterLocalizer["Remark"]</th>
+                                    </tr>
+                                </thead>
                                 @for (int i = 0; i < Model.CapitalOtherExpenditure.Count; i++)
                                 {
                                     <tr>
@@ -246,6 +251,83 @@
                     </div>
                     <div class="col-md-4"></div>
                     @*--------End----CapitalOtherExpenditure-------------*@
+                </div>
+                <div class="row">
+                    @*--------Start----ManhourEstimates-------------*@
+                    <div class="col-md-12" id="dvManhourEstimates">
+                        @if (Model.ManhourEstimates != null)
+                        {
+                            <table class="table">
+                                <thead>
+                                    <tr class="text-center">
+                                        <th>@MasterLocalizer["ManhourEstimates"]</th>
+                                        <th>@MasterLocalizer["NoOfEmployee"]</th>
+                                        <th>@MasterLocalizer["Months"]</th>
+                                        <th>@MasterLocalizer["Hours"]</th>
+                                        <th>@MasterLocalizer["Cost"]</th>
+                                    </tr>
+                                </thead>
+                                @for (int i = 0; i < Model.ManhourEstimates.Count; i++)
+                                {
+                                    <tr>
+                                        <td>
+                                            <input type="hidden" asp-for="@Model.ManhourEstimates[i].ManhourEstimatesId" />
+                                            <input type="hidden" asp-for="@Model.ManhourEstimates[i].Name" />
+                                            <label class="control-label">@Model.ManhourEstimates[i].Name </label>
+                                        </td>
+                                        <td>
+                                            @Html.TextBoxFor(model => model.ManhourEstimates[i].ManhourEstimatesNoOfEmployeeValue, new { @class = "form-control" , @placeholder="" })
+                                            <label class="text-danger" style="display:contents"></label>
+                                        </td>
+                                        <td>
+                                            @Html.TextBoxFor(model => model.ManhourEstimates[i].ManhourEstimatesMonthsValue, new { @class = "form-control" , @placeholder="" })
+                                            <label class="text-danger" style="display:contents"></label>
+                                        </td>
+                                        <td>
+                                            @Html.TextBoxFor(model => model.ManhourEstimates[i].ManhourEstimatesHoursValue, new { @readonly = "readonly", @class = "form-control" , @placeholder="" })
+                                            <label class="text-danger" style="display:contents"></label>
+                                        </td>
+                                        <td>
+                                            @Html.TextBoxFor(model => model.ManhourEstimates[i].ManhourEstimatesCostValue, new {@readonly = "readonly", @class = "form-control" , @placeholder="" })
+                                            <label class="text-danger" style="display:contents"></label>
+                                        </td>
+                                    </tr>
+                                }
+                            </table>
+                        }
+                    </div>
+                    @*--------End----ManhourEstimates-------------*@
+                </div>
+                <div class="row">
+                    @*--------Start----HeadwiseBudget-------------*@
+                    <div class="col-md-12" id="dvHeadwiseBudget">
+                        @if (Model.HeadwiseBudget != null)
+                        {
+                            <table class="table">
+                                <thead>
+                                    <tr class="text-center">
+                                        <th>@MasterLocalizer["HeadwiseBudget(In Lacs)"]</th>
+                                        <th>@MasterLocalizer["Rupee(In Lacs)"]</th>
+                                    </tr>
+                                </thead>
+                                @for (int i = 0; i < Model.HeadwiseBudget.Count; i++)
+                                {
+                                    <tr>
+                                        <td>
+                                            <input type="hidden" asp-for="@Model.HeadwiseBudget[i].HeadwiseBudgetId" />
+                                            <input type="hidden" asp-for="@Model.HeadwiseBudget[i].Name" />
+                                            <label class="control-label">@Model.HeadwiseBudget[i].Name </label>
+                                        </td>
+                                        <td>
+                                            @Html.TextBoxFor(model => model.HeadwiseBudget[i].HeadwiseBudgetValue, new {@readonly = "readonly", @class = "form-control" , @placeholder="" })
+                                            <label class="text-danger" style="display:contents"></label>
+                                        </td>
+                                    </tr>
+                                }
+                            </table>
+                        }
+                    </div>
+                    @*--------End----HeadwiseBudget-------------*@
                 </div>
                 <div class="row">
                     <div>

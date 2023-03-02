@@ -1,5 +1,5 @@
 ﻿var ControlsToValidate = ['APIGroupLeader','ManHourRates'];
-var DivsToValidate = ['dvTimelineInMonths', 'dvManhourEstimates','dvAnalyticalDepartment'];
+var DivsToValidate = ['dvTimelineInMonths', 'dvManhourEstimates', 'dvAnalyticalDepartment', 'dvPRDDepartment', 'dvCapitalOtherExpenditure', 'dvManhourEstimates','dvHeadwiseBudget'];
 
 
 $(document).ready(function () {
@@ -13,8 +13,6 @@ $(document).ready(function () {
             toastr.error(SaveStatus);
     }
 });
-
-
 
 $('#Save').click(function () {
     ValidateForm();
@@ -62,40 +60,6 @@ function ValidateForm() {
     }
     return IsValid;
 }
-
-
-//function ValidateForm() {
-//    var IsInvalid = false;
-//    if ($("#MarketDetailsNewPortCGIDetails")[0].files.length <= 0) {
-//        $("#valmsgMarketDetailsNewPortCGIDetails").text('Required')
-//        IsInvalid = true;
-//    }
-//    else {
-//        $("#valmsgMarketDetailsNewPortCGIDetails").text('')
-//    }
-//    if ($("#DrugsCategory").val() == '') {
-//        $("#valmsgDrugsCategory").text('Required')
-//        IsInvalid = true;
-//    }
-//    else {
-//        $("#valmsgDrugsCategory").text('')
-//    }
-//    if ($("#ProductStrength").val() == '') {
-//        $("#valmsgProductStrength").text('Required')
-//        IsInvalid = true;
-//    }
-//    else {
-//        $("#valmsgProductStrength").text('')
-//    }
-//    if (IsInvalid) {
-//        $("#IsModelValid").val('')
-//    }
-//    else {
-//        $("#IsModelValid").val('Valid')
-//    }
-//    return IsInvalid;
-//}
-
 
 
 
