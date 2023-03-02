@@ -4,6 +4,8 @@
 @inject IHttpContextAccessor HttpContextAccessor
 @inject Microsoft.Extensions.Localization.IStringLocalizer<MastersController> MasterLocalizer
 @inject Microsoft.Extensions.Localization.IStringLocalizer<EmcureNPD.Resource.Shared> SharedLocalizer
+@using Microsoft.Extensions.Configuration
+@inject IConfiguration Configuration
 @{
     ViewData["Title"] = @MasterLocalizer["APIListTitle"];
 }
@@ -63,8 +65,8 @@
 @section MyScripts {
 
     @Html.Partial("_DataTablePartial")
-    <script type="text/javascript" src="~/js/Custom/DynamicDataTable.js"></script>
-    <script type="text/javascript" src="~/js/Custom/APIList/MasterAPIList.js"></script>
+    <script type="text/javascript" src="~/js/Custom/DynamicDataTable.js?v=@Configuration.GetSection("StaticJS")["version"]"></script>
+    <script type="text/javascript" src="~/js/Custom/APIList/MasterAPIList.js?v=@Configuration.GetSection("StaticJS")["version"]"></script>
 
     <script>
 
