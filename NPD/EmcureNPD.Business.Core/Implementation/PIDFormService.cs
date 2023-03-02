@@ -29,6 +29,7 @@ namespace EmcureNPD.Business.Core.Implementation
 		private readonly IMasterCountryService _countryService;
 		private readonly IMasterAuditLogService _auditLogService;
 		private readonly IConfiguration _configuration;
+		private readonly INotificationService _notificationService;
 		private IRepository<PidfIpd> _repository { get; set; }
 		private IRepository<PidfIpdPatentDetail> _ipdParentRepository { get; set; }
 		private IRepository<MasterRegion> _regionRepository { get; set; }
@@ -39,7 +40,7 @@ namespace EmcureNPD.Business.Core.Implementation
 		private IRepository<Pidf> _pidfrepository { get; set; }
 		private IRepository<PidfMedical> _pidfMedicalrepository { get; set; }
 		private IRepository<PidfMedicalFile> _pidfMedicalFilerepository { get; set; }
-		public PIDFormService(IUnitOfWork unitOfWork, IMapperFactory mapperFactory, IMasterOralService oralService, IMasterUnitofMeasurementService unitofMeasurementService, IMasterDosageFormService dosageFormService, IMasterPackagingTypeService packagingTypeService, IMasterBusinessUnitService businessUnitService, IMasterCountryService countryService, IMasterAuditLogService auditLogService, IConfiguration configuration)
+		public PIDFormService(IUnitOfWork unitOfWork, IMapperFactory mapperFactory, IMasterOralService oralService, IMasterUnitofMeasurementService unitofMeasurementService, IMasterDosageFormService dosageFormService, IMasterPackagingTypeService packagingTypeService, IMasterBusinessUnitService businessUnitService, IMasterCountryService countryService, IMasterAuditLogService auditLogService, IConfiguration configuration, INotificationService notificationService)
 		{
 			_unitOfWork = unitOfWork;
 			_mapperFactory = mapperFactory;
@@ -57,6 +58,7 @@ namespace EmcureNPD.Business.Core.Implementation
 			_pidfMedicalrepository = unitOfWork.GetRepository<PidfMedical>();
 			_pidfMedicalFilerepository = unitOfWork.GetRepository<PidfMedicalFile>();
 			_configuration = configuration;
+			_notificationService = notificationService;
 
 		}
 
@@ -558,13 +560,11 @@ namespace EmcureNPD.Business.Core.Implementation
 						}
 					}
 					//status update in PIDF
-					Pidf objPidf = await _pidfrepository.GetAsync(medicalModel.Pidfid);
-					objPidf.StatusId = 9;
-					objPidf.StatusUpdatedDate = DateTime.Now;
-					_pidfrepository.UpdateAsync(objPidf);
+					await _auditLogService.UpdatePIDFStatusCommon(medicalModel.Pidfid, (int)Master_PIDFStatus.MedicalSubmitted, medicalModel.CreatedBy);
+					//test to update notification
+                    await _notificationService.UpdateNotification(13, "testTitleUpdate", "testDescriptionUpdate", medicalModel.CreatedBy);
 
-					await _unitOfWork.SaveChangesAsync();
-					var isSuccess = await _auditLogService.CreateAuditLog<PIDFMedicalViewModel>(medicalModel.PidfmedicalId > 0 ? Utility.Audit.AuditActionType.Update : Utility.Audit.AuditActionType.Create,
+                    var isSuccess = await _auditLogService.CreateAuditLog<PIDFMedicalViewModel>(medicalModel.PidfmedicalId > 0 ? Utility.Audit.AuditActionType.Update : Utility.Audit.AuditActionType.Create,
 						   Utility.Enums.ModuleEnum.Medical, oldPIDFFEntity, medicalModel, Convert.ToInt32(objPIDFMedical.PidfmedicalId));
 					return DBOperation.Success;
 				}
@@ -623,7 +623,7 @@ namespace EmcureNPD.Business.Core.Implementation
 							string us = FileValidation(files[i]);
 							if (us == null)
 							{
-								FileUpload(files[i], path, uniqueFileName);
+								await FileUpload(files[i], path, uniqueFileName);
 								_pidfMedicalFilerepository.AddAsync(medicalFiles);
 							}
 							else
@@ -634,14 +634,13 @@ namespace EmcureNPD.Business.Core.Implementation
 						i++;
 					}
 				}
-				//status update in PIDF
-				Pidf objPidf = await _pidfrepository.GetAsync(medicalModel.Pidfid);
-				objPidf.StatusId = 9;
-				objPidf.StatusUpdatedDate = DateTime.Now;
-				_pidfrepository.UpdateAsync(objPidf);
-				await _unitOfWork.SaveChangesAsync();
+				//Status Update in PIDF
+                await _auditLogService.UpdatePIDFStatusCommon(medicalModel.Pidfid, (int)Master_PIDFStatus.MedicalSubmitted, medicalModel.CreatedBy);
 
-				return DBOperation.Success;
+                //test To create notification
+                await _notificationService.CreateNotification((int)medicalModel.Pidfid, (int)Master_PIDFStatus.MedicalSubmitted, "testTitleCreate", "testDescriptionCreate", medicalModel.CreatedBy);
+
+                return DBOperation.Success;
 			}
 
 			else

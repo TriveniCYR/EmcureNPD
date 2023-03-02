@@ -10,7 +10,7 @@ namespace EmcureNPD.Data.DataAccess.Entity
         public int PrototypeId { get; set; }
         public long PbfanalyticalId { get; set; }
         public long StrengthId { get; set; }
-        public int? TestTypeId { get; set; }
+        public int TestTypeId { get; set; }
         public int? Numberoftests { get; set; }
         public string PrototypeDevelopment { get; set; }
         public decimal? Cost { get; set; }
