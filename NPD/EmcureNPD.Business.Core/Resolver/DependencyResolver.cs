@@ -59,7 +59,7 @@ namespace EmcureNPD.Business.Core.Resolver
 			services.AddTransient<ICommercialFormService, CommercialFormService>();
 			
             services.AddTransient<IDashboardService, DashboardService>();
-            services.AddTransient<IReminderService, ReminderService>();
+            services.AddTransient<ISchedulerService, SchedulerService>();
             services.AddTransient<INotificationService, NotificationService>();
             services.AddTransient<IHelper, Helper>();
             services.AddTransient<IMasterTestTypeService, MasterTestTypeService>();

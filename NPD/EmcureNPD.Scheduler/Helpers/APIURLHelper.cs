@@ -9,7 +9,7 @@ namespace EmcureNPD.Scheduler.Helpers {
         public static string LoginURL = "/api/Account/Login";
 
         #region Reminder
-        public static string SendReminder = "api/Reminder/SendReminder";
+        public static string SendReminder = "api/Scheduler/SendReminder";
         #endregion
     }
 }
