@@ -159,7 +159,7 @@ namespace EmcureNPD.Web.Controllers
                 {
                     TempData[UserHelper.SuccessMessage] = Convert.ToString(_stringLocalizerShared["RecordInsertUpdate"]);
                     ModelState.Clear();
-                    return RedirectToAction("PIDFList", "PIDF", new { ScreenId = 2 });
+                    return RedirectToAction("PIDFList", "PIDF", new { ScreenId = (int)PIDFScreen.IPD });
                 }
                 else
                 {
