@@ -4,21 +4,20 @@ function GetAllNotifications() {
 }
 function GetAllNotificationListSuccess(data) {
     try {
-        let html = '';
+        let elehtml = '';
         let rowcount = 1;
-        $("#notificationCounter").html(html);
         if (data != null) {
             $('#NotificationNo').html(data.recordsTotal);
             $('#NotificationCount').html(data.recordsTotal + " Notifications");
             for (var i = 0; i < data.recordsFiltered; i++) {
                 /*<span class="badge badge-secondary"><i class="fas fa-envelope mr-1"></i>${rowcount} <b>${data.data[i].notificationTitle}</b></span>*/
-                html += `<a href="#" class="dropdown-item">
-                    <b>${rowcount}</b>:<span class="badge badge-secondary"><i class="fas fa-envelope mr-1"></i>${data.data[i].notificationDescription}</span>
+                elehtml += `<a href="#" class="dropdown-item">
+                    <span class="badge badge-secondary">${rowcount}:<i class="fas fa-envelope mr-1"></i>${data.data[i].notificationTitleView}</span>
                     <span class="float-right text-muted text-sm">${timeDiffrance(data.data[i].createdDate)}</span>
                 </a>`
                 rowcount++;
             }
-            $("#notificationCounter").html(html);
+            $("#notificationCounter").html(elehtml);
         }
     } catch (e) {
         toastr.error('Error:' + e.message);
@@ -29,11 +28,11 @@ function GetAllNotificationListError(x, y, z) {
 }
 
 
-var signalRServer = $.connection.signalRServer;
+//var signalRServer = $.connection.signalRServer;
 
-signalRServer.client.ShowAllNotification = function () { GetAllNotifications(); }
+//signalRServer.client.ShowAllNotification = function () { GetAllNotifications(); }
 
-$.connection.hub.start();
+//$.connection.hub.start();
 
 GetAllNotifications();
 
