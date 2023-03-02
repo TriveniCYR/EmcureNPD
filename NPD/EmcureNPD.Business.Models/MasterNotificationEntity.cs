@@ -1,21 +1,18 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 
-#nullable disable
-
-namespace EmcureNPD.Data.DataAccess.Entity
+namespace EmcureNPD.Business.Models
 {
-    public partial class MasterNotification
+    public class MasterNotificationEntity
     {
-        public long NotificationId { get; set; }
-        public long? Pidfid { get; set; }
+        public long? PIDFId { get; set; }
         public int? StatusId { get; set; }
         public string NotificationTitle { get; set; }
         public string NotificationDescription { get; set; }
         public DateTime CreatedDate { get; set; }
         public int CreatedBy { get; set; }
-
-        public virtual Pidf Pidf { get; set; }
-        public virtual MasterPidfstatus Status { get; set; }
     }
 }

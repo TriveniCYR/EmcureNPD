@@ -6,7 +6,7 @@
 @inject IHttpContextAccessor HttpContextAccessor
 @inject Microsoft.Extensions.Localization.IStringLocalizer<EmcureNPD.Resource.Master> MasterLocalizer
 @inject Microsoft.Extensions.Localization.IStringLocalizer<EmcureNPD.Resource.Shared> SharedLocalizer
-@model EmcureNPD.Business.Models.PidfPbfEntity
+@model EmcureNPD.Business.Models.PidfPbfFormEntity
 @{
     ViewData["Title"] = "PBFAnaLytical";
 }
@@ -18,7 +18,7 @@
         <input type="hidden" asp-for="pidfPbfAnalyticalEntity.AnalyticalPIDFID" />
         <input type="hidden" asp-for="pidfPbfAnalyticalEntity.AnalyticalBusinessUnitId" />
         <input type="hidden" asp-for="pidfPbfAnalyticalEntity.StrengthId" />
-        <input type="hidden" asp-for="pidfPbfAnalyticalEntity.AnalyticalLicence" />
+        <input type="hidden" asp-for="pidfPbfAnalyticalEntity.AnalyticalLicence"/>
 
         <div class="card-header">
             <h5 class="mb-0"><b>General</b></h5>
@@ -115,7 +115,9 @@
             <br />
             <div class="row border m-2">
                 <div class="col-md-3">
-                    @Html.Label("Strength", "Strength", new { @class = "control-label" })
+					@Html.LabelFor(model => model.pidfPbfAnalyticalEntity.StrengthId, "Strength", new { @class = "control-label" })
+                    @Html.ValidationMessageFor(model => model.pidfPbfAnalyticalEntity.StrengthId,"", new { @class = "text-danger" })
+
                 </div>
                 <div class="col-md-9 pl-lg-5">
                     <div class="form-group required">
@@ -180,14 +182,14 @@
                                         </td>
                                         <td>
                                             <div class="col-md">
-                                                @Html.EditorFor(model => model.pidfPbfAnalyticalEntity.AnalyticalPrototypeEntities[j].Numberoftests, new { htmlAttributes = new { @autocomplete = "off", @class = "form-control checkbox-checked", @placeholder = "No Of Tests",@required="required" } })
+                                                @Html.EditorFor(model => model.pidfPbfAnalyticalEntity.AnalyticalPrototypeEntities[j].Numberoftests, new { htmlAttributes = new { @autocomplete = "off", @class = "form-control", @placeholder = "No Of Tests",@required="required" } })
                                                 @Html.ValidationMessageFor(model => model.pidfPbfAnalyticalEntity.AnalyticalPrototypeEntities[j].Numberoftests, "", new { @class = "text-danger" })
                                             </div>
                                         </td>
                                         <td>
                                             <div class="col-md">
                                                 <div class="form-group required">
-                                                    @Html.EditorFor(model => model.pidfPbfAnalyticalEntity.AnalyticalPrototypeEntities[j].PrototypeDevelopment, new { htmlAttributes = new { @autocomplete = "off", @class = "form-control checkbox-checked", @placeholder = "Prototype Development",@required="required" } })
+                                                    @Html.EditorFor(model => model.pidfPbfAnalyticalEntity.AnalyticalPrototypeEntities[j].PrototypeDevelopment, new { htmlAttributes = new { @autocomplete = "off", @class = "form-control", @placeholder = "Prototype Development",@required="required" } })
                                                     @Html.ValidationMessageFor(model => model.pidfPbfAnalyticalEntity.AnalyticalPrototypeEntities[j].PrototypeDevelopment, "", new { @class = "text-danger" })
                                                 </div>
                                             </div>
@@ -195,7 +197,7 @@
                                         <td>
                                             <div class="col-md">
                                                 <div class="form-group required">
-                                                    @Html.EditorFor(model => model.pidfPbfAnalyticalEntity.AnalyticalPrototypeEntities[j].Cost, new { htmlAttributes = new { @autocomplete = "off", @class = "form-control checkbox-checked", @placeholder = "Cost" ,@required="required"} })
+                                                    @Html.EditorFor(model => model.pidfPbfAnalyticalEntity.AnalyticalPrototypeEntities[j].Cost, new { htmlAttributes = new { @autocomplete = "off", @class = "form-control", @placeholder = "Cost" ,@required="required"} })
                                                     @Html.ValidationMessageFor(model => model.pidfPbfAnalyticalEntity.AnalyticalPrototypeEntities[j].Cost, "", new { @class = "text-danger" })
                                                 </div>
                                             </div>
@@ -203,7 +205,7 @@
                                         <td>
                                             <div class="col-md">
                                                 <div class="form-group required">
-                                                    @Html.EditorFor(model => model.pidfPbfAnalyticalEntity.AnalyticalPrototypeEntities[j].PrototypeCost, new { htmlAttributes = new { @autocomplete = "off", @class = "form-control checkbox-checked", @placeholder = "Prototype Cost" ,@required="required"} })
+                                                    @Html.EditorFor(model => model.pidfPbfAnalyticalEntity.AnalyticalPrototypeEntities[j].PrototypeCost, new { htmlAttributes = new { @autocomplete = "off", @class = "form-control analyticalcalculatecost", @placeholder = "Prototype Cost" ,@required="required"} })
                                                     @Html.ValidationMessageFor(model => model.pidfPbfAnalyticalEntity.AnalyticalPrototypeEntities[j].PrototypeCost, "", new { @class = "text-danger" })
                                                 </div>
                                             </div>
@@ -236,14 +238,14 @@
                                 </td>
                                 <td>
                                     <div class="col-md">
-                                        @Html.EditorFor(model => model.pidfPbfAnalyticalEntity.AnalyticalPrototypeEntities[j].Numberoftests, new { htmlAttributes = new { @autocomplete = "off", @class = "form-control checkbox-checked", @placeholder = "No Of Tests" ,@required="required"} })
+                                        @Html.EditorFor(model => model.pidfPbfAnalyticalEntity.AnalyticalPrototypeEntities[j].Numberoftests, new { htmlAttributes = new { @autocomplete = "off", @class = "form-control", @placeholder = "No Of Tests" ,@required="required"} })
                                         @Html.ValidationMessageFor(model => model.pidfPbfAnalyticalEntity.AnalyticalPrototypeEntities[j].Numberoftests, "", new { @class = "text-danger" })
                                     </div>
                                 </td>
                                 <td>
                                     <div class="col-md">
                                         <div class="form-group required">
-                                            @Html.EditorFor(model => model.pidfPbfAnalyticalEntity.AnalyticalPrototypeEntities[j].PrototypeDevelopment, new { htmlAttributes = new { @autocomplete = "off", @class = "form-control checkbox-checked", @placeholder = "Prototype Development" ,@required="required"} })
+                                            @Html.EditorFor(model => model.pidfPbfAnalyticalEntity.AnalyticalPrototypeEntities[j].PrototypeDevelopment, new { htmlAttributes = new { @autocomplete = "off", @class = "form-control", @placeholder = "Prototype Development" ,@required="required"} })
                                             @Html.ValidationMessageFor(model => model.pidfPbfAnalyticalEntity.AnalyticalPrototypeEntities[j].PrototypeDevelopment, "", new { @class = "text-danger" })
                                         </div>
                                     </div>
@@ -251,7 +253,7 @@
                                 <td>
                                     <div class="col-md">
                                         <div class="form-group required">
-                                            @Html.EditorFor(model => model.pidfPbfAnalyticalEntity.AnalyticalPrototypeEntities[j].Cost, new { htmlAttributes = new { @autocomplete = "off", @class = "form-control checkbox-checked", @placeholder = "Cost" ,@required="required"} })
+                                            @Html.EditorFor(model => model.pidfPbfAnalyticalEntity.AnalyticalPrototypeEntities[j].Cost, new { htmlAttributes = new { @autocomplete = "off", @class = "form-control", @placeholder = "Cost" ,@required="required"} })
                                             @Html.ValidationMessageFor(model => model.pidfPbfAnalyticalEntity.AnalyticalPrototypeEntities[j].Cost, "", new { @class = "text-danger" })
                                         </div>
                                     </div>
@@ -259,7 +261,7 @@
                                 <td>
                                     <div class="col-md">
                                         <div class="form-group required">
-                                            @Html.EditorFor(model => model.pidfPbfAnalyticalEntity.AnalyticalPrototypeEntities[j].PrototypeCost, new { htmlAttributes = new { @autocomplete = "off", @class = "form-control checkbox-checked", @placeholder = "Prototype Cost" ,@required="required"} })
+                                            @Html.EditorFor(model => model.pidfPbfAnalyticalEntity.AnalyticalPrototypeEntities[j].PrototypeCost, new { htmlAttributes = new { @autocomplete = "off", @class = "form-control analyticalcalculatecost", @placeholder = "Prototype Cost" ,@required="required"} })
                                             @Html.ValidationMessageFor(model => model.pidfPbfAnalyticalEntity.AnalyticalPrototypeEntities[j].PrototypeCost, "", new { @class = "text-danger" })
                                         </div>
                                     </div>
@@ -318,14 +320,14 @@
                                         </td>
                                         <td>
                                             <div class="col-md">
-                                                @Html.EditorFor(model => model.pidfPbfAnalyticalEntity.AnalyticalExhibitEntities[j].Numberoftests, new { htmlAttributes = new { @autocomplete = "off", @class = "form-control checkbox-checked", @placeholder = "No Of Tests",@required="required" } })
+                                                @Html.EditorFor(model => model.pidfPbfAnalyticalEntity.AnalyticalExhibitEntities[j].Numberoftests, new { htmlAttributes = new { @autocomplete = "off", @class = "form-control", @placeholder = "No Of Tests",@required="required" } })
                                                 @Html.ValidationMessageFor(model => model.pidfPbfAnalyticalEntity.AnalyticalExhibitEntities[j].Numberoftests, "", new { @class = "text-danger" })
                                             </div>
                                         </td>
                                         <td>
                                             <div class="col-md">
                                                 <div class="form-group required">
-                                                    @Html.EditorFor(model => model.pidfPbfAnalyticalEntity.AnalyticalExhibitEntities[j].PrototypeDevelopment, new { htmlAttributes = new { @autocomplete = "off", @class = "form-control checkbox-checked", @placeholder = "Prototype Development" ,@required="required"} })
+                                                    @Html.EditorFor(model => model.pidfPbfAnalyticalEntity.AnalyticalExhibitEntities[j].PrototypeDevelopment, new { htmlAttributes = new { @autocomplete = "off", @class = "form-control", @placeholder = "Prototype Development" ,@required="required"} })
                                                     @Html.ValidationMessageFor(model => model.pidfPbfAnalyticalEntity.AnalyticalExhibitEntities[j].PrototypeDevelopment, "", new { @class = "text-danger" })
                                                 </div>
                                             </div>
@@ -333,7 +335,7 @@
                                         <td>
                                             <div class="col-md">
                                                 <div class="form-group required">
-                                                    @Html.EditorFor(model => model.pidfPbfAnalyticalEntity.AnalyticalExhibitEntities[j].Cost, new { htmlAttributes = new { @autocomplete = "off", @class = "form-control checkbox-checked", @placeholder = "Cost" ,@required="required"} })
+                                                    @Html.EditorFor(model => model.pidfPbfAnalyticalEntity.AnalyticalExhibitEntities[j].Cost, new { htmlAttributes = new { @autocomplete = "off", @class = "form-control", @placeholder = "Cost" ,@required="required"} })
                                                     @Html.ValidationMessageFor(model => model.pidfPbfAnalyticalEntity.AnalyticalExhibitEntities[j].Cost, "", new { @class = "text-danger" })
                                                 </div>
                                             </div>
@@ -341,7 +343,7 @@
                                         <td>
                                             <div class="col-md">
                                                 <div class="form-group required">
-                                                    @Html.EditorFor(model => model.pidfPbfAnalyticalEntity.AnalyticalExhibitEntities[j].PrototypeCost, new { htmlAttributes = new { @autocomplete = "off", @class = "form-control checkbox-checked", @placeholder = "Prototype Cost" ,@required="required"} })
+                                                    @Html.EditorFor(model => model.pidfPbfAnalyticalEntity.AnalyticalExhibitEntities[j].PrototypeCost, new { htmlAttributes = new { @autocomplete = "off", @class = "form-control analyticalcalculatecost", @placeholder = "Prototype Cost" ,@required="required"} })
                                                     @Html.ValidationMessageFor(model => model.pidfPbfAnalyticalEntity.AnalyticalExhibitEntities[j].PrototypeCost, "", new { @class = "text-danger" })
                                                 </div>
                                             </div>
@@ -375,14 +377,14 @@
                                 </td>
                                 <td>
                                     <div class="col-md">
-                                        @Html.EditorFor(model => model.pidfPbfAnalyticalEntity.AnalyticalExhibitEntities[j].Numberoftests, new { htmlAttributes = new { @autocomplete = "off", @class = "form-control checkbox-checked", @placeholder = "No Of Tests" ,@required="required"} })
+                                        @Html.EditorFor(model => model.pidfPbfAnalyticalEntity.AnalyticalExhibitEntities[j].Numberoftests, new { htmlAttributes = new { @autocomplete = "off", @class = "form-control", @placeholder = "No Of Tests" ,@required="required"} })
                                         @Html.ValidationMessageFor(model => model.pidfPbfAnalyticalEntity.AnalyticalExhibitEntities[j].Numberoftests, "", new { @class = "text-danger" })
                                     </div>
                                 </td>
                                 <td>
                                     <div class="col-md">
                                         <div class="form-group required">
-                                            @Html.EditorFor(model => model.pidfPbfAnalyticalEntity.AnalyticalExhibitEntities[j].PrototypeDevelopment, new { htmlAttributes = new { @autocomplete = "off", @class = "form-control checkbox-checked", @placeholder = "Prototype Development" ,@required="required"} })
+                                            @Html.EditorFor(model => model.pidfPbfAnalyticalEntity.AnalyticalExhibitEntities[j].PrototypeDevelopment, new { htmlAttributes = new { @autocomplete = "off", @class = "form-control", @placeholder = "Prototype Development" ,@required="required"} })
                                             @Html.ValidationMessageFor(model => model.pidfPbfAnalyticalEntity.AnalyticalExhibitEntities[j].PrototypeDevelopment, "", new { @class = "text-danger" })
                                         </div>
                                     </div>
@@ -390,7 +392,7 @@
                                 <td>
                                     <div class="col-md">
                                         <div class="form-group required">
-                                            @Html.EditorFor(model => model.pidfPbfAnalyticalEntity.AnalyticalExhibitEntities[j].Cost, new { htmlAttributes = new { @autocomplete = "off", @class = "form-control checkbox-checked", @placeholder = "Cost" ,@required="required"} })
+                                            @Html.EditorFor(model => model.pidfPbfAnalyticalEntity.AnalyticalExhibitEntities[j].Cost, new { htmlAttributes = new { @autocomplete = "off", @class = "form-control", @placeholder = "Cost" ,@required="required"} })
                                             @Html.ValidationMessageFor(model => model.pidfPbfAnalyticalEntity.AnalyticalExhibitEntities[j].Cost, "", new { @class = "text-danger" })
                                         </div>
                                     </div>
@@ -398,7 +400,7 @@
                                 <td>
                                     <div class="col-md">
                                         <div class="form-group required">
-                                            @Html.EditorFor(model => model.pidfPbfAnalyticalEntity.AnalyticalExhibitEntities[j].PrototypeCost, new { htmlAttributes = new { @autocomplete = "off", @class = "form-control checkbox-checked", @placeholder = "Prototype Cost" ,@required="required"} })
+                                            @Html.EditorFor(model => model.pidfPbfAnalyticalEntity.AnalyticalExhibitEntities[j].PrototypeCost, new { htmlAttributes = new { @autocomplete = "off", @class = "form-control analyticalcalculatecost", @placeholder = "Prototype Cost" ,@required="required"} })
                                             @Html.ValidationMessageFor(model => model.pidfPbfAnalyticalEntity.AnalyticalExhibitEntities[j].PrototypeCost, "", new { @class = "text-danger" })
                                         </div>
                                     </div>
@@ -458,14 +460,14 @@
                                         </td>
                                         <td>
                                             <div class="col-md">
-                                                @Html.EditorFor(model => model.pidfPbfAnalyticalEntity.AnalyticalScaleUpEntities[j].Numberoftests, new { htmlAttributes = new { @autocomplete = "off", @class = "form-control checkbox-checked", @placeholder = "No Of Tests" ,@required="required"} })
+                                                @Html.EditorFor(model => model.pidfPbfAnalyticalEntity.AnalyticalScaleUpEntities[j].Numberoftests, new { htmlAttributes = new { @autocomplete = "off", @class = "form-control", @placeholder = "No Of Tests" ,@required="required"} })
                                                 @Html.ValidationMessageFor(model => model.pidfPbfAnalyticalEntity.AnalyticalScaleUpEntities[j].Numberoftests, "", new { @class = "text-danger" })
                                             </div>
                                         </td>
                                         <td>
                                             <div class="col-md">
                                                 <div class="form-group required">
-                                                    @Html.EditorFor(model => model.pidfPbfAnalyticalEntity.AnalyticalScaleUpEntities[j].PrototypeDevelopment, new { htmlAttributes = new { @autocomplete = "off", @class = "form-control checkbox-checked", @placeholder = "Prototype Development" ,@required="required"} })
+                                                    @Html.EditorFor(model => model.pidfPbfAnalyticalEntity.AnalyticalScaleUpEntities[j].PrototypeDevelopment, new { htmlAttributes = new { @autocomplete = "off", @class = "form-control", @placeholder = "Prototype Development" ,@required="required"} })
                                                     @Html.ValidationMessageFor(model => model.pidfPbfAnalyticalEntity.AnalyticalScaleUpEntities[j].PrototypeDevelopment, "", new { @class = "text-danger" })
                                                 </div>
                                             </div>
@@ -473,7 +475,7 @@
                                         <td>
                                             <div class="col-md">
                                                 <div class="form-group required">
-                                                    @Html.EditorFor(model => model.pidfPbfAnalyticalEntity.AnalyticalScaleUpEntities[j].Cost, new { htmlAttributes = new { @autocomplete = "off", @class = "form-control checkbox-checked", @placeholder = "Cost" ,@required="required"} })
+                                                    @Html.EditorFor(model => model.pidfPbfAnalyticalEntity.AnalyticalScaleUpEntities[j].Cost, new { htmlAttributes = new { @autocomplete = "off", @class = "form-control", @placeholder = "Cost" ,@required="required"} })
                                                     @Html.ValidationMessageFor(model => model.pidfPbfAnalyticalEntity.AnalyticalScaleUpEntities[j].Cost, "", new { @class = "text-danger" })
                                                 </div>
                                             </div>
@@ -481,7 +483,7 @@
                                         <td>
                                             <div class="col-md">
                                                 <div class="form-group required">
-                                                    @Html.EditorFor(model => model.pidfPbfAnalyticalEntity.AnalyticalScaleUpEntities[j].PrototypeCost, new { htmlAttributes = new { @autocomplete = "off", @class = "form-control checkbox-checked", @placeholder = "Prototype Cost" ,@required="required"} })
+                                                    @Html.EditorFor(model => model.pidfPbfAnalyticalEntity.AnalyticalScaleUpEntities[j].PrototypeCost, new { htmlAttributes = new { @autocomplete = "off", @class = "form-control analyticalcalculatecost", @placeholder = "Prototype Cost" ,@required="required"} })
                                                     @Html.ValidationMessageFor(model => model.pidfPbfAnalyticalEntity.AnalyticalScaleUpEntities[j].PrototypeCost, "", new { @class = "text-danger" })
                                                 </div>
                                             </div>
@@ -515,14 +517,14 @@
                                 </td>
                                 <td>
                                     <div class="col-md">
-                                        @Html.EditorFor(model => model.pidfPbfAnalyticalEntity.AnalyticalScaleUpEntities[j].Numberoftests, new { htmlAttributes = new { @autocomplete = "off", @class = "form-control checkbox-checked", @placeholder = "No Of Tests",@required="required" } })
+                                        @Html.EditorFor(model => model.pidfPbfAnalyticalEntity.AnalyticalScaleUpEntities[j].Numberoftests, new { htmlAttributes = new { @autocomplete = "off", @class = "form-control", @placeholder = "No Of Tests",@required="required" } })
                                         @Html.ValidationMessageFor(model => model.pidfPbfAnalyticalEntity.AnalyticalScaleUpEntities[j].Numberoftests, "", new { @class = "text-danger" })
                                     </div>
                                 </td>
                                 <td>
                                     <div class="col-md">
                                         <div class="form-group required">
-                                            @Html.EditorFor(model => model.pidfPbfAnalyticalEntity.AnalyticalScaleUpEntities[j].PrototypeDevelopment, new { htmlAttributes = new { @autocomplete = "off", @class = "form-control checkbox-checked", @placeholder = "Prototype Development",@required="required" } })
+                                            @Html.EditorFor(model => model.pidfPbfAnalyticalEntity.AnalyticalScaleUpEntities[j].PrototypeDevelopment, new { htmlAttributes = new { @autocomplete = "off", @class = "form-control", @placeholder = "Prototype Development",@required="required" } })
                                             @Html.ValidationMessageFor(model => model.pidfPbfAnalyticalEntity.AnalyticalScaleUpEntities[j].PrototypeDevelopment, "", new { @class = "text-danger" })
                                         </div>
                                     </div>
@@ -530,7 +532,7 @@
                                 <td>
                                     <div class="col-md">
                                         <div class="form-group required">
-                                            @Html.EditorFor(model => model.pidfPbfAnalyticalEntity.AnalyticalScaleUpEntities[j].Cost, new { htmlAttributes = new { @autocomplete = "off", @class = "form-control checkbox-checked", @placeholder = "Cost" ,@required="required"} })
+                                            @Html.EditorFor(model => model.pidfPbfAnalyticalEntity.AnalyticalScaleUpEntities[j].Cost, new { htmlAttributes = new { @autocomplete = "off", @class = "form-control", @placeholder = "Cost" ,@required="required"} })
                                             @Html.ValidationMessageFor(model => model.pidfPbfAnalyticalEntity.AnalyticalScaleUpEntities[j].Cost, "", new { @class = "text-danger" })
                                         </div>
                                     </div>
@@ -538,7 +540,7 @@
                                 <td>
                                     <div class="col-md">
                                         <div class="form-group required">
-                                            @Html.EditorFor(model => model.pidfPbfAnalyticalEntity.AnalyticalScaleUpEntities[j].PrototypeCost, new { htmlAttributes = new { @autocomplete = "off", @class = "form-control checkbox-checked", @placeholder = "Prototype Cost" ,@required="required"} })
+                                            @Html.EditorFor(model => model.pidfPbfAnalyticalEntity.AnalyticalScaleUpEntities[j].PrototypeCost, new { htmlAttributes = new { @autocomplete = "off", @class = "form-control analyticalcalculatecost", @placeholder = "Prototype Cost" ,@required="required"} })
                                             @Html.ValidationMessageFor(model => model.pidfPbfAnalyticalEntity.AnalyticalScaleUpEntities[j].PrototypeCost, "", new { @class = "text-danger" })
                                         </div>
                                     </div>
@@ -574,7 +576,7 @@
                 <div class="col-md-3">
                     <div class="form-group required">
                         @Html.LabelFor(model => model.pidfPbfAnalyticalEntity.pidfPbfAnalyticalCost.TotalAWVCost, "Total AWV Cost", new { @class = "control-label" })
-                        @Html.TextBoxFor(model => model.pidfPbfAnalyticalEntity.pidfPbfAnalyticalCost.TotalAWVCost, new { @class = "form-control", @placeholder = "Total AWV Cost" ,@required="required"})
+                        @Html.TextBoxFor(model => model.pidfPbfAnalyticalEntity.pidfPbfAnalyticalCost.TotalAWVCost, new { @class = "form-control analyticalcalculatecost", @placeholder = "Total AWV Cost" ,@required="required"})
 
                     </div>
                 </div>
@@ -583,7 +585,7 @@
                     <div class="form-group required">
                         @Html.LabelFor(model => model.pidfPbfAnalyticalEntity.pidfPbfAnalyticalCost.Remark, "Remark", new { @class = "control-label" })
 
-                        @Html.TextAreaFor(model => model.pidfPbfAnalyticalEntity.pidfPbfAnalyticalCost.Remark, new { @class = "form-control", @placeholder = "Remark" ,@required="required"})
+                        @Html.TextAreaFor(model => model.pidfPbfAnalyticalEntity.pidfPbfAnalyticalCost.Remark, new { @class = "form-control analyticalcalculatecost", @placeholder = "Remark" ,@required="required"})
                     </div>
                 </div>
             </div>
