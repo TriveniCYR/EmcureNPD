@@ -10,14 +10,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <_WebToolingArtifacts Remove="Properties\launchSettings.json" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Content Include="Properties\launchSettings.json" />
-  </ItemGroup>
-
-  <ItemGroup>
     <PackageReference Include="Microsoft.AspNet.WebApi.Core" Version="5.2.9" />
     <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="6.0.13" />
     <PackageReference Include="Microsoft.AspNetCore.Cors" Version="2.2.0" />
