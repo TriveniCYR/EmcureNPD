@@ -45,7 +45,7 @@ namespace EmcureNPD.API.Controllers.Notificaiton {
         /// <response code="404">Not Found</response>
         /// <response code="405">Method Not Allowed</response>
         /// <response code="500">Internal Server</response>
-        [HttpPost, Route("GetAllNotification")]
+        [HttpGet, Route("GetAllNotification")]
         public async Task<IActionResult> GetAllNotification() {
             try {
                 return _ObjectResponse.CreateData(await _NotificationService.GetAll(), (Int32)HttpStatusCode.OK);
