@@ -11,8 +11,8 @@ function GetAllNotificationListSuccess(data) {
             $('#NotificationCount').html(data.recordsTotal + " Notifications");
             for (var i = 0; i < data.recordsFiltered; i++) {
                 /*<span class="badge badge-secondary"><i class="fas fa-envelope mr-1"></i>${rowcount} <b>${data.data[i].notificationTitle}</b></span>*/
-                elehtml += `<a href="#" class="dropdown-item" style="background-color:${data.data[i].statusColor}">
-                    <b>${rowcount}</b>:<span class="badge badge-secondary"><i class="fas fa-envelope mr-1"></i>${data.data[i].notificationTitle}</span>
+                elehtml += `<a href="#" class="dropdown-item">
+                    <span class="badge badge-secondary">${rowcount}:<i class="fas fa-envelope mr-1"></i>${data.data[i].notificationTitleView}</span>
                     <span class="float-right text-muted text-sm">${timeDiffrance(data.data[i].createdDate)}</span>
                 </a>`
                 rowcount++;
