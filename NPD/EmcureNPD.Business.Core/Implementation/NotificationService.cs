@@ -26,14 +26,16 @@ namespace EmcureNPD.Business.Core.Implementation {
         private readonly IStringLocalizer<Errors> _stringLocalizerError;
         private readonly Microsoft.Extensions.Configuration.IConfiguration configuration;
         private IRepository<MasterNotification> _repository { get; set; }
-
+        private readonly IHelper _helper;
 
         public NotificationService(IUnitOfWork unitOfWork, IMapperFactory mapperFactory, IStringLocalizer<Errors> stringLocalizerError,
-                                 Microsoft.Extensions.Configuration.IConfiguration _configuration) {
+                                 Microsoft.Extensions.Configuration.IConfiguration _configuration, IHelper helper)
+        {
             _unitOfWork = unitOfWork;
             _mapperFactory = mapperFactory;
             _repository = _unitOfWork.GetRepository<MasterNotification>();
             configuration = _configuration;
+            _helper = helper;
         }
         public async Task<DataTableResponseModel> GetAll() {
             string ColumnName = "NotificationTitle";
@@ -43,8 +45,9 @@ namespace EmcureNPD.Business.Core.Implementation {
             model.start = 0;
             model.length = 25;
 
+            int userId = _helper.GetLoggedInUser().UserId;
             SqlParameter[] osqlParameter = {
-                new SqlParameter("@NotificationId", 0),
+                new SqlParameter("@UserId",userId),
                 new SqlParameter("@CurrentPageNumber", model.start),
                     new SqlParameter("@PageSize", model.length),
                     new SqlParameter("@SortColumn", ColumnName),
@@ -69,9 +72,9 @@ namespace EmcureNPD.Business.Core.Implementation {
 			var model = new DataTableAjaxPostModel();
 			model.start = start;
 			model.length = length;
-
-			SqlParameter[] osqlParameter = {
-				new SqlParameter("@NotificationId", 0),
+            int userId= _helper.GetLoggedInUser().UserId;
+            SqlParameter[] osqlParameter = {
+				new SqlParameter("@UserId",userId),
 				new SqlParameter("@CurrentPageNumber", model.start),
 					new SqlParameter("@PageSize", model.length),
 					new SqlParameter("@SortColumn", ColumnName),

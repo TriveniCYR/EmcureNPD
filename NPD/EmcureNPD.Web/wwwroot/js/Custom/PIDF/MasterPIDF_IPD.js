@@ -1,5 +1,12 @@
 ﻿$(document).ready(function () {
-    GetRegionList();    
+    GetRegionList();   
+    $('.IPDIsComment').change(function () {
+        if ($(this).val()) {
+            $('#dvIPDComments').show();
+        } else {
+            $('#dvIPDComments').hide();
+        }
+    });
 });
 // #region Get Region List
 function GetRegionList() {
