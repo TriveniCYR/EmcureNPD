@@ -159,7 +159,7 @@ namespace EmcureNPD.Web.Controllers
                 {
                     TempData[UserHelper.SuccessMessage] = Convert.ToString(_stringLocalizerShared["RecordInsertUpdate"]);
                     ModelState.Clear();
-                    return RedirectToAction("PIDFList", "PIDF", new { ScreenId = 2 });
+                    return RedirectToAction("PIDFList", "PIDF", new { ScreenId = (int)PIDFScreen.IPD });
                 }
                 else
                 {
@@ -263,22 +263,17 @@ namespace EmcureNPD.Web.Controllers
 
                 //var response = httpClient.PostAsync($"/api/PIDForm/PIDMedicalForm", form).Result;
                 HttpResponseMessage responseMessage = objapi.APIComm(APIURLHelper.PIDMedicalForm, HttpMethod.Post, token, form).Result;
+                string jsonResponse = responseMessage.Content.ReadAsStringAsync().Result;
+                var data = JsonConvert.DeserializeObject<APIResponseEntity<dynamic>>(jsonResponse);
+
                 if (responseMessage.IsSuccessStatusCode)
                 {
-                    TempData[UserHelper.SuccessMessage] = Convert.ToString(_stringLocalizerShared["RecordInsertUpdate"]);
-					return RedirectToAction("PIDFList", "PIDF", new { ScreenId = 3 });
+                    TempData[UserHelper.SuccessMessage] = data._Message;
+					return RedirectToAction("PIDFList", "PIDF", new { ScreenId = (int)PIDFScreen.Medical });
                 }
                 else
                 {
-					TempData[UserHelper.ErrorMessage] = Convert.ToString(responseMessage.Content.ReadAsStringAsync().Result);
-                    var errorMessage = TempData[UserHelper.ErrorMessage];
-
-                    // Cast the value to a string and parse the JSON to a JObject
-                    var errorMessageJson = errorMessage as string;
-                    var errorMessageObj = JObject.Parse(errorMessageJson);
-
-                    // Get the value of _Message from the JObject
-                    TempData[UserHelper.ErrorMessage] = errorMessageObj["_Message"].ToString();
+                    TempData[UserHelper.ErrorMessage] = data._Message;
                     ModelState.Clear();
 					return RedirectToAction("Medical", "PIDForm", new { pidfid = id });
 				}
@@ -287,6 +282,12 @@ namespace EmcureNPD.Web.Controllers
             {
                 return View(medicalEntity);
             }
+        }
+
+        [HttpGet]
+        public IActionResult ProjectManagement(string pidfid, string bussnessId)
+        {
+            return View();
         }
     }
 }

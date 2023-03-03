@@ -5,7 +5,7 @@ $(document).ready(function () {
 });
 
 function InitializePIDFList() {
-    var setDefaultOrder = [24, 'desc'];
+    var setDefaultOrder = [23, 'desc'];
     var ajaxObject = {
         "url": $('#hdnBaseURL').val() + AllPIDF,
         "type": "POST",
@@ -107,11 +107,11 @@ function InitializePIDFList() {
                 return '<a class="small-button btn btn-' + (row.finance ? "success" : "danger") + '"><i class="fa ' + (row.finance ? "fa-check" : "fa-remove") + '"></i></a>';
             }
         },
-        {
-            "data": "management", "name": "Management", "render": function (data, type, row, meta) {
-                return '<a class="small-button btn btn-' + (row.management ? "success" : "danger") + '"><i class="fa ' + (row.management ? "fa-check" : "fa-remove") + '"></i></a>';
-            }
-        },
+        //{
+        //    "data": "management", "name": "Management", "render": function (data, type, row, meta) {
+        //        return '<a class="small-button btn btn-' + (row.management ? "success" : "danger") + '"><i class="fa ' + (row.management ? "fa-check" : "fa-remove") + '"></i></a>';
+        //    }
+        //},
         {
             "data": "marketExtension", "name": "Market Extension"
         },
@@ -160,7 +160,10 @@ function InitializePIDFList() {
                     var _IPDForm = '/PIDForm/PIDForm?pidfid=' + row.encpidfid + '&bui=' + row.encbud;
                     var _enable = (row.pidfStatusID == 3 || row.pidfStatusID == 5 || row.pidfStatusID == 6);
                     html += '<a class="large-font" style="color:' + (_enable ? "#007bff" : "grey") + '" href="' + (_enable ? _IPDForm : "#") + '"><i class="fa fa-fw fa-edit mr-1"></i></a>';
-                    html += '<a class="ml-1 large-font" href="' + _IPDForm + '&IsView=1"><i class="fa fa-fw fa-eye mr-1"></i></a>';
+
+                    var _enableView = (row.pidfStatusID == 1 || row.pidfStatusID == 2 || row.pidfStatusID == 3 || row.pidfStatusID == 4);
+
+                    html += '<a class="ml-1 large-font" style="color:' + (!_enableView ? "#007bff" : "grey") + '" href="' + (!_enableView ? _IPDForm : "#") + '&IsView=1"><i class="fa fa-fw fa-eye mr-1"></i></a>';
 
                 } else if (_screenId == "3") {
                     var _MedicalForm = '/PIDForm/Medical?pidfid=' + row.encpidfid + '&bui=' + row.encbud;
@@ -197,6 +200,12 @@ function InitializePIDFList() {
                     var _ManagementForm = '/Finance/PIDFManagementApproval?pidfid=' + row.encpidfid + '&bui=' + row.encbud;
                     var _enable = true; //(row.pidfStatusID == 18 || row.pidfStatusID == 20);
                     html += '<a class="large-font" title="View" style="color:' + (_enable ? "#007bff" : "grey") + '" href="' + (_enable ? _ManagementForm + "&IsView=1" : "#") + '"><i class="fa fa-fw fa-eye mr-1"></i></a>';
+                }
+                else if (_screenId == "9") {
+                    var _ProjectManagementForm = '/PIDForm/ProjectManagement?pidfid=' + row.encpidfid + '&bui=' + row.encbud;
+                    var _enable = (row.pidfStatusID == 3 || row.pidfStatusID == 5 || row.pidfStatusID == 6 || row.pidfStatusID == 7);
+                    html += '<a class="large-font" style="color:' + (_enable ? "#007bff" : "grey") + '" href="' + (_enable ? _ProjectManagementForm : "#") + '"><i class="fa fa-fw fa-edit mr-1"></i></a>';
+                    html += '<a class="ml-1 large-font" href="' + _ProjectManagementForm + '&IsView=1"><i class="fa fa-fw fa-eye mr-1"></i></a>';
                 }
                 return html;
             }

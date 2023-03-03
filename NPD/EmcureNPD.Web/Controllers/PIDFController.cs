@@ -16,6 +16,7 @@ using System.Net.Http;
 
 namespace EmcureNPD.Web.Controllers
 {
+    [ViewComponent]
     public class PIDFController : BaseController
     {
         #region Properties
@@ -47,7 +48,7 @@ namespace EmcureNPD.Web.Controllers
             return View();
         }
 
-        public IActionResult PIDF(int? PIDFId)
+        public IActionResult PIDF(int? PIDFId, bool _Partial = false, bool IsViewMode = false)
         {
             PIDFEntity pidf;
             try
@@ -56,6 +57,8 @@ namespace EmcureNPD.Web.Controllers
                 if (PIDFId == null || PIDFId <= 0)
                 {
                     pidf = new PIDFEntity();
+                    pidf._Partial = _Partial;
+                    pidf.IsViewMode = IsViewMode;
                     pidf.LogInId = Convert.ToInt32(logUserId);
                     return View(pidf);
                 }
@@ -64,6 +67,9 @@ namespace EmcureNPD.Web.Controllers
                     HttpResponseMessage responseMessage;
 
                     var data = GetPidfFormModel(PIDFId, out responseMessage);
+
+                    data._Partial = _Partial;
+                    data.IsViewMode = IsViewMode;
 
                     if (data != null)
                     {
@@ -125,28 +131,34 @@ namespace EmcureNPD.Web.Controllers
                 if (pIDFEntity.PIDFID <= 0)
                     pIDFEntity.LastStatusId = pIDFEntity.StatusId;
 
-                pIDFEntity.CreatedBy = _helper.GetLoggedInUserId(); //Convert.ToInt32(HttpContext.Session.GetString(UserHelper.LoggedInUserId));
+                //pIDFEntity.CreatedBy = _helper.GetLoggedInUserId(); //Convert.ToInt32(HttpContext.Session.GetString(UserHelper.LoggedInUserId));
 
                 string token = _helper.GetToken();
                 APIRepository objapi = new(_cofiguration);
 
                 HttpResponseMessage responseMessage = objapi.APICommunication(APIURLHelper.SavePIDF, HttpMethod.Post, token, new StringContent(JsonConvert.SerializeObject(pIDFEntity))).Result;
 
+                string jsonResponse = responseMessage.Content.ReadAsStringAsync().Result;
+                ModelState.Clear();
+                var data = JsonConvert.DeserializeObject<APIResponseEntity<dynamic>>(jsonResponse);
                 if (responseMessage.IsSuccessStatusCode)
                 {
-                    string jsonResponse = responseMessage.Content.ReadAsStringAsync().Result;
-                    ModelState.Clear();
-                    return RedirectToAction(nameof(PIDFList));
+                    TempData[EmcureNPD.Web.Helpers.UserHelper.SuccessMessage] = data._Message;
+                    return RedirectToAction(nameof(PIDFList), new { ScreenId = (int)PIDFScreen.PIDF });
                 }
+                else
+                {
+                    ViewBag.errormessage = Convert.ToString(data._Message);
+                    return View(pIDFEntity);
+                }
+                
             }
             catch (Exception e)
             {
                 ViewBag.errormessage = Convert.ToString(e.StackTrace);
                 ModelState.Clear();
-                return View(nameof(PIDFList));
+                return View(pIDFEntity);
             }
-            ModelState.Clear();
-            return RedirectToAction(nameof(PIDFList));
         }
 
         public IActionResult PIDFCommercial()

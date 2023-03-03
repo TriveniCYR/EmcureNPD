@@ -8,21 +8,24 @@
 @inject Microsoft.Extensions.Localization.IStringLocalizer<EmcureNPD.Resource.Shared> SharedLocalizer
 @model EmcureNPD.Business.Models.PIDFEntity
 @{
+	if (Model._Partial)
+	{
+		Layout = null;		
+	}
+}
+@{
     ViewData["Title"] = @MasterLocalizer["PIDF"];
 }
-<div id="SavePIDFModel">
-	<form asp-action="PIDF">
+@if(!Model._Partial){
+            <div class="content-header">
+                <h2 class="m-0">Product Identification Form</h2>
+            </div>
+}
+            <div class="container-fluid background-white-card" id="dvPIDFContainer">
+				<input type="hidden" id="hdnPIDFId" value="@(Model.PIDFID)" />
+				<input type="hidden" id="hdnIsView" value="@(Model.IsViewMode ? "1" : "0")" />
+				<form asp-action="PIDF" asp-route-PIDFId="@Model.PIDFID">
 
-		<div class="card card-outline card-primary">
-			<div class="card-header" id="pidfHeaderhide">
-				<h5 class="mb-0"><b>Product Identification Form</b></h5>
-				   <div class="card-tools">
-                        <button id="collapseButton" type="button" class="btn btn-tool" data-card-widget="collapse" title="Collapse">
-                            <i class="fas fa-minus"></i>
-                        </button>
-                    </div>
-			</div>
-			<div class="card-body" style="display: block;">
 				<input type="hidden" asp-for="PIDFID" />
 				<input type="hidden" asp-for="SaveType" />
 				<input type="hidden" asp-for="LogInId" />
@@ -30,26 +33,28 @@
 					<div class="col-md-3">
 
 						<div class="form-group required">
-							@Html.LabelFor(model => model.OralId, Master.OralName, new { @class = "control-label" })
+							@Html.LabelFor(model => model.OralId, Master.OralName, new { @class = "control-label" }) <span class="text-danger">*</span>
+							<input type="hidden" id="hdnOralId" value="@Model.OralId" />
 							<select id="OralId" name="OralId" class="form-control readOnlyUpdate" required></select>
 						</div>
 					</div>
 					<div class="col-md-3">
 						<div class="form-group required">
-							@Html.LabelFor(model => model.UnitofMeasurementId, Master.UnitofMeasurements , new { @class = "control-label" })
+							@Html.LabelFor(model => model.UnitofMeasurementId, Master.UnitofMeasurements , new { @class = "control-label" }) <span class="text-danger">*</span>
+							<input type="hidden" id="hdnUnitofMeasurementId" value="@Model.UnitofMeasurementId" />
 							<select id="UnitofMeasurementId" name="UnitofMeasurementId" class="form-control readOnlyUpdate" required></select>
 						</div>
 					</div>
 					<div class="col-md-3">
 						<div class="form-group required">
-							@Html.LabelFor(model => model.MoleculeName, new { @class = "control-label" })
+							@Html.LabelFor(model => model.MoleculeName, new { @class = "control-label" }) <span class="text-danger">*</span>
 							@Html.EditorFor(model => model.MoleculeName, new { htmlAttributes = new { @autocomplete = "off", @class = "form-control checkbox-checked", @placeholder = @MasterLocalizer["MoleculeName"] } })
 							@Html.ValidationMessageFor(model => model.MoleculeName, "", new { @class = "text-danger" })
 						</div>
 					</div>
 					<div class="col-md-3">
 						<div class="form-group required">
-							@Html.LabelFor(model => model.BrandName, new { @class = "control-label" })
+							@Html.LabelFor(model => model.BrandName, new { @class = "control-label" }) <span class="text-danger">*</span>
 							@Html.EditorFor(model => model.BrandName, new { htmlAttributes = new { @autocomplete = "off", @class = "form-control checkbox-checked", @placeholder = @MasterLocalizer["BrandName"] } })
 							@Html.ValidationMessageFor(model => model.BrandName, "", new { @class = "text-danger" })
 						</div>
@@ -60,25 +65,29 @@
 				<div class="row">
 					<div class="col-md-3">
 						<div class="form-group required">
-							@Html.LabelFor(model => model.DosageFormId, Master.DosageForms, new { @class = "control-label" })
+							@Html.LabelFor(model => model.DosageFormId, Master.DosageForms, new { @class = "control-label" }) <span class="text-danger">*</span>
+							<input type="hidden" id="hdnDosageFormId" value="@Model.DosageFormId" />
 							<select id="DosageFormId" name="DosageFormId" class="form-control readOnlyUpdate" required></select>
 						</div>
 					</div>
 					<div class="col-md-3">
 						<div class="form-group required">
-							@Html.LabelFor(model => model.MarketExtenstionId, "Market Extension" , new { @class = "control-label" })
+							@Html.LabelFor(model => model.MarketExtenstionId, "Market Extension" , new { @class = "control-label" }) <span class="text-danger">*</span>
+							<input type="hidden" id="hdnMarketExtenstionId" value="@Model.MarketExtenstionId" />
 							<select id="MarketExtenstionId" name="MarketExtenstionId" class="form-control readOnlyUpdate" required></select>
 						</div>
 					</div>
 					<div class="col-md-3">
 						<div class="form-group required">
-							@Html.LabelFor(model => model.PackagingTypeId, Master.PackagingTypes , new { @class = "control-label" })
+							@Html.LabelFor(model => model.PackagingTypeId, Master.PackagingTypes , new { @class = "control-label" }) <span class="text-danger">*</span>
+							<input type="hidden" id="hdnPackagingTypeId" value="@Model.PackagingTypeId" />
 							<select id="PackagingTypeId" name="PackagingTypeId" class="form-control readOnlyUpdate" required></select>
 						</div>
 					</div>
 					<div class="col-md-3">
 						<div class="form-group required">
-							@Html.LabelFor(model => model.Diaid, Master.DIAName, new { @class = "control-label" })
+							@Html.LabelFor(model => model.Diaid, Master.DIAName, new { @class = "control-label" }) <span class="text-danger">*</span>
+							<input type="hidden" id="hdnDiaid" value="@Model.Diaid" />
 							<select id="Diaid" name="Diaid" class="form-control readOnlyUpdate" required></select>
 						</div>
 						<div class="form-group required" hidden>
@@ -92,20 +101,23 @@
 				<div class="row">
 					<div class="col-md-3">
 						<div class="form-group required">
-							@Html.LabelFor(model => model.BusinessUnitId, Master.BusinessUnitName , new { @class = "control-label" })
+							@Html.LabelFor(model => model.BusinessUnitId, Master.BusinessUnitName , new { @class = "control-label" }) <span class="text-danger">*</span>
+							<input type="hidden" id="hdnBusinessUnitId" value="@Model.BusinessUnitId" />
 							<select id="BusinessUnitId" name="BusinessUnitId" class="form-control readOnlyUpdate" required></select>
 						</div>
 					</div>
 					<div class="col-md-3">
 						<div class="form-group required">
-							<label class="control-label">In house</label>
+							<label class="control-label">In house</label> <span class="text-danger">*</span>
+							<input type="hidden" id="hdnInhouseDropdownId" value="@(Model.InHouses ? "1" : "2")" checked="@(Model.InHouses ? "checked" : "")" />
+							<input type="checkbox" id="InHouses" name="InHouses" value="@(Model.InHouses)" style="display:none;" />
 							<select id="InhouseDropdownId" name="InhouseDropdownId" class="form-control readOnlyUpdate" required></select>
 						</div>
 					</div>
 
 					<div class="col-md-3">
 						<div class="form-group required">
-							@Html.LabelFor(model => model.ApprovedGenerics, new { @class = "control-label" })
+							@Html.LabelFor(model => model.ApprovedGenerics, new { @class = "control-label" }) <span class="text-danger">*</span>
 							@Html.EditorFor(model => model.ApprovedGenerics, new { htmlAttributes = new { @autocomplete = "off", @class = "form-control checkbox-checked", @placeholder = @MasterLocalizer["ApprovedGenerics"] } })
 							@Html.ValidationMessageFor(model => model.ApprovedGenerics, "", new { @class = "text-danger" })
 						</div>
@@ -113,7 +125,7 @@
 
 					<div class="col-md-3">
 						<div class="form-group required">
-							@Html.LabelFor(model => model.LaunchedGenerics, new { @class = "control-label" })
+							@Html.LabelFor(model => model.LaunchedGenerics, new { @class = "control-label" }) <span class="text-danger">*</span>
 							@Html.EditorFor(model => model.LaunchedGenerics, new { htmlAttributes = new { @autocomplete = "off", @class = "form-control checkbox-checked", @placeholder = @MasterLocalizer["LaunchedGenerics"] } })
 							@Html.ValidationMessageFor(model => model.LaunchedGenerics, "", new { @class = "text-danger" })
 						</div>
@@ -124,8 +136,14 @@
 				<div class="row">
 					<div class="col-12">
 						<div class="card">
-							<div class="card-header">
-								<h3 class="card-title">Product Strengths</h3>
+							<div class="card-header bg-primary">
+								<h3 class="card-title mb-0">
+									
+									<button type="button" class="btn btn-tool" data-card-widget="collapse" >
+								Product Strengths
+                                </button>
+
+									</h3>
 								<div class="card-tools">
 									<button type="button" class="btn btn-tool" data-card-widget="collapse" title="Collapse">
 										<i class="fas fa-minus"></i>
@@ -136,8 +154,8 @@
 								<table id="ProductStrengthTable" class="table table-bordered table-striped table-hover">
 									<thead>
 										<tr>
-											<th>@MasterLocalizer["Strength"]</th>
-											<th>@MasterLocalizer["Unit"]</th>
+											<th>@MasterLocalizer["Strength"] <span class="text-danger">*</span></th>
+											<th>@MasterLocalizer["Unit"] <span class="text-danger">*</span></th>
 											<th class="text-center">@SharedLocalizer["Action"]</th>
 										</tr>
 									</thead>
@@ -159,6 +177,7 @@
 														<td>
 															<div class="col-md">
 																<div class="form-group required">
+																	<input type="hidden" id="hdnProductStrengthUnit" value="@Model.pidfProductStregthEntities[i].UnitofMeasurementId" />
 																	<select id="productStrengthUnit_0" name="pidfProductStregthEntities[@i].UnitofMeasurementId" class="form-control readOnlyUpdate productStrengthUnit" required></select>
 																</div>
 															</div>
@@ -166,9 +185,9 @@
 														<td>
 															<div class="col-md">
 																<div class="form-group">
-																	<i class="fas fa-plus operationButton" id="addIcon_@i" onclick="addRowProductStrength(@i)"></i>
+																	<i class="fa-solid fa-circle-plus nav-icon text-success operationButton" id="addIcon_@i" onclick="addRowProductStrength(@i)"></i>
 																	&nbsp;&nbsp;&nbsp;&nbsp;
-																	<span><i class="fas fa-trash-alt strengthDeleteIcon operationButton" id="deleteIconAPI_@i" onclick="deleteRowProductStrength(@i, this)"></i></span>
+															<span><i class="fa-solid fa-trash nav-icon text-red strengthDeleteIcon operationButton" id="deleteIconAPI_@i" onclick="deleteRowProductStrength(@i, this)"></i></span>
 																</div>
 
 															</div>
@@ -199,9 +218,9 @@
 												<td>
 													<div class="col-md">
 														<div class="form-group">
-															<i class="fas fa-plus" id="addIconAPI_@j" onclick="addRowProductStrength(@j)"></i>
+															<i class="fa-solid fa-circle-plus nav-icon text-success operationButton" id="addIconAPI_@j" onclick="addRowProductStrength(@j)"></i>
 															&nbsp;&nbsp;&nbsp;&nbsp;
-															<span><i class="fas fa-trash-alt strengthDeleteIcon" id="deleteIconAPI_@j" onclick="deleteRowProductStrength(@j, this)"></i></span>
+															<span><i class="fa-solid fa-trash nav-icon text-red strengthDeleteIcon operationButton" id="deleteIconAPI_@j" onclick="deleteRowProductStrength(@j, this)"></i></span>
 															@Html.HiddenFor(model => model.pidfProductStregthEntities[j].Pidfid, new { id = "pidfProductStregthEntities[" + j + "].PidfproductStrengthId"})
 														</div>
 													</div>
@@ -219,8 +238,8 @@
 				<div class="row">
 					<div class="col-12">
 						<div class="card">
-							<div class="card-header">
-								<h3 class="card-title">API Details</h3>
+							<div class="card-header bg-primary">
+								<h3 class="card-title mb-0"><button type="button" class="btn btn-tool" data-card-widget="collapse">API Details</button></h3>
 								<div class="card-tools">
 									<button type="button" class="btn btn-tool" data-card-widget="collapse" title="Collapse">
 										<i class="fas fa-minus"></i>
@@ -231,9 +250,9 @@
 								<table id="APIDetailsTable" class="table table-bordered table-striped table-hover">
 									<thead>
 										<tr>
-											<th>@MasterLocalizer["API Name"]</th>
-											<th>@MasterLocalizer["API Sourcing"]</th>
-											<th>@SharedLocalizer["API Vendor"]</th>
+											<th>@MasterLocalizer["API Name"] <span class="text-danger">*</span></th>
+											<th>@MasterLocalizer["API Sourcing"] <span class="text-danger">*</span></th>
+											<th>@SharedLocalizer["API Vendor"] <span class="text-danger">*</span></th>
 											<th class="text-center">@SharedLocalizer["Action"]</th>
 										</tr>
 									</thead>
@@ -255,6 +274,7 @@
 														<td>
 															<div class="col-md">
 																<div class="form-group required">
+																	<input type="hidden" id="hdnAPISourcing" value="@Model.pidfApiDetailEntities[j].ApisourcingId" />
 																	<select id="apiSourcingData_0" name="pidfApiDetailEntities[@j].ApisourcingId" class="form-control readOnlyUpdate productApiSourcing" required></select>
 																</div>
 															</div>
@@ -269,9 +289,9 @@
 														<td>
 															<div class="col-md">
 																<div class="form-group">
-																	<i class="fas fa-plus" id="addIconAPI_@j" onclick="addRowApiDetails(@j)"></i>
+																	<i class="fa-solid fa-circle-plus nav-icon text-success operationButton" id="addIconAPI_@j" onclick="addRowApiDetails(@j)"></i>
 																	&nbsp;&nbsp;&nbsp;&nbsp;
-																	<span><i class="fas fa-trash-alt apiDeleteIcon" id="deleteIconAPI_@j" onclick="deleteRowApiDetails(@j, this)"></i></span>
+																	<span><i class="fa-solid fa-trash nav-icon text-red apiDeleteIcon operationButton" id="deleteIconAPI_@j" onclick="deleteRowApiDetails(@j, this)"></i></span>
 																</div>
 															</div>
 														</td>
@@ -309,9 +329,9 @@
 												<td>
 													<div class="col-md">
 														<div class="form-group">
-															<i class="fas fa-plus" id="addIconAPI_@j"  onclick="addRowApiDetails(@j)"></i>
+															<i class="fa-solid fa-circle-plus nav-icon text-success operationButton" id="addIconAPI_@j"  onclick="addRowApiDetails(@j)"></i>
 															&nbsp;&nbsp;&nbsp;&nbsp;
-															<span><i class="fas fa-trash-alt apiDeleteIcon" id="deleteIconAPI_@j" onclick="deleteRowApiDetails(@j, this)"></i></span>
+													<span><i class="fa-solid fa-trash nav-icon text-red apiDeleteIcon operationButton" id="deleteIconAPI_@j" onclick="deleteRowApiDetails(@j, this)"></i></span>
 															@Html.HiddenFor(model => model.pidfApiDetailEntities[j].Pidfid, new { id = "pidfApiDetailEntities[" + j + "].Pidfid"})
 														</div>
 													</div>
@@ -329,9 +349,9 @@
 				<div class="row">
 					<div class="col-12">
 						<div class="card">
-							<div class="card-header">
-								<h3 class="card-title">
-									Reference Product Detail
+							<div class="card-header bg-primary">
+								<h3 class="card-title mb-0">
+									<button type="button" class="btn btn-tool" data-card-widget="collapse" >Reference Product Detail</button>
 								</h3>
 								<div class="card-tools">
 									<button type="button" class="btn btn-tool" data-card-widget="collapse" title="Collapse">
@@ -343,27 +363,28 @@
 								<div class="row">
 									<div class="col-md-3">
 										<div class="form-group required">
-											@Html.LabelFor(model => model.RFDBrand, new { @class = "control-label" })
+											@Html.LabelFor(model => model.RFDBrand, new { @class = "control-label" }) <span class="text-danger">*</span>
 											@Html.EditorFor(model => model.RFDBrand, new { htmlAttributes = new { @autocomplete = "off", @class = "form-control checkbox-checked", @placeholder = @MasterLocalizer["RFDBrand"] } })
 											@Html.ValidationMessageFor(model => model.RFDBrand, "", new { @class = "text-danger" })
 										</div>
 									</div>
 									<div class="col-md-3">
 										<div class="form-group required">
-											@Html.LabelFor(model => model.RFDApplicant, new { @class = "control-label" })
+											@Html.LabelFor(model => model.RFDApplicant, new { @class = "control-label" }) <span class="text-danger">*</span>
 											@Html.EditorFor(model => model.RFDApplicant, new { htmlAttributes = new { @autocomplete = "off", @class = "form-control checkbox-checked", @placeholder = @MasterLocalizer["RFDApplicant"] } })
 											@Html.ValidationMessageFor(model => model.RFDApplicant, "", new { @class = "text-danger" })
 										</div>
 									</div>
 									<div class="col-md-3">
 										<div class="form-group required">
-											@Html.LabelFor(model => model.RFDCountryId, Master.Countrys , new { @class = "control-label" })
+											@Html.LabelFor(model => model.RFDCountryId, Master.Countrys , new { @class = "control-label" }) <span class="text-danger">*</span>
+											<input type="hidden" id="hdnRFDCountryId" value="@Model.RFDCountryId" />
 											<select id="RFDCountryId" name="RFDCountryId" class="form-control" required></select>
 										</div>
 									</div>
 									<div class="col-md-3">
 										<div class="form-group required">
-											@Html.LabelFor(model => model.RFDIndication, new { @class = "control-label" })
+											@Html.LabelFor(model => model.RFDIndication, new { @class = "control-label" }) <span class="text-danger">*</span>
 											@Html.EditorFor(model => model.RFDIndication, new { htmlAttributes = new { @autocomplete = "off", @class = "form-control checkbox-checked", @placeholder = @MasterLocalizer["RFDIndication"] } })
 											@Html.ValidationMessageFor(model => model.RFDIndication, "", new { @class = "text-danger" })
 										</div>
@@ -372,14 +393,14 @@
 								<div class="row">
 									<div class="col-md-3">
 										<div class="form-group required">
-											@Html.LabelFor(model => model.RFDInnovators, new { @class = "control-label" })
+											@Html.LabelFor(model => model.RFDInnovators, new { @class = "control-label" }) <span class="text-danger">*</span>
 											@Html.EditorFor(model => model.RFDInnovators, new { htmlAttributes = new { @autocomplete = "off", @class = "form-control checkbox-checked", @placeholder = @MasterLocalizer["RFDInnovators"] } })
 											@Html.ValidationMessageFor(model => model.RFDInnovators, "", new { @class = "text-danger" })
 										</div>
 									</div>
 									<div class="col-md-3">
 										<div class="form-group required">
-											@Html.LabelFor(model => model.RFDInitialRevenuePotential, new { @class = "control-label" })
+											@Html.LabelFor(model => model.RFDInitialRevenuePotential, new { @class = "control-label" }) <span class="text-danger">*</span>
 											@Html.EditorFor(model => model.RFDInitialRevenuePotential, new { htmlAttributes = new { @autocomplete = "off", @class = "form-control checkbox-checked", @placeholder = @MasterLocalizer["RFDInitialRevenuePotential"] } })
 											@Html.ValidationMessageFor(model => model.RFDInitialRevenuePotential, "", new { @class = "text-danger" })
 										</div>
@@ -387,7 +408,7 @@
 
 									<div class="col-md-3">
 										<div class="form-group required">
-											@Html.LabelFor(model => model.RFDPriceDiscounting, new { @class = "control-label" })
+											@Html.LabelFor(model => model.RFDPriceDiscounting, new { @class = "control-label" }) <span class="text-danger">*</span>
 											@Html.EditorFor(model => model.RFDPriceDiscounting, new { htmlAttributes = new { @autocomplete = "off", @class = "form-control checkbox-checked", @placeholder = @MasterLocalizer["RFDPriceDiscounting"] } })
 											@Html.ValidationMessageFor(model => model.RFDPriceDiscounting, "", new { @class = "text-danger" })
 										</div>
@@ -395,7 +416,7 @@
 
 									<div class="col-md-3">
 										<div class="form-group required">
-											@Html.LabelFor(model => model.RFDCommercialBatchSize, new { @class = "control-label" })
+											@Html.LabelFor(model => model.RFDCommercialBatchSize, new { @class = "control-label" }) <span class="text-danger">*</span>
 											@Html.EditorFor(model => model.RFDCommercialBatchSize, new { htmlAttributes = new { @autocomplete = "off", @class = "form-control checkbox-checked", @placeholder = @MasterLocalizer["RFDCommercialBatchSize"] } })
 											@Html.ValidationMessageFor(model => model.RFDCommercialBatchSize, "", new { @class = "text-danger" })
 										</div>
@@ -509,31 +530,32 @@
 					</div>
 				
 				<div class="row" id="pidfButtonhide">
-					<div>
+					<div class="col-12 text-end">
 						<div class="form-group">
-							<button type="submit" class="btn btn-primary operationButton" onClick="SaveClick();">@SharedLocalizer["Submit"]</button>
+					<button type="submit" class="btn btn-success me-3 outside-buttons operationButton" onClick="SaveClick();">@SharedLocalizer["Submit"]</button>
 							@if (Model.StatusId == (Int32)Master_PIDFStatus.PIDFInProgress || Model.StatusId == 0)
 							{
-								<button type="submit" class="btn btn-info" onClick="SaveDraftClick();">@SharedLocalizer["SaveDraft"]</button>
+						<button type="submit" class="btn btn-primary me-3 outside-buttons operationButton" onClick="SaveDraftClick();">@SharedLocalizer["SaveDraft"]</button>
 							}
 							@if (Model.StatusId == (Int32)Master_PIDFStatus.PIDFSubmitted)
 							{
-								<a class="btn btn-success operationButton" onClick="approveRejDeleteData('A')"><i class="fa fa-check mr-1"></i> @SharedLocalizer["Approve"]</a>
-								<a class="btn btn-danger operationButton" onClick="approveRejDeleteData('R')"><i class="far fa fa-times mr-1"></i> @SharedLocalizer["Reject"]</a>
+						<a class="btn btn-success me-3 outside-buttons operationButton" onClick="approveRejDeleteData('A')"><i class="fa fa-check-circle mr-1"></i> @SharedLocalizer["Approve"]</a>
+						<a class="btn btn-danger me-3 outside-buttons operationButton" onClick="approveRejDeleteData('R')"><i class="fa fa-ban mr-1"></i> @SharedLocalizer["Reject"]</a>
 
 							}
-							<a class="btn btn-danger" asp-action="PIDFList" asp-controller="PIDF">@SharedLocalizer["Cancel"]</a>
+					<a class="btn btn-danger me-3 outside-buttons operationButton" asp-action="PIDFList" asp-controller="PIDF" asp-route-ScreenId="1">@SharedLocalizer["Cancel"]</a>
 						</div>
 					</div>
 				</div>
 
-			</div>
-		</div>
+			
 	</form>
-</div>
-@section MyScripts {
+				</div>
 
-	@Html.Partial("_DataTablePartial")
+
+
+
+@*	@Html.Partial("_DataTablePartial")*@
 
 	<script type="text/javascript" src="~/js/Custom/PIDF/MasterPIDF.js"></script>
 	<script>
@@ -553,6 +575,11 @@
 		var RecordDelete = "@SharedLocalizer["RecordDelete"]";
 		var AddLabel = "@SharedLocalizer["Add"]";
 		var UpdateLabel = "@SharedLocalizer["Update"]";
+		var errorCallBack = '@ViewBag.errormessage';
+        if (errorCallBack)
+        {
+			toastr.error(errorCallBack);
+        }
+		
 						//#endregion
 	</script>
-}

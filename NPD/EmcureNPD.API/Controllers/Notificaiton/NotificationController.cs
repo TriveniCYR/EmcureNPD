@@ -16,7 +16,7 @@ namespace EmcureNPD.API.Controllers.Notificaiton {
     [Route("api/[controller]")]
     [ApiController]
     public class NotificationController : ControllerBase {
-        
+
         #region Properties
         private readonly IConfiguration _configuration;
         private readonly IResponseHandler<dynamic> _ObjectResponse;
@@ -45,7 +45,7 @@ namespace EmcureNPD.API.Controllers.Notificaiton {
         /// <response code="404">Not Found</response>
         /// <response code="405">Method Not Allowed</response>
         /// <response code="500">Internal Server</response>
-        [HttpPost, Route("GetAllNotification")]
+        [HttpGet, Route("GetAllNotification")]
         public async Task<IActionResult> GetAllNotification() {
             try {
                 return _ObjectResponse.CreateData(await _NotificationService.GetAll(), (Int32)HttpStatusCode.OK);
@@ -53,5 +53,17 @@ namespace EmcureNPD.API.Controllers.Notificaiton {
                 return _ObjectResponse.Create(false, (Int32)HttpStatusCode.InternalServerError, Convert.ToString(ex.StackTrace));
             }
         }
-    }
+        [HttpGet, Route("GetFilteredNotifications/{ColumnName}/{SortDir}/{start}/{length}")]
+        public async Task<IActionResult> GetFilteredNotifications(string ColumnName, string SortDir, int start, int length)
+		{
+			try
+			{
+				return _ObjectResponse.CreateData(await _NotificationService.GetFilteredNotifications(ColumnName, SortDir, start, length), (Int32)HttpStatusCode.OK);
+			}
+			catch (Exception ex)
+			{
+				return _ObjectResponse.Create(false, (Int32)HttpStatusCode.InternalServerError, Convert.ToString(ex.StackTrace));
+			}
+		}
+	}
 }

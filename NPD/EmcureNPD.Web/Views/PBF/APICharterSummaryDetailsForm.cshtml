@@ -1,0 +1,451 @@
+﻿@using Microsoft.AspNetCore.Http
+@using EmcureNPD.Web.Controllers
+@using Microsoft.AspNetCore.Mvc.Localization
+@using EmcureNPD.Utility.Utility
+@using EmcureNPD.Utility.Enums
+
+@inject IHttpContextAccessor HttpContextAccessor
+@inject Microsoft.Extensions.Localization.IStringLocalizer<EmcureNPD.Resource.Master> MasterLocalizer
+@inject Microsoft.Extensions.Localization.IStringLocalizer<EmcureNPD.Resource.Shared> SharedLocalizer
+@model EmcureNPD.Business.Models.PIDFAPICharterFormEntity
+
+@{
+    ViewData["Title"] = @MasterLocalizer["APICharterDetails"];
+}
+<div>
+    <div class="card card-outline card-primary">
+        <div class="card-header">
+            <h5 class="mb-0"><b>@MasterLocalizer["APICharterDetailsForm"]</b></h5>
+        </div>
+        <div class="card-body">
+            <form asp-action="APICharterDetailsForm" asp-controller="PBF" method="post">
+                <input type="hidden" asp-for="Pidfid" />
+                <input type="hidden" asp-for="BusinessUnitId" />
+                <input type="hidden" asp-for="PIDFAPICharterFormID" />
+                <input type="hidden" asp-for="SaveType" />
+                <input asp-for="IsModelValid" style="visibility: hidden;" />
+                <div class="row">
+                    <div class="col-md-5">
+                        <table class="table">
+
+                            <tr>
+                                <td>
+                                    @Html.LabelFor(model => model.ProjectName,@MasterLocalizer["ProjectName"], new { @class = "control-label" })
+                                </td>
+                                <td>
+                                    @Html.TextBoxFor(model => model.ProjectName, new { @readonly = "readonly",  @class = "form-control"})
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    @Html.LabelFor(model => model.Market  ,@MasterLocalizer["Market"], new { @class = "control-label" })
+                                </td>
+                                <td>
+                                    @Html.DropDownListFor(model => model.Market, new List<SelectListItem> { },  new {@readonly = "readonly", @class = "form-control"})
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    @Html.LabelFor(model => model.ProjectInitiationDate,@MasterLocalizer["ProjectInitiationDate"], new { @class = "control-label" })
+                                </td>
+                                <td>
+                                    @Html.TextBoxFor(model => model.ProjectInitiationDate, new {@readonly = "readonly", @class = "form-control", })
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    @Html.LabelFor(model => model.ProjectEndDate,@MasterLocalizer["ProjectEndDate"], new { @class = "control-label" })
+                                </td>
+                                <td>
+                                    @Html.TextBoxFor(model => model.ProjectEndDate, new {@readonly = "readonly",@class = "form-control", @placeholder = @MasterLocalizer["ProjectEndDate"] })
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    @Html.LabelFor(model => model.APIGroupLeader,@MasterLocalizer["APIGroupLeader"], new { @class = "control-label" })
+                                </td>
+                                <td>
+                                    @Html.TextBoxFor(model => model.APIGroupLeader, new { @class = "form-control" })
+                                    <label class="text-danger" id="valmsgAPIGroupLeader" style="display:contents"></label>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    @Html.LabelFor(model => model.ProjectComplexityId  ,@MasterLocalizer["ProjectComplexity"], new { @class = "control-label" })
+                                </td>
+                                <td>
+                                    @Html.DropDownListFor(model => model.ProjectComplexityId, Html.GetEnumSelectList(typeof(ProjectComplexicity)),  new {@class = "form-control"})
+                                </td>
+                            </tr>
+                        </table>
+                    </div>
+                    <div class="col-md-7"></div>
+                </div>
+                <div class="row">
+                    @*--------Start----Timeline IN Months-------------*@
+                    <h4 class="mb-0"><b>@MasterLocalizer["TimelineInMonths"]</b></h4>
+                    <div class="col-md-4" id="dvTimelineInMonths">
+                        @if (Model.TimelineInMonths != null)
+                        {
+                            <table class="table">
+                                @for (int i = 0; i < Model.TimelineInMonths.Count; i++)
+                                {
+                                    <tr>
+                                        <td>
+                                            <input type="hidden" asp-for="@Model.TimelineInMonths[i].TimelineInMonthsId" />
+                                            <input type="hidden" asp-for="@Model.TimelineInMonths[i].Name" />
+                                            <label class="control-label">@Model.TimelineInMonths[i].Name </label>
+                                        </td>
+                                        @if (i == 6)
+                                        {
+                                            <td>
+                                                @Html.TextBoxFor(model => model.TimelineInMonths[i].TimelineInMonthsValue, new {@readonly = "readonly", @class = "form-control" , @placeholder="" })
+                                                <label class="text-danger" style="display:contents"></label>
+                                            </td>
+                                        }
+                                        else
+                                        {
+                                            <td>
+                                                @Html.TextBoxFor(model => model.TimelineInMonths[i].TimelineInMonthsValue, new { @class = "form-control" , @placeholder="" })
+                                                <label class="text-danger" style="display:contents"></label>
+                                            </td>
+                                        }
+                                    </tr>
+                                }
+                            </table>
+                        }
+                    </div>
+                    <div class="col-md-8"></div>
+                    @*--------End----Timeline IN Months-------------*@
+                </div>
+                @*------------Finance Rates--------------------------*@
+                <h4 class="mb-0"><b>@MasterLocalizer["FinanceRates"]</b></h4>
+                <div class="row">
+                    <div class="col-md-5">
+                        <table class="table">
+                            <tr>
+                                <td>
+                                    @Html.LabelFor(model => model.ManHourRates  ,@MasterLocalizer["ManHourRates"], new { @class = "control-label" })
+                                </td>
+                                <td>
+                                    @Html.TextBoxFor(model => model.ManHourRates, new { @class = "form-control"})
+                                    <label class="text-danger" id="valmsgManHourRates" style="display:contents"></label>
+                                </td>
+                            </tr>
+                        </table>
+                    </div>
+                    <div class="col-md-7"></div>
+                </div>
+                @*--------------Finance Rates----------------------*@
+
+                <div class="row">
+                    @*--------Start----AnalyticalDepartment-------------*@
+                    <div class="col-md-12" id="dvAnalyticalDepartment">
+                        @if (Model.AnalyticalDepartment != null)
+                        {
+                            <table class="table">
+                                <thead>
+                                    <tr class="text-center">
+                                        <th>@MasterLocalizer["AnalyticalDepartments"]</th>
+                                        <th>@MasterLocalizer["ARD"]</th>
+                                        <th>@MasterLocalizer["Impurity"]</th>
+                                        <th>@MasterLocalizer["Stability"]</th>
+                                        <th>@MasterLocalizer["AMV"]</th>
+                                        <th>@MasterLocalizer["AMT"]</th>
+                                    </tr>
+                                </thead>
+                                @for (int i = 0; i < Model.AnalyticalDepartment.Count; i++)
+                                {
+                                    <tr>
+                                        <td>
+                                            <input type="hidden" asp-for="@Model.AnalyticalDepartment[i].AnalyticalDepartmentId" />
+                                            <input type="hidden" asp-for="@Model.AnalyticalDepartment[i].Name" />
+                                            <label class="control-label">@Model.AnalyticalDepartment[i].Name </label>
+                                        </td>
+                                        @if (i == 5)
+                                        {
+                                            <td>
+                                                @Html.TextBoxFor(model => model.AnalyticalDepartment[i].AnalyticalDepartmentARDValue, new {@readonly = "readonly", @class = "form-control" , @placeholder="" })
+                                                <label class="text-danger" style="display:contents"></label>
+                                            </td>
+                                            <td>
+                                                @Html.TextBoxFor(model => model.AnalyticalDepartment[i].AnalyticalDepartmentImpurityValue, new {@readonly = "readonly", @class = "form-control" , @placeholder="" })
+                                                <label class="text-danger" style="display:contents"></label>
+                                            </td>
+                                            <td>
+                                                @Html.TextBoxFor(model => model.AnalyticalDepartment[i].AnalyticalDepartmentStabilityValue, new {@readonly = "readonly", @class = "form-control" , @placeholder="" })
+                                                <label class="text-danger" style="display:contents"></label>
+                                            </td>
+                                            <td>
+                                                @Html.TextBoxFor(model => model.AnalyticalDepartment[i].AnalyticalDepartmentAMVValue, new { @readonly = "readonly",@class = "form-control" , @placeholder="" })
+                                                <label class="text-danger" style="display:contents"></label>
+                                            </td>
+                                            <td>
+                                                @Html.TextBoxFor(model => model.AnalyticalDepartment[i].AnalyticalDepartmentAMTValue, new {@readonly = "readonly", @class = "form-control" , @placeholder="" })
+                                                <label class="text-danger" style="display:contents"></label>
+                                            </td>
+                                        }
+                                        else
+                                        {
+                                            <td>
+                                                @if (i == 3)
+                                                {
+                                                    @Html.TextBoxFor(model => model.AnalyticalDepartment[i].AnalyticalDepartmentARDValue, new {@readonly = "readonly", @class = "form-control" , @placeholder="" })
+                                                }
+                                                else
+                                                {
+                                                    @Html.TextBoxFor(model => model.AnalyticalDepartment[i].AnalyticalDepartmentARDValue, new { @class = "form-control" , @placeholder="" })
+                                                }
+
+                                                <label class="text-danger" style="display:contents"></label>
+                                            </td>
+                                            <td>
+                                                @Html.TextBoxFor(model => model.AnalyticalDepartment[i].AnalyticalDepartmentImpurityValue, new { @class = "form-control" , @placeholder="" })
+                                                <label class="text-danger" style="display:contents"></label>
+                                            </td>
+                                            <td>
+                                                @Html.TextBoxFor(model => model.AnalyticalDepartment[i].AnalyticalDepartmentStabilityValue, new { @class = "form-control" , @placeholder="" })
+                                                <label class="text-danger" style="display:contents"></label>
+                                            </td>
+                                            <td>
+                                                @Html.TextBoxFor(model => model.AnalyticalDepartment[i].AnalyticalDepartmentAMVValue, new { @class = "form-control" , @placeholder="" })
+                                                <label class="text-danger" style="display:contents"></label>
+                                            </td>
+                                            <td>
+                                                @Html.TextBoxFor(model => model.AnalyticalDepartment[i].AnalyticalDepartmentAMTValue, new { @class = "form-control" , @placeholder="" })
+                                                <label class="text-danger" style="display:contents"></label>
+                                            </td>
+                                        }
+                                    </tr>
+                                }
+                            </table>
+                        }
+                    </div>
+                    @*--------End----AnalyticalDepartment-------------*@
+                </div>
+                <div class="row">
+                    @*--------Start----PRDDepartment-------------*@
+                    <div class="col-md-4" id="dvPRDDepartment">
+                        @if (Model.PRDDepartment != null)
+                        {
+                            <table class="table">
+                                <thead>
+                                    <tr class="text-center">
+                                        <th>@MasterLocalizer["PRDDepartments"]</th>
+                                        <th>@MasterLocalizer["RawMaterialCost"]</th>
+                                    </tr>
+                                </thead>
+                                @for (int i = 0; i < Model.PRDDepartment.Count; i++)
+                                {
+                                    <tr>
+                                        <td>
+                                            <input type="hidden" asp-for="@Model.PRDDepartment[i].PRDDepartmentId" />
+                                            <input type="hidden" asp-for="@Model.PRDDepartment[i].Name" />
+                                            <label class="control-label">@Model.PRDDepartment[i].Name </label>
+                                        </td>
+                                        @if (i == 4)
+                                        {
+                                            <td>
+                                                @Html.TextBoxFor(model => model.PRDDepartment[i].PRDDepartmentRawMaterialValue, new { @readonly = "readonly",@class = "form-control" , @placeholder="" })
+                                                <label class="text-danger" style="display:contents"></label>
+                                            </td>
+                                        }
+                                        else
+                                        {
+                                            <td>
+                                                @Html.TextBoxFor(model => model.PRDDepartment[i].PRDDepartmentRawMaterialValue, new { @class = "form-control" , @placeholder="" })
+                                                <label class="text-danger" style="display:contents"></label>
+                                            </td>
+                                        }
+                                    </tr>
+                                }
+                            </table>
+                        }
+                    </div>
+                    <div class="col-md-8"></div>
+                    @*--------End----PRDDepartment-------------*@
+                </div>
+                <div class="row">
+                    @*--------Start----CapitalOtherExpenditure-------------*@
+                    <div class="col-md-8" id="dvCapitalOtherExpenditure">
+                        @if (Model.CapitalOtherExpenditure != null)
+                        {
+                            <table class="table">
+                                <thead>
+                                    <tr class="text-center">
+                                        <th>@MasterLocalizer["CapitalOtherExpenditure"]</th>
+                                        <th>@MasterLocalizer["Amount"]</th>
+                                        <th>@MasterLocalizer["Remark"]</th>
+                                    </tr>
+                                </thead>
+                                @for (int i = 0; i < Model.CapitalOtherExpenditure.Count; i++)
+                                {
+                                    <tr>
+                                        <td>
+                                            <input type="hidden" asp-for="@Model.CapitalOtherExpenditure[i].CapitalOtherExpenditureId" />
+                                            <input type="hidden" asp-for="@Model.CapitalOtherExpenditure[i].Name" />
+                                            <label class="control-label">@Model.CapitalOtherExpenditure[i].Name </label>
+                                        </td>
+                                        <td>
+                                            @Html.TextBoxFor(model => model.CapitalOtherExpenditure[i].CapitalOtherExpenditureAmountValue, new { @class = "form-control" , @placeholder="" })
+                                            <label class="text-danger" style="display:contents"></label>
+                                        </td>
+                                        <td>
+                                            @Html.TextBoxFor(model => model.CapitalOtherExpenditure[i].CapitalOtherExpenditureRemarkValue, new { @class = "form-control" , @placeholder="" })
+                                            <label class="text-danger" style="display:contents"></label>
+                                        </td>
+                                    </tr>
+                                }
+                            </table>
+                        }
+                    </div>
+                    <div class="col-md-4"></div>
+                    @*--------End----CapitalOtherExpenditure-------------*@
+                </div>
+                <div class="row">
+                    @*--------Start----ManhourEstimates-------------*@
+                    <div class="col-md-12" id="dvManhourEstimates">
+                        @if (Model.ManhourEstimates != null)
+                        {
+                            <table class="table">
+                                <thead>
+                                    <tr class="text-center">
+                                        <th>@MasterLocalizer["ManhourEstimates"]</th>
+                                        <th>@MasterLocalizer["NoOfEmployee"]</th>
+                                        <th>@MasterLocalizer["Months"]</th>
+                                        <th>@MasterLocalizer["Hours"]</th>
+                                        <th>@MasterLocalizer["Cost"]</th>
+                                    </tr>
+                                </thead>
+                                @for (int i = 0; i < Model.ManhourEstimates.Count; i++)
+                                {
+                                    <tr>
+                                        <td>
+                                            <input type="hidden" asp-for="@Model.ManhourEstimates[i].ManhourEstimatesId" />
+                                            <input type="hidden" asp-for="@Model.ManhourEstimates[i].Name" />
+                                            <label class="control-label">@Model.ManhourEstimates[i].Name </label>
+                                        </td>
+                                        @if(i!=7){
+                                            <td>
+                                                @Html.TextBoxFor(model => model.ManhourEstimates[i].ManhourEstimatesNoOfEmployeeValue, new { @class = "form-control" , @placeholder="" })
+                                                <label class="text-danger" style="display:contents"></label>
+                                            </td>
+                                            <td>
+                                                @Html.TextBoxFor(model => model.ManhourEstimates[i].ManhourEstimatesMonthsValue, new { @class = "form-control" , @placeholder="" })
+                                                <label class="text-danger" style="display:contents"></label>
+                                            </td>
+                                        }
+                                        else
+                                        {
+                                             <td></td>
+                                             <td></td>
+                                        }
+                                        <td>
+                                            @Html.TextBoxFor(model => model.ManhourEstimates[i].ManhourEstimatesHoursValue, new { @readonly = "readonly", @class = "form-control" , @placeholder="" })
+                                            <label class="text-danger" style="display:contents"></label>
+                                        </td>
+                                        <td>
+                                            @Html.TextBoxFor(model => model.ManhourEstimates[i].ManhourEstimatesCostValue, new {@readonly = "readonly", @class = "form-control" , @placeholder="" })
+                                            <label class="text-danger" style="display:contents"></label>
+                                        </td>
+                                    </tr>
+                                }
+                            </table>
+                        }
+                    </div>
+                    @*--------End----ManhourEstimates-------------*@
+                </div>
+                <div class="row">
+                    @*--------Start----HeadwiseBudget-------------*@
+                    <div class="col-md-6" id="dvHeadwiseBudget">
+                        @if (Model.HeadwiseBudget != null)
+                        {
+                            <table class="table">
+                                <thead>
+                                    <tr class="text-center">
+                                        <th>@MasterLocalizer["HeadwiseBudget(In Lacs)"]</th>
+                                        <th>@MasterLocalizer["Rupee(In Lacs)"]</th>
+                                    </tr>
+                                </thead>
+                                @for (int i = 0; i < Model.HeadwiseBudget.Count; i++)
+                                {
+                                    <tr>
+                                        <td>
+                                            <input type="hidden" asp-for="@Model.HeadwiseBudget[i].HeadwiseBudgetId" />
+                                            <input type="hidden" asp-for="@Model.HeadwiseBudget[i].Name" />
+                                            <label class="control-label">@Model.HeadwiseBudget[i].Name </label>
+                                        </td>
+                                        <td>
+                                            @Html.TextBoxFor(model => model.HeadwiseBudget[i].HeadwiseBudgetValue, new {@readonly = "readonly", @class = "form-control" , @placeholder="" })
+                                            <label class="text-danger" style="display:contents"></label>
+                                        </td>
+                                    </tr>
+                                }
+                            </table>
+                        }
+                    </div>
+                    <div class="col-md-6"></div>
+
+                    @*--------End----HeadwiseBudget-------------*@
+                </div>
+                <div class="row">
+                    <div>
+                        <div class="form-group">
+                            <button type="submit" id="Save" class="btn btn-primary">@SharedLocalizer["Submit"]</button>
+                            <a class="btn btn-danger" asp-action="PIDFList" asp-controller="PIDF" asp-route-ScreenId="5">@SharedLocalizer["Cancel"]</a>
+                            <button type="submit" id="SaveDraft" class="btn btn-info">@SharedLocalizer["SaveDraft"]</button>
+                            @*   <a  class="btn btn-success" onClick="SaveApproveClick();">@SharedLocalizer["Approve"]</a>
+                            <a  class="btn btn-danger" onClick="SaveRejectClick();">@SharedLocalizer["Reject"]</a>*@
+                        </div>
+                    </div>
+                </div>
+                @* ----------End -Save buttons-------------*@
+            </form>
+        </div>
+    </div>
+</div>
+@section MyScripts {
+    <link href="/lib/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
+    <script src="/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="~/js/custom/pidf/APICharterDetailsForm.js"></script>
+    <script>
+        var SaveStatus = "@TempData["SaveStatus"]";
+        var ErrorMessage = "@SharedLocalizer["Error"]";
+        var GetAllMarketExtension = "@EmcureNPD.Web.Helpers.APIURLHelper.GetAllMarketExtension";
+
+        document.addEventListener("DOMContentLoaded", function () {
+            var tabList = [].slice.call(document.querySelectorAll("#mainDivCommercial a"));
+            var tabs = $('#tabList');
+
+            tabList.forEach(function (tab) {
+                var tabTrigger = new bootstrap.Tab(tab);
+
+                tab.addEventListener("click", function (event) {
+                    event.preventDefault();
+                    tabTrigger.show();
+                });
+                tabs.append('<div class="tab-pane fade" id="' + tab + '">');
+
+            });
+        });
+        var errorCallBack = '@TempData[EmcureNPD.Web.Helpers.UserHelper.ErrorMessage]';
+        if (errorCallBack) {
+            toastr.error(errorCallBack);
+        }
+        var successCallBack = '@TempData[EmcureNPD.Web.Helpers.UserHelper.SuccessMessage]';
+        if (successCallBack) {
+            toastr.success(successCallBack);
+        }
+    </script>
+
+}
+
+
+
+
+
+
+
+
+
+

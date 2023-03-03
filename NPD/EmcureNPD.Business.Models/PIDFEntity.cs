@@ -74,10 +74,10 @@ namespace EmcureNPD.Business.Models
         public string RFDCommercialBatchSize { get; set; }
 
         public bool IsActive { get; set; }
-        public DateTime CreatedDate { get; set; }
-        public int? CreatedBy { get; set; }
-        public DateTime? ModifyDate { get; set; }
-		public int? ModifyBy { get; set; }
+  //      public DateTime CreatedDate { get; set; }
+  //      public int? CreatedBy { get; set; }
+  //      public DateTime? ModifyDate { get; set; }
+		//public int? ModifyBy { get; set; }
 		
         public int StatusId { get; set; }
         
@@ -85,6 +85,9 @@ namespace EmcureNPD.Business.Models
         
         public int LastStatusId { get; set; }
 		public bool InHouses { get; set; }
+
+        public bool _Partial { get; set; }
+        public bool IsViewMode { get; set; }
 
         [Required(ErrorMessageResourceType = typeof(Validation), ErrorMessageResourceName = "Required")]
         //[Display(Name = "MarketExtension", ResourceType = typeof(Master))]

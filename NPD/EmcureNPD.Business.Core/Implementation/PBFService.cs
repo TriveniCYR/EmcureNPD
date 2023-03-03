@@ -142,6 +142,8 @@ namespace EmcureNPD.Business.Core.Implementation
             _pidfPbfClinicalPivotalBioFedRepository = _unitOfWork.GetRepository<PidfPbfClinicalPivotalBioFed>();
             _pidfPbfClinicalCostRepository = _unitOfWork.GetRepository<PidfPbfClinicalCost>();
         }
+
+        //------------Start------API_Functions_Kuldip--------------------------
         public string FileValidation(IFormFile file)
         {
             PIDFMedicalViewModel fileUpload = new PIDFMedicalViewModel();
@@ -323,8 +325,16 @@ namespace EmcureNPD.Business.Core.Implementation
         //------------End------API_IPD_Details_Form_Entity--------------------------
         #endregion
 
+        public async Task<PIDFAPICharterFormEntity> GetAPICharterSummaryFormData(long pidfId)
+        {
+            PIDFAPICharterFormEntity _oCharterEntity = new PIDFAPICharterFormEntity();
+            SqlParameter[] osqlParameter = {
+                new SqlParameter("@PIDFID", pidfId)
+            };
+            var dbresult = await _pidf_API_Charter_repository.GetDataSetBySP("stp_npd_GetAPICharterSummaryData",
+                System.Data.CommandType.StoredProcedure, osqlParameter);
 
-        public async Task<PIDFAPICharterFormEntity> GetAPICharterFormData(long pidfId)
+        public async Task<PIDFAPICharterFormEntity>  GetAPICharterFormData(long pidfId)
         {
             PIDFAPICharterFormEntity _oCharterEntity = new PIDFAPICharterFormEntity();
             SqlParameter[] osqlParameter = {
@@ -341,8 +351,11 @@ namespace EmcureNPD.Business.Core.Implementation
                 {
                     _CharterObjects = dbresult.Tables[0].DataTableToList<CharterObject>();
                     _oCharterEntity.TimelineInMonths = dbresult.Tables[1].DataTableToList<TimelineInMonths>();
-                    _oCharterEntity.ManhourEstimates = dbresult.Tables[2].DataTableToList<ManhourEstimates>();
-                    _oCharterEntity.AnalyticalDepartment = dbresult.Tables[3].DataTableToList<AnalyticalDepartment>();
+                    _oCharterEntity.AnalyticalDepartment = dbresult.Tables[2].DataTableToList<AnalyticalDepartment>();
+                    _oCharterEntity.PRDDepartment = dbresult.Tables[3].DataTableToList<PRDDepartment>();
+                    _oCharterEntity.CapitalOtherExpenditure = dbresult.Tables[4].DataTableToList<CapitalOtherExpenditure>();
+                    _oCharterEntity.ManhourEstimates = dbresult.Tables[5].DataTableToList<ManhourEstimates>();
+                    _oCharterEntity.HeadwiseBudget = dbresult.Tables[6].DataTableToList<HeadwiseBudget>();
                 }
             }
 
@@ -381,6 +394,11 @@ namespace EmcureNPD.Business.Core.Implementation
             var _objPidfApiCharterManhourEstimates = FillObjData<ManhourEstimates, PidfApiCharterManhourEstimate>(_oAPICharter.ManhourEstimates);
             var _objPidfApiCharterAnalyticalDepartment = FillObjData<AnalyticalDepartment, PidfApiCharterAnalyticalDepartment>(_oAPICharter.AnalyticalDepartment);
 
+            var _objPidfApiCharterPRDDepartment = FillObjData<PRDDepartment, PidfApiCharterPrddepartment>(_oAPICharter.PRDDepartment);
+            var _objPidfApiCharterCapitalOtherExpenditure = FillObjData<CapitalOtherExpenditure, PidfApiCharterCapitalOtherExpenditure>(_oAPICharter.CapitalOtherExpenditure);
+            var _objPidfApiCharterHeadwiseBudget = FillObjData<HeadwiseBudget, PidfApiCharterHeadwiseBudget>(_oAPICharter.HeadwiseBudget);         
+
+
             if (_oAPICharter.PIDFAPICharterFormID > 0)
             {
                 var lastApiCharter = _pidf_API_Charter_repository.GetAll().First(x => x.PidfApiCharterId == _oAPICharter.PIDFAPICharterFormID);
@@ -391,7 +409,7 @@ namespace EmcureNPD.Business.Core.Implementation
                     lastApiCharter.PidfApiCharterTimelineInMonths = _objPidfApiCharterTimelineInMonth;
                     lastApiCharter.PidfApiCharterManhourEstimates = _objPidfApiCharterManhourEstimates;
                     lastApiCharter.PidfApiCharterAnalyticalDepartments = _objPidfApiCharterAnalyticalDepartment;
-
+                    
 
 
                     _oAPICharter.ManHourRates = (Convert.ToString(_oAPICharter.ManHourRates) == "" || _oAPICharter.ManHourRates == null) ? "0" : _oAPICharter.ManHourRates;
@@ -416,7 +434,14 @@ namespace EmcureNPD.Business.Core.Implementation
             {
                 var _oDBApiCharter = new PidfApiCharter();
 
-                //_oAPICharter.ManHourRates = (Convert._oAPICharter(_oAPICharter.ManHourRates) == "") ? "0" : _oAPICharter.ManHourRates;
+                _oDBApiCharter.PidfApiCharterTimelineInMonths = _objPidfApiCharterTimelineInMonth;
+                _oDBApiCharter.PidfApiCharterManhourEstimates = _objPidfApiCharterManhourEstimates;
+                _oDBApiCharter.PidfApiCharterAnalyticalDepartments = _objPidfApiCharterAnalyticalDepartment;                
+                _oDBApiCharter.PidfApiCharterPrddepartments = _objPidfApiCharterPRDDepartment;
+                _oDBApiCharter.PidfApiCharterCapitalOtherExpenditures = _objPidfApiCharterCapitalOtherExpenditure;
+                _oDBApiCharter.PidfApiCharterHeadwiseBudgets = _objPidfApiCharterHeadwiseBudget;
+
+                _oAPICharter.ManHourRates = (Convert.ToString(_oAPICharter.ManHourRates) == "" || _oAPICharter.ManHourRates == null) ? "0" : _oAPICharter.ManHourRates;
                 _oDBApiCharter.ManHourRates = int.Parse(_oAPICharter.ManHourRates);
                 _oDBApiCharter.ApigroupLeader = _oAPICharter.APIGroupLeader;
                 _oDBApiCharter.ProjectComplexityId = _oAPICharter.ProjectComplexityId;
@@ -434,7 +459,6 @@ namespace EmcureNPD.Business.Core.Implementation
         }
         public async Task<PIDFAPIRnDFormEntity> GetAPIRnDFormData(long pidfId, string _webrootPath)
         {
-
             PIDFAPIRnDFormEntity _oApiRnDData = new PIDFAPIRnDFormEntity();
             var _oAPIRnD = await _pidf_API_RnD_repository.GetAsync(x => x.Pidfid == pidfId);
             var _oAPIIpd = await _pidf_API_IPD_repository.GetAsync(x => x.Pidfid == pidfId);
@@ -452,8 +476,6 @@ namespace EmcureNPD.Business.Core.Implementation
                 _oApiRnDData.SponsorBusinessPartner = _oAPIRnD.SponsorBusinessPartner;
                 _oApiRnDData.APIMarketPrice = _oAPIRnD.ApimarketPrice;
                 _oApiRnDData.APITargetRMC_CCPC = _oAPIRnD.ApitargetRmcCcpc;
-
-
             }
             if (_oAPIIpd != null)
             {
@@ -495,8 +517,8 @@ namespace EmcureNPD.Business.Core.Implementation
                     lastApiRnD.ModifyDate = DateTime.Now;
                     _pidf_API_RnD_repository.UpdateAsync(lastApiRnD);
 
-                    var isSuccess = await _auditLogService.CreateAuditLog<PidfApiRnD>(Utility.Audit.AuditActionType.Update,
-                 Utility.Enums.ModuleEnum.PBF, OldObjAPiIPD, lastApiRnD, 0);
+                    //   var isSuccess = await _auditLogService.CreateAuditLog<PidfApiRnD>(Utility.Audit.AuditActionType.Update,
+                    //Utility.Enums.ModuleEnum.PBF, OldObjAPiIPD, lastApiRnD, 0);
                 }
                 else
                 {
@@ -523,11 +545,11 @@ namespace EmcureNPD.Business.Core.Implementation
                 _pidf_API_RnD_repository.AddAsync(_oDBApiRnd);
             }
             await _unitOfWork.SaveChangesAsync();
-            var _StatusID = (_oAPIRnD.SaveType == "Save") ? Master_PIDFStatus.APISubmitted : Master_PIDFStatus.APISubmitted;
+            var _StatusID = (_oAPIRnD.SaveType == "Save") ? Master_PIDFStatus.APISubmitted : Master_PIDFStatus.APIInProgress;
             await _auditLogService.UpdatePIDFStatusCommon(long.Parse(_oAPIRnD.Pidfid), (int)_StatusID, _oAPIRnD.LoggedInUserId);
             return DBOperation.Success;
         }
-
+        //------------End------API_Functions_Kuldip--------------------------
         public async Task<dynamic> FillDropdown()
         {
             dynamic DropdownObjects = new ExpandoObject();
@@ -987,7 +1009,7 @@ namespace EmcureNPD.Business.Core.Implementation
                                 clinicalPilotBioFed.NumberofVolunteers = item.NumberofVolunteers;
                                 clinicalPilotBioFed.ClinicalCostandVol = item.ClinicalCostandVol;
                                 clinicalPilotBioFed.DocCostandStudy = item.DocCostandStudy;
-                                clinicalPilotBioFed.TotalCost = item.TotalCost;
+                                //clinicalPilotBioFed.TotalCost = item.TotalCost;
                                 clinicalPilotBioFed.CreatedDate = DateTime.Now;
                                 clinicalPilotBioFed.CreatedBy = loggedInUserId;
 

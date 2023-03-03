@@ -97,3 +97,7 @@ table, th, td {
     border-radius:15px;
     box-shadow:5px 5px 5px #e8e8e8;
 }
+.operationButton {
+    cursor: pointer;
+}
+.card-header.bg-primary button{color:#fff;}
