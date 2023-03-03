@@ -215,9 +215,21 @@ $("[id*='ManhourEstimatesCostValue']").change(function () {
 //--------------Calculation of Analytical Aaw Material---------------------------AnalyticalDepartment_5__AnalyticalDepartmentARDValue
 function CalculateTotalHeadwiseAnalytical () {
     var sum = 0;
+    var i = 0;
         var Control_Id = "#AnalyticalDepartment_5__AnalyticalDepartmentARDValue";
         var Value = ($(Control_Id).val() == '') ? 0 : $(Control_Id).val();
         if (!isNaN(Value))
+        sum = parseFloat(Value);
+
+    $("#HeadwiseBudget_0__HeadwiseBudgetValue").val(sum);
+}
+//-----------------Calculatyion of HeadwiseBudgetValue---------------------------------------
+function CalculateTotalHeadwiseAnalytical() {
+    var sum = 0;
+    var i = 0;
+    var Control_Id = "#AnalyticalDepartment_5__AnalyticalDepartmentARDValue";
+    var Value = ($(Control_Id).val() == '') ? 0 : $(Control_Id).val();
+    if (!isNaN(Value))
         sum = parseFloat(Value);
 
     $("#HeadwiseBudget_0__HeadwiseBudgetValue").val(sum);
