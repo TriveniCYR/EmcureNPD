@@ -1,6 +1,7 @@
 ﻿using EmcureNPD.Business.Models;
 using EmcureNPD.Data.DataAccess.Entity;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -23,6 +24,8 @@ namespace EmcureNPD.Business.Core.Interface
         Task<IEnumerable<dynamic>> GetAllRegion(int userId);
         Task<IEnumerable<dynamic>> GetCountryRefByRegionIds(string regionIds);
         Task<DBOperation> ApproveRejectIpdPidf(EntryApproveRej oApprRej);
+
+        public ProjectTaskEntity GetDropDownsForTask();
 
     }
 }

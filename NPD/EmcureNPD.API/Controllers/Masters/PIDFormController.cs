@@ -322,5 +322,13 @@ namespace EmcureNPD.API.Controllers.Masters
             }
         }
 
+        [HttpGet, Route("GetDropdownsForAddDRFTask")]
+        
+        public ActionResult GetDropdownsForAddDRFTask()
+        {
+            var oResponse = _PIDFormService.GetDropDownsForTask();
+            return Ok(oResponse);
+
+        }
     }
 }
