@@ -83,7 +83,6 @@ namespace EmcureNPD.Data.DataAccess.DataContext
         public virtual DbSet<PidfCommercial> PidfCommercials { get; set; }
         public virtual DbSet<PidfCommercialYear> PidfCommercialYears { get; set; }
         public virtual DbSet<PidfFinance> PidfFinances { get; set; }
-        public virtual DbSet<PidfFinance1> PidfFinances1 { get; set; }
         public virtual DbSet<PidfFinanceBatchSizeCoating> PidfFinanceBatchSizeCoatings { get; set; }
         public virtual DbSet<PidfIpd> PidfIpds { get; set; }
         public virtual DbSet<PidfIpdCountry> PidfIpdCountries { get; set; }
@@ -1641,128 +1640,6 @@ namespace EmcureNPD.Data.DataAccess.DataContext
                 entity.Property(e => e.Total).HasColumnType("numeric(18, 2)");
             });
 
-            modelBuilder.Entity<PidfFinance1>(entity =>
-            {
-                entity.HasKey(e => e.PidffinaceId)
-                    .HasName("PK__PIDF_Fin__985A8F564BE0B0DD");
-
-                entity.ToTable("PIDF_Finance");
-
-                entity.Property(e => e.PidffinaceId).HasColumnName("PIDFFinaceId");
-
-                entity.Property(e => e.ApprovalDate).HasColumnType("datetime");
-
-                entity.Property(e => e.ApprovalPeriodinDays).HasMaxLength(20);
-
-                entity.Property(e => e.BatchManufacturing).HasMaxLength(70);
-
-                entity.Property(e => e.BatchmanufacturingcostOrApiactualsEst)
-                    .HasColumnType("numeric(18, 2)")
-                    .HasColumnName("BatchmanufacturingcostOrAPIActualsEst");
-
-                entity.Property(e => e.BatchmanufacturingcostOrApiactualsEstPhaseEndDate)
-                    .HasColumnType("datetime")
-                    .HasColumnName("BatchmanufacturingcostOrAPIActualsEstPhaseEndDate");
-
-                entity.Property(e => e.Bestudies)
-                    .HasColumnType("numeric(18, 2)")
-                    .HasColumnName("BEstudies");
-
-                entity.Property(e => e.BestudiesPhaseEndDate)
-                    .HasColumnType("datetime")
-                    .HasColumnName("BEstudiesPhaseEndDate");
-
-                entity.Property(e => e.BioStuddyCost).HasColumnType("numeric(18, 2)");
-
-                entity.Property(e => e.BioStuddyCostPhaseEndDate).HasColumnType("datetime");
-
-                entity.Property(e => e.Capex).HasColumnType("numeric(18, 2)");
-
-                entity.Property(e => e.CapexPhaseEndDate).HasColumnType("datetime");
-
-                entity.Property(e => e.CreatedDate).HasColumnType("datetime");
-
-                entity.Property(e => e.Currency).HasMaxLength(20);
-
-                entity.Property(e => e.DiscountRate).HasColumnType("numeric(18, 2)");
-
-                entity.Property(e => e.Entity).HasMaxLength(70);
-
-                entity.Property(e => e.ExpectedFilling).HasMaxLength(70);
-
-                entity.Property(e => e.Filingfees).HasColumnType("numeric(18, 2)");
-
-                entity.Property(e => e.FilingfeesPhaseEndDate).HasColumnType("datetime");
-
-                entity.Property(e => e.ForecastDate).HasColumnType("datetime");
-
-                entity.Property(e => e.GrosstoNet).HasColumnType("numeric(18, 2)");
-
-                entity.Property(e => e.Incometaxrate).HasColumnType("numeric(18, 2)");
-
-                entity.Property(e => e.ManufacturingSiteOrPartner).HasMaxLength(70);
-
-                entity.Property(e => e.MarketShareErosionrate).HasColumnType("numeric(18, 2)");
-
-                entity.Property(e => e.MarketingAllowance).HasColumnType("numeric(18, 2)");
-
-                entity.Property(e => e.Mspersentage).HasColumnName("MSPersentage");
-
-                entity.Property(e => e.NoSkus).HasColumnName("NoSKUs");
-
-                entity.Property(e => e.NoSkusPhaseEndDate)
-                    .HasColumnType("datetime")
-                    .HasColumnName("NoSKUsPhaseEndDate");
-
-                entity.Property(e => e.NoofbatchestobemanufacturedPhaseEndDate).HasColumnType("datetime");
-
-                entity.Property(e => e.Pidfid).HasColumnName("PIDFId");
-
-                entity.Property(e => e.PriceErosion).HasColumnType("numeric(18, 2)");
-
-                entity.Property(e => e.Product).HasMaxLength(70);
-
-                entity.Property(e => e.ProductLaunchDate).HasColumnType("datetime");
-
-                entity.Property(e => e.ProjectStartDate).HasColumnType("datetime");
-
-                entity.Property(e => e.RandDanalyticalcost)
-                    .HasColumnType("numeric(18, 2)")
-                    .HasColumnName("RandDAnalyticalcost");
-
-                entity.Property(e => e.RandDanalyticalcostPhaseEndDate)
-                    .HasColumnType("datetime")
-                    .HasColumnName("RandDAnalyticalcostPhaseEndDate");
-
-                entity.Property(e => e.RegulatoryMaintenanceCost).HasColumnType("numeric(18, 2)");
-
-                entity.Property(e => e.Rldsamplecost)
-                    .HasColumnType("numeric(18, 2)")
-                    .HasColumnName("RLDsamplecost");
-
-                entity.Property(e => e.RldsamplecostPhaseEndDate)
-                    .HasColumnType("datetime")
-                    .HasColumnName("RLDsamplecostPhaseEndDate");
-
-                entity.Property(e => e.Sixmonthsstabilitycost).HasColumnType("numeric(18, 2)");
-
-                entity.Property(e => e.SixmonthsstabilitycostPhaseEndDate).HasColumnType("datetime");
-
-                entity.Property(e => e.Skus)
-                    .HasMaxLength(70)
-                    .HasColumnName("SKUs");
-
-                entity.Property(e => e.TechTransfer).HasColumnType("numeric(18, 2)");
-
-                entity.Property(e => e.TechTransferPhaseEndDate).HasColumnType("datetime");
-
-                entity.Property(e => e.ToolingAndChangeParts).HasColumnType("numeric(18, 2)");
-
-                entity.Property(e => e.ToolingAndChangePartsPhaseEndDate).HasColumnType("datetime");
-
-                entity.Property(e => e.Total).HasColumnType("numeric(18, 2)");
-            });
-
             modelBuilder.Entity<PidfFinanceBatchSizeCoating>(entity =>
             {
                 entity.HasKey(e => e.PidffinaceBatchSizeCoatingId)
@@ -2286,6 +2163,7 @@ namespace EmcureNPD.Data.DataAccess.DataContext
                 entity.HasOne(d => d.ProductType)
                     .WithMany(p => p.PidfPbfClinicals)
                     .HasForeignKey(d => d.ProductTypeId)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("FK_PIDF_PBF_Clinical_Master_ProductType");
 
                 entity.HasOne(d => d.Strength)
@@ -2315,7 +2193,7 @@ namespace EmcureNPD.Data.DataAccess.DataContext
                     .WithMany(p => p.PidfPbfClinicalCosts)
                     .HasForeignKey(d => d.PbfclinicalId)
                     .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK_PIDF_PBF_Clinical_Cost_PIDF_PBF_Clinical_Cost");
+                    .HasConstraintName("FK_PIDF_PBF_Clinical_Cost_PIDF_PBF_Clinical");
 
                 entity.HasOne(d => d.Strength)
                     .WithMany(p => p.PidfPbfClinicalCosts)
@@ -2330,8 +2208,6 @@ namespace EmcureNPD.Data.DataAccess.DataContext
                     .HasName("PK_PIDF_PBF_PilotBioFasting");
 
                 entity.ToTable("PIDF_PBF_Clinical_PilotBioFasting", "dbo");
-
-                entity.Property(e => e.PilotBioFastingId).ValueGeneratedNever();
 
                 entity.Property(e => e.ClinicalCostandVol)
                     .HasColumnType("decimal(18, 0)")
@@ -2367,9 +2243,7 @@ namespace EmcureNPD.Data.DataAccess.DataContext
 
                 entity.ToTable("PIDF_PBF_Clinical_PilotBioFED", "dbo");
 
-                entity.Property(e => e.PilotBioFedid)
-                    .ValueGeneratedNever()
-                    .HasColumnName("PilotBioFEDId");
+                entity.Property(e => e.PilotBioFedid).HasColumnName("PilotBioFEDId");
 
                 entity.Property(e => e.ClinicalCostandVol)
                     .HasColumnType("decimal(18, 0)")
@@ -2407,8 +2281,6 @@ namespace EmcureNPD.Data.DataAccess.DataContext
 
                 entity.ToTable("PIDF_PBF_Clinical_PivotalBioFasting", "dbo");
 
-                entity.Property(e => e.PivotalBioFastingId).ValueGeneratedNever();
-
                 entity.Property(e => e.ClinicalCostandVol)
                     .HasColumnType("decimal(18, 0)")
                     .HasColumnName("ClinicalCostandVOl");
@@ -2443,9 +2315,7 @@ namespace EmcureNPD.Data.DataAccess.DataContext
 
                 entity.ToTable("PIDF_PBF_Clinical_PivotalBioFED", "dbo");
 
-                entity.Property(e => e.PivotalBioFedid)
-                    .ValueGeneratedNever()
-                    .HasColumnName("PivotalBioFEDId");
+                entity.Property(e => e.PivotalBioFedid).HasColumnName("PivotalBioFEDId");
 
                 entity.Property(e => e.ClinicalCostandVol)
                     .HasColumnType("decimal(18, 0)")

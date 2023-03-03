@@ -244,13 +244,15 @@ namespace EmcureNPD.Web.Helpers
         public static string SavePBF = "api/PBF/InsertUpdatePBFDetails";
         public static string SavePBFAnatical = "api/PBF/PBFAnaLytical";
         public static string GetPBFReadonlyDataByPIDFId = "api/PBF/GetPBFAnalyticalReadonlyData";
-		
+        public static string GetPbfFormDetails = "api/PBF/GetPbfFormDetails";
+        
 
-		#endregion
+
+        #endregion
 
 
-		#region MarketExtension
-		public static string GetAllMarketExtension = "api/MarketExtension/GetAllMarketExtension";
+        #region MarketExtension
+        public static string GetAllMarketExtension = "api/MarketExtension/GetAllMarketExtension";
         public static string SaveMarketExtension = "api/MarketExtension/InsertUpdateMarketExtension";
         public static string GetMarketExtensionById = "api/MarketExtension/GetMarketExtensionById";
         public static string DeleteMarketExtensionById = "api/MarketExtension/DeleteMarketExtension";

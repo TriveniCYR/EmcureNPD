@@ -1,13 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace EmcureNPD.Business.Models
 {
     public class PidfPbfFormEntity
-    {
+    { 
         public long Pidfpbfid { get; set; }
         public long Pidfid { get; set; }
         public int BusinessUnitId { get; set; }
@@ -33,10 +30,11 @@ namespace EmcureNPD.Business.Models
         public int CreatedBy { get; set; }
         public DateTime? ModifyDate { get; set; }
         public int? ModifyBy { get; set; }
-        public string SaveSubmitType { get; set; }
+        public string SaveSubmitType { get; set; }       
+
         public List<MasterBusinessUnitEntity> MasterBusinessUnitEntities { get; set; }
         public PidfPbfRnDEntity pidfPbfRndEntity { get; set; }
-        public PidfPbfAnalyticalEntity pidfPbfAnalyticalEntity { get; set; }
-        public PidfPbfClinicalEntity pidfPbfClinicalEntity { get; set; }
+        public PidfPbfAnalyticalEntity PidfPbfAnalyticals { get; set; }
+        public PidfPbfClinicalEntity PidfPbfClinicals { get; set; }       
     }
 }

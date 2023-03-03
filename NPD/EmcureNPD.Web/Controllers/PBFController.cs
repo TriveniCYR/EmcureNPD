@@ -641,9 +641,9 @@ namespace EmcureNPD.Web.Controllers
             {
                 ViewBag.errormessage = Convert.ToString(e.StackTrace);
                 ModelState.Clear();
-                return RedirectToAction(nameof(PIDFList));
+               return RedirectToAction("PIDFList", "PIDF", new { ScreenId = 6 });
             }
-            return RedirectToAction(nameof(PIDFList));
+            return RedirectToAction("PIDFList", "PIDF", new { ScreenId = 6 });
         }
     }
 

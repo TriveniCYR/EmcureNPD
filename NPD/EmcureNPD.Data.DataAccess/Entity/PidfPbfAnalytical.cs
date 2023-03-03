@@ -5,7 +5,7 @@ using System.Collections.Generic;
 
 namespace EmcureNPD.Data.DataAccess.Entity
 {
-    public partial class PidfPbfAnalytical
+    public partial class PidfPbfAnalytical 
     {
         public PidfPbfAnalytical()
         {

@@ -6,7 +6,7 @@ $(document).ready(function () {
     GetPBFDropdown();
     SetDivReadonly();
     hideForms();
-    $("#pidfPbfAnalyticalEntity_AnalyticalPIDFID").val($('#Pidfid').val());
+    $("#PidfPbfAnalyticals_PIDFID").val($('#Pidfid').val());
     GetProductStrengthById($('#Pidfid').val());
     $(".analyticalcalculatecost").on("change", function () {
         Calculate_Analytical_total();
@@ -31,7 +31,7 @@ function GetPBFDropdownSuccess(data) {
             $(data.MasterAPISourcing).each(function (index, item) {
                 $('#apiSourcingData_0').append('<option value="' + item.apiSourcingId + '">' + item.apiSourcingName + '</option>');
             });
-            $(data.MasterDosageForms).each(function (index, item) {
+            $(data.MasterDosage).each(function (index, item) {
                 $('#PbfDosageFormId').append('<option value="' + item.dosageId + '">' + item.dosageName + '</option>');
             });
             $(data.MasterPackagingTypes).each(function (index, item) {
@@ -101,12 +101,12 @@ function GetPBFDropdownSuccess(data) {
                 $('#ClinicalProductTypeId').append('<option value="' + item.productTypeId + '">' + item.productTypeName + '</option>');
             });
             $(data.MasterFormulationService).each(function (index, item) {
-                $('#AnalyticalFormulationGLId').append('<option value="' + item.formulationId + '">' + item.formulationName + '</option>');
-                $('#ClinicalFormulationGLId').append('<option value="' + item.formulationId + '">' + item.formulationName + '</option>');
+                $('#AnalyticalFormulationId').append('<option value="' + item.formulationId + '">' + item.formulationName + '</option>');
+                $('#ClinicalFormulationId').append('<option value="' + item.formulationId + '">' + item.formulationName + '</option>');
             });
             $(data.MasterAnalyticalGLService).each(function (index, item) {
-                $('#AnalyticalAnalyticalGLId').append('<option value="' + item.analyticalId + '">' + item.analyticalName + '</option>');
-                $('#ClinicalAnalyticalGLId').append('<option value="' + item.analyticalId + '">' + item.analyticalName + '</option>');
+                $('#AnalyticalAnalyticalId').append('<option value="' + item.analyticalId + '">' + item.analyticalName + '</option>');
+                $('#ClinicalAnalyticalId').append('<option value="' + item.analyticalId + '">' + item.analyticalName + '</option>');
             });
             $(data.MasterTestType).each(function (index, item) {
                 $('#AnalyticalPrototypeTestTypeId').append('<option value="' + item.testTypeId + '">' + item.testTypeName + '</option>');
@@ -114,8 +114,8 @@ function GetPBFDropdownSuccess(data) {
                 $('#AnalyticalScaleUpTestTypeId').append('<option value="' + item.testTypeId + '">' + item.testTypeName + '</option>');
             });
             $(data.MasterTestLicense).each(function (index, item) {
-                $('#Analyticallicence').append('&nbsp;<input type="checkbox" name="AnalyticalLicence" value="' + item.testLicenseId + '">&nbsp;' + item.testLicenseName);
-                $('#ClinicalLicence').append('&nbsp;<input type="checkbox" name="ClinicalLicence" value="' + item.testLicenseId + '">&nbsp;' + item.testLicenseName);
+                $('#Analyticallicence').append('&nbsp;<input type="checkbox" name="PidfPbfAnalyticals.TestLicenseAvailability" value="' + item.testLicenseId + '">&nbsp;' + item.testLicenseName);
+                $('#TestLicenseAvailability').append('&nbsp;<input type="checkbox" name="PidfPbfClinicals.TestLicenseAvailability" value="' + item.testLicenseId + '">&nbsp;' + item.testLicenseName);
 
             });
         }
@@ -201,8 +201,6 @@ function StrengthtabClick(strengthId, pidfidval, strengthVal) {
 }
 function BUtabClick(BUVal, pidfidval) {
     SelectedBUValue = BUVal;
-    $("#pidfPbfAnalyticalEntity_AnalyticalBusinessUnitId").val(SelectedBUValue);
-    $("#pidfPbfAnalyticalEntity_AnalyticalPIDFID").val($('#Pidfid').val());
 }
 // #region Get ProductStrength By pidfId
 function GetProductStrengthById(id) {
@@ -211,12 +209,12 @@ function GetProductStrengthById(id) {
 function GetProductStrengthByIdSuccess(data) {
     debugger;
     try {
-        $('#pidfPbfAnalyticalEntity_ProjectName').val(data._object.projectName);
-        $('#pidfPbfAnalyticalEntity_SAPProjectProjectCode').val(data._object.sapProjectProjectCode);
-        $('#pidfPbfAnalyticalEntity_ImprintingEmbossingCodes').val(data._object.imprintingEmbossingCodes);
-        $('#pidfPbfClinicalEntity_ProjectName').val(data._object.projectName);
-        $('#pidfPbfClinicalEntity_SAPProjectProjectCode').val(data._object.sapProjectProjectCode);
-        $('#pidfPbfClinicalEntity_ImprintingEmbossingCodes').val(data._object.imprintingEmbossingCodes);
+        $('#PidfPbfAnalyticals_ProjectName').val(data._object.projectName);
+        $('#PidfPbfAnalyticals_SAPProjectProjectCode').val(data._object.sapProjectProjectCode);
+        $('#PidfPbfAnalyticals_ImprintingEmbossingCodes').val(data._object.imprintingEmbossingCodes);
+        $('#PidfPbfClinicals_ProjectName').val(data._object.projectName);
+        $('#PidfPbfClinicals_SAPProjectProjectCode').val(data._object.sapProjectProjectCode);
+        $('#PidfPbfClinicals_ImprintingEmbossingCodes').val(data._object.imprintingEmbossingCodes);
         $(data._object.productStrength).each(function (index, item) {
             $('#strengthlblAnalytical').append('<ul class="nav nav-pills" ><li class="nav-item mr-2"><label class="form-control">' + item.strength + '</label></li></ul>');
             $('#strengthlblClinical').append('<ul class="nav nav-pills" ><li class="nav-item mr-2"><label class="form-control">' + item.strength + '</label></li></ul>');
@@ -393,37 +391,45 @@ function Save() {
             //code need to be implemented
             break;
         case 'Analytical':
-            $.each($("input[name='AnalyticalLicence']:checked"), function () {
+            $.each($("input[name='PidfPbfAnalyticals.TestLicenseAvailability']:checked"), function () {
                 selected.push($(this).val());
             });
-            $("#pidfPbfAnalyticalEntity_AnalyticalLicence").val(selected.join(", "))
-            $("#pidfPbfAnalyticalEntity_StrengthId").val(SelectedstrengthValue);
-            $("#pidfPbfAnalyticalEntity_AnalyticalBusinessUnitId").val(SelectedBUValue);
-            $("#pidfPbfAnalyticalEntity_AnalyticalPIDFID").val($('#Pidfid').val());
-            if ($("#pidfPbfAnalyticalEntity_AnalyticalBusinessUnitId").val() == 0) {
+            $("#PidfPbfAnalyticals_TestLicenseAvailability").val(selected.join(", "))
+            $("#PidfPbfAnalyticals_StrengthId").val(SelectedstrengthValue);
+            $("#PidfPbfAnalyticals_BusinessUnitId").val(SelectedBUValue);
+            $("#PidfPbfAnalyticals_PIDFID").val($('#Pidfid').val());
+            if ($("#PidfPbfAnalyticals_BusinessUnitId").val() == 0) {
                 toastr.error('Please Select Business Unit');
                 preventSubmit();
             }
-            if ($("#pidfPbfAnalyticalEntity_StrengthId").val() == 0) {
+            if ($("#PidfPbfAnalyticals_StrengthId").val() == 0) {
                 toastr.error('Please select Strength');
+                preventSubmit();
+            }
+            if (selected.length == 0 ) {
+                toastr.error('Please Select License Availability');
                 preventSubmit();
             }
             SetChildRows(selectedTab);
             break;
         case 'Clinical':
-            $.each($("input[name='ClinicalLicence']:checked"), function () {
+            $.each($("input[name='PidfPbfClinicals.TestLicenseAvailability']:checked"), function () {
                 selected.push($(this).val());
             });
-            $("#pidfPbfClinicalEntity_ClinicalLicence").val(selected.join(", "))
-            $("#pidfPbfClinicalEntity_StrengthId").val(SelectedstrengthValue);
-            $("#pidfPbfClinicalEntity_ClinicalBusinessUnitId").val(SelectedBUValue);
-            $("#pidfPbfClinicalEntity_ClinicalPIDFID").val($('#Pidfid').val());
-            if ($("#pidfPbfClinicalEntity_ClinicalBusinessUnitId").val() == 0) {
+            $("#PidfPbfClinicals_TestLicenseAvailability").val(selected.join(", "))
+            $("#PidfPbfClinicals_StrengthId").val(SelectedstrengthValue);
+            $("#PidfPbfClinicals_BusinessUnitId").val(SelectedBUValue);
+            $("#PidfPbfClinicals_PIDFID").val($('#Pidfid').val());
+            if ($("#PidfPbfClinicals_BusinessUnitId").val() == 0) {
                 toastr.error('Please Select Business Unit');
                 preventSubmit();
             }
-            if ($("#pidfPbfClinicalEntity_StrengthId").val() == 0) {
+            if ($("#PidfPbfClinicals_StrengthId").val() == 0) {
                 toastr.error('Please select Strength');
+                preventSubmit();
+            }
+            if (selected.length == 0) {
+                toastr.error('Please Select License Availability');
                 preventSubmit();
             }
             SetChildRows(selectedTab);
@@ -446,58 +452,58 @@ function SetChildRows(selectedTab) {
         case 'Analytical':
             //Analytical Table set data start
             $.each($('#PrototypeTable tbody tr'), function (index, value) {
-                $(this).find("td:first select").attr("name", "pidfPbfAnalyticalEntity.AnalyticalPrototypeEntities[" + index.toString() + "].TestTypeId");
-                $(this).find("td:eq(1) input").attr("name", "pidfPbfAnalyticalEntity.AnalyticalPrototypeEntities[" + index.toString() + "].Numberoftests");
-                $(this).find("td:eq(2) input").attr("name", "pidfPbfAnalyticalEntity.AnalyticalPrototypeEntities[" + index.toString() + "].PrototypeDevelopment");
-                $(this).find("td:eq(3) input").attr("name", "pidfPbfAnalyticalEntity.AnalyticalPrototypeEntities[" + index.toString() + "].Cost");
-                $(this).find("td:eq(4) input").attr("name", "pidfPbfAnalyticalEntity.AnalyticalPrototypeEntities[" + index.toString() + "].PrototypeCost");
+                $(this).find("td:first select").attr("name", "PidfPbfAnalyticals.PidfPbfAnalyticalPrototypes[" + index.toString() + "].TestTypeId");
+                $(this).find("td:eq(1) input").attr("name", "PidfPbfAnalyticals.PidfPbfAnalyticalPrototypes[" + index.toString() + "].Numberoftests");
+                $(this).find("td:eq(2) input").attr("name", "PidfPbfAnalyticals.PidfPbfAnalyticalPrototypes[" + index.toString() + "].PrototypeDevelopment");
+                $(this).find("td:eq(3) input").attr("name", "PidfPbfAnalyticals.PidfPbfAnalyticalPrototypes[" + index.toString() + "].Cost");
+                $(this).find("td:eq(4) input").attr("name", "PidfPbfAnalyticals.PidfPbfAnalyticalPrototypes[" + index.toString() + "].PrototypeCost");
             });
             $.each($('#ScaleUpTable tbody tr'), function (index, value) {
-                $(this).find("td:first select").attr("name", "pidfPbfAnalyticalEntity.AnalyticalScaleUpEntities[" + index.toString() + "].TestTypeId");
-                $(this).find("td:eq(1) input").attr("name", "pidfPbfAnalyticalEntity.AnalyticalScaleUpEntities[" + index.toString() + "].Numberoftests");
-                $(this).find("td:eq(2) input").attr("name", "pidfPbfAnalyticalEntity.AnalyticalScaleUpEntities[" + index.toString() + "].PrototypeDevelopment");
-                $(this).find("td:eq(3) input").attr("name", "pidfPbfAnalyticalEntity.AnalyticalScaleUpEntities[" + index.toString() + "].Cost");
-                $(this).find("td:eq(4) input").attr("name", "pidfPbfAnalyticalEntity.AnalyticalScaleUpEntities[" + index.toString() + "].PrototypeCost");
+                $(this).find("td:first select").attr("name", "PidfPbfAnalyticals.PidfPbfAnalyticalScaleUps[" + index.toString() + "].TestTypeId");
+                $(this).find("td:eq(1) input").attr("name", "PidfPbfAnalyticals.PidfPbfAnalyticalScaleUps[" + index.toString() + "].Numberoftests");
+                $(this).find("td:eq(2) input").attr("name", "PidfPbfAnalyticals.PidfPbfAnalyticalScaleUps[" + index.toString() + "].PrototypeDevelopment");
+                $(this).find("td:eq(3) input").attr("name", "PidfPbfAnalyticals.PidfPbfAnalyticalScaleUps[" + index.toString() + "].Cost");
+                $(this).find("td:eq(4) input").attr("name", "PidfPbfAnalyticals.PidfPbfAnalyticalScaleUps[" + index.toString() + "].PrototypeCost");
 
             });
             $.each($('#ExhibitTable tbody tr'), function (index, value) {
-                $(this).find("td:first select").attr("name", "pidfPbfAnalyticalEntity.AnalyticalExhibitEntities[" + index.toString() + "].TestTypeId");
-                $(this).find("td:eq(1) input").attr("name", "pidfPbfAnalyticalEntity.AnalyticalExhibitEntities[" + index.toString() + "].Numberoftests");
-                $(this).find("td:eq(2) input").attr("name", "pidfPbfAnalyticalEntity.AnalyticalExhibitEntities[" + index.toString() + "].PrototypeDevelopment");
-                $(this).find("td:eq(3) input").attr("name", "pidfPbfAnalyticalEntity.AnalyticalExhibitEntities[" + index.toString() + "].Cost");
-                $(this).find("td:eq(4) input").attr("name", "pidfPbfAnalyticalEntity.AnalyticalExhibitEntities[" + index.toString() + "].PrototypeCost");
+                $(this).find("td:first select").attr("name", "PidfPbfAnalyticals.PidfPbfAnalyticalExhibits[" + index.toString() + "].TestTypeId");
+                $(this).find("td:eq(1) input").attr("name", "PidfPbfAnalyticals.PidfPbfAnalyticalExhibits[" + index.toString() + "].Numberoftests");
+                $(this).find("td:eq(2) input").attr("name", "PidfPbfAnalyticals.PidfPbfAnalyticalExhibits[" + index.toString() + "].PrototypeDevelopment");
+                $(this).find("td:eq(3) input").attr("name", "PidfPbfAnalyticals.PidfPbfAnalyticalExhibits[" + index.toString() + "].Cost");
+                $(this).find("td:eq(4) input").attr("name", "PidfPbfAnalyticals.PidfPbfAnalyticalExhibits[" + index.toString() + "].PrototypeCost");
             });
             //Analytical Table set data End
             break;
         case 'Clinical':
             //Clinical table set data start
             $.each($('#PilotBioFastingTable tbody tr'), function (index, value) {
-                $(this).find("td:first input").attr("name", "pidfPbfClinicalEntity.pidfpbfClinicalpilotBioFastingEntity[" + index.toString() + "].Fasting");
-                $(this).find("td:eq(1) input").attr("name", "pidfPbfClinicalEntity.pidfpbfClinicalpilotBioFastingEntity[" + index.toString() + "].NumberofVolunteers");
-                $(this).find("td:eq(2) input").attr("name", "pidfPbfClinicalEntity.pidfpbfClinicalpilotBioFastingEntity[" + index.toString() + "].ClinicalCostandVol");
-                $(this).find("td:eq(3) input").attr("name", "pidfPbfClinicalEntity.pidfpbfClinicalpilotBioFastingEntity[" + index.toString() + "].DocCostandStudy");
-                $(this).find("td:eq(4) input").attr("name", "pidfPbfClinicalEntity.pidfpbfClinicalpilotBioFastingEntity[" + index.toString() + "].TotalCost");
+                $(this).find("td:first input").attr("name", "PidfPbfClinicals.pidfpbfClinicalpilotBioFastingEntity[" + index.toString() + "].Fasting");
+                $(this).find("td:eq(1) input").attr("name", "PidfPbfClinicals.pidfpbfClinicalpilotBioFastingEntity[" + index.toString() + "].NumberofVolunteers");
+                $(this).find("td:eq(2) input").attr("name", "PidfPbfClinicals.pidfpbfClinicalpilotBioFastingEntity[" + index.toString() + "].ClinicalCostandVol");
+                $(this).find("td:eq(3) input").attr("name", "PidfPbfClinicals.pidfpbfClinicalpilotBioFastingEntity[" + index.toString() + "].DocCostandStudy");
+                $(this).find("td:eq(4) input").attr("name", "PidfPbfClinicals.pidfpbfClinicalpilotBioFastingEntity[" + index.toString() + "].TotalCost");
             });
             $.each($('#PilotBioFEDTable tbody tr'), function (index, value) {
-                $(this).find("td:first input").attr("name", "pidfPbfClinicalEntity.pidfpbfClinicalPilotBioFedEntity[" + index.toString() + "].Fed");
-                $(this).find("td:eq(1) input").attr("name", "pidfPbfClinicalEntity.pidfpbfClinicalPilotBioFedEntity[" + index.toString() + "].NumberofVolunteers");
-                $(this).find("td:eq(2) input").attr("name", "pidfPbfClinicalEntity.pidfpbfClinicalPilotBioFedEntity[" + index.toString() + "].ClinicalCostandVol");
-                $(this).find("td:eq(3) input").attr("name", "pidfPbfClinicalEntity.pidfpbfClinicalPilotBioFedEntity[" + index.toString() + "].DocCostandStudy");
-                $(this).find("td:eq(4) input").attr("name", "pidfPbfClinicalEntity.pidfpbfClinicalPilotBioFedEntity[" + index.toString() + "].TotalCost");
+                $(this).find("td:first input").attr("name", "PidfPbfClinicals.pidfpbfClinicalPilotBioFedEntity[" + index.toString() + "].Fed");
+                $(this).find("td:eq(1) input").attr("name", "PidfPbfClinicals.pidfpbfClinicalPilotBioFedEntity[" + index.toString() + "].NumberofVolunteers");
+                $(this).find("td:eq(2) input").attr("name", "PidfPbfClinicals.pidfpbfClinicalPilotBioFedEntity[" + index.toString() + "].ClinicalCostandVol");
+                $(this).find("td:eq(3) input").attr("name", "PidfPbfClinicals.pidfpbfClinicalPilotBioFedEntity[" + index.toString() + "].DocCostandStudy");
+                $(this).find("td:eq(4) input").attr("name", "PidfPbfClinicals.pidfpbfClinicalPilotBioFedEntity[" + index.toString() + "].TotalCost");
             });
             $.each($('#PivotalBioFastingTable tbody tr'), function (index, value) {
-                $(this).find("td:first input").attr("name", "pidfPbfClinicalEntity.pidfpbfClinicalPivotalBioFastingEntity[" + index.toString() + "].Fasting");
-                $(this).find("td:eq(1) input").attr("name", "pidfPbfClinicalEntity.pidfpbfClinicalPivotalBioFastingEntity[" + index.toString() + "].NumberofVolunteers");
-                $(this).find("td:eq(2) input").attr("name", "pidfPbfClinicalEntity.pidfpbfClinicalPivotalBioFastingEntity[" + index.toString() + "].ClinicalCostandVol");
-                $(this).find("td:eq(3) input").attr("name", "pidfPbfClinicalEntity.pidfpbfClinicalPivotalBioFastingEntity[" + index.toString() + "].DocCostandStudy");
-                $(this).find("td:eq(4) input").attr("name", "pidfPbfClinicalEntity.pidfpbfClinicalPivotalBioFastingEntity[" + index.toString() + "].TotalCost");
+                $(this).find("td:first input").attr("name", "PidfPbfClinicals.pidfpbfClinicalPivotalBioFastingEntity[" + index.toString() + "].Fasting");
+                $(this).find("td:eq(1) input").attr("name", "PidfPbfClinicals.pidfpbfClinicalPivotalBioFastingEntity[" + index.toString() + "].NumberofVolunteers");
+                $(this).find("td:eq(2) input").attr("name", "PidfPbfClinicals.pidfpbfClinicalPivotalBioFastingEntity[" + index.toString() + "].ClinicalCostandVol");
+                $(this).find("td:eq(3) input").attr("name", "PidfPbfClinicals.pidfpbfClinicalPivotalBioFastingEntity[" + index.toString() + "].DocCostandStudy");
+                $(this).find("td:eq(4) input").attr("name", "PidfPbfClinicals.pidfpbfClinicalPivotalBioFastingEntity[" + index.toString() + "].TotalCost");
             });
             $.each($('#PivotalBioFEDTable tbody tr'), function (index, value) {
-                $(this).find("td:first input").attr("name", "pidfPbfClinicalEntity.pidfpbfClinicalPivotalBioFedEntity[" + index.toString() + "].Fed");
-                $(this).find("td:eq(1) input").attr("name", "pidfPbfClinicalEntity.pidfpbfClinicalPivotalBioFedEntity[" + index.toString() + "].NumberofVolunteers");
-                $(this).find("td:eq(2) input").attr("name", "pidfPbfClinicalEntity.pidfpbfClinicalPivotalBioFedEntity[" + index.toString() + "].ClinicalCostandVol");
-                $(this).find("td:eq(3) input").attr("name", "pidfPbfClinicalEntity.pidfpbfClinicalPivotalBioFedEntity[" + index.toString() + "].DocCostandStudy");
-                $(this).find("td:eq(4) input").attr("name", "pidfPbfClinicalEntity.pidfpbfClinicalPivotalBioFedEntity[" + index.toString() + "].TotalCost");
+                $(this).find("td:first input").attr("name", "PidfPbfClinicals.pidfpbfClinicalPivotalBioFedEntity[" + index.toString() + "].Fed");
+                $(this).find("td:eq(1) input").attr("name", "PidfPbfClinicals.pidfpbfClinicalPivotalBioFedEntity[" + index.toString() + "].NumberofVolunteers");
+                $(this).find("td:eq(2) input").attr("name", "PidfPbfClinicals.pidfpbfClinicalPivotalBioFedEntity[" + index.toString() + "].ClinicalCostandVol");
+                $(this).find("td:eq(3) input").attr("name", "PidfPbfClinicals.pidfpbfClinicalPivotalBioFedEntity[" + index.toString() + "].DocCostandStudy");
+                $(this).find("td:eq(4) input").attr("name", "PidfPbfClinicals.pidfpbfClinicalPivotalBioFedEntity[" + index.toString() + "].TotalCost");
             });
             //Clinical table set data End
             break;
@@ -506,31 +512,33 @@ function SetChildRows(selectedTab) {
 
     }
 }
+
 function Calculate_Analytical_total() {
-    var totalAWVsum = parseFloat($('#pidfPbfAnalyticalEntity_pidfPbfAnalyticalCost_TotalAWVCost').val());
+    debugger;
+    var totalAWVsum = parseFloat($('#PidfPbfAnalyticals_PidfPbfAnalyticalCosts_TotalAWVCost').val());
     var prototypesum = 0;
     var scaleupsum = 0;
     var exhibitsum = 0;
     var totalsum = 0;
 
     $.each($('#PrototypeTable tbody tr'), function (index, value) {
-        prototypesum += parseFloat($(this).find("td:eq(4) input").attr("name", "pidfPbfAnalyticalEntity.AnalyticalPrototypeEntities[" + index.toString() + "].PrototypeCost").val());
+        prototypesum += parseFloat($(this).find("td:eq(4) input").attr("name", "PidfPbfAnalyticals.PidfPbfAnalyticalPrototypes[" + index.toString() + "].PrototypeCost").val());
 
     });
     $.each($('#ScaleUpTable tbody tr'), function (index, value) {
-        scaleupsum += parseFloat($(this).find("td:eq(4) input").attr("name", "pidfPbfAnalyticalEntity.AnalyticalScaleUpEntities[" + index.toString() + "].PrototypeCost").val());
+        scaleupsum += parseFloat($(this).find("td:eq(4) input").attr("name", "PidfPbfAnalyticals.PidfPbfAnalyticalScaleUps[" + index.toString() + "].PrototypeCost").val());
 
     });
     $.each($('#ExhibitTable tbody tr'), function (index, value) {
-        exhibitsum += parseFloat($(this).find("td:eq(4) input").attr("name", "pidfPbfAnalyticalEntity.AnalyticalExhibitEntities[" + index.toString() + "].PrototypeCost").val());
+        exhibitsum += parseFloat($(this).find("td:eq(4) input").attr("name", "PidfPbfAnalyticals.PidfPbfAnalyticalExhibits[" + index.toString() + "].PrototypeCost").val());
 
     });
     totalsum = prototypesum + scaleupsum + exhibitsum + totalAWVsum;
-    $('#pidfPbfAnalyticalEntity_pidfPbfAnalyticalCost_TotalPrototypeCost').val(prototypesum);
-    $('#pidfPbfAnalyticalEntity_pidfPbfAnalyticalCost_TotalScaleUpCost').val(scaleupsum);
-    $('#pidfPbfAnalyticalEntity_pidfPbfAnalyticalCost_TotalExhibitCost').val(exhibitsum);
+    $('#PidfPbfAnalyticals_PidfPbfAnalyticalCosts_TotalPrototypeCost').val(prototypesum);
+    $('#PidfPbfAnalyticals_PidfPbfAnalyticalCosts_TotalScaleUpCost').val(scaleupsum);
+    $('#PidfPbfAnalyticals_PidfPbfAnalyticalCosts_TotalExhibitCost').val(exhibitsum);
     $('#txtAWVCost').val(totalAWVsum);
-    $('#pidfPbfAnalyticalEntity_pidfPbfAnalyticalCost_TotalCost').val(totalsum);
+    $('#PidfPbfAnalyticals_PidfPbfAnalyticalCosts_TotalCost').val(totalsum);
 }
 function Calculate_Clinical_total() {
     debugger
@@ -541,29 +549,29 @@ function Calculate_Clinical_total() {
     var totalsum = 0;
 
     $.each($('#PilotBioFastingTable tbody tr'), function (index, value) {
-        pilotbiofastingsum += parseFloat($(this).find("td:eq(4) input").attr("name", "pidfPbfClinicalEntity.pidfpbfClinicalpilotBioFastingEntity[" + index.toString() + "].TotalCost").val());
+        pilotbiofastingsum += parseFloat($(this).find("td:eq(4) input").attr("name", "PidfPbfClinicals.pidfpbfClinicalpilotBioFastingEntity[" + index.toString() + "].TotalCost").val());
 
     });
-    $.each($('#PilotBioFedTable tbody tr'), function (index, value) {
-        pilotbiofedsum += parseFloat($(this).find("td:eq(4) input").attr("name", "pidfPbfClinicalEntity.pidfpbfClinicalPilotBioFedEntity[" + index.toString() + "].TotalCost").val());
+    $.each($('#PilotBioFEDTable tbody tr'), function (index, value) {
+        pilotbiofedsum += parseFloat($(this).find("td:eq(4) input").attr("name", "PidfPbfClinicals.pidfpbfClinicalPilotBioFedEntity[" + index.toString() + "].TotalCost").val());
 
     });
     $.each($('#PivotalBioFastingTable tbody tr'), function (index, value) {
-        pivotalbiofastingsum += parseFloat($(this).find("td:eq(4) input").attr("name", "pidfPbfClinicalEntity.pidfpbfClinicalPivotalBioFastingEntity[" + index.toString() + "].TotalCost").val());
+        pivotalbiofastingsum += parseFloat($(this).find("td:eq(4) input").attr("name", "PidfPbfClinicals.pidfpbfClinicalPivotalBioFastingEntity[" + index.toString() + "].TotalCost").val());
 
     });
-    $.each($('#PivotalBioFedTable tbody tr'), function (index, value) {
-        pivotalbiofedsum += parseFloat($(this).find("td:eq(4) input").attr("name", "pidfPbfClinicalEntity.pidfpbfClinicalPivotalBioFedEntity[" + index.toString() + "].TotalCost").val());
+    $.each($('#PivotalBioFEDTable tbody tr'), function (index, value) {
+        pivotalbiofedsum += parseFloat($(this).find("td:eq(4) input").attr("name", "PidfPbfClinicals.pidfpbfClinicalPivotalBioFedEntity[" + index.toString() + "].TotalCost").val());
         
     });
 
     totalsum = pilotbiofastingsum + pilotbiofedsum + pivotalbiofastingsum + pivotalbiofedsum;
     
-    $('#pidfPbfClinicalEntity_pidfPbfClinicalCost_TotalPilotFastingCost').val(pilotbiofastingsum);
-    $('#pidfPbfClinicalEntity_pidfPbfClinicalCost_TotalPilotFEDCost').val(pilotbiofedsum);
-    $('#pidfPbflLinicalEntity_pidfPbfClinicalCost_TotalPivotalFastingCost').val(pivotalbiofastingsum);
-    $('#pidfPbflLinicalEntity_pidfPbfClinicalCost_TotalPivotalFEDCost').val(pivotalbiofedsum);
-    $('#pidfPbflLinicalEntity_pidfPbfClinicalCost_TotalCost').val(totalsum);
+    $('#PidfPbfClinicals_pidfPbfClinicalCost_TotalPilotFastingCost').val(pilotbiofastingsum);
+    $('#PidfPbfClinicals_pidfPbfClinicalCost_TotalPilotFEDCost').val(pilotbiofedsum);
+    $('#PidfPbfClinicals_pidfPbfClinicalCost_TotalPivotalFastingCost').val(pivotalbiofastingsum);
+    $('#PidfPbfClinicals_pidfPbfClinicalCost_TotalPivotalFEDCost').val(pivotalbiofedsum);
+    $('#PidfPbfClinicals_pidfPbfClinicalCost_TotalCost').val(totalsum);
 }
 function preventSubmit() {
 
