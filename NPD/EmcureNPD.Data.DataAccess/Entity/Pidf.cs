@@ -23,6 +23,7 @@ namespace EmcureNPD.Data.DataAccess.Entity
             Pidfapidetails = new HashSet<Pidfapidetail>();
             PidfproductStrengths = new HashSet<PidfproductStrength>();
             PidfstatusHistories = new HashSet<PidfstatusHistory>();
+            ProjectTasks = new HashSet<ProjectTask>();
         }
 
         public long Pidfid { get; set; }
@@ -82,5 +83,6 @@ namespace EmcureNPD.Data.DataAccess.Entity
         public virtual ICollection<Pidfapidetail> Pidfapidetails { get; set; }
         public virtual ICollection<PidfproductStrength> PidfproductStrengths { get; set; }
         public virtual ICollection<PidfstatusHistory> PidfstatusHistories { get; set; }
+        public virtual ICollection<ProjectTask> ProjectTasks { get; set; }
     }
 }
