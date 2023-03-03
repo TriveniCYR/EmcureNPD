@@ -317,6 +317,41 @@ namespace EmcureNPD.Business.Core.Implementation
         //------------End------API_IPD_Details_Form_Entity--------------------------
         #endregion
 
+        public async Task<PIDFAPICharterFormEntity> GetAPICharterSummaryFormData(long pidfId)
+        {
+            PIDFAPICharterFormEntity _oCharterEntity = new PIDFAPICharterFormEntity();
+            SqlParameter[] osqlParameter = {
+                new SqlParameter("@PIDFID", pidfId)
+            };
+            var dbresult = await _pidf_API_Charter_repository.GetDataSetBySP("stp_npd_GetAPICharterSummaryData",
+                System.Data.CommandType.StoredProcedure, osqlParameter);
+
+            // dynamic _CharterObjects = new ExpandoObject();
+            List<CharterObject> _CharterObjects = new List<CharterObject>();
+            if (dbresult != null)
+            {
+                if (dbresult.Tables[0] != null && dbresult.Tables[0].Rows.Count > 0)
+                {
+                    _CharterObjects = dbresult.Tables[0].DataTableToList<CharterObject>();
+                    _oCharterEntity.TimelineInMonths = dbresult.Tables[1].DataTableToList<TimelineInMonths>();
+                    _oCharterEntity.AnalyticalDepartment = dbresult.Tables[2].DataTableToList<AnalyticalDepartment>();
+                    _oCharterEntity.PRDDepartment = dbresult.Tables[3].DataTableToList<PRDDepartment>();
+                    _oCharterEntity.CapitalOtherExpenditure = dbresult.Tables[4].DataTableToList<CapitalOtherExpenditure>();
+                    _oCharterEntity.ManhourEstimates = dbresult.Tables[5].DataTableToList<ManhourEstimates>();
+                    _oCharterEntity.HeadwiseBudget = dbresult.Tables[6].DataTableToList<HeadwiseBudget>();
+                }
+            }
+
+            if (_CharterObjects.Count > 0)
+            {
+                _oCharterEntity.APIGroupLeader = _CharterObjects[0].APIGroupLeader;
+                _oCharterEntity.ManHourRates = Convert.ToString(_CharterObjects[0].ManHourRates);
+                _oCharterEntity.PIDFAPICharterFormID = _CharterObjects[0].PIDF_API_CharterId;
+                _oCharterEntity.ProjectComplexityId = _CharterObjects[0].ProjectComplexityId;
+            }
+
+            return _oCharterEntity;
+        }
 
         public async Task<PIDFAPICharterFormEntity> GetAPICharterFormData(long pidfId)
         {
@@ -389,14 +424,14 @@ namespace EmcureNPD.Business.Core.Implementation
                 var OldObjAPICharter = lastApiCharter;
                 if (lastApiCharter != null)
                 {
-                    //RemoveChildDataAPICharter(_oAPICharter.PIDFAPICharterFormID); // Remove child table data
+                    RemoveChildDataAPICharter(_oAPICharter.PIDFAPICharterFormID); // Remove child table data
                     lastApiCharter.PidfApiCharterTimelineInMonths = _objPidfApiCharterTimelineInMonth;
                     lastApiCharter.PidfApiCharterManhourEstimates = _objPidfApiCharterManhourEstimates;
-                    //lastApiCharter.PidfApiCharterAnalyticalDepartments = _objPidfApiCharterAnalyticalDepartment;
+                    lastApiCharter.PidfApiCharterAnalyticalDepartments = _objPidfApiCharterAnalyticalDepartment;
 
-                    //lastApiCharter.PidfApiCharterPrddepartments = _objPidfApiCharterPRDDepartment;
-                    //lastApiCharter.PidfApiCharterCapitalOtherExpenditures = _objPidfApiCharterCapitalOtherExpenditure;
-                   // lastApiCharter.PidfApiCharterHeadwiseBudgets = _objPidfApiCharterHeadwiseBudget;
+                    lastApiCharter.PidfApiCharterPrddepartments = _objPidfApiCharterPRDDepartment;
+                    lastApiCharter.PidfApiCharterCapitalOtherExpenditures = _objPidfApiCharterCapitalOtherExpenditure;
+                    lastApiCharter.PidfApiCharterHeadwiseBudgets = _objPidfApiCharterHeadwiseBudget;
 
 
                     _oAPICharter.ManHourRates = (Convert.ToString(_oAPICharter.ManHourRates) == "" || _oAPICharter.ManHourRates == null) ? "0" : _oAPICharter.ManHourRates;
