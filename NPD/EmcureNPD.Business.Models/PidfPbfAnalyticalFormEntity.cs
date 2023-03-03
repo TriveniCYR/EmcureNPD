@@ -26,8 +26,8 @@ namespace EmcureNPD.Business.Models
         public int? ProductTypeId { get; set; }
         public int StrengthId { get; set; }
 
-        public int FormulationGLId { get; set; }
-        public int AnalyticalGLId { get; set; }
+        public int FormulationId { get; set; }
+        public int AnalyticalId { get; set; }
 
         public bool IsActive { get; set; }
         public DateTime CreatedDate { get; set; }

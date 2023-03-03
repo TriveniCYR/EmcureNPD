@@ -32,6 +32,7 @@ namespace EmcureNPD.Business.Core.Interface
 
         // ---------------------------PBFDetails----------------------------
         Task<DBOperation> AddUpdatePBFDetails(PidfPbfFormEntity pbfEntity);
-
+        Task<PidfPbfFormEntity> GetPbfFormDetails(long pidfId, int buid, int? strengthid);
+        
     }	
 }

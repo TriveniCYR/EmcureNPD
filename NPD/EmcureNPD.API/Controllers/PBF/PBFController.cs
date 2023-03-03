@@ -265,5 +265,23 @@ namespace EmcureNPD.API.Controllers.PBF
                 return _ObjectResponse.Create(false, (Int32)HttpStatusCode.InternalServerError, Convert.ToString(ex.StackTrace));
             }
         }
+
+        [HttpGet, Route("GetPbfFormDetails/{pidfId}/{bussnessId}/{strengthid}")]
+        public async Task<IActionResult> GetPbfFormDetails([FromRoute] long pidfId, int bussnessId, int? strengthid)
+        {
+            try
+            {
+                //pidfId = int.Parse(UtilityHelper.Decreypt(strpidfId));
+                var oPIDFEntity = await _PBFService.GetPbfFormDetails(pidfId, bussnessId, strengthid);
+                if (oPIDFEntity != null)
+                    return _ObjectResponse.Create(oPIDFEntity, (Int32)HttpStatusCode.OK);
+                else
+                    return _ObjectResponse.Create(null, (Int32)HttpStatusCode.BadRequest, "Record not found");
+            }
+            catch (Exception ex)
+            {
+                return _ObjectResponse.Create(false, (Int32)HttpStatusCode.InternalServerError, Convert.ToString(ex.StackTrace));
+            }
+        }
     }	
 }

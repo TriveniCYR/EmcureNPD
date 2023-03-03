@@ -14,15 +14,15 @@ function GetPBFDropdownSuccess(data) {
         if (data != null) {
             alert('MasterProductType called');
             $(data.MasterProductType).each(function (index, item) {
-                $('#AnalyticalProductTypeId').append('<option value="' + item.productTypeId + '">' + item.productTypeName + '</option>');
+                $('#ProductTypeId').append('<option value="' + item.productTypeId + '">' + item.productTypeName + '</option>');
             });
             alert('MasterFormulationService called');
             $(data.MasterFormulationService).each(function (index, item) {
-                $('#AnalyticalFormulationGLId').append('<option value="' + item.formulationId + '">' + item.formulationName + '</option>');
+                $('#FormulationId').append('<option value="' + item.formulationId + '">' + item.formulationName + '</option>');
             });
             alert('MasterAnalyticalGLService called');
             $(data.MasterAnalyticalGLService).each(function (index, item) {
-                $('#AnalyticalAnalyticalGLId').append('<option value="' + item.analyticalId + '">' + item.analyticalName + '</option>');
+                $('#AnalyticalId').append('<option value="' + item.analyticalId + '">' + item.analyticalName + '</option>');
             });
            
         }
@@ -83,7 +83,7 @@ $('#SaveDraft').click(function () {
 //    $.extend(objMainForm, { 'ImprintingEmbossingCodes': $("#ImprintingEmbossingCodes").val() });
 //    $.extend(objMainForm, { 'TotalExpenses': $("#TotalExpenses").val() });
 //    $.extend(objMainForm, { 'ProjectComplexity': $("#ProjectComplexity").val() });
-//    $.extend(objMainForm, { 'AnalyticalProductTypeId': $("#AnalyticalProductTypeId").val() });
+//    $.extend(objMainForm, { 'ProductTypeId': $("#ProductTypeId").val() });
 //    $.extend(objMainForm, { 'BudgetTimelineDate': $("#BudgetTimelineDate").val() });
 //    $.extend(objMainForm, { 'PbfAnalFormulationId': $("#PbfAnalFormulationId").val() });
 //    $.extend(objMainForm, { 'PbfAnalAnalyticalId': $("#PbfAnalAnalyticalId").val() });

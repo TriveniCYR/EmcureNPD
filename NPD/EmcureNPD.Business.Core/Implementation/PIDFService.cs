@@ -321,7 +321,7 @@ namespace EmcureNPD.Business.Core.Implementation
             }
         }
 
-        public async Task<PIDFEntity> GetById(int id)
+        public async Task<PIDFEntity> GetById(int id)  
         {
             var ids = Convert.ToInt64(id);
             var data = _mapperFactory.Get<Pidf, PIDFEntity>(await _repository.GetAsync(ids));
