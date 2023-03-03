@@ -2,6 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata;
 using EmcureNPD.Data.DataAccess.Entity;
+using EmcureNPD.Utility;
 
 #nullable disable
 
@@ -121,13 +122,15 @@ namespace EmcureNPD.Data.DataAccess.DataContext
         public virtual DbSet<PidfproductStrength> PidfproductStrengths { get; set; }
         public virtual DbSet<PidfstatusHistory> PidfstatusHistories { get; set; }
         public virtual DbSet<RoleModulePermission> RoleModulePermissions { get; set; }
+        public virtual DbSet<UserSessionLogMaster> UserSessionLogMasters { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             if (!optionsBuilder.IsConfigured)
             {
 #warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see http://go.microsoft.com/fwlink/?LinkId=723263.
-                optionsBuilder.UseSqlServer("Data Source=180.149.241.172;Initial Catalog=EmcureNPDDev;Persist Security Info=True;User ID=emcurenpddev_dbUser;pwd=emcure123!@#");
+                //   optionsBuilder.UseSqlServer("Data Source=180.149.241.172;Initial Catalog=EmcureNPDDev;Persist Security Info=True;User ID=emcurenpddev_dbUser;pwd=emcure123!@#");
+                optionsBuilder.UseSqlServer(DatabaseConnection.NPDDatabaseConnection);
             }
         }
 
@@ -1161,10 +1164,6 @@ namespace EmcureNPD.Data.DataAccess.DataContext
 
                 entity.Property(e => e.AnalyticalDepartmentStabilityValue).HasMaxLength(100);
 
-                entity.Property(e => e.CreatedDate).HasColumnType("datetime");
-
-                entity.Property(e => e.ModifyDate).HasColumnType("datetime");
-
                 entity.Property(e => e.PidfApiCharterId).HasColumnName("PIDF_API_CharterId");
 
                 entity.Property(e => e.Pidfid).HasColumnName("PIDFId");
@@ -1186,10 +1185,6 @@ namespace EmcureNPD.Data.DataAccess.DataContext
 
                 entity.Property(e => e.CapitalOtherExpenditureRemarkValue).HasMaxLength(100);
 
-                entity.Property(e => e.CreatedDate).HasColumnType("datetime");
-
-                entity.Property(e => e.ModifyDate).HasColumnType("datetime");
-
                 entity.Property(e => e.PidfApiCharterId).HasColumnName("PIDF_API_CharterId");
 
                 entity.Property(e => e.Pidfid).HasColumnName("PIDFId");
@@ -1207,11 +1202,7 @@ namespace EmcureNPD.Data.DataAccess.DataContext
 
                 entity.Property(e => e.PidfApiCharterHeadwiseBudgetId).HasColumnName("PIDF_API_Charter_HeadwiseBudgetId");
 
-                entity.Property(e => e.CreatedDate).HasColumnType("datetime");
-
                 entity.Property(e => e.HeadwiseBudgetValue).HasMaxLength(100);
-
-                entity.Property(e => e.ModifyDate).HasColumnType("datetime");
 
                 entity.Property(e => e.PidfApiCharterId).HasColumnName("PIDF_API_CharterId");
 
@@ -1254,10 +1245,6 @@ namespace EmcureNPD.Data.DataAccess.DataContext
                 entity.ToTable("PIDF_API_Charter_PRDDepartment", "dbo");
 
                 entity.Property(e => e.PidfApiCharterPrddepartmentId).HasColumnName("PIDF_API_Charter_PRDDepartmentId");
-
-                entity.Property(e => e.CreatedDate).HasColumnType("datetime");
-
-                entity.Property(e => e.ModifyDate).HasColumnType("datetime");
 
                 entity.Property(e => e.PidfApiCharterId).HasColumnName("PIDF_API_CharterId");
 
@@ -2209,8 +2196,6 @@ namespace EmcureNPD.Data.DataAccess.DataContext
 
                 entity.ToTable("PIDF_PBF_Clinical_PilotBioFasting", "dbo");
 
-                entity.Property(e => e.PilotBioFastingId).ValueGeneratedNever();
-
                 entity.Property(e => e.ClinicalCostandVol)
                     .HasColumnType("decimal(18, 0)")
                     .HasColumnName("ClinicalCostandVOl");
@@ -2245,9 +2230,7 @@ namespace EmcureNPD.Data.DataAccess.DataContext
 
                 entity.ToTable("PIDF_PBF_Clinical_PilotBioFED", "dbo");
 
-                entity.Property(e => e.PilotBioFedid)
-                    .ValueGeneratedNever()
-                    .HasColumnName("PilotBioFEDId");
+                entity.Property(e => e.PilotBioFedid).HasColumnName("PilotBioFEDId");
 
                 entity.Property(e => e.ClinicalCostandVol)
                     .HasColumnType("decimal(18, 0)")
@@ -2285,8 +2268,6 @@ namespace EmcureNPD.Data.DataAccess.DataContext
 
                 entity.ToTable("PIDF_PBF_Clinical_PivotalBioFasting", "dbo");
 
-                entity.Property(e => e.PivotalBioFastingId).ValueGeneratedNever();
-
                 entity.Property(e => e.ClinicalCostandVol)
                     .HasColumnType("decimal(18, 0)")
                     .HasColumnName("ClinicalCostandVOl");
@@ -2321,9 +2302,7 @@ namespace EmcureNPD.Data.DataAccess.DataContext
 
                 entity.ToTable("PIDF_PBF_Clinical_PivotalBioFED", "dbo");
 
-                entity.Property(e => e.PivotalBioFedid)
-                    .ValueGeneratedNever()
-                    .HasColumnName("PivotalBioFEDId");
+                entity.Property(e => e.PivotalBioFedid).HasColumnName("PivotalBioFEDId");
 
                 entity.Property(e => e.ClinicalCostandVol)
                     .HasColumnType("decimal(18, 0)")
@@ -2870,6 +2849,21 @@ namespace EmcureNPD.Data.DataAccess.DataContext
                 entity.Property(e => e.CreatedDate).HasColumnType("datetime");
 
                 entity.Property(e => e.ModifyDate).HasColumnType("datetime");
+            });
+
+            modelBuilder.Entity<UserSessionLogMaster>(entity =>
+            {
+                entity.HasKey(e => e.UserLoginHistoryId);
+
+                entity.ToTable("UserSessionLogMaster", "dbo");
+
+                entity.Property(e => e.CreatedDate).HasColumnType("datetime");
+
+                entity.HasOne(d => d.User)
+                    .WithMany(p => p.UserSessionLogMasters)
+                    .HasForeignKey(d => d.UserId)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("FK_UserSessionLogMaster_Master_User");
             });
 
             OnModelCreatingPartial(modelBuilder);

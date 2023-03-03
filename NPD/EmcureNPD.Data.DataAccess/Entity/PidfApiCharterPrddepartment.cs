@@ -9,13 +9,9 @@ namespace EmcureNPD.Data.DataAccess.Entity
     {
         public long PidfApiCharterPrddepartmentId { get; set; }
         public long PidfApiCharterId { get; set; }
-        public long Pidfid { get; set; }
+        public long? Pidfid { get; set; }
         public int? PrddepartmentId { get; set; }
         public string PrddepartmentRawMaterialValue { get; set; }
-        public int CreatedBy { get; set; }
-        public DateTime CreatedDate { get; set; }
-        public int? ModifyBy { get; set; }
-        public DateTime? ModifyDate { get; set; }
 
         public virtual PidfApiCharter PidfApiCharter { get; set; }
     }
