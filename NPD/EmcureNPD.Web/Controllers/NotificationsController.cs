@@ -45,7 +45,8 @@ namespace EmcureNPD.Web.Controllers
                     string jsonResponse = responseMessage.Content.ReadAsStringAsync().Result;
                     var data = JsonConvert.DeserializeObject<DataTableResponseModel>(jsonResponse);
                     // return data.Data;
-                    return View(data);
+                     return View(data);
+                   
                 }
                 else
                 {
