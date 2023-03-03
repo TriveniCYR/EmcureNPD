@@ -389,14 +389,14 @@ namespace EmcureNPD.Business.Core.Implementation
                 var OldObjAPICharter = lastApiCharter;
                 if (lastApiCharter != null)
                 {
-                    RemoveChildDataAPICharter(_oAPICharter.PIDFAPICharterFormID); // Remove child table data
+                    //RemoveChildDataAPICharter(_oAPICharter.PIDFAPICharterFormID); // Remove child table data
                     lastApiCharter.PidfApiCharterTimelineInMonths = _objPidfApiCharterTimelineInMonth;
                     lastApiCharter.PidfApiCharterManhourEstimates = _objPidfApiCharterManhourEstimates;
-                    lastApiCharter.PidfApiCharterAnalyticalDepartments = _objPidfApiCharterAnalyticalDepartment;
+                    //lastApiCharter.PidfApiCharterAnalyticalDepartments = _objPidfApiCharterAnalyticalDepartment;
 
-                    lastApiCharter.PidfApiCharterPrddepartments = _objPidfApiCharterPRDDepartment;
-                    lastApiCharter.PidfApiCharterCapitalOtherExpenditures = _objPidfApiCharterCapitalOtherExpenditure;
-                    lastApiCharter.PidfApiCharterHeadwiseBudgets = _objPidfApiCharterHeadwiseBudget;
+                    //lastApiCharter.PidfApiCharterPrddepartments = _objPidfApiCharterPRDDepartment;
+                    //lastApiCharter.PidfApiCharterCapitalOtherExpenditures = _objPidfApiCharterCapitalOtherExpenditure;
+                   // lastApiCharter.PidfApiCharterHeadwiseBudgets = _objPidfApiCharterHeadwiseBudget;
 
 
                     _oAPICharter.ManHourRates = (Convert.ToString(_oAPICharter.ManHourRates) == "" || _oAPICharter.ManHourRates == null) ? "0" : _oAPICharter.ManHourRates;
@@ -971,7 +971,7 @@ namespace EmcureNPD.Business.Core.Implementation
                                 clinicalPilotBioFed.NumberofVolunteers = item.NumberofVolunteers;
                                 clinicalPilotBioFed.ClinicalCostandVol = item.ClinicalCostandVol;
                                 clinicalPilotBioFed.DocCostandStudy = item.DocCostandStudy;
-                                clinicalPilotBioFed.TotalCost = item.TotalCost;
+                                //clinicalPilotBioFed.TotalCost = item.TotalCost;
                                 clinicalPilotBioFed.CreatedDate = DateTime.Now;
                                 clinicalPilotBioFed.CreatedBy = loggedInUserId;
 
