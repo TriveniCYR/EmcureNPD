@@ -8,6 +8,7 @@
 @inject IConfiguration Configuration
 @{
     ViewData["Title"] = @MasterLocalizer["APIListTitle"];
+    string jsVersion = @Configuration.GetSection("StaticJS")["version"];
 }
 <div class="row">
     <section class="col-lg-12">
@@ -65,8 +66,8 @@
 @section MyScripts {
 
     @Html.Partial("_DataTablePartial")
-    <script type="text/javascript" src="~/js/Custom/DynamicDataTable.js?v=@Configuration.GetSection("StaticJS")["version"]"></script>
-    <script type="text/javascript" src="~/js/Custom/APIList/MasterAPIList.js?v=@Configuration.GetSection("StaticJS")["version"]"></script>
+    <script type="text/javascript" src="~/js/Custom/DynamicDataTable.js?v=@jsVersion"></script>
+    <script type="text/javascript" src="~/js/Custom/APIList/MasterAPIList.js?v=@jsVersion"></script>
 
     <script>
 

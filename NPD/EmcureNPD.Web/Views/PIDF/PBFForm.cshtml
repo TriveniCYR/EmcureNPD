@@ -7,9 +7,11 @@
 @using EmcureNPD.Utility.Utility
 @using EmcureNPD.Utility.Enums
 @using EmcureNPD.Business.Models
+@using Microsoft.Extensions.Configuration
+@inject IConfiguration Configuration
 
 @model EmcureNPD.Business.Models.PidfPbfFormEntity
-
+@{string jsVersion = @Configuration.GetSection("StaticJS")["version"];}
 
 <div id="SavePIDFModel">
         <div class="card">
@@ -334,8 +336,8 @@
 @section MyScripts {
 
     @Html.Partial("_DataTablePartial")
-    <script type="text/javascript" src="~/js/Custom/DynamicDataTable.js"></script>
-    <script type="text/javascript" src="~/js/Custom/PIDF/PBFForm.js"></script>
+    <script type="text/javascript" src="~/js/Custom/DynamicDataTable.js?v=@jsVersion"></script>
+    <script type="text/javascript" src="~/js/Custom/PIDF/PBFForm.js?v=@jsVersion"></script>
     @*    <script type="text/javascript" src="~/js/Custom/PBF/Analytical/PBFAnalytical.js"></script>*@
     <link rel="stylesheet" href="~/AdminLTE/plugins/select2/css/select2.min.css" />
     <script type="text/javascript" src="~/AdminLTE/plugins/select2/js/select2.min.js"></script>

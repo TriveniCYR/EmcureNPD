@@ -2,9 +2,12 @@
 @inject IHttpContextAccessor HttpContextAccessor
 @inject Microsoft.Extensions.Localization.IStringLocalizer<EmcureNPD.Resource.Master> MasterLocalizer
 @inject Microsoft.Extensions.Localization.IStringLocalizer<EmcureNPD.Resource.Shared> SharedLocalizer
+@using Microsoft.Extensions.Configuration
+@inject IConfiguration Configuration
 @model EmcureNPD.Business.Models.MasterUserEntity
 @{
     ViewData["Title"] = @MasterLocalizer["UserManage"];
+    string jsVersion = @Configuration.GetSection("StaticJS")["version"];
 }
 
 <form asp-action="UserManage" method="post">
@@ -148,7 +151,7 @@
 </form>
 @section MyScripts {
     <link rel="stylesheet" href="~/AdminLTE/plugins/select2/css/select2.min.css" />
-    <script type="text/javascript" src="~/js/Custom/User/UserManage.js"></script>
+    <script type="text/javascript" src="~/js/Custom/User/UserManage.js?v=@jsVersion"></script>
     <script type="text/javascript" src="~/AdminLTE/plugins/select2/js/select2.min.js"></script>
     <script>
     //#region Setup API Url

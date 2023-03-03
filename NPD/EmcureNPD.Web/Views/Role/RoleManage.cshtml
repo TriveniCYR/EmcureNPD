@@ -5,10 +5,13 @@
 @inject Microsoft.Extensions.Localization.IStringLocalizer<EmcureNPD.Resource.Master> MasterLocalizer
 
 @inject Microsoft.Extensions.Localization.IStringLocalizer<EmcureNPD.Resource.Shared> SharedLocalizer
+@using Microsoft.Extensions.Configuration
+@inject IConfiguration Configuration
 
 @model EmcureNPD.Business.Models.MasterRoleEntity
 @{
     ViewData["Title"] = @MasterLocalizer["RoleManage"];
+    string jsVersion = @Configuration.GetSection("StaticJS")["version"];
     string[] Approve_Modules = { "PIDF", "IPD", "Finance", "Management HOD" };
     string[] Delete_Modules = { "User Management", "Role Management", "Master Management", "Project" };
 }
@@ -160,5 +163,5 @@
 </div>
 @section MyScripts {
 
-    <script type="text/javascript" src="~/js/Custom/Role/RoleManage.js"></script>
+    <script type="text/javascript" src="~/js/Custom/Role/RoleManage.js?v=@jsVersion"></script>
 }

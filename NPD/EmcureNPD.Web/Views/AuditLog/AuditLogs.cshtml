@@ -4,9 +4,12 @@
 @inject IHttpContextAccessor HttpContextAccessor
 @inject Microsoft.Extensions.Localization.IStringLocalizer<EmcureNPD.Resource.Master> MasterLocalizer
 @inject Microsoft.Extensions.Localization.IStringLocalizer<EmcureNPD.Resource.Shared> SharedLocalizer
+@using Microsoft.Extensions.Configuration
+@inject IConfiguration Configuration
 @model EmcureNPD.Business.Models.AuditLogEntity
 @{
 	ViewData["Title"] = @MasterLocalizer["AuditLog"];
+	string jsVersion = @Configuration.GetSection("StaticJS")["version"];
 }
 <div class="row">
 	<section class="col-lg-12">
@@ -51,8 +54,8 @@
 @section MyScripts {
 
 	@Html.Partial("_DataTablePartial")
-	<script type="text/javascript" src="~/js/Custom/DynamicDataTable.js"></script>
-	<script type="text/javascript" src="~/js/Custom/AuditLog/AuditLog.js"></script>
+	<script type="text/javascript" src="~/js/Custom/DynamicDataTable.js?v=@jsVersion"></script>
+	<script type="text/javascript" src="~/js/Custom/AuditLog/AuditLog.js?v=@jsVersion"></script>
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/jstree/3.2.1/jstree.min.js"></script>
 	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jstree/3.2.1/themes/default/style.min.css" />
 	<script>

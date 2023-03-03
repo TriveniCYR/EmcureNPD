@@ -1,7 +1,10 @@
 ﻿@using EmcureNPD.Business.Models
+@using Microsoft.Extensions.Configuration
+@inject IConfiguration Configuration
 @model EmcureNPD.Business.Models.DataTableResponseModel
 @{
     int i = 0;
+    string jsVersion = @Configuration.GetSection("StaticJS")["version"];
 }
 <section class="content-wrapper p-3 pb-4">
     <div class="content-header">
@@ -48,5 +51,5 @@
 
     @Html.Partial("_DataTablePartial")
     <script type="text/javascript" src="~/js/Custom/DynamicDataTable.js"></script>
-<script src="~/js/custom/notification/allnotifications.js"></script>
+<script src="~/js/custom/notification/allnotifications.js?v=@jsVersion"></script>
 }

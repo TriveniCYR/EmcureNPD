@@ -6,9 +6,13 @@
 @inject IHttpContextAccessor HttpContextAccessor
 @inject Microsoft.Extensions.Localization.IStringLocalizer<EmcureNPD.Resource.Master> MasterLocalizer
 @inject Microsoft.Extensions.Localization.IStringLocalizer<EmcureNPD.Resource.Shared> SharedLocalizer
+@using Microsoft.Extensions.Configuration
+@inject IConfiguration Configuration
+
 @model EmcureNPD.Business.Models.PIDFEntity
 @{
     ViewData["Title"] = @MasterLocalizer["PIDF"];
+	string jsVersion = @Configuration.GetSection("StaticJS")["version"];
 }
             <div class="content-header">
                 <h2 class="m-0">Product Identification Form</h2>
@@ -547,7 +551,7 @@
 
 @*	@Html.Partial("_DataTablePartial")*@
 
-	<script type="text/javascript" src="~/js/Custom/PIDF/MasterPIDF.js"></script>
+	<script type="text/javascript" src="~/js/Custom/PIDF/MasterPIDF.js?v=@jsVersion"></script>
 	<script>
 
 		//#region Setup API Url

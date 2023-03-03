@@ -5,12 +5,15 @@
 @inject IHttpContextAccessor HttpContextAccessor
 @inject Microsoft.Extensions.Localization.IStringLocalizer<EmcureNPD.Resource.Master> MasterLocalizer
 @inject Microsoft.Extensions.Localization.IStringLocalizer<EmcureNPD.Resource.Shared> SharedLocalizer
+@using Microsoft.Extensions.Configuration
+@inject IConfiguration Configuration
 @{
     ViewData["Title"] = @SharedLocalizer["UserMangegment"];
     RolePermissionModel objPermssion = (RolePermissionModel)ViewBag._objPermission;
     string IsAddAllow = (objPermssion.Add) ? "" : "display: none";
     string IsEditAllow = (objPermssion.Edit) ? "" : "display: none";
     string IsDeleteAllow = (objPermssion.Delete) ? "" : "display: none";
+    string jsVersion = @Configuration.GetSection("StaticJS")["version"];
 }
 <div class="content-header">
     <div class="container-fluid d-flex justify-content-between">
@@ -72,8 +75,8 @@
 @section MyScripts {
 
     @Html.Partial("_DataTablePartial")
-    <script type="text/javascript" src="~/js/Custom/DynamicDataTable.js"></script>
-    <script type="text/javascript" src="~/js/Custom/User/MasterUser.js"></script>
+    <script type="text/javascript" src="~/js/Custom/DynamicDataTable.js?v=@jsVersion"></script>
+    <script type="text/javascript" src="~/js/Custom/User/MasterUser.js?v=@jsVersion"></script>
 
     <script>
 
