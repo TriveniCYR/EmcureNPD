@@ -72,13 +72,14 @@ namespace EmcureNPD.Business.Core.Implementation
         private IRepository<PidfPbfAnalyticalPrototype> _pidfPbfAnalyticalPrototypeRepository { get; set; }
         private IRepository<PidfPbfAnalyticalScaleUp> _pidfPbfAnalyticalScaleUpRepository { get; set; }
         private IRepository<PidfPbfAnalyticalExhibit> _pidfPbfAnalyticalExhibitRepository { get; set; }
-        private IRepository<PidfPbfAnalyticalCost> _PidfPbfAnalyticalCostsRepository { get; set; }
+        private IRepository<PidfPbfAnalyticalCost> _pidfPbfAnalyticalCostRepository { get; set; }
         private IRepository<PidfPbfClinical> _pidfPbfClinicalRepository { get; set; }
         private IRepository<PidfPbfClinicalPilotBioFasting> _pidfPbfClinicalPilotBioFastingRepository { get; set; }
         private IRepository<PidfPbfClinicalPilotBioFed> _pidfPbfClinicalPilotBioFedRepository { get; set; }
         private IRepository<PidfPbfClinicalPivotalBioFasting> _pidfPbfClinicalPivotalBioFastingRepository { get; set; }
         private IRepository<PidfPbfClinicalPivotalBioFed> _pidfPbfClinicalPivotalBioFedRepository { get; set; }
         private IRepository<PidfPbfClinicalCost> _pidfPbfClinicalCostRepository { get; set; }
+        private IRepository<PidfPbfAnalyticalCost> _PidfPbfAnalyticalCostsRepository { get; set; }
 
         private IRepository<MasterDosage> _masterDosageRepository { get; set; }
         private IRepository<PidfproductStrength> _pidfProductStrength { get; set; }
@@ -134,13 +135,6 @@ namespace EmcureNPD.Business.Core.Implementation
             _pidfPbfAnalyticalScaleUpRepository = _unitOfWork.GetRepository<PidfPbfAnalyticalScaleUp>();
             _pidfPbfAnalyticalExhibitRepository = _unitOfWork.GetRepository<PidfPbfAnalyticalExhibit>();
             _PidfPbfAnalyticalCostsRepository = _unitOfWork.GetRepository<PidfPbfAnalyticalCost>();
-            _masterDosageRepository = _unitOfWork.GetRepository<MasterDosage>();
-            _pidfPbfClinicalRepository = _unitOfWork.GetRepository<PidfPbfClinical>();
-            _pidfPbfClinicalPilotBioFastingRepository = _unitOfWork.GetRepository<PidfPbfClinicalPilotBioFasting>();
-            _pidfPbfClinicalPilotBioFedRepository = _unitOfWork.GetRepository<PidfPbfClinicalPilotBioFed>();
-            _pidfPbfClinicalPivotalBioFastingRepository = _unitOfWork.GetRepository<PidfPbfClinicalPivotalBioFasting>();
-            _pidfPbfClinicalPivotalBioFedRepository = _unitOfWork.GetRepository<PidfPbfClinicalPivotalBioFed>();
-            _pidfPbfClinicalCostRepository = _unitOfWork.GetRepository<PidfPbfClinicalCost>();
         }
 
         //------------Start------API_Functions_Kuldip--------------------------
@@ -191,7 +185,7 @@ namespace EmcureNPD.Business.Core.Implementation
             }
         }
         //------------Start------API_IPD_Details_Form_Entity--------------------------
-        #region API_IPD_Details_Form_Entity 
+        
         public async Task<DBOperation> AddUpdateAPIIPD(IFormCollection _oAPIIPD_Form, string _webrootPath)
         {
             bool hasNewUploadFile = true;
@@ -323,8 +317,7 @@ namespace EmcureNPD.Business.Core.Implementation
             return _oApiIpdData;
         }
         //------------End------API_IPD_Details_Form_Entity--------------------------
-        #endregion
-
+        
         public async Task<PIDFAPICharterFormEntity> GetAPICharterSummaryFormData(long pidfId)
         {
             PIDFAPICharterFormEntity _oCharterEntity = new PIDFAPICharterFormEntity();
@@ -334,7 +327,34 @@ namespace EmcureNPD.Business.Core.Implementation
             var dbresult = await _pidf_API_Charter_repository.GetDataSetBySP("stp_npd_GetAPICharterSummaryData",
                 System.Data.CommandType.StoredProcedure, osqlParameter);
 
-        public async Task<PIDFAPICharterFormEntity>  GetAPICharterFormData(long pidfId)
+            // dynamic _CharterObjects = new ExpandoObject();
+            List<CharterObject> _CharterObjects = new List<CharterObject>();
+            if (dbresult != null)
+            {
+                if (dbresult.Tables[0] != null && dbresult.Tables[0].Rows.Count > 0)
+                {
+                    _CharterObjects = dbresult.Tables[0].DataTableToList<CharterObject>();
+                    _oCharterEntity.TimelineInMonths = dbresult.Tables[1].DataTableToList<TimelineInMonths>();
+                    _oCharterEntity.AnalyticalDepartment = dbresult.Tables[2].DataTableToList<AnalyticalDepartment>();
+                    _oCharterEntity.PRDDepartment = dbresult.Tables[3].DataTableToList<PRDDepartment>();
+                    _oCharterEntity.CapitalOtherExpenditure = dbresult.Tables[4].DataTableToList<CapitalOtherExpenditure>();
+                    _oCharterEntity.ManhourEstimates = dbresult.Tables[5].DataTableToList<ManhourEstimates>();
+                    _oCharterEntity.HeadwiseBudget = dbresult.Tables[6].DataTableToList<HeadwiseBudget>();
+                }
+            }
+
+            if (_CharterObjects.Count > 0)
+            {
+                _oCharterEntity.APIGroupLeader = _CharterObjects[0].APIGroupLeader;
+                _oCharterEntity.ManHourRates = Convert.ToString(_CharterObjects[0].ManHourRates);
+                _oCharterEntity.PIDFAPICharterFormID = _CharterObjects[0].PIDF_API_CharterId;
+                _oCharterEntity.ProjectComplexityId = _CharterObjects[0].ProjectComplexityId;
+            }
+
+            return _oCharterEntity;
+        }
+
+        public async Task<PIDFAPICharterFormEntity> GetAPICharterFormData(long pidfId)
         {
             PIDFAPICharterFormEntity _oCharterEntity = new PIDFAPICharterFormEntity();
             SqlParameter[] osqlParameter = {
@@ -396,7 +416,7 @@ namespace EmcureNPD.Business.Core.Implementation
 
             var _objPidfApiCharterPRDDepartment = FillObjData<PRDDepartment, PidfApiCharterPrddepartment>(_oAPICharter.PRDDepartment);
             var _objPidfApiCharterCapitalOtherExpenditure = FillObjData<CapitalOtherExpenditure, PidfApiCharterCapitalOtherExpenditure>(_oAPICharter.CapitalOtherExpenditure);
-            var _objPidfApiCharterHeadwiseBudget = FillObjData<HeadwiseBudget, PidfApiCharterHeadwiseBudget>(_oAPICharter.HeadwiseBudget);         
+            var _objPidfApiCharterHeadwiseBudget = FillObjData<HeadwiseBudget, PidfApiCharterHeadwiseBudget>(_oAPICharter.HeadwiseBudget);
 
 
             if (_oAPICharter.PIDFAPICharterFormID > 0)
@@ -409,7 +429,10 @@ namespace EmcureNPD.Business.Core.Implementation
                     lastApiCharter.PidfApiCharterTimelineInMonths = _objPidfApiCharterTimelineInMonth;
                     lastApiCharter.PidfApiCharterManhourEstimates = _objPidfApiCharterManhourEstimates;
                     lastApiCharter.PidfApiCharterAnalyticalDepartments = _objPidfApiCharterAnalyticalDepartment;
-                    
+
+                    lastApiCharter.PidfApiCharterPrddepartments = _objPidfApiCharterPRDDepartment;
+                    lastApiCharter.PidfApiCharterCapitalOtherExpenditures = _objPidfApiCharterCapitalOtherExpenditure;
+                    lastApiCharter.PidfApiCharterHeadwiseBudgets = _objPidfApiCharterHeadwiseBudget;
 
 
                     _oAPICharter.ManHourRates = (Convert.ToString(_oAPICharter.ManHourRates) == "" || _oAPICharter.ManHourRates == null) ? "0" : _oAPICharter.ManHourRates;
@@ -436,7 +459,7 @@ namespace EmcureNPD.Business.Core.Implementation
 
                 _oDBApiCharter.PidfApiCharterTimelineInMonths = _objPidfApiCharterTimelineInMonth;
                 _oDBApiCharter.PidfApiCharterManhourEstimates = _objPidfApiCharterManhourEstimates;
-                _oDBApiCharter.PidfApiCharterAnalyticalDepartments = _objPidfApiCharterAnalyticalDepartment;                
+                _oDBApiCharter.PidfApiCharterAnalyticalDepartments = _objPidfApiCharterAnalyticalDepartment;
                 _oDBApiCharter.PidfApiCharterPrddepartments = _objPidfApiCharterPRDDepartment;
                 _oDBApiCharter.PidfApiCharterCapitalOtherExpenditures = _objPidfApiCharterCapitalOtherExpenditure;
                 _oDBApiCharter.PidfApiCharterHeadwiseBudgets = _objPidfApiCharterHeadwiseBudget;
@@ -770,7 +793,6 @@ namespace EmcureNPD.Business.Core.Implementation
             try
             {
 
-                #region Analytical
                 //if (analyticalEntites != null && analyticalEntites.PidfPbfAnalyticalPrototypes.Count() > 0 && analyticalEntites.PidfPbfAnalyticalScaleUps.Count() > 0 && analyticalEntites.PidfPbfAnalyticalExhibits.Count() > 0)
 
 
@@ -916,9 +938,6 @@ namespace EmcureNPD.Business.Core.Implementation
                 }
 
 
-                #endregion
-
-                #region Clinical
                 //if (clinicalEntites.StrengthId > 0 != null && clinicalEntites.pidfpbfClinicalpilotBioFastingEntity.Count() > 0 && clinicalEntites.pidfpbfClinicalPilotBioFedEntity.Count() > 0 && clinicalEntites.pidfpbfClinicalPivotalBioFastingEntity.Count() > 0 && clinicalEntites.pidfpbfClinicalPivotalBioFedEntity.Count() > 0)
 
                 if (clinicalEntites.StrengthId > 0 && clinicalEntites.BusinessUnitId > 0)//for checking which tab is selected
@@ -1089,14 +1108,6 @@ namespace EmcureNPD.Business.Core.Implementation
                 }
 
 
-
-                #endregion
-
-                #region RnD
-
-                #endregion
-
-
                 return true;
             }
             catch (Exception)
@@ -1109,7 +1120,7 @@ namespace EmcureNPD.Business.Core.Implementation
             //PBF Entity Mapping
             var data = new PidfPbfFormEntity();
 
-            var data1 =  GetPbfTabDetails(pidfId, buid, strengthid);
+            var data1 = GetPbfTabDetails(pidfId, buid, strengthid);
             PidfPbfRnDEntity pidfPbfRnDEntity = new PidfPbfRnDEntity();
             var objPIDFPbf = _pbfRepository.GetAll().Where(x => x.Pidfid == pidfId).First();
             //var objanalytical =  _pidfPbfAnalyticalRepository.GetAllQuery().Where(x => x.Pbfid == objPIDFPbf.Pidfpbfid).First();
@@ -1119,7 +1130,7 @@ namespace EmcureNPD.Business.Core.Implementation
             pidfPbfRnDEntity.MasterStrengthEntities = _productStrengthService.GetAll().Result.Where(x => x.Pidfid == pidfId).ToList();
             data.pidfPbfRndEntity = pidfPbfRnDEntity;
             data.BusinessUnitId = buid;
-            data.Pidfid = pidfId;          
+            data.Pidfid = pidfId;
             data.Pidfpbfid = objPIDFPbf.Pidfpbfid;
             data.ProductTypeId = objPIDFPbf.ProductTypeId;
             //data.BusinessUnitId = objPIDFPbf.BusinessUnitId;
@@ -1173,7 +1184,7 @@ namespace EmcureNPD.Business.Core.Implementation
             {
                 if (dbresult.Tables[0] != null && dbresult.Tables[0].Rows.Count > 0)
                 {
-                    
+
                     pidf = dbresult.Tables[0].DataTableToList<PidfPbfFormEntity>();
                     analytical = dbresult.Tables[1].DataTableToList<PidfPbfAnalyticalEntity>();
                     anlyticalprototype = dbresult.Tables[2].DataTableToList<PidfPbfAnalyticalPrototypeEntity>();
@@ -1189,7 +1200,7 @@ namespace EmcureNPD.Business.Core.Implementation
                 }
             }
 
-            
+
 
 
 
@@ -1200,12 +1211,12 @@ namespace EmcureNPD.Business.Core.Implementation
 
         }
 
-        #region Private mapping function
+        
         private PidfPbfFormEntity PbfDatasetMappper(System.Data.DataSet ds)
         {
             var data = new PidfPbfFormEntity();
-           // data.PidfPbfAnalyticals = ds.Tables[1].ChildRelations;
-            data.PidfPbfAnalyticals.PidfPbfAnalyticalPrototypes = ds.Tables[2].DataTableToList<PidfPbfAnalyticalPrototypeEntity>();           
+            // data.PidfPbfAnalyticals = ds.Tables[1].ChildRelations;
+            data.PidfPbfAnalyticals.PidfPbfAnalyticalPrototypes = ds.Tables[2].DataTableToList<PidfPbfAnalyticalPrototypeEntity>();
             data.PidfPbfAnalyticals.PidfPbfAnalyticalScaleUps = ds.Tables[3].DataTableToList<PidfPbfAnalyticalScaleUpEntity>();
             data.PidfPbfAnalyticals.PidfPbfAnalyticalExhibits = ds.Tables[4].DataTableToList<PidfPbfAnalyticalExhibitEntity>();
             //data.PidfPbfAnalyticals.PidfPbfAnalyticalCosts = ds.Tables[5]<PidfPbfAnalyticalCostEntity>();
@@ -1214,7 +1225,7 @@ namespace EmcureNPD.Business.Core.Implementation
 
 
 
-            private PidfPbfFormEntity PbfMappper(long pidfId, int buid)
+        private PidfPbfFormEntity PbfMappper(long pidfId, int buid)
         {
             var data = new PidfPbfFormEntity();
             PidfPbfAnalyticalEntity _pidfPbfanalyticalEntity = new PidfPbfAnalyticalEntity();
@@ -1466,6 +1477,5 @@ namespace EmcureNPD.Business.Core.Implementation
 
             return data;
         }
-        #endregion
     }
 }
