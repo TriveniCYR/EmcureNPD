@@ -23,25 +23,21 @@
                     <th>Title</th>
                     <th>PidfNo</th>
                     <th>Created On</th>
-                    @*<th>Action</th>*@
                 </tr>
             </thead>
             <tbody class="text-center">
-                @foreach (var item in Model.Data) 
+               @* @foreach (var item in Model.Data) 
                 {
                     i++;
                     <tr>
                         <td>@i</td>
                         <td>@item.notificationTitle</td>
-                        <td>@item.PidfNo</td>
+                        <td>@item.pidfNo</td>
                         <td>@item.createdDate.ToString("dd/MM/yyy")</td>
-                       @* <td>
-                            <i class="fa-solid fa-clock-rotate-left me-2"></i>
-                            <i class="fa-solid fa-circle-plus"></i>
-                        </td>*@
+                      
                     </tr>
                    
-                }
+                }*@
              
             </tbody>
         </table>
@@ -50,6 +46,9 @@
 @section MyScripts {
 
     @Html.Partial("_DataTablePartial")
-    <script type="text/javascript" src="~/js/Custom/DynamicDataTable.js"></script>
+    <script type="text/javascript" src="~/js/Custom/DynamicDataTable.js?v=@jsVersion"></script>
 <script src="~/js/custom/notification/allnotifications.js?v=@jsVersion"></script>
+<script>
+        const GetAllNotification = "@EmcureNPD.Web.Helpers.APIURLHelper.GetAllNotification";
+</script>
 }

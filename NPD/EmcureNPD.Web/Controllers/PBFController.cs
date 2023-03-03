@@ -187,7 +187,49 @@ namespace EmcureNPD.Web.Controllers
             }
         }
 
-        #region API Details Form _KD  
+        #region API Details Form _KD 
+        public IActionResult APICharterSummaryDetailsForm(string pidfid, string bui)
+        {
+            ModelState.Clear();
+            var _APICharterDetailsForm = new PIDFAPICharterFormEntity();
+            try
+            {
+                int rolId = (int)HttpContext.Session.GetInt32(UserHelper.LoggedInRoleId);
+                RolePermissionModel objPermssion = UtilityHelper.GetCntrActionAccess(Convert.ToString(RouteData.Values["controller"]), rolId);
+                if (objPermssion == null || (!objPermssion.Add && !objPermssion.Edit))
+                {
+                    return RedirectToAction("AccessRestriction", "Home");
+                }
+                ViewBag.Access = objPermssion;
+                pidfid = UtilityHelper.Decreypt(pidfid);
+                string bussnessId = "";
+                if (string.IsNullOrEmpty(bui))
+                {
+                    bussnessId = Convert.ToString(HttpContext.Session.GetInt32(UserHelper.LoggedInBusId));
+                }
+                else
+                    bussnessId = UtilityHelper.Decreypt(bui);
+
+                HttpContext.Request.Cookies.TryGetValue(UserHelper.EmcureNPDToken, out string token);
+                APIRepository objapi = new(_cofiguration);
+                HttpResponseMessage responseMessage = objapi.APICommunication(APIURLHelper.GetAPICharterFormData + "/" + pidfid, HttpMethod.Get, token).Result;
+                if (responseMessage.IsSuccessStatusCode)
+                {
+                    string jsonResponse = responseMessage.Content.ReadAsStringAsync().Result;
+                    var data = JsonConvert.DeserializeObject<APIResponseEntity<PIDFAPICharterFormEntity>>(jsonResponse);
+                    _APICharterDetailsForm = data._object;
+                }
+                _APICharterDetailsForm.Pidfid = UtilityHelper.Encrypt(pidfid);
+                _APICharterDetailsForm.BusinessUnitId = UtilityHelper.Encrypt(bussnessId);
+                return View(_APICharterDetailsForm);
+            }
+            catch (Exception e)
+            {
+                ViewBag.errormessage = Convert.ToString(e.StackTrace);
+                return RedirectToAction("Login", "Account");
+            }
+        }
+
         [HttpGet]
         public IActionResult APICharterDetailsForm(string pidfid, string bui)
         {
@@ -641,9 +683,9 @@ namespace EmcureNPD.Web.Controllers
             {
                 ViewBag.errormessage = Convert.ToString(e.StackTrace);
                 ModelState.Clear();
-                return RedirectToAction(nameof(PIDFList));
+               return RedirectToAction("PIDFList", "PIDF", new { ScreenId = 6 });
             }
-            return RedirectToAction(nameof(PIDFList));
+            return RedirectToAction("PIDFList", "PIDF", new { ScreenId = 6 });
         }
     }
 

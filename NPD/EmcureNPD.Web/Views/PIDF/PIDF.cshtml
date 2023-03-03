@@ -11,13 +11,23 @@
 
 @model EmcureNPD.Business.Models.PIDFEntity
 @{
+	if (Model._Partial)
+	{
+		Layout = null;		
+	}
+}
+@{
     ViewData["Title"] = @MasterLocalizer["PIDF"];
 	string jsVersion = @Configuration.GetSection("StaticJS")["version"];
 }
+@if(!Model._Partial){
             <div class="content-header">
                 <h2 class="m-0">Product Identification Form</h2>
             </div>
-            <div class="container-fluid background-white-card">
+}
+            <div class="container-fluid background-white-card" id="dvPIDFContainer">
+				<input type="hidden" id="hdnPIDFId" value="@(Model.PIDFID)" />
+				<input type="hidden" id="hdnIsView" value="@(Model.IsViewMode ? "1" : "0")" />
 				<form asp-action="PIDF" asp-route-PIDFId="@Model.PIDFID">
 
 				<input type="hidden" asp-for="PIDFID" />
@@ -537,7 +547,7 @@
 						<a class="btn btn-danger me-3 outside-buttons operationButton" onClick="approveRejDeleteData('R')"><i class="fa fa-ban mr-1"></i> @SharedLocalizer["Reject"]</a>
 
 							}
-					<a class="btn btn-danger me-3 outside-buttons" asp-action="PIDFList" asp-controller="PIDF" asp-route-ScreenId="1">@SharedLocalizer["Cancel"]</a>
+					<a class="btn btn-danger me-3 outside-buttons operationButton" asp-action="PIDFList" asp-controller="PIDF" asp-route-ScreenId="1">@SharedLocalizer["Cancel"]</a>
 						</div>
 					</div>
 				</div>
@@ -547,7 +557,7 @@
 				</div>
 
 
-@section MyScripts {
+
 
 @*	@Html.Partial("_DataTablePartial")*@
 
@@ -577,4 +587,3 @@
 		
 						//#endregion
 	</script>
-}

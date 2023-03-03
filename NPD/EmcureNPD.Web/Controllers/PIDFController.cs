@@ -48,7 +48,7 @@ namespace EmcureNPD.Web.Controllers
             return View();
         }
 
-        public IActionResult PIDF(int? PIDFId)
+        public IActionResult PIDF(int? PIDFId, bool _Partial = false, bool IsViewMode = false)
         {
             PIDFEntity pidf;
             try
@@ -57,6 +57,8 @@ namespace EmcureNPD.Web.Controllers
                 if (PIDFId == null || PIDFId <= 0)
                 {
                     pidf = new PIDFEntity();
+                    pidf._Partial = _Partial;
+                    pidf.IsViewMode = IsViewMode;
                     pidf.LogInId = Convert.ToInt32(logUserId);
                     return View(pidf);
                 }
@@ -65,6 +67,9 @@ namespace EmcureNPD.Web.Controllers
                     HttpResponseMessage responseMessage;
 
                     var data = GetPidfFormModel(PIDFId, out responseMessage);
+
+                    data._Partial = _Partial;
+                    data.IsViewMode = IsViewMode;
 
                     if (data != null)
                     {
@@ -335,7 +340,7 @@ namespace EmcureNPD.Web.Controllers
             var StrengthId = 0;
             HttpContext.Request.Cookies.TryGetValue(UserHelper.EmcureNPDToken, out string token);
             APIRepository objapi = new(_cofiguration);
-            HttpResponseMessage responseMessage = objapi.APICommunication(APIURLHelper.GetPbfFormData + "/" + pidfid + "/" + bussnessId + "/" + StrengthId, HttpMethod.Get, token).Result;
+            HttpResponseMessage responseMessage = objapi.APICommunication(APIURLHelper.GetPbfFormDetails + "/" + pidfid + "/" + bussnessId + "/" + StrengthId, HttpMethod.Get, token).Result;
             if (responseMessage.IsSuccessStatusCode)
             {
                 string jsonResponse = responseMessage.Content.ReadAsStringAsync().Result;

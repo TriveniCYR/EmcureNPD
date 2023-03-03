@@ -55,6 +55,7 @@ namespace EmcureNPD.Utility.Enums
         API = 5,
         PBF = 6,
         Finance = 7,
-        Management = 8
+        Management = 8,
+        Project = 9
     }
 }
