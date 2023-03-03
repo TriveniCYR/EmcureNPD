@@ -72,14 +72,13 @@ namespace EmcureNPD.Business.Core.Implementation
         private IRepository<PidfPbfAnalyticalPrototype> _pidfPbfAnalyticalPrototypeRepository { get; set; }
         private IRepository<PidfPbfAnalyticalScaleUp> _pidfPbfAnalyticalScaleUpRepository { get; set; }
         private IRepository<PidfPbfAnalyticalExhibit> _pidfPbfAnalyticalExhibitRepository { get; set; }
-        private IRepository<PidfPbfAnalyticalCost> _pidfPbfAnalyticalCostRepository { get; set; }
+        private IRepository<PidfPbfAnalyticalCost> _PidfPbfAnalyticalCostsRepository { get; set; }
         private IRepository<PidfPbfClinical> _pidfPbfClinicalRepository { get; set; }
         private IRepository<PidfPbfClinicalPilotBioFasting> _pidfPbfClinicalPilotBioFastingRepository { get; set; }
         private IRepository<PidfPbfClinicalPilotBioFed> _pidfPbfClinicalPilotBioFedRepository { get; set; }
         private IRepository<PidfPbfClinicalPivotalBioFasting> _pidfPbfClinicalPivotalBioFastingRepository { get; set; }
         private IRepository<PidfPbfClinicalPivotalBioFed> _pidfPbfClinicalPivotalBioFedRepository { get; set; }
         private IRepository<PidfPbfClinicalCost> _pidfPbfClinicalCostRepository { get; set; }
-        private IRepository<PidfPbfAnalyticalCost> _PidfPbfAnalyticalCostsRepository { get; set; }
 
         private IRepository<MasterDosage> _masterDosageRepository { get; set; }
         private IRepository<PidfproductStrength> _pidfProductStrength { get; set; }
@@ -135,6 +134,13 @@ namespace EmcureNPD.Business.Core.Implementation
             _pidfPbfAnalyticalScaleUpRepository = _unitOfWork.GetRepository<PidfPbfAnalyticalScaleUp>();
             _pidfPbfAnalyticalExhibitRepository = _unitOfWork.GetRepository<PidfPbfAnalyticalExhibit>();
             _PidfPbfAnalyticalCostsRepository = _unitOfWork.GetRepository<PidfPbfAnalyticalCost>();
+            _masterDosageRepository = _unitOfWork.GetRepository<MasterDosage>();
+            _pidfPbfClinicalRepository = _unitOfWork.GetRepository<PidfPbfClinical>();
+            _pidfPbfClinicalPilotBioFastingRepository = _unitOfWork.GetRepository<PidfPbfClinicalPilotBioFasting>();
+            _pidfPbfClinicalPilotBioFedRepository = _unitOfWork.GetRepository<PidfPbfClinicalPilotBioFed>();
+            _pidfPbfClinicalPivotalBioFastingRepository = _unitOfWork.GetRepository<PidfPbfClinicalPivotalBioFasting>();
+            _pidfPbfClinicalPivotalBioFedRepository = _unitOfWork.GetRepository<PidfPbfClinicalPivotalBioFed>();
+            _pidfPbfClinicalCostRepository = _unitOfWork.GetRepository<PidfPbfClinicalCost>();
         }
 
         //------------Start------API_Functions_Kuldip--------------------------

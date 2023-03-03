@@ -12,7 +12,7 @@
 
 
 <div id="SavePIDFModel">
-        <div class="card">
+        @*<div class="card">
             <div id="PIDFFormTemplate">
                 @{
                     await Html.RenderPartialAsync("PIDF", new PIDFEntity());
@@ -48,7 +48,7 @@
                     </div>
                 </div>
             </div>
-        </div>
+        </div>*@
     <form asp-action="PBF" asp-controller="PBF" method="post">
         <input type="hidden" asp-for="Pidfid" />
         <input type="hidden" asp-for="BusinessUnitId" />
