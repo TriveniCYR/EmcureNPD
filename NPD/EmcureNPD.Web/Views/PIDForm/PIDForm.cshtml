@@ -11,7 +11,24 @@
     ViewData["Title"] = @MasterLocalizer["IPD"];
 }
 
-<div id="dynamicContentContainer"></div>
+
+<div class="card collapsed-card">
+    <div class="card-header bg-primary">
+        <h3 class="card-title mb-0">
+            <button type="button" class="btn btn-tool" data-card-widget="collapse">
+                Product Identification Form
+            </button>
+        </h3>
+        <div class="card-tools">
+            <button type="button" class="btn btn-tool" data-card-widget="collapse" title="Collapse">
+                <i class="fas fa-minus"></i>
+            </button>
+        </div>
+    </div>
+    <div class="card-body p-0">
+        <div id="dvPIDFContainer"></div>
+    </div>
+</div>
 
 <div class="content-header">
                 <h2 class="m-0">Internal Patent Details</h2>
@@ -72,14 +89,14 @@
                             </div>
                             <div class="col-md-3">
                                 <div class="form-group required">
-                                    @Html.LabelFor(model => model.DataExclusivity, "Data Exclusivity", new { @class = "control-label" })
+                                    @Html.LabelFor(model => model.DataExclusivity, "Data Exclusivity", new { @class = "control-label" }) <span class="text-danger">*</span>
                                     @Html.EditorFor(model => model.DataExclusivity, new { htmlAttributes = new { @autocomplete = "off", @class = "form-control checkbox-checked", @placeholder = @MasterLocalizer["Data Exclusivity"] } })
                                     @Html.ValidationMessageFor(model => model.DataExclusivity, "", new { @class = "text-danger" })
                                 </div>
                             </div>
                             <div class="col-md-3">
                                 <div class="form-group required">
-                                    @Html.LabelFor(model => model.FillingType, "Type of Filling", new { @class = "control-label" })
+                                    @Html.LabelFor(model => model.FillingType, "Type of Filling", new { @class = "control-label" }) <span class="text-danger">*</span>
                                     @Html.EditorFor(model => model.FillingType, new { htmlAttributes = new { @autocomplete = "off", @class = "form-control checkbox-checked", @placeholder = @MasterLocalizer["Type of Filling"] } })
                                     @Html.ValidationMessageFor(model => model.FillingType, "", new { @class = "text-danger" })
                                 </div>
@@ -88,21 +105,21 @@
                         <div class="row">
                             <div class="col-md-3">
                                 <div class="form-group required">
-                                    @Html.LabelFor(model => model.ApprovedGenetics, "Approved Genetics", new { @class = "control-label" })
+                                    @Html.LabelFor(model => model.ApprovedGenetics, "Approved Genetics", new { @class = "control-label" }) <span class="text-danger">*</span>
                                     @Html.EditorFor(model => model.ApprovedGenetics, new { htmlAttributes = new { @autocomplete = "off", @class = "form-control checkbox-checked", @placeholder = @MasterLocalizer["Approved Genetics"] } })
                                     @Html.ValidationMessageFor(model => model.ApprovedGenetics, "", new { @class = "text-danger" })
                                 </div>
                             </div>
                             <div class="col-md-3">
                                 <div class="form-group required">
-                                    @Html.LabelFor(model => model.LaunchedGenetics, "Launched Genetics", new { @class = "control-label" })
+                                    @Html.LabelFor(model => model.LaunchedGenetics, "Launched Genetics", new { @class = "control-label" }) <span class="text-danger">*</span>
                                     @Html.EditorFor(model => model.LaunchedGenetics, new { htmlAttributes = new { @autocomplete = "off", @class = "form-control checkbox-checked", @placeholder = @MasterLocalizer["Launched Genetics"] } })
                                     @Html.ValidationMessageFor(model => model.LaunchedGenetics, "", new { @class = "text-danger" })
                                 </div>
                             </div>
                             <div class="col-md-3">
                                 <div class="form-group required">
-                                    @Html.LabelFor(model => model.Innovators, new { @class = "control-label" })
+                                    @Html.LabelFor(model => model.Innovators, new { @class = "control-label" }) <span class="text-danger">*</span>
                                     @Html.EditorFor(model => model.Innovators, new { htmlAttributes = new { @autocomplete = "off", @class = "form-control checkbox-checked", @placeholder = @MasterLocalizer["RFDInnovators"] } })
                                     @Html.ValidationMessageFor(model => model.Innovators, "", new { @class = "text-danger" })
                                 </div>
@@ -124,14 +141,14 @@
                             </div>
                             <div class="col-md-3">
                                 <div class="form-group required">
-                                    @Html.LabelFor(model => model.LegalStatus, "Legal Status", new { @class = "control-label" })
+                                    @Html.LabelFor(model => model.LegalStatus, "Legal Status", new { @class = "control-label" }) <span class="text-danger">*</span>
                                     @Html.EditorFor(model => model.LegalStatus, new { htmlAttributes = new { @autocomplete = "off", @class = "form-control checkbox-checked", @placeholder = @MasterLocalizer["Legal Status"] } })
                                     @Html.ValidationMessageFor(model => model.LegalStatus, "", new { @class = "text-danger" })
                                 </div>
                             </div>
                             <div class="col-md-3">
                                 <div class="form-group required">
-                                    @Html.LabelFor(model => model.CostOfLitication, "Cost of Litigation", new { @class = "control-label" })
+                                    @Html.LabelFor(model => model.CostOfLitication, "Cost of Litigation", new { @class = "control-label" }) <span class="text-danger">*</span>
                                     @Html.EditorFor(model => model.CostOfLitication, new { htmlAttributes = new { @autocomplete = "off", @class = "form-control checkbox-checked", @placeholder = @MasterLocalizer["Cost of Litigation"] } })
                                     @Html.ValidationMessageFor(model => model.CostOfLitication, "", new { @class = "text-danger" })
                                 </div>
@@ -172,12 +189,12 @@
                                         <table id="PIDFTable" class="table table-bordered table-striped table-hover" style="width:100%">
                                             <thead>
                                                 <tr>
-                                                    <th>@MasterLocalizer["Patent Number"]</th>
+                                                    <th style="display:none;">@MasterLocalizer["Patent Number"]</th>
                                             <th>@MasterLocalizer["Type"] <span class="text-danger">*</span></th>
-                                                    <th>@SharedLocalizer["Original Expiry Date"]</th>
-                                                    <th>@SharedLocalizer["Extension Expiry Date"]</th>
-                                                    <th>@SharedLocalizer["Comments (Patent Specific)"]</th>
-                                                    <th>@SharedLocalizer["Strategy"]</th>                                                   
+                                                    <th>@SharedLocalizer["Original Expiry Date"] <span class="text-danger">*</span></th>
+                                                    <th>@SharedLocalizer["Extension Expiry Date"] <span class="text-danger">*</span></th>
+                                                    <th>@SharedLocalizer["Comments (Patent Specific)"] <span class="text-danger">*</span></th>
+                                                    <th>@SharedLocalizer["Strategy"] <span class="text-danger">*</span></th>                                                   
                                                     <th class="text-center">@SharedLocalizer["Action"]</th>
                                                 </tr>
                                             </thead>
@@ -187,7 +204,7 @@
                                                     for (int i = 0; i < Model.pidf_IPD_PatentDetailsEntities.Count(); i++)
                                                     {
                                                         <tr id="parentRow_@i">
-                                                            <td>
+                                                    <td style="display:none;">
                                                                 <div class="">
                                                                     <div class="form-group required">
                                                                         @Html.EditorFor(model => model.pidf_IPD_PatentDetailsEntities[i].PatentNumber, new { htmlAttributes = new { @autocomplete = "off",@readonly = true, @class = "form-control checkbox-checked", id = "pidf_IPD_PatentDetailsEntities[" + i + "].PatentNumber", @placeholder = @MasterLocalizer["Patent Number"]} })
@@ -294,8 +311,8 @@
 
     <script>
 
-        $.get('@Url.Action("PIDF", "PIDF")', { PIDFId: @Model.PIDFID }, function (content) {
-            $("#dynamicContentContainer").html(content);
+        $.get('@Url.Action("PIDF", "PIDF")', { PIDFId: @Model.PIDFID, _Partial : true, IsViewMode: true }, function (content) {
+            $("#dvPIDFContainer").html(content);
         });
 
 

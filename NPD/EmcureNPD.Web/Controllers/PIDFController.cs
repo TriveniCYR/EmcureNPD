@@ -48,7 +48,7 @@ namespace EmcureNPD.Web.Controllers
             return View();
         }
 
-        public IActionResult PIDF(int? PIDFId)
+        public IActionResult PIDF(int? PIDFId, bool _Partial = false, bool IsViewMode = false)
         {
             PIDFEntity pidf;
             try
@@ -57,6 +57,8 @@ namespace EmcureNPD.Web.Controllers
                 if (PIDFId == null || PIDFId <= 0)
                 {
                     pidf = new PIDFEntity();
+                    pidf._Partial = _Partial;
+                    pidf.IsViewMode = IsViewMode;
                     pidf.LogInId = Convert.ToInt32(logUserId);
                     return View(pidf);
                 }
@@ -65,6 +67,9 @@ namespace EmcureNPD.Web.Controllers
                     HttpResponseMessage responseMessage;
 
                     var data = GetPidfFormModel(PIDFId, out responseMessage);
+
+                    data._Partial = _Partial;
+                    data.IsViewMode = IsViewMode;
 
                     if (data != null)
                     {

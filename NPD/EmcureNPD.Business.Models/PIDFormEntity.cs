@@ -18,18 +18,33 @@ namespace EmcureNPD.Business.Models
         [Required(ErrorMessageResourceType = typeof(Validation), ErrorMessageResourceName = "Required")]
         [Display(Name = "MarketName")]
         public string MarketName { get; set; }
+
+        [Required(ErrorMessageResourceType = typeof(Validation), ErrorMessageResourceName = "Required")]
         public string DataExclusivity { get; set; }
+
+        [Required(ErrorMessageResourceType = typeof(Validation), ErrorMessageResourceName = "Required")]
         public string FillingType { get; set; }
+
+        [Required(ErrorMessageResourceType = typeof(Validation), ErrorMessageResourceName = "Required")]
         public string ApprovedGenetics { get; set; }
+
+        [Required(ErrorMessageResourceType = typeof(Validation), ErrorMessageResourceName = "Required")]
         public string LaunchedGenetics { get; set; }
+
         [Display(Name = "Region")]
         public string RegionId { get; set; }
         public string RegionIds { get; set; }
         [Display(Name = "Country")]
         public string CountryId { get; set; }
         public string CountryIds { get; set; }
+
+        [Required(ErrorMessageResourceType = typeof(Validation), ErrorMessageResourceName = "Required")]
         public string Innovators { get; set; }
+
+        [Required(ErrorMessageResourceType = typeof(Validation), ErrorMessageResourceName = "Required")]
         public string LegalStatus { get; set; }
+
+        [Required(ErrorMessageResourceType = typeof(Validation), ErrorMessageResourceName = "Required")]
         public int CostOfLitication { get; set; }
         public bool IsComment { get; set; } = true;
         public string Comments { get; set; }
@@ -61,14 +76,20 @@ namespace EmcureNPD.Business.Models
         [Display(Name = "Type")]
         public string Type { get; set; }
 
+        [Required(ErrorMessageResourceType = typeof(Validation), ErrorMessageResourceName = "Required")]
         [DataType(DataType.Date, ErrorMessage = "Original Expiry Date")]
         [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:yyyy-MM-dd}")]
         public DateTime? OriginalExpiryDate { get; set; }
 
+        [Required(ErrorMessageResourceType = typeof(Validation), ErrorMessageResourceName = "Required")]
         [DataType(DataType.Date, ErrorMessage = "Extension Expiry Date")]
         [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:yyyy-MM-dd}")]
         public DateTime? ExtensionExpiryDate { get; set; }
+
+        [Required(ErrorMessageResourceType = typeof(Validation), ErrorMessageResourceName = "Required")]
         public string Comments { get; set; }
+
+        [Required(ErrorMessageResourceType = typeof(Validation), ErrorMessageResourceName = "Required")]
         public string Strategy { get; set; }        
     }
     public partial class IPDPIDFListEntity
