@@ -4,8 +4,11 @@
 @inject IHttpContextAccessor HttpContextAccessor
 @inject Microsoft.Extensions.Localization.IStringLocalizer<MastersController> MasterLocalizer
 @inject Microsoft.Extensions.Localization.IStringLocalizer<EmcureNPD.Resource.Shared> SharedLocalizer
+@using Microsoft.Extensions.Configuration
+@inject IConfiguration Configuration
 @{
     ViewData["Title"] = @MasterLocalizer["PIDF List"];
+    string jsVersion = @Configuration.GetSection("StaticJS")["version"];
 }
 <div class="content-header">
     <div class="container-fluid d-flex justify-content-between">
@@ -168,8 +171,8 @@
 @section MyScripts {
 
     @Html.Partial("_DataTablePartial")
-    <script type="text/javascript" src="~/js/Custom/DynamicDataTable.js"></script>
-    <script type="text/javascript" src="~/js/Custom/PIDF/MasterPIDFList.js"></script>
+    <script type="text/javascript" src="~/js/Custom/DynamicDataTable.js?v=@jsVersion"></script>
+    <script type="text/javascript" src="~/js/Custom/PIDF/MasterPIDFList.js?v=@jsVersion"></script>
 
     <script>
 

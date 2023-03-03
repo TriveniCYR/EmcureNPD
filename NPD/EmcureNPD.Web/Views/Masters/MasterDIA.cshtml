@@ -5,6 +5,8 @@
 @inject IHttpContextAccessor HttpContextAccessor
 @inject Microsoft.Extensions.Localization.IStringLocalizer<MastersController> MasterLocalizer
 @inject Microsoft.Extensions.Localization.IStringLocalizer<EmcureNPD.Resource.Shared> SharedLocalizer
+@using Microsoft.Extensions.Configuration
+@inject IConfiguration Configuration
 
 @model EmcureNPD.Business.Models.MasterDIAEntity
 @{
@@ -13,6 +15,7 @@
 	string IsAddAllow = (objPermssion.Add) ? "" : "display: none";
 	string IsEditAllow = (objPermssion.Edit) ? "" : "display: none";
 	string IsDeleteAllow = (objPermssion.Delete) ? "" : "display: none";
+	string jsVersion = @Configuration.GetSection("StaticJS")["version"];
 }
 <div class="content-header">
 	<div class="container-fluid d-flex justify-content-between">
@@ -107,7 +110,7 @@
 
 	@Html.Partial("_DataTablePartial")
 
-	<script type="text/javascript" src="~/js/Custom/Masters/MasterDIA.js"></script>
+	<script type="text/javascript" src="~/js/Custom/Masters/MasterDIA.js?v=@jsVersion"></script>
 	<script>
 
 		//#region Setup API Url

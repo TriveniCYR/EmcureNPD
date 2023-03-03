@@ -6,9 +6,12 @@
 @inject IHttpContextAccessor HttpContextAccessor
 @inject Microsoft.Extensions.Localization.IStringLocalizer<EmcureNPD.Resource.Master> MasterLocalizer
 @inject Microsoft.Extensions.Localization.IStringLocalizer<EmcureNPD.Resource.Shared> SharedLocalizer
+@using Microsoft.Extensions.Configuration
+@inject IConfiguration Configuration
 @model EmcureNPD.Business.Models.PidfPbfFormEntity
 @{
     ViewData["Title"] = "PBFAnaLytical";
+    string jsVersion = @Configuration.GetSection("StaticJS")["version"];
 }
 
 

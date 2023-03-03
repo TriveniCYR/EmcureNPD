@@ -34,57 +34,57 @@ function GetAllNotificationListError(x, y, z) {
 
 //$.connection.hub.start();
 
-GetAllNotifications();
+//GetAllNotifications();
 
-//var connection = new signalR.HubConnectionBuilder().withUrl('signalRServer').configureLogging(signalR.LogLevel.Information).build();
-////connection.start();
-//connection.on('SendMessage', () => { GetAllNotifications(); });
-////connection.invoke("SendNotification").catch(function (err) {
-////    return console.error(err.toString());
+////var connection = new signalR.HubConnectionBuilder().withUrl('signalRServer').configureLogging(signalR.LogLevel.Information).build();
+//////connection.start();
+////connection.on('SendMessage', () => { GetAllNotifications(); });
+//////connection.invoke("SendNotification").catch(function (err) {
+//////    return console.error(err.toString());
+//////});
+
+////async function start() {
+////    try {
+////        await connection.start();
+////        console.log("SignalR Connected.");
+////    } catch (err) {
+////        console.log(err);
+////        setTimeout(start, 5);
+////    }
+////};
+
+////connection.onclose(async () => {
+////    await start();
 ////});
 
-//async function start() {
-//    try {
-//        await connection.start();
-//        console.log("SignalR Connected.");
-//    } catch (err) {
-//        console.log(err);
-//        setTimeout(start, 5);
+////// Start the connection.
+////start();
+//function timeDiffrance(_dateInput) {
+//    let _suffix = "";
+//    _dateInput = new Date(_dateInput);
+//    const _currentDate = new Date();
+//    let diffHour = (_currentDate - _dateInput) / 1000;
+//    const diffTime = Math.abs(_currentDate - _dateInput);
+//    const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+//    diffHour /= (60 * 60);
+//    diffHour = Math.abs(Math.round(diffHour));
+//    console.log(diffTime + " milliseconds");
+//    //millisecond to sec and min
+//    let diffMin = Math.floor((diffTime / 1000 / 60) << 0);
+//    let diffSec = Math.floor((diffTime / 1000) % 60);
+
+//    console.log(diffDays + " days");
+//    if (diffHour >= 24) {
+//        diffHour = diffDays;
+//        _suffix = "days";
 //    }
-//};
+//    if (diffHour < 24 && diffMin < 60) {
+//        diffHour = diffMin;
+//        _suffix = "min :" + diffSec + "sec";
+//    }
+//    else {
 
-//connection.onclose(async () => {
-//    await start();
-//});
-
-//// Start the connection.
-//start();
-function timeDiffrance(_dateInput) {
-    let _suffix = "";
-    _dateInput = new Date(_dateInput);
-    const _currentDate = new Date();
-    let diffHour = (_currentDate - _dateInput) / 1000;
-    const diffTime = Math.abs(_currentDate - _dateInput);
-    const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
-    diffHour /= (60 * 60);
-    diffHour = Math.abs(Math.round(diffHour));
-    console.log(diffTime + " milliseconds");
-    //millisecond to sec and min
-    let diffMin = Math.floor((diffTime / 1000 / 60) << 0);
-    let diffSec = Math.floor((diffTime / 1000) % 60);
-
-    console.log(diffDays + " days");
-    if (diffHour >= 24) {
-        diffHour = diffDays;
-        _suffix = "days";
-    }
-    if (diffHour < 24 && diffMin < 60) {
-        diffHour = diffMin;
-        _suffix = "min :" + diffSec + "sec";
-    }
-    else {
-
-        _suffix = "hour";
-    }
-    return diffHour + "" + _suffix;
-}
+//        _suffix = "hour";
+//    }
+//    return diffHour + "" + _suffix;
+//}
