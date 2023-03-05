@@ -99,6 +99,8 @@ namespace EmcureNPD.Business.Models
         public int ProjectComplexityId { get; set; }
         public string APIGroupLeader { get; set; }
         public int ManHourRates { get; set; }
+        public string ProjectName { get; set; }
+        public string Market { get; set; }
     }
     #endregion
 }

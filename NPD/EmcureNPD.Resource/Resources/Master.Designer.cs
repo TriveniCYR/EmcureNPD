@@ -747,6 +747,15 @@ namespace EmcureNPD.Resource.Resources {
         /// <summary>
         ///   Looks up a localized string similar to Headwise Budget (In Lacs).
         /// </summary>
+        public static string HeadwiseBudget_In_Lacs_ {
+            get {
+                return ResourceManager.GetString("HeadwiseBudget(In Lacs)", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Headwise Budget (In Lacs).
+        /// </summary>
         public static string HeadwiseBudget_InLacs_ {
             get {
                 return ResourceManager.GetString("HeadwiseBudget(InLacs)", resourceCulture);
@@ -1416,6 +1425,15 @@ namespace EmcureNPD.Resource.Resources {
         public static string RoleName {
             get {
                 return ResourceManager.GetString("RoleName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Rupee (In Lacs).
+        /// </summary>
+        public static string Rupee_In_Lacs_ {
+            get {
+                return ResourceManager.GetString("Rupee(In Lacs)", resourceCulture);
             }
         }
         

@@ -43,7 +43,7 @@
                                     @Html.LabelFor(model => model.Market  ,@MasterLocalizer["Market"], new { @class = "control-label" })
                                 </td>
                                 <td>
-                                    @Html.DropDownListFor(model => model.Market, new List<SelectListItem> { },  new {@readonly = "readonly", @class = "form-control"})
+                                    @Html.TextBoxFor(model => model.Market, new {@readonly = "readonly", @class = "form-control", })
                                 </td>
                             </tr>
                             <tr>
@@ -59,7 +59,7 @@
                                     @Html.LabelFor(model => model.ProjectEndDate,@MasterLocalizer["ProjectEndDate"], new { @class = "control-label" })
                                 </td>
                                 <td>
-                                    @Html.TextBoxFor(model => model.ProjectEndDate, new {@readonly = "readonly",@class = "form-control", @placeholder = @MasterLocalizer["ProjectEndDate"] })
+                                    @Html.TextBoxFor(model => model.ProjectEndDate, new {@readonly = "readonly",@class = "form-control" })
                                 </td>
                             </tr>
                             <tr>

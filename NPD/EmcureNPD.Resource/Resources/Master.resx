@@ -633,4 +633,10 @@
   <data name="TimelineInMonths" xml:space="preserve">
     <value>TimelineInMonths</value>
   </data>
+  <data name="HeadwiseBudget(In Lacs)" xml:space="preserve">
+    <value>Headwise Budget (In Lacs)</value>
+  </data>
+  <data name="Rupee(In Lacs)" xml:space="preserve">
+    <value>Rupee (In Lacs)</value>
+  </data>
 </root>
