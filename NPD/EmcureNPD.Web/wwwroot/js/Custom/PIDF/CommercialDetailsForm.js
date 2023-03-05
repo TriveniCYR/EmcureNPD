@@ -7,17 +7,17 @@ var selectedStrength = 0;
 var UserwiseBusinessUnit;
 
 $(document).ready(function () {
-    debugger;
     UserwiseBusinessUnit = UserWiseBUList.split(',');
     SetDivReadonly();    
     InitializeCurrencyDropdown();
     InitializeFinalSelectionDropdown();
     InitializeProductTypeDropdown();
     $("#AddYearForm").hide();
-    IsViewMode();
+    IsViewModeCommercial();
+    getPIDFAccordion(_PIDFAccordionURL, _PIDFID, "dvPIDFAccrdion");
 });
 
-function IsViewMode() {
+function IsViewModeCommercial() {
     if ($("#IsView").val() == '1') {
         SetCommercialFormReadonly();
     }

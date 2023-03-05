@@ -121,7 +121,6 @@ function GetPIDFDropdownSuccess(data) {
 
             try {
                 if (_PIDFId > 0) {
-                    debugger;
                     $('#OralId').val($('#hdnOralId').val());
                     $('#UnitofMeasurementId').val($('#hdnUnitofMeasurementId').val());
                     $('#DosageFormId').val($('#hdnDosageFormId').val());
@@ -256,7 +255,6 @@ function SetChildRows() {
     });
 }
 function SetChildRowDeleteIcon() {
-    debugger;
     if ($('#APIDetailsTable tbody tr').length > 1 && _mode != 1) {
         $('.apiDeleteIcon').show();
     } else {

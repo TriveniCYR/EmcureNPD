@@ -34,7 +34,6 @@ function LoadIPDForm(pidfId, BusinessUnitId) {
     _selectBusinessUnit = BusinessUnitId;
     if ($("#custom-tabs-" + BusinessUnitId).html() == "") {
         $.get(_IPDPartialURL, { pidfid: pidfId, bui: BusinessUnitId }, function (content) {
-            debugger;
             $("#custom-tabs-" + BusinessUnitId).html(content);
         });
     }
@@ -103,7 +102,6 @@ function SaveIPDClick(type) {
 }
 
 function addRowParent(j) {
-    debugger;
     var table = getParentFormId().find('#parentBody');
     var node = getParentFormId().find('#parentRow_0').clone(true);
     table.find('tr:last').after((node.length > 1 ? node[0] : node));
@@ -121,7 +119,6 @@ function tabClick(val, pidfidval) {
     window.location.href = url;
 }
 function IPDSetChildRowDeleteIcon() {
-    debugger;
     if (getParentFormId().find('#PIDFTable tbody tr').length > 1 && _IPDMode != 1) {
         getParentFormId().find('.apiDeleteIcon').show();
     } else {
