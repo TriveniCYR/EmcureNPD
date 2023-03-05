@@ -110,13 +110,11 @@ function SaveApproveClick() {
     getParentFormId().find('#SaveType').val('A');
     getParentFormId().find('#RegionIds').val(getParentFormId().find('.regionCombo').val());
     getParentFormId().find('#CountryIds').val(getParentFormId().find('#CountryId').val());
-    console.log("SaveAppr");
 }
 function SaveRejectClick() {
     getParentFormId().find('#SaveType').val('R');
     getParentFormId().find('#RegionIds').val(getParentFormId().find('.regionCombo').val());
     getParentFormId().find('#CountryIds').val(getParentFormId().find('#CountryId').val());
-    console.log("SaveReject");
 }
 
 

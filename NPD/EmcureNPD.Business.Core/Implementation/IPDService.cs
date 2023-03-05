@@ -31,6 +31,7 @@ namespace EmcureNPD.Business.Core.Implementation
 		private readonly IMasterAuditLogService _auditLogService;
 		private readonly IConfiguration _configuration;
 		private readonly INotificationService _notificationService;
+
 		private IRepository<PidfIpd> _repository { get; set; }
 		private IRepository<PidfIpdPatentDetail> _ipdParentRepository { get; set; }
 		private IRepository<MasterRegion> _regionRepository { get; set; }
@@ -45,6 +46,7 @@ namespace EmcureNPD.Business.Core.Implementation
 		private IRepository<MasterUser> _masterUserRepository { get; set; }
 		private IRepository<MasterProjectStatus> _masterProjectStatusRepository { get; set; }
 		private IRepository<MasterProjectPriority> _masterProjectPriorityRepository { get; set; }
+
         private readonly IHelper _helper;
 
         public IPDService(IUnitOfWork unitOfWork, IMapperFactory mapperFactory, IMasterBusinessUnitService businessUnitService, IMasterCountryService countryService, IMasterAuditLogService auditLogService, IConfiguration configuration, INotificationService notificationService, IHelper helper)
@@ -53,9 +55,12 @@ namespace EmcureNPD.Business.Core.Implementation
 			_mapperFactory = mapperFactory;
 			_businessUnitService = businessUnitService;
 			_countryService = countryService;
-			_repository = _unitOfWork.GetRepository<PidfIpd>();
+            _auditLogService = auditLogService;
+            _notificationService = notificationService;
+			_helper = helper;
+
+            _repository = _unitOfWork.GetRepository<PidfIpd>();
 			_ipdParentRepository = unitOfWork.GetRepository<PidfIpdPatentDetail>();
-			_auditLogService = auditLogService;
 			_regionRepository = _unitOfWork.GetRepository<MasterRegion>();
 			_userRegionRepository = _unitOfWork.GetRepository<MasterUserRegionMapping>();
 			_userRegionCountryRepository = _unitOfWork.GetRepository<MasterRegionCountryMapping>();
@@ -64,16 +69,16 @@ namespace EmcureNPD.Business.Core.Implementation
 			_pidfrepository = unitOfWork.GetRepository<Pidf>();
 			_pidfMedicalrepository = unitOfWork.GetRepository<PidfMedical>();
 			_pidfMedicalFilerepository = unitOfWork.GetRepository<PidfMedicalFile>();
-			_configuration = configuration;
-			_notificationService = notificationService;
+
 			_projectTaskRepository = unitOfWork.GetRepository<ProjectTask>();
 			_masterUserRepository = unitOfWork.GetRepository<MasterUser>();
 			_masterProjectStatusRepository = unitOfWork.GetRepository<MasterProjectStatus>();
 			_masterProjectPriorityRepository = unitOfWork.GetRepository<MasterProjectPriority>();
 
-		}
+            _configuration = configuration;
+        }
 
-		public async Task<IPDEntity> FillDropdown()
+        public async Task<IPDEntity> FillDropdown()
 		{
 			var IPD = new IPDEntity
 			{
