@@ -74,6 +74,7 @@ $("[id*='TimelineInMonthsValue']").change(function () {
             sum = parseFloat(sum) + parseFloat(Value);
     });
     $("#TimelineInMonths_6__TimelineInMonthsValue").val(sum);
+    CalculateTotalHeadwiseAnalytical();
 });
 //--------------Calculation of PRDDepartmentRawMaterialValue----------------------
 $("[id*='PRDDepartmentRawMaterialValue']").change(function () {
@@ -84,8 +85,9 @@ $("[id*='PRDDepartmentRawMaterialValue']").change(function () {
             sum = parseFloat(sum) + parseFloat(Value);
     });
     $("#PRDDepartment_4__PRDDepartmentRawMaterialValue").val(sum);
-    $("#HeadwiseBudget_1__HeadwiseBudgetValue").val(sum);
-    
+    $("#HeadwiseBudget_1__HeadwiseBudgetValue").val(sum); 
+    $("[id*='HeadwiseBudgetValue']").change();    
+    CalculateTotalHeadwiseAnalytical();
 });
 //----------Impurity------------------------------
 
@@ -97,6 +99,7 @@ $("[id*='AnalyticalDepartmentImpurityValue']").change(function () {
             sum = parseFloat(sum) + parseFloat(Value);
     });
     $("#AnalyticalDepartment_5__AnalyticalDepartmentImpurityValue").val(sum);
+    CalculateTotalHeadwiseAnalytical();
 });
 //----------Stability------------------------------ AnalyticalDepartment_0__AnalyticalDepartmentStabilityValue
 $("[id*='AnalyticalDepartmentStabilityValue']").change(function () {
@@ -107,6 +110,7 @@ $("[id*='AnalyticalDepartmentStabilityValue']").change(function () {
             sum = parseFloat(sum) + parseFloat(Value);
     });
     $("#AnalyticalDepartment_5__AnalyticalDepartmentStabilityValue").val(sum);
+    CalculateTotalHeadwiseAnalytical();
 });
 //----------AMV------------------------------ AnalyticalDepartment_0__AnalyticalDepartmentAMVValue
 $("[id*='AnalyticalDepartmentAMVValue']").change(function () {
@@ -117,6 +121,7 @@ $("[id*='AnalyticalDepartmentAMVValue']").change(function () {
             sum = parseFloat(sum) + parseFloat(Value);
     });
     $("#AnalyticalDepartment_5__AnalyticalDepartmentAMVValue").val(sum);
+    CalculateTotalHeadwiseAnalytical();
 });
 
 //----------AMT------------------------------ AnalyticalDepartment_0__AnalyticalDepartmentAMTValue
@@ -128,6 +133,7 @@ $("[id*='AnalyticalDepartmentAMTValue']").change(function () {
             sum = parseFloat(sum) + parseFloat(Value);
     });
     $("#AnalyticalDepartment_5__AnalyticalDepartmentAMTValue").val(sum);
+    CalculateTotalHeadwiseAnalytical();
 });
 //----------ARD------------------------------ AnalyticalDepartment_0__AnalyticalDepartmentARDValue
 $("[id*='AnalyticalDepartmentARDValue']").change(function () {
@@ -140,10 +146,13 @@ $("[id*='AnalyticalDepartmentARDValue']").change(function () {
             sum = parseFloat(sum) + parseFloat(Value);
     });
     $("#AnalyticalDepartment_3__AnalyticalDepartmentARDValue").val(sum);
+    cal_TotalcostofAnalyticalRawMaterial();
     CalculateTotalHeadwiseAnalytical();
 });
-
 $("#AnalyticalDepartment_4__AnalyticalDepartmentARDValue").change(function () {
+    cal_TotalcostofAnalyticalRawMaterial();
+});
+function cal_TotalcostofAnalyticalRawMaterial() {
     var sum = 0;
     var Value = ($("#AnalyticalDepartment_4__AnalyticalDepartmentARDValue").val() == '') ? 0 : $("#AnalyticalDepartment_4__AnalyticalDepartmentARDValue").val();
     var SumValue = ($("#AnalyticalDepartment_3__AnalyticalDepartmentARDValue").val() == '') ? 0 : $("#AnalyticalDepartment_3__AnalyticalDepartmentARDValue").val();
@@ -152,7 +161,19 @@ $("#AnalyticalDepartment_4__AnalyticalDepartmentARDValue").change(function () {
 
     $("#AnalyticalDepartment_5__AnalyticalDepartmentARDValue").val(sum);
     CalculateTotalHeadwiseAnalytical();
-});
+}
+
+function CalculateTotalHeadwiseAnalytical () {
+    var arrAnalyticalCol = ['ARD', 'Impurity', 'Stability', 'AMV', 'AMT'];
+    var sum = 0;
+    $.each(arrAnalyticalCol, function (index, value) {
+        var ControlId = '#AnalyticalDepartment_5__AnalyticalDepartment' + value + 'Value';
+        var valueOfControl = ($(ControlId).val() == '') ? 0 : $(ControlId).val();
+        if (!isNaN(valueOfControl))
+            sum = parseFloat(sum) + parseFloat(valueOfControl);        
+    });
+    $("#HeadwiseBudget_0__HeadwiseBudgetValue").val(sum);    // Headwise -Total Cost Of Analytical Raw Material
+}
 //--------------ManhourEstimates--------------------------------------------------------------
 
 $("[id*='ManhourEstimatesNoOfEmployeeValue']").change(function () { 
@@ -211,29 +232,44 @@ $("[id*='ManhourEstimatesCostValue']").change(function () {
     });
     $("#ManhourEstimates_7__ManhourEstimatesCostValue").val(sum);
     $("#HeadwiseBudget_2__HeadwiseBudgetValue").val(sum);
+    $("[id*='HeadwiseBudgetValue']").change();
 });
-//--------------Calculation of Analytical Aaw Material---------------------------AnalyticalDepartment_5__AnalyticalDepartmentARDValue
-function CalculateTotalHeadwiseAnalytical () {
-    var sum = 0;
-    var i = 0;
-        var Control_Id = "#AnalyticalDepartment_5__AnalyticalDepartmentARDValue";
-        var Value = ($(Control_Id).val() == '') ? 0 : $(Control_Id).val();
-        if (!isNaN(Value))
-        sum = parseFloat(Value);
+//--------------Calculation of CapitalOtherExpenditureAmountValue------------------------------------------
 
-    $("#HeadwiseBudget_0__HeadwiseBudgetValue").val(sum);
-}
-//-----------------Calculatyion of HeadwiseBudgetValue---------------------------------------
-function CalculateTotalHeadwiseAnalytical() {
-    var sum = 0;
-    var i = 0;
-    var Control_Id = "#AnalyticalDepartment_5__AnalyticalDepartmentARDValue";
-    var Value = ($(Control_Id).val() == '') ? 0 : $(Control_Id).val();
-    if (!isNaN(Value))
-        sum = parseFloat(Value);
+$("[id*='CapitalOtherExpenditureAmountValue']").change(function () {
+    var Value = ($(this).val() == '') ? 0 : $(this).val();
+    if (!isNaN(Value)) {
+        if ($(this).attr('id').includes('0__CapitalOtherExpenditureAmountValue')) //capex value
+            $("#HeadwiseBudget_3__HeadwiseBudgetValue").val(Value);  
 
-    $("#HeadwiseBudget_0__HeadwiseBudgetValue").val(sum);
-}
+        else if ($(this).attr('id').includes('1__CapitalOtherExpenditureAmountValue')) //Other Expenses/Utility Cost
+            $("#HeadwiseBudget_4__HeadwiseBudgetValue").val(Value);  
 
+        else if ($(this).attr('id').includes('2__CapitalOtherExpenditureAmountValue')) //DMF Filling Cost
+            $("#HeadwiseBudget_6__HeadwiseBudgetValue").val(Value);  
+
+        else if ($(this).attr('id').includes('3__CapitalOtherExpenditureAmountValue')) //Litigation Cost / Patent Registration Cost
+            $("#HeadwiseBudget_5__HeadwiseBudgetValue").val(Value); 
+
+        else if ($(this).attr('id').includes('4__CapitalOtherExpenditureAmountValue')) //Bio Cost
+            $("#HeadwiseBudget_7__HeadwiseBudgetValue").val(Value);
+
+        $("[id*='HeadwiseBudgetValue']").change();
+    }
+});
+//---------------------Total of Headwise count value----------HeadwiseBudget_0__HeadwiseBudgetValue
+$("[id*='HeadwiseBudgetValue']").change(function () {
+
+    $("[id*='HeadwiseBudgetValue']").change(function () {
+        var sum = 0;
+        $("[id*='HeadwiseBudgetValue']").each(function () {
+            var Value = ($(this).val() == '') ? 0 : $(this).val();
+            if (($(this).attr('id') != 'HeadwiseBudget_8__HeadwiseBudgetValue') && !isNaN(Value))
+                sum = parseFloat(sum) + parseFloat(Value);
+        });
+        $("#HeadwiseBudget_8__HeadwiseBudgetValue").val(sum);
+    });
+});
+HeadwiseBudget_0__HeadwiseBudgetValue
 
 
