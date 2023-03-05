@@ -166,10 +166,13 @@ function InitializePIDFList() {
                     html += '<a class="ml-1 large-font" style="color:' + (!_enableView ? "#007bff" : "grey") + '" href="' + (!_enableView ? _IPDForm : "#") + '&IsView=1"><i class="fa fa-fw fa-eye mr-1"></i></a>';
 
                 } else if (_screenId == "3") {
-                    var _MedicalForm = '/PIDForm/Medical?pidfid=' + row.encpidfid + '&bui=' + row.encbud;
-                    var _enable = (row.pidfStatusID == 3 || row.pidfStatusID == 5 || row.pidfStatusID == 6 || row.pidfStatusID == 7);
+                    var _MedicalForm = '/Medical/Medical?pidfid=' + row.encpidfid + '&bui=' + row.encbud;
+                    var _enable = (row.pidfStatusID == 7 || row.pidfStatusID == 9 || row.pidfStatusID == 10 || row.pidfStatusID == 11);
+
                     html += '<a class="large-font" style="color:' + (_enable ? "#007bff" : "grey") + '" href="' + (_enable ? _MedicalForm : "#") + '"><i class="fa fa-fw fa-edit mr-1"></i></a>';
-                    html += '<a class="ml-1 large-font" href="' + _MedicalForm + '&IsView=1"><i class="fa fa-fw fa-eye mr-1"></i></a>';
+
+                    var _enableView = (row.pidfStatusID == 9);
+                    html += '<a class="ml-1 large-font" style="color:' + (!_enableView ? "#007bff" : "grey") + '" href="' + (!_enableView ? _IPDForm : "#") + '&IsView=1"><i class="fa fa-fw fa-eye mr-1"></i></a>';
                 } else if (_screenId == "4") {
                     var _CommercialForm = '/PIDF/PIDFCommerciaLDetails?pidfid=' + row.encpidfid + '&bui=' + row.encbud;
                     var _enable = (row.pidfStatusID == 7 || row.pidfStatusID == 10 || row.pidfStatusID == 11 || row.pidfStatusID == 12 || row.pidfStatusID == 13 || row.pidfStatusID == 14 || row.pidfStatusID == 15);
@@ -270,7 +273,6 @@ function CustomizeChildContent(d) {
 }
 
 function chkClick(cb, pidfId) {
-    console.log("Clicked, new value = " + cb.checked + " ---pidfId::" + pidfId);
     if (cb.checked) {
         objApprRejList.push({ pidfId: pidfId })
     }

@@ -57,6 +57,9 @@
 
   <ItemGroup>
     <Folder Include="Views\Dashboard\" />
+    <Folder Include="Views\API\" />
+    <Folder Include="Views\Commercial\" />
+    <Folder Include="Views\Management\" />
   </ItemGroup>
 
 </Project>

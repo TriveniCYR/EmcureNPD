@@ -298,8 +298,8 @@ namespace EmcureNPD.Web.Helpers
         public static string ApproveRejectIpdPidf = "api/IPD/ApproveRejectIpdPidf";
 		public static string GetCommercialFormData = "api/CommercialPIDFForm/GetCommercialFormData";
         public static string GetAllFinalSelection = "api/CommercialPIDFForm/GetAllFinalSelection";
-        public static string PIDMedicalForm = "api/IPD/PIDMedicalForm";
-        public static string GetMedicalFormdata = "api/IPD/GetPIDFMedicalFormData";
+        public static string PIDMedicalForm = "api/Medical/PIDMedicalForm";
+        public static string GetMedicalFormdata = "api/Medical/GetPIDFMedicalFormData";
         public static string GetAPIIPDFormData = "api/PBF/GetAPIIPDFormData";
         public static string InsertUpdateAPIIPD = "api/PBF/InsertUpdateAPIIPD";
         public static string GetAPIRnDFormData = "api/PBF/GetAPIRnDFormData";

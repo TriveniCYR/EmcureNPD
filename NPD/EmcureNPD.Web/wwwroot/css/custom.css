@@ -101,3 +101,4 @@ table, th, td {
     cursor: pointer;
 }
 .card-header.bg-primary button{color:#fff;}
+.filename{cursor:pointer;border:none;}

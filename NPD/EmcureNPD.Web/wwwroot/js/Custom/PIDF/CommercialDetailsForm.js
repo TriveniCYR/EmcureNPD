@@ -44,7 +44,6 @@ function InitializeProductTypeDropdown() {
     ajaxServiceMethod($('#hdnBaseURL').val() + GetAllProductType, 'GET', GetProductTypeListSuccess, GetProductTypeListError);
 }
 function GetProductTypeListSuccess(data) {
-    console.log(data._object);
     try {
         $.each(data._object, function (index, object) {
             $('#PackagingTypeId1').append($('<option>').text(object.productTypeName).attr('value', object.productTypeId));

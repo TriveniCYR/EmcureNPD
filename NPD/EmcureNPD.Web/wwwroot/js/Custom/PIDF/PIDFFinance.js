@@ -2,7 +2,6 @@
 $(document).ready(function () {
     GetCurrencyList();
     GetDosageFormList();
-    console.log("Pidffinance");
     //$("#FinanceTable tbody tr:first").find('.del-rows').hide();
     if (isView === "1") {
         $('.readOnlyUpdate').prop('readonly', true);

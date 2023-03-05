@@ -15,7 +15,6 @@ function fnGetActiveBusinessUnit() {
     ajaxServiceMethod($('#hdnBaseURL').val() + GetActiveBusinessUnit, 'GET', GetActiveBusinessUnitSuccess, GetActiveBusinessUnitError);
 }
 function GetActiveBusinessUnitSuccess(data) {
-    console.log(data);
     var businessUnitHTML = "";
     var businessUnitPanel = "";
     $.each(data._object, function (index, item) {

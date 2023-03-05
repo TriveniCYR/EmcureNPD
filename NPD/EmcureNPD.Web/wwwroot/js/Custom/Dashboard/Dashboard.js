@@ -24,7 +24,6 @@ function GetDashboardDropdown() {
 }
 function GetDashboardDropdownSuccess(data) {
     try {
-        console.log(data);
         $('#BusinessUnitId').append('<option value="0">-- Select Business Unit --</option>');
         if (data != null) {            
             $(data.MasterBusinessUnits).each(function (index, item) {

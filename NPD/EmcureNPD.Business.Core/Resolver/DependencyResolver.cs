@@ -50,6 +50,7 @@ namespace EmcureNPD.Business.Core.Resolver
             services.AddTransient<IMasterActivityTypeService, MasterActivityTypeService>();
             services.AddTransient<IMasterFillingExpenseService, MasterFillingExpenseService>();
             services.AddTransient<IIPDService, IPDService>();
+            services.AddTransient<IMedicalService, MedicalService>();
             services.AddTransient<IAPIListService, APIListService>();
             services.AddTransient<IPidfProductStrengthService, PidfProductStrengthService>();
             services.AddTransient<IPidfApiDetailsService, PidfApiDetailsService>();
