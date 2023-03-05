@@ -331,8 +331,8 @@ namespace EmcureNPD.Business.Core.Implementation
                         saveTId = (Int32)Master_PIDFStatus.FinanceRejected;
                     else if (oApprRej.ScreenId == Convert.ToString((Int32)PIDFScreen.Management))
                         saveTId = (Int32)Master_PIDFStatus.ManagementRejected;
-
-                    saveTId = (Int32)Master_PIDFStatus.PIDFRejected;
+                    else
+                        saveTId = (Int32)Master_PIDFStatus.PIDFRejected;
                 }
                 if (oApprRej.SaveType == "A")
                 {
@@ -346,8 +346,8 @@ namespace EmcureNPD.Business.Core.Implementation
                         saveTId = (Int32)Master_PIDFStatus.FinanceApproved;
                     else if (oApprRej.ScreenId == Convert.ToString((Int32)PIDFScreen.Management))
                         saveTId = (Int32)Master_PIDFStatus.ManagementApproved;
-
-                    saveTId = (Int32)Master_PIDFStatus.PIDFApproved;
+                    else
+                        saveTId = (Int32)Master_PIDFStatus.PIDFApproved;
                 }
 
                 for (int i = 0; i < oApprRej.PidfIds.Count; i++)

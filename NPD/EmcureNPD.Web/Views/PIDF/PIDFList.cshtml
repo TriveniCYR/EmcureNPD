@@ -38,8 +38,8 @@
         <div>
             @if (Context.Request.Query["ScreenId"] == Convert.ToString((int)EmcureNPD.Utility.Enums.PIDFScreen.PIDF) || Context.Request.Query["ScreenId"] == Convert.ToString((int)EmcureNPD.Utility.Enums.PIDFScreen.IPD) || Context.Request.Query["ScreenId"] == Convert.ToString((int)EmcureNPD.Utility.Enums.PIDFScreen.Finance) || Context.Request.Query["ScreenId"] == Convert.ToString((int)EmcureNPD.Utility.Enums.PIDFScreen.Management))
             {
-                <a class="btn btn-success" onClick="approveRejDeleteData('A')"><i class="fa fa-check-circle mr-1"></i> @SharedLocalizer["Approve"]</a>
-                <a class="btn btn-danger" onClick="approveRejDeleteData('R')"><i class="fa fa-ban mr-1"></i> @SharedLocalizer["Reject"]</a>
+                <a class="btn btn-success"  onClick="ApproveRejectPIDF('A', @(Context.Request.Query["ScreenId"]), '/PIDF/PIDFList?ScreenId=@(Context.Request.Query["ScreenId"])')"><i class="fa fa-check-circle mr-1"></i> @SharedLocalizer["Approve"]</a>
+                <a class="btn btn-danger" onClick="ApproveRejectPIDF('R', @(Context.Request.Query["ScreenId"]), '/PIDF/PIDFList?ScreenId=@(Context.Request.Query["ScreenId"])')"><i class="fa fa-ban mr-1"></i> @SharedLocalizer["Reject"]</a>
             }
             @*<a class="btn btn-danger" onClick="approveRejDeleteData('D')"><i class="far fa fa-trash mr-1"></i> @SharedLocalizer["Delete"]</a>*@
             @if (Context.Request.Query["ScreenId"] == Convert.ToString((int)EmcureNPD.Utility.Enums.PIDFScreen.PIDF))
@@ -91,7 +91,7 @@
 
 
         @*ApproveModel*@
-        <div id="ApproveModel" class="modal themeModal" role="dialog">
+@*        <div id="ApproveModel" class="modal themeModal" role="dialog">
             <div class="modal-dialog">
                 <!-- Modal content-->
                 <div class="modal-content">
@@ -114,9 +114,9 @@
                     </div>
                 </div>
             </div>
-        </div>
+        </div>*@
         @*RejectModel*@
-        <div id="RejectModel" class="modal themeModal" role="dialog">
+        @*<div id="RejectModel" class="modal themeModal" role="dialog">
             <div class="modal-dialog">
                 <!-- Modal content-->
                 <div class="modal-content">
@@ -139,9 +139,9 @@
                     </div>
                 </div>
             </div>
-        </div>
+        </div>*@
         @*DeletePIDFModel*@
-        <div id="DeleteModel" class="modal themeModal " role="dialog">
+        @*<div id="DeleteModel" class="modal themeModal " role="dialog">
             <div class="modal-dialog">
                 <!-- Modal content-->
                 <div class="modal-content">
@@ -165,8 +165,9 @@
                     </div>
                 </div>
             </div>
-        </div>
+        </div>*@
 
+        @Html.Partial("_PIDFApproveReject")
 
 @section MyScripts {
 

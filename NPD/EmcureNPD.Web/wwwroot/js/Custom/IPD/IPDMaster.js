@@ -9,10 +9,7 @@ $(document).ready(function () {
     } catch (e) {
         _IPDMode = getParameterByName("IsView");
     }
-
-    if (_IPDMode == 1) {
-        readOnlyForm();
-    }
+    getPIDFAccordion(_PIDFAccordionURL, _PIDFID, "dvPIDFAccrdion");
 });
 function fnGetActiveBusinessUnit() {
     ajaxServiceMethod($('#hdnBaseURL').val() + GetActiveBusinessUnit, 'GET', GetActiveBusinessUnitSuccess, GetActiveBusinessUnitError);
@@ -106,18 +103,6 @@ function SaveIPDClick(type) {
     SetIPDChildRows();
 }
 
-function SaveApproveClick() {
-    getParentFormId().find('#SaveType').val('A');
-    getParentFormId().find('#RegionIds').val(getParentFormId().find('.regionCombo').val());
-    getParentFormId().find('#CountryIds').val(getParentFormId().find('#CountryId').val());
-}
-function SaveRejectClick() {
-    getParentFormId().find('#SaveType').val('R');
-    getParentFormId().find('#RegionIds').val(getParentFormId().find('.regionCombo').val());
-    getParentFormId().find('#CountryIds').val(getParentFormId().find('#CountryId').val());
-}
-
-
 function addRowParent(j) {
     debugger;
     var table = getParentFormId().find('#parentBody');
@@ -181,4 +166,11 @@ $(document).on("change", ".regionCombo", function () {
 });
 function getParentFormId() {
     return $('#fIPDForm_' + _selectBusinessUnit);
+}
+function readOnlyIPDForm() {
+    $('#dvIPDContainer').find('input').attr('readonly', true).attr('disabled', true);
+    $('#dvIPDContainer').find('textarea').attr('readonly', true).attr('disabled', true);
+    //$('button').attr('readonly', true).attr('disabled', true);
+    $('#dvIPDContainer').find('select').attr('readonly', true).attr('disabled', true).trigger("change");
+    $('#dvIPDContainer').find('.operationButton').hide();
 }

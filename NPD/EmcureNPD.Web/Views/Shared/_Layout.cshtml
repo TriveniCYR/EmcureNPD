@@ -1,5 +1,8 @@
 ﻿@using Microsoft.Extensions.Configuration
+@using Microsoft.AspNetCore.Mvc.Localization
 @inject IConfiguration Configuration
+@inject Microsoft.Extensions.Localization.IStringLocalizer<EmcureNPD.Resource.Shared> SharedLocalizer
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -128,6 +131,12 @@
 
 	<script>
 		const GetFilteredNotifications = "@EmcureNPD.Web.Helpers.APIURLHelper.GetFilteredNotifications";
+
+		var _RejectConfirm = "@SharedLocalizer["RejectConfirm"]"
+		var _RejectTitle = "@SharedLocalizer["Reject"]";
+		var _ApproveConfirm = "@SharedLocalizer["ApproveConfirm"]"
+		var _ApproveTitle = "@SharedLocalizer["Approve"]";
+
 	</script>
     
     <script type="text/javascript" src="~/lib/signalr/signalr.js"></script>

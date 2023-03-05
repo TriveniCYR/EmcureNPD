@@ -173,3 +173,65 @@ function getParameterByName(name, url = window.location.href) {
 $(document).ready(function () {
     setNavigation();
 });
+function ApproveRejectClick(type, PIDFID, ScreenId, URL) {
+    if (PIDFID != undefined && PIDFID != "" && PIDFID != null) {
+        if (type == "A") {
+            $('#ApproveRejectModel').find('#ApproveRejectTitle').html(_ApproveTitle);
+            $('#ApproveRejectModel').find('#ApproveRejectLabel').html(_ApproveConfirm);
+        } else {
+            $('#ApproveRejectModel').find('#ApproveRejectTitle').html(_RejectTitle);
+            $('#ApproveRejectModel').find('#ApproveRejectLabel').html(_RejectConfirm);
+        }
+        $('#hdnStatuspidfIds').val(PIDFID);
+        $('#hdnStatusSaveType').val(type);
+        $('#hdnStatusscreenId').val(ScreenId);
+        $('#hdnStatusReturnUrl').val(URL);
+        $('#ApproveRejectModel').modal('show');
+    } else {
+        toastr.error("Select Pidf");
+    }
+}
+function ApproveRejectConfirm() {
+    var _PIDFIds = $('#hdnStatuspidfIds').val();
+    if (_PIDFIds != undefined && _PIDFIds != "" && _PIDFIds != null) {
+        var objApproveRejectList = [];
+        var _numberPIDFIds = _PIDFIds.split(",").map(Number);
+        $.each(_numberPIDFIds, function (index, item) {
+            objApproveRejectList.push({ pidfId: item });
+        });
+
+        var objIds = {
+            saveType: $('#hdnStatusSaveType').val(),
+            pidfIds: objApproveRejectList,
+            screenId: $('#hdnStatusscreenId').val(),
+            comment: $('#txtStatusComment').val()
+        };
+        ajaxServiceMethod($('#hdnBaseURL').val() + ApproveRejectDeletePidf, 'POST', SaveApproveRejectSuccess, SaveApproveRejectError, JSON.stringify(objIds));
+    }
+    $('#ApproveRejectModel').modal('hide');
+}
+function SaveApproveRejectSuccess(data) {
+    try {
+        if (data._Success === true) {
+            toastr.success(data._Message);
+            window.location = $('#hdnStatusReturnUrl').val();
+        }
+        else {
+            toastr.error(data._Message);
+        }
+    } catch (e) {
+        toastr.error('Error:' + e.message);
+    }
+}
+function SaveApproveRejectError(x, y, z) {
+    toastr.error(ErrorMessage);
+}
+function getPIDFAccordion(url, _PIDFId, divId) {
+    var html = '<div class="card collapsed-card"><div class="card-header bg-primary"><h3 class="card-title mb-0"><button id="btnPIDFAccordionHeader" type="button" class="btn btn-tool" data-card-widget="collapse">Product Identification Form</button></h3><div class="card-tools"><button type="button" class="btn btn-tool" data-card-widget="collapse" title="Collapse"><i class="fas fa-minus"></i></button></div></div><div class="card-body p-0"><div id="dvPIDFContainer"></div></div></div>';
+    $.get(url, {
+        PIDFId: _PIDFId, _Partial: true, IsViewMode: true
+    }, function (content) {
+        $("#" + divId).html(html);
+        $("#" + divId).find("#dvPIDFContainer").html(content);
+    });
+}

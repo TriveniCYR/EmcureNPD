@@ -325,3 +325,11 @@ function SaveAppRejSuccess(data) {
 function SaveApprRejFormError(x, y, z) {
     toastr.error(ErrorMessage);
 }
+function ApproveRejectPIDF(type, ScreenId, URL) {
+var _selectedPIDFId = "";
+    $.each(objApprRejList, function(index, item){
+        _selectedPIDFId += item.pidfId + (index == objApprRejList.length - 1 ? "" : ",");
+    });
+
+    ApproveRejectClick(type, _selectedPIDFId, ScreenId, URL);
+}

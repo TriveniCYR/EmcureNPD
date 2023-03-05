@@ -134,6 +134,7 @@ namespace EmcureNPD.Business.Models
     {
         public string SaveType { get; set; }
         public string ScreenId { get; set; }
+        public string Comment { get; set; }
         public List<ApprRejPidf> PidfIds { get; set; }
     }
     public partial class ApprRejPidf
