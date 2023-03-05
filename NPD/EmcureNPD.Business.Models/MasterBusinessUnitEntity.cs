@@ -23,4 +23,10 @@ namespace EmcureNPD.Business.Models
 		public float? Latitude { get; set; }
 		public float? Longitude { get; set; }
 	}
+
+    public class BusinessUnitViewModel
+    {
+        public int BusinessUnitId { get; set; }
+        public string BusinessUnitName { get; set; }
+    }
 }

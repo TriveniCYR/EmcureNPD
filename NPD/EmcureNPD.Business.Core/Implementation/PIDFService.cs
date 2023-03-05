@@ -23,50 +23,29 @@ namespace EmcureNPD.Business.Core.Implementation
         private readonly IUnitOfWork _unitOfWork;
         private readonly IMapperFactory _mapperFactory;
 
-        private readonly IMasterOralService _oralService;
-        private readonly IMasterUnitofMeasurementService _unitofMeasurementService;
-        private readonly IMasterDosageFormService _dosageFormService;
-        private readonly IMasterPackagingTypeService _packagingTypeService;
-        private readonly IMasterBusinessUnitService _businessUnitService;
-        private readonly IMasterCountryService _countryService;
-        private readonly IMasterAPISourcingService _APISourcingService;
         private readonly IPidfApiDetailsService _PidfApiDetailsService;
         private readonly IPidfProductStrengthService _pidfProductStrengthService;
-        private readonly IMasterDIAService _masterDIAService;
-        private readonly IMasterMarketExtensionService _masterMarketExtensionService;
+
         private readonly IMasterAuditLogService _auditLogService;
-        private readonly IHttpContextAccessor _httpContextAccessor;
         private readonly IHelper _helper;
 
         private IRepository<Pidf> _repository { get; set; }
         private IRepository<Pidfapidetail> _pidfApiRepository { get; set; }
         private IRepository<PidfproductStrength> _pidfProductStrength { get; set; }
-        private IRepository<MasterUser> _masteUser { get; set; }
-        private IRepository<MasterUser> _masteCountry { get; set; }
-        //Market Extension & In House
 
-        public PIDFService(IUnitOfWork unitOfWork, IMapperFactory mapperFactory, IMasterOralService oralService, IMasterUnitofMeasurementService unitofMeasurementService, IMasterDosageFormService dosageFormService, IMasterPackagingTypeService packagingTypeService, IMasterBusinessUnitService businessUnitService, IMasterCountryService countryService, IMasterAPISourcingService masterAPISourcingService, IPidfApiDetailsService pidfApiDetailsService, IPidfProductStrengthService pidfProductStrengthService, IMasterDIAService masterDium, IMasterMarketExtensionService masterMarketExtensionService, IMasterAuditLogService auditLogService, IHttpContextAccessor httpContextAccessor, IHelper helper)
+        public PIDFService(IUnitOfWork unitOfWork, IMapperFactory mapperFactory, IPidfApiDetailsService pidfApiDetailsService, IPidfProductStrengthService pidfProductStrengthService, IMasterAuditLogService auditLogService, IHelper helper)
         {
             _unitOfWork = unitOfWork;
             _mapperFactory = mapperFactory;
-            _oralService = oralService;
-            _unitofMeasurementService = unitofMeasurementService;
-            _dosageFormService = dosageFormService;
-            _packagingTypeService = packagingTypeService;
-            _businessUnitService = businessUnitService;
-            _countryService = countryService;
-            _APISourcingService = masterAPISourcingService;
+
             _PidfApiDetailsService = pidfApiDetailsService;
             _pidfProductStrengthService = pidfProductStrengthService;
+            _auditLogService = auditLogService;
+
             _repository = _unitOfWork.GetRepository<Pidf>();
             _pidfApiRepository = unitOfWork.GetRepository<Pidfapidetail>();
             _pidfProductStrength = unitOfWork.GetRepository<PidfproductStrength>();
-            _masteUser = unitOfWork.GetRepository<MasterUser>();
-            _masteCountry = unitOfWork.GetRepository<MasterUser>();
-            _masterDIAService = masterDium;
-            _masterMarketExtensionService = masterMarketExtensionService;
-            _auditLogService = auditLogService;
-            _httpContextAccessor = httpContextAccessor;
+
             _helper = helper;
         }
 
@@ -102,7 +81,7 @@ namespace EmcureNPD.Business.Core.Implementation
                 new SqlParameter("@UserId", userid)
             };
 
-            var dbresult = await _masteUser.GetDataSetBySP("stp_npd_GetBusinessUnitByUserId", System.Data.CommandType.StoredProcedure, osqlParameter);
+            var dbresult = await _repository.GetDataSetBySP("stp_npd_GetBusinessUnitByUserId", System.Data.CommandType.StoredProcedure, osqlParameter);
 
             dynamic _BUObjects = new ExpandoObject();
             if (dbresult != null)
@@ -121,7 +100,7 @@ namespace EmcureNPD.Business.Core.Implementation
                 new SqlParameter("@UserId", userid)
             };
 
-            var dbresult = await _masteCountry.GetDataSetBySP("stp_npd_GetCountryByUserId", System.Data.CommandType.StoredProcedure, osqlParameter);
+            var dbresult = await _repository.GetDataSetBySP("stp_npd_GetCountryByUserId", System.Data.CommandType.StoredProcedure, osqlParameter);
 
             dynamic _CNObjects = new ExpandoObject();
             if (dbresult != null)

@@ -63,9 +63,9 @@ namespace EmcureNPD.Business.Core.Implementation
             _finalSelectionrepository= _unitOfWork.GetRepository<MasterFinalSelection>();
         }
 
-        public async Task<PIDFormEntity> FillDropdown()
+        public async Task<IPDEntity> FillDropdown()
         {
-            var PIDForm = new PIDFormEntity
+            var PIDForm = new IPDEntity
             {
                 MasterBusinessUnitEntities = _businessUnitService.GetAll().Result.Where(xx => xx.IsActive).ToList(),
                 MasterCountries = _countryService.GetAll().Result.Where(xx => xx.IsActive).ToList(),

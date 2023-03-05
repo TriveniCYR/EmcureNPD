@@ -22,7 +22,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace EmcureNPD.Business.Core.Implementation
 {
-	public class PIDFormService : IPIDFormService
+	public class IPDService : IIPDService
 	{
 		private readonly IUnitOfWork _unitOfWork;
 		private readonly IMapperFactory _mapperFactory;
@@ -45,7 +45,9 @@ namespace EmcureNPD.Business.Core.Implementation
 		private IRepository<MasterUser> _masterUserRepository { get; set; }
 		private IRepository<MasterProjectStatus> _masterProjectStatusRepository { get; set; }
 		private IRepository<MasterProjectPriority> _masterProjectPriorityRepository { get; set; }
-		public PIDFormService(IUnitOfWork unitOfWork, IMapperFactory mapperFactory, IMasterOralService oralService, IMasterUnitofMeasurementService unitofMeasurementService, IMasterDosageFormService dosageFormService, IMasterPackagingTypeService packagingTypeService, IMasterBusinessUnitService businessUnitService, IMasterCountryService countryService, IMasterAuditLogService auditLogService, IConfiguration configuration, INotificationService notificationService)
+        private readonly IHelper _helper;
+
+        public IPDService(IUnitOfWork unitOfWork, IMapperFactory mapperFactory, IMasterBusinessUnitService businessUnitService, IMasterCountryService countryService, IMasterAuditLogService auditLogService, IConfiguration configuration, INotificationService notificationService, IHelper helper)
 		{
 			_unitOfWork = unitOfWork;
 			_mapperFactory = mapperFactory;
@@ -71,19 +73,19 @@ namespace EmcureNPD.Business.Core.Implementation
 
 		}
 
-		public async Task<PIDFormEntity> FillDropdown()
+		public async Task<IPDEntity> FillDropdown()
 		{
-			var PIDForm = new PIDFormEntity
+			var IPD = new IPDEntity
 			{
 				MasterBusinessUnitEntities = _businessUnitService.GetAll().Result.Where(xx => xx.IsActive).ToList(),
 				MasterCountries = _countryService.GetAll().Result.Where(xx => xx.IsActive).ToList(),
 			};
-			return PIDForm;
+			return IPD;
 		}
-		public async Task<DBOperation> AddUpdateIPD(PIDFormEntity entityIPD)
+		public async Task<DBOperation> AddUpdateIPD(IPDEntity entityIPD)
 		{
 			PidfIpd objIPD;
-			PIDFormEntity oldIPDFEntity;
+			IPDEntity oldIPDFEntity;
 			if (entityIPD.IPDID > 0)
 			{
 				objIPD = await _repository.GetAsync(entityIPD.IPDID);
@@ -92,13 +94,13 @@ namespace EmcureNPD.Business.Core.Implementation
 					entityIPD.ModifyBy = Convert.ToInt32(entityIPD.CreatedBy);
 					objIPD.ModifyBy = Convert.ToInt32(entityIPD.CreatedBy);
 					objIPD.ModifyDate = DateTime.Now;
-					oldIPDFEntity = _mapperFactory.Get<PidfIpd, PIDFormEntity>(objIPD);
+					oldIPDFEntity = _mapperFactory.Get<PidfIpd, IPDEntity>(objIPD);
 					oldIPDFEntity.StatusId = entityIPD.StatusId;
 					oldIPDFEntity.LogInId = entityIPD.LogInId;
 					oldIPDFEntity.SaveType = entityIPD.SaveType;
 					oldIPDFEntity.ProjectName = entityIPD.ProjectName;
 
-					objIPD = _mapperFactory.Get<PIDFormEntity, PidfIpd>(entityIPD);
+					objIPD = _mapperFactory.Get<IPDEntity, PidfIpd>(entityIPD);
 
 					_repository.UpdateAsync(objIPD);
 
@@ -174,19 +176,11 @@ namespace EmcureNPD.Business.Core.Implementation
 
 					}
 
-					Pidf objPidf = await _pidfrepository.GetAsync(entityIPD.PIDFID);
-					objPidf.LastStatusId = objPidf.StatusId;
-					objPidf.StatusId = Convert.ToInt32(entityIPD.StatusId);
-					_pidfrepository.UpdateAsync(objPidf);
-					await _unitOfWork.SaveChangesAsync();
-
 					if (objIPD.Pidfid == 0)
 						return DBOperation.Error;
 
-					var isSuccess = await _auditLogService.CreateAuditLog<PIDFormEntity>(entityIPD.IPDID > 0 ? Utility.Audit.AuditActionType.Update : Utility.Audit.AuditActionType.Create,
+					var isSuccess = await _auditLogService.CreateAuditLog<IPDEntity>(entityIPD.IPDID > 0 ? Utility.Audit.AuditActionType.Update : Utility.Audit.AuditActionType.Create,
 					   Utility.Enums.ModuleEnum.IPD, oldIPDFEntity, entityIPD, Convert.ToInt32(entityIPD.IPDID));
-
-					return DBOperation.Success;
 				}
 				else
 				{
@@ -195,9 +189,9 @@ namespace EmcureNPD.Business.Core.Implementation
 			}
 			else
 			{
-				oldIPDFEntity = _mapperFactory.Get<PidfIpd, PIDFormEntity>(new PidfIpd { });
+				oldIPDFEntity = _mapperFactory.Get<PidfIpd, IPDEntity>(new PidfIpd { });
 
-				objIPD = _mapperFactory.Get<PIDFormEntity, PidfIpd>(entityIPD);
+				objIPD = _mapperFactory.Get<IPDEntity, PidfIpd>(entityIPD);
 				oldIPDFEntity.StatusId = entityIPD.StatusId;
 				oldIPDFEntity.LogInId = entityIPD.LogInId;
 				oldIPDFEntity.SaveType = entityIPD.SaveType;
@@ -273,45 +267,37 @@ namespace EmcureNPD.Business.Core.Implementation
 
 				}
 
-				Pidf objPidf = await _pidfrepository.GetAsync(entityIPD.PIDFID);
-				objPidf.LastStatusId = objPidf.StatusId;
-				objPidf.StatusId = Convert.ToInt32(entityIPD.StatusId);
-				_pidfrepository.UpdateAsync(objPidf);
-				await _unitOfWork.SaveChangesAsync();
 				if (objIPD.Ipdid == 0)
 					return DBOperation.Error;
 
-				var isSuccess = await _auditLogService.CreateAuditLog<PIDFormEntity>(entityIPD.IPDID > 0 ? Utility.Audit.AuditActionType.Update : Utility.Audit.AuditActionType.Create,
+                var isSuccess = await _auditLogService.CreateAuditLog<IPDEntity>(entityIPD.IPDID > 0 ? Utility.Audit.AuditActionType.Update : Utility.Audit.AuditActionType.Create,
 					   Utility.Enums.ModuleEnum.IPD, oldIPDFEntity, entityIPD, Convert.ToInt32(objIPD.Ipdid));
 
-
-				return DBOperation.Success;
 			}
-		}
+            await _auditLogService.UpdatePIDFStatusCommon(entityIPD.PIDFID, (int)entityIPD.StatusId, _helper.GetLoggedInUser().UserId);
+            return DBOperation.Success;
+        }
 
-		public async Task<PIDFormEntity> GetIPDFormData(long pidfId, int buid)
+		public async Task<IPDEntity> GetIPDFormData(long pidfId, int buid)
 		{
 
-			//var data = _mapperFactory.Get<Pidfipd, PIDFormEntity>(await _repository.GetAsync(id));
+			//var data = _mapperFactory.Get<Pidfipd, IPDEntity>(await _repository.GetAsync(id));
 			Expression<Func<PidfIpd, bool>> expr = u => u.BusinessUnitId == buid && u.Pidfid == pidfId;
 			dynamic objData = (dynamic)await _repository.FindAllAsync(expr);
-			PIDFormEntity data = new PIDFormEntity();
+			IPDEntity data = new IPDEntity();
 			if (objData != null && objData.Count > 0)
 			{
-				data = _mapperFactory.Get<PidfIpd, PIDFormEntity>(objData[0]);
-				data.pidf_IPD_PatentDetailsEntities = _mapperFactory.GetList<PidfIpdPatentDetail, PIDF_IPD_PatentDetailsEntity>(_ipdParentRepository.GetAll().Where(x => x.Ipdid == data.IPDID).ToList());
-				data.RegionIds = string.Join(",", _ipdRegionRepository.GetAllQuery().Where(x => x.Ipdid == data.IPDID).Select(x => x.RegionId.ToString()));
+				data = _mapperFactory.Get<PidfIpd, IPDEntity>(objData[0]);
+				data.pidf_IPD_PatentDetailsEntities = _mapperFactory.GetList<PidfIpdPatentDetail, PIDF_IPD_PatentDetailsEntity>(_ipdParentRepository.GetAllQuery().Where(x => x.Ipdid == data.IPDID).ToList());
+
+                data.RegionIds = string.Join(",", _ipdRegionRepository.GetAllQuery().Where(x => x.Ipdid == data.IPDID).Select(x => x.RegionId.ToString()));
 				data.RegionId = data.RegionIds;
 				data.CountryIds = string.Join(",", _ipdCountryRepository.GetAllQuery().Where(x => x.Ipdid == data.IPDID).Select(x => x.CountryId.ToString()));
 				data.CountryId = data.RegionIds;
 			}
 			data.MasterBusinessUnitEntities = _businessUnitService.GetAll().Result.Where(xx => xx.IsActive).ToList();
-
-
 			Pidf objPidf = await _pidfrepository.GetAsync(pidfId);
 			data.StatusId = objPidf.StatusId;
-
-
 			return data;
 		}
 		public async Task<IEnumerable<dynamic>> GetAllRegion(int userId)

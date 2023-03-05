@@ -6,7 +6,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace EmcureNPD.Business.Models
 {
-    public partial class PIDFormEntity
+    public partial class IPDEntity
     {
         public long IPDID { get; set; }
         public long PIDFID { get; set; }
@@ -64,7 +64,7 @@ namespace EmcureNPD.Business.Models
         public string SaveType { get; set; }
         public int? LogInId { get; set; }
         public int? StatusId { get; set; }
-        public int? LastStatusId { get; set; }
+        //public int? LastStatusId { get; set; }
     }
     public partial class PIDF_IPD_PatentDetailsEntity
     {

@@ -510,9 +510,9 @@ namespace EmcureNPD.Web.Controllers
         }
 
         [NonAction] // Get Model for View PIDForm.cshtml (IP EVolution)
-        private PIDFormEntity GetModelForPIDForm(string pidfid, string bussnessId)
+        private IPDEntity GetModelForPIDForm(string pidfid, string bussnessId)
         {
-            PIDFormEntity oPIDForm = new();
+            IPDEntity oPIDForm = new();
             try
             {
 
@@ -523,7 +523,7 @@ namespace EmcureNPD.Web.Controllers
                 if (responseMessage.IsSuccessStatusCode)
                 {
                     string jsonResponse = responseMessage.Content.ReadAsStringAsync().Result;
-                    var data = JsonConvert.DeserializeObject<APIResponseEntity<PIDFormEntity>>(jsonResponse);
+                    var data = JsonConvert.DeserializeObject<APIResponseEntity<IPDEntity>>(jsonResponse);
                     oPIDForm = data._object;
                     oPIDForm.BusinessUnitId = Convert.ToInt32(bussnessId);
                     oPIDForm.PIDFID = Convert.ToInt64(pidfid);
@@ -598,9 +598,9 @@ namespace EmcureNPD.Web.Controllers
         }
 
         [NonAction] // Get Model for View PIDForm.cshtml 
-        public PIDFormEntity GetModelForIPDForm(string pidfid, string bussnessId)
+        public IPDEntity GetModelForIPDForm(string pidfid, string bussnessId)
         {
-            PIDFormEntity oPIDForm = new();
+            IPDEntity oPIDForm = new();
             try
             {
 
@@ -611,7 +611,7 @@ namespace EmcureNPD.Web.Controllers
                 if (responseMessage.IsSuccessStatusCode)
                 {
                     string jsonResponse = responseMessage.Content.ReadAsStringAsync().Result;
-                    var data = JsonConvert.DeserializeObject<APIResponseEntity<PIDFormEntity>>(jsonResponse);
+                    var data = JsonConvert.DeserializeObject<APIResponseEntity<IPDEntity>>(jsonResponse);
                     oPIDForm = data._object;
                     oPIDForm.BusinessUnitId = Convert.ToInt32(bussnessId);
                     oPIDForm.PIDFID = Convert.ToInt64(pidfid);

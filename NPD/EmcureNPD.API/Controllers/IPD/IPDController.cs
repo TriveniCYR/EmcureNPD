@@ -21,28 +21,28 @@ using System.Text.Json.Nodes;
 using System.Threading.Tasks;
 using static EmcureNPD.Utility.Enums.GeneralEnum;
 
-namespace EmcureNPD.API.Controllers.Masters
+namespace EmcureNPD.API.Controllers.IPD
 {
     [Route("api/[controller]")]
     [ApiController]
-    [AuthorizeAttribute]
-    public class PIDFormController : ControllerBase
+    [Authorize]
+    public class IPDController : ControllerBase
     {
         #region Properties
 
-        private readonly IPIDFormService _PIDFormService;
+        private readonly IIPDService _IPDService;
 
         private readonly IResponseHandler<dynamic> _ObjectResponse;
         private readonly IWebHostEnvironment _webHostEnvironment;
-        private readonly ILogger<PIDFormController> _logger;
+        private readonly ILogger<IPDController> _logger;
 
         #endregion Properties
 
         #region Constructor
 
-        public PIDFormController(IPIDFormService PIDFormService, IResponseHandler<dynamic> ObjectResponse, IWebHostEnvironment webHostEnvironment, ILogger<PIDFormController> logger)
+        public IPDController(IIPDService IPDService, IResponseHandler<dynamic> ObjectResponse, IWebHostEnvironment webHostEnvironment, ILogger<IPDController> logger)
         {
-            _PIDFormService = PIDFormService;
+            _IPDService = IPDService;
             _ObjectResponse = ObjectResponse;
             _webHostEnvironment = webHostEnvironment;
             _logger = logger;
@@ -63,15 +63,15 @@ namespace EmcureNPD.API.Controllers.Masters
         /// <response code="404">Not Found</response>
         /// <response code="405">Method Not Allowed</response>
         /// <response code="500">Internal Server</response>
-        [HttpGet, Route("GetPIDForm")]
-        public async Task<IActionResult> GetPIDForm()
+        [HttpGet, Route("GetIPD")]
+        public async Task<IActionResult> GetIPD()
         {
-            var oFormulationList = await _PIDFormService.FillDropdown();
+            var oFormulationList = await _IPDService.FillDropdown();
 
             if (oFormulationList != null)
-                return _ObjectResponse.Create(oFormulationList, (Int32)HttpStatusCode.OK);
+                return _ObjectResponse.Create(oFormulationList, (int)HttpStatusCode.OK);
             else
-                return _ObjectResponse.Create(null, (Int32)HttpStatusCode.BadRequest, "No Records found");
+                return _ObjectResponse.Create(null, (int)HttpStatusCode.BadRequest, "No Records found");
         }
         /// <summary>
         /// Description - To Insert and Update IPD Form
@@ -86,11 +86,11 @@ namespace EmcureNPD.API.Controllers.Masters
         /// <response code="500">Internal Server</response>
         [HttpPost]
         [Route("SaveIPDForm")]
-        public async Task<IActionResult> SaveIPDForm(PIDFormEntity ipdobj)
+        public async Task<IActionResult> SaveIPDForm(IPDEntity ipdobj)
         {
             try
             {
-                DBOperation oResponse = await _PIDFormService.AddUpdateIPD(ipdobj);
+                DBOperation oResponse = await _IPDService.AddUpdateIPD(ipdobj);
                 if (oResponse == DBOperation.Success)
                 {
                     if (ipdobj.SaveType == "A" || ipdobj.SaveType == "R")
@@ -101,16 +101,16 @@ namespace EmcureNPD.API.Controllers.Masters
                         objApprej.PidfIds = new List<ApprRejPidf>();
                         objList.pidfId = ipdobj.PIDFID;
                         objApprej.PidfIds.Add(objList);
-                        oResponse = await _PIDFormService.ApproveRejectIpdPidf(objApprej);
+                        oResponse = await _IPDService.ApproveRejectIpdPidf(objApprej);
                     }
-                    return _ObjectResponse.Create(true, (Int32)HttpStatusCode.OK, (ipdobj.IPDID > 0 ? "Updated Successfully" : "Inserted Successfully"));
+                    return _ObjectResponse.Create(true, (int)HttpStatusCode.OK, ipdobj.IPDID > 0 ? "Updated Successfully" : "Inserted Successfully");
                 }
                 else
-                    return _ObjectResponse.Create(false, (Int32)HttpStatusCode.BadRequest, (oResponse == DBOperation.NotFound ? "Record not found" : "Bad request"));
+                    return _ObjectResponse.Create(false, (int)HttpStatusCode.BadRequest, oResponse == DBOperation.NotFound ? "Record not found" : "Bad request");
             }
             catch (Exception ex)
             {
-                return _ObjectResponse.Create(false, (Int32)HttpStatusCode.InternalServerError, Convert.ToString(ex.StackTrace));
+                return _ObjectResponse.Create(false, (int)HttpStatusCode.InternalServerError, Convert.ToString(ex.StackTrace));
             }
         }
 
@@ -132,15 +132,15 @@ namespace EmcureNPD.API.Controllers.Masters
             try
             {
 
-                var oPIDFEntity = await _PIDFormService.GetIPDFormData(pidfId, bussnessId);
+                var oPIDFEntity = await _IPDService.GetIPDFormData(pidfId, bussnessId);
                 if (oPIDFEntity != null)
-                    return _ObjectResponse.Create(oPIDFEntity, (Int32)HttpStatusCode.OK);
+                    return _ObjectResponse.Create(oPIDFEntity, (int)HttpStatusCode.OK);
                 else
-                    return _ObjectResponse.Create(null, (Int32)HttpStatusCode.BadRequest, "Record not found");
+                    return _ObjectResponse.Create(null, (int)HttpStatusCode.BadRequest, "Record not found");
             }
             catch (Exception ex)
             {
-                return _ObjectResponse.Create(false, (Int32)HttpStatusCode.InternalServerError, Convert.ToString(ex.StackTrace));
+                return _ObjectResponse.Create(false, (int)HttpStatusCode.InternalServerError, Convert.ToString(ex.StackTrace));
             }
         }
         /// <summary>
@@ -160,11 +160,11 @@ namespace EmcureNPD.API.Controllers.Masters
         {
             try
             {
-                return _ObjectResponse.CreateData(await _PIDFormService.GetAllIPDPIDFList(model), (Int32)HttpStatusCode.OK);
+                return _ObjectResponse.CreateData(await _IPDService.GetAllIPDPIDFList(model), (int)HttpStatusCode.OK);
             }
             catch (Exception ex)
             {
-                return _ObjectResponse.Create(false, (Int32)HttpStatusCode.InternalServerError, Convert.ToString(ex.StackTrace));
+                return _ObjectResponse.Create(false, (int)HttpStatusCode.InternalServerError, Convert.ToString(ex.StackTrace));
             }
         }
 
@@ -185,15 +185,15 @@ namespace EmcureNPD.API.Controllers.Masters
         {
             try
             {
-                var oRegionList = await _PIDFormService.GetAllRegion(userId);
+                var oRegionList = await _IPDService.GetAllRegion(userId);
                 if (oRegionList != null)
-                    return _ObjectResponse.Create(oRegionList, (Int32)HttpStatusCode.OK);
+                    return _ObjectResponse.Create(oRegionList, (int)HttpStatusCode.OK);
                 else
-                    return _ObjectResponse.Create(null, (Int32)HttpStatusCode.BadRequest, "No Records found");
+                    return _ObjectResponse.Create(null, (int)HttpStatusCode.BadRequest, "No Records found");
             }
             catch (Exception ex)
             {
-                return _ObjectResponse.Create(false, (Int32)HttpStatusCode.InternalServerError, Convert.ToString(ex.StackTrace));
+                return _ObjectResponse.Create(false, (int)HttpStatusCode.InternalServerError, Convert.ToString(ex.StackTrace));
             }
         }
         [HttpGet, Route("GetCountryRefByRegionIds/{regionIds}")]
@@ -201,15 +201,15 @@ namespace EmcureNPD.API.Controllers.Masters
         {
             try
             {
-                var oRegionList = await _PIDFormService.GetCountryRefByRegionIds(regionIds);
+                var oRegionList = await _IPDService.GetCountryRefByRegionIds(regionIds);
                 if (oRegionList != null)
-                    return _ObjectResponse.Create(oRegionList, (Int32)HttpStatusCode.OK);
+                    return _ObjectResponse.Create(oRegionList, (int)HttpStatusCode.OK);
                 else
-                    return _ObjectResponse.Create(null, (Int32)HttpStatusCode.BadRequest, "No Records found");
+                    return _ObjectResponse.Create(null, (int)HttpStatusCode.BadRequest, "No Records found");
             }
             catch (Exception ex)
             {
-                return _ObjectResponse.Create(false, (Int32)HttpStatusCode.InternalServerError, Convert.ToString(ex.StackTrace));
+                return _ObjectResponse.Create(false, (int)HttpStatusCode.InternalServerError, Convert.ToString(ex.StackTrace));
             }
         }
         [HttpPost]
@@ -218,15 +218,15 @@ namespace EmcureNPD.API.Controllers.Masters
         {
             try
             {
-                DBOperation oResponse = await _PIDFormService.ApproveRejectIpdPidf(oApprRej);
+                DBOperation oResponse = await _IPDService.ApproveRejectIpdPidf(oApprRej);
                 if (oResponse == DBOperation.Success)
-                    return _ObjectResponse.Create(true, (Int32)HttpStatusCode.OK, ("Save Successfully"));
+                    return _ObjectResponse.Create(true, (int)HttpStatusCode.OK, "Save Successfully");
                 else
-                    return _ObjectResponse.Create(false, (Int32)HttpStatusCode.BadRequest, (oResponse == DBOperation.NotFound ? "Record not found" : "Bad request"));
+                    return _ObjectResponse.Create(false, (int)HttpStatusCode.BadRequest, oResponse == DBOperation.NotFound ? "Record not found" : "Bad request");
             }
             catch (Exception ex)
             {
-                return _ObjectResponse.Create(false, (Int32)HttpStatusCode.InternalServerError, Convert.ToString(ex.StackTrace));
+                return _ObjectResponse.Create(false, (int)HttpStatusCode.InternalServerError, Convert.ToString(ex.StackTrace));
             }
         }
         [HttpPost]
@@ -256,44 +256,44 @@ namespace EmcureNPD.API.Controllers.Masters
                         model.FileName[i] = "Medical\\" + file.FileName;
                     }
                 }
-                else if(jsonObject.FileName.HasValues)
+                else if (jsonObject.FileName.HasValues)
                 {
                     object[] myarray = jsonObject.FileName.ToObject<object[]>();
-					int count = myarray.Count(s => s != null);
+                    int count = myarray.Count(s => s != null);
                     model.FileName = new string[count];
                     int i = 0;
                     foreach (var item in myarray)
                     {
-						if (item != null)
+                        if (item != null)
                         {
-							var file = item.ToString();
-							model.FileName[i] = "Medical\\" + file;
+                            var file = item.ToString();
+                            model.FileName[i] = "Medical\\" + file;
                             i++;
-						}
+                        }
                     }
                 }
                 var path = Path.Combine(_webHostEnvironment.WebRootPath, "Uploads\\PIDF\\Medical");
-                DBOperation oResponse = await _PIDFormService.Medical(model,files,path);
+                DBOperation oResponse = await _IPDService.Medical(model, files, path);
                 if (oResponse == DBOperation.Success)
-				{
-                    _logger.LogInformation("PIDFormService db operation success and PIDMedicalForm controller completed");
-                    return _ObjectResponse.Create(true, (Int32)HttpStatusCode.OK, ("Save Successfully"));
-                }
-                else if(oResponse == DBOperation.InvalidFile)
                 {
-                    _logger.LogInformation("PIDFormService db operation failed and PIDMedicalForm controller ended");
-                    return _ObjectResponse.Create(false, (Int32)HttpStatusCode.BadRequest, (oResponse == DBOperation.InvalidFile ? "File not supported" : "Bad request"));
+                    _logger.LogInformation("IPDService db operation success and PIDMedicalForm controller completed");
+                    return _ObjectResponse.Create(true, (int)HttpStatusCode.OK, "Save Successfully");
                 }
-				else
-				{
-                    _logger.LogInformation("PIDFormService db operation failed and PIDMedicalForm controller ended");
-                    return _ObjectResponse.Create(false, (Int32)HttpStatusCode.BadRequest, (oResponse == DBOperation.NotFound ? "Record not found" : "Bad request"));
+                else if (oResponse == DBOperation.InvalidFile)
+                {
+                    _logger.LogInformation("IPDService db operation failed and PIDMedicalForm controller ended");
+                    return _ObjectResponse.Create(false, (int)HttpStatusCode.BadRequest, oResponse == DBOperation.InvalidFile ? "File not supported" : "Bad request");
+                }
+                else
+                {
+                    _logger.LogInformation("IPDService db operation failed and PIDMedicalForm controller ended");
+                    return _ObjectResponse.Create(false, (int)HttpStatusCode.BadRequest, oResponse == DBOperation.NotFound ? "Record not found" : "Bad request");
                 }
             }
             catch (Exception ex)
             {
                 _logger.LogInformation("Exception occured in PIDMedicalForm controller ended");
-                return _ObjectResponse.Create(false, (Int32)HttpStatusCode.InternalServerError, Convert.ToString(ex.StackTrace));
+                return _ObjectResponse.Create(false, (int)HttpStatusCode.InternalServerError, Convert.ToString(ex.StackTrace));
             }
         }
         [HttpGet, Route("GetPIDFMedicalFormData/{pidfId}")]
@@ -302,31 +302,31 @@ namespace EmcureNPD.API.Controllers.Masters
             try
             {
                 _logger.LogInformation("GetPIDFMedicalFormData controller started");
-                var oPIDFEntity = await _PIDFormService.GetPIDFMedicalData(pidfId);
+                var oPIDFEntity = await _IPDService.GetPIDFMedicalData(pidfId);
                 if (oPIDFEntity != null)
-				{
-                    _logger.LogInformation("_PIDFormService GetPIDFMedicalData succeeded and GetPIDFMedicalFormData controller completed");
-                    return _ObjectResponse.Create(oPIDFEntity, (Int32)HttpStatusCode.OK);
+                {
+                    _logger.LogInformation("_IPDService GetPIDFMedicalData succeeded and GetPIDFMedicalFormData controller completed");
+                    return _ObjectResponse.Create(oPIDFEntity, (int)HttpStatusCode.OK);
                 }
-				else
-				{
-                    _logger.LogInformation("_PIDFormService GetPIDFMedicalData failed and GetPIDFMedicalFormData controller ended");
-                    return _ObjectResponse.Create(null, (Int32)HttpStatusCode.BadRequest, "Record not found");
+                else
+                {
+                    _logger.LogInformation("_IPDService GetPIDFMedicalData failed and GetPIDFMedicalFormData controller ended");
+                    return _ObjectResponse.Create(null, (int)HttpStatusCode.BadRequest, "Record not found");
                 }
-                    
+
             }
             catch (Exception ex)
             {
                 _logger.LogInformation("Exception occured in GetPIDFMedicalFormData controller ended");
-                return _ObjectResponse.Create(false, (Int32)HttpStatusCode.InternalServerError, Convert.ToString(ex.StackTrace));
+                return _ObjectResponse.Create(false, (int)HttpStatusCode.InternalServerError, Convert.ToString(ex.StackTrace));
             }
         }
 
         [HttpGet, Route("GetDropdownsForAddDRFTask")]
-        
+
         public ActionResult GetDropdownsForAddDRFTask()
         {
-            var oResponse = _PIDFormService.GetDropDownsForTask();
+            var oResponse = _IPDService.GetDropDownsForTask();
             return Ok(oResponse);
 
         }

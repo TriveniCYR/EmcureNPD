@@ -256,6 +256,7 @@ function SetChildRows() {
     });
 }
 function SetChildRowDeleteIcon() {
+    debugger;
     if ($('#APIDetailsTable tbody tr').length > 1 && _mode != 1) {
         $('.apiDeleteIcon').show();
     } else {

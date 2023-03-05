@@ -125,6 +125,23 @@ namespace EmcureNPD.API.Controllers.Masters
             }
         }
 
+        [HttpGet, Route("GetActiveBusinessUnit")]
+        public IActionResult GetActiveBusinessUnit()
+        {
+            try
+            {
+                var oBusinessUnitList = _MasterBusinessUnitService.GetActiveBusinessUnit();
+                if (oBusinessUnitList != null)
+                    return _ObjectResponse.Create(oBusinessUnitList, (Int32)HttpStatusCode.OK);
+                else
+                    return _ObjectResponse.Create(null, (Int32)HttpStatusCode.BadRequest, "No Records found");
+            }
+            catch (Exception ex)
+            {
+                return _ObjectResponse.Create(false, (Int32)HttpStatusCode.InternalServerError, Convert.ToString(ex.StackTrace));
+            }
+        }
+
         /// <summary>
         /// Description - To Delete a BusinessUnit by Id
         /// </summary>
