@@ -9,14 +9,14 @@ function GetAllNotificationListSuccess(data) {
         if (data != null) {
             $('#NotificationNo').html(data.recordsTotal);
             $('#NotificationCount').html(data.recordsTotal + " Notifications");
-            //for (var i = 0; i < data.recordsFiltered; i++) {
-            //    /*<span class="badge badge-secondary"><i class="fas fa-envelope mr-1"></i>${rowcount} <b>${data.data[i].notificationTitle}</b></span>*/
-            //    elehtml += `<a href="#" class="dropdown-item">
-            //        <span class="badge badge-secondary">${rowcount}:<i class="fas fa-envelope mr-1"></i>${data.data[i].notificationTitleView}</span>
-            //        <span class="float-right text-muted text-sm">${timeDiffrance(data.data[i].createdDate)}</span>
-            //    </a>`
-            //    rowcount++;
-            //}
+            for (var i = 0; i < data.recordsFiltered; i++) {
+                /*<span class="badge badge-secondary"><i class="fas fa-envelope mr-1"></i>${rowcount} <b>${data.data[i].notificationTitle}</b></span>*/
+                elehtml += `<a href="#" class="dropdown-item">
+                    <span class="badge badge-secondary">${rowcount}:<i class="fas fa-envelope mr-1"></i>${data.data[i].notificationTitleView}</span>
+                    <span class="float-right text-muted text-sm">${timeDiffrance(data.data[i].createdDate)}</span>
+                </a>`
+                rowcount++;
+            }
             $("#notificationCounter").html(elehtml);
         }
     } catch (e) {
