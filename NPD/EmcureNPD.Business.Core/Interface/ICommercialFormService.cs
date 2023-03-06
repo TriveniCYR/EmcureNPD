@@ -10,7 +10,7 @@ namespace EmcureNPD.Business.Core.Interface
 {
     public interface ICommercialFormService
 	{
-        Task<PIDFormEntity> FillDropdown();
+        Task<IPDEntity> FillDropdown();
        // Task<DBOperation> AddUpdateIPD(PIDFormEntity entityIPD);
         Task<DBOperation> AddUpdateCommercialPIDF(PIDFCommercialEntity entityIPD);
         

@@ -84,7 +84,6 @@ function GetRegionByBusinessUnitError(x, y, z) {
 function GetCountryByRegion() {
     $('#CountryId option').remove();   
    /* $('#CountryId').append($('<option>').text("--Select--").attr('value', 0));*/
-        console.log($('#RegionId').val());
         ajaxServiceMethod($('#hdnBaseURL').val() + GetCountryByRegionURL + "?RegionIds=" + $('#RegionId').val(), 'GET', GetCountryByRegionSuccess, GetCountryByRegionError);
     }
 function GetCountryByRegionSuccess(data) {

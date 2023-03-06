@@ -11,9 +11,9 @@ namespace EmcureNPD.Business.Models
     public partial class PidfPbfAnalyticalEntity
     {
         public long PBFAnalyticalID { get; set; }
-        public long AnalyticalPIDFID { get; set; }       
+        public long PIDFID { get; set; }       
         public string PIDFNO { get; set; }
-        public int AnalyticalBusinessUnitId { get; set; }
+        public int BusinessUnitId { get; set; }
         public string ProjectName { get; set; }
 
         public string SAPProjectProjectCode { get; set; }
@@ -24,13 +24,13 @@ namespace EmcureNPD.Business.Models
 
         public string ProjectComplexity { get; set; }
 
-        public int AnalyticalProductTypeId { get; set; }
+        public int ProductTypeId { get; set; }
         [Required(ErrorMessageResourceType = typeof(Validation), ErrorMessageResourceName = "Required")]      
         public int StrengthId { get; set; }
         public DateTime? BudgetTimelineSubmissionDate { get; set; }
-        public int AnalyticalFormulationGLId { get; set; }
-        public int AnalyticalAnalyticalGLId { get; set; }
-        public string AnalyticalLicence { get; set; }
+        public int FormulationId { get; set; }
+        public int AnalyticalId { get; set; }
+        public string TestLicenseAvailability { get; set; }
         public bool IsActive { get; set; }
         public DateTime CreatedDate { get; set; }
         public int? CreatedBy { get; set; }
@@ -42,10 +42,10 @@ namespace EmcureNPD.Business.Models
         public int LastStatusId { get; set; }
       
         public int? LogInId { get; set; }
-        public List<PidfPbfAnalyticalExhibitEntity> AnalyticalExhibitEntities { get; set; }
-        public List<PidfPbfAnalyticalPrototypeEntity> AnalyticalPrototypeEntities { get; set; }
-        public List<PidfPbfAnalyticalScaleUpEntity> AnalyticalScaleUpEntities { get; set; }  
-        public PidfPbfAnalyticalCostEntity pidfPbfAnalyticalCost{ get; set; }
+        public List<PidfPbfAnalyticalExhibitEntity> PidfPbfAnalyticalExhibits { get; set; }
+        public List<PidfPbfAnalyticalPrototypeEntity> PidfPbfAnalyticalPrototypes { get; set; }
+        public List<PidfPbfAnalyticalScaleUpEntity> PidfPbfAnalyticalScaleUps { get; set; }  
+        public PidfPbfAnalyticalCostEntity PidfPbfAnalyticalCosts{ get; set; }
         public List<PidfProductStregthEntity> ProductStrength { get; set; }
     }
     

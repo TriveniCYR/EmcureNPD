@@ -147,7 +147,22 @@ namespace EmcureNPD.API.Controllers.PBF
                 return _ObjectResponse.Create(false, (Int32)HttpStatusCode.InternalServerError, Convert.ToString(ex.StackTrace));
             }
         }
-
+        [HttpGet, Route("GetAPICharterSummaryFormData/{pidfId}")]
+        public async Task<IActionResult> GetAPICharterSummaryFormData([FromRoute] long pidfId)
+        {       
+            try
+            {
+                var oPIDFEntity = await _PBFService.GetAPICharterSummaryFormData(pidfId);
+                if (oPIDFEntity != null)
+                    return _ObjectResponse.Create(oPIDFEntity, (Int32)HttpStatusCode.OK);
+                else
+                    return _ObjectResponse.Create(null, (Int32)HttpStatusCode.BadRequest, "Record not found");
+            }
+            catch (Exception ex)
+            {
+                return _ObjectResponse.Create(false, (Int32)HttpStatusCode.InternalServerError, Convert.ToString(ex.StackTrace));
+            }
+        }
         [HttpGet, Route("GetAPICharterFormData/{pidfId}")]
         public async Task<IActionResult> GetAPICharterFormData([FromRoute] long pidfId)
         {
@@ -244,6 +259,24 @@ namespace EmcureNPD.API.Controllers.PBF
                     return _ObjectResponse.Create(true, (Int32)HttpStatusCode.OK, (pbfEntity.Pidfpbfid > 0 ? "Updated Successfully" : "Inserted Successfully"));
                 else
                     return _ObjectResponse.Create(false, (Int32)HttpStatusCode.BadRequest, (oResponse == DBOperation.NotFound ? "Record not found" : "Bad request"));
+            }
+            catch (Exception ex)
+            {
+                return _ObjectResponse.Create(false, (Int32)HttpStatusCode.InternalServerError, Convert.ToString(ex.StackTrace));
+            }
+        }
+
+        [HttpGet, Route("GetPbfFormDetails/{pidfId}/{bussnessId}/{strengthid}")]
+        public async Task<IActionResult> GetPbfFormDetails([FromRoute] long pidfId, int bussnessId, int? strengthid)
+        {
+            try
+            {
+                //pidfId = int.Parse(UtilityHelper.Decreypt(strpidfId));
+                var oPIDFEntity = await _PBFService.GetPbfFormDetails(pidfId, bussnessId, strengthid);
+                if (oPIDFEntity != null)
+                    return _ObjectResponse.Create(oPIDFEntity, (Int32)HttpStatusCode.OK);
+                else
+                    return _ObjectResponse.Create(null, (Int32)HttpStatusCode.BadRequest, "Record not found");
             }
             catch (Exception ex)
             {

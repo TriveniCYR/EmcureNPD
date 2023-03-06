@@ -56,6 +56,7 @@ namespace EmcureNPD.Web.Helpers
         public static string GetBusinessUnitById = "api/BusinessUnit/GetBusinessUnitById";
         public static string DeleteBusinessUnitById = "api/BusinessUnit/DeleteBusinessUnit";
         public static string GetCountryByBusinessUnitId = "api/BusinessUnit/GetCountryByBusinessUnitId";
+        public static string GetActiveBusinessUnit = "api/BusinessUnit/GetActiveBusinessUnit";
         #endregion
 
         #region Region 
@@ -244,13 +245,15 @@ namespace EmcureNPD.Web.Helpers
         public static string SavePBF = "api/PBF/InsertUpdatePBFDetails";
         public static string SavePBFAnatical = "api/PBF/PBFAnaLytical";
         public static string GetPBFReadonlyDataByPIDFId = "api/PBF/GetPBFAnalyticalReadonlyData";
-		
+        public static string GetPbfFormDetails = "api/PBF/GetPbfFormDetails";
+        
 
-		#endregion
+
+        #endregion
 
 
-		#region MarketExtension
-		public static string GetAllMarketExtension = "api/MarketExtension/GetAllMarketExtension";
+        #region MarketExtension
+        public static string GetAllMarketExtension = "api/MarketExtension/GetAllMarketExtension";
         public static string SaveMarketExtension = "api/MarketExtension/InsertUpdateMarketExtension";
         public static string GetMarketExtensionById = "api/MarketExtension/GetMarketExtensionById";
         public static string DeleteMarketExtensionById = "api/MarketExtension/DeleteMarketExtension";
@@ -284,19 +287,19 @@ namespace EmcureNPD.Web.Helpers
         public static string DeleteFillingExpenseById = "api/FillingExpense/DeleteFillingExpense";
         #endregion
 
-        #region PIDForm
-        public static string GetPIDForm = "api/PIDForm/GetPIDForm";
-        public static string GetAllPIDForm = "api/PIDForm/GetAllPIDForm";
-        public static string SaveIPDForm = "api/PIDForm/SaveIPDForm";
-        public static string GetIPDFormData = "api/PIDForm/GetIPDFormData";
-        public static string GetAllIPDPIDFList = "api/PIDForm/GetAllIPDPIDFList";
-        public static string GetAllRegionIPD = "api/PIDForm/GetAllRegion";
-        public static string GetCountryRefByRegionIds = "api/PIDForm/GetCountryRefByRegionIds";
-        public static string ApproveRejectIpdPidf = "api/PIDForm/ApproveRejectIpdPidf";
+        #region IPD
+        public static string GetIPD = "api/IPD/GetIPD";
+        public static string GetAllIPD = "api/IPD/GetAllIPD";
+        public static string SaveIPDForm = "api/IPD/SaveIPDForm";
+        public static string GetIPDFormData = "api/IPD/GetIPDFormData";
+        public static string GetAllIPDPIDFList = "api/IPD/GetAllIPDPIDFList";
+        public static string GetAllRegionIPD = "api/IPD/GetAllRegion";
+        public static string GetCountryRefByRegionIds = "api/IPD/GetCountryRefByRegionIds";
+        public static string ApproveRejectIpdPidf = "api/IPD/ApproveRejectIpdPidf";
 		public static string GetCommercialFormData = "api/CommercialPIDFForm/GetCommercialFormData";
         public static string GetAllFinalSelection = "api/CommercialPIDFForm/GetAllFinalSelection";
-        public static string PIDMedicalForm = "api/PIDForm/PIDMedicalForm";
-        public static string GetMedicalFormdata = "api/PIDForm/GetPIDFMedicalFormData";
+        public static string PIDMedicalForm = "api/Medical/PIDMedicalForm";
+        public static string GetMedicalFormdata = "api/Medical/GetPIDFMedicalFormData";
         public static string GetAPIIPDFormData = "api/PBF/GetAPIIPDFormData";
         public static string InsertUpdateAPIIPD = "api/PBF/InsertUpdateAPIIPD";
         public static string GetAPIRnDFormData = "api/PBF/GetAPIRnDFormData";

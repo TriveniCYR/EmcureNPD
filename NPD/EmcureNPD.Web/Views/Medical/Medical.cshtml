@@ -35,7 +35,7 @@
 	<div class="content">
 		<div class="container-fluid con">
 			<h5 class="mb-4">Medical Opinion</h5>
-			<form class="row" asp-controller=PIDForm asp-action=Medical asp-route-id="@ViewBag.id" method="post" enctype="multipart/form-data">
+			<form class="row" asp-controller=Medical asp-action=Medical asp-route-id="@ViewBag.id" method="post" enctype="multipart/form-data">
 				<div class="col-12 mb-4">
 					<div class="d-flex">
 						<div class="form-check me-4">
@@ -57,13 +57,13 @@
 				</div>
 				<div class="col-12 form-group d-flex flex-column mb-4">
 					<label for="labelRemarks" class="form-label">Remarks</label>
-					<textarea asp-for=Remark name="Remark" id="labelRemarks" cols="15" rows="5"></textarea>
+					<textarea asp-for=Remark name="Remark" class="form-control" id="labelRemarks" cols="15" rows="5"></textarea>
 					<span asp-validation-for=Remark class="text-danger"></span>
 				</div>
-				<div class="col-12 form-group d-flex flex-column mb-4">
+				<div class="col-12 form-group d-flex flex-column">
 					<label for="File" class="form-label">File Upload</label>
 					<input  @(!objPermssion.Edit ? "read-only" : "") type="file" style="visibility: hidden;" name="File" id="File"
-						   class="form-control form-control-lg bg-transparent text-white" multiple>
+						   class="bg-transparent text-white" multiple>
 				</div>
 				<div class="col-12 d-flex align-items-center justify-content-left mb-4">
 					<input type="text" asp-for=PidfmedicalId hidden />
@@ -76,8 +76,8 @@
 								for (int i = 0; i < Model.FileName.Length; i++)
 								{
 									<div class="element" id="element_@i">
-										<a href="@ViewBag.baseUrl/Uploads/PIDF/Medical/@Model.FileName[i]" target="_blank">@Html.EditorFor(m => m.FileName[i], new { htmlAttributes = new {@readonly = "readonly" } })</a>
-										<button type="button" class="btn btn-sm btn-danger" onclick="deleteElement(@i)">Delete</button>
+										<a href="@ViewBag.baseUrl/Uploads/PIDF/Medical/@Model.FileName[i]" target="_blank">@Html.EditorFor(m => m.FileName[i], new { htmlAttributes = new {@readonly = "readonly", @class="filename text-primary" } })</a>
+										<button type="button" class="btn btn-sm btn-danger ml-3 mb-2" onclick="deleteElement(@i)">Delete</button>
 									</div>
 								}
 							}

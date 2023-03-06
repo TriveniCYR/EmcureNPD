@@ -7,9 +7,12 @@
 @using EmcureNPD.Utility.Utility
 @using EmcureNPD.Utility.Enums
 @using EmcureNPD.Business.Models
+@using Microsoft.Extensions.Configuration
+@inject IConfiguration Configuration
 @model EmcureNPD.Business.Models.FinanceModel
 @{
 var PidafId=Context.Request.Query["pidfid"];
+string jsVersion = @Configuration.GetSection("StaticJS")["version"];
 }
 
 <div id="SaveFinanceModel">
@@ -6350,7 +6353,7 @@ var PidafId=Context.Request.Query["pidfid"];
 @section MyScripts {
 	@*@Html.Partial("_DataTablePartial")*@
 <link rel="stylesheet" href="~/AdminLTE/plugins/select2/css/select2.min.css" />
-	<script src="~/js/custom/pidf/PIDFFinance.js"></script>
+	<script src="~/js/custom/pidf/PIDFFinance.js?v=@jsVersion"></script>
 <script type="text/javascript" src="~/AdminLTE/plugins/select2/js/select2.min.js"></script>
 <script>
 	const AllCurrency = "@EmcureNPD.Web.Helpers.APIURLHelper.GetAllCurrency";

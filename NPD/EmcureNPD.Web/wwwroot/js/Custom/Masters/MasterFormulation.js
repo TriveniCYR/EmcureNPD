@@ -143,9 +143,8 @@ function GetAuditLogByIdSuccess(data) {
                 AuditDisplay = AuditDisplay + "</tr>";
             }
         }
-        AuditDisplay = AuditDisplay + "</table>" >
+        AuditDisplay = AuditDisplay + "</table>";
             $("#LogViewModel #logBody").html(AuditDisplay);
-        console.log(data);
     }
     catch (e) {
         toastr.error('Error:' + e.message);

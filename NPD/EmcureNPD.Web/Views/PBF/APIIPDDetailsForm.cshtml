@@ -7,11 +7,15 @@
 @inject IHttpContextAccessor HttpContextAccessor
 @inject Microsoft.Extensions.Localization.IStringLocalizer<EmcureNPD.Resource.Master> MasterLocalizer
 @inject Microsoft.Extensions.Localization.IStringLocalizer<EmcureNPD.Resource.Shared> SharedLocalizer
+@using Microsoft.Extensions.Configuration
+@inject IConfiguration Configuration
+
 @model EmcureNPD.Business.Models.PIDFAPIIPDFormEntity
 
 @{
     ViewData["Title"] = @MasterLocalizer["APIIPDDetails"];
     string countryName = string.Empty;
+    string jsVersion = @Configuration.GetSection("StaticJS")["version"];
     if (@Model.IPEvalution.CountryIds != null && @Model.IPEvalution.MasterCountries != null)
     {
         int countryid = Convert.ToInt32(@Model.IPEvalution.CountryIds);
@@ -22,7 +26,7 @@
 <div>
         <div id="CommercialPIDFScreen">
             @{
-            await Html.RenderPartialAsync("~/Views/PIDF/PIDFCommercialDetails.cshtml", Model._commercialFormEntity);
+            await Html.RenderPartialAsync("~/Views/Commercial/PIDFCommercialDetails.cshtml", Model._commercialFormEntity);
             }            
         </div>     
     <div class="card card-outline card-primary">
@@ -274,7 +278,7 @@
 @section MyScripts {
     <link href="/lib/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
     <script src="/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="~/js/custom/pidf/apiipddetailsform.js"></script>
+    <script src="~/js/custom/pidf/apiipddetailsform.js?v=@jsVersion"></script>
     <script>
         var SaveStatus = "@TempData["SaveStatus"]";
         var ErrorMessage = "@SharedLocalizer["Error"]";

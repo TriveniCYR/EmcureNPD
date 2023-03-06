@@ -7,57 +7,56 @@
 @inject IHttpContextAccessor HttpContextAccessor
 @inject Microsoft.Extensions.Localization.IStringLocalizer<EmcureNPD.Resource.Master> MasterLocalizer
 @inject Microsoft.Extensions.Localization.IStringLocalizer<EmcureNPD.Resource.Shared> SharedLocalizer
+@using Microsoft.Extensions.Configuration
+@inject IConfiguration Configuration
+
 @model EmcureNPD.Business.Models.PIDFCommercialEntity
-@{ ViewData["Title"] = @MasterLocalizer["PIDFCommercialDetails"];}
-<div>
-    <div id="PIDFScreen">   
+@{ ViewData["Title"] = @MasterLocalizer["PIDFCommercialDetails"];
+    string jsVersion = @Configuration.GetSection("StaticJS")["version"];
+}
 
-          
-        @{ await Html. RenderPartialAsync("~/Views/PIDF/PIDF.cshtml",Model.pidfEntity);}
-           
-         @{ await Html.RenderPartialAsync("~/Views/PIDForm/PIDForm.cshtml", Model.IPDFormEntity);}
-        </div>
-    <div class="card card-outline card-primary">
+<div id="dvPIDFAccrdion"></div>
 
-        <div class="card-header">
-            <h5 class="mb-0"><b>@MasterLocalizer["CommercialDetails"]</b></h5>
-            <div class="card-tools">
-                <button id="CommercialcollapseButton" type="button" class="btn btn-tool" data-card-widget="collapse" title="Collapse">
-                    <i class="fas fa-minus"></i>
-                </button>
+<div class="content-header">
+    <h2 class="m-0">@MasterLocalizer["CommercialDetails"]</h2>
             </div>
-        </div>
-        <div class="card-body" id="mainDivCommercial">
-            <div class="row border m-2">
-                <div class="col-md-3">
-                    @Html.LabelFor(model => model.BusinessUnitId, "Business Unit", new { @class = "control-label" })
-                    <lable id="valmsgBusinessUnitId" class="text-danger"></lable>
-                </div>
-                <div class="col-md-9">
-                    <ul class="nav nav-pills" id="businessUnitTabs">
+
+<div class="container-fluid background-white-card">
+        <input type="hidden" id="hdnCommercialIsView" value="@(Context.Request.Query["IsView"] == "1" ? "1" : "0")" />
+    <div class="row">         
+        <div class="col-md-12" id="mainDivCommercial">
+
+             <div class="card card-primary card-tabs">
+                            <div class="card-header p-0 pt-1">
+                    <ul class="nav nav-tabs text-center m-0" id="businessUnitTabs">
                         @if (Model.MasterBusinessUnitEntities.Count() > 0)
                         {
                             int k = 0;
                             @foreach (var businessUnit in Model.MasterBusinessUnitEntities)
                             {
-                                <li class="nav-item mr-2">
-                                    <a class="btn btn-outline-primary" href="#tab_@businessUnit.BusinessUnitName" onClick="BUtabClick('@businessUnit.BusinessUnitId','@Model.Pidfid');" id="BUtab_@businessUnit.BusinessUnitId">@businessUnit.BusinessUnitName</a>
+                                <li class="nav-item p-0">
+                                    <a class="nav-link" href="#tab_@businessUnit.BusinessUnitName" onClick="BUtabClick('@businessUnit.BusinessUnitId','@Model.Pidfid');" id="BUtab_@businessUnit.BusinessUnitId">@businessUnit.BusinessUnitName</a>
                                 </li>
                                 k = k + 1;
                             }
                         }
 
                     </ul>
-                </div>
-            </div>
+                        </div>  
+
+                      
+                        </div>
+
 
             <div class="tab-content" id="tabList">
                 <div>
                     <div class="row">
                         <div class="col-12">
                             <div class="card">
-                                <div class="card-header">
-                                    <h3 class="card-title">Year Details</h3>
+                                <div class="card-header bg-primary">
+                                    <h3 class="card-title mb-0"><button type="button" class="btn btn-tool" data-card-widget="collapse" title="Collapse">
+                                            Year Details
+                                        </button></h3>
                                     <div class="card-tools">
                                         <button type="button" class="btn btn-tool" data-card-widget="collapse" title="Collapse">
                                             <i class="fas fa-minus"></i>
@@ -108,20 +107,17 @@
                 </div>
             </div>
             @*-----------------Strength---------------------*@
-            <div class="row border m-2">
-                <div class="col-md-3">
-                    @Html.Label("Strength", "Strength", new { @class = "control-label" })
-                    <lable id="valmsgStrength" class="text-danger"></lable>
-                </div>
-                <div class="col-md-9">
-                    <ul class="nav nav-pills" id="ProductStrengthTabs">
+
+            <div class="card card-maroon card-outline card-outline-tabs m-0">
+                <div class="card-header p-0 border-bottom-0">
+                            <ul class="nav nav-tabs row m-0 text-center" id="ProductStrengthTabs">
                         @if (Model.MasterStrengthEntities.Count() > 0 || Model.MasterStrengthEntities != null)
                         {
                             int k = 0;
                             @foreach (var _strength in Model.MasterStrengthEntities)
                             {
-                                <li class="nav-item mr-2">
-                                    <a class="btn btn-outline-primary" href="#tab_@_strength.Strength" onClick="StrengthtabClick('@_strength.PidfproductStrengthId','@Model.Pidfid');" id="Strengthtab_@_strength.PidfproductStrengthId">@_strength.Strength</a>
+                            <li class="nav-item col-6 p-0">
+                                    <a class="nav-link" href="#tab_@_strength.Strength" onClick="StrengthtabClick('@_strength.PidfproductStrengthId','@Model.Pidfid');" id="Strengthtab_@_strength.PidfproductStrengthId">@_strength.Strength</a>
                                 </li>
                                 k = k + 1;
                             }
@@ -130,6 +126,7 @@
                 </div>
             </div>
             @*-----------------End- of-Strength---------------------*@
+            <div class="clearfix">&nbsp;</div>
             <div class="row">
                 <div class="col-md-4">
                     <div class="form-group required">
@@ -248,7 +245,7 @@
                             <select id="FinalSelectionId" name="FinalSelectionId" class="form-control" required></select>                            
                         </div>
                     </div>
-                    <div class="col-md-3 border">
+                    <div class="col-md-3 border ml-3">
                         <h3 class="card-title font-weight-bold">Market Share % </h3>
                         <table class="table table-bordered">
                             <tr>
@@ -271,7 +268,7 @@
                             </tr>
                         </table>
                     </div>
-                    <div class="col-md-3 border">
+                    <div class="col-md-3 border ml-3">
                         <h3 class="card-title font-weight-bold">Estimated Market Share Units </h3>
                         <table class="table table-bordered">
                             <tr>
@@ -293,7 +290,7 @@
                             </tr>
                         </table>
                     </div>
-                    <div class="col-md-3 border">
+                    <div class="col-md-3 border ml-3">
                         <h3 class="card-title font-weight-bold">NSP / Units </h3>
                         <table class="table table-bordered">
                             <tr>
@@ -316,7 +313,7 @@
                             </tr>
                         </table>
                     </div>
-                    <div class="col-md-3 border">
+                    <div class="col-md-2 border ml-3">
                         <h3 class="card-title font-weight-bold">NSP</h3>
                         <table class="table table-bordered">
                             <tr>
@@ -335,22 +332,22 @@
                         </table>
                     </div>
 
-                    <div class="col-md-10"></div>
-                    <div class="col-md-2">
+                    <div class="clearfix">&nbsp;</div>
+                    <div class="row text-end">
                         <div class="form-group required">
-                          <button type="button" class="btn btn-primary" value="AddYear" onClick="AddYearClick()">@SharedLocalizer["Save"]</button>
+                          <button type="button" class="btn btn-success" value="AddYear" onClick="AddYearClick()">@SharedLocalizer["Save Year"]</button>
                         </div>
                     </div>
                 </div>
             </form>               
             </div>
             <div class="row">
-                <div>
+                <div class="col-12 text-end">
                     <div class="form-group">
-                        <button type="button" class="btn btn-primary" onClick="SaveClick();">@SharedLocalizer["Submit"]</button>
-                        <input class="btn btn-danger" value="Cancel" id="btnCommercialCancel" type="button" title=@SharedLocalizer["Cancel"] onclick="location.href='@Url.Action("PIDFList", "PIDF", new { ScreenId = 4 })'" />
+                        <button type="button" class="btn btn-success me-3 outside-buttons" onClick="SaveClick();">@SharedLocalizer["Submit"]</button>
+                        <input class="btn btn-danger me-3 outside-buttons " value="Cancel" id="btnCommercialCancel" type="button" title=@SharedLocalizer["Cancel"] onclick="location.href='@Url.Action("PIDFList", "PIDF", new { ScreenId = 4 })'" />
                         @*<button class="btn btn-danger" type="button" onclick="window.history.back();">@SharedLocalizer["Cancel"]</button>*@
-                        <button type="submit" class="btn btn-info" onClick="SaveDraftClick();">@SharedLocalizer["SaveDraft"]</button>
+                        <button type="submit" class="btn btn-primary me-3 outside-buttons" onClick="SaveDraftClick();">@SharedLocalizer["SaveDraft"]</button>
                      
                         @*  @if (Model.StatusId != (Int32)Master_PIDFStatus.IPDInProgress)
                         {
@@ -392,7 +389,7 @@
 @section MyScripts {
     <link rel="stylesheet" href="~/AdminLTE/plugins/select2/css/select2.min.css" />
     <script type="text/javascript" src="~/AdminLTE/plugins/select2/js/select2.min.js"></script>
-    <script src="~/js/custom/pidf/commercialdetailsform.js"></script>
+    <script src="~/js/custom/pidf/commercialdetailsform.js?v=@jsVersion"></script>
     <link href="/lib/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
     <script src="/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
 
@@ -406,6 +403,9 @@
         var SaveCommercialPIDF = "@EmcureNPD.Web.Helpers.APIURLHelper.SaveCommercialPIDF";
         var GetCommercialFormData = "@EmcureNPD.Web.Helpers.APIURLHelper.GetCommercialFormData";
         var GetAllFinalSelection = "@EmcureNPD.Web.Helpers.APIURLHelper.GetAllFinalSelection";
+
+         var _PIDFID = "@UtilityHelper.Decreypt(Convert.ToString(Context.Request.Query["pidfid"]))";
+        var _PIDFAccordionURL = "@Url.Action("PIDF", "PIDF")";
 
         var UserWiseBUList="@Model.BusinessUnitsByUser";
         var ErrorMessage = "@SharedLocalizer["Error"]";

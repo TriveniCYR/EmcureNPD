@@ -1,5 +1,8 @@
 ﻿@using Microsoft.Extensions.Configuration
+@using Microsoft.AspNetCore.Mvc.Localization
 @inject IConfiguration Configuration
+@inject Microsoft.Extensions.Localization.IStringLocalizer<EmcureNPD.Resource.Shared> SharedLocalizer
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -39,6 +42,10 @@
 	<link rel="stylesheet" href="~/css/index.css">
 
 	<script src="https://kit.fontawesome.com/e8af261920.js" crossorigin="anonymous"></script>
+
+	<!-- jQuery -->
+	<script src="~/AdminLTE/plugins/jquery/jquery.min.js"></script>
+
 	
 </head>
 <body class="hold-transition sidebar-mini sidebar-collapse layout-fixed">
@@ -76,8 +83,6 @@
 		<!-- Control sidebar content goes here -->
 		<!-- /.control-sidebar -->
 	</div>
-	<!-- jQuery -->
-	<script src="~/AdminLTE/plugins/jquery/jquery.min.js"></script>
 	<!-- jQuery UI 1.11.4 -->
 	<script src="~/AdminLTE/plugins/jquery-ui/jquery-ui.min.js"></script>
 	<!-- Resolve conflict in jQuery UI tooltip with Bootstrap tooltip -->
@@ -126,6 +131,12 @@
 
 	<script>
 		const GetFilteredNotifications = "@EmcureNPD.Web.Helpers.APIURLHelper.GetFilteredNotifications";
+
+		var _RejectConfirm = "@SharedLocalizer["RejectConfirm"]"
+		var _RejectTitle = "@SharedLocalizer["Reject"]";
+		var _ApproveConfirm = "@SharedLocalizer["ApproveConfirm"]"
+		var _ApproveTitle = "@SharedLocalizer["Approve"]";
+
 	</script>
     
     <script type="text/javascript" src="~/lib/signalr/signalr.js"></script>

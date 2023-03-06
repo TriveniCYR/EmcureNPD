@@ -10,9 +10,9 @@ namespace EmcureNPD.Business.Models
     {
         public long PBFClinicalID { get; set; }
         
-        public long ClinicalPIDFID { get; set; }
+        public long PIDFID { get; set; }
         public string PIDFNO { get; set; }
-        public int ClinicalBusinessUnitId { get; set; }
+        public int BusinessUnitId { get; set; }
         public string ProjectName { get; set; }
 
         public string SAPProjectProjectCode { get; set; }
@@ -23,12 +23,12 @@ namespace EmcureNPD.Business.Models
 
         public string ProjectComplexity { get; set; }
 
-        public int ClinicalProductTypeId { get; set; }
+        public int ProductTypeId { get; set; }
         public int StrengthId { get; set; }
         public DateTime? BudgetTimelineSubmissionDate { get; set; }
-        public int ClinicalFormulationGLId { get; set; }
-        public int ClinicalAnalyticalGLId { get; set; }
-        public string ClinicalLicence { get; set; }
+        public int FormulationId { get; set; }
+        public int AnalyticalId { get; set; }
+        public string TestLicenseAvailability { get; set; }
         public bool IsActive { get; set; }
         public DateTime CreatedDate { get; set; }
         public int? CreatedBy { get; set; }

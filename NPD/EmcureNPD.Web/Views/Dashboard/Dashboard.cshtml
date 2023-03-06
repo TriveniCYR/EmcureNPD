@@ -5,7 +5,11 @@
 @inject Microsoft.Extensions.Localization.IStringLocalizer<EmcureNPD.Resource.Master> MasterLocalizer
 @inject Microsoft.Extensions.Localization.IStringLocalizer<EmcureNPD.Resource.Shared> SharedLocalizer
 @model EmcureNPD.Business.Models.PIDFEntity
-
+@using Microsoft.Extensions.Configuration
+@inject IConfiguration Configuration
+@{
+	string jsVersion = @Configuration.GetSection("StaticJS")["version"];
+}
 <div class="content-header">
     <div class="container-fluid d-flex justify-content-between">
 		<h3>@SharedLocalizer["Dashboard"]</h3>

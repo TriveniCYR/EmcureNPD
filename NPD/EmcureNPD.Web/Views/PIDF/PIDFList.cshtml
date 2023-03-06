@@ -4,8 +4,11 @@
 @inject IHttpContextAccessor HttpContextAccessor
 @inject Microsoft.Extensions.Localization.IStringLocalizer<MastersController> MasterLocalizer
 @inject Microsoft.Extensions.Localization.IStringLocalizer<EmcureNPD.Resource.Shared> SharedLocalizer
+@using Microsoft.Extensions.Configuration
+@inject IConfiguration Configuration
 @{
     ViewData["Title"] = @MasterLocalizer["PIDF List"];
+    string jsVersion = @Configuration.GetSection("StaticJS")["version"];
 }
 <div class="content-header">
     <div class="container-fluid d-flex justify-content-between">
@@ -35,8 +38,8 @@
         <div>
             @if (Context.Request.Query["ScreenId"] == Convert.ToString((int)EmcureNPD.Utility.Enums.PIDFScreen.PIDF) || Context.Request.Query["ScreenId"] == Convert.ToString((int)EmcureNPD.Utility.Enums.PIDFScreen.IPD) || Context.Request.Query["ScreenId"] == Convert.ToString((int)EmcureNPD.Utility.Enums.PIDFScreen.Finance) || Context.Request.Query["ScreenId"] == Convert.ToString((int)EmcureNPD.Utility.Enums.PIDFScreen.Management))
             {
-                <a class="btn btn-success" onClick="approveRejDeleteData('A')"><i class="fa fa-check-circle mr-1"></i> @SharedLocalizer["Approve"]</a>
-                <a class="btn btn-danger" onClick="approveRejDeleteData('R')"><i class="fa fa-ban mr-1"></i> @SharedLocalizer["Reject"]</a>
+                <a class="btn btn-success"  onClick="ApproveRejectPIDF('A', @(Context.Request.Query["ScreenId"]), '/PIDF/PIDFList?ScreenId=@(Context.Request.Query["ScreenId"])')"><i class="fa fa-check-circle mr-1"></i> @SharedLocalizer["Approve"]</a>
+                <a class="btn btn-danger" onClick="ApproveRejectPIDF('R', @(Context.Request.Query["ScreenId"]), '/PIDF/PIDFList?ScreenId=@(Context.Request.Query["ScreenId"])')"><i class="fa fa-ban mr-1"></i> @SharedLocalizer["Reject"]</a>
             }
             @*<a class="btn btn-danger" onClick="approveRejDeleteData('D')"><i class="far fa fa-trash mr-1"></i> @SharedLocalizer["Delete"]</a>*@
             @if (Context.Request.Query["ScreenId"] == Convert.ToString((int)EmcureNPD.Utility.Enums.PIDFScreen.PIDF))
@@ -88,7 +91,7 @@
 
 
         @*ApproveModel*@
-        <div id="ApproveModel" class="modal themeModal" role="dialog">
+@*        <div id="ApproveModel" class="modal themeModal" role="dialog">
             <div class="modal-dialog">
                 <!-- Modal content-->
                 <div class="modal-content">
@@ -111,9 +114,9 @@
                     </div>
                 </div>
             </div>
-        </div>
+        </div>*@
         @*RejectModel*@
-        <div id="RejectModel" class="modal themeModal" role="dialog">
+        @*<div id="RejectModel" class="modal themeModal" role="dialog">
             <div class="modal-dialog">
                 <!-- Modal content-->
                 <div class="modal-content">
@@ -136,9 +139,9 @@
                     </div>
                 </div>
             </div>
-        </div>
+        </div>*@
         @*DeletePIDFModel*@
-        <div id="DeleteModel" class="modal themeModal " role="dialog">
+        @*<div id="DeleteModel" class="modal themeModal " role="dialog">
             <div class="modal-dialog">
                 <!-- Modal content-->
                 <div class="modal-content">
@@ -162,14 +165,15 @@
                     </div>
                 </div>
             </div>
-        </div>
+        </div>*@
 
+        @Html.Partial("_PIDFApproveReject")
 
 @section MyScripts {
 
     @Html.Partial("_DataTablePartial")
-    <script type="text/javascript" src="~/js/Custom/DynamicDataTable.js"></script>
-    <script type="text/javascript" src="~/js/Custom/PIDF/MasterPIDFList.js"></script>
+    <script type="text/javascript" src="~/js/Custom/DynamicDataTable.js?v=@jsVersion"></script>
+    <script type="text/javascript" src="~/js/Custom/PIDF/MasterPIDFList.js?v=@jsVersion"></script>
 
     <script>
 

@@ -1,7 +1,16 @@
 ﻿var objApprRejList = [];
 var _mode = 0;
+var _PIDFId = 0;
 $(document).ready(function () {
-    _mode = getParameterByName("IsView");
+
+    try {
+        _PIDFId = parseInt($('#hdnPIDFId').val());
+        _mode = $('#hdnIsView').val(); //parseInt($('#hdnPIDFId').val());
+    } catch (e) {
+        _mode = getParameterByName("IsView");
+        _PIDFId = parseInt(getParameterByName("PIDFId"));
+    }
+    
     if (_mode == 1) {
         readOnlyForm();
     }
@@ -37,7 +46,7 @@ function GetCountryByBusinessUnitSuccess(data) {
             });
 
             try {
-                if (parseInt(getParameterByName("PIDFId")) > 0) {
+                if (_PIDFId > 0) {
                     $('#RFDCountryId').val($('#hdnRFDCountryId').val());
                 }
             } catch (e) {
@@ -111,7 +120,7 @@ function GetPIDFDropdownSuccess(data) {
             });
 
             try {
-                if (parseInt(getParameterByName("PIDFId")) > 0) {
+                if (_PIDFId > 0) {
                     $('#OralId').val($('#hdnOralId').val());
                     $('#UnitofMeasurementId').val($('#hdnUnitofMeasurementId').val());
                     $('#DosageFormId').val($('#hdnDosageFormId').val());
@@ -220,10 +229,10 @@ function deleteRowApiDetails(j, element) {
 
 
 function readOnlyForm() {
-    $('input').attr('readonly', true).attr('disabled', true);
+    $('#dvPIDFContainer').find('input').attr('readonly', true).attr('disabled', true);
     //$('button').attr('readonly', true).attr('disabled', true);
-    $('select').attr('readonly', true).attr('disabled', true).trigger("change");
-    $('.operationButton').hide();
+    $('#dvPIDFContainer').find('select').attr('readonly', true).attr('disabled', true).trigger("change");
+    $('#dvPIDFContainer').find('.operationButton').hide();
 }
 
 function SaveClick() {

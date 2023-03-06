@@ -157,24 +157,29 @@ function InitializePIDFList() {
                     html += '<a class="large-font" style="color:' + (_enable ? "#007bff" : "grey") + '" href="' + (_enable ? _PIDFForm : "#") + '"><i class="fa fa-fw fa-edit mr-1"></i></a>';
                     html += '<a class="ml-1 large-font" href="' + _PIDFForm + '&IsView=1"><i class="fa fa-fw fa-eye mr-1"></i></a>';
                 } else if (_screenId == "2") {
-                    var _IPDForm = '/PIDForm/PIDForm?pidfid=' + row.encpidfid + '&bui=' + row.encbud;
+                    var _IPDForm = '/IPD/IPD?pidfid=' + row.encpidfid + '&bui=' + row.encbud;
                     var _enable = (row.pidfStatusID == 3 || row.pidfStatusID == 5 || row.pidfStatusID == 6);
                     html += '<a class="large-font" style="color:' + (_enable ? "#007bff" : "grey") + '" href="' + (_enable ? _IPDForm : "#") + '"><i class="fa fa-fw fa-edit mr-1"></i></a>';
 
-                    var _enableView = (row.pidfStatusID == 1 || row.pidfStatusID == 2 || row.pidfStatusID == 3 || row.pidfStatusID == 4);
+                    var _enableView = (row.pidfStatusID > 4);
 
-                    html += '<a class="ml-1 large-font" style="color:' + (!_enableView ? "#007bff" : "grey") + '" href="' + (!_enableView ? _IPDForm : "#") + '&IsView=1"><i class="fa fa-fw fa-eye mr-1"></i></a>';
+                    html += '<a class="ml-1 large-font" style="color:' + (_enableView ? "#007bff" : "grey") + '" href="' + (_enableView ? _IPDForm : "#") + '&IsView=1"><i class="fa fa-fw fa-eye mr-1"></i></a>';
 
                 } else if (_screenId == "3") {
-                    var _MedicalForm = '/PIDForm/Medical?pidfid=' + row.encpidfid + '&bui=' + row.encbud;
-                    var _enable = (row.pidfStatusID == 3 || row.pidfStatusID == 5 || row.pidfStatusID == 6 || row.pidfStatusID == 7);
+                    var _MedicalForm = '/Medical/Medical?pidfid=' + row.encpidfid + '&bui=' + row.encbud;
+                    var _enable = (row.pidfStatusID == 7 || row.pidfStatusID == 9 || row.pidfStatusID == 10 || row.pidfStatusID == 11);
+
                     html += '<a class="large-font" style="color:' + (_enable ? "#007bff" : "grey") + '" href="' + (_enable ? _MedicalForm : "#") + '"><i class="fa fa-fw fa-edit mr-1"></i></a>';
-                    html += '<a class="ml-1 large-font" href="' + _MedicalForm + '&IsView=1"><i class="fa fa-fw fa-eye mr-1"></i></a>';
+
+                    var _enableView = (row.pidfStatusID > 8);
+                    html += '<a class="ml-1 large-font" style="color:' + (_enableView ? "#007bff" : "grey") + '" href="' + (_enableView ? _MedicalForm : "#") + '&IsView=1"><i class="fa fa-fw fa-eye mr-1"></i></a>';
                 } else if (_screenId == "4") {
-                    var _CommercialForm = '/PIDF/PIDFCommerciaLDetails?pidfid=' + row.encpidfid + '&bui=' + row.encbud;
+                    var _CommercialForm = '/Commercial/PIDFCommerciaLDetails?pidfid=' + row.encpidfid + '&bui=' + row.encbud;
                     var _enable = (row.pidfStatusID == 7 || row.pidfStatusID == 10 || row.pidfStatusID == 11 || row.pidfStatusID == 12 || row.pidfStatusID == 13 || row.pidfStatusID == 14 || row.pidfStatusID == 15);
                     html += '<a class="large-font" style="color:' + (_enable ? "#007bff" : "grey") + '" href="' + (_enable ? _CommercialForm : "#") + '"><i class="fa fa-fw fa-edit mr-1"></i></a>';
-                    html += '<a class="ml-1 large-font" href="' + _CommercialForm + '&IsView=1"><i class="fa fa-fw fa-eye mr-1"></i></a>';
+
+                    var _enableView = (row.pidfStatusID > 9);
+                    html += '<a class="ml-1 large-font" style="color:' + (_enableView ? "#007bff" : "grey") + '" href="' + (_enableView ? _CommercialForm : "#") + '&IsView=1"><i class="fa fa-fw fa-eye mr-1"></i></a>';
 
                 } else if (_screenId == "5") {
                     var _APIForm = '/PBF/';
@@ -270,7 +275,6 @@ function CustomizeChildContent(d) {
 }
 
 function chkClick(cb, pidfId) {
-    console.log("Clicked, new value = " + cb.checked + " ---pidfId::" + pidfId);
     if (cb.checked) {
         objApprRejList.push({ pidfId: pidfId })
     }
@@ -324,4 +328,12 @@ function SaveAppRejSuccess(data) {
 }
 function SaveApprRejFormError(x, y, z) {
     toastr.error(ErrorMessage);
+}
+function ApproveRejectPIDF(type, ScreenId, URL) {
+var _selectedPIDFId = "";
+    $.each(objApprRejList, function(index, item){
+        _selectedPIDFId += item.pidfId + (index == objApprRejList.length - 1 ? "" : ",");
+    });
+
+    ApproveRejectClick(type, _selectedPIDFId, ScreenId, URL);
 }

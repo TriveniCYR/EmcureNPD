@@ -8,10 +8,13 @@
 @inject Microsoft.Extensions.Localization.IStringLocalizer<EmcureNPD.Resource.Master> MasterLocalizer
 @inject Microsoft.Extensions.Localization.IStringLocalizer<EmcureNPD.Resource.Shared> SharedLocalizer
 @model EmcureNPD.Business.Models.PIDFAPIRnDFormEntity
+@using Microsoft.Extensions.Configuration
+@inject IConfiguration Configuration
 
 @{
     ViewData["Title"] = @MasterLocalizer["APIRndDetails"];
     string countryName = string.Empty;
+    string jsVersion = @Configuration.GetSection("StaticJS")["version"];
     if (@Model.IPEvalution.CountryIds != null && @Model.IPEvalution.MasterCountries != null)
     {
         int countryid = Convert.ToInt32(@Model.IPEvalution.CountryIds);
@@ -276,7 +279,7 @@
 @section MyScripts {
     <link href="/lib/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
     <script src="/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="~/js/custom/pidf/apirnddetailsform.js"></script>
+    <script src="~/js/custom/pidf/apirnddetailsform.js?v=@jsVersion"></script>
     <script>
         var SaveStatus = "@TempData["SaveStatus"]";
         var ErrorMessage = "@SharedLocalizer["Error"]";

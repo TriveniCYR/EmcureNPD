@@ -121,7 +121,7 @@ tr {
 }
 
 #custom-tabs-two-tab .nav-item {
-  width: calc(100% / 5);
+  width: calc(100% / 8);
 }
 
 .input-values-table tr td {

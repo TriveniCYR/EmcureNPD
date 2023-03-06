@@ -18,6 +18,7 @@
 
   <ItemGroup>
     <Content Remove="appsettings.json" />
+    <Content Remove="Views\Commercial\PIDFCommercial.cshtml" />
     <Content Remove="Views\Dashboard\Dashboard.cshtml" />
   </ItemGroup>
 
@@ -57,6 +58,8 @@
 
   <ItemGroup>
     <Folder Include="Views\Dashboard\" />
+    <Folder Include="Views\API\" />
+    <Folder Include="Views\Management\" />
   </ItemGroup>
 
 </Project>

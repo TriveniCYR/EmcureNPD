@@ -11,6 +11,7 @@ using System.Data.SqlClient;
 using System.Linq;
 using System.Threading.Tasks;
 using static EmcureNPD.Utility.Enums.GeneralEnum;
+using EmcureNPD.Utility.Utility;
 
 namespace EmcureNPD.Business.Core.ServiceImplementations
 {
@@ -158,5 +159,11 @@ namespace EmcureNPD.Business.Core.ServiceImplementations
             var _businessUnit = await _repository.GetBySP("SP_GetCountryByBusinessUnit", CommandType.StoredProcedure, osqlParameter);
             return _businessUnit;
         }
+
+        public DataTable GetActiveBusinessUnit()
+        {
+            return _repository.GetDataBySP("SP_GetActiveBusinessUnit");
+        }
+
     }
 }

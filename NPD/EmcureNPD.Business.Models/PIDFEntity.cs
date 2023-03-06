@@ -86,6 +86,9 @@ namespace EmcureNPD.Business.Models
         public int LastStatusId { get; set; }
 		public bool InHouses { get; set; }
 
+        public bool _Partial { get; set; }
+        public bool IsViewMode { get; set; }
+
         [Required(ErrorMessageResourceType = typeof(Validation), ErrorMessageResourceName = "Required")]
         //[Display(Name = "MarketExtension", ResourceType = typeof(Master))]
         public int MarketExtenstionId { get; set; }

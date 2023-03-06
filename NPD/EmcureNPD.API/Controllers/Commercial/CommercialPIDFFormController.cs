@@ -12,11 +12,11 @@ using System.Net;
 using System.Threading.Tasks;
 using static EmcureNPD.Utility.Enums.GeneralEnum;
 
-namespace EmcureNPD.API.Controllers.Masters
+namespace EmcureNPD.API.Controllers.Commercial
 {
     [Route("api/[controller]")]
     [ApiController]
-    [AuthorizeAttribute]
+    [Authorize]
     public class CommercialPIDFFormController : ControllerBase
     {
         #region Properties
@@ -59,9 +59,9 @@ namespace EmcureNPD.API.Controllers.Masters
             var oFormulationList = await _pidfCommercialFormService.FillDropdown();
 
             if (oFormulationList != null)
-                return _ObjectResponse.Create(oFormulationList, (Int32)HttpStatusCode.OK);
+                return _ObjectResponse.Create(oFormulationList, (int)HttpStatusCode.OK);
             else
-                return _ObjectResponse.Create(null, (Int32)HttpStatusCode.BadRequest, "No Records found");
+                return _ObjectResponse.Create(null, (int)HttpStatusCode.BadRequest, "No Records found");
         }
         /// <summary>
         /// Description - To Insert and Update IPD Form
@@ -74,7 +74,7 @@ namespace EmcureNPD.API.Controllers.Masters
         /// <response code="404">Not Found</response>
         /// <response code="405">Method Not Allowed</response>
         /// <response code="500">Internal Server</response>
-       
+
         /// <summary>
         /// Description - To Get All IPD PIDFList
         /// </summary>
@@ -92,11 +92,11 @@ namespace EmcureNPD.API.Controllers.Masters
         {
             try
             {
-                return _ObjectResponse.CreateData(await _pidfCommercialFormService.GetAllIPDPIDFList(model), (Int32)HttpStatusCode.OK);
+                return _ObjectResponse.CreateData(await _pidfCommercialFormService.GetAllIPDPIDFList(model), (int)HttpStatusCode.OK);
             }
             catch (Exception ex)
             {
-                return _ObjectResponse.Create(false, (Int32)HttpStatusCode.InternalServerError, Convert.ToString(ex.StackTrace));
+                return _ObjectResponse.Create(false, (int)HttpStatusCode.InternalServerError, Convert.ToString(ex.StackTrace));
             }
         }
 
@@ -119,13 +119,13 @@ namespace EmcureNPD.API.Controllers.Masters
             {
                 var oRegionList = await _pidfCommercialFormService.GetAllRegion(userId);
                 if (oRegionList != null)
-                    return _ObjectResponse.Create(oRegionList, (Int32)HttpStatusCode.OK);
+                    return _ObjectResponse.Create(oRegionList, (int)HttpStatusCode.OK);
                 else
-                    return _ObjectResponse.Create(null, (Int32)HttpStatusCode.BadRequest, "No Records found");
+                    return _ObjectResponse.Create(null, (int)HttpStatusCode.BadRequest, "No Records found");
             }
             catch (Exception ex)
             {
-                return _ObjectResponse.Create(false, (Int32)HttpStatusCode.InternalServerError, Convert.ToString(ex.StackTrace));
+                return _ObjectResponse.Create(false, (int)HttpStatusCode.InternalServerError, Convert.ToString(ex.StackTrace));
             }
         }
         [HttpGet, Route("GetCountryRefByRegionIds/{regionIds}")]
@@ -135,13 +135,13 @@ namespace EmcureNPD.API.Controllers.Masters
             {
                 var oRegionList = await _pidfCommercialFormService.GetCountryRefByRegionIds(regionIds);
                 if (oRegionList != null)
-                    return _ObjectResponse.Create(oRegionList, (Int32)HttpStatusCode.OK);
+                    return _ObjectResponse.Create(oRegionList, (int)HttpStatusCode.OK);
                 else
-                    return _ObjectResponse.Create(null, (Int32)HttpStatusCode.BadRequest, "No Records found");
+                    return _ObjectResponse.Create(null, (int)HttpStatusCode.BadRequest, "No Records found");
             }
             catch (Exception ex)
             {
-                return _ObjectResponse.Create(false, (Int32)HttpStatusCode.InternalServerError, Convert.ToString(ex.StackTrace));
+                return _ObjectResponse.Create(false, (int)HttpStatusCode.InternalServerError, Convert.ToString(ex.StackTrace));
             }
         }
         [HttpPost]
@@ -152,15 +152,15 @@ namespace EmcureNPD.API.Controllers.Masters
             {
                 DBOperation oResponse = await _pidfCommercialFormService.ApproveRejectIpdPidf(oApprRej);
                 if (oResponse == DBOperation.Success)
-                    return _ObjectResponse.Create(true, (Int32)HttpStatusCode.OK, ("Save Successfully"));
+                    return _ObjectResponse.Create(true, (int)HttpStatusCode.OK, "Save Successfully");
                 else
-                    return _ObjectResponse.Create(false, (Int32)HttpStatusCode.BadRequest, (oResponse == DBOperation.NotFound ? "Record not found" : "Bad request"));
+                    return _ObjectResponse.Create(false, (int)HttpStatusCode.BadRequest, oResponse == DBOperation.NotFound ? "Record not found" : "Bad request");
             }
             catch (Exception ex)
             {
-                return _ObjectResponse.Create(false, (Int32)HttpStatusCode.InternalServerError, Convert.ToString(ex.StackTrace));
+                return _ObjectResponse.Create(false, (int)HttpStatusCode.InternalServerError, Convert.ToString(ex.StackTrace));
             }
-		}
+        }
         /// <summary>
         /// Description - To Get IPD Form By Id
         /// </summary>
@@ -174,22 +174,22 @@ namespace EmcureNPD.API.Controllers.Masters
         /// <response code="405">Method Not Allowed</response>
         /// <response code="500">Internal Server</response>
         [HttpGet, Route("GetCommercialFormData/{pidfId}/{bussnessId}/{strengthid}")]
-		public async Task<IActionResult> GetCommercialFormData([FromRoute] long pidfId, int bussnessId,int? strengthid)
-		{
+        public async Task<IActionResult> GetCommercialFormData([FromRoute] long pidfId, int bussnessId, int? strengthid)
+        {
             try
-			{
-               //pidfId = int.Parse(UtilityHelper.Decreypt(strpidfId));
+            {
+                //pidfId = int.Parse(UtilityHelper.Decreypt(strpidfId));
                 var oPIDFEntity = await _pidfCommercialFormService.GetCommercialFormData(pidfId, bussnessId, strengthid);
                 if (oPIDFEntity != null)
-					return _ObjectResponse.Create(oPIDFEntity, (Int32)HttpStatusCode.OK);
-				else
-					return _ObjectResponse.Create(null, (Int32)HttpStatusCode.BadRequest, "Record not found");
-			}
-			catch (Exception ex)
-			{
-				return _ObjectResponse.Create(false, (Int32)HttpStatusCode.InternalServerError, Convert.ToString(ex.StackTrace));
-			}
-		}
+                    return _ObjectResponse.Create(oPIDFEntity, (int)HttpStatusCode.OK);
+                else
+                    return _ObjectResponse.Create(null, (int)HttpStatusCode.BadRequest, "Record not found");
+            }
+            catch (Exception ex)
+            {
+                return _ObjectResponse.Create(false, (int)HttpStatusCode.InternalServerError, Convert.ToString(ex.StackTrace));
+            }
+        }
 
         [HttpPost]
         [Route("SaveCommercialPIDF")]
@@ -197,18 +197,18 @@ namespace EmcureNPD.API.Controllers.Masters
         {
             try
             {
-                commercialpidfobj.CreatedBy = int.Parse( UtilityHelper.Decreypt(commercialpidfobj.encCreatedBy));
+                commercialpidfobj.CreatedBy = int.Parse(UtilityHelper.Decreypt(commercialpidfobj.encCreatedBy));
 
-                DBOperation oResponse =await _pidfCommercialFormService.AddUpdateCommercialPIDF(commercialpidfobj);
-                if (oResponse == DBOperation.Success) 
-                    return _ObjectResponse.Create(true, (Int32)HttpStatusCode.OK, "Commercial Details Submitted");
-                    //return _ObjectResponse.Create(true, (Int32)HttpStatusCode.OK, (commercialpidfobj.PidfcommercialId> 0 ? "Updated Successfully" : "Inserted Successfully"));
+                DBOperation oResponse = await _pidfCommercialFormService.AddUpdateCommercialPIDF(commercialpidfobj);
+                if (oResponse == DBOperation.Success)
+                    return _ObjectResponse.Create(true, (int)HttpStatusCode.OK, "Commercial Details Submitted");
+                //return _ObjectResponse.Create(true, (Int32)HttpStatusCode.OK, (commercialpidfobj.PidfcommercialId> 0 ? "Updated Successfully" : "Inserted Successfully"));
                 else
-                    return _ObjectResponse.Create(false, (Int32)HttpStatusCode.BadRequest, (oResponse == DBOperation.NotFound ? "Record not found" : "Bad request"));
+                    return _ObjectResponse.Create(false, (int)HttpStatusCode.BadRequest, oResponse == DBOperation.NotFound ? "Record not found" : "Bad request");
             }
             catch (Exception ex)
             {
-                return _ObjectResponse.Create(false, (Int32)HttpStatusCode.InternalServerError, Convert.ToString(ex.StackTrace));
+                return _ObjectResponse.Create(false, (int)HttpStatusCode.InternalServerError, Convert.ToString(ex.StackTrace));
             }
         }
 
@@ -219,13 +219,13 @@ namespace EmcureNPD.API.Controllers.Masters
             {
                 var oFSList = await _pidfCommercialFormService.GetAllFinalSelection();
                 if (oFSList != null)
-                    return _ObjectResponse.Create(oFSList, (Int32)HttpStatusCode.OK);
+                    return _ObjectResponse.Create(oFSList, (int)HttpStatusCode.OK);
                 else
-                    return _ObjectResponse.Create(null, (Int32)HttpStatusCode.BadRequest, "No Records found");
+                    return _ObjectResponse.Create(null, (int)HttpStatusCode.BadRequest, "No Records found");
             }
             catch (Exception ex)
             {
-                return _ObjectResponse.Create(false, (Int32)HttpStatusCode.InternalServerError, Convert.ToString(ex.StackTrace));
+                return _ObjectResponse.Create(false, (int)HttpStatusCode.InternalServerError, Convert.ToString(ex.StackTrace));
             }
         }
 

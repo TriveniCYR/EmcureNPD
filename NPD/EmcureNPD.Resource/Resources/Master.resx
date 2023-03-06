@@ -570,4 +570,73 @@
   <data name="FreeOfCost" xml:space="preserve">
     <value>Free Of Cost</value>
   </data>
+  <data name="Amount" xml:space="preserve">
+    <value>Amount</value>
+  </data>
+  <data name="AMT" xml:space="preserve">
+    <value>AMT</value>
+  </data>
+  <data name="AMV" xml:space="preserve">
+    <value>AMV</value>
+  </data>
+  <data name="AnalyticalDepartments" xml:space="preserve">
+    <value>Analytical Departments</value>
+  </data>
+  <data name="ARD" xml:space="preserve">
+    <value>ARD</value>
+  </data>
+  <data name="CapitalOtherExpenditure" xml:space="preserve">
+    <value>Capital Other Expenditure</value>
+  </data>
+  <data name="Cost" xml:space="preserve">
+    <value>Cost</value>
+  </data>
+  <data name="FinanceRates" xml:space="preserve">
+    <value>Finance Rates</value>
+  </data>
+  <data name="HeadwiseBudget(InLacs)" xml:space="preserve">
+    <value>Headwise Budget (In Lacs)</value>
+  </data>
+  <data name="Hours" xml:space="preserve">
+    <value>Hours</value>
+  </data>
+  <data name="Impurity" xml:space="preserve">
+    <value>Impurity</value>
+  </data>
+  <data name="ManhourEstimates" xml:space="preserve">
+    <value>Manhour Estimates</value>
+  </data>
+  <data name="ManHourRates" xml:space="preserve">
+    <value>ManHour Rates</value>
+  </data>
+  <data name="Months" xml:space="preserve">
+    <value>Months</value>
+  </data>
+  <data name="NoOfEmployee" xml:space="preserve">
+    <value>No Of Employee</value>
+  </data>
+  <data name="PRDDepartments" xml:space="preserve">
+    <value>PRD Departments</value>
+  </data>
+  <data name="RawMaterialCost" xml:space="preserve">
+    <value>Raw Material Cost</value>
+  </data>
+  <data name="Remark" xml:space="preserve">
+    <value>Remark</value>
+  </data>
+  <data name="Rupee(InLacs)" xml:space="preserve">
+    <value>Rupee(In Lacs)</value>
+  </data>
+  <data name="Stability" xml:space="preserve">
+    <value>Stability</value>
+  </data>
+  <data name="TimelineInMonths" xml:space="preserve">
+    <value>TimelineInMonths</value>
+  </data>
+  <data name="HeadwiseBudget(In Lacs)" xml:space="preserve">
+    <value>Headwise Budget (In Lacs)</value>
+  </data>
+  <data name="Rupee(In Lacs)" xml:space="preserve">
+    <value>Rupee (In Lacs)</value>
+  </data>
 </root>

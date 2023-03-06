@@ -7,7 +7,10 @@
 @inject Microsoft.Extensions.Localization.IStringLocalizer<EmcureNPD.Resource.Master> MasterLocalizer
 @inject Microsoft.Extensions.Localization.IStringLocalizer<EmcureNPD.Resource.Shared> SharedLocalizer
 @model EmcureNPD.Business.Models.PidfPbfRnDEntity
+@using Microsoft.Extensions.Configuration
+@inject IConfiguration Configuration
 
+@{ string jsVersion = @Configuration.GetSection("StaticJS")["version"];}
 
 <div class="card">
 	<div class="card-header">
@@ -4397,8 +4400,8 @@
 @section MyScripts {
 
 	@Html.Partial("_DataTablePartial")
-	<script type="text/javascript" src="~/js/Custom/DynamicDataTable.js"></script>
-	<script type="text/javascript" src="~/js/Custom/PIDF/PBFForm.js"></script>
+	<script type="text/javascript" src="~/js/Custom/DynamicDataTable.js?v=@jsVersion"></script>
+	<script type="text/javascript" src="~/js/Custom/PIDF/PBFForm.js?v=@jsVersion"></script>
 
 	<link rel="stylesheet" href="~/AdminLTE/plugins/select2/css/select2.min.css" />
 	<script type="text/javascript" src="~/AdminLTE/plugins/select2/js/select2.min.js"></script>

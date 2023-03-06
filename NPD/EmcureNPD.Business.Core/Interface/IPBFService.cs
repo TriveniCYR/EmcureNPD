@@ -25,12 +25,14 @@ namespace EmcureNPD.Business.Core.Interface
 
         //Task<DBOperation> AddUpdateAPIRnD(PIDFAPICharterFormEntity _oAPICharter);
         Task<PIDFAPICharterFormEntity> GetAPICharterFormData(long pidfId);
+        Task<PIDFAPICharterFormEntity> GetAPICharterSummaryFormData(long pidfId);
         Task<DBOperation> AddUpdateAPICharter(PIDFAPICharterFormEntity _oAPICharter);
         Task<DBOperation> AddUpdateAPIRnD(PIDFAPIRnDFormEntity _oAPIRnD);
 		Task<PidfPbfAnalyticalEntity> GetPBFAnalyticalReadonlyData(long pidfid);
 
         // ---------------------------PBFDetails----------------------------
         Task<DBOperation> AddUpdatePBFDetails(PidfPbfFormEntity pbfEntity);
-
+        Task<PidfPbfFormEntity> GetPbfFormDetails(long pidfId, int buid, int? strengthid);
+        
     }	
 }
