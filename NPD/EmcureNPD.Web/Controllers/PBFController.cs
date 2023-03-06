@@ -210,9 +210,10 @@ namespace EmcureNPD.Web.Controllers
                 else
                     bussnessId = UtilityHelper.Decreypt(bui);
 
+                short IsCharter = 2; //if Chartet then 1 if CharterSummary then 2
                 HttpContext.Request.Cookies.TryGetValue(UserHelper.EmcureNPDToken, out string token);
                 APIRepository objapi = new(_cofiguration);
-                HttpResponseMessage responseMessage = objapi.APICommunication(APIURLHelper.GetAPICharterFormData + "/" + pidfid, HttpMethod.Get, token).Result;
+                HttpResponseMessage responseMessage = objapi.APICommunication(APIURLHelper.GetAPICharterFormData + "/" + pidfid + "/" + IsCharter, HttpMethod.Get, token).Result;
                 if (responseMessage.IsSuccessStatusCode)
                 {
                     string jsonResponse = responseMessage.Content.ReadAsStringAsync().Result;
@@ -253,9 +254,10 @@ namespace EmcureNPD.Web.Controllers
                 else
                     bussnessId = UtilityHelper.Decreypt(bui);
 
+                short IsCharter = 1; //if Chartet then 1 if CharterSummary then 2
                 HttpContext.Request.Cookies.TryGetValue(UserHelper.EmcureNPDToken, out string token);
                 APIRepository objapi = new(_cofiguration);
-                HttpResponseMessage responseMessage = objapi.APICommunication(APIURLHelper.GetAPICharterFormData + "/" + pidfid, HttpMethod.Get, token).Result;
+                HttpResponseMessage responseMessage = objapi.APICommunication(APIURLHelper.GetAPICharterFormData + "/" + pidfid + "/" + IsCharter, HttpMethod.Get, token).Result;
                 if (responseMessage.IsSuccessStatusCode)
                 {
                     string jsonResponse = responseMessage.Content.ReadAsStringAsync().Result;

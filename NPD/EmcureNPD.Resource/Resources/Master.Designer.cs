@@ -169,6 +169,15 @@ namespace EmcureNPD.Resource.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to  API Charter Summary Details.
+        /// </summary>
+        public static string APICharterSummaryDetails {
+            get {
+                return ResourceManager.GetString("APICharterSummaryDetails", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to API Group Leader.
         /// </summary>
         public static string APIGroupLeader {
@@ -747,15 +756,6 @@ namespace EmcureNPD.Resource.Resources {
         /// <summary>
         ///   Looks up a localized string similar to Headwise Budget (In Lacs).
         /// </summary>
-        public static string HeadwiseBudget_In_Lacs_ {
-            get {
-                return ResourceManager.GetString("HeadwiseBudget(In Lacs)", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Headwise Budget (In Lacs).
-        /// </summary>
         public static string HeadwiseBudget_InLacs_ {
             get {
                 return ResourceManager.GetString("HeadwiseBudget(InLacs)", resourceCulture);
@@ -1276,6 +1276,15 @@ namespace EmcureNPD.Resource.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Project Details.
+        /// </summary>
+        public static string ProjectDetails {
+            get {
+                return ResourceManager.GetString("ProjectDetails", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Project End Date.
         /// </summary>
         public static string ProjectEndDate {
@@ -1429,15 +1438,6 @@ namespace EmcureNPD.Resource.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Rupee (In Lacs).
-        /// </summary>
-        public static string Rupee_In_Lacs_ {
-            get {
-                return ResourceManager.GetString("Rupee(In Lacs)", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to Rupee(In Lacs).
         /// </summary>
         public static string Rupee_InLacs_ {
@@ -1519,7 +1519,7 @@ namespace EmcureNPD.Resource.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to TimelineInMonths.
+        ///   Looks up a localized string similar to Timeline In Months.
         /// </summary>
         public static string TimelineInMonths {
             get {
