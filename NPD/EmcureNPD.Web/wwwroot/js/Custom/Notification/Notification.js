@@ -59,19 +59,19 @@ function GetAllNotificationListError(x, y, z) {
 
 ////// Start the connection.
 ////start();
-//function timeDiffrance(_dateInput) {
-//    let _suffix = "";
-//    _dateInput = new Date(_dateInput);
-//    const _currentDate = new Date();
-//    let diffHour = (_currentDate - _dateInput) / 1000;
-//    const diffTime = Math.abs(_currentDate - _dateInput);
-//    const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
-//    diffHour /= (60 * 60);
-//    diffHour = Math.abs(Math.round(diffHour));
-//    console.log(diffTime + " milliseconds");
-//    //millisecond to sec and min
-//    let diffMin = Math.floor((diffTime / 1000 / 60) << 0);
-//    let diffSec = Math.floor((diffTime / 1000) % 60);
+function timeDiffrance(_dateInput) {
+    let _suffix = "";
+    _dateInput = new Date(_dateInput);
+    const _currentDate = new Date();
+    let diffHour = (_currentDate - _dateInput) / 1000;
+    const diffTime = Math.abs(_currentDate - _dateInput);
+    const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+    diffHour /= (60 * 60);
+    diffHour = Math.abs(Math.round(diffHour));
+    console.log(diffTime + " milliseconds");
+    //millisecond to sec and min
+    let diffMin = Math.floor((diffTime / 1000 / 60) << 0);
+    let diffSec = Math.floor((diffTime / 1000) % 60);
 
     console.log(diffDays + " days");
     if (diffHour >= 24) {
