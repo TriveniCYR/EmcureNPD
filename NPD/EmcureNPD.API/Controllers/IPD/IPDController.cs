@@ -229,14 +229,5 @@ namespace EmcureNPD.API.Controllers.IPD
                 return _ObjectResponse.Create(false, (int)HttpStatusCode.InternalServerError, Convert.ToString(ex.StackTrace));
             }
         }
-
-        [HttpGet, Route("GetDropdownsForAddDRFTask")]
-
-        public ActionResult GetDropdownsForAddDRFTask()
-        {
-            var oResponse = _IPDService.GetDropDownsForTask();
-            return Ok(oResponse);
-
-        }
     }
 }

@@ -24,8 +24,5 @@ namespace EmcureNPD.Business.Core.Interface
         Task<IEnumerable<dynamic>> GetAllRegion(int userId);
         Task<IEnumerable<dynamic>> GetCountryRefByRegionIds(string regionIds);
         Task<DBOperation> ApproveRejectIpdPidf(EntryApproveRej oApprRej);
-
-        public ProjectTaskEntity GetDropDownsForTask();
-
     }
 }

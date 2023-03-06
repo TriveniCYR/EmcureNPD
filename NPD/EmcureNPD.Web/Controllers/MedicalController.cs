@@ -144,11 +144,5 @@ namespace EmcureNPD.Web.Controllers
                 return View(medicalEntity);
             }
         }
-
-        [HttpGet]
-        public IActionResult ProjectManagement(string pidfid, string bussnessId)
-        {
-            return View();
-        }
     }
 }

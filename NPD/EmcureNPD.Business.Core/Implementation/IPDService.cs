@@ -42,10 +42,7 @@ namespace EmcureNPD.Business.Core.Implementation
 		private IRepository<Pidf> _pidfrepository { get; set; }
 		private IRepository<PidfMedical> _pidfMedicalrepository { get; set; }
 		private IRepository<PidfMedicalFile> _pidfMedicalFilerepository { get; set; }
-		private IRepository<ProjectTask> _projectTaskRepository { get; set; }
-		private IRepository<MasterUser> _masterUserRepository { get; set; }
-		private IRepository<MasterProjectStatus> _masterProjectStatusRepository { get; set; }
-		private IRepository<MasterProjectPriority> _masterProjectPriorityRepository { get; set; }
+		
 
         private readonly IHelper _helper;
 
@@ -69,12 +66,6 @@ namespace EmcureNPD.Business.Core.Implementation
 			_pidfrepository = unitOfWork.GetRepository<Pidf>();
 			_pidfMedicalrepository = unitOfWork.GetRepository<PidfMedical>();
 			_pidfMedicalFilerepository = unitOfWork.GetRepository<PidfMedicalFile>();
-
-			_projectTaskRepository = unitOfWork.GetRepository<ProjectTask>();
-			_masterUserRepository = unitOfWork.GetRepository<MasterUser>();
-			_masterProjectStatusRepository = unitOfWork.GetRepository<MasterProjectStatus>();
-			_masterProjectPriorityRepository = unitOfWork.GetRepository<MasterProjectPriority>();
-
             _configuration = configuration;
         }
 
@@ -721,55 +712,6 @@ namespace EmcureNPD.Business.Core.Implementation
 			}
 			return data;
 		}
-
-        public ProjectTaskEntity GetDropDownsForTask()
-        {
-            ProjectTaskEntity TaskAddModel = new ProjectTaskEntity();
-            List<MasterUserEntity> taskOwner = new List<MasterUserEntity>();
-            var taskOwnerList = _masterUserRepository.GetAll().ToList();
-
-            foreach (var data in taskOwnerList)
-            {
-                MasterUserEntity temp = new MasterUserEntity();
-                temp.UserId = data.UserId;
-                temp.FullName = data.FullName;
-                taskOwner.Add(temp);
-            }
-
-            TaskAddModel.TaskOwner = taskOwner;
-
-            List<MasterProjectStatusEntity> projectStatus = new List<MasterProjectStatusEntity>();
-			//List<int> notIDS = new List<int> { 2, 3, 4, 5, 6, 7, 9, 10,12};//status ID array 
-			var projectStatusList = _masterProjectStatusRepository.GetAll().ToList();
-
-            foreach (var data in projectStatusList)
-            {
-                MasterProjectStatusEntity temp = new MasterProjectStatusEntity();
-                temp.StatusId = data.StatusId;
-                temp.StatusName = data.StatusName;
-                projectStatus.Add(temp);
-            }
-
-            TaskAddModel.Status = projectStatus;
-
-            List<MasterProjectPriorityEntity> priority = new List<MasterProjectPriorityEntity>();
-			var projectPriorityList = _masterProjectPriorityRepository.GetAll().ToList();
-
-            foreach (var data in projectPriorityList)
-            {
-                MasterProjectPriorityEntity temp = new MasterProjectPriorityEntity();
-                temp.PriorityId = data.PriorityId;
-                temp.PriorityName = data.PriorityName;
-                priority.Add(temp);
-            }
-
-            TaskAddModel.Priority = priority;
-
-
-            return TaskAddModel;
-            //return View();
-        }
-
     }
 }
 
