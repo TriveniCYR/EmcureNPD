@@ -78,11 +78,11 @@ function timeDiffrance(_dateInput) {
         diffHour = diffDays;
         _suffix = "days";
     }
-    if (diffHour < 24 && diffMin < 60) {
+  else  if (diffHour < 24 && diffMin < 60) {
         diffHour = diffMin;
         _suffix = "min :" + diffSec + "sec";
     }
-    else {
+   else if (diffHour < 24) {
 
         _suffix = "hour";
     }
