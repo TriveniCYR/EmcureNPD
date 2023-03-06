@@ -23,7 +23,8 @@ namespace EmcureNPD.Business.Models
         public string ProjectEndDate { get; set; }
         public string ManHourRates { get; set; }
         public string APIGroupLeader { get; set; }
-        public int ProjectComplexityId { get; set; }        
+        public int ProjectComplexityId { get; set; }
+        public string ProjectComplexity { get; set; }
         public int LoggedInUserId { get; set; }
         //public List<PIDF_IPD_PatentDetailsEntity> IPD_PatentDetailsList { get; set; }
         [Required]
@@ -97,10 +98,13 @@ namespace EmcureNPD.Business.Models
     {
         public long PIDF_API_CharterId { get; set; }
         public int ProjectComplexityId { get; set; }
+        public string ProjectComplexity { get; set; }
         public string APIGroupLeader { get; set; }
-        public int ManHourRates { get; set; }
+        public string ManHourRates { get; set; }
         public string ProjectName { get; set; }
         public string Market { get; set; }
+        public string ProjectInitiationDate { get; set; }
+        public string ProjectEndDate { get; set; }
     }
     #endregion
 }

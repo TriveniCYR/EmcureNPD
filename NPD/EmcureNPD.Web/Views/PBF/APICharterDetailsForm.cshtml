@@ -29,7 +29,9 @@
                 <div class="row">
                     <div class="col-md-5">
                         <table class="table">
-
+                             <tr class="bg-primary">
+                                    <td colspan=2><b>@MasterLocalizer["ProjectDetails"]</b></td>
+                                </tr>
                             <tr>
                                 <td>
                                     @Html.LabelFor(model => model.ProjectName,@MasterLocalizer["ProjectName"], new { @class = "control-label" })
@@ -83,13 +85,15 @@
                     </div>
                     <div class="col-md-7"></div>
                 </div>
-                <div class="row">
+                <div class="row mt-4">
                     @*--------Start----Timeline IN Months-------------*@
-                    <h4 class="mb-0"><b>@MasterLocalizer["TimelineInMonths"]</b></h4>
                     <div class="col-md-4" id="dvTimelineInMonths">
                         @if (Model.TimelineInMonths != null)
                         {
                             <table class="table">
+                                <tr class="bg-primary">
+                                    <td colspan=2><b>@MasterLocalizer["TimelineInMonths"]</b></td>
+                                </tr>
                                 @for (int i = 0; i < Model.TimelineInMonths.Count; i++)
                                 {
                                     <tr>
@@ -121,10 +125,12 @@
                     @*--------End----Timeline IN Months-------------*@
                 </div>
                 @*------------Finance Rates--------------------------*@
-                <h4 class="mb-0"><b>@MasterLocalizer["FinanceRates"]</b></h4>
-                <div class="row">
+                <div class="row mt-4">
                     <div class="col-md-5">
                         <table class="table">
+                               <tr class="bg-primary">
+                                    <td colspan=2 ><b>@MasterLocalizer["FinanceRates"]</b></td>
+                                </tr>
                             <tr>
                                 <td>
                                     @Html.LabelFor(model => model.ManHourRates  ,@MasterLocalizer["ManHourRates"], new { @class = "control-label" })
@@ -140,14 +146,14 @@
                 </div>
                 @*--------------Finance Rates----------------------*@
 
-                <div class="row">
+                <div class="row mt-4">
                     @*--------Start----AnalyticalDepartment-------------*@
                     <div class="col-md-12" id="dvAnalyticalDepartment">
                         @if (Model.AnalyticalDepartment != null)
                         {
-                            <table class="table">
-                                <thead>
-                                    <tr class="text-center">
+                            <table class="table table-bordered">
+                                <thead class="bg-primary">
+                                    <tr class="text-center ">
                                         <th>@MasterLocalizer["AnalyticalDepartments"]</th>
                                         <th>@MasterLocalizer["ARD"]</th>
                                         <th>@MasterLocalizer["Impurity"]</th>
@@ -225,13 +231,13 @@
                     </div>
                     @*--------End----AnalyticalDepartment-------------*@
                 </div>
-                <div class="row">
+                <div class="row mt-4">
                     @*--------Start----PRDDepartment-------------*@
                     <div class="col-md-4" id="dvPRDDepartment">
                         @if (Model.PRDDepartment != null)
                         {
                             <table class="table">
-                                <thead>
+                                <thead class="bg-primary">
                                     <tr class="text-center">
                                         <th>@MasterLocalizer["PRDDepartments"]</th>
                                         <th>@MasterLocalizer["RawMaterialCost"]</th>
@@ -267,13 +273,13 @@
                     <div class="col-md-8"></div>
                     @*--------End----PRDDepartment-------------*@
                 </div>
-                <div class="row">
+                <div class="row mt-4">
                     @*--------Start----CapitalOtherExpenditure-------------*@
                     <div class="col-md-8" id="dvCapitalOtherExpenditure">
                         @if (Model.CapitalOtherExpenditure != null)
                         {
                             <table class="table">
-                                <thead>
+                                <thead class="bg-primary">
                                     <tr class="text-center">
                                         <th>@MasterLocalizer["CapitalOtherExpenditure"]</th>
                                         <th>@MasterLocalizer["Amount"]</th>
@@ -304,13 +310,13 @@
                     <div class="col-md-4"></div>
                     @*--------End----CapitalOtherExpenditure-------------*@
                 </div>
-                <div class="row">
+                <div class="row mt-4">
                     @*--------Start----ManhourEstimates-------------*@
                     <div class="col-md-12" id="dvManhourEstimates">
                         @if (Model.ManhourEstimates != null)
                         {
                             <table class="table">
-                                <thead>
+                                <thead class="bg-primary">
                                     <tr class="text-center">
                                         <th>@MasterLocalizer["ManhourEstimates"]</th>
                                         <th>@MasterLocalizer["NoOfEmployee"]</th>
@@ -327,7 +333,8 @@
                                             <input type="hidden" asp-for="@Model.ManhourEstimates[i].Name" />
                                             <label class="control-label">@Model.ManhourEstimates[i].Name </label>
                                         </td>
-                                        @if(i!=7){
+                                        @if (i != 7)
+                                        {
                                             <td>
                                                 @Html.TextBoxFor(model => model.ManhourEstimates[i].ManhourEstimatesNoOfEmployeeValue, new { @class = "form-control" , @placeholder="" })
                                                 <label class="text-danger" style="display:contents"></label>
@@ -339,8 +346,8 @@
                                         }
                                         else
                                         {
-                                             <td></td>
-                                             <td></td>
+                                            <td></td>
+                                            <td></td>
                                         }
                                         <td>
                                             @Html.TextBoxFor(model => model.ManhourEstimates[i].ManhourEstimatesHoursValue, new { @readonly = "readonly", @class = "form-control" , @placeholder="" })
@@ -357,16 +364,16 @@
                     </div>
                     @*--------End----ManhourEstimates-------------*@
                 </div>
-                <div class="row">
+                <div class="row mt-4">
                     @*--------Start----HeadwiseBudget-------------*@
                     <div class="col-md-6" id="dvHeadwiseBudget">
                         @if (Model.HeadwiseBudget != null)
                         {
                             <table class="table">
-                                <thead>
+                                <thead class="bg-primary">
                                     <tr class="text-center">
-                                        <th>@MasterLocalizer["HeadwiseBudget(In Lacs)"]</th>
-                                        <th>@MasterLocalizer["Rupee(In Lacs)"]</th>
+                                        <th>@MasterLocalizer["HeadwiseBudget(InLacs)"]</th>
+                                        <th>@MasterLocalizer["Rupee(InLacs)"]</th>
                                     </tr>
                                 </thead>
                                 @for (int i = 0; i < Model.HeadwiseBudget.Count; i++)
@@ -390,7 +397,7 @@
 
                     @*--------End----HeadwiseBudget-------------*@
                 </div>
-                <div class="row">
+                <div class="row mt-4">
                     <div>
                         <div class="form-group">
                             <button type="submit" id="Save" class="btn btn-primary">@SharedLocalizer["Submit"]</button>

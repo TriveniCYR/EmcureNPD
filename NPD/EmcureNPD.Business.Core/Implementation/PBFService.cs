@@ -360,13 +360,14 @@ namespace EmcureNPD.Business.Core.Implementation
             return _oCharterEntity;
         }
 
-        public async Task<PIDFAPICharterFormEntity> GetAPICharterFormData(long pidfId)
+        public async Task<PIDFAPICharterFormEntity> GetAPICharterFormData(long pidfId,short IsCharter)
         {
             PIDFAPICharterFormEntity _oCharterEntity = new PIDFAPICharterFormEntity();
             SqlParameter[] osqlParameter = {
                 new SqlParameter("@PIDFID", pidfId)
             };
-            var dbresult = await _pidf_API_Charter_repository.GetDataSetBySP("stp_npd_GetPIDFAPICharterData",
+            string Sp_Name = (IsCharter == 1) ? "stp_npd_GetPIDFAPICharterData" : "stp_npd_GetPIDFAPICharterSummaryData";
+            var dbresult = await _pidf_API_Charter_repository.GetDataSetBySP(Sp_Name,
                 System.Data.CommandType.StoredProcedure, osqlParameter);
 
             // dynamic _CharterObjects = new ExpandoObject();
@@ -390,11 +391,11 @@ namespace EmcureNPD.Business.Core.Implementation
                 _oCharterEntity.APIGroupLeader = _CharterObjects[0].APIGroupLeader;
                 _oCharterEntity.ManHourRates = Convert.ToString(_CharterObjects[0].ManHourRates);
                 _oCharterEntity.PIDFAPICharterFormID = _CharterObjects[0].PIDF_API_CharterId;
-                _oCharterEntity.ProjectComplexityId = _CharterObjects[0].ProjectComplexityId;
+                _oCharterEntity.ProjectComplexityId = _CharterObjects[0].ProjectComplexityId;               
 
                 _oCharterEntity.ProjectName = _CharterObjects[0].ProjectName;
                 _oCharterEntity.Market = _CharterObjects[0].Market;
-               // _oCharterEntity.ProjectInitiationDate = _CharterObjects[0].ProjectComplexityId;
+                _oCharterEntity.ProjectInitiationDate = _CharterObjects[0].ProjectInitiationDate;
                 //_oCharterEntity.ProjectEndDate = _CharterObjects[0].ProjectComplexityId;
             }
 
