@@ -62,8 +62,8 @@
 
                 <div class="col-md-3">
                     <div class="form-group required">
-                        @Html.LabelFor(model => model.PidfPbfAnalyticals.TotalExpenses,"Total Expenses", new { @class = "control-label" })
-                        @Html.TextBoxFor(model => model.PidfPbfAnalyticals.TotalExpenses, new { @class = "form-control", @placeholder = "Total Expenses",@required="required" })
+                        @Html.LabelFor(model => model.PidfPbfAnalyticals.TotalExpense,"Total Expenses", new { @class = "control-label" })
+                        @Html.TextBoxFor(model => model.PidfPbfAnalyticals.TotalExpense, new { @class = "form-control", @placeholder = "Total Expenses",@required="required" })
                     </div>
                 </div>
 
@@ -578,8 +578,8 @@
 
                 <div class="col-md-3">
                     <div class="form-group required">
-                        @Html.LabelFor(model => model.PidfPbfAnalyticals.PidfPbfAnalyticalCosts.TotalAWVCost, "Total AWV Cost", new { @class = "control-label" })
-                        @Html.TextBoxFor(model => model.PidfPbfAnalyticals.PidfPbfAnalyticalCosts.TotalAWVCost, new { @class = "form-control analyticalcalculatecost", @placeholder = "Total AWV Cost" ,@required="required"})
+                        @Html.LabelFor(model => model.PidfPbfAnalyticals.PidfPbfAnalyticalCosts.TotalAMVCost, "Total AWV Cost", new { @class = "control-label" })
+                        @Html.TextBoxFor(model => model.PidfPbfAnalyticals.PidfPbfAnalyticalCosts.TotalAMVCost, new { @class = "form-control analyticalcalculatecost", @placeholder = "Total AWV Cost" ,@required="required"})
 
                     </div>
                 </div>
@@ -630,9 +630,9 @@
                         <td>
                             <div class="form-group required">
 
-                                @*@Html.LabelFor(model => model.PidfPbfAnalyticals.PidfPbfAnalyticalCosts.TotalAWVCost, "Total AWV Cost", new { @class = "control-label" })*@
-                                <input type="text" id="txtAWVCost" class="form-control required" placeholder="Total AWV Cost" disabled="disabled" />
-                                @*@Html.TextBoxFor(model => model.PidfPbfAnalyticals.PidfPbfAnalyticalCosts.TotalAWVCost, new {@readonly = "readonly", @class = "form-control", @placeholder = "Total AWV Cost" })*@
+                                @*@Html.LabelFor(model => model.PidfPbfAnalyticals.PidfPbfAnalyticalCosts.TotalAMVCost, "Total AMV Cost", new { @class = "control-label" })*@
+                                <input type="text" id="txtAMVCost" class="form-control required" placeholder="Total AMV Cost" disabled="disabled" />
+                                @*@Html.TextBoxFor(model => model.PidfPbfAnalyticals.PidfPbfAnalyticalCosts.TotalAMVCost, new {@readonly = "readonly", @class = "form-control", @placeholder = "Total AMV Cost" })*@
                             </div>
                         </td>
                         <td>

@@ -11,7 +11,7 @@ namespace EmcureNPD.Business.Models
         public int PBFAnalyticalCostId { get; set; }
         public int PBFAnalyticalId { get; set; }
         public int StrengthId { get; set; }
-        public double? TotalAWVCost { get; set; }
+        public double? TotalAMVCost { get; set; }
         public string Remark { get; set; }
         public double? TotalPrototypeCost { get; set; }
         public double? TotalExhibitCost { get; set; }

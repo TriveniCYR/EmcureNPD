@@ -6,6 +6,19 @@ $(document).ready(function () {
     GetPBFDropdown();
     SetDivReadonly();
     hideForms();
+
+    if ($("#Pidfpbfid").val() > 0);
+    {
+        Calculate_Analytical_total();
+        Calculate_Clinical_total();
+    }
+    if ($("#PidfPbfAnalyticals_StrengthId").val() > 0 || $("#PidfPbfClinicals_StrengthId").val() > 0) {
+        alert($("#PidfPbfAnalyticals_StrengthId").val());
+        $('#'+ $("#PidfPbfAnalyticals_StrengthId").val()).addClass("active");
+    }
+   
+
+
     $("#PidfPbfAnalyticals_PIDFID").val($('#Pidfid').val());
     GetProductStrengthById($('#Pidfid').val());
     $(".analyticalcalculatecost").on("change", function () {
@@ -197,7 +210,7 @@ function SetDivReadonly() {
 
 function StrengthtabClick(strengthId, pidfidval, strengthVal) {
 
-    $('.clsStrengthName').val(strengthVal);
+   /* $('.clsStrengthName').val(strengthVal);*/
 }
 function BUtabClick(BUVal, pidfidval) {
     SelectedBUValue = BUVal;
@@ -515,7 +528,7 @@ function SetChildRows(selectedTab) {
 
 function Calculate_Analytical_total() {
     debugger;
-    var totalAWVsum = parseFloat($('#PidfPbfAnalyticals_PidfPbfAnalyticalCosts_TotalAWVCost').val());
+    var totalAMVsum = parseFloat($('#PidfPbfAnalyticals_PidfPbfAnalyticalCosts_TotalAMVCost').val());
     var prototypesum = 0;
     var scaleupsum = 0;
     var exhibitsum = 0;
@@ -533,11 +546,11 @@ function Calculate_Analytical_total() {
         exhibitsum += parseFloat($(this).find("td:eq(4) input").attr("name", "PidfPbfAnalyticals.PidfPbfAnalyticalExhibits[" + index.toString() + "].PrototypeCost").val());
 
     });
-    totalsum = prototypesum + scaleupsum + exhibitsum + totalAWVsum;
+    totalsum = prototypesum + scaleupsum + exhibitsum + totalAMVsum;
     $('#PidfPbfAnalyticals_PidfPbfAnalyticalCosts_TotalPrototypeCost').val(prototypesum);
     $('#PidfPbfAnalyticals_PidfPbfAnalyticalCosts_TotalScaleUpCost').val(scaleupsum);
     $('#PidfPbfAnalyticals_PidfPbfAnalyticalCosts_TotalExhibitCost').val(exhibitsum);
-    $('#txtAWVCost').val(totalAWVsum);
+    $('#txtAMVCost').val(totalAMVsum);
     $('#PidfPbfAnalyticals_PidfPbfAnalyticalCosts_TotalCost').val(totalsum);
 }
 function Calculate_Clinical_total() {
