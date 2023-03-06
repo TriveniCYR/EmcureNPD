@@ -24,7 +24,7 @@ namespace EmcureNPD.Business.Core.Interface
         Task<PIDFAPIRnDFormEntity> GetAPIRnDFormData(long pidfId, string _webrootPath);
 
         //Task<DBOperation> AddUpdateAPIRnD(PIDFAPICharterFormEntity _oAPICharter);
-        Task<PIDFAPICharterFormEntity> GetAPICharterFormData(long pidfId);
+        Task<PIDFAPICharterFormEntity> GetAPICharterFormData(long pidfId,short IsCharter);
         Task<PIDFAPICharterFormEntity> GetAPICharterSummaryFormData(long pidfId);
         Task<DBOperation> AddUpdateAPICharter(PIDFAPICharterFormEntity _oAPICharter);
         Task<DBOperation> AddUpdateAPIRnD(PIDFAPIRnDFormEntity _oAPIRnD);
