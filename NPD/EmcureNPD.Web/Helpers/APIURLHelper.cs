@@ -333,6 +333,7 @@ namespace EmcureNPD.Web.Helpers
         #region Project
         public static string FillTaskDropdown = "api/Project/GetDropdownsForAddTask";
         public static string AddUpdateTask = "api/Project/AddUpdateTaskDetails";
+        public static string GetAllTaskSubTaskList = "api/Project/GetTaskSubTask";
         #endregion
 
     }

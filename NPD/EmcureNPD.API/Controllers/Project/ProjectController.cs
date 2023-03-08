@@ -7,6 +7,8 @@ using System;
 using EmcureNPD.Business.Core.Interface;
 using EmcureNPD.API.Helpers.Response;
 using EmcureNPD.API.Filters;
+using EmcureNPD.Utility.Utility;
+using EmcureNPD.Business.Core.ServiceImplementations;
 
 namespace EmcureNPD.API.Controllers.Project
 {
@@ -44,6 +46,24 @@ namespace EmcureNPD.API.Controllers.Project
             {
                 return _ObjectResponse.Create(false, (int)HttpStatusCode.InternalServerError, Convert.ToString(ex.StackTrace));
             }
+        }
+        [HttpGet, Route("GetTaskSubTask/{pidfId}")]
+        public async Task<IActionResult> GetTaskSubTask([FromRoute] string pidfId)
+        {
+            try
+            {
+                var oTaskEntity = _projectService.GetTaskSubTaskList(long.Parse(UtilityHelper.Decreypt(pidfId))); ;
+                if (oTaskEntity != null)
+                    return _ObjectResponse.Create(oTaskEntity, (Int32)HttpStatusCode.OK);
+                else
+                    return _ObjectResponse.Create(null, (Int32)HttpStatusCode.BadRequest, "Record not found");
+            }
+            catch (Exception ex)
+            {
+                return _ObjectResponse.Create(false, (Int32)HttpStatusCode.InternalServerError, Convert.ToString(ex.StackTrace));
+            }
+            //var result = _projectService.GetTaskSubTaskList(long.Parse(UtilityHelper.Decreypt(pidfId)));
+            //return Ok(result);
         }
     }
 }

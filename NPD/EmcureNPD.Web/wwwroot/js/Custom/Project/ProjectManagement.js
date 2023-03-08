@@ -1,6 +1,40 @@
 $(document).ready(function () {
-
+    GetTaskSubTaskList();
 });
+
+
+//get all task and subtask list
+function GetTaskSubTaskList() {
+    ajaxServiceMethod($('#hdnBaseURL').val() + GetAllTaskSubTaskList + "/" + $('#pidfId').val(), 'GET', GetTaskSubTaskListSuccess, GetTaskSubTaskListError);
+}
+function GetTaskSubTaskListSuccess(data) {
+    try {
+        $('#Milestones tbody').html('')
+        $.each(data._object, function (index, object) {
+            var start = new Date(object.startDate);
+            var startDate = start.toLocaleDateString('en-US', { year: 'numeric', month: '2-digit', day: '2-digit' });
+            var end = new Date(object.endDate);
+            var endDate = end.toLocaleDateString('en-US', { year: 'numeric', month: '2-digit', day: '2-digit' });
+            if (object.modifyDate != null) {
+                var updated = new Date(object.modifyDate);
+                var updatedDate = updated.toLocaleDateString('en-US', { year: 'numeric', month: '2-digit', day: '2-digit' });
+            }
+            else
+                var updatedDate = "";
+           
+            $('#Milestones tbody').append('<tr><td>' + object.taskName + '</td><td>' + object.taskOwnerName + '</td><td>' + object.statusName + '</td><td>' + object.priorityName + '</td><td>' + startDate + '</td><td>' + endDate + '</td><td>' + object.taskDuration + '</td><td>' + object.totalPercentage + '</td><td>' + updatedDate + '</td><td>  <a class="large-font" style="" href="" title="Edit" data-toggle="modal" data-target="' + (object.taskLevel == 1 ? "#AddTaskModel" : "#AddSubTaskModel") + '" data-backdrop="static" data-keyboard="false"  onclick="GetTaskSubTaskById(' + object.projectTaskId + '); return false;"><i class="fa fa-fw fa-edit mr-1"></i> ' + '</a><a class="large-font text-danger" style="" href="" title="Delete" data-toggle="modal" data-target="#DeleteBusinessUnitModel" data-backdrop="static" data-keyboard="false" onclick="ConfirmationDeleteBusinessUnit(' + object.projectTaskId + '); return false;"><i class="fa fa-fw fa-trash mr-1"></i> ' + '</a>  </td></tr>');
+        });
+        StaticDataTable("#Milestones");
+    } catch (e) {
+        toastr.error('Error:' + e.message);
+    }
+}
+function GetTaskSubTaskListError(x, y, z) {
+    toastr.error(ErrorMessage);
+}
+//get tasksubtask by id
+
+
 function AddTaskSubTask() {
     $('#AddModel').modal('show');
 }
