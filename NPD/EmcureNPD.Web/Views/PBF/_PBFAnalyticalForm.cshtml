@@ -33,27 +33,27 @@
 
                 <div class="col-md-3">
                     <div class="form-group required">
-                        @Html.LabelFor(model => model.PidfPbfAnalyticals.ProjectName,@MasterLocalizer["ProjectName"], new { @class = "control-label" })
+                        @Html.LabelFor(model => model.PidfPbfAnalyticals.ProjectName,@MasterLocalizer["ProjectName"], new { @class = "control-label" })<span class="text-danger">*</span>
                         @Html.TextBoxFor(model => model.PidfPbfAnalyticals.ProjectName, new {@readonly = "readonly", @class = "form-control", @placeholder = @MasterLocalizer["ProjectName"],@required="required" })
                     </div>
                 </div>
 
                 <div class="col-md-3">
                     <div class="form-group">
-                        <label class="control-label">Strength</label>
+                        <label class="control-label">Strength</label><span class="text-danger">*</span>
                         <div style="display: -webkit-inline-box;" id="strengthlblAnalytical">
                         </div>
                     </div>
                 </div>
                 <div class="col-md-3">
                     <div class="form-group required">
-                        @Html.LabelFor(model => model.PidfPbfAnalyticals.SAPProjectProjectCode,"SAP Code / Project Code", new { @class = "control-label" })
+                        @Html.LabelFor(model => model.PidfPbfAnalyticals.SAPProjectProjectCode,"SAP Code / Project Code", new { @class = "control-label" })<span class="text-danger">*</span>
                         @Html.TextBoxFor(model => model.PidfPbfAnalyticals.SAPProjectProjectCode, new {@readonly = "readonly", @class = "form-control", @placeholder = "SAP Code / Project Code" ,@required="required"})
                     </div>
                 </div>
                 <div class="col-md-3">
                     <div class="form-group required">
-                        @Html.LabelFor(model => model.PidfPbfAnalyticals.ImprintingEmbossingCodes,"Imprinting Embossing Codes", new { @class = "control-label" })
+                        @Html.LabelFor(model => model.PidfPbfAnalyticals.ImprintingEmbossingCodes,"Imprinting Embossing Codes", new { @class = "control-label" })<span class="text-danger">*</span>
                         @Html.TextBoxFor(model => model.PidfPbfAnalyticals.ImprintingEmbossingCodes, new {@readonly = "readonly", @class = "form-control", @placeholder = "Imprinting Embossing Codes",@required="required" })
                     </div>
                 </div>
@@ -63,26 +63,26 @@
 
                 <div class="col-md-3">
                     <div class="form-group required">
-                        @Html.LabelFor(model => model.PidfPbfAnalyticals.TotalExpense,"Total Expenses", new { @class = "control-label" })
+                        @Html.LabelFor(model => model.PidfPbfAnalyticals.TotalExpense,"Total Expenses", new { @class = "control-label" })<span class="text-danger">*</span>
                         @Html.TextBoxFor(model => model.PidfPbfAnalyticals.TotalExpense, new { @class = "form-control", @placeholder = "Total Expenses",@required="required" })
                     </div>
                 </div>
 
                 <div class="col-md-3">
                     <div class="form-group required">
-                        @Html.LabelFor(model => model.PidfPbfAnalyticals.ProjectComplexity,"Project Complexity", new { @class = "control-label" })
+                        @Html.LabelFor(model => model.PidfPbfAnalyticals.ProjectComplexity,"Project Complexity", new { @class = "control-label" })<span class="text-danger">*</span>
                         @Html.TextBoxFor(model => model.PidfPbfAnalyticals.ProjectComplexity, new { @class = "form-control", @placeholder = "Project Complexity" ,@required="required"})
                     </div>
                 </div>
                 <div class="col-md-3">
                     <div class="form-group required">
-                        @Html.LabelFor(model => model.PidfPbfAnalyticals.ProductTypeId, "Product Type", new { @class = "control-label" })
+                        @Html.LabelFor(model => model.PidfPbfAnalyticals.ProductTypeId, "Product Type", new { @class = "control-label" })<span class="text-danger">*</span>
                         <select id="AnalyticalProductTypeId" name="PidfPbfAnalyticals.ProductTypeId" class="form-control readOnlyUpdate" required></select>
                     </div>
                 </div>
                 <div class="col-md-3">
                     <div class="form-group required">
-                        <label class="control-label">Test Licence Availability</label>
+                        <label class="control-label">Test Licence Availability</label><span class="text-danger">*</span>
 
                         <div stylle="display: inline-block;" id="Analyticallicence">
                             @* <input type="checkbox" value="AHD" name=TestLicenseAvailability>AHD
@@ -97,20 +97,20 @@
 
                 <div class="col-md-3">
                     <div class="form-group required">
-                        <label class="control-label">Budget and Timeline Submission Date</label>
+                        <label class="control-label">Budget and Timeline Submission Date</label><span class="text-danger">*</span>
                         @Html.TextBoxFor(@modal=> modal.PidfPbfAnalyticals.BudgetTimelineSubmissionDate,"{0:yyyy-MM-dd}",new{@type="date",@class="form-control readOnlyUpdate",@required="required"})
                     </div>
                 </div>
 
                 <div class="col-md-3">
                     <div class="form-group required">
-                        @Html.LabelFor(model => model.PidfPbfAnalyticals.FormulationId, "Formulation GL", new { @class = "control-label" })
+                        @Html.LabelFor(model => model.PidfPbfAnalyticals.FormulationId, "Formulation GL", new { @class = "control-label" })<span class="text-danger">*</span>
                         <select id="AnalyticalFormulationId" name="PidfPbfAnalyticals.FormulationId" class="form-control readOnlyUpdate" required></select>
                     </div>
                 </div>
                 <div class="col-md-3">
                     <div class="form-group required">
-                        @Html.LabelFor(model => model.PidfPbfAnalyticals.AnalyticalId, "Analytical GL", new { @class = "control-label" })
+                        @Html.LabelFor(model => model.PidfPbfAnalyticals.AnalyticalId, "Analytical GL", new { @class = "control-label" })<span class="text-danger">*</span>
                         <select id="AnalyticalAnalyticalId" name="PidfPbfAnalyticals.AnalyticalId" class="form-control readOnlyUpdate" required></select>
                     </div>
                 </div>
@@ -119,7 +119,7 @@
             <br />
             <div class="row border m-2">
                 <div class="col-md-3">
-					@Html.LabelFor(model => model.PidfPbfAnalyticals.StrengthId, "Strength", new { @class = "control-label" })
+					@Html.LabelFor(model => model.PidfPbfAnalyticals.StrengthId, "Strength", new { @class = "control-label" })<span class="text-danger">*</span>
                     @Html.ValidationMessageFor(model => model.PidfPbfAnalyticals.StrengthId,"", new { @class = "text-danger" })
 
                 </div>

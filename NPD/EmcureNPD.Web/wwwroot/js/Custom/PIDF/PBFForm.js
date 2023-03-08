@@ -2,6 +2,7 @@
 var SelectedstrengthValue = 0;
 var selectedTab = '';
 $(document).ready(function () {
+    //fnGetActiveBusinessUnit();
     $('.operationButton').hide();
     GetPBFDropdown();
     SetDivReadonly();
@@ -14,9 +15,9 @@ $(document).ready(function () {
     }
     if ($("#PidfPbfAnalyticals_StrengthId").val() > 0 || $("#PidfPbfClinicals_StrengthId").val() > 0) {
         alert($("#PidfPbfAnalyticals_StrengthId").val());
-        $('#'+ $("#PidfPbfAnalyticals_StrengthId").val()).addClass("active");
+        $('#' + $("#PidfPbfAnalyticals_StrengthId").val()).addClass("active");
     }
-   
+
 
 
     $("#PidfPbfAnalyticals_PIDFID").val($('#Pidfid').val());
@@ -128,7 +129,7 @@ function GetPBFDropdownSuccess(data) {
             });
             $(data.MasterTestLicense).each(function (index, item) {
                 $('#Analyticallicence').append('&nbsp;<input type="checkbox" name="PidfPbfAnalyticals.TestLicenseAvailability" value="' + item.testLicenseId + '">&nbsp;' + item.testLicenseName);
-                $('#TestLicenseAvailability').append('&nbsp;<input type="checkbox" name="PidfPbfClinicals.TestLicenseAvailability" value="' + item.testLicenseId + '">&nbsp;' + item.testLicenseName);
+                $('#Clinicallicence').append('&nbsp;<input type="checkbox" name="PidfPbfClinicals.TestLicenseAvailability" value="' + item.testLicenseId + '">&nbsp;' + item.testLicenseName);
 
             });
         }
@@ -208,10 +209,10 @@ function SetDivReadonly() {
     $("#collapseButton").click();
 }
 
-function StrengthtabClick(strengthId, pidfidval, strengthVal) {
+//function StrengthtabClick(strengthId, pidfidval, strengthVal) {
 
-   /* $('.clsStrengthName').val(strengthVal);*/
-}
+//   /* $('.clsStrengthName').val(strengthVal);*/
+//}
 function BUtabClick(BUVal, pidfidval) {
     SelectedBUValue = BUVal;
 }
@@ -231,9 +232,15 @@ function GetProductStrengthByIdSuccess(data) {
         $(data._object.productStrength).each(function (index, item) {
             $('#strengthlblAnalytical').append('<ul class="nav nav-pills" ><li class="nav-item mr-2"><label class="form-control">' + item.strength + '</label></li></ul>');
             $('#strengthlblClinical').append('<ul class="nav nav-pills" ><li class="nav-item mr-2"><label class="form-control">' + item.strength + '</label></li></ul>');
+            if ($("#PidfPbfAnalyticals_StrengthId").val() > 0 && $("#PidfPbfAnalyticals_StrengthId").val() == item.pidfproductStrengthId) {
+                alert('value not empty');
+                $('#StrengthTabsAnalytical').append("<li class='nav-item mr-2'>  <a class='btn btn-outline-primary strengthtab active' id=" + item.pidfproductStrengthId + " onclick='StrengthtabClick(event," + item.pidfproductStrengthId + ");'>" + item.strength + "</a></li>");
+                $('#StrengthTabsClinical').append("<li class='nav-item mr-2'>  <a class='btn btn-outline-primary strengthtab active' id=" + item.pidfproductStrengthId + " onclick='StrengthtabClick(event," + item.pidfproductStrengthId + ");'>" + item.strength + "</a></li>");
 
-            $('#StrengthTabsAnalytical').append("<li class='nav-item mr-2'>  <a class='btn btn-outline-primary' id=" + item.pidfproductStrengthId + " onclick='StrengthtabClick(" + item.pidfproductStrengthId + ");'>" + item.strength + "</a></li>");
-            $('#StrengthTabsClinical').append("<li class='nav-item mr-2'>  <a class='btn btn-outline-primary' id=" + item.pidfproductStrengthId + " onclick='StrengthtabClick(" + item.pidfproductStrengthId + ");'>" + item.strength + "</a></li>");
+            } else {
+                $('#StrengthTabsAnalytical').append("<li class='nav-item mr-2'>  <a class='btn btn-outline-primary strengthtab' id=" + item.pidfproductStrengthId + " onclick='StrengthtabClick(event," + item.pidfproductStrengthId + ");'>" + item.strength + "</a></li>");
+                $('#StrengthTabsClinical').append("<li class='nav-item mr-2'>  <a class='btn btn-outline-primary strengthtab' id=" + item.pidfproductStrengthId + " onclick='StrengthtabClick(event," + item.pidfproductStrengthId + ");'>" + item.strength + "</a></li>");
+            }
 
         });
     }
@@ -244,8 +251,15 @@ function GetProductStrengthByIdSuccess(data) {
 function GetProductStrengthByIdError(x, y, z) {
     toastr.error(ErrorMessage);
 }
-function StrengthtabClick(strengthVal) {
+function StrengthtabClick(evt, strengthVal) {
+    var i, tabcontent, strengthtab;
     SelectedstrengthValue = strengthVal;
+    strengthtab = document.getElementsByClassName("strengthtab");
+    for (i = 0; i < strengthtab.length; i++) {
+        strengthtab[i].className = strengthtab[i].className.replace(" active", "");
+    }
+    document.getElementById(strengthVal).style.display = "block";
+    evt.currentTarget.className += " active";
 }
 
 // #endregion
@@ -392,7 +406,7 @@ function SetChildRowDeleteIcon() {
 
 }
 
-function SaveClick() {    
+function SaveClick() {
     $('#SaveSubmitType').val('Save');
     Save();
 }
@@ -419,7 +433,7 @@ function Save() {
                 toastr.error('Please select Strength');
                 preventSubmit();
             }
-            if (selected.length == 0 ) {
+            if (selected.length == 0) {
                 toastr.error('Please Select License Availability');
                 preventSubmit();
             }
@@ -458,6 +472,7 @@ function SaveDraftClick() {
     Save();
 }
 function SetChildRows(selectedTab) {
+    debugger;
     switch (selectedTab) {
         case 'RnD':
             //code need to be impliment
@@ -575,11 +590,11 @@ function Calculate_Clinical_total() {
     });
     $.each($('#PivotalBioFEDTable tbody tr'), function (index, value) {
         pivotalbiofedsum += parseFloat($(this).find("td:eq(4) input").attr("name", "PidfPbfClinicals.pidfpbfClinicalPivotalBioFedEntity[" + index.toString() + "].TotalCost").val());
-        
+
     });
 
     totalsum = pilotbiofastingsum + pilotbiofedsum + pivotalbiofastingsum + pivotalbiofedsum;
-    
+
     $('#PidfPbfClinicals_pidfPbfClinicalCost_TotalPilotFastingCost').val(pilotbiofastingsum);
     $('#PidfPbfClinicals_pidfPbfClinicalCost_TotalPilotFEDCost').val(pilotbiofedsum);
     $('#PidfPbfClinicals_pidfPbfClinicalCost_TotalPivotalFastingCost').val(pivotalbiofastingsum);
@@ -595,3 +610,33 @@ function preventSubmit() {
         return;
     });
 }
+// Business Unit Binding Start
+
+function fnGetActiveBusinessUnit() {
+    ajaxServiceMethod($('#hdnBaseURL').val() + GetActiveBusinessUnit, 'GET', GetActiveBusinessUnitSuccess, GetActiveBusinessUnitError);
+}
+function GetActiveBusinessUnitSuccess(data) {
+    var businessUnitHTML = "";
+    var businessUnitPanel = "";
+    $.each(data._object, function (index, item) {
+        businessUnitHTML += '<li class="nav-item p-0">\
+            <a class="nav-link '+ (item.businessUnitId == _selectBusinessUnit ? "active" : "") + ' px-2" href="#custom-tabs-' + item.businessUnitId + '" data-toggle="pill" aria-selected="true" onclick="LoadIPDForm(' + _PIDFID + ', ' + item.businessUnitId + ')" id="custom-tabs-two-' + item.businessUnitId + '-tab">' + item.businessUnitName + '</a></li>';
+        businessUnitPanel += '<div class="tab-pane ' + ((item.businessUnitId == _selectBusinessUnit ? "fade show active" : "")) + '" id="custom-tabs-' + item.businessUnitId + '" role="tabpanel" aria-labelledby="custom-tabs-two-' + item.businessUnitId + '-tab"></div>';
+    });
+    $('#custom-tabs-two-tab').html(businessUnitHTML);
+    $('#custom-tabs-two-tabContent').html(businessUnitPanel);
+
+    LoadIPDForm(_PIDFID, _selectBusinessUnit);
+}
+function GetActiveBusinessUnitError(x, y, z) {
+    toastr.error(ErrorMessage);
+}
+function LoadIPDForm(pidfId, BusinessUnitId) {
+    _selectBusinessUnit = BusinessUnitId;
+    if ($("#custom-tabs-" + BusinessUnitId).html() == "") {
+        $.get(_PBFPartialURL, { pidfid: pidfId, bui: BusinessUnitId }, function (content) {
+            $("#custom-tabs-" + BusinessUnitId).html(content);
+        });
+    }
+}
+// Business Unit Binding End
