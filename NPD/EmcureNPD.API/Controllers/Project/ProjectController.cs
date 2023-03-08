@@ -65,5 +65,21 @@ namespace EmcureNPD.API.Controllers.Project
             //var result = _projectService.GetTaskSubTaskList(long.Parse(UtilityHelper.Decreypt(pidfId)));
             //return Ok(result);
         }
+        [HttpPost("DeleteTaskSubTask/{id}")]
+        public async Task<IActionResult> DeleteBusinessUnit([FromRoute] int id)
+        {
+            try
+            {
+                DBOperation oResponse = await _projectService.DeleteTaskSubTask(id);
+                if (oResponse == DBOperation.Success)
+                    return _ObjectResponse.Create(true, (Int32)HttpStatusCode.OK, "Deleted Successfully");
+                else
+                    return _ObjectResponse.Create(null, (Int32)HttpStatusCode.BadRequest, "Record not found");
+            }
+            catch (Exception ex)
+            {
+                return _ObjectResponse.Create(false, (Int32)HttpStatusCode.InternalServerError, Convert.ToString(ex.StackTrace));
+            }
+        }
     }
 }

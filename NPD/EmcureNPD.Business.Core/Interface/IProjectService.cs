@@ -13,5 +13,6 @@ namespace EmcureNPD.Business.Core.Interface
         public ProjectTaskEntity GetDropDownsForTask();
         Task<DBOperation> AddUpdateTaskDetail(ProjectTaskEntity addTaskModel);
         public List<ProjectTaskEntity> GetTaskSubTaskList(long pidfId);
+        Task<DBOperation> DeleteTaskSubTask(int id);
     }
 }
