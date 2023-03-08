@@ -81,7 +81,7 @@ $('#SaveDraft').click(function () {
 //    $.extend(objMainForm, { 'ProductStrength': $("#ProductStrength").val() });
 //    $.extend(objMainForm, { 'SAPProjectProjectCode': $("#SAPProjectProjectCode").val() });
 //    $.extend(objMainForm, { 'ImprintingEmbossingCodes': $("#ImprintingEmbossingCodes").val() });
-//    $.extend(objMainForm, { 'TotalExpenses': $("#TotalExpenses").val() });
+//    $.extend(objMainForm, { 'TotalExpense': $("#TotalExpense").val() });
 //    $.extend(objMainForm, { 'ProjectComplexity': $("#ProjectComplexity").val() });
 //    $.extend(objMainForm, { 'ProductTypeId': $("#ProductTypeId").val() });
 //    $.extend(objMainForm, { 'BudgetTimelineDate': $("#BudgetTimelineDate").val() });

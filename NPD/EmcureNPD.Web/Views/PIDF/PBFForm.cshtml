@@ -51,8 +51,13 @@
                 </div>
             </div>
         </div>*@
+
+
+
+
     <form asp-action="PBF" asp-controller="PBF" method="post">
         <input type="hidden" asp-for="Pidfid" />
+         <input type="hidden" asp-for="Pidfpbfid" />
         <input type="hidden" asp-for="BusinessUnitId" />
          <input type="hidden" asp-for="SaveSubmitType" />        
         <div class="card-body" style="background-color:white">
@@ -265,10 +270,10 @@
                     <br />
                     <div class="tab col-md-3">
                         <li class="nav-item mr-2" style="list-style-type: none;">
-                            <a class="btn btn-outline-primary" onclick="openPBFForm(event, 'RnD')">RnD</a>
-                            @*<a class="btn btn-outline-primary" onclick="tabClick('PBFAnalyticalForm','','')">Analytical</a>*@
-                            <a class="btn btn-outline-primary" onclick="openPBFForm(event, 'Analytical')">Analytical</a>
-                            <a class="btn btn-outline-primary" onclick="openPBFForm(event, 'Clinical')">Clinical</a>
+                            <a class="btn btn-outline-primary tablinks" onclick="openPBFForm(event, 'RnD')">RnD</a>
+                            @*<a class="btn btn-outline-primary tablinks" onclick="tabClick('PBFAnalyticalForm','','')">Analytical</a>*@
+                            <a class="btn btn-outline-primary tablinks" onclick="openPBFForm(event, 'Analytical')">Analytical</a>
+                            <a class="btn btn-outline-primary tablinks" onclick="openPBFForm(event, 'Clinical')">Clinical</a>
                         </li>
 
                         @*<div class="form-group required">
@@ -308,13 +313,13 @@
 
                     <div id="Analytical" class="tabcontent">
                         @{
-                            await Html.RenderPartialAsync("~/Views/PBF/PBFAnalyticalForm.cshtml", new PidfPbfFormEntity());
+                            await Html.RenderPartialAsync("~/Views/PBF/PBFAnalyticalForm.cshtml",  Model);
                         }
                     </div>
 
                     <div id="Clinical" class="tabcontent">
                         @{
-                            await Html.RenderPartialAsync("~/Views/PBF/PBFClinicalForm.cshtml", new PidfPbfFormEntity());
+                            await Html.RenderPartialAsync("~/Views/PBF/PBFClinicalForm.cshtml",  Model);
                         }
                     </div>
                     <br />

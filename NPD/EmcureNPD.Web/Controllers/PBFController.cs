@@ -98,7 +98,7 @@ namespace EmcureNPD.Web.Controllers
         private PidfPbfEntity GetPIDFPbfModel(string pidfid, string bui)
         {
             PidfPbfEntity oPIDForm = new();
-            pidfid = UtilityHelper.Decreypt(pidfid);
+           // pidfid = UtilityHelper.Decreypt(pidfid);
             string logUserId = Convert.ToString(HttpContext.Session.GetString(UserHelper.LoggedInUserId));
             HttpResponseMessage resMsg;
             var _pidfEntity = GetPidfFormModel(int.Parse(pidfid), out resMsg);
