@@ -308,7 +308,8 @@ namespace EmcureNPD.Web.Controllers
         public IActionResult PBFForm(string pidfid, string bui)
         {
             ModelState.Clear();
-            PidfPbfFormEntity oPIDForm = new();
+           
+            PidfPbfFormEntity oPIDForm = new PidfPbfFormEntity();
             try
             {
                 int rolId = (int)HttpContext.Session.GetInt32(UserHelper.LoggedInRoleId);
@@ -318,7 +319,9 @@ namespace EmcureNPD.Web.Controllers
                     return RedirectToAction("AccessRestriction", "Home");
                 }
                 ViewBag.Access = objPermssion;
+               
                 oPIDForm = GetPIDFPbfModel(pidfid, bui);
+                //return PartialView("~/Views/PIDF/_PBFForm.cshtml", oPIDForm);
                 return View(oPIDForm);
             }
             catch (Exception e)
@@ -333,10 +336,13 @@ namespace EmcureNPD.Web.Controllers
         {
             PidfPbfFormEntity oPIDForm = new();
             pidfid = UtilityHelper.Decreypt(pidfid);
+            bui = UtilityHelper.Decreypt(bui);
             string logUserId = Convert.ToString(HttpContext.Session.GetString(UserHelper.LoggedInUserId));
             HttpResponseMessage resMsg;
-            var _pidfEntity = GetPidfFormModel(int.Parse(pidfid), out resMsg);
-            string bussnessId = _pidfEntity.BusinessUnitId.ToString();
+            // var _pidfEntity = GetPidfFormModel(int.Parse(pidfid), out resMsg);
+            
+            //pidfid = int.Parse(pidfid) ? UtilityHelper.Decreypt(pidfid) : pidfid;
+            string bussnessId = bui;
             var StrengthId = 0;
             HttpContext.Request.Cookies.TryGetValue(UserHelper.EmcureNPDToken, out string token);
             APIRepository objapi = new(_cofiguration);

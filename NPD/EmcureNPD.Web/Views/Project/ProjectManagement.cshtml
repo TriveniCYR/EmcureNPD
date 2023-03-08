@@ -1,8 +1,14 @@
-﻿@inject Microsoft.Extensions.Localization.IStringLocalizer<EmcureNPD.Resource.Shared> SharedLocalizer
+﻿@using EmcureNPD.Utility.Models;
+@inject Microsoft.Extensions.Localization.IStringLocalizer<EmcureNPD.Resource.Shared> SharedLocalizer
 @{
-    ViewData["Title"] = "PIDF Show Details";
+    ViewData["Title"] = "Project Show Details";
+    //RolePermissionModel objPermssion = (RolePermissionModel)ViewBag.Access;
+    //string IsAddAllow = (objPermssion.Add) ? "" : "display: none";
+    //string IsEditAllow = (objPermssion.Edit) ? "" : "display: none";
+    //string IsDeleteAllow = (objPermssion.Delete) ? "" : "display: none";
 }
 @model EmcureNPD.Business.Models.ProjectTaskEntity
+@inject Microsoft.Extensions.Localization.IStringLocalizer<EmcureNPD.Resource.Shared> SharedLocalizer
 
 
 <div class="content-wrapper pt-3">
@@ -21,16 +27,16 @@
                             </h3>
                             <div class="card-tools md-left">
                                 <div class="mybtn-group">
-                                        <a class="btn btn-primary" href="@Url.Action("PIDFList","PIDF")"><i class="fas fa-list mr-1"></i>Project List</a>
-                                 
-                                        <a class="btn btn-primary" href="@Url.Action("PIDFStrengthList","PIDF")"><i class="far fa-list-alt mr-1"></i>PIDF List</a>
-                                   
-                                        <a class="btn btn-primary" href="@Url.Action("Index","GanttNew")"><i class="fas fa-project-diagram mr-2"></i>Gantt Chart</a>
-                                   
-                                        <a class="btn btn-primary" href="@Url.Action("PIDFNew","PIDF")"><i class="far fa-plus-square mr-1"></i> Create New PIDF</a>
-                                   
-                                        <button class="btn btn-primary" onclick="javascript:window.history.back();"><i class="fas fa-undo mr-1"></i> Back</button>
-                                   
+                                    <a class="btn btn-primary" href="@Url.Action("PIDFList","PIDF")"><i class="fas fa-list mr-1"></i>Project List</a>
+
+                                    <a class="btn btn-primary" href="@Url.Action("PIDFStrengthList","PIDF")"><i class="far fa-list-alt mr-1"></i>PIDF List</a>
+
+                                    <a class="btn btn-primary" href="@Url.Action("Index","GanttNew")"><i class="fas fa-project-diagram mr-2"></i>Gantt Chart</a>
+
+                                    <a class="btn btn-primary" href="@Url.Action("PIDFNew","PIDF")"><i class="far fa-plus-square mr-1"></i> Create New PIDF</a>
+
+                                    <button class="btn btn-primary" onclick="javascript:window.history.back();"><i class="fas fa-undo mr-1"></i> Back</button>
+
                                 </div>
                             </div>
                         </div>
@@ -458,10 +464,10 @@
                                             <div class="card-tools md-left">
                                                 <div class="mybtn-group">
                                                     <input type="hidden" name="CurrentUserRole" id="CurrentUserRole" value="@ViewBag.CurrentUserRolePIDF" />
-                                                  @*  @if (User.IsInRole("Prescriber") || User.IsInRole("Regulatory Manager") || User.IsInRole("Senior Project Manager"))
+                                                    @*  @if (User.IsInRole("Prescriber") || User.IsInRole("Regulatory Manager") || User.IsInRole("Senior Project Manager"))
                                                     {*@
-                                                        <button type="button" onclick=AddTaskSubTask() class="btn btn-primary">@SharedLocalizer["Add Milestones"].Value</button>
-                                                   @* }*@
+                                                    <button type="button" onclick=AddTaskSubTask() class="btn btn-primary">@SharedLocalizer["Add Milestones"].Value</button>
+                                                    @* }*@
                                                     <button type="button" class="btn btn-tool p-0 mr-3 ml-3" data-card-widget="maximize">
                                                         <i class="fas fa-expand"></i>
                                                     </button>
@@ -476,7 +482,24 @@
 
                                         <div class="card-body">
                                             <div class="table-responsive">
-                                                <table id="Milestones" class="table" style="width:100%;"></table>
+                                                <table id="Milestones" class="table" style="width:100%;">
+                                                    <thead>
+                                                        <tr>
+                                                            <th>@SharedLocalizer["Task"]</th>
+                                                            <th>@SharedLocalizer["Task Owner"]</th>
+                                                            <th>@SharedLocalizer["Status"]</th>
+                                                            <th>@SharedLocalizer["Priority"]</th>
+                                                            <th>@SharedLocalizer["Start Date"]</th>
+                                                            <th>@SharedLocalizer["End date"]</th>
+                                                            <th>@SharedLocalizer["Duration"]</th>
+                                                            <th>@SharedLocalizer["Completed %"]</th>
+                                                            <th>@SharedLocalizer["Updated Date"]</th>
+                                                            <th class="text-center">@SharedLocalizer["Action"]</th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                    </tbody>
+                                                </table>
                                             </div>
 
                                             <!-- /.card-body -->
@@ -498,41 +521,33 @@
         </div>
 
         @*UpdateModel*@
-       
+
 
         @*DeleteModel*@
         <div id="DeleteModel" class="modal themeModal " role="dialog">
-            @*<form asp-route-returnUrl="@ViewData["ReturnUrl"]" method="POST" onsubmit="return SubmitForm(this)">*@
             <div class="modal-dialog">
                 <!-- Modal content-->
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h4 class="modal-title">@SharedLocalizer["Delete"].Value</h4>
+                        <h4 class="modal-title">@SharedLocalizer["Delete"]</h4>
                         <button type="button" class="close" data-dismiss="modal">&times;</button>
                     </div>
                     <div class="modal-body">
                         <div class="row">
                             <div class="col-md-12">
                                 <div class="form-group">
-                                    @Html.Label("Are you shure you want to delete this step ?")
+                                    @Html.Label(@SharedLocalizer["DeleteConfirm"])
                                 </div>
                             </div>
                         </div>
-                        @Html.Hidden("StepIDForDelete")
-                        @Html.Hidden("DeleteRedirectTo", Url.Action("DRFList", "DRF"))
-
-
-
+                        @Html.Hidden("ProjectTaskId")
+                        <div class="card-footer text-center">
+                            <button type="button" onclick="DeleteTaskSubTask()" data-dismiss="modal" class="btn btn-primary mr-2">@SharedLocalizer["Yes"]</button>
+                            <a class="btn btn-danger" data-dismiss="modal">@SharedLocalizer["No"]</a>
+                        </div>
                     </div>
-                    <div class="modal-footer">
-                        <button type="button" onclick="DeleteTaskSubTask()" class="btn btn-primary">@SharedLocalizer["Yes"].Value</button>
-                        <a class="btn btn-danger" onclick="HideDeleteModel()">@SharedLocalizer["No"].Value</a>
-                    </div>
-
                 </div>
             </div>
-
-            @*</form>*@
         </div>
 
         @*AddModel*@
@@ -735,9 +750,16 @@
 
 </div>
 @section MyScripts {
-<script src="~/js/custom/project/projectmanagement.js"></script>
-<script>
+    @Html.Partial("_DataTablePartial")
+    <script src="~/js/custom/project/projectmanagement.js"></script>
+    <script>
         var FillTaskDropdown = "@EmcureNPD.Web.Helpers.APIURLHelper.FillTaskDropdown";
-</script>
+        var GetAllTaskSubTaskList = "@EmcureNPD.Web.Helpers.APIURLHelper.GetAllTaskSubTaskList";
+        var DeleteTasksubTask = "@EmcureNPD.Web.Helpers.APIURLHelper.DeleteTaskSubTAsk";
+
+        var RecordDelete = "@SharedLocalizer["RecordDelete"]";
+		var ErrorMessage = "@SharedLocalizer["Error"]";
+		var RecordInsertUpdate = "@SharedLocalizer["RecordInsertUpdate"]";
+    </script>
 }
 

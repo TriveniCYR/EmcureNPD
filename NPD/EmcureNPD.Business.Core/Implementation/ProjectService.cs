@@ -129,5 +129,30 @@ namespace EmcureNPD.Business.Core.Implementation
                 return DBOperation.Error;
             }
         }
+
+        public List<ProjectTaskEntity> GetTaskSubTaskList(long pidfId)
+        {
+            List<ProjectTask> projectTasks = _projectTaskRepository.GetAll().Where(x => x.Pidfid == pidfId).ToList();
+            var result = _mapperFactory.GetList<ProjectTask, ProjectTaskEntity>(projectTasks);
+            result.ForEach(pt =>
+            {
+                pt.TaskOwnerName = _masterUserRepository.Get(pt.TaskOwnerId).FullName;
+                pt.StatusName = _masterProjectStatusRepository.Get(pt.StatusId).StatusName;
+                pt.PriorityName = _masterProjectPriorityRepository.Get(pt.PriorityId).PriorityName;
+            }
+            );
+            return result;
+        }
+
+        public async Task<DBOperation> DeleteTaskSubTask(int id)
+        {
+            var entityProject = _projectTaskRepository.Get(x => x.ProjectTaskId == id);
+            //var entityBusinessUnitRegionMapping = _repositoryMasterBusinessUnitRegionMapping.GetAllQuery().Where(x => x.BusinessUnitId == id);
+            if (entityProject == null)
+                return DBOperation.NotFound;
+            _projectTaskRepository.Remove(entityProject);
+            await _unitOfWork.SaveChangesAsync();
+            return DBOperation.Success;
+        }
     }
 }
