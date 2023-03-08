@@ -7,6 +7,7 @@ var selectedStrength = 0;
 var UserwiseBusinessUnit;
 
 $(document).ready(function () {
+    debugger;
     UserwiseBusinessUnit = UserWiseBUList.split(',');
     SetDivReadonly();    
     InitializeCurrencyDropdown();
@@ -15,8 +16,26 @@ $(document).ready(function () {
     $("#AddYearForm").hide();
     IsViewModeCommercial();
     getPIDFAccordion(_PIDFAccordionURL, _PIDFID, "dvPIDFAccrdion");
+    SetBU_Strength();
 });
 
+function SetBU_Strength() {
+    var PIDFBusinessUnitId = $("#PIDFBusinessUnitId").val();
+    var PIDFProductStrengthId = $("#PIDFProductStrengthId").val(); 
+    var pidfId = $("#PIDFId").val();
+
+    SelectedBUValue = PIDFBusinessUnitId;
+    selectedStrength = PIDFProductStrengthId;
+
+    var StrengthAnchorId = '#BUtab_' + PIDFBusinessUnitId;
+    var BUAnchorId = '#Strengthtab_' + PIDFProductStrengthId;
+
+    $(StrengthAnchorId).addClass('active');
+    $(BUAnchorId).addClass('active');
+
+    GetCommercialPIDFByBU(pidfId);
+    $("#AddYearForm").hide();
+}
 function IsViewModeCommercial() {
     if ($("#IsView").val() == '1') {
         SetCommercialFormReadonly();
@@ -193,8 +212,7 @@ function SetDivReadonly() {
     $("#PIDFormcollapseButton").click();    
     $("#collapseButton").click();
 }
-
-function SaveClick() {
+$("#btnSubmit").click(function () {
     if (ValidateMainForm() && ValidateBU_Strength()) {
         if (objYears.length > 0) {
             $.extend(objMainForm, { 'SaveType': 'Sv' });
@@ -202,15 +220,17 @@ function SaveClick() {
         }
         else {
             toastr.error('No Year Data Added');
-        }        
+        }
     }
-}
-function SaveDraftClick() {
+});
+
+
+$("#btnSaveAsDraft").click(function () {
     if (ValidateBU_Strength()) {
         $.extend(objMainForm, { 'SaveType': 'SvDrf' });
         SaveCommertialPIDFForm();
     }
-}
+});
 
 function UpdateYearTable(columns) {
     $("#AddYearTBody tr").remove();

@@ -23,9 +23,11 @@
 
 <div class="container-fluid background-white-card">
         <input type="hidden" id="hdnCommercialIsView" value="@(Context.Request.Query["IsView"] == "1" ? "1" : "0")" />
+        
     <div class="row">         
         <div class="col-md-12" id="mainDivCommercial">
-
+            <input type="hidden" id="PIDFBusinessUnitId" value="@Model.BusinessUnitId" />
+            <input type="hidden" id="PIDFId" value="@Model.Pidfid" />
              <div class="card card-primary card-tabs">
                             <div class="card-header p-0 pt-1">
                     <ul class="nav nav-tabs text-center m-0" id="businessUnitTabs">
@@ -110,6 +112,10 @@
 
             <div class="card card-maroon card-outline card-outline-tabs m-0">
                 <div class="card-header p-0 border-bottom-0">
+                    @if (Model.MasterStrengthEntities.Count() > 0 || Model.MasterStrengthEntities != null)
+                        {
+                        <input type="hidden" id="PIDFProductStrengthId" value="@Model.MasterStrengthEntities[0].PidfproductStrengthId" />
+                        }
                             <ul class="nav nav-tabs row m-0 text-center" id="ProductStrengthTabs">
                         @if (Model.MasterStrengthEntities.Count() > 0 || Model.MasterStrengthEntities != null)
                         {
@@ -344,10 +350,10 @@
             <div class="row">
                 <div class="col-12 text-end">
                     <div class="form-group">
-                        <button type="button" class="btn btn-success me-3 outside-buttons" onClick="SaveClick();">@SharedLocalizer["Submit"]</button>
+                        <button type="button" id="btnSubmit" class="btn btn-success me-3 outside-buttons" >@SharedLocalizer["Submit"]</button>
                         <input class="btn btn-danger me-3 outside-buttons " value="Cancel" id="btnCommercialCancel" type="button" title=@SharedLocalizer["Cancel"] onclick="location.href='@Url.Action("PIDFList", "PIDF", new { ScreenId = 4 })'" />
                         @*<button class="btn btn-danger" type="button" onclick="window.history.back();">@SharedLocalizer["Cancel"]</button>*@
-                        <button type="submit" class="btn btn-primary me-3 outside-buttons" onClick="SaveDraftClick();">@SharedLocalizer["SaveDraft"]</button>
+                        <button type="submit" id="btnSaveAsDraft" class="btn btn-primary me-3 outside-buttons" >@SharedLocalizer["SaveDraft"]</button>
                      
                         @*  @if (Model.StatusId != (Int32)Master_PIDFStatus.IPDInProgress)
                         {

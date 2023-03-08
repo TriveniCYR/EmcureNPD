@@ -22,7 +22,7 @@ function InitializeMarketDropdown() {
 function GetMarketListSuccess(data) {  
     try {
         $.each(data._object, function (index, object) {
-            $('#MarketID').append($('<option>').text(object.marketExtenstionName).attr('value', object.marketExtenstionId));
+            $('#MarketID').append($('<option>').text(object.businessUnitName).attr('value', object.businessUnitId));
         });
 
         if ($("#PIDFAPIRnDFormID").val()>0) {
