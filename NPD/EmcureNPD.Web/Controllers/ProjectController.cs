@@ -8,6 +8,7 @@ using Newtonsoft.Json;
 using System.Net.Http;
 using System;
 using Microsoft.Extensions.Configuration;
+using EmcureNPD.Utility.Models;
 
 namespace EmcureNPD.Web.Controllers
 {
@@ -21,6 +22,13 @@ namespace EmcureNPD.Web.Controllers
         [HttpGet]
         public IActionResult ProjectManagement(string pidfid, string bussnessId)
         {
+            //int rolId = (int)HttpContext.Session.GetInt32(UserHelper.LoggedInRoleId);
+            //RolePermissionModel objPermssion = UtilityHelper.GetCntrActionAccess(Convert.ToString(RouteData.Values["controller"]), rolId);
+            //if (objPermssion == null || !objPermssion.View)
+            //{
+            //    return RedirectToAction("AccessRestriction", "Home");
+            //}
+            //ViewBag.Access = objPermssion;
             ViewBag.id = pidfid;
             return View();
         }

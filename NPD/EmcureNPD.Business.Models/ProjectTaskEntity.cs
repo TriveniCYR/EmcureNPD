@@ -12,11 +12,14 @@ namespace EmcureNPD.Business.Models
         public long Pidfid { get; set; }
         public string TaskName { get; set; }
         public int TaskOwnerId { get; set; }
+        public string TaskOwnerName { get; set; }
         public int TaskLevel { get; set; }
         public DateTime StartDate { get; set; }
         public DateTime EndDate { get; set; }
         public int PriorityId { get; set; }
+        public string PriorityName { get; set; }
         public int StatusId { get; set; }
+        public string StatusName { get; set; }
         public int TaskDuration { get; set; }
         public double TotalPercentage { get; set; }
         public DateTime CreatedDate { get; set; }
