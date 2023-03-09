@@ -295,7 +295,82 @@ function setPercentage(statusID, idx) {
 }
 
 $(function () {
-    $('#datetimepicker').datetimepicker({
-        format: 'YYYY-MM-DD HH:mm:ss'
+    $('.datetimepicker').datetimepicker({
+        format: 'YYYY-MM-DD'
     });
 });
+
+$(function () {
+    $('.datetimepicker').datetimepicker({
+        format: 'YYYY-MM-DD'
+    });
+});
+
+//Not Wokring 
+$(function () {
+    // attach change event to start date field
+    $("#AddTaskStartDate").change(function (e) {
+        console.log("Change called");
+        var tempMinDate = new Date(e.date);
+        var setminDate = new Date(tempMinDate);
+        setminDate.setDate(tempMinDate.getDate() + 1);
+        $('#AddTaskStartDate').data("DateTimePicker").minDate(setminDate);
+        updateDurationField();
+    });
+
+    // attach change event to end date field
+    $("#AddTaskEndDate").change(function (e) {
+        updateDurationField();
+    });
+
+    // calculate and update duration field value
+    function updateDurationField() {
+        var startDate = $("#AddTaskStartDate").val();
+        var endDate = $("#AddTaskEndDate").val();
+        var duration = calculateDaysDifference(startDate, endDate);
+        
+        $('#AddTaskDuration').val(duration);
+    }
+
+    $("#AddSubTaskStartDate").change(function (e) {
+        console.log("Change called");
+        var tempMinDate = new Date(e.date);
+        var setminDate = new Date(tempMinDate);
+        setminDate.setDate(tempMinDate.getDate() + 1);
+        $('#AddSubTaskStartDate').data("DateTimePicker").minDate(setminDate);
+        updateDurationField();
+    });
+
+    // attach change event to end date field
+    $("#AddSubTaskEndDate").change(function (e) {
+        updateSubDurationField();
+    });
+
+    // calculate and update duration field value
+    function updateSubDurationField() {
+        var startDate = $("#AddSubTaskStartDate").val();
+        var endDate = $("#AddSubTaskEndDate").val();
+        var duration = calculateDaysDifference(startDate, endDate);
+        $('#AddSubTaskDuration').val(duration);
+    }
+
+
+
+});
+
+//calculate days diff
+function calculateDaysDifference(start, end) {
+    var d1 = start;
+    var d2 = end;
+    var oneDay = 24 * 60 * 60 * 1000;
+    var diff = 0;
+    if (d1 && d2) {
+
+        var startDate = new Date(d1.split('-')[2] + '-' + d1.split('-')[1] + '-' + d1.split('-')[0]);
+        var endDate = new Date(d2.split('-')[2] + '-' + d2.split('-')[1] + '-' + d2.split('-')[0]);
+        diff = Math.round(Math.abs((endDate.getTime() - startDate.getTime()) / (oneDay)));
+        console.log(diff);
+    }
+    return diff;
+
+}
