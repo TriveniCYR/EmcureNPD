@@ -521,6 +521,101 @@
         </div>
 
         @*UpdateModel*@
+        <div id="UpdateModel" class="modal themeModal " role="dialog">
+            <form method="POST" asp-controller=Project asp-action=AddUpdateTask>
+                @*<div class="card-body">*@
+                <div class="modal-dialog modal-lg">
+                    <!-- Modal content-->
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h4 class="modal-title">@SharedLocalizer["Update Task"].Value</h4>
+                            <button type="button" class="close" data-dismiss="modal">&times;</button>
+                        </div>
+                        <div class="modal-body">
+                            <div class="row">
+                                <div class="col-sm-6">
+                                    <div class="form-group required">
+                                        @Html.LabelFor(o => o.TaskName, new { @class = "control-label" })
+                                        @Html.EditorFor(o => o.TaskName, new { htmlAttributes = new { @autocomplete = "off", @class = "form-control" } })
+                                        @Html.ValidationMessageFor(o => o.TaskName, "", new { @class = "text-danger" })
+                                    </div>
+                                    <div class="form-group required">
+                                        @Html.LabelFor(o => o.StartDate, new { @class = "control-label" })
+                                        <div class="input-group date" id="startDate" data-target-input="nearest">
+
+                                            @Html.TextBoxFor(o => o.StartDate, new { @class = "form-control datetimepicker-input", autocomplete = "off", @readonly = "readonly" })
+                                            <div class="input-group-append" data-target="#DRFEditStartDate" data-toggle="datetimepicker">
+                                                <div class="input-group-text"><i class="fa fa-calendar"></i></div>
+                                            </div><br>
+
+                                        </div>
+                                        @Html.ValidationMessageFor(o => o.StartDate, "", new { @class = "text-danger" })
+                                    </div>
+                                    <div class="form-group required">
+                                        @Html.LabelFor(o => o.PriorityId, new { @class = "control-label" })
+                                        @Html.DropDownListFor(o => o.PriorityId, new SelectList(string.Empty, "Value", "Text"), "Please select option", htmlAttributes: new { @class = "form-control input-sm f-s-15 bg-eff4f55c w100per", id = "TaskPriority" })
+                                        @Html.ValidationMessageFor(o => o.PriorityId, "", new { @class = "text-danger" })
+                                    </div>
+                                    <div class="form-group required">
+                                        @Html.LabelFor(o => o.TaskDuration, new { @class = "control-label" })
+                                        @Html.EditorFor(o => o.TaskDuration, new { htmlAttributes = new { @autocomplete = "off", @class = "form-control", @readonly = "readonly" } })@*disabled = "disabled"*@
+                                        @Html.ValidationMessageFor(o => o.TaskDuration, "", new { @class = "text-danger" })
+                                    </div>
+
+                                </div>
+                                <div class="col-sm-6">
+                                    <div class="form-group required">
+                                        @Html.LabelFor(o => o.TaskOwnerId, new { @class = "control-label" })
+                                        @Html.DropDownListFor(o => o.TaskOwnerId, new SelectList(string.Empty, "Value", "Text"), "Please select option", htmlAttributes: new { @class = "form-control input-sm f-s-15 bg-eff4f55c w100per", id = "TaskOwner" })
+                                        @Html.ValidationMessageFor(o => o.TaskOwnerId, "", new { @class = "text-danger" })
+                                    </div>
+                                    <div class="form-group required">
+                                        @Html.LabelFor(o => o.EndDate, new { @class = "control-label" })
+                                        <div class="input-group date" id="endDate" data-target-input="nearest">
+
+                                            @Html.TextBoxFor(o => o.EndDate, new { @class = "form-control datetimepicker-input", autocomplete = "off", @readonly = "readonly" })
+                                            <div class="input-group-append" data-target="#DRFEditEndDate" data-toggle="datetimepicker">
+                                                <div class="input-group-text"><i class="fa fa-calendar"></i></div>
+                                            </div><br>
+
+                                        </div>
+                                        @Html.ValidationMessageFor(o => o.EndDate, "", new { @class = "text-danger" })
+                                    </div>
+                                    <div class="form-group required">
+                                        @Html.LabelFor(o => o.StatusId, new { @class = "control-label" })
+                                        @Html.DropDownListFor(o => o.StatusId, new SelectList(string.Empty, "Value", "Text"), "Please select option", htmlAttributes: new { @class = "form-control input-sm f-s-15 bg-eff4f55c w100per", id = "TaskStatus", onchange = "setPercentage(this.value,0)" })
+                                        @Html.ValidationMessageFor(o => o.StatusId, "", new { @class = "text-danger" })
+                                    </div>
+                                    <div class="form-group required">
+                                        @Html.LabelFor(o => o.TotalPercentage, new { @class = "control-label" })
+                                        @Html.EditorFor(o => o.TotalPercentage, new { htmlAttributes = new { @autocomplete = "off", @class = "form-control disabledPercentage", id = "TaskPercentage", @min = 0, @max = 100 } })
+                                        @Html.ValidationMessageFor(o => o.TotalPercentage, "", new { @class = "text-danger" })
+                                    </div>
+
+                                </div>
+                            </div>
+                             @Html.HiddenFor(o => o.Pidfid, new{id="pidfid"})
+                            @Html.HiddenFor(o => o.ProjectTaskId, new{id="projectTaskId"})
+                            @Html.HiddenFor(o => o.TaskLevel, new{id="tasklevel"})
+                        </div>
+                        <div class="modal-footer">
+                            <button type="submit" class="btn btn-primary">@SharedLocalizer["Save"].Value</button>
+                            <a class="btn btn-danger" onclick="HideUpdateModel()">@SharedLocalizer["Cancel"].Value</a>
+                        </div>
+
+                    </div>
+                </div>
+
+
+                @*</div>*@
+
+
+                @*<div class="card-footer text-center">
+                <button type="submit" class="btn btn-primary mr-2 attachedDisabled">@SharedLocalizer["Save"].Value</button>
+                <a class="btn btn-primary" asp-area="" asp-controller="DRF" asp-action="DRFShowDetails">@SharedLocalizer["Cancel"].Value</a>
+                </div>*@
+            </form>
+        </div>
 
 
         @*DeleteModel*@
@@ -664,7 +759,7 @@
         </div>
         @*AddSubTaskModel*@
         <div id="AddSubTaskModel" class="modal themeModal " role="dialog">
-            <form method="POST" asp-controller=Project asp-action=AddUpdateTask asp-route-id="@ViewBag.id" asp-route-act="subTask" method="post">
+            <form method="POST" asp-controller=Project asp-action=AddUpdateTask asp-route-id="@ViewBag.id" asp-route-act="SubTask">
 
                 <div class="modal-dialog modal-lg">
                     <!-- Modal content-->
@@ -756,6 +851,7 @@
         var FillTaskDropdown = "@EmcureNPD.Web.Helpers.APIURLHelper.FillTaskDropdown";
         var GetAllTaskSubTaskList = "@EmcureNPD.Web.Helpers.APIURLHelper.GetAllTaskSubTaskList";
         var DeleteTasksubTask = "@EmcureNPD.Web.Helpers.APIURLHelper.DeleteTaskSubTAsk";
+        var GetTaskSubTaskByIds = "@EmcureNPD.Web.Helpers.APIURLHelper.GetTaskSubTaskById";
 
         var RecordDelete = "@SharedLocalizer["RecordDelete"]";
 		var ErrorMessage = "@SharedLocalizer["Error"]";

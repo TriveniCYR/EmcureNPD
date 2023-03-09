@@ -33,13 +33,10 @@ namespace EmcureNPD.Web.Controllers
             return View();
         }
         [HttpPost]
-        public IActionResult AddUpdateTask(string id, string act, ProjectTaskEntity addTask)
+        public IActionResult AddUpdateTask(ProjectTaskEntity addTask, string id = "", string act = "")
         {
-            addTask.Pidfid = long.Parse(UtilityHelper.Decreypt(id));
-            if (act == "Task")
-                addTask.TaskLevel = 1;
-            else
-                addTask.TaskLevel = 2;
+           // addTask.ProjectTaskId = projecttaskid;
+           
             if (addTask.ProjectTaskId > 0)
             {
                 addTask.ModifyBy = Convert.ToInt32(HttpContext.Session.GetString(UserHelper.LoggedInUserId));
@@ -47,6 +44,11 @@ namespace EmcureNPD.Web.Controllers
             }
             else
             {
+                if (act == "Task")
+                    addTask.TaskLevel = 1;
+                else if (act == "SubTask")
+                    addTask.TaskLevel = 2;
+                addTask.Pidfid = long.Parse(UtilityHelper.Decreypt(id));
                 addTask.CreatedBy = Convert.ToInt32(HttpContext.Session.GetString(UserHelper.LoggedInUserId));
                 addTask.CreatedDate = DateTime.Now;
             }
