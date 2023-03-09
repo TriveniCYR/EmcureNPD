@@ -56,11 +56,9 @@
                         <div class="col-12">
                             <div class="card">
                                 <div class="card-header bg-primary">
-                                    <h3 class="card-title mb-0"><button type="button" class="btn btn-tool" data-card-widget="collapse" title="Collapse">
-                                            Year Details
-                                        </button></h3>
+                                    <h3 class="card-title mb-0"> Year Details</h3>
                                     <div class="card-tools">
-                                        <button type="button" class="btn btn-tool" data-card-widget="collapse" title="Collapse">
+                                        <button type="button" class="btn btn-tool" id="AddyeartableCollapseButton" data-card-widget="collapse" title="Collapse">
                                             <i class="fas fa-minus"></i>
                                         </button>
                                     </div>
@@ -94,7 +92,7 @@
                 </div>
             </div>
             <div class="row">
-                <div class="col-md-5">
+                <div class="col-md-12">
                     <table class="table table-bordered">
                         <thead>
                             <tr>
@@ -137,7 +135,7 @@
                 <div class="col-md-4">
                     <div class="form-group required">
                         @Html.LabelFor(model => model.MarketSizeInUnit,@MasterLocalizer["MarketSizeInUnit"], new { @class = "control-label" })
-
+                        <span class="text-danger">*</span>
                         @Html.TextBoxFor(model => model.MarketSizeInUnit, new { @autocomplete = "off",  @class = "form-control checkbox-checked", @placeholder = @MasterLocalizer["MarketSizeInUnit"] })
                         <lable id="valmsgMarketSizeInUnit" class="text-danger"></lable>
                     </div>
@@ -149,6 +147,7 @@
                 <div class="col-md-4">
                     <div class="form-group required">
                         @Html.LabelFor(model => model.ShelfLife,@MasterLocalizer["ShelfLife"], new { @class = "control-label" })
+                        <span class="text-danger">*</span>
                         @Html.TextBoxFor(model => model.ShelfLife, new { @autocomplete = "off", @class = "form-control checkbox-checked", @placeholder = @MasterLocalizer["ShelfLife"] })
                         <lable id="valmsgShelfLife" class="text-danger"></lable>
                     </div>
@@ -166,7 +165,7 @@
                     <div class="col-md-3">
                         <div class="form-group required">
                             @Html.LabelFor(model => model.PackagingTypeId,@MasterLocalizer["ProductPackagingType"], new { @class = "control-label" })
-                                <select id="PackagingTypeId1" name="PackagingTypeId1" class="form-control"></select>                           
+                                <select id="PackagingTypeId" name="PackagingTypeId" class="form-control"></select>                           
                         </div>
                     </div>
                     <div class="col-md-3">
@@ -178,6 +177,7 @@
                     <div class="col-md-3">
                         <div class="form-group required">
                             @Html.LabelFor(model => model.CommercialBatchSize,@MasterLocalizer["CommercialBatchSize"], new { @class = "control-label" })
+                                <span class="text-danger">*</span>
                             @Html.TextBoxFor(model => model.CommercialBatchSize, new { @autocomplete = "off", @class = "form-control checkbox-checked", @placeholder = @MasterLocalizer["CommercialBatchSize"] })
                             @Html.ValidationMessageFor(model => model.CommercialBatchSize, "", new { @class = "text-danger" })
                             <lable id="valmsgCommercialBatchSize" class="text-danger"></lable>
@@ -186,7 +186,7 @@
                     <div class="col-md-3">
                         <div class="form-group required">
                             @Html.LabelFor(model => model.PriceDiscounting,@MasterLocalizer["PriceDiscounting"], new { @class = "control-label" })
-
+                                <span class="text-danger">*</span>
                             @Html.TextBoxFor(model => model.PriceDiscounting, new { @autocomplete = "off", @class = "form-control checkbox-checked", @placeholder = @MasterLocalizer["PriceDiscounting"] })
                             @Html.ValidationMessageFor(model => model.PriceDiscounting, "", new { @class = "text-danger" })
                             <lable id="valmsgPriceDiscounting" class="text-danger"></lable>
@@ -195,7 +195,7 @@
                     <div class="col-md-3">
                         <div class="form-group required">
                             @Html.LabelFor(model => model.TotalApireq,@MasterLocalizer["TotalAPIReq"], new { @class = "control-label" })
-
+                            <span class="text-danger">*</span>
                             @Html.TextBoxFor(model => model.TotalApireq, new { @autocomplete = "off", @class = "form-control checkbox-checked", @placeholder = @MasterLocalizer["TotalAPIReq"] })
                             <lable id="valmsgTotalApireq" class="text-danger"></lable>
                         </div>
@@ -211,7 +211,7 @@
                     <div class="col-md-3">
                         <div class="form-group required">
                             @Html.LabelFor(model => model.Suimsvolume,@MasterLocalizer["SU_IMS"], new { @class = "control-label" })
-
+                            <span class="text-danger">*</span>
                             @Html.TextBoxFor(model => model.Suimsvolume, new { @autocomplete = "off", @class = "form-control checkbox-checked", @placeholder = @MasterLocalizer["SU_IMS"] })
                             <lable id="valmsgSuimsvolume" class="text-danger"></lable>
                         </div>
@@ -219,7 +219,7 @@
                     <div class="col-md-3">
                         <div class="form-group required">
                                 @Html.LabelFor(model => model.FreeOfCost,@MasterLocalizer["FreeOfCost"], new { @class = "control-label" })
-
+                                <span class="text-danger">*</span>
                                 @Html.TextBoxFor(model => model.FreeOfCost, new { @autocomplete = "off", @class = "form-control checkbox-checked", @placeholder = @MasterLocalizer["FreeOfCost"] })
                                 <lable id="valmsgFreeOfCost" class="text-danger"></lable>
                         </div>
@@ -227,6 +227,7 @@
                     <div class="col-md-3">
                         <div class="form-group required">
                             @Html.LabelFor(model => model.MarketGrowth,@MasterLocalizer["MarketGrowth"], new { @class = "control-label" })
+                          <span class="text-danger">*</span>
                             @Html.TextBoxFor(model => model.MarketGrowth, new { @type="number", @autocomplete = "off", @class = "form-control checkbox-checked", @placeholder = @MasterLocalizer["MarketGrowth"] })
                             <lable id="valmsgMarketGrowth" class="text-danger"></lable>
                         </div>
@@ -240,7 +241,7 @@
                     <div class="col-md-3">
                         <div class="form-group required">
                             @Html.LabelFor(model => model.PriceErosion,@MasterLocalizer["PriceErosion"], new { @class = "control-label" })
-
+                            <span class="text-danger">*</span>
                             @Html.TextBoxFor(model => model.PriceErosion, new { @autocomplete = "off", @class = "form-control checkbox-checked", @placeholder = @MasterLocalizer["PriceErosion"] })
                             <lable id="valmsgPriceErosion" class="text-danger"></lable>
                         </div>
@@ -255,19 +256,21 @@
                         <h3 class="card-title font-weight-bold">Market Share % </h3>
                         <table class="table table-bordered">
                             <tr>
-                                <td> <label class="control-label">@MasterLocalizer["Low"]</label></td>
+                                <td> <label class="control-label">@MasterLocalizer["Low"]</label>
+                                    <span class="text-danger">*</span>
+                                </td>
                                 <td>@Html.TextBoxFor(model => model.MarketSharePercentageLow, new { @autocomplete = "off", @class = "form-control " })
                                     <lable id="valmsgMarketSharePercentageLow" class="text-danger"></lable>
                                 </td>
                             </tr>
                             <tr>
-                                <td> <label class="control-label">@MasterLocalizer["Medium"]</label></td>
+                                <td> <label class="control-label">@MasterLocalizer["Medium"]</label><span class="text-danger">*</span></td>
                                 <td>@Html.TextBoxFor(model => model.MarketSharePercentageMedium, new { @autocomplete = "off", @class = "form-control" })
                                 <lable id="valmsgMarketSharePercentageMedium" class="text-danger"></lable>
                                 </td>
                             </tr>
                             <tr>
-                                <td> <label class="control-label">@MasterLocalizer["High"]</label></td>
+                                <td> <label class="control-label">@MasterLocalizer["High"]</label><span class="text-danger">*</span></td>
                                 <td>@Html.TextBoxFor(model => model.MarketSharePercentageHigh, new { @autocomplete = "off", @class = "form-control "})
                                     <lable id="valmsgMarketSharePercentageHigh" class="text-danger"></lable>
                                 </td>
@@ -300,19 +303,19 @@
                         <h3 class="card-title font-weight-bold">NSP / Units </h3>
                         <table class="table table-bordered">
                             <tr>
-                                <td> <label class="control-label">@MasterLocalizer["Low"]</label></td>
+                                <td> <label class="control-label">@MasterLocalizer["Low"]</label><span class="text-danger">*</span></td>
                                 <td>@Html.TextBoxFor(model => model.NspunitsLow, new { @autocomplete = "off", @class = "form-control " })
                                     <lable id="valmsgNspunitsLow" class="text-danger"></lable>
                                 </td>
                             </tr>
                             <tr>
-                               <td> <label class="control-label">@MasterLocalizer["Medium"]</label></td>
+                               <td> <label class="control-label">@MasterLocalizer["Medium"]</label><span class="text-danger">*</span></td>
                                 <td>@Html.TextBoxFor(model => model.NspunitsMedium, new { @autocomplete = "off", @class = "form-control" })
                                     <lable id="valmsgNspunitsMedium" class="text-danger"></lable>
                                 </td>
                             </tr>
                             <tr>
-                                 <td> <label class="control-label">@MasterLocalizer["High"]</label></td>
+                                    <td> <label class="control-label">@MasterLocalizer["High"]</label><span class="text-danger">*</span></td>
                                 <td>@Html.TextBoxFor(model => model.NspunitsHigh, new { @autocomplete = "off", @class = "form-control "})
                                     <lable id="valmsgNspunitsHigh" class="text-danger"></lable>
                                 </td>
@@ -341,7 +344,8 @@
                     <div class="clearfix">&nbsp;</div>
                     <div class="row text-end">
                         <div class="form-group required">
-                          <button type="button" class="btn btn-success" value="AddYear" onClick="AddYearClick()">@SharedLocalizer["Save Year"]</button>
+                          <button type="button" class="btn btn-success" id="btnSaveYear" value="AddYear" onClick="AddYearClick()">@SharedLocalizer["SaveYear"]</button>
+                                <button type="button" class="btn btn-danger" id="btnCancelYearForm" >@SharedLocalizer["Cancel"]</button>
                         </div>
                     </div>
                 </div>
@@ -349,7 +353,7 @@
             </div>
             <div class="row">
                 <div class="col-12 text-end">
-                    <div class="form-group">
+                    <div class="form-group" id="dvMainButton">
                         <button type="button" id="btnSubmit" class="btn btn-success me-3 outside-buttons" >@SharedLocalizer["Submit"]</button>
                         <input class="btn btn-danger me-3 outside-buttons " value="Cancel" id="btnCommercialCancel" type="button" title=@SharedLocalizer["Cancel"] onclick="location.href='@Url.Action("PIDFList", "PIDF", new { ScreenId = 4 })'" />
                         @*<button class="btn btn-danger" type="button" onclick="window.history.back();">@SharedLocalizer["Cancel"]</button>*@
