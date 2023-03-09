@@ -1,22 +1,42 @@
 ﻿var objYears = [];
 var objMainForm = {};
-var ColumnObjUpcase = ['PackagingTypeId1', 'CommercialBatchSize', 'PriceDiscounting', 'TotalApireq', 'Apireq', 'Suimsvolume', 'MarketGrowth', 'MarketSize', 'PriceErosion', 'FinalSelectionId'];
+var ColumnObjUpcase = ['PackagingTypeId', 'CommercialBatchSize', 'PriceDiscounting', 'TotalApireq', 'Apireq', 'Suimsvolume', 'MarketGrowth', 'MarketSize', 'PriceErosion', 'FinalSelectionId'];
 /*var ColumnObjLowcase = ['packagingTypeId', 'commercialBatchSize', 'priceDiscounting', 'totalApireq', 'apireq', 'suimsvolume', 'marketGrowth', 'marketSize', 'priceErosion', 'finalSelectionId'];*/
 var SelectedBUValue = 0;
 var selectedStrength = 0;
 var UserwiseBusinessUnit;
 
 $(document).ready(function () {
+    debugger;
     UserwiseBusinessUnit = UserWiseBUList.split(',');
-    SetDivReadonly();    
+    SetDivReadonly();
     InitializeCurrencyDropdown();
     InitializeFinalSelectionDropdown();
     InitializeProductTypeDropdown();
     $("#AddYearForm").hide();
     IsViewModeCommercial();
     getPIDFAccordion(_PIDFAccordionURL, _PIDFID, "dvPIDFAccrdion");
+    SetBU_Strength();
 });
 
+function SetBU_Strength() {
+    var PIDFBusinessUnitId = $("#PIDFBusinessUnitId").val();
+    var PIDFProductStrengthId = $("#PIDFProductStrengthId").val();
+    var pidfId = $("#PIDFId").val();
+
+    SelectedBUValue = PIDFBusinessUnitId;
+    selectedStrength = PIDFProductStrengthId;
+
+    var StrengthAnchorId = '#BUtab_' + PIDFBusinessUnitId;
+    var BUAnchorId = '#Strengthtab_' + PIDFProductStrengthId;
+
+    $(StrengthAnchorId).addClass('active');
+    $(BUAnchorId).addClass('active');
+
+    GetCommercialPIDFByBU(pidfId);
+    $("#AddYearForm").hide();
+    IsShowCancel_Save_buttons(true);
+}
 function IsViewModeCommercial() {
     if ($("#IsView").val() == '1') {
         SetCommercialFormReadonly();
@@ -40,13 +60,13 @@ function GetCountryListError(x, y, z) {
 }
 
 function InitializeProductTypeDropdown() {
-   
+
     ajaxServiceMethod($('#hdnBaseURL').val() + GetAllProductType, 'GET', GetProductTypeListSuccess, GetProductTypeListError);
 }
 function GetProductTypeListSuccess(data) {
     try {
         $.each(data._object, function (index, object) {
-            $('#PackagingTypeId1').append($('<option>').text(object.productTypeName).attr('value', object.productTypeId));
+            $('#PackagingTypeId').append($('<option>').text(object.productTypeName).attr('value', object.productTypeId));
         });
     } catch (e) {
         toastr.error('Error:' + e.message);
@@ -57,7 +77,7 @@ function GetProductTypeListError(x, y, z) {
 }
 
 function InitializeFinalSelectionDropdown() {
-     ajaxServiceMethod($('#hdnBaseURL').val() + GetAllFinalSelection, 'GET', GetFSListSuccess, GetFSListError);
+    ajaxServiceMethod($('#hdnBaseURL').val() + GetAllFinalSelection, 'GET', GetFSListSuccess, GetFSListError);
 }
 function GetFSListSuccess(data) {
     try {
@@ -72,7 +92,7 @@ function GetFSListError(x, y, z) {
     toastr.error(ErrorMessage);
 }
 
-function  ValidateYearForm() {
+function ValidateYearForm() {
     var ArrofInvalid = []
     //var IsValid = true;;
     $.each($('#AddYearForm').serializeArray(), function (_, kv) {
@@ -81,7 +101,7 @@ function  ValidateYearForm() {
             //IsValid = false;
             ArrofInvalid.push(kv.name);
         }
-        else{
+        else {
             $('#valmsg' + kv.name).text('');
         }
     });
@@ -90,7 +110,7 @@ function  ValidateYearForm() {
     return status;
 }
 function ClearValidationForYearForm() {
-   
+
     $.each($('#AddYearForm').serializeArray(), function (_, kv) {
         $('#valmsg' + kv.name).text('');
     });
@@ -103,7 +123,7 @@ function ClearValidationForMainForm() {
 }
 function ValidateMainForm() {
     var ArrofInvalid = []
-    var MainFormFeilds = ['MarketSizeInUnit','ShelfLife']
+    var MainFormFeilds = ['MarketSizeInUnit', 'ShelfLife']
     $.each(MainFormFeilds, function (_, kv) {
         if ($('#' + kv).val() == '') {
             $('#valmsg' + kv).text('Required');
@@ -129,7 +149,7 @@ function ValidateBU_Strength() {
         valMsg += ' Strength ';
     }
     if (!status) {
-        toastr.error('Please Select : ' + valMsg);  
+        toastr.error('Please Select : ' + valMsg);
     }
     return status;
 }
@@ -152,8 +172,9 @@ function AddYearClick() {
         //entityYear['YearIndex'] = objYears.length + 1;
         objYears.push(entityYear);
         UpdateYearTable(ColumnObjUpcase);
-        ClearValidationForYearForm();    
-        $("#AddYearForm").hide();  
+        ClearValidationForYearForm();
+        $("#AddYearForm").hide();
+        IsShowCancel_Save_buttons(true);
     }
 }
 function AddRow(i) {
@@ -172,11 +193,11 @@ function deleteRow(i) {
 }
 function AddtblRevenueRow(year, i, columns) {
 
-    var finalSelection = columns[9];    
+    var finalSelection = columns[9];
     var FSSelectedText = $('#' + finalSelection).find(":selected").text();
     var ArrItem = FSSelectedText.split('/');
     var MarketShareUnit = year["MarketShareUnit" + ArrItem[0]];
-    var Nsp = year["Nsp" + ArrItem[1]]; 
+    var Nsp = year["Nsp" + ArrItem[1]];
     var result = MarketShareUnit * Nsp;
     $('#RevenueTbody').append(`<tr id='RevenueRow` + i + `'></tr>`)
     $('#RevenueRow' + i).append('<td>Year' + (i + 1) + '</td>')
@@ -190,11 +211,10 @@ function SetDivReadonly() {
     $("#PIDFScreen").find("#collapseButton").show();
     $("#PIDFScreen").find("#PIDFormcollapseButton").show();
 
-    $("#PIDFormcollapseButton").click();    
+    $("#PIDFormcollapseButton").click();
     $("#collapseButton").click();
 }
-
-function SaveClick() {
+$("#btnSubmit").click(function () {
     if (ValidateMainForm() && ValidateBU_Strength()) {
         if (objYears.length > 0) {
             $.extend(objMainForm, { 'SaveType': 'Sv' });
@@ -202,15 +222,17 @@ function SaveClick() {
         }
         else {
             toastr.error('No Year Data Added');
-        }        
+        }
     }
-}
-function SaveDraftClick() {
+});
+
+
+$("#btnSaveAsDraft").click(function () {
     if (ValidateBU_Strength()) {
         $.extend(objMainForm, { 'SaveType': 'SvDrf' });
         SaveCommertialPIDFForm();
     }
-}
+});
 
 function UpdateYearTable(columns) {
     $("#AddYearTBody tr").remove();
@@ -236,18 +258,18 @@ function UpdateYearTable(columns) {
 }
 
 function SaveCommertialPIDFForm() {
-  
-        $.extend(objMainForm, { 'PidfproductStrengthId': selectedStrength });
-        $.extend(objMainForm, { 'BusinessUnitId': SelectedBUValue });
 
-        $.extend(objMainForm, { 'Pidfid': $("#Pidfid").val() });
-        $.extend(objMainForm, { 'MarketSizeInUnit': $("#MarketSizeInUnit").val() });
-        $.extend(objMainForm, { 'ShelfLife': $("#ShelfLife").val() });
-        $.extend(objMainForm, { 'encCreatedBy': $("#LoggedInUserId").val() });
-        $.extend(objMainForm, { 'PidfCommercialYears': objYears });
+    $.extend(objMainForm, { 'PidfproductStrengthId': selectedStrength });
+    $.extend(objMainForm, { 'BusinessUnitId': SelectedBUValue });
 
-        //console.log(JSON.stringify(objMainForm));
-        ajaxServiceMethod($('#hdnBaseURL').val() + SaveCommercialPIDF, 'POST', SaveCommertialPIDFFormSuccess, SaveCommertialPIDFFormError, JSON.stringify(objMainForm));
+    $.extend(objMainForm, { 'Pidfid': $("#Pidfid").val() });
+    $.extend(objMainForm, { 'MarketSizeInUnit': $("#MarketSizeInUnit").val() });
+    $.extend(objMainForm, { 'ShelfLife': $("#ShelfLife").val() });
+    $.extend(objMainForm, { 'encCreatedBy': $("#LoggedInUserId").val() });
+    $.extend(objMainForm, { 'PidfCommercialYears': objYears });
+
+    //console.log(JSON.stringify(objMainForm));
+    ajaxServiceMethod($('#hdnBaseURL').val() + SaveCommercialPIDF, 'POST', SaveCommertialPIDFFormSuccess, SaveCommertialPIDFFormError, JSON.stringify(objMainForm));
 
 }
 function SaveCommertialPIDFFormSuccess(data) {
@@ -257,6 +279,7 @@ function SaveCommertialPIDFFormSuccess(data) {
             //window.location = "/PIDF/PIDFList";
             toastr.success(data._Message);
             $("#AddYearForm").hide();
+            IsShowCancel_Save_buttons(true);
         }
         else {
             toastr.error(data._Message);
@@ -275,6 +298,7 @@ function BUtabClick(BUVal, pidfidval) {
     ClearValidationForMainForm();
     GetCommercialPIDFByBU(pidfidval);
     $("#AddYearForm").hide();
+    IsShowCancel_Save_buttons(true);
 }
 
 
@@ -284,6 +308,7 @@ function StrengthtabClick(strengthVal, pidfidval) {
     ClearValidationForMainForm();
     GetCommercialPIDFByBU(pidfidval);
     $("#AddYearForm").hide();
+    IsShowCancel_Save_buttons(true);
 }
 
 
@@ -313,10 +338,10 @@ function UpdateFormData(objectForm) {
     if (objectForm.pidfCommercialYears != undefined && objectForm.pidfCommercialYears != null) {
         objYears = [];
         objYears = objectForm.pidfCommercialYears;
-       // console.log('objYears')
-       // console.log(objYears)
+        // console.log('objYears')
+        // console.log(objYears)
         var TempObjYears = [];
-      
+
         for (var i = 0; i < objYears.length; i++) {
             var entityYear = {};
             $.each(objYears[i], function (key, value) {
@@ -327,7 +352,7 @@ function UpdateFormData(objectForm) {
             TempObjYears.push(entityYear);
             entityYear = {};
         }
-       // console.log('TempObjYears')
+        // console.log('TempObjYears')
         //console.log(TempObjYears);
         objYears = TempObjYears;
         UpdateYearTable(ColumnObjUpcase);
@@ -340,8 +365,8 @@ function UpdateFormData(objectForm) {
 }
 
 function ResetYearForm() {
-   // $("#AddYearForm").find("input,textarea").val('');
-   // $("#AddYearForm").find("select").val('1');
+    // $("#AddYearForm").find("input,textarea").val('');
+    // $("#AddYearForm").find("select").val('1');
 }
 function ResetMainFormForm() {
     $("#MarketSizeInUnit").val('');
@@ -351,18 +376,19 @@ function SetCommercialFormReadonly() {
     $("#mainDivCommercial").find("input, button, submit, textarea, select").prop('disabled', true);
     $("[id^='deleteIconAddyear']").hide();
     $("#btnCommercialCancel").prop('disabled', false);
-    
+    $("#AddyeartableCollapseButton").prop('disabled', false);
 }
 function SetDisableForOtherUserBU() {
     var BU_VALUE = SelectedBUValue;
     var status = UserwiseBusinessUnit.indexOf(BU_VALUE);
-    var IsViewInMode =  ($("#IsView").val() == '1')
+    var IsViewInMode = ($("#IsView").val() == '1')
     if (status == -1 || IsViewInMode) {
         SetCommercialFormReadonly();
     }
     else {
         $("#mainDivCommercial").find("input, button, submit, textarea, select").prop('disabled', false);
         $("[id^='deleteIconAddyear']").show();
+        $("#AddyeartableCollapseButton").prop('disabled', false);
     }
 }
 
@@ -374,19 +400,19 @@ $('#MarketGrowth').focusout(function () {
     var MarketGrowth;
     var objyearLen = objYears.length;
 
-    if (objyearLen==0) {
-         MarketSizeAsLaunch = $('#MarketSizeInUnit').val();
-         MarketGrowth = $('#MarketGrowth').val();
-        result = MarketSizeAsLaunch * (1 + (MarketGrowth / 100))
-        $('#MarketSize').val(result.toFixed());
-    } 
-    if (objyearLen > 0) {
-         MarketSizeAsLaunch = objYears[objyearLen - 1]['MarketSize']
-         MarketGrowth = $('#MarketGrowth').val();
+    if (objyearLen == 0) {
+        MarketSizeAsLaunch = $('#MarketSizeInUnit').val();
+        MarketGrowth = $('#MarketGrowth').val();
         result = MarketSizeAsLaunch * (1 + (MarketGrowth / 100))
         $('#MarketSize').val(result.toFixed());
     }
-   // $('#MarketGrowth').val(MarketGrowth + '%');
+    if (objyearLen > 0) {
+        MarketSizeAsLaunch = objYears[objyearLen - 1]['MarketSize']
+        MarketGrowth = $('#MarketGrowth').val();
+        result = MarketSizeAsLaunch * (1 + (MarketGrowth / 100))
+        $('#MarketSize').val(result.toFixed());
+    }
+    // $('#MarketGrowth').val(MarketGrowth + '%');
 });
 //--------- Estimated Market Share Units--------------------
 $('#MarketSharePercentageLow').focusout(function () {
@@ -401,7 +427,7 @@ $('#MarketSharePercentageHigh').focusout(function () {
 function EstimatedMarketShareUnits(variable) {
     var MarketSize = $('#MarketSize').val();
     var MarketShare = $('#MarketSharePercentage' + variable).val();
-    var result = MarketSize * MarketShare/100;
+    var result = MarketSize * MarketShare / 100;
     $('#MarketShareUnit' + variable).val(result.toFixed());
 }
 //---------NSP------------------------------------
@@ -434,8 +460,21 @@ function ShowPopUpCommercial() {
 }
 function ShowYearForm() {
     if (ValidateBU_Strength()) {
-        $("#AddYearForm").show();  
-
+        $("#AddYearForm").show();
+        IsShowCancel_Save_buttons(false);
     }
-     
+    var Count_Of_Next_year = objYears.length + 1;
+    var SaveButtonText = 'Save Year';
+    $("#btnSaveYear").text(SaveButtonText + Count_Of_Next_year);
 }
+function IsShowCancel_Save_buttons(flag) {
+    if (flag)
+        $("#dvMainButton").show();
+    else
+        $("#dvMainButton").hide();
+}
+
+$('#btnCancelYearForm').click(function () {
+    $("#AddYearForm").hide();
+    IsShowCancel_Save_buttons(true);
+});

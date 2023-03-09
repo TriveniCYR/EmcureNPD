@@ -397,7 +397,7 @@ namespace EmcureNPD.Business.Core.Implementation
 
                 _oCharterEntity.ProjectName = _CharterObjects[0].ProjectName;
                 _oCharterEntity.Market = _CharterObjects[0].Market;
-               // _oCharterEntity.ProjectInitiationDate = _CharterObjects[0].ProjectComplexityId;
+                 _oCharterEntity.ProjectInitiationDate = _CharterObjects[0].ProjectInitiationDate;
                 //_oCharterEntity.ProjectEndDate = _CharterObjects[0].ProjectComplexityId;
             }
 
@@ -697,53 +697,101 @@ namespace EmcureNPD.Business.Core.Implementation
                         _pbfRepository.UpdateAsync(objPIDFPbf);
                         await _unitOfWork.SaveChangesAsync();
 
-                        //var objPIDFPbfanalytical = _pidfPbfAnalyticalRepository.GetAll().Where(x => x.Pbfid == objPIDFPbf.Pidfpbfid).First();
+                        var objPIDFPbfanalytical = _pidfPbfAnalyticalRepository.GetAll().Where(x => x.Pbfid == objPIDFPbf.Pidfpbfid).FirstOrDefault();
 
-                        ////For Updating PBF Analytical
-                        //if (objPIDFPbfanalytical != null)
-                        //{
-                        //    PidfPbfAnalytical _previousPbfAnalyticalEntity = _mapperFactory.Get<PidfPbfAnalyticalEntity, PidfPbfAnalytical>(pbfEntity.PidfPbfAnalyticals);
-                        //    _pidfPbfAnalyticalRepository.UpdateAsync(_previousPbfAnalyticalEntity);
-                        //    await _unitOfWork.SaveChangesAsync();
+                        //For Updating PBF Analytical
+                        if (objPIDFPbfanalytical != null)
+                        {
+                            //PidfPbfAnalytical _previousPbfAnalyticalEntity = _mapperFactory.Get<PidfPbfAnalyticalEntity, PidfPbfAnalytical>(pbfEntity.PidfPbfAnalyticals);
+                            //_pidfPbfAnalyticalRepository.UpdateAsync(_previousPbfAnalyticalEntity);
+                            //await _unitOfWork.SaveChangesAsync();
 
-                        //    var prototypeDetails = _pidfPbfAnalyticalPrototypeRepository.GetAllQuery().Where(x => x.PbfanalyticalId == objPIDFPbfanalytical.PbfanalyticalId);
-                        //    _pidfPbfAnalyticalPrototypeRepository.RemoveRange(prototypeDetails);
-                        //    await _unitOfWork.SaveChangesAsync();
+                            var prototypeDetails = _pidfPbfAnalyticalPrototypeRepository.GetAll().Where(x => x.PbfanalyticalId == objPIDFPbfanalytical.PbfanalyticalId).ToList();
+                            if (prototypeDetails.Count > 0)
+                            {
+                                foreach (var item in prototypeDetails)
+                                {
+                                    _pidfPbfAnalyticalPrototypeRepository.Remove(item);
+                                }
+                                await _unitOfWork.SaveChangesAsync();
+                            }
+                            
 
-                        //    var exhibitDetails = _pidfPbfAnalyticalExhibitRepository.GetAllQuery().Where(x => x.PbfanalyticalId == objPIDFPbfanalytical.PbfanalyticalId);
-                        //    _pidfPbfAnalyticalExhibitRepository.RemoveRange(exhibitDetails);
-                        //    await _unitOfWork.SaveChangesAsync();
+                            var exhibitDetails = _pidfPbfAnalyticalExhibitRepository.GetAll().Where(x => x.PbfanalyticalId == objPIDFPbfanalytical.PbfanalyticalId).ToList();
+                            if (exhibitDetails.Count > 0 )
+                            {
+                                foreach (var item in exhibitDetails)
+                                {
+                                    _pidfPbfAnalyticalExhibitRepository.Remove(item);
+                                }
+                                await _unitOfWork.SaveChangesAsync();
+                            }
+                           
 
-                        //    var scaleupDetails = _pidfPbfAnalyticalScaleUpRepository.GetAllQuery().Where(x => x.PbfanalyticalId == objPIDFPbfanalytical.PbfanalyticalId);
-                        //    _pidfPbfAnalyticalScaleUpRepository.RemoveRange(scaleupDetails);
-                        //    await _unitOfWork.SaveChangesAsync();
+                            var scaleupDetails = _pidfPbfAnalyticalScaleUpRepository.GetAll().Where(x => x.PbfanalyticalId == objPIDFPbfanalytical.PbfanalyticalId).ToList();
+                            if (scaleupDetails.Count > 0)
+                            {
+                                foreach (var item in scaleupDetails)
+                                {
+                                    _pidfPbfAnalyticalScaleUpRepository.Remove(item);
+                                }
+                                await _unitOfWork.SaveChangesAsync();
+                            }
+                            
 
-                        //}
-                        //var objPIDFPbfclincial = _pidfPbfClinicalRepository.GetAll().Where(x => x.Pbfid == objPIDFPbf.Pidfpbfid).First();
-                        ////For Updating PBF Clinical
-                        //if (objPIDFPbfclincial != null)
-                        //{
-                        //    PidfPbfClinical _previousPbfClinicalEntity = _mapperFactory.Get<PidfPbfClinicalEntity, PidfPbfClinical>(pbfEntity.PidfPbfClinicals);
-                        //    _pidfPbfClinicalRepository.UpdateAsync(_previousPbfClinicalEntity);
-                        //    await _unitOfWork.SaveChangesAsync();
+                        }
+                        var objPIDFPbfclincial = _pidfPbfClinicalRepository.GetAll().Where(x => x.Pbfid == objPIDFPbf.Pidfpbfid).FirstOrDefault();
+                        //For Updating PBF Clinical
+                        if (objPIDFPbfclincial != null)
+                        {
+                            //PidfPbfClinical _previousPbfClinicalEntity = _mapperFactory.Get<PidfPbfClinicalEntity, PidfPbfClinical>(pbfEntity.PidfPbfClinicals);
+                            //_pidfPbfClinicalRepository.UpdateAsync(_previousPbfClinicalEntity);
+                            //await _unitOfWork.SaveChangesAsync();
 
-                        //    var pilotBioFasting = _pidfPbfClinicalPilotBioFastingRepository.GetAllQuery().Where(x => x.PbfclinicalId == objPIDFPbfclincial.PbfclinicalId);
-                        //    _pidfPbfClinicalPilotBioFastingRepository.RemoveRange(pilotBioFasting);
-                        //    await _unitOfWork.SaveChangesAsync();
+                            var pilotBioFasting = _pidfPbfClinicalPilotBioFastingRepository.GetAll().Where(x => x.PbfclinicalId == objPIDFPbfclincial.PbfclinicalId).ToList();
+                            if (pilotBioFasting.Count > 0)
+                            {
+                                foreach (var item in pilotBioFasting)
+                                {
+                                    _pidfPbfClinicalPilotBioFastingRepository.Remove(item);
+                                }
+                                await _unitOfWork.SaveChangesAsync();
+                            }
+                           
 
-                        //    var pilotBioFed = _pidfPbfClinicalPilotBioFedRepository.GetAllQuery().Where(x => x.PbfclinicalId == objPIDFPbfclincial.PbfclinicalId);
-                        //    _pidfPbfClinicalPilotBioFedRepository.RemoveRange(pilotBioFed);
-                        //    await _unitOfWork.SaveChangesAsync();
+                            var pilotBioFed = _pidfPbfClinicalPilotBioFedRepository.GetAll().Where(x => x.PbfclinicalId == objPIDFPbfclincial.PbfclinicalId).ToList();
+                            if (pilotBioFed.Count > 0)
+                            {
+                                foreach (var item in pilotBioFed)
+                                {
+                                    _pidfPbfClinicalPilotBioFedRepository.Remove(item);
+                                }
+                                await _unitOfWork.SaveChangesAsync();
+                            }
+                            
 
-                        //    var pivotalBioFasting = _pidfPbfClinicalPivotalBioFastingRepository.GetAllQuery().Where(x => x.PbfclinicalId == objPIDFPbfclincial.PbfclinicalId);
-                        //    _pidfPbfClinicalPivotalBioFastingRepository.RemoveRange(pivotalBioFasting);
-                        //    await _unitOfWork.SaveChangesAsync();
+                            var pivotalBioFasting = _pidfPbfClinicalPivotalBioFastingRepository.GetAll().Where(x => x.PbfclinicalId == objPIDFPbfclincial.PbfclinicalId).ToList();
+                            if (pivotalBioFasting.Count > 0)
+                            {
+                                foreach (var item in pivotalBioFasting)
+                                {
+                                    _pidfPbfClinicalPivotalBioFastingRepository.Remove(item);
+                                }
+                                await _unitOfWork.SaveChangesAsync();
+                            }
+                            
 
-                        //    var pivotalBioFed = _pidfPbfClinicalPivotalBioFedRepository.GetAllQuery().Where(x => x.PbfclinicalId == objPIDFPbfclincial.PbfclinicalId);
-                        //    _pidfPbfClinicalPivotalBioFedRepository.RemoveRange(pivotalBioFed);
-                        //    await _unitOfWork.SaveChangesAsync();
-
-                        //}
+                            var pivotalBioFed = _pidfPbfClinicalPivotalBioFedRepository.GetAll().Where(x => x.PbfclinicalId == objPIDFPbfclincial.PbfclinicalId).ToList();
+                            if (pivotalBioFed.Count > 0)
+                            {
+                                foreach (var item in pivotalBioFed)
+                                {
+                                    _pidfPbfClinicalPivotalBioFedRepository.Remove(item);
+                                }
+                                await _unitOfWork.SaveChangesAsync();
+                            }
+                           
+                        }
                         await SaveChildDetails(objPIDFPbf.Pidfpbfid, loggedInUserId, pbfEntity.PidfPbfAnalyticals, pbfEntity.PidfPbfClinicals, pbfEntity.pidfPbfRndEntity);
 
                         var isSuccess = await _auditLogService.CreateAuditLog<PidfPbfFormEntity>(objPIDFPbf.Pidfid > 0 ? Utility.Audit.AuditActionType.Update : Utility.Audit.AuditActionType.Create,
@@ -832,6 +880,7 @@ namespace EmcureNPD.Business.Core.Implementation
                             _objpidfpbfadd.AnalyticalId = analyticalEntites.AnalyticalId;
                             _pidfPbfAnalyticalRepository.UpdateAsync(_objpidfpbfadd);
                             //return DBOperation.Success;
+                            
                         }
                         else
                         {
@@ -1131,40 +1180,7 @@ namespace EmcureNPD.Business.Core.Implementation
         }
         public async Task<PidfPbfFormEntity> GetPbfFormDetails(long pidfId, int buid, int? strengthid)
         {
-            //PBF Entity Mapping
-            //var data = new PidfPbfFormEntity();
-
             var data = await GetPbfTabDetails(pidfId, buid, strengthid);
-            PidfPbfRnDEntity pidfPbfRnDEntity = new PidfPbfRnDEntity();
-            //var objPIDFPbf = _pbfRepository.GetAll().Where(x => x.Pidfid == pidfId).First();
-            ////var objanalytical =  _pidfPbfAnalyticalRepository.GetAllQuery().Where(x => x.Pbfid == objPIDFPbf.Pidfpbfid).First();
-            ////var objanalyticalprototype = _pidfPbfAnalyticalPrototypeRepository.GetAllQuery().Where(x => x.Pbfanalytical.PbfanalyticalId == objanalytical.PbfanalyticalId).ToList();
-            ////var objnclinical = _pidfPbfClinicalRepository.GetAllQuery().Where(x => x.Pbfid == objPIDFPbf.Pidfpbfid).ToList();           
-            //data.MasterBusinessUnitEntities = _businessUnitService.GetAll().Result.Where(xx => xx.IsActive).ToList();
-            //pidfPbfRnDEntity.MasterStrengthEntities = _productStrengthService.GetAll().Result.Where(x => x.Pidfid == pidfId).ToList();
-            //data.pidfPbfRndEntity = pidfPbfRnDEntity;
-            //data.BusinessUnitId = buid;
-            //data.Pidfid = pidfId;
-            //data.Pidfpbfid = objPIDFPbf.Pidfpbfid;
-            //data.ProductTypeId = objPIDFPbf.ProductTypeId;
-            ////data.BusinessUnitId = objPIDFPbf.BusinessUnitId;
-            //data.ProjectName = objPIDFPbf.ProjectName;
-            //data.Market = objPIDFPbf.Market;
-            //data.BusinessRelationable = objPIDFPbf.BusinessRelationable;
-            //data.BerequirementId = objPIDFPbf.BerequirementId;
-            //data.NumberOfApprovedAnda = objPIDFPbf.NumberOfApprovedAnda;
-            //data.ProductTypeId = objPIDFPbf.ProductTypeId;
-            //data.PlantId = objPIDFPbf.PlantId;
-            //data.WorkflowId = objPIDFPbf.WorkflowId;
-            //data.DosageId = objPIDFPbf.DosageId;
-            //data.PatentStatus = objPIDFPbf.PatentStatus;
-            //data.SponsorBusinessPartner = objPIDFPbf.SponsorBusinessPartner;
-            //data.FormRnDdivisionId = objPIDFPbf.FormRnDdivisionId;
-            //data.ProjectInitiationDate = objPIDFPbf.ProjectInitiationDate;
-            //data.RnDhead = objPIDFPbf.RnDhead;
-            //data.ProjectManager = objPIDFPbf.ProjectManager;
-            ////  data.Dosage = objPIDFPbf.Dosage;
-            //data.PackagingTypeId = objPIDFPbf.PackagingTypeId;
             return data;
 
         }
@@ -1223,7 +1239,7 @@ namespace EmcureNPD.Business.Core.Implementation
                         {
                             data.Pidfpbfid = item.Pidfpbfid;
                             data.ProductTypeId = item.ProductTypeId;
-                            //data.BusinessUnitId = item.BusinessUnitId;
+                            data.BusinessUnitId = buid;
                             data.ProjectName = item.ProjectName;
                             data.Market = item.Market;
                             data.BusinessRelationable = item.BusinessRelationable;
