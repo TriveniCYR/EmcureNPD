@@ -93,7 +93,7 @@ namespace EmcureNPD.Business.Core.Implementation
                     task.TaskName = addTaskModel.TaskName;
                     task.Pidfid = addTaskModel.Pidfid;
                     task.StartDate = addTaskModel.StartDate;
-                    task.EndDate = addTaskModel.StartDate;
+                    task.EndDate = addTaskModel.EndDate;
                     task.PriorityId = addTaskModel.PriorityId;
                     task.StatusId = addTaskModel.StatusId;
                     task.TaskDuration = addTaskModel.TaskDuration;
@@ -114,7 +114,7 @@ namespace EmcureNPD.Business.Core.Implementation
                 task.TaskName = addTaskModel.TaskName;
                 task.Pidfid = addTaskModel.Pidfid;
                 task.StartDate = addTaskModel.StartDate;
-                task.EndDate = addTaskModel.StartDate;
+                task.EndDate = addTaskModel.EndDate;
                 task.PriorityId = addTaskModel.PriorityId;
                 task.StatusId = addTaskModel.StatusId;
                 task.TaskDuration = addTaskModel.TaskDuration;
@@ -153,6 +153,28 @@ namespace EmcureNPD.Business.Core.Implementation
             _projectTaskRepository.Remove(entityProject);
             await _unitOfWork.SaveChangesAsync();
             return DBOperation.Success;
+        }
+
+        public async Task<ProjectTaskEntity> GetById(long id)
+        {
+            ProjectTaskEntity TaskAddModel = new ProjectTaskEntity();
+            var task = _mapperFactory.Get<ProjectTask, ProjectTaskEntity>(await _projectTaskRepository.GetAsync(id));
+            task.TaskOwnerId = _masterUserRepository.Get(task.TaskOwnerId).UserId;
+            task.StatusId = _masterProjectStatusRepository.Get(task.StatusId).StatusId;
+            task.PriorityId = _masterProjectPriorityRepository.Get(task.PriorityId).PriorityId;
+            TaskAddModel = GetDropDownsForTask();
+            TaskAddModel.TaskName = task.TaskName;
+            TaskAddModel.EditTaskOwnerId = task.TaskOwnerId;
+            TaskAddModel.EditTaskPriorityId = task.PriorityId;
+            TaskAddModel.EditTaskStatusId = task.StatusId;
+            TaskAddModel.StartDate = task.StartDate;
+            TaskAddModel.EndDate = task.EndDate;
+            TaskAddModel.TaskDuration = task.TaskDuration;
+            TaskAddModel.TotalPercentage = task.TotalPercentage;
+            TaskAddModel.ProjectTaskId = task.ProjectTaskId;
+            TaskAddModel.Pidfid = task.Pidfid;
+            TaskAddModel.TaskLevel = task.TaskLevel;
+            return TaskAddModel;
         }
     }
 }

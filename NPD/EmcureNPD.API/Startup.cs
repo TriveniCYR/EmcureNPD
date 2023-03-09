@@ -68,7 +68,8 @@ namespace EmcureNPD.API
                    }
                 });
             });
-
+            services.AddOutputCaching();
+            services.AddMvc();
             //services.AddSwaggerGen(c =>
             //{
             //    c.SwaggerDoc(Configuration["Swagger:version"], new OpenApiInfo
@@ -133,10 +134,11 @@ namespace EmcureNPD.API
             }
             else
             {
+               
                 app.UseExceptionHandler("/Home/Error");
                 app.UseHsts();
             }
-
+            
             app.UseStaticFiles();
 
             var allowedOrigins = Configuration.GetSection("AllowedOrigins").Value.Split(",");
@@ -147,7 +149,8 @@ namespace EmcureNPD.API
                                     .AllowAnyHeader()
                                     .AllowCredentials()
             );
-
+            app.UseOutputCaching();
+            //app.UseMvcWithDefaultRoute();
             app.UseHttpsRedirection();
 
             app.UseRequestLocalization();

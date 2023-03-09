@@ -59,7 +59,7 @@
 		@Html.Partial("_Navigation")
 
 		<input type="hidden" id="hdnBaseURL" value="@Configuration.GetSection("Apiconfig")["baseurl"]" />
-
+		<input type="hidden" id="hdnWebBaseURL" value="@Configuration.GetSection("Apiconfig")["webbaseurl"]" />
 		<!-- Content Wrapper. Contains page content -->
 		@*@Html.Partial("_BreadCrumb")*@
 		<!-- Main content -->
@@ -131,7 +131,7 @@
 
 	<script>
 		const GetFilteredNotifications = "@EmcureNPD.Web.Helpers.APIURLHelper.GetFilteredNotifications";
-
+		const GetWebFilteredNotifications = "@EmcureNPD.Web.Helpers.APIURLHelper.GetWebFilteredNotifications";
 		var _RejectConfirm = "@SharedLocalizer["RejectConfirm"]"
 		var _RejectTitle = "@SharedLocalizer["Reject"]";
 		var _ApproveConfirm = "@SharedLocalizer["ApproveConfirm"]"

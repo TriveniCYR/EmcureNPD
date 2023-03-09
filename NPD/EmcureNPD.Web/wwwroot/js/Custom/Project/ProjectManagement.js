@@ -22,7 +22,7 @@ function GetTaskSubTaskListSuccess(data) {
             else
                 var updatedDate = "";
            
-            $('#Milestones tbody').append('<tr><td>' + object.taskName + '</td><td>' + object.taskOwnerName + '</td><td>' + object.statusName + '</td><td>' + object.priorityName + '</td><td>' + startDate + '</td><td>' + endDate + '</td><td>' + object.taskDuration + '</td><td>' + object.totalPercentage + '</td><td>' + updatedDate + '</td><td>  <a class="large-font" style="" href="" title="Edit" data-toggle="modal" data-target="' + (object.taskLevel == 1 ? "#AddTaskModel" : "#AddSubTaskModel") + '" data-backdrop="static" data-keyboard="false"  onclick="GetTaskSubTaskById(' + object.projectTaskId + '); return false;"><i class="fa fa-fw fa-edit mr-1"></i> ' + '</a><a class="large-font text-danger" style="" href="" title="Delete" data-toggle="modal" data-target="#DeleteModel" data-backdrop="static" data-keyboard="false" onclick="ConfirmationDeleteTaskSubTask(' + object.projectTaskId + '); return false;"><i class="fa fa-fw fa-trash mr-1"></i> ' + '</a>  </td></tr>');
+            $('#Milestones tbody').append('<tr><td>' + object.taskName + '</td><td>' + object.taskOwnerName + '</td><td>' + object.statusName + '</td><td>' + object.priorityName + '</td><td>' + startDate + '</td><td>' + endDate + '</td><td>' + object.taskDuration + '</td><td>' + object.totalPercentage + '</td><td>' + updatedDate + '</td><td>  <a class="large-font" style="" href="" title="Edit" data-toggle="modal" data-target="#UpdateModel" data-backdrop="static" data-keyboard="false"  onclick="GetTaskSubTaskById(' + object.projectTaskId + '); return false;"><i class="fa fa-fw fa-edit mr-1"></i> ' + '</a><a class="large-font text-danger" style="" href="" title="Delete" data-toggle="modal" data-target="#DeleteModel" data-backdrop="static" data-keyboard="false" onclick="ConfirmationDeleteTaskSubTask(' + object.projectTaskId + '); return false;"><i class="fa fa-fw fa-trash mr-1"></i> ' + '</a>  </td></tr>');
         });
         StaticDataTable("#Milestones");
     } catch (e) {
@@ -32,6 +32,75 @@ function GetTaskSubTaskListSuccess(data) {
 function GetTaskSubTaskListError(x, y, z) {
     toastr.error(ErrorMessage);
 }
+
+// getTaskSubTask by id
+function GetTaskSubTaskById(id) {
+    ajaxServiceMethod($('#hdnBaseURL').val() + GetTaskSubTaskByIds + "/" + id, 'GET', GetTaskSubTaskByIdSuccess, GetTaskSubTaskByIdError);
+}
+function GetTaskSubTaskByIdSuccess(data) {
+    try {
+        $('#loading').hide();
+        $("#TaskName").val(data._object.taskName);
+        $('#TaskOwner').empty().append(
+            "<option value=''>Please select option</option>"
+        );
+        $.each(data._object.taskOwner, function (i, List) {
+            $("#TaskOwner").append('<option value="' + List.userId + '">' +
+                List.fullName + '</option>');
+        });
+
+        $('#TaskOwner option[value="' + data._object.editTaskOwnerId + '"]').attr("selected", true);
+
+        $('#TaskPriority').empty().append(
+            "<option value=''>Please select option</option>"
+        );
+        $.each(data._object.priority, function (i, List) {
+            $("#TaskPriority").append('<option value="' + List.priorityId + '">' +
+                List.priorityName + '</option>');
+        });
+        $('#TaskPriority option[value="' + data._object.editTaskPriorityId + '"]').attr("selected", true);
+
+        $('#TaskStatus').empty().append(
+            "<option value=''>Please select option</option>"
+        );
+        $.each(data._object.status, function (i, List) {
+            $("#TaskStatus").append('<option value="' + List.statusId + '">' +
+                List.statusName + '</option>');
+        });
+        $('#TaskStatus option[value="' + data._object.editTaskStatusId + '"]').attr("selected", true);
+
+        $("#StartDate").val(data._object.startDate);
+        $("#EndDate").val(data._object.endDate);
+
+        $("#TaskDuration").val(data._object.taskDuration);
+        $("#projectTaskId").val(data._object.projectTaskId)
+        $("#pidfid").val(data._object.pidfid)
+        $("#tasklevel").val(data._object.taskLevel)
+
+
+        if (data._object.editTaskStatusId == 1) {
+            $(".disabledPercentage").prop("readOnly", true);
+            $("#TaskPercentage").val(data_object.totalPercentage);
+        } else if (data._object.editTaskStatusId == 2) {
+            $(".disabledPercentage").prop("readOnly", false);
+            $("#TaskPercentage").val(data._object.totalPercentage);
+        }
+        else if (data._object.editTaskStatusId == 3) {
+            $(".disabledPercentage").prop("readOnly", true);
+            $("#TaskPercentage").val(data._object.totalPercentage);
+        }
+    }
+    catch (e) {
+        toastr.error('Error:' + e.message);
+    }
+}
+function GetTaskSubTaskByIdError(x, y, z) {
+    toastr.error(ErrorMessage);
+}
+//end getTaskSubTask by id
+
+
+
 //delete tasksubtask by
 function ConfirmationDeleteTaskSubTask(id) {
     $('#DeleteModel #ProjectTaskId').val(id);
@@ -58,6 +127,7 @@ function DeleteTaskSubError(x, y, z) {
 }
 //end delete
 
+//add task
 function AddTaskSubTask() {
     $('#AddModel').modal('show');
 }
@@ -108,11 +178,13 @@ function GetDropdownsForAddTaskError(x, y, z) {
 function HideAddTaskModel() {
     $('#AddTaskModel').modal('hide');
 }
-
-// FOR SUB TASK
+//end add task
+function HideUpdateModel() {
+    $('#UpdateModel').modal('hide');
+}
+// add sub task
 function ShowAddSubTaskForm() {
     $('#AddSubTaskModel').modal('show');
-    //$('#DRFTaskAddModel_DRFAddTaskDRFID').val(PIDFInitializationID);
     $('#loading').show();
     ajaxServiceMethod($('#hdnBaseURL').val() + FillTaskDropdown, 'GET', GetDropdownsForAddSubTaskSuccess, GetDropdownsForAddSubTaskError);
 }
@@ -156,6 +228,8 @@ function GetDropdownsForAddSubTaskError(x, y, z) {
 function HideAddSubTaskModel() {
     $('#AddSubTaskModel').modal('hide');
 }
+//end add sub task
+
 $('#AddSubTaskDuration').on('keypress', function () {
     var charCode = window.event.keyCode;
     if (charCode > 31 && (charCode < 48 || charCode > 57)) {
@@ -221,7 +295,82 @@ function setPercentage(statusID, idx) {
 }
 
 $(function () {
-    $('#datetimepicker').datetimepicker({
-        format: 'YYYY-MM-DD HH:mm:ss'
+    $('.datetimepicker').datetimepicker({
+        format: 'YYYY-MM-DD'
     });
 });
+
+$(function () {
+    $('.datetimepicker').datetimepicker({
+        format: 'YYYY-MM-DD'
+    });
+});
+
+//Not Wokring 
+$(function () {
+    // attach change event to start date field
+    $("#AddTaskStartDate").change(function (e) {
+        console.log("Change called");
+        var tempMinDate = new Date(e.date);
+        var setminDate = new Date(tempMinDate);
+        setminDate.setDate(tempMinDate.getDate() + 1);
+        $('#AddTaskStartDate').data("DateTimePicker").minDate(setminDate);
+        updateDurationField();
+    });
+
+    // attach change event to end date field
+    $("#AddTaskEndDate").change(function (e) {
+        updateDurationField();
+    });
+
+    // calculate and update duration field value
+    function updateDurationField() {
+        var startDate = $("#AddTaskStartDate").val();
+        var endDate = $("#AddTaskEndDate").val();
+        var duration = calculateDaysDifference(startDate, endDate);
+        
+        $('#AddTaskDuration').val(duration);
+    }
+
+    $("#AddSubTaskStartDate").change(function (e) {
+        console.log("Change called");
+        var tempMinDate = new Date(e.date);
+        var setminDate = new Date(tempMinDate);
+        setminDate.setDate(tempMinDate.getDate() + 1);
+        $('#AddSubTaskStartDate').data("DateTimePicker").minDate(setminDate);
+        updateDurationField();
+    });
+
+    // attach change event to end date field
+    $("#AddSubTaskEndDate").change(function (e) {
+        updateSubDurationField();
+    });
+
+    // calculate and update duration field value
+    function updateSubDurationField() {
+        var startDate = $("#AddSubTaskStartDate").val();
+        var endDate = $("#AddSubTaskEndDate").val();
+        var duration = calculateDaysDifference(startDate, endDate);
+        $('#AddSubTaskDuration').val(duration);
+    }
+
+
+
+});
+
+//calculate days diff
+function calculateDaysDifference(start, end) {
+    var d1 = start;
+    var d2 = end;
+    var oneDay = 24 * 60 * 60 * 1000;
+    var diff = 0;
+    if (d1 && d2) {
+
+        var startDate = new Date(d1.split('-')[2] + '-' + d1.split('-')[1] + '-' + d1.split('-')[0]);
+        var endDate = new Date(d2.split('-')[2] + '-' + d2.split('-')[1] + '-' + d2.split('-')[0]);
+        diff = Math.round(Math.abs((endDate.getTime() - startDate.getTime()) / (oneDay)));
+        console.log(diff);
+    }
+    return diff;
+
+}

@@ -15,7 +15,7 @@ namespace EmcureNPD.Business.Core.Interface {
 
         Task<DBOperation> CreateNotification(long pidfId, int statusid, string notificatioTitle, string notificationDescription, int loggedinUserId);
         Task<DBOperation> UpdateNotification(long notificationId,string notificationTitle, string notificationDescription, int loggedinUserId);
-        Task<DataTableResponseModel> GetFilteredNotifications(string ColumnName, string SortDir, int start, int length);
+        Task<DataTableResponseModel> GetFilteredNotifications(string ColumnName, string SortDir, int start, int length, int RoleId);
 
     }
 }

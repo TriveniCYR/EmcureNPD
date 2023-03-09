@@ -31,7 +31,7 @@ namespace EmcureNPD.Web
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-
+            services.AddOutputCaching();
             services.AddMvc(config =>
             {
                 config.Filters.Add(typeof(ExceptionsFilter));
@@ -138,6 +138,7 @@ namespace EmcureNPD.Web
             }
 
             app.UseSession();
+            app.UseOutputCaching();
             app.UseHttpsRedirection();
             app.UseStaticFiles();
             app.UseRouting();

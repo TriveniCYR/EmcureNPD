@@ -14,5 +14,6 @@ namespace EmcureNPD.Business.Core.Interface
         Task<DBOperation> AddUpdateTaskDetail(ProjectTaskEntity addTaskModel);
         public List<ProjectTaskEntity> GetTaskSubTaskList(long pidfId);
         Task<DBOperation> DeleteTaskSubTask(int id);
+        Task<ProjectTaskEntity> GetById(long id);
     }
 }

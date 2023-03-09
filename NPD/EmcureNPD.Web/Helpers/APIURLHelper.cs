@@ -320,10 +320,11 @@ namespace EmcureNPD.Web.Helpers
         #region Notification
         public static string GetAllNotification = "api/Notification/GetAllNotification";
 		public static string GetFilteredNotifications = "api/Notification/GetFilteredNotifications";
-		#endregion
+        public static string GetWebFilteredNotifications = "Notifications/GetFilteredNotifications";
+        #endregion
 
-		#region PIDFFinance
-		public static string AddUpdatePidfFinance = "api/PidfFinance/AddUpdatePidfFinance";
+        #region PIDFFinance
+        public static string AddUpdatePidfFinance = "api/PidfFinance/AddUpdatePidfFinance";
         public static string AddUpdatePidfFinanceBatchSizeCoating = "api/PidfFinance/AddUpdatePidfFinanceBatchSizeCoating";
         public static string GetPidfFinance = "api/PidfFinance/GetPidfFinance";
         public static string GetFinanceBatchSizeCoating = "api/PidfFinance/GetFinanceBatchSizeCoating";
@@ -335,6 +336,7 @@ namespace EmcureNPD.Web.Helpers
         public static string AddUpdateTask = "api/Project/AddUpdateTaskDetails";
         public static string GetAllTaskSubTaskList = "api/Project/GetTaskSubTask";
         public static string DeleteTaskSubTAsk = "api/Project/DeleteTaskSubTask";
+        public static string GetTaskSubTaskById = "api/Project/GetTaskSubTaskById";
         #endregion
 
     }

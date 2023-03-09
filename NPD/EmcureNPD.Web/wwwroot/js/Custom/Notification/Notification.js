@@ -1,19 +1,21 @@
 ﻿$(document).ready(function () { GetAllNotifications(); });
 function GetAllNotifications() {
-    ajaxServiceMethod($('#hdnBaseURL').val() + GetFilteredNotifications + '/CreatedDate/DESC/0/4', 'GET', GetAllNotificationListSuccess, GetAllNotificationListError);
+    let ColumnName = "CreatedDate", SortDir = "DESC", start = 0, length = 4;
+    ajaxServiceMethod($('#hdnWebBaseURL').val() + GetWebFilteredNotifications + `?ColumnName=${ColumnName}&SortDir=${SortDir}&=start=${start}&length=${length}`, 'GET', GetAllNotificationListSuccess, GetAllNotificationListError);
 }
 function GetAllNotificationListSuccess(data) {
     try {
         let elehtml = '';
         let rowcount = 1;
-        if (data != null) {
-            $('#NotificationNo').html(data.recordsTotal);
-            $('#NotificationCount').html(data.recordsTotal + " Notifications");
-            for (var i = 0; i < data.recordsFiltered; i++) {
+        let result = JSON.parse(data)
+        if (result != null) {
+            $('#NotificationNo').html(result.recordsTotal);
+            $('#NotificationCount').html(result.recordsTotal + " Notifications");
+            for (var i = 0; i < result.recordsFiltered; i++) {
                 /*<span class="badge badge-secondary"><i class="fas fa-envelope mr-1"></i>${rowcount} <b>${data.data[i].notificationTitle}</b></span>*/
                 elehtml += `<a href="#" class="dropdown-item">
-                    <span class="badge badge-secondary">${rowcount}:<i class="fas fa-envelope mr-1"></i>${data.data[i].notificationTitleView}</span>
-                    <span class="float-right text-muted text-sm">${timeDiffrance(data.data[i].createdDate)}</span>
+                    <span class="badge badge-secondary">${rowcount}:<i class="fas fa-envelope mr-1"></i>${result.data[i].notificationTitleView}</span>
+                    <span class="float-right text-muted text-sm">${timeDiffrance(result.data[i].createdDate)}</span>
                 </a>`
                 rowcount++;
             }

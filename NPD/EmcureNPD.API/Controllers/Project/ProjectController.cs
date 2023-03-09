@@ -81,5 +81,22 @@ namespace EmcureNPD.API.Controllers.Project
                 return _ObjectResponse.Create(false, (Int32)HttpStatusCode.InternalServerError, Convert.ToString(ex.StackTrace));
             }
         }
+
+        [HttpGet, Route("GetTaskSubTaskById/{id}")]
+        public async Task<IActionResult> GetTaskSubTaskById([FromRoute] long id)
+        {
+            try
+            {
+                var oBusinessUnitEntity = await _projectService.GetById(id);
+                if (oBusinessUnitEntity != null)
+                    return _ObjectResponse.Create(oBusinessUnitEntity, (Int32)HttpStatusCode.OK);
+                else
+                    return _ObjectResponse.Create(null, (Int32)HttpStatusCode.BadRequest, "Record not found");
+            }
+            catch (Exception ex)
+            {
+                return _ObjectResponse.Create(false, (Int32)HttpStatusCode.InternalServerError, Convert.ToString(ex.StackTrace));
+            }
+        }
     }
 }
