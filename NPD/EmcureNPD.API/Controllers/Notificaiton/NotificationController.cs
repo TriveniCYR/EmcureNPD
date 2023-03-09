@@ -11,6 +11,7 @@ using System.Net;
 using System.Threading.Tasks;
 using System;
 using Microsoft.AspNetCore.SignalR;
+using EmcureNPD.Business.Core;
 
 namespace EmcureNPD.API.Controllers.Notificaiton {
     [Route("api/[controller]")]
@@ -21,14 +22,17 @@ namespace EmcureNPD.API.Controllers.Notificaiton {
         private readonly IConfiguration _configuration;
         private readonly IResponseHandler<dynamic> _ObjectResponse;
         private readonly INotificationService _NotificationService;
+        private readonly IHelper _helper;
+
         #endregion Properties
 
         #region Constructor
 
-        public NotificationController(IConfiguration configuration, IResponseHandler<dynamic> ObjectResponse, INotificationService NotificationService) {
+        public NotificationController(IConfiguration configuration, IResponseHandler<dynamic> ObjectResponse, INotificationService NotificationService, IHelper helper) {
             _configuration = configuration;
             _ObjectResponse = ObjectResponse;
             _NotificationService = NotificationService;
+            _helper = helper;
         }
 
         #endregion Constructor
@@ -54,11 +58,13 @@ namespace EmcureNPD.API.Controllers.Notificaiton {
             }
         }
         [HttpGet, Route("GetFilteredNotifications/{ColumnName}/{SortDir}/{start}/{length}")]
-        public async Task<IActionResult> GetFilteredNotifications(string ColumnName, string SortDir, int start, int length)
+        [OutputCache(Duration = 120, VaryByParam = "RoleId")]
+        public async Task<IActionResult> GetFilteredNotifications(string ColumnName, string SortDir, int start, int length,int RoleId)
 		{
 			try
 			{
-				return _ObjectResponse.CreateData(await _NotificationService.GetFilteredNotifications(ColumnName, SortDir, start, length), (Int32)HttpStatusCode.OK);
+                RoleId = _helper.GetLoggedInUser().RoleId;
+                return _ObjectResponse.CreateData(await _NotificationService.GetFilteredNotifications(ColumnName, SortDir, start, length,RoleId), (Int32)HttpStatusCode.OK);
 			}
 			catch (Exception ex)
 			{

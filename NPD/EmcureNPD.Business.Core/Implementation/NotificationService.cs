@@ -66,7 +66,7 @@ namespace EmcureNPD.Business.Core.Implementation {
             sqlDependency.OnChange += new OnChangeEventHandler(dbChangeNotification);
             return oDataTableResponseModel;
         }
-		public async Task<DataTableResponseModel> GetFilteredNotifications(string ColumnName, string SortDir, int start,int length)
+		public async Task<DataTableResponseModel> GetFilteredNotifications(string ColumnName, string SortDir, int start,int length,int RoleId)
 		{
 			
 			var model = new DataTableAjaxPostModel();
