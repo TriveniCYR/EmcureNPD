@@ -10,7 +10,13 @@ $(document).ready(function () {
         else
             toastr.error(SaveStatus);
     }
-    InitializeProductTypeDropdown();      
+    InitializeProductTypeDropdown(); 
+
+    var IsImageAvailable = $("#imgPreviewMarketdetails").attr("src");
+    if (IsImageAvailable == undefined || IsImageAvailable == '') {
+        $("#imgPreviewMarketdetails").hide();
+    }
+
 });
 
 function InitializeProductTypeDropdown() {
@@ -37,12 +43,19 @@ function GetProductTypeListError(x, y, z) {
 
 $('#MarketDetailsNewPortCGIDetails').change(function () {
     debugger;
-    var $input = $("#MarketDetailsNewPortCGIDetails");
-    var reader = new FileReader();
-    reader.onload = function () {
-        $("#imgPreviewMarketdetails").attr("src", reader.result);        
+    if ($("#MarketDetailsNewPortCGIDetails")[0].files[0] != null) {
+        $("#imgPreviewMarketdetails").show();
+        var $input = $("#MarketDetailsNewPortCGIDetails");
+        var reader = new FileReader();
+        reader.onload = function () {
+            $("#imgPreviewMarketdetails").attr("src", reader.result);
+        }
+        reader.readAsDataURL($input[0].files[0]);
+    } else {
+        $("#imgPreviewMarketdetails").hide();
+        $("#imgPreviewMarketdetails").attr("src", "");
     }
-    reader.readAsDataURL($input[0].files[0]);    
+       
     $("#MarketDetailsFileName").val('');
 });
 $('#imgPreviewMarketdetails').click(function () {

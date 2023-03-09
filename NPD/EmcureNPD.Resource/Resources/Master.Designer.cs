@@ -1087,6 +1087,15 @@ namespace EmcureNPD.Resource.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Patent Details.
+        /// </summary>
+        public static string PatentDetails {
+            get {
+                return ResourceManager.GetString("PatentDetails", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Patent Number.
         /// </summary>
         public static string PatentNumber {

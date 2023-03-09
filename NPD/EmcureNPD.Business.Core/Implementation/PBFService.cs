@@ -311,15 +311,15 @@ namespace EmcureNPD.Business.Core.Implementation
                 //_oApiIpdData.Total = _oAPIIPD.Total;
                 //_oApiIpdData.Exhibit = _oAPIIPD.Exhibit;
                 //_oApiIpdData.ScaleUp = _oAPIIPD.ScaleUp;
-                string baseURL = _configuration.GetSection("Apiconfig").GetSection("EmcureNPDAPIUrl").Value; //https://localhost:44362/
+                string baseURL = _configuration.GetSection("Apiconfig").GetSection("EmcureNPDAPIUrl").Value;
                 var path = Path.Combine(baseURL, "Uploads/PIDF/APIIPD");
                 var fullPath = path + "/" + _oAPIIPD.MarketDetailsFileName;
-
+                
                 _oApiIpdData.DrugsCategory = _oAPIIPD.DrugsCategory;
                 _oApiIpdData.ProductTypeId = (int)_oAPIIPD.ProductTypeId;
                 _oApiIpdData.APIIPDDetailsFormID = _oAPIIPD.PidfApiIpdId;
                 _oApiIpdData.ProductStrength = _oAPIIPD.ProductStrength;
-                _oApiIpdData.MarketDetailsFileName = fullPath;
+                _oApiIpdData.MarketDetailsFileName = (Convert.ToString(_oAPIIPD.MarketDetailsFileName)=="")? "": fullPath;
                 _oApiIpdData.Pidfid = _oAPIIPD.Pidfid.ToString();
             }
             return _oApiIpdData;
@@ -523,7 +523,7 @@ namespace EmcureNPD.Business.Core.Implementation
                 _oApiRnDData.DrugsCategory = _oAPIIpd.DrugsCategory;
                 _oApiRnDData.ProductTypeId = (int)_oAPIIpd.ProductTypeId;
                 _oApiRnDData.ProductStrength = _oAPIIpd.ProductStrength;
-                _oApiRnDData.MarketDetailsFileName = fullPath;
+                _oApiRnDData.MarketDetailsFileName = (Convert.ToString(_oAPIIpd.MarketDetailsFileName) == "") ? "" : fullPath;
                 var _objProductType = await _masterProductTypeService.GetById((int)_oAPIIpd.ProductTypeId);
                 if (_objProductType != null)
                     _oApiRnDData.ProductType = _objProductType.ProductTypeName;
