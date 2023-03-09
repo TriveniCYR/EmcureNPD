@@ -68,6 +68,8 @@ namespace EmcureNPD.Business.Core.Resolver
             services.AddTransient<IPidfFinanceService, PidfFinanceService>();
             services.AddTransient<IManagementApproval, ManagementApproval>();
 
+            services.AddTransient<IProjectService, ProjectService>();
+
             return services;
         }
     }

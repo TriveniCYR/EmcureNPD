@@ -7,7 +7,7 @@ namespace EmcureNPD.Business.Models
 {
     public partial class PidfPbfAnalyticalScaleUpEntity
     {
-        public long PrototypeId { get; set; }
+        public long ScaleUpId { get; set; }
         public long PBFAnalyticalId { get; set; }
         public long StrengthId { get; set; }
         public long TestTypeId { get; set; }

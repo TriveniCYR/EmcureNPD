@@ -330,5 +330,14 @@ namespace EmcureNPD.Web.Helpers
         public static string GetFinanceBatchSizeCoating = "api/PidfFinance/GetFinanceBatchSizeCoating";
         public static string GetProjectNameAndStrength = "api/ManagementApproval/GetProjectNameAndStrength";
         #endregion
+
+        #region Project
+        public static string FillTaskDropdown = "api/Project/GetDropdownsForAddTask";
+        public static string AddUpdateTask = "api/Project/AddUpdateTaskDetails";
+        public static string GetAllTaskSubTaskList = "api/Project/GetTaskSubTask";
+        public static string DeleteTaskSubTAsk = "api/Project/DeleteTaskSubTask";
+        public static string GetTaskSubTaskById = "api/Project/GetTaskSubTaskById";
+        #endregion
+
     }
 }

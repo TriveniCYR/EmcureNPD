@@ -9,7 +9,7 @@ namespace EmcureNPD.Business.Models
     public class PidfPbfClinicalCostEntity
     {
         public int PBFClinicalCostId { get; set; }
-        public int PBFClinicalId { get; set; }
+        public long PBFClinicalId { get; set; }
         public int StrengthId { get; set; }      
         public double? TotalPilotFastingCost { get; set; }
         public double? TotalPilotFEDCost { get; set; }

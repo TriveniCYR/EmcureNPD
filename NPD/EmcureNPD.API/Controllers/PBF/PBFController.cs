@@ -163,12 +163,12 @@ namespace EmcureNPD.API.Controllers.PBF
                 return _ObjectResponse.Create(false, (Int32)HttpStatusCode.InternalServerError, Convert.ToString(ex.StackTrace));
             }
         }
-        [HttpGet, Route("GetAPICharterFormData/{pidfId}")]
-        public async Task<IActionResult> GetAPICharterFormData([FromRoute] long pidfId)
+        [HttpGet, Route("GetAPICharterFormData/{pidfId}/{IsCharter}")]
+        public async Task<IActionResult> GetAPICharterFormData([FromRoute] long pidfId, [FromRoute] short IsCharter)
         {
             try
             {
-                var oPIDFEntity = await _PBFService.GetAPICharterFormData(pidfId);
+                var oPIDFEntity = await _PBFService.GetAPICharterFormData(pidfId, IsCharter);
                 if (oPIDFEntity != null)
                     return _ObjectResponse.Create(oPIDFEntity, (Int32)HttpStatusCode.OK);
                 else

@@ -1,7 +1,15 @@
-﻿@inject Microsoft.Extensions.Localization.IStringLocalizer<EmcureNPD.Resource.Shared> SharedLocalizer
+﻿@using EmcureNPD.Utility.Models;
+@inject Microsoft.Extensions.Localization.IStringLocalizer<EmcureNPD.Resource.Shared> SharedLocalizer
 @{
-    ViewData["Title"] = "PIDF Show Details";
+    ViewData["Title"] = "Project Show Details";
+    //RolePermissionModel objPermssion = (RolePermissionModel)ViewBag.Access;
+    //string IsAddAllow = (objPermssion.Add) ? "" : "display: none";
+    //string IsEditAllow = (objPermssion.Edit) ? "" : "display: none";
+    //string IsDeleteAllow = (objPermssion.Delete) ? "" : "display: none";
 }
+@model EmcureNPD.Business.Models.ProjectTaskEntity
+@inject Microsoft.Extensions.Localization.IStringLocalizer<EmcureNPD.Resource.Shared> SharedLocalizer
+
 
 <div class="content-wrapper pt-3">
     <!-- Main content -->
@@ -19,16 +27,16 @@
                             </h3>
                             <div class="card-tools md-left">
                                 <div class="mybtn-group">
-                                        <a class="btn btn-primary" href="@Url.Action("PIDFList","PIDF")"><i class="fas fa-list mr-1"></i>Project List</a>
-                                 
-                                        <a class="btn btn-primary" href="@Url.Action("PIDFStrengthList","PIDF")"><i class="far fa-list-alt mr-1"></i>PIDF List</a>
-                                   
-                                        <a class="btn btn-primary" href="@Url.Action("Index","GanttNew")"><i class="fas fa-project-diagram mr-2"></i>Gantt Chart</a>
-                                   
-                                        <a class="btn btn-primary" href="@Url.Action("PIDFNew","PIDF")"><i class="far fa-plus-square mr-1"></i> Create New PIDF</a>
-                                   
-                                        <button class="btn btn-primary" onclick="javascript:window.history.back();"><i class="fas fa-undo mr-1"></i> Back</button>
-                                   
+                                    <a class="btn btn-primary" href="@Url.Action("PIDFList","PIDF")"><i class="fas fa-list mr-1"></i>Project List</a>
+
+                                    <a class="btn btn-primary" href="@Url.Action("PIDFStrengthList","PIDF")"><i class="far fa-list-alt mr-1"></i>PIDF List</a>
+
+                                    <a class="btn btn-primary" href="@Url.Action("Index","GanttNew")"><i class="fas fa-project-diagram mr-2"></i>Gantt Chart</a>
+
+                                    <a class="btn btn-primary" href="@Url.Action("PIDFNew","PIDF")"><i class="far fa-plus-square mr-1"></i> Create New PIDF</a>
+
+                                    <button class="btn btn-primary" onclick="javascript:window.history.back();"><i class="fas fa-undo mr-1"></i> Back</button>
+
                                 </div>
                             </div>
                         </div>
@@ -456,10 +464,10 @@
                                             <div class="card-tools md-left">
                                                 <div class="mybtn-group">
                                                     <input type="hidden" name="CurrentUserRole" id="CurrentUserRole" value="@ViewBag.CurrentUserRolePIDF" />
-                                                  @*  @if (User.IsInRole("Prescriber") || User.IsInRole("Regulatory Manager") || User.IsInRole("Senior Project Manager"))
+                                                    @*  @if (User.IsInRole("Prescriber") || User.IsInRole("Regulatory Manager") || User.IsInRole("Senior Project Manager"))
                                                     {*@
-                                                        <button type="button" onclick=AddTaskSubTask() class="btn btn-primary">@SharedLocalizer["Add Milestones"].Value</button>
-                                                   @* }*@
+                                                    <button type="button" onclick=AddTaskSubTask() class="btn btn-primary">@SharedLocalizer["Add Milestones"].Value</button>
+                                                    @* }*@
                                                     <button type="button" class="btn btn-tool p-0 mr-3 ml-3" data-card-widget="maximize">
                                                         <i class="fas fa-expand"></i>
                                                     </button>
@@ -474,7 +482,24 @@
 
                                         <div class="card-body">
                                             <div class="table-responsive">
-                                                <table id="Milestones" class="table" style="width:100%;"></table>
+                                                <table id="Milestones" class="table" style="width:100%;">
+                                                    <thead>
+                                                        <tr>
+                                                            <th>@SharedLocalizer["Task"]</th>
+                                                            <th>@SharedLocalizer["Task Owner"]</th>
+                                                            <th>@SharedLocalizer["Status"]</th>
+                                                            <th>@SharedLocalizer["Priority"]</th>
+                                                            <th>@SharedLocalizer["Start Date"]</th>
+                                                            <th>@SharedLocalizer["End date"]</th>
+                                                            <th>@SharedLocalizer["Duration"]</th>
+                                                            <th>@SharedLocalizer["Completed %"]</th>
+                                                            <th>@SharedLocalizer["Updated Date"]</th>
+                                                            <th class="text-center">@SharedLocalizer["Action"]</th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                    </tbody>
+                                                </table>
                                             </div>
 
                                             <!-- /.card-body -->
@@ -496,41 +521,128 @@
         </div>
 
         @*UpdateModel*@
-       
+        <div id="UpdateModel" class="modal themeModal " role="dialog">
+            <form method="POST" asp-controller=Project asp-action=AddUpdateTask>
+                @*<div class="card-body">*@
+                <div class="modal-dialog modal-lg">
+                    <!-- Modal content-->
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h4 class="modal-title">@SharedLocalizer["Update Task"].Value</h4>
+                            <button type="button" class="close" data-dismiss="modal">&times;</button>
+                        </div>
+                        <div class="modal-body">
+                            <div class="row">
+                                <div class="col-sm-6">
+                                    <div class="form-group required">
+                                        @Html.LabelFor(o => o.TaskName, new { @class = "control-label" })
+                                        @Html.EditorFor(o => o.TaskName, new { htmlAttributes = new { @autocomplete = "off", @class = "form-control" } })
+                                        @Html.ValidationMessageFor(o => o.TaskName, "", new { @class = "text-danger" })
+                                    </div>
+                                    <div class="form-group required">
+                                        @Html.LabelFor(o => o.StartDate, new { @class = "control-label" })
+                                        <div class="input-group date" id="startDate" data-target-input="nearest">
+
+                                            @Html.TextBoxFor(o => o.StartDate, new { @class = "form-control datetimepicker-input", autocomplete = "off", @readonly = "readonly" })
+                                            <div class="input-group-append" data-target="#DRFEditStartDate" data-toggle="datetimepicker">
+                                                <div class="input-group-text"><i class="fa fa-calendar"></i></div>
+                                            </div><br>
+
+                                        </div>
+                                        @Html.ValidationMessageFor(o => o.StartDate, "", new { @class = "text-danger" })
+                                    </div>
+                                    <div class="form-group required">
+                                        @Html.LabelFor(o => o.PriorityId, new { @class = "control-label" })
+                                        @Html.DropDownListFor(o => o.PriorityId, new SelectList(string.Empty, "Value", "Text"), "Please select option", htmlAttributes: new { @class = "form-control input-sm f-s-15 bg-eff4f55c w100per", id = "TaskPriority" })
+                                        @Html.ValidationMessageFor(o => o.PriorityId, "", new { @class = "text-danger" })
+                                    </div>
+                                    <div class="form-group required">
+                                        @Html.LabelFor(o => o.TaskDuration, new { @class = "control-label" })
+                                        @Html.EditorFor(o => o.TaskDuration, new { htmlAttributes = new { @autocomplete = "off", @class = "form-control", @readonly = "readonly" } })@*disabled = "disabled"*@
+                                        @Html.ValidationMessageFor(o => o.TaskDuration, "", new { @class = "text-danger" })
+                                    </div>
+
+                                </div>
+                                <div class="col-sm-6">
+                                    <div class="form-group required">
+                                        @Html.LabelFor(o => o.TaskOwnerId, new { @class = "control-label" })
+                                        @Html.DropDownListFor(o => o.TaskOwnerId, new SelectList(string.Empty, "Value", "Text"), "Please select option", htmlAttributes: new { @class = "form-control input-sm f-s-15 bg-eff4f55c w100per", id = "TaskOwner" })
+                                        @Html.ValidationMessageFor(o => o.TaskOwnerId, "", new { @class = "text-danger" })
+                                    </div>
+                                    <div class="form-group required">
+                                        @Html.LabelFor(o => o.EndDate, new { @class = "control-label" })
+                                        <div class="input-group date" id="endDate" data-target-input="nearest">
+
+                                            @Html.TextBoxFor(o => o.EndDate, new { @class = "form-control datetimepicker-input", autocomplete = "off", @readonly = "readonly" })
+                                            <div class="input-group-append" data-target="#DRFEditEndDate" data-toggle="datetimepicker">
+                                                <div class="input-group-text"><i class="fa fa-calendar"></i></div>
+                                            </div><br>
+
+                                        </div>
+                                        @Html.ValidationMessageFor(o => o.EndDate, "", new { @class = "text-danger" })
+                                    </div>
+                                    <div class="form-group required">
+                                        @Html.LabelFor(o => o.StatusId, new { @class = "control-label" })
+                                        @Html.DropDownListFor(o => o.StatusId, new SelectList(string.Empty, "Value", "Text"), "Please select option", htmlAttributes: new { @class = "form-control input-sm f-s-15 bg-eff4f55c w100per", id = "TaskStatus", onchange = "setPercentage(this.value,0)" })
+                                        @Html.ValidationMessageFor(o => o.StatusId, "", new { @class = "text-danger" })
+                                    </div>
+                                    <div class="form-group required">
+                                        @Html.LabelFor(o => o.TotalPercentage, new { @class = "control-label" })
+                                        @Html.EditorFor(o => o.TotalPercentage, new { htmlAttributes = new { @autocomplete = "off", @class = "form-control disabledPercentage", id = "TaskPercentage", @min = 0, @max = 100 } })
+                                        @Html.ValidationMessageFor(o => o.TotalPercentage, "", new { @class = "text-danger" })
+                                    </div>
+
+                                </div>
+                            </div>
+                             @Html.HiddenFor(o => o.Pidfid, new{id="pidfid"})
+                            @Html.HiddenFor(o => o.ProjectTaskId, new{id="projectTaskId"})
+                            @Html.HiddenFor(o => o.TaskLevel, new{id="tasklevel"})
+                        </div>
+                        <div class="modal-footer">
+                            <button type="submit" class="btn btn-primary">@SharedLocalizer["Save"].Value</button>
+                            <a class="btn btn-danger" onclick="HideUpdateModel()">@SharedLocalizer["Cancel"].Value</a>
+                        </div>
+
+                    </div>
+                </div>
+
+
+                @*</div>*@
+
+
+                @*<div class="card-footer text-center">
+                <button type="submit" class="btn btn-primary mr-2 attachedDisabled">@SharedLocalizer["Save"].Value</button>
+                <a class="btn btn-primary" asp-area="" asp-controller="DRF" asp-action="DRFShowDetails">@SharedLocalizer["Cancel"].Value</a>
+                </div>*@
+            </form>
+        </div>
+
 
         @*DeleteModel*@
         <div id="DeleteModel" class="modal themeModal " role="dialog">
-            @*<form asp-route-returnUrl="@ViewData["ReturnUrl"]" method="POST" onsubmit="return SubmitForm(this)">*@
             <div class="modal-dialog">
                 <!-- Modal content-->
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h4 class="modal-title">@SharedLocalizer["Delete"].Value</h4>
+                        <h4 class="modal-title">@SharedLocalizer["Delete"]</h4>
                         <button type="button" class="close" data-dismiss="modal">&times;</button>
                     </div>
                     <div class="modal-body">
                         <div class="row">
                             <div class="col-md-12">
                                 <div class="form-group">
-                                    @Html.Label("Are you shure you want to delete this step ?")
+                                    @Html.Label(@SharedLocalizer["DeleteConfirm"])
                                 </div>
                             </div>
                         </div>
-                        @Html.Hidden("StepIDForDelete")
-                        @Html.Hidden("DeleteRedirectTo", Url.Action("DRFList", "DRF"))
-
-
-
+                        @Html.Hidden("ProjectTaskId")
+                        <div class="card-footer text-center">
+                            <button type="button" onclick="DeleteTaskSubTask()" data-dismiss="modal" class="btn btn-primary mr-2">@SharedLocalizer["Yes"]</button>
+                            <a class="btn btn-danger" data-dismiss="modal">@SharedLocalizer["No"]</a>
+                        </div>
                     </div>
-                    <div class="modal-footer">
-                        <button type="button" onclick="DeleteTaskSubTask()" class="btn btn-primary">@SharedLocalizer["Yes"].Value</button>
-                        <a class="btn btn-danger" onclick="HideDeleteModel()">@SharedLocalizer["No"].Value</a>
-                    </div>
-
                 </div>
             </div>
-
-            @*</form>*@
         </div>
 
         @*AddModel*@
@@ -563,14 +675,187 @@
         </div>
 
         @*AddTaskModel*@
+        <div id="AddTaskModel" class="modal themeModal " role="dialog">
+            <form method="POST" asp-controller=Project asp-action=AddUpdateTask asp-route-id="@ViewBag.id" asp-route-act="Task" method="post">
 
+                <div class="modal-dialog modal-lg">
+                    <!-- Modal content-->
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h4 class="modal-title">@SharedLocalizer["Add Task"].Value</h4>
+                            <button type="button" class="close" data-dismiss="modal">&times;</button>
+                        </div>
+                        <div class="modal-body p-4">
+                            <div class="row">
+                                <div class="col-sm-6">
+                                    <div class="form-group required">
+                                        @Html.LabelFor(t => t.TaskName, new { @class = "control-label" })
+                                        @Html.EditorFor(t => t.TaskName, new { htmlAttributes = new { @autocomplete = "off", @class = "form-control" } })
+                                        @Html.ValidationMessageFor(t => t.TaskName, "", new { @class = "text-danger" })
+                                    </div>
+                                    <div class="form-group required">
+                                        @Html.LabelFor(t => t.StartDate, new { @class = "control-label" })
+                                        <div class="input-group date" id="addTaskStartDate" data-target-input="nearest">
+
+                                            @Html.TextBoxFor(t => t.StartDate, new { @class = "form-control datetimepicker",type = "date", autocomplete = "off", @id = "AddTaskStartDate" })
+                                            <div class="input-group-append" data-toggle="datetimepicker">
+                                            </div><br>
+
+                                        </div>
+                                        @Html.ValidationMessageFor(t => t.StartDate, "", new { @class = "text-danger" })
+                                    </div>
+                                    <div class="form-group required">
+                                        @Html.LabelFor(t => t.PriorityId, new { @class = "control-label" })
+                                        @Html.DropDownListFor(t => t.PriorityId, new SelectList(string.Empty, "Value", "Text"), "Please select option", htmlAttributes: new { @class = "form-control input-sm f-s-15 bg-eff4f55c w100per", id = "AddTaskPriority" })
+                                        @Html.ValidationMessageFor(t => t.PriorityId, "", new { @class = "text-danger" })
+                                    </div>
+                                    <div class="form-group required">
+                                        @Html.LabelFor(t => t.TaskDuration, new { @class = "control-label" })
+                                        @Html.EditorFor(t => t.TaskDuration, new { htmlAttributes = new { @autocomplete = "off", @class = "form-control", id = "AddTaskDuration" } })@*disabled = "disabled"*@
+                                        @Html.ValidationMessageFor(t => t.TaskDuration, "", new { @class = "text-danger" })
+                                    </div>
+
+                                </div>
+                                <div class="col-sm-6">
+                                    <div class="form-group required">
+                                        @Html.LabelFor(t => t.TaskOwnerId, new { @class = "control-label" })
+                                        @Html.DropDownListFor(t => t.TaskOwnerId, new SelectList(string.Empty, "Value", "Text"), "Please select option", htmlAttributes: new { @class = "form-control input-sm f-s-15 bg-eff4f55c w100per", id = "AddTaskOwner" })
+                                        @Html.ValidationMessageFor(t => t.TaskOwnerId, "", new { @class = "text-danger" })
+                                    </div>
+                                    <div class="form-group required">
+                                        @Html.LabelFor(t => t.EndDate, new { @class = "control-label" })
+                                        <div class="input-group date" id="addTaskEndDate" data-target-input="nearest">
+
+                                            @Html.TextBoxFor(t => t.EndDate, new { @class = "form-control datetimepicker", type = "date", autocomplete = "off", @id = "AddTaskEndDate" })
+                                            <div class="input-group-append" data-toggle="datetimepicker">
+                                            </div><br>
+
+                                        </div>
+                                        @Html.ValidationMessageFor(t => t.EndDate, "", new { @class = "text-danger" })
+                                    </div>
+                                    <div class="form-group required">
+                                        @Html.LabelFor(t => t.StatusId, new { @class = "control-label" })
+                                        @Html.DropDownListFor(t => t.StatusId, new SelectList(string.Empty, "Value", "Text"), "Please select option", htmlAttributes: new { @class = "form-control input-sm f-s-15 bg-eff4f55c w100per", id = "AddTaskStatus", onchange = "setPercentage(this.value,1)" })
+                                        @Html.ValidationMessageFor(t => t.StatusId, "", new { @class = "text-danger" })
+                                    </div>
+                                    <div class="form-group required">
+                                        @Html.LabelFor(t => t.TotalPercentage, new { @class = "control-label" })
+                                        @Html.EditorFor(t => t.TotalPercentage, new { htmlAttributes = new { @autocomplete = "off", @class = "form-control disabledTaskPercentage", id = "AddTaskPercentage", @min = 0, @max = 100 } })
+                                        @Html.ValidationMessageFor(t => t.TotalPercentage, "", new { @class = "text-danger" })
+                                    </div>
+
+                                </div>
+                            </div>
+                            @Html.HiddenFor(t => t.Pidfid, new { id = "pidfId" })
+                        </div>
+                        <div class="modal-footer">
+                            <button type="submit" class="btn btn-primary ">@SharedLocalizer["Save"].Value</button>
+                            <a class="btn btn-danger" onclick="HideAddTaskModel()">@SharedLocalizer["Cancel"].Value</a>
+                        </div>
+
+                    </div>
+                </div>
+            </form>
+        </div>
         @*AddSubTaskModel*@
-       
+        <div id="AddSubTaskModel" class="modal themeModal " role="dialog">
+            <form method="POST" asp-controller=Project asp-action=AddUpdateTask asp-route-id="@ViewBag.id" asp-route-act="SubTask">
+
+                <div class="modal-dialog modal-lg">
+                    <!-- Modal content-->
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h4 class="modal-title">@SharedLocalizer["Add Sub Task"].Value</h4>
+                            <button type="button" class="close" data-dismiss="modal">&times;</button>
+                        </div>
+                        <div class="modal-body p-4">
+                            <div class="row">
+                                <div class="col-sm-6">
+                                    <div class="form-group required">
+                                        @Html.LabelFor(t => t.TaskName, new { @class = "control-label" })
+                                        @Html.EditorFor(t => t.TaskName, new { htmlAttributes = new { @autocomplete = "off", @class = "form-control" } })
+                                        @Html.ValidationMessageFor(t => t.TaskName, "", new { @class = "text-danger" })
+                                    </div>
+                                    <div class="form-group required">
+                                        @Html.LabelFor(t => t.StartDate, new { @class = "control-label" })
+                                        <div class="input-group date" id="addTaskStartDate" data-target-input="nearest">
+
+                                            @Html.TextBoxFor(t => t.StartDate, new { @class = "form-control datetimepicker",type = "date", autocomplete = "off", @id = "AddSubTaskStartDate" })
+                                            <div class="input-group-append" data-toggle="datetimepicker">
+                                            </div><br>
+
+                                        </div>
+                                        @Html.ValidationMessageFor(t => t.StartDate, "", new { @class = "text-danger" })
+                                    </div>
+                                    <div class="form-group required">
+                                        @Html.LabelFor(t => t.PriorityId, new { @class = "control-label" })
+                                        @Html.DropDownListFor(t => t.PriorityId, new SelectList(string.Empty, "Value", "Text"), "Please select option", htmlAttributes: new { @class = "form-control input-sm f-s-15 bg-eff4f55c w100per", id = "AddSubTaskPriority" })
+                                        @Html.ValidationMessageFor(t => t.PriorityId, "", new { @class = "text-danger" })
+                                    </div>
+                                    <div class="form-group required">
+                                        @Html.LabelFor(t => t.TaskDuration, new { @class = "control-label" })
+                                        @Html.EditorFor(t => t.TaskDuration, new { htmlAttributes = new { @autocomplete = "off", @class = "form-control", id = "AddSubTaskDuration" } })@*disabled = "disabled"*@
+                                        @Html.ValidationMessageFor(t => t.TaskDuration, "", new { @class = "text-danger" })
+                                    </div>
+
+                                </div>
+                                <div class="col-sm-6">
+                                    <div class="form-group required">
+                                        @Html.LabelFor(t => t.TaskOwnerId, new { @class = "control-label" })
+                                        @Html.DropDownListFor(t => t.TaskOwnerId, new SelectList(string.Empty, "Value", "Text"), "Please select option", htmlAttributes: new { @class = "form-control input-sm f-s-15 bg-eff4f55c w100per", id = "AddSubTaskOwner" })
+                                        @Html.ValidationMessageFor(t => t.TaskOwnerId, "", new { @class = "text-danger" })
+                                    </div>
+                                    <div class="form-group required">
+                                        @Html.LabelFor(t => t.EndDate, new { @class = "control-label" })
+                                        <div class="input-group date" id="addTaskEndDate" data-target-input="nearest">
+
+                                            @Html.TextBoxFor(t => t.EndDate, new { @class = "form-control datetimepicker", type = "date", autocomplete = "off", @id = "AddSubTaskEndDate" })
+                                            <div class="input-group-append" data-toggle="datetimepicker">
+                                            </div><br>
+
+                                        </div>
+                                        @Html.ValidationMessageFor(t => t.EndDate, "", new { @class = "text-danger" })
+                                    </div>
+                                    <div class="form-group required">
+                                        @Html.LabelFor(t => t.StatusId, new { @class = "control-label" })
+                                        @Html.DropDownListFor(t => t.StatusId, new SelectList(string.Empty, "Value", "Text"), "Please select option", htmlAttributes: new { @class = "form-control input-sm f-s-15 bg-eff4f55c w100per", id = "AddSubTaskStatus", onchange = "setSubTaskPercentage(this.value,1)" })
+                                        @Html.ValidationMessageFor(t => t.StatusId, "", new { @class = "text-danger" })
+                                    </div>
+                                    <div class="form-group required">
+                                        @Html.LabelFor(t => t.TotalPercentage, new { @class = "control-label" })
+                                        @Html.EditorFor(t => t.TotalPercentage, new { htmlAttributes = new { @autocomplete = "off", @class = "form-control disabledSubTaskPercentage", id = "AddSubTaskPercentage", @min = 0, @max = 100 } })
+                                        @Html.ValidationMessageFor(t => t.TotalPercentage, "", new { @class = "text-danger" })
+                                    </div>
+
+                                </div>
+                            </div>
+                            @Html.HiddenFor(t => t.Pidfid, new { id = "pidfId" })
+                        </div>
+                        <div class="modal-footer">
+                            <button type="submit" class="btn btn-primary ">@SharedLocalizer["Save"].Value</button>
+                            <a class="btn btn-danger" onclick="HideAddSubTaskModel()">@SharedLocalizer["Cancel"].Value</a>
+                        </div>
+
+                    </div>
+                </div>
+            </form>
+        </div>
 
     </section>
 
 </div>
 @section MyScripts {
-<script src="~/js/custom/pidf/projectmanagement.js"></script>
+    @Html.Partial("_DataTablePartial")
+    <script src="~/js/custom/project/projectmanagement.js"></script>
+    <script>
+        var FillTaskDropdown = "@EmcureNPD.Web.Helpers.APIURLHelper.FillTaskDropdown";
+        var GetAllTaskSubTaskList = "@EmcureNPD.Web.Helpers.APIURLHelper.GetAllTaskSubTaskList";
+        var DeleteTasksubTask = "@EmcureNPD.Web.Helpers.APIURLHelper.DeleteTaskSubTAsk";
+        var GetTaskSubTaskByIds = "@EmcureNPD.Web.Helpers.APIURLHelper.GetTaskSubTaskById";
+
+        var RecordDelete = "@SharedLocalizer["RecordDelete"]";
+		var ErrorMessage = "@SharedLocalizer["Error"]";
+		var RecordInsertUpdate = "@SharedLocalizer["RecordInsertUpdate"]";
+    </script>
 }
 

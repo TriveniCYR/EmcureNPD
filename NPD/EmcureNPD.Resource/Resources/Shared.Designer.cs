@@ -403,6 +403,15 @@ namespace EmcureNPD.Resource.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Save Year.
+        /// </summary>
+        internal static string SaveYear {
+            get {
+                return ResourceManager.GetString("SaveYear", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Status.
         /// </summary>
         internal static string Status {

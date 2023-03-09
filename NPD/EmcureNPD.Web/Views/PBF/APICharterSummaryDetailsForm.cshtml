@@ -8,1087 +8,412 @@
 @inject Microsoft.Extensions.Localization.IStringLocalizer<EmcureNPD.Resource.Master> MasterLocalizer
 @inject Microsoft.Extensions.Localization.IStringLocalizer<EmcureNPD.Resource.Shared> SharedLocalizer
 @model EmcureNPD.Business.Models.PIDFAPICharterFormEntity
-
+@using Microsoft.Extensions.Configuration
+@inject IConfiguration Configuration
 @{
-    ViewData["Title"] = @MasterLocalizer["APICharterDetails"];
+    ViewData["Title"] = @MasterLocalizer["APICharterSummaryDetails"];
+    string jsVersion = @Configuration.GetSection("StaticJS")["version"];
 }
-@*
-<body class="hold-transition sidebar-mini sidebar-collapse layout-fixed">
-    <div class="wrapper">
-        <!-- Navbar -->
-        <nav class="main-header navbar navbar-expand navbar-white navbar-light">
-            <!-- Left navbar links -->
-            <ul class="navbar-nav">
-                <li class="nav-item">
-                    <a class="nav-link" data-widget="pushmenu" href="#" role="button"><i class="fas fa-bars"></i></a>
-                </li>
-                <li class="nav-item d-none d-sm-inline-block">
-                    <a href="../Home/index.html" class="nav-link">Home</a>
-                </li>
-            </ul>
-            <ul class="navbar-nav ml-auto">
-                <!-- Navbar Search -->
-                <li class="nav-item">
-                    <a class="nav-link" data-widget="navbar-search" href="#" role="button">
-                        <i class="fas fa-search"></i>
-                    </a>
-                    <div class="navbar-search-block">
-                        <form class="form-inline">
-                            <div class="input-group input-group-sm">
-                                <input class="form-control form-control-navbar" type="search" placeholder="Search"
-                                    aria-label="Search">
-                                <div class="input-group-append">
-                                    <button class="btn btn-navbar" type="submit">
-                                        <i class="fas fa-search"></i>
-                                    </button>
-                                    <button class="btn btn-navbar" type="button" data-widget="navbar-search">
-                                        <i class="fas fa-times"></i>
-                                    </button>
-                                </div>
-                            </div>
-                        </form>
+<div>
+    <div class="card card-outline card-primary">
+        <div class="card-header">
+            <h5 class="mb-0"><b>@MasterLocalizer["APICharterSummaryDetails"]</b></h5>
+        </div>
+        <div class="card-body">
+           
+                <input type="hidden" asp-for="Pidfid" />
+                <input type="hidden" asp-for="BusinessUnitId" />
+                <input type="hidden" asp-for="PIDFAPICharterFormID" />
+                <input type="hidden" asp-for="SaveType" />
+                <input asp-for="IsModelValid" style="visibility: hidden;" />
+                <div class="row">
+                    <div class="col-md-5">
+                        <table class="table">
+                             <tr class="bg-primary">
+                                    <td colspan=2><b>@MasterLocalizer["ProjectDetails"]</b></td>
+                                </tr>
+                            <tr>
+                                <td>
+                                    @Html.LabelFor(model => model.ProjectName,@MasterLocalizer["ProjectName"], new { @class = "control-label" })
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(model => model.ProjectName, new { @readonly = "readonly",  @class = "form-control"})
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    @Html.LabelFor(model => model.Market  ,@MasterLocalizer["Market"], new { @class = "control-label" })
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(model => model.Market, new {@readonly = "readonly", @class = "form-control", })
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    @Html.LabelFor(model => model.ProjectInitiationDate,@MasterLocalizer["ProjectInitiationDate"], new { @class = "control-label" })
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(model => model.ProjectInitiationDate, new {@readonly = "readonly", @class = "form-control", })
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    @Html.LabelFor(model => model.ProjectEndDate,@MasterLocalizer["ProjectEndDate"], new { @class = "control-label" })
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(model => model.ProjectEndDate, new {@readonly = "readonly",@class = "form-control" })
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    @Html.LabelFor(model => model.APIGroupLeader,@MasterLocalizer["APIGroupLeader"], new { @class = "control-label" })
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(model => model.APIGroupLeader, new { @class = "form-control" })
+                                    <label class="text-danger" id="valmsgAPIGroupLeader" style="display:contents"></label>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    @Html.LabelFor(model => model.ProjectComplexityId  ,@MasterLocalizer["ProjectComplexity"], new { @class = "control-label" })
+                                </td>
+                                <td>
+                                @Enum.GetName((ProjectComplexicity)Model.ProjectComplexityId)
+                                </td>
+                            </tr>
+                        </table>
                     </div>
-                </li>
-
-                <!-- Messages Dropdown Menu -->
-                <li class="nav-item dropdown">
-                    <a class="nav-link" data-toggle="dropdown" href="#">
-                        <i class="far fa-comments"></i>
-                    </a>
-                    <div class="dropdown-menu dropdown-menu-lg dropdown-menu-right">
-                        <a href="#" class="dropdown-item">
-                            <!-- Message Start -->
-                            <div class="media">
-                                <img src="dist/img/user1-128x128.jpg" alt="User Avatar"
-                                    class="img-size-50 mr-3 img-circle">
-                                <div class="media-body">
-                                    <h3 class="dropdown-item-title">
-                                        Brad Diesel
-                                        <span class="float-right text-sm text-danger"><i class="fas fa-star"></i></span>
-                                    </h3>
-                                    <p class="text-sm">Call me whenever you can...</p>
-                                    <p class="text-sm text-muted"><i class="far fa-clock mr-1"></i> 4 Hours Ago</p>
-                                </div>
-                            </div>
-                            <!-- Message End -->
-                        </a>
-                        <div class="dropdown-divider"></div>
-                        <a href="#" class="dropdown-item">
-                            <!-- Message Start -->
-                            <div class="media">
-                                <img src="dist/img/user8-128x128.jpg" alt="User Avatar"
-                                    class="img-size-50 img-circle mr-3">
-                                <div class="media-body">
-                                    <h3 class="dropdown-item-title">
-                                        John Pierce
-                                        <span class="float-right text-sm text-muted"><i class="fas fa-star"></i></span>
-                                    </h3>
-                                    <p class="text-sm">I got your message bro</p>
-                                    <p class="text-sm text-muted"><i class="far fa-clock mr-1"></i> 4 Hours Ago</p>
-                                </div>
-                            </div>
-                            <!-- Message End -->
-                        </a>
-                        <div class="dropdown-divider"></div>
-                        <a href="#" class="dropdown-item">
-                            <!-- Message Start -->
-                            <div class="media">
-                                <img src="dist/img/user3-128x128.jpg" alt="User Avatar"
-                                    class="img-size-50 img-circle mr-3">
-                                <div class="media-body">
-                                    <h3 class="dropdown-item-title">
-                                        Nora Silvester
-                                        <span class="float-right text-sm text-warning"><i
-                                                class="fas fa-star"></i></span>
-                                    </h3>
-                                    <p class="text-sm">The subject goes here</p>
-                                    <p class="text-sm text-muted"><i class="far fa-clock mr-1"></i> 4 Hours Ago</p>
-                                </div>
-                            </div>
-                            <!-- Message End -->
-                        </a>
-                        <div class="dropdown-divider"></div>
-                        <a href="#" class="dropdown-item dropdown-footer">See All Messages</a>
-                    </div>
-                </li>
-                <!-- Notifications Dropdown Menu -->
-                <li class="nav-item dropdown">
-                    <a class="nav-link" data-toggle="dropdown" href="#">
-                        <i class="fa-solid fa-bell"></i>
-                    </a>
-                    <div class="dropdown-menu dropdown-menu-lg dropdown-menu-right">
-                        <span class="dropdown-item dropdown-header">15 Notifications</span>
-                        <div class="dropdown-divider"></div>
-                        <a href="#" class="dropdown-item">
-                            <i class="fas fa-envelope mr-2"></i> 4 new messages
-                            <span class="float-right text-muted text-sm">3 mins</span>
-                        </a>
-                        <div class="dropdown-divider"></div>
-                        <a href="#" class="dropdown-item">
-                            <i class="fas fa-users mr-2"></i> 8 friend requests
-                            <span class="float-right text-muted text-sm">12 hours</span>
-                        </a>
-                        <div class="dropdown-divider"></div>
-                        <a href="#" class="dropdown-item">
-                            <i class="fas fa-file mr-2"></i> 3 new reports
-                            <span class="float-right text-muted text-sm">2 days</span>
-                        </a>
-                        <div class="dropdown-divider"></div>
-                        <a href="#" class="dropdown-item dropdown-footer">See All Notifications</a>
-                    </div>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" data-widget="fullscreen" href="#" role="button">
-                        <i class="fas fa-expand-arrows-alt"></i>
-                    </a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" data-widget="control-sidebar" data-controlsidebar-slide="true" href="#"
-                        role="button">
-                        <i class="fas fa-th-large"></i>
-                    </a>
-                </li>
-            </ul>
-        </nav>
-        <!-- /.navbar -->
-
-        <!-- Main Sidebar Container -->
-        <aside class="main-sidebar sidebar-dark-primary elevation-4">
-            <!-- Brand Logo -->
-            <a href="#" class="brand-link text-decoration-none">
-                <i class="fa-solid fa-e fs-3 nav-icon brand-image text-red" style="padding: 9px 10px;"></i>
-                <div class="logo">
-                    <span class="ms-2">Emcure</span><sub>Success Through Innovation</sub>
+                    <div class="col-md-2"></div>
+                @*--------Start----Timeline IN Months-------------*@
+                <div class="col-md-5" id="dvTimelineInMonths">
+                    @if (Model.TimelineInMonths != null)
+                    {
+                        <table class="table">
+                            <tr class="bg-primary">
+                                <td colspan=2><b>@MasterLocalizer["TimelineInMonths"]</b></td>
+                            </tr>
+                            @for (int i = 0; i < Model.TimelineInMonths.Count; i++)
+                            {
+                                <tr>
+                                    <td>
+                                        <input type="hidden" asp-for="@Model.TimelineInMonths[i].TimelineInMonthsId" />
+                                        <input type="hidden" asp-for="@Model.TimelineInMonths[i].Name" />
+                                        <label class="control-label">@Model.TimelineInMonths[i].Name </label>
+                                    </td>
+                                    @if (i == 6)
+                                    {
+                                        <td>
+                                            @Html.DisplayFor(model => model.TimelineInMonths[i].TimelineInMonthsValue, new {@readonly = "readonly", @class = "form-control" , @placeholder="" })
+                                            <label class="text-danger" style="display:contents"></label>
+                                        </td>
+                                    }
+                                    else
+                                    {
+                                        <td>
+                                            @Html.DisplayFor(model => model.TimelineInMonths[i].TimelineInMonthsValue, new { @class = "form-control" , @placeholder="" })
+                                            <label class="text-danger" style="display:contents"></label>
+                                        </td>
+                                    }
+                                </tr>
+                            }
+                        </table>
+                    }
                 </div>
-            </a>
-
-            <!-- Sidebar -->
-            <div class="sidebar">
-                <!-- Sidebar user panel (optional) -->
-                <div class="user-panel mt-3 pb-3 mb-3 d-flex">
-                    <div class="image">
-                        <img src="../dist/img/user2-160x160.jpg" class="img-circle elevation-2" alt="User Image">
+                @*--------End----Timeline IN Months-------------*@
+                </div>
+                @*------------Finance Rates--------------------------*@
+                <div class="row mt-4">
+                    <div class="col-md-5">
+                        <table class="table">
+                               <tr class="bg-primary">
+                                    <td colspan=2 ><b>@MasterLocalizer["FinanceRates"]</b></td>
+                                </tr>
+                            <tr>
+                                <td>
+                                    @Html.LabelFor(model => model.ManHourRates  ,@MasterLocalizer["ManHourRates"], new { @class = "control-label" })
+                                </td>
+                                <td>
+                                @Html.DisplayFor(model => model.ManHourRates, new { @class = "form-control"})
+                                    <label class="text-danger" id="valmsgManHourRates" style="display:contents"></label>
+                                </td>
+                            </tr>
+                        </table>
                     </div>
-                    <div class="info">
-                        <a href="#" class="d-block text-decoration-none">Alexander Pierce</a>
+                    <div class="col-md-7"></div>
+                </div>
+                @*--------------Finance Rates----------------------*@
+
+                <div class="row mt-4">
+                    @*--------Start----AnalyticalDepartment-------------*@
+                    <div class="col-md-12" id="dvAnalyticalDepartment">
+                        @if (Model.AnalyticalDepartment != null)
+                        {
+                            <table class="table table-bordered">
+                                <thead class="bg-primary">
+                                    <tr class="text-center ">
+                                        <th>@MasterLocalizer["AnalyticalDepartments"]</th>
+                                        <th>@MasterLocalizer["ARD"]</th>
+                                        <th>@MasterLocalizer["Impurity"]</th>
+                                        <th>@MasterLocalizer["Stability"]</th>
+                                        <th>@MasterLocalizer["AMV"]</th>
+                                        <th>@MasterLocalizer["AMT"]</th>
+                                    </tr>
+                                </thead>
+                                @for (int i = 0; i < Model.AnalyticalDepartment.Count; i++)
+                                {
+                                    <tr>
+                                        <td>
+                                            <input type="hidden" asp-for="@Model.AnalyticalDepartment[i].AnalyticalDepartmentId" />
+                                            <input type="hidden" asp-for="@Model.AnalyticalDepartment[i].Name" />
+                                            <label class="control-label">@Model.AnalyticalDepartment[i].Name </label>
+                                        </td>
+                                        @if (i == 5)
+                                        {
+                                            <td>
+                                                @Html.DisplayFor(model => model.AnalyticalDepartment[i].AnalyticalDepartmentARDValue, new {@readonly = "readonly", @class = "form-control" , @placeholder="" })
+                                                <label class="text-danger" style="display:contents"></label>
+                                            </td>
+                                            <td>
+                                                @Html.DisplayFor(model => model.AnalyticalDepartment[i].AnalyticalDepartmentImpurityValue, new {@readonly = "readonly", @class = "form-control" , @placeholder="" })
+                                                <label class="text-danger" style="display:contents"></label>
+                                            </td>
+                                            <td>
+                                                @Html.DisplayFor(model => model.AnalyticalDepartment[i].AnalyticalDepartmentStabilityValue, new {@readonly = "readonly", @class = "form-control" , @placeholder="" })
+                                                <label class="text-danger" style="display:contents"></label>
+                                            </td>
+                                            <td>
+                                                @Html.DisplayFor(model => model.AnalyticalDepartment[i].AnalyticalDepartmentAMVValue, new { @readonly = "readonly",@class = "form-control" , @placeholder="" })
+                                                <label class="text-danger" style="display:contents"></label>
+                                            </td>
+                                            <td>
+                                                @Html.DisplayFor(model => model.AnalyticalDepartment[i].AnalyticalDepartmentAMTValue, new {@readonly = "readonly", @class = "form-control" , @placeholder="" })
+                                                <label class="text-danger" style="display:contents"></label>
+                                            </td>
+                                        }
+                                        else
+                                        {
+                                            <td>
+                                                @if (i == 3)
+                                                {
+                                                    @Html.DisplayFor(model => model.AnalyticalDepartment[i].AnalyticalDepartmentARDValue, new {@readonly = "readonly", @class = "form-control" , @placeholder="" })
+                                                }
+                                                else
+                                                {
+                                                    @Html.DisplayFor(model => model.AnalyticalDepartment[i].AnalyticalDepartmentARDValue, new { @class = "form-control" , @placeholder="" })
+                                                }
+
+                                                <label class="text-danger" style="display:contents"></label>
+                                            </td>
+                                            <td>
+                                                @Html.DisplayFor(model => model.AnalyticalDepartment[i].AnalyticalDepartmentImpurityValue, new { @class = "form-control" , @placeholder="" })
+                                                <label class="text-danger" style="display:contents"></label>
+                                            </td>
+                                            <td>
+                                                @Html.DisplayFor(model => model.AnalyticalDepartment[i].AnalyticalDepartmentStabilityValue, new { @class = "form-control" , @placeholder="" })
+                                                <label class="text-danger" style="display:contents"></label>
+                                            </td>
+                                            <td>
+                                                @Html.DisplayFor(model => model.AnalyticalDepartment[i].AnalyticalDepartmentAMVValue, new { @class = "form-control" , @placeholder="" })
+                                                <label class="text-danger" style="display:contents"></label>
+                                            </td>
+                                            <td>
+                                                @Html.DisplayFor(model => model.AnalyticalDepartment[i].AnalyticalDepartmentAMTValue, new { @class = "form-control" , @placeholder="" })
+                                                <label class="text-danger" style="display:contents"></label>
+                                            </td>
+                                        }
+                                    </tr>
+                                }
+                            </table>
+                        }
+                    </div>
+                    @*--------End----AnalyticalDepartment-------------*@
+                </div>
+                <div class="row mt-4">
+                    @*--------Start----PRDDepartment-------------*@
+                    <div class="col-md-4" id="dvPRDDepartment">
+                        @if (Model.PRDDepartment != null)
+                        {
+                            <table class="table">
+                                <thead class="bg-primary">
+                                    <tr class="text-center">
+                                        <th>@MasterLocalizer["PRDDepartments"]</th>
+                                        <th>@MasterLocalizer["RawMaterialCost"]</th>
+                                    </tr>
+                                </thead>
+                                @for (int i = 0; i < Model.PRDDepartment.Count; i++)
+                                {
+                                    <tr>
+                                        <td>
+                                            <input type="hidden" asp-for="@Model.PRDDepartment[i].PRDDepartmentId" />
+                                            <input type="hidden" asp-for="@Model.PRDDepartment[i].Name" />
+                                            <label class="control-label">@Model.PRDDepartment[i].Name </label>
+                                        </td>
+                                        @if (i == 4)
+                                        {
+                                            <td>
+                                                @Html.DisplayFor(model => model.PRDDepartment[i].PRDDepartmentRawMaterialValue, new { @readonly = "readonly",@class = "form-control" , @placeholder="" })
+                                                <label class="text-danger" style="display:contents"></label>
+                                            </td>
+                                        }
+                                        else
+                                        {
+                                            <td>
+                                                @Html.DisplayFor(model => model.PRDDepartment[i].PRDDepartmentRawMaterialValue, new { @class = "form-control" , @placeholder="" })
+                                                <label class="text-danger" style="display:contents"></label>
+                                            </td>
+                                        }
+                                    </tr>
+                                }
+                            </table>
+                        }
+                    </div>
+                    <div class="col-md-8"></div>
+                    @*--------End----PRDDepartment-------------*@
+                </div>
+                <div class="row mt-4">
+                    @*--------Start----CapitalOtherExpenditure-------------*@
+                    <div class="col-md-8" id="dvCapitalOtherExpenditure">
+                        @if (Model.CapitalOtherExpenditure != null)
+                        {
+                            <table class="table">
+                                <thead class="bg-primary">
+                                    <tr class="text-center">
+                                        <th>@MasterLocalizer["CapitalOtherExpenditure"]</th>
+                                        <th>@MasterLocalizer["Amount"]</th>
+                                        <th>@MasterLocalizer["Remark"]</th>
+                                    </tr>
+                                </thead>
+                                @for (int i = 0; i < Model.CapitalOtherExpenditure.Count; i++)
+                                {
+                                    <tr>
+                                        <td>
+                                            <input type="hidden" asp-for="@Model.CapitalOtherExpenditure[i].CapitalOtherExpenditureId" />
+                                            <input type="hidden" asp-for="@Model.CapitalOtherExpenditure[i].Name" />
+                                            <label class="control-label">@Model.CapitalOtherExpenditure[i].Name </label>
+                                        </td>
+                                        <td>
+                                            @Html.DisplayFor(model => model.CapitalOtherExpenditure[i].CapitalOtherExpenditureAmountValue, new { @class = "form-control" , @placeholder="" })
+                                            <label class="text-danger" style="display:contents"></label>
+                                        </td>
+                                        <td>
+                                            @Html.DisplayFor(model => model.CapitalOtherExpenditure[i].CapitalOtherExpenditureRemarkValue, new { @class = "form-control" , @placeholder="" })
+                                            <label class="text-danger" style="display:contents"></label>
+                                        </td>
+                                    </tr>
+                                }
+                            </table>
+                        }
+                    </div>
+                    <div class="col-md-4"></div>
+                    @*--------End----CapitalOtherExpenditure-------------*@
+                </div>
+                <div class="row mt-4">
+                    @*--------Start----ManhourEstimates-------------*@
+                    <div class="col-md-12" id="dvManhourEstimates">
+                        @if (Model.ManhourEstimates != null)
+                        {
+                            <table class="table">
+                                <thead class="bg-primary">
+                                    <tr class="text-center">
+                                        <th>@MasterLocalizer["ManhourEstimates"]</th>
+                                        <th>@MasterLocalizer["NoOfEmployee"]</th>
+                                        <th>@MasterLocalizer["Months"]</th>
+                                        <th>@MasterLocalizer["Hours"]</th>
+                                        <th>@MasterLocalizer["Cost"]</th>
+                                    </tr>
+                                </thead>
+                                @for (int i = 0; i < Model.ManhourEstimates.Count; i++)
+                                {
+                                    <tr>
+                                        <td>
+                                            <input type="hidden" asp-for="@Model.ManhourEstimates[i].ManhourEstimatesId" />
+                                            <input type="hidden" asp-for="@Model.ManhourEstimates[i].Name" />
+                                            <label class="control-label">@Model.ManhourEstimates[i].Name </label>
+                                        </td>
+                                        @if (i != 7)
+                                        {
+                                            <td>
+                                                @Html.DisplayFor(model => model.ManhourEstimates[i].ManhourEstimatesNoOfEmployeeValue, new { @class = "form-control" , @placeholder="" })
+                                                <label class="text-danger" style="display:contents"></label>
+                                            </td>
+                                            <td>
+                                                @Html.DisplayFor(model => model.ManhourEstimates[i].ManhourEstimatesMonthsValue, new { @class = "form-control" , @placeholder="" })
+                                                <label class="text-danger" style="display:contents"></label>
+                                            </td>
+                                        }
+                                        else
+                                        {
+                                            <td></td>
+                                            <td></td>
+                                        }
+                                        <td>
+                                            @Html.DisplayFor(model => model.ManhourEstimates[i].ManhourEstimatesHoursValue, new { @readonly = "readonly", @class = "form-control" , @placeholder="" })
+                                            <label class="text-danger" style="display:contents"></label>
+                                        </td>
+                                        <td>
+                                            @Html.DisplayFor(model => model.ManhourEstimates[i].ManhourEstimatesCostValue, new {@readonly = "readonly", @class = "form-control" , @placeholder="" })
+                                            <label class="text-danger" style="display:contents"></label>
+                                        </td>
+                                    </tr>
+                                }
+                            </table>
+                        }
+                    </div>
+                    @*--------End----ManhourEstimates-------------*@
+                </div>
+                <div class="row mt-4">
+                    @*--------Start----HeadwiseBudget-------------*@
+                    <div class="col-md-6" id="dvHeadwiseBudget">
+                        @if (Model.HeadwiseBudget != null)
+                        {
+                            <table class="table">
+                                <thead class="bg-primary">
+                                    <tr class="text-center">
+                                        <th>@MasterLocalizer["HeadwiseBudget(InLacs)"]</th>
+                                        <th>@MasterLocalizer["Rupee(InLacs)"]</th>
+                                    </tr>
+                                </thead>
+                                @for (int i = 0; i < Model.HeadwiseBudget.Count; i++)
+                                {
+                                    <tr>
+                                        <td>
+                                            <input type="hidden" asp-for="@Model.HeadwiseBudget[i].HeadwiseBudgetId" />
+                                            <input type="hidden" asp-for="@Model.HeadwiseBudget[i].Name" />
+                                            <label class="control-label">@Model.HeadwiseBudget[i].Name </label>
+                                        </td>
+                                        <td>
+                                            @Html.DisplayFor(model => model.HeadwiseBudget[i].HeadwiseBudgetValue, new {@readonly = "readonly", @class = "form-control" , @placeholder="" })
+                                            <label class="text-danger" style="display:contents"></label>
+                                        </td>
+                                    </tr>
+                                }
+                            </table>
+                        }
+                    </div>
+                    <div class="col-md-6"></div>
+
+                    @*--------End----HeadwiseBudget-------------*@
+                </div>
+                <div class="row mt-4">
+                    <div>
+                        <div class="form-group">
+                            <button type="submit" id="Save" class="btn btn-primary">@SharedLocalizer["Submit"]</button>
+                            <a class="btn btn-danger" asp-action="PIDFList" asp-controller="PIDF" asp-route-ScreenId="5">@SharedLocalizer["Cancel"]</a>
+                            <button type="submit" id="SaveDraft" class="btn btn-info">@SharedLocalizer["SaveDraft"]</button>
+                            @*   <a  class="btn btn-success" onClick="SaveApproveClick();">@SharedLocalizer["Approve"]</a>
+                            <a  class="btn btn-danger" onClick="SaveRejectClick();">@SharedLocalizer["Reject"]</a>*@
+                        </div>
                     </div>
                 </div>
-
-                <!-- SidebarSearch Form -->
-                <div class="form-inline">
-                    <div class="input-group" data-widget="sidebar-search">
-                        <input class="form-control form-control-sidebar" type="search" placeholder="Search"
-                            aria-label="Search">
-                        <div class="input-group-append">
-                            <button class="btn btn-sidebar">
-                                <i class="fas fa-search fa-fw"></i>
-                            </button>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Sidebar Menu -->
-                <nav class="mt-2">
-                    <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu"
-                        data-accordion="false">
-                        <!-- Add icons to the links using the .nav-icon class
-               with font-awesome or any other icon font library -->
-                        <li class="nav-item mb-2">
-                            <a href="../Home/index.html" class="nav-link">
-                                <i class="nav-icon fas fa-home-alt"></i>
-                                <p>
-                                    Home
-                                </p>
-                            </a>
-                        </li>
-                        <li class="nav-item mb-2">
-                            <a href="../AddUser-Form/index.html" class="nav-link">
-                                <i class="nav-icon fa-solid fa-user-plus ms-1 me-0"></i>
-                                <p>
-                                    Add User
-                                </p>
-                            </a>
-                        </li>
-                        <li class="nav-item mb-2">
-                            <a href="../Medical-form/index.html" class="nav-link">
-                                <i class="nav-icon fa-solid fa-file-waveform"></i>
-                                <p>
-                                    Medical Form
-                                </p>
-                            </a>
-                        </li>
-                        <li class="nav-item mb-2">
-                            <a href="#" class="nav-link">
-                                <i class="bi bi-files nav-icon mx-1"></i>
-                                <p>
-                                    PIDF Management
-                                    <i class="fas fa-angle-left right mt-1"></i>
-                                </p>
-                            </a>
-                            <ul class="nav nav-treeview">
-                                <li class="nav-item">
-                                    <a href="../PIDF-form/index.html" class="nav-link">
-                                        <i class="far fa-circle nav-icon"></i>
-                                        <p>
-                                            PIDF Form
-                                        </p>
-                                    </a>
-                                </li>
-                                <li class="nav-item">
-                                    <a href="../PIDF-list/index.html" class="nav-link">
-                                        <i class="far fa-circle nav-icon"></i>
-                                        <p>
-                                            PIDF List
-                                        </p>
-                                    </a>
-                                </li>
-                                <li class="nav-item">
-                                    <a href="../IPD-form/index.html" class="nav-link">
-                                        <i class="far fa-circle nav-icon"></i>
-                                        <p>
-                                            IPD Form
-                                        </p>
-                                    </a>
-                                </li>
-                            </ul>
-                        </li>
-                        <li class="nav-item mb-2">
-                            <a href="#" class="nav-link">
-                                <i class="bi bi-files nav-icon mx-1"></i>
-                                <p>
-                                    PBF
-                                    <i class="fas fa-angle-left right mt-1"></i>
-                                </p>
-                            </a>
-                            <ul class="nav nav-treeview">
-                                <li class="nav-item">
-                                    <a href="../PBF-RnD/index.html" class="nav-link">
-                                        <i class="far fa-circle nav-icon"></i>
-                                        <p>
-                                            PBF RnD
-                                        </p>
-                                    </a>
-                                </li>
-                                <li class="nav-item">
-                                    <a href="../PBF-analytical/index.html" class="nav-link">
-                                        <i class="far fa-circle nav-icon"></i>
-                                        <p>
-                                            PBF Analytical
-                                        </p>
-                                    </a>
-                                </li>
-                                <li class="nav-item">
-                                    <a href="../PBF-clinical/index.html" class="nav-link">
-                                        <i class="far fa-circle nav-icon"></i>
-                                        <p>
-                                            PBF Clinical
-                                        </p>
-                                    </a>
-                                </li>
-                            </ul>
-                        </li>
-                        <li class="nav-item mb-2">
-                            <a href="../Log-history/index.html" class="nav-link">
-                                <i class="fa-solid fa-clock-rotate-left nav-icon"></i>
-                                <p>
-                                    Log History
-                                </p>
-                            </a>
-                        </li>
-                        <li class="nav-item mb-2">
-                            <a href="../Log-history-details/index.html" class="nav-link">
-                                <i class="fa-solid fa-clock-rotate-left nav-icon"></i>
-                                <p>
-                                    Log History Details
-                                </p>
-                            </a>
-                        </li>
-                        <li class="nav-item mb-2">
-                            <a href="../Finance-PIDF/index.html" class="nav-link">
-                                <i class="fa-solid fa-file nav-icon"></i>
-                                <p>
-                                    Finance PIDF
-                                </p>
-                            </a>
-                        </li>
-                        <li class="nav-item mb-2">
-                            <a href="../API-charter-summary/index.html" class="nav-link">
-                                <i class="fa-solid fa-chart-simple nav-icon"></i>
-                                <p>
-                                    API Charter Summary
-                                </p>
-                            </a>
-                        </li>
-                        <li class="nav-item mb-2">
-                            <a href="index.html" class="nav-link">
-                                <i class="fa-solid fa-chart-simple nav-icon"></i>
-                                <p>
-                                    Project Charter
-                                </p>
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a href="../Login/index.html" class="nav-link">
-                                <i class="nav-icon fa-solid fa-right-from-bracket ms-1 me-0"></i>
-                                <p>
-                                    Logout
-                                </p>
-                            </a>
-                        </li>
-                    </ul>
-                </nav>
-                <!-- /.sidebar-menu -->
-            </div>
-            <!-- /.sidebar -->
-        </aside>
-
-        <section class="content-wrapper p-3 pb-4">
-            <div class="container-fluid background-white-card">
-                <div class="content-header text-center">
-                    <h1 class="m-0 mb-2">
-                        Project Charter Summary Template
-                    </h1>
-                </div>
-                <form class="row">
-                    <div class="col-6 mb-4">
-                        <table class="table table-bordered text-center m-0 project-name-table">
-                            <thead class="bg-primary">
-                                <tr>
-                                    <th class="text-start">
-                                        Project Name
-                                    </th>
-                                    <th></th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr>
-                                    <td class="text-start">
-                                        Market
-                                    </td>
-                                    <td>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td class="text-start">
-                                        Project Initiation Date
-                                    </td>
-                                    <td>
-                                        01-Aug-22
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td class="text-start">
-                                        Project End Date
-                                    </td>
-                                    <td>
-                                        Calender Date
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td class="text-start">
-                                        API Group Leader
-                                    </td>
-                                    <td>
-                                        Text Box
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td class="text-start">
-                                        Project Complexity
-                                    </td>
-                                    <td>
-                                        Dropdown
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td class="fw-bold text-start">
-                                        Finance Rates
-                                    </td>
-                                    <td>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td class="text-start">
-                                        Manhour Rate
-                                    </td>
-                                    <td>
-                                        RS 1,400
-                                    </td>
-                                </tr>
-                            </tbody>
-                        </table>
-                    </div>
-                    <div class="col-2 mb-4"></div>
-                    <div class="col-4 mb-4">
-                        <table class="table table-bordered text-center m-0 time-line-in-months-table">
-                            <thead class="bg-primary">
-                                <tr>
-                                    <th class="text-start">
-                                        Time Lines In Months
-                                    </th>
-                                    <th></th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr>
-                                    <td class="text-start">
-                                        Feasibility study
-                                    </td>
-                                    <td>
-                                        3
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td class="text-start">
-                                        Development
-                                    </td>
-                                    <td>
-                                        2
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td class="text-start">
-                                        Scalelup
-                                    </td>
-                                    <td>
-                                        2
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td class="text-start">
-                                        Validation
-                                    </td>
-                                    <td>
-                                        4
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td class="text-start">
-                                        Stability
-                                    </td>
-                                    <td>
-                                        6
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td class="text-start">
-                                        Filing
-                                    </td>
-                                    <td>
-                                        0.5
-                                    </td>
-                                </tr>
-                                <tr class="fw-bold">
-                                    <td class="text-start">
-                                        Total
-                                    </td>
-                                    <td>
-                                        17.05
-                                    </td>
-                                </tr>
-                            </tbody>
-                        </table>
-                    </div>
-                    <div class="col-12 mb-4">
-                        <table class="table table-bordered text-center m-0 analytical-departments-table">
-                            <thead class="bg-primary">
-                                <tr>
-                                    <th class="text-start">
-                                        Analytical Departments
-                                    </th>
-                                    <th>
-                                        ARD
-                                    </th>
-                                    <th>
-                                        Impurity
-                                    </th>
-                                    <th>
-                                        Stability
-                                    </th>
-                                    <th>
-                                        AMV
-                                    </th>
-                                    <th>
-                                        AMT
-                                    </th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr>
-                                    <td class="text-start">
-                                        Chemicals! Reagents
-                                    </td>
-                                    <td>
-                                        Rs. 2.00
-                                    </td>
-                                    <td>
-                                        Rs. 2.00
-                                    </td>
-                                    <td>
-                                        Rs. 2.00
-                                    </td>
-                                    <td>
-                                        Rs. 2.00
-                                    </td>
-                                    <td>
-                                        Rs. 2.00
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td class="text-start">
-                                        No of Columns
-                                    </td>
-                                    <td>
-                                        2
-                                    </td>
-                                    <td>
-                                        2
-                                    </td>
-                                    <td>
-                                        2
-                                    </td>
-                                    <td>
-                                        2
-                                    </td>
-                                    <td>
-                                        2
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td class="text-start">
-                                        Cost per Column
-                                    </td>
-                                    <td>
-                                        Rs. 2.00
-                                    </td>
-                                    <td>
-                                        Rs. 2.00
-                                    </td>
-                                    <td>
-                                        Rs. 2.00
-                                    </td>
-                                    <td>
-                                        Rs. 2.00
-                                    </td>
-                                    <td>
-                                        Rs. 2.00
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td class="text-start">
-                                        Total Cost of Coloumn
-                                    </td>
-                                    <td>
-                                        Rs. 4.00
-                                    </td>
-                                    <td>
-                                        Rs. 4.00
-                                    </td>
-                                    <td>
-                                        Rs. 4.00
-                                    </td>
-                                    <td>
-                                        Rs. 4.00
-                                    </td>
-                                    <td>
-                                        Rs. 4.00
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td class="text-start">
-                                        Cost of Impurities/RLD/Standard Silica
-                                    </td>
-                                    <td>
-                                        Rs. 2.00
-                                    </td>
-                                    <td>
-                                        Rs. 2.00
-                                    </td>
-                                    <td>
-                                        Rs. 2.00
-                                    </td>
-                                    <td>
-                                        Rs. 2.00
-                                    </td>
-                                    <td>
-                                        Rs. 2.00
-                                    </td>
-                                </tr>
-                                <tr class="fw-bold">
-                                    <td class="text-start">
-                                        Total Cost Of Analytical Rawmaterial
-                                    </td>
-                                    <td>
-                                        Rs. 8.00
-                                    </td>
-                                    <td>
-                                        Rs. 8.00
-                                    </td>
-                                    <td>
-                                        Rs. 8.00
-                                    </td>
-                                    <td>
-                                        Rs. 8.00
-                                    </td>
-                                    <td>
-                                        Rs. 8.00
-                                    </td>
-                                </tr>
-                            </tbody>
-                        </table>
-                    </div>
-                    <div class="col-12 mb-4">
-                        <table class="table table-bordered text-center m-0 prd-department-table">
-                            <thead class="bg-primary">
-                                <tr>
-                                    <th class="text-start">
-                                        PRD Department
-                                    </th>
-                                    <th>
-                                        Raw Material Cost
-                                    </th>
-                                    <th></th>
-                                    <th></th>
-                                    <th></th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr>
-                                    <td class="text-start">
-                                        Development
-                                    </td>
-                                    <td>
-                                        Rs. 3.00
-                                    </td>
-                                    <td></td>
-                                    <td></td>
-                                    <td></td>
-                                </tr>
-                                <tr>
-                                    <td class="text-start">
-                                        Optimization
-                                    </td>
-                                    <td>
-                                        Rs. 3.00
-                                    </td>
-                                    <td></td>
-                                    <td></td>
-                                    <td></td>
-                                </tr>
-                                <tr>
-                                    <td class="text-start">
-                                        Scale Up
-                                    </td>
-                                    <td>
-                                        Rs. 3.00
-                                    </td>
-                                    <td></td>
-                                    <td></td>
-                                    <td></td>
-                                </tr>
-                                <tr>
-                                    <td class="text-start">
-                                        Validation
-                                    </td>
-                                    <td>
-                                        Rs. 0.00
-                                    </td>
-                                    <td></td>
-                                    <td></td>
-                                    <td></td>
-                                </tr>
-                                <tr class="fw-bold">
-                                    <td class="text-start">
-                                        Total Cost Of Raw Material
-                                    </td>
-                                    <td>
-                                        Rs. 9.00
-                                    </td>
-                                    <td></td>
-                                    <td></td>
-                                    <td></td>
-                                </tr>
-                            </tbody>
-                        </table>
-                    </div>
-                    <div class="col-12 mb-4">
-                        <table class="table table-bordered text-center m-0 prd-department-table">
-                            <thead class="bg-primary">
-                                <tr>
-                                    <th class="text-start">
-                                        PRD Department
-                                    </th>
-                                    <th>
-                                        Raw Material Cost
-                                    </th>
-                                    <th></th>
-                                    <th></th>
-                                    <th></th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr>
-                                    <td class="text-start">
-                                        Development
-                                    </td>
-                                    <td>
-                                        Rs. 3.00
-                                    </td>
-                                    <td></td>
-                                    <td></td>
-                                    <td></td>
-                                </tr>
-                                <tr>
-                                    <td class="text-start">
-                                        Optimization
-                                    </td>
-                                    <td>
-                                        Rs. 3.00
-                                    </td>
-                                    <td></td>
-                                    <td></td>
-                                    <td></td>
-                                </tr>
-                                <tr>
-                                    <td class="text-start">
-                                        Scale Up
-                                    </td>
-                                    <td>
-                                        Rs. 3.00
-                                    </td>
-                                    <td></td>
-                                    <td></td>
-                                    <td></td>
-                                </tr>
-                                <tr>
-                                    <td class="text-start">
-                                        Validation
-                                    </td>
-                                    <td>
-                                        Rs. 0.00
-                                    </td>
-                                    <td></td>
-                                    <td></td>
-                                    <td></td>
-                                </tr>
-                                <tr class="fw-bold">
-                                    <td class="text-start">
-                                        Total Cost Of Raw Material
-                                    </td>
-                                    <td>
-                                        Rs. 9.00
-                                    </td>
-                                    <td></td>
-                                    <td></td>
-                                    <td></td>
-                                </tr>
-                            </tbody>
-                        </table>
-                    </div>
-                    <div class="col-12 mb-4">
-                        <table class="table table-bordered text-center m-0 capital-other-expenditure-table">
-                            <thead class="bg-primary">
-                                <tr>
-                                    <th class="text-start">
-                                        Capital and Other Expenditure
-                                    </th>
-                                    <th>
-                                        Amount
-                                    </th>
-                                    <th>
-                                        Remarks
-                                    </th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr>
-                                    <td class="text-start">
-                                        Capex
-                                    </td>
-                                    <td>
-                                        Rs. 2
-                                    </td>
-                                    <td></td>
-                                </tr>
-                                <tr>
-                                    <td class="text-start">
-                                        Other expenses/Utility Cost
-                                    </td>
-                                    <td>
-                                        Rs. 3
-                                    </td>
-                                    <td></td>
-                                </tr>
-                                <tr>
-                                    <td class="text-start">
-                                        DMFICEP Filing Cost
-                                    </td>
-                                    <td>
-                                        Rs. 4
-                                    </td>
-                                    <td></td>
-                                </tr>
-                                <tr>
-                                    <td class="text-start">
-                                        Litigation Patent Cost
-                                    </td>
-                                    <td>
-                                        Rs. 5
-                                    </td>
-                                    <td></td>
-                                </tr>
-                                <tr>
-                                    <td class="text-start">
-                                        Toxicity Study
-                                    </td>
-                                    <td>
-                                        Rs. 6
-                                    </td>
-                                    <td></td>
-                                </tr>
-                            </tbody>
-                        </table>
-                    </div>
-                    <div class="col-12 mb-4">
-                        <table class="table table-bordered text-center m-0 manhour-estimate-table">
-                            <thead class="bg-primary">
-                                <tr>
-                                    <th class="text-start">
-                                        Manhour Estimates
-                                    </th>
-                                    <th>
-                                        No Of Employees
-                                    </th>
-                                    <th>
-                                        Months
-                                    </th>
-                                    <th>
-                                        Hours
-                                    </th>
-                                    <th>
-                                        Cost
-                                    </th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr>
-                                    <td class="text-start">
-                                        PFD Department
-                                    </td>
-                                    <td>
-                                        2
-                                    </td>
-                                    <td>18</td>
-                                    <td>6336</td>
-                                    <td>Rs. 88,70,400.00</td>
-                                </tr>
-                                <tr>
-                                    <td class="text-start">
-                                        Analytical Development Departments
-                                    </td>
-                                    <td>
-                                        3
-                                    </td>
-                                    <td>4</td>
-                                    <td>2112</td>
-                                    <td>Rs. 29,56,800.00</td>
-                                </tr>
-                                <tr>
-                                    <td class="text-start">
-                                        Analytical Validation Department
-                                    </td>
-                                    <td>
-                                        2
-                                    </td>
-                                    <td>5</td>
-                                    <td>1760</td>
-                                    <td>Rs. 24,64,000.00</td>
-                                </tr>
-                                <tr>
-                                    <td class="text-start">
-                                        Analytical Meathod Transfer Department
-                                    </td>
-                                    <td>
-                                        1
-                                    </td>
-                                    <td>6</td>
-                                    <td>1056</td>
-                                    <td>Rs. 14,78,400.00</td>
-                                </tr>
-                                <tr>
-                                    <td class="text-start">
-                                        Impurity Department
-                                    </td>
-                                    <td>
-                                        3
-                                    </td>
-                                    <td>7</td>
-                                    <td>3696</td>
-                                    <td>Rs. 51,74,400.00</td>
-                                </tr>
-                                <tr>
-                                    <td class="text-start">
-                                        Stability Department
-                                    </td>
-                                    <td>
-                                        2
-                                    </td>
-                                    <td>8</td>
-                                    <td>2816</td>
-                                    <td>Rs. 39,42,400.00</td>
-                                </tr>
-                                <tr>
-                                    <td class="text-start">
-                                        Technology Transfer Department
-                                    </td>
-                                    <td>
-                                        3
-                                    </td>
-                                    <td>9</td>
-                                    <td>4752</td>
-                                    <td>Rs. 66,52,800.00</td>
-                                </tr>
-                                <tr class="fw-bold">
-                                    <td class="text-start">
-                                        Total Cost Of Man Hours
-                                    </td>
-                                    <td>
-                                    </td>
-                                    <td></td>
-                                    <td>22528</td>
-                                    <td>Rs. 3,15,39,200.00</td>
-                                </tr>
-                            </tbody>
-                        </table>
-                    </div>
-                    <div class="col-6 mb-4">
-                        <table class="table table-bordered text-center m-0 head-wise-budget-table">
-                            <thead class="bg-primary">
-                                <tr>
-                                    <th class="text-start">
-                                        Head-Wise Budget (in Lacs)
-                                    </th>
-                                    <th>
-                                        Rupee (In Lac)
-                                    </th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr>
-                                    <td class="text-start">
-                                        Total Cost Of Analytical Rawmaterial
-                                    </td>
-                                    <td>
-                                        Rs. 40
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td class="text-start">
-                                        Total Cost Of Rawmaterial
-                                    </td>
-                                    <td>
-                                        Rs. 9
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td class="text-start">
-                                        Total Cost Of Man Hours
-                                    </td>
-                                    <td>
-                                        Rs. 3,15,39,200
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td class="text-start">
-                                        Capex
-                                    </td>
-                                    <td>
-                                        Rs. 2
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td class="text-start">
-                                        Other Expenses! Utility Cost
-                                    </td>
-                                    <td>
-                                        Rs. 3
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td class="text-start">
-                                        Litigation cost iPatent Registration Cost Toxicity study
-                                    </td>
-                                    <td>
-                                        Rs. 5
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td class="text-start">
-                                        DMF Filing Cost
-                                    </td>
-                                    <td>
-                                        Rs. 4
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td class="text-start">
-                                        Bio Cost
-                                    </td>
-                                    <td>
-                                        Rs. 6
-                                    </td>
-                                </tr>
-                                <tr class="fw-bold">
-                                    <td class="text-start">
-                                        Total API Project Cost
-                                    </td>
-                                    <td>
-                                        Rs. 3,15,39,269
-                                    </td>
-                                </tr>
-                            </tbody>
-                        </table>
-                    </div>
-                    <div class="col-6 mb-4"></div>
-                    <div class="col-12 d-flex flex-wrap mb-4">
-                        <div class="col-3 text-center mt-5">
-                            <h6 class="m-0 fw-bold">Dr. Abhijit Roychowdhury</h6>
-                            <p class="m-0 fw-bold">API R&D</p>
-                        </div>
-                        <div class="col-3 text-center mt-5">
-                            <h6 class="m-0 fw-bold">Dr. Parag Gatane</h6>
-                            <p class="m-0 fw-bold">Project Management</p>
-                        </div>
-                        <div class="col-3 text-center mt-5">
-                            <h6 class="m-0 fw-bold">Dr. M K Gurjar</h6>
-                            <p class="m-0 fw-bold">CSO</p>
-                        </div>
-                        <div class="col-3 text-center mt-5">
-                            <h6 class="m-0 fw-bold">Mr.Sanjay Mehta</h6>
-                            <p class="m-0 fw-bold">President Commercial</p>
-                        </div>
-                    </div>
-                </form>
-            </div>
-        </section>
-
-
-        <!-- Control Sidebar -->
-        <aside class="control-sidebar control-sidebar-dark">
-            <!-- Control sidebar content goes here -->
-        </aside>
-        <!-- /.control-sidebar -->
-
-        <!-- Main Footer -->
-        <footer class="main-footer text-center">
-            <strong>Copyright &copy; 2022 <a href="../Home/index.html">Emcure</a>.</strong>
-            All rights reserved.
-        </footer>
-    </div>*@
+                @* ----------End -Save buttons-------------*@
+           
+        </div>
+    </div>
+</div>
 @section MyScripts {
     <link href="/lib/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
     <script src="/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="~/js/custom/pidf/APICharterDetailsForm.js"></script>
+    <script src="~/js/custom/pidf/APICharterDetailsForm.js?v=@jsVersion"></script>
     <script>
         var SaveStatus = "@TempData["SaveStatus"]";
         var ErrorMessage = "@SharedLocalizer["Error"]";

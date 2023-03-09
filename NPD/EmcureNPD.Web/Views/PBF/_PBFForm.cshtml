@@ -16,6 +16,47 @@
 }
 
 <div id="SavePIDFModel">
+    @*<div class="card">
+        <div id="PIDFFormTemplate">
+        @{
+        await Html.RenderPartialAsync("PIDF", new PIDFEntity());
+        }
+        </div>
+        </div>
+        <div class="card">
+        <div class="card-header ">
+        <h5 class="mb-0"><b>Internal Patent Details</b></h5>
+        <div class="card-tools">
+        <button type="button" class="btn btn-tool" data-toggle="collapse" data-target="#idpCollapse" title="Collapse">
+        <i class="fas fa-angle-double-down"></i>
+        </button>
+        </div>
+        <div id="idpCollapse" class="collapse">
+        <div class="card-body">
+        @Html.Partial("~/Views/PIDF/PIDF.cshtml",new PIDFEntity())
+        </div>
+        </div>
+        </div>
+        </div>
+        <div class="card">
+        <div class="card-header ">
+        <h5 class="mb-0"><b>Commercial Details</b></h5>
+        <div class="card-tools">
+        <button type="button" class="btn btn-tool" data-toggle="collapse" data-target="#comCollapse" title="Collapse">
+        <i class="fas fa-angle-double-down"></i>
+        </button>
+        </div>
+        <div id="comCollapse" class="collapse">
+        <div class="card-body">
+        @Html.Partial("~/Views/PIDF/PIDF.cshtml",new PIDFEntity())
+        </div>
+        </div>
+        </div>
+        </div>*@
+
+
+
+
     <form id="fpbfForm_@Model.BusinessUnitId" class="" asp-action="PBF" asp-controller="PBF" method="post">
         <input type="hidden" asp-for="Pidfid" />
         <input type="hidden" asp-for="Pidfpbfid" />
@@ -299,7 +340,7 @@
             </div>
         </div>
     </form>
-
+    <br />
 </div>
 @section MyScripts {
 
@@ -332,10 +373,6 @@
     var PFBAPIPIDFList = "@EmcureNPD.Web.Helpers.APIURLHelper.GetPFBAPIPIDFList";
     var GetAllPBF = "@EmcureNPD.Web.Helpers.APIURLHelper.GetPBFDropdown";
     var GetPBFReadonlyDataByPIDFId = "@EmcureNPD.Web.Helpers.APIURLHelper.GetPBFReadonlyDataByPIDFId";
-    var _selectBusinessUnit = "@UtilityHelper.Decreypt(Convert.ToString(Context.Request.Query["bui"]))";
-    var _PIDFID = "@UtilityHelper.Decreypt(Convert.ToString(Context.Request.Query["pidfid"]))";    
-     var GetActiveBusinessUnit = "@EmcureNPD.Web.Helpers.APIURLHelper.GetActiveBusinessUnit";
-      var _PBFPartialURL = "@Url.Action("PBFForm", "PIDF")";
     // #endregion
 
     //#region Static Messae Init

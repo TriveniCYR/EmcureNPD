@@ -20,7 +20,7 @@ namespace EmcureNPD.Business.Models
 
         public string ImprintingEmbossingCodes { get; set; }
 
-        public double? TotalExpenses { get; set; }
+        public double? TotalExpense { get; set; }
 
         public string ProjectComplexity { get; set; }
 

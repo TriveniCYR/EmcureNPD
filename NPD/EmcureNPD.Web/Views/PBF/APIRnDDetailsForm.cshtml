@@ -24,9 +24,7 @@
 }
 <div>
         <div id="CommercialPIDFScreen">
-            @{
-            await Html.RenderPartialAsync("~/Views/PIDF/PIDFCommercialDetails.cshtml", Model._commercialFormEntity);
-            }            
+          @*  @{ await Html.RenderPartialAsync("~/Views/PIDF/PIDFCommercialDetails.cshtml", Model._commercialFormEntity);   }  *@
         </div>     
     <div class="card card-outline card-primary">
         <div class="card-header">
@@ -283,7 +281,7 @@
     <script>
         var SaveStatus = "@TempData["SaveStatus"]";
         var ErrorMessage = "@SharedLocalizer["Error"]";
-        var GetAllMarketExtension = "@EmcureNPD.Web.Helpers.APIURLHelper.GetAllMarketExtension";
+        var GetAllMarketExtension = "@EmcureNPD.Web.Helpers.APIURLHelper.GetActiveBusinessUnit";
         var DBMarketID = "@Model.MarketID";
         
         document.addEventListener("DOMContentLoaded", function () {

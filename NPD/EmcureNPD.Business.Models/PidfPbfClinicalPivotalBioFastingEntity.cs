@@ -7,7 +7,8 @@ namespace EmcureNPD.Business.Models
 {
     public partial class PidfPbfClinicalPivotalBioFastingEntity
     {
-        public int PilotBioFastingId { get; set; }
+        public int PivotalBioFastingId { get; set; }
+        public long PBFClinicalId { get; set; }
         public string Fasting { get; set; }
         public int? NumberofVolunteers { get; set; }
         public decimal? ClinicalCostandVol { get; set; }
