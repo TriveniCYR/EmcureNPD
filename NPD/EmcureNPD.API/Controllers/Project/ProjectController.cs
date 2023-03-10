@@ -66,7 +66,7 @@ namespace EmcureNPD.API.Controllers.Project
             //return Ok(result);
         }
         [HttpPost("DeleteTaskSubTask/{id}")]
-        public async Task<IActionResult> DeleteBusinessUnit([FromRoute] int id)
+        public async Task<IActionResult> DeleteTaskSubTask([FromRoute] int id)
         {
             try
             {
