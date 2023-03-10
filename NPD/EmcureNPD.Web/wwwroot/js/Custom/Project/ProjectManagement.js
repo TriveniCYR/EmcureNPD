@@ -32,7 +32,7 @@ function GetTaskSubTaskListSuccess(data) {
 function GetTaskSubTaskListError(x, y, z) {
     toastr.error(ErrorMessage);
 }
-
+//#end region
 // getTaskSubTask by id
 function GetTaskSubTaskById(id) {
     ajaxServiceMethod($('#hdnBaseURL').val() + GetTaskSubTaskByIds + "/" + id, 'GET', GetTaskSubTaskByIdSuccess, GetTaskSubTaskByIdError);
@@ -105,7 +105,7 @@ function GetTaskSubTaskByIdSuccess(data) {
 function GetTaskSubTaskByIdError(x, y, z) {
     toastr.error(ErrorMessage);
 }
-//end getTaskSubTask by id
+//end region
 
 
 
@@ -133,7 +133,7 @@ function DeleteTaskSubSuccess(data) {
 function DeleteTaskSubError(x, y, z) {
     toastr.error(ErrorMessage);
 }
-//end delete
+//end region
 
 //add task
 function AddTaskSubTask() {
@@ -236,7 +236,7 @@ function GetDropdownsForAddSubTaskError(x, y, z) {
 function HideAddSubTaskModel() {
     $('#AddSubTaskModel').modal('hide');
 }
-//end add sub task
+//#end region
 
 $('#AddSubTaskDuration').on('keypress', function () {
     var charCode = window.event.keyCode;
@@ -254,7 +254,7 @@ $('#AddSubTaskPercentage').on('keypress', function () {
     }
     return true;
 });
-
+//set percentage
 function setPercentage(statusID, idx) {
     if (statusID == 1) {
         //Completed Status
@@ -312,7 +312,7 @@ function setPercentage(statusID, idx) {
         }
     }
 }
-
+//#end region
 $('#AddTaskDuration').on('keypress', function () {
     var charCode = window.event.keyCode;
     if (charCode > 31 && (charCode < 48 || charCode > 57)) {

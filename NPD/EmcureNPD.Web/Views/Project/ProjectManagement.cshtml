@@ -552,7 +552,7 @@
                                         @Html.ValidationMessageFor(o => o.StartDate, "", new { @class = "text-danger" })
                                     </div>
                                     <div class="form-group required">
-                                        @Html.LabelFor(o => o.PriorityId, new { @class = "control-label" })
+                                        @Html.LabelFor(o => o.PriorityId,"Priority", new { @class = "control-label" })
                                         @Html.DropDownListFor(o => o.PriorityId, new SelectList(string.Empty, "Value", "Text"), "Please select option", htmlAttributes: new { @class = "form-control input-sm f-s-15 bg-eff4f55c w100per", id = "TaskPriority" })
                                         @Html.ValidationMessageFor(o => o.PriorityId, "", new { @class = "text-danger" })
                                     </div>
@@ -565,7 +565,7 @@
                                 </div>
                                 <div class="col-sm-6">
                                     <div class="form-group required">
-                                        @Html.LabelFor(o => o.TaskOwnerId, new { @class = "control-label" })
+                                        @Html.LabelFor(o => o.TaskOwnerId,"Task Owner", new { @class = "control-label" })
                                         @Html.DropDownListFor(o => o.TaskOwnerId, new SelectList(string.Empty, "Value", "Text"), "Please select option", htmlAttributes: new { @class = "form-control input-sm f-s-15 bg-eff4f55c w100per", id = "TaskOwner" })
                                         @Html.ValidationMessageFor(o => o.TaskOwnerId, "", new { @class = "text-danger" })
                                     </div>
@@ -582,7 +582,7 @@
                                         @Html.ValidationMessageFor(o => o.EndDate, "", new { @class = "text-danger" })
                                     </div>
                                     <div class="form-group required">
-                                        @Html.LabelFor(o => o.StatusId, new { @class = "control-label" })
+                                        @Html.LabelFor(o => o.StatusId,"Status", new { @class = "control-label" })
                                         @Html.DropDownListFor(o => o.StatusId, new SelectList(string.Empty, "Value", "Text"), "Please select option", htmlAttributes: new { @class = "form-control input-sm f-s-15 bg-eff4f55c w100per", id = "TaskStatus", onchange = "setPercentage(this.value,0)" })
                                         @Html.ValidationMessageFor(o => o.StatusId, "", new { @class = "text-danger" })
                                     </div>
@@ -705,7 +705,7 @@
                                         @Html.ValidationMessageFor(t => t.StartDate, "", new { @class = "text-danger" })
                                     </div>
                                     <div class="form-group required">
-                                        @Html.LabelFor(t => t.PriorityId, new { @class = "control-label" })
+                                        @Html.LabelFor(t => t.PriorityId,"Priority" ,new { @class = "control-label" })
                                         @Html.DropDownListFor(t => t.PriorityId, new SelectList(string.Empty, "Value", "Text"), "Please select option", htmlAttributes: new { @class = "form-control input-sm f-s-15 bg-eff4f55c w100per", id = "AddTaskPriority" })
                                         @Html.ValidationMessageFor(t => t.PriorityId, "", new { @class = "text-danger" })
                                     </div>
@@ -718,7 +718,7 @@
                                 </div>
                                 <div class="col-sm-6">
                                     <div class="form-group required">
-                                        @Html.LabelFor(t => t.TaskOwnerId, new { @class = "control-label" })
+                                        @Html.LabelFor(t => t.TaskOwnerId,"Task Owner", new { @class = "control-label" })
                                         @Html.DropDownListFor(t => t.TaskOwnerId, new SelectList(string.Empty, "Value", "Text"), "Please select option", htmlAttributes: new { @class = "form-control input-sm f-s-15 bg-eff4f55c w100per", id = "AddTaskOwner" })
                                         @Html.ValidationMessageFor(t => t.TaskOwnerId, "", new { @class = "text-danger" })
                                     </div>
@@ -734,7 +734,7 @@
                                         @Html.ValidationMessageFor(t => t.EndDate, "", new { @class = "text-danger" })
                                     </div>
                                     <div class="form-group required">
-                                        @Html.LabelFor(t => t.StatusId, new { @class = "control-label" })
+                                        @Html.LabelFor(t => t.StatusId,"Status", new { @class = "control-label" })
                                         @Html.DropDownListFor(t => t.StatusId, new SelectList(string.Empty, "Value", "Text"), "Please select option", htmlAttributes: new { @class = "form-control input-sm f-s-15 bg-eff4f55c w100per", id = "AddTaskStatus", onchange = "setPercentage(this.value,1)" })
                                         @Html.ValidationMessageFor(t => t.StatusId, "", new { @class = "text-danger" })
                                     </div>
@@ -788,7 +788,7 @@
                                         @Html.ValidationMessageFor(t => t.StartDate, "", new { @class = "text-danger" })
                                     </div>
                                     <div class="form-group required">
-                                        @Html.LabelFor(t => t.PriorityId, new { @class = "control-label" })
+                                        @Html.LabelFor(t => t.PriorityId,"Priority", new { @class = "control-label" })
                                         @Html.DropDownListFor(t => t.PriorityId, new SelectList(string.Empty, "Value", "Text"), "Please select option", htmlAttributes: new { @class = "form-control input-sm f-s-15 bg-eff4f55c w100per", id = "AddSubTaskPriority" })
                                         @Html.ValidationMessageFor(t => t.PriorityId, "", new { @class = "text-danger" })
                                     </div>
@@ -801,7 +801,7 @@
                                 </div>
                                 <div class="col-sm-6">
                                     <div class="form-group required">
-                                        @Html.LabelFor(t => t.TaskOwnerId, new { @class = "control-label" })
+                                        @Html.LabelFor(t => t.TaskOwnerId,"Task Owner", new { @class = "control-label" })
                                         @Html.DropDownListFor(t => t.TaskOwnerId, new SelectList(string.Empty, "Value", "Text"), "Please select option", htmlAttributes: new { @class = "form-control input-sm f-s-15 bg-eff4f55c w100per", id = "AddSubTaskOwner" })
                                         @Html.ValidationMessageFor(t => t.TaskOwnerId, "", new { @class = "text-danger" })
                                     </div>
@@ -817,7 +817,7 @@
                                         @Html.ValidationMessageFor(t => t.EndDate, "", new { @class = "text-danger" })
                                     </div>
                                     <div class="form-group required">
-                                        @Html.LabelFor(t => t.StatusId, new { @class = "control-label" })
+                                        @Html.LabelFor(t => t.StatusId,"Status", new { @class = "control-label" })
                                         @Html.DropDownListFor(t => t.StatusId, new SelectList(string.Empty, "Value", "Text"), "Please select option", htmlAttributes: new { @class = "form-control input-sm f-s-15 bg-eff4f55c w100per", id = "AddSubTaskStatus", onchange = "setPercentage(this.value,2)" })
                                         @Html.ValidationMessageFor(t => t.StatusId, "", new { @class = "text-danger" })
                                     </div>
