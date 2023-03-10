@@ -11,8 +11,6 @@ namespace EmcureNPD.Data.DataAccess.Entity
         public long? Pidfid { get; set; }
         public int? StatusId { get; set; }
         public string NotificationTitle { get; set; }
-        public string PidfNo { get; set; }
-        public string NotificationTitleView { get; set; }
         public string NotificationDescription { get; set; }
         public DateTime CreatedDate { get; set; }
         public int CreatedBy { get; set; }
