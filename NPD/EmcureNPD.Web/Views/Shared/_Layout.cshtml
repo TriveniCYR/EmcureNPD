@@ -59,7 +59,7 @@
 		@Html.Partial("_Navigation")
 
 		<input type="hidden" id="hdnBaseURL" value="@Configuration.GetSection("Apiconfig")["baseurl"]" />
-		<input type="hidden" id="hdnWebBaseURL" value="@Configuration.GetSection("Apiconfig")["webbaseurl"]" />
+		<input type="hidden" id="hdnWebBaseURL"/>
 		<!-- Content Wrapper. Contains page content -->
 		@*@Html.Partial("_BreadCrumb")*@
 		<!-- Main content -->
@@ -136,6 +136,10 @@
 		var _RejectTitle = "@SharedLocalizer["Reject"]";
 		var _ApproveConfirm = "@SharedLocalizer["ApproveConfirm"]"
 		var _ApproveTitle = "@SharedLocalizer["Approve"]";
+
+		let webBaseUrl = window.location.origin + '/' + window.location.pathname.split('/')[1];
+		$("#hdnWebBaseURL").val(webBaseUrl);
+		console.log("webbaseurl:" + $("#hdnWebBaseURL").val())
 
 	</script>
     
