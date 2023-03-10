@@ -543,7 +543,7 @@
                                         @Html.LabelFor(o => o.StartDate, new { @class = "control-label" })
                                         <div class="input-group date" id="startDate" data-target-input="nearest">
 
-                                            @Html.TextBoxFor(o => o.StartDate, new { @class = "form-control datetimepicker-input",type="datetime-local", autocomplete = "off", @readonly = "readonly" })
+                                            @Html.TextBoxFor(o => o.StartDate, new { @class = "form-control datetimepicker-input",type="date", autocomplete = "off", @readonly = "readonly" })
                                             <div class="input-group-append" data-target="#DRFEditStartDate" data-toggle="datetimepicker">
                                                 <div class="input-group-text"><i class="fa fa-calendar"></i></div>
                                             </div><br>
@@ -573,7 +573,7 @@
                                         @Html.LabelFor(o => o.EndDate, new { @class = "control-label" })
                                         <div class="input-group date" id="endDate" data-target-input="nearest">
 
-                                            @Html.TextBoxFor(o => o.EndDate, new { @class = "form-control datetimepicker-input",type="datetime-local", autocomplete = "off", @readonly = "readonly" })
+                                            @Html.TextBoxFor(o => o.EndDate, new { @class = "form-control datetimepicker-input",type="date", autocomplete = "off", @readonly = "readonly" })
                                             <div class="input-group-append" data-target="#DRFEditEndDate" data-toggle="datetimepicker">
                                                 <div class="input-group-text"><i class="fa fa-calendar"></i></div>
                                             </div><br>

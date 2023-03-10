@@ -69,8 +69,16 @@ function GetTaskSubTaskByIdSuccess(data) {
         });
         $('#TaskStatus option[value="' + data._object.editTaskStatusId + '"]').attr("selected", true);
 
-        $("#StartDate").val(data._object.startDate);
-        $("#EndDate").val(data._object.endDate);
+        var startDate = new Date(data._object.startDate);
+        var endDate = new Date(data._object.endDate);
+
+        // Format the date strings in the "YYYY-MM-DD" format
+        var formattedStartDate = startDate.getFullYear() + '-' + ('0' + (startDate.getMonth() + 1)).slice(-2) + '-' + ('0' + startDate.getDate()).slice(-2);
+        var formattedEndDate = endDate.getFullYear() + '-' + ('0' + (endDate.getMonth() + 1)).slice(-2) + '-' + ('0' + endDate.getDate()).slice(-2);
+
+        $("#StartDate").val(formattedStartDate);
+        $("#EndDate").val(formattedEndDate);
+
 
         $("#TaskDuration").val(data._object.taskDuration);
         $("#projectTaskId").val(data._object.projectTaskId)
