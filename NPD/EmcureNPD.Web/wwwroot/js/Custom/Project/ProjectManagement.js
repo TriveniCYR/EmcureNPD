@@ -247,18 +247,61 @@ $('#AddSubTaskPercentage').on('keypress', function () {
     return true;
 });
 
-function setSubTaskPercentage(statusID, idx) {
+function setPercentage(statusID, idx) {
     if (statusID == 1) {
         //Completed Status
-        $(".disabledSubTaskPercentage").prop("readOnly", true);
-        $('#AddSubTaskPercentage').val('0');
-    } else if (statusID == 2) {
-        $(".disabledSubTaskPercentage").prop("readOnly", true);
-        $('#AddSubTaskPercentage').val('0');
+        if (idx == 2) {
+            $(".disabledSubTaskPercentage").prop("readOnly", true);
+            $('#AddSubTaskPercentage').val('0');
+        } else if (idx == 1) {
+            $(".disabledTaskPercentage").prop("readOnly", true);
+            $('#AddTaskPercentage').val('0');
+        }
+        else if (idx == 0) {
+            $(".disabledPercentage").prop("readOnly", true);
+            $('#TaskPercentage').val('0');
+        }
+    }
+    else if (statusID == 2) {
+        //InProgress status
+        if (idx == 2) {
+            $(".disabledSubTaskPercentage").prop("readOnly", false);
+            $('#AddSubTaskPercentage').val('0');
+        } else if (idx == 1) {
+            $(".disabledTaskPercentage").prop("readOnly", false);
+            $('#AddTaskPercentage').val('0');
+        }
+        else if (idx == 0) {
+            $(".disabledPercentage").prop("readOnly", false);
+            $('#TaskPercentage').val('0');
+        }
     }
     else if (statusID == 3) {
-        $(".disabledSubTaskPercentage").prop("readOnly", true);
-        $('#AddSubTaskPercentage').val('100');
+        //Initial status
+        if (idx == 2) {
+            $(".disabledSubTaskPercentage").prop("readOnly", true);
+            $('#AddSubTaskPercentage').val('100');
+        } else if (idx == 1) {
+            $(".disabledTaskPercentage").prop("readOnly", true);
+            $('#AddTaskPercentage').val('100');
+        }
+        else if (idx == 0) {
+            $(".disabledPercentage").prop("readOnly", true);
+            $('#TaskPercentage').val('100');
+        }
+    }
+    else {
+        if (idx == 2) {
+            $(".disabledSubTaskPercentage").prop("readOnly", false);
+            $('#AddSubTaskPercentage').val('0');
+        } else if (idx == 1) {
+            $(".disabledTaskPercentage").prop("readOnly", false);
+            $('#AddTaskPercentage').val('0');
+        }
+        else if (idx == 0) {
+            $(".disabledPercentage").prop("readOnly", false);
+            $('#TaskPercentage').val('0');
+        }
     }
 }
 
@@ -279,27 +322,6 @@ $('#AddTaskPercentage').on('keypress', function () {
     return true;
 });
 
-function setPercentage(statusID, idx) {
-    if (statusID == 1) {
-        //Completed Status
-            $(".disabledSubTaskPercentage").prop("readOnly", true);
-        $('#AddTaskPercentage').val('0');
-    } else if (statusID == 2) {
-            $(".disabledTaskPercentage").prop("readOnly", true);
-            $('#AddTaskPercentage').val('0');
-    }
-    else if (statusID == 3) {
-            $(".disabledPercentage").prop("readOnly", true);
-            $('#AddTaskPercentage').val('100');
-        }
-}
-
-$(function () {
-    $('.datetimepicker').datetimepicker({
-        format: 'YYYY-MM-DD'
-    });
-});
-
 $(function () {
     $('.datetimepicker').datetimepicker({
         format: 'YYYY-MM-DD'
@@ -307,56 +329,47 @@ $(function () {
 });
 
 //Not Wokring 
-$(function () {
-    // attach change event to start date field
-    $("#AddTaskStartDate").change(function (e) {
-        console.log("Change called");
-        var tempMinDate = new Date(e.date);
-        var setminDate = new Date(tempMinDate);
-        setminDate.setDate(tempMinDate.getDate() + 1);
-        $('#AddTaskStartDate').data("DateTimePicker").minDate(setminDate);
-        updateDurationField();
-    });
+//$(function () {
+//    // attach change event to start date field
+//    $("#AddTaskStartDate").on("dp.change", function (e) {
+//        console.log("Change called");
+//        var tempMinDate = new Date(e.date);
+//        var setminDate = new Date(tempMinDate);
+//        setminDate.setDate(tempMinDate.getDate() + 1);
+//        $('#AddTaskStartDate').data("DateTimePicker").minDate(setminDate);
+//        $('#AddTaskDuration').val(calculateDaysDifference($("#AddTaskStartDate").val(), $('#AddTaskEndDate').val()));
 
-    // attach change event to end date field
-    $("#AddTaskEndDate").change(function (e) {
-        updateDurationField();
-    });
+//    });
+//    $("#AddTaskEndDate").on("dp.change", function (e) {
+//        console.log("Change called");
+//        var tempMinDate = new Date(e.date);
+//        var setminDate = new Date(tempMinDate);
+//        setminDate.setDate(tempMinDate.getDate() + 1);
+//        $('#AddTaskStartDate').data("DateTimePicker").minDate(setminDate);
+//        $('#AddTaskDuration').val(calculateDaysDifference($("#AddTaskStartDate").val(), $('#AddTaskEndDate').val()));
 
-    // calculate and update duration field value
-    function updateDurationField() {
-        var startDate = $("#AddTaskStartDate").val();
-        var endDate = $("#AddTaskEndDate").val();
-        var duration = calculateDaysDifference(startDate, endDate);
-        
-        $('#AddTaskDuration').val(duration);
-    }
+//    });
 
-    $("#AddSubTaskStartDate").change(function (e) {
-        console.log("Change called");
-        var tempMinDate = new Date(e.date);
-        var setminDate = new Date(tempMinDate);
-        setminDate.setDate(tempMinDate.getDate() + 1);
-        $('#AddSubTaskStartDate').data("DateTimePicker").minDate(setminDate);
-        updateDurationField();
-    });
+//    $("#AddSubTaskStartDate").on("dp.change", function (e) {
+//        console.log("Change called");
+//        var tempMinDate = new Date(e.date);
+//        var setminDate = new Date(tempMinDate);
+//        setminDate.setDate(tempMinDate.getDate() + 1);
+//        $('#AddSubTaskStartDate').data("DateTimePicker").minDate(setminDate);
+//        $('#AddSubTaskDuration').val(calculateDaysDifference($("#AddSubTaskStartDate").val(), $('#AddSubTaskEndDate').val()));
 
-    // attach change event to end date field
-    $("#AddSubTaskEndDate").change(function (e) {
-        updateSubDurationField();
-    });
+//    });
+//    $("#AddSubTaskEndDate").on("dp.change", function (e) {
+//        console.log("Change called");
+//        var tempMinDate = new Date(e.date);
+//        var setminDate = new Date(tempMinDate);
+//        setminDate.setDate(tempMinDate.getDate() + 1);
+//        $('#AddSubTaskStartDate').data("DateTimePicker").minDate(setminDate);
+//        $('#AddSubTaskDuration').val(calculateDaysDifference($("#AddSubTaskStartDate").val(), $('#AddSubTaskEndDate').val()));
 
-    // calculate and update duration field value
-    function updateSubDurationField() {
-        var startDate = $("#AddSubTaskStartDate").val();
-        var endDate = $("#AddSubTaskEndDate").val();
-        var duration = calculateDaysDifference(startDate, endDate);
-        $('#AddSubTaskDuration').val(duration);
-    }
+//    });
+//});
 
-
-
-});
 
 //calculate days diff
 function calculateDaysDifference(start, end) {
