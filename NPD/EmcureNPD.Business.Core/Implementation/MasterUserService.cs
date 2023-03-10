@@ -245,8 +245,8 @@ namespace EmcureNPD.Business.Core.ServiceImplementations
                     var result = await _repository.GetDataSetBySP("stp_npd_RemoveAllMultipleMappingofMasterUser", System.Data.CommandType.StoredProcedure, osqlParameter);
                      objUser = FillMappingData(entityUser, objUser);
                     _repository.UpdateAsync(objUser);
-                    var isSuccess = await _auditLogService.CreateAuditLog<MasterUser>(Utility.Audit.AuditActionType.Update,
-                  Utility.Enums.ModuleEnum.UserManagement, OldObjUser, objUser, 0);
+                  //  var isSuccess = await _auditLogService.CreateAuditLog<MasterUser>(Utility.Audit.AuditActionType.Update,
+                  //Utility.Enums.ModuleEnum.UserManagement, OldObjUser, objUser, 0);
 
                 }
                 else

@@ -300,12 +300,15 @@ namespace EmcureNPD.Web.Helpers
         public static string GetAllFinalSelection = "api/CommercialPIDFForm/GetAllFinalSelection";
         public static string PIDMedicalForm = "api/Medical/PIDMedicalForm";
         public static string GetMedicalFormdata = "api/Medical/GetPIDFMedicalFormData";
-        public static string GetAPIIPDFormData = "api/PBF/GetAPIIPDFormData";
-        public static string InsertUpdateAPIIPD = "api/PBF/InsertUpdateAPIIPD";
-        public static string GetAPIRnDFormData = "api/PBF/GetAPIRnDFormData";
-        public static string InsertUpdateAPIRnD = "api/PBF/InsertUpdateAPIRnD";
-        public static string GetAPICharterFormData = "api/PBF/GetAPICharterFormData";
-        public static string InsertUpdateAPICharter = "api/PBF/InsertUpdateAPICharter";
+        #endregion
+
+        #region API
+        public static string GetAPIIPDFormData = "api/API/GetAPIIPDFormData";
+        public static string InsertUpdateAPIIPD = "api/API/InsertUpdateAPIIPD";
+        public static string GetAPIRnDFormData = "api/API/GetAPIRnDFormData";
+        public static string InsertUpdateAPIRnD = "api/API/InsertUpdateAPIRnD";
+        public static string GetAPICharterFormData = "api/API/GetAPICharterFormData";
+        public static string InsertUpdateAPICharter = "api/API/InsertUpdateAPICharter";  
         #endregion
 
         #region API List

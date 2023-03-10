@@ -7,13 +7,12 @@
 @inject IHttpContextAccessor HttpContextAccessor
 @inject Microsoft.Extensions.Localization.IStringLocalizer<EmcureNPD.Resource.Master> MasterLocalizer
 @inject Microsoft.Extensions.Localization.IStringLocalizer<EmcureNPD.Resource.Shared> SharedLocalizer
+@model EmcureNPD.Business.Models.PIDFAPIRnDFormEntity
 @using Microsoft.Extensions.Configuration
 @inject IConfiguration Configuration
 
-@model EmcureNPD.Business.Models.PIDFAPIIPDFormEntity
-
 @{
-    ViewData["Title"] = @MasterLocalizer["APIIPDDetails"];
+    ViewData["Title"] = @MasterLocalizer["APIRndDetails"];
     string countryName = string.Empty;
     string jsVersion = @Configuration.GetSection("StaticJS")["version"];
     if (@Model.IPEvalution.CountryIds != null && @Model.IPEvalution.MasterCountries != null)
@@ -25,13 +24,11 @@
 }
 <div>
     <div id="CommercialPIDFScreen">
-        @{
-            await Html.RenderPartialAsync("~/Views/Commercial/PIDFCommercialDetails.cshtml", Model._commercialFormEntity);
-        }
+        @*  @{ await Html.RenderPartialAsync("~/Views/PIDF/PIDFCommercialDetails.cshtml", Model._commercialFormEntity);   }  *@
     </div>
     <div class="card card-outline card-primary">
         <div class="card-header bg-primary">
-            <h5 class="mb-0"><b>@MasterLocalizer["APIIPDDetailsForm"]</b></h5>
+            <h5 class="mb-0"><b>@MasterLocalizer["APIRndDetailsForm"]</b></h5>
             <div class="card-tools">
                 <button type="button" name="collapseButton" class="btn btn-tool" data-card-widget="collapse" title="Collapse">
                     <i class="fas fa-minus"></i>
@@ -39,12 +36,11 @@
             </div>
         </div>
         <div class="card-body">
-            <form asp-action="APIIPDDetailsForm" asp-controller="PBF" enctype="multipart/form-data" method="post">
+            <form asp-action="APIRnDDetailsForm" asp-controller="API" method="post">
                 <input type="hidden" asp-for="Pidfid" />
-                <input type="hidden" asp-for="APIIPDDetailsFormID" />
+                <input type="hidden" asp-for="PIDFAPIRnDFormID" />
                 <input type="hidden" asp-for="BusinessUnitId" />
                 <input type="hidden" asp-for="SaveType" />
-
                 <div class="row">
                     <div class="col-md-4">
                         <div class="form-group required">
@@ -52,27 +48,53 @@
                             @Html.TextBoxFor(model => model.ProjectName, new { @readonly = "readonly",  @class = "form-control", @placeholder = @MasterLocalizer["ProjectName"] })
                         </div>
                     </div>
-                    <div class="col-md-8">  <input asp-for="IsModelValid" style="visibility: hidden;" /></div>
-                </div>
-                <div class="row">
-                    <div class="col-md-3">
+                    <div class="col-md-4">
                         <div class="form-group required">
-                            @Html.LabelFor(model => model.MarketDetailsNewPortCGIDetails,@MasterLocalizer["MarketDetailsNewPortCGIDetails"], new { @class = "control-label" })
-                            <input asp-for="MarketDetailsNewPortCGIDetails" class="form-control" />
-                            @Html.ValidationMessageFor(model => model.MarketDetailsNewPortCGIDetails, "", new { @class = "text-danger" })
-                            <lable id="valmsgMarketDetailsNewPortCGIDetails" class="text-danger"></lable>
+                            @Html.LabelFor(model => model.MarketID  ,@MasterLocalizer["MarketID"], new { @class = "control-label" })
+                            @Html.DropDownListFor(model => model.MarketID, new List<SelectListItem> { },  new { @class = "form-control"})
                         </div>
                     </div>
-                    <div class="col-md-2">
-                        @*   <a id="btnPreview" style="margin-top:32px" class="btn btn-primary">@MasterLocalizer["Preview"]</a>*@
-                    </div>
-                    <div class="col-md-7">
+                    <div class="col-md-4">
                         <div class="form-group required">
-                            <img height="100" width="300" src="@Model.MarketDetailsFileName" id="imgPreviewMarketdetails" />
+                            @Html.LabelFor(model => model.SponsorBusinessPartner,@MasterLocalizer["SponsorBusinessPartner"], new { @class = "control-label" })
+                            <span class="text-danger">*</span>
+                            @Html.TextBoxFor(model => model.SponsorBusinessPartner, new { @class = "form-control", @placeholder = @MasterLocalizer["SponsorBusinessPartner"] })
+
+                            <lable id="valmsgSponsorBusinessPartner" class="text-danger"></lable>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="form-group required">
+                            @Html.LabelFor(model => model.APIMarketPrice,@MasterLocalizer["APIMarketPrice"], new { @class = "control-label" })
+                            <span class="text-danger">*</span>
+                            @Html.TextBoxFor(model => model.APIMarketPrice, new { @class = "form-control", @placeholder = @MasterLocalizer["APIMarketPrice"] })
+
+                            <lable id="valmsgAPIMarketPrice" class="text-danger"></lable>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="form-group required">
+                            @Html.LabelFor(model => model.APITargetRMC_CCPC,@MasterLocalizer["APITargetRMC_CCPC"], new { @class = "control-label" })
+                            <span class="text-danger">*</span>
+                            @Html.TextBoxFor(model => model.APITargetRMC_CCPC, new { @class = "form-control", @placeholder = @MasterLocalizer["APITargetRMC_CCPC"] })
+
+                            <lable id="valmsgAPITargetRMC_CCPC" class="text-danger"></lable>
+                        </div>
+                        <input asp-for="IsModelValid" style="visibility: hidden;" />
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-7">
+
+                        <div class="form-group required">
+                            <lable class="control-label"> @MasterLocalizer["MarketDetailsNewPortCGIDetails"]</lable>
+                            @if (Model.MarketDetailsFileName != null || Model.MarketDetailsFileName != "")
+                            {
+                                <img height="100" width="300" src="@Model.MarketDetailsFileName" id="imgPreviewMarketdetails" />
+                            }
                             <input type="hidden" asp-for="MarketDetailsFileName" />
                         </div>
                     </div>
-
                     @* <input type="hidden" id="SaveType" />
                     <input type="hidden" id="LoggedInUserId" value=@UtilityHelper.Encrypt(Convert.ToString(@Model.CreatedBy)) />*@
                 </div>
@@ -80,31 +102,68 @@
                 <div class="row">
                     <div class="col-md-3">
                         <div class="form-group required">
-                            @Html.LabelFor(model => model.ProductTypeId,@MasterLocalizer["ProductType"], new { @class = "control-label" })
-                            @*@Html.DropDownListFor(model=>model.ProductTypeId, new List<SelectListItem> { }, new { @class = "control-label" })*@
-                            <select id="ProductTypeId" name="ProductTypeId" class="form-control"></select>
+                            @Html.LabelFor(model => model.ProductType,@MasterLocalizer["ProductType"], new { @class = "control-label" })
+                            @Html.TextBoxFor(model => model.ProductType, new {@readonly = "readonly", @class = "form-control"})
                         </div>
                     </div>
                     <div class="col-md-3">
                         <div class="form-group required">
                             @Html.LabelFor(model => model.DrugsCategory,@MasterLocalizer["DrugsCategory"], new { @class = "control-label" })
-                            <span class="text-danger">*</span>
-                            @Html.TextBoxFor(model => model.DrugsCategory, new { @class = "form-control"})
-
-                            <lable id="valmsgDrugsCategory" class="text-danger"></lable>
+                            @Html.TextBoxFor(model => model.DrugsCategory, new {@readonly = "readonly", @class = "form-control"})
                         </div>
                     </div>
                     <div class="col-md-3">
                         <div class="form-group required">
                             @Html.LabelFor(model => model.ProductStrength,@MasterLocalizer["ProductStrength"], new { @class = "control-label" })
-                            <span class="text-danger">*</span>
-                            @Html.TextBoxFor(model => model.ProductStrength, new {@class = "form-control"})
-                            <lable id="valmsgProductStrength" class="text-danger"></lable>
+                            @Html.TextBoxFor(model => model.ProductStrength, new {@readonly = "readonly",@class = "form-control"})
+
                         </div>
                     </div>
                 </div>
+                <h3 class="bg-primary">@MasterLocalizer["FormulationQuantityRequiredKG/GmStage"]</h3>
+                <div class="row">
+                    <div class="col-md-4">
+                        <div class="form-group required">
+                            @Html.LabelFor(model => model.Development,@MasterLocalizer["Development"], new { @class = "control-label" })
+                            <span class="text-danger">*</span>
+                            @Html.TextBoxFor(model => model.Development, new { @autocomplete = "off",@class = "form-control"})
+                            <lable id="valmsgDevelopment" class="text-danger"></lable>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="form-group required">
+                            @Html.LabelFor(model => model.ScaleUp,@MasterLocalizer["ScaleUp"], new { @class = "control-label" })
+                            <span class="text-danger">*</span>
+                            @Html.TextBoxFor(model => model.ScaleUp, new { @autocomplete = "off",@class = "form-control"})
+                            <lable id="valmsgScaleUp" class="text-danger"></lable>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="form-group required">
+                            @Html.LabelFor(model => model.Exhibit,@MasterLocalizer["Exhibit"], new { @class = "control-label" })
+                            <span class="text-danger">*</span>
+                            @Html.TextBoxFor(model => model.Exhibit, new { @autocomplete = "off",@class = "form-control"})
+                            <lable id="valmsgExhibit" class="text-danger"></lable>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="form-group required">
+                            @Html.LabelFor(model => model.PlantQC,@MasterLocalizer["PlantQC"], new { @class = "control-label" })
+                            <span class="text-danger">*</span>
+                            @Html.TextBoxFor(model => model.PlantQC, new { @autocomplete = "off",@class = "form-control"})
+                            <lable id="valmsgPlantQC" class="text-danger"></lable>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="form-group required">
+                            @Html.LabelFor(model => model.Total,@MasterLocalizer["Total"], new { @class = "control-label" })
+                            <span class="text-danger">*</span>
+                            <lable id="valmsgTotal" class="text-danger"></lable>
+                            @Html.TextBoxFor(model => model.Total, new { @autocomplete = "off",@class = "form-control"})
 
-
+                        </div>
+                    </div>
+                </div>
 
 
                 @* ----------Start -IPEvalution-------------*@
@@ -190,12 +249,12 @@
 
                 @* ----------Start -Save buttons-------------*@
                 <div class="row">
-                    <div class="col-md-9"></div>
-                    <div class="col-md-3">
+                     <div class="col-md-9" ></div>
+                    <div class="col-md-3" >
                         <div class="form-group">
                             <button style="visibility: hidden;" type="submit" id="Save" class="btn btn-success">@SharedLocalizer["Submit"]</button>
                             <a class="btn btn-danger" asp-action="PIDFList" asp-controller="PIDF"
-                               asp-route-ScreenId="@Convert.ToString((int)EmcureNPD.Utility.Enums.PIDFScreen.API)">@SharedLocalizer["Cancel"]</a>
+                            asp-route-ScreenId="@Convert.ToString((int)EmcureNPD.Utility.Enums.PIDFScreen.API)">@SharedLocalizer["Cancel"]</a>
                             <button type="submit" id="SaveDraft" class="btn btn-primary">@SharedLocalizer["SaveDraft"]</button>
                         </div>
                     </div>
@@ -233,12 +292,13 @@
 @section MyScripts {
     <link href="/lib/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
     <script src="/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="~/js/custom/pidf/apiipddetailsform.js?v=@jsVersion"></script>
+    <script src="~/js/custom/api/apirnddetailsform.js?v=@jsVersion"></script>
+
     <script>
         var SaveStatus = "@TempData["SaveStatus"]";
         var ErrorMessage = "@SharedLocalizer["Error"]";
-        var GetAllProductType = "@EmcureNPD.Web.Helpers.APIURLHelper.GetAllProductType";
-        var DBProductTypeId = "@Model.ProductTypeId";
+        var GetAllMarketExtension = "@EmcureNPD.Web.Helpers.APIURLHelper.GetActiveBusinessUnit";
+        var DBMarketID = "@Model.MarketID";
 
         document.addEventListener("DOMContentLoaded", function () {
             var tabList = [].slice.call(document.querySelectorAll("#mainDivCommercial a"));
