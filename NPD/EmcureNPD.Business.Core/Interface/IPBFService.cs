@@ -14,20 +14,7 @@ namespace EmcureNPD.Business.Core.Interface
 	{
 		Task<dynamic> FillDropdown();
 		Task<PidfPbfEntity> GetPbfFormData(long pidfId, int buid, int? strengthid);
-		Task<DBOperation> AddUpdatePBF(PidfPbfEntity pbfEntity);
-		
-		//------------Start------API_IPD_Details_Form_Entity--------------------------
-        Task<DBOperation> AddUpdateAPIIPD(IFormCollection entityPIDF,string _webrootPath);
-
-		Task<PIDFAPIIPDFormEntity> GetAPIIPDFormData(long pidfId, string _webrootPath);
-        //------------End------API_IPD_Details_Form_Entity--------------------------
-        Task<PIDFAPIRnDFormEntity> GetAPIRnDFormData(long pidfId, string _webrootPath);
-
-        //Task<DBOperation> AddUpdateAPIRnD(PIDFAPICharterFormEntity _oAPICharter);
-        Task<PIDFAPICharterFormEntity> GetAPICharterFormData(long pidfId,short IsCharter);
-        Task<PIDFAPICharterFormEntity> GetAPICharterSummaryFormData(long pidfId);
-        Task<DBOperation> AddUpdateAPICharter(PIDFAPICharterFormEntity _oAPICharter);
-        Task<DBOperation> AddUpdateAPIRnD(PIDFAPIRnDFormEntity _oAPIRnD);
+		Task<DBOperation> AddUpdatePBF(PidfPbfEntity pbfEntity);		
 		Task<PidfPbfAnalyticalEntity> GetPBFAnalyticalReadonlyData(long pidfid);
 
         // ---------------------------PBFDetails----------------------------

@@ -182,7 +182,7 @@ function InitializePIDFList() {
                     html += '<a class="ml-1 large-font" style="color:' + (_enableView ? "#007bff" : "grey") + '" href="' + (_enableView ? _CommercialForm : "#") + '&IsView=1"><i class="fa fa-fw fa-eye mr-1"></i></a>';
 
                 } else if (_screenId == "5") {
-                    var _APIForm = '/PBF/';
+                    var _APIForm = '/API/';
                     var _APIQS = '?pidfid=' + row.encpidfid + '&bui=' + row.encbud;
                     var _enable = (row.pidfStatusID == 7 || row.pidfStatusID == 10 || row.pidfStatusID == 11 || row.pidfStatusID == 12 || row.pidfStatusID == 13 || row.pidfStatusID == 14 || row.pidfStatusID == 15);
                     html += '<a class="large-font" title="IPD" style="color:' + (_enable ? "#007bff" : "grey") + '" href="' + (_enable ? _APIForm + "APIIPDDetailsForm" + _APIQS : "#") + '"><i class="fa fa-fw fa-columns mr-1"></i></a>';

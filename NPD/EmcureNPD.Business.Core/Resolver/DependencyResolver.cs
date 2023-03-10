@@ -58,7 +58,8 @@ namespace EmcureNPD.Business.Core.Resolver
             services.AddTransient<IMasterCurrencyService, MasterCurrencyService>();
 			services.AddTransient<IPBFService, PBFService>();
 			services.AddTransient<ICommercialFormService, CommercialFormService>();
-			
+            services.AddTransient<IAPIService, APIService>();
+
             services.AddTransient<IDashboardService, DashboardService>();
             services.AddTransient<ISchedulerService, SchedulerService>();
             services.AddTransient<INotificationService, NotificationService>();
