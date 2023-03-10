@@ -64,13 +64,13 @@ namespace EmcureNPD.Web.Controllers
             if (responseMessage.IsSuccessStatusCode)
             {
                 TempData[UserHelper.SuccessMessage] = data._Message;
-                return RedirectToAction("PIDFList", "PIDF", new { ScreenId = (int)PIDFScreen.Project });
+                return RedirectToAction("ProjectManagement", "Project", new {pidfid = UtilityHelper.Encrypt(addTask.Pidfid.ToString())});
             }
             else
             {
                 TempData[UserHelper.ErrorMessage] = data._Message;
                 ModelState.Clear();
-                return RedirectToAction("ProjectManagement", "Project");
+                return RedirectToAction("ProjectManagement", "Project", new { pidfid = UtilityHelper.Encrypt(addTask.Pidfid.ToString())});
             }
         }
     }

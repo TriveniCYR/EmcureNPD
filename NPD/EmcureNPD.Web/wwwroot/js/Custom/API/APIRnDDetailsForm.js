@@ -11,6 +11,13 @@ $(document).ready(function () {
             toastr.error(SaveStatus);
     }
     InitializeMarketDropdown(); 
+
+    if ($('#MarketDetailsFileName').val() == '') {
+        $('#imgPreviewMarketdetails').hide();
+    }
+    else {
+        $('#imgPreviewMarketdetails').show();
+    }
       
 });
 

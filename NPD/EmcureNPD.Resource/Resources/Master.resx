@@ -639,4 +639,7 @@
   <data name="APICharterSummaryDetails" xml:space="preserve">
     <value> API Charter Summary Details</value>
   </data>
+  <data name="PatentDetails" xml:space="preserve">
+    <value>Patent Details</value>
+  </data>
 </root>
