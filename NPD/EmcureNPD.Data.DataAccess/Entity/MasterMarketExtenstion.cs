@@ -9,7 +9,6 @@ namespace EmcureNPD.Data.DataAccess.Entity
     {
         public MasterMarketExtenstion()
         {
-            PidfApiRnDs = new HashSet<PidfApiRnD>();
             Pidfs = new HashSet<Pidf>();
         }
 
@@ -21,7 +20,6 @@ namespace EmcureNPD.Data.DataAccess.Entity
         public int? ModifyBy { get; set; }
         public DateTime? ModifyDate { get; set; }
 
-        public virtual ICollection<PidfApiRnD> PidfApiRnDs { get; set; }
         public virtual ICollection<Pidf> Pidfs { get; set; }
     }
 }

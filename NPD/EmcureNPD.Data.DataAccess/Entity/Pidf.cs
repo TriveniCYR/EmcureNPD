@@ -59,7 +59,6 @@ namespace EmcureNPD.Data.DataAccess.Entity
         public DateTime? StatusUpdatedDate { get; set; }
 
         public virtual MasterBusinessUnit BusinessUnit { get; set; }
-        public virtual MasterUser CreatedByNavigation { get; set; }
         public virtual MasterDium Dia { get; set; }
         public virtual MasterDosageForm DosageForm { get; set; }
         public virtual MasterPidfstatus LastStatus { get; set; }

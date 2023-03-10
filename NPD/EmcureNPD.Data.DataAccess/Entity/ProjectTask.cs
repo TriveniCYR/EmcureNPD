@@ -22,6 +22,7 @@ namespace EmcureNPD.Data.DataAccess.Entity
         public int CreatedBy { get; set; }
         public DateTime? ModifyDate { get; set; }
         public int? ModifyBy { get; set; }
+        public long? ParentId { get; set; }
 
         public virtual Pidf Pidf { get; set; }
         public virtual MasterProjectPriority Priority { get; set; }
