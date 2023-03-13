@@ -13,7 +13,6 @@ namespace EmcureNPD.Data.DataAccess.Entity
             MasterUserCountryMappings = new HashSet<MasterUserCountryMapping>();
             MasterUserDepartmentMappings = new HashSet<MasterUserDepartmentMapping>();
             MasterUserRegionMappings = new HashSet<MasterUserRegionMapping>();
-            Pidfs = new HashSet<Pidf>();
             ProjectTasks = new HashSet<ProjectTask>();
             UserSessionLogMasters = new HashSet<UserSessionLogMaster>();
         }
@@ -42,7 +41,6 @@ namespace EmcureNPD.Data.DataAccess.Entity
         public virtual ICollection<MasterUserCountryMapping> MasterUserCountryMappings { get; set; }
         public virtual ICollection<MasterUserDepartmentMapping> MasterUserDepartmentMappings { get; set; }
         public virtual ICollection<MasterUserRegionMapping> MasterUserRegionMappings { get; set; }
-        public virtual ICollection<Pidf> Pidfs { get; set; }
         public virtual ICollection<ProjectTask> ProjectTasks { get; set; }
         public virtual ICollection<UserSessionLogMaster> UserSessionLogMasters { get; set; }
     }

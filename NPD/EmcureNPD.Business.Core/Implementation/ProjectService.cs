@@ -34,6 +34,17 @@ namespace EmcureNPD.Business.Core.Implementation
         public ProjectTaskEntity GetDropDownsForTask()
         {
             ProjectTaskEntity TaskAddModel = new ProjectTaskEntity();
+            List<ProjectTaskEntity> mainTasks = new List<ProjectTaskEntity>();
+            var mainTaskList = _projectTaskRepository.GetAll().Where(x => x.TaskLevel == 1).ToList();
+            foreach(var data in mainTaskList)
+            {
+                ProjectTaskEntity temp = new ProjectTaskEntity();
+                temp.ProjectTaskId = data.ProjectTaskId;
+                temp.TaskName = data.TaskName;
+                mainTasks.Add(temp);
+            }
+            TaskAddModel.Task = mainTasks;
+
             List<MasterUserEntity> taskOwner = new List<MasterUserEntity>();
             var taskOwnerList = _masterUserRepository.GetAll().ToList();
 
@@ -120,6 +131,7 @@ namespace EmcureNPD.Business.Core.Implementation
                 task.TaskDuration = addTaskModel.TaskDuration;
                 task.TotalPercentage = addTaskModel.TotalPercentage;
                 task.TaskOwnerId = addTaskModel.TaskOwnerId;
+                task.ParentId = addTaskModel.ParentId;
                 _projectTaskRepository.AddAsync(task);
                 await _unitOfWork.SaveChangesAsync();
                 return DBOperation.Success;
@@ -147,9 +159,20 @@ namespace EmcureNPD.Business.Core.Implementation
         public async Task<DBOperation> DeleteTaskSubTask(int id)
         {
             var entityProject = _projectTaskRepository.Get(x => x.ProjectTaskId == id);
-            //var entityBusinessUnitRegionMapping = _repositoryMasterBusinessUnitRegionMapping.GetAllQuery().Where(x => x.BusinessUnitId == id);
             if (entityProject == null)
                 return DBOperation.NotFound;
+            if (entityProject.ParentId == null)
+            {
+                var childs = _projectTaskRepository.GetAll().Where(x => x.ParentId == entityProject.ProjectTaskId).ToList();
+                if (childs.Count > 0)
+                {
+                    foreach(var child in childs)
+                    {
+                       _projectTaskRepository.Remove(child);
+                    }
+                    
+                }
+            }
             _projectTaskRepository.Remove(entityProject);
             await _unitOfWork.SaveChangesAsync();
             return DBOperation.Success;
@@ -174,6 +197,7 @@ namespace EmcureNPD.Business.Core.Implementation
             TaskAddModel.ProjectTaskId = task.ProjectTaskId;
             TaskAddModel.Pidfid = task.Pidfid;
             TaskAddModel.TaskLevel = task.TaskLevel;
+            TaskAddModel.ParentId = task.ParentId;
             return TaskAddModel;
         }
     }

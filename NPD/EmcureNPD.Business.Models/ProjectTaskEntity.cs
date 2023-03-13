@@ -29,7 +29,8 @@ namespace EmcureNPD.Business.Models
         public int CreatedBy { get; set; }
         public DateTime? ModifyDate { get; set; }
         public int? ModifyBy { get; set; }
-
+        public long? ParentId { get; set; }
+        public List<ProjectTaskEntity> Task { get; set; }
         public virtual PIDFEntity Pidf { get; set; }
         public virtual List<MasterProjectPriorityEntity> Priority { get; set; }
         public virtual List<MasterProjectStatusEntity> Status { get; set; }

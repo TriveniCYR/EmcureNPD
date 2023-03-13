@@ -84,6 +84,7 @@ function GetTaskSubTaskByIdSuccess(data) {
         $("#projectTaskId").val(data._object.projectTaskId)
         $("#pidfid").val(data._object.pidfid)
         $("#tasklevel").val(data._object.taskLevel)
+        $("#parentId").val(data._object.parentId)
 
 
         if (data._object.editTaskStatusId == 1) {
@@ -199,6 +200,14 @@ function ShowAddSubTaskForm() {
 function GetDropdownsForAddSubTaskSuccess(data) {
     try {
         $('#loading').hide();
+        $('#AddSubTaskofTask').empty().append(
+            "<option value=''>Please select option</option>"
+        );
+
+        $.each(data.task, function (i, List) {
+            $("#AddSubTaskofTask").append('<option value="' + List.projectTaskId + '">' +
+                List.taskName + '</option>');
+        });
         $('#AddSubTaskOwner').empty().append(
             "<option value=''>Please select option</option>"
         );

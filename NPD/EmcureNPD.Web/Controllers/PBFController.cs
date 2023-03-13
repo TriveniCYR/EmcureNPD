@@ -197,6 +197,86 @@ namespace EmcureNPD.Web.Controllers
             }
             return RedirectToAction("PIDFList", "PIDF", new { ScreenId = 6 });
         }
+
+        //-------------------------------------Start-----KUldip NEw PBF Modules---------------------
+
+        // "PBFRnDDetailsForm" + _APIQS : "#"
+        //FForm + "PBFAnalyticalDetailsForm" 
+        //orm + "PBFClinicalDetailsForm" + _A
+
+        [HttpGet]
+        public IActionResult PBFRnDDetailsForm(string pidfid, string bui)
+        {
+            ModelState.Clear();
+            PidfPbfEntity oPIDForm = new();
+            try
+            {
+                int rolId = (int)HttpContext.Session.GetInt32(UserHelper.LoggedInRoleId);
+                RolePermissionModel objPermssion = UtilityHelper.GetCntrActionAccess(Convert.ToString(RouteData.Values["controller"]), rolId);
+                if (objPermssion == null || (!objPermssion.Add && !objPermssion.Edit))
+                {
+                    return RedirectToAction("AccessRestriction", "Home");
+                }
+                ViewBag.Access = objPermssion;
+                oPIDForm = GetPIDFPbfModel(pidfid, bui);
+                return View("PBFRnDForm", oPIDForm);
+            }
+            catch (Exception e)
+            {
+                ViewBag.errormessage = Convert.ToString(e.StackTrace);
+                return View("Login");
+            }
+        }
+        [HttpGet]
+        public IActionResult PBFClinicalDetailsForm(string pidfid, string bui)
+        {
+            ModelState.Clear();
+            PidfPbfEntity oPIDForm = new();
+            try
+            {
+                int rolId = (int)HttpContext.Session.GetInt32(UserHelper.LoggedInRoleId);
+                RolePermissionModel objPermssion = UtilityHelper.GetCntrActionAccess(Convert.ToString(RouteData.Values["controller"]), rolId);
+                if (objPermssion == null || (!objPermssion.Add && !objPermssion.Edit))
+                {
+                    return RedirectToAction("AccessRestriction", "Home");
+                }
+                ViewBag.Access = objPermssion;
+                oPIDForm = GetPIDFPbfModel(pidfid, bui);
+                return View("PBFClinicalForm", oPIDForm);
+            }
+            catch (Exception e)
+            {
+                ViewBag.errormessage = Convert.ToString(e.StackTrace);
+                return View("Login");
+            }
+        }
+
+        [HttpGet]
+        public IActionResult PBFAnalyticalDetailsForm(string pidfid, string bui)
+        {
+            ModelState.Clear();
+            PidfPbfEntity oPIDForm = new();
+            try
+            {
+                int rolId = (int)HttpContext.Session.GetInt32(UserHelper.LoggedInRoleId);
+                RolePermissionModel objPermssion = UtilityHelper.GetCntrActionAccess(Convert.ToString(RouteData.Values["controller"]), rolId);
+                if (objPermssion == null || (!objPermssion.Add && !objPermssion.Edit))
+                {
+                    return RedirectToAction("AccessRestriction", "Home");
+                }
+                ViewBag.Access = objPermssion;
+                oPIDForm = GetPIDFPbfModel(pidfid, bui);
+                return View("PBFAnalyticalForm", oPIDForm);
+            }
+            catch (Exception e)
+            {
+                ViewBag.errormessage = Convert.ToString(e.StackTrace);
+                return View("Login");
+            }
+        }
+
+        //-------------------------------------End-----KUldip NEw PBF Modules---------------------
+
     }
 
 }
