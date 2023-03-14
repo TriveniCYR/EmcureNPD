@@ -27,13 +27,7 @@
                             </h3>
                             <div class="card-tools md-left">
                                 <div class="mybtn-group">
-                                    <a class="btn btn-primary" href="@Url.Action("PIDFList","PIDF")"><i class="fas fa-list mr-1"></i>Project List</a>
-
-                                    <a class="btn btn-primary" href="@Url.Action("PIDFStrengthList","PIDF")"><i class="far fa-list-alt mr-1"></i>PIDF List</a>
-
-                                    <a class="btn btn-primary" href="@Url.Action("Index","GanttNew")"><i class="fas fa-project-diagram mr-2"></i>Gantt Chart</a>
-
-                                    <a class="btn btn-primary" href="@Url.Action("PIDFNew","PIDF")"><i class="far fa-plus-square mr-1"></i> Create New PIDF</a>
+                                    <a class="btn btn-primary" href="@Url.Action("Gantt","Project", new{pidfid =@ViewBag.id})"><i class="fas fa-project-diagram mr-2"></i>Gantt Chart</a>
 
                                     <button class="btn btn-primary" onclick="javascript:window.history.back();"><i class="fas fa-undo mr-1"></i> Back</button>
 
@@ -381,76 +375,33 @@
 
                             @*DRF List below*@
 
-                            <div class="row mt-1">
+                            @*Upload file details*@
+                            <div class="row">
                                 <section class="col-lg-12">
                                     <!-- Custom tabs (Charts with tabs)-->
                                     <div class="card">
-                                        <div class="card-header p-2 pt-2">
+                                        <div class="card-header">
                                             <h3 class="card-title">
-                                                <i class="far fa-list-alt mr-2"></i> Dossier List
+                                                <i class="fas fa-file-alt mr-3"></i> Uploaded Files
                                             </h3>
-                                            <div class="card-tools">
-                                                <button type="button" class="btn btn-tool p-0 mr-3 ml-3" data-card-widget="maximize">
-                                                    <i class="fas fa-expand"></i>
-                                                </button>
-                                                <button type="button" class="btn btn-tool" data-card-widget="collapse">
-                                                    <i class="fas fa-minus"></i>
-                                                </button>
-                                            </div>
                                         </div>
-                                        <div class="card-body " id="tablelistdata">
+                                        <div class="card-body">
                                             <div class="table-responsive">
-                                                <table id="DRFTable" class="table table-bordered table-striped table-hover" style="width:100%">
+                                                <table id="files" class="table" style="width:100%;">
                                                     <thead>
                                                         <tr>
-                                                            <th>@SharedLocalizer["Id"].Value</th>
-                                                            <th>@SharedLocalizer["DRF No"].Value</th>
-                                                            <th>@SharedLocalizer["Project Name"].Value</th>
-                                                            <th>@SharedLocalizer["Country"].Value</th>
-                                                            <th>@SharedLocalizer["Generic Name"].Value</th>
-                                                            <th>@SharedLocalizer["Brand Name"].Value</th>
-                                                            <th>@SharedLocalizer["Order Frequency"].Value</th>
-                                                            <th>@SharedLocalizer["Strength"].Value</th>
-                                                            <th>@SharedLocalizer["Pack Size"].Value</th>
-                                                            <th>@SharedLocalizer["Pack Style"].Value</th>
-                                                            <th>@SharedLocalizer["Form"].Value</th>
-                                                            <th>@SharedLocalizer["Plant"].Value</th>
-                                                            <th>@SharedLocalizer["Incoterms"].Value</th>
-                                                            <th>@SharedLocalizer["MA Holder"].Value</th>
-                                                            <th>@SharedLocalizer["Dossier to be sent"].Value</th>
-                                                            <th>@SharedLocalizer["Project Manager"].Value</th>
-                                                            <th>@SharedLocalizer["Dossier Template"].Value</th>
-                                                            <th>@SharedLocalizer["Status"].Value</th>
-
+                                                            <th>Files</th>
                                                         </tr>
                                                     </thead>
+                                                    <tbody>
+                                                    </tbody>
                                                 </table>
                                             </div>
                                         </div>
-
                                     </div>
+
                                 </section>
                             </div>
-
-                            @*Upload file details*@
-                            <section class="col-lg-12">
-                                <div class="card mt-1">
-                                    <div class="card-header mb-1">
-                                        <h3 class="card-title" for="exampleInputFile"><i class="fas fa-file-alt mr-3"></i>Uploaded Files</h3>
-                                    </div>
-                                    <div class="row p-3">
-                                        <div class="col-sm-12 ">
-                                            <table class="table fileorder-list table-bordered mr-3 ">
-                                                <thead>
-                                                    <tr>
-                                                        <th>Files</th>
-                                                    </tr>
-                                                </thead>
-                                            </table>
-                                        </div>
-                                    </div>
-                                </div>
-                            </section>
 
                             @*Show Milestones below*@
                             <div class="row">
@@ -594,7 +545,7 @@
 
                                 </div>
                             </div>
-                             @Html.HiddenFor(o => o.Pidfid, new{id="pidfid"})
+                            @Html.HiddenFor(o => o.Pidfid, new{id="pidfid"})
                             @Html.HiddenFor(o => o.ProjectTaskId, new{id="projectTaskId"})
                             @Html.HiddenFor(o => o.TaskLevel, new{id="tasklevel"})
                             @Html.HiddenFor(o => o.ParentId, new{id="parentId"})
@@ -772,7 +723,7 @@
                         <div class="modal-body p-4">
                             <div class="row">
                                 <div class="col-sm-6">
-                                     <div class="form-group required">
+                                    <div class="form-group required">
                                         @Html.LabelFor(t => t.ParentId, new { @class = "control-label" })
                                         @Html.DropDownListFor(t => t.ParentId, new SelectList(string.Empty, "Value", "Text"), "Please select option", htmlAttributes: new { @class = "form-control input-sm f-s-15 bg-eff4f55c w100per", id = "AddSubTaskofTask" })
                                         @Html.ValidationMessageFor(t => t.ParentId, "", new { @class = "text-danger" })
@@ -858,19 +809,21 @@
         var GetAllTaskSubTaskList = "@EmcureNPD.Web.Helpers.APIURLHelper.GetAllTaskSubTaskList";
         var DeleteTasksubTask = "@EmcureNPD.Web.Helpers.APIURLHelper.DeleteTaskSubTAsk";
         var GetTaskSubTaskByIds = "@EmcureNPD.Web.Helpers.APIURLHelper.GetTaskSubTaskById";
+        var GetPIDFDetails = "@EmcureNPD.Web.Helpers.APIURLHelper.GetPIDFDetails";
+        var GetFiles = "@EmcureNPD.Web.Helpers.APIURLHelper.GetFiles";
 
         var RecordDelete = "@SharedLocalizer["RecordDelete"]";
-		var ErrorMessage = "@SharedLocalizer["Error"]";
-		var RecordInsertUpdate = "@SharedLocalizer["RecordInsertUpdate"]";
+        var ErrorMessage = "@SharedLocalizer["Error"]";
+        var RecordInsertUpdate = "@SharedLocalizer["RecordInsertUpdate"]";
 
         var errorCallBack = '@TempData[EmcureNPD.Web.Helpers.UserHelper.ErrorMessage]';
-		if (errorCallBack) {
-			toastr.error(errorCallBack);
-		}
+        if (errorCallBack) {
+            toastr.error(errorCallBack);
+        }
         var successCallBack = '@TempData[EmcureNPD.Web.Helpers.UserHelper.SuccessMessage]';
-		if (successCallBack) {
-			toastr.success(successCallBack);
-		}
+        if (successCallBack) {
+            toastr.success(successCallBack);
+        }
     </script>
 }
 

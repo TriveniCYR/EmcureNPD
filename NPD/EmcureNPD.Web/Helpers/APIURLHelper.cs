@@ -340,6 +340,8 @@ namespace EmcureNPD.Web.Helpers
         public static string GetAllTaskSubTaskList = "api/Project/GetTaskSubTask";
         public static string DeleteTaskSubTAsk = "api/Project/DeleteTaskSubTask";
         public static string GetTaskSubTaskById = "api/Project/GetTaskSubTaskById";
+        public static string GetPIDFDetails = "api/Project/GetPIDFById";
+        public static string GetFiles = "api/Project/GetFiles";
         #endregion
 
     }

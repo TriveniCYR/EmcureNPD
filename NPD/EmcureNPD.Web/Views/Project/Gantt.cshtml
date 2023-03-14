@@ -1,0 +1,66 @@
+﻿@model IEnumerable<EmcureNPD.Business.Models.ProjectTaskEntity>
+@{
+    var id = ViewBag.id;
+}
+<div class="content-wrapper pt-3">
+    <section class="content">
+        <div class="container-fluid">
+            <div class="row">
+                <section class="col-lg-12 connectedSortable">
+                    <!-- Custom tabs (Charts with tabs)-->
+                    <div class="card">
+                        <div class="card-header">
+                            <h3 class="card-title">
+                                <i class="far fa-plus-square mr-2"></i> Project : @ViewBag.GanttProjectName
+                            </h3>
+                            <div class="card-tools md-left">
+                                <div class="mybtn-group">
+                                    <a class="btn btn-primary" href=@ViewBag.DetailsPageURL ?Id=@ViewBag.DRFID><i class="far fa-list-alt mr-1"></i>@ViewBag.ButtonDetailPage</a>
+                                    <a class="btn btn-primary" href=@ViewBag.ListPageURL><i class="far fa-list-alt mr-1"></i>@ViewBag.ButtonListPage</a>
+                                    <button class="btn btn-primary" onclick="javascript:window.history.back();"><i class="fas fa-undo mr-1"></i> Back</button>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="card-body" style="padding:0;">
+                            <div class="card maximized-card" style="box-shadow:none;">
+                                <div class="card-body">
+                                    <div class="row">
+                                        <form class="gantt_control col-md-12">
+
+                                            <input type="radio" id="scale1" class="gantt_radio" name="scale" value="day" checked>
+                                            <label for="scale1">Day scale</label>
+
+                                            <input type="radio" id="scale2" class="gantt_radio" name="scale" value="week">
+                                            <label for="scale2">Week scale</label>
+
+                                            <input type="radio" id="scale3" class="gantt_radio" name="scale" value="month">
+                                            <label for="scale3">Month scale</label>
+
+                                            <input type="radio" id="scale5" class="gantt_radio" name="scale" value="year">
+                                            <label for="scale5">Year scale</label>
+                                            <button type="button" class="btn float-right p-0" data-card-widget="maximize">
+                                                <i class="fas fa-compress"></i>
+                                            </button>
+                                        </form>
+                                        <div id="gantt_here" style="height:500px; width:100%;"></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+            </div>
+        </div>
+    </section>
+</div>
+@section MyScripts{
+
+    <link href="https://cdn.dhtmlx.com/gantt/edge/dhtmlxgantt.css" rel="stylesheet" type="text/css" />
+    <script src="https://cdn.dhtmlx.com/gantt/edge/dhtmlxgantt.js"></script>
+    <link href="~/css/gantt.css" rel="stylesheet" />
+    <script src="~/js/custom/gantt/gantt.js"></script>
+    <script src="~/js/custom/gantt/dhtmlxgantt.js"></script>
+    <script>
+            var id = @Html.Raw(Json.Serialize(id));
+    </script>
+}

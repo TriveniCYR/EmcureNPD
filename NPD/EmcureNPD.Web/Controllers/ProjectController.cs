@@ -73,5 +73,10 @@ namespace EmcureNPD.Web.Controllers
                 return RedirectToAction("ProjectManagement", "Project", new { pidfid = UtilityHelper.Encrypt(addTask.Pidfid.ToString())});
             }
         }
+        public IActionResult Gantt(string pidfid)
+        {
+            ViewBag.id = pidfid;
+            return View();
+        }
     }
 }

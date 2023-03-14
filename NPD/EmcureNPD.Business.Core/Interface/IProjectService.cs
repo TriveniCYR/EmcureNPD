@@ -15,5 +15,6 @@ namespace EmcureNPD.Business.Core.Interface
         public List<ProjectTaskEntity> GetTaskSubTaskList(long pidfId);
         Task<DBOperation> DeleteTaskSubTask(int id);
         Task<ProjectTaskEntity> GetById(long id);
+        Task<PIDFMedicalViewModel> GetFiles(long id);
     }
 }

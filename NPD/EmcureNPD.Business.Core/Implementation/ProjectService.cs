@@ -7,6 +7,7 @@ using EmcureNPD.Data.DataAccess.Entity;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Text;
 using System.Threading.Tasks;
 using static EmcureNPD.Utility.Enums.GeneralEnum;
@@ -21,7 +22,8 @@ namespace EmcureNPD.Business.Core.Implementation
         private IRepository<MasterUser> _masterUserRepository { get; set; }
         private IRepository<MasterProjectStatus> _masterProjectStatusRepository { get; set; }
         private IRepository<MasterProjectPriority> _masterProjectPriorityRepository { get; set; }
-
+        private IRepository<PidfMedical> _pidfMedicalrepository { get; set; }
+        private IRepository<PidfMedicalFile> _pidfMedicalFilerepository { get; set; }
         public ProjectService(IUnitOfWork unitOfWork, IMapperFactory mapperFactory)
         {
             _projectTaskRepository = unitOfWork.GetRepository<ProjectTask>();
@@ -30,6 +32,8 @@ namespace EmcureNPD.Business.Core.Implementation
             _masterProjectPriorityRepository = unitOfWork.GetRepository<MasterProjectPriority>();
             _unitOfWork = unitOfWork;
             _mapperFactory = mapperFactory;
+            _pidfMedicalrepository = unitOfWork.GetRepository<PidfMedical>();
+            _pidfMedicalFilerepository = unitOfWork.GetRepository<PidfMedicalFile>();
         }
         public ProjectTaskEntity GetDropDownsForTask()
         {
@@ -199,6 +203,28 @@ namespace EmcureNPD.Business.Core.Implementation
             TaskAddModel.TaskLevel = task.TaskLevel;
             TaskAddModel.ParentId = task.ParentId;
             return TaskAddModel;
+        }
+
+        public async Task<PIDFMedicalViewModel> GetFiles(long id)
+        {
+            Expression<Func<PidfMedical, bool>> expr = u => u.Pidfid == id;
+            dynamic objData = (dynamic)await _pidfMedicalrepository.FindAllAsync(expr);
+            PIDFMedicalViewModel data = new PIDFMedicalViewModel();
+            if (objData != null && objData.Count > 0)
+            {
+                data = _mapperFactory.Get<PidfMedical, PIDFMedicalViewModel>(objData[0]);
+                var medicalFileData = _pidfMedicalFilerepository.GetAll().Where(x => x.PidfmedicalId == data.PidfmedicalId).ToList();
+                int i = 0;
+                data.FileName = new string[medicalFileData.Count];
+                foreach (var item in medicalFileData)
+                {
+                    data.PidfmedicalId = item.PidfmedicalId;
+                    data.PidfmedicalFileId = item.PidfmedicalFileId;
+                    data.FileName[i] = item.FileName;
+                    i++;
+                }
+            }
+            return data;
         }
     }
 }

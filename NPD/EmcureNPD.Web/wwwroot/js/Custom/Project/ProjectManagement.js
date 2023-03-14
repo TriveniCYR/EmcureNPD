@@ -1,8 +1,59 @@
 $(document).ready(function () {
+    GetPIDFDetail();
     GetTaskSubTaskList();
+    GetFile();
 });
+//get files
+function GetFile() {
+    ajaxServiceMethod($('#hdnBaseURL').val() + GetFiles + "/" + $('#pidfId').val(), 'GET', GetFilesSuccess, GetFilesError);
+}
+function GetFilesSuccess(data) {
+    try {
+        $('#files tbody').html('')
+        $.each(data._object.fileName, function (index, file) {
+            var link = $('#hdnBaseUrl').val() + '/Uploads/PIDF/Medical/' + file;
+            $('#files tbody').append('<tr><td><a href="' + link + '">' + file + '</a></td></tr>');
+        });
+    }
+    catch (e) {
+        toastr.error('Error:' + e.message);
+    }
+}
+function GetFilesError() {
+    toastr.error(ErrorMessage);
+}
+//get PIDF details
+function GetPIDFDetail() {
+    ajaxServiceMethod($('#hdnBaseURL').val() + GetPIDFDetails + "/" + $('#pidfId').val(), 'GET', GetPIDFDetailSuccess, GetPIDFDetailError);
+}
+function GetPIDFDetailSuccess(data) {
+    try {
+        $('#loading').hide();
+        $('#pidf_ProjectorProductName').text(data._object.moleculeName);
+        $('#pidf_ProductTypeName').text(data.productName);
+        $('#pidf_PlantName').text(data.plantName);
+        $('#pidf_FormulationName').text(data.formulationName);
+        $('#pidf_WorkflowName').text(data.workflowName);
+        $.each(data._object.pidfProductStregthEntities, function (i, List) {
+            //console.log(List);
+            var newRow = $("<tr>");
+            var cols = "";
 
+            cols += '<td>' + List.strength + '</td>';
+            cols += '<td>' + List.UnitofMeasurementName + ' </td>';
+            newRow.append(cols);
+            $("table.order-list").append(newRow);
 
+        });
+    }
+    catch (e) {
+        toastr.error('Error:' + e.message);
+    }
+}
+function GetPIDFDetailError() {
+    toastr.error(ErrorMessage);
+}
+//#end region
 //get all task and subtask list
 function GetTaskSubTaskList() {
     ajaxServiceMethod($('#hdnBaseURL').val() + GetAllTaskSubTaskList + "/" + $('#pidfId').val(), 'GET', GetTaskSubTaskListSuccess, GetTaskSubTaskListError);
