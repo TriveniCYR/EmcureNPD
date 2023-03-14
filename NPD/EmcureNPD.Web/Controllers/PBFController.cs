@@ -198,11 +198,7 @@ namespace EmcureNPD.Web.Controllers
             return RedirectToAction("PIDFList", "PIDF", new { ScreenId = 6 });
         }
 
-        //-------------------------------------Start-----KUldip NEw PBF Modules---------------------
-
-        // "PBFRnDDetailsForm" + _APIQS : "#"
-        //FForm + "PBFAnalyticalDetailsForm" 
-        //orm + "PBFClinicalDetailsForm" + _A
+        //-------------------------------------Start-----KUldip NEw PBF Modules---------------------      
 
         [HttpGet]
         public IActionResult PBFRnDDetailsForm(string pidfid, string bui)
@@ -266,7 +262,7 @@ namespace EmcureNPD.Web.Controllers
                 }
                 ViewBag.Access = objPermssion;
                 oPIDForm = GetPIDFPbfModel(pidfid, bui);
-                return View("PBFAnalyticalForm", oPIDForm);
+                return View("_PBFAnalyticalForm", oPIDForm);
             }
             catch (Exception e)
             {
