@@ -2,7 +2,32 @@ $(document).ready(function () {
     GetPIDFDetail();
     GetTaskSubTaskList();
     GetFile();
+    GetBusinessUnit();
 });
+//getAllBusinessUnit
+function GetBusinessUnit() {
+    ajaxServiceMethod($('#hdnBaseURL').val() + GetAllBusinessunit, 'GET', GetBusinessUnitSuccess, GetBusinessUnitSuccess);
+}
+function GetBusinessUnitSuccess(data) {
+    try {
+        $.each(data._object, function (index, bunits) {
+            var $li = $('<li class="nav-item"></li>');
+            var $a = $('<a class="nav-link" id="' + bunits.businessUnitName + '" data-toggle="pill" href="#LATAM" role="tab" aria-controls="LATAM" aria-selected="false">' + bunits.businessUnitName + '</a>');
+            if (bunits.businessUnitId == bid) {
+                $a.addClass('active');
+            }
+            $li.append($a);
+            $li.insertAfter($('#custom-tabs-one-tab li').eq(0));
+        });
+    }
+    catch(e){
+        toastr.error('Error:' + e.message);
+    }
+}
+function GetBusinessUnitError() {
+    toastr.error(ErrorMessage);
+}
+//Endregion
 //get files
 function GetFile() {
     ajaxServiceMethod($('#hdnBaseURL').val() + GetFiles + "/" + $('#pidfId').val(), 'GET', GetFilesSuccess, GetFilesError);
@@ -34,11 +59,11 @@ function GetPIDFDetailSuccess(data) {
         $('#pidf_PlantName').text(data.plantName);
         $('#pidf_FormulationName').text(data.formulationName);
         $('#pidf_WorkflowName').text(data.workflowName);
+        console.log(data._object.pidfProductStregthEntities);
         $.each(data._object.pidfProductStregthEntities, function (i, List) {
             //console.log(List);
             var newRow = $("<tr>");
             var cols = "";
-
             cols += '<td>' + List.strength + '</td>';
             cols += '<td>' + List.UnitofMeasurementName + ' </td>';
             newRow.append(cols);
