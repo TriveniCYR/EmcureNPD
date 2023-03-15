@@ -1,0 +1,307 @@
+﻿@using Microsoft.AspNetCore.Http
+@using EmcureNPD.Web.Controllers
+@using Microsoft.AspNetCore.Mvc.Localization
+@inject IHttpContextAccessor HttpContextAccessor
+@inject Microsoft.Extensions.Localization.IStringLocalizer<MastersController> MasterLocalizer
+@inject Microsoft.Extensions.Localization.IStringLocalizer<EmcureNPD.Resource.Shared> SharedLocalizer
+@using EmcureNPD.Utility.Utility
+@using EmcureNPD.Utility.Enums
+@using EmcureNPD.Business.Models
+@using Microsoft.Extensions.Configuration
+@inject IConfiguration Configuration
+
+@model EmcureNPD.Business.Models.PidfPbfFormEntity
+@{
+    string jsVersion = @Configuration.GetSection("StaticJS")["version"];
+
+    var _StrengthId = (Context.Request.Query.ContainsKey("strengthId")) ? Convert.ToString(Context.Request.Query["strengthId"]) : ViewBag.DefaultStrengthId;
+    long nval; var EncQueryStrengthId = "" ; var QueryStrengthId = "";
+    if (!long.TryParse(_StrengthId, out nval))
+    {
+        QueryStrengthId = UtilityHelper.Decreypt(_StrengthId);
+        EncQueryStrengthId = _StrengthId;
+    }
+    else
+    {
+        QueryStrengthId = _StrengthId;
+        EncQueryStrengthId = UtilityHelper.Encrypt(_StrengthId);
+    }
+
+}
+
+<div id="SavePIDFModel">
+    <form id="fpbfForm_@Model.BusinessUnitId" class="" asp-action="PBFAnalytical" asp-controller="PBF" method="post">
+        <input type="hidden" asp-for="Pidfid" />
+        <input type="hidden" id="encPidfid" value="@UtilityHelper.Encrypt(@Model.Pidfid.ToString())" />
+        <input type="hidden" asp-for="Pidfpbfid" />
+        <input type="hidden" asp-for="BusinessUnitId" />
+        <input type="hidden" asp-for="SaveSubmitType" />
+        <div class="tab-content" id="tabList">
+            @*-------Start--partial View Content----*@
+            <div class="card-body" style="background-color:white">
+              @*  <input type="hidden" />
+                <div class="row">
+                    <div class="col-md-3">
+                        <div class="form-group required">
+                            @Html.LabelFor(model => model.ProjectName,@MasterLocalizer["ProjectName"], new { @class = "control-label" })<span class="text-danger">*</span>
+                            @Html.TextBoxFor(model => model.ProjectName, new {@class = "form-control", @placeholder = @MasterLocalizer["ProjectName"] })
+
+                        </div>
+                    </div>
+
+                    <div class="col-md-3">
+                        <div class="form-group required">
+                            @Html.LabelFor(model => model.Market,@MasterLocalizer["Market"], new { @class = "control-label" })<span class="text-danger">*</span>
+                            @Html.TextBoxFor(model => model.Market, new {@class = "form-control", @placeholder = @MasterLocalizer["Market"] })
+
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="form-group required">
+                            @Html.LabelFor(model => model.BusinessRelationable,@MasterLocalizer["BusinessRationable"], new { @class = "control-label" })<span class="text-danger">*</span>
+                            @Html.TextBoxFor(model => model.BusinessRelationable, new {@class = "form-control", @placeholder = @MasterLocalizer["BusinessRationable"] })
+
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="form-group required">
+                            @Html.LabelFor(model => model.BerequirementId, "BE Requirement", new { @class = "control-label" })<span class="text-danger">*</span>
+                            <select id="BERequirementId" name="BERequirementId" class="form-control readOnlyUpdate" ></select>
+                        </div>
+                    </div>
+
+                </div>
+                <div class="row">
+                    <div class="col-md-3">
+                        <div class="form-group required">
+
+                            @Html.LabelFor(model => model.NumberOfApprovedAnda,"No. of  Approved ANDAs", new { @class = "control-label" })<span class="text-danger">*</span>
+                            @Html.TextBoxFor(model => model.NumberOfApprovedAnda, new {@class = "form-control", @placeholder = "No. of  Approved ANDAs" })
+
+                        </div>
+                    </div>
+
+                    <div class="col-md-3">
+                        <div class="form-group required">
+                            @Html.LabelFor(model => model.ProductTypeId, "Product Type", new { @class = "control-label" })<span class="text-danger">*</span>
+                            <select id="ProductTypeId" name="ProductTypeId" class="form-control readOnlyUpdate" ></select>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="form-group required">
+                            @Html.LabelFor(model => model.PlantId, "Plant Name", new { @class = "control-label" })<span class="text-danger">*</span>
+                            <select id="PlantId" name="PlantId" class="form-control readOnlyUpdate" ></select>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="form-group required">
+                            @Html.LabelFor(model => model.WorkflowId, "Work Flow", new { @class = "control-label" })<span class="text-danger">*</span>
+                            <select id="WorkflowId" name="WorkflowId" class="form-control readOnlyUpdate" ></select>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-3">
+                        <div class="form-group required">
+                            @Html.LabelFor(model => model.DosageId, "Dosage", new { @class = "control-label" })<span class="text-danger">*</span>
+                            <select id="PbfDosageFormId" name="DosageId" class="form-control readOnlyUpdate" ></select>
+                        </div>
+                    </div>
+
+                    <div class="col-md-3">
+                        <div class="form-group required">
+                            @Html.LabelFor(model => model.PatentStatus,"Patent Status", new { @class = "control-label" })<span class="text-danger">*</span>
+                            @Html.TextBoxFor(model => model.PatentStatus, new {@class = "form-control", @placeholder = "Patent Status"})
+
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="form-group required">
+                            @Html.LabelFor(model => model.SponsorBusinessPartner,"Sponsor / Business Partner", new { @class = "control-label" })<span class="text-danger">*</span>
+                            @Html.TextBoxFor(model => model.SponsorBusinessPartner, new {@class = "form-control", @placeholder = "Sponsor / Business Partner" })
+
+                        </div>
+                    </div>
+
+                </div>
+                <div>
+                    <div class="card-header">
+                        <h3 class="card-title">Formulation Detail</h3>
+                    </div>
+                    <div class="row">
+
+                        <div class="col-md-3">
+                            <div class="form-group required">
+                                @Html.LabelFor(model => model.FormRnDdivisionId, "Form R&D Division", new { @class = "control-label" })<span class="text-danger">*</span>
+                                <select id="FormRNDDivisionId" name="FormRNDDivisionId" class="form-control readOnlyUpdate" ></select>
+                            </div>
+                        </div>
+
+                        <div class="col-md-3">
+                            <div class="form-group required">
+                                @Html.LabelFor(model => model.ProjectInitiationDate,"Project Initiation Date", new { @class = "control-label" })<span class="text-danger">*</span>
+                                @Html.TextBoxFor(@modal=> modal.ProjectInitiationDate,"{0:yyyy-MM-dd}",new{@type="date",@class="form-control readOnlyUpdate", @placeholder = "Project Initiation Date"})
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="form-group required">
+                                @Html.LabelFor(model => model.RnDhead,"R&D Head", new { @class = "control-label" })<span class="text-danger">*</span>
+                                @Html.TextBoxFor(model => model.RnDhead, new {@class = "form-control", @placeholder = "R&D Head" })
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="form-group required">
+                                @Html.LabelFor(model => model.ProjectManager,"Project Manager", new { @class = "control-label" })<span class="text-danger">*</span>
+                                @Html.TextBoxFor(model => model.ProjectManager, new {@class = "form-control", @placeholder = "Project Manager" })
+
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-3">
+                            <div class="form-group required">
+                                @Html.LabelFor(model => model.Dosage,"Dosage", new { @class = "control-label" })<span class="text-danger">*</span>
+                                @Html.TextBoxFor(model => model.Dosage, new {@class = "form-control", @placeholder = "Dosage" })
+
+                            </div>
+                        </div>
+
+                        <div class="col-md-3">
+                            <div class="form-group required">
+                                @Html.LabelFor(model => model.PackagingTypeId, "Packaging type", new { @class = "control-label" })<span class="text-danger">*</span>
+                                <select id="PbfPackagingTypeId" name="PackagingTypeId" class="form-control readOnlyUpdate" ></select>
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="form-group required">
+                                @Html.LabelFor(model => model.FormRnDdivisionId, "Manufacturing Plant", new { @class = "control-label" })<span class="text-danger">*</span>
+                                <select id="PbfManfFormRNDDivisionId" name="FormRNDDivisionId" class="form-control readOnlyUpdate" ></select>
+                            </div>
+                        </div>
+                    </div>
+                </div>*@
+
+            </div>
+            @*--------End-partial View Content----*@
+            <div class="card" style="background-color:white;">
+                <div class="card-body">
+                    <div class="row ">
+                        <div class="col col-lg-2">
+                            @Html.LabelFor(model => model.BusinessUnitId, "Business Unit", new { @class = "control-label" })
+                            <lable id="valmsgBusinessUnitId" class="text-danger"></lable>
+                        </div>
+                        <div class="col-md-9 form-group required">
+                            <ul class="nav nav-pills" id="businessUnitTabs">
+                                @if (Model.MasterBusinessUnitEntities.Count() > 0)
+                                {
+                                    int k = 0;
+                                    @foreach (var businessUnit in Model.MasterBusinessUnitEntities)
+                                    {
+                                        <li class="nav-item mr-2">
+                                            <a class="btn btn-outline-primary" href="#tab_@businessUnit.BusinessUnitName" onClick="BUtabClick('@UtilityHelper.Encrypt(businessUnit.BusinessUnitId.ToString())','@UtilityHelper.Encrypt(Model.Pidfid.ToString())');" id="BUtab_@businessUnit.BusinessUnitId">@businessUnit.BusinessUnitName</a>
+                                        </li>
+                                        k = k + 1;
+                                    }
+                                }
+                            </ul>
+                        </div>
+                    </div>
+                    <br />
+                    <div class="row ">
+                        <div class="col col-lg-2">
+                            @Html.LabelFor(model => model.BusinessUnitId, "Department", new { @class = "control-label" })
+                            <lable id="valmsgBusinessUnitId" class="text-danger"></lable>
+                        </div>
+                       
+                        
+
+                       @* <div id="Analytical" class="tabcontent">*@
+                           <div>
+                            @{
+                                await Html.RenderPartialAsync("~/Views/PBF/_PBFAnalyticalForm.cshtml", Model);
+                            }
+                        </div>
+                      
+                        <br />
+                        @*</section>*@
+                        <div class="form-group">
+                            <button type="submit" id="btnSubmit" class="btn btn-primary operationButton" onclick="SaveClick();">@SharedLocalizer["Submit"]</button>
+                            <button type="submit" id="btnSaveAsDraft" class="btn btn-info operationButton" onClick="SaveDraftClick();">@SharedLocalizer["SaveDraft"]</button>
+                            <a id="btnCancel" class="btn btn-danger operationButton" asp-action="PIDFList" asp-controller="PIDF" asp-route-ScreenId="6">@SharedLocalizer["Cancel"]</a>
+
+                        </div>
+                    </div>
+
+                </div>
+
+            </div>
+        </div>
+    </form>
+
+</div>
+@section MyScripts {
+
+    @Html.Partial("_DataTablePartial")
+<script type="text/javascript" src="~/js/Custom/DynamicDataTable.js?v=@jsVersion"></script>
+    <script type="text/javascript" src="~/js/custom/pidf/pbfformanalytical.js?v=@jsVersion"></script>
+    @*    <script type="text/javascript" src="~/js/Custom/PBF/Analytical/PBFAnalytical.js"></script>*@
+<link rel="stylesheet" href="~/AdminLTE/plugins/select2/css/select2.min.css" />
+<script type="text/javascript" src="~/AdminLTE/plugins/select2/js/select2.min.js"></script>
+<link href="/lib/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
+<script src="/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        var tabList = [].slice.call(document.querySelectorAll("#tabs a"));
+        var tabs = $('#tabList');
+
+        tabList.forEach(function (tab) {
+            var tabTrigger = new bootstrap.Tab(tab);
+
+            tab.addEventListener("click", function (event) {
+                event.preventDefault();
+                tabTrigger.show();
+            });
+            tabs.append('<div class="tab-pane fade" id="' + tab + '">');
+
+        });
+    });
+    //#region Setup API Url
+    var PFBAPIPIDFList = "@EmcureNPD.Web.Helpers.APIURLHelper.GetPFBAPIPIDFList";
+    var GetAllPBF = "@EmcureNPD.Web.Helpers.APIURLHelper.GetPBFDropdown";
+    var GetPBFReadonlyDataByPIDFId = "@EmcureNPD.Web.Helpers.APIURLHelper.GetPBFReadonlyDataByPIDFId";
+        var QueryBusinessUnit = "@UtilityHelper.Decreypt(Convert.ToString(Context.Request.Query["bui"]))";
+        var QueryPidfid = "@UtilityHelper.Decreypt(Convert.ToString(Context.Request.Query["pidfid"]))";
+        var QuerystrengthId = "@QueryStrengthId";
+
+
+        var EncQueryBusinessUnit = "@Convert.ToString(Context.Request.Query["bui"])";
+        var EncQueryPidfid = "@Convert.ToString(Context.Request.Query["pidfid"])";
+        var EncQueryStrengthId = "@EncQueryStrengthId";
+
+        var GetActiveBusinessUnit = "@EmcureNPD.Web.Helpers.APIURLHelper.GetActiveBusinessUnit";
+      var _PBFPartialURL = "@Url.Action("PBFForm", "PIDF")";
+    // #endregion
+
+    //#region Static Messae Init
+    var EditLabel = "@SharedLocalizer["Edit"]";
+    var DeleteLabel = "@SharedLocalizer["Delete"]";
+    var ErrorMessage = "@SharedLocalizer["Error"]";
+    var RecordDelete = "@SharedLocalizer["RecordDelete"]";
+    var AddLabel = "@SharedLocalizer["Add"]";
+    var UpdateLabel = "@SharedLocalizer["Update"]";
+        @*var successCallBack = '@TempData[EmcureNPD.Web.Helpers.PIDFHelper.SuccessMessage]';
+        if (successCallBack)
+        {
+        toastr.success(successCallBack);
+        }*@
+
+        //#endregion
+</script>
+<script>
+    $('.card-header').click(function () {
+        $(this).find('i').toggleClass('fas fa-angle-double-down fas fa-angle-double-up');
+    });
+</script>
+
+
+}

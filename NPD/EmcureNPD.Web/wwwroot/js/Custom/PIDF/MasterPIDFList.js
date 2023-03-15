@@ -196,9 +196,9 @@ function InitializePIDFList() {
                     var _enable = (row.pidfStatusID == 7 || row.pidfStatusID == 10 || row.pidfStatusID == 11 || row.pidfStatusID == 12 || row.pidfStatusID == 13 || row.pidfStatusID == 14 || row.pidfStatusID == 15);
                     html += '<a class="large-font" title="Edit" style="color:' + (_enable ? "#007bff" : "grey") + '" href="' + (_enable ? _PBFForm + "PBFForm" + _PBFQS : "#") + '"><i class="fa fa-fw fa-edit mr-1"></i></a>';
 
-                    html += '<a class="large-font" title="RnD" style="color:' + (_enable ? "#007bff" : "grey") + '" href="' + (_enable ? _NewPBFForm + "PBFRnDDetailsForm" + _APIQS : "#") + '"><i class="fa fa-fw fa-columns mr-1"></i></a>';
-                    html += '<a class="large-font" title="Analytical" style="color:' + (_enable ? "#007bff" : "grey") + '" href="' + (_enable ? _NewPBFForm + "PBFAnalyticalDetailsForm" + _APIQS : "#") + '"><i class="fa fa-fw fa-flask mr-1"></i></a>';
-                    html += '<a class="large-font" title="Clinical" style="color:' + (_enable ? "#007bff" : "grey") + '" href="' + (_enable ? _NewPBFForm + "PBFClinicalDetailsForm" + _APIQS : "#") + '"><i class="fa fa-fw fa-map-marker mr-1"></i></a>';
+                    html += '<a class="large-font" title="RnD" style="color:' + (_enable ? "#007bff" : "grey") + '" href="' + (_enable ? _NewPBFForm + "PBFRnDDetailsForm" + _PBFQS : "#") + '"><i class="fa fa-fw fa-columns mr-1"></i></a>';
+                    html += '<a class="large-font" title="Analytical" style="color:' + (_enable ? "#007bff" : "grey") + '" href="' + (_enable ? _PBFForm + "PBFFormAnalytical" + _PBFQS : "#") + '"><i class="fa fa-fw fa-flask mr-1"></i></a>';
+                    html += '<a class="large-font" title="Clinical" style="color:' + (_enable ? "#007bff" : "grey") + '" href="' + (_enable ? _NewPBFForm + "PBFClinicalDetailsForm" + _PBFQS : "#") + '"><i class="fa fa-fw fa-map-marker mr-1"></i></a>';
 
                     html += '<a class="large-font" title="View" style="color:' + (_enable ? "#007bff" : "grey") + '" href="' + (_enable ? _PBFForm + "PBFForm" + _PBFQS : "#") + '"><i class="fa fa-fw fa-eye mr-1"></i></a>';
                     html += '<a class="large-font" title="Charter Summary" style="color:' + (_enable ? "#007bff" : "grey") + '" href="' + (_enable ? _PBFForm + "PBFForm" + _PBFQS : "#") + '"><i class="fa fa-fw fa-chart-line mr-1"></i></a>';

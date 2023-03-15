@@ -12,12 +12,15 @@ namespace EmcureNPD.Business.Core.Interface
 {
 	public interface IPBFService
 	{
-		Task<dynamic> FillDropdown();
+        Task<DBOperation> AddUpdatePBFDetailsAnalytical(PidfPbfFormEntity pbfEntity);
+        Task<PidfPbfFormEntity> GetPbfFormDetailsAnalytical(long pidfId, int buid, int strengthid);
+        
+        Task<dynamic> FillDropdown();
 		Task<PidfPbfEntity> GetPbfFormData(long pidfId, int buid, int? strengthid);
 		Task<DBOperation> AddUpdatePBF(PidfPbfEntity pbfEntity);		
 		Task<PidfPbfAnalyticalEntity> GetPBFAnalyticalReadonlyData(long pidfid);
 
-        // ---------------------------PBFDetails----------------------------
+        // ---------------------------PBFDetails----------------------------       
         Task<DBOperation> AddUpdatePBFDetails(PidfPbfFormEntity pbfEntity);
         Task<PidfPbfFormEntity> GetPbfFormDetails(long pidfId, int buid, int? strengthid);
         

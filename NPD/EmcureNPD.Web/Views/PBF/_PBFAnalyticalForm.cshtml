@@ -124,26 +124,30 @@
 
                 </div>
                 <div class="col-md-9 pl-lg-5">
-                    <div class="form-group required">
-                       
-                        <ul class="nav nav-pills" id="StrengthTabsAnalytical">
+                      @*-----------------Strength---------------------*@
 
-                            @*@if (@Model !=null && @Model.ProductStrength != null)
-                            {
-                            @if (@Model.ProductStrength.Count > 0)
-                            {
+            <div class="card card-maroon card-outline card-outline-tabs m-0">
+                <div class="card-header p-0 border-bottom-0">
+                    @if (Model.MasterStrengthEntities.Count() > 0 || Model.MasterStrengthEntities != null)
+                        {
+                                <input type="hidden" id="PIDFProductStrengthId" value="@Model.MasterStrengthEntities[0].PidfproductStrengthId" />
+                        }
+                            <ul class="nav nav-tabs row m-0 text-center" id="ProductStrengthTabs">
+                        @if (Model.MasterStrengthEntities.Count() > 0 || Model.MasterStrengthEntities != null)
+                        {
                             int k = 0;
-                            @foreach (var strenght in @Model.ProductStrength)
+                            @foreach (var _strength in Model.MasterStrengthEntities)
                             {
-                            <li class="nav-item mr-2">
-                            <a class="btn btn-outline-primary" href="@strenght.ProductStrengthId" id="tab_@strenght.ProductStrengthId"> @strenght.ProductStrengthName</a>
-                            </li>
-                            k = k + 1;
+                            <li class="nav-item col-6 p-0">
+                                    <a class="nav-link" href="#tab_@_strength.Strength" onClick="StrengthtabClick('@UtilityHelper.Encrypt(_strength.PidfproductStrengthId.ToString())','@Model.Pidfid');" id="Strengthtab_@_strength.PidfproductStrengthId">@_strength.Strength</a>
+                                </li>
+                                k = k + 1;
                             }
-                            }
-                            }*@
-                        </ul>
-                    </div>
+                        }
+                    </ul>
+                </div>
+            </div>
+            @*-----------------End- of-Strength---------------------*@
                 </div>
             </div>
             <br />
