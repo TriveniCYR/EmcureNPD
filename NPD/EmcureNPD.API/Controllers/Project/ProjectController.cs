@@ -22,14 +22,12 @@ namespace EmcureNPD.API.Controllers.Project
     public class ProjectController : ControllerBase
     {
         private readonly IProjectService _projectService;
-        private readonly IPIDFService _PIDFService;
 
         private readonly IResponseHandler<dynamic> _ObjectResponse;
-        public ProjectController(IProjectService projectService, IPIDFService PIDFService, IResponseHandler<dynamic> ObjectResponse)
+        public ProjectController(IProjectService projectService,IResponseHandler<dynamic> ObjectResponse)
         {
             _projectService = projectService;
             _ObjectResponse = ObjectResponse;
-            _PIDFService = PIDFService;
         }
         [HttpGet, Route("GetDropdownsForAddTask")]
         public ActionResult GetDropdownsForAddTask()
@@ -128,6 +126,23 @@ namespace EmcureNPD.API.Controllers.Project
         {
             return _projectService.GetTaskSubTaskList(long.Parse(UtilityHelper.Decreypt(id)));
         }
+        [HttpGet, Route("GetPIDFDetailsById/{id}")]
+        public async Task<IActionResult> GetPIDFDetailsById([FromRoute] string id)
+        {
+            try
+            {
+                var oPIDFEntity = await _projectService.GetByPIDFDetailsById(long.Parse(UtilityHelper.Decreypt(id)));
+                if (oPIDFEntity != null)
+                    return _ObjectResponse.Create(oPIDFEntity, (Int32)HttpStatusCode.OK);
+                else
+                    return _ObjectResponse.Create(null, (Int32)HttpStatusCode.BadRequest, "Record not found");
+            }
+            catch (Exception ex)
+            {
+                return _ObjectResponse.Create(false, (Int32)HttpStatusCode.InternalServerError, Convert.ToString(ex.StackTrace));
+            }
+        }
+
 
     }
 }
