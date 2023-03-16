@@ -32,10 +32,11 @@ namespace EmcureNPD.Web.Controllers
             var bid = long.Parse(UtilityHelper.Decreypt(bui));
             ViewBag.id = pidfid;
             ViewBag.bid = bid;
+            ViewBag.uencbid = bui;
             return View();
         }
         [HttpPost]
-        public IActionResult AddUpdateTask(ProjectTaskEntity addTask, string id = "", string act = "")
+        public IActionResult AddUpdateTask(ProjectTaskEntity addTask, string id = "", string act = "", string buid="")
         {
            // addTask.ProjectTaskId = projecttaskid;
            
@@ -66,13 +67,13 @@ namespace EmcureNPD.Web.Controllers
             if (responseMessage.IsSuccessStatusCode)
             {
                 TempData[UserHelper.SuccessMessage] = data._Message;
-                return RedirectToAction("ProjectManagement", "Project", new {pidfid = UtilityHelper.Encrypt(addTask.Pidfid.ToString())});
+                return RedirectToAction("ProjectManagement", "Project", new {pidfid = UtilityHelper.Encrypt(addTask.Pidfid.ToString()), bui= buid});
             }
             else
             {
                 TempData[UserHelper.ErrorMessage] = data._Message;
                 ModelState.Clear();
-                return RedirectToAction("ProjectManagement", "Project", new { pidfid = UtilityHelper.Encrypt(addTask.Pidfid.ToString())});
+                return RedirectToAction("ProjectManagement", "Project", new { pidfid = UtilityHelper.Encrypt(addTask.Pidfid.ToString()), bui = buid});
             }
         }
         public IActionResult Gantt(string pidfid)
