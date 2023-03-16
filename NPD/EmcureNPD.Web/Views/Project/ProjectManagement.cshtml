@@ -267,7 +267,7 @@
 
         @*UpdateModel*@
         <div id="UpdateModel" class="modal themeModal " role="dialog">
-            <form method="POST" asp-controller=Project asp-action=AddUpdateTask>
+            <form method="POST" asp-controller=Project asp-action=AddUpdateTask asp-route-buid="@ViewBag.uencbid">
                 @*<div class="card-body">*@
                 <div class="modal-dialog modal-lg">
                     <!-- Modal content-->
@@ -421,7 +421,7 @@
 
         @*AddTaskModel*@
         <div id="AddTaskModel" class="modal themeModal " role="dialog">
-            <form method="POST" asp-controller=Project asp-action=AddUpdateTask asp-route-id="@ViewBag.id" asp-route-act="Task" method="post">
+            <form method="POST" asp-controller=Project asp-action=AddUpdateTask asp-route-id="@ViewBag.id" asp-route-buid="@ViewBag.uencbid" asp-route-act="Task" method="post">
 
                 <div class="modal-dialog modal-lg">
                     <!-- Modal content-->
@@ -504,7 +504,7 @@
         </div>
         @*AddSubTaskModel*@
         <div id="AddSubTaskModel" class="modal themeModal " role="dialog">
-            <form method="POST" asp-controller=Project asp-action=AddUpdateTask asp-route-id="@ViewBag.id" asp-route-act="SubTask">
+            <form method="POST" asp-controller=Project asp-action=AddUpdateTask asp-route-id="@ViewBag.id" asp-route-buid="@ViewBag.uencbid" asp-route-act="SubTask">
 
                 <div class="modal-dialog modal-lg">
                     <!-- Modal content-->
@@ -599,12 +599,9 @@
     <script src="~/js/custom/project/projectmanagement.js"></script>
     <script>
         var FillTaskDropdown = "@EmcureNPD.Web.Helpers.APIURLHelper.FillTaskDropdown";
-        var GetAllTaskSubTaskList = "@EmcureNPD.Web.Helpers.APIURLHelper.GetAllTaskSubTaskList";
         var DeleteTasksubTask = "@EmcureNPD.Web.Helpers.APIURLHelper.DeleteTaskSubTAsk";
         var GetTaskSubTaskByIds = "@EmcureNPD.Web.Helpers.APIURLHelper.GetTaskSubTaskById";
-        var GetPIDFDetails = "@EmcureNPD.Web.Helpers.APIURLHelper.GetPIDFDetails";
-        var GetFiles = "@EmcureNPD.Web.Helpers.APIURLHelper.GetFiles";
-        var GetAllBusinessunit = "@EmcureNPD.Web.Helpers.APIURLHelper.GetAllBusinessUnit";
+        var GetAllData = "@EmcureNPD.Web.Helpers.APIURLHelper.GetAllData";
 
         var RecordDelete = "@SharedLocalizer["RecordDelete"]";
         var ErrorMessage = "@SharedLocalizer["Error"]";
