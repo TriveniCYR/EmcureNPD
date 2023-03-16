@@ -221,8 +221,11 @@ function BUtabClick(BUVal, pidfidval) {
     tabClick();
 }
 function tabClick(){
-    
-    var url = "/PIDF/PBFFormAnalytical?pidfid=" + $('#encPidfid').val() + "&bui=" + SelectedBUValue + "&strengthId=" + SelectedstrengthValue;
+
+    $("#hdnBusinessUnitId").val(SelectedBUValue);
+    $("#hdnStrengthId").val(SelectedstrengthValue);
+
+    var url = "/PBF/PBFFormAnalytical?pidfid=" + $('#encPidfid').val() + "&bui=" + SelectedBUValue + "&strengthId=" + SelectedstrengthValue;
     window.location.href = url;
 }
 // #region Get ProductStrength By pidfId

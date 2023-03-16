@@ -20,8 +20,8 @@
         @*<form asp-action="PBFAnalyticalForm" asp-controller="PBF" enctype="multipart/form-data" method="post">*@
         <input type="hidden" asp-for="PidfPbfAnalyticals.PIDFID" />
         <input type="hidden" asp-for="PidfPbfAnalyticals.PBFAnalyticalID" />
-        <input type="hidden" asp-for="PidfPbfAnalyticals.BusinessUnitId" />
-        <input type="hidden" asp-for="PidfPbfAnalyticals.StrengthId" />
+        <input id="hdnBusinessUnitId" type="hidden" asp-for="PidfPbfAnalyticals.BusinessUnitId" />
+        <input id="hdnStrengthId" type="hidden" asp-for="PidfPbfAnalyticals.StrengthId" />
         <input type="hidden" asp-for="PidfPbfAnalyticals.TestLicenseAvailability"/>
 
         <div class="card-header">
@@ -175,7 +175,7 @@
                     <tbody id="PrototypeTableBody">
                         @if (Model.PidfPbfAnalyticals != null)
                         {
-                            if (Model.PidfPbfAnalyticals.PidfPbfAnalyticalPrototypes != null && Model.PidfPbfAnalyticals.PidfPbfAnalyticalPrototypes.Count() > 0)
+                            if (Model.PidfPbfAnalyticals.PidfPbfAnalyticalPrototypes != null)
                             {
                                 for (int j = 0; j < Model.PidfPbfAnalyticals.PidfPbfAnalyticalPrototypes.Count(); j++)
                                 {
@@ -231,7 +231,7 @@
                                     </tr>
                                 }
                             }
-                        }
+                       
                         else
                         {
                             int j = 0;
@@ -287,6 +287,7 @@
                                 </td>
                             </tr>
                         }
+                         }
                     </tbody>
 
                 </table>
@@ -313,7 +314,7 @@
                     <tbody id="ExhibitTableBody">
                         @if (Model.PidfPbfAnalyticals != null)
                         {
-                            if (Model.PidfPbfAnalyticals.PidfPbfAnalyticalExhibits != null && Model.PidfPbfAnalyticals.PidfPbfAnalyticalExhibits.Count() > 0)
+                            if (Model.PidfPbfAnalyticals.PidfPbfAnalyticalExhibits != null)
                             {
                                 for (int j = 0; j < Model.PidfPbfAnalyticals.PidfPbfAnalyticalExhibits.Count(); j++)
                                 {
@@ -370,7 +371,7 @@
                                     </tr>
                                 }
                             }
-                        }
+                        
                         else
                         {
                             int j = 0;
@@ -426,6 +427,7 @@
                                 </td>
                             </tr>
                         }
+                       }
                     </tbody>
 
                 </table>
@@ -453,7 +455,7 @@
                     <tbody id="ScaleUpTableBody">
                         @if (Model.PidfPbfAnalyticals != null)
                         {
-                            if (Model.PidfPbfAnalyticals.PidfPbfAnalyticalScaleUps != null && Model.PidfPbfAnalyticals.PidfPbfAnalyticalScaleUps.Count() > 0)
+                            if (Model.PidfPbfAnalyticals.PidfPbfAnalyticalScaleUps != null)
                             {
                                 for (int j = 0; j < Model.PidfPbfAnalyticals.PidfPbfAnalyticalScaleUps.Count(); j++)
                                 {
@@ -510,7 +512,7 @@
                                     </tr>
                                 }
                             }
-                        }
+                        
                         else
                         {
                             int j = 0;
@@ -565,6 +567,7 @@
                                     </div>
                                 </td>
                             </tr>
+                        }
                         }
                     </tbody>
 
