@@ -9,6 +9,7 @@ namespace EmcureNPD.Business.Models
     {
         public int PilotBioFastingId { get; set; }
         public long PBFClinicalId { get; set; }
+        public long StrengthId { get; set; }
         public string Fasting { get; set; }
         public int? NumberofVolunteers { get; set; }
         public decimal? ClinicalCostandVol { get; set; }

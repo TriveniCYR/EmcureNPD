@@ -9,6 +9,7 @@ namespace EmcureNPD.Business.Models
     {
         public int PivotalBioFedid { get; set; }
         public long PBFClinicalId { get; set; }
+        public long StrengthId { get; set; }
         public string Fed { get; set; }
         public int? NumberofVolunteers { get; set; }
         public decimal? ClinicalCostandVol { get; set; }

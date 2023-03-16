@@ -188,7 +188,7 @@ namespace EmcureNPD.API.Controllers.PBF
             try
             {
                 //pidfId = int.Parse(UtilityHelper.Decreypt(strpidfId));
-                var oPIDFEntity = await _PBFService.GetPbfFormDetails(pidfId, bussnessId, strengthid);
+                var oPIDFEntity = await _PBFService.GetPbfClinicalFormDetails(pidfId, bussnessId, strengthid);
                 if (oPIDFEntity != null)
                     return _ObjectResponse.Create(oPIDFEntity, (Int32)HttpStatusCode.OK);
                 else
@@ -199,8 +199,25 @@ namespace EmcureNPD.API.Controllers.PBF
                 return _ObjectResponse.Create(false, (Int32)HttpStatusCode.InternalServerError, Convert.ToString(ex.StackTrace));
             }
         }
+		[HttpPost]
+		[Route("InsertUpdatePBFClinicalDetails")]
+		public async Task<IActionResult> InsertUpdatePBFClinicalDetails(PIDFPBFClinicalFormEntity pbfClinicalEntity)
+		{
+			try
+			{
+
+				DBOperation oResponse = await _PBFService.AddUpdatePBFClinicalDetails(pbfClinicalEntity);
+				if (oResponse == DBOperation.Success)
+					return _ObjectResponse.Create(true, (Int32)HttpStatusCode.OK, (pbfClinicalEntity.Pidfpbfid > 0 ? "Updated Successfully" : "Inserted Successfully"));
+				else
+					return _ObjectResponse.Create(false, (Int32)HttpStatusCode.BadRequest, (oResponse == DBOperation.NotFound ? "Record not found" : "Bad request"));
+			}
+			catch (Exception ex)
+			{
+				return _ObjectResponse.Create(false, (Int32)HttpStatusCode.InternalServerError, Convert.ToString(ex.StackTrace));
+			}
+		}
 
 
-
-    }	
+	}	
 }

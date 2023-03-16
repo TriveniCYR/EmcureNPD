@@ -251,6 +251,9 @@ namespace EmcureNPD.Web.Helpers
         public static string SavePBFAnalytical = "api/PBF/InsertUpdatePBFDetailsAnalytical";
 
         
+        public static string SavePBFClinical = "api/PBF/InsertUpdatePBFClinicalDetails";
+
+
 
         #endregion
 
