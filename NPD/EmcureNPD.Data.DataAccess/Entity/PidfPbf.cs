@@ -11,6 +11,7 @@ namespace EmcureNPD.Data.DataAccess.Entity
         {
             PidfPbfAnalyticals = new HashSet<PidfPbfAnalytical>();
             PidfPbfClinicals = new HashSet<PidfPbfClinical>();
+            PidfPbfGenerals = new HashSet<PidfPbfGeneral>();
         }
 
         public long Pidfpbfid { get; set; }
@@ -26,6 +27,9 @@ namespace EmcureNPD.Data.DataAccess.Entity
         public int DosageId { get; set; }
         public string PatentStatus { get; set; }
         public string SponsorBusinessPartner { get; set; }
+        public int? TransferFormRnDdivisionId { get; set; }
+        public int? FillingTypeId { get; set; }
+        public string ScopeObjectives { get; set; }
         public int FormRnDdivisionId { get; set; }
         public DateTime? ProjectInitiationDate { get; set; }
         public string RnDhead { get; set; }
@@ -33,6 +37,8 @@ namespace EmcureNPD.Data.DataAccess.Entity
         public int PackagingTypeId { get; set; }
         public string DosageFormulationDetail { get; set; }
         public int? ManufacturingId { get; set; }
+        public string PreviousProjectCode { get; set; }
+        public double? SinkCost { get; set; }
         public DateTime CreatedDate { get; set; }
         public int CreatedBy { get; set; }
         public DateTime? ModifyDate { get; set; }
@@ -40,6 +46,7 @@ namespace EmcureNPD.Data.DataAccess.Entity
 
         public virtual MasterBerequirement Berequirement { get; set; }
         public virtual MasterDosage Dosage { get; set; }
+        public virtual MasterFilingType FillingType { get; set; }
         public virtual MasterFormRnDdivision FormRnDdivision { get; set; }
         public virtual MasterManufacturing Manufacturing { get; set; }
         public virtual MasterPackagingType PackagingType { get; set; }
@@ -49,5 +56,6 @@ namespace EmcureNPD.Data.DataAccess.Entity
         public virtual MasterWorkflow Workflow { get; set; }
         public virtual ICollection<PidfPbfAnalytical> PidfPbfAnalyticals { get; set; }
         public virtual ICollection<PidfPbfClinical> PidfPbfClinicals { get; set; }
+        public virtual ICollection<PidfPbfGeneral> PidfPbfGenerals { get; set; }
     }
 }

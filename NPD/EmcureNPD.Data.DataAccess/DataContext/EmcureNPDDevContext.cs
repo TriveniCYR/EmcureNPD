@@ -2,7 +2,6 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata;
 using EmcureNPD.Data.DataAccess.Entity;
-using EmcureNPD.Utility;
 
 #nullable disable
 
@@ -44,6 +43,7 @@ namespace EmcureNPD.Data.DataAccess.DataContext
         public virtual DbSet<MasterExipient> MasterExipients { get; set; }
         public virtual DbSet<MasterExpenseRegion> MasterExpenseRegions { get; set; }
         public virtual DbSet<MasterExtensionApplication> MasterExtensionApplications { get; set; }
+        public virtual DbSet<MasterFilingType> MasterFilingTypes { get; set; }
         public virtual DbSet<MasterFinalSelection> MasterFinalSelections { get; set; }
         public virtual DbSet<MasterFormRnDdivision> MasterFormRnDdivisions { get; set; }
         public virtual DbSet<MasterFormulation> MasterFormulations { get; set; }
@@ -82,7 +82,6 @@ namespace EmcureNPD.Data.DataAccess.DataContext
         public virtual DbSet<PidfApiCharterPrddepartment> PidfApiCharterPrddepartments { get; set; }
         public virtual DbSet<PidfApiCharterTimelineInMonth> PidfApiCharterTimelineInMonths { get; set; }
         public virtual DbSet<PidfApiIpd> PidfApiIpds { get; set; }
-        public virtual DbSet<PidfApiRnD> PidfApiRnDs { get; set; }
         public virtual DbSet<PidfCommercial> PidfCommercials { get; set; }
         public virtual DbSet<PidfCommercialYear> PidfCommercialYears { get; set; }
         public virtual DbSet<PidfFinance> PidfFinances { get; set; }
@@ -105,21 +104,8 @@ namespace EmcureNPD.Data.DataAccess.DataContext
         public virtual DbSet<PidfPbfClinicalPilotBioFed> PidfPbfClinicalPilotBioFeds { get; set; }
         public virtual DbSet<PidfPbfClinicalPivotalBioFasting> PidfPbfClinicalPivotalBioFastings { get; set; }
         public virtual DbSet<PidfPbfClinicalPivotalBioFed> PidfPbfClinicalPivotalBioFeds { get; set; }
-        public virtual DbSet<PidfPbfRnD> PidfPbfRnDs { get; set; }
-        public virtual DbSet<PidfPbfRnDCapexandMiscellaneousExpense> PidfPbfRnDCapexandMiscellaneousExpenses { get; set; }
-        public virtual DbSet<PidfPbfRnDExicipientExhibit> PidfPbfRnDExicipientExhibits { get; set; }
-        public virtual DbSet<PidfPbfRnDExicipientProtoype> PidfPbfRnDExicipientProtoypes { get; set; }
-        public virtual DbSet<PidfPbfRnDExicipientScaleUp> PidfPbfRnDExicipientScaleUps { get; set; }
-        public virtual DbSet<PidfPbfRnDFillingExpense> PidfPbfRnDFillingExpenses { get; set; }
-        public virtual DbSet<PidfPbfRnDManPowerCostAndProjectDuration> PidfPbfRnDManPowerCostAndProjectDurations { get; set; }
-        public virtual DbSet<PidfPbfRnDPackagingExhibit> PidfPbfRnDPackagingExhibits { get; set; }
-        public virtual DbSet<PidfPbfRnDPackagingPrototype> PidfPbfRnDPackagingPrototypes { get; set; }
-        public virtual DbSet<PidfPbfRnDPackagingScaleUp> PidfPbfRnDPackagingScaleUps { get; set; }
-        public virtual DbSet<PidfPbfRnDPlantSupportCost> PidfPbfRnDPlantSupportCosts { get; set; }
-        public virtual DbSet<PidfPbfRnDToolingandChangePartCost> PidfPbfRnDToolingandChangePartCosts { get; set; }
-        public virtual DbSet<PidfPbfRndProjectActivity> PidfPbfRndProjectActivities { get; set; }
-        public virtual DbSet<PidfPbfRndProjectEstimation> PidfPbfRndProjectEstimations { get; set; }
-        public virtual DbSet<PidfPbfRndReferenceProductDetail> PidfPbfRndReferenceProductDetails { get; set; }
+        public virtual DbSet<PidfPbfGeneral> PidfPbfGenerals { get; set; }
+        public virtual DbSet<PidfPbfRnDExicipientRequirement> PidfPbfRnDExicipientRequirements { get; set; }
         public virtual DbSet<Pidfapidetail> Pidfapidetails { get; set; }
         public virtual DbSet<PidfproductStrength> PidfproductStrengths { get; set; }
         public virtual DbSet<PidfstatusHistory> PidfstatusHistories { get; set; }
@@ -132,7 +118,7 @@ namespace EmcureNPD.Data.DataAccess.DataContext
             if (!optionsBuilder.IsConfigured)
             {
 #warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see http://go.microsoft.com/fwlink/?LinkId=723263.
-                optionsBuilder.UseSqlServer(DatabaseConnection.NPDDatabaseConnection);
+                optionsBuilder.UseSqlServer("Data Source=180.149.241.172;Initial Catalog=EmcureNPDDev;Persist Security Info=True;User ID=emcurenpddev_dbUser;pwd=emcure123!@#;Connection Timeout=30;Encrypt=False;TrustServerCertificate=False;ApplicationIntent=ReadWrite;MultiSubnetFailover=False");
             }
         }
 
@@ -520,6 +506,19 @@ namespace EmcureNPD.Data.DataAccess.DataContext
                 entity.Property(e => e.CreatedDate).HasColumnType("datetime");
 
                 entity.Property(e => e.ExtensionApplicationName).HasMaxLength(100);
+
+                entity.Property(e => e.ModifyDate).HasColumnType("datetime");
+            });
+
+            modelBuilder.Entity<MasterFilingType>(entity =>
+            {
+                entity.HasKey(e => e.FilingTypeId);
+
+                entity.ToTable("Master_FilingType", "dbo");
+
+                entity.Property(e => e.CreatedDate).HasColumnType("datetime");
+
+                entity.Property(e => e.FilingTypeName).HasMaxLength(100);
 
                 entity.Property(e => e.ModifyDate).HasColumnType("datetime");
             });
@@ -1339,53 +1338,6 @@ namespace EmcureNPD.Data.DataAccess.DataContext
                     .HasConstraintName("FK_PIDF_API_IPD_ProductTypeId");
             });
 
-            modelBuilder.Entity<PidfApiRnD>(entity =>
-            {
-                entity.ToTable("PIDF_API_RnD", "dbo");
-
-                entity.Property(e => e.PidfApiRnDId).HasColumnName("PIDF_API_RnD_ID");
-
-                entity.Property(e => e.ApimarketPrice)
-                    .HasMaxLength(100)
-                    .HasColumnName("APIMarketPrice");
-
-                entity.Property(e => e.ApitargetRmcCcpc)
-                    .HasMaxLength(100)
-                    .HasColumnName("APITargetRMC_CCPC");
-
-                entity.Property(e => e.CreatedDate).HasColumnType("datetime");
-
-                entity.Property(e => e.Development).HasMaxLength(100);
-
-                entity.Property(e => e.Exhibit).HasMaxLength(100);
-
-                entity.Property(e => e.ModifyDate).HasColumnType("datetime");
-
-                entity.Property(e => e.Pidfid).HasColumnName("PIDFID");
-
-                entity.Property(e => e.PlantQc)
-                    .HasMaxLength(100)
-                    .HasColumnName("PlantQC");
-
-                entity.Property(e => e.ScaleUp).HasMaxLength(100);
-
-                entity.Property(e => e.SponsorBusinessPartner).HasMaxLength(100);
-
-                entity.Property(e => e.Total).HasMaxLength(100);
-
-                entity.HasOne(d => d.MarketExtenstion)
-                    .WithMany(p => p.PidfApiRnDs)
-                    .HasForeignKey(d => d.MarketExtenstionId)
-                    .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK_PIDF_API_RnD_MarketExtenstionId");
-
-                entity.HasOne(d => d.Pidf)
-                    .WithMany(p => p.PidfApiRnDs)
-                    .HasForeignKey(d => d.Pidfid)
-                    .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK_PIDF_API_RnD_PIDFID");
-            });
-
             modelBuilder.Entity<PidfCommercial>(entity =>
             {
                 entity.ToTable("PIDF_Commercial", "dbo");
@@ -1872,6 +1824,8 @@ namespace EmcureNPD.Data.DataAccess.DataContext
 
                 entity.Property(e => e.Pidfid).HasColumnName("PIDFId");
 
+                entity.Property(e => e.PreviousProjectCode).HasMaxLength(50);
+
                 entity.Property(e => e.ProjectInitiationDate).HasColumnType("datetime");
 
                 entity.Property(e => e.ProjectManager).HasMaxLength(100);
@@ -1882,7 +1836,11 @@ namespace EmcureNPD.Data.DataAccess.DataContext
                     .HasMaxLength(100)
                     .HasColumnName("RnDHead");
 
+                entity.Property(e => e.ScopeObjectives).HasMaxLength(100);
+
                 entity.Property(e => e.SponsorBusinessPartner).HasMaxLength(100);
+
+                entity.Property(e => e.TransferFormRnDdivisionId).HasColumnName("TransferFormRnDDivisionId");
 
                 entity.HasOne(d => d.Berequirement)
                     .WithMany(p => p.PidfPbfs)
@@ -1895,6 +1853,11 @@ namespace EmcureNPD.Data.DataAccess.DataContext
                     .HasForeignKey(d => d.DosageId)
                     .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("FK_PIDF_PBF_Master_Dosage");
+
+                entity.HasOne(d => d.FillingType)
+                    .WithMany(p => p.PidfPbfs)
+                    .HasForeignKey(d => d.FillingTypeId)
+                    .HasConstraintName("FK_PIDF_PBF_Master_FilingType");
 
                 entity.HasOne(d => d.FormRnDdivision)
                     .WithMany(p => p.PidfPbfs)
@@ -2192,17 +2155,11 @@ namespace EmcureNPD.Data.DataAccess.DataContext
 
                 entity.Property(e => e.CreatedDate).HasColumnType("datetime");
 
-                entity.Property(e => e.PbfclinicalId).HasColumnName("PBFClinicalId");
+                entity.Property(e => e.Pbfgenerald).HasColumnName("PBFGenerald");
 
                 entity.Property(e => e.TotalPilotFedcost).HasColumnName("TotalPilotFEDCost");
 
                 entity.Property(e => e.TotalPivotalFedcost).HasColumnName("TotalPivotalFEDCost");
-
-                entity.HasOne(d => d.Pbfclinical)
-                    .WithMany(p => p.PidfPbfClinicalCosts)
-                    .HasForeignKey(d => d.PbfclinicalId)
-                    .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK_PIDF_PBF_Clinical_Cost_PIDF_PBF_Clinical");
 
                 entity.HasOne(d => d.Strength)
                     .WithMany(p => p.PidfPbfClinicalCosts)
@@ -2228,15 +2185,15 @@ namespace EmcureNPD.Data.DataAccess.DataContext
 
                 entity.Property(e => e.Fasting).HasMaxLength(50);
 
-                entity.Property(e => e.PbfclinicalId).HasColumnName("PBFClinicalId");
+                entity.Property(e => e.PbfgeneralId).HasColumnName("PBFGeneralId");
 
                 entity.Property(e => e.TotalCost).HasColumnType("decimal(18, 0)");
 
-                entity.HasOne(d => d.Pbfclinical)
+                entity.HasOne(d => d.Pbfgeneral)
                     .WithMany(p => p.PidfPbfClinicalPilotBioFastings)
-                    .HasForeignKey(d => d.PbfclinicalId)
+                    .HasForeignKey(d => d.PbfgeneralId)
                     .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK_PIDF_PBF_Clinical_PilotBioFasting_PIDF_PBF_Clinical");
+                    .HasConstraintName("FK_PIDF_PBF_Clinical_PilotBioFasting_PIDF_PBF_General");
 
                 entity.HasOne(d => d.Strength)
                     .WithMany(p => p.PidfPbfClinicalPilotBioFastings)
@@ -2266,15 +2223,15 @@ namespace EmcureNPD.Data.DataAccess.DataContext
                     .HasMaxLength(50)
                     .HasColumnName("FED");
 
-                entity.Property(e => e.PbfclinicalId).HasColumnName("PBFClinicalId");
+                entity.Property(e => e.PbfgeneralId).HasColumnName("PBFGeneralId");
 
                 entity.Property(e => e.TotalCost).HasColumnType("decimal(18, 0)");
 
-                entity.HasOne(d => d.Pbfclinical)
+                entity.HasOne(d => d.Pbfgeneral)
                     .WithMany(p => p.PidfPbfClinicalPilotBioFeds)
-                    .HasForeignKey(d => d.PbfclinicalId)
+                    .HasForeignKey(d => d.PbfgeneralId)
                     .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK_PIDF_PBF_Clinical_PilotBioFED_PIDF_PBF_Clinical");
+                    .HasConstraintName("FK_PIDF_PBF_Clinical_PilotBioFED_PIDF_PBF_General");
 
                 entity.HasOne(d => d.Strength)
                     .WithMany(p => p.PidfPbfClinicalPilotBioFeds)
@@ -2300,15 +2257,15 @@ namespace EmcureNPD.Data.DataAccess.DataContext
 
                 entity.Property(e => e.Fasting).HasMaxLength(50);
 
-                entity.Property(e => e.PbfclinicalId).HasColumnName("PBFClinicalId");
+                entity.Property(e => e.PbfgeneralId).HasColumnName("PBFGeneralId");
 
                 entity.Property(e => e.TotalCost).HasColumnType("decimal(18, 0)");
 
-                entity.HasOne(d => d.Pbfclinical)
+                entity.HasOne(d => d.Pbfgeneral)
                     .WithMany(p => p.PidfPbfClinicalPivotalBioFastings)
-                    .HasForeignKey(d => d.PbfclinicalId)
+                    .HasForeignKey(d => d.PbfgeneralId)
                     .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK_PIDF_PBF_Clinical_PivotalBioFasting_PIDF_PBF_Clinical");
+                    .HasConstraintName("FK_PIDF_PBF_Clinical_PivotalBioFasting_PIDF_PBF_General");
 
                 entity.HasOne(d => d.Strength)
                     .WithMany(p => p.PidfPbfClinicalPivotalBioFastings)
@@ -2338,15 +2295,15 @@ namespace EmcureNPD.Data.DataAccess.DataContext
                     .HasMaxLength(50)
                     .HasColumnName("FED");
 
-                entity.Property(e => e.PbfclinicalId).HasColumnName("PBFClinicalId");
+                entity.Property(e => e.PbfgeneralId).HasColumnName("PBFGeneralId");
 
                 entity.Property(e => e.TotalCost).HasColumnType("decimal(18, 0)");
 
-                entity.HasOne(d => d.Pbfclinical)
+                entity.HasOne(d => d.Pbfgeneral)
                     .WithMany(p => p.PidfPbfClinicalPivotalBioFeds)
-                    .HasForeignKey(d => d.PbfclinicalId)
+                    .HasForeignKey(d => d.PbfgeneralId)
                     .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK_PIDF_PBF_Clinical_PivotalBioFED_PIDF_PBF_Clinical");
+                    .HasConstraintName("FK_PIDF_PBF_Clinical_PivotalBioFED_PIDF_PBF_General");
 
                 entity.HasOne(d => d.Strength)
                     .WithMany(p => p.PidfPbfClinicalPivotalBioFeds)
@@ -2355,424 +2312,88 @@ namespace EmcureNPD.Data.DataAccess.DataContext
                     .HasConstraintName("FK_PIDF_PBF_Clinical_PivotalBioFED_PIDFProductStrength");
             });
 
-            modelBuilder.Entity<PidfPbfRnD>(entity =>
+            modelBuilder.Entity<PidfPbfGeneral>(entity =>
             {
-                entity.ToTable("PIDF_PBF_RnD", "dbo");
+                entity.HasKey(e => e.PbfgeneralId)
+                    .HasName("PK_PIDF_PBF_g");
 
-                entity.Property(e => e.PidfpbfrnDid)
-                    .ValueGeneratedNever()
-                    .HasColumnName("PIDFPBFRnDId");
+                entity.ToTable("PIDF_PBF_General", "dbo");
 
-                entity.Property(e => e.Pidfpbfid).HasColumnName("PIDFPBFId");
+                entity.Property(e => e.PbfgeneralId).HasColumnName("PBFGeneralId");
 
-                entity.Property(e => e.TotalExicipientCosts).HasColumnType("decimal(18, 0)");
+                entity.Property(e => e.BudgetTimelineSubmissionDate).HasColumnType("datetime");
 
-                entity.Property(e => e.TotalPackagingCosts).HasColumnType("decimal(18, 0)");
+                entity.Property(e => e.Capex).HasMaxLength(50);
 
-                entity.HasOne(d => d.CapexAndMiscellaneousExpenses)
-                    .WithMany(p => p.PidfPbfRnDs)
-                    .HasForeignKey(d => d.CapexAndMiscellaneousExpensesId)
+                entity.Property(e => e.CreatedDate).HasColumnType("datetime");
+
+                entity.Property(e => e.ImprintingImbossingCodes).HasMaxLength(50);
+
+                entity.Property(e => e.Pbfid).HasColumnName("PBFID");
+
+                entity.Property(e => e.Pidfid).HasColumnName("PIDFID");
+
+                entity.Property(e => e.ProjectComplexity).HasMaxLength(50);
+
+                entity.Property(e => e.ProjectDevelopmentInitialDate).HasColumnType("datetime");
+
+                entity.Property(e => e.ProjectName).HasMaxLength(50);
+
+                entity.Property(e => e.SapCodeProjectCode).HasMaxLength(50);
+
+                entity.Property(e => e.TestLicenseAvailability)
+                    .HasMaxLength(100)
+                    .IsUnicode(false);
+
+                entity.HasOne(d => d.BusinessUnit)
+                    .WithMany(p => p.PidfPbfGenerals)
+                    .HasForeignKey(d => d.BusinessUnitId)
                     .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK_PIDF_PBF_RnD_CapexAndMiscellaneousExpenses");
+                    .HasConstraintName("FK_PIDF_PBF_General_Master_BusinessUnit");
 
-                entity.HasOne(d => d.ExicipientExhibit)
-                    .WithMany(p => p.PidfPbfRnDs)
-                    .HasForeignKey(d => d.ExicipientExhibitId)
+                entity.HasOne(d => d.Pbf)
+                    .WithMany(p => p.PidfPbfGenerals)
+                    .HasForeignKey(d => d.Pbfid)
                     .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK_PIDF_PBF_RnD_ExicipientExhibit");
+                    .HasConstraintName("FK_PIDF_PBF_General_PIDF_PBF");
 
-                entity.HasOne(d => d.ExicipientProtoype)
-                    .WithMany(p => p.PidfPbfRnDs)
-                    .HasForeignKey(d => d.ExicipientProtoypeId)
+                entity.HasOne(d => d.Pidf)
+                    .WithMany(p => p.PidfPbfGenerals)
+                    .HasForeignKey(d => d.Pidfid)
                     .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK_PIDF_PBF_RnD_ExicipientProtoype");
+                    .HasConstraintName("FK_PIDF_PBF_General_PIDF");
 
-                entity.HasOne(d => d.ExicipientScaleUp)
-                    .WithMany(p => p.PidfPbfRnDs)
-                    .HasForeignKey(d => d.ExicipientScaleUpId)
+                entity.HasOne(d => d.ProductType)
+                    .WithMany(p => p.PidfPbfGenerals)
+                    .HasForeignKey(d => d.ProductTypeId)
                     .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK_PIDF_PBF_RnD_ExicipientScaleUp");
-
-                entity.HasOne(d => d.FillingExpenses)
-                    .WithMany(p => p.PidfPbfRnDs)
-                    .HasForeignKey(d => d.FillingExpensesId)
-                    .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK_PIDF_PBF_RnD_FillingExpenses_Id");
-
-                entity.HasOne(d => d.PackagingExhibit)
-                    .WithMany(p => p.PidfPbfRnDs)
-                    .HasForeignKey(d => d.PackagingExhibitId)
-                    .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK_PIDF_PBF_RnD_PackagingExhibit");
-
-                entity.HasOne(d => d.PackagingPrototype)
-                    .WithMany(p => p.PidfPbfRnDs)
-                    .HasForeignKey(d => d.PackagingPrototypeId)
-                    .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK_PIDF_PBF_RnD_PackagingPrototype");
-
-                entity.HasOne(d => d.PackagingScaleUp)
-                    .WithMany(p => p.PidfPbfRnDs)
-                    .HasForeignKey(d => d.PackagingScaleUpId)
-                    .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK_PIDF_PBF_RnD_PackagingScaleUp");
-
-                entity.HasOne(d => d.Pidfpbf)
-                    .WithMany(p => p.PidfPbfRnDs)
-                    .HasForeignKey(d => d.Pidfpbfid)
-                    .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK_PIDF_PBF_RnD_PIDF");
-
-                entity.HasOne(d => d.PlantSupportCost)
-                    .WithMany(p => p.PidfPbfRnDs)
-                    .HasForeignKey(d => d.PlantSupportCostId)
-                    .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK_PIDF_PBF_RnD_PlantSupportCost");
+                    .HasConstraintName("FK_PIDF_PBF_General_Master_ProductType");
 
                 entity.HasOne(d => d.Strength)
-                    .WithMany(p => p.PidfPbfRnDs)
+                    .WithMany(p => p.PidfPbfGenerals)
                     .HasForeignKey(d => d.StrengthId)
                     .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK_PIDF_PBF_RnD_PIDF_Strength_Id");
+                    .HasConstraintName("FK_PIDF_PBF_General_PIDFProductStrength");
+            });
 
-                entity.HasOne(d => d.ToolingAndChangePartCost)
-                    .WithMany(p => p.PidfPbfRnDs)
-                    .HasForeignKey(d => d.ToolingAndChangePartCostId)
+            modelBuilder.Entity<PidfPbfRnDExicipientRequirement>(entity =>
+            {
+                entity.HasKey(e => e.ExicipientRequirementId)
+                    .HasName("PK__PIDF_PBF__72D1E4E7F70D75D5");
+
+                entity.ToTable("PIDF_PBF_RnD_ExicipientRequirement");
+
+                entity.Property(e => e.CreatedDate).HasColumnType("datetime");
+
+                entity.Property(e => e.ExicipientPrototype).HasMaxLength(70);
+
+                entity.Property(e => e.MgPerUnitDosage).HasMaxLength(70);
+
+                entity.HasOne(d => d.PidfPbfGeneral)
+                    .WithMany(p => p.PidfPbfRnDExicipientRequirements)
+                    .HasForeignKey(d => d.PidfPbfGeneralId)
                     .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK_PIDF_PBF_RnD_ToolingAndChangePartCost");
-            });
-
-            modelBuilder.Entity<PidfPbfRnDCapexandMiscellaneousExpense>(entity =>
-            {
-                entity.HasKey(e => e.CapexandMiscellaneousExpensesId)
-                    .HasName("PK_Master_CapexandMiscellaneousExpenses");
-
-                entity.ToTable("PIDF_PBF_RnD_CapexandMiscellaneousExpenses", "dbo");
-
-                entity.Property(e => e.CapexandMiscellaneousExpensesId).ValueGeneratedNever();
-
-                entity.Property(e => e.Capex1).HasMaxLength(50);
-
-                entity.Property(e => e.Capex2).HasMaxLength(50);
-
-                entity.Property(e => e.CreatedDate).HasColumnType("datetime");
-
-                entity.Property(e => e.Licensing).HasMaxLength(50);
-
-                entity.Property(e => e.Miscellaneous).HasMaxLength(50);
-
-                entity.Property(e => e.TotalCost).HasColumnType("decimal(18, 0)");
-            });
-
-            modelBuilder.Entity<PidfPbfRnDExicipientExhibit>(entity =>
-            {
-                entity.HasKey(e => e.ExicipientExhibitId)
-                    .HasName("PK_Master_ExicipientExhibit");
-
-                entity.ToTable("PIDF_PBF_RnD_ExicipientExhibit", "dbo");
-
-                entity.Property(e => e.ExicipientExhibitId).ValueGeneratedNever();
-
-                entity.Property(e => e.Cost).HasColumnType("decimal(18, 0)");
-
-                entity.Property(e => e.CreatedDate).HasColumnType("datetime");
-
-                entity.Property(e => e.DosagePerUnit).HasMaxLength(50);
-
-                entity.Property(e => e.ExicipientExhibit).HasMaxLength(50);
-
-                entity.HasOne(d => d.Strength)
-                    .WithMany(p => p.PidfPbfRnDExicipientExhibits)
-                    .HasForeignKey(d => d.StrengthId)
-                    .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK_PIDF_PBF_RnD_ExicipientExhibit_Strength");
-            });
-
-            modelBuilder.Entity<PidfPbfRnDExicipientProtoype>(entity =>
-            {
-                entity.HasKey(e => e.ExicipientProtoypeId)
-                    .HasName("PK_Master_ExicipientProtoype");
-
-                entity.ToTable("PIDF_PBF_RnD_ExicipientProtoype", "dbo");
-
-                entity.Property(e => e.ExicipientProtoypeId).ValueGeneratedNever();
-
-                entity.Property(e => e.Cost).HasColumnType("decimal(18, 0)");
-
-                entity.Property(e => e.CreatedDate).HasColumnType("datetime");
-
-                entity.Property(e => e.DosagePerUnit).HasMaxLength(50);
-
-                entity.Property(e => e.ExicipientPrototype)
-                    .IsRequired()
-                    .HasMaxLength(50);
-
-                entity.HasOne(d => d.Strength)
-                    .WithMany(p => p.PidfPbfRnDExicipientProtoypes)
-                    .HasForeignKey(d => d.StrengthId)
-                    .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK_PIDF_PBF_RnD_ExicipientProtoype_Strength");
-            });
-
-            modelBuilder.Entity<PidfPbfRnDExicipientScaleUp>(entity =>
-            {
-                entity.HasKey(e => e.ExicipientScaleUpId)
-                    .HasName("PK_Master_ExicipientScaleUp");
-
-                entity.ToTable("PIDF_PBF_RnD_ExicipientScaleUp", "dbo");
-
-                entity.Property(e => e.ExicipientScaleUpId).ValueGeneratedNever();
-
-                entity.Property(e => e.Cost).HasColumnType("decimal(18, 0)");
-
-                entity.Property(e => e.CreatedDate).HasColumnType("datetime");
-
-                entity.Property(e => e.DosagePerUnit)
-                    .HasMaxLength(50)
-                    .IsFixedLength(true);
-
-                entity.Property(e => e.ExicipientPrototype).HasMaxLength(50);
-
-                entity.HasOne(d => d.Strength)
-                    .WithMany(p => p.PidfPbfRnDExicipientScaleUps)
-                    .HasForeignKey(d => d.StrengthId)
-                    .HasConstraintName("FK_PIDF_PBF_RnD_Scaleup_Strength");
-            });
-
-            modelBuilder.Entity<PidfPbfRnDFillingExpense>(entity =>
-            {
-                entity.HasKey(e => e.FillingExpensesId)
-                    .HasName("PK_Master_FillingExpenses");
-
-                entity.ToTable("PIDF_PBF_RnD_FillingExpenses", "dbo");
-
-                entity.Property(e => e.FillingExpensesId).ValueGeneratedNever();
-
-                entity.Property(e => e.Cost).HasColumnType("decimal(18, 0)");
-
-                entity.Property(e => e.CreatedDate).HasColumnType("datetime");
-
-                entity.Property(e => e.TotalCost).HasColumnType("decimal(18, 0)");
-            });
-
-            modelBuilder.Entity<PidfPbfRnDManPowerCostAndProjectDuration>(entity =>
-            {
-                entity.HasKey(e => e.ManPowerCostAndProjectDurationId)
-                    .HasName("PK_ManPowerCostAndProjectDuration");
-
-                entity.ToTable("PIDF_PBF_RnD_ManPowerCostAndProjectDuration", "dbo");
-
-                entity.Property(e => e.ManPowerCostAndProjectDurationId).ValueGeneratedNever();
-
-                entity.Property(e => e.AmvandTt)
-                    .HasColumnType("decimal(18, 0)")
-                    .HasColumnName("AMVandTT");
-
-                entity.Property(e => e.AnalyticalDevelopment).HasColumnType("decimal(18, 0)");
-
-                entity.Property(e => e.ExhibitBatch).HasColumnType("decimal(18, 0)");
-
-                entity.Property(e => e.ExhibitCost).HasColumnType("decimal(18, 0)");
-
-                entity.Property(e => e.Filling).HasColumnType("decimal(18, 0)");
-
-                entity.Property(e => e.FormulationDevelopment).HasColumnType("decimal(18, 0)");
-
-                entity.Property(e => e.LiteratureReviewAndSourcing).HasColumnType("decimal(18, 0)");
-
-                entity.Property(e => e.ManHourRate).HasMaxLength(50);
-
-                entity.Property(e => e.PilotBioStudy).HasColumnType("decimal(18, 0)");
-
-                entity.Property(e => e.PivotalBioStudy).HasColumnType("decimal(18, 0)");
-
-                entity.Property(e => e.ProjectInitiation).HasColumnType("decimal(18, 0)");
-
-                entity.Property(e => e.PrototypeCost).HasColumnType("decimal(18, 0)");
-
-                entity.Property(e => e.ScaleUp).HasColumnType("decimal(18, 0)");
-
-                entity.Property(e => e.ScaleUpCost).HasColumnType("decimal(18, 0)");
-
-                entity.Property(e => e.Stability).HasColumnType("decimal(18, 0)");
-
-                entity.Property(e => e.TotalCost).HasColumnType("decimal(18, 0)");
-            });
-
-            modelBuilder.Entity<PidfPbfRnDPackagingExhibit>(entity =>
-            {
-                entity.HasKey(e => e.PackagingExhibitId)
-                    .HasName("PK_Master_PackagingExhibit");
-
-                entity.ToTable("PIDF_PBF_RnD_PackagingExhibit", "dbo");
-
-                entity.Property(e => e.PackagingExhibitId).ValueGeneratedNever();
-
-                entity.Property(e => e.Cost).HasColumnType("decimal(18, 0)");
-
-                entity.Property(e => e.CreatedDate).HasColumnType("datetime");
-
-                entity.Property(e => e.UnitofMeasurement).HasMaxLength(50);
-
-                entity.HasOne(d => d.Strength)
-                    .WithMany(p => p.PidfPbfRnDPackagingExhibits)
-                    .HasForeignKey(d => d.StrengthId)
-                    .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK_PIDF_PBF_RnD_PackagingExhibit_Strength");
-            });
-
-            modelBuilder.Entity<PidfPbfRnDPackagingPrototype>(entity =>
-            {
-                entity.HasKey(e => e.PackagingPrototypeId)
-                    .HasName("PK_Master_PackagingPrototype");
-
-                entity.ToTable("PIDF_PBF_RnD_PackagingPrototype", "dbo");
-
-                entity.Property(e => e.PackagingPrototypeId).ValueGeneratedNever();
-
-                entity.Property(e => e.Cost).HasColumnType("decimal(18, 0)");
-
-                entity.Property(e => e.CreatedDate).HasColumnType("datetime");
-
-                entity.Property(e => e.UnitofMeasurement).HasMaxLength(50);
-
-                entity.HasOne(d => d.Strength)
-                    .WithMany(p => p.PidfPbfRnDPackagingPrototypes)
-                    .HasForeignKey(d => d.StrengthId)
-                    .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK_PIDF_PBF_RnD_Strength");
-            });
-
-            modelBuilder.Entity<PidfPbfRnDPackagingScaleUp>(entity =>
-            {
-                entity.HasKey(e => e.PackagingScaleUpId)
-                    .HasName("PK_Master_PackagingScaleUp");
-
-                entity.ToTable("PIDF_PBF_RnD_PackagingScaleUp", "dbo");
-
-                entity.Property(e => e.PackagingScaleUpId).ValueGeneratedNever();
-
-                entity.Property(e => e.Cost).HasColumnType("decimal(18, 0)");
-
-                entity.Property(e => e.CreatedDate).HasColumnType("datetime");
-
-                entity.Property(e => e.UnitofMeasurement).HasMaxLength(50);
-
-                entity.HasOne(d => d.Strength)
-                    .WithMany(p => p.PidfPbfRnDPackagingScaleUps)
-                    .HasForeignKey(d => d.StrengthId)
-                    .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK_PIDF_PBF_RnD_PackagingScaleUp_Strength");
-            });
-
-            modelBuilder.Entity<PidfPbfRnDPlantSupportCost>(entity =>
-            {
-                entity.HasKey(e => e.PlantSupportCostId)
-                    .HasName("PK_Master_PlantSupportCost");
-
-                entity.ToTable("PIDF_PBF_RnD_PlantSupportCost", "dbo");
-
-                entity.Property(e => e.PlantSupportCostId).ValueGeneratedNever();
-
-                entity.Property(e => e.CreatedDate).HasColumnType("datetime");
-
-                entity.Property(e => e.ExhibitBatch).HasMaxLength(50);
-
-                entity.Property(e => e.ScaleUp).HasMaxLength(50);
-
-                entity.Property(e => e.TotalCost).HasColumnType("decimal(18, 0)");
-
-                entity.HasOne(d => d.Strength)
-                    .WithMany(p => p.PidfPbfRnDPlantSupportCosts)
-                    .HasForeignKey(d => d.StrengthId)
-                    .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK_PIDF_PBF_RnD_PlantSupportCost_Strength");
-            });
-
-            modelBuilder.Entity<PidfPbfRnDToolingandChangePartCost>(entity =>
-            {
-                entity.HasKey(e => e.ToolingandChangePartCostId)
-                    .HasName("PK_Master_ToolingandChangePartCost");
-
-                entity.ToTable("PIDF_PBF_RnD_ToolingandChangePartCost", "dbo");
-
-                entity.Property(e => e.ToolingandChangePartCostId).ValueGeneratedNever();
-
-                entity.Property(e => e.Cost).HasColumnType("decimal(18, 0)");
-
-                entity.Property(e => e.CreatedDate).HasColumnType("datetime");
-
-                entity.Property(e => e.Prototype).HasMaxLength(50);
-
-                entity.Property(e => e.PrototypeDevelopment).HasMaxLength(50);
-
-                entity.Property(e => e.ScaleUpandExhibitBatch).HasMaxLength(50);
-
-                entity.Property(e => e.TotalCost1)
-                    .HasColumnType("decimal(18, 0)")
-                    .HasColumnName("Total_Cost");
-
-                entity.Property(e => e.TotalScaleupandExhibitBatch).HasMaxLength(50);
-            });
-
-            modelBuilder.Entity<PidfPbfRndProjectActivity>(entity =>
-            {
-                entity.HasKey(e => e.ProjectActivitiesId);
-
-                entity.ToTable("PIDF_PBF_Rnd_ProjectActivities", "dbo");
-
-                entity.Property(e => e.ProjectActivitiesId).ValueGeneratedNever();
-
-                entity.Property(e => e.ProjectActivityName).HasMaxLength(50);
-            });
-
-            modelBuilder.Entity<PidfPbfRndProjectEstimation>(entity =>
-            {
-                entity.HasKey(e => e.ProjectActivitiesId);
-
-                entity.ToTable("PIDF_PBF_Rnd_ProjectEstimation", "dbo");
-
-                entity.Property(e => e.ProjectActivitiesId).ValueGeneratedNever();
-
-                entity.Property(e => e.NonRld).HasColumnName("NonRLD");
-
-                entity.Property(e => e.Rld).HasColumnName("RLD");
-
-                entity.HasOne(d => d.ProjectActivity)
-                    .WithMany(p => p.PidfPbfRndProjectEstimations)
-                    .HasForeignKey(d => d.ProjectActivityId)
-                    .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK_PIDF_PBF_Rnd_ProjectEstimation_ProjectActivity");
-
-                entity.HasOne(d => d.Strength)
-                    .WithMany(p => p.PidfPbfRndProjectEstimations)
-                    .HasForeignKey(d => d.StrengthId)
-                    .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK_PIDF_PBF_Rnd_ProjectEstimation_Strength");
-            });
-
-            modelBuilder.Entity<PidfPbfRndReferenceProductDetail>(entity =>
-            {
-                entity.HasKey(e => e.ReferenceProductDetailId)
-                    .HasName("PK_PIDF_PBF_ReferenceProductDetail");
-
-                entity.ToTable("PIDF_PBF_Rnd_ReferenceProductDetail", "dbo");
-
-                entity.Property(e => e.ReferenceProductDetailId).ValueGeneratedNever();
-
-                entity.Property(e => e.FormulationDevelopment).HasColumnType("decimal(18, 0)");
-
-                entity.Property(e => e.PharmasuiticalEquivalence).HasColumnType("decimal(18, 0)");
-
-                entity.Property(e => e.PilotBe)
-                    .HasColumnType("decimal(18, 0)")
-                    .HasColumnName("PilotBE");
-
-                entity.Property(e => e.PivotalBio).HasColumnType("decimal(18, 0)");
-
-                entity.Property(e => e.TotalCost).HasColumnType("decimal(18, 0)");
-
-                entity.Property(e => e.UnitCostOfReferenceProduct).HasColumnType("decimal(18, 0)");
+                    .HasConstraintName("FK_PIDF_PBF_RnD_ExicipientRequirement_PIDF_PBF_General");
             });
 
             modelBuilder.Entity<Pidfapidetail>(entity =>
