@@ -308,7 +308,7 @@ namespace EmcureNPD.Web.Controllers
         public IActionResult PBFForm(string pidfid, string bui)
         {
             ModelState.Clear();
-           
+            
             PidfPbfFormEntity oPIDForm = new PidfPbfFormEntity();
             try
             {
@@ -330,6 +330,89 @@ namespace EmcureNPD.Web.Controllers
                 return View("Login");
             }
         }
+
+        [HttpGet]
+        public IActionResult PBFFormAnalytical(string pidfid, string bui,string? strengthId)
+        {
+            ModelState.Clear(); 
+
+            PidfPbfFormEntity oPIDForm = new PidfPbfFormEntity();
+            try
+            {
+                strengthId = (strengthId == null) ? "0" : strengthId;
+                int rolId = (int)HttpContext.Session.GetInt32(UserHelper.LoggedInRoleId);
+                RolePermissionModel objPermssion = UtilityHelper.GetCntrActionAccess(Convert.ToString(RouteData.Values["controller"]), rolId);
+                if (objPermssion == null || (!objPermssion.Add && !objPermssion.Edit))
+                {
+                    return RedirectToAction("AccessRestriction", "Home");
+                }
+                ViewBag.Access = objPermssion;
+                
+                oPIDForm = GetPIDFPbfModelAnalytical(pidfid, bui, strengthId);
+                if(oPIDForm.MasterStrengthEntities.Count>0 && oPIDForm.MasterStrengthEntities !=null)
+                ViewBag.DefaultStrengthId = Convert.ToString(oPIDForm.MasterStrengthEntities[0].PidfproductStrengthId);
+
+
+                return View("PBFFormAnalytical", oPIDForm);
+            }
+            catch (Exception e)
+            {
+                ViewBag.errormessage = Convert.ToString(e.StackTrace);
+                return View("Login");
+            }
+        }
+
+        [NonAction]
+        private PidfPbfFormEntity GetPIDFPbfModelAnalytical(string pidfid, string bui, string StrengthId)
+        {
+            PidfPbfFormEntity oPIDForm = new();
+            long n;
+            if (!long.TryParse(bui,out n))
+            {               
+                bui = UtilityHelper.Decreypt(bui);
+                StrengthId = (StrengthId=="0")? "0": UtilityHelper.Decreypt(StrengthId);
+            }
+            if (!long.TryParse(pidfid, out n))
+            {
+                pidfid = UtilityHelper.Decreypt(pidfid);
+            }
+            if (!long.TryParse(StrengthId, out n))
+            {
+                StrengthId = UtilityHelper.Decreypt(StrengthId);
+            }
+
+            string logUserId = Convert.ToString(HttpContext.Session.GetString(UserHelper.LoggedInUserId));
+            HttpResponseMessage resMsg;
+            // var _pidfEntity = GetPidfFormModel(int.Parse(pidfid), out resMsg);
+
+            //pidfid = int.Parse(pidfid) ? UtilityHelper.Decreypt(pidfid) : pidfid;
+            string bussnessId = bui;
+            HttpContext.Request.Cookies.TryGetValue(UserHelper.EmcureNPDToken, out string token);
+            APIRepository objapi = new(_cofiguration);
+            HttpResponseMessage responseMessage = objapi.APICommunication(APIURLHelper.GetPbfFormDetailsAnalytical + "/" + pidfid + "/" + bussnessId + "/" + StrengthId, HttpMethod.Get, token).Result;
+            if (responseMessage.IsSuccessStatusCode)
+            {
+                string jsonResponse = responseMessage.Content.ReadAsStringAsync().Result;
+                var data = JsonConvert.DeserializeObject<APIResponseEntity<PidfPbfFormEntity>>(jsonResponse);
+                oPIDForm = data._object;
+                oPIDForm.Pidfid = Convert.ToInt64(pidfid);
+                oPIDForm.CreatedBy = Convert.ToInt32(logUserId);
+                TempData["BusList"] = JsonConvert.SerializeObject(oPIDForm.MasterBusinessUnitEntities);
+
+                HttpResponseMessage responseMS = objapi.APICommunication(APIURLHelper.GetPIDFById + "/" + pidfid, HttpMethod.Get, token).Result;
+
+                if (responseMS.IsSuccessStatusCode)
+                {
+                    string jsnRs = responseMS.Content.ReadAsStringAsync().Result;
+                    var retPIDF = JsonConvert.DeserializeObject<APIResponseEntity<PIDFEntity>>(jsnRs);
+                }
+            }
+            //oPIDForm.pidfEntity = _pidfEntity;
+
+            //oPIDForm.BusinessUnitId = oPIDForm.pidfEntity.BusinessUnitId;
+            return oPIDForm;
+        }
+
 
         [NonAction]
         private PidfPbfFormEntity GetPIDFPbfModel(string pidfid, string bui)

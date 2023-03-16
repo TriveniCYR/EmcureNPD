@@ -4,24 +4,31 @@ using EmcureNPD.Business.Models;
 using EmcureNPD.Data.DataAccess.Core.Repositories;
 using EmcureNPD.Data.DataAccess.Core.UnitOfWork;
 using EmcureNPD.Data.DataAccess.Entity;
+using EmcureNPD.Utility.Utility;
+using Microsoft.EntityFrameworkCore.Metadata.Internal;
 using System;
 using System.Collections.Generic;
+using System.Data.SqlClient;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Text;
 using System.Threading.Tasks;
 using static EmcureNPD.Utility.Enums.GeneralEnum;
 
 namespace EmcureNPD.Business.Core.Implementation
 {
-    public class ProjectService :IProjectService
+    public class ProjectService : IProjectService
     {
         private readonly IUnitOfWork _unitOfWork;
         private readonly IMapperFactory _mapperFactory;
+        private IRepository<Pidf> _repository { get; set; }
+        private IRepository<PidfproductStrength> _pidfProductStrength { get; set; }
         private IRepository<ProjectTask> _projectTaskRepository { get; set; }
         private IRepository<MasterUser> _masterUserRepository { get; set; }
         private IRepository<MasterProjectStatus> _masterProjectStatusRepository { get; set; }
         private IRepository<MasterProjectPriority> _masterProjectPriorityRepository { get; set; }
-
+        private IRepository<PidfMedical> _pidfMedicalrepository { get; set; }
+        private IRepository<PidfMedicalFile> _pidfMedicalFilerepository { get; set; }
         public ProjectService(IUnitOfWork unitOfWork, IMapperFactory mapperFactory)
         {
             _projectTaskRepository = unitOfWork.GetRepository<ProjectTask>();
@@ -30,13 +37,17 @@ namespace EmcureNPD.Business.Core.Implementation
             _masterProjectPriorityRepository = unitOfWork.GetRepository<MasterProjectPriority>();
             _unitOfWork = unitOfWork;
             _mapperFactory = mapperFactory;
+            _pidfMedicalrepository = unitOfWork.GetRepository<PidfMedical>();
+            _pidfMedicalFilerepository = unitOfWork.GetRepository<PidfMedicalFile>();
+            _repository = unitOfWork.GetRepository<Pidf>();
+            _pidfProductStrength = unitOfWork.GetRepository<PidfproductStrength>();
         }
         public ProjectTaskEntity GetDropDownsForTask()
         {
             ProjectTaskEntity TaskAddModel = new ProjectTaskEntity();
             List<ProjectTaskEntity> mainTasks = new List<ProjectTaskEntity>();
             var mainTaskList = _projectTaskRepository.GetAll().Where(x => x.TaskLevel == 1).ToList();
-            foreach(var data in mainTaskList)
+            foreach (var data in mainTaskList)
             {
                 ProjectTaskEntity temp = new ProjectTaskEntity();
                 temp.ProjectTaskId = data.ProjectTaskId;
@@ -166,11 +177,11 @@ namespace EmcureNPD.Business.Core.Implementation
                 var childs = _projectTaskRepository.GetAll().Where(x => x.ParentId == entityProject.ProjectTaskId).ToList();
                 if (childs.Count > 0)
                 {
-                    foreach(var child in childs)
+                    foreach (var child in childs)
                     {
-                       _projectTaskRepository.Remove(child);
+                        _projectTaskRepository.Remove(child);
                     }
-                    
+
                 }
             }
             _projectTaskRepository.Remove(entityProject);
@@ -199,6 +210,40 @@ namespace EmcureNPD.Business.Core.Implementation
             TaskAddModel.TaskLevel = task.TaskLevel;
             TaskAddModel.ParentId = task.ParentId;
             return TaskAddModel;
+        }
+
+        public async Task<PIDFMedicalViewModel> GetFiles(long id)
+        {
+            Expression<Func<PidfMedical, bool>> expr = u => u.Pidfid == id;
+            dynamic objData = (dynamic)await _pidfMedicalrepository.FindAllAsync(expr);
+            PIDFMedicalViewModel data = new PIDFMedicalViewModel();
+            if (objData != null && objData.Count > 0)
+            {
+                data = _mapperFactory.Get<PidfMedical, PIDFMedicalViewModel>(objData[0]);
+                var medicalFileData = _pidfMedicalFilerepository.GetAll().Where(x => x.PidfmedicalId == data.PidfmedicalId).ToList();
+                int i = 0;
+                data.FileName = new string[medicalFileData.Count];
+                foreach (var item in medicalFileData)
+                {
+                    data.PidfmedicalId = item.PidfmedicalId;
+                    data.PidfmedicalFileId = item.PidfmedicalFileId;
+                    data.FileName[i] = item.FileName;
+                    i++;
+                }
+            }
+            return data;
+        }
+
+        public async Task<PIDFEntity> GetByPIDFDetailsById(long id)
+        {
+            SqlParameter[] osqlParameter = {
+                new SqlParameter("@PIDFID", id)
+            };
+            var PIDFList = await _repository.GetBySP("std_npd_GetPIDFById", System.Data.CommandType.StoredProcedure, osqlParameter);
+            return null;
+            //var data = _mapperFactory.Get<Pidf, PIDFEntity>(await _repository.GetAsync(id));
+            //data.pidfProductStregthEntities = _mapperFactory.GetList<PidfproductStrength, PidfProductStregthEntity>(_pidfProductStrength.GetAll().Where(x => x.Pidfid == id).ToList());
+            //return data;
         }
     }
 }

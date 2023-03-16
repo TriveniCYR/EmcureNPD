@@ -456,6 +456,307 @@ namespace EmcureNPD.Business.Core.Implementation
             }
         }
         // t
+
+        public async Task<DBOperation> AddUpdatePBFDetailsAnalytical(PidfPbfFormEntity pbfEntity)
+        {
+            try
+            {
+                //Dummy function to same PIDFPBF Data
+                PidfPbf objPIDFPbf;
+                var loggedInUserId = _helper.GetLoggedInUser().UserId;
+                //PIDFAPIIPDFormEntity _exsistingAPIRnD = new PIDFAPIIPDFormEntity();
+                objPIDFPbf = _pbfRepository.GetAll().Where(x => x.Pidfid == pbfEntity.Pidfid).First();
+                if (objPIDFPbf != null)
+                {
+                    //objPIDFPbf = await _pbfRepository.GetAsync(pbfEntity.Pidfid);
+                    if (objPIDFPbf != null)
+                    {
+                        //for updating PIDFPBF
+
+                        objPIDFPbf.Pidfid = pbfEntity.Pidfid;
+                        objPIDFPbf.ProjectName = pbfEntity.ProjectName;
+                        objPIDFPbf.Market = pbfEntity.Market;
+                        objPIDFPbf.BusinessRelationable = pbfEntity.BusinessRelationable;
+                        objPIDFPbf.BerequirementId = pbfEntity.BerequirementId;
+                        objPIDFPbf.NumberOfApprovedAnda = pbfEntity.NumberOfApprovedAnda;
+                        objPIDFPbf.ProductTypeId = pbfEntity.ProductTypeId;
+                        objPIDFPbf.PlantId = pbfEntity.PlantId;
+                        objPIDFPbf.WorkflowId = pbfEntity.WorkflowId;
+                        objPIDFPbf.DosageId = pbfEntity.DosageId;
+                        objPIDFPbf.PatentStatus = pbfEntity.PatentStatus;
+                        objPIDFPbf.SponsorBusinessPartner = pbfEntity.SponsorBusinessPartner;
+                        objPIDFPbf.FormRnDdivisionId = pbfEntity.FormRnDdivisionId;
+                        objPIDFPbf.ProjectInitiationDate = pbfEntity.ProjectInitiationDate;
+                        objPIDFPbf.RnDhead = pbfEntity.RnDhead;
+                        objPIDFPbf.ProjectManager = pbfEntity.ProjectManager;
+                        objPIDFPbf.PackagingTypeId = (int)pbfEntity.PackagingTypeId;
+                        objPIDFPbf.DosageFormulationDetail = pbfEntity.DosageFormulationDetail;
+                        //objPIDFPbf.ManufacturingId = pbfEntity.manufeturingId;
+                        objPIDFPbf.ModifyBy = loggedInUserId;
+                        objPIDFPbf.ModifyDate = DateTime.Now;
+                        _pbfRepository.UpdateAsync(objPIDFPbf);
+                        await _unitOfWork.SaveChangesAsync();
+
+                        var objPIDFPbfanalytical = _pidfPbfAnalyticalRepository.GetAll().Where(x => x.Pbfid == objPIDFPbf.Pidfpbfid).FirstOrDefault();
+
+                        //For Updating PBF Analytical
+                        if (objPIDFPbfanalytical != null)
+                        {
+                            //PidfPbfAnalytical _previousPbfAnalyticalEntity = _mapperFactory.Get<PidfPbfAnalyticalEntity, PidfPbfAnalytical>(pbfEntity.PidfPbfAnalyticals);
+                            //_pidfPbfAnalyticalRepository.UpdateAsync(_previousPbfAnalyticalEntity);
+                            //await _unitOfWork.SaveChangesAsync();
+
+                            var prototypeDetails = _pidfPbfAnalyticalPrototypeRepository.GetAll().Where(x => x.PbfanalyticalId == objPIDFPbfanalytical.PbfanalyticalId).ToList();
+                            if (prototypeDetails.Count > 0)
+                            {
+                                foreach (var item in prototypeDetails)
+                                {
+                                    _pidfPbfAnalyticalPrototypeRepository.Remove(item);
+                                }
+                                await _unitOfWork.SaveChangesAsync();
+                            }
+
+
+                            var exhibitDetails = _pidfPbfAnalyticalExhibitRepository.GetAll().Where(x => x.PbfanalyticalId == objPIDFPbfanalytical.PbfanalyticalId).ToList();
+                            if (exhibitDetails.Count > 0)
+                            {
+                                foreach (var item in exhibitDetails)
+                                {
+                                    _pidfPbfAnalyticalExhibitRepository.Remove(item);
+                                }
+                                await _unitOfWork.SaveChangesAsync();
+                            }
+
+
+                            var scaleupDetails = _pidfPbfAnalyticalScaleUpRepository.GetAll().Where(x => x.PbfanalyticalId == objPIDFPbfanalytical.PbfanalyticalId).ToList();
+                            if (scaleupDetails.Count > 0)
+                            {
+                                foreach (var item in scaleupDetails)
+                                {
+                                    _pidfPbfAnalyticalScaleUpRepository.Remove(item);
+                                }
+                                await _unitOfWork.SaveChangesAsync();
+                            }
+
+
+                        }                     
+                        await SaveChildDetailsAnalytical(objPIDFPbf.Pidfpbfid, loggedInUserId, pbfEntity.PidfPbfAnalyticals);
+
+                        var isSuccess = await _auditLogService.CreateAuditLog<PidfPbfFormEntity>(objPIDFPbf.Pidfid > 0 ? Utility.Audit.AuditActionType.Update : Utility.Audit.AuditActionType.Create,
+                           Utility.Enums.ModuleEnum.PBF, pbfEntity, pbfEntity, Convert.ToInt32(objPIDFPbf.Pidfid));
+                        await _unitOfWork.SaveChangesAsync();
+                        var _StatusID = (pbfEntity.SaveSubmitType == "Save") ? Master_PIDFStatus.PBFSubmitted : Master_PIDFStatus.PBFInProgress;
+                        await _auditLogService.UpdatePIDFStatusCommon(pbfEntity.Pidfid, (int)_StatusID, loggedInUserId);
+
+                        return DBOperation.Success;
+                    }
+                    else
+                    {
+                        return DBOperation.NotFound;
+                    }
+
+                }
+                else
+                {
+
+                    var _objpidfpbfadd = new PidfPbf();
+                    _objpidfpbfadd.Pidfid = pbfEntity.Pidfid;
+                    _objpidfpbfadd.ProjectName = pbfEntity.ProjectName;
+                    _objpidfpbfadd.Market = pbfEntity.Market;
+                    _objpidfpbfadd.BusinessRelationable = pbfEntity.BusinessRelationable;
+                    _objpidfpbfadd.BerequirementId = pbfEntity.BerequirementId;
+                    _objpidfpbfadd.NumberOfApprovedAnda = pbfEntity.NumberOfApprovedAnda;
+                    _objpidfpbfadd.ProductTypeId = pbfEntity.ProductTypeId;
+                    _objpidfpbfadd.PlantId = pbfEntity.PlantId;
+                    _objpidfpbfadd.WorkflowId = pbfEntity.WorkflowId;
+                    _objpidfpbfadd.DosageId = pbfEntity.DosageId;
+                    _objpidfpbfadd.PatentStatus = pbfEntity.PatentStatus;
+                    _objpidfpbfadd.SponsorBusinessPartner = pbfEntity.SponsorBusinessPartner;
+                    _objpidfpbfadd.FormRnDdivisionId = pbfEntity.FormRnDdivisionId;
+                    _objpidfpbfadd.ProjectInitiationDate = pbfEntity.ProjectInitiationDate;
+                    _objpidfpbfadd.RnDhead = pbfEntity.RnDhead;
+                    _objpidfpbfadd.ProjectManager = pbfEntity.ProjectManager;
+                    _objpidfpbfadd.PackagingTypeId = (int)pbfEntity.PackagingTypeId;
+                    _objpidfpbfadd.DosageFormulationDetail = pbfEntity.DosageFormulationDetail;
+                    //_objpidfpbfadd.ManufacturingId = pbfEntity.manufeturingId;
+                    _objpidfpbfadd.CreatedBy = loggedInUserId;
+                    _objpidfpbfadd.CreatedDate = DateTime.Now;
+                    _pbfRepository.AddAsync(_objpidfpbfadd);
+
+                    await _unitOfWork.SaveChangesAsync();
+                    await SaveChildDetails(_objpidfpbfadd.Pidfpbfid, loggedInUserId, pbfEntity.PidfPbfAnalyticals, pbfEntity.PidfPbfClinicals, pbfEntity.pidfPbfRndEntity);
+                    var _StatusID = (pbfEntity.SaveSubmitType == "Save") ? Master_PIDFStatus.PBFSubmitted : Master_PIDFStatus.PBFInProgress;
+                    await _auditLogService.UpdatePIDFStatusCommon(pbfEntity.Pidfid, (int)_StatusID, loggedInUserId);
+                    return DBOperation.Success;
+
+                }
+            }
+            catch (Exception ex)
+            {
+
+                return DBOperation.Error;
+            }
+        }
+
+        private async Task<bool> SaveChildDetailsAnalytical(long Pidfpbfid, int loggedInUserId, PidfPbfAnalyticalEntity analyticalEntites)
+        {
+            try
+            {
+
+                //if (analyticalEntites != null && analyticalEntites.PidfPbfAnalyticalPrototypes.Count() > 0 && analyticalEntites.PidfPbfAnalyticalScaleUps.Count() > 0 && analyticalEntites.PidfPbfAnalyticalExhibits.Count() > 0)
+
+
+                if (analyticalEntites.StrengthId > 0 && analyticalEntites.BusinessUnitId > 0)//for checking which tab is selected
+                {
+                    if (analyticalEntites.PBFAnalyticalID > 0)
+                    {
+                        var objpidfpbfupdate = _pidfPbfAnalyticalRepository.GetAll().First(x => x.PbfanalyticalId == analyticalEntites.PBFAnalyticalID);
+                        if (objpidfpbfupdate != null)
+                        {
+
+                            var _objpidfpbfadd = new PidfPbfAnalytical();
+                            _objpidfpbfadd.Pbfid = Pidfpbfid;
+                            _objpidfpbfadd.Pidfid = analyticalEntites.PIDFID;
+                            _objpidfpbfadd.BusinessUnitId = analyticalEntites.BusinessUnitId;
+                            _objpidfpbfadd.TotalExpense = analyticalEntites.TotalExpense;
+                            _objpidfpbfadd.ProjectComplexity = analyticalEntites.ProjectComplexity;
+                            _objpidfpbfadd.StrengthId = analyticalEntites.StrengthId;
+                            _objpidfpbfadd.ProductTypeId = analyticalEntites.ProductTypeId;
+                            _objpidfpbfadd.TestLicenseAvailability = analyticalEntites.TestLicenseAvailability;
+                            _objpidfpbfadd.BudgetTimelineSubmissionDate = analyticalEntites.BudgetTimelineSubmissionDate;
+                            _objpidfpbfadd.FormulationId = analyticalEntites.FormulationId;
+                            _objpidfpbfadd.AnalyticalId = analyticalEntites.AnalyticalId;
+                            _pidfPbfAnalyticalRepository.UpdateAsync(_objpidfpbfadd);
+                            //return DBOperation.Success;
+
+                        }
+                        else
+                        {
+                            //return DBOperation.NotFound;
+                        }
+
+
+                    }
+                    else
+                    {
+                        var _objpidfpbfadd = new PidfPbfAnalytical();
+                        _objpidfpbfadd.Pbfid = Pidfpbfid;
+                        _objpidfpbfadd.Pidfid = analyticalEntites.PIDFID;
+                        _objpidfpbfadd.BusinessUnitId = analyticalEntites.BusinessUnitId;
+                        _objpidfpbfadd.TotalExpense = analyticalEntites.TotalExpense;
+                        _objpidfpbfadd.ProjectComplexity = analyticalEntites.ProjectComplexity;
+                        _objpidfpbfadd.StrengthId = analyticalEntites.StrengthId;
+                        _objpidfpbfadd.ProductTypeId = analyticalEntites.ProductTypeId;
+                        _objpidfpbfadd.TestLicenseAvailability = analyticalEntites.TestLicenseAvailability;
+                        _objpidfpbfadd.BudgetTimelineSubmissionDate = analyticalEntites.BudgetTimelineSubmissionDate;
+                        _objpidfpbfadd.FormulationId = analyticalEntites.FormulationId;
+                        _objpidfpbfadd.AnalyticalId = analyticalEntites.AnalyticalId;
+                        _objpidfpbfadd.CreatedBy = loggedInUserId;
+                        _objpidfpbfadd.CreatedDate = DateTime.Now;
+                        _pidfPbfAnalyticalRepository.AddAsync(_objpidfpbfadd);
+                        await _unitOfWork.SaveChangesAsync();
+
+                        //Save Prototype Table
+                        if (analyticalEntites.PidfPbfAnalyticalPrototypes != null && analyticalEntites.PidfPbfAnalyticalPrototypes.Count() > 0)
+                        {
+                            List<PidfPbfAnalyticalPrototype> _objAnalyticalprototype = new List<PidfPbfAnalyticalPrototype>();
+                            foreach (var item in analyticalEntites.PidfPbfAnalyticalPrototypes)
+                            {
+
+                                PidfPbfAnalyticalPrototype analyticalprototype = new PidfPbfAnalyticalPrototype();
+                                analyticalprototype.PbfanalyticalId = _objpidfpbfadd.PbfanalyticalId;
+                                analyticalprototype.StrengthId = analyticalEntites.StrengthId;
+                                analyticalprototype.TestTypeId = (int)item.TestTypeId;
+                                analyticalprototype.Numberoftests = item.Numberoftests;
+                                analyticalprototype.PrototypeDevelopment = item.PrototypeDevelopment;
+                                analyticalprototype.Cost = item.Cost;
+                                analyticalprototype.PrototypeCost = item.PrototypeCost;
+                                analyticalprototype.CreatedDate = DateTime.Now;
+                                analyticalprototype.CreatedBy = loggedInUserId;
+
+                                //analyticalprototype = _mapperFactory.Get<PidfPbfAnalyticalPrototypeEntity, PidfPbfAnalyticalPrototype>(item);
+                                _objAnalyticalprototype.Add(analyticalprototype);
+                            }
+                            _pidfPbfAnalyticalPrototypeRepository.AddRangeAsync(_objAnalyticalprototype);
+                            await _unitOfWork.SaveChangesAsync();
+                        }
+                        //Save ScaleUp Table
+                        if (analyticalEntites.PidfPbfAnalyticalScaleUps != null && analyticalEntites.PidfPbfAnalyticalScaleUps.Count() > 0)
+                        {
+                            List<PidfPbfAnalyticalScaleUp> _objAnalyticalscaleup = new List<PidfPbfAnalyticalScaleUp>();
+                            foreach (var item in analyticalEntites.PidfPbfAnalyticalScaleUps)
+                            {
+
+                                PidfPbfAnalyticalScaleUp analyticalscaleup = new PidfPbfAnalyticalScaleUp();
+                                analyticalscaleup.PbfanalyticalId = _objpidfpbfadd.PbfanalyticalId;
+                                analyticalscaleup.StrengthId = analyticalEntites.StrengthId;
+                                analyticalscaleup.TestTypeId = (int)item.TestTypeId;
+                                analyticalscaleup.Numberoftests = item.Numberoftests;
+                                analyticalscaleup.PrototypeDevelopment = item.PrototypeDevelopment;
+                                analyticalscaleup.Cost = item.Cost;
+                                analyticalscaleup.PrototypeCost = item.PrototypeCost;
+                                analyticalscaleup.CreatedDate = DateTime.Now;
+                                analyticalscaleup.CreatedBy = loggedInUserId;
+                                //analyticalscaleup = _mapperFactory.Get<PidfPbfAnalyticalScaleUpEntity, PidfPbfAnalyticalScaleUp>(item);
+                                _objAnalyticalscaleup.Add(analyticalscaleup);
+                            }
+                            _pidfPbfAnalyticalScaleUpRepository.AddRangeAsync(_objAnalyticalscaleup);
+                            await _unitOfWork.SaveChangesAsync();
+                        }
+                        //Save Exhibit Table
+                        if (analyticalEntites.PidfPbfAnalyticalExhibits != null && analyticalEntites.PidfPbfAnalyticalExhibits.Count() > 0)
+                        {
+                            List<PidfPbfAnalyticalExhibit> _objAnalyticalexhibit = new List<PidfPbfAnalyticalExhibit>();
+                            foreach (var item in analyticalEntites.PidfPbfAnalyticalExhibits)
+                            {
+
+                                PidfPbfAnalyticalExhibit analyticalexhibit = new PidfPbfAnalyticalExhibit();
+                                analyticalexhibit.PbfanalyticalId = _objpidfpbfadd.PbfanalyticalId;
+                                analyticalexhibit.StrengthId = analyticalEntites.StrengthId;
+                                analyticalexhibit.TestTypeId = (int)item.TestTypeId;
+                                analyticalexhibit.Numberoftests = item.Numberoftests;
+                                analyticalexhibit.PrototypeDevelopment = item.PrototypeDevelopment;
+                                analyticalexhibit.Cost = item.Cost;
+                                analyticalexhibit.PrototypeCost = item.PrototypeCost;
+                                analyticalexhibit.CreatedDate = DateTime.Now;
+                                analyticalexhibit.CreatedBy = loggedInUserId;
+                                //analyticalexhibit = _mapperFactory.Get<PidfPbfAnalyticalExhibitEntity, PidfPbfAnalyticalExhibit>(item);
+                                _objAnalyticalexhibit.Add(analyticalexhibit);
+                            }
+                            _pidfPbfAnalyticalExhibitRepository.AddRangeAsync(_objAnalyticalexhibit);
+                            await _unitOfWork.SaveChangesAsync();
+                        }
+                        //Save Cost Table
+                        if (analyticalEntites.PidfPbfAnalyticalCosts != null)
+                        {
+                            PidfPbfAnalyticalCost analyticalcost = new PidfPbfAnalyticalCost();
+                            analyticalcost.PbfanalyticalId = _objpidfpbfadd.PbfanalyticalId;
+                            analyticalcost.StrengthId = analyticalEntites.StrengthId;
+                            analyticalcost.TotalAmvcost = analyticalEntites.PidfPbfAnalyticalCosts.TotalAMVCost;
+                            analyticalcost.Remark = analyticalEntites.PidfPbfAnalyticalCosts.Remark;
+                            analyticalcost.TotalPrototypeCost = analyticalEntites.PidfPbfAnalyticalCosts.TotalPrototypeCost;
+                            analyticalcost.TotalScaleupCost = analyticalEntites.PidfPbfAnalyticalCosts.TotalScaleUpCost;
+                            analyticalcost.TotalExhibitCost = analyticalEntites.PidfPbfAnalyticalCosts.TotalExhibitCost;
+                            analyticalcost.TotalCost = analyticalEntites.PidfPbfAnalyticalCosts.TotalCost;
+                            analyticalcost.CreatedDate = DateTime.Now;
+                            analyticalcost.CreatedBy = loggedInUserId;
+                            //analyticalexhibit = _mapperFactory.Get<PidfPbfAnalyticalExhibitEntity, PidfPbfAnalyticalExhibit>(item);
+                            _PidfPbfAnalyticalCostsRepository.AddAsync(analyticalcost);
+                            await _unitOfWork.SaveChangesAsync();
+                        }
+                    }
+
+                }
+
+                return true;
+            }
+            catch (Exception)
+            {
+                return false;
+            }
+        }
+
+
         private async Task<bool> SaveChildDetails(long Pidfpbfid, int loggedInUserId, PidfPbfAnalyticalEntity analyticalEntites, PidfPbfClinicalEntity clinicalEntites, PidfPbfRnDEntity rnDEntites)
         {
             try
@@ -784,360 +1085,204 @@ namespace EmcureNPD.Business.Core.Implementation
                 return false;
             }
         }
-        public async Task<PIDFPBFClinicalFormEntity> GetPbfClinicalFormDetails(long pidfId, int buid, long? strengthid)
+             
+        public async Task<PidfPbfFormEntity> GetPbfFormDetailsAnalytical(long pidfId, int buid, int strengthid)
         {
-            var data = await GetPbfTabDetails(pidfId, buid, strengthid);           
+            var data = await GetPbfTabDetailsAnalytical(pidfId, buid, strengthid);
             return data;
 
         }
-        public async Task<PIDFPBFClinicalFormEntity> GetPbfTabDetails(long pidfId, int buid, long? strengthid)
+
+        public async Task<PidfPbfFormEntity> GetPbfTabDetailsAnalytical(long pidfId, int buid, int strengthid)
         {
+            
             //PBF Entity Mapping
-            var data = new PIDFPBFClinicalFormEntity();
+            var data = new PidfPbfFormEntity();            
             //analytical Tables
-            PBFFormEntity _PbfaformEntity = new PBFFormEntity();
-            PidfPbfAnalyticalEntity _pidfPbfanalyticalEntity = new PidfPbfAnalyticalEntity();
-            PidfPbfRnDEntity pidfPbfRnDEntity = new PidfPbfRnDEntity();
+            PidfPbfAnalyticalEntity _pidfPbfanalyticalEntity = new PidfPbfAnalyticalEntity();           
             List<PidfPbfAnalyticalPrototypeEntity> objPrototypeList = new();
             List<PidfPbfAnalyticalExhibitEntity> objExhibitList = new();
             List<PidfPbfAnalyticalScaleUpEntity> objScaleUpList = new();
             PidfPbfAnalyticalCostEntity objanalyticalcost = new();
-            //Clinical Tables
-            PidfPbfClinicalEntity _pidfPbfclinicalEntity = new PidfPbfClinicalEntity();
-            List<PidfPbfClinicalPilotBioFastingEntity> _objclinicalPilotBioFasting = new();
-            List<PidfPbfClinicalPilotBioFedEntity> _objclinicalPilotBioFed = new();
-            List<PidfPbfClinicalPivotalBioFastingEntity> _objclinicalPivotalBioFasting = new();
-            List<PidfPbfClinicalPivotalBioFedEntity> _objclinicalPivotalBioFed = new();
-            PidfPbfClinicalCostEntity _obgclinicalcost = new();
+            
             SqlParameter[] osqlParameter = {
                 new SqlParameter("@PIDFID", pidfId),
-                new SqlParameter("@BUSINESSUNITId", buid)
+                new SqlParameter("@BUSINESSUNITId", buid),
+                new SqlParameter("@STRENGTHId", strengthid)
             };
 
-            var dbresult = await _pbfRepository.GetDataSetBySP("stp_npd_GetPbfData", System.Data.CommandType.StoredProcedure, osqlParameter);
+            var dbresult = await _pbfRepository.GetDataSetBySP("stp_npd_GetPbfData_Analytical", System.Data.CommandType.StoredProcedure, osqlParameter);
 
-            dynamic pbf = new ExpandoObject();
+            dynamic pidf = new ExpandoObject();
             dynamic analytical = new ExpandoObject();
-            dynamic clinical = new ExpandoObject();
+           // dynamic clinical = new ExpandoObject();
             dynamic anlyticalprototype = new ExpandoObject();
             dynamic anlyticalscaleup = new ExpandoObject();
             dynamic analyticalexhibit = new ExpandoObject();
             dynamic analyticalcost = new ExpandoObject();
-            dynamic clinicalpilotbiofasting = new ExpandoObject();
-            dynamic clinicalpilotbiofed = new ExpandoObject();
-            dynamic clinicalpivotalbiofasting = new ExpandoObject();
-            dynamic clinicalpivotalbiofed = new ExpandoObject();
-            dynamic clinicalcost = new ExpandoObject();
+           
             if (dbresult != null)
             {
                 if (dbresult.Tables[0] != null && dbresult.Tables[0].Rows.Count > 0)
                 {
-                    //var objPidf = UtilityHelper.ConvertDataTable<PidfPbfFormEntity>(dbresult.Tables[0]);
-                    pbf = dbresult.Tables[0].DataTableToList<PBFFormEntity>();
-                    if (pbf.Count > 0)
+                    var objPidf = UtilityHelper.ConvertDataTable<PidfPbfFormEntity>(dbresult.Tables[0]);
+                    pidf = dbresult.Tables[0].DataTableToList<PidfPbfFormEntity>();
+                    if (pidf.Count > 0)
                     {
-                        var _pidfEntity = _repository.GetAll().Where(x => x.Pidfid == pidfId).FirstOrDefault();
                         //PBF Entity Mapping
                         data.MasterBusinessUnitEntities = _businessUnitService.GetAll().Result.Where(xx => xx.IsActive).ToList();
-                        //pidfPbfRnDEntity.MasterStrengthEntities = _productStrengthService.GetAll().Result.Where(x => x.Pidfid == pidfId).ToList();
-                        data.MasterStrengthEntities = _productStrengthService.GetAll().Result.Where(x => x.Pidfid == pidfId).ToList();
-                        //data.pidfPbfRndEntity = pidfPbfRnDEntity;
+                       
                         data.BusinessUnitId = buid;
-                        data.StrengthId = strengthid;
                         data.Pidfid = pidfId;
-                        foreach (var item in pbf)
+                        foreach (var item in pidf)
                         {
                             data.Pidfpbfid = item.Pidfpbfid;
-                            _PbfaformEntity.Pidfpbfid = item.Pidfpbfid;
-                            _PbfaformEntity.ProductTypeId = item.ProductTypeId;
-                            _PbfaformEntity.ProjectName = item.ProjectName;
-                            _PbfaformEntity.Market = item.Market;
-                            _PbfaformEntity.BusinessRelationable = item.BusinessRelationable;
-                            _PbfaformEntity.BerequirementId = item.BerequirementId;
-                            _PbfaformEntity.NumberOfApprovedAnda = item.NumberOfApprovedAnda;
-                            _PbfaformEntity.ProductTypeId = item.ProductTypeId;
-                            _PbfaformEntity.PlantId = item.PlantId;
-                            _PbfaformEntity.WorkflowId = item.WorkflowId;
-                            _PbfaformEntity.DosageId = item.DosageId;
-                            _PbfaformEntity.PatentStatus = item.PatentStatus;
-                            _PbfaformEntity.SponsorBusinessPartner = item.SponsorBusinessPartner;
-                            _PbfaformEntity.FormRnDdivisionId = item.FormRnDdivisionId;
-                            _PbfaformEntity.ProjectInitiationDate = item.ProjectInitiationDate;
-                            _PbfaformEntity.RnDhead = item.RnDhead;
-                            _PbfaformEntity.ProjectManager = item.ProjectManager;
-                            _PbfaformEntity.DosageFormulationDetail = item.DosageFormulationDetail;
-                            _PbfaformEntity.PackagingTypeId = item.PackagingTypeId;
-                            _PbfaformEntity.BrandName = _pidfEntity.BrandName;
-                            _PbfaformEntity.RFDIndication = _pidfEntity.Rfdindication;
-                            _PbfaformEntity.RFDApplicant = _pidfEntity.Rfdapplicant;
-                            _PbfaformEntity.RFDCountryId = _pidfEntity.RfdcountryId;
+                            data.ProductTypeId = item.ProductTypeId;
+                            data.BusinessUnitId = buid;
+                            data.ProjectName = item.ProjectName;
+                            data.Market = item.Market;
+                            data.BusinessRelationable = item.BusinessRelationable;
+                            data.BerequirementId = item.BerequirementId;
+                            data.NumberOfApprovedAnda = item.NumberOfApprovedAnda;
+                            data.ProductTypeId = item.ProductTypeId;
+                            data.PlantId = item.PlantId;
+                            data.WorkflowId = item.WorkflowId;
+                            data.DosageId = item.DosageId;
+                            data.PatentStatus = item.PatentStatus;
+                            data.SponsorBusinessPartner = item.SponsorBusinessPartner;
+                            data.FormRnDdivisionId = item.FormRnDdivisionId;
+                            data.ProjectInitiationDate = item.ProjectInitiationDate;
+                            data.RnDhead = item.RnDhead;
+                            data.ProjectManager = item.ProjectManager;
+                            //  data.Dosage = item.Dosage;
+                            data.PackagingTypeId = item.PackagingTypeId;
                         }
-                        data.PbfFormEntities = _PbfaformEntity;
+
 
                         //data.PidfPbfAnalyticals = _pidfPbfanalyticalEntity;
                         //data.PidfPbfClinicals = _pidfPbfclinicalEntity;
 
 
                     }
-                    ////analytical table mapping
-                    //analytical = dbresult.Tables[1].DataTableToList<PidfPbfAnalyticalEntity>();
-                    //if (analytical.Count > 0)
-                    //{
-                    //    foreach (var item in analytical)
-                    //    {
-                    //        _pidfPbfanalyticalEntity.PBFAnalyticalID = item.PBFAnalyticalID;
-                    //        _pidfPbfanalyticalEntity.PIDFID = item.PIDFID;
-                    //        _pidfPbfanalyticalEntity.BusinessUnitId = item.BusinessUnitId;
-                    //        _pidfPbfanalyticalEntity.TotalExpense = item.TotalExpense;
-                    //        _pidfPbfanalyticalEntity.ProjectComplexity = item.ProjectComplexity;
-                    //        _pidfPbfanalyticalEntity.ProductTypeId = item.ProductTypeId;
-                    //        _pidfPbfanalyticalEntity.TestLicenseAvailability = item.TestLicenseAvailability;
-                    //        _pidfPbfanalyticalEntity.BudgetTimelineSubmissionDate = item.BudgetTimelineSubmissionDate;
-                    //        _pidfPbfanalyticalEntity.FormulationId = (int)item.FormulationId;
-                    //        _pidfPbfanalyticalEntity.StrengthId = (int)item.StrengthId;
-                    //        _pidfPbfanalyticalEntity.AnalyticalId = (int)item.AnalyticalId;
-                    //    }
-                    //    data.PidfPbfAnalyticals = _pidfPbfanalyticalEntity;
-                    //    //prototype table mapping
-                    //    anlyticalprototype = dbresult.Tables[2].DataTableToList<PidfPbfAnalyticalPrototypeEntity>();
-                    //    if (anlyticalprototype.Count > 0)
-                    //    {
-                    //        //List<PidfPbfAnalyticalPrototypeEntity> objPrototypeList = new();
-                    //        foreach (var item in anlyticalprototype)
-                    //        {
-                    //            PidfPbfAnalyticalPrototypeEntity objprototype = new();
-                    //            objprototype.PrototypeId = item.PrototypeId;
-                    //            objprototype.PBFAnalyticalId = item.PBFAnalyticalId;
-                    //            objprototype.StrengthId = item.StrengthId;
-                    //            objprototype.TestTypeId = item.TestTypeId;
-                    //            objprototype.Numberoftests = item.Numberoftests;
-                    //            objprototype.PrototypeDevelopment = item.PrototypeDevelopment;
-                    //            objprototype.Cost = item.Cost;
-                    //            objprototype.PrototypeCost = item.PrototypeCost;
-                    //            //objprototype.CreatedDate = item.CreatedDate;
-                    //            //objprototype.CreatedBy = item.CreatedBy;
-
-                    //            objPrototypeList.Add(objprototype);
-                    //        }
-                    //        data.PidfPbfAnalyticals.PidfPbfAnalyticalPrototypes = objPrototypeList;
-
-                    //    }
-                    //    //scaleup table mapping
-
-                    //    anlyticalscaleup = dbresult.Tables[3].DataTableToList<PidfPbfAnalyticalScaleUpEntity>();
-                    //    if (anlyticalscaleup.Count > 0)
-                    //    {
-                    //        foreach (var item in anlyticalscaleup)
-                    //        {
-                    //            PidfPbfAnalyticalScaleUpEntity objscaleup = new();
-                    //            objscaleup.ScaleUpId = item.ScaleUpId;
-                    //            objscaleup.PBFAnalyticalId = item.PBFAnalyticalId;
-                    //            objscaleup.StrengthId = (int)item.StrengthId;
-                    //            objscaleup.TestTypeId = (int)item.TestTypeId;
-                    //            objscaleup.Numberoftests = item.Numberoftests;
-                    //            objscaleup.PrototypeDevelopment = item.PrototypeDevelopment;
-                    //            objscaleup.Cost = item.Cost;
-                    //            objscaleup.PrototypeCost = item.PrototypeCost;
-                    //            //objscaleup.CreatedDate = item.CreatedDate;
-                    //            //objscaleup.CreatedBy = item.CreatedBy;
-
-                    //            objScaleUpList.Add(objscaleup);
-                    //        }
-                    //        data.PidfPbfAnalyticals.PidfPbfAnalyticalScaleUps = objScaleUpList;
-                    //    }
-                    //    //exhibit table mapping
-
-                    //    analyticalexhibit = dbresult.Tables[4].DataTableToList<PidfPbfAnalyticalExhibitEntity>();
-                    //    if (analyticalexhibit.Count > 0)
-                    //    {
-                    //        foreach (var item in analyticalexhibit)
-                    //        {
-                    //            PidfPbfAnalyticalExhibitEntity objexhibit = new();
-                    //            objexhibit.ExhibitId = item.ExhibitId;
-                    //            objexhibit.PBFAnalyticalId = item.PBFAnalyticalId;
-                    //            objexhibit.StrengthId = item.StrengthId;
-                    //            objexhibit.TestTypeId = item.TestTypeId;
-                    //            objexhibit.Numberoftests = item.Numberoftests;
-                    //            objexhibit.PrototypeDevelopment = item.PrototypeDevelopment;
-                    //            objexhibit.Cost = item.Cost;
-                    //            objexhibit.PrototypeCost = item.PrototypeCost;
-                    //            //objexhibit.CreatedDate = item.CreatedDate;
-                    //            //objexhibit.CreatedBy = item.CreatedBy;
-
-                    //            objExhibitList.Add(objexhibit);
-                    //        }
-                    //        data.PidfPbfAnalyticals.PidfPbfAnalyticalExhibits = objExhibitList;
-                    //    }
-                    //    //cost table mapping
-                    //    analyticalcost = dbresult.Tables[5].DataTableToList<PidfPbfAnalyticalCostEntity>();
-                    //    //PidfPbfAnalyticalCostEntity analyticalcost = new();
-                    //    if (analyticalcost.Count > 0)
-                    //    {
-                    //        foreach (var item in analyticalcost)
-                    //        {
-
-                    //            objanalyticalcost.PBFAnalyticalCostId = (int)item.PBFAnalyticalCostId;
-                    //            objanalyticalcost.StrengthId = (int)item.StrengthId;
-                    //            objanalyticalcost.TotalAMVCost = item.TotalAMVCost;
-                    //            objanalyticalcost.Remark = item.Remark;
-                    //            objanalyticalcost.TotalPrototypeCost = item.TotalPrototypeCost;
-                    //            objanalyticalcost.TotalScaleUpCost = item.TotalScaleUpCost;
-                    //            objanalyticalcost.TotalExhibitCost = item.TotalExhibitCost;
-                    //            objanalyticalcost.TotalCost = item.TotalCost;
-
-                    //        }
-
-                    //    }
-                    //    data.PidfPbfAnalyticals.PidfPbfAnalyticalCosts = objanalyticalcost;
-                    //}
-
-                    //clinical table mapping
-                    clinical = dbresult.Tables[6].DataTableToList<PidfPbfClinicalEntity>();
-                    if (clinical.Count > 0)
+                    //analytical table mapping
+                    analytical = dbresult.Tables[1].DataTableToList<PidfPbfAnalyticalEntity>();
+                    if (analytical.Count > 0)
                     {
-                        foreach (var item in clinical)
+                        foreach (var item in analytical)
                         {
-                            _pidfPbfclinicalEntity.PBFClinicalID = item.PBFClinicalID;
-                            _pidfPbfclinicalEntity.PIDFID = item.PIDFID;
-                            _pidfPbfclinicalEntity.BusinessUnitId = item.BusinessUnitId;
-                            _pidfPbfclinicalEntity.TotalExpense = item.TotalExpense;
-                            _pidfPbfclinicalEntity.ProjectComplexity = item.ProjectComplexity;
-                            _pidfPbfclinicalEntity.ProductTypeId = item.ProductTypeId;
-                            _pidfPbfclinicalEntity.TestLicenseAvailability = item.TestLicenseAvailability;
-                            _pidfPbfclinicalEntity.BudgetTimelineSubmissionDate = item.BudgetTimelineSubmissionDate;
-                            _pidfPbfclinicalEntity.FormulationId = (int)item.FormulationId;
-                            _pidfPbfclinicalEntity.StrengthId = (int)item.StrengthId;
-                            _pidfPbfclinicalEntity.AnalyticalId = (int)item.AnalyticalId;
+                            _pidfPbfanalyticalEntity.PBFAnalyticalID = item.PBFAnalyticalID;
+                            _pidfPbfanalyticalEntity.PIDFID = item.PIDFID;
+                            _pidfPbfanalyticalEntity.BusinessUnitId = item.BusinessUnitId;
+                            _pidfPbfanalyticalEntity.TotalExpense = item.TotalExpense;
+                            _pidfPbfanalyticalEntity.ProjectComplexity = item.ProjectComplexity;
+                            _pidfPbfanalyticalEntity.ProductTypeId = item.ProductTypeId;
+                            _pidfPbfanalyticalEntity.TestLicenseAvailability = item.TestLicenseAvailability;
+                            _pidfPbfanalyticalEntity.BudgetTimelineSubmissionDate = item.BudgetTimelineSubmissionDate;
+                            _pidfPbfanalyticalEntity.FormulationId = (int)item.FormulationId;
+                            _pidfPbfanalyticalEntity.StrengthId = (int)item.StrengthId;
+                            _pidfPbfanalyticalEntity.AnalyticalId = (int)item.AnalyticalId;
                         }
-                        data.PidfPbfClinicals = _pidfPbfclinicalEntity;
-                    }
-                    //Pilot Bio Fasting Table
-                    clinicalpilotbiofasting = dbresult.Tables[7].DataTableToList<PidfPbfClinicalPilotBioFastingEntity>();
-                    if (clinicalpilotbiofasting.Count > 0)
-                    {
-                        foreach (var item in clinicalpilotbiofasting)
+                        data.PidfPbfAnalyticals = _pidfPbfanalyticalEntity;
+                        //prototype table mapping
+                        anlyticalprototype = dbresult.Tables[2].DataTableToList<PidfPbfAnalyticalPrototypeEntity>();
+                        if (anlyticalprototype.Count > 0)
                         {
-
-                            PidfPbfClinicalPilotBioFastingEntity clinicalPilotBioFasting = new();
-                            clinicalPilotBioFasting.PBFClinicalId = item.PBFClinicalId;
-                            clinicalPilotBioFasting.PilotBioFastingId = item.PilotBioFastingId;
-                            clinicalPilotBioFasting.StrengthId = item.StrengthId;
-                            clinicalPilotBioFasting.Fasting = item.Fasting;
-                            clinicalPilotBioFasting.NumberofVolunteers = item.NumberofVolunteers;
-                            clinicalPilotBioFasting.ClinicalCostandVol = item.ClinicalCostandVol;
-                            clinicalPilotBioFasting.DocCostandStudy = item.DocCostandStudy;
-                            clinicalPilotBioFasting.TotalCost = item.TotalCost;
-                            //clinicalPilotBioFasting.CreatedDate = DateTime.Now;
-                            //clinicalPilotBioFasting.CreatedBy = loggedInUserId;
-
-                            _objclinicalPilotBioFasting.Add(clinicalPilotBioFasting);
-                        }   
-                        
-                        data.PidfPbfClinicals.pidfpbfClinicalpilotBioFastingEntity = strengthid.HasValue && strengthid > 0 ? _objclinicalPilotBioFasting.Where(x => x.StrengthId == strengthid).ToList().Count > 0 ? _objclinicalPilotBioFasting : null : null;
-                    }
-                    //Pilot Bio Fed Table
-                    clinicalpilotbiofed = dbresult.Tables[8].DataTableToList<PidfPbfClinicalPilotBioFedEntity>();
-                    if (clinicalpilotbiofed.Count > 0)
-                    {
-
-                        foreach (var item in clinicalpilotbiofed)
-                        {
-
-                            PidfPbfClinicalPilotBioFedEntity clinicalPilotBioFed = new();
-                            clinicalPilotBioFed.PilotBioFedid = item.PilotBioFedid;
-                            clinicalPilotBioFed.PBFClinicalId = item.PBFClinicalId;
-                            clinicalPilotBioFed.StrengthId = item.StrengthId;
-                            clinicalPilotBioFed.Fed = item.Fed;
-                            clinicalPilotBioFed.NumberofVolunteers = item.NumberofVolunteers;
-                            clinicalPilotBioFed.ClinicalCostandVol = item.ClinicalCostandVol;
-                            clinicalPilotBioFed.DocCostandStudy = item.DocCostandStudy;
-                            clinicalPilotBioFed.TotalCost = item.TotalCost;
-                            //clinicalPilotBioFed.CreatedDate = DateTime.Now;
-                            //clinicalPilotBioFed.CreatedBy = loggedInUserId;
-
-                            _objclinicalPilotBioFed.Add(clinicalPilotBioFed);
-                        }
-                        
-                        data.PidfPbfClinicals.pidfpbfClinicalPilotBioFedEntity = strengthid.HasValue && strengthid > 0 ? _objclinicalPilotBioFed.Where(x => x.StrengthId == strengthid).ToList().Count > 0 ? _objclinicalPilotBioFed:null : null; 
-                    }
-                    //Pilot Bio Fasting Table
-                    clinicalpivotalbiofasting = dbresult.Tables[9].DataTableToList<PidfPbfClinicalPivotalBioFastingEntity>();
-                    if (clinicalpivotalbiofasting.Count > 0)
-                    {
-
-                        foreach (var item in clinicalpivotalbiofasting)
-                        {
-
-                            PidfPbfClinicalPivotalBioFastingEntity clinicalPivotalBioFasting = new();
-                            clinicalPivotalBioFasting.PBFClinicalId = item.PBFClinicalId;
-                            clinicalPivotalBioFasting.PivotalBioFastingId = item.PivotalBioFastingId;
-                            clinicalPivotalBioFasting.StrengthId = item.StrengthId;
-                            clinicalPivotalBioFasting.Fasting = item.Fasting;
-                            clinicalPivotalBioFasting.NumberofVolunteers = item.NumberofVolunteers;
-                            clinicalPivotalBioFasting.ClinicalCostandVol = item.ClinicalCostandVol;
-                            clinicalPivotalBioFasting.DocCostandStudy = item.DocCostandStudy;
-                            clinicalPivotalBioFasting.TotalCost = item.TotalCost;
-                            //clinicalPivotalBioFasting.CreatedDate = DateTime.Now;
-                            //clinicalPivotalBioFasting.CreatedBy = loggedInUserId;
-
-                            _objclinicalPivotalBioFasting.Add(clinicalPivotalBioFasting);
-                        }
-                        
-                        data.PidfPbfClinicals.pidfpbfClinicalPivotalBioFastingEntity = strengthid.HasValue && strengthid > 0 ? _objclinicalPivotalBioFasting.Where(x => x.StrengthId == strengthid).ToList().Count>0 ? _objclinicalPivotalBioFasting : null : null;
-                    }
-                    //Pilot Bio Fed Table
-                    clinicalpivotalbiofed = dbresult.Tables[10].DataTableToList<PidfPbfClinicalPivotalBioFedEntity>();
-                    if (clinicalpivotalbiofed.Count > 0)
-                    {
-
-                        foreach (var item in clinicalpivotalbiofed)
-                        {
-                            PidfPbfClinicalPivotalBioFedEntity clinicalPivotalBioFed = new();
-                            clinicalPivotalBioFed.PBFClinicalId = item.PBFClinicalId;
-                            clinicalPivotalBioFed.PivotalBioFedid = item.PivotalBioFedid;
-                            clinicalPivotalBioFed.StrengthId = item.StrengthId;
-                            clinicalPivotalBioFed.Fed = item.Fed;
-                            clinicalPivotalBioFed.NumberofVolunteers = item.NumberofVolunteers;
-                            clinicalPivotalBioFed.ClinicalCostandVol = item.ClinicalCostandVol;
-                            clinicalPivotalBioFed.DocCostandStudy = item.DocCostandStudy;
-                            clinicalPivotalBioFed.TotalCost = item.TotalCost;
-                            //clinicalPivotalBioFed.CreatedDate = DateTime.Now;
-                            //clinicalPivotalBioFed.CreatedBy = loggedInUserId;
-
-                            _objclinicalPivotalBioFed.Add(clinicalPivotalBioFed);
-                        }
-                        
-                        data.PidfPbfClinicals.pidfpbfClinicalPivotalBioFedEntity = strengthid.HasValue && strengthid > 0 ? _objclinicalPivotalBioFed.Where(x => x.StrengthId == strengthid).ToList().Count > 0 ? _objclinicalPivotalBioFed :null : null;
-                    }
-                    //Cost Table
-                    clinicalcost = dbresult.Tables[11].DataTableToList<PidfPbfClinicalCostEntity>();
-                    if (clinicalcost.Count > 0)
-                    {
-
-
-                        foreach (var item in clinicalcost)
-                        {
-                            if (strengthid.HasValue && strengthid.HasValue && strengthid > 0 && item.StrengthId == strengthid)
+                            //List<PidfPbfAnalyticalPrototypeEntity> objPrototypeList = new();
+                            foreach (var item in anlyticalprototype)
                             {
-                                _obgclinicalcost.PBFClinicalCostId = (int)item.PBFClinicalCostId;
-                                _obgclinicalcost.PBFClinicalId = (int)item.PBFClinicalId;
-                                _obgclinicalcost.StrengthId = item.StrengthId;
-                                _obgclinicalcost.TotalPilotFastingCost = item.TotalPilotFastingCost;
-                                _obgclinicalcost.TotalPilotFEDCost = item.TotalPilotFEDCost;
-                                _obgclinicalcost.TotalPivotalFastingCost = item.TotalPivotalFastingCost;
-                                _obgclinicalcost.TotalPivotalFEDCost = item.TotalPivotalFEDCost;
-                                _obgclinicalcost.TotalCost = item.TotalCost;
+                                PidfPbfAnalyticalPrototypeEntity objprototype = new();
+                                objprototype.PrototypeId = item.PrototypeId;
+                                objprototype.PBFAnalyticalId = item.PBFAnalyticalId;
+                                objprototype.StrengthId = item.StrengthId;
+                                objprototype.TestTypeId = item.TestTypeId;
+                                objprototype.Numberoftests = item.Numberoftests;
+                                objprototype.PrototypeDevelopment = item.PrototypeDevelopment;
+                                objprototype.Cost = item.Cost;
+                                objprototype.PrototypeCost = item.PrototypeCost;
+                                //objprototype.CreatedDate = item.CreatedDate;
+                                //objprototype.CreatedBy = item.CreatedBy;
+
+                                objPrototypeList.Add(objprototype);
+                            }
+                            data.PidfPbfAnalyticals.PidfPbfAnalyticalPrototypes = objPrototypeList;
+
+                        }
+                        //scaleup table mapping
+
+                        anlyticalscaleup = dbresult.Tables[3].DataTableToList<PidfPbfAnalyticalScaleUpEntity>();
+                        if (anlyticalscaleup.Count > 0)
+                        {
+                            foreach (var item in anlyticalscaleup)
+                            {
+                                PidfPbfAnalyticalScaleUpEntity objscaleup = new();
+                                objscaleup.ScaleUpId = item.ScaleUpId;
+                                objscaleup.PBFAnalyticalId = item.PBFAnalyticalId;
+                                objscaleup.StrengthId = (int)item.StrengthId;
+                                objscaleup.TestTypeId = (int)item.TestTypeId;
+                                objscaleup.Numberoftests = item.Numberoftests;
+                                objscaleup.PrototypeDevelopment = item.PrototypeDevelopment;
+                                objscaleup.Cost = item.Cost;
+                                objscaleup.PrototypeCost = item.PrototypeCost;
+                                //objscaleup.CreatedDate = item.CreatedDate;
+                                //objscaleup.CreatedBy = item.CreatedBy;
+
+                                objScaleUpList.Add(objscaleup);
+                            }
+                            data.PidfPbfAnalyticals.PidfPbfAnalyticalScaleUps = objScaleUpList;
+                        }
+                        //exhibit table mapping
+
+                        analyticalexhibit = dbresult.Tables[4].DataTableToList<PidfPbfAnalyticalExhibitEntity>();
+                        if (analyticalexhibit.Count > 0)
+                        {
+                            foreach (var item in analyticalexhibit)
+                            {
+                                PidfPbfAnalyticalExhibitEntity objexhibit = new();
+                                objexhibit.ExhibitId = item.ExhibitId;
+                                objexhibit.PBFAnalyticalId = item.PBFAnalyticalId;
+                                objexhibit.StrengthId = item.StrengthId;
+                                objexhibit.TestTypeId = item.TestTypeId;
+                                objexhibit.Numberoftests = item.Numberoftests;
+                                objexhibit.PrototypeDevelopment = item.PrototypeDevelopment;
+                                objexhibit.Cost = item.Cost;
+                                objexhibit.PrototypeCost = item.PrototypeCost;
+                                //objexhibit.CreatedDate = item.CreatedDate;
+                                //objexhibit.CreatedBy = item.CreatedBy;
+
+                                objExhibitList.Add(objexhibit);
+                            }
+                            data.PidfPbfAnalyticals.PidfPbfAnalyticalExhibits = objExhibitList;
+                        }
+                        //cost table mapping
+                        analyticalcost = dbresult.Tables[5].DataTableToList<PidfPbfAnalyticalCostEntity>();
+                        //PidfPbfAnalyticalCostEntity analyticalcost = new();
+                        if (analyticalcost.Count > 0)
+                        {
+                            foreach (var item in analyticalcost)
+                            {
+
+                                objanalyticalcost.PBFAnalyticalCostId = (int)item.PBFAnalyticalCostId;
+                                objanalyticalcost.StrengthId = (int)item.StrengthId;
+                                objanalyticalcost.TotalAMVCost = item.TotalAMVCost;
+                                objanalyticalcost.Remark = item.Remark;
+                                objanalyticalcost.TotalPrototypeCost = item.TotalPrototypeCost;
+                                objanalyticalcost.TotalScaleUpCost = item.TotalScaleUpCost;
+                                objanalyticalcost.TotalExhibitCost = item.TotalExhibitCost;
+                                objanalyticalcost.TotalCost = item.TotalCost;
+
                             }
 
                         }
-                        data.PidfPbfClinicals.pidfPbfClinicalCost = _obgclinicalcost;
-
+                        data.PidfPbfAnalyticals.PidfPbfAnalyticalCosts = objanalyticalcost;
                     }
+                 
                 }
             }
+            data.MasterBusinessUnitEntities = _businessUnitService.GetAll().Result.Where(xx => xx.IsActive).ToList();
+            data.MasterStrengthEntities = _productStrengthService.GetAll().Result.Where(x => x.Pidfid == pidfId).ToList();
             return data;
 
-        }
+        }      
 
         public async Task<DBOperation> AddUpdatePBFClinicalDetails(PIDFPBFClinicalFormEntity pbfEntity)
         {
@@ -1595,8 +1740,365 @@ namespace EmcureNPD.Business.Core.Implementation
                 return false;
             }
         }
-        #region Private Methods
+      
 
+       
+
+        public async Task<PIDFPBFClinicalFormEntity> GetPbfClinicalFormDetails(long pidfId, int buid, long? strengthid)
+        {
+            var data = await GetPbfTabDetails(pidfId, buid, strengthid);
+            return data;
+
+        }
+        public async Task<PIDFPBFClinicalFormEntity> GetPbfTabDetails(long pidfId, int buid, long? strengthid)
+        {
+            //PBF Entity Mapping
+            var data = new PIDFPBFClinicalFormEntity();
+            //analytical Tables
+            PBFFormEntity _PbfaformEntity = new PBFFormEntity();
+            PidfPbfAnalyticalEntity _pidfPbfanalyticalEntity = new PidfPbfAnalyticalEntity();
+            PidfPbfRnDEntity pidfPbfRnDEntity = new PidfPbfRnDEntity();
+            List<PidfPbfAnalyticalPrototypeEntity> objPrototypeList = new();
+            List<PidfPbfAnalyticalExhibitEntity> objExhibitList = new();
+            List<PidfPbfAnalyticalScaleUpEntity> objScaleUpList = new();
+            PidfPbfAnalyticalCostEntity objanalyticalcost = new();
+            //Clinical Tables
+            PidfPbfClinicalEntity _pidfPbfclinicalEntity = new PidfPbfClinicalEntity();
+            List<PidfPbfClinicalPilotBioFastingEntity> _objclinicalPilotBioFasting = new();
+            List<PidfPbfClinicalPilotBioFedEntity> _objclinicalPilotBioFed = new();
+            List<PidfPbfClinicalPivotalBioFastingEntity> _objclinicalPivotalBioFasting = new();
+            List<PidfPbfClinicalPivotalBioFedEntity> _objclinicalPivotalBioFed = new();
+            PidfPbfClinicalCostEntity _obgclinicalcost = new();
+            SqlParameter[] osqlParameter = {
+                new SqlParameter("@PIDFID", pidfId),
+                new SqlParameter("@BUSINESSUNITId", buid)
+            };
+
+            var dbresult = await _pbfRepository.GetDataSetBySP("stp_npd_GetPbfData", System.Data.CommandType.StoredProcedure, osqlParameter);
+
+            dynamic pbf = new ExpandoObject();
+            dynamic analytical = new ExpandoObject();
+            dynamic clinical = new ExpandoObject();
+            dynamic anlyticalprototype = new ExpandoObject();
+            dynamic anlyticalscaleup = new ExpandoObject();
+            dynamic analyticalexhibit = new ExpandoObject();
+            dynamic analyticalcost = new ExpandoObject();
+            dynamic clinicalpilotbiofasting = new ExpandoObject();
+            dynamic clinicalpilotbiofed = new ExpandoObject();
+            dynamic clinicalpivotalbiofasting = new ExpandoObject();
+            dynamic clinicalpivotalbiofed = new ExpandoObject();
+            dynamic clinicalcost = new ExpandoObject();
+            if (dbresult != null)
+            {
+                if (dbresult.Tables[0] != null && dbresult.Tables[0].Rows.Count > 0)
+                {
+                    //var objPidf = UtilityHelper.ConvertDataTable<PidfPbfFormEntity>(dbresult.Tables[0]);
+                    pbf = dbresult.Tables[0].DataTableToList<PBFFormEntity>();
+                    if (pbf.Count > 0)
+                    {
+                        var _pidfEntity = _repository.GetAll().Where(x => x.Pidfid == pidfId).FirstOrDefault();
+                        //PBF Entity Mapping
+                        data.MasterBusinessUnitEntities = _businessUnitService.GetAll().Result.Where(xx => xx.IsActive).ToList();
+                        //pidfPbfRnDEntity.MasterStrengthEntities = _productStrengthService.GetAll().Result.Where(x => x.Pidfid == pidfId).ToList();
+                        data.MasterStrengthEntities = _productStrengthService.GetAll().Result.Where(x => x.Pidfid == pidfId).ToList();
+                        //data.pidfPbfRndEntity = pidfPbfRnDEntity;
+                        data.BusinessUnitId = buid;
+                        data.StrengthId = strengthid;
+                        data.Pidfid = pidfId;
+                        foreach (var item in pbf)
+                        {
+                            data.Pidfpbfid = item.Pidfpbfid;
+                            _PbfaformEntity.Pidfpbfid = item.Pidfpbfid;
+                            _PbfaformEntity.ProductTypeId = item.ProductTypeId;
+                            _PbfaformEntity.ProjectName = item.ProjectName;
+                            _PbfaformEntity.Market = item.Market;
+                            _PbfaformEntity.BusinessRelationable = item.BusinessRelationable;
+                            _PbfaformEntity.BerequirementId = item.BerequirementId;
+                            _PbfaformEntity.NumberOfApprovedAnda = item.NumberOfApprovedAnda;
+                            _PbfaformEntity.ProductTypeId = item.ProductTypeId;
+                            _PbfaformEntity.PlantId = item.PlantId;
+                            _PbfaformEntity.WorkflowId = item.WorkflowId;
+                            _PbfaformEntity.DosageId = item.DosageId;
+                            _PbfaformEntity.PatentStatus = item.PatentStatus;
+                            _PbfaformEntity.SponsorBusinessPartner = item.SponsorBusinessPartner;
+                            _PbfaformEntity.FormRnDdivisionId = item.FormRnDdivisionId;
+                            _PbfaformEntity.ProjectInitiationDate = item.ProjectInitiationDate;
+                            _PbfaformEntity.RnDhead = item.RnDhead;
+                            _PbfaformEntity.ProjectManager = item.ProjectManager;
+                            _PbfaformEntity.DosageFormulationDetail = item.DosageFormulationDetail;
+                            _PbfaformEntity.PackagingTypeId = item.PackagingTypeId;
+                            _PbfaformEntity.BrandName = _pidfEntity.BrandName;
+                            _PbfaformEntity.RFDIndication = _pidfEntity.Rfdindication;
+                            _PbfaformEntity.RFDApplicant = _pidfEntity.Rfdapplicant;
+                            _PbfaformEntity.RFDCountryId = _pidfEntity.RfdcountryId;
+                        }
+                        data.PbfFormEntities = _PbfaformEntity;
+
+                        //data.PidfPbfAnalyticals = _pidfPbfanalyticalEntity;
+                        //data.PidfPbfClinicals = _pidfPbfclinicalEntity;
+
+
+                    }
+                    ////analytical table mapping
+                    //analytical = dbresult.Tables[1].DataTableToList<PidfPbfAnalyticalEntity>();
+                    //if (analytical.Count > 0)
+                    //{
+                    //    foreach (var item in analytical)
+                    //    {
+                    //        _pidfPbfanalyticalEntity.PBFAnalyticalID = item.PBFAnalyticalID;
+                    //        _pidfPbfanalyticalEntity.PIDFID = item.PIDFID;
+                    //        _pidfPbfanalyticalEntity.BusinessUnitId = item.BusinessUnitId;
+                    //        _pidfPbfanalyticalEntity.TotalExpense = item.TotalExpense;
+                    //        _pidfPbfanalyticalEntity.ProjectComplexity = item.ProjectComplexity;
+                    //        _pidfPbfanalyticalEntity.ProductTypeId = item.ProductTypeId;
+                    //        _pidfPbfanalyticalEntity.TestLicenseAvailability = item.TestLicenseAvailability;
+                    //        _pidfPbfanalyticalEntity.BudgetTimelineSubmissionDate = item.BudgetTimelineSubmissionDate;
+                    //        _pidfPbfanalyticalEntity.FormulationId = (int)item.FormulationId;
+                    //        _pidfPbfanalyticalEntity.StrengthId = (int)item.StrengthId;
+                    //        _pidfPbfanalyticalEntity.AnalyticalId = (int)item.AnalyticalId;
+                    //    }
+                    //    data.PidfPbfAnalyticals = _pidfPbfanalyticalEntity;
+                    //    //prototype table mapping
+                    //    anlyticalprototype = dbresult.Tables[2].DataTableToList<PidfPbfAnalyticalPrototypeEntity>();
+                    //    if (anlyticalprototype.Count > 0)
+                    //    {
+                    //        //List<PidfPbfAnalyticalPrototypeEntity> objPrototypeList = new();
+                    //        foreach (var item in anlyticalprototype)
+                    //        {
+                    //            PidfPbfAnalyticalPrototypeEntity objprototype = new();
+                    //            objprototype.PrototypeId = item.PrototypeId;
+                    //            objprototype.PBFAnalyticalId = item.PBFAnalyticalId;
+                    //            objprototype.StrengthId = item.StrengthId;
+                    //            objprototype.TestTypeId = item.TestTypeId;
+                    //            objprototype.Numberoftests = item.Numberoftests;
+                    //            objprototype.PrototypeDevelopment = item.PrototypeDevelopment;
+                    //            objprototype.Cost = item.Cost;
+                    //            objprototype.PrototypeCost = item.PrototypeCost;
+                    //            //objprototype.CreatedDate = item.CreatedDate;
+                    //            //objprototype.CreatedBy = item.CreatedBy;
+
+                    //            objPrototypeList.Add(objprototype);
+                    //        }
+                    //        data.PidfPbfAnalyticals.PidfPbfAnalyticalPrototypes = objPrototypeList;
+
+                    //    }
+                    //    //scaleup table mapping
+
+                    //    anlyticalscaleup = dbresult.Tables[3].DataTableToList<PidfPbfAnalyticalScaleUpEntity>();
+                    //    if (anlyticalscaleup.Count > 0)
+                    //    {
+                    //        foreach (var item in anlyticalscaleup)
+                    //        {
+                    //            PidfPbfAnalyticalScaleUpEntity objscaleup = new();
+                    //            objscaleup.ScaleUpId = item.ScaleUpId;
+                    //            objscaleup.PBFAnalyticalId = item.PBFAnalyticalId;
+                    //            objscaleup.StrengthId = (int)item.StrengthId;
+                    //            objscaleup.TestTypeId = (int)item.TestTypeId;
+                    //            objscaleup.Numberoftests = item.Numberoftests;
+                    //            objscaleup.PrototypeDevelopment = item.PrototypeDevelopment;
+                    //            objscaleup.Cost = item.Cost;
+                    //            objscaleup.PrototypeCost = item.PrototypeCost;
+                    //            //objscaleup.CreatedDate = item.CreatedDate;
+                    //            //objscaleup.CreatedBy = item.CreatedBy;
+
+                    //            objScaleUpList.Add(objscaleup);
+                    //        }
+                    //        data.PidfPbfAnalyticals.PidfPbfAnalyticalScaleUps = objScaleUpList;
+                    //    }
+                    //    //exhibit table mapping
+
+                    //    analyticalexhibit = dbresult.Tables[4].DataTableToList<PidfPbfAnalyticalExhibitEntity>();
+                    //    if (analyticalexhibit.Count > 0)
+                    //    {
+                    //        foreach (var item in analyticalexhibit)
+                    //        {
+                    //            PidfPbfAnalyticalExhibitEntity objexhibit = new();
+                    //            objexhibit.ExhibitId = item.ExhibitId;
+                    //            objexhibit.PBFAnalyticalId = item.PBFAnalyticalId;
+                    //            objexhibit.StrengthId = item.StrengthId;
+                    //            objexhibit.TestTypeId = item.TestTypeId;
+                    //            objexhibit.Numberoftests = item.Numberoftests;
+                    //            objexhibit.PrototypeDevelopment = item.PrototypeDevelopment;
+                    //            objexhibit.Cost = item.Cost;
+                    //            objexhibit.PrototypeCost = item.PrototypeCost;
+                    //            //objexhibit.CreatedDate = item.CreatedDate;
+                    //            //objexhibit.CreatedBy = item.CreatedBy;
+
+                    //            objExhibitList.Add(objexhibit);
+                    //        }
+                    //        data.PidfPbfAnalyticals.PidfPbfAnalyticalExhibits = objExhibitList;
+                    //    }
+                    //    //cost table mapping
+                    //    analyticalcost = dbresult.Tables[5].DataTableToList<PidfPbfAnalyticalCostEntity>();
+                    //    //PidfPbfAnalyticalCostEntity analyticalcost = new();
+                    //    if (analyticalcost.Count > 0)
+                    //    {
+                    //        foreach (var item in analyticalcost)
+                    //        {
+
+                    //            objanalyticalcost.PBFAnalyticalCostId = (int)item.PBFAnalyticalCostId;
+                    //            objanalyticalcost.StrengthId = (int)item.StrengthId;
+                    //            objanalyticalcost.TotalAMVCost = item.TotalAMVCost;
+                    //            objanalyticalcost.Remark = item.Remark;
+                    //            objanalyticalcost.TotalPrototypeCost = item.TotalPrototypeCost;
+                    //            objanalyticalcost.TotalScaleUpCost = item.TotalScaleUpCost;
+                    //            objanalyticalcost.TotalExhibitCost = item.TotalExhibitCost;
+                    //            objanalyticalcost.TotalCost = item.TotalCost;
+
+                    //        }
+
+                    //    }
+                    //    data.PidfPbfAnalyticals.PidfPbfAnalyticalCosts = objanalyticalcost;
+                    //}
+
+                    //clinical table mapping
+                    clinical = dbresult.Tables[6].DataTableToList<PidfPbfClinicalEntity>();
+                    if (clinical.Count > 0)
+                    {
+                        foreach (var item in clinical)
+                        {
+                            _pidfPbfclinicalEntity.PBFClinicalID = item.PBFClinicalID;
+                            _pidfPbfclinicalEntity.PIDFID = item.PIDFID;
+                            _pidfPbfclinicalEntity.BusinessUnitId = item.BusinessUnitId;
+                            _pidfPbfclinicalEntity.TotalExpense = item.TotalExpense;
+                            _pidfPbfclinicalEntity.ProjectComplexity = item.ProjectComplexity;
+                            _pidfPbfclinicalEntity.ProductTypeId = item.ProductTypeId;
+                            _pidfPbfclinicalEntity.TestLicenseAvailability = item.TestLicenseAvailability;
+                            _pidfPbfclinicalEntity.BudgetTimelineSubmissionDate = item.BudgetTimelineSubmissionDate;
+                            _pidfPbfclinicalEntity.FormulationId = (int)item.FormulationId;
+                            _pidfPbfclinicalEntity.StrengthId = (int)item.StrengthId;
+                            _pidfPbfclinicalEntity.AnalyticalId = (int)item.AnalyticalId;
+                        }
+                        data.PidfPbfClinicals = _pidfPbfclinicalEntity;
+                    }
+                    //Pilot Bio Fasting Table
+                    clinicalpilotbiofasting = dbresult.Tables[7].DataTableToList<PidfPbfClinicalPilotBioFastingEntity>();
+                    if (clinicalpilotbiofasting.Count > 0)
+                    {
+                        foreach (var item in clinicalpilotbiofasting)
+                        {
+
+                            PidfPbfClinicalPilotBioFastingEntity clinicalPilotBioFasting = new();
+                            clinicalPilotBioFasting.PBFClinicalId = item.PBFClinicalId;
+                            clinicalPilotBioFasting.PilotBioFastingId = item.PilotBioFastingId;
+                            clinicalPilotBioFasting.StrengthId = item.StrengthId;
+                            clinicalPilotBioFasting.Fasting = item.Fasting;
+                            clinicalPilotBioFasting.NumberofVolunteers = item.NumberofVolunteers;
+                            clinicalPilotBioFasting.ClinicalCostandVol = item.ClinicalCostandVol;
+                            clinicalPilotBioFasting.DocCostandStudy = item.DocCostandStudy;
+                            clinicalPilotBioFasting.TotalCost = item.TotalCost;
+                            //clinicalPilotBioFasting.CreatedDate = DateTime.Now;
+                            //clinicalPilotBioFasting.CreatedBy = loggedInUserId;
+
+                            _objclinicalPilotBioFasting.Add(clinicalPilotBioFasting);
+                        }
+
+                        data.PidfPbfClinicals.pidfpbfClinicalpilotBioFastingEntity = strengthid.HasValue && strengthid > 0 ? _objclinicalPilotBioFasting.Where(x => x.StrengthId == strengthid).ToList().Count > 0 ? _objclinicalPilotBioFasting : null : null;
+                    }
+                    //Pilot Bio Fed Table
+                    clinicalpilotbiofed = dbresult.Tables[8].DataTableToList<PidfPbfClinicalPilotBioFedEntity>();
+                    if (clinicalpilotbiofed.Count > 0)
+                    {
+
+                        foreach (var item in clinicalpilotbiofed)
+                        {
+
+                            PidfPbfClinicalPilotBioFedEntity clinicalPilotBioFed = new();
+                            clinicalPilotBioFed.PilotBioFedid = item.PilotBioFedid;
+                            clinicalPilotBioFed.PBFClinicalId = item.PBFClinicalId;
+                            clinicalPilotBioFed.StrengthId = item.StrengthId;
+                            clinicalPilotBioFed.Fed = item.Fed;
+                            clinicalPilotBioFed.NumberofVolunteers = item.NumberofVolunteers;
+                            clinicalPilotBioFed.ClinicalCostandVol = item.ClinicalCostandVol;
+                            clinicalPilotBioFed.DocCostandStudy = item.DocCostandStudy;
+                            clinicalPilotBioFed.TotalCost = item.TotalCost;
+                            //clinicalPilotBioFed.CreatedDate = DateTime.Now;
+                            //clinicalPilotBioFed.CreatedBy = loggedInUserId;
+
+                            _objclinicalPilotBioFed.Add(clinicalPilotBioFed);
+                        }
+
+                        data.PidfPbfClinicals.pidfpbfClinicalPilotBioFedEntity = strengthid.HasValue && strengthid > 0 ? _objclinicalPilotBioFed.Where(x => x.StrengthId == strengthid).ToList().Count > 0 ? _objclinicalPilotBioFed : null : null;
+                    }
+                    //Pilot Bio Fasting Table
+                    clinicalpivotalbiofasting = dbresult.Tables[9].DataTableToList<PidfPbfClinicalPivotalBioFastingEntity>();
+                    if (clinicalpivotalbiofasting.Count > 0)
+                    {
+
+                        foreach (var item in clinicalpivotalbiofasting)
+                        {
+
+                            PidfPbfClinicalPivotalBioFastingEntity clinicalPivotalBioFasting = new();
+                            clinicalPivotalBioFasting.PBFClinicalId = item.PBFClinicalId;
+                            clinicalPivotalBioFasting.PivotalBioFastingId = item.PivotalBioFastingId;
+                            clinicalPivotalBioFasting.StrengthId = item.StrengthId;
+                            clinicalPivotalBioFasting.Fasting = item.Fasting;
+                            clinicalPivotalBioFasting.NumberofVolunteers = item.NumberofVolunteers;
+                            clinicalPivotalBioFasting.ClinicalCostandVol = item.ClinicalCostandVol;
+                            clinicalPivotalBioFasting.DocCostandStudy = item.DocCostandStudy;
+                            clinicalPivotalBioFasting.TotalCost = item.TotalCost;
+                            //clinicalPivotalBioFasting.CreatedDate = DateTime.Now;
+                            //clinicalPivotalBioFasting.CreatedBy = loggedInUserId;
+
+                            _objclinicalPivotalBioFasting.Add(clinicalPivotalBioFasting);
+                        }
+
+                        data.PidfPbfClinicals.pidfpbfClinicalPivotalBioFastingEntity = strengthid.HasValue && strengthid > 0 ? _objclinicalPivotalBioFasting.Where(x => x.StrengthId == strengthid).ToList().Count > 0 ? _objclinicalPivotalBioFasting : null : null;
+                    }
+                    //Pilot Bio Fed Table
+                    clinicalpivotalbiofed = dbresult.Tables[10].DataTableToList<PidfPbfClinicalPivotalBioFedEntity>();
+                    if (clinicalpivotalbiofed.Count > 0)
+                    {
+
+                        foreach (var item in clinicalpivotalbiofed)
+                        {
+                            PidfPbfClinicalPivotalBioFedEntity clinicalPivotalBioFed = new();
+                            clinicalPivotalBioFed.PBFClinicalId = item.PBFClinicalId;
+                            clinicalPivotalBioFed.PivotalBioFedid = item.PivotalBioFedid;
+                            clinicalPivotalBioFed.StrengthId = item.StrengthId;
+                            clinicalPivotalBioFed.Fed = item.Fed;
+                            clinicalPivotalBioFed.NumberofVolunteers = item.NumberofVolunteers;
+                            clinicalPivotalBioFed.ClinicalCostandVol = item.ClinicalCostandVol;
+                            clinicalPivotalBioFed.DocCostandStudy = item.DocCostandStudy;
+                            clinicalPivotalBioFed.TotalCost = item.TotalCost;
+                            //clinicalPivotalBioFed.CreatedDate = DateTime.Now;
+                            //clinicalPivotalBioFed.CreatedBy = loggedInUserId;
+
+                            _objclinicalPivotalBioFed.Add(clinicalPivotalBioFed);
+                        }
+
+                        data.PidfPbfClinicals.pidfpbfClinicalPivotalBioFedEntity = strengthid.HasValue && strengthid > 0 ? _objclinicalPivotalBioFed.Where(x => x.StrengthId == strengthid).ToList().Count > 0 ? _objclinicalPivotalBioFed : null : null;
+                    }
+                    //Cost Table
+                    clinicalcost = dbresult.Tables[11].DataTableToList<PidfPbfClinicalCostEntity>();
+                    if (clinicalcost.Count > 0)
+                    {
+
+
+                        foreach (var item in clinicalcost)
+                        {
+                            if (strengthid.HasValue && strengthid.HasValue && strengthid > 0 && item.StrengthId == strengthid)
+                            {
+                                _obgclinicalcost.PBFClinicalCostId = (int)item.PBFClinicalCostId;
+                                _obgclinicalcost.PBFClinicalId = (int)item.PBFClinicalId;
+                                _obgclinicalcost.StrengthId = item.StrengthId;
+                                _obgclinicalcost.TotalPilotFastingCost = item.TotalPilotFastingCost;
+                                _obgclinicalcost.TotalPilotFEDCost = item.TotalPilotFEDCost;
+                                _obgclinicalcost.TotalPivotalFastingCost = item.TotalPivotalFastingCost;
+                                _obgclinicalcost.TotalPivotalFEDCost = item.TotalPivotalFEDCost;
+                                _obgclinicalcost.TotalCost = item.TotalCost;
+                            }
+
+                        }
+                        data.PidfPbfClinicals.pidfPbfClinicalCost = _obgclinicalcost;
+
+                    }
+                }
+            }
+            return data;
+
+        }
+        #region Private Methods
         public async Task<long> SavePidfAndPBFCommanDetails(long pidfid, PBFFormEntity pbfentity)
         {
             long pidfpbfid = 0;
@@ -1670,7 +2172,7 @@ namespace EmcureNPD.Business.Core.Implementation
                 #endregion
                 #region Update PIDF
                 objPIDFupdate = _repository.GetAll().Where(x => x.Pidfid == pidfid).FirstOrDefault();
-                if (objPIDFupdate !=null)
+                if (objPIDFupdate != null)
                 {
                     objPIDFupdate.BrandName = pbfentity.BrandName;
                     objPIDFupdate.Rfdindication = pbfentity.RFDIndication;
@@ -1688,9 +2190,16 @@ namespace EmcureNPD.Business.Core.Implementation
             {
                 return pidfpbfid;
             }
-            
-        }
 
+        }
         #endregion
+
+
+
+
+
+
+
+
     }
 }

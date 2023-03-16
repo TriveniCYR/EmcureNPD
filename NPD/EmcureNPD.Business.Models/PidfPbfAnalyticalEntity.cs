@@ -47,6 +47,7 @@ namespace EmcureNPD.Business.Models
         public List<PidfPbfAnalyticalScaleUpEntity> PidfPbfAnalyticalScaleUps { get; set; }  
         public PidfPbfAnalyticalCostEntity PidfPbfAnalyticalCosts{ get; set; }
         public List<PidfProductStregthEntity> ProductStrength { get; set; }
+       // public List<PidfProductStregthEntity> MasterStrengthEntities { get; set; }
     }
     
 }

@@ -13,17 +13,33 @@
 @model EmcureNPD.Business.Models.PidfPbfFormEntity
 @{
     string jsVersion = @Configuration.GetSection("StaticJS")["version"];
+
+    var _StrengthId = (Context.Request.Query.ContainsKey("strengthId")) ? Convert.ToString(Context.Request.Query["strengthId"]) : ViewBag.DefaultStrengthId;
+    long nval; var EncQueryStrengthId = "" ; var QueryStrengthId = "";
+    if (!long.TryParse(_StrengthId, out nval))
+    {
+        QueryStrengthId = UtilityHelper.Decreypt(_StrengthId);
+        EncQueryStrengthId = _StrengthId;
+    }
+    else
+    {
+        QueryStrengthId = _StrengthId;
+        EncQueryStrengthId = UtilityHelper.Encrypt(_StrengthId);
+    }
+
 }
 
 <div id="SavePIDFModel">
-    <form id="fpbfForm_@Model.BusinessUnitId" class="" asp-action="PBF" asp-controller="PBF" method="post">
+    <form id="fpbfForm_@Model.BusinessUnitId" class="" asp-action="PBFAnalytical" asp-controller="PBF" method="post">
         <input type="hidden" asp-for="Pidfid" />
+        <input type="hidden" id="encPidfid" value="@UtilityHelper.Encrypt(@Model.Pidfid.ToString())" />
         <input type="hidden" asp-for="Pidfpbfid" />
         <input type="hidden" asp-for="BusinessUnitId" />
         <input type="hidden" asp-for="SaveSubmitType" />
         <div class="tab-content" id="tabList">
+            @*-------Start--partial View Content----*@
             <div class="card-body" style="background-color:white">
-                <input type="hidden" />
+              @*  <input type="hidden" />
                 <div class="row">
                     <div class="col-md-3">
                         <div class="form-group required">
@@ -144,8 +160,8 @@
                     <div class="row">
                         <div class="col-md-3">
                             <div class="form-group required">
-                                @Html.LabelFor(model => model.DosageFormulationDetail,"Dosage", new { @class = "control-label" })<span class="text-danger">*</span>
-                                @Html.TextBoxFor(model => model.DosageFormulationDetail, new {@class = "form-control", @placeholder = "Dosage" ,@required="required"})
+                                @Html.LabelFor(model => model.Dosage,"Dosage", new { @class = "control-label" })<span class="text-danger">*</span>
+                                @Html.TextBoxFor(model => model.Dosage, new {@class = "form-control", @placeholder = "Dosage" })
 
                             </div>
                         </div>
@@ -163,43 +179,10 @@
                             </div>
                         </div>
                     </div>
-                </div>
+                </div>*@
 
-                @* <div class="card-header">
-                    <h3 class="card-title">Reference Product Detail</h3>
-                    </div>
-                    <div class="row">
-
-                    <div class="col-md-3">
-                    <div class="form-group required">
-                    @Html.LabelFor(model => model.pidfEntity.BrandName,"Brand", new { @class = "control-label" })
-                    @Html.TextBoxFor(model => model.pidfEntity.BrandName, new {@class = "form-control", @placeholder = "Brand" })
-
-                    </div>
-                    </div>
-
-                    <div class="col-md-3">
-                    <div class="form-group required">
-
-                    @Html.LabelFor(model => model.pidfEntity.RFDApplicant,"Applicant", new { @class = "control-label" })
-                    @Html.TextBoxFor(model => model.pidfEntity.RFDApplicant, new {@class = "form-control", @placeholder = "Applicant" })
-
-                    </div>
-                    </div>
-                    <div class="col-md-3">
-                    <div class="form-group required">
-                    @Html.LabelFor(model => model.pidfEntity.RFDCountryId, "Country", new { @class = "control-label" })
-                    <select id="PbfRFDCountryId" name="RFDCountryId" class="form-control readOnlyUpdate" required></select>
-                    </div>
-                    </div>
-                    <div class="col-md-3">
-                    <div class="form-group required">
-                    @Html.LabelFor(model => model.pidfEntity.RFDIndication,"Indication", new { @class = "control-label" })
-                    @Html.TextBoxFor(model => model.pidfEntity.RFDIndication, new {@class = "form-control", @placeholder = "Indication" })
-                    </div>
-                    </div>
-                    </div>*@
             </div>
+            @*--------End-partial View Content----*@
             <div class="card" style="background-color:white;">
                 <div class="card-body">
                     <div class="row ">
@@ -215,7 +198,7 @@
                                     @foreach (var businessUnit in Model.MasterBusinessUnitEntities)
                                     {
                                         <li class="nav-item mr-2">
-                                            <a class="btn btn-outline-primary" href="#tab_@businessUnit.BusinessUnitName" onClick="BUtabClick('@businessUnit.BusinessUnitId','@Model.Pidfid');" id="BUtab_@businessUnit.BusinessUnitId">@businessUnit.BusinessUnitName</a>
+                                            <a class="btn btn-outline-primary" href="#tab_@businessUnit.BusinessUnitName" onClick="BUtabClick('@UtilityHelper.Encrypt(businessUnit.BusinessUnitId.ToString())','@UtilityHelper.Encrypt(Model.Pidfid.ToString())');" id="BUtab_@businessUnit.BusinessUnitId">@businessUnit.BusinessUnitName</a>
                                         </li>
                                         k = k + 1;
                                     }
@@ -229,67 +212,22 @@
                             @Html.LabelFor(model => model.BusinessUnitId, "Department", new { @class = "control-label" })
                             <lable id="valmsgBusinessUnitId" class="text-danger"></lable>
                         </div>
-                        <br />
-                        <div class="tab col-md-3">
-                            <li class="nav-item mr-2" style="list-style-type: none;">
-                                <a class="btn btn-outline-primary tablinks" onclick="openPBFForm(event, 'RnD')">RnD</a>
-                                @*<a class="btn btn-outline-primary tablinks" onclick="tabClick('PBFAnalyticalForm','','')">Analytical</a>*@
-                                <a class="btn btn-outline-primary tablinks" onclick="openPBFForm(event, 'Analytical')">Analytical</a>
-                                <a class="btn btn-outline-primary tablinks" onclick="openPBFForm(event, 'Clinical')">Clinical</a>
-                            </li>
+                       
+                        
 
-                            @*<div class="form-group required">
-                                <button class="tablinks" style="height: 50px;
-                                width: 100px;
-                                background-color: cornflowerblue;
-                                border: none;
-                                border-radius: 7px;
-                                color: white;" onclick="openPBFForm(event, 'RnD')">
-                                RnD
-                                </button>
-
-                                <button class="tablinks" style="height: 50px;
-                                width: 100px;
-                                background-color: cornflowerblue;
-                                border: none;
-                                border-radius: 7px;
-                                color: white;" onclick="openPBFForm(event, 'Analytical')">
-                                Analytical
-                                </button>
-                                <button class="tablinks" style="height: 50px;
-                                width: 100px;
-                                background-color: cornflowerblue;
-                                border: none;
-                                border-radius: 7px;
-                                color: white;" onclick="openPBFForm(event, 'Clinical')">
-                                Clinical
-                                </button>
-                                </div>*@
-                        </div>
-                        <br />
-                        <div id="RnD" class="tabcontent">
-                            @{
-                                await Html.RenderPartialAsync("PBFRnDForm", Model);
-                            }
-                        </div>
-
-                        <div id="Analytical" class="tabcontent">
+                       @* <div id="Analytical" class="tabcontent">*@
+                           <div>
                             @{
                                 await Html.RenderPartialAsync("~/Views/PBF/_PBFAnalyticalForm.cshtml", Model);
                             }
                         </div>
-
-                        <div id="Clinical" class="tabcontent">
-                            @{
-                                await Html.RenderPartialAsync("~/Views/PBF/_PBFClinicalForm.cshtml", Model);
-                            }
-                        </div>
+                      
                         <br />
                         @*</section>*@
                         <div class="form-group">
-                            <button type="submit" class="btn btn-primary operationButton" onclick="SaveClick();">@SharedLocalizer["Submit"]</button>
-                            <button type="submit" class="btn btn-info operationButton" onClick="SaveDraftClick();">@SharedLocalizer["SaveDraft"]</button>
-                            <a class="btn btn-danger operationButton" asp-action="PIDFList" asp-controller="PIDF" asp-route-ScreenId="6">@SharedLocalizer["Cancel"]</a>
+                            <button type="submit" id="btnSubmit" class="btn btn-primary operationButton" onclick="SaveClick();">@SharedLocalizer["Submit"]</button>
+                            <button type="submit" id="btnSaveAsDraft" class="btn btn-info operationButton" onClick="SaveDraftClick();">@SharedLocalizer["SaveDraft"]</button>
+                            <a id="btnCancel" class="btn btn-danger operationButton" asp-action="PIDFList" asp-controller="PIDF" asp-route-ScreenId="6">@SharedLocalizer["Cancel"]</a>
 
                         </div>
                     </div>
@@ -305,13 +243,12 @@
 
     @Html.Partial("_DataTablePartial")
 <script type="text/javascript" src="~/js/Custom/DynamicDataTable.js?v=@jsVersion"></script>
-<script type="text/javascript" src="~/js/Custom/PIDF/PBFForm.js?v=@jsVersion"></script>
+    <script type="text/javascript" src="~/js/custom/pidf/pbfformanalytical.js?v=@jsVersion"></script>
     @*    <script type="text/javascript" src="~/js/Custom/PBF/Analytical/PBFAnalytical.js"></script>*@
 <link rel="stylesheet" href="~/AdminLTE/plugins/select2/css/select2.min.css" />
 <script type="text/javascript" src="~/AdminLTE/plugins/select2/js/select2.min.js"></script>
 <link href="/lib/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
 <script src="/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
-
 <script>
     document.addEventListener("DOMContentLoaded", function () {
         var tabList = [].slice.call(document.querySelectorAll("#tabs a"));
@@ -332,9 +269,16 @@
     var PFBAPIPIDFList = "@EmcureNPD.Web.Helpers.APIURLHelper.GetPFBAPIPIDFList";
     var GetAllPBF = "@EmcureNPD.Web.Helpers.APIURLHelper.GetPBFDropdown";
     var GetPBFReadonlyDataByPIDFId = "@EmcureNPD.Web.Helpers.APIURLHelper.GetPBFReadonlyDataByPIDFId";
-    var _selectBusinessUnit = "@UtilityHelper.Decreypt(Convert.ToString(Context.Request.Query["bui"]))";
-    var _PIDFID = "@UtilityHelper.Decreypt(Convert.ToString(Context.Request.Query["pidfid"]))";    
-     var GetActiveBusinessUnit = "@EmcureNPD.Web.Helpers.APIURLHelper.GetActiveBusinessUnit";
+        var QueryBusinessUnit = "@UtilityHelper.Decreypt(Convert.ToString(Context.Request.Query["bui"]))";
+        var QueryPidfid = "@UtilityHelper.Decreypt(Convert.ToString(Context.Request.Query["pidfid"]))";
+        var QuerystrengthId = "@QueryStrengthId";
+
+
+        var EncQueryBusinessUnit = "@Convert.ToString(Context.Request.Query["bui"])";
+        var EncQueryPidfid = "@Convert.ToString(Context.Request.Query["pidfid"])";
+        var EncQueryStrengthId = "@EncQueryStrengthId";
+
+        var GetActiveBusinessUnit = "@EmcureNPD.Web.Helpers.APIURLHelper.GetActiveBusinessUnit";
       var _PBFPartialURL = "@Url.Action("PBFForm", "PIDF")";
     // #endregion
 
