@@ -1,16 +1,38 @@
 $(document).ready(function () {
-    GetPIDFDetail();
-    GetTaskSubTaskList();
-    GetFile();
-    GetBusinessUnit();
+    GetProjectDetails();
 });
-//getAllBusinessUnit
-function GetBusinessUnit() {
-    ajaxServiceMethod($('#hdnBaseURL').val() + GetAllBusinessunit, 'GET', GetBusinessUnitSuccess, GetBusinessUnitSuccess);
+function GetProjectDetails() {
+    ajaxServiceMethod($('#hdnBaseURL').val() + GetAllData + "/" + $('#pidfId').val(), 'GET', GetProjectDetailsSuccess, GetProjectDetailsError);
 }
-function GetBusinessUnitSuccess(data) {
+function GetProjectDetailsSuccess(data) {
     try {
-        $.each(data._object, function (index, bunits) {
+        //project details
+        console.log(data);
+        $('#loading').hide();
+        $('#pidf_ProjectorProductName').text(data.table[0].projectName);
+        $('#pidf_ProductTypeName').text(data.productName);
+        $('#pidf_PlantName').text(data.plantName);
+        $('#pidf_FormulationName').text(data.formulationName);
+        $('#pidf_WorkflowName').text(data.workflowName);;
+        $.each(data.table2, function (i, List) {
+            var newRow = $("<tr>");
+            var cols = "";
+            cols += '<td>' + List.strength + '</td>';
+            cols += '<td>' + List.unitofMeasurementName + ' </td>';
+            newRow.append(cols);
+            $("table.order-list").append(newRow);
+        });
+        //end
+        //File details
+        $('#files tbody').html('')
+        $.each(data.table1, function (index, file) {
+            var link = $('#hdnBaseUrl').val() + '/Uploads/PIDF/Medical/' + file.fileName;
+            $('#files tbody').append('<tr><td><a href="' + link + '">' + file.fileName + '</a></td></tr>');
+        });
+        //end
+        //Businessunit details
+        $('#custom-tabs-one-tab li').slice(1).remove();
+        $.each(data.table3, function (index, bunits) {
             var $li = $('<li class="nav-item"></li>');
             var $a = $('<a class="nav-link" id="' + bunits.businessUnitName + '" data-toggle="pill" href="#LATAM" role="tab" aria-controls="LATAM" aria-selected="false">' + bunits.businessUnitName + '</a>');
             if (bunits.businessUnitId == bid) {
@@ -19,74 +41,10 @@ function GetBusinessUnitSuccess(data) {
             $li.append($a);
             $li.insertAfter($('#custom-tabs-one-tab li').eq(0));
         });
-    }
-    catch(e){
-        toastr.error('Error:' + e.message);
-    }
-}
-function GetBusinessUnitError() {
-    toastr.error(ErrorMessage);
-}
-//Endregion
-//get files
-function GetFile() {
-    ajaxServiceMethod($('#hdnBaseURL').val() + GetFiles + "/" + $('#pidfId').val(), 'GET', GetFilesSuccess, GetFilesError);
-}
-function GetFilesSuccess(data) {
-    try {
-        $('#files tbody').html('')
-        $.each(data._object.fileName, function (index, file) {
-            var link = $('#hdnBaseUrl').val() + '/Uploads/PIDF/Medical/' + file;
-            $('#files tbody').append('<tr><td><a href="' + link + '">' + file + '</a></td></tr>');
-        });
-    }
-    catch (e) {
-        toastr.error('Error:' + e.message);
-    }
-}
-function GetFilesError() {
-    toastr.error(ErrorMessage);
-}
-//get PIDF details
-function GetPIDFDetail() {
-    ajaxServiceMethod($('#hdnBaseURL').val() + GetPIDFDetails + "/" + $('#pidfId').val(), 'GET', GetPIDFDetailSuccess, GetPIDFDetailError);
-}
-function GetPIDFDetailSuccess(data) {
-    try {
-        $('#loading').hide();
-        $('#pidf_ProjectorProductName').text(data._object.moleculeName);
-        $('#pidf_ProductTypeName').text(data.productName);
-        $('#pidf_PlantName').text(data.plantName);
-        $('#pidf_FormulationName').text(data.formulationName);
-        $('#pidf_WorkflowName').text(data.workflowName);
-        console.log(data._object.pidfProductStregthEntities);
-        $.each(data._object.pidfProductStregthEntities, function (i, List) {
-            //console.log(List);
-            var newRow = $("<tr>");
-            var cols = "";
-            cols += '<td>' + List.strength + '</td>';
-            cols += '<td>' + List.UnitofMeasurementName + ' </td>';
-            newRow.append(cols);
-            $("table.order-list").append(newRow);
-
-        });
-    }
-    catch (e) {
-        toastr.error('Error:' + e.message);
-    }
-}
-function GetPIDFDetailError() {
-    toastr.error(ErrorMessage);
-}
-//#end region
-//get all task and subtask list
-function GetTaskSubTaskList() {
-    ajaxServiceMethod($('#hdnBaseURL').val() + GetAllTaskSubTaskList + "/" + $('#pidfId').val(), 'GET', GetTaskSubTaskListSuccess, GetTaskSubTaskListError);
-}
-function GetTaskSubTaskListSuccess(data) {
-    try {
+        //end
+        //tasksubtask list details
         $('#Milestones tbody').html('')
-        $.each(data._object, function (index, object) {
+        $.each(data.table4, function (index, object) {
             var start = new Date(object.startDate);
             var startDate = start.toLocaleDateString('en-US', { year: 'numeric', month: '2-digit', day: '2-digit' });
             var end = new Date(object.endDate);
@@ -97,19 +55,20 @@ function GetTaskSubTaskListSuccess(data) {
             }
             else
                 var updatedDate = "";
-           
-            $('#Milestones tbody').append('<tr><td>' + object.taskName + '</td><td>' + object.taskOwnerName + '</td><td>' + object.statusName + '</td><td>' + object.priorityName + '</td><td>' + startDate + '</td><td>' + endDate + '</td><td>' + object.taskDuration + '</td><td>' + object.totalPercentage + '</td><td>' + updatedDate + '</td><td>  <a class="large-font" style="" href="" title="Edit" data-toggle="modal" data-target="#UpdateModel" data-backdrop="static" data-keyboard="false"  onclick="GetTaskSubTaskById(' + object.projectTaskId + '); return false;"><i class="fa fa-fw fa-edit mr-1"></i> ' + '</a><a class="large-font text-danger" style="" href="" title="Delete" data-toggle="modal" data-target="#DeleteModel" data-backdrop="static" data-keyboard="false" onclick="ConfirmationDeleteTaskSubTask(' + object.projectTaskId + '); return false;"><i class="fa fa-fw fa-trash mr-1"></i> ' + '</a>  </td></tr>');
+
+            $('#Milestones tbody').append('<tr><td>' + object.taskName + '</td><td>' + object.fullName + '</td><td>' + object.statusName + '</td><td>' + object.priorityName + '</td><td>' + startDate + '</td><td>' + endDate + '</td><td>' + object.taskDuration + '</td><td>' + object.totalPercentage + '</td><td>' + updatedDate + '</td><td>  <a class="large-font" style="" href="" title="Edit" data-toggle="modal" data-target="#UpdateModel" data-backdrop="static" data-keyboard="false"  onclick="GetTaskSubTaskById(' + object.projectTaskId + '); return false;"><i class="fa fa-fw fa-edit mr-1"></i> ' + '</a><a class="large-font text-danger" style="" href="" title="Delete" data-toggle="modal" data-target="#DeleteModel" data-backdrop="static" data-keyboard="false" onclick="ConfirmationDeleteTaskSubTask(' + object.projectTaskId + '); return false;"><i class="fa fa-fw fa-trash mr-1"></i> ' + '</a>  </td></tr>');
         });
         StaticDataTable("#Milestones");
-    } catch (e) {
+        //end
+    }
+    catch (e) {
         toastr.error('Error:' + e.message);
     }
 }
-function GetTaskSubTaskListError(x, y, z) {
+function GetProjectDetailsError() {
     toastr.error(ErrorMessage);
 }
-//#end region
-// getTaskSubTask by id
+
 function GetTaskSubTaskById(id) {
     ajaxServiceMethod($('#hdnBaseURL').val() + GetTaskSubTaskByIds + "/" + id, 'GET', GetTaskSubTaskByIdSuccess, GetTaskSubTaskByIdError);
 }
@@ -198,7 +157,7 @@ function DeleteTaskSubSuccess(data) {
     try {
         if (data._Success === true) {
             toastr.success(RecordDelete);
-            GetTaskSubTaskList();
+            GetProjectDetails();
         }
         else {
             toastr.error(data._Message);

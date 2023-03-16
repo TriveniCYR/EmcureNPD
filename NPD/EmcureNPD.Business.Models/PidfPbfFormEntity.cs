@@ -30,6 +30,8 @@ namespace EmcureNPD.Business.Models
         public int CreatedBy { get; set; }
         public DateTime? ModifyDate { get; set; }
         public int? ModifyBy { get; set; }
+        public PBFFormEntity PbfFormEntities { get; set; }
+        public PIDFPBFClinicalFormEntity PbfClinicalEntities { get; set; }
         public string SaveSubmitType { get; set; }
         public List<MasterBusinessUnitEntity> MasterBusinessUnitEntities { get; set; }
         public List<PidfProductStregthEntity> MasterStrengthEntities { get; set; }

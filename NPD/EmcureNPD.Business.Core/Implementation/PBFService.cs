@@ -147,8 +147,6 @@ namespace EmcureNPD.Business.Core.Implementation
             _pidfPbfClinicalCostRepository = _unitOfWork.GetRepository<PidfPbfClinicalCost>();
             _pidfPbfGeneralRepository = _unitOfWork.GetRepository<PidfPbfGeneral>();
             _masterFillingTypeRepository = _unitOfWork.GetRepository<MasterFilingType>();
-            
-
         }
 
         //------------Start------API_Functions_Kuldip--------------------------
@@ -223,8 +221,6 @@ namespace EmcureNPD.Business.Core.Implementation
             DropdownObjects.MasterAnalyticalGLService = _masterAnalyticalGLService.GetAll().Result.Where(xx => xx.IsActive).ToList();
             DropdownObjects.MasterTestType = _masterTestTypeService.GetAll().Result.Where(xx => xx.IsActive).ToList();
             DropdownObjects.MasterTestLicense = _masterTestLicenseService.GetAll().Result.Where(xx => xx.IsActive).ToList();
-            DropdownObjects.MasterFillingType = _masterFillingTypeRepository.GetAll().Where(xx => xx.IsActive).ToList();
-            
 
             return DropdownObjects;
         }
@@ -271,7 +267,6 @@ namespace EmcureNPD.Business.Core.Implementation
             PAE.ImprintingEmbossingCodes = "NTD";
             return PAE;
         }
-      
        
 
         public async Task<DBOperation> AddUpdatePBFDetailsAnalytical(PidfPbfFormEntity pbfEntity)
@@ -279,45 +274,18 @@ namespace EmcureNPD.Business.Core.Implementation
             try
             {
                 //Dummy function to same PIDFPBF Data
+                long pidfpbfid = 0;
                 PidfPbf objPIDFPbf;
                 var loggedInUserId = _helper.GetLoggedInUser().UserId;
-                //PIDFAPIIPDFormEntity _exsistingAPIRnD = new PIDFAPIIPDFormEntity();
-                objPIDFPbf = _pbfRepository.GetAll().Where(x => x.Pidfid == pbfEntity.Pidfid).First();
-                if (objPIDFPbf != null)
+                pidfpbfid = await SavePidfAndPBFCommanDetails(pbfEntity.Pidfid, pbfEntity.PbfFormEntities);
+
+                if (pidfpbfid > 0)
                 {
-                    //objPIDFPbf = await _pbfRepository.GetAsync(pbfEntity.Pidfid);
-                    if (objPIDFPbf != null)
-                    {
-                        //for updating PIDFPBF
-
-                        objPIDFPbf.Pidfid = pbfEntity.Pidfid;
-                        objPIDFPbf.ProjectName = pbfEntity.ProjectName;
-                        objPIDFPbf.Market = pbfEntity.Market;
-                        objPIDFPbf.BusinessRelationable = pbfEntity.BusinessRelationable;
-                        objPIDFPbf.BerequirementId = pbfEntity.BerequirementId;
-                        objPIDFPbf.NumberOfApprovedAnda = pbfEntity.NumberOfApprovedAnda;
-                        objPIDFPbf.ProductTypeId = pbfEntity.ProductTypeId;
-                        objPIDFPbf.PlantId = pbfEntity.PlantId;
-                        objPIDFPbf.WorkflowId = pbfEntity.WorkflowId;
-                        objPIDFPbf.DosageId = pbfEntity.DosageId;
-                        objPIDFPbf.PatentStatus = pbfEntity.PatentStatus;
-                        objPIDFPbf.SponsorBusinessPartner = pbfEntity.SponsorBusinessPartner;
-                        objPIDFPbf.FormRnDdivisionId = pbfEntity.FormRnDdivisionId;
-                        objPIDFPbf.ProjectInitiationDate = pbfEntity.ProjectInitiationDate;
-                        objPIDFPbf.RnDhead = pbfEntity.RnDhead;
-                        objPIDFPbf.ProjectManager = pbfEntity.ProjectManager;
-                        objPIDFPbf.PackagingTypeId = (int)pbfEntity.PackagingTypeId;
-                        objPIDFPbf.DosageFormulationDetail = pbfEntity.DosageFormulationDetail;
-                        //objPIDFPbf.ManufacturingId = pbfEntity.manufeturingId;
-                        objPIDFPbf.ModifyBy = loggedInUserId;
-                        objPIDFPbf.ModifyDate = DateTime.Now;
-                        _pbfRepository.UpdateAsync(objPIDFPbf);
-                        await _unitOfWork.SaveChangesAsync();
-
-                        var objPIDFPbfanalytical = _pidfPbfAnalyticalRepository.GetAll().Where(x => x.Pbfid == objPIDFPbf.Pidfpbfid).FirstOrDefault();
-
-                        //For Updating PBF Analytical
-                        if (objPIDFPbfanalytical != null)
+                   // var objPIDFPbfclincial = _pidfPbfClinicalRepository.GetAll().Where(x => x.Pbfid == pidfpbfid & x.BusinessUnitId == pbfEntity.BusinessUnitId).FirstOrDefault();
+                    var objPIDFPbfanalytical = _pidfPbfAnalyticalRepository.GetAll().Where(x => x.Pbfid == pidfpbfid & x.BusinessUnitId == pbfEntity.BusinessUnitId).FirstOrDefault();
+                        
+                    //For Updating PBF Analytical
+                    if (objPIDFPbfanalytical != null)
                         {
                             //PidfPbfAnalytical _previousPbfAnalyticalEntity = _mapperFactory.Get<PidfPbfAnalyticalEntity, PidfPbfAnalytical>(pbfEntity.PidfPbfAnalyticals);
                             //_pidfPbfAnalyticalRepository.UpdateAsync(_previousPbfAnalyticalEntity);
@@ -357,10 +325,10 @@ namespace EmcureNPD.Business.Core.Implementation
 
 
                         }                     
-                        await SaveChildDetailsAnalytical(objPIDFPbf.Pidfpbfid, loggedInUserId, pbfEntity.PidfPbfAnalyticals);
+                        await SaveChildDetailsAnalytical(pidfpbfid, loggedInUserId, pbfEntity.PidfPbfAnalyticals);
 
-                        var isSuccess = await _auditLogService.CreateAuditLog<PidfPbfFormEntity>(objPIDFPbf.Pidfid > 0 ? Utility.Audit.AuditActionType.Update : Utility.Audit.AuditActionType.Create,
-                           Utility.Enums.ModuleEnum.PBF, pbfEntity, pbfEntity, Convert.ToInt32(objPIDFPbf.Pidfid));
+                        var isSuccess = await _auditLogService.CreateAuditLog<PidfPbfFormEntity>(pbfEntity.Pidfid > 0 ? Utility.Audit.AuditActionType.Update : Utility.Audit.AuditActionType.Create,
+                           Utility.Enums.ModuleEnum.PBF, pbfEntity, pbfEntity, Convert.ToInt32(pbfEntity.Pidfid));
                         await _unitOfWork.SaveChangesAsync();
                         var _StatusID = (pbfEntity.SaveSubmitType == "Save") ? Master_PIDFStatus.PBFSubmitted : Master_PIDFStatus.PBFInProgress;
                         await _auditLogService.UpdatePIDFStatusCommon(pbfEntity.Pidfid, (int)_StatusID, loggedInUserId);
@@ -372,41 +340,41 @@ namespace EmcureNPD.Business.Core.Implementation
                         return DBOperation.NotFound;
                     }
 
-                }
-                else
-                {
+                
+                //else
+                //{
 
-                    var _objpidfpbfadd = new PidfPbf();
-                    _objpidfpbfadd.Pidfid = pbfEntity.Pidfid;
-                    _objpidfpbfadd.ProjectName = pbfEntity.ProjectName;
-                    _objpidfpbfadd.Market = pbfEntity.Market;
-                    _objpidfpbfadd.BusinessRelationable = pbfEntity.BusinessRelationable;
-                    _objpidfpbfadd.BerequirementId = pbfEntity.BerequirementId;
-                    _objpidfpbfadd.NumberOfApprovedAnda = pbfEntity.NumberOfApprovedAnda;
-                    _objpidfpbfadd.ProductTypeId = pbfEntity.ProductTypeId;
-                    _objpidfpbfadd.PlantId = pbfEntity.PlantId;
-                    _objpidfpbfadd.WorkflowId = pbfEntity.WorkflowId;
-                    _objpidfpbfadd.DosageId = pbfEntity.DosageId;
-                    _objpidfpbfadd.PatentStatus = pbfEntity.PatentStatus;
-                    _objpidfpbfadd.SponsorBusinessPartner = pbfEntity.SponsorBusinessPartner;
-                    _objpidfpbfadd.FormRnDdivisionId = pbfEntity.FormRnDdivisionId;
-                    _objpidfpbfadd.ProjectInitiationDate = pbfEntity.ProjectInitiationDate;
-                    _objpidfpbfadd.RnDhead = pbfEntity.RnDhead;
-                    _objpidfpbfadd.ProjectManager = pbfEntity.ProjectManager;
-                    _objpidfpbfadd.PackagingTypeId = (int)pbfEntity.PackagingTypeId;
-                    _objpidfpbfadd.DosageFormulationDetail = pbfEntity.DosageFormulationDetail;
-                    //_objpidfpbfadd.ManufacturingId = pbfEntity.manufeturingId;
-                    _objpidfpbfadd.CreatedBy = loggedInUserId;
-                    _objpidfpbfadd.CreatedDate = DateTime.Now;
-                    _pbfRepository.AddAsync(_objpidfpbfadd);
+                //    var _objpidfpbfadd = new PidfPbf();
+                //    _objpidfpbfadd.Pidfid = pbfEntity.Pidfid;
+                //    _objpidfpbfadd.ProjectName = pbfEntity.ProjectName;
+                //    _objpidfpbfadd.Market = pbfEntity.Market;
+                //    _objpidfpbfadd.BusinessRelationable = pbfEntity.BusinessRelationable;
+                //    _objpidfpbfadd.BerequirementId = pbfEntity.BerequirementId;
+                //    _objpidfpbfadd.NumberOfApprovedAnda = pbfEntity.NumberOfApprovedAnda;
+                //    _objpidfpbfadd.ProductTypeId = pbfEntity.ProductTypeId;
+                //    _objpidfpbfadd.PlantId = pbfEntity.PlantId;
+                //    _objpidfpbfadd.WorkflowId = pbfEntity.WorkflowId;
+                //    _objpidfpbfadd.DosageId = pbfEntity.DosageId;
+                //    _objpidfpbfadd.PatentStatus = pbfEntity.PatentStatus;
+                //    _objpidfpbfadd.SponsorBusinessPartner = pbfEntity.SponsorBusinessPartner;
+                //    _objpidfpbfadd.FormRnDdivisionId = pbfEntity.FormRnDdivisionId;
+                //    _objpidfpbfadd.ProjectInitiationDate = pbfEntity.ProjectInitiationDate;
+                //    _objpidfpbfadd.RnDhead = pbfEntity.RnDhead;
+                //    _objpidfpbfadd.ProjectManager = pbfEntity.ProjectManager;
+                //    _objpidfpbfadd.PackagingTypeId = (int)pbfEntity.PackagingTypeId;
+                //    _objpidfpbfadd.DosageFormulationDetail = pbfEntity.DosageFormulationDetail;
+                //    //_objpidfpbfadd.ManufacturingId = pbfEntity.manufeturingId;
+                //    _objpidfpbfadd.CreatedBy = loggedInUserId;
+                //    _objpidfpbfadd.CreatedDate = DateTime.Now;
+                //    _pbfRepository.AddAsync(_objpidfpbfadd);
 
-                    await _unitOfWork.SaveChangesAsync();
-                    //await SaveChildDetails(_objpidfpbfadd.Pidfpbfid, loggedInUserId, pbfEntity.PidfPbfAnalyticals, pbfEntity.PidfPbfClinicals, pbfEntity.pidfPbfRndEntity);
-                    var _StatusID = (pbfEntity.SaveSubmitType == "Save") ? Master_PIDFStatus.PBFSubmitted : Master_PIDFStatus.PBFInProgress;
-                    await _auditLogService.UpdatePIDFStatusCommon(pbfEntity.Pidfid, (int)_StatusID, loggedInUserId);
-                    return DBOperation.Success;
+                //    await _unitOfWork.SaveChangesAsync();
+                //    await SaveChildDetails(_objpidfpbfadd.Pidfpbfid, loggedInUserId, pbfEntity.PidfPbfAnalyticals, pbfEntity.PidfPbfClinicals, pbfEntity.pidfPbfRndEntity);
+                //    var _StatusID = (pbfEntity.SaveSubmitType == "Save") ? Master_PIDFStatus.PBFSubmitted : Master_PIDFStatus.PBFInProgress;
+                //    await _auditLogService.UpdatePIDFStatusCommon(pbfEntity.Pidfid, (int)_StatusID, loggedInUserId);
+                //    return DBOperation.Success;
 
-                }
+                //}
             }
             catch (Exception ex)
             {
@@ -422,7 +390,7 @@ namespace EmcureNPD.Business.Core.Implementation
 
                 //if (analyticalEntites != null && analyticalEntites.PidfPbfAnalyticalPrototypes.Count() > 0 && analyticalEntites.PidfPbfAnalyticalScaleUps.Count() > 0 && analyticalEntites.PidfPbfAnalyticalExhibits.Count() > 0)
 
-
+                var NewAnalyticalId = 0;
                 if (analyticalEntites.StrengthId > 0 && analyticalEntites.BusinessUnitId > 0)//for checking which tab is selected
                 {
                     if (analyticalEntites.PBFAnalyticalID > 0)
@@ -432,20 +400,20 @@ namespace EmcureNPD.Business.Core.Implementation
                         {
 
                             var _objpidfpbfadd = new PidfPbfAnalytical();
-                            _objpidfpbfadd.Pbfid = Pidfpbfid;
-                            _objpidfpbfadd.Pidfid = analyticalEntites.PIDFID;
-                            _objpidfpbfadd.BusinessUnitId = analyticalEntites.BusinessUnitId;
-                            _objpidfpbfadd.TotalExpense = analyticalEntites.TotalExpense;
-                            _objpidfpbfadd.ProjectComplexity = analyticalEntites.ProjectComplexity;
-                            _objpidfpbfadd.StrengthId = analyticalEntites.StrengthId;
-                            _objpidfpbfadd.ProductTypeId = analyticalEntites.ProductTypeId;
-                            _objpidfpbfadd.TestLicenseAvailability = analyticalEntites.TestLicenseAvailability;
-                            _objpidfpbfadd.BudgetTimelineSubmissionDate = analyticalEntites.BudgetTimelineSubmissionDate;
-                            _objpidfpbfadd.FormulationId = analyticalEntites.FormulationId;
-                            _objpidfpbfadd.AnalyticalId = analyticalEntites.AnalyticalId;
-                            _pidfPbfAnalyticalRepository.UpdateAsync(_objpidfpbfadd);
+                            objpidfpbfupdate.Pbfid = Pidfpbfid;
+                            objpidfpbfupdate.Pidfid = analyticalEntites.PIDFID;
+                            objpidfpbfupdate.BusinessUnitId = analyticalEntites.BusinessUnitId;
+                            objpidfpbfupdate.TotalExpense = analyticalEntites.TotalExpense;
+                            objpidfpbfupdate.ProjectComplexity = analyticalEntites.ProjectComplexity;
+                            objpidfpbfupdate.StrengthId = analyticalEntites.StrengthId;
+                            objpidfpbfupdate.ProductTypeId = analyticalEntites.ProductTypeId;
+                            objpidfpbfupdate.TestLicenseAvailability = analyticalEntites.TestLicenseAvailability;
+                            objpidfpbfupdate.BudgetTimelineSubmissionDate = analyticalEntites.BudgetTimelineSubmissionDate;
+                            objpidfpbfupdate.FormulationId = analyticalEntites.FormulationId;
+                            objpidfpbfupdate.AnalyticalId = analyticalEntites.AnalyticalId;
+                            _pidfPbfAnalyticalRepository.UpdateAsync(objpidfpbfupdate);
                             //return DBOperation.Success;
-
+                            NewAnalyticalId = (int)objpidfpbfupdate.PbfanalyticalId;
                         }
                         else
                         {
@@ -472,7 +440,8 @@ namespace EmcureNPD.Business.Core.Implementation
                         _objpidfpbfadd.CreatedDate = DateTime.Now;
                         _pidfPbfAnalyticalRepository.AddAsync(_objpidfpbfadd);
                         await _unitOfWork.SaveChangesAsync();
-
+                        NewAnalyticalId = (int)_objpidfpbfadd.PbfanalyticalId;
+                    }
                         //Save Prototype Table
                         if (analyticalEntites.PidfPbfAnalyticalPrototypes != null && analyticalEntites.PidfPbfAnalyticalPrototypes.Count() > 0)
                         {
@@ -481,7 +450,7 @@ namespace EmcureNPD.Business.Core.Implementation
                             {
 
                                 PidfPbfAnalyticalPrototype analyticalprototype = new PidfPbfAnalyticalPrototype();
-                                analyticalprototype.PbfanalyticalId = _objpidfpbfadd.PbfanalyticalId;
+                                analyticalprototype.PbfanalyticalId = NewAnalyticalId;
                                 analyticalprototype.StrengthId = analyticalEntites.StrengthId;
                                 analyticalprototype.TestTypeId = (int)item.TestTypeId;
                                 analyticalprototype.Numberoftests = item.Numberoftests;
@@ -505,7 +474,7 @@ namespace EmcureNPD.Business.Core.Implementation
                             {
 
                                 PidfPbfAnalyticalScaleUp analyticalscaleup = new PidfPbfAnalyticalScaleUp();
-                                analyticalscaleup.PbfanalyticalId = _objpidfpbfadd.PbfanalyticalId;
+                                analyticalscaleup.PbfanalyticalId = NewAnalyticalId;
                                 analyticalscaleup.StrengthId = analyticalEntites.StrengthId;
                                 analyticalscaleup.TestTypeId = (int)item.TestTypeId;
                                 analyticalscaleup.Numberoftests = item.Numberoftests;
@@ -528,7 +497,7 @@ namespace EmcureNPD.Business.Core.Implementation
                             {
 
                                 PidfPbfAnalyticalExhibit analyticalexhibit = new PidfPbfAnalyticalExhibit();
-                                analyticalexhibit.PbfanalyticalId = _objpidfpbfadd.PbfanalyticalId;
+                                analyticalexhibit.PbfanalyticalId = NewAnalyticalId;
                                 analyticalexhibit.StrengthId = analyticalEntites.StrengthId;
                                 analyticalexhibit.TestTypeId = (int)item.TestTypeId;
                                 analyticalexhibit.Numberoftests = item.Numberoftests;
@@ -547,7 +516,7 @@ namespace EmcureNPD.Business.Core.Implementation
                         if (analyticalEntites.PidfPbfAnalyticalCosts != null)
                         {
                             PidfPbfAnalyticalCost analyticalcost = new PidfPbfAnalyticalCost();
-                            analyticalcost.PbfanalyticalId = _objpidfpbfadd.PbfanalyticalId;
+                            analyticalcost.PbfanalyticalId = NewAnalyticalId;
                             analyticalcost.StrengthId = analyticalEntites.StrengthId;
                             analyticalcost.TotalAmvcost = analyticalEntites.PidfPbfAnalyticalCosts.TotalAMVCost;
                             analyticalcost.Remark = analyticalEntites.PidfPbfAnalyticalCosts.Remark;
@@ -561,9 +530,9 @@ namespace EmcureNPD.Business.Core.Implementation
                             _PidfPbfAnalyticalCostsRepository.AddAsync(analyticalcost);
                             await _unitOfWork.SaveChangesAsync();
                         }
-                    }
-
                 }
+
+                
 
                 return true;
             }
@@ -572,7 +541,10 @@ namespace EmcureNPD.Business.Core.Implementation
                 return false;
             }
         }
-    
+
+
+       
+             
         public async Task<PidfPbfFormEntity> GetPbfFormDetailsAnalytical(long pidfId, int buid, int strengthid)
         {
             var data = await GetPbfTabDetailsAnalytical(pidfId, buid, strengthid);
@@ -582,10 +554,16 @@ namespace EmcureNPD.Business.Core.Implementation
 
         public async Task<PidfPbfFormEntity> GetPbfTabDetailsAnalytical(long pidfId, int buid, int strengthid)
         {
-            
+
             //PBF Entity Mapping
-            var data = new PidfPbfFormEntity();            
+            var data = new PidfPbfFormEntity();
+            data.MasterBusinessUnitEntities = _businessUnitService.GetAll().Result.Where(xx => xx.IsActive).ToList();
+            data.MasterStrengthEntities = _productStrengthService.GetAll().Result.Where(x => x.Pidfid == pidfId).ToList();
+
+            if (data.MasterStrengthEntities.Count > 0 && data.MasterStrengthEntities != null)
+                strengthid = (strengthid == 0) ? (int)data.MasterStrengthEntities[0].PidfproductStrengthId : strengthid;
             //analytical Tables
+            PBFFormEntity _PbfaformEntity = new PBFFormEntity();
             PidfPbfAnalyticalEntity _pidfPbfanalyticalEntity = new PidfPbfAnalyticalEntity();           
             List<PidfPbfAnalyticalPrototypeEntity> objPrototypeList = new();
             List<PidfPbfAnalyticalExhibitEntity> objExhibitList = new();
@@ -600,6 +578,7 @@ namespace EmcureNPD.Business.Core.Implementation
 
             var dbresult = await _pbfRepository.GetDataSetBySP("stp_npd_GetPbfData_Analytical", System.Data.CommandType.StoredProcedure, osqlParameter);
 
+            dynamic pbf = new ExpandoObject();
             dynamic pidf = new ExpandoObject();
             dynamic analytical = new ExpandoObject();
            // dynamic clinical = new ExpandoObject();
@@ -612,39 +591,48 @@ namespace EmcureNPD.Business.Core.Implementation
             {
                 if (dbresult.Tables[0] != null && dbresult.Tables[0].Rows.Count > 0)
                 {
-                    var objPidf = UtilityHelper.ConvertDataTable<PidfPbfFormEntity>(dbresult.Tables[0]);
-                    pidf = dbresult.Tables[0].DataTableToList<PidfPbfFormEntity>();
-                    if (pidf.Count > 0)
+                    //var objPidf = UtilityHelper.ConvertDataTable<PidfPbfFormEntity>(dbresult.Tables[0]);
+                   // pidf = dbresult.Tables[0].DataTableToList<PidfPbfFormEntity>();
+                    pbf = dbresult.Tables[0].DataTableToList<PBFFormEntity>();
+                    if (pbf.Count > 0)
                     {
+                        var _pidfEntity = _repository.GetAll().Where(x => x.Pidfid == pidfId).FirstOrDefault();
                         //PBF Entity Mapping
                         data.MasterBusinessUnitEntities = _businessUnitService.GetAll().Result.Where(xx => xx.IsActive).ToList();
-                       
+                        //pidfPbfRnDEntity.MasterStrengthEntities = _productStrengthService.GetAll().Result.Where(x => x.Pidfid == pidfId).ToList();
+                        data.MasterStrengthEntities = _productStrengthService.GetAll().Result.Where(x => x.Pidfid == pidfId).ToList();
+                        //data.pidfPbfRndEntity = pidfPbfRnDEntity;
                         data.BusinessUnitId = buid;
+                        //data.StrengthId = strengthid;
                         data.Pidfid = pidfId;
-                        foreach (var item in pidf)
+                        foreach (var item in pbf)
                         {
                             data.Pidfpbfid = item.Pidfpbfid;
-                            data.ProductTypeId = item.ProductTypeId;
-                            data.BusinessUnitId = buid;
-                            data.ProjectName = item.ProjectName;
-                            data.Market = item.Market;
-                            data.BusinessRelationable = item.BusinessRelationable;
-                            data.BerequirementId = item.BerequirementId;
-                            data.NumberOfApprovedAnda = item.NumberOfApprovedAnda;
-                            data.ProductTypeId = item.ProductTypeId;
-                            data.PlantId = item.PlantId;
-                            data.WorkflowId = item.WorkflowId;
-                            data.DosageId = item.DosageId;
-                            data.PatentStatus = item.PatentStatus;
-                            data.SponsorBusinessPartner = item.SponsorBusinessPartner;
-                            data.FormRnDdivisionId = item.FormRnDdivisionId;
-                            data.ProjectInitiationDate = item.ProjectInitiationDate;
-                            data.RnDhead = item.RnDhead;
-                            data.ProjectManager = item.ProjectManager;
-                            //  data.Dosage = item.Dosage;
-                            data.PackagingTypeId = item.PackagingTypeId;
+                            _PbfaformEntity.Pidfpbfid = item.Pidfpbfid;
+                            _PbfaformEntity.ProductTypeId = item.ProductTypeId;
+                            _PbfaformEntity.ProjectName = item.ProjectName;
+                            _PbfaformEntity.Market = item.Market;
+                            _PbfaformEntity.BusinessRelationable = item.BusinessRelationable;
+                            _PbfaformEntity.BerequirementId = item.BerequirementId;
+                            _PbfaformEntity.NumberOfApprovedAnda = item.NumberOfApprovedAnda;
+                            _PbfaformEntity.ProductTypeId = item.ProductTypeId;
+                            _PbfaformEntity.PlantId = item.PlantId;
+                            _PbfaformEntity.WorkflowId = item.WorkflowId;
+                            _PbfaformEntity.DosageId = item.DosageId;
+                            _PbfaformEntity.PatentStatus = item.PatentStatus;
+                            _PbfaformEntity.SponsorBusinessPartner = item.SponsorBusinessPartner;
+                            _PbfaformEntity.FormRnDdivisionId = item.FormRnDdivisionId;
+                            _PbfaformEntity.ProjectInitiationDate = item.ProjectInitiationDate;
+                            _PbfaformEntity.RnDhead = item.RnDhead;
+                            _PbfaformEntity.ProjectManager = item.ProjectManager;
+                            _PbfaformEntity.DosageFormulationDetail = item.DosageFormulationDetail;
+                            _PbfaformEntity.PackagingTypeId = item.PackagingTypeId;
+                            _PbfaformEntity.BrandName = _pidfEntity.BrandName;
+                            _PbfaformEntity.RFDIndication = _pidfEntity.Rfdindication;
+                            _PbfaformEntity.RFDApplicant = _pidfEntity.Rfdapplicant;
+                            _PbfaformEntity.RFDCountryId = _pidfEntity.RfdcountryId;
                         }
-
+                        data.PbfFormEntities = _PbfaformEntity;
 
                         //data.PidfPbfAnalyticals = _pidfPbfanalyticalEntity;
                         //data.PidfPbfClinicals = _pidfPbfclinicalEntity;
@@ -765,11 +753,9 @@ namespace EmcureNPD.Business.Core.Implementation
                  
                 }
             }
-            data.MasterBusinessUnitEntities = _businessUnitService.GetAll().Result.Where(xx => xx.IsActive).ToList();
-            data.MasterStrengthEntities = _productStrengthService.GetAll().Result.Where(x => x.Pidfid == pidfId).ToList();
             return data;
 
-        }      
+        }
 
         public async Task<DBOperation> AddUpdatePBFClinicalDetails(PIDFPBFClinicalFormEntity pbfEntity)
         {
@@ -846,9 +832,10 @@ namespace EmcureNPD.Business.Core.Implementation
 
                     return DBOperation.Success;
                 }
-                else {
+                else
+                {
                     return DBOperation.Error;
-                }                
+                }
             }
             catch (Exception ex)
             {
@@ -856,7 +843,7 @@ namespace EmcureNPD.Business.Core.Implementation
                 return DBOperation.Error;
             }
         }
-        
+
         private async Task<bool> SaveChildClinicalDetails(long pbfgeneralid, int loggedInUserId, PidfPbfClinicalEntity clinicalEntites)
         {
             try
@@ -985,9 +972,9 @@ namespace EmcureNPD.Business.Core.Implementation
                 return false;
             }
         }
-      
 
-       
+
+
 
         public async Task<PIDFPBFClinicalFormEntity> GetPbfClinicalFormDetails(long pidfId, int buid, long? strengthid)
         {
@@ -1017,8 +1004,8 @@ namespace EmcureNPD.Business.Core.Implementation
 
             var dbresult = await _pbfRepository.GetDataSetBySP("stp_npd_GetPbfData_Clinical", System.Data.CommandType.StoredProcedure, osqlParameter);
 
-            dynamic pbf = new ExpandoObject();           
-            dynamic General = new ExpandoObject();           
+            dynamic pbf = new ExpandoObject();
+            dynamic General = new ExpandoObject();
             dynamic clinicalpilotbiofasting = new ExpandoObject();
             dynamic clinicalpilotbiofed = new ExpandoObject();
             dynamic clinicalpivotalbiofasting = new ExpandoObject();
@@ -1068,7 +1055,7 @@ namespace EmcureNPD.Business.Core.Implementation
                             _PbfaformEntity.RFDApplicant = _pidfEntity.Rfdapplicant;
                             _PbfaformEntity.RFDCountryId = _pidfEntity.RfdcountryId;
 
-                            
+
 
 
                         }
@@ -1328,7 +1315,7 @@ namespace EmcureNPD.Business.Core.Implementation
                     //objPIDFGeneralupdate.ModifyBy = loggedInUserId;
                     //objPIDFGeneralupdate.ModifyDate = DateTime.Now;
                     _pidfPbfGeneralRepository.UpdateAsync(objPIDFGeneralupdate);
-                    
+
                     await _unitOfWork.SaveChangesAsync();
                     pbfgeneralid = objPIDFGeneralupdate.PbfgeneralId;
 
