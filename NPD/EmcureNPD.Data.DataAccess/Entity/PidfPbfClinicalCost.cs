@@ -8,7 +8,7 @@ namespace EmcureNPD.Data.DataAccess.Entity
     public partial class PidfPbfClinicalCost
     {
         public long PbfclinicalCostId { get; set; }
-        public long Pbfgenerald { get; set; }
+        public long Pbfgeneralld { get; set; }
         public long StrengthId { get; set; }
         public double? TotalPilotFastingCost { get; set; }
         public double? TotalPilotFedcost { get; set; }
@@ -18,6 +18,7 @@ namespace EmcureNPD.Data.DataAccess.Entity
         public DateTime CreatedDate { get; set; }
         public int CreatedBy { get; set; }
 
+        public virtual PidfPbfGeneral PbfgeneralldNavigation { get; set; }
         public virtual PidfproductStrength Strength { get; set; }
     }
 }

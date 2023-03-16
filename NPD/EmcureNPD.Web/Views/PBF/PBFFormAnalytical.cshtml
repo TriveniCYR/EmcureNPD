@@ -1,29 +1,96 @@
 ﻿@using Microsoft.AspNetCore.Http
 @using EmcureNPD.Web.Controllers
 @using Microsoft.AspNetCore.Mvc.Localization
-@using EmcureNPD.Utility.Utility;
-@using EmcureNPD.Utility.Enums
 @inject IHttpContextAccessor HttpContextAccessor
-@inject Microsoft.Extensions.Localization.IStringLocalizer<EmcureNPD.Resource.Master> MasterLocalizer
+@inject Microsoft.Extensions.Localization.IStringLocalizer<MastersController> MasterLocalizer
 @inject Microsoft.Extensions.Localization.IStringLocalizer<EmcureNPD.Resource.Shared> SharedLocalizer
+@using EmcureNPD.Utility.Utility
+@using EmcureNPD.Utility.Enums
+@using EmcureNPD.Business.Models
 @using Microsoft.Extensions.Configuration
 @inject IConfiguration Configuration
+
 @model EmcureNPD.Business.Models.PidfPbfFormEntity
 @{
-    ViewData["Title"] = "PBFAnaLytical";
     string jsVersion = @Configuration.GetSection("StaticJS")["version"];
+
+    var _StrengthId = (Context.Request.Query.ContainsKey("strengthId")) ? Convert.ToString(Context.Request.Query["strengthId"]) : ViewBag.DefaultStrengthId;
+    long nval; var EncQueryStrengthId = "" ; var QueryStrengthId = "";
+    if (!long.TryParse(_StrengthId, out nval))
+    {
+        QueryStrengthId = UtilityHelper.Decreypt(_StrengthId);
+        EncQueryStrengthId = _StrengthId;
+    }
+    else
+    {
+        QueryStrengthId = _StrengthId;
+        EncQueryStrengthId = UtilityHelper.Encrypt(_StrengthId);
+    }
+
 }
 
+<div id="SavePIDFModel">
+    <form id="fpbfForm_@Model.BusinessUnitId" class="" asp-action="PBFAnalytical" asp-controller="PBF" method="post">
+        <input type="hidden" asp-for="Pidfid" />
+        <input type="hidden" id="encPidfid" value="@UtilityHelper.Encrypt(@Model.Pidfid.ToString())" />
+        <input type="hidden" asp-for="Pidfpbfid" />
+        <input type="hidden" asp-for="BusinessUnitId" />
+        <input type="hidden" asp-for="SaveSubmitType" />
+        <div class="tab-content" id="tabList">
 
+              <input type="hidden" asp-for="PidfPbfAnalyticals.PIDFID" />
+        <input type="hidden" asp-for="PidfPbfAnalyticals.PBFAnalyticalID" />
+        <input id="hdnBusinessUnitId" type="hidden" asp-for="PidfPbfAnalyticals.BusinessUnitId" />
+        <input id="hdnStrengthId" type="hidden" asp-for="PidfPbfAnalyticals.StrengthId" />
+        <input type="hidden" asp-for="PidfPbfAnalyticals.TestLicenseAvailability"/>
+
+            @*-------Start--partial View Content----*@
+            <div class="card-body" style="background-color:white">
+               @{
+                await Html.RenderPartialAsync("~/Views/PBF/_PBFPartial.cshtml", Model.PbfClinicalEntities);
+            }
+
+            </div>
+            @*--------End-partial View Content----*@
+            <div class="card" style="background-color:white;">
+                <div class="card-body">
+                    <div class="row ">
+                        <div class="col col-lg-2">
+                            @Html.LabelFor(model => model.BusinessUnitId, "Business Unit", new { @class = "control-label" })
+                            <lable id="valmsgBusinessUnitId" class="text-danger"></lable>
+                        </div>
+                        <div class="col-md-9 form-group required">
+                            <ul class="nav nav-pills" id="businessUnitTabs">
+                                @if (Model.MasterBusinessUnitEntities.Count() > 0)
+                                {
+                                    int k = 0;
+                                    @foreach (var businessUnit in Model.MasterBusinessUnitEntities)
+                                    {
+                                        <li class="nav-item mr-2">
+                                            <a class="btn btn-outline-primary" href="#tab_@businessUnit.BusinessUnitName" onClick="BUtabClick('@UtilityHelper.Encrypt(businessUnit.BusinessUnitId.ToString())','@UtilityHelper.Encrypt(Model.Pidfid.ToString())');" id="BUtab_@businessUnit.BusinessUnitId">@businessUnit.BusinessUnitName</a>
+                                        </li>
+                                        k = k + 1;
+                                    }
+                                }
+                            </ul>
+                        </div>
+                    </div>
+                    <br />
+                    <div class="row ">
+                        <div class="col col-lg-2">
+                            @Html.LabelFor(model => model.BusinessUnitId, "Department", new { @class = "control-label" })
+                            <lable id="valmsgBusinessUnitId" class="text-danger"></lable>
+                        </div>
+                       
+                        
+
+                       @* <div id="Analytical" class="tabcontent">*@
+                           <div>
+                           
 <div class="card" style="width:100%">
     <div class="card-body" style="background-color:white">
         @*<form asp-action="PBFAnalyticalForm" asp-controller="PBF" enctype="multipart/form-data" method="post">*@
-        <input type="hidden" asp-for="PidfPbfAnalyticals.PIDFID" />
-        <input type="hidden" asp-for="PidfPbfAnalyticals.PBFAnalyticalID" />
-        <input type="hidden" asp-for="PidfPbfAnalyticals.BusinessUnitId" />
-        <input type="hidden" asp-for="PidfPbfAnalyticals.StrengthId" />
-        <input type="hidden" asp-for="PidfPbfAnalyticals.TestLicenseAvailability"/>
-
+      
         <div class="card-header">
             <h5 class="mb-0"><b>General</b></h5>
         </div>
@@ -33,28 +100,28 @@
 
                 <div class="col-md-3">
                     <div class="form-group required">
-                        @Html.LabelFor(model => model.PidfPbfAnalyticals.ProjectName,@MasterLocalizer["ProjectName"], new { @class = "control-label" })
-                        @Html.TextBoxFor(model => model.PidfPbfAnalyticals.ProjectName, new {@readonly = "readonly", @class = "form-control", @placeholder = @MasterLocalizer["ProjectName"],@required="required" })
+                        @Html.LabelFor(model => model.PidfPbfAnalyticals.ProjectName,@MasterLocalizer["ProjectName"], new { @class = "control-label" })<span class="text-danger">*</span>
+                        @Html.TextBoxFor(model => model.PidfPbfAnalyticals.ProjectName, new {@readonly = "readonly", @class = "form-control", @placeholder = @MasterLocalizer["ProjectName"] })
                     </div>
                 </div>
 
                 <div class="col-md-3">
                     <div class="form-group">
-                        <label class="control-label">Strength</label>
+                        <label class="control-label">Strength</label><span class="text-danger">*</span>
                         <div style="display: -webkit-inline-box;" id="strengthlblAnalytical">
                         </div>
                     </div>
                 </div>
                 <div class="col-md-3">
                     <div class="form-group required">
-                        @Html.LabelFor(model => model.PidfPbfAnalyticals.SAPProjectProjectCode,"SAP Code / Project Code", new { @class = "control-label" })
-                        @Html.TextBoxFor(model => model.PidfPbfAnalyticals.SAPProjectProjectCode, new {@readonly = "readonly", @class = "form-control", @placeholder = "SAP Code / Project Code" ,@required="required"})
+                        @Html.LabelFor(model => model.PidfPbfAnalyticals.SAPProjectProjectCode,"SAP Code / Project Code", new { @class = "control-label" })<span class="text-danger">*</span>
+                        @Html.TextBoxFor(model => model.PidfPbfAnalyticals.SAPProjectProjectCode, new {@readonly = "readonly", @class = "form-control", @placeholder = "SAP Code / Project Code" })
                     </div>
                 </div>
                 <div class="col-md-3">
                     <div class="form-group required">
-                        @Html.LabelFor(model => model.PidfPbfAnalyticals.ImprintingEmbossingCodes,"Imprinting Embossing Codes", new { @class = "control-label" })
-                        @Html.TextBoxFor(model => model.PidfPbfAnalyticals.ImprintingEmbossingCodes, new {@readonly = "readonly", @class = "form-control", @placeholder = "Imprinting Embossing Codes",@required="required" })
+                        @Html.LabelFor(model => model.PidfPbfAnalyticals.ImprintingEmbossingCodes,"Imprinting Embossing Codes", new { @class = "control-label" })<span class="text-danger">*</span>
+                        @Html.TextBoxFor(model => model.PidfPbfAnalyticals.ImprintingEmbossingCodes, new {@readonly = "readonly", @class = "form-control", @placeholder = "Imprinting Embossing Codes" })
                     </div>
                 </div>
             </div>
@@ -63,26 +130,26 @@
 
                 <div class="col-md-3">
                     <div class="form-group required">
-                        @Html.LabelFor(model => model.PidfPbfAnalyticals.TotalExpense,"Total Expenses", new { @class = "control-label" })
-                        @Html.TextBoxFor(model => model.PidfPbfAnalyticals.TotalExpense, new { @class = "form-control", @placeholder = "Total Expenses",@required="required" })
+                        @Html.LabelFor(model => model.PidfPbfAnalyticals.TotalExpense,"Total Expenses", new { @class = "control-label" })<span class="text-danger">*</span>
+                        @Html.TextBoxFor(model => model.PidfPbfAnalyticals.TotalExpense, new { @class = "form-control", @placeholder = "Total Expenses" })
                     </div>
                 </div>
 
                 <div class="col-md-3">
                     <div class="form-group required">
-                        @Html.LabelFor(model => model.PidfPbfAnalyticals.ProjectComplexity,"Project Complexity", new { @class = "control-label" })
-                        @Html.TextBoxFor(model => model.PidfPbfAnalyticals.ProjectComplexity, new { @class = "form-control", @placeholder = "Project Complexity" ,@required="required"})
+                        @Html.LabelFor(model => model.PidfPbfAnalyticals.ProjectComplexity,"Project Complexity", new { @class = "control-label" })<span class="text-danger">*</span>
+                        @Html.TextBoxFor(model => model.PidfPbfAnalyticals.ProjectComplexity, new { @class = "form-control", @placeholder = "Project Complexity" })
                     </div>
                 </div>
                 <div class="col-md-3">
                     <div class="form-group required">
-                        @Html.LabelFor(model => model.PidfPbfAnalyticals.ProductTypeId, "Product Type", new { @class = "control-label" })
-                        <select id="AnalyticalProductTypeId" name="PidfPbfAnalyticals.ProductTypeId" class="form-control readOnlyUpdate" required></select>
+                        @Html.LabelFor(model => model.PidfPbfAnalyticals.ProductTypeId, "Product Type", new { @class = "control-label" })<span class="text-danger">*</span>
+                        <select id="AnalyticalProductTypeId" name="PidfPbfAnalyticals.ProductTypeId" class="form-control readOnlyUpdate" ></select>
                     </div>
                 </div>
                 <div class="col-md-3">
                     <div class="form-group required">
-                        <label class="control-label">Test Licence Availability</label>
+                        <label class="control-label">Test Licence Availability</label><span class="text-danger">*</span>
 
                         <div stylle="display: inline-block;" id="Analyticallicence">
                             @* <input type="checkbox" value="AHD" name=TestLicenseAvailability>AHD
@@ -97,21 +164,21 @@
 
                 <div class="col-md-3">
                     <div class="form-group required">
-                        <label class="control-label">Budget and Timeline Submission Date</label>
-                        @Html.TextBoxFor(@modal=> modal.PidfPbfAnalyticals.BudgetTimelineSubmissionDate,"{0:yyyy-MM-dd}",new{@type="date",@class="form-control readOnlyUpdate",@required="required"})
+                        <label class="control-label">Budget and Timeline Submission Date</label><span class="text-danger">*</span>
+                        @Html.TextBoxFor(@modal=> modal.PidfPbfAnalyticals.BudgetTimelineSubmissionDate,"{0:yyyy-MM-dd}",new{@type="date",@class="form-control readOnlyUpdate"})
                     </div>
                 </div>
 
                 <div class="col-md-3">
                     <div class="form-group required">
-                        @Html.LabelFor(model => model.PidfPbfAnalyticals.FormulationId, "Formulation GL", new { @class = "control-label" })
-                        <select id="AnalyticalFormulationId" name="PidfPbfAnalyticals.FormulationId" class="form-control readOnlyUpdate" required></select>
+                        @Html.LabelFor(model => model.PidfPbfAnalyticals.FormulationId, "Formulation GL", new { @class = "control-label" })<span class="text-danger">*</span>
+                        <select id="AnalyticalFormulationId" name="PidfPbfAnalyticals.FormulationId" class="form-control readOnlyUpdate" ></select>
                     </div>
                 </div>
                 <div class="col-md-3">
                     <div class="form-group required">
-                        @Html.LabelFor(model => model.PidfPbfAnalyticals.AnalyticalId, "Analytical GL", new { @class = "control-label" })
-                        <select id="AnalyticalAnalyticalId" name="PidfPbfAnalyticals.AnalyticalId" class="form-control readOnlyUpdate" required></select>
+                        @Html.LabelFor(model => model.PidfPbfAnalyticals.AnalyticalId, "Analytical GL", new { @class = "control-label" })<span class="text-danger">*</span>
+                        <select id="AnalyticalAnalyticalId" name="PidfPbfAnalyticals.AnalyticalId" class="form-control readOnlyUpdate" ></select>
                     </div>
                 </div>
 
@@ -119,31 +186,35 @@
             <br />
             <div class="row border m-2">
                 <div class="col-md-3">
-					@Html.LabelFor(model => model.PidfPbfAnalyticals.StrengthId, "Strength", new { @class = "control-label" })
+					@Html.LabelFor(model => model.PidfPbfAnalyticals.StrengthId, "Strength", new { @class = "control-label" })<span class="text-danger">*</span>
                     @Html.ValidationMessageFor(model => model.PidfPbfAnalyticals.StrengthId,"", new { @class = "text-danger" })
 
                 </div>
                 <div class="col-md-9 pl-lg-5">
-                    <div class="form-group required">
-                       
-                        <ul class="nav nav-pills" id="StrengthTabsAnalytical">
+                      @*-----------------Strength---------------------*@
 
-                            @*@if (@Model !=null && @Model.ProductStrength != null)
-                            {
-                            @if (@Model.ProductStrength.Count > 0)
-                            {
+            <div class="card card-maroon card-outline card-outline-tabs m-0">
+                <div class="card-header p-0 border-bottom-0">
+                    @if (Model.MasterStrengthEntities.Count() > 0 || Model.MasterStrengthEntities != null)
+                        {
+                                <input type="hidden" id="PIDFProductStrengthId" value="@Model.MasterStrengthEntities[0].PidfproductStrengthId" />
+                        }
+                            <ul class="nav nav-tabs row m-0 text-center" id="ProductStrengthTabs">
+                        @if (Model.MasterStrengthEntities.Count() > 0 || Model.MasterStrengthEntities != null)
+                        {
                             int k = 0;
-                            @foreach (var strenght in @Model.ProductStrength)
+                            @foreach (var _strength in Model.MasterStrengthEntities)
                             {
-                            <li class="nav-item mr-2">
-                            <a class="btn btn-outline-primary" href="@strenght.ProductStrengthId" id="tab_@strenght.ProductStrengthId"> @strenght.ProductStrengthName</a>
-                            </li>
-                            k = k + 1;
+                            <li class="nav-item col-6 p-0">
+                                    <a class="nav-link" href="#tab_@_strength.Strength" onClick="StrengthtabClick('@UtilityHelper.Encrypt(_strength.PidfproductStrengthId.ToString())','@Model.Pidfid');" id="Strengthtab_@_strength.PidfproductStrengthId">@_strength.Strength</a>
+                                </li>
+                                k = k + 1;
                             }
-                            }
-                            }*@
-                        </ul>
-                    </div>
+                        }
+                    </ul>
+                </div>
+            </div>
+            @*-----------------End- of-Strength---------------------*@
                 </div>
             </div>
             <br />
@@ -171,7 +242,7 @@
                     <tbody id="PrototypeTableBody">
                         @if (Model.PidfPbfAnalyticals != null)
                         {
-                            if (Model.PidfPbfAnalyticals.PidfPbfAnalyticalPrototypes != null && Model.PidfPbfAnalyticals.PidfPbfAnalyticalPrototypes.Count() > 0)
+                            if (Model.PidfPbfAnalyticals.PidfPbfAnalyticalPrototypes != null)
                             {
                                 for (int j = 0; j < Model.PidfPbfAnalyticals.PidfPbfAnalyticalPrototypes.Count(); j++)
                                 {
@@ -179,21 +250,21 @@
                                         <td>
                                             <div class="col-md">
                                                 <div class="form-group required">
-                                                    <select id="AnalyticalPrototypeTestTypeId" name="PidfPbfAnalyticals.PidfPbfAnalyticalPrototypes.TestTypeId" class="form-control readOnlyUpdate" required></select>
+                                                    <select id="AnalyticalPrototypeTestTypeId" name="PidfPbfAnalyticals.PidfPbfAnalyticalPrototypes.TestTypeId" class="form-control readOnlyUpdate" ></select>
 
                                                 </div>
                                             </div>
                                         </td>
                                         <td>
                                             <div class="col-md">
-                                                @Html.EditorFor(model => model.PidfPbfAnalyticals.PidfPbfAnalyticalPrototypes[j].Numberoftests, new { htmlAttributes = new { @autocomplete = "off", @class = "form-control", @placeholder = "No Of Tests",@required="required" } })
+                                                @Html.EditorFor(model => model.PidfPbfAnalyticals.PidfPbfAnalyticalPrototypes[j].Numberoftests, new { htmlAttributes = new { @autocomplete = "off", @class = "form-control", @placeholder = "No Of Tests" } })
                                                 @Html.ValidationMessageFor(model => model.PidfPbfAnalyticals.PidfPbfAnalyticalPrototypes[j].Numberoftests, "", new { @class = "text-danger" })
                                             </div>
                                         </td>
                                         <td>
                                             <div class="col-md">
                                                 <div class="form-group required">
-                                                    @Html.EditorFor(model => model.PidfPbfAnalyticals.PidfPbfAnalyticalPrototypes[j].PrototypeDevelopment, new { htmlAttributes = new { @autocomplete = "off", @class = "form-control", @placeholder = "Prototype Development",@required="required" } })
+                                                    @Html.EditorFor(model => model.PidfPbfAnalyticals.PidfPbfAnalyticalPrototypes[j].PrototypeDevelopment, new { htmlAttributes = new { @autocomplete = "off", @class = "form-control", @placeholder = "Prototype Development" } })
                                                     @Html.ValidationMessageFor(model => model.PidfPbfAnalyticals.PidfPbfAnalyticalPrototypes[j].PrototypeDevelopment, "", new { @class = "text-danger" })
                                                 </div>
                                             </div>
@@ -201,7 +272,7 @@
                                         <td>
                                             <div class="col-md">
                                                 <div class="form-group required">
-                                                    @Html.EditorFor(model => model.PidfPbfAnalyticals.PidfPbfAnalyticalPrototypes[j].Cost, new { htmlAttributes = new { @autocomplete = "off", @class = "form-control", @placeholder = "Cost" ,@required="required"} })
+                                                    @Html.EditorFor(model => model.PidfPbfAnalyticals.PidfPbfAnalyticalPrototypes[j].Cost, new { htmlAttributes = new { @autocomplete = "off", @class = "form-control", @placeholder = "Cost" } })
                                                     @Html.ValidationMessageFor(model => model.PidfPbfAnalyticals.PidfPbfAnalyticalPrototypes[j].Cost, "", new { @class = "text-danger" })
                                                 </div>
                                             </div>
@@ -209,7 +280,7 @@
                                         <td>
                                             <div class="col-md">
                                                 <div class="form-group required">
-                                                    @Html.EditorFor(model => model.PidfPbfAnalyticals.PidfPbfAnalyticalPrototypes[j].PrototypeCost, new { htmlAttributes = new { @autocomplete = "off", @class = "form-control analyticalcalculatecost", @placeholder = "Prototype Cost" ,@required="required"} })
+                                                    @Html.EditorFor(model => model.PidfPbfAnalyticals.PidfPbfAnalyticalPrototypes[j].PrototypeCost, new { htmlAttributes = new { @autocomplete = "off", @class = "form-control analyticalcalculatecost", @placeholder = "Prototype Cost" } })
                                                     @Html.ValidationMessageFor(model => model.PidfPbfAnalyticals.PidfPbfAnalyticalPrototypes[j].PrototypeCost, "", new { @class = "text-danger" })
                                                 </div>
                                             </div>
@@ -227,7 +298,7 @@
                                     </tr>
                                 }
                             }
-                        }
+                       
                         else
                         {
                             int j = 0;
@@ -235,21 +306,21 @@
                                 <td>
                                     <div class="col-md">
                                         <div class="form-group required">
-                                            <select id="AnalyticalPrototypeTestTypeId" name="PidfPbfAnalyticals.PidfPbfAnalyticalPrototypes[@j].TestTypeId" class="form-control readOnlyUpdate" required></select>
+                                            <select id="AnalyticalPrototypeTestTypeId" name="PidfPbfAnalyticals.PidfPbfAnalyticalPrototypes[@j].TestTypeId" class="form-control readOnlyUpdate" ></select>
 
                                         </div>
                                     </div>
                                 </td>
                                 <td>
                                     <div class="col-md">
-                                        @Html.EditorFor(model => model.PidfPbfAnalyticals.PidfPbfAnalyticalPrototypes[j].Numberoftests, new { htmlAttributes = new { @autocomplete = "off", @class = "form-control", @placeholder = "No Of Tests" ,@required="required"} })
+                                        @Html.EditorFor(model => model.PidfPbfAnalyticals.PidfPbfAnalyticalPrototypes[j].Numberoftests, new { htmlAttributes = new { @autocomplete = "off", @class = "form-control", @placeholder = "No Of Tests" } })
                                         @Html.ValidationMessageFor(model => model.PidfPbfAnalyticals.PidfPbfAnalyticalPrototypes[j].Numberoftests, "", new { @class = "text-danger" })
                                     </div>
                                 </td>
                                 <td>
                                     <div class="col-md">
                                         <div class="form-group required">
-                                            @Html.EditorFor(model => model.PidfPbfAnalyticals.PidfPbfAnalyticalPrototypes[j].PrototypeDevelopment, new { htmlAttributes = new { @autocomplete = "off", @class = "form-control", @placeholder = "Prototype Development" ,@required="required"} })
+                                            @Html.EditorFor(model => model.PidfPbfAnalyticals.PidfPbfAnalyticalPrototypes[j].PrototypeDevelopment, new { htmlAttributes = new { @autocomplete = "off", @class = "form-control", @placeholder = "Prototype Development" } })
                                             @Html.ValidationMessageFor(model => model.PidfPbfAnalyticals.PidfPbfAnalyticalPrototypes[j].PrototypeDevelopment, "", new { @class = "text-danger" })
                                         </div>
                                     </div>
@@ -257,7 +328,7 @@
                                 <td>
                                     <div class="col-md">
                                         <div class="form-group required">
-                                            @Html.EditorFor(model => model.PidfPbfAnalyticals.PidfPbfAnalyticalPrototypes[j].Cost, new { htmlAttributes = new { @autocomplete = "off", @class = "form-control", @placeholder = "Cost" ,@required="required"} })
+                                            @Html.EditorFor(model => model.PidfPbfAnalyticals.PidfPbfAnalyticalPrototypes[j].Cost, new { htmlAttributes = new { @autocomplete = "off", @class = "form-control", @placeholder = "Cost" } })
                                             @Html.ValidationMessageFor(model => model.PidfPbfAnalyticals.PidfPbfAnalyticalPrototypes[j].Cost, "", new { @class = "text-danger" })
                                         </div>
                                     </div>
@@ -265,7 +336,7 @@
                                 <td>
                                     <div class="col-md">
                                         <div class="form-group required">
-                                            @Html.EditorFor(model => model.PidfPbfAnalyticals.PidfPbfAnalyticalPrototypes[j].PrototypeCost, new { htmlAttributes = new { @autocomplete = "off", @class = "form-control analyticalcalculatecost", @placeholder = "Prototype Cost" ,@required="required"} })
+                                            @Html.EditorFor(model => model.PidfPbfAnalyticals.PidfPbfAnalyticalPrototypes[j].PrototypeCost, new { htmlAttributes = new { @autocomplete = "off", @class = "form-control analyticalcalculatecost", @placeholder = "Prototype Cost" } })
                                             @Html.ValidationMessageFor(model => model.PidfPbfAnalyticals.PidfPbfAnalyticalPrototypes[j].PrototypeCost, "", new { @class = "text-danger" })
                                         </div>
                                     </div>
@@ -283,6 +354,7 @@
                                 </td>
                             </tr>
                         }
+                         }
                     </tbody>
 
                 </table>
@@ -309,7 +381,7 @@
                     <tbody id="ExhibitTableBody">
                         @if (Model.PidfPbfAnalyticals != null)
                         {
-                            if (Model.PidfPbfAnalyticals.PidfPbfAnalyticalExhibits != null && Model.PidfPbfAnalyticals.PidfPbfAnalyticalExhibits.Count() > 0)
+                            if (Model.PidfPbfAnalyticals.PidfPbfAnalyticalExhibits != null)
                             {
                                 for (int j = 0; j < Model.PidfPbfAnalyticals.PidfPbfAnalyticalExhibits.Count(); j++)
                                 {
@@ -324,14 +396,14 @@
                                         </td>
                                         <td>
                                             <div class="col-md">
-                                                @Html.EditorFor(model => model.PidfPbfAnalyticals.PidfPbfAnalyticalExhibits[j].Numberoftests, new { htmlAttributes = new { @autocomplete = "off", @class = "form-control", @placeholder = "No Of Tests",@required="required" } })
+                                                @Html.EditorFor(model => model.PidfPbfAnalyticals.PidfPbfAnalyticalExhibits[j].Numberoftests, new { htmlAttributes = new { @autocomplete = "off", @class = "form-control", @placeholder = "No Of Tests" } })
                                                 @Html.ValidationMessageFor(model => model.PidfPbfAnalyticals.PidfPbfAnalyticalExhibits[j].Numberoftests, "", new { @class = "text-danger" })
                                             </div>
                                         </td>
                                         <td>
                                             <div class="col-md">
                                                 <div class="form-group required">
-                                                    @Html.EditorFor(model => model.PidfPbfAnalyticals.PidfPbfAnalyticalExhibits[j].PrototypeDevelopment, new { htmlAttributes = new { @autocomplete = "off", @class = "form-control", @placeholder = "Prototype Development" ,@required="required"} })
+                                                    @Html.EditorFor(model => model.PidfPbfAnalyticals.PidfPbfAnalyticalExhibits[j].PrototypeDevelopment, new { htmlAttributes = new { @autocomplete = "off", @class = "form-control", @placeholder = "Prototype Development" } })
                                                     @Html.ValidationMessageFor(model => model.PidfPbfAnalyticals.PidfPbfAnalyticalExhibits[j].PrototypeDevelopment, "", new { @class = "text-danger" })
                                                 </div>
                                             </div>
@@ -339,7 +411,7 @@
                                         <td>
                                             <div class="col-md">
                                                 <div class="form-group required">
-                                                    @Html.EditorFor(model => model.PidfPbfAnalyticals.PidfPbfAnalyticalExhibits[j].Cost, new { htmlAttributes = new { @autocomplete = "off", @class = "form-control", @placeholder = "Cost" ,@required="required"} })
+                                                    @Html.EditorFor(model => model.PidfPbfAnalyticals.PidfPbfAnalyticalExhibits[j].Cost, new { htmlAttributes = new { @autocomplete = "off", @class = "form-control", @placeholder = "Cost" } })
                                                     @Html.ValidationMessageFor(model => model.PidfPbfAnalyticals.PidfPbfAnalyticalExhibits[j].Cost, "", new { @class = "text-danger" })
                                                 </div>
                                             </div>
@@ -347,7 +419,7 @@
                                         <td>
                                             <div class="col-md">
                                                 <div class="form-group required">
-                                                    @Html.EditorFor(model => model.PidfPbfAnalyticals.PidfPbfAnalyticalExhibits[j].PrototypeCost, new { htmlAttributes = new { @autocomplete = "off", @class = "form-control analyticalcalculatecost", @placeholder = "Prototype Cost" ,@required="required"} })
+                                                    @Html.EditorFor(model => model.PidfPbfAnalyticals.PidfPbfAnalyticalExhibits[j].PrototypeCost, new { htmlAttributes = new { @autocomplete = "off", @class = "form-control analyticalcalculatecost", @placeholder = "Prototype Cost" } })
                                                     @Html.ValidationMessageFor(model => model.PidfPbfAnalyticals.PidfPbfAnalyticalExhibits[j].PrototypeCost, "", new { @class = "text-danger" })
                                                 </div>
                                             </div>
@@ -366,7 +438,7 @@
                                     </tr>
                                 }
                             }
-                        }
+                        
                         else
                         {
                             int j = 0;
@@ -374,21 +446,21 @@
                                 <td>
                                     <div class="col-md">
                                         <div class="form-group required">
-                                            <select id="AnalyticalExhibitTestTypeId" name="PidfPbfAnalyticals.PidfPbfAnalyticalExhibits[@j].TestTypeId" class="form-control readOnlyUpdate" required></select>
+                                            <select id="AnalyticalExhibitTestTypeId" name="PidfPbfAnalyticals.PidfPbfAnalyticalExhibits[@j].TestTypeId" class="form-control readOnlyUpdate" ></select>
 
                                         </div>
                                     </div>
                                 </td>
                                 <td>
                                     <div class="col-md">
-                                        @Html.EditorFor(model => model.PidfPbfAnalyticals.PidfPbfAnalyticalExhibits[j].Numberoftests, new { htmlAttributes = new { @autocomplete = "off", @class = "form-control", @placeholder = "No Of Tests" ,@required="required"} })
+                                        @Html.EditorFor(model => model.PidfPbfAnalyticals.PidfPbfAnalyticalExhibits[j].Numberoftests, new { htmlAttributes = new { @autocomplete = "off", @class = "form-control", @placeholder = "No Of Tests" } })
                                         @Html.ValidationMessageFor(model => model.PidfPbfAnalyticals.PidfPbfAnalyticalExhibits[j].Numberoftests, "", new { @class = "text-danger" })
                                     </div>
                                 </td>
                                 <td>
                                     <div class="col-md">
                                         <div class="form-group required">
-                                            @Html.EditorFor(model => model.PidfPbfAnalyticals.PidfPbfAnalyticalExhibits[j].PrototypeDevelopment, new { htmlAttributes = new { @autocomplete = "off", @class = "form-control", @placeholder = "Prototype Development" ,@required="required"} })
+                                            @Html.EditorFor(model => model.PidfPbfAnalyticals.PidfPbfAnalyticalExhibits[j].PrototypeDevelopment, new { htmlAttributes = new { @autocomplete = "off", @class = "form-control", @placeholder = "Prototype Development" } })
                                             @Html.ValidationMessageFor(model => model.PidfPbfAnalyticals.PidfPbfAnalyticalExhibits[j].PrototypeDevelopment, "", new { @class = "text-danger" })
                                         </div>
                                     </div>
@@ -396,7 +468,7 @@
                                 <td>
                                     <div class="col-md">
                                         <div class="form-group required">
-                                            @Html.EditorFor(model => model.PidfPbfAnalyticals.PidfPbfAnalyticalExhibits[j].Cost, new { htmlAttributes = new { @autocomplete = "off", @class = "form-control", @placeholder = "Cost" ,@required="required"} })
+                                            @Html.EditorFor(model => model.PidfPbfAnalyticals.PidfPbfAnalyticalExhibits[j].Cost, new { htmlAttributes = new { @autocomplete = "off", @class = "form-control", @placeholder = "Cost" } })
                                             @Html.ValidationMessageFor(model => model.PidfPbfAnalyticals.PidfPbfAnalyticalExhibits[j].Cost, "", new { @class = "text-danger" })
                                         </div>
                                     </div>
@@ -404,7 +476,7 @@
                                 <td>
                                     <div class="col-md">
                                         <div class="form-group required">
-                                            @Html.EditorFor(model => model.PidfPbfAnalyticals.PidfPbfAnalyticalExhibits[j].PrototypeCost, new { htmlAttributes = new { @autocomplete = "off", @class = "form-control analyticalcalculatecost", @placeholder = "Prototype Cost" ,@required="required"} })
+                                            @Html.EditorFor(model => model.PidfPbfAnalyticals.PidfPbfAnalyticalExhibits[j].PrototypeCost, new { htmlAttributes = new { @autocomplete = "off", @class = "form-control analyticalcalculatecost", @placeholder = "Prototype Cost" } })
                                             @Html.ValidationMessageFor(model => model.PidfPbfAnalyticals.PidfPbfAnalyticalExhibits[j].PrototypeCost, "", new { @class = "text-danger" })
                                         </div>
                                     </div>
@@ -422,6 +494,7 @@
                                 </td>
                             </tr>
                         }
+                       }
                     </tbody>
 
                 </table>
@@ -449,7 +522,7 @@
                     <tbody id="ScaleUpTableBody">
                         @if (Model.PidfPbfAnalyticals != null)
                         {
-                            if (Model.PidfPbfAnalyticals.PidfPbfAnalyticalScaleUps != null && Model.PidfPbfAnalyticals.PidfPbfAnalyticalScaleUps.Count() > 0)
+                            if (Model.PidfPbfAnalyticals.PidfPbfAnalyticalScaleUps != null)
                             {
                                 for (int j = 0; j < Model.PidfPbfAnalyticals.PidfPbfAnalyticalScaleUps.Count(); j++)
                                 {
@@ -457,21 +530,21 @@
                                         <td>
                                             <div class="col-md">
                                                 <div class="form-group required">
-                                                    <select id="AnalyticalScaleUpTestTypeId" name="PidfPbfAnalyticals.PidfPbfAnalyticalScaleUps.TestTypeId" class="form-control readOnlyUpdate" required></select>
+                                                    <select id="AnalyticalScaleUpTestTypeId" name="PidfPbfAnalyticals.PidfPbfAnalyticalScaleUps.TestTypeId" class="form-control readOnlyUpdate" ></select>
 
                                                 </div>
                                             </div>
                                         </td>
                                         <td>
                                             <div class="col-md">
-                                                @Html.EditorFor(model => model.PidfPbfAnalyticals.PidfPbfAnalyticalScaleUps[j].Numberoftests, new { htmlAttributes = new { @autocomplete = "off", @class = "form-control", @placeholder = "No Of Tests" ,@required="required"} })
+                                                @Html.EditorFor(model => model.PidfPbfAnalyticals.PidfPbfAnalyticalScaleUps[j].Numberoftests, new { htmlAttributes = new { @autocomplete = "off", @class = "form-control", @placeholder = "No Of Tests" } })
                                                 @Html.ValidationMessageFor(model => model.PidfPbfAnalyticals.PidfPbfAnalyticalScaleUps[j].Numberoftests, "", new { @class = "text-danger" })
                                             </div>
                                         </td>
                                         <td>
                                             <div class="col-md">
                                                 <div class="form-group required">
-                                                    @Html.EditorFor(model => model.PidfPbfAnalyticals.PidfPbfAnalyticalScaleUps[j].PrototypeDevelopment, new { htmlAttributes = new { @autocomplete = "off", @class = "form-control", @placeholder = "Prototype Development" ,@required="required"} })
+                                                    @Html.EditorFor(model => model.PidfPbfAnalyticals.PidfPbfAnalyticalScaleUps[j].PrototypeDevelopment, new { htmlAttributes = new { @autocomplete = "off", @class = "form-control", @placeholder = "Prototype Development" } })
                                                     @Html.ValidationMessageFor(model => model.PidfPbfAnalyticals.PidfPbfAnalyticalScaleUps[j].PrototypeDevelopment, "", new { @class = "text-danger" })
                                                 </div>
                                             </div>
@@ -479,7 +552,7 @@
                                         <td>
                                             <div class="col-md">
                                                 <div class="form-group required">
-                                                    @Html.EditorFor(model => model.PidfPbfAnalyticals.PidfPbfAnalyticalScaleUps[j].Cost, new { htmlAttributes = new { @autocomplete = "off", @class = "form-control", @placeholder = "Cost" ,@required="required"} })
+                                                    @Html.EditorFor(model => model.PidfPbfAnalyticals.PidfPbfAnalyticalScaleUps[j].Cost, new { htmlAttributes = new { @autocomplete = "off", @class = "form-control", @placeholder = "Cost" } })
                                                     @Html.ValidationMessageFor(model => model.PidfPbfAnalyticals.PidfPbfAnalyticalScaleUps[j].Cost, "", new { @class = "text-danger" })
                                                 </div>
                                             </div>
@@ -487,7 +560,7 @@
                                         <td>
                                             <div class="col-md">
                                                 <div class="form-group required">
-                                                    @Html.EditorFor(model => model.PidfPbfAnalyticals.PidfPbfAnalyticalScaleUps[j].PrototypeCost, new { htmlAttributes = new { @autocomplete = "off", @class = "form-control analyticalcalculatecost", @placeholder = "Prototype Cost" ,@required="required"} })
+                                                    @Html.EditorFor(model => model.PidfPbfAnalyticals.PidfPbfAnalyticalScaleUps[j].PrototypeCost, new { htmlAttributes = new { @autocomplete = "off", @class = "form-control analyticalcalculatecost", @placeholder = "Prototype Cost" } })
                                                     @Html.ValidationMessageFor(model => model.PidfPbfAnalyticals.PidfPbfAnalyticalScaleUps[j].PrototypeCost, "", new { @class = "text-danger" })
                                                 </div>
                                             </div>
@@ -506,7 +579,7 @@
                                     </tr>
                                 }
                             }
-                        }
+                        
                         else
                         {
                             int j = 0;
@@ -514,21 +587,21 @@
                                 <td>
                                     <div class="col-md">
                                         <div class="form-group required">
-                                            <select id="AnalyticalScaleUpTestTypeId" name="PidfPbfAnalyticals.PidfPbfAnalyticalScaleUps[@j].TestTypeId" class="form-control readOnlyUpdate" required></select>
+                                            <select id="AnalyticalScaleUpTestTypeId" name="PidfPbfAnalyticals.PidfPbfAnalyticalScaleUps[@j].TestTypeId" class="form-control readOnlyUpdate" ></select>
 
                                         </div>
                                     </div>
                                 </td>
                                 <td>
                                     <div class="col-md">
-                                        @Html.EditorFor(model => model.PidfPbfAnalyticals.PidfPbfAnalyticalScaleUps[j].Numberoftests, new { htmlAttributes = new { @autocomplete = "off", @class = "form-control", @placeholder = "No Of Tests",@required="required" } })
+                                        @Html.EditorFor(model => model.PidfPbfAnalyticals.PidfPbfAnalyticalScaleUps[j].Numberoftests, new { htmlAttributes = new { @autocomplete = "off", @class = "form-control", @placeholder = "No Of Tests" } })
                                         @Html.ValidationMessageFor(model => model.PidfPbfAnalyticals.PidfPbfAnalyticalScaleUps[j].Numberoftests, "", new { @class = "text-danger" })
                                     </div>
                                 </td>
                                 <td>
                                     <div class="col-md">
                                         <div class="form-group required">
-                                            @Html.EditorFor(model => model.PidfPbfAnalyticals.PidfPbfAnalyticalScaleUps[j].PrototypeDevelopment, new { htmlAttributes = new { @autocomplete = "off", @class = "form-control", @placeholder = "Prototype Development",@required="required" } })
+                                            @Html.EditorFor(model => model.PidfPbfAnalyticals.PidfPbfAnalyticalScaleUps[j].PrototypeDevelopment, new { htmlAttributes = new { @autocomplete = "off", @class = "form-control", @placeholder = "Prototype Development" } })
                                             @Html.ValidationMessageFor(model => model.PidfPbfAnalyticals.PidfPbfAnalyticalScaleUps[j].PrototypeDevelopment, "", new { @class = "text-danger" })
                                         </div>
                                     </div>
@@ -536,7 +609,7 @@
                                 <td>
                                     <div class="col-md">
                                         <div class="form-group required">
-                                            @Html.EditorFor(model => model.PidfPbfAnalyticals.PidfPbfAnalyticalScaleUps[j].Cost, new { htmlAttributes = new { @autocomplete = "off", @class = "form-control", @placeholder = "Cost" ,@required="required"} })
+                                            @Html.EditorFor(model => model.PidfPbfAnalyticals.PidfPbfAnalyticalScaleUps[j].Cost, new { htmlAttributes = new { @autocomplete = "off", @class = "form-control", @placeholder = "Cost" } })
                                             @Html.ValidationMessageFor(model => model.PidfPbfAnalyticals.PidfPbfAnalyticalScaleUps[j].Cost, "", new { @class = "text-danger" })
                                         </div>
                                     </div>
@@ -544,7 +617,7 @@
                                 <td>
                                     <div class="col-md">
                                         <div class="form-group required">
-                                            @Html.EditorFor(model => model.PidfPbfAnalyticals.PidfPbfAnalyticalScaleUps[j].PrototypeCost, new { htmlAttributes = new { @autocomplete = "off", @class = "form-control analyticalcalculatecost", @placeholder = "Prototype Cost" ,@required="required"} })
+                                            @Html.EditorFor(model => model.PidfPbfAnalyticals.PidfPbfAnalyticalScaleUps[j].PrototypeCost, new { htmlAttributes = new { @autocomplete = "off", @class = "form-control analyticalcalculatecost", @placeholder = "Prototype Cost" } })
                                             @Html.ValidationMessageFor(model => model.PidfPbfAnalyticals.PidfPbfAnalyticalScaleUps[j].PrototypeCost, "", new { @class = "text-danger" })
                                         </div>
                                     </div>
@@ -561,6 +634,7 @@
                                     </div>
                                 </td>
                             </tr>
+                        }
                         }
                     </tbody>
 
@@ -580,7 +654,7 @@
                 <div class="col-md-3">
                     <div class="form-group required">
                         @Html.LabelFor(model => model.PidfPbfAnalyticals.PidfPbfAnalyticalCosts.TotalAMVCost, "Total AWV Cost", new { @class = "control-label" })
-                        @Html.TextBoxFor(model => model.PidfPbfAnalyticals.PidfPbfAnalyticalCosts.TotalAMVCost, new { @class = "form-control analyticalcalculatecost", @placeholder = "Total AWV Cost" ,@required="required"})
+                        @Html.TextBoxFor(model => model.PidfPbfAnalyticals.PidfPbfAnalyticalCosts.TotalAMVCost, new { @class = "form-control analyticalcalculatecost", @placeholder = "Total AWV Cost" })
 
                     </div>
                 </div>
@@ -589,7 +663,7 @@
                     <div class="form-group required">
                         @Html.LabelFor(model => model.PidfPbfAnalyticals.PidfPbfAnalyticalCosts.Remark, "Remark", new { @class = "control-label" })
 
-                        @Html.TextAreaFor(model => model.PidfPbfAnalyticals.PidfPbfAnalyticalCosts.Remark, new { @class = "form-control analyticalcalculatecost", @placeholder = "Remark" ,@required="required"})
+                        @Html.TextAreaFor(model => model.PidfPbfAnalyticals.PidfPbfAnalyticalCosts.Remark, new { @class = "form-control analyticalcalculatecost", @placeholder = "Remark" })
                     </div>
                 </div>
             </div>
@@ -652,3 +726,89 @@
 
     </div>
 </div>
+
+                        </div>
+                      
+                        <br />
+                        @*</section>*@
+                        <div class="form-group">
+                            <button type="submit" id="btnSubmit" class="btn btn-primary operationButton" onclick="SaveClick();">@SharedLocalizer["Submit"]</button>
+                            <button type="submit" id="btnSaveAsDraft" class="btn btn-info operationButton" onClick="SaveDraftClick();">@SharedLocalizer["SaveDraft"]</button>
+                            <a id="btnCancel" class="btn btn-danger operationButton" asp-action="PIDFList" asp-controller="PIDF" asp-route-ScreenId="6">@SharedLocalizer["Cancel"]</a>
+
+                        </div>
+                    </div>
+
+                </div>
+
+            </div>
+        </div>
+    </form>
+
+</div>
+@section MyScripts {
+
+    @Html.Partial("_DataTablePartial")
+<script type="text/javascript" src="~/js/Custom/DynamicDataTable.js?v=@jsVersion"></script>
+    <script type="text/javascript" src="~/js/custom/pidf/pbfformanalytical.js?v=@jsVersion"></script>
+    @*    <script type="text/javascript" src="~/js/Custom/PBF/Analytical/PBFAnalytical.js"></script>*@
+<link rel="stylesheet" href="~/AdminLTE/plugins/select2/css/select2.min.css" />
+<script type="text/javascript" src="~/AdminLTE/plugins/select2/js/select2.min.js"></script>
+<link href="/lib/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
+<script src="/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        var tabList = [].slice.call(document.querySelectorAll("#tabs a"));
+        var tabs = $('#tabList');
+
+        tabList.forEach(function (tab) {
+            var tabTrigger = new bootstrap.Tab(tab);
+
+            tab.addEventListener("click", function (event) {
+                event.preventDefault();
+                tabTrigger.show();
+            });
+            tabs.append('<div class="tab-pane fade" id="' + tab + '">');
+
+        });
+    });
+    //#region Setup API Url
+    var PFBAPIPIDFList = "@EmcureNPD.Web.Helpers.APIURLHelper.GetPFBAPIPIDFList";
+    var GetAllPBF = "@EmcureNPD.Web.Helpers.APIURLHelper.GetPBFDropdown";
+    var GetPBFReadonlyDataByPIDFId = "@EmcureNPD.Web.Helpers.APIURLHelper.GetPBFReadonlyDataByPIDFId";
+        var QueryBusinessUnit = "@UtilityHelper.Decreypt(Convert.ToString(Context.Request.Query["bui"]))";
+        var QueryPidfid = "@UtilityHelper.Decreypt(Convert.ToString(Context.Request.Query["pidfid"]))";
+        var QuerystrengthId = "@QueryStrengthId";
+
+
+        var EncQueryBusinessUnit = "@Convert.ToString(Context.Request.Query["bui"])";
+        var EncQueryPidfid = "@Convert.ToString(Context.Request.Query["pidfid"])";
+        var EncQueryStrengthId = "@EncQueryStrengthId";
+
+        var GetActiveBusinessUnit = "@EmcureNPD.Web.Helpers.APIURLHelper.GetActiveBusinessUnit";
+      var _PBFPartialURL = "@Url.Action("PBFForm", "PIDF")";
+    // #endregion
+
+    //#region Static Messae Init
+    var EditLabel = "@SharedLocalizer["Edit"]";
+    var DeleteLabel = "@SharedLocalizer["Delete"]";
+    var ErrorMessage = "@SharedLocalizer["Error"]";
+    var RecordDelete = "@SharedLocalizer["RecordDelete"]";
+    var AddLabel = "@SharedLocalizer["Add"]";
+    var UpdateLabel = "@SharedLocalizer["Update"]";
+        @*var successCallBack = '@TempData[EmcureNPD.Web.Helpers.PIDFHelper.SuccessMessage]';
+        if (successCallBack)
+        {
+        toastr.success(successCallBack);
+        }*@
+
+        //#endregion
+</script>
+<script>
+    $('.card-header').click(function () {
+        $(this).find('i').toggleClass('fas fa-angle-double-down fas fa-angle-double-up');
+    });
+</script>
+
+
+}

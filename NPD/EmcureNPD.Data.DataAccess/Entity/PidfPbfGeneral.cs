@@ -9,6 +9,7 @@ namespace EmcureNPD.Data.DataAccess.Entity
     {
         public PidfPbfGeneral()
         {
+            PidfPbfClinicalCosts = new HashSet<PidfPbfClinicalCost>();
             PidfPbfClinicalPilotBioFastings = new HashSet<PidfPbfClinicalPilotBioFasting>();
             PidfPbfClinicalPilotBioFeds = new HashSet<PidfPbfClinicalPilotBioFed>();
             PidfPbfClinicalPivotalBioFastings = new HashSet<PidfPbfClinicalPivotalBioFasting>();
@@ -41,6 +42,7 @@ namespace EmcureNPD.Data.DataAccess.Entity
         public virtual Pidf Pidf { get; set; }
         public virtual MasterProductType ProductType { get; set; }
         public virtual PidfproductStrength Strength { get; set; }
+        public virtual ICollection<PidfPbfClinicalCost> PidfPbfClinicalCosts { get; set; }
         public virtual ICollection<PidfPbfClinicalPilotBioFasting> PidfPbfClinicalPilotBioFastings { get; set; }
         public virtual ICollection<PidfPbfClinicalPilotBioFed> PidfPbfClinicalPilotBioFeds { get; set; }
         public virtual ICollection<PidfPbfClinicalPivotalBioFasting> PidfPbfClinicalPivotalBioFastings { get; set; }

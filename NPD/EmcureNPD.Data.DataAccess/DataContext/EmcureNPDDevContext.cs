@@ -2,7 +2,6 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata;
 using EmcureNPD.Data.DataAccess.Entity;
-using EmcureNPD.Utility;
 
 
 #nullable disable
@@ -2162,6 +2161,12 @@ namespace EmcureNPD.Data.DataAccess.DataContext
                 entity.Property(e => e.TotalPilotFedcost).HasColumnName("TotalPilotFEDCost");
 
                 entity.Property(e => e.TotalPivotalFedcost).HasColumnName("TotalPivotalFEDCost");
+
+                entity.HasOne(d => d.PbfgeneralldNavigation)
+                    .WithMany(p => p.PidfPbfClinicalCosts)
+                    .HasForeignKey(d => d.Pbfgeneralld)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("FK_PIDF_PBF_Clinical_Cost_PIDF_PBF_General");
 
                 entity.HasOne(d => d.Strength)
                     .WithMany(p => p.PidfPbfClinicalCosts)

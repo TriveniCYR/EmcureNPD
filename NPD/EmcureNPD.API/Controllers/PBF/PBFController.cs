@@ -133,9 +133,10 @@ namespace EmcureNPD.API.Controllers.PBF
         {
             try
             {
-                
-                DBOperation oResponse = await _PBFService.AddUpdatePBFDetails(pbfEntity);
-                if (oResponse == DBOperation.Success)
+
+				DBOperation oResponse = DBOperation.Success; //await _PBFService.AddUpdatePBFDetails(pbfEntity);
+
+				if (oResponse == DBOperation.Success)
                     return _ObjectResponse.Create(true, (Int32)HttpStatusCode.OK, (pbfEntity.Pidfpbfid > 0 ? "Updated Successfully" : "Inserted Successfully"));
                 else
                     return _ObjectResponse.Create(false, (Int32)HttpStatusCode.BadRequest, (oResponse == DBOperation.NotFound ? "Record not found" : "Bad request"));
