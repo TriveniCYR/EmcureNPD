@@ -1,0 +1,191 @@
+﻿@using Microsoft.AspNetCore.Mvc.Localization
+@using EmcureNPD.Utility.Utility;
+@using EmcureNPD.Utility.Enums
+@inject Microsoft.Extensions.Localization.IStringLocalizer<EmcureNPD.Resource.Master> MasterLocalizer
+@inject Microsoft.Extensions.Localization.IStringLocalizer<EmcureNPD.Resource.Shared> SharedLocalizer
+@using Microsoft.Extensions.Configuration
+@inject IConfiguration Configuration
+@model EmcureNPD.Business.Models.PIDFPBFClinicalFormEntity
+@{
+    ViewData["Title"] = "PBFClinical";
+    string jsVersion = @Configuration.GetSection("StaticJS")["version"];
+}
+ 
+<div class="card-body" style="background-color:white" id="divcomman">
+
+                <div class="row">
+                    <div class="col-md-3">
+                        <div class="form-group required">
+                            @Html.LabelFor(model => model.PbfFormEntities.ProjectName,@MasterLocalizer["ProjectName"], new { @class = "control-label" })<span class="text-danger">*</span>
+                            @Html.TextBoxFor(model => model.PbfFormEntities.ProjectName, new {@class = "form-control", @placeholder = @MasterLocalizer["ProjectName"] ,@required="required"})
+
+                        </div>
+                    </div>
+
+                    <div class="col-md-3">
+                        <div class="form-group required">
+                            @Html.LabelFor(model => model.PbfFormEntities.Market,@MasterLocalizer["Market"], new { @class = "control-label" })<span class="text-danger">*</span>
+                            @Html.TextBoxFor(model => model.PbfFormEntities.Market, new {@class = "form-control", @placeholder = @MasterLocalizer["Market"] ,@required="required"})
+
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="form-group required">
+                            @Html.LabelFor(model => model.PbfFormEntities.BusinessRelationable,@MasterLocalizer["BusinessRationable"], new { @class = "control-label" })<span class="text-danger">*</span>
+                            @Html.TextBoxFor(model => model.PbfFormEntities.BusinessRelationable, new {@class = "form-control", @placeholder = @MasterLocalizer["BusinessRationable"] ,@required="required"})
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="form-group required">
+                            @Html.LabelFor(model => model.PbfFormEntities.BerequirementId, "BE Requirement", new { @class = "control-label" })<span class="text-danger">*</span>
+                            <select id="BERequirementId" name="PbfFormEntities.BerequirementId" class="form-control readOnlyUpdate" required></select>
+
+                        </div>
+                    </div>
+
+                </div>
+                <div class="row">
+                    <div class="col-md-3">
+                        <div class="form-group required">
+
+                            @Html.LabelFor(model => model.PbfFormEntities.NumberOfApprovedAnda,"No. of  Approved ANDAs", new { @class = "control-label" })<span class="text-danger">*</span>
+                            @Html.TextBoxFor(model => model.PbfFormEntities.NumberOfApprovedAnda, new {@class = "form-control", @placeholder = "No. of  Approved ANDAs" ,@required="required"})
+
+                        </div>
+                    </div>
+
+                    <div class="col-md-3">
+                        <div class="form-group required">
+                            @Html.LabelFor(model => model.PbfFormEntities.ProductTypeId, "Product Type", new { @class = "control-label" })<span class="text-danger">*</span>
+                            <select id="ProductTypeId" name="PbfFormEntities.ProductTypeId" class="form-control readOnlyUpdate" required></select>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="form-group required">
+                            @Html.LabelFor(model => model.PbfFormEntities.PlantId, "Plant Name", new { @class = "control-label" })<span class="text-danger">*</span>
+                            <select id="PlantId" name="PbfFormEntities.PlantId" class="form-control readOnlyUpdate" required></select>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="form-group required">
+                            @Html.LabelFor(model => model.PbfFormEntities.WorkflowId, "Work Flow", new { @class = "control-label" })<span class="text-danger">*</span>
+                            <select id="WorkflowId" name="PbfFormEntities.WorkflowId" class="form-control readOnlyUpdate" required></select>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-3">
+                        <div class="form-group required">
+                            @Html.LabelFor(model => model.PbfFormEntities.DosageId, "Dosage", new { @class = "control-label" })<span class="text-danger">*</span>
+                            <select id="PbfDosageFormId" name="PbfFormEntities.DosageId" class="form-control readOnlyUpdate" required></select>
+                        </div>
+                    </div>
+
+                    <div class="col-md-3">
+                        <div class="form-group required">
+                            @Html.LabelFor(model => model.PbfFormEntities.PatentStatus,"Patent Status", new { @class = "control-label" })<span class="text-danger">*</span>
+                            @Html.TextBoxFor(model => model.PbfFormEntities.PatentStatus, new {@class = "form-control", @placeholder = "Patent Status" ,@required="required"})
+
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="form-group required">
+                            @Html.LabelFor(model => model.PbfFormEntities.SponsorBusinessPartner,"Sponsor / Business Partner", new { @class = "control-label" })<span class="text-danger">*</span>
+                            @Html.TextBoxFor(model => model.PbfFormEntities.SponsorBusinessPartner, new {@class = "form-control", @placeholder = "Sponsor / Business Partner" ,@required="required"})
+
+                        </div>
+                    </div>
+
+                </div>
+                <div>
+                    <div class="card-header">
+                        <h3 class="card-title">Formulation Detail</h3>
+                    </div>
+                    <div class="row">
+
+                        <div class="col-md-3">
+                            <div class="form-group required">
+                                @Html.LabelFor(model => model.PbfFormEntities.FormRnDdivisionId, "Form R&D Division", new { @class = "control-label" })<span class="text-danger">*</span>
+                                <select id="FormRNDDivisionId" name="PbfFormEntities.FormRnDdivisionId" class="form-control readOnlyUpdate" required></select>
+                            </div>
+                        </div>
+
+                        <div class="col-md-3">
+                            <div class="form-group required">
+                                @Html.LabelFor(model => model.PbfFormEntities.ProjectInitiationDate,"Project Initiation Date", new { @class = "control-label" })<span class="text-danger">*</span>
+                                @Html.TextBoxFor(@modal=> modal.PbfFormEntities.ProjectInitiationDate,"{0:yyyy-MM-dd}",new{@type="date",@class="form-control readOnlyUpdate", @placeholder = "Project Initiation Date",@required="required"})
+
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="form-group required">
+                                @Html.LabelFor(model => model.PbfFormEntities.RnDhead,"R&D Head", new { @class = "control-label" })<span class="text-danger">*</span>
+                                @Html.TextBoxFor(model => model.PbfFormEntities.RnDhead, new {@class = "form-control", @placeholder = "R&D Head",@required="required" })
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="form-group required">
+                                @Html.LabelFor(model => model.PbfFormEntities.ProjectManager,"Project Manager", new { @class = "control-label" })<span class="text-danger">*</span>
+                                @Html.TextBoxFor(model => model.PbfFormEntities.ProjectManager, new {@class = "form-control", @placeholder = "Project Manager" ,@required="required"})
+
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-3">
+                            <div class="form-group required">
+                                @Html.LabelFor(model => model.PbfFormEntities.DosageFormulationDetail,"Dosage", new { @class = "control-label" })<span class="text-danger">*</span>
+                                @Html.TextBoxFor(model => model.PbfFormEntities.DosageFormulationDetail, new {@class = "form-control", @placeholder = "Dosage" ,@required="required"})
+
+                            </div>
+                        </div>
+
+                        <div class="col-md-3">
+                            <div class="form-group required">
+                                @Html.LabelFor(model => model.PbfFormEntities.PackagingTypeId, "Packaging type", new { @class = "control-label" })<span class="text-danger">*</span>
+                                <select id="PbfPackagingTypeId" name="PbfFormEntities.PackagingTypeId" class="form-control readOnlyUpdate" required></select>
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="form-group required">
+                                @Html.LabelFor(model => model.PbfFormEntities.FormRnDdivisionId, "Manufacturing Plant", new { @class = "control-label" })<span class="text-danger">*</span>
+                                <select id="PbfManfFormRNDDivisionId" name="PbfFormEntities.FormRnDdivisionId" class="form-control readOnlyUpdate" required></select>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="card-header">
+                    <h3 class="card-title">Reference Product Detail</h3>
+                </div>
+                <div class="row">
+
+                    <div class="col-md-3">
+                        <div class="form-group required">
+                            @Html.LabelFor(model => model.PbfFormEntities.BrandName,"Brand", new { @class = "control-label" })
+                            @Html.TextBoxFor(model => model.PbfFormEntities.BrandName, new {@class = "form-control", @placeholder = "Brand" ,@required="required"})
+
+                        </div>
+                    </div>
+
+                    <div class="col-md-3">
+                        <div class="form-group required">
+
+                            @Html.LabelFor(model => model.PbfFormEntities.RFDApplicant,"Applicant", new { @class = "control-label" })
+                            @Html.TextBoxFor(model => model.PbfFormEntities.RFDApplicant, new {@class = "form-control", @placeholder = "Applicant" ,@required="required"})
+
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="form-group required">
+                            @Html.LabelFor(model => model.PbfFormEntities.RFDCountryId, "Country", new { @class = "control-label" })
+                            <select id="PbfRFDCountryId" name="PbfFormEntities.RFDCountryId" class="form-control readOnlyUpdate" required></select>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="form-group required">
+                            @Html.LabelFor(model => model.PbfFormEntities.RFDIndication,"Indication", new { @class = "control-label" })
+                            @Html.TextBoxFor(model => model.PbfFormEntities.RFDIndication, new {@class = "form-control", @placeholder = "Indication",@required="required" })
+                        </div>
+                    </div>
+                </div>
+            </div>

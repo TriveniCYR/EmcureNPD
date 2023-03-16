@@ -19,7 +19,10 @@ namespace EmcureNPD.Business.Core.Interface
 
         // ---------------------------PBFDetails----------------------------
         Task<DBOperation> AddUpdatePBFDetails(PidfPbfFormEntity pbfEntity);
-        Task<PidfPbfFormEntity> GetPbfFormDetails(long pidfId, int buid, int? strengthid);
-        
-    }	
+        //Task<PidfPbfFormEntity> GetPbfFormDetails(long pidfId, int buid, int? strengthid);
+		// ---------------------------PBFClinicalDetails----------------------------
+		Task<DBOperation> AddUpdatePBFClinicalDetails(PIDFPBFClinicalFormEntity pbfClinicalEntity);
+		Task<PIDFPBFClinicalFormEntity> GetPbfClinicalFormDetails(long pidfId, int buid, long? strengthid);
+
+	}
 }

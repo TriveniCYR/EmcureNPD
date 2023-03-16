@@ -246,7 +246,8 @@ namespace EmcureNPD.Web.Helpers
         public static string SavePBFAnatical = "api/PBF/PBFAnaLytical";
         public static string GetPBFReadonlyDataByPIDFId = "api/PBF/GetPBFAnalyticalReadonlyData";
         public static string GetPbfFormDetails = "api/PBF/GetPbfFormDetails";
-        
+        public static string SavePBFClinical = "api/PBF/InsertUpdatePBFClinicalDetails";
+
 
 
         #endregion
