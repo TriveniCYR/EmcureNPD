@@ -229,6 +229,8 @@ namespace EmcureNPD.Web.Helpers
         #endregion
 
         #region PIDF
+        public static string GetPbfFormDetailsAnalytical = "api/PBF/GetPbfFormDetailsAnalytical";
+
         public static string GetPIDFDropdown = "api/PIDF/FillDropdown";
         public static string GetAllPIDF = "api/PIDF/GetAllPIDFList";
         public static string SavePIDF = "api/PIDF/InsertUpdatePIDF";
@@ -246,8 +248,9 @@ namespace EmcureNPD.Web.Helpers
         public static string SavePBFAnatical = "api/PBF/PBFAnaLytical";
         public static string GetPBFReadonlyDataByPIDFId = "api/PBF/GetPBFAnalyticalReadonlyData";
         public static string GetPbfFormDetails = "api/PBF/GetPbfFormDetails";
-        
+        public static string SavePBFAnalytical = "api/PBF/InsertUpdatePBFDetailsAnalytical";
 
+        
 
         #endregion
 
@@ -340,6 +343,8 @@ namespace EmcureNPD.Web.Helpers
         public static string GetAllTaskSubTaskList = "api/Project/GetTaskSubTask";
         public static string DeleteTaskSubTAsk = "api/Project/DeleteTaskSubTask";
         public static string GetTaskSubTaskById = "api/Project/GetTaskSubTaskById";
+        public static string GetPIDFDetails = "api/Project/GetPIDFDetailsById";
+        public static string GetFiles = "api/Project/GetFiles";
         #endregion
 
     }

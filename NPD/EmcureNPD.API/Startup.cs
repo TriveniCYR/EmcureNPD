@@ -1,11 +1,11 @@
 using EmcureNPD.API.Filter;
-using EmcureNPD.API.Helpers;
 using EmcureNPD.API.Helpers.Response;
 using EmcureNPD.API.Middlewares;
 using EmcureNPD.Business.Core.Resolver;
 using EmcureNPD.Resource;
 using EmcureNPD.Utility;
 using EmcureNPD.Utility.Helpers;
+using Microsoft.AspNet.SignalR;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
@@ -14,14 +14,12 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.FileProviders;
 using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Options;
 using Microsoft.OpenApi.Models;
-using Newtonsoft.Json.Serialization;
 using System.IO;
 
 namespace EmcureNPD.API
 {
-    public class Startup
+	public class Startup
     {
         public Startup(IConfiguration configuration)
         {
@@ -159,16 +157,29 @@ namespace EmcureNPD.API
 
             app.UseAuthentication();
             app.UseAuthorization();
-
-            // custom jwt auth middleware
-            app.UseMiddleware<JwtMiddleware>();
+			app.UseFileServer();
+			// custom jwt auth middleware
+			app.UseMiddleware<JwtMiddleware>();
             //.UseMiddleware<ExceptionMiddleware>();
 
 
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllers();
-            });
-        }
+               // endpoints.MapHub<NotificationHub>("/signalR");
+
+			});
+			//app.Use(async (context, next) =>
+			//{
+			//	var hubContext = context.RequestServices
+			//							.GetRequiredService<IHubContext<NotificationHub>>();
+			//	//...
+
+			//	if (next != null)
+			//	{
+			//		await next.Invoke();
+			//	}
+			//});
+		}
     }
 }

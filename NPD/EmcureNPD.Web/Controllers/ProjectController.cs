@@ -20,7 +20,7 @@ namespace EmcureNPD.Web.Controllers
             _configuration = configuration;
         }
         [HttpGet]
-        public IActionResult ProjectManagement(string pidfid, string bussnessId)
+        public IActionResult ProjectManagement(string pidfid, string bui)
         {
             //int rolId = (int)HttpContext.Session.GetInt32(UserHelper.LoggedInRoleId);
             //RolePermissionModel objPermssion = UtilityHelper.GetCntrActionAccess(Convert.ToString(RouteData.Values["controller"]), rolId);
@@ -29,7 +29,9 @@ namespace EmcureNPD.Web.Controllers
             //    return RedirectToAction("AccessRestriction", "Home");
             //}
             //ViewBag.Access = objPermssion;
+            var bid = long.Parse(UtilityHelper.Decreypt(bui));
             ViewBag.id = pidfid;
+            ViewBag.bid = bid;
             return View();
         }
         [HttpPost]
@@ -72,6 +74,11 @@ namespace EmcureNPD.Web.Controllers
                 ModelState.Clear();
                 return RedirectToAction("ProjectManagement", "Project", new { pidfid = UtilityHelper.Encrypt(addTask.Pidfid.ToString())});
             }
+        }
+        public IActionResult Gantt(string pidfid)
+        {
+            ViewBag.id = pidfid;
+            return View();
         }
     }
 }

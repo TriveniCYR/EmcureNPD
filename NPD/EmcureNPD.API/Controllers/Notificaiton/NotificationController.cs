@@ -12,6 +12,7 @@ using System.Threading.Tasks;
 using System;
 using Microsoft.AspNetCore.SignalR;
 using EmcureNPD.Business.Core;
+using Microsoft.Extensions.Logging;
 
 namespace EmcureNPD.API.Controllers.Notificaiton {
     [Route("api/[controller]")]
@@ -22,18 +23,21 @@ namespace EmcureNPD.API.Controllers.Notificaiton {
         private readonly IConfiguration _configuration;
         private readonly IResponseHandler<dynamic> _ObjectResponse;
         private readonly INotificationService _NotificationService;
-        private readonly IHelper _helper;
+		private readonly ILogger<NotificationController> _logger;
+
+		private readonly IHelper _helper;
 
         #endregion Properties
 
         #region Constructor
 
-        public NotificationController(IConfiguration configuration, IResponseHandler<dynamic> ObjectResponse, INotificationService NotificationService, IHelper helper) {
+        public NotificationController(IConfiguration configuration, IResponseHandler<dynamic> ObjectResponse, INotificationService NotificationService, IHelper helper, ILogger<NotificationController> logger) {
             _configuration = configuration;
             _ObjectResponse = ObjectResponse;
             _NotificationService = NotificationService;
             _helper = helper;
-        }
+			_logger = logger;
+		}
 
         #endregion Constructor
 
@@ -54,7 +58,8 @@ namespace EmcureNPD.API.Controllers.Notificaiton {
             try {
                 return _ObjectResponse.CreateData(await _NotificationService.GetAll(), (Int32)HttpStatusCode.OK);
             } catch (Exception ex) {
-                return _ObjectResponse.Create(false, (Int32)HttpStatusCode.InternalServerError, Convert.ToString(ex.StackTrace));
+				_logger.LogInformation($"ERROR:Notifications/GetAllNotification:{ex}");
+				return _ObjectResponse.Create(false, (Int32)HttpStatusCode.InternalServerError, Convert.ToString(ex.StackTrace));
             }
         }
         [HttpGet, Route("GetFilteredNotifications/{ColumnName}/{SortDir}/{start}/{length}")]
@@ -68,6 +73,7 @@ namespace EmcureNPD.API.Controllers.Notificaiton {
 			}
 			catch (Exception ex)
 			{
+				_logger.LogInformation($"ERROR:Notifications/GetFilteredNotifications:{ex}");
 				return _ObjectResponse.Create(false, (Int32)HttpStatusCode.InternalServerError, Convert.ToString(ex.StackTrace));
 			}
 		}

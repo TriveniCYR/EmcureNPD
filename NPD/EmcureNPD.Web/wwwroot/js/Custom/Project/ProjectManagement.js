@@ -1,8 +1,84 @@
 $(document).ready(function () {
+    GetPIDFDetail();
     GetTaskSubTaskList();
+    GetFile();
+    GetBusinessUnit();
 });
+//getAllBusinessUnit
+function GetBusinessUnit() {
+    ajaxServiceMethod($('#hdnBaseURL').val() + GetAllBusinessunit, 'GET', GetBusinessUnitSuccess, GetBusinessUnitSuccess);
+}
+function GetBusinessUnitSuccess(data) {
+    try {
+        $.each(data._object, function (index, bunits) {
+            var $li = $('<li class="nav-item"></li>');
+            var $a = $('<a class="nav-link" id="' + bunits.businessUnitName + '" data-toggle="pill" href="#LATAM" role="tab" aria-controls="LATAM" aria-selected="false">' + bunits.businessUnitName + '</a>');
+            if (bunits.businessUnitId == bid) {
+                $a.addClass('active');
+            }
+            $li.append($a);
+            $li.insertAfter($('#custom-tabs-one-tab li').eq(0));
+        });
+    }
+    catch(e){
+        toastr.error('Error:' + e.message);
+    }
+}
+function GetBusinessUnitError() {
+    toastr.error(ErrorMessage);
+}
+//Endregion
+//get files
+function GetFile() {
+    ajaxServiceMethod($('#hdnBaseURL').val() + GetFiles + "/" + $('#pidfId').val(), 'GET', GetFilesSuccess, GetFilesError);
+}
+function GetFilesSuccess(data) {
+    try {
+        $('#files tbody').html('')
+        $.each(data._object.fileName, function (index, file) {
+            var link = $('#hdnBaseUrl').val() + '/Uploads/PIDF/Medical/' + file;
+            $('#files tbody').append('<tr><td><a href="' + link + '">' + file + '</a></td></tr>');
+        });
+    }
+    catch (e) {
+        toastr.error('Error:' + e.message);
+    }
+}
+function GetFilesError() {
+    toastr.error(ErrorMessage);
+}
+//get PIDF details
+function GetPIDFDetail() {
+    ajaxServiceMethod($('#hdnBaseURL').val() + GetPIDFDetails + "/" + $('#pidfId').val(), 'GET', GetPIDFDetailSuccess, GetPIDFDetailError);
+}
+function GetPIDFDetailSuccess(data) {
+    try {
+        $('#loading').hide();
+        $('#pidf_ProjectorProductName').text(data._object.moleculeName);
+        $('#pidf_ProductTypeName').text(data.productName);
+        $('#pidf_PlantName').text(data.plantName);
+        $('#pidf_FormulationName').text(data.formulationName);
+        $('#pidf_WorkflowName').text(data.workflowName);
+        console.log(data._object.pidfProductStregthEntities);
+        $.each(data._object.pidfProductStregthEntities, function (i, List) {
+            //console.log(List);
+            var newRow = $("<tr>");
+            var cols = "";
+            cols += '<td>' + List.strength + '</td>';
+            cols += '<td>' + List.UnitofMeasurementName + ' </td>';
+            newRow.append(cols);
+            $("table.order-list").append(newRow);
 
-
+        });
+    }
+    catch (e) {
+        toastr.error('Error:' + e.message);
+    }
+}
+function GetPIDFDetailError() {
+    toastr.error(ErrorMessage);
+}
+//#end region
 //get all task and subtask list
 function GetTaskSubTaskList() {
     ajaxServiceMethod($('#hdnBaseURL').val() + GetAllTaskSubTaskList + "/" + $('#pidfId').val(), 'GET', GetTaskSubTaskListSuccess, GetTaskSubTaskListError);
@@ -84,6 +160,7 @@ function GetTaskSubTaskByIdSuccess(data) {
         $("#projectTaskId").val(data._object.projectTaskId)
         $("#pidfid").val(data._object.pidfid)
         $("#tasklevel").val(data._object.taskLevel)
+        $("#parentId").val(data._object.parentId)
 
 
         if (data._object.editTaskStatusId == 1) {
@@ -199,6 +276,14 @@ function ShowAddSubTaskForm() {
 function GetDropdownsForAddSubTaskSuccess(data) {
     try {
         $('#loading').hide();
+        $('#AddSubTaskofTask').empty().append(
+            "<option value=''>Please select option</option>"
+        );
+
+        $.each(data.task, function (i, List) {
+            $("#AddSubTaskofTask").append('<option value="' + List.projectTaskId + '">' +
+                List.taskName + '</option>');
+        });
         $('#AddSubTaskOwner').empty().append(
             "<option value=''>Please select option</option>"
         );
