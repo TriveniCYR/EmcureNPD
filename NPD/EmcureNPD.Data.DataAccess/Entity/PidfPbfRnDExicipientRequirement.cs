@@ -16,7 +16,5 @@ namespace EmcureNPD.Data.DataAccess.Entity
         public string MgPerUnitDosage { get; set; }
         public int? CreatedBy { get; set; }
         public DateTime CreatedDate { get; set; }
-
-        public virtual PidfPbfGeneral PidfPbfGeneral { get; set; }
     }
 }

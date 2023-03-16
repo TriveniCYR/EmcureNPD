@@ -35,6 +35,14 @@ namespace EmcureNPD.Web.Controllers
             _stringLocalizerShared = stringLocalizerShared;
             _helper = helper;
         }
+
+
+        public IActionResult PBF()
+        {
+            return View();
+        }
+
+
         public IActionResult PIDFList()
         {
             return View();

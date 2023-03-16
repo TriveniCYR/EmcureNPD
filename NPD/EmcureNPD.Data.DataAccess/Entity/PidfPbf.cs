@@ -9,25 +9,21 @@ namespace EmcureNPD.Data.DataAccess.Entity
     {
         public PidfPbf()
         {
-            PidfPbfAnalyticals = new HashSet<PidfPbfAnalytical>();
-            PidfPbfClinicals = new HashSet<PidfPbfClinical>();
             PidfPbfGenerals = new HashSet<PidfPbfGeneral>();
         }
 
         public long Pidfpbfid { get; set; }
         public long Pidfid { get; set; }
         public string ProjectName { get; set; }
-        public string Market { get; set; }
         public string BusinessRelationable { get; set; }
         public int BerequirementId { get; set; }
         public string NumberOfApprovedAnda { get; set; }
         public int ProductTypeId { get; set; }
         public int PlantId { get; set; }
-        public int WorkflowId { get; set; }
-        public int DosageId { get; set; }
+        public int? WorkflowId { get; set; }
+        public int? DosageId { get; set; }
         public string PatentStatus { get; set; }
         public string SponsorBusinessPartner { get; set; }
-        public int? TransferFormRnDdivisionId { get; set; }
         public int? FillingTypeId { get; set; }
         public string ScopeObjectives { get; set; }
         public int FormRnDdivisionId { get; set; }
@@ -35,10 +31,7 @@ namespace EmcureNPD.Data.DataAccess.Entity
         public string RnDhead { get; set; }
         public string ProjectManager { get; set; }
         public int PackagingTypeId { get; set; }
-        public string DosageFormulationDetail { get; set; }
         public int? ManufacturingId { get; set; }
-        public string PreviousProjectCode { get; set; }
-        public double? SinkCost { get; set; }
         public DateTime CreatedDate { get; set; }
         public int CreatedBy { get; set; }
         public DateTime? ModifyDate { get; set; }
@@ -54,8 +47,6 @@ namespace EmcureNPD.Data.DataAccess.Entity
         public virtual MasterPlant Plant { get; set; }
         public virtual MasterProductType ProductType { get; set; }
         public virtual MasterWorkflow Workflow { get; set; }
-        public virtual ICollection<PidfPbfAnalytical> PidfPbfAnalyticals { get; set; }
-        public virtual ICollection<PidfPbfClinical> PidfPbfClinicals { get; set; }
         public virtual ICollection<PidfPbfGeneral> PidfPbfGenerals { get; set; }
     }
 }

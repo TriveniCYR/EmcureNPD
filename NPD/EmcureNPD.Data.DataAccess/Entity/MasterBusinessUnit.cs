@@ -15,8 +15,6 @@ namespace EmcureNPD.Data.DataAccess.Entity
             PidfApiIpds = new HashSet<PidfApiIpd>();
             PidfCommercials = new HashSet<PidfCommercial>();
             PidfIpds = new HashSet<PidfIpd>();
-            PidfPbfAnalyticals = new HashSet<PidfPbfAnalytical>();
-            PidfPbfClinicals = new HashSet<PidfPbfClinical>();
             PidfPbfGenerals = new HashSet<PidfPbfGeneral>();
             Pidfs = new HashSet<Pidf>();
         }
@@ -37,8 +35,6 @@ namespace EmcureNPD.Data.DataAccess.Entity
         public virtual ICollection<PidfApiIpd> PidfApiIpds { get; set; }
         public virtual ICollection<PidfCommercial> PidfCommercials { get; set; }
         public virtual ICollection<PidfIpd> PidfIpds { get; set; }
-        public virtual ICollection<PidfPbfAnalytical> PidfPbfAnalyticals { get; set; }
-        public virtual ICollection<PidfPbfClinical> PidfPbfClinicals { get; set; }
         public virtual ICollection<PidfPbfGeneral> PidfPbfGenerals { get; set; }
         public virtual ICollection<Pidf> Pidfs { get; set; }
     }

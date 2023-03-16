@@ -9,21 +9,15 @@ namespace EmcureNPD.Data.DataAccess.Entity
     {
         public PidfPbfGeneral()
         {
-            PidfPbfClinicalCosts = new HashSet<PidfPbfClinicalCost>();
-            PidfPbfClinicalPilotBioFastings = new HashSet<PidfPbfClinicalPilotBioFasting>();
-            PidfPbfClinicalPilotBioFeds = new HashSet<PidfPbfClinicalPilotBioFed>();
-            PidfPbfClinicalPivotalBioFastings = new HashSet<PidfPbfClinicalPivotalBioFasting>();
-            PidfPbfClinicalPivotalBioFeds = new HashSet<PidfPbfClinicalPivotalBioFed>();
-            PidfPbfRnDExicipientRequirements = new HashSet<PidfPbfRnDExicipientRequirement>();
+            PidfPbfAnalyticalCosts = new HashSet<PidfPbfAnalyticalCost>();
+            PidfPbfAnalyticals = new HashSet<PidfPbfAnalytical>();
+            PidfPbfClinicals = new HashSet<PidfPbfClinical>();
+            PidfPbfGeneralStrengths = new HashSet<PidfPbfGeneralStrength>();
         }
 
         public long PbfgeneralId { get; set; }
-        public long Pbfid { get; set; }
-        public long Pidfid { get; set; }
+        public long Pidfpbfid { get; set; }
         public int BusinessUnitId { get; set; }
-        public string ProjectName { get; set; }
-        public string SapCodeProjectCode { get; set; }
-        public string ImprintingImbossingCodes { get; set; }
         public string Capex { get; set; }
         public double? TotalExpense { get; set; }
         public string ProjectComplexity { get; set; }
@@ -31,22 +25,19 @@ namespace EmcureNPD.Data.DataAccess.Entity
         public string TestLicenseAvailability { get; set; }
         public DateTime? BudgetTimelineSubmissionDate { get; set; }
         public DateTime? ProjectDevelopmentInitialDate { get; set; }
-        public int? FormulationId { get; set; }
-        public long StrengthId { get; set; }
-        public int? AnalyticalId { get; set; }
+        public int? FormulationGlid { get; set; }
+        public int? AnalyticalGlid { get; set; }
         public DateTime CreatedDate { get; set; }
-        public int? CreatedBy { get; set; }
+        public int CreatedBy { get; set; }
 
+        public virtual MasterUser AnalyticalGl { get; set; }
         public virtual MasterBusinessUnit BusinessUnit { get; set; }
-        public virtual PidfPbf Pbf { get; set; }
-        public virtual Pidf Pidf { get; set; }
+        public virtual MasterUser FormulationGl { get; set; }
+        public virtual PidfPbf Pidfpbf { get; set; }
         public virtual MasterProductType ProductType { get; set; }
-        public virtual PidfproductStrength Strength { get; set; }
-        public virtual ICollection<PidfPbfClinicalCost> PidfPbfClinicalCosts { get; set; }
-        public virtual ICollection<PidfPbfClinicalPilotBioFasting> PidfPbfClinicalPilotBioFastings { get; set; }
-        public virtual ICollection<PidfPbfClinicalPilotBioFed> PidfPbfClinicalPilotBioFeds { get; set; }
-        public virtual ICollection<PidfPbfClinicalPivotalBioFasting> PidfPbfClinicalPivotalBioFastings { get; set; }
-        public virtual ICollection<PidfPbfClinicalPivotalBioFed> PidfPbfClinicalPivotalBioFeds { get; set; }
-        public virtual ICollection<PidfPbfRnDExicipientRequirement> PidfPbfRnDExicipientRequirements { get; set; }
+        public virtual ICollection<PidfPbfAnalyticalCost> PidfPbfAnalyticalCosts { get; set; }
+        public virtual ICollection<PidfPbfAnalytical> PidfPbfAnalyticals { get; set; }
+        public virtual ICollection<PidfPbfClinical> PidfPbfClinicals { get; set; }
+        public virtual ICollection<PidfPbfGeneralStrength> PidfPbfGeneralStrengths { get; set; }
     }
 }
