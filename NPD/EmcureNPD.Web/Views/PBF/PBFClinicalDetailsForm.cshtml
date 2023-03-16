@@ -28,12 +28,13 @@
             <input type="hidden" asp-for="StrengthId" />
             <input type="hidden" asp-for="SaveSubmitType" />
             <input type="hidden" asp-for="PidfPbfClinicals.PIDFID" />
-            <input type="hidden" asp-for="PidfPbfClinicals.PBFClinicalID" />
-            <input type="hidden" asp-for="PidfPbfClinicals.BusinessUnitId" />
-            <input type="hidden" asp-for="PidfPbfClinicals.StrengthId" />
-            <input type="hidden" asp-for="PidfPbfClinicals.TestLicenseAvailability" />
+            <input type="hidden" asp-for="PidfPbfClinicals.PBFGeneralID" />
+            <input type="hidden" asp-for="PbfFormEntities.BusinessUnitId" />
+            <input type="hidden" asp-for="PbfFormEntities.StrengthId" />
+            <input type="hidden" asp-for="PbfFormEntities.TestLicenseAvailability" />
+            
             @{
-                await Html.RenderPartialAsync("_PBFPartial", Model);
+                await Html.RenderPartialAsync("_PBFPartial",Model.PbfFormEntities);
             }
             <div class="row">
                 <div class="col-md-12" id="mainDivCommercial">
@@ -63,104 +64,7 @@
 
                 </div>
             </div>
-            <div class="card-header">
-                <h5 class="mb-0"><b>General</b></h5>
-            </div>
-            <br>
-            <div class="card-body" id="mainDivClinical">
-                <div class="row">
-
-                    <div class="col-md-3">
-                        <div class="form-group required">
-                            @Html.LabelFor(model => model.PidfPbfClinicals.ProjectName,@MasterLocalizer["ProjectName"], new { @class = "control-label" })
-                            @Html.TextBoxFor(model => model.PidfPbfClinicals.ProjectName, new {@readonly = "readonly", @class = "form-control", @placeholder = @MasterLocalizer["ProjectName"],@required="required" })
-                        </div>
-                    </div>
-
-                    <div class="col-md-3">
-                        <div class="form-group">
-                            <label class="control-label">Strength</label>
-                            <div style="display: -webkit-inline-box;" id="strengthlblClinical">
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-md-3">
-                        <div class="form-group required">
-                            @Html.LabelFor(model => model.PidfPbfClinicals.SAPProjectProjectCode,"SAP Code / Project Code", new { @class = "control-label" })
-                            @Html.TextBoxFor(model => model.PidfPbfClinicals.SAPProjectProjectCode, new {@readonly = "readonly", @class = "form-control", @placeholder = "SAP Code / Project Code" ,@required="required"})
-                        </div>
-                    </div>
-                    <div class="col-md-3">
-                        <div class="form-group required">
-                            @Html.LabelFor(model => model.PidfPbfClinicals.ImprintingEmbossingCodes,"Imprinting Embossing Codes", new { @class = "control-label" })
-                            @Html.TextBoxFor(model => model.PidfPbfClinicals.ImprintingEmbossingCodes, new {@readonly = "readonly", @class = "form-control", @placeholder = "Imprinting Embossing Codes",@required="required" })
-                        </div>
-                    </div>
-                </div>
-
-                <div class="row">
-
-                    <div class="col-md-3">
-                        <div class="form-group required">
-                            @Html.LabelFor(model => model.PidfPbfClinicals.TotalExpense,"Total Expenses", new { @class = "control-label" })
-                            @Html.TextBoxFor(model => model.PidfPbfClinicals.TotalExpense, new { @class = "form-control", @placeholder = "Total Expenses" })
-
-                        </div>
-                    </div>
-
-                    <div class="col-md-3">
-                        <div class="form-group required">
-                            @Html.LabelFor(model => model.PidfPbfClinicals.ProjectComplexity,"Project Complexity", new { @class = "control-label" })
-                            @Html.TextBoxFor(model => model.PidfPbfClinicals.ProjectComplexity, new { @class = "form-control", @placeholder = "Project Complexity" })
-                        </div>
-                    </div>
-                    <div class="col-md-3">
-                        <div class="form-group required">
-                            @Html.LabelFor(model => model.PidfPbfClinicals.ProductTypeId, "Product Type", new { @class = "control-label" })
-                            <select id="ClinicalProductTypeId" name="PidfPbfClinicals.ProductTypeId" class="form-control readOnlyUpdate" required></select>
-                        </div>
-                    </div>
-                    <div class="col-md-3">
-                        <div class="form-group required">
-                            <label class="control-label">Test Licence Availability</label>
-                            @Html.HiddenFor(model => model.PidfPbfClinicals.TestLicenseAvailability, new { @class = "control-label" ,@required="required"})
-                            <div stylle="display: inline-block;" id="Clinicallicence">
-                                @* <input type="checkbox" value="AHD" name=TestLicenseAvailability>AHD
-                                    <input type="checkbox" value="BHS" name=TestLicenseAvailability>BHS
-                                    <input type="checkbox" value="HNJ" name=TestLicenseAvailability>HNJ
-                                    <input type="checkbox" value="LYO" name=TestLicenseAvailability>LYO Cycle*@
-                            </div>
-                            <lable id="valmsgPidfPbfClinicals_TestLicenseAvailability" class="text-danger"></lable>
-                            @Html.ValidationMessageFor(model => model.PidfPbfClinicals.TestLicenseAvailability, "", new { @class = "text-danger" })
-                        </div>
-                    </div>
-                </div>
-                <div class="row">
-
-                    <div class="col-md-3">
-                        <div class="form-group required">
-                            <label class="control-label">Budget and Timeline Submission Date</label>
-                            @Html.TextBoxFor(@modal=> modal.PidfPbfClinicals.BudgetTimelineSubmissionDate,"{0:yyyy-MM-dd}",new{@type="date",@class="form-control readOnlyUpdate",@required="required"})
-                        </div>
-                    </div>
-
-                    <div class="col-md-3">
-                        <div class="form-group required">
-                            @Html.LabelFor(model => model.PidfPbfClinicals.FormulationId, "Formulation GL", new { @class = "control-label" })
-                            <select id="ClinicalFormulationId" name="PidfPbfClinicals.FormulationId" class="form-control readOnlyUpdate" required></select>
-                        </div>
-                    </div>
-                    <div class="col-md-3">
-                        <div class="form-group required">
-                            @Html.LabelFor(model => model.PidfPbfClinicals.AnalyticalId, "Analytical GL", new { @class = "control-label" })
-                            <select id="ClinicalAnalyticalId" name="PidfPbfClinicals.AnalyticalId" class="form-control readOnlyUpdate" required></select>
-                        </div>
-                    </div>
-
-                </div>
-
-                <br />
-            </div>
+            
 
             @*-----------------Strength---------------------*@
 
@@ -1098,7 +1002,7 @@
     var GetActiveBusinessUnit = "@EmcureNPD.Web.Helpers.APIURLHelper.GetActiveBusinessUnit";
     var _PBFPartialURL = "@Url.Action("PBFClinicalDetailsForm", "PBF")";
     var UserWiseBUList="@Model.BusinessUnitsByUser";
-    var selectedstrengthid="@Model.PidfPbfClinicals.StrengthId";
+    var selectedstrengthid="@Model.StrengthId";
    
 </script>
 <script>

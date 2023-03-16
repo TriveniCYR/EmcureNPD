@@ -21,7 +21,7 @@ namespace EmcureNPD.Business.Core.Interface
 		Task<PidfPbfAnalyticalEntity> GetPBFAnalyticalReadonlyData(long pidfid);
 
         // ---------------------------PBFDetails----------------------------       
-        Task<DBOperation> AddUpdatePBFDetails(PidfPbfFormEntity pbfEntity);
+       
         //Task<PidfPbfFormEntity> GetPbfFormDetails(long pidfId, int buid, int? strengthid);
 		// ---------------------------PBFClinicalDetails----------------------------
 		Task<DBOperation> AddUpdatePBFClinicalDetails(PIDFPBFClinicalFormEntity pbfClinicalEntity);
