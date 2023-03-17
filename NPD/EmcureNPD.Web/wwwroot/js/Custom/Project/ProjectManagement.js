@@ -1,6 +1,25 @@
 $(document).ready(function () {
     GetProjectDetails();
+    GetBusinessUnitDetails(bid);
 });
+function GetBusinessUnitDetails(bid) {
+    ajaxServiceMethod($('#hdnBaseURL').val() + GetBusinessUnitDetail + "/" + bid + "/" + $('#pidfId').val(), 'GET', GetBusinessUnitDetailsSuccess, GetBusinessUnitDetailsError);
+}
+function GetBusinessUnitDetailsSuccess(data) {
+    try {
+        //business unit details
+        $('#BDetailsTable tbody').html('');
+        $.each(data.table, function (index, object) {
+            $('#BDetailsTable tbody').append('<tr><td>' + object.country + '</td><td>' + object.strength + '</td><td>' + object.packSize + '</td><td>' + object.packing + '</td></td></tr>');
+        })
+    }
+    catch (e) {
+        toastr.error('Error:' + e.message);
+    }
+}
+function GetBusinessUnitDetailsError() {
+    toastr.error(ErrorMessage);
+}
 function GetProjectDetails() {
     ajaxServiceMethod($('#hdnBaseURL').val() + GetAllData + "/" + $('#pidfId').val(), 'GET', GetProjectDetailsSuccess, GetProjectDetailsError);
 }
@@ -10,10 +29,10 @@ function GetProjectDetailsSuccess(data) {
         console.log(data);
         $('#loading').hide();
         $('#pidf_ProjectorProductName').text(data.table[0].projectName);
-        $('#pidf_ProductTypeName').text(data.productName);
-        $('#pidf_PlantName').text(data.plantName);
-        $('#pidf_FormulationName').text(data.formulationName);
-        $('#pidf_WorkflowName').text(data.workflowName);;
+        $('#pidf_ProductTypeName').text(data.table[0].productType);
+        $('#pidf_PlantName').text(data.table[0].plantName);
+        $('#pidf_FormulationName').text(data.table[0].formulation);
+        $('#pidf_WorkflowName').text(data.table[0].workFlow);;
         $.each(data.table2, function (i, List) {
             var newRow = $("<tr>");
             var cols = "";
@@ -34,10 +53,17 @@ function GetProjectDetailsSuccess(data) {
         $('#custom-tabs-one-tab li').slice(1).remove();
         $.each(data.table3, function (index, bunits) {
             var $li = $('<li class="nav-item"></li>');
-            var $a = $('<a class="nav-link" id="' + bunits.businessUnitName + '" data-toggle="pill" href="#LATAM" role="tab" aria-controls="LATAM" aria-selected="false">' + bunits.businessUnitName + '</a>');
+            var $a = $('<a class="nav-link" id="' + bunits.businessUnitId + '" data-toggle="pill" href="#LATAM" role="tab" aria-controls="LATAM" aria-selected="false">' + bunits.businessUnitName + '</a>');
             if (bunits.businessUnitId == bid) {
+                var $span = $('<span>').text(bunits.businessUnitName);
+                $('#BHeading').empty().append($span);
                 $a.addClass('active');
             }
+            $a.click(function () {
+                GetBusinessUnitDetails(bunits.businessUnitId);
+                var $span = $('<span>').text(bunits.businessUnitName);
+                $('#BHeading').empty().append($span);
+            });
             $li.append($a);
             $li.insertAfter($('#custom-tabs-one-tab li').eq(0));
         });
@@ -58,7 +84,7 @@ function GetProjectDetailsSuccess(data) {
 
             $('#Milestones tbody').append('<tr><td>' + object.taskName + '</td><td>' + object.fullName + '</td><td>' + object.statusName + '</td><td>' + object.priorityName + '</td><td>' + startDate + '</td><td>' + endDate + '</td><td>' + object.taskDuration + '</td><td>' + object.totalPercentage + '</td><td>' + updatedDate + '</td><td>  <a class="large-font" style="" href="" title="Edit" data-toggle="modal" data-target="#UpdateModel" data-backdrop="static" data-keyboard="false"  onclick="GetTaskSubTaskById(' + object.projectTaskId + '); return false;"><i class="fa fa-fw fa-edit mr-1"></i> ' + '</a><a class="large-font text-danger" style="" href="" title="Delete" data-toggle="modal" data-target="#DeleteModel" data-backdrop="static" data-keyboard="false" onclick="ConfirmationDeleteTaskSubTask(' + object.projectTaskId + '); return false;"><i class="fa fa-fw fa-trash mr-1"></i> ' + '</a>  </td></tr>');
         });
-        StaticDataTable("#Milestones");
+        //StaticDataTable("#Milestones");
         //end
     }
     catch (e) {

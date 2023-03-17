@@ -109,26 +109,26 @@
                                         <div class="card-body">
                                             <div class="tab-content" id="custom-tabs-one-tabContent">
 
-                                                <div class="tab-pane fade show active" id="CIS" role="tabpanel" aria-labelledby="CIS-tab">
-                                                    <h4 class="text-divider"><span>CIS</span></h4>
-                                                    <form method="post" name="CISCountryCreate" id="CISCountryCreate">
+                                                <div class="tab-pane fade show active" id="BUnit" role="tabpanel" aria-labelledby="BUnit-tab">
+                                                    <h4 id="BHeading" class="text-divider"><span></span></h4>
+                                                    <form method="post" >
 
                                                         <div class="row mt-5 mb-3">
                                                             <div class="table-responsive">
-                                                                <table id="CISPIDFTable" class="table CISorder-list table-striped table-bordered dt-responsive nowrap" style="width:100%">
+                                                                <table id="BDetailsTable" class="table table-striped table-bordered dt-responsive nowrap" style="width:100%">
                                                                     <thead>
                                                                         <tr>
                                                                             <th>Country</th>
                                                                             <th>Strength</th>
                                                                             <th>Pack Size</th>
                                                                             <th>Packing</th>
-                                                                            <th>1st Year CIF Price/Pack</th>
+                                                                            <th>1st Year Price/Pack</th>
                                                                             <th>1st Year Qty.</th>
                                                                             <th>1st Year Volume</th>
-                                                                            <th>2nd Year CIF Price/Pack</th>
+                                                                            <th>2nd Year Price/Pack</th>
                                                                             <th>2nd Year Qty.</th>
                                                                             <th>2nd Year Volume</th>
-                                                                            <th>3rd Year CIF Price/Pack</th>
+                                                                            <th>3rd Year Price/Pack</th>
                                                                             <th>3rd Year Qty.</th>
                                                                             <th>3rd Year Volume</th>
                                                                             <th>Batch Size</th>
@@ -137,7 +137,7 @@
                                                                             <th>2nd Year COGS</th>
                                                                             <th>3rd Year COGS</th>
                                                                             <th>Freight</th>
-                                                                            <th>Total CIF Cost</th>
+                                                                            <th>Total Cost</th>
                                                                             <th>3 Year Contribution</th>
                                                                             <th>Cost of 3 Batches</th>
                                                                             <th>Analytical Cost</th>
@@ -602,6 +602,7 @@
         var DeleteTasksubTask = "@EmcureNPD.Web.Helpers.APIURLHelper.DeleteTaskSubTAsk";
         var GetTaskSubTaskByIds = "@EmcureNPD.Web.Helpers.APIURLHelper.GetTaskSubTaskById";
         var GetAllData = "@EmcureNPD.Web.Helpers.APIURLHelper.GetAllData";
+        var GetBusinessUnitDetail = "@EmcureNPD.Web.Helpers.APIURLHelper.GetBusinessUnitDeatil";
 
         var RecordDelete = "@SharedLocalizer["RecordDelete"]";
         var ErrorMessage = "@SharedLocalizer["Error"]";
