@@ -3,6 +3,7 @@
     For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 *@
 @{
+	var pidfid = ViewBag.id;
 	ViewData["Title"] = "Medical - Emcure NPD";
 	RolePermissionModel objPermssion = (RolePermissionModel)ViewBag.Access;
 	string IsAddAllow = (objPermssion.Add) ? "" : "display: none";
@@ -26,6 +27,7 @@
 		width: 10%;
 	}
 </style>
+<div id="dvPIDFAccrdion"></div>
 <section class="pb-2">
 	<div class="content-header">
 		<div class="container-fluid">
@@ -97,7 +99,12 @@
 @section MyScripts {
 	<script src="/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
 	<script>
-
+		var pidid = @Html.Raw(Json.Serialize(pidfid));
+		$(document).ready(function () {
+			var _PIDFAccordionURL = "@Url.Action("PIDF", "PIDF")";
+			_PIDFID = parseInt(pidid);
+			getPIDFAccordion(_PIDFAccordionURL, _PIDFID, "dvPIDFAccrdion");
+		})
 		// browse files
 		var selectFileButton = document.getElementById("selectFileButton");
 		var fileInput = document.getElementById("File");

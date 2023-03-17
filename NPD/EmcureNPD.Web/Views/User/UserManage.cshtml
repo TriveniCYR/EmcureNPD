@@ -134,16 +134,42 @@
             
 
             <div class="row">
-                <div class="col-3">
+                <div class="col-2">
                     <div class="form-group required">
                         @Html.CheckBoxFor(model => model.IsActive, new { @class = "checkbox-checked", @checked = "checked" })
                         @Html.LabelFor(model => model.IsActive)
                     </div>
                 </div>
-                <div class="col-3">
+                <div class="col-2">
                     <div class="form-group required">
                         @Html.CheckBoxFor(model => model.IsManagement, new { @class = "checkbox-checked", @checked = "checked" })
                         @Html.LabelFor(model => model.IsManagement)
+                    </div>
+                </div>
+                <div class="col-2">
+                    <div class="form-group required">
+                        @Html.CheckBoxFor(model => model.APIUser, new { @class = "checkbox-checked", @checked = "checked" })
+                        @Html.LabelFor(model => model.APIUser)
+                    </div>
+                </div>
+                 <div class="col-2">
+                    <div class="form-group required">
+                        @Html.CheckBoxFor(model => model.FormulationGL, new { @class = "checkbox-checked", @checked = "checked" })
+                        @Html.LabelFor(model => model.FormulationGL)
+                    </div>
+                </div>
+                <div class="col-2">
+                    <div class="form-group required">
+                        @Html.CheckBoxFor(model => model.AnalyticalGL, new {@change="TriggerDesignationName()", @class = "checkbox-checked", @checked = "checked" })
+                        @Html.LabelFor(model => model.AnalyticalGL)
+                    </div>
+                </div>
+                 <div class="col-2">
+                    <div class="form-group required" id="dvDesignatioName" >
+                        @Html.LabelFor(model => model.DesignationName,@SharedLocalizer["DesignationName"], new { @class = "control-label" })
+                       @* <span class="text-danger">*</span>*@
+                        @Html.TextBoxFor(model => model.DesignationName, new {@onblur="TrimSpace(this.id)",@autocomplete = "off", @class = "form-control checkbox-checked",  @placeholder = @SharedLocalizer["DesignationName"] })
+                        @Html.ValidationMessageFor(model => model.DesignationName, "", new { @class = "text-danger" })
                     </div>
                 </div>
             </div>

@@ -171,6 +171,9 @@
   <data name="Department" xml:space="preserve">
     <value>Department</value>
   </data>
+  <data name="DesignationName" xml:space="preserve">
+    <value>Designation Name</value>
+  </data>
   <data name="Edit" xml:space="preserve">
     <value>Edit</value>
   </data>

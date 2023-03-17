@@ -1,5 +1,6 @@
 ﻿var objYears = [];
 var objMainForm = {};
+var objdropdownYearControls_array = ['PackagingTypeId', 'CurrencyId','FinalSelectionId'];
 var ColumnObjUpcase = ['PackagingTypeId', 'CommercialBatchSize', 'PriceDiscounting', 'TotalApireq', 'Apireq', 'Suimsvolume', 'MarketGrowth', 'MarketSize', 'PriceErosion', 'FinalSelectionId'];
 /*var ColumnObjLowcase = ['packagingTypeId', 'commercialBatchSize', 'priceDiscounting', 'totalApireq', 'apireq', 'suimsvolume', 'marketGrowth', 'marketSize', 'priceErosion', 'finalSelectionId'];*/
 var SelectedBUValue = 0;
@@ -48,6 +49,7 @@ function InitializeCurrencyDropdown() {
 }
 function GetCountryListSuccess(data) {
     try {
+        $('#CurrencyId').append($('<option>').text('--Select--').attr('value','0'));
         $.each(data._object, function (index, object) {
             $('#CurrencyId').append($('<option>').text(object.currencyName).attr('value', object.currencyId));
         });
@@ -65,6 +67,7 @@ function InitializeProductTypeDropdown() {
 }
 function GetProductTypeListSuccess(data) {
     try {
+        $('#PackagingTypeId').append($('<option>').text('--Select--').attr('value', '0'));
         $.each(data._object, function (index, object) {
             $('#PackagingTypeId').append($('<option>').text(object.productTypeName).attr('value', object.productTypeId));
         });
@@ -81,6 +84,7 @@ function InitializeFinalSelectionDropdown() {
 }
 function GetFSListSuccess(data) {
     try {
+        $('#FinalSelectionId').append($('<option>').text('--Select--').attr('value', '0'));
         $.each(data._object, function (index, object) {
             $('#FinalSelectionId').append($('<option>').text(object.finalSelectionName).attr('value', object.finalSelectionId));
         });
@@ -96,14 +100,32 @@ function ValidateYearForm() {
     var ArrofInvalid = []
     //var IsValid = true;;
     $.each($('#AddYearForm').serializeArray(), function (_, kv) {
-        if (kv.value == '') {
-            $('#valmsg' + kv.name).text('Required');
-            //IsValid = false;
-            ArrofInvalid.push(kv.name);
+
+        
+        if (jQuery.inArray(kv.name, objdropdownYearControls_array) != -1) {
+
+            if (kv.value == 0) {
+                $('#valmsg' + kv.name).text('Required');
+                //IsValid = false;
+                ArrofInvalid.push(kv.name);
+            }
+            else {
+                $('#valmsg' + kv.name).text('');
+            }
         }
-        else {
-            $('#valmsg' + kv.name).text('');
+        else
+        {
+            if (kv.value == '' ) {
+                $('#valmsg' + kv.name).text('Required');
+                //IsValid = false;
+                ArrofInvalid.push(kv.name);
+            }
+            else {
+                $('#valmsg' + kv.name).text('');
+            }
         }
+
+       
     });
     var status = (ArrofInvalid.length == 0) ? true : false;
     if (!status) { toastr.error('Some fields are missing !'); }
@@ -153,10 +175,24 @@ function ValidateBU_Strength() {
     }
     return status;
 }
+
+function ResetYearFormValues() {
+
+    $.each($('#AddYearForm').serializeArray(), function (_, kv) {
+
+        if (jQuery.inArray(kv.name, objdropdownYearControls_array) != -1) {
+            $('#' + kv.name).val(0);
+        }
+        else {
+            $('#' + kv.name).val('');
+        }
+    });
+}
+
 function AddYearClick() {
     //var year = $('#AddYearForm').serializeArray();
     var valBUStrength = ValidateBU_Strength();
-    if (ValidateYearForm() && valBUStrength) {
+    if (ValidateYearForm() && valBUStrength && ValidateMainForm()) {
         var entityYear = {};
         //var IsValid = true;;
         $.each($('#AddYearForm').serializeArray(), function (_, kv) {
@@ -175,6 +211,7 @@ function AddYearClick() {
         ClearValidationForYearForm();
         $("#AddYearForm").hide();
         IsShowCancel_Save_buttons(true);
+        ResetYearFormValues();
     }
 }
 function AddRow(i) {
@@ -194,6 +231,7 @@ function deleteRow(i) {
 function AddtblRevenueRow(year, i, columns) {
 
     var finalSelection = columns[9];
+    $('#' + finalSelection).val(year["FinalSelectionId"]);
     var FSSelectedText = $('#' + finalSelection).find(":selected").text();
     var ArrItem = FSSelectedText.split('/');
     var MarketShareUnit = year["MarketShareUnit" + ArrItem[0]];
@@ -477,4 +515,5 @@ function IsShowCancel_Save_buttons(flag) {
 $('#btnCancelYearForm').click(function () {
     $("#AddYearForm").hide();
     IsShowCancel_Save_buttons(true);
+    ResetYearFormValues();
 });

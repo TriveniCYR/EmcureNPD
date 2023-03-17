@@ -1,4 +1,4 @@
-﻿
+﻿var IsDesignationVisible = false;
 
 $(document).ready(function () {
     //GetUserDropdown();
@@ -19,7 +19,8 @@ $(document).ready(function () {
 
    // $('#RegionId').css("height", "fit - content"); //height: fit - content
    // $('#CountryId').css("height", "fit - content"); //height: fit - content  
-   
+    $('#dvDesignatioName').hide();
+    IsDesignationVisible = false;
 });
 
 function GetBusinessUnitList() {
@@ -160,6 +161,29 @@ function GetAllRoleListError(x, y, z) {
 function TrimSpace(id) {
     var ctrlValue = $(id).val()
     $(id).val($.trim(ctrlValue));
+}
+
+function TriggerDesignationName() {
+    var arrCheckBox = ['AnalyticalGL', 'FormulationGL', 'APIUser', 'IsManagement'];
+    var IsAtleastOneChecked = false;
+    $.each(arrCheckBox, function (index, value) {
+
+        var control_chk = $('#' + value);
+        if (control_chk.checked == true) {
+            IsAtleastOneChecked = true;
+        }
+    });  
+
+    if (IsAtleastOneChecked) {
+        $('#dvDesignatioName').show();
+        IsDesignationVisible = true;
+    }
+
+    else {
+        $('#dvDesignatioName').hide();
+        $('#DesignationName').val('');
+        IsDesignationVisible = false;
+    }
 }
 
 

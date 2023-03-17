@@ -52,7 +52,7 @@ namespace EmcureNPD.API.Controllers.Project
         {
             try
             {
-                var oTaskEntity = _projectService.GetTaskSubTaskList(long.Parse(UtilityHelper.Decreypt(pidfId))); ;
+                var oTaskEntity = _projectService.GetTaskSubTaskList(long.Parse(UtilityHelper.Decreypt(pidfId)));
                 if (oTaskEntity != null)
                     return _ObjectResponse.Create(oTaskEntity, (Int32)HttpStatusCode.OK);
                 else
@@ -110,12 +110,12 @@ namespace EmcureNPD.API.Controllers.Project
                 return _ObjectResponse.Create(null, (Int32)HttpStatusCode.BadRequest, "No Records found");
             }
         }
-        [HttpGet, Route("GetBusinessUnitDetails/{id}")]
-        public async Task<IActionResult> GetBusinessUnitDetails([FromRoute] string id)
+        [HttpGet, Route("GetBusinessUnitDetails/{buid}/{pidfid}")]
+        public async Task<IActionResult> GetBusinessUnitDetails([FromRoute] long buid, string pidfid)
         {
             try
             {
-                return _ObjectResponse.CreateData(await _projectService.GetBusinessunitDetails(long.Parse(UtilityHelper.Decreypt(id))), (Int32)HttpStatusCode.OK);
+                return _ObjectResponse.CreateData(await _projectService.GetBusinessunitDetails(buid, long.Parse(UtilityHelper.Decreypt(pidfid))), (Int32)HttpStatusCode.OK);
             }
             catch (Exception ex)
             {

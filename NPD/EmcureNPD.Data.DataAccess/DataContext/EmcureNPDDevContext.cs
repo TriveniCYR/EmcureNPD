@@ -882,9 +882,15 @@ namespace EmcureNPD.Data.DataAccess.DataContext
 
                 entity.Property(e => e.Address).HasMaxLength(200);
 
+                entity.Property(e => e.AnalyticalGl).HasColumnName("AnalyticalGL");
+
+                entity.Property(e => e.Apiuser).HasColumnName("APIUser");
+
                 entity.Property(e => e.CreatedDate).HasColumnType("datetime");
 
                 entity.Property(e => e.DeletedDate).HasColumnType("datetime");
+
+                entity.Property(e => e.DesignationName).HasMaxLength(100);
 
                 entity.Property(e => e.EmailAddress)
                     .IsRequired()
@@ -896,6 +902,8 @@ namespace EmcureNPD.Data.DataAccess.DataContext
                 entity.Property(e => e.ForgotPasswordToken)
                     .HasMaxLength(100)
                     .IsUnicode(false);
+
+                entity.Property(e => e.FormulationGl).HasColumnName("FormulationGL");
 
                 entity.Property(e => e.FullName)
                     .IsRequired()
@@ -1662,6 +1670,8 @@ namespace EmcureNPD.Data.DataAccess.DataContext
 
                 entity.Property(e => e.ModifyDate).HasColumnType("datetime");
 
+                entity.Property(e => e.PatentStatus).HasMaxLength(50);
+
                 entity.Property(e => e.Pidfid).HasColumnName("PIDFID");
 
                 entity.HasOne(d => d.BusinessUnit)
@@ -1719,6 +1729,10 @@ namespace EmcureNPD.Data.DataAccess.DataContext
                 entity.Property(e => e.PatentNumber)
                     .HasMaxLength(20)
                     .IsUnicode(false);
+
+                entity.Property(e => e.PatentNumber1)
+                    .HasMaxLength(50)
+                    .HasColumnName("PatentNumber_1");
 
                 entity.Property(e => e.Strategy)
                     .HasMaxLength(100)
