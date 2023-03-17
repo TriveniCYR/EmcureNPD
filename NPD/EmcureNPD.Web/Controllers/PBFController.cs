@@ -37,10 +37,7 @@ namespace EmcureNPD.Web.Controllers
         }
 
 
-        public IActionResult PBF()
-        {
-            return View();
-        }
+       
 
 
         public IActionResult PIDFList()
@@ -456,6 +453,111 @@ namespace EmcureNPD.Web.Controllers
                 throw;
             }
         }
+
+        #region PBF
+
+       
+        public IActionResult PBF(string pidfid, string bui)
+        {
+            try
+            {
+                PBFFormEntity oPBForm = null;
+                int rolId = (int)HttpContext.Session.GetInt32(UserHelper.LoggedInRoleId);
+                RolePermissionModel objPermssion = UtilityHelper.GetCntrActionAccess(Convert.ToString(RouteData.Values["controller"]), rolId);
+                if (objPermssion == null || (!objPermssion.Add && !objPermssion.Edit))
+                {
+                    return RedirectToAction("AccessRestriction", "Home");
+                }
+                ViewBag.Access = objPermssion;
+                oPBForm = GetPbfModel(pidfid, bui, null);
+                return View(oPBForm);
+            }
+            catch (Exception e)
+            {
+                ViewBag.errormessage = Convert.ToString(e.StackTrace);
+                return View("Login");
+            }
+
+
+            return View();
+        }
+
+        [NonAction]
+        private PBFFormEntity GetPbfModel(string pidfid, string bui, string strength)
+        {
+            var oPBForm = new PBFFormEntity();
+            pidfid = UtilityHelper.Decreypt(pidfid);
+            string logUserId = Convert.ToString(HttpContext.Session.GetString(UserHelper.LoggedInUserId));
+            HttpResponseMessage resMsg;
+            string bussnessId = UtilityHelper.Decreypt(bui);
+            string StrengthId = "0";
+            if (strength != null)
+            {
+                StrengthId = UtilityHelper.Decreypt(strength);
+            }
+            HttpContext.Request.Cookies.TryGetValue(UserHelper.EmcureNPDToken, out string token);
+            APIRepository objapi = new(_cofiguration);
+            HttpResponseMessage responseMessage = objapi.APICommunication(APIURLHelper.GetPbfFormDetails + "/" + pidfid + "/" + bussnessId + "/" + StrengthId, HttpMethod.Get, token).Result;
+            if (responseMessage.IsSuccessStatusCode)
+            {
+                string jsonResponse = responseMessage.Content.ReadAsStringAsync().Result;
+                var data = JsonConvert.DeserializeObject<APIResponseEntity<PBFFormEntity>>(jsonResponse);
+                oPBForm = data._object;
+                oPBForm.Pidfid = Convert.ToInt64(pidfid);
+                oPBForm.BusinessUnitId = Convert.ToInt32(bussnessId);
+                oPBForm.BusinessUnitsByUser = GetUserWiseBusinessUnit(Convert.ToInt32(logUserId));
+
+                HttpResponseMessage responseMS = objapi.APICommunication(APIURLHelper.GetPIDFById + "/" + pidfid, HttpMethod.Get, token).Result;
+
+                if (responseMS.IsSuccessStatusCode)
+                {
+                    string jsnRs = responseMS.Content.ReadAsStringAsync().Result;
+                    var retPIDF = JsonConvert.DeserializeObject<APIResponseEntity<PIDFEntity>>(jsnRs);
+                }
+            }
+            return oPBForm;
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public IActionResult PBF(int PIDFId, PBFFormEntity pbfEntity)
+        {
+            try
+            {
+                string logUserId = Convert.ToString(HttpContext.Session.GetString(UserHelper.LoggedInUserId));
+                int rolId = (int)HttpContext.Session.GetInt32(UserHelper.LoggedInRoleId);
+                RolePermissionModel objPermssion = UtilityHelper.GetCntrActionAccess(Convert.ToString(RouteData.Values["controller"]), rolId);
+                if (objPermssion == null || (!objPermssion.Add && !objPermssion.Edit))
+                {
+                    return RedirectToAction("AccessRestriction", "Home");
+
+                }               
+                //pbfEntity.CreatedBy = Convert.ToInt32(HttpContext.Session.GetString(UserHelper.LoggedInUserId));
+                HttpContext.Request.Cookies.TryGetValue(UserHelper.EmcureNPDToken, out string token);
+                APIRepository objapi = new(_cofiguration);
+                HttpResponseMessage responseMessage = objapi.APICommunication(APIURLHelper.SavePBF, HttpMethod.Post, token, new StringContent(JsonConvert.SerializeObject(pbfEntity))).Result;
+
+                if (responseMessage.IsSuccessStatusCode)
+                {
+                    string jsonResponse = responseMessage.Content.ReadAsStringAsync().Result;
+                    ModelState.Clear();
+                    return RedirectToAction("PIDFList", "PIDF", new { ScreenId = 6 });
+                }
+
+
+            }
+            catch (Exception e)
+            {
+                ViewBag.errormessage = Convert.ToString(e.StackTrace);
+                ModelState.Clear();
+                return RedirectToAction("PIDFList", "PIDF", new { ScreenId = 6 });
+            }
+            return RedirectToAction("PIDFList", "PIDF", new { ScreenId = 6 });
+        }
+
+
+
+        #endregion
     }
 
 }

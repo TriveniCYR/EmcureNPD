@@ -21,13 +21,13 @@
             </div>
         </div>
 
-        <div class="col-md-3">
+       @* <div class="col-md-3">
             <div class="form-group required">
                 @Html.LabelFor(model => model.Market,@MasterLocalizer["Market"], new { @class = "control-label" })<span class="text-danger">*</span>
                 @Html.TextBoxFor(model => model.Market, new {@class = "form-control", @placeholder = @MasterLocalizer["Market"] ,@required="required"})
 
             </div>
-        </div>
+        </div>*@
         <div class="col-md-3">
             <div class="form-group required">
                 @Html.LabelFor(model => model.BusinessRelationable,@MasterLocalizer["BusinessRationable"], new { @class = "control-label" })<span class="text-danger">*</span>
@@ -164,7 +164,7 @@
                     <select id="PbfManfFormRNDDivisionId" name="PbfFormEntities.FormRnDdivisionId" class="form-control readOnlyUpdate" required></select>
                 </div>
             </div>
-            <div class="col-md-3">
+           @* <div class="col-md-3">
                 <div class="form-group required">
                     @Html.LabelFor(model => model.TransferFormRnDdivisionId, "Transfer R&D Division", new { @class = "control-label" })<span class="text-danger">*</span>
                     <select id="TransferFormRNDDivisionId" name="PbfFormEntities.TransferFormRnDdivisionId" class="form-control readOnlyUpdate" required></select>
@@ -183,7 +183,7 @@
                     @Html.TextBoxFor(model => model.SinkCost, new {@class = "form-control", @placeholder = "Sink Cost" ,@required="required"})
 
                 </div>
-            </div>            
+            </div> *@           
         </div>
     </div>
     <div class="card-header">
@@ -220,6 +220,31 @@
             </div>
         </div>
     </div>
+    <div id=divbusinessunit>
+         <input type="hidden" id="PIDFBusinessUnitId" value="@Model.BusinessUnitId" />
+                    <input type="hidden" id="PIDFId" value="@Model.Pidfid" />
+                    <div class="card card-primary card-tabs">
+                        <div class="card-header p-0 pt-1">
+                            <ul class="nav nav-tabs text-center m-0" id="businessUnitTabs">
+                               @* @if (Model.MasterBusinessUnitEntities != null)
+                                {
+                                    @if (Model.MasterBusinessUnitEntities.Count() > 0)
+                                    {
+                                        int k = 0;
+                                        @foreach (var businessUnit in Model.MasterBusinessUnitEntities)
+                                        {
+                                            <li class="nav-item p-0">
+                                                <a class="nav-link BUtab" onClick="BUtabClick('@businessUnit.BusinessUnitId','@Model.Pidfid');" name="BusinessUnitId" id="BUtab_@businessUnit.BusinessUnitId">@businessUnit.BusinessUnitName</a>
+                                            </li>
+                                            k = k + 1;
+                                        }
+                                    }
+                                }*@
+                            </ul>
+                        </div>
+
+                    </div>
+    </div>
     <div class="card-header">
                 <h5 class="mb-0"><b>General</b></h5>
             </div>
@@ -241,7 +266,7 @@
                             </div>
                         </div>
                     </div>
-                    <div class="col-md-3">
+                  @*  <div class="col-md-3">
                         <div class="form-group required">
                             @Html.LabelFor(model => model.SAPProjectProjectCode,"SAP Code / Project Code", new { @class = "control-label" })
                             @Html.TextBoxFor(model => model.SAPProjectProjectCode, new {@readonly = "readonly", @class = "form-control", @placeholder = "SAP Code / Project Code" ,@required="required"})
@@ -252,7 +277,7 @@
                             @Html.LabelFor(model => model.ImprintingEmbossingCodes,"Imprinting Embossing Codes", new { @class = "control-label" })
                             @Html.TextBoxFor(model => model.ImprintingEmbossingCodes, new {@readonly = "readonly", @class = "form-control", @placeholder = "Imprinting Embossing Codes",@required="required" })
                         </div>
-                    </div>
+                    </div>*@
                 </div>
 
                 <div class="row">
@@ -305,7 +330,7 @@
                             @Html.TextBoxFor(@modal=> modal.ProjectDevelopmentInitialDate,"{0:yyyy-MM-dd}",new{@type="date",@class="form-control readOnlyUpdate",@required="required"})
                         </div>
                     </div>
-                    <div class="col-md-3">
+                   @* <div class="col-md-3">
                         <div class="form-group required">
                             @Html.LabelFor(model => model.FormulationId, "Formulation GL", new { @class = "control-label" })
                             <select id="ClinicalFormulationId" name="PbfFormEntities.FormulationId" class="form-control readOnlyUpdate" required></select>
@@ -316,7 +341,7 @@
                             @Html.LabelFor(model => model.AnalyticalId, "Analytical GL", new { @class = "control-label" })
                             <select id="ClinicalAnalyticalId" name="PbfFormEntities.AnalyticalId" class="form-control readOnlyUpdate" required></select>
                         </div>
-                    </div>
+                    </div>*@
 
                 </div>
 

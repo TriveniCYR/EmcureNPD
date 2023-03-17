@@ -36,8 +36,6 @@ function setLicensevalues() {
             $("#Clinicallicence").find($(".License" + value).prop("checked", true));
         });
     }
-
-
 }
 function SetBU_Strength() {
     debugger;
