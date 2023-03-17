@@ -216,6 +216,7 @@ function AddTaskSubTask() {
 }
 
 function ShowAddTaskForm() {
+    CleareTaskFields();
     $('#AddTaskModel').modal('show');
     $('#loading').show();
     ajaxServiceMethod($('#hdnBaseURL').val() + FillTaskDropdown, 'GET', GetDropdownsForAddTaskSuccess, GetDropdownsForAddTaskError);
@@ -267,8 +268,7 @@ function HideUpdateModel() {
 }
 // add sub task
 function ShowAddSubTaskForm(parentId, taskName) {
-    console.log(parentId, taskName);
-  
+    CleareSubTaskFields();
     $('#AddSubTaskModel').modal('show');
     $('#AddSubTaskofTask').empty().append(
         "<option selected readonly value='" + parentId + "'>" + taskName + "</option>"
@@ -444,5 +444,44 @@ function calculateSubTaskDuration() {
         var duration = (end - start) / (1000 * 60 * 60 * 24); // difference in days
         document.getElementById("AddSubTaskDuration").value = duration;
         document.getElementById("AddSubTaskDuration").readOnly = true;
+    }
+}
+
+//clear fields
+
+function CleareTaskFields() {
+    $('#AddTaskModel #TaskName').val("");
+    $('#AddTaskModel #AddTaskStartDate').val("");
+    $('#AddTaskModel #PriorityId').val("");
+    document.getElementById("AddTaskDuration").readOnly = false;
+    $('#AddTaskModel #AddTaskDuration').val("");
+    $('#AddTaskModel #TaskOwnerId').val("");
+    $('#AddTaskModel #AddTaskEndDate').val("");
+    $('#AddTaskModel #StatusId').val("");
+    document.getElementById("AddTaskPercentage").readOnly = false;
+    $('#AddTaskModel #AddTaskPercentage').val("");
+    var validationMessages = document.querySelectorAll(".field-validation-error");
+
+    //// Loop through the messages and clear them
+    for (var i = 0; i < validationMessages.length; i++) {
+        validationMessages[i].textContent = "";
+    }
+}
+function CleareSubTaskFields() {
+    $('#AddSubTaskModel #TaskName').val("");
+    $('#AddSubTaskModel #AddSubTaskStartDate').val("");
+    $('#AddSubTaskModel #PriorityId').val("");
+    document.getElementById("AddSubTaskDuration").readOnly = false;
+    $('#AddSubTaskModel #AddSubTaskDuration').val("");
+    $('#AddSubTaskModel #TaskOwnerId').val("");
+    $('#AddSubTaskModel #AddSubTaskEndDate').val("");
+    $('#AddSubTaskModel #StatusId').val("");
+    document.getElementById("AddSubTaskPercentage").readOnly = false;
+    $('#AddSubTaskModel #AddSubTaskPercentage').val("");
+    var validationMessages = document.querySelectorAll(".field-validation-error");
+
+    //// Loop through the messages and clear them
+    for (var i = 0; i < validationMessages.length; i++) {
+        validationMessages[i].textContent = "";
     }
 }
