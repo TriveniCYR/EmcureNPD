@@ -423,62 +423,26 @@ $(function () {
     });
 });
 
-//Not Wokring 
-//$(function () {
-//    // attach change event to start date field
-//    $("#AddTaskStartDate").on("dp.change", function (e) {
-//        console.log("Change called");
-//        var tempMinDate = new Date(e.date);
-//        var setminDate = new Date(tempMinDate);
-//        setminDate.setDate(tempMinDate.getDate() + 1);
-//        $('#AddTaskStartDate').data("DateTimePicker").minDate(setminDate);
-//        $('#AddTaskDuration').val(calculateDaysDifference($("#AddTaskStartDate").val(), $('#AddTaskEndDate').val()));
-
-//    });
-//    $("#AddTaskEndDate").on("dp.change", function (e) {
-//        console.log("Change called");
-//        var tempMinDate = new Date(e.date);
-//        var setminDate = new Date(tempMinDate);
-//        setminDate.setDate(tempMinDate.getDate() + 1);
-//        $('#AddTaskStartDate').data("DateTimePicker").minDate(setminDate);
-//        $('#AddTaskDuration').val(calculateDaysDifference($("#AddTaskStartDate").val(), $('#AddTaskEndDate').val()));
-
-//    });
-
-//    $("#AddSubTaskStartDate").on("dp.change", function (e) {
-//        console.log("Change called");
-//        var tempMinDate = new Date(e.date);
-//        var setminDate = new Date(tempMinDate);
-//        setminDate.setDate(tempMinDate.getDate() + 1);
-//        $('#AddSubTaskStartDate').data("DateTimePicker").minDate(setminDate);
-//        $('#AddSubTaskDuration').val(calculateDaysDifference($("#AddSubTaskStartDate").val(), $('#AddSubTaskEndDate').val()));
-
-//    });
-//    $("#AddSubTaskEndDate").on("dp.change", function (e) {
-//        console.log("Change called");
-//        var tempMinDate = new Date(e.date);
-//        var setminDate = new Date(tempMinDate);
-//        setminDate.setDate(tempMinDate.getDate() + 1);
-//        $('#AddSubTaskStartDate').data("DateTimePicker").minDate(setminDate);
-//        $('#AddSubTaskDuration').val(calculateDaysDifference($("#AddSubTaskStartDate").val(), $('#AddSubTaskEndDate').val()));
-
-//    });
-//});
-
-
 //calculate days diff
-function calculateDaysDifference(start, end) {
-    var d1 = start;
-    var d2 = end;
-    var oneDay = 24 * 60 * 60 * 1000;
-    var diff = 0;
-    if (d1 && d2) {
-
-        var startDate = new Date(d1.split('-')[2] + '-' + d1.split('-')[1] + '-' + d1.split('-')[0]);
-        var endDate = new Date(d2.split('-')[2] + '-' + d2.split('-')[1] + '-' + d2.split('-')[0]);
-        diff = Math.round(Math.abs((endDate.getTime() - startDate.getTime()) / (oneDay)));
-        console.log(diff);
+function calculateTaskDuration() {
+    var startDate = document.getElementById("AddTaskStartDate").value;
+    var endDate = document.getElementById("AddTaskEndDate").value;
+    if (startDate && endDate) {
+        var start = new Date(startDate);
+        var end = new Date(endDate);
+        var duration = (end - start) / (1000 * 60 * 60 * 24); // difference in days
+        document.getElementById("AddTaskDuration").value = duration;
+        document.getElementById("AddTaskDuration").readOnly = true;
     }
-    return diff;
-
+}
+function calculateSubTaskDuration() {
+    var startDate = document.getElementById("AddSubTaskStartDate").value;
+    var endDate = document.getElementById("AddSubTaskEndDate").value;
+    if (startDate && endDate) {
+        var start = new Date(startDate);
+        var end = new Date(endDate);
+        var duration = (end - start) / (1000 * 60 * 60 * 24); // difference in days
+        document.getElementById("AddSubTaskDuration").value = duration;
+        document.getElementById("AddSubTaskDuration").readOnly = true;
+    }
 }

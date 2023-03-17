@@ -404,7 +404,7 @@
                                     @Html.LabelFor(t => t.StartDate, new { @class = "control-label" })
                                     <div class="input-group date" id="addTaskStartDate" data-target-input="nearest">
 
-                                        @Html.TextBoxFor(t => t.StartDate, new { @class = "form-control datetimepicker",type = "date", autocomplete = "off", @id = "AddTaskStartDate" })
+                                        @Html.TextBoxFor(t => t.StartDate, new { @class = "form-control datetimepicker",type = "date",onchange = "calculateTaskDuration()", autocomplete = "off", @id = "AddTaskStartDate" })
                                         <div class="input-group-append" data-toggle="datetimepicker">
                                         </div><br>
 
@@ -433,7 +433,7 @@
                                     @Html.LabelFor(t => t.EndDate, new { @class = "control-label" })
                                     <div class="input-group date" id="addTaskEndDate" data-target-input="nearest">
 
-                                        @Html.TextBoxFor(t => t.EndDate, new { @class = "form-control datetimepicker", type = "date", autocomplete = "off", @id = "AddTaskEndDate" })
+                                        @Html.TextBoxFor(t => t.EndDate, new { @class = "form-control datetimepicker", type = "date",onchange = "calculateTaskDuration()", autocomplete = "off", @id = "AddTaskEndDate" })
                                         <div class="input-group-append" data-toggle="datetimepicker">
                                         </div><br>
 
@@ -492,7 +492,7 @@
                                     @Html.LabelFor(t => t.EndDate, new { @class = "control-label" })
                                     <div class="input-group date" id="addTaskEndDate" data-target-input="nearest">
 
-                                        @Html.TextBoxFor(t => t.EndDate, new { @class = "form-control datetimepicker", type = "date", autocomplete = "off", @id = "AddSubTaskEndDate" })
+                                        @Html.TextBoxFor(t => t.EndDate, new { @class = "form-control datetimepicker",onchange = "calculateSubTaskDuration()", type = "date", autocomplete = "off", @id = "AddSubTaskEndDate" })
                                         <div class="input-group-append" data-toggle="datetimepicker">
                                         </div><br>
 
@@ -521,7 +521,7 @@
                                     @Html.LabelFor(t => t.StartDate, new { @class = "control-label" })
                                     <div class="input-group date" id="addTaskStartDate" data-target-input="nearest">
 
-                                        @Html.TextBoxFor(t => t.StartDate, new { @class = "form-control datetimepicker",type = "date", autocomplete = "off", @id = "AddSubTaskStartDate" })
+                                        @Html.TextBoxFor(t => t.StartDate, new { @class = "form-control datetimepicker",type = "date",onchange = "calculateSubTaskDuration()", autocomplete = "off", @id = "AddSubTaskStartDate" })
                                         <div class="input-group-append" data-toggle="datetimepicker">
                                         </div><br>
 
