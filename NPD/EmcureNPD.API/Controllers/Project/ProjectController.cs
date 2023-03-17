@@ -52,7 +52,7 @@ namespace EmcureNPD.API.Controllers.Project
         {
             try
             {
-                var oTaskEntity = _projectService.GetTaskSubTaskList(long.Parse(UtilityHelper.Decreypt(pidfId))); ;
+                var oTaskEntity = _projectService.GetTaskSubTaskList(long.Parse(UtilityHelper.Decreypt(pidfId)));
                 if (oTaskEntity != null)
                     return _ObjectResponse.Create(oTaskEntity, (Int32)HttpStatusCode.OK);
                 else
