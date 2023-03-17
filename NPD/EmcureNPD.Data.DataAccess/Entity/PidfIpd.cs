@@ -32,6 +32,7 @@ namespace EmcureNPD.Data.DataAccess.Entity
         public int? ModifyBy { get; set; }
         public int? BusinessUnitId { get; set; }
         public bool? IsComment { get; set; }
+        public string PatentStatus { get; set; }
 
         public virtual MasterBusinessUnit BusinessUnit { get; set; }
         public virtual Pidf Pidf { get; set; }

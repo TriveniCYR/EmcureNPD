@@ -5,21 +5,21 @@ using System.Collections.Generic;
 
 namespace EmcureNPD.Data.DataAccess.Entity
 {
-    public partial class MasterTestType
+    public partial class MasterFilingType
     {
-        public MasterTestType()
+        public MasterFilingType()
         {
-            PidfPbfAnalyticals = new HashSet<PidfPbfAnalytical>();
+            PidfPbfs = new HashSet<PidfPbf>();
         }
 
-        public int TestTypeId { get; set; }
-        public string TestTypeName { get; set; }
+        public int FilingTypeId { get; set; }
+        public string FilingTypeName { get; set; }
         public bool IsActive { get; set; }
         public int? CreatedBy { get; set; }
         public DateTime CreatedDate { get; set; }
         public int? ModifyBy { get; set; }
         public DateTime? ModifyDate { get; set; }
 
-        public virtual ICollection<PidfPbfAnalytical> PidfPbfAnalyticals { get; set; }
+        public virtual ICollection<PidfPbf> PidfPbfs { get; set; }
     }
 }

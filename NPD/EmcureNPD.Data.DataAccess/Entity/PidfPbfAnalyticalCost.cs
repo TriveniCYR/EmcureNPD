@@ -7,19 +7,19 @@ namespace EmcureNPD.Data.DataAccess.Entity
 {
     public partial class PidfPbfAnalyticalCost
     {
+        public PidfPbfAnalyticalCost()
+        {
+            PidfPbfAnalyticalCostStrengthMappings = new HashSet<PidfPbfAnalyticalCostStrengthMapping>();
+        }
+
         public long PbfanalyticalCostId { get; set; }
-        public long PbfanalyticalId { get; set; }
-        public long StrengthId { get; set; }
+        public long PbfgeneralId { get; set; }
         public double? TotalAmvcost { get; set; }
         public string Remark { get; set; }
-        public double? TotalPrototypeCost { get; set; }
-        public double? TotalScaleupCost { get; set; }
-        public double? TotalExhibitCost { get; set; }
-        public double? TotalCost { get; set; }
         public DateTime CreatedDate { get; set; }
         public int CreatedBy { get; set; }
 
-        public virtual PidfPbfAnalytical Pbfanalytical { get; set; }
-        public virtual PidfproductStrength Strength { get; set; }
+        public virtual PidfPbfGeneral Pbfgeneral { get; set; }
+        public virtual ICollection<PidfPbfAnalyticalCostStrengthMapping> PidfPbfAnalyticalCostStrengthMappings { get; set; }
     }
 }

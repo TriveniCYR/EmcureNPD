@@ -223,6 +223,15 @@ namespace EmcureNPD.Resource.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Designation Name.
+        /// </summary>
+        internal static string DesignationName {
+            get {
+                return ResourceManager.GetString("DesignationName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Edit.
         /// </summary>
         internal static string Edit {
