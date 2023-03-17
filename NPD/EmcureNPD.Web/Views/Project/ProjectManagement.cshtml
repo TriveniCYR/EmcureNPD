@@ -11,588 +11,548 @@
 @model EmcureNPD.Business.Models.ProjectTaskEntity
 @inject Microsoft.Extensions.Localization.IStringLocalizer<EmcureNPD.Resource.Shared> SharedLocalizer
 
+<div class="content-header">
+    <div style="display: flex; justify-content: space-between; align-items: center;">
+        <h2 class="m-0">Project Management</h2>
+        <div class="md-left mb-1">
+            <div class="mybtn-group">
+                <a class="btn btn-primary" href="@Url.Action("Gantt","Project", new{pidfid =@ViewBag.id})"><i class="fas fa-project-diagram mr-2"></i>Gantt Chart</a>
 
-<div class="content-wrapper pt-3">
-    <!-- Main content -->
-    <section class="content">
-        <div class="container-fluid">
-            <!-- Small boxes (Stat box) -->
-            <!-- Main row -->
-            <div class="row">
-                <section class="col-lg-12 ">
-                    <!-- Custom tabs (Charts with tabs)-->
-                    <div class="card">
-                        <div class="card-header">
-                            <h3 class="card-title">
-                                <i class="far fa-plus-square mr-2"></i> PIDF
-                            </h3>
-                            <div class="card-tools md-left">
-                                <div class="mybtn-group">
-                                    <a class="btn btn-primary" href="@Url.Action("Gantt","Project", new{pidfid =@ViewBag.id})"><i class="fas fa-project-diagram mr-2"></i>Gantt Chart</a>
-
-                                    <button class="btn btn-primary" onclick="javascript:window.history.back();"><i class="fas fa-undo mr-1"></i> Back</button>
-
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="card-body">
-                            <div>
-                                <div class="row mt-2">
-                                    <div class="col-sm-12 col-md-12 col-lg-7">
-                                        <table class="table table-bordered">
-                                            <tr>
-                                                <td width="30%"><strong>Product Name</strong></td>
-                                                <td><div class="col-sm-9" id="pidf_ProjectorProductName"></div></td>
-                                            </tr>
-                                            <tr>
-                                                <td width="30%"><strong>Product Type</strong></td>
-                                                <td><div class="col-sm-9" id="pidf_ProductTypeName"></div></td>
-                                            </tr>
-                                            <tr>
-                                                <td width="30%"><strong>Plant Name</strong></td>
-                                                <td><div class="col-sm-9" id="pidf_PlantName"></div></td>
-                                            </tr>
-                                            <tr>
-                                                <td width="30%"><label>Formulation</label></td>
-                                                <td><div class="col-sm-9" id="pidf_FormulationName"></div></td>
-                                            </tr>
-                                            <tr>
-                                                <td width="30%"><label>Work Flow</label></td>
-                                                <td><div class="col-sm-9" id="pidf_WorkflowName"></div></td>
-                                            </tr>
-                                        </table>
-
-                                    </div>
-                                    <div class="col-sm-12 col-md-12 col-lg-5">
-                                        <style>
-                                            #myTable tbody {
-                                                display: block;
-                                                overflow-y: auto;
-                                                table-layout: fixed;
-                                                max-height: 200px;
-                                            }
-                                        </style>
-                                        <table id="myTable" class="table order-list table-bordered" style="width:100%">
-                                            <thead>
-                                                <tr>
-                                                    <th width="30%">Strength</th>
-                                                    <th>Unit</th>
-                                                </tr>
-                                            </thead>
-                                        </table>
-                                    </div>
-                                </div>
-                            </div>
-
-                            @*Remaining code here*@
-
-                            <div class="row mt-1">
-                                <div class="col-sm-12">
-                                    <div class="card  card-primary card-outline card-outline-tabs nav-fill nav-pills">
-                                        <div class="card-header p-0">
-                                            <ul class="nav nav-tabs" id="custom-tabs-one-tab" role="tablist">
-                                                <li class="pt-2 px-3">
-                                                    <h3 class="card-title"><i class="fas fa-globe mr-2"></i>Business Unit</h3>
-                                                </li>
-                                                
-                                                <div class="card-tools">
-                                                    <button type="button" class="btn btn-tool p-0 mr-3 ml-3" data-card-widget="maximize">
-                                                        <i class="fas fa-expand"></i>
-                                                    </button>
-                                                    <button type="button" class="btn btn-tool" data-card-widget="collapse">
-                                                        <i class="fas fa-minus"></i>
-                                                    </button>
-                                                </div>
-                                            </ul>
-                                        </div>
-                                        <div class="card-body">
-                                            <div class="tab-content" id="custom-tabs-one-tabContent">
-
-                                                <div class="tab-pane fade show active" id="BUnit" role="tabpanel" aria-labelledby="BUnit-tab">
-                                                    <h4 id="BHeading" class="text-divider"><span></span></h4>
-                                                    <form method="post" >
-
-                                                        <div class="row mt-5 mb-3">
-                                                            <div class="table-responsive">
-                                                                <table id="BDetailsTable" class="table table-striped table-bordered dt-responsive nowrap" style="width:100%">
-                                                                    <thead>
-                                                                        <tr>
-                                                                            <th>Country</th>
-                                                                            <th>Strength</th>
-                                                                            <th>Pack Size</th>
-                                                                            <th>Packing</th>
-                                                                            <th>1st Year Price/Pack</th>
-                                                                            <th>1st Year Qty.</th>
-                                                                            <th>1st Year Volume</th>
-                                                                            <th>2nd Year Price/Pack</th>
-                                                                            <th>2nd Year Qty.</th>
-                                                                            <th>2nd Year Volume</th>
-                                                                            <th>3rd Year Price/Pack</th>
-                                                                            <th>3rd Year Qty.</th>
-                                                                            <th>3rd Year Volume</th>
-                                                                            <th>Batch Size</th>
-                                                                            <th>Currency</th>
-                                                                            <th>1st Year COGS</th>
-                                                                            <th>2nd Year COGS</th>
-                                                                            <th>3rd Year COGS</th>
-                                                                            <th>Freight</th>
-                                                                            <th>Total Cost</th>
-                                                                            <th>3 Year Contribution</th>
-                                                                            <th>Cost of 3 Batches</th>
-                                                                            <th>Analytical Cost</th>
-                                                                            <th>BECost</th>
-                                                                            <th>RLD Cost</th>
-                                                                            <th>R&D Cost</th>
-                                                                            <th>Filing Cost</th>
-                                                                            <th>Stability Cost</th>
-                                                                            <th>Total Invest</th>
-                                                                            <th>Other Cost</th>
-                                                                            <th>API Source</th>
-                                                                            <th>ROI</th>
-                                                                        </tr>
-                                                                    </thead>
-                                                                    <tbody>
-
-                                                                    </tbody>
-                                                                </table>
-                                                            </div>
-                                                        </div>
-                                                    </form>
-                                                </div>
-
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-
-                            @*DRF List below*@
-
-                            @*Upload file details*@
-                            <div class="row">
-                                <section class="col-lg-12">
-                                    <!-- Custom tabs (Charts with tabs)-->
-                                    <div class="card">
-                                        <div class="card-header">
-                                            <h3 class="card-title">
-                                                <i class="fas fa-file-alt mr-3"></i> Uploaded Files
-                                            </h3>
-                                        </div>
-                                        <div class="card-body">
-                                            <div class="table-responsive">
-                                                <table id="files" class="table" style="width:100%;">
-                                                    <thead>
-                                                        <tr>
-                                                            <th>Files</th>
-                                                        </tr>
-                                                    </thead>
-                                                    <tbody>
-                                                    </tbody>
-                                                </table>
-                                            </div>
-                                        </div>
-                                    </div>
-
-                                </section>
-                            </div>
-
-                            @*Show Milestones below*@
-                            <div class="row">
-                                <section class="col-lg-12">
-                                    <!-- Custom tabs (Charts with tabs)-->
-                                    <div class="card">
-                                        <div class="card-header">
-                                            <h3 class="card-title">
-                                                <i class="far fa-edit"></i> Tasks
-                                            </h3>
-                                            <div class="card-tools md-left">
-                                                <div class="mybtn-group">
-                                                    <input type="hidden" name="CurrentUserRole" id="CurrentUserRole" value="@ViewBag.CurrentUserRolePIDF" />
-                                                    @*  @if (User.IsInRole("Prescriber") || User.IsInRole("Regulatory Manager") || User.IsInRole("Senior Project Manager"))
-                                                    {*@
-                                                    <button type="button" onclick=AddTaskSubTask() class="btn btn-primary">@SharedLocalizer["Add Milestones"].Value</button>
-                                                    @* }*@
-                                                    <button type="button" class="btn btn-tool p-0 mr-3 ml-3" data-card-widget="maximize">
-                                                        <i class="fas fa-expand"></i>
-                                                    </button>
-                                                    <button type="button" class="btn btn-tool" data-card-widget="collapse">
-                                                        <i class="fas fa-minus"></i>
-                                                    </button>
-                                                </div>
-                                            </div>
-                                            @*<a style='cursor:pointer; color:blue;float:right' onclick="AddTaskSubTask()">@SharedLocalizer["Add Milestones"].Value</a>*@
-                                        </div>
-                                        <!-- /.card-header -->
-
-                                        <div class="card-body">
-                                            <div class="table-responsive">
-                                                <table id="Milestones" class="table" style="width:100%;">
-                                                    <thead>
-                                                        <tr>
-                                                            <th>@SharedLocalizer["Task"]</th>
-                                                            <th>@SharedLocalizer["Task Owner"]</th>
-                                                            <th>@SharedLocalizer["Status"]</th>
-                                                            <th>@SharedLocalizer["Priority"]</th>
-                                                            <th>@SharedLocalizer["Start Date"]</th>
-                                                            <th>@SharedLocalizer["End date"]</th>
-                                                            <th>@SharedLocalizer["Duration"]</th>
-                                                            <th>@SharedLocalizer["Completed %"]</th>
-                                                            <th>@SharedLocalizer["Updated Date"]</th>
-                                                            <th class="text-center">@SharedLocalizer["Action"]</th>
-                                                        </tr>
-                                                    </thead>
-                                                    <tbody>
-                                                    </tbody>
-                                                </table>
-                                            </div>
-
-                                            <!-- /.card-body -->
-                                        </div>
-
-                                        <!-- /.card -->
-
-
-                                    </div>
-                                </section>
-                            </div>
-
-
-                        </div>
-
-                    </div>
-                </section>
+                <button class="btn btn-primary" onclick="javascript:window.history.back();"><i class="fas fa-undo mr-1"></i> Back</button>
             </div>
         </div>
+    </div>
 
-        @*UpdateModel*@
-        <div id="UpdateModel" class="modal themeModal " role="dialog">
-            <form method="POST" asp-controller=Project asp-action=AddUpdateTask asp-route-buid="@ViewBag.uencbid">
-                @*<div class="card-body">*@
-                <div class="modal-dialog modal-lg">
-                    <!-- Modal content-->
-                    <div class="modal-content">
-                        <div class="modal-header">
-                            <h4 class="modal-title">@SharedLocalizer["Update Task"].Value</h4>
-                            <button type="button" class="close" data-dismiss="modal">&times;</button>
-                        </div>
-                        <div class="modal-body">
-                            <div class="row">
-                                <div class="col-sm-6">
-                                    <div class="form-group required">
-                                        @Html.LabelFor(o => o.TaskName, new { @class = "control-label" })
-                                        @Html.EditorFor(o => o.TaskName, new { htmlAttributes = new { @autocomplete = "off", @class = "form-control" } })
-                                        @Html.ValidationMessageFor(o => o.TaskName, "", new { @class = "text-danger" })
-                                    </div>
-                                    <div class="form-group required">
-                                        @Html.LabelFor(o => o.StartDate, new { @class = "control-label" })
-                                        <div class="input-group date" id="startDate" data-target-input="nearest">
-
-                                            @Html.TextBoxFor(o => o.StartDate, new { @class = "form-control datetimepicker-input",type="date", autocomplete = "off", @readonly = "readonly" })
-                                            <div class="input-group-append" data-target="#DRFEditStartDate" data-toggle="datetimepicker">
-                                                <div class="input-group-text"><i class="fa fa-calendar"></i></div>
-                                            </div><br>
-
-                                        </div>
-                                        @Html.ValidationMessageFor(o => o.StartDate, "", new { @class = "text-danger" })
-                                    </div>
-                                    <div class="form-group required">
-                                        @Html.LabelFor(o => o.PriorityId,"Priority", new { @class = "control-label" })
-                                        @Html.DropDownListFor(o => o.PriorityId, new SelectList(string.Empty, "Value", "Text"), "Please select option", htmlAttributes: new { @class = "form-control input-sm f-s-15 bg-eff4f55c w100per", id = "TaskPriority" })
-                                        @Html.ValidationMessageFor(o => o.PriorityId, "", new { @class = "text-danger" })
-                                    </div>
-                                    <div class="form-group required">
-                                        @Html.LabelFor(o => o.TaskDuration, new { @class = "control-label" })
-                                        @Html.EditorFor(o => o.TaskDuration, new { htmlAttributes = new { @autocomplete = "off", @class = "form-control", @readonly = "readonly" } })@*disabled = "disabled"*@
-                                        @Html.ValidationMessageFor(o => o.TaskDuration, "", new { @class = "text-danger" })
-                                    </div>
-                                </div>
-                                <div class="col-sm-6">
-                                    <div class="form-group required">
-                                        @Html.LabelFor(o => o.TaskOwnerId,"Task Owner", new { @class = "control-label" })
-                                        @Html.DropDownListFor(o => o.TaskOwnerId, new SelectList(string.Empty, "Value", "Text"), "Please select option", htmlAttributes: new { @class = "form-control input-sm f-s-15 bg-eff4f55c w100per", id = "TaskOwner" })
-                                        @Html.ValidationMessageFor(o => o.TaskOwnerId, "", new { @class = "text-danger" })
-                                    </div>
-                                    <div class="form-group required">
-                                        @Html.LabelFor(o => o.EndDate, new { @class = "control-label" })
-                                        <div class="input-group date" id="endDate" data-target-input="nearest">
-
-                                            @Html.TextBoxFor(o => o.EndDate, new { @class = "form-control datetimepicker-input",type="date", autocomplete = "off", @readonly = "readonly" })
-                                            <div class="input-group-append" data-target="#DRFEditEndDate" data-toggle="datetimepicker">
-                                                <div class="input-group-text"><i class="fa fa-calendar"></i></div>
-                                            </div><br>
-
-                                        </div>
-                                        @Html.ValidationMessageFor(o => o.EndDate, "", new { @class = "text-danger" })
-                                    </div>
-                                    <div class="form-group required">
-                                        @Html.LabelFor(o => o.StatusId,"Status", new { @class = "control-label" })
-                                        @Html.DropDownListFor(o => o.StatusId, new SelectList(string.Empty, "Value", "Text"), "Please select option", htmlAttributes: new { @class = "form-control input-sm f-s-15 bg-eff4f55c w100per", id = "TaskStatus", onchange = "setPercentage(this.value,0)" })
-                                        @Html.ValidationMessageFor(o => o.StatusId, "", new { @class = "text-danger" })
-                                    </div>
-                                    <div class="form-group required">
-                                        @Html.LabelFor(o => o.TotalPercentage, new { @class = "control-label" })
-                                        @Html.EditorFor(o => o.TotalPercentage, new { htmlAttributes = new { @autocomplete = "off", @class = "form-control disabledPercentage", id = "TaskPercentage", @min = 0, @max = 100 } })
-                                        @Html.ValidationMessageFor(o => o.TotalPercentage, "", new { @class = "text-danger" })
-                                    </div>
-
-                                </div>
-                            </div>
-                            @Html.HiddenFor(o => o.Pidfid, new{id="pidfid"})
-                            @Html.HiddenFor(o => o.ProjectTaskId, new{id="projectTaskId"})
-                            @Html.HiddenFor(o => o.TaskLevel, new{id="tasklevel"})
-                            @Html.HiddenFor(o => o.ParentId, new{id="parentId"})
-                        </div>
-                        <div class="modal-footer">
-                            <button type="submit" class="btn btn-primary">@SharedLocalizer["Save"].Value</button>
-                            <a class="btn btn-danger" onclick="HideUpdateModel()">@SharedLocalizer["Cancel"].Value</a>
-                        </div>
-
+</div>
+<div class="container-fluid background-white-card">
+    <div class="row">
+        <div class="col-md-12 ">
+            <!-- Custom tabs (Charts with tabs)-->
+            <div class="card">
+                <div class="card-header bg-primary">
+                    <h3 class="card-title mb-0">PIDF</h3>
+                    <div class="card-tools">
+                        <button type="button" class="btn btn-tool" id="AddyeartableCollapseButton" data-card-widget="collapse" title="Collapse">
+                            <i class="fas fa-minus"></i>
+                        </button>
                     </div>
                 </div>
 
+                <div class="card-body">
+                    <div>
+                        <div class="row mt-2">
+                            <div class="col-sm-12 col-md-12 col-lg-7">
+                                <table class="table table-bordered">
+                                    <tr>
+                                        <td width="30%"><strong>Product Name</strong></td>
+                                        <td><div class="col-sm-9" id="pidf_ProjectorProductName"></div></td>
+                                    </tr>
+                                    <tr>
+                                        <td width="30%"><strong>Product Type</strong></td>
+                                        <td><div class="col-sm-9" id="pidf_ProductTypeName"></div></td>
+                                    </tr>
+                                    <tr>
+                                        <td width="30%"><strong>Plant Name</strong></td>
+                                        <td><div class="col-sm-9" id="pidf_PlantName"></div></td>
+                                    </tr>
+                                    <tr>
+                                        <td width="30%"><label>Formulation</label></td>
+                                        <td><div class="col-sm-9" id="pidf_FormulationName"></div></td>
+                                    </tr>
+                                    <tr>
+                                        <td width="30%"><label>Work Flow</label></td>
+                                        <td><div class="col-sm-9" id="pidf_WorkflowName"></div></td>
+                                    </tr>
+                                </table>
 
-                @*</div>*@
+                            </div>
+                            <div class="col-sm-12 col-md-12 col-lg-5">
+                                <style>
+                                    #myTable tbody {
+                                        display: block;
+                                        overflow-y: auto;
+                                        table-layout: fixed;
+                                        max-height: 200px;
+                                    }
+                                </style>
+                                <table id="myTable" class="table order-list table-bordered" style="width:100%">
+                                    <thead>
+                                        <tr>
+                                            <th width="30%">Strength</th>
+                                            <th>Unit</th>
+                                        </tr>
+                                    </thead>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+
+                    @*Remaining code here*@
+
+                    <div class="row mt-1">
+                        <div class="col-sm-12">
+                            <div class="card card-primary card-tabs">
+                                <div class="card-header p-0">
+                                    
+                                    <ul class="nav nav-tabs text-center m-0" id="custom-tabs-one-tab" role="tablist">
+                                        <li class="nav-item p-0">
+                                            <h3 class="card-title mx-auto">Business Unit</h3>
+                                        </li>
+                                    </ul>
+                                </div>
+                                <div class="card-body">
+                                    <div class="tab-content" id="custom-tabs-one-tabContent">
+
+                                        <div class="tab-pane fade show active" id="BUnit" role="tabpanel" aria-labelledby="BUnit-tab">
+                                            <h4 id="BHeading" class="text-divider"><span></span></h4>
+                                            <form method="post">
+
+                                                <div class="row mt-5 mb-3">
+                                                    <div class="table-responsive">
+                                                        <table id="BDetailsTable" class="table table-striped table-bordered dt-responsive nowrap" style="width:100%">
+                                                            <thead>
+                                                                <tr>
+                                                                    <th>Country</th>
+                                                                    <th>Strength</th>
+                                                                    <th>Pack Size</th>
+                                                                    <th>Packing</th>
+                                                                    <th>1st Year Price/Pack</th>
+                                                                    <th>1st Year Qty.</th>
+                                                                    <th>1st Year Volume</th>
+                                                                    <th>2nd Year Price/Pack</th>
+                                                                    <th>2nd Year Qty.</th>
+                                                                    <th>2nd Year Volume</th>
+                                                                    <th>3rd Year Price/Pack</th>
+                                                                    <th>3rd Year Qty.</th>
+                                                                    <th>3rd Year Volume</th>
+                                                                    <th>Batch Size</th>
+                                                                    <th>Currency</th>
+                                                                    <th>1st Year COGS</th>
+                                                                    <th>2nd Year COGS</th>
+                                                                    <th>3rd Year COGS</th>
+                                                                    <th>Freight</th>
+                                                                    <th>Total Cost</th>
+                                                                    <th>3 Year Contribution</th>
+                                                                    <th>Cost of 3 Batches</th>
+                                                                    <th>Analytical Cost</th>
+                                                                    <th>BECost</th>
+                                                                    <th>RLD Cost</th>
+                                                                    <th>R&D Cost</th>
+                                                                    <th>Filing Cost</th>
+                                                                    <th>Stability Cost</th>
+                                                                    <th>Total Invest</th>
+                                                                    <th>Other Cost</th>
+                                                                    <th>API Source</th>
+                                                                    <th>ROI</th>
+                                                                </tr>
+                                                            </thead>
+                                                            <tbody>
+                                                            </tbody>
+                                                        </table>
+                                                    </div>
+                                                </div>
+                                            </form>
+                                        </div>
+
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    @*DRF List below*@
+
+                    @*Upload file details*@
+                    <div class="row">
+                        <div class="col-lg-12">
+                            <!-- Custom tabs (Charts with tabs)-->
+                            <div class="card">
+                                <div class="card-header bg-primary">
+                                    <h3 class="card-title mb-0">
+                                        <i class="fas fa-file-alt mr-3"></i> Uploaded Files
+                                    </h3>
+                                </div>
+                                <div class="card-body">
+                                    <div class="table-responsive">
+                                        <table id="files" class="table" style="width:100%;">
+                                            <thead>
+                                                <tr>
+                                                    <th>Files</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+
+                    @*Show Milestones below*@
+                    <div class="row">
+                        <section class="col-lg-12">
+                            <!-- Custom tabs (Charts with tabs)-->
+                            <div class="card">
+                                <div class="card-header bg-primary">
+                                    <h3 class="card-title mb-0">
+                                        <i class="far fa-edit"></i> Tasks
+                                    </h3>
+                                    <div class="card-tools md-left">
+                                        <div class="mybtn-group">
+                                            <input type="hidden" name="CurrentUserRole" id="CurrentUserRole" value="@ViewBag.CurrentUserRolePIDF" />
+                                            @*  @if (User.IsInRole("Prescriber") || User.IsInRole("Regulatory Manager") || User.IsInRole("Senior Project Manager"))
+                                            {*@
+                                            <button type="button" onclick="ShowAddTaskForm()" class="btn btn-primary">@SharedLocalizer["Add Task"].Value</button>
+                                            @* }*@
+                                            <button type="button" class="btn btn-tool p-0 mr-3 ml-3" data-card-widget="maximize">
+                                                <i class="fas fa-expand"></i>
+                                            </button>
+                                            <button type="button" class="btn btn-tool" data-card-widget="collapse">
+                                                <i class="fas fa-minus"></i>
+                                            </button>
+                                        </div>
+                                    </div>
+                                    @*<a style='cursor:pointer; color:blue;float:right' onclick="AddTaskSubTask()">@SharedLocalizer["Add Milestones"].Value</a>*@
+                                </div>
+                                <!-- /.card-header -->
+
+                                <div class="card-body">
+                                    <div class="table-responsive">
+                                        <table id="Milestones" class="table" style="width:100%;">
+                                            <thead>
+                                                <tr>
+                                                    <th>@SharedLocalizer["Task"]</th>
+                                                    <th>@SharedLocalizer["Task Owner"]</th>
+                                                    <th>@SharedLocalizer["Status"]</th>
+                                                    <th>@SharedLocalizer["Priority"]</th>
+                                                    <th>@SharedLocalizer["Start Date"]</th>
+                                                    <th>@SharedLocalizer["End date"]</th>
+                                                    <th>@SharedLocalizer["Duration"]</th>
+                                                    <th>@SharedLocalizer["Completed %"]</th>
+                                                    <th>@SharedLocalizer["Updated Date"]</th>
+                                                    <th class="text-center">@SharedLocalizer["Action"]</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                            </tbody>
+                                        </table>
+                                    </div>
+
+                                    <!-- /.card-body -->
+                                </div>
+
+                                <!-- /.card -->
 
 
-                @*<div class="card-footer text-center">
-                <button type="submit" class="btn btn-primary mr-2 attachedDisabled">@SharedLocalizer["Save"].Value</button>
-                <a class="btn btn-primary" asp-area="" asp-controller="DRF" asp-action="DRFShowDetails">@SharedLocalizer["Cancel"].Value</a>
-                </div>*@
-            </form>
+                            </div>
+                        </section>
+                    </div>
+
+
+                </div>
+
+            </div>
         </div>
+    </div>
 
-
-        @*DeleteModel*@
-        <div id="DeleteModel" class="modal themeModal " role="dialog">
-            <div class="modal-dialog">
+    @*UpdateModel*@
+    <div id="UpdateModel" class="modal themeModal " role="dialog">
+        <form method="POST" asp-controller=Project asp-action=AddUpdateTask asp-route-buid="@ViewBag.uencbid">
+            @*<div class="card-body">*@
+            <div class="modal-dialog modal-lg">
                 <!-- Modal content-->
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h4 class="modal-title">@SharedLocalizer["Delete"]</h4>
+                        <h4 class="modal-title">@SharedLocalizer["Update Task"].Value</h4>
                         <button type="button" class="close" data-dismiss="modal">&times;</button>
                     </div>
                     <div class="modal-body">
                         <div class="row">
-                            <div class="col-md-12">
-                                <div class="form-group">
-                                    @Html.Label(@SharedLocalizer["DeleteConfirm"])
+                            <div class="col-sm-6">
+                                <div class="form-group required">
+                                    @Html.LabelFor(o => o.TaskName, new { @class = "control-label" })
+                                    @Html.EditorFor(o => o.TaskName, new { htmlAttributes = new { @autocomplete = "off", @class = "form-control" } })
+                                    @Html.ValidationMessageFor(o => o.TaskName, "", new { @class = "text-danger" })
+                                </div>
+                                <div class="form-group required">
+                                    @Html.LabelFor(o => o.StartDate, new { @class = "control-label" })
+                                    <div class="input-group date" id="startDate" data-target-input="nearest">
+
+                                        @Html.TextBoxFor(o => o.StartDate, new { @class = "form-control datetimepicker-input",type="date", autocomplete = "off", @readonly = "readonly" })
+                                        <div class="input-group-append" data-target="#DRFEditStartDate" data-toggle="datetimepicker">
+                                            <div class="input-group-text"><i class="fa fa-calendar"></i></div>
+                                        </div><br>
+
+                                    </div>
+                                    @Html.ValidationMessageFor(o => o.StartDate, "", new { @class = "text-danger" })
+                                </div>
+                                <div class="form-group required">
+                                    @Html.LabelFor(o => o.PriorityId,"Priority", new { @class = "control-label" })
+                                    @Html.DropDownListFor(o => o.PriorityId, new SelectList(string.Empty, "Value", "Text"), "Please select option", htmlAttributes: new { @class = "form-control input-sm f-s-15 bg-eff4f55c w100per", id = "TaskPriority" })
+                                    @Html.ValidationMessageFor(o => o.PriorityId, "", new { @class = "text-danger" })
+                                </div>
+                                <div class="form-group required">
+                                    @Html.LabelFor(o => o.TaskDuration, new { @class = "control-label" })
+                                    @Html.EditorFor(o => o.TaskDuration, new { htmlAttributes = new { @autocomplete = "off", @class = "form-control", @readonly = "readonly" } })@*disabled = "disabled"*@
+                                    @Html.ValidationMessageFor(o => o.TaskDuration, "", new { @class = "text-danger" })
                                 </div>
                             </div>
+                            <div class="col-sm-6">
+                                <div class="form-group required">
+                                    @Html.LabelFor(o => o.TaskOwnerId,"Task Owner", new { @class = "control-label" })
+                                    @Html.DropDownListFor(o => o.TaskOwnerId, new SelectList(string.Empty, "Value", "Text"), "Please select option", htmlAttributes: new { @class = "form-control input-sm f-s-15 bg-eff4f55c w100per", id = "TaskOwner" })
+                                    @Html.ValidationMessageFor(o => o.TaskOwnerId, "", new { @class = "text-danger" })
+                                </div>
+                                <div class="form-group required">
+                                    @Html.LabelFor(o => o.EndDate, new { @class = "control-label" })
+                                    <div class="input-group date" id="endDate" data-target-input="nearest">
+
+                                        @Html.TextBoxFor(o => o.EndDate, new { @class = "form-control datetimepicker-input",type="date", autocomplete = "off", @readonly = "readonly" })
+                                        <div class="input-group-append" data-target="#DRFEditEndDate" data-toggle="datetimepicker">
+                                            <div class="input-group-text"><i class="fa fa-calendar"></i></div>
+                                        </div><br>
+
+                                    </div>
+                                    @Html.ValidationMessageFor(o => o.EndDate, "", new { @class = "text-danger" })
+                                </div>
+                                <div class="form-group required">
+                                    @Html.LabelFor(o => o.StatusId,"Status", new { @class = "control-label" })
+                                    @Html.DropDownListFor(o => o.StatusId, new SelectList(string.Empty, "Value", "Text"), "Please select option", htmlAttributes: new { @class = "form-control input-sm f-s-15 bg-eff4f55c w100per", id = "TaskStatus", onchange = "setPercentage(this.value,0)" })
+                                    @Html.ValidationMessageFor(o => o.StatusId, "", new { @class = "text-danger" })
+                                </div>
+                                <div class="form-group required">
+                                    @Html.LabelFor(o => o.TotalPercentage, new { @class = "control-label" })
+                                    @Html.EditorFor(o => o.TotalPercentage, new { htmlAttributes = new { @autocomplete = "off", @class = "form-control disabledPercentage", id = "TaskPercentage", @min = 0, @max = 100 } })
+                                    @Html.ValidationMessageFor(o => o.TotalPercentage, "", new { @class = "text-danger" })
+                                </div>
+
+                            </div>
                         </div>
-                        @Html.Hidden("ProjectTaskId")
-                        <div class="card-footer text-center">
-                            <button type="button" onclick="DeleteTaskSubTask()" data-dismiss="modal" class="btn btn-primary mr-2">@SharedLocalizer["Yes"]</button>
-                            <a class="btn btn-danger" data-dismiss="modal">@SharedLocalizer["No"]</a>
+                        @Html.HiddenFor(o => o.Pidfid, new{id="pidfid"})
+                        @Html.HiddenFor(o => o.ProjectTaskId, new{id="projectTaskId"})
+                        @Html.HiddenFor(o => o.TaskLevel, new{id="tasklevel"})
+                        @Html.HiddenFor(o => o.ParentId, new{id="parentId"})
+                    </div>
+                    <div class="modal-footer">
+                        <button type="submit" class="btn btn-primary">@SharedLocalizer["Save"].Value</button>
+                        <a class="btn btn-danger" onclick="HideUpdateModel()">@SharedLocalizer["Cancel"].Value</a>
+                    </div>
+
+                </div>
+            </div>
+
+
+            @*</div>*@
+
+
+            @*<div class="card-footer text-center">
+            <button type="submit" class="btn btn-primary mr-2 attachedDisabled">@SharedLocalizer["Save"].Value</button>
+            <a class="btn btn-primary" asp-area="" asp-controller="DRF" asp-action="DRFShowDetails">@SharedLocalizer["Cancel"].Value</a>
+            </div>*@
+        </form>
+    </div>
+
+
+    @*DeleteModel*@
+    <div id="DeleteModel" class="modal themeModal " role="dialog">
+        <div class="modal-dialog">
+            <!-- Modal content-->
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title">@SharedLocalizer["Delete"]</h4>
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                </div>
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                @Html.Label(@SharedLocalizer["DeleteConfirm"])
+                            </div>
                         </div>
+                    </div>
+                    @Html.Hidden("ProjectTaskId")
+                    <div class="card-footer text-center">
+                        <button type="button" onclick="DeleteTaskSubTask()" data-dismiss="modal" class="btn btn-primary mr-2">@SharedLocalizer["Yes"]</button>
+                        <a class="btn btn-danger" data-dismiss="modal">@SharedLocalizer["No"]</a>
                     </div>
                 </div>
             </div>
         </div>
+    </div>
 
-        @*AddModel*@
-        <div id="AddModel" class="modal themeModal " role="dialog">
+    @*AddTaskModel*@
+    <div id="AddTaskModel" class="modal themeModal " role="dialog">
+        <form method="POST" asp-controller=Project asp-action=AddUpdateTask asp-route-id="@ViewBag.id" asp-route-buid="@ViewBag.uencbid" asp-route-act="Task" method="post">
 
-
-            <div class="modal-dialog">
+            <div class="modal-dialog modal-lg">
                 <!-- Modal content-->
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h4 class="modal-title">@SharedLocalizer["Add Milestones"].Value</h4>
+                        <h4 class="modal-title">@SharedLocalizer["Add Task"].Value</h4>
                         <button type="button" class="close" data-dismiss="modal">&times;</button>
                     </div>
-                    <div class="modal-body mx-auto text-center">
+                    <div class="modal-body p-4">
                         <div class="row">
-                            <div class="col-md-12">
-                                <div class="form-group">
-                                    <button type="button" onclick="ShowAddTaskForm()" class="btn btn-primary ">@SharedLocalizer["Add Task"].Value</button>
-                                    <button type="button" onclick="ShowAddSubTaskForm()" class="btn btn-primary ">@SharedLocalizer["Add Sub Task"].Value</button>
+                            <div class="col-sm-6">
+                                <div class="form-group required">
+                                    @Html.LabelFor(t => t.TaskName, new { @class = "control-label" })
+                                    @Html.EditorFor(t => t.TaskName, new { htmlAttributes = new { @autocomplete = "off", @class = "form-control" } })
+                                    @Html.ValidationMessageFor(t => t.TaskName, "", new { @class = "text-danger" })
                                 </div>
+                                <div class="form-group required">
+                                    @Html.LabelFor(t => t.StartDate, new { @class = "control-label" })
+                                    <div class="input-group date" id="addTaskStartDate" data-target-input="nearest">
+
+                                        @Html.TextBoxFor(t => t.StartDate, new { @class = "form-control datetimepicker",type = "date", autocomplete = "off", @id = "AddTaskStartDate" })
+                                        <div class="input-group-append" data-toggle="datetimepicker">
+                                        </div><br>
+
+                                    </div>
+                                    @Html.ValidationMessageFor(t => t.StartDate, "", new { @class = "text-danger" })
+                                </div>
+                                <div class="form-group required">
+                                    @Html.LabelFor(t => t.PriorityId,"Priority" ,new { @class = "control-label" })
+                                    @Html.DropDownListFor(t => t.PriorityId, new SelectList(string.Empty, "Value", "Text"), "Please select option", htmlAttributes: new { @class = "form-control input-sm f-s-15 bg-eff4f55c w100per", id = "AddTaskPriority" })
+                                    @Html.ValidationMessageFor(t => t.PriorityId, "", new { @class = "text-danger" })
+                                </div>
+                                <div class="form-group required">
+                                    @Html.LabelFor(t => t.TaskDuration, new { @class = "control-label" })
+                                    @Html.EditorFor(t => t.TaskDuration, new { htmlAttributes = new { @autocomplete = "off", @class = "form-control", id = "AddTaskDuration" } })@*disabled = "disabled"*@
+                                    @Html.ValidationMessageFor(t => t.TaskDuration, "", new { @class = "text-danger" })
+                                </div>
+
+                            </div>
+                            <div class="col-sm-6">
+                                <div class="form-group required">
+                                    @Html.LabelFor(t => t.TaskOwnerId,"Task Owner", new { @class = "control-label" })
+                                    @Html.DropDownListFor(t => t.TaskOwnerId, new SelectList(string.Empty, "Value", "Text"), "Please select option", htmlAttributes: new { @class = "form-control input-sm f-s-15 bg-eff4f55c w100per", id = "AddTaskOwner" })
+                                    @Html.ValidationMessageFor(t => t.TaskOwnerId, "", new { @class = "text-danger" })
+                                </div>
+                                <div class="form-group required">
+                                    @Html.LabelFor(t => t.EndDate, new { @class = "control-label" })
+                                    <div class="input-group date" id="addTaskEndDate" data-target-input="nearest">
+
+                                        @Html.TextBoxFor(t => t.EndDate, new { @class = "form-control datetimepicker", type = "date", autocomplete = "off", @id = "AddTaskEndDate" })
+                                        <div class="input-group-append" data-toggle="datetimepicker">
+                                        </div><br>
+
+                                    </div>
+                                    @Html.ValidationMessageFor(t => t.EndDate, "", new { @class = "text-danger" })
+                                </div>
+                                <div class="form-group required">
+                                    @Html.LabelFor(t => t.StatusId,"Status", new { @class = "control-label" })
+                                    @Html.DropDownListFor(t => t.StatusId, new SelectList(string.Empty, "Value", "Text"), "Please select option", htmlAttributes: new { @class = "form-control input-sm f-s-15 bg-eff4f55c w100per", id = "AddTaskStatus", onchange = "setPercentage(this.value,1)" })
+                                    @Html.ValidationMessageFor(t => t.StatusId, "", new { @class = "text-danger" })
+                                </div>
+                                <div class="form-group required">
+                                    @Html.LabelFor(t => t.TotalPercentage, new { @class = "control-label" })
+                                    @Html.EditorFor(t => t.TotalPercentage, new { htmlAttributes = new { @autocomplete = "off", @class = "form-control disabledTaskPercentage", id = "AddTaskPercentage", @min = 0, @max = 100 } })
+                                    @Html.ValidationMessageFor(t => t.TotalPercentage, "", new { @class = "text-danger" })
+                                </div>
+
                             </div>
                         </div>
-
+                        @Html.HiddenFor(t => t.Pidfid, new { id = "pidfId" })
+                    </div>
+                    <div class="modal-footer">
+                        <button type="submit" class="btn btn-primary ">@SharedLocalizer["Save"].Value</button>
+                        <a class="btn btn-danger" onclick="HideAddTaskModel()">@SharedLocalizer["Cancel"].Value</a>
                     </div>
 
                 </div>
             </div>
+        </form>
+    </div>
+    @*AddSubTaskModel*@
+    <div id="AddSubTaskModel" class="modal themeModal " role="dialog">
+        <form method="POST" asp-controller=Project asp-action=AddUpdateTask asp-route-id="@ViewBag.id" asp-route-buid="@ViewBag.uencbid" asp-route-act="SubTask">
 
-
-        </div>
-
-        @*AddTaskModel*@
-        <div id="AddTaskModel" class="modal themeModal " role="dialog">
-            <form method="POST" asp-controller=Project asp-action=AddUpdateTask asp-route-id="@ViewBag.id" asp-route-buid="@ViewBag.uencbid" asp-route-act="Task" method="post">
-
-                <div class="modal-dialog modal-lg">
-                    <!-- Modal content-->
-                    <div class="modal-content">
-                        <div class="modal-header">
-                            <h4 class="modal-title">@SharedLocalizer["Add Task"].Value</h4>
-                            <button type="button" class="close" data-dismiss="modal">&times;</button>
-                        </div>
-                        <div class="modal-body p-4">
-                            <div class="row">
-                                <div class="col-sm-6">
-                                    <div class="form-group required">
-                                        @Html.LabelFor(t => t.TaskName, new { @class = "control-label" })
-                                        @Html.EditorFor(t => t.TaskName, new { htmlAttributes = new { @autocomplete = "off", @class = "form-control" } })
-                                        @Html.ValidationMessageFor(t => t.TaskName, "", new { @class = "text-danger" })
-                                    </div>
-                                    <div class="form-group required">
-                                        @Html.LabelFor(t => t.StartDate, new { @class = "control-label" })
-                                        <div class="input-group date" id="addTaskStartDate" data-target-input="nearest">
-
-                                            @Html.TextBoxFor(t => t.StartDate, new { @class = "form-control datetimepicker",type = "date", autocomplete = "off", @id = "AddTaskStartDate" })
-                                            <div class="input-group-append" data-toggle="datetimepicker">
-                                            </div><br>
-
-                                        </div>
-                                        @Html.ValidationMessageFor(t => t.StartDate, "", new { @class = "text-danger" })
-                                    </div>
-                                    <div class="form-group required">
-                                        @Html.LabelFor(t => t.PriorityId,"Priority" ,new { @class = "control-label" })
-                                        @Html.DropDownListFor(t => t.PriorityId, new SelectList(string.Empty, "Value", "Text"), "Please select option", htmlAttributes: new { @class = "form-control input-sm f-s-15 bg-eff4f55c w100per", id = "AddTaskPriority" })
-                                        @Html.ValidationMessageFor(t => t.PriorityId, "", new { @class = "text-danger" })
-                                    </div>
-                                    <div class="form-group required">
-                                        @Html.LabelFor(t => t.TaskDuration, new { @class = "control-label" })
-                                        @Html.EditorFor(t => t.TaskDuration, new { htmlAttributes = new { @autocomplete = "off", @class = "form-control", id = "AddTaskDuration" } })@*disabled = "disabled"*@
-                                        @Html.ValidationMessageFor(t => t.TaskDuration, "", new { @class = "text-danger" })
-                                    </div>
-
-                                </div>
-                                <div class="col-sm-6">
-                                    <div class="form-group required">
-                                        @Html.LabelFor(t => t.TaskOwnerId,"Task Owner", new { @class = "control-label" })
-                                        @Html.DropDownListFor(t => t.TaskOwnerId, new SelectList(string.Empty, "Value", "Text"), "Please select option", htmlAttributes: new { @class = "form-control input-sm f-s-15 bg-eff4f55c w100per", id = "AddTaskOwner" })
-                                        @Html.ValidationMessageFor(t => t.TaskOwnerId, "", new { @class = "text-danger" })
-                                    </div>
-                                    <div class="form-group required">
-                                        @Html.LabelFor(t => t.EndDate, new { @class = "control-label" })
-                                        <div class="input-group date" id="addTaskEndDate" data-target-input="nearest">
-
-                                            @Html.TextBoxFor(t => t.EndDate, new { @class = "form-control datetimepicker", type = "date", autocomplete = "off", @id = "AddTaskEndDate" })
-                                            <div class="input-group-append" data-toggle="datetimepicker">
-                                            </div><br>
-
-                                        </div>
-                                        @Html.ValidationMessageFor(t => t.EndDate, "", new { @class = "text-danger" })
-                                    </div>
-                                    <div class="form-group required">
-                                        @Html.LabelFor(t => t.StatusId,"Status", new { @class = "control-label" })
-                                        @Html.DropDownListFor(t => t.StatusId, new SelectList(string.Empty, "Value", "Text"), "Please select option", htmlAttributes: new { @class = "form-control input-sm f-s-15 bg-eff4f55c w100per", id = "AddTaskStatus", onchange = "setPercentage(this.value,1)" })
-                                        @Html.ValidationMessageFor(t => t.StatusId, "", new { @class = "text-danger" })
-                                    </div>
-                                    <div class="form-group required">
-                                        @Html.LabelFor(t => t.TotalPercentage, new { @class = "control-label" })
-                                        @Html.EditorFor(t => t.TotalPercentage, new { htmlAttributes = new { @autocomplete = "off", @class = "form-control disabledTaskPercentage", id = "AddTaskPercentage", @min = 0, @max = 100 } })
-                                        @Html.ValidationMessageFor(t => t.TotalPercentage, "", new { @class = "text-danger" })
-                                    </div>
-
-                                </div>
-                            </div>
-                            @Html.HiddenFor(t => t.Pidfid, new { id = "pidfId" })
-                        </div>
-                        <div class="modal-footer">
-                            <button type="submit" class="btn btn-primary ">@SharedLocalizer["Save"].Value</button>
-                            <a class="btn btn-danger" onclick="HideAddTaskModel()">@SharedLocalizer["Cancel"].Value</a>
-                        </div>
-
+            <div class="modal-dialog modal-lg">
+                <!-- Modal content-->
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h4 class="modal-title">@SharedLocalizer["Add Sub Task"].Value</h4>
+                        <button type="button" class="close" data-dismiss="modal">&times;</button>
                     </div>
-                </div>
-            </form>
-        </div>
-        @*AddSubTaskModel*@
-        <div id="AddSubTaskModel" class="modal themeModal " role="dialog">
-            <form method="POST" asp-controller=Project asp-action=AddUpdateTask asp-route-id="@ViewBag.id" asp-route-buid="@ViewBag.uencbid" asp-route-act="SubTask">
-
-                <div class="modal-dialog modal-lg">
-                    <!-- Modal content-->
-                    <div class="modal-content">
-                        <div class="modal-header">
-                            <h4 class="modal-title">@SharedLocalizer["Add Sub Task"].Value</h4>
-                            <button type="button" class="close" data-dismiss="modal">&times;</button>
-                        </div>
-                        <div class="modal-body p-4">
-                            <div class="row">
-                                <div class="col-sm-6">
-                                    <div class="form-group required">
-                                        @Html.LabelFor(t => t.ParentId, new { @class = "control-label" })
-                                        @Html.DropDownListFor(t => t.ParentId, new SelectList(string.Empty, "Value", "Text"), "Please select option", htmlAttributes: new { @class = "form-control input-sm f-s-15 bg-eff4f55c w100per", id = "AddSubTaskofTask" })
-                                        @Html.ValidationMessageFor(t => t.ParentId, "", new { @class = "text-danger" })
-                                    </div>
-                                    <div class="form-group required">
-                                        @Html.LabelFor(t => t.TaskName, new { @class = "control-label" })
-                                        @Html.EditorFor(t => t.TaskName, new { htmlAttributes = new { @autocomplete = "off", @class = "form-control" } })
-                                        @Html.ValidationMessageFor(t => t.TaskName, "", new { @class = "text-danger" })
-                                    </div>
-                                    <div class="form-group required">
-                                        @Html.LabelFor(t => t.StartDate, new { @class = "control-label" })
-                                        <div class="input-group date" id="addTaskStartDate" data-target-input="nearest">
-
-                                            @Html.TextBoxFor(t => t.StartDate, new { @class = "form-control datetimepicker",type = "date", autocomplete = "off", @id = "AddSubTaskStartDate" })
-                                            <div class="input-group-append" data-toggle="datetimepicker">
-                                            </div><br>
-
-                                        </div>
-                                        @Html.ValidationMessageFor(t => t.StartDate, "", new { @class = "text-danger" })
-                                    </div>
-                                    <div class="form-group required">
-                                        @Html.LabelFor(t => t.PriorityId,"Priority", new { @class = "control-label" })
-                                        @Html.DropDownListFor(t => t.PriorityId, new SelectList(string.Empty, "Value", "Text"), "Please select option", htmlAttributes: new { @class = "form-control input-sm f-s-15 bg-eff4f55c w100per", id = "AddSubTaskPriority" })
-                                        @Html.ValidationMessageFor(t => t.PriorityId, "", new { @class = "text-danger" })
-                                    </div>
-                                    <div class="form-group required">
-                                        @Html.LabelFor(t => t.TaskDuration, new { @class = "control-label" })
-                                        @Html.EditorFor(t => t.TaskDuration, new { htmlAttributes = new { @autocomplete = "off", @class = "form-control", id = "AddSubTaskDuration" } })@*disabled = "disabled"*@
-                                        @Html.ValidationMessageFor(t => t.TaskDuration, "", new { @class = "text-danger" })
-                                    </div>
-
+                    <div class="modal-body p-4">
+                        <div class="row">
+                            <div class="col-sm-6">
+                                <div class="form-group required">
+                                    @Html.LabelFor(t => t.ParentId,"Main Task", new { @class = "control-label" })
+                                   @Html.DropDownListFor(t => t.ParentId, new SelectList(string.Empty, "Value", "Text"), "Please select option", htmlAttributes: new { @class = "form-control input-sm f-s-15 bg-eff4f55c w100per", id = "AddSubTaskofTask" })
+                                   @Html.ValidationMessageFor(t => t.ParentId, "", new { @class = "text-danger" })
                                 </div>
-                                <div class="col-sm-6">
-                                    <div class="form-group required">
-                                        @Html.LabelFor(t => t.TaskOwnerId,"Task Owner", new { @class = "control-label" })
-                                        @Html.DropDownListFor(t => t.TaskOwnerId, new SelectList(string.Empty, "Value", "Text"), "Please select option", htmlAttributes: new { @class = "form-control input-sm f-s-15 bg-eff4f55c w100per", id = "AddSubTaskOwner" })
-                                        @Html.ValidationMessageFor(t => t.TaskOwnerId, "", new { @class = "text-danger" })
-                                    </div>
-                                    <div class="form-group required">
-                                        @Html.LabelFor(t => t.EndDate, new { @class = "control-label" })
-                                        <div class="input-group date" id="addTaskEndDate" data-target-input="nearest">
-
-                                            @Html.TextBoxFor(t => t.EndDate, new { @class = "form-control datetimepicker", type = "date", autocomplete = "off", @id = "AddSubTaskEndDate" })
-                                            <div class="input-group-append" data-toggle="datetimepicker">
-                                            </div><br>
-
-                                        </div>
-                                        @Html.ValidationMessageFor(t => t.EndDate, "", new { @class = "text-danger" })
-                                    </div>
-                                    <div class="form-group required">
-                                        @Html.LabelFor(t => t.StatusId,"Status", new { @class = "control-label" })
-                                        @Html.DropDownListFor(t => t.StatusId, new SelectList(string.Empty, "Value", "Text"), "Please select option", htmlAttributes: new { @class = "form-control input-sm f-s-15 bg-eff4f55c w100per", id = "AddSubTaskStatus", onchange = "setPercentage(this.value,2)" })
-                                        @Html.ValidationMessageFor(t => t.StatusId, "", new { @class = "text-danger" })
-                                    </div>
-                                    <div class="form-group required">
-                                        @Html.LabelFor(t => t.TotalPercentage, new { @class = "control-label" })
-                                        @Html.EditorFor(t => t.TotalPercentage, new { htmlAttributes = new { @autocomplete = "off", @class = "form-control disabledSubTaskPercentage", id = "AddSubTaskPercentage", @min = 0, @max = 100 } })
-                                        @Html.ValidationMessageFor(t => t.TotalPercentage, "", new { @class = "text-danger" })
-                                    </div>
-
+                                <div class="form-group required">
+                                    @Html.LabelFor(t => t.TaskName, new { @class = "control-label" })
+                                    @Html.EditorFor(t => t.TaskName, new { htmlAttributes = new { @autocomplete = "off", @class = "form-control" } })
+                                    @Html.ValidationMessageFor(t => t.TaskName, "", new { @class = "text-danger" })
                                 </div>
+                                <div class="form-group required">
+                                    @Html.LabelFor(t => t.EndDate, new { @class = "control-label" })
+                                    <div class="input-group date" id="addTaskEndDate" data-target-input="nearest">
+
+                                        @Html.TextBoxFor(t => t.EndDate, new { @class = "form-control datetimepicker", type = "date", autocomplete = "off", @id = "AddSubTaskEndDate" })
+                                        <div class="input-group-append" data-toggle="datetimepicker">
+                                        </div><br>
+
+                                    </div>
+                                    @Html.ValidationMessageFor(t => t.EndDate, "", new { @class = "text-danger" })
+                                </div>
+                                <div class="form-group required">
+                                    @Html.LabelFor(t => t.PriorityId,"Priority", new { @class = "control-label" })
+                                    @Html.DropDownListFor(t => t.PriorityId, new SelectList(string.Empty, "Value", "Text"), "Please select option", htmlAttributes: new { @class = "form-control input-sm f-s-15 bg-eff4f55c w100per", id = "AddSubTaskPriority" })
+                                    @Html.ValidationMessageFor(t => t.PriorityId, "", new { @class = "text-danger" })
+                                </div>
+                                <div class="form-group required">
+                                    @Html.LabelFor(t => t.TaskDuration, new { @class = "control-label" })
+                                    @Html.EditorFor(t => t.TaskDuration, new { htmlAttributes = new { @autocomplete = "off", @class = "form-control", id = "AddSubTaskDuration" } })@*disabled = "disabled"*@
+                                    @Html.ValidationMessageFor(t => t.TaskDuration, "", new { @class = "text-danger" })
+                                </div>
+
                             </div>
-                            @Html.HiddenFor(t => t.Pidfid, new { id = "pidfId" })
-                        </div>
-                        <div class="modal-footer">
-                            <button type="submit" class="btn btn-primary ">@SharedLocalizer["Save"].Value</button>
-                            <a class="btn btn-danger" onclick="HideAddSubTaskModel()">@SharedLocalizer["Cancel"].Value</a>
-                        </div>
+                            <div class="col-sm-6">
+                                <div class="form-group required">
+                                    @Html.LabelFor(t => t.TaskOwnerId,"Task Owner", new { @class = "control-label" })
+                                    @Html.DropDownListFor(t => t.TaskOwnerId, new SelectList(string.Empty, "Value", "Text"), "Please select option", htmlAttributes: new { @class = "form-control input-sm f-s-15 bg-eff4f55c w100per", id = "AddSubTaskOwner" })
+                                    @Html.ValidationMessageFor(t => t.TaskOwnerId, "", new { @class = "text-danger" })
+                                </div>
+                                <div class="form-group required">
+                                    @Html.LabelFor(t => t.StartDate, new { @class = "control-label" })
+                                    <div class="input-group date" id="addTaskStartDate" data-target-input="nearest">
 
+                                        @Html.TextBoxFor(t => t.StartDate, new { @class = "form-control datetimepicker",type = "date", autocomplete = "off", @id = "AddSubTaskStartDate" })
+                                        <div class="input-group-append" data-toggle="datetimepicker">
+                                        </div><br>
+
+                                    </div>
+                                    @Html.ValidationMessageFor(t => t.StartDate, "", new { @class = "text-danger" })
+                                </div>
+                                <div class="form-group required">
+                                    @Html.LabelFor(t => t.StatusId,"Status", new { @class = "control-label" })
+                                    @Html.DropDownListFor(t => t.StatusId, new SelectList(string.Empty, "Value", "Text"), "Please select option", htmlAttributes: new { @class = "form-control input-sm f-s-15 bg-eff4f55c w100per", id = "AddSubTaskStatus", onchange = "setPercentage(this.value,2)" })
+                                    @Html.ValidationMessageFor(t => t.StatusId, "", new { @class = "text-danger" })
+                                </div>
+                                <div class="form-group required">
+                                    @Html.LabelFor(t => t.TotalPercentage, new { @class = "control-label" })
+                                    @Html.EditorFor(t => t.TotalPercentage, new { htmlAttributes = new { @autocomplete = "off", @class = "form-control disabledSubTaskPercentage", id = "AddSubTaskPercentage", @min = 0, @max = 100 } })
+                                    @Html.ValidationMessageFor(t => t.TotalPercentage, "", new { @class = "text-danger" })
+                                </div>
+
+                            </div>
+                        </div>
+                        @Html.HiddenFor(t => t.Pidfid, new { id = "pidfId" })
                     </div>
+                    <div class="modal-footer">
+                        <button type="submit" class="btn btn-primary ">@SharedLocalizer["Save"].Value</button>
+                        <a class="btn btn-danger" onclick="HideAddSubTaskModel()">@SharedLocalizer["Cancel"].Value</a>
+                    </div>
+
                 </div>
-            </form>
-        </div>
-
-    </section>
-
+            </div>
+        </form>
+    </div>
 </div>
 @section MyScripts {
     @Html.Partial("_DataTablePartial")
@@ -616,7 +576,7 @@
         if (successCallBack) {
             toastr.success(successCallBack);
         }
-            var bid = @Html.Raw(Json.Serialize(id));
+        var bid = @Html.Raw(Json.Serialize(id));
     </script>
 }
 
