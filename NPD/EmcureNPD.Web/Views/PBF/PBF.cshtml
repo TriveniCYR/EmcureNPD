@@ -11,8 +11,11 @@
     string jsVersion = @Configuration.GetSection("StaticJS")["version"];
 }
 
-<div class="card-body" style="background-color:white" id="divcomman">
 
+<div class="content-header">
+    <h2 class="m-0" id="hPIDFTitle">Project Budget Form</h2>
+</div>
+<div class="container-fluid background-white-card">
     <div class="row">
         <div class="col-md-3">
             <div class="form-group required">
@@ -54,10 +57,10 @@
         </div>
 
         <div class="col-md-3">
-            @*<div class="form-group required">
+            <div class="form-group required">
                 @Html.LabelFor(model => model.ProductTypeId, "Product Type", new { @class = "control-label" })<span class="text-danger">*</span>
                 <select id="ProductTypeId" name="PbfFormEntities.ProductTypeId" class="form-control readOnlyUpdate" required></select>
-            </div>*@
+            </div>
         </div>
         <div class="col-md-3">
             <div class="form-group required">
@@ -161,29 +164,9 @@
             <div class="col-md-3">
                 <div class="form-group required">
                     @Html.LabelFor(model => model.FormRnDdivisionId, "Manufacturing Plant", new { @class = "control-label" })<span class="text-danger">*</span>
-                    <select id="PbfManfFormRNDDivisionId" name="PbfFormEntities.FormRnDdivisionId" class="form-control readOnlyUpdate" required></select>
+                    <select id="PbfManufacturingPlant" name="PbfFormEntities.FormRnDdivisionId" class="form-control readOnlyUpdate" required></select>
                 </div>
-            </div>
-            <div class="col-md-3">
-                <div class="form-group required">
-                    @Html.LabelFor(model => model.TransferFormRnDdivisionId, "Transfer R&D Division", new { @class = "control-label" })<span class="text-danger">*</span>
-                    <select id="TransferFormRNDDivisionId" name="PbfFormEntities.TransferFormRnDdivisionId" class="form-control readOnlyUpdate" required></select>
-                </div>
-            </div>
-            <div class="col-md-3">
-                <div class="form-group required">
-                    @Html.LabelFor(model => model.PreviousProjectCode ,"Previous Project Code ", new { @class = "control-label" })<span class="text-danger">*</span>
-                    @Html.TextBoxFor(model => model.PreviousProjectCode, new {@class = "form-control", @placeholder = "Previous Project Code" ,@required="required"})
-
-                </div>
-            </div>
-             <div class="col-md-3">
-                <div class="form-group required">
-                    @Html.LabelFor(model => model.SinkCost,"Sink Cost", new { @class = "control-label" })<span class="text-danger">*</span>
-                    @Html.TextBoxFor(model => model.SinkCost, new {@class = "form-control", @placeholder = "Sink Cost" ,@required="required"})
-
-                </div>
-            </div>            
+            </div>          
         </div>
     </div>
     <div class="card-header">
@@ -322,4 +305,9 @@
 
                 <br />
             </div>
-</div>
+    </div>
+
+                    <script type="text/javascript" src="~/js/Custom/PBF/PBF.js"></script>
+                    <script>
+    var GetAllPBF = "@EmcureNPD.Web.Helpers.APIURLHelper.GetPBFDropdown";
+                    </script>

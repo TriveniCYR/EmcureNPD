@@ -12,20 +12,20 @@ namespace EmcureNPD.Business.Core.Interface
 {
 	public interface IPBFService
 	{
-        Task<DBOperation> AddUpdatePBFDetailsAnalytical(PidfPbfFormEntity pbfEntity);
-        Task<PidfPbfFormEntity> GetPbfFormDetailsAnalytical(long pidfId, int buid, int strengthid);
+  //      Task<DBOperation> AddUpdatePBFDetailsAnalytical(PidfPbfFormEntity pbfEntity);
+  //      Task<PidfPbfFormEntity> GetPbfFormDetailsAnalytical(long pidfId, int buid, int strengthid);
         
-        Task<dynamic> FillDropdown();
-		Task<PidfPbfEntity> GetPbfFormData(long pidfId, int buid, int? strengthid);
-		Task<DBOperation> AddUpdatePBF(PidfPbfEntity pbfEntity);		
-		Task<PidfPbfAnalyticalEntity> GetPBFAnalyticalReadonlyData(long pidfid);
+        Task<dynamic> FillDropdown(int PIDFId);
+		//Task<PidfPbfEntity> GetPbfFormData(long pidfId, int buid, int? strengthid);
+		//Task<DBOperation> AddUpdatePBF(PidfPbfEntity pbfEntity);		
+		//Task<PidfPbfAnalyticalEntity> GetPBFAnalyticalReadonlyData(long pidfid);
 
-        // ---------------------------PBFDetails----------------------------       
-        Task<DBOperation> AddUpdatePBFDetails(PidfPbfFormEntity pbfEntity);
-        //Task<PidfPbfFormEntity> GetPbfFormDetails(long pidfId, int buid, int? strengthid);
-		// ---------------------------PBFClinicalDetails----------------------------
-		Task<DBOperation> AddUpdatePBFClinicalDetails(PIDFPBFClinicalFormEntity pbfClinicalEntity);
-		Task<PIDFPBFClinicalFormEntity> GetPbfClinicalFormDetails(long pidfId, int buid, long? strengthid);
+  //      // ---------------------------PBFDetails----------------------------       
+       
+  //      //Task<PidfPbfFormEntity> GetPbfFormDetails(long pidfId, int buid, int? strengthid);
+		//// ---------------------------PBFClinicalDetails----------------------------
+		//Task<DBOperation> AddUpdatePBFClinicalDetails(PIDFPBFClinicalFormEntity pbfClinicalEntity);
+		//Task<PIDFPBFClinicalFormEntity> GetPbfClinicalFormDetails(long pidfId, int buid, long? strengthid);
 
 	}
 }

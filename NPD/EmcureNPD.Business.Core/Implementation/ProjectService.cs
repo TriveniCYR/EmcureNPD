@@ -210,10 +210,11 @@ namespace EmcureNPD.Business.Core.Implementation
             return TaskSubAndprojDetails;
         }
 
-        public async Task<dynamic> GetBusinessunitDetails(long id)
+        public async Task<dynamic> GetBusinessunitDetails(long buid, long pidfid)
         {
             SqlParameter[] osqlParameter = {
-                new SqlParameter("@BUID", id)
+                new SqlParameter("@BUID", buid),
+                 new SqlParameter("@PIDFID", pidfid)
             };
             DataSet BusinesUnitDetails = await _repository.GetDataSetBySP("GetBusinessUnitDetails", System.Data.CommandType.StoredProcedure, osqlParameter);
             return BusinesUnitDetails;

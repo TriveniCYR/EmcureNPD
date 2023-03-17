@@ -29,10 +29,10 @@ function SetClinicalFormReadonly() {
     $("#dvPBFClinicalContainer").find("input, button, submit, textarea, select,a,i").prop('disabled', true);
 }
 function setLicensevalues() {
-    var straclinical = $('#PidfPbfClinicals_TestLicenseAvailability').val();
+    var straclinical = $('#PbfFormEntities_TestLicenseAvailability').val();
     var strarrayclinical = straclinical.split(',');
     if (strarrayclinical.length > 0) {
-        $.each(strarrayclinical, function (index, value) {
+       $.each(strarrayclinical, function (index, value) {
             $("#Clinicallicence").find($(".License" + value).prop("checked", true));
         });
     }
@@ -40,14 +40,15 @@ function setLicensevalues() {
 
 }
 function SetBU_Strength() {
+    debugger;
     var PIDFProductStrengthId = 0; PIDFBusinessUnitId = 0;  
     if ($("#StrengthId").val() > 0)
         PIDFProductStrengthId = $("#StrengthId").val();
     else
         PIDFBusinessUnitId = $("#PIDFBusinessUnitId").val();
 
-    if ($("#PidfPbfClinicals_BusinessUnitId").val() > 0)
-        PIDFBusinessUnitId = $("#PidfPbfClinicals_BusinessUnitId").val();
+    if ($("#PbfFormEntities_BusinessUnitId").val() > 0)
+        PIDFBusinessUnitId = $("#PbfFormEntities_BusinessUnitId").val();
     else
         PIDFProductStrengthId = $("#PIDFProductStrengthId").val();
 
@@ -55,9 +56,9 @@ function SetBU_Strength() {
 
     SelectedBUValue = PIDFBusinessUnitId;
     selectedStrength = PIDFProductStrengthId;
-    $("#PidfPbfClinicals_BusinessUnitId").val(SelectedBUValue);
+    $("#PbfFormEntities_BusinessUnitId").val(SelectedBUValue);
     $("#BusinessUnitId").val(SelectedBUValue);
-    $("#PidfPbfClinicals_StrengthId").val(selectedStrength);
+    $("#PbfFormEntities_StrengthId").val(selectedStrength);
     $("#StrengthId").val(selectedStrength);
 
     var StrengthAnchorId = '#BUtab_' + PIDFBusinessUnitId;
@@ -108,6 +109,7 @@ function GetPBFDropdownSuccess(data) {
             });
             $(data.MasterFormRNDDivisionService).each(function (index, item) {
                 $('#FormRNDDivisionId').append('<option value="' + item.formRNDDivisionId + '">' + item.formRNDDivisionName + '</option>');
+                $('#TransferFormRNDDivisionId').append('<option value="' + item.formRNDDivisionId + '">' + item.formRNDDivisionName + '</option>');
             });
 
             $(data.MasterProductType).each(function (index, item) {
@@ -123,6 +125,11 @@ function GetPBFDropdownSuccess(data) {
             $(data.MasterTestLicense).each(function (index, item) {
                 $('#Clinicallicence').append('&nbsp;<input type="checkbox" name="PidfPbfClinicals.TestLicenseAvailability" class="License' + item.testLicenseId + '" value="' + item.testLicenseId + '">&nbsp;' + item.testLicenseName);
             });
+            $(data.MasterFillingType).each(function (index, item) {
+                $('#FillingTypeId').append('<option value="' + item.filingTypeId + '">' + item.filingTypeName + '</option>');
+
+            });
+            
         }
     } catch (e) {
         toastr.error('Error:' + e.message);
@@ -138,7 +145,7 @@ function BUtabClick(BUVal, pidfidval) {
 
     SelectedBUValue = BUVal;
     $("#BusinessUnitId").val(SelectedBUValue);
-    $("#PidfPbfClinicals_BusinessUnitId").val(SelectedBUValue);
+    $("#PbfFormEntities_BusinessUnitId").val(SelectedBUValue);
     butab = document.getElementsByClassName("BUtab");
     for (i = 0; i < butab.length; i++) {
         butab[i].className = butab[i].className.replace(" active", "");
@@ -155,9 +162,9 @@ function GetProductStrengthById(id) {
 }
 function GetProductStrengthByIdSuccess(data) {
     try {
-        $('#PidfPbfClinicals_ProjectName').val(data._object.projectName);
-        $('#PidfPbfClinicals_SAPProjectProjectCode').val(data._object.sapProjectProjectCode);
-        $('#PidfPbfClinicals_ImprintingEmbossingCodes').val(data._object.imprintingEmbossingCodes);
+        $('#PbfFormEntities_ProjectName').val(data._object.projectName);
+        $('#SAPProjectProjectCode').val(data._object.sapProjectProjectCode);
+        $('#ImprintingEmbossingCodes').val(data._object.imprintingEmbossingCodes);
         $(data._object.productStrength).each(function (index, item) {
             $('#strengthlblClinical').append('<ul class="nav nav-pills" ><li class="nav-item mr-2"><label class="form-control">' + item.strength + '</label></li></ul>');
         });
