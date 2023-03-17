@@ -37,6 +37,10 @@ namespace EmcureNPD.Data.DataAccess.Entity
         public string ForgotPasswordToken { get; set; }
         public DateTime? ForgotPasswordDateTime { get; set; }
         public bool? IsManagement { get; set; }
+        public bool? Apiuser { get; set; }
+        public bool? FormulationGl { get; set; }
+        public bool? AnalyticalGl { get; set; }
+        public string DesignationName { get; set; }
 
         public virtual MasterRole Role { get; set; }
         public virtual ICollection<MasterUserBusinessUnitMapping> MasterUserBusinessUnitMappings { get; set; }

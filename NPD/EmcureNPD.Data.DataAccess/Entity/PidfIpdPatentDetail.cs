@@ -15,6 +15,7 @@ namespace EmcureNPD.Data.DataAccess.Entity
         public DateTime? ExtensionExpiryDate { get; set; }
         public string Comments { get; set; }
         public string Strategy { get; set; }
+        public string PatentNumber1 { get; set; }
 
         public virtual PidfIpd Ipd { get; set; }
     }

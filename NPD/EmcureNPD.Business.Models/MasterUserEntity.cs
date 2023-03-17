@@ -23,7 +23,10 @@ namespace EmcureNPD.Business.Models
         public bool IsActive { get; set; }
         [Display(Name = "Management")]
         public bool IsManagement { get; set; }
-
+        public bool APIUser { get; set; }
+        public bool FormulationGL { get; set; }
+        public bool AnalyticalGL { get; set; }
+        public string DesignationName { get; set; }
         public int[] DepartmentId { get; set; }
                
         public int[] BusinessUnitId { get; set; }
