@@ -142,7 +142,7 @@
                 </div>
                 <div class="col-2">
                     <div class="form-group required">
-                        @Html.CheckBoxFor(model => model.IsManagement, new { @class = "checkbox-checked", @checked = "checked" })
+                        @Html.CheckBoxFor(model => model.IsManagement, new {  @class = "checkbox-checked", @checked = "checked" })
                         @Html.LabelFor(model => model.IsManagement)
                     </div>
                 </div>
@@ -160,7 +160,7 @@
                 </div>
                 <div class="col-2">
                     <div class="form-group required">
-                        @Html.CheckBoxFor(model => model.AnalyticalGL, new {@change="TriggerDesignationName()", @class = "checkbox-checked", @checked = "checked" })
+                        @Html.CheckBoxFor(model => model.AnalyticalGL, new { @class = "checkbox-checked", @checked = "checked" })
                         @Html.LabelFor(model => model.AnalyticalGL)
                     </div>
                 </div>

@@ -87,6 +87,7 @@ namespace EmcureNPD.Business.Core.ServiceImplementations
                 oUser.UserId = Convert.ToInt32(UserList.Rows[0]["UserId"]);
                 oUser.Email = Convert.ToString(UserList.Rows[0]["EmailAddress"]);
                 oUser.RoleId = Convert.ToInt32(UserList.Rows[0]["RoleId"]);
+                oUser.AssignedBusinessUnit = Convert.ToString(UserList.Rows[0]["AssignedBusinessUnit"]);
             }
             return oUser;
         }
@@ -236,6 +237,10 @@ namespace EmcureNPD.Business.Core.ServiceImplementations
                     objUser.Address = entityUser.Address;
                     objUser.IsActive = entityUser.IsActive;
                     objUser.IsManagement = entityUser.IsManagement;
+                    objUser.Apiuser  = entityUser.APIUser;
+                    objUser.FormulationGl = entityUser.FormulationGL;
+                    objUser.AnalyticalGl = entityUser.AnalyticalGL;
+                    objUser.DesignationName = entityUser.DesignationName;
                     objUser.ModifyBy = LoggedUserId;
                     objUser.ModifyDate = DateTime.Now;
 

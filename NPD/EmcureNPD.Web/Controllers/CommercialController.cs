@@ -75,6 +75,7 @@ namespace EmcureNPD.Web.Controllers
             PIDFCommercialEntity oPIDForm = new();
             pidfid = UtilityHelper.Decreypt(pidfid);
             bui = UtilityHelper.Decreypt(bui);
+            string AssignedBusinessUnit = _helper.GetAssignedBusinessUnit();
             string logUserId = Convert.ToString(HttpContext.Session.GetString(UserHelper.LoggedInUserId));
             HttpResponseMessage resMsg;
             //var _pidfEntity = GetPidfFormModel(int.Parse(pidfid), out resMsg); //PIDF Form data
@@ -103,7 +104,7 @@ namespace EmcureNPD.Web.Controllers
             }
             //oPIDForm.pidfEntity = _pidfEntity;
             //oPIDForm.IPDFormEntity = _ipdFormEntity;
-            oPIDForm.BusinessUnitsByUser = GetUserWiseBusinessUnit(Convert.ToInt32(logUserId));
+            oPIDForm.BusinessUnitsByUser = AssignedBusinessUnit;//GetUserWiseBusinessUnit(Convert.ToInt32(logUserId));
             oPIDForm.BusinessUnitId = Convert.ToInt32(bui); //oPIDForm.pidfEntity.BusinessUnitId;
             return oPIDForm;
         }

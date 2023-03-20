@@ -43,8 +43,8 @@
                 <input type="hidden" asp-for="Pidfid" />
                 <input type="hidden" asp-for="APIIPDDetailsFormID" />
                 <input type="hidden" asp-for="BusinessUnitId" />
-                <input type="hidden" asp-for="SaveType" />
-
+                <input type="hidden" asp-for="SaveType" />  
+                <input type="hidden" asp-for="BusinessUnitsByUser" />  
                 <div class="row">
                     <div class="col-md-4">
                         <div class="form-group required">
@@ -126,6 +126,7 @@
                                     <th>       @MasterLocalizer["CostOfLitication"]                  </th>
                                     <th>       @MasterLocalizer["Comments"]                  </th>
                                     <th>       @MasterLocalizer["Innovators"]                  </th>
+                                    <th>       @MasterLocalizer["PatentStatus"]                  </th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -142,7 +143,7 @@
                                     <td> @Model.IPEvalution.CostOfLitication                    </td>
                                     <td> @Model.IPEvalution.Comments                    </td>
                                     <td> @Model.IPEvalution.Innovators                    </td>
-
+                                    <td> @Model.IPEvalution.PatentStatus                    </td>
                                 </tr>
                             </tbody>
                         </table>
@@ -163,6 +164,8 @@
                                     <th>       @MasterLocalizer["ExtensionExpiryDate"]         </th>
                                     <th>       @MasterLocalizer["CommentsPatentSpecific"]                 </th>
                                     <th>       @MasterLocalizer["Strategy"]                  </th>
+                                    <th>       @MasterLocalizer["PatentNumber"]                  </th>
+
                                 </tr>
                             </thead>
                             <tbody>
@@ -175,6 +178,7 @@
                                         <td> @item.ExtensionExpiryDate       </td>
                                         <td> @item.Comments                  </td>
                                         <td> @item.Strategy                  </td>
+                                        <td> @item.PatentNumber1                  </td>
                                     </tr>
                                     @* <tr>
                                 <td>
@@ -239,7 +243,7 @@
         var ErrorMessage = "@SharedLocalizer["Error"]";
         var GetAllProductType = "@EmcureNPD.Web.Helpers.APIURLHelper.GetAllProductType";
         var DBProductTypeId = "@Model.ProductTypeId";
-
+        var UserWiseBUList = "@Model.BusinessUnitsByUser";
         document.addEventListener("DOMContentLoaded", function () {
             var tabList = [].slice.call(document.querySelectorAll("#mainDivCommercial a"));
             var tabs = $('#tabList');

@@ -23,6 +23,7 @@
             <div class="container-fluid background-white-card" id="dvIPDContainer">
     <input type="hidden" asp-for="LogInId" />
     <input type="hidden" id="hdnIPDIsView" value="@(Context.Request.Query["IsView"] == "1" ? "1" : "0")" />
+    <input type="hidden" id="BusinessUnitsByUser" value="@Model.BusinessUnitsByUser" />
                 <div class="row">         
                         <div class="col-md-12">
                             <div class="card card-primary card-tabs">
@@ -83,7 +84,7 @@
 		var ErrorMessage = "@SharedLocalizer["Error"]";
 		var RecordInsertUpdate = "@SharedLocalizer["RecordInsertUpdate"]";
         var _PIDFAccordionURL = "@Url.Action("PIDF", "PIDF")";
-
+        var UserWiseBUList = "@Model.BusinessUnitsByUser";
         //document.addEventListener("DOMContentLoaded", function () {
         //    var tabList = [].slice.call(document.querySelectorAll("#tabs a"));
         //    var tabs = $('#tabList');

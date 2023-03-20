@@ -16,6 +16,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Net.Http;
 
+
 namespace EmcureNPD.Web.Controllers
 {
 	public class FinanceController : BaseController
@@ -162,6 +163,10 @@ namespace EmcureNPD.Web.Controllers
 				List<ProjectNameModel> ListProjectName = new List<ProjectNameModel>();
 				List<ProjectStrength> ListprojectStrengths = new List<ProjectStrength>();
                 List<Manager> Listmanager = new List<Manager>();
+				List<HeadWiseBudget> ListHeadWiseBudget=new List<HeadWiseBudget>();
+                List<ProjectDetails> ListProjectDetails = new List<ProjectDetails>();
+				List<CumulativePhaseWiseBudget> ListCumulativePhaseWiseBudget=new List<CumulativePhaseWiseBudget>();
+				List<Deliverables> ListDeliverables = new List<Deliverables>();
                 HttpResponseMessage responseMessage = new HttpResponseMessage();
 				HttpContext.Request.Cookies.TryGetValue(UserHelper.EmcureNPDToken, out string token);
 				APIRepository objapi = new(_cofiguration);
@@ -203,13 +208,66 @@ namespace EmcureNPD.Web.Controllers
                         {
                             Listmanager.Add(new Manager
                             {
-                                ManagerName = item.managerName
+                                ManagerName = item.managerName,
+                                DesignationName=item.designationName
 
                             });
                         }
-						model.lsManager = Listmanager;
+                        model.lsManager = Listmanager;
                     }
-					return View(model);
+                    if (data.table3.Count > 0)
+                    {
+						for (int i = 0; i < data.table3.Count; i++)
+						{
+							ListHeadWiseBudget.Add(new HeadWiseBudget
+							{
+								BudgetsHeades = data.table3[i].BudgetsHeades,
+                                Prototype= data.table3[i].Prototype,
+								ScaleUp= data.table3[i].ScaleUp,
+                                Exhibit= data.table3[i].Exhibit,
+								TOTAL = data.table3[i].TOTAL
+                            });
+                        }
+						model.lsHeadWiseBudget = ListHeadWiseBudget;
+                    }
+                    if (data.table4.Count > 0)
+                    {
+                        for (int i = 0; i < data.table4.Count; i++)
+                        {
+                            ListProjectDetails.Add(new ProjectDetails
+                            {
+                                Market = data.table4[i].Market,
+                                Row = data.table4[i].Row
+                            });
+                        }
+                        model.lsProjectDetails = ListProjectDetails;
+                    }
+                    if (data.table5.Count > 0)
+                    {
+                        for (int i = 0; i < data.table5.Count; i++)
+                        {
+                            ListCumulativePhaseWiseBudget.Add(new CumulativePhaseWiseBudget
+                            {
+                                CostHeads = data.table5[i].CostHeads,
+                                PercentOfTotal = data.table5[i].PercentOfTotal,
+                                CostRsLacs = data.table5[i].CostRsLacs,
+                            });
+                        }
+                        model.lsCumulativePhaseWiseBudget = ListCumulativePhaseWiseBudget;
+                    }
+                    if (data.table6.Count > 0)
+                    {
+                        for (int i = 0; i < data.table6.Count; i++)
+                        {
+                            ListDeliverables.Add(new Deliverables
+                            {
+                                PharmacoepialStandardsonQuality = data.table6[i].PharmacoepialStandardsonQuality,
+                                Row = data.table6[i].Row
+                            });
+                        }
+                        model.lsDeliverables = ListDeliverables;
+                    }
+                    return View(model);
                 }
 			}
                return View();

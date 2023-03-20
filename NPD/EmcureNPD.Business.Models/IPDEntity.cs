@@ -33,6 +33,8 @@ namespace EmcureNPD.Business.Models
 
         [Display(Name = "Region")]
         public string RegionId { get; set; }
+        public string BusinessUnitsByUser { get; set; }
+        
         public string RegionIds { get; set; }
         [Display(Name = "Country")]
         public string CountryId { get; set; }
@@ -40,6 +42,8 @@ namespace EmcureNPD.Business.Models
 
         [Required(ErrorMessageResourceType = typeof(Validation), ErrorMessageResourceName = "Required")]
         public string Innovators { get; set; }
+        [Required(ErrorMessageResourceType = typeof(Validation), ErrorMessageResourceName = "Required")]
+        public string PatentStatus { get; set; }
 
         [Required(ErrorMessageResourceType = typeof(Validation), ErrorMessageResourceName = "Required")]
         public string LegalStatus { get; set; }
@@ -90,7 +94,11 @@ namespace EmcureNPD.Business.Models
         public string Comments { get; set; }
 
         [Required(ErrorMessageResourceType = typeof(Validation), ErrorMessageResourceName = "Required")]
-        public string Strategy { get; set; }        
+        public string Strategy { get; set; }
+
+        [Required(ErrorMessageResourceType = typeof(Validation), ErrorMessageResourceName = "Required")]
+        public string PatentNumber1 { get; set; }
+        
     }
     public partial class IPDPIDFListEntity
     {

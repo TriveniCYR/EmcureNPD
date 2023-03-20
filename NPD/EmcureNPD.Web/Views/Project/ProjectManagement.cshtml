@@ -18,7 +18,7 @@
             <div class="mybtn-group">
                 <a class="btn btn-primary" href="@Url.Action("Gantt","Project", new{pidfid =@ViewBag.id})"><i class="fas fa-project-diagram mr-2"></i>Gantt Chart</a>
 
-                <button class="btn btn-primary" onclick="javascript:window.history.back();"><i class="fas fa-undo mr-1"></i> Back</button>
+                <button class="btn btn-primary" onclick="location.href='@Url.Action("PIDFList", "PIDF", new { ScreenId = 9 })'"><i class="fas fa-undo mr-1"></i> Back</button>
             </div>
         </div>
     </div>
@@ -94,9 +94,7 @@
                             <div class="card card-primary card-tabs">
                                 <div class="card-header p-0 pt-1">
                                     <ul class="nav nav-tabs row text-center m-0" id="custom-tabs-one-tab" role="tablist">
-                                        <li class="nav-item p-0">
-                                            <h3 class="card-title mb-0">Business Unit</h3>
-                                        </li>
+                                        
                                     </ul>
                                 </div>
                                 <div class="card-body">

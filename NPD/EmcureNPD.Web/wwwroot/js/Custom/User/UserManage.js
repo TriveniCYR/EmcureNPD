@@ -19,8 +19,8 @@ $(document).ready(function () {
 
    // $('#RegionId').css("height", "fit - content"); //height: fit - content
    // $('#CountryId').css("height", "fit - content"); //height: fit - content  
-    $('#dvDesignatioName').hide();
-    IsDesignationVisible = false;
+    //$('#dvDesignatioName').hide();
+    //IsDesignationVisible = false;
 });
 
 function GetBusinessUnitList() {
@@ -169,7 +169,7 @@ function TriggerDesignationName() {
     $.each(arrCheckBox, function (index, value) {
 
         var control_chk = $('#' + value);
-        if (control_chk.checked == true) {
+        if (control_chk.is(":checked") == true) {
             IsAtleastOneChecked = true;
         }
     });  
