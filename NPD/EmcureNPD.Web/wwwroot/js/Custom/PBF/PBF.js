@@ -215,12 +215,10 @@ function BindStrength(data) {
     });
     strengthHTML += "</tr></thead>";
     strengthHTML += "<tbody><tr>";
-    console.log(data);
     for (var count = 0; count < data.length; count++) {
         strengthHTML += '<td><input type="text" class="form-control" id="GeneralStrengthEntities[' + [count] + '].ProjectCode" name="GeneralStrengthEntities[' + [count] + '].ProjectCode" placeholder="Project Code" value="' + (data[count].projectCode != null && data[count].projectCode != undefined ? data[count].projectCode : "") + '" /></td>';
     }
     strengthHTML += '</tr>';
-
     strengthHTML += "<tr>";
     for (var count = 0; count < data.length; count++) {
         strengthHTML += '<td> <input type="text" class="form-control" id="GeneralStrengthEntities[' + [count] + '].ImprintingEmbossingCode" name="GeneralStrengthEntities[' + [count] + '].ImprintingEmbossingCode" placeholder="Imprinting Embossing Code" value="' + (data[count].imprintingEmbossingCode != null && data[count].imprintingEmbossingCode != undefined ? data[count].imprintingEmbossingCode : "") + '" /></td>';
