@@ -10,7 +10,22 @@ function GetBusinessUnitDetailsSuccess(data) {
         //business unit details
         $('#BDetailsTable tbody').html('');
         $.each(data.table, function (index, object) {
-            $('#BDetailsTable tbody').append('<tr><td>' + object.country + '</td><td>' + object.strength + '</td><td>' + object.packSize + '</td><td>' + object.packing + '</td><td>' + object.firstYearPrice + '</td><td>' + object.FirstYearQty + '</td><td>' + object.firstYearVolume + '</td><td>' + object.secondYearPrice + '</td><td>' + object.secondYearQty + '</td><td>' + object.secondYearvolume + '</td><td>' + object.thirdYearPrice + '</td><td>' + object.thirdYearQty + '</td><td>' + object.thirdYearVolume + '</td><td>' + object.currency + '</td></td></tr>');
+            $('#BDetailsTable tbody').append('<tr><td>' + object.country +
+                '</td><td>' + object.strength + '</td><td>' + object.packSize +
+                '</td><td>' + object.packing + '</td><td>' + object.firstYearPrice +
+                '</td><td>' + object.firstYearQty + '</td><td>' + object.firstYearVolume +
+                '</td><td>' + object.secondYearPrice + '</td><td>' + object.secondYearQty +
+                '</td><td>' + object.secondYearvolume + '</td><td>' + object.thirdYearPrice +
+                '</td><td>' + object.thirdYearQty + '</td><td>' + object.thirdYearVolume +
+                '</td><td>' + object.batchSize + '</td><td>' + object.currency +
+                '</td><td>' + object.firstyearCogs + '</td><td>' + object.secondYearCogs +
+                '</td><td>' + object.thirdYearCogs + '</td><td>' + object.freight +
+                '</td><td>' + object.totalCost + '</td><td>' + object.threeYearcontribution +
+                '</td><td>' + object.costOfThreeBatches + '</td><td>' + object.analyticalCost +
+                '</td><td>' + object.beCost + '</td><td>' + object.rldCost +
+                '</td><td>' + object.rnDCost + '</td><td>' + object.filingCost +
+                '</td><td>' + object.stabilityCost + '</td><td>' + object.totalInvest +
+                '</td><td>' + object.otherCost + '</td><td>' + object.apiSource + '</td><td>' + object.roi + '</td></td></tr>');
         })
     }
     catch (e) {
@@ -50,25 +65,28 @@ function GetProjectDetailsSuccess(data) {
         });
         //end
         //Businessunit details
-        $('#custom-tabs-one-tab li').slice(1).remove();
-        $.each(data.table3, function (index, bunits) {
-            var $li = $('<li class="nav-item p-0"></li>');
-            var $a = $('<a class="nav-link" id="' + bunits.businessUnitId + '" aria-selected="false">' + bunits.businessUnitName + '</a>');
-            if (bunits.businessUnitId == bid) {
-                var $span = $('<span>').text(bunits.businessUnitName);
-                $('#BHeading').empty().append($span);
-                $a.addClass('active');
-            }
-            $a.click(function () {
+
+        function addLiElement(bunits, bid) {
+            var activeClass = bunits.businessUnitId == bid ? 'active' : '';
+            var liHtml = `<li class="nav-item p-0">
+                  <a class="nav-link ${activeClass}" id="${bunits.businessUnitId}" aria-selected="false">${bunits.businessUnitName}</a>
+                </li>`;
+            var $li = $(liHtml);
+            $li.click(function () {
                 $('.nav-link.active').removeClass('active');
                 // Add active class to highlight the selected item
-                $(this).addClass('active');
+                $(this).find('a').addClass('active');
                 GetBusinessUnitDetails(bunits.businessUnitId);
                 var $span = $('<span>').text(bunits.businessUnitName);
                 $('#BHeading').empty().append($span);
             });
-            $li.append($a);
-            $li.insertAfter($('#custom-tabs-one-tab li').eq(0));
+            return $li;
+        }
+
+        $('#custom-tabs-one-tab li').slice(1).remove();
+        $.each(data.table3, function (index, bunits) {
+            var $li = addLiElement(bunits, bid);
+            $('#custom-tabs-one-tab').append($li);
         });
         //end
         //tasksubtask list details
@@ -89,13 +107,8 @@ function GetProjectDetailsSuccess(data) {
             if (object.taskLevel == 1) {
                 deleteTag += '<a class="large-font" style="" href="" title="Add SubTask" onclick="ShowAddSubTaskForm(\'' + object.projectTaskId + '\', \'' + object.taskName + '\'); return false;"><i class="fa fa-fw fa-plus mr-1"></i> ' + '</a>';
             }
-
-
-            //var tableRow = '<tr><td>' + object.taskName + '</td><td>' + object.fullName + '</td><td>' + object.statusName + '</td><td>' + object.priorityName + '</td><td>' + startDate + '</td><td>' + endDate + '</td><td>' + object.taskDuration + '</td><td>' + object.totalPercentage + '</td><td>' + updatedDate + '</td><td>' + edit + deleteTag + '</td></tr>';
             var tableRow = '<tr><td>' + object.taskName + '</td><td>' + object.fullName + '</td><td>' + object.statusName + '</td><td>' + object.priorityName + '</td><td>' + startDate + '</td><td>' + endDate + '</td><td>' + object.taskDuration + '</td><td><div class="progress"><div class="progress-bar" role="progressbar" style="width: ' + object.totalPercentage + '%;" aria-valuenow="' + object.totalPercentage + '" aria-valuemin="0" aria-valuemax="100">' + object.totalPercentage + '%</div></div></td><td>' + updatedDate + '</td><td>' + edit + deleteTag + '</td></tr>';
             $('#Milestones tbody').append(tableRow);
-
-            //$('#Milestones tbody').append('<tr><td>' + object.taskName + '</td><td>' + object.fullName + '</td><td>' + object.statusName + '</td><td>' + object.priorityName + '</td><td>' + startDate + '</td><td>' + endDate + '</td><td>' + object.taskDuration + '</td><td>' + object.totalPercentage + '</td><td>' + updatedDate + '</td><td>  <a class="large-font" style="" href="" title="Edit" data-toggle="modal" data-target="#UpdateModel" data-backdrop="static" data-keyboard="false"  onclick="GetTaskSubTaskById(' + object.projectTaskId + '); return false;"><i class="fa fa-fw fa-edit mr-1"></i> ' + '</a><a class="large-font text-danger" style="" href="" title="Delete" data-toggle="modal" data-target="#DeleteModel" data-backdrop="static" data-keyboard="false" onclick="ConfirmationDeleteTaskSubTask(' + object.projectTaskId + '); return false;"><i class="fa fa-fw fa-trash mr-1"></i> ' + '</a> </td></tr>');
         });
         //StaticDataTable("#Milestones");
         //end
@@ -430,7 +443,7 @@ function calculateTaskDuration() {
     if (startDate && endDate) {
         var start = new Date(startDate);
         var end = new Date(endDate);
-        var duration = (end - start) / (1000 * 60 * 60 * 24); // difference in days
+        var duration = (end - start) / (1000 * 60 * 60 * 24); 
         document.getElementById("AddTaskDuration").value = duration;
         document.getElementById("AddTaskDuration").readOnly = true;
     }
@@ -441,7 +454,7 @@ function calculateSubTaskDuration() {
     if (startDate && endDate) {
         var start = new Date(startDate);
         var end = new Date(endDate);
-        var duration = (end - start) / (1000 * 60 * 60 * 24); // difference in days
+        var duration = (end - start) / (1000 * 60 * 60 * 24);
         document.getElementById("AddSubTaskDuration").value = duration;
         document.getElementById("AddSubTaskDuration").readOnly = true;
     }
