@@ -5,18 +5,19 @@ using System.Collections.Generic;
 
 namespace EmcureNPD.Data.DataAccess.Entity
 {
-    public partial class PidfPbfRnDExicipientScaleUp
+    public partial class PidfPbfRnDExicipientPrototype
     {
-        public long ExicipientScaleUpId { get; set; }
+        public long ExicipientProtoypeId { get; set; }
         public long PidfPbfGeneralId { get; set; }
         public long BusinessUnitId { get; set; }
         public long StrengthId { get; set; }
-        public string ExicipientScaleUp { get; set; }
+        public string ExicipientPrototype { get; set; }
         public double? RsPerKg { get; set; }
         public string MgPerUnitDosage { get; set; }
         public int? CreatedBy { get; set; }
         public DateTime CreatedDate { get; set; }
 
         public virtual PidfPbfGeneral PidfPbfGeneral { get; set; }
+        public virtual PidfproductStrength Strength { get; set; }
     }
 }

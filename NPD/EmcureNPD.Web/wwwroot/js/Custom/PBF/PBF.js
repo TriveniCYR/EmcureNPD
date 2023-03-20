@@ -5,7 +5,7 @@ var _mode = 0;
 $(document).ready(function () {
 
     try {
-        _PIDFPBFId = parseInt($('#hdnPIDFId').val());
+        _PIDFPBFId = parseInt($('#hdnPIDFPBFId').val());
         _mode = $('#hdnIsView').val(); //parseInt($('#hdnPIDFId').val());
     } catch (e) {
         _mode = getParameterByName("IsView");
@@ -14,11 +14,11 @@ $(document).ready(function () {
 
     if (_mode == 1) {
         readOnlyForm();
-    }
+    }  
     GetPBFDropdown();
     UserwiseBusinessUnit = UserWiseBUList.split(',');
     SetBU_Tab();
-    /*SetDisableForOtherUserBU(); */  
+    /*SetDisableForOtherUserBU(); */
 });
 function GetPBFDropdown() {
     ajaxServiceMethod($('#hdnBaseURL').val() + GetAllPBF + "/" + _PIDFID, 'GET', GetPBFDropdownSuccess, GetPBFDropdownError);
@@ -26,20 +26,13 @@ function GetPBFDropdown() {
 function GetPBFDropdownSuccess(data) {
     try {
         if (data != null) {
+            BindBusinessUnit(data.MasterBusinessUnit);
+            BindStrength(data.PIDFStrengthEntity)
             $.each(data.MasterBusinessUnit, function (index, object) {
                 $('#MarketMappingId').append($('<option>').text(object.businessUnitName).attr('value', object.businessUnitId));
+                
             });
             $('#MarketMappingId').select2();
-            BindBusinessUnit(data.MasterBusinessUnit);         
-            BindStrength(data.PIDFStrengthEntity)
-            $('#ProjectName').val(data.PIDFEntity[0].moleculeName);
-            $('#BrandName').val(data.PIDFEntity[0].rfdBrand);
-            
-            $('#hdnPbfRFDCountryId').val(data.PIDFEntity[0].rfdCountryId);
-            $('#RFDCountryId').val(data.PIDFEntity[0].rfdCountryId);
-            $('#RFDApplicant').val(data.PIDFEntity[0].rfdApplicant);
-            $('#RFDIndication').val(data.PIDFEntity[0].rfdIndication);
-           /* $('#PatentStatus').val(data.PIDFIPDEntity[0].patentStatus);*/
             var _emptyOption = '<option value="">-- Select --</option>';
 
             $('#BERequirementId').append(_emptyOption);
@@ -51,10 +44,10 @@ function GetPBFDropdownSuccess(data) {
             $('#PbfPackagingTypeId').append(_emptyOption);
             $('#PbfManufacturingId').append(_emptyOption);
             $('#PbfRFDCountryId').append(_emptyOption);
-            $('#ProductTypeId').append(_emptyOption);         
+            $('#ProductTypeId').append(_emptyOption);
             $('#GeneralProductTypeId').append(_emptyOption);
-            $('#GeneralFormulationId').append(_emptyOption);
-            $('#GeneralAnalyticalId').append(_emptyOption);
+            $('#GeneralFormulationGLId').append(_emptyOption);
+            $('#GeneralAnalyticalGLId').append(_emptyOption);
 
             $(data.MasterBERequirement).each(function (index, item) {
                 $('#BERequirementId').append('<option value="' + item.beRequirementId + '">' + item.beRequirementName + '</option>');
@@ -73,7 +66,7 @@ function GetPBFDropdownSuccess(data) {
                 $('#FillingTypeId').append('<option value="' + item.filingTypeId + '">' + item.filingTypeName + '</option>');
             });
             $(data.MasterFormRnDDivision).each(function (index, item) {
-                $('#PbfFormRNDDivisionId').append('<option value="' + item.formRnDDivisionId + '">' + item.formRnDDivisionName + '</option>');               
+                $('#PbfFormRNDDivisionId').append('<option value="' + item.formRnDDivisionId + '">' + item.formRnDDivisionName + '</option>');
             });
             $(data.MasterPackagingType).each(function (index, item) {
                 $('#PbfPackagingTypeId').append('<option value="' + item.packagingTypeId + '">' + item.packagingTypeName + '</option>');
@@ -82,26 +75,46 @@ function GetPBFDropdownSuccess(data) {
                 $('#PbfManufacturingId').append('<option value="' + item.manufacturingId + '">' + item.manufacturingName + '</option>');
             });
             $(data.MasterCountry).each(function (index, item) {
-                $('#PbfRFDCountryId').append('<option value="' + item.countryId + '">' + item.countryName + '</option>');
+                $('#PbfRFDCountryId').append('<option value="' + item.countryID + '">' + item.countryName + '</option>');
             });
             $(data.MasterProductType).each(function (index, item) {
                 $('#ProductTypeId').append('<option value="' + item.productTypeId + '">' + item.productTypeName + '</option>');
-            });          
+            });
             $(data.MasterProductType).each(function (index, item) {
                 $('#GeneralProductTypeId').append('<option value="' + item.productTypeId + '">' + item.productTypeName + '</option>');
             });
             $(data.MasterFormulationGL).each(function (index, item) {
-                $('#GeneralFormulationGlId').append('<option value="' + item.UserId + '">' + item.fullName + '</option>');
+                $('#GeneralFormulationGLId').append('<option value="' + item.userId + '">' + item.fullName + '</option>');
             });
             $(data.MasterAnalyticalGL).each(function (index, item) {
-                $('#GeneralAnalyticalGlId').append('<option value="' + item.UserId + '">' + item.fullName + '</option>');
+                $('#GeneralAnalyticalGLId').append('<option value="' + item.userId + '">' + item.fullName + '</option>');
             });
             $(data.MasterTestLicense).each(function (index, item) {
-                $('#testlicence').append('&nbsp;<input type="checkbox" name="TestLicenseAvailability" class="License' + item.testLicenseId + '" value="' + item.testLicenseId + '">&nbsp;' + item.testLicenseName);
+                $('#testlicence').append('&nbsp;<input type="checkbox" name="TestLicenseAvailability" id="License' + item.testLicenseId + '" value="' + item.testLicenseId + '">&nbsp;' + item.testLicenseName);
             });
-           
+
             try {
+                if (_PIDFID > 0) {
+                    if ($('#ProjectName').val() == "") {
+                        $('#ProjectName').val(data.PIDFEntity[0].moleculeName);
+                    }
+                    if ($('#PatentStatus').val() == "") {
+                        /*$('#PatentStatus').val(data.PIDFIPDEntity[0].patentStatus);*/
+                        $('#PatentStatus').val('active');
+                    }
+                    $('#BrandName').val(data.PIDFEntity[0].rfdBrand);
+                    $('#hdnPbfRFDCountryId').val(data.PIDFEntity[0].rfdCountryId);
+                    $('#PbfRFDCountryId').val($('#hdnPbfRFDCountryId').val());
+                    $('#RFDCountryId').val(data.PIDFEntity[0].rfdCountryId);
+                    $('#RFDApplicant').val(data.PIDFEntity[0].rfdApplicant);
+                    $('#RFDIndication').val(data.PIDFEntity[0].rfdIndication);
+                   
+                }
                 if (_PIDFPBFId > 0) {
+                    $("#Pidfpbfid").val(_PIDFPBFId);
+                    $("#PBFGeneralId").val($("#hdnPBFGeneralId").val());
+                    
+
                     $('#BERequirementId').val($('#hdnBERequirementId').val());
                     $('#PbfDosageFormId').val($('#hdnPbfDosageFormId').val());
                     $('#PlantId').val($('#hdnPlantId').val());
@@ -110,11 +123,22 @@ function GetPBFDropdownSuccess(data) {
                     $('#PbfFormRNDDivisionId').val($('#hdnPbfFormRNDDivisionId').val());
                     $('#PbfPackagingTypeId').val($('#hdnPbfPackagingTypeId').val());
                     $('#PbfManufacturingId').val($('#hdnPbfManufacturingId').val());
-                    $('#PbfRFDCountryId').val(data.PIDFEntity.rfdCountryId);
+                    $('#PbfRFDCountryId').val($('#hdnPbfRFDCountryId').val());
                     $('#ProductTypeId').val($('#hdnProductTypeId').val());
                     $('#GeneralProductTypeId').val($('#hdnGeneralProductTypeId').val());
-                    $('#GeneralFormulationId').val($('#hdnGeneralFormulationGlId').val());
-                    $('#GeneralAnalyticalId').val($('#hdnGeneralAnalyticalGlId').val());
+                    $('#GeneralFormulationGLId').val($('#hdnGeneralFormulationGLId').val());
+                    $('#GeneralAnalyticalGLId').val($('#hdnGeneralAnalyticalGLId').val());
+                    $("#MarketMappingId").val($("#hdnMarketMappingIds").val().split(',')).trigger('change');
+                    //var mappingid = $("#hdnMarketMappingIds").val().split(',');
+                    //$.each(mappingid, function (index, item) {
+                    //    $("#MarketMappingId").val($("#hdnMarketMappingIds").val().split(',')).trigger('change');
+                    //});
+                    var license = $("#TestLicenseAvailability").val().split(',');
+                    $.each(license, function (index, item) {
+                        $("#License" + item).prop("checked", true);
+                    });
+
+
                 }
             } catch (e) {
 
@@ -160,16 +184,17 @@ function BUtabClick(pidfidval, BUVal) {
 
 }
 
-function SetBU_Tab() {  
-    var PIDFBusinessUnitId = 0;      
+function SetBU_Tab() {
+    var PIDFBusinessUnitId = 0;
 
     if ($("#BusinessUnitId").val() > 0)
         PIDFBusinessUnitId = $("#BusinessUnitId").val();
     else
         PIDFBusinessUnitId = $("#PIDFBusinessUnitId").val();
     SelectedBUValue = PIDFBusinessUnitId;
+    $("#Pidfid").val(_PIDFID);
     var pidfId = $("#PIDFId").val();
-    var BUAnchorId = '#BUtab_' + PIDFBusinessUnitId; 
+    var BUAnchorId = '#BUtab_' + PIDFBusinessUnitId;
     $(BUAnchorId).addClass('active');
     //window.location.href = 'PBFClinicalDetailsForm?pidfid=' + btoa(pidfId) + '&bui=' + btoa(SelectedBUValue) + '&strength=' + btoa(selectedStrength);
 
@@ -185,27 +210,60 @@ function BindBusinessUnit(data) {
     $('#custom-tabs-two-tab').html(businessUnitHTML);
 }
 function BindStrength(data) {
-    var strengthHTML = "";
+    var i = 0;
+    var strengthHTML = '<tr>';
     $.each(data, function (index, item) {
-        strengthHTML += '<li class="nav-item col-6 p-0">\
-            <a class="nav-link '+ (item.businessUnitId == _selectBusinessUnit ? "active" : "") + ' px-2" href="#custom-tabs-' + item.pidfProductStrengthId + '" data-toggle="pill" aria-selected="true" id="custom-tabs-two-' + item.pidfProductStrengthId + '-tab">' + item.strength + '</a></li>';
-        //<a class="nav-link '+ (item.businessUnitId == _selectBusinessUnit ? " active" : "") + ' px-2" href = "#custom-tabs-' + item.pidfProductStrengthId + '" data - toggle="pill" aria - selected="true" onclick = "StrengthtabClick(' + _PIDFID + ', ' + item.pidfProductStrengthId + ')" id = "custom-tabs-two-' + item.pidfProductStrengthId + '-tab" > ' + item.strength + '</a ></li > ';
-
+        strengthHTML += '<td><input type="hidden" class="control-label" id="GeneralStrengthEntities[' + i + '].StrengthId" name="GeneralStrengthEntities[' + i + '].StrengthId" value="' + item.pidfProductStrengthId + '" >' + item.strength + ' </td>';
+        i++;
     });
-    $('#ProductStrengthTabs').html(strengthHTML);
-}
-function StrengthtabClick(strengthVal, pidfval) {
-    //selectedStrength = 0;
-    var i, tabcontent, strengthtab;
-    selectedStrength = strengthVal;
-    $("#PidfPbfClinicals_StrengthId").val(strengthVal);
-    //var StrengthAnchorId = '#Strengthtab_' + strengthVal;
-    //$(StrengthAnchorId).className.add(" active", "");
-    strengthtab = document.getElementsByClassName("strengthtab");
-    for (i = 0; i < strengthtab.length; i++) {
-        strengthtab[i].className = strengthtab[i].className.replace(" active", "");
+    strengthHTML += "</tr>";
+    strengthHTML += "<tr>";
+    for (var count = 0; count < i; count++) {
+
+        strengthHTML += '<td><input type="text" class="form-control" id="GeneralStrengthEntities[' + [count] + '].ProjectCode" name="GeneralStrengthEntities[' + [count] + '].ProjectCode" placeholder="Project Code" /></td>';
     }
-    var StrengthAnchorId = '#Strengthtab_' + strengthVal;
-    $(StrengthAnchorId).addClass("active");
-    window.location.href = 'PBF?pidfid=' + btoa(pidfval) + '&bui=' + btoa(SelectedBUValue) + '&strength=' + btoa(strengthVal);
+    strengthHTML += '</tr>';
+
+    strengthHTML += "<tr>";
+    for (var count = 0; count < i; count++) {
+
+        strengthHTML += '<td> <input type="text" class="form-control" id="GeneralStrengthEntities[' + [count] + '].ImprintingEmbossingCode" name="GeneralStrengthEntities[' + [count] + '].ImprintingEmbossingCode" placeholder="Imprinting Embossing Code" /></td>';
+    }
+    strengthHTML += '</tr>';
+
+    $('#tableGeneralStarength').html(strengthHTML);
 }
+
+
+$("#save").click(function () {
+    setlicense();
+    $('#SaveType').val('Save');
+});
+$("#savedraft").click(function () {
+    setlicense();
+    $('#SaveType').val('draft');
+});
+
+
+function setlicense() {
+    var selected = new Array();
+    $.each($("input[name='TestLicenseAvailability']:checked"), function () {
+        selected.push($(this).val());
+    });
+    $("#TestLicenseAvailability").val(selected.join(", "))
+}
+//function StrengthtabClick(strengthVal, pidfval) {  
+//    //selectedStrength = 0;
+//    var i, tabcontent, strengthtab;
+//    selectedStrength = strengthVal;
+//    /*$("#PidfPbfClinicals_StrengthId").val(strengthVal);*/
+//    //var StrengthAnchorId = '#Strengthtab_' + strengthVal;
+//    //$(StrengthAnchorId).className.add(" active", "");
+//    strengthtab = document.getElementsByClassName("strengthtab");
+//    for (i = 0; i < strengthtab.length; i++) {
+//        strengthtab[i].className = strengthtab[i].className.replace(" active", "");
+//    }
+//    var StrengthAnchorId = '#Strengthtab_' + strengthVal;
+//    $(StrengthAnchorId).addClass("active");
+//    window.location.href = 'PBF?pidfid=' + btoa(pidfval) + '&bui=' + btoa(SelectedBUValue) + '&strength=' + btoa(strengthVal);
+//}

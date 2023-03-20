@@ -10,6 +10,7 @@ namespace EmcureNPD.Data.DataAccess.Entity
         public PidfPbf()
         {
             PidfPbfGenerals = new HashSet<PidfPbfGeneral>();
+            PidfPbfMarketMappings = new HashSet<PidfPbfMarketMapping>();
         }
 
         public long Pidfpbfid { get; set; }
@@ -48,5 +49,6 @@ namespace EmcureNPD.Data.DataAccess.Entity
         public virtual MasterProductType ProductType { get; set; }
         public virtual MasterWorkflow Workflow { get; set; }
         public virtual ICollection<PidfPbfGeneral> PidfPbfGenerals { get; set; }
+        public virtual ICollection<PidfPbfMarketMapping> PidfPbfMarketMappings { get; set; }
     }
 }

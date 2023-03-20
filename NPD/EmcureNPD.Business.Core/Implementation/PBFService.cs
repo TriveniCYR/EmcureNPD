@@ -1291,6 +1291,10 @@ namespace EmcureNPD.Business.Core.Implementation
                 {
                     data = dbresult.Tables[0].DataTableToList<PBFFormEntity>()[0];                                       
                 }
+                if (dbresult.Tables[1] != null && dbresult.Tables[1].Rows.Count > 0)
+                {
+                    data.GeneralStrengthEntities = dbresult.Tables[1].DataTableToList<GeneralStrengthEntity>();
+                }
             }
             return data;
         }
@@ -1332,7 +1336,7 @@ namespace EmcureNPD.Business.Core.Implementation
         {
             long pidfpbfid = 0;
             long pbfgeneralid = 0;
-
+            List<PidfPbfMarketMapping> objmapping = new();
             try
             {
                 #region Section PBF Add Update
@@ -1407,19 +1411,33 @@ namespace EmcureNPD.Business.Core.Implementation
                 #endregion
 
                 #region Marketting Mapping Add Update
-                if (pidfpbfid > 0)
+                if (pbfentity.MarketMappingId.Length > 0)
                 {
+                    if (pidfpbfid > 0)
                     {
-                        var marketmapping = _pidfPbfMarketMappingRepository.GetAll().Where(x => x.Pidfpbfid == pidfpbfid).ToList();
-                        if (marketmapping.Count > 0)
                         {
-                            foreach (var item in marketmapping)
+                            var marketmapping = _pidfPbfMarketMappingRepository.GetAll().Where(x => x.Pidfpbfid == pidfpbfid).ToList();
+                            if (marketmapping.Count > 0)
                             {
-                                _pidfPbfMarketMappingRepository.Remove(item);
+                                foreach (var item in marketmapping)
+                                {
+                                    _pidfPbfMarketMappingRepository.Remove(item);
+                                }
+                                await _unitOfWork.SaveChangesAsync();
                             }
-                            await _unitOfWork.SaveChangesAsync();
                         }
                     }
+                        foreach (var item in pbfentity.MarketMappingId)
+                        {
+                            PidfPbfMarketMapping objMM = new();
+                            objMM.BusinessUnitId = item;
+                            objMM.Pidfpbfid = pidfpbfid;
+                            objMM.CreatedBy = loggedInUserId;
+                            objMM.CreatedDate = DateTime.Now;
+                            objmapping.Add(objMM);
+                        }
+                        _pidfPbfMarketMappingRepository.AddRange(objmapping);
+                        await _unitOfWork.SaveChangesAsync();
                 }
                 #endregion                
 
@@ -1431,8 +1449,8 @@ namespace EmcureNPD.Business.Core.Implementation
 
                     //for updating objPIDFGeneralupdate
 
-                    //objPIDFGeneralupdate.Pidfpbfid = pidfid;
-                    //objPIDFGeneralupdate.Copex = pbfentity.Copex;
+                    objPIDFGeneralupdate.Pidfpbfid = pidfpbfid;
+                    objPIDFGeneralupdate.Capex = pbfentity.Capex;
                     objPIDFGeneralupdate.BusinessUnitId = pbfentity.BusinessUnitId;
                     objPIDFGeneralupdate.TotalExpense = pbfentity.TotalExpense;
                     objPIDFGeneralupdate.ProjectComplexity = pbfentity.ProjectComplexity;
@@ -1440,8 +1458,8 @@ namespace EmcureNPD.Business.Core.Implementation
                     objPIDFGeneralupdate.TestLicenseAvailability = pbfentity.TestLicenseAvailability;
                     objPIDFGeneralupdate.BudgetTimelineSubmissionDate = pbfentity.BudgetTimelineSubmissionDate;
                     objPIDFGeneralupdate.ProjectDevelopmentInitialDate = pbfentity.ProjectDevelopmentInitialDate;
-                    objPIDFGeneralupdate.FormulationGlid = pbfentity.FormulationGlId;
-                    objPIDFGeneralupdate.AnalyticalGlid = pbfentity.AnalyticalGlId;
+                    objPIDFGeneralupdate.FormulationGlid = pbfentity.FormulationGLId;
+                    objPIDFGeneralupdate.AnalyticalGlid = pbfentity.AnalyticalGLId;
                     //objPIDFGeneralupdate.ModifyBy = loggedInUserId;
                     //objPIDFGeneralupdate.ModifyDate = DateTime.Now;
                     _pidfPbfGeneralRepository.UpdateAsync(objPIDFGeneralupdate);
@@ -1454,8 +1472,8 @@ namespace EmcureNPD.Business.Core.Implementation
                 else
                 {
                     var objPIDFGeneraladd = new PidfPbfGeneral();
-                    //objPIDFGeneraladd.Pidfpbfid = pidfid;
-                    //objPIDFGeneraladd.Copex = pbfentity.Copex;
+                    objPIDFGeneraladd.Pidfpbfid = pidfpbfid;
+                    objPIDFGeneraladd.Capex = pbfentity.Capex;
                     objPIDFGeneraladd.BusinessUnitId = pbfentity.BusinessUnitId;
                     objPIDFGeneraladd.TotalExpense = pbfentity.TotalExpense;
                     objPIDFGeneraladd.ProjectComplexity = pbfentity.ProjectComplexity;
@@ -1463,8 +1481,8 @@ namespace EmcureNPD.Business.Core.Implementation
                     objPIDFGeneraladd.TestLicenseAvailability = pbfentity.TestLicenseAvailability;
                     objPIDFGeneraladd.BudgetTimelineSubmissionDate = pbfentity.BudgetTimelineSubmissionDate;
                     objPIDFGeneraladd.ProjectDevelopmentInitialDate = pbfentity.ProjectDevelopmentInitialDate;
-                    objPIDFGeneraladd.FormulationGlid = pbfentity.FormulationGlId;
-                    objPIDFGeneraladd.AnalyticalGlid = pbfentity.AnalyticalGlId;
+                    objPIDFGeneraladd.FormulationGlid = pbfentity.FormulationGLId;
+                    objPIDFGeneraladd.AnalyticalGlid = pbfentity.AnalyticalGLId;
                     objPIDFGeneraladd.CreatedBy = loggedInUserId;
                     objPIDFGeneraladd.CreatedDate = DateTime.Now;
                     _pidfPbfGeneralRepository.AddAsync(objPIDFGeneraladd);
@@ -1512,9 +1530,9 @@ namespace EmcureNPD.Business.Core.Implementation
 
                         PidfPbfGeneralStrength pidfPbfGeneralStrength = new PidfPbfGeneralStrength();
                         pidfPbfGeneralStrength.PbfgeneralId = pbfgeneralid;
-                        pidfPbfGeneralStrength.StengthId = item.StrengthId;
+                        pidfPbfGeneralStrength.StrengthId = item.StrengthId;
                         pidfPbfGeneralStrength.ProjectCode = item.ProjectCode;
-                        pidfPbfGeneralStrength.ImprintingEmbossingCode = item.ImprintingEmbossingCodes;                       
+                        pidfPbfGeneralStrength.ImprintingEmbossingCode = item.ImprintingEmbossingCode;                       
                         pidfPbfGeneralStrength.CreatedDate = DateTime.Now;
                         pidfPbfGeneralStrength.CreatedBy = loggedInUserId;
 
