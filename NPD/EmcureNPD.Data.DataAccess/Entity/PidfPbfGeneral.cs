@@ -13,6 +13,7 @@ namespace EmcureNPD.Data.DataAccess.Entity
             PidfPbfAnalyticals = new HashSet<PidfPbfAnalytical>();
             PidfPbfClinicals = new HashSet<PidfPbfClinical>();
             PidfPbfGeneralStrengths = new HashSet<PidfPbfGeneralStrength>();
+            PidfPbfRnDExicipientPrototypes = new HashSet<PidfPbfRnDExicipientPrototype>();
         }
 
         public long PbfgeneralId { get; set; }
@@ -39,5 +40,6 @@ namespace EmcureNPD.Data.DataAccess.Entity
         public virtual ICollection<PidfPbfAnalytical> PidfPbfAnalyticals { get; set; }
         public virtual ICollection<PidfPbfClinical> PidfPbfClinicals { get; set; }
         public virtual ICollection<PidfPbfGeneralStrength> PidfPbfGeneralStrengths { get; set; }
+        public virtual ICollection<PidfPbfRnDExicipientPrototype> PidfPbfRnDExicipientPrototypes { get; set; }
     }
 }

@@ -46,5 +46,8 @@ namespace EmcureNPD.Business.Models
         public List<PidfPbfClinicalPivotalBioFedEntity> pidfpbfClinicalPivotalBioFedEntity { get; set; }
         public PidfPbfClinicalCostEntity pidfPbfClinicalCost { get; set; }
         public List<PidfProductStregthEntity> ProductStrength { get; set; }
-    }
+		public List<PidfPbfRnDExicipientPrototypeEntity> PidfPbfRnDExicipientPrototypeEntity { get; set; }
+
+		public PBFFormEntity objPBFFormEntity { get; set; }
+	}
 }
