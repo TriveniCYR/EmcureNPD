@@ -26,16 +26,17 @@ namespace EmcureNPD.Web.Controllers
         private readonly IConfiguration _cofiguration;
         private readonly IStringLocalizer<Errors> _stringLocalizerError;
         private readonly IStringLocalizer<Shared> _stringLocalizerShared;
+        private readonly IHelper _helper;
         //private IHostingEnvironment _env;
         #endregion
 
         public IPDController(IConfiguration configuration,// IHostingEnvironment env,
-            IStringLocalizer<Errors> stringLocalizerError, IStringLocalizer<Shared> stringLocalizerShared)
+            IStringLocalizer<Errors> stringLocalizerError, IStringLocalizer<Shared> stringLocalizerShared, IHelper helper)
         {
             _cofiguration = configuration;
             _stringLocalizerError = stringLocalizerError;
             _stringLocalizerShared = stringLocalizerShared;
-            // _env = env;
+            _helper = helper;
         }
 
         //[Route("IPD/IPD")]
@@ -110,8 +111,7 @@ namespace EmcureNPD.Web.Controllers
         {
             IPDEntity oIPD = new();
             try
-            {
-
+            {                
                 string logUserId = Convert.ToString(HttpContext.Session.GetString(UserHelper.LoggedInUserId));
                 HttpContext.Request.Cookies.TryGetValue(UserHelper.EmcureNPDToken, out string token);
                 APIRepository objapi = new(_cofiguration);
@@ -124,6 +124,7 @@ namespace EmcureNPD.Web.Controllers
                     oIPD.BusinessUnitId = Convert.ToInt32(bussnessId);
                     oIPD.PIDFID = Convert.ToInt64(pidfid);
                     oIPD.LogInId = Convert.ToInt32(logUserId);
+                    oIPD.BusinessUnitsByUser = _helper.GetAssignedBusinessUnit();
                     TempData["BusList"] = JsonConvert.SerializeObject(oIPD.MasterBusinessUnitEntities);
 
                     if (oIPD.pidf_IPD_PatentDetailsEntities == null || oIPD.pidf_IPD_PatentDetailsEntities.Count == 0)

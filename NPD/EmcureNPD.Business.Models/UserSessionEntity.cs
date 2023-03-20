@@ -14,5 +14,6 @@ namespace EmcureNPD.Business.Models
 
         public DateTime VallidTo { get; set; }
         public int RoleId { get;set; }
+        public string AssignedBusinessUnit { get; set; }
     }
 }
