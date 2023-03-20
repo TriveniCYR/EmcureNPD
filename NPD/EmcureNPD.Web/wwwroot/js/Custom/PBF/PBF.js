@@ -135,7 +135,7 @@ function GetPBFDropdownSuccess(data) {
                     //});
                     var license = $("#TestLicenseAvailability").val().split(',');
                     $.each(license, function (index, item) {
-                        $("#License" + item).prop("checked", true);
+                        $("#License" + item.trim()).prop("checked", true);
                     });
 
 
@@ -151,6 +151,7 @@ function GetPBFDropdownSuccess(data) {
 function GetPBFDropdownError(x, y, z) {
     toastr.error(ErrorMessage);
 }
+
 function SetDisableForOtherUserBU() {
     var BU_VALUE = SelectedBUValue;
     var status = UserwiseBusinessUnit.indexOf(BU_VALUE);
@@ -165,7 +166,6 @@ function SetDisableForOtherUserBU() {
 function SetPBFFormReadonly() {
     $("#dvPBFContainer").find("input, button, submit, textarea, select,a,i").prop('disabled', true);
 }
-
 function BUtabClick(pidfidval, BUVal) {
     SelectedBUValue = 0;
     var i, tabcontent, butab;
@@ -183,7 +183,6 @@ function BUtabClick(pidfidval, BUVal) {
     window.location.href = 'PBF?pidfid=' + btoa(pidfidval) + '&bui=' + btoa(BUVal);
 
 }
-
 function SetBU_Tab() {
     var PIDFBusinessUnitId = 0;
 
@@ -210,47 +209,36 @@ function BindBusinessUnit(data) {
     $('#custom-tabs-two-tab').html(businessUnitHTML);
 }
 function BindStrength(data) {
-    var i = 0;
-    var strengthHTML = '<tr>';
+    var strengthHTML = '<thead><tr>';
     $.each(data, function (index, item) {
-        strengthHTML += '<td><input type="hidden" class="control-label" id="GeneralStrengthEntities[' + i + '].StrengthId" name="GeneralStrengthEntities[' + i + '].StrengthId" value="' + item.pidfProductStrengthId + '" >' + item.strength + ' </td>';
-        i++;
+        strengthHTML += '<td><input type="hidden" class="control-label" id="GeneralStrengthEntities[' + index + '].StrengthId" name="GeneralStrengthEntities[' + index + '].StrengthId" value="' + item.pidfProductStrengthId + '" >' + item.strength + ' </td>';
     });
-    strengthHTML += "</tr>";
-    strengthHTML += "<tr>";
-    for (var count = 0; count < i; count++) {
-
-        strengthHTML += '<td><input type="text" class="form-control" id="GeneralStrengthEntities[' + [count] + '].ProjectCode" name="GeneralStrengthEntities[' + [count] + '].ProjectCode" placeholder="Project Code" /></td>';
+    strengthHTML += "</tr></thead>";
+    strengthHTML += "<tbody><tr>";
+    console.log(data);
+    for (var count = 0; count < data.length; count++) {
+        strengthHTML += '<td><input type="text" class="form-control" id="GeneralStrengthEntities[' + [count] + '].ProjectCode" name="GeneralStrengthEntities[' + [count] + '].ProjectCode" placeholder="Project Code" value="' + (data[count].projectCode != null && data[count].projectCode != undefined ? data[count].projectCode : "") + '" /></td>';
     }
     strengthHTML += '</tr>';
 
     strengthHTML += "<tr>";
-    for (var count = 0; count < i; count++) {
-
-        strengthHTML += '<td> <input type="text" class="form-control" id="GeneralStrengthEntities[' + [count] + '].ImprintingEmbossingCode" name="GeneralStrengthEntities[' + [count] + '].ImprintingEmbossingCode" placeholder="Imprinting Embossing Code" /></td>';
+    for (var count = 0; count < data.length; count++) {
+        strengthHTML += '<td> <input type="text" class="form-control" id="GeneralStrengthEntities[' + [count] + '].ImprintingEmbossingCode" name="GeneralStrengthEntities[' + [count] + '].ImprintingEmbossingCode" placeholder="Imprinting Embossing Code" value="' + (data[count].imprintingEmbossingCode != null && data[count].imprintingEmbossingCode != undefined ? data[count].imprintingEmbossingCode : "") + '" /></td>';
     }
-    strengthHTML += '</tr>';
+    strengthHTML += '</tr></tbody>';
 
-    $('#tableGeneralStarength').html(strengthHTML);
+    $('#tableGeneralStrength').html(strengthHTML);
 }
-
-
-$("#save").click(function () {
+function SavePBFForm(_SaveType) {
     setlicense();
-    $('#SaveType').val('Save');
-});
-$("#savedraft").click(function () {
-    setlicense();
-    $('#SaveType').val('draft');
-});
-
-
+    $('#SaveType').val(_SaveType);
+}
 function setlicense() {
     var selected = new Array();
     $.each($("input[name='TestLicenseAvailability']:checked"), function () {
         selected.push($(this).val());
     });
-    $("#TestLicenseAvailability").val(selected.join(", "))
+    $("#TestLicenseAvailability").val(selected.join(","))
 }
 //function StrengthtabClick(strengthVal, pidfval) {  
 //    //selectedStrength = 0;

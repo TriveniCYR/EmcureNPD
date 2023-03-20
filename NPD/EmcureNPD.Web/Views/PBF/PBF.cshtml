@@ -54,8 +54,8 @@
                     </div>*@
                 <div class="col-md-3">
                     <div class="form-group required">
-                        @Html.LabelFor(model => model.BusinessRelationable,@MasterLocalizer["BusinessRationable"], new { @class = "control-label" })<span class="text-danger">*</span>
-                        @Html.TextAreaFor(model => model.BusinessRelationable, new {@class = "form-control", @placeholder = @MasterLocalizer["BusinessRationable"] ,@required="required"})
+                        @Html.LabelFor(model => model.PatentStatus,"Patent Status", new { @class = "control-label" })<span class="text-danger">*</span>
+                        @Html.TextBoxFor(model => model.PatentStatus, new {@class = "form-control", @placeholder = "Patent Status" ,@required="required",@readonly ="readonly"})
 
                     </div>
                 </div>
@@ -107,14 +107,6 @@
                         <select id="PbfDosageFormId" name="DosageId" class="form-control readOnlyUpdate" required></select>
                     </div>
                 </div>
-
-                <div class="col-md-3">
-                    <div class="form-group required">
-                        @Html.LabelFor(model => model.PatentStatus,"Patent Status", new { @class = "control-label" })<span class="text-danger">*</span>
-                        @Html.TextBoxFor(model => model.PatentStatus, new {@class = "form-control", @placeholder = "Patent Status" ,@required="required",@readonly ="readonly"})
-
-                    </div>
-                </div>
                 <div class="col-md-3">
                     <div class="form-group required">
                         @Html.LabelFor(model => model.SponsorBusinessPartner,"Sponsor / Business Partner", new { @class = "control-label" })<span class="text-danger">*</span>
@@ -130,7 +122,14 @@
 
                     </div>
                 </div>
-                <div class="col-md-3">
+                <div class="col-md-6">
+                    <div class="form-group required">
+                        @Html.LabelFor(model => model.BusinessRelationable,@MasterLocalizer["BusinessRationable"], new { @class = "control-label" })<span class="text-danger">*</span>
+                        @Html.TextAreaFor(model => model.BusinessRelationable, new {@class = "form-control", @placeholder = @MasterLocalizer["BusinessRationable"] ,@required="required"})
+
+                    </div>
+                </div>
+                <div class="col-md-6">
                     <div class="form-group required">
                         @Html.LabelFor(model => model.ScopeObjectives,"Scope & Objectives", new { @class = "control-label" })<span class="text-danger">*</span>
                         @Html.TextAreaFor(model => model.ScopeObjectives, new { @class = "form-control", @placeholder = "Scope & Objectives" ,@required="required"})
@@ -330,13 +329,13 @@
 
                                 <div class="col-md-3">
                                     <div class="form-group required">
-                                        <label class="control-label">Budget and Timeline Submission Date</label>
+                                        <label class="control-label">Budget and Timeline Submission</label>
                                         @Html.TextBoxFor(@modal=> modal.BudgetTimelineSubmissionDate,"{0:yyyy-MM-dd}",new{@type="date",@class="form-control readOnlyUpdate",@required="required"})
                                     </div>
                                 </div>
                                 <div class="col-md-3">
                                     <div class="form-group required">
-                                        <label class="control-label">Project Development Initial Date</label>
+                                        <label class="control-label">Project Development Initial</label>
                                         @Html.TextBoxFor(@modal=> modal.ProjectDevelopmentInitialDate,"{0:yyyy-MM-dd}",new{@type="date",@class="form-control readOnlyUpdate",@required="required"})
                                     </div>
                                 </div>
@@ -365,7 +364,7 @@
                                 </div>
                                 <div class="row">
                                     <div class="col-md-12">
-                                        <table id="tableGeneralStarength" class="table table-bordered table-striped table-hover" style="width:100%">
+                                        <table id="tableGeneralStrength" class="table text-center" style="width:100%">
                                         </table>
 
                                     </div>
@@ -381,8 +380,8 @@
             <div class="row">
                 <div class="col-12 text-end">
                     <div class="form-group" id="dvMainButton">
-                        <button type="submit" class="btn btn-success me-3 outside-buttons operationButton" id="save">@SharedLocalizer["Submit"]</button>
-                        <button type="submit" class="btn btn-info me-3 outside-buttons operationButton" id="savedraft">@SharedLocalizer["SaveDraft"]</button>
+                        <button type="submit" class="btn btn-success me-3 outside-buttons operationButton" id="save" onclick="SavePBFForm('Save')">@SharedLocalizer["Submit"]</button>
+                        <button type="submit" class="btn btn-info me-3 outside-buttons operationButton" id="savedraft" onclick="SavePBFForm('Draft')">@SharedLocalizer["SaveDraft"]</button>
                         <a class="btn btn-danger me-3 outside-buttons operationButton" asp-action="PIDFList" asp-controller="PIDF" asp-route-ScreenId="6">@SharedLocalizer["Cancel"]</a>
                     </div>
                 </div>

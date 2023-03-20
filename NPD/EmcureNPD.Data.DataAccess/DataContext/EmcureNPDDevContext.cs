@@ -2,7 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata;
 using EmcureNPD.Data.DataAccess.Entity;
-
+using EmcureNPD.Utility;
 
 #nullable disable
 
@@ -116,8 +116,9 @@ namespace EmcureNPD.Data.DataAccess.DataContext
             if (!optionsBuilder.IsConfigured)
             {
 #warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see http://go.microsoft.com/fwlink/?LinkId=723263.
-				//optionsBuilder.UseSqlServer(DatabaseConnection.NPDDatabaseConnection);
-			}
+                //optionsBuilder.UseSqlServer("Data Source=180.149.241.172;Initial Catalog=EmcureNPDDev;Persist Security Info=True;User ID=emcurenpddev_dbUser;pwd=emcure123!@#");
+                optionsBuilder.UseSqlServer(DatabaseConnection.NPDDatabaseConnection);
+            }
         }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
@@ -2122,33 +2123,6 @@ namespace EmcureNPD.Data.DataAccess.DataContext
                     .HasForeignKey(d => d.Pidfpbfid)
                     .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("FK_PIDF_PBF_MarketMapping_PIDF_PBF");
-            });
-
-            modelBuilder.Entity<PidfPbfRnDExicipientPrototype>(entity =>
-            {
-                entity.HasKey(e => e.ExicipientProtoypeId);
-
-                entity.ToTable("PIDF_PBF_RnD_ExicipientPrototype");
-
-                entity.Property(e => e.CreatedDate)
-                    .HasColumnType("datetime")
-                    .HasDefaultValueSql("(getdate())");
-
-                entity.Property(e => e.ExicipientPrototype).HasMaxLength(80);
-
-                entity.Property(e => e.MgPerUnitDosage).HasMaxLength(80);
-
-                entity.HasOne(d => d.PidfPbfGeneral)
-                    .WithMany(p => p.PidfPbfRnDExicipientPrototypes)
-                    .HasForeignKey(d => d.PidfPbfGeneralId)
-                    .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK_PIDF_PBF_RnD_ExicipientPrototype_PIDF_PBF_General");
-
-                entity.HasOne(d => d.Strength)
-                    .WithMany(p => p.PidfPbfRnDExicipientPrototypes)
-                    .HasForeignKey(d => d.StrengthId)
-                    .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK_PIDF_PBF_RnD_ExicipientPrototype_PIDFProductStrength");
             });
 
             modelBuilder.Entity<PidfPbfRnDExicipientPrototype>(entity =>

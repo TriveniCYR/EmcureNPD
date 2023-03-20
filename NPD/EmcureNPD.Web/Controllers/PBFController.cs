@@ -7,6 +7,7 @@ using EmcureNPD.Web.Helpers;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
+using Microsoft.DotNet.MSIdentity.Shared;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Localization;
 using Newtonsoft.Json;
@@ -16,6 +17,7 @@ using System.Linq;
 using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Reflection;
+using System.Security.Principal;
 
 namespace EmcureNPD.Web.Controllers
 {
@@ -537,22 +539,29 @@ namespace EmcureNPD.Web.Controllers
                 APIRepository objapi = new(_cofiguration);
                 HttpResponseMessage responseMessage = objapi.APICommunication(APIURLHelper.SavePBF, HttpMethod.Post, token, new StringContent(JsonConvert.SerializeObject(pbfEntity))).Result;
 
+                string jsonResponse = responseMessage.Content.ReadAsStringAsync().Result;
+                ModelState.Clear();
+                var data = JsonConvert.DeserializeObject<APIResponseEntity<dynamic>>(jsonResponse);
+
                 if (responseMessage.IsSuccessStatusCode)
                 {
-                    string jsonResponse = responseMessage.Content.ReadAsStringAsync().Result;
-                    ModelState.Clear();
+                    TempData[EmcureNPD.Web.Helpers.UserHelper.SuccessMessage] = data._Message;
                     return RedirectToAction("PIDFList", "PIDF", new { ScreenId = 6 });
                 }
-
-
+                else
+                {
+                    ViewBag.errormessage = Convert.ToString(data._Message);
+                    return View(pbfEntity);
+                }
             }
             catch (Exception e)
             {
                 ViewBag.errormessage = Convert.ToString(e.StackTrace);
                 ModelState.Clear();
-                return RedirectToAction("PIDFList", "PIDF", new { ScreenId = 6 });
+                //return RedirectToAction("PIDFList", "PIDF", new { ScreenId = 6 });
+                return View(pbfEntity);
             }
-            return RedirectToAction("PIDFList", "PIDF", new { ScreenId = 6 });
+            //return RedirectToAction("PIDFList", "PIDF", new { ScreenId = 6 });
         }
 
 
