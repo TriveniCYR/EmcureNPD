@@ -89,10 +89,11 @@ namespace EmcureNPD.Business.Core.Implementation
         private IRepository<MasterFilingType> _masterFillingTypeRepository { get; set; }
         private IRepository<PidfPbfMarketMapping> _pidfPbfMarketMappingRepository { get; set; }
         private IRepository<PidfPbfGeneralStrength> _pidfPbfGeneralStrengthRepository { get; set; }
-        
-        //Market Extension & In House
+		private IRepository<PidfPbfRnD> _pidfPbfRnDRepository { get; set; }
+		private IRepository<PidfPbfRnDExicipientPrototype> _pidfPbfRnDExicipientPrototype { get; set; }
+		//Market Extension & In House
 
-        public PBFService(IUnitOfWork unitOfWork, IMapperFactory mapperFactory, IMasterOralService oralService, IMasterUnitofMeasurementService unitofMeasurementService,
+		public PBFService(IUnitOfWork unitOfWork, IMapperFactory mapperFactory, IMasterOralService oralService, IMasterUnitofMeasurementService unitofMeasurementService,
             IMasterDosageFormService dosageFormService, IMasterPackagingTypeService packagingTypeService, IMasterBusinessUnitService businessUnitService,
             IMasterCountryService countryService, IMasterAPISourcingService masterAPISourcingService, IPidfApiDetailsService pidfApiDetailsService,
             IPidfProductStrengthService pidfProductStrengthService, IMasterDIAService masterDium, IMasterMarketExtensionService masterMarketExtensionService,
@@ -151,8 +152,10 @@ namespace EmcureNPD.Business.Core.Implementation
             _masterFillingTypeRepository = _unitOfWork.GetRepository<MasterFilingType>();
             _pidfPbfMarketMappingRepository = _unitOfWork.GetRepository<PidfPbfMarketMapping>();
             _pidfPbfGeneralStrengthRepository = _unitOfWork.GetRepository<PidfPbfGeneralStrength>();
+			_pidfPbfRnDRepository = _unitOfWork.GetRepository<PidfPbfRnD>();
+			_pidfPbfRnDExicipientPrototype = _unitOfWork.GetRepository<PidfPbfRnDExicipientPrototype>();
 
-        }
+		}
 
 
         public async Task<dynamic> FillDropdown(int PIDFId)
@@ -1326,9 +1329,26 @@ namespace EmcureNPD.Business.Core.Implementation
                 return DBOperation.Error;
             }
         }
+		#region saving RnD Details
+		public async Task<DBOperation> AddUpdateRnD(PidfPbfGeneralEntity PidfPbfGeneralEntity)
+		{
+			//PidfPbfGeneral objpidfPbfGeneral;
+            List<PidfPbfRnDExicipientPrototypeEntity> lspidfPbfRnDExicipientPrototypeEntity = new List<PidfPbfRnDExicipientPrototypeEntity>();
+			var loggedInUserId = _helper.GetLoggedInUser().UserId;
+			var pbfgeneralid = await SavePidfAndPBFCommanDetails(PidfPbfGeneralEntity.PIDFID, PidfPbfGeneralEntity.objPBFFormEntity);
+			//objpidfPbfGeneral=_pidfPbfGeneralRepository.GetAll().Where(x=>x.PbfgeneralId== pbfgeneralid).First();
 
-        #region Private Methods
-        public async Task<long> SavePidfAndPBFCommanDetails(long pidfid, PBFFormEntity pbfentity)
+			var isSuccess = await _auditLogService.CreateAuditLog<PidfPbfGeneralEntity>(pbfgeneralid > 0 ? Utility.Audit.AuditActionType.Update : Utility.Audit.AuditActionType.Create,
+						  Utility.Enums.ModuleEnum.PBF, PidfPbfGeneralEntity, PidfPbfGeneralEntity, Convert.ToInt32(pbfgeneralid));
+			await _unitOfWork.SaveChangesAsync();
+			var _StatusID = (PidfPbfGeneralEntity.SaveType == "Save") ? Master_PIDFStatus.PBFSubmitted : Master_PIDFStatus.PBFInProgress;
+			await _auditLogService.UpdatePIDFStatusCommon(pbfgeneralid, (int)_StatusID, loggedInUserId);
+
+			return DBOperation.Success;
+		}
+     #endregion
+		#region Private Methods
+		public async Task<long> SavePidfAndPBFCommanDetails(long pidfid, PBFFormEntity pbfentity)
         {
             long pidfpbfid = 0;
             long pbfgeneralid = 0;
@@ -1526,6 +1546,7 @@ namespace EmcureNPD.Business.Core.Implementation
                 }
 
                 #endregion
+
 
 
 
