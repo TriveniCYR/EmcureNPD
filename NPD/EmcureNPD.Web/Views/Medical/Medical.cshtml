@@ -88,7 +88,7 @@
 				</div>
 				<div class="col-12 d-flex align-items-center justify-content-end">
 					<button  @((!objPermssion.Edit || !objPermssion.Add) ? "disabled" : "") class="btn btn-success me-3 outside-buttons" type="submit">Submit</button>
-					<input class="btn btn-danger me-3 outside-buttons" value="Cancel" type="button" title="Cancel" onclick="location.href='@Url.Action("PIDFList", "PIDF", new { ScreenId = 3 })'" />
+					<input class="btn btn-danger me-3 outside-buttons" value="Cancel" type="button" title="Cancel" onclick="CancelModal()" />
 					@*<button class="btn btn-danger me-3 outside-buttons" type="button" onclick="window.history.back();">cancel</button>*@
 				</div>
 			</form>
@@ -96,52 +96,38 @@
 	</div>
 </section>
 
+@*CancelModel*@
+<div id="CancelModel" class="modal themeModal " role="dialog">
+	<div class="modal-dialog">
+		<!-- Modal content-->
+		<div class="modal-content">
+			<div class="modal-header">
+				<h4 class="modal-title">Cancel</h4>
+				<button type="button" class="close" data-dismiss="modal">&times;</button>
+			</div>
+			<div class="modal-body">
+				<div class="row">
+					<div class="col-md-12">
+						<div class="form-group">
+							@Html.Label("Are you sure, you want to cancel the request?")
+						</div>
+					</div>
+				</div>
+				<div class="card-footer text-center">
+					<button type="button" onclick="location.href='@Url.Action("PIDFList", "PIDF", new { ScreenId = 3 })'" data-dismiss="modal" class="btn btn-primary mr-2">Yes</button>
+					<a class="btn btn-danger" data-dismiss="modal">No</a>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+
 @section MyScripts {
-	<script src="/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+	<script src="~/js/custom/medical/medical.js"></script>
 	<script>
 		var pidid = @Html.Raw(Json.Serialize(pidfid));
-		$(document).ready(function () {
-			var _PIDFAccordionURL = "@Url.Action("PIDF", "PIDF")";
-			_PIDFID = parseInt(pidid);
-			getPIDFAccordion(_PIDFAccordionURL, _PIDFID, "dvPIDFAccrdion");
-		})
-		// browse files
-		var selectFileButton = document.getElementById("selectFileButton");
-		var fileInput = document.getElementById("File");
-
-		selectFileButton.addEventListener("click", function () {
-			event.preventDefault();
-			fileInput.click();
-		});
-		// preview Files
-
-		function previewFile(file) {
-			window.open(URL.createObjectURL(file));
-		}
-
-		const input = document.getElementById("File");
-		const fileList = document.getElementById("fileList");
-		input.addEventListener("change", () => {
-			fileList.innerHTML = "";
-			for (const file of input.files) {
-				const li = document.createElement("li");
-				const a = document.createElement("a");
-				a.textContent = file.name;
-				a.href = "#";
-				a.addEventListener("click", () => previewFile(file));
-				li.appendChild(a);
-				fileList.appendChild(li);
-			}
-		});
-
-		//remove files
-		function deleteElement(controlId) {
-			var controlName = "FileName_" + controlId + "_";
-			$('#' + controlName).val('');
-			var divControl = "element_" + controlId;
-			var divCtrl = document.getElementById("element_" + controlId)
-			divCtrl.style.display = "none";
-		}
+		var _PIDFAccordionURL = "@Url.Action("PIDF", "PIDF")";
 
 		var errorCallBack = '@TempData[EmcureNPD.Web.Helpers.UserHelper.ErrorMessage]';
 		if (errorCallBack) {
