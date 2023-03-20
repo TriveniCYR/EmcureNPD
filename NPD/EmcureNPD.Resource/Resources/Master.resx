@@ -642,4 +642,7 @@
   <data name="PatentDetails" xml:space="preserve">
     <value>Patent Details</value>
   </data>
+  <data name="PatentStatus" xml:space="preserve">
+    <value>Patent Status</value>
+  </data>
 </root>
