@@ -60,6 +60,7 @@
   <ItemGroup>
     <Folder Include="Views\Dashboard\" />
     <Folder Include="Views\Management\" />
+    <Folder Include="wwwroot\js\Custom\Medical\" />
   </ItemGroup>
 
 </Project>
