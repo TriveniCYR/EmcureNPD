@@ -28,7 +28,8 @@ namespace EmcureNPD.Business.Core.Interface
 		//Task<PIDFPBFClinicalFormEntity> GetPbfClinicalFormDetails(long pidfId, int buid, long? strengthid);
 
 		// ---------------------------PBFDetails----------------------------
-		Task<DBOperation> AddUpdatePBFDetails(PBFFormEntity pbfEntity);	
+		Task<DBOperation> AddUpdatePBFDetails(PBFFormEntity pbfEntity);
+		Task<DBOperation> AddUpdateRnD(PidfPbfGeneralEntity PidfPbfGeneralEntity);
 		Task<PBFFormEntity> GetPbfFormDetails(long pidfId, int buid, int? strengthid);
 	}
 }
