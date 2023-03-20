@@ -1114,6 +1114,15 @@ namespace EmcureNPD.Resource.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Patent Status.
+        /// </summary>
+        public static string PatentStatus {
+            get {
+                return ResourceManager.GetString("PatentStatus", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to PBF &amp; API.
         /// </summary>
         public static string PBFAPI {

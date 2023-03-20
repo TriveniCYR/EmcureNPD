@@ -236,6 +236,10 @@ namespace EmcureNPD.Business.Core.ServiceImplementations
                     objUser.Address = entityUser.Address;
                     objUser.IsActive = entityUser.IsActive;
                     objUser.IsManagement = entityUser.IsManagement;
+                    objUser.Apiuser  = entityUser.APIUser;
+                    objUser.FormulationGl = entityUser.FormulationGL;
+                    objUser.AnalyticalGl = entityUser.AnalyticalGL;
+                    objUser.DesignationName = entityUser.DesignationName;
                     objUser.ModifyBy = LoggedUserId;
                     objUser.ModifyDate = DateTime.Now;
 
