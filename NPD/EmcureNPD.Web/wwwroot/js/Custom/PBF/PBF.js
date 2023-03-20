@@ -209,9 +209,9 @@ function BindBusinessUnit(data) {
     $('#custom-tabs-two-tab').html(businessUnitHTML);
 }
 function BindStrength(data) {
-    var strengthHTML = '<thead><tr>';
+    var strengthHTML = '<thead class="bg-primary"><tr>';
     $.each(data, function (index, item) {
-        strengthHTML += '<td><input type="hidden" class="control-label" id="GeneralStrengthEntities[' + index + '].StrengthId" name="GeneralStrengthEntities[' + index + '].StrengthId" value="' + item.pidfProductStrengthId + '" >' + item.strength + ' </td>';
+        strengthHTML += '<td><input type="hidden" class="control-label" id="GeneralStrengthEntities[' + index + '].StrengthId" name="GeneralStrengthEntities[' + index + '].StrengthId" value="' + item.pidfProductStrengthId + '" /><b>' + item.strength + item.unitofMeasurementName + '</b></td>';
     });
     strengthHTML += "</tr></thead>";
     strengthHTML += "<tbody><tr>";

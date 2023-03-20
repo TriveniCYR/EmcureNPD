@@ -1318,7 +1318,7 @@ namespace EmcureNPD.Business.Core.Implementation
                        Utility.Enums.ModuleEnum.PBF, pbfEntity, pbfEntity, Convert.ToInt32(pbfEntity.Pidfid));
                     await _unitOfWork.SaveChangesAsync();
                     var _StatusID = (pbfEntity.SaveType == "Save") ? Master_PIDFStatus.PBFSubmitted : Master_PIDFStatus.PBFInProgress;
-                    await _auditLogService.UpdatePIDFStatusCommon(pbfEntity.Pidfpbfid, (int)_StatusID, loggedInUserId);
+                    await _auditLogService.UpdatePIDFStatusCommon(pbfEntity.Pidfid, (int)_StatusID, loggedInUserId);
 
                     return DBOperation.Success;
                 }

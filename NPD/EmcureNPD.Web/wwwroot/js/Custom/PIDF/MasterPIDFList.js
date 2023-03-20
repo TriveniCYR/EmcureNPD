@@ -190,18 +190,18 @@ function InitializePIDFList() {
                     html += '<a class="large-font" title="Charter" style="color:' + (_enable ? "#007bff" : "grey") + '" href="' + (_enable ? _APIForm + "APICharterDetailsForm" + _APIQS : "#") + '"><i class="fa fa-fw fa-map-marker mr-1"></i></a>';
                     html += '<a class="large-font" title="Charter Summary" style="color:' + (_enable ? "#007bff" : "grey") + '" href="' + (_enable ? _APIForm + "APICharterSummaryDetailsForm" + _APIQS : "#") + '"><i class="fa fa-fw fa-chart-line mr-1"></i></a>';
                 } else if (_screenId == "6") {
-                    var _PBFForm = '/PIDF/';
+                    //var _PBFForm = '/PIDF/';
                     var _NewPBFForm = '/PBF/';
                     var _PBFQS = '?pidfid=' + row.encpidfid + '&bui=' + row.encbud;
                     var _enable = (row.pidfStatusID == 7 || row.pidfStatusID == 10 || row.pidfStatusID == 11 || row.pidfStatusID == 12 || row.pidfStatusID == 13 || row.pidfStatusID == 14 || row.pidfStatusID == 15);
-                    html += '<a class="large-font" title="Edit" style="color:' + (_enable ? "#007bff" : "grey") + '" href="' + (_enable ? _PBFForm + "PBFForm" + _PBFQS : "#") + '"><i class="fa fa-fw fa-edit mr-1"></i></a>';
+                    //html += '<a class="large-font" title="Edit" style="color:' + (_enable ? "#007bff" : "grey") + '" href="' + (_enable ? _PBFForm + "PBFForm" + _PBFQS : "#") + '"><i class="fa fa-fw fa-edit mr-1"></i></a>';
 
-                    html += '<a class="large-font" title="RnD" style="color:' + (_enable ? "#007bff" : "grey") + '" href="' + (_enable ? _NewPBFForm + "PBF" + _PBFQS : "#") + '"><i class="fa fa-fw fa-columns mr-1"></i></a>';
-                    html += '<a class="large-font" title="Analytical" style="color:' + (_enable ? "#007bff" : "grey") + '" href="' + (_enable ? _NewPBFForm + "PBFFormAnalytical" + _PBFQS : "#") + '"><i class="fa fa-fw fa-flask mr-1"></i></a>';
-                    html += '<a class="large-font" title="Clinical" style="color:' + (_enable ? "#007bff" : "grey") + '" href="' + (_enable ? _NewPBFForm + "PBFClinicalDetailsForm" + _PBFQS : "#") + '"><i class="fa fa-fw fa-map-marker mr-1"></i></a>';
+                    html += '<a class="large-font" title="RnD" style="color:' + (_enable ? "#007bff" : "grey") + '" href="' + (_enable ? _NewPBFForm + "PBF" + _PBFQS : "#") + '"><i class="fa fa-fw fa-edit mr-1"></i></a>';
+                    //html += '<a class="large-font" title="Analytical" style="color:' + (_enable ? "#007bff" : "grey") + '" href="' + (_enable ? _NewPBFForm + "PBFFormAnalytical" + _PBFQS : "#") + '"><i class="fa fa-fw fa-flask mr-1"></i></a>';
+                    //html += '<a class="large-font" title="Clinical" style="color:' + (_enable ? "#007bff" : "grey") + '" href="' + (_enable ? _NewPBFForm + "PBFClinicalDetailsForm" + _PBFQS : "#") + '"><i class="fa fa-fw fa-map-marker mr-1"></i></a>';
 
-                    html += '<a class="large-font" title="View" style="color:' + (_enable ? "#007bff" : "grey") + '" href="' + (_enable ? _PBFForm + "PBFForm" + _PBFQS : "#") + '"><i class="fa fa-fw fa-eye mr-1"></i></a>';
-                    html += '<a class="large-font" title="Charter Summary" style="color:' + (_enable ? "#007bff" : "grey") + '" href="' + (_enable ? _PBFForm + "PBFForm" + _PBFQS : "#") + '"><i class="fa fa-fw fa-chart-line mr-1"></i></a>';
+                    html += '<a class="large-font" title="View" style="color:' + (_enable ? "#007bff" : "grey") + '" href="' + (_enable ? _NewPBFForm + "PBF" + _PBFQS + "&IsView=1" : "#") + '"><i class="fa fa-fw fa-eye mr-1"></i></a>';
+                //    html += '<a class="large-font" title="Charter Summary" style="color:' + (_enable ? "#007bff" : "grey") + '" href="' + (_enable ? _PBFForm + "PBFForm" + _PBFQS : "#") + '"><i class="fa fa-fw fa-chart-line mr-1"></i></a>';
                 } else if (_screenId == "7") {
                     var _FinanceForm = '/Finance/PIDFFinance?pidfid=' + row.encpidfid + '&bui=' + row.encbud;
                     var _enable = (row.pidfStatusID == 7 || row.pidfStatusID == 10 || row.pidfStatusID == 11 || row.pidfStatusID == 12 || row.pidfStatusID == 13 || row.pidfStatusID == 14 || row.pidfStatusID == 15 || row.pidfStatusID == 16 || row.pidfStatusID == 17);
