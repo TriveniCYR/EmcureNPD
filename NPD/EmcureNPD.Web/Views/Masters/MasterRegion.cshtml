@@ -84,6 +84,7 @@
 						<div class="col">
 							<div class="form-group required">
 								@Html.LabelFor(model =>model.MasterRegionEntity.RegionName,"Region Name", new { @class = "control-label"  })
+								<span class="text-danger">*</span>
 								@Html.EditorFor(model=>model.MasterRegionEntity.RegionName, new { htmlAttributes = new { @autocomplete = "off", @class = "form-control checkbox-checked", @placeholder = @SharedLocalizer["Region Name"] } })
 								@Html.ValidationMessageFor(model =>model.MasterRegionEntity.RegionName, "", new { @class = "text-danger" })
 							</div>
@@ -91,6 +92,7 @@
 							<div class="form-group required">
 								<input type="hidden" id="RegionCountryMappingId" name="RegionCountryMappingId" value="0" />
 								@Html.LabelFor(model => model.MasterCountryEntity.CountryName,"Country Name", new { @class = "control-label" })
+								<span class="text-danger">*</span>
 								@Html.DropDownListFor(model => model.CountryId, new List<SelectListItem> { }, new { @class = "form-control", @multiple = "multiple" })
 								@Html.ValidationMessageFor(model => model.CountryId, "", new { @class = "text-danger" })
 							</div>
