@@ -154,7 +154,8 @@ namespace EmcureNPD.Web.Controllers
                                 new Claim("FullName", oUserDetail.FullName),
                                 new Claim("Email", oUserDetail.Email),
                                 new Claim("UserId", Convert.ToString(oUserDetail.UserId)),
-                                new Claim("RoleId", Convert.ToString(oUserDetail.RoleId))
+                                new Claim("RoleId", Convert.ToString(oUserDetail.RoleId)),
+                                new Claim("AssignedBusinessUnit", oUserDetail.AssignedBusinessUnit)
                             };
 
             var claimsIdentity = new ClaimsIdentity(

@@ -31,7 +31,6 @@ namespace EmcureNPD.Business.Models
         public DateTime? ProjectInitiationDate { get; set; }
         public string RnDhead { get; set; }
         public string ProjectManager { get; set; }
-        public string DosageFormulationDetail { get; set; }
         public int? PackagingTypeId { get; set; }
         public int ManufacturingId { get; set; }
 
@@ -39,8 +38,7 @@ namespace EmcureNPD.Business.Models
         public string BrandName { get; set; }
         public string RFDApplicant { get; set; }
         public int RFDCountryId { get; set; }
-        public string RFDIndication { get; set; }
-
+        public string RFDIndication { get; set; }      
         //General section 
         public long PBFGeneralId { get; set; }        
         public int BusinessUnitId { get; set; }
@@ -51,8 +49,8 @@ namespace EmcureNPD.Business.Models
         public string TestLicenseAvailability { get; set; }
         public DateTime? BudgetTimelineSubmissionDate { get; set; }
         public DateTime? ProjectDevelopmentInitialDate { get; set; }
-        public int FormulationGlId { get; set; }
-        public int AnalyticalGlId { get; set; }
+        public int FormulationGLId { get; set; }
+        public int AnalyticalGLId { get; set; }
         public int StrengthId { get; set; }
         public string SaveType { get; set; }
         public string BusinessUnitsByUser { get; set; }
@@ -62,6 +60,6 @@ namespace EmcureNPD.Business.Models
         public long PBFGeneralId { get; set; }
         public int StrengthId { get; set; }
         public string ProjectCode { get; set; }
-        public string ImprintingEmbossingCodes { get; set; }       
+        public string ImprintingEmbossingCode { get; set; }       
     }
 }

@@ -4,7 +4,6 @@ using Microsoft.EntityFrameworkCore.Metadata;
 using EmcureNPD.Data.DataAccess.Entity;
 using EmcureNPD.Utility;
 
-
 #nullable disable
 
 namespace EmcureNPD.Data.DataAccess.DataContext
@@ -104,6 +103,7 @@ namespace EmcureNPD.Data.DataAccess.DataContext
         public virtual DbSet<PidfPbfMarketMapping> PidfPbfMarketMappings { get; set; }
         public virtual DbSet<PidfPbfRnDExicipientPrototype> PidfPbfRnDExicipientPrototypes { get; set; }
         public virtual DbSet<PidfPbfRnDExicipientRequirement> PidfPbfRnDExicipientRequirements { get; set; }
+        public virtual DbSet<PidfPbfRnDExicipientScaleUp> PidfPbfRnDExicipientScaleUps { get; set; }
         public virtual DbSet<Pidfapidetail> Pidfapidetails { get; set; }
         public virtual DbSet<PidfproductStrength> PidfproductStrengths { get; set; }
         public virtual DbSet<PidfstatusHistory> PidfstatusHistories { get; set; }
@@ -116,8 +116,9 @@ namespace EmcureNPD.Data.DataAccess.DataContext
             if (!optionsBuilder.IsConfigured)
             {
 #warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see http://go.microsoft.com/fwlink/?LinkId=723263.
-				optionsBuilder.UseSqlServer(DatabaseConnection.NPDDatabaseConnection);
-			}
+                //optionsBuilder.UseSqlServer("Data Source=180.149.241.172;Initial Catalog=EmcureNPDDev;Persist Security Info=True;User ID=emcurenpddev_dbUser;pwd=emcure123!@#");
+                optionsBuilder.UseSqlServer(DatabaseConnection.NPDDatabaseConnection);
+            }
         }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
@@ -2092,9 +2093,9 @@ namespace EmcureNPD.Data.DataAccess.DataContext
                     .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("FK_PIDF_PBF_General_Strength_PIDF_PBF_General");
 
-                entity.HasOne(d => d.Stength)
+                entity.HasOne(d => d.Strength)
                     .WithMany(p => p.PidfPbfGeneralStrengths)
-                    .HasForeignKey(d => d.StengthId)
+                    .HasForeignKey(d => d.StrengthId)
                     .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("FK_PIDF_PBF_General_Strength_PIDFProductStrength");
             });
@@ -2110,6 +2111,18 @@ namespace EmcureNPD.Data.DataAccess.DataContext
                 entity.Property(e => e.CreatedDate).HasColumnType("datetime");
 
                 entity.Property(e => e.Pidfpbfid).HasColumnName("PIDFPBFId");
+
+                entity.HasOne(d => d.BusinessUnit)
+                    .WithMany(p => p.PidfPbfMarketMappings)
+                    .HasForeignKey(d => d.BusinessUnitId)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("FK_PIDF_PBF_MarketMapping_Master_BusinessUnit");
+
+                entity.HasOne(d => d.Pidfpbf)
+                    .WithMany(p => p.PidfPbfMarketMappings)
+                    .HasForeignKey(d => d.Pidfpbfid)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("FK_PIDF_PBF_MarketMapping_PIDF_PBF");
             });
 
             modelBuilder.Entity<PidfPbfRnDExicipientPrototype>(entity =>
@@ -2151,6 +2164,28 @@ namespace EmcureNPD.Data.DataAccess.DataContext
                 entity.Property(e => e.ExicipientPrototype).HasMaxLength(70);
 
                 entity.Property(e => e.MgPerUnitDosage).HasMaxLength(70);
+            });
+
+            modelBuilder.Entity<PidfPbfRnDExicipientScaleUp>(entity =>
+            {
+                entity.HasKey(e => e.ExicipientScaleUpId)
+                    .HasName("PK__PIDF_PBF__25B6F2DB7DDA7A4A");
+
+                entity.ToTable("PIDF_PBF_RnD_ExicipientScaleUp", "dbo");
+
+                entity.Property(e => e.CreatedDate)
+                    .HasColumnType("datetime")
+                    .HasDefaultValueSql("(getdate())");
+
+                entity.Property(e => e.ExicipientScaleUp).HasMaxLength(80);
+
+                entity.Property(e => e.MgPerUnitDosage).HasMaxLength(80);
+
+                entity.HasOne(d => d.PidfPbfGeneral)
+                    .WithMany(p => p.PidfPbfRnDExicipientScaleUps)
+                    .HasForeignKey(d => d.PidfPbfGeneralId)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("FK_PIDF_PBF_RnD_ExicipientScaleUp_PIDF_PBF_General");
             });
 
             modelBuilder.Entity<Pidfapidetail>(entity =>

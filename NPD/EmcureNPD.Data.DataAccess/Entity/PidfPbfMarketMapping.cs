@@ -12,5 +12,8 @@ namespace EmcureNPD.Data.DataAccess.Entity
         public int BusinessUnitId { get; set; }
         public DateTime CreatedDate { get; set; }
         public int CreatedBy { get; set; }
+
+        public virtual MasterBusinessUnit BusinessUnit { get; set; }
+        public virtual PidfPbf Pidfpbf { get; set; }
     }
 }

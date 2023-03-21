@@ -23,5 +23,9 @@ namespace EmcureNPD.Web.Helpers
             _httpContextAccessor.HttpContext.Request.Cookies.TryGetValue(UserHelper.EmcureNPDToken, out string token);
             return token;
         }
+        public string GetAssignedBusinessUnit()
+        {
+            return (_httpContextAccessor.HttpContext.Session.GetString(UserHelper.AssignedBusinessUnit));
+        }
     }
 }

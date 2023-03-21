@@ -5,11 +5,9 @@ var ColumnObjUpcase = ['PackagingTypeId', 'CommercialBatchSize', 'PriceDiscounti
 /*var ColumnObjLowcase = ['packagingTypeId', 'commercialBatchSize', 'priceDiscounting', 'totalApireq', 'apireq', 'suimsvolume', 'marketGrowth', 'marketSize', 'priceErosion', 'finalSelectionId'];*/
 var SelectedBUValue = 0;
 var selectedStrength = 0;
-var UserwiseBusinessUnit;
 
 $(document).ready(function () {
     debugger;
-    UserwiseBusinessUnit = UserWiseBUList.split(',');
     SetDivReadonly();
     InitializeCurrencyDropdown();
     InitializeFinalSelectionDropdown();
@@ -417,6 +415,7 @@ function SetCommercialFormReadonly() {
     $("#AddyeartableCollapseButton").prop('disabled', false);
 }
 function SetDisableForOtherUserBU() {
+    var UserwiseBusinessUnit = $('#BusinessUnitsByUser').val().split(',');
     var BU_VALUE = SelectedBUValue;
     var status = UserwiseBusinessUnit.indexOf(BU_VALUE);
     var IsViewInMode = ($("#IsView").val() == '1')

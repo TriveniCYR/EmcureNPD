@@ -91,96 +91,109 @@ var PidafId=Context.Request.Query["pidfid"];
                         </tr>
                     </thead>
                     <tbody>
-                        <tr>
-                            <td class="text-start">
-                                Total Manpower Cost
-                            </td>
-                            <td>₹ 13.13</td>
-                            <td>₹ 0.43</td>
-                            <td>₹ 36.72</td>
-                            <td>₹ 50.28</td>
-                        </tr>
-                        <tr>
-                            <td class="text-start">
-                                Total Raw material Cost
-                            </td>
-                            <td>₹ 4.85</td>
-                            <td>₹ 9.66</td>
-                            <td>₹ 33.91</td>
-                            <td>₹ 48.42</td>
-                        </tr>
-                        <tr>
-                            <td class="text-start">
-                                Plant Support Cost
-                            </td>
-                            <td>₹ -</td>
-                            <td>₹ 6.72</td>
-                            <td>₹ 20.16</td>
-                            <td>₹ 26.88</td>
-                        </tr>
-                        <tr>
-                            <td class="text-start">
-                                Reference Product Cost
-                            </td>
-                            <td>₹ -</td>
-                            <td>₹ -</td>
-                            <td>₹ 3.00</td>
-                            <td>₹ 4.00</td>
-                        </tr>
-                        <tr>
-                            <td class="text-start">
-                                Analytical Cost
-                            </td>
-                            <td>₹ 12.63</td>
-                            <td>₹ 7.15</td>
-                            <td>₹ 31.03</td>
-                            <td>₹ 50.81</td>
-                        </tr>
-                        <tr>
-                            <td class="text-start">
-                                Bio Study Cost*
-                            </td>
-                            <td>₹ 20.00</td>
-                            <td>₹ -</td>
-                            <td>₹ -</td>
-                            <td>₹ 20.00</td>
-                        </tr>
-                        <tr>
-                            <td class="text-start">
-                                Tooling & Change Parts
-                            </td>
-                            <td>₹ -</td>
-                            <td>₹ 5.64</td>
-                            <td>₹ -</td>
-                            <td>₹ 5.64</td>
-                        </tr>
-                        <tr>
-                            <td class="text-start">
-                                Other Expenses
-                            </td>
-                            <td>₹ 4.85</td>
-                            <td>₹ 9.66</td>
-                            <td>₹ 33.91</td>
-                            <td>₹ 48.42</td>
-                        </tr>
-                        <tr>
-                            <td class="text-start">
-                                Filling Expenses
-                            </td>
-                            <td>₹ 2.00</td>
-                            <td>₹ -</td>
-                            <td>₹ -</td>
-                            <td>₹ 2.00</td>
-                        </tr>
-                        <tr class="fw-bold">
-                            <td class="text-start">
-                                Total
-                            </td>
-                            <td>₹ 52.61</td>
-                            <td>₹ 29.60</td>
-                            <td>₹ 124.82</td>
-                            <td>₹ 207.03</td>
-                        </tr>
+                        @if (Model != null && Model.lsHeadWiseBudget .Count>0)
+                        {
+                            for (int i = 0; i < Model.lsHeadWiseBudget.Count; i++)
+                            {
+                                if (Model.lsHeadWiseBudget[i].BudgetsHeades.ToLower().Equals("total"))
+                                {
+                                    <tr class="fw-bold">
+                                        <td class="text-start">
+                                            @Model.lsHeadWiseBudget[i].BudgetsHeades
+                                        </td>
+                                        <td>₹ @Model.lsHeadWiseBudget[i].Prototype</td>
+                                        <td>₹ @Model.lsHeadWiseBudget[i].ScaleUp</td>
+                                        <td>₹ @Model.lsHeadWiseBudget[i].Exhibit</td>
+                                        <td>₹ @Model.lsHeadWiseBudget[i].TOTAL</td>
+                                    </tr>
+                                }
+                                else
+                                {
+                                    <tr>
+                                        <td class="text-start">
+                                            @Model.lsHeadWiseBudget[i].BudgetsHeades
+                                        </td>
+                                        <td>₹ @Model.lsHeadWiseBudget[i].Prototype</td>
+                                        <td>₹ @Model.lsHeadWiseBudget[i].ScaleUp</td>
+                                        <td>₹ @Model.lsHeadWiseBudget[i].Exhibit</td>
+                                        <td>₹ @Model.lsHeadWiseBudget[i].TOTAL</td>
+                                    </tr>
+                                }
+                            }
+                        }
+
+                        @* <tr>
+                                    <td class="text-start">
+                                        Total Raw material Cost
+                                    </td>
+                                    <td>₹ 4.85</td>
+                                    <td>₹ 9.66</td>
+                                    <td>₹ 33.91</td>
+                                    <td>₹ 48.42</td>
+                                </tr>
+                                <tr>
+                                    <td class="text-start">
+                                        Plant Support Cost
+                                    </td>
+                                    <td>₹ -</td>
+                                    <td>₹ 6.72</td>
+                                    <td>₹ 20.16</td>
+                                    <td>₹ 26.88</td>
+                                </tr>
+                                <tr>
+                                    <td class="text-start">
+                                        Reference Product Cost
+                                    </td>
+                                    <td>₹ -</td>
+                                    <td>₹ -</td>
+                                    <td>₹ 3.00</td>
+                                    <td>₹ 4.00</td>
+                                </tr>
+                                <tr>
+                                    <td class="text-start">
+                                        Analytical Cost
+                                    </td>
+                                    <td>₹ 12.63</td>
+                                    <td>₹ 7.15</td>
+                                    <td>₹ 31.03</td>
+                                    <td>₹ 50.81</td>
+                                </tr>
+                                <tr>
+                                    <td class="text-start">
+                                        Bio Study Cost*
+                                    </td>
+                                    <td>₹ 20.00</td>
+                                    <td>₹ -</td>
+                                    <td>₹ -</td>
+                                    <td>₹ 20.00</td>
+                                </tr>
+                                <tr>
+                                    <td class="text-start">
+                                        Tooling & Change Parts
+                                    </td>
+                                    <td>₹ -</td>
+                                    <td>₹ 5.64</td>
+                                    <td>₹ -</td>
+                                    <td>₹ 5.64</td>
+                                </tr>
+                                <tr>
+                                    <td class="text-start">
+                                        Other Expenses
+                                    </td>
+                                    <td>₹ 4.85</td>
+                                    <td>₹ 9.66</td>
+                                    <td>₹ 33.91</td>
+                                    <td>₹ 48.42</td>
+                                </tr>
+                                <tr>
+                                    <td class="text-start">
+                                        Filling Expenses
+                                    </td>
+                                    <td>₹ 2.00</td>
+                                    <td>₹ -</td>
+                                    <td>₹ -</td>
+                                    <td>₹ 2.00</td>
+                                </tr>*@
                     </tbody>
                 </table>
                 <table class="table table-bordered text-center cumulative-phase-wise-budget-table m-0">
@@ -203,48 +216,20 @@ var PidafId=Context.Request.Query["pidfid"];
                         </tr>
                     </thead>
                     <tbody>
-                        <tr>
-                            <td class="text-start">
-                                Feasibility
-                            </td>
-                            <td>0.24%</td>
-                            <td>₹ 0.50</td>
-                        </tr>
-                        <tr>
-                            <td class="text-start">
-                                Prototype Devt
-                            </td>
-                            <td>25.87%</td>
-                            <td>₹ 52.61</td>
-                        </tr>
-                        <tr>
-                            <td class="text-start">
-                                R&D Scale Up
-                            </td>
-                            <td>40.42%</td>
-                            <td>₹ 82.21</td>
-                        </tr>
-                        <tr>
-                            <td class="text-start">
-                                AMV/AMT
-                            </td>
-                            <td>45.14%</td>
-                            <td>₹ 91.80</td>
-                        </tr>
-                        <tr>
-                            <td class="text-start">
-                                Exhibit/Stability
-                            </td>
-                            <td>99.79%</td>
-                            <td>₹ 202.95</td>
-                        </tr>
-                        <tr>
-                            <td class="text-start">
-                                Filling
-                            </td>
-                            <td>₹ 100.00%</td>
-                            <td>₹ 203.38</td>
-                        </tr>
+                        @if (Model != null && Model.lsCumulativePhaseWiseBudget.Count > 0)
+                        {
+                            for (int i = 0; i < Model.lsCumulativePhaseWiseBudget.Count; i++)
+                            {
+                                <tr>
+                                    <td class="text-start">
+                                        @Model.lsCumulativePhaseWiseBudget[i].CostHeads
+                                    </td>
+                                    <td>@Model.lsCumulativePhaseWiseBudget[i].PercentOfTotal</td>
+                                    <td>₹ @Model.lsCumulativePhaseWiseBudget[i].CostRsLacs</td>
+                                </tr>
+                            }
+                            
+                        }
                     </tbody>
                 </table>
                 <table class="table table-bordered text-center domestic-market-table m-0">
@@ -319,7 +304,19 @@ var PidafId=Context.Request.Query["pidfid"];
                             <td>Row</td>
                             <td></td>
                         </tr>
-                        <tr>
+                        @if (Model != null && Model.lsProjectDetails.Count > 0)
+                        {
+                            for (int i = 0; i < Model.lsProjectDetails.Count; i++)
+                            {
+                                <tr>
+                                    <td>
+                                        @Model.lsProjectDetails[i].Market
+                                    </td>
+                                    <td colspan="5"> @Model.lsProjectDetails[i].Row</td>
+                                </tr>
+                            }
+                        }
+                        @*<tr>
                             <td>
                                 Sponsor/Business Partner
                             </td>
@@ -409,7 +406,7 @@ var PidafId=Context.Request.Query["pidfid"];
                             <td></td>
                             <td></td>
                             <td colspan="2"></td>
-                        </tr>
+                        </tr>*@
                     </tbody>
                 </table>
                 <table class="table table-bordered text-center deliverables-table m-0">
@@ -431,17 +428,40 @@ var PidafId=Context.Request.Query["pidfid"];
                             <td class="align-middle">Row</td>
                             <td></td>
                         </tr>
-                        <tr>
-                            <td class="text-start">
-                                Project Budjet (INR Lacs)
-                            </td>
-                            <td style="width: 18%;">₹ 203.38 lacs</td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                        </tr>
-                        <tr>
+                        @if (Model != null && Model.lsDeliverables.Count > 0)
+                        {
+                            foreach (var item in Model.lsDeliverables)
+                            {
+                                if (item.PharmacoepialStandardsonQuality.Equals("Project Budjet (INR Lacs)"))
+                                {
+                                    <tr>
+                                        <td class="text-start">
+                                            @item.PharmacoepialStandardsonQuality
+                                        </td>
+                                        <td style="width: 18%;">₹ @item.Row lacs</td>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                    </tr>
+                                }
+                                else
+                                {
+                                    <tr>
+                                        <td class="text-start">
+                                            @item.PharmacoepialStandardsonQuality
+                                        </td>
+                                        <td style="width: 18%;">₹ @item.Row</td>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                    </tr>
+                                }
+                            }
+                            
+                        }
+                        @*<tr>
                             <td class="text-start">
                                 Project Completion/Filing Date
                             </td>
@@ -452,7 +472,7 @@ var PidafId=Context.Request.Query["pidfid"];
                                 BE Studies
                             </td>
                             <td colspan="5">FTR</td>
-                        </tr>
+                        </tr>*@
                     </tbody>
                 </table>
                 <table class="table table-bordered text-center eu-market-table m-0">
@@ -555,7 +575,7 @@ var PidafId=Context.Request.Query["pidfid"];
                     {
                         <div class="col-4 text-center mt-5">
                             <h6 class="m-0 fw-bold">@item.ManagerName</h6>
-                            <p class="m-0 fw-bold">Associate Director (R&D)</p>
+                            <p class="m-0 fw-bold">@item.DesignationName</p>
                         </div>
                        @* <div class="col-4 text-center mt-5">
                             <h6 class="m-0 fw-bold">@item.ManagerName</h6>

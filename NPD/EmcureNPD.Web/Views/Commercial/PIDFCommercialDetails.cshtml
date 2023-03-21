@@ -28,7 +28,7 @@
         <div class="col-md-12" id="mainDivCommercial">
             <input type="hidden" id="PIDFBusinessUnitId" value="@Model.BusinessUnitId" />
             <input type="hidden" id="PIDFId" value="@Model.Pidfid" />
-            <input type="hidden" id="UsersBusinessUnits" value="32,22" />
+            <input type="hidden" id="BusinessUnitsByUser" value="@Model.BusinessUnitsByUser" />
              <div class="card card-primary card-tabs">
                             <div class="card-header p-0 pt-1">
                     <ul class="nav nav-tabs text-center m-0" id="businessUnitTabs">
@@ -441,7 +441,6 @@
          var _PIDFID = "@UtilityHelper.Decreypt(Convert.ToString(Context.Request.Query["pidfid"]))";
         var _PIDFAccordionURL = "@Url.Action("PIDF", "PIDF")";
 
-        var UserWiseBUList="@Model.BusinessUnitsByUser";
         var ErrorMessage = "@SharedLocalizer["Error"]";
         document.addEventListener("DOMContentLoaded", function () {
             var tabList = [].slice.call(document.querySelectorAll("#mainDivCommercial a"));

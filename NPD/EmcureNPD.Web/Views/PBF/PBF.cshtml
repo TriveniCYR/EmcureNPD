@@ -7,7 +7,7 @@
 @inject IConfiguration Configuration
 @model EmcureNPD.Business.Models.PBFFormEntity
 @{
-    ViewData["Title"] = "PBFClinical";
+    ViewData["Title"] = "PBF";
     string jsVersion = @Configuration.GetSection("StaticJS")["version"];
 }
 
@@ -18,10 +18,13 @@
 <div id="dvPBFContainer">
     <form id="AddPBFForm" asp-action="PBF" asp-controller="PBF" method="post">
         <input type="hidden" asp-for="Pidfid" />
+        <input type="hidden" asp-for="Pidfpbfid" />
+        <input type="hidden" asp-for="PBFGeneralId" />
         <input type="hidden" asp-for="BusinessUnitId" />
         <input type="hidden" asp-for="StrengthId" />
         <input type="hidden" asp-for="SaveType" />
-        <input type="hidden" id="hdnPIDFId" value="@(Model.Pidfpbfid)" />
+        <input type="hidden" id="hdnPBFGeneralId" value="@(Model.PBFGeneralId)" />
+        <input type="hidden" id="hdnPIDFPBFId" value="@(Model.Pidfpbfid)" />
         <input type="hidden" id="hdnPBFIsView" value="@(Context.Request.Query["IsView"] == "1" ? "1" : "0")" />
         <div class="container-fluid background-white-card">
             <div class="row">
@@ -38,7 +41,7 @@
                         <span class="text-danger">*</span>
                         @*<select id="BusinessUnitId" name="BusinessUnitId" class="form-control readOnlyUpdate" required></select>*@
                         @Html.DropDownListFor(model => model.MarketMappingId, new List<SelectListItem> { }, new { @class = "form-control", @multiple = "multiple", @required = "required" })
-                        <input type="hidden" id="hdnMarketMappingId" value="@Model.MarketIds" />
+                        <input type="hidden" id="hdnMarketMappingIds" value="@Model.MarketIds" />
                         @Html.ValidationMessageFor(model => model.MarketMappingId, "", new { @class = "text-danger" })
                     </div>
                 </div>
@@ -51,8 +54,8 @@
                     </div>*@
                 <div class="col-md-3">
                     <div class="form-group required">
-                        @Html.LabelFor(model => model.BusinessRelationable,@MasterLocalizer["BusinessRationable"], new { @class = "control-label" })<span class="text-danger">*</span>
-                        @Html.TextAreaFor(model => model.BusinessRelationable, new {@class = "form-control", @placeholder = @MasterLocalizer["BusinessRationable"] ,@required="required"})
+                        @Html.LabelFor(model => model.PatentStatus,"Patent Status", new { @class = "control-label" })<span class="text-danger">*</span>
+                        @Html.TextBoxFor(model => model.PatentStatus, new {@class = "form-control", @placeholder = "Patent Status" ,@required="required",@readonly ="readonly"})
 
                     </div>
                 </div>
@@ -104,14 +107,6 @@
                         <select id="PbfDosageFormId" name="DosageId" class="form-control readOnlyUpdate" required></select>
                     </div>
                 </div>
-
-                <div class="col-md-3">
-                    <div class="form-group required">
-                        @Html.LabelFor(model => model.PatentStatus,"Patent Status", new { @class = "control-label" })<span class="text-danger">*</span>
-                        @Html.TextBoxFor(model => model.PatentStatus, new {@class = "form-control", @placeholder = "Patent Status" ,@required="required"})
-
-                    </div>
-                </div>
                 <div class="col-md-3">
                     <div class="form-group required">
                         @Html.LabelFor(model => model.SponsorBusinessPartner,"Sponsor / Business Partner", new { @class = "control-label" })<span class="text-danger">*</span>
@@ -127,7 +122,14 @@
 
                     </div>
                 </div>
-                <div class="col-md-3">
+                <div class="col-md-6">
+                    <div class="form-group required">
+                        @Html.LabelFor(model => model.BusinessRelationable,@MasterLocalizer["BusinessRationable"], new { @class = "control-label" })<span class="text-danger">*</span>
+                        @Html.TextAreaFor(model => model.BusinessRelationable, new {@class = "form-control", @placeholder = @MasterLocalizer["BusinessRationable"] ,@required="required"})
+
+                    </div>
+                </div>
+                <div class="col-md-6">
                     <div class="form-group required">
                         @Html.LabelFor(model => model.ScopeObjectives,"Scope & Objectives", new { @class = "control-label" })<span class="text-danger">*</span>
                         @Html.TextAreaFor(model => model.ScopeObjectives, new { @class = "form-control", @placeholder = "Scope & Objectives" ,@required="required"})
@@ -135,106 +137,138 @@
                     </div>
                 </div>
             </div>
-            <div>
-                <div class="card-header">
-                    <h3 class="card-title">Formulation Detail</h3>
-                </div>
-                <div class="row">
 
-                    <div class="col-md-3">
-                        <div class="form-group required">
-                            @Html.LabelFor(model => model.FormRnDdivisionId, "Form R&D Division", new { @class = "control-label" })<span class="text-danger">*</span>
-                            <input type="hidden" id="hdnPbfFormRNDDivisionId" value="@Model.FormRnDdivisionId" />
-                            <select id="PbfFormRNDDivisionId" name="FormRnDdivisionId" class="form-control readOnlyUpdate" required></select>
-                        </div>
-                    </div>
-
-                    <div class="col-md-3">
-                        <div class="form-group required">
-                            @Html.LabelFor(model => model.ProjectInitiationDate,"Project Initiation Date", new { @class = "control-label" })<span class="text-danger">*</span>
-                            @Html.TextBoxFor(@modal=> modal.ProjectInitiationDate,"{0:yyyy-MM-dd}",new{@type="date",@class="form-control readOnlyUpdate", @placeholder = "Project Initiation Date",@required="required"})
-
-                        </div>
-                    </div>
-                    <div class="col-md-3">
-                        <div class="form-group required">
-                            @Html.LabelFor(model => model.RnDhead,"R&D Head", new { @class = "control-label" })<span class="text-danger">*</span>
-                            @Html.TextBoxFor(model => model.RnDhead, new {@class = "form-control", @placeholder = "R&D Head",@required="required" })
-                        </div>
-                    </div>
-                    <div class="col-md-3">
-                        <div class="form-group required">
-                            @Html.LabelFor(model => model.ProjectManager,"Project Manager", new { @class = "control-label" })<span class="text-danger">*</span>
-                            @Html.TextBoxFor(model => model.ProjectManager, new {@class = "form-control", @placeholder = "Project Manager" ,@required="required"})
-
-                        </div>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="col-md-3">
-                        <div class="form-group required">
-                            @Html.LabelFor(model => model.DosageFormulationDetail,"Dosage", new { @class = "control-label" })<span class="text-danger">*</span>
-                            @Html.TextBoxFor(model => model.DosageFormulationDetail, new {@class = "form-control", @placeholder = "Dosage" ,@required="required"})
-
-                        </div>
-                    </div>
-
-                    <div class="col-md-3">
-                        <div class="form-group required">
-                            @Html.LabelFor(model => model.PackagingTypeId, "Packaging type", new { @class = "control-label" })<span class="text-danger">*</span>
-                            <input type="hidden" id="hdnPbfPackagingTypeId" value="@Model.PackagingTypeId" />
-                            <select id="PbfPackagingTypeId" name="PackagingTypeId" class="form-control readOnlyUpdate" required></select>
-                        </div>
-                    </div>
-                    <div class="col-md-3">
-                        <div class="form-group required">
-                            @Html.LabelFor(model => model.ManufacturingId, "Manufacturing Plant", new { @class = "control-label" })<span class="text-danger">*</span>
-                            <input type="hidden" id="hdnPbfManufacturingId" value="@Model.ManufacturingId" />
-                            <select id="PbfManufacturingId" name="ManufacturingId" class="form-control readOnlyUpdate" required></select>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="card-header">
-                <h3 class="card-title">Reference Product Detail</h3>
-            </div>
             <div class="row">
+                <div class="col-12">
+                    <div class="card">
+                        <div class="card-header bg-primary">
+                            <h3 class="card-title mb-0">
 
-                <div class="col-md-3">
-                    <div class="form-group required">
-                        @Html.LabelFor(model => model.BrandName,"Brand", new { @class = "control-label" })
-                        <input type="hidden" id="hdnBrandName" value="@Model.BrandName" />
-                        @Html.TextBoxFor(model => model.BrandName, new {@class = "form-control", @placeholder = "Brand" ,@required="required"})
+                                <button type="button" class="btn btn-tool" data-card-widget="collapse">
+                                    Formulation Detail
+                                </button>
 
+                            </h3>
+                            <div class="card-tools">
+                                <button type="button" class="btn btn-tool" data-card-widget="collapse" title="Collapse">
+                                    <i class="fas fa-minus"></i>
+                                </button>
+                            </div>
+                        </div>
+                        <div class="card-body">
+                            <div class="row">
+
+                                <div class="col-md-3">
+                                    <div class="form-group required">
+                                        @Html.LabelFor(model => model.FormRnDdivisionId, "Form R&D Division", new { @class = "control-label" })<span class="text-danger">*</span>
+                                        <input type="hidden" id="hdnPbfFormRNDDivisionId" value="@Model.FormRnDdivisionId" />
+                                        <select id="PbfFormRNDDivisionId" name="FormRnDdivisionId" class="form-control readOnlyUpdate" required></select>
+                                    </div>
+                                </div>
+
+                                <div class="col-md-3">
+                                    <div class="form-group required">
+                                        @Html.LabelFor(model => model.ProjectInitiationDate,"Project Initiation Date", new { @class = "control-label" })<span class="text-danger">*</span>
+                                        @Html.TextBoxFor(@modal=> modal.ProjectInitiationDate,"{0:yyyy-MM-dd}",new{@type="date",@class="form-control readOnlyUpdate", @placeholder = "Project Initiation Date",@required="required"})
+
+                                    </div>
+                                </div>
+                                <div class="col-md-3">
+                                    <div class="form-group required">
+                                        @Html.LabelFor(model => model.RnDhead,"R&D Head", new { @class = "control-label" })<span class="text-danger">*</span>
+                                        @Html.TextBoxFor(model => model.RnDhead, new {@class = "form-control", @placeholder = "R&D Head",@required="required" })
+                                    </div>
+                                </div>
+                                <div class="col-md-3">
+                                    <div class="form-group required">
+                                        @Html.LabelFor(model => model.ProjectManager,"Project Manager", new { @class = "control-label" })<span class="text-danger">*</span>
+                                        @Html.TextBoxFor(model => model.ProjectManager, new {@class = "form-control", @placeholder = "Project Manager" ,@required="required"})
+
+                                    </div>
+                                </div>
+                                <div class="col-md-3">
+                                    <div class="form-group required">
+                                        @Html.LabelFor(model => model.PackagingTypeId, "Packaging type", new { @class = "control-label" })<span class="text-danger">*</span>
+                                        <input type="hidden" id="hdnPbfPackagingTypeId" value="@Model.PackagingTypeId" />
+                                        <select id="PbfPackagingTypeId" name="PackagingTypeId" class="form-control readOnlyUpdate" required></select>
+                                    </div>
+                                </div>
+                                <div class="col-md-3">
+                                    <div class="form-group required">
+                                        @Html.LabelFor(model => model.ManufacturingId, "Manufacturing Plant", new { @class = "control-label" })<span class="text-danger">*</span>
+                                        <input type="hidden" id="hdnPbfManufacturingId" value="@Model.ManufacturingId" />
+                                        <select id="PbfManufacturingId" name="ManufacturingId" class="form-control readOnlyUpdate" required></select>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                     </div>
-                </div>
 
-                <div class="col-md-3">
-                    <div class="form-group required">
-
-                        @Html.LabelFor(model => model.RFDApplicant,"Applicant", new { @class = "control-label" })
-                        <input type="hidden" id="hdnRFDApplicant" value="@Model.RFDApplicant" />
-
-                        @Html.TextBoxFor(model => model.RFDApplicant, new {@class = "form-control", @placeholder = "Applicant" ,@required="required"})
-
-                    </div>
-                </div>
-                <div class="col-md-3">
-                    <div class="form-group required">
-                        @Html.LabelFor(model => model.RFDCountryId, "Country", new { @class = "control-label" })
-                        <input type="hidden" id="hdnPbfRFDCountryId" value="@Model.RFDCountryId" />
-                        <select id="PbfRFDCountryId" name="RFDCountryId" class="form-control readOnlyUpdate" required></select>
-                    </div>
-                </div>
-                <div class="col-md-3">
-                    <div class="form-group required">
-                        @Html.LabelFor(model => model.RFDIndication,"Indication", new { @class = "control-label" })
-                        <input type="hidden" id="hdnRFDIndication" value="@Model.RFDIndication" />
-
-                        @Html.TextBoxFor(model => model.RFDIndication, new {@class = "form-control", @placeholder = "Indication",@required="required" })
-                    </div>
                 </div>
             </div>
+
+
+            <div class="row">
+                <div class="col-12">
+                    <div class="card">
+                        <div class="card-header bg-primary">
+                            <h3 class="card-title mb-0">
+
+                                <button type="button" class="btn btn-tool" data-card-widget="collapse">
+                                    Reference Product Detail
+                                </button>
+
+                            </h3>
+                            <div class="card-tools">
+                                <button type="button" class="btn btn-tool" data-card-widget="collapse" title="Collapse">
+                                    <i class="fas fa-minus"></i>
+                                </button>
+                            </div>
+                        </div>
+                        <div class="card-body">
+                            <div class="row">
+
+                                <div class="col-md-3">
+                                    <div class="form-group required">
+                                        @Html.LabelFor(model => model.BrandName,"Brand", new { @class = "control-label" })
+                                        <input type="hidden" id="hdnBrandName" value="@Model.BrandName" />
+                                        @Html.TextBoxFor(model => model.BrandName, new {@class = "form-control", @placeholder = "Brand" ,@required="required"})
+
+                                    </div>
+                                </div>
+
+                                <div class="col-md-3">
+                                    <div class="form-group required">
+
+                                        @Html.LabelFor(model => model.RFDApplicant,"Applicant", new { @class = "control-label" })
+                                        <input type="hidden" id="hdnRFDApplicant" value="@Model.RFDApplicant" />
+
+                                        @Html.TextBoxFor(model => model.RFDApplicant, new {@class = "form-control", @placeholder = "Applicant" ,@required="required"})
+
+                                    </div>
+                                </div>
+                                <div class="col-md-3">
+                                    <div class="form-group required">
+                                        @Html.LabelFor(model => model.RFDCountryId, "Country", new { @class = "control-label" })
+                                        <input type="hidden" id="hdnPbfRFDCountryId" value="@Model.RFDCountryId" />
+                                        <select id="PbfRFDCountryId" name="RFDCountryId" class="form-control readOnlyUpdate" required></select>
+                                    </div>
+                                </div>
+                                <div class="col-md-3">
+                                    <div class="form-group required">
+                                        @Html.LabelFor(model => model.RFDIndication,"Indication", new { @class = "control-label" })
+                                        <input type="hidden" id="hdnRFDIndication" value="@Model.RFDIndication" />
+
+                                        @Html.TextBoxFor(model => model.RFDIndication, new {@class = "form-control", @placeholder = "Indication",@required="required" })
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
             <div id="divbusinessunit" class="card card-primary card-tabs">
                 <input type="hidden" id="PIDFBusinessUnitId" value="@Model.BusinessUnitId" />
                 <input type="hidden" id="PIDFId" value="@Model.Pidfid" />
@@ -244,105 +278,190 @@
                 </div>
 
             </div>
-            <div class="card-header">
-                <h5 class="mb-0"><b>General</b></h5>
-            </div>
-            <br>
-            <div class="card-body" id="mainDivClinical">
-                <div class="row">
-                    <div class="col-md-12">
-                        <table id="tableStarength" class="table table-bordered table-striped table-hover" style="width:100%">
-                            <div class="card card-maroon card-outline card-outline-tabs m-0">
-                                <div class="card-header p-0 border-bottom-0">
-                                    <ul class="nav nav-tabs row m-0 text-center" id="ProductStrengthTabs">
-                                    </ul>
+
+            <div class="row">
+                <div class="col-12">
+                    <div class="card">
+                        <div class="card-header bg-primary">
+                            <h3 class="card-title mb-0">
+
+                                <button type="button" class="btn btn-tool" data-card-widget="collapse">
+                                    General
+                                </button>
+
+                            </h3>
+                            <div class="card-tools">
+                                <button type="button" class="btn btn-tool" data-card-widget="collapse" title="Collapse">
+                                    <i class="fas fa-minus"></i>
+                                </button>
+                            </div>
+                        </div>
+                        <div class="card-body">
+                            <div class="row">
+                                <div class="col-md-3">
+                                    <div class="form-group required">
+                                        @Html.LabelFor(model => model.Capex,"Capex", new { @class = "control-label" })<span class="text-danger">*</span>
+                                        @Html.TextBoxFor(model => model.Capex, new {@class = "form-control", @placeholder = "Capex" ,@required="required"})
+
+                                    </div>
+                                </div>
+                                <div class="col-md-3">
+                                    <div class="form-group required">
+                                        @Html.LabelFor(model => model.TotalExpense,"Total Expenses", new { @class = "control-label" })
+                                        @Html.TextBoxFor(model => model.TotalExpense, new { @class = "form-control", @placeholder = "Total Expenses", @readonly ="readonly" })
+
+                                    </div>
+                                </div>
+
+                                <div class="col-md-3">
+                                    <div class="form-group required">
+                                        @Html.LabelFor(model => model.ProjectComplexity,"Project Complexity", new { @class = "control-label" })
+                                        @Html.TextBoxFor(model => model.ProjectComplexity, new { @class = "form-control", @placeholder = "Project Complexity" })
+                                    </div>
+                                </div>
+                                <div class="col-md-3">
+                                    <div class="form-group required">
+                                        @Html.LabelFor(model => model.GeneralProductTypeId, "Product Type", new { @class = "control-label" })
+                                        <input type="hidden" id="hdnGeneralProductTypeId" value="@Model.GeneralProductTypeId" />
+                                        <select id="GeneralProductTypeId" name="GeneralProductTypeId" class="form-control readOnlyUpdate" required></select>
+                                    </div>
+                                </div>
+
+                                <div class="col-md-3">
+                                    <div class="form-group required">
+                                        <label class="control-label">Budget and Timeline Submission</label>
+                                        @Html.TextBoxFor(@modal=> modal.BudgetTimelineSubmissionDate,"{0:yyyy-MM-dd}",new{@type="date",@class="form-control readOnlyUpdate",@required="required"})
+                                    </div>
+                                </div>
+                                <div class="col-md-3">
+                                    <div class="form-group required">
+                                        <label class="control-label">Project Development Initial</label>
+                                        @Html.TextBoxFor(@modal=> modal.ProjectDevelopmentInitialDate,"{0:yyyy-MM-dd}",new{@type="date",@class="form-control readOnlyUpdate",@required="required"})
+                                    </div>
+                                </div>
+                                <div class="col-md-3">
+                                    <div class="form-group required">
+                                        @Html.LabelFor(model => model.FormulationGLId, "Formulation GL", new { @class = "control-label" })
+                                        <input type="hidden" id="hdnGeneralFormulationGLId" value="@Model.FormulationGLId" />
+                                        <select id="GeneralFormulationGLId" name="FormulationGLId" class="form-control readOnlyUpdate" required></select>
+                                    </div>
+                                </div>
+                                <div class="col-md-3">
+                                    <div class="form-group required">
+                                        @Html.LabelFor(model => model.AnalyticalGLId, "Analytical GL", new { @class = "control-label" })
+                                        <input type="hidden" id="hdnGeneralAnalyticalGLId" value="@Model.AnalyticalGLId" />
+                                        <select id="GeneralAnalyticalGLId" name="AnalyticalGLId" class="form-control readOnlyUpdate" required></select>
+                                    </div>
+                                </div>
+                                <div class="col-md-3">
+                                    <div class="form-group required">
+                                        <label class="control-label">Test Licence Availability</label>
+                                        @Html.HiddenFor(model => model.TestLicenseAvailability, new { @class = "control-label" ,@required="required"})
+                                        <div stylle="display: inline-block;" id="testlicence">
+                                        </div>
+                                        @Html.ValidationMessageFor(model => model.TestLicenseAvailability, "", new { @class = "text-danger" })
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <table id="tableGeneralStrength" class="table text-center" style="width:100%">
+                                        </table>
+
+                                    </div>
+
                                 </div>
                             </div>
-                        </table>
-
+                        </div>
                     </div>
 
                 </div>
+            </div>
+            
+            
+            
+            
+            <div
+                                                                class="card card-dark card-outline card-outline-tabs m-0">
+                                                                <div class="card-header p-0">
+                                                                    <ul class="nav nav-tabs m-0"
+                                                                        id="custom-tabs-department-tab" role="tablist">
+                                                                        <li class="nav-item p-0">
+                                                                            <a class="nav-link active px-2"
+                                                                                id="custom-tabs-department-RnD-tab"
+                                                                                data-toggle="pill"
+                                                                                href="#custom-tabs-RnD" role="tab"
+                                                                                aria-controls="custom-tabs-RnD"
+                                                                                aria-selected="true">RnD</a>
+                                                                        </li>
+                                                                        <li class="nav-item p-0">
+                                                                            <a class="nav-link px-2"
+                                                                                id="custom-tabs-department-Analytical-tab"
+                                                                                data-toggle="pill"
+                                                                                href="#custom-tabs-Analytical"
+                                                                                role="tab"
+                                                                                aria-controls="custom-tabs-Analytical"
+                                                                                aria-selected="false">Analytical</a>
+                                                                        </li>
+                                                                        <li class="nav-item p-0">
+                                                                            <a class="nav-link px-2"
+                                                                                id="custom-tabs-department-Clinical-tab"
+                                                                                data-toggle="pill"
+                                                                                href="#custom-tabs-Clinical" role="tab"
+                                                                                aria-controls="custom-tabs-Clinical"
+                                                                                aria-selected="false">Clinical</a>
+                                                                        </li>
+                                                                    </ul>
+                                                                </div>
+                                                                <div class="card-body">
+                                                                    <div class="tab-content"
+                                                                        id="custom-tabs-department-tabContent">
+                                                                        <div class="tab-pane fade show active"
+                                                                            id="custom-tabs-RnD" role="tabpanel"
+                                                                            aria-labelledby="custom-tabs-department-RnD-tab">
+                                                                            <div class="container-fluid">
+                                                                                <div class="row">
+                                                                               RnD     
+                                                                </div>
+                                                            </div>
+                                                            </div>
 
-                <div class="row">
+                                                            <div class="tab-pane fade show"
+                                                                            id="custom-tabs-Analytical" role="tabpanel"
+                                                                            aria-labelledby="custom-tabs-department-Analytical-tab">
+                                                                            <div class="container-fluid">
+                                                                                <div class="row">
+                                                                               Analytical     
+                                                                </div>
+                                                            </div>
+                                                            </div>
 
-                    <div class="col-md-3">
-                        <div class="form-group required">
-                            @Html.LabelFor(model => model.TotalExpense,"Total Expenses", new { @class = "control-label" })
-                            @Html.TextBoxFor(model => model.TotalExpense, new { @class = "form-control", @placeholder = "Total Expenses", @readonly ="readonly" })
-
-                        </div>
-                    </div>
-
-                    <div class="col-md-3">
-                        <div class="form-group required">
-                            @Html.LabelFor(model => model.ProjectComplexity,"Project Complexity", new { @class = "control-label" })
-                            @Html.TextBoxFor(model => model.ProjectComplexity, new { @class = "form-control", @placeholder = "Project Complexity" })
-                        </div>
-                    </div>
-                    <div class="col-md-3">
-                        <div class="form-group required">
-                            @Html.LabelFor(model => model.GeneralProductTypeId, "Product Type", new { @class = "control-label" })
-                            <input type="hidden" id="hdnGeneralProductTypeId" value="@Model.GeneralProductTypeId" />
-                            <select id="GeneralProductTypeId" name="GeneralProductTypeId" class="form-control readOnlyUpdate" required></select>
-                        </div>
-                    </div>
-                    <div class="col-md-3">
-                        <div class="form-group required">
-                            <label class="control-label">Test Licence Availability</label>
-                            @Html.HiddenFor(model => model.TestLicenseAvailability, new { @class = "control-label" ,@required="required"})
-                            <div stylle="display: inline-block;" id="testlicence">
-                                @* <input type="checkbox" value="AHD" name=TestLicenseAvailability>AHD
-                                    <input type="checkbox" value="BHS" name=TestLicenseAvailability>BHS
-                                    <input type="checkbox" value="HNJ" name=TestLicenseAvailability>HNJ
-                                    <input type="checkbox" value="LYO" name=TestLicenseAvailability>LYO Cycle*@
+                        <div class="tab-pane fade show"
+                             id="custom-tabs-Clinical" role="tabpanel"
+                             aria-labelledby="custom-tabs-department-clinical-tab">
+                            <div class="container-fluid">
+                                <div class="row">
+                                    Clinical
+                                </div>
                             </div>
-                            @Html.ValidationMessageFor(model => model.TestLicenseAvailability, "", new { @class = "text-danger" })
                         </div>
-                    </div>
-                </div>
-                <div class="row">
 
-                    <div class="col-md-3">
-                        <div class="form-group required">
-                            <label class="control-label">Budget and Timeline Submission Date</label>
-                            @Html.TextBoxFor(@modal=> modal.BudgetTimelineSubmissionDate,"{0:yyyy-MM-dd}",new{@type="date",@class="form-control readOnlyUpdate",@required="required"})
-                        </div>
-                    </div>
-                    <div class="col-md-3">
-                        <div class="form-group required">
-                            <label class="control-label">Project Development Initial Date</label>
-                            @Html.TextBoxFor(@modal=> modal.ProjectDevelopmentInitialDate,"{0:yyyy-MM-dd}",new{@type="date",@class="form-control readOnlyUpdate",@required="required"})
-                        </div>
-                    </div>
-                    <div class="col-md-3">
-                        <div class="form-group required">
-                            @Html.LabelFor(model => model.FormulationGlId, "Formulation GL", new { @class = "control-label" })
-                            <input type="hidden" id="hdnGeneralFormulationGlId" value="@Model.FormulationGlId" />
-                            <select id="GeneralFormulationGlId" name="FormulationGlId" class="form-control readOnlyUpdate" required></select>
-                        </div>
-                    </div>
-                    <div class="col-md-3">
-                        <div class="form-group required">
-                            @Html.LabelFor(model => model.AnalyticalGlId, "Analytical GL", new { @class = "control-label" })
-                            <input type="hidden" id="hdnGeneralAnalyticalGlId" value="@Model.AnalyticalGlId" />
-                            <select id="GeneralAnalyticalGlId" name="AnalyticalGlId" class="form-control readOnlyUpdate" required></select>
-                        </div>
-                    </div>
-
-                </div>
-
-                <br />
-                <div class="row">
-                    <div class="col-12 text-end">
-                        <div class="form-group" id="dvMainButton">
-                            <button type="submit" class="btn btn-success me-3 outside-buttons operationButton" id="save">@SharedLocalizer["Submit"]</button>
-                            <button type="submit" class="btn btn-info me-3 outside-buttons operationButton" id="savedraft">@SharedLocalizer["SaveDraft"]</button>
-                            <a class="btn btn-danger me-3 outside-buttons operationButton" asp-action="PIDFList" asp-controller="PIDF" asp-route-ScreenId="6">@SharedLocalizer["Cancel"]</a>
-                        </div>
+                                                            </div>
+                                                            </div>
+                                                            </div>
+            
+            
+            
+            <br>
+            <div class="row">
+                <div class="col-12 text-end">
+                    <div class="form-group" id="dvMainButton">
+                        <button type="submit" class="btn btn-success me-3 outside-buttons operationButton" id="save" onclick="SavePBFForm('Save')">@SharedLocalizer["Submit"]</button>
+                        <button type="submit" class="btn btn-info me-3 outside-buttons operationButton" id="savedraft" onclick="SavePBFForm('Draft')">@SharedLocalizer["SaveDraft"]</button>
+                        <a class="btn btn-danger me-3 outside-buttons operationButton" asp-action="PIDFList" asp-controller="PIDF" asp-route-ScreenId="6">@SharedLocalizer["Cancel"]</a>
                     </div>
                 </div>
             </div>
+
         </div>
     </form>
 </div>
