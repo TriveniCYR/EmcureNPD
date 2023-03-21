@@ -9,13 +9,12 @@ namespace EmcureNPD.Data.DataAccess.Entity
     {
         public long PatentDetailsId { get; set; }
         public long Ipdid { get; set; }
-        public string PatentNumber { get; set; }
         public string Type { get; set; }
         public DateTime? OriginalExpiryDate { get; set; }
         public DateTime? ExtensionExpiryDate { get; set; }
         public string Comments { get; set; }
         public string Strategy { get; set; }
-        public string PatentNumber1 { get; set; }
+        public string PatentNumber { get; set; }
 
         public virtual PidfIpd Ipd { get; set; }
     }
