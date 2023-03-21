@@ -4,7 +4,6 @@ $(document).ready(function () {
     debugger;
     fnGetActiveBusinessUnit();
     GetRegionList();
-    SetDisableForOtherUserBU();
     try {
         _PIDFId = parseInt($('#hdnPIDFId').val());
         _IPDMode = $('#hdnIPDIsView').val(); //parseInt($('#hdnPIDFId').val());
@@ -17,6 +16,7 @@ function fnGetActiveBusinessUnit() {
     ajaxServiceMethod($('#hdnBaseURL').val() + GetActiveBusinessUnit, 'GET', GetActiveBusinessUnitSuccess, GetActiveBusinessUnitError);
 }
 function GetActiveBusinessUnitSuccess(data) {
+    
     var businessUnitHTML = "";
     var businessUnitPanel = "";
     $.each(data._object, function (index, item) {
@@ -179,20 +179,17 @@ function SetDisableForOtherUserBU(_selectBusinessUnit) {
     var status = UserwiseBusinessUnit.indexOf(_selectBusinessUnit);
    // var IsViewInMode = ($("#IsView").val() == '1')
     if (status == -1) {
-        readOnlyIPDFormForOtherBU(true);
-    }
-    else {
-        readOnlyIPDFormForOtherBU(false);
+        readOnlyIPDForm();
     }
 }
 
-function readOnlyIPDFormForOtherBU(flag) {
-    $('#dvIPDContainer').find('input').attr('readonly', flag).attr('disabled', flag);
-    $('#dvIPDContainer').find('textarea').attr('readonly', flag).attr('disabled', flag);
-    //$('button').attr('readonly', true).attr('disabled', true);
-    $('#dvIPDContainer').find('select').attr('readonly', flag).attr('disabled', flag);
-    if(flag)
-        $('#dvIPDContainer').find('.operationButton').hide();
-    else
-        $('#dvIPDContainer').find('.operationButton').show();
-}
+//function readOnlyIPDFormForOtherBU(flag) {
+//    $('#dvIPDContainer').find('input').attr('readonly', flag).attr('disabled', flag);
+//    $('#dvIPDContainer').find('textarea').attr('readonly', flag).attr('disabled', flag);
+//    //$('button').attr('readonly', true).attr('disabled', true);
+//    $('#dvIPDContainer').find('select').attr('readonly', flag).attr('disabled', flag);
+//    if(flag)
+//        $('#dvIPDContainer').find('.operationButton').hide();
+//    else
+//        $('#dvIPDContainer').find('.operationButton').show();
+//}
