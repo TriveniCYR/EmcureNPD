@@ -1,7 +1,17 @@
 $(document).ready(function () {
+	IsViewModeMedical();
 	_PIDFID = parseInt(pidid);
 	getPIDFAccordion(_PIDFAccordionURL, _PIDFID, "dvPIDFAccrdion");
 })
+function IsViewModeMedical() {
+	if ($("#IsView").val() == '1') {
+		SetMedicalFormReadonly();
+	}
+}
+function SetMedicalFormReadonly() {
+	$(".content").find("input, button, submit, textarea, select").prop('disabled', true);
+	$("#cancelButton").prop('disabled', false);
+}
 // browse files
 var selectFileButton = document.getElementById("selectFileButton");
 var fileInput = document.getElementById("File");
