@@ -60,12 +60,12 @@
 					</div>
 				</div>
 				<div class="col-12 form-group d-flex flex-column mb-4">
-					<label for="labelRemarks" class="form-label">Remarks</label>
+					<label for="labelRemarks" class="form-label">Remarks<span class="text-danger">*</span></label>
 					<textarea asp-for=Remark name="Remark" class="form-control" id="labelRemarks" cols="15" rows="5"></textarea>
 					<span asp-validation-for=Remark class="text-danger"></span>
 				</div>
 				<div class="col-12 form-group d-flex flex-column">
-					<label for="File" class="form-label">File Upload</label>
+					<label for="File" class="form-label">File Upload<span class="text-danger">*</span></label>
 					<input  @(!objPermssion.Edit ? "read-only" : "") type="file" style="visibility: hidden;" name="File" id="File"
 						   class="bg-transparent text-white" multiple>
 				</div>
