@@ -84,6 +84,7 @@
 						<div class="col-md-12">
 							<div class="form-group required">
 								@Html.LabelFor(model => model.FormRNDDivisionName, "Form R&D Division Name", new { @class = "control-label" })
+								<span class="text-danger">*</span>
 								@Html.EditorFor(model => model.FormRNDDivisionName, new { htmlAttributes = new { @autocomplete = "off", @class = "form-control checkbox-checked", @placeholder = @SharedLocalizer["Form R&D Division Name"] } })
 								@Html.ValidationMessageFor(model => model.FormRNDDivisionName, "", new { @class = "text-danger" })
 							</div>

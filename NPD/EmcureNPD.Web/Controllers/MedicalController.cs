@@ -38,7 +38,7 @@ namespace EmcureNPD.Web.Controllers
         }
 
         [HttpGet]
-        public IActionResult Medical(string pidfid)
+        public IActionResult Medical(string pidfid, int? IsView)
         {
             ViewBag.id = pidfid;
             ViewBag.baseUrl = _cofiguration.GetSection("Apiconfig").GetSection("baseurl").Value;
@@ -54,9 +54,10 @@ namespace EmcureNPD.Web.Controllers
 
                 }
                 ViewBag.Access = objPermssion;
-                pidfid = UtilityHelper.Decreypt(pidfid);
+				pidfid = UtilityHelper.Decreypt(pidfid);
                 oMedical = GetModelForMedicalForm(pidfid);
-                if (oMedical.PidfmedicalId <= 0)
+				oMedical.IsView = (IsView == null) ? 0 : (int)IsView;
+				if (oMedical.PidfmedicalId <= 0)
                 {
                     oMedical.MedicalOpinion = 1;
                 }

@@ -400,7 +400,7 @@ namespace EmcureNPD.Web.Controllers
                     if (oPIDForm.pidf_IPD_PatentDetailsEntities == null || oPIDForm.pidf_IPD_PatentDetailsEntities.Count == 0)
                     {
                         oPIDForm.pidf_IPD_PatentDetailsEntities = new List<PIDF_IPD_PatentDetailsEntity>();
-                        oPIDForm.pidf_IPD_PatentDetailsEntities.Add(new PIDF_IPD_PatentDetailsEntity() { PatentNumber = "1" });
+                        oPIDForm.pidf_IPD_PatentDetailsEntities.Add(new PIDF_IPD_PatentDetailsEntity());
                         oPIDForm.TotalParent = oPIDForm.pidf_IPD_PatentDetailsEntities.Count;
                     }
                     else

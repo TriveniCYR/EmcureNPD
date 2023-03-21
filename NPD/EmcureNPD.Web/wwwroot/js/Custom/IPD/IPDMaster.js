@@ -29,7 +29,7 @@ function GetActiveBusinessUnitSuccess(data) {
 
     LoadIPDForm(_PIDFID, _selectBusinessUnit);
   
-    SetDisableForOtherUserBU();
+    SetDisableForOtherUserBU(_selectBusinessUnit);
 }
 function GetActiveBusinessUnitError(x, y, z) {
     toastr.error(ErrorMessage);
@@ -174,10 +174,9 @@ function readOnlyIPDForm() {
     $('#dvIPDContainer').find('select').attr('readonly', true).attr('disabled', true).trigger("change");
     $('#dvIPDContainer').find('.operationButton').hide();
 }
-function SetDisableForOtherUserBU() {
-   var UserwiseBusinessUnit = $('#BusinessUnitsByUser').val().split(',');
-    var BU_VALUE = SelectedBUValue;
-    var status = UserwiseBusinessUnit.indexOf(BU_VALUE);
+function SetDisableForOtherUserBU(_selectBusinessUnit) {
+   var UserwiseBusinessUnit = $('#BusinessUnitsByUser').val().split(',');    
+    var status = UserwiseBusinessUnit.indexOf(_selectBusinessUnit);
    // var IsViewInMode = ($("#IsView").val() == '1')
     if (status == -1) {
         readOnlyIPDFormForOtherBU(true);

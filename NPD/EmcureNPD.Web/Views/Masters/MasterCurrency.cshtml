@@ -87,6 +87,7 @@
                                 <div class="col">
                                     <div class="form-group required">
                                         @Html.LabelFor(model =>model.MasterCurrencyEntity.CurrencyName,"Currency Name", new { @class = "control-label"  })
+                                <span class="text-danger">*</span>
                                         @Html.EditorFor(model=>model.MasterCurrencyEntity.CurrencyName, new { htmlAttributes = new { @autocomplete = "off", @class = "form-control checkbox-checked", @placeholder = @SharedLocalizer["CurrencyName"] } })
                                         @Html.ValidationMessageFor(model =>model.MasterCurrencyEntity.CurrencyName, "", new { @class = "text-danger" })
                                     </div>
@@ -106,6 +107,7 @@
                                     <div class="form-group required">
                                         <input type="hidden" id="CurrencyCountryMappingId" name="CurrencyCountryMappingId" value="0" />
                                         @Html.LabelFor(model => model.MasterCountryEntity.CountryName,"Country Name", new { @class = "control-label" })
+                                <span class="text-danger">*</span>
                                         @Html.DropDownListFor(model => model.CountryId, new List<SelectListItem> { }, new { @class = "form-control", @multiple = "multiple" })
                                         @Html.ValidationMessageFor(model => model.CountryId, "", new { @class = "text-danger" })
                                     </div>

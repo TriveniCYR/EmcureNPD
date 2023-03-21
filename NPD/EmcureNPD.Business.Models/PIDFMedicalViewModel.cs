@@ -19,8 +19,8 @@ namespace EmcureNPD.Business.Models
         [Required]
         public string Remark { get; set; }
         public DateTime CreatedDate { get; set; }
-
-        public long PidfmedicalFileId { get; set; }
+		public int IsView { get; set; }
+		public long PidfmedicalFileId { get; set; }
         public string[] FileName { get; set; }
         public int CreatedBy { get; set; }
 

@@ -83,7 +83,7 @@ namespace EmcureNPD.Web.Controllers
         {
             IPDEntity oIPD = new();
             try
-            {
+                {
                 string logUserId = Convert.ToString(HttpContext.Session.GetString(UserHelper.LoggedInUserId));
                 int rolId = (int)HttpContext.Session.GetInt32(UserHelper.LoggedInRoleId);
                 RolePermissionModel objPermssion = UtilityHelper.GetCntrActionAccess(Convert.ToString(RouteData.Values["controller"]), rolId);
@@ -130,7 +130,7 @@ namespace EmcureNPD.Web.Controllers
                     if (oIPD.pidf_IPD_PatentDetailsEntities == null || oIPD.pidf_IPD_PatentDetailsEntities.Count == 0)
                     {
                         oIPD.pidf_IPD_PatentDetailsEntities = new List<PIDF_IPD_PatentDetailsEntity>();
-                        oIPD.pidf_IPD_PatentDetailsEntities.Add(new PIDF_IPD_PatentDetailsEntity() { PatentNumber = "1" });
+                        oIPD.pidf_IPD_PatentDetailsEntities.Add(new PIDF_IPD_PatentDetailsEntity());
                         oIPD.TotalParent = oIPD.pidf_IPD_PatentDetailsEntities.Count;
                     }
                     else

@@ -84,6 +84,7 @@
 						<div class="col-md-12">
 							<div class="form-group required">
 								@Html.LabelFor(model => model.AnalyticalName, "Analytical GL Name", new { @class = "control-label" })
+								<span class="text-danger">*</span>
 								@Html.EditorFor(model => model.AnalyticalName, new { htmlAttributes = new { @autocomplete = "off", @class = "form-control checkbox-checked", @placeholder = @SharedLocalizer["Analytical GL Name"] } })
 								@Html.ValidationMessageFor(model => model.AnalyticalName, "", new { @class = "text-danger" })
 							</div>
