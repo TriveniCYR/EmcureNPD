@@ -60,7 +60,7 @@ function GetProjectDetailsSuccess(data) {
         //File details
         $('#files tbody').html('')
         $.each(data.table1, function (index, file) {
-            var link = $('#hdnBaseUrl').val() + '/Uploads/PIDF/Medical/' + file.fileName;
+            var link = $('#hdnBaseURL').val() + '/Uploads/PIDF/Medical/' + file.fileName;
             $('#files tbody').append('<tr><td><a href="' + link + '">' + file.fileName + '</a></td></tr>');
         });
         //end
@@ -90,7 +90,9 @@ function GetProjectDetailsSuccess(data) {
         });
         //end
         //tasksubtask list details
-        $('#Milestones tbody').html('')
+        $('#Milestones tbody').html('');
+        //$('#ChildMilestones tbody').html('');
+        var childRow = "";
         $.each(data.table4, function (index, object) {
             var start = new Date(object.startDate);
             var startDate = start.toLocaleDateString('en-US', { year: 'numeric', month: '2-digit', day: '2-digit' });
@@ -104,13 +106,40 @@ function GetProjectDetailsSuccess(data) {
                 var updatedDate = "";
             var edit = '<a class="large-font" style="" href="" title="Edit" data-toggle="modal" data-target="#UpdateModel" data-backdrop="static" data-keyboard="false"  onclick="GetTaskSubTaskById(' + object.projectTaskId + '); return false;"><i class="fa fa-fw fa-edit mr-1"></i> ' + '</a>';
             var deleteTag = '<a class="large-font text-danger" style="" href="" title="Delete" data-toggle="modal" data-target="#DeleteModel" data-backdrop="static" data-keyboard="false" onclick="ConfirmationDeleteTaskSubTask(' + object.projectTaskId + '); return false;"><i class="fa fa-fw fa-trash mr-1"></i> ' + '</a>';
+           
             if (object.taskLevel == 1) {
                 deleteTag += '<a class="large-font" style="" href="" title="Add SubTask" onclick="ShowAddSubTaskForm(\'' + object.projectTaskId + '\', \'' + object.taskName + '\'); return false;"><i class="fa fa-fw fa-plus mr-1"></i> ' + '</a>';
+
+                $.each(data.table4, function (i, obj) {
+                    var childStart = new Date(obj.startDate);
+                    var childStartDate = childStart.toLocaleDateString('en-US', { year: 'numeric', month: '2-digit', day: '2-digit' });
+                    var childEnd = new Date(obj.endDate);
+                    var childEndDate = childEnd.toLocaleDateString('en-US', { year: 'numeric', month: '2-digit', day: '2-digit' });
+                    if (object.modifyDate != null) {
+                        var childUpdated = new Date(obj.modifyDate);
+                        var childUpdatedDate = childUpdated.toLocaleDateString('en-US', { year: 'numeric', month: '2-digit', day: '2-digit' });
+                    }
+                    else
+                        var childUpdatedDate = "";
+                    
+                    if (object.projectTaskId == obj.parentId) {
+                        childRow = '<tr><td>' + obj.taskName + '</td><td>' + obj.fullName + '</td><td>' + obj.statusName + '</td><td>' + obj.priorityName + '</td><td>' + childStartDate + '</td><td>' + childEndDate + '</td><td>' + obj.taskDuration + '</td><td><div class="progress"><div class="progress-bar" role="progressbar" style="width: ' + obj.totalPercentage + '%;" aria-valuenow="' + obj.totalPercentage + '" aria-valuemin="0" aria-valuemax="100">' + obj.totalPercentage + '%</div></div></td><td>' + childUpdatedDate + '</td><td>' + edit + deleteTag + '</td></tr>';
+                        $('#ChildMilestones tbody').append(childRow);
+                        
+                    }
+                })
+                
+                var tableRow = '<tr><td class="dt-control dtfc-fixed-left" style="left: 0px; position: sticky;"></td><td>' + object.taskName + '</td><td>' + object.fullName + '</td><td>' + object.statusName + '</td><td>' + object.priorityName + '</td><td>' + startDate + '</td><td>' + endDate + '</td><td>' + object.taskDuration + '</td><td><div class="progress"><div class="progress-bar" role="progressbar" style="width: ' + object.totalPercentage + '%;" aria-valuenow="' + object.totalPercentage + '" aria-valuemin="0" aria-valuemax="100">' + object.totalPercentage + '%</div></div></td><td>' + updatedDate + '</td><td>' + edit + deleteTag + '</td></tr><tr><td colspan="10"><table id="ChildMilestones">' + $('#ChildMilestones').html() + '</table></td></tr>';
+                console.log($('#ChildMilestones').html());
+                $('#Milestones tbody').append(tableRow);
+                $('#ChildMilestones tbody').html('');
+               
+                
             }
-            var tableRow = '<tr><td>' + object.taskName + '</td><td>' + object.fullName + '</td><td>' + object.statusName + '</td><td>' + object.priorityName + '</td><td>' + startDate + '</td><td>' + endDate + '</td><td>' + object.taskDuration + '</td><td><div class="progress"><div class="progress-bar" role="progressbar" style="width: ' + object.totalPercentage + '%;" aria-valuenow="' + object.totalPercentage + '" aria-valuemin="0" aria-valuemax="100">' + object.totalPercentage + '%</div></div></td><td>' + updatedDate + '</td><td>' + edit + deleteTag + '</td></tr>';
-            $('#Milestones tbody').append(tableRow);
+            
+           
         });
-        //StaticDataTable("#Milestones");
+        StaticDataTable("#Milestones");
         //end
     }
     catch (e) {

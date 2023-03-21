@@ -94,7 +94,6 @@
                             <div class="card card-primary card-tabs">
                                 <div class="card-header p-0 pt-1">
                                     <ul class="nav nav-tabs row text-center m-0" id="custom-tabs-one-tab" role="tablist">
-                                        
                                     </ul>
                                 </div>
                                 <div class="card-body">
@@ -186,7 +185,6 @@
 
                         </div>
                     </div>
-
                     @*Show Milestones below*@
                     <div class="row">
                         <section class="col-lg-12">
@@ -220,6 +218,7 @@
                                         <table id="Milestones" class="table" style="width:100%;">
                                             <thead>
                                                 <tr>
+                                                    <th></th>
                                                     <th>@SharedLocalizer["Task"]</th>
                                                     <th>@SharedLocalizer["Task Owner"]</th>
                                                     <th>@SharedLocalizer["Status"]</th>
@@ -253,7 +252,28 @@
             </div>
         </div>
     </div>
+    @*child table*@
+    <div class="table-responsive">
+        <table id="ChildMilestones" class="table" style="width:100%;">
+            <thead>
+                <tr>
+                    <th>Sub Task</th>
+                    <th>Task Owner</th>
+                    <th>Status</th>
+                    <th>Priority</th>
+                    <th>Start Date</th>
+                    <th>End Date</th>
+                    <th>Duration</th>
+                    <th>Completed %</th>
+                    <th>Updated Date</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody>
 
+            </tbody>
+        </table>
+    </div>
     @*UpdateModel*@
     <div id="UpdateModel" class="modal themeModal " role="dialog">
         <form method="POST" asp-controller=Project asp-action=AddUpdateTask asp-route-buid="@ViewBag.uencbid">
@@ -478,8 +498,8 @@
                             <div class="col-sm-6">
                                 <div class="form-group required">
                                     @Html.LabelFor(t => t.ParentId,"Main Task", new { @class = "control-label" })
-                                   @Html.DropDownListFor(t => t.ParentId, new SelectList(string.Empty, "Value", "Text"), "Please select option", htmlAttributes: new { @class = "form-control input-sm f-s-15 bg-eff4f55c w100per", id = "AddSubTaskofTask" })
-                                   @Html.ValidationMessageFor(t => t.ParentId, "", new { @class = "text-danger" })
+                                    @Html.DropDownListFor(t => t.ParentId, new SelectList(string.Empty, "Value", "Text"), "Please select option", htmlAttributes: new { @class = "form-control input-sm f-s-15 bg-eff4f55c w100per", id = "AddSubTaskofTask" })
+                                    @Html.ValidationMessageFor(t => t.ParentId, "", new { @class = "text-danger" })
                                 </div>
                                 <div class="form-group required">
                                     @Html.LabelFor(t => t.TaskName, new { @class = "control-label" })
