@@ -58,4 +58,11 @@ namespace EmcureNPD.Utility.Enums
         Management = 8,
         Project = 9
     }
+    public enum ClinicalBioStudyType
+    {
+        PilotBioFasting = 1,
+        PilotBioFed = 2,
+        PivotalBioFasting = 3,
+        PivotalBioFed = 4       
+    }
 }
