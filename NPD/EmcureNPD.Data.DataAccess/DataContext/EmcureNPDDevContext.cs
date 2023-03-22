@@ -116,7 +116,6 @@ namespace EmcureNPD.Data.DataAccess.DataContext
             if (!optionsBuilder.IsConfigured)
             {
 #warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see http://go.microsoft.com/fwlink/?LinkId=723263.
-                //optionsBuilder.UseSqlServer("Data Source=180.149.241.172;Initial Catalog=EmcureNPDDev;Persist Security Info=True;User ID=emcurenpddev_dbUser;pwd=emcure123!@#");
                 optionsBuilder.UseSqlServer(DatabaseConnection.NPDDatabaseConnection);
             }
         }
@@ -1729,13 +1728,7 @@ namespace EmcureNPD.Data.DataAccess.DataContext
 
                 entity.Property(e => e.OriginalExpiryDate).HasColumnType("date");
 
-                entity.Property(e => e.PatentNumber)
-                    .HasMaxLength(20)
-                    .IsUnicode(false);
-
-                entity.Property(e => e.PatentNumber1)
-                    .HasMaxLength(50)
-                    .HasColumnName("PatentNumber_1");
+                entity.Property(e => e.PatentNumber).HasMaxLength(50);
 
                 entity.Property(e => e.Strategy)
                     .HasMaxLength(100)
@@ -2129,7 +2122,7 @@ namespace EmcureNPD.Data.DataAccess.DataContext
             {
                 entity.HasKey(e => e.ExicipientProtoypeId);
 
-                entity.ToTable("PIDF_PBF_RnD_ExicipientPrototype");
+                entity.ToTable("PIDF_PBF_RnD_ExicipientPrototype", "dbo");
 
                 entity.Property(e => e.CreatedDate)
                     .HasColumnType("datetime")
@@ -2157,7 +2150,7 @@ namespace EmcureNPD.Data.DataAccess.DataContext
                 entity.HasKey(e => e.ExicipientRequirementId)
                     .HasName("PK__PIDF_PBF__72D1E4E7F70D75D5");
 
-                entity.ToTable("PIDF_PBF_RnD_ExicipientRequirement");
+                entity.ToTable("PIDF_PBF_RnD_ExicipientRequirement", "dbo");
 
                 entity.Property(e => e.CreatedDate).HasColumnType("datetime");
 

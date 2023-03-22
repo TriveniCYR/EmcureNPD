@@ -187,7 +187,7 @@ namespace EmcureNPD.Business.Core.Implementation
             DropdownObjects.PIDFEntity = dsDropdownOptions.Tables[14];
             DropdownObjects.PIDFIPDEntity = dsDropdownOptions.Tables[15];
             DropdownObjects.PIDFStrengthEntity = dsDropdownOptions.Tables[16];
-
+            DropdownObjects.PBFClinicalEntity = dsDropdownOptions.Tables[17];
 
             return DropdownObjects;
         }
@@ -1312,15 +1312,22 @@ namespace EmcureNPD.Business.Core.Implementation
                 pbfgeneralid = await SavePidfAndPBFCommanDetails(pbfEntity.Pidfid, pbfEntity);
 
                 if (pbfgeneralid > 0)
-                {                
-
-                    var isSuccess = await _auditLogService.CreateAuditLog<PBFFormEntity>(pbfEntity.Pidfpbfid > 0 ? Utility.Audit.AuditActionType.Update : Utility.Audit.AuditActionType.Create,
+                {
+                    if (await SaveClinicalTabDetails(pbfgeneralid, pbfEntity.ClinicalEntities) > 0)
+                    {
+                        var isSuccess = await _auditLogService.CreateAuditLog<PBFFormEntity>(pbfEntity.Pidfpbfid > 0 ? Utility.Audit.AuditActionType.Update : Utility.Audit.AuditActionType.Create,
                        Utility.Enums.ModuleEnum.PBF, pbfEntity, pbfEntity, Convert.ToInt32(pbfEntity.Pidfid));
-                    await _unitOfWork.SaveChangesAsync();
-                    var _StatusID = (pbfEntity.SaveType == "Save") ? Master_PIDFStatus.PBFSubmitted : Master_PIDFStatus.PBFInProgress;
-                    await _auditLogService.UpdatePIDFStatusCommon(pbfEntity.Pidfid, (int)_StatusID, loggedInUserId);
+                        await _unitOfWork.SaveChangesAsync();
+                        var _StatusID = (pbfEntity.SaveType == "Save") ? Master_PIDFStatus.PBFSubmitted : Master_PIDFStatus.PBFInProgress;
+                        await _auditLogService.UpdatePIDFStatusCommon(pbfEntity.Pidfid, (int)_StatusID, loggedInUserId);
 
-                    return DBOperation.Success;
+                        return DBOperation.Success;
+                    }
+                    else
+                    {
+                        return DBOperation.Error;
+                    }
+
                 }
                 else
                 {
@@ -1486,6 +1493,54 @@ namespace EmcureNPD.Business.Core.Implementation
             catch (Exception ex)
             {
                 return pbfgeneralid;
+            }
+        }
+        public async Task<long> SaveClinicalTabDetails(long pbfgenerald, List<ClinicalEntity> clinicalentity)
+        {
+            long pidfpbfclinicalid = 0;
+            try
+            {
+                #region Section Clinical Add Update
+                var loggedInUserId = _helper.GetLoggedInUser().UserId;
+                List<PidfPbfClinical> objClinicallist = new();
+
+                if (pbfgenerald > 0)
+                {
+                    var clinical = _pidfPbfClinicalRepository.GetAllQuery().Where(x => x.PbfgeneralId == pbfgenerald).ToList();
+                    if (clinical.Count > 0)
+                    {
+                        foreach (var item in clinical)
+                        {
+                            _pidfPbfClinicalRepository.Remove(item);
+                        }
+                        await _unitOfWork.SaveChangesAsync();
+                    }
+                }
+
+                //Save clinical Entities
+                if (clinicalentity != null && clinicalentity.Count() > 0)
+                {
+                    List<PidfPbfGeneralStrength> _objPidfPbfGeneralStrength = new List<PidfPbfGeneralStrength>();
+                    foreach (var item in clinicalentity)
+                    {
+                        PidfPbfClinical obgclinical = new PidfPbfClinical();
+                        obgclinical = _mapperFactory.Get<ClinicalEntity, PidfPbfClinical>(item);
+                        obgclinical.PbfgeneralId = pbfgenerald;
+                        obgclinical.CreatedDate = DateTime.Now;
+                        obgclinical.CreatedBy = loggedInUserId;
+                        objClinicallist.Add(obgclinical);
+                    }
+                    _pidfPbfClinicalRepository.AddRangeAsync(objClinicallist);
+                    await _unitOfWork.SaveChangesAsync();
+                }               
+                
+                #endregion
+               
+                return pbfgenerald;
+            }
+            catch (Exception ex)
+            {
+                return pidfpbfclinicalid;
             }
         }
         #endregion

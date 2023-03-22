@@ -74,7 +74,6 @@ namespace EmcureNPD.Business.Models
     {
         public long? PatentDetailsID { get; set; }
         public long? IPDID { get; set; }
-        public string PatentNumber { get; set; } = "1";
 
         [Required(ErrorMessageResourceType = typeof(Validation), ErrorMessageResourceName = "Required")]
         [Display(Name = "Type")]
@@ -97,7 +96,7 @@ namespace EmcureNPD.Business.Models
         public string Strategy { get; set; }
 
         [Required(ErrorMessageResourceType = typeof(Validation), ErrorMessageResourceName = "Required")]
-        public string PatentNumber1 { get; set; }
+        public string PatentNumber { get; set; }
         
     }
     public partial class IPDPIDFListEntity

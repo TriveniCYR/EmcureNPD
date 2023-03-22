@@ -54,12 +54,25 @@ namespace EmcureNPD.Business.Models
         public int StrengthId { get; set; }
         public string SaveType { get; set; }
         public string BusinessUnitsByUser { get; set; }
-        public List<GeneralStrengthEntity> GeneralStrengthEntities { get; set; }       
+        public List<GeneralStrengthEntity> GeneralStrengthEntities { get; set; }
+        public List<ClinicalEntity> ClinicalEntities { get; set; }
     }
     public class GeneralStrengthEntity {
         public long PBFGeneralId { get; set; }
         public int StrengthId { get; set; }
         public string ProjectCode { get; set; }
         public string ImprintingEmbossingCode { get; set; }       
+    }
+    public class ClinicalEntity
+    {
+        public long PBFClinicalId { get; set; }
+        public long PBFGeneralId { get; set; }
+        public long StrengthId { get; set; }
+        public int BioStudyTypeId { get; set; }
+        public double? FastingOrFed { get; set; }
+        public int? NumberofVolunteers { get; set; }
+        public double? ClinicalCostAndVolume { get; set; }        
+        public double? BioAnalyticalCostAndVolume { get; set; }
+        public double? DocCostandStudy { get; set; }        
     }
 }

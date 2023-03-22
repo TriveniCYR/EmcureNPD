@@ -218,16 +218,10 @@ namespace EmcureNPD.Business.Core.Implementation
             PIDFAPIIPDFormEntity _oApiIpdData = new PIDFAPIIPDFormEntity();
             var _oAPIIPD = await _pidf_API_IPD_repository.GetAsync(x => x.Pidfid == pidfId);
             if (_oAPIIPD != null)
-            {
-                //_oApiIpdData.FormulationQuantity = _oAPIIPD.FormulationQuantity;
-                //_oApiIpdData.APIIPDDetailsFormID = _oAPIIPD.PidfApiIpdId;
-                // _oApiIpdData.PlantQC = _oAPIIPD.PlantQc;
-                //_oApiIpdData.Development = _oAPIIPD.Development;
-                //_oApiIpdData.Total = _oAPIIPD.Total;
-                //_oApiIpdData.Exhibit = _oAPIIPD.Exhibit;
-                //_oApiIpdData.ScaleUp = _oAPIIPD.ScaleUp;
-                string baseURL = _configuration.GetSection("Apiconfig").GetSection("EmcureNPDAPIUrl").Value;
-                var path = Path.Combine(baseURL, "Uploads/PIDF/APIIPD");
+            {               
+                //string baseURL = _configuration.GetSection("Apiconfig").GetSection("EmcureNPDAPIUrl").Value;
+                //var path = Path.Combine(baseURL, "Uploads/PIDF/APIIPD");
+                var path = Path.Combine(_webrootPath, "Uploads\\PIDF\\APIIPD");
                 var fullPath = path + "/" + _oAPIIPD.MarketDetailsFileName;
                 
                 _oApiIpdData.DrugsCategory = _oAPIIPD.DrugsCategory;
