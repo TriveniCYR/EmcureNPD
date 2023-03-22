@@ -215,7 +215,7 @@
 
                                 <div class="card-body">
                                     <div class="table-responsive">
-                                        <table id="Milestones" class="table" style="width:100%;">
+                                        <table id="Milestones" class="table tree" style="width:100%;">
                                             <thead>
                                                 <tr>
                                                     <th></th>
@@ -571,6 +571,9 @@
         </form>
     </div>
 </div>
+<script src="~/js/jquery.treegrid.min.js"></script>
+<link type="text/css" rel="stylesheet" src="~/css/jquery.treegrid.css" />
+
 @section MyScripts {
     @Html.Partial("_DataTablePartial")
     <script src="~/js/custom/project/projectmanagement.js"></script>

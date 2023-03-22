@@ -2,8 +2,9 @@
 var UserwiseBusinessUnit;
 var _PIDFPBFId = 0;
 var _mode = 0;
-$(document).ready(function () {
+var _strengthArray = [];
 
+$(document).ready(function () {
     try {
         _PIDFPBFId = parseInt($('#hdnPIDFPBFId').val());
         _mode = $('#hdnIsView').val(); //parseInt($('#hdnPIDFId').val());
@@ -16,7 +17,6 @@ $(document).ready(function () {
         readOnlyForm();
     }
     $(".clinicalcalculatecost").on("change", function () {
-        alert('hi from clinicalcalculatecost ');
         Calculate_Clinical_total();
     });
     GetPBFDropdown();
@@ -24,23 +24,19 @@ $(document).ready(function () {
     SetBU_Tab();
     /*SetDisableForOtherUserBU(); */
 });
+
 function GetPBFDropdown() {
     ajaxServiceMethod($('#hdnBaseURL').val() + GetAllPBF + "/" + _PIDFID, 'GET', GetPBFDropdownSuccess, GetPBFDropdownError);
 }
 function GetPBFDropdownSuccess(data) {
+    console.log(data);
     try {
         if (data != null) {
-            clearclinicaltables();
-            BindBusinessUnit(data.MasterBusinessUnit);
-            BindStrength(data.PIDFStrengthEntity)
-            BindClinical(data.PIDFStrengthEntity, data.PBFClinicalEntity)
             $.each(data.MasterBusinessUnit, function (index, object) {
                 $('#MarketMappingId').append($('<option>').text(object.businessUnitName).attr('value', object.businessUnitId));
-
             });
             $('#MarketMappingId').select2();
             var _emptyOption = '<option value="">-- Select --</option>';
-
             $('#BERequirementId').append(_emptyOption);
             $('#PbfDosageFormId').append(_emptyOption);
             $('#PlantId').append(_emptyOption);
@@ -54,11 +50,9 @@ function GetPBFDropdownSuccess(data) {
             $('#GeneralProductTypeId').append(_emptyOption);
             $('#GeneralFormulationGLId').append(_emptyOption);
             $('#GeneralAnalyticalGLId').append(_emptyOption);
-
             $(data.MasterBERequirement).each(function (index, item) {
                 $('#BERequirementId').append('<option value="' + item.beRequirementId + '">' + item.beRequirementName + '</option>');
             });
-
             $(data.MasterDosage).each(function (index, item) {
                 $('#PbfDosageFormId').append('<option value="' + item.dosageId + '">' + item.dosageName + '</option>');
             });
@@ -149,6 +143,11 @@ function GetPBFDropdownSuccess(data) {
             } catch (e) {
 
             }
+
+            _strengthArray = data.PIDFStrengthEntity;
+            BindBusinessUnit(data.MasterBusinessUnit);
+            BindStrength(data.PIDFPBFGeneralStrength)
+            BindClinical(data.PBFClinicalEntity)
         }
     } catch (e) {
         toastr.error('Error:' + e.message);
@@ -156,6 +155,25 @@ function GetPBFDropdownSuccess(data) {
 }
 function GetPBFDropdownError(x, y, z) {
     toastr.error(ErrorMessage);
+}
+
+function getStrengthName(strengthId) {
+    var _filteredStrength = $.grep(_strengthArray, function (n, i) {
+        return n.pidfProductStrengthId === strengthId;
+    });
+    if (_filteredStrength != null && _filteredStrength != undefined && _filteredStrength.length > 0) {
+        return _filteredStrength[0].strength + " " + _filteredStrength[0].unitofMeasurementName;
+    } else { return ""; }
+}
+function getValueFromStrengthId(data, strengthId, propertyName) {
+    var _filteredStrength = $.grep(data, function (n, i) {
+        return n.strengthId === strengthId;
+    });
+    if (_filteredStrength != null && _filteredStrength != undefined && _filteredStrength.length > 0) {
+        if (_filteredStrength[0][propertyName] != null && _filteredStrength[0][propertyName] != undefined) {
+            return _filteredStrength[0][propertyName];
+        } else { return ""; }
+    } else { return ""; }
 }
 
 function SetDisableForOtherUserBU() {
@@ -185,9 +203,7 @@ function BUtabClick(pidfidval, BUVal) {
     }
     var BUAnchorId = '#BUtab_' + BUVal;
     $(BUAnchorId).addClass('active');
-    clearclinicaltables();
     window.location.href = 'PBF?pidfid=' + btoa(pidfidval) + '&bui=' + btoa(BUVal);
-
 }
 function SetBU_Tab() {
     var PIDFBusinessUnitId = 0;
@@ -216,23 +232,24 @@ function BindBusinessUnit(data) {
 }
 function BindStrength(data) {
     var strengthHTML = '<thead class="bg-primary"><tr>';
-    $.each(data, function (index, item) {
-        strengthHTML += '<td><input type="hidden" class="control-label" id="GeneralStrengthEntities[' + index + '].StrengthId" name="GeneralStrengthEntities[' + index + '].StrengthId" value="' + item.pidfProductStrengthId + '" /><b>' + item.strength + item.unitofMeasurementName + '</b></td>';
+    $.each(_strengthArray, function (index, item) {
+        strengthHTML += '<td><input type="hidden" class="control-label" id="GeneralStrengthEntities[' + index + '].StrengthId" name="GeneralStrengthEntities[' + index + '].StrengthId" value="' + item.pidfProductStrengthId + '" /><b>' + getStrengthName(item.pidfProductStrengthId) + '</b></td>';
     });
     strengthHTML += "</tr></thead>";
     strengthHTML += "<tbody><tr>";
-    for (var count = 0; count < data.length; count++) {
-        strengthHTML += '<td><input type="text" class="form-control" id="GeneralStrengthEntities[' + [count] + '].ProjectCode" name="GeneralStrengthEntities[' + [count] + '].ProjectCode" placeholder="Project Code" value="' + (data[count].projectCode != null && data[count].projectCode != undefined ? data[count].projectCode : "") + '" /></td>';
+    for (var count = 0; count < _strengthArray.length; count++) {
+        strengthHTML += '<td><input type="text" class="form-control" id="GeneralStrengthEntities[' + [count] + '].ProjectCode" name="GeneralStrengthEntities[' + [count] + '].ProjectCode" placeholder="Project Code" value="' + (getValueFromStrengthId(data, _strengthArray[count].pidfProductStrengthId, "projectCode")) + '" /></td>';
     }
     strengthHTML += '</tr>';
     strengthHTML += "<tr>";
-    for (var count = 0; count < data.length; count++) {
-        strengthHTML += '<td> <input type="text" class="form-control" id="GeneralStrengthEntities[' + [count] + '].ImprintingEmbossingCode" name="GeneralStrengthEntities[' + [count] + '].ImprintingEmbossingCode" placeholder="Imprinting Embossing Code" value="' + (data[count].imprintingEmbossingCode != null && data[count].imprintingEmbossingCode != undefined ? data[count].imprintingEmbossingCode : "") + '" /></td>';
+    for (var count = 0; count < _strengthArray.length; count++) {
+        strengthHTML += '<td> <input type="text" class="form-control" id="GeneralStrengthEntities[' + [count] + '].ImprintingEmbossingCode" name="GeneralStrengthEntities[' + [count] + '].ImprintingEmbossingCode" placeholder="Imprinting Embossing Code" value="' + (getValueFromStrengthId(data, _strengthArray[count].pidfProductStrengthId, "imprintingEmbossingCode")) + '" /></td>';
     }
     strengthHTML += '</tr></tbody>';
 
     $('#tableGeneralStrength').html(strengthHTML);
 }
+
 function SavePBFForm(_SaveType) {
     setlicense();
     $('#SaveType').val(_SaveType);
@@ -244,70 +261,88 @@ function setlicense() {
     });
     $("#TestLicenseAvailability").val(selected.join(","))
 }
-function createclinicaltables(data, tablefor, type, tablename, iteration, biostudytype, result) {
-    var objectname = '<thead class="bg-primary"><tr><td>' + tablefor + '</td>';
-    $.each(data, function (index, item) {
-        objectname += '<td><input type="hidden" class="control-label" id="ClinicalEntities[' + parseInt(index + iteration) + '].StrengthId" name="ClinicalEntities[' + parseInt(index + iteration) + '].StrengthId" value="' + item.pidfProductStrengthId + '" /><b>' + item.strength + item.unitofMeasurementName + '</b></td>';
-    });
-    objectname += '</tr></thead>';
-    objectname += '<tbody><tr><td>' + type + '</td>';
-    for (var count = iteration; count < data.length + iteration; count++) {
-        objectname += '<td>'
-            + '<input type="hidden" class="control-label" id="ClinicalEntities[' + [count] + '].BioStudyTypeId" name="ClinicalEntities[' + [count] + '].BioStudyTypeId" value="' + (result[count].bioStudyTypeId != null && result[count].bioStudyTypeId != undefined ? result[count].bioStudyTypeId : biostudytype) + '" />'
-            + '<input type="text" class="form-control clinicalcalculatecost" id="ClinicalEntities[' + [count] + '].FastingOrFed" name="ClinicalEntities[' + [count] + '].FastingOrFed" placeholder="' + type + '" value="' + (result[count].fastingOrFed != null && result[count].fastingOrFed != undefined ? result[count].fastingOrFed : "") + '" /></td>';
 
+function CreateClinicalTable(data, bioStudyTypeId) {
+    var objectname = "";
+    var tableTitle = "";
+    var fastingOrFed = "";
+    if (bioStudyTypeId == 1 || bioStudyTypeId == 3) {
+        fastingOrFed = "Fasting";
+    } else {
+        fastingOrFed = "Fed";
     }
-    /* objectname += '<td> <input type="text" class="form-control readonlyUpdate" value="0" disabled="true"/> </td></tr>';*/
-    objectname += '</tr>';
+    if (bioStudyTypeId == 1 || bioStudyTypeId == 2) {
+        tableTitle = "Pilot Bio";
+    } else {
+        tableTitle = "Pivotal Bio";
+    }
+
+    objectname += '<tr><td class="text-left text-bold bg-light" colspan="' + (_strengthArray.length + 2) + '">' + tableTitle + " " + fastingOrFed + '</td>';
+
+    var _iterator = (bioStudyTypeId - 1) * _strengthArray.length;
+
+
+    objectname += "<tr><td>" + fastingOrFed +"</td>";
+    for (var i = 0; i < _strengthArray.length; i++) {
+        objectname += '<td><input type="hidden" id="ClinicalEntities[' + [(i + _iterator)] + '].BioStudyTypeId" name="ClinicalEntities[' + [(i + _iterator)] + '].BioStudyTypeId" value="' + bioStudyTypeId + '" /><input type="hidden" id="ClinicalEntities[' + [(i + _iterator)] + '].StrengthId" name="ClinicalEntities[' + [(i + _iterator)] + '].StrengthId" value="' + _strengthArray[i].pidfProductStrengthId + '" /><input type="number" class="form-control clinicalcalculatecost" id="ClinicalEntities[' + [(i + _iterator)] + '].FastingOrFed" name="ClinicalEntities[' + [(i + _iterator)] + '].FastingOrFed" placeholder="' + fastingOrFed + '" value="' + (getValueFromStrengthId(data, _strengthArray[i].pidfProductStrengthId, "fastingOrFed")) + '" /></td>';
+    }
+    objectname += "<td><input type='number' class='form-control totalClinical' readonly='readonly' /></td></tr>";
+
     objectname += "<tr><td>Number of Volunteers</td>";
-    for (var count = iteration; count < data.length + iteration; count++) {
-        objectname += '<td> <input type="text" class="form-control clinicalcalculatecost" id="ClinicalEntities[' + [count] + '].NumberofVolunteers" name="ClinicalEntities[' + [count] + '].NumberofVolunteers" placeholder="Number of Volunteers" value="' + (result[count].numberofVolunteers != null && result[count].numberofVolunteers != undefined ? result[count].numberofVolunteers : "") + '"  /></td>';
+    for (var i = 0; i < _strengthArray.length; i++) {
+        objectname += '<td><input type="number" class="form-control clinicalcalculatecost" id="ClinicalEntities[' + [(i + _iterator)] + '].NumberofVolunteers" name="ClinicalEntities[' + [(i + _iterator)] + '].NumberofVolunteers" placeholder="Number of Volunteers" value="' + (getValueFromStrengthId(data, _strengthArray[i].pidfProductStrengthId, "numberofVolunteers")) + '"  /></td>';
+    }
+    objectname += "<td></td></tr>";
+
+    objectname += '<tr><td>Clinical Cost/Vol.</td>';
+    for (var i = 0; i < _strengthArray.length; i++) {
+        objectname += '<td> <input type="number" class="form-control clinicalcalculatecost" id="ClinicalEntities[' + [(i + _iterator)] + '].ClinicalCostAndVolume" name="ClinicalEntities[' + [(i + _iterator)] + '].ClinicalCostAndVolume" placeholder="Clinical Cost And Volume" value="' + (getValueFromStrengthId(data, _strengthArray[i].pidfProductStrengthId, "clinicalCostAndVolume")) + '" /></td>';
 
     }
-    /*objectname += '<td> <input type="text" class="form-control readonlyUpdate" value="0" disabled="true" /> </td></tr>';*/
-    objectname += '</tr>';
-    objectname += '<tr><td>ClinicalCostAndVolume</td>';
-    for (var count = iteration; count < data.length + iteration; count++) {
-        objectname += '<td> <input type="text" class="form-control clinicalcalculatecost" id="ClinicalEntities[' + [count] + '].ClinicalCostAndVolume" name="ClinicalEntities[' + [count] + '].ClinicalCostAndVolume" placeholder="Clinical Cost And Volume" value="' + (result[count].clinicalCostAndVolume != null && result[count].clinicalCostAndVolume != undefined ? result[count].clinicalCostAndVolume : "") + '" /></td>';
+    objectname += "<td></td></tr>";
+
+    objectname += "<tr><td>Bio analytical Cost/Vol.</td>";
+    for (var i = 0; i < _strengthArray.length; i++) {
+        objectname += '<td> <input type="number" class="form-control clinicalcalculatecost" id="ClinicalEntities[' + [(i + _iterator)] + '].BioAnalyticalCostAndVolume" name="ClinicalEntities[' + [(i + _iterator)] + '].BioAnalyticalCostAndVolume" placeholder="Bio Analytical Cost And Volume" value="' + (getValueFromStrengthId(data, _strengthArray[i].pidfProductStrengthId, "bioAnalyticalCostAndVolume")) + '" /></td>';
 
     }
-    /* objectname += '<td> <input type="text" class="form-control readonlyUpdate" value="0" disabled="true" /> </td></tr>';*/
-    objectname += '</tr>';
-    objectname += "<tr><td>BioAnalyticalCostAndVolume</td>";
-    for (var count = iteration; count < data.length + iteration; count++) {
-        objectname += '<td> <input type="text" class="form-control clinicalcalculatecost" id="ClinicalEntities[' + [count] + '].BioAnalyticalCostAndVolume" name="ClinicalEntities[' + [count] + '].BioAnalyticalCostAndVolume" placeholder="Bio Analytical Cost And Volume" value="' + (result[count].bioAnalyticalCostAndVolume != null && result[count].bioAnalyticalCostAndVolume != undefined ? result[count].bioAnalyticalCostAndVolume : "") + '" /></td>';
+    objectname += "<td></td></tr>";
+
+    objectname += "<tr><td>Doc. Cost/study</td>";
+    for (var i = 0; i < _strengthArray.length; i++) {
+        objectname += '<td> <input type="number" class="form-control clinicalcalculatecost" id="ClinicalEntities[' + [(i + _iterator)] + '].DocCostandStudy" name="ClinicalEntities[' + [(i + _iterator)] + '].DocCostandStudy" placeholder="Doc Costand Study" value="' + (getValueFromStrengthId(data, _strengthArray[i].pidfProductStrengthId, "docCostandStudy")) + '"/></td>';
 
     }
-    /*objectname += '<td> <input type="text" class="form-control readonlyUpdate" value="0" disabled="true" /> </td></tr>';*/
-    objectname += '</tr>';
-    objectname += "<tr><td>DocCostandStudy</td>";
-    for (var count = iteration; count < data.length + iteration; count++) {
-        objectname += '<td> <input type="text" class="form-control clinicalcalculatecost" id="ClinicalEntities[' + [count] + '].DocCostandStudy" name="ClinicalEntities[' + [count] + '].DocCostandStudy" placeholder="Doc Costand Study" value="' + (result[count].docCostandStudy != null && result[count].docCostandStudy != undefined ? result[count].docCostandStudy : "") + '"/></td>';
+    objectname += "<td></td></tr>";
 
+    objectname += "<tr><td class='text-bold'>Total Cost</td>";
+    for (var i = 0; i < _strengthArray.length; i++) {
+        objectname += "<td><input type='number' class='form-control totalClinical' readonly='readonly' /></td>";
     }
-    /*objectname += '<td> <input type="text" class="form-control readonlyUpdate" value="0" disabled="true" /> </td></tr></tbody>';*/
-    objectname += '</tr></tbody>';
-    $('#' + tablename).html(objectname);
+    objectname += "<td><input type='number' class='form-control totalClinical' readonly='readonly' /></td></tr>";
+
+    return objectname;
+}
+function BindClinical(data) {
+    console.log(data);
+    var bioStudyHTML = '<thead class="bg-primary text-bold"><tr><td>Bio Study Cost</td>';
+    $.each(_strengthArray, function (index, item) {
+        bioStudyHTML += '<td>' + getStrengthName(item.pidfProductStrengthId) + '</td>';
+    });
+    bioStudyHTML += '<td>Total</td></tr></thead><tbody>';
+
+    for (var i = 1; i < 5; i++) {
+        bioStudyHTML += CreateClinicalTable($.grep(data, function (n, x) { return n.bioStudyTypeId == i; }), i);
+    }
+
+    bioStudyHTML += '<tr><td class="text-bold">Total Bio Study Cost</td>';
+    $.each(_strengthArray, function (index, item) {
+        bioStudyHTML += "<td><input type='number' class='form-control totalClinical' readonly='readonly' /></td>";
+    });
+    bioStudyHTML += "<td><input type='number' class='form-control totalClinical' readonly='readonly' /></td></tr></tbody>";
+    $('#tableclinical').html(bioStudyHTML);
 }
 
-function BindClinical(data, result) {
-    //pilot fasting table start
-    createclinicaltables(data, 'Pilot Bio Fasting', 'Fasting', 'tableclinicalpilotfasting', 0, 1, result);
-    //end
-
-    //pilot fed table start
-    createclinicaltables(data, 'Pilot Bio Fed', 'Fed', 'tableclinicalpilotfed', 2, 2, result);
-    //pilot fed end
-
-    //pivotal bio fasting table start
-    createclinicaltables(data, 'Pivotal Bio Fasting', 'Fasting', 'tableclinicalpivotalfasting', 4, 3, result);
-
-    //end
-
-    //pivotal fed table start
-    createclinicaltables(data, 'Pivotal Bio Fed', 'Fed', 'tableclinicalpivotalfed', 6, 4, result);
-    //pivotal fed end
-}
 function Calculate_Clinical_total() {
 
     $('#tableclinicalpilotfasting').tableTotal({      
@@ -327,30 +362,4 @@ function Calculate_Clinical_total() {
         bold: true
     });
 }
-function clearclinicaltables() {
-    $("#tableclinicalpilotfasting").find("tr:gt(0)").remove();
-    $("#tableclinicalpilotfed").find("tr:gt(0)").remove();
-    $("#tableclinicalpivotalfasting").find("tr:gt(0)").remove();
-    $("#tableclinicalpivotalfed").find("tr:gt(0)").remove();
-    //$('#tableclinicalpilotfasting tbody').empty();
-    //$('#tableclinicalpilotfed tbody').empty();
-    //$('#tableclinicalpivotalfasting tbody').empty();
-    //$('#tableclinicalpivotalfed tbody').empty();
-}
 
-
-//function StrengthtabClick(strengthVal, pidfval) {  
-//    //selectedStrength = 0;
-//    var i, tabcontent, strengthtab;
-//    selectedStrength = strengthVal;
-//    /*$("#PidfPbfClinicals_StrengthId").val(strengthVal);*/
-//    //var StrengthAnchorId = '#Strengthtab_' + strengthVal;
-//    //$(StrengthAnchorId).className.add(" active", "");
-//    strengthtab = document.getElementsByClassName("strengthtab");
-//    for (i = 0; i < strengthtab.length; i++) {
-//        strengthtab[i].className = strengthtab[i].className.replace(" active", "");
-//    }
-//    var StrengthAnchorId = '#Strengthtab_' + strengthVal;
-//    $(StrengthAnchorId).addClass("active");
-//    window.location.href = 'PBF?pidfid=' + btoa(pidfval) + '&bui=' + btoa(SelectedBUValue) + '&strength=' + btoa(strengthVal);
-//}
