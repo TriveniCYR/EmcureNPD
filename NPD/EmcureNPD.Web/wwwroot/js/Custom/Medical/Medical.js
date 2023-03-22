@@ -48,6 +48,7 @@ input.addEventListener("change", () => {
 		const a = document.createElement("a");
 		a.textContent = file.name;
 		a.href = "#";
+		a.style.textDecoration = "none";
 		a.addEventListener("click", () => previewFile(file));
 		div.appendChild(a);
 		div.appendChild(del);
