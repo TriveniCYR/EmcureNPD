@@ -67,16 +67,40 @@ namespace EmcureNPD.API.Controllers.IPD
                 model.Remark = jsonObject.Remark;
                 model.CreatedBy = jsonObject.CreatedBy;
                 var files = medicalModel.Files;
-                if (files.Count > 0)
+                if (files.Count > 0 && jsonObject.FileName.HasValues)
                 {
-                    model.FileName = new string[files.Count];
-                    for (int i = 0; i < files.Count; i++)
+					object[] myarray = jsonObject.FileName.ToObject<object[]>();
+					int count = myarray.Count(s => s != null);
+                    int totalCount = count + files.Count;
+					model.FileName = new string[totalCount];
+                    int i = 0;
+                    for (i = 0; i < files.Count; i++)
                     {
                         var file = files[i];
                         model.FileName[i] = "Medical\\" + file.FileName;
                     }
-                }
-                else if (jsonObject.FileName.HasValues)
+					foreach (var item in myarray)
+					{
+						if (item != null)
+						{
+							var file = item.ToString();
+							model.FileName[i] = "Medical\\" + file;
+							i++;
+						}
+					}
+
+				}
+                else if(files.Count > 0)
+                {
+					model.FileName = new string[files.Count];
+					for (int i = 0; i < files.Count; i++)
+					{
+						var file = files[i];
+						model.FileName[i] = "Medical\\" + file.FileName;
+					}
+				}
+
+				else if (jsonObject.FileName.HasValues)
                 {
                     object[] myarray = jsonObject.FileName.ToObject<object[]>();
                     int count = myarray.Count(s => s != null);

@@ -19,6 +19,7 @@ using Microsoft.AspNetCore.Hosting;
 using static EmcureNPD.Utility.Enums.GeneralEnum;
 using Microsoft.Extensions.Configuration;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Razor.Language;
 
 namespace EmcureNPD.Business.Core.Implementation
 {
@@ -74,12 +75,21 @@ namespace EmcureNPD.Business.Core.Implementation
 				if (objPIDFMedical != null)
 				{
 					int i = 0;
+					bool validFile = false;
 					oldPIDFFEntity = _mapperFactory.Get<PidfMedical, PIDFMedicalViewModel>(objPIDFMedical);
 					objPIDFMedical = _mapperFactory.Get<PIDFMedicalViewModel, PidfMedical>(medicalModel);
 					if (files.Count() != 0)
 					{
-						string us = FileValidation(files[i]);
-						if (us == null)
+						foreach (var item in files)
+						{
+							string us = FileValidation(files[i]);
+							if (us == null)
+								validFile = true;
+							else
+								validFile = false;
+							i++;
+						}
+						if (validFile == true)
 						{
 							_pidfMedicalrepository.UpdateAsync(objPIDFMedical);
 							await _unitOfWork.SaveChangesAsync();
@@ -101,75 +111,29 @@ namespace EmcureNPD.Business.Core.Implementation
 					var MedicalFile = _pidfMedicalFilerepository.GetAll().Where(x => x.PidfmedicalId == medicalModel.PidfmedicalId).ToList();
 					foreach (var item in MedicalFile)
 					{
-						if (medicalModel.FileName.Length != 0 && i < medicalModel.FileName.Count())
+						var fullPath = path + "\\" + item.FileName;
+						var previousFileName = "Medical\\" + item.FileName;
+						if (!medicalModel.FileName.Contains(previousFileName))
 						{
-							var uniqueFileName = Path.GetFileNameWithoutExtension(medicalModel.FileName[i])
-							   + Guid.NewGuid().ToString().Substring(0, 4)
-							   + Path.GetExtension(medicalModel.FileName[i]);
-							PidfMedicalFile medicalFiles = new PidfMedicalFile
-							{
-								FileName = uniqueFileName,
-								CreatedDate = DateTime.Now,
-								PidfmedicalId = Convert.ToInt64(objPIDFMedical.PidfmedicalId),
-								PidfmedicalFileId = Convert.ToInt64(item.PidfmedicalFileId),
-								CreatedBy = (int)objPIDFMedical.CreatedBy,
-							};
-							var fullPath = path + "\\" + item.FileName;
-							var itmFileName = "Medical\\" + item.FileName;
-							if (!medicalModel.FileName.Contains(itmFileName))
-							{
-								if (System.IO.File.Exists(fullPath))
-								{
-									System.IO.File.Delete(fullPath);
-								}
-								PidfMedicalFile medicalFile = new PidfMedicalFile
-								{
-									PidfmedicalFileId = Convert.ToInt64(item.PidfmedicalFileId),
-								};
-								_pidfMedicalFilerepository.Remove(medicalFile);
-								if (files.Count() != 0)
-								{
-									string us = FileValidation(files[i]);
-									if (us == null)
-									{
-										await FileUpload(files[i], path, uniqueFileName);
-										_pidfMedicalFilerepository.UpdateAsync(medicalFiles);
-									}
-									else
-									{
-										return DBOperation.InvalidFile;
-
-									}
-								}
-
-							}
-							i++;
-						}
-						else if (medicalModel.FileName.Length != 0)
-						{
-							PidfMedicalFile medicalFiles = new PidfMedicalFile
-							{
-								PidfmedicalFileId = Convert.ToInt64(item.PidfmedicalFileId),
-							};
-							//var file = item.FileName.Substring(7);
-							var fullPath = path + "\\" + item.FileName;
-
 							if (System.IO.File.Exists(fullPath))
 							{
 								System.IO.File.Delete(fullPath);
 							}
-							_pidfMedicalFilerepository.Remove(medicalFiles);
-							i++;
+							PidfMedicalFile medicalFile = new PidfMedicalFile
+							{
+								PidfmedicalFileId = Convert.ToInt64(item.PidfmedicalFileId),
+							};
+							_pidfMedicalFilerepository.Remove(medicalFile);
 						}
 					}
-
-					if (medicalModel.FileName.Length != 0 && i < medicalModel.FileName.Count())
+					if (medicalModel.FileName.Count() > 0)
 					{
-						foreach (var filename in i != 0 ? medicalModel.FileName.Skip(i) : medicalModel.FileName)
+						int iteration = 0;
+						foreach (var filename in medicalModel.FileName)
 						{
-							var uniqueFileName = Path.GetFileNameWithoutExtension(medicalModel.FileName[i])
-							   + Guid.NewGuid().ToString().Substring(0, 4)
-							   + Path.GetExtension(medicalModel.FileName[i]);
+							var uniqueFileName = Path.GetFileNameWithoutExtension(medicalModel.FileName[iteration])
+								   + Guid.NewGuid().ToString().Substring(0, 4)
+								   + Path.GetExtension(medicalModel.FileName[iteration]);
 							PidfMedicalFile medicalFiles = new PidfMedicalFile
 							{
 								FileName = uniqueFileName,
@@ -177,28 +141,21 @@ namespace EmcureNPD.Business.Core.Implementation
 								PidfmedicalId = Convert.ToInt64(objPIDFMedical.PidfmedicalId),
 								CreatedBy = (int)objPIDFMedical.CreatedBy,
 							};
-							if (files.Count() != 0)
+							if (files.Count() != 0 && iteration<files.Count())
 							{
-								string us = FileValidation(files[i]);
-								if (us == null)
-								{
-									await FileUpload(files[i], path, uniqueFileName);
-									_pidfMedicalFilerepository.AddAsync(medicalFiles);
-								}
-								else
-								{
-									return DBOperation.InvalidFile;
-								}
+								await FileUpload(files[iteration], path, uniqueFileName);
+								_pidfMedicalFilerepository.AddAsync(medicalFiles);
+								await _unitOfWork.SaveChangesAsync();
 							}
-							i++;
+							iteration++;
 						}
 					}
 					//status update in PIDF
 					await _auditLogService.UpdatePIDFStatusCommon(medicalModel.Pidfid, (int)Master_PIDFStatus.MedicalSubmitted, medicalModel.CreatedBy);
 					//test to update notification
-                    await _notificationService.UpdateNotification(13, "testTitleUpdate", "testDescriptionUpdate", medicalModel.CreatedBy);
+					await _notificationService.UpdateNotification(13, "testTitleUpdate", "testDescriptionUpdate", medicalModel.CreatedBy);
 
-                    var isSuccess = await _auditLogService.CreateAuditLog<PIDFMedicalViewModel>(medicalModel.PidfmedicalId > 0 ? Utility.Audit.AuditActionType.Update : Utility.Audit.AuditActionType.Create,
+					var isSuccess = await _auditLogService.CreateAuditLog<PIDFMedicalViewModel>(medicalModel.PidfmedicalId > 0 ? Utility.Audit.AuditActionType.Update : Utility.Audit.AuditActionType.Create,
 						   Utility.Enums.ModuleEnum.Medical, oldPIDFFEntity, medicalModel, Convert.ToInt32(objPIDFMedical.PidfmedicalId));
 					return DBOperation.Success;
 				}
@@ -210,14 +167,23 @@ namespace EmcureNPD.Business.Core.Implementation
 			else if (medicalModel.PidfmedicalId == 0)
 			{
 				int i = 0;
+				bool validFile = false;
 				var medical = _mapperFactory.Get<PIDFMedicalViewModel, PidfMedical>(medicalModel);
 				medical.MedicalOpinion = medicalModel.MedicalOpinion;
 				medical.Remark = medicalModel.Remark;
 				medical.CreatedDate = DateTime.Now;
 				if (files.Count() != 0)
 				{
-					string us = FileValidation(files[i]);
-					if (us == null)
+					foreach (var item in files)
+					{
+						string us = FileValidation(files[i]);
+						if (us == null)
+							validFile = true;
+						else
+							validFile = false;
+						i++;
+					}
+					if (validFile == true)
 					{
 						_pidfMedicalrepository.AddAsync(medical);
 						await _unitOfWork.SaveChangesAsync();
@@ -227,19 +193,16 @@ namespace EmcureNPD.Business.Core.Implementation
 						return DBOperation.InvalidFile;
 					}
 				}
-				else if (files.Count() == 0 && medicalModel.FileName != null)
-				{
-					_pidfMedicalrepository.AddAsync(medical);
-					await _unitOfWork.SaveChangesAsync();
-				}
-				else
+				else if (files.Count() == 0)
 				{
 					return DBOperation.Error;
 				}
+				else
+					return DBOperation.Error;
 
-				//var medicalFile = _mapperFactory.Get<PIDFMedicalViewModel, PidfMedicalFile>(medicalModel);
 				if (medicalModel.FileName != null)
 				{
+					int iteration = 0;
 					foreach (var filename in medicalModel.FileName)
 					{
 						var uniqueFileName = Path.GetFileNameWithoutExtension(filename)
@@ -254,34 +217,30 @@ namespace EmcureNPD.Business.Core.Implementation
 						};
 						if (files.Count() != 0)
 						{
-							string us = FileValidation(files[i]);
-							if (us == null)
+							if (validFile == true)
 							{
-								await FileUpload(files[i], path, uniqueFileName);
+								await FileUpload(files[iteration], path, uniqueFileName);
 								_pidfMedicalFilerepository.AddAsync(medicalFiles);
+								await _unitOfWork.SaveChangesAsync();
 							}
 							else
-							{
 								return DBOperation.InvalidFile;
-							}
 						}
-						i++;
+						iteration++;
 					}
 				}
 				//Status Update in PIDF
-                await _auditLogService.UpdatePIDFStatusCommon(medicalModel.Pidfid, (int)Master_PIDFStatus.MedicalSubmitted, medicalModel.CreatedBy);
+				await _auditLogService.UpdatePIDFStatusCommon(medicalModel.Pidfid, (int)Master_PIDFStatus.MedicalSubmitted, medicalModel.CreatedBy);
 
-                //test To create notification
-                await _notificationService.CreateNotification((int)medicalModel.Pidfid, (int)Master_PIDFStatus.MedicalSubmitted, "testTitleCreate", "testDescriptionCreate", medicalModel.CreatedBy);
+				//test To create notification
+				await _notificationService.CreateNotification((int)medicalModel.Pidfid, (int)Master_PIDFStatus.MedicalSubmitted, "testTitleCreate", "testDescriptionCreate", medicalModel.CreatedBy);
 
-                return DBOperation.Success;
+				return DBOperation.Success;
 			}
-
 			else
 			{
 				return DBOperation.Error;
 			}
-
 		}
 
 		public async Task FileUpload(IFormFile files, string path, string uniqueFileName)
