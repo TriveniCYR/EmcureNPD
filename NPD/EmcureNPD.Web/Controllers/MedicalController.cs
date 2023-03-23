@@ -1,20 +1,15 @@
 ﻿using EmcureNPD.Business.Models;
 using EmcureNPD.Resource;
-using EmcureNPD.Utility.Audit;
 using EmcureNPD.Utility.Enums;
 using EmcureNPD.Utility.Models;
 using EmcureNPD.Utility.Utility;
 using EmcureNPD.Web.Helpers;
-using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Localization;
 using Newtonsoft.Json;
-using Newtonsoft.Json.Linq;
 using System;
-using System.Collections.Generic;
 using System.Net.Http;
 using System.Net.Http.Headers;
 
@@ -116,14 +111,6 @@ namespace EmcureNPD.Web.Controllers
                 }
 
                 form.Add(new StringContent(JsonConvert.SerializeObject(medicalEntity)), "Data");
-                //var streamContent = new StreamContent(form.ReadAsStreamAsync().Result);
-                //streamContent.Headers.ContentType = MediaTypeHeaderValue.Parse("multipart/form-data");
-                //var httpClient = new HttpClient()
-                //{
-                //    BaseAddress = new Uri("https://localhost:44368")
-                //};
-
-                //var response = httpClient.PostAsync($"/api/Medical/PIDMedicalForm", form).Result;
                 HttpResponseMessage responseMessage = objapi.APIComm(APIURLHelper.PIDMedicalForm, HttpMethod.Post, token, form).Result;
                 string jsonResponse = responseMessage.Content.ReadAsStringAsync().Result;
                 var data = JsonConvert.DeserializeObject<APIResponseEntity<dynamic>>(jsonResponse);

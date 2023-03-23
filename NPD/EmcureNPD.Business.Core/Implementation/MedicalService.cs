@@ -5,21 +5,14 @@ using EmcureNPD.Data.DataAccess.Core.Repositories;
 using EmcureNPD.Data.DataAccess.Core.UnitOfWork;
 using EmcureNPD.Data.DataAccess.Entity;
 using EmcureNPD.Utility.Enums;
-using EmcureNPD.Utility.Utility;
 using Microsoft.AspNetCore.Http;
 using System;
-using System.Collections.Generic;
-using System.Data.SqlClient;
 using System.IO;
 using System.Linq;
 using System.Linq.Expressions;
-using System.Net;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Hosting;
 using static EmcureNPD.Utility.Enums.GeneralEnum;
 using Microsoft.Extensions.Configuration;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Razor.Language;
 
 namespace EmcureNPD.Business.Core.Implementation
 {
@@ -39,28 +32,11 @@ namespace EmcureNPD.Business.Core.Implementation
 		{
 			_unitOfWork = unitOfWork;
 			_mapperFactory = mapperFactory;
-			//_businessUnitService = businessUnitService;
-			//_countryService = countryService;
             _auditLogService = auditLogService;
             _notificationService = notificationService;
 			_helper = helper;
-
-   //         _repository = _unitOfWork.GetRepository<PidfIpd>();
-			//_ipdParentRepository = unitOfWork.GetRepository<PidfIpdPatentDetail>();
-			//_regionRepository = _unitOfWork.GetRepository<MasterRegion>();
-			//_userRegionRepository = _unitOfWork.GetRepository<MasterUserRegionMapping>();
-			//_userRegionCountryRepository = _unitOfWork.GetRepository<MasterRegionCountryMapping>();
-			//_ipdRegionRepository = unitOfWork.GetRepository<PidfIpdRegion>();
-			//_ipdCountryRepository = unitOfWork.GetRepository<PidfIpdCountry>();
-			//_pidfrepository = unitOfWork.GetRepository<Pidf>();
 			_pidfMedicalrepository = unitOfWork.GetRepository<PidfMedical>();
 			_pidfMedicalFilerepository = unitOfWork.GetRepository<PidfMedicalFile>();
-
-			//_projectTaskRepository = unitOfWork.GetRepository<ProjectTask>();
-			//_masterUserRepository = unitOfWork.GetRepository<MasterUser>();
-			//_masterProjectStatusRepository = unitOfWork.GetRepository<MasterProjectStatus>();
-			//_masterProjectPriorityRepository = unitOfWork.GetRepository<MasterProjectPriority>();
-
             _configuration = configuration;
         }
 
@@ -153,7 +129,7 @@ namespace EmcureNPD.Business.Core.Implementation
 					//status update in PIDF
 					await _auditLogService.UpdatePIDFStatusCommon(medicalModel.Pidfid, (int)Master_PIDFStatus.MedicalSubmitted, medicalModel.CreatedBy);
 					//test to update notification
-					await _notificationService.UpdateNotification(13, "testTitleUpdate", "testDescriptionUpdate", medicalModel.CreatedBy);
+					await _notificationService.UpdateNotification(13, string.Empty, string.Empty, medicalModel.CreatedBy);
 
 					var isSuccess = await _auditLogService.CreateAuditLog<PIDFMedicalViewModel>(medicalModel.PidfmedicalId > 0 ? Utility.Audit.AuditActionType.Update : Utility.Audit.AuditActionType.Create,
 						   Utility.Enums.ModuleEnum.Medical, oldPIDFFEntity, medicalModel, Convert.ToInt32(objPIDFMedical.PidfmedicalId));
@@ -233,7 +209,7 @@ namespace EmcureNPD.Business.Core.Implementation
 				await _auditLogService.UpdatePIDFStatusCommon(medicalModel.Pidfid, (int)Master_PIDFStatus.MedicalSubmitted, medicalModel.CreatedBy);
 
 				//test To create notification
-				await _notificationService.CreateNotification((int)medicalModel.Pidfid, (int)Master_PIDFStatus.MedicalSubmitted, "testTitleCreate", "testDescriptionCreate", medicalModel.CreatedBy);
+				await _notificationService.CreateNotification((int)medicalModel.Pidfid, (int)Master_PIDFStatus.MedicalSubmitted, string.Empty, string.Empty, medicalModel.CreatedBy);
 
 				return DBOperation.Success;
 			}
@@ -247,9 +223,6 @@ namespace EmcureNPD.Business.Core.Implementation
 		{
 			if (files != null)
 			{
-				//     var uniqueFileName = Path.GetFileNameWithoutExtension(file.FileName)
-				//+ Guid.NewGuid().ToString().Substring(0, 4)
-				//+ Path.GetExtension(file.FileName);
 				string uploadFolder = path;
 				if (!Directory.Exists(uploadFolder))
 				{

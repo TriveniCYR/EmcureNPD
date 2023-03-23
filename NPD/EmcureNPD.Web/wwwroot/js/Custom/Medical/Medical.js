@@ -56,6 +56,7 @@ input.addEventListener("change", () => {
 		i++;
 	}
 });
+//delete selected files
 function deleteSelectedFile(id) {
 	const element = document.getElementById(id);
 	const index = parseInt(id.replace("elements_", ""), 10);
