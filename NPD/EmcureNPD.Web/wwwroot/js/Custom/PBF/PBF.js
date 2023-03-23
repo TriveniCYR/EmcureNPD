@@ -20,6 +20,7 @@ $(document).ready(function () {
         Calculate_Clinical_total();
     });
     GetPBFDropdown();
+    GetPBFTabDetails();
     UserwiseBusinessUnit = UserWiseBUList.split(',');
     SetBU_Tab();
     /*SetDisableForOtherUserBU(); */
@@ -92,7 +93,7 @@ function GetPBFDropdownSuccess(data) {
             $(data.MasterTestLicense).each(function (index, item) {
                 $('#testlicence').append('&nbsp;<input type="checkbox" name="TestLicenseAvailability" id="License' + item.testLicenseId + '" value="' + item.testLicenseId + '">&nbsp;' + item.testLicenseName);
             });
-
+         
             try {
                 if (_PIDFID > 0) {
                     if ($('#ProjectName').val() == "") {
@@ -136,8 +137,7 @@ function GetPBFDropdownSuccess(data) {
                     var license = $("#TestLicenseAvailability").val().split(',');
                     $.each(license, function (index, item) {
                         $("#License" + item.trim()).prop("checked", true);
-                    });
-                    Calculate_Clinical_total();
+                    });                   
 
                 }
             } catch (e) {
@@ -146,8 +146,7 @@ function GetPBFDropdownSuccess(data) {
 
             _strengthArray = data.PIDFStrengthEntity;
             BindBusinessUnit(data.MasterBusinessUnit);
-            BindStrength(data.PIDFPBFGeneralStrength)
-            BindClinical(data.PBFClinicalEntity)
+           
         }
     } catch (e) {
         toastr.error('Error:' + e.message);
@@ -157,7 +156,42 @@ function GetPBFDropdownError(x, y, z) {
     toastr.error(ErrorMessage);
 }
 
-function getStrengthName(strengthId) {
+function GetPBFTabDetails() {
+    ajaxServiceMethod($('#hdnBaseURL').val() + GetPBFAllTabDetails + "/" + _PIDFID + "/" + _selectBusinessUnit, 'GET', GetPBFTabDetailsSuccess, GetPBFTabDetailsError);
+}
+function GetPBFTabDetailsSuccess(data) {
+    console.log(data);
+    try {
+        if (data != null) {           
+            BindStrength(data.PIDFPBFGeneralStrength);
+            try {
+                var _emptyOption = '<option value="">-- Select --</option>';
+                $('.AnalyticalTestTypeId').append(_emptyOption);
+                $('.AMVstrengths').append(_emptyOption);
+                BindClinical(data.PBFClinicalEntity);
+                BindAnalytical(data.PBFClinicalEntity);
+                $(data.MasterTestType).each(function (index, item) {
+                    $('.AnalyticalTestTypeId').append('<option value="' + item.testTypeId + '">' + item.testTypeName + '</option>');
+                });
+                $(_strengthArray).each(function (index, item) {
+                    $('.AMVstrengths').append('<option value="' + item.pidfProductStrengthId + '">' + getStrengthName(item.pidfProductStrengthId) + '</option>');
+                });
+                $('.AMVstrengths').select2();
+
+            } catch (e) {
+
+            }
+           
+        }
+    } catch (e) {
+        toastr.error('Error:' + e.message);
+    }
+}
+function GetPBFTabDetailsError(x, y, z) {
+    toastr.error(ErrorMessage);
+}
+
+function getStrengthName(strengthId) {   
     var _filteredStrength = $.grep(_strengthArray, function (n, i) {
         return n.pidfProductStrengthId === strengthId;
     });
@@ -323,8 +357,7 @@ function CreateClinicalTable(data, bioStudyTypeId) {
 
     return objectname;
 }
-function BindClinical(data) {
-    console.log(data);
+function BindClinical(data) {   
     var bioStudyHTML = '<thead class="bg-primary text-bold"><tr><td>Bio Study Cost</td>';
     $.each(_strengthArray, function (index, item) {
         bioStudyHTML += '<td>' + getStrengthName(item.pidfProductStrengthId) + '</td>';
@@ -342,24 +375,106 @@ function BindClinical(data) {
     bioStudyHTML += "<td><input type='number' class='form-control totalClinical' readonly='readonly' /></td></tr></tbody>";
     $('#tableclinical').html(bioStudyHTML);
 }
+function CreateAnalyticalTable(data, activityTypeId) {
+   
+    var objectname = "";
+    var tableTitle = "";
+   
+    if (activityTypeId == 1) {
+        tableTitle = "Prototype";
+    } else if (activityTypeId == 2) {
+        tableTitle = "Scale Up";
+    } else {
+        tableTitle = "Exhibit Batch";
+    }
+    var _iterator = (activityTypeId - 1) * _strengthArray.length;
+    objectname += '<tr><td class="text-left text-bold bg-light" colspan="10">' + tableTitle + '</td>';
 
-function Calculate_Clinical_total() {
+    
 
-    $('#tableclinicalpilotfasting').tableTotal({      
-        totalCol: true,
-        bold: true
-    });
-    $('#tableclinicalpilotfed').tableTotal({
-        totalCol: true,
-        bold: true
-    });
-    $('#tableclinicalpivotalfasting').tableTotal({
-        totalCol: true,
-        bold: true
-    });
-    $('#tableclinicalpivotalfed').tableTotal({
-        totalCol: true,
-        bold: true
-    });
+    objectname += '<tr  id="clinicalRow'+ _iterator+'"><td></td>'
+        + '<td><input type="hidden" id="AnalyticalEntities[' + [(_iterator)] + '].TestTypeId" name="AnalyticalEntities[' + [(_iterator)] + '].TestTypeId" /> <select id="AnalyticalTestTypeId[' + [(_iterator)] + ']" class="form-control readOnlyUpdate AnalyticalTestTypeId"></select></td>'
+        + '<td><input type="text" id="AnalyticalEntities[' + [( _iterator)] + '].Numberoftests" class="form-control totalAnalytical"  /></td>'
+        + '<td><input type="number" id="AnalyticalEntities[' + [(_iterator)] + '].PrototypeDevelopment" class="form-control totalAnalytical"  /></td>'
+        + '<td><input type="number" id="AnalyticalEntities[' + [(_iterator)] + '].CostPerTest" class="form-control totalAnalytical"  /></td>'
+        + '<td><input type="number" id="AnalyticalEntities[' + [(_iterator)] + '].PrototypeCost" class="form-control totalAnalytical"  /></td>';
+    for (var i = 0; i < _strengthArray.length; i++) {
+        objectname += '<td><input type="hidden" id="AnalyticalEntities[' + [(i + _iterator)] + '].ActivityTypeId" name="AnalyticalEntities[' + [(i + _iterator)] + '].ActivityTypeId" value="' + activityTypeId + '" /><input type="hidden" id="AnalyticalEntities[' + [(i + _iterator)] + '].StrengthId" name="AnalyticalEntities[' + [(i + _iterator)] + '].StrengthId" value="' + _strengthArray[i].pidfProductStrengthId + '" /><input type="number" class="form-control" /></td>';
+    }
+    objectname += "<td><input type='number' class='form-control' readonly='readonly' /></td><td> <i class='fas fa-plus' id='addIcon' onclick='addRow(" + _iterator + ");'></i> <i class='fas fa-trash-alt DeleteIcon' id='deleteIcon" + _iterator + "' onclick='deleteRow(" + _iterator + ",this);' ></i></td></tr>";
+
+
+    //objectname += "<tr><td class='text-bold'>Total Cost</td>";
+    //for (var i = 0; i < _strengthArray.length; i++) {
+    //    objectname += "<td><input type='number' class='form-control totalAnalytical' readonly='readonly' /></td>";
+    //}
+    //objectname += "<td><input type='number' class='form-control totalAnalytical' readonly='readonly' /> </td></tr>";
+   
+    return objectname;
 }
+function BindAnalytical(data) {
+    console.log(data);
+    var analyticalactivityHTML = '<thead class="bg-primary text-bold"><tr><td>Analytical Activities</td>'
+        + '<td>Test Type</td>'
+        + '<td>Number of tests</td>'
+        + '<td>Prototype Development</td>'
+        + '<td>Rs /test</td>'
+        + '<td>Prototype Cost</td>';
+    $.each(_strengthArray, function (index, item) {
+        analyticalactivityHTML += '<td>' + getStrengthName(item.pidfProductStrengthId) + '</td>';
+    });
+    analyticalactivityHTML += '<td>Total</td><td>Action</td></tr></thead><tbody id="tblanalyticalBody">';
+
+    for (var i = 1; i < 4; i++) {
+        analyticalactivityHTML += CreateAnalyticalTable($.grep(data, function (n, x) { return n.bioStudyTypeId == i; }), i);
+    }
+    analyticalactivityHTML += '<tr><td class="text-left text-bold bg-light" colspan="10"></td></tr>';
+    analyticalactivityHTML += '<tr><td class="text-bold">AMV Cost</td>';
+    analyticalactivityHTML += '<td colspan="2"><input type="number" class="form-control totalAnalytical" name="AnalyticalEntities.TotalAMVCost.TotalCost" placeholder="Total AMV Cost" /><td class="text-bold" colspan="4"><textarea id="remark" class="form-control" name="AnalyticalEntities.TotalAMVCost.Remark" placeholder="Remark"></textarea></td>  <td colspan="4"><select class="form-control readOnlyUpdate AMVstrengths" multiple="multiple"></select> </td></tr>';
+    analyticalactivityHTML += '<tr><td class="text-bold">Total Cost</td>';
+    $.each(_strengthArray, function (index, item) {
+        analyticalactivityHTML += "<td><input type='number' class='form-control totalAnalytical' readonly='readonly' /></td>";
+    });
+    analyticalactivityHTML += "<td><input type='number' class='form-control totalAnalytical' readonly='readonly' /></td></tr></tbody>";
+    $('#tableanalytical').html(analyticalactivityHTML);
+    
+}
+
+function addRow(j) {
+    var table = $('#tblanalyticalBody');
+    var node = $('#clinicalRow'+j).clone(true);
+    table.find('#clinicalRow' + j).after(node);
+    table.find('#clinicalRow' + j).find("input").val("");
+    SetChildRowDeleteIcon(j);
+}
+function deleteRow(j, element) {
+    $(element).closest("tr").remove();
+    SetChildRowDeleteIcon(j);
+}
+function SetChildRowDeleteIcon(j) {
+    if ($('#tableclinical tbody tr').length > 1) {
+        $('#DeleteIcon' + j).show();
+    } else {
+        $('#DeleteIcon' + j).hide();
+    }   
+}
+//function Calculate_Clinical_total() {
+
+//    $('#tableclinicalpilotfasting').tableTotal({      
+//        totalCol: true,
+//        bold: true
+//    });
+//    $('#tableclinicalpilotfed').tableTotal({
+//        totalCol: true,
+//        bold: true
+//    });
+//    $('#tableclinicalpivotalfasting').tableTotal({
+//        totalCol: true,
+//        bold: true
+//    });
+//    $('#tableclinicalpivotalfed').tableTotal({
+//        totalCol: true,
+//        bold: true
+//    });
+//}
 

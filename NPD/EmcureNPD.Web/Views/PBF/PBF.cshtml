@@ -429,7 +429,8 @@
                              aria-labelledby="custom-tabs-department-Analytical-tab">
                             <div class="container-fluid">
                                 <div class="row">
-                                    Analytical
+                                    <table id="tableanalytical" class="table text-center" style="width:100%">
+                                    </table>
                                 </div>
                             </div>
                         </div>
@@ -438,9 +439,9 @@
                              id="custom-tabs-Clinical" role="tabpanel"
                              aria-labelledby="custom-tabs-department-clinical-tab">
                             <div class="container-fluid">
-                                <div class="row">                                  
+                                <div class="row">
                                     <table id="tableclinical" class="table text-center" style="width:100%">
-                                    </table> 
+                                    </table>
                                 </div>
                             </div>
                         </div>
@@ -477,4 +478,5 @@
      var UserWiseBUList="@Model.BusinessUnitsByUser";
      var _selectBusinessUnit = "@UtilityHelper.Decreypt(Convert.ToString(Context.Request.Query["bui"]))";
         var _PIDFID = "@UtilityHelper.Decreypt(Convert.ToString(Context.Request.Query["pidfid"]))";
+         var GetPBFAllTabDetails = "@EmcureNPD.Web.Helpers.APIURLHelper.GetPBFTabDetails";
 </script>

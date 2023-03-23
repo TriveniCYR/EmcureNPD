@@ -186,8 +186,8 @@ namespace EmcureNPD.Business.Core.Implementation
             DropdownObjects.PIDFEntity = dsDropdownOptions.Tables[14];
             DropdownObjects.PIDFIPDEntity = dsDropdownOptions.Tables[15];
             DropdownObjects.PIDFStrengthEntity = dsDropdownOptions.Tables[16];
-            DropdownObjects.PIDFPBFGeneralStrength = dsDropdownOptions.Tables[17];
-            DropdownObjects.PBFClinicalEntity = dsDropdownOptions.Tables[18];
+            DropdownObjects.MasterTestType = dsDropdownOptions.Tables[17];
+            //DropdownObjects.PBFClinicalEntity = dsDropdownOptions.Tables[18];
 
             return DropdownObjects;
         }
@@ -1348,9 +1348,27 @@ namespace EmcureNPD.Business.Core.Implementation
 
 			return DBOperation.Success;
 		}
-     #endregion
-		#region Private Methods
-		public async Task<long> SavePidfAndPBFCommanDetails(long pidfid, PBFFormEntity pbfentity)
+        #endregion
+        public async Task<dynamic> PBFAllTabDetails(int PIDFId,int BUId)
+        {
+            dynamic DropdownObjects = new ExpandoObject();
+
+            var loggedInUserId = _helper.GetLoggedInUser().UserId;
+
+            SqlParameter[] osqlParameter = {                
+                new SqlParameter("@PIDFId", PIDFId),
+                new SqlParameter("@BUId", BUId)
+            };
+            DataSet dsDropdownOptions = await _repository.GetDataSetBySP("stp_npd_GetPbfAllTabData", System.Data.CommandType.StoredProcedure, osqlParameter);
+
+            DropdownObjects.MasterTestType = dsDropdownOptions.Tables[0];
+            DropdownObjects.PIDFPBFGeneralStrength = dsDropdownOptions.Tables[1];
+            DropdownObjects.PBFClinicalEntity = dsDropdownOptions.Tables[2];
+
+            return DropdownObjects;
+        }
+        #region Private Methods
+        public async Task<long> SavePidfAndPBFCommanDetails(long pidfid, PBFFormEntity pbfentity)
         {
             long pidfpbfid = 0;
             long pbfgeneralid = 0;
@@ -1498,7 +1516,6 @@ namespace EmcureNPD.Business.Core.Implementation
                 //Save clinical Entities
                 if (pbfentity.ClinicalEntities != null && pbfentity.ClinicalEntities.Count() > 0)
                 {
-                    List<PidfPbfGeneralStrength> _objPidfPbfGeneralStrength = new List<PidfPbfGeneralStrength>();
                     foreach (var item in pbfentity.ClinicalEntities)
                     {
                         PidfPbfClinical obgclinical = new PidfPbfClinical();
@@ -1511,6 +1528,42 @@ namespace EmcureNPD.Business.Core.Implementation
                     _pidfPbfClinicalRepository.AddRangeAsync(objClinicallist);
                     await _unitOfWork.SaveChangesAsync();
                 }
+
+                #endregion
+
+                #region Section Analytical Add Update
+                List<PidfPbfAnalytical> objAnalyticallist = new();
+                if (pbfgeneralid > 0)
+                {
+                    var analytical = _pidfPbfAnalyticalRepository.GetAllQuery().Where(x => x.PbfgeneralId == pbfgeneralid).ToList();
+                    if (analytical.Count > 0)
+                    {
+                        foreach (var item in analytical)
+                        {
+                            _pidfPbfAnalyticalRepository.Remove(item);
+                        }
+                        await _unitOfWork.SaveChangesAsync();
+                    }
+                }
+
+                //Save analytical Entities
+                if (pbfentity.AnalyticalEntities != null && pbfentity.AnalyticalEntities.Count() > 0)
+                {
+                    foreach (var item in pbfentity.AnalyticalEntities)
+                    {
+                        PidfPbfAnalytical obganalytical = new PidfPbfAnalytical();
+                        obganalytical = _mapperFactory.Get<AnalyticalEntity, PidfPbfAnalytical>(item);
+                        obganalytical.PbfgeneralId = pbfgeneralid;
+                        obganalytical.CreatedDate = DateTime.Now;
+                        obganalytical.CreatedBy = loggedInUserId;
+                        objAnalyticallist.Add(obganalytical);
+                    }
+                    _pidfPbfAnalyticalRepository.AddRangeAsync(objAnalyticallist);
+                    await _unitOfWork.SaveChangesAsync();
+                }
+                //Save analytical cost start
+
+                //Save analytical cost end
 
                 #endregion
 

@@ -254,6 +254,17 @@ namespace EmcureNPD.API.Controllers.PBF
                 return _ObjectResponse.Create(false, (Int32)HttpStatusCode.InternalServerError, Convert.ToString(ex.StackTrace));
             }
         }
-
+        [HttpGet, Route("PBFTabDetails/{PIDFId}/{BUId}")]
+        public async Task<IActionResult> FillDropdown(int PIDFId,int BUId)
+        {
+            try
+            {
+                return _ObjectResponse.CreateData(await _PBFService.PBFAllTabDetails(PIDFId,BUId), (Int32)HttpStatusCode.OK);
+            }
+            catch (Exception e)
+            {
+                return _ObjectResponse.Create(null, (Int32)HttpStatusCode.BadRequest, "No Records found");
+            }
+        }
     }
 }
