@@ -12,9 +12,10 @@ function GetAllNotificationListSuccess(data) {
             $('#NotificationNo').html(result.recordsTotal);
             $('#NotificationCount').html(result.recordsTotal + " Notifications");
             for (var i = 0; i < result.recordsFiltered; i++) {
+                let notificationTitle = result.data[i].notificationTitle.length > 40 ? result.data[i].notificationTitle.slice(0, 39) + '...' : result.data[i].notificationTitle;
                 /*<span class="badge badge-secondary"><i class="fas fa-envelope mr-1"></i>${rowcount} <b>${data.data[i].notificationTitle}</b></span>*/
                 elehtml += `<a href="#" class="dropdown-item">
-                    <span class="badge badge-secondary">${rowcount}:<i class="fas fa-envelope mr-1"></i>${result.data[i].notificationTitleView}</span>
+                    <span class="badge badge-secondary" title=${result.data[i].notificationTitle}>${rowcount}:<i class="fas fa-envelope mr-1"></i>${notificationTitle}</span>
                     <span class="float-right text-muted text-sm">${timeDiffrance(result.data[i].createdDate)}</span>
                 </a>`
                 rowcount++;
