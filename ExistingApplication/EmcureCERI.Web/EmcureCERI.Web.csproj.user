@@ -3,5 +3,9 @@
   <PropertyGroup>
     <NameOfLastUsedPublishProfile>D:\E Drive\Nilesh_Jain\Clients\Emcure_Pharma\ExistingSystem\EmcureCERI.Web\Properties\PublishProfiles\FolderProfile2.pubxml</NameOfLastUsedPublishProfile>
     <ShowAllFiles>true</ShowAllFiles>
+    <ActiveDebugProfile>EmcureCERI.Web</ActiveDebugProfile>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+    <DebuggerFlavor>ProjectDebugger</DebuggerFlavor>
   </PropertyGroup>
 </Project>
