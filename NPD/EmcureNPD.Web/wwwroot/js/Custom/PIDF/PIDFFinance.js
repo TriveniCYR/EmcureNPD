@@ -23,6 +23,12 @@ $(document).ready(function () {
 //$(".btn-tool").click(function () {
 //  $(this).data('clicked', true);
 //});
+$("#btnApprove").click(function () {
+    $('#ApproveModel').modal('show');
+})
+$("#btnRejects").click(function () {
+    $("#RejectModel").modal('show');
+})
 function GetCurrencyList() {
     ajaxServiceMethod($('#hdnBaseURL').val() + AllCurrency, 'GET', GetCurrencyListSuccess, GetCurrencyListError);
 }

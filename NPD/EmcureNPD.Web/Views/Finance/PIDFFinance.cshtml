@@ -15,26 +15,31 @@ var PidafId=Context.Request.Query["pidfid"];
 string jsVersion = @Configuration.GetSection("StaticJS")["version"];
 }
 
+<div class="content-header">
+    <div style="display: flex; justify-content: space-between; align-items: center;">
+        <h2 class="m-0">PIDF/Finance</h2>
+        
+    </div>
+
+</div>
 <div id="SaveFinanceModel">
     <form action="PIDFFinancePost" method="post" class="needs-validation">
 		<div class="card">
-			<div class="card-header bg-gradient-primary">
-				<h5 class="mb-0 text-white"><b>New Project Details</b></h5> 
+			<div class="card-header bg-primary">
+			<h3 class="card-title mb-0"><button type="button" class="btn btn-tool" data-card-widget="collapse">New Project Details</button></h3>
 				<div class="card-tools">
-					<button type="button" class="btn btn-tool accordion-button fw-bold  text-white" data-toggle="collapse" data-target="#pidfCollapse" title="Collapse" >
-						<i class="fas fa-angle-double-down"></i>
+					<button type="button" class="btn btn-tool" data-card-widget="collapse" data-target="#pidfCollapse" title="Collapse">
+                           <i class="fas fa-minus"></i>
 					</button>
 				</div>
-			</div>			
-		
-		
-			<div class="card-body collapse" id="pidfCollapse" style="background-color:white">
+			</div>
+            <div class="card-body collapse show" id="pidfCollapse" style="background-color:white">
 				<input type="hidden" id="Pidfid" name="Pidfid" value="@PidafId" />
                 <input type="hidden" id="SaveType" name="SaveType" />
 			<div class="row">
 				<div class="col-md-3">
 					<div class="form-group required">
-						<label class="control-label">Entity</label> 
+						<label class="control-label">Entity*</label> 
                         @Html.HiddenFor(@model=>model.PidffinaceId)
 						@Html.TextBoxFor(@modal=>modal.Entity,new{@class="form-control readOnlyUpdate",@required="required"})
                          <div class="invalid-feedback">
@@ -48,7 +53,7 @@ string jsVersion = @Configuration.GetSection("StaticJS")["version"];
 
 				<div class="col-md-3">
 					<div class="form-group required">
-						<label class="control-label">Product</label>
+						<label class="control-label">Product*</label>
 							@Html.TextBoxFor(@modal=>modal.Product,new{@class="form-control readOnlyUpdate",@required="required"})
                              <div class="invalid-feedback">
                                 Please enter Product
@@ -60,7 +65,7 @@ string jsVersion = @Configuration.GetSection("StaticJS")["version"];
 				</div>
 				<div class="col-md-3">
 					<div class="form-group required">
-						<label class="control-label">Forecast Date</label>
+						<label class="control-label">Forecast Date*</label>
 							@Html.TextBoxFor(@modal=>modal.ForecastDate,"{0:yyyy-MM-dd}",new{@class="form-control readOnlyUpdate",@required="required",@type="date"})
 					<div class="invalid-feedback">
                                 Please select Forecast Date.
@@ -72,7 +77,7 @@ string jsVersion = @Configuration.GetSection("StaticJS")["version"];
 				</div>
 				<div class="col-md-3">
 					<div class="form-group required">
-						<label class="control-label">Currency</label>
+						<label class="control-label">Currency*</label>
 							@Html.DropDownListFor(model => model.Currencyid,
 							new List<SelectListItem> { new SelectListItem { Value = "0", Text = "Plese Select Currency" } },new { @class="form-control readOnlyUpdate",@required="required",@id="Currency"})
 							<div class="invalid-feedback">
@@ -87,7 +92,7 @@ string jsVersion = @Configuration.GetSection("StaticJS")["version"];
 					<div class="row">
 						<div class="col-md-3">
 							<div class ="form-group required">
-								<label class="control-label">Dosage Form</label>
+								<label class="control-label">Dosage Form*</label>
 							@Html.DropDownListFor(model => model.DosageFrom,
 							new List<SelectListItem> { new SelectListItem { Value = "0", Text = "Plese Select DosageFrom" } },new { @class="form-control readOnlyUpdate",@required="required"})
                                 <div class="invalid-feedback">
@@ -101,7 +106,7 @@ string jsVersion = @Configuration.GetSection("StaticJS")["version"];
 
 						<div class="col-md-3">
 							<div class="form-group required">
-								<label class="control-label">Manufacturing Site / Partner</label>
+								<label class="control-label">Manufacturing Site / Partner*</label>
 							@Html.TextBoxFor(@modal=>modal.ManufacturingSiteOrPartner,new{@class="form-control readOnlyUpdate",@required="required"})
 						 <div class="invalid-feedback">
                                 Please enter Manufacturing Site / Partner.
@@ -113,7 +118,7 @@ string jsVersion = @Configuration.GetSection("StaticJS")["version"];
 						</div>
 						<div class="col-md-3">
 							<div class="form-group required">
-								<label class="control-label">SKUs</label>
+								<label class="control-label">SKUs*</label>
 							@Html.TextBoxFor(@modal=>modal.Skus,new{@class="form-control readOnlyUpdate",@required="required"})
                              <div class="invalid-feedback">
                                 Please enter SKUs.
@@ -132,8 +137,8 @@ string jsVersion = @Configuration.GetSection("StaticJS")["version"];
 
 								<table style="width:100%;">
 									<tr>
-										<th>MS %</th>
-										<th>Target Price Scenario</th>
+										<th>MS %*</th>
+										<th>Target Price Scenario*</th>
 									</tr>
 									<tbody>
 										<tr>
@@ -171,15 +176,14 @@ string jsVersion = @Configuration.GetSection("StaticJS")["version"];
 			</div>
 		</div>
 		<div class="card">
-			<div class="card-header bg-gradient-primary">
-				<h5 class="mb-0 text-white"><b>Project Timelines</b></h5> 
+			<div class="card-header bg-primary">
+			<h3 class="card-title mb-0"><button type="button" class="btn btn-tool" data-card-widget="collapse">Project Timelines</button></h3>
 				<div class="card-tools">
-                    <button type="button" class="btn btn-tool accordion-button fw-bold  text-white" data-toggle="collapse" data-target="#TimelinesCollapse" title="Collapse">
-						<i class="fas fa-angle-double-down"></i>
+					<button type="button" class="btn btn-tool" data-card-widget="collapse" data-target="#TimelinesCollapse" title="Collapse">
+                           <i class="fas fa-plus"></i>
 					</button>
 				</div>
 			</div>
-			
 			<div class="card-body collapse" id="TimelinesCollapse" style="background-color:white">
 				<input type="hidden" />
 				<div class="">
@@ -188,7 +192,7 @@ string jsVersion = @Configuration.GetSection("StaticJS")["version"];
 				<div class="row">
 					<div class="col-md-3">
 						<div class="form-group required">
-							<label class="control-label">Project Start Date</label>
+							<label class="control-label">Project Start Date*</label>
 							@Html.TextBoxFor(@modal=>modal.ProjectStartDate,"{0:yyyy-MM-dd}",new{@type="date",@class="form-control readOnlyUpdate",@required="required"})
 						                    <div class="invalid-feedback">
                                             Please select Project Start Date.
@@ -201,7 +205,7 @@ string jsVersion = @Configuration.GetSection("StaticJS")["version"];
 
 					<div class="col-md-3">
 						<div class="form-group required">
-							<label class="control-label">Batch Manufacturing</label>
+							<label class="control-label">Batch Manufacturing*</label>
 							@Html.TextBoxFor(@modal=>modal.BatchManufacturing,new{@class="form-control readOnlyUpdate",@required="required"})
 						                 <div class="invalid-feedback">
                                             Please enter Batch Manufacturing.
@@ -213,7 +217,7 @@ string jsVersion = @Configuration.GetSection("StaticJS")["version"];
 					</div>
 					<div class="col-md-3">
 						<div class="form-group required">
-							<label class="control-label">Expected Filling</label>
+							<label class="control-label">Expected Filling*</label>
 							@Html.TextBoxFor(@modal=>modal.ExpectedFilling,new{@class="form-control readOnlyUpdate",@required="required"})
                                           <div class="invalid-feedback">
                                             Please enter Expected Filling.
@@ -225,7 +229,7 @@ string jsVersion = @Configuration.GetSection("StaticJS")["version"];
 					</div>
 					<div class="col-md-3">
 						<div class="form-group required">
-							<label class="control-label">Approval Period in Days</label>
+							<label class="control-label">Approval Period in Days*</label>
 							@Html.TextBoxFor(@modal=>modal.ApprovalPeriodinDays,new{@class="form-control readOnlyUpdate",@required="required"})
                                           <div class="invalid-feedback">
                                             Please enter Approval Period in Days.
@@ -239,7 +243,7 @@ string jsVersion = @Configuration.GetSection("StaticJS")["version"];
 				<div class="row">
 					<div class="col-md-3">
 						<div class="form-group required">
-							<label class="control-label">Approval Date</label>
+							<label class="control-label">Approval Date*</label>
 							@Html.TextBoxFor(@modal=>modal.ApprovalDate,"{0:yyyy-MM-dd}",new{@type="date",@class="form-control readOnlyUpdate",@required="required"})
                                          <div class="invalid-feedback">
                                             Please enter Approval Date.
@@ -252,7 +256,7 @@ string jsVersion = @Configuration.GetSection("StaticJS")["version"];
 
 					<div class="col-md-3">
 						<div class="form-group required">
-							<label class="control-label">Product Launch Date</label>
+							<label class="control-label">Product Launch Date*</label>
 							@Html.TextBoxFor(@modal=>modal.ProductLaunchDate,"{0:yyyy-MM-dd}",new{@type="date",@class="form-control readOnlyUpdate",@required="required"})
 						                <div class="invalid-feedback">
                                             Please enter Product Launch Date.
@@ -264,7 +268,7 @@ string jsVersion = @Configuration.GetSection("StaticJS")["version"];
 					</div>
 					<div class="col-md-3">
 						<div class="form-group required">
-							<label class="control-label">Gestation Period in Years</label>
+							<label class="control-label">Gestation Period in Years*</label>
 							@Html.TextBoxFor(@modal=>modal.GestationPeriodinYears,new{@class="form-control readOnlyUpdate",@required="required"})
                                           <div class="invalid-feedback">
                                             Please enter Gestation Period in Years.
@@ -282,7 +286,7 @@ string jsVersion = @Configuration.GetSection("StaticJS")["version"];
 				<div class="row">
 					<div class="col-md-3">
 						<div class="form-group required">
-							<label class="control-label">Market Share Erosion rate</label>
+							<label class="control-label">Market Share Erosion rate*</label>
 							@Html.TextBoxFor(@modal=>modal.MarketShareErosionrate,new{@class="form-control readOnlyUpdate",@required="required"})
                                            <div class="invalid-feedback">
                                             Please enter Market Share Erosion rate.
@@ -295,7 +299,7 @@ string jsVersion = @Configuration.GetSection("StaticJS")["version"];
 
 					<div class="col-md-3">
 						<div class="form-group required">
-							<label class="control-label">Price Erosion</label>
+							<label class="control-label">Price Erosion*</label>
 							@Html.TextBoxFor(@modal=>modal.PriceErosion,new{@class="form-control readOnlyUpdate",@required="required"})
                                           <div class="invalid-feedback">
                                             Please enter Price Erosion.
@@ -307,7 +311,7 @@ string jsVersion = @Configuration.GetSection("StaticJS")["version"];
 					</div>
 					<div class="col-md-3">
 						<div class="form-group required">
-							<label class="control-label">Escalation in COGS</label>
+							<label class="control-label">Escalation in COGS*</label>
 							@Html.TextBoxFor(@modal=>modal.EscalationinCOGS,new{@class="form-control readOnlyUpdate",@required="required"})
                                           <div class="invalid-feedback">
                                             Please enter Escalation in COGS.
@@ -322,11 +326,11 @@ string jsVersion = @Configuration.GetSection("StaticJS")["version"];
 		</div>
 		</div>
 		<div class="card">
-			<div class="card-header bg-gradient-primary">
-				<h5 class="mb-0 text-white"><b>Finance Inputs</b></h5> 
+            <div class="card-header bg-primary">
+			<h3 class="card-title mb-0"><button type="button" class="btn btn-tool" data-card-widget="collapse">Finance Inputs</button></h3>
 				<div class="card-tools">
-					<button type="button" class="btn btn-tool accordion-button fw-bold  text-white" data-toggle="collapse" data-target="#FinanceCollapse" title="Collapse">
-						<i class="fas fa-angle-double-down"></i>
+					<button type="button" class="btn btn-tool" data-card-widget="collapse" data-target="#FinanceCollapse" title="Collapse">
+                           <i class="fas fa-plus"></i>
 					</button>
 				</div>
 			</div>
@@ -339,7 +343,7 @@ string jsVersion = @Configuration.GetSection("StaticJS")["version"];
 				<div class="row">
 					<div class="col-md-3">
 						<div class="form-group required">
-							<label class="control-label">Discount Rate</label>
+							<label class="control-label">Discount Rate*</label>
 							@Html.TextBoxFor(@modal=>modal.DiscountRate,new{@class="form-control readOnlyUpdate",@required="required"})
                                          <div class="invalid-feedback">
                                             Please enter Discount Rate.
@@ -352,7 +356,7 @@ string jsVersion = @Configuration.GetSection("StaticJS")["version"];
 
 					<div class="col-md-3">
 						<div class="form-group required">
-							<label class="control-label">Income tax rate</label>
+							<label class="control-label">Income tax rate*</label>
 							@Html.TextBoxFor(@modal=>modal.Incometaxrate,new{@class="form-control readOnlyUpdate",@required="required"})
                                           <div class="invalid-feedback">
                                             Please enter Income tax rate.
@@ -364,7 +368,7 @@ string jsVersion = @Configuration.GetSection("StaticJS")["version"];
 					</div>
 					<div class="col-md-3">
 						<div class="form-group required">
-							<label class="control-label">Opex as a % to sales</label>
+							<label class="control-label">Opex as a % to sales *</label>
 							@Html.TextBoxFor(@modal=>modal.Opexasapercenttosale,new{@class="form-control readOnlyUpdate",@required="required"})
                                           <div class="invalid-feedback">
                                             Please enter Opex as a % to sales.
@@ -376,7 +380,7 @@ string jsVersion = @Configuration.GetSection("StaticJS")["version"];
 					</div>
 					<div class="col-md-3">
 						<div class="form-group required">
-							<label class="control-label">External Profit Share %</label>
+							<label class="control-label">External Profit Share % *</label>
 							@Html.TextBoxFor(@modal=>modal.ExternalProfitSharepercent,new{@class="form-control readOnlyUpdate",@required="required"})
                                            <div class="invalid-feedback">
                                             Please enter External Profit Share %.
@@ -390,7 +394,7 @@ string jsVersion = @Configuration.GetSection("StaticJS")["version"];
 				<div class="row">
 					<div class="col-md-3">
 						<div class="form-group required">
-							<label class="control-label">Collection in Days</label>
+							<label class="control-label">Collection in Days*</label>
 							@Html.TextBoxFor(@modal=>modal.CollectioninDays,new{@class="form-control readOnlyUpdate",@required="required"})
                                           <div class="invalid-feedback">
                                             Please enter Collection in Days.
@@ -403,7 +407,7 @@ string jsVersion = @Configuration.GetSection("StaticJS")["version"];
 
 					<div class="col-md-3">
 						<div class="form-group required">
-							<label class="control-label">Inventory in Days</label>
+							<label class="control-label">Inventory in Days*</label>
 							@Html.TextBoxFor(@modal=>modal.InventoryinDays,new{@class="form-control readOnlyUpdate",@required="required"})
                                           <div class="invalid-feedback">
                                             Please enter Inventory in Days.
@@ -415,7 +419,7 @@ string jsVersion = @Configuration.GetSection("StaticJS")["version"];
 					</div>
 					<div class="col-md-3">
 						<div class="form-group required">
-							<label class="control-label">Creditor in Days</label>
+							<label class="control-label">Creditor in Days*</label>
 							@Html.TextBoxFor(@modal=>modal.CreditorinDays,new{@class="form-control readOnlyUpdate",@required="required"})
                                        <div class="invalid-feedback">
                                             Please enter Creditor in Days.
@@ -427,7 +431,7 @@ string jsVersion = @Configuration.GetSection("StaticJS")["version"];
 					</div>
 					<div class="col-md-3">
 						<div class="form-group required">
-							<label class="control-label">Marketing Allowance</label>
+							<label class="control-label">Marketing Allowance*</label>
 							@Html.TextBoxFor(@modal=>modal.MarketingAllowance,new{@class="form-control readOnlyUpdate",@required="required"})
                                        <div class="invalid-feedback">
                                             Please enter Marketing Allowance.
@@ -442,7 +446,7 @@ string jsVersion = @Configuration.GetSection("StaticJS")["version"];
 				<div class="row">
 					<div class="col-md-3">
 						<div class="form-group required">
-							<label class="control-label">Regulatory Maintenance Cost</label>
+							<label class="control-label">Regulatory Maintenance Cost*</label>
 							@Html.TextBoxFor(@modal=>modal.RegulatoryMaintenanceCost,new{@class="form-control readOnlyUpdate",@required="required"})
                             <div class="invalid-feedback">
                                             Please enter Regulatory Maintenance Cost.
@@ -455,7 +459,7 @@ string jsVersion = @Configuration.GetSection("StaticJS")["version"];
 
 					<div class="col-md-3">
 						<div class="form-group required">
-							<label class="control-label">Gross to Net</label>
+							<label class="control-label">Gross to Net*</label>
 							@Html.TextBoxFor(@modal=>modal.GrosstoNet,new{@class="form-control readOnlyUpdate",@required="required"})
                              <div class="invalid-feedback">
                                             Please enter Gross to Net.
@@ -471,11 +475,12 @@ string jsVersion = @Configuration.GetSection("StaticJS")["version"];
 			</div>
 		</div>
 		<div class="card">
-			<div class="card-header bg-gradient-primary">
-				<h5 class="mb-0 text-white"><b>Deal Terms</b></h5> 
+			
+            <div class="card-header bg-primary">
+			<h3 class="card-title mb-0"><button type="button" class="btn btn-tool" data-card-widget="collapse">Deal Terms</button></h3>
 				<div class="card-tools">
-					<button type="button" class="btn btn-tool accordion-button fw-bold  text-white" data-toggle="collapse" data-target="#DealCollapse" title="Collapse">
-						<i class="fas fa-angle-double-down"></i>
+					<button type="button" class="btn btn-tool" data-card-widget="collapse" data-target="#DealCollapse" title="Collapse">
+                           <i class="fas fa-plus"></i>
 					</button>
 				</div>
 			</div>
@@ -496,7 +501,7 @@ string jsVersion = @Configuration.GetSection("StaticJS")["version"];
 							<td>
 							<div class="">
 								<div class="form-group required">
-										<label class="control-label">No of batches to be manufactured</label>
+										<label class="control-label">No of batches to be manufactured*</label>
 								</div>
 							</div>
 							</td>
@@ -531,7 +536,7 @@ string jsVersion = @Configuration.GetSection("StaticJS")["version"];
 							<td>
 								<div class="">
 									<div class="form-group required">
-										<label class="control-label">No of SKUs</label>
+										<label class="control-label">No of SKUs *</label>
 									</div>
 								</div>
 							</td>
@@ -566,7 +571,7 @@ string jsVersion = @Configuration.GetSection("StaticJS")["version"];
 							<td>
 								<div class="">
 									<div class="form-group required">
-										<label class="control-label">R&D/Analytical cost</label>
+										<label class="control-label">R&D/Analytical cost *</label>
 									</div>
 								</div>
 							</td>
@@ -601,7 +606,7 @@ string jsVersion = @Configuration.GetSection("StaticJS")["version"];
 							<td>
 								<div class="">
 									<div class="form-group required">
-										<label class="control-label">RLD sample cost</label>
+										<label class="control-label">RLD sample cost *</label>
 									</div>
 								</div>
 							</td>
@@ -636,7 +641,7 @@ string jsVersion = @Configuration.GetSection("StaticJS")["version"];
 							<td>
 								<div class="">
 									<div class="form-group required">
-										<label class="control-label">Batch manufacturing cost/ API Actuals Est</label>
+										<label class="control-label">Batch manufacturing cost/ API Actuals Est *</label>
 									</div>
 								</div>
 							</td>
@@ -671,7 +676,7 @@ string jsVersion = @Configuration.GetSection("StaticJS")["version"];
 							<td>
 								<div class="">
 									<div class="form-group required">
-										<label class="control-label">6 months stability cost</label>
+										<label class="control-label">6 months stability cost *</label>
 									</div>
 								</div>
 							</td>
@@ -706,7 +711,7 @@ string jsVersion = @Configuration.GetSection("StaticJS")["version"];
 							<td>
 								<div class="">
 									<div class="form-group required">
-										<label class="control-label">Tech Transfer</label>
+										<label class="control-label">Tech Transfer *</label>
 									</div>
 								</div>
 							</td>
@@ -741,7 +746,7 @@ string jsVersion = @Configuration.GetSection("StaticJS")["version"];
 							<td>
 								<div class="">
 									<div class="form-group required">
-										<label class="control-label">BE studies</label>
+										<label class="control-label">BE studies *</label>
 									</div>
 								</div>
 							</td>
@@ -776,7 +781,7 @@ string jsVersion = @Configuration.GetSection("StaticJS")["version"];
 							<td>
 								<div class="">
 									<div class="form-group required">
-										<label class="control-label">Filing fees</label>
+										<label class="control-label">Filing fees *</label>
 									</div>
 								</div>
 							</td>
@@ -811,7 +816,7 @@ string jsVersion = @Configuration.GetSection("StaticJS")["version"];
 							<td>
 								<div class="">
 									<div class="form-group required">
-										<label class="control-label">Bio Study Cost</label>
+										<label class="control-label">Bio Study Cost *</label>
 									</div>
 								</div>
 							</td>
@@ -846,7 +851,7 @@ string jsVersion = @Configuration.GetSection("StaticJS")["version"];
 							<td>
 								<div class="">
 									<div class="form-group required">
-										<label class="control-label">Capex</label>
+										<label class="control-label">Capex *</label>
 									</div>
 								</div>
 							</td>
@@ -881,7 +886,7 @@ string jsVersion = @Configuration.GetSection("StaticJS")["version"];
 							<td>
 								<div class="">
 									<div class="form-group required">
-										<label class="control-label">Tooling & Change Parts</label>
+										<label class="control-label">Tooling & Change Parts *</label>
 									</div>
 								</div>
 							</td>
@@ -930,11 +935,12 @@ string jsVersion = @Configuration.GetSection("StaticJS")["version"];
 		</div>
 
 		<div class="card">
-			<div class="card-header bg-gradient-primary">
-				<h5 class="mb-0 text-white"><b>Projections</b></h5> 
+			
+             <div class="card-header bg-primary">
+			<h3 class="card-title mb-0"><button type="button" class="btn btn-tool" data-card-widget="collapse">Projections</button></h3>
 				<div class="card-tools">
-					<button type="button" class="btn btn-tool accordion-button fw-bold  text-white" data-toggle="collapse" data-target="#ProjectionsCollapse" title="Collapse">
-						<i class="fas fa-angle-double-down"></i>
+					<button type="button" class="btn btn-tool" data-card-widget="collapse" data-target="#ProjectionsCollapse" title="Collapse">
+                           <i class="fas fa-plus"></i>
 					</button>
 				</div>
 			</div>
@@ -5519,11 +5525,12 @@ string jsVersion = @Configuration.GetSection("StaticJS")["version"];
 		</div>
 
         <div class="card">
-            <div class="card-header bg-gradient-primary">
-				<h5 class="mb-0  text-white"><b>Batch Size Coating</b></h5>
+            
+             <div class="card-header bg-primary">
+			<h3 class="card-title mb-0"><button type="button" class="btn btn-tool" data-card-widget="collapse">Batch Size Coating</button></h3>
 				<div class="card-tools">
-                    <button type="button" class="btn btn-tool accordion-button fw-bold  text-white" data-toggle="collapse" data-target="#BatchSizeCollapse" title="Collapse">
-						<i class="fas fa-angle-double-down"></i>
+					<button type="button" class="btn btn-tool" data-card-widget="collapse" data-target="#BatchSizeCollapse" title="Collapse">
+                           <i class="fas fa-plus"></i>
 					</button>
 				</div>
 			</div>
@@ -5544,15 +5551,15 @@ string jsVersion = @Configuration.GetSection("StaticJS")["version"];
                                                     <th>CAGR over 2016/12 Est MAT units</th>
                                                     <th>Market in packs</th>
                                                     <th>Batch size in ltr/tabs</th>
-                                                    <th>Batch size</th>
-                                                    <th style="width: 50px;">Yield</th>
-                                                    <th>Batch output</th>
-                                                    <th>API (CAD)</th>
-                                                    <th>Excipients (CAD)</th>
-                                                    <th>PM (CAD)</th>
-                                                    <th>CCPC (CAD)</th>
-                                                    <th>Freight (CAD)</th>
-                                                    <th>Emcure COGs/pack</th>
+                                                    <th>Batch size*</th>
+                                                    <th style="width: 50px;">Yield*</th>
+                                                    <th>Batch output*</th>
+                                                    <th>API (CAD)*</th>
+                                                    <th>Excipients (CAD)*</th>
+                                                    <th>PM (CAD)*</th>
+                                                    <th>CCPC (CAD)*</th>
+                                                    <th>Freight (CAD)*</th>
+                                                    <th>Emcure COGs/pack*</th>
                                 <th class="dtfc-fixed-right">Action</th>
                                                 </tr>
                                             </thead>
@@ -5682,11 +5689,11 @@ string jsVersion = @Configuration.GetSection("StaticJS")["version"];
             </div>
 		</div>
         <div class="card">
-            <div class="card-header bg-gradient-primary">
-				<h5 class="mb-0  text-white"><b>Commercial Per Pack</b></h5>
+                <div class="card-header bg-primary">
+			<h3 class="card-title mb-0"><button type="button" class="btn btn-tool" data-card-widget="collapse">Commercial Per Pack</button></h3>
 				<div class="card-tools">
-                    <button type="button" class="btn btn-tool accordion-button fw-bold  text-white" data-toggle="collapse" data-target="#CommercialPerPack" title="Collapse">
-						<i class="fas fa-angle-double-down"></i>
+					<button type="button" class="btn btn-tool" data-card-widget="collapse" data-target="#CommercialPerPack" title="Collapse">
+                           <i class="fas fa-plus"></i>
 					</button>
 				</div>
 			</div>
@@ -6334,22 +6341,79 @@ string jsVersion = @Configuration.GetSection("StaticJS")["version"];
                                 </div>
             </div>
 		</div>
-			<div class="form-group btn-group dv-controls" role="group">  
+			<div class="card form-group btn-group dv-controls text-right" role="group">  
             @if(ViewBag.Access.Add == true)
             {
-                <button type="submit" id="btnSaveDraft" class="btn btn-primary" onclick="SaveDraftClick();"><i class="fab fa-firstdraft"></i> Save as Draft</button>
-                <button type="submit"  id="btnSave" class="btn btn-success operationButton" onclick="SaveClick();"><i class="fa fa-save"></i> Submit</button>
+                <button type="submit" id="btnSaveDraft" class="btn btn-info" onclick="SaveDraftClick();">
+                    @*<i class="fab fa-firstdraft"></i>*@
+                    Save as Draft</button>
+                <button type="submit"  id="btnSave" class="btn btn-success operationButton" onclick="SaveClick();">
+                   @* <i class="fa fa-save"></i> *@
+                    Submit</button>
             }
             @if(ViewBag.Access.Approve == true)
             {
-                <button type="submit" class="btn btn-success operationButton" onclick="ApproveClick();"><i class="fa fa-check-circle mr-1" aria-hidden="true"></i> Approve</button>
-                <button class="btn btn-danger operationButton" onclick="RejectClick();"><i class="fa fa-ban mr-1" aria-hidden="true"></i> Reject</button>
+                <button class="btn btn-success operationButton" id="btnApprove"><i class="fa fa-check-circle mr-1" aria-hidden="true"></i> Approve</button>
+                <button class="btn btn-danger operationButton" id="btnRejects"><i class="fa fa-ban mr-1" aria-hidden="true"></i> Reject</button>
             }
-                <a class="btn btn-danger" href="@Url.Action("PIDFList","PIDF")/ScreenId=7"><i class="fa fa-times" aria-hidden="true"></i> Cancel</a>
+                <a class="btn btn-danger" href="@Url.Action("PIDFList","PIDF")/ScreenId=7">
+                    @*<i class="fa fa-times" aria-hidden="true"></i>*@
+                    Cancel</a>
 			</div>
 	</form>
 </div>
-
+ @*ApproveModel*@
+        <div id="ApproveModel" class="modal themeModal" role="dialog">
+            <div class="modal-dialog">
+                <!-- Modal content-->
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h4 class="modal-title">@SharedLocalizer["Approve"]</h4>
+                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="form-group">
+                                    <p>@Html.Label(@SharedLocalizer["ApproveConfirm"])</p>
+                                    <textarea class="form-control" rows="3" id="StatusRemark" name="StatusRemark" placeholder="Comment"></textarea>
+                                </div>
+                            </div>
+                        </div>                        
+                        <div class="card-footer text-right">
+                            <button type="button" onclick="ApproveClick()" data-dismiss="modal" class="btn btn-success me-3 outside-buttons">@SharedLocalizer["Yes"]</button>
+                            <a class="btn btn-danger me-3 outside-buttons" data-dismiss="modal">@SharedLocalizer["No"]</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        @*RejectModel*@
+        <div id="RejectModel" class="modal themeModal" role="dialog">
+            <div class="modal-dialog">
+                <!-- Modal content-->
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h4 class="modal-title">@SharedLocalizer["Reject"]</h4>
+                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="form-group">
+                                    @Html.Label(@SharedLocalizer["RejectConfirm"])
+                                    <textarea class="form-control" rows="3" id="StatusRemark" name="StatusRemark" placeholder="Comment"></textarea>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="card-footer text-center">
+                            <button type="button" onclick="RejectClick();" data-dismiss="modal" class="btn btn-success me-3 outside-buttons">@SharedLocalizer["Yes"]</button>
+                            <a class="btn btn-danger me-3 outside-buttons" data-dismiss="modal">@SharedLocalizer["No"]</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
 @section MyScripts {
 	@*@Html.Partial("_DataTablePartial")*@
 <link rel="stylesheet" href="~/AdminLTE/plugins/select2/css/select2.min.css" />
