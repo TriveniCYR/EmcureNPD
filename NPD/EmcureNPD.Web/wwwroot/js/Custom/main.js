@@ -122,7 +122,7 @@ function StaticDataTable(selector, dom, buttons) {
         dom = "Bfrtip"
     }
 
-    $(selector).DataTable({
+    var _datatableInstance = $(selector).DataTable({
         responsive: true,
         ordering: true,
         lengthChange: true,
@@ -136,6 +136,7 @@ function StaticDataTable(selector, dom, buttons) {
             'processing': '<div class="spinner"></div>'
         }
     });
+    return _datatableInstance;
 }
 function ajaxServiceMethod(url, type, successCallback, errorCallback, body, header, async, dataType, contentType) {
     if (contentType == null || contentType == undefined) {
