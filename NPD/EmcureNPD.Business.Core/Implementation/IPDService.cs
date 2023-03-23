@@ -80,8 +80,9 @@ namespace EmcureNPD.Business.Core.Implementation
 		}
 		public async Task<DBOperation> AddUpdateIPD(IPDEntity entityIPD)
 		{
+			//PidfIpd objIPD = await _repository.GetAsync(x=>x.BusinessUnitId== entityIPD.SelectedTabBusinessUnit && x.Pidfid== entityIPD.PIDFID);
 			PidfIpd objIPD;
-			IPDEntity oldIPDFEntity;
+            IPDEntity oldIPDFEntity;
 			if (entityIPD.IPDID > 0)
 			{
 				objIPD = await _repository.GetAsync(entityIPD.IPDID);
@@ -276,10 +277,9 @@ namespace EmcureNPD.Business.Core.Implementation
 
 		public async Task<IPDEntity> GetIPDFormData(long pidfId, int buid)
 		{
+            Expression<Func<PidfIpd, bool>> expr = (buid == -1)?	u =>  u.Pidfid == pidfId : u => u.BusinessUnitId == buid && u.Pidfid == pidfId;
 
-			//var data = _mapperFactory.Get<Pidfipd, IPDEntity>(await _repository.GetAsync(id));
-			Expression<Func<PidfIpd, bool>> expr = u => u.BusinessUnitId == buid && u.Pidfid == pidfId;
-			dynamic objData = (dynamic)await _repository.FindAllAsync(expr);
+            dynamic objData = (dynamic)await _repository.FindAllAsync(expr);
 			IPDEntity data = new IPDEntity();
 			if (objData != null && objData.Count > 0)
 			{

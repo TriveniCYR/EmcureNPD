@@ -26,10 +26,9 @@ function GetActiveBusinessUnitSuccess(data) {
     });
     $('#custom-tabs-two-tab').html(businessUnitHTML);
     $('#custom-tabs-two-tabContent').html(businessUnitPanel);
-
-    LoadIPDForm(_PIDFID, _selectBusinessUnit);
-  
-    SetDisableForOtherUserBU(_selectBusinessUnit);
+    
+    
+    LoadIPDForm(_PIDFID, _selectBusinessUnit); 
 }
 function GetActiveBusinessUnitError(x, y, z) {
     toastr.error(ErrorMessage);
@@ -41,6 +40,8 @@ function LoadIPDForm(pidfId, BusinessUnitId) {
             $("#custom-tabs-" + BusinessUnitId).html(content);
         });
     }
+    $('#SelectedTabBusinessUnit').val(_selectBusinessUnit);
+    SetDisableForOtherUserBU(_selectBusinessUnit);
 }
 // #region Get Region List
 function GetRegionList() {
@@ -175,21 +176,25 @@ function readOnlyIPDForm() {
     $('#dvIPDContainer').find('.operationButton').hide();
 }
 function SetDisableForOtherUserBU(_selectBusinessUnit) {
-   var UserwiseBusinessUnit = $('#BusinessUnitsByUser').val().split(',');    
-    var status = UserwiseBusinessUnit.indexOf(_selectBusinessUnit);
+    var UserwiseBusinessUnit = $('#BusinessUnitsByUser').val().split(','); 
+   var BUval= _selectBusinessUnit.toString();
+    var status = UserwiseBusinessUnit.indexOf(BUval);
    // var IsViewInMode = ($("#IsView").val() == '1')
     if (status == -1) {
-        readOnlyIPDForm();
+        readOnlyIPDFormForOtherBU(true);
     }
+    else
+        readOnlyIPDFormForOtherBU(false);
 }
 
-//function readOnlyIPDFormForOtherBU(flag) {
-//    $('#dvIPDContainer').find('input').attr('readonly', flag).attr('disabled', flag);
-//    $('#dvIPDContainer').find('textarea').attr('readonly', flag).attr('disabled', flag);
-//    //$('button').attr('readonly', true).attr('disabled', true);
-//    $('#dvIPDContainer').find('select').attr('readonly', flag).attr('disabled', flag);
-//    if(flag)
-//        $('#dvIPDContainer').find('.operationButton').hide();
-//    else
-//        $('#dvIPDContainer').find('.operationButton').show();
-//}
+function readOnlyIPDFormForOtherBU(flag) {    
+    $('#ProjectName').attr('readonly', flag);
+    $('#dvIPDContainer').find('input').attr('readonly', flag).attr('disabled', flag);
+    $('#dvIPDContainer').find('textarea').attr('readonly', flag).attr('disabled', flag);
+    //$('button').attr('readonly', true).attr('disabled', true);
+    $('#dvIPDContainer').find('select').attr('readonly', flag).attr('disabled', flag);
+    if(flag)
+        $('#dvIPDContainer').find('.operationButton').hide();
+    else
+        $('#dvIPDContainer').find('.operationButton').show();
+}

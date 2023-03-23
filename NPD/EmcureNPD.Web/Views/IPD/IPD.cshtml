@@ -18,27 +18,28 @@
 <div id="dvPIDFAccrdion"></div>
 
 <div class="content-header">
-                <h2 class="m-0">Internal Patent Details</h2>
-            </div>
-            <div class="container-fluid background-white-card" id="dvIPDContainer">
+    <h2 class="m-0">Internal Patent Details</h2>
+</div>
+<div class="container-fluid background-white-card" id="dvIPDContainer">
     <input type="hidden" asp-for="LogInId" />
     <input type="hidden" id="hdnIPDIsView" value="@(Context.Request.Query["IsView"] == "1" ? "1" : "0")" />
     <input type="hidden" id="BusinessUnitsByUser" value="@Model.BusinessUnitsByUser" />
-                <div class="row">         
-                        <div class="col-md-12">
-                            <div class="card card-primary card-tabs">
-                            <div class="card-header p-0 pt-1">
-                <ul class="nav nav-tabs text-center m-0" id="custom-tabs-two-tab" role="tablist">
-                            </ul>
-                        </div>  
+    <input type="hidden"  asp-for="SelectedTabBusinessUnit" />
+    <div class="row">
+        <div class="col-md-12">
+            <div class="card card-primary card-tabs">
+                <div class="card-header p-0 pt-1">
+                    <ul class="nav nav-tabs text-center m-0" id="custom-tabs-two-tab" role="tablist">
+                    </ul>
+                </div>
 
-                        <div class="card-body">
-                        <div class="tab-content" id="custom-tabs-two-tabContent">
-                                        </div>
-                                        </div>
-                        </div>
+                <div class="card-body">
+                    <div class="tab-content" id="custom-tabs-two-tabContent">
+                    </div>
+                </div>
             </div>
         </div>
+    </div>
     <div class="row">
         <div class="col-12 text-end">
             <div class="form-group">
@@ -52,13 +53,13 @@
             </div>
         </div>
     </div>
-                </div>
+</div>
 
-                @Html.Partial("_PIDFApproveReject")
+@Html.Partial("_PIDFApproveReject")
 
 
 @section MyScripts {
-@*    @Html.Partial("_DataTablePartial")*@
+    @*    @Html.Partial("_DataTablePartial")*@
     <link rel="stylesheet" href="~/AdminLTE/plugins/select2/css/select2.min.css" />
     <script type="text/javascript" src="~/AdminLTE/plugins/select2/js/select2.min.js"></script>
     <script type="text/javascript" src="~/js/Custom/IPD/IPDMaster.js?v=@jsVersion"></script>
@@ -81,8 +82,8 @@
         var _PIDFID = "@UtilityHelper.Decreypt(Convert.ToString(Context.Request.Query["pidfid"]))";
         var _IPDPartialURL = "@Url.Action("IPDPartial", "IPD")";
         var _IPDSaveUpdateURL = "@Url.Action("IPD", "IPD")";
-		var ErrorMessage = "@SharedLocalizer["Error"]";
-		var RecordInsertUpdate = "@SharedLocalizer["RecordInsertUpdate"]";
+        var ErrorMessage = "@SharedLocalizer["Error"]";
+        var RecordInsertUpdate = "@SharedLocalizer["RecordInsertUpdate"]";
         var _PIDFAccordionURL = "@Url.Action("PIDF", "PIDF")";
         var UserWiseBUList = "@Model.BusinessUnitsByUser";
         //document.addEventListener("DOMContentLoaded", function () {
@@ -109,5 +110,5 @@
             toastr.success(successCallBack);
         }
     </script>
-    
+
 }

@@ -187,6 +187,15 @@ namespace EmcureNPD.Resource.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to API IPD.
+        /// </summary>
+        public static string APIIPD {
+            get {
+                return ResourceManager.GetString("APIIPD", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to API IPD Details.
         /// </summary>
         public static string APIIPDDetails {
@@ -237,6 +246,15 @@ namespace EmcureNPD.Resource.Resources {
         public static string APiReq_EmcureKg_ {
             get {
                 return ResourceManager.GetString("APiReq(EmcureKg)", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to API Rnd.
+        /// </summary>
+        public static string APIRnd {
+            get {
+                return ResourceManager.GetString("APIRnd", resourceCulture);
             }
         }
         

@@ -645,4 +645,10 @@
   <data name="PatentStatus" xml:space="preserve">
     <value>Patent Status</value>
   </data>
+  <data name="APIIPD" xml:space="preserve">
+    <value>API IPD</value>
+  </data>
+  <data name="APIRnd" xml:space="preserve">
+    <value>API Rnd</value>
+  </data>
 </root>

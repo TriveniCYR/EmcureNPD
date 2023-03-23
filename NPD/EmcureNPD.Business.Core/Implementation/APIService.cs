@@ -212,18 +212,15 @@ namespace EmcureNPD.Business.Core.Implementation
             await _auditLogService.UpdatePIDFStatusCommon(long.Parse(_oAPIIPD.Pidfid), (int)_StatusID, _oAPIIPD.LoggedInUserId);
             return DBOperation.Success;
         }
-        public async Task<PIDFAPIIPDFormEntity> GetAPIIPDFormData(long pidfId, string _webrootPath)
+        public async Task<PIDFAPIIPDFormEntity> GetAPIIPDFormData(long pidfId, string HostValue)
         {
 
             PIDFAPIIPDFormEntity _oApiIpdData = new PIDFAPIIPDFormEntity();
             var _oAPIIPD = await _pidf_API_IPD_repository.GetAsync(x => x.Pidfid == pidfId);
             if (_oAPIIPD != null)
             {               
-                //string baseURL = _configuration.GetSection("Apiconfig").GetSection("EmcureNPDAPIUrl").Value;
-                //var path = Path.Combine(baseURL, "Uploads/PIDF/APIIPD");
-                var path = Path.Combine(_webrootPath, "Uploads\\PIDF\\APIIPD");
-                var fullPath = path + "/" + _oAPIIPD.MarketDetailsFileName;
-                
+                string baseURL =  "https://"+HostValue+ "/Uploads/PIDF/APIIPD";
+                var fullPath = baseURL + "/" + _oAPIIPD.MarketDetailsFileName;                
                 _oApiIpdData.DrugsCategory = _oAPIIPD.DrugsCategory;
                 _oApiIpdData.ProductTypeId = (int)_oAPIIPD.ProductTypeId;
                 _oApiIpdData.APIIPDDetailsFormID = _oAPIIPD.PidfApiIpdId;
@@ -401,7 +398,7 @@ namespace EmcureNPD.Business.Core.Implementation
             await _auditLogService.UpdatePIDFStatusCommon(long.Parse(_oAPICharter.Pidfid), (int)_StatusID, _oAPICharter.LoggedInUserId);
             return DBOperation.Success;
         }
-        public async Task<PIDFAPIRnDFormEntity> GetAPIRnDFormData(long pidfId, string _webrootPath)
+        public async Task<PIDFAPIRnDFormEntity> GetAPIRnDFormData(long pidfId, string HostValue)
         {
             PIDFAPIRnDFormEntity _oApiRnDData = new PIDFAPIRnDFormEntity();
             var _oAPIRnD = await _pidf_API_RnD_repository.GetAsync(x => x.Pidfid == pidfId);
@@ -423,9 +420,8 @@ namespace EmcureNPD.Business.Core.Implementation
             }
             if (_oAPIIpd != null)
             {
-                string baseURL = _configuration.GetSection("Apiconfig").GetSection("EmcureNPDAPIUrl").Value;
-                var path = Path.Combine(baseURL, "Uploads/PIDF/APIIPD");
-                var fullPath = path + "/" + _oAPIIpd.MarketDetailsFileName;
+                string baseURL = "https://" + HostValue + "/Uploads/PIDF/APIIPD";
+                var fullPath = baseURL + "/" + _oAPIIpd.MarketDetailsFileName;
 
                 _oApiRnDData.DrugsCategory = _oAPIIpd.DrugsCategory;
                 _oApiRnDData.ProductTypeId = (int)_oAPIIpd.ProductTypeId;
