@@ -1,9 +1,10 @@
 var _milestoneInstance;
 var _milestoneData = [];
 $(document).ready(function () {
+    
     GetProjectDetails();
     GetBusinessUnitDetails(bid);
-
+    IsViewModeProject();
     // Add event listener for opening and closing details
     $('#Milestones tbody').on('click', 'td.dt-control', function () {
         var tr = $(this).closest('tr');
@@ -21,6 +22,17 @@ $(document).ready(function () {
     });
 
 });
+function IsViewModeProject() {
+    if ($("#IsView").val() == '1') {
+        SetProjectFormReadonly();
+    }
+}
+function SetProjectFormReadonly() {
+    $("#addTaskButton").prop('disabled', true);
+    $("#subTaskButton").prop('hidden', true);
+    $("#editButton").prop('disabled', true);
+    $("#deleteButton").prop('disabled', true);
+}
 function CustomizeChildContent(d) {
     try {
         var _projectTaskId = parseInt($(d[0]).val());
@@ -146,10 +158,10 @@ function GetProjectDetailsSuccess(data) {
             }
             else
                 var updatedDate = "";
-            var edit = '<a class="large-font" style="" href="" title="Edit" data-toggle="modal" data-target="#UpdateModel" data-backdrop="static" data-keyboard="false"  onclick="GetTaskSubTaskById(' + object.projectTaskId + '); return false;"><i class="fa fa-fw fa-edit mr-1"></i> ' + '</a>';
-            var deleteTag = '<a class="large-font text-danger" style="" href="" title="Delete" data-toggle="modal" data-target="#DeleteModel" data-backdrop="static" data-keyboard="false" onclick="ConfirmationDeleteTaskSubTask(' + object.projectTaskId + '); return false;"><i class="fa fa-fw fa-trash mr-1"></i> ' + '</a>';
+            var edit = '<a id="editButton" class="large-font" style="" href="" title="Edit" data-toggle="modal" data-target="#UpdateModel" data-backdrop="static" data-keyboard="false"  onclick="GetTaskSubTaskById(' + object.projectTaskId + '); return false;"><i class="fa fa-fw fa-edit mr-1"></i> ' + '</a>';
+            var deleteTag = '<a id="deleteButton" class="large-font text-danger" style="" href="" title="Delete" data-toggle="modal" data-target="#DeleteModel" data-backdrop="static" data-keyboard="false" onclick="ConfirmationDeleteTaskSubTask(' + object.projectTaskId + '); return false;"><i class="fa fa-fw fa-trash mr-1"></i> ' + '</a>';
 
-            deleteTag += '<a class="large-font" style="" href="" title="Add SubTask" onclick="ShowAddSubTaskForm(\'' + object.projectTaskId + '\', \'' + object.taskName + '\'); return false;"><i class="fa fa-fw fa-plus mr-1"></i> ' + '</a>';
+            deleteTag += '<a id="subTaskButton" class="large-font" style="" href="" title="Add SubTask" onclick="ShowAddSubTaskForm(\'' + object.projectTaskId + '\', \'' + object.taskName + '\'); return false;"><i class="fa fa-fw fa-plus mr-1"></i> ' + '</a>';
 
             var _parentClass = (object.taskLevel > 1 ? "treegrid-parent-" + object.parentId + "" : "");
             var tableRow = '<tr class="treegrid-' + index + ' ' + _parentClass + '"><td class="dt-control dtfc-fixed-left" style="left: 0px; position: sticky;"><input type="hidden" value="' + object.projectTaskId + '" /></td><td>' + object.taskName + '</td><td>' + object.fullName + '</td><td>' + object.statusName + '</td><td>' + object.priorityName + '</td><td>' + startDate + '</td><td>' + endDate + '</td><td>' + object.taskDuration + '</td><td><div class="progress"><div class="progress-bar" role="progressbar" style="width: ' + object.totalPercentage + '%;" aria-valuenow="' + object.totalPercentage + '" aria-valuemin="0" aria-valuemax="100">' + object.totalPercentage + '%</div></div></td><td>' + updatedDate + '</td><td>' + edit + deleteTag + '</td></tr>';

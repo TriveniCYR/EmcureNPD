@@ -25,6 +25,8 @@
 
 </div>
 <div class="container-fluid background-white-card">
+    <input type="hidden" id="hdnProjectIsView" value="@(Context.Request.Query["IsView"] == "1" ? "1" : "0")" />
+    <input type="hidden" id="IsView" value=@ViewBag.IsView />
     <div class="row">
         <div class="col-md-12 ">
             <!-- Custom tabs (Charts with tabs)-->
@@ -199,7 +201,7 @@
                                             <input type="hidden" name="CurrentUserRole" id="CurrentUserRole" value="@ViewBag.CurrentUserRolePIDF" />
                                             @*  @if (User.IsInRole("Prescriber") || User.IsInRole("Regulatory Manager") || User.IsInRole("Senior Project Manager"))
                                             {*@
-                                            <button type="button" onclick="ShowAddTaskForm()" class="btn btn-primary">@SharedLocalizer["Add Task"].Value</button>
+                                            <button id="addTaskButton" IsAddAllow type="button" onclick="ShowAddTaskForm()" class="btn btn-primary">@SharedLocalizer["Add Task"].Value</button>
                                             @* }*@
                                             <button type="button" class="btn btn-tool p-0 mr-3 ml-3" data-card-widget="maximize">
                                                 <i class="fas fa-expand"></i>
@@ -597,6 +599,9 @@
             toastr.success(successCallBack);
         }
         var bid = @Html.Raw(Json.Serialize(id));
+        //var IsAdd = IsAddAllow;
+        //var IsUpdate = IsEditAllow;
+        //var IsDelete = IsDeleteAllow;
     </script>
 }
 
