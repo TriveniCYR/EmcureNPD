@@ -20,16 +20,18 @@ namespace EmcureNPD.Web.Controllers
             _configuration = configuration;
         }
         [HttpGet]
-        public IActionResult ProjectManagement(string pidfid, string bui)
+        public IActionResult ProjectManagement(string pidfid, string bui, int? IsView)
         {
             //int rolId = (int)HttpContext.Session.GetInt32(UserHelper.LoggedInRoleId);
             //RolePermissionModel objPermssion = UtilityHelper.GetCntrActionAccess(Convert.ToString(RouteData.Values["controller"]), rolId);
-            //if (objPermssion == null || !objPermssion.View)
+            //if (objPermssion == null || (!objPermssion.View && IsView==1))
             //{
             //    return RedirectToAction("AccessRestriction", "Home");
             //}
             //ViewBag.Access = objPermssion;
-            var bid = long.Parse(UtilityHelper.Decreypt(bui));
+
+            ViewBag.IsView = (IsView == null) ? 0 : (int)IsView;
+			var bid = long.Parse(UtilityHelper.Decreypt(bui));
             ViewBag.id = pidfid;
             ViewBag.bid = bid;
             ViewBag.uencbid = bui;

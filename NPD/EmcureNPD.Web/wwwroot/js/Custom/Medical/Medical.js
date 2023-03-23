@@ -30,6 +30,10 @@ const input = document.getElementById("File");
 const fileList = document.getElementById("fileList");
 
 input.addEventListener("change", () => {
+	const myDivs = fileList.getElementsByClassName('my-div');
+	while (myDivs.length > 0) {
+		myDivs[0].parentNode.removeChild(myDivs[0]);
+	}
 	var i = 0;
 	//const dataTransfer = new DataTransfer();
 	//Array.from(input.files).forEach((file, i) => {
@@ -39,6 +43,7 @@ input.addEventListener("change", () => {
 	for (const file of input.files) {
 		const div = document.createElement("div");
 		div.setAttribute("id", "elements_" + i);
+		div.classList.add('my-div');
 		const del = document.createElement("button");
 		del.type = "button";
 		del.classList.add("btn", "btn-sm", "btn-danger", "ml-3", "mb-2");
