@@ -1,7 +1,7 @@
 ﻿@using EmcureNPD.Utility.Models
 @{
 	var pidfid = ViewBag.id;
-	ViewData["Title"] = "Medical - Emcure NPD";
+	ViewData["Title"] = "Medical";
 	RolePermissionModel objPermssion = (RolePermissionModel)ViewBag.Access;
 	string IsAddAllow = (objPermssion.Add) ? "" : "display: none";
 	string IsEditAllow = (objPermssion.Edit) ? "" : "display: none";

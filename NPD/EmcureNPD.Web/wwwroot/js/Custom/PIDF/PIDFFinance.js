@@ -23,6 +23,12 @@ $(document).ready(function () {
 //$(".btn-tool").click(function () {
 //  $(this).data('clicked', true);
 //});
+$("#btnApprove").click(function () {
+    $('#ApproveModel').modal('show');
+})
+$("#btnRejects").click(function () {
+    $("#RejectModel").modal('show');
+})
 function GetCurrencyList() {
     ajaxServiceMethod($('#hdnBaseURL').val() + AllCurrency, 'GET', GetCurrencyListSuccess, GetCurrencyListError);
 }
@@ -97,6 +103,7 @@ function SaveDraftClick() {
 function ApproveClick() {
     //if ($('.readOnlyUpdate').val() !== null && $('.readOnlyUpdate').val() !== "") {
     $('#SaveType').val('approved');
+    $("#HfStatusRemark").val($("#textApproveStatusRemark").val());
         SetChildRows();
     //}
     //else {
@@ -106,6 +113,7 @@ function ApproveClick() {
 function RejectClick() {
     //if ($('.readOnlyUpdate').val() !== null && $('.readOnlyUpdate').val() !== "") {
     $('#SaveType').val('rejected');
+    $("#HfStatusRemark").val($("#textRejectStatusRemark").val());
         SetChildRows();
     //}
     //else {
@@ -151,6 +159,41 @@ function preventSubmit() {
         return;
     });
 }
+//....Start:Approval and Rejection....//
+//function approveRejConfirm(type) {
+//    if (objApprRejList != undefined && objApprRejList.length > 0) {
+//        var objIds = {
+//            saveType: type,
+//            pidfIds: objApprRejList
+//        };
+//        ajaxServiceMethod($('#hdnBaseURL').val() + ApproveRejectIds, 'POST', SaveAppRejSuccess, SaveApprRejFormError, JSON.stringify(objIds));
+
+//    }
+//    if (type == "A")
+//        $('#ApproveModel').modal('hide');
+//    else if (type == "R")
+//        $('#RejectModel').modal('hide');
+//}
+//function SaveAppRejSuccess(data) {
+//    try {
+//        if (data._Success === true) {
+
+//            toastr.success(data._Message);
+//            objApprRejList = [];
+//            $("#IPDPIDFTable").dataTable().fnDestroy();
+//            InitializePIDFList();
+//        }
+//        else {
+//            toastr.error(data._Message);
+//        }
+//    } catch (e) {
+//        toastr.error('Error:' + e.message);
+//    }
+//}
+//function SaveApprRejFormError(x, y, z) {
+//    toastr.error(ErrorMessage);
+//}
+//....End:Approval and Rejection....//
 // Example starter JavaScript for disabling form submissions if there are invalid fields
 (function () {
     'use strict'

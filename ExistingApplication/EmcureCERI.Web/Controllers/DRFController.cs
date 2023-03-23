@@ -1739,7 +1739,7 @@ namespace EmcureCERI.Web.Controllers
         [Authorize(Roles = "Prescriber,Regulatory Manager")]
         [HttpPost]
         [ActionName("GetDRFTaskSubTaskDetailsForEdit")]
-        public ActionResult GetDRFTaskSubTaskDetailsForEdit(DRFTaskSubTaskDetailsForEditDelete dRFTaskSubTaskDetailsForEditDelete)
+        public ActionResult GetDRFTaskSubTaskDetailsForEditReturnUrl(DRFTaskSubTaskDetailsForEditDelete dRFTaskSubTaskDetailsForEditDelete)
         {
             var List = (from TMPM in _db.Tbl_Master_ProjectTask_Mapping
                         join PD in _db.PrescriberDetails on TMPM.EmpID equals PD.AspNetUserId

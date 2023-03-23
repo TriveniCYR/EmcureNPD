@@ -26,15 +26,11 @@
     <div id="CommercialPIDFScreen">
         @*  @{ await Html.RenderPartialAsync("~/Views/PIDF/PIDFCommercialDetails.cshtml", Model._commercialFormEntity);   }  *@
     </div>
+    <div class="content-header">
+        <h2 class="m-0">@MasterLocalizer["APIRnd"]</h2>
+    </div>
     <div class="card card-outline card-primary">
-        <div class="card-header bg-primary">
-            <h5 class="mb-0"><b>@MasterLocalizer["APIRndDetailsForm"]</b></h5>
-            <div class="card-tools">
-                <button type="button" name="collapseButton" class="btn btn-tool" data-card-widget="collapse" title="Collapse">
-                    <i class="fas fa-minus"></i>
-                </button>
-            </div>
-        </div>
+
         <div class="card-body">
             <form asp-action="APIRnDDetailsForm" asp-controller="API" method="post">
                 <input type="hidden" asp-for="Pidfid" />
@@ -98,169 +94,211 @@
                     @* <input type="hidden" id="SaveType" />
                     <input type="hidden" id="LoggedInUserId" value=@UtilityHelper.Encrypt(Convert.ToString(@Model.CreatedBy)) />*@
                 </div>
-                <h3 class="bg-primary">@MasterLocalizer["FormulationDetails"]</h3>
-                <div class="row">
-                    <div class="col-md-3">
-                        <div class="form-group required">
-                            @Html.LabelFor(model => model.ProductType,@MasterLocalizer["ProductType"], new { @class = "control-label" })
-                            @Html.TextBoxFor(model => model.ProductType, new {@readonly = "readonly", @class = "form-control"})
-                        </div>
-                    </div>
-                    <div class="col-md-3">
-                        <div class="form-group required">
-                            @Html.LabelFor(model => model.DrugsCategory,@MasterLocalizer["DrugsCategory"], new { @class = "control-label" })
-                            @Html.TextBoxFor(model => model.DrugsCategory, new {@readonly = "readonly", @class = "form-control"})
-                        </div>
-                    </div>
-                    <div class="col-md-3">
-                        <div class="form-group required">
-                            @Html.LabelFor(model => model.ProductStrength,@MasterLocalizer["ProductStrength"], new { @class = "control-label" })
-                            @Html.TextBoxFor(model => model.ProductStrength, new {@readonly = "readonly",@class = "form-control"})
 
-                        </div>
-                    </div>
-                </div>
-                <h3 class="bg-primary">@MasterLocalizer["FormulationQuantityRequiredKG/GmStage"]</h3>
-                <div class="row">
-                    <div class="col-md-4">
-                        <div class="form-group required">
-                            @Html.LabelFor(model => model.Development,@MasterLocalizer["Development"], new { @class = "control-label" })
-                            <span class="text-danger">*</span>
-                            @Html.TextBoxFor(model => model.Development, new { @autocomplete = "off",@class = "form-control"})
-                            <lable id="valmsgDevelopment" class="text-danger"></lable>
-                        </div>
-                    </div>
-                    <div class="col-md-4">
-                        <div class="form-group required">
-                            @Html.LabelFor(model => model.ScaleUp,@MasterLocalizer["ScaleUp"], new { @class = "control-label" })
-                            <span class="text-danger">*</span>
-                            @Html.TextBoxFor(model => model.ScaleUp, new { @autocomplete = "off",@class = "form-control"})
-                            <lable id="valmsgScaleUp" class="text-danger"></lable>
-                        </div>
-                    </div>
-                    <div class="col-md-4">
-                        <div class="form-group required">
-                            @Html.LabelFor(model => model.Exhibit,@MasterLocalizer["Exhibit"], new { @class = "control-label" })
-                            <span class="text-danger">*</span>
-                            @Html.TextBoxFor(model => model.Exhibit, new { @autocomplete = "off",@class = "form-control"})
-                            <lable id="valmsgExhibit" class="text-danger"></lable>
-                        </div>
-                    </div>
-                    <div class="col-md-4">
-                        <div class="form-group required">
-                            @Html.LabelFor(model => model.PlantQC,@MasterLocalizer["PlantQC"], new { @class = "control-label" })
-                            <span class="text-danger">*</span>
-                            @Html.TextBoxFor(model => model.PlantQC, new { @autocomplete = "off",@class = "form-control"})
-                            <lable id="valmsgPlantQC" class="text-danger"></lable>
-                        </div>
-                    </div>
-                    <div class="col-md-4">
-                        <div class="form-group required">
-                            @Html.LabelFor(model => model.Total,@MasterLocalizer["Total"], new { @class = "control-label" })
-                            <span class="text-danger">*</span>
-                            <lable id="valmsgTotal" class="text-danger"></lable>
-                            @Html.TextBoxFor(model => model.Total, new { @autocomplete = "off",@class = "form-control"})
 
+                <div class="card card-outline card-primary">
+                    <div class="card-header bg-primary">
+                        <h3 class="card-title mb-0"><button type="button" class="btn btn-tool" data-card-widget="collapse">@MasterLocalizer["FormulationDetails"]</button></h3>
+                        <div class="card-tools">
+                            <button type="button" class="btn btn-tool" data-card-widget="collapse" title="Collapse">
+                                <i class="fas fa-minus"></i>
+                            </button>
+                        </div>
+                    </div>
+                    <div class="card-body" style="display: block;">
+                        <div class="row">
+                            <div class="col-md-3">
+                                <div class="form-group required">
+                                    @Html.LabelFor(model => model.ProductType,@MasterLocalizer["ProductType"], new { @class = "control-label" })
+                                    @Html.TextBoxFor(model => model.ProductType, new {@readonly = "readonly", @class = "form-control"})
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="form-group required">
+                                    @Html.LabelFor(model => model.DrugsCategory,@MasterLocalizer["DrugsCategory"], new { @class = "control-label" })
+                                    @Html.TextBoxFor(model => model.DrugsCategory, new {@readonly = "readonly", @class = "form-control"})
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="form-group required">
+                                    @Html.LabelFor(model => model.ProductStrength,@MasterLocalizer["ProductStrength"], new { @class = "control-label" })
+                                    @Html.TextBoxFor(model => model.ProductStrength, new {@readonly = "readonly",@class = "form-control"})
+
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
 
+                <div class="card card-outline card-primary">
+                    <div class="card-header bg-primary">
+                        <h3 class="card-title mb-0"><button type="button" class="btn btn-tool" data-card-widget="collapse">@MasterLocalizer["FormulationQuantityRequiredKG/GmStage"]</button></h3>
+                        <div class="card-tools">
+                            <button type="button" class="btn btn-tool" data-card-widget="collapse" title="Collapse">
+                                <i class="fas fa-minus"></i>
+                            </button>
+                        </div>
+                    </div>
+                    <div class="card-body" style="display: block;">
+                        <div class="row">
+                            <div class="col-md-4">
+                                <div class="form-group required">
+                                    @Html.LabelFor(model => model.Development,@MasterLocalizer["Development"], new { @class = "control-label" })
+                                    <span class="text-danger">*</span>
+                                    @Html.TextBoxFor(model => model.Development, new { @autocomplete = "off",@class = "form-control"})
+                                    <lable id="valmsgDevelopment" class="text-danger"></lable>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="form-group required">
+                                    @Html.LabelFor(model => model.ScaleUp,@MasterLocalizer["ScaleUp"], new { @class = "control-label" })
+                                    <span class="text-danger">*</span>
+                                    @Html.TextBoxFor(model => model.ScaleUp, new { @autocomplete = "off",@class = "form-control"})
+                                    <lable id="valmsgScaleUp" class="text-danger"></lable>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="form-group required">
+                                    @Html.LabelFor(model => model.Exhibit,@MasterLocalizer["Exhibit"], new { @class = "control-label" })
+                                    <span class="text-danger">*</span>
+                                    @Html.TextBoxFor(model => model.Exhibit, new { @autocomplete = "off",@class = "form-control"})
+                                    <lable id="valmsgExhibit" class="text-danger"></lable>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="form-group required">
+                                    @Html.LabelFor(model => model.PlantQC,@MasterLocalizer["PlantQC"], new { @class = "control-label" })
+                                    <span class="text-danger">*</span>
+                                    @Html.TextBoxFor(model => model.PlantQC, new { @autocomplete = "off",@class = "form-control"})
+                                    <lable id="valmsgPlantQC" class="text-danger"></lable>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="form-group required">
+                                    @Html.LabelFor(model => model.Total,@MasterLocalizer["Total"], new { @class = "control-label" })
+                                    <span class="text-danger">*</span>
+                                    <lable id="valmsgTotal" class="text-danger"></lable>
+                                    @Html.TextBoxFor(model => model.Total, new { @autocomplete = "off",@class = "form-control"})
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
 
                 @* ----------Start -IPEvalution-------------*@
-                <div>
-                    <h4 class="bg-primary">@MasterLocalizer["IPEvalution"]</h4>
-                    <div style="overflow-x:auto;">
-                        <table class="table table-bordered">
-                            <thead>
-                                <tr>
-                                    <th>       @MasterLocalizer["PatentNumber"]                 </th>
-                                    <th>       @MasterLocalizer["MarketName"]                        </th>
-                                    <th>       @MasterLocalizer["DataExclusivity"]         </th>
-                                    <th>       @MasterLocalizer["FillingType"]         </th>
-                                    <th>       @MasterLocalizer["FillingType"]                 </th>
-                                    <th>       @MasterLocalizer["ApprovedGenetics"]                  </th>
-                                    <th>       @MasterLocalizer["LaunchedGenetics"]                  </th>
-                                    <th>       @MasterLocalizer["Countrys"]                  </th>
-                                    <th>       @MasterLocalizer["LegalStatus"]                  </th>
-                                    <th>       @MasterLocalizer["CostOfLitication"]                  </th>
-                                    <th>       @MasterLocalizer["Comments"]                  </th>
-                                    <th>       @MasterLocalizer["Innovators"]                  </th>
-                                    <th>       @MasterLocalizer["PatentStatus"]                  </th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr>
-                                    <td>                    1                                </td>
-                                    <td> @Model.IPEvalution.ProjectName                      </td>
-                                    <td> @Model.IPEvalution.MarketName                            </td>
-                                    <td> @Model.IPEvalution.DataExclusivity                      </td>
-                                    <td> @Model.IPEvalution.FillingType                      </td>
-                                    <td> @Model.IPEvalution.ApprovedGenetics                      </td>
-                                    <td> @Model.IPEvalution.LaunchedGenetics                    </td>
-                                    <td> @countryName                                         </td>
-                                    <td> @Model.IPEvalution.LegalStatus                    </td>
-                                    <td> @Model.IPEvalution.CostOfLitication                    </td>
-                                    <td> @Model.IPEvalution.Comments                    </td>
-                                    <td> @Model.IPEvalution.Innovators                    </td>
-                                     <td> @Model.IPEvalution.PatentStatus                    </td>
-
-
-                                </tr>
-                            </tbody>
-                        </table>
+                <div class="card card-outline card-primary">
+                    <div class="card-header bg-primary">
+                        <h3 class="card-title mb-0"><button type="button" class="btn btn-tool" data-card-widget="collapse">@MasterLocalizer["IPEvalution"]</button></h3>
+                        <div class="card-tools">
+                            <button type="button" class="btn btn-tool" data-card-widget="collapse" title="Collapse">
+                                <i class="fas fa-minus"></i>
+                            </button>
+                        </div>
+                    </div>
+                    <div class="card-body" style="display: block;">
+                        <div style="overflow-x:auto;">
+                            <table class="table table-bordered">
+                                <thead>
+                                    <tr>
+                                        <th>       @MasterLocalizer["Sr.No."]                 </th>
+                                        <th>       @MasterLocalizer["ProjectName"]         </th>
+                                        <th>       @MasterLocalizer["MarketName"]                        </th>
+                                        <th>       @MasterLocalizer["DataExclusivity"]         </th>
+                                        <th>       @MasterLocalizer["FillingType"]                 </th>
+                                        <th>       @MasterLocalizer["ApprovedGenetics"]                  </th>
+                                        <th>       @MasterLocalizer["LaunchedGenetics"]                  </th>
+                                        <th>       @MasterLocalizer["Countrys"]                  </th>
+                                        <th>       @MasterLocalizer["LegalStatus"]                  </th>
+                                        <th>       @MasterLocalizer["CostOfLitication"]                  </th>
+                                        <th>       @MasterLocalizer["Comments"]                  </th>
+                                        <th>       @MasterLocalizer["Innovators"]                  </th>
+                                        <th>       @MasterLocalizer["PatentStatus"]                  </th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td>                    1                                </td>
+                                        <td> @Model.IPEvalution.ProjectName                      </td>
+                                        <td> @Model.IPEvalution.MarketName                            </td>
+                                        <td> @Model.IPEvalution.DataExclusivity                      </td>
+                                        <td> @Model.IPEvalution.FillingType                      </td>
+                                        <td> @Model.IPEvalution.ApprovedGenetics                      </td>
+                                        <td> @Model.IPEvalution.LaunchedGenetics                    </td>
+                                        <td> @countryName                                         </td>
+                                        <td> @Model.IPEvalution.LegalStatus                    </td>
+                                        <td> @Model.IPEvalution.CostOfLitication                    </td>
+                                        <td> @Model.IPEvalution.Comments                    </td>
+                                        <td> @Model.IPEvalution.Innovators                    </td>
+                                        <td> @Model.IPEvalution.PatentStatus                    </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
                     </div>
                 </div>
+
                 @* ----------End -IPEvalution-------------*@
 
                 @* ----------Start -Patent Details-------------*@
-                <div>
-                    <h4 class="bg-primary">@MasterLocalizer["PatentDetails"]</h4>
-                    <div style="overflow-x:auto;">
-                        <table class="table table-bordered">
-                            <thead>
-                                <tr>
-                                    <th>       @MasterLocalizer["PatentNumber"]                 </th>
-                                    <th>        @MasterLocalizer["Type"]                        </th>
-                                    <th>       @MasterLocalizer["OriginalExpiraDate"]         </th>
-                                    <th>       @MasterLocalizer["ExtensionExpiryDate"]         </th>
-                                    <th>       @MasterLocalizer["CommentsPatentSpecific"]                 </th>
-                                    <th>       @MasterLocalizer["Strategy"]                  </th>
-                                    <th>       @MasterLocalizer["PatentNumber"]                  </th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                @foreach (var item in Model.IPD_PatentDetailsList)
-                                {
+                <div class="card card-outline card-primary">
+                    <div class="card-header bg-primary">
+                        <h3 class="card-title mb-0"><button type="button" class="btn btn-tool" data-card-widget="collapse">@MasterLocalizer["PatentDetails"]</button></h3>
+                        <div class="card-tools">
+                            <button type="button" class="btn btn-tool" data-card-widget="collapse" title="Collapse">
+                                <i class="fas fa-minus"></i>
+                            </button>
+                        </div>
+                    </div>
+                    <div class="card-body" style="display: block;">
+                        <div style="overflow-x:auto;">
+                            <table class="table table-bordered">
+                                <thead>
                                     <tr>
-                                        <td> @item.PatentNumber              </td>
-                                        <td> @item.Type                      </td>
-                                        <td> @item.OriginalExpiryDate        </td>
-                                        <td> @item.ExtensionExpiryDate       </td>
-                                        <td> @item.Comments                  </td>
-                                        <td> @item.Strategy                  </td>
-                                        <td> @item.PatentNumber                  </td>
+                                        <th>       @MasterLocalizer["PatentNumber"]                 </th>
+                                        <th>        @MasterLocalizer["Type"]                        </th>
+                                        <th>       @MasterLocalizer["OriginalExpiraDate"]         </th>
+                                        <th>       @MasterLocalizer["ExtensionExpiryDate"]         </th>
+                                        <th>       @MasterLocalizer["CommentsPatentSpecific"]      </th>
+                                        <th>       @MasterLocalizer["Strategy"]                  </th>
+
+
                                     </tr>
-                                    @* <tr>
-                                <td>
-                                @Html.TextBox(item.PatentNumber, new { @readonly = "readonly",@class = "form-control "})
-                                </td>
-                                </tr>*@
-                                }
-                            </tbody>
-                        </table>
+                                </thead>
+                                <tbody>
+                                    @foreach (var item in Model.IPD_PatentDetailsList)
+                                    {
+                                        <tr>
+                                            <td> @item.PatentNumber              </td>
+                                            <td> @item.Type                      </td>
+                                            <td> @item.OriginalExpiryDate        </td>
+                                            <td> @item.ExtensionExpiryDate       </td>
+                                            <td> @item.Comments                  </td>
+                                            <td> @item.Strategy                  </td>
+                                        </tr>
+                                        @* <tr>
+                                    <td>
+                                    @Html.TextBox(item.PatentNumber, new { @readonly = "readonly",@class = "form-control "})
+                                    </td>
+                                    </tr>*@
+                                    }
+                                </tbody>
+                            </table>
+                        </div>
                     </div>
                 </div>
                 @* ----------End -Patent Details-------------*@
 
                 @* ----------Start -Save buttons-------------*@
                 <div class="row">
-                     <div class="col-md-9" ></div>
-                    <div class="col-md-3" >
+                    <div class="col-md-9"></div>
+                    <div class="col-md-3">
                         <div class="form-group">
                             <button style="visibility: hidden;" type="submit" id="Save" class="btn btn-success">@SharedLocalizer["Submit"]</button>
-                            <a class="btn btn-danger" asp-action="PIDFList" asp-controller="PIDF"
-                            asp-route-ScreenId="@Convert.ToString((int)EmcureNPD.Utility.Enums.PIDFScreen.API)">@SharedLocalizer["Cancel"]</a>
                             <button type="submit" id="SaveDraft" class="btn btn-primary">@SharedLocalizer["SaveDraft"]</button>
+                            <a class="btn btn-danger" asp-action="PIDFList" asp-controller="PIDF"
+                               asp-route-ScreenId="@Convert.ToString((int)EmcureNPD.Utility.Enums.PIDFScreen.API)">@SharedLocalizer["Cancel"]
+                            </a>
                         </div>
                     </div>
                 </div>

@@ -53,6 +53,7 @@ namespace EmcureNPD.Data.DataAccess.Entity
         public int? Diaid { get; set; }
         public int? StatusUpdatedBy { get; set; }
         public DateTime? StatusUpdatedDate { get; set; }
+        public string StatusRemark { get; set; }
 
         public virtual MasterBusinessUnit BusinessUnit { get; set; }
         public virtual MasterDium Dia { get; set; }
