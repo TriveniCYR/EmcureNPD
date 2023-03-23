@@ -36,6 +36,7 @@ string jsVersion = @Configuration.GetSection("StaticJS")["version"];
             <div class="card-body collapse show" id="pidfCollapse" style="background-color:white">
 				<input type="hidden" id="Pidfid" name="Pidfid" value="@PidafId" />
                 <input type="hidden" id="SaveType" name="SaveType" />
+                 <input type="hidden" id="HfStatusRemark" name="StatusRemark" />
 			<div class="row">
 				<div class="col-md-3">
 					<div class="form-group required">
@@ -6376,7 +6377,7 @@ string jsVersion = @Configuration.GetSection("StaticJS")["version"];
                             <div class="col-md-12">
                                 <div class="form-group">
                                     <p>@Html.Label(@SharedLocalizer["ApproveConfirm"])</p>
-                                    <textarea class="form-control" rows="3" id="StatusRemark" name="StatusRemark" placeholder="Comment"></textarea>
+                                    <textarea class="form-control" rows="3" id="textApproveStatusRemark"  placeholder="Comment"></textarea>
                                 </div>
                             </div>
                         </div>                        
@@ -6402,7 +6403,7 @@ string jsVersion = @Configuration.GetSection("StaticJS")["version"];
                             <div class="col-md-12">
                                 <div class="form-group">
                                     @Html.Label(@SharedLocalizer["RejectConfirm"])
-                                    <textarea class="form-control" rows="3" id="StatusRemark" name="StatusRemark" placeholder="Comment"></textarea>
+                                    <textarea class="form-control" rows="3" id="textRejectStatusRemark"  placeholder="Comment"></textarea>
                                 </div>
                             </div>
                         </div>

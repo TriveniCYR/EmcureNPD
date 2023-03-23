@@ -9,7 +9,11 @@ $(document).ready(function () {
                     "data": "notificationId"
                 },
              { "data": "notificationTitle" },
-             { "data": "pidfNo" },
+                //{
+                //    "data": "pidfNo","render": function (data, type, row, meta) {
+                //        return data.replace(/[^0-9]/g, '')
+                //    }
+                //},
                 {
                     "data": "createdDate", "render": function (data, type, row, meta) {
                         return moment(data).format("DD MMM YYYY h:m");

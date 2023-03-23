@@ -1087,6 +1087,8 @@ namespace EmcureNPD.Data.DataAccess.DataContext
                     .HasMaxLength(100)
                     .HasColumnName("RFDPriceDiscounting");
 
+                entity.Property(e => e.StatusRemark).HasMaxLength(300);
+
                 entity.Property(e => e.StatusUpdatedDate).HasColumnType("datetime");
 
                 entity.HasOne(d => d.BusinessUnit)
@@ -2254,6 +2256,8 @@ namespace EmcureNPD.Data.DataAccess.DataContext
                 entity.Property(e => e.CreatedDate).HasColumnType("datetime");
 
                 entity.Property(e => e.Pidfid).HasColumnName("PIDFID");
+
+                entity.Property(e => e.StatusRemark).HasMaxLength(300);
 
                 entity.HasOne(d => d.Pidf)
                     .WithMany(p => p.PidfstatusHistories)

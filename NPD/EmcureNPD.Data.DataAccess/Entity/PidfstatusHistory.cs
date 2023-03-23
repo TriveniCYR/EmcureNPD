@@ -12,6 +12,7 @@ namespace EmcureNPD.Data.DataAccess.Entity
         public long Pidfid { get; set; }
         public DateTime CreatedDate { get; set; }
         public int CreatedBy { get; set; }
+        public string StatusRemark { get; set; }
 
         public virtual Pidf Pidf { get; set; }
         public virtual MasterPidfstatus Status { get; set; }
