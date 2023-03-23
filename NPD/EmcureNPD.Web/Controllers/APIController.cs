@@ -252,7 +252,7 @@ namespace EmcureNPD.Web.Controllers
                     _APIRnDDetailsForm = data._object;
                 }
 
-                _APIRnDDetailsForm.IPEvalution = GetModelForPIDForm(pidfid, bussnessId);
+                _APIRnDDetailsForm.IPEvalution = GetModelForPIDForm(pidfid, "-1");
                 _APIRnDDetailsForm._commercialFormEntity = GetPIDFCommercialModel(pidfid, bussnessId);
                 _APIRnDDetailsForm.ProjectName = _APIRnDDetailsForm.IPEvalution.ProjectName;
                 _APIRnDDetailsForm.IPD_PatentDetailsList = _APIRnDDetailsForm.IPEvalution.pidf_IPD_PatentDetailsEntities;
@@ -301,7 +301,7 @@ namespace EmcureNPD.Web.Controllers
 
             // return back with Invalid Model
             _RnDmodel._commercialFormEntity = GetPIDFCommercialModel(_RnDmodel.Pidfid, _RnDmodel.BusinessUnitId);
-            _RnDmodel.IPEvalution = GetModelForPIDForm(_RnDmodel.Pidfid, _RnDmodel.BusinessUnitId);
+            _RnDmodel.IPEvalution = GetModelForPIDForm(_RnDmodel.Pidfid, "-1");
             _RnDmodel.ProjectName = _RnDmodel.IPEvalution.ProjectName;
             _RnDmodel.IPD_PatentDetailsList = _RnDmodel.IPEvalution.pidf_IPD_PatentDetailsEntities;
             _RnDmodel.Pidfid = UtilityHelper.Encrypt(_RnDmodel.Pidfid);
@@ -344,7 +344,7 @@ namespace EmcureNPD.Web.Controllers
                     _APIIPDDetailsForm = data._object;
                 }
 
-                _APIIPDDetailsForm.IPEvalution = GetModelForPIDForm(pidfid, bussnessId);
+                _APIIPDDetailsForm.IPEvalution = GetModelForPIDForm(pidfid, "-1");
                 _APIIPDDetailsForm._commercialFormEntity = GetPIDFCommercialModel(pidfid, bussnessId);
                 _APIIPDDetailsForm.ProjectName = _APIIPDDetailsForm.IPEvalution.ProjectName;
                 _APIIPDDetailsForm.IPD_PatentDetailsList = _APIIPDDetailsForm.IPEvalution.pidf_IPD_PatentDetailsEntities;
@@ -408,7 +408,7 @@ namespace EmcureNPD.Web.Controllers
 
             // return back with Invalid Model
             _IPDmodel._commercialFormEntity = GetPIDFCommercialModel(_IPDmodel.Pidfid, _IPDmodel.BusinessUnitId);
-            _IPDmodel.IPEvalution = GetModelForPIDForm(_IPDmodel.Pidfid, _IPDmodel.BusinessUnitId);
+            _IPDmodel.IPEvalution = GetModelForPIDForm(_IPDmodel.Pidfid, "-1");
             _IPDmodel.ProjectName = _IPDmodel.IPEvalution.ProjectName;
             _IPDmodel.IPD_PatentDetailsList = _IPDmodel.IPEvalution.pidf_IPD_PatentDetailsEntities;
             _IPDmodel.Pidfid = UtilityHelper.Encrypt(_IPDmodel.Pidfid);

@@ -9,7 +9,7 @@ using EmcureNPD.Business.Models;
 using static EmcureNPD.Utility.Enums.GeneralEnum;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Hosting;
-
+using Microsoft.AspNetCore.Http.Extensions;
 
 namespace EmcureNPD.API.Controllers.API
 {
@@ -61,7 +61,8 @@ namespace EmcureNPD.API.Controllers.API
         {
             try
             {
-                var oPIDFEntity = await _APIService.GetAPIIPDFormData(pidfId, _webHostEnvironment.WebRootPath);
+                var APIurl = HttpContext.Request.Host.Value;
+                var oPIDFEntity = await _APIService.GetAPIIPDFormData(pidfId, APIurl);
                 if (oPIDFEntity != null)
                     return _ObjectResponse.Create(oPIDFEntity, (Int32)HttpStatusCode.OK);
                 else
@@ -127,7 +128,8 @@ namespace EmcureNPD.API.Controllers.API
         {
             try
             {
-                var oPIDFEntity = await _APIService.GetAPIRnDFormData(pidfId, _webHostEnvironment.WebRootPath);
+                var APIurl = HttpContext.Request.Host.Value;
+                var oPIDFEntity = await _APIService.GetAPIRnDFormData(pidfId, APIurl);
                 if (oPIDFEntity != null)
                     return _ObjectResponse.Create(oPIDFEntity, (Int32)HttpStatusCode.OK);
                 else
