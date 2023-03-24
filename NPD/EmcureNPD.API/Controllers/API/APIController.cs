@@ -61,7 +61,7 @@ namespace EmcureNPD.API.Controllers.API
         {
             try
             {
-                var APIurl = HttpContext.Request.Host.Value;
+                var APIurl = HttpContext.Request.Scheme +"://" +HttpContext.Request.Host.Value;
                 var oPIDFEntity = await _APIService.GetAPIIPDFormData(pidfId, APIurl);
                 if (oPIDFEntity != null)
                     return _ObjectResponse.Create(oPIDFEntity, (Int32)HttpStatusCode.OK);
@@ -128,7 +128,7 @@ namespace EmcureNPD.API.Controllers.API
         {
             try
             {
-                var APIurl = HttpContext.Request.Host.Value;
+                var APIurl = HttpContext.Request.Scheme + "://" + HttpContext.Request.Host.Value;
                 var oPIDFEntity = await _APIService.GetAPIRnDFormData(pidfId, APIurl);
                 if (oPIDFEntity != null)
                     return _ObjectResponse.Create(oPIDFEntity, (Int32)HttpStatusCode.OK);
