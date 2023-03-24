@@ -198,12 +198,12 @@ function ApproveRejectConfirm() {
         var objApproveRejectList = [];
         var _numberPIDFIds = _PIDFIds.split(",").map(Number);
         $.each(_numberPIDFIds, function (index, item) {
-            objApproveRejectList.push({ pidfId: item });
+            objApproveRejectList.push({ PidfIds: item });
         });
 
         var objIds = {
             saveType: $('#hdnStatusSaveType').val(),
-            pidfIds: objApproveRejectList,
+            PidfIds: objApproveRejectList,
             screenId: $('#hdnStatusscreenId').val(),
             comment: $('#txtStatusComment').val()
         };

@@ -67,7 +67,7 @@ function GetProductTypeListSuccess(data) {
     try {
         $('#PackagingTypeId').append($('<option>').text('--Select--').attr('value', '0'));
         $.each(data._object, function (index, object) {
-            $('#PackagingTypeId').append($('<option>').text(object.productTypeName).attr('value', object.productTypeId));
+            $('#PackagingTypeId').append($('<option>').text(object.packagingTypeName).attr('value', object.packagingTypeId));
         });
     } catch (e) {
         toastr.error('Error:' + e.message);
@@ -264,9 +264,14 @@ $("#btnSubmit").click(function () {
 
 
 $("#btnSaveAsDraft").click(function () {
-    if (ValidateBU_Strength()) {
-        $.extend(objMainForm, { 'SaveType': 'SvDrf' });
-        SaveCommertialPIDFForm();
+    if (ValidateMainForm() && ValidateBU_Strength()) {
+        if (objYears.length > 0) {
+            $.extend(objMainForm, { 'SaveType': 'SvDrf' });
+            SaveCommertialPIDFForm();
+        }
+        else {
+            toastr.error('No Year Data Added');
+        }
     }
 });
 

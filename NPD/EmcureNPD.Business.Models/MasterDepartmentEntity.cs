@@ -11,8 +11,8 @@ namespace EmcureNPD.Business.Models
     public class MasterDepartmentEntity
     {
         public int DepartmentId { get; set; }
-        [Required(ErrorMessageResourceType = typeof(Validation), ErrorMessageResourceName = "Required")]
-        [Display(Name = "DepartmentName", ResourceType = typeof(Master))]
+		[Required(ErrorMessage = "Department Name is required")]
+		[Display(Name = "DepartmentName", ResourceType = typeof(Master))]
 		[RegularExpression(@"^(?!\s*$).+", ErrorMessage = "The field cannot contain only spaces.")]
 		public string DepartmentName { get; set; }
         [Display(Name = "Active", ResourceType = typeof(Master))]

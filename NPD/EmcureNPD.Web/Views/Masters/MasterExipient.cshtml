@@ -10,7 +10,7 @@
 
 @model EmcureNPD.Business.Models.MasterExipientEntity
 @{
-	ViewData["Title"] = @MasterLocalizer["Exipient - Emcure NPD"];
+	ViewData["Title"] = @MasterLocalizer["Excipient - Emcure NPD"];
 	RolePermissionModel objPermssion = (RolePermissionModel)ViewBag.Access;
 	string IsAddAllow = (objPermssion.Add) ? "" : "display: none";
 	string IsEditAllow = (objPermssion.Edit) ? "" : "display: none";
@@ -19,7 +19,7 @@
 }
 <div class="content-header">
 	<div class="container-fluid d-flex justify-content-between">
-		<h3>@MasterLocalizer["Exipient"]</h3>
+		<h3>@MasterLocalizer["Excipient"]</h3>
 		<div>
 			<a style="@IsAddAllow" class="btn btn-primary" data-toggle="modal" data-target="#SaveExipientModel" data-backdrop="static" data-keyboard="false" onclick="AddExipient();"><i class="far fa-plus-square mr-1"></i> @SharedLocalizer["Add"]</a>
 		</div>
@@ -29,7 +29,7 @@
 	<table id="ExipientTable" class="table table-bordered table-striped table-hover" style="width:100%">
 		<thead>
 			<tr>
-				<th>@MasterLocalizer["Exipient"]</th>
+				<th>@MasterLocalizer["Excipient"]</th>
 				<th>@SharedLocalizer["Status"]</th>
 				<th class="text-center">@SharedLocalizer["Action"]</th>
 			</tr>
@@ -83,7 +83,7 @@
 					<div class="row">
 						<div class="col-md-12">
 							<div class="form-group required">
-								@Html.LabelFor(model => model.ExipientName, "Exipient Name", new { @class = "control-label" })
+								@Html.LabelFor(model => model.ExipientName, "Excipient Name", new { @class = "control-label" })
 								<span class="text-danger">*</span>
 								@Html.EditorFor(model => model.ExipientName, new { htmlAttributes = new { @autocomplete = "off", @class = "form-control checkbox-checked", @placeholder = @SharedLocalizer["Exipient Name"] } })
 								@Html.ValidationMessageFor(model => model.ExipientName, "", new { @class = "text-danger" })
@@ -128,8 +128,8 @@
 		var ErrorMessage = "@SharedLocalizer["Error"]";
 		var RecordInsertUpdate = "@SharedLocalizer["RecordInsertUpdate"]";
 		var RecordDelete = "@SharedLocalizer["RecordDelete"]";
-		var AddLabel = "@SharedLocalizer["Add Exipient"]";
-		var UpdateLabel = "@SharedLocalizer["Edit Exipient"]";
+		var AddLabel = "@SharedLocalizer["Add Excipient"]";
+		var UpdateLabel = "@SharedLocalizer["Edit Excipient"]";
 				//#endregion
 	</script>
 }
