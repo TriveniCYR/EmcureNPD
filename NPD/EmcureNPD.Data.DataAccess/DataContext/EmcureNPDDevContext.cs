@@ -83,6 +83,7 @@ namespace EmcureNPD.Data.DataAccess.DataContext
         public virtual DbSet<PidfApiCharterPrddepartment> PidfApiCharterPrddepartments { get; set; }
         public virtual DbSet<PidfApiCharterTimelineInMonth> PidfApiCharterTimelineInMonths { get; set; }
         public virtual DbSet<PidfApiIpd> PidfApiIpds { get; set; }
+        public virtual DbSet<PidfApiRnD> PidfApiRnDs { get; set; }
         public virtual DbSet<PidfCommercial> PidfCommercials { get; set; }
         public virtual DbSet<PidfCommercialYear> PidfCommercialYears { get; set; }
         public virtual DbSet<PidfFinance> PidfFinances { get; set; }
@@ -1346,6 +1347,41 @@ namespace EmcureNPD.Data.DataAccess.DataContext
                     .WithMany(p => p.PidfApiIpds)
                     .HasForeignKey(d => d.ProductTypeId)
                     .HasConstraintName("FK_PIDF_API_IPD_ProductTypeId");
+            });
+
+            modelBuilder.Entity<PidfApiRnD>(entity =>
+            {
+                entity.ToTable("PIDF_API_RnD", "dbo");
+
+                entity.Property(e => e.PidfApiRnDId).HasColumnName("PIDF_API_RnD_ID");
+
+                entity.Property(e => e.ApimarketPrice)
+                    .HasMaxLength(100)
+                    .HasColumnName("APIMarketPrice");
+
+                entity.Property(e => e.ApitargetRmcCcpc)
+                    .HasMaxLength(100)
+                    .HasColumnName("APITargetRMC_CCPC");
+
+                entity.Property(e => e.CreatedDate).HasColumnType("datetime");
+
+                entity.Property(e => e.Development).HasMaxLength(100);
+
+                entity.Property(e => e.Exhibit).HasMaxLength(100);
+
+                entity.Property(e => e.ModifyDate).HasColumnType("datetime");
+
+                entity.Property(e => e.Pidfid).HasColumnName("PIDFID");
+
+                entity.Property(e => e.PlantQc)
+                    .HasMaxLength(100)
+                    .HasColumnName("PlantQC");
+
+                entity.Property(e => e.ScaleUp).HasMaxLength(100);
+
+                entity.Property(e => e.SponsorBusinessPartner).HasMaxLength(100);
+
+                entity.Property(e => e.Total).HasMaxLength(100);
             });
 
             modelBuilder.Entity<PidfCommercial>(entity =>

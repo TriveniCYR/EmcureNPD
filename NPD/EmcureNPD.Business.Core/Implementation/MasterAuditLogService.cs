@@ -7,6 +7,7 @@ using EmcureNPD.Data.DataAccess.Entity;
 using EmcureNPD.Utility.Audit;
 using EmcureNPD.Utility.Enums;
 using EmcureNPD.Utility.Utility;
+using Microsoft.AspNetCore.Http;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
@@ -21,12 +22,12 @@ namespace EmcureNPD.Business.Core.Implementation
     {
         private readonly IUnitOfWork _unitOfWork;
         private readonly IMapperFactory _mapperFactory;
-
-        private IRepository<MasterAuditLog> _repository { get; set; }
+		private readonly IHelper _helper;
+		private IRepository<MasterAuditLog> _repository { get; set; }
         private IRepository<MasterModule> _moduleRepository { get; set; }
         private IRepository<MasterUser> _userRepository { get; set; }
         private IRepository<Pidf> _pidfrepository { get; set; }
-        public MasterAuditLogService(IUnitOfWork unitOfWork, IMapperFactory mapperFactory)
+        public MasterAuditLogService(IUnitOfWork unitOfWork, IMapperFactory mapperFactory, IHelper helper)
         {
             _unitOfWork = unitOfWork;
             _mapperFactory = mapperFactory;
@@ -34,6 +35,7 @@ namespace EmcureNPD.Business.Core.Implementation
             _moduleRepository = _unitOfWork.GetRepository<MasterModule>();
             _userRepository = _unitOfWork.GetRepository<MasterUser>();
             _pidfrepository = unitOfWork.GetRepository<Pidf>();
+            _helper = helper;
         }
         public async Task<DBOperation> CreateAuditLog<TResult>(AuditActionType auditActionType,  
             ModuleEnum moduleEnum, TResult Old, TResult New, int? PrimaryId) where TResult : new()
@@ -41,7 +43,8 @@ namespace EmcureNPD.Business.Core.Implementation
             MasterAuditLog objAuditLog;
             var entityAuditLog = new MasterAuditLogEntity
             {
-                ActionType = Enum.GetName(typeof(AuditActionType), auditActionType),
+                CreatedBy = _helper.GetLoggedInUser().UserId,
+			    ActionType = Enum.GetName(typeof(AuditActionType), auditActionType),
                 Log = Old.ToAuditLog(New),
                 ModuleId = (int)moduleEnum,
                 EntityId = (int)PrimaryId

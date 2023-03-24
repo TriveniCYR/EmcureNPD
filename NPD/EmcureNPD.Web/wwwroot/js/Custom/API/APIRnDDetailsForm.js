@@ -67,7 +67,7 @@ $('#Save').click(function () {
     $("#SaveType").val('Save');    
 });
 $('#SaveDraft').click(function () {
-    $("#IsModelValid").val('Valid')
+    ValidateForm();
     $("#SaveType").val('SaveDraft');
 });
 function SetDivReadonly() {
