@@ -11,8 +11,8 @@ namespace EmcureNPD.Business.Models
     public class MasterProductStrengthEntity
     {
         public int ProductStrengthId { get; set; }
-        [Required(ErrorMessageResourceType = typeof(Validation), ErrorMessageResourceName = "Required")]
-        [Display(Name = "ProductStrengthName", ResourceType = typeof(Master))]
+		[Required(ErrorMessage = "Product Strength Name is required")]
+		[Display(Name = "ProductStrengthName", ResourceType = typeof(Master))]
 		[RegularExpression(@"^(?!\s*$).+", ErrorMessage = "The field cannot contain only spaces.")]
 		public string ProductStrengthName { get; set; }
         [Display(Name = "Active", ResourceType = typeof(Master))]
