@@ -96,7 +96,9 @@ namespace EmcureNPD.Business.Core.Implementation
 			{
                
                 SqlConnection con = new SqlConnection(_configuration.GetSection("ConnectionStrings:DefaultConnection").Value);
-                PidfFinance _previousFinanceEntity = await _repository.GetAsync(entityPidfFinance.PidffinaceId);
+				PidfFinance _previousFinanceEntity = new PidfFinance();
+				if(entityPidfFinance.PidffinaceId>0)
+                    _previousFinanceEntity=await _repository.GetAsync(entityPidfFinance.PidffinaceId);
                 
                 DynamicParameters data = new DynamicParameters();
 				data.Add("@PIDFId", entityPidfFinance.Pidfid);
