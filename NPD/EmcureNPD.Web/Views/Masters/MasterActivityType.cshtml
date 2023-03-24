@@ -20,7 +20,7 @@
 
 <div class="content-header">
 	<div class="container-fluid d-flex justify-content-between">
-		<h3>@MasterLocalizer["ActivityType"]</h3>
+		<h3>@MasterLocalizer["Activity Type"]</h3>
 		<div>
 			<a style="@IsAddAllow" class="btn btn-primary" data-toggle="modal" data-target="#SaveActivityTypeModel" data-backdrop="static" data-keyboard="false" onclick="AddActivityType();"><i class="far fa-plus-square mr-1"></i> @SharedLocalizer["Add"]</a>
 		</div>
@@ -30,7 +30,7 @@
 	<table id="ActivityTypeTable" class="table table-bordered table-striped table-hover" style="width:100%">
 		<thead>
 			<tr>
-				<th>@MasterLocalizer["ActivityType"]</th>
+				<th>@MasterLocalizer["Activity Type"]</th>
 				<th>@SharedLocalizer["Status"]</th>
 				<th class="text-center">@SharedLocalizer["Action"]</th>
 			</tr>
@@ -84,7 +84,7 @@
 					<div class="row">
 						<div class="col-md-12">
 							<div class="form-group required">
-								@Html.LabelFor(model => model.ActivityTypeName, "ActivityType Name", new { @class = "control-label" })
+								@Html.LabelFor(model => model.ActivityTypeName, "Activity Type Name", new { @class = "control-label" })
 								<span class="text-danger">*</span>
 								@Html.EditorFor(model => model.ActivityTypeName, new { htmlAttributes = new { @autocomplete = "off", @class = "form-control checkbox-checked", @placeholder = @SharedLocalizer["ActivityType Name"] } })
 								@Html.ValidationMessageFor(model => model.ActivityTypeName, "", new { @class = "text-danger" })

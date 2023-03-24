@@ -160,27 +160,32 @@ function GetPBFTabDetails() {
     ajaxServiceMethod($('#hdnBaseURL').val() + GetPBFAllTabDetails + "/" + _PIDFID + "/" + _selectBusinessUnit, 'GET', GetPBFTabDetailsSuccess, GetPBFTabDetailsError);
 }
 function GetPBFTabDetailsSuccess(data) {
-    console.log(data);
     try {
         if (data != null) {           
-            BindStrength(data.PIDFPBFGeneralStrength);
-            try {
-                var _emptyOption = '<option value="">-- Select --</option>';
-                $('.AnalyticalTestTypeId').append(_emptyOption);
-                $('.AMVstrengths').append(_emptyOption);
-                BindClinical(data.PBFClinicalEntity);
-                BindAnalytical(data.PBFClinicalEntity);
-                $(data.MasterTestType).each(function (index, item) {
-                    $('.AnalyticalTestTypeId').append('<option value="' + item.testTypeId + '">' + item.testTypeName + '</option>');
-                });
-                $(_strengthArray).each(function (index, item) {
-                    $('.AMVstrengths').append('<option value="' + item.pidfProductStrengthId + '">' + getStrengthName(item.pidfProductStrengthId) + '</option>');
-                });
-                $('.AMVstrengths').select2();
+            BindStrength(data.PIDFPBFGeneralStrength);        
+          
+          
+            $('.AMVstrengths').select2();
+            BindClinical(data.PBFClinicalEntity);
+            BindAnalytical(data.PBFAnalyticalEntity);
+            $(data.MasterTestType).each(function (index, item) {
+                $('.AnalyticalTestTypeId').append('<option value="' + item.testTypeId + '">' + item.testTypeName + '</option>');
+            });
+            $(_strengthArray).each(function (index, item) {
+                $('.AMVstrengths').append('<option value="' + item.pidfProductStrengthId + '">' + getStrengthName(item.pidfProductStrengthId) + '</option>');
+            });
+            $('.AMVstrengths').select2();
+            BindRNDExicipient(data.PBFAnalyticalEntity);
+            BindRNDPackaging(data.PBFAnalyticalEntity);
+            $(data.MasterPackagingType).each(function (index, item) {
+                $('.RNDPackagingTypeId').append('<option value="' + item.packagingTypeId + '">' + item.packagingTypeName + '</option>');
+            });
+            //try {
+                
 
-            } catch (e) {
+            //} catch (e) {
 
-            }
+            //}
            
         }
     } catch (e) {
@@ -286,6 +291,7 @@ function BindStrength(data) {
 
 function SavePBFForm(_SaveType) {
     setlicense();
+    SetAnalyticalChildRows();
     $('#SaveType').val(_SaveType);
 }
 function setlicense() {
@@ -295,7 +301,7 @@ function setlicense() {
     });
     $("#TestLicenseAvailability").val(selected.join(","))
 }
-
+//Clinical Start
 function CreateClinicalTable(data, bioStudyTypeId) {
     var objectname = "";
     var tableTitle = "";
@@ -375,6 +381,9 @@ function BindClinical(data) {
     bioStudyHTML += "<td><input type='number' class='form-control totalClinical' readonly='readonly' /></td></tr></tbody>";
     $('#tableclinical').html(bioStudyHTML);
 }
+//Clinical End
+
+//Analytical Start
 function CreateAnalyticalTable(data, activityTypeId) {
    
     var objectname = "";
@@ -392,16 +401,16 @@ function CreateAnalyticalTable(data, activityTypeId) {
 
     
 
-    objectname += '<tr  id="clinicalRow'+ _iterator+'"><td></td>'
-        + '<td><input type="hidden" id="AnalyticalEntities[' + [(_iterator)] + '].TestTypeId" name="AnalyticalEntities[' + [(_iterator)] + '].TestTypeId" /> <select id="AnalyticalTestTypeId[' + [(_iterator)] + ']" class="form-control readOnlyUpdate AnalyticalTestTypeId"></select></td>'
-        + '<td><input type="text" id="AnalyticalEntities[' + [( _iterator)] + '].Numberoftests" class="form-control totalAnalytical"  /></td>'
-        + '<td><input type="number" id="AnalyticalEntities[' + [(_iterator)] + '].PrototypeDevelopment" class="form-control totalAnalytical"  /></td>'
-        + '<td><input type="number" id="AnalyticalEntities[' + [(_iterator)] + '].CostPerTest" class="form-control totalAnalytical"  /></td>'
-        + '<td><input type="number" id="AnalyticalEntities[' + [(_iterator)] + '].PrototypeCost" class="form-control totalAnalytical"  /></td>';
+    objectname += '<tr  id="analyticalRow'+ _iterator+'" class="analyticalactivity"><td></td>'
+        + '<td><select class="form-control readOnlyUpdate AnalyticalTestTypeId"><option value = "0" > --Select --</option ></select></td>'
+        + '<td><input type="number" class="form-control totalAnalytical"  /></td>'
+        + '<td><input type="number" class="form-control totalAnalytical"  /></td>'
+        + '<td><input type="number" class="form-control totalAnalytical"  /></td>'
+        + '<td><input type="number" class="form-control totalAnalytical"  /></td>';
     for (var i = 0; i < _strengthArray.length; i++) {
         objectname += '<td><input type="hidden" id="AnalyticalEntities[' + [(i + _iterator)] + '].ActivityTypeId" name="AnalyticalEntities[' + [(i + _iterator)] + '].ActivityTypeId" value="' + activityTypeId + '" /><input type="hidden" id="AnalyticalEntities[' + [(i + _iterator)] + '].StrengthId" name="AnalyticalEntities[' + [(i + _iterator)] + '].StrengthId" value="' + _strengthArray[i].pidfProductStrengthId + '" /><input type="number" class="form-control" /></td>';
     }
-    objectname += "<td><input type='number' class='form-control' readonly='readonly' /></td><td> <i class='fas fa-plus' id='addIcon' onclick='addRow(" + _iterator + ");'></i> <i class='fas fa-trash-alt DeleteIcon' id='deleteIcon" + _iterator + "' onclick='deleteRow(" + _iterator + ",this);' ></i></td></tr>";
+    objectname += "<td><input type='number' class='form-control' readonly='readonly' /></td><td> <i class='fas fa-plus' id='addIcon' onclick='addRowanalytical(" + _iterator + ");'></i> <i class='fas fa-trash-alt DeleteIcon' id='deleteIcon" + _iterator + "' onclick='deleteRowanalytical(" + _iterator + ",this);' ></i></td></tr>";
 
 
     //objectname += "<tr><td class='text-bold'>Total Cost</td>";
@@ -426,55 +435,180 @@ function BindAnalytical(data) {
     analyticalactivityHTML += '<td>Total</td><td>Action</td></tr></thead><tbody id="tblanalyticalBody">';
 
     for (var i = 1; i < 4; i++) {
-        analyticalactivityHTML += CreateAnalyticalTable($.grep(data, function (n, x) { return n.bioStudyTypeId == i; }), i);
+        analyticalactivityHTML += CreateAnalyticalTable($.grep(data, function (n, x) { return n.activityTypeId == i; }), i);
     }
     analyticalactivityHTML += '<tr><td class="text-left text-bold bg-light" colspan="10"></td></tr>';
     analyticalactivityHTML += '<tr><td class="text-bold">AMV Cost</td>';
-    analyticalactivityHTML += '<td colspan="2"><input type="number" class="form-control totalAnalytical" name="AnalyticalEntities.TotalAMVCost.TotalCost" placeholder="Total AMV Cost" /><td class="text-bold" colspan="4"><textarea id="remark" class="form-control" name="AnalyticalEntities.TotalAMVCost.Remark" placeholder="Remark"></textarea></td>  <td colspan="4"><select class="form-control readOnlyUpdate AMVstrengths" multiple="multiple"></select> </td></tr>';
-    analyticalactivityHTML += '<tr><td class="text-bold">Total Cost</td>';
-    $.each(_strengthArray, function (index, item) {
-        analyticalactivityHTML += "<td><input type='number' class='form-control totalAnalytical' readonly='readonly' /></td>";
-    });
-    analyticalactivityHTML += "<td><input type='number' class='form-control totalAnalytical' readonly='readonly' /></td></tr></tbody>";
+    analyticalactivityHTML += '<td colspan="2"><input type="number" class="form-control totalAnalytical" id="AMVCosts.TotalAmvcost" name="AMVCosts.TotalAmvcost" placeholder="Total AMV Cost" /></td><td class="text-bold" colspan="4"><textarea id="remark" class="form-control" id="AMVCosts.Remark" name="AMVCosts.Remark" placeholder="Remark"></textarea></td>  <td colspan="4"><input type="hidden" id="AMVCosts.StrengthId" name="AMVCosts.StrengthId" /><select class="form-control readOnlyUpdate AMVstrengths" multiple="multiple" name="AMVCosts.StrengthId"></select> </td></tr>';
+    analyticalactivityHTML += '<tr><td class="text-bold">Total Cost</td>';   
+    analyticalactivityHTML += "<td><input type='number' class='form-control' readonly='readonly' /></td><td><input type='number' class='form-control' readonly='readonly' /></td><td><input type='number' class='form-control' readonly='readonly' /></td><td><input type='number' class='form-control' readonly='readonly' /></td></tr></tbody>";
+
     $('#tableanalytical').html(analyticalactivityHTML);
     
 }
-
-function addRow(j) {
+function addRowanalytical(j) {
     var table = $('#tblanalyticalBody');
-    var node = $('#clinicalRow'+j).clone(true);
-    table.find('#clinicalRow' + j).after(node);
-    table.find('#clinicalRow' + j).find("input").val("");
+    var node = $('#analyticalRow'+j).clone(true);
+    table.find('#analyticalRow' + j).after(node);
+    table.find('#analyticalRow' + j).find("input").val("");
     SetChildRowDeleteIcon(j);
 }
-function deleteRow(j, element) {
+function deleteRowanalytical(j, element) {
     $(element).closest("tr").remove();
     SetChildRowDeleteIcon(j);
 }
 function SetChildRowDeleteIcon(j) {
     if ($('#tableclinical tbody tr').length > 1) {
-        $('#DeleteIcon' + j).show();
+        $('.DeleteIcon').show();
     } else {
-        $('#DeleteIcon' + j).hide();
-    }   
+        $('.DeleteIcon').hide();
+    }
+    if ($('#tablerndexicipientrequirement tbody tr').length > 1) {
+        $('.DeleteIcon').show();
+    } else {
+        $('.DeleteIcon').hide();
+    }
+    if ($('#tablerndpackagingmaterialrequirement tbody tr').length > 1) {
+        $('.DeleteIcon').show();
+    } else {
+        $('.DeleteIcon').hide();
+    }
+    
 }
-//function Calculate_Clinical_total() {
+function SetAnalyticalChildRows() {
+    $.each($('#tableanalytical tbody tr.analyticalactivity'), function (index, value) {
 
-//    $('#tableclinicalpilotfasting').tableTotal({      
-//        totalCol: true,
-//        bold: true
-//    });
-//    $('#tableclinicalpilotfed').tableTotal({
-//        totalCol: true,
-//        bold: true
-//    });
-//    $('#tableclinicalpivotalfasting').tableTotal({
-//        totalCol: true,
-//        bold: true
-//    });
-//    $('#tableclinicalpivotalfed').tableTotal({
-//        totalCol: true,
-//        bold: true
-//    });
-//}
+        //if ($(this).find("td:eq(1) .AnalyticalTestTypeId").val() != 0) {
+        //    alert($(this).find("td:eq(1) .AnalyticalTestTypeId").val());
+            $(this).find("td:eq(1) .AnalyticalTestTypeId").attr("name", "AnalyticalEntities[" + index.toString() + "].TestTypeId");
+            $(this).find("td:eq(2) input").attr("name", "AnalyticalEntities[" + index.toString() + "].Numberoftests");
+            $(this).find("td:eq(3) input").attr("name", "AnalyticalEntities[" + index.toString() + "].PrototypeDevelopment");
+            $(this).find("td:eq(4) input").attr("name", "AnalyticalEntities[" + index.toString() + "].CostPerTest");
+            $(this).find("td:eq(5) input").attr("name", "AnalyticalEntities[" + index.toString() + "].PrototypeCost");           
+        //}
+        
+    });  
+}
+//Analytical End
 
+//R&D Start
+function CreateRNDExicipientTable(data, activityTypeId) {
+    var objectname = "";
+    var tableTitle = "";
+
+    if (activityTypeId == 1) {
+        tableTitle = "Exicipient Protoype";
+    } else if (activityTypeId == 2) {
+        tableTitle = "Exicipient Scale Up";
+    } else {
+        tableTitle = "Exicipient Exhibit";
+    }
+    var _iterator = (activityTypeId - 1) * _strengthArray.length;
+    objectname += '<tr><td class="text-left text-bold bg-light" colspan="10">' + tableTitle + '</td>';
+
+
+
+    objectname += '<tr  id="ExicipientRow' + _iterator + '" class="exicipientactivity"><td></td>'     
+        + '<td><input type="number" class="form-control" /></td>'
+        + '<td><input type="number" class="form-control" /></td>'
+        + '<td><input type="number" class="form-control" /></td>';
+    for (var i = 0; i < _strengthArray.length; i++) {
+        objectname += '<td><input type="hidden" id="RnDEntities[' + [(i + _iterator)] + '].ActivityTypeId" name="RnDEntities[' + [(i + _iterator)] + '].ActivityTypeId" value="' + activityTypeId + '" /><input type="hidden" id="RnDEntities[' + [(i + _iterator)] + '].StrengthId" name="RnDEntities[' + [(i + _iterator)] + '].StrengthId" value="' + _strengthArray[i].pidfProductStrengthId + '" /><input type="number" class="form-control" /></td>';
+    }
+    objectname += "<td><input type='number' class='form-control' readonly='readonly' /></td><td> <i class='fas fa-plus' id='addIcon' onclick='addRowRNDExicipient(" + _iterator + ");'></i> <i class='fas fa-trash-alt DeleteIcon' id='deleteIcon" + _iterator + "' onclick='deleteRowRNDExicipient(" + _iterator + ",this);' ></i></td></tr>";
+
+    return objectname;
+}
+function BindRNDExicipient(data) {
+
+    var ExicipientActivityHTML = '<thead class="bg-primary text-bold"><tr><td>Exicipient Requirement</td>'
+        + '<td>Exicipient Prototype</td>'
+        + '<td>Rs / Kg</td>'
+        + '<td>Mg Per Unit Dosage</td>';
+    $.each(_strengthArray, function (index, item) {
+        ExicipientActivityHTML += '<td>' + getStrengthName(item.pidfProductStrengthId) + '</td>';
+    });
+    ExicipientActivityHTML += '<td>Total</td><td>Action</td></tr></thead><tbody id="tblExicipientBody">';
+
+    for (var i = 1; i < 4; i++) {
+        ExicipientActivityHTML += CreateRNDExicipientTable($.grep(data, function (n, x) { return n.activityTypeId == i; }), i);
+    }
+    ExicipientActivityHTML += '<tr><td class="text-left text-bold bg-light" colspan="10"></td></tr>';
+    ExicipientActivityHTML += '<tr><td class="text-bold">Total Exicipient Costs</td>';
+    ExicipientActivityHTML += '<tr><td class="text-bold">Total Cost</td>';
+    ExicipientActivityHTML += "<td><input type='number' class='form-control' readonly='readonly' /></td><td><input type='number' class='form-control' readonly='readonly' /></td><td><input type='number' class='form-control' readonly='readonly' /></td><td><input type='number' class='form-control' readonly='readonly' /></td></tr></tbody>";
+    $('#tablerndexicipientrequirement').html(ExicipientActivityHTML);
+
+}
+function addRowRNDExicipient(j) {
+    var table = $('#tblExicipientBody');
+    var node = $('#ExicipientRow' + j).clone(true);
+    table.find('#ExicipientRow' + j).after(node);
+    table.find('#ExicipientRow' + j).find("input").val("");
+    SetChildRowDeleteIcon(j);
+}
+function deleteRowRNDExicipient(j, element) {
+    $(element).closest("tr").remove();
+    SetChildRowDeleteIcon(j);
+}
+function CreateRNDPackagingTable(data, activityTypeId) {
+
+    var objectname = "";
+    var tableTitle = "";
+
+    if (activityTypeId == 1) {
+        tableTitle = "Packaging Protoype";
+    } else if (activityTypeId == 2) {
+        tableTitle = "Packaging Scale Up";
+    } else {
+        tableTitle = "Packaging Exhibit";
+    }
+    var _iterator = (activityTypeId - 1) * _strengthArray.length;
+    objectname += '<tr><td class="text-left text-bold bg-light" colspan="10">' + tableTitle + '</td>';
+
+
+
+    objectname += '<tr  id="PackagingRow' + _iterator + '" class="packagingactivity"><td></td>'
+        + '<td><select class="form-control readOnlyUpdate RNDPackagingTypeId"><option value = "0" > --Select --</option ></select></td>'
+        + '<td><input type="number" class="form-control" /></td>'
+        + '<td><input type="number" class="form-control" /></td>'
+        + '<td><input type="number" class="form-control" /></td>';
+    for (var i = 0; i < _strengthArray.length; i++) {
+        objectname += '<td><input type="hidden" id="AnalyticalEntities[' + [(i + _iterator)] + '].ActivityTypeId" name="AnalyticalEntities[' + [(i + _iterator)] + '].ActivityTypeId" value="' + activityTypeId + '" /><input type="hidden" id="AnalyticalEntities[' + [(i + _iterator)] + '].StrengthId" name="AnalyticalEntities[' + [(i + _iterator)] + '].StrengthId" value="' + _strengthArray[i].pidfProductStrengthId + '" /><input type="number" class="form-control" /></td>';
+    }
+    objectname += "<td><input type='number' class='form-control' readonly='readonly' /></td><td> <i class='fas fa-plus' id='addIcon' onclick='addRowRNDPackaging(" + _iterator + ");'></i> <i class='fas fa-trash-alt DeleteIcon' id='deleteIcon" + _iterator + "' onclick='deleteRowRNDPackaging(" + _iterator + ",this);' ></i></td></tr>";
+    return objectname;
+}
+function BindRNDPackaging(data) {
+    var PackagingActivityHTML = '<thead class="bg-primary text-bold"><tr><td>Packaging Requirement</td>'
+        + '<td>Packaging Type</td>'
+        + '<td>Unit of Measurement</td>'
+        + '<td>Rs / Unit</td>'
+        + '<td>Quantity</td>';
+    $.each(_strengthArray, function (index, item) {
+        PackagingActivityHTML += '<td>' + getStrengthName(item.pidfProductStrengthId) + '</td>';
+    });
+    PackagingActivityHTML += '<td>Total</td><td>Action</td></tr></thead><tbody id="tblPackagingBody">';
+
+    for (var i = 1; i < 4; i++) {
+        PackagingActivityHTML += CreateRNDPackagingTable($.grep(data, function (n, x) { return n.activityTypeId == i; }), i);
+    }
+    PackagingActivityHTML += '<tr><td class="text-left text-bold bg-light" colspan="10"></td></tr>';
+    PackagingActivityHTML += '<tr><td class="text-bold">Total Packaging Costs</td>';
+    PackagingActivityHTML += '<tr><td class="text-bold">Total Cost</td>';
+    PackagingActivityHTML += "<td><input type='number' class='form-control' readonly='readonly' /></td><td><input type='number' class='form-control' readonly='readonly' /></td><td><input type='number' class='form-control' readonly='readonly' /></td><td><input type='number' class='form-control' readonly='readonly' /></td></tr></tbody>";
+    $('#tablerndpackagingmaterialrequirement').html(PackagingActivityHTML);
+
+}
+function addRowRNDPackaging(j) {
+    var table = $('#tblPackagingBody');
+    var node = $('#PackagingRow' + j).clone(true);
+    table.find('#PackagingRow' + j).after(node);
+    table.find('#PackagingRow' + j).find("input").val("");
+    SetChildRowDeleteIcon(j);
+}
+function deleteRowRNDPackaging(j, element) {
+    $(element).closest("tr").remove();
+    SetChildRowDeleteIcon(j);
+}
+//R&D End

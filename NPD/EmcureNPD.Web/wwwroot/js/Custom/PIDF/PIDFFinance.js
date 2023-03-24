@@ -25,9 +25,17 @@ $(document).ready(function () {
 //});
 $("#btnApprove").click(function () {
     $('#ApproveModel').modal('show');
+    $('#SaveType').val('approved');
+    if ($("#HfStatusRemark").val() == null || $("#HfStatusRemark").val() == "") {
+        preventSubmit();
+    }
 })
 $("#btnRejects").click(function () {
     $("#RejectModel").modal('show');
+    $('#SaveType').val('rejected');
+    if ($("#HfStatusRemark").val() == null || $("#HfStatusRemark").val() == "") {
+        preventSubmit();
+    }
 })
 function GetCurrencyList() {
     ajaxServiceMethod($('#hdnBaseURL').val() + AllCurrency, 'GET', GetCurrencyListSuccess, GetCurrencyListError);
@@ -84,7 +92,8 @@ function addRowFinanceDetails(j) {
 }
 function SaveClick() {
     //if ($('.readOnlyUpdate').val() !== null && $('.readOnlyUpdate').val()!=="") {
-        $('#SaveType').val('submit');
+    $('#SaveType').val('submit');
+    /*$("#HfStatusRemark").val("Submitted");*/
         SetChildRows();
     //}
     //else {
@@ -93,7 +102,8 @@ function SaveClick() {
 }
 function SaveDraftClick() {
     //if ($('.readOnlyUpdate').val() !== null && $('.readOnlyUpdate').val() !== "") {
-        $('#SaveType').val('draft');
+    $('#SaveType').val('draft');
+    /*$("#HfStatusRemark").val("SavedAsDraft");*/
         SetChildRows();
     //}
     //else {
@@ -109,6 +119,7 @@ function ApproveClick() {
     //else {
     //    preventSubmit();
     //}
+    grantSubmit();
 }
 function RejectClick() {
     //if ($('.readOnlyUpdate').val() !== null && $('.readOnlyUpdate').val() !== "") {
@@ -119,6 +130,7 @@ function RejectClick() {
     //else {
     //    preventSubmit();
     //}
+    grantSubmit();
 }
 function SetChildRows() {
     $.each($('#FinanceTableBoy tr'), function (index, value) {
@@ -154,9 +166,18 @@ function preventSubmit() {
     $(document).on('submit', 'form', function (e) {
         e.preventDefault();
         //your code goes here
-        toastr.error('Error:required input fields could not be empty');
+        //toastr.error('Error:required input fields could not be empty');
         //100% works
         return;
+    });
+}
+function grantSubmit() {
+    $(document).on('submit', 'form', function (e) {
+        //e.preventDefault();
+        //your code goes here
+        //toastr.error('Error:required input fields could not be empty');
+        //100% works
+        //return;
     });
 }
 //....Start:Approval and Rejection....//
