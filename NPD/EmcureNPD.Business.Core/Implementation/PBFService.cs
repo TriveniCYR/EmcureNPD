@@ -91,6 +91,7 @@ namespace EmcureNPD.Business.Core.Implementation
         private IRepository<PidfPbfGeneralStrength> _pidfPbfGeneralStrengthRepository { get; set; }
 		private IRepository<PidfPbfRnD> _pidfPbfRnDRepository { get; set; }
 		private IRepository<PidfPbfRnDExicipientPrototype> _pidfPbfRnDExicipientPrototype { get; set; }
+        private IRepository<PidfPbfAnalyticalCostStrengthMapping> _pidfPbfAnalyticalCostStrengthMappingRepository { get; set; }
 		//Market Extension & In House
 
 		public PBFService(IUnitOfWork unitOfWork, IMapperFactory mapperFactory, IMasterOralService oralService, IMasterUnitofMeasurementService unitofMeasurementService,
@@ -154,8 +155,10 @@ namespace EmcureNPD.Business.Core.Implementation
             _pidfPbfGeneralStrengthRepository = _unitOfWork.GetRepository<PidfPbfGeneralStrength>();
 			_pidfPbfRnDRepository = _unitOfWork.GetRepository<PidfPbfRnD>();
 			_pidfPbfRnDExicipientPrototype = _unitOfWork.GetRepository<PidfPbfRnDExicipientPrototype>();
+            _pidfPbfAnalyticalCostStrengthMappingRepository = _unitOfWork.GetRepository<PidfPbfAnalyticalCostStrengthMapping>();
+            
 
-		}
+        }
 
 
         public async Task<dynamic> FillDropdown(int PIDFId)
@@ -1309,7 +1312,7 @@ namespace EmcureNPD.Business.Core.Implementation
                 long pbfgeneralid = 0;
                 PidfPbf objPIDFPbf;
                 var loggedInUserId = _helper.GetLoggedInUser().UserId;
-                pbfgeneralid = await SavePidfAndPBFCommanDetails(pbfEntity.Pidfid, pbfEntity);
+                pbfgeneralid = 1; //await SavePidfAndPBFCommanDetails(pbfEntity.Pidfid, pbfEntity);
 
                 if (pbfgeneralid > 0)
                 {
@@ -1362,8 +1365,10 @@ namespace EmcureNPD.Business.Core.Implementation
             DataSet dsDropdownOptions = await _repository.GetDataSetBySP("stp_npd_GetPbfAllTabData", System.Data.CommandType.StoredProcedure, osqlParameter);
 
             DropdownObjects.MasterTestType = dsDropdownOptions.Tables[0];
-            DropdownObjects.PIDFPBFGeneralStrength = dsDropdownOptions.Tables[1];
-            DropdownObjects.PBFClinicalEntity = dsDropdownOptions.Tables[2];
+            DropdownObjects.MasterPackagingType = dsDropdownOptions.Tables[1];
+            DropdownObjects.PIDFPBFGeneralStrength = dsDropdownOptions.Tables[2];
+            DropdownObjects.PBFClinicalEntity = dsDropdownOptions.Tables[3];
+            DropdownObjects.PBFAnalyticalEntity = dsDropdownOptions.Tables[4];
 
             return DropdownObjects;
         }
@@ -1373,6 +1378,7 @@ namespace EmcureNPD.Business.Core.Implementation
             long pidfpbfid = 0;
             long pbfgeneralid = 0;
             List<PidfPbfMarketMapping> objmapping = new();
+            List<PidfPbfAnalyticalCostStrengthMapping> objACSMList = new();
             try
             {
                 #region Section PBF Add Update
@@ -1562,9 +1568,55 @@ namespace EmcureNPD.Business.Core.Implementation
                     await _unitOfWork.SaveChangesAsync();
                 }
                 //Save analytical cost start
+                var analyticalcost = _PidfPbfAnalyticalCostsRepository.GetAllQuery().Where(x => x.PbfgeneralId == pbfgeneralid);
+                if (analyticalcost!=null)
+                {
+                    foreach (var item in analyticalcost)
+                    {
+                        _PidfPbfAnalyticalCostsRepository.Remove(item);
+                    }
+                    await _unitOfWork.SaveChangesAsync();
+                }
+
+                PidfPbfAnalyticalCost obganalyticalcost = new PidfPbfAnalyticalCost();
+                obganalyticalcost = _mapperFactory.Get<AMVCost, PidfPbfAnalyticalCost>(pbfentity.AMVCosts);
+                obganalyticalcost.TotalAmvcost = pbfentity.AMVCosts.TotalAmvcost;
+                obganalyticalcost.Remark = pbfentity.AMVCosts.Remark;
+                obganalyticalcost.PbfgeneralId = pbfgeneralid;
+                obganalyticalcost.CreatedDate = DateTime.Now;
+                obganalyticalcost.CreatedBy = loggedInUserId;
+                _PidfPbfAnalyticalCostsRepository.AddAsync(obganalyticalcost);
+                await _unitOfWork.SaveChangesAsync();
 
                 //Save analytical cost end
 
+                //Save analytical cost strength mapping start
+               
+                if (pidfpbfid > 0 && pbfentity.MarketMappingId.Length > 0)
+                {
+                    var analyticalcoststrength = _pidfPbfAnalyticalCostStrengthMappingRepository.GetAllQuery().Where(x => x.PbfanalyticalCostId == obganalyticalcost.PbfanalyticalCostId).ToList();
+                    if (analyticalcoststrength.Count > 0)
+                    {
+                        foreach (var item in analyticalcoststrength)
+                        {
+                            _pidfPbfAnalyticalCostStrengthMappingRepository.Remove(item);
+                        }
+                        await _unitOfWork.SaveChangesAsync();
+                    }
+                    foreach (var item in pbfentity.AMVCosts.StrengthId)
+                    {
+                        PidfPbfAnalyticalCostStrengthMapping objacsm = new();
+                        objacsm.StrengthId = item;
+                        objacsm.PbfanalyticalCostId = obganalyticalcost.PbfanalyticalCostId;
+                        objacsm.CreatedBy = loggedInUserId;
+                        objacsm.CreatedDate = DateTime.Now;
+                        objACSMList.Add(objacsm);
+                    }
+                    _pidfPbfAnalyticalCostStrengthMappingRepository.AddRange(objACSMList);
+                    await _unitOfWork.SaveChangesAsync();
+                }
+
+                //Save analytical cost end
                 #endregion
 
                 return pbfgeneralid;
