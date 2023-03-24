@@ -93,7 +93,7 @@ function addRowFinanceDetails(j) {
 function SaveClick() {
     //if ($('.readOnlyUpdate').val() !== null && $('.readOnlyUpdate').val()!=="") {
     $('#SaveType').val('submit');
-    $("#HfStatusRemark").val("Submitted");
+    /*$("#HfStatusRemark").val("Submitted");*/
         SetChildRows();
     //}
     //else {
@@ -103,7 +103,7 @@ function SaveClick() {
 function SaveDraftClick() {
     //if ($('.readOnlyUpdate').val() !== null && $('.readOnlyUpdate').val() !== "") {
     $('#SaveType').val('draft');
-    $("#HfStatusRemark").val("SavedAsDraft");
+    /*$("#HfStatusRemark").val("SavedAsDraft");*/
         SetChildRows();
     //}
     //else {

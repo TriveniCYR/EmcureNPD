@@ -361,6 +361,7 @@ namespace EmcureNPD.Business.Core.Implementation
                     //{
                     objPidf.LastStatusId = objPidf.StatusId;
                     objPidf.StatusId = saveTId;
+                    objPidf.StatusRemark = oApprRej.Comment;
                     //}
 
                     objPidf.StatusUpdatedBy = _helper.GetLoggedInUser().UserId;
@@ -403,6 +404,7 @@ namespace EmcureNPD.Business.Core.Implementation
                     {
                         objPidf.LastStatusId = objPidf.StatusId;
                         objPidf.StatusId = saveTId;
+                        objPidf.StatusRemark = oApprRej.Comment;
                     }
                     _repository.UpdateAsync(objPidf);
 

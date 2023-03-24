@@ -247,7 +247,7 @@ namespace EmcureNPD.Business.Core.Implementation
                         objPidf.StatusId = saveTId;
                         objPidf.StatusUpdatedBy = entityPidfFinance.CreatedBy;
                         objPidf.StatusUpdatedDate = DateTime.Now;
-						objPidf.StatusRemark = entityPidfFinance.StatusRemark;
+					   //objPidf.StatusRemark = entityPidfFinance.StatusRemark;
                         _pidfrepository.UpdateAsync(objPidf);
                         await _unitOfWork.SaveChangesAsync();
                     }
