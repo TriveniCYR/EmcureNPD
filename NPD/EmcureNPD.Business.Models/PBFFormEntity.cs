@@ -56,6 +56,8 @@ namespace EmcureNPD.Business.Models
         public string BusinessUnitsByUser { get; set; }
         public List<GeneralStrengthEntity> GeneralStrengthEntities { get; set; }
         public List<ClinicalEntity> ClinicalEntities { get; set; }
+        public List<AnalyticalEntity> AnalyticalEntities { get; set; }
+        public AMVCost AMVCosts { get; set; }
     }
     public class GeneralStrengthEntity {
         public long PBFGeneralId { get; set; }
@@ -74,5 +76,23 @@ namespace EmcureNPD.Business.Models
         public double? ClinicalCostAndVolume { get; set; }        
         public double? BioAnalyticalCostAndVolume { get; set; }
         public double? DocCostandStudy { get; set; }        
+    }
+    public class AnalyticalEntity
+    {
+        public long PBFAnalyticalId { get; set; }
+        public long PBFGeneralId { get; set; }
+        public long StrengthId { get; set; }
+        public int TestTypeId { get; set; }
+        public int ActivityTypeId { get; set; }
+        public string Numberoftests { get; set; }
+        public string PrototypeDevelopment { get; set; }
+        public int? CostPerTest { get; set; }
+        public int? PrototypeCost { get; set; }        
+    }
+    public class AMVCost {
+        public long PBFGeneralId { get; set; }
+        public int? TotalAMVCost { get; set; }
+        public string Remark { get; set; }
+        public int[] StrengthId { get; set; }
     }
 }

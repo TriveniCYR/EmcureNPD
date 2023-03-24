@@ -21,7 +21,7 @@ $('#Save').click(function () {
     $("#SaveType").val('Save');
 });
 $('#SaveDraft').click(function () {
-    $("#IsModelValid").val('Valid')
+    ValidateForm();// $("#IsModelValid").val('Valid')
     $("#SaveType").val('SaveDraft');
 });
 
