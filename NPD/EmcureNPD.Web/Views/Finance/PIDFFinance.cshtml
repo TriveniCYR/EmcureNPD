@@ -6361,9 +6361,7 @@ string jsVersion = @Configuration.GetSection("StaticJS")["version"];
                     @*<i class="fa fa-times" aria-hidden="true"></i>*@
                     Cancel</a>
 			</div>
-	</form>
-</div>
- @*ApproveModel*@
+        @*ApproveModel*@
         <div id="ApproveModel" class="modal themeModal" role="dialog">
             <div class="modal-dialog">
                 <!-- Modal content-->
@@ -6377,12 +6375,12 @@ string jsVersion = @Configuration.GetSection("StaticJS")["version"];
                             <div class="col-md-12">
                                 <div class="form-group">
                                     <p>@Html.Label(@SharedLocalizer["ApproveConfirm"])</p>
-                                    <textarea class="form-control" rows="3" id="textApproveStatusRemark"  placeholder="Comment"></textarea>
+                                    <textarea class="form-control" rows="3" id="textApproveStatusRemark" placeholder="Comment"></textarea>
                                 </div>
                             </div>
-                        </div>                        
+                        </div>
                         <div class="card-footer text-right">
-                            <button type="button" onclick="ApproveClick()" data-dismiss="modal" class="btn btn-success me-3 outside-buttons">@SharedLocalizer["Yes"]</button>
+                            <button type="submit" onclick="ApproveClick()" data-dismiss="modal" class="btn btn-success me-3 outside-buttons">@SharedLocalizer["Yes"]</button>
                             <a class="btn btn-danger me-3 outside-buttons" data-dismiss="modal">@SharedLocalizer["No"]</a>
                         </div>
                     </div>
@@ -6403,18 +6401,21 @@ string jsVersion = @Configuration.GetSection("StaticJS")["version"];
                             <div class="col-md-12">
                                 <div class="form-group">
                                     @Html.Label(@SharedLocalizer["RejectConfirm"])
-                                    <textarea class="form-control" rows="3" id="textRejectStatusRemark"  placeholder="Comment"></textarea>
+                                    <textarea class="form-control" rows="3" id="textRejectStatusRemark" placeholder="Comment"></textarea>
                                 </div>
                             </div>
                         </div>
                         <div class="card-footer text-center">
-                            <button type="button" onclick="RejectClick();" data-dismiss="modal" class="btn btn-success me-3 outside-buttons">@SharedLocalizer["Yes"]</button>
+                            <button type="submit" onclick="RejectClick();" data-dismiss="modal" class="btn btn-success me-3 outside-buttons">@SharedLocalizer["Yes"]</button>
                             <a class="btn btn-danger me-3 outside-buttons" data-dismiss="modal">@SharedLocalizer["No"]</a>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
+	</form>
+</div>
+ 
 @section MyScripts {
 	@*@Html.Partial("_DataTablePartial")*@
 <link rel="stylesheet" href="~/AdminLTE/plugins/select2/css/select2.min.css" />
