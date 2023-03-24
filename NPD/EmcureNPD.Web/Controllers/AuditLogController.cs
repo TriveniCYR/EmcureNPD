@@ -51,6 +51,11 @@ namespace EmcureNPD.Web.Controllers
 		public ActionResult AuditLogPartialView(DateTime createdDate, string createdBy,string log)
 		{
             ViewBag.log = JsonConvert.DeserializeObject(log);
+            if(createdBy=="null" || createdBy==null || createdBy == " ")
+            {
+                createdBy = "";
+            }
+            //createdBy = !string.IsNullOrEmpty(createdBy) ? createdBy : "";
 		    var Model = new AuditLogEntity { CreatedDate = createdDate, CreatedBy = createdBy };
 			return PartialView("_AuditLogPartialView", Model);
 		}
