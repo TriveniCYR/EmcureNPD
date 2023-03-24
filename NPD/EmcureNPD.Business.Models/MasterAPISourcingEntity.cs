@@ -7,8 +7,8 @@ namespace EmcureNPD.Business.Models
     public class MasterAPISourcingEntity
     {
         public int APISourcingId { get; set; }
-        [Required(ErrorMessageResourceType = typeof(Validation), ErrorMessageResourceName = "Required")]
-        [Display(Name = "APISourcingName", ResourceType = typeof(Master))]
+		[Required(ErrorMessage = "API Sourcing Name is required")]
+		[Display(Name = "APISourcingName", ResourceType = typeof(Master))]
 		[RegularExpression(@"^(?!\s*$).+", ErrorMessage = "The field cannot contain only spaces.")]
 		public string APISourcingName { get; set; }
         [Display(Name = "Active", ResourceType = typeof(Master))]
