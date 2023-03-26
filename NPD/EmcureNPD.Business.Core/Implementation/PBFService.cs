@@ -1312,7 +1312,7 @@ namespace EmcureNPD.Business.Core.Implementation
                 long pbfgeneralid = 0;
                 PidfPbf objPIDFPbf;
                 var loggedInUserId = _helper.GetLoggedInUser().UserId;
-                pbfgeneralid = 1; //await SavePidfAndPBFCommanDetails(pbfEntity.Pidfid, pbfEntity);
+                pbfgeneralid = await SavePidfAndPBFCommanDetails(pbfEntity.Pidfid, pbfEntity);
 
                 if (pbfgeneralid > 0)
                 {
@@ -1369,6 +1369,7 @@ namespace EmcureNPD.Business.Core.Implementation
             DropdownObjects.PIDFPBFGeneralStrength = dsDropdownOptions.Tables[2];
             DropdownObjects.PBFClinicalEntity = dsDropdownOptions.Tables[3];
             DropdownObjects.PBFAnalyticalEntity = dsDropdownOptions.Tables[4];
+            DropdownObjects.PBFAnalyticalCostEntity = dsDropdownOptions.Tables[5];
 
             return DropdownObjects;
         }
@@ -1568,33 +1569,36 @@ namespace EmcureNPD.Business.Core.Implementation
                     await _unitOfWork.SaveChangesAsync();
                 }
                 //Save analytical cost start
-                var analyticalcost = _PidfPbfAnalyticalCostsRepository.GetAllQuery().Where(x => x.PbfgeneralId == pbfgeneralid);
+                var analyticalcost = _PidfPbfAnalyticalCostsRepository.GetAllQuery().Where(x => x.PbfgeneralId == pbfgeneralid).FirstOrDefault();
+                long analyticalCostId;
                 if (analyticalcost!=null)
                 {
-                    foreach (var item in analyticalcost)
-                    {
-                        _PidfPbfAnalyticalCostsRepository.Remove(item);
-                    }
-                    await _unitOfWork.SaveChangesAsync();
+                    analyticalcost.TotalAmvcost = pbfentity.AMVCosts.TotalAmvcost;
+                    analyticalcost.Remark = pbfentity.AMVCosts.Remark;
+                    analyticalcost.CreatedDate = DateTime.Now;
+                    analyticalcost.CreatedBy = loggedInUserId;
+                    _PidfPbfAnalyticalCostsRepository.UpdateAsync(analyticalcost);
+                    analyticalCostId = analyticalcost.PbfanalyticalCostId;
                 }
-
-                PidfPbfAnalyticalCost obganalyticalcost = new PidfPbfAnalyticalCost();
-                obganalyticalcost = _mapperFactory.Get<AMVCost, PidfPbfAnalyticalCost>(pbfentity.AMVCosts);
-                obganalyticalcost.TotalAmvcost = pbfentity.AMVCosts.TotalAmvcost;
-                obganalyticalcost.Remark = pbfentity.AMVCosts.Remark;
-                obganalyticalcost.PbfgeneralId = pbfgeneralid;
-                obganalyticalcost.CreatedDate = DateTime.Now;
-                obganalyticalcost.CreatedBy = loggedInUserId;
-                _PidfPbfAnalyticalCostsRepository.AddAsync(obganalyticalcost);
+                else
+                {
+                    PidfPbfAnalyticalCost obganalyticalcost = new PidfPbfAnalyticalCost();
+                    obganalyticalcost = _mapperFactory.Get<AMVCost, PidfPbfAnalyticalCost>(pbfentity.AMVCosts);
+                    obganalyticalcost.TotalAmvcost = pbfentity.AMVCosts.TotalAmvcost;
+                    obganalyticalcost.Remark = pbfentity.AMVCosts.Remark;
+                    obganalyticalcost.PbfgeneralId = pbfgeneralid;
+                    obganalyticalcost.CreatedDate = DateTime.Now;
+                    obganalyticalcost.CreatedBy = loggedInUserId;
+                    _PidfPbfAnalyticalCostsRepository.AddAsync(obganalyticalcost);
+                    analyticalCostId = obganalyticalcost.PbfanalyticalCostId;
+                }
                 await _unitOfWork.SaveChangesAsync();
-
                 //Save analytical cost end
 
                 //Save analytical cost strength mapping start
-               
                 if (pidfpbfid > 0 && pbfentity.MarketMappingId.Length > 0)
                 {
-                    var analyticalcoststrength = _pidfPbfAnalyticalCostStrengthMappingRepository.GetAllQuery().Where(x => x.PbfanalyticalCostId == obganalyticalcost.PbfanalyticalCostId).ToList();
+                    var analyticalcoststrength = _pidfPbfAnalyticalCostStrengthMappingRepository.GetAllQuery().Where(x => x.PbfanalyticalCostId == analyticalCostId).ToList();
                     if (analyticalcoststrength.Count > 0)
                     {
                         foreach (var item in analyticalcoststrength)
@@ -1607,7 +1611,7 @@ namespace EmcureNPD.Business.Core.Implementation
                     {
                         PidfPbfAnalyticalCostStrengthMapping objacsm = new();
                         objacsm.StrengthId = item;
-                        objacsm.PbfanalyticalCostId = obganalyticalcost.PbfanalyticalCostId;
+                        objacsm.PbfanalyticalCostId = analyticalCostId;
                         objacsm.CreatedBy = loggedInUserId;
                         objacsm.CreatedDate = DateTime.Now;
                         objACSMList.Add(objacsm);

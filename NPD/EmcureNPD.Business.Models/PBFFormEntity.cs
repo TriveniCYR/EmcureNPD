@@ -54,10 +54,16 @@ namespace EmcureNPD.Business.Models
         public int StrengthId { get; set; }
         public string SaveType { get; set; }
         public string BusinessUnitsByUser { get; set; }
+        
         public List<GeneralStrengthEntity> GeneralStrengthEntities { get; set; }
+        
         public List<ClinicalEntity> ClinicalEntities { get; set; }
+
+        public string AnalyticalRawData { get; set; }
         public List<AnalyticalEntity> AnalyticalEntities { get; set; }
+        
         public AMVCost AMVCosts { get; set; }
+        
         public RNDEntity RNDEntities { get; set; }
         
 

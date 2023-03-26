@@ -526,6 +526,8 @@ namespace EmcureNPD.Web.Controllers
         {
             try
             {
+                pbfEntity.AnalyticalEntities = JsonConvert.DeserializeObject<List<AnalyticalEntity>>(pbfEntity.AnalyticalRawData);
+
                 string logUserId = Convert.ToString(HttpContext.Session.GetString(UserHelper.LoggedInUserId));
                 int rolId = (int)HttpContext.Session.GetInt32(UserHelper.LoggedInRoleId);
                 RolePermissionModel objPermssion = UtilityHelper.GetCntrActionAccess(Convert.ToString(RouteData.Values["controller"]), rolId);
