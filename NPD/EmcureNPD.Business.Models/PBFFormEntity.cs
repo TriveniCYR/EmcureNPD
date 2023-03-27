@@ -63,9 +63,12 @@ namespace EmcureNPD.Business.Models
         public List<AnalyticalEntity> AnalyticalEntities { get; set; }
         
         public AMVCost AMVCosts { get; set; }
-        
+
+        public string RNDExicipientRawData { get; set; }
+        public string RNDPackagingRawData { get; set; }
         public RNDEntity RNDEntities { get; set; }
-        
+        public List<RNDExicipient> RNDExicipients { get; set; }
+        public List<RNDPackaging> RNDPackagings { get; set; }
 
     }
     public class GeneralStrengthEntity {
@@ -109,16 +112,17 @@ namespace EmcureNPD.Business.Models
     {
         public long PBFRndId { get; set; }
         public long PBFGeneralId { get; set; }
-        public List<RNDExcipient> RNDExcipients { get; set; }
+        public List<RNDExicipient> RNDExcipients { get; set; }
         public List<RNDPackaging> RNDPackagings { get; set; }
     }
-    public class RNDExcipient {
+    public class RNDExicipient
+    {
         public long PIDFPBFRNDExicipientId { get; set; }
         public long PBFGeneralId { get; set; }
         public long StrengthId { get; set; }
         public int ActivityTypeId { get; set; }
         public string ExicipientPrototype { get; set; }
-        public string PrototypeDevelopment { get; set; }
+        public string ExicipientDevelopment { get; set; }
         public double? RsPerKg { get; set; }
         public string MgPerUnitDosage { get; set; }
     }
@@ -130,7 +134,7 @@ namespace EmcureNPD.Business.Models
         public int ActivityTypeId { get; set; }
         public int PackagingTypeId { get; set; }
         public string UnitOfMeasurement { get; set; }
-        public string PrototypeDevelopment { get; set; }
+        public string PackagingDevelopment { get; set; }
         public double? RsPerUnit { get; set; }
         public int? Quantity { get; set; }
     }

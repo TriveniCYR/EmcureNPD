@@ -526,8 +526,12 @@ namespace EmcureNPD.Web.Controllers
         {
             try
             {
+                //rnd json data
+                pbfEntity.RNDExicipients = JsonConvert.DeserializeObject<List<RNDExicipient>>(pbfEntity.RNDExicipientRawData);
+                pbfEntity.RNDPackagings = JsonConvert.DeserializeObject<List<RNDPackaging>>(pbfEntity.RNDPackagingRawData);
+                //Analytical json data
                 pbfEntity.AnalyticalEntities = JsonConvert.DeserializeObject<List<AnalyticalEntity>>(pbfEntity.AnalyticalRawData);
-
+                
                 string logUserId = Convert.ToString(HttpContext.Session.GetString(UserHelper.LoggedInUserId));
                 int rolId = (int)HttpContext.Session.GetInt32(UserHelper.LoggedInRoleId);
                 RolePermissionModel objPermssion = UtilityHelper.GetCntrActionAccess(Convert.ToString(RouteData.Values["controller"]), rolId);

@@ -89,12 +89,14 @@ namespace EmcureNPD.Business.Core.Implementation
         private IRepository<MasterFilingType> _masterFillingTypeRepository { get; set; }
         private IRepository<PidfPbfMarketMapping> _pidfPbfMarketMappingRepository { get; set; }
         private IRepository<PidfPbfGeneralStrength> _pidfPbfGeneralStrengthRepository { get; set; }
-		private IRepository<PidfPbfRnD> _pidfPbfRnDRepository { get; set; }
-		private IRepository<PidfPbfRnDExicipientPrototype> _pidfPbfRnDExicipientPrototype { get; set; }
+        private IRepository<PidfPbfRnD> _pidfPbfRnDRepository { get; set; }
+        private IRepository<PidfPbfRnDExicipientPrototype> _pidfPbfRnDExicipientPrototype { get; set; }
+        private IRepository<PidfPbfRnDExicipient> _pidfPbfRnDExicipientRepository { get; set; }
+        private IRepository<PidfPbfRnDPackaging> _pidfPbfRnDPackagingRepository { get; set; }
         private IRepository<PidfPbfAnalyticalCostStrengthMapping> _pidfPbfAnalyticalCostStrengthMappingRepository { get; set; }
-		//Market Extension & In House
+        //Market Extension & In House
 
-		public PBFService(IUnitOfWork unitOfWork, IMapperFactory mapperFactory, IMasterOralService oralService, IMasterUnitofMeasurementService unitofMeasurementService,
+        public PBFService(IUnitOfWork unitOfWork, IMapperFactory mapperFactory, IMasterOralService oralService, IMasterUnitofMeasurementService unitofMeasurementService,
             IMasterDosageFormService dosageFormService, IMasterPackagingTypeService packagingTypeService, IMasterBusinessUnitService businessUnitService,
             IMasterCountryService countryService, IMasterAPISourcingService masterAPISourcingService, IPidfApiDetailsService pidfApiDetailsService,
             IPidfProductStrengthService pidfProductStrengthService, IMasterDIAService masterDium, IMasterMarketExtensionService masterMarketExtensionService,
@@ -153,10 +155,12 @@ namespace EmcureNPD.Business.Core.Implementation
             _masterFillingTypeRepository = _unitOfWork.GetRepository<MasterFilingType>();
             _pidfPbfMarketMappingRepository = _unitOfWork.GetRepository<PidfPbfMarketMapping>();
             _pidfPbfGeneralStrengthRepository = _unitOfWork.GetRepository<PidfPbfGeneralStrength>();
-			_pidfPbfRnDRepository = _unitOfWork.GetRepository<PidfPbfRnD>();
-			_pidfPbfRnDExicipientPrototype = _unitOfWork.GetRepository<PidfPbfRnDExicipientPrototype>();
+            _pidfPbfRnDRepository = _unitOfWork.GetRepository<PidfPbfRnD>();
+            _pidfPbfRnDExicipientPrototype = _unitOfWork.GetRepository<PidfPbfRnDExicipientPrototype>();
             _pidfPbfAnalyticalCostStrengthMappingRepository = _unitOfWork.GetRepository<PidfPbfAnalyticalCostStrengthMapping>();
-            
+            _pidfPbfRnDExicipientRepository = _unitOfWork.GetRepository<PidfPbfRnDExicipient>();
+            _pidfPbfRnDPackagingRepository = _unitOfWork.GetRepository<PidfPbfRnDPackaging>();
+
 
         }
 
@@ -1261,7 +1265,7 @@ namespace EmcureNPD.Business.Core.Implementation
         //}
 
 
-      
+
 
         public async Task<PBFFormEntity> GetPbfFormDetails(long pidfId, int buid, int? strengthid)
         {
@@ -1275,11 +1279,11 @@ namespace EmcureNPD.Business.Core.Implementation
             var data = new PBFFormEntity();
             //data.MasterBusinessUnitEntities = _businessUnitService.GetAll().Result.Where(xx => xx.IsActive).ToList();
             //data.MasterStrengthEntities = _productStrengthService.GetAll().Result.Where(x => x.Pidfid == pidfId).ToList();
-            data.BusinessUnitId = buid;            
+            data.BusinessUnitId = buid;
             data.Pidfid = pidfId;
             data.StrengthId = (int)strengthid;
             // PBF Entity Mapping
-           
+
             PBFFormEntity _PbfaformEntity = new PBFFormEntity();
             SqlParameter[] osqlParameter = {
                     new SqlParameter("@PIDFID", pidfId),
@@ -1295,7 +1299,7 @@ namespace EmcureNPD.Business.Core.Implementation
             {
                 if (dbresult.Tables[0] != null && dbresult.Tables[0].Rows.Count > 0)
                 {
-                    data = dbresult.Tables[0].DataTableToList<PBFFormEntity>()[0];                                       
+                    data = dbresult.Tables[0].DataTableToList<PBFFormEntity>()[0];
                 }
                 if (dbresult.Tables[1] != null && dbresult.Tables[1].Rows.Count > 0)
                 {
@@ -1334,31 +1338,31 @@ namespace EmcureNPD.Business.Core.Implementation
                 return DBOperation.Error;
             }
         }
-		#region saving RnD Details
-		public async Task<DBOperation> AddUpdateRnD(PidfPbfGeneralEntity PidfPbfGeneralEntity)
-		{
-			//PidfPbfGeneral objpidfPbfGeneral;
+        #region saving RnD Details
+        public async Task<DBOperation> AddUpdateRnD(PidfPbfGeneralEntity PidfPbfGeneralEntity)
+        {
+            //PidfPbfGeneral objpidfPbfGeneral;
             List<PidfPbfRnDExicipientPrototypeEntity> lspidfPbfRnDExicipientPrototypeEntity = new List<PidfPbfRnDExicipientPrototypeEntity>();
-			var loggedInUserId = _helper.GetLoggedInUser().UserId;
-			var pbfgeneralid = await SavePidfAndPBFCommanDetails(PidfPbfGeneralEntity.PIDFID, PidfPbfGeneralEntity.objPBFFormEntity);
-			//objpidfPbfGeneral=_pidfPbfGeneralRepository.GetAll().Where(x=>x.PbfgeneralId== pbfgeneralid).First();
+            var loggedInUserId = _helper.GetLoggedInUser().UserId;
+            var pbfgeneralid = await SavePidfAndPBFCommanDetails(PidfPbfGeneralEntity.PIDFID, PidfPbfGeneralEntity.objPBFFormEntity);
+            //objpidfPbfGeneral=_pidfPbfGeneralRepository.GetAll().Where(x=>x.PbfgeneralId== pbfgeneralid).First();
 
-			var isSuccess = await _auditLogService.CreateAuditLog<PidfPbfGeneralEntity>(pbfgeneralid > 0 ? Utility.Audit.AuditActionType.Update : Utility.Audit.AuditActionType.Create,
-						  Utility.Enums.ModuleEnum.PBF, PidfPbfGeneralEntity, PidfPbfGeneralEntity, Convert.ToInt32(pbfgeneralid));
-			await _unitOfWork.SaveChangesAsync();
-			var _StatusID = (PidfPbfGeneralEntity.SaveType == "Save") ? Master_PIDFStatus.PBFSubmitted : Master_PIDFStatus.PBFInProgress;
-			await _auditLogService.UpdatePIDFStatusCommon(pbfgeneralid, (int)_StatusID, loggedInUserId);
+            var isSuccess = await _auditLogService.CreateAuditLog<PidfPbfGeneralEntity>(pbfgeneralid > 0 ? Utility.Audit.AuditActionType.Update : Utility.Audit.AuditActionType.Create,
+                          Utility.Enums.ModuleEnum.PBF, PidfPbfGeneralEntity, PidfPbfGeneralEntity, Convert.ToInt32(pbfgeneralid));
+            await _unitOfWork.SaveChangesAsync();
+            var _StatusID = (PidfPbfGeneralEntity.SaveType == "Save") ? Master_PIDFStatus.PBFSubmitted : Master_PIDFStatus.PBFInProgress;
+            await _auditLogService.UpdatePIDFStatusCommon(pbfgeneralid, (int)_StatusID, loggedInUserId);
 
-			return DBOperation.Success;
-		}
+            return DBOperation.Success;
+        }
         #endregion
-        public async Task<dynamic> PBFAllTabDetails(int PIDFId,int BUId)
+        public async Task<dynamic> PBFAllTabDetails(int PIDFId, int BUId)
         {
             dynamic DropdownObjects = new ExpandoObject();
 
             var loggedInUserId = _helper.GetLoggedInUser().UserId;
 
-            SqlParameter[] osqlParameter = {                
+            SqlParameter[] osqlParameter = {
                 new SqlParameter("@PIDFId", PIDFId),
                 new SqlParameter("@BUId", BUId)
             };
@@ -1370,6 +1374,8 @@ namespace EmcureNPD.Business.Core.Implementation
             DropdownObjects.PBFClinicalEntity = dsDropdownOptions.Tables[3];
             DropdownObjects.PBFAnalyticalEntity = dsDropdownOptions.Tables[4];
             DropdownObjects.PBFAnalyticalCostEntity = dsDropdownOptions.Tables[5];
+            DropdownObjects.PBFRNDExicipientEntity = dsDropdownOptions.Tables[6];
+            DropdownObjects.PBFRNDPackagingEntity = dsDropdownOptions.Tables[7];
 
             return DropdownObjects;
         }
@@ -1386,7 +1392,7 @@ namespace EmcureNPD.Business.Core.Implementation
                 var loggedInUserId = _helper.GetLoggedInUser().UserId;
                 PidfPbf objPIDFPbf;
                 Pidf objPIDFupdate;
-                objPIDFPbf = _pbfRepository.GetAllQuery().Where(x=> x.Pidfid == pbfentity.Pidfid).FirstOrDefault();
+                objPIDFPbf = _pbfRepository.GetAllQuery().Where(x => x.Pidfid == pbfentity.Pidfid).FirstOrDefault();
                 if (objPIDFPbf != null)
                 {
                     objPIDFPbf = _mapperFactory.Get<PBFFormEntity, PidfPbf>(pbfentity);
@@ -1458,7 +1464,7 @@ namespace EmcureNPD.Business.Core.Implementation
                 #endregion
 
                 #region Update PIDF
-                objPIDFupdate = objPIDFupdate = _repository.GetAllQuery().Where(x=> x.Pidfid == pidfid).FirstOrDefault(); 
+                objPIDFupdate = objPIDFupdate = _repository.GetAllQuery().Where(x => x.Pidfid == pidfid).FirstOrDefault();
                 //_repository.GetAll().Where(x => x.Pidfid == pidfid).FirstOrDefault();
                 if (objPIDFupdate != null)
                 {
@@ -1506,7 +1512,7 @@ namespace EmcureNPD.Business.Core.Implementation
                 #endregion
 
                 #region Section Clinical Add Update
-                 List<PidfPbfClinical> objClinicallist = new();
+                List<PidfPbfClinical> objClinicallist = new();
                 if (pbfgeneralid > 0)
                 {
                     var clinical = _pidfPbfClinicalRepository.GetAllQuery().Where(x => x.PbfgeneralId == pbfgeneralid).ToList();
@@ -1571,7 +1577,7 @@ namespace EmcureNPD.Business.Core.Implementation
                 //Save analytical cost start
                 var analyticalcost = _PidfPbfAnalyticalCostsRepository.GetAllQuery().Where(x => x.PbfgeneralId == pbfgeneralid).FirstOrDefault();
                 long analyticalCostId;
-                if (analyticalcost!=null)
+                if (analyticalcost != null)
                 {
                     analyticalcost.TotalAmvcost = pbfentity.AMVCosts.TotalAmvcost;
                     analyticalcost.Remark = pbfentity.AMVCosts.Remark;
@@ -1621,6 +1627,74 @@ namespace EmcureNPD.Business.Core.Implementation
                 }
 
                 //Save analytical cost end
+                #endregion
+
+
+                #region RND Add Update
+                #region RND Excipient Add Update
+                List<PidfPbfRnDExicipient> objExicipientlist = new();
+                if (pbfgeneralid > 0)
+                {
+                    var exicipient = _pidfPbfRnDExicipientRepository.GetAllQuery().Where(x => x.PbfgeneralId == pbfgeneralid).ToList();
+                    if (exicipient.Count > 0)
+                    {
+                        foreach (var item in exicipient)
+                        {
+                            _pidfPbfRnDExicipientRepository.Remove(item);
+                        }
+                        await _unitOfWork.SaveChangesAsync();
+                    }
+                }
+
+                //Save Exicipient Entities
+                if (pbfentity.RNDExicipients != null && pbfentity.RNDExicipients.Count() > 0)
+                {
+                    foreach (var item in pbfentity.RNDExicipients)
+                    {
+                        PidfPbfRnDExicipient obgexcipient = new PidfPbfRnDExicipient();
+                        obgexcipient = _mapperFactory.Get<RNDExicipient, PidfPbfRnDExicipient>(item);
+                        obgexcipient.PbfgeneralId = pbfgeneralid;
+                        obgexcipient.CreatedDate = DateTime.Now;
+                        obgexcipient.CreatedBy = loggedInUserId;
+                        objExicipientlist.Add(obgexcipient);
+                    }
+                    _pidfPbfRnDExicipientRepository.AddRangeAsync(objExicipientlist);
+                    await _unitOfWork.SaveChangesAsync();
+                }
+
+                #endregion
+                #region RND Packaging Add Update
+                List<PidfPbfRnDPackaging> objPackaginglist = new();
+                if (pbfgeneralid > 0)
+                {
+                    var packging = _pidfPbfRnDPackagingRepository.GetAllQuery().Where(x => x.PbfgeneralId == pbfgeneralid).ToList();
+                    if (packging.Count > 0)
+                    {
+                        foreach (var item in packging)
+                        {
+                            _pidfPbfRnDPackagingRepository.Remove(item);
+                        }
+                        await _unitOfWork.SaveChangesAsync();
+                    }
+                }
+
+                //Save Packaging Entities
+                if (pbfentity.RNDPackagings != null && pbfentity.RNDPackagings.Count() > 0)
+                {
+                    foreach (var item in pbfentity.RNDPackagings)
+                    {
+                        PidfPbfRnDPackaging obgpackaging = new PidfPbfRnDPackaging();
+                        obgpackaging = _mapperFactory.Get<RNDPackaging, PidfPbfRnDPackaging>(item);
+                        obgpackaging.PbfgeneralId = pbfgeneralid;
+                        obgpackaging.CreatedDate = DateTime.Now;
+                        obgpackaging.CreatedBy = loggedInUserId;
+                        objPackaginglist.Add(obgpackaging);
+                    }
+                    _pidfPbfRnDPackagingRepository.AddRangeAsync(objPackaginglist);
+                    await _unitOfWork.SaveChangesAsync();
+                }
+
+                #endregion
                 #endregion
 
                 return pbfgeneralid;

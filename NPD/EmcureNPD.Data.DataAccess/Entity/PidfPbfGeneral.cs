@@ -15,6 +15,8 @@ namespace EmcureNPD.Data.DataAccess.Entity
             PidfPbfGeneralStrengths = new HashSet<PidfPbfGeneralStrength>();
             PidfPbfRnDExicipientPrototypes = new HashSet<PidfPbfRnDExicipientPrototype>();
             PidfPbfRnDExicipientScaleUps = new HashSet<PidfPbfRnDExicipientScaleUp>();
+            PidfPbfRnDExicipients = new HashSet<PidfPbfRnDExicipient>();
+            PidfPbfRnDPackagings = new HashSet<PidfPbfRnDPackaging>();
         }
 
         public long PbfgeneralId { get; set; }
@@ -43,5 +45,7 @@ namespace EmcureNPD.Data.DataAccess.Entity
         public virtual ICollection<PidfPbfGeneralStrength> PidfPbfGeneralStrengths { get; set; }
         public virtual ICollection<PidfPbfRnDExicipientPrototype> PidfPbfRnDExicipientPrototypes { get; set; }
         public virtual ICollection<PidfPbfRnDExicipientScaleUp> PidfPbfRnDExicipientScaleUps { get; set; }
+        public virtual ICollection<PidfPbfRnDExicipient> PidfPbfRnDExicipients { get; set; }
+        public virtual ICollection<PidfPbfRnDPackaging> PidfPbfRnDPackagings { get; set; }
     }
 }
