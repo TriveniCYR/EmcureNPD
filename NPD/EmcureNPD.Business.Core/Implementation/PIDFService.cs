@@ -352,24 +352,28 @@ namespace EmcureNPD.Business.Core.Implementation
 
                 for (int i = 0; i < oApprRej.PidfIds.Count; i++)
                 {
-                    Pidf objPidf = await _repository.GetAsync(oApprRej.PidfIds[i].pidfId);
-                    //if (oApprRej.SaveType == "D")
-                    //{
-                    //    objPidf.IsActive = false;
-                    //}
-                    //else
-                    //{
-                    objPidf.LastStatusId = objPidf.StatusId;
-                    objPidf.StatusId = saveTId;
-                    objPidf.StatusRemark = oApprRej.Comment;
-                    //}
+                    Pidf objPidf;
+                    if (oApprRej.PidfIds[i].pidfId > 0)
+                    {
+                        objPidf = await _repository.GetAsync(oApprRej.PidfIds[i].pidfId);
+                        //if (oApprRej.SaveType == "D")
+                        //{
+                        //    objPidf.IsActive = false;
+                        //}
+                        //else
+                        //{
+                        objPidf.LastStatusId = objPidf.StatusId;
+                        objPidf.StatusId = saveTId;
+                        objPidf.StatusRemark = oApprRej.Comment;
+                        //}
 
-                    objPidf.StatusUpdatedBy = _helper.GetLoggedInUser().UserId;
-                    objPidf.StatusUpdatedDate = DateTime.Now;
+                        objPidf.StatusUpdatedBy = _helper.GetLoggedInUser().UserId;
+                        objPidf.StatusUpdatedDate = DateTime.Now;
 
-                    _repository.UpdateAsync(objPidf);
+                        _repository.UpdateAsync(objPidf);
 
-                    await _unitOfWork.SaveChangesAsync();
+                        await _unitOfWork.SaveChangesAsync();
+                    }
                 }
                 //var isSuccess = await _auditLogService.CreateAuditLog<EntryApproveRej>(oApprRej.SaveType == "D" ? Utility.Audit.AuditActionType.Delete : Utility.Audit.AuditActionType.Update,
                 //   Utility.Enums.ModuleEnum.PIDF, oApprRej, oApprRej, 0);

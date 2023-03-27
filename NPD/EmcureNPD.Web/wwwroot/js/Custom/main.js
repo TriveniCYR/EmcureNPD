@@ -198,7 +198,7 @@ function ApproveRejectConfirm() {
         var objApproveRejectList = [];
         var _numberPIDFIds = _PIDFIds.split(",").map(Number);
         $.each(_numberPIDFIds, function (index, item) {
-            objApproveRejectList.push({ PidfIds: item });
+            objApproveRejectList.push({ pidfId: item });
         });
 
         var objIds = {
