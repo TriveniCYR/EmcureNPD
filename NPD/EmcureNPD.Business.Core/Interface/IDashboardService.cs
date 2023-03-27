@@ -10,6 +10,6 @@ namespace EmcureNPD.Business.Core.Interface
     public interface IDashboardService
     {
         Task<dynamic> FillDropdown();        
-        Task<dynamic> GetPIDFByYearAndBusinessUnit(int id, string years);        
+        Task<dynamic> GetPIDFByYearAndBusinessUnit(int id, string fromDate,string toDate);        
     }
 }

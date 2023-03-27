@@ -208,6 +208,7 @@ namespace EmcureNPD.Web.Controllers
                         {
                             Listmanager.Add(new Manager
                             {
+								UserId=item.userId,
                                 ManagerName = item.managerName,
                                 DesignationName=item.designationName
 

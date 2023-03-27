@@ -26,6 +26,7 @@ namespace EmcureNPD.Business.Models
     }
     public class Manager
     {
+        public long UserId { get; set; }
         public string ManagerName { get; set; }
         public string DesignationName { get; set; } 
     }
