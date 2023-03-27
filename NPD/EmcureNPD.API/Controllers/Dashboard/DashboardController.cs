@@ -66,12 +66,12 @@ namespace EmcureNPD.API.Controllers.Dashboard
             }
         }
 
-        [HttpGet, Route("GetPIDFByYearAndBusinessUnit/{id}/{years}")]
-        public async Task<IActionResult> GetPIDFByYearAndBusinessUnit([FromRoute] int id,[FromRoute]string years)
+        [HttpGet, Route("GetPIDFByYearAndBusinessUnit/{id}/{fromDate}/{toDate}")]
+        public async Task<IActionResult> GetPIDFByYearAndBusinessUnit([FromRoute] int id,[FromRoute]string fromDate, [FromRoute]string toDate)
         {
             try
             {
-                var data = await _dashboardService.GetPIDFByYearAndBusinessUnit(id,years);
+                var data = await _dashboardService.GetPIDFByYearAndBusinessUnit(id,fromDate,toDate);
                 return _ObjectResponse.CreateData(data, (Int32)HttpStatusCode.OK);
             }
             catch (Exception e)
