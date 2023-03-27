@@ -1,7 +1,9 @@
 ﻿@using EmcureNPD.Web.Controllers
+@using EmcureNPD.Web.Helpers;
 @using Microsoft.AspNetCore.Http
 @using Microsoft.AspNetCore.Mvc.Localization
 @inject IHttpContextAccessor HttpContextAccessor
+@inject IHelper Helper
 @inject Microsoft.Extensions.Localization.IStringLocalizer<MastersController> MasterLocalizer
 @inject Microsoft.Extensions.Localization.IStringLocalizer<EmcureNPD.Resource.Shared> SharedLocalizer
 @using EmcureNPD.Utility.Utility
@@ -9,9 +11,10 @@
 @using EmcureNPD.Business.Models
 @model EmcureNPD.Business.Models.ProjectsModel
 @{
-var PidafId=Context.Request.Query["pidfid"];
-}
-
+    int CurrentUserId = Helper.GetLoggedInUserId();
+    var PidafId=Context.Request.Query["pidfid"];
+    
+  }
 <section class="content-wrapper p-3 pb-4">
     <div class="container-fluid background-white-card">
         <form class="row">
@@ -574,33 +577,20 @@ var PidafId=Context.Request.Query["pidfid"];
                     foreach (var item in Model.lsManager)
                     {
                         <div class="col-4 text-center mt-5">
+                            @if (item.UserId == CurrentUserId) //CurrentUserId)1048
+                            {
+
+                                <a class="btn btn-success operationButton" onClick="ApproveRejectClick('A', '@PidafId', @((int)EmcureNPD.Utility.Enums.PIDFScreen.Management), '/PIDF/PIDFList?ScreenId=@((int)EmcureNPD.Utility.Enums.PIDFScreen.Management)')"><i class="fa fa-check-circle mr-1"></i> @SharedLocalizer["Approve"]</a>
+                                <a class="btn btn-danger  operationButton" onClick="ApproveRejectClick('R', '@PidafId', @((int)EmcureNPD.Utility.Enums.PIDFScreen.Management), '/PIDF/PIDFList?ScreenId=@((int)EmcureNPD.Utility.Enums.PIDFScreen.Management)')"><i class="fa fa-ban mr-1"></i> @SharedLocalizer["Reject"]</a>
+                            }
                             <h6 class="m-0 fw-bold">@item.ManagerName</h6>
                             <p class="m-0 fw-bold">@item.DesignationName</p>
                         </div>
-                       @* <div class="col-4 text-center mt-5">
-                            <h6 class="m-0 fw-bold">@item.ManagerName</h6>
-                            <p class="m-0 fw-bold">Associate Director (R&D)</p>
-                        </div>
-                        <div class="col-4 text-center mt-5">
-                            <h6 class="m-0 fw-bold">@item.ManagerName</h6>
-                            <p class="m-0 fw-bold">Associate Director (R&D)</p>
-                        </div>
-                        <div class="col-4 text-center mt-5">
-                            <h6 class="m-0 fw-bold">@item.ManagerName</h6>
-                            <p class="m-0 fw-bold">Associate Director (R&D)</p>
-                        </div>
-                        <div class="col-4 text-center mt-5">
-                            <h6 class="m-0 fw-bold">@item.ManagerName</h6>
-                            <p class="m-0 fw-bold">Associate Director (R&D)</p>
-                        </div>
-                        <div class="col-4 text-center mt-5">
-                            <h6 class="m-0 fw-bold">@item.ManagerName</h6>
-                            <p class="m-0 fw-bold">Associate Director (R&D)</p>
-                        </div>*@
+                      
                     }
                 }
             </div>
-           
+            @Html.Partial("_PIDFApproveReject");
         </form>
     </div>
 </section>

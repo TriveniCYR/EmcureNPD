@@ -29,6 +29,7 @@ namespace EmcureNPD.Web.Models
 
     public class ManagerView
     {
+        public long userId { get; set; } 
         public string managerName { get; set; }
         public string designationName { get; set; }
     }
