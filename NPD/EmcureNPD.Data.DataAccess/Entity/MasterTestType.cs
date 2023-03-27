@@ -19,6 +19,8 @@ namespace EmcureNPD.Data.DataAccess.Entity
         public DateTime CreatedDate { get; set; }
         public int? ModifyBy { get; set; }
         public DateTime? ModifyDate { get; set; }
+        public string TestTypeCode { get; set; }
+        public int? TestTypePrice { get; set; }
 
         public virtual ICollection<PidfPbfAnalytical> PidfPbfAnalyticals { get; set; }
     }

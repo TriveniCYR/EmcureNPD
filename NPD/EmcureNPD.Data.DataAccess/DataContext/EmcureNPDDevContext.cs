@@ -2,7 +2,6 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata;
 using EmcureNPD.Data.DataAccess.Entity;
-using EmcureNPD.Utility;
 
 #nullable disable
 
@@ -102,9 +101,11 @@ namespace EmcureNPD.Data.DataAccess.DataContext
         public virtual DbSet<PidfPbfGeneral> PidfPbfGenerals { get; set; }
         public virtual DbSet<PidfPbfGeneralStrength> PidfPbfGeneralStrengths { get; set; }
         public virtual DbSet<PidfPbfMarketMapping> PidfPbfMarketMappings { get; set; }
+        public virtual DbSet<PidfPbfRnDExicipient> PidfPbfRnDExicipients { get; set; }
         public virtual DbSet<PidfPbfRnDExicipientPrototype> PidfPbfRnDExicipientPrototypes { get; set; }
         public virtual DbSet<PidfPbfRnDExicipientRequirement> PidfPbfRnDExicipientRequirements { get; set; }
         public virtual DbSet<PidfPbfRnDExicipientScaleUp> PidfPbfRnDExicipientScaleUps { get; set; }
+        public virtual DbSet<PidfPbfRnDPackaging> PidfPbfRnDPackagings { get; set; }
         public virtual DbSet<Pidfapidetail> Pidfapidetails { get; set; }
         public virtual DbSet<PidfproductStrength> PidfproductStrengths { get; set; }
         public virtual DbSet<PidfstatusHistory> PidfstatusHistories { get; set; }
@@ -117,7 +118,7 @@ namespace EmcureNPD.Data.DataAccess.DataContext
             if (!optionsBuilder.IsConfigured)
             {
 #warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see http://go.microsoft.com/fwlink/?LinkId=723263.
-                optionsBuilder.UseSqlServer(DatabaseConnection.NPDDatabaseConnection);
+                optionsBuilder.UseSqlServer("Data Source=180.149.241.172;Initial Catalog=EmcureNPDDev;Persist Security Info=True;User ID=emcurenpddev_dbUser;pwd=emcure123!@#");
             }
         }
 
@@ -843,6 +844,8 @@ namespace EmcureNPD.Data.DataAccess.DataContext
                 entity.Property(e => e.CreatedDate).HasColumnType("datetime");
 
                 entity.Property(e => e.ModifyDate).HasColumnType("datetime");
+
+                entity.Property(e => e.TestTypeCode).HasMaxLength(6);
 
                 entity.Property(e => e.TestTypeName).HasMaxLength(100);
             });
@@ -2156,6 +2159,35 @@ namespace EmcureNPD.Data.DataAccess.DataContext
                     .HasConstraintName("FK_PIDF_PBF_MarketMapping_PIDF_PBF");
             });
 
+            modelBuilder.Entity<PidfPbfRnDExicipient>(entity =>
+            {
+                entity.ToTable("PIDF_PBF_RnD_Exicipient", "dbo");
+
+                entity.Property(e => e.PidfpbfrndexicipientId).HasColumnName("PIDFPBFRNDExicipientId");
+
+                entity.Property(e => e.CreatedDate).HasColumnType("datetime");
+
+                entity.Property(e => e.ExicipientDevelopment).HasMaxLength(100);
+
+                entity.Property(e => e.ExicipientPrototype).HasMaxLength(20);
+
+                entity.Property(e => e.MgPerUnitDosage).HasMaxLength(80);
+
+                entity.Property(e => e.PbfgeneralId).HasColumnName("PBFGeneralId");
+
+                entity.HasOne(d => d.Pbfgeneral)
+                    .WithMany(p => p.PidfPbfRnDExicipients)
+                    .HasForeignKey(d => d.PbfgeneralId)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("FK_PIDF_PBF_RnD_Exicipient_PIDF_PBF_General");
+
+                entity.HasOne(d => d.Strength)
+                    .WithMany(p => p.PidfPbfRnDExicipients)
+                    .HasForeignKey(d => d.StrengthId)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("FK_PIDF_PBF_RnD_Exicipient_PIDFProductStrength");
+            });
+
             modelBuilder.Entity<PidfPbfRnDExicipientPrototype>(entity =>
             {
                 entity.HasKey(e => e.ExicipientProtoypeId);
@@ -2217,6 +2249,38 @@ namespace EmcureNPD.Data.DataAccess.DataContext
                     .HasForeignKey(d => d.PidfPbfGeneralId)
                     .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("FK_PIDF_PBF_RnD_ExicipientScaleUp_PIDF_PBF_General");
+            });
+
+            modelBuilder.Entity<PidfPbfRnDPackaging>(entity =>
+            {
+                entity.ToTable("PIDF_PBF_RnD_Packaging", "dbo");
+
+                entity.Property(e => e.PidfpbfrndpackagingId).HasColumnName("PIDFPBFRNDPackagingId");
+
+                entity.Property(e => e.CreatedDate).HasColumnType("datetime");
+
+                entity.Property(e => e.PackagingDevelopment).HasMaxLength(100);
+
+                entity.Property(e => e.PbfgeneralId).HasColumnName("PBFGeneralId");
+
+                entity.Property(e => e.UnitOfMeasurement).HasMaxLength(20);
+
+                entity.HasOne(d => d.PackagingType)
+                    .WithMany(p => p.PidfPbfRnDPackagings)
+                    .HasForeignKey(d => d.PackagingTypeId)
+                    .HasConstraintName("FK_PIDF_PBF_RnD_Packaging_Master_PackagingType");
+
+                entity.HasOne(d => d.Pbfgeneral)
+                    .WithMany(p => p.PidfPbfRnDPackagings)
+                    .HasForeignKey(d => d.PbfgeneralId)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("FK_PIDF_PBF_RnD_Packaging_PIDF_PBF_General");
+
+                entity.HasOne(d => d.Strength)
+                    .WithMany(p => p.PidfPbfRnDPackagings)
+                    .HasForeignKey(d => d.StrengthId)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("FK_PIDF_PBF_RnD_Packaging_PIDFProductStrength");
             });
 
             modelBuilder.Entity<Pidfapidetail>(entity =>

@@ -40,7 +40,7 @@
                         @Html.LabelFor(model => model.MarketMappingId,@SharedLocalizer["Market"], new { @class = "control-label" })
                         <span class="text-danger">*</span>
                         @*<select id="BusinessUnitId" name="BusinessUnitId" class="form-control readOnlyUpdate" required></select>*@
-                        @Html.DropDownListFor(model => model.MarketMappingId, new List<SelectListItem> { }, new { @class = "form-control", @multiple = "multiple", @required = "required" })
+                        @Html.DropDownListFor(model => model.MarketMappingId, new List<SelectListItem> { }, new { @class = "form-control market", @multiple = "multiple", @required = "required" })
                         <input type="hidden" id="hdnMarketMappingIds" value="@Model.MarketIds" />
                         @Html.ValidationMessageFor(model => model.MarketMappingId, "", new { @class = "text-danger" })
                     </div>
@@ -421,8 +421,10 @@
                                 <div class="row">
                                     <table id="tablerndexicipientrequirement" class="table text-center" style="width:100%">
                                     </table>
+                                     <input type="hidden" id="hdnrndExicipientData" name="RNDExicipientRawData" />
                                      <table id="tablerndpackagingmaterialrequirement" class="table text-center" style="width:100%">
                                     </table>
+                                     <input type="hidden" id="hdnrndPackagingData" name="RNDPackagingRawData" />
                                 </div>
                             </div>
                         </div>
