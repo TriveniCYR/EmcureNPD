@@ -15,10 +15,10 @@
     ViewData["Title"] = @MasterLocalizer["APIRndDetails"];
     string countryName = string.Empty;
     string jsVersion = @Configuration.GetSection("StaticJS")["version"];
-    if (@Model.IPEvalution.CountryIds != null && @Model.IPEvalution.MasterCountries != null)
+    if (@Model.IPEvalution.CountryIds != null && @Model.MasterCountries != null)
     {
         int countryid = Convert.ToInt32(@Model.IPEvalution.CountryIds);
-        var _objcountry = @Model.IPEvalution.MasterCountries.Find(x => x.CountryId == countryid);
+        var _objcountry = @Model.MasterCountries.Find(x => x.CountryId == countryid);
         countryName = (_objcountry == null) ? string.Empty : _objcountry.CountryName;
     }
 }

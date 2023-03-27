@@ -44,10 +44,11 @@ namespace EmcureNPD.Business.Core.Implementation
         private readonly IMasterAuditLogService _auditLogService;
         private IRepository<Pidf> _repository { get; set; }      
         private readonly IHelper _helper;
+        private readonly IMasterCountryService _countryService;
 
         public APIService(IUnitOfWork unitOfWork, IMapperFactory mapperFactory,
             Microsoft.Extensions.Configuration.IConfiguration configuration, IMasterProductTypeService masterProductTypeService,
-            IMasterAuditLogService auditLogService, IHelper helper)
+            IMasterCountryService countryService,IMasterAuditLogService auditLogService, IHelper helper)
         {
             _unitOfWork = unitOfWork;
             _mapperFactory = mapperFactory;          
@@ -60,6 +61,7 @@ namespace EmcureNPD.Business.Core.Implementation
             _auditLogService = auditLogService;
             _configuration = configuration;
             _helper = helper;
+            _countryService = countryService;
         }
 
         //------------Start------API_Functions_Kuldip--------------------------
@@ -214,12 +216,12 @@ namespace EmcureNPD.Business.Core.Implementation
         }
         public async Task<PIDFAPIIPDFormEntity> GetAPIIPDFormData(long pidfId, string HostValue)
         {
-
+            
             PIDFAPIIPDFormEntity _oApiIpdData = new PIDFAPIIPDFormEntity();
             var _oAPIIPD = await _pidf_API_IPD_repository.GetAsync(x => x.Pidfid == pidfId);
             if (_oAPIIPD != null)
             {               
-                string baseURL =  "https://"+HostValue+ "/Uploads/PIDF/APIIPD";
+                string baseURL =  HostValue+ "/Uploads/PIDF/APIIPD";
                 var fullPath = baseURL + "/" + _oAPIIPD.MarketDetailsFileName;                
                 _oApiIpdData.DrugsCategory = _oAPIIPD.DrugsCategory;
                 _oApiIpdData.ProductTypeId = (int)_oAPIIPD.ProductTypeId;
@@ -228,6 +230,7 @@ namespace EmcureNPD.Business.Core.Implementation
                 _oApiIpdData.MarketDetailsFileName = (Convert.ToString(_oAPIIPD.MarketDetailsFileName)=="")? "": fullPath;
                 _oApiIpdData.Pidfid = _oAPIIPD.Pidfid.ToString();
             }
+            _oApiIpdData.MasterCountries = _countryService.GetAll().Result.ToList();
             return _oApiIpdData;
         }
         //------------End------API_IPD_Details_Form_Entity--------------------------
@@ -420,7 +423,7 @@ namespace EmcureNPD.Business.Core.Implementation
             }
             if (_oAPIIpd != null)
             {
-                string baseURL = "https://" + HostValue + "/Uploads/PIDF/APIIPD";
+                string baseURL = HostValue + "/Uploads/PIDF/APIIPD";
                 var fullPath = baseURL + "/" + _oAPIIpd.MarketDetailsFileName;
 
                 _oApiRnDData.DrugsCategory = _oAPIIpd.DrugsCategory;
@@ -432,6 +435,7 @@ namespace EmcureNPD.Business.Core.Implementation
                     _oApiRnDData.ProductType = _objProductType.ProductTypeName;
 
             }
+            _oApiRnDData.MasterCountries = _countryService.GetAll().Result.ToList();
             return _oApiRnDData;
         }
         public async Task<DBOperation> AddUpdateAPIRnD(PIDFAPIRnDFormEntity _oAPIRnD)

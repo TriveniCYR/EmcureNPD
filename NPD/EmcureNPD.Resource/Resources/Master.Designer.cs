@@ -1285,7 +1285,7 @@ namespace EmcureNPD.Resource.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to ProductType.
+        ///   Looks up a localized string similar to Product Type.
         /// </summary>
         public static string ProductType {
             get {

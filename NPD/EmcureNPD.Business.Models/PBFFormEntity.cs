@@ -54,10 +54,19 @@ namespace EmcureNPD.Business.Models
         public int StrengthId { get; set; }
         public string SaveType { get; set; }
         public string BusinessUnitsByUser { get; set; }
+        
         public List<GeneralStrengthEntity> GeneralStrengthEntities { get; set; }
+        
         public List<ClinicalEntity> ClinicalEntities { get; set; }
+
+        public string AnalyticalRawData { get; set; }
         public List<AnalyticalEntity> AnalyticalEntities { get; set; }
+        
         public AMVCost AMVCosts { get; set; }
+        
+        public RNDEntity RNDEntities { get; set; }
+        
+
     }
     public class GeneralStrengthEntity {
         public long PBFGeneralId { get; set; }
@@ -87,12 +96,42 @@ namespace EmcureNPD.Business.Models
         public string Numberoftests { get; set; }
         public string PrototypeDevelopment { get; set; }
         public int? CostPerTest { get; set; }
-        public int? PrototypeCost { get; set; }        
+        public int? PrototypeCost { get; set; }
+       
     }
     public class AMVCost {
         public long PBFGeneralId { get; set; }
-        public int? TotalAMVCost { get; set; }
+        public int? TotalAmvcost { get; set; }
         public string Remark { get; set; }
         public int[] StrengthId { get; set; }
+    }
+    public class RNDEntity
+    {
+        public long PBFRndId { get; set; }
+        public long PBFGeneralId { get; set; }
+        public List<RNDExcipient> RNDExcipients { get; set; }
+        public List<RNDPackaging> RNDPackagings { get; set; }
+    }
+    public class RNDExcipient {
+        public long PIDFPBFRNDExicipientId { get; set; }
+        public long PBFGeneralId { get; set; }
+        public long StrengthId { get; set; }
+        public int ActivityTypeId { get; set; }
+        public string ExicipientPrototype { get; set; }
+        public string PrototypeDevelopment { get; set; }
+        public double? RsPerKg { get; set; }
+        public string MgPerUnitDosage { get; set; }
+    }
+    public class RNDPackaging
+    {
+        public long PIDFPBFRNDPackagingId { get; set; }
+        public long PBFGeneralId { get; set; }
+        public long StrengthId { get; set; }
+        public int ActivityTypeId { get; set; }
+        public int PackagingTypeId { get; set; }
+        public string UnitOfMeasurement { get; set; }
+        public string PrototypeDevelopment { get; set; }
+        public double? RsPerUnit { get; set; }
+        public int? Quantity { get; set; }
     }
 }
