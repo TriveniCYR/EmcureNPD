@@ -20,14 +20,41 @@
 	<div class="row">
 		<div class="col-md-3">
 			<div class="form-group required">
-				@Html.LabelFor(model => model.BusinessUnitId, "Business Unit", new { @class = "control-label" })
-				<select id="BusinessUnitId" name="BusinessUnitId" class="form-control readOnlyUpdate" required></select>
+				<div>
+					<label for="date-range-input">Date Range</label>
+				</div>
+				<div>
+					<button onclick=dateRange() type="button" id="date-range-input" class="btn btn-md btn-primary">
+						<i class="fa fa-calendar" aria-hidden="true"></i> Date Range
+					</button>
+				</div>
 			</div>
 		</div>
 		<div class="col-md-3">
 			<div class="form-group required">
+				@Html.LabelFor(model => model.BusinessUnitId, "Business Unit", new { @class = "control-label" })
+				<select id="BusinessUnitId" name="BusinessUnitId" class="form-control readOnlyUpdate" required></select>
+			</div>
+		</div>
+		<div class="col-md-3" id="years-field">
+			<div class="form-group required">
 				<label class="m-1" for="years">Year</label>
 				<select id="years" name="years" class="form-control readOnlyUpdate" required></select>
+			</div>
+		</div>
+		<div class="col-md-3" id="date-range-fields" style="display:none; position:relative;">
+			<i class="fa fa-times text-danger" onclick="closeDateRange()" aria-hidden="true" style="position:absolute; top:8px; right:20px;"></i>
+			<div class="form-group required">
+				<label class="m-1" for="from-date">From</label>
+				<input type="date" id="from-date" name="from-date" class="form-control" required>
+
+				<label class="m-1" for="to-date">To</label>
+				<input type="date" id="to-date" name="to-date" class="form-control" required>
+			</div>
+		</div>
+		<div class="col-md-3 ">
+			<div class="form-group required mt-4">
+				<button class="btn btn-md btn-primary" onclick=getDashBoardData()>Apply</button>
 			</div>
 		</div>
 	</div>

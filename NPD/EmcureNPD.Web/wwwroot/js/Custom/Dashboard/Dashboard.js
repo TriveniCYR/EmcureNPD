@@ -4,20 +4,23 @@ $(document).ready(function () {
     GetDashboardDropdown();
     GetFinanacialYear();
     GetPIDFReport();
-    $('#BusinessUnitId').change(
-        function () {
-            ajaxServiceMethod($('#hdnBaseURL').val() + GetPIDFList + "/" + $("#BusinessUnitId").val() + "/" + $("#years").val(), 'GET', GetPIDFListSuccess);
-        }
-    );
-    $('#years').change(
-        function () {
-            ajaxServiceMethod($('#hdnBaseURL').val() + GetPIDFList + "/" + $("#BusinessUnitId").val() + "/" + $("#years").val(), 'GET', GetPIDFListSuccess);
-        }
-    );
+    //$('#BusinessUnitId').change(
+    //    function () {
+    //        ajaxServiceMethod($('#hdnBaseURL').val() + GetPIDFList + "/" + $("#BusinessUnitId").val() + "/" + $("#years").val(), 'GET', GetPIDFListSuccess);
+    //    }
+    //);
+    //$('#years').change(
+    //    function () {
+    //        ajaxServiceMethod($('#hdnBaseURL').val() + GetPIDFList + "/" + $("#BusinessUnitId").val() + "/" + $("#years").val(), 'GET', GetPIDFListSuccess);
+    //    }
+    //);
 });
 function GetPIDFReport() {
+    let currentYear = new Date().getFullYear();
+    let fromDate = `04-01-1970`;
+    let toDate = `03-31-${currentYear}`;
     var _businessUnitId = ($("#BusinessUnitId").val() == null || $("#BusinessUnitId").val() == undefined ? "0" : $("#BusinessUnitId").val());
-    ajaxServiceMethod($('#hdnBaseURL').val() + GetPIDFList + "/" + _businessUnitId + "/" + $("#years").val(), 'GET', GetPIDFListSuccess);
+    ajaxServiceMethod($('#hdnBaseURL').val() + GetPIDFList + "/" + _businessUnitId + "/" + fromDate + "/" + toDate, 'GET', GetPIDFListSuccess);
 }
 function GetDashboardDropdown() {
     ajaxServiceMethod($('#hdnBaseURL').val() + GetAllDashboard, 'GET', GetDashboardDropdownSuccess);
@@ -132,6 +135,7 @@ function RenderVectorMap() {
             onMarkerClick: function (event, index) {
                 var markerData = markers[index];
                 $('#BusinessUnitId').val(markerData.bUnitId).change();
+                getDashBoardData();
                 /*$('#BusinessUnitId').change();*/
             }
         }).vectorMap('get', 'mapObject');
@@ -142,3 +146,48 @@ function RenderVectorMap() {
 
     });
 }
+
+//date range
+function dateRange() {
+    //var dateRangeButton = document.getElementById("date-range-input");
+    var yearsField = document.getElementById("years-field");
+    var dateRangeFields = document.getElementById("date-range-fields");
+    yearsField.style.display = "none";
+    dateRangeFields.style.display = "block";
+    $("#years").val("");
+}
+function closeDateRange() {
+    var yearsField = document.getElementById("years-field");
+    var dateRangeFields = document.getElementById("date-range-fields");
+    yearsField.style.display = "block";
+    dateRangeFields.style.display = "none";
+    var currentYear = new Date().getFullYear();
+    $("#years").val(`1970-${currentYear}`);
+}
+function getDashBoardData() {
+    var dateRangeOrYear = "";
+    var fromDate;
+    var toDate;
+    if ($("#years").val() != null) {
+        dateRangeOrYear = $("#years").val();
+        const [fromYear, toYear] = dateRangeOrYear.split("-");
+        fromDate = `04-01-${fromYear}`;
+        toDate = `03-31-${toYear}`;
+    }
+    else if ($("#years").val() == null) {
+        var FromDate = $('#from-date').val();
+        var ToDate = $('#to-date').val();
+        var fromDate = new Date(FromDate).toLocaleDateString('en-US', {
+            month: '2-digit',
+            day: '2-digit',
+            year: 'numeric'
+        }).replace(/\//g, '-');
+        var toDate = new Date(ToDate).toLocaleDateString('en-US', {
+            month: '2-digit',
+            day: '2-digit',
+            year: 'numeric'
+        }).replace(/\//g, '-');
+    }
+    ajaxServiceMethod($('#hdnBaseURL').val() + GetPIDFList + "/" + $("#BusinessUnitId").val() + "/" + fromDate + "/" + toDate, 'GET', GetPIDFListSuccess);
+}
+

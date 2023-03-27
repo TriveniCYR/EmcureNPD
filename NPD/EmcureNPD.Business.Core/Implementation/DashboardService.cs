@@ -43,12 +43,12 @@ namespace EmcureNPD.Business.Core.Implementation
             return DropdownObjects;
         }
 
-        public async Task<dynamic> GetPIDFByYearAndBusinessUnit(int id, string years)
+        public async Task<dynamic> GetPIDFByYearAndBusinessUnit(int id, string fromDate,string toDate)
         {
             dynamic DropdownObjects = new ExpandoObject();
-            var splitYear = years.Split('-');
-            string FinancialYearStart = splitYear[0];
-            string FinancialYearEnd = splitYear[1];
+            //var splitYear = years.Split('-');
+            string FinancialYearStart = fromDate;
+            string FinancialYearEnd = toDate;
             SqlParameter[] osqlParameter = {
                 new SqlParameter("@BusinessUnitId",id),
                 new SqlParameter("@FinancialYearStart",FinancialYearStart),
