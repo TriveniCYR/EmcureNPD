@@ -5,7 +5,8 @@ $(document).ready(function () {
 
     try {
         _PIDFId = parseInt($('#hdnPIDFId').val());
-        _mode = $('#hdnIsView').val(); //parseInt($('#hdnPIDFId').val());
+        //_mode = $('#hdnIsView').val(); //parseInt($('#hdnPIDFId').val());
+        _mode = getParameterByName("IsView");
     } catch (e) {
         _mode = getParameterByName("IsView");
         _PIDFId = parseInt(getParameterByName("PIDFId"));
@@ -37,7 +38,7 @@ $(document).ready(function () {
 
 function GetCountryByBusinessUnitSuccess(data) {
     try {
-        $('#RFDCountryId options').remove();
+        $('#RFDCountryId').find('option').remove()
         if (data._object != null && data._object.length > 0) {
             var _emptyOption = '<option value="">-- Select --</option>';
             $('#RFDCountryId').append(_emptyOption);

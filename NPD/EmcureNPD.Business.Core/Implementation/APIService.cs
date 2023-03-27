@@ -40,18 +40,18 @@ namespace EmcureNPD.Business.Core.Implementation
         private IRepository<PidfApiIpd> _pidf_API_IPD_repository { get; set; }
         private IRepository<PidfApiRnD> _pidf_API_RnD_repository { get; set; }
         private IRepository<PidfApiCharter> _pidf_API_Charter_repository { get; set; }
-        private IRepository<PidfApiCharterTimelineInMonth> _pidf_API_TimelineInMonth_repository { get; set; }     
+        private IRepository<PidfApiCharterTimelineInMonth> _pidf_API_TimelineInMonth_repository { get; set; }
         private readonly IMasterAuditLogService _auditLogService;
-        private IRepository<Pidf> _repository { get; set; }      
+        private IRepository<Pidf> _repository { get; set; }
         private readonly IHelper _helper;
         private readonly IMasterCountryService _countryService;
 
         public APIService(IUnitOfWork unitOfWork, IMapperFactory mapperFactory,
             Microsoft.Extensions.Configuration.IConfiguration configuration, IMasterProductTypeService masterProductTypeService,
-            IMasterCountryService countryService,IMasterAuditLogService auditLogService, IHelper helper)
+            IMasterCountryService countryService, IMasterAuditLogService auditLogService, IHelper helper)
         {
             _unitOfWork = unitOfWork;
-            _mapperFactory = mapperFactory;          
+            _mapperFactory = mapperFactory;
             _repository = _unitOfWork.GetRepository<Pidf>();
             _pidf_API_IPD_repository = _unitOfWork.GetRepository<PidfApiIpd>();
             _pidf_API_RnD_repository = _unitOfWork.GetRepository<PidfApiRnD>();
@@ -216,18 +216,18 @@ namespace EmcureNPD.Business.Core.Implementation
         }
         public async Task<PIDFAPIIPDFormEntity> GetAPIIPDFormData(long pidfId, string HostValue)
         {
-            
+
             PIDFAPIIPDFormEntity _oApiIpdData = new PIDFAPIIPDFormEntity();
             var _oAPIIPD = await _pidf_API_IPD_repository.GetAsync(x => x.Pidfid == pidfId);
             if (_oAPIIPD != null)
-            {               
-                string baseURL =  HostValue+ "/Uploads/PIDF/APIIPD";
-                var fullPath = baseURL + "/" + _oAPIIPD.MarketDetailsFileName;                
+            {
+                string baseURL = HostValue + "/Uploads/PIDF/APIIPD";
+                var fullPath = baseURL + "/" + _oAPIIPD.MarketDetailsFileName;
                 _oApiIpdData.DrugsCategory = _oAPIIPD.DrugsCategory;
                 _oApiIpdData.ProductTypeId = (int)_oAPIIPD.ProductTypeId;
                 _oApiIpdData.APIIPDDetailsFormID = _oAPIIPD.PidfApiIpdId;
                 _oApiIpdData.ProductStrength = _oAPIIPD.ProductStrength;
-                _oApiIpdData.MarketDetailsFileName = (Convert.ToString(_oAPIIPD.MarketDetailsFileName)=="")? "": fullPath;
+                _oApiIpdData.MarketDetailsFileName = (Convert.ToString(_oAPIIPD.MarketDetailsFileName) == "") ? "" : fullPath;
                 _oApiIpdData.Pidfid = _oAPIIPD.Pidfid.ToString();
             }
             _oApiIpdData.MasterCountries = _countryService.GetAll().Result.ToList();
@@ -269,7 +269,7 @@ namespace EmcureNPD.Business.Core.Implementation
 
             return _oCharterEntity;
         }
-        public async Task<PIDFAPICharterFormEntity> GetAPICharterFormData(long pidfId,short IsCharter)
+        public async Task<PIDFAPICharterFormEntity> GetAPICharterFormData(long pidfId, short IsCharter)
         {
             PIDFAPICharterFormEntity _oCharterEntity = new PIDFAPICharterFormEntity();
             SqlParameter[] osqlParameter = {
@@ -282,32 +282,31 @@ namespace EmcureNPD.Business.Core.Implementation
             // dynamic _CharterObjects = new ExpandoObject();
             List<CharterObject> _CharterObjects = new List<CharterObject>();
             if (dbresult != null)
+            {                
+                _oCharterEntity.TimelineInMonths = dbresult.Tables[1].DataTableToList<TimelineInMonths>();
+                _oCharterEntity.AnalyticalDepartment = dbresult.Tables[2].DataTableToList<AnalyticalDepartment>();
+                _oCharterEntity.PRDDepartment = dbresult.Tables[3].DataTableToList<PRDDepartment>();
+                _oCharterEntity.CapitalOtherExpenditure = dbresult.Tables[4].DataTableToList<CapitalOtherExpenditure>();
+                _oCharterEntity.ManhourEstimates = dbresult.Tables[5].DataTableToList<ManhourEstimates>();
+                _oCharterEntity.HeadwiseBudget = dbresult.Tables[6].DataTableToList<HeadwiseBudget>();
+            }
+
+            if (dbresult.Tables[0] != null && dbresult.Tables[0].Rows.Count > 0)
             {
-                if (dbresult.Tables[0] != null && dbresult.Tables[0].Rows.Count > 0)
+                _CharterObjects = dbresult.Tables[0].DataTableToList<CharterObject>();
+                if (_CharterObjects.Count > 0)
                 {
-                    _CharterObjects = dbresult.Tables[0].DataTableToList<CharterObject>();
-                    _oCharterEntity.TimelineInMonths = dbresult.Tables[1].DataTableToList<TimelineInMonths>();
-                    _oCharterEntity.AnalyticalDepartment = dbresult.Tables[2].DataTableToList<AnalyticalDepartment>();
-                    _oCharterEntity.PRDDepartment = dbresult.Tables[3].DataTableToList<PRDDepartment>();
-                    _oCharterEntity.CapitalOtherExpenditure = dbresult.Tables[4].DataTableToList<CapitalOtherExpenditure>();
-                    _oCharterEntity.ManhourEstimates = dbresult.Tables[5].DataTableToList<ManhourEstimates>();
-                    _oCharterEntity.HeadwiseBudget = dbresult.Tables[6].DataTableToList<HeadwiseBudget>();
+                    _oCharterEntity.APIGroupLeader = _CharterObjects[0].APIGroupLeader;
+                    _oCharterEntity.ManHourRates = Convert.ToString(_CharterObjects[0].ManHourRates);
+                    _oCharterEntity.PIDFAPICharterFormID = _CharterObjects[0].PIDF_API_CharterId;
+                    _oCharterEntity.ProjectComplexityId = _CharterObjects[0].ProjectComplexityId;
+
+                    _oCharterEntity.ProjectName = _CharterObjects[0].ProjectName;
+                    _oCharterEntity.Market = _CharterObjects[0].Market;
+                    _oCharterEntity.ProjectInitiationDate = _CharterObjects[0].ProjectInitiationDate;
+                    //_oCharterEntity.ProjectEndDate = _CharterObjects[0].ProjectComplexityId;
                 }
             }
-
-            if (_CharterObjects.Count > 0)
-            {
-                _oCharterEntity.APIGroupLeader = _CharterObjects[0].APIGroupLeader;
-                _oCharterEntity.ManHourRates = Convert.ToString(_CharterObjects[0].ManHourRates);
-                _oCharterEntity.PIDFAPICharterFormID = _CharterObjects[0].PIDF_API_CharterId;
-                _oCharterEntity.ProjectComplexityId = _CharterObjects[0].ProjectComplexityId;               
-
-                _oCharterEntity.ProjectName = _CharterObjects[0].ProjectName;
-                _oCharterEntity.Market = _CharterObjects[0].Market;
-                 _oCharterEntity.ProjectInitiationDate = _CharterObjects[0].ProjectInitiationDate;
-                //_oCharterEntity.ProjectEndDate = _CharterObjects[0].ProjectComplexityId;
-            }
-
             return _oCharterEntity;
         }
         private List<DM> FillObjData<VM, DM>(List<VM> _vmObj)

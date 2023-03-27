@@ -186,6 +186,9 @@
   <data name="FinalSelection" xml:space="preserve">
     <value>Final Selection</value>
   </data>
+  <data name="Indication" xml:space="preserve">
+    <value>Indication</value>
+  </data>
   <data name="IsActive" xml:space="preserve">
     <value>IsActive</value>
   </data>

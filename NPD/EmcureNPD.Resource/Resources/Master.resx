@@ -421,7 +421,7 @@
     <value> Formulation Details</value>
   </data>
   <data name="IPEvalution" xml:space="preserve">
-    <value>IP Evalution</value>
+    <value>IP Evolution</value>
   </data>
   <data name="ApprovedGenetics" xml:space="preserve">
     <value>Approved Genetics</value>
@@ -436,7 +436,7 @@
     <value>Comments Patent Specific</value>
   </data>
   <data name="CostOfLitication" xml:space="preserve">
-    <value>Cost Of Litication</value>
+    <value>Cost Of Litigation</value>
   </data>
   <data name="Countrys1" xml:space="preserve">
     <value>Countrys</value>
@@ -463,7 +463,7 @@
     <value>Market Name</value>
   </data>
   <data name="OriginalExpiraDate" xml:space="preserve">
-    <value>Original Expira Date</value>
+    <value>Original Expiry Date</value>
   </data>
   <data name="PatentNumber" xml:space="preserve">
     <value>Patent Number</value>
@@ -650,5 +650,20 @@
   </data>
   <data name="APIRnd" xml:space="preserve">
     <value>API Rnd</value>
+  </data>
+  <data name="AddRole" xml:space="preserve">
+    <value>Add Role</value>
+  </data>
+  <data name="AddUser" xml:space="preserve">
+    <value>Add User</value>
+  </data>
+  <data name="RoleManage" xml:space="preserve">
+    <value>Role Manage</value>
+  </data>
+  <data name="UpdateRole" xml:space="preserve">
+    <value>Update Role</value>
+  </data>
+  <data name="UpdateUser" xml:space="preserve">
+    <value>Update User</value>
   </data>
 </root>

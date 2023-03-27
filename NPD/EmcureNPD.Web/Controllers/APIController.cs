@@ -202,8 +202,8 @@ namespace EmcureNPD.Web.Controllers
                     TempData["SaveStatus"] = Convert.ToString(_stringLocalizerShared["RecordInsertUpdate"]);
                     ModelState.Clear();
                     IsSaveError = false;
-                    return RedirectToAction("APICharterDetailsForm",
-                        new { pidfid = UtilityHelper.Encrypt(_Chartermodel.Pidfid), bui = UtilityHelper.Encrypt(_Chartermodel.BusinessUnitId) }); // return to PBFAPI List
+                    return RedirectToAction("PIDFList", "PIDF",new { ScreenId = (int)PIDFScreen.API }); // return to PIDF List
+                    //var ScreenId = @Convert.ToString((int)EmcureNPD.Utility.Enums.PIDFScreen.API);
                 }
                 else
                 {
@@ -288,8 +288,8 @@ namespace EmcureNPD.Web.Controllers
                     TempData["SaveStatus"] = Convert.ToString(_stringLocalizerShared["RecordInsertUpdate"]);
                     ModelState.Clear();
                     IsSaveError = false;
-                    return RedirectToAction("APIRndDetailsForm",
-                        new { pidfid = UtilityHelper.Encrypt(_RnDmodel.Pidfid), bui = UtilityHelper.Encrypt(_RnDmodel.BusinessUnitId) }); // return to PBFAPI List
+                    //return RedirectToAction("APIRndDetailsForm",new { pidfid = UtilityHelper.Encrypt(_RnDmodel.Pidfid), bui = UtilityHelper.Encrypt(_RnDmodel.BusinessUnitId) }); // return to PBFAPI List
+                    return RedirectToAction("PIDFList", "PIDF", new { ScreenId = (int)PIDFScreen.API }); // return to PIDF List
                 }
                 else
                 {
@@ -395,8 +395,8 @@ namespace EmcureNPD.Web.Controllers
                     TempData["SaveStatus"] = Convert.ToString(_stringLocalizerShared["RecordInsertUpdate"]);
                     ModelState.Clear();
                     IsSaveError = false;
-                    return RedirectToAction("APIIPDDetailsForm",
-                        new { pidfid = UtilityHelper.Encrypt(_IPDmodel.Pidfid), bui = UtilityHelper.Encrypt(_IPDmodel.BusinessUnitId) }); // return to PBFAPI List
+                   // return RedirectToAction("APIIPDDetailsForm",new { pidfid = UtilityHelper.Encrypt(_IPDmodel.Pidfid), bui = UtilityHelper.Encrypt(_IPDmodel.BusinessUnitId) }); // return to PBFAPI List
+                    return RedirectToAction("PIDFList", "PIDF",new { ScreenId = (int)PIDFScreen.API }); // return to PIDF List
                 }
                 else
                 {

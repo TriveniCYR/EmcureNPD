@@ -14,7 +14,14 @@
     <input type="hidden" asp-for="UserId" />
     <div class="content-header">
     <div class="container-fluid d-flex justify-content-between">
-            <h3>@MasterLocalizer["User"].Value</h3>
+            @if (Model.UserId > 0)
+            {
+                <h3>@MasterLocalizer["UpdateUser"].Value</h3>
+            }
+            else
+            {
+                <h3>@MasterLocalizer["AddUser"].Value</h3>
+            }
     </div>
 </div>
     <div class="container-fluid overflow-auto background-white-card">

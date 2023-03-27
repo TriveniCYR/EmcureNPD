@@ -11,6 +11,7 @@
 @model EmcureNPD.Business.Models.MasterRoleEntity
 @{
     ViewData["Title"] = @MasterLocalizer["RoleManage"];
+    string PageHeading = "";
     string jsVersion = @Configuration.GetSection("StaticJS")["version"];
     string[] Approve_Modules = { "PIDF", "IPD", "Finance", "Management HOD" };
     string[] Delete_Modules = { "User Management", "Role Management", "Master Management", "Project" };
@@ -20,10 +21,15 @@
         @if (@ViewBag.IsEdit)
         {
             <input type="hidden" asp-for="RoleId" />
+            PageHeading = MasterLocalizer["UpdateRole"].Value;
+        }
+        else
+        {
+            PageHeading = MasterLocalizer["AddRole"].Value;
         }
         <div class="content-header">
     <div class="container-fluid d-flex justify-content-between">
-                <h3>@MasterLocalizer["RoleManagement"].Value</h3>
+                <h3>@PageHeading</h3>
     </div>
 </div>
     <div class="container-fluid overflow-auto background-white-card">

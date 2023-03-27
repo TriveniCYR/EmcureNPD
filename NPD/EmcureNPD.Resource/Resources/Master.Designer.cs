@@ -97,6 +97,24 @@ namespace EmcureNPD.Resource.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Add Role.
+        /// </summary>
+        public static string AddRole {
+            get {
+                return ResourceManager.GetString("AddRole", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Add User.
+        /// </summary>
+        public static string AddUser {
+            get {
+                return ResourceManager.GetString("AddUser", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Add Year.
         /// </summary>
         public static string AddYear {
@@ -457,7 +475,7 @@ namespace EmcureNPD.Resource.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Cost Of Litication.
+        ///   Looks up a localized string similar to Cost Of Litigation.
         /// </summary>
         public static string CostOfLitication {
             get {
@@ -844,7 +862,7 @@ namespace EmcureNPD.Resource.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to IP Evalution.
+        ///   Looks up a localized string similar to IP Evolution.
         /// </summary>
         public static string IPEvalution {
             get {
@@ -1069,7 +1087,7 @@ namespace EmcureNPD.Resource.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Original Expira Date.
+        ///   Looks up a localized string similar to Original Expiry Date.
         /// </summary>
         public static string OriginalExpiraDate {
             get {
@@ -1456,6 +1474,15 @@ namespace EmcureNPD.Resource.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Role Manage.
+        /// </summary>
+        public static string RoleManage {
+            get {
+                return ResourceManager.GetString("RoleManage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Role Management.
         /// </summary>
         public static string RoleManagement {
@@ -1614,6 +1641,24 @@ namespace EmcureNPD.Resource.Resources {
         public static string UnitofMeasurements {
             get {
                 return ResourceManager.GetString("UnitofMeasurements", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Update Role.
+        /// </summary>
+        public static string UpdateRole {
+            get {
+                return ResourceManager.GetString("UpdateRole", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Update User.
+        /// </summary>
+        public static string UpdateUser {
+            get {
+                return ResourceManager.GetString("UpdateUser", resourceCulture);
             }
         }
         
