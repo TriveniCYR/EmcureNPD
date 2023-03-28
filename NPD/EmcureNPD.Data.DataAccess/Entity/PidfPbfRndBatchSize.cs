@@ -5,15 +5,17 @@ using System.Collections.Generic;
 
 namespace EmcureNPD.Data.DataAccess.Entity
 {
-    public partial class PidfPbfRnDPlantSupportCost
+    public partial class PidfPbfRndBatchSize
     {
-        public long PlantSupportCostId { get; set; }
+        public long BatchSizeId { get; set; }
         public long PbfgeneralId { get; set; }
         public long StrengthId { get; set; }
-        public string PlantSupportDevelopment { get; set; }
-        public string ScaleUp { get; set; }
-        public double? ExhibitBatch { get; set; }
-        public double? TotalCost { get; set; }
+        public string BatchDevelopment { get; set; }
+        public string PrototypeFormulation { get; set; }
+        public string ScaleUpbatch { get; set; }
+        public string ExhibitBatch1 { get; set; }
+        public string ExhibitBatch2 { get; set; }
+        public string ExhibitBatch3 { get; set; }
         public DateTime CreatedDate { get; set; }
         public int CreatedBy { get; set; }
 

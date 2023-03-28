@@ -5,19 +5,21 @@ using System.Collections.Generic;
 
 namespace EmcureNPD.Data.DataAccess.Entity
 {
-    public partial class PidfPbfRnDExicipientRequirement
+    public partial class PidfPbfRnDPackagingMaterial
     {
-        public long PidfpbfrndexicipientId { get; set; }
+        public long PidfpbfrndpackagingId { get; set; }
         public long PbfgeneralId { get; set; }
         public long StrengthId { get; set; }
         public int ActivityTypeId { get; set; }
-        public string ExicipientPrototype { get; set; }
-        public string ExicipientDevelopment { get; set; }
-        public double? RsPerKg { get; set; }
-        public string MgPerUnitDosage { get; set; }
+        public int? PackagingTypeId { get; set; }
+        public string UnitOfMeasurement { get; set; }
+        public string PackagingDevelopment { get; set; }
+        public double? RsPerUnit { get; set; }
+        public int? Quantity { get; set; }
         public int CreatedBy { get; set; }
         public DateTime CreatedDate { get; set; }
 
+        public virtual MasterPackagingType PackagingType { get; set; }
         public virtual PidfPbfGeneral Pbfgeneral { get; set; }
         public virtual PidfproductStrength Strength { get; set; }
     }

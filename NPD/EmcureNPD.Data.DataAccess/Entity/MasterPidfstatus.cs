@@ -11,6 +11,7 @@ namespace EmcureNPD.Data.DataAccess.Entity
         {
             MasterNotifications = new HashSet<MasterNotification>();
             PidfLastStatuses = new HashSet<Pidf>();
+            PidfManagementApprovalStatusHistories = new HashSet<PidfManagementApprovalStatusHistory>();
             PidfStatuses = new HashSet<Pidf>();
             PidfstatusHistories = new HashSet<PidfstatusHistory>();
         }
@@ -27,6 +28,7 @@ namespace EmcureNPD.Data.DataAccess.Entity
 
         public virtual ICollection<MasterNotification> MasterNotifications { get; set; }
         public virtual ICollection<Pidf> PidfLastStatuses { get; set; }
+        public virtual ICollection<PidfManagementApprovalStatusHistory> PidfManagementApprovalStatusHistories { get; set; }
         public virtual ICollection<Pidf> PidfStatuses { get; set; }
         public virtual ICollection<PidfstatusHistory> PidfstatusHistories { get; set; }
     }
