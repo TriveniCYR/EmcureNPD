@@ -5,17 +5,17 @@ using System.Collections.Generic;
 
 namespace EmcureNPD.Data.DataAccess.Entity
 {
-    public partial class PidfPbfRnDReferenceProductDetail
+    public partial class PidfPbfRnDCapexMiscellaneousExpense
     {
-        public long ReferenceProductDetailId { get; set; }
+        public long CapexMiscellaneousExpensesId { get; set; }
         public long PbfgeneralId { get; set; }
         public long StrengthId { get; set; }
-        public string ReferenceProductDetailDevelopment { get; set; }
-        public string UnitCostOfReferenceProduct { get; set; }
-        public string FormulationDevelopment { get; set; }
-        public string PilotBe { get; set; }
-        public string PharmasuiticalEquivalence { get; set; }
-        public string PivotalBio { get; set; }
+        public string CapexMiscellaneousExpensesDevelopment { get; set; }
+        public string MiscellaneousDevelopment { get; set; }
+        public string Licensing { get; set; }
+        public string Capex1 { get; set; }
+        public string Capex2 { get; set; }
+        public string Capex3 { get; set; }
         public double? TotalCost { get; set; }
         public DateTime CreatedDate { get; set; }
         public int CreatedBy { get; set; }
