@@ -107,6 +107,7 @@ namespace EmcureNPD.Data.DataAccess.DataContext
         public virtual DbSet<PidfPbfRnDExicipientPrototype> PidfPbfRnDExicipientPrototypes { get; set; }
         public virtual DbSet<PidfPbfRnDExicipientRequirement> PidfPbfRnDExicipientRequirements { get; set; }
         public virtual DbSet<PidfPbfRnDExicipientScaleUp> PidfPbfRnDExicipientScaleUps { get; set; }
+        public virtual DbSet<PidfPbfRnDFillingExpense> PidfPbfRnDFillingExpenses { get; set; }
         public virtual DbSet<PidfPbfRnDMaster> PidfPbfRnDMasters { get; set; }
         public virtual DbSet<PidfPbfRnDPackagingMaterial> PidfPbfRnDPackagingMaterials { get; set; }
         public virtual DbSet<PidfPbfRnDPlantSupportCost> PidfPbfRnDPlantSupportCosts { get; set; }
@@ -1822,7 +1823,7 @@ namespace EmcureNPD.Data.DataAccess.DataContext
             {
                 entity.HasKey(e => e.ManagementApprovalStatusHistoryId);
 
-                entity.ToTable("PIDF_ManagementApprovalStatusHistory");
+                entity.ToTable("PIDF_ManagementApprovalStatusHistory", "dbo");
 
                 entity.Property(e => e.CreatedDate)
                     .HasColumnType("datetime")
@@ -2197,10 +2198,6 @@ namespace EmcureNPD.Data.DataAccess.DataContext
 
                 entity.Property(e => e.ApirequirementId).HasColumnName("APIRequirementId");
 
-                entity.Property(e => e.ApirequirementDevelopment)
-                    .HasMaxLength(50)
-                    .HasColumnName("APIRequirementDevelopment");
-
                 entity.Property(e => e.CreatedDate).HasColumnType("datetime");
 
                 entity.Property(e => e.ExhibitBatch1).HasMaxLength(50);
@@ -2342,6 +2339,35 @@ namespace EmcureNPD.Data.DataAccess.DataContext
                     .HasForeignKey(d => d.PidfPbfGeneralId)
                     .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("FK_PIDF_PBF_RnD_ExicipientScaleUp_PIDF_PBF_General");
+            });
+
+            modelBuilder.Entity<PidfPbfRnDFillingExpense>(entity =>
+            {
+                entity.HasKey(e => e.FillingExpensesId);
+
+                entity.ToTable("PIDF_PBF_RnD_FillingExpenses", "dbo");
+
+                entity.Property(e => e.CreatedDate).HasColumnType("datetime");
+
+                entity.Property(e => e.PbfgeneralId).HasColumnName("PBFGeneralId");
+
+                entity.HasOne(d => d.BusinessUnit)
+                    .WithMany(p => p.PidfPbfRnDFillingExpenses)
+                    .HasForeignKey(d => d.BusinessUnitId)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("FK_PIDF_PBF_RnD_FillingExpenses_Master_BusinessUnit");
+
+                entity.HasOne(d => d.Pbfgeneral)
+                    .WithMany(p => p.PidfPbfRnDFillingExpenses)
+                    .HasForeignKey(d => d.PbfgeneralId)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("FK_PIDF_PBF_RnD_FillingExpenses_PIDF_PBF_General");
+
+                entity.HasOne(d => d.Strength)
+                    .WithMany(p => p.PidfPbfRnDFillingExpenses)
+                    .HasForeignKey(d => d.StrengthId)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("FK_PIDF_PBF_RnD_FillingExpenses_PIDFProductStrength");
             });
 
             modelBuilder.Entity<PidfPbfRnDMaster>(entity =>
@@ -2500,8 +2526,6 @@ namespace EmcureNPD.Data.DataAccess.DataContext
                 entity.HasKey(e => e.BatchSizeId);
 
                 entity.ToTable("PIDF_PBF_Rnd_BatchSize", "dbo");
-
-                entity.Property(e => e.BatchDevelopment).HasMaxLength(50);
 
                 entity.Property(e => e.CreatedDate).HasColumnType("datetime");
 

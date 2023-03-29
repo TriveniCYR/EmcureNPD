@@ -10,7 +10,6 @@ namespace EmcureNPD.Data.DataAccess.Entity
         public long BatchSizeId { get; set; }
         public long PbfgeneralId { get; set; }
         public long StrengthId { get; set; }
-        public string BatchDevelopment { get; set; }
         public string PrototypeFormulation { get; set; }
         public string ScaleUpbatch { get; set; }
         public string ExhibitBatch1 { get; set; }

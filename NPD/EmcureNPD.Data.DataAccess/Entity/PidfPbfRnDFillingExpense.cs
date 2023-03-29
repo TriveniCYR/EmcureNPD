@@ -7,18 +7,16 @@ namespace EmcureNPD.Data.DataAccess.Entity
 {
     public partial class PidfPbfRnDFillingExpense
     {
-        public PidfPbfRnDFillingExpense()
-        {
-            PidfPbfRnDs = new HashSet<PidfPbfRnD>();
-        }
+        public long FillingExpensesId { get; set; }
+        public long PbfgeneralId { get; set; }
+        public long StrengthId { get; set; }
+        public int BusinessUnitId { get; set; }
+        public bool? IsChecked { get; set; }
+        public DateTime CreatedDate { get; set; }
+        public int CreatedBy { get; set; }
 
-        public int FillingExpensesId { get; set; }
-        public int RegionId { get; set; }
-        public decimal? Cost { get; set; }
-        public decimal? TotalCost { get; set; }
-        public int? CreatedBy { get; set; }
-        public DateTime? CreatedDate { get; set; }
-
-        public virtual ICollection<PidfPbfRnD> PidfPbfRnDs { get; set; }
+        public virtual MasterBusinessUnit BusinessUnit { get; set; }
+        public virtual PidfPbfGeneral Pbfgeneral { get; set; }
+        public virtual PidfproductStrength Strength { get; set; }
     }
 }
