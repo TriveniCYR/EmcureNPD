@@ -194,22 +194,27 @@ function ApproveRejectClick(type, PIDFID, ScreenId, URL) {
 }
 function ApproveRejectConfirm() {
     var _PIDFIds = $('#hdnStatuspidfIds').val();
-    if (_PIDFIds != undefined && _PIDFIds != "" && _PIDFIds != null) {
-        var objApproveRejectList = [];
-        var _numberPIDFIds = _PIDFIds.split(",").map(Number);
-        $.each(_numberPIDFIds, function (index, item) {
-            objApproveRejectList.push({ pidfId: item });
-        });
+    if ($('#txtStatusComment').val() != "") {
+        if (_PIDFIds != undefined && _PIDFIds != "" && _PIDFIds != null) {
+            var objApproveRejectList = [];
+            var _numberPIDFIds = _PIDFIds.split(",").map(Number);
+            $.each(_numberPIDFIds, function (index, item) {
+                objApproveRejectList.push({ pidfId: item });
+            });
 
-        var objIds = {
-            saveType: $('#hdnStatusSaveType').val(),
-            PidfIds: objApproveRejectList,
-            screenId: $('#hdnStatusscreenId').val(),
-            comment: $('#txtStatusComment').val()
-        };
-        ajaxServiceMethod($('#hdnBaseURL').val() + ApproveRejectDeletePidf, 'POST', SaveApproveRejectSuccess, SaveApproveRejectError, JSON.stringify(objIds));
+            var objIds = {
+                saveType: $('#hdnStatusSaveType').val(),
+                PidfIds: objApproveRejectList,
+                screenId: $('#hdnStatusscreenId').val(),
+                comment: $('#txtStatusComment').val()
+            };
+            ajaxServiceMethod($('#hdnBaseURL').val() + ApproveRejectDeletePidf, 'POST', SaveApproveRejectSuccess, SaveApproveRejectError, JSON.stringify(objIds));
+        }
+        $('#ApproveRejectModel').modal('hide');
     }
-    $('#ApproveRejectModel').modal('hide');
+    else {
+        toastr.error("Please Enter Comments!","ERROR:")
+    }
 }
 function SaveApproveRejectSuccess(data) {
     try {
