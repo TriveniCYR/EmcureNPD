@@ -26,7 +26,7 @@ namespace EmcureNPD.Business.Core.Implementation
         private readonly IMasterCountryService _countryService;
         private readonly IMasterAuditLogService _auditLogService;
         private readonly IPidfProductStrengthService _productStrengthService;
-
+        private readonly INotificationService _notificationService;
         private IRepository<PidfIpd> _repository { get; set; }
         private IRepository<PidfCommercial> _commercialrepository { get; set; }
         private IRepository<PidfCommercialYear> _commercialYearrepository { get; set; }
@@ -42,6 +42,7 @@ namespace EmcureNPD.Business.Core.Implementation
             IMasterOralService oralService, IMasterUnitofMeasurementService unitofMeasurementService,
             IMasterDosageFormService dosageFormService, IMasterPackagingTypeService packagingTypeService,
             IMasterBusinessUnitService businessUnitService, IMasterCountryService countryService,
+            INotificationService notificationService,
             IMasterAuditLogService auditLogService, IPidfProductStrengthService productStrengthService)
         {
             _unitOfWork = unitOfWork;
@@ -61,6 +62,7 @@ namespace EmcureNPD.Business.Core.Implementation
             _commercialrepository = _unitOfWork.GetRepository<PidfCommercial>();
             _commercialYearrepository = _unitOfWork.GetRepository<PidfCommercialYear>();
             _finalSelectionrepository= _unitOfWork.GetRepository<MasterFinalSelection>();
+            _notificationService = notificationService;
         }
 
         public async Task<IPDEntity> FillDropdown()
@@ -128,7 +130,7 @@ namespace EmcureNPD.Business.Core.Implementation
             }
             var _StatusID = (entitycommPIDF.SaveType == "Sv") ? Master_PIDFStatus.CommercialSubmitted : Master_PIDFStatus.CommercialInProgress;
             await _auditLogService.UpdatePIDFStatusCommon(entitycommPIDF.Pidfid, (int)_StatusID, entitycommPIDF.CreatedBy);
-
+            await _notificationService.CreateNotification(entitycommPIDF.Pidfid, (int)_StatusID, string.Empty, string.Empty, entitycommPIDF.CreatedBy);
             return DBOperation.Success;
         }
         public async Task<PIDFCommercialEntity> GetCommercialFormData(long pidfId, int buid, int? strengthid)

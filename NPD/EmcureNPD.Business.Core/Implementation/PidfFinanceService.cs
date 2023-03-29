@@ -33,7 +33,10 @@ namespace EmcureNPD.Business.Core.Implementation
 		private readonly IConfiguration _configuration;
         private readonly IMasterAuditLogService _auditLogService;
         private IRepository<PidfFinanceBatchSizeCoating> _childrepository { get; set; }
-		public PidfFinanceService(IUnitOfWork unitOfWork, IMapperFactory mapperFactory, IConfiguration configuration, DbContext dbContext, IMasterAuditLogService auditLogService)
+        private readonly INotificationService _notificationService;
+        public PidfFinanceService(IUnitOfWork unitOfWork, IMapperFactory mapperFactory,
+             INotificationService notificationService,
+            IConfiguration configuration, DbContext dbContext, IMasterAuditLogService auditLogService)
 		{
 			_unitOfWork = unitOfWork;
 			_mapperFactory = mapperFactory;
@@ -43,7 +46,7 @@ namespace EmcureNPD.Business.Core.Implementation
 			_dbContext = dbContext;
 			_auditLogService = auditLogService;
             _pidfrepository= _unitOfWork.GetRepository<Pidf>();
-
+            _notificationService = notificationService;
         }
 		public async Task<List<PidfFinance>> GetAll()
 		{
@@ -250,6 +253,7 @@ namespace EmcureNPD.Business.Core.Implementation
 					   //objPidf.StatusRemark = entityPidfFinance.StatusRemark;
                         _pidfrepository.UpdateAsync(objPidf);
                         await _unitOfWork.SaveChangesAsync();
+                        await _notificationService.CreateNotification(objPidf.Pidfid, objPidf.StatusId, string.Empty, string.Empty, (int)objPidf.StatusUpdatedBy);
                     }
 					catch (Exception ex)
 					{

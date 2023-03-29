@@ -57,6 +57,7 @@ namespace EmcureNPD.Business.Core.Implementation
         private readonly IPidfProductStrengthService _productStrengthService;
         private readonly IMasterTestTypeService _masterTestTypeService;
         private readonly IMasterTestLicenseService _masterTestLicenseService;
+        private readonly INotificationService _notificationService;
 
         private readonly Microsoft.Extensions.Configuration.IConfiguration _configuration;
         private IRepository<PidfApiIpd> _pidf_API_IPD_repository { get; set; }
@@ -107,6 +108,7 @@ namespace EmcureNPD.Business.Core.Implementation
         public PBFService(IUnitOfWork unitOfWork, IMapperFactory mapperFactory, IMasterOralService oralService, IMasterUnitofMeasurementService unitofMeasurementService,
             IMasterDosageFormService dosageFormService, IMasterPackagingTypeService packagingTypeService, IMasterBusinessUnitService businessUnitService,
             IMasterCountryService countryService, IMasterAPISourcingService masterAPISourcingService, IPidfApiDetailsService pidfApiDetailsService,
+             INotificationService notificationService,
             IPidfProductStrengthService pidfProductStrengthService, IMasterDIAService masterDium, IMasterMarketExtensionService masterMarketExtensionService,
             IMasterBERequirementService masterBERequirementService, IMasterProductTypeService masterProductTypeService, IMasterPlantService masterPlantService,
             IMasterWorkflowService masterWorkflowService, IMasterFormRNDDivisionService masterFormRNDDivisionService, IMasterFormulationService masterFormulationService,
@@ -175,7 +177,8 @@ namespace EmcureNPD.Business.Core.Implementation
             _pidfPbfRndCapexMiscellaneousExpenseRepository = _unitOfWork.GetRepository<PidfPbfRnDCapexMiscellaneousExpense>();
             _pidfPbfRndPlantSupportCostRepository = _unitOfWork.GetRepository<PidfPbfRnDPlantSupportCost>();
             _pidfPbfRndReferenceProductDetailRepository = _unitOfWork.GetRepository<PidfPbfRnDReferenceProductDetail>();
-    }
+            _notificationService = notificationService;
+        }
 
 
     public async Task<dynamic> FillDropdown(int PIDFId)
@@ -1338,7 +1341,7 @@ namespace EmcureNPD.Business.Core.Implementation
                     await _unitOfWork.SaveChangesAsync();
                     var _StatusID = (pbfEntity.SaveType == "Save") ? Master_PIDFStatus.PBFSubmitted : Master_PIDFStatus.PBFInProgress;
                     await _auditLogService.UpdatePIDFStatusCommon(pbfEntity.Pidfid, (int)_StatusID, loggedInUserId);
-
+                    await _notificationService.CreateNotification(pbfEntity.Pidfid, (int)_StatusID, string.Empty, string.Empty, loggedInUserId);
                     return DBOperation.Success;
                 }
                 else
