@@ -161,7 +161,7 @@ function ValidateMainForm() {
             ArrofInvalid.push(kv);
         }
         else {
-            $('#valmsg' + kv.name).text('');
+            $('#valmsg' + kv).text('');
         }
     });
     var status = (ArrofInvalid.length == 0) ? true : false;
@@ -270,7 +270,7 @@ $("#btnSubmit").click(function () {
         else {
             toastr.error('No Year Data Added');
         }
-    }
+    }    
 });
 
 
@@ -284,6 +284,7 @@ $("#btnSaveAsDraft").click(function () {
             toastr.error('No Year Data Added');
         }
     }
+    
 });
 
 function UpdateYearTable(columns) {
@@ -332,6 +333,7 @@ function SaveCommertialPIDFFormSuccess(data) {
             toastr.success(data._Message);
             $("#AddYearForm").hide();
             IsShowCancel_Save_buttons(true);
+            window.location.href = "/PIDF/PIDFList?ScreenId=4";
         }
         else {
             toastr.error(data._Message);

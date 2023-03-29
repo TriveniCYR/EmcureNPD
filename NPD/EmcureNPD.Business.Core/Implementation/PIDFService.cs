@@ -28,16 +28,19 @@ namespace EmcureNPD.Business.Core.Implementation
 
         private readonly IMasterAuditLogService _auditLogService;
         private readonly IHelper _helper;
-
+        private readonly INotificationService _notificationService;
         private IRepository<Pidf> _repository { get; set; }
         private IRepository<Pidfapidetail> _pidfApiRepository { get; set; }
         private IRepository<PidfproductStrength> _pidfProductStrength { get; set; }
 
-        public PIDFService(IUnitOfWork unitOfWork, IMapperFactory mapperFactory, IPidfApiDetailsService pidfApiDetailsService, IPidfProductStrengthService pidfProductStrengthService, IMasterAuditLogService auditLogService, IHelper helper)
+        public PIDFService(IUnitOfWork unitOfWork, IMapperFactory mapperFactory, 
+            IPidfApiDetailsService pidfApiDetailsService, IPidfProductStrengthService pidfProductStrengthService,
+             INotificationService notificationService,
+            IMasterAuditLogService auditLogService, IHelper helper)
         {
             _unitOfWork = unitOfWork;
             _mapperFactory = mapperFactory;
-
+            _notificationService = notificationService;
             _PidfApiDetailsService = pidfApiDetailsService;
             _pidfProductStrengthService = pidfProductStrengthService;
             _auditLogService = auditLogService;
@@ -221,7 +224,7 @@ namespace EmcureNPD.Business.Core.Implementation
 
                         var isSuccess = await _auditLogService.CreateAuditLog<PIDFEntity>(entityPIDF.PIDFID > 0 ? Utility.Audit.AuditActionType.Update : Utility.Audit.AuditActionType.Create,
                            Utility.Enums.ModuleEnum.PIDF, _previousPIDFEntity, entityPIDF, Convert.ToInt32(objPIDF.Pidfid));
-
+                        await _notificationService.CreateNotification(objPIDF.Pidfid, entityPIDF.StatusId, string.Empty, string.Empty, loggedInUserId);
                         return DBOperation.Success;
                     }
                     else
@@ -247,6 +250,8 @@ namespace EmcureNPD.Business.Core.Implementation
                     await _unitOfWork.SaveChangesAsync();
 
                     await SaveChildDetails(objPIDF.Pidfid, loggedInUserId, entityPIDF.pidfApiDetailEntities, entityPIDF.pidfProductStregthEntities);
+                   
+                    await _notificationService.CreateNotification(objPIDF.Pidfid, entityPIDF.StatusId, string.Empty, string.Empty, loggedInUserId);
 
                     return DBOperation.Success;
                 }
@@ -373,6 +378,7 @@ namespace EmcureNPD.Business.Core.Implementation
                         _repository.UpdateAsync(objPidf);
 
                         await _unitOfWork.SaveChangesAsync();
+                        await _notificationService.CreateNotification(objPidf.Pidfid, objPidf.StatusId, string.Empty, string.Empty, (int)objPidf.StatusUpdatedBy);
                     }
                 }
                 //var isSuccess = await _auditLogService.CreateAuditLog<EntryApproveRej>(oApprRej.SaveType == "D" ? Utility.Audit.AuditActionType.Delete : Utility.Audit.AuditActionType.Update,
@@ -413,6 +419,7 @@ namespace EmcureNPD.Business.Core.Implementation
                     _repository.UpdateAsync(objPidf);
 
                     await _unitOfWork.SaveChangesAsync();
+                    await _notificationService.CreateNotification(objPidf.Pidfid, objPidf.StatusId, string.Empty, string.Empty, (int)objPidf.StatusUpdatedBy);
                 }
                 var isSuccess = await _auditLogService.CreateAuditLog<EntryApproveRej>(oApprRej.SaveType == "D" ? Utility.Audit.AuditActionType.Delete : Utility.Audit.AuditActionType.Update,
                    Utility.Enums.ModuleEnum.PIDF, oApprRej, oApprRej, 0);

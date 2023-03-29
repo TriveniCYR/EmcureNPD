@@ -33,6 +33,9 @@
         <h2 class="m-0">@MasterLocalizer["APIIPD"]</h2>
     </div>
     <div>
+        <div class="card card-outline card-primary">
+            @*<div class="card-header bg-primary"></div>*@
+            <div class="card-body" style="display: block;">
         <form asp-action="APIIPDDetailsForm" asp-controller="API" enctype="multipart/form-data" method="post">
             <input type="hidden" asp-for="Pidfid" />
             <input type="hidden" asp-for="APIIPDDetailsFormID" />
@@ -40,39 +43,39 @@
             <input type="hidden" asp-for="SaveType" />
             <input type="hidden" asp-for="BusinessUnitsByUser" />
             <input type="hidden" asp-for="StatusId" />
-            <div class="row">
-                <div class="col-md-4">
-                    <div class="form-group required">
-                        @Html.LabelFor(model => model.ProjectName,@MasterLocalizer["ProjectName"], new { @class = "control-label" })
-                        @Html.TextBoxFor(model => model.ProjectName, new { @readonly = "readonly",  @class = "form-control", @placeholder = @MasterLocalizer["ProjectName"] })
+          
+                    <div class="row">
+                        <div class="col-md-4">
+                            <div class="form-group required">
+                                @Html.LabelFor(model => model.ProjectName,@MasterLocalizer["ProjectName"], new { @class = "control-label" })
+                                @Html.TextBoxFor(model => model.ProjectName, new { @readonly = "readonly",  @class = "form-control", @placeholder = @MasterLocalizer["ProjectName"] })
+                            </div>
+                        </div>
+                        <div class="col-md-8">  <input asp-for="IsModelValid" style="visibility: hidden;" /></div>
                     </div>
-                </div>
-                <div class="col-md-8">  <input asp-for="IsModelValid" style="visibility: hidden;" /></div>
-            </div>
-            <div class="row">
-                <div class="col-md-3">
-                    <div class="form-group required">
-                        @Html.LabelFor(model => model.MarketDetailsNewPortCGIDetails,@MasterLocalizer["MarketDetailsNewPortCGIDetails"], new { @class = "control-label" })
-                        <input asp-for="MarketDetailsNewPortCGIDetails" class="form-control" />
-                        @Html.ValidationMessageFor(model => model.MarketDetailsNewPortCGIDetails, "", new { @class = "text-danger" })
-                        <lable id="valmsgMarketDetailsNewPortCGIDetails" class="text-danger"></lable>
+                    <div class="row">
+                        <div class="col-md-3">
+                            <div class="form-group required">
+                                @Html.LabelFor(model => model.MarketDetailsNewPortCGIDetails,@MasterLocalizer["MarketDetailsNewPortCGIDetails"], new { @class = "control-label" })
+                                <input asp-for="MarketDetailsNewPortCGIDetails" class="form-control" />
+                                @Html.ValidationMessageFor(model => model.MarketDetailsNewPortCGIDetails, "", new { @class = "text-danger" })
+                                <lable id="valmsgMarketDetailsNewPortCGIDetails" class="text-danger"></lable>
+                            </div>
+                        </div>
+                        <div class="col-md-2">
+                            @*   <a id="btnPreview" style="margin-top:32px" class="btn btn-primary">@MasterLocalizer["Preview"]</a>*@
+                        </div>
+                        <div class="col-md-7">
+                            <div class="form-group required">
+                                <img height="100" width="300" src="@Model.MarketDetailsFileName" id="imgPreviewMarketdetails" />
+                                <input type="hidden" asp-for="MarketDetailsFileName" />
+                            </div>
+                        </div>
+
+                        @* <input type="hidden" id="SaveType" />
+                        <input type="hidden" id="LoggedInUserId" value=@UtilityHelper.Encrypt(Convert.ToString(@Model.CreatedBy)) />*@
                     </div>
-                </div>
-                <div class="col-md-2">
-                    @*   <a id="btnPreview" style="margin-top:32px" class="btn btn-primary">@MasterLocalizer["Preview"]</a>*@
-                </div>
-                <div class="col-md-7">
-                    <div class="form-group required">
-                        <img height="100" width="300" src="@Model.MarketDetailsFileName" id="imgPreviewMarketdetails" />
-                        <input type="hidden" asp-for="MarketDetailsFileName" />
-                    </div>
-                </div>
-
-                @* <input type="hidden" id="SaveType" />
-                <input type="hidden" id="LoggedInUserId" value=@UtilityHelper.Encrypt(Convert.ToString(@Model.CreatedBy)) />*@
-            </div>
-
-
+               
 
             <div class="card card-outline card-primary">
                 <div class="card-header bg-primary">
@@ -235,6 +238,8 @@
         </form>
     </div>
 </div>
+    </div>
+</div>
 @*CancelModel*@
 @*<div id="CancelModelAPIIPD" class="modal themeModal" role="dialog">
     <div class="modal-dialog">
@@ -289,7 +294,7 @@
         if (errorCallBack) {
             toastr.error(errorCallBack);
         }
-     
+
     </script>
 
 }
