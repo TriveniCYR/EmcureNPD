@@ -91,9 +91,17 @@ namespace EmcureNPD.Business.Core.Implementation
         private IRepository<PidfPbfGeneralStrength> _pidfPbfGeneralStrengthRepository { get; set; }
         private IRepository<PidfPbfRnD> _pidfPbfRnDRepository { get; set; }
         private IRepository<PidfPbfRnDExicipientPrototype> _pidfPbfRnDExicipientPrototype { get; set; }
-        private IRepository<PidfPbfRnDExicipient> _pidfPbfRnDExicipientRepository { get; set; }
-        private IRepository<PidfPbfRnDPackaging> _pidfPbfRnDPackagingRepository { get; set; }
+        private IRepository<PidfPbfRnDExicipientRequirement> _pidfPbfRnDExicipientRequirementRepository { get; set; }
+        private IRepository<PidfPbfRnDPackagingMaterial> _pidfPbfRnDPackagingMaterialRepository { get; set; }
         private IRepository<PidfPbfAnalyticalCostStrengthMapping> _pidfPbfAnalyticalCostStrengthMappingRepository { get; set; }
+        private IRepository<PidfPbfRnDMaster> _pidfPbfRnDMasterRepository { get; set; }
+        private IRepository<PidfPbfRndBatchSize> _pidfPbfRndBatchSizeRepository { get; set; }
+        private IRepository<PidfPbfRnDApirequirement> _pidfPbfRndApirequirementRepository { get; set; }
+        private IRepository<PidfPbfRnDToolingChangepart> _pidfPbfRndToolingChangePartCostRepository { get; set; }
+        private IRepository<PidfPbfRnDCapexMiscellaneousExpense> _pidfPbfRndCapexMiscellaneousExpenseRepository { get; set; }
+        private IRepository<PidfPbfRnDPlantSupportCost> _pidfPbfRndPlantSupportCostRepository { get; set; }
+        private IRepository<PidfPbfRnDReferenceProductDetail> _pidfPbfRndReferenceProductDetailRepository { get; set; }
+
         //Market Extension & In House
 
         public PBFService(IUnitOfWork unitOfWork, IMapperFactory mapperFactory, IMasterOralService oralService, IMasterUnitofMeasurementService unitofMeasurementService,
@@ -158,14 +166,19 @@ namespace EmcureNPD.Business.Core.Implementation
             _pidfPbfRnDRepository = _unitOfWork.GetRepository<PidfPbfRnD>();
             _pidfPbfRnDExicipientPrototype = _unitOfWork.GetRepository<PidfPbfRnDExicipientPrototype>();
             _pidfPbfAnalyticalCostStrengthMappingRepository = _unitOfWork.GetRepository<PidfPbfAnalyticalCostStrengthMapping>();
-            _pidfPbfRnDExicipientRepository = _unitOfWork.GetRepository<PidfPbfRnDExicipient>();
-            _pidfPbfRnDPackagingRepository = _unitOfWork.GetRepository<PidfPbfRnDPackaging>();
+            _pidfPbfRnDExicipientRequirementRepository = _unitOfWork.GetRepository<PidfPbfRnDExicipientRequirement>();
+            _pidfPbfRnDPackagingMaterialRepository = _unitOfWork.GetRepository<PidfPbfRnDPackagingMaterial>();
+            _pidfPbfRnDMasterRepository = _unitOfWork.GetRepository<PidfPbfRnDMaster>();
+            _pidfPbfRndBatchSizeRepository = _unitOfWork.GetRepository<PidfPbfRndBatchSize>();
+            _pidfPbfRndApirequirementRepository = _unitOfWork.GetRepository<PidfPbfRnDApirequirement>();
+            _pidfPbfRndToolingChangePartCostRepository = _unitOfWork.GetRepository<PidfPbfRnDToolingChangepart>();
+            _pidfPbfRndCapexMiscellaneousExpenseRepository = _unitOfWork.GetRepository<PidfPbfRnDCapexMiscellaneousExpense>();
+            _pidfPbfRndPlantSupportCostRepository = _unitOfWork.GetRepository<PidfPbfRnDPlantSupportCost>();
+            _pidfPbfRndReferenceProductDetailRepository = _unitOfWork.GetRepository<PidfPbfRnDReferenceProductDetail>();
+    }
 
 
-        }
-
-
-        public async Task<dynamic> FillDropdown(int PIDFId)
+    public async Task<dynamic> FillDropdown(int PIDFId)
         {
             dynamic DropdownObjects = new ExpandoObject();
 
@@ -1370,12 +1383,16 @@ namespace EmcureNPD.Business.Core.Implementation
 
             DropdownObjects.MasterTestType = dsDropdownOptions.Tables[0];
             DropdownObjects.MasterPackagingType = dsDropdownOptions.Tables[1];
-            DropdownObjects.PIDFPBFGeneralStrength = dsDropdownOptions.Tables[2];
-            DropdownObjects.PBFClinicalEntity = dsDropdownOptions.Tables[3];
-            DropdownObjects.PBFAnalyticalEntity = dsDropdownOptions.Tables[4];
-            DropdownObjects.PBFAnalyticalCostEntity = dsDropdownOptions.Tables[5];
-            DropdownObjects.PBFRNDExicipientEntity = dsDropdownOptions.Tables[6];
-            DropdownObjects.PBFRNDPackagingEntity = dsDropdownOptions.Tables[7];
+            DropdownObjects.MasterBatchSize = dsDropdownOptions.Tables[2];
+            DropdownObjects.PIDFPBFGeneralStrength = dsDropdownOptions.Tables[3];
+            DropdownObjects.PBFClinicalEntity = dsDropdownOptions.Tables[4];
+            DropdownObjects.PBFAnalyticalEntity = dsDropdownOptions.Tables[5];
+            DropdownObjects.PBFAnalyticalCostEntity = dsDropdownOptions.Tables[6];
+            DropdownObjects.PBFRNDExicipientEntity = dsDropdownOptions.Tables[7];
+            DropdownObjects.PBFRNDPackagingEntity = dsDropdownOptions.Tables[8];
+            DropdownObjects.PBFRNDBatchSize = dsDropdownOptions.Tables[9];
+            DropdownObjects.PBFRNDAPIRequirement = dsDropdownOptions.Tables[10];
+            DropdownObjects.PBFRNDToolingChangePart = dsDropdownOptions.Tables[11];
 
             return DropdownObjects;
         }
@@ -1464,7 +1481,7 @@ namespace EmcureNPD.Business.Core.Implementation
                 #endregion
 
                 #region Update PIDF
-                objPIDFupdate = objPIDFupdate = _repository.GetAllQuery().Where(x => x.Pidfid == pidfid).FirstOrDefault();
+                objPIDFupdate = _repository.GetAllQuery().Where(x => x.Pidfid == pidfid).FirstOrDefault();
                 //_repository.GetAll().Where(x => x.Pidfid == pidfid).FirstOrDefault();
                 if (objPIDFupdate != null)
                 {
@@ -1631,16 +1648,107 @@ namespace EmcureNPD.Business.Core.Implementation
 
 
                 #region RND Add Update
+
+                #region RND Master Add Update                
+
+                PidfPbfRnDMaster objrndMaster;
+                objrndMaster = _pidfPbfRnDMasterRepository.GetAllQuery().Where(x => x.PbfgeneralId == pbfgeneralid).FirstOrDefault();
+                if (objrndMaster != null)
+                {
+                    objrndMaster.BatchSizeId = pbfentity.RNDMasterEntities.BatchSizeId;
+                    objrndMaster.ApirequirementMarketPrice = pbfentity.RNDMasterEntities.ApirequirementMarketPrice;
+                    objrndMaster.ManHourRate = pbfentity.RNDMasterEntities.ManHourRate;
+                    objrndMaster.PlanSupportCostRsPerDay = pbfentity.RNDMasterEntities.PlanSupportCostRsPerDay;
+                    //objRndMaster.ModifyBy = loggedInUserId;
+                    //objRndMaster.ModifyDate = DateTime.Now;
+                    _pidfPbfRnDMasterRepository.UpdateAsync(objrndMaster);
+                    await _unitOfWork.SaveChangesAsync();
+                }
+                else
+                {
+                    PidfPbfRnDMaster objRndMaster = new PidfPbfRnDMaster();
+                    objRndMaster = _mapperFactory.Get<RNDMasterEntity, PidfPbfRnDMaster>(pbfentity.RNDMasterEntities);
+                    objRndMaster.PbfgeneralId = pbfgeneralid;
+                    objRndMaster.CreatedBy = loggedInUserId;
+                    objRndMaster.CreatedDate = DateTime.Now;
+                    _pidfPbfRnDMasterRepository.AddAsync(objRndMaster);
+                    await _unitOfWork.SaveChangesAsync();
+                }
+                #endregion
+
+                #region Batch Size Add Update
+                List<PidfPbfRndBatchSize> objBatchSizelist = new();
+
+                var batchsize = _pidfPbfRndBatchSizeRepository.GetAllQuery().Where(x => x.PbfgeneralId == pbfgeneralid).ToList();
+                if (batchsize.Count > 0)
+                {
+                    foreach (var item in batchsize)
+                    {
+                        _pidfPbfRndBatchSizeRepository.Remove(item);
+                    }
+                    await _unitOfWork.SaveChangesAsync();
+                }
+
+
+                //Save batch size Entities
+                if (pbfentity.RNDBatchSizes != null && pbfentity.RNDBatchSizes.Count() > 0)
+                {
+                    foreach (var item in pbfentity.RNDBatchSizes)
+                    {
+                        PidfPbfRndBatchSize objbatchsize = new PidfPbfRndBatchSize();
+                        objbatchsize = _mapperFactory.Get<RNDBatchSize, PidfPbfRndBatchSize>(item);                      
+                        objbatchsize.PbfgeneralId = pbfgeneralid;
+                        objbatchsize.CreatedDate = DateTime.Now;
+                        objbatchsize.CreatedBy = loggedInUserId;
+                        objBatchSizelist.Add(objbatchsize);
+                    }
+                    _pidfPbfRndBatchSizeRepository.AddRangeAsync(objBatchSizelist);
+                    await _unitOfWork.SaveChangesAsync();
+                }
+
+                #endregion
+
+                #region API Requirement Add Update
+                List<PidfPbfRnDApirequirement> objApirequirementlist = new();
+
+                var apirequirement = _pidfPbfRndApirequirementRepository.GetAllQuery().Where(x => x.PbfgeneralId == pbfgeneralid).ToList();
+                if (apirequirement.Count > 0)
+                {
+                    foreach (var item in apirequirement)
+                    {
+                        _pidfPbfRndApirequirementRepository.Remove(item);
+                    }
+                    await _unitOfWork.SaveChangesAsync();
+                }
+
+
+                //Save Api requirement Entities
+                if (pbfentity.RNDApirequirements != null && pbfentity.RNDApirequirements.Count() > 0)
+                {
+                    foreach (var item in pbfentity.RNDApirequirements)
+                    {
+                        PidfPbfRnDApirequirement objapirequirement = new PidfPbfRnDApirequirement();
+                        objapirequirement = _mapperFactory.Get<RNDApirequirement, PidfPbfRnDApirequirement>(item);
+                        objapirequirement.PbfgeneralId = pbfgeneralid;
+                        objapirequirement.CreatedDate = DateTime.Now;
+                        objapirequirement.CreatedBy = loggedInUserId;
+                        objApirequirementlist.Add(objapirequirement);
+                    }
+                    _pidfPbfRndApirequirementRepository.AddRangeAsync(objApirequirementlist);
+                    await _unitOfWork.SaveChangesAsync();
+                }
+
+                #endregion
                 #region RND Excipient Add Update
-                List<PidfPbfRnDExicipient> objExicipientlist = new();
+                List<PidfPbfRnDExicipientRequirement> objExicipientlist = new();
                 if (pbfgeneralid > 0)
                 {
-                    var exicipient = _pidfPbfRnDExicipientRepository.GetAllQuery().Where(x => x.PbfgeneralId == pbfgeneralid).ToList();
+                    var exicipient = _pidfPbfRnDExicipientRequirementRepository.GetAllQuery().Where(x => x.PbfgeneralId == pbfgeneralid).ToList();
                     if (exicipient.Count > 0)
                     {
                         foreach (var item in exicipient)
                         {
-                            _pidfPbfRnDExicipientRepository.Remove(item);
+                            _pidfPbfRnDExicipientRequirementRepository.Remove(item);
                         }
                         await _unitOfWork.SaveChangesAsync();
                     }
@@ -1651,28 +1759,28 @@ namespace EmcureNPD.Business.Core.Implementation
                 {
                     foreach (var item in pbfentity.RNDExicipients)
                     {
-                        PidfPbfRnDExicipient obgexcipient = new PidfPbfRnDExicipient();
-                        obgexcipient = _mapperFactory.Get<RNDExicipient, PidfPbfRnDExicipient>(item);
+                        PidfPbfRnDExicipientRequirement obgexcipient = new PidfPbfRnDExicipientRequirement();
+                        obgexcipient = _mapperFactory.Get<RNDExicipient, PidfPbfRnDExicipientRequirement>(item);
                         obgexcipient.PbfgeneralId = pbfgeneralid;
                         obgexcipient.CreatedDate = DateTime.Now;
                         obgexcipient.CreatedBy = loggedInUserId;
                         objExicipientlist.Add(obgexcipient);
                     }
-                    _pidfPbfRnDExicipientRepository.AddRangeAsync(objExicipientlist);
+                    _pidfPbfRnDExicipientRequirementRepository.AddRangeAsync(objExicipientlist);
                     await _unitOfWork.SaveChangesAsync();
                 }
 
                 #endregion
                 #region RND Packaging Add Update
-                List<PidfPbfRnDPackaging> objPackaginglist = new();
+                List<PidfPbfRnDPackagingMaterial> objPackaginglist = new();
                 if (pbfgeneralid > 0)
                 {
-                    var packging = _pidfPbfRnDPackagingRepository.GetAllQuery().Where(x => x.PbfgeneralId == pbfgeneralid).ToList();
+                    var packging = _pidfPbfRnDPackagingMaterialRepository.GetAllQuery().Where(x => x.PbfgeneralId == pbfgeneralid).ToList();
                     if (packging.Count > 0)
                     {
                         foreach (var item in packging)
                         {
-                            _pidfPbfRnDPackagingRepository.Remove(item);
+                            _pidfPbfRnDPackagingMaterialRepository.Remove(item);
                         }
                         await _unitOfWork.SaveChangesAsync();
                     }
@@ -1683,14 +1791,139 @@ namespace EmcureNPD.Business.Core.Implementation
                 {
                     foreach (var item in pbfentity.RNDPackagings)
                     {
-                        PidfPbfRnDPackaging obgpackaging = new PidfPbfRnDPackaging();
-                        obgpackaging = _mapperFactory.Get<RNDPackaging, PidfPbfRnDPackaging>(item);
+                        PidfPbfRnDPackagingMaterial obgpackaging = new PidfPbfRnDPackagingMaterial();
+                        obgpackaging = _mapperFactory.Get<RNDPackaging, PidfPbfRnDPackagingMaterial>(item);
                         obgpackaging.PbfgeneralId = pbfgeneralid;
                         obgpackaging.CreatedDate = DateTime.Now;
                         obgpackaging.CreatedBy = loggedInUserId;
                         objPackaginglist.Add(obgpackaging);
                     }
-                    _pidfPbfRnDPackagingRepository.AddRangeAsync(objPackaginglist);
+                    _pidfPbfRnDPackagingMaterialRepository.AddRangeAsync(objPackaginglist);
+                    await _unitOfWork.SaveChangesAsync();
+                }
+
+                #endregion
+
+                #region Tooling Change Part Add Update
+                List<PidfPbfRnDToolingChangepart> objToolingChangePartCostlist = new();
+
+                var toolongchangepart = _pidfPbfRndToolingChangePartCostRepository.GetAllQuery().Where(x => x.PbfgeneralId == pbfgeneralid).ToList();
+                if (toolongchangepart.Count > 0)
+                {
+                    foreach (var item in toolongchangepart)
+                    {
+                        _pidfPbfRndToolingChangePartCostRepository.Remove(item);
+                    }
+                    await _unitOfWork.SaveChangesAsync();
+                }
+
+
+                //Save ToolingChangeparts Entities
+                if (pbfentity.RNDToolingChangeparts != null && pbfentity.RNDToolingChangeparts.Count() > 0)
+                {
+                    foreach (var item in pbfentity.RNDToolingChangeparts)
+                    {
+                        PidfPbfRnDToolingChangepart objtoolingcgangepart = new PidfPbfRnDToolingChangepart();
+                        objtoolingcgangepart = _mapperFactory.Get<RNDToolingChangepart, PidfPbfRnDToolingChangepart>(item);
+                        objtoolingcgangepart.PbfgeneralId = pbfgeneralid;
+                        objtoolingcgangepart.CreatedDate = DateTime.Now;
+                        objtoolingcgangepart.CreatedBy = loggedInUserId;
+                        objToolingChangePartCostlist.Add(objtoolingcgangepart);
+                    }
+                    _pidfPbfRndToolingChangePartCostRepository.AddRangeAsync(objToolingChangePartCostlist);
+                    await _unitOfWork.SaveChangesAsync();
+                }
+
+                #endregion
+                #region Capex and Miscellaneous Expenses Add Update
+                List<PidfPbfRnDCapexMiscellaneousExpense> objCapexMiscellaneouslist = new();
+
+                var capexandmiscellaneous = _pidfPbfRndCapexMiscellaneousExpenseRepository.GetAllQuery().Where(x => x.PbfgeneralId == pbfgeneralid).ToList();
+                if (capexandmiscellaneous.Count > 0)
+                {
+                    foreach (var item in capexandmiscellaneous)
+                    {
+                        _pidfPbfRndCapexMiscellaneousExpenseRepository.Remove(item);
+                    }
+                    await _unitOfWork.SaveChangesAsync();
+                }
+
+
+                //Save CapexMiscellaneousExpenses Entities
+                if (pbfentity.RNDCapexMiscellaneousExpenses != null && pbfentity.RNDCapexMiscellaneousExpenses.Count() > 0)
+                {
+                    foreach (var item in pbfentity.RNDCapexMiscellaneousExpenses)
+                    {
+                        PidfPbfRnDCapexMiscellaneousExpense objcapex = new PidfPbfRnDCapexMiscellaneousExpense();
+                        objcapex = _mapperFactory.Get<RNDCapexMiscellaneousExpense, PidfPbfRnDCapexMiscellaneousExpense>(item);
+                        objcapex.PbfgeneralId = pbfgeneralid;
+                        objcapex.CreatedDate = DateTime.Now;
+                        objcapex.CreatedBy = loggedInUserId;
+                        objCapexMiscellaneouslist.Add(objcapex);
+                    }
+                    _pidfPbfRndCapexMiscellaneousExpenseRepository.AddRangeAsync(objCapexMiscellaneouslist);
+                    await _unitOfWork.SaveChangesAsync();
+                }
+
+                #endregion
+                #region Plant Support Cost Add Update
+                List<PidfPbfRnDPlantSupportCost> objPlantSupportCostlist = new();
+
+                var plantsupportcost = _pidfPbfRndPlantSupportCostRepository.GetAllQuery().Where(x => x.PbfgeneralId == pbfgeneralid).ToList();
+                if (plantsupportcost.Count > 0)
+                {
+                    foreach (var item in plantsupportcost)
+                    {
+                        _pidfPbfRndPlantSupportCostRepository.Remove(item);
+                    }
+                    await _unitOfWork.SaveChangesAsync();
+                }
+
+
+                //Save PlantSupportCosts Entities
+                if (pbfentity.RNDPlantSupportCosts != null && pbfentity.RNDPlantSupportCosts.Count() > 0)
+                {
+                    foreach (var item in pbfentity.RNDPlantSupportCosts)
+                    {
+                        PidfPbfRnDPlantSupportCost objplantsupportcost = new PidfPbfRnDPlantSupportCost();
+                        objplantsupportcost = _mapperFactory.Get<RNDPlantSupportCost, PidfPbfRnDPlantSupportCost>(item);
+                        objplantsupportcost.PbfgeneralId = pbfgeneralid;
+                        objplantsupportcost.CreatedDate = DateTime.Now;
+                        objplantsupportcost.CreatedBy = loggedInUserId;
+                        objPlantSupportCostlist.Add(objplantsupportcost);
+                    }
+                    _pidfPbfRndPlantSupportCostRepository.AddRangeAsync(objPlantSupportCostlist);
+                    await _unitOfWork.SaveChangesAsync();
+                }
+
+                #endregion
+                #region Reference Product Detail Add Update
+                List<PidfPbfRnDReferenceProductDetail> objReferenceProductDetaillist = new();
+
+                var referenceporduct = _pidfPbfRndReferenceProductDetailRepository.GetAllQuery().Where(x => x.PbfgeneralId == pbfgeneralid).ToList();
+                if (referenceporduct.Count > 0)
+                {
+                    foreach (var item in referenceporduct)
+                    {
+                        _pidfPbfRndReferenceProductDetailRepository.Remove(item);
+                    }
+                    await _unitOfWork.SaveChangesAsync();
+                }
+
+
+                //Save ReferenceProductDetail Entities
+                if (pbfentity.RNDReferenceProductDetails != null && pbfentity.RNDReferenceProductDetails.Count() > 0)
+                {
+                    foreach (var item in pbfentity.RNDReferenceProductDetails)
+                    {
+                        PidfPbfRnDReferenceProductDetail objreferenceporduct = new PidfPbfRnDReferenceProductDetail();
+                        objreferenceporduct = _mapperFactory.Get<RNDReferenceProductDetail, PidfPbfRnDReferenceProductDetail>(item);
+                        objreferenceporduct.PbfgeneralId = pbfgeneralid;
+                        objreferenceporduct.CreatedDate = DateTime.Now;
+                        objreferenceporduct.CreatedBy = loggedInUserId;
+                        objReferenceProductDetaillist.Add(objreferenceporduct);
+                    }
+                    _pidfPbfRndReferenceProductDetailRepository.AddRangeAsync(objReferenceProductDetaillist);
                     await _unitOfWork.SaveChangesAsync();
                 }
 

@@ -14,9 +14,15 @@ namespace EmcureNPD.Data.DataAccess.Entity
             PidfPbfAnalyticals = new HashSet<PidfPbfAnalytical>();
             PidfPbfClinicals = new HashSet<PidfPbfClinical>();
             PidfPbfGeneralStrengths = new HashSet<PidfPbfGeneralStrength>();
+            PidfPbfRnDApirequirements = new HashSet<PidfPbfRnDApirequirement>();
+            PidfPbfRnDCapexMiscellaneousExpenses = new HashSet<PidfPbfRnDCapexMiscellaneousExpense>();
             PidfPbfRnDExicipientPrototypes = new HashSet<PidfPbfRnDExicipientPrototype>();
-            PidfPbfRnDExicipients = new HashSet<PidfPbfRnDExicipient>();
-            PidfPbfRnDPackagings = new HashSet<PidfPbfRnDPackaging>();
+            PidfPbfRnDExicipientRequirements = new HashSet<PidfPbfRnDExicipientRequirement>();
+            PidfPbfRnDPackagingMaterials = new HashSet<PidfPbfRnDPackagingMaterial>();
+            PidfPbfRnDPlantSupportCosts = new HashSet<PidfPbfRnDPlantSupportCost>();
+            PidfPbfRnDReferenceProductDetails = new HashSet<PidfPbfRnDReferenceProductDetail>();
+            PidfPbfRnDToolingChangeparts = new HashSet<PidfPbfRnDToolingChangepart>();
+            PidfPbfRndBatchSizes = new HashSet<PidfPbfRndBatchSize>();
         }
 
         public long PidfproductStrengthId { get; set; }
@@ -33,8 +39,14 @@ namespace EmcureNPD.Data.DataAccess.Entity
         public virtual ICollection<PidfPbfAnalytical> PidfPbfAnalyticals { get; set; }
         public virtual ICollection<PidfPbfClinical> PidfPbfClinicals { get; set; }
         public virtual ICollection<PidfPbfGeneralStrength> PidfPbfGeneralStrengths { get; set; }
+        public virtual ICollection<PidfPbfRnDApirequirement> PidfPbfRnDApirequirements { get; set; }
+        public virtual ICollection<PidfPbfRnDCapexMiscellaneousExpense> PidfPbfRnDCapexMiscellaneousExpenses { get; set; }
         public virtual ICollection<PidfPbfRnDExicipientPrototype> PidfPbfRnDExicipientPrototypes { get; set; }
-        public virtual ICollection<PidfPbfRnDExicipient> PidfPbfRnDExicipients { get; set; }
-        public virtual ICollection<PidfPbfRnDPackaging> PidfPbfRnDPackagings { get; set; }
+        public virtual ICollection<PidfPbfRnDExicipientRequirement> PidfPbfRnDExicipientRequirements { get; set; }
+        public virtual ICollection<PidfPbfRnDPackagingMaterial> PidfPbfRnDPackagingMaterials { get; set; }
+        public virtual ICollection<PidfPbfRnDPlantSupportCost> PidfPbfRnDPlantSupportCosts { get; set; }
+        public virtual ICollection<PidfPbfRnDReferenceProductDetail> PidfPbfRnDReferenceProductDetails { get; set; }
+        public virtual ICollection<PidfPbfRnDToolingChangepart> PidfPbfRnDToolingChangeparts { get; set; }
+        public virtual ICollection<PidfPbfRndBatchSize> PidfPbfRndBatchSizes { get; set; }
     }
 }

@@ -419,12 +419,47 @@
                              aria-labelledby="custom-tabs-department-RnD-tab">
                             <div class="container-fluid">
                                 <div class="row">
+                                    <div class="col-md-3">
+                                        <div class="form-group required">
+                                            @Html.LabelFor(model => model.RNDMasterEntities.BatchSizeId, "Batch Size", new { @class = "control-label" })
+                                            @*<input type="hidden" id="hdnBatchSizeId" value="@Model.RNDMasterEntities.BatchSizeId" />*@
+                                            <select id="RNDBatchSizeId" name="RNDMasterEntities.BatchSizeId" class="form-control readOnlyUpdate" required></select>
+                                        </div>
+                                    </div>
+                                    <table id="tablerndbatchsize" class="table text-center" style="width:100%">
+                                    </table>
+                                    <div class="col-md-3">
+                                        <div class="form-group required">
+                                            @Html.LabelFor(model => model.RNDMasterEntities.ApirequirementMarketPrice, "Market Prize (Rs/kg)", new { @class = "control-label" })
+                                            @Html.TextBoxFor(@modal=> modal.RNDMasterEntities.ApirequirementMarketPrice,new{@class="form-control"})
+                                        </div>
+                                    </div>
+                                    <table id="tablerndapirequirement" class="table text-center" style="width:100%">
+                                    </table>
                                     <table id="tablerndexicipientrequirement" class="table text-center" style="width:100%">
                                     </table>
-                                     <input type="hidden" id="hdnrndExicipientData" name="RNDExicipientRawData" />
-                                     <table id="tablerndpackagingmaterialrequirement" class="table text-center" style="width:100%">
+                                    <input type="hidden" id="hdnrndExicipientData" name="RNDExicipientRawData" />
+                                    <table id="tablerndpackagingmaterialrequirement" class="table text-center" style="width:100%">
                                     </table>
-                                     <input type="hidden" id="hdnrndPackagingData" name="RNDPackagingRawData" />
+                                    <input type="hidden" id="hdnrndPackagingData" name="RNDPackagingRawData" />
+                                    <table id="tablerndtoolingchangepart" class="table text-center" style="width:100%">
+                                    </table>
+                                    <input type="hidden" id="hdnrndToolingChangePartData" name="RNDToolingChangePartRawData" />
+                                    <table id="tablerndcapexmiscellaneousexpenses" class="table text-center" style="width:100%">
+                                    </table>
+                                    <input type="hidden" id="hdnrndCapexMiscellaneousExpensesData" name="RNDCapexMiscellaneousExpensesRawData" />
+                                    <div class="col-md-3">
+                                        <div class="form-group required">
+                                            @Html.LabelFor(model => model.RNDMasterEntities.PlanSupportCostRsPerDay, "Plant Utilization rate Rs/Day", new { @class = "control-label" })
+                                            @Html.TextBoxFor(@modal=> modal.RNDMasterEntities.PlanSupportCostRsPerDay,new{@class="form-control"})
+                                        </div>
+                                    </div>
+                                    <table id="tablerndplantsupportcost" class="table text-center" style="width:100%">
+                                    </table>
+                                    <input type="hidden" id="hdnrndPlantSupportCostData" name="RNDPlantSupportCostRawData" />
+
+                                    <table id="tablerndreferenceproductdetail" class="table text-center" style="width:100%">
+                                    </table>
                                 </div>
                             </div>
                         </div>
@@ -434,6 +469,7 @@
                              aria-labelledby="custom-tabs-department-Analytical-tab">
                             <div class="container-fluid">
                                 <div class="row">
+
                                     <table id="tableanalytical" class="table text-center" style="width:100%">
                                     </table>
                                     <input type="hidden" id="hdnAnalyticalData" name="AnalyticalRawData" />
@@ -477,7 +513,7 @@
 <script type="text/javascript" src="~/AdminLTE/plugins/select2/js/select2.min.js"></script>
 <link href="/lib/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
 <script src="/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
-<script type="text/javascript" src="~/js/Custom/jquery.tableTotal.js"></script>
+
 
 <script>
     var GetAllPBF = "@EmcureNPD.Web.Helpers.APIURLHelper.GetPBFDropdown";

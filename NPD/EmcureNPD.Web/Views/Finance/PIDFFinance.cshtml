@@ -937,7 +937,173 @@ var PidfNumber=UtilityHelper.Decreypt(Convert.ToString(PidafId));
 			</div>
 		</div>
 
-		<div class="card">
+		
+
+        <div class="card">
+            
+             <div class="card-header bg-primary">
+			<h3 class="card-title mb-0"><button type="button" class="btn btn-tool" data-card-widget="collapse">Batch Size Coating</button></h3>
+				<div class="card-tools">
+					<button type="button" class="btn btn-tool" data-card-widget="collapse" data-target="#BatchSizeCollapse" title="Collapse">
+                           <i class="fas fa-plus"></i>
+					</button>
+				</div>
+			</div>
+			<div class="card-body collapse" id="BatchSizeCollapse" style="background-color:white;overflow-x:auto;">
+				<input type="hidden" />
+            <div class="col-12 table-overflow batch-size-coating-table">
+                                        <table class="table table-bordered text-center m-0">
+                                            <thead>
+                                                <tr>
+                                                    <th>#</th>
+                                                    <th>SKU</th>
+                                                    <th>Pack size</th>
+                                                    <th>Brand Price</th>
+                                                    <th>Generic List price</th>
+                                                    <th>Net Realisation</th>
+                                                    <th>Est MAT 2016/12 Units</th>
+                                                    <th>Est MAT 2020/12 Units</th>
+                                                    <th>CAGR over 2016/12 Est MAT units</th>
+                                                    <th>Market in packs</th>
+                                                    <th>Batch size in ltr/tabs</th>
+                                                    <th>Batch size*</th>
+                                                    <th style="width: 50px;">Yield*</th>
+                                                    <th>Batch output*</th>
+                                                    <th>API (CAD)*</th>
+                                                    <th>Excipients (CAD)*</th>
+                                                    <th>PM (CAD)*</th>
+                                                    <th>CCPC (CAD)*</th>
+                                                    <th>Freight (CAD)*</th>
+                                                    <th>Emcure COGs/pack*</th>
+                                <th class="dtfc-fixed-right">Action</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody id="FinanceTableBoy">
+						    @if (Model!=null && Model.lsPidfFinanceBatchSizeCoating != null && Model.lsPidfFinanceBatchSizeCoating.Count() > 0)
+						    {
+							    int j = 0;
+							    foreach (var item in Model.lsPidfFinanceBatchSizeCoating)
+							    {
+								
+								    <tr id="financeDetailsRow_0">
+									
+									    <td>1
+										    <input type="hidden" id="PidffinaceId" name="lsPidfFinanceBatchSizeCoating[@j].PidffinaceId" value="@item.PidffinaceId">
+										   
+									    </td>
+									    <td>100mg
+                                             <input type="hidden" id="PidffinaceBatchSizeCoatingId" name="lsPidfFinanceBatchSizeCoating[@j].PidffinaceBatchSizeCoatingId" value="@item.PidffinaceBatchSizeCoatingId"> 
+                                        </td>
+									    <td>100</td>
+									    <td>-</td>
+									    <td>1.65</td>
+									    <td>0.66</td>
+									    <td></td>
+									    <td>3,523,554</td>
+									    <td></td>
+									    <td>3,523,554</td>
+									    <td>500,000</td>
+
+									    <td>
+
+										    <input type="number" id="Batchsize" name="lsPidfFinanceBatchSizeCoating[@j].Batchsize" value="@item.Batchsize" class="Batchsize form-control readOnlyUpdate" required />
+									    </td>
+									    <td>
+										    <input type="number" style="width: 50px;" id="Yield" name="lsPidfFinanceBatchSizeCoating[@j].Yield" value="@item.Yield" class="Yield form-control readOnlyUpdate" required />
+									    </td>
+									    <td>
+										    <input type="number" id="Batchoutput" name="lsPidfFinanceBatchSizeCoating[@j].Batchoutput" value="@item.Batchoutput" class=" Batchoutput form-control readOnlyUpdate" required />
+									    </td>
+									    <td>
+										    <input type="number" id="API_CAD" name="lsPidfFinanceBatchSizeCoating[@j].ApiCad" value="@item.ApiCad" class="API_CAD form-control readOnlyUpdate" required />
+									    </td>
+									    <td>
+										    <input type="number" id="Excipients_CAD" name="lsPidfFinanceBatchSizeCoating[@j].ExcipientsCad" value="@item.ExcipientsCad" class=" Excipients_CAD form-control readOnlyUpdate" required />
+									    </td>
+									    <td>
+										    <input type="number" id="PM_CAD" name="lsPidfFinanceBatchSizeCoating[@j].PmCad" value="@item.PmCad" class="PM_CAD form-control readOnlyUpdate" required />
+									    </td>
+									    <td>
+										    <input type="number" id="CCPC_CAD" name="lsPidfFinanceBatchSizeCoating[@j].CcpcCad" value="@item.CcpcCad" class="CCPC_CAD form-control readOnlyUpdate" required />
+									    </td>
+									    <td>
+										    <input type="number" id="Freight_CAD" name="lsPidfFinanceBatchSizeCoating[@j].FreightCad" value="@item.FreightCad" class="Freight_CAD form-control readOnlyUpdate" required />
+									    </td>
+									    <td>
+                                                <input type="number" id="EmcureCOGs_pack" name="lsPidfFinanceBatchSizeCoating[@j].EmcureCogsPack" value="@item.EmcureCogsPack" class="EmcureCOGs_pack form-control readOnlyUpdate" required />
+									    </td>
+									    <td class="align-middle abc">
+                                                            <div class="d-flex justify-content-center">
+                                                                <i class="fa-solid fa-circle-plus nav-icon mx-3 text-success add-rows" onclick="addRowFinanceDetails(@j)"></i>
+                                                                <i class="fa-solid fa-trash nav-icon me-3 text-red del-rows" id="del_row_@j" onclick="deleteRowFinance(@j,this)"></i>
+                                                            </div>
+                                           </td>
+								    </tr>
+								    j++;
+							    }
+						    }
+						    else
+						    {
+							int j = 0;
+							<tr id="financeDetailsRow_@j">
+								
+									<td>1
+                                        <input type="hidden" id="PidffinaceId" name="lsPidfFinanceBatchSizeCoating[@j].PidffinaceId">
+									</td>
+									<td>100mg
+                                        <input type="hidden" id="PidffinaceBatchSizeCoatingId" name="lsPidfFinanceBatchSizeCoating[@j].PidffinaceBatchSizeCoatingId">
+                                    </td>
+									<td>100</td>
+									<td>-</td>
+									<td>1.65</td>
+									<td>0.66</td>
+									<td></td>
+									<td>3,523,554</td>
+									<td></td>
+									<td>3,523,554</td>
+									<td>500,000</td>
+
+									<td>
+										<input type="number" id="Batchsize" name="lsPidfFinanceBatchSizeCoating[@j].Batchsize" class="Batchsize form-control readOnlyUpdate" required />
+									</td> 
+									<td>
+									<input type="number" style="width: 50px;" id="Yield" name="lsPidfFinanceBatchSizeCoating[@j].Yield" class="Yield form-control readOnlyUpdate" required />
+									</td>
+									<td>
+									<input type="number" id="Batchoutput" name="lsPidfFinanceBatchSizeCoating[@j].Batchoutput" class=" Batchoutput form-control readOnlyUpdate" required />
+									</td>
+									<td>
+									<input type="number" id="API_CAD" name="lsPidfFinanceBatchSizeCoating[@j].ApiCad" class="API_CAD form-control readOnlyUpdate" required />
+									</td>
+									<td>
+									<input type="number" id="Excipients_CAD" name="lsPidfFinanceBatchSizeCoating[@j].ExcipientsCad" class=" Excipients_CAD form-control readOnlyUpdate" required />
+									</td>
+									<td>
+									<input type="number" id="PM_CAD" name="lsPidfFinanceBatchSizeCoating[@j].PmCad" class="PM_CAD form-control readOnlyUpdate" required />
+									</td>
+									<td>
+									<input type="number" id="CCPC_CAD" name="lsPidfFinanceBatchSizeCoating[@j].CcpcCad" class="CCPC_CAD form-control readOnlyUpdate" required />
+									</td>
+									<td>
+									<input type="number" id="Freight_CAD" name="lsPidfFinanceBatchSizeCoating[@j].FreightCad" class="Freight_CAD form-control readOnlyUpdate" required />
+									</td>
+									<td>
+                                        <input type="number" id="EmcureCOGs_pack" name="lsPidfFinanceBatchSizeCoating[@j].EmcureCogsPack" class="EmcureCOGs_pack form-control readOnlyUpdate" required />
+									</td>
+                                    <td class="align-middle abc">
+                                                        <div class="d-flex justify-content-center">
+                                                            <i class="fa-solid fa-circle-plus nav-icon mx-3 text-success add-rows" onclick="addRowFinanceDetails(@j)"></i>
+                                                            <i class="fa-solid fa-trash nav-icon me-3 text-red del-rows" id="del_row_@j" onclick="deleteRowFinance(@j,this)"></i>
+                                                        </div>
+                                                    </td>
+								</tr>
+						}
+					          </tbody>
+                               </table>
+                                    </div>
+            </div>
+		</div>
+        <div class="card">
 			
              <div class="card-header bg-primary">
 			<h3 class="card-title mb-0"><button type="button" class="btn btn-tool" data-card-widget="collapse">Projections</button></h3>
@@ -5526,171 +5692,6 @@ var PidfNumber=UtilityHelper.Decreypt(Convert.ToString(PidafId));
 				
 			</div>
 		</div>
-
-        <div class="card">
-            
-             <div class="card-header bg-primary">
-			<h3 class="card-title mb-0"><button type="button" class="btn btn-tool" data-card-widget="collapse">Batch Size Coating</button></h3>
-				<div class="card-tools">
-					<button type="button" class="btn btn-tool" data-card-widget="collapse" data-target="#BatchSizeCollapse" title="Collapse">
-                           <i class="fas fa-plus"></i>
-					</button>
-				</div>
-			</div>
-			<div class="card-body collapse" id="BatchSizeCollapse" style="background-color:white;overflow-x:auto;">
-				<input type="hidden" />
-            <div class="col-12 table-overflow batch-size-coating-table">
-                                        <table class="table table-bordered text-center m-0">
-                                            <thead>
-                                                <tr>
-                                                    <th>#</th>
-                                                    <th>SKU</th>
-                                                    <th>Pack size</th>
-                                                    <th>Brand Price</th>
-                                                    <th>Generic List price</th>
-                                                    <th>Net Realisation</th>
-                                                    <th>Est MAT 2016/12 Units</th>
-                                                    <th>Est MAT 2020/12 Units</th>
-                                                    <th>CAGR over 2016/12 Est MAT units</th>
-                                                    <th>Market in packs</th>
-                                                    <th>Batch size in ltr/tabs</th>
-                                                    <th>Batch size*</th>
-                                                    <th style="width: 50px;">Yield*</th>
-                                                    <th>Batch output*</th>
-                                                    <th>API (CAD)*</th>
-                                                    <th>Excipients (CAD)*</th>
-                                                    <th>PM (CAD)*</th>
-                                                    <th>CCPC (CAD)*</th>
-                                                    <th>Freight (CAD)*</th>
-                                                    <th>Emcure COGs/pack*</th>
-                                <th class="dtfc-fixed-right">Action</th>
-                                                </tr>
-                                            </thead>
-                                            <tbody id="FinanceTableBoy">
-						    @if (Model!=null && Model.lsPidfFinanceBatchSizeCoating != null && Model.lsPidfFinanceBatchSizeCoating.Count() > 0)
-						    {
-							    int j = 0;
-							    foreach (var item in Model.lsPidfFinanceBatchSizeCoating)
-							    {
-								
-								    <tr id="financeDetailsRow_0">
-									
-									    <td>1
-										    <input type="hidden" id="PidffinaceId" name="lsPidfFinanceBatchSizeCoating[@j].PidffinaceId" value="@item.PidffinaceId">
-										   
-									    </td>
-									    <td>100mg
-                                             <input type="hidden" id="PidffinaceBatchSizeCoatingId" name="lsPidfFinanceBatchSizeCoating[@j].PidffinaceBatchSizeCoatingId" value="@item.PidffinaceBatchSizeCoatingId"> 
-                                        </td>
-									    <td>100</td>
-									    <td>-</td>
-									    <td>1.65</td>
-									    <td>0.66</td>
-									    <td></td>
-									    <td>3,523,554</td>
-									    <td></td>
-									    <td>3,523,554</td>
-									    <td>500,000</td>
-
-									    <td>
-
-										    <input type="number" id="Batchsize" name="lsPidfFinanceBatchSizeCoating[@j].Batchsize" value="@item.Batchsize" class="Batchsize form-control readOnlyUpdate" required />
-									    </td>
-									    <td>
-										    <input type="number" style="width: 50px;" id="Yield" name="lsPidfFinanceBatchSizeCoating[@j].Yield" value="@item.Yield" class="Yield form-control readOnlyUpdate" required />
-									    </td>
-									    <td>
-										    <input type="number" id="Batchoutput" name="lsPidfFinanceBatchSizeCoating[@j].Batchoutput" value="@item.Batchoutput" class=" Batchoutput form-control readOnlyUpdate" required />
-									    </td>
-									    <td>
-										    <input type="number" id="API_CAD" name="lsPidfFinanceBatchSizeCoating[@j].ApiCad" value="@item.ApiCad" class="API_CAD form-control readOnlyUpdate" required />
-									    </td>
-									    <td>
-										    <input type="number" id="Excipients_CAD" name="lsPidfFinanceBatchSizeCoating[@j].ExcipientsCad" value="@item.ExcipientsCad" class=" Excipients_CAD form-control readOnlyUpdate" required />
-									    </td>
-									    <td>
-										    <input type="number" id="PM_CAD" name="lsPidfFinanceBatchSizeCoating[@j].PmCad" value="@item.PmCad" class="PM_CAD form-control readOnlyUpdate" required />
-									    </td>
-									    <td>
-										    <input type="number" id="CCPC_CAD" name="lsPidfFinanceBatchSizeCoating[@j].CcpcCad" value="@item.CcpcCad" class="CCPC_CAD form-control readOnlyUpdate" required />
-									    </td>
-									    <td>
-										    <input type="number" id="Freight_CAD" name="lsPidfFinanceBatchSizeCoating[@j].FreightCad" value="@item.FreightCad" class="Freight_CAD form-control readOnlyUpdate" required />
-									    </td>
-									    <td>
-                                                <input type="number" id="EmcureCOGs_pack" name="lsPidfFinanceBatchSizeCoating[@j].EmcureCogsPack" value="@item.EmcureCogsPack" class="EmcureCOGs_pack form-control readOnlyUpdate" required />
-									    </td>
-									    <td class="align-middle abc">
-                                                            <div class="d-flex justify-content-center">
-                                                                <i class="fa-solid fa-circle-plus nav-icon mx-3 text-success add-rows" onclick="addRowFinanceDetails(@j)"></i>
-                                                                <i class="fa-solid fa-trash nav-icon me-3 text-red del-rows" id="del_row_@j" onclick="deleteRowFinance(@j,this)"></i>
-                                                            </div>
-                                           </td>
-								    </tr>
-								    j++;
-							    }
-						    }
-						    else
-						    {
-							int j = 0;
-							<tr id="financeDetailsRow_@j">
-								
-									<td>1
-                                        <input type="hidden" id="PidffinaceId" name="lsPidfFinanceBatchSizeCoating[@j].PidffinaceId">
-									</td>
-									<td>100mg
-                                        <input type="hidden" id="PidffinaceBatchSizeCoatingId" name="lsPidfFinanceBatchSizeCoating[@j].PidffinaceBatchSizeCoatingId">
-                                    </td>
-									<td>100</td>
-									<td>-</td>
-									<td>1.65</td>
-									<td>0.66</td>
-									<td></td>
-									<td>3,523,554</td>
-									<td></td>
-									<td>3,523,554</td>
-									<td>500,000</td>
-
-									<td>
-										<input type="number" id="Batchsize" name="lsPidfFinanceBatchSizeCoating[@j].Batchsize" class="Batchsize form-control readOnlyUpdate" required />
-									</td> 
-									<td>
-									<input type="number" style="width: 50px;" id="Yield" name="lsPidfFinanceBatchSizeCoating[@j].Yield" class="Yield form-control readOnlyUpdate" required />
-									</td>
-									<td>
-									<input type="number" id="Batchoutput" name="lsPidfFinanceBatchSizeCoating[@j].Batchoutput" class=" Batchoutput form-control readOnlyUpdate" required />
-									</td>
-									<td>
-									<input type="number" id="API_CAD" name="lsPidfFinanceBatchSizeCoating[@j].ApiCad" class="API_CAD form-control readOnlyUpdate" required />
-									</td>
-									<td>
-									<input type="number" id="Excipients_CAD" name="lsPidfFinanceBatchSizeCoating[@j].ExcipientsCad" class=" Excipients_CAD form-control readOnlyUpdate" required />
-									</td>
-									<td>
-									<input type="number" id="PM_CAD" name="lsPidfFinanceBatchSizeCoating[@j].PmCad" class="PM_CAD form-control readOnlyUpdate" required />
-									</td>
-									<td>
-									<input type="number" id="CCPC_CAD" name="lsPidfFinanceBatchSizeCoating[@j].CcpcCad" class="CCPC_CAD form-control readOnlyUpdate" required />
-									</td>
-									<td>
-									<input type="number" id="Freight_CAD" name="lsPidfFinanceBatchSizeCoating[@j].FreightCad" class="Freight_CAD form-control readOnlyUpdate" required />
-									</td>
-									<td>
-                                        <input type="number" id="EmcureCOGs_pack" name="lsPidfFinanceBatchSizeCoating[@j].EmcureCogsPack" class="EmcureCOGs_pack form-control readOnlyUpdate" required />
-									</td>
-                                    <td class="align-middle abc">
-                                                        <div class="d-flex justify-content-center">
-                                                            <i class="fa-solid fa-circle-plus nav-icon mx-3 text-success add-rows" onclick="addRowFinanceDetails(@j)"></i>
-                                                            <i class="fa-solid fa-trash nav-icon me-3 text-red del-rows" id="del_row_@j" onclick="deleteRowFinance(@j,this)"></i>
-                                                        </div>
-                                                    </td>
-								</tr>
-						}
-					          </tbody>
-                               </table>
-                                    </div>
-            </div>
-		</div>
         <div class="card">
                 <div class="card-header bg-primary">
 			<h3 class="card-title mb-0"><button type="button" class="btn btn-tool" data-card-widget="collapse">Commercial Per Pack</button></h3>
@@ -6345,10 +6346,10 @@ var PidfNumber=UtilityHelper.Decreypt(Convert.ToString(PidafId));
             </div>
 		</div>
         @Html.Partial("_PIDFApproveReject")
-			<div class="card form-group btn-group dv-controls text-right" role="group">  
+			<div class="card form-group  dv-controls text-right" role="group">  
             @if(ViewBag.Access.Add == true)
             {
-                <button type="submit" id="btnSaveDraft" class="btn btn-info" onclick="SaveDraftClick();">
+                <button type="submit" id="btnSaveDraft" class="btn btn-primary" onclick="SaveDraftClick();">
                     @*<i class="fab fa-firstdraft"></i>*@
                     Save as Draft</button>
                 <button type="submit"  id="btnSave" class="btn btn-success operationButton" onclick="SaveClick();">
