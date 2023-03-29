@@ -4,21 +4,30 @@
 @using Microsoft.AspNetCore.Mvc.Localization
 @inject IHttpContextAccessor HttpContextAccessor
 @inject IHelper Helper
+@inject IConfiguration Configuration
 @inject Microsoft.Extensions.Localization.IStringLocalizer<MastersController> MasterLocalizer
 @inject Microsoft.Extensions.Localization.IStringLocalizer<EmcureNPD.Resource.Shared> SharedLocalizer
 @using EmcureNPD.Utility.Utility
 @using EmcureNPD.Utility.Enums
 @using EmcureNPD.Business.Models
+@using Microsoft.Extensions.Configuration;
 @model EmcureNPD.Business.Models.ProjectsModel
 @{
     int CurrentUserId = Helper.GetLoggedInUserId();
     var PidafId=Context.Request.Query["pidfid"];
     var PidfNumber = UtilityHelper.Decreypt(Convert.ToString(PidafId));
-    
+    string jsVersion = @Configuration.GetSection("StaticJS")["version"];
   }
-
+<div class="container-fluid d-flex justify-content-between">
+    <h3>Management/Management Approval</h3>
+    <div>
+        <a class="btn btn-success btn-sm" id="btnExportToExcel" title="ExportToExcel"><i class="fa fa-file-excel-o" aria-hidden="true"></i> ExportToExcel</a>
+        
+        <div class="export-btn mybtn-group"></div>
+    </div>
+</div>
     <div class="container-fluid background-white-card">
-        <form class="row">
+    <div class="row" id="frmMA">
             <div class="col-12 mb-4">
                 <table class="table table-bordered text-center m-0 levi-table">
                     <thead class="bg-primary">
@@ -29,6 +38,9 @@
                             <th class="text-start" colspan="13">
                                 Levetiracetam Tablets
                             </th>
+                            @*<th class="text-right">
+                            <i id="btnExportToExcel" class="fa fa-file-excel-o" aria-hidden="true" ></i>
+                            </th>*@
                         </tr>
                     </thead>
                     <tbody>
@@ -592,14 +604,16 @@
                 }
             </div>
             @Html.Partial("_PIDFApproveReject");
-        </form>
+        </div>
     </div>
 
 
 @section MyScripts {
 	@*@Html.Partial("_DataTablePartial")*@
 <link rel="stylesheet" href="~/AdminLTE/plugins/select2/css/select2.min.css" />
-<script type="text/javascript" src="~/AdminLTE/plugins/select2/js/select2.min.js"></script>
+    <script type="text/javascript" src="~/AdminLTE/plugins/select2/js/select2.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/1.3.4/jspdf.min.js"></script>
+    <script src="~/js/custom/managementapproval/managementapproval.js?v=@jsVersion"></script>
 <script>
 	
 		const isView = "@Context.Request.Query["IsView"]";

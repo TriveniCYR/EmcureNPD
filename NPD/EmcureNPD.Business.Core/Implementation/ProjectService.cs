@@ -148,7 +148,8 @@ namespace EmcureNPD.Business.Core.Implementation
             var result = _mapperFactory.GetList<ProjectTask, ProjectTaskEntity>(projectTasks);
             result.ForEach(pt =>
             {
-                pt.TaskOwnerName = _masterUserRepository.Get(pt.TaskOwnerId).FullName;
+               
+                pt.TaskOwnerName =  pt.TaskLevel == 1 ? _masterUserRepository.Get(pt.TaskOwnerId).FullName:"" ;
                 pt.StatusName = _masterProjectStatusRepository.Get(pt.StatusId).StatusName;
                 pt.PriorityName = _masterProjectPriorityRepository.Get(pt.PriorityId).PriorityName;
             }
