@@ -17,8 +17,14 @@ $(document).ready(function () {
     if (IsImageAvailable == undefined || IsImageAvailable == '') {
         $("#imgPreviewMarketdetails").hide();
     }
-
+    HideSaveAsDraft();
 });
+function HideSaveAsDraft() {
+    if ($('#StatusId').val() == 15)     //[APIInProgress = 14, APISubmitted = 15]
+        $('#SaveDraft').hide();
+    else
+        $('#SaveDraft').show();
+}
 
 function InitializeProductTypeDropdown() {
     debugger;
@@ -103,9 +109,15 @@ function ShowPopUpAPIIPD() {
 
 function ValidateForm() {
     var IsInvalid = false;
-    if ($("#MarketDetailsNewPortCGIDetails")[0].files.length <= 0) {
+    var IsPrevImageExist = true;
+    var ImageUrl = $('#MarketDetailsFileName').val();
+    if (ImageUrl == "" || ImageUrl == undefined) {
+        IsPrevImageExist = false;
+    }
+    if (($("#MarketDetailsNewPortCGIDetails")[0].files.length <= 0) && !IsPrevImageExist) {
         $("#valmsgMarketDetailsNewPortCGIDetails").text('Required')
         IsInvalid = true;
+        $("#MarketDetailsNewPortCGIDetails").focus();
     }
     else {
         $("#valmsgMarketDetailsNewPortCGIDetails").text('')
@@ -113,6 +125,7 @@ function ValidateForm() {
     if ($("#DrugsCategory").val() == '') {
         $("#valmsgDrugsCategory").text('Required')
         IsInvalid = true;
+        $("#DrugsCategory").focus();
     }
     else {
         $("#valmsgDrugsCategory").text('')
@@ -120,12 +133,14 @@ function ValidateForm() {
     if ($("#ProductStrength").val() == '') {
         $("#valmsgProductStrength").text('Required')
         IsInvalid = true;
+        $("#ProductStrength").focus();
     }
     else {
         $("#valmsgProductStrength").text('')
     }
     if (IsInvalid) {
-        $("#IsModelValid").val('')
+        $("#IsModelValid").val('')        
+        toastr.error('Some fields are missing !');       
     }
     else {
         $("#IsModelValid").val('Valid')

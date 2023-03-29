@@ -17,7 +17,13 @@
 <div>
     <div class="card card-outline card-primary">
         <div class="card-header">
-            <h5 class="mb-0"><b>@MasterLocalizer["APICharterSummaryDetails"]</b></h5>
+            <h3 class="card-title mb-0"><button type="button" class="btn btn-tool" data-card-widget="collapse">@MasterLocalizer["APICharterSummaryDetails"]</button></h3>
+             <div class="card-tools">
+                <button type="button" class="btn btn-tool">
+                    <a class="btn btn-danger" asp-action="PIDFList" asp-controller="PIDF"
+                       asp-route-ScreenId="@Convert.ToString((int)EmcureNPD.Utility.Enums.PIDFScreen.API)">@SharedLocalizer["Back"]</a>
+                </button>
+            </div>
         </div>
         <div class="card-body">
            
@@ -26,6 +32,7 @@
                 <input type="hidden" asp-for="PIDFAPICharterFormID" />
                 <input type="hidden" asp-for="SaveType" />
                 <input asp-for="IsModelValid" style="visibility: hidden;" />
+                <input type="hidden" asp-for="StatusId"/>
                 <div class="row">
                     <div class="col-md-5">
                         <table class="table">

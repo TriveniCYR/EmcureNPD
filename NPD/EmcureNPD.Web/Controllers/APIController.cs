@@ -199,7 +199,7 @@ namespace EmcureNPD.Web.Controllers
 
                 if (responseMessage.IsSuccessStatusCode)
                 {
-                    TempData["SaveStatus"] = Convert.ToString(_stringLocalizerShared["RecordInsertUpdate"]);
+                    TempData[EmcureNPD.Web.Helpers.UserHelper.SuccessMessage] = Convert.ToString(_stringLocalizerShared["RecordInsertUpdate"]);
                     ModelState.Clear();
                     IsSaveError = false;
                     return RedirectToAction("PIDFList", "PIDF",new { ScreenId = (int)PIDFScreen.API }); // return to PIDF List
@@ -285,7 +285,7 @@ namespace EmcureNPD.Web.Controllers
 
                 if (responseMessage.IsSuccessStatusCode)
                 {
-                    TempData["SaveStatus"] = Convert.ToString(_stringLocalizerShared["RecordInsertUpdate"]);
+                    TempData[EmcureNPD.Web.Helpers.UserHelper.SuccessMessage] = Convert.ToString(_stringLocalizerShared["RecordInsertUpdate"]);
                     ModelState.Clear();
                     IsSaveError = false;
                     //return RedirectToAction("APIRndDetailsForm",new { pidfid = UtilityHelper.Encrypt(_RnDmodel.Pidfid), bui = UtilityHelper.Encrypt(_RnDmodel.BusinessUnitId) }); // return to PBFAPI List
@@ -392,7 +392,7 @@ namespace EmcureNPD.Web.Controllers
                 HttpResponseMessage responseMessage = objapi.APIComm(APIURLHelper.InsertUpdateAPIIPD, HttpMethod.Post, token, form).Result;
                 if (responseMessage.IsSuccessStatusCode)
                 {
-                    TempData["SaveStatus"] = Convert.ToString(_stringLocalizerShared["RecordInsertUpdate"]);
+                    TempData[EmcureNPD.Web.Helpers.UserHelper.SuccessMessage] = Convert.ToString(_stringLocalizerShared["RecordInsertUpdate"]);
                     ModelState.Clear();
                     IsSaveError = false;
                    // return RedirectToAction("APIIPDDetailsForm",new { pidfid = UtilityHelper.Encrypt(_IPDmodel.Pidfid), bui = UtilityHelper.Encrypt(_IPDmodel.BusinessUnitId) }); // return to PBFAPI List

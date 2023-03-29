@@ -14,7 +14,14 @@ $(document).ready(function () {
         else
             toastr.error(SaveStatus);
     }
+    HideSaveAsDraft();
 });
+function HideSaveAsDraft() {
+    if ($('#StatusId').val() == 15)    //[APIInProgress = 14,   APISubmitted = 15]
+        $('#SaveDraft').hide();
+    else
+        $('#SaveDraft').show();
+}
 
 $('#Save').click(function () {
     ValidateForm();
@@ -54,6 +61,8 @@ function ValidateForm() {
     });
     var IsValid = (ArrofInvalid.length == 0) ? true : false;
     if (!IsValid) {
+        var controltobeFocus = ArrofInvalid[ArrofInvalid.length - 1];
+        $('#' + controltobeFocus).focus();
         toastr.error('Some fields are missing !');
         $("#IsModelValid").val('')
     }

@@ -45,6 +45,7 @@ namespace EmcureNPD.Business.Core.Implementation
         private IRepository<Pidf> _repository { get; set; }
         private readonly IHelper _helper;
         private readonly IMasterCountryService _countryService;
+        private IRepository<Pidf> _pidfrepository { get; set; }
 
         public APIService(IUnitOfWork unitOfWork, IMapperFactory mapperFactory,
             Microsoft.Extensions.Configuration.IConfiguration configuration, IMasterProductTypeService masterProductTypeService,
@@ -62,6 +63,7 @@ namespace EmcureNPD.Business.Core.Implementation
             _configuration = configuration;
             _helper = helper;
             _countryService = countryService;
+            _pidfrepository = unitOfWork.GetRepository<Pidf>();
         }
 
         //------------Start------API_Functions_Kuldip--------------------------
@@ -153,6 +155,7 @@ namespace EmcureNPD.Business.Core.Implementation
             _oAPIIPD.ProductTypeId = jsonObject.ProductTypeId;
             _oAPIIPD.Pidfid = jsonObject.Pidfid;
             _oAPIIPD.LoggedInUserId = jsonObject.LoggedInUserId;
+            _oAPIIPD.SaveType = jsonObject.SaveType;
             var _APIIPDDBEntity = new PidfApiIpd();
             if (_oAPIIPD.APIIPDDetailsFormID > 0)
             {
@@ -231,6 +234,8 @@ namespace EmcureNPD.Business.Core.Implementation
                 _oApiIpdData.Pidfid = _oAPIIPD.Pidfid.ToString();
             }
             _oApiIpdData.MasterCountries = _countryService.GetAll().Result.ToList();
+            Pidf objPidf = await _pidfrepository.GetAsync(pidfId);
+            _oApiIpdData.StatusId = objPidf.StatusId;
             return _oApiIpdData;
         }
         //------------End------API_IPD_Details_Form_Entity--------------------------
@@ -266,7 +271,8 @@ namespace EmcureNPD.Business.Core.Implementation
                 _oCharterEntity.PIDFAPICharterFormID = _CharterObjects[0].PIDF_API_CharterId;
                 _oCharterEntity.ProjectComplexityId = _CharterObjects[0].ProjectComplexityId;
             }
-
+            Pidf objPidf = await _pidfrepository.GetAsync(pidfId);
+            _oCharterEntity.StatusId = objPidf.StatusId;
             return _oCharterEntity;
         }
         public async Task<PIDFAPICharterFormEntity> GetAPICharterFormData(long pidfId, short IsCharter)
@@ -307,6 +313,9 @@ namespace EmcureNPD.Business.Core.Implementation
                     //_oCharterEntity.ProjectEndDate = _CharterObjects[0].ProjectComplexityId;
                 }
             }
+            Pidf objPidf = await _pidfrepository.GetAsync(pidfId);
+            _oCharterEntity.StatusId = objPidf.StatusId;
+
             return _oCharterEntity;
         }
         private List<DM> FillObjData<VM, DM>(List<VM> _vmObj)
@@ -435,6 +444,8 @@ namespace EmcureNPD.Business.Core.Implementation
 
             }
             _oApiRnDData.MasterCountries = _countryService.GetAll().Result.ToList();
+            Pidf objPidf = await _pidfrepository.GetAsync(pidfId);
+            _oApiRnDData.StatusId = objPidf.StatusId;
             return _oApiRnDData;
         }
         public async Task<DBOperation> AddUpdateAPIRnD(PIDFAPIRnDFormEntity _oAPIRnD)

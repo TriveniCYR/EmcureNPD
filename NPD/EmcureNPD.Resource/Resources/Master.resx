@@ -421,7 +421,7 @@
     <value> Formulation Details</value>
   </data>
   <data name="IPEvalution" xml:space="preserve">
-    <value>IP Evolution</value>
+    <value>IP Evaluation</value>
   </data>
   <data name="ApprovedGenetics" xml:space="preserve">
     <value>Approved Genetics</value>
@@ -665,5 +665,8 @@
   </data>
   <data name="UpdateUser" xml:space="preserve">
     <value>Update User</value>
+  </data>
+  <data name="Back" xml:space="preserve">
+    <value>Back</value>
   </data>
 </root>
