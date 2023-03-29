@@ -10,13 +10,20 @@ $(document).ready(function () {
     debugger;
     SetDivReadonly();
     InitializeCurrencyDropdown();
-    InitializeFinalSelectionDropdown();
-    InitializeProductTypeDropdown();
+    InitializeFinalSelectionDropdown();    
     $("#AddYearForm").hide();
     IsViewModeCommercial();
     getPIDFAccordion(_PIDFAccordionURL, _PIDFID, "dvPIDFAccrdion");
     SetBU_Strength();
+    HideSaveAsDraft();
+    InitializeProductTypeDropdown();
 });
+function HideSaveAsDraft() {    
+    if ($('#StatusId').val() == 11)     //[11=CommercialSubmitted , 10= CommercialInProgress]
+     $('#btnSaveAsDraft').hide();    
+    else
+      $('#btnSaveAsDraft').show();
+}
 
 function SetBU_Strength() {
     var PIDFBusinessUnitId = $("#PIDFBusinessUnitId").val();
@@ -126,7 +133,11 @@ function ValidateYearForm() {
        
     });
     var status = (ArrofInvalid.length == 0) ? true : false;
-    if (!status) { toastr.error('Some fields are missing !'); }
+    if (!status) {
+        var controltobeFocus = ArrofInvalid[ArrofInvalid.length-1];
+        $('#' + controltobeFocus).focus();
+        toastr.error('Some fields are missing !');
+    }
     return status;
 }
 function ClearValidationForYearForm() {
