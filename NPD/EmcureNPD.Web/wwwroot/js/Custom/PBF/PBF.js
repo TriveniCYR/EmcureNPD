@@ -192,6 +192,7 @@ function GetPBFTabDetailsSuccess(data) {
             BindRNDPlantSupportCost(data.PBFRNDPlantSupportCost);
             BindRNDReferenceProductDetail(data.PBFRNDReferenceProductDetail);
             BindRNDFillingExpenses(data.PBFRNDFillingExpenses);
+            BindRNDManPowerCost(data.PBFRNDManPowerCost)
             $(data.MasterTestType).each(function (index, item) {
                 $('.AnalyticalTestTypeId').append('<option value="' + item.testTypeId + '" data-TestTypeCode="' + item.testTypeCode + '" data-TestTypePrice="' + item.testTypePrice + '">' + item.testTypeCode + ": " + item.testTypeName + '</option>');
             });
@@ -205,7 +206,7 @@ function GetPBFTabDetailsSuccess(data) {
                 $('.rndFillingExpensesRegionId').append('<option value="' + item.businessUnitId + '">' + item.businessUnitName + '</option>');
             });
 
-            
+
             var _availableStrength = $('.AMVstrengths').next().val();
             if (_availableStrength != "") {
                 $('.AMVstrengths').val(_availableStrength.split(","));
@@ -228,25 +229,17 @@ function GetPBFTabDetailsSuccess(data) {
             $(data.MasterBatchSize).each(function (index, item) {
                 $('#RNDBatchSizeId').append('<option value="' + item.batchSizeNumberId + '">' + item.batchSizeNumberName + '</option>');
             });
-            if (data.PBFRNDMasterEntity[0].batchSizeId > 0) {
-                $('#RNDBatchSizeId').val(data.PBFRNDMasterEntity[0].batchSizeId);
+            if (data.PBFRNDMasterEntity.length > 0) {
+                if (data.PBFRNDMasterEntity[0].batchSizeId > 0) {
+                    $('#RNDBatchSizeId').val(data.PBFRNDMasterEntity[0].batchSizeId);
+                }
             }
+           
             $.each($('.rndFillingExpensesRegionId'), function (index, item) {
                 if ($(this).next().val() != undefined && $(this).next().val() != null) {
                     $(this).val($(this).next().val());
                 }
             });
-           
-            $.each($('#tablerndfilingexpenses tbody tr.FillingExpensesactivity'), function () {
-                $.each($(this).find(".rndFillingExpensesStrengthId"), function (index, item) {
-                    var ischecked = $(this).parent().find('#rndFillingExpensesStrengthIsChecked' + $(this).val()).val();
-                    alert(ischecked);
-                    if (ischecked) {
-                        $(this).parent().find('#rndFillingExpensesStrengthIsChecked' + $(this).val()).prop("checked", true);
-                    }
-                });
-            });
-
         }
     } catch (e) {
         toastr.error('Error:' + e.message);
@@ -294,6 +287,7 @@ function getValueFromStrengthPackagingTypeId(data, strengthId, propertyName, pac
         } else { return ""; }
     } else { return ""; }
 }
+
 function SetDisableForOtherUserBU() {
     var BU_VALUE = SelectedBUValue;
     var status = UserwiseBusinessUnit.indexOf(BU_VALUE);
@@ -840,10 +834,12 @@ function BindRNDBatchSize(data, rndmasterdata) {
     });
     batchSizeHTML += "<td><input type='number' class='form-control totalBatchSize' readonly='readonly' /></td></tr></tbody>";
     $('#tablerndbatchsize').html(batchSizeHTML);
-
-    $("#RNDMasterEntities_ApirequirementMarketPrice").val(rndmasterdata[0].apiRequirementMarketPrice);
-    $("#RNDMasterEntities_PlanSupportCostRsPerDay").val(rndmasterdata[0].planSupportCostRsPerDay);
-    $("#RNDMasterEntities_ManHourRate").val(rndmasterdata[0].manHourRate);
+    if (rndmasterdata.length > 0) {
+        $("#RNDMasterEntities_ApirequirementMarketPrice").val(rndmasterdata[0].apiRequirementMarketPrice);
+        $("#RNDMasterEntities_PlanSupportCostRsPerDay").val(rndmasterdata[0].planSupportCostRsPerDay);
+        $("#RNDMasterEntities_ManHourRate").val(rndmasterdata[0].manHourRate);
+    }
+   
 }
 //Batch size table end
 //API requirement table start
@@ -969,7 +965,7 @@ function CreateToolingchangepartTable(data, activityTypeId) {
     return objectname;
 }
 function BindRNDToolingchangepart(data) {
-    console.log(data)
+    
     var toolingchangepartHTML = '<thead class="bg-primary text-bold"><tr>'
         + '<td>Prototype Development</td>'
         + '<td>Total Cost</td>'
@@ -1234,16 +1230,18 @@ function CreateFillingExpensesTable(data, activityTypeId) {
 
     objectname += '<tr><td class="text-left text-bold bg-light" colspan="' + (6 + _strengthArray.length) + '">' + tableTitle + '</td>';
     for (var a = 0; a < _counter; a++) {
+
         if (data.length > 0) {
             if (_activityType.indexOf(data[a].businessUnitId) !== -1) {
                 continue;
             }
         }
+
         objectname += '<tr  id="FillingExpensesRow" class="FillingExpensesactivity FillingExpensesActivity' + (activityTypeId) + '">'
             + '<td><input type="number" class="form-control totalFillingExpenses rndFillingExpensesTotalCost" value="2300000" /></td>'
-            + '<td><select class="form-control readOnlyUpdate rndFillingExpensesRegionId"><option value = "0" > --Select --</option ></select><input type="hidden" value="' + (data.length > 0 ? data[a].businessUnitId : "") + '"</td>'
+            + '<td><select class="form-control readOnlyUpdate rndFillingExpensesRegionId"><option value = "0" > --Select --</option ></select><input type="hidden" value="' + (data.length > 0 ? data[a].businessUnitId : "") + '"/></td>'
         for (var i = 0; i < _strengthArray.length; i++) {
-            objectname += '<td> <div stylle="display: inline-block;" ><input type="hidden" class="rndFillingExpensesStrengthId" value="' + _strengthArray[i].pidfProductStrengthId + '" /><input type="checkbox" id="rndFillingExpensesStrengthIsChecked' + _strengthArray[i].pidfProductStrengthId + '" class="rndFillingExpensesStrengthIsChecked" value="' + (data.length > 0 ? data[a].isChecked : "") + '" > &nbsp; <input type="number" class="FillingExpensesStrengthValue" readonly="readonly" disabled="true" /></div></td>';
+            objectname += '<td> <div stylle="display: inline-block;" ><input type="hidden" class="rndFillingExpensesStrengthId" value="' + _strengthArray[i].pidfProductStrengthId + '" /><input type="checkbox" id="rndFillingExpensesStrengthIsChecked' + _strengthArray[i].pidfProductStrengthId + '" class="rndFillingExpensesStrengthIsChecked' + _strengthArray[i].pidfProductStrengthId + '"  ></select> &nbsp; <input type="number" class="FillingExpensesStrengthValue" readonly="readonly" disabled="true" /></div></td>';
         }
         objectname += "<td><input type='number' class='form-control' readonly='readonly' /></td><td> <i class='fa-solid fa-circle-plus nav-icon text-success operationButton' id='addIcon' onclick='addRowFillingExpenses(this);'></i> <i class='fa-solid fa-trash nav-icon text-red strengthDeleteIcon operationButton DeleteIcon' onclick='deleteRowFillingExpenses(this);' ></i></td></tr>";
         if (data.length > 0) {
@@ -1254,7 +1252,7 @@ function CreateFillingExpensesTable(data, activityTypeId) {
     return objectname;
 }
 function BindRNDFillingExpenses(data) {
-    console.log(data)
+   
     var FillingExpensesexpensesHTML = '<thead class="bg-primary text-bold"><tr>'
         + '<td width="15%">Total Cost</td>'
         + '<td>Region</td>'
@@ -1263,7 +1261,7 @@ function BindRNDFillingExpenses(data) {
     });
     FillingExpensesexpensesHTML += '<td>Total</td><td>Action</td></tr></thead><tbody id="tblFillingExpensesBody">';
     for (var i = 1; i < 2; i++) {
-        FillingExpensesexpensesHTML += CreateFillingExpensesTable($.grep(data, function (n, x) { return n.pbfGeneralId == i; }), i);
+        FillingExpensesexpensesHTML += CreateFillingExpensesTable($.grep(data, function (n, x) { return n.pbfGeneralId; }), i);
     }
 
     //FillingExpensesexpensesHTML += '<tr><td class="text-bold">Total Cost</td>';
@@ -1273,10 +1271,9 @@ function BindRNDFillingExpenses(data) {
     //});
 
     //FillingExpensesexpensesHTML += "<td><input type='number' class='form-control' readonly='readonly' /><td></td></tr></tbody>";
-
     $('#tablerndfilingexpenses').html(FillingExpensesexpensesHTML);
-
     SetChildRowDeleteIcon();
+   
 
 }
 function addRowFillingExpenses(element) {
@@ -1290,6 +1287,53 @@ function deleteRowFillingExpenses(element) {
     SetChildRowDeleteIcon();
 }
 // Filling Expenses table End
+
+//MPC table start
+function CreateRNDManPowerCostTable(data) {
+    var objectname = "";
+
+    objectname += '<tr><td class="text-left text-bold bg-light" colspan="' + (8+_strengthArray.length + 2) + '">Project Activities</td></tr>';
+    var _counter = (data.length == 0 ? 1 : data.length);
+    var _testType = [];
+    for (var a = 0; a < _counter; a++) {
+        if (data.length > 0) {
+            if (_testType.indexOf(data[a].projectActivitiesId) !== -1) {
+                continue;
+            }
+        }
+        objectname += '<tr class="MPCActivity"><td><input type="number" class="form-control totalMPC rndMPCDurationInDays" value="' + (data.length > 0 ? data[a].durationInDays : "") + '"   /></td><td><input type="hidden" class="rndMPCProjectActivitiesId" value="' + data[a].projectActivitiesId + '" />' + data[a].projectActivitiesName + '</td><td><input type="number" class="form-control totalMPC rndMPCManPowerInDays" value="' + (data.length > 0 ? data[a].manPowerInDays : "") + '" /></td>';
+        for (var i = 0; i < _strengthArray.length; i++) {
+            objectname += '<td><input type="hidden" class="rndMPCStrengthId"  value="' + _strengthArray[i].pidfProductStrengthId + '" /><input type="number" class="form-control rndMPCStrengthValue" readonly="readonly"/></td>';
+        }
+        objectname += "<td><input type='number' class='form-control totalRPD' readonly='readonly' /></td><td><input type='number' class='form-control totalRPD' readonly='readonly' /></td><td><input type='number' class='form-control totalRPD' readonly='readonly' /></td><td><input type='number' class='form-control totalRPD' readonly='readonly' /></td><td><input type='number' class='form-control totalRPD' readonly='readonly' /></td></tr>";
+        if (data.length > 0) {
+            _testType.push(data[a].projectActivitiesId);
+        }
+    }
+
+    //objectname += "<tr><td>Total Cost </td>";
+    //for (var i = 0; i < _strengthArray.length; i++) {
+    //    objectname += '<td> <input type="number" class="form-control totalRPD" id="RNDReferenceProductDetails[' + [(i + _iterator)] + '].TotalCost" name="RNDReferenceProductDetails[' + [(i + _iterator)] + '].TotalCost" placeholder="Total Cost" value="' + (getValueFromStrengthId(data, _strengthArray[i].pidfProductStrengthId, "totalCost")) + '"/></td>';
+
+    //}
+    //objectname += "<td></td></tr>";
+
+    return objectname;
+}
+function BindRNDManPowerCost(data) {
+    console.log(data)
+    var RPDHTML = '<thead class="bg-primary text-bold"><tr><td>Duration in days </td><td>Project Activities </td><td>Man Power in days </td>';
+    $.each(_strengthArray, function (index, item) {
+        RPDHTML += '<td>' + getStrengthName(item.pidfProductStrengthId) + '</td>';
+    });
+    RPDHTML += '<td>Total</td><td>4 Strength</td><td>4 RLD</td><td>NON RLD</td><td>RLD</td></tr></thead><tbody>';
+
+    RPDHTML += CreateRNDManPowerCostTable(data);
+
+    RPDHTML += "</tbody>";
+    $('#tablerrndmanpowercostprojectduration').html(RPDHTML);
+}
+//MPC table end
 function SetRNDChildRows() {
 
     var _RNDexicipientArray = [];
@@ -1298,7 +1342,7 @@ function SetRNDChildRows() {
     var _RNDCapexMiscArray = [];
     var _RNDPlantSupportCostArray = [];
     var _RNDFillingExpensesArray = [];
-
+    var _RNDMenPowerCostArray = [];
     for (var i = 1; i < 4; i++) {
         $.each($('#tablerndexicipientrequirement tbody tr.exicipientActivity' + i + ''), function () {
 
@@ -1459,12 +1503,12 @@ function SetRNDChildRows() {
             $.each($('#tablerndfilingexpenses tbody tr.FillingExpensesActivity' + i + ''), function () {
 
                 var BusinessUnitId = $(this).find(".rndFillingExpensesRegionId").val();
-                
+
                 $.each($(this).find(".rndFillingExpensesStrengthId"), function (index, item) {
                     var _rndFillingExpensesObject = new Object();
                     _rndFillingExpensesObject.StrengthId = $(this).val();
                     _rndFillingExpensesObject.ExpensesStrengthValue = $(this).parent().find(".FillingExpensesStrengthValue").val();
-                    _rndFillingExpensesObject.IsChecked = $(this).parent().find('#rndFillingExpensesStrengthIsChecked'+$(this).val()).is(":checked");
+                    _rndFillingExpensesObject.IsChecked = $(this).parent().find('#rndFillingExpensesStrengthIsChecked' + $(this).val()).is(":checked");
                     _rndFillingExpensesObject.BusinessUnitId = BusinessUnitId;
                     if (_rndFillingExpensesObject.IsChecked == true) {
                         //_rndPlantSupportObject.ActivityTypeId = fillingcount;
@@ -1476,6 +1520,29 @@ function SetRNDChildRows() {
             });
 
             $('#hdnrndFillingExpensesData').val(JSON.stringify(_RNDFillingExpensesArray));
+            var MPCcount = i
+            $.each($('#tablerrndmanpowercostprojectduration tbody tr.MPCActivity'), function () {
+
+                var DurationInDays = $(this).find(".rndMPCDurationInDays").val();
+                var ProjectActivitiesId = $(this).find(".rndMPCProjectActivitiesId").val();
+                var ManPowerInDays = $(this).find(".rndMPCManPowerInDays").val();
+                
+                $.each($(this).find(".rndMPCStrengthId"), function (index, item) {
+                    var _rndMPCObject = new Object();
+                    _rndMPCObject.StrengthId = $(this).val();
+                    _rndMPCObject.MCPStrengthValue = $(this).parent().find(".rndMPCStrengthValue").val();
+                    _rndMPCObject.DurationInDays = DurationInDays;
+                    _rndMPCObject.ProjectActivitiesId = ProjectActivitiesId;
+                    _rndMPCObject.ManPowerInDays = ManPowerInDays;
+                    //if (_rndFillingExpensesObject.ExpensesStrengthValue == true) {
+                    _RNDMenPowerCostArray.push(_rndMPCObject);
+
+                    //}
+                });
+                fillingcount++;
+            });
+
+            $('#hdnrndManPowerCostProjectDuration').val(JSON.stringify(_RNDMenPowerCostArray));
         }
 
 

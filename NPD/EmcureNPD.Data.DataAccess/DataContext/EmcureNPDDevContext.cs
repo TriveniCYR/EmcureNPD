@@ -57,6 +57,7 @@ namespace EmcureNPD.Data.DataAccess.DataContext
         public virtual DbSet<MasterPlant> MasterPlants { get; set; }
         public virtual DbSet<MasterProductStrength> MasterProductStrengths { get; set; }
         public virtual DbSet<MasterProductType> MasterProductTypes { get; set; }
+        public virtual DbSet<MasterProjectActivity> MasterProjectActivities { get; set; }
         public virtual DbSet<MasterProjectPriority> MasterProjectPriorities { get; set; }
         public virtual DbSet<MasterProjectStatus> MasterProjectStatuses { get; set; }
         public virtual DbSet<MasterRegion> MasterRegions { get; set; }
@@ -108,6 +109,7 @@ namespace EmcureNPD.Data.DataAccess.DataContext
         public virtual DbSet<PidfPbfRnDExicipientRequirement> PidfPbfRnDExicipientRequirements { get; set; }
         public virtual DbSet<PidfPbfRnDExicipientScaleUp> PidfPbfRnDExicipientScaleUps { get; set; }
         public virtual DbSet<PidfPbfRnDFillingExpense> PidfPbfRnDFillingExpenses { get; set; }
+        public virtual DbSet<PidfPbfRnDManPowerCost> PidfPbfRnDManPowerCosts { get; set; }
         public virtual DbSet<PidfPbfRnDMaster> PidfPbfRnDMasters { get; set; }
         public virtual DbSet<PidfPbfRnDPackagingMaterial> PidfPbfRnDPackagingMaterials { get; set; }
         public virtual DbSet<PidfPbfRnDPlantSupportCost> PidfPbfRnDPlantSupportCosts { get; set; }
@@ -733,6 +735,17 @@ namespace EmcureNPD.Data.DataAccess.DataContext
                 entity.Property(e => e.ModifyDate).HasColumnType("datetime");
 
                 entity.Property(e => e.ProductTypeName).HasMaxLength(100);
+            });
+
+            modelBuilder.Entity<MasterProjectActivity>(entity =>
+            {
+                entity.HasKey(e => e.ProjectActivitiesId);
+
+                entity.ToTable("Master_ProjectActivities", "dbo");
+
+                entity.Property(e => e.CreatedDate).HasColumnType("datetime");
+
+                entity.Property(e => e.ProjectActivitiesName).HasMaxLength(100);
             });
 
             modelBuilder.Entity<MasterProjectPriority>(entity =>
@@ -2368,6 +2381,35 @@ namespace EmcureNPD.Data.DataAccess.DataContext
                     .HasForeignKey(d => d.StrengthId)
                     .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("FK_PIDF_PBF_RnD_FillingExpenses_PIDFProductStrength");
+            });
+
+            modelBuilder.Entity<PidfPbfRnDManPowerCost>(entity =>
+            {
+                entity.HasKey(e => e.ManPowerCostId);
+
+                entity.ToTable("PIDF_PBF_RnD_ManPowerCost", "dbo");
+
+                entity.Property(e => e.CreatedDate).HasColumnType("datetime");
+
+                entity.Property(e => e.PbfgeneralId).HasColumnName("PBFGeneralId");
+
+                entity.HasOne(d => d.Pbfgeneral)
+                    .WithMany(p => p.PidfPbfRnDManPowerCosts)
+                    .HasForeignKey(d => d.PbfgeneralId)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("FK_PIDF_PBF_RnD_ManPowerCost_PIDF_PBF_General");
+
+                entity.HasOne(d => d.ProjectActivities)
+                    .WithMany(p => p.PidfPbfRnDManPowerCosts)
+                    .HasForeignKey(d => d.ProjectActivitiesId)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("FK_PIDF_PBF_RnD_ManPowerCost_Master_ProjectActivities");
+
+                entity.HasOne(d => d.Strength)
+                    .WithMany(p => p.PidfPbfRnDManPowerCosts)
+                    .HasForeignKey(d => d.StrengthId)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("FK_PIDF_PBF_RnD_ManPowerCost_PIDFProductStrength");
             });
 
             modelBuilder.Entity<PidfPbfRnDMaster>(entity =>

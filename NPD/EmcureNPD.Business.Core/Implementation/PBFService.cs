@@ -103,6 +103,7 @@ namespace EmcureNPD.Business.Core.Implementation
         private IRepository<PidfPbfRnDPlantSupportCost> _pidfPbfRndPlantSupportCostRepository { get; set; }
         private IRepository<PidfPbfRnDReferenceProductDetail> _pidfPbfRndReferenceProductDetailRepository { get; set; }
         private IRepository<PidfPbfRnDFillingExpense> _pidfPbfRndFillingExpenseRepository { get; set; }
+        private IRepository<PidfPbfRnDManPowerCost> _pidfPbfRndPidfPbfRnDManPowerCostRepository { get; set; }
 
         //Market Extension & In House
 
@@ -179,7 +180,10 @@ namespace EmcureNPD.Business.Core.Implementation
             _pidfPbfRndPlantSupportCostRepository = _unitOfWork.GetRepository<PidfPbfRnDPlantSupportCost>();
             _pidfPbfRndReferenceProductDetailRepository = _unitOfWork.GetRepository<PidfPbfRnDReferenceProductDetail>();
             _notificationService = notificationService;
-        }
+            _pidfPbfRndPidfPbfRnDManPowerCostRepository = _unitOfWork.GetRepository<PidfPbfRnDManPowerCost>();
+            _pidfPbfRndFillingExpenseRepository = _unitOfWork.GetRepository<PidfPbfRnDFillingExpense>();
+
+    }
 
 
     public async Task<dynamic> FillDropdown(int PIDFId)
@@ -1403,7 +1407,8 @@ namespace EmcureNPD.Business.Core.Implementation
             DropdownObjects.PBFRNDPlantSupportCost = dsDropdownOptions.Tables[15];
             DropdownObjects.PBFRNDReferenceProductDetail = dsDropdownOptions.Tables[16];
             DropdownObjects.PBFRNDFillingExpenses = dsDropdownOptions.Tables[17];
-            
+            DropdownObjects.PBFRNDManPowerCost = dsDropdownOptions.Tables[18];
+
             return DropdownObjects;
         }
         #region Private Methods
@@ -1966,6 +1971,38 @@ namespace EmcureNPD.Business.Core.Implementation
                         objFillinfExpenseslist.Add(objfillingexpense);
                     }
                     _pidfPbfRndFillingExpenseRepository.AddRangeAsync(objFillinfExpenseslist);
+                    await _unitOfWork.SaveChangesAsync();
+                }
+
+                #endregion
+
+                #region Man Power Cost Add Update
+                List<PidfPbfRnDManPowerCost> objManPowerCostlist = new();
+
+                var manpowercost = _pidfPbfRndPidfPbfRnDManPowerCostRepository.GetAllQuery().Where(x => x.PbfgeneralId == pbfgeneralid).ToList();
+                if (manpowercost.Count > 0)
+                {
+                    foreach (var item in manpowercost)
+                    {
+                        _pidfPbfRndPidfPbfRnDManPowerCostRepository.Remove(item);
+                    }
+                    await _unitOfWork.SaveChangesAsync();
+                }
+
+
+                //Save manpowercost Entities
+                if (pbfentity.RNDManPowerCosts != null && pbfentity.RNDManPowerCosts.Count() > 0)
+                {
+                    foreach (var item in pbfentity.RNDManPowerCosts)
+                    {
+                        PidfPbfRnDManPowerCost objmanpowercost = new PidfPbfRnDManPowerCost();
+                        objmanpowercost = _mapperFactory.Get<RNDManPowerCost, PidfPbfRnDManPowerCost>(item);
+                        objmanpowercost.PbfgeneralId = pbfgeneralid;
+                        objmanpowercost.CreatedDate = DateTime.Now;
+                        objmanpowercost.CreatedBy = loggedInUserId;
+                        objManPowerCostlist.Add(objmanpowercost);
+                    }
+                    _pidfPbfRndPidfPbfRnDManPowerCostRepository.AddRangeAsync(objManPowerCostlist);
                     await _unitOfWork.SaveChangesAsync();
                 }
 

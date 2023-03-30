@@ -77,8 +77,9 @@ namespace EmcureNPD.Business.Models
         public List<RNDReferenceProductDetail> RNDReferenceProductDetails { get; set; }
         public string RNDFillingExpensesRawData { get; set; }
         public List<RNDFillingExpense> RNDFillingExpenses { get; set; }
+        public string RNDManPowerCostProjectDurationRawData { get; set; }
+        public List<RNDManPowerCost> RNDManPowerCosts { get; set; }
 
-        
 
         #endregion
     }
@@ -248,6 +249,16 @@ namespace EmcureNPD.Business.Models
         public int BusinessUnitId { get; set; }
         public bool? IsChecked { get; set; }
 
+    }
+
+    public class RNDManPowerCost
+    {
+        public int ManPowerCostId { get; set; }
+        public int ProjectActivitiesId { get; set; }
+        public long PbfgeneralId { get; set; }
+        public long StrengthId { get; set; }
+        public int? DurationInDays { get; set; }
+        public int? ManPowerInDays { get; set; }
     }
     #endregion
 }

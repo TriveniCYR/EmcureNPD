@@ -19,6 +19,7 @@ namespace EmcureNPD.Data.DataAccess.Entity
             PidfPbfRnDExicipientPrototypes = new HashSet<PidfPbfRnDExicipientPrototype>();
             PidfPbfRnDExicipientRequirements = new HashSet<PidfPbfRnDExicipientRequirement>();
             PidfPbfRnDFillingExpenses = new HashSet<PidfPbfRnDFillingExpense>();
+            PidfPbfRnDManPowerCosts = new HashSet<PidfPbfRnDManPowerCost>();
             PidfPbfRnDPackagingMaterials = new HashSet<PidfPbfRnDPackagingMaterial>();
             PidfPbfRnDPlantSupportCosts = new HashSet<PidfPbfRnDPlantSupportCost>();
             PidfPbfRnDReferenceProductDetails = new HashSet<PidfPbfRnDReferenceProductDetail>();
@@ -45,6 +46,7 @@ namespace EmcureNPD.Data.DataAccess.Entity
         public virtual ICollection<PidfPbfRnDExicipientPrototype> PidfPbfRnDExicipientPrototypes { get; set; }
         public virtual ICollection<PidfPbfRnDExicipientRequirement> PidfPbfRnDExicipientRequirements { get; set; }
         public virtual ICollection<PidfPbfRnDFillingExpense> PidfPbfRnDFillingExpenses { get; set; }
+        public virtual ICollection<PidfPbfRnDManPowerCost> PidfPbfRnDManPowerCosts { get; set; }
         public virtual ICollection<PidfPbfRnDPackagingMaterial> PidfPbfRnDPackagingMaterials { get; set; }
         public virtual ICollection<PidfPbfRnDPlantSupportCost> PidfPbfRnDPlantSupportCosts { get; set; }
         public virtual ICollection<PidfPbfRnDReferenceProductDetail> PidfPbfRnDReferenceProductDetails { get; set; }

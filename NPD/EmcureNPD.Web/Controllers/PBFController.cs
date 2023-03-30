@@ -533,6 +533,7 @@ namespace EmcureNPD.Web.Controllers
                 pbfEntity.RNDCapexMiscellaneousExpenses = JsonConvert.DeserializeObject<List<RNDCapexMiscellaneousExpense>>(pbfEntity.RNDCapexMiscellaneousExpensesRawData);
                 pbfEntity.RNDPlantSupportCosts = JsonConvert.DeserializeObject<List<RNDPlantSupportCost>>(pbfEntity.RNDPlantSupportCostRawData);
                 pbfEntity.RNDFillingExpenses = JsonConvert.DeserializeObject<List<RNDFillingExpense>>(pbfEntity.RNDFillingExpensesRawData);
+                pbfEntity.RNDManPowerCosts = JsonConvert.DeserializeObject<List<RNDManPowerCost>>(pbfEntity.RNDManPowerCostProjectDurationRawData);
 
                 //Analytical json data
                 pbfEntity.AnalyticalEntities = JsonConvert.DeserializeObject<List<AnalyticalEntity>>(pbfEntity.AnalyticalRawData);
