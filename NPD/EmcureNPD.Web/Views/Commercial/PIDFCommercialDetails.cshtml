@@ -16,7 +16,7 @@
 }
 
 <div id="dvPIDFAccrdion"></div>
-
+<div id="dvIPDAccrdion"></div>
 <div class="content-header">
     <h4 class="m-0">@MasterLocalizer["CommercialDetails"]</h4>
             </div>
@@ -442,8 +442,10 @@
         var GetAllFinalSelection = "@EmcureNPD.Web.Helpers.APIURLHelper.GetAllFinalSelection";
 
          var _PIDFID = "@UtilityHelper.Decreypt(Convert.ToString(Context.Request.Query["pidfid"]))";
+         var _EncPIDFID = "@Convert.ToString(Context.Request.Query["pidfid"])";
+        var _PIDFBusinessUnitId = "@Convert.ToString(Context.Request.Query["bui"])";
         var _PIDFAccordionURL = "@Url.Action("PIDF", "PIDF")";
-
+        var _IPDAccordionURL = "@Url.Action("IPD", "IPD")";
         var ErrorMessage = "@SharedLocalizer["Error"]";
         document.addEventListener("DOMContentLoaded", function () {
             var tabList = [].slice.call(document.querySelectorAll("#mainDivCommercial a"));

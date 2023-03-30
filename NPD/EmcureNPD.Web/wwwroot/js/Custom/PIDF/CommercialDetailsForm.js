@@ -14,6 +14,7 @@ $(document).ready(function () {
     $("#AddYearForm").hide();
     IsViewModeCommercial();
     getPIDFAccordion(_PIDFAccordionURL, _PIDFID, "dvPIDFAccrdion");
+    getIPDAccordion(_IPDAccordionURL, _EncPIDFID, _PIDFBusinessUnitId, "dvIPDAccrdion");
     SetBU_Strength();
     HideSaveAsDraft();
     InitializeProductTypeDropdown();
