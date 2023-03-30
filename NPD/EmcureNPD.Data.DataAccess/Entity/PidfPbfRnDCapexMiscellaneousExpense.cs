@@ -10,6 +10,7 @@ namespace EmcureNPD.Data.DataAccess.Entity
         public long CapexMiscellaneousExpensesId { get; set; }
         public long PbfgeneralId { get; set; }
         public long StrengthId { get; set; }
+        public int? ActivityTypeId { get; set; }
         public string CapexMiscellaneousExpensesDevelopment { get; set; }
         public string MiscellaneousDevelopment { get; set; }
         public string Licensing { get; set; }

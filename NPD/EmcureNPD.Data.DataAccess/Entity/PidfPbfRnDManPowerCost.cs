@@ -5,18 +5,19 @@ using System.Collections.Generic;
 
 namespace EmcureNPD.Data.DataAccess.Entity
 {
-    public partial class PidfPbfRnDFillingExpense
+    public partial class PidfPbfRnDManPowerCost
     {
-        public long FillingExpensesId { get; set; }
+        public int ManPowerCostId { get; set; }
+        public int ProjectActivitiesId { get; set; }
         public long PbfgeneralId { get; set; }
         public long StrengthId { get; set; }
-        public int BusinessUnitId { get; set; }
-        public bool? IsChecked { get; set; }
+        public int? DurationInDays { get; set; }
+        public int? ManPowerInDays { get; set; }
         public DateTime CreatedDate { get; set; }
         public int CreatedBy { get; set; }
 
-        public virtual MasterBusinessUnit BusinessUnit { get; set; }
         public virtual PidfPbfGeneral Pbfgeneral { get; set; }
+        public virtual MasterProjectActivity ProjectActivities { get; set; }
         public virtual PidfproductStrength Strength { get; set; }
     }
 }

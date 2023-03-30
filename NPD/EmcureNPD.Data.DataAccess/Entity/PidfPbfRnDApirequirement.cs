@@ -10,7 +10,6 @@ namespace EmcureNPD.Data.DataAccess.Entity
         public long ApirequirementId { get; set; }
         public long PbfgeneralId { get; set; }
         public long StrengthId { get; set; }
-        public string ApirequirementDevelopment { get; set; }
         public string Prototype { get; set; }
         public string ScaleUp { get; set; }
         public string ExhibitBatch1 { get; set; }

@@ -10,6 +10,7 @@ namespace EmcureNPD.Data.DataAccess.Entity
         public long ToolingChangepartId { get; set; }
         public long PbfgeneralId { get; set; }
         public long StrengthId { get; set; }
+        public int? ActivityTypeId { get; set; }
         public string ToolingChangepartDevelopment { get; set; }
         public string PrototypeDevelopment { get; set; }
         public double? TotalCost { get; set; }
