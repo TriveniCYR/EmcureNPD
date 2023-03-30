@@ -272,6 +272,7 @@ namespace EmcureNPD.Business.Core.Implementation
 
 			}
             await _auditLogService.UpdatePIDFStatusCommon(entityIPD.PIDFID, (int)entityIPD.StatusId, _helper.GetLoggedInUser().UserId);
+            await _notificationService.CreateNotification(entityIPD.PIDFID, (int)entityIPD.StatusId, string.Empty, string.Empty, (int)entityIPD.LogInId);
             return DBOperation.Success;
         }
 
@@ -406,7 +407,8 @@ namespace EmcureNPD.Business.Core.Implementation
 					_pidfrepository.UpdateAsync(objPidf);
 
 					await _unitOfWork.SaveChangesAsync();
-				}
+                    await _notificationService.CreateNotification(objPidf.Pidfid, (int)objPidf.StatusId, string.Empty, string.Empty, (int)objPidf.CreatedBy);
+                }
 				var isSuccess = await _auditLogService.CreateAuditLog<EntryApproveRej>(Utility.Audit.AuditActionType.Update,
 				   Utility.Enums.ModuleEnum.IPD, oApprRej, oApprRej, 0);
 

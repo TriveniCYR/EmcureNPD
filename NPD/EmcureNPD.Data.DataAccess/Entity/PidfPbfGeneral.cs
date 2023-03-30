@@ -18,6 +18,7 @@ namespace EmcureNPD.Data.DataAccess.Entity
             PidfPbfRnDExicipientPrototypes = new HashSet<PidfPbfRnDExicipientPrototype>();
             PidfPbfRnDExicipientRequirements = new HashSet<PidfPbfRnDExicipientRequirement>();
             PidfPbfRnDExicipientScaleUps = new HashSet<PidfPbfRnDExicipientScaleUp>();
+            PidfPbfRnDFillingExpenses = new HashSet<PidfPbfRnDFillingExpense>();
             PidfPbfRnDMasters = new HashSet<PidfPbfRnDMaster>();
             PidfPbfRnDPackagingMaterials = new HashSet<PidfPbfRnDPackagingMaterial>();
             PidfPbfRnDPlantSupportCosts = new HashSet<PidfPbfRnDPlantSupportCost>();
@@ -55,6 +56,7 @@ namespace EmcureNPD.Data.DataAccess.Entity
         public virtual ICollection<PidfPbfRnDExicipientPrototype> PidfPbfRnDExicipientPrototypes { get; set; }
         public virtual ICollection<PidfPbfRnDExicipientRequirement> PidfPbfRnDExicipientRequirements { get; set; }
         public virtual ICollection<PidfPbfRnDExicipientScaleUp> PidfPbfRnDExicipientScaleUps { get; set; }
+        public virtual ICollection<PidfPbfRnDFillingExpense> PidfPbfRnDFillingExpenses { get; set; }
         public virtual ICollection<PidfPbfRnDMaster> PidfPbfRnDMasters { get; set; }
         public virtual ICollection<PidfPbfRnDPackagingMaterial> PidfPbfRnDPackagingMaterials { get; set; }
         public virtual ICollection<PidfPbfRnDPlantSupportCost> PidfPbfRnDPlantSupportCosts { get; set; }
