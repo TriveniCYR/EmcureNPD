@@ -109,7 +109,6 @@ namespace EmcureNPD.Web.Controllers
                         form.Add(fileContent, "file", file.FileName);
                     }
                 }
-
                 form.Add(new StringContent(JsonConvert.SerializeObject(medicalEntity)), "Data");
                 HttpResponseMessage responseMessage = objapi.APIComm(APIURLHelper.PIDMedicalForm, HttpMethod.Post, token, form).Result;
                 string jsonResponse = responseMessage.Content.ReadAsStringAsync().Result;

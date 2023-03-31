@@ -11,8 +11,8 @@ namespace EmcureNPD.Data.DataAccess.Entity
         public long PbfgeneralId { get; set; }
         public long StrengthId { get; set; }
         public int? ActivityTypeId { get; set; }
-        public string PlantSupportDevelopment { get; set; }
-        public string ScaleUp { get; set; }
+        public double? PlantSupportDevelopment { get; set; }
+        public double? ScaleUp { get; set; }
         public double? ExhibitBatch { get; set; }
         public double? TotalCost { get; set; }
         public DateTime CreatedDate { get; set; }

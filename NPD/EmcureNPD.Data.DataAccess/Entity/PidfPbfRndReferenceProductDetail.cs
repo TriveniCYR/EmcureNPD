@@ -10,12 +10,12 @@ namespace EmcureNPD.Data.DataAccess.Entity
         public long ReferenceProductDetailId { get; set; }
         public long PbfgeneralId { get; set; }
         public long StrengthId { get; set; }
-        public string ReferenceProductDetailDevelopment { get; set; }
-        public string UnitCostOfReferenceProduct { get; set; }
-        public string FormulationDevelopment { get; set; }
-        public string PilotBe { get; set; }
-        public string PharmasuiticalEquivalence { get; set; }
-        public string PivotalBio { get; set; }
+        public double? ReferenceProductDetailDevelopment { get; set; }
+        public double? UnitCostOfReferenceProduct { get; set; }
+        public double? FormulationDevelopment { get; set; }
+        public double? PilotBe { get; set; }
+        public double? PharmasuiticalEquivalence { get; set; }
+        public double? PivotalBio { get; set; }
         public double? TotalCost { get; set; }
         public DateTime CreatedDate { get; set; }
         public int CreatedBy { get; set; }
