@@ -35,6 +35,9 @@ namespace EmcureNPD.Business.Core.ServiceImplementations
 
         public async Task<DBOperation> AddUpdateBERequirement(MasterBERequirementEntity entityBERequirement)
         {
+            try
+            {
+
             MasterBerequirement objBERequirement;
             if (entityBERequirement.BERequirementId > 0)
             {
@@ -54,13 +57,19 @@ namespace EmcureNPD.Business.Core.ServiceImplementations
                 objBERequirement = _mapperFactory.Get<MasterBERequirementEntity, MasterBerequirement>(entityBERequirement);
                 _repository.AddAsync(objBERequirement);
             }
-
-            await _unitOfWork.SaveChangesAsync();
-
+           
+                await _unitOfWork.SaveChangesAsync();
             if (objBERequirement.BerequirementId == 0)
                 return DBOperation.Error;
 
             return DBOperation.Success;
+
+            }
+            catch (System.Exception ex)
+            {
+
+                return DBOperation.Error;
+            }
         }
 
         public async Task<DBOperation> DeleteBERequirement(int id)

@@ -90,6 +90,7 @@ namespace EmcureNPD.API.Controllers.IPD
         {
             try
             {
+                ipdobj.Comments = ipdobj.Comments == null ? "" : ipdobj.Comments;
                 DBOperation oResponse = await _IPDService.AddUpdateIPD(ipdobj);
                 if (oResponse == DBOperation.Success)
                 {

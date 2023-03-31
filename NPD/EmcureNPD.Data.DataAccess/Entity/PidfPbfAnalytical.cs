@@ -12,7 +12,7 @@ namespace EmcureNPD.Data.DataAccess.Entity
         public long StrengthId { get; set; }
         public int TestTypeId { get; set; }
         public int ActivityTypeId { get; set; }
-        public string Numberoftests { get; set; }
+        public int? Numberoftests { get; set; }
         public string PrototypeDevelopment { get; set; }
         public int? CostPerTest { get; set; }
         public int PrototypeCost { get; set; }
