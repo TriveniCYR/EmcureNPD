@@ -112,10 +112,10 @@ namespace EmcureNPD.Business.Models
         public long StrengthId { get; set; }
         public int TestTypeId { get; set; }
         public int ActivityTypeId { get; set; }
-        public string Numberoftests { get; set; }
+        public int? Numberoftests { get; set; }
         public string PrototypeDevelopment { get; set; }
         public int? CostPerTest { get; set; }
-        public int? PrototypeCost { get; set; }
+        public int PrototypeCost { get; set; }
 
     }
     public class AMVCost
@@ -141,11 +141,11 @@ namespace EmcureNPD.Business.Models
         public long BatchSizeId { get; set; }
         public long PbfgeneralId { get; set; }
         public long StrengthId { get; set; }
-        public string PrototypeFormulation { get; set; }
-        public string ScaleUpbatch { get; set; }
-        public string ExhibitBatch1 { get; set; }
-        public string ExhibitBatch2 { get; set; }
-        public string ExhibitBatch3 { get; set; }
+        public double? PrototypeFormulation { get; set; }
+        public double? ScaleUpbatch { get; set; }
+        public double? ExhibitBatch1 { get; set; }
+        public double? ExhibitBatch2 { get; set; }
+        public double? ExhibitBatch3 { get; set; }
     }
     public class RNDExicipient
     {
@@ -153,10 +153,10 @@ namespace EmcureNPD.Business.Models
         public long PBFGeneralId { get; set; }
         public long StrengthId { get; set; }
         public int ActivityTypeId { get; set; }
-        public string ExicipientPrototype { get; set; }
-        public string ExicipientDevelopment { get; set; }
+        public double? ExicipientPrototype { get; set; }
+        public double? ExicipientDevelopment { get; set; }
         public double? RsPerKg { get; set; }
-        public string MgPerUnitDosage { get; set; }
+        public double? MgPerUnitDosage { get; set; }
     }
     public class RNDPackaging
     {
@@ -165,8 +165,8 @@ namespace EmcureNPD.Business.Models
         public long StrengthId { get; set; }
         public int ActivityTypeId { get; set; }
         public int PackagingTypeId { get; set; }
-        public string UnitOfMeasurement { get; set; }
-        public string PackagingDevelopment { get; set; }
+        public double? UnitOfMeasurement { get; set; }
+        public double? PackagingDevelopment { get; set; }
         public double? RsPerUnit { get; set; }
         public int? Quantity { get; set; }
     }
@@ -176,15 +176,15 @@ namespace EmcureNPD.Business.Models
         public long ApirequirementId { get; set; }
         public long PbfgeneralId { get; set; }
         public long StrengthId { get; set; }
-        public string Prototype { get; set; }
-        public string ScaleUp { get; set; }
-        public string ExhibitBatch1 { get; set; }
-        public string ExhibitBatch2 { get; set; }
-        public string ExhibitBatch3 { get; set; }
-        public double PrototypeCost { get; set; }
-        public double ScaleUpCost { get; set; }
-        public double ExhibitBatchCost { get; set; }
-        public double TotalCost { get; set; }
+        public double? Prototype { get; set; }
+        public double? ScaleUp { get; set; }
+        public double? ExhibitBatch1 { get; set; }
+        public double? ExhibitBatch2 { get; set; }
+        public double? ExhibitBatch3 { get; set; }
+        public double? PrototypeCost { get; set; }
+        public double? ScaleUpCost { get; set; }
+        public double? ExhibitBatchCost { get; set; }
+        public double? TotalCost { get; set; }
 
     }
     public class RNDToolingChangepart
@@ -193,12 +193,12 @@ namespace EmcureNPD.Business.Models
         public long PbfgeneralId { get; set; }
         public long StrengthId { get; set; }
         public int? ActivityTypeId { get; set; }
-        public string ToolingChangepartDevelopment { get; set; }
-        public string PrototypeDevelopment { get; set; }
+        public double? ToolingChangepartDevelopment { get; set; }
+        public double? PrototypeDevelopment { get; set; }
         public double? TotalCost { get; set; }
         public double? Cost { get; set; }
-        public string Prototype { get; set; }
-        public string ScaleUpExhibitBatch { get; set; }
+        public double? Prototype { get; set; }
+        public double? ScaleUpExhibitBatch { get; set; }
         public double? TotalScaleUpExhibitBatch { get; set; }
         public double? FinalCost { get; set; }
 
@@ -209,12 +209,12 @@ namespace EmcureNPD.Business.Models
         public long PbfgeneralId { get; set; }
         public long StrengthId { get; set; }
         public int? ActivityTypeId { get; set; }
-        public string CapexMiscellaneousExpensesDevelopment { get; set; }
-        public string MiscellaneousDevelopment { get; set; }
-        public string Licensing { get; set; }
-        public string Capex1 { get; set; }
-        public string Capex2 { get; set; }
-        public string Capex3 { get; set; }
+        public double? CapexMiscellaneousExpensesDevelopment { get; set; }
+        public double? MiscellaneousDevelopment { get; set; }
+        public double? Licensing { get; set; }
+        public double? Capex1 { get; set; }
+        public double? Capex2 { get; set; }
+        public double? Capex3 { get; set; }
         public double? TotalCost { get; set; }
     }
     public class RNDPlantSupportCost
@@ -223,8 +223,8 @@ namespace EmcureNPD.Business.Models
         public long PbfgeneralId { get; set; }
         public long StrengthId { get; set; }
         public int? ActivityTypeId { get; set; }
-        public string PlantSupportDevelopment { get; set; }
-        public string ScaleUp { get; set; }
+        public double? PlantSupportDevelopment { get; set; }
+        public double? ScaleUp { get; set; }
         public double? ExhibitBatch { get; set; }
         public double? TotalCost { get; set; }
     }
@@ -233,11 +233,11 @@ namespace EmcureNPD.Business.Models
         public long ReferenceProductDetailId { get; set; }
         public long PbfgeneralId { get; set; }
         public long StrengthId { get; set; }
-        public string UnitCostOfReferenceProduct { get; set; }
-        public string FormulationDevelopment { get; set; }
-        public string PilotBe { get; set; }
-        public string PharmasuiticalEquivalence { get; set; }
-        public string PivotalBio { get; set; }
+        public double? UnitCostOfReferenceProduct { get; set; }
+        public double? FormulationDevelopment { get; set; }
+        public double? PilotBe { get; set; }
+        public double? PharmasuiticalEquivalence { get; set; }
+        public double? PivotalBio { get; set; }
         public double? TotalCost { get; set; }
     }
 

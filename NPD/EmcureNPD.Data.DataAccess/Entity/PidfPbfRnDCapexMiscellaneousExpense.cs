@@ -11,12 +11,12 @@ namespace EmcureNPD.Data.DataAccess.Entity
         public long PbfgeneralId { get; set; }
         public long StrengthId { get; set; }
         public int? ActivityTypeId { get; set; }
-        public string CapexMiscellaneousExpensesDevelopment { get; set; }
-        public string MiscellaneousDevelopment { get; set; }
-        public string Licensing { get; set; }
-        public string Capex1 { get; set; }
-        public string Capex2 { get; set; }
-        public string Capex3 { get; set; }
+        public double? CapexMiscellaneousExpensesDevelopment { get; set; }
+        public double? MiscellaneousDevelopment { get; set; }
+        public double? Licensing { get; set; }
+        public double? Capex1 { get; set; }
+        public double? Capex2 { get; set; }
+        public double? Capex3 { get; set; }
         public double? TotalCost { get; set; }
         public DateTime CreatedDate { get; set; }
         public int CreatedBy { get; set; }

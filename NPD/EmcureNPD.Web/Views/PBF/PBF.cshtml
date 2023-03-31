@@ -472,7 +472,7 @@
                                                 <div class="col-md-3">
                                                     <div class="form-group required">
                                                         @Html.LabelFor(model => model.RNDMasterEntities.ApirequirementMarketPrice, "Market Prize (Rs/kg)", new { @class = "control-label" })
-                                                        @Html.TextBoxFor(@modal=> modal.RNDMasterEntities.ApirequirementMarketPrice,new{@class="form-control"})
+                                                        @Html.TextBoxFor(@modal=> modal.RNDMasterEntities.ApirequirementMarketPrice,new{@class="form-control",type = "number", min = 0})
                                                     </div>
                                                 </div>
                                                 <table id="tablerndapirequirement" class="table text-center" style="width:100%">
@@ -609,7 +609,7 @@
                                                 <div class="col-md-3">
                                                     <div class="form-group required">
                                                         @Html.LabelFor(model => model.RNDMasterEntities.PlanSupportCostRsPerDay, "Plant Utilization rate Rs/Day", new { @class = "control-label" })
-                                                        @Html.TextBoxFor(@modal=> modal.RNDMasterEntities.PlanSupportCostRsPerDay,new{@class="form-control"})
+                                                        @Html.TextBoxFor(@modal=> modal.RNDMasterEntities.PlanSupportCostRsPerDay,new{@class="form-control",type = "number", min = 0})
                                                     </div>
                                                 </div>
                                                 <table id="tablerndplantsupportcost" class="table text-center" style="width:100%">
@@ -669,7 +669,7 @@
                                                 <div class="col-md-3">
                                                     <div class="form-group required">
                                                         @Html.LabelFor(model => model.RNDMasterEntities.ManHourRate, "Man Hour Rate (Rs/hour)", new { @class = "control-label" })
-                                                        @Html.TextBoxFor(@modal=> modal.RNDMasterEntities.ManHourRate,new{@class="form-control"})
+                                                        @Html.TextBoxFor(@modal=> modal.RNDMasterEntities.ManHourRate,new{@class="form-control",type = "number", min = 0})
                                                     </div>
                                                 </div>
                                                 <table id="tablerrndmanpowercostprojectduration" class="table text-center" style="width:100%">
