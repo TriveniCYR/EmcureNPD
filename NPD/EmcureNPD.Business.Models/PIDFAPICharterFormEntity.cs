@@ -31,7 +31,7 @@ namespace EmcureNPD.Business.Models
         [Required]
         public string IsModelValid { get; set; }
         //-------------------Child Table-------------------------- 
-       
+        public List<ManagmentTeam> ManagmentTeams { get; set; }
         public List<TimelineInMonths> TimelineInMonths { get; set; }
         public List<AnalyticalDepartment> AnalyticalDepartment { get; set; }
         public List<PRDDepartment> PRDDepartment { get; set; }
@@ -42,6 +42,11 @@ namespace EmcureNPD.Business.Models
 
     #region Child Table Class
 
+    public class ManagmentTeam
+    {
+        public string FullName { get; set; }
+        public string DesignationName { get; set; }
+    }
     public class TimelineInMonths
     {
         public long PidfApiCharterId { get; set; }

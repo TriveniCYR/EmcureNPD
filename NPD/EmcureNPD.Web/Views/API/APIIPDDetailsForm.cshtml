@@ -24,6 +24,9 @@
     }
 }
 <div>
+    <div id="dvPIDFAccrdion"></div>
+    <div id="dvIPDAccrdion"></div>
+    <div id="dvCommercialAccrdion"></div>
     @* <div id="CommercialPIDFScreen">
     @{
     await Html.RenderPartialAsync("~/Views/Commercial/PIDFCommercialDetails.cshtml", Model._commercialFormEntity);
@@ -275,6 +278,17 @@
         var GetAllProductType = "@EmcureNPD.Web.Helpers.APIURLHelper.GetAllProductType";
         var DBProductTypeId = "@Model.ProductTypeId";
         var UserWiseBUList = "@Model.BusinessUnitsByUser";
+
+        //--------start--------Accordian Data----------------
+        var _PIDFID = "@UtilityHelper.Decreypt(Convert.ToString(Context.Request.Query["pidfid"]))";
+         var _EncPIDFID = "@Convert.ToString(Context.Request.Query["pidfid"])";
+        var _PIDFBusinessUnitId = "@Convert.ToString(Context.Request.Query["bui"])";
+        var _PIDFAccordionURL = "@Url.Action("PIDF", "PIDF")";
+        var _IPDAccordionURL = "@Url.Action("IPD", "IPD")";
+        var _CommercialAccordionURL = "@Url.Action("PIDFCommerciaLDetails", "Commercial")";
+         //--------End--------Accordian Data----------------
+
+
         document.addEventListener("DOMContentLoaded", function () {
             var tabList = [].slice.call(document.querySelectorAll("#mainDivCommercial a"));
             var tabs = $('#tabList');

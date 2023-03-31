@@ -85,8 +85,8 @@
         var AllRegion = "@EmcureNPD.Web.Helpers.APIURLHelper.GetAllRegionIPD";
         var AllRegionCountry = "@EmcureNPD.Web.Helpers.APIURLHelper.GetCountryRefByRegionIds";
         var GetActiveBusinessUnit = "@EmcureNPD.Web.Helpers.APIURLHelper.GetActiveBusinessUnit";
-        var _selectBusinessUnit = "@UtilityHelper.Decreypt(Convert.ToString(Context.Request.Query["bui"]))";
-        var _PIDFID = "@UtilityHelper.Decreypt(Convert.ToString(Context.Request.Query["pidfid"]))";
+        var _selectBusinessUnit = "@Model.BusinessUnitId";
+        var _PIDFID = "@Model.PIDFID";
         var _IPDPartialURL = "@Url.Action("IPDPartial", "IPD")";
         var _IPDSaveUpdateURL = "@Url.Action("IPD", "IPD")";
         var ErrorMessage = "@SharedLocalizer["Error"]";

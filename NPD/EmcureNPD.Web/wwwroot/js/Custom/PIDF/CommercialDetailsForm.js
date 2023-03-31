@@ -267,6 +267,7 @@ $("#btnSubmit").click(function () {
         if (objYears.length > 0) {
             $.extend(objMainForm, { 'SaveType': 'Sv' });
             SaveCommertialPIDFForm();
+
         }
         else {
             toastr.error('No Year Data Added');
