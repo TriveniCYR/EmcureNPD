@@ -19,7 +19,7 @@ $('#btnExportToPdf').click(() => {
     let width = $("#frmMA").width();
     let options = {
         'background': "#ffffff",
-        'width': width
+        //'width': width
     }
      let pdf = new jsPDF('p', 'pt', 'a4');
     //let pdf = new jsPDF('p', 'mm', 'a4');

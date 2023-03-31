@@ -6349,18 +6349,22 @@ var PidfNumber=UtilityHelper.Decreypt(Convert.ToString(PidafId));
 			<div class="card form-group  dv-controls text-right" role="group">  
             @if(ViewBag.Access.Add == true)
             {
+                 if(Model!=null && (Model.PIDFStatusId==0 || Model.PIDFStatusId == (Int32)Master_PIDFStatus.FinanceInProgres)){
                 <button type="submit" id="btnSaveDraft" class="btn btn-primary" onclick="SaveDraftClick();">
                     @*<i class="fab fa-firstdraft"></i>*@
                     Save as Draft</button>
+                 }
                 <button type="submit"  id="btnSave" class="btn btn-success operationButton" onclick="SaveClick();">
                    @* <i class="fa fa-save"></i> *@
                     Submit</button>
             }
             @if(ViewBag.Access.Approve == true)
             {
-                <a class="btn btn-success operationButton" onClick="ApproveRejectClick('A', '@PidfNumber', @((int)EmcureNPD.Utility.Enums.PIDFScreen.Finance), '/PIDF/PIDFList?ScreenId=@((int)EmcureNPD.Utility.Enums.PIDFScreen.Finance)')"><i class="fa fa-check-circle mr-1"></i> @SharedLocalizer["Approve"]</a>
-                <a class="btn btn-danger  operationButton" onClick="ApproveRejectClick('R', '@PidfNumber', @((int)EmcureNPD.Utility.Enums.PIDFScreen.Finance), '/PIDF/PIDFList?ScreenId=@((int)EmcureNPD.Utility.Enums.PIDFScreen.Finance)')"><i class="fa fa-ban mr-1"></i> @SharedLocalizer["Reject"]</a>
-              
+                if (Model != null && Model.PIDFStatusId > 0 && Model.PIDFStatusId == (Int32)Master_PIDFStatus.FinanceSubmitted)
+                {
+                    <a class="btn btn-success operationButton" onClick="ApproveRejectClick('A', '@PidfNumber', @((int)EmcureNPD.Utility.Enums.PIDFScreen.Finance), '/PIDF/PIDFList?ScreenId=@((int)EmcureNPD.Utility.Enums.PIDFScreen.Finance)')"><i class="fa fa-check-circle mr-1"></i> @SharedLocalizer["Approve"]</a>
+                    <a class="btn btn-danger  operationButton" onClick="ApproveRejectClick('R', '@PidfNumber', @((int)EmcureNPD.Utility.Enums.PIDFScreen.Finance), '/PIDF/PIDFList?ScreenId=@((int)EmcureNPD.Utility.Enums.PIDFScreen.Finance)')"><i class="fa fa-ban mr-1"></i> @SharedLocalizer["Reject"]</a>
+                }
             }
                 <a class="btn btn-danger" href="@Url.Action("PIDFList","PIDF")/ScreenId=7">
                     @*<i class="fa fa-times" aria-hidden="true"></i>*@
