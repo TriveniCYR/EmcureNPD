@@ -146,7 +146,9 @@ namespace EmcureNPD.Web.Models
 		public double toolingAndChangeParts { get; set; }
 		public DateTime toolingAndChangePartsPhaseEndDate { get; set; }
 		public object total { get; set; }
-		public DateTime createdDate { get; set; }
+		public int PIDFStatusId { get; set; }
+
+        public DateTime createdDate { get; set; }
 		public int createdBy { get; set; }
 	}
 

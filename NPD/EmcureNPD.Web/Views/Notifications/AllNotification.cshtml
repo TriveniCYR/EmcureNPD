@@ -6,7 +6,7 @@
     int i = 0;
     string jsVersion = @Configuration.GetSection("StaticJS")["version"];
 }
-<section class="content-wrapper p-3 pb-4">
+
     <div class="content-header">
         <div class="container-fluid d-flex justify-content-between">
             <h3>All Notifications</h3>
@@ -42,7 +42,7 @@
             </tbody>
         </table>
     </div>
-</section>
+
 @section MyScripts {
 
     @Html.Partial("_DataTablePartial")

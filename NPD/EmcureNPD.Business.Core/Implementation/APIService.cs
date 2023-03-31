@@ -217,6 +217,7 @@ namespace EmcureNPD.Business.Core.Implementation
                 _oCharterEntity.CapitalOtherExpenditure = dbresult.Tables[4].DataTableToList<CapitalOtherExpenditure>();
                 _oCharterEntity.ManhourEstimates = dbresult.Tables[5].DataTableToList<ManhourEstimates>();
                 _oCharterEntity.HeadwiseBudget = dbresult.Tables[6].DataTableToList<HeadwiseBudget>();
+                _oCharterEntity.ManagmentTeams = dbresult.Tables[7].DataTableToList<ManagmentTeam>();
             }
 
             if (dbresult.Tables[0] != null && dbresult.Tables[0].Rows.Count > 0)

@@ -111,7 +111,9 @@ namespace EmcureNPD.Web.Controllers
 						model.ToolingAndChangeParts = Convert.ToDecimal(data.table[0].toolingAndChangeParts);
 						model.ToolingAndChangePartsPhaseEndDate = data.table[0].toolingAndChangePartsPhaseEndDate;
 						model.Total = Convert.ToDecimal(data.table[0].total);
-						var lsitem = GetFinanceBatchSizeCoating(model.PidffinaceId);
+						model.PIDFStatusId = data.table[0].PIDFStatusId; 
+
+                        var lsitem = GetFinanceBatchSizeCoating(model.PidffinaceId);
 						List<ChildPidfFinanceBatchSizeCoating> ls = new List<ChildPidfFinanceBatchSizeCoating>();
 						foreach (var item in lsitem)
 						{

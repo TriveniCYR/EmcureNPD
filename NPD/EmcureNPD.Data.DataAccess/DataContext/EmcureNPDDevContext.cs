@@ -350,9 +350,7 @@ namespace EmcureNPD.Data.DataAccess.DataContext
 
                 entity.ToTable("Master_BERequirement", "dbo");
 
-                entity.Property(e => e.BerequirementId)
-                    .ValueGeneratedNever()
-                    .HasColumnName("BERequirementId");
+                entity.Property(e => e.BerequirementId).HasColumnName("BERequirementId");
 
                 entity.Property(e => e.BerequirementName)
                     .HasMaxLength(100)
