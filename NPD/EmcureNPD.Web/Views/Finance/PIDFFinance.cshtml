@@ -6366,7 +6366,7 @@ var PidfNumber=UtilityHelper.Decreypt(Convert.ToString(PidafId));
                     <a class="btn btn-danger  operationButton" onClick="ApproveRejectClick('R', '@PidfNumber', @((int)EmcureNPD.Utility.Enums.PIDFScreen.Finance), '/PIDF/PIDFList?ScreenId=@((int)EmcureNPD.Utility.Enums.PIDFScreen.Finance)')"><i class="fa fa-ban mr-1"></i> @SharedLocalizer["Reject"]</a>
                 }
             }
-                <a class="btn btn-danger" href="@Url.Action("PIDFList","PIDF")/ScreenId=7">
+            <a class="btn btn-danger" href="@Url.Action("PIDFList","PIDF", new { ScreenId=Convert.ToString((int)EmcureNPD.Utility.Enums.PIDFScreen.Finance)})">
                     @*<i class="fa fa-times" aria-hidden="true"></i>*@
                     Cancel</a>
 			</div>
