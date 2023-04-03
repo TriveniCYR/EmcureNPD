@@ -8,16 +8,16 @@ var selectedStrength = 0;
 
 $(document).ready(function () {
     debugger;
-    SetDivReadonly();
+    InitializeProductTypeDropdown();
+    //SetDivReadonly();
     InitializeCurrencyDropdown();
     InitializeFinalSelectionDropdown();    
-    $("#AddYearForm").hide();
-    IsViewModeCommercial();
-    getPIDFAccordion(_PIDFAccordionURL, _PIDFID, "dvPIDFAccrdion");
-    getIPDAccordion(_IPDAccordionURL, _EncPIDFID, _PIDFBusinessUnitId, "dvIPDAccrdion");
+  //  $("#AddYearForm").hide();
+    IsViewModeCommercial();    
     SetBU_Strength();
     HideSaveAsDraft();
-    InitializeProductTypeDropdown();
+    getPIDFAccordion(_PIDFAccordionURL, _PIDFID, "dvPIDFAccrdion");
+    getIPDAccordion(_IPDAccordionURL, _EncPIDFID, _PIDFBusinessUnitId, "dvIPDAccrdion");
 });
 function HideSaveAsDraft() {    
     if ($('#StatusId').val() == 11)     //[11=CommercialSubmitted , 10= CommercialInProgress]
@@ -290,13 +290,22 @@ $("#btnSaveAsDraft").click(function () {
 });
 
 function UpdateYearTable(columns) {
+    
     $("#AddYearTBody tr").remove();
     $("#RevenueTbody tr").remove();
     for (var i = 0; i < objYears.length; i++) {
         AddRow(i);
         $.each(columns, function (item) {
-            var cntrlName = columns[item]
+            console.log(item);
+            var cntrlName = columns[item]            
             var result = objYears[i][cntrlName]
+            if (cntrlName == 'PackagingTypeId')
+                result = $("#PackagingTypeId option[value=" + result +"]").text();
+            else if (cntrlName == 'CurrencyId')
+                result = $("#CurrencyId option[value=" + result + "]").text();
+            else if (cntrlName == 'FinalSelectionId')
+                result = $("#FinalSelectionId option[value=" + result + "]").text();            
+
             //console.log(result);
             if (result != undefined) {
                 AddColToRow(i, result)

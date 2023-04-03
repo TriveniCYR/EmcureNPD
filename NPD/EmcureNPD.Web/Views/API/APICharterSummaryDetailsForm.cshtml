@@ -21,7 +21,7 @@
             <div class="card-tools">
                 <button type="button" class="btn btn-tool">
                     <a class="btn btn-danger" id="btnExportToPdf_APICharter" title="ExportToPdf"><i class="fa fa-file-pdf-o" aria-hidden="true"></i>PDF</a>
-                    <a class="btn btn-danger" asp-action="PIDFList" asp-controller="PIDF"
+                    <a class="btn btn-danger" id="btnBack" asp-action="PIDFList" asp-controller="PIDF"
                        asp-route-ScreenId="@Convert.ToString((int)EmcureNPD.Utility.Enums.PIDFScreen.API)">@SharedLocalizer["Back"]</a>
                 </button>
             </div>
@@ -457,16 +457,23 @@
 
 
         $('#btnExportToPdf_APICharter').click(() => {
+            $('btnExportToPdf_APICharter').hide();
+            $('btnBack').hide();
+
             let width = $("#divToExport").width();
+            let height = $("#divToExport").height();
             let options = {
                 'background': "#ffffff",
                 'width': width
             }
-            let pdf = new jsPDF('p', 'pt', 'a4');
+            let pdf = new jsPDF('l', 'mm', 'a1');
             //let pdf = new jsPDF('p', 'mm', 'a4');
             pdf.addHTML($("#divToExport"), options, function () {
                 pdf.save('APICharterSummary.pdf');
             });
+
+            $('btnExportToPdf_APICharter').show();
+            $('btnBack').show();
         })
 
     </script>
