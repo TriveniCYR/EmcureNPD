@@ -91,22 +91,16 @@ $(document).ready(function () {
 
         var _ClinicalRows = $('.clinicalcal_' + _BioStudyTypeId + '').find("[data-strengthid=" + _StrengthId + "]");
 
-        var FastingOrFed = 0;
-        var NoOfVol = 0;
-        var ClinicalCost = 0;
-        var BioAnalyticalCost = 0;
-        var DocCostStudy = 0;
-
-        FastingOrFed = parseFloat(_ClinicalRows.find(".calcFastingOrFed").val());
-        NoOfVol = parseFloat(_ClinicalRows.find(".calcNoOfVolunteers").val());
-        ClinicalCost = parseFloat(_ClinicalRows.find(".calcClinicalCost").val());
-        BioAnalyticalCost = parseFloat(_ClinicalRows.find(".calcBioAnalyticalCost").val());
-        DocCostStudy = parseFloat(_ClinicalRows.find(".calcDocCostandStudy").val());
+        var FastingOrFed = _ClinicalRows.find(".calcFastingOrFed").val();
+        var NoOfVol = _ClinicalRows.find(".calcNoOfVolunteers").val();
+        var ClinicalCost = _ClinicalRows.find(".calcClinicalCost").val();
+        var BioAnalyticalCost = _ClinicalRows.find(".calcBioAnalyticalCost").val();
+        var DocCostStudy = _ClinicalRows.find(".calcDocCostandStudy").val();
 
         var _Sum = 0;
         $.each($(this).parent().parent().find("input[type=number]"), function (index, item) {
             if ($(item).attr("class").indexOf("TotalStrength") === -1) {
-                _Sum += parseFloat($(item).val());
+                _Sum += parseFloat(($(item).val() == "" ? 0 : $(item).val()));
             }
         });
 
@@ -114,19 +108,38 @@ $(document).ready(function () {
         $(this).parent().parent().find(".TotalStrength").val(_Sum);
 
         // formula to calculate the total cost for one strength (all the properties) (one column)
-        var totalCostFastingFed = FastingOrFed * (NoOfVol * (ClinicalCost + BioAnalyticalCost) + DocCostStudy);
+        var totalCostFastingFed = (FastingOrFed == "" ? 0 : parseFloat(FastingOrFed)) * ((NoOfVol == "" ? 0 : parseFloat(NoOfVol)) * ((ClinicalCost == "" ? 0 : parseFloat(ClinicalCost)) + (BioAnalyticalCost == "" ? 0 : parseFloat(BioAnalyticalCost))) + (DocCostStudy == "" ? 0 : parseFloat(DocCostStudy)));
 
         // set total for all the property in the table for one strength
         $('.clinicalcal_' + _BioStudyTypeId + 'Total').find("[data-strengthid=" + _StrengthId + "]").find(".calcTotalCostForStrength").val(totalCostFastingFed);
 
         var _TotalSum = 0;
         $.each($('.clinicalcal_' + _BioStudyTypeId + 'Total').find(".calcTotalCostForStrength"), function (index, item) {
-            _TotalSum += parseFloat($(item).val());
+            _TotalSum += parseFloat(($(item).val() == "" ? 0 : $(item).val()));
         });
 
         // set total for all the property in the table
         $('.clinicalcal_' + _BioStudyTypeId + 'Total').find(".calcTotalCostForStrengthTotal").val(_TotalSum);
 
+        var _TotalBioStudySum = 0;
+        $.each($('.calcTotalCostForStrength'), function (index, item) {
+            _TotalBioStudySum += parseFloat(($(item).val() == "" ? 0 : $(item).val()));
+        });
+
+        var _TotalBioStudyCost = 0;
+        $.each($('.totalBioStudyCost'), function (index, item) {
+            var _strengthId = $(item).parent().attr("data-strengthid");
+            var _TotalBioStudySum = 0;
+            $.each($('.calcTotalCostForStrength'), function (i, it) {
+                var _childStrengthId = $(it).parent().attr("data-strengthid");
+                if (_childStrengthId == _strengthId) {
+                    _TotalBioStudySum += parseFloat(($(it).val() == "" ? 0 : $(it).val()));
+                }
+            });
+            $(item).val(_TotalBioStudySum);
+            _TotalBioStudyCost += _TotalBioStudySum;
+        });
+        $('.totalBioStudyCostTotal').val(_TotalBioStudyCost);
     });
 });
 
@@ -535,10 +548,17 @@ function BindClinical(data) {
 
     bioStudyHTML += '<tr><td class="text-bold">Total Bio Study Cost</td>';
     $.each(_strengthArray, function (index, item) {
-        bioStudyHTML += "<td><input type='number' class='form-control totalClinical' readonly='readonly' /></td>";
+        bioStudyHTML += "<td data-strengthid='" + item.pidfProductStrengthId +"'><input type='number' class='form-control totalBioStudyCost' readonly='readonly' /></td>";
     });
-    bioStudyHTML += "<td><input type='number' class='form-control totalClinical' readonly='readonly' /></td></tr></tbody>";
+    bioStudyHTML += "<td><input type='number' class='form-control totalBioStudyCostTotal' readonly='readonly' /></td></tr></tbody>";
     $('#tableclinical').html(bioStudyHTML);
+
+    $("input[class~='calcFastingOrFed']").trigger('change');
+    $("input[class~='calcNoOfVolunteers']").trigger('change');
+    $("input[class~='calcClinicalCost']").trigger('change');
+    $("input[class~='calcBioAnalyticalCost']").trigger('change');
+    $("input[class~='calcDocCostandStudy']").trigger('change');
+
 }
 //Clinical End
 //Analytical Start
@@ -1309,7 +1329,6 @@ function CreateFillingExpensesTable(data, activityTypeId) {
     //var _iterator = (activityTypeId - 1) * _strengthArray.length;
 
     var _counter = (data.length == 0 ? 1 : data.length);
-
     var _activityType = [];
 
     objectname += '<tr><td class="text-left text-bold bg-light" colspan="' + (6 + _strengthArray.length) + '">' + tableTitle + '</td>';
@@ -1325,7 +1344,7 @@ function CreateFillingExpensesTable(data, activityTypeId) {
             + '<td><input type="number" class="form-control totalFillingExpenses rndFillingExpensesTotalCost" value="2300000" min="0"/></td>'
             + '<td><select class="form-control readOnlyUpdate rndFillingExpensesRegionId"><option value = "0" > --Select --</option ></select><input type="hidden" value="' + (data.length > 0 ? data[a].businessUnitId : "") + '"/></td>'
         for (var i = 0; i < _strengthArray.length; i++) {
-            objectname += '<td> <div stylle="display: inline-block;" ><input type="hidden" class="rndFillingExpensesStrengthId" value="' + _strengthArray[i].pidfProductStrengthId + '" /><input type="checkbox" id="rndFillingExpensesStrengthIsChecked' + _strengthArray[i].pidfProductStrengthId + '" class="rndFillingExpensesStrengthIsChecked' + _strengthArray[i].pidfProductStrengthId + '"  ></select> &nbsp; <input type="number" class="FillingExpensesStrengthValue" readonly="readonly" disabled="true" min="0" /></div></td>';
+            objectname += '<td> <div style="display: inline-block;" ><input type="hidden" class="rndFillingExpensesStrengthId" value="' + _strengthArray[i].pidfProductStrengthId + '" /><input type="checkbox" id="rndFillingExpensesStrengthIsChecked' + _strengthArray[i].pidfProductStrengthId + '" class="rndFillingExpensesStrengthIsChecked' + _strengthArray[i].pidfProductStrengthId + '" ' + (data[a].isChecked ? "checked" : "") + '  ></select> &nbsp; <input type="number" class="FillingExpensesStrengthValue" readonly="readonly" disabled="true" min="0" /></div></td>';
         }
         objectname += "<td><input type='number' class='form-control' readonly='readonly' min='0' /></td><td> <i class='fa-solid fa-circle-plus nav-icon text-success operationButton' id='addIcon' onclick='addRowFillingExpenses(this);'></i> <i class='fa-solid fa-trash nav-icon text-red strengthDeleteIcon operationButton DeleteIcon' onclick='deleteRowFillingExpenses(this);' ></i></td></tr>";
         if (data.length > 0) {
@@ -1405,7 +1424,6 @@ function CreateRNDManPowerCostTable(data) {
     return objectname;
 }
 function BindRNDManPowerCost(data) {
-    console.log(data)
     var RPDHTML = '<thead class="bg-primary text-bold"><tr><td>Duration in days </td><td>Project Activities </td><td>Man Power in days </td>';
     $.each(_strengthArray, function (index, item) {
         RPDHTML += '<td>' + getStrengthName(item.pidfProductStrengthId) + '</td>';

@@ -36,9 +36,7 @@ function SetProjectFormReadonly() {
 function CustomizeChildContent(d) {
     try {
         var _projectTaskId = parseInt($(d[0]).val());
-        console.log(_milestoneData);
-
-
+        
         $.grep(data, function (n, i) {
             return n.prop_1 === 'val_11';
         });
@@ -91,7 +89,6 @@ function GetProjectDetails() {
 function GetProjectDetailsSuccess(data) {
     try {
         //project details
-        console.log(data);
         $('#loading').hide();
         $('#pidf_ProjectorProductName').text(data.table[0].projectName);
         $('#pidf_ProductTypeName').text(data.table[0].productType);
