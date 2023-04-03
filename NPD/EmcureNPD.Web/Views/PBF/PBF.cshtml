@@ -419,47 +419,291 @@
                              aria-labelledby="custom-tabs-department-RnD-tab">
                             <div class="container-fluid">
                                 <div class="row">
-                                    <div class="col-md-3">
-                                        <div class="form-group required">
-                                            @Html.LabelFor(model => model.RNDMasterEntities.BatchSizeId, "Batch Size", new { @class = "control-label" })
-                                            @*<input type="hidden" id="hdnBatchSizeId" value="@Model.RNDMasterEntities.BatchSizeId" />*@
-                                            <select id="RNDBatchSizeId" name="RNDMasterEntities.BatchSizeId" class="form-control readOnlyUpdate" required></select>
-                                        </div>
-                                    </div>
-                                    <table id="tablerndbatchsize" class="table text-center" style="width:100%">
-                                    </table>
-                                    <div class="col-md-3">
-                                        <div class="form-group required">
-                                            @Html.LabelFor(model => model.RNDMasterEntities.ApirequirementMarketPrice, "Market Prize (Rs/kg)", new { @class = "control-label" })
-                                            @Html.TextBoxFor(@modal=> modal.RNDMasterEntities.ApirequirementMarketPrice,new{@class="form-control"})
-                                        </div>
-                                    </div>
-                                    <table id="tablerndapirequirement" class="table text-center" style="width:100%">
-                                    </table>
-                                    <table id="tablerndexicipientrequirement" class="table text-center" style="width:100%">
-                                    </table>
-                                    <input type="hidden" id="hdnrndExicipientData" name="RNDExicipientRawData" />
-                                    <table id="tablerndpackagingmaterialrequirement" class="table text-center" style="width:100%">
-                                    </table>
-                                    <input type="hidden" id="hdnrndPackagingData" name="RNDPackagingRawData" />
-                                    <table id="tablerndtoolingchangepart" class="table text-center" style="width:100%">
-                                    </table>
-                                    <input type="hidden" id="hdnrndToolingChangePartData" name="RNDToolingChangePartRawData" />
-                                    <table id="tablerndcapexmiscellaneousexpenses" class="table text-center" style="width:100%">
-                                    </table>
-                                    <input type="hidden" id="hdnrndCapexMiscellaneousExpensesData" name="RNDCapexMiscellaneousExpensesRawData" />
-                                    <div class="col-md-3">
-                                        <div class="form-group required">
-                                            @Html.LabelFor(model => model.RNDMasterEntities.PlanSupportCostRsPerDay, "Plant Utilization rate Rs/Day", new { @class = "control-label" })
-                                            @Html.TextBoxFor(@modal=> modal.RNDMasterEntities.PlanSupportCostRsPerDay,new{@class="form-control"})
-                                        </div>
-                                    </div>
-                                    <table id="tablerndplantsupportcost" class="table text-center" style="width:100%">
-                                    </table>
-                                    <input type="hidden" id="hdnrndPlantSupportCostData" name="RNDPlantSupportCostRawData" />
+                                    @* batch size*@
+                                    <div class="card">
+                                        <div class="card-header bg-primary">
+                                            <h3 class="card-title mb-0">
 
-                                    <table id="tablerndreferenceproductdetail" class="table text-center" style="width:100%">
-                                    </table>
+                                                <button type="button" class="btn btn-tool" data-card-widget="collapse">
+                                                    Batch Size
+                                                </button>
+
+                                            </h3>
+                                            <div class="card-tools">
+                                                <button type="button" class="btn btn-tool" data-card-widget="collapse" title="Collapse">
+                                                    <i class="fas fa-minus"></i>
+                                                </button>
+                                            </div>
+                                        </div>
+                                        <div class="card-body">
+                                            <div class="row">
+                                                <div class="col-md-3">
+                                                    <div class="form-group required">
+                                                        @Html.LabelFor(model => model.RNDMasterEntities.BatchSizeId, "Batch Size", new { @class = "control-label" })
+                                                        @*<input type="hidden" id="hdnBatchSizeId" value="@Model.RNDMasterEntities.BatchSizeId" />*@
+                                                        <select id="RNDBatchSizeId" name="RNDMasterEntities.BatchSizeId" class="form-control readOnlyUpdate" required></select>
+                                                    </div>
+                                                </div>
+                                                <table id="tablerndbatchsize" class="table text-center" style="width:100%">
+                                                </table>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    @* api Requirement*@
+
+                                    <div class="card">
+                                        <div class="card-header bg-primary">
+                                            <h3 class="card-title mb-0">
+
+                                                <button type="button" class="btn btn-tool" data-card-widget="collapse">
+                                                    API Requirement
+                                                </button>
+
+                                            </h3>
+                                            <div class="card-tools">
+                                                <button type="button" class="btn btn-tool" data-card-widget="collapse" title="Collapse">
+                                                    <i class="fas fa-minus"></i>
+                                                </button>
+                                            </div>
+                                        </div>
+                                        <div class="card-body">
+                                            <div class="row">
+                                                <div class="col-md-3">
+                                                    <div class="form-group required">
+                                                        @Html.LabelFor(model => model.RNDMasterEntities.ApirequirementMarketPrice, "Market Prize (Rs/kg)", new { @class = "control-label" })
+                                                        @Html.TextBoxFor(@modal=> modal.RNDMasterEntities.ApirequirementMarketPrice,new{@class="form-control",type = "number", min = 0})
+                                                    </div>
+                                                </div>
+                                                <table id="tablerndapirequirement" class="table text-center" style="width:100%">
+                                                </table>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    @* Exicipient Requirement*@
+
+                                    <div class="card">
+                                        <div class="card-header bg-primary">
+                                            <h3 class="card-title mb-0">
+
+                                                <button type="button" class="btn btn-tool" data-card-widget="collapse">
+                                                    Exicipient Requirement
+                                                </button>
+
+                                            </h3>
+                                            <div class="card-tools">
+                                                <button type="button" class="btn btn-tool" data-card-widget="collapse" title="Collapse">
+                                                    <i class="fas fa-minus"></i>
+                                                </button>
+                                            </div>
+                                        </div>
+                                        <div class="card-body">
+                                            <div class="row">
+                                                <table id="tablerndexicipientrequirement" class="table text-center" style="width:100%">
+                                                </table>
+                                                <input type="hidden" id="hdnrndExicipientData" name="RNDExicipientRawData" />
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    @* Packaging Material*@
+
+                                    <div class="card">
+                                        <div class="card-header bg-primary">
+                                            <h3 class="card-title mb-0">
+
+                                                <button type="button" class="btn btn-tool" data-card-widget="collapse">
+                                                    Packaging Material
+                                                </button>
+
+                                            </h3>
+                                            <div class="card-tools">
+                                                <button type="button" class="btn btn-tool" data-card-widget="collapse" title="Collapse">
+                                                    <i class="fas fa-minus"></i>
+                                                </button>
+                                            </div>
+                                        </div>
+                                        <div class="card-body">
+                                            <div class="row">
+                                                <table id="tablerndpackagingmaterialrequirement" class="table text-center" style="width:100%">
+                                                </table>
+                                                <input type="hidden" id="hdnrndPackagingData" name="RNDPackagingRawData" />
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    @* Tooling Change Part*@
+
+                                    <div class="card">
+                                        <div class="card-header bg-primary">
+                                            <h3 class="card-title mb-0">
+
+                                                <button type="button" class="btn btn-tool" data-card-widget="collapse">
+                                                    Tooling Change Part
+                                                </button>
+
+                                            </h3>
+                                            <div class="card-tools">
+                                                <button type="button" class="btn btn-tool" data-card-widget="collapse" title="Collapse">
+                                                    <i class="fas fa-minus"></i>
+                                                </button>
+                                            </div>
+                                        </div>
+                                        <div class="card-body">
+                                            <div class="row">
+                                                <table id="tablerndtoolingchangepart" class="table text-center" style="width:100%">
+                                                </table>
+                                                <input type="hidden" id="hdnrndToolingChangePartData" name="RNDToolingChangePartRawData" />
+
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    @* Capex Misc Expanses*@
+
+                                    <div class="card">
+                                        <div class="card-header bg-primary">
+                                            <h3 class="card-title mb-0">
+
+                                                <button type="button" class="btn btn-tool" data-card-widget="collapse">
+                                                    Capex Miscellaneouse Expenses
+                                                </button>
+
+                                            </h3>
+                                            <div class="card-tools">
+                                                <button type="button" class="btn btn-tool" data-card-widget="collapse" title="Collapse">
+                                                    <i class="fas fa-minus"></i>
+                                                </button>
+                                            </div>
+                                        </div>
+                                        <div class="card-body">
+                                            <div class="row">
+                                                <table id="tablerndcapexmiscellaneousexpenses" class="table text-center" style="width:100%">
+                                                </table>
+                                                <input type="hidden" id="hdnrndCapexMiscellaneousExpensesData" name="RNDCapexMiscellaneousExpensesRawData" />
+
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    @* Plant Support Cost*@
+
+                                    <div class="card">
+                                        <div class="card-header bg-primary">
+                                            <h3 class="card-title mb-0">
+
+                                                <button type="button" class="btn btn-tool" data-card-widget="collapse">
+                                                    Plant Support Cost
+                                                </button>
+
+                                            </h3>
+                                            <div class="card-tools">
+                                                <button type="button" class="btn btn-tool" data-card-widget="collapse" title="Collapse">
+                                                    <i class="fas fa-minus"></i>
+                                                </button>
+                                            </div>
+                                        </div>
+                                        <div class="card-body">
+                                            <div class="row">
+                                                <div class="col-md-3">
+                                                    <div class="form-group required">
+                                                        @Html.LabelFor(model => model.RNDMasterEntities.PlanSupportCostRsPerDay, "Plant Utilization rate Rs/Day", new { @class = "control-label" })
+                                                        @Html.TextBoxFor(@modal=> modal.RNDMasterEntities.PlanSupportCostRsPerDay,new{@class="form-control",type = "number", min = 0})
+                                                    </div>
+                                                </div>
+                                                <table id="tablerndplantsupportcost" class="table text-center" style="width:100%">
+                                                </table>
+                                                <input type="hidden" id="hdnrndPlantSupportCostData" name="RNDPlantSupportCostRawData" />
+
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    @* Referense Product Details*@
+
+                                    <div class="card">
+                                        <div class="card-header bg-primary">
+                                            <h3 class="card-title mb-0">
+
+                                                <button type="button" class="btn btn-tool" data-card-widget="collapse">
+                                                    Reference Product Detail
+                                                </button>
+
+                                            </h3>
+                                            <div class="card-tools">
+                                                <button type="button" class="btn btn-tool" data-card-widget="collapse" title="Collapse">
+                                                    <i class="fas fa-minus"></i>
+                                                </button>
+                                            </div>
+                                        </div>
+                                        <div class="card-body">
+                                            <div class="row">
+                                                <table id="tablerndreferenceproductdetail" class="table text-center" style="width:100%">
+                                                </table>
+
+
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    @*  Man Power Cost & Project Duration*@
+
+                                    <div class="card">
+                                        <div class="card-header bg-primary">
+                                            <h3 class="card-title mb-0">
+
+                                                <button type="button" class="btn btn-tool" data-card-widget="collapse">
+                                                    Man Power Cost & Project Duration
+                                                </button>
+
+                                            </h3>
+                                            <div class="card-tools">
+                                                <button type="button" class="btn btn-tool" data-card-widget="collapse" title="Collapse">
+                                                    <i class="fas fa-minus"></i>
+                                                </button>
+                                            </div>
+                                        </div>
+                                        <div class="card-body">
+                                            <div class="row">
+                                                <div class="col-md-3">
+                                                    <div class="form-group required">
+                                                        @Html.LabelFor(model => model.RNDMasterEntities.ManHourRate, "Man Hour Rate (Rs/hour)", new { @class = "control-label" })
+                                                        @Html.TextBoxFor(@modal=> modal.RNDMasterEntities.ManHourRate,new{@class="form-control",type = "number", min = 0})
+                                                    </div>
+                                                </div>
+                                                <table id="tablerrndmanpowercostprojectduration" class="table text-center" style="width:100%">
+                                                </table>
+                                            </div>
+                                            <input type="hidden" id="hdnrndManPowerCostProjectDuration" name="RNDManPowerCostProjectDurationRawData" />
+                                        </div>
+                                    </div>
+
+                                    @*  Filling Expanses*@
+
+                                    <div class="card">
+                                        <div class="card-header bg-primary">
+                                            <h3 class="card-title mb-0">
+
+                                                <button type="button" class="btn btn-tool" data-card-widget="collapse">
+                                                    Filling Expenses
+                                                </button>
+
+                                            </h3>
+                                            <div class="card-tools">
+                                                <button type="button" class="btn btn-tool" data-card-widget="collapse" title="Collapse">
+                                                    <i class="fas fa-minus"></i>
+                                                </button>
+                                            </div>
+                                        </div>
+                                        <div class="card-body">
+                                            <div class="row">
+                                                <table id="tablerndfilingexpenses" class="table text-center" style="width:100%">
+                                                </table>
+                                            </div>
+                                            <input type="hidden" id="hdnrndFillingExpensesData" name="RNDFillingExpensesRawData" />
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -514,11 +758,11 @@
 <link href="/lib/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
 <script src="/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
 
-
 <script>
     var GetAllPBF = "@EmcureNPD.Web.Helpers.APIURLHelper.GetPBFDropdown";
-     var UserWiseBUList="@Model.BusinessUnitsByUser";
-     var _selectBusinessUnit = "@UtilityHelper.Decreypt(Convert.ToString(Context.Request.Query["bui"]))";
-        var _PIDFID = "@UtilityHelper.Decreypt(Convert.ToString(Context.Request.Query["pidfid"]))";
-         var GetPBFAllTabDetails = "@EmcureNPD.Web.Helpers.APIURLHelper.GetPBFTabDetails";
+    var UserWiseBUList="@Model.BusinessUnitsByUser";
+    var _selectBusinessUnit = "@UtilityHelper.Decreypt(Convert.ToString(Context.Request.Query["bui"]))";
+    var _PIDFID = "@UtilityHelper.Decreypt(Convert.ToString(Context.Request.Query["pidfid"]))";
+    var GetPBFAllTabDetails = "@EmcureNPD.Web.Helpers.APIURLHelper.GetPBFTabDetails";
+    var ErrorMessage = "@SharedLocalizer["Error"]";
 </script>

@@ -90,6 +90,19 @@ namespace EmcureNPD.Web.Controllers
         [HttpPost]
         public IActionResult Medical(string id, PIDFMedicalViewModel medicalEntity)
         {
+
+            ViewBag.id = id;
+            ViewBag.baseUrl = _cofiguration.GetSection("Apiconfig").GetSection("baseurl").Value;
+            string logUserId = Convert.ToString(HttpContext.Session.GetString(UserHelper.LoggedInUserId));
+            int rolId = (int)HttpContext.Session.GetInt32(UserHelper.LoggedInRoleId);
+            RolePermissionModel objPermssion = UtilityHelper.GetCntrActionAccess(Convert.ToString(this.ControllerContext.ActionDescriptor.ActionName), rolId);
+            if (objPermssion == null || (!objPermssion.View && medicalEntity.IsView == 1))
+            {
+                return RedirectToAction("AccessRestriction", "Home");
+
+            }
+            ViewBag.Access = objPermssion;
+           
             if (ModelState.IsValid)
             {
                 medicalEntity.Pidfid = long.Parse(UtilityHelper.Decreypt(id));
@@ -109,8 +122,10 @@ namespace EmcureNPD.Web.Controllers
                         form.Add(fileContent, "file", file.FileName);
                     }
                 }
-
-                form.Add(new StringContent(JsonConvert.SerializeObject(medicalEntity)), "Data");
+                if (medicalEntity.Remark != null)
+                {
+                    form.Add(new StringContent(JsonConvert.SerializeObject(medicalEntity)), "Data");
+                }
                 HttpResponseMessage responseMessage = objapi.APIComm(APIURLHelper.PIDMedicalForm, HttpMethod.Post, token, form).Result;
                 string jsonResponse = responseMessage.Content.ReadAsStringAsync().Result;
                 var data = JsonConvert.DeserializeObject<APIResponseEntity<dynamic>>(jsonResponse);
@@ -129,7 +144,7 @@ namespace EmcureNPD.Web.Controllers
             }
             else
             {
-                return View(medicalEntity);
+                return RedirectToAction("Medical", "Medical", new { pidfid = id });
             }
         }
     }

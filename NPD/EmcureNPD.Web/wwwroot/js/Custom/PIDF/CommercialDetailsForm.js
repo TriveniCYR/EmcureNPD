@@ -10,13 +10,21 @@ $(document).ready(function () {
     debugger;
     SetDivReadonly();
     InitializeCurrencyDropdown();
-    InitializeFinalSelectionDropdown();
-    InitializeProductTypeDropdown();
+    InitializeFinalSelectionDropdown();    
     $("#AddYearForm").hide();
     IsViewModeCommercial();
     getPIDFAccordion(_PIDFAccordionURL, _PIDFID, "dvPIDFAccrdion");
+    getIPDAccordion(_IPDAccordionURL, _EncPIDFID, _PIDFBusinessUnitId, "dvIPDAccrdion");
     SetBU_Strength();
+    HideSaveAsDraft();
+    InitializeProductTypeDropdown();
 });
+function HideSaveAsDraft() {    
+    if ($('#StatusId').val() == 11)     //[11=CommercialSubmitted , 10= CommercialInProgress]
+     $('#btnSaveAsDraft').hide();    
+    else
+      $('#btnSaveAsDraft').show();
+}
 
 function SetBU_Strength() {
     var PIDFBusinessUnitId = $("#PIDFBusinessUnitId").val();
@@ -126,7 +134,11 @@ function ValidateYearForm() {
        
     });
     var status = (ArrofInvalid.length == 0) ? true : false;
-    if (!status) { toastr.error('Some fields are missing !'); }
+    if (!status) {
+        var controltobeFocus = ArrofInvalid[ArrofInvalid.length-1];
+        $('#' + controltobeFocus).focus();
+        toastr.error('Some fields are missing !');
+    }
     return status;
 }
 function ClearValidationForYearForm() {
@@ -150,7 +162,7 @@ function ValidateMainForm() {
             ArrofInvalid.push(kv);
         }
         else {
-            $('#valmsg' + kv.name).text('');
+            $('#valmsg' + kv).text('');
         }
     });
     var status = (ArrofInvalid.length == 0) ? true : false;
@@ -255,11 +267,12 @@ $("#btnSubmit").click(function () {
         if (objYears.length > 0) {
             $.extend(objMainForm, { 'SaveType': 'Sv' });
             SaveCommertialPIDFForm();
+
         }
         else {
             toastr.error('No Year Data Added');
         }
-    }
+    }    
 });
 
 
@@ -273,6 +286,7 @@ $("#btnSaveAsDraft").click(function () {
             toastr.error('No Year Data Added');
         }
     }
+    
 });
 
 function UpdateYearTable(columns) {
@@ -321,6 +335,7 @@ function SaveCommertialPIDFFormSuccess(data) {
             toastr.success(data._Message);
             $("#AddYearForm").hide();
             IsShowCancel_Save_buttons(true);
+            window.location.href = "/PIDF/PIDFList?ScreenId=4";
         }
         else {
             toastr.error(data._Message);

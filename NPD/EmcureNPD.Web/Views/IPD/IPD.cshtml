@@ -11,15 +11,22 @@
 
 @model EmcureNPD.Business.Models.IPDEntity
 @{
+    if (Model._Partial)
+    {
+        Layout = null;
+    }
+}
+@{
     ViewData["Title"] = @MasterLocalizer["IPD"];
     string jsVersion = @Configuration.GetSection("StaticJS")["version"];
 }
 
 <div id="dvPIDFAccrdion"></div>
-
-<div class="content-header">
-    <h2 class="m-0">Internal Patent Details</h2>
-</div>
+@if(!Model._Partial){
+    <div class="content-header">
+        <h2 class="m-0">Internal Patent Details</h2>
+    </div>
+}
 <div class="container-fluid background-white-card" id="dvIPDContainer">
     <input type="hidden" asp-for="LogInId" />
     <input type="hidden" id="hdnIPDIsView" value="@(Context.Request.Query["IsView"] == "1" ? "1" : "0")" />
@@ -55,7 +62,7 @@
     </div>
 </div>
 
-@Html.Partial("_PIDFApproveReject")
+
 
 
 @section MyScripts {
@@ -78,8 +85,8 @@
         var AllRegion = "@EmcureNPD.Web.Helpers.APIURLHelper.GetAllRegionIPD";
         var AllRegionCountry = "@EmcureNPD.Web.Helpers.APIURLHelper.GetCountryRefByRegionIds";
         var GetActiveBusinessUnit = "@EmcureNPD.Web.Helpers.APIURLHelper.GetActiveBusinessUnit";
-        var _selectBusinessUnit = "@UtilityHelper.Decreypt(Convert.ToString(Context.Request.Query["bui"]))";
-        var _PIDFID = "@UtilityHelper.Decreypt(Convert.ToString(Context.Request.Query["pidfid"]))";
+        var _selectBusinessUnit = "@Model.BusinessUnitId";
+        var _PIDFID = "@Model.PIDFID";
         var _IPDPartialURL = "@Url.Action("IPDPartial", "IPD")";
         var _IPDSaveUpdateURL = "@Url.Action("IPD", "IPD")";
         var ErrorMessage = "@SharedLocalizer["Error"]";

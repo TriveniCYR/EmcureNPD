@@ -1,4 +1,5 @@
 ﻿using EmcureNPD.Business.Models;
+using EmcureNPD.Data.DataAccess.Entity;
 using EmcureNPD.Resource;
 using EmcureNPD.Utility.Audit;
 using EmcureNPD.Utility.Enums;
@@ -41,13 +42,13 @@ namespace EmcureNPD.Web.Controllers
 
         //[Route("IPD/IPD")]
         [HttpGet]
-        public IActionResult IPD(string pidfid, string bui)
+        public IActionResult IPD(string pidfid, string bui, bool _Partial = false, bool IsViewMode = false)
         {
 
             ModelState.Clear();
             IPDEntity oIPD = new();
             try
-            {
+            {               
                 string logUserId = Convert.ToString(HttpContext.Session.GetString(UserHelper.LoggedInUserId));
                 int rolId = (int)HttpContext.Session.GetInt32(UserHelper.LoggedInRoleId);
                 RolePermissionModel objPermssion = UtilityHelper.GetCntrActionAccess(Convert.ToString(RouteData.Values["controller"]), rolId);
@@ -67,7 +68,8 @@ namespace EmcureNPD.Web.Controllers
                     bussnessId = UtilityHelper.Decreypt(bui);
 
                 oIPD = GetModelForIPDForm(pidfid, bussnessId);
-
+                oIPD._Partial = _Partial;
+                oIPD.IsViewMode = IsViewMode;
                 return View(oIPD);
             }
             catch (Exception e)

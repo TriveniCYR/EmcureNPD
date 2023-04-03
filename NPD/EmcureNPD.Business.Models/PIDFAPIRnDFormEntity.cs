@@ -17,6 +17,7 @@ namespace EmcureNPD.Business.Models
         public string Pidfid { get; set; }
         public string SaveType { get; set; }
         public string ProjectName { get; set; }
+        public int? StatusId { get; set; }
         public string BusinessUnitId { get; set; }
         public string MarketDetailsFileName { get; set; }
         public int ProductTypeId { get; set; }

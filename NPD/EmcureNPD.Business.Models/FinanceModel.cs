@@ -67,7 +67,8 @@ namespace EmcureNPD.Business.Models
 		public DateTime? CreatedDate { get; set; }
 		public int? CreatedBy { get; set; }
 		public string SaveType { get; set; }
-		public string StatusRemark { get; set; }
+        public int PIDFStatusId { get; set; }
+        public string StatusRemark { get; set; }
         public List<ChildPidfFinanceBatchSizeCoating> lsPidfFinanceBatchSizeCoating{ get; set; }
 	}
 	public partial class ChildPidfFinanceBatchSizeCoating

@@ -45,10 +45,13 @@ namespace EmcureNPD.Business.Core.Implementation
         private IRepository<Pidf> _repository { get; set; }
         private readonly IHelper _helper;
         private readonly IMasterCountryService _countryService;
+        private IRepository<Pidf> _pidfrepository { get; set; }
+        private readonly INotificationService _notificationService;
 
         public APIService(IUnitOfWork unitOfWork, IMapperFactory mapperFactory,
             Microsoft.Extensions.Configuration.IConfiguration configuration, IMasterProductTypeService masterProductTypeService,
-            IMasterCountryService countryService, IMasterAuditLogService auditLogService, IHelper helper)
+             INotificationService notificationService,
+        IMasterCountryService countryService, IMasterAuditLogService auditLogService, IHelper helper)
         {
             _unitOfWork = unitOfWork;
             _mapperFactory = mapperFactory;
@@ -62,6 +65,8 @@ namespace EmcureNPD.Business.Core.Implementation
             _configuration = configuration;
             _helper = helper;
             _countryService = countryService;
+            _pidfrepository = unitOfWork.GetRepository<Pidf>();
+            _notificationService = notificationService;
         }
 
         //------------Start------API_Functions_Kuldip--------------------------
@@ -111,7 +116,168 @@ namespace EmcureNPD.Business.Core.Implementation
 
             }
         }
-        //------------Start------API_IPD_Details_Form_Entity--------------------------
+        private List<DM> FillObjData<VM, DM>(List<VM> _vmObj)
+        {
+            var _objPidfApiCharterTimelineInMonth = new List<DM>();
+            foreach (var obj in _vmObj)
+            {
+                var _objTimelineInMonths = _mapperFactory.Get<VM, DM>(obj);
+                _objPidfApiCharterTimelineInMonth.Add(_objTimelineInMonths);
+            }
+            return _objPidfApiCharterTimelineInMonth;
+        }
+        private void RemoveChildDataAPICharter(long APICharterId)
+        {
+            PIDFAPICharterFormEntity _oCharterEntity = new PIDFAPICharterFormEntity();
+            SqlParameter[] osqlParameter = {
+                new SqlParameter("@PIDFAPICharterId", APICharterId)
+            };
+            var dbresult = _pidf_API_Charter_repository.GetDataSetBySP("stp_npd_RemoveChildDataAPICharter",
+                System.Data.CommandType.StoredProcedure, osqlParameter);
+        }
+       //---------------End Child Method-----------------------------------------------
+      
+        public async Task<PIDFAPIIPDFormEntity> GetAPIIPDFormData(long pidfId, string HostValue)
+        {
+
+            PIDFAPIIPDFormEntity _oApiIpdData = new PIDFAPIIPDFormEntity();
+            var _oAPIIPD = await _pidf_API_IPD_repository.GetAsync(x => x.Pidfid == pidfId);
+            if (_oAPIIPD != null)
+            {
+                string baseURL = HostValue + "/Uploads/PIDF/APIIPD";
+                var fullPath = baseURL + "/" + _oAPIIPD.MarketDetailsFileName;
+                _oApiIpdData.DrugsCategory = _oAPIIPD.DrugsCategory;
+                _oApiIpdData.ProductTypeId = (int)_oAPIIPD.ProductTypeId;
+                _oApiIpdData.APIIPDDetailsFormID = _oAPIIPD.PidfApiIpdId;
+                _oApiIpdData.ProductStrength = _oAPIIPD.ProductStrength;
+                _oApiIpdData.MarketDetailsFileName = (Convert.ToString(_oAPIIPD.MarketDetailsFileName) == "") ? "" : fullPath;
+                _oApiIpdData.Pidfid = _oAPIIPD.Pidfid.ToString();
+            }
+            _oApiIpdData.MasterCountries = _countryService.GetAll().Result.ToList();
+            Pidf objPidf = await _pidfrepository.GetAsync(pidfId);
+            _oApiIpdData.StatusId = objPidf.StatusId;
+            return _oApiIpdData;
+        }
+        public async Task<PIDFAPIRnDFormEntity> GetAPIRnDFormData(long pidfId, string HostValue)
+        {
+            PIDFAPIRnDFormEntity _oApiRnDData = new PIDFAPIRnDFormEntity();
+            var _oAPIRnD = await _pidf_API_RnD_repository.GetAsync(x => x.Pidfid == pidfId);
+            var _oAPIIpd = await _pidf_API_IPD_repository.GetAsync(x => x.Pidfid == pidfId);
+            if (_oAPIRnD != null)
+            {
+                _oApiRnDData.PIDFAPIRnDFormID = _oAPIRnD.PidfApiRnDId;
+                _oApiRnDData.Pidfid = _oAPIRnD.Pidfid.ToString();
+
+                _oApiRnDData.PlantQC = _oAPIRnD.PlantQc;
+                _oApiRnDData.Development = _oAPIRnD.Development;
+                _oApiRnDData.Total = _oAPIRnD.Total;
+                _oApiRnDData.Exhibit = _oAPIRnD.Exhibit;
+                _oApiRnDData.ScaleUp = _oAPIRnD.ScaleUp;
+                _oApiRnDData.MarketID = _oAPIRnD.MarketExtenstionId;
+                _oApiRnDData.SponsorBusinessPartner = _oAPIRnD.SponsorBusinessPartner;
+                _oApiRnDData.APIMarketPrice = _oAPIRnD.ApimarketPrice;
+                _oApiRnDData.APITargetRMC_CCPC = _oAPIRnD.ApitargetRmcCcpc;
+            }
+            if (_oAPIIpd != null)
+            {
+                string baseURL = HostValue + "/Uploads/PIDF/APIIPD";
+                var fullPath = baseURL + "/" + _oAPIIpd.MarketDetailsFileName;
+
+                _oApiRnDData.DrugsCategory = _oAPIIpd.DrugsCategory;
+                _oApiRnDData.ProductTypeId = (int)_oAPIIpd.ProductTypeId;
+                _oApiRnDData.ProductStrength = _oAPIIpd.ProductStrength;
+                _oApiRnDData.MarketDetailsFileName = (Convert.ToString(_oAPIIpd.MarketDetailsFileName) == "") ? "" : fullPath;
+                var _objProductType = await _masterProductTypeService.GetById((int)_oAPIIpd.ProductTypeId);
+                if (_objProductType != null)
+                    _oApiRnDData.ProductType = _objProductType.ProductTypeName;
+
+            }
+            _oApiRnDData.MasterCountries = _countryService.GetAll().Result.ToList();
+            Pidf objPidf = await _pidfrepository.GetAsync(pidfId);
+            _oApiRnDData.StatusId = objPidf.StatusId;
+            return _oApiRnDData;
+        }
+        public async Task<PIDFAPICharterFormEntity> GetAPICharterFormData(long pidfId, short IsCharter)
+        {
+            PIDFAPICharterFormEntity _oCharterEntity = new PIDFAPICharterFormEntity();
+            SqlParameter[] osqlParameter = {
+                new SqlParameter("@PIDFID", pidfId)
+            };
+            string Sp_Name = (IsCharter == 1) ? "stp_npd_GetPIDFAPICharterData" : "stp_npd_GetPIDFAPICharterSummaryData";
+            var dbresult = await _pidf_API_Charter_repository.GetDataSetBySP(Sp_Name,
+                System.Data.CommandType.StoredProcedure, osqlParameter);
+
+            // dynamic _CharterObjects = new ExpandoObject();
+            List<CharterObject> _CharterObjects = new List<CharterObject>();
+            if (dbresult != null)
+            {
+                _oCharterEntity.TimelineInMonths = dbresult.Tables[1].DataTableToList<TimelineInMonths>();
+                _oCharterEntity.AnalyticalDepartment = dbresult.Tables[2].DataTableToList<AnalyticalDepartment>();
+                _oCharterEntity.PRDDepartment = dbresult.Tables[3].DataTableToList<PRDDepartment>();
+                _oCharterEntity.CapitalOtherExpenditure = dbresult.Tables[4].DataTableToList<CapitalOtherExpenditure>();
+                _oCharterEntity.ManhourEstimates = dbresult.Tables[5].DataTableToList<ManhourEstimates>();
+                _oCharterEntity.HeadwiseBudget = dbresult.Tables[6].DataTableToList<HeadwiseBudget>();
+                _oCharterEntity.ManagmentTeams = dbresult.Tables[7].DataTableToList<ManagmentTeam>();
+            }
+
+            if (dbresult.Tables[0] != null && dbresult.Tables[0].Rows.Count > 0)
+            {
+                _CharterObjects = dbresult.Tables[0].DataTableToList<CharterObject>();
+                if (_CharterObjects.Count > 0)
+                {
+                    _oCharterEntity.APIGroupLeader = _CharterObjects[0].APIGroupLeader;
+                    _oCharterEntity.ManHourRates = Convert.ToString(_CharterObjects[0].ManHourRates);
+                    _oCharterEntity.PIDFAPICharterFormID = _CharterObjects[0].PIDF_API_CharterId;
+                    _oCharterEntity.ProjectComplexityId = _CharterObjects[0].ProjectComplexityId;
+
+                    _oCharterEntity.ProjectName = _CharterObjects[0].ProjectName;
+                    _oCharterEntity.Market = _CharterObjects[0].Market;
+                    _oCharterEntity.ProjectInitiationDate = _CharterObjects[0].ProjectInitiationDate;
+                    //_oCharterEntity.ProjectEndDate = _CharterObjects[0].ProjectComplexityId;
+                }
+            }
+            Pidf objPidf = await _pidfrepository.GetAsync(pidfId);
+            _oCharterEntity.StatusId = objPidf.StatusId;
+
+            return _oCharterEntity;
+        }
+        public async Task<PIDFAPICharterFormEntity> GetAPICharterSummaryFormData(long pidfId)
+        {
+            PIDFAPICharterFormEntity _oCharterEntity = new PIDFAPICharterFormEntity();
+            SqlParameter[] osqlParameter = {
+                new SqlParameter("@PIDFID", pidfId)
+            };
+            var dbresult = await _pidf_API_Charter_repository.GetDataSetBySP("stp_npd_GetAPICharterSummaryData",
+                System.Data.CommandType.StoredProcedure, osqlParameter);
+
+            // dynamic _CharterObjects = new ExpandoObject();
+            List<CharterObject> _CharterObjects = new List<CharterObject>();
+            if (dbresult != null)
+            {
+                if (dbresult.Tables[0] != null && dbresult.Tables[0].Rows.Count > 0)
+                {
+                    _CharterObjects = dbresult.Tables[0].DataTableToList<CharterObject>();
+                    _oCharterEntity.TimelineInMonths = dbresult.Tables[1].DataTableToList<TimelineInMonths>();
+                    _oCharterEntity.AnalyticalDepartment = dbresult.Tables[2].DataTableToList<AnalyticalDepartment>();
+                    _oCharterEntity.PRDDepartment = dbresult.Tables[3].DataTableToList<PRDDepartment>();
+                    _oCharterEntity.CapitalOtherExpenditure = dbresult.Tables[4].DataTableToList<CapitalOtherExpenditure>();
+                    _oCharterEntity.ManhourEstimates = dbresult.Tables[5].DataTableToList<ManhourEstimates>();
+                    _oCharterEntity.HeadwiseBudget = dbresult.Tables[6].DataTableToList<HeadwiseBudget>();
+                }
+            }
+
+            if (_CharterObjects.Count > 0)
+            {
+                _oCharterEntity.APIGroupLeader = _CharterObjects[0].APIGroupLeader;
+                _oCharterEntity.ManHourRates = Convert.ToString(_CharterObjects[0].ManHourRates);
+                _oCharterEntity.PIDFAPICharterFormID = _CharterObjects[0].PIDF_API_CharterId;
+                _oCharterEntity.ProjectComplexityId = _CharterObjects[0].ProjectComplexityId;
+            }
+            Pidf objPidf = await _pidfrepository.GetAsync(pidfId);
+            _oCharterEntity.StatusId = objPidf.StatusId;
+            return _oCharterEntity;
+        }
+
         public async Task<DBOperation> AddUpdateAPIIPD(IFormCollection _oAPIIPD_Form, string _webrootPath)
         {
             bool hasNewUploadFile = true;
@@ -153,6 +319,7 @@ namespace EmcureNPD.Business.Core.Implementation
             _oAPIIPD.ProductTypeId = jsonObject.ProductTypeId;
             _oAPIIPD.Pidfid = jsonObject.Pidfid;
             _oAPIIPD.LoggedInUserId = jsonObject.LoggedInUserId;
+            _oAPIIPD.SaveType = jsonObject.SaveType;
             var _APIIPDDBEntity = new PidfApiIpd();
             if (_oAPIIPD.APIIPDDetailsFormID > 0)
             {
@@ -212,121 +379,64 @@ namespace EmcureNPD.Business.Core.Implementation
             await _unitOfWork.SaveChangesAsync();
             var _StatusID = (_oAPIIPD.SaveType == "Save") ? Master_PIDFStatus.APISubmitted : Master_PIDFStatus.APIInProgress;
             await _auditLogService.UpdatePIDFStatusCommon(long.Parse(_oAPIIPD.Pidfid), (int)_StatusID, _oAPIIPD.LoggedInUserId);
+            await _notificationService.CreateNotification(long.Parse(_oAPIIPD.Pidfid), (int)_StatusID, string.Empty, string.Empty, _oAPIIPD.LoggedInUserId);
             return DBOperation.Success;
         }
-        public async Task<PIDFAPIIPDFormEntity> GetAPIIPDFormData(long pidfId, string HostValue)
+        public async Task<DBOperation> AddUpdateAPIRnD(PIDFAPIRnDFormEntity _oAPIRnD)
         {
-
-            PIDFAPIIPDFormEntity _oApiIpdData = new PIDFAPIIPDFormEntity();
-            var _oAPIIPD = await _pidf_API_IPD_repository.GetAsync(x => x.Pidfid == pidfId);
-            if (_oAPIIPD != null)
+            //PIDFAPIIPDFormEntity _exsistingAPIRnD = new PIDFAPIIPDFormEntity();
+            if (_oAPIRnD.PIDFAPIRnDFormID > 0)
             {
-                string baseURL = HostValue + "/Uploads/PIDF/APIIPD";
-                var fullPath = baseURL + "/" + _oAPIIPD.MarketDetailsFileName;
-                _oApiIpdData.DrugsCategory = _oAPIIPD.DrugsCategory;
-                _oApiIpdData.ProductTypeId = (int)_oAPIIPD.ProductTypeId;
-                _oApiIpdData.APIIPDDetailsFormID = _oAPIIPD.PidfApiIpdId;
-                _oApiIpdData.ProductStrength = _oAPIIPD.ProductStrength;
-                _oApiIpdData.MarketDetailsFileName = (Convert.ToString(_oAPIIPD.MarketDetailsFileName) == "") ? "" : fullPath;
-                _oApiIpdData.Pidfid = _oAPIIPD.Pidfid.ToString();
-            }
-            _oApiIpdData.MasterCountries = _countryService.GetAll().Result.ToList();
-            return _oApiIpdData;
-        }
-        //------------End------API_IPD_Details_Form_Entity--------------------------
-        public async Task<PIDFAPICharterFormEntity> GetAPICharterSummaryFormData(long pidfId)
-        {
-            PIDFAPICharterFormEntity _oCharterEntity = new PIDFAPICharterFormEntity();
-            SqlParameter[] osqlParameter = {
-                new SqlParameter("@PIDFID", pidfId)
-            };
-            var dbresult = await _pidf_API_Charter_repository.GetDataSetBySP("stp_npd_GetAPICharterSummaryData",
-                System.Data.CommandType.StoredProcedure, osqlParameter);
-
-            // dynamic _CharterObjects = new ExpandoObject();
-            List<CharterObject> _CharterObjects = new List<CharterObject>();
-            if (dbresult != null)
-            {
-                if (dbresult.Tables[0] != null && dbresult.Tables[0].Rows.Count > 0)
+                var lastApiRnD = _pidf_API_RnD_repository.GetAll().First(x => x.PidfApiRnDId == _oAPIRnD.PIDFAPIRnDFormID);
+                var OldObjAPiIPD = lastApiRnD;
+                if (lastApiRnD != null)
                 {
-                    _CharterObjects = dbresult.Tables[0].DataTableToList<CharterObject>();
-                    _oCharterEntity.TimelineInMonths = dbresult.Tables[1].DataTableToList<TimelineInMonths>();
-                    _oCharterEntity.AnalyticalDepartment = dbresult.Tables[2].DataTableToList<AnalyticalDepartment>();
-                    _oCharterEntity.PRDDepartment = dbresult.Tables[3].DataTableToList<PRDDepartment>();
-                    _oCharterEntity.CapitalOtherExpenditure = dbresult.Tables[4].DataTableToList<CapitalOtherExpenditure>();
-                    _oCharterEntity.ManhourEstimates = dbresult.Tables[5].DataTableToList<ManhourEstimates>();
-                    _oCharterEntity.HeadwiseBudget = dbresult.Tables[6].DataTableToList<HeadwiseBudget>();
+                    lastApiRnD.PlantQc = _oAPIRnD.PlantQC;
+                    lastApiRnD.Development = _oAPIRnD.Development;
+                    lastApiRnD.Total = _oAPIRnD.Total;
+                    lastApiRnD.Exhibit = _oAPIRnD.Exhibit;
+                    lastApiRnD.ScaleUp = _oAPIRnD.ScaleUp;
+                    lastApiRnD.MarketExtenstionId = _oAPIRnD.MarketID;
+                    lastApiRnD.SponsorBusinessPartner = _oAPIRnD.SponsorBusinessPartner;
+                    lastApiRnD.ApimarketPrice = _oAPIRnD.APIMarketPrice;
+                    lastApiRnD.ApitargetRmcCcpc = _oAPIRnD.APITargetRMC_CCPC;
+                    lastApiRnD.Pidfid = long.Parse(_oAPIRnD.Pidfid);
+                    lastApiRnD.ModifyBy = _oAPIRnD.LoggedInUserId;
+                    lastApiRnD.ModifyDate = DateTime.Now;
+                    _pidf_API_RnD_repository.UpdateAsync(lastApiRnD);
+
+                    //   var isSuccess = await _auditLogService.CreateAuditLog<PidfApiRnD>(Utility.Audit.AuditActionType.Update,
+                    //Utility.Enums.ModuleEnum.PBF, OldObjAPiIPD, lastApiRnD, 0);
+                }
+                else
+                {
+                    return DBOperation.NotFound;
                 }
             }
-
-            if (_CharterObjects.Count > 0)
+            else
             {
-                _oCharterEntity.APIGroupLeader = _CharterObjects[0].APIGroupLeader;
-                _oCharterEntity.ManHourRates = Convert.ToString(_CharterObjects[0].ManHourRates);
-                _oCharterEntity.PIDFAPICharterFormID = _CharterObjects[0].PIDF_API_CharterId;
-                _oCharterEntity.ProjectComplexityId = _CharterObjects[0].ProjectComplexityId;
-            }
+                var _oDBApiRnd = new PidfApiRnD();
 
-            return _oCharterEntity;
-        }
-        public async Task<PIDFAPICharterFormEntity> GetAPICharterFormData(long pidfId, short IsCharter)
-        {
-            PIDFAPICharterFormEntity _oCharterEntity = new PIDFAPICharterFormEntity();
-            SqlParameter[] osqlParameter = {
-                new SqlParameter("@PIDFID", pidfId)
-            };
-            string Sp_Name = (IsCharter == 1) ? "stp_npd_GetPIDFAPICharterData" : "stp_npd_GetPIDFAPICharterSummaryData";
-            var dbresult = await _pidf_API_Charter_repository.GetDataSetBySP(Sp_Name,
-                System.Data.CommandType.StoredProcedure, osqlParameter);
+                _oDBApiRnd.PlantQc = _oAPIRnD.PlantQC;
+                _oDBApiRnd.Development = _oAPIRnD.Development;
+                _oDBApiRnd.Total = _oAPIRnD.Total;
+                _oDBApiRnd.Exhibit = _oAPIRnD.Exhibit;
+                _oDBApiRnd.ScaleUp = _oAPIRnD.ScaleUp;
+                _oDBApiRnd.MarketExtenstionId = _oAPIRnD.MarketID;
+                _oDBApiRnd.SponsorBusinessPartner = _oAPIRnD.SponsorBusinessPartner;
+                _oDBApiRnd.ApimarketPrice = _oAPIRnD.APIMarketPrice;
+                _oDBApiRnd.ApitargetRmcCcpc = _oAPIRnD.APITargetRMC_CCPC;
+                _oDBApiRnd.Pidfid = long.Parse(_oAPIRnD.Pidfid);
 
-            // dynamic _CharterObjects = new ExpandoObject();
-            List<CharterObject> _CharterObjects = new List<CharterObject>();
-            if (dbresult != null)
-            {                
-                _oCharterEntity.TimelineInMonths = dbresult.Tables[1].DataTableToList<TimelineInMonths>();
-                _oCharterEntity.AnalyticalDepartment = dbresult.Tables[2].DataTableToList<AnalyticalDepartment>();
-                _oCharterEntity.PRDDepartment = dbresult.Tables[3].DataTableToList<PRDDepartment>();
-                _oCharterEntity.CapitalOtherExpenditure = dbresult.Tables[4].DataTableToList<CapitalOtherExpenditure>();
-                _oCharterEntity.ManhourEstimates = dbresult.Tables[5].DataTableToList<ManhourEstimates>();
-                _oCharterEntity.HeadwiseBudget = dbresult.Tables[6].DataTableToList<HeadwiseBudget>();
+                _oDBApiRnd.CreatedBy = _oAPIRnD.LoggedInUserId;
+                _oDBApiRnd.CreatedDate = DateTime.Now;
+                _pidf_API_RnD_repository.AddAsync(_oDBApiRnd);
             }
-
-            if (dbresult.Tables[0] != null && dbresult.Tables[0].Rows.Count > 0)
-            {
-                _CharterObjects = dbresult.Tables[0].DataTableToList<CharterObject>();
-                if (_CharterObjects.Count > 0)
-                {
-                    _oCharterEntity.APIGroupLeader = _CharterObjects[0].APIGroupLeader;
-                    _oCharterEntity.ManHourRates = Convert.ToString(_CharterObjects[0].ManHourRates);
-                    _oCharterEntity.PIDFAPICharterFormID = _CharterObjects[0].PIDF_API_CharterId;
-                    _oCharterEntity.ProjectComplexityId = _CharterObjects[0].ProjectComplexityId;
-
-                    _oCharterEntity.ProjectName = _CharterObjects[0].ProjectName;
-                    _oCharterEntity.Market = _CharterObjects[0].Market;
-                    _oCharterEntity.ProjectInitiationDate = _CharterObjects[0].ProjectInitiationDate;
-                    //_oCharterEntity.ProjectEndDate = _CharterObjects[0].ProjectComplexityId;
-                }
-            }
-            return _oCharterEntity;
-        }
-        private List<DM> FillObjData<VM, DM>(List<VM> _vmObj)
-        {
-            var _objPidfApiCharterTimelineInMonth = new List<DM>();
-            foreach (var obj in _vmObj)
-            {
-                var _objTimelineInMonths = _mapperFactory.Get<VM, DM>(obj);
-                _objPidfApiCharterTimelineInMonth.Add(_objTimelineInMonths);
-            }
-            return _objPidfApiCharterTimelineInMonth;
-        }
-        public void RemoveChildDataAPICharter(long APICharterId)
-        {
-            PIDFAPICharterFormEntity _oCharterEntity = new PIDFAPICharterFormEntity();
-            SqlParameter[] osqlParameter = {
-                new SqlParameter("@PIDFAPICharterId", APICharterId)
-            };
-            var dbresult = _pidf_API_Charter_repository.GetDataSetBySP("stp_npd_RemoveChildDataAPICharter",
-                System.Data.CommandType.StoredProcedure, osqlParameter);
+            await _unitOfWork.SaveChangesAsync();
+            var _StatusID = (_oAPIRnD.SaveType == "Save") ? Master_PIDFStatus.APISubmitted : Master_PIDFStatus.APIInProgress;
+            await _auditLogService.UpdatePIDFStatusCommon(long.Parse(_oAPIRnD.Pidfid), (int)_StatusID, _oAPIRnD.LoggedInUserId);
+            await _notificationService.CreateNotification(long.Parse(_oAPIRnD.Pidfid), (int)_StatusID, string.Empty, string.Empty, _oAPIRnD.LoggedInUserId);
+            return DBOperation.Success;
         }
         public async Task<DBOperation> AddUpdateAPICharter(PIDFAPICharterFormEntity _oAPICharter)
         {
@@ -398,99 +508,9 @@ namespace EmcureNPD.Business.Core.Implementation
             await _unitOfWork.SaveChangesAsync();
             var _StatusID = (_oAPICharter.SaveType == "Save") ? Master_PIDFStatus.APISubmitted : Master_PIDFStatus.APIInProgress;
             await _auditLogService.UpdatePIDFStatusCommon(long.Parse(_oAPICharter.Pidfid), (int)_StatusID, _oAPICharter.LoggedInUserId);
+            await _notificationService.CreateNotification(long.Parse(_oAPICharter.Pidfid), (int)_StatusID, string.Empty, string.Empty, _oAPICharter.LoggedInUserId);
             return DBOperation.Success;
-        }
-        public async Task<PIDFAPIRnDFormEntity> GetAPIRnDFormData(long pidfId, string HostValue)
-        {
-            PIDFAPIRnDFormEntity _oApiRnDData = new PIDFAPIRnDFormEntity();
-            var _oAPIRnD = await _pidf_API_RnD_repository.GetAsync(x => x.Pidfid == pidfId);
-            var _oAPIIpd = await _pidf_API_IPD_repository.GetAsync(x => x.Pidfid == pidfId);
-            if (_oAPIRnD != null)
-            {
-                _oApiRnDData.PIDFAPIRnDFormID = _oAPIRnD.PidfApiRnDId;
-                _oApiRnDData.Pidfid = _oAPIRnD.Pidfid.ToString();
-
-                _oApiRnDData.PlantQC = _oAPIRnD.PlantQc;
-                _oApiRnDData.Development = _oAPIRnD.Development;
-                _oApiRnDData.Total = _oAPIRnD.Total;
-                _oApiRnDData.Exhibit = _oAPIRnD.Exhibit;
-                _oApiRnDData.ScaleUp = _oAPIRnD.ScaleUp;
-                _oApiRnDData.MarketID = _oAPIRnD.MarketExtenstionId;
-                _oApiRnDData.SponsorBusinessPartner = _oAPIRnD.SponsorBusinessPartner;
-                _oApiRnDData.APIMarketPrice = _oAPIRnD.ApimarketPrice;
-                _oApiRnDData.APITargetRMC_CCPC = _oAPIRnD.ApitargetRmcCcpc;
-            }
-            if (_oAPIIpd != null)
-            {
-                string baseURL = HostValue + "/Uploads/PIDF/APIIPD";
-                var fullPath = baseURL + "/" + _oAPIIpd.MarketDetailsFileName;
-
-                _oApiRnDData.DrugsCategory = _oAPIIpd.DrugsCategory;
-                _oApiRnDData.ProductTypeId = (int)_oAPIIpd.ProductTypeId;
-                _oApiRnDData.ProductStrength = _oAPIIpd.ProductStrength;
-                _oApiRnDData.MarketDetailsFileName = (Convert.ToString(_oAPIIpd.MarketDetailsFileName) == "") ? "" : fullPath;
-                var _objProductType = await _masterProductTypeService.GetById((int)_oAPIIpd.ProductTypeId);
-                if (_objProductType != null)
-                    _oApiRnDData.ProductType = _objProductType.ProductTypeName;
-
-            }
-            _oApiRnDData.MasterCountries = _countryService.GetAll().Result.ToList();
-            return _oApiRnDData;
-        }
-        public async Task<DBOperation> AddUpdateAPIRnD(PIDFAPIRnDFormEntity _oAPIRnD)
-        {
-            //PIDFAPIIPDFormEntity _exsistingAPIRnD = new PIDFAPIIPDFormEntity();
-            if (_oAPIRnD.PIDFAPIRnDFormID > 0)
-            {
-                var lastApiRnD = _pidf_API_RnD_repository.GetAll().First(x => x.PidfApiRnDId == _oAPIRnD.PIDFAPIRnDFormID);
-                var OldObjAPiIPD = lastApiRnD;
-                if (lastApiRnD != null)
-                {
-                    lastApiRnD.PlantQc = _oAPIRnD.PlantQC;
-                    lastApiRnD.Development = _oAPIRnD.Development;
-                    lastApiRnD.Total = _oAPIRnD.Total;
-                    lastApiRnD.Exhibit = _oAPIRnD.Exhibit;
-                    lastApiRnD.ScaleUp = _oAPIRnD.ScaleUp;
-                    lastApiRnD.MarketExtenstionId = _oAPIRnD.MarketID;
-                    lastApiRnD.SponsorBusinessPartner = _oAPIRnD.SponsorBusinessPartner;
-                    lastApiRnD.ApimarketPrice = _oAPIRnD.APIMarketPrice;
-                    lastApiRnD.ApitargetRmcCcpc = _oAPIRnD.APITargetRMC_CCPC;
-                    lastApiRnD.Pidfid = long.Parse(_oAPIRnD.Pidfid);
-                    lastApiRnD.ModifyBy = _oAPIRnD.LoggedInUserId;
-                    lastApiRnD.ModifyDate = DateTime.Now;
-                    _pidf_API_RnD_repository.UpdateAsync(lastApiRnD);
-
-                    //   var isSuccess = await _auditLogService.CreateAuditLog<PidfApiRnD>(Utility.Audit.AuditActionType.Update,
-                    //Utility.Enums.ModuleEnum.PBF, OldObjAPiIPD, lastApiRnD, 0);
-                }
-                else
-                {
-                    return DBOperation.NotFound;
-                }
-            }
-            else
-            {
-                var _oDBApiRnd = new PidfApiRnD();
-
-                _oDBApiRnd.PlantQc = _oAPIRnD.PlantQC;
-                _oDBApiRnd.Development = _oAPIRnD.Development;
-                _oDBApiRnd.Total = _oAPIRnD.Total;
-                _oDBApiRnd.Exhibit = _oAPIRnD.Exhibit;
-                _oDBApiRnd.ScaleUp = _oAPIRnD.ScaleUp;
-                _oDBApiRnd.MarketExtenstionId = _oAPIRnD.MarketID;
-                _oDBApiRnd.SponsorBusinessPartner = _oAPIRnD.SponsorBusinessPartner;
-                _oDBApiRnd.ApimarketPrice = _oAPIRnD.APIMarketPrice;
-                _oDBApiRnd.ApitargetRmcCcpc = _oAPIRnD.APITargetRMC_CCPC;
-                _oDBApiRnd.Pidfid = long.Parse(_oAPIRnD.Pidfid);
-
-                _oDBApiRnd.CreatedBy = _oAPIRnD.LoggedInUserId;
-                _oDBApiRnd.CreatedDate = DateTime.Now;
-                _pidf_API_RnD_repository.AddAsync(_oDBApiRnd);
-            }
-            await _unitOfWork.SaveChangesAsync();
-            var _StatusID = (_oAPIRnD.SaveType == "Save") ? Master_PIDFStatus.APISubmitted : Master_PIDFStatus.APIInProgress;
-            await _auditLogService.UpdatePIDFStatusCommon(long.Parse(_oAPIRnD.Pidfid), (int)_StatusID, _oAPIRnD.LoggedInUserId);
-            return DBOperation.Success;
-        }
+        }       
+        
     }
 }

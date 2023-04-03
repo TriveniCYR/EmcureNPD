@@ -180,42 +180,14 @@ function grantSubmit() {
         //return;
     });
 }
-//....Start:Approval and Rejection....//
-//function approveRejConfirm(type) {
-//    if (objApprRejList != undefined && objApprRejList.length > 0) {
-//        var objIds = {
-//            saveType: type,
-//            pidfIds: objApprRejList
-//        };
-//        ajaxServiceMethod($('#hdnBaseURL').val() + ApproveRejectIds, 'POST', SaveAppRejSuccess, SaveApprRejFormError, JSON.stringify(objIds));
+$("i.fas.fa-plus").click(function () {
+    let count = 1;
+    for (let i = 0; i < count; i++) {
+        if (i == 0) { this.click(); }
+    }
+   
 
-//    }
-//    if (type == "A")
-//        $('#ApproveModel').modal('hide');
-//    else if (type == "R")
-//        $('#RejectModel').modal('hide');
-//}
-//function SaveAppRejSuccess(data) {
-//    try {
-//        if (data._Success === true) {
-
-//            toastr.success(data._Message);
-//            objApprRejList = [];
-//            $("#IPDPIDFTable").dataTable().fnDestroy();
-//            InitializePIDFList();
-//        }
-//        else {
-//            toastr.error(data._Message);
-//        }
-//    } catch (e) {
-//        toastr.error('Error:' + e.message);
-//    }
-//}
-//function SaveApprRejFormError(x, y, z) {
-//    toastr.error(ErrorMessage);
-//}
-//....End:Approval and Rejection....//
-// Example starter JavaScript for disabling form submissions if there are invalid fields
+});
 (function () {
     'use strict'
 

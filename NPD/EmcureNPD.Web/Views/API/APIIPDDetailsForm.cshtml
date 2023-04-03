@@ -24,6 +24,9 @@
     }
 }
 <div>
+    <div id="dvPIDFAccrdion"></div>
+    <div id="dvIPDAccrdion"></div>
+    <div id="dvCommercialAccrdion"></div>
     @* <div id="CommercialPIDFScreen">
     @{
     await Html.RenderPartialAsync("~/Views/Commercial/PIDFCommercialDetails.cshtml", Model._commercialFormEntity);
@@ -33,45 +36,49 @@
         <h2 class="m-0">@MasterLocalizer["APIIPD"]</h2>
     </div>
     <div>
+        <div class="card card-outline card-primary">
+            @*<div class="card-header bg-primary"></div>*@
+            <div class="card-body" style="display: block;">
         <form asp-action="APIIPDDetailsForm" asp-controller="API" enctype="multipart/form-data" method="post">
             <input type="hidden" asp-for="Pidfid" />
             <input type="hidden" asp-for="APIIPDDetailsFormID" />
             <input type="hidden" asp-for="BusinessUnitId" />
             <input type="hidden" asp-for="SaveType" />
             <input type="hidden" asp-for="BusinessUnitsByUser" />
-            <div class="row">
-                <div class="col-md-4">
-                    <div class="form-group required">
-                        @Html.LabelFor(model => model.ProjectName,@MasterLocalizer["ProjectName"], new { @class = "control-label" })
-                        @Html.TextBoxFor(model => model.ProjectName, new { @readonly = "readonly",  @class = "form-control", @placeholder = @MasterLocalizer["ProjectName"] })
+            <input type="hidden" asp-for="StatusId" />
+          
+                    <div class="row">
+                        <div class="col-md-4">
+                            <div class="form-group required">
+                                @Html.LabelFor(model => model.ProjectName,@MasterLocalizer["ProjectName"], new { @class = "control-label" })
+                                @Html.TextBoxFor(model => model.ProjectName, new { @readonly = "readonly",  @class = "form-control", @placeholder = @MasterLocalizer["ProjectName"] })
+                            </div>
+                        </div>
+                        <div class="col-md-8">  <input asp-for="IsModelValid" style="visibility: hidden;" /></div>
                     </div>
-                </div>
-                <div class="col-md-8">  <input asp-for="IsModelValid" style="visibility: hidden;" /></div>
-            </div>
-            <div class="row">
-                <div class="col-md-3">
-                    <div class="form-group required">
-                        @Html.LabelFor(model => model.MarketDetailsNewPortCGIDetails,@MasterLocalizer["MarketDetailsNewPortCGIDetails"], new { @class = "control-label" })
-                        <input asp-for="MarketDetailsNewPortCGIDetails" class="form-control" />
-                        @Html.ValidationMessageFor(model => model.MarketDetailsNewPortCGIDetails, "", new { @class = "text-danger" })
-                        <lable id="valmsgMarketDetailsNewPortCGIDetails" class="text-danger"></lable>
+                    <div class="row">
+                        <div class="col-md-3">
+                            <div class="form-group required">
+                                @Html.LabelFor(model => model.MarketDetailsNewPortCGIDetails,@MasterLocalizer["MarketDetailsNewPortCGIDetails"], new { @class = "control-label" })
+                                <input asp-for="MarketDetailsNewPortCGIDetails" class="form-control" />
+                                @Html.ValidationMessageFor(model => model.MarketDetailsNewPortCGIDetails, "", new { @class = "text-danger" })
+                                <lable id="valmsgMarketDetailsNewPortCGIDetails" class="text-danger"></lable>
+                            </div>
+                        </div>
+                        <div class="col-md-2">
+                            @*   <a id="btnPreview" style="margin-top:32px" class="btn btn-primary">@MasterLocalizer["Preview"]</a>*@
+                        </div>
+                        <div class="col-md-7">
+                            <div class="form-group required">
+                                <img height="100" width="300" src="@Model.MarketDetailsFileName" id="imgPreviewMarketdetails" />
+                                <input type="hidden" asp-for="MarketDetailsFileName" />
+                            </div>
+                        </div>
+
+                        @* <input type="hidden" id="SaveType" />
+                        <input type="hidden" id="LoggedInUserId" value=@UtilityHelper.Encrypt(Convert.ToString(@Model.CreatedBy)) />*@
                     </div>
-                </div>
-                <div class="col-md-2">
-                    @*   <a id="btnPreview" style="margin-top:32px" class="btn btn-primary">@MasterLocalizer["Preview"]</a>*@
-                </div>
-                <div class="col-md-7">
-                    <div class="form-group required">
-                        <img height="100" width="300" src="@Model.MarketDetailsFileName" id="imgPreviewMarketdetails" />
-                        <input type="hidden" asp-for="MarketDetailsFileName" />
-                    </div>
-                </div>
-
-                @* <input type="hidden" id="SaveType" />
-                <input type="hidden" id="LoggedInUserId" value=@UtilityHelper.Encrypt(Convert.ToString(@Model.CreatedBy)) />*@
-            </div>
-
-
+               
 
             <div class="card card-outline card-primary">
                 <div class="card-header bg-primary">
@@ -220,7 +227,7 @@
                 <div class="col-md-9"></div>
                 <div class="col-md-3">
                     <div class="form-group">
-                        <button style="visibility: hidden;" type="submit" id="Save" class="btn btn-success">@SharedLocalizer["Submit"]</button>
+                        <button type="submit" id="Save" class="btn btn-success">@SharedLocalizer["Submit"]</button>
                         <button type="submit" id="SaveDraft" class="btn btn-primary">@SharedLocalizer["SaveDraft"]</button>
                         <a class="btn btn-danger" asp-action="PIDFList" asp-controller="PIDF"
                            asp-route-ScreenId="@Convert.ToString((int)EmcureNPD.Utility.Enums.PIDFScreen.API)">
@@ -232,6 +239,8 @@
             </div>
             @* ----------End -Save buttons-------------*@
         </form>
+    </div>
+</div>
     </div>
 </div>
 @*CancelModel*@
@@ -269,6 +278,17 @@
         var GetAllProductType = "@EmcureNPD.Web.Helpers.APIURLHelper.GetAllProductType";
         var DBProductTypeId = "@Model.ProductTypeId";
         var UserWiseBUList = "@Model.BusinessUnitsByUser";
+
+        //--------start--------Accordian Data----------------
+        var _PIDFID = "@UtilityHelper.Decreypt(Convert.ToString(Context.Request.Query["pidfid"]))";
+         var _EncPIDFID = "@Convert.ToString(Context.Request.Query["pidfid"])";
+        var _PIDFBusinessUnitId = "@Convert.ToString(Context.Request.Query["bui"])";
+        var _PIDFAccordionURL = "@Url.Action("PIDF", "PIDF")";
+        var _IPDAccordionURL = "@Url.Action("IPD", "IPD")";
+        var _CommercialAccordionURL = "@Url.Action("PIDFCommerciaLDetails", "Commercial")";
+         //--------End--------Accordian Data----------------
+
+
         document.addEventListener("DOMContentLoaded", function () {
             var tabList = [].slice.call(document.querySelectorAll("#mainDivCommercial a"));
             var tabs = $('#tabList');
@@ -288,10 +308,7 @@
         if (errorCallBack) {
             toastr.error(errorCallBack);
         }
-        var successCallBack = '@TempData[EmcureNPD.Web.Helpers.UserHelper.SuccessMessage]';
-        if (successCallBack) {
-            toastr.success(successCallBack);
-        }
+
     </script>
 
 }

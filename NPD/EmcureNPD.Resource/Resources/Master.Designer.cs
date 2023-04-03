@@ -349,6 +349,15 @@ namespace EmcureNPD.Resource.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Back.
+        /// </summary>
+        public static string Back {
+            get {
+                return ResourceManager.GetString("Back", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Batch Size Number Name.
         /// </summary>
         public static string BatchSizeNumberName {
@@ -862,7 +871,7 @@ namespace EmcureNPD.Resource.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to IP Evolution.
+        ///   Looks up a localized string similar to IP Evaluation.
         /// </summary>
         public static string IPEvalution {
             get {

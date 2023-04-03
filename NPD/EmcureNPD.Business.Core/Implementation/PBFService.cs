@@ -57,6 +57,7 @@ namespace EmcureNPD.Business.Core.Implementation
         private readonly IPidfProductStrengthService _productStrengthService;
         private readonly IMasterTestTypeService _masterTestTypeService;
         private readonly IMasterTestLicenseService _masterTestLicenseService;
+        private readonly INotificationService _notificationService;
 
         private readonly Microsoft.Extensions.Configuration.IConfiguration _configuration;
         private IRepository<PidfApiIpd> _pidf_API_IPD_repository { get; set; }
@@ -101,12 +102,15 @@ namespace EmcureNPD.Business.Core.Implementation
         private IRepository<PidfPbfRnDCapexMiscellaneousExpense> _pidfPbfRndCapexMiscellaneousExpenseRepository { get; set; }
         private IRepository<PidfPbfRnDPlantSupportCost> _pidfPbfRndPlantSupportCostRepository { get; set; }
         private IRepository<PidfPbfRnDReferenceProductDetail> _pidfPbfRndReferenceProductDetailRepository { get; set; }
+        private IRepository<PidfPbfRnDFillingExpense> _pidfPbfRndFillingExpenseRepository { get; set; }
+        private IRepository<PidfPbfRnDManPowerCost> _pidfPbfRndPidfPbfRnDManPowerCostRepository { get; set; }
 
         //Market Extension & In House
 
         public PBFService(IUnitOfWork unitOfWork, IMapperFactory mapperFactory, IMasterOralService oralService, IMasterUnitofMeasurementService unitofMeasurementService,
             IMasterDosageFormService dosageFormService, IMasterPackagingTypeService packagingTypeService, IMasterBusinessUnitService businessUnitService,
             IMasterCountryService countryService, IMasterAPISourcingService masterAPISourcingService, IPidfApiDetailsService pidfApiDetailsService,
+             INotificationService notificationService,
             IPidfProductStrengthService pidfProductStrengthService, IMasterDIAService masterDium, IMasterMarketExtensionService masterMarketExtensionService,
             IMasterBERequirementService masterBERequirementService, IMasterProductTypeService masterProductTypeService, IMasterPlantService masterPlantService,
             IMasterWorkflowService masterWorkflowService, IMasterFormRNDDivisionService masterFormRNDDivisionService, IMasterFormulationService masterFormulationService,
@@ -175,6 +179,10 @@ namespace EmcureNPD.Business.Core.Implementation
             _pidfPbfRndCapexMiscellaneousExpenseRepository = _unitOfWork.GetRepository<PidfPbfRnDCapexMiscellaneousExpense>();
             _pidfPbfRndPlantSupportCostRepository = _unitOfWork.GetRepository<PidfPbfRnDPlantSupportCost>();
             _pidfPbfRndReferenceProductDetailRepository = _unitOfWork.GetRepository<PidfPbfRnDReferenceProductDetail>();
+            _notificationService = notificationService;
+            _pidfPbfRndPidfPbfRnDManPowerCostRepository = _unitOfWork.GetRepository<PidfPbfRnDManPowerCost>();
+            _pidfPbfRndFillingExpenseRepository = _unitOfWork.GetRepository<PidfPbfRnDFillingExpense>();
+
     }
 
 
@@ -1338,7 +1346,7 @@ namespace EmcureNPD.Business.Core.Implementation
                     await _unitOfWork.SaveChangesAsync();
                     var _StatusID = (pbfEntity.SaveType == "Save") ? Master_PIDFStatus.PBFSubmitted : Master_PIDFStatus.PBFInProgress;
                     await _auditLogService.UpdatePIDFStatusCommon(pbfEntity.Pidfid, (int)_StatusID, loggedInUserId);
-
+                    await _notificationService.CreateNotification(pbfEntity.Pidfid, (int)_StatusID, string.Empty, string.Empty, loggedInUserId);
                     return DBOperation.Success;
                 }
                 else
@@ -1384,15 +1392,22 @@ namespace EmcureNPD.Business.Core.Implementation
             DropdownObjects.MasterTestType = dsDropdownOptions.Tables[0];
             DropdownObjects.MasterPackagingType = dsDropdownOptions.Tables[1];
             DropdownObjects.MasterBatchSize = dsDropdownOptions.Tables[2];
-            DropdownObjects.PIDFPBFGeneralStrength = dsDropdownOptions.Tables[3];
-            DropdownObjects.PBFClinicalEntity = dsDropdownOptions.Tables[4];
-            DropdownObjects.PBFAnalyticalEntity = dsDropdownOptions.Tables[5];
-            DropdownObjects.PBFAnalyticalCostEntity = dsDropdownOptions.Tables[6];
-            DropdownObjects.PBFRNDExicipientEntity = dsDropdownOptions.Tables[7];
-            DropdownObjects.PBFRNDPackagingEntity = dsDropdownOptions.Tables[8];
-            DropdownObjects.PBFRNDBatchSize = dsDropdownOptions.Tables[9];
-            DropdownObjects.PBFRNDAPIRequirement = dsDropdownOptions.Tables[10];
-            DropdownObjects.PBFRNDToolingChangePart = dsDropdownOptions.Tables[11];
+            DropdownObjects.MasterBusinessUnit = dsDropdownOptions.Tables[3];
+            DropdownObjects.PIDFPBFGeneralStrength = dsDropdownOptions.Tables[4];
+            DropdownObjects.PBFClinicalEntity = dsDropdownOptions.Tables[5];
+            DropdownObjects.PBFAnalyticalEntity = dsDropdownOptions.Tables[6];
+            DropdownObjects.PBFAnalyticalCostEntity = dsDropdownOptions.Tables[7];
+            DropdownObjects.PBFRNDMasterEntity = dsDropdownOptions.Tables[8];
+            DropdownObjects.PBFRNDExicipientEntity = dsDropdownOptions.Tables[9];
+            DropdownObjects.PBFRNDPackagingEntity = dsDropdownOptions.Tables[10];
+            DropdownObjects.PBFRNDBatchSize = dsDropdownOptions.Tables[11];
+            DropdownObjects.PBFRNDAPIRequirement = dsDropdownOptions.Tables[12];
+            DropdownObjects.PBFRNDToolingChangePart = dsDropdownOptions.Tables[13];
+            DropdownObjects.PBFRNDCapexMiscExpenses = dsDropdownOptions.Tables[14];
+            DropdownObjects.PBFRNDPlantSupportCost = dsDropdownOptions.Tables[15];
+            DropdownObjects.PBFRNDReferenceProductDetail = dsDropdownOptions.Tables[16];
+            DropdownObjects.PBFRNDFillingExpenses = dsDropdownOptions.Tables[17];
+            DropdownObjects.PBFRNDManPowerCost = dsDropdownOptions.Tables[18];
 
             return DropdownObjects;
         }
@@ -1924,6 +1939,70 @@ namespace EmcureNPD.Business.Core.Implementation
                         objReferenceProductDetaillist.Add(objreferenceporduct);
                     }
                     _pidfPbfRndReferenceProductDetailRepository.AddRangeAsync(objReferenceProductDetaillist);
+                    await _unitOfWork.SaveChangesAsync();
+                }
+
+                #endregion
+
+                #region Filling Expenses Add Update
+                List<PidfPbfRnDFillingExpense> objFillinfExpenseslist = new();
+
+                var fillingexpenses = _pidfPbfRndFillingExpenseRepository.GetAllQuery().Where(x => x.PbfgeneralId == pbfgeneralid).ToList();
+                if (fillingexpenses.Count > 0)
+                {
+                    foreach (var item in fillingexpenses)
+                    {
+                        _pidfPbfRndFillingExpenseRepository.Remove(item);
+                    }
+                    await _unitOfWork.SaveChangesAsync();
+                }
+
+
+                //Save ReferenceProductDetail Entities
+                if (pbfentity.RNDFillingExpenses != null && pbfentity.RNDFillingExpenses.Count() > 0)
+                {
+                    foreach (var item in pbfentity.RNDFillingExpenses)
+                    {
+                        PidfPbfRnDFillingExpense objfillingexpense = new PidfPbfRnDFillingExpense();
+                        objfillingexpense = _mapperFactory.Get<RNDFillingExpense, PidfPbfRnDFillingExpense>(item);
+                        objfillingexpense.PbfgeneralId = pbfgeneralid;
+                        objfillingexpense.CreatedDate = DateTime.Now;
+                        objfillingexpense.CreatedBy = loggedInUserId;
+                        objFillinfExpenseslist.Add(objfillingexpense);
+                    }
+                    _pidfPbfRndFillingExpenseRepository.AddRangeAsync(objFillinfExpenseslist);
+                    await _unitOfWork.SaveChangesAsync();
+                }
+
+                #endregion
+
+                #region Man Power Cost Add Update
+                List<PidfPbfRnDManPowerCost> objManPowerCostlist = new();
+
+                var manpowercost = _pidfPbfRndPidfPbfRnDManPowerCostRepository.GetAllQuery().Where(x => x.PbfgeneralId == pbfgeneralid).ToList();
+                if (manpowercost.Count > 0)
+                {
+                    foreach (var item in manpowercost)
+                    {
+                        _pidfPbfRndPidfPbfRnDManPowerCostRepository.Remove(item);
+                    }
+                    await _unitOfWork.SaveChangesAsync();
+                }
+
+
+                //Save manpowercost Entities
+                if (pbfentity.RNDManPowerCosts != null && pbfentity.RNDManPowerCosts.Count() > 0)
+                {
+                    foreach (var item in pbfentity.RNDManPowerCosts)
+                    {
+                        PidfPbfRnDManPowerCost objmanpowercost = new PidfPbfRnDManPowerCost();
+                        objmanpowercost = _mapperFactory.Get<RNDManPowerCost, PidfPbfRnDManPowerCost>(item);
+                        objmanpowercost.PbfgeneralId = pbfgeneralid;
+                        objmanpowercost.CreatedDate = DateTime.Now;
+                        objmanpowercost.CreatedBy = loggedInUserId;
+                        objManPowerCostlist.Add(objmanpowercost);
+                    }
+                    _pidfPbfRndPidfPbfRnDManPowerCostRepository.AddRangeAsync(objManPowerCostlist);
                     await _unitOfWork.SaveChangesAsync();
                 }
 

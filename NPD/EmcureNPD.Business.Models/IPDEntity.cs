@@ -35,7 +35,8 @@ namespace EmcureNPD.Business.Models
         public string RegionId { get; set; }
         public string BusinessUnitsByUser { get; set; }
         public int SelectedTabBusinessUnit { get; set; }
-        
+        public bool _Partial { get; set; }
+        public bool IsViewMode { get; set; }
         public string RegionIds { get; set; }
         [Display(Name = "Country")]
         public string CountryId { get; set; }

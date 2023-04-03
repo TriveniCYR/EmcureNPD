@@ -198,3 +198,12 @@ function readOnlyIPDFormForOtherBU(flag) {
     else
         $('#dvIPDContainer').find('.operationButton').show();
 }
+function checkRadioCheckOrNot() {
+    
+    if ($(".IPDIsComment").is(":checked")) { $(".IPDCommentText").attr("readonly", false); $(".IPDCommentText").attr("disabled", false  ) }
+    else {
+        $(".IPDCommentText").val("");
+        $(".IPDCommentText").attr("disabled", true);
+        $(".IPDCommentText").attr("readonly", true)
+    }
+}
