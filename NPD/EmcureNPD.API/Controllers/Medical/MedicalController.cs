@@ -29,7 +29,7 @@ namespace EmcureNPD.API.Controllers.IPD
         private readonly IResponseHandler<dynamic> _ObjectResponse;
         private readonly IWebHostEnvironment _webHostEnvironment;
         private readonly ILogger<MedicalController> _logger;
-
+        private string[] permittedExtensions = { ".png",".jpg", ".jpeg", ".txt", ".pdf", ".xlx", ".xlsx"};
         #endregion Properties
 
         #region Constructor
@@ -50,6 +50,7 @@ namespace EmcureNPD.API.Controllers.IPD
         {
             try
             {
+                DBOperation oResponse =new ();
                 _logger.LogInformation("PIDMedicalForm controller started");
                 medicalModel.TryGetValue("Data", out StringValues Data);
                 dynamic jsonObject = JsonConvert.DeserializeObject(Data);
@@ -61,9 +62,21 @@ namespace EmcureNPD.API.Controllers.IPD
                 model.Remark = jsonObject.Remark;
                 model.CreatedBy = jsonObject.CreatedBy;
                 var files = medicalModel.Files;
+                foreach (var item in files)
+                {
+                    var ext = Path.GetExtension(item.FileName).ToLowerInvariant();
+
+                    if (string.IsNullOrEmpty(ext) || !permittedExtensions.Contains(ext))
+                    {
+                        oResponse = DBOperation.InvalidFile;
+                        return _ObjectResponse.Create(false, (int)HttpStatusCode.BadRequest, oResponse == DBOperation.InvalidFile ? "Only Supported Formats Are:- .png, .jpg, .jpeg, .pdf, .txt, .xlx, .xlsx" : "Bad request");
+                    }
+
+                }
                 if (files.Count > 0 && jsonObject.FileName.HasValues)
                 {
-					object[] myarray = jsonObject.FileName.ToObject<object[]>();
+                    
+                    object[] myarray = jsonObject.FileName.ToObject<object[]>();
 					int count = myarray.Count(s => s != null);
                     int totalCount = count + files.Count;
 					model.FileName = new string[totalCount];
@@ -111,7 +124,7 @@ namespace EmcureNPD.API.Controllers.IPD
                     }
                 }
                 var path = Path.Combine(_webHostEnvironment.WebRootPath, "Uploads\\PIDF\\Medical");
-                DBOperation oResponse = await _MedicalService.Medical(model, files, path);
+                oResponse = await _MedicalService.Medical(model, files, path);
                 if (oResponse == DBOperation.Success)
                 {
                     _logger.LogInformation("IPDService db operation success and PIDMedicalForm controller completed");

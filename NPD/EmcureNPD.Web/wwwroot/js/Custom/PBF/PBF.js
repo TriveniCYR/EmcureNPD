@@ -86,8 +86,9 @@ $(document).ready(function () {
         }
     });
     $(document).on("change", ".calcFastingOrFed, .calcNoOfVolunteers, .calcClinicalCost, .calcBioAnalyticalCost, .calcDocCostandStudy, .calcClinicalstrength, .calctotalClinical", function () {
+     
         for (var i = 1; i < 4; i++) {
-            if (event.parent().parent().hasClass("clinicalcal" + i + "")) {
+            if ($(this).parent().parent().hasClass("clinicalcal" + i + "")) {
                 var fed = 0;
                 var noofV = 0;
                 var CC = 0;
@@ -96,16 +97,25 @@ $(document).ready(function () {
                 var total = 0;
                 $.each($('.clinicalcal' + i + '').find(".calcFastingOrFed"), function (index, item) {
                     fed = $(this).val();
-
                     total += parseFloat(fed);
 
                 });
+                
                 $('.clinicalcal' + i + '').find(".totalClinical").val(total);
-                //$.each($('#tableclinical tbody tr.clinicalcal' + i + ''), function () {
-                //    alert('hi');
-                //    fed += $(this).find(".calcFastingOrFed").val();
-                //});
-                alert(fed);
+                $.each($('.clinicalcal' + i + ''), function (index, item) {
+                    var fed = parseFloat($(this).find('td').find('.calcFastingOrFed').val());
+                    var noofV = parseFloat($(this).find('td').find('.calcNoOfVolunteers').val());
+                    var CC = parseFloat($(this).find('td').find('.calcClinicalCost').val());
+                    var BAC = parseFloat($(this).find('td').find('.calcBioAnalyticalCost').val());
+                    var DCS = parseFloat($(this).find('td').find('.calcDocCostandStudy').val());
+                    alert(fed + 'fed');
+                    alert(noofV + 'noofV');
+                    alert(CC + 'CC');
+                    alert(BAC + 'BAC');
+                    alert(DCS + 'DCS');
+                    total = parseFloat(fed + noofV + CC + BAC + DCS)
+                    $(this).find('td').find(".calcstrength").val(total);
+                });
             }
         }
     });
@@ -480,9 +490,9 @@ function CreateClinicalTable(data, bioStudyTypeId) {
         objectname += '<td> <input type="number" class="form-control calcClinicalCost" id="ClinicalEntities[' + [(i + _iterator)] + '].ClinicalCostAndVolume" name="ClinicalEntities[' + [(i + _iterator)] + '].ClinicalCostAndVolume" placeholder="Clinical Cost And Volume" min="0" value="' + (getValueFromStrengthId(data, _strengthArray[i].pidfProductStrengthId, "clinicalCostAndVolume")) + '" /></td>';
 
     }
-    objectname += "<td class='clinicalcal" + bioStudyTypeId +"'></td></tr>";
+    objectname += "<td></td></tr>";
 
-    objectname += "<tr><td>Bio analytical Cost/Vol.</td>";
+    objectname += "<tr  class='clinicalcal" + bioStudyTypeId +"'><td>Bio analytical Cost/Vol.</td>";
     for (var i = 0; i < _strengthArray.length; i++) {
         objectname += '<td> <input type="number" class="form-control calcBioAnalyticalCost" id="ClinicalEntities[' + [(i + _iterator)] + '].BioAnalyticalCostAndVolume" name="ClinicalEntities[' + [(i + _iterator)] + '].BioAnalyticalCostAndVolume" placeholder="Bio Analytical Cost And Volume" min="0" value="' + (getValueFromStrengthId(data, _strengthArray[i].pidfProductStrengthId, "bioAnalyticalCostAndVolume")) + '" /></td>';
 
