@@ -155,14 +155,22 @@ function GetProjectDetailsSuccess(data) {
             }
             else
                 var updatedDate = "";
+            let tableRow = null;
             var edit = '<a class="large-font editBtn" style="" href="" title="Edit" data-toggle="modal" data-target="#UpdateModel" data-backdrop="static" data-keyboard="false"  onclick="GetTaskSubTaskById(' + object.projectTaskId + '); return false;"><i class="fa fa-fw fa-edit mr-1"></i> ' + '</a>';
             var deleteTag = '<a class="large-font text-danger deleteBtn" style="" href="" title="Delete" data-toggle="modal" data-target="#DeleteModel" data-backdrop="static" data-keyboard="false" onclick="ConfirmationDeleteTaskSubTask(' + object.projectTaskId + '); return false;"><i class="fa fa-fw fa-trash mr-1"></i> ' + '</a>';
 
-            deleteTag += '<a class="large-font addSubTaskBtn" style="" href="" title="Add SubTask" onclick="ShowAddSubTaskForm(\'' + object.projectTaskId + '\', \'' + object.taskName + '\'); return false;"><i class="fa fa-fw fa-plus mr-1"></i> ' + '</a>';
-
+            let addSubTaskButton = '<a class="large-font addSubTaskBtn" style="" href="" title="Add SubTask" onclick="ShowAddSubTaskForm(\'' + object.projectTaskId + '\', \'' + object.taskName + '\'); return false;"><i class="fa fa-fw fa-plus mr-1"></i> ' + '</a>';
+            //let displaySubTaskListButton = '<a class="large-font" style="" href="javascript:ShowChildRows(' + object.projectTaskId + ');" title="Show Sub task"><i class="fa fa-caret-down" aria-hidden="true"></i>' + '</a>';
+            let displaySubTaskListButton = '<a class="large-font" style="" href="javascript:ShowChildRows(' + object.projectTaskId + ');" title="Show Sub task"><i class="fa fa-plus-circle icoShowSubtask' + object.projectTaskId +'" aria-hidden="true" style="color:#31b131;"></i>' + '</a>';
             var _parentClass = (object.taskLevel > 1 ? "treegrid-parent-" + object.parentId + "" : "");
-            var tableRow = '<tr class="treegrid-' + index + ' ' + _parentClass + '"><td class="dt-control dtfc-fixed-left" style="left: 0px; position: sticky;"><input type="hidden" value="' + object.projectTaskId + '" /></td><td>' + object.taskName + '</td><td>' + object.fullName + '</td><td>' + object.statusName + '</td><td>' + object.priorityName + '</td><td>' + startDate + '</td><td>' + endDate + '</td><td>' + object.taskDuration + '</td><td><div class="progress"><div class="progress-bar" role="progressbar" style="width: ' + object.totalPercentage + '%;" aria-valuenow="' + object.totalPercentage + '" aria-valuemin="0" aria-valuemax="100">' + object.totalPercentage + '%</div></div></td><td>' + updatedDate + '</td><td>' + edit + deleteTag + '</td></tr>';
+            if (object.taskLevel > 1) {
+                tableRow = '<tr style="display:none;background: aliceblue" class="clildrows' + object.parentId + ' treegrid-' + index + ' ' + _parentClass + '"><td><input type="hidden" value="' + object.projectTaskId + '" />' + (object.taskLevel > 1 ? '' : displaySubTaskListButton) + '</td><td>' + object.taskName + '</td><td>' + object.fullName + '</td><td>' + object.statusName + '</td><td>' + object.priorityName + '</td><td>' + startDate + '</td><td>' + endDate + '</td><td>' + object.taskDuration + '</td><td><div class="progress"><div class="progress-bar" role="progressbar" style="width: ' + object.totalPercentage + '%;" aria-valuenow="' + object.totalPercentage + '" aria-valuemin="0" aria-valuemax="100">' + object.totalPercentage + '%</div></div></td><td>' + updatedDate + '</td><td>' + edit + deleteTag+ '</td></tr>';
+            }
+            else {
+                tableRow = '<tr class="treegrid-' + index + '"><td><input type="hidden" value="' + object.projectTaskId + '" />' + displaySubTaskListButton +'</td><td>' + object.taskName + '</td><td>' + object.fullName + '</td><td>' + object.statusName + '</td><td>' + object.priorityName + '</td><td>' + startDate + '</td><td>' + endDate + '</td><td>' + object.taskDuration + '</td><td><div class="progress"><div class="progress-bar" role="progressbar" style="width: ' + object.totalPercentage + '%;" aria-valuenow="' + object.totalPercentage + '" aria-valuemin="0" aria-valuemax="100">' + object.totalPercentage + '%</div></div></td><td>' + updatedDate + '</td><td>' + edit + deleteTag + addSubTaskButton+'</td></tr>';
+            }
             $('#Milestones tbody').append(tableRow);
+            
         });
         $('.tree').treegrid();
 
@@ -236,7 +244,7 @@ function GetTaskSubTaskByIdSuccess(data) {
 
         if (data._object.editTaskStatusId == 1) {
             $(".disabledPercentage").prop("readOnly", true);
-            $("#TaskPercentage").val(data_object.totalPercentage);
+            $("#TaskPercentage").val(data._object.totalPercentage);
         } else if (data._object.editTaskStatusId == 2) {
             $(".disabledPercentage").prop("readOnly", false);
             $("#TaskPercentage").val(data._object.totalPercentage);
@@ -501,6 +509,11 @@ function calculateTaskDuration() {
     var startDate = document.getElementById("AddTaskStartDate").value;
     var endDate = document.getElementById("AddTaskEndDate").value;
     if (startDate && endDate) {
+        if (startDate > endDate) {
+            toastr.error("Start date should be less than end date!", "Invalid Date Range")
+            document.getElementById("AddTaskStartDate").value = null;
+            return false;
+        }
         var start = new Date(startDate);
         var end = new Date(endDate);
         var duration = (end - start) / (1000 * 60 * 60 * 24); 
@@ -512,6 +525,11 @@ function calculateSubTaskDuration() {
     var startDate = document.getElementById("AddSubTaskStartDate").value;
     var endDate = document.getElementById("AddSubTaskEndDate").value;
     if (startDate && endDate) {
+        if (startDate > endDate) {
+            toastr.error("Start date should be less than end date!", "Invalid Date Range")
+            document.getElementById("AddSubTaskStartDate").value = null;
+            return false;
+        }
         var start = new Date(startDate);
         var end = new Date(endDate);
         var duration = (end - start) / (1000 * 60 * 60 * 24);
@@ -556,5 +574,19 @@ function CleareSubTaskFields() {
     //// Loop through the messages and clear them
     for (var i = 0; i < validationMessages.length; i++) {
         validationMessages[i].textContent = "";
+    }
+}
+function ShowChildRows(id) {
+    if ($(".clildrows" + id).is(':visible')) {
+        $(".clildrows" + id).hide();
+        $(".icoShowSubtask" + id).removeClass("fa fa-minus-circle")
+        $(".icoShowSubtask" + id).addClass("fa fa-plus-circle")
+        $(".icoShowSubtask" + id).css("color","#31b131")
+    }
+    else {
+        $(".clildrows" + id).show()
+        $(".icoShowSubtask" + id).removeClass("fa fa-plus-circle")
+        $(".icoShowSubtask" + id).addClass("fa fa-minus-circle")
+        $(".icoShowSubtask" + id).css("color", "#d33333")
     }
 }

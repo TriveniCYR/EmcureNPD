@@ -307,7 +307,7 @@ namespace EmcureNPD.Business.Core.Implementation
                 var itmFileName = "APIIPD\\" + MarketCGIFile.FileName;
 
 
-                ErrorMsg = FileValidation(MarketCGIFile);
+               // ErrorMsg = FileValidation(MarketCGIFile);
             }
 
             PIDFAPIIPDFormEntity _oAPIIPD = new PIDFAPIIPDFormEntity();
@@ -334,7 +334,7 @@ namespace EmcureNPD.Business.Core.Implementation
                         {
                             System.IO.File.Delete(exsistingFilePath);
                         }
-                        if (ErrorMsg == null && hasNewUploadFile)
+                        if (hasNewUploadFile)
                         {
                             var MarketCGIFile = _oAPIIPD_Form.Files[0];
                             await FileUpload(MarketCGIFile, path, uniqueFileName);

@@ -254,28 +254,7 @@
             </div>
         </div>
     </div>
-    @*child table*@
-    <div class="table-responsive">
-        <table id="ChildMilestones" class="table" style="width:100%;">
-            <thead>
-                <tr>
-                    <th>Sub Task</th>
-                    <th>Task Owner</th>
-                    <th>Status</th>
-                    <th>Priority</th>
-                    <th>Start Date</th>
-                    <th>End Date</th>
-                    <th>Duration</th>
-                    <th>Completed %</th>
-                    <th>Updated Date</th>
-                    <th>Action</th>
-                </tr>
-            </thead>
-            <tbody>
-
-            </tbody>
-        </table>
-    </div>
+ 
     @*UpdateModel*@
     <div id="UpdateModel" class="modal themeModal " role="dialog">
         <form method="POST" asp-controller=Project asp-action=AddUpdateTask asp-route-buid="@ViewBag.uencbid">
@@ -291,12 +270,12 @@
                         <div class="row">
                             <div class="col-sm-6">
                                 <div class="form-group required">
-                                    @Html.LabelFor(o => o.TaskName, new { @class = "control-label" })
+                                    @Html.LabelFor(o => o.TaskName, new { @class = "control-label" })*
                                     @Html.EditorFor(o => o.TaskName, new { htmlAttributes = new { @autocomplete = "off", @class = "form-control" } })
                                     @Html.ValidationMessageFor(o => o.TaskName, "", new { @class = "text-danger" })
                                 </div>
                                 <div class="form-group required">
-                                    @Html.LabelFor(o => o.StartDate, new { @class = "control-label" })
+                                    @Html.LabelFor(o => o.StartDate, new { @class = "control-label" })*
                                     <div class="input-group date" id="startDate" data-target-input="nearest">
 
                                         @Html.TextBoxFor(o => o.StartDate, new { @class = "form-control datetimepicker-input",type="date", autocomplete = "off", @readonly = "readonly" })
@@ -308,24 +287,24 @@
                                     @Html.ValidationMessageFor(o => o.StartDate, "", new { @class = "text-danger" })
                                 </div>
                                 <div class="form-group required">
-                                    @Html.LabelFor(o => o.PriorityId,"Priority", new { @class = "control-label" })
+                                    @Html.LabelFor(o => o.PriorityId,"Priority", new { @class = "control-label" })*
                                     @Html.DropDownListFor(o => o.PriorityId, new SelectList(string.Empty, "Value", "Text"), "Please select option", htmlAttributes: new { @class = "form-control input-sm f-s-15 bg-eff4f55c w100per", id = "TaskPriority" })
                                     @Html.ValidationMessageFor(o => o.PriorityId, "", new { @class = "text-danger" })
                                 </div>
                                 <div class="form-group required">
-                                    @Html.LabelFor(o => o.TaskDuration, new { @class = "control-label" })
+                                    @Html.LabelFor(o => o.TaskDuration, new { @class = "control-label" })*
                                     @Html.EditorFor(o => o.TaskDuration, new { htmlAttributes = new { @autocomplete = "off", @class = "form-control", @readonly = "readonly" } })@*disabled = "disabled"*@
                                     @Html.ValidationMessageFor(o => o.TaskDuration, "", new { @class = "text-danger" })
                                 </div>
                             </div>
                             <div class="col-sm-6">
                                 <div class="form-group required">
-                                    @Html.LabelFor(o => o.TaskOwnerId,"Task Owner", new { @class = "control-label" })
+                                    @Html.LabelFor(o => o.TaskOwnerId,"Task Owner", new { @class = "control-label" })*
                                     @Html.DropDownListFor(o => o.TaskOwnerId, new SelectList(string.Empty, "Value", "Text"), "Please select option", htmlAttributes: new { @class = "form-control input-sm f-s-15 bg-eff4f55c w100per", id = "TaskOwner" })
                                     @Html.ValidationMessageFor(o => o.TaskOwnerId, "", new { @class = "text-danger" })
                                 </div>
                                 <div class="form-group required">
-                                    @Html.LabelFor(o => o.EndDate, new { @class = "control-label" })
+                                    @Html.LabelFor(o => o.EndDate, new { @class = "control-label" })*
                                     <div class="input-group date" id="endDate" data-target-input="nearest">
 
                                         @Html.TextBoxFor(o => o.EndDate, new { @class = "form-control datetimepicker-input",type="date", autocomplete = "off", @readonly = "readonly" })
@@ -342,7 +321,7 @@
                                     @Html.ValidationMessageFor(o => o.StatusId, "", new { @class = "text-danger" })
                                 </div>
                                 <div class="form-group required">
-                                    @Html.LabelFor(o => o.TotalPercentage, new { @class = "control-label" })
+                                    @Html.LabelFor(o => o.TotalPercentage, new { @class = "control-label" })*
                                     @Html.EditorFor(o => o.TotalPercentage, new { htmlAttributes = new { @autocomplete = "off", @class = "form-control disabledPercentage", id = "TaskPercentage", @min = 0, @max = 100 } })
                                     @Html.ValidationMessageFor(o => o.TotalPercentage, "", new { @class = "text-danger" })
                                 </div>
@@ -416,12 +395,12 @@
                         <div class="row">
                             <div class="col-sm-6">
                                 <div class="form-group required">
-                                    @Html.LabelFor(t => t.TaskName,"Task Name", new { @class = "control-label" })
+                                    @Html.LabelFor(t => t.TaskName,"Task Name", new { @class = "control-label" })*
                                     @Html.EditorFor(t => t.TaskName, new { htmlAttributes = new { @autocomplete = "off", @class = "form-control" } })
                                     @Html.ValidationMessageFor(t => t.TaskName, "", new { @class = "text-danger" })
                                 </div>
                                 <div class="form-group required">
-                                    @Html.LabelFor(t => t.StartDate,"Start Date", new { @class = "control-label" })
+                                    @Html.LabelFor(t => t.StartDate,"Start Date", new { @class = "control-label" })*
                                     <div class="input-group date" id="addTaskStartDate" data-target-input="nearest">
 
                                         @Html.TextBoxFor(t => t.StartDate, new { @class = "form-control datetimepicker",type = "date",onchange = "calculateTaskDuration()", autocomplete = "off", @id = "AddTaskStartDate" })
@@ -432,12 +411,12 @@
                                     @Html.ValidationMessageFor(t => t.StartDate, "", new { @class = "text-danger" })
                                 </div>
                                 <div class="form-group required">
-                                    @Html.LabelFor(t => t.PriorityId,"Priority" ,new { @class = "control-label" })
+                                    @Html.LabelFor(t => t.PriorityId,"Priority" ,new { @class = "control-label" })*
                                     @Html.DropDownListFor(t => t.PriorityId, new SelectList(string.Empty, "Value", "Text"), "Please select option", htmlAttributes: new { @class = "form-control input-sm f-s-15 bg-eff4f55c w100per", id = "AddTaskPriority" })
                                     @Html.ValidationMessageFor(t => t.PriorityId, "", new { @class = "text-danger" })
                                 </div>
                                 <div class="form-group required">
-                                    @Html.LabelFor(t => t.TaskDuration,"Task Duration", new { @class = "control-label" })
+                                    @Html.LabelFor(t => t.TaskDuration,"Task Duration", new { @class = "control-label" })*
                                     @Html.EditorFor(t => t.TaskDuration, new { htmlAttributes = new { @autocomplete = "off", @class = "form-control", id = "AddTaskDuration" } })@*disabled = "disabled"*@
                                     @Html.ValidationMessageFor(t => t.TaskDuration, "", new { @class = "text-danger" })
                                 </div>
@@ -445,12 +424,12 @@
                             </div>
                             <div class="col-sm-6">
                                 <div class="form-group required">
-                                    @Html.LabelFor(t => t.TaskOwnerId,"Task Owner", new { @class = "control-label" })
+                                    @Html.LabelFor(t => t.TaskOwnerId,"Task Owner", new { @class = "control-label" })*
                                     @Html.DropDownListFor(t => t.TaskOwnerId, new SelectList(string.Empty, "Value", "Text"), "Please select option", htmlAttributes: new { @class = "form-control input-sm f-s-15 bg-eff4f55c w100per", id = "AddTaskOwner" })
                                     @Html.ValidationMessageFor(t => t.TaskOwnerId, "", new { @class = "text-danger" })
                                 </div>
                                 <div class="form-group required">
-                                    @Html.LabelFor(t => t.EndDate,"End Date", new { @class = "control-label" })
+                                    @Html.LabelFor(t => t.EndDate,"End Date", new { @class = "control-label" })*
                                     <div class="input-group date" id="addTaskEndDate" data-target-input="nearest">
 
                                         @Html.TextBoxFor(t => t.EndDate, new { @class = "form-control datetimepicker", type = "date",onchange = "calculateTaskDuration()", autocomplete = "off", @id = "AddTaskEndDate" })
@@ -461,12 +440,12 @@
                                     @Html.ValidationMessageFor(t => t.EndDate, "", new { @class = "text-danger" })
                                 </div>
                                 <div class="form-group required">
-                                    @Html.LabelFor(t => t.StatusId,"Status", new { @class = "control-label" })
+                                    @Html.LabelFor(t => t.StatusId,"Status", new { @class = "control-label" })*
                                     @Html.DropDownListFor(t => t.StatusId, new SelectList(string.Empty, "Value", "Text"), "Please select option", htmlAttributes: new { @class = "form-control input-sm f-s-15 bg-eff4f55c w100per", id = "AddTaskStatus", onchange = "setPercentage(this.value,1)" })
                                     @Html.ValidationMessageFor(t => t.StatusId, "", new { @class = "text-danger" })
                                 </div>
                                 <div class="form-group required">
-                                    @Html.LabelFor(t => t.TotalPercentage,"Total Percentage", new { @class = "control-label" })
+                                    @Html.LabelFor(t => t.TotalPercentage,"Total Percentage", new { @class = "control-label" })*
                                     @Html.EditorFor(t => t.TotalPercentage, new { htmlAttributes = new { @autocomplete = "off", @class = "form-control disabledTaskPercentage", id = "AddTaskPercentage", @min = 0, @max = 100 } })
                                     @Html.ValidationMessageFor(t => t.TotalPercentage, "", new { @class = "text-danger" })
                                 </div>
@@ -504,12 +483,12 @@
                                     @Html.ValidationMessageFor(t => t.ParentId, "", new { @class = "text-danger" })
                                 </div>
                                 <div class="form-group required">
-                                    @Html.LabelFor(t => t.TaskName,"Task Name", new { @class = "control-label" })
+                                    @Html.LabelFor(t => t.TaskName,"Task Name", new { @class = "control-label" })*
                                     @Html.EditorFor(t => t.TaskName, new { htmlAttributes = new { @autocomplete = "off", @class = "form-control" } })
                                     @Html.ValidationMessageFor(t => t.TaskName, "", new { @class = "text-danger" })
                                 </div>
                                 <div class="form-group required">
-                                    @Html.LabelFor(t => t.EndDate,"End Date", new { @class = "control-label" })
+                                    @Html.LabelFor(t => t.EndDate,"End Date", new { @class = "control-label" })*
                                     <div class="input-group date" id="addTaskEndDate" data-target-input="nearest">
 
                                         @Html.TextBoxFor(t => t.EndDate, new { @class = "form-control datetimepicker",onchange = "calculateSubTaskDuration()", type = "date", autocomplete = "off", @id = "AddSubTaskEndDate" })
@@ -520,12 +499,12 @@
                                     @Html.ValidationMessageFor(t => t.EndDate, "", new { @class = "text-danger" })
                                 </div>
                                 <div class="form-group required">
-                                    @Html.LabelFor(t => t.PriorityId,"Priority", new { @class = "control-label" })
+                                    @Html.LabelFor(t => t.PriorityId,"Priority", new { @class = "control-label" })*
                                     @Html.DropDownListFor(t => t.PriorityId, new SelectList(string.Empty, "Value", "Text"), "Please select option", htmlAttributes: new { @class = "form-control input-sm f-s-15 bg-eff4f55c w100per", id = "AddSubTaskPriority" })
                                     @Html.ValidationMessageFor(t => t.PriorityId, "", new { @class = "text-danger" })
                                 </div>
                                 <div class="form-group required">
-                                    @Html.LabelFor(t => t.TaskDuration,"Task Duration", new { @class = "control-label" })
+                                    @Html.LabelFor(t => t.TaskDuration,"Task Duration", new { @class = "control-label" })*
                                     @Html.EditorFor(t => t.TaskDuration, new { htmlAttributes = new { @autocomplete = "off", @class = "form-control", id = "AddSubTaskDuration" } })@*disabled = "disabled"*@
                                     @Html.ValidationMessageFor(t => t.TaskDuration, "", new { @class = "text-danger" })
                                 </div>
@@ -533,12 +512,12 @@
                             </div>
                             <div class="col-sm-6">
                                 <div class="form-group required">
-                                    @Html.LabelFor(t => t.TaskOwnerId,"Task Owner", new { @class = "control-label" })
+                                    @Html.LabelFor(t => t.TaskOwnerId,"Task Owner", new { @class = "control-label" })*
                                     @Html.DropDownListFor(t => t.TaskOwnerId, new SelectList(string.Empty, "Value", "Text"), "Please select option", htmlAttributes: new { @class = "form-control input-sm f-s-15 bg-eff4f55c w100per", id = "AddSubTaskOwner" })
                                     @Html.ValidationMessageFor(t => t.TaskOwnerId, "", new { @class = "text-danger" })
                                 </div>
                                 <div class="form-group required">
-                                    @Html.LabelFor(t => t.StartDate,"Start Date", new { @class = "control-label" })
+                                    @Html.LabelFor(t => t.StartDate,"Start Date", new { @class = "control-label" })*
                                     <div class="input-group date" id="addTaskStartDate" data-target-input="nearest">
 
                                         @Html.TextBoxFor(t => t.StartDate, new { @class = "form-control datetimepicker",type = "date",onchange = "calculateSubTaskDuration()", autocomplete = "off", @id = "AddSubTaskStartDate" })
@@ -549,12 +528,12 @@
                                     @Html.ValidationMessageFor(t => t.StartDate, "", new { @class = "text-danger" })
                                 </div>
                                 <div class="form-group required">
-                                    @Html.LabelFor(t => t.StatusId,"Status", new { @class = "control-label" })
+                                    @Html.LabelFor(t => t.StatusId,"Status", new { @class = "control-label" })*
                                     @Html.DropDownListFor(t => t.StatusId, new SelectList(string.Empty, "Value", "Text"), "Please select option", htmlAttributes: new { @class = "form-control input-sm f-s-15 bg-eff4f55c w100per", id = "AddSubTaskStatus", onchange = "setPercentage(this.value,2)" })
                                     @Html.ValidationMessageFor(t => t.StatusId, "", new { @class = "text-danger" })
                                 </div>
                                 <div class="form-group required">
-                                    @Html.LabelFor(t => t.TotalPercentage,"Total Percentage", new { @class = "control-label" })
+                                    @Html.LabelFor(t => t.TotalPercentage,"Total Percentage", new { @class = "control-label" })*
                                     @Html.EditorFor(t => t.TotalPercentage, new { htmlAttributes = new { @autocomplete = "off", @class = "form-control disabledSubTaskPercentage", id = "AddSubTaskPercentage", @min = 0, @max = 100 } })
                                     @Html.ValidationMessageFor(t => t.TotalPercentage, "", new { @class = "text-danger" })
                                 </div>
