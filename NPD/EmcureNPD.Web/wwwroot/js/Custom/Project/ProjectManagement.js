@@ -236,7 +236,7 @@ function GetTaskSubTaskByIdSuccess(data) {
 
         if (data._object.editTaskStatusId == 1) {
             $(".disabledPercentage").prop("readOnly", true);
-            $("#TaskPercentage").val(data_object.totalPercentage);
+            $("#TaskPercentage").val(data._object.totalPercentage);
         } else if (data._object.editTaskStatusId == 2) {
             $(".disabledPercentage").prop("readOnly", false);
             $("#TaskPercentage").val(data._object.totalPercentage);
@@ -501,6 +501,11 @@ function calculateTaskDuration() {
     var startDate = document.getElementById("AddTaskStartDate").value;
     var endDate = document.getElementById("AddTaskEndDate").value;
     if (startDate && endDate) {
+        if (startDate > endDate) {
+            toastr.error("Start date should be less than end date!", "Invalid Date Range")
+            document.getElementById("AddTaskStartDate").value = null;
+            return false;
+        }
         var start = new Date(startDate);
         var end = new Date(endDate);
         var duration = (end - start) / (1000 * 60 * 60 * 24); 
@@ -512,6 +517,11 @@ function calculateSubTaskDuration() {
     var startDate = document.getElementById("AddSubTaskStartDate").value;
     var endDate = document.getElementById("AddSubTaskEndDate").value;
     if (startDate && endDate) {
+        if (startDate > endDate) {
+            toastr.error("Start date should be less than end date!", "Invalid Date Range")
+            document.getElementById("AddSubTaskStartDate").value = null;
+            return false;
+        }
         var start = new Date(startDate);
         var end = new Date(endDate);
         var duration = (end - start) / (1000 * 60 * 60 * 24);
