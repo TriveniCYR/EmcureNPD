@@ -1,23 +1,23 @@
 ﻿var objYears = [];
 var objMainForm = {};
-var objdropdownYearControls_array = ['PackagingTypeId', 'CurrencyId','FinalSelectionId'];
-var ColumnObjUpcase = ['PackagingTypeId', 'CommercialBatchSize', 'PriceDiscounting', 'TotalApireq', 'Apireq', 'Suimsvolume', 'MarketGrowth', 'MarketSize', 'PriceErosion', 'FinalSelectionId'];
+var objdropdownYearControls_array = ['CommercialPackagingTypeId', 'CurrencyId','FinalSelectionId'];
+var ColumnObjUpcase = ['CommercialPackagingTypeId', 'CommercialBatchSize', 'PriceDiscounting', 'TotalApireq', 'Apireq', 'Suimsvolume', 'MarketGrowth', 'MarketSize', 'PriceErosion', 'FinalSelectionId'];
 /*var ColumnObjLowcase = ['packagingTypeId', 'commercialBatchSize', 'priceDiscounting', 'totalApireq', 'apireq', 'suimsvolume', 'marketGrowth', 'marketSize', 'priceErosion', 'finalSelectionId'];*/
 var SelectedBUValue = 0;
 var selectedStrength = 0;
 
 $(document).ready(function () {
     debugger;
-    SetDivReadonly();
+    InitializeProductTypeDropdown();
+    //SetDivReadonly();
     InitializeCurrencyDropdown();
     InitializeFinalSelectionDropdown();    
-    $("#AddYearForm").hide();
-    IsViewModeCommercial();
-    getPIDFAccordion(_PIDFAccordionURL, _PIDFID, "dvPIDFAccrdion");
-    getIPDAccordion(_IPDAccordionURL, _EncPIDFID, _PIDFBusinessUnitId, "dvIPDAccrdion");
+  //  $("#AddYearForm").hide();
+    IsViewModeCommercial();    
     SetBU_Strength();
     HideSaveAsDraft();
-    InitializeProductTypeDropdown();
+    getPIDFAccordion(_PIDFAccordionURL, _PIDFID, "dvPIDFAccrdion");
+    getIPDAccordion(_IPDAccordionURL, _EncPIDFID, _PIDFBusinessUnitId, "dvIPDAccrdion");
 });
 function HideSaveAsDraft() {    
     if ($('#StatusId').val() == 11)     //[11=CommercialSubmitted , 10= CommercialInProgress]
@@ -73,9 +73,9 @@ function InitializeProductTypeDropdown() {
 }
 function GetProductTypeListSuccess(data) {
     try {
-        $('#PackagingTypeId').append($('<option>').text('--Select--').attr('value', '0'));
+        $('#CommercialPackagingTypeId').append($('<option>').text('--Select--').attr('value', '0'));
         $.each(data._object, function (index, object) {
-            $('#PackagingTypeId').append($('<option>').text(object.packagingTypeName).attr('value', object.packagingTypeId));
+            $('#CommercialPackagingTypeId').append($('<option>').text(object.packagingTypeName).attr('value', object.packagingTypeId));
         });
     } catch (e) {
         toastr.error('Error:' + e.message);
@@ -290,13 +290,22 @@ $("#btnSaveAsDraft").click(function () {
 });
 
 function UpdateYearTable(columns) {
+    
     $("#AddYearTBody tr").remove();
     $("#RevenueTbody tr").remove();
     for (var i = 0; i < objYears.length; i++) {
         AddRow(i);
         $.each(columns, function (item) {
-            var cntrlName = columns[item]
+            console.log(item);
+            var cntrlName = columns[item]            
             var result = objYears[i][cntrlName]
+            if (cntrlName == 'CommercialPackagingTypeId')
+                result = $("#CommercialPackagingTypeId option[value=" + result +"]").text();
+            else if (cntrlName == 'CurrencyId')
+                result = $("#CurrencyId option[value=" + result + "]").text();
+            else if (cntrlName == 'FinalSelectionId')
+                result = $("#FinalSelectionId option[value=" + result + "]").text();            
+
             //console.log(result);
             if (result != undefined) {
                 AddColToRow(i, result)

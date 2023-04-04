@@ -2,7 +2,7 @@
 
 $(document).ready(function () {
     debugger;
-   
+
     SetDivReadonly();
     $("#IsModelValid").val('');
     if (SaveStatus != '' && SaveStatus != undefined) {
@@ -11,7 +11,7 @@ $(document).ready(function () {
         else
             toastr.error(SaveStatus);
     }
-    InitializeProductTypeDropdown(); 
+    InitializeProductTypeDropdown();
 
     var IsImageAvailable = $("#imgPreviewMarketdetails").attr("src");
     if (IsImageAvailable == undefined || IsImageAvailable == '') {
@@ -33,14 +33,14 @@ function InitializeProductTypeDropdown() {
     debugger;
     ajaxServiceMethod($('#hdnBaseURL').val() + GetAllProductType, 'GET', GetProductTypeListSuccess, GetProductTypeListError);
 }
-function GetProductTypeListSuccess(data) {  
+function GetProductTypeListSuccess(data) {
     try {
         $.each(data._object, function (index, object) {
             $('#ProductTypeId').append($('<option>').text(object.productTypeName).attr('value', object.productTypeId));
         });
 
-        if ($("#APIIPDDetailsFormID").val()>0) {
-            $("#ProductTypeId").val(DBProductTypeId);  
+        if ($("#APIIPDDetailsFormID").val() > 0) {
+            $("#ProductTypeId").val(DBProductTypeId);
         }
     } catch (e) {
         toastr.error('Error:' + e.message);
@@ -49,27 +49,46 @@ function GetProductTypeListSuccess(data) {
 function GetProductTypeListError(x, y, z) {
     toastr.error(ErrorMessage);
 }
-
+function IsFileTypeImage() {
+    var $input = $("#MarketDetailsNewPortCGIDetails");
+    var file = $input[0].files[0];
+    var fileType = file["type"];
+    var validImageTypes = ["image/gif", "image/jpeg", "image/png", "image/jpg"];
+    if ($.inArray(fileType, validImageTypes) < 0) {
+        $("#valmsgMarketDetailsNewPortCGIDetails").text('Required Image!')
+        return false;
+    } else {
+        $("#valmsgMarketDetailsNewPortCGIDetails").text('');
+        return true;
+    }
+   
+}
 
 $('#MarketDetailsNewPortCGIDetails').change(function () {
     debugger;
     if ($("#MarketDetailsNewPortCGIDetails")[0].files[0] != null) {
-        $("#imgPreviewMarketdetails").show();
-        var $input = $("#MarketDetailsNewPortCGIDetails");
-        var reader = new FileReader();
-        reader.onload = function () {
-            $("#imgPreviewMarketdetails").attr("src", reader.result);
+        if (IsFileTypeImage()) {
+            $("#imgPreviewMarketdetails").show();
+            var $input = $("#MarketDetailsNewPortCGIDetails");
+            var reader = new FileReader();
+            reader.onload = function () {
+                $("#imgPreviewMarketdetails").attr("src", reader.result);
+            }
+            reader.readAsDataURL($input[0].files[0]);
         }
-        reader.readAsDataURL($input[0].files[0]);
+        else {
+            $("#imgPreviewMarketdetails").hide();
+            $("#imgPreviewMarketdetails").attr("src", "");
+        }
     } else {
         $("#imgPreviewMarketdetails").hide();
         $("#imgPreviewMarketdetails").attr("src", "");
     }
-       
+
     $("#MarketDetailsFileName").val('');
 });
 $('#imgPreviewMarketdetails').click(function () {
-    var ImageUrl = $('#MarketDetailsFileName').val();   
+    var ImageUrl = $('#MarketDetailsFileName').val();
     if (ImageUrl == "" || ImageUrl == undefined) {
 
     }
@@ -88,7 +107,7 @@ $('#imgPreviewMarketdetails').click(function () {
 
 $('#Save').click(function () {
     ValidateForm();
-    $("#SaveType").val('Save');    
+    $("#SaveType").val('Save');
 });
 $('#SaveDraft').click(function () {
     ValidateForm(); //$("#IsModelValid").val('Valid')
@@ -100,10 +119,10 @@ function SetDivReadonly() {
     $("#PIDFScreen").find("#collapseButton").show();
     $("#PIDFScreen").find("#PIDFormcollapseButton").show();
     $("#CommercialPIDFScreen").find("#CommercialcollapseButton").show();
-    
+
     $("#CommercialcollapseButton").click();
     $("#PIDFormcollapseButton").click();
-    $("#collapseButton").click();    
+    $("#collapseButton").click();
 }
 function ShowPopUpAPIIPD() {
     $("#CancelModelAPIIPD").find("button, submit, a").show();
@@ -111,7 +130,7 @@ function ShowPopUpAPIIPD() {
 }
 
 function ValidateForm() {
-    var IsInvalid = false;
+    var IsInvalid = false; var IsInvalidImage = false;
     var IsPrevImageExist = true;
     var ImageUrl = $('#MarketDetailsFileName').val();
     if (ImageUrl == "" || ImageUrl == undefined) {
@@ -122,7 +141,12 @@ function ValidateForm() {
         IsInvalid = true;
         $("#MarketDetailsNewPortCGIDetails").focus();
     }
-    else {
+    else if (!IsFileTypeImage()) {        
+        IsInvalid = true;
+        IsInvalidImage = true;;
+        $("#MarketDetailsNewPortCGIDetails").focus();
+    }
+    else {        
         $("#valmsgMarketDetailsNewPortCGIDetails").text('')
     }
     if ($("#DrugsCategory").val() == '') {
@@ -135,15 +159,18 @@ function ValidateForm() {
     }
     if ($("#ProductStrength").val() == '') {
         $("#valmsgProductStrength").text('Required')
-        IsInvalid = true;
+        IsInvalid = true; 
         $("#ProductStrength").focus();
     }
     else {
         $("#valmsgProductStrength").text('')
     }
     if (IsInvalid) {
-        $("#IsModelValid").val('')        
-        toastr.error('Some fields are missing !');       
+        if (IsInvalidImage) { }
+        else {
+            $("#IsModelValid").val('')
+            toastr.error('Some fields are missing !');
+        }
     }
     else {
         $("#IsModelValid").val('Valid')
@@ -151,7 +178,7 @@ function ValidateForm() {
     return IsInvalid;
 }
 
-function OpenImageInNewTab(url,FileName) {
+function OpenImageInNewTab(url, FileName) {
     var win = window.open(url, FileName);
     if (win) {
         //Browser has allowed it to be opened
@@ -164,6 +191,6 @@ function OpenImageInNewTab(url,FileName) {
 
 
 
-  
+
 
 

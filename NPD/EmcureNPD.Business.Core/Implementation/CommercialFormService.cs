@@ -81,6 +81,7 @@ namespace EmcureNPD.Business.Core.Implementation
             foreach (var year in entitycommPIDF.PidfCommercialYears)
             {
                 var Yeardata = _mapperFactory.Get<PidfCommercialYearEntity, PidfCommercialYear>(year);
+                Yeardata.PackagingTypeId = year.CommercialPackagingTypeId;
                 Yeardata.PidfcommercialYearId = 0;
                 Yeardata.PidfcommercialId = 0;
                 Yeardata.YearIndex = i;
@@ -157,6 +158,7 @@ namespace EmcureNPD.Business.Core.Implementation
                 foreach (var year in years)
                 {
                     var Yeardata = _mapperFactory.Get<PidfCommercialYear, PidfCommercialYearEntity>(year);
+                    Yeardata.CommercialPackagingTypeId = year.PackagingTypeId;
                     data.PidfCommercialYears.Add(Yeardata);
                 }
             }

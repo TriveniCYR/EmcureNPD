@@ -60,7 +60,7 @@
                         <div class="col-md-3">
                             <div class="form-group required">
                                 @Html.LabelFor(model => model.MarketDetailsNewPortCGIDetails,@MasterLocalizer["MarketDetailsNewPortCGIDetails"], new { @class = "control-label" })
-                                <input asp-for="MarketDetailsNewPortCGIDetails" class="form-control" />
+                                <input asp-for="MarketDetailsNewPortCGIDetails" accept="image/*" class="form-control" />
                                 @Html.ValidationMessageFor(model => model.MarketDetailsNewPortCGIDetails, "", new { @class = "text-danger" })
                                 <lable id="valmsgMarketDetailsNewPortCGIDetails" class="text-danger"></lable>
                             </div>
@@ -280,9 +280,9 @@
         var UserWiseBUList = "@Model.BusinessUnitsByUser";
 
         //--------start--------Accordian Data----------------
-        var _PIDFID = "@UtilityHelper.Decreypt(Convert.ToString(Context.Request.Query["pidfid"]))";
-         var _EncPIDFID = "@Convert.ToString(Context.Request.Query["pidfid"])";
-        var _PIDFBusinessUnitId = "@Convert.ToString(Context.Request.Query["bui"])";
+        var _PIDFID = "@@Model.Pidfid";
+        var _EncPIDFID = "@UtilityHelper.Encrypt(@Model.Pidfid)";
+        var _PIDFBusinessUnitId = "@UtilityHelper.Encrypt(@Model.BusinessUnitId)";
         var _PIDFAccordionURL = "@Url.Action("PIDF", "PIDF")";
         var _IPDAccordionURL = "@Url.Action("IPD", "IPD")";
         var _CommercialAccordionURL = "@Url.Action("PIDFCommerciaLDetails", "Commercial")";
