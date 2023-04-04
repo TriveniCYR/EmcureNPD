@@ -362,13 +362,30 @@
                                         @Html.ValidationMessageFor(model => model.TestLicenseAvailability, "", new { @class = "text-danger" })
                                     </div>
                                 </div>
-                                <div class="row">
-                                    <div class="col-md-12">
-                                        <table id="tableGeneralStrength" class="table text-center" style="width:100%">
-                                        </table>
+                                <div class="col-md-12">
+                                    <div class="card">
+                                        <div class="card-header bg-primary">
+                                            <h3 class="card-title mb-0">
 
+                                                <button type="button" class="btn btn-tool" data-card-widget="collapse">
+                                                    Strength
+                                                </button>
+
+                                            </h3>
+                                            <div class="card-tools">
+                                                <button type="button" class="btn btn-tool" data-card-widget="collapse" title="Collapse">
+                                                    <i class="fas fa-minus"></i>
+                                                </button>
+                                            </div>
+                                        </div>
+                                        <div class="card-body">
+                                            <div class="row">
+                                                <table id="tableGeneralStrength" class="table text-center" style="width:100%">
+                                                </table>
+                                            </div>
+                                        </div>
                                     </div>
-
+                                   
                                 </div>
                             </div>
                         </div>
@@ -421,292 +438,318 @@
                                 <div class="row">
                                     @* batch size*@
                                     <div class="col-12">
-                                    <div class="card">
-                                        <div class="card-header bg-primary">
-                                            <h3 class="card-title mb-0">
+                                        <div class="card collapsed-card">
+                                            <div class="card-header bg-primary">
+                                                <h3 class="card-title mb-0">
 
-                                                <button type="button" class="btn btn-tool" data-card-widget="collapse">
-                                                    Batch Size
-                                                </button>
+                                                    <button type="button" class="btn btn-tool" data-card-widget="collapse">
+                                                        Batch Size
+                                                    </button>
 
-                                            </h3>
-                                            <div class="card-tools">
-                                                <button type="button" class="btn btn-tool" data-card-widget="collapse" title="Collapse">
-                                                    <i class="fas fa-minus"></i>
-                                                </button>
-                                            </div>
-                                        </div>
-                                        <div class="card-body">
-                                            <div class="row">
-                                                <div class="col-md-3">
-                                                    <div class="form-group required">
-                                                        @Html.LabelFor(model => model.RNDMasterEntities.BatchSizeId, "Batch Size", new { @class = "control-label" })
-                                                        @*<input type="hidden" id="hdnBatchSizeId" value="@Model.RNDMasterEntities.BatchSizeId" />*@
-                                                        <select id="RNDBatchSizeId" name="RNDMasterEntities.BatchSizeId" class="form-control readOnlyUpdate" required></select>
-                                                    </div>
+                                                </h3>
+                                                <div class="card-tools">
+                                                    <button type="button" class="btn btn-tool" data-card-widget="collapse" title="Collapse">
+                                                        <i class="fas fa-minus"></i>
+                                                    </button>
                                                 </div>
-                                                <table id="tablerndbatchsize" class="table text-center" style="width:100%">
-                                                </table>
+                                            </div>
+                                            <div class="card-body">
+                                                <div class="row">
+                                                    <div class="col-md-3">
+                                                        <div class="form-group required">
+                                                            @Html.LabelFor(model => model.RNDMasterEntities.BatchSizeId, "Batch Size", new { @class = "control-label" })
+                                                            @*<input type="hidden" id="hdnBatchSizeId" value="@Model.RNDMasterEntities.BatchSizeId" />*@
+                                                            <select id="RNDBatchSizeId" name="RNDMasterEntities.BatchSizeId" class="form-control readOnlyUpdate" required></select>
+                                                        </div>
+                                                    </div>
+                                                    <table id="tablerndbatchsize" class="table text-center" style="width:100%">
+                                                    </table>
+                                                </div>
                                             </div>
                                         </div>
-                                    </div>
                                     </div>
 
                                     @* api Requirement*@
                                     <div class="col-12">
-                                    <div class="card">
-                                        <div class="card-header bg-primary">
-                                            <h3 class="card-title mb-0">
+                                        <div class="card collapsed-card">
+                                            <div class="card-header bg-primary">
+                                                <h3 class="card-title mb-0">
 
-                                                <button type="button" class="btn btn-tool" data-card-widget="collapse">
-                                                    API Requirement
-                                                </button>
+                                                    <button type="button" class="btn btn-tool" data-card-widget="collapse">
+                                                        API Requirement
+                                                    </button>
 
-                                            </h3>
-                                            <div class="card-tools">
-                                                <button type="button" class="btn btn-tool" data-card-widget="collapse" title="Collapse">
-                                                    <i class="fas fa-minus"></i>
-                                                </button>
-                                            </div>
-                                        </div>
-                                        <div class="card-body">
-                                            <div class="row">
-                                                <div class="col-md-3">
-                                                    <div class="form-group required">
-                                                        @Html.LabelFor(model => model.RNDMasterEntities.ApirequirementMarketPrice, "Market Prize (Rs/kg)", new { @class = "control-label" })
-                                                        @Html.TextBoxFor(@modal=> modal.RNDMasterEntities.ApirequirementMarketPrice,new{@class="form-control",type = "number", min = 0})
-                                                    </div>
+                                                </h3>
+                                                <div class="card-tools">
+                                                    <button type="button" class="btn btn-tool" data-card-widget="collapse" title="Collapse">
+                                                        <i class="fas fa-minus"></i>
+                                                    </button>
                                                 </div>
-                                                <table id="tablerndapirequirement" class="table text-center" style="width:100%">
-                                                </table>
+                                            </div>
+                                            <div class="card-body">
+                                                <div class="row">
+                                                    <div class="col-md-3">
+                                                        <div class="form-group required">
+                                                            @Html.LabelFor(model => model.RNDMasterEntities.ApirequirementMarketPrice, "Market Prize (Rs/kg)", new { @class = "control-label" })
+                                                            @Html.TextBoxFor(@modal=> modal.RNDMasterEntities.ApirequirementMarketPrice,new{@class="form-control calcRNDApirequirementsMarketPrice",type = "number", min = 0})
+                                                        </div>
+                                                    </div>
+                                                    <table id="tablerndapirequirement" class="table text-center" style="width:100%">
+                                                    </table>
+                                                </div>
                                             </div>
                                         </div>
-                                    </div>
                                     </div>
 
                                     @* Exicipient Requirement*@
                                     <div class="col-12">
-                                    <div class="card">
-                                        <div class="card-header bg-primary">
-                                            <h3 class="card-title mb-0">
+                                        <div class="card collapsed-card">
+                                            <div class="card-header bg-primary">
+                                                <h3 class="card-title mb-0">
 
-                                                <button type="button" class="btn btn-tool" data-card-widget="collapse">
-                                                    Exicipient Requirement
-                                                </button>
+                                                    <button type="button" class="btn btn-tool" data-card-widget="collapse">
+                                                        Exicipient Requirement
+                                                    </button>
 
-                                            </h3>
-                                            <div class="card-tools">
-                                                <button type="button" class="btn btn-tool" data-card-widget="collapse" title="Collapse">
-                                                    <i class="fas fa-minus"></i>
-                                                </button>
+                                                </h3>
+                                                <div class="card-tools">
+                                                    <button type="button" class="btn btn-tool" data-card-widget="collapse" title="Collapse">
+                                                        <i class="fas fa-minus"></i>
+                                                    </button>
+                                                </div>
+                                            </div>
+                                            <div class="card-body">
+                                                <div class="row">
+                                                    <table id="tablerndexicipientrequirement" class="table text-center" style="width:100%">
+                                                    </table>
+                                                    <input type="hidden" id="hdnrndExicipientData" name="RNDExicipientRawData" />
+                                                </div>
                                             </div>
                                         </div>
-                                        <div class="card-body">
-                                            <div class="row">
-                                                <table id="tablerndexicipientrequirement" class="table text-center" style="width:100%">
-                                                </table>
-                                                <input type="hidden" id="hdnrndExicipientData" name="RNDExicipientRawData" />
-                                            </div>
-                                        </div>
-                                    </div>
                                     </div>
                                     @* Packaging Material*@
                                     <div class="col-12">
-                                    <div class="card">
-                                        <div class="card-header bg-primary">
-                                            <h3 class="card-title mb-0">
+                                        <div class="card collapsed-card">
+                                            <div class="card-header bg-primary">
+                                                <h3 class="card-title mb-0">
 
-                                                <button type="button" class="btn btn-tool" data-card-widget="collapse">
-                                                    Packaging Material
-                                                </button>
+                                                    <button type="button" class="btn btn-tool" data-card-widget="collapse">
+                                                        Packaging Material
+                                                    </button>
 
-                                            </h3>
-                                            <div class="card-tools">
-                                                <button type="button" class="btn btn-tool" data-card-widget="collapse" title="Collapse">
-                                                    <i class="fas fa-minus"></i>
-                                                </button>
+                                                </h3>
+                                                <div class="card-tools">
+                                                    <button type="button" class="btn btn-tool" data-card-widget="collapse" title="Collapse">
+                                                        <i class="fas fa-minus"></i>
+                                                    </button>
+                                                </div>
+                                            </div>
+                                            <div class="card-body">
+                                                <div class="row">
+                                                    <table id="tablerndpackagingmaterialrequirement" class="table text-center" style="width:100%">
+                                                    </table>
+                                                    <input type="hidden" id="hdnrndPackagingData" name="RNDPackagingRawData" />
+                                                </div>
                                             </div>
                                         </div>
-                                        <div class="card-body">
-                                            <div class="row">
-                                                <table id="tablerndpackagingmaterialrequirement" class="table text-center" style="width:100%">
-                                                </table>
-                                                <input type="hidden" id="hdnrndPackagingData" name="RNDPackagingRawData" />
-                                            </div>
-                                        </div>
-                                    </div>
                                     </div>
                                     @* Tooling Change Part*@
                                     <div class="col-12">
-                                    <div class="card">
-                                        <div class="card-header bg-primary">
-                                            <h3 class="card-title mb-0">
+                                        <div class="card collapsed-card">
+                                            <div class="card-header bg-primary">
+                                                <h3 class="card-title mb-0">
 
-                                                <button type="button" class="btn btn-tool" data-card-widget="collapse">
-                                                    Tooling Change Part
-                                                </button>
+                                                    <button type="button" class="btn btn-tool" data-card-widget="collapse">
+                                                        Tooling Change Part
+                                                    </button>
 
-                                            </h3>
-                                            <div class="card-tools">
-                                                <button type="button" class="btn btn-tool" data-card-widget="collapse" title="Collapse">
-                                                    <i class="fas fa-minus"></i>
-                                                </button>
+                                                </h3>
+                                                <div class="card-tools">
+                                                    <button type="button" class="btn btn-tool" data-card-widget="collapse" title="Collapse">
+                                                        <i class="fas fa-minus"></i>
+                                                    </button>
+                                                </div>
+                                            </div>
+                                            <div class="card-body">
+                                                <div class="row">
+                                                    <table id="tablerndtoolingchangepart" class="table text-center" style="width:100%">
+                                                    </table>
+                                                    <input type="hidden" id="hdnrndToolingChangePartData" name="RNDToolingChangePartRawData" />
+
+                                                </div>
                                             </div>
                                         </div>
-                                        <div class="card-body">
-                                            <div class="row">
-                                                <table id="tablerndtoolingchangepart" class="table text-center" style="width:100%">
-                                                </table>
-                                                <input type="hidden" id="hdnrndToolingChangePartData" name="RNDToolingChangePartRawData" />
-
-                                            </div>
-                                        </div>
-                                    </div>
                                     </div>
                                     @* Capex Misc Expanses*@
                                     <div class="col-12">
-                                    <div class="card">
-                                        <div class="card-header bg-primary">
-                                            <h3 class="card-title mb-0">
+                                        <div class="card collapsed-card">
+                                            <div class="card-header bg-primary">
+                                                <h3 class="card-title mb-0">
 
-                                                <button type="button" class="btn btn-tool" data-card-widget="collapse">
-                                                    Capex Miscellaneouse Expenses
-                                                </button>
+                                                    <button type="button" class="btn btn-tool" data-card-widget="collapse">
+                                                        Capex Miscellaneouse Expenses
+                                                    </button>
 
-                                            </h3>
-                                            <div class="card-tools">
-                                                <button type="button" class="btn btn-tool" data-card-widget="collapse" title="Collapse">
-                                                    <i class="fas fa-minus"></i>
-                                                </button>
+                                                </h3>
+                                                <div class="card-tools">
+                                                    <button type="button" class="btn btn-tool" data-card-widget="collapse" title="Collapse">
+                                                        <i class="fas fa-minus"></i>
+                                                    </button>
+                                                </div>
+                                            </div>
+                                            <div class="card-body">
+                                                <div class="row">
+                                                    <table id="tablerndcapexmiscellaneousexpenses" class="table text-center" style="width:100%">
+                                                    </table>
+                                                    <input type="hidden" id="hdnrndCapexMiscellaneousExpensesData" name="RNDCapexMiscellaneousExpensesRawData" />
+
+                                                </div>
                                             </div>
                                         </div>
-                                        <div class="card-body">
-                                            <div class="row">
-                                                <table id="tablerndcapexmiscellaneousexpenses" class="table text-center" style="width:100%">
-                                                </table>
-                                                <input type="hidden" id="hdnrndCapexMiscellaneousExpensesData" name="RNDCapexMiscellaneousExpensesRawData" />
-
-                                            </div>
-                                        </div>
-                                    </div>
                                     </div>
                                     @* Plant Support Cost*@
                                     <div class="col-12">
-                                    <div class="card">
-                                        <div class="card-header bg-primary">
-                                            <h3 class="card-title mb-0">
+                                        <div class="card collapsed-card">
+                                            <div class="card-header bg-primary">
+                                                <h3 class="card-title mb-0">
 
-                                                <button type="button" class="btn btn-tool" data-card-widget="collapse">
-                                                    Plant Support Cost
-                                                </button>
+                                                    <button type="button" class="btn btn-tool" data-card-widget="collapse">
+                                                        Plant Support Cost
+                                                    </button>
 
-                                            </h3>
-                                            <div class="card-tools">
-                                                <button type="button" class="btn btn-tool" data-card-widget="collapse" title="Collapse">
-                                                    <i class="fas fa-minus"></i>
-                                                </button>
-                                            </div>
-                                        </div>
-                                        <div class="card-body">
-                                            <div class="row">
-                                                <div class="col-md-3">
-                                                    <div class="form-group required">
-                                                        @Html.LabelFor(model => model.RNDMasterEntities.PlanSupportCostRsPerDay, "Plant Utilization rate Rs/Day", new { @class = "control-label" })
-                                                        @Html.TextBoxFor(@modal=> modal.RNDMasterEntities.PlanSupportCostRsPerDay,new{@class="form-control",type = "number", min = 0})
-                                                    </div>
+                                                </h3>
+                                                <div class="card-tools">
+                                                    <button type="button" class="btn btn-tool" data-card-widget="collapse" title="Collapse">
+                                                        <i class="fas fa-minus"></i>
+                                                    </button>
                                                 </div>
-                                                <table id="tablerndplantsupportcost" class="table text-center" style="width:100%">
-                                                </table>
-                                                <input type="hidden" id="hdnrndPlantSupportCostData" name="RNDPlantSupportCostRawData" />
+                                            </div>
+                                            <div class="card-body">
+                                                <div class="row">
+                                                    <div class="col-md-3">
+                                                        <div class="form-group required">
+                                                            @Html.LabelFor(model => model.RNDMasterEntities.PlanSupportCostRsPerDay, "Plant Utilization rate Rs/Day", new { @class = "control-label" })
+                                                            @Html.TextBoxFor(@modal=> modal.RNDMasterEntities.PlanSupportCostRsPerDay,new{@class="form-control",type = "number", min = 0})
+                                                        </div>
+                                                    </div>
+                                                    <table id="tablerndplantsupportcost" class="table text-center" style="width:100%">
+                                                    </table>
+                                                    <input type="hidden" id="hdnrndPlantSupportCostData" name="RNDPlantSupportCostRawData" />
 
+                                                </div>
                                             </div>
                                         </div>
-                                    </div>
                                     </div>
                                     @* Referense Product Details*@
                                     <div class="col-12">
-                                    <div class="card">
-                                        <div class="card-header bg-primary">
-                                            <h3 class="card-title mb-0">
+                                        <div class="card collapsed-card">
+                                            <div class="card-header bg-primary">
+                                                <h3 class="card-title mb-0">
 
-                                                <button type="button" class="btn btn-tool" data-card-widget="collapse">
-                                                    Reference Product Detail
-                                                </button>
+                                                    <button type="button" class="btn btn-tool" data-card-widget="collapse">
+                                                        Reference Product Detail
+                                                    </button>
 
-                                            </h3>
-                                            <div class="card-tools">
-                                                <button type="button" class="btn btn-tool" data-card-widget="collapse" title="Collapse">
-                                                    <i class="fas fa-minus"></i>
-                                                </button>
+                                                </h3>
+                                                <div class="card-tools">
+                                                    <button type="button" class="btn btn-tool" data-card-widget="collapse" title="Collapse">
+                                                        <i class="fas fa-minus"></i>
+                                                    </button>
+                                                </div>
+                                            </div>
+                                            <div class="card-body">
+                                                <div class="row">
+                                                    <table id="tablerndreferenceproductdetail" class="table text-center" style="width:100%">
+                                                    </table>
+
+
+                                                </div>
                                             </div>
                                         </div>
-                                        <div class="card-body">
-                                            <div class="row">
-                                                <table id="tablerndreferenceproductdetail" class="table text-center" style="width:100%">
-                                                </table>
-
-
-                                            </div>
-                                        </div>
-                                    </div>
                                     </div>
                                     @*  Man Power Cost & Project Duration*@
                                     <div class="col-12">
-                                    <div class="card">
-                                        <div class="card-header bg-primary">
-                                            <h3 class="card-title mb-0">
+                                        <div class="card collapsed-card">
+                                            <div class="card-header bg-primary">
+                                                <h3 class="card-title mb-0">
 
-                                                <button type="button" class="btn btn-tool" data-card-widget="collapse">
-                                                    Man Power Cost & Project Duration
-                                                </button>
+                                                    <button type="button" class="btn btn-tool" data-card-widget="collapse">
+                                                        Man Power Cost & Project Duration
+                                                    </button>
 
-                                            </h3>
-                                            <div class="card-tools">
-                                                <button type="button" class="btn btn-tool" data-card-widget="collapse" title="Collapse">
-                                                    <i class="fas fa-minus"></i>
-                                                </button>
-                                            </div>
-                                        </div>
-                                        <div class="card-body">
-                                            <div class="row">
-                                                <div class="col-md-3">
-                                                    <div class="form-group required">
-                                                        @Html.LabelFor(model => model.RNDMasterEntities.ManHourRate, "Man Hour Rate (Rs/hour)", new { @class = "control-label" })
-                                                        @Html.TextBoxFor(@modal=> modal.RNDMasterEntities.ManHourRate,new{@class="form-control",type = "number", min = 0})
-                                                    </div>
+                                                </h3>
+                                                <div class="card-tools">
+                                                    <button type="button" class="btn btn-tool" data-card-widget="collapse" title="Collapse">
+                                                        <i class="fas fa-minus"></i>
+                                                    </button>
                                                 </div>
-                                                <table id="tablerrndmanpowercostprojectduration" class="table text-center" style="width:100%">
-                                                </table>
                                             </div>
-                                            <input type="hidden" id="hdnrndManPowerCostProjectDuration" name="RNDManPowerCostProjectDurationRawData" />
+                                            <div class="card-body">
+                                                <div class="row">
+                                                    <div class="col-md-3">
+                                                        <div class="form-group required">
+                                                            @Html.LabelFor(model => model.RNDMasterEntities.ManHourRate, "Man Hour Rate (Rs/hour)", new { @class = "control-label" })
+                                                            @Html.TextBoxFor(@modal=> modal.RNDMasterEntities.ManHourRate,new{@class="form-control",type = "number", min = 0})
+                                                        </div>
+                                                    </div>
+                                                    <table id="tablerrndmanpowercostprojectduration" class="table text-center" style="width:100%">
+                                                    </table>
+                                                </div>
+                                                <input type="hidden" id="hdnrndManPowerCostProjectDuration" name="RNDManPowerCostProjectDurationRawData" />
+                                            </div>
                                         </div>
-                                    </div>
                                     </div>
                                     @*  Filling Expanses*@
                                     <div class="col-12">
-                                    <div class="card">
-                                        <div class="card-header bg-primary">
-                                            <h3 class="card-title mb-0">
+                                        <div class="card collapsed-card">
+                                            <div class="card-header bg-primary">
+                                                <h3 class="card-title mb-0">
 
-                                                <button type="button" class="btn btn-tool" data-card-widget="collapse">
-                                                    Filling Expenses
-                                                </button>
+                                                    <button type="button" class="btn btn-tool" data-card-widget="collapse">
+                                                        Filling Expenses
+                                                    </button>
 
-                                            </h3>
-                                            <div class="card-tools">
-                                                <button type="button" class="btn btn-tool" data-card-widget="collapse" title="Collapse">
-                                                    <i class="fas fa-minus"></i>
-                                                </button>
+                                                </h3>
+                                                <div class="card-tools">
+                                                    <button type="button" class="btn btn-tool" data-card-widget="collapse" title="Collapse">
+                                                        <i class="fas fa-minus"></i>
+                                                    </button>
+                                                </div>
                                             </div>
-                                        </div>
-                                        <div class="card-body">
-                                            <div class="row">
-                                                <table id="tablerndfilingexpenses" class="table text-center" style="width:100%">
-                                                </table>
+                                            <div class="card-body">
+                                                <div class="row">
+                                                    <table id="tablerndfilingexpenses" class="table text-center" style="width:100%">
+                                                    </table>
+                                                </div>
+                                                <input type="hidden" id="hdnrndFillingExpensesData" name="RNDFillingExpensesRawData" />
                                             </div>
-                                            <input type="hidden" id="hdnrndFillingExpensesData" name="RNDFillingExpensesRawData" />
                                         </div>
                                     </div>
+                                    @*  Phase Wise Budget*@
+                                    <div class="col-12">
+                                        <div class="card collapsed-card">
+                                            <div class="card-header bg-primary">
+                                                <h3 class="card-title mb-0">
+
+                                                    <button type="button" class="btn btn-tool" data-card-widget="collapse">
+                                                        Phase Wise Budget
+                                                    </button>
+
+                                                </h3>
+                                                <div class="card-tools">
+                                                    <button type="button" class="btn btn-tool" data-card-widget="collapse" title="Collapse">
+                                                        <i class="fas fa-minus"></i>
+                                                    </button>
+                                                </div>
+                                            </div>
+                                            <div class="card-body">
+                                                <div class="row">
+                                                    <table id="tablerndphasewisebudget" class="table text-center" style="width:100%">
+                                                    </table>
+                                                </div>
+
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
