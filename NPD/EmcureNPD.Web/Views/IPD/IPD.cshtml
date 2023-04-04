@@ -22,7 +22,8 @@
 }
 
 <div id="dvPIDFAccrdion"></div>
-@if(!Model._Partial){
+@if (!Model._Partial)
+{
     <div class="content-header">
         <h2 class="m-0">Internal Patent Details</h2>
     </div>
@@ -31,7 +32,7 @@
     <input type="hidden" asp-for="LogInId" />
     <input type="hidden" id="hdnIPDIsView" value="@(Context.Request.Query["IsView"] == "1" ? "1" : "0")" />
     <input type="hidden" id="BusinessUnitsByUser" value="@Model.BusinessUnitsByUser" />
-    <input type="hidden"  asp-for="SelectedTabBusinessUnit" />
+    <input type="hidden" asp-for="SelectedTabBusinessUnit" />
     <div class="row">
         <div class="col-md-12">
             <div class="card card-primary card-tabs">
@@ -56,7 +57,11 @@
                     <button type="submit" class="btn btn-success me-3 outside-buttons operationButton" onClick="ApproveRejectClick('A', '@Model.PIDFID', @((int)EmcureNPD.Utility.Enums.PIDFScreen.IPD), '/PIDF/PIDFList?ScreenId=@((int)EmcureNPD.Utility.Enums.PIDFScreen.IPD)')"><i class="fa fa-check-circle mr-1"></i>@SharedLocalizer["Approve"]</button>
                     <button type="submit" class="btn btn-danger me-3 outside-buttons operationButton" onClick="ApproveRejectClick('R', @Model.PIDFID, @EmcureNPD.Utility.Enums.PIDFScreen.IPD, '/PIDF/PIDFList?ScreenId=@((int)EmcureNPD.Utility.Enums.PIDFScreen.IPD)');"><i class="fa fa-ban mr-1"></i>@SharedLocalizer["Reject"]</button>
                 }
-                <a class="btn btn-danger me-3 outside-buttons" asp-action="PIDFList" asp-controller="PIDF" asp-route-ScreenId="2">@SharedLocalizer["Cancel"]</a>
+                @if (!Model._Partial)
+                {
+                    <a class="btn btn-danger me-3 outside-buttons" asp-action="PIDFList" asp-controller="PIDF" asp-route-ScreenId="2">@SharedLocalizer["Cancel"]</a>
+                }
+
             </div>
         </div>
     </div>

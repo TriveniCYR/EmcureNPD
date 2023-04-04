@@ -1,7 +1,7 @@
 ﻿var objYears = [];
 var objMainForm = {};
-var objdropdownYearControls_array = ['PackagingTypeId', 'CurrencyId','FinalSelectionId'];
-var ColumnObjUpcase = ['PackagingTypeId', 'CommercialBatchSize', 'PriceDiscounting', 'TotalApireq', 'Apireq', 'Suimsvolume', 'MarketGrowth', 'MarketSize', 'PriceErosion', 'FinalSelectionId'];
+var objdropdownYearControls_array = ['CommercialPackagingTypeId', 'CurrencyId','FinalSelectionId'];
+var ColumnObjUpcase = ['CommercialPackagingTypeId', 'CommercialBatchSize', 'PriceDiscounting', 'TotalApireq', 'Apireq', 'Suimsvolume', 'MarketGrowth', 'MarketSize', 'PriceErosion', 'FinalSelectionId'];
 /*var ColumnObjLowcase = ['packagingTypeId', 'commercialBatchSize', 'priceDiscounting', 'totalApireq', 'apireq', 'suimsvolume', 'marketGrowth', 'marketSize', 'priceErosion', 'finalSelectionId'];*/
 var SelectedBUValue = 0;
 var selectedStrength = 0;
@@ -73,9 +73,9 @@ function InitializeProductTypeDropdown() {
 }
 function GetProductTypeListSuccess(data) {
     try {
-        $('#PackagingTypeId').append($('<option>').text('--Select--').attr('value', '0'));
+        $('#CommercialPackagingTypeId').append($('<option>').text('--Select--').attr('value', '0'));
         $.each(data._object, function (index, object) {
-            $('#PackagingTypeId').append($('<option>').text(object.packagingTypeName).attr('value', object.packagingTypeId));
+            $('#CommercialPackagingTypeId').append($('<option>').text(object.packagingTypeName).attr('value', object.packagingTypeId));
         });
     } catch (e) {
         toastr.error('Error:' + e.message);
@@ -299,8 +299,8 @@ function UpdateYearTable(columns) {
             console.log(item);
             var cntrlName = columns[item]            
             var result = objYears[i][cntrlName]
-            if (cntrlName == 'PackagingTypeId')
-                result = $("#PackagingTypeId option[value=" + result +"]").text();
+            if (cntrlName == 'CommercialPackagingTypeId')
+                result = $("#CommercialPackagingTypeId option[value=" + result +"]").text();
             else if (cntrlName == 'CurrencyId')
                 result = $("#CurrencyId option[value=" + result + "]").text();
             else if (cntrlName == 'FinalSelectionId')
