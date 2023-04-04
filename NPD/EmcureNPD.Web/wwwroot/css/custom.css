@@ -102,3 +102,6 @@ table, th, td {
 }
 .card-header.bg-primary button{color:#fff;}
 .filename{cursor:pointer;border:none;}
+.card.card-outline-tabs .card-tools {
+margin:auto;
+}

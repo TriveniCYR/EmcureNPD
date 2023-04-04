@@ -71,12 +71,9 @@ function timeDiffrance(_dateInput) {
     const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
     diffHour /= (60 * 60);
     diffHour = Math.abs(Math.round(diffHour));
-    console.log(diffTime + " milliseconds");
     //millisecond to sec and min
     let diffMin = Math.floor((diffTime / 1000 / 60) << 0);
     let diffSec = Math.floor((diffTime / 1000) % 60);
-
-    console.log(diffDays + " days");
     if (diffHour >= 24) {
         diffHour = diffDays;
         _suffix = "days";

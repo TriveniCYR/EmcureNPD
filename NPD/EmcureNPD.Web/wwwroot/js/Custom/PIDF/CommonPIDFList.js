@@ -11,7 +11,6 @@ function InitializePIDFList() {
         "url": $('#hdnBaseURL').val() + GetCommonPIDFList +"?ScreenName=" + ScreenName,
         "type": "POST",
         "data": function (d) {
-            console.log(d);
             var pageNumber = $('#' + tableId).DataTable().page.info();
             d.PageNumber = pageNumber.page;
         },
@@ -88,7 +87,6 @@ function InitializePIDFList() {
     }
 
 function chkClick(cb, pidfId) {
-    console.log("Clicked, new value = " + cb.checked + " ---pidfId::" + pidfId);
     if (cb.checked) {
         objApprRejList.push({ pidfId: pidfId })
     }
