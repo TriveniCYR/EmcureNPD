@@ -29,7 +29,7 @@ namespace EmcureNPD.API.Controllers.IPD
         private readonly IResponseHandler<dynamic> _ObjectResponse;
         private readonly IWebHostEnvironment _webHostEnvironment;
         private readonly ILogger<MedicalController> _logger;
-        private string[] permittedExtensions = { ".png",".jpg", ".jpeg", ".txt", ".pdf", ".xlx", ".xlsx"};
+        private string[] permittedExtensions = { ".png",".PNG",".jpg", ".jpeg", ".txt", ".pdf", ".xlx",".xlsx"};
         #endregion Properties
 
         #region Constructor
