@@ -266,7 +266,7 @@ namespace EmcureNPD.Business.Core.ServiceImplementations
                 objUser.CreatedBy = LoggedUserId;
                 objUser.CreatedDate = DateTime.Now;
                 _repository.AddAsync(objUser);
-                SendUserCreateMail(entityUser, LoggedUserId);
+               // SendUserCreateMail(entityUser, LoggedUserId);
             }
             await _unitOfWork.SaveChangesAsync();
 
@@ -277,20 +277,24 @@ namespace EmcureNPD.Business.Core.ServiceImplementations
         }
         public void SendUserCreateMail(MasterUserEntity entityUser, int LoggedUserId)
         {
-            EmailHelper email = new EmailHelper();
-            string WebURL = configuration.GetSection("Apiconfig").GetSection("EmcureNPDWebUrl").Value;
-            string strHtml = System.IO.File.ReadAllText(@"wwwroot\Uploads\HTMLTemplates\UserCreated.html");
-            var LoggedInUserDetails = _repository.Get(LoggedUserId);
-            if (LoggedInUserDetails != null)
+            try
             {
-                strHtml = strHtml.Replace("{CreatedByFullName}", LoggedInUserDetails.FullName);
-                strHtml = strHtml.Replace("{CreatedByEmail}", LoggedInUserDetails.EmailAddress);
+                EmailHelper email = new EmailHelper();
+                //need web URL  // string WebURL = configuration.GetSection("Apiconfig").GetSection("EmcureNPDWebUrl").Value;
+                string strHtml = System.IO.File.ReadAllText(@"wwwroot\Uploads\HTMLTemplates\UserCreated.html");
+                var LoggedInUserDetails = _repository.Get(LoggedUserId);
+                if (LoggedInUserDetails != null)
+                {
+                    strHtml = strHtml.Replace("{CreatedByFullName}", LoggedInUserDetails.FullName);
+                    strHtml = strHtml.Replace("{CreatedByEmail}", LoggedInUserDetails.EmailAddress);
+                }
+                strHtml = strHtml.Replace("{FullName}", entityUser.FullName);
+                strHtml = strHtml.Replace("{Email}", entityUser.EmailAddress);
+                strHtml = strHtml.Replace("{Password}", entityUser.StringPassword);
+                // strHtml = strHtml.Replace("{ApplicationLoginURL}", WebURL);
+                email.SendMail(entityUser.EmailAddress, string.Empty, "Emcure NPD - User Created", strHtml);
             }
-            strHtml = strHtml.Replace("{FullName}", entityUser.FullName);
-            strHtml = strHtml.Replace("{Email}", entityUser.EmailAddress);
-            strHtml = strHtml.Replace("{Password}", entityUser.StringPassword);
-            strHtml = strHtml.Replace("{ApplicationLoginURL}", WebURL);
-            email.SendMail(entityUser.EmailAddress, string.Empty, "Emcure NPD - User Created", strHtml);
+            catch (Exception ex) { }
         }
         private MasterUser FillMappingData(MasterUserEntity entityUser, MasterUser objUser)
         {

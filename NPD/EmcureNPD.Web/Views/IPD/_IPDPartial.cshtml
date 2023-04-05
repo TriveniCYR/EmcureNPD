@@ -161,7 +161,7 @@
                             <table id="PIDFTable" class="table table-bordered table-striped table-hover" style="width:100%">
                                 <thead>
                                     <tr>
-                                        <th>@MasterLocalizer["Patent Number"]</th>
+                                        <th>@MasterLocalizer["Patent Number"] <span class="text-danger">*</span></th>
                                         <th>@MasterLocalizer["Type"] <span class="text-danger">*</span></th>
                                         <th>@SharedLocalizer["Original Expiry Date"] <span class="text-danger">*</span></th>
                                         <th>@SharedLocalizer["Extension Expiry Date"] <span class="text-danger">*</span></th>
@@ -187,7 +187,7 @@
                                                     <div class="">
                                                         <div class="form-group required">
                                                             @Html.EditorFor(model => model.pidf_IPD_PatentDetailsEntities[i].PatentNumber, new { htmlAttributes = new { @autocomplete = "off", @class = "form-control checkbox-checked",  @placeholder = @MasterLocalizer["PatentNumber"],@required="required" } })
-                                                            @Html.ValidationMessageFor(model => model.pidf_IPD_PatentDetailsEntities[i].PatentNumber, "", new { @class = "text-danger" })
+                                                            @*@Html.ValidationMessageFor(model => model.pidf_IPD_PatentDetailsEntities[i].PatentNumber, "", new { @class = "text-danger" })*@
                                                         </div>
                                                     </div>
                                                 </td>

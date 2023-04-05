@@ -2,7 +2,7 @@
 var _mode = 0;
 var _PIDFId = 0;
 $(document).ready(function () {
-
+    debugger;
     try {
         _PIDFId = parseInt($('#hdnPIDFId').val());
         //_mode = $('#hdnIsView').val(); //parseInt($('#hdnPIDFId').val());
@@ -36,6 +36,10 @@ $(document).ready(function () {
     });
 });
 
+$("[id*='].Strength']").blur(function () {
+    var strengthval = $(this).val();
+    $(this).val($.trim(strengthval));
+})
 function GetCountryByBusinessUnitSuccess(data) {
     try {
         $('#RFDCountryId').find('option').remove()
@@ -234,6 +238,7 @@ function readOnlyForm() {
     //$('button').attr('readonly', true).attr('disabled', true);
     $('#dvPIDFContainer').find('select').attr('readonly', true).attr('disabled', true).trigger("change");
     $('#dvPIDFContainer').find('.operationButton').hide();
+    $('#btnPIDFCancel').show(); 
 }
 
 function SaveClick() {
