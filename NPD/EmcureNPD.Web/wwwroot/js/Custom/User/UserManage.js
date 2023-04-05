@@ -158,11 +158,10 @@ function GetAllRoleListError(x, y, z) {
 }
 //#endregion
 
-function TrimSpace(id) {
-    var ctrlValue = $(id).val()
-    $(id).val($.trim(ctrlValue));
-}
-
+$("#FullName").blur(function () {
+    var FullNameval = $(this).val();
+    $(this).val($.trim(FullNameval));
+})
 function TriggerDesignationName() {
     var arrCheckBox = ['AnalyticalGL', 'FormulationGL', 'APIUser', 'IsManagement'];
     var IsAtleastOneChecked = false;

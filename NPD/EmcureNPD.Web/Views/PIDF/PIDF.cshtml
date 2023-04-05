@@ -174,7 +174,7 @@
 														<td>
 															<div class="col-md">
 																<div class="form-group required">
-																	@Html.EditorFor(model => Model.pidfProductStregthEntities[i].Strength, new { htmlAttributes = new { @autocomplete = "off", @class = "form-control checkbox-checked", id = "pidfProductStregthEntities[" + i + "].Strength", @placeholder = @MasterLocalizer["Product Strength"] } })
+																	@Html.EditorFor(model => Model.pidfProductStregthEntities[i].Strength, new { htmlAttributes = new { @autocomplete = "off", @class = "txtclsStrngth form-control checkbox-checked", id = "pidfProductStregthEntities[" + i + "].Strength", @placeholder = @MasterLocalizer["Product Strength"] } })
 																</div>
 															</div>
 														</td>
@@ -549,8 +549,11 @@
 						<a class="btn btn-danger me-3 outside-buttons operationButton" onClick="ApproveRejectClick('R', '@Model.PIDFID', @((int)EmcureNPD.Utility.Enums.PIDFScreen.PIDF), '/PIDF/PIDFList?ScreenId=@((int)EmcureNPD.Utility.Enums.PIDFScreen.PIDF)')"><i class="fa fa-ban mr-1"></i> @SharedLocalizer["Reject"]</a>
 
 							}
-					<a class="btn btn-danger me-3 outside-buttons operationButton" asp-action="PIDFList" asp-controller="PIDF" asp-route-ScreenId="1">@SharedLocalizer["Cancel"]</a>
-						</div>
+					@if (!Model._Partial)
+					{
+						<a class="btn btn-danger me-3 outside-buttons operationButton" id="btnPIDFCancel" asp-action="PIDFList" asp-controller="PIDF" asp-route-ScreenId="1">@SharedLocalizer["Cancel"]</a>
+					}		
+				</div>
 					</div>
 				</div>
 

@@ -361,7 +361,7 @@ namespace EmcureNPD.Business.Core.Implementation
             }
             else
             {
-                if (ErrorMsg == null && hasNewUploadFile)
+                if (hasNewUploadFile)
                 {
                     var MarketCGIFile = _oAPIIPD_Form.Files[0];
                     await FileUpload(MarketCGIFile, path, uniqueFileName);

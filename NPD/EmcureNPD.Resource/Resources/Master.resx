@@ -529,7 +529,7 @@
     <value>API Market Price</value>
   </data>
   <data name="APIRndDetails" xml:space="preserve">
-    <value>API Rnd Details</value>
+    <value>API RnD Details</value>
   </data>
   <data name="APIRndDetailsForm" xml:space="preserve">
     <value>API Rnd Details Form</value>
@@ -649,7 +649,7 @@
     <value>API IPD</value>
   </data>
   <data name="APIRnd" xml:space="preserve">
-    <value>API Rnd</value>
+    <value>API RnD</value>
   </data>
   <data name="AddRole" xml:space="preserve">
     <value>Add Role</value>

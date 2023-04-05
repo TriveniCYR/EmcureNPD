@@ -268,7 +268,7 @@ namespace EmcureNPD.Resource.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to API Rnd.
+        ///   Looks up a localized string similar to API RnD.
         /// </summary>
         public static string APIRnd {
             get {
@@ -277,7 +277,7 @@ namespace EmcureNPD.Resource.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to API Rnd Details.
+        ///   Looks up a localized string similar to API RnD Details.
         /// </summary>
         public static string APIRndDetails {
             get {
