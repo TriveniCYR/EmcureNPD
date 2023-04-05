@@ -311,19 +311,21 @@ $(document).ready(function () {
         //var Activity11 = parseFloat(_MPCRows.find(".rndMPCActivity11").val() == "" ? 0 : _MPCRows.find(".rndMPCActivity11").val());
 
         var strength = Math.round((DurationInDays) * (ManPowerInDays));
-        var strengthvalue = (strength) / (_strengthArray.length);
+        $(this).parent().parent().find(".sumstrength").val(strength);
+
+
+        var strengthvalue = ((strength / _strengthArray.length) * 8);
+        $(this).parent().parent().find(".rndMPCStrengthValue").val(strengthvalue);
         var _Sum = 0;
         $.each($(this).parent().parent().find(".rndMPCDurationInDays" + _activityId + ", .rndMPCManPowerInDays" + _activityId), function (index, item) {
             if ($(item).attr("class").indexOf("TotalStrength") === -1) {
                 _Sum += parseFloat(($(item).val() == "" ? 0 : $(item).val()));
             }
         });           
-
-
         // set total for the row
         $(this).parent().parent().find(".TotalStrength").val(_Sum);
-        $(this).parent().parent().find(".sumstrength").val(strength);
-        $(this).parent().parent().find(".rndMPCStrengthValue").val(strengthvalue);
+       
+       
 
         var _SumDurationindays = 0;
         $.each($('.rndMPCDurationInDays'), function (index, item) {
@@ -332,6 +334,28 @@ $(document).ready(function () {
         });
 
         $('.manpowercost_' + _BioStudyTypeId + 'Total').find(".calcDurationInDaysTotal").val(_SumDurationindays);
+
+        var _SumStrengths = 0;
+        var _Sumprototype = 0;
+        var _SumScaleup = 0;
+        var _SumExhibit = 0;
+        $.each($('.rndMPCStrengthValue'), function (index, item) {
+            var _activityId = $(item).parent().attr("data-activityid");
+            if (_activityId == 1 || _activityId == 2 || _activityId == 3 || _activityId == 4 || _activityId == 5) {
+                _Sumprototype += parseFloat(($(item).val() == "" ? 0 : $(item).val()));
+            } else if (_activityId == 7 || _activityId == 8 || _activityId == 9 || _activityId == 10 || _activityId == 11) {
+                _SumExhibit += parseFloat(($(item).val() == "" ? 0 : $(item).val()));
+            } else {
+                _SumScaleup += parseFloat(($(item).val() == "" ? 0 : $(item).val()));
+            }
+            _SumStrengths += parseFloat(($(item).val() == "" ? 0 : $(item).val()));
+        });
+        _Sumprototype = (_Sumprototype) * (manhourrate);
+        _SumExhibit = (_SumExhibit) * (manhourrate);
+        _SumScaleup = (_SumScaleup) * (manhourrate);
+       
+        _SumStrengths = ((_Sumprototype) + (_SumExhibit) + (_SumScaleup))
+        $('.manpowercost_' + _BioStudyTypeId + 'Total').find(".calcTotalCostForStrength").val(_SumStrengths);
 
         ////prototype cost
         //var prototypecost = (manhourrate * (Prototype == "" ? 0 : parseFloat(Prototype)));
@@ -1588,7 +1612,7 @@ function CreateFillingExpensesTable(data, activityTypeId) {
             + '<td><input type="number" class="form-control totalFillingExpenses rndFillingExpensesTotalCost" value="2300000" min="0"/></td>'
             + '<td><select class="form-control readOnlyUpdate rndFillingExpensesRegionId"><option value = "0" > --Select --</option ></select><input type="hidden" value="' + (data.length > 0 ? data[a].businessUnitId : "") + '"/></td>'
         for (var i = 0; i < _strengthArray.length; i++) {
-            objectname += '<td> <div style="display: inline-block;" ><input type="hidden" class="rndFillingExpensesStrengthId" value="' + _strengthArray[i].pidfProductStrengthId + '" /><input type="checkbox" id="rndFillingExpensesStrengthIsChecked' + _strengthArray[i].pidfProductStrengthId + '" class="rndFillingExpensesStrengthIsChecked' + _strengthArray[i].pidfProductStrengthId + '" ' + (data[a].isChecked && data[a].businessUnitId == BUID && _strengthArray[i].pidfProductStrengthId == data[a].strengthId ? "checked" : "") + '  > &nbsp; <input type="number" class="FillingExpensesStrengthValue" readonly="readonly" disabled="true" min="0" /></div></td>';
+            objectname += '<td> <div style="display: inline-block;" ><input type="hidden" class="rndFillingExpensesStrengthId" value="' + _strengthArray[i].pidfProductStrengthId + '" /><input type="checkbox" id="rndFillingExpensesStrengthIsChecked' + _strengthArray[i].pidfProductStrengthId + '" class="rndFillingExpensesStrengthIsChecked' + _strengthArray[i].pidfProductStrengthId + '" ' + (data.length > 0 && data[a].isChecked && data[a].businessUnitId == BUID && _strengthArray[i].pidfProductStrengthId == data[a].strengthId ? "checked" : "") + '  > &nbsp; <input type="number" class="FillingExpensesStrengthValue" readonly="readonly" disabled="true" min="0" /></div></td>';
         }
         objectname += "<td><input type='number' class='form-control' readonly='readonly' min='0' /></td><td> <i class='fa-solid fa-circle-plus nav-icon text-success operationButton' id='addIcon' onclick='addRowFillingExpenses(this);'></i> <i class='fa-solid fa-trash nav-icon text-red strengthDeleteIcon operationButton DeleteIcon' onclick='deleteRowFillingExpenses(this);' ></i></td></tr>";
         if (data.length > 0) {
