@@ -11,8 +11,8 @@ namespace EmcureNPD.Data.DataAccess.Entity
         public int ProjectActivitiesId { get; set; }
         public long PbfgeneralId { get; set; }
         public long StrengthId { get; set; }
-        public int? DurationInDays { get; set; }
-        public int? ManPowerInDays { get; set; }
+        public double? DurationInDays { get; set; }
+        public double? ManPowerInDays { get; set; }
         public DateTime CreatedDate { get; set; }
         public int CreatedBy { get; set; }
 

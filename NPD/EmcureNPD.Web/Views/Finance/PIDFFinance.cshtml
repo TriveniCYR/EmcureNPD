@@ -11,9 +11,10 @@
 @inject IConfiguration Configuration
 @model EmcureNPD.Business.Models.FinanceModel
 @{
-var PidafId=Context.Request.Query["pidfid"];
-string jsVersion = @Configuration.GetSection("StaticJS")["version"];
-var PidfNumber=UtilityHelper.Decreypt(Convert.ToString(PidafId));
+    var PidafId=Context.Request.Query["pidfid"];
+    string jsVersion = @Configuration.GetSection("StaticJS")["version"];
+    var PidfNumber=UtilityHelper.Decreypt(Convert.ToString(PidafId));
+    var DefaultStatus = Model == null ? 0 : Model.PIDFStatusId;
 }
 
 
@@ -6349,7 +6350,8 @@ var PidfNumber=UtilityHelper.Decreypt(Convert.ToString(PidafId));
 			<div class="card form-group  dv-controls text-right" role="group">  
             @if(ViewBag.Access.Add == true)
             {
-                 if(Model!=null && (Model.PIDFStatusId==0 || Model.PIDFStatusId == (Int32)Master_PIDFStatus.FinanceInProgres)){
+                if (DefaultStatus == 0 || Model.PIDFStatusId == (Int32)Master_PIDFStatus.FinanceInProgres)
+                {
                 <button type="submit" id="btnSaveDraft" class="btn btn-primary" onclick="SaveDraftClick();">
                     @*<i class="fab fa-firstdraft"></i>*@
                     Save as Draft</button>
