@@ -1601,7 +1601,7 @@ function CreateFillingExpensesTable(data, activityTypeId) {
 
     objectname += '<tr><td class="text-left text-bold bg-light" colspan="' + (6 + _strengthArray.length) + '">' + tableTitle + '</td>';
     for (var a = 0; a < _counter; a++) {
-        var BUID = data[a].businessUnitId;
+        var BUID = data.length > 0 ? data[a].businessUnitId:0;
         if (data.length > 0) {
             if (_activityType.indexOf(data[a].businessUnitId) !== -1) {
                 continue;
