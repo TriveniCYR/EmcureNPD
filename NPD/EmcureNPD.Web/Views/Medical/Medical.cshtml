@@ -125,6 +125,7 @@
 	<script src="~/js/custom/medical/medical.js"></script>
 	<script>
 		var pidid = @Html.Raw(Json.Serialize(pidfid));
+		var _PIDFID = "@Model.Pidfid";
 		var _PIDFAccordionURL = "@Url.Action("PIDF", "PIDF")";
 
 		var errorCallBack = '@TempData[EmcureNPD.Web.Helpers.UserHelper.ErrorMessage]';

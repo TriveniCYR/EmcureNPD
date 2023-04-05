@@ -116,7 +116,7 @@ namespace EmcureNPD.Business.Core.Implementation
             return _CNObjects;
         }
 
-        public async Task<DataTableResponseModel> GetAllPIDFList(DataTableAjaxPostModel model)
+        public async Task<DataTableResponseModel> GetAllPIDFList(DataTableAjaxPostModel model, int ScreenId)
         {
             var loggedInUserId = _helper.GetLoggedInUser().UserId;
 
@@ -129,7 +129,8 @@ namespace EmcureNPD.Business.Core.Implementation
                     new SqlParameter("@PageSize", model.length),
                     new SqlParameter("@SortColumn", ColumnName),
                     new SqlParameter("@SortDirection", SortDir),
-                    new SqlParameter("@SearchText", model.search.value)
+                    new SqlParameter("@SearchText", model.search.value),
+                    new SqlParameter("@ScreenId", ScreenId),
             };
 
             var PIDFList = await _repository.GetBySP("stp_npd_GetPIDFList", System.Data.CommandType.StoredProcedure, osqlParameter);

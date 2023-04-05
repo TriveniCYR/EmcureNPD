@@ -12,6 +12,8 @@ namespace EmcureNPD.Business.Models
 
         public string UserToken { get; set; }
 
+        public bool IsManagement { get; set; }
+
         public DateTime VallidTo { get; set; }
         public int RoleId { get;set; }
         public string AssignedBusinessUnit { get; set; }

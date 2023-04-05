@@ -87,6 +87,7 @@ namespace EmcureNPD.Business.Core.ServiceImplementations
                 oUser.UserId = Convert.ToInt32(UserList.Rows[0]["UserId"]);
                 oUser.Email = Convert.ToString(UserList.Rows[0]["EmailAddress"]);
                 oUser.RoleId = Convert.ToInt32(UserList.Rows[0]["RoleId"]);
+                oUser.IsManagement = Convert.ToBoolean(UserList.Rows[0]["IsManagement"]);
                 oUser.AssignedBusinessUnit = Convert.ToString(UserList.Rows[0]["AssignedBusinessUnit"]);
             }
             return oUser;

@@ -112,3 +112,7 @@ margin:auto;
 select.form-control {
     appearance: auto;
 }
+#ApproveRejectModel .card-footer {
+    background-color: #fff;
+    border-top: none;
+}
