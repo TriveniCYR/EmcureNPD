@@ -138,6 +138,11 @@ function StaticDataTable(selector, dom, buttons) {
     });
     return _datatableInstance;
 }
+function destoryStaticDataTable(selector) {
+    if ($.fn.DataTable.isDataTable(selector)) {
+        $(selector).DataTable().clear().destroy();
+    }
+}
 function ajaxServiceMethod(url, type, successCallback, errorCallback, body, header, async, dataType, contentType) {
     if (contentType == null || contentType == undefined) {
         contentType = "application/json;";

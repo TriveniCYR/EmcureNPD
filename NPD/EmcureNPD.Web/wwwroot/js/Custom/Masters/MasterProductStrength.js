@@ -8,7 +8,8 @@ function GetProductStrengthList() {
 }
 function GetProductStrengthListSuccess(data) {
     try {
-        $('#ProductStrengthTable tbody').html('')
+        destoryStaticDataTable('#ProductStrengthTable');
+        $('#ProductStrengthTable tbody').html('');
         $.each(data._object, function (index, object) {
             $('#ProductStrengthTable tbody').append('<tr><td>' + object.productStrengthName + '</td><td><span style="color:' + (object.isActive ? "green" : "red") + '">' + (object.isActive ? "Active" : "InActive") + '</span></td><td>  <a class="large-font" style="' + IsEditAllow + '" href="" title="Edit" data-toggle="modal" data-target="#SaveProductStrengthModel" data-backdrop="static" data-keyboard="false"  onclick="GetProductStrengthById(' + object.productStrengthId + '); return false;"><i class="fa fa-fw fa-edit mr-1"></i> ' + '</a> <a class="large-font text-danger" style="' + IsDeleteAllow +'" href="" title="Delete" data-toggle="modal" data-target="#DeleteProductStrengthModel" data-backdrop="static" data-keyboard="false" onclick="ConfirmationDeleteProductStrength(' + object.productStrengthId + '); return false;"><i class="fa fa-fw fa-trash mr-1"></i> ' + '</a>  </td></tr>');
         });

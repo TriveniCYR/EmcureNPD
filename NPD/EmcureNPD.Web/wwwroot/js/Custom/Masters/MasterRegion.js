@@ -11,8 +11,8 @@ function GetCountryListSuccess(data) {
         $.each(data._object, function (index, object) {
             $('#CountryId').append($('<option>').text(object.countryName).attr('value', object.countryId));
             $('#CountryId').select2();
-            $('#CountryId option:eq(0)').val(0);
-            $('#CountryId').val("-");
+            //$('#CountryId option:eq(0)').val(0);
+            //$('#CountryId').val("-");
             $('#CountryId').trigger('change');
         });
     } catch (e) {
@@ -29,7 +29,8 @@ function GetRegionList() {
 }
 function GetRegionListSuccess(data) {
     try {
-        $('#RegionTable tbody').html('')
+        destoryStaticDataTable('#RegionTable');
+        $('#RegionTable tbody').html('');
         $.each(data._object, function (index, object) {
             $('#RegionTable tbody').append('<tr><td>' + object.regionName + '</td><td><span style="color:' + (object.isActive ? "green" : "red") + '">' + (object.isActive ? "Active" : "InActive") + '</span></td><td>  <a class="large-font" style="' + IsEditAllow + '" href="" title="Edit" data-toggle="modal" data-target="#SaveRegionModel" data-backdrop="static" data-keyboard="false"  onclick="GetRegionById(' + object.regionId + '); return false;"><i class="fa fa-fw fa-edit mr-1"></i> ' + '</a> <a class="large-font text-danger" style="' + IsDeleteAllow +'" href="" title="Delete" data-toggle="modal" data-target="#DeleteRegionModel" data-backdrop="static" data-keyboard="false" onclick="ConfirmationDeleteRegion(' + object.regionId + '); return false;"><i class="fa fa-fw fa-trash mr-1"></i> ' + '</a>  </td></tr>');
         });

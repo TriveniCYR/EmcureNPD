@@ -8,7 +8,8 @@ function GetOralList() {
 }
 function GetOralListSuccess(data) {
     try {
-        $('#OralTable tbody').html('')
+        destoryStaticDataTable('#OralTable');
+        $('#OralTable tbody').html('');
         $.each(data._object, function (index, object) {
             $('#OralTable tbody').append('<tr><td>' + object.oralName + '</td><td><span style="color:' + (object.isActive ? "green" : "red") + '">' + (object.isActive ? "Active" : "InActive") + '</span></td><td>  <a class="large-font" style="' + IsEditAllow + '" href="" title="Edit" data-toggle="modal" data-target="#SaveOralModel" data-backdrop="static" data-keyboard="false"  onclick="GetOralById(' + object.oralId + '); return false;"><i class="fa fa-fw fa-edit mr-1"></i> ' + '</a> <a class="large-font text-danger" style="' + IsDeleteAllow +'" href="" title="Delete" data-toggle="modal" data-target="#DeleteOralModel" data-backdrop="static" data-keyboard="false" onclick="ConfirmationDeleteOral(' + object.oralId + '); return false;"><i class="fa fa-fw fa-trash mr-1"></i> ' + '</a>  </td></tr>');
         });

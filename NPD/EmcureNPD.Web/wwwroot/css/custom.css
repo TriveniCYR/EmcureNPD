@@ -105,3 +105,10 @@ table, th, td {
 .card.card-outline-tabs .card-tools {
 margin:auto;
 }
+.select2-container--default .select2-selection--multiple .select2-selection__choice {
+    background-color: #f7f7f7 !important;
+    color: black;
+}
+select.form-control {
+    appearance: auto;
+}
