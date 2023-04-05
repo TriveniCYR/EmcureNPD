@@ -36,7 +36,7 @@ namespace EmcureNPD.Business.Core.Implementation
         {
             ProjectTaskEntity TaskAddModel = new ProjectTaskEntity();
             List<ProjectTaskEntity> mainTasks = new List<ProjectTaskEntity>();
-            var mainTaskList = _projectTaskRepository.GetAll().Where(x => x.TaskLevel == 1).ToList();
+            var mainTaskList = _projectTaskRepository.GetAllQuery().Where(x => x.TaskLevel == 1).ToList();
             foreach (var data in mainTaskList)
             {
                 ProjectTaskEntity temp = new ProjectTaskEntity();
@@ -47,7 +47,7 @@ namespace EmcureNPD.Business.Core.Implementation
             TaskAddModel.Task = mainTasks;
 
             List<MasterUserEntity> taskOwner = new List<MasterUserEntity>();
-            var taskOwnerList = _masterUserRepository.GetAll().ToList();
+            var taskOwnerList = _masterUserRepository.GetAllQuery().Where(x=> x.IsActive == true && x.IsDeleted == false).ToList();
 
             foreach (var data in taskOwnerList)
             {
@@ -61,7 +61,7 @@ namespace EmcureNPD.Business.Core.Implementation
 
             List<MasterProjectStatusEntity> projectStatus = new List<MasterProjectStatusEntity>();
             //List<int> notIDS = new List<int> { 2, 3, 4, 5, 6, 7, 9, 10,12};//status ID array 
-            var projectStatusList = _masterProjectStatusRepository.GetAll().ToList();
+            var projectStatusList = _masterProjectStatusRepository.GetAllQuery().ToList();
 
             foreach (var data in projectStatusList)
             {
@@ -74,7 +74,7 @@ namespace EmcureNPD.Business.Core.Implementation
             TaskAddModel.Status = projectStatus;
 
             List<MasterProjectPriorityEntity> priority = new List<MasterProjectPriorityEntity>();
-            var projectPriorityList = _masterProjectPriorityRepository.GetAll().ToList();
+            var projectPriorityList = _masterProjectPriorityRepository.GetAllQuery().ToList();
 
             foreach (var data in projectPriorityList)
             {
@@ -144,7 +144,7 @@ namespace EmcureNPD.Business.Core.Implementation
         }
         public List<ProjectTaskEntity> GetTaskSubTaskList(long pidfId)
         {
-            List<ProjectTask> projectTasks = _projectTaskRepository.GetAll().Where(x => x.Pidfid == pidfId).ToList();
+            List<ProjectTask> projectTasks = _projectTaskRepository.GetAllQuery().Where(x => x.Pidfid == pidfId).ToList();
             var result = _mapperFactory.GetList<ProjectTask, ProjectTaskEntity>(projectTasks);
             result.ForEach(pt =>
             {
@@ -164,7 +164,7 @@ namespace EmcureNPD.Business.Core.Implementation
                 return DBOperation.NotFound;
             if (entityProject.ParentId == null)
             {
-                var childs = _projectTaskRepository.GetAll().Where(x => x.ParentId == entityProject.ProjectTaskId).ToList();
+                var childs = _projectTaskRepository.GetAllQuery().Where(x => x.ParentId == entityProject.ProjectTaskId).ToList();
                 if (childs.Count > 0)
                 {
                     foreach (var child in childs)
