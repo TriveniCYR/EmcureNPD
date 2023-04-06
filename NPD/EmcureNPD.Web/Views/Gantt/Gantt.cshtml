@@ -1,7 +1,12 @@
-﻿<div id="gantt-chart"></div>
+﻿@using Microsoft.Extensions.Configuration
+@inject IConfiguration Configuration
+@{
+	string jsVersion = @Configuration.GetSection("StaticJS")["version"];
+}
+<div id="gantt-chart"></div>
 @section MyScripts{
     <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
-    <script src="~/js/custom/gantt/gantt.js"></script>
+    <script src="~/js/custom/gantt/gantt.js?v=@jsVersion"></script>
     <script>
         var GetAllTaskSubTaskList = "@EmcureNPD.Web.Helpers.APIURLHelper.GetAllTaskSubTaskList";
     </script>

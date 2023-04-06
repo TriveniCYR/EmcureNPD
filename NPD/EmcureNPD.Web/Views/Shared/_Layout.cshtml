@@ -2,7 +2,9 @@
 @using Microsoft.AspNetCore.Mvc.Localization
 @inject IConfiguration Configuration
 @inject Microsoft.Extensions.Localization.IStringLocalizer<EmcureNPD.Resource.Shared> SharedLocalizer
-
+@{
+    string jsVersion = @Configuration.GetSection("StaticJS")["version"];
+}
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -30,7 +32,7 @@
 	<link rel="stylesheet" href="~/AdminLTE/plugins/toastr/toastr.min.css" />
 
 	<!-- Custom css by developer-->
-	<link rel="stylesheet" href="~/css/custom.css">
+	<link rel="stylesheet" href="~/css/custom.css?v=@jsVersion">
 
 	<!-- IonIcons -->
 	@*<link rel="stylesheet" href="https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css">*@
@@ -122,9 +124,9 @@
 	@*<script src="~/lib/signalr/signalr.js"></script>
 	<script src="~/js/notification.js"></script>*@
 
-	<script type="text/javascript" src="~/js/Custom/main.js"></script>
-	<script type="text/javascript" src="~/js/Custom/CustomDateFormat.js"></script>
-	<script type="text/javascript" src="~/js/Custom/JqueryExtension.js"></script>
+	<script type="text/javascript" src="~/js/Custom/main.js?v=@jsVersion"></script>
+	<script type="text/javascript" src="~/js/Custom/CustomDateFormat.js?v=@jsVersion"></script>
+	<script type="text/javascript" src="~/js/Custom/JqueryExtension.js?v=@jsVersion"></script>
 
 	@await RenderSectionAsync("Scripts", required: false)
 	@await RenderSectionAsync("MyScripts", required: false)
@@ -144,7 +146,7 @@
 	</script>
     
     <script type="text/javascript" src="~/lib/signalr/signalr.js"></script>
-    <script type="text/javascript" src="~/js/Custom/Notification/Notification.js"></script>
+    <script type="text/javascript" src="~/js/Custom/Notification/Notification.js?v=@jsVersion"></script>
    
 
 </body>
