@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 
 namespace EmcureNPD.Web.Models
 {
@@ -32,6 +33,8 @@ namespace EmcureNPD.Web.Models
         public long userId { get; set; } 
         public string managerName { get; set; }
         public string designationName { get; set; }
+        public int statusId { get; set; }
+        public DateTime CreatedDate { get; set; }
     }
     public class HeadWiseBudgetView
     {

@@ -323,7 +323,7 @@ namespace EmcureNPD.Business.Core.Implementation
             var _APIIPDDBEntity = new PidfApiIpd();
             if (_oAPIIPD.APIIPDDetailsFormID > 0)
             {
-                var lastApiIpd = _pidf_API_IPD_repository.GetAll().First(x => x.PidfApiIpdId == _oAPIIPD.APIIPDDetailsFormID);
+                var lastApiIpd = _pidf_API_IPD_repository.GetAllQuery().First(x => x.PidfApiIpdId == _oAPIIPD.APIIPDDetailsFormID);
                 var OldObjAPIIPD = lastApiIpd;
                 if (lastApiIpd != null)
                 {
@@ -387,7 +387,7 @@ namespace EmcureNPD.Business.Core.Implementation
             //PIDFAPIIPDFormEntity _exsistingAPIRnD = new PIDFAPIIPDFormEntity();
             if (_oAPIRnD.PIDFAPIRnDFormID > 0)
             {
-                var lastApiRnD = _pidf_API_RnD_repository.GetAll().First(x => x.PidfApiRnDId == _oAPIRnD.PIDFAPIRnDFormID);
+                var lastApiRnD = _pidf_API_RnD_repository.GetAllQuery().First(x => x.PidfApiRnDId == _oAPIRnD.PIDFAPIRnDFormID);
                 var OldObjAPiIPD = lastApiRnD;
                 if (lastApiRnD != null)
                 {
@@ -451,7 +451,7 @@ namespace EmcureNPD.Business.Core.Implementation
 
             if (_oAPICharter.PIDFAPICharterFormID > 0)
             {
-                var lastApiCharter = _pidf_API_Charter_repository.GetAll().First(x => x.PidfApiCharterId == _oAPICharter.PIDFAPICharterFormID);
+                var lastApiCharter = _pidf_API_Charter_repository.GetAllQuery().First(x => x.PidfApiCharterId == _oAPICharter.PIDFAPICharterFormID);
                 var OldObjAPICharter = lastApiCharter;
                 if (lastApiCharter != null)
                 {
