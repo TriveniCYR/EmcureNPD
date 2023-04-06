@@ -1,6 +1,9 @@
 ﻿@using Microsoft.AspNetCore.Http;
-
-
+@using Microsoft.Extensions.Configuration
+@inject IConfiguration Configuration
+@{
+    string jsVersion = @Configuration.GetSection("StaticJS")["version"];
+}
 <!-- Navbar -->
 <nav class="main-header navbar navbar-expand navbar-white navbar-light">
     <!-- Left navbar links -->
@@ -71,7 +74,7 @@
 <!-- /.navbar -->
 @section MyScripts {
     <script src="~/lib/signalr/signalr.js"></script>
-    <script type="text/javascript" src="~/js/Custom/Notification/Notification.js"></script>
+    <script type="text/javascript" src="~/js/Custom/Notification/Notification.js?v=@jsVersion"></script>
     <script>
         var GetAllNotificationURL = "@EmcureNPD.Web.Helpers.APIURLHelper.GetAllNotification";
     </script>

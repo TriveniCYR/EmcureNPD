@@ -212,7 +212,10 @@ namespace EmcureNPD.Web.Controllers
                             {
 								UserId=item.userId,
                                 ManagerName = item.managerName,
-                                DesignationName=item.designationName
+                                DesignationName=item.designationName,
+								StatusId=item.statusId,
+								CreatedDate=item.CreatedDate
+								
 
                             });
                         }

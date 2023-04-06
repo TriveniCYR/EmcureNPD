@@ -29,6 +29,8 @@ namespace EmcureNPD.Business.Models
         public long UserId { get; set; }
         public string ManagerName { get; set; }
         public string DesignationName { get; set; } 
+        public int StatusId { get; set; }
+        public DateTime CreatedDate { get; set; }
     }
     public class HeadWiseBudget
     {

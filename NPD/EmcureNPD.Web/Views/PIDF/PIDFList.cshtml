@@ -10,8 +10,10 @@
 @using Microsoft.Extensions.Configuration
 @inject IConfiguration Configuration
 @{
+    int CurrentUserId = Helper.GetLoggedInUserId();
     ViewData["Title"] = @MasterLocalizer["PIDF List"];
     string jsVersion = @Configuration.GetSection("StaticJS")["version"];
+   
 }
 <div class="content-header">
     <div class="container-fluid d-flex justify-content-between">
@@ -41,8 +43,10 @@
         <div>
             @if (Context.Request.Query["ScreenId"] == Convert.ToString((int)EmcureNPD.Utility.Enums.PIDFScreen.PIDF) || Context.Request.Query["ScreenId"] == Convert.ToString((int)EmcureNPD.Utility.Enums.PIDFScreen.IPD) || Context.Request.Query["ScreenId"] == Convert.ToString((int)EmcureNPD.Utility.Enums.PIDFScreen.Finance) || Context.Request.Query["ScreenId"] == Convert.ToString((int)EmcureNPD.Utility.Enums.PIDFScreen.Management))
             {
+                <div id="DvApproveReject" style="display:none;">
                 <a class="btn btn-success"  onClick="ApproveRejectPIDF('A', @(Context.Request.Query["ScreenId"]), '/PIDF/PIDFList?ScreenId=@(Context.Request.Query["ScreenId"])')"><i class="fa fa-check-circle mr-1"></i> @SharedLocalizer["Approve"]</a>
                 <a class="btn btn-danger" onClick="ApproveRejectPIDF('R', @(Context.Request.Query["ScreenId"]), '/PIDF/PIDFList?ScreenId=@(Context.Request.Query["ScreenId"])')"><i class="fa fa-ban mr-1"></i> @SharedLocalizer["Reject"]</a>
+                </div>
             }
             @*<a class="btn btn-danger" onClick="approveRejDeleteData('D')"><i class="far fa fa-trash mr-1"></i> @SharedLocalizer["Delete"]</a>*@
             @if (Context.Request.Query["ScreenId"] == Convert.ToString((int)EmcureNPD.Utility.Enums.PIDFScreen.PIDF))
@@ -171,8 +175,9 @@
             </div>
         </div>*@
 
-        @Html.Partial("_PIDFApproveReject")
 
+    @Html.Partial("_PIDFApproveReject")
+    
 @section MyScripts {
 
     @Html.Partial("_DataTablePartial")
@@ -185,7 +190,7 @@
         var AllPIDF = "@EmcureNPD.Web.Helpers.APIURLHelper.GetAllPIDF";
         var ApproveRejectDeletePidf = "@EmcureNPD.Web.Helpers.APIURLHelper.ApproveRejectDeletePidf";
         // #endregion
-
+        const currentUserId = "@CurrentUserId";
         //#region Static Messae Init
         var EditLabel = "@SharedLocalizer["Edit"]";
         var DeleteLabel = "@SharedLocalizer["Delete"]";

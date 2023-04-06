@@ -11,7 +11,7 @@ namespace EmcureNPD.Data.DataAccess.Entity
         public long PbfgeneralId { get; set; }
         public long StrengthId { get; set; }
         public int ActivityTypeId { get; set; }
-        public double? ExicipientPrototype { get; set; }
+        public string ExicipientPrototype { get; set; }
         public double? ExicipientDevelopment { get; set; }
         public double? RsPerKg { get; set; }
         public double? MgPerUnitDosage { get; set; }
