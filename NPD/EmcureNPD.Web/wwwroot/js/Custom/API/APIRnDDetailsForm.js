@@ -69,11 +69,11 @@ $('#imgPreviewMarketdetails').click(function () {
 
 $('#Save').click(function () {
     ValidateForm();
-    $("#SaveType").val('Save');    
+    $("#APIRnD_SaveType").val('Save');    
 });
 $('#SaveDraft').click(function () {
     ValidateForm();
-    $("#SaveType").val('SaveDraft');
+    $("#APIRnD_SaveType").val('SaveDraft');
 });
 function SetDivReadonly() {
     $("#CommercialPIDFScreen").find("input, submit, textarea, a, select").attr("disabled", "disabled");

@@ -255,7 +255,7 @@
         <div class="col-12 text-end">
             <div class="form-group">
                 <button type="submit" class="btn btn-success me-3 outside-buttons operationButton" onClick="SaveIPDClick('Sv');">@SharedLocalizer["Submit"]</button>
-                @if (Model.StatusId == (Int32)Master_PIDFStatus.IPDInProgress)
+                @if (Model.StatusId == (Int32)Master_PIDFStatus.IPDInProgress || Model.StatusId == (Int32)Master_PIDFStatus.PIDFSubmitted|| Model.StatusId == (Int32)Master_PIDFStatus.PIDFApproved)
                 {
                     <button type="submit" class="btn btn-primary me-3 outside-buttons operationButton" onClick="SaveIPDClick('Drf');">@SharedLocalizer["SaveDraft"]</button>
                 }

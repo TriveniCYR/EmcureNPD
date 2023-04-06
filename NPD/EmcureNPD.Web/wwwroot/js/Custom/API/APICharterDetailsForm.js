@@ -25,11 +25,11 @@ function HideSaveAsDraft() {
 
 $('#Save').click(function () {
     ValidateForm();
-    $("#SaveType").val('Save');
+    $("#SaveType_APICharter").val('Save');
 });
 $('#SaveDraft').click(function () {
     ValidateForm();// $("#IsModelValid").val('Valid')
-    $("#SaveType").val('SaveDraft');
+    $("#SaveType_APICharter").val('SaveDraft');
 });
 
 function ValidateForm() {

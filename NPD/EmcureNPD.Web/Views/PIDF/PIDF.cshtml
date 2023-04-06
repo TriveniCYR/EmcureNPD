@@ -41,6 +41,7 @@
 							@Html.LabelFor(model => model.OralId, Master.OralName, new { @class = "control-label" }) <span class="text-danger">*</span>
 							<input type="hidden" id="hdnOralId" value="@Model.OralId" />
 							<select id="OralId" name="OralId" class="form-control readOnlyUpdate" required></select>
+					@Html.ValidationMessageFor(model => model.OralId, "", new { @class = "text-danger" })
 						</div>
 					</div>
 					<div class="col-md-3">
@@ -48,6 +49,7 @@
 							@Html.LabelFor(model => model.UnitofMeasurementId, Master.UnitofMeasurements , new { @class = "control-label" }) <span class="text-danger">*</span>
 							<input type="hidden" id="hdnUnitofMeasurementId" value="@Model.UnitofMeasurementId" />
 							<select id="UnitofMeasurementId" name="UnitofMeasurementId" class="form-control readOnlyUpdate" required></select>
+							@Html.ValidationMessageFor(model => model.UnitofMeasurementId, "", new { @class = "text-danger" })
 						</div>
 					</div>
 					<div class="col-md-3">
@@ -73,6 +75,7 @@
 							@Html.LabelFor(model => model.DosageFormId, Master.DosageForms, new { @class = "control-label" }) <span class="text-danger">*</span>
 							<input type="hidden" id="hdnDosageFormId" value="@Model.DosageFormId" />
 							<select id="DosageFormId" name="DosageFormId" class="form-control readOnlyUpdate" required></select>
+							@Html.ValidationMessageFor(model => model.DosageFormId, "", new { @class = "text-danger" })
 						</div>
 					</div>
 					<div class="col-md-3">
@@ -80,6 +83,8 @@
 							@Html.LabelFor(model => model.MarketExtenstionId, "Market Extension" , new { @class = "control-label" }) <span class="text-danger">*</span>
 							<input type="hidden" id="hdnMarketExtenstionId" value="@Model.MarketExtenstionId" />
 							<select id="MarketExtenstionId" name="MarketExtenstionId" class="form-control readOnlyUpdate" required></select>
+					@Html.ValidationMessageFor(model => model.MarketExtenstionId, "", new { @class = "text-danger" })
+
 						</div>
 					</div>
 					<div class="col-md-3">
@@ -87,6 +92,7 @@
 							@Html.LabelFor(model => model.PackagingTypeId, Master.PackagingTypes , new { @class = "control-label" }) <span class="text-danger">*</span>
 							<input type="hidden" id="hdnPackagingTypeId" value="@Model.PackagingTypeId" />
 							<select id="PackagingTypeId" name="PackagingTypeId" class="form-control readOnlyUpdate" required></select>
+					@Html.ValidationMessageFor(model => model.PackagingTypeId, "", new { @class = "text-danger" })
 						</div>
 					</div>
 					<div class="col-md-3">
@@ -94,6 +100,7 @@
 							@Html.LabelFor(model => model.Diaid, Master.DIAName, new { @class = "control-label" }) <span class="text-danger">*</span>
 							<input type="hidden" id="hdnDiaid" value="@Model.Diaid" />
 							<select id="Diaid" name="Diaid" class="form-control readOnlyUpdate" required></select>
+					@Html.ValidationMessageFor(model => model.Diaid, "", new { @class = "text-danger" })
 						</div>
 						<div class="form-group required" hidden>
 							@Html.LabelFor(model => model.PIDFNO, new { @class = "control-label" })
@@ -109,6 +116,7 @@
 							@Html.LabelFor(model => model.BusinessUnitId, Master.BusinessUnitName , new { @class = "control-label" }) <span class="text-danger">*</span>
 							<input type="hidden" id="hdnBusinessUnitId" value="@Model.BusinessUnitId" />
 							<select id="BusinessUnitId" name="BusinessUnitId" class="form-control readOnlyUpdate" required></select>
+					@Html.ValidationMessageFor(model => model.BusinessUnitId, "", new { @class = "text-danger" })
 						</div>
 					</div>
 					<div class="col-md-3">
@@ -117,6 +125,7 @@
 							<input type="hidden" id="hdnInhouseDropdownId" value="@(Model.InHouses ? "1" : "2")" checked="@(Model.InHouses ? "checked" : "")" />
 							<input type="checkbox" id="InHouses" name="InHouses" value="@(Model.InHouses)" style="display:none;" />
 							<select id="InhouseDropdownId" name="InhouseDropdownId" class="form-control readOnlyUpdate" required></select>
+							
 						</div>
 					</div>
 
@@ -184,6 +193,7 @@
 																<div class="form-group required">
 																	<input type="hidden" id="hdnProductStrengthUnit" value="@Model.pidfProductStregthEntities[i].UnitofMeasurementId" />
 																	<select id="productStrengthUnit_0" name="pidfProductStregthEntities[@i].UnitofMeasurementId" class="form-control readOnlyUpdate productStrengthUnit" required></select>
+															@Html.ValidationMessageFor(model => model.pidfProductStregthEntities[i].UnitofMeasurementId, "", new { @class = "text-danger" })
 																</div>
 															</div>
 														</td>
@@ -217,6 +227,7 @@
 													<div class="col-md">
 														<div class="form-group required">
 															<select id="productStrengthUnit_@j" name="pidfProductStregthEntities[@j].UnitofMeasurementId" class="form-control readOnlyUpdate productStrengthUnit" required></select>
+												@Html.ValidationMessageFor(model => model.pidfProductStregthEntities[j].UnitofMeasurementId, "", new { @class = "text-danger" })
 														</div>
 													</div>
 												</td>
@@ -281,6 +292,7 @@
 																<div class="form-group required">
 																	<input type="hidden" id="hdnAPISourcing" value="@Model.pidfApiDetailEntities[j].ApisourcingId" />
 																	<select id="apiSourcingData_0" name="pidfApiDetailEntities[@j].ApisourcingId" class="form-control readOnlyUpdate productApiSourcing" required></select>
+															@Html.ValidationMessageFor(model => model.pidfApiDetailEntities[j].ApisourcingId, "", new { @class = "text-danger" })
 																</div>
 															</div>
 														</td>
@@ -320,6 +332,7 @@
 													<div class="col-md">
 														<div class="form-group required">
 															<select id="apiSourcingData_@j" name="pidfApiDetailEntities[@j].ApisourcingId" class="form-control readOnlyUpdate productApiSourcing" required></select>
+													@Html.ValidationMessageFor(model => model.pidfApiDetailEntities[j].ApisourcingId, "", new { @class = "text-danger" })
 														</div>
 													</div>
 												</td>
@@ -385,6 +398,7 @@
 											@Html.LabelFor(model => model.RFDCountryId, Master.Countrys , new { @class = "control-label" }) <span class="text-danger">*</span>
 											<input type="hidden" id="hdnRFDCountryId" value="@Model.RFDCountryId" />
 											<select id="RFDCountryId" name="RFDCountryId" class="form-control" required></select>
+									@Html.ValidationMessageFor(model => model.RFDCountryId, "", new { @class = "text-danger" })
 										</div>
 									</div>
 									<div class="col-md-3">

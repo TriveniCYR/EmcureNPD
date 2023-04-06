@@ -40,6 +40,10 @@ $("[id*='].Strength']").blur(function () {
     var strengthval = $(this).val();
     $(this).val($.trim(strengthval));
 })
+$("[id*='__Apiname']").blur(function () {
+    var textboxval = $(this).val();
+    $(this).val($.trim(textboxval));
+})
 function GetCountryByBusinessUnitSuccess(data) {
     try {
         $('#RFDCountryId').find('option').remove()
