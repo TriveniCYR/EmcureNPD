@@ -1,4 +1,6 @@
 ﻿@using EmcureNPD.Utility.Models
+@using Microsoft.Extensions.Configuration
+@inject IConfiguration Configuration
 @{
 	var pidfid = ViewBag.id;
 	ViewData["Title"] = "Medical";
@@ -6,6 +8,7 @@
 	string IsAddAllow = (objPermssion.Add) ? "" : "display: none";
 	string IsEditAllow = (objPermssion.Edit) ? "" : "display: none";
 	string IsDeleteAllow = (objPermssion.Delete) ? "" : "display: none";
+	string jsVersion = @Configuration.GetSection("StaticJS")["version"];
 }
 @model EmcureNPD.Business.Models.PIDFMedicalViewModel;
 
@@ -122,7 +125,7 @@
 
 @section MyScripts {
     <script src="/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
-	<script src="~/js/custom/medical/medical.js"></script>
+	<script src="~/js/custom/medical/medical.js?v=@jsVersion"></script>
 	<script>
 		var pidid = @Html.Raw(Json.Serialize(pidfid));
 		var _PIDFID = "@Model.Pidfid";

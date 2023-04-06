@@ -1,8 +1,11 @@
 ﻿@using EmcureNPD.Utility.Models;
 @inject Microsoft.Extensions.Localization.IStringLocalizer<EmcureNPD.Resource.Shared> SharedLocalizer
+@using Microsoft.Extensions.Configuration
+@inject IConfiguration Configuration
 @{
     ViewData["Title"] = "Project Show Details";
     var id = ViewBag.bid;
+    string jsVersion = @Configuration.GetSection("StaticJS")["version"];
     //RolePermissionModel objPermssion = (RolePermissionModel)ViewBag.Access;
     //string IsAddAllow = (objPermssion.Add) ? "" : "display: none";
     //string IsEditAllow = (objPermssion.Edit) ? "" : "display: none";
@@ -557,7 +560,7 @@
 
 @section MyScripts {
     @Html.Partial("_DataTablePartial")
-    <script src="~/js/custom/project/projectmanagement.js"></script>
+    <script src="~/js/custom/project/projectmanagement.js?v=@jsVersion"></script>
     <script>
         var FillTaskDropdown = "@EmcureNPD.Web.Helpers.APIURLHelper.FillTaskDropdown";
         var DeleteTasksubTask = "@EmcureNPD.Web.Helpers.APIURLHelper.DeleteTaskSubTAsk";
