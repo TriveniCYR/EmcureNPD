@@ -298,18 +298,7 @@ $(document).ready(function () {
         var _MPCRows = $('.manpowercost_' + _BioStudyTypeId + '').find("[data-activityid=" + _activityId + "]");;
         var DurationInDays = parseFloat(_MPCRows.find(".rndMPCDurationInDays" + _activityId).val() == "" ? 0 : _MPCRows.find(".rndMPCDurationInDays" + _activityId).val());
         var ManPowerInDays = parseFloat(_MPCRows.find(".rndMPCManPowerInDays" + _activityId).val() == "" ? 0 : _MPCRows.find(".rndMPCManPowerInDays" + _activityId).val());
-        //var Activity1 = parseFloat(_MPCRows.find(".rndMPCActivity1").val() == "" ? 0 : _MPCRows.find(".rndMPCActivity1").val());
-        //var Activity2 = parseFloat(_MPCRows.find(".rndMPCActivity2").val() == "" ? 0 : _MPCRows.find(".rndMPCActivity2").val());
-        //var Activity3 = parseFloat(_MPCRows.find(".rndMPCActivity3").val() == "" ? 0 : _MPCRows.find(".rndMPCActivity3").val());
-        //var Activity4 = parseFloat(_MPCRows.find(".rndMPCActivity4").val() == "" ? 0 : _MPCRows.find(".rndMPCActivity4").val());
-        //var Activity5 = parseFloat(_MPCRows.find(".rndMPCActivity5").val() == "" ? 0 : _MPCRows.find(".rndMPCActivity5").val());
-        //var Activity6 = parseFloat(_MPCRows.find(".rndMPCActivity6").val() == "" ? 0 : _MPCRows.find(".rndMPCActivity6").val());
-        //var Activity7 = parseFloat(_MPCRows.find(".rndMPCActivity7").val() == "" ? 0 : _MPCRows.find(".rndMPCActivity7").val());
-        //var Activity8 = parseFloat(_MPCRows.find(".rndMPCActivity8").val() == "" ? 0 : _MPCRows.find(".rndMPCActivity8").val());
-        //var Activity9 = parseFloat(_MPCRows.find(".rndMPCActivity9").val() == "" ? 0 : _MPCRows.find(".rndMPCActivity9").val());
-        //var Activity10 = parseFloat(_MPCRows.find(".rndMPCActivity10").val() == "" ? 0 : _MPCRows.find(".rndMPCActivity10").val());
-        //var Activity11 = parseFloat(_MPCRows.find(".rndMPCActivity11").val() == "" ? 0 : _MPCRows.find(".rndMPCActivity11").val());
-
+       
         var strength = Math.round((DurationInDays) * (ManPowerInDays));
         $(this).parent().parent().find(".sumstrength").val(strength);
 
@@ -326,7 +315,7 @@ $(document).ready(function () {
         $(this).parent().parent().find(".TotalStrength").val(_Sum);
        
        
-
+        //duration in days sum
         var _SumDurationindays = 0;
         $.each($('.rndMPCDurationInDays'), function (index, item) {
             var _activityId = $(item).parent().attr("data-activityid");
@@ -335,6 +324,7 @@ $(document).ready(function () {
 
         $('.manpowercost_' + _BioStudyTypeId + 'Total').find(".calcDurationInDaysTotal").val(_SumDurationindays);
 
+        //strength sum
         var _SumStrengths = 0;
         var _Sumprototype = 0;
         var _SumScaleup = 0;
@@ -356,49 +346,6 @@ $(document).ready(function () {
        
         _SumStrengths = ((_Sumprototype) + (_SumExhibit) + (_SumScaleup))
         $('.manpowercost_' + _BioStudyTypeId + 'Total').find(".calcTotalCostForStrength").val(_SumStrengths);
-
-        ////prototype cost
-        //var prototypecost = (manhourrate * (Prototype == "" ? 0 : parseFloat(Prototype)));
-        //$('.manpowercost_' + _BioStudyTypeId).find("[data-strengthid=" + _StrengthId + "]").find(".calcRNDApirequirementsPrototypeCost").val(prototypecost);
-        ////scale up cost
-        //var scaleupcost = (manhourrate * (ScaleUp == "" ? 0 : parseFloat(ScaleUp)));
-        //$('.manpowercost_' + _BioStudyTypeId).find("[data-strengthid=" + _StrengthId + "]").find(".calcRNDApirequirementsScaleUpCost").val(scaleupcost);
-        ////exhibit cost
-        //var exhibitcost = ((manhourrate * ((ExhibitBatch1 == "" ? 0 : parseFloat(ExhibitBatch1)) + (ExhibitBatch2 == "" ? 0 : parseFloat(ExhibitBatch2)) + (ExhibitBatch3 == "" ? 0 : parseFloat(ExhibitBatch3)))));
-        //$('.manpowercost_' + _BioStudyTypeId).find("[data-strengthid=" + _StrengthId + "]").find(".calcRNDApirequirementsExhibitBatchCost").val(exhibitcost);
-
-        //// formula to calculate the total cost for one strength (all the properties) (one column)
-        //var totalapirequirement = ((prototypecost == "" ? 0 : parseFloat(prototypecost)) + ((scaleupcost == "" ? 0 : parseFloat(scaleupcost)) + ((exhibitcost == "" ? 0 : parseFloat(exhibitcost)))));
-        //// set total for all the property in the table for one strength
-        //$('.manpowercost_' + _BioStudyTypeId + 'Total').find("[data-strengthid=" + _StrengthId + "]").find(".calcTotalCostForStrength").val(totalapirequirement);
-
-        //var _TotalSum = 0;
-        //$.each($('.manpowercost_' + _BioStudyTypeId + 'Total').find(".calcTotalCostForStrength"), function (index, item) {
-        //    _TotalSum += parseFloat(($(item).val() == "" ? 0 : $(item).val()));
-        //});
-
-        // set total for all the property in the table
-        //$('.manpowercost_' + _BioStudyTypeId + 'Total').find(".calcDurationInDaysTotal").val(totalmanpowerindays == "" ? 0 : totalmanpowerindays);
-
-        //var _TotalBatchSizeSum = 0;
-        //$.each($('.calcTotalCostForStrength'), function (index, item) {
-        //    _TotalBatchSizeSum += parseFloat(($(item).val() == "" ? 0 : $(item).val()));
-        //});
-
-        //var _TotalBatchSizeCost = 0;
-        //$.each($('.totalBatchSizeCost'), function (index, item) {
-        //    var _strengthId = $(item).parent().attr("data-strengthid");
-        //    var _TotalBatchSizeSum = 0;
-        //    $.each($('.calcTotalCostForStrength'), function (i, it) {
-        //        var _childStrengthId = $(it).parent().attr("data-strengthid");
-        //        if (_childStrengthId == _strengthId) {
-        //            _TotalBatchSizeSum += parseFloat(($(it).val() == "" ? 0 : $(it).val()));
-        //        }
-        //    });
-        //    $(item).val(_TotalBatchSizeSum);
-        //    _TotalBatchSizeCost += _TotalBatchSizeSum;
-        //});
-        //$('.totalBatchSizeTotal').val(_TotalBatchSizeCost);
     });
 });
 
