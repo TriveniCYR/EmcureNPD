@@ -590,19 +590,42 @@
                     foreach (var item in Model.lsManager)
                     {
                         <div class="col-4 text-center mt-5">
-                            @if (item.UserId == CurrentUserId) //CurrentUserId)1048
+                        @if (item.UserId == CurrentUserId && ((Int32)item.StatusId != (Int32)Master_PIDFStatus.ManagementApproved && (Int32)item.StatusId != (Int32)Master_PIDFStatus.ManagementRejected)) //CurrentUserId)1048
                             {
 
                             <a class="btn btn-success operationButton" onClick="ApproveRejectClick('A', '@PidfNumber', @((int)EmcureNPD.Utility.Enums.PIDFScreen.Management), '/PIDF/PIDFList?ScreenId=@((int)EmcureNPD.Utility.Enums.PIDFScreen.Management)')"><i class="fa fa-check-circle mr-1"></i> @SharedLocalizer["Approve"]</a>
                             <a class="btn btn-danger  operationButton" onClick="ApproveRejectClick('R', '@PidfNumber', @((int)EmcureNPD.Utility.Enums.PIDFScreen.Management), '/PIDF/PIDFList?ScreenId=@((int)EmcureNPD.Utility.Enums.PIDFScreen.Management)')"><i class="fa fa-ban mr-1"></i> @SharedLocalizer["Reject"]</a>
-                            }
-                            <h6 class="m-0 fw-bold">@item.ManagerName</h6>
+                        }
+                        else if (item.UserId == CurrentUserId && (Int32)item.StatusId == (Int32)Master_PIDFStatus.ManagementApproved)
+                        {
+                            <span class="btn btn-success">
+                                Approved On:[@item.CreatedDate]
+                            </span>
+                        }
+                        else if (item.UserId == CurrentUserId && (Int32)item.StatusId == (Int32)Master_PIDFStatus.ManagementRejected)
+                        {
+                            <span class="btn btn-danger">
+                               Rejected On:[@item.CreatedDate]
+                            </span>
+                        }
+                        <h6 class="m-0 fw-bold">@item.ManagerName</h6>
                             <p class="m-0 fw-bold">@item.DesignationName</p>
                         </div>
                       
                     }
                 }
             </div>
+            <div class="text-right">
+                <div class="row">
+                    <div class="col-md-11"></div>
+                    <div class="col-md-1">
+                    <a class="btn btn-danger" href="@Url.Action("PIDFList","PIDF", new { ScreenId=Convert.ToString((int)EmcureNPD.Utility.Enums.PIDFScreen.Management)})">
+                        Cancel
+                    </a>
+                    </div>
+                </div>
+        </div>
+    </div>
             @Html.Partial("_PIDFApproveReject")
         </div>
     </div>
