@@ -8,7 +8,8 @@ function GetUnitofMeasurementList() {
 }
 function GetUnitofMeasurementListSuccess(data) {
     try {
-        $('#UnitofMeasurementTable tbody').html('')
+        destoryStaticDataTable('#UnitofMeasurementTable');
+        $('#UnitofMeasurementTable tbody').html('');
         $.each(data._object, function (index, object) {
             $('#UnitofMeasurementTable tbody').append('<tr><td>' + object.unitofMeasurementName + '</td><td><span style="color:' + (object.isActive ? "green" : "red") + '">' + (object.isActive ? "Active" : "InActive") + '</span></td><td>  <a class="large-font" style="' + IsEditAllow + '" href="" title="Edit" data-toggle="modal" data-target="#SaveUnitofMeasurementModel" data-backdrop="static" data-keyboard="false"  onclick="GetUnitofMeasurementById(' + object.unitofMeasurementId + '); return false;"><i class="fa fa-fw fa-edit mr-1"></i> ' + '</a> <a class="large-font text-danger" style="' + IsDeleteAllow +'" href="" title="Delete" data-toggle="modal" data-target="#DeleteUnitofMeasurementModel" data-backdrop="static" data-keyboard="false" onclick="ConfirmationDeleteUnitofMeasurement(' + object.unitofMeasurementId + '); return false;"><i class="fa fa-fw fa-trash mr-1"></i> ' + '</a>  </td></tr>');
         });

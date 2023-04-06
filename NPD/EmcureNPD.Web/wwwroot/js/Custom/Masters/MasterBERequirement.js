@@ -8,7 +8,8 @@ function GetBERequirementList() {
 }
 function GetBERequirementListSuccess(data) {
     try {
-        $('#BERequirementTable tbody').html('')
+        destoryStaticDataTable('#BERequirementTable');
+        $('#BERequirementTable tbody').html('');
         $.each(data._object, function (index, object) {
             $('#BERequirementTable tbody').append('<tr><td>' + object.beRequirementName + '</td><td><span style="color:' + (object.isActive ? "green" : "red") + '">' + (object.isActive ? "Active" : "InActive") + '</span></td><td>  <a class="large-font" style="' + IsEditAllow + '" href="" title="Edit" data-toggle="modal" data-target="#SaveBERequirementModel" data-backdrop="static" data-keyboard="false"  onclick="GetBERequirementById(' + object.beRequirementId + '); return false;"><i class="fa fa-fw fa-edit mr-1"></i> ' + '</a> <a class="large-font text-danger" style="' + IsDeleteAllow +'" href="" title="Delete" data-toggle="modal" data-target="#DeleteBERequirementModel" data-backdrop="static" data-keyboard="false" onclick="ConfirmationDeleteBERequirement(' + object.beRequirementId + '); return false;"><i class="fa fa-fw fa-trash mr-1"></i> ' + '</a>  </td></tr>');
         });

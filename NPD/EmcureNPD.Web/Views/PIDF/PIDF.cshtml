@@ -24,6 +24,7 @@
             <div class="content-header">
                 <h2 class="m-0" id="hPIDFTitle">Product Identification Form</h2>
             </div>
+								@Html.Partial("_PIDFApproveReject")
 }
             <div class="container-fluid background-white-card" id="dvPIDFContainer">
 				<input type="hidden" id="hdnPIDFId" value="@(Model.PIDFID)" />
@@ -532,9 +533,6 @@
 							</div>
 						</div>
 					</div>*@
-				
-					@Html.Partial("_PIDFApproveReject")
-
 				<div class="row" id="pidfButtonhide">
 					<div class="col-12 text-end">
 						<div class="form-group">

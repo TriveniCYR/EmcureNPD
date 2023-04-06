@@ -155,6 +155,7 @@ namespace EmcureNPD.Web.Controllers
                                 new Claim("Email", oUserDetail.Email),
                                 new Claim("UserId", Convert.ToString(oUserDetail.UserId)),
                                 new Claim("RoleId", Convert.ToString(oUserDetail.RoleId)),
+                                new Claim("IsManagement", oUserDetail.IsManagement.ToString()),
                                 new Claim("AssignedBusinessUnit", oUserDetail.AssignedBusinessUnit)
                             };
 

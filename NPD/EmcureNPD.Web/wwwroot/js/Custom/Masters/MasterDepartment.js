@@ -12,8 +12,8 @@ function GetBusinessUnitListSuccess(data) {
         $.each(data._object, function (index, object) {
             $('#DepartmentBusinessUnitMappingId').append($('<option>').text(object.businessUnitName).attr('value', object.businessUnitId));
             $('#DepartmentBusinessUnitMappingId').select2();
-            $('#DepartmentBusinessUnitMappingId option:eq(0)').val(0);
-            $('#DepartmentBusinessUnitMappingId').val("-");
+            //$('#DepartmentBusinessUnitMappingId option:eq(0)').val(0);
+            //$('#DepartmentBusinessUnitMappingId').val("-");
             $('#DepartmentBusinessUnitMappingId').trigger('change');
         });
     } catch (e) {
@@ -31,7 +31,8 @@ function GetDepartmentList() {
 }
 function GetDepartmentListSuccess(data) {
     try {
-        $('#DepartmentTable tbody').html('')
+        destoryStaticDataTable('#DepartmentTable');
+        $('#DepartmentTable tbody').html('');
         $.each(data._object, function (index, object) {
             $('#DepartmentTable tbody').append('<tr><td>' + object.departmentName + '</td><td><span style="color:' + (object.isActive ? "green" : "red") + '">' + (object.isActive ? "Active" : "InActive") + '</span></td><td>  <a class="large-font" style="' + IsEditAllow + '" href="" title="Edit" data-toggle="modal" data-target="#SaveDepartmentModel" data-backdrop="static" data-keyboard="false"  onclick="GetDepartmentById(' + object.departmentId + '); return false;"><i class="fa fa-fw fa-edit mr-1"></i> ' + '</a> <a class="large-font text-danger" style="' + IsDeleteAllow +'" href="" title="Delete" data-toggle="modal" data-target="#DeleteDepartmentModel" data-backdrop="static" data-keyboard="false" onclick="ConfirmationDeleteDepartment(' + object.departmentId + '); return false;"><i class="fa fa-fw fa-trash mr-1"></i> ' + '</a>  </td></tr>');
         });

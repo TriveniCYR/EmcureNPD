@@ -8,7 +8,8 @@ function GetProductTypeList() {
 }
 function GetProductTypeListSuccess(data) {
     try {
-        $('#ProductTypeTable tbody').html('')
+        destoryStaticDataTable('#ProductTypeTable');
+        $('#ProductTypeTable tbody').html('');
         $.each(data._object, function (index, object) {
             $('#ProductTypeTable tbody').append('<tr><td>' + object.productTypeName + '</td><td><span style="color:' + (object.isActive ? "green" : "red") + '">' + (object.isActive ? "Active" : "InActive") + '</span></td><td>  <a class="large-font" style="' + IsEditAllow + '" href="" title="Edit" data-toggle="modal" data-target="#SaveProductTypeModel" data-backdrop="static" data-keyboard="false"  onclick="GetProductTypeById(' + object.productTypeId + '); return false;"><i class="fa fa-fw fa-edit mr-1"></i> ' + '</a> <a class="large-font text-danger" style="' + IsDeleteAllow +'" href="" title="Delete" data-toggle="modal" data-target="#DeleteProductTypeModel" data-backdrop="static" data-keyboard="false" onclick="ConfirmationDeleteProductType(' + object.productTypeId + '); return false;"><i class="fa fa-fw fa-trash mr-1"></i> ' + '</a>  </td></tr>');
         });

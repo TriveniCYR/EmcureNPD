@@ -84,7 +84,7 @@ namespace EmcureNPD.Business.Core.Implementation
 					{
 						return DBOperation.Error;
 					}
-					var MedicalFile = _pidfMedicalFilerepository.GetAll().Where(x => x.PidfmedicalId == medicalModel.PidfmedicalId).ToList();
+					var MedicalFile = _pidfMedicalFilerepository.GetAllQuery().Where(x => x.PidfmedicalId == medicalModel.PidfmedicalId).ToList();
 					foreach (var item in MedicalFile)
 					{
 						var fullPath = path + "\\" + item.FileName;
@@ -276,7 +276,7 @@ namespace EmcureNPD.Business.Core.Implementation
 			if (objData != null && objData.Count > 0)
 			{
 				data = _mapperFactory.Get<PidfMedical, PIDFMedicalViewModel>(objData[0]);
-				var medicalFileData = _pidfMedicalFilerepository.GetAll().Where(x => x.PidfmedicalId == data.PidfmedicalId).ToList();
+				var medicalFileData = _pidfMedicalFilerepository.GetAllQuery().Where(x => x.PidfmedicalId == data.PidfmedicalId).ToList();
 				int i = 0;
 				data.FileName = new string[medicalFileData.Count];
 				foreach (var item in medicalFileData)

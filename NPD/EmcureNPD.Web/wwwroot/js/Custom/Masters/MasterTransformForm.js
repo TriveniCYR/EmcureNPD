@@ -8,7 +8,8 @@ function GetTransformList() {
 }
 function GetTransformListSuccess(data) {
     try {
-        $('#TransformTable tbody').html('')
+        destoryStaticDataTable('#TransformTable');
+        $('#TransformTable tbody').html('');
         $.each(data._object, function (index, object) {
             $('#TransformTable tbody').append('<tr><td>' + object.transformName + '</td><td><span style="color:' + (object.isActive ? "green" : "red") + '">' + (object.isActive ? "Active" : "InActive") + '</span></td><td>  <a class="large-font" style="' + IsEditAllow + '" href="" title="Edit" data-toggle="modal" data-target="#SaveTransformModel" data-backdrop="static" data-keyboard="false"  onclick="GetTransformById(' + object.transformId + '); return false;"><i class="fa fa-fw fa-edit mr-1"></i> ' + '</a> <a class="large-font text-danger" style="' + IsDeleteAllow +'" href="" title="Delete" data-toggle="modal" data-target="#DeleteTransformModel" data-backdrop="static" data-keyboard="false" onclick="ConfirmationDeleteTransform(' + object.transformId + '); return false;"><i class="fa fa-fw fa-trash mr-1"></i> ' + '</a>  </td></tr>');
         });

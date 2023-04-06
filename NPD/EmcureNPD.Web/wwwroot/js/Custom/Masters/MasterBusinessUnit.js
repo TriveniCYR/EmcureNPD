@@ -11,8 +11,8 @@ function GetRegionListSuccess(data) {
         $.each(data._object, function (index, object) {
             $('#RegionId').append($('<option>').text(object.regionName).attr('value', object.regionId));
             $('#RegionId').select2();
-            $('#RegionId option:eq(0)').val(0);
-            $('#RegionId').val("-");
+            //$('#RegionId option:eq(0)').val(0);
+            //$('#RegionId').val("-");
             $('#RegionId').trigger('change');
         });
     } catch (e) {
@@ -29,7 +29,8 @@ function GetBusinessUnitList() {
 }
 function GetBusinessUnitListSuccess(data) {
     try {
-        $('#BusinessUnitTable tbody').html('')
+        destoryStaticDataTable('#BusinessUnitTable');
+        $('#BusinessUnitTable tbody').html('');
         $.each(data._object, function (index, object) {
             $('#BusinessUnitTable tbody').append('<tr><td>' + object.businessUnitName + '</td><td><span style="color:' + (object.isActive ? "green" : "red") + '">' + (object.isActive ? "Active" : "InActive") + '</span></td><td>  <a class="large-font" style="' + IsEditAllow + '" href="" title="Edit" data-toggle="modal" data-target="#SaveBusinessUnitModel" data-backdrop="static" data-keyboard="false"  onclick="GetBusinessUnitById(' + object.businessUnitId + '); return false;"><i class="fa fa-fw fa-edit mr-1"></i> ' + '</a><a class="large-font text-danger" style="' + IsDeleteAllow +'" href="" title="Delete" data-toggle="modal" data-target="#DeleteBusinessUnitModel" data-backdrop="static" data-keyboard="false" onclick="ConfirmationDeleteBusinessUnit(' + object.businessUnitId + '); return false;"><i class="fa fa-fw fa-trash mr-1"></i> ' + '</a>  </td></tr>');
         });

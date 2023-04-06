@@ -34,7 +34,7 @@ namespace EmcureNPD.Business.Core.Implementation
 		{
 			PidfPbfRnD objpidfPbfRnD;
 			var loggedInUserId = _helper.GetLoggedInUser().UserId;
-			objpidfPbfRnD = _pidfPbfRnDRepository.GetAll().Where(x => x.PidfpbfrnDid == EntitypidfRnd.PidfpbfrnDid).First();
+			objpidfPbfRnD = _pidfPbfRnDRepository.GetAllQuery().Where(x => x.PidfpbfrnDid == EntitypidfRnd.PidfpbfrnDid).First();
 			if (objpidfPbfRnD != null)
 			{
 				//objpidfPbfRnD.ExicipientProtoype.CreatedDate = DateTime.UtcNow;

@@ -73,11 +73,11 @@ namespace EmcureNPD.API.Controllers.Masters
         /// <response code="405">Method Not Allowed</response>
         /// <response code="500">Internal Server</response>
         [HttpPost, Route("GetAllPIDFList")]
-        public async Task<IActionResult> GetAllPIDFList([FromForm] DataTableAjaxPostModel model)
+        public async Task<IActionResult> GetAllPIDFList([FromForm] DataTableAjaxPostModel model, int ScreenId)
         {
             try
             {
-                return _ObjectResponse.CreateData(await _PIDFService.GetAllPIDFList(model), (Int32)HttpStatusCode.OK);
+                return _ObjectResponse.CreateData(await _PIDFService.GetAllPIDFList(model, ScreenId), (Int32)HttpStatusCode.OK);
             }
             catch (Exception ex)
             {

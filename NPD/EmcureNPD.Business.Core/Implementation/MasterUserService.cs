@@ -87,6 +87,7 @@ namespace EmcureNPD.Business.Core.ServiceImplementations
                 oUser.UserId = Convert.ToInt32(UserList.Rows[0]["UserId"]);
                 oUser.Email = Convert.ToString(UserList.Rows[0]["EmailAddress"]);
                 oUser.RoleId = Convert.ToInt32(UserList.Rows[0]["RoleId"]);
+                oUser.IsManagement = Convert.ToBoolean(UserList.Rows[0]["IsManagement"]);
                 oUser.AssignedBusinessUnit = Convert.ToString(UserList.Rows[0]["AssignedBusinessUnit"]);
             }
             return oUser;
@@ -213,10 +214,10 @@ namespace EmcureNPD.Business.Core.ServiceImplementations
             var _userEntity = new MasterUserEntity();
             _userEntity = _mapperFactory.Get<MasterUser, MasterUserEntity>(await _repository.GetAsync(id));
 
-            _userEntity.BusinessUnitIds = string.Join(',', _masterUserBusinessUnitMappingrepository.GetAll().Where(x => x.UserId == id).Select(x => x.BusinessUnitId));
-            _userEntity.RegionIds = string.Join(',', _masterUserRegionMappingrepository.GetAll().Where(x => x.UserId == id).Select(x => x.RegionId));
-            _userEntity.CountryIds = string.Join(',', _masterUserCountryMappingrepository.GetAll().Where(x => x.UserId == id).Select(x => x.CountryId));
-            _userEntity.DepartmentIds = string.Join(',', _masterUserDepartmentMappingrepository.GetAll().Where(x => x.UserId == id).Select(x => x.DepartmentId));
+            _userEntity.BusinessUnitIds = string.Join(',', _masterUserBusinessUnitMappingrepository.GetAllQuery().Where(x => x.UserId == id).Select(x => x.BusinessUnitId));
+            _userEntity.RegionIds = string.Join(',', _masterUserRegionMappingrepository.GetAllQuery().Where(x => x.UserId == id).Select(x => x.RegionId));
+            _userEntity.CountryIds = string.Join(',', _masterUserCountryMappingrepository.GetAllQuery().Where(x => x.UserId == id).Select(x => x.CountryId));
+            _userEntity.DepartmentIds = string.Join(',', _masterUserDepartmentMappingrepository.GetAllQuery().Where(x => x.UserId == id).Select(x => x.DepartmentId));
 
             return _userEntity;
         }

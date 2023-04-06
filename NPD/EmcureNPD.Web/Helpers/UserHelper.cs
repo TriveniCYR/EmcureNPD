@@ -11,6 +11,7 @@
         public static string ErrorMessage = "ErrorMessage";
         public static string SuccessMessage = "SuccessMessage";
         public static string AssignedBusinessUnit = "AssignedBusinessUnit";
-        
+        public static string IsManagement = "IsManagement";
+
     }
 }
