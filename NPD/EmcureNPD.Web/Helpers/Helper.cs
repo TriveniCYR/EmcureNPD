@@ -21,7 +21,14 @@ namespace EmcureNPD.Web.Helpers
         }
         public int GetLoggedInRoleId()
         {
-            return Convert.ToInt32(_httpContextAccessor.HttpContext.Session.GetString(UserHelper.LoggedInRoleId));
+            try
+            {
+                return Convert.ToInt32(_httpContextAccessor.HttpContext.Session.GetInt32(UserHelper.LoggedInRoleId));
+            }
+            catch (Exception ex)
+            {
+                return 0;
+            }
         }
         public string IsManagementUser()
         {
