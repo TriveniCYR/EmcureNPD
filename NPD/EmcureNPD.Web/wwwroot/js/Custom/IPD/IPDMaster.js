@@ -181,10 +181,10 @@ function SetDisableForOtherUserBU(_selectBusinessUnit) {
     var status = UserwiseBusinessUnit.indexOf(BUval);
    // var IsViewInMode = ($("#IsView").val() == '1')
     if (status == -1) {
-        readOnlyIPDFormForOtherBU(true);
+        readOnlyIPDForm();// readOnlyIPDFormForOtherBU(true);
     }
-    else
-        readOnlyIPDFormForOtherBU(false);
+   
+        //readOnlyIPDFormForOtherBU(false);
 }
 
 function readOnlyIPDFormForOtherBU(flag) {    

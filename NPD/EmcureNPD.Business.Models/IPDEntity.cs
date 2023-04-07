@@ -16,7 +16,7 @@ namespace EmcureNPD.Business.Models
         public int BusinessUnitId { get; set; }
 
         [Required(ErrorMessageResourceType = typeof(Validation), ErrorMessageResourceName = "Required")]
-        [Display(Name = "MarketName")]
+        [Display(Name = "Market Name")]
         public string MarketName { get; set; }
 
         [Required(ErrorMessageResourceType = typeof(Validation), ErrorMessageResourceName = "Required")]

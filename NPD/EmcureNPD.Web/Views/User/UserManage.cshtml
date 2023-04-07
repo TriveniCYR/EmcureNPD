@@ -28,7 +28,7 @@
 
         <div class="row">
 
-                <div class="col-3 mb-4">
+                <div class="col-4 mb-4">
                     <div class="form-group required">
                         @Html.LabelFor(model => model.FullName,"Full Name", new { @class = "control-label" })
                     <span class="text-danger">*</span>
@@ -36,7 +36,24 @@
                         @Html.ValidationMessageFor(model => model.FullName, "", new { @class = "text-danger" })
                     </div>
                 </div>
-                <div class="col-3 mb-4">
+                <div class="col-4 mb-4">
+                    <div class="form-group required">
+                    @Html.LabelFor(model => model.EmailAddress, @SharedLocalizer["EmailAddress"],new { @class = "control-label" })
+                        @Html.TextBoxFor(model => model.EmailAddress, new { @autocomplete = "off", @class = "form-control checkbox-checked readOnlyUpdate", @placeholder = @SharedLocalizer["EmailAddress"] })
+                        @*@Html.ValidationMessageFor(model => model.EmailAddress, "", new { @class = "text-danger" })*@
+                        @Html.ValidationMessage("EmailExist", new { @class = "text-danger" })
+                    @Html.ValidationMessageFor(model => model.EmailAddress, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+            <div class="col-4 mb-4">
+                <div class="form-group required">
+                    @Html.LabelFor(model => model.MobileNumber, @SharedLocalizer["MobileNumber"],new { @class = "control-label" })
+                    <span class="text-danger">*</span>
+                    @Html.TextBoxFor(model => model.MobileNumber, new { @autocomplete = "off", @class = "form-control checkbox-checked", @placeholder = @SharedLocalizer["MobileNumber"] })
+                    @Html.ValidationMessageFor(model => model.MobileNumber, "", new { @class = "text-danger" })
+                </div>
+            </div>
+                <div class="col-4 mb-4">
                     <div class="form-group required">
 
                         @Html.LabelFor(model => model.BusinessUnitId,@SharedLocalizer["BusinessUnit"], new { @class = "control-label" })
@@ -49,7 +66,7 @@
                 </div>
 
 
-        <div class="col-3 mb-4">
+                <div class="col-4 mb-4">
                     <div class="form-group required">
                         @Html.LabelFor(model => model.RegionId,@SharedLocalizer["Region"], new { @class = "control-label" })
                     <span class="text-danger">*</span>
@@ -59,7 +76,7 @@
                         @Html.ValidationMessageFor(model => model.RegionId, "", new { @class = "text-danger" })
                     </div>
                 </div>
-                <div class="col-3 mb-4">
+                <div class="col-4 mb-4">
                     <div class="form-group required">
                         @Html.LabelFor(model => model.CountryId,@SharedLocalizer["Country"], new { @class = "control-label" })
                     <span class="text-danger">*</span>
@@ -69,7 +86,7 @@
                         @Html.ValidationMessageFor(model => model.CountryId, "", new { @class = "text-danger" })
                     </div>
                 </div>
-                <div class="col-3 mb-4">
+                <div class="col-4 mb-4">
                     <div class="form-group required">
                     @Html.LabelFor(model => model.DepartmentId,@SharedLocalizer["Department"], new { @class = "control-label" })
                     <span class="text-danger">*</span>
@@ -79,39 +96,29 @@
                         @Html.ValidationMessageFor(model => model.DepartmentId, "", new { @class = "text-danger" })
                     </div>
                 </div>
-
-
-        <div class="col-3 mb-4">
-                    <div class="form-group required">
-                    @Html.LabelFor(model => model.EmailAddress, @SharedLocalizer["EmailAddress"],new { @class = "control-label" })
-                        @Html.TextBoxFor(model => model.EmailAddress, new { @autocomplete = "off", @class = "form-control checkbox-checked readOnlyUpdate", @placeholder = @SharedLocalizer["EmailAddress"] })
-                        @*@Html.ValidationMessageFor(model => model.EmailAddress, "", new { @class = "text-danger" })*@
-                        @Html.ValidationMessage("EmailExist", new { @class = "text-danger" })
-                    @Html.ValidationMessageFor(model => model.EmailAddress, "", new { @class = "text-danger" })
-                    </div>
-                </div>
-                <div class="col-3 mb-4">
-                    <div class="form-group required">
-                    @Html.LabelFor(model => model.MobileNumber, @SharedLocalizer["MobileNumber"],new { @class = "control-label" })
+            <div class="col-4 mb-4">
+                <div class="form-group required">
+                    @Html.LabelFor(model => model.RoleId, "Role",new { @class = "control-label" })
                     <span class="text-danger">*</span>
-                        @Html.TextBoxFor(model => model.MobileNumber, new { @autocomplete = "off", @class = "form-control checkbox-checked", @placeholder = @SharedLocalizer["MobileNumber"] })
-                        @Html.ValidationMessageFor(model => model.MobileNumber, "", new { @class = "text-danger" })
-                    </div>
+                    <select id="RoleId" name="RoleId" class="form-control" required></select>
+                    <input type="hidden" id="hdnRoleId" value="@Model.RoleId" />
+                    @Html.ValidationMessageFor(model => model.RoleId, "", new { @class = "text-danger" })
                 </div>
-        <div class="col-3 mb-4">
-            <div class="form-group required">
-                @Html.LabelFor(model => model.RoleId, "Role",new { @class = "control-label" })
-                    <span class="text-danger">*</span>
-                <select id="RoleId" name="RoleId" class="form-control" required></select>
-                <input type="hidden" id="hdnRoleId" value="@Model.RoleId" />
-                @Html.ValidationMessageFor(model => model.RoleId, "", new { @class = "text-danger" })
             </div>
-        </div>
+            <div class="col-4 mb-4">
+                <div class="form-group required" id="dvDesignatioName">
+                    @Html.LabelFor(model => model.DesignationName,@SharedLocalizer["DesignationName"], new { @class = "control-label" })
+                    @* <span class="text-danger">*</span>*@
+                    @Html.TextBoxFor(model => model.DesignationName, new {@autocomplete = "off", @class = "form-control checkbox-checked",  @placeholder = @SharedLocalizer["DesignationName"] })
+                    @Html.ValidationMessageFor(model => model.DesignationName, "", new { @class = "text-danger" })
+                </div>
+            </div>
+       
             
             @if (Model.UserId <= 0)
             {
 
-                    <div class="col-3 mb-4">
+                    <div class="col-4 mb-4">
                         <div class="form-group required">
                             @Html.LabelFor(model => model.Password, new { @class = "control-label" })
                              <span class="text-danger">*</span>
@@ -119,7 +126,7 @@
                             @Html.ValidationMessageFor(model => model.Password, "", new { @class = "text-danger" })
                         </div>
                     </div>
-                    <div class="col-3 mb-4">
+                    <div class="col-4 mb-4">
                         <div class="form-group required">
                         @Html.LabelFor(model => model.ConfirmPassowrd, @SharedLocalizer["ConfirmPassword"], new { @class = "control-label" })
                         <span class="text-danger">*</span>
@@ -128,10 +135,8 @@
                         </div>
                     </div>
                 
-            }
-
-                
-                <div class="col-6 mb-4">
+            }                
+                <div class="col-4 mb-4">
                     <div class="form-group required">
                         @Html.LabelFor(model => model.Address, new { @class = "control-label" })
                         @Html.TextBoxFor(model => model.Address, new { @autocomplete = "off", @class = "form-control checkbox-checked", @placeholder = @SharedLocalizer["Address"] })
@@ -171,14 +176,7 @@
                         @Html.LabelFor(model => model.AnalyticalGL)
                     </div>
                 </div>
-                 <div class="col-2">
-                    <div class="form-group required" id="dvDesignatioName" >
-                        @Html.LabelFor(model => model.DesignationName,@SharedLocalizer["DesignationName"], new { @class = "control-label" })
-                       @* <span class="text-danger">*</span>*@
-                        @Html.TextBoxFor(model => model.DesignationName, new {@autocomplete = "off", @class = "form-control checkbox-checked",  @placeholder = @SharedLocalizer["DesignationName"] })
-                        @Html.ValidationMessageFor(model => model.DesignationName, "", new { @class = "text-danger" })
-                    </div>
-                </div>
+            
             </div>
             <div class="row">
                 <div class="col-12 mb-4 text-end">
