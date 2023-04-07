@@ -167,8 +167,10 @@ namespace EmcureNPD.Utility.Utility
             }
         }
       
-        public static bool GetMenuAccess(Enum name, IEnumerable<dynamic> objVal)
+        public static bool GetMenuAccess(int ModuleId, int RoleId, int SubModuleId = 0)
         {
+            IEnumerable<RolePermissionModel> objVal = GetModuleRole<IEnumerable<RolePermissionModel>>(RoleId);
+
             //FieldInfo fi = name.GetType().GetField(name.ToString());
 
             //DescriptionAttribute[] attributes =
@@ -177,19 +179,22 @@ namespace EmcureNPD.Utility.Utility
 
             //string compVal = "";
             //if (attributes != null && attributes.Length > 0)
-            //    compVal=attributes[0].Description.Trim();
+            //    compVal = attributes[0].Description.Trim();
             //else
-            //    compVal=name.ToString().Trim();
-        
-            //if (objVal != null)
-            //{
-            //    var x = objVal.Where(o => o.MainModuleName.Trim() == compVal || o.SubModuleName.Trim() == compVal);
-            //    if(x.Any() && x.Count()>0)
-            //    {
-            //        return true;
-            //    }
-            //}
-            return true;
+            //    compVal = name.ToString().Trim();
+
+            if (objVal != null)
+            {
+                var _permissionObject = objVal.Where(o => o.MainModuleId == ModuleId).FirstOrDefault();
+                if (_permissionObject != null && _permissionObject.RoleId > 0)
+                {
+                    if (_permissionObject.View || _permissionObject.Edit || _permissionObject.Delete || _permissionObject.Add || _permissionObject.Approve)
+                    {
+                        return true;
+                    }
+                }
+            }
+            return false;
         }
         public static RolePermissionModel GetCntrActionAccess(string controllerNm, int loginRoleId)
         {            

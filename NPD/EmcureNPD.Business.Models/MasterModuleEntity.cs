@@ -13,6 +13,7 @@ namespace EmcureNPD.Business.Models
         }
 
         public int ModuleId { get; set; }
+        public int SortOrder { get; set; }
         public string ModuleName { get; set; }
 
         public bool IsActive { get; set; }
