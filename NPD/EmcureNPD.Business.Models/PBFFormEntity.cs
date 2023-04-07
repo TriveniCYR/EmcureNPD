@@ -193,14 +193,10 @@ namespace EmcureNPD.Business.Models
         public long PbfgeneralId { get; set; }
         public long StrengthId { get; set; }
         public int? ActivityTypeId { get; set; }
-        public double? ToolingChangepartDevelopment { get; set; }
-        public double? PrototypeDevelopment { get; set; }
-        public double? TotalCost { get; set; }
         public double? Cost { get; set; }
-        public double? Prototype { get; set; }
-        public double? ScaleUpExhibitBatch { get; set; }
-        public double? TotalScaleUpExhibitBatch { get; set; }
-        public double? FinalCost { get; set; }
+        public string Prototype { get; set; }
+        public double? StrengthUnitQuantity { get; set; }
+
 
     }
     public class RNDCapexMiscellaneousExpense
@@ -209,13 +205,8 @@ namespace EmcureNPD.Business.Models
         public long PbfgeneralId { get; set; }
         public long StrengthId { get; set; }
         public int? ActivityTypeId { get; set; }
-        public double? CapexMiscellaneousExpensesDevelopment { get; set; }
-        public double? MiscellaneousDevelopment { get; set; }
-        public double? Licensing { get; set; }
-        public double? Capex1 { get; set; }
-        public double? Capex2 { get; set; }
-        public double? Capex3 { get; set; }
-        public double? TotalCost { get; set; }
+        public double? StrengthMiscellaneousExpense { get; set; }
+        public string MiscellaneousDevelopment { get; set; }
     }
     public class RNDPlantSupportCost
     {
@@ -223,10 +214,10 @@ namespace EmcureNPD.Business.Models
         public long PbfgeneralId { get; set; }
         public long StrengthId { get; set; }
         public int? ActivityTypeId { get; set; }
-        public double? PlantSupportDevelopment { get; set; }
-        public double? ScaleUp { get; set; }
-        public double? ExhibitBatch { get; set; }
-        public double? TotalCost { get; set; }
+        public string PlantSupportDevelopment { get; set; }
+        public double? StrengthPlantSupportDays { get; set; }
+
+
     }
     public class RNDReferenceProductDetail
     {
