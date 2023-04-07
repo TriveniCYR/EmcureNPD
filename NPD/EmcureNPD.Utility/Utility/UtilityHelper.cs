@@ -1,4 +1,5 @@
 ﻿using EmcureNPD.Business.Models;
+using EmcureNPD.Utility.Enums;
 using EmcureNPD.Utility.Models;
 using Newtonsoft.Json.Linq;
 using System;
@@ -196,7 +197,29 @@ namespace EmcureNPD.Utility.Utility
             }
             return false;
         }
-        public static RolePermissionModel GetCntrActionAccess(string controllerNm, int loginRoleId)
+        public static bool GetAccess(int ModuleId, int RoleId, int PermissionType, int SubModuleId = 0)
+        {
+            IEnumerable<RolePermissionModel> objVal = GetModuleRole<IEnumerable<RolePermissionModel>>(RoleId);
+            if (objVal != null)
+            {
+                var _permissionObject = objVal.Where(o => o.MainModuleId == ModuleId).FirstOrDefault();
+                if (_permissionObject != null && _permissionObject.RoleId > 0)
+                {
+                    //switch (PermissionType)
+                    //{
+                    //    case:  PermissionEnum.Add
+                    //    return _permissionObject.Add;
+                    //default:
+                    //        break;
+                    //}
+                    return true;
+                }
+            }
+            return false;
+        }
+
+
+            public static RolePermissionModel GetCntrActionAccess(string controllerNm, int loginRoleId)
         {            
             RolePermissionModel objList = new RolePermissionModel();
             IEnumerable<RolePermissionModel> obj = UtilityHelper.GetModuleRole<dynamic>(loginRoleId);
@@ -207,6 +230,18 @@ namespace EmcureNPD.Utility.Utility
             }
             return objList;
 
+        }
+
+        public static RolePermissionModel GetCntrActionAccess(int ModuleId, int loginRoleId, int SubModuleId = 0)
+        {
+            RolePermissionModel objList = new RolePermissionModel();
+            IEnumerable<RolePermissionModel> obj = UtilityHelper.GetModuleRole<dynamic>(loginRoleId);
+            if (obj != null)
+            {
+                objList = obj.Where(o => o.ControlName != null && o.MainModuleId == ModuleId && (o.SubModuleId == SubModuleId || SubModuleId == 0)).FirstOrDefault();
+
+            }
+            return objList;
         }
     }
 }

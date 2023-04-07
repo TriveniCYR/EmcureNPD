@@ -7,6 +7,7 @@ using EmcureNPD.Data.DataAccess.Entity;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Cryptography.X509Certificates;
 using System.Threading.Tasks;
 using static EmcureNPD.Utility.Enums.GeneralEnum;
 
@@ -32,7 +33,8 @@ namespace EmcureNPD.Business.Core.ServiceImplementations
 
         public async Task<List<MasterCurrencyEntity>> GetAll()
         {
-            return _mapperFactory.GetList<MasterCurrency, MasterCurrencyEntity>(await _repository.GetAllAsync());
+            var list = await _repository.GetAllAsync(x=>x.IsActive==true);
+            return _mapperFactory.GetList<MasterCurrency, MasterCurrencyEntity>(list.ToList());
         }
 
         public async Task<MasterCurrencyEntity> GetById(int id)
