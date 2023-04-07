@@ -15,6 +15,8 @@
     string jsVersion = @Configuration.GetSection("StaticJS")["version"];
     var PidfNumber=UtilityHelper.Decreypt(Convert.ToString(PidafId));
     var DefaultStatus = Model == null ? 0 : Model.PIDFStatusId;
+    var CurrencyId=Model == null ? 0 : Model.Currencyid;
+    var DosageFormId=Model == null ? 0 : Model.DosageFrom;
 }
 
 
@@ -83,7 +85,7 @@
 					<div class="form-group required">
 						<label class="control-label">Currency*</label>
 							@Html.DropDownListFor(model => model.Currencyid,
-							new List<SelectListItem> { new SelectListItem { Value = "0", Text = "Plese Select Currency" } },new { @class="form-control readOnlyUpdate",@required="required",@id="Currency"})
+							new List<SelectListItem> { new SelectListItem { Value = "0", Text = "Plese Select Currency",Selected=Model.Currencyid>0?true:false } },new { @class="form-control readOnlyUpdate",@required="required",@id="Currency"})
 							<div class="invalid-feedback">
                                 Please select Currency.
                        </div>
@@ -98,7 +100,7 @@
 							<div class ="form-group required">
 								<label class="control-label">Dosage Form*</label>
 							@Html.DropDownListFor(model => model.DosageFrom,
-							new List<SelectListItem> { new SelectListItem { Value = "0", Text = "Plese Select DosageFrom" } },new { @class="form-control readOnlyUpdate",@required="required"})
+							new List<SelectListItem> { new SelectListItem { Value = "0", Text = "Plese Select DosageFrom",Selected=Model.DosageFrom>0?true:false } },new { @class="form-control readOnlyUpdate",@required="required"})
                                 <div class="invalid-feedback">
                                 Please select Dosage Form.
                        </div>
@@ -6352,11 +6354,11 @@
             {
                 if (DefaultStatus == 0 || Model.PIDFStatusId == (Int32)Master_PIDFStatus.FinanceInProgres)
                 {
-                <button type="submit" id="btnSaveDraft" class="btn btn-primary" onclick="SaveDraftClick();">
+                <button type="submit" id="btnSaveDraft" class="btn btn-primary btnControll" onclick="SaveDraftClick();">
                     @*<i class="fab fa-firstdraft"></i>*@
                     Save as Draft</button>
                  }
-                <button type="submit"  id="btnSave" class="btn btn-success operationButton" onclick="SaveClick();">
+                <button type="submit"  id="btnSave" class="btn btn-success operationButton btnControll" onclick="SaveClick();">
                    @* <i class="fa fa-save"></i> *@
                     Submit</button>
             }
@@ -6364,8 +6366,8 @@
             {
                 if (Model != null && Model.PIDFStatusId > 0 && Model.PIDFStatusId == (Int32)Master_PIDFStatus.FinanceSubmitted)
                 {
-                    <a class="btn btn-success operationButton" onClick="ApproveRejectClick('A', '@PidfNumber', @((int)EmcureNPD.Utility.Enums.PIDFScreen.Finance), '/PIDF/PIDFList?ScreenId=@((int)EmcureNPD.Utility.Enums.PIDFScreen.Finance)')"><i class="fa fa-check-circle mr-1"></i> @SharedLocalizer["Approve"]</a>
-                    <a class="btn btn-danger  operationButton" onClick="ApproveRejectClick('R', '@PidfNumber', @((int)EmcureNPD.Utility.Enums.PIDFScreen.Finance), '/PIDF/PIDFList?ScreenId=@((int)EmcureNPD.Utility.Enums.PIDFScreen.Finance)')"><i class="fa fa-ban mr-1"></i> @SharedLocalizer["Reject"]</a>
+                    <a class="btn btn-success operationButton btnControll" onClick="ApproveRejectClick('A', '@PidfNumber', @((int)EmcureNPD.Utility.Enums.PIDFScreen.Finance), '/PIDF/PIDFList?ScreenId=@((int)EmcureNPD.Utility.Enums.PIDFScreen.Finance)')"><i class="fa fa-check-circle mr-1"></i> @SharedLocalizer["Approve"]</a>
+                    <a class="btn btn-danger  operationButton btnControll" onClick="ApproveRejectClick('R', '@PidfNumber', @((int)EmcureNPD.Utility.Enums.PIDFScreen.Finance), '/PIDF/PIDFList?ScreenId=@((int)EmcureNPD.Utility.Enums.PIDFScreen.Finance)')"><i class="fa fa-ban mr-1"></i> @SharedLocalizer["Reject"]</a>
                 }
             }
             <a class="btn btn-danger" href="@Url.Action("PIDFList","PIDF", new { ScreenId=Convert.ToString((int)EmcureNPD.Utility.Enums.PIDFScreen.Finance)})">
@@ -6386,5 +6388,8 @@
 	const AllDosageForm="@EmcureNPD.Web.Helpers.APIURLHelper.GetAllDosageForm";
 	const isView = "@Context.Request.Query["IsView"]";
     const  ApproveRejectDeletePidf = "@EmcureNPD.Web.Helpers.APIURLHelper.ApproveRejectDeletePidf";
+    const selectedDosageFormId="@DosageFormId";
+    const selectedCurrencyId="@CurrencyId";
+    
 </script>
 }
