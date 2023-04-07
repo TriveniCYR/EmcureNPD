@@ -3,10 +3,10 @@
 @using EmcureNPD.Web.Helpers;
 @using EmcureNPD.Utility.Utility;
 @using EmcureNPD.Utility.Enums;
-@using Microsoft.AspNetCore.Mvc.Localization
-@inject IHttpContextAccessor HttpContextAccessor
+@using Microsoft.AspNetCore.Mvc.Localization;
 @inject Microsoft.Extensions.Localization.IStringLocalizer<EmcureNPD.Resource.Master> MasterLocalizer
 @inject Microsoft.Extensions.Localization.IStringLocalizer<EmcureNPD.Resource.Shared> SharedLocalizer
+@inject IHelper Helper
 
 <!-- Main Sidebar Container -->
 <aside class="main-sidebar sidebar-dark-primary elevation-4">
@@ -37,166 +37,130 @@
 			<ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
 				<!-- Add icons to the links using the .nav-icon class
 				with font-awesome or any other icon font library -->
-				@if (Context.Session.GetInt32(UserHelper.LoggedInRoleId) != null)
+				@if (Helper.GetLoggedInRoleId() != 0)
 				{
-					int rolId = (int)Context.Session.GetInt32(UserHelper.LoggedInRoleId);
-					dynamic rolObj = UtilityHelper.GetModuleRole<dynamic>(rolId);
-					//dynamic rolObj = Context.Session.GetObject<dynamic>(UserHelper.LoggedPermission);
-					if (rolObj != null)
-					{
-						@*@if (UtilityHelper.GetMenuAccess(ModulePermissionEnum.Dashboard, rolObj))
-						{
-										<li class="nav-item menu-open">
-											<a href="~/Home/Index" class="nav-link">
-												<i class="nav-icon fas fa-tachometer-alt"></i>
-												<p>
-													Dashboard
-												</p>
-											</a>
-										</li>
-						}		*@			
-						@if (UtilityHelper.GetMenuAccess(ModulePermissionEnum.Dashboard, rolObj))
-						{
-										<li class="nav-item menu-open">
-											<a href="~/Home/Index" class="nav-link">
-												<i class="nav-icon fas fa-tachometer-alt"></i>
-												<p>
-													Dashboard
-												</p>
-											</a>
-										</li>
-
-						}
-						@if (UtilityHelper.GetMenuAccess(ModulePermissionEnum.PIDF, rolObj))
-						{
-							<li class="nav-item">
-
-											<a id="parentPIDF" href="#" class="nav-link">
-												<i class="bi bi-files nav-icon mx-1"></i>
-												<p>
-										@MasterLocalizer["PIDFManagement"]
-													<i class="right fas fa-angle-left"></i>
-												</p>
-											</a>
-
-											<ul class="nav nav-treeview">
-												<li class="nav-item">
-										<a id="PIDF" href="@Url.Action("PIDFList","PIDF", new { ScreenId = Convert.ToString((int)EmcureNPD.Utility.Enums.PIDFScreen.PIDF)})" class="nav-link">
-														<i class="nav-icon fas fa-th"></i>
-														<p>
-												@MasterLocalizer["PIDFManagement"]
-														</p>
-													</a>
-												</li>
-									@if (UtilityHelper.GetMenuAccess(ModulePermissionEnum.IPD, rolObj))
-									{
-														<li class="nav-item">
-											<a id="IPD" href="@Url.Action("PIDFList","PIDF", new { ScreenId = Convert.ToString((int)EmcureNPD.Utility.Enums.PIDFScreen.IPD)})" class="nav-link">
-																<i class="nav-icon fas fa fa-columns"></i>
-																<p>
-													@MasterLocalizer["IPDManagement"]
-																</p>
-															</a>
-														</li>
-									}	
-									@if (UtilityHelper.GetMenuAccess(ModulePermissionEnum.Medical, rolObj))
-									{
-														<li class="nav-item">
-											<a id="Medical" href="@Url.Action("PIDFList","PIDF", new { ScreenId = Convert.ToString((int)EmcureNPD.Utility.Enums.PIDFScreen.Medical)})" class="nav-link">
-												<i class="nav-icon fas fa fa-plus-square"></i>
-																<p>
-													@MasterLocalizer["Medical Management"]
-																</p>
-															</a>
-														</li>
-									}	
-									@if (UtilityHelper.GetMenuAccess(ModulePermissionEnum.PIDF, rolObj))
-									{
-														<li class="nav-item">
-											<a id="Commercial" href="@Url.Action("PIDFList","PIDF", new { ScreenId = Convert.ToString((int)EmcureNPD.Utility.Enums.PIDFScreen.Commercial)})" class="nav-link">
-																<i class="nav-icon fas fa fa-certificate"></i>
-																<p>
-													@SharedLocalizer["Commercial Management"]
-																</p>
-															</a>
-														</li>
-									}
-									@if (UtilityHelper.GetMenuAccess(ModulePermissionEnum.APIListManagement, rolObj))
-									{
-														<li class="nav-item">
-											<a href="@Url.Action("PIDFList","PIDF", new { ScreenId = Convert.ToString((int)EmcureNPD.Utility.Enums.PIDFScreen.API)})" class="nav-link">
-												<i class="nav-icon fas fa fa-random"></i>
-																<p>
-													@SharedLocalizer["API Management"]
-																</p>
-															</a>
-														</li>
-									}
-									@if (UtilityHelper.GetMenuAccess(ModulePermissionEnum.PBF, rolObj) && UtilityHelper.GetMenuAccess(ModulePermissionEnum.APIListManagement, rolObj))
-									{
-														<li class="nav-item">
-											<a href="@Url.Action("PIDFList","PIDF", new { ScreenId = Convert.ToString((int)EmcureNPD.Utility.Enums.PIDFScreen.PBF)})" class="nav-link">
-																<i class="nav-icon fas fa fa-cube"></i>
-																<p>
-													@SharedLocalizer["PBF Management"]
-																</p>
-															</a>
-														</li>
-									}
-									@if (UtilityHelper.GetMenuAccess(ModulePermissionEnum.Finance, rolObj))
-									{
-														<li class="nav-item">
-											<a href="@Url.Action("PIDFList","PIDF", new { ScreenId = Convert.ToString((int)EmcureNPD.Utility.Enums.PIDFScreen.Finance)})" class="nav-link">
-																<i class="nav-icon fas fa-coins"></i>
-																<p>
-													@SharedLocalizer["Finance Management"]
-																</p>
-															</a>
-														</li>
-									}
-									@if (UtilityHelper.GetMenuAccess(ModulePermissionEnum.PIDF, rolObj))
-									{
-														<li class="nav-item">
-											<a href="@Url.Action("PIDFList","PIDF", new { ScreenId = Convert.ToString((int)EmcureNPD.Utility.Enums.PIDFScreen.Management)})" class="nav-link">
-																<i class="nav-icon fas fa-book"></i>
-																<p>
-													@MasterLocalizer["Management"]
-																</p>
-															</a>
-														</li>
-									}
-									@if (UtilityHelper.GetMenuAccess(ModulePermissionEnum.Auditlogs, rolObj))
-									{
-														<li class="nav-item">
-															<a href="@Url.Action("AuditLogs","AuditLog")" class="nav-link">
-																<i class="fa-solid fa-clock-rotate-left nav-icon"></i>
-																<p>
-													@MasterLocalizer["AuditLogs"]
-																</p>
-															</a>
-														</li>
-									}
-
-											</ul>
-										</li>
-						}
-
-						
-					}					
-					@*@if (UtilityHelper.GetMenuAccess(ModulePermissionEnum.Dossier, rolObj))
-					{
-						<li class="nav-item">
-									<a href="#" class="nav-link">
-										<i class="nav-icon fas fa-table"></i>
+					int _roleId = Helper.GetLoggedInRoleId();
+					<li class="nav-item menu-open">
+						<a href="~/Home/Index" class="nav-link">
+							<i class="nav-icon fas fa-tachometer-alt"></i>
+							<p>
+								Dashboard
+							</p>
+						</a>
+					</li>
+					<li class="nav-item">
+						<a id="parentPIDF" href="#" class="nav-link">
+							<i class="bi bi-files nav-icon mx-1"></i>
+							<p>
+								@MasterLocalizer["PIDFManagement"]
+								<i class="right fas fa-angle-left"></i>
+							</p>
+						</a>
+						<ul class="nav nav-treeview">
+							@if (UtilityHelper.GetMenuAccess((int)ModulePermissionEnum.PIDF, _roleId))
+							{
+								<li class="nav-item">
+									<a id="PIDF" href="@Url.Action("PIDFList","PIDF", new { ScreenId = Convert.ToString((int)EmcureNPD.Utility.Enums.PIDFScreen.PIDF)})" class="nav-link">
+										<i class="nav-icon fas fa-th"></i>
 										<p>
-											Dossier Management
+											@MasterLocalizer["PIDFManagement"]
 										</p>
 									</a>
 								</li>
-					}*@
-					@*@if (UtilityHelper.GetMenuAccess(ModulePermissionEnum.Project, rolObj))
-					{*@
-				<li class="nav-item">
+							}
+							@if (UtilityHelper.GetMenuAccess((int)ModulePermissionEnum.IPD, _roleId))
+							{
+								<li class="nav-item">
+									<a id="IPD" href="@Url.Action("PIDFList","PIDF", new { ScreenId = Convert.ToString((int)EmcureNPD.Utility.Enums.PIDFScreen.IPD)})" class="nav-link">
+										<i class="nav-icon fas fa fa-columns"></i>
+										<p>
+											@MasterLocalizer["IPDManagement"]
+										</p>
+									</a>
+								</li>
+							}	
+							@if (UtilityHelper.GetMenuAccess((int)ModulePermissionEnum.Medical, _roleId))
+							{
+								<li class="nav-item">
+									<a id="Medical" href="@Url.Action("PIDFList","PIDF", new { ScreenId = Convert.ToString((int)EmcureNPD.Utility.Enums.PIDFScreen.Medical)})" class="nav-link">
+										<i class="nav-icon fas fa fa-plus-square"></i>
+										<p>
+											@MasterLocalizer["Medical Management"]
+										</p>
+									</a>
+								</li>
+							}	
+							@if (UtilityHelper.GetMenuAccess((int)ModulePermissionEnum.Commercial, _roleId))
+							{
+								<li class="nav-item">
+									<a id="Commercial" href="@Url.Action("PIDFList","PIDF", new { ScreenId = Convert.ToString((int)EmcureNPD.Utility.Enums.PIDFScreen.Commercial)})" class="nav-link">
+										<i class="nav-icon fas fa fa-certificate"></i>
+										<p>
+											@SharedLocalizer["Commercial Management"]
+										</p>
+									</a>
+								</li>
+							}
+							@if (UtilityHelper.GetMenuAccess((int)ModulePermissionEnum.APIListManagement, _roleId))
+							{
+								<li class="nav-item">
+									<a href="@Url.Action("PIDFList","PIDF", new { ScreenId = Convert.ToString((int)EmcureNPD.Utility.Enums.PIDFScreen.API)})" class="nav-link">
+										<i class="nav-icon fas fa fa-random"></i>
+										<p>
+											@SharedLocalizer["API Management"]
+										</p>
+									</a>
+								</li>
+							}
+							@if (UtilityHelper.GetMenuAccess((int)ModulePermissionEnum.PBF, _roleId))
+							{
+								<li class="nav-item">
+									<a href="@Url.Action("PIDFList","PIDF", new { ScreenId = Convert.ToString((int)EmcureNPD.Utility.Enums.PIDFScreen.PBF)})" class="nav-link">
+										<i class="nav-icon fas fa fa-cube"></i>
+										<p>
+											@SharedLocalizer["PBF Management"]
+										</p>
+									</a>
+								</li>
+							}
+							@if (UtilityHelper.GetMenuAccess((int)ModulePermissionEnum.Finance, _roleId))
+							{
+								<li class="nav-item">
+									<a href="@Url.Action("PIDFList","PIDF", new { ScreenId = Convert.ToString((int)EmcureNPD.Utility.Enums.PIDFScreen.Finance)})" class="nav-link">
+										<i class="nav-icon fas fa-coins"></i>
+										<p>
+											@SharedLocalizer["Finance Management"]
+										</p>
+									</a>
+								</li>
+							}
+							@if (UtilityHelper.GetMenuAccess((int)ModulePermissionEnum.ManagementHOD, _roleId))
+							{
+								<li class="nav-item">
+									<a href="@Url.Action("PIDFList","PIDF", new { ScreenId = Convert.ToString((int)EmcureNPD.Utility.Enums.PIDFScreen.Management)})" class="nav-link">
+										<i class="nav-icon fas fa-book"></i>
+										<p>
+											@MasterLocalizer["Management"]
+										</p>
+									</a>
+								</li>
+							}
+							@if (UtilityHelper.GetMenuAccess((int)ModulePermissionEnum.Auditlogs, _roleId))
+							{
+								<li class="nav-item">
+									<a href="@Url.Action("AuditLogs","AuditLog")" class="nav-link">
+										<i class="fa-solid fa-clock-rotate-left nav-icon"></i>
+										<p>
+											@MasterLocalizer["AuditLogs"]
+										</p>
+									</a>
+								</li>
+							}
+
+						</ul>
+					</li>
+					@if (UtilityHelper.GetMenuAccess((int)ModulePermissionEnum.PIDF, _roleId)){
+					<li class="nav-item">
 					<a href="@Url.Action("PIDFList","PIDF", new { ScreenId = Convert.ToString((int)EmcureNPD.Utility.Enums.PIDFScreen.Project)})" class="nav-link">
 										<i class="nav-icon fas fa-coins"></i>
 										<p>
@@ -204,9 +168,8 @@
 										</p>
 									</a>
 								</li>
-					@*}*@
-					@if (UtilityHelper.GetMenuAccess(ModulePermissionEnum.UserManagement, rolObj))
-					{
+					}
+					
 						<li class="nav-item">
 									<a href="#" class="nav-link">
 										<i class="nav-icon fas fa-user"></i>
@@ -216,6 +179,8 @@
 										</p>
 									</a>
 									<ul class="nav nav-treeview">
+										@if (UtilityHelper.GetMenuAccess((int)ModulePermissionEnum.UserManagement, _roleId))
+					{
 										<li class="nav-item">
 											<a href="@Url.Action("User","User")" class="nav-link">
 												<i class="nav-icon fas fa-users"></i>
@@ -224,7 +189,8 @@
 												</p>
 											</a>
 										</li>
-								@if (UtilityHelper.GetMenuAccess(ModulePermissionEnum.RoleManagement, rolObj))
+					}
+								@if (UtilityHelper.GetMenuAccess((int)ModulePermissionEnum.RoleManagement, _roleId))
 								{
 												<li class="nav-item">
 													<a href="@Url.Action("Roles","Role")" class="nav-link">
@@ -237,178 +203,177 @@
 								}
 									</ul>
 								</li>
-					}
-					@if (UtilityHelper.GetMenuAccess(ModulePermissionEnum.MasterManagement, rolObj))
-					{
-								<li class="nav-item">
-									<a href="#" class="nav-link">
-										<i class="nav-icon fas fa-database"></i>
-										<p>
-											Master Management
-											<i class="right fas fa-angle-left"></i>
-										</p>
-									</a>
-									<ul class="nav nav-treeview">
-										<li class="nav-item">
-											<a href="@Url.Action("MasterBusinessUnit", "Masters")" class="nav-link">
-												<i class="far fa-circle nav-icon text-info"></i>
-												<p>Business Unit</p>
-											</a>
-										</li>
-										<li class="nav-item">
-											<a href="@Url.Action("MasterRegion", "Masters")" class="nav-link">
-												<i class="far fa-circle nav-icon text-info"></i>
-												<p>Region</p>
-											</a>
-										</li>
-										<li class="nav-item">
-											<a href="@Url.Action("MasterCountry", "Masters")" class="nav-link">
-												<i class="far fa-circle nav-icon text-info"></i>
-												<p>Country</p>
-											</a>
-										</li>
-										<li class="nav-item">
-											<a href="@Url.Action("MasterDepartment", "Masters")" class="nav-link">
-												<i class="far fa-circle nav-icon text-info"></i>
-												<p>Department</p>
-											</a>
-										</li>
-										<li class="nav-item">
-											<a href="@Url.Action("MasterCurrency", "Masters")" class="nav-link">
-												<i class="far fa-circle nav-icon text-info"></i>
-												<p>Currency</p>
-											</a>
-										</li>
-										<li class="nav-item">
-											<a href="@Url.Action("MasterFormulation", "Masters")" class="nav-link">
-												<i class="far fa-circle nav-icon text-info"></i>
-												<p>Formulation</p>
-											</a>
-										</li>
-										<li class="nav-item">
-											<a href="@Url.Action("MasterPackagingType", "Masters")" class="nav-link">
-												<i class="far fa-circle nav-icon text-info"></i>
-												<p>Packaging Type</p>
-											</a>
-										</li>
-										<li class="nav-item">
-											<a href="@Url.Action("MasterProductType", "Masters")" class="nav-link">
-												<i class="far fa-circle nav-icon text-info"></i>
-												<p>Product Type</p>
-											</a>
-										</li>
-										<li class="nav-item">
-											<a href="@Url.Action("MasterUnitofMeasurement", "Masters")" class="nav-link">
-												<i class="far fa-circle nav-icon text-info"></i>
-												<p>Unit of Measurement</p>
-											</a>
-										</li>
-										<li class="nav-item">
-											<a href="@Url.Action("MasterWorkflow", "Masters")" class="nav-link">
-												<i class="far fa-circle nav-icon text-info"></i>
-												<p>Workflow</p>
-											</a>
-										</li>
-										<li class="nav-item">
-											<a href="@Url.Action("MasterDosageForm", "Masters")" class="nav-link">
-												<i class="far fa-circle nav-icon text-info"></i>
-												<p>Dosage Form</p>
-											</a>
-										</li>
-										<li class="nav-item">
-											<a href="@Url.Action("MasterOral", "Masters")" class="nav-link">
-												<i class="far fa-circle nav-icon text-info"></i>
-												<p>Oral</p>
-											</a>
-										</li>
-										<li class="nav-item">
-											<a href="@Url.Action("MasterAPISourcing", "Masters")" class="nav-link">
-												<i class="far fa-circle nav-icon text-info"></i>
-												<p>API Sourcing</p>
-											</a>
-										</li>
-										<li class="nav-item">
-											<a href="@Url.Action("MasterPlant", "Masters")" class="nav-link">
-												<i class="far fa-circle nav-icon text-info"></i>
-												<p>Plant Name</p>
-											</a>
-										</li>
-										<li class="nav-item">
-											<a href="@Url.Action("MasterExipient", "Masters")" class="nav-link">
-												<i class="far fa-circle nav-icon text-info"></i>
-												<p>Exicipient</p>
-											</a>
-										</li>
-										
-										<li class="nav-item">
-											<a href="@Url.Action("MasterFormRNDDivision", "Masters")" class="nav-link">
-												<i class="far fa-circle nav-icon text-info"></i>
-												<p>Form RND Division</p>
-											</a>
-										</li>
-										<li class="nav-item">
-											<a href="@Url.Action("MasterAnalyticalGL", "Masters")" class="nav-link">
-												<i class="far fa-circle nav-icon text-info"></i>
-												<p>Analytical GL</p>
-											</a>
-										</li>
-										<li class="nav-item">
-											<a href="@Url.Action("MasterBatchSizeNumber", "Masters")" class="nav-link">
-												<i class="far fa-circle nav-icon text-info"></i>
-												<p>Batch Size Number</p>
-											</a>
-										</li>
-										<li class="nav-item">
-											<a href="@Url.Action("MasterProductStrength", "Masters")" class="nav-link">
-												<i class="far fa-circle nav-icon text-info"></i>
-												<p>Product Strength</p>
-											</a>
-										</li>
-										<li class="nav-item">
-											<a href="@Url.Action("MasterBERequirement", "Masters")" class="nav-link">
-												<i class="far fa-circle nav-icon text-info"></i>
-												<p>BE Requirement</p>
-											</a>
-										</li>
-										<li class="nav-item">
-											<a href="@Url.Action("MasterDIA", "Masters")" class="nav-link">
-												<i class="far fa-circle nav-icon text-info"></i>
-												<p>DIA / ANDA / ANDS</p>
-											</a>
-										</li>
-										<li class="nav-item">
-											<a href="@Url.Action("MasterMarketExtension", "Masters")" class="nav-link">
-												<i class="far fa-circle nav-icon text-info"></i>
-												<p>Market Extension</p>
-											</a>
-										</li>
-										<li class="nav-item">
-											<a href="@Url.Action("MasterTransformForm", "Masters")" class="nav-link">
-												<i class="far fa-circle nav-icon text-info"></i>
-												<p>Transform Form</p>
-											</a>
-										</li>
-										<li class="nav-item">
-											<a href="@Url.Action("MasterExtensionApplication", "Masters")" class="nav-link">
-												<i class="far fa-circle nav-icon text-info"></i>
-												<p>Extension Application</p>
-											</a>
-										</li>
-										<li class="nav-item">
-											<a href="@Url.Action("MasterActivityType", "Masters")" class="nav-link">
-												<i class="far fa-circle nav-icon text-info"></i>
-												<p>Activity Type</p>
-											</a>
-										</li>
-										<li class="nav-item">
-											<a href="@Url.Action("MasterFillingExpense", "Masters")" class="nav-link">
-												<i class="far fa-circle nav-icon text-info"></i>
-												<p>Filling Expense</p>
-											</a>
-										</li>
-									</ul>
-								</li>
-					}
+					
+					@if (UtilityHelper.GetMenuAccess((int)ModulePermissionEnum.MasterManagement, _roleId))
+				{
+					<li class="nav-item">
+						<a href="#" class="nav-link">
+							<i class="nav-icon fas fa-database"></i>
+							<p>
+								Master Management
+								<i class="right fas fa-angle-left"></i>
+							</p>
+						</a>
+						<ul class="nav nav-treeview">
+							<li class="nav-item">
+								<a href="@Url.Action("MasterBusinessUnit", "Masters")" class="nav-link">
+									<i class="far fa-circle nav-icon text-info"></i>
+									<p>Business Unit</p>
+								</a>
+							</li>
+							<li class="nav-item">
+								<a href="@Url.Action("MasterRegion", "Masters")" class="nav-link">
+									<i class="far fa-circle nav-icon text-info"></i>
+									<p>Region</p>
+								</a>
+							</li>
+							<li class="nav-item">
+								<a href="@Url.Action("MasterCountry", "Masters")" class="nav-link">
+									<i class="far fa-circle nav-icon text-info"></i>
+									<p>Country</p>
+								</a>
+							</li>
+							<li class="nav-item">
+								<a href="@Url.Action("MasterDepartment", "Masters")" class="nav-link">
+									<i class="far fa-circle nav-icon text-info"></i>
+									<p>Department</p>
+								</a>
+							</li>
+							<li class="nav-item">
+								<a href="@Url.Action("MasterCurrency", "Masters")" class="nav-link">
+									<i class="far fa-circle nav-icon text-info"></i>
+									<p>Currency</p>
+								</a>
+							</li>
+							<li class="nav-item">
+								<a href="@Url.Action("MasterFormulation", "Masters")" class="nav-link">
+									<i class="far fa-circle nav-icon text-info"></i>
+									<p>Formulation</p>
+								</a>
+							</li>
+							<li class="nav-item">
+								<a href="@Url.Action("MasterPackagingType", "Masters")" class="nav-link">
+									<i class="far fa-circle nav-icon text-info"></i>
+									<p>Packaging Type</p>
+								</a>
+							</li>
+							<li class="nav-item">
+								<a href="@Url.Action("MasterProductType", "Masters")" class="nav-link">
+									<i class="far fa-circle nav-icon text-info"></i>
+									<p>Product Type</p>
+								</a>
+							</li>
+							<li class="nav-item">
+								<a href="@Url.Action("MasterUnitofMeasurement", "Masters")" class="nav-link">
+									<i class="far fa-circle nav-icon text-info"></i>
+									<p>Unit of Measurement</p>
+								</a>
+							</li>
+							<li class="nav-item">
+								<a href="@Url.Action("MasterWorkflow", "Masters")" class="nav-link">
+									<i class="far fa-circle nav-icon text-info"></i>
+									<p>Workflow</p>
+								</a>
+							</li>
+							<li class="nav-item">
+								<a href="@Url.Action("MasterDosageForm", "Masters")" class="nav-link">
+									<i class="far fa-circle nav-icon text-info"></i>
+									<p>Dosage Form</p>
+								</a>
+							</li>
+							<li class="nav-item">
+								<a href="@Url.Action("MasterOral", "Masters")" class="nav-link">
+									<i class="far fa-circle nav-icon text-info"></i>
+									<p>Oral</p>
+								</a>
+							</li>
+							<li class="nav-item">
+								<a href="@Url.Action("MasterAPISourcing", "Masters")" class="nav-link">
+									<i class="far fa-circle nav-icon text-info"></i>
+									<p>API Sourcing</p>
+								</a>
+							</li>
+							<li class="nav-item">
+								<a href="@Url.Action("MasterPlant", "Masters")" class="nav-link">
+									<i class="far fa-circle nav-icon text-info"></i>
+									<p>Plant Name</p>
+								</a>
+							</li>
+							<li class="nav-item">
+								<a href="@Url.Action("MasterExipient", "Masters")" class="nav-link">
+									<i class="far fa-circle nav-icon text-info"></i>
+									<p>Exicipient</p>
+								</a>
+							</li>
+
+							<li class="nav-item">
+								<a href="@Url.Action("MasterFormRNDDivision", "Masters")" class="nav-link">
+									<i class="far fa-circle nav-icon text-info"></i>
+									<p>Form RND Division</p>
+								</a>
+							</li>
+							<li class="nav-item">
+								<a href="@Url.Action("MasterAnalyticalGL", "Masters")" class="nav-link">
+									<i class="far fa-circle nav-icon text-info"></i>
+									<p>Analytical GL</p>
+								</a>
+							</li>
+							<li class="nav-item">
+								<a href="@Url.Action("MasterBatchSizeNumber", "Masters")" class="nav-link">
+									<i class="far fa-circle nav-icon text-info"></i>
+									<p>Batch Size Number</p>
+								</a>
+							</li>
+							<li class="nav-item">
+								<a href="@Url.Action("MasterProductStrength", "Masters")" class="nav-link">
+									<i class="far fa-circle nav-icon text-info"></i>
+									<p>Product Strength</p>
+								</a>
+							</li>
+							<li class="nav-item">
+								<a href="@Url.Action("MasterBERequirement", "Masters")" class="nav-link">
+									<i class="far fa-circle nav-icon text-info"></i>
+									<p>BE Requirement</p>
+								</a>
+							</li>
+							<li class="nav-item">
+								<a href="@Url.Action("MasterDIA", "Masters")" class="nav-link">
+									<i class="far fa-circle nav-icon text-info"></i>
+									<p>DIA / ANDA / ANDS</p>
+								</a>
+							</li>
+							<li class="nav-item">
+								<a href="@Url.Action("MasterMarketExtension", "Masters")" class="nav-link">
+									<i class="far fa-circle nav-icon text-info"></i>
+									<p>Market Extension</p>
+								</a>
+							</li>
+							<li class="nav-item">
+								<a href="@Url.Action("MasterTransformForm", "Masters")" class="nav-link">
+									<i class="far fa-circle nav-icon text-info"></i>
+									<p>Transform Form</p>
+								</a>
+							</li>
+							<li class="nav-item">
+								<a href="@Url.Action("MasterExtensionApplication", "Masters")" class="nav-link">
+									<i class="far fa-circle nav-icon text-info"></i>
+									<p>Extension Application</p>
+								</a>
+							</li>
+							<li class="nav-item">
+								<a href="@Url.Action("MasterActivityType", "Masters")" class="nav-link">
+									<i class="far fa-circle nav-icon text-info"></i>
+									<p>Activity Type</p>
+								</a>
+							</li>
+							<li class="nav-item">
+								<a href="@Url.Action("MasterFillingExpense", "Masters")" class="nav-link">
+									<i class="far fa-circle nav-icon text-info"></i>
+									<p>Filling Expense</p>
+								</a>
+							</li>
+						</ul>
+					</li>
 				}
 				<li class="nav-item">
 					<form asp-action="Logout" asp-controller="Account" method="post">
@@ -420,10 +385,10 @@
 						</a>
 					</form>
 				</li>
+				}	
 			</ul>
 		</nav>
 		<!-- /.sidebar-menu -->
-
 	</div>
 	<!-- /.sidebar -->
 </aside>

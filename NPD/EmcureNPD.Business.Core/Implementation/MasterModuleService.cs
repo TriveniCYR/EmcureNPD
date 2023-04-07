@@ -33,7 +33,7 @@ namespace EmcureNPD.Business.Core.Implementation
         public async Task<List<MasterModuleEntity>> GetAll()
         {
 
-            var MasterModuleData = _mapperFactory.GetList<MasterModule, MasterModuleEntity>(await _repository.GetAllAsync());
+            var MasterModuleData = _mapperFactory.GetList<MasterModule, MasterModuleEntity>(await _repository.GetAllAsync()).OrderBy(x => x.SortOrder).ToList();
 
             var MasterSubModuleData = _mapperFactory.GetList<MasterSubModule, MasterSubModuleEntity>(await _repositorySub.GetAllAsync());
 
@@ -58,7 +58,7 @@ namespace EmcureNPD.Business.Core.Implementation
 
         public async Task<List<MasterModuleEntity>> GetByRoleId(int roleId)
         {
-            var Permissions = _mapperFactory.GetList<RoleModulePermission, RoleModulePermissionEntity>(await _repositoryRolePermission.FindAllAsync(xx => xx.RoleId == roleId));
+            var Permissions = _mapperFactory.GetList<RoleModulePermission, RoleModulePermissionEntity>(await _repositoryRolePermission.FindAllAsync(xx => xx.RoleId == roleId)).OrderBy(x => x.SortOrder).ToList();
             if (Permissions.Any())
             {
                 var MasterModuleData = _mapperFactory.GetList<MasterModule, MasterModuleEntity>(await _repository.GetAllAsync());

@@ -20,6 +20,7 @@ namespace EmcureNPD.Data.DataAccess.Entity
         public int? ModifyBy { get; set; }
         public DateTime? ModifyDate { get; set; }
         public string ControlName { get; set; }
+        public int? SortOrder { get; set; }
 
         public virtual ICollection<MasterSubModule> MasterSubModules { get; set; }
     }

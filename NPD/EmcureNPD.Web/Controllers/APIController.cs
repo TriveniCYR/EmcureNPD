@@ -101,7 +101,7 @@ namespace EmcureNPD.Web.Controllers
             try
             {
                 int rolId = (int)HttpContext.Session.GetInt32(UserHelper.LoggedInRoleId);
-                RolePermissionModel objPermssion = UtilityHelper.GetCntrActionAccess(Convert.ToString(RouteData.Values["controller"]), rolId);
+                RolePermissionModel objPermssion = UtilityHelper.GetCntrActionAccess((int)ModulePermissionEnum.APIListManagement, rolId);
                 if (objPermssion == null || (!objPermssion.Add && !objPermssion.Edit))
                 {
                     return RedirectToAction("AccessRestriction", "Home");
@@ -145,7 +145,7 @@ namespace EmcureNPD.Web.Controllers
             try
             {
                 int rolId = (int)HttpContext.Session.GetInt32(UserHelper.LoggedInRoleId);
-                RolePermissionModel objPermssion = UtilityHelper.GetCntrActionAccess(Convert.ToString(RouteData.Values["controller"]), rolId);
+                RolePermissionModel objPermssion = UtilityHelper.GetCntrActionAccess((int)ModulePermissionEnum.APIListManagement, rolId);
                 if (objPermssion == null || (!objPermssion.Add && !objPermssion.Edit))
                 {
                     return RedirectToAction("AccessRestriction", "Home");
@@ -226,7 +226,7 @@ namespace EmcureNPD.Web.Controllers
             try
             {
                 int rolId = (int)HttpContext.Session.GetInt32(UserHelper.LoggedInRoleId);
-                RolePermissionModel objPermssion = UtilityHelper.GetCntrActionAccess(Convert.ToString(RouteData.Values["controller"]), rolId);
+                RolePermissionModel objPermssion = UtilityHelper.GetCntrActionAccess((int)ModulePermissionEnum.APIListManagement, rolId);
                 if (objPermssion == null || (!objPermssion.Add && !objPermssion.Edit))
                 {
                     return RedirectToAction("AccessRestriction", "Home");
@@ -318,7 +318,7 @@ namespace EmcureNPD.Web.Controllers
             try
             {
                 int rolId = (int)HttpContext.Session.GetInt32(UserHelper.LoggedInRoleId);
-                RolePermissionModel objPermssion = UtilityHelper.GetCntrActionAccess(Convert.ToString(RouteData.Values["controller"]), rolId);
+                RolePermissionModel objPermssion = UtilityHelper.GetCntrActionAccess((int)ModulePermissionEnum.APIListManagement, rolId);
                 if (objPermssion == null || (!objPermssion.Add && !objPermssion.Edit))
                 {
                     return RedirectToAction("AccessRestriction", "Home");

@@ -19,7 +19,6 @@ namespace EmcureNPD.Data.DataAccess.DataContext
         {
         }
 
-        public virtual DbSet<Abc1> Abc1s { get; set; }
         public virtual DbSet<MasterActivityType> MasterActivityTypes { get; set; }
         public virtual DbSet<MasterAnalytical> MasterAnalyticals { get; set; }
         public virtual DbSet<MasterApiCharterAnalyticalDepartment> MasterApiCharterAnalyticalDepartments { get; set; }
@@ -130,63 +129,14 @@ namespace EmcureNPD.Data.DataAccess.DataContext
             if (!optionsBuilder.IsConfigured)
             {
 #warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see http://go.microsoft.com/fwlink/?LinkId=723263.
-				optionsBuilder.UseSqlServer(DatabaseConnection.NPDDatabaseConnection);
-			}
+                optionsBuilder.UseSqlServer(DatabaseConnection.NPDDatabaseConnection);
+            }
         }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.HasDefaultSchema("emcurenpddev_dbUser")
                 .HasAnnotation("Relational:Collation", "SQL_Latin1_General_CP1_CI_AS");
-
-            modelBuilder.Entity<Abc1>(entity =>
-            {
-                entity.HasNoKey();
-
-                entity.ToTable("ABC_1");
-
-                entity.Property(e => e.Address).HasMaxLength(200);
-
-                entity.Property(e => e.AnalyticalGl).HasColumnName("AnalyticalGL");
-
-                entity.Property(e => e.Apiuser).HasColumnName("APIUser");
-
-                entity.Property(e => e.CreatedDate).HasColumnType("datetime");
-
-                entity.Property(e => e.DeletedDate).HasColumnType("datetime");
-
-                entity.Property(e => e.DesignationName).HasMaxLength(100);
-
-                entity.Property(e => e.EmailAddress)
-                    .IsRequired()
-                    .HasMaxLength(100)
-                    .IsUnicode(false);
-
-                entity.Property(e => e.ForgotPasswordDateTime).HasColumnType("datetime");
-
-                entity.Property(e => e.ForgotPasswordToken)
-                    .HasMaxLength(100)
-                    .IsUnicode(false);
-
-                entity.Property(e => e.FormulationGl).HasColumnName("FormulationGL");
-
-                entity.Property(e => e.FullName)
-                    .IsRequired()
-                    .HasMaxLength(100);
-
-                entity.Property(e => e.MobileNumber)
-                    .HasMaxLength(15)
-                    .IsUnicode(false);
-
-                entity.Property(e => e.ModifyDate).HasColumnType("datetime");
-
-                entity.Property(e => e.Password)
-                    .IsRequired()
-                    .HasMaxLength(100)
-                    .IsUnicode(false);
-
-                entity.Property(e => e.UserId).ValueGeneratedOnAdd();
-            });
 
             modelBuilder.Entity<MasterActivityType>(entity =>
             {
