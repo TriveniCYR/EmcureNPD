@@ -85,7 +85,7 @@
 					<div class="form-group required">
 						<label class="control-label">Currency*</label>
 							@Html.DropDownListFor(model => model.Currencyid,
-							new List<SelectListItem> { new SelectListItem { Value = "0", Text = "Plese Select Currency",Selected=Model.Currencyid>0?true:false } },new { @class="form-control readOnlyUpdate",@required="required",@id="Currency"})
+							new List<SelectListItem> { new SelectListItem { Value = "0", Text = "Plese Select Currency" } },new { @class="form-control readOnlyUpdate",@required="required",@id="Currency"})
 							<div class="invalid-feedback">
                                 Please select Currency.
                        </div>
@@ -100,7 +100,7 @@
 							<div class ="form-group required">
 								<label class="control-label">Dosage Form*</label>
 							@Html.DropDownListFor(model => model.DosageFrom,
-							new List<SelectListItem> { new SelectListItem { Value = "0", Text = "Plese Select DosageFrom",Selected=Model.DosageFrom>0?true:false } },new { @class="form-control readOnlyUpdate",@required="required"})
+							new List<SelectListItem> { new SelectListItem { Value = "0", Text = "Plese Select DosageFrom"} },new { @class="form-control readOnlyUpdate",@required="required"})
                                 <div class="invalid-feedback">
                                 Please select Dosage Form.
                        </div>
@@ -6349,7 +6349,8 @@
             </div>
 		</div>
         @Html.Partial("_PIDFApproveReject")
-			<div class="card form-group  dv-controls text-right" role="group">  
+
+        <div class="card form-group container-fluid d-flex justify-content-between dv-controls text-right" role="group">
             @if(ViewBag.Access.Add == true)
             {
                 if (DefaultStatus == 0 || Model.PIDFStatusId == (Int32)Master_PIDFStatus.FinanceInProgres)
