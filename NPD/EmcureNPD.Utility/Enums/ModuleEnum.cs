@@ -32,8 +32,6 @@ namespace EmcureNPD.Utility.Enums
         IPD = 7,
         Finance = 8,
         Medical = 9,
-
-
         [Description("API List Management")]
         APIListManagement = 13,
         [Description("Audit logs")]
@@ -41,19 +39,25 @@ namespace EmcureNPD.Utility.Enums
         Commercial = 15,
         ManagementHOD = 16,
         Project = 17
-        //Formulation = 11,
-        //Rnd= 12,
-        //Clinical= 13,
-        //Analytical = 14,
-        //[Description("API RnD")]
-        //APIRnd = 15,
-        //[Description("Dossier Management")]
-        //Dossier = 17,
-        //[Description("API IPD")]
-        //APIIpd = 15,
-        //[Description("API Charter")]
-        //APICharter = 15,
-        //[Description("PBF RnD")]
-        //PBFRnd = 15,
+    }
+    public enum SubModulePermissionEnum
+    {
+        RnD = 1,
+        Clinical = 2,
+        Analytical = 3,
+        APIRnD = 4,
+        APIIPD = 12,
+        APICharter = 13,
+        APICharterSummary = 14
+    }
+
+    public enum PermissionEnum
+    {
+        Any = 0,
+        View = 1,
+        Add = 2,
+        Edit = 3,
+        Delete = 4,
+        Approve = 5
     }
 }

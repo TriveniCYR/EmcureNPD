@@ -1,19 +1,28 @@
 ﻿let rowcount = 0;
+
 $(document).ready(function () {
     GetCurrencyList();
     GetDosageFormList();
+ 
+    //for (var option of document.getElementById("DosageFrom").value) {
+    //    //alert(option.value);
+    //    if (option.value === selectedDosageFormId) {
+    //        option.selected = true;
+    //        return;
+    //    }
+    //}
     //$("#FinanceTable tbody tr:first").find('.del-rows').hide();
     if (isView === "1") {
         $('.readOnlyUpdate').prop('readonly', true);
         $('select.form-control.readOnlyUpdate').attr("disabled", true);
-        $('.dv-controls').css("display", "none");
+        $('.btnControll').css("display", "none");
         $('.add-rows').css("display", "none");
         $('.del-rows').css("display", "none");
     }
     else {
         $('.readOnlyUpdate').prop('readonly', false);
         $('select.form-control.readOnlyUpdate').attr("disabled", false);
-        $('.dv-controls').css("display", "block");
+        $('.btnControll').css("display", "block");
         $('.add-rows').css("display", "block");
         $('.del-rows').css("display", "block");
         SetChildRowDeleteIcon();
@@ -44,7 +53,7 @@ function GetCurrencyList() {
 function GetCurrencyListSuccess(data) {
     try {
         $('#Currency').html('')
-        let optionhtml = '< option value = "0">--Select--</option>';
+        let optionhtml = '<option value = "0">--Select--</option>';
         $.each(data._object, function (index, object) {
             optionhtml +='<option value="' +
                 object.currencyId + '">' + object.currencyName + '</option>';
@@ -52,6 +61,12 @@ function GetCurrencyListSuccess(data) {
 
         });
         $("#Currency").append(optionhtml);
+        $("select#Currency option").each(function (index, value) {
+            if (this.value === selectedCurrencyId) {
+                $("select#Currency").prop('selectedIndex', index);
+                return;
+            }
+        });
     } catch (e) {
         toastr.error('Error:' + e.message);
     }
@@ -67,12 +82,19 @@ function GetDosageFormList() {
 function GetDosageFormListSuccess(data) {
     try {
         $('#DosageFrom').html('')
-        let optionhtml = 'option value = "0">--Select--</option>';
+        let optionhtml = '<option value = "0">--Select--</option>';
         $.each(data._object, function (index, object) {
             optionhtml +='<option value="' +
                 object.dosageFormId + '">' + object.dosageFormName + '</option>';
         });
         $("#DosageFrom").append(optionhtml);
+
+        $("select#DosageFrom option").each(function (index,value) {
+            if (this.value === selectedDosageFormId) {
+                $("select#DosageFrom").prop('selectedIndex', index);
+                return;
+            }
+        });
     } catch (e) {
         toastr.error('Error:' + e.message);
     }
@@ -187,6 +209,14 @@ $("i.fas.fa-plus").click(function () {
     }
    
 
+});
+$(".readOnlyUpdate").keyup(function () {
+    $(this).val($(this).val().replace(/ /g, ''));
+    if ($("#Entity").val().length == 1 && $(this).val()=="") {
+        $(this).attr("required", true)
+        $(this).removeClass("valid");
+    }
+    
 });
 (function () {
     'use strict'

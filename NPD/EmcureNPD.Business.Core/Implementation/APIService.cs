@@ -233,7 +233,7 @@ namespace EmcureNPD.Business.Core.Implementation
                     _oCharterEntity.ProjectName = _CharterObjects[0].ProjectName;
                     _oCharterEntity.Market = _CharterObjects[0].Market;
                     _oCharterEntity.ProjectInitiationDate = _CharterObjects[0].ProjectInitiationDate;
-                    //_oCharterEntity.ProjectEndDate = _CharterObjects[0].ProjectComplexityId;
+                    _oCharterEntity.ProjectEndDate = _CharterObjects[0].ProjectEndDate;
                 }
             }
             Pidf objPidf = await _pidfrepository.GetAsync(pidfId);

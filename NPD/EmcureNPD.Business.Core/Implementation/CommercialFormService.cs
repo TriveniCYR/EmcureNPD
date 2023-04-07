@@ -13,6 +13,7 @@ using System.Linq;
 using System.Linq.Expressions;
 using System.Net;
 using System.Runtime.CompilerServices;
+using System.Security.Cryptography.X509Certificates;
 using System.Threading.Tasks;
 using static EmcureNPD.Utility.Enums.GeneralEnum;
 
@@ -294,7 +295,8 @@ namespace EmcureNPD.Business.Core.Implementation
         }
         public async Task<List<MasterFinalSelectionEntity>> GetAllFinalSelection()
         {
-            return _mapperFactory.GetList<MasterFinalSelection, MasterFinalSelectionEntity>(await _finalSelectionrepository.GetAllAsync());
+            var list = await _finalSelectionrepository.GetAllAsync(x => x.IsActive == true);
+            return _mapperFactory.GetList<MasterFinalSelection, MasterFinalSelectionEntity>(list.ToList());
         }
 
 

@@ -43,7 +43,6 @@ function InitializePIDFList() {
                             _flag = true;
 
                         }
-                        $("#DvApproveReject").show();
                     } else if (_screenId == "7") {
                         if (row.pidfStatusID == 17) {
                             _flag = true;
@@ -52,19 +51,14 @@ function InitializePIDFList() {
                         $("#DvApproveReject").show();
                     }
                     else if (_screenId == "8") {
-                        if (row.pidfStatusID == 18 && row.isManagement == true && row.userId == currentUserId) {
+                        if (row.pidfStatusID == 18 &&  row.alReadyApproved == false) {
                             _flag = true;
                             isManagement = _flag;
-                            $("#DvApproveReject").show();
-                        }
-                        else {
-                            $("#DvApproveReject").hide();
+                           
                         }
                     }
-                    
                     return '<input type="checkbox" class="ml-2 custom-list-checkbox" id="chk_' + row.pidfid + '" name="id[]" onclick="chkClick(this,' + row.pidfid + ');" value="' + $('<div/>').text(data).html() + '" ' + (_flag ? "" : "disabled") + '>';
                 } else {
-                    $("#DvApproveReject").show();
                     return "";
                 }
             }

@@ -52,16 +52,17 @@ function GetProductTypeListError(x, y, z) {
 function IsFileTypeImage() {
     var $input = $("#MarketDetailsNewPortCGIDetails");
     var file = $input[0].files[0];
-    var fileType = file["type"];
-    var validImageTypes = ["image/gif", "image/jpeg", "image/png", "image/jpg"];
-    if ($.inArray(fileType, validImageTypes) < 0) {
-        $("#valmsgMarketDetailsNewPortCGIDetails").text('Required Image!')
-        return false;
-    } else {
-        $("#valmsgMarketDetailsNewPortCGIDetails").text('');
-        return true;
+    if (file != null && file != undefined) {
+        var fileType = file["type"];
+        var validImageTypes = ["image/gif", "image/jpeg", "image/png", "image/jpg"];
+        if ($.inArray(fileType, validImageTypes) < 0) {
+            $("#valmsgMarketDetailsNewPortCGIDetails").text('Required Image!')
+            return false;
+        } else {
+            $("#valmsgMarketDetailsNewPortCGIDetails").text('');
+            return true;
+        }
     }
-   
 }
 
 $('#MarketDetailsNewPortCGIDetails').change(function () {
@@ -107,11 +108,11 @@ $('#imgPreviewMarketdetails').click(function () {
 
 $('#Save').click(function () {
     ValidateForm();
-    $("#SaveType").val('Save');
+    $("#APIIPD_SaveType").val('Save');
 });
 $('#SaveDraft').click(function () {
     ValidateForm(); //$("#IsModelValid").val('Valid')
-    $("#SaveType").val('SaveDraft');
+    $("#APIIPD_SaveType").val('SaveDraft');
 });
 function SetDivReadonly() {
     $("#CommercialPIDFScreen").find("input, submit, textarea, a, select").attr("disabled", "disabled");
@@ -141,7 +142,7 @@ function ValidateForm() {
         IsInvalid = true;
         $("#MarketDetailsNewPortCGIDetails").focus();
     }
-    else if (!IsFileTypeImage()) {        
+    else if (!IsFileTypeImage() && !IsPrevImageExist) {        
         IsInvalid = true;
         IsInvalidImage = true;;
         $("#MarketDetailsNewPortCGIDetails").focus();

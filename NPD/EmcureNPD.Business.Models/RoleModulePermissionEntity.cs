@@ -8,6 +8,7 @@ namespace EmcureNPD.Business.Models
         public int RoleId { get; set; }
         public int ModuleId { get; set; }
         public int SubModuleId { get; set; }
+        public int SortOrder { get; set; }
 
         public bool View { get; set; }
         public bool Add { get; set; }

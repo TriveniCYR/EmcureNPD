@@ -5,6 +5,7 @@ using EmcureNPD.Data.DataAccess.Core.Repositories;
 using EmcureNPD.Data.DataAccess.Core.UnitOfWork;
 using EmcureNPD.Data.DataAccess.Entity;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using static EmcureNPD.Utility.Enums.GeneralEnum;
 
@@ -25,7 +26,8 @@ namespace EmcureNPD.Business.Core.ServiceImplementations
 
         public async Task<List<MasterPackagingTypeEntity>> GetAll()
         {
-            return _mapperFactory.GetList<MasterPackagingType, MasterPackagingTypeEntity>(await _repository.GetAllAsync());
+            var PackagingTypeList =await _repository.GetAllAsync(x => x.IsActive == true);
+            return _mapperFactory.GetList<MasterPackagingType, MasterPackagingTypeEntity>(PackagingTypeList.ToList()) ;
         }
 
         public async Task<MasterPackagingTypeEntity> GetById(int id)

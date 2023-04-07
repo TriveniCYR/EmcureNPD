@@ -9,5 +9,6 @@ namespace EmcureNPD.Web.Helpers
         string GetToken();
         string GetAssignedBusinessUnit();
         string IsManagementUser();
+        int GetLoggedInRoleId();
     }
 }

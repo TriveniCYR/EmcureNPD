@@ -38,6 +38,9 @@ function LoadIPDForm(pidfId, BusinessUnitId) {
     if ($("#custom-tabs-" + BusinessUnitId).html() == "") {
         $.get(_IPDPartialURL, { pidfid: pidfId, bui: BusinessUnitId }, function (content) {
             $("#custom-tabs-" + BusinessUnitId).html(content);
+                //if (_IPDMode == 1) {
+                //    readOnlyIPDForm();
+                //}
         });
     }
     $('#SelectedTabBusinessUnit').val(_selectBusinessUnit);
@@ -181,10 +184,10 @@ function SetDisableForOtherUserBU(_selectBusinessUnit) {
     var status = UserwiseBusinessUnit.indexOf(BUval);
    // var IsViewInMode = ($("#IsView").val() == '1')
     if (status == -1) {
-        readOnlyIPDFormForOtherBU(true);
+        readOnlyIPDForm();// readOnlyIPDFormForOtherBU(true);
     }
-    else
-        readOnlyIPDFormForOtherBU(false);
+   
+        //readOnlyIPDFormForOtherBU(false);
 }
 
 function readOnlyIPDFormForOtherBU(flag) {    

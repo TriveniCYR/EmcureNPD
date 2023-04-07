@@ -299,7 +299,7 @@ namespace EmcureNPD.Business.Core.Implementation
 		}
 		public async Task<IEnumerable<dynamic>> GetAllRegion(int userId)
 		{
-			var dataRegion = _mapperFactory.GetList<MasterRegion, RegionEntity>(await _regionRepository.GetAllAsync());
+			var dataRegion = _mapperFactory.GetList<MasterRegion, RegionEntity>(await _regionRepository.GetAllAsync(x=>x.IsActive==true));
 			var dataUserRegion = _mapperFactory.GetList<MasterUserRegionMapping, UserRegionMappingEntity>(await _userRegionRepository.FindAllAsync(xx => xx.UserId == userId));
 
 			if (dataRegion.Any())
@@ -334,7 +334,7 @@ namespace EmcureNPD.Business.Core.Implementation
 				}
 
 
-				var dataCountry = _countryService.GetAll().Result.Where(xx => xx.IsActive).ToList();
+				var dataCountry = _countryService.GetAll().Result.ToList();
 
 				var dataRegionCountry = _mapperFactory.GetList<MasterRegionCountryMapping, MasterRegionCountryMapping>(await _userRegionCountryRepository.FindAllAsync(xx => intIDs.Contains(xx.RegionId)));
 
