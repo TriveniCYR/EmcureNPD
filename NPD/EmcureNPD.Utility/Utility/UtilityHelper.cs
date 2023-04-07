@@ -169,27 +169,27 @@ namespace EmcureNPD.Utility.Utility
       
         public static bool GetMenuAccess(Enum name, IEnumerable<dynamic> objVal)
         {
-            FieldInfo fi = name.GetType().GetField(name.ToString());
+            //FieldInfo fi = name.GetType().GetField(name.ToString());
 
-            DescriptionAttribute[] attributes =
-            (DescriptionAttribute[])fi.GetCustomAttributes(
-                typeof(DescriptionAttribute), false);
+            //DescriptionAttribute[] attributes =
+            //(DescriptionAttribute[])fi.GetCustomAttributes(
+            //    typeof(DescriptionAttribute), false);
 
-            string compVal = "";
-            if (attributes != null && attributes.Length > 0)
-                compVal=attributes[0].Description.Trim();
-            else
-                compVal=name.ToString().Trim();
+            //string compVal = "";
+            //if (attributes != null && attributes.Length > 0)
+            //    compVal=attributes[0].Description.Trim();
+            //else
+            //    compVal=name.ToString().Trim();
         
-            if (objVal != null)
-            {
-                var x = objVal.Where(o => o.MainModuleName.Trim() == compVal || o.SubModuleName.Trim() == compVal);
-                if(x.Any() && x.Count()>0)
-                {
-                    return true;
-                }
-            }
-            return false;
+            //if (objVal != null)
+            //{
+            //    var x = objVal.Where(o => o.MainModuleName.Trim() == compVal || o.SubModuleName.Trim() == compVal);
+            //    if(x.Any() && x.Count()>0)
+            //    {
+            //        return true;
+            //    }
+            //}
+            return true;
         }
         public static RolePermissionModel GetCntrActionAccess(string controllerNm, int loginRoleId)
         {            
