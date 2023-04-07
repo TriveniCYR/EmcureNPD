@@ -42,7 +42,7 @@ namespace EmcureNPD.Web.Controllers
             {
                 string logUserId = Convert.ToString(HttpContext.Session.GetString(UserHelper.LoggedInUserId));
                 int rolId = (int)HttpContext.Session.GetInt32(UserHelper.LoggedInRoleId);
-                RolePermissionModel objPermssion = UtilityHelper.GetCntrActionAccess(Convert.ToString(this.ControllerContext.ActionDescriptor.ActionName), rolId);
+                RolePermissionModel objPermssion = UtilityHelper.GetCntrActionAccess((int)ModulePermissionEnum.Medical, rolId);
                 if (objPermssion == null || (!objPermssion.View && IsView==1))
                 {
                     return RedirectToAction("AccessRestriction", "Home");
@@ -95,7 +95,7 @@ namespace EmcureNPD.Web.Controllers
             ViewBag.baseUrl = _cofiguration.GetSection("Apiconfig").GetSection("baseurl").Value;
             string logUserId = Convert.ToString(HttpContext.Session.GetString(UserHelper.LoggedInUserId));
             int rolId = (int)HttpContext.Session.GetInt32(UserHelper.LoggedInRoleId);
-            RolePermissionModel objPermssion = UtilityHelper.GetCntrActionAccess(Convert.ToString(this.ControllerContext.ActionDescriptor.ActionName), rolId);
+            RolePermissionModel objPermssion = UtilityHelper.GetCntrActionAccess((int)ModulePermissionEnum.Medical, rolId);
             if (objPermssion == null || (!objPermssion.View && medicalEntity.IsView == 1))
             {
                 return RedirectToAction("AccessRestriction", "Home");

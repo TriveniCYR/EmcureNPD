@@ -145,7 +145,7 @@ namespace EmcureNPD.Web.Controllers
 						model.lsPidfFinanceBatchSizeCoating = ls;
 					}
                     int rolId = (int)HttpContext.Session.GetInt32(UserHelper.LoggedInRoleId);
-                    RolePermissionModel objPermssion = UtilityHelper.GetCntrActionAccess(Convert.ToString(RouteData.Values["controller"]), rolId);
+                    RolePermissionModel objPermssion = UtilityHelper.GetCntrActionAccess((int)ModulePermissionEnum.Finance, rolId);
                     ViewBag.Access = objPermssion;
                     if (model.PidffinaceId > 0)
 						return View(model);
