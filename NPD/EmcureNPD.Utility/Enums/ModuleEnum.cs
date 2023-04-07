@@ -56,4 +56,14 @@ namespace EmcureNPD.Utility.Enums
         //[Description("PBF RnD")]
         //PBFRnd = 15,
     }
+
+    public enum PermissionEnum
+    {
+        Any = 0,
+        View = 1,
+        Add = 2,
+        Edit = 3,
+        Delete = 4,
+        Approve = 5
+    }
 }
