@@ -11,6 +11,7 @@
 @inject IConfiguration Configuration
 @{
     int CurrentUserId = Helper.GetLoggedInUserId();
+    var Ismanagement = Helper.IsManagementUser();
     ViewData["Title"] = @MasterLocalizer["PIDF List"];
     string jsVersion = @Configuration.GetSection("StaticJS")["version"];
    
@@ -43,10 +44,11 @@
         <div>
             @if (Context.Request.Query["ScreenId"] == Convert.ToString((int)EmcureNPD.Utility.Enums.PIDFScreen.PIDF) || Context.Request.Query["ScreenId"] == Convert.ToString((int)EmcureNPD.Utility.Enums.PIDFScreen.IPD) || Context.Request.Query["ScreenId"] == Convert.ToString((int)EmcureNPD.Utility.Enums.PIDFScreen.Finance) || Context.Request.Query["ScreenId"] == Convert.ToString((int)EmcureNPD.Utility.Enums.PIDFScreen.Management))
             {
-                <div id="DvApproveReject" style="display:none;">
-                <a class="btn btn-success"  onClick="ApproveRejectPIDF('A', @(Context.Request.Query["ScreenId"]), '/PIDF/PIDFList?ScreenId=@(Context.Request.Query["ScreenId"])')"><i class="fa fa-check-circle mr-1"></i> @SharedLocalizer["Approve"]</a>
-                <a class="btn btn-danger" onClick="ApproveRejectPIDF('R', @(Context.Request.Query["ScreenId"]), '/PIDF/PIDFList?ScreenId=@(Context.Request.Query["ScreenId"])')"><i class="fa fa-ban mr-1"></i> @SharedLocalizer["Reject"]</a>
-                </div>
+                if (Ismanagement.Equals("True"))
+                {
+                    <a class="btn btn-success"  onClick="ApproveRejectPIDF('A', @(Context.Request.Query["ScreenId"]), '/PIDF/PIDFList?ScreenId=@(Context.Request.Query["ScreenId"])')"><i class="fa fa-check-circle mr-1"></i> @SharedLocalizer["Approve"]</a>
+                    <a class="btn btn-danger" onClick="ApproveRejectPIDF('R', @(Context.Request.Query["ScreenId"]), '/PIDF/PIDFList?ScreenId=@(Context.Request.Query["ScreenId"])')"><i class="fa fa-ban mr-1"></i> @SharedLocalizer["Reject"]</a>
+                }
             }
             @*<a class="btn btn-danger" onClick="approveRejDeleteData('D')"><i class="far fa fa-trash mr-1"></i> @SharedLocalizer["Delete"]</a>*@
             @if (Context.Request.Query["ScreenId"] == Convert.ToString((int)EmcureNPD.Utility.Enums.PIDFScreen.PIDF))

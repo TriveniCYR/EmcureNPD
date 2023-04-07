@@ -188,6 +188,14 @@ $("i.fas.fa-plus").click(function () {
    
 
 });
+$(".readOnlyUpdate").keyup(function () {
+    $(this).val($(this).val().replace(/ /g, ''));
+    if ($("#Entity").val().length == 1 && $(this).val()=="") {
+        $(this).attr("required", true)
+        $(this).removeClass("valid");
+    }
+    
+});
 (function () {
     'use strict'
 
