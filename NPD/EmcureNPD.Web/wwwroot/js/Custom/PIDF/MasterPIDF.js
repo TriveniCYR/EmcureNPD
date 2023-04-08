@@ -14,6 +14,9 @@ $(document).ready(function () {
     if (_mode == 1) {
         readOnlyForm();
     }
+    if (_PIDFId == 0) {
+        $('#InHouses').prop("checked", true).val(true);
+    }
     GetPIDFDropdown();
     SetChildRowDeleteIcon();
 

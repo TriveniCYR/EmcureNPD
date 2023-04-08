@@ -255,9 +255,9 @@
         <div class="col-12 text-end">
             <div class="form-group">
                 <button type="submit" class="btn btn-success me-3 outside-buttons operationButton" onClick="SaveIPDClick('Sv');">@SharedLocalizer["Submit"]</button>
-                @if (Model.StatusId == (Int32)Master_PIDFStatus.IPDInProgress || Model.StatusId == (Int32)Master_PIDFStatus.PIDFSubmitted|| Model.StatusId == (Int32)Master_PIDFStatus.PIDFApproved)
+                @if (Model.StatusId == (Int32)Master_PIDFStatus.IPDInProgress || Model.StatusId == (Int32)Master_PIDFStatus.PIDFApproved || Model.StatusId == (Int32)Master_PIDFStatus.MedicalSubmitted)
                 {
-                    <button type="submit" class="btn btn-primary me-3 outside-buttons operationButton" onClick="SaveIPDClick('Drf');">@SharedLocalizer["SaveDraft"]</button>
+                    <button type="submit" id="btnIPDSaveAsDraft" class="btn btn-primary me-3 outside-buttons operationButton" onClick="SaveIPDClick('Drf');">@SharedLocalizer["SaveDraft"]</button>
                 }
             </div>
         </div>
@@ -273,6 +273,9 @@
         $('.countryCombo').select2();
         if (_IPDMode == 1) {
             readOnlyIPDForm();
+        }
+        if (_IsIPDSubmitted.toLowerCase() === 'true') {
+            $('#btnIPDSaveAsDraft').hide();
         }
     });
 </script>

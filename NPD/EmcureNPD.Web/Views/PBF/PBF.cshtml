@@ -792,7 +792,11 @@
                 <div class="col-12 text-end">
                     <div class="form-group" id="dvMainButton">
                         <button type="submit" class="btn btn-success me-3 outside-buttons operationButton" id="save" onclick="SavePBFForm('Save')">@SharedLocalizer["Submit"]</button>
-                        <button type="submit" class="btn btn-info me-3 outside-buttons operationButton" id="savedraft" onclick="SavePBFForm('Draft')">@SharedLocalizer["SaveDraft"]</button>
+
+                        @if (Convert.ToBoolean(Context.Request.Query["pbf"]) == false)
+                        {
+                            <button type="submit" class="btn btn-primary me-3 outside-buttons operationButton" id="savedraft" onclick="SavePBFForm('Draft')">@SharedLocalizer["SaveDraft"]</button>
+                        }
                         <a class="btn btn-danger me-3 outside-buttons operationButton" asp-action="PIDFList" asp-controller="PIDF" asp-route-ScreenId="6">@SharedLocalizer["Cancel"]</a>
                     </div>
                 </div>

@@ -978,7 +978,7 @@ function SavePBFForm(_SaveType) {
     setlicense();
     SetRNDChildRows();
     SetAnalyticalChildRows();
-    $('#SaveType').val(_SaveType);
+    $('#AddPBFForm').find('#SaveType').val(_SaveType);
     return false;
 }
 function setlicense() {

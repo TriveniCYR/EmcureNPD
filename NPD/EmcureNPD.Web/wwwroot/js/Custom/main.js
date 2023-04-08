@@ -36,11 +36,13 @@ $.ajaxSetup({
 $(document)
     .ajaxStart(function () {
         //ajax request went so show the loading image
-        $('#mainLoader').height("100vh").find("img").show();
+        /*$('#mainLoader').height("100vh").find("img").show();*/
+        $('#loading-wrapper').show();
     })
     .ajaxStop(function () {
         //got response so hide the loading image
-        $('#mainLoader').height("0").find("img").hide();
+        /*$('#mainLoader').height("0").find("img").hide();*/
+        setTimeout(function () { $('#loading-wrapper').hide(); }, 700);
     });
 function getCookie(name) {
     const value = `; ${document.cookie}`;
