@@ -1,7 +1,6 @@
 ﻿var _userRegion = [];
 var _IPDMode = 0;
 $(document).ready(function () {
-    debugger;
     fnGetActiveBusinessUnit();
     GetRegionList();
     try {
@@ -10,7 +9,9 @@ $(document).ready(function () {
     } catch (e) {
         _IPDMode = getParameterByName("IsView");
     }
-    getPIDFAccordion(_PIDFAccordionURL, _PIDFID, "dvPIDFAccrdion");
+    if ($('#hdnIsPartial').val() != '1') {
+        getPIDFAccordion(_PIDFAccordionURL, _PIDFID, "dvPIDFAccrdion");
+    }
 });
 function fnGetActiveBusinessUnit() {
     ajaxServiceMethod($('#hdnBaseURL').val() + GetActiveBusinessUnit, 'GET', GetActiveBusinessUnitSuccess, GetActiveBusinessUnitError);

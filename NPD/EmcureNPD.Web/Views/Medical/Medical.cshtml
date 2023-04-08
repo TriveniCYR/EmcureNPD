@@ -28,6 +28,7 @@
 	}
 </style>
 <div id="dvPIDFAccrdion"></div>
+<div id="dvIPDAccrdion"></div>
 <section class="pb-2">
 	<div class="content-header">
 		<div class="container-fluid">
@@ -130,6 +131,9 @@
 		var pidid = @Html.Raw(Json.Serialize(pidfid));
 		var _PIDFID = "@Model.Pidfid";
 		var _PIDFAccordionURL = "@Url.Action("PIDF", "PIDF")";
+		var _IPDAccordionURL = "@Url.Action("IPD", "IPD")";
+		var _EncPIDFID = "@Convert.ToString(Context.Request.Query["pidfid"])";
+		var _PIDFBusinessUnitId = "@Convert.ToString(Context.Request.Query["bui"])";
 
 		var errorCallBack = '@TempData[EmcureNPD.Web.Helpers.UserHelper.ErrorMessage]';
 		if (errorCallBack) {

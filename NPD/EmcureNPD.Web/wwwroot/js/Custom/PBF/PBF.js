@@ -61,7 +61,6 @@ $(document).ready(function () {
             }
         }
     });
-
     $(document).on("change", ".rndFillingExpensesRegionId", function () {
         var _selectedTestType = $(this).val();
         if (_selectedTestType != "" && _selectedTestType != "0") {
@@ -370,7 +369,6 @@ $(document).ready(function () {
         $('.RPDcal_' + _BioStudyTypeId + 'Total').find(".calcTotalCostForStrengthTotal").val(_TotalSum);
 
     });
-
     /*Man power cost*/
     $(document).on("change", ".rndMPCDurationInDays, .rndMPCManPowerInDays", function () {
         var manhourrate = $("#RNDMasterEntities_ManHourRate").val();
@@ -444,7 +442,6 @@ $(document).ready(function () {
         $('.manpowercost_' + _BioStudyTypeId + 'Total').find(".calcTotalCostForStrength").val(_SumStrengths);
 
     });
-
     /*Pakaging Material*/
     $(document).on("change", ".rndPackagingUnitofMeasurement, .rndPackagingRsperUnit, .rndPackagingStrengthValue", function () {
         var _ActivityTypeId = $(this).parent().parent().attr("data-activitytypeid");
@@ -496,7 +493,6 @@ $(document).ready(function () {
         $('.PakagingMaterialTotal').val(totalpakagingCost * _strengthArray.length);
 
     });
-
     /*Excipient Requirement*/
     $(document).on("change", ".rndExicipientPrototype, .rndExicipientRsperkg, .rndExicipientQuantity, .rndExicipientStrengthValue", function () {
         var batchvalue = $("#RNDBatchSizeId").val();
@@ -572,7 +568,6 @@ $(document).ready(function () {
         $('.ExicipientTotal').val(totalexicipientCost);
 
     });
-
     /*Analytical Tab*/
     $(document).on("change", ".analyticalRsTest, .analyticalNumberOfTest, .analyticalStrengthValue", function () {
         var _ActivityTypeId = $(this).parent().parent().attr("data-activitytypeid");
@@ -625,7 +620,8 @@ $(document).ready(function () {
 
     });
 
-
+    getPIDFAccordion(_PIDFAccordionURL, _PIDFID, "dvPIDFAccrdion");
+    getIPDAccordion(_IPDAccordionURL, _EncPIDFID, _PIDFBusinessUnitId, "dvIPDAccrdion");
 
 });
 
