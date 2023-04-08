@@ -256,11 +256,11 @@ function getIPDAccordion(url, _PIDFId, _PIDFBusinessUnitId, divId) {
     });
 }
 function getCommercialAccordion(url, _PIDFId, _PIDFBusinessUnitId, divId) {
-    var html = '<div class="card collapsed-card"><div class="card-header bg-primary"><h3 class="card-title mb-0"><button id="btnCommercialAccordionHeader" type="button" class="btn btn-tool" data-card-widget="collapse">Commercial Details</button></h3><div class="card-tools"><button type="button" class="btn btn-tool" data-card-widget="collapse" title="Collapse"><i class="fas fa-minus"></i></button></div></div><div class="card-body p-0"><div id="dvCommercialAccrdion"></div></div></div>';
+    var html = '<div class="card collapsed-card"><div class="card-header bg-primary"><h3 class="card-title mb-0"><button id="btnCommercialAccordionHeader" type="button" class="btn btn-tool" data-card-widget="collapse">Commercial Details</button></h3><div class="card-tools"><button type="button" class="btn btn-tool" data-card-widget="collapse" title="Collapse"><i class="fas fa-minus"></i></button></div></div><div class="card-body p-0"><div id="dvCommercialContainer"></div></div></div>';
     $.get(url, {
-        PIDFId: _PIDFId, bui: _PIDFBusinessUnitId, _Partial: true, IsViewMode: true
+        pidfid: _PIDFId, bui: _PIDFBusinessUnitId, _Partial: true, IsView: 1
     }, function (content) {
         $("#" + divId).html(html);
-        $("#" + divId).find("#dvCommercialAccrdion").html(content);
+        $("#" + divId).find("#dvCommercialContainer").html(content);
     });
 }

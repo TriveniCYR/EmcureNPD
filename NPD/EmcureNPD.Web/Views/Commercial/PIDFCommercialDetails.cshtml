@@ -14,13 +14,22 @@
 @{ ViewData["Title"] = @MasterLocalizer["PIDFCommercialDetails"];
     string jsVersion = @Configuration.GetSection("StaticJS")["version"];
 }
-
-<div id="dvPIDFAccrdion"></div>
-<div id="dvIPDAccrdion"></div>
-<div class="content-header">
+@{
+    if (Model._Partial)
+    {
+        Layout = null;
+    }
+}
+@if (!Model._Partial)
+{
+    <div id="dvPIDFAccrdion"></div>
+    <div id="dvIPDAccrdion"></div>
+    <div class="content-header">
     <h4 class="m-0">@MasterLocalizer["CommercialDetails"]</h4>
             </div>
+}
 
+<input type="hidden" value="@(Model._Partial ? '1' : '0')" id="hdnIsPartial" />
 <div class="container-fluid background-white-card">
         <input type="hidden" id="hdnCommercialIsView" value="@(Context.Request.Query["IsView"] == "1" ? "1" : "0")" />
         
@@ -423,12 +432,11 @@
         </div>
     </div>
 </div>
-@section MyScripts {
     <link rel="stylesheet" href="~/AdminLTE/plugins/select2/css/select2.min.css" />
     <script type="text/javascript" src="~/AdminLTE/plugins/select2/js/select2.min.js"></script>
     <script src="~/js/custom/pidf/commercialdetailsform.js?v=@jsVersion"></script>
-    <link href="/lib/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
-    <script src="/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+@*    <link href="/lib/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
+    <script src="/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>*@
     <script>
         var GetAllProductType = "@EmcureNPD.Web.Helpers.APIURLHelper.GetAllPackagingType";
         var GetAllCurrency = "@EmcureNPD.Web.Helpers.APIURLHelper.GetAllCurrency";
@@ -466,8 +474,6 @@
             toastr.success(successCallBack);
         }
     </script>
-
-}
 
 
 

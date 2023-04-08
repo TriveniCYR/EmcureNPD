@@ -19,6 +19,9 @@ $(document).ready(function () {
         $('#imgPreviewMarketdetails').show();
     }
     HideSaveAsDraft(); 
+    getPIDFAccordion(_PIDFAccordionURL, _PIDFID, "dvPIDFAccrdion");
+    getIPDAccordion(_IPDAccordionURL, _EncPIDFID, _PIDFBusinessUnitId, "dvIPDAccrdion");
+    getCommercialAccordion(_CommercialAccordionURL, _EncPIDFID, _PIDFBusinessUnitId, "dvCommercialAccrdion");
 });
 
 function HideSaveAsDraft() {

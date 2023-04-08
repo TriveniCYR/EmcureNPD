@@ -23,9 +23,9 @@
     }
 }
 <div>
-    <div id="CommercialPIDFScreen">
-        @*  @{ await Html.RenderPartialAsync("~/Views/PIDF/PIDFCommercialDetails.cshtml", Model._commercialFormEntity);   }  *@
-    </div>
+    <div id="dvPIDFAccrdion"></div>
+    <div id="dvIPDAccrdion"></div>
+    <div id="dvCommercialAccrdion"></div>
     <div class="content-header">
         <h2 class="m-0">@MasterLocalizer["APIRnd"]</h2>
     </div>
@@ -334,8 +334,8 @@
     </div>
 </div>*@
 @section MyScripts {
-    <link href="/lib/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
-    <script src="/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+@*    <link href="/lib/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
+    <script src="/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>*@
     <script src="~/js/custom/api/apirnddetailsform.js?v=@jsVersion"></script>
 
     <script>
@@ -343,6 +343,15 @@
         var ErrorMessage = "@SharedLocalizer["Error"]";
         var GetAllMarketExtension = "@EmcureNPD.Web.Helpers.APIURLHelper.GetActiveBusinessUnit";
         var DBMarketID = "@Model.MarketID";
+
+        //--------start--------Accordian Data----------------
+        var _PIDFID = "@UtilityHelper.Decreypt(Model.Pidfid)";
+        var _EncPIDFID = "@(@Model.Pidfid)";
+        var _PIDFBusinessUnitId = "@(@Model.BusinessUnitId)";
+        var _PIDFAccordionURL = "@Url.Action("PIDF", "PIDF")";
+        var _IPDAccordionURL = "@Url.Action("IPD", "IPD")";
+        var _CommercialAccordionURL = "@Url.Action("PIDFCommerciaLDetails", "Commercial")";
+        //--------End--------Accordian Data----------------
 
         document.addEventListener("DOMContentLoaded", function () {
             var tabList = [].slice.call(document.querySelectorAll("#mainDivCommercial a"));

@@ -60,7 +60,7 @@ function GetCountryListSuccess(data) {
             $('#CurrencyId').append($('<option>').text(object.currencyName).attr('value', object.currencyId));
         });
     } catch (e) {
-        toastr.error('Error:' + e.message);
+        toastr.error('Get Country Error:' + e.message);
     }
 }
 function GetCountryListError(x, y, z) {
@@ -78,7 +78,7 @@ function GetProductTypeListSuccess(data) {
             $('#CommercialPackagingTypeId').append($('<option>').text(object.packagingTypeName).attr('value', object.packagingTypeId));
         });
     } catch (e) {
-        toastr.error('Error:' + e.message);
+        toastr.error('Get Product Type Error:' + e.message);
     }
 }
 function GetProductTypeListError(x, y, z) {
@@ -95,7 +95,7 @@ function GetFSListSuccess(data) {
             $('#FinalSelectionId').append($('<option>').text(object.finalSelectionName).attr('value', object.finalSelectionId));
         });
     } catch (e) {
-        toastr.error('Error:' + e.message);
+        toastr.error('Get Final Selection Error:' + e.message);
     }
 }
 function GetFSListError(x, y, z) {
@@ -350,7 +350,7 @@ function SaveCommertialPIDFFormSuccess(data) {
             toastr.error(data._Message);
         }
     } catch (e) {
-        toastr.error('Error:' + e.message);
+        toastr.error('Save Commercial Error:' + e.message);
     }
 }
 function SaveCommertialPIDFFormError(x, y, z) {
@@ -391,7 +391,7 @@ function GetCommercialPIDFByBUSuccess(data) {
         SetDisableForOtherUserBU();
 
     } catch (e) {
-        toastr.error('Error:' + e.message);
+        toastr.error('Get Commercial Error:' + e.message);
     }
 }
 function GetCommercialPIDFByBUError(x, y, z) {

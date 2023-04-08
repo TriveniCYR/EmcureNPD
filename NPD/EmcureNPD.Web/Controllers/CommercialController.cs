@@ -44,7 +44,7 @@ namespace EmcureNPD.Web.Controllers
         }
 
         [HttpGet]
-        public IActionResult PIDFCommerciaLDetails(string pidfid, string bui, int? IsView )
+        public IActionResult PIDFCommerciaLDetails(string pidfid, string bui, int? IsView, bool _Partial = false)
         {
             ModelState.Clear();
             PIDFCommercialEntity oPIDForm = new();
@@ -60,6 +60,7 @@ namespace EmcureNPD.Web.Controllers
                 ViewBag.Access = objPermssion;
                 oPIDForm = GetPIDFCommercialModel(pidfid, bui);
                 oPIDForm.IsView = (IsView == null) ? 0 : (int)IsView;
+                oPIDForm._Partial = _Partial;
                 return View(oPIDForm);
             }
             catch (Exception e)

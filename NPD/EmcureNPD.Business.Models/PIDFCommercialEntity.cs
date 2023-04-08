@@ -72,5 +72,7 @@ namespace EmcureNPD.Business.Models
         public string NspMedium { get; set; }
         [ReadOnly(true)]
         public string NspHigh { get; set; }
+
+        public bool _Partial { get; set; }
     }
 }
