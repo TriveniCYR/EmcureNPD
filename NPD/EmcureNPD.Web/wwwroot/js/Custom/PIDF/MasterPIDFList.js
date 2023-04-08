@@ -39,9 +39,8 @@ function InitializePIDFList() {
                         }
                         $("#DvApproveReject").show();
                     } else if (_screenId == "2") {
-                        if (row.pidfStatusID == 6 || row.pidfStatusID == 9) {
+                        if (row.pidfStatusID == 6 || (row.ipd && row.pidfStatusID == 9)) {
                             _flag = true;
-
                         }
                     } else if (_screenId == "7") {
                         if (row.pidfStatusID == 17) {
@@ -168,7 +167,7 @@ function InitializePIDFList() {
                 } else if (_screenId == "2") {
                     var _IPDForm = '/IPD/IPD?pidfid=' + row.encpidfid + '&bui=' + row.encbud;
 
-                    var _enable = (row.pidfStatusID == 3 || row.pidfStatusID == 5 || row.pidfStatusID == 6);
+                    var _enable = (row.pidfStatusID == 3 || row.pidfStatusID == 5 || row.pidfStatusID == 6 || row.pidfStatusID == 9);
                     html += '<a class="large-font" style="color:' + (_enable ? "#007bff" : "grey") + '" href="' + (_enable ? _IPDForm : "#") + '"><i class="fa fa-fw fa-edit mr-1"></i></a>';
 
                     var _enableView = (row.pidfStatusID > 4);

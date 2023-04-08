@@ -2,7 +2,6 @@
 var _mode = 0;
 var _PIDFId = 0;
 $(document).ready(function () {
-    
     try {
         _PIDFId = parseInt($('#hdnPIDFId').val());
         //_mode = $('#hdnIsView').val(); //parseInt($('#hdnPIDFId').val());
@@ -16,12 +15,13 @@ $(document).ready(function () {
         readOnlyForm();
     }
     GetPIDFDropdown();
+    SetChildRowDeleteIcon();
+
     var uri = document.getElementById("PIDFID").value;
-    var status = document.getElementById("StatusId").value;
+    var status = $('#dvPIDFContainer').find("#StatusId").val();
     if (uri > 0 & status != 1 & status != 2) {
         readOnlyForm();
     }
-    SetChildRowDeleteIcon();
 
     $('#BusinessUnitId').change(function (e) {
         if ($(this).val() != "") {

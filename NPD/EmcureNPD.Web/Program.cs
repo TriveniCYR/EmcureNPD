@@ -1,5 +1,7 @@
+using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Serilog;
 
@@ -29,6 +31,11 @@ namespace EmcureNPD.Web
             {
                 Log.CloseAndFlush();
             }
+
+            var builder = WebApplication.CreateBuilder(args);
+
+            builder.Services.AddRazorPages()
+                .AddRazorRuntimeCompilation();
         }
 
         public static IHostBuilder CreateHostBuilder(string[] args) =>
