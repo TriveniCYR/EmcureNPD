@@ -147,7 +147,7 @@ function GetPBFDropdownError(x, y, z) {
 }
 
 function SavePBFForm(form) {
-    debugger;
+    
     $.validator.unobtrusive.parse(form);
     if ($(form).valid()) {
         ajaxServiceMethod($('#hdnBaseURL').val() + SavePBFRnD, 'POST', SavePBFFormSuccess, SavePBFFormError, JSON.stringify(getFormData($(form))));
@@ -203,7 +203,7 @@ function GetProductStrengthById(id) {
     ajaxServiceMethod($('#hdnBaseURL').val() + GetPBFReadonlyDataByPIDFId + "/" + id, 'GET', GetProductStrengthByIdSuccess, GetProductStrengthByIdError);
 }
 function GetProductStrengthByIdSuccess(data) {
-    debugger;
+    
     try {
         $('#PidfPbfClinicals_ProjectName').val(data._object.projectName);
         $('#PidfPbfClinicals_SAPProjectProjectCode').val(data._object.sapProjectProjectCode);
@@ -330,7 +330,7 @@ function SaveClick() {
 }
 function Save() {
     var selected = new Array();
-    debugger;
+    
     $.each($("input[name='PidfPbfClinicals.TestLicenseAvailability']:checked"), function () {
         selected.push($(this).val());
     });
@@ -357,7 +357,7 @@ function SaveDraftClick() {
     Save();
 }
 function SetChildRows() {
-    debugger;
+    
     //Clinical table set data start
     $.each($('#PilotBioFastingTable tbody tr'), function (index, value) {
         $(this).find("td:first input").attr("name", "PidfPbfClinicals.pidfpbfClinicalpilotBioFastingEntity[" + index.toString() + "].Fasting");
@@ -390,7 +390,7 @@ function SetChildRows() {
             //Clinical table set data End
 }
 function Calculate_Clinical_total() {
-    debugger
+    
     var pilotbiofastingsum = 0;
     var pilotbiofedsum = 0;
     var pivotalbiofastingsum = 0;

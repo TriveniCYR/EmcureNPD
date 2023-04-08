@@ -10,7 +10,7 @@ $(document).ready(function () {
         //GetRegionByBusinessUnit();
     }
     $('#BusinessUnitId').change(function () {
-        debugger;
+        
         /*GetDepartmentCountryByBusinessUnit();*/  GetRegionByBusinessUnit();
     });
     $('#RegionId').change(function () {

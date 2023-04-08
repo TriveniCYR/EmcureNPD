@@ -7,7 +7,7 @@ var SelectedBUValue = 0;
 var selectedStrength = 0;
 
 $(document).ready(function () {
-    debugger;
+    
     InitializeProductTypeDropdown();
     //SetDivReadonly();
     InitializeCurrencyDropdown();

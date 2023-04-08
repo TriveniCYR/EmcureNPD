@@ -2,7 +2,7 @@
 var SelectedstrengthValue = 0;
 var selectedTab = 'Analytical';
 $(document).ready(function () {
-    debugger;
+    
 
     SelectedBUValue = EncQueryBusinessUnit;
     SelectedstrengthValue = EncQueryStrengthId;
@@ -211,12 +211,12 @@ function SetDivReadonly() {
 }
 
 function StrengthtabClick(strengthId, pidfidval) {
-    debugger;
+    
     SelectedstrengthValue = strengthId;
     tabClick();
 }
 function BUtabClick(BUVal, pidfidval) {
-    debugger;
+    
     SelectedBUValue = BUVal;
     tabClick();
 }

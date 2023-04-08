@@ -3,7 +3,6 @@ var DivsToValidate = ['dvTimelineInMonths', 'dvManhourEstimates', 'dvAnalyticalD
 
 
 $(document).ready(function () {
-    debugger;
    // $("#ManhourEstimates_7__ManhourEstimatesMonthsValue").hide();
    // $("#ManhourEstimates_7__ManhourEstimatesNoOfEmployeeValue").hide();
   //  SetDivReadonly();

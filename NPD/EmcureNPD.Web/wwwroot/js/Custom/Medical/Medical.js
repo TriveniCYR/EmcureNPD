@@ -1,9 +1,7 @@
 $(document).ready(function () {
 	IsViewModeMedical();
 	//_PIDFID = parseInt(pidid);
-	debugger;
 	getPIDFAccordion(_PIDFAccordionURL, _PIDFID, "dvPIDFAccrdion");
-	getIPDAccordion(_IPDAccordionURL, _EncPIDFID, _PIDFBusinessUnitId, "dvIPDAccrdion");
 })
 function IsViewModeMedical() {
 	if ($("#IsView").val() == '1') {

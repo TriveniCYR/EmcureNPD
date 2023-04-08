@@ -38,7 +38,7 @@ function setLicensevalues() {
     }
 }
 function SetBU_Strength() {
-    debugger;
+    
     var PIDFProductStrengthId = 0; PIDFBusinessUnitId = 0;  
     if ($("#StrengthId").val() > 0)
         PIDFProductStrengthId = $("#StrengthId").val();
@@ -378,7 +378,7 @@ function ValidateMainForm() {
     return status;
 }
 function ValidateBU_Strength() {
-    debugger;
+    
     var status = true;
     var valMsg = '';
     if (SelectedBUValue == 0) {

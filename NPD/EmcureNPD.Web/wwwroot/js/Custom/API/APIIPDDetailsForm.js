@@ -1,8 +1,6 @@
 ﻿
 
 $(document).ready(function () {
-    debugger;
-
     SetDivReadonly();
     $("#IsModelValid").val('');
     if (SaveStatus != '' && SaveStatus != undefined) {
@@ -30,7 +28,6 @@ function HideSaveAsDraft() {
 }
 
 function InitializeProductTypeDropdown() {
-    debugger;
     ajaxServiceMethod($('#hdnBaseURL').val() + GetAllProductType, 'GET', GetProductTypeListSuccess, GetProductTypeListError);
 }
 function GetProductTypeListSuccess(data) {
@@ -66,7 +63,6 @@ function IsFileTypeImage() {
 }
 
 $('#MarketDetailsNewPortCGIDetails').change(function () {
-    debugger;
     if ($("#MarketDetailsNewPortCGIDetails")[0].files[0] != null) {
         if (IsFileTypeImage()) {
             $("#imgPreviewMarketdetails").show();

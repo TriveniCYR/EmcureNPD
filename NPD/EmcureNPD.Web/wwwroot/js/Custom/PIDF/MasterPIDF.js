@@ -2,7 +2,7 @@
 var _mode = 0;
 var _PIDFId = 0;
 $(document).ready(function () {
-    debugger;
+    
     try {
         _PIDFId = parseInt($('#hdnPIDFId').val());
         //_mode = $('#hdnIsView').val(); //parseInt($('#hdnPIDFId').val());
