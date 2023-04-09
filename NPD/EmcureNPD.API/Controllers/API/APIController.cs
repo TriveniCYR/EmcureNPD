@@ -158,6 +158,25 @@ namespace EmcureNPD.API.Controllers.API
                 return _ObjectResponse.Create(false, (Int32)HttpStatusCode.InternalServerError, Convert.ToString(ex.StackTrace));
             }
         }
-		
+
+        [HttpGet]
+        [Route("GetIPDByPIDF/{pidfId}")]
+        public async Task<IActionResult> GetIPDByPIDF([FromRoute] long pidfId)
+        {
+            try
+            {
+                var oPIDFEntity = await _APIService.GetIPDByPIDF(pidfId);
+                if (oPIDFEntity != null)
+                    return _ObjectResponse.Create(oPIDFEntity, (Int32)HttpStatusCode.OK);
+                else
+                    return _ObjectResponse.Create(null, (Int32)HttpStatusCode.BadRequest, "Record not found");
+            }
+            catch (Exception ex)
+            {
+                return _ObjectResponse.Create(false, (Int32)HttpStatusCode.InternalServerError, Convert.ToString(ex.StackTrace));
+            }
+        }
+
+
     }	
 }

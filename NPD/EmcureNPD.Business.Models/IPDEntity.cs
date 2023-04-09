@@ -71,7 +71,20 @@ namespace EmcureNPD.Business.Models
         public int? LogInId { get; set; }
         public int? StatusId { get; set; }
         //public int? LastStatusId { get; set; }
+
+        public string Country { get; set; }
+        public string BusinessUnitName { get; set; }
+
     }
+
+    public partial class APIIPDEntity
+    {
+       public List<IPDEntity> IPDList { get; set; }
+        public List<PIDF_IPD_PatentDetailsEntity> IPD_PatentDetailsList { get; set; }
+
+        public string ProjectName { get; set; }
+    }
+
     public partial class PIDF_IPD_PatentDetailsEntity
     {
         public long? PatentDetailsID { get; set; }
@@ -99,7 +112,8 @@ namespace EmcureNPD.Business.Models
 
         [Required(ErrorMessageResourceType = typeof(Validation), ErrorMessageResourceName = "Required")]
         public string PatentNumber { get; set; }
-        
+        public string BusinessUnitName { get; set; }
+
     }
     public partial class IPDPIDFListEntity
     {

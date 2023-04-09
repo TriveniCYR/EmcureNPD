@@ -13,23 +13,16 @@
 
 @{
     ViewData["Title"] = @MasterLocalizer["APIRndDetails"];
-    string countryName = string.Empty;
     string jsVersion = @Configuration.GetSection("StaticJS")["version"];
-    if (@Model.IPEvalution.CountryIds != null && @Model.MasterCountries != null)
-    {
-        int countryid = Convert.ToInt32(@Model.IPEvalution.CountryIds);
-        var _objcountry = @Model.MasterCountries.Find(x => x.CountryId == countryid);
-        countryName = (_objcountry == null) ? string.Empty : _objcountry.CountryName;
-    }
 }
 <div>
     <div id="dvPIDFAccrdion"></div>
     <div id="dvIPDAccrdion"></div>
     <div id="dvCommercialAccrdion"></div>
     <div class="content-header">
-        <h2 class="m-0">@MasterLocalizer["APIRnd"]</h2>
+        <h2 class="m-0">Active Pharmaceutical Ingredient (R & D)</h2>
     </div>
-    <div class="card card-outline card-primary">
+    <div class="card card-outline">
 
         <div class="card-body">
             <form asp-action="APIRnDDetailsForm" asp-controller="API" method="post">
@@ -198,11 +191,11 @@
                         </div>
                     </div>
                     <div class="card-body" style="display: block;">
-                        <div style="overflow-x:auto;">
-                            <table class="table table-bordered">
+                        <div style="overflow-x:auto;" class="scrollElement">
+                            <table class="table table-bordered apiIPDTable">
                                 <thead>
                                     <tr>
-                                        <th>       @MasterLocalizer["Sr.No."]                 </th>
+                                        <th>       @MasterLocalizer["Business Unit"]                 </th>
                                         <th>       @MasterLocalizer["ProjectName"]         </th>
                                         <th>       @MasterLocalizer["MarketName"]                        </th>
                                         <th>       @MasterLocalizer["DataExclusivity"]         </th>
@@ -218,21 +211,24 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    <tr>
-                                        <td>                    1                                </td>
-                                        <td> @Model.IPEvalution.ProjectName                      </td>
-                                        <td> @Model.IPEvalution.MarketName                            </td>
-                                        <td> @Model.IPEvalution.DataExclusivity                      </td>
-                                        <td> @Model.IPEvalution.FillingType                      </td>
-                                        <td> @Model.IPEvalution.ApprovedGenetics                      </td>
-                                        <td> @Model.IPEvalution.LaunchedGenetics                    </td>
-                                        <td> @countryName                                         </td>
-                                        <td> @Model.IPEvalution.LegalStatus                    </td>
-                                        <td> @Model.IPEvalution.CostOfLitication                    </td>
-                                        <td> @Model.IPEvalution.Comments                    </td>
-                                        <td> @Model.IPEvalution.Innovators                    </td>
-                                        <td> @Model.IPEvalution.PatentStatus                    </td>
-                                    </tr>
+                                    @foreach (var item in Model.IPEvalution)
+                                    {
+                                        <tr>
+                                            <td>             @item.BusinessUnitName                                     </td>
+                                            <td> @item.ProjectName                      </td>
+                                            <td> @item.MarketName                            </td>
+                                            <td> @item.DataExclusivity                      </td>
+                                            <td> @item.FillingType                      </td>
+                                            <td> @item.ApprovedGenetics                      </td>
+                                            <td> @item.LaunchedGenetics                    </td>
+                                            <td> @item.Country</td>
+                                            <td> @item.LegalStatus                    </td>
+                                            <td> @item.CostOfLitication                    </td>
+                                            <td> @item.Comments                    </td>
+                                            <td> @item.Innovators                    </td>
+                                            <td> @item.PatentStatus                    </td>
+                                        </tr>
+                                    }
                                 </tbody>
                             </table>
                         </div>
@@ -256,6 +252,7 @@
                             <table class="table table-bordered">
                                 <thead>
                                     <tr>
+                                        <th>       @MasterLocalizer["Business Unit"]                 </th>
                                         <th>       @MasterLocalizer["PatentNumber"]                 </th>
                                         <th>        @MasterLocalizer["Type"]                        </th>
                                         <th>       @MasterLocalizer["OriginalExpiraDate"]         </th>
@@ -270,6 +267,7 @@
                                     @foreach (var item in Model.IPD_PatentDetailsList)
                                     {
                                         <tr>
+                                            <td> @item.BusinessUnitName              </td>
                                             <td> @item.PatentNumber              </td>
                                             <td> @item.Type                      </td>
                                             <td> @item.OriginalExpiryDate        </td>
@@ -292,11 +290,13 @@
 
                 @* ----------Start -Save buttons-------------*@
                 <div class="row">
-                    <div class="col-md-9"></div>
-                    <div class="col-md-3">
+                    <div class="col-12 text-end">
                         <div class="form-group">
                             <button type="submit" id="Save" class="btn btn-success">@SharedLocalizer["Submit"]</button>
+                            @if (Convert.ToBoolean(Context.Request.Query["api"]) == false)
+                                {
                             <button type="submit" id="SaveDraft" class="btn btn-primary">@SharedLocalizer["SaveDraft"]</button>
+                                }
                             <a class="btn btn-danger" asp-action="PIDFList" asp-controller="PIDF"
                                asp-route-ScreenId="@Convert.ToString((int)EmcureNPD.Utility.Enums.PIDFScreen.API)">@SharedLocalizer["Cancel"]
                             </a>

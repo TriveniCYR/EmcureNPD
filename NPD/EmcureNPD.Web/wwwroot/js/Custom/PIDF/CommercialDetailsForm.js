@@ -110,7 +110,7 @@ function ValidateYearForm() {
 
         
         if (jQuery.inArray(kv.name, objdropdownYearControls_array) != -1) {
-
+            console.log(kv);
             if (kv.value == 0) {
 /*                $('#valmsg' + kv.name).text('Required');*/
                 $('#' + kv.name).addClass('InvalidBox');
@@ -289,6 +289,11 @@ $('#mainDivCommercial').find("#btnSaveAsDraft").click(function () {
         }
     }
     
+});
+$(document).on("change", "#mainDivCommercial .InvalidBox", function () {
+    if ($(this).val() != '' && $(this).val() != 0) {
+        $(this).removeClass("InvalidBox");
+    }
 });
 function UpdateYearTable(columns) {
     

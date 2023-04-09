@@ -100,76 +100,128 @@ $("[id*='PRDDepartmentRawMaterialValue']").change(function () {
 //----------Impurity------------------------------
 
 $("[id*='AnalyticalDepartmentImpurityValue']").change(function () {
-    var sum = 0;
-    $("[id*='AnalyticalDepartmentImpurityValue']").each(function () {
-        var Value = ($(this).val() == '') ? 0 : $(this).val();
-        if (($(this).attr('id') != 'AnalyticalDepartment_5__AnalyticalDepartmentImpurityValue') && !isNaN(Value))
-            sum = parseFloat(sum) + parseFloat(Value);
-    });
-    $("#AnalyticalDepartment_5__AnalyticalDepartmentImpurityValue").val(sum);
+    var NoOfCols = $("#AnalyticalDepartment_1__AnalyticalDepartmentImpurityValue").val();
+    var CostPerCols = $("#AnalyticalDepartment_2__AnalyticalDepartmentImpurityValue").val();
+    var TotalCostPerColumn = parseFloat((NoOfCols == "" ? 0 : NoOfCols)) * parseFloat((CostPerCols == "" ? 0 : CostPerCols));
+    $("#AnalyticalDepartment_3__AnalyticalDepartmentImpurityValue").val(TotalCostPerColumn);
+
+    var Chemical = $("#AnalyticalDepartment_0__AnalyticalDepartmentImpurityValue").val();
+    var CostofSilica = $("#AnalyticalDepartment_4__AnalyticalDepartmentImpurityValue").val();
+    var TotalCostAnalytical = parseFloat((Chemical == "" ? 0 : Chemical)) + parseFloat((CostofSilica == "" ? 0 : CostofSilica)) + TotalCostPerColumn;
+    $("#AnalyticalDepartment_5__AnalyticalDepartmentImpurityValue").val(TotalCostAnalytical);
+
+    //var sum = 0;
+    //$("[id*='AnalyticalDepartmentImpurityValue']").each(function () {
+    //    var Value = ($(this).val() == '') ? 0 : $(this).val();
+    //    if (($(this).attr('id') != 'AnalyticalDepartment_5__AnalyticalDepartmentImpurityValue') && !isNaN(Value))
+    //        sum = parseFloat(sum) + parseFloat(Value);
+    //});
+    //$("#AnalyticalDepartment_5__AnalyticalDepartmentImpurityValue").val(sum);
     CalculateTotalHeadwiseAnalytical();
 });
 //----------Stability------------------------------ AnalyticalDepartment_0__AnalyticalDepartmentStabilityValue
 $("[id*='AnalyticalDepartmentStabilityValue']").change(function () {
-    var sum = 0;
-    $("[id*='AnalyticalDepartmentStabilityValue']").each(function () {
-        var Value = ($(this).val() == '') ? 0 : $(this).val();
-        if (($(this).attr('id') != 'AnalyticalDepartment_5__AnalyticalDepartmentStabilityValue') && !isNaN(Value))
-            sum = parseFloat(sum) + parseFloat(Value);
-    });
-    $("#AnalyticalDepartment_5__AnalyticalDepartmentStabilityValue").val(sum);
+
+    var NoOfCols = $("#AnalyticalDepartment_1__AnalyticalDepartmentStabilityValue").val();
+    var CostPerCols = $("#AnalyticalDepartment_2__AnalyticalDepartmentStabilityValue").val();
+    var TotalCostPerColumn = parseFloat((NoOfCols == "" ? 0 : NoOfCols)) * parseFloat((CostPerCols == "" ? 0 : CostPerCols));
+    $("#AnalyticalDepartment_3__AnalyticalDepartmentStabilityValue").val(TotalCostPerColumn);
+
+    var Chemical = $("#AnalyticalDepartment_0__AnalyticalDepartmentStabilityValue").val();
+    var CostofSilica = $("#AnalyticalDepartment_4__AnalyticalDepartmentStabilityValue").val();
+    var TotalCostAnalytical = parseFloat((Chemical == "" ? 0 : Chemical)) + parseFloat((CostofSilica == "" ? 0 : CostofSilica)) + TotalCostPerColumn;
+    $("#AnalyticalDepartment_5__AnalyticalDepartmentStabilityValue").val(TotalCostAnalytical);
+    //var sum = 0;
+    //$("[id*='AnalyticalDepartmentStabilityValue']").each(function () {
+    //    var Value = ($(this).val() == '') ? 0 : $(this).val();
+    //    if (($(this).attr('id') != 'AnalyticalDepartment_5__AnalyticalDepartmentStabilityValue') && !isNaN(Value))
+    //        sum = parseFloat(sum) + parseFloat(Value);
+    //});
+    //$("#AnalyticalDepartment_5__AnalyticalDepartmentStabilityValue").val(sum);
     CalculateTotalHeadwiseAnalytical();
 });
 //----------AMV------------------------------ AnalyticalDepartment_0__AnalyticalDepartmentAMVValue
 $("[id*='AnalyticalDepartmentAMVValue']").change(function () {
-    var sum = 0;
-    $("[id*='AnalyticalDepartmentAMVValue']").each(function () {
-        var Value = ($(this).val() == '') ? 0 : $(this).val();
-        if (($(this).attr('id') != 'AnalyticalDepartment_5__AnalyticalDepartmentAMVValue') && !isNaN(Value))
-            sum = parseFloat(sum) + parseFloat(Value);
-    });
-    $("#AnalyticalDepartment_5__AnalyticalDepartmentAMVValue").val(sum);
+
+    var NoOfCols = $("#AnalyticalDepartment_1__AnalyticalDepartmentAMVValue").val();
+    var CostPerCols = $("#AnalyticalDepartment_2__AnalyticalDepartmentAMVValue").val();
+    var TotalCostPerColumn = parseFloat((NoOfCols == "" ? 0 : NoOfCols)) * parseFloat((CostPerCols == "" ? 0 : CostPerCols));
+    $("#AnalyticalDepartment_3__AnalyticalDepartmentAMVValue").val(TotalCostPerColumn);
+
+    var Chemical = $("#AnalyticalDepartment_0__AnalyticalDepartmentAMVValue").val();
+    var CostofSilica = $("#AnalyticalDepartment_4__AnalyticalDepartmentAMVValue").val();
+    var TotalCostAnalytical = parseFloat((Chemical == "" ? 0 : Chemical)) + parseFloat((CostofSilica == "" ? 0 : CostofSilica)) + TotalCostPerColumn;
+    $("#AnalyticalDepartment_5__AnalyticalDepartmentAMVValue").val(TotalCostAnalytical);
+    //var sum = 0;
+    //$("[id*='AnalyticalDepartmentAMVValue']").each(function () {
+    //    var Value = ($(this).val() == '') ? 0 : $(this).val();
+    //    if (($(this).attr('id') != 'AnalyticalDepartment_5__AnalyticalDepartmentAMVValue') && !isNaN(Value))
+    //        sum = parseFloat(sum) + parseFloat(Value);
+    //});
+    //$("#AnalyticalDepartment_5__AnalyticalDepartmentAMVValue").val(sum);
     CalculateTotalHeadwiseAnalytical();
 });
 
 //----------AMT------------------------------ AnalyticalDepartment_0__AnalyticalDepartmentAMTValue
 $("[id*='AnalyticalDepartmentAMTValue']").change(function () {
-    var sum = 0;
-    $("[id*='AnalyticalDepartmentAMTValue']").each(function () {
-        var Value = ($(this).val() == '') ? 0 : $(this).val();
-        if (($(this).attr('id') != 'AnalyticalDepartment_5__AnalyticalDepartmentAMTValue') && !isNaN(Value))
-            sum = parseFloat(sum) + parseFloat(Value);
-    });
-    $("#AnalyticalDepartment_5__AnalyticalDepartmentAMTValue").val(sum);
+
+    var NoOfCols = $("#AnalyticalDepartment_1__AnalyticalDepartmentAMTValue").val();
+    var CostPerCols = $("#AnalyticalDepartment_2__AnalyticalDepartmentAMTValue").val();
+    var TotalCostPerColumn = parseFloat((NoOfCols == "" ? 0 : NoOfCols)) * parseFloat((CostPerCols == "" ? 0 : CostPerCols));
+    $("#AnalyticalDepartment_3__AnalyticalDepartmentAMTValue").val(TotalCostPerColumn);
+
+    var Chemical = $("#AnalyticalDepartment_0__AnalyticalDepartmentAMTValue").val();
+    var CostofSilica = $("#AnalyticalDepartment_4__AnalyticalDepartmentAMTValue").val();
+    var TotalCostAnalytical = parseFloat((Chemical == "" ? 0 : Chemical)) + parseFloat((CostofSilica == "" ? 0 : CostofSilica)) + TotalCostPerColumn;
+    $("#AnalyticalDepartment_5__AnalyticalDepartmentAMTValue").val(TotalCostAnalytical);
+
+    //var sum = 0;
+    //$("[id*='AnalyticalDepartmentAMTValue']").each(function () {
+    //    var Value = ($(this).val() == '') ? 0 : $(this).val();
+    //    if (($(this).attr('id') != 'AnalyticalDepartment_5__AnalyticalDepartmentAMTValue') && !isNaN(Value))
+    //        sum = parseFloat(sum) + parseFloat(Value);
+    //});
+    //$("#AnalyticalDepartment_5__AnalyticalDepartmentAMTValue").val(sum);
     CalculateTotalHeadwiseAnalytical();
 });
 //----------ARD------------------------------ AnalyticalDepartment_0__AnalyticalDepartmentARDValue
 $("[id*='AnalyticalDepartmentARDValue']").change(function () {
-    var sum = 0;
-    $("[id*='AnalyticalDepartmentARDValue']").each(function () {
-        var Value = ($(this).val() == '') ? 0 : $(this).val();
-        if (($(this).attr('id') != 'AnalyticalDepartment_3__AnalyticalDepartmentARDValue') &&
-            ($(this).attr('id') != 'AnalyticalDepartment_4__AnalyticalDepartmentARDValue') &&
-            ($(this).attr('id') != 'AnalyticalDepartment_5__AnalyticalDepartmentARDValue') && !isNaN(Value))
-            sum = parseFloat(sum) + parseFloat(Value);
-    });
-    $("#AnalyticalDepartment_3__AnalyticalDepartmentARDValue").val(sum);
-    cal_TotalcostofAnalyticalRawMaterial();
-    CalculateTotalHeadwiseAnalytical();
-});
-$("#AnalyticalDepartment_4__AnalyticalDepartmentARDValue").change(function () {
-    cal_TotalcostofAnalyticalRawMaterial();
-});
-function cal_TotalcostofAnalyticalRawMaterial() {
-    var sum = 0;
-    var Value = ($("#AnalyticalDepartment_4__AnalyticalDepartmentARDValue").val() == '') ? 0 : $("#AnalyticalDepartment_4__AnalyticalDepartmentARDValue").val();
-    var SumValue = ($("#AnalyticalDepartment_3__AnalyticalDepartmentARDValue").val() == '') ? 0 : $("#AnalyticalDepartment_3__AnalyticalDepartmentARDValue").val();
-    if (!isNaN(Value) && !isNaN(SumValue))
-        sum = parseFloat(SumValue) + parseFloat(Value);
+    var NoOfCols = $("#AnalyticalDepartment_1__AnalyticalDepartmentARDValue").val();
+    var CostPerCols = $("#AnalyticalDepartment_2__AnalyticalDepartmentARDValue").val();
+    var TotalCostPerColumn = parseFloat((NoOfCols == "" ? 0 : NoOfCols)) * parseFloat((CostPerCols == "" ? 0 : CostPerCols));
+    $("#AnalyticalDepartment_3__AnalyticalDepartmentARDValue").val(TotalCostPerColumn);
 
-    $("#AnalyticalDepartment_5__AnalyticalDepartmentARDValue").val(sum);
+    var Chemical = $("#AnalyticalDepartment_0__AnalyticalDepartmentARDValue").val();
+    var CostofSilica = $("#AnalyticalDepartment_4__AnalyticalDepartmentARDValue").val();
+    var TotalCostAnalytical = parseFloat((Chemical == "" ? 0 : Chemical)) + parseFloat((CostofSilica == "" ? 0 : CostofSilica)) + TotalCostPerColumn;
+    $("#AnalyticalDepartment_5__AnalyticalDepartmentARDValue").val(TotalCostAnalytical);
+
+    //$("[id*='AnalyticalDepartmentARDValue']").each(function () {
+    //    var Value = ($(this).val() == '') ? 0 : $(this).val();
+    //    if (($(this).attr('id') != 'AnalyticalDepartment_3__AnalyticalDepartmentARDValue') &&
+    //        ($(this).attr('id') != 'AnalyticalDepartment_0__AnalyticalDepartmentARDValue') &&
+    //        ($(this).attr('id') != 'AnalyticalDepartment_4__AnalyticalDepartmentARDValue') &&
+    //        ($(this).attr('id') != 'AnalyticalDepartment_5__AnalyticalDepartmentARDValue') && !isNaN(Value))
+    //        sum = parseFloat(sum) + parseFloat(Value);
+    //});
+    //cal_TotalcostofAnalyticalRawMaterial();
+
+
     CalculateTotalHeadwiseAnalytical();
-}
+});
+//$("#AnalyticalDepartment_4__AnalyticalDepartmentARDValue").change(function () {
+//    cal_TotalcostofAnalyticalRawMaterial();
+//});
+//function cal_TotalcostofAnalyticalRawMaterial() {
+//    var sum = 0;
+//    var Value = ($("#AnalyticalDepartment_4__AnalyticalDepartmentARDValue").val() == '') ? 0 : $("#AnalyticalDepartment_4__AnalyticalDepartmentARDValue").val();
+//    var SumValue = ($("#AnalyticalDepartment_3__AnalyticalDepartmentARDValue").val() == '') ? 0 : $("#AnalyticalDepartment_3__AnalyticalDepartmentARDValue").val();
+//    if (!isNaN(Value) && !isNaN(SumValue))
+//        sum = parseFloat(SumValue) + parseFloat(Value);
+
+//    $("#AnalyticalDepartment_5__AnalyticalDepartmentARDValue").val(sum);
+//    CalculateTotalHeadwiseAnalytical();
+//}
 
 function CalculateTotalHeadwiseAnalytical () {
     var arrAnalyticalCol = ['ARD', 'Impurity', 'Stability', 'AMV', 'AMT'];
@@ -202,8 +254,8 @@ function Calculate_ManhourEstimates(ControlID) {
 
     var ManHourRates = ($("#ManHourRates").val() == '') ? 0 : $("#ManHourRates").val();
 
-    var HoursInMonth = parseFloat(730);    // Asuumed , later may be change
-    var HourValue = parseFloat(MonthValue) * HoursInMonth * NoofEmployeeValue;
+    //var HoursInMonth = parseFloat(730);    // Asuumed , later may be change
+    var HourValue = parseFloat(MonthValue) * (8 * 22) * NoofEmployeeValue;
     var CostValue = parseFloat(ManHourRates) * parseFloat(HourValue);
 
     var HoursControlID = "#" + SpliID[0] + "__ManhourEstimatesHoursValue";

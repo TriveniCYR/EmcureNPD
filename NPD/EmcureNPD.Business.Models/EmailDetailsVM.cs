@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace EmcureNPD.Web.Models
+namespace EmcureNPD.Business.Models
 {
     public class EmailDetailsVM
     {

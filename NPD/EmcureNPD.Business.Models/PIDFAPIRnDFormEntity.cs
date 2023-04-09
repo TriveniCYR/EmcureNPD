@@ -25,7 +25,7 @@ namespace EmcureNPD.Business.Models
         public string DrugsCategory { get; set; }
         public string ProductStrength { get; set; }
         public int LoggedInUserId { get; set; }
-        public IPDEntity IPEvalution { get; set; }
+        public List<IPDEntity> IPEvalution { get; set; }
         public List<MasterCountryEntity> MasterCountries { get; set; }
         public List<PIDF_IPD_PatentDetailsEntity> IPD_PatentDetailsList { get; set; }
         public PIDFCommercialEntity _commercialFormEntity { get; set; }

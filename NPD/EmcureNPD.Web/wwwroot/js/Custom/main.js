@@ -180,6 +180,11 @@ function getParameterByName(name, url = window.location.href) {
 }
 $(document).ready(function () {
     setNavigation();
+    if ($('.scrollElement').length > 0) {
+        $('.scrollElement').overlayScrollbars({
+            className: "os-theme-dark"
+        });
+    }
 });
 function ApproveRejectClick(type, PIDFID, ScreenId, URL) {
     if (PIDFID != undefined && PIDFID != "" && PIDFID != null) {

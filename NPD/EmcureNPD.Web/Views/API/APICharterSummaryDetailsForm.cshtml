@@ -14,20 +14,18 @@
     ViewData["Title"] = @MasterLocalizer["APICharterSummaryDetails"];
     string jsVersion = @Configuration.GetSection("StaticJS")["version"];
 }
+<div class="content-header">
+    <h4 class="m-0">Active Pharmaceutical Ingredient Charter Detail Summary</h4>
+</div>
+<div class="container-fluid background-white-card">
 <div id="divToExport">
-    <div class="card card-outline card-primary">
-        <div class="card-header">
-            <h3 class="card-title mb-0"><button type="button" class="btn btn-tool" data-card-widget="collapse">@MasterLocalizer["APICharterSummaryDetails"]</button></h3>
-            <div class="card-tools">
-                <button type="button" class="btn btn-tool">
-                    <a class="btn btn-danger" id="btnExportToPdf_APICharter" title="ExportToPdf"><i class="fa fa-file-pdf-o" aria-hidden="true"></i>PDF</a>
-                    <a class="btn btn-danger" id="btnBack" asp-action="PIDFList" asp-controller="PIDF"
-                       asp-route-ScreenId="@Convert.ToString((int)EmcureNPD.Utility.Enums.PIDFScreen.API)">@SharedLocalizer["Back"]</a>
-                </button>
-            </div>
+    <div class="">
+        <div class="col-12 text-end">
+                <a class="btn btn-primary mr-3" id="btnExportToPdf_APICharter" title="ExportToPdf"><i class="fa fa-file-pdf-o" aria-hidden="true"></i>PDF</a>
+                <a class="btn btn-danger" id="btnBack" asp-action="PIDFList" asp-controller="PIDF"
+                   asp-route-ScreenId="@Convert.ToString((int)EmcureNPD.Utility.Enums.PIDFScreen.API)">@SharedLocalizer["Back"]</a>
         </div>
-        <div class="card-body">
-
+        <div class="">
             <input type="hidden" asp-for="Pidfid" />
             <input type="hidden" asp-for="BusinessUnitId" />
             <input type="hidden" asp-for="PIDFAPICharterFormID" />
@@ -35,7 +33,7 @@
             <input asp-for="IsModelValid" style="visibility: hidden;" />
             <input type="hidden" asp-for="StatusId" />
             <div class="row">
-                <div class="col-md-5">
+                <div class="col-md-6">
                     <table class="table">
                         <tr class="bg-primary">
                             <td colspan=2><b>@MasterLocalizer["ProjectDetails"]</b></td>
@@ -91,9 +89,8 @@
                         </tr>
                     </table>
                 </div>
-                <div class="col-md-2"></div>
                 @*--------Start----Timeline IN Months-------------*@
-                <div class="col-md-5" id="dvTimelineInMonths">
+                <div class="col-md-3" id="dvTimelineInMonths">
                     @if (Model.TimelineInMonths != null)
                     {
                         <table class="table">
@@ -127,11 +124,10 @@
                         </table>
                     }
                 </div>
-                @*--------End----Timeline IN Months-------------*@
-            </div>
-            @*------------Finance Rates--------------------------*@
-            <div class="row mt-4">
-                <div class="col-md-5">
+                    @*--------End----Timeline IN Months-------------*@
+
+                    @*------------Finance Rates--------------------------*@
+                <div class="col-md-3">
                     <table class="table">
                         <tr class="bg-primary">
                             <td colspan=2><b>@MasterLocalizer["FinanceRates"]</b></td>
@@ -147,11 +143,11 @@
                         </tr>
                     </table>
                 </div>
-                <div class="col-md-7"></div>
+                    @*--------------Finance Rates----------------------*@
             </div>
-            @*--------------Finance Rates----------------------*@
 
-            <div class="row mt-4">
+
+            <div class="row mt-3">
                 @*--------Start----AnalyticalDepartment-------------*@
                 <div class="col-md-12" id="dvAnalyticalDepartment">
                     @if (Model.AnalyticalDepartment != null)
@@ -236,7 +232,7 @@
                 </div>
                 @*--------End----AnalyticalDepartment-------------*@
             </div>
-            <div class="row mt-4">
+            <div class="row mt-3">
                 @*--------Start----PRDDepartment-------------*@
                 <div class="col-md-4" id="dvPRDDepartment">
                     @if (Model.PRDDepartment != null)
@@ -275,11 +271,8 @@
                         </table>
                     }
                 </div>
-                <div class="col-md-8"></div>
                 @*--------End----PRDDepartment-------------*@
-            </div>
-            <div class="row mt-4">
-                @*--------Start----CapitalOtherExpenditure-------------*@
+                 @*--------Start----CapitalOtherExpenditure-------------*@
                 <div class="col-md-8" id="dvCapitalOtherExpenditure">
                     @if (Model.CapitalOtherExpenditure != null)
                     {
@@ -312,10 +305,9 @@
                         </table>
                     }
                 </div>
-                <div class="col-md-4"></div>
                 @*--------End----CapitalOtherExpenditure-------------*@
             </div>
-            <div class="row mt-4">
+            <div class="row mt-3">
                 @*--------Start----ManhourEstimates-------------*@
                 <div class="col-md-12" id="dvManhourEstimates">
                     @if (Model.ManhourEstimates != null)
@@ -369,9 +361,9 @@
                 </div>
                 @*--------End----ManhourEstimates-------------*@
             </div>
-            <div class="row mt-4">
+            <div class="row mt-3">
                 @*--------Start----HeadwiseBudget-------------*@
-                <div class="col-md-6" id="dvHeadwiseBudget">
+                <div class="col-md-8" id="dvHeadwiseBudget">
                     @if (Model.HeadwiseBudget != null)
                     {
                         <table class="table">
@@ -403,7 +395,7 @@
                 @*--------End----HeadwiseBudget-------------*@
             </div>
             @* ----------Start -MangmentTeam-------------*@
-            <div class="row mt-4">
+            <div class="row mt-3">
                 <div class="col-12 d-flex flex-wrap mb-4">
                     @if (Model.ManagmentTeams != null)
                     {
@@ -421,6 +413,7 @@
 
         </div>
     </div>
+</div>
 </div>
 @section MyScripts {
     <link href="/lib/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">

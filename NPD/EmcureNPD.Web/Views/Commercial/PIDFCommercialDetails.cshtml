@@ -269,14 +269,14 @@
                                                     </div>
                                                 </div>
                                                 <div class="col-md-3 border ml-3">
-                                                    <h3 class="card-title font-weight-bold">Market Share % </h3>
+                                                    <div class="row bg-primary pt-2"><h3 class="card-title font-weight-bold">Market Share % </h3></div>
                                                     <table class="table table-bordered">
                                                         <tr>
-                                                            <td>
+                                                            <td style="width:35%">
                                                                 <label class="control-label">@MasterLocalizer["Low"]</label>
                                                                 <span class="text-danger">*</span>
                                                             </td>
-                                                            <td>
+                                                            <td style="width:65%">
                                                                 @Html.TextBoxFor(model => model.MarketSharePercentageLow, new {@type="number", @autocomplete = "off", @class = "form-control " })
                                                                 <lable id="valmsgMarketSharePercentageLow" class="text-danger"></lable>
                                                             </td>
@@ -298,11 +298,12 @@
                                                     </table>
                                                 </div>
                                                 <div class="col-md-3 border ml-3">
-                                                    <h3 class="card-title font-weight-bold">Estimated Market Share Units </h3>
+                                                    <div class="row bg-primary pt-2">
+                                                        <h3 class="card-title font-weight-bold">Estimated Market Share Units </h3></div>
                                                     <table class="table table-bordered">
                                                         <tr>
-                                                            <td> <label class="control-label">@MasterLocalizer["Low"]</label></td>
-                                                            <td>
+                                                            <td style="width:35%"> <label class="control-label">@MasterLocalizer["Low"]</label></td>
+                                                            <td style="width:65%">
                                                                 @Html.TextBoxFor(model => model.MarketShareUnitLow, new { @readonly = "readonly",@autocomplete = "off", @class = "form-control " })
 
                                                             </td>
@@ -323,11 +324,12 @@
                                                     </table>
                                                 </div>
                                                 <div class="col-md-3 border ml-3">
-                                                    <h3 class="card-title font-weight-bold">NSP / Units </h3>
+                                                    <div class="row bg-primary pt-2">
+                                                        <h3 class="card-title font-weight-bold">NSP / Units </h3></div>
                                                     <table class="table table-bordered">
                                                         <tr>
-                                                            <td> <label class="control-label">@MasterLocalizer["Low"]</label><span class="text-danger">*</span></td>
-                                                            <td>
+                                                            <td style="width:35%"> <label class="control-label">@MasterLocalizer["Low"]</label><span class="text-danger">*</span></td>
+                                                            <td style="width:65%">
                                                                 @Html.TextBoxFor(model => model.NspunitsLow, new { @type="number",@autocomplete = "off", @class = "form-control " })
                                                                 <lable id="valmsgNspunitsLow" class="text-danger"></lable>
                                                             </td>
@@ -349,11 +351,11 @@
                                                     </table>
                                                 </div>
                                                 <div class="col-md-2 border ml-3">
-                                                    <h3 class="card-title font-weight-bold">NSP</h3>
+                                                    <div class="row bg-primary pt-2"><h3 class="card-title font-weight-bold">NSP</h3></div>
                                                     <table class="table table-bordered">
                                                         <tr>
-                                                            <td> <label class="control-label">@MasterLocalizer["Low"]</label></td>
-                                                            <td>
+                                                            <td style="width:35%"> <label class="control-label">@MasterLocalizer["Low"]</label></td>
+                                                            <td style="width:65%">
                                                                 @Html.TextBoxFor(model => model.NspLow, new {@readonly = "readonly", @autocomplete = "off", @class = "form-control " })
                                                             </td>
                                                         </tr>
