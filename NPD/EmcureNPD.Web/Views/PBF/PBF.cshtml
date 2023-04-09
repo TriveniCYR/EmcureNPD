@@ -797,7 +797,7 @@
                         {
                             <button type="submit" class="btn btn-primary me-3 outside-buttons operationButton" id="savedraft" onclick="SavePBFForm('Draft')">@SharedLocalizer["SaveDraft"]</button>
                         }
-                        <a class="btn btn-danger me-3 outside-buttons operationButton" asp-action="PIDFList" asp-controller="PIDF" asp-route-ScreenId="6">@SharedLocalizer["Cancel"]</a>
+                        <a class="btn btn-danger me-3 outside-buttons operationButton" onclick="CancelPopup()">@SharedLocalizer["Cancel"]</a>
                     </div>
                 </div>
             </div>
@@ -805,6 +805,8 @@
         </div>
     </form>
 </div>
+@Html.Partial("_CancelRequest", (int)PIDFScreen.PBF)
+
 <script type="text/javascript" src="~/js/Custom/PBF/PBF.js"></script>
 <link rel="stylesheet" href="~/AdminLTE/plugins/select2/css/select2.min.css" />
 <script type="text/javascript" src="~/AdminLTE/plugins/select2/js/select2.min.js"></script>

@@ -373,8 +373,7 @@
                             {
                                 <button type="submit" id="SaveDraft" class="btn btn-primary">@SharedLocalizer["SaveDraft"]</button>
                             }
-                            <a class="btn btn-danger" asp-action="PIDFList" asp-controller="PIDF"
-                               asp-route-ScreenId="@Convert.ToString((int)EmcureNPD.Utility.Enums.PIDFScreen.API)">@SharedLocalizer["Cancel"]</a>
+                            <a class="btn btn-danger" onclick="CancelPopup()">@SharedLocalizer["Cancel"]</a>
                             
                             @*   <a  class="btn btn-success" onClick="SaveApproveClick();">@SharedLocalizer["Approve"]</a>
                             <a  class="btn btn-danger" onClick="SaveRejectClick();">@SharedLocalizer["Reject"]</a>*@
@@ -386,6 +385,7 @@
         </div>
     </div>
 </div>
+@Html.Partial("_CancelRequest", (int)PIDFScreen.API)
 @section MyScripts {
 @*    <link href="/lib/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
     <script src="/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>*@

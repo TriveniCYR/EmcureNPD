@@ -27,6 +27,7 @@
     <div class="content-header">
     <h4 class="m-0">@MasterLocalizer["CommercialDetails"]</h4>
             </div>
+    @Html.Partial("_CancelRequest", (int)PIDFScreen.Commercial)
 }
 
 <input type="hidden" value="@(Model._Partial ? '1' : '0')" id="hdnIsPartial" />
@@ -399,34 +400,9 @@
                         }
                         @if (!Model._Partial)
 					{
-                        <input class="btn btn-danger me-3 outside-buttons " value="Cancel" id="btnCommercialCancel" type="button" title=@SharedLocalizer["Cancel"] onclick="location.href='@Url.Action("PIDFList", "PIDF", new { ScreenId = 4 })'" />
+                            <input class="btn btn-danger me-3 outside-buttons " value="Cancel" id="btnCommercialCancel" type="button" title=@SharedLocalizer["Cancel"] onclick="CancelPopup()" />
                     }
                     </div>
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
-@*CancelModel*@
-<div id="CancelModelCommercial" class="modal themeModal" role="dialog">
-    <div class="modal-dialog">
-        <!-- Modal content-->
-        <div class="modal-content">
-            <div class="modal-header">
-                <h4 class="modal-title">@SharedLocalizer["Cancel"]</h4>
-                <button type="button" class="close" data-dismiss="modal">&times;</button>
-            </div>
-            <div class="modal-body">
-                <div class="row">
-                    <div class="col-md-12">
-                        <div class="form-group">
-                            @Html.Label(@SharedLocalizer["CancelConfirm"])
-                        </div>
-                    </div>
-                </div>
-                <div class="card-footer text-center">
-                    <a asp-action="PIDFCommercial" asp-controller="PIDF" data-dismiss="modal" class="btn btn-primary mr-2">@SharedLocalizer["Yes"]</a>
-                    <a class="btn btn-danger" data-dismiss="modal">@SharedLocalizer["No"]</a>
                 </div>
             </div>
         </div>

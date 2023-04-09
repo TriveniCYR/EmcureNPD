@@ -297,8 +297,8 @@
                                 {
                             <button type="submit" id="SaveDraft" class="btn btn-primary">@SharedLocalizer["SaveDraft"]</button>
                                 }
-                            <a class="btn btn-danger" asp-action="PIDFList" asp-controller="PIDF"
-                               asp-route-ScreenId="@Convert.ToString((int)EmcureNPD.Utility.Enums.PIDFScreen.API)">@SharedLocalizer["Cancel"]
+                            <a class="btn btn-danger" onclick="CancelPopup()">
+                                @SharedLocalizer["Cancel"]
                             </a>
                         </div>
                     </div>
@@ -308,31 +308,7 @@
         </div>
     </div>
 </div>
-@*CancelModel*@
-@*<div id="CancelModelAPIIPD" class="modal themeModal" role="dialog">
-    <div class="modal-dialog">
-        <!-- Modal content-->
-        <div class="modal-content">
-            <div class="modal-header">
-                <h4 class="modal-title">@SharedLocalizer["Cancel"]</h4>
-                <button type="button" class="close" data-dismiss="modal">&times;</button>
-            </div>
-            <div class="modal-body">
-                <div class="row">
-                    <div class="col-md-12">
-                        <div class="form-group">
-                            @Html.Label(@SharedLocalizer["CancelConfirm"])
-                        </div>
-                    </div>
-                </div>
-                <div class="card-footer text-center">
-                    <a asp-action="PBFAPI" asp-controller="PIDF" class="btn btn-primary mr-2">@SharedLocalizer["Yes"]</a>
-                    <a class="btn btn-danger" data-dismiss="modal">@SharedLocalizer["No"]</a>
-                </div>
-            </div>
-        </div>
-    </div>
-</div>*@
+@Html.Partial("_CancelRequest", (int)PIDFScreen.API)
 @section MyScripts {
 @*    <link href="/lib/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
     <script src="/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>*@

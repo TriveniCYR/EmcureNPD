@@ -271,3 +271,6 @@ function getCommercialAccordion(url, _PIDFId, _PIDFBusinessUnitId, divId) {
         $("#" + divId).find("#dvCommercialContainerAccordion").html(content);
     });
 }
+function CancelPopup() {
+    $('#CancelModel').modal('show');
+}

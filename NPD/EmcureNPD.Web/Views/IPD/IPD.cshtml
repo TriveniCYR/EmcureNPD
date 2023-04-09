@@ -28,6 +28,7 @@
         <h2 class="m-0">Internal Patent Details</h2>
     </div>
     @Html.Partial("_PIDFApproveReject")
+    @Html.Partial("_CancelRequest", (int)PIDFScreen.IPD)
 }
 <input type="hidden" value="@(Model._Partial ? '1' : '0')" id="hdnIsPartial" />
 <div class="container-fluid background-white-card" id="dvIPDContainer">
@@ -61,7 +62,7 @@
                 }
                 @if (!Model._Partial)
                 {
-                    <a class="btn btn-danger me-3 outside-buttons" asp-action="PIDFList" asp-controller="PIDF" asp-route-ScreenId="2">@SharedLocalizer["Cancel"]</a>
+                    <a class="btn btn-danger me-3 outside-buttons" onclick="CancelPopup();">@SharedLocalizer["Cancel"]</a>
                 }
 
             </div>

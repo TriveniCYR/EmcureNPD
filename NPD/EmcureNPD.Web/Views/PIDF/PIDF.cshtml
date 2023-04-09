@@ -20,13 +20,15 @@
     ViewData["Title"] = @MasterLocalizer["PIDF"];
 	string jsVersion = @Configuration.GetSection("StaticJS")["version"];
 }
-@if(!Model._Partial){
-            <div class="content-header">
-                <h2 class="m-0" id="hPIDFTitle">Product Identification Form</h2>
-            </div>
-								@Html.Partial("_PIDFApproveReject")
+@if (!Model._Partial)
+{
+	<div class="content-header">
+		<h2 class="m-0" id="hPIDFTitle">Product Identification Form</h2>
+	</div>
+	@Html.Partial("_PIDFApproveReject")
+	@Html.Partial("_CancelRequest", (int)PIDFScreen.PIDF)
 }
-            <div class="container-fluid background-white-card" id="dvPIDFContainer">
+<div class="container-fluid background-white-card" id="dvPIDFContainer">
 				<input type="hidden" id="hdnPIDFId" value="@(Model.PIDFID)" />
 				<input type="hidden" id="hdnIsView" value="@(Model.IsViewMode ? "1" : "0")" />
 				<form asp-action="PIDF" asp-route-PIDFId="@Model.PIDFID">
@@ -563,7 +565,7 @@
 							}
 					@if (!Model._Partial)
 					{
-						<a class="btn btn-danger me-3 outside-buttons operationButton" id="btnPIDFCancel" asp-action="PIDFList" asp-controller="PIDF" asp-route-ScreenId="1">@SharedLocalizer["Cancel"]</a>
+						<a class="btn btn-danger me-3 outside-buttons operationButton" id="btnPIDFCancel" onclick="CancelPopup();">@SharedLocalizer["Cancel"]</a>
 					}		
 				</div>
 					</div>

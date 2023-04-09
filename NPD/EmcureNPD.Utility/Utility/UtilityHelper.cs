@@ -170,19 +170,18 @@ namespace EmcureNPD.Utility.Utility
       
         public static bool GetMenuAccess(int ModuleId, int RoleId, int SubModuleId = 0)
         {
-            //IEnumerable<RolePermissionModel> objVal = GetModuleRole<IEnumerable<RolePermissionModel>>(RoleId);
-
-            //if (objVal != null)
-            //{
-            //    var _permissionObject = objVal.Where(o => o.MainModuleId == ModuleId).FirstOrDefault();
-            //    if (_permissionObject != null && _permissionObject.RoleId > 0)
-            //    {
-            //        if (_permissionObject.View || _permissionObject.Edit || _permissionObject.Delete || _permissionObject.Add || _permissionObject.Approve)
-            //        {
-            //            return true;
-            //        }
-            //    }
-            //}
+            IEnumerable<RolePermissionModel> objVal = GetModuleRole<IEnumerable<RolePermissionModel>>(RoleId);
+            if (objVal != null)
+            {
+                var _permissionObject = objVal.Where(o => o.MainModuleId == ModuleId).FirstOrDefault();
+                if (_permissionObject != null && _permissionObject.RoleId > 0)
+                {
+                    if (_permissionObject.View || _permissionObject.Edit || _permissionObject.Delete || _permissionObject.Add || _permissionObject.Approve)
+                    {
+                        return true;
+                    }
+                }
+            }
             return true;
         }
 

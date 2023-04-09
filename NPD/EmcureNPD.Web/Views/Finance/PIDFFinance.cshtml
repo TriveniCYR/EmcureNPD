@@ -11,6 +11,7 @@
 @inject IConfiguration Configuration
 @model EmcureNPD.Business.Models.FinanceModel
 @{
+    ViewData["Title"] = @MasterLocalizer["Finance Management"];
     var PidafId=Context.Request.Query["pidfid"];
     string jsVersion = @Configuration.GetSection("StaticJS")["version"];
     var PidfNumber=UtilityHelper.Decreypt(Convert.ToString(PidafId));
@@ -19,14 +20,10 @@
     var DosageFormId=Model == null ? 0 : Model.DosageFrom;
 }
 
-
 <div class="content-header">
-    <div style="display: flex; justify-content: space-between; align-items: center;">
-        <h2 class="m-0">PIDF/Finance</h2>
-        
-    </div>
-
+        <h2 class="m-0">Finance Management</h2>
 </div>
+<div class="container-fluid background-white-card">
 <div id="SaveFinanceModel">
     <form action="PIDFFinancePost" method="post" class="needs-validation">
 		<div class="card">
@@ -6350,18 +6347,21 @@
 		</div>
         @Html.Partial("_PIDFApproveReject")
 
-        <div class="card form-group container-fluid d-flex justify-content-between dv-controls text-right" role="group">
+<div class="row">
+					<div class="col-12 text-end">
+						<div class="form-group">
             @if(ViewBag.Access.Add == true)
             {
                 if (DefaultStatus == 0 || Model.PIDFStatusId == (Int32)Master_PIDFStatus.FinanceInProgres)
                 {
+                     <button type="submit"  id="btnSave" class="btn btn-success operationButton btnControll" onclick="SaveClick();">
+                   @* <i class="fa fa-save"></i> *@
+                    Submit</button>
                 <button type="submit" id="btnSaveDraft" class="btn btn-primary btnControll" onclick="SaveDraftClick();">
                     @*<i class="fab fa-firstdraft"></i>*@
                     Save as Draft</button>
                  }
-                <button type="submit"  id="btnSave" class="btn btn-success operationButton btnControll" onclick="SaveClick();">
-                   @* <i class="fa fa-save"></i> *@
-                    Submit</button>
+               
             }
             @if(ViewBag.Access.Approve == true)
             {
@@ -6371,14 +6371,18 @@
                     <a class="btn btn-danger  operationButton btnControll" onClick="ApproveRejectClick('R', '@PidfNumber', @((int)EmcureNPD.Utility.Enums.PIDFScreen.Finance), '/PIDF/PIDFList?ScreenId=@((int)EmcureNPD.Utility.Enums.PIDFScreen.Finance)')"><i class="fa fa-ban mr-1"></i> @SharedLocalizer["Reject"]</a>
                 }
             }
-            <a class="btn btn-danger" href="@Url.Action("PIDFList","PIDF", new { ScreenId=Convert.ToString((int)EmcureNPD.Utility.Enums.PIDFScreen.Finance)})">
+            <a class="btn btn-danger" onclick="CancelPopup()">
                     @*<i class="fa fa-times" aria-hidden="true"></i>*@
                     Cancel</a>
 			</div>
+            </div>
+            </div>
+
         
 	</form>
 </div>
- 
+</div>
+     @Html.Partial("_CancelRequest", (int)PIDFScreen.Finance)
 @section MyScripts {
 	@*@Html.Partial("_DataTablePartial")*@
 <link rel="stylesheet" href="~/AdminLTE/plugins/select2/css/select2.min.css" />
