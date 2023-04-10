@@ -190,18 +190,18 @@ $(document).ready(function () {
         var totalCostFastingFed = (FastingOrFed == "" ? 0 : parseFloat(FastingOrFed)) * ((NoOfVol == "" ? 0 : parseFloat(NoOfVol)) * ((ClinicalCost == "" ? 0 : parseFloat(ClinicalCost)) + (BioAnalyticalCost == "" ? 0 : parseFloat(BioAnalyticalCost))) + (DocCostStudy == "" ? 0 : parseFloat(DocCostStudy)));
 
         // set total for all the property in the table for one strength
-        $('.clinicalcal_' + _BioStudyTypeId + 'Total').find("[data-strengthid=" + _StrengthId + "]").find(".calcTotalCostForStrength").val(totalCostFastingFed);
+        $('.clinicalcal_' + _BioStudyTypeId + 'Total').find("[data-strengthid=" + _StrengthId + "]").find(".calcTotalCostForStrengthClinical").val(totalCostFastingFed);
 
         var _TotalSum = 0;
-        $.each($('.clinicalcal_' + _BioStudyTypeId + 'Total').find(".calcTotalCostForStrength"), function (index, item) {
+        $.each($('.clinicalcal_' + _BioStudyTypeId + 'Total').find(".calcTotalCostForStrengthClinical"), function (index, item) {
             _TotalSum += parseFloat(($(item).val() == "" ? 0 : $(item).val()));
         });
 
         // set total for all the property in the table
-        $('.clinicalcal_' + _BioStudyTypeId + 'Total').find(".calcTotalCostForStrengthTotal").val(_TotalSum);
+        $('.clinicalcal_' + _BioStudyTypeId + 'Total').find(".calcTotalCostForStrengthClinicalTotal").val(_TotalSum);
 
         var _TotalBioStudySum = 0;
-        $.each($('.calcTotalCostForStrength'), function (index, item) {
+        $.each($('.calcTotalCostForStrengthClinical'), function (index, item) {
             _TotalBioStudySum += parseFloat(($(item).val() == "" ? 0 : $(item).val()));
         });
 
@@ -209,7 +209,7 @@ $(document).ready(function () {
         $.each($('.totalBioStudyCost'), function (index, item) {
             var _strengthId = $(item).parent().attr("data-strengthid");
             var _TotalBioStudySum = 0;
-            $.each($('.calcTotalCostForStrength'), function (i, it) {
+            $.each($('.calcTotalCostForStrengthClinical'), function (i, it) {
                 var _childStrengthId = $(it).parent().attr("data-strengthid");
                 if (_childStrengthId == _strengthId) {
                     _TotalBioStudySum += parseFloat(($(it).val() == "" ? 0 : $(it).val()));
@@ -1059,9 +1059,9 @@ function CreateClinicalTable(data, bioStudyTypeId) {
 
     objectname += "<tr class='clinicalcal_" + bioStudyTypeId + "Total' data-biostudytypeid='" + bioStudyTypeId + "'><td class='text-bold'>Total Cost</td>";
     for (var i = 0; i < _strengthArray.length; i++) {
-        objectname += "<td data-strengthid='" + _strengthArray[i].pidfProductStrengthId + "'><input type='number' class='form-control calcTotalCostForStrength' readonly='readonly' min='0' /></td>";
+        objectname += "<td data-strengthid='" + _strengthArray[i].pidfProductStrengthId + "'><input type='number' class='form-control calcTotalCostForStrengthClinical' readonly='readonly' min='0' /></td>";
     }
-    objectname += "<td><input type='number' class='form-control calcTotalCostForStrengthTotal' readonly='readonly'  min='0' /></td></tr>";
+    objectname += "<td><input type='number' class='form-control calcTotalCostForStrengthClinicalTotal' readonly='readonly'  min='0' /></td></tr>";
 
     return objectname;
 }
