@@ -6350,11 +6350,12 @@
 		</div>
         @Html.Partial("_PIDFApproveReject")
 
-        <div class="card form-group container-fluid d-flex justify-content-between dv-controls text-right" role="group">
+        <div class="card form-group  text-right" role="group">
             @if(ViewBag.Access.Add == true)
             {
                 if (DefaultStatus == 0 || Model.PIDFStatusId == (Int32)Master_PIDFStatus.FinanceInProgres)
                 {
+                    
                 <button type="submit" id="btnSaveDraft" class="btn btn-primary btnControll" onclick="SaveDraftClick();">
                     @*<i class="fab fa-firstdraft"></i>*@
                     Save as Draft</button>
