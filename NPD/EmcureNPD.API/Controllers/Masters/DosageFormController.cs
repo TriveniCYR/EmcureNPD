@@ -123,6 +123,22 @@ namespace EmcureNPD.API.Controllers.Masters
                 return _ObjectResponse.Create(false, (Int32)HttpStatusCode.InternalServerError, Convert.ToString(ex.StackTrace));
             }
         }
+        [HttpGet, Route("GetAllActiveDosageFormFinance")]
+        public async Task<IActionResult> GetAllActiveDosageFormFinance()
+        {
+            try
+            {
+                var oDosageFormList = await _MasterDosageFormService.GetAllActiveDosageFormFinance();
+                if (oDosageFormList != null)
+                    return _ObjectResponse.Create(oDosageFormList, (Int32)HttpStatusCode.OK);
+                else
+                    return _ObjectResponse.Create(null, (Int32)HttpStatusCode.BadRequest, "No Records found");
+            }
+            catch (Exception ex)
+            {
+                return _ObjectResponse.Create(false, (Int32)HttpStatusCode.InternalServerError, Convert.ToString(ex.StackTrace));
+            }
+        }
 
         /// <summary>
         /// Description - To Delete a DosageForm by Id

@@ -57,15 +57,21 @@ function GetBusinessUnitDetailsSuccess(data) {
     try {
         //business unit details
         $('#BDetailsTable tbody').html('');
-        $.each(data.table, function (index, object) {
-            $('#BDetailsTable tbody').append('<tr><td>' + object.projectName +
-                '</td><td>' + object.country + '</td><td>' + object.inHouses +
-                '</td><td>' + object.strength + '</td><td>' + object.year +
-                '</td><td>' + object.packagingTypeName + '</td><td>' + object.batchSize +
-                '</td><td>' + object.currencyName + '</td><td>' + object.marketSize +
-                '</td><td>' + object.priceDiscounting + '</td><td>' + object.marketGrowth +
-                '</td><td>' + object.suimsVolume + '</td><td>' + object.totalAPIReq+'</td></td></tr>');
-        })
+        if (data.table.length > 0) {
+            $.each(data.table, function (index, object) {
+                $('#BDetailsTable tbody').append('<tr><td>' + object.projectName +
+                    '</td><td>' + object.country + '</td><td>' + object.inHouses +
+                    '</td><td>' + object.strength + '</td><td>' + object.year +
+                    '</td><td>' + object.packagingTypeName + '</td><td>' + object.batchSize +
+                    '</td><td>' + object.currencyName + '</td><td>' + object.marketSize +
+                    '</td><td>' + object.priceDiscounting + '</td><td>' + object.marketGrowth +
+                    '</td><td>' + object.suimsVolume + '</td><td>' + object.totalAPIReq + '</td></td></tr>');
+            })
+        }
+        else {
+            $('#BDetailsTable tbody').html('<span class="text-center">No Record Found</span>');
+            //$('#BDetailsTable tbody').append('<tr><td style="width:100%">No Record Found</td></tr>');
+        }
     }
     catch (e) {
         toastr.error('Error:' + e.message);
