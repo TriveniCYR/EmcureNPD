@@ -8,7 +8,7 @@ namespace EmcureNPD.Business.Core.Interface
     public interface IMasterDosageFormService
     {
         Task<List<MasterDosageFormEntity>> GetAll();
-
+        Task<List<MasterDosageFormEntity>> GetAllActiveDosageFormFinance();
         Task<MasterDosageFormEntity> GetById(int id);
 
         Task<DBOperation> AddUpdateDosageForm(MasterDosageFormEntity entityDosageForm);

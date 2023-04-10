@@ -1468,31 +1468,6 @@ namespace EmcureNPD.Business.Core.Implementation
                     _pidfPbfMarketMappingRepository.AddRange(objmapping);
                     await _unitOfWork.SaveChangesAsync();
                 }
-                #endregion                
-
-                #region Section PBF General Add Update
-                PidfPbfGeneral objPIDFGeneralupdate;
-                objPIDFGeneralupdate = _pidfPbfGeneralRepository.GetAllQuery().Where(x => x.Pidfpbfid == pbfentity.Pidfpbfid).FirstOrDefault();
-                if (objPIDFGeneralupdate != null)
-                {
-                    objPIDFGeneralupdate = _mapperFactory.Get<PBFFormEntity, PidfPbfGeneral>(pbfentity);
-                    objPIDFGeneralupdate.CreatedBy = loggedInUserId;
-                    objPIDFGeneralupdate.CreatedDate = DateTime.Now;
-                    _pidfPbfGeneralRepository.UpdateAsync(objPIDFGeneralupdate);
-                    await _unitOfWork.SaveChangesAsync();
-                }
-                else
-                {
-                    objPIDFGeneralupdate = new PidfPbfGeneral();
-                    objPIDFGeneralupdate = _mapperFactory.Get<PBFFormEntity, PidfPbfGeneral>(pbfentity);
-                    objPIDFGeneralupdate.CreatedBy = loggedInUserId;
-                    objPIDFGeneralupdate.CreatedDate = DateTime.Now;
-                    _pidfPbfGeneralRepository.AddAsync(objPIDFGeneralupdate);
-                    await _unitOfWork.SaveChangesAsync();
-
-                }
-                pbfgeneralid = objPIDFGeneralupdate.PbfgeneralId;
-
                 #endregion
 
                 #region Update PIDF
@@ -1510,6 +1485,54 @@ namespace EmcureNPD.Business.Core.Implementation
                     await _unitOfWork.SaveChangesAsync();
                 }
                 #endregion
+
+                #region Section PBF General Add Update
+                //PidfPbfGeneral objPIDFGeneralupdate;
+                var objPIDFGeneralupdate = _pidfPbfGeneralRepository.GetAllQuery().Where(x => x.Pidfpbfid == pbfentity.Pidfpbfid && x.BusinessUnitId == pbfentity.BusinessUnitId).FirstOrDefault();
+                if (objPIDFGeneralupdate != null)
+                {
+                    //objPIDFGeneralupdate = _mapperFactory.Get<PBFFormEntity, PidfPbfGeneral>(pbfentity);
+
+                    //objPIDFGeneralupdate.BusinessUnitId = pbfentity.BusinessUnitId;
+                    objPIDFGeneralupdate.Capex = pbfentity.Capex;
+                    objPIDFGeneralupdate.TotalExpense = pbfentity.TotalExpense;
+                    objPIDFGeneralupdate.ProjectComplexity = pbfentity.ProjectComplexity;
+                    objPIDFGeneralupdate.ProductTypeId = pbfentity.GeneralProductTypeId;
+                    objPIDFGeneralupdate.TestLicenseAvailability = pbfentity.TestLicenseAvailability;
+                    objPIDFGeneralupdate.BudgetTimelineSubmissionDate = pbfentity.BudgetTimelineSubmissionDate;
+                    objPIDFGeneralupdate.ProjectDevelopmentInitialDate = pbfentity.ProjectDevelopmentInitialDate;
+                    objPIDFGeneralupdate.FormulationGlid = pbfentity.FormulationGLId;
+                    objPIDFGeneralupdate.AnalyticalGlid = pbfentity.AnalyticalGLId;
+                    //objPIDFGeneralupdate = _mapperFactory.Get<PBFFormEntity, PidfPbfGeneral>(pbfentity);
+                    _pidfPbfGeneralRepository.UpdateAsync(objPIDFGeneralupdate);
+                    await _unitOfWork.SaveChangesAsync();
+                    pbfgeneralid = objPIDFGeneralupdate.PbfgeneralId;
+
+                }
+                else
+                {
+                    PidfPbfGeneral objPIDFGeneraladd = new PidfPbfGeneral();
+                    objPIDFGeneraladd.Pidfpbfid = pidfpbfid;
+                    objPIDFGeneraladd.BusinessUnitId = pbfentity.BusinessUnitId;
+                    objPIDFGeneraladd.Capex = pbfentity.Capex;
+                    objPIDFGeneraladd.TotalExpense = pbfentity.TotalExpense;
+                    objPIDFGeneraladd.ProjectComplexity = pbfentity.ProjectComplexity;
+                    objPIDFGeneraladd.ProductTypeId = pbfentity.GeneralProductTypeId;
+                    objPIDFGeneraladd.TestLicenseAvailability = pbfentity.TestLicenseAvailability;
+                    objPIDFGeneraladd.BudgetTimelineSubmissionDate = pbfentity.BudgetTimelineSubmissionDate;
+                    objPIDFGeneraladd.ProjectDevelopmentInitialDate = pbfentity.ProjectDevelopmentInitialDate;
+                    objPIDFGeneraladd.FormulationGlid = pbfentity.FormulationGLId;
+                    objPIDFGeneraladd.AnalyticalGlid = pbfentity.AnalyticalGLId;
+                    //objPIDFGeneraladd = _mapperFactory.Get<PBFFormEntity, PidfPbfGeneral>(pbfentity);
+                    objPIDFGeneraladd.CreatedBy = loggedInUserId;
+                    objPIDFGeneraladd.CreatedDate = DateTime.Now;
+                    _pidfPbfGeneralRepository.AddAsync(objPIDFGeneraladd);
+                    await _unitOfWork.SaveChangesAsync();
+                    pbfgeneralid = objPIDFGeneraladd.PbfgeneralId;
+                }
+
+                #endregion
+              
 
                 #region GeneralProductStrength Add Update
                 if (pbfgeneralid > 0)

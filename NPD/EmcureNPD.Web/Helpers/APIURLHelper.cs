@@ -121,6 +121,7 @@ namespace EmcureNPD.Web.Helpers
         public static string SaveDosageForm = "api/DosageForm/InsertUpdateDosageForm";
         public static string GetDosageFormById = "api/DosageForm/GetDosageFormById";
         public static string DeleteDosageFormById = "api/DosageForm/DeleteDosageForm";
+        public static string GetAllActiveDosageFormFinance= "api/DosageForm/GetAllActiveDosageFormFinance";
         #endregion
 
         #region Oral

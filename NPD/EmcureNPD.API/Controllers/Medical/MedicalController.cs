@@ -1,4 +1,5 @@
-﻿using EmcureNPD.API.Filters;
+﻿
+using EmcureNPD.API.Filters;
 using EmcureNPD.API.Helpers.Response;
 using EmcureNPD.Business.Core.Interface;
 using EmcureNPD.Business.Models;
@@ -14,6 +15,7 @@ using System.Linq;
 using System.Net;
 using System.Threading.Tasks;
 using static EmcureNPD.Utility.Enums.GeneralEnum;
+using Microsoft.Extensions.Configuration;
 
 namespace EmcureNPD.API.Controllers.IPD
 {
@@ -29,17 +31,18 @@ namespace EmcureNPD.API.Controllers.IPD
         private readonly IResponseHandler<dynamic> _ObjectResponse;
         private readonly IWebHostEnvironment _webHostEnvironment;
         private readonly ILogger<MedicalController> _logger;
-        private string[] permittedExtensions = { ".png",".PNG",".jpg", ".jpeg", ".txt", ".pdf", ".xlx",".xlsx"};
+        private readonly IConfiguration _configuration;
         #endregion Properties
 
         #region Constructor
 
-        public MedicalController(IMedicalService MedicalService, IResponseHandler<dynamic> ObjectResponse, IWebHostEnvironment webHostEnvironment, ILogger<MedicalController> logger)
+        public MedicalController(IMedicalService MedicalService, IResponseHandler<dynamic> ObjectResponse, IWebHostEnvironment webHostEnvironment, ILogger<MedicalController> logger, IConfiguration configuration)
         {
             _MedicalService = MedicalService;
             _ObjectResponse = ObjectResponse;
             _webHostEnvironment = webHostEnvironment;
             _logger = logger;
+            _configuration = configuration;
         }
 
         #endregion Constructor
@@ -62,17 +65,7 @@ namespace EmcureNPD.API.Controllers.IPD
                 model.Remark = jsonObject.Remark;
                 model.CreatedBy = jsonObject.CreatedBy;
                 var files = medicalModel.Files;
-                foreach (var item in files)
-                {
-                    var ext = Path.GetExtension(item.FileName).ToLowerInvariant();
-
-                    if (string.IsNullOrEmpty(ext) || !permittedExtensions.Contains(ext))
-                    {
-                        oResponse = DBOperation.InvalidFile;
-                        return _ObjectResponse.Create(false, (int)HttpStatusCode.BadRequest, oResponse == DBOperation.InvalidFile ? "Only Supported Formats Are:- .png, .jpg, .jpeg, .pdf, .txt, .xlx, .xlsx" : "Bad request");
-                    }
-
-                }
+               
                 if (files.Count > 0 && jsonObject.FileName.HasValues)
                 {
                     
@@ -133,7 +126,7 @@ namespace EmcureNPD.API.Controllers.IPD
                 else if (oResponse == DBOperation.InvalidFile)
                 {
                     _logger.LogInformation("IPDService db operation failed and PIDMedicalForm controller ended");
-                    return _ObjectResponse.Create(false, (int)HttpStatusCode.BadRequest, oResponse == DBOperation.InvalidFile ? "File not supported" : "Bad request");
+                    return _ObjectResponse.Create(false, (int)HttpStatusCode.BadRequest, oResponse == DBOperation.InvalidFile ? _configuration.GetSection("FileUploadSettings").GetSection("FileNotAllowedErrorMessage").Value : "Bad request");
                 }
                 else
                 {

@@ -4,7 +4,9 @@ using EmcureNPD.Business.Models;
 using EmcureNPD.Data.DataAccess.Core.Repositories;
 using EmcureNPD.Data.DataAccess.Core.UnitOfWork;
 using EmcureNPD.Data.DataAccess.Entity;
+using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using static EmcureNPD.Utility.Enums.GeneralEnum;
 
@@ -27,7 +29,10 @@ namespace EmcureNPD.Business.Core.ServiceImplementations
         {
             return _mapperFactory.GetList<MasterDosageForm, MasterDosageFormEntity>(await _repository.GetAllAsync());
         }
-
+        public async Task<List<MasterDosageFormEntity>> GetAllActiveDosageFormFinance()
+        {
+            return  _mapperFactory.GetList<MasterDosageForm, MasterDosageFormEntity>( _repository.GetAllQuery().Where(x=>x.IsActive==true).ToList());
+        }
         public async Task<MasterDosageFormEntity> GetById(int id)
         {
             return _mapperFactory.Get<MasterDosageForm, MasterDosageFormEntity>(await _repository.GetAsync(id));
