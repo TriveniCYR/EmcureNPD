@@ -50,7 +50,7 @@ namespace EmcureNPD.Business.Core.Implementation
         }
 		public async Task<List<PidfFinance>> GetAll()
 		{
-			return await _repository.GetAllAsync();
+			return await _repository.GetAllQuery().ToListAsync();
 		}
 		public async Task<dynamic> GetPidfFinance(int Pidfid = 0)
 		{

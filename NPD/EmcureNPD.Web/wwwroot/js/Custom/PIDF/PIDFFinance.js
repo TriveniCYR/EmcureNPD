@@ -48,6 +48,8 @@ $("#btnRejects").click(function () {
 })
 function GetCurrencyList() {
     ajaxServiceMethod($('#hdnBaseURL').val() + AllCurrency, 'GET', GetCurrencyListSuccess, GetCurrencyListError);
+    //ajaxServiceMethod($('#hdnBaseURL').val() + "api/Currency/GetCurrencyByLoggedInUser", 'GET', GetCurrencyListSuccess, GetCurrencyListError);
+
 }
 
 function GetCurrencyListSuccess(data) {
