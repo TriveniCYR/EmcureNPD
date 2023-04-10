@@ -1,4 +1,5 @@
 ﻿using EmcureNPD.Business.Models;
+using EmcureNPD.Web.Models;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -15,42 +16,48 @@ namespace EmcureNPD.Utility.Helpers
     {
         public void SendMail(string toList, string ccList, string subject, string body)
         {
-
-            string msg = string.Empty;
-
-            MailMessage message = new MailMessage();
-            MailAddress fromAddress = new MailAddress("dev.net.smtp@gmail.com");
-            message.From = fromAddress;
-            message.To.Add(toList);
-            if (ccList != null && ccList != string.Empty)
-                message.CC.Add(ccList);
-            message.Subject = subject;
-            message.Body = body;
-            message.IsBodyHtml = true;
-
-
-            using (SmtpClient smtpClient = new SmtpClient())
+            try
             {
-                smtpClient.Host = "smtp.gmail.com";
-                smtpClient.Credentials = new System.Net.NetworkCredential("dev.net.smtp@gmail.com", "pass123!@#");
-                smtpClient.Port = 587;//put smtp port here
-                smtpClient.EnableSsl = true;
-                smtpClient.UseDefaultCredentials = true;
-                smtpClient.DeliveryMethod = SmtpDeliveryMethod.Network;
-                string fileName = @"C:\Log\logger.txt";
-                try
+                string msg = string.Empty;
+
+                MailMessage message = new MailMessage();
+                MailAddress fromAddress = new MailAddress("dev.net.smtp@gmail.com");
+                message.From = fromAddress;
+                message.To.Add(toList);
+                if (ccList != null && ccList != string.Empty)
+                    message.CC.Add(ccList);
+                message.Subject = subject;
+                message.Body = body;
+                message.IsBodyHtml = true;
+
+
+                using (SmtpClient smtpClient = new SmtpClient())
                 {
-                    smtpClient.Send(message);
-                }
-                catch (Exception e)
-                {
-                    using (FileStream fs = File.Create(fileName))
+                    smtpClient.Host = "smtp.gmail.com";
+                    smtpClient.Credentials = new System.Net.NetworkCredential("dev.net.smtp@gmail.com", "pass123!@#");
+                    smtpClient.Port = 587;//put smtp port here
+                    smtpClient.EnableSsl = true;
+                    smtpClient.UseDefaultCredentials = true;
+                    smtpClient.DeliveryMethod = SmtpDeliveryMethod.Network;
+                    string fileName = @"C:\Log\logger.txt";
+                    try
                     {
-                        // Add some text to file    
-                        Byte[] title = new UTF8Encoding(true).GetBytes(e.ToString());
-                        fs.Write(title, 0, title.Length);
+                        smtpClient.Send(message);
+                    }
+                    catch (Exception e)
+                    {
+                        using (FileStream fs = File.Create(fileName))
+                        {
+                            // Add some text to file    
+                            Byte[] title = new UTF8Encoding(true).GetBytes(e.ToString());
+                            fs.Write(title, 0, title.Length);
+                        }
                     }
                 }
+            }
+            catch (Exception ex)
+            {
+                LogData(ex.Message);
             }
         }
 

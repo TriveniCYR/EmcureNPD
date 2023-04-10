@@ -267,10 +267,10 @@ namespace EmcureNPD.Business.Core.ServiceImplementations
                 objUser.CreatedBy = LoggedUserId;
                 objUser.CreatedDate = DateTime.Now;
                 _repository.AddAsync(objUser);
-               // SendUserCreateMail(entityUser, LoggedUserId);
+                
             }
             await _unitOfWork.SaveChangesAsync();
-
+            SendUserCreateMail(entityUser, LoggedUserId);
             if (objUser.UserId == 0)
                 return DBOperation.Error;
 

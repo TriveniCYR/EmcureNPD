@@ -216,7 +216,7 @@ function InitializePIDFList() {
                     var _enableView = (row.pidfStatusID > 7);
                     html += '<a class="large-font" title="View" style="color:' + (_enableView ? "#007bff" : "grey") + '" href="' + (_enableView ? _FinanceForm + "&IsView=1" : "#") + '"><i class="fa fa-fw fa-eye mr-1"></i></a>';
                 } else if (_screenId == "8") {
-                    var _ManagementForm = '/Finance/PIDFManagementApproval?pidfid=' + row.encpidfid + '&bui=' + row.encbud;
+                    var _ManagementForm = '/Management/PIDFManagementApproval?pidfid=' + row.encpidfid + '&bui=' + row.encbud;
                     var _enable = (row.pidfStatusID == 18 || row.pidfStatusID == 20 || row.pidfStatusID == 21 || row.pidfStatusID == 22);
                     html += '<a class="large-font" title="View" style="color:' + (_enable ? "#007bff" : "grey") + '" href="' + (_enable ? _ManagementForm + "&IsView=1" : "#") + '"><i class="fa fa-fw fa-eye mr-1"></i></a>';
                 }

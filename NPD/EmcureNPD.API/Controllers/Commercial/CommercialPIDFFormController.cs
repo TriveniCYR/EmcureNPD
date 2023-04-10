@@ -53,16 +53,16 @@ namespace EmcureNPD.API.Controllers.Commercial
         /// <response code="404">Not Found</response>
         /// <response code="405">Method Not Allowed</response>
         /// <response code="500">Internal Server</response>
-        [HttpGet, Route("GetPIDForm")]
-        public async Task<IActionResult> GetPIDForm()
-        {
-            var oFormulationList = await _pidfCommercialFormService.FillDropdown();
+        //[HttpGet, Route("GetPIDForm")]
+        //public async Task<IActionResult> GetPIDForm()
+        //{
+        //    var oFormulationList = await _pidfCommercialFormService.FillDropdown();
 
-            if (oFormulationList != null)
-                return _ObjectResponse.Create(oFormulationList, (int)HttpStatusCode.OK);
-            else
-                return _ObjectResponse.Create(null, (int)HttpStatusCode.BadRequest, "No Records found");
-        }
+        //    if (oFormulationList != null)
+        //        return _ObjectResponse.Create(oFormulationList, (int)HttpStatusCode.OK);
+        //    else
+        //        return _ObjectResponse.Create(null, (int)HttpStatusCode.BadRequest, "No Records found");
+        //}
         /// <summary>
         /// Description - To Insert and Update IPD Form
         /// </summary>
@@ -228,11 +228,6 @@ namespace EmcureNPD.API.Controllers.Commercial
                 return _ObjectResponse.Create(false, (int)HttpStatusCode.InternalServerError, Convert.ToString(ex.StackTrace));
             }
         }
-
-
-
-
-
 
     }
 }

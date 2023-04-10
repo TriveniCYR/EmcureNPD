@@ -4,8 +4,11 @@ using EmcureNPD.Business.Models;
 using EmcureNPD.Data.DataAccess.Core.Repositories;
 using EmcureNPD.Data.DataAccess.Core.UnitOfWork;
 using EmcureNPD.Data.DataAccess.Entity;
+using EmcureNPD.Utility.Utility;
 using System;
 using System.Collections.Generic;
+using System.Data;
+using System.Data.SqlClient;
 using System.Linq;
 using System.Security.Cryptography.X509Certificates;
 using System.Threading.Tasks;
@@ -20,15 +23,16 @@ namespace EmcureNPD.Business.Core.ServiceImplementations
         private IRepository<MasterCurrency> _repository { get; set; }
         private IRepository<MasterCurrencyCountryMapping> _repositoryMasterCurrencyCountryMapping { get; set; }
         private IRepository<MasterCountry> _countryRepository { get; set; }
+        private readonly IHelper _helper;
 
-
-        public MasterCurrencyService(IUnitOfWork unitOfWork, IMapperFactory mapperFactory)
+        public MasterCurrencyService(IUnitOfWork unitOfWork, IMapperFactory mapperFactory, IHelper helper)
         {
             _unitOfWork = unitOfWork;
             _mapperFactory = mapperFactory;
             _repository = _unitOfWork.GetRepository<MasterCurrency>();
             _countryRepository = _unitOfWork.GetRepository<MasterCountry>();
             _repositoryMasterCurrencyCountryMapping = _unitOfWork.GetRepository<MasterCurrencyCountryMapping>();
+            _helper = helper;
         }
 
         public async Task<List<MasterCurrencyEntity>> GetAll()
@@ -142,6 +146,17 @@ namespace EmcureNPD.Business.Core.ServiceImplementations
             var CurrencyCountryMapping = _repositoryMasterCurrencyCountryMapping.Get(x => x.CurrencyId == id);
             var country = _countryRepository.Get(x => x.CountryId == CurrencyCountryMapping.CountryId);
             return _mapperFactory.Get<MasterCountry, MasterCountryEntity>(country);
+        }
+        public async Task<List<MasterCurrencyEntity>> GetCurrencyByLoggedInUser()
+        {
+            var _loggedInUser = _helper.GetLoggedInUser();
+            SqlParameter[] osqlParameter = {
+                new SqlParameter("@UserId", _loggedInUser.UserId)
+            };
+            DataSet dsCureenctList = await _repository.GetDataSetBySP("SP_GetCurrencyByUser", CommandType.StoredProcedure, osqlParameter);
+
+            var _currencyList = dsCureenctList.Tables[0].DataTableToList<MasterCurrencyEntity>();
+            return _currencyList;
         }
     }
 }

@@ -6,8 +6,10 @@ using EmcureNPD.Data.DataAccess.Core.UnitOfWork;
 using EmcureNPD.Data.DataAccess.Entity;
 using EmcureNPD.Utility.Enums;
 using EmcureNPD.Utility.Utility;
+using Microsoft.AspNetCore.SignalR;
 using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Data.SqlClient;
 using System.Linq;
 using System.Linq.Expressions;
@@ -38,6 +40,9 @@ namespace EmcureNPD.Business.Core.Implementation
         private IRepository<PidfIpdRegion> _ipdRegionRepository { get; set; }
         private IRepository<PidfIpdCountry> _ipdCountryRepository { get; set; }
         private IRepository<Pidf> _pidfrepository { get; set; }
+        private IRepository<MasterBusinessUnit> _businessUnitrepository { get; set; }
+        private IRepository<MasterCountry> _countryrepository { get; set; }
+        private IRepository<PidfproductStrength> _pidfProductStrengthrepository { get; set; }
         private IRepository<MasterFinalSelection> _finalSelectionrepository { get; set; }
         public CommercialFormService(IUnitOfWork unitOfWork, IMapperFactory mapperFactory,
             IMasterBusinessUnitService businessUnitService, IMasterCountryService countryService,
@@ -60,19 +65,23 @@ namespace EmcureNPD.Business.Core.Implementation
             _productStrengthService = productStrengthService;
             _commercialrepository = _unitOfWork.GetRepository<PidfCommercial>();
             _commercialYearrepository = _unitOfWork.GetRepository<PidfCommercialYear>();
-            _finalSelectionrepository= _unitOfWork.GetRepository<MasterFinalSelection>();
+            _finalSelectionrepository = _unitOfWork.GetRepository<MasterFinalSelection>();
             _notificationService = notificationService;
+            _businessUnitrepository = _unitOfWork.GetRepository<MasterBusinessUnit>();
+            _pidfProductStrengthrepository = _unitOfWork.GetRepository<PidfproductStrength>();
+            _countryrepository = _unitOfWork.GetRepository<MasterCountry>();
+            
         }
 
-        public async Task<IPDEntity> FillDropdown()
-        {
-            var PIDForm = new IPDEntity
-            {
-                MasterBusinessUnitEntities = _businessUnitService.GetAll().Result.Where(xx => xx.IsActive).ToList(),
-                MasterCountries = _countryService.GetAll().Result.Where(xx => xx.IsActive).ToList(),
-            };
-            return PIDForm;
-        }
+        //public async Task<IPDEntity> FillDropdown()
+        //{
+        //    var PIDForm = new IPDEntity
+        //    {
+        //        MasterBusinessUnitEntities = _businessUnitService.GetAll().Result.Where(xx => xx.IsActive).ToList(),
+        //        MasterCountries = _countryService.GetAll().Result.Where(xx => xx.IsActive).ToList(),
+        //    };
+        //    return PIDForm;
+        //}
         public async Task<DBOperation> AddUpdateCommercialPIDF(PIDFCommercialEntity entitycommPIDF)
         {
             var listYear = new List<PidfCommercialYear>();
@@ -125,8 +134,8 @@ namespace EmcureNPD.Business.Core.Implementation
                 objFetchData.ModifyDate = DateTime.Now;
                 _commercialrepository.UpdateAsync(objFetchData);
                 await _unitOfWork.SaveChangesAsync();
-              //  var isSuccess = await _auditLogService.CreateAuditLog<PidfCommercial>(Utility.Audit.AuditActionType.Update,
-              //Utility.Enums.ModuleEnum.PIDF, OldObjpidfCommercial, objFetchData, 0);
+                var isSuccess = await _auditLogService.CreateAuditLog<PidfCommercial>(Utility.Audit.AuditActionType.Update,
+                ModuleEnum.PIDF, OldObjpidfCommercial, objFetchData, 0);
             }
             var _StatusID = (entitycommPIDF.SaveType == "Sv") ? Master_PIDFStatus.CommercialSubmitted : Master_PIDFStatus.CommercialInProgress;
             await _auditLogService.UpdatePIDFStatusCommon(entitycommPIDF.Pidfid, (int)_StatusID, entitycommPIDF.CreatedBy);
@@ -161,8 +170,11 @@ namespace EmcureNPD.Business.Core.Implementation
                     data.PidfCommercialYears.Add(Yeardata);
                 }
             }
-            data.MasterBusinessUnitEntities = _businessUnitService.GetAll().Result.Where(xx => xx.IsActive).ToList();
-            data.MasterStrengthEntities = _productStrengthService.GetAll().Result.Where(x => x.Pidfid == pidfId).ToList();
+
+            data.MasterBusinessUnitEntities = _mapperFactory.GetList<MasterBusinessUnit, MasterBusinessUnitEntity>
+                (_businessUnitrepository.GetAllQuery().Where(xx => xx.IsActive).ToList());
+            data.MasterStrengthEntities = _mapperFactory.GetList<PidfproductStrength, PidfProductStregthEntity>
+                (_pidfProductStrengthrepository.GetAllQuery().Where(x => x.Pidfid == pidfId).ToList());
             data.BusinessUnitId = buid;
             data.Pidfid = pidfId;
             Pidf objPidf = await _pidfrepository.GetAsync(pidfId);
@@ -170,6 +182,7 @@ namespace EmcureNPD.Business.Core.Implementation
 
             return data;
         }
+      
         public async Task<IEnumerable<dynamic>> GetAllRegion(int userId)
         {
             var dataRegion = _mapperFactory.GetList<MasterRegion, RegionEntity>(await _regionRepository.GetAllAsync());
@@ -207,7 +220,7 @@ namespace EmcureNPD.Business.Core.Implementation
                 }
 
 
-                var dataCountry = _countryService.GetAll().Result.Where(xx => xx.IsActive).ToList();
+                var dataCountry = _countryrepository.GetAllQuery().Where(xx => xx.IsActive).ToList();
 
                 var dataRegionCountry = _mapperFactory.GetList<MasterRegionCountryMapping, MasterRegionCountryMapping>(await _userRegionCountryRepository.FindAllAsync(xx => intIDs.Contains(xx.RegionId)));
 

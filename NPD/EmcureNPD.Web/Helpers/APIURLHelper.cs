@@ -70,6 +70,7 @@ namespace EmcureNPD.Web.Helpers
 
         #region Region 
         public static string GetAllCurrency = "api/Currency/GetAllCurrency";
+        public static string GetAllCurrencyByUser = "api/Currency/GetCurrencyByLoggedInUser";
         public static string GetAllActiveCurrency = "api/Currency/GetAllActiveCurrency";
         public static string SaveCurrency = "api/Currency/InsertUpdateCurrency";
         public static string GetCurrencyById = "api/Currency/GetCurrencyById";
@@ -242,7 +243,7 @@ namespace EmcureNPD.Web.Helpers
         public static string CommonApproveRejectDeletePidf = "api/PIDF/CommonApproveRejectDeletePidf";        
 		public static string GetPBFDropdown = "api/PBF/FillDropdown";
 		public static string SavePBFRnD = "api/PBF/InsertUpdatePBF";
-        public static string SaveCommercialPIDF = "api/CommercialPIDFForm/SaveCommercialPIDF";
+        public static string SaveCommercialPIDF = "api/CommercialPIDFForm/SaveCommercialPIDF";       
         public static string GetPbfFormData = "api/PBF/GetPbfFormData";
         public static string SavePBF = "api/PBF/InsertUpdatePBFDetails";
         public static string SavePBFAnatical = "api/PBF/PBFAnaLytical";

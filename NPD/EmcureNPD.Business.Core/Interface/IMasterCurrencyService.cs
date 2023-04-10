@@ -15,5 +15,6 @@ namespace EmcureNPD.Business.Core.Interface
 
         Task<DBOperation> DeleteCurrency(int id);
         Task<MasterCountryEntity> GetCountryByCurrencyId(int id);
+        Task<List<MasterCurrencyEntity>> GetCurrencyByLoggedInUser();
     }
 }

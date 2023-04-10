@@ -15,7 +15,7 @@ namespace EmcureNPD.Business.Core.Interface
         public List<ProjectTaskEntity> GetTaskSubTaskList(long pidfId);
         Task<DBOperation> DeleteTaskSubTask(int id);
         Task<ProjectTaskEntity> GetById(long id);
-        Task<dynamic> GetTaskSubTaskAndProjectDetails(long id);
+        Task<dynamic> GetTaskSubTaskAndProjectDetails(long id,long? FilterId = 0);
         Task<dynamic> GetBusinessunitDetails(long buid, long pidfid);
     }
 }

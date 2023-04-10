@@ -183,7 +183,24 @@ namespace EmcureNPD.API.Controllers.Masters
             }
         }
 
+        [HttpGet, Route("GetCurrencyByLoggedInUser")]
+        public async Task<IActionResult> GetCurrencyByLoggedInUser()
+        {
+            try
+            {
+                var oCurrencyList = await _MasterCurrencyService.GetCurrencyByLoggedInUser();
+                if (oCurrencyList != null)
+                    return _ObjectResponse.Create(oCurrencyList, (Int32)HttpStatusCode.OK);
+                else
+                    return _ObjectResponse.Create(null, (Int32)HttpStatusCode.BadRequest, "No Records found");
+            }
+            catch (Exception ex)
+            {
+                return _ObjectResponse.Create(false, (Int32)HttpStatusCode.InternalServerError, Convert.ToString(ex.StackTrace));
+            }
+        }
+
         #endregion API Methods
-        
+
     }
 }

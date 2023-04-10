@@ -101,6 +101,7 @@ namespace EmcureNPD.Business.Core.Implementation
                                    ModuleId = c.ModuleId,
                                    CreatedDate = c.CreatedDate,
                                    IsActive = c.IsActive,
+                                   SortOrder= c.SortOrder,
                                    RoleModulePermission = Permissions.FirstOrDefault(xx => xx.ModuleId == c.ModuleId && xx.SubModuleId == 0),
                                    MasterSubModules = o.ToList()
                                }).ToList();
