@@ -103,7 +103,9 @@ namespace EmcureNPD.API.Controllers.Project
         {
             try
             {
-                return _ObjectResponse.CreateData(await _projectService.GetTaskSubTaskAndProjectDetails(long.Parse(UtilityHelper.Decreypt(id))), (Int32)HttpStatusCode.OK);
+                var pidfid = long.Parse(UtilityHelper.Decreypt(id.Split('-')[0]));
+                var FilterId = long.Parse(id.Split('-')[1]);
+                return _ObjectResponse.CreateData(await _projectService.GetTaskSubTaskAndProjectDetails(pidfid, FilterId), (Int32)HttpStatusCode.OK);
             }
             catch (Exception ex)
             {

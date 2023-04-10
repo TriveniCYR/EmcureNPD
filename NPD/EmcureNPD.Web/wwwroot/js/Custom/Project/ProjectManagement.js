@@ -2,7 +2,7 @@ var _milestoneInstance;
 var _milestoneData = [];
 $(document).ready(function () {
     
-    GetProjectDetails();
+    GetProjectDetails(0);
     GetBusinessUnitDetails(bid);
     
     // Add event listener for opening and closing details
@@ -58,22 +58,13 @@ function GetBusinessUnitDetailsSuccess(data) {
         //business unit details
         $('#BDetailsTable tbody').html('');
         $.each(data.table, function (index, object) {
-            $('#BDetailsTable tbody').append('<tr><td>' + object.country +
-                '</td><td>' + object.strength + '</td><td>' + object.packSize +
-                '</td><td>' + object.packing + '</td><td>' + object.firstYearPrice +
-                '</td><td>' + object.firstYearQty + '</td><td>' + object.firstYearVolume +
-                '</td><td>' + object.secondYearPrice + '</td><td>' + object.secondYearQty +
-                '</td><td>' + object.secondYearvolume + '</td><td>' + object.thirdYearPrice +
-                '</td><td>' + object.thirdYearQty + '</td><td>' + object.thirdYearVolume +
-                '</td><td>' + object.batchSize + '</td><td>' + object.currency +
-                '</td><td>' + object.firstyearCogs + '</td><td>' + object.secondYearCogs +
-                '</td><td>' + object.thirdYearCogs + '</td><td>' + object.freight +
-                '</td><td>' + object.totalCost + '</td><td>' + object.threeYearcontribution +
-                '</td><td>' + object.costOfThreeBatches + '</td><td>' + object.analyticalCost +
-                '</td><td>' + object.beCost + '</td><td>' + object.rldCost +
-                '</td><td>' + object.rnDCost + '</td><td>' + object.filingCost +
-                '</td><td>' + object.stabilityCost + '</td><td>' + object.totalInvest +
-                '</td><td>' + object.otherCost + '</td><td>' + object.apiSource + '</td><td>' + object.roi + '</td></td></tr>');
+            $('#BDetailsTable tbody').append('<tr><td>' + object.projectName +
+                '</td><td>' + object.country + '</td><td>' + object.inHouses +
+                '</td><td>' + object.strength + '</td><td>' + object.year +
+                '</td><td>' + object.packagingTypeName + '</td><td>' + object.batchSize +
+                '</td><td>' + object.currencyName + '</td><td>' + object.marketSize +
+                '</td><td>' + object.priceDiscounting + '</td><td>' + object.marketGrowth +
+                '</td><td>' + object.suimsVolume + '</td><td>' + object.totalAPIReq+'</td></td></tr>');
         })
     }
     catch (e) {
@@ -83,20 +74,38 @@ function GetBusinessUnitDetailsSuccess(data) {
 function GetBusinessUnitDetailsError() {
     toastr.error(ErrorMessage);
 }
-function GetProjectDetails() {
-    ajaxServiceMethod($('#hdnBaseURL').val() + GetAllData + "/" + $('#pidfId').val(), 'GET', GetProjectDetailsSuccess, GetProjectDetailsError);
+function GetProjectDetails(filterId = 0) {
+    $(".status_filter").removeClass("active");
+    if (filterId == 1) {
+        $("#btnMonthly").addClass("active");
+    }
+    else if (filterId == 2) {
+        $("#btnQuarterly").addClass("active");
+    }
+    else if (filterId == 3) {
+        $("#btnHalfYearly").addClass("active");
+    }
+    else if (filterId == 4) {
+        $("#btnAnnualy").addClass("active");
+    }
+    else { $("#btnAll").addClass("active"); }
+    ajaxServiceMethod($('#hdnBaseURL').val() + GetAllData + "/" + $('#pidfId').val() + '-' + filterId, 'GET', GetProjectDetailsSuccess, GetProjectDetailsError);
 }
 function GetProjectDetailsSuccess(data) {
     try {
+        
         //project details
         $('#loading').hide();
         $('#pidf_ProjectorProductName').text(data.table[0].projectName);
         $('#pidf_ProductTypeName').text(data.table[0].productType);
         $('#pidf_PlantName').text(data.table[0].plantName);
-        $('#pidf_FormulationName').text(data.table[0].formulation);
-        $('#pidf_WorkflowName').text(data.table[0].workFlow);;
+       // $('#pidf_FormulationName').text(data.table[0].formulation);
+        $('#pidf_WorkflowName').text(data.table[0].workFlow);
+        $(".StrengthandunitofMeasurementName").empty();
         $.each(data.table2, function (i, List) {
-            var newRow = $("<tr>");
+
+            
+            var newRow = $("<tr class='StrengthandunitofMeasurementName'>");
             var cols = "";
             cols += '<td>' + List.strength + '</td>';
             cols += '<td>' + List.unitofMeasurementName + ' </td>';
@@ -109,6 +118,7 @@ function GetProjectDetailsSuccess(data) {
         $.each(data.table1, function (index, file) {
             var link = $('#hdnBaseURL').val() + '/Uploads/PIDF/Medical/' + file.fileName;
             $('#files tbody').append('<tr><td><a href="' + link + '">' + file.fileName + '</a></td></tr>');
+            console.log("Files:" + link)
         });
         //end
         //Businessunit details
@@ -120,6 +130,7 @@ function GetProjectDetailsSuccess(data) {
                 </li>`;
             var $li = $(liHtml);
             $li.click(function () {
+
                 $('.nav-link.active').removeClass('active');
                 // Add active class to highlight the selected item
                 $(this).find('a').addClass('active');
@@ -129,7 +140,7 @@ function GetProjectDetailsSuccess(data) {
             });
             return $li;
         }
-
+        $("#custom-tabs-one-tab").html('');
         $('#custom-tabs-one-tab li').slice(1).remove();
         $.each(data.table3, function (index, bunits) {
             var $li = addLiElement(bunits, bid);

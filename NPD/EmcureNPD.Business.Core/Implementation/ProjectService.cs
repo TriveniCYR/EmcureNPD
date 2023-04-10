@@ -202,10 +202,12 @@ namespace EmcureNPD.Business.Core.Implementation
             return TaskAddModel;
         }
 
-        public async Task<dynamic> GetTaskSubTaskAndProjectDetails(long id)
+        public async Task<dynamic> GetTaskSubTaskAndProjectDetails(long id,long ?FilterId=0)
         {
+            //id = 1;
             SqlParameter[] osqlParameter = {
-                new SqlParameter("@PIDFID", id)
+                new SqlParameter("@PIDFID", id),
+            new SqlParameter("@FilterId", FilterId)
             };
             DataSet TaskSubAndprojDetails = await _repository.GetDataSetBySP("GetTaskSubTaskFileProject", System.Data.CommandType.StoredProcedure, osqlParameter);
             return TaskSubAndprojDetails;
