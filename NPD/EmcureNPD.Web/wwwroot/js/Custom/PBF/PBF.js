@@ -917,7 +917,7 @@ function SetPBFFormReadonly() {
 function BUtabClick(pidfidval, BUVal) {
     SelectedBUValue = 0;
     var i, tabcontent, butab;
-
+    $("#dvGeneralPBF").find("input,textarea,select").prop('disabled', true);
     SelectedBUValue = BUVal;
     $("#BusinessUnitId").val(SelectedBUValue);
     $("#PbfFormEntities_BusinessUnitId").val(SelectedBUValue);

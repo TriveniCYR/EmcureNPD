@@ -41,6 +41,10 @@ namespace EmcureNPD.Web.Controllers
 
         public IActionResult PIDFList()
         {
+            int rolId = (int)HttpContext.Session.GetInt32(UserHelper.LoggedInRoleId);
+            RolePermissionModel objPermssion = UtilityHelper.GetCntrActionAccess((int)ModulePermissionEnum.PIDF, rolId);
+            ViewBag._objPermission = objPermssion;
+
             if (TempData.ContainsKey(UserHelper.SuccessMessage))
             {
                 TempData[UserHelper.SuccessMessage] = TempData[UserHelper.SuccessMessage];

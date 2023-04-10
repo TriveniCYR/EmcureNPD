@@ -7,7 +7,7 @@ var SelectedBUValue = 0;
 var selectedStrength = 0;
 
 $(document).ready(function () {
-    
+    debugger;
     InitializeProductTypeDropdown();
     //SetCommercialDivReadonly();
     InitializeCurrencyDropdown();
@@ -362,6 +362,8 @@ function SaveCommertialPIDFFormError(x, y, z) {
 }
 
 function BUtabClick(BUVal, pidfidval) {
+    $('[id^="BUtab_"]').removeClass('active');
+    $('#BUtab_' + BUVal).addClass('active');      
     SelectedBUValue = BUVal;
     ClearValidationForYearForm();
     ClearValidationForMainForm();
@@ -370,6 +372,8 @@ function BUtabClick(BUVal, pidfidval) {
     IsShowCancel_Save_buttons(true);
 }
 function StrengthtabClick(strengthVal, pidfidval) {
+    $('[id^="Strengthtab_"]').removeClass('active');
+    $('#Strengthtab_' + strengthVal).addClass('active');
     selectedStrength = strengthVal;
     ClearValidationForYearForm();
     ClearValidationForMainForm();
@@ -444,6 +448,7 @@ function SetCommercialFormReadonly() {
     $("[id^='deleteIconAddyear']").hide();
     $("#btnCommercialCancel").prop('disabled', false);
     $("#AddyeartableCollapseButton").prop('disabled', false);
+    $("#btnAddyeartableCollapseButton").prop('disabled', false);    
     $('#mainDivCommercial').find('.operationButton').hide();
 }
 function SetCommercialDisableForOtherUserBU() {

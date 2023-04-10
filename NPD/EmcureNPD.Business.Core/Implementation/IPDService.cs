@@ -72,6 +72,7 @@ namespace EmcureNPD.Business.Core.Implementation
             _configuration = configuration;
             _businessUnitrepository = _unitOfWork.GetRepository<MasterBusinessUnit>();
             _countryrepository = _unitOfWork.GetRepository<MasterCountry>();
+            _masterUserCountryMappingrepository = _unitOfWork.GetRepository<MasterUserCountryMapping>();
         }
 
         public async Task<IPDEntity> FillDropdown()
@@ -332,8 +333,9 @@ namespace EmcureNPD.Business.Core.Implementation
 		public async Task<IEnumerable<dynamic>> GetCountryRefByRegionIds(string regionIds)
 		{
 			//int[] intIDs = new[] { 1, 2 };
+			var loggedinUser = _helper.GetLoggedInUser();
 
-			string[] regionList = regionIds.Split(",");
+            string[] regionList = regionIds.Split(",");
 			if (regionList.Length > 0)
 			{
 				int[] intIDs = new int[regionList.Length];
@@ -345,7 +347,7 @@ namespace EmcureNPD.Business.Core.Implementation
 
 
 				var dataCountry = _countryService.GetAll().Result.ToList();
-				var userCountrymapping = _masterUserCountryMappingrepository.GetAll();
+				var userCountrymapping = _masterUserCountryMappingrepository.GetAllQuery().Where(x => x.UserId == loggedinUser.UserId).ToList();
 
                 var dataRegionCountry = _mapperFactory.GetList<MasterRegionCountryMapping, MasterRegionCountryMapping>(await _userRegionCountryRepository.FindAllAsync(xx => intIDs.Contains(xx.RegionId)));
 
