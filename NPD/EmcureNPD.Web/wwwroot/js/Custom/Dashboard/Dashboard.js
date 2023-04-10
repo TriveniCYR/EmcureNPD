@@ -3,7 +3,7 @@ var graph;
 $(document).ready(function () {
     GetDashboardDropdown();
     GetFinanacialYear();
-    GetPIDFReport();
+    /*GetPIDFReport();*/
     //$('#BusinessUnitId').change(
     //    function () {
     //        ajaxServiceMethod($('#hdnBaseURL').val() + GetPIDFList + "/" + $("#BusinessUnitId").val() + "/" + $("#years").val(), 'GET', GetPIDFListSuccess);
@@ -39,6 +39,7 @@ function GetDashboardDropdownSuccess(data) {
                 };
                 markers.push(marker);
             });
+            getDashBoardData();
         }
         RenderVectorMap();
     } catch (e) {

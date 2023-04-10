@@ -75,7 +75,23 @@ namespace EmcureNPD.Business.Core.Implementation
                                             SubModuleName = c.SubModuleName,
                                             RoleModulePermission = o.FirstOrDefault(xx => xx.SubModuleId == c.SubModuleId)
                                         }).ToList();
+                foreach (var item in MasterSubModuleData)
+                {
+                    if (item.RoleModulePermission == null)
+                    {
+                        var _roleModulepermission = new RoleModulePermissionEntity();
+                        _roleModulepermission.Add = false;
+                        _roleModulepermission.Delete = false;
+                        _roleModulepermission.View = false;
+                        _roleModulepermission.Edit = false;
+                        _roleModulepermission.Approve = false;
+                        _roleModulepermission.RoleId = roleId;
+                        _roleModulepermission.ModuleId = item.ModuleId;
+                        _roleModulepermission.SubModuleId = item.SubModuleId;
 
+                        item.RoleModulePermission = _roleModulepermission;
+                    }
+                }
                 MasterModuleData = MasterModuleData.GroupJoin(MasterSubModuleData,
                                c => c.ModuleId,
                                o => o.ModuleId,
@@ -89,7 +105,21 @@ namespace EmcureNPD.Business.Core.Implementation
                                    MasterSubModules = o.ToList()
                                }).ToList();
 
-
+                foreach(var item in MasterModuleData)
+                {
+                   if(item.RoleModulePermission ==null)
+                    {
+                        var _roleModulepermission = new RoleModulePermissionEntity();
+                        _roleModulepermission.Add = false;
+                        _roleModulepermission.Delete = false;
+                        _roleModulepermission.View = false;
+                        _roleModulepermission.Edit = false;
+                        _roleModulepermission.Approve = false;
+                        _roleModulepermission.RoleId = roleId;
+                        _roleModulepermission.ModuleId = item.ModuleId; 
+                        item.RoleModulePermission = _roleModulepermission;
+                    }
+                }
                 return MasterModuleData;
             }
             else

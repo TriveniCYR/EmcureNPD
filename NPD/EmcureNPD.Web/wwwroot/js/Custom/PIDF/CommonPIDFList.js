@@ -1,7 +1,7 @@
 ﻿var tableId = "PIDFTable";
 var objApprRejList = [];
 $(document).ready(function () {
-    debugger;
+    
     InitializePIDFList();
 });
 

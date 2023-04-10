@@ -1,7 +1,7 @@
 ﻿var tableId = "PIDFTable";
 var objApprRejList = [];
 $(document).ready(function () {
-    debugger;
+    
     if (SaveStatus != '' && SaveStatus != undefined) {
         if (SaveStatus == 'Saved successfully.')
             toastr.success(SaveStatus);

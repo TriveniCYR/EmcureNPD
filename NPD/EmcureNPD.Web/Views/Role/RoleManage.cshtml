@@ -28,125 +28,127 @@
             PageHeading = MasterLocalizer["AddRole"].Value;
         }
         <div class="content-header">
-    <div class="container-fluid d-flex justify-content-between">
+            <div class="container-fluid d-flex justify-content-between">
                 <h3>@PageHeading</h3>
-    </div>
-</div>
-    <div class="container-fluid overflow-auto background-white-card">
-        <div class="row">
-                    <div class="col-md-12">
-                        <div class="form-group required">
-                            @Html.LabelFor(model => model.RoleName, new { @class = "control-label" })
+            </div>
+        </div>
+        <div class="container-fluid overflow-auto background-white-card">
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="form-group required">
+                        @Html.LabelFor(model => model.RoleName, new { @class = "control-label" })
                         <span class="text-danger">*</span>
-                            @Html.EditorFor(model => model.RoleName, new { htmlAttributes = new { @autocomplete = "off", @class = "form-control checkbox-checked", @placeholder = @MasterLocalizer["RoleName"] } })
-                            @Html.ValidationMessageFor(model => model.RoleName, "", new { @class = "text-danger" })
-                        </div>
-                    </div>
-                    <div class="col-md-12">
-                        <div class="required">
-                            @Html.CheckBoxFor(model => model.IsActive, new { @class = "checkbox-checked", @checked = "checked" })
-                            @Html.Label(@SharedLocalizer["IsActive"])
-                        </div>
+                        @Html.EditorFor(model => model.RoleName, new { htmlAttributes = new { @autocomplete = "off", @class = "form-control checkbox-checked", @placeholder = @MasterLocalizer["RoleName"] } })
+                        @Html.ValidationMessageFor(model => model.RoleName, "", new { @class = "text-danger" })
                     </div>
                 </div>
+                <div class="col-md-12">
+                    <div class="required">
+                        @Html.CheckBoxFor(model => model.IsActive, new { @class = "checkbox-checked", @checked = "checked" })
+                        @Html.Label(@SharedLocalizer["IsActive"])
+                    </div>
+                </div>
+            </div>
 
 
-                <div class="row">
-                    <div class="col-md-12 table-responsive">
-                        <table class="table table-bordered">
-                            <thead>
+            <div class="row">
+                <div class="col-md-12 table-responsive">
+                    <table class="table table-bordered">
+                        <thead>
+                            <tr>
+                                <th>Module</th>
+                                <th>Sub Module</th>
+                                <th> <input type="checkbox" id="chkView" class="checkbox-checked" /> View</th>
+                                <th> <input type="checkbox" id="chkAdd" class="checkbox-checked" /> Add</th>
+                                <th><input type="checkbox" id="chkEdit" class="checkbox-checked" /> Edit</th>
+                                <th><input type="checkbox" id="chkDelete" class="checkbox-checked" /> Delete</th>
+                                <th><input type="checkbox" id="chkApprove" class="checkbox-checked" /> Approve</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @for (int i = 0; i < Model.MasterModules.Count; i++)
+                            {
+                                @Html.HiddenFor(m => m.MasterModules[i].ModuleName)
+                                @Html.HiddenFor(m => m.MasterModules[i].ModuleId)
+                                @Html.HiddenFor(m => m.MasterModules[i].RoleModulePermission.ModuleId)
+                                @Html.HiddenFor(m => m.MasterModules[i].RoleModulePermission.RoleId)
+
                                 <tr>
-                                    <th>Module</th>
-                                    <th>Sub Module</th>
-                                    <th> <input type="checkbox" id="chkView" class="checkbox-checked" /> View</th>
-                                    <th> <input type="checkbox" id="chkAdd" class="checkbox-checked" /> Add</th>
-                                    <th><input type="checkbox"  id="chkEdit" class="checkbox-checked" /> Edit</th>
-                                    <th><input type="checkbox"  id="chkDelete" class="checkbox-checked" /> Delete</th>
-                                    <th><input type="checkbox"  id="chkApprove" class="checkbox-checked" /> Approve</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                @for (int i = 0; i < Model.MasterModules.Count; i++)
-                                {
-                                    @Html.HiddenFor(m => m.MasterModules[i].ModuleName)
-                                    @Html.HiddenFor(m => m.MasterModules[i].ModuleId)
-                                    @Html.HiddenFor(m => m.MasterModules[i].RoleModulePermission.ModuleId)
-                                    @Html.HiddenFor(m => m.MasterModules[i].RoleModulePermission.RoleId)
-
-                                    <tr>
-                                        <td>@Model.MasterModules[i].ModuleName</td>
-                                        <td></td>
-                                        <td>@Html.CheckBoxFor(model => Model.MasterModules[i].RoleModulePermission.View, new { @class = "checkbox-checked", @checked = "checked" })</td>
-                                        <td>
-                                            @if (@Model.MasterModules[i].ModuleId != (int)EmcureNPD.Utility.Enums.ModulePermissionEnum.Auditlogs && @Model.MasterModules[i].ModuleId != (int)EmcureNPD.Utility.Enums.ModulePermissionEnum.ManagementHOD){
-@Html.CheckBoxFor(model => Model.MasterModules[i].RoleModulePermission.Add, new { @class = "checkbox-checked", @checked = "checked" })
-                                            }
-                                            </td>
-                                        <td>
-                                            @if (@Model.MasterModules[i].ModuleId != (int)EmcureNPD.Utility.Enums.ModulePermissionEnum.Auditlogs && @Model.MasterModules[i].ModuleId != (int)EmcureNPD.Utility.Enums.ModulePermissionEnum.ManagementHOD){
+                                    <td>@Model.MasterModules[i].ModuleName</td>
+                                    <td></td>
+                                    <td>@Html.CheckBoxFor(model => Model.MasterModules[i].RoleModulePermission.View, new { @class = "checkbox-checked", @checked = "checked" })</td>
+                                    <td>
+                                        @if (@Model.MasterModules[i].ModuleId != (int)EmcureNPD.Utility.Enums.ModulePermissionEnum.Auditlogs && @Model.MasterModules[i].ModuleId != (int)EmcureNPD.Utility.Enums.ModulePermissionEnum.ManagementHOD)
+                                        {
+                                            @Html.CheckBoxFor(model => Model.MasterModules[i].RoleModulePermission.Add, new { @class = "checkbox-checked", @checked = "checked" })
+                                        }
+                                    </td>
+                                    <td>
+                                        @if (@Model.MasterModules[i].ModuleId != (int)EmcureNPD.Utility.Enums.ModulePermissionEnum.Auditlogs && @Model.MasterModules[i].ModuleId != (int)EmcureNPD.Utility.Enums.ModulePermissionEnum.ManagementHOD)
+                                        {
                                             @Html.CheckBoxFor(model => Model.MasterModules[i].RoleModulePermission.Edit, new { @class = "checkbox-checked", @checked = "checked" })
-}
-</td>
-                                        <td>
+                                        }
+                                    </td>
+                                    <td>
                                         @if (@Model.MasterModules[i].ModuleId == (int)EmcureNPD.Utility.Enums.ModulePermissionEnum.Project || @Model.MasterModules[i].ModuleId == (int)EmcureNPD.Utility.Enums.ModulePermissionEnum.UserManagement || @Model.MasterModules[i].ModuleId == (int)EmcureNPD.Utility.Enums.ModulePermissionEnum.RoleManagement || @Model.MasterModules[i].ModuleId == (int)EmcureNPD.Utility.Enums.ModulePermissionEnum.MasterManagement)
-                                            {
-                                                @Html.CheckBoxFor(model => Model.MasterModules[i].RoleModulePermission.Delete, new { @class = "checkbox-checked", @checked = "checked" })
-                                            }
-                                        </td>
-                                        <td>
-                                                                                    @if (@Model.MasterModules[i].ModuleId == (int)EmcureNPD.Utility.Enums.ModulePermissionEnum.PIDF || @Model.MasterModules[i].ModuleId == (int)EmcureNPD.Utility.Enums.ModulePermissionEnum.IPD || @Model.MasterModules[i].ModuleId == (int)EmcureNPD.Utility.Enums.ModulePermissionEnum.Finance || @Model.MasterModules[i].ModuleId == (int)EmcureNPD.Utility.Enums.ModulePermissionEnum.ManagementHOD)
-{
-                                                @Html.CheckBoxFor(model => Model.MasterModules[i].RoleModulePermission.Approve, new { @class = "checkbox-checked", @checked = "checked" })
-}
-                                        </td>
-                                    </tr>
-                                    @for (int j = 0; j < Model.MasterModules[i].MasterSubModules.Count; j++)
-                                    {
+                                        {
+                                            @Html.CheckBoxFor(model => Model.MasterModules[i].RoleModulePermission.Delete, new { @class = "checkbox-checked", @checked = "checked" })
+                                        }
+                                    </td>
+                                    <td>
+                                        @if (@Model.MasterModules[i].ModuleId == (int)EmcureNPD.Utility.Enums.ModulePermissionEnum.PIDF || @Model.MasterModules[i].ModuleId == (int)EmcureNPD.Utility.Enums.ModulePermissionEnum.IPD || @Model.MasterModules[i].ModuleId == (int)EmcureNPD.Utility.Enums.ModulePermissionEnum.Finance || @Model.MasterModules[i].ModuleId == (int)EmcureNPD.Utility.Enums.ModulePermissionEnum.ManagementHOD)
+                                        {
+                                            @Html.CheckBoxFor(model => Model.MasterModules[i].RoleModulePermission.Approve, new { @class = "checkbox-checked", @checked = "checked" })
+                                        }
+                                    </td>
+                                </tr>
+                                @for (int j = 0; j < Model.MasterModules[i].MasterSubModules.Count; j++)
+                                {
 
-                                        @Html.HiddenFor(m => m.MasterModules[i].MasterSubModules[j].SubModuleName)
-                                        @Html.HiddenFor(m => m.MasterModules[i].MasterSubModules[j].ModuleId)
-                                        @Html.HiddenFor(m => m.MasterModules[i].MasterSubModules[j].SubModuleId)
-                                        @Html.HiddenFor(m => m.MasterModules[i].MasterSubModules[j].RoleModulePermission.SubModuleId)
-                                        @Html.HiddenFor(m => m.MasterModules[i].MasterSubModules[j].RoleModulePermission.ModuleId)
-                                        @Html.HiddenFor(m => m.MasterModules[i].MasterSubModules[j].RoleModulePermission.RoleId)
-                                        <tr>
-                                            <td></td>
-                                            <td>@Model.MasterModules[i].MasterSubModules[j].SubModuleName</td>
-                                            <td> @Html.CheckBoxFor(model => Model.MasterModules[i].MasterSubModules[j].RoleModulePermission.View, new { @class = "checkbox-checked", @checked = "checked" })</td>
-                                            <td>
-                                            @if ( Model.MasterModules[i].MasterSubModules[j].SubModuleId != (int)EmcureNPD.Utility.Enums.SubModulePermissionEnum.APICharterSummary)
+                                    @Html.HiddenFor(m => m.MasterModules[i].MasterSubModules[j].SubModuleName)
+                                    @Html.HiddenFor(m => m.MasterModules[i].MasterSubModules[j].ModuleId)
+                                    @Html.HiddenFor(m => m.MasterModules[i].MasterSubModules[j].SubModuleId)
+                                    @Html.HiddenFor(m => m.MasterModules[i].MasterSubModules[j].RoleModulePermission.SubModuleId)
+                                    @Html.HiddenFor(m => m.MasterModules[i].MasterSubModules[j].RoleModulePermission.ModuleId)
+                                    @Html.HiddenFor(m => m.MasterModules[i].MasterSubModules[j].RoleModulePermission.RoleId)
+                                    <tr>
+                                        <td></td>
+                                        <td>@Model.MasterModules[i].MasterSubModules[j].SubModuleName</td>
+                                        <td> @Html.CheckBoxFor(model => Model.MasterModules[i].MasterSubModules[j].RoleModulePermission.View, new { @class = "checkbox-checked", @checked = "checked" })</td>
+                                        <td>
+                                            @if (Model.MasterModules[i].MasterSubModules[j].SubModuleId != (int)EmcureNPD.Utility.Enums.SubModulePermissionEnum.APICharterSummary)
                                             {
                                                 @Html.CheckBoxFor(model => Model.MasterModules[i].MasterSubModules[j].RoleModulePermission.Add, new { @class = "checkbox-checked", @checked = "checked" })
                                             }
                                         </td>
                                         <td>
-                                            @if ( Model.MasterModules[i].MasterSubModules[j].SubModuleId != (int)EmcureNPD.Utility.Enums.SubModulePermissionEnum.APICharterSummary)
+                                            @if (Model.MasterModules[i].MasterSubModules[j].SubModuleId != (int)EmcureNPD.Utility.Enums.SubModulePermissionEnum.APICharterSummary)
                                             {
                                                 @Html.CheckBoxFor(model => Model.MasterModules[i].MasterSubModules[j].RoleModulePermission.Edit, new { @class = "checkbox-checked", @checked = "checked" })
                                             }
-                                            </td>
-                                            <td>
-                                            </td>
-                                            <td>
-                                            </td>
-                                        </tr>
+                                        </td>
+                                        <td>
+                                        </td>
+                                        <td>
+                                        </td>
+                                    </tr>
 
-                                        @*-----------*@
-                                    }
+                                    @*-----------*@
                                 }
-                            </tbody>
-                        </table>
-                    </div>
+                            }
+                        </tbody>
+                    </table>
                 </div>
+            </div>
 
-                <div class="row">
-                    <div class="col-12 text-end">
-                        <div class="form-group">
-                            <button type="submit" class="btn btn-success me-3 large-button">@SharedLocalizer["Save"]</button>
+            <div class="row">
+                <div class="col-12 text-end">
+                    <div class="form-group">
+                        <button type="submit" class="btn btn-success me-3 large-button">@SharedLocalizer["Save"]</button>
                         <a class="btn btn-danger ms-3 large-button" asp-action="Roles">@SharedLocalizer["Cancel"]</a>
-                        </div>
                     </div>
                 </div>
+            </div>
         </div>
     </form>
 </div>

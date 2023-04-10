@@ -22,7 +22,7 @@ $(document).ready(function () {
     else {
         $('.readOnlyUpdate').prop('readonly', false);
         $('select.form-control.readOnlyUpdate').attr("disabled", false);
-        $('.btnControll').css("display", "block");
+        $('.btnControll').css("display", "inline-block");
         $('.add-rows').css("display", "block");
         $('.del-rows').css("display", "block");
         SetChildRowDeleteIcon();

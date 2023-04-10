@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using System;
 using System.Collections.Generic;
@@ -112,6 +113,10 @@ namespace EmcureNPD.Web.Helpers
             {
                 oHttpResponseMessage.StatusCode = HttpStatusCode.InternalServerError;
             }
+            //if (oHttpResponseMessage.StatusCode == HttpStatusCode.Unauthorized)
+            //{
+            //    context.Result = new RedirectResult("~/Home/AccessRestriction");
+            //}
             return oHttpResponseMessage;
         }
     }

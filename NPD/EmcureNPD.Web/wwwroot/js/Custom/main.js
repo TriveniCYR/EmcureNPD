@@ -36,11 +36,13 @@ $.ajaxSetup({
 $(document)
     .ajaxStart(function () {
         //ajax request went so show the loading image
-        $('#mainLoader').height("100vh").find("img").show();
+        /*$('#mainLoader').height("100vh").find("img").show();*/
+        $('#loading-wrapper').show();
     })
     .ajaxStop(function () {
         //got response so hide the loading image
-        $('#mainLoader').height("0").find("img").hide();
+        /*$('#mainLoader').height("0").find("img").hide();*/
+        setTimeout(function () { $('#loading-wrapper').hide(); }, 700);
     });
 function getCookie(name) {
     const value = `; ${document.cookie}`;
@@ -178,6 +180,11 @@ function getParameterByName(name, url = window.location.href) {
 }
 $(document).ready(function () {
     setNavigation();
+    if ($('.scrollElement').length > 0) {
+        $('.scrollElement').overlayScrollbars({
+            className: "os-theme-dark"
+        });
+    }
 });
 function ApproveRejectClick(type, PIDFID, ScreenId, URL) {
     if (PIDFID != undefined && PIDFID != "" && PIDFID != null) {
@@ -238,29 +245,32 @@ function SaveApproveRejectError(x, y, z) {
     toastr.error(ErrorMessage);
 }
 function getPIDFAccordion(url, _PIDFId, divId) {
-    var html = '<div class="card collapsed-card"><div class="card-header bg-primary"><h3 class="card-title mb-0"><button id="btnPIDFAccordionHeader" type="button" class="btn btn-tool" data-card-widget="collapse">Product Identification Form</button></h3><div class="card-tools"><button type="button" class="btn btn-tool" data-card-widget="collapse" title="Collapse"><i class="fas fa-minus"></i></button></div></div><div class="card-body p-0"><div id="dvPIDFContainer"></div></div></div>';
+    var html = '<div class="card collapsed-card"><div class="card-header bg-primary"><h3 class="card-title mb-0"><button id="btnPIDFAccordionHeader" type="button" class="btn btn-tool" data-card-widget="collapse">Product Identification Form</button></h3><div class="card-tools"><button type="button" class="btn btn-tool" data-card-widget="collapse" title="Collapse"><i class="fas fa-minus"></i></button></div></div><div class="card-body p-0"><div id="dvPIDFContainerAccordion"></div></div></div>';
     $.get(url, {
         PIDFId: _PIDFId, _Partial: true, IsViewMode: true
     }, function (content) {
         $("#" + divId).html(html);
-        $("#" + divId).find("#dvPIDFContainer").html(content);
+        $("#" + divId).find("#dvPIDFContainerAccordion").html(content);
     });
 }
 function getIPDAccordion(url, _PIDFId, _PIDFBusinessUnitId, divId) {
-    var html = '<div class="card collapsed-card"><div class="card-header bg-primary"><h3 class="card-title mb-0"><button id="btnIPDAccordionHeader" type="button" class="btn btn-tool" data-card-widget="collapse">Internal Patent Details</button></h3><div class="card-tools"><button type="button" class="btn btn-tool" data-card-widget="collapse" title="Collapse"><i class="fas fa-minus"></i></button></div></div><div class="card-body p-0"><div id="dvIPDContainer"></div></div></div>';
+    var html = '<div class="card collapsed-card"><div class="card-header bg-primary"><h3 class="card-title mb-0"><button id="btnIPDAccordionHeader" type="button" class="btn btn-tool" data-card-widget="collapse">Internal Patent Details</button></h3><div class="card-tools"><button type="button" class="btn btn-tool" data-card-widget="collapse" title="Collapse"><i class="fas fa-minus"></i></button></div></div><div class="card-body p-0"><div id="dvIPDContainerAccordion"></div></div></div>';
     $.get(url, {
-        PIDFId: _PIDFId, bui: _PIDFBusinessUnitId, _Partial: true, IsViewMode: true
+        PIDFId: _PIDFId, bui: _PIDFBusinessUnitId, _Partial: true, IsView: 1
     }, function (content) {
         $("#" + divId).html(html);
-        $("#" + divId).find("#dvIPDContainer").html(content);
+        $("#" + divId).find("#dvIPDContainerAccordion").html(content);
     });
 }
 function getCommercialAccordion(url, _PIDFId, _PIDFBusinessUnitId, divId) {
-    var html = '<div class="card collapsed-card"><div class="card-header bg-primary"><h3 class="card-title mb-0"><button id="btnCommercialAccordionHeader" type="button" class="btn btn-tool" data-card-widget="collapse">Commercial Details</button></h3><div class="card-tools"><button type="button" class="btn btn-tool" data-card-widget="collapse" title="Collapse"><i class="fas fa-minus"></i></button></div></div><div class="card-body p-0"><div id="dvCommercialAccrdion"></div></div></div>';
+    var html = '<div class="card collapsed-card"><div class="card-header bg-primary"><h3 class="card-title mb-0"><button id="btnCommercialAccordionHeader" type="button" class="btn btn-tool" data-card-widget="collapse">Commercial Details</button></h3><div class="card-tools"><button type="button" class="btn btn-tool" data-card-widget="collapse" title="Collapse"><i class="fas fa-minus"></i></button></div></div><div class="card-body p-0"><div id="dvCommercialContainerAccordion"></div></div></div>';
     $.get(url, {
-        PIDFId: _PIDFId, bui: _PIDFBusinessUnitId, _Partial: true, IsViewMode: true
+        pidfid: _PIDFId, bui: _PIDFBusinessUnitId, _Partial: true, IsView: 1
     }, function (content) {
         $("#" + divId).html(html);
-        $("#" + divId).find("#dvCommercialAccrdion").html(content);
+        $("#" + divId).find("#dvCommercialContainerAccordion").html(content);
     });
+}
+function CancelPopup() {
+    $('#CancelModel').modal('show');
 }

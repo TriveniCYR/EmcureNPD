@@ -171,19 +171,6 @@ namespace EmcureNPD.Utility.Utility
         public static bool GetMenuAccess(int ModuleId, int RoleId, int SubModuleId = 0)
         {
             IEnumerable<RolePermissionModel> objVal = GetModuleRole<IEnumerable<RolePermissionModel>>(RoleId);
-
-            //FieldInfo fi = name.GetType().GetField(name.ToString());
-
-            //DescriptionAttribute[] attributes =
-            //(DescriptionAttribute[])fi.GetCustomAttributes(
-            //    typeof(DescriptionAttribute), false);
-
-            //string compVal = "";
-            //if (attributes != null && attributes.Length > 0)
-            //    compVal = attributes[0].Description.Trim();
-            //else
-            //    compVal = name.ToString().Trim();
-
             if (objVal != null)
             {
                 var _permissionObject = objVal.Where(o => o.MainModuleId == ModuleId).FirstOrDefault();
@@ -195,8 +182,9 @@ namespace EmcureNPD.Utility.Utility
                     }
                 }
             }
-            return false;
+            return true;
         }
+
         public static bool GetAccess(int ModuleId, int RoleId, int PermissionType, int SubModuleId = 0)
         {
             IEnumerable<RolePermissionModel> objVal = GetModuleRole<IEnumerable<RolePermissionModel>>(RoleId);
@@ -218,8 +206,7 @@ namespace EmcureNPD.Utility.Utility
             return false;
         }
 
-
-            public static RolePermissionModel GetCntrActionAccess(string controllerNm, int loginRoleId)
+        public static RolePermissionModel GetCntrActionAccess(string controllerNm, int loginRoleId)
         {            
             RolePermissionModel objList = new RolePermissionModel();
             IEnumerable<RolePermissionModel> obj = UtilityHelper.GetModuleRole<dynamic>(loginRoleId);

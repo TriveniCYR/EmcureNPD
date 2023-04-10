@@ -1,5 +1,6 @@
 ﻿using EmcureNPD.Business.Models;
 using EmcureNPD.Resource;
+using EmcureNPD.Utility.Enums;
 using EmcureNPD.Utility.Models;
 using EmcureNPD.Utility.Utility;
 using EmcureNPD.Web.Helpers;
@@ -36,7 +37,7 @@ namespace EmcureNPD.Web.Controllers
             try
             {
                 int rolId = (int)HttpContext.Session.GetInt32(UserHelper.LoggedInRoleId);
-                RolePermissionModel objPermssion = UtilityHelper.GetCntrActionAccess(Convert.ToString(RouteData.Values["controller"]), rolId);
+                RolePermissionModel objPermssion = UtilityHelper.GetCntrActionAccess((int)ModulePermissionEnum.RoleManagement, rolId);
                 ViewBag._objPermission = objPermssion;
 
                 HttpContext.Request.Cookies.TryGetValue(UserHelper.EmcureNPDToken, out string token);

@@ -1,7 +1,6 @@
 ﻿var _userRegion = [];
 var _IPDMode = 0;
 $(document).ready(function () {
-    debugger;
     fnGetActiveBusinessUnit();
     GetRegionList();
     try {
@@ -10,7 +9,9 @@ $(document).ready(function () {
     } catch (e) {
         _IPDMode = getParameterByName("IsView");
     }
-    getPIDFAccordion(_PIDFAccordionURL, _PIDFID, "dvPIDFAccrdion");
+    if ($('#hdnIsPartial').val() != '1') {
+        getPIDFAccordion(_PIDFAccordionURL, _PIDFID, "dvPIDFAccrdion");
+    }
 });
 function fnGetActiveBusinessUnit() {
     ajaxServiceMethod($('#hdnBaseURL').val() + GetActiveBusinessUnit, 'GET', GetActiveBusinessUnitSuccess, GetActiveBusinessUnitError);
@@ -38,10 +39,10 @@ function LoadIPDForm(pidfId, BusinessUnitId) {
     if ($("#custom-tabs-" + BusinessUnitId).html() == "") {
         $.get(_IPDPartialURL, { pidfid: pidfId, bui: BusinessUnitId }, function (content) {
             $("#custom-tabs-" + BusinessUnitId).html(content);
+            $('#SelectedTabBusinessUnit').val(_selectBusinessUnit);
+            SetDisableForOtherUserBU(_selectBusinessUnit);
         });
     }
-    $('#SelectedTabBusinessUnit').val(_selectBusinessUnit);
-    SetDisableForOtherUserBU(_selectBusinessUnit);
 }
 // #region Get Region List
 function GetRegionList() {
@@ -63,7 +64,7 @@ function setRegion() {
     $.each(_userRegion, function (index, object) {
         getParentFormId().find('.regionCombo').append($('<option>').text(object.regionName).attr('value', object.regionId));
     });
-    $('.regionCombo').select2();
+    getParentFormId().find('.regionCombo').select2();
     if (selRegion != undefined && selRegion != "") {
         let arr = selRegion.split(',');
         getParentFormId().find('.regionCombo').val(arr).trigger('change');
@@ -91,7 +92,7 @@ function GetCountryListSuccess(data) {
                 getParentFormId().find('#CountryId').val(arr).trigger('change');
             }
         });
-        $('.countryCombo').select2();
+        getParentFormId().find(('.countryCombo')).select2();
     } catch (e) {
         toastr.error('Error:' + e.message);
     }
@@ -169,22 +170,19 @@ function getParentFormId() {
     return $('#fIPDForm_' + _selectBusinessUnit);
 }
 function readOnlyIPDForm() {
-    $('#dvIPDContainer').find('input').attr('readonly', true).attr('disabled', true);
-    $('#dvIPDContainer').find('textarea').attr('readonly', true).attr('disabled', true);
-    //$('button').attr('readonly', true).attr('disabled', true);
-    $('#dvIPDContainer').find('select').attr('readonly', true).attr('disabled', true).trigger("change");
-    $('#dvIPDContainer').find('.operationButton').hide();
+    $('#dvIPDContainer').find(getParentFormId()).find('input').attr('readonly', true).attr('disabled', true);
+    $('#dvIPDContainer').find(getParentFormId()).find('textarea').attr('readonly', true).attr('disabled', true);
+    $('#dvIPDContainer').find(getParentFormId()).find('select').attr('readonly', true).attr('disabled', true).trigger("change");
+    $('#dvIPDContainer').find(getParentFormId()).find('.operationButton').hide();
 }
 function SetDisableForOtherUserBU(_selectBusinessUnit) {
-    var UserwiseBusinessUnit = $('#BusinessUnitsByUser').val().split(','); 
-   var BUval= _selectBusinessUnit.toString();
+    var UserwiseBusinessUnit = $('#BusinessUnitsByUser').val().split(',');
+    var BUval = _selectBusinessUnit.toString();
     var status = UserwiseBusinessUnit.indexOf(BUval);
-   // var IsViewInMode = ($("#IsView").val() == '1')
+    // var IsViewInMode = ($("#IsView").val() == '1')
     if (status == -1) {
-        readOnlyIPDForm();// readOnlyIPDFormForOtherBU(true);
+        readOnlyIPDForm();
     }
-   
-        //readOnlyIPDFormForOtherBU(false);
 }
 
 function readOnlyIPDFormForOtherBU(flag) {    

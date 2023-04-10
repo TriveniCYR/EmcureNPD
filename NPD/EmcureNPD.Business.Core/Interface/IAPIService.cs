@@ -23,5 +23,6 @@ namespace EmcureNPD.Business.Core.Interface
         Task<PIDFAPICharterFormEntity> GetAPICharterFormData(long pidfId,short IsCharter);
         Task<DBOperation> AddUpdateAPICharter(PIDFAPICharterFormEntity _oAPICharter);
         Task<PIDFAPICharterFormEntity> GetAPICharterSummaryFormData(long pidfId);
+        Task<APIIPDEntity> GetIPDByPIDF(long pidfId);
     }	
 }

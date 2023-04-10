@@ -142,7 +142,7 @@ function GetPBFDropdownError(x, y, z) {
 }
 
 function SavePBFForm(form) {
-    debugger;
+    
     $.validator.unobtrusive.parse(form);
     if ($(form).valid()) {
         ajaxServiceMethod($('#hdnBaseURL').val() + SavePBFRnD, 'POST', SavePBFFormSuccess, SavePBFFormError, JSON.stringify(getFormData($(form))));
@@ -168,7 +168,7 @@ function SavePIDFFormError(x, y, z) {
 }
 
 function tabClick(action, val, pidfidval) {
-    debugger;
+    
     if (action == 'PBFRnDForm')
         var url = "/PBF/PBFRnDForm?pidfid=" + pidfidval + "&bui=" + val;
     if (action == 'PBFAnalyticalForm')
@@ -221,7 +221,7 @@ function GetProductStrengthById(id) {
     ajaxServiceMethod($('#hdnBaseURL').val() + GetPBFReadonlyDataByPIDFId + "/" + id, 'GET', GetProductStrengthByIdSuccess, GetProductStrengthByIdError);
 }
 function GetProductStrengthByIdSuccess(data) {
-    debugger;
+    
     try {
         $('#PidfPbfAnalyticals_ProjectName').val(data._object.projectName);
         $('#PidfPbfAnalyticals_SAPProjectProjectCode').val(data._object.sapProjectProjectCode);
@@ -412,7 +412,7 @@ function SaveClick() {
 }
 function Save() {
     var selected = new Array();
-    debugger;
+    
     switch (selectedTab) {
         case 'RnD':
             //code need to be implemented
@@ -472,7 +472,7 @@ function SaveDraftClick() {
     Save();
 }
 function SetChildRows(selectedTab) {
-    debugger;
+    
     switch (selectedTab) {
         case 'RnD':
             //code need to be impliment
@@ -542,7 +542,7 @@ function SetChildRows(selectedTab) {
 }
 
 function Calculate_Analytical_total() {
-    debugger;
+    
     var totalAMVsum = parseFloat($('#PidfPbfAnalyticals_PidfPbfAnalyticalCosts_TotalAMVCost').val());
     var prototypesum = 0;
     var scaleupsum = 0;
@@ -569,7 +569,7 @@ function Calculate_Analytical_total() {
     $('#PidfPbfAnalyticals_PidfPbfAnalyticalCosts_TotalCost').val(totalsum);
 }
 function Calculate_Clinical_total() {
-    debugger
+    
     var pilotbiofastingsum = 0;
     var pilotbiofedsum = 0;
     var pivotalbiofastingsum = 0;

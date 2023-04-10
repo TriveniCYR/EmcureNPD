@@ -18,6 +18,7 @@ using EmcureNPD.Utility.Helpers;
 using System.Net.Mail;
 using EmcureNPD.Utility.Utility;
 using EmcureNPD.Utility.Models;
+using EmcureNPD.Utility.Enums;
 
 namespace EmcureNPD.Web.Controllers
 {
@@ -42,7 +43,7 @@ namespace EmcureNPD.Web.Controllers
         public IActionResult User()
         {
 			int rolId = (int)HttpContext.Session.GetInt32(UserHelper.LoggedInRoleId);
-			RolePermissionModel objPermssion = UtilityHelper.GetCntrActionAccess(Convert.ToString(RouteData.Values["controller"]), rolId);
+			RolePermissionModel objPermssion = UtilityHelper.GetCntrActionAccess((int)ModulePermissionEnum.UserManagement, rolId);
             ViewBag._objPermission = objPermssion;
 			return View();
         }

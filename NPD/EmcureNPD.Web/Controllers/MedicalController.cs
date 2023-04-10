@@ -51,7 +51,8 @@ namespace EmcureNPD.Web.Controllers
                 ViewBag.Access = objPermssion;
 				pidfid = UtilityHelper.Decreypt(pidfid);
                 oMedical = GetModelForMedicalForm(pidfid);
-				oMedical.IsView = (IsView == null) ? 0 : (int)IsView;
+                oMedical.Pidfid = Convert.ToInt32(pidfid);
+                oMedical.IsView = (IsView == null) ? 0 : (int)IsView;
 				if (oMedical.PidfmedicalId <= 0)
                 {
                     oMedical.MedicalOpinion = 1;

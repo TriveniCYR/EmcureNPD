@@ -14,13 +14,23 @@
 @{ ViewData["Title"] = @MasterLocalizer["PIDFCommercialDetails"];
     string jsVersion = @Configuration.GetSection("StaticJS")["version"];
 }
-
-<div id="dvPIDFAccrdion"></div>
-<div id="dvIPDAccrdion"></div>
-<div class="content-header">
+@{
+    if (Model._Partial)
+    {
+        Layout = null;
+    }
+}
+@if (!Model._Partial)
+{
+    <div id="dvPIDFAccrdion"></div>
+    <div id="dvIPDAccrdion"></div>
+    <div class="content-header">
     <h4 class="m-0">@MasterLocalizer["CommercialDetails"]</h4>
             </div>
+    @Html.Partial("_CancelRequest", (int)PIDFScreen.Commercial)
+}
 
+<input type="hidden" value="@(Model._Partial ? '1' : '0')" id="hdnIsPartial" />
 <div class="container-fluid background-white-card">
         <input type="hidden" id="hdnCommercialIsView" value="@(Context.Request.Query["IsView"] == "1" ? "1" : "0")" />
         
@@ -91,7 +101,7 @@
                                         </tbody>
                                     </table>
                                     @*-------------------End - Year Table-----------*@
-
+                                    <div class="clearfix">&nbsp;</div>
                                     <div class="row">
                                         <div class="col-md-12">
                                             <table class="table table-bordered">
@@ -155,7 +165,7 @@
                                         </div>
                                         <div class="col-md-2"></div>
                                         <div class="col-md-2">
-                                            <button type="button" class="btn btn-primary mt-4" value="AddYear" onClick="ShowYearForm()">@MasterLocalizer["AddYear"]</button>
+                                            <button type="button" class="btn btn-primary mt-4 operationButton" value="AddYear" onClick="ShowYearForm()">@MasterLocalizer["AddYear"]</button>
                                         </div>
                                     </div>
 
@@ -260,14 +270,14 @@
                                                     </div>
                                                 </div>
                                                 <div class="col-md-3 border ml-3">
-                                                    <h3 class="card-title font-weight-bold">Market Share % </h3>
+                                                    <div class="row bg-primary pt-2"><h3 class="card-title font-weight-bold">Market Share % </h3></div>
                                                     <table class="table table-bordered">
                                                         <tr>
-                                                            <td>
+                                                            <td style="width:35%">
                                                                 <label class="control-label">@MasterLocalizer["Low"]</label>
                                                                 <span class="text-danger">*</span>
                                                             </td>
-                                                            <td>
+                                                            <td style="width:65%">
                                                                 @Html.TextBoxFor(model => model.MarketSharePercentageLow, new {@type="number", @autocomplete = "off", @class = "form-control " })
                                                                 <lable id="valmsgMarketSharePercentageLow" class="text-danger"></lable>
                                                             </td>
@@ -289,11 +299,12 @@
                                                     </table>
                                                 </div>
                                                 <div class="col-md-3 border ml-3">
-                                                    <h3 class="card-title font-weight-bold">Estimated Market Share Units </h3>
+                                                    <div class="row bg-primary pt-2">
+                                                        <h3 class="card-title font-weight-bold">Estimated Market Share Units </h3></div>
                                                     <table class="table table-bordered">
                                                         <tr>
-                                                            <td> <label class="control-label">@MasterLocalizer["Low"]</label></td>
-                                                            <td>
+                                                            <td style="width:35%"> <label class="control-label">@MasterLocalizer["Low"]</label></td>
+                                                            <td style="width:65%">
                                                                 @Html.TextBoxFor(model => model.MarketShareUnitLow, new { @readonly = "readonly",@autocomplete = "off", @class = "form-control " })
 
                                                             </td>
@@ -314,11 +325,12 @@
                                                     </table>
                                                 </div>
                                                 <div class="col-md-3 border ml-3">
-                                                    <h3 class="card-title font-weight-bold">NSP / Units </h3>
+                                                    <div class="row bg-primary pt-2">
+                                                        <h3 class="card-title font-weight-bold">NSP / Units </h3></div>
                                                     <table class="table table-bordered">
                                                         <tr>
-                                                            <td> <label class="control-label">@MasterLocalizer["Low"]</label><span class="text-danger">*</span></td>
-                                                            <td>
+                                                            <td style="width:35%"> <label class="control-label">@MasterLocalizer["Low"]</label><span class="text-danger">*</span></td>
+                                                            <td style="width:65%">
                                                                 @Html.TextBoxFor(model => model.NspunitsLow, new { @type="number",@autocomplete = "off", @class = "form-control " })
                                                                 <lable id="valmsgNspunitsLow" class="text-danger"></lable>
                                                             </td>
@@ -340,11 +352,11 @@
                                                     </table>
                                                 </div>
                                                 <div class="col-md-2 border ml-3">
-                                                    <h3 class="card-title font-weight-bold">NSP</h3>
+                                                    <div class="row bg-primary pt-2"><h3 class="card-title font-weight-bold">NSP</h3></div>
                                                     <table class="table table-bordered">
                                                         <tr>
-                                                            <td> <label class="control-label">@MasterLocalizer["Low"]</label></td>
-                                                            <td>
+                                                            <td style="width:35%"> <label class="control-label">@MasterLocalizer["Low"]</label></td>
+                                                            <td style="width:65%">
                                                                 @Html.TextBoxFor(model => model.NspLow, new {@readonly = "readonly", @autocomplete = "off", @class = "form-control " })
                                                             </td>
                                                         </tr>
@@ -381,59 +393,26 @@
             <div class="row">
                 <div class="col-12 text-end">
                     <div class="form-group" id="dvMainButton">
-                        <button type="button" id="btnSubmit" class="btn btn-success me-3 outside-buttons" >@SharedLocalizer["Submit"]</button>
-                        <input class="btn btn-danger me-3 outside-buttons " value="Cancel" id="btnCommercialCancel" type="button" title=@SharedLocalizer["Cancel"] onclick="location.href='@Url.Action("PIDFList", "PIDF", new { ScreenId = 4 })'" />
-                        @*<button class="btn btn-danger" type="button" onclick="window.history.back();">@SharedLocalizer["Cancel"]</button>*@
-                        <button type="submit" id="btnSaveAsDraft" class="btn btn-primary me-3 outside-buttons" >@SharedLocalizer["SaveDraft"]</button>
-                     
-                        @*  @if (Model.StatusId != (Int32)Master_PIDFStatus.IPDInProgress)
+                        <button type="button" id="btnSubmit" class="btn btn-success me-3 outside-buttons operationButton">@SharedLocalizer["Submit"]</button>
+                        @if (Model.StatusId == (Int32)Master_PIDFStatus.IPDApproved || Model.StatusId == (Int32)Master_PIDFStatus.CommercialInProgress || Convert.ToBoolean(Context.Request.Query["commercial"]) == false)
                         {
-                            <button type="submit" class="btn btn-info" onClick="SaveDraftClick();">@SharedLocalizer["SaveDraft"]</button>
+                            <button type="submit" id="btnSaveAsDraft" class="btn btn-primary me-3 outside-buttons operationButton" >@SharedLocalizer["SaveDraft"]</button>
                         }
-                        <button class="btn btn-success" onClick="SaveApproveClick();">@SharedLocalizer["Approve"]</button>
-                        <button class="btn btn-danger" onClick="SaveRejectClick();">@SharedLocalizer["Reject"]</button>*@
+                        @if (!Model._Partial)
+					{
+                            <input class="btn btn-danger me-3 outside-buttons " value="Cancel" id="btnCommercialCancel" type="button" title=@SharedLocalizer["Cancel"] onclick="CancelPopup()" />
+                    }
                     </div>
                 </div>
             </div>
         </div>
     </div>
 </div>
-@*CancelModel*@
-<div id="CancelModelCommercial" class="modal themeModal" role="dialog">
-    <div class="modal-dialog">
-        <!-- Modal content-->
-        <div class="modal-content">
-            <div class="modal-header">
-                <h4 class="modal-title">@SharedLocalizer["Cancel"]</h4>
-                <button type="button" class="close" data-dismiss="modal">&times;</button>
-            </div>
-            <div class="modal-body">
-                <div class="row">
-                    <div class="col-md-12">
-                        <div class="form-group">
-                            @Html.Label(@SharedLocalizer["CancelConfirm"])
-                        </div>
-                    </div>
-                </div>
-                <div class="card-footer text-center">
-                    <a asp-action="PIDFCommercial" asp-controller="PIDF" data-dismiss="modal" class="btn btn-primary mr-2">@SharedLocalizer["Yes"]</a>
-                    <a class="btn btn-danger" data-dismiss="modal">@SharedLocalizer["No"]</a>
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
-@section MyScripts {
     <link rel="stylesheet" href="~/AdminLTE/plugins/select2/css/select2.min.css" />
     <script type="text/javascript" src="~/AdminLTE/plugins/select2/js/select2.min.js"></script>
     <script src="~/js/custom/pidf/commercialdetailsform.js?v=@jsVersion"></script>
-    <link href="/lib/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
-    <script src="/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
-
-    @*<script type="text/javascript" src="~/js/Custom/PIDF/MasterPIDF.js"></script>
-    <script type="text/javascript" src="~/js/Custom/Masters/MasterPIDForm.js"></script>
-    <script type="text/javascript" src="~/js/Custom/PIDF/MasterPIDF_IPD.js"></script>*@
-
+@*    <link href="/lib/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
+    <script src="/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>*@
     <script>
         var GetAllProductType = "@EmcureNPD.Web.Helpers.APIURLHelper.GetAllPackagingType";
         var GetAllCurrency = "@EmcureNPD.Web.Helpers.APIURLHelper.GetAllCurrency";
@@ -471,8 +450,6 @@
             toastr.success(successCallBack);
         }
     </script>
-
-}
 
 
 

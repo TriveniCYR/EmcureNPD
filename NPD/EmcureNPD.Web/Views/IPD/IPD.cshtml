@@ -21,13 +21,16 @@
     string jsVersion = @Configuration.GetSection("StaticJS")["version"];
 }
 
-<div id="dvPIDFAccrdion"></div>
 @if (!Model._Partial)
 {
+    <div id="dvPIDFAccrdion"></div>
     <div class="content-header">
         <h2 class="m-0">Internal Patent Details</h2>
     </div>
+    @Html.Partial("_PIDFApproveReject")
+    @Html.Partial("_CancelRequest", (int)PIDFScreen.IPD)
 }
+<input type="hidden" value="@(Model._Partial ? '1' : '0')" id="hdnIsPartial" />
 <div class="container-fluid background-white-card" id="dvIPDContainer">
     <input type="hidden" asp-for="LogInId" />
     <input type="hidden" id="hdnIPDIsView" value="@(Context.Request.Query["IsView"] == "1" ? "1" : "0")" />
@@ -51,7 +54,7 @@
     <div class="row">
         <div class="col-12 text-end">
             <div class="form-group">
-                @if (Model.StatusId == (Int32)Master_PIDFStatus.IPDSubmitted)
+                @if (Model.StatusId == (Int32)Master_PIDFStatus.IPDSubmitted || Convert.ToBoolean(Context.Request.Query["ipd"]))
                 {
 
                     <button type="submit" class="btn btn-success me-3 outside-buttons operationButton" onClick="ApproveRejectClick('A', '@Model.PIDFID', @((int)EmcureNPD.Utility.Enums.PIDFScreen.IPD), '/PIDF/PIDFList?ScreenId=@((int)EmcureNPD.Utility.Enums.PIDFScreen.IPD)')"><i class="fa fa-check-circle mr-1"></i>@SharedLocalizer["Approve"]</button>
@@ -59,7 +62,7 @@
                 }
                 @if (!Model._Partial)
                 {
-                    <a class="btn btn-danger me-3 outside-buttons" asp-action="PIDFList" asp-controller="PIDF" asp-route-ScreenId="2">@SharedLocalizer["Cancel"]</a>
+                    <a class="btn btn-danger me-3 outside-buttons" onclick="CancelPopup();">@SharedLocalizer["Cancel"]</a>
                 }
 
             </div>
@@ -67,25 +70,10 @@
     </div>
 </div>
 
-
-
-
-@section MyScripts {
-    @*    @Html.Partial("_DataTablePartial")*@
     <link rel="stylesheet" href="~/AdminLTE/plugins/select2/css/select2.min.css" />
     <script type="text/javascript" src="~/AdminLTE/plugins/select2/js/select2.min.js"></script>
     <script type="text/javascript" src="~/js/Custom/IPD/IPDMaster.js?v=@jsVersion"></script>
-    @*<script type="text/javascript" src="~/js/Custom/IPD/IPD.js?v=@jsVersion"></script>*@
-    @*<link href="/lib/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
-    <script src="/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>*@
-
-
     <script>
-
-        //$.get('@Url.Action("PIDF", "PIDF")', { PIDFId: @Model.PIDFID, _Partial : true, IsViewMode: true }, function (content) {
-        //    $("#dvPIDFContainer").html(content);
-        //});
-
 
         var AllRegion = "@EmcureNPD.Web.Helpers.APIURLHelper.GetAllRegionIPD";
         var AllRegionCountry = "@EmcureNPD.Web.Helpers.APIURLHelper.GetCountryRefByRegionIds";
@@ -98,6 +86,7 @@
         var RecordInsertUpdate = "@SharedLocalizer["RecordInsertUpdate"]";
         var _PIDFAccordionURL = "@Url.Action("PIDF", "PIDF")";
         var UserWiseBUList = "@Model.BusinessUnitsByUser";
+    var _IsIPDSubmitted = "@Convert.ToBoolean(Context.Request.Query["ipd"])";
         //document.addEventListener("DOMContentLoaded", function () {
         //    var tabList = [].slice.call(document.querySelectorAll("#tabs a"));
         //    var tabs = $('#tabList');
@@ -122,5 +111,3 @@
             toastr.success(successCallBack);
         }
     </script>
-
-}

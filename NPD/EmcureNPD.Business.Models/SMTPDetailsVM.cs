@@ -1,4 +1,4 @@
-﻿namespace EmcureNPD.Web.Models
+﻿namespace EmcureNPD.Business.Models
 {
     public class SMTPDetailsVM
     {

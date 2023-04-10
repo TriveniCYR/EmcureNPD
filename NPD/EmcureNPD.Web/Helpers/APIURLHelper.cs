@@ -315,7 +315,8 @@ namespace EmcureNPD.Web.Helpers
         public static string GetAPIRnDFormData = "api/API/GetAPIRnDFormData";
         public static string InsertUpdateAPIRnD = "api/API/InsertUpdateAPIRnD";
         public static string GetAPICharterFormData = "api/API/GetAPICharterFormData";
-        public static string InsertUpdateAPICharter = "api/API/InsertUpdateAPICharter";  
+        public static string InsertUpdateAPICharter = "api/API/InsertUpdateAPICharter";
+        public static string GetIPDByPIDF = "api/API/GetIPDByPIDF";
         #endregion
 
         #region API List

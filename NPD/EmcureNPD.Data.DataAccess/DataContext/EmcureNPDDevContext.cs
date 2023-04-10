@@ -2231,6 +2231,8 @@ namespace EmcureNPD.Data.DataAccess.DataContext
 
                 entity.Property(e => e.CreatedDate).HasColumnType("datetime");
 
+                entity.Property(e => e.MiscellaneousDevelopment).HasMaxLength(200);
+
                 entity.Property(e => e.PbfgeneralId).HasColumnName("PBFGeneralId");
 
                 entity.HasOne(d => d.Pbfgeneral)
@@ -2443,6 +2445,8 @@ namespace EmcureNPD.Data.DataAccess.DataContext
 
                 entity.Property(e => e.PbfgeneralId).HasColumnName("PBFGeneralId");
 
+                entity.Property(e => e.PlantSupportDevelopment).HasMaxLength(200);
+
                 entity.HasOne(d => d.Pbfgeneral)
                     .WithMany(p => p.PidfPbfRnDPlantSupportCosts)
                     .HasForeignKey(d => d.PbfgeneralId)
@@ -2490,6 +2494,8 @@ namespace EmcureNPD.Data.DataAccess.DataContext
                 entity.Property(e => e.CreatedDate).HasColumnType("datetime");
 
                 entity.Property(e => e.PbfgeneralId).HasColumnName("PBFGeneralId");
+
+                entity.Property(e => e.Prototype).HasMaxLength(100);
 
                 entity.HasOne(d => d.Pbfgeneral)
                     .WithMany(p => p.PidfPbfRnDToolingChangeparts)

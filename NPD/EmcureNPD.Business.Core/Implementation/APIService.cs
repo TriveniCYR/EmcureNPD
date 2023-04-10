@@ -153,11 +153,28 @@ namespace EmcureNPD.Business.Core.Implementation
                 _oApiIpdData.MarketDetailsFileName = (Convert.ToString(_oAPIIPD.MarketDetailsFileName) == "") ? "" : fullPath;
                 _oApiIpdData.Pidfid = _oAPIIPD.Pidfid.ToString();
             }
-            _oApiIpdData.MasterCountries = _countryService.GetAll().Result.ToList();
+            //_oApiIpdData.MasterCountries = _countryService.GetAll().Result.ToList();
             Pidf objPidf = await _pidfrepository.GetAsync(pidfId);
             _oApiIpdData.StatusId = objPidf.StatusId;
             return _oApiIpdData;
         }
+
+        public async Task<APIIPDEntity> GetIPDByPIDF(long pidfId)
+        {
+            SqlParameter[] osqlParameter = {
+                new SqlParameter("@PIDFId", pidfId)
+            };
+            DataSet dsIPDDetail = await _repository.GetDataSetBySP("stp_npd_GetIPDDetailByPIDF", System.Data.CommandType.StoredProcedure, osqlParameter);
+            APIIPDEntity oAPIIPDEntity = new APIIPDEntity();
+            oAPIIPDEntity.IPDList = dsIPDDetail.Tables[0].DataTableToList<IPDEntity>();
+            oAPIIPDEntity.IPD_PatentDetailsList = dsIPDDetail.Tables[1].DataTableToList<PIDF_IPD_PatentDetailsEntity>();
+            if (dsIPDDetail.Tables[2].Rows.Count > 0)
+            {
+                oAPIIPDEntity.ProjectName = Convert.ToString(dsIPDDetail.Tables[2].Rows[0]["ProjectName"]);
+            }
+            return oAPIIPDEntity;
+        }
+
         public async Task<PIDFAPIRnDFormEntity> GetAPIRnDFormData(long pidfId, string HostValue)
         {
             PIDFAPIRnDFormEntity _oApiRnDData = new PIDFAPIRnDFormEntity();

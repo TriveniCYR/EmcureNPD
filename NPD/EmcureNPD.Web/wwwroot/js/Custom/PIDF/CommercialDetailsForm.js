@@ -7,25 +7,26 @@ var SelectedBUValue = 0;
 var selectedStrength = 0;
 
 $(document).ready(function () {
-    debugger;
+    
     InitializeProductTypeDropdown();
-    //SetDivReadonly();
+    //SetCommercialDivReadonly();
     InitializeCurrencyDropdown();
     InitializeFinalSelectionDropdown();    
   //  $("#AddYearForm").hide();
     IsViewModeCommercial();    
     SetBU_Strength();
-    HideSaveAsDraft();
-    getPIDFAccordion(_PIDFAccordionURL, _PIDFID, "dvPIDFAccrdion");
-    getIPDAccordion(_IPDAccordionURL, _EncPIDFID, _PIDFBusinessUnitId, "dvIPDAccrdion");
+/*    HideSaveAsDraft();*/
+    if ($('#hdnIsPartial').val() != '1') {
+        getPIDFAccordion(_PIDFAccordionURL, _PIDFID, "dvPIDFAccrdion");
+        getIPDAccordion(_IPDAccordionURL, _EncPIDFID, _PIDFBusinessUnitId, "dvIPDAccrdion");
+    }
 });
-function HideSaveAsDraft() {    
-    if ($('#StatusId').val() == 11)     //[11=CommercialSubmitted , 10= CommercialInProgress]
-     $('#btnSaveAsDraft').hide();    
-    else
-      $('#btnSaveAsDraft').show();
-}
-
+//function HideSaveAsDraft() {    
+//    if ($('#StatusId').val() == 11)     //[11=CommercialSubmitted , 10= CommercialInProgress]
+//     $('#btnSaveAsDraft').hide();    
+//    else
+//      $('#btnSaveAsDraft').show();
+//}
 function SetBU_Strength() {
     var PIDFBusinessUnitId = $("#PIDFBusinessUnitId").val();
     var PIDFProductStrengthId = $("#PIDFProductStrengthId").val();
@@ -51,19 +52,19 @@ function IsViewModeCommercial() {
 }
 
 function InitializeCurrencyDropdown() {
-    ajaxServiceMethod($('#hdnBaseURL').val() + GetAllCurrency, 'GET', GetCountryListSuccess, GetCountryListError);
+    ajaxServiceMethod($('#hdnBaseURL').val() + GetAllCurrency, 'GET', GetCurrencyListSuccess, GetCurrencyListError);
 }
-function GetCountryListSuccess(data) {
+function GetCurrencyListSuccess(data) {
     try {
         $('#CurrencyId').append($('<option>').text('--Select--').attr('value','0'));
         $.each(data._object, function (index, object) {
             $('#CurrencyId').append($('<option>').text(object.currencyName).attr('value', object.currencyId));
         });
     } catch (e) {
-        toastr.error('Error:' + e.message);
+        toastr.error('Get Currency Error:' + e.message);
     }
 }
-function GetCountryListError(x, y, z) {
+function GetCurrencyListError(x, y, z) {
     toastr.error(ErrorMessage);
 }
 
@@ -78,7 +79,7 @@ function GetProductTypeListSuccess(data) {
             $('#CommercialPackagingTypeId').append($('<option>').text(object.packagingTypeName).attr('value', object.packagingTypeId));
         });
     } catch (e) {
-        toastr.error('Error:' + e.message);
+        toastr.error('Get Product Type Error:' + e.message);
     }
 }
 function GetProductTypeListError(x, y, z) {
@@ -95,7 +96,7 @@ function GetFSListSuccess(data) {
             $('#FinalSelectionId').append($('<option>').text(object.finalSelectionName).attr('value', object.finalSelectionId));
         });
     } catch (e) {
-        toastr.error('Error:' + e.message);
+        toastr.error('Get Final Selection Error:' + e.message);
     }
 }
 function GetFSListError(x, y, z) {
@@ -109,25 +110,29 @@ function ValidateYearForm() {
 
         
         if (jQuery.inArray(kv.name, objdropdownYearControls_array) != -1) {
-
+            console.log(kv);
             if (kv.value == 0) {
-                $('#valmsg' + kv.name).text('Required');
+/*                $('#valmsg' + kv.name).text('Required');*/
+                $('#' + kv.name).addClass('InvalidBox');
                 //IsValid = false;
                 ArrofInvalid.push(kv.name);
             }
             else {
-                $('#valmsg' + kv.name).text('');
+/*                $('#valmsg' + kv.name).text('');*/
+                $('#' + kv.name).removeClass('InvalidBox');
             }
         }
         else
         {
             if (kv.value == '' ) {
-                $('#valmsg' + kv.name).text('Required');
+                /*$('#valmsg' + kv.name).text('Required');*/
+                $('#' + kv.name).addClass('InvalidBox');
                 //IsValid = false;
                 ArrofInvalid.push(kv.name);
             }
             else {
                 $('#valmsg' + kv.name).text('');
+                $('#' + kv.name).removeClass('InvalidBox');
             }
         }
 
@@ -224,7 +229,7 @@ function AddYearClick() {
         ResetYearFormValues();
     }
 }
-function AddRow(i) {
+function AddCommercialRow(i) {
     $('#AddYearTBody').append(`<tr id='AddYearRow` + i + `'></tr>`)
     var rowid = 'AddYearRow' + i;
     $('#' + rowid).append('<td>Year' + (i + 1) + '</td>')
@@ -234,7 +239,7 @@ function AddColToRow(i, tdvalue) {
     $('#' + rowid).append('<td>' + tdvalue + '</td>')
 }
 
-function deleteRow(i) {
+function deleteCommercialRow(i) {
     objYears.pop(i);
     UpdateYearTable(ColumnObjUpcase);
 }
@@ -252,8 +257,7 @@ function AddtblRevenueRow(year, i, columns) {
     $('#RevenueRow' + i).append('<td>' + FSSelectedText + '</td>')
     $('#RevenueRow' + i).append('<td>' + result.toFixed() + '</td>')
 }
-
-function SetDivReadonly() {
+function SetCommercialDivReadonly() {
     $("#PIDFScreen").find("input, submit, textarea, a, select").attr("disabled", "disabled");
     $("#PIDFScreen").find("button, submit, a").hide();
     $("#PIDFScreen").find("#collapseButton").show();
@@ -262,7 +266,7 @@ function SetDivReadonly() {
     $("#PIDFormcollapseButton").click();
     $("#collapseButton").click();
 }
-$("#btnSubmit").click(function () {
+$('#mainDivCommercial').find("#btnSubmit").click(function () {
     if (ValidateMainForm() && ValidateBU_Strength()) {
         if (objYears.length > 0) {
             $.extend(objMainForm, { 'SaveType': 'Sv' });
@@ -274,9 +278,7 @@ $("#btnSubmit").click(function () {
         }
     }    
 });
-
-
-$("#btnSaveAsDraft").click(function () {
+$('#mainDivCommercial').find("#btnSaveAsDraft").click(function () {
     if (ValidateMainForm() && ValidateBU_Strength()) {
         if (objYears.length > 0) {
             $.extend(objMainForm, { 'SaveType': 'SvDrf' });
@@ -288,15 +290,18 @@ $("#btnSaveAsDraft").click(function () {
     }
     
 });
-
+$(document).on("change", "#mainDivCommercial .InvalidBox", function () {
+    if ($(this).val() != '' && $(this).val() != 0) {
+        $(this).removeClass("InvalidBox");
+    }
+});
 function UpdateYearTable(columns) {
     
     $("#AddYearTBody tr").remove();
     $("#RevenueTbody tr").remove();
     for (var i = 0; i < objYears.length; i++) {
-        AddRow(i);
+        AddCommercialRow(i);
         $.each(columns, function (item) {
-            console.log(item);
             var cntrlName = columns[item]            
             var result = objYears[i][cntrlName]
             if (cntrlName == 'CommercialPackagingTypeId')
@@ -314,13 +319,12 @@ function UpdateYearTable(columns) {
             }
         });
         AddtblRevenueRow(objYears[i], i, columns);
-        $('#AddYearRow' + i).append('<td> <spam><i class="fas fa-trash-alt" id="deleteIconAddyear_' + i + '" onclick="deleteRow(' + i + ')"></i></spam></td>')
+        $('#AddYearRow' + i).append('<td> <spam><i class="fas fa-trash-alt" id="deleteIconAddyear_' + i + '" onclick="deleteCommercialRow(' + i + ')"></i></spam></td>')
 
         $('#AddYearRow' + i + ' td:eq(10) spam i').prop('id', 'deleteIconAPI_' + i + '');
         $('#AddYearRow' + i + ' td:eq(10) spam i').attr('onclick', 'deleteRowApiDetails(' + i + ')');
     }
 }
-
 function SaveCommertialPIDFForm() {
 
     $.extend(objMainForm, { 'PidfproductStrengthId': selectedStrength });
@@ -350,7 +354,7 @@ function SaveCommertialPIDFFormSuccess(data) {
             toastr.error(data._Message);
         }
     } catch (e) {
-        toastr.error('Error:' + e.message);
+        toastr.error('Save Commercial Error:' + e.message);
     }
 }
 function SaveCommertialPIDFFormError(x, y, z) {
@@ -365,8 +369,6 @@ function BUtabClick(BUVal, pidfidval) {
     $("#AddYearForm").hide();
     IsShowCancel_Save_buttons(true);
 }
-
-
 function StrengthtabClick(strengthVal, pidfidval) {
     selectedStrength = strengthVal;
     ClearValidationForYearForm();
@@ -375,7 +377,6 @@ function StrengthtabClick(strengthVal, pidfidval) {
     $("#AddYearForm").hide();
     IsShowCancel_Save_buttons(true);
 }
-
 
 function GetCommercialPIDFByBU(pidfidval) {
     //SelectedBUValue = (SelectedBUValue === undefined) ? 0 : SelectedBUValue;
@@ -388,10 +389,11 @@ function GetCommercialPIDFByBUSuccess(data) {
     try {
 
         UpdateFormData(data._object);
-        SetDisableForOtherUserBU();
+        SetCommercialDisableForOtherUserBU();
 
     } catch (e) {
-        toastr.error('Error:' + e.message);
+        console.log(e);
+        toastr.error('Get Commercial Error:' + e.message);
     }
 }
 function GetCommercialPIDFByBUError(x, y, z) {
@@ -442,8 +444,9 @@ function SetCommercialFormReadonly() {
     $("[id^='deleteIconAddyear']").hide();
     $("#btnCommercialCancel").prop('disabled', false);
     $("#AddyeartableCollapseButton").prop('disabled', false);
+    $('#mainDivCommercial').find('.operationButton').hide();
 }
-function SetDisableForOtherUserBU() {
+function SetCommercialDisableForOtherUserBU() {
     var UserwiseBusinessUnit = $('#BusinessUnitsByUser').val().split(',');
     var BU_VALUE = SelectedBUValue;
     var status = UserwiseBusinessUnit.indexOf(BU_VALUE);

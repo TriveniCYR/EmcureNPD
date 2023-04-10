@@ -53,8 +53,25 @@
 <body class="hold-transition sidebar-mini sidebar-collapse layout-fixed">
 	<div class="wrapper">
 		<!-- Preloader -->
-		<div id="mainLoader" class="preloader flex-column justify-content-center align-items-center">
+		@*<div id="mainLoader" class="preloader flex-column justify-content-center align-items-center">
 			<img class="animation__shake" src="~/images/emcure_loader.gif" alt="EmcureNPDLogo" height="250" width="250">
+		</div>*@
+		<div id="loading-wrapper">
+			@*<div class="v-spinner">
+				<div class="v-scale v-scale1 loaderAnimation"></div>
+				<div class="v-scale v-scale1 loaderAnimation"></div>
+				<div class="v-scale v-scale1 loaderAnimation"></div>
+				<div class="v-scale v-scale1 loaderAnimation"></div>
+				<div class="v-scale v-scale1 loaderAnimation"></div>
+			</div>*@
+			@*<img class="animation__shake" src="~/images/emcure_loader.gif" alt="EmcureNPDLogo" height="250" width="250">*@
+			@*<div class="loaderAnimation animation__shake"></div>*@
+			<ul>
+				<li> </li>
+				<li> </li>
+				<li> </li>
+				<li> </li>
+			</ul>
 		</div>
 
 		@Html.Partial("_TopBar")

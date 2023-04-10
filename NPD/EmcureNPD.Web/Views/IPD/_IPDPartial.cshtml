@@ -102,7 +102,7 @@
                     <div class="form-group required">
                         @Html.LabelFor(model => model.LegalStatus, "Legal Status", new { @class = "control-label" }) <span class="text-danger">*</span>
                         @Html.EditorFor(model => model.LegalStatus, new { htmlAttributes = new { @autocomplete = "off", @class = "form-control checkbox-checked", @placeholder = @MasterLocalizer["Legal Status"] ,@required="required"} })
-                        @Html.ValidationMessageFor(model => model.LegalStatus, "The 'Legal Status' field is required.", new { @class = "text-danger" })
+                        @Html.ValidationMessageFor(model => model.LegalStatus, "", new { @class = "text-danger" })
                     </div>
                 </div>
                 <div class="col-md-3">
@@ -255,16 +255,16 @@
         <div class="col-12 text-end">
             <div class="form-group">
                 <button type="submit" class="btn btn-success me-3 outside-buttons operationButton" onClick="SaveIPDClick('Sv');">@SharedLocalizer["Submit"]</button>
-                @if (Model.StatusId == (Int32)Master_PIDFStatus.IPDInProgress || Model.StatusId == (Int32)Master_PIDFStatus.PIDFSubmitted|| Model.StatusId == (Int32)Master_PIDFStatus.PIDFApproved)
+                @if (Model.StatusId == (Int32)Master_PIDFStatus.IPDInProgress || Model.StatusId == (Int32)Master_PIDFStatus.PIDFApproved || Model.StatusId == (Int32)Master_PIDFStatus.MedicalSubmitted)
                 {
-                    <button type="submit" class="btn btn-primary me-3 outside-buttons operationButton" onClick="SaveIPDClick('Drf');">@SharedLocalizer["SaveDraft"]</button>
+                    <button type="submit" id="btnIPDSaveAsDraft" class="btn btn-primary me-3 outside-buttons operationButton" onClick="SaveIPDClick('Drf');">@SharedLocalizer["SaveDraft"]</button>
                 }
             </div>
         </div>
     </div>
 </form>
-@Html.Partial("_PIDFApproveReject")
 @*@Html.Partial("_ValidationScriptsPartial")*@
+@Html.Partial("_ValidationScriptsPartial")
 <script>
     $(document).ready(function () {
         setRegion();
@@ -273,6 +273,9 @@
         $('.countryCombo').select2();
         if (_IPDMode == 1) {
             readOnlyIPDForm();
+        }
+        if (_IsIPDSubmitted.toLowerCase() === 'true') {
+            $('#btnIPDSaveAsDraft').hide();
         }
     });
 </script>

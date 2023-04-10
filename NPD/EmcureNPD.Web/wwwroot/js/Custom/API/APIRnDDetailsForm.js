@@ -1,7 +1,6 @@
 ﻿var ControlsToValidate = ['Development', 'ScaleUp', 'Exhibit', 'PlantQC', 'Total', 'SponsorBusinessPartner', 'APIMarketPrice', 'APITargetRMC_CCPC'];
 
 $(document).ready(function () {
-    debugger;
     SetDivReadonly();
     $("#IsModelValid").val('');
     if (SaveStatus != '' && SaveStatus != undefined) {
@@ -19,6 +18,9 @@ $(document).ready(function () {
         $('#imgPreviewMarketdetails').show();
     }
     HideSaveAsDraft(); 
+    getPIDFAccordion(_PIDFAccordionURL, _PIDFID, "dvPIDFAccrdion");
+    getIPDAccordion(_IPDAccordionURL, _EncPIDFID, _PIDFBusinessUnitId, "dvIPDAccrdion");
+    getCommercialAccordion(_CommercialAccordionURL, _EncPIDFID, _PIDFBusinessUnitId, "dvCommercialAccrdion");
 });
 
 function HideSaveAsDraft() {

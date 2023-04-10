@@ -23,7 +23,7 @@ namespace EmcureNPD.Web.Controllers
         public IActionResult ProjectManagement(string pidfid, string bui, int? IsView)
         {
             //int rolId = (int)HttpContext.Session.GetInt32(UserHelper.LoggedInRoleId);
-            //RolePermissionModel objPermssion = UtilityHelper.GetCntrActionAccess(Convert.ToString(RouteData.Values["controller"]), rolId);
+            //RolePermissionModel objPermssion = UtilityHelper.GetCntrActionAccess((int)ModulePermissionEnum.Project, rolId);
             //if (objPermssion == null || (!objPermssion.View && IsView==1))
             //{
             //    return RedirectToAction("AccessRestriction", "Home");

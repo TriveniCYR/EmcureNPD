@@ -1,8 +1,6 @@
 ﻿
 
 $(document).ready(function () {
-    debugger;
-
     SetDivReadonly();
     $("#IsModelValid").val('');
     if (SaveStatus != '' && SaveStatus != undefined) {
@@ -30,11 +28,12 @@ function HideSaveAsDraft() {
 }
 
 function InitializeProductTypeDropdown() {
-    debugger;
     ajaxServiceMethod($('#hdnBaseURL').val() + GetAllProductType, 'GET', GetProductTypeListSuccess, GetProductTypeListError);
 }
 function GetProductTypeListSuccess(data) {
     try {
+        var _emptyOption = '<option value="">-- Select --</option>';
+        $('#ProductTypeId').append(_emptyOption);
         $.each(data._object, function (index, object) {
             $('#ProductTypeId').append($('<option>').text(object.productTypeName).attr('value', object.productTypeId));
         });
@@ -66,7 +65,6 @@ function IsFileTypeImage() {
 }
 
 $('#MarketDetailsNewPortCGIDetails').change(function () {
-    debugger;
     if ($("#MarketDetailsNewPortCGIDetails")[0].files[0] != null) {
         if (IsFileTypeImage()) {
             $("#imgPreviewMarketdetails").show();
@@ -138,33 +136,47 @@ function ValidateForm() {
         IsPrevImageExist = false;
     }
     if (($("#MarketDetailsNewPortCGIDetails")[0].files.length <= 0) && !IsPrevImageExist) {
-        $("#valmsgMarketDetailsNewPortCGIDetails").text('Required')
+        /*$("#valmsgMarketDetailsNewPortCGIDetails").text('Required');*/
+        $("#MarketDetailsNewPortCGIDetails").addClass('InvalidBox');
         IsInvalid = true;
         $("#MarketDetailsNewPortCGIDetails").focus();
     }
     else if (!IsFileTypeImage() && !IsPrevImageExist) {        
         IsInvalid = true;
-        IsInvalidImage = true;;
+        IsInvalidImage = true;
+        $("#MarketDetailsNewPortCGIDetails").addClass('InvalidBox');
         $("#MarketDetailsNewPortCGIDetails").focus();
     }
     else {        
-        $("#valmsgMarketDetailsNewPortCGIDetails").text('')
+        $("#valmsgMarketDetailsNewPortCGIDetails").text('');
+        $("#MarketDetailsNewPortCGIDetails").removeClass('InvalidBox');
     }
     if ($("#DrugsCategory").val() == '') {
-        $("#valmsgDrugsCategory").text('Required')
+        /*$("#valmsgDrugsCategory").text('Required')*/
+        $("#DrugsCategory").addClass('InvalidBox');
         IsInvalid = true;
         $("#DrugsCategory").focus();
     }
     else {
-        $("#valmsgDrugsCategory").text('')
+        $("#valmsgDrugsCategory").text('');
+        $("#DrugsCategory").removeClass('InvalidBox');
     }
     if ($("#ProductStrength").val() == '') {
-        $("#valmsgProductStrength").text('Required')
+        /*$("#valmsgProductStrength").text('Required')*/
+        $("#ProductStrength").addClass('InvalidBox');
         IsInvalid = true; 
         $("#ProductStrength").focus();
     }
     else {
-        $("#valmsgProductStrength").text('')
+        $("#valmsgProductStrength").text('');
+        $("#ProductStrength").removeClass('InvalidBox');
+    }
+    if ($("#ProductTypeId").val() == '') {
+        $("#ProductTypeId").addClass('InvalidBox').focus();
+        IsInvalid = true;
+    }
+    else {
+        $("#ProductTypeId").removeClass('InvalidBox');
     }
     if (IsInvalid) {
         if (IsInvalidImage) { }
