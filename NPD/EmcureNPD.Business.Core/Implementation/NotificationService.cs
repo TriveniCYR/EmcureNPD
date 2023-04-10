@@ -99,23 +99,30 @@ namespace EmcureNPD.Business.Core.Implementation {
 
         public async Task<DBOperation> CreateNotification(long pidfId, int statusid, string notificationTitle, string notificationDescription, int loggedinUserId)
         {
-            MasterNotification objNotification;
-            var notification = new MasterNotificationEntity
+            try
             {
-                PIDFId = pidfId,
-                StatusId = statusid,
-                NotificationTitle = notificationTitle,
-                NotificationDescription = notificationDescription,
-                CreatedDate = DateTime.Now,
-                CreatedBy = loggedinUserId,
-            };
-            objNotification = _mapperFactory.Get<MasterNotificationEntity, MasterNotification>(notification);
-            _repository.AddAsync(objNotification);
+                MasterNotification objNotification;
+                var notification = new MasterNotificationEntity
+                {
+                    PIDFId = pidfId,
+                    StatusId = statusid,
+                    NotificationTitle = notificationTitle,
+                    NotificationDescription = notificationDescription,
+                    CreatedDate = DateTime.Now,
+                    CreatedBy = loggedinUserId,
+                };
+                objNotification = _mapperFactory.Get<MasterNotificationEntity, MasterNotification>(notification);
+                _repository.AddAsync(objNotification);
 
-            await _unitOfWork.SaveChangesAsync();
-            if (objNotification.NotificationId == 0)
+                await _unitOfWork.SaveChangesAsync();
+                if (objNotification.NotificationId == 0)
+                    return DBOperation.Error;
+                return DBOperation.Success;
+            }
+            catch (Exception ex)
+            {
                 return DBOperation.Error;
-            return DBOperation.Success;
+            }            
         }
 
         public async Task<DBOperation> UpdateNotification(long notificationId, string notificationTitle, string notificationDescription, int loggedinUserId)

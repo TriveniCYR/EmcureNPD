@@ -104,8 +104,8 @@ namespace EmcureNPD.Business.Core.Implementation
         }
         public async Task<List<MasterRoleEntity>> GetActiveRole()
         {
-            var ActiveRole = await _repository.GetAllAsync();
-            return _mapperFactory.GetList<MasterRole, MasterRoleEntity>(ActiveRole.Where(x=>x.IsActive==true).ToList());
+            var ActiveRole = await _repository.GetAllAsync(x => x.IsActive == true);
+            return _mapperFactory.GetList<MasterRole, MasterRoleEntity>(ActiveRole.ToList());
         }
         public async Task<MasterRoleEntity> GetById(int id)
         {

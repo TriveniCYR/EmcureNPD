@@ -12,6 +12,7 @@ using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Data;
+using System.Linq;
 using System.Net.Http;
 
 namespace EmcureNPD.Web.Controllers
@@ -78,7 +79,7 @@ namespace EmcureNPD.Web.Controllers
                     string jsonResponse = responseMessage.Content.ReadAsStringAsync().Result;
 
                     var data = JsonConvert.DeserializeObject<APIResponseEntity<List<MasterModuleEntity>>>(jsonResponse);
-                    MasterRole.MasterModules = data._object;
+                    MasterRole.MasterModules = data._object.OrderBy(x => x.SortOrder).ToList();
                     return View(MasterRole);
                 }
 
@@ -99,6 +100,8 @@ namespace EmcureNPD.Web.Controllers
                     {
                         return NotFound();
                     }
+                    List<MasterModuleEntity> _oListMasterModules = data._object.MasterModules.OrderBy(x => x.SortOrder).ToList();
+                    data._object.MasterModules = _oListMasterModules;
                     return View(data._object);
                 }
                 return NotFound();

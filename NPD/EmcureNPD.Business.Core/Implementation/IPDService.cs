@@ -42,11 +42,14 @@ namespace EmcureNPD.Business.Core.Implementation
 		private IRepository<Pidf> _pidfrepository { get; set; }
 		private IRepository<PidfMedical> _pidfMedicalrepository { get; set; }
 		private IRepository<PidfMedicalFile> _pidfMedicalFilerepository { get; set; }
-		
-
+        private IRepository<MasterBusinessUnit> _businessUnitrepository { get; set; }
+        private IRepository<MasterCountry> _countryrepository { get; set; }
+        private IRepository<MasterUserCountryMapping> _masterUserCountryMappingrepository { get; set; }
         private readonly IHelper _helper;
 
-        public IPDService(IUnitOfWork unitOfWork, IMapperFactory mapperFactory, IMasterBusinessUnitService businessUnitService, IMasterCountryService countryService, IMasterAuditLogService auditLogService, IConfiguration configuration, INotificationService notificationService, IHelper helper)
+        public IPDService(IUnitOfWork unitOfWork, IMapperFactory mapperFactory, IMasterBusinessUnitService businessUnitService, 
+			IMasterCountryService countryService, IMasterAuditLogService auditLogService, IConfiguration configuration,
+			INotificationService notificationService, IHelper helper)
 		{
 			_unitOfWork = unitOfWork;
 			_mapperFactory = mapperFactory;
@@ -67,15 +70,20 @@ namespace EmcureNPD.Business.Core.Implementation
 			_pidfMedicalrepository = unitOfWork.GetRepository<PidfMedical>();
 			_pidfMedicalFilerepository = unitOfWork.GetRepository<PidfMedicalFile>();
             _configuration = configuration;
+            _businessUnitrepository = _unitOfWork.GetRepository<MasterBusinessUnit>();
+            _countryrepository = _unitOfWork.GetRepository<MasterCountry>();
         }
 
         public async Task<IPDEntity> FillDropdown()
 		{
 			var IPD = new IPDEntity
 			{
-				MasterBusinessUnitEntities = _businessUnitService.GetAll().Result.Where(xx => xx.IsActive).ToList(),
-				MasterCountries = _countryService.GetAll().Result.Where(xx => xx.IsActive).ToList(),
-			};
+				MasterBusinessUnitEntities = _mapperFactory.GetList<MasterBusinessUnit, MasterBusinessUnitEntity>
+                (_businessUnitrepository.GetAllQuery().Where(xx => xx.IsActive).ToList()),
+
+            MasterCountries = _mapperFactory.GetList<MasterCountry, MasterCountryEntity>
+                (_countryrepository.GetAllQuery().Where(xx => xx.IsActive).ToList())
+        };
 			return IPD;
 		}
 		public async Task<DBOperation> AddUpdateIPD(IPDEntity entityIPD)
@@ -272,7 +280,7 @@ namespace EmcureNPD.Business.Core.Implementation
 
 			}
             await _auditLogService.UpdatePIDFStatusCommon(entityIPD.PIDFID, (int)entityIPD.StatusId, _helper.GetLoggedInUser().UserId);
-           // await _notificationService.CreateNotification(entityIPD.PIDFID, (int)entityIPD.StatusId, string.Empty, string.Empty, (int)entityIPD.LogInId);
+            await _notificationService.CreateNotification(entityIPD.PIDFID, (int)entityIPD.StatusId, string.Empty, string.Empty, (int)entityIPD.LogInId);
             return DBOperation.Success;
         }
 
@@ -292,8 +300,10 @@ namespace EmcureNPD.Business.Core.Implementation
 				data.CountryIds = string.Join(",", _ipdCountryRepository.GetAllQuery().Where(x => x.Ipdid == data.IPDID).Select(x => x.CountryId.ToString()));
 				data.CountryId = data.RegionIds;
 			}
-			data.MasterBusinessUnitEntities = _businessUnitService.GetAll().Result.Where(xx => xx.IsActive).ToList();
-			Pidf objPidf = await _pidfrepository.GetAsync(pidfId);
+			data.MasterBusinessUnitEntities = _mapperFactory.GetList<MasterBusinessUnit, MasterBusinessUnitEntity>
+                (_businessUnitrepository.GetAllQuery().Where(xx => xx.IsActive).ToList());
+
+            Pidf objPidf = await _pidfrepository.GetAsync(pidfId);
 			data.StatusId = objPidf.StatusId;
 			return data;
 		}
@@ -335,14 +345,17 @@ namespace EmcureNPD.Business.Core.Implementation
 
 
 				var dataCountry = _countryService.GetAll().Result.ToList();
+				var userCountrymapping = _masterUserCountryMappingrepository.GetAll();
 
-				var dataRegionCountry = _mapperFactory.GetList<MasterRegionCountryMapping, MasterRegionCountryMapping>(await _userRegionCountryRepository.FindAllAsync(xx => intIDs.Contains(xx.RegionId)));
+                var dataRegionCountry = _mapperFactory.GetList<MasterRegionCountryMapping, MasterRegionCountryMapping>(await _userRegionCountryRepository.FindAllAsync(xx => intIDs.Contains(xx.RegionId)));
 
 				if (dataCountry.Any())
 				{
 					var countryList = (from p in dataCountry
 									   join m in dataRegionCountry on p.CountryId equals m.CountryId
-									   select new
+									   join u in userCountrymapping on p.CountryId equals u.CountryId
+
+                                       select new
 									   {
 										   CountryId = p.CountryId,
 										   CountryName = p.CountryName,
@@ -457,7 +470,7 @@ namespace EmcureNPD.Business.Core.Implementation
 					{
 						return DBOperation.Error;
 					}
-					var MedicalFile = _pidfMedicalFilerepository.GetAll().Where(x => x.PidfmedicalId == medicalModel.PidfmedicalId).ToList();
+					var MedicalFile = _pidfMedicalFilerepository.GetAllQuery().Where(x => x.PidfmedicalId == medicalModel.PidfmedicalId).ToList();
 					foreach (var item in MedicalFile)
 					{
 						if (medicalModel.FileName.Length != 0 && i < medicalModel.FileName.Count())
@@ -701,7 +714,7 @@ namespace EmcureNPD.Business.Core.Implementation
 			if (objData != null && objData.Count > 0)
 			{
 				data = _mapperFactory.Get<PidfMedical, PIDFMedicalViewModel>(objData[0]);
-				var medicalFileData = _pidfMedicalFilerepository.GetAll().Where(x => x.PidfmedicalId == data.PidfmedicalId).ToList();
+				var medicalFileData = _pidfMedicalFilerepository.GetAllQuery().Where(x => x.PidfmedicalId == data.PidfmedicalId).ToList();
 				int i = 0;
 				data.FileName = new string[medicalFileData.Count];
 				foreach (var item in medicalFileData)

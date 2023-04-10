@@ -22,8 +22,8 @@ namespace EmcureNPD.Business.Core.Implementation
     {
         private readonly IUnitOfWork _unitOfWork;
         private readonly IMapperFactory _mapperFactory;
-		private readonly IHelper _helper;
-		private IRepository<MasterAuditLog> _repository { get; set; }
+        private readonly IHelper _helper;
+        private IRepository<MasterAuditLog> _repository { get; set; }
         private IRepository<MasterModule> _moduleRepository { get; set; }
         private IRepository<MasterUser> _userRepository { get; set; }
         private IRepository<Pidf> _pidfrepository { get; set; }
@@ -37,43 +37,57 @@ namespace EmcureNPD.Business.Core.Implementation
             _pidfrepository = unitOfWork.GetRepository<Pidf>();
             _helper = helper;
         }
-        public async Task<DBOperation> CreateAuditLog<TResult>(AuditActionType auditActionType,  
+        public async Task<DBOperation> CreateAuditLog<TResult>(AuditActionType auditActionType,
             ModuleEnum moduleEnum, TResult Old, TResult New, int? PrimaryId) where TResult : new()
         {
-            MasterAuditLog objAuditLog;
-            var entityAuditLog = new MasterAuditLogEntity
+            try
             {
-                CreatedBy = _helper.GetLoggedInUser().UserId,
-			    ActionType = Enum.GetName(typeof(AuditActionType), auditActionType),
-                Log = Old.ToAuditLog(New),
-                ModuleId = (int)moduleEnum,
-                EntityId = (int)PrimaryId
-            };
-            if (entityAuditLog.Log != "[]")
-            {
-                objAuditLog = _mapperFactory.Get<MasterAuditLogEntity, MasterAuditLog>(entityAuditLog);
-                _repository.AddAsync(objAuditLog);
+                MasterAuditLog objAuditLog;
+                var entityAuditLog = new MasterAuditLogEntity
+                {
+                    CreatedBy = _helper.GetLoggedInUser().UserId,
+                    ActionType = Enum.GetName(typeof(AuditActionType), auditActionType),
+                    Log = Old.ToAuditLog(New),
+                    ModuleId = (int)moduleEnum,
+                    EntityId = (int)PrimaryId
+                };
+                if (entityAuditLog.Log != "[]")
+                {
+                    objAuditLog = _mapperFactory.Get<MasterAuditLogEntity, MasterAuditLog>(entityAuditLog);
+                    _repository.AddAsync(objAuditLog);
 
-                await _unitOfWork.SaveChangesAsync();
+                    await _unitOfWork.SaveChangesAsync();
 
-                if (objAuditLog.AuditLogId == 0)
-                    return DBOperation.Error;
+                    if (objAuditLog.AuditLogId == 0)
+                        return DBOperation.Error;
+                }
+                return DBOperation.Success;
             }
-            return DBOperation.Success;
+            catch (Exception ex)
+            {
+                return DBOperation.Error;
+            }
         }
         public async Task<DBOperation> UpdatePIDFStatusCommon(long PidfId, int StatusId, int StatusUpdatedBy)
         {
-           var _objExistingPIDF=  _pidfrepository.Get(x=>x.Pidfid== PidfId);
-            if (_objExistingPIDF != null)
+            try
             {
-                _objExistingPIDF.LastStatusId = _objExistingPIDF.StatusId;
-                _objExistingPIDF.StatusId = StatusId;               
-                _objExistingPIDF.StatusUpdatedBy = StatusUpdatedBy;
-                _objExistingPIDF.StatusUpdatedDate= DateTime.Now;
-                _pidfrepository.UpdateAsync(_objExistingPIDF);
+                var _objExistingPIDF = _pidfrepository.Get(x => x.Pidfid == PidfId);
+                if (_objExistingPIDF != null)
+                {
+                    _objExistingPIDF.LastStatusId = _objExistingPIDF.StatusId;
+                    _objExistingPIDF.StatusId = StatusId;
+                    _objExistingPIDF.StatusUpdatedBy = StatusUpdatedBy;
+                    _objExistingPIDF.StatusUpdatedDate = DateTime.Now;
+                    _pidfrepository.UpdateAsync(_objExistingPIDF);
+                }
+                await _unitOfWork.SaveChangesAsync();
+                return DBOperation.Success;
             }
-            await _unitOfWork.SaveChangesAsync();
-            return DBOperation.Success;
+            catch (Exception ex)
+            {
+                return DBOperation.Error;
+            }
         }
         public Task<List<MasterAuditLogEntity>> GetAllAuditLog()
         {
@@ -118,7 +132,7 @@ namespace EmcureNPD.Business.Core.Implementation
             var PIDFList = await _repository.GetBySP("stp_npd_GetAuditLogList", System.Data.CommandType.StoredProcedure, osqlParameter);
 
             var TotalRecord = (PIDFList != null && PIDFList.Rows.Count > 0 ? Convert.ToInt32(PIDFList.Rows[0]["TotalRecord"]) : 0);
-            
+
             DataTableResponseModel oDataTableResponseModel = new DataTableResponseModel(model.draw, TotalRecord, TotalRecord, PIDFList.DataTableToList<AuditLogEntity>());
 
             return oDataTableResponseModel;
