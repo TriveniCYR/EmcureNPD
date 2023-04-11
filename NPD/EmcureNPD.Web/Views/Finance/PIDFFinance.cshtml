@@ -347,7 +347,7 @@
 					<div class="col-md-3">
 						<div class="form-group required">
 							<label class="control-label">Discount Rate<span style="color:red;">*</span></label>
-							@Html.TextBoxFor(@modal=>modal.DiscountRate,new{@class="form-control readOnlyUpdate",@required="required"})
+							@Html.TextBoxFor(@modal=>modal.DiscountRate,new{@class="form-control readOnlyUpdate",@required="required",@type="number"})
                                          <div class="invalid-feedback">
                                             Please enter Discount Rate.
                                            </div>
@@ -360,7 +360,7 @@
 					<div class="col-md-3">
 						<div class="form-group required">
 							<label class="control-label">Income tax rate<span style="color:red;">*</span></label>
-							@Html.TextBoxFor(@modal=>modal.Incometaxrate,new{@class="form-control readOnlyUpdate",@required="required"})
+							@Html.TextBoxFor(@modal=>modal.Incometaxrate,new{@class="form-control readOnlyUpdate",@required="required",@type="number"})
                                           <div class="invalid-feedback">
                                             Please enter Income tax rate.
                                            </div>
@@ -372,7 +372,7 @@
 					<div class="col-md-3">
 						<div class="form-group required">
 							<label class="control-label">Opex as a % to sales <span style="color:red;">*</span></label>
-							@Html.TextBoxFor(@modal=>modal.Opexasapercenttosale,new{@class="form-control readOnlyUpdate",@required="required"})
+							@Html.TextBoxFor(@modal=>modal.Opexasapercenttosale,new{@class="form-control readOnlyUpdate",@required="required",@type="number"})
                                           <div class="invalid-feedback">
                                             Please enter Opex as a % to sales.
                                            </div>
@@ -384,7 +384,7 @@
 					<div class="col-md-3">
 						<div class="form-group required">
 							<label class="control-label">External Profit Share % <span style="color:red;">*</span></label>
-							@Html.TextBoxFor(@modal=>modal.ExternalProfitSharepercent,new{@class="form-control readOnlyUpdate",@required="required"})
+							@Html.TextBoxFor(@modal=>modal.ExternalProfitSharepercent,new{@class="form-control readOnlyUpdate",@required="required",@type="number"})
                                            <div class="invalid-feedback">
                                             Please enter External Profit Share %.
                                            </div>
@@ -398,7 +398,7 @@
 					<div class="col-md-3">
 						<div class="form-group required">
 							<label class="control-label">Collection in Days<span style="color:red;">*</span></label>
-							@Html.TextBoxFor(@modal=>modal.CollectioninDays,new{@class="form-control readOnlyUpdate",@required="required"})
+							@Html.TextBoxFor(@modal=>modal.CollectioninDays,new{@class="form-control readOnlyUpdate",@required="required",@type="number"})
                                           <div class="invalid-feedback">
                                             Please enter Collection in Days.
                                            </div>
@@ -411,7 +411,7 @@
 					<div class="col-md-3">
 						<div class="form-group required">
 							<label class="control-label">Inventory in Days<span style="color:red;">*</span></label>
-							@Html.TextBoxFor(@modal=>modal.InventoryinDays,new{@class="form-control readOnlyUpdate",@required="required"})
+							@Html.TextBoxFor(@modal=>modal.InventoryinDays,new{@class="form-control readOnlyUpdate",@required="required",@type="number"})
                                           <div class="invalid-feedback">
                                             Please enter Inventory in Days.
                                            </div>
@@ -423,7 +423,7 @@
 					<div class="col-md-3">
 						<div class="form-group required">
 							<label class="control-label">Creditor in Days<span style="color:red;">*</span></label>
-							@Html.TextBoxFor(@modal=>modal.CreditorinDays,new{@class="form-control readOnlyUpdate",@required="required"})
+							@Html.TextBoxFor(@modal=>modal.CreditorinDays,new{@class="form-control readOnlyUpdate",@required="required",@type="number"})
                                        <div class="invalid-feedback">
                                             Please enter Creditor in Days.
                                            </div>
@@ -435,7 +435,7 @@
 					<div class="col-md-3">
 						<div class="form-group required">
 							<label class="control-label">Marketing Allowance<span style="color:red;">*</span></label>
-							@Html.TextBoxFor(@modal=>modal.MarketingAllowance,new{@class="form-control readOnlyUpdate",@required="required"})
+							@Html.TextBoxFor(@modal=>modal.MarketingAllowance,new{@class="form-control readOnlyUpdate",@required="required",@type="number"})
                                        <div class="invalid-feedback">
                                             Please enter Marketing Allowance.
                                            </div>
@@ -450,7 +450,7 @@
 					<div class="col-md-3">
 						<div class="form-group required">
 							<label class="control-label">Regulatory Maintenance Cost<span style="color:red;">*</span></label>
-							@Html.TextBoxFor(@modal=>modal.RegulatoryMaintenanceCost,new{@class="form-control readOnlyUpdate",@required="required"})
+							@Html.TextBoxFor(@modal=>modal.RegulatoryMaintenanceCost,new{@class="form-control readOnlyUpdate",@required="required",@type="number"})
                             <div class="invalid-feedback">
                                             Please enter Regulatory Maintenance Cost.
                                            </div>
@@ -463,7 +463,7 @@
 					<div class="col-md-3">
 						<div class="form-group required">
 							<label class="control-label">Gross to Net<span style="color:red;">*</span></label>
-							@Html.TextBoxFor(@modal=>modal.GrosstoNet,new{@class="form-control readOnlyUpdate",@required="required"})
+                                @Html.TextBoxFor(@modal=>modal.GrosstoNet,new{@class="form-control readOnlyUpdate",@required="required",@type="number"})
                              <div class="invalid-feedback">
                                             Please enter Gross to Net.
                                            </div>
