@@ -507,7 +507,8 @@ namespace EmcureNPD.Web.Controllers
                 oPBForm = data._object;
                 oPBForm.Pidfid = Convert.ToInt64(pidfid);
                 oPBForm.BusinessUnitId = Convert.ToInt32(bussnessId);
-                oPBForm.BusinessUnitsByUser = GetUserWiseBusinessUnit(Convert.ToInt32(logUserId));
+                
+                //oPBForm.BusinessUnitsByUser = GetUserWiseBusinessUnit(Convert.ToInt32(logUserId));
 
                 HttpResponseMessage responseMS = objapi.APICommunication(APIURLHelper.GetPIDFById + "/" + pidfid, HttpMethod.Get, token).Result;
 
@@ -517,6 +518,7 @@ namespace EmcureNPD.Web.Controllers
                     var retPIDF = JsonConvert.DeserializeObject<APIResponseEntity<PIDFEntity>>(jsnRs);
                 }
             }
+            oPBForm.BusinessUnitsByUser = _helper.GetAssignedBusinessUnit();
             return oPBForm;
         }
 
