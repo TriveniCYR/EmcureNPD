@@ -930,10 +930,11 @@ function getValueFromStrengthByMiscellaneousDevelopment(data, strengthId, proper
     } else { return ""; }
 }
 function SetPBFDisableForOtherUserBU() {
-    var BU_VALUE = SelectedBUValue;
+    var BU_VALUE = $("#PIDFBusinessUnitId").val();
     var status = UserwiseBusinessUnit.indexOf(BU_VALUE);
-    var IsViewInMode = ($("#hdnPBFIsView").val() == '1')
-    if (status == -1 || IsViewInMode) {
+    //var IsViewInMode = ($("#hdnPBFIsView").val() == '1')
+    /*if (status == -1 || IsViewInMode) {*/
+    if (status == -1) {
        // SetPBFFormReadonly();
         PBFreadOnlyForm();
     }
