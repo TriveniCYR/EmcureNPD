@@ -932,7 +932,6 @@ function SetPBFFormReadonly() {
 function PBFBUtabClick(pidfidval, BUVal) {
     SelectedBUValue = 0;
     var i, tabcontent, butab;
-    $("#dvGeneralPBF").find("input,textarea,select").prop('disabled', true);
     SelectedBUValue = BUVal;
     $("#BusinessUnitId").val(SelectedBUValue);
     $("#PbfFormEntities_BusinessUnitId").val(SelectedBUValue);
@@ -940,11 +939,13 @@ function PBFBUtabClick(pidfidval, BUVal) {
     for (i = 0; i < butab.length; i++) {
         butab[i].className = butab[i].className.replace(" active", "");
     }
+    SetPBFDisableForOtherUserBU();
     var BUAnchorId = '#BUtab_' + BUVal;
     $(BUAnchorId).addClass('active');
     if (_mode > 0) window.location.href = 'PBF?pidfid=' + btoa(pidfidval) + '&bui=' + btoa(BUVal) + '&pbf=' + _pbf + '&IsView=' + _mode;
     else window.location.href = 'PBF?pidfid=' + btoa(pidfidval) + '&bui=' + btoa(BUVal) + '&pbf=' + _pbf;
 }
+
 function SetPBFBU_Tab() {
     var PIDFBusinessUnitId = 0;
 
