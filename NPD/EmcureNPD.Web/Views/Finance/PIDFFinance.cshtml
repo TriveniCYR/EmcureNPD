@@ -6354,14 +6354,15 @@
             {
                 if (DefaultStatus == 0 || Model.PIDFStatusId == (Int32)Master_PIDFStatus.FinanceInProgres)
                 {
-                     <button type="submit"  id="btnSave" class="btn btn-success operationButton btnControll" onclick="SaveClick();">
-                   @* <i class="fa fa-save"></i> *@
-                    Submit</button>
+                   
                 <button type="submit" id="btnSaveDraft" class="btn btn-primary btnControll" onclick="SaveDraftClick();">
                     @*<i class="fab fa-firstdraft"></i>*@
                     Save as Draft</button>
                  }
-               
+                            <button type="submit" id="btnSave" class="btn btn-success operationButton btnControll" onclick="SaveClick();">
+                                @* <i class="fa fa-save"></i> *@
+                                Submit
+                            </button>
             }
             @if(ViewBag.Access.Approve == true)
             {
@@ -6371,6 +6372,7 @@
                     <a class="btn btn-danger  operationButton btnControll" onClick="ApproveRejectClick('R', '@PidfNumber', @((int)EmcureNPD.Utility.Enums.PIDFScreen.Finance), '/PIDF/PIDFList?ScreenId=@((int)EmcureNPD.Utility.Enums.PIDFScreen.Finance)')"><i class="fa fa-ban mr-1"></i> @SharedLocalizer["Reject"]</a>
                 }
             }
+                        
             <a class="btn btn-danger" onclick="CancelPopup()">
                     @*<i class="fa fa-times" aria-hidden="true"></i>*@
                     Cancel</a>

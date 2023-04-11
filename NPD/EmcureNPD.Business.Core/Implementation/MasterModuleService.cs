@@ -130,7 +130,7 @@ namespace EmcureNPD.Business.Core.Implementation
         }
         public async Task<IEnumerable<dynamic>> GetByPermisionRoleUsingRoleId(int roleId)
         {
-            var Permissions = _mapperFactory.GetList<RoleModulePermission, RoleModulePermissionEntity>(await _repositoryRolePermission.FindAllAsync(xx => xx.RoleId == roleId && (xx.Approve==true || xx.Add == true || xx.Delete == true || xx.Edit == true || xx.View == true)));
+            var Permissions = _mapperFactory.GetList<RoleModulePermission, RoleModulePermissionEntity>(await _repositoryRolePermission.FindAllAsync(xx => xx.RoleId == roleId));
             if (Permissions.Any())
             {
                 var MasterModuleData = _mapperFactory.GetList<MasterModule, MasterModuleEntity>(await _repository.GetAllAsync());
