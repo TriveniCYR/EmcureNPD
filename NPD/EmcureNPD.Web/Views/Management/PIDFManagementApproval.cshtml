@@ -13,15 +13,19 @@
 @using Microsoft.Extensions.Configuration;
 @model EmcureNPD.Business.Models.ProjectsModel
 @{
+    ViewData["Title"] = @MasterLocalizer["Management Approval"];
     int CurrentUserId = Helper.GetLoggedInUserId();
     var PidafId=Context.Request.Query["pidfid"];
     var PidfNumber = UtilityHelper.Decreypt(Convert.ToString(PidafId));
     string jsVersion = @Configuration.GetSection("StaticJS")["version"];
   }
 <div class="container-fluid d-flex justify-content-between">
-    <h3>Management/Management Approval</h3>
+    <h3>Management Approval</h3>
     <div>
-        <a class="btn btn-danger btn-sm" id="btnExportToPdf" title="ExportToPdf"><i class="fa fa-file-pdf-o" aria-hidden="true"></i>PDF</a>
+        <a class="btn btn-success mr-2" id="btnExportToPdf" title="ExportToPdf"><i class="fa fa-file-pdf-o" aria-hidden="true"></i>PDF</a>
+        <a class="btn btn-danger" href="@Url.Action("PIDFList","PIDF", new { ScreenId=Convert.ToString((int)EmcureNPD.Utility.Enums.PIDFScreen.Management)})">
+            Cancel
+        </a>
         
         <div class="export-btn mybtn-group"></div>
     </div>
@@ -599,13 +603,13 @@
                         else if ((Int32)item.StatusId == (Int32)Master_PIDFStatus.ManagementApproved)
                         {
 
-                            <span class="bg-success">Approved On:@item.CreatedDate.ToString("dd MMMM yyyy hh:mm")</span>
+                            <div class="bg-success ApproveRejectText p-2 mb-1">Approved On: @item.CreatedDate.ToString("dd MMMM yyyy hh:mm")</div>
                             
                         }
                         else if ((Int32)item.StatusId == (Int32)Master_PIDFStatus.ManagementRejected)
                         {
 
-                            <span class="bg-danger">Rejected On:@item.CreatedDate.ToString("dd MMMM yyyy hh:mm")</span>
+                            <div class="bg-danger ApproveRejectText p-2 mb-1">Rejected On: @item.CreatedDate.ToString("dd MMMM yyyy hh:mm")</div>
                             
                         }
                         <h6 class="m-0 fw-bold">@item.ManagerName</h6>
@@ -615,20 +619,9 @@
                     }
                 }
             </div>
-            <div class="text-right">
-                <div class="row">
-                    <div class="col-md-11"></div>
-                    <div class="col-md-1">
-                    <a class="btn btn-danger" href="@Url.Action("PIDFList","PIDF", new { ScreenId=Convert.ToString((int)EmcureNPD.Utility.Enums.PIDFScreen.Management)})">
-                        Cancel
-                    </a>
-                    </div>
-                </div>
-        </div>
     </div>
             @Html.Partial("_PIDFApproveReject")
         </div>
-    </div>
 
 
 @section MyScripts {

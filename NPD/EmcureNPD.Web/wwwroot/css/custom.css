@@ -222,3 +222,8 @@ tr.bg-primary td, thead.bg-primary th {
     border-left: 4px solid transparent;
     border-right: 4px solid transparent;
 }
+.ApproveRejectText {
+    max-width: 250px;
+    border-radius: 10px;
+    margin: auto;
+}

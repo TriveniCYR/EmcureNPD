@@ -42,7 +42,7 @@
 			<div class="row">
 				<div class="col-md-3">
 					<div class="form-group required">
-						<label class="control-label">Entity*</label> 
+						<label class="control-label">Entity<span style="color:red;">*</span></label> 
                         @Html.HiddenFor(@model=>model.PidffinaceId)
 						@Html.TextBoxFor(@modal=>modal.Entity,new{@class="form-control readOnlyUpdate",@required="required"})
                          <div class="invalid-feedback">
@@ -56,7 +56,7 @@
 
 				<div class="col-md-3">
 					<div class="form-group required">
-						<label class="control-label">Product*</label>
+						<label class="control-label">Product<span style="color:red;">*</span></label>
 							@Html.TextBoxFor(@modal=>modal.Product,new{@class="form-control readOnlyUpdate",@required="required"})
                              <div class="invalid-feedback">
                                 Please enter Product
@@ -68,7 +68,7 @@
 				</div>
 				<div class="col-md-3">
 					<div class="form-group required">
-						<label class="control-label">Forecast Date*</label>
+						<label class="control-label">Forecast Date<span style="color:red;">*</span></label>
 							@Html.TextBoxFor(@modal=>modal.ForecastDate,"{0:yyyy-MM-dd}",new{@class="form-control readOnlyUpdate",@required="required",@type="date"})
 					<div class="invalid-feedback">
                                 Please select Forecast Date.
@@ -80,7 +80,7 @@
 				</div>
 				<div class="col-md-3">
 					<div class="form-group required">
-						<label class="control-label">Currency*</label>
+						<label class="control-label">Currency<span style="color:red;">*</span></label>
 							@Html.DropDownListFor(model => model.Currencyid,
 							new List<SelectListItem> { new SelectListItem { Value = "0", Text = "Plese Select Currency" } },new { @class="form-control readOnlyUpdate",@required="required",@id="Currency"})
 							<div class="invalid-feedback">
@@ -95,7 +95,7 @@
 					<div class="row">
 						<div class="col-md-3">
 							<div class ="form-group required">
-								<label class="control-label">Dosage Form*</label>
+								<label class="control-label">Dosage Form<span style="color:red;">*</span></label>
 							@Html.DropDownListFor(model => model.DosageFrom,
 							new List<SelectListItem> { new SelectListItem { Value = "0", Text = "Plese Select DosageFrom"} },new { @class="form-control readOnlyUpdate",@required="required"})
                                 <div class="invalid-feedback">
@@ -109,7 +109,7 @@
 
 						<div class="col-md-3">
 							<div class="form-group required">
-								<label class="control-label">Manufacturing Site / Partner*</label>
+								<label class="control-label">Manufacturing Site / Partner<span style="color:red;">*</span></label>
 							@Html.TextBoxFor(@modal=>modal.ManufacturingSiteOrPartner,new{@class="form-control readOnlyUpdate",@required="required"})
 						 <div class="invalid-feedback">
                                 Please enter Manufacturing Site / Partner.
@@ -121,7 +121,7 @@
 						</div>
 						<div class="col-md-3">
 							<div class="form-group required">
-								<label class="control-label">SKUs*</label>
+								<label class="control-label">SKUs<span style="color:red;">*</span></label>
 							@Html.TextBoxFor(@modal=>modal.Skus,new{@class="form-control readOnlyUpdate",@required="required"})
                              <div class="invalid-feedback">
                                 Please enter SKUs.
@@ -195,7 +195,7 @@
 				<div class="row">
 					<div class="col-md-3">
 						<div class="form-group required">
-							<label class="control-label">Project Start Date*</label>
+							<label class="control-label">Project Start Date<span style="color:red;">*</span></label>
 							@Html.TextBoxFor(@modal=>modal.ProjectStartDate,"{0:yyyy-MM-dd}",new{@type="date",@class="form-control readOnlyUpdate",@required="required"})
 						                    <div class="invalid-feedback">
                                             Please select Project Start Date.
@@ -208,7 +208,7 @@
 
 					<div class="col-md-3">
 						<div class="form-group required">
-							<label class="control-label">Batch Manufacturing*</label>
+							<label class="control-label">Batch Manufacturing<span style="color:red;">*</span></label>
 							@Html.TextBoxFor(@modal=>modal.BatchManufacturing,new{@class="form-control readOnlyUpdate",@required="required"})
 						                 <div class="invalid-feedback">
                                             Please enter Batch Manufacturing.
@@ -220,7 +220,7 @@
 					</div>
 					<div class="col-md-3">
 						<div class="form-group required">
-							<label class="control-label">Expected Filling*</label>
+							<label class="control-label">Expected Filling<span style="color:red;">*</span></label>
 							@Html.TextBoxFor(@modal=>modal.ExpectedFilling,new{@class="form-control readOnlyUpdate",@required="required"})
                                           <div class="invalid-feedback">
                                             Please enter Expected Filling.
@@ -232,7 +232,7 @@
 					</div>
 					<div class="col-md-3">
 						<div class="form-group required">
-							<label class="control-label">Approval Period in Days*</label>
+							<label class="control-label">Approval Period in Days<span style="color:red;">*</span></label>
 							@Html.TextBoxFor(@modal=>modal.ApprovalPeriodinDays,new{@class="form-control readOnlyUpdate",@required="required"})
                                           <div class="invalid-feedback">
                                             Please enter Approval Period in Days.
@@ -246,7 +246,7 @@
 				<div class="row">
 					<div class="col-md-3">
 						<div class="form-group required">
-							<label class="control-label">Approval Date*</label>
+							<label class="control-label">Approval Date<span style="color:red;">*</span></label>
 							@Html.TextBoxFor(@modal=>modal.ApprovalDate,"{0:yyyy-MM-dd}",new{@type="date",@class="form-control readOnlyUpdate",@required="required"})
                                          <div class="invalid-feedback">
                                             Please enter Approval Date.
@@ -259,7 +259,7 @@
 
 					<div class="col-md-3">
 						<div class="form-group required">
-							<label class="control-label">Product Launch Date*</label>
+							<label class="control-label">Product Launch Date<span style="color:red;">*</span></label>
 							@Html.TextBoxFor(@modal=>modal.ProductLaunchDate,"{0:yyyy-MM-dd}",new{@type="date",@class="form-control readOnlyUpdate",@required="required"})
 						                <div class="invalid-feedback">
                                             Please enter Product Launch Date.
@@ -271,7 +271,7 @@
 					</div>
 					<div class="col-md-3">
 						<div class="form-group required">
-							<label class="control-label">Gestation Period in Years*</label>
+							<label class="control-label">Gestation Period in Years<span style="color:red;">*</span></label>
 							@Html.TextBoxFor(@modal=>modal.GestationPeriodinYears,new{@class="form-control readOnlyUpdate",@required="required"})
                                           <div class="invalid-feedback">
                                             Please enter Gestation Period in Years.
@@ -289,7 +289,7 @@
 				<div class="row">
 					<div class="col-md-3">
 						<div class="form-group required">
-							<label class="control-label">Market Share Erosion rate*</label>
+							<label class="control-label">Market Share Erosion rate<span style="color:red;">*</span></label>
 							@Html.TextBoxFor(@modal=>modal.MarketShareErosionrate,new{@class="form-control readOnlyUpdate",@required="required"})
                                            <div class="invalid-feedback">
                                             Please enter Market Share Erosion rate.
@@ -302,7 +302,7 @@
 
 					<div class="col-md-3">
 						<div class="form-group required">
-							<label class="control-label">Price Erosion*</label>
+							<label class="control-label">Price Erosion<span style="color:red;">*</span></label>
 							@Html.TextBoxFor(@modal=>modal.PriceErosion,new{@class="form-control readOnlyUpdate",@required="required"})
                                           <div class="invalid-feedback">
                                             Please enter Price Erosion.
@@ -314,7 +314,7 @@
 					</div>
 					<div class="col-md-3">
 						<div class="form-group required">
-							<label class="control-label">Escalation in COGS*</label>
+							<label class="control-label">Escalation in COGS<span style="color:red;">*</span></label>
 							@Html.TextBoxFor(@modal=>modal.EscalationinCOGS,new{@class="form-control readOnlyUpdate",@required="required"})
                                           <div class="invalid-feedback">
                                             Please enter Escalation in COGS.
@@ -346,8 +346,8 @@
 				<div class="row">
 					<div class="col-md-3">
 						<div class="form-group required">
-							<label class="control-label">Discount Rate*</label>
-							@Html.TextBoxFor(@modal=>modal.DiscountRate,new{@class="form-control readOnlyUpdate",@required="required"})
+							<label class="control-label">Discount Rate<span style="color:red;">*</span></label>
+							@Html.TextBoxFor(@modal=>modal.DiscountRate,new{@class="form-control readOnlyUpdate",@required="required",@type="number"})
                                          <div class="invalid-feedback">
                                             Please enter Discount Rate.
                                            </div>
@@ -359,8 +359,8 @@
 
 					<div class="col-md-3">
 						<div class="form-group required">
-							<label class="control-label">Income tax rate*</label>
-							@Html.TextBoxFor(@modal=>modal.Incometaxrate,new{@class="form-control readOnlyUpdate",@required="required"})
+							<label class="control-label">Income tax rate<span style="color:red;">*</span></label>
+							@Html.TextBoxFor(@modal=>modal.Incometaxrate,new{@class="form-control readOnlyUpdate",@required="required",@type="number"})
                                           <div class="invalid-feedback">
                                             Please enter Income tax rate.
                                            </div>
@@ -371,8 +371,8 @@
 					</div>
 					<div class="col-md-3">
 						<div class="form-group required">
-							<label class="control-label">Opex as a % to sales *</label>
-							@Html.TextBoxFor(@modal=>modal.Opexasapercenttosale,new{@class="form-control readOnlyUpdate",@required="required"})
+							<label class="control-label">Opex as a % to sales <span style="color:red;">*</span></label>
+							@Html.TextBoxFor(@modal=>modal.Opexasapercenttosale,new{@class="form-control readOnlyUpdate",@required="required",@type="number"})
                                           <div class="invalid-feedback">
                                             Please enter Opex as a % to sales.
                                            </div>
@@ -383,8 +383,8 @@
 					</div>
 					<div class="col-md-3">
 						<div class="form-group required">
-							<label class="control-label">External Profit Share % *</label>
-							@Html.TextBoxFor(@modal=>modal.ExternalProfitSharepercent,new{@class="form-control readOnlyUpdate",@required="required"})
+							<label class="control-label">External Profit Share % <span style="color:red;">*</span></label>
+							@Html.TextBoxFor(@modal=>modal.ExternalProfitSharepercent,new{@class="form-control readOnlyUpdate",@required="required",@type="number"})
                                            <div class="invalid-feedback">
                                             Please enter External Profit Share %.
                                            </div>
@@ -397,8 +397,8 @@
 				<div class="row">
 					<div class="col-md-3">
 						<div class="form-group required">
-							<label class="control-label">Collection in Days*</label>
-							@Html.TextBoxFor(@modal=>modal.CollectioninDays,new{@class="form-control readOnlyUpdate",@required="required"})
+							<label class="control-label">Collection in Days<span style="color:red;">*</span></label>
+							@Html.TextBoxFor(@modal=>modal.CollectioninDays,new{@class="form-control readOnlyUpdate",@required="required",@type="number"})
                                           <div class="invalid-feedback">
                                             Please enter Collection in Days.
                                            </div>
@@ -410,8 +410,8 @@
 
 					<div class="col-md-3">
 						<div class="form-group required">
-							<label class="control-label">Inventory in Days*</label>
-							@Html.TextBoxFor(@modal=>modal.InventoryinDays,new{@class="form-control readOnlyUpdate",@required="required"})
+							<label class="control-label">Inventory in Days<span style="color:red;">*</span></label>
+							@Html.TextBoxFor(@modal=>modal.InventoryinDays,new{@class="form-control readOnlyUpdate",@required="required",@type="number"})
                                           <div class="invalid-feedback">
                                             Please enter Inventory in Days.
                                            </div>
@@ -422,8 +422,8 @@
 					</div>
 					<div class="col-md-3">
 						<div class="form-group required">
-							<label class="control-label">Creditor in Days*</label>
-							@Html.TextBoxFor(@modal=>modal.CreditorinDays,new{@class="form-control readOnlyUpdate",@required="required"})
+							<label class="control-label">Creditor in Days<span style="color:red;">*</span></label>
+							@Html.TextBoxFor(@modal=>modal.CreditorinDays,new{@class="form-control readOnlyUpdate",@required="required",@type="number"})
                                        <div class="invalid-feedback">
                                             Please enter Creditor in Days.
                                            </div>
@@ -434,8 +434,8 @@
 					</div>
 					<div class="col-md-3">
 						<div class="form-group required">
-							<label class="control-label">Marketing Allowance*</label>
-							@Html.TextBoxFor(@modal=>modal.MarketingAllowance,new{@class="form-control readOnlyUpdate",@required="required"})
+							<label class="control-label">Marketing Allowance<span style="color:red;">*</span></label>
+							@Html.TextBoxFor(@modal=>modal.MarketingAllowance,new{@class="form-control readOnlyUpdate",@required="required",@type="number"})
                                        <div class="invalid-feedback">
                                             Please enter Marketing Allowance.
                                            </div>
@@ -449,8 +449,8 @@
 				<div class="row">
 					<div class="col-md-3">
 						<div class="form-group required">
-							<label class="control-label">Regulatory Maintenance Cost*</label>
-							@Html.TextBoxFor(@modal=>modal.RegulatoryMaintenanceCost,new{@class="form-control readOnlyUpdate",@required="required"})
+							<label class="control-label">Regulatory Maintenance Cost<span style="color:red;">*</span></label>
+							@Html.TextBoxFor(@modal=>modal.RegulatoryMaintenanceCost,new{@class="form-control readOnlyUpdate",@required="required",@type="number"})
                             <div class="invalid-feedback">
                                             Please enter Regulatory Maintenance Cost.
                                            </div>
@@ -462,8 +462,8 @@
 
 					<div class="col-md-3">
 						<div class="form-group required">
-							<label class="control-label">Gross to Net*</label>
-							@Html.TextBoxFor(@modal=>modal.GrosstoNet,new{@class="form-control readOnlyUpdate",@required="required"})
+							<label class="control-label">Gross to Net<span style="color:red;">*</span></label>
+                                @Html.TextBoxFor(@modal=>modal.GrosstoNet,new{@class="form-control readOnlyUpdate",@required="required",@type="number"})
                              <div class="invalid-feedback">
                                             Please enter Gross to Net.
                                            </div>
@@ -504,7 +504,7 @@
 							<td>
 							<div class="">
 								<div class="form-group required">
-										<label class="control-label">No of batches to be manufactured*</label>
+										<label class="control-label">No of batches to be manufactured<span style="color:red;">*</span></label>
 								</div>
 							</div>
 							</td>
@@ -539,7 +539,7 @@
 							<td>
 								<div class="">
 									<div class="form-group required">
-										<label class="control-label">No of SKUs *</label>
+										<label class="control-label">No of SKUs <span style="color:red;">*</span></label>
 									</div>
 								</div>
 							</td>
@@ -574,7 +574,7 @@
 							<td>
 								<div class="">
 									<div class="form-group required">
-										<label class="control-label">R&D/Analytical cost *</label>
+										<label class="control-label">R&D/Analytical cost <span style="color:red;">*</span></label>
 									</div>
 								</div>
 							</td>
@@ -609,7 +609,7 @@
 							<td>
 								<div class="">
 									<div class="form-group required">
-										<label class="control-label">RLD sample cost *</label>
+										<label class="control-label">RLD sample cost <span style="color:red;">*</span></label>
 									</div>
 								</div>
 							</td>
@@ -644,7 +644,7 @@
 							<td>
 								<div class="">
 									<div class="form-group required">
-										<label class="control-label">Batch manufacturing cost/ API Actuals Est *</label>
+										<label class="control-label">Batch manufacturing cost/ API Actuals Est <span style="color:red;">*</span></label>
 									</div>
 								</div>
 							</td>
@@ -679,7 +679,7 @@
 							<td>
 								<div class="">
 									<div class="form-group required">
-										<label class="control-label">6 months stability cost *</label>
+										<label class="control-label">6 months stability cost <span style="color:red;">*</span></label>
 									</div>
 								</div>
 							</td>
@@ -714,7 +714,7 @@
 							<td>
 								<div class="">
 									<div class="form-group required">
-										<label class="control-label">Tech Transfer *</label>
+										<label class="control-label">Tech Transfer <span style="color:red;">*</span></label>
 									</div>
 								</div>
 							</td>
@@ -749,7 +749,7 @@
 							<td>
 								<div class="">
 									<div class="form-group required">
-										<label class="control-label">BE studies *</label>
+										<label class="control-label">BE studies <span style="color:red;">*</span></label>
 									</div>
 								</div>
 							</td>
@@ -784,7 +784,7 @@
 							<td>
 								<div class="">
 									<div class="form-group required">
-										<label class="control-label">Filing fees *</label>
+										<label class="control-label">Filing fees <span style="color:red;">*</span></label>
 									</div>
 								</div>
 							</td>
@@ -819,7 +819,7 @@
 							<td>
 								<div class="">
 									<div class="form-group required">
-										<label class="control-label">Bio Study Cost *</label>
+										<label class="control-label">Bio Study Cost <span style="color:red;">*</span></label>
 									</div>
 								</div>
 							</td>
@@ -854,7 +854,7 @@
 							<td>
 								<div class="">
 									<div class="form-group required">
-										<label class="control-label">Capex *</label>
+										<label class="control-label">Capex <span style="color:red;">*</span></label>
 									</div>
 								</div>
 							</td>
@@ -889,7 +889,7 @@
 							<td>
 								<div class="">
 									<div class="form-group required">
-										<label class="control-label">Tooling & Change Parts *</label>
+										<label class="control-label">Tooling & Change Parts <span style="color:red;">*</span></label>
 									</div>
 								</div>
 							</td>
