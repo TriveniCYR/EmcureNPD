@@ -835,6 +835,7 @@ function GetPBFTabDetailsSuccess(data) {
                     $(this).val($(this).next().val());
                 }
             });
+            SetChildRowDeleteIconPBF();
             if (_mode == 1) {
                 PBFreadOnlyForm();
             }
@@ -1126,7 +1127,7 @@ function CreateAnalyticalTable(data, activityTypeId) {
         for (var i = 0; i < _strengthArray.length; i++) {
             objectname += '<td data-strengthid="' + _strengthArray[i].pidfProductStrengthId + '"><input class="analyticalTypeId" type="hidden" value="' + activityTypeId + '" /><input type="hidden" class="analyticalStrengthId" value="' + _strengthArray[i].pidfProductStrengthId + '" /><input type="number" class="form-control analyticalStrengthValue" min="0" value="' + (data.length > 0 ? getValueFromStrengthTestTypeId(data, _strengthArray[i].pidfProductStrengthId, "prototypeCost", data[a].testTypeId) : "") + '" /></td>';
         }
-        objectname += "<td><input type='number' class='form-control TotalStrength' readonly='readonly' /></td><td> <i class='fa-solid fa-circle-plus nav-icon text-success operationButton' id='addIcon' onclick='addRowanalytical(this);'></i> <i class='fa-solid fa-trash nav-icon text-red strengthDeleteIcon operationButton analyticalDeleteIcon' onclick='deleteRowanalytical(this);' ></i></td></tr>";
+        objectname += "<td><input type='number' class='form-control TotalStrength' readonly='readonly' /></td><td> <i class='fa-solid fa-circle-plus nav-icon text-success operationButton' id='addIcon' onclick='addRowanalytical(this);'></i> <i class='fa-solid fa-trash nav-icon text-red strengthDeleteIcon operationButton analyticalDeleteIcon DeleteIcon' onclick='deleteRowanalytical(this);' ></i></td></tr>";
 
         if (data.length > 0) {
             _testType.push(data[a].testTypeId);
@@ -1167,7 +1168,7 @@ function BindAnalytical(data, costData) {
 
     $('#tableanalytical').html(analyticalactivityHTML);
 
-    SetChildRowDeleteIcon();
+    SetChildRowDeleteIconPBF();
     //$("input[class~='analyticalRsTest']").trigger('change');
     ////$("input[class~='AnalyticalTestTypeId']").trigger('change');
     //$("input[class~='analyticalNumberOfTest']").trigger('change');
@@ -1177,54 +1178,100 @@ function addRowanalytical(element) {
     var node = $(element).parent().parent().clone(true);
     node.find("input.form-control").val("");
     $(element).parent().parent().after(node);
-    SetChildRowDeleteIcon();
+    SetChildRowDeleteIconPBF();
 }
 function deleteRowanalytical(element) {
     $(element).closest("tr").remove();
-    SetChildRowDeleteIcon();
+    SetChildRowDeleteIconPBF();
 }
-function SetChildRowDeleteIcon() {
+function SetChildRowDeleteIconPBF() {
     for (var i = 1; i < 4; i++) {
-        if ($('#tableanalytical tbody tr.analyticalActivity' + i + '').length > 1) {
-            $('.analyticalActivity' + i + '').find(".DeleteIcon").show();
+        if ($('#tablerndexicipientrequirement tbody').find('.exicipientActivity' + i.toString()).length > 1) {
+            $('#tablerndexicipientrequirement tbody').find('.exicipientActivity' + i.toString()).find('.DeleteIcon').show();
         } else {
-            $('.analyticalActivity' + i + '').find(".DeleteIcon").hide();
+            $('#tablerndexicipientrequirement tbody').find('.exicipientActivity' + i.toString()).find('.DeleteIcon').hide();
         }
-        if ($('#tablerndexicipientrequirement tbody tr.exicipientActivity' + i + '').length > 1) {
-            $('.exicipientActivity' + i + '').find(".DeleteIcon").show();
-        } else {
-            $('.exicipientActivity' + i + '').find(".DeleteIcon").hide();
-        }
-        if ($('#tablerndpackagingmaterialrequirement tbody tr.packagingActivity' + i + '').length > 1) {
-            $('.packagingActivity' + i + '').find(".DeleteIcon").show();
-        } else {
-            $('.packagingActivity' + i + '').find(".DeleteIcon").hide();
-        }
-
-        if ($('#tablerndtoolingchangepart tbody tr.ToolingChangePartActivity' + i + '').length > 1) {
-            $('.ToolingChangePartActivity' + i + '').find(".DeleteIcon").show();
-        } else {
-            $('.ToolingChangePartActivity' + i + '').find(".DeleteIcon").hide();
-        }
-        if ($('#tablerndcapexmiscellaneousexpenses tbody tr.CapexMiscActivity' + i + '').length > 1) {
-            $('.CapexMiscActivity' + i + '').find(".DeleteIcon").show();
-        } else {
-            $('.CapexMiscActivity' + i + '').find(".DeleteIcon").hide();
-        }
-        if ($('#tablerndplantsupportcost tbody tr.PlantSupportCostActivity' + i + '').length > 1) {
-            $('.PlantSupportCostActivity' + i + '').find(".DeleteIcon").show();
-        } else {
-            $('.PlantSupportCostActivity' + i + '').find(".DeleteIcon").hide();
-        }
-        if ($('#tablerndfilingexpenses tbody tr.FillingExpensesActivity' + i + '').length > 1) {
-            $('.FillingExpensesActivity' + i + '').find(".DeleteIcon").show();
-        } else {
-            $('.FillingExpensesActivity' + i + '').find(".DeleteIcon").hide();
-        }
-
-
     }
+    for (var i = 1; i < 4; i++) {
+        if ($('#tablerndpackagingmaterialrequirement tbody').find('.packagingActivity' + i.toString()).length > 1) {
+            $('#tablerndpackagingmaterialrequirement tbody').find('.packagingActivity' + i.toString()).find('.DeleteIcon').show();
+        } else {
+            $('#tablerndpackagingmaterialrequirement tbody').find('.packagingActivity' + i.toString()).find('.DeleteIcon').hide();
+        }
+    }
+    for (var i = 1; i < 4; i++) {
+        if ($('#tablerndtoolingchangepart tbody').find('.ToolingChangePartActivity' + i.toString()).length > 1) {
+            $('#tablerndtoolingchangepart tbody').find('.ToolingChangePartActivity' + i.toString()).find('.DeleteIcon').show();
+        } else {
+            $('#tablerndtoolingchangepart tbody').find('.ToolingChangePartActivity' + i.toString()).find('.DeleteIcon').hide();
+        }
+    }
+    for (var i = 1; i < 4; i++) {
+        if ($('#tableanalytical tbody').find('.analyticalActivity' + i.toString()).length > 1) {
+            $('#tableanalytical tbody').find('.analyticalActivity' + i.toString()).find('.DeleteIcon').show();
+        } else {
+            $('#tableanalytical tbody').find('.analyticalActivity' + i.toString()).find('.DeleteIcon').hide();
+        }
+    }
+    for (var i = 1; i < 2; i++) {
+        if ($('#tablerndcapexmiscellaneousexpenses tbody').find('.CapexMiscActivity' + i.toString()).length > 1) {
+            $('#tablerndcapexmiscellaneousexpenses tbody').find('.CapexMiscActivity' + i.toString()).find('.DeleteIcon').show();
+        } else {
+            $('#tablerndcapexmiscellaneousexpenses tbody').find('.CapexMiscActivity' + i.toString()).find('.DeleteIcon').hide();
+        }
+    }
+    for (var i = 1; i < 2; i++) {
+        if ($('#tablerndplantsupportcost tbody').find('.PlantSupportCostActivity' + i.toString()).length > 1) {
+            $('#tablerndplantsupportcost tbody').find('.PlantSupportCostActivity' + i.toString()).find('.DeleteIcon').show();
+        } else {
+            $('#tablerndplantsupportcost tbody').find('.PlantSupportCostActivity' + i.toString()).find('.DeleteIcon').hide();
+        }
+    } 
+    for (var i = 1; i < 2; i++) {
+        if ($('#tablerndfilingexpenses tbody').find('.FillingExpensesActivity' + i.toString()).length > 1) {
+            $('#tablerndfilingexpenses tbody').find('.FillingExpensesActivity' + i.toString()).find('.DeleteIcon').show();
+        } else {
+            $('#tablerndfilingexpenses tbody').find('.FillingExpensesActivity' + i.toString()).find('.DeleteIcon').hide();
+        }
+    }
+    //for (var i = 1; i < 4; i++) {
+    //    if ($('#tableanalytical tbody tr.analyticalActivity' + i + '').length > 1) {
+    //        $('.analyticalActivity' + i + '').find(".DeleteIcon").show();
+    //    } else {
+    //        $('.analyticalActivity' + i + '').find(".DeleteIcon").hide();
+    //    }
+    //    if ($('#tablerndexicipientrequirement tbody tr.exicipientActivity' + i + '').length > 1) {
+    //        $('.exicipientActivity' + i + '').find(".DeleteIcon").show();
+    //    } else {
+    //        $('.exicipientActivity' + i + '').find(".DeleteIcon").hide();
+    //    }
+    //    if ($('#tablerndpackagingmaterialrequirement tbody tr.packagingActivity' + i + '').length > 1) {
+    //        $('.packagingActivity' + i + '').find(".DeleteIcon").show();
+    //    } else {
+    //        $('.packagingActivity' + i + '').find(".DeleteIcon").hide();
+    //    }
 
+    //    if ($('#tablerndtoolingchangepart tbody tr.ToolingChangePartActivity' + i + '').length > 1) {
+    //        $('.ToolingChangePartActivity' + i + '').find(".DeleteIcon").show();
+    //    } else {
+    //        $('.ToolingChangePartActivity' + i + '').find(".DeleteIcon").hide();
+    //    }
+    //    if ($('#tablerndcapexmiscellaneousexpenses tbody tr.CapexMiscActivity' + i + '').length > 1) {
+    //        $('.CapexMiscActivity' + i + '').find(".DeleteIcon").show();
+    //    } else {
+    //        $('.CapexMiscActivity' + i + '').find(".DeleteIcon").hide();
+    //    }
+    //    if ($('#tablerndplantsupportcost tbody tr.PlantSupportCostActivity' + i + '').length > 1) {
+    //        $('.PlantSupportCostActivity' + i + '').find(".DeleteIcon").show();
+    //    } else {
+    //        $('.PlantSupportCostActivity' + i + '').find(".DeleteIcon").hide();
+    //    }
+    //    if ($('#tablerndfilingexpenses tbody tr.FillingExpensesActivity' + i + '').length > 1) {
+    //        $('.FillingExpensesActivity' + i + '').find(".DeleteIcon").show();
+    //    } else {
+    //        $('.FillingExpensesActivity' + i + '').find(".DeleteIcon").hide();
+    //    }
+    //}
 }
 function SetAnalyticalChildRows() {
 
@@ -1324,7 +1371,7 @@ function BindRNDExicipient(data) {
     ExicipientActivityHTML += '<tr><td class="text-bold">Total Cost (For All Strength)</td>';
     ExicipientActivityHTML += "<td><input type='number' class='form-control ExicipientTotal' readonly='readonly' /></td></tr></tbody>";
     $('#tablerndexicipientrequirement').html(ExicipientActivityHTML);
-    SetChildRowDeleteIcon();
+    SetChildRowDeleteIconPBF();
     $("input[class~='rndExicipientPrototype']").trigger('change');
     $("input[class~='rndExicipientRsperkg']").trigger('change');
     $("input[class~='rndExicipientQuantity']").trigger('change');
@@ -1334,11 +1381,11 @@ function addRowRNDExicipient(element) {
     var node = $(element).parent().parent().clone(true);
     node.find("input.form-control").val("");
     $(element).parent().parent().after(node);
-    SetChildRowDeleteIcon();
+    SetChildRowDeleteIconPBF();
 }
 function deleteRowRNDExicipient(element) {
     $(element).closest("tr").remove();
-    SetChildRowDeleteIcon();
+    SetChildRowDeleteIconPBF();
 }
 //Exicipient Requirement table end
 //Packaging Material table start
@@ -1406,7 +1453,7 @@ function BindRNDPackaging(data) {
     PackagingActivityHTML += '<tr><td class="text-bold">Total Cost (for all Strength)</td>';
     PackagingActivityHTML += "<td><input type='number' class='form-control PakagingMaterialTotal' readonly='readonly' /></td></tr></tbody>";
     $('#tablerndpackagingmaterialrequirement').html(PackagingActivityHTML);
-    SetChildRowDeleteIcon();
+    SetChildRowDeleteIconPBF();
 
     $("input[class~='rndPackagingUnitofMeasurement']").trigger('change');
     $("input[class~='rndPackagingRsperUnit']").trigger('change');
@@ -1416,11 +1463,11 @@ function addRowRNDPackaging(element) {
     var node = $(element).parent().parent().clone(true);
     node.find("input.form-control").val("");
     $(element).parent().parent().after(node);
-    SetChildRowDeleteIcon();
+    SetChildRowDeleteIconPBF();
 }
 function deleteRowRNDPackaging(element) {
     $(element).closest("tr").remove();
-    SetChildRowDeleteIcon();
+    SetChildRowDeleteIconPBF();
 }
 //Packaging Material table end
 //Batch size table start
@@ -1650,18 +1697,18 @@ function BindRNDToolingchangepart(data) {
 
     $('#tablerndtoolingchangepart').html(toolingchangepartHTML);
 
-    SetChildRowDeleteIcon();
+    SetChildRowDeleteIconPBF();
 
 }
 function addRowToolingChangePart(element) {
     var node = $(element).parent().parent().clone(true);
     node.find("input.form-control").val("");
     $(element).parent().parent().after(node);
-    SetChildRowDeleteIcon();
+    SetChildRowDeleteIconPBF();
 }
 function deleteRowToolingChangePart(element) {
     $(element).closest("tr").remove();
-    SetChildRowDeleteIcon();
+    SetChildRowDeleteIconPBF();
 }
 //Tooling change part table end
 //Capex and Misc Exp table start
@@ -1717,18 +1764,18 @@ function BindRNDCapexMiscExpenses(data) {
 
     $('#tablerndcapexmiscellaneousexpenses').html(capexmiscexpensesHTML);
 
-    SetChildRowDeleteIcon();
+    SetChildRowDeleteIconPBF();
 
 }
 function addRowCapexMisc(element) {
     var node = $(element).parent().parent().clone(true);
     node.find("input.form-control").val("");
     $(element).parent().parent().after(node);
-    SetChildRowDeleteIcon();
+    SetChildRowDeleteIconPBF();
 }
 function deleteRowCapexMisc(element) {
     $(element).closest("tr").remove();
-    SetChildRowDeleteIcon();
+    SetChildRowDeleteIconPBF();
 }
 //Capex and Misc Exp table end
 //plant support cost table start
@@ -1783,18 +1830,18 @@ function BindRNDPlantSupportCost(data) {
 
     $('#tablerndplantsupportcost').html(plantsupportcostHTML);
 
-    SetChildRowDeleteIcon();
+    SetChildRowDeleteIconPBF();
 
 }
 function addRowPlantSupportCost(element) {
     var node = $(element).parent().parent().clone(true);
     node.find("input.form-control").val("");
     $(element).parent().parent().after(node);
-    SetChildRowDeleteIcon();
+    SetChildRowDeleteIconPBF();
 }
 function deleteRowPlantSupportCost(element) {
     $(element).closest("tr").remove();
-    SetChildRowDeleteIcon();
+    SetChildRowDeleteIconPBF();
 }
 //plant support cost table end
 //Reference Product Detail table start
@@ -1921,7 +1968,7 @@ function BindRNDFillingExpenses(data) {
 
     //FillingExpensesexpensesHTML += "<td><input type='number' class='form-control' readonly='readonly' /><td></td></tr></tbody>";
     $('#tablerndfilingexpenses').html(FillingExpensesexpensesHTML);
-    SetChildRowDeleteIcon();
+    SetChildRowDeleteIconPBF();
 
 
 }
@@ -1929,11 +1976,11 @@ function addRowFillingExpenses(element) {
     var node = $(element).parent().parent().clone(true);
     node.find("input.form-control").val("");
     $(element).parent().parent().after(node);
-    SetChildRowDeleteIcon();
+    SetChildRowDeleteIconPBF();
 }
 function deleteRowFillingExpenses(element) {
     $(element).closest("tr").remove();
-    SetChildRowDeleteIcon();
+    SetChildRowDeleteIconPBF();
 }
 // Filling Expenses table End
 

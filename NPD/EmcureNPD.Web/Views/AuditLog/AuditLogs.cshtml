@@ -11,15 +11,13 @@
 	ViewData["Title"] = @MasterLocalizer["AuditLog"];
 	string jsVersion = @Configuration.GetSection("StaticJS")["version"];
 }
+<div class="content-header">
+	<h2 class="m-0">@MasterLocalizer["Audit Log"]</h2>
+</div>
+
+<div class="container-fluid background-white-card">
 <div class="row">
-	<section class="col-lg-12">
-		<div class="card">
-			<div class="card-header">
-				<h3 class="card-title">
-					<i class="far fa-list-alt mr-2"></i>@MasterLocalizer["Audit Log"]
-				</h3>
-			</div>
-			<div class="card-body">
+	
 				<table id="AuditLogTable" class="table table-bordered table-striped table-hover" style="width:100%">
 					<thead>
 						<tr>
@@ -34,7 +32,7 @@
 					</tbody>
 				</table>
 			</div>
-		</div>
+	
 		@*AuditLogModel*@
 		<div id="AuditLogViewModel" class="modal themeModal" role="dialog">
 			<div class="modal-dialog modal-xl">
@@ -49,7 +47,7 @@
 				</div>
 			</div>
 			</div>
-	</section>
+	
 </div>
 @section MyScripts {
 
