@@ -31,7 +31,7 @@ function InitializeAuditLogList() {
         {
             "data": "Action", "name": "Action", "render": function (data, type, row, meta) {
                 var html = '';
-                html += '<button type="button" data-toggle="modal" data-target="#AuditLogViewModel" data-backdrop="static" data-keyboard="false" onclick=\'Viewlog(' + row.log + ',' + '"' + row.createdDate + '"' + ',' + '"' + row.createdBy + '")\' class="btn btn-primary mr-2" >View</button>';
+                html += '<a type="button" data-toggle="modal" data-target="#AuditLogViewModel" data-backdrop="static" data-keyboard="false" onclick=\'Viewlog(' + row.log + ',' + '"' + row.createdDate + '"' + ',' + '"' + row.createdBy + '")\' class="ml-1 large-font" ><i class="fa fa-fw fa-eye mr-1"></i></a>';
                 return html;
             }
         }
