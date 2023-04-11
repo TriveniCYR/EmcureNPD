@@ -838,6 +838,7 @@ function GetPBFTabDetailsSuccess(data) {
             if (_mode == 1) {
                 PBFreadOnlyForm();
             }
+            SetPBFDisableForOtherUserBU();
         }
     } catch (e) {
         toastr.error('Error:' + e.message);
@@ -920,15 +921,16 @@ function SetPBFDisableForOtherUserBU() {
     var status = UserwiseBusinessUnit.indexOf(BU_VALUE);
     var IsViewInMode = ($("#hdnPBFIsView").val() == '1')
     if (status == -1 || IsViewInMode) {
-        SetPBFFormReadonly();
+       // SetPBFFormReadonly();
+        PBFreadOnlyForm();
     }
-    else {
-        $("#dvPBFContainer").find("input, button, submit, textarea, select,a,i").prop('disabled', false);
-    }
+    //else {
+    //    $("#dvPBFContainer").find("input, button, submit, textarea, select,a,i").prop('disabled', false);
+    //}
 }
-function SetPBFFormReadonly() {
-    $("#dvPBFContainer").find("input, button, submit, textarea, select,a,i").prop('disabled', true);
-}
+//function SetPBFFormReadonly() {
+//    $("#dvPBFContainer").find("input, button, submit, textarea, select,a,i").prop('disabled', true);
+//}
 function PBFBUtabClick(pidfidval, BUVal) {
     SelectedBUValue = 0;
     var i, tabcontent, butab;
@@ -939,7 +941,7 @@ function PBFBUtabClick(pidfidval, BUVal) {
     for (i = 0; i < butab.length; i++) {
         butab[i].className = butab[i].className.replace(" active", "");
     }
-    SetPBFDisableForOtherUserBU();
+    //SetPBFDisableForOtherUserBU();
     var BUAnchorId = '#BUtab_' + BUVal;
     $(BUAnchorId).addClass('active');
     if (_mode > 0) window.location.href = 'PBF?pidfid=' + btoa(pidfidval) + '&bui=' + btoa(BUVal) + '&pbf=' + _pbf + '&IsView=' + _mode;
