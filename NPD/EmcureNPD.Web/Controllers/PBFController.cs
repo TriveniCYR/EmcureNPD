@@ -539,7 +539,8 @@ namespace EmcureNPD.Web.Controllers
 
                 //Analytical json data
                 pbfEntity.AnalyticalEntities = JsonConvert.DeserializeObject<List<AnalyticalEntity>>(pbfEntity.AnalyticalRawData);
-                
+                pbfEntity.AnalyticalStrengthMappingEntities = JsonConvert.DeserializeObject<List<AnalyticalAmvcostStrengthMappingEntity>>(pbfEntity.AnalyticalStrengthMappingRawData);
+
                 string logUserId = Convert.ToString(HttpContext.Session.GetString(UserHelper.LoggedInUserId));
                 int rolId = (int)HttpContext.Session.GetInt32(UserHelper.LoggedInRoleId);
                 RolePermissionModel objPermssion = UtilityHelper.GetCntrActionAccess((int)ModulePermissionEnum.PBF, rolId);

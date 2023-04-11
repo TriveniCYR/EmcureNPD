@@ -75,7 +75,7 @@ namespace EmcureNPD.Business.Core.Implementation
         private IRepository<PidfPbfAnalyticalPrototype> _pidfPbfAnalyticalPrototypeRepository { get; set; }
         private IRepository<PidfPbfAnalyticalScaleUp> _pidfPbfAnalyticalScaleUpRepository { get; set; }
         private IRepository<PidfPbfAnalyticalExhibit> _pidfPbfAnalyticalExhibitRepository { get; set; }
-        private IRepository<PidfPbfAnalyticalCost> _PidfPbfAnalyticalCostsRepository { get; set; }
+        private IRepository<PidfPbfAnalyticalAmvcost> _PidfPbfAnalyticalAmvcostRepository { get; set; }
         private IRepository<PidfPbfClinical> _pidfPbfClinicalRepository { get; set; }
         private IRepository<PidfPbfClinicalPilotBioFasting> _pidfPbfClinicalPilotBioFastingRepository { get; set; }
         private IRepository<PidfPbfClinicalPilotBioFed> _pidfPbfClinicalPilotBioFedRepository { get; set; }
@@ -94,7 +94,7 @@ namespace EmcureNPD.Business.Core.Implementation
         private IRepository<PidfPbfRnDExicipientPrototype> _pidfPbfRnDExicipientPrototype { get; set; }
         private IRepository<PidfPbfRnDExicipientRequirement> _pidfPbfRnDExicipientRequirementRepository { get; set; }
         private IRepository<PidfPbfRnDPackagingMaterial> _pidfPbfRnDPackagingMaterialRepository { get; set; }
-        private IRepository<PidfPbfAnalyticalCostStrengthMapping> _pidfPbfAnalyticalCostStrengthMappingRepository { get; set; }
+        private IRepository<PidfPbfAnalyticalAmvcostStrengthMapping> _pidfPbfAnalyticalAmvcostStrengthMappingRepository { get; set; }
         private IRepository<PidfPbfRnDMaster> _pidfPbfRnDMasterRepository { get; set; }
         private IRepository<PidfPbfRndBatchSize> _pidfPbfRndBatchSizeRepository { get; set; }
         private IRepository<PidfPbfRnDApirequirement> _pidfPbfRndApirequirementRepository { get; set; }
@@ -155,7 +155,7 @@ namespace EmcureNPD.Business.Core.Implementation
             _pidfPbfAnalyticalPrototypeRepository = _unitOfWork.GetRepository<PidfPbfAnalyticalPrototype>();
             _pidfPbfAnalyticalScaleUpRepository = _unitOfWork.GetRepository<PidfPbfAnalyticalScaleUp>();
             _pidfPbfAnalyticalExhibitRepository = _unitOfWork.GetRepository<PidfPbfAnalyticalExhibit>();
-            _PidfPbfAnalyticalCostsRepository = _unitOfWork.GetRepository<PidfPbfAnalyticalCost>();
+            _PidfPbfAnalyticalAmvcostRepository = _unitOfWork.GetRepository<PidfPbfAnalyticalAmvcost>();
             _masterDosageRepository = _unitOfWork.GetRepository<MasterDosage>();
             _pidfPbfClinicalRepository = _unitOfWork.GetRepository<PidfPbfClinical>();
             _pidfPbfClinicalPilotBioFastingRepository = _unitOfWork.GetRepository<PidfPbfClinicalPilotBioFasting>();
@@ -169,7 +169,7 @@ namespace EmcureNPD.Business.Core.Implementation
             _pidfPbfGeneralStrengthRepository = _unitOfWork.GetRepository<PidfPbfGeneralStrength>();
             _pidfPbfRnDRepository = _unitOfWork.GetRepository<PidfPbfRnD>();
             _pidfPbfRnDExicipientPrototype = _unitOfWork.GetRepository<PidfPbfRnDExicipientPrototype>();
-            _pidfPbfAnalyticalCostStrengthMappingRepository = _unitOfWork.GetRepository<PidfPbfAnalyticalCostStrengthMapping>();
+            _pidfPbfAnalyticalAmvcostStrengthMappingRepository = _unitOfWork.GetRepository<PidfPbfAnalyticalAmvcostStrengthMapping>();
             _pidfPbfRnDExicipientRequirementRepository = _unitOfWork.GetRepository<PidfPbfRnDExicipientRequirement>();
             _pidfPbfRnDPackagingMaterialRepository = _unitOfWork.GetRepository<PidfPbfRnDPackagingMaterial>();
             _pidfPbfRnDMasterRepository = _unitOfWork.GetRepository<PidfPbfRnDMaster>();
@@ -1601,6 +1601,7 @@ namespace EmcureNPD.Business.Core.Implementation
 
                 #region Section Analytical Add Update
                 List<PidfPbfAnalytical> objAnalyticallist = new();
+                List<PidfPbfAnalyticalAmvcostStrengthMapping> objAnalyticalAmvcostStrengthMappinglist = new();
                 if (pbfgeneralid > 0)
                 {
                     var analytical = _pidfPbfAnalyticalRepository.GetAllQuery().Where(x => x.PbfgeneralId == pbfgeneralid).ToList();
@@ -1630,55 +1631,60 @@ namespace EmcureNPD.Business.Core.Implementation
                     await _unitOfWork.SaveChangesAsync();
                 }
                 //Save analytical cost start
-                var analyticalcost = _PidfPbfAnalyticalCostsRepository.GetAllQuery().Where(x => x.PbfgeneralId == pbfgeneralid).FirstOrDefault();
-                long analyticalCostId;
-                if (analyticalcost != null)
+                var analyticalamvcost = _PidfPbfAnalyticalAmvcostRepository.GetAllQuery().Where(x => x.PbfgeneralId == pbfgeneralid).FirstOrDefault();
+                long TotalAMVCostId = 0;
+                if (analyticalamvcost != null)
                 {
-                    analyticalcost.TotalAmvcost = pbfentity.AMVCosts.TotalAmvcost;
-                    analyticalcost.Remark = pbfentity.AMVCosts.Remark;
-                    analyticalcost.CreatedDate = DateTime.Now;
-                    analyticalcost.CreatedBy = loggedInUserId;
-                    _PidfPbfAnalyticalCostsRepository.UpdateAsync(analyticalcost);
-                    analyticalCostId = analyticalcost.PbfanalyticalCostId;
+                    analyticalamvcost.TotalAmvtitle = pbfentity.AnalyticalAMVCosts.TotalAmvtitle;
+                    analyticalamvcost.TotalAmvcost = pbfentity.AnalyticalAMVCosts.TotalAmvcost;
+                    analyticalamvcost.Remark = pbfentity.AnalyticalAMVCosts.Remark;
+                    analyticalamvcost.CreatedDate = DateTime.Now;
+                    analyticalamvcost.CreatedBy = loggedInUserId;
+                    _PidfPbfAnalyticalAmvcostRepository.UpdateAsync(analyticalamvcost);
+                    TotalAMVCostId = analyticalamvcost.TotalAmvcostId;
                 }
                 else
                 {
-                    PidfPbfAnalyticalCost obganalyticalcost = new PidfPbfAnalyticalCost();
-                    obganalyticalcost = _mapperFactory.Get<AMVCost, PidfPbfAnalyticalCost>(pbfentity.AMVCosts);
-                    obganalyticalcost.TotalAmvcost = pbfentity.AMVCosts.TotalAmvcost;
-                    obganalyticalcost.Remark = pbfentity.AMVCosts.Remark;
-                    obganalyticalcost.PbfgeneralId = pbfgeneralid;
-                    obganalyticalcost.CreatedDate = DateTime.Now;
-                    obganalyticalcost.CreatedBy = loggedInUserId;
-                    _PidfPbfAnalyticalCostsRepository.AddAsync(obganalyticalcost);
-                    analyticalCostId = obganalyticalcost.PbfanalyticalCostId;
+                    PidfPbfAnalyticalAmvcost obganalyticalamvcost = new PidfPbfAnalyticalAmvcost();
+                    obganalyticalamvcost.TotalAmvtitle = pbfentity.AnalyticalAMVCosts.TotalAmvtitle;
+                    obganalyticalamvcost.TotalAmvcost = pbfentity.AnalyticalAMVCosts.TotalAmvcost;
+                    obganalyticalamvcost.Remark = pbfentity.AnalyticalAMVCosts.Remark;
+                    obganalyticalamvcost.PbfgeneralId = pbfgeneralid;
+                    obganalyticalamvcost.CreatedDate = DateTime.Now;
+                    obganalyticalamvcost.CreatedBy = loggedInUserId;
+                    _PidfPbfAnalyticalAmvcostRepository.AddAsync(obganalyticalamvcost);
+                    TotalAMVCostId = obganalyticalamvcost.TotalAmvcostId;
                 }
                 await _unitOfWork.SaveChangesAsync();
                 //Save analytical cost end
 
-                //Save analytical cost strength mapping start
-                if (pidfpbfid > 0 && pbfentity.MarketMappingId.Length > 0)
+                //Save analytical Total strength mapping start
+                if (pidfpbfid > 0 && pbfentity.AnalyticalStrengthMappingEntities.Count > 0)
                 {
-                    var analyticalcoststrength = _pidfPbfAnalyticalCostStrengthMappingRepository.GetAllQuery().Where(x => x.PbfanalyticalCostId == analyticalCostId).ToList();
-                    if (analyticalcoststrength.Count > 0)
+                    var analyticalstrengthmapping = _pidfPbfAnalyticalAmvcostStrengthMappingRepository.GetAllQuery().Where(x => x.TotalAmvcostId == TotalAMVCostId).ToList();
+                    if (analyticalstrengthmapping.Count > 0)
                     {
-                        foreach (var item in analyticalcoststrength)
+                        foreach (var item in analyticalstrengthmapping)
                         {
-                            _pidfPbfAnalyticalCostStrengthMappingRepository.Remove(item);
+                            _pidfPbfAnalyticalAmvcostStrengthMappingRepository.Remove(item);
                         }
                         await _unitOfWork.SaveChangesAsync();
                     }
-                    foreach (var item in pbfentity.AMVCosts.StrengthId)
+                    if (pbfentity.AnalyticalStrengthMappingEntities != null && pbfentity.AnalyticalStrengthMappingEntities.Count() > 0)
                     {
-                        PidfPbfAnalyticalCostStrengthMapping objacsm = new();
-                        objacsm.StrengthId = item;
-                        objacsm.PbfanalyticalCostId = analyticalCostId;
-                        objacsm.CreatedBy = loggedInUserId;
-                        objacsm.CreatedDate = DateTime.Now;
-                        objACSMList.Add(objacsm);
+                        foreach (var item in pbfentity.AnalyticalStrengthMappingEntities)
+                        {
+                            PidfPbfAnalyticalAmvcostStrengthMapping objstrengthmapping = new PidfPbfAnalyticalAmvcostStrengthMapping();
+                            objstrengthmapping = _mapperFactory.Get<AnalyticalAmvcostStrengthMappingEntity, PidfPbfAnalyticalAmvcostStrengthMapping>(item);
+                            objstrengthmapping.TotalAmvcostId = TotalAMVCostId;
+                            objstrengthmapping.CreatedDate = DateTime.Now;
+                            objstrengthmapping.CreatedBy = loggedInUserId;
+                            objAnalyticalAmvcostStrengthMappinglist.Add(objstrengthmapping);
+                        }
+                        _pidfPbfAnalyticalAmvcostStrengthMappingRepository.AddRangeAsync(objAnalyticalAmvcostStrengthMappinglist);
+                        await _unitOfWork.SaveChangesAsync();
                     }
-                    _pidfPbfAnalyticalCostStrengthMappingRepository.AddRange(objACSMList);
-                    await _unitOfWork.SaveChangesAsync();
+                    
                 }
 
                 //Save analytical cost end

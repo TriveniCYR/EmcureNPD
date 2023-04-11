@@ -60,7 +60,10 @@ namespace EmcureNPD.Business.Models
         public List<ClinicalEntity> ClinicalEntities { get; set; }
         public string AnalyticalRawData { get; set; }
         public List<AnalyticalEntity> AnalyticalEntities { get; set; }
-        public AMVCost AMVCosts { get; set; }
+        public AnalyticalAmvcost AnalyticalAMVCosts { get; set; }
+        public string AnalyticalStrengthMappingRawData { get; set; }
+        public List<AnalyticalAmvcostStrengthMappingEntity> AnalyticalStrengthMappingEntities { get; set; }
+
         public string RNDExicipientRawData { get; set; }
         public string RNDPackagingRawData { get; set; }
         public RNDMasterEntity RNDMasterEntities { get; set; }
@@ -118,12 +121,21 @@ namespace EmcureNPD.Business.Models
         public int PrototypeCost { get; set; }
 
     }
-    public class AMVCost
+    public class AnalyticalAmvcost
     {
-        public long PBFGeneralId { get; set; }
-        public int? TotalAmvcost { get; set; }
+        public long TotalAmvcostId { get; set; }
+        public long PbfgeneralId { get; set; }
+        public double? TotalAmvcost { get; set; }
+        public string TotalAmvtitle { get; set; }
         public string Remark { get; set; }
-        public int[] StrengthId { get; set; }
+
+    }
+    public class AnalyticalAmvcostStrengthMappingEntity
+    {
+        public long PbfanalyticalCostStrengthId { get; set; }
+        public long TotalAmvcostId { get; set; }
+        public long StrengthId { get; set; }
+        public bool? IsChecked { get; set; }
     }
     #endregion
     #region RND Classes 
