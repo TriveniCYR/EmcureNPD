@@ -2,7 +2,6 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata;
 using EmcureNPD.Data.DataAccess.Entity;
-using EmcureNPD.Utility;
 
 #nullable disable
 
@@ -98,8 +97,8 @@ namespace EmcureNPD.Data.DataAccess.DataContext
         public virtual DbSet<PidfMedicalFile> PidfMedicalFiles { get; set; }
         public virtual DbSet<PidfPbf> PidfPbfs { get; set; }
         public virtual DbSet<PidfPbfAnalytical> PidfPbfAnalyticals { get; set; }
-        public virtual DbSet<PidfPbfAnalyticalCost> PidfPbfAnalyticalCosts { get; set; }
-        public virtual DbSet<PidfPbfAnalyticalCostStrengthMapping> PidfPbfAnalyticalCostStrengthMappings { get; set; }
+        public virtual DbSet<PidfPbfAnalyticalAmvcost> PidfPbfAnalyticalAmvcosts { get; set; }
+        public virtual DbSet<PidfPbfAnalyticalAmvcostStrengthMapping> PidfPbfAnalyticalAmvcostStrengthMappings { get; set; }
         public virtual DbSet<PidfPbfClinical> PidfPbfClinicals { get; set; }
         public virtual DbSet<PidfPbfGeneral> PidfPbfGenerals { get; set; }
         public virtual DbSet<PidfPbfGeneralStrength> PidfPbfGeneralStrengths { get; set; }
@@ -129,7 +128,7 @@ namespace EmcureNPD.Data.DataAccess.DataContext
             if (!optionsBuilder.IsConfigured)
             {
 #warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see http://go.microsoft.com/fwlink/?LinkId=723263.
-                optionsBuilder.UseSqlServer(DatabaseConnection.NPDDatabaseConnection);
+                optionsBuilder.UseSqlServer("Data Source=180.149.241.172;Initial Catalog=EmcureNPDDev;Persist Security Info=True;User ID=emcurenpddev_dbUser;pwd=emcure123!@#");
             }
         }
 
@@ -2014,13 +2013,13 @@ namespace EmcureNPD.Data.DataAccess.DataContext
                     .HasConstraintName("FK_PIDF_PBF_Analytical_Master_TestType");
             });
 
-            modelBuilder.Entity<PidfPbfAnalyticalCost>(entity =>
+            modelBuilder.Entity<PidfPbfAnalyticalAmvcost>(entity =>
             {
-                entity.HasKey(e => e.PbfanalyticalCostId);
+                entity.HasKey(e => e.TotalAmvcostId);
 
-                entity.ToTable("PIDF_PBF_Analytical_Cost", "dbo");
+                entity.ToTable("PIDF_PBF_Analytical_AMVCost", "dbo");
 
-                entity.Property(e => e.PbfanalyticalCostId).HasColumnName("PBFAnalyticalCostId");
+                entity.Property(e => e.TotalAmvcostId).HasColumnName("TotalAMVCostId");
 
                 entity.Property(e => e.CreatedDate).HasColumnType("datetime");
 
@@ -2030,36 +2029,40 @@ namespace EmcureNPD.Data.DataAccess.DataContext
 
                 entity.Property(e => e.TotalAmvcost).HasColumnName("TotalAMVCost");
 
+                entity.Property(e => e.TotalAmvtitle)
+                    .HasMaxLength(100)
+                    .HasColumnName("TotalAMVTitle");
+
                 entity.HasOne(d => d.Pbfgeneral)
-                    .WithMany(p => p.PidfPbfAnalyticalCosts)
+                    .WithMany(p => p.PidfPbfAnalyticalAmvcosts)
                     .HasForeignKey(d => d.PbfgeneralId)
                     .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK_PIDF_PBF_Analytical_Cost_PIDF_PBF_General");
+                    .HasConstraintName("FK_PIDF_PBF_Analytical_AMVCost_PIDF_PBF_General");
             });
 
-            modelBuilder.Entity<PidfPbfAnalyticalCostStrengthMapping>(entity =>
+            modelBuilder.Entity<PidfPbfAnalyticalAmvcostStrengthMapping>(entity =>
             {
                 entity.HasKey(e => e.PbfanalyticalCostStrengthId);
 
-                entity.ToTable("PIDF_PBF_Analytical_Cost_StrengthMapping", "dbo");
+                entity.ToTable("PIDF_PBF_Analytical_AMVCost_StrengthMapping", "dbo");
 
                 entity.Property(e => e.PbfanalyticalCostStrengthId).HasColumnName("PBFAnalyticalCostStrengthId");
 
                 entity.Property(e => e.CreatedDate).HasColumnType("datetime");
 
-                entity.Property(e => e.PbfanalyticalCostId).HasColumnName("PBFAnalyticalCostId");
-
-                entity.HasOne(d => d.PbfanalyticalCost)
-                    .WithMany(p => p.PidfPbfAnalyticalCostStrengthMappings)
-                    .HasForeignKey(d => d.PbfanalyticalCostId)
-                    .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK_PIDF_PBF_Analytical_Cost_StrengthMapping_PIDF_PBF_Analytical_Cost");
+                entity.Property(e => e.TotalAmvcostId).HasColumnName("TotalAMVCostId");
 
                 entity.HasOne(d => d.Strength)
-                    .WithMany(p => p.PidfPbfAnalyticalCostStrengthMappings)
+                    .WithMany(p => p.PidfPbfAnalyticalAmvcostStrengthMappings)
                     .HasForeignKey(d => d.StrengthId)
                     .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK_PIDF_PBF_Analytical_Cost_StrengthMapping_PIDFProductStrength");
+                    .HasConstraintName("FK_PIDF_PBF_Analytical_AMVCost_StrengthMapping_PIDFProductStrength");
+
+                entity.HasOne(d => d.TotalAmvcost)
+                    .WithMany(p => p.PidfPbfAnalyticalAmvcostStrengthMappings)
+                    .HasForeignKey(d => d.TotalAmvcostId)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("FK_PIDF_PBF_Analytical_AMVCost_StrengthMapping_PIDF_PBF_Analytical_AMVCost");
             });
 
             modelBuilder.Entity<PidfPbfClinical>(entity =>
@@ -2306,7 +2309,7 @@ namespace EmcureNPD.Data.DataAccess.DataContext
             modelBuilder.Entity<PidfPbfRnDExicipientScaleUp>(entity =>
             {
                 entity.HasKey(e => e.ExicipientScaleUpId)
-                    .HasName("PK__PIDF_PBF__25B6F2DB7DDA7A4A");
+                    .HasName("PK__PIDF_PBF__25B6F2DB1C257D51");
 
                 entity.ToTable("PIDF_PBF_RnD_ExicipientScaleUp", "dbo");
 
@@ -2375,12 +2378,6 @@ namespace EmcureNPD.Data.DataAccess.DataContext
                     .HasForeignKey(d => d.ProjectActivitiesId)
                     .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("FK_PIDF_PBF_RnD_ManPowerCost_Master_ProjectActivities");
-
-                entity.HasOne(d => d.Strength)
-                    .WithMany(p => p.PidfPbfRnDManPowerCosts)
-                    .HasForeignKey(d => d.StrengthId)
-                    .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK_PIDF_PBF_RnD_ManPowerCost_PIDFProductStrength");
             });
 
             modelBuilder.Entity<PidfPbfRnDMaster>(entity =>
