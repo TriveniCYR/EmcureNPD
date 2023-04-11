@@ -233,7 +233,7 @@
 					<div class="col-md-3">
 						<div class="form-group required">
 							<label class="control-label">Approval Period in Days<span style="color:red;">*</span></label>
-							@Html.TextBoxFor(@modal=>modal.ApprovalPeriodinDays,new{@class="form-control readOnlyUpdate",@required="required"})
+							@Html.TextBoxFor(@modal=>modal.ApprovalPeriodinDays,new{@class="form-control readOnlyUpdate",@required="required",@type="number"})
                                           <div class="invalid-feedback">
                                             Please enter Approval Period in Days.
                                            </div>
@@ -272,7 +272,7 @@
 					<div class="col-md-3">
 						<div class="form-group required">
 							<label class="control-label">Gestation Period in Years<span style="color:red;">*</span></label>
-							@Html.TextBoxFor(@modal=>modal.GestationPeriodinYears,new{@class="form-control readOnlyUpdate",@required="required"})
+							@Html.TextBoxFor(@modal=>modal.GestationPeriodinYears,new{@class="form-control readOnlyUpdate",@required="required",@type="number"})
                                           <div class="invalid-feedback">
                                             Please enter Gestation Period in Years.
                                            </div>
@@ -290,7 +290,7 @@
 					<div class="col-md-3">
 						<div class="form-group required">
 							<label class="control-label">Market Share Erosion rate<span style="color:red;">*</span></label>
-							@Html.TextBoxFor(@modal=>modal.MarketShareErosionrate,new{@class="form-control readOnlyUpdate",@required="required"})
+							@Html.TextBoxFor(@modal=>modal.MarketShareErosionrate,new{@class="form-control readOnlyUpdate",@required="required",@type="number"})
                                            <div class="invalid-feedback">
                                             Please enter Market Share Erosion rate.
                                            </div>
@@ -303,7 +303,7 @@
 					<div class="col-md-3">
 						<div class="form-group required">
 							<label class="control-label">Price Erosion<span style="color:red;">*</span></label>
-							@Html.TextBoxFor(@modal=>modal.PriceErosion,new{@class="form-control readOnlyUpdate",@required="required"})
+							@Html.TextBoxFor(@modal=>modal.PriceErosion,new{@class="form-control readOnlyUpdate",@required="required",@type="number"})
                                           <div class="invalid-feedback">
                                             Please enter Price Erosion.
                                            </div>
@@ -315,7 +315,7 @@
 					<div class="col-md-3">
 						<div class="form-group required">
 							<label class="control-label">Escalation in COGS<span style="color:red;">*</span></label>
-							@Html.TextBoxFor(@modal=>modal.EscalationinCOGS,new{@class="form-control readOnlyUpdate",@required="required"})
+							@Html.TextBoxFor(@modal=>modal.EscalationinCOGS,new{@class="form-control readOnlyUpdate",@required="required",@type="number"})
                                           <div class="invalid-feedback">
                                             Please enter Escalation in COGS.
                                            </div>
