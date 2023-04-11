@@ -460,9 +460,10 @@ function SetCommercialDisableForOtherUserBU() {
         SetCommercialFormReadonly();
     }
     else {
-        $("#mainDivCommercial").find("input, button, submit, textarea, select").prop('disabled', false);
-        $("[id^='deleteIconAddyear']").show();
-        $("#AddyeartableCollapseButton").prop('disabled', false);
+        $("#mainDivCommercial").find("input, button, submit, textarea, select").prop('disabled', false);        
+        $("[id^='deleteIconAddyear']").show();       
+        $('#mainDivCommercial').find('.operationButton').show();
+
     }
 }
 

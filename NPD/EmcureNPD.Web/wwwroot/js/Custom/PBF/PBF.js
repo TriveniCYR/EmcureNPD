@@ -839,6 +839,7 @@ function GetPBFTabDetailsSuccess(data) {
             if (_mode == 1) {
                 PBFreadOnlyForm();
             }
+            SetPBFDisableForOtherUserBU();
         }
     } catch (e) {
         toastr.error('Error:' + e.message);
@@ -886,6 +887,18 @@ function getValueFromStrengthTestTypeId(data, strengthId, propertyName, testType
         } else { return ""; }
     } else { return ""; }
 }
+function getValueFromStrengthBusinessUnitId(data, strengthId, propertyName, businessUnitId) {
+    var _filteredStrength = $.grep(data, function (n, i) {
+        return n.strengthId === strengthId && n.businessUnitId == businessUnitId;
+    });
+    if (_filteredStrength != null && _filteredStrength != undefined && _filteredStrength.length > 0) {
+        if (_filteredStrength[0][propertyName] != null && _filteredStrength[0][propertyName] != undefined) {
+            return (_filteredStrength[0][propertyName] ? "checked" : "");
+        } else { return ""; }
+    } else { return ""; }
+}
+
+
 function getValueFromStrengthPackagingTypeId(data, strengthId, propertyName, packagingTypeId) {
     var _filteredStrength = $.grep(data, function (n, i) {
         return n.strengthId === strengthId && n.packagingTypeId == packagingTypeId;
@@ -917,19 +930,21 @@ function getValueFromStrengthByMiscellaneousDevelopment(data, strengthId, proper
     } else { return ""; }
 }
 function SetPBFDisableForOtherUserBU() {
-    var BU_VALUE = SelectedBUValue;
+    var BU_VALUE = $("#PIDFBusinessUnitId").val();
     var status = UserwiseBusinessUnit.indexOf(BU_VALUE);
-    var IsViewInMode = ($("#hdnPBFIsView").val() == '1')
-    if (status == -1 || IsViewInMode) {
-        SetPBFFormReadonly();
+    //var IsViewInMode = ($("#hdnPBFIsView").val() == '1')
+    /*if (status == -1 || IsViewInMode) {*/
+    if (status == -1) {
+       // SetPBFFormReadonly();
+        PBFreadOnlyForm();
     }
-    else {
-        $("#dvPBFContainer").find("input, button, submit, textarea, select,a,i").prop('disabled', false);
-    }
+    //else {
+    //    $("#dvPBFContainer").find("input, button, submit, textarea, select,a,i").prop('disabled', false);
+    //}
 }
-function SetPBFFormReadonly() {
-    $("#dvPBFContainer").find("input, button, submit, textarea, select,a,i").prop('disabled', true);
-}
+//function SetPBFFormReadonly() {
+//    $("#dvPBFContainer").find("input, button, submit, textarea, select,a,i").prop('disabled', true);
+//}
 function PBFBUtabClick(pidfidval, BUVal) {
     SelectedBUValue = 0;
     var i, tabcontent, butab;
@@ -940,7 +955,7 @@ function PBFBUtabClick(pidfidval, BUVal) {
     for (i = 0; i < butab.length; i++) {
         butab[i].className = butab[i].className.replace(" active", "");
     }
-    SetPBFDisableForOtherUserBU();
+    //SetPBFDisableForOtherUserBU();
     var BUAnchorId = '#BUtab_' + BUVal;
     $(BUAnchorId).addClass('active');
     if (_mode > 0) window.location.href = 'PBF?pidfid=' + btoa(pidfidval) + '&bui=' + btoa(BUVal) + '&pbf=' + _pbf + '&IsView=' + _mode;
@@ -1923,7 +1938,7 @@ function CreateFillingExpensesTable(data, activityTypeId) {
 
     var _counter = (data.length == 0 ? 1 : data.length);
     var _activityType = [];
-
+    console.log(data);
     objectname += '<tr><td class="text-left text-bold bg-light" colspan="' + (6 + _strengthArray.length) + '">' + tableTitle + '</td>';
     for (var a = 0; a < _counter; a++) {
         var BUID = data.length > 0 ? data[a].businessUnitId : 0;
@@ -1937,7 +1952,7 @@ function CreateFillingExpensesTable(data, activityTypeId) {
             + '<td><input type="number" class="form-control totalFillingExpenses rndFillingExpensesTotalCost" value="2300000" min="0"/></td>'
             + '<td><select class="form-control readOnlyUpdate rndFillingExpensesRegionId"><option value = "" > --Select --</option ></select><input type="hidden" value="' + (data.length > 0 ? data[a].businessUnitId : "") + '"/></td>'
         for (var i = 0; i < _strengthArray.length; i++) {
-            objectname += '<td> <div style="display: inline-block;" ><input type="hidden" class="rndFillingExpensesStrengthId" value="' + _strengthArray[i].pidfProductStrengthId + '" /><input type="checkbox" id="rndFillingExpensesStrengthIsChecked' + _strengthArray[i].pidfProductStrengthId + '" class="rndFillingExpensesStrengthIsChecked' + _strengthArray[i].pidfProductStrengthId + '" ' + (data.length > 0 && data[a].isChecked && data[a].businessUnitId == BUID && _strengthArray[i].pidfProductStrengthId == data[a].strengthId ? "checked" : "") + '  > &nbsp; <input type="number" class="FillingExpensesStrengthValue" readonly="readonly" disabled="true" min="0" /></div></td>';
+            objectname += '<td> <div style="display: inline-block;" ><input type="hidden" class="rndFillingExpensesStrengthId" value="' + _strengthArray[i].pidfProductStrengthId + '" /><input type="checkbox" id="rndFillingExpensesStrengthIsChecked' + _strengthArray[i].pidfProductStrengthId + '" class="rndFillingExpensesStrengthIsChecked' + _strengthArray[i].pidfProductStrengthId + '" ' + (data.length > 0 ? getValueFromStrengthBusinessUnitId(data, _strengthArray[i].pidfProductStrengthId, "isChecked", data[a].businessUnitId) : "") + '  > &nbsp; <input type="number" class="FillingExpensesStrengthValue" readonly="readonly" disabled="true" min="0" /></div></td>';
         }
         objectname += "<td><input type='number' class='form-control' readonly='readonly' min='0' /></td><td> <i class='fa-solid fa-circle-plus nav-icon text-success operationButton' id='addIcon' onclick='addRowFillingExpenses(this);'></i> <i class='fa-solid fa-trash nav-icon text-red strengthDeleteIcon operationButton DeleteIcon' onclick='deleteRowFillingExpenses(this);' ></i></td></tr>";
         if (data.length > 0) {
