@@ -280,8 +280,9 @@ namespace EmcureNPD.Business.Core.Implementation
 					   Utility.Enums.ModuleEnum.IPD, oldIPDFEntity, entityIPD, Convert.ToInt32(objIPD.Ipdid));
 
 			}
+			var loggedInUser = _helper.GetLoggedInUser();
             await _auditLogService.UpdatePIDFStatusCommon(entityIPD.PIDFID, (int)entityIPD.StatusId, _helper.GetLoggedInUser().UserId);
-            await _notificationService.CreateNotification(entityIPD.PIDFID, (int)entityIPD.StatusId, string.Empty, string.Empty, (int)entityIPD.LogInId);
+            await _notificationService.CreateNotification(entityIPD.PIDFID, (int)entityIPD.StatusId, string.Empty, string.Empty, loggedInUser.UserId);
             return DBOperation.Success;
         }
 

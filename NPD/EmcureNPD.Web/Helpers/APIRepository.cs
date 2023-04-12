@@ -71,6 +71,10 @@ namespace EmcureNPD.Web.Helpers
             {
                 oHttpResponseMessage.StatusCode = HttpStatusCode.InternalServerError;
             }
+            if(oHttpResponseMessage.StatusCode==HttpStatusCode.Unauthorized)
+            {
+               // RedirectToAction("Login", "Account");
+            }
             return oHttpResponseMessage;
         }
 
