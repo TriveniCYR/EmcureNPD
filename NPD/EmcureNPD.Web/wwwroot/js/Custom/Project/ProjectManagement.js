@@ -102,6 +102,7 @@ function GetProjectDetailsSuccess(data) {
         
         //project details
         $('#loading').hide();
+        localStorage.setItem("prjName", data.table[0].projectName);
         $('#pidf_ProjectorProductName').text(data.table[0].projectName);
         $('#pidf_ProductTypeName').text(data.table[0].productType);
         $('#pidf_PlantName').text(data.table[0].plantName);

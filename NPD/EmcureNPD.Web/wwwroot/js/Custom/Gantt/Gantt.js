@@ -1,4 +1,5 @@
 $(document).ready(function () {
+    $("#lblProjectName").text(localStorage.getItem("prjName"));
     //gantt.config.columns = [
     //    { name: "taskName", label: "Task name", width: "150", resize: true, tree: true },
     //    { name: "startDate", label: "Start date", width: "80", resize: true, align: "center" },
