@@ -4,6 +4,109 @@
     var id = ViewBag.id;
 }
 <link href="https://cdn.dhtmlx.com/gantt/edge/dhtmlxgantt.css" rel="stylesheet" type="text/css" />
+<style>
+    .gantt_task_progress {
+        text-align: left;
+        padding-left: 10px;
+        box-sizing: border-box;
+        color: white;
+        font-weight: bold;
+    }
+
+    .gantt_tooltip {
+        font-size: 13px;
+        line-height: 16px;
+        z-index: 999999;
+    }
+
+    .gantt_task_content {
+        padding-left: 30px;
+    }
+
+    .task-no-progress {
+        background: #3db9d3;
+    }
+
+        .task-no-progress .gantt_task_progress {
+            background: #2898b0;
+            border: red;
+        }
+
+    .task-in-progress {
+        background: green;
+    }
+
+        .task-in-progress .gantt_task_progress {
+            background: limegreen;
+        }
+
+    .task-full-progress .gantt_task_progress {
+        background: gray;
+        border: red;
+    }
+
+    /*new code added on date 10/03/2021*/
+    .gantt_task_line.gantt_dependent_task {
+        background-color: #65c16f;
+        border: 1px solid #3c9445;
+    }
+
+        .gantt_task_line.gantt_dependent_task .gantt_task_progress {
+            background-color: #46ad51;
+        }
+
+    .hide_project_progress_drag .gantt_task_progress_drag {
+        visibility: hidden;
+    }
+
+    .gantt_task_cell.week_end {
+        background-color: #EFF5FD;
+    }
+
+    .gantt_task_row.gantt_selected .gantt_task_cell.week_end {
+        background-color: #F8EC9C;
+    }
+    /*end of new code*/
+
+    /*new code for baseline*/
+    .baseline {
+        position: absolute;
+        border-radius: 2px;
+        opacity: 0.6;
+        margin-top: -7px;
+        height: 12px;
+        background: #ffd180;
+        border: 1px solid rgb(255, 153, 0);
+    }
+
+    /* move task lines upper */
+    .gantt_task_line, .gantt_line_wrapper {
+        margin-top: -9px;
+    }
+
+    .gantt_side_content {
+        margin-bottom: 7px;
+    }
+
+    .gantt_task_link .gantt_link_arrow {
+        margin-top: -12px
+    }
+
+    .gantt_side_content.gantt_right {
+        bottom: 0;
+    }
+
+    html, body {
+        height: 100%;
+        padding: 0;
+        margin: 0;
+        overflow: auto;
+    }
+    /*end of code base line*/
+
+
+
+</style>
 
 <div class="content-header">
     <div style="display: flex; justify-content: space-between; align-items: center;">
