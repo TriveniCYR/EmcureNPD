@@ -227,3 +227,7 @@ tr.bg-primary td, thead.bg-primary th {
     border-radius: 10px;
     margin: auto;
 }
+.inline-textbox {
+    width: 80% !important;
+    display: inline-block !important;
+}
