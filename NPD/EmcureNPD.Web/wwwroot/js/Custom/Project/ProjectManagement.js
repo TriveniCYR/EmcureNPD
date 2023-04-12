@@ -123,7 +123,7 @@ function GetProjectDetailsSuccess(data) {
         $('#files tbody').html('')
         $.each(data.table1, function (index, file) {
             var link = $('#hdnBaseURL').val() + '/Uploads/PIDF/Medical/' + file.fileName;
-            $('#files tbody').append('<tr><td><a href="' + link + '">' + file.fileName + '</a></td></tr>');
+            $('#files tbody').append('<tr><td><a href="' + link + '" target="_blank">' + file.fileName + '</a></td></tr>');
             console.log("Files:" + link)
         });
         //end
