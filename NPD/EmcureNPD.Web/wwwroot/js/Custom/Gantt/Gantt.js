@@ -1,4 +1,4 @@
-$(document).ready(function () {
+document.addEventListener("DOMContentLoaded", function () {
     $("#lblProjectName").text(localStorage.getItem("prjName"));
     //gantt.config.columns = [
     //    { name: "taskName", label: "Task name", width: "150", resize: true, tree: true },
@@ -250,7 +250,7 @@ $(document).ready(function () {
     function parent_progress(id) {
         var temptask;
         gantt.eachParent(function (task) {
-
+            
             var children = gantt.getChildren(task.id);
             var child_progress = 0;
             for (var i = 0; i < children.length; i++) {
@@ -282,10 +282,10 @@ $(document).ready(function () {
                 //}
             });
 
-            // console.log(response1);
+            console.log("response1"+response1);
 
         }
-        setTimeout(reloadFunc, 3000);
+        //setTimeout(reloadFunc, 3000);
     }
 
     var resourceTemplates = {
@@ -441,7 +441,7 @@ $(document).ready(function () {
     gantt.attachEvent("onGanttReady", function () {
         var tooltips = gantt.ext.tooltips;
 
-        gantt.templates.tooltip_text = function (start, end, task) {
+        gantt.templates.tooltip_text = function (start,end,task) {
             var store = gantt.getDatastore("resource");
             //console.log(store);
             var assignments = task[gantt.config.resource_property] || [];
@@ -449,11 +449,11 @@ $(document).ready(function () {
             var owner = store.getItem(assignments);
             //owners.push(owner.text);
             return "<b>Task:</b> " + task.text + "<br/>" +
-                "<b>Owner:</b>" + owners.join(",") + "<br/>" +
+                "<b>Owner:</b>" + task.owner + "<br/>" +
                 "<b>Start date:</b> " +
-                gantt.templates.tooltip_date_format(start) + "<br/>" +
-                "<b>Progress:</b> " + Math.round(task.progress * 100) + "%";
-            +"<br/><b>End date:</b> " + gantt.templates.tooltip_date_format(end);
+                gantt.templates.tooltip_date_format(start)
+                +"<br/><b>End date:</b> " + gantt.templates.tooltip_date_format(end) + "<br/>" +
+            "<b>Progress:</b> " + Math.round(task.progress * 100) + "%";
         };
 
         var radios = [].slice.call(gantt.$container.querySelectorAll("input[type='radio']"));
@@ -499,7 +499,10 @@ $(document).ready(function () {
     //OnAfterTaskUpdate for Parent Task progress
     gantt.attachEvent("onAfterTaskUpdate", function (id, task) {
         parent_progress(id);
-        //setTimeout(reloadFunc, 2000);
+        $(".gantt_task_line").each(function (i, value) {
+           // alert($(this).attr("aria-label"))
+        });
+       // setTimeout(reloadFunc, 2000);
     });
 
     gantt.attachEvent("onParse", function () {
@@ -526,7 +529,7 @@ $(document).ready(function () {
     });
 
     gantt.attachEvent("onAfterLinkAdd", function (id, item) {
-        setTimeout(reloadFunc, 2000);
+        //setTimeout(reloadFunc, 2000);
     });
 
     function reloadFunc() {
@@ -604,15 +607,31 @@ $(document).ready(function () {
          //    taskOwnerName: data._object[i].taskOwnerName,
          //    totalPercentage: data._object[i].totalPercentage
            //}
-           let ganttdata = JSON.stringify(gdata).replace("{", "").replace("}","");
+           //let ganttdata = JSON.stringify(gdata).replace("{", "").replace("}", "");
+           //$(".gantt_task_line").each(function (i, value) {
+           //    alert($(this).attr("aria-label"))
+           //});
+          
+        
+          
+           
           // gantt.parse({ data: ganttdata });
            gantt.parse(gdata);
-           
+           //gantt.task.progress = parseInt(data._object[i].totalPercentage); 
        }
       
    }
    function GetTaskSubTaskListError() {
        toastr.error("Error");
     }
-   
+   // gantt.config.auto_scheduling = false;
+
+   // var obj = gantt.json;
+   // gantt.init("ganttContainer")//, new Date(2021, 1, 1,0,0,0), new Date(2022, 1, 1,0,0,0)); // initialize gantt
+   // gantt.load(JSON.stringify(gdata), "json");
+
+   // var dp = new gantt.dataProcessor($('#hdnBaseURL').val() + "/api/Project/GetTaskSubTask" + "/" + id);
+   //// var dp = new gantt.dataProcessor("/api")
+   // dp.init(gantt);
+   // dp.setTransactionMode("REST-JSON");
 });
