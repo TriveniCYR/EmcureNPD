@@ -108,14 +108,14 @@
                                     @if (i == 6)
                                     {
                                         <td>
-                                            @Html.DisplayFor(model => model.TimelineInMonths[i].TimelineInMonthsValue, new {@readonly = "readonly", @class = "form-control" , @placeholder="" })
+                                            @Html.DisplayFor(model => model.TimelineInMonths[i].TimelineInMonthsValue, new { @readonly = "readonly", @class = "form-control" , @placeholder="" })
                                             <label class="text-danger" style="display:contents"></label>
                                         </td>
                                     }
                                     else
                                     {
                                         <td>
-                                            @Html.DisplayFor(model => model.TimelineInMonths[i].TimelineInMonthsValue, new { @class = "form-control" , @placeholder="" })
+                                                @Html.DisplayFor(model => model.TimelineInMonths[i].TimelineInMonthsValue, new { @class = "form-control" , @placeholder="" })
                                             <label class="text-danger" style="display:contents"></label>
                                         </td>
                                     }
