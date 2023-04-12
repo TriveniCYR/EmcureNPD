@@ -181,12 +181,11 @@ namespace EmcureNPD.Business.Core.Implementation
 						await _unitOfWork.SaveChangesAsync();
 
 					}
-
 					if (objIPD.Pidfid == 0)
 						return DBOperation.Error;
 
-					var isSuccess = await _auditLogService.CreateAuditLog<IPDEntity>(entityIPD.IPDID > 0 ? Utility.Audit.AuditActionType.Update : Utility.Audit.AuditActionType.Create,
-					   Utility.Enums.ModuleEnum.IPD, oldIPDFEntity, entityIPD, Convert.ToInt32(entityIPD.IPDID));
+					var isSuccess = await _auditLogService.CreateAuditLog<IPDEntity>(Utility.Audit.AuditActionType.Update,
+					   ModuleEnum.IPD, oldIPDFEntity, entityIPD, Convert.ToInt32(entityIPD.IPDID));
 				}
 				else
 				{
@@ -275,10 +274,6 @@ namespace EmcureNPD.Business.Core.Implementation
 
 				if (objIPD.Ipdid == 0)
 					return DBOperation.Error;
-
-                var isSuccess = await _auditLogService.CreateAuditLog<IPDEntity>(entityIPD.IPDID > 0 ? Utility.Audit.AuditActionType.Update : Utility.Audit.AuditActionType.Create,
-					   Utility.Enums.ModuleEnum.IPD, oldIPDFEntity, entityIPD, Convert.ToInt32(objIPD.Ipdid));
-
 			}
 			var loggedInUser = _helper.GetLoggedInUser();
             await _auditLogService.UpdatePIDFStatusCommon(entityIPD.PIDFID, (int)entityIPD.StatusId, _helper.GetLoggedInUser().UserId);
