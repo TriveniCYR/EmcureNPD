@@ -221,62 +221,62 @@ $(document).ready(function () {
         $('.totalBioStudyCostTotal').val(_TotalBioStudyCost);
     });
     /*batch size*/
-    $(document).on("change", ".calcRNDBatchSizesPrototypeFormulation, .calcRNDBatchSizesScaleUpbatch, .calcRNDBatchSizesExhibitBatch1, .calcRNDBatchSizesExhibitBatch2, .calcRNDBatchSizesExhibitBatch3", function () {
-        var _BioStudyTypeId = $(this).parent().parent().attr("data-biostudytypeid");
-        var _StrengthId = $(this).parent().attr("data-strengthid");
+    //$(document).on("change", ".calcRNDBatchSizesPrototypeFormulation, .calcRNDBatchSizesScaleUpbatch, .calcRNDBatchSizesExhibitBatch1, .calcRNDBatchSizesExhibitBatch2, .calcRNDBatchSizesExhibitBatch3", function () {
+    //    var _BioStudyTypeId = $(this).parent().parent().attr("data-biostudytypeid");
+    //    var _StrengthId = $(this).parent().attr("data-strengthid");
 
-        var _BatchsizeRows = $('.batchsize_' + _BioStudyTypeId + '').find("[data-strengthid=" + _StrengthId + "]");
+    //    var _BatchsizeRows = $('.batchsize_' + _BioStudyTypeId + '').find("[data-strengthid=" + _StrengthId + "]");
 
-        var PrototypeFormulation = _BatchsizeRows.find(".calcRNDBatchSizesPrototypeFormulation").val();
-        var ScaleUpbatch = _BatchsizeRows.find(".calcRNDBatchSizesScaleUpbatch").val();
-        var ExhibitBatch1 = _BatchsizeRows.find(".calcRNDBatchSizesExhibitBatch1").val();
-        var ExhibitBatch2 = _BatchsizeRows.find(".calcRNDBatchSizesExhibitBatch2").val();
-        var ExhibitBatch3 = _BatchsizeRows.find(".calcRNDBatchSizesExhibitBatch3").val();
+    //    var PrototypeFormulation = _BatchsizeRows.find(".calcRNDBatchSizesPrototypeFormulation").val();
+    //    var ScaleUpbatch = _BatchsizeRows.find(".calcRNDBatchSizesScaleUpbatch").val();
+    //    var ExhibitBatch1 = _BatchsizeRows.find(".calcRNDBatchSizesExhibitBatch1").val();
+    //    var ExhibitBatch2 = _BatchsizeRows.find(".calcRNDBatchSizesExhibitBatch2").val();
+    //    var ExhibitBatch3 = _BatchsizeRows.find(".calcRNDBatchSizesExhibitBatch3").val();
 
-        var _Sum = 0;
-        $.each($(this).parent().parent().find("input[type=number]"), function (index, item) {
-            if ($(item).attr("class").indexOf("TotalStrength") === -1) {
-                _Sum += parseFloat(($(item).val() == "" ? 0 : $(item).val()));
-            }
-        });
+    //    var _Sum = 0;
+    //    $.each($(this).parent().parent().find("input[type=number]"), function (index, item) {
+    //        if ($(item).attr("class").indexOf("TotalStrength") === -1) {
+    //            _Sum += parseFloat(($(item).val() == "" ? 0 : $(item).val()));
+    //        }
+    //    });
 
-        // set total for the row
-        $(this).parent().parent().find(".TotalStrength").val(_Sum);
+    //    // set total for the row
+    //    $(this).parent().parent().find(".TotalStrength").val(_Sum);
 
-        // formula to calculate the total cost for one strength (all the properties) (one column)
-        var totalbatchsize = (PrototypeFormulation == "" ? 0 : parseFloat(PrototypeFormulation)) * ((ScaleUpbatch == "" ? 0 : parseFloat(ScaleUpbatch)) * ((ExhibitBatch1 == "" ? 0 : parseFloat(ExhibitBatch1)) + (ExhibitBatch2 == "" ? 0 : parseFloat(ExhibitBatch2))) + (ExhibitBatch3 == "" ? 0 : parseFloat(ExhibitBatch3)));
+    //    // formula to calculate the total cost for one strength (all the properties) (one column)
+    //    var totalbatchsize = (PrototypeFormulation == "" ? 0 : parseFloat(PrototypeFormulation)) * ((ScaleUpbatch == "" ? 0 : parseFloat(ScaleUpbatch)) * ((ExhibitBatch1 == "" ? 0 : parseFloat(ExhibitBatch1)) + (ExhibitBatch2 == "" ? 0 : parseFloat(ExhibitBatch2))) + (ExhibitBatch3 == "" ? 0 : parseFloat(ExhibitBatch3)));
 
-        // set total for all the property in the table for one strength
-        $('.batchsize_' + _BioStudyTypeId + 'Total').find("[data-strengthid=" + _StrengthId + "]").find(".calcTotalCostForStrength").val(totalbatchsize);
+    //    // set total for all the property in the table for one strength
+    //    $('.batchsize_' + _BioStudyTypeId + 'Total').find("[data-strengthid=" + _StrengthId + "]").find(".calcTotalCostForStrength").val(totalbatchsize);
 
-        var _TotalSum = 0;
-        $.each($('.batchsize_' + _BioStudyTypeId + 'Total').find(".calcTotalCostForStrength"), function (index, item) {
-            _TotalSum += parseFloat(($(item).val() == "" ? 0 : $(item).val()));
-        });
+    //    var _TotalSum = 0;
+    //    $.each($('.batchsize_' + _BioStudyTypeId + 'Total').find(".calcTotalCostForStrength"), function (index, item) {
+    //        _TotalSum += parseFloat(($(item).val() == "" ? 0 : $(item).val()));
+    //    });
 
-        // set total for all the property in the table
-        $('.batchsize_' + _BioStudyTypeId + 'Total').find(".calcTotalCostForStrengthTotal").val(_TotalSum);
+    //    // set total for all the property in the table
+    //    $('.batchsize_' + _BioStudyTypeId + 'Total').find(".calcTotalCostForStrengthTotal").val(_TotalSum);
 
-        //var _TotalBatchSizeSum = 0;
-        //$.each($('.calcTotalCostForStrength'), function (index, item) {
-        //    _TotalBatchSizeSum += parseFloat(($(item).val() == "" ? 0 : $(item).val()));
-        //});
+    //    //var _TotalBatchSizeSum = 0;
+    //    //$.each($('.calcTotalCostForStrength'), function (index, item) {
+    //    //    _TotalBatchSizeSum += parseFloat(($(item).val() == "" ? 0 : $(item).val()));
+    //    //});
 
-        //var _TotalBatchSizeCost = 0;
-        //$.each($('.totalBatchSizeCost'), function (index, item) {
-        //    var _strengthId = $(item).parent().attr("data-strengthid");
-        //    var _TotalBatchSizeSum = 0;
-        //    $.each($('.calcTotalCostForStrength'), function (i, it) {
-        //        var _childStrengthId = $(it).parent().attr("data-strengthid");
-        //        if (_childStrengthId == _strengthId) {
-        //            _TotalBatchSizeSum += parseFloat(($(it).val() == "" ? 0 : $(it).val()));
-        //        }
-        //    });
-        //    $(item).val(_TotalBatchSizeSum);
-        //    _TotalBatchSizeCost += _TotalBatchSizeSum;
-        //});
-        //$('.totalBatchSizeTotal').val(_TotalBatchSizeCost);
-    });
+    //    //var _TotalBatchSizeCost = 0;
+    //    //$.each($('.totalBatchSizeCost'), function (index, item) {
+    //    //    var _strengthId = $(item).parent().attr("data-strengthid");
+    //    //    var _TotalBatchSizeSum = 0;
+    //    //    $.each($('.calcTotalCostForStrength'), function (i, it) {
+    //    //        var _childStrengthId = $(it).parent().attr("data-strengthid");
+    //    //        if (_childStrengthId == _strengthId) {
+    //    //            _TotalBatchSizeSum += parseFloat(($(it).val() == "" ? 0 : $(it).val()));
+    //    //        }
+    //    //    });
+    //    //    $(item).val(_TotalBatchSizeSum);
+    //    //    _TotalBatchSizeCost += _TotalBatchSizeSum;
+    //    //});
+    //    //$('.totalBatchSizeTotal').val(_TotalBatchSizeCost);
+    //});
     /*API Requirement*/
     $(document).on("change", ".calcRNDApirequirementsPrototype, .calcRNDApirequirementsScaleUp, .calcRNDApirequirementsExhibitBatch1, .calcRNDApirequirementsExhibitBatch2, .calcRNDApirequirementsExhibitBatch3, .calcRNDApirequirementsPrototypeCost, .calcRNDApirequirementsScaleUpCost, .calcRNDApirequirementsExhibitBatchCost, .calcRNDApirequirementsMarketPrice", function () {
         var marketprice = $("#RNDMasterEntities_ApirequirementMarketPrice").val();
@@ -305,8 +305,24 @@ $(document).ready(function () {
         // set total for the row
         $(this).parent().parent().find(".TotalStrength").val(_Sum);
 
+        var _TotalPrototypeCost = 0;
+        $.each($('.calcRNDApirequirementsPrototypeCost'), function () {
+            _TotalPrototypeCost += parseFloat($(this).val() == "" ? 0 : $(this).val());
+        });
+        $('.APIReqPrototypeCostTotalCost').val(_TotalPrototypeCost);
 
+        var _TotalScaleupCost = 0;
+        $.each($('.calcRNDApirequirementsScaleUpCost'), function () {
+            _TotalScaleupCost += parseFloat($(this).val() == "" ? 0 : $(this).val());
+        });
+        $('.APIReqScaleupCostTotalCost').val(_TotalScaleupCost);
 
+        var _TotalExhibitBatchCost = 0;
+        $.each($('.calcRNDApirequirementsExhibitBatchCost'), function () {
+            _TotalExhibitBatchCost += parseFloat($(this).val() == "" ? 0 : $(this).val());
+        });
+        $('.APIReqExhibitBatchTotalCost').val(_TotalExhibitBatchCost);
+        
         //prototype cost
         var prototypecost = (marketprice * (Prototype == "" ? 0 : parseFloat(Prototype)));
         $('.ApiRequirement_' + _BioStudyTypeId).find("[data-strengthid=" + _StrengthId + "]").find(".calcRNDApirequirementsPrototypeCost").val(prototypecost);
@@ -1539,40 +1555,40 @@ function CreateBatchsizeTable(data, bioStudyTypeId) {
     for (var i = 0; i < _strengthArray.length; i++) {
         objectname += '<td data-strengthid="' + _strengthArray[i].pidfProductStrengthId + '"><input type="hidden" id="RNDBatchSizes[' + [(i + _iterator)] + '].StrengthId" name="RNDBatchSizes[' + [(i + _iterator)] + '].StrengthId" value="' + _strengthArray[i].pidfProductStrengthId + '" /><input type="number" class="form-control BatchSize_Excipient_PrototypeFormulation_' + _strengthArray[i].pidfProductStrengthId + ' calcRNDBatchSizesPrototypeFormulation" id="RNDBatchSizes[' + [(i + _iterator)] + '].PrototypeFormulation" name="RNDBatchSizes[' + [(i + _iterator)] + '].PrototypeFormulation" placeholder="Prototype Formulation" min="0" value="' + (getValueFromStrengthId(data, _strengthArray[i].pidfProductStrengthId, "prototypeFormulation")) + '" /></td>';
     }
-    objectname += "<td><input type='number' class='form-control TotalStrength' readonly='readonly' tabindex=-1 /></td></tr>";
+    //objectname += "<td><input type='number' class='form-control TotalStrength' readonly='readonly' tabindex=-1 /></td></tr>";
 
     objectname += "<tr class='batchsize_" + bioStudyTypeId + "' data-biostudytypeid='" + bioStudyTypeId + "'><td>Scale Up batch</td>";
     for (var i = 0; i < _strengthArray.length; i++) {
         objectname += '<td data-strengthid="' + _strengthArray[i].pidfProductStrengthId + '"><input type="number" class="form-control calcRNDBatchSizesScaleUpbatch" id="RNDBatchSizes[' + [(i + _iterator)] + '].ScaleUpbatch" name="RNDBatchSizes[' + [(i + _iterator)] + '].ScaleUpbatch" placeholder="ScaleUp batch" min="0" value="' + (getValueFromStrengthId(data, _strengthArray[i].pidfProductStrengthId, "scaleUpbatch")) + '"  /></td>';
     }
-    objectname += "<td><input type='number' class='form-control TotalStrength' readonly='readonly' tabindex=-1 /></td></tr>";
+    //objectname += "<td><input type='number' class='form-control TotalStrength' readonly='readonly' tabindex=-1 /></td></tr>";
 
     objectname += "<tr class='batchsize_" + bioStudyTypeId + "' data-biostudytypeid='" + bioStudyTypeId + "'><td>Exhibit Batch 1</td>";
     for (var i = 0; i < _strengthArray.length; i++) {
         objectname += '<td data-strengthid="' + _strengthArray[i].pidfProductStrengthId + '"> <input type="number" class="form-control calcRNDBatchSizesExhibitBatch1" id="RNDBatchSizes[' + [(i + _iterator)] + '].ExhibitBatch1" name="RNDBatchSizes[' + [(i + _iterator)] + '].ExhibitBatch1" placeholder="Exhibit Batch 1" min="0" value="' + (getValueFromStrengthId(data, _strengthArray[i].pidfProductStrengthId, "exhibitBatch1")) + '" /></td>';
 
     }
-    objectname += "<td><input type='number' class='form-control TotalStrength' readonly='readonly' tabindex=-1 /></td></tr>";
+    //objectname += "<td><input type='number' class='form-control TotalStrength' readonly='readonly' tabindex=-1 /></td></tr>";
 
     objectname += "<tr class='batchsize_" + bioStudyTypeId + "' data-biostudytypeid='" + bioStudyTypeId + "'><td>Exhibit Batch 2</td>";
     for (var i = 0; i < _strengthArray.length; i++) {
         objectname += '<td data-strengthid="' + _strengthArray[i].pidfProductStrengthId + '"> <input type="number" class="form-control calcRNDBatchSizesExhibitBatch2" id="RNDBatchSizes[' + [(i + _iterator)] + '].ExhibitBatch2" name="RNDBatchSizes[' + [(i + _iterator)] + '].ExhibitBatch2" placeholder="Exhibit Batch 2" min="0" value="' + (getValueFromStrengthId(data, _strengthArray[i].pidfProductStrengthId, "exhibitBatch2")) + '" /></td>';
 
     }
-    objectname += "<td><input type='number' class='form-control TotalStrength' readonly='readonly' tabindex=-1 /></td></tr>";
+    //objectname += "<td><input type='number' class='form-control TotalStrength' readonly='readonly' tabindex=-1 /></td></tr>";
 
     objectname += "<tr class='batchsize_" + bioStudyTypeId + "' data-biostudytypeid='" + bioStudyTypeId + "'><td>Exhibit Batch 3</td>";
     for (var i = 0; i < _strengthArray.length; i++) {
         objectname += '<td data-strengthid="' + _strengthArray[i].pidfProductStrengthId + '"> <input type="number" class="form-control calcRNDBatchSizesExhibitBatch3" id="RNDBatchSizes[' + [(i + _iterator)] + '].ExhibitBatch3" name="RNDBatchSizes[' + [(i + _iterator)] + '].ExhibitBatch3" placeholder="Exhibit Batch 3" min="0" value="' + (getValueFromStrengthId(data, _strengthArray[i].pidfProductStrengthId, "exhibitBatch3")) + '"/></td>';
 
     }
-    objectname += "<td><input type='number' class='form-control TotalStrength' readonly='readonly' tabindex=-1 /></td></tr>";
+    //objectname += "<td><input type='number' class='form-control TotalStrength' readonly='readonly' tabindex=-1 /></td></tr>";
 
-    objectname += "<tr class='batchsize_" + bioStudyTypeId + "Total' data-biostudytypeid='" + bioStudyTypeId + "'><td class='text-bold'>Total Cost</td>";
-    for (var i = 0; i < _strengthArray.length; i++) {
-        objectname += "<td data-strengthid='" + _strengthArray[i].pidfProductStrengthId + "'><input type='number' class='form-control calcTotalCostForStrength' readonly='readonly' tabindex=-1 min='0'/></td>";
-    }
-    objectname += "<td><input type='number' class='form-control calcTotalCostForStrengthTotal' readonly='readonly' tabindex=-1 min='0' /></td></tr>";
+    //objectname += "<tr class='batchsize_" + bioStudyTypeId + "Total' data-biostudytypeid='" + bioStudyTypeId + "'><td class='text-bold'>Total Cost</td>";
+    //for (var i = 0; i < _strengthArray.length; i++) {
+    //    objectname += "<td data-strengthid='" + _strengthArray[i].pidfProductStrengthId + "'><input type='number' class='form-control calcTotalCostForStrength' readonly='readonly' tabindex=-1 min='0'/></td>";
+    //}
+    //objectname += "<td><input type='number' class='form-control calcTotalCostForStrengthTotal' readonly='readonly' tabindex=-1 min='0' /></td></tr>";
 
     return objectname;
 }
@@ -1581,7 +1597,7 @@ function BindRNDBatchSize(data, rndmasterdata) {
     $.each(_strengthArray, function (index, item) {
         batchSizeHTML += '<td>' + getStrengthName(item.pidfProductStrengthId) + '</td>';
     });
-    batchSizeHTML += '<td>Total</td></tr></thead><tbody>';
+    batchSizeHTML += '</tr></thead><tbody>';
 
     batchSizeHTML += CreateBatchsizeTable(data, 1);
 
@@ -1647,19 +1663,19 @@ function CreateAPIrequirementTable(data, bioStudyTypeId) {
         objectname += '<td data-strengthid="' + _strengthArray[i].pidfProductStrengthId + '"> <input type="number" class="form-control calcRNDApirequirementsPrototypeCost" readonly="readonly" tabindex=-1 id="RNDApirequirements[' + [(i + _iterator)] + '].PrototypeCost" name="RNDApirequirements[' + [(i + _iterator)] + '].PrototypeCost" placeholder="Prototype Cost" min="0" value="' + (getValueFromStrengthId(data, _strengthArray[i].pidfProductStrengthId, "prototypeCost")) + '"/></td>';
 
     }
-    objectname += "<td><input type='number' class='form-control TotalStrength' readonly='readonly' tabindex=-1 /></td></tr>";
+    objectname += "<td><input type='number' class='form-control TotalStrength APIReqPrototypeCostTotalCost' readonly='readonly' tabindex=-1 /></td></tr>";
     objectname += "<tr class='ApiRequirement_" + bioStudyTypeId + "' data-biostudytypeid='" + bioStudyTypeId + "'><td>Scale Up Cost</td>";
     for (var i = 0; i < _strengthArray.length; i++) {
         objectname += '<td data-strengthid="' + _strengthArray[i].pidfProductStrengthId + '"> <input type="number" class="form-control calcRNDApirequirementsScaleUpCost" readonly="readonly" tabindex=-1 id="RNDApirequirements[' + [(i + _iterator)] + '].ScaleUpCost" name="RNDApirequirements[' + [(i + _iterator)] + '].ScaleUpCost" placeholder="Scale Up Cost" min="0" value="' + (getValueFromStrengthId(data, _strengthArray[i].pidfProductStrengthId, "scaleUpCost")) + '"/></td>';
 
     }
-    objectname += "<td><input type='number' class='form-control TotalStrength' readonly='readonly' tabindex=-1 /></td></tr>";
+    objectname += "<td><input type='number' class='form-control TotalStrength APIReqScaleupCostTotalCost' readonly='readonly' tabindex=-1 /></td></tr>";
     objectname += "<tr class='ApiRequirement_" + bioStudyTypeId + "' data-biostudytypeid='" + bioStudyTypeId + "'><td>Exhibit Batch Cost</td>";
     for (var i = 0; i < _strengthArray.length; i++) {
         objectname += '<td data-strengthid="' + _strengthArray[i].pidfProductStrengthId + '"> <input type="number" class="form-control calcRNDApirequirementsExhibitBatchCost"  readonly="readonly" tabindex=-1 id="RNDApirequirements[' + [(i + _iterator)] + '].ExhibitBatchCost" name="RNDApirequirements[' + [(i + _iterator)] + '].ExhibitBatchCost" placeholder="Exhibit Batch Cost" min="0" value="' + (getValueFromStrengthId(data, _strengthArray[i].pidfProductStrengthId, "exhibitBatchCost")) + '"/></td>';
 
     }
-    objectname += "<td><input type='number' class='form-control TotalStrength' readonly='readonly' tabindex=-1 /></td></tr>";
+    objectname += "<td><input type='number' class='form-control TotalStrength APIReqExhibitBatchTotalCost' readonly='readonly' tabindex=-1 /></td></tr>";
     objectname += "<tr class='ApiRequirement_" + bioStudyTypeId + "Total' data-biostudytypeid='" + bioStudyTypeId + "'><td class='text-bold'>Total Cost</td>";
     for (var i = 0; i < _strengthArray.length; i++) {
         objectname += "<td data-strengthid='" + _strengthArray[i].pidfProductStrengthId + "'><input type='number' class='form-control calcTotalCostForStrength' readonly='readonly' tabindex=-1 min='0' /></td>";
