@@ -1,8 +1,10 @@
 ﻿@using EmcureNPD.Business.Models
 @using Microsoft.Extensions.Configuration
+@inject Microsoft.Extensions.Localization.IStringLocalizer<EmcureNPD.Resource.Shared> SharedLocalizer
 @inject IConfiguration Configuration
 @model EmcureNPD.Business.Models.DataTableResponseModel
 @{
+    ViewData["Title"] = "Notification";
     int i = 0;
     string jsVersion = @Configuration.GetSection("StaticJS")["version"];
 }
@@ -21,7 +23,7 @@
                 <tr class="text-center">
                     <th>#</th>
                     <th>Title</th>
-                   @* <th>PidfNo</th>*@
+                    <th>Created By</th>
                     <th>Created On</th>
                 </tr>
             </thead>
@@ -50,5 +52,6 @@
 <script src="~/js/custom/notification/allnotifications.js?v=@jsVersion"></script>
 <script>
         const GetAllNotification = "@EmcureNPD.Web.Helpers.APIURLHelper.GetAllNotification";
+         var ErrorMessage = "@SharedLocalizer["Error"]";
 </script>
 }

@@ -19,11 +19,13 @@ function InitializeAuditLogList() {
         {
             "data": "moduleName", "name": "Module Name"
         },
+        //{
+        //    "data": "actionType", "name": "Action Type"
+        //},
         {
-            "data": "actionType", "name": "Action Type"
-        },
-        {
-            "data": "createdDate", "name": "Created Date"
+            "data": "createdDate", "Created Date": "Action", "render": function (data, type, row, meta) {
+                return moment(data).format("DD MMM YYYY h:m");
+            }
         },
         {
             "data": "createdBy", "name": "Created By"
@@ -41,10 +43,12 @@ function InitializeAuditLogList() {
 }
 
 function Viewlog(log, createdDate, createdBy) {
-    const date = new Date(createdDate);
-    const day = date.getDate().toString().padStart(2, '0');
-    const month = (date.getMonth() + 1).toString().padStart(2, '0');
-    const year = date.getFullYear().toString().slice(-2);
+    
+    //const date = new Date(createdDate);
+    //const day = date.getDate().toString().padStart(2, '0');
+    //const month = (date.getMonth() + 1).toString().padStart(2, '0');
+    //const year = date.getFullYear().toString().slice(-2);
+    //var formateddate = formatDate(createdDate)
     log = JSON.stringify(log);
   
     $.ajax({

@@ -1,9 +1,20 @@
 ﻿@using Microsoft.AspNetCore.Http;
 @using Microsoft.Extensions.Configuration
+@inject Microsoft.Extensions.Localization.IStringLocalizer<EmcureNPD.Resource.Shared> SharedLocalizer
 @inject IConfiguration Configuration
 @{
     string jsVersion = @Configuration.GetSection("StaticJS")["version"];
 }
+<style>
+.navbar-badge {
+    font-size: .8rem;
+    font-weight: 300;
+    padding: 2px 4px;
+    position: inherit;
+    right: 15px;
+    top: -20px;
+}
+</style>
 <!-- Navbar -->
 <nav class="main-header navbar navbar-expand navbar-white navbar-light">
     <!-- Left navbar links -->
@@ -55,9 +66,9 @@
             <div class="dropdown-menu dropdown-menu-lg dropdown-menu-right">
                 <span class="dropdown-item dropdown-header">@Convert.ToString(Context.Session.GetString(EmcureNPD.Web.Helpers.UserHelper.LoggedInUserName))</span>
                 <div class="dropdown-divider"></div>
-                <a class="dropdown-item" href="#">
+               @* <a class="dropdown-item" href="#">
                     <i class="fas fa-id-badge mr-2"></i> Manage Profile
-                </a>
+                </a>*@
                 <a href="@Url.Action("ChangePassword", "User")" class="dropdown-item">
                     <i class="fas fa-user-secret mr-2"></i>Change Password
                 </a>
@@ -77,5 +88,6 @@
     <script type="text/javascript" src="~/js/Custom/Notification/Notification.js?v=@jsVersion"></script>
     <script>
         var GetAllNotificationURL = "@EmcureNPD.Web.Helpers.APIURLHelper.GetAllNotification";
+         var ErrorMessage = "@SharedLocalizer["Error"]";
     </script>
     }

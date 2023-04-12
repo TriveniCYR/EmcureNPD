@@ -13,7 +13,7 @@ namespace EmcureNPD.Business.Models
         public string ModuleName { get; set; }
         public string ActionType { get; set; }
         public string CreatedBy { get; set; }
-        public DateTime? CreatedDate { get; set; }
+        public string CreatedDate { get; set; }
         public string log { get; set; }
     }
 }
