@@ -459,8 +459,8 @@
                 'background': "#ffffff",
                 'width': width
             }
-            let pdf = new jsPDF('l', 'mm', 'a1');
-            //let pdf = new jsPDF('p', 'mm', 'a4');
+            //let pdf = new jsPDF('l', 'mm', 'a1');
+            let pdf = new jsPDF('p', 'mm', 'a4');
             pdf.addHTML($("#divToExport"), options, function () {
                 pdf.save('APICharterSummary.pdf');
             });

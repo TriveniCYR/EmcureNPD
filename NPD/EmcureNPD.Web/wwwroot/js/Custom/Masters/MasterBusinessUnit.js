@@ -90,7 +90,9 @@ function SaveBusinessUnitForm(form) {
         businessUnitName: $('#SaveBusinessUnitModel #MasterBusinessUnitEntity_BusinessUnitName').val(),
         isActive: $('#SaveBusinessUnitModel #MasterBusinessUnitEntity_IsActive').prop('checked'),
         regionIds: $('#RegionId').val().toString(),
-        masterBusinessRegionMappingIds: $('#SaveBusinessUnitModel #BusinessUnitRegionMappingId').val()
+        masterBusinessRegionMappingIds: $('#SaveBusinessUnitModel #BusinessUnitRegionMappingId').val(),
+        Latitude: $('#SaveBusinessUnitModel #MasterBusinessUnitEntity_Latitude').val(),
+        Longitude: $('#SaveBusinessUnitModel #MasterBusinessUnitEntity_Longitude').val()
     };
     if ($(form).valid()) {
         ajaxServiceMethod($('#hdnBaseURL').val() + SaveBusinessUnit, 'POST', SaveBusinessUnitFormSuccess, SaveBusinessUnitFormError, JSON.stringify(obj));
