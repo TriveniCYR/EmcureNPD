@@ -9,6 +9,7 @@ using Microsoft.Extensions.Configuration;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Net.Http;
 
 namespace EmcureNPD.Web.Controllers
@@ -49,7 +50,7 @@ namespace EmcureNPD.Web.Controllers
             return View();
             //}
         }
-		public ActionResult AuditLogPartialView(DateTime createdDate, string createdBy,string log)
+		public ActionResult AuditLogPartialView(string createdDate, string createdBy,string log)
 		{
             ViewBag.log = JsonConvert.DeserializeObject(log);
             if(createdBy=="null" || createdBy==null || createdBy == " ")
@@ -57,7 +58,7 @@ namespace EmcureNPD.Web.Controllers
                 createdBy = "";
             }
             //createdBy = !string.IsNullOrEmpty(createdBy) ? createdBy : "";
-		    var Model = new AuditLogEntity { CreatedDate = createdDate, CreatedBy = createdBy };
+            var Model = new AuditLogEntity { CreatedDate = createdDate, CreatedBy = createdBy };
 			return PartialView("_AuditLogPartialView", Model);
 		}
 	}

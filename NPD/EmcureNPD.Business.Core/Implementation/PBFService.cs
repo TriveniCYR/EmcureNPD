@@ -28,6 +28,7 @@ using System.Data.SqlClient;
 using EmcureNPD.Utility.Enums;
 using System.Data;
 using System.Reflection;
+using Microsoft.AspNetCore.Mvc.Razor.Internal;
 
 namespace EmcureNPD.Business.Core.Implementation
 {
@@ -1425,6 +1426,7 @@ namespace EmcureNPD.Business.Core.Implementation
                 PidfPbf objPIDFPbf;
                 Pidf objPIDFupdate;
                 objPIDFPbf = _pbfRepository.GetAllQuery().Where(x => x.Pidfid == pbfentity.Pidfid).FirstOrDefault();
+                var OldPBFEntity = _mapperFactory.Get<PidfPbf,PBFFormEntity>(objPIDFPbf);
                 if (objPIDFPbf != null)
                 {
                     objPIDFPbf = _mapperFactory.Get<PBFFormEntity, PidfPbf>(pbfentity);
@@ -1432,6 +1434,8 @@ namespace EmcureNPD.Business.Core.Implementation
                     objPIDFPbf.ModifyDate = DateTime.Now;
                     _pbfRepository.UpdateAsync(objPIDFPbf);
                     await _unitOfWork.SaveChangesAsync();
+                    var isSuccess = await _auditLogService.CreateAuditLog<PBFFormEntity>(Utility.Audit.AuditActionType.Update,
+                  ModuleEnum.PBF, OldPBFEntity, pbfentity, loggedInUserId);
                 }
                 else
                 {
