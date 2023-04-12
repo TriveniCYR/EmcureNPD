@@ -36,6 +36,7 @@
                     <div class="form-group required">
                         @Html.LabelFor(model => model.ProjectName,@MasterLocalizer["ProjectName"], new { @class = "control-label" })<span class="text-danger">*</span>
                         @Html.TextBoxFor(model => model.ProjectName, new {@class = "form-control", @placeholder = @MasterLocalizer["ProjectName"] ,@required="required",@readonly ="readonly",@tabindex=-1})
+                    @Html.ValidationMessageFor(model => model.ProjectName, "", new { @class = "text-danger" })
                     </div>
                 </div>
                 <div class="col-md-3">
@@ -60,7 +61,7 @@
                     <div class="form-group required">
                         @Html.LabelFor(model => model.PatentStatus,"Patent Status", new { @class = "control-label" })<span class="text-danger">*</span>
                         @Html.TextBoxFor(model => model.PatentStatus, new {@class = "form-control", @placeholder = "Patent Status" ,@required="required",@readonly ="readonly",@tabindex=-1})
-
+                        
                     </div>
                 </div>
                 <div class="col-md-3">
@@ -68,6 +69,8 @@
                         @Html.LabelFor(model => model.BerequirementId, "BE Requirement", new { @class = "control-label" })<span class="text-danger">*</span>
                         <input type="hidden" id="hdnBERequirementId" value="@Model.BerequirementId" />
                         <select id="BERequirementId" name="BerequirementId" class="form-control readOnlyUpdate" required></select>
+                    @Html.ValidationMessageFor(model => model.BerequirementId, "", new { @class = "text-danger" })
+
                     </div>
                 </div>
 
@@ -77,7 +80,7 @@
                     <div class="form-group required">
                         @Html.LabelFor(model => model.NumberOfApprovedAnda,"No. of  Approved ANDAs", new { @class = "control-label" })<span class="text-danger">*</span>
                         @Html.TextBoxFor(model => model.NumberOfApprovedAnda, new {@class = "form-control", @placeholder = "No. of  Approved ANDAs" ,@required="required",type = "number", min = 0})
-
+                        @Html.ValidationMessageFor(model => model.NumberOfApprovedAnda, "", new { @class = "text-danger" })
                     </div>
                 </div>
 
@@ -86,6 +89,8 @@
                         @Html.LabelFor(model => model.ProductTypeId, "Product Type", new { @class = "control-label" })<span class="text-danger">*</span>
                         <input type="hidden" id="hdnProductTypeId" value="@Model.ProductTypeId" />
                         <select id="ProductTypeId" name="ProductTypeId" class="form-control readOnlyUpdate" required></select>
+                        @Html.ValidationMessageFor(model => model.ProductTypeId, "", new { @class = "text-danger" })
+
                     </div>
                 </div>
                 <div class="col-md-3">
@@ -93,6 +98,8 @@
                         @Html.LabelFor(model => model.PlantId, "Plant Name", new { @class = "control-label" })<span class="text-danger">*</span>
                         <input type="hidden" id="hdnPlantId" value="@Model.PlantId" />
                         <select id="PlantId" name="PlantId" class="form-control readOnlyUpdate" required></select>
+                        @Html.ValidationMessageFor(model => model.PlantId, "", new { @class = "text-danger" })
+
                     </div>
                 </div>
                 <div class="col-md-3">
@@ -100,6 +107,8 @@
                         @Html.LabelFor(model => model.WorkflowId, "Work Flow", new { @class = "control-label" })<span class="text-danger">*</span>
                         <input type="hidden" id="hdnWorkflowId" value="@Model.WorkflowId" />
                         <select id="WorkflowId" name="WorkflowId" class="form-control readOnlyUpdate" required></select>
+                        @Html.ValidationMessageFor(model => model.WorkflowId, "", new { @class = "text-danger" })
+
                     </div>
                 </div>
             </div>
@@ -109,12 +118,15 @@
                         @Html.LabelFor(model => model.DosageId, "Dosage", new { @class = "control-label" })<span class="text-danger">*</span>
                         <input type="hidden" id="hdnPbfDosageFormId" value="@Model.DosageId" />
                         <select id="PbfDosageFormId" name="DosageId" class="form-control readOnlyUpdate" required></select>
+                        @Html.ValidationMessageFor(model => model.DosageId, "", new { @class = "text-danger" })
+
                     </div>
                 </div>
                 <div class="col-md-3">
                     <div class="form-group required">
                         @Html.LabelFor(model => model.SponsorBusinessPartner,"Sponsor / Business Partner", new { @class = "control-label" })<span class="text-danger">*</span>
                         @Html.TextBoxFor(model => model.SponsorBusinessPartner, new {@class = "form-control", @placeholder = "Sponsor / Business Partner" ,@required="required"})
+                        @Html.ValidationMessageFor(model => model.SponsorBusinessPartner, "", new { @class = "text-danger" })
 
                     </div>
                 </div>
@@ -123,6 +135,7 @@
                         @Html.LabelFor(model => model.FillingTypeId,"Filling Type", new { @class = "control-label" })<span class="text-danger">*</span>
                         <input type="hidden" id="hdnFillingTypeId" value="@Model.FillingTypeId" />
                         <select id="FillingTypeId" name="FillingTypeId" class="form-control readOnlyUpdate" required></select>
+                        @Html.ValidationMessageFor(model => model.FillingTypeId, "", new { @class = "text-danger" })
 
                     </div>
                 </div>
@@ -130,6 +143,7 @@
                     <div class="form-group required">
                         @Html.LabelFor(model => model.BusinessRelationable,@MasterLocalizer["BusinessRationable"], new { @class = "control-label" })<span class="text-danger">*</span>
                         @Html.TextAreaFor(model => model.BusinessRelationable, new {@class = "form-control", @placeholder = @MasterLocalizer["BusinessRationable"] ,@required="required"})
+                        @Html.ValidationMessageFor(model => model.BusinessRelationable, "", new { @class = "text-danger" })
 
                     </div>
                 </div>
@@ -137,6 +151,7 @@
                     <div class="form-group required">
                         @Html.LabelFor(model => model.ScopeObjectives,"Scope & Objectives", new { @class = "control-label" })<span class="text-danger">*</span>
                         @Html.TextAreaFor(model => model.ScopeObjectives, new { @class = "form-control", @placeholder = "Scope & Objectives" ,@required="required"})
+                        @Html.ValidationMessageFor(model => model.ScopeObjectives, "", new { @class = "text-danger" })
 
                     </div>
                 </div>
@@ -167,6 +182,8 @@
                                         @Html.LabelFor(model => model.FormRnDdivisionId, "Form R&D Division", new { @class = "control-label" })<span class="text-danger">*</span>
                                         <input type="hidden" id="hdnPbfFormRNDDivisionId" value="@Model.FormRnDdivisionId" />
                                         <select id="PbfFormRNDDivisionId" name="FormRnDdivisionId" class="form-control readOnlyUpdate" required></select>
+                        @Html.ValidationMessageFor(model => model.FormRnDdivisionId, "", new { @class = "text-danger" })
+
                                     </div>
                                 </div>
 
@@ -174,6 +191,7 @@
                                     <div class="form-group required">
                                         @Html.LabelFor(model => model.ProjectInitiationDate,"Project Initiation Date", new { @class = "control-label" })<span class="text-danger">*</span>
                                         @Html.TextBoxFor(@modal=> modal.ProjectInitiationDate,"{0:yyyy-MM-dd}",new{@type="date",@class="form-control readOnlyUpdate", @placeholder = "Project Initiation Date",@required="required"})
+                        @Html.ValidationMessageFor(model => model.ProjectInitiationDate, "", new { @class = "text-danger" })
 
                                     </div>
                                 </div>
@@ -181,12 +199,15 @@
                                     <div class="form-group required">
                                         @Html.LabelFor(model => model.RnDhead,"R&D Head", new { @class = "control-label" })<span class="text-danger">*</span>
                                         @Html.TextBoxFor(model => model.RnDhead, new {@class = "form-control", @placeholder = "R&D Head",@required="required" })
+                        @Html.ValidationMessageFor(model => model.RnDhead, "", new { @class = "text-danger" })
+                                    
                                     </div>
                                 </div>
                                 <div class="col-md-3">
                                     <div class="form-group required">
                                         @Html.LabelFor(model => model.ProjectManager,"Project Manager", new { @class = "control-label" })<span class="text-danger">*</span>
                                         @Html.TextBoxFor(model => model.ProjectManager, new {@class = "form-control", @placeholder = "Project Manager" ,@required="required"})
+                        @Html.ValidationMessageFor(model => model.ProjectManager, "", new { @class = "text-danger" })
 
                                     </div>
                                 </div>
@@ -195,6 +216,8 @@
                                         @Html.LabelFor(model => model.PackagingTypeId, "Packaging type", new { @class = "control-label" })<span class="text-danger">*</span>
                                         <input type="hidden" id="hdnPbfPackagingTypeId" value="@Model.PackagingTypeId" />
                                         <select id="PbfPackagingTypeId" name="PackagingTypeId" class="form-control readOnlyUpdate" required></select>
+                        @Html.ValidationMessageFor(model => model.PackagingTypeId, "", new { @class = "text-danger" })
+
                                     </div>
                                 </div>
                                 <div class="col-md-3">
@@ -202,6 +225,8 @@
                                         @Html.LabelFor(model => model.ManufacturingId, "Manufacturing Plant", new { @class = "control-label" })<span class="text-danger">*</span>
                                         <input type="hidden" id="hdnPbfManufacturingId" value="@Model.ManufacturingId" />
                                         <select id="PbfManufacturingId" name="ManufacturingId" class="form-control readOnlyUpdate" required></select>
+                        @Html.ValidationMessageFor(model => model.ManufacturingId, "", new { @class = "text-danger" })
+
                                     </div>
                                 </div>
                             </div>
@@ -237,6 +262,7 @@
                                         @Html.LabelFor(model => model.BrandName,"Brand", new { @class = "control-label" })<span class="text-danger">*</span>
                                         <input type="hidden" id="hdnBrandName" value="@Model.BrandName" />
                                         @Html.TextBoxFor(model => model.BrandName, new {@class = "form-control", @placeholder = "Brand" ,@required="required"})
+                        @Html.ValidationMessageFor(model => model.BrandName, "", new { @class = "text-danger" })
 
                                     </div>
                                 </div>
@@ -248,6 +274,7 @@
                                         <input type="hidden" id="hdnRFDApplicant" value="@Model.RFDApplicant" />
 
                                         @Html.TextBoxFor(model => model.RFDApplicant, new {@class = "form-control", @placeholder = "Applicant" ,@required="required"})
+                        @Html.ValidationMessageFor(model => model.RFDApplicant, "", new { @class = "text-danger" })
 
                                     </div>
                                 </div>
@@ -256,6 +283,8 @@
                                         @Html.LabelFor(model => model.RFDCountryId, "Country", new { @class = "control-label" })<span class="text-danger">*</span>
                                         <input type="hidden" id="hdnPbfRFDCountryId" value="@Model.RFDCountryId" />
                                         <select id="PbfRFDCountryId" name="RFDCountryId" class="form-control readOnlyUpdate" required></select>
+                        @Html.ValidationMessageFor(model => model.RFDCountryId, "", new { @class = "text-danger" })
+
                                     </div>
                                 </div>
                                 <div class="col-md-3">
@@ -264,6 +293,8 @@
                                         <input type="hidden" id="hdnRFDIndication" value="@Model.RFDIndication" />
 
                                         @Html.TextBoxFor(model => model.RFDIndication, new {@class = "form-control", @placeholder = "Indication",@required="required" })
+                        @Html.ValidationMessageFor(model => model.RFDIndication, "", new { @class = "text-danger" })
+                                    
                                     </div>
                                 </div>
                             </div>
@@ -306,6 +337,7 @@
                                     <div class="form-group required">
                                         @Html.LabelFor(model => model.Capex,"Capex", new { @class = "control-label" })<span class="text-danger">*</span>
                                         @Html.TextBoxFor(model => model.Capex, new {@class = "form-control", @placeholder = "Capex" ,@required="required"})
+                        @Html.ValidationMessageFor(model => model.Capex, "", new { @class = "text-danger" })
 
                                     </div>
                                 </div>
@@ -321,6 +353,8 @@
                                     <div class="form-group required">
                                         @Html.LabelFor(model => model.ProjectComplexity,"Project Complexity", new { @class = "control-label" })<span class="text-danger">*</span>
                                         @Html.TextBoxFor(model => model.ProjectComplexity, new { @class = "form-control", @placeholder = "Project Complexity" ,@required="required"})
+                        @Html.ValidationMessageFor(model => model.ProjectComplexity, "", new { @class = "text-danger" })
+                                    
                                     </div>
                                 </div>
                                 <div class="col-md-3">
@@ -328,6 +362,8 @@
                                         @Html.LabelFor(model => model.GeneralProductTypeId, "Product Type", new { @class = "control-label" })<span class="text-danger">*</span>
                                         <input type="hidden" id="hdnGeneralProductTypeId" value="@Model.GeneralProductTypeId" />
                                         <select id="GeneralProductTypeId" name="GeneralProductTypeId" class="form-control readOnlyUpdate" required></select>
+                        @Html.ValidationMessageFor(model => model.GeneralProductTypeId, "", new { @class = "text-danger" })
+                                    
                                     </div>
                                 </div>
 
@@ -335,12 +371,16 @@
                                     <div class="form-group required">
                                         <label class="control-label">Budget and Timeline Submission</label><span class="text-danger">*</span>
                                         @Html.TextBoxFor(@modal=> modal.BudgetTimelineSubmissionDate,"{0:yyyy-MM-dd}",new{@type="date",@class="form-control readOnlyUpdate",@required="required"})
+                        @Html.ValidationMessageFor(model => model.BudgetTimelineSubmissionDate, "", new { @class = "text-danger" })
+                                    
                                     </div>
                                 </div>
                                 <div class="col-md-3">
                                     <div class="form-group required">
                                         <label class="control-label">Project Development Initial</label><span class="text-danger">*</span>
                                         @Html.TextBoxFor(@modal=> modal.ProjectDevelopmentInitialDate,"{0:yyyy-MM-dd}",new{@type="date",@class="form-control readOnlyUpdate",@required="required"})
+                        @Html.ValidationMessageFor(model => model.ProjectDevelopmentInitialDate, "", new { @class = "text-danger" })
+                                    
                                     </div>
                                 </div>
                                 <div class="col-md-3">
@@ -348,6 +388,8 @@
                                         @Html.LabelFor(model => model.FormulationGLId, "Formulation GL", new { @class = "control-label" })<span class="text-danger">*</span>
                                         <input type="hidden" id="hdnGeneralFormulationGLId" value="@Model.FormulationGLId" />
                                         <select id="GeneralFormulationGLId" name="FormulationGLId" class="form-control readOnlyUpdate" required></select>
+                        @Html.ValidationMessageFor(model => model.FormulationGLId, "", new { @class = "text-danger" })
+                                    
                                     </div>
                                 </div>
                                 <div class="col-md-3">
@@ -355,6 +397,8 @@
                                         @Html.LabelFor(model => model.AnalyticalGLId, "Analytical GL", new { @class = "control-label" })<span class="text-danger">*</span>
                                         <input type="hidden" id="hdnGeneralAnalyticalGLId" value="@Model.AnalyticalGLId" />
                                         <select id="GeneralAnalyticalGLId" name="AnalyticalGLId" class="form-control readOnlyUpdate" required></select>
+                        @Html.ValidationMessageFor(model => model.AnalyticalGLId, "", new { @class = "text-danger" })
+                                    
                                     </div>
                                 </div>
                                 <div class="col-md-3">

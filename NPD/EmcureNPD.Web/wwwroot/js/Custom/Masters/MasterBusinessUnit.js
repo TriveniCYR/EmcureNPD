@@ -62,6 +62,8 @@ function GetBusinessUnitByIdSuccess(data) {
 
         $('#SaveBusinessUnitModel #BusinessUnitID').val(data._object.businessUnitId);
         $('#SaveBusinessUnitModel #MasterBusinessUnitEntity_BusinessUnitName').val(data._object.businessUnitName);
+        $('#SaveBusinessUnitModel #MasterBusinessUnitEntity_Latitude').val(data._object.latitude);
+        $('#SaveBusinessUnitModel #MasterBusinessUnitEntity_Longitude').val(data._object.longitude);
         $('#SaveBusinessUnitModel #BusinessUnitTitle').html(UpdateLabel);
         if (!data._object.isActive) {
             $('#SaveBusinessUnitModel #MasterBusinessUnitEntity_IsActive').prop('checked', false);
@@ -121,6 +123,8 @@ function CleareBusinessUnitFields() {
     $('#SaveBusinessUnitModel #MasterBusinessUnitEntity_IsActive').prop('checked', true);
     $('#SaveBusinessUnitModel #BusinessUnitID').val("0");
     $('#SaveBusinessUnitModel #MasterBusinessUnitEntity_BusinessUnitName').val("");
+    $('#SaveBusinessUnitModel #MasterBusinessUnitEntity_Latitude').val("");
+    $('#SaveBusinessUnitModel #MasterBusinessUnitEntity_Longitude').val("");
     $('#DeleteBusinessUnitModel #BusinessUnitID').val("0");
     $('#SaveBusinessUnitModel #BusinessUnitRegionMappingId').val("");
     $('#SaveBusinessUnitModel #RegionId').val("");
