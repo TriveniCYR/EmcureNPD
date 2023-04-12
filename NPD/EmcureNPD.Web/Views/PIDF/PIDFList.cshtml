@@ -16,7 +16,7 @@
     var Ismanagement = Helper.IsManagementUser();
     ViewData["Title"] = @MasterLocalizer["PIDF List"];
     string jsVersion = @Configuration.GetSection("StaticJS")["version"];
-    bool IsApprovedToUser = true; /*UtilityHelper.GetCntrActionAccess( (int)Context.Request.Query["ScreenId"], Helper.GetLoggedInRoleId()).Approve;*/
+    bool IsAccessToLoggedInUser = true;  /*UtilityHelper.GetAccess(Int32.Parse(Convert.ToString(Context.Request.Query["ScreenId"])),Helper.GetLoggedInRoleId(),(int)PermissionEnum.Approve);*/
 }
 <div class="content-header">
     <div class="container-fluid d-flex justify-content-between">
@@ -44,7 +44,8 @@
             <h3>@SharedLocalizer["Management"]</h3>
             }
         <div>
-            @if (Context.Request.Query["ScreenId"] == Convert.ToString((int)EmcureNPD.Utility.Enums.PIDFScreen.PIDF) || Context.Request.Query["ScreenId"] == Convert.ToString((int)EmcureNPD.Utility.Enums.PIDFScreen.IPD) || Context.Request.Query["ScreenId"] == Convert.ToString((int)EmcureNPD.Utility.Enums.PIDFScreen.Finance) || (Context.Request.Query["ScreenId"] == Convert.ToString((int)EmcureNPD.Utility.Enums.PIDFScreen.Management) && Ismanagement.Equals("True")))
+            @if ( (Context.Request.Query["ScreenId"] == Convert.ToString((int)EmcureNPD.Utility.Enums.PIDFScreen.PIDF) || Context.Request.Query["ScreenId"] == Convert.ToString((int)EmcureNPD.Utility.Enums.PIDFScreen.IPD) || Context.Request.Query["ScreenId"] == Convert.ToString((int)EmcureNPD.Utility.Enums.PIDFScreen.Finance) || (Context.Request.Query["ScreenId"] == Convert.ToString((int)EmcureNPD.Utility.Enums.PIDFScreen.Management) && Ismanagement.Equals("True")))
+                  && IsAccessToLoggedInUser)
             {
                     <a class="btn btn-success"  onClick="ApproveRejectPIDF('A', @(Context.Request.Query["ScreenId"]), '/PIDF/PIDFList?ScreenId=@(Context.Request.Query["ScreenId"])')"><i class="fa fa-check-circle mr-1"></i> @SharedLocalizer["Approve"]</a>
                     <a class="btn btn-danger" onClick="ApproveRejectPIDF('R', @(Context.Request.Query["ScreenId"]), '/PIDF/PIDFList?ScreenId=@(Context.Request.Query["ScreenId"])')"><i class="fa fa-ban mr-1"></i> @SharedLocalizer["Reject"]</a>

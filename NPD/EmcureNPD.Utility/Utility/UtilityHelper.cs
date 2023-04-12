@@ -190,17 +190,24 @@ namespace EmcureNPD.Utility.Utility
             IEnumerable<RolePermissionModel> objVal = GetModuleRole<IEnumerable<RolePermissionModel>>(RoleId);
             if (objVal != null)
             {
-                var _permissionObject = objVal.Where(o => o.MainModuleId == ModuleId).FirstOrDefault();
+                var _permissionObject = objVal.Where(o => o.MainModuleId == ModuleId && (o.SubModuleId == SubModuleId || SubModuleId == 0)).FirstOrDefault();
                 if (_permissionObject != null && _permissionObject.RoleId > 0)
                 {
-                    //switch (PermissionType)
-                    //{
-                    //    case:  PermissionEnum.Add
-                    //    return _permissionObject.Add;
-                    //default:
-                    //        break;
-                    //}
-                    return true;
+                    switch (PermissionType)
+                    {
+                        case (int)PermissionEnum.Add:
+                            return _permissionObject.Add;
+                        case (int)PermissionEnum.Edit:
+                            return _permissionObject.Edit;
+                        case (int)PermissionEnum.Delete:
+                            return _permissionObject.Delete;
+                        case (int)PermissionEnum.View:
+                            return _permissionObject.View;
+                        case (int)PermissionEnum.Approve:
+                            return _permissionObject.Approve;
+                        default:
+                            break;
+                    }
                 }
             }
             return false;
