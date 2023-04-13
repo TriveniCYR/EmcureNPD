@@ -32,5 +32,6 @@ namespace EmcureNPD.Business.Core.Interface
         Task<string> ResetPassword(MasterUserResetPasswordEntity entity);
         Task<List<MasterBusinessUnitEntity>> GetBusinessUNitByUserId(int userid);
         Task<bool> IsTokenValid(string token);
+        SMTPEntityViewModel GetSMTPConfiguration();
     }
 }

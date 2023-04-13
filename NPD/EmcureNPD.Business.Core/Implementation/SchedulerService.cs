@@ -16,11 +16,15 @@ namespace EmcureNPD.Business.Core.Implementation {
 
         private readonly IUnitOfWork _unitOfWork;
         private readonly Microsoft.Extensions.Configuration.IConfiguration configuration;
+        private readonly IMasterUserService _MasterUserService;
         private IRepository<MasterUser> _masterUser { get; set; }
-        public SchedulerService(IUnitOfWork unitOfWork, Microsoft.Extensions.Configuration.IConfiguration _configuration) {
+        public SchedulerService(IUnitOfWork unitOfWork, Microsoft.Extensions.Configuration.IConfiguration _configuration
+                , IMasterUserService MasterUserService
+            ) {
             _unitOfWork = unitOfWork;
             _masterUser = unitOfWork.GetRepository<MasterUser>();
             configuration = _configuration;
+            _MasterUserService = MasterUserService;
         }
 
         public async Task<SendReminderModel> SendReminder() {
@@ -61,7 +65,7 @@ namespace EmcureNPD.Business.Core.Implementation {
             strHtml = strHtml.Replace("{DateTime}", sendReminderModel.RejectedDateTime.ToString());
             strHtml = strHtml.Replace("{FullName}", sendReminderModel.FullName);
             strHtml = strHtml.Replace("{MoleculeName}", sendReminderModel.MoleculeName);
-            email.SendMail(sendReminderModel.EmailAddress, string.Empty, "PIDF : {"+ sendReminderModel.PIDFNO+ "} - Molecule Name : {"+ sendReminderModel.MoleculeName+"} Commercial Detail pending", strHtml);
+            email.SendMail(sendReminderModel.EmailAddress, string.Empty, "PIDF : {"+ sendReminderModel.PIDFNO+ "} - Molecule Name : {"+ sendReminderModel.MoleculeName+"} Commercial Detail pending", strHtml,_MasterUserService.GetSMTPConfiguration());
         }
 
         public void AutoUpdatePIDFStatusMail(AutoUpdatePIDFStatusModel autoUpdatePIDFStatusModel) {
@@ -72,9 +76,7 @@ namespace EmcureNPD.Business.Core.Implementation {
             strHtml = strHtml.Replace("{PIDFStatus}", autoUpdatePIDFStatusModel.PIDFStatus);
             strHtml = strHtml.Replace("{MoleculeName}", autoUpdatePIDFStatusModel.MoleculeName);
             strHtml = strHtml.Replace("{FullName}", autoUpdatePIDFStatusModel.FullName);
-            email.SendMail(autoUpdatePIDFStatusModel.EmailAddress, string.Empty, " PIDF : {"+ autoUpdatePIDFStatusModel.PIDFNO+"} - Molecule Name : {"+ autoUpdatePIDFStatusModel.MoleculeName+"} - Auto Updated status : {" + autoUpdatePIDFStatusModel.PIDFStatus+"}", strHtml);
+            email.SendMail(autoUpdatePIDFStatusModel.EmailAddress, string.Empty, " PIDF : {"+ autoUpdatePIDFStatusModel.PIDFNO+"} - Molecule Name : {"+ autoUpdatePIDFStatusModel.MoleculeName+"} - Auto Updated status : {" + autoUpdatePIDFStatusModel.PIDFStatus+"}", strHtml, _MasterUserService.GetSMTPConfiguration());
         }
-
-
     }
 }

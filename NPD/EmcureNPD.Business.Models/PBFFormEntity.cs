@@ -1,5 +1,7 @@
-﻿using System;
+﻿using EmcureNPD.Resource.Resources;
+using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -13,43 +15,71 @@ namespace EmcureNPD.Business.Models
         public string ProjectName { get; set; }
         public string MarketIds { get; set; }
         public int[] MarketMappingId { get; set; }//insert into seperate table with business unit id
+        [Required(ErrorMessageResourceType = typeof(Validation), ErrorMessageResourceName = "Required")]
         public string BusinessRelationable { get; set; }
+        [Required(ErrorMessageResourceType = typeof(Validation), ErrorMessageResourceName = "Required")]
         public int BerequirementId { get; set; }
+        [Required(ErrorMessageResourceType = typeof(Validation), ErrorMessageResourceName = "Required")]
         public string NumberOfApprovedAnda { get; set; }
+        [Required(ErrorMessageResourceType = typeof(Validation), ErrorMessageResourceName = "Required")]
         public int ProductTypeId { get; set; }
+        [Required(ErrorMessageResourceType = typeof(Validation), ErrorMessageResourceName = "Required")]
         public int PlantId { get; set; }
+        [Required(ErrorMessageResourceType = typeof(Validation), ErrorMessageResourceName = "Required")]
         public int WorkflowId { get; set; }
+        [Required(ErrorMessageResourceType = typeof(Validation), ErrorMessageResourceName = "Required")]
         public int DosageId { get; set; }
+
         public string PatentStatus { get; set; }
+        [Required(ErrorMessageResourceType = typeof(Validation), ErrorMessageResourceName = "Required")]
         public string SponsorBusinessPartner { get; set; }
+        [Required(ErrorMessageResourceType = typeof(Validation), ErrorMessageResourceName = "Required")]
         public int FillingTypeId { get; set; }
+        [Required(ErrorMessageResourceType = typeof(Validation), ErrorMessageResourceName = "Required")]
         public string ScopeObjectives { get; set; }
 
 
         // Formulation Detils
+        [Required(ErrorMessageResourceType = typeof(Validation), ErrorMessageResourceName = "Required")]
         public int FormRnDdivisionId { get; set; }
+        [Required(ErrorMessageResourceType = typeof(Validation), ErrorMessageResourceName = "Required")]
         public DateTime? ProjectInitiationDate { get; set; }
+        [Required(ErrorMessageResourceType = typeof(Validation), ErrorMessageResourceName = "Required")]
         public string RnDhead { get; set; }
+        [Required(ErrorMessageResourceType = typeof(Validation), ErrorMessageResourceName = "Required")]
         public string ProjectManager { get; set; }
+        [Required(ErrorMessageResourceType = typeof(Validation), ErrorMessageResourceName = "Required")]
         public int? PackagingTypeId { get; set; }
+        [Required(ErrorMessageResourceType = typeof(Validation), ErrorMessageResourceName = "Required")]
         public int ManufacturingId { get; set; }
 
         //RFD sectipn
+        [Required(ErrorMessageResourceType = typeof(Validation), ErrorMessageResourceName = "Required")]
         public string BrandName { get; set; }
+        [Required(ErrorMessageResourceType = typeof(Validation), ErrorMessageResourceName = "Required")]
         public string RFDApplicant { get; set; }
+        [Required(ErrorMessageResourceType = typeof(Validation), ErrorMessageResourceName = "Required")]
         public int RFDCountryId { get; set; }
+        [Required(ErrorMessageResourceType = typeof(Validation), ErrorMessageResourceName = "Required")]
         public string RFDIndication { get; set; }
         //General section 
         public long PBFGeneralId { get; set; }
         public int BusinessUnitId { get; set; }
+        [Required(ErrorMessageResourceType = typeof(Validation), ErrorMessageResourceName = "Required")]
         public string Capex { get; set; }
         public double TotalExpense { get; set; }
+        [Required(ErrorMessageResourceType = typeof(Validation), ErrorMessageResourceName = "Required")]
         public string ProjectComplexity { get; set; }
+        [Required(ErrorMessageResourceType = typeof(Validation), ErrorMessageResourceName = "Required")]
         public int GeneralProductTypeId { get; set; }
         public string TestLicenseAvailability { get; set; }
+        [Required(ErrorMessageResourceType = typeof(Validation), ErrorMessageResourceName = "Required")]
         public DateTime? BudgetTimelineSubmissionDate { get; set; }
+        [Required(ErrorMessageResourceType = typeof(Validation), ErrorMessageResourceName = "Required")]
         public DateTime? ProjectDevelopmentInitialDate { get; set; }
+        [Required(ErrorMessageResourceType = typeof(Validation), ErrorMessageResourceName = "Required")]
         public int FormulationGLId { get; set; }
+        [Required(ErrorMessageResourceType = typeof(Validation), ErrorMessageResourceName = "Required")]
         public int AnalyticalGLId { get; set; }
         public int StrengthId { get; set; }
         public string SaveType { get; set; }

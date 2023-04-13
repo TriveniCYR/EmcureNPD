@@ -16,42 +16,65 @@
     var Ismanagement = Helper.IsManagementUser();
     ViewData["Title"] = @MasterLocalizer["PIDF List"];
     string jsVersion = @Configuration.GetSection("StaticJS")["version"];
-    bool IsAccessToLoggedInUser = true;  /*UtilityHelper.GetAccess(Int32.Parse(Convert.ToString(Context.Request.Query["ScreenId"])),Helper.GetLoggedInRoleId(),(int)PermissionEnum.Approve);*/
+    int ScreenModuleID = 0;
+    //bool IsAccessToLoggedInUser = UtilityHelper.GetAccess(Int32.Parse(Convert.ToString(Context.Request.Query["ScreenId"])), Helper.GetLoggedInRoleId(), (int)PermissionEnum.Approve);
+
 }
 <div class="content-header">
     <div class="container-fluid d-flex justify-content-between">
-            @if (Context.Request.Query["ScreenId"] == Convert.ToString((int)EmcureNPD.Utility.Enums.PIDFScreen.PIDF))
-            {
-                <h3>@MasterLocalizer["PIDF"]</h3>
-            }else if(Context.Request.Query["ScreenId"] == Convert.ToString((int)EmcureNPD.Utility.Enums.PIDFScreen.IPD)){
-                <h3>@SharedLocalizer["IPD"]</h3>
-            }else if(Context.Request.Query["ScreenId"] == Convert.ToString((int)EmcureNPD.Utility.Enums.PIDFScreen.Medical)){
-                <h3>@SharedLocalizer["Medical"]</h3>
+        @if (Context.Request.Query["ScreenId"] == Convert.ToString((int)EmcureNPD.Utility.Enums.PIDFScreen.PIDF))
+        {
+            <h3>@MasterLocalizer["PIDF"]</h3>
+            ScreenModuleID = (int)ModulePermissionEnum.PIDF;
+        }
+        else if (Context.Request.Query["ScreenId"] == Convert.ToString((int)EmcureNPD.Utility.Enums.PIDFScreen.IPD))
+        {
+            <h3>@SharedLocalizer["IPD"]</h3>
+            ScreenModuleID = (int)ModulePermissionEnum.IPD;
+        }
+        else if (Context.Request.Query["ScreenId"] == Convert.ToString((int)EmcureNPD.Utility.Enums.PIDFScreen.Medical))
+        {
+            <h3>@SharedLocalizer["Medical"]</h3>
+
         }
         else if (Context.Request.Query["ScreenId"] == Convert.ToString((int)EmcureNPD.Utility.Enums.PIDFScreen.Commercial))
         {
-                <h3>@SharedLocalizer["Commercial"]</h3>    
-            }else if(Context.Request.Query["ScreenId"] == Convert.ToString((int)EmcureNPD.Utility.Enums.PIDFScreen.API)){
-                <h3>@SharedLocalizer["API"]</h3>
+            <h3>@SharedLocalizer["Commercial"]</h3>
         }
-        else if (Context.Request.Query["ScreenId"] == Convert.ToString((int)EmcureNPD.Utility.Enums.PIDFScreen.PBF)){
-                <h3>@SharedLocalizer["PBF"]</h3>
+        else if (Context.Request.Query["ScreenId"] == Convert.ToString((int)EmcureNPD.Utility.Enums.PIDFScreen.API))
+        {
+            <h3>@SharedLocalizer["API"]</h3>
+        }
+        else if (Context.Request.Query["ScreenId"] == Convert.ToString((int)EmcureNPD.Utility.Enums.PIDFScreen.PBF))
+        {
+            <h3>@SharedLocalizer["PBF"]</h3>
         }
         else if (Context.Request.Query["ScreenId"] == Convert.ToString((int)EmcureNPD.Utility.Enums.PIDFScreen.Finance))
         {
-                <h3>@SharedLocalizer["Finance"]</h3>   
-            }else if(Context.Request.Query["ScreenId"] == Convert.ToString((int)EmcureNPD.Utility.Enums.PIDFScreen.Management)){
+            <h3>@SharedLocalizer["Finance"]</h3>
+            ScreenModuleID = (int)ModulePermissionEnum.Finance;
+        }
+        else if (Context.Request.Query["ScreenId"] == Convert.ToString((int)EmcureNPD.Utility.Enums.PIDFScreen.Management))
+        {
             <h3>@SharedLocalizer["Management"]</h3>
-            }
+            ScreenModuleID = (int)ModulePermissionEnum.ManagementHOD;
+        } 
+        else if (Context.Request.Query["ScreenId"] == Convert.ToString((int)EmcureNPD.Utility.Enums.PIDFScreen.Project))
+        {
+            <h3>@SharedLocalizer["Project Management"]</h3>
+        }
         <div>
-            @if ( (Context.Request.Query["ScreenId"] == Convert.ToString((int)EmcureNPD.Utility.Enums.PIDFScreen.PIDF) || Context.Request.Query["ScreenId"] == Convert.ToString((int)EmcureNPD.Utility.Enums.PIDFScreen.IPD) || Context.Request.Query["ScreenId"] == Convert.ToString((int)EmcureNPD.Utility.Enums.PIDFScreen.Finance) || (Context.Request.Query["ScreenId"] == Convert.ToString((int)EmcureNPD.Utility.Enums.PIDFScreen.Management) && Ismanagement.Equals("True")))
-                  && IsAccessToLoggedInUser)
+            @if (Context.Request.Query["ScreenId"] == Convert.ToString((int)EmcureNPD.Utility.Enums.PIDFScreen.PIDF) || Context.Request.Query["ScreenId"] == Convert.ToString((int)EmcureNPD.Utility.Enums.PIDFScreen.IPD) || Context.Request.Query["ScreenId"] == Convert.ToString((int)EmcureNPD.Utility.Enums.PIDFScreen.Finance) || (Context.Request.Query["ScreenId"] == Convert.ToString((int)EmcureNPD.Utility.Enums.PIDFScreen.Management) && Ismanagement.Equals("True")))
             {
-                    <a class="btn btn-success"  onClick="ApproveRejectPIDF('A', @(Context.Request.Query["ScreenId"]), '/PIDF/PIDFList?ScreenId=@(Context.Request.Query["ScreenId"])')"><i class="fa fa-check-circle mr-1"></i> @SharedLocalizer["Approve"]</a>
+                bool IsAccessToLoggedInUser = UtilityHelper.GetAccess(Int32.Parse(Convert.ToString(ScreenModuleID)), Helper.GetLoggedInRoleId(), (int)PermissionEnum.Approve);
+                @if(IsAccessToLoggedInUser)
+                {
+                    <a class="btn btn-success" onClick="ApproveRejectPIDF('A', @(Context.Request.Query["ScreenId"]), '/PIDF/PIDFList?ScreenId=@(Context.Request.Query["ScreenId"])')"><i class="fa fa-check-circle mr-1"></i> @SharedLocalizer["Approve"]</a>
                     <a class="btn btn-danger" onClick="ApproveRejectPIDF('R', @(Context.Request.Query["ScreenId"]), '/PIDF/PIDFList?ScreenId=@(Context.Request.Query["ScreenId"])')"><i class="fa fa-ban mr-1"></i> @SharedLocalizer["Reject"]</a>
+                }
             }
             @*<a class="btn btn-danger" onClick="approveRejDeleteData('D')"><i class="far fa fa-trash mr-1"></i> @SharedLocalizer["Delete"]</a>*@
-            @if ((Context.Request.Query["ScreenId"] == Convert.ToString((int)EmcureNPD.Utility.Enums.PIDFScreen.PIDF)) && @UtilityHelper.GetCntrActionAccess((int)ModulePermissionEnum.PIDF, Helper.GetLoggedInRoleId()).Approve)
+            @if ((Context.Request.Query["ScreenId"] == Convert.ToString((int)EmcureNPD.Utility.Enums.PIDFScreen.PIDF)) && UtilityHelper.GetAccess(Int32.Parse(Convert.ToString(ScreenModuleID)), Helper.GetLoggedInRoleId(), (int)PermissionEnum.Add))
             {
                 <a class="btn btn-primary" asp-action="PIDF"><i class="far fa-plus-square mr-1"></i> @SharedLocalizer["Add"]</a>
             }
@@ -61,47 +84,47 @@
 </div>
 
 <div class="container-fluid overflow-auto background-white-card">
-    <span class="text-danger" >Note: Below table is having horizontal scroolbar, Please scroll to view detailed column data.</span>
+    <span class="text-danger">Note: Below table is having horizontal scroolbar, Please scroll to view detailed column data.</span>
     <div>&nbsp;</div>
-        <table id="PIDFTable" class="table table-hover">
-            <thead>
-                <tr class="text-center">
-                    <th class="text-center" style="min-width:25px"></th>
-                    <th class="text-center" style="min-width:25px"></th>
-                    <th style="min-width:90px">@MasterLocalizer["PIDF No"]</th>
-                    <th style="min-width:110px">@MasterLocalizer["Project Name"]</th>
-                    <th style="min-width:110px">@SharedLocalizer["Brand Name"]</th>
-                    <th style="min-width:110px">@SharedLocalizer["Dosage Form"]</th>
-                    <th style="min-width:110px">@SharedLocalizer["Business Unit"]</th>
-                    <th style="min-width:110px">@SharedLocalizer["Oral Name"]</th>
-                    <th style="min-width:80px">@SharedLocalizer["In House"]</th>
-                    <th style="min-width:50px">@SharedLocalizer["IPD"]</th>
-                    <th style="min-width:50px">@SharedLocalizer["Medical"]</th>
-                    <th style="min-width:50px">@SharedLocalizer["Commercial"]</th>
-                    <th style="min-width:50px">@SharedLocalizer["PBF"]</th>
-                    <th style="min-width:50px">@SharedLocalizer["API"]</th>
-                    <th style="min-width:50px">@SharedLocalizer["Finance"]</th>
-@*                    <th style="min-width:50px">@SharedLocalizer["Management"]</th>*@
-                    <th style="min-width:140px">@SharedLocalizer["Market Extension"]</th>
-                    <th style="min-width:140px">@SharedLocalizer["Product Packaging"]</th>
-                    <th style="min-width:140px">@SharedLocalizer["Ref Product Brand"]</th>
-                    <th style="min-width:100px">@SharedLocalizer["Applicant"]</th>
-                    <th style="min-width:80px">@SharedLocalizer["Country"]</th>
+    <table id="PIDFTable" class="table table-hover">
+        <thead>
+            <tr class="text-center">
+                <th class="text-center" style="min-width:25px"></th>
+                <th class="text-center" style="min-width:25px"></th>
+                <th style="min-width:90px">@MasterLocalizer["PIDF No"]</th>
+                <th style="min-width:110px">@MasterLocalizer["Project Name"]</th>
+                <th style="min-width:110px">@SharedLocalizer["Brand Name"]</th>
+                <th style="min-width:110px">@SharedLocalizer["Dosage Form"]</th>
+                <th style="min-width:110px">@SharedLocalizer["Business Unit"]</th>
+                <th style="min-width:110px">@SharedLocalizer["Oral Name"]</th>
+                <th style="min-width:80px">@SharedLocalizer["In House"]</th>
+                <th style="min-width:50px">@SharedLocalizer["IPD"]</th>
+                <th style="min-width:50px">@SharedLocalizer["Medical"]</th>
+                <th style="min-width:50px">@SharedLocalizer["Commercial"]</th>
+                <th style="min-width:50px">@SharedLocalizer["PBF"]</th>
+                <th style="min-width:50px">@SharedLocalizer["API"]</th>
+                <th style="min-width:50px">@SharedLocalizer["Finance"]</th>
+                @*                    <th style="min-width:50px">@SharedLocalizer["Management"]</th>*@
+                <th style="min-width:140px">@SharedLocalizer["Market Extension"]</th>
+                <th style="min-width:140px">@SharedLocalizer["Product Packaging"]</th>
+                <th style="min-width:140px">@SharedLocalizer["Ref Product Brand"]</th>
+                <th style="min-width:100px">@SharedLocalizer["Applicant"]</th>
+                <th style="min-width:80px">@SharedLocalizer["Country"]</th>
                 <th style="min-width:80px">@SharedLocalizer["Indication"]</th>
-                    <th style="min-width:120px">@SharedLocalizer["DIA /ANDA/ ANDS"]</th>
-                    <th style="min-width:100px">@SharedLocalizer["Created By"]</th>
-                    <th style="min-width:100px">@SharedLocalizer["Created Date"]</th>
-                    <th style="min-width:150px">@SharedLocalizer["Status"]</th>
-                    <th style="min-width:100px" class="text-center">@SharedLocalizer["Action"]</th>
-                </tr>
-            </thead>
-            <tbody class="text-center">
-            </tbody>
-        </table>
+                <th style="min-width:120px">@SharedLocalizer["DIA /ANDA/ ANDS"]</th>
+                <th style="min-width:100px">@SharedLocalizer["Created By"]</th>
+                <th style="min-width:100px">@SharedLocalizer["Created Date"]</th>
+                <th style="min-width:150px">@SharedLocalizer["Status"]</th>
+                <th style="min-width:100px" class="text-center">@SharedLocalizer["Action"]</th>
+            </tr>
+        </thead>
+        <tbody class="text-center">
+        </tbody>
+    </table>
 </div>
 
 
-        @*ApproveModel*@
+@*ApproveModel*@
 @*        <div id="ApproveModel" class="modal themeModal" role="dialog">
             <div class="modal-dialog">
                 <!-- Modal content-->
@@ -126,8 +149,8 @@
                 </div>
             </div>
         </div>*@
-        @*RejectModel*@
-        @*<div id="RejectModel" class="modal themeModal" role="dialog">
+@*RejectModel*@
+@*<div id="RejectModel" class="modal themeModal" role="dialog">
             <div class="modal-dialog">
                 <!-- Modal content-->
                 <div class="modal-content">
@@ -151,8 +174,8 @@
                 </div>
             </div>
         </div>*@
-        @*DeletePIDFModel*@
-        @*<div id="DeleteModel" class="modal themeModal " role="dialog">
+@*DeletePIDFModel*@
+@*<div id="DeleteModel" class="modal themeModal " role="dialog">
             <div class="modal-dialog">
                 <!-- Modal content-->
                 <div class="modal-content">
@@ -179,8 +202,8 @@
         </div>*@
 
 
-    @Html.Partial("_PIDFApproveReject")
-    
+@Html.Partial("_PIDFApproveReject")
+
 @section MyScripts {
 
     @Html.Partial("_DataTablePartial")
@@ -203,48 +226,47 @@
         var UpdateLabel = "@SharedLocalizer["Update"]";
         var _screenId = '@Context.Request.Query["ScreenId"]';
         var successCallBack = '@TempData[EmcureNPD.Web.Helpers.UserHelper.SuccessMessage]';
-        if (successCallBack)
-        {
+        if (successCallBack) {
             toastr.success(successCallBack);
         }
         var IsEditPIDF = '@UtilityHelper.GetCntrActionAccess((int)ModulePermissionEnum.PIDF, Helper.GetLoggedInRoleId()).Edit' == 'True'
-        var IsAddPIDF = '@UtilityHelper.GetCntrActionAccess((int)ModulePermissionEnum.PIDF, Helper.GetLoggedInRoleId()).Add'== 'True'
-        var IsApprovePIDF = '@UtilityHelper.GetCntrActionAccess((int)ModulePermissionEnum.PIDF, Helper.GetLoggedInRoleId()).Approve'== 'True'
-        var IsViewPIDF = '@UtilityHelper.GetCntrActionAccess((int)ModulePermissionEnum.PIDF, Helper.GetLoggedInRoleId()).View'== 'True'
+        var IsAddPIDF = '@UtilityHelper.GetCntrActionAccess((int)ModulePermissionEnum.PIDF, Helper.GetLoggedInRoleId()).Add' == 'True'
+        var IsApprovePIDF = '@UtilityHelper.GetCntrActionAccess((int)ModulePermissionEnum.PIDF, Helper.GetLoggedInRoleId()).Approve' == 'True'
+        var IsViewPIDF = '@UtilityHelper.GetCntrActionAccess((int)ModulePermissionEnum.PIDF, Helper.GetLoggedInRoleId()).View' == 'True'
 
-        var IsEditIPD = '@UtilityHelper.GetCntrActionAccess((int)ModulePermissionEnum.IPD, Helper.GetLoggedInRoleId()).Edit'== 'True'
-        var IsAddIPD = '@UtilityHelper.GetCntrActionAccess((int)ModulePermissionEnum.IPD, Helper.GetLoggedInRoleId()).Add'== 'True'
-        var IsApproveIPD = '@UtilityHelper.GetCntrActionAccess((int)ModulePermissionEnum.IPD, Helper.GetLoggedInRoleId()).Approve'== 'True'
-        var IsViewIPD = '@UtilityHelper.GetCntrActionAccess((int)ModulePermissionEnum.IPD, Helper.GetLoggedInRoleId()).View'== 'True'
+        var IsEditIPD = '@UtilityHelper.GetCntrActionAccess((int)ModulePermissionEnum.IPD, Helper.GetLoggedInRoleId()).Edit' == 'True'
+        var IsAddIPD = '@UtilityHelper.GetCntrActionAccess((int)ModulePermissionEnum.IPD, Helper.GetLoggedInRoleId()).Add' == 'True'
+        var IsApproveIPD = '@UtilityHelper.GetCntrActionAccess((int)ModulePermissionEnum.IPD, Helper.GetLoggedInRoleId()).Approve' == 'True'
+        var IsViewIPD = '@UtilityHelper.GetCntrActionAccess((int)ModulePermissionEnum.IPD, Helper.GetLoggedInRoleId()).View' == 'True'
 
-        var IsEditFinance = '@UtilityHelper.GetCntrActionAccess((int)ModulePermissionEnum.Finance, Helper.GetLoggedInRoleId()).Edit'== 'True'
-        var IsAddFinance = '@UtilityHelper.GetCntrActionAccess((int)ModulePermissionEnum.Finance, Helper.GetLoggedInRoleId()).Add'== 'True'
-        var IsApproveFinance = '@UtilityHelper.GetCntrActionAccess((int)ModulePermissionEnum.Finance, Helper.GetLoggedInRoleId()).Approve'== 'True'
-        var IsViewFinance = '@UtilityHelper.GetCntrActionAccess((int)ModulePermissionEnum.Finance, Helper.GetLoggedInRoleId()).View'== 'True'
+        var IsEditFinance = '@UtilityHelper.GetCntrActionAccess((int)ModulePermissionEnum.Finance, Helper.GetLoggedInRoleId()).Edit' == 'True'
+        var IsAddFinance = '@UtilityHelper.GetCntrActionAccess((int)ModulePermissionEnum.Finance, Helper.GetLoggedInRoleId()).Add' == 'True'
+        var IsApproveFinance = '@UtilityHelper.GetCntrActionAccess((int)ModulePermissionEnum.Finance, Helper.GetLoggedInRoleId()).Approve' == 'True'
+        var IsViewFinance = '@UtilityHelper.GetCntrActionAccess((int)ModulePermissionEnum.Finance, Helper.GetLoggedInRoleId()).View' == 'True'
 
-        var IsEditMedical = '@UtilityHelper.GetCntrActionAccess((int)ModulePermissionEnum.Medical, Helper.GetLoggedInRoleId()).Edit'== 'True'
-        var IsAddMedical = '@UtilityHelper.GetCntrActionAccess((int)ModulePermissionEnum.Medical, Helper.GetLoggedInRoleId()).Add'== 'True'
-        var IsViewMedical = '@UtilityHelper.GetCntrActionAccess((int)ModulePermissionEnum.Medical, Helper.GetLoggedInRoleId()).View'== 'True'
+        var IsEditMedical = '@UtilityHelper.GetCntrActionAccess((int)ModulePermissionEnum.Medical, Helper.GetLoggedInRoleId()).Edit' == 'True'
+        var IsAddMedical = '@UtilityHelper.GetCntrActionAccess((int)ModulePermissionEnum.Medical, Helper.GetLoggedInRoleId()).Add' == 'True'
+        var IsViewMedical = '@UtilityHelper.GetCntrActionAccess((int)ModulePermissionEnum.Medical, Helper.GetLoggedInRoleId()).View' == 'True'
 
-        var IsEditCommercial = '@UtilityHelper.GetCntrActionAccess((int)ModulePermissionEnum.Commercial, Helper.GetLoggedInRoleId()).Edit'== 'True'
-        var IsAddCommercial = '@UtilityHelper.GetCntrActionAccess((int)ModulePermissionEnum.Commercial, Helper.GetLoggedInRoleId()).Add'== 'True'
-        var IsViewCommercial = '@UtilityHelper.GetCntrActionAccess((int)ModulePermissionEnum.Commercial, Helper.GetLoggedInRoleId()).View'== 'True'
+        var IsEditCommercial = '@UtilityHelper.GetCntrActionAccess((int)ModulePermissionEnum.Commercial, Helper.GetLoggedInRoleId()).Edit' == 'True'
+        var IsAddCommercial = '@UtilityHelper.GetCntrActionAccess((int)ModulePermissionEnum.Commercial, Helper.GetLoggedInRoleId()).Add' == 'True'
+        var IsViewCommercial = '@UtilityHelper.GetCntrActionAccess((int)ModulePermissionEnum.Commercial, Helper.GetLoggedInRoleId()).View' == 'True'
 
-        var IsEditProject = '@UtilityHelper.GetCntrActionAccess((int)ModulePermissionEnum.Project, Helper.GetLoggedInRoleId()).Edit'== 'True'
+        var IsEditProject = '@UtilityHelper.GetCntrActionAccess((int)ModulePermissionEnum.Project, Helper.GetLoggedInRoleId()).Edit' == 'True'
 
-        var IsApproveManagementHOD = '@UtilityHelper.GetCntrActionAccess((int)ModulePermissionEnum.ManagementHOD, Helper.GetLoggedInRoleId()).Approve'== 'True'
+        var IsApproveManagementHOD = '@UtilityHelper.GetCntrActionAccess((int)ModulePermissionEnum.ManagementHOD, Helper.GetLoggedInRoleId()).Approve' == 'True'
         var IsViewManagementHOD = '@UtilityHelper.GetCntrActionAccess((int)ModulePermissionEnum.ManagementHOD, Helper.GetLoggedInRoleId()).View' == 'True'
 
-        var IsViewAuditlogs = '@UtilityHelper.GetCntrActionAccess((int)ModulePermissionEnum.Auditlogs, Helper.GetLoggedInRoleId()).View'== 'True'
+        var IsViewAuditlogs = '@UtilityHelper.GetCntrActionAccess((int)ModulePermissionEnum.Auditlogs, Helper.GetLoggedInRoleId()).View' == 'True'
 
-        var IsEditAPIIPD = '@UtilityHelper.GetCntrActionAccess((int)ModulePermissionEnum.APIListManagement, Helper.GetLoggedInRoleId(),(int)SubModulePermissionEnum.APIIPD).Edit'== 'True'
-        var IsEditAPIRnD = '@UtilityHelper.GetCntrActionAccess((int)ModulePermissionEnum.APIListManagement, Helper.GetLoggedInRoleId(),(int)SubModulePermissionEnum.APIRnD).Edit'== 'True'
-        var IsEditAPICharter = '@UtilityHelper.GetCntrActionAccess((int)ModulePermissionEnum.APIListManagement, Helper.GetLoggedInRoleId(),(int)SubModulePermissionEnum.APICharter).Edit'== 'True'
-        var IsViewAPICharterSummary = '@UtilityHelper.GetCntrActionAccess((int)ModulePermissionEnum.APIListManagement, Helper.GetLoggedInRoleId(),(int)SubModulePermissionEnum.APICharterSummary).View'== 'True'
+        var IsEditAPIIPD = '@UtilityHelper.GetCntrActionAccess((int)ModulePermissionEnum.APIListManagement, Helper.GetLoggedInRoleId(),(int)SubModulePermissionEnum.APIIPD).Edit' == 'True'
+        var IsEditAPIRnD = '@UtilityHelper.GetCntrActionAccess((int)ModulePermissionEnum.APIListManagement, Helper.GetLoggedInRoleId(),(int)SubModulePermissionEnum.APIRnD).Edit' == 'True'
+        var IsEditAPICharter = '@UtilityHelper.GetCntrActionAccess((int)ModulePermissionEnum.APIListManagement, Helper.GetLoggedInRoleId(),(int)SubModulePermissionEnum.APICharter).Edit' == 'True'
+        var IsViewAPICharterSummary = '@UtilityHelper.GetCntrActionAccess((int)ModulePermissionEnum.APIListManagement, Helper.GetLoggedInRoleId(),(int)SubModulePermissionEnum.APICharterSummary).View' == 'True'
 
-        var IsEditPBF = '@UtilityHelper.GetCntrActionAccess((int)ModulePermissionEnum.PBF, Helper.GetLoggedInRoleId()).Edit'== 'True'
+        var IsEditPBF = '@UtilityHelper.GetCntrActionAccess((int)ModulePermissionEnum.PBF, Helper.GetLoggedInRoleId()).Edit' == 'True'
         var IsViewPBF = '@UtilityHelper.GetCntrActionAccess((int)ModulePermissionEnum.PBF, Helper.GetLoggedInRoleId()).View' == 'True'
 
-        //#endregion
+                        //#endregion
     </script>
 }

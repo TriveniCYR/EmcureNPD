@@ -6,8 +6,7 @@ var ColumnObjUpcase = ['CommercialPackagingTypeId', 'CommercialBatchSize', 'Pric
 var SelectedBUValue = 0;
 var selectedStrength = 0;
 
-$(document).ready(function () {
-    debugger;
+$(document).ready(function () {    
     InitializeProductTypeDropdown();
     //SetCommercialDivReadonly();
     InitializeCurrencyDropdown();
@@ -110,7 +109,7 @@ function ValidateYearForm() {
 
         
         if (jQuery.inArray(kv.name, objdropdownYearControls_array) != -1) {
-            console.log(kv);
+            
             if (kv.value == 0) {
 /*                $('#valmsg' + kv.name).text('Required');*/
                 $('#' + kv.name).addClass('InvalidBox');
@@ -396,7 +395,7 @@ function GetCommercialPIDFByBUSuccess(data) {
         SetCommercialDisableForOtherUserBU();
 
     } catch (e) {
-        console.log(e);
+        
         toastr.error('Get Commercial Error:' + e.message);
     }
 }

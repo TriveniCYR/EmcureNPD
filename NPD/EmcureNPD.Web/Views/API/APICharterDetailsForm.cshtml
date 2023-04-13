@@ -105,7 +105,7 @@
                                         @if (i == 6)
                                         {
                                                 <td style="width:50%">
-                                                @Html.TextBoxFor(model => model.TimelineInMonths[i].TimelineInMonthsValue, new {@readonly = "readonly", @class = "form-control" , @placeholder="" })
+                                                @Html.TextBoxFor(model => model.TimelineInMonths[i].TimelineInMonthsValue, new {@readonly = "readonly" ,@tabindex="-1", @class = "form-control" , @placeholder="" })
                                                 <label class="text-danger" style="display:contents"></label>
                                             </td>
                                         }
@@ -265,7 +265,7 @@
                                                 <label class="text-danger" style="display:contents"></label>
                                             </td>
                                             <td>
-                                                @Html.TextBoxFor(model => model.CapitalOtherExpenditure[i].CapitalOtherExpenditureRemarkValue, new { @type="number",@class = "form-control" , @placeholder="" })
+                                                @Html.TextBoxFor(model => model.CapitalOtherExpenditure[i].CapitalOtherExpenditureRemarkValue, new { @class = "form-control" , @placeholder="" })
                                                 <label class="text-danger" style="display:contents"></label>
                                             </td>
                                         </tr>

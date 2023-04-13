@@ -182,33 +182,40 @@ namespace EmcureNPD.Utility.Utility
                     }
                 }
             }
-            return true;
+            return false;
         }
 
         public static bool GetAccess(int ModuleId, int RoleId, int PermissionType, int SubModuleId = 0)
         {
-            IEnumerable<RolePermissionModel> objVal = GetModuleRole<IEnumerable<RolePermissionModel>>(RoleId);
-            if (objVal != null)
+            try
             {
-                var _permissionObject = objVal.Where(o => o.MainModuleId == ModuleId && (o.SubModuleId == SubModuleId || SubModuleId == 0)).FirstOrDefault();
-                if (_permissionObject != null && _permissionObject.RoleId > 0)
+                IEnumerable<RolePermissionModel> objVal = GetModuleRole<IEnumerable<RolePermissionModel>>(RoleId);
+                if (objVal != null)
                 {
-                    switch (PermissionType)
+                    var _permissionObject = objVal.Where(o => o.MainModuleId == ModuleId && (o.SubModuleId == SubModuleId || SubModuleId == 0)).FirstOrDefault();
+                    if (_permissionObject != null && _permissionObject.RoleId > 0)
                     {
-                        case (int)PermissionEnum.Add:
-                            return _permissionObject.Add;
-                        case (int)PermissionEnum.Edit:
-                            return _permissionObject.Edit;
-                        case (int)PermissionEnum.Delete:
-                            return _permissionObject.Delete;
-                        case (int)PermissionEnum.View:
-                            return _permissionObject.View;
-                        case (int)PermissionEnum.Approve:
-                            return _permissionObject.Approve;
-                        default:
-                            break;
+                        switch (PermissionType)
+                        {
+                            case (int)PermissionEnum.Add:
+                                return _permissionObject.Add;
+                            case (int)PermissionEnum.Edit:
+                                return _permissionObject.Edit;
+                            case (int)PermissionEnum.Delete:
+                                return _permissionObject.Delete;
+                            case (int)PermissionEnum.View:
+                                return _permissionObject.View;
+                            case (int)PermissionEnum.Approve:
+                                return _permissionObject.Approve;
+                            default:
+                                break;
+                        }
                     }
                 }
+            }
+            catch (Exception ex) 
+            {
+                return false;
             }
             return false;
         }

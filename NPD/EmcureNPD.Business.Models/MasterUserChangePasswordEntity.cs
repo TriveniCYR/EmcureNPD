@@ -22,7 +22,10 @@ namespace EmcureNPD.Business.Models
 
         [Display(Name = "Password", ResourceType = typeof(Master))]
         [Required(ErrorMessageResourceType = typeof(Validation), ErrorMessageResourceName = "Required")]
-        [StringLength(10, ErrorMessage = "Must be between 5 and 10 characters", MinimumLength = 5)]
+        [RegularExpression(@"^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,16}$",ErrorMessage = "A password must have Minimum 8, " +
+            "Maximum 16 characters,at least one number,at least one upper case,at least one lower case," +
+            "at least one special character e.g. @$!%*?&")]
+        
         [DataType(DataType.Password)]
         public string Password { get; set; }
 
