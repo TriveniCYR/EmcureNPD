@@ -9,6 +9,7 @@ namespace EmcureNPD.Data.DataAccess.Entity
     {
         public MasterUser()
         {
+            MasterNotificationUsers = new HashSet<MasterNotificationUser>();
             MasterUserBusinessUnitMappings = new HashSet<MasterUserBusinessUnitMapping>();
             MasterUserCountryMappings = new HashSet<MasterUserCountryMapping>();
             MasterUserDepartmentMappings = new HashSet<MasterUserDepartmentMapping>();
@@ -43,6 +44,7 @@ namespace EmcureNPD.Data.DataAccess.Entity
         public string DesignationName { get; set; }
 
         public virtual MasterRole Role { get; set; }
+        public virtual ICollection<MasterNotificationUser> MasterNotificationUsers { get; set; }
         public virtual ICollection<MasterUserBusinessUnitMapping> MasterUserBusinessUnitMappings { get; set; }
         public virtual ICollection<MasterUserCountryMapping> MasterUserCountryMappings { get; set; }
         public virtual ICollection<MasterUserDepartmentMapping> MasterUserDepartmentMappings { get; set; }
