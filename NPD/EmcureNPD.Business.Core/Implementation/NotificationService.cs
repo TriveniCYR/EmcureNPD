@@ -26,6 +26,7 @@ namespace EmcureNPD.Business.Core.Implementation {
         private readonly IStringLocalizer<Errors> _stringLocalizerError;
         private readonly Microsoft.Extensions.Configuration.IConfiguration configuration;
         private IRepository<MasterNotification> _repository { get; set; }
+        private IRepository<MasterNotificationUser> _repositoryNotificationUser { get; set; }
         private readonly IHelper _helper;
 
         public NotificationService(IUnitOfWork unitOfWork, IMapperFactory mapperFactory, IStringLocalizer<Errors> stringLocalizerError,
@@ -34,6 +35,7 @@ namespace EmcureNPD.Business.Core.Implementation {
             _unitOfWork = unitOfWork;
             _mapperFactory = mapperFactory;
             _repository = _unitOfWork.GetRepository<MasterNotification>();
+            _repositoryNotificationUser = _unitOfWork.GetRepository<MasterNotificationUser>();
             configuration = _configuration;
             _helper = helper;
         }
@@ -139,5 +141,24 @@ namespace EmcureNPD.Business.Core.Implementation {
             await _unitOfWork.SaveChangesAsync();
             return DBOperation.Success;
         }
+        public async Task<DBOperation> ClickedNotification()
+        {
+            int userId = _helper.GetLoggedInUser().UserId;
+            var _objClickedgNotUser = _repositoryNotificationUser.GetAllQuery().Where(x => x.UserId == userId).FirstOrDefault();
+            if (_objClickedgNotUser != null)
+            {
+                _objClickedgNotUser.UpdateDate = DateTime.Now;
+                _repositoryNotificationUser.UpdateAsync(_objClickedgNotUser);
+            }
+            else {
+                MasterNotificationUser _objClickedgNotUserAdd = new();
+                _objClickedgNotUserAdd.UserId = userId;
+                _objClickedgNotUserAdd.UpdateDate = DateTime.Now;
+                _repositoryNotificationUser.AddAsync(_objClickedgNotUserAdd);
+            }
+            await _unitOfWork.SaveChangesAsync();
+            return DBOperation.Success;
+        }
+
     }
 }

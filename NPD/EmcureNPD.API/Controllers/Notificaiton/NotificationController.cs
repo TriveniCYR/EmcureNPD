@@ -77,5 +77,19 @@ namespace EmcureNPD.API.Controllers.Notificaiton {
 				return _ObjectResponse.Create(false, (Int32)HttpStatusCode.InternalServerError, Convert.ToString(ex.StackTrace));
 			}
 		}
-	}
+        [HttpGet, Route("NotificationsClickedByUser")]
+        //[OutputCache(Duration = 120, VaryByParam = "RoleId")]
+        public async Task<IActionResult> NotificationsClickedByUser()
+        {
+            try
+            {
+                return _ObjectResponse.CreateData(await _NotificationService.ClickedNotification(),(Int32)HttpStatusCode.OK);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogInformation($"ERROR:Notifications/GetFilteredNotifications:{ex}");
+                return _ObjectResponse.Create(false, (Int32)HttpStatusCode.InternalServerError, Convert.ToString(ex.StackTrace));
+            }
+        }
+    }
 }
