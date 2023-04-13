@@ -228,7 +228,7 @@ tr.bg-primary td, thead.bg-primary th {
     margin: auto;
 }
 form-control.is-valid, .was-validated .form-control:valid {
-    border-color: none !important;
+    border: var(--bs-border-width) solid var(--bs-border-color) !important;
     padding-right: calc(1.5em + 0.75rem);
     background-image: none !important;
     background-repeat: no-repeat;
