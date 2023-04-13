@@ -159,7 +159,7 @@
 
 						</ul>
 					</li>
-					@if (UtilityHelper.GetMenuAccess((int)ModulePermissionEnum.PIDF, _roleId)){
+					@if (UtilityHelper.GetMenuAccess((int)ModulePermissionEnum.Project, _roleId)){
 					<li class="nav-item">
 					<a href="@Url.Action("PIDFList","PIDF", new { ScreenId = Convert.ToString((int)EmcureNPD.Utility.Enums.PIDFScreen.Project)})" class="nav-link">
 										<i class="nav-icon fas fa-coins"></i>

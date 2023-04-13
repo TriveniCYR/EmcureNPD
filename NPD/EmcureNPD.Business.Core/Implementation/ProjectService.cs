@@ -4,6 +4,7 @@ using EmcureNPD.Business.Models;
 using EmcureNPD.Data.DataAccess.Core.Repositories;
 using EmcureNPD.Data.DataAccess.Core.UnitOfWork;
 using EmcureNPD.Data.DataAccess.Entity;
+using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Data.SqlClient;
@@ -111,8 +112,19 @@ namespace EmcureNPD.Business.Core.Implementation
                     task.TaskDuration = addTaskModel.TaskDuration;
                     task.TotalPercentage = addTaskModel.TotalPercentage;
                     task.TaskOwnerId = addTaskModel.TaskOwnerId;
-                    _projectTaskRepository.UpdateAsync(task);
-                    await _unitOfWork.SaveChangesAsync();
+                    //if (addTaskModel.IsGanttUpdate)
+                    //{
+                    //    if (await UpdateMainTaskProgressByParentId(task.ParentId.ToString(), addTaskModel.TotalPercentage))
+                    //    {
+                    //        _projectTaskRepository.UpdateAsync(task);
+                    //        await _unitOfWork.SaveChangesAsync();
+                    //    }
+                    //}
+                    //else
+                    //{
+                        _projectTaskRepository.UpdateAsync(task);
+                        await _unitOfWork.SaveChangesAsync();
+                    //}
                     return DBOperation.Success;
                 }
                 else
@@ -221,6 +233,23 @@ namespace EmcureNPD.Business.Core.Implementation
             };
             DataSet BusinesUnitDetails = await _repository.GetDataSetBySP("GetBusinessUnitDetails", System.Data.CommandType.StoredProcedure, osqlParameter);
             return BusinesUnitDetails;
+        }
+        public async Task<dynamic> UpdateMainTaskProgressByParentId(string ParentId, double TotalPercentage)
+        {
+            ProjectTask task;
+            if (TotalPercentage > 0)
+            {
+                task = await _projectTaskRepository.GetAsync(Convert.ToInt64(ParentId));
+                if (task != null)
+                    
+                {   //double totalPercentage=task.TaskLevel==1? TotalPercentage:(totalPercentage)
+                    task.TotalPercentage = TotalPercentage;
+                    _projectTaskRepository.UpdateAsync(task);
+                    await _unitOfWork.SaveChangesAsync();
+                    return true;
+                }
+            }
+            return false;
         }
     }
 }

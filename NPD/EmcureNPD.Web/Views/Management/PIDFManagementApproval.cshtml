@@ -9,6 +9,8 @@
 @inject Microsoft.Extensions.Localization.IStringLocalizer<EmcureNPD.Resource.Shared> SharedLocalizer
 @using EmcureNPD.Utility.Utility
 @using EmcureNPD.Utility.Enums
+@using Microsoft.AspNetCore.Mvc.Localization
+@using EmcureNPD.Utility.Models;
 @using EmcureNPD.Business.Models
 @using Microsoft.Extensions.Configuration;
 @model EmcureNPD.Business.Models.ProjectsModel
@@ -18,6 +20,8 @@
     var PidafId=Context.Request.Query["pidfid"];
     var PidfNumber = UtilityHelper.Decreypt(Convert.ToString(PidafId));
     string jsVersion = @Configuration.GetSection("StaticJS")["version"];
+    RolePermissionModel objPermssion = (RolePermissionModel)ViewBag.Access;
+    string IsApproveAllow = (objPermssion.Approve) ? "" : "display: none";
   }
 <div class="container-fluid d-flex justify-content-between">
     <h3>Management Approval</h3>
@@ -603,8 +607,8 @@
                         @if (item.UserId == CurrentUserId && ((Int32)item.StatusId != (Int32)Master_PIDFStatus.ManagementApproved && (Int32)item.StatusId != (Int32)Master_PIDFStatus.ManagementRejected)) //CurrentUserId)1048
                             {
 
-                            <a class="btn btn-success operationButton" onClick="ApproveRejectClick('A', '@PidfNumber', @((int)EmcureNPD.Utility.Enums.PIDFScreen.Management), '/PIDF/PIDFList?ScreenId=@((int)EmcureNPD.Utility.Enums.PIDFScreen.Management)')"><i class="fa fa-check-circle mr-1"></i> @SharedLocalizer["Approve"]</a>
-                            <a class="btn btn-danger  operationButton" onClick="ApproveRejectClick('R', '@PidfNumber', @((int)EmcureNPD.Utility.Enums.PIDFScreen.Management), '/PIDF/PIDFList?ScreenId=@((int)EmcureNPD.Utility.Enums.PIDFScreen.Management)')"><i class="fa fa-ban mr-1"></i> @SharedLocalizer["Reject"]</a>
+                            <a style="@IsApproveAllow" class="btn btn-success operationButton" onClick="ApproveRejectClick('A', '@PidfNumber', @((int)EmcureNPD.Utility.Enums.PIDFScreen.Management), '/PIDF/PIDFList?ScreenId=@((int)EmcureNPD.Utility.Enums.PIDFScreen.Management)')"><i class="fa fa-check-circle mr-1"></i> @SharedLocalizer["Approve"]</a>
+                            <a style="@IsApproveAllow" class="btn btn-danger  operationButton" onClick="ApproveRejectClick('R', '@PidfNumber', @((int)EmcureNPD.Utility.Enums.PIDFScreen.Management), '/PIDF/PIDFList?ScreenId=@((int)EmcureNPD.Utility.Enums.PIDFScreen.Management)')"><i class="fa fa-ban mr-1"></i> @SharedLocalizer["Reject"]</a>
                         }
                         else if ((Int32)item.StatusId == (Int32)Master_PIDFStatus.ManagementApproved)
                         {
