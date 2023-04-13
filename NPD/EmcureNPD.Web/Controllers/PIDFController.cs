@@ -57,6 +57,10 @@ namespace EmcureNPD.Web.Controllers
             PIDFEntity pidf;
             try
             {
+
+                int rolId = (int)HttpContext.Session.GetInt32(UserHelper.LoggedInRoleId);
+                RolePermissionModel objPermssion = UtilityHelper.GetCntrActionAccess((int)ModulePermissionEnum.PIDF, rolId);
+                ViewBag.Access = objPermssion;
                 string logUserId = Convert.ToString(HttpContext.Session.GetString(UserHelper.LoggedInUserId));
                 if (PIDFId == null || PIDFId <= 0)
                 {

@@ -126,10 +126,8 @@ namespace EmcureNPD.Business.Core.Implementation
 							iteration++;
 						}
 					}
-					//status update in PIDF
 					await _auditLogService.UpdatePIDFStatusCommon(medicalModel.Pidfid, (int)Master_PIDFStatus.MedicalSubmitted, medicalModel.CreatedBy);
-					//test to update notification
-					await _notificationService.UpdateNotification(13, string.Empty, string.Empty, medicalModel.CreatedBy);
+					await _notificationService.CreateNotification((int)medicalModel.Pidfid, (int)Master_PIDFStatus.MedicalSubmitted, string.Empty, string.Empty, medicalModel.CreatedBy);
 
 					var isSuccess = await _auditLogService.CreateAuditLog<PIDFMedicalViewModel>(medicalModel.PidfmedicalId > 0 ? Utility.Audit.AuditActionType.Update : Utility.Audit.AuditActionType.Create,
 						   Utility.Enums.ModuleEnum.Medical, oldPIDFFEntity, medicalModel, Convert.ToInt32(objPIDFMedical.PidfmedicalId));
@@ -205,10 +203,8 @@ namespace EmcureNPD.Business.Core.Implementation
 						iteration++;
 					}
 				}
-				//Status Update in PIDF
 				await _auditLogService.UpdatePIDFStatusCommon(medicalModel.Pidfid, (int)Master_PIDFStatus.MedicalSubmitted, medicalModel.CreatedBy);
 
-				//test To create notification
 				await _notificationService.CreateNotification((int)medicalModel.Pidfid, (int)Master_PIDFStatus.MedicalSubmitted, string.Empty, string.Empty, medicalModel.CreatedBy);
 
 				return DBOperation.Success;

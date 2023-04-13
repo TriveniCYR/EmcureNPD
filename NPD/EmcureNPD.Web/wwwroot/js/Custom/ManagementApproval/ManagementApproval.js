@@ -18,9 +18,13 @@ $('#btnExportToPdf').click(() => {
     
     let width = $("#frmMA").width();
     let options = {
-        'background': "#ffffff",
-        //'width': width
+        pagesplit: true,
+        'background': "#ffffff"
+       /* 'width': width*/
+        //'fontname':"Times-Roman",
+        //'fontsize':"15"
     }
+
      let pdf = new jsPDF('p', 'pt', 'a4');
     //let pdf = new jsPDF('p', 'mm', 'a4');
     pdf.addHTML($("#frmMA"), options, function () {

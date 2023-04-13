@@ -42,6 +42,9 @@ namespace EmcureNPD.Web.Controllers
         }
         public IActionResult PIDFManagementApproval()
         {
+            int rolId = (int)HttpContext.Session.GetInt32(UserHelper.LoggedInRoleId);
+            RolePermissionModel objPermssion = UtilityHelper.GetCntrActionAccess((int)ModulePermissionEnum.ManagementHOD, rolId);
+            ViewBag.Access = objPermssion;
             var pidfid = Request.Query["pidfid"];
             if (pidfid != "")
             {

@@ -1,4 +1,6 @@
+let taskStatus=[]
 document.addEventListener("DOMContentLoaded", function () {
+    let responsTtaskList = null;
     $("#lblProjectName").text(localStorage.getItem("prjName"));
     //gantt.config.columns = [
     //    { name: "taskName", label: "Task name", width: "150", resize: true, tree: true },
@@ -250,12 +252,22 @@ document.addEventListener("DOMContentLoaded", function () {
     function parent_progress(id) {
         var temptask;
         gantt.eachParent(function (task) {
-            
-            var children = gantt.getChildren(task.id);
-            var child_progress = 0;
-            for (var i = 0; i < children.length; i++) {
-                var child = gantt.getTask(children[i])
-                child_progress += (child.progress * 100);
+            let response = responsTtaskList;
+            if (response != undefined && response.length > 0) {
+                var children = gantt.getChildren(task.id);
+                var child_progress = 0;
+                for (var i = 0; i < children.length; i++) {
+                    var child = gantt.getTask(children[i])
+                    child_progress += parseInt(response[i].totalPercentage) //* 100;
+                }
+            }
+            else {
+                var children = gantt.getChildren(task.id);
+                var child_progress = 0;
+                for (var i = 0; i < children.length; i++) {
+                    var child = gantt.getTask(children[i])
+                    child_progress += (child.progress * 100);
+                }
             }
             task.progress = child_progress / children.length / 100;
             temptask = task;
@@ -264,27 +276,27 @@ document.addEventListener("DOMContentLoaded", function () {
         //console.log(temptask);
 
 
-        if (temptask != undefined) {
-            var response1 = gantt.ajax.put({
-                headers: {
-                    "Content-Type": "application/json"
-                },
-                url: $('#hdnBaseURL').val() + "api/Project/GetTaskSubTask" + "/" + id, //"https://localhost:44358/api" + "/task/" + temptask.id,
-                data: JSON.stringify(temptask)
+        //if (temptask != undefined) {
+        //    var response1 = gantt.ajax.put({
+        //        headers: {
+        //            "Content-Type": "application/json"
+        //        },
+        //        url: $('#hdnBaseURL').val() + "api/Project/GetTaskSubTask" + "/" + id, //"https://localhost:44358/api" + "/task/" + temptask.id,
+        //        data: JSON.stringify(temptask)
 
-                //return gantt.ajax.put({
-                //    headers: {
-                //        "Content-Type": "application/json"
-                //    },
-                //    url: "https://localhost:44358/api" + "/task/" + temptask.id,
-                //    data: JSON.stringify(temptask)
-                //success: function (response) {
-                //}
-            });
+        //        //return gantt.ajax.put({
+        //        //    headers: {
+        //        //        "Content-Type": "application/json"
+        //        //    },
+        //        //    url: "https://localhost:44358/api" + "/task/" + temptask.id,
+        //        //    data: JSON.stringify(temptask)
+        //        //success: function (response) {
+        //        //}
+        //    });
 
-            console.log("response1"+response1);
+        //    console.log("response1"+response1);
 
-        }
+        //}
         //setTimeout(reloadFunc, 3000);
     }
 
@@ -433,10 +445,10 @@ document.addEventListener("DOMContentLoaded", function () {
 
         task.planned_start = gantt.date.parseDate(task.planned_start, "xml_date");
         task.planned_end = gantt.date.parseDate(task.planned_end, "xml_date");
-
+        
         return true;
     });
-
+  
     var resourceMode = "hours";
     gantt.attachEvent("onGanttReady", function () {
         var tooltips = gantt.ext.tooltips;
@@ -498,10 +510,15 @@ document.addEventListener("DOMContentLoaded", function () {
 
     //OnAfterTaskUpdate for Parent Task progress
     gantt.attachEvent("onAfterTaskUpdate", function (id, task) {
+        responsTtaskList = null;
+        
         parent_progress(id);
-        $(".gantt_task_line").each(function (i, value) {
-           // alert($(this).attr("aria-label"))
-        });
+        saveUpdateGanttTask(task,id);
+        
+
+        //$(".gantt_task_line").each(function (i, value) {
+        //    console.log($(this).attr("aria-label").split(":")[1]);
+        //});
        // setTimeout(reloadFunc, 2000);
     });
 
@@ -537,6 +554,7 @@ document.addEventListener("DOMContentLoaded", function () {
     }
 
     gantt.templates.progress_text = function (start, end, task) {
+        parent_progress(task.id);
         return "<span style='text-align:left;padding-left: 10px;box-sizing: border-box;color: white;font-weight: bold;'>" + Math.round(task.progress * 100) + "% </span>";
     };
 
@@ -561,69 +579,7 @@ document.addEventListener("DOMContentLoaded", function () {
     //    ]
     //}
     //gantt.parse(gdata);
-   ajaxServiceMethod($('#hdnBaseURL').val() + "api/Project/GetTaskSubTask" + "/" + id, 'GET', GetTaskSubTaskListSuccess, GetTaskSubTaskListError);
-   function GetTaskSubTaskListSuccess(data) {
-       let restructeredData = {}
-       for (var i = 0; i < data._object.length; i++) {
-           let crDate = moment(data._object[i].createdDate).format("YYYY-MM-DD hh:mm")
-           let enDate = moment(data._object[i].endDate).format("YYYY-MM-DD hh:mm")
-           let modifyDate = moment(data._object[i].modifyDate).format("YYYY-MM-DD hh:mm")
-           let startDate = moment(data._object[i].startDate).format("YYYY-MM-DD hh:mm")
-           let subTaskId = data._object[i].taskLevel > 1 ? data._object[i].projectTaskId : 0
-          
-           gdata = {
-               "tasks": [
-                   //{ "id": data._object[i].pidfid, "text": "Project #1", "start_date": startDate, "owner": data._object[i].taskOwnerName, "priority": data._object[i].priorityId, "duration": data._object[i].taskDuration },
-                   { "id": data._object[i].projectTaskId, "text": data._object[i].taskName, "start_date": crDate, "owner": data._object[i].taskOwnerId, "priority": data._object[i].priorityId, "duration": data._object[i].taskDuration, "parent": data._object[i].parentId },
-                  
-               ],
-               "links": [
-                   { "id": data._object[i].projectTaskId, "source": data._object[i].parentId, "target": data._object[i].projectTaskId, "type": "0" },
-                   //{ "id": data._object[i].projectTaskId, "source": data._object[i].parentId, "target": data._object[i].projectTaskId, "type": "1" },
-                
-               ]
-           }
-         // restructeredData = {
-         //    createdBy: data._object[i].createdBy,
-         //    createdDate: crDate,
-         //    editTaskOwnerId: data._object[i].editTaskOwnerId,
-         //    editTaskPriorityId: data._object[i].editTaskPriorityId,
-         //    editTaskStatusId: data._object[i].editTaskStatusId,
-         //    endDate: enDate,
-         //    modifyBy: data._object[i].modifyBy,
-         //    modifyDate: modifyDate,
-         //    parentId: data._object[i].parentId,
-         //    pidfid: data._object[i].pidfid,
-         //    priorityId: data._object[i].priorityId,
-         //    priorityName: data._object[i].priorityName,
-         //    projectTaskId: data._object[i].projectTaskId,
-         //    startDate: startDate,
-         //    statusId: data._object[i].statusId,
-         //    statusName: data._object[i].statusName,
-         //    taskDuration: data._object[i].taskDuration,
-         //    taskLevel: data._object[i].taskLevel,
-         //    taskName: data._object[i].taskName,
-         //    taskOwnerId: data._object[i].taskOwnerId,
-         //    taskOwnerName: data._object[i].taskOwnerName,
-         //    totalPercentage: data._object[i].totalPercentage
-           //}
-           //let ganttdata = JSON.stringify(gdata).replace("{", "").replace("}", "");
-           //$(".gantt_task_line").each(function (i, value) {
-           //    alert($(this).attr("aria-label"))
-           //});
-          
-        
-          
-           
-          // gantt.parse({ data: ganttdata });
-           gantt.parse(gdata);
-           //gantt.task.progress = parseInt(data._object[i].totalPercentage); 
-       }
-      
-   }
-   function GetTaskSubTaskListError() {
-       toastr.error("Error");
-    }
+    GetProjectGanttTaskList();
    // gantt.config.auto_scheduling = false;
 
    // var obj = gantt.json;
@@ -634,4 +590,105 @@ document.addEventListener("DOMContentLoaded", function () {
    //// var dp = new gantt.dataProcessor("/api")
    // dp.init(gantt);
    // dp.setTransactionMode("REST-JSON");
+
+     function GetProjectGanttTaskList() {
+         ajaxServiceMethod($('#hdnBaseURL').val() + "api/Project/GetTaskSubTask" + "/" + id, 'GET', GetTaskSubTaskListSuccess, GetTaskSubTaskListError);
+        function GetTaskSubTaskListSuccess(data) {
+            let restructeredData = {}
+            for (var i = 0; i < data._object.length; i++) {
+                let crDate = moment(data._object[i].createdDate).format("YYYY-MM-DD hh:mm")
+                let enDate = moment(data._object[i].endDate).format("YYYY-MM-DD hh:mm")
+                let modifyDate = moment(data._object[i].modifyDate).format("YYYY-MM-DD hh:mm")
+                let startDate = moment(data._object[i].startDate).format("YYYY-MM-DD hh:mm")
+                let subTaskId = data._object[i].taskLevel > 1 ? data._object[i].projectTaskId : 0
+
+                gdata = {
+                    "tasks": [
+                        //{ "id": data._object[i].pidfid, "text": "Project #1", "start_date": startDate, "owner": data._object[i].taskOwnerName, "priority": data._object[i].priorityId, "duration": data._object[i].taskDuration },
+                        { "id": data._object[i].projectTaskId, "text": data._object[i].taskName, "start_date": crDate, "owner": data._object[i].taskOwnerId, "priority": data._object[i].priorityId, "duration": data._object[i].taskDuration, "parent": data._object[i].parentId },
+
+                    ],
+                    "links": [
+                        { "id": data._object[i].projectTaskId, "source": data._object[i].parentId, "target": data._object[i].projectTaskId, "type": "0" },
+                        //{ "id": data._object[i].projectTaskId, "source": data._object[i].parentId, "target": data._object[i].projectTaskId, "type": "1" },
+
+                    ]
+                }
+                taskStatus.push({
+                    statusId: data._object[i].statusId, projectTaskId: data._object[i].projectTaskId
+                });
+                //    createdDate: crDate,
+                //    editTaskOwnerId: data._object[i].editTaskOwnerId,
+                //    editTaskPriorityId: data._object[i].editTaskPriorityId,
+                //    editTaskStatusId: data._object[i].editTaskStatusId,
+                //    endDate: enDate,
+                //    modifyBy: data._object[i].modifyBy,
+                //    modifyDate: modifyDate,
+                //    parentId: data._object[i].parentId,
+                //    pidfid: data._object[i].pidfid,
+                //    priorityId: data._object[i].priorityId,
+                //    priorityName: data._object[i].priorityName,
+                //    projectTaskId: data._object[i].projectTaskId,
+                //    startDate: startDate,
+                //    statusId: data._object[i].statusId,
+                //    statusName: data._object[i].statusName,
+                //    taskDuration: data._object[i].taskDuration,
+                //    taskLevel: data._object[i].taskLevel,
+                //    taskName: data._object[i].taskName,
+                //    taskOwnerId: data._object[i].taskOwnerId,
+                //    taskOwnerName: data._object[i].taskOwnerName,
+                //    totalPercentage: data._object[i].totalPercentage
+                //}
+                //let ganttdata = JSON.stringify(gdata).replace("{", "").replace("}", "");
+                //$(".gantt_task_line").each(function (i, value) {
+                //    alert($(this).attr("aria-label"))
+                //});
+
+
+
+
+                // gantt.parse({ data: ganttdata });
+                gantt.parse(gdata);
+                //gantt.task.progress = parseInt(data._object[i].totalPercentage); 
+            }
+            responsTtaskList= data._object;
+        }
+        function GetTaskSubTaskListError() {
+            toastr.error("Error");
+        }
+        
+    }
+    function saveUpdateGanttTask(taskObjects, ProjectTaskId) {
+       //let startDate = moment(taskObjects.start_date).format("MM/DD/YYYY hh:mm");
+       //let endDate = moment(taskObjects.start_date).format("MM/DD/YYYY hh:mm");
+        const res = taskStatus.filter(x => x.projectTaskId === ProjectTaskId); 
+        let addTask = {
+            ProjectTaskId: ProjectTaskId,
+            TaskName: taskObjects.text,
+            Pidfid: 0,
+            PriorityId: taskObjects.priority,
+            StartDate: taskObjects.start_date,
+            EndDate: taskObjects.start_date,
+            StatusId: res[0].statusId,
+            TaskOwnerId: taskObjects.owner,
+            TotalPercentage: Math.round((taskObjects.progress * 100)),
+            ParentId: taskObjects.parent,
+            TaskDuration: taskObjects.duration,
+            IsGanttUpdate:true
+        }
+        let act = taskObjects.parent == 0 ? "Task" : "SubTask";
+        let pidfId = (new URL(location.href)).searchParams.get('pidfid');
+        console.log(JSON.stringify(addTask))
+       ajaxServiceMethod($('#hdnWebBaseURL').val() + "Project/AddUpdateGanttTask?id=" + pidfId + "&act=" + act, 'POST', SaveTaskSubTaskListSuccess, SaveTaskSubTaskListError, JSON.stringify(addTask), null, null, null,"application/json; charset=utf-8");
+     
+       function SaveTaskSubTaskListSuccess(data) {
+           toastr.success("Success");
+       }
+       function SaveTaskSubTaskListError() {
+           toastr.error("Error");
+       }
+    }
+    $(".gantt_save_btn").on('click',function () {
+        alert("Saved")
+    })
 });

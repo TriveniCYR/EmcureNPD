@@ -52,6 +52,7 @@ namespace EmcureNPD.Data.DataAccess.DataContext
         public virtual DbSet<MasterMarketExtenstion> MasterMarketExtenstions { get; set; }
         public virtual DbSet<MasterModule> MasterModules { get; set; }
         public virtual DbSet<MasterNotification> MasterNotifications { get; set; }
+        public virtual DbSet<MasterNotificationUser> MasterNotificationUsers { get; set; }
         public virtual DbSet<MasterOral> MasterOrals { get; set; }
         public virtual DbSet<MasterPackagingType> MasterPackagingTypes { get; set; }
         public virtual DbSet<MasterPidfstatus> MasterPidfstatuses { get; set; }
@@ -646,6 +647,21 @@ namespace EmcureNPD.Data.DataAccess.DataContext
                     .WithMany(p => p.MasterNotifications)
                     .HasForeignKey(d => d.StatusId)
                     .HasConstraintName("FK_Master_Notification_Master_PIDFStatus");
+            });
+
+            modelBuilder.Entity<MasterNotificationUser>(entity =>
+            {
+                entity.HasKey(e => e.NotificationUserId);
+
+                entity.ToTable("Master_Notification_User", "dbo");
+
+                entity.Property(e => e.UpdateDate).HasColumnType("datetime");
+
+                entity.HasOne(d => d.User)
+                    .WithMany(p => p.MasterNotificationUsers)
+                    .HasForeignKey(d => d.UserId)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("FK_Master_Notification_User_Master_User");
             });
 
             modelBuilder.Entity<MasterOral>(entity =>

@@ -14,4 +14,14 @@ namespace EmcureNPD.Business.Models
         public string Body { get; set; }
         public string DispalyName { get; set; }
     }
+
+    public class SMTPEntityViewModel
+    {
+        public string Host { get; set; }
+        public string Port { get; set; }
+        public string EnableSsl { get; set; }
+        public string FromEmail { get; set; }
+        public string UserName { get; set; }
+        public string Password { get; set; }
+    }
 }

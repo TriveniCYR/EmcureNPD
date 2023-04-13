@@ -35,9 +35,9 @@
 
         <!-- Notifications Dropdown Menu -->
         <li class="nav-item dropdown">
-            <a class="nav-link" data-toggle="dropdown" href="#">
-                <i class="far fa-bell"></i>
-                <span class="badge badge-warning navbar-badge" id="NotificationNo"> </span>
+            <a class="nav-link" data-toggle="dropdown" href="@Url.Action("ClickedNotification","Notifications")">
+                <i class="far fa-bell notification"></i>
+                <span class="badge badge-warning navbar-badge notification" id="NotificationNo"> </span>
             </a>
             <div class="dropdown-menu dropdown-menu-lg dropdown-menu-right">
                 <span class="dropdown-item dropdown-header" id="NotificationCount">0 Notifications</span>
@@ -88,6 +88,6 @@
     <script type="text/javascript" src="~/js/Custom/Notification/Notification.js?v=@jsVersion"></script>
     <script>
         var GetAllNotificationURL = "@EmcureNPD.Web.Helpers.APIURLHelper.GetAllNotification";
-         var ErrorMessage = "@SharedLocalizer["Error"]";
+        var ErrorMessage = "@SharedLocalizer["Error"]";
     </script>
     }

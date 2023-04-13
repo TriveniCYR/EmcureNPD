@@ -58,6 +58,18 @@ namespace EmcureNPD.Business.Core.ServiceImplementations
             _auditLogService = auditLogService;
         }
 
+        public SMTPEntityViewModel GetSMTPConfiguration()
+        {
+            SMTPEntityViewModel _smtp = new SMTPEntityViewModel();
+            _smtp.Host = configuration.GetSection("SMTPDetails").GetSection("Host").Value;
+            _smtp.Port = configuration.GetSection("SMTPDetails").GetSection("Port").Value;
+            _smtp.EnableSsl = configuration.GetSection("SMTPDetails").GetSection("Enable_SSL").Value;
+            _smtp.FromEmail = configuration.GetSection("SMTPDetails").GetSection("FromEmail").Value;
+            _smtp.UserName = configuration.GetSection("SMTPDetails").GetSection("UserName").Value;
+            _smtp.Password = configuration.GetSection("SMTPDetails").GetSection("Password").Value;
+            return _smtp;
+        }
+
         public async Task<UserSessionEntity> Login(LoginViewModel oLogin)
         {
             //UserSessionEntity oUser = new UserSessionEntity();
@@ -293,7 +305,7 @@ namespace EmcureNPD.Business.Core.ServiceImplementations
                 strHtml = strHtml.Replace("{Email}", entityUser.EmailAddress);
                 strHtml = strHtml.Replace("{Password}", entityUser.StringPassword);
                 // strHtml = strHtml.Replace("{ApplicationLoginURL}", WebURL);
-                email.SendMail(entityUser.EmailAddress, string.Empty, "Emcure NPD - User Created", strHtml);
+                email.SendMail(entityUser.EmailAddress, string.Empty, "Emcure NPD - User Created", strHtml, GetSMTPConfiguration());
             }
             catch (Exception ex) { }
         }
@@ -408,7 +420,7 @@ namespace EmcureNPD.Business.Core.ServiceImplementations
         public async Task<DBOperation> ForgotPassword(string emailAddress)
         {
             EmailHelper email = new EmailHelper();
-            string baseURL = configuration.GetSection("Apiconfig").GetSection("EmcureNPDWebUrl").Value;
+            string baseURL = ""; //configuration.GetSection("Apiconfig").GetSection("EmcureNPDWebUrl").Value;
             var entityUser = _repository.Get(x => x.EmailAddress == emailAddress);
             if (entityUser == null)
                 return DBOperation.NotFound;
@@ -423,7 +435,7 @@ namespace EmcureNPD.Business.Core.ServiceImplementations
             strHtml = strHtml.Replace("ValidateURL", strURL);
             strHtml = strHtml.Replace("ValidDateTime", entityUser.ForgotPasswordDateTime.Value.AddHours(1).ToString());
             strHtml = strHtml.Replace("Name", entityUser.FullName);
-            email.SendMail(entityUser.EmailAddress, string.Empty, "Emcure NPD - Forgot Password", strHtml);
+            email.SendMail(entityUser.EmailAddress, string.Empty, "Emcure NPD - Forgot Password", strHtml, GetSMTPConfiguration());
             return DBOperation.Success;
         }
         public async Task<string> ResetPassword(MasterUserResetPasswordEntity resetPasswordentity)

@@ -14,14 +14,14 @@ namespace EmcureNPD.Utility.Helpers
 {
     public class EmailHelper
     {
-        public void SendMail(string toList, string ccList, string subject, string body)
+        public void SendMail(string toList, string ccList, string subject, string body, SMTPEntityViewModel _smtpEntity)
         {
             try
             {
                 string msg = string.Empty;
 
                 MailMessage message = new MailMessage();
-                MailAddress fromAddress = new MailAddress("dev.net.smtp@gmail.com");
+                MailAddress fromAddress = new MailAddress(_smtpEntity.FromEmail);
                 message.From = fromAddress;
                 message.To.Add(toList);
                 if (ccList != null && ccList != string.Empty)
@@ -33,10 +33,10 @@ namespace EmcureNPD.Utility.Helpers
 
                 using (SmtpClient smtpClient = new SmtpClient())
                 {
-                    smtpClient.Host = "smtp.gmail.com";
-                    smtpClient.Credentials = new System.Net.NetworkCredential("dev.net.smtp@gmail.com", "pass123!@#");
-                    smtpClient.Port = 587;//put smtp port here
-                    smtpClient.EnableSsl = true;
+                    smtpClient.Host = _smtpEntity.Host;
+                    smtpClient.Credentials = new System.Net.NetworkCredential(_smtpEntity.UserName, _smtpEntity.Password);
+                    smtpClient.Port =  Int32.Parse(_smtpEntity.Port) ;//put smtp port here
+                    smtpClient.EnableSsl = bool.Parse(_smtpEntity.EnableSsl);
                     smtpClient.UseDefaultCredentials = true;
                     smtpClient.DeliveryMethod = SmtpDeliveryMethod.Network;
                     string fileName = @"C:\Log\logger.txt";

@@ -2,6 +2,7 @@
 @inject IConfiguration Configuration
 @{
 	string jsVersion = @Configuration.GetSection("StaticJS")["version"];
+     var PidafId=Context.Request.Query["pidfid"];
 }
 <div id="gantt-chart"></div>
 @section MyScripts{
@@ -9,5 +10,6 @@
     <script src="~/js/custom/gantt/gantt.js?v=@jsVersion"></script>
     <script>
         var GetAllTaskSubTaskList = "@EmcureNPD.Web.Helpers.APIURLHelper.GetAllTaskSubTaskList";
+        const taskpidfid="@PidafId";
     </script>
 }

@@ -1,6 +1,7 @@
 ﻿@using Microsoft.AspNetCore.Http
 @using EmcureNPD.Web.Controllers
 @using Microsoft.AspNetCore.Mvc.Localization
+@using EmcureNPD.Utility.Models;
 @using EmcureNPD.Utility.Enums
 @using EmcureNPD.Resource.Resources;
 @inject IHttpContextAccessor HttpContextAccessor
@@ -19,6 +20,8 @@
 @{
     ViewData["Title"] = @MasterLocalizer["PIDF"];
 	string jsVersion = @Configuration.GetSection("StaticJS")["version"];
+	RolePermissionModel objPermssion = (RolePermissionModel)ViewBag.Access;
+	string IsApproveAllow = (objPermssion.Approve) ? "" : "display: none";
 }
 @if (!Model._Partial)
 {
@@ -559,8 +562,8 @@
 							}
 							@if (Model.StatusId == (Int32)Master_PIDFStatus.PIDFSubmitted)
 							{
-						<a class="btn btn-success me-3 outside-buttons operationButton" onClick="ApproveRejectClick('A', '@Model.PIDFID', @((int)EmcureNPD.Utility.Enums.PIDFScreen.PIDF), '/PIDF/PIDFList?ScreenId=@((int)EmcureNPD.Utility.Enums.PIDFScreen.PIDF)')"><i class="fa fa-check-circle mr-1"></i> @SharedLocalizer["Approve"]</a>
-						<a class="btn btn-danger me-3 outside-buttons operationButton" onClick="ApproveRejectClick('R', '@Model.PIDFID', @((int)EmcureNPD.Utility.Enums.PIDFScreen.PIDF), '/PIDF/PIDFList?ScreenId=@((int)EmcureNPD.Utility.Enums.PIDFScreen.PIDF)')"><i class="fa fa-ban mr-1"></i> @SharedLocalizer["Reject"]</a>
+						<a style="@IsApproveAllow" class="btn btn-success me-3 outside-buttons operationButton" onClick="ApproveRejectClick('A', '@Model.PIDFID', @((int)EmcureNPD.Utility.Enums.PIDFScreen.PIDF), '/PIDF/PIDFList?ScreenId=@((int)EmcureNPD.Utility.Enums.PIDFScreen.PIDF)')"><i class="fa fa-check-circle mr-1"></i> @SharedLocalizer["Approve"]</a>
+						<a style="@IsApproveAllow" class="btn btn-danger me-3 outside-buttons operationButton" onClick="ApproveRejectClick('R', '@Model.PIDFID', @((int)EmcureNPD.Utility.Enums.PIDFScreen.PIDF), '/PIDF/PIDFList?ScreenId=@((int)EmcureNPD.Utility.Enums.PIDFScreen.PIDF)')"><i class="fa fa-ban mr-1"></i> @SharedLocalizer["Reject"]</a>
 
 							}
 					@if (!Model._Partial)
