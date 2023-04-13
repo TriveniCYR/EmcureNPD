@@ -227,6 +227,15 @@ tr.bg-primary td, thead.bg-primary th {
     border-radius: 10px;
     margin: auto;
 }
+form-control.is-valid, .was-validated .form-control:valid {
+    border-color: none !important;
+    padding-right: calc(1.5em + 0.75rem);
+    background-image: none !important;
+    background-repeat: no-repeat;
+    /*background-position: none !important;*/
+    /*background-size: none !important;*/
+}
+}
 .inline-textbox {
     width: 80% !important;
     display: inline-block !important;
