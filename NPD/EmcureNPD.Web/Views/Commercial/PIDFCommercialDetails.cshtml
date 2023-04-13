@@ -250,7 +250,7 @@
                                                 <div class="col-md-3">
                                                     <div class="form-group required">
                                                         @Html.LabelFor(model => model.MarketSize,@MasterLocalizer["MarketSize"], new { @class = "control-label" })
-                                                        @Html.TextBoxFor(model => model.MarketSize, new { @type="number",@readonly = "readonly" , @autocomplete = "off", @class = "form-control checkbox-checked", @placeholder = @MasterLocalizer["MarketSize"] })
+                                                        @Html.TextBoxFor(model => model.MarketSize, new {@tabindex="-1", @type="number",@readonly = "readonly" , @autocomplete = "off", @class = "form-control checkbox-checked", @placeholder = @MasterLocalizer["MarketSize"] })
                                                     </div>
                                                 </div>
                                                 <div class="col-md-3">
@@ -305,21 +305,21 @@
                                                         <tr>
                                                             <td style="width:35%"> <label class="control-label">@MasterLocalizer["Low"]</label></td>
                                                             <td style="width:65%">
-                                                                @Html.TextBoxFor(model => model.MarketShareUnitLow, new { @readonly = "readonly",@autocomplete = "off", @class = "form-control " })
+                                                                @Html.TextBoxFor(model => model.MarketShareUnitLow, new { @readonly = "readonly" ,@tabindex="-1",@autocomplete = "off", @class = "form-control " })
 
                                                             </td>
                                                         </tr>
                                                         <tr>
                                                             <td> <label class="control-label">@MasterLocalizer["Medium"]</label></td>
                                                             <td>
-                                                                @Html.TextBoxFor(model => model.MarketShareUnitMedium, new {@readonly = "readonly", @autocomplete = "off", @class = "form-control" })
+                                                                @Html.TextBoxFor(model => model.MarketShareUnitMedium, new {@readonly = "readonly" ,@tabindex="-1", @autocomplete = "off", @class = "form-control" })
 
                                                             </td>
                                                         </tr>
                                                         <tr>
                                                             <td> <label class="control-label">@MasterLocalizer["High"]</label></td>
                                                             <td>
-                                                                @Html.TextBoxFor(model => model.MarketShareUnitHigh, new {@readonly = "readonly", @autocomplete = "off", @class = "form-control "})
+                                                                @Html.TextBoxFor(model => model.MarketShareUnitHigh, new {@readonly = "readonly" ,@tabindex="-1", @autocomplete = "off", @class = "form-control "})
                                                             </td>
                                                         </tr>
                                                     </table>
@@ -357,16 +357,16 @@
                                                         <tr>
                                                             <td style="width:35%"> <label class="control-label">@MasterLocalizer["Low"]</label></td>
                                                             <td style="width:65%">
-                                                                @Html.TextBoxFor(model => model.NspLow, new {@readonly = "readonly", @autocomplete = "off", @class = "form-control " })
+                                                                @Html.TextBoxFor(model => model.NspLow, new {@readonly = "readonly" ,@tabindex="-1", @autocomplete = "off", @class = "form-control " })
                                                             </td>
                                                         </tr>
                                                         <tr>
                                                             <td> <label class="control-label">@MasterLocalizer["Medium"]</label></td>
-                                                            <td>@Html.TextBoxFor(model => model.NspMedium, new { @readonly = "readonly",@autocomplete = "off", @class = "form-control" })</td>
+                                                            <td>@Html.TextBoxFor(model => model.NspMedium, new { @readonly = "readonly" ,@tabindex="-1",@autocomplete = "off", @class = "form-control" })</td>
                                                         </tr>
                                                         <tr>
                                                             <td> <label class="control-label">@MasterLocalizer["High"]</label></td>
-                                                            <td>@Html.TextBoxFor(model => model.NspHigh, new { @readonly = "readonly",@autocomplete = "off", @class = "form-control "})</td>
+                                                            <td>@Html.TextBoxFor(model => model.NspHigh, new { @readonly = "readonly" ,@tabindex="-1",@autocomplete = "off", @class = "form-control "})</td>
                                                         </tr>
                                                     </table>
                                                 </div>
