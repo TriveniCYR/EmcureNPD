@@ -7,6 +7,11 @@ namespace EmcureNPD.Data.DataAccess.Entity
 {
     public partial class MasterPackingType
     {
+        public MasterPackingType()
+        {
+            PidfPbfRnDPackagingMaterials = new HashSet<PidfPbfRnDPackagingMaterial>();
+        }
+
         public int PackingTypeId { get; set; }
         public string PackingTypeName { get; set; }
         public double? PackingCost { get; set; }
@@ -17,5 +22,7 @@ namespace EmcureNPD.Data.DataAccess.Entity
         public DateTime CreatedDate { get; set; }
         public int? ModifyBy { get; set; }
         public DateTime? ModifyDate { get; set; }
+
+        public virtual ICollection<PidfPbfRnDPackagingMaterial> PidfPbfRnDPackagingMaterials { get; set; }
     }
 }
