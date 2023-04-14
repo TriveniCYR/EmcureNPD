@@ -40,6 +40,11 @@ namespace EmcureNPD.Business.Core.Implementation {
             _helper = helper;
         }
         public async Task<DataTableResponseModel> GetAll(DataTableAjaxPostModel model) {
+            DataTableResponseModel oDataTableResponseModel = null;
+            if (model.columns ==null)
+            {
+                return oDataTableResponseModel;
+            }
 
             string ColumnName = (model.order.Count > 0 ? model.columns[model.order[0].column].data : string.Empty);
             string SortDir = (model.order.Count > 0 ? model.order[0].dir : string.Empty);
@@ -60,7 +65,7 @@ namespace EmcureNPD.Business.Core.Implementation {
             var TotalRecord = (NotificationList != null && NotificationList.Rows.Count > 0 ? Convert.ToInt32(NotificationList.Rows[0]["TotalRecord"]) : 0);
             var TotalCount = (NotificationList != null && NotificationList.Rows.Count > 0 ? Convert.ToInt32(NotificationList.Rows[0]["TotalCount"]) : 0);
 
-            DataTableResponseModel oDataTableResponseModel = new DataTableResponseModel(model.draw, TotalRecord, TotalCount, NotificationList);
+            oDataTableResponseModel = new DataTableResponseModel(model.draw, TotalRecord, TotalCount, NotificationList);
             
             SqlDependency sqlDependency = new SqlDependency();
             sqlDependency.OnChange += new OnChangeEventHandler(dbChangeNotification);

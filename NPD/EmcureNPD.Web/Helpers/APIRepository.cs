@@ -14,11 +14,13 @@ namespace EmcureNPD.Web.Helpers
     {
         public static string baseURL;
         private IConfiguration Configuration;
+        private readonly IHttpContextAccessor _httpContextAccessor;
 
-        public APIRepository(IConfiguration configuration)
+        public APIRepository(IConfiguration configuration, IHttpContextAccessor httpContextAccessor)
         {
             Configuration = configuration;
             baseURL = Configuration.GetSection("Apiconfig").GetSection("baseurl").Value;
+            _httpContextAccessor = httpContextAccessor;
         }
 
         #region APICommunication - Common Method for API calling
@@ -117,10 +119,11 @@ namespace EmcureNPD.Web.Helpers
             {
                 oHttpResponseMessage.StatusCode = HttpStatusCode.InternalServerError;
             }
-            //if (oHttpResponseMessage.StatusCode == HttpStatusCode.Unauthorized)
-            //{
-            //    context.Result = new RedirectResult("~/Home/AccessRestriction");
-            //}
+            if (oHttpResponseMessage.StatusCode == HttpStatusCode.Unauthorized)
+            {
+                _httpContextAccessor.HttpContext.Response.Redirect("~/Home/AccessRestriction");
+                //context.Result = new RedirectResult("~/Home/AccessRestriction");
+            }
             return oHttpResponseMessage;
         }
     }
