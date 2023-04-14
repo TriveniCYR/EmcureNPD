@@ -50,7 +50,7 @@ function InitializePIDFList() {
                         $("#DvApproveReject").show();
                     }
                     else if (_screenId == "8") {
-                        if (row.pidfStatusID == 18 && row.alReadyApproved == false) {
+                        if ((row.pidfStatusID == 18 || row.pidfStatusID == 20 || row.pidfStatusID==21) && row.alReadyApproved == false) {
                             _flag = true;
                             isManagement = _flag;
 
