@@ -46,8 +46,8 @@ namespace EmcureNPD.Business.Core.Implementation
                     _repository.UpdateAsync(objRole);
                     await _unitOfWork.SaveChangesAsync();
 
-                    var isSuccess = await _auditLogService.CreateAuditLog<MasterRole>(Utility.Audit.AuditActionType.Update,
-                        Utility.Enums.ModuleEnum.RoleManagement, OldObjRole, objRole,0);
+                    //var isSuccess = await _auditLogService.CreateAuditLog<MasterRole>(Utility.Audit.AuditActionType.Update,
+                    //    Utility.Enums.ModuleEnum.RoleManagement, OldObjRole, objRole,0);
                 }
                 else
                 {

@@ -26,6 +26,7 @@ namespace EmcureNPD.Business.Core.Implementation {
         private readonly IStringLocalizer<Errors> _stringLocalizerError;
         private readonly Microsoft.Extensions.Configuration.IConfiguration configuration;
         private IRepository<MasterNotification> _repository { get; set; }
+        private IRepository<MasterNotificationUser> _repositoryNotificationUser { get; set; }
         private readonly IHelper _helper;
 
         public NotificationService(IUnitOfWork unitOfWork, IMapperFactory mapperFactory, IStringLocalizer<Errors> stringLocalizerError,
@@ -34,25 +35,24 @@ namespace EmcureNPD.Business.Core.Implementation {
             _unitOfWork = unitOfWork;
             _mapperFactory = mapperFactory;
             _repository = _unitOfWork.GetRepository<MasterNotification>();
+            _repositoryNotificationUser = _unitOfWork.GetRepository<MasterNotificationUser>();
             configuration = _configuration;
             _helper = helper;
         }
-        public async Task<DataTableResponseModel> GetAll() {
-            string ColumnName = "NotificationTitle";
-            string SortDir = "ASC";
-            
-            var model = new DataTableAjaxPostModel();
-            model.start = 0;
-            model.length = 25;
+        public async Task<DataTableResponseModel> GetAll(DataTableAjaxPostModel model) {
+
+            string ColumnName = (model.order.Count > 0 ? model.columns[model.order[0].column].data : string.Empty);
+            string SortDir = (model.order.Count > 0 ? model.order[0].dir : string.Empty);
 
             int userId = _helper.GetLoggedInUser().UserId;
+
             SqlParameter[] osqlParameter = {
                 new SqlParameter("@UserId",userId),
                 new SqlParameter("@CurrentPageNumber", model.start),
                     new SqlParameter("@PageSize", model.length),
                     new SqlParameter("@SortColumn", ColumnName),
                     new SqlParameter("@SortDirection", SortDir),
-                    new SqlParameter("@SearchText", "")
+                    new SqlParameter("@SearchText", model.search.value)
             };
             
             var NotificationList = await _repository.GetBySP("stp_npd_GetNotificationList", System.Data.CommandType.StoredProcedure, osqlParameter);
@@ -60,7 +60,7 @@ namespace EmcureNPD.Business.Core.Implementation {
             var TotalRecord = (NotificationList != null && NotificationList.Rows.Count > 0 ? Convert.ToInt32(NotificationList.Rows[0]["TotalRecord"]) : 0);
             var TotalCount = (NotificationList != null && NotificationList.Rows.Count > 0 ? Convert.ToInt32(NotificationList.Rows[0]["TotalCount"]) : 0);
 
-            DataTableResponseModel oDataTableResponseModel = new DataTableResponseModel(model.draw, TotalRecord, TotalCount, NotificationList.DataTableToList<MasterNotification>());
+            DataTableResponseModel oDataTableResponseModel = new DataTableResponseModel(model.draw, TotalRecord, TotalCount, NotificationList);
             
             SqlDependency sqlDependency = new SqlDependency();
             sqlDependency.OnChange += new OnChangeEventHandler(dbChangeNotification);
@@ -139,5 +139,24 @@ namespace EmcureNPD.Business.Core.Implementation {
             await _unitOfWork.SaveChangesAsync();
             return DBOperation.Success;
         }
+        public async Task<DBOperation> ClickedNotification()
+        {
+            int userId = _helper.GetLoggedInUser().UserId;
+            var _objClickedgNotUser = _repositoryNotificationUser.GetAllQuery().Where(x => x.UserId == userId).FirstOrDefault();
+            if (_objClickedgNotUser != null)
+            {
+                _objClickedgNotUser.UpdateDate = DateTime.Now;
+                _repositoryNotificationUser.UpdateAsync(_objClickedgNotUser);
+            }
+            else {
+                MasterNotificationUser _objClickedgNotUserAdd = new();
+                _objClickedgNotUserAdd.UserId = userId;
+                _objClickedgNotUserAdd.UpdateDate = DateTime.Now;
+                _repositoryNotificationUser.AddAsync(_objClickedgNotUserAdd);
+            }
+            await _unitOfWork.SaveChangesAsync();
+            return DBOperation.Success;
+        }
+
     }
 }
