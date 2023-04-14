@@ -335,6 +335,8 @@ namespace EmcureNPD.Web.Helpers
 		public static string GetFilteredNotifications = "api/Notification/GetFilteredNotifications";
         public static string GetWebFilteredNotifications = "Notifications/GetFilteredNotifications";
         public static string NotificationsClickedByUser = "api/Notification/NotificationsClickedByUser";
+        public static string NotificationsCountUser = "api/Notification/NotificationsCountUser";
+        
         #endregion
 
         #region PIDFFinance

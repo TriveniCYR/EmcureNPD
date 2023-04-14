@@ -1391,7 +1391,7 @@ namespace EmcureNPD.Business.Core.Implementation
             DataSet dsDropdownOptions = await _repository.GetDataSetBySP("stp_npd_GetPbfAllTabData", System.Data.CommandType.StoredProcedure, osqlParameter);
 
             DropdownObjects.MasterTestType = dsDropdownOptions.Tables[0];
-            DropdownObjects.MasterPackagingType = dsDropdownOptions.Tables[1];
+            DropdownObjects.MasterPackingType = dsDropdownOptions.Tables[1];
             DropdownObjects.MasterBatchSize = dsDropdownOptions.Tables[2];
             DropdownObjects.MasterBusinessUnit = dsDropdownOptions.Tables[3];
             DropdownObjects.PIDFPBFGeneralStrength = dsDropdownOptions.Tables[4];

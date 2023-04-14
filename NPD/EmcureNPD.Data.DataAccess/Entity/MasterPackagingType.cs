@@ -10,7 +10,6 @@ namespace EmcureNPD.Data.DataAccess.Entity
         public MasterPackagingType()
         {
             PidfCommercialYears = new HashSet<PidfCommercialYear>();
-            PidfPbfRnDPackagingMaterials = new HashSet<PidfPbfRnDPackagingMaterial>();
             PidfPbfs = new HashSet<PidfPbf>();
             Pidfs = new HashSet<Pidf>();
         }
@@ -24,7 +23,6 @@ namespace EmcureNPD.Data.DataAccess.Entity
         public DateTime? ModifyDate { get; set; }
 
         public virtual ICollection<PidfCommercialYear> PidfCommercialYears { get; set; }
-        public virtual ICollection<PidfPbfRnDPackagingMaterial> PidfPbfRnDPackagingMaterials { get; set; }
         public virtual ICollection<PidfPbf> PidfPbfs { get; set; }
         public virtual ICollection<Pidf> Pidfs { get; set; }
     }
