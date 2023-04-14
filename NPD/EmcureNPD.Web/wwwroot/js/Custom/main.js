@@ -42,7 +42,7 @@ $(document)
     .ajaxStop(function () {
         //got response so hide the loading image
         /*$('#mainLoader').height("0").find("img").hide();*/
-        setTimeout(function () { $('#loading-wrapper').hide(); }, 700);
+        setTimeout(function () { $('#loading-wrapper').hide(); }, 500);
     });
 function getCookie(name) {
     const value = `; ${document.cookie}`;
