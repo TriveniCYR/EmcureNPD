@@ -1,14 +1,19 @@
 ﻿@model IEnumerable<EmcureNPD.Business.Models.ProjectTaskEntity>
+@using Microsoft.Extensions.Configuration
+@inject IConfiguration Configuration
+@{
+    string jsVersion = @Configuration.GetSection("StaticJS")["version"];
+}
 @{
     ViewData["Title"] = "Gantt View";
     var id = ViewBag.id;
 }
 
 <link href="~/css/GanttSite.css" rel="stylesheet" type="text/css" />
-<script src="~/codebase/dhtmlxgantt.js"></script>
+<script src="~/codebase/dhtmlxgantt.js?v=@jsVersion"></script>
 <link rel="stylesheet" href="~/codebase/dhtmlxgantt.css" type="text/css" />
 @*<script src="~/Scripts/main.js"></script>*@
-<script src="~/js/custom/gantt/updatedgantt.js"></script>
+<script src="~/js/custom/gantt/updatedgantt.js?v=@jsVersion"></script>
 
 <style>
     .gantt_task_progress {
