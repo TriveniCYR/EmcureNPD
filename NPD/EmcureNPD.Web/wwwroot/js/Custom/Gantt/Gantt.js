@@ -1,4 +1,10 @@
-let taskStatus=[]
+let taskStatus = [];
+$("i.fas.fa-compress").click(function () {
+    $("#ganttContainer").css("width", "98%");
+});
+$("i.fas.fa-expand").click(function () {
+    $("#ganttContainer").css("width", "100%");
+});
 document.addEventListener("DOMContentLoaded", function () {
     let responsTtaskList = null;
     $("#lblProjectName").text(localStorage.getItem("prjName"));
@@ -734,3 +740,5 @@ document.addEventListener("DOMContentLoaded", function () {
         toastr.error(`TaskId:${taskid} not deleted due to something wrong`);
     }
 });
+
+
