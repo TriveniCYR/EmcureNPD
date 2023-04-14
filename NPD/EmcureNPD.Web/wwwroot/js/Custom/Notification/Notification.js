@@ -1,5 +1,6 @@
 ﻿$(document).ready(function () {
     GetAllNotifications();
+    GetNotificationsForUser();
     $(".notification").click(function () {
         ajaxServiceMethod($('#hdnBaseURL').val() + NotificationsClickedByUser, 'GET', GetNotificationClickedSuccess, GetNotificationClickedError);
     });
@@ -13,17 +14,7 @@ function GetAllNotificationListSuccess(data) {
         let elehtml = '';
         let rowcount = 1;
         let result = JSON.parse(data)
-        if (result != null) {
-            if (result.data.length > 0) {
-                if (result.data[0].pendingNotification > 0) {
-                    $('#NotificationNo').html(result.data[0].pendingNotification);
-                } else {
-                    $('#NotificationNo').hide();
-                }
-                
-            } else {
-                $('#NotificationNo').hide();
-            }
+        if (result != null) {           
             $('#NotificationCount').html(result.recordsTotal + " Notifications");
             for (var i = 0; i < result.data.length; i++) {
                 let notificationTitle = result.data[i].notificationTitle.length > 40 ? result.data[i].notificationTitle.slice(0, 39) + '...' : result.data[i].notificationTitle;
@@ -44,9 +35,38 @@ function GetAllNotificationListError(x, y, z) {
     toastr.error(ErrorMessage);
 }
 
+function GetNotificationsForUser() {
+    ajaxServiceMethod($('#hdnBaseURL').val() + NotificationsCountUser, 'GET', GetNotificationsForUserSuccess, GetNotificationsForUserError);
+}
+function GetNotificationsForUserSuccess(data) {
+    try {
+        if (data != null) {
+            if (data.count > 0) {
+                $('#NotificationNo').html(data.count);
+            } else {
+                $('#NotificationNo').hide();
+            }
+        }
+    } catch (e) {
+        toastr.error('Error:' + e.message);
+    }
+}
+function GetNotificationsForUserError(x, y, z) {
+    toastr.error(ErrorMessage);
+}
+
+
+
 function GetNotificationClickedSuccess(data) {
     try {
-        let result = JSON.parse(data)
+        //let result = JSON.parse(data)
+        if (data != null) {
+            if (data.count > 0) {
+                    $('#NotificationNo').html(data.count);
+                } else {
+                    $('#NotificationNo').hide();
+                }
+        }
     } catch (e) {
         toastr.error('Error:' + e.message);
     }

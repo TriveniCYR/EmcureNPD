@@ -7,6 +7,7 @@ using EmcureNPD.Data.DataAccess.Entity;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Cryptography.X509Certificates;
 using System.Threading.Tasks;
 using static EmcureNPD.Utility.Enums.GeneralEnum;
 
@@ -18,7 +19,7 @@ namespace EmcureNPD.Business.Core.Implementation
         private readonly IMapperFactory _mapperFactory;
         private IRepository<MasterRole> _repository { get; set; }
         private readonly IRoleModulePermission _roleModulePermission;
-        private readonly IMasterAuditLogService _auditLogService;
+        private IRepository<MasterUser> _Userrepository { get; set; }
 
         public MasterRoleService(IUnitOfWork unitOfWork, IMasterAuditLogService auditLogService,
                                 IMapperFactory mapperFactory, IRoleModulePermission roleModulePermission)
@@ -27,7 +28,7 @@ namespace EmcureNPD.Business.Core.Implementation
             _mapperFactory = mapperFactory;
             _roleModulePermission = roleModulePermission;
             _repository = _unitOfWork.GetRepository<MasterRole>();
-            _auditLogService = auditLogService;
+            _Userrepository = _unitOfWork.GetRepository<MasterUser>();
         }
 
         public async Task<DBOperation> AddUpdateRole(MasterRoleEntity masterRoleEntity)
@@ -36,6 +37,12 @@ namespace EmcureNPD.Business.Core.Implementation
             var LoggedUserId = masterRoleEntity.LoggedUserId;
             if (masterRoleEntity.RoleId > 0) //Update existing user
             {
+                if (!masterRoleEntity.IsActive)
+                {
+                    var IsUserExist = _Userrepository.GetAllQuery().Where(x => x.RoleId == masterRoleEntity.RoleId).ToList();
+                    if (IsUserExist.Count>0)
+                     masterRoleEntity.IsActive = true;                    
+                }
                 objRole = _repository.Get(masterRoleEntity.RoleId);
                 var OldObjRole = objRole;
                 if (objRole != null)
@@ -87,24 +94,26 @@ namespace EmcureNPD.Business.Core.Implementation
         public async Task<DBOperation> DeleteRole(int id)
         {
             var entityRole = _repository.Get(x => x.RoleId == id);
+            var IsUserExist = _Userrepository.GetAllQuery().Where(x => x.RoleId == entityRole.RoleId).ToList();
+            if (IsUserExist.Count <= 0)
+            {
+                if (entityRole == null)
+                    return DBOperation.NotFound;
 
-            if (entityRole == null)
-                return DBOperation.NotFound;
+                _repository.Remove(entityRole);
 
-            _repository.Remove(entityRole);
-
-            await _unitOfWork.SaveChangesAsync();
-
-            return DBOperation.Success;
+                await _unitOfWork.SaveChangesAsync();
+                return DBOperation.Success;
+            }
+            return DBOperation.NotFound;
         }
-
         public async Task<List<MasterRoleEntity>> GetAll()
         {
             return _mapperFactory.GetList<MasterRole, MasterRoleEntity>(await _repository.GetAllAsync());
         }
         public async Task<List<MasterRoleEntity>> GetActiveRole()
         {
-            var ActiveRole = await _repository.GetAllAsync(x => x.IsActive == true);
+            var ActiveRole = await _repository.GetAllAsync(x => x.IsActive == true && x.IsDeleted == false);
             return _mapperFactory.GetList<MasterRole, MasterRoleEntity>(ActiveRole.ToList());
         }
         public async Task<MasterRoleEntity> GetById(int id)

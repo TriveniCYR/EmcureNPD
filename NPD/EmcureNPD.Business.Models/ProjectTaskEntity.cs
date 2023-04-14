@@ -23,6 +23,9 @@ namespace EmcureNPD.Business.Models
 
         [Required(ErrorMessage = "End Date is required")]
         public DateTime EndDate { get; set; }
+      
+        public DateTime ?PlannedStartDate { get; set; }
+        public DateTime ?PlannedEndDate { get; set; }
         [Required(ErrorMessage = "Priority is required")]
         public int PriorityId { get; set; }
         public string PriorityName { get; set; }

@@ -139,7 +139,7 @@ namespace EmcureNPD.Business.Core.Implementation {
             await _unitOfWork.SaveChangesAsync();
             return DBOperation.Success;
         }
-        public async Task<DBOperation> ClickedNotification()
+        public async Task<PendingNotification> ClickedNotification()
         {
             int userId = _helper.GetLoggedInUser().UserId;
             var _objClickedgNotUser = _repositoryNotificationUser.GetAllQuery().Where(x => x.UserId == userId).FirstOrDefault();
@@ -155,8 +155,29 @@ namespace EmcureNPD.Business.Core.Implementation {
                 _repositoryNotificationUser.AddAsync(_objClickedgNotUserAdd);
             }
             await _unitOfWork.SaveChangesAsync();
-            return DBOperation.Success;
+            
+            return await NotificationCountForUser();
         }
+       
+        public async Task<PendingNotification> NotificationCountForUser() {
+            
+            var model = new DataTableAjaxPostModel();
+            int userId = _helper.GetLoggedInUser().UserId;
+            SqlParameter[] osqlParameter = {
+                new SqlParameter("@UserId",userId),
+            };
+
+            var PendingNotification = await _repository.GetBySP("stp_npd_GetRealTimeNotificationForUser", System.Data.CommandType.StoredProcedure, osqlParameter);
+
+            var count = (PendingNotification != null && PendingNotification.Rows.Count > 0 ? Convert.ToInt32(PendingNotification.Rows[0]["PendingNotification"]) : 0);
+
+            PendingNotification oResponseModel = new PendingNotification { Count = count } ;
+
+            SqlDependency sqlDependency = new SqlDependency();
+            sqlDependency.OnChange += new OnChangeEventHandler(dbChangeNotification);
+            return oResponseModel;
+        }
+      
 
     }
 }

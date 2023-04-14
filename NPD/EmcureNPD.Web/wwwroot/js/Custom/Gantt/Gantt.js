@@ -1,4 +1,10 @@
-let taskStatus=[]
+let taskStatus = [];
+$("i.fas.fa-compress").click(function () {
+    $("#ganttContainer").css("width", "98%");
+});
+$("i.fas.fa-expand").click(function () {
+    $("#ganttContainer").css("width", "100%");
+});
 document.addEventListener("DOMContentLoaded", function () {
     let responsTtaskList = null;
     $("#lblProjectName").text(localStorage.getItem("prjName"));
@@ -253,6 +259,40 @@ document.addEventListener("DOMContentLoaded", function () {
         var temptask;
         gantt.eachParent(function (task) {
             let response = responsTtaskList;
+           let progrss = taskStatus.find(x => x.projectTaskId === task.id);
+           // let c = taskStatus.find(x => x.projectTaskId === task.id && x.taskLevel>1);
+            if (response != undefined && response.length > 1) {
+                var children = [];
+                //if (progrss.taskLevel > 1) {
+                    children = gantt.getChildren(task.id);
+                //}
+                var child_progress = 0;
+                for (var i = 0; i < children.length; i++) {
+                    var child = gantt.getTask(children[i])
+                   // getchild_progress(child.id);
+                    child_progress += parseInt(response[i].totalPercentage);
+                }
+                task.progress = child_progress / children.length  / 100;//**To be continue..Kp*/
+                temptask = task;
+            }
+            //else {
+            //    var children = gantt.getChildren(task.id);
+            //    var child_progress = 0;
+            //    for (var i = 0; i < children.length; i++) {
+            //        var child = gantt.getTask(children[i])
+            //        child_progress += (child.progress * 100);
+            //    }
+            //}
+            
+           
+        }, id)
+        gantt.render();
+        //setTimeout(reloadFunc, 3000);
+    }
+    function getchild_progress(id) {
+        var temptask;
+        gantt.eachParent(function (task) {
+            let response = responsTtaskList;
             if (response != undefined && response.length > 0) {
                 var children = gantt.getChildren(task.id);
                 var child_progress = 0;
@@ -269,37 +309,12 @@ document.addEventListener("DOMContentLoaded", function () {
                     child_progress += (child.progress * 100);
                 }
             }
-            task.progress = child_progress / children.length / 100;
+            task.progress = child_progress / children.length * 100 / 100;
             temptask = task;
         }, id)
         gantt.render();
-        //console.log(temptask);
-
-
-        //if (temptask != undefined) {
-        //    var response1 = gantt.ajax.put({
-        //        headers: {
-        //            "Content-Type": "application/json"
-        //        },
-        //        url: $('#hdnBaseURL').val() + "api/Project/GetTaskSubTask" + "/" + id, //"https://localhost:44358/api" + "/task/" + temptask.id,
-        //        data: JSON.stringify(temptask)
-
-        //        //return gantt.ajax.put({
-        //        //    headers: {
-        //        //        "Content-Type": "application/json"
-        //        //    },
-        //        //    url: "https://localhost:44358/api" + "/task/" + temptask.id,
-        //        //    data: JSON.stringify(temptask)
-        //        //success: function (response) {
-        //        //}
-        //    });
-
-        //    console.log("response1"+response1);
-
-        //}
-        //setTimeout(reloadFunc, 3000);
+        
     }
-
     var resourceTemplates = {
         grid_row_class: function (start, end, resource) {
             var css = [];
@@ -333,7 +348,7 @@ document.addEventListener("DOMContentLoaded", function () {
         { key: 5, label: "Low" },
         { key: 6, label: "Very Low" }
     ]);
-
+    
     gantt.locale.labels.section_owner = "Owner";
     gantt.locale.labels.section_priority = "Priority";
     gantt.config.lightbox.sections = [
@@ -392,9 +407,9 @@ document.addEventListener("DOMContentLoaded", function () {
                     return "";
                 }
                 var store = gantt.getDatastore(gantt.config.resource_store);
-                var owner = store.getItem(task[gantt.config.resource_property]);
+                var owner = taskStatus.filter(x => x.projectTaskId === task.id);
                 if (owner) {
-                    return owner.text;
+                    return owner[0].taskOwnerName;
                 } else {
                     return "Unassigned";
                 }
@@ -457,15 +472,24 @@ document.addEventListener("DOMContentLoaded", function () {
             var store = gantt.getDatastore("resource");
             //console.log(store);
             var assignments = task[gantt.config.resource_property] || [];
-            var owners = [];
+            var owners = taskStatus.filter(x => x.projectTaskId === task.id);
             var owner = store.getItem(assignments);
             //owners.push(owner.text);
-            return "<b>Task:</b> " + task.text + "<br/>" +
-                "<b>Owner:</b>" + task.owner + "<br/>" +
-                "<b>Start date:</b> " +
-                gantt.templates.tooltip_date_format(start)
-                +"<br/><b>End date:</b> " + gantt.templates.tooltip_date_format(end) + "<br/>" +
-            "<b>Progress:</b> " + Math.round(task.progress * 100) + "%";
+            if (owners[0].taskLevel == 1) {
+                return "<b>Task:</b> " + task.text + "<br/>" +
+                    "<b>Owner:</b>" + owners[0].taskOwnerName + "<br/>" +
+                    "<b>Start date:</b> " +
+                    gantt.templates.tooltip_date_format(start)
+                    + "<br/><b>End date:</b> " + gantt.templates.tooltip_date_format(end) + "<br/>" +
+                    "<b>Progress:</b> " + Math.round(owners[0].totalPercentage) + "%";
+            }
+            else if (owners[0].taskLevel > 1) {
+                return "<b>Task:</b> " + task.text + "<br/>" +
+                    "<b>Start date:</b> " +
+                    gantt.templates.tooltip_date_format(start)
+                    + "<br/><b>End date:</b> " + gantt.templates.tooltip_date_format(end) + "<br/>" +
+                    "<b>Progress:</b> " + Math.round(owners[0].totalPercentage) + "%";
+            }
         };
 
         var radios = [].slice.call(gantt.$container.querySelectorAll("input[type='radio']"));
@@ -527,6 +551,8 @@ document.addEventListener("DOMContentLoaded", function () {
         gantt.$resourcesStore.parse(resources);
         //console.log(gantt.$resourcesStore);
 
+        taskStatus.forEach(function (item) { console.log(item) });
+
         var lightboxOptions = [];
         gantt.$resourcesStore.eachItem(function (res) {
             //console.log(res);
@@ -541,14 +567,19 @@ document.addEventListener("DOMContentLoaded", function () {
                 lightboxOptions.push(copy);
             }
         });
-        gantt.updateCollection("people", lightboxOptions);
+       // gantt.updateCollection("people", lightboxOptions);
         console.log(gantt.serverList("people"));
     });
 
     gantt.attachEvent("onAfterLinkAdd", function (id, item) {
         //setTimeout(reloadFunc, 2000);
     });
-
+    gantt.attachEvent("onAfterTaskDelete", function (id, item) {
+        //any custom logic here
+        alert('hi')
+        deleteGanttTaskSubTask(id);
+    });
+   
     function reloadFunc() {
         location.reload();
     }
@@ -615,7 +646,14 @@ document.addEventListener("DOMContentLoaded", function () {
                     ]
                 }
                 taskStatus.push({
-                    statusId: data._object[i].statusId, projectTaskId: data._object[i].projectTaskId
+                    statusId: data._object[i].statusId,
+                    projectTaskId: data._object[i].projectTaskId,
+                    taskOwnerId: data._object[i].taskOwnerId,
+                    taskOwnerName: data._object[i].taskOwnerName,
+                    taskLevel: data._object[i].taskLevel,
+                    totalPercentage: data._object[i].totalPercentage,
+                    plannedStartDate: data._object[i].PlannedStartDate,
+                    plannedEndDate: data._object[i].PlannedEndDate
                 });
                 //    createdDate: crDate,
                 //    editTaskOwnerId: data._object[i].editTaskOwnerId,
@@ -668,27 +706,39 @@ document.addEventListener("DOMContentLoaded", function () {
             Pidfid: 0,
             PriorityId: taskObjects.priority,
             StartDate: taskObjects.start_date,
-            EndDate: taskObjects.start_date,
+            EndDate: taskObjects.end_date,
             StatusId: res[0].statusId,
             TaskOwnerId: taskObjects.owner,
             TotalPercentage: Math.round((taskObjects.progress * 100)),
             ParentId: taskObjects.parent,
             TaskDuration: taskObjects.duration,
-            IsGanttUpdate:true
+            IsGanttUpdate: true,
+            PlannedStartDate: taskObjects.planned_start,
+            PlannedEndDate:taskObjects.planned_end,
         }
         let act = taskObjects.parent == 0 ? "Task" : "SubTask";
         let pidfId = (new URL(location.href)).searchParams.get('pidfid');
         console.log(JSON.stringify(addTask))
        ajaxServiceMethod($('#hdnWebBaseURL').val() + "Project/AddUpdateGanttTask?id=" + pidfId + "&act=" + act, 'POST', SaveTaskSubTaskListSuccess, SaveTaskSubTaskListError, JSON.stringify(addTask), null, null, null,"application/json; charset=utf-8");
      
-       function SaveTaskSubTaskListSuccess(data) {
+        function SaveTaskSubTaskListSuccess(data) {
+           // GetProjectGanttTaskList();
            toastr.success("Success");
+           
        }
        function SaveTaskSubTaskListError() {
            toastr.error("Error");
        }
     }
-    $(".gantt_save_btn").on('click',function () {
-        alert("Saved")
-    })
+    function deleteGanttTaskSubTask(taskid) {
+        ajaxServiceMethod($('#hdnBaseURL').val() + "api/Project/DeleteTaskSubTask" + "/" + taskid, 'POST', deleteGanttTaskSubTaskSuccess, deleteGanttTaskSubTaskError);
+    }
+    function deleteGanttTaskSubTaskSuccess(response){
+        toastr.success(`TaskId:${taskid} Deleted SuccessFully...!`);
+    }
+    function deleteGanttTaskSubTaskError() {
+        toastr.error(`TaskId:${taskid} not deleted due to something wrong`);
+    }
 });
+
+

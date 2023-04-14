@@ -100,11 +100,11 @@ namespace EmcureNPD.Web.Controllers
                 HttpContext.Request.Cookies.TryGetValue(UserHelper.EmcureNPDToken, out string token);
                 APIRepository objapi = new(_cofiguration);
 
-                responseMessage = objapi.APICommunication(APIURLHelper.NotificationsClickedByUser, HttpMethod.Post, token).Result;
+                responseMessage = objapi.APICommunication(APIURLHelper.NotificationsClickedByUser, HttpMethod.Get, token).Result;
 
                 if (responseMessage.IsSuccessStatusCode)
                 {
-
+                    
                     string jsonResponse = responseMessage.Content.ReadAsStringAsync().Result;
                     var data = JsonConvert.DeserializeObject<DataTableResponseModel>(jsonResponse);
                     // return data.Data;

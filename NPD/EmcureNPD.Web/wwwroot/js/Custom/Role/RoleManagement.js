@@ -32,8 +32,14 @@ function DeleteRole() {
 function DeleteRoleByIdSuccess(data) {
     try {
         if (data._Success === true) {
+            if (data._Message == "UserAssigned") {
+                toastr.error("Can not Delete Role, User assigned to this Role");
+            }
+            else { 
             CleareRoleFields();
-            toastr.success(RecordDelete);
+                toastr.success(RecordDelete);
+                location.reload(true);
+            }
         }
         else {
             toastr.error(data._Message);
@@ -41,9 +47,10 @@ function DeleteRoleByIdSuccess(data) {
     } catch (e) {
         toastr.error('Error:' + e.message);
     }
-    location.reload(true);
+    
 }
 function DeleteRoleByIdError(x, y, z) {
+    if (x.get)
     toastr.error(ErrorMessage);
     location.reload(true);
 }

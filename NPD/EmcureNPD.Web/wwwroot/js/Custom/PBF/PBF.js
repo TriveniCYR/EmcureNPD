@@ -44,13 +44,13 @@ $(document).ready(function () {
         $(this).parent().parent().find('.analyticalPrototypeDevelopment').val($(this).find(':selected').text());
         $(this).parent().parent().find('.analyticalNumberOfTest').val("1");
     });
-    $(document).on("change", ".rndPackagingTypeId", function () {
+    $(document).on("change", ".rndPackingTypeId", function () {
         var _selectedTestType = $(this).val();
         if (_selectedTestType != "" && _selectedTestType != "0") {
             var returnFromFunction = 0;
             for (var i = 1; i < 4; i++) {
                 if ($(this).parent().parent().hasClass("packagingActivity" + i + "")) {
-                    $.each($('.packagingActivity' + i + '').find(".rndPackagingTypeId"), function () {
+                    $.each($('.packagingActivity' + i + '').find(".rndPackingTypeId"), function () {
                         if ($(this).val() == _selectedTestType) {
                             returnFromFunction++;
                         }
@@ -63,6 +63,8 @@ $(document).ready(function () {
                 }
             }
         }
+        $(this).parent().parent().find('.rndPackagingUnitofMeasurement').val($(this).find(':selected').attr('data-packingunit'));
+        $(this).parent().parent().find('.rndPackagingRsperUnit').val($(this).find(':selected').attr('data-packingcost'));
     });
     $(document).on("change", ".rndFillingExpensesRegionId", function () {
         var _selectedTestType = $(this).val();
@@ -462,7 +464,7 @@ $(document).ready(function () {
 
     });
     /*Pakaging Material*/
-    $(document).on("change", ".rndPackagingUnitofMeasurement, .rndPackagingRsperUnit, .rndPackagingStrengthValue", function () {
+    $(document).on("change", ".rndPackagingStrengthValue", function () {
         var _ActivityTypeId = $(this).parent().parent().attr("data-activitytypeid");
         //var _StrengthId = $(this).parent().attr("data-strengthid");
 
@@ -800,8 +802,8 @@ function GetPBFTabDetailsSuccess(data) {
             $(_strengthArray).each(function (index, item) {
                 $('.AMVstrengths').append('<option value="' + item.pidfProductStrengthId + '">' + getStrengthName(item.pidfProductStrengthId) + '</option>');
             });
-            $(data.MasterPackagingType).each(function (index, item) {
-                $('.rndPackagingTypeId').append('<option value="' + item.packagingTypeId + '">' + item.packagingTypeName + '</option>');
+            $(data.MasterPackingType).each(function (index, item) {
+                $('.rndPackingTypeId').append('<option value="' + item.packingTypeId + '" data-PackingUnit="' + item.unit + '" data-PackingCost="' + item.packingCost + '">' + item.packingTypeName + '</option>');
             });
             $(data.MasterBusinessUnit).each(function (index, item) {
                 $('.rndFillingExpensesRegionId').append('<option value="' + item.businessUnitId + '">' + item.businessUnitName + '</option>');
@@ -812,7 +814,7 @@ function GetPBFTabDetailsSuccess(data) {
                     $(this).val($(this).next().val());
                 }
             });
-            $.each($('.rndPackagingTypeId'), function (index, item) {
+            $.each($('.rndPackingTypeId'), function (index, item) {
                 if ($(this).next().val() != undefined && $(this).next().val() != null) {
                     $(this).val($(this).next().val());
                 }
@@ -898,9 +900,9 @@ function getCheckboxCheckedStrength(data, strengthId, propertyName) {
     } else { return ""; }
 }
 
-function getValueFromStrengthPackagingTypeId(data, strengthId, propertyName, packagingTypeId) {
+function getValueFromStrengthPackingTypeId(data, strengthId, propertyName, packingTypeId) {
     var _filteredStrength = $.grep(data, function (n, i) {
-        return n.strengthId === strengthId && n.packagingTypeId == packagingTypeId;
+        return n.strengthId === strengthId && n.packingTypeId == packingTypeId;
     });
     if (_filteredStrength != null && _filteredStrength != undefined && _filteredStrength.length > 0) {
         if (_filteredStrength[0][propertyName] != null && _filteredStrength[0][propertyName] != undefined) {
@@ -1457,24 +1459,24 @@ function CreateRNDPackagingTable(data, activityTypeId) {
     var _packagingType = [];
     for (var a = 0; a < _counter; a++) {
         if (data.length > 0) {
-            if (_packagingType.indexOf(data[a].packagingTypeId) !== -1) {
+            if (_packagingType.indexOf(data[a].packingTypeId) !== -1) {
                 continue;
             }
         }
 
         objectname += '<tr  id="PackagingRow" class="packagingactivity packagingActivity' + (activityTypeId) + '" data-activitytypeid="' + activityTypeId + '">'
-            + '<td><select class="form-control readOnlyUpdate rndPackagingTypeId"><option value = "" > --Select --</option ></select><input type="hidden" value="' + (data.length > 0 ? data[a].packagingTypeId : "") + '" /></td>'
-            + '<td><input type="number" class="form-control rndPackagingUnitofMeasurement" min="0"  value="' + (data.length > 0 ? data[a].unitOfMeasurement : "") + '"/></td>'
+            + '<td><select class="form-control readOnlyUpdate rndPackingTypeId"><option value = "" > --Select --</option ></select><input type="hidden" value="' + (data.length > 0 ? data[a].packingTypeId : "") + '" /></td>'
+            + '<td><input type="text" class="form-control rndPackagingUnitofMeasurement" min="0"  value="' + (data.length > 0 ? data[a].unitOfMeasurement : "") + '"/></td>'
             + '<td><input type="number" class="form-control rndPackagingRsperUnit" min="0"  value="' + (data.length > 0 ? data[a].rsPerUnit : "") + '" /></td>';
         //+ '<td><input type="number" class="form-control rndPackagingQuantity" min="0" value="' + (data.length > 0 ? data[a].quantity : "") + '"  /></td>'
         for (var i = 0; i < _strengthArray.length; i++) {
-            objectname += '<td data-strengthid="' + _strengthArray[i].pidfProductStrengthId + '"><input class="rndPackagingActivityId" type="hidden" value="' + activityTypeId + '" /><input type="hidden" class="rndPackagingStrengthId" value="' + _strengthArray[i].pidfProductStrengthId + '" /><input type="number" class="form-control rndPackagingStrengthValue" min="0" value="' + (data.length > 0 ? getValueFromStrengthPackagingTypeId(data, _strengthArray[i].pidfProductStrengthId, "packagingDevelopment", data[a].packagingTypeId) : "") + '"/></td>';
+            objectname += '<td data-strengthid="' + _strengthArray[i].pidfProductStrengthId + '"><input class="rndPackagingActivityId" type="hidden" value="' + activityTypeId + '" /><input type="hidden" class="rndPackagingStrengthId" value="' + _strengthArray[i].pidfProductStrengthId + '" /><input type="number" class="form-control rndPackagingStrengthValue" min="0" value="' + (data.length > 0 ? getValueFromStrengthPackingTypeId(data, _strengthArray[i].pidfProductStrengthId, "packagingDevelopment", data[a].packingTypeId) : "") + '"/></td>';
         }
         objectname += "<td><input type='number' class='form-control TotalStrength' readonly='readonly' tabindex=-1 min='0' /></td><td> <i class='fa-solid fa-circle-plus nav-icon text-success operationButton' id='addIcon' onclick='addRowRNDPackaging(this);'></i> <i class='fa-solid fa-trash nav-icon text-red strengthDeleteIcon operationButton DeleteIcon'  onclick='deleteRowRNDPackaging(this);' ></i></td></tr>";
 
 
         if (data.length > 0) {
-            _packagingType.push(data[a].packagingTypeId);
+            _packagingType.push(data[a].packingTypeId);
         }
 
     }
@@ -1488,7 +1490,7 @@ function CreateRNDPackagingTable(data, activityTypeId) {
 }
 function BindRNDPackaging(data) {
     var PackagingActivityHTML = '<thead class="bg-primary text-bold"><tr>'
-        + '<td>Packaging Type</td>'
+        + '<td>Packing Type</td>'
         + '<td>Unit of Measurement</td>'
         + '<td>Rs / Unit</td>';
     $.each(_strengthArray, function (index, item) {
@@ -1506,8 +1508,8 @@ function BindRNDPackaging(data) {
     $('#tablerndpackagingmaterialrequirement').html(PackagingActivityHTML);
     SetChildRowDeleteIconPBF();
 
-    $("input[class~='rndPackagingUnitofMeasurement']").trigger('change');
-    $("input[class~='rndPackagingRsperUnit']").trigger('change');
+    //$("input[class~='rndPackagingUnitofMeasurement']").trigger('change');
+    //$("input[class~='rndPackagingRsperUnit']").trigger('change');
     $("input[class~='rndPackagingStrengthValue']").trigger('change');
 }
 function addRowRNDPackaging(element) {
@@ -1974,7 +1976,7 @@ function CreateFillingExpensesTable(data, activityTypeId) {
 
     var _counter = (data.length == 0 ? 1 : data.length);
     var _activityType = [];
-    console.log(data);
+   
     objectname += '<tr><td class="text-left text-bold bg-light" colspan="' + (6 + _strengthArray.length) + '">' + tableTitle + '</td>';
     for (var a = 0; a < _counter; a++) {
         var BUID = data.length > 0 ? data[a].businessUnitId : 0;
@@ -2187,7 +2189,7 @@ function SetRNDChildRows() {
 
         $.each($('#tablerndpackagingmaterialrequirement tbody tr.packagingActivity' + i + ''), function () {
 
-            var PackagingTypeId = $(this).find(".rndPackagingTypeId").val();
+            var PackingTypeId = $(this).find(".rndPackingTypeId").val();
             var ActivityTypeId = $(this).find(".rndPackagingActivityId").val();
             var UnitOfMeasurement = $(this).find(".rndPackagingUnitofMeasurement").val();
             /*  var PrototypeDevelopment = $(this).find(".rndPackagingPrototype").val();*/
@@ -2199,14 +2201,14 @@ function SetRNDChildRows() {
                 var _rndPackagingObject = new Object();
                 _rndPackagingObject.StrengthId = $(this).val();
                 _rndPackagingObject.PackagingDevelopment = $(this).parent().find(".rndPackagingStrengthValue").val();
-                _rndPackagingObject.PackagingTypeId = PackagingTypeId;
+                _rndPackagingObject.PackingTypeId = PackingTypeId;
                 _rndPackagingObject.ActivityTypeId = ActivityTypeId;
                 /* _rndPackagingObject.PrototypeDevelopment = PrototypeDevelopment;*/
                 _rndPackagingObject.RsPerUnit = RsPerUnit;
                 _rndPackagingObject.UnitOfMeasurement = UnitOfMeasurement;
                 _rndPackagingObject.Quantity = Quantity;
 
-                if (_rndPackagingObject.PackagingDevelopment != "" && _rndPackagingObject.PackagingTypeId != "0") {
+                if (_rndPackagingObject.PackagingDevelopment != "" && _rndPackagingObject.PackingTypeId != "0") {
                     _RNDpackagingArray.push(_rndPackagingObject);
                 }
             });

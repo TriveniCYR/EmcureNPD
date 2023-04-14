@@ -69,8 +69,7 @@ function GetBusinessUnitDetailsSuccess(data) {
             })
         }
         else {
-            $('#BDetailsTable tbody').html('<span class="text-center">No Record Found</span>');
-            //$('#BDetailsTable tbody').append('<tr><td style="width:100%">No Record Found</td></tr>');
+            $('#BDetailsTable tbody').append('<tr><td></td> <td></td> <td></td> <td></td> <td></td> <td></td><td width="20%" style="text-align:center;"><span style="color:red"><b>No Record Found</b></span></td><td></td> <td></td> <td></td> <td></td> <td></td> <td></td></tr>');
         }
     }
     catch (e) {

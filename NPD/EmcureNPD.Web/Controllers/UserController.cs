@@ -108,11 +108,7 @@ namespace EmcureNPD.Web.Controllers
                 HttpContext.Request.Cookies.TryGetValue(UserHelper.EmcureNPDToken, out string token);
                 APIRepository objapi = new(_cofiguration);
 
-                if (!string.IsNullOrEmpty(masterUser.Password) && masterUser.UserId <= 0)
-                {
-                    masterUser.Password = Utility.Utility.UtilityHelper.GenerateSHA256String(masterUser.Password);
-                    masterUser.ConfirmPassowrd = masterUser.Password;
-                }
+               
 
                 HttpResponseMessage responseMessage = objapi.APICommunication(APIURLHelper.SaveUser, HttpMethod.Post, token, new StringContent(JsonConvert.SerializeObject(masterUser))).Result;
 
