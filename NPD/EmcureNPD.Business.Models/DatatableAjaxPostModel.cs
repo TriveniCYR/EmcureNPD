@@ -54,5 +54,9 @@ namespace EmcureNPD.Business.Models
         public int recordsFiltered { get; set; }
         public dynamic Data { get; set; }
     }
-
+    public class PendingNotification
+    {
+        public int Count { get; set; }
+       
+    }
 }
