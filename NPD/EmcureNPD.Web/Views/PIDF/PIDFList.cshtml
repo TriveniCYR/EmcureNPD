@@ -58,10 +58,16 @@
         {
             <h3>@SharedLocalizer["Management"]</h3>
             ScreenModuleID = (int)ModulePermissionEnum.ManagementHOD;
+            
         } 
         else if (Context.Request.Query["ScreenId"] == Convert.ToString((int)EmcureNPD.Utility.Enums.PIDFScreen.Project))
         {
             <h3>@SharedLocalizer["Project Management"]</h3>
+            <div class="md-right mb-1">
+                <div class="mybtn-group">
+                    <a class="btn btn-primary" href="@Url.Action("ProjectSummary","Project", new{ScreenId =Context.Request.Query["ScreenId"]})"><i class="fas fa-project-diagram mr-2"></i>Gantt Chart</a>
+                </div>
+            </div>
         }
         <div>
             @if (Context.Request.Query["ScreenId"] == Convert.ToString((int)EmcureNPD.Utility.Enums.PIDFScreen.PIDF) || Context.Request.Query["ScreenId"] == Convert.ToString((int)EmcureNPD.Utility.Enums.PIDFScreen.IPD) || Context.Request.Query["ScreenId"] == Convert.ToString((int)EmcureNPD.Utility.Enums.PIDFScreen.Finance) || (Context.Request.Query["ScreenId"] == Convert.ToString((int)EmcureNPD.Utility.Enums.PIDFScreen.Management) && Ismanagement.Equals("True")))

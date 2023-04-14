@@ -19,6 +19,8 @@
     var DefaultStatus = Model == null ? 0 : Model.PIDFStatusId;
     var CurrencyId=Model == null ? 0 : Model.Currencyid;
     var DosageFormId=Model == null ? 0 : Model.DosageFrom;
+    var MSPercent=Model==null?0:Model.Mspersentage;
+    var TargetPriceScenario=Model==null?0:Model.TargetPriceScenario;
     RolePermissionModel objPermssion = (RolePermissionModel)ViewBag.Access;
     string IsApproveAllow = (objPermssion.Approve) ? "" : "display: none";
 }
@@ -6400,6 +6402,7 @@
     const  ApproveRejectDeletePidf = "@EmcureNPD.Web.Helpers.APIURLHelper.ApproveRejectDeletePidf";
     const selectedDosageFormId="@DosageFormId";
     const selectedCurrencyId="@CurrencyId";
-    
+    const selectedMsId="@MSPercent";
+        const selectedTargetPriceScenario = "@TargetPriceScenario";
 </script>
 }

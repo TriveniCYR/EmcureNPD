@@ -129,7 +129,7 @@ namespace EmcureNPD.Web.Controllers
             ViewBag.id = pidfid;
             return View();
         }
-        public IActionResult GanttView(string pidfid)
+        public IActionResult ProjectSummary(string pidfid)
         {
             ViewBag.id = pidfid;
             return View();
