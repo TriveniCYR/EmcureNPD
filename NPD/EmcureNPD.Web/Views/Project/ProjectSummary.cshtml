@@ -1,11 +1,9 @@
 ﻿@model IEnumerable<EmcureNPD.Business.Models.ProjectTaskEntity>
-@using Microsoft.Extensions.Configuration
-@inject IConfiguration Configuration
 @{
-    ViewData["Title"] = "Gantt Chart";
-    var id = ViewBag.id;
-    string jsVersion = @Configuration.GetSection("StaticJS")["version"];
+    ViewData["Title"] = "Project Summary";
+    var ScreenId = Context.Request.Query["ScreenId"];
 }
+
 <link href="https://cdn.dhtmlx.com/gantt/edge/dhtmlxgantt.css" rel="stylesheet" type="text/css" />
 <style>
     .gantt_task_progress {
@@ -113,27 +111,26 @@
 
 <div class="content-header">
     <div style="display: flex; justify-content: space-between; align-items: center;">
-        <h2 class="m-0">Management Gantt Chart</h2>
-        <div class="md-left mb-1">
+        <h2 class="m-0">Projects Gantt Chart</h2>
+        <div class="md-right mb-1">
             <div class="mybtn-group">
                 <button class="btn btn-danger" onclick="javascript:window.history.back();"><i class="fas fa-undo mr-1"></i> Back</button>
-               @* <button class="btn btn-danger" onclick="location.href='@Url.Action("PIDFList", "PIDF", new { ScreenId = 9 })'"><i class="fas fa-undo mr-1"></i> Back</button>*@
             </div>
         </div>
     </div>
 
 </div>
 <div class="container-fluid background-white-card">
-           
-                <section class="connectedSortable">
-                    <!-- Custom tabs (Charts with tabs)-->
-                    <div class="card">
-                       @* <div class="card-header">
-                            <h3 class="card-title">
-                                <i class="far fa-plus-square mr-2"></i> Project : @ViewBag.GanttProjectName
-                            </h3>
-                            
-                        </div>*@
+
+    <section class="connectedSortable">
+        <!-- Custom tabs (Charts with tabs)-->
+        <div class="card">
+            @* <div class="card-header">
+            <h3 class="card-title">
+            <i class="far fa-plus-square mr-2"></i> Project : @ViewBag.GanttProjectName
+            </h3>
+
+            </div>*@
             <div class="card-header bg-primary">
                 <h3 class="card-title mb-0">Project : <span id="lblProjectName"></span></h3>
                 <div class="card-tools">
@@ -142,46 +139,47 @@
                     </button>
                 </div>
             </div>
-                        <div class="card-body">
-                            <div class="card maximized-card" >
-                                <div class="card-body">
-                                    <div class="row">
-                                        <form class="gantt_control col-md-12">
+            <div class="card-body">
+                <div class="card maximized-card">
+                    <div class="card-body">
+                        <div class="row">
+                            <form class="gantt_control col-md-12">
 
-                                            <input type="radio" id="scale1" class="gantt_radio" name="scale" value="day" checked>
-                                            <label for="scale1">Day scale</label>
+                                <input type="radio" id="scale1" class="gantt_radio" name="scale" value="day" checked>
+                                <label for="scale1">Day scale</label>
 
-                                            <input type="radio" id="scale2" class="gantt_radio" name="scale" value="week">
-                                            <label for="scale2">Week scale</label>
+                                <input type="radio" id="scale2" class="gantt_radio" name="scale" value="week">
+                                <label for="scale2">Week scale</label>
 
-                                            <input type="radio" id="scale3" class="gantt_radio" name="scale" value="month">
-                                            <label for="scale3">Month scale</label>
+                                <input type="radio" id="scale3" class="gantt_radio" name="scale" value="month">
+                                <label for="scale3">Month scale</label>
 
-                                            <input type="radio" id="scale5" class="gantt_radio" name="scale" value="year">
-                                            <label for="scale5">Year scale</label>
-                                            <button type="button" class="btn float-right p-0" data-card-widget="maximize">
-                                                <i class="fas fa-compress"></i>
-                                            </button>
-                                        </form>
-                                        <div id="ganttContainer" style="height:700px; width:auto;max-width:100%;"></div>
-                                    </div>
-                                </div>
-                            </div>
+                                <input type="radio" id="scale5" class="gantt_radio" name="scale" value="year">
+                                <label for="scale5">Year scale</label>
+                                <button type="button" class="btn float-right p-0" data-card-widget="maximize">
+                                    <i class="fas fa-compress"></i>
+                                </button>
+                            </form>
+                            <div id="ganttContainer" style="height:700px; width:auto;max-width:100%;"></div>
                         </div>
                     </div>
-                </section>
-           
+                </div>
+            </div>
         </div>
+    </section>
+
+</div>
 
 @section MyScripts{
 
-   
+
     <script src="https://cdn.dhtmlx.com/gantt/edge/dhtmlxgantt.js"></script>
-    <link href="~/css/gantt.css?v=@jsVersion" rel="stylesheet" />
-    <script src="~/js/custom/gantt/gantt.js?v=@jsVersion"></script>
-    <script src="~/js/custom/gantt/dhtmlxgantt.js?v=@jsVersion"></script>
+    <link href="~/css/gantt.css" rel="stylesheet" />
+    <script src="~/js/custom/project/projectganttsummary.js"></script>
+    <script src="~/js/custom/gantt/dhtmlxgantt.js"></script>
     <script>
-            var id = @Html.Raw(Json.Serialize(id));
+        var id = "@ScreenId";
+        const AllPIDF = "@EmcureNPD.Web.Helpers.APIURLHelper.GetAllPIDF";
     </script>
-   
+
 }

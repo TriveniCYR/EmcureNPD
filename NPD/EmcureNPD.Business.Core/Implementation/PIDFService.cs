@@ -120,16 +120,16 @@ namespace EmcureNPD.Business.Core.Implementation
         {
             var loggedInUserId = _helper.GetLoggedInUser().UserId;
 
-            string ColumnName = (model.order.Count > 0 ? model.columns[model.order[0].column].data : string.Empty);
-            string SortDir = (model.order.Count > 0 ? model.order[0].dir : string.Empty);
-
+            string ColumnName = (model.order!=null && model.order.Count > 0 ? model.columns[model.order[0].column].data : string.Empty);
+            string SortDir = (model.order != null && model.order.Count > 0 ? model.order[0].dir : string.Empty);
+            string SearchText= (model.search != null ? model.search.value : string.Empty);
             SqlParameter[] osqlParameter = {
                 new SqlParameter("@UserId", loggedInUserId),
                 new SqlParameter("@CurrentPageNumber", model.start),
                     new SqlParameter("@PageSize", model.length),
                     new SqlParameter("@SortColumn", ColumnName),
                     new SqlParameter("@SortDirection", SortDir),
-                    new SqlParameter("@SearchText", model.search.value),
+                    new SqlParameter("@SearchText", SearchText),
                     new SqlParameter("@ScreenId", ScreenId),
             };
 
