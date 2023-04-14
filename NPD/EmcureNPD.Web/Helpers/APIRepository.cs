@@ -16,11 +16,11 @@ namespace EmcureNPD.Web.Helpers
         private IConfiguration Configuration;
         private readonly IHttpContextAccessor _httpContextAccessor;
 
-        public APIRepository(IConfiguration configuration, IHttpContextAccessor httpContextAccessor)
+        public APIRepository(IConfiguration configuration)
         {
             Configuration = configuration;
             baseURL = Configuration.GetSection("Apiconfig").GetSection("baseurl").Value;
-            _httpContextAccessor = httpContextAccessor;
+           // _httpContextAccessor = httpContextAccessor;
         }
 
         #region APICommunication - Common Method for API calling
@@ -84,6 +84,7 @@ namespace EmcureNPD.Web.Helpers
 
         public async Task<HttpResponseMessage> APIComm(string URL, HttpMethod invokeType, string token, HttpContent body = null)
         {
+            HttpContextAccessor httpContextAccessor = new HttpContextAccessor();
             HttpResponseMessage oHttpResponseMessage = new HttpResponseMessage();
             try
             {
@@ -97,21 +98,21 @@ namespace EmcureNPD.Web.Helpers
 
                     if (invokeType.Method == HttpMethod.Get.ToString())
                     {
-                        return await client.GetAsync(URL);
+                        oHttpResponseMessage= await client.GetAsync(URL);
                     }
                     else if (invokeType.Method == HttpMethod.Post.ToString())
                     {
                         if (body != null)
-                            return await client.PostAsync(URL, body);
+                            oHttpResponseMessage= await client.PostAsync(URL, body);
                     }
                     else if (invokeType.Method == HttpMethod.Put.ToString())
                     {
                         if (body != null)
-                            return await client.PostAsync(URL, body);
+                            oHttpResponseMessage= await client.PostAsync(URL, body);
                     }
                     else if (invokeType.Method == HttpMethod.Delete.ToString())
                     {
-                        return await client.DeleteAsync(URL);
+                        oHttpResponseMessage=await client.DeleteAsync(URL);
                     }
                 }
             }
@@ -121,8 +122,11 @@ namespace EmcureNPD.Web.Helpers
             }
             if (oHttpResponseMessage.StatusCode == HttpStatusCode.Unauthorized)
             {
-                _httpContextAccessor.HttpContext.Response.Redirect("~/Home/AccessRestriction");
-                //context.Result = new RedirectResult("~/Home/AccessRestriction");
+                string redirecturl = "/Home/AccessRestriction";
+                string scheme = httpContextAccessor.HttpContext.Request.Scheme;
+                string Host = httpContextAccessor.HttpContext.Request.Host.ToUriComponent();
+                var absoluteUri = string.Concat(scheme,"://",Host,redirecturl);
+                httpContextAccessor.HttpContext.Response.Redirect(absoluteUri);
             }
             return oHttpResponseMessage;
         }

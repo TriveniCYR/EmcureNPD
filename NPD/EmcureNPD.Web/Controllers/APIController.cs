@@ -383,7 +383,6 @@ namespace EmcureNPD.Web.Controllers
                 }
 
                 form.Add(new StringContent(JsonConvert.SerializeObject(_IPDmodel)), "Data");
-
                 HttpContext.Request.Cookies.TryGetValue(UserHelper.EmcureNPDToken, out string token);
                 APIRepository objapi = new(_cofiguration);
 
