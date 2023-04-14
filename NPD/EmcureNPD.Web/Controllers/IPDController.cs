@@ -52,7 +52,7 @@ namespace EmcureNPD.Web.Controllers
                 string logUserId = Convert.ToString(HttpContext.Session.GetString(UserHelper.LoggedInUserId));
                 int rolId = (int)HttpContext.Session.GetInt32(UserHelper.LoggedInRoleId);
                 RolePermissionModel objPermssion = UtilityHelper.GetCntrActionAccess((int)ModulePermissionEnum.IPD, rolId);
-                if (objPermssion == null || (!objPermssion.Add && !objPermssion.Edit))
+                if (objPermssion == null || !(objPermssion.View || objPermssion.Add || objPermssion.Edit))
                 {
                     return RedirectToAction("AccessRestriction", "Home");
 
@@ -89,7 +89,7 @@ namespace EmcureNPD.Web.Controllers
                 string logUserId = Convert.ToString(HttpContext.Session.GetString(UserHelper.LoggedInUserId));
                 int rolId = (int)HttpContext.Session.GetInt32(UserHelper.LoggedInRoleId);
                 RolePermissionModel objPermssion = UtilityHelper.GetCntrActionAccess((int)ModulePermissionEnum.IPD, rolId);
-                if (objPermssion == null || (!objPermssion.Add && !objPermssion.Edit))
+                if (objPermssion == null || !(objPermssion.View || objPermssion.Add || objPermssion.Edit))
                 {
                     return RedirectToAction("AccessRestriction", "Home");
 
@@ -161,7 +161,7 @@ namespace EmcureNPD.Web.Controllers
 
             int rolId = (int)HttpContext.Session.GetInt32(UserHelper.LoggedInRoleId);
             RolePermissionModel objPermssion = UtilityHelper.GetCntrActionAccess((int)ModulePermissionEnum.IPD, rolId);
-            if (objPermssion == null || !objPermssion.View)
+            if (objPermssion == null || !(objPermssion.View || objPermssion.Add || objPermssion.Edit))
             {
                 return RedirectToAction("AccessRestriction", "Home");
 

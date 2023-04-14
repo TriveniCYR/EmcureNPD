@@ -21,7 +21,7 @@
     <div class="container-fluid d-flex justify-content-between">
         <h3>@MasterLocalizer["Currency"]</h3>
         <div>
-            <a class="btn btn-primary" data-toggle="modal" data-target="#SaveCurrencyModel" data-backdrop="static" data-keyboard="false" onclick="AddCurrency();"><i class="far fa-plus-square mr-1"></i> @SharedLocalizer["Add"]</a>
+            <a style="@IsAddAllow" class="btn btn-primary" data-toggle="modal" data-target="#SaveCurrencyModel" data-backdrop="static" data-keyboard="false" onclick="AddCurrency();"><i class="far fa-plus-square mr-1"></i> @SharedLocalizer["Add"]</a>
         </div>
     </div>
 </div>

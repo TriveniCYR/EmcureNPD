@@ -1,7 +1,7 @@
 var _milestoneInstance;
 var _milestoneData = [];
 $(document).ready(function () {
-    
+   
     GetProjectDetails(0);
     GetBusinessUnitDetails(bid);
     
@@ -20,13 +20,28 @@ $(document).ready(function () {
             tr.addClass('shown');
         }
     });
-
+    HideIfEditPermissionOnly();
 });
 function IsViewModeProject() {
     if ($("#IsView").val() == '1') {
         SetProjectFormReadonly();
+        HideIfEditPermissionOnly();
     }
 }
+function HideIfEditPermissionOnly() {
+    if (IsAddPermission != 'True') {
+        $("#addTaskButton").prop('disabled', true);
+        $(".addSubTaskBtn").prop('hidden', true);
+    } 
+    if (IsUpdatePermission != 'True') {
+        $(".editBtn").prop('hidden', true);
+    }
+    if (IsDeletePermission != 'True'){
+        $(".deleteBtn").prop('hidden', true);
+    }   
+}
+
+
 function SetProjectFormReadonly() {
     $("#addTaskButton").prop('disabled', true);
     $(".addSubTaskBtn").prop('hidden', true);
@@ -176,7 +191,7 @@ function GetProjectDetailsSuccess(data) {
             var edit = '<a class="large-font editBtn" style="" href="" title="Edit" data-toggle="modal" data-target="#UpdateModel" data-backdrop="static" data-keyboard="false"  onclick="GetTaskSubTaskById(' + object.projectTaskId + '); return false;"><i class="fa fa-fw fa-edit mr-1"></i> ' + '</a>';
             var deleteTag = '<a class="large-font text-danger deleteBtn" style="" href="" title="Delete" data-toggle="modal" data-target="#DeleteModel" data-backdrop="static" data-keyboard="false" onclick="ConfirmationDeleteTaskSubTask(' + object.projectTaskId + '); return false;"><i class="fa fa-fw fa-trash mr-1"></i> ' + '</a>';
 
-            let addSubTaskButton = '<a class="large-font addSubTaskBtn" style="" href="" title="Add SubTask" onclick="ShowAddSubTaskForm(\'' + object.projectTaskId + '\', \'' + object.taskName + '\'); return false;"><i class="fa fa-fw fa-plus mr-1"></i> ' + '</a>';
+            let addSubTaskButton = '<a class="large-font addSubTaskBtn" name="btnaddSubTask" style="" href="" title="Add SubTask" onclick="ShowAddSubTaskForm(\'' + object.projectTaskId + '\', \'' + object.taskName + '\'); return false;"><i class="fa fa-fw fa-plus mr-1"></i> ' + '</a>';
             //let displaySubTaskListButton = '<a class="large-font" style="" href="javascript:ShowChildRows(' + object.projectTaskId + ');" title="Show Sub task"><i class="fa fa-caret-down" aria-hidden="true"></i>' + '</a>';
             let displaySubTaskListButton = '<a class="large-font" style="" href="javascript:ShowChildRows(' + object.projectTaskId + ');" title="Show Sub task"><i class="fa fa-plus-circle icoShowSubtask' + object.projectTaskId +'" aria-hidden="true" style="color:#31b131;"></i>' + '</a>';
             var _parentClass = (object.taskLevel > 1 ? "treegrid-parent-" + object.parentId + "" : "");
@@ -194,7 +209,7 @@ function GetProjectDetailsSuccess(data) {
         //_milestoneInstance = StaticDataTable("#Milestones");
         //end
 
-       
+        HideIfEditPermissionOnly();
     }
     catch (e) {
         toastr.error('Error:' + e.message);

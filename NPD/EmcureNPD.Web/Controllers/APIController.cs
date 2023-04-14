@@ -101,8 +101,8 @@ namespace EmcureNPD.Web.Controllers
             try
             {
                 int rolId = (int)HttpContext.Session.GetInt32(UserHelper.LoggedInRoleId);
-                RolePermissionModel objPermssion = UtilityHelper.GetCntrActionAccess((int)ModulePermissionEnum.APIListManagement, rolId);
-                if (objPermssion == null || (!objPermssion.Add && !objPermssion.Edit))
+                RolePermissionModel objPermssion = UtilityHelper.GetCntrActionAccess((int)ModulePermissionEnum.APIListManagement, rolId, (int)SubModulePermissionEnum.APICharterSummary);
+                if (objPermssion == null || !(objPermssion.View))
                 {
                     return RedirectToAction("AccessRestriction", "Home");
                 }
@@ -145,8 +145,8 @@ namespace EmcureNPD.Web.Controllers
             try
             {
                 int rolId = (int)HttpContext.Session.GetInt32(UserHelper.LoggedInRoleId);
-                RolePermissionModel objPermssion = UtilityHelper.GetCntrActionAccess((int)ModulePermissionEnum.APIListManagement, rolId);
-                if (objPermssion == null || (!objPermssion.Add && !objPermssion.Edit))
+                RolePermissionModel objPermssion = UtilityHelper.GetCntrActionAccess((int)ModulePermissionEnum.APIListManagement, rolId, (int)SubModulePermissionEnum.APICharter);
+                if (objPermssion == null || !(objPermssion.View || objPermssion.Add || objPermssion.Edit))
                 {
                     return RedirectToAction("AccessRestriction", "Home");
                 }
@@ -226,8 +226,8 @@ namespace EmcureNPD.Web.Controllers
             try
             {
                 int rolId = (int)HttpContext.Session.GetInt32(UserHelper.LoggedInRoleId);
-                RolePermissionModel objPermssion = UtilityHelper.GetCntrActionAccess((int)ModulePermissionEnum.APIListManagement, rolId);
-                if (objPermssion == null || (!objPermssion.Add && !objPermssion.Edit))
+                RolePermissionModel objPermssion = UtilityHelper.GetCntrActionAccess((int)ModulePermissionEnum.APIListManagement, rolId, (int)SubModulePermissionEnum.APIRnD);
+                if (objPermssion == null || !(objPermssion.View || objPermssion.Add || objPermssion.Edit))
                 {
                     return RedirectToAction("AccessRestriction", "Home");
                 }
@@ -319,8 +319,8 @@ namespace EmcureNPD.Web.Controllers
             try
             {
                 int rolId = (int)HttpContext.Session.GetInt32(UserHelper.LoggedInRoleId);
-                RolePermissionModel objPermssion = UtilityHelper.GetCntrActionAccess((int)ModulePermissionEnum.APIListManagement, rolId);
-                if (objPermssion == null || (!objPermssion.Add && !objPermssion.Edit))
+                RolePermissionModel objPermssion = UtilityHelper.GetCntrActionAccess((int)ModulePermissionEnum.APIListManagement, rolId, (int)SubModulePermissionEnum.APIIPD);
+                if (objPermssion == null || !(objPermssion.View || objPermssion.Add || objPermssion.Edit))
                 {
                     return RedirectToAction("AccessRestriction", "Home");
                 }
