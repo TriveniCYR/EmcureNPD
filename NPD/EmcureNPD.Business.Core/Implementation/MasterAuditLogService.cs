@@ -122,7 +122,7 @@ namespace EmcureNPD.Business.Core.Implementation
             string SortDir = (model.order.Count > 0 ? model.order[0].dir : string.Empty);
 
             SqlParameter[] osqlParameter = {
-                    new SqlParameter("@CurrentPageNumber", model.page),
+                    new SqlParameter("@CurrentPageNumber", model.start),
                     new SqlParameter("@PageSize", model.length),
                     new SqlParameter("@SortColumn", ColumnName),
                     new SqlParameter("@SortDirection", SortDir),
@@ -132,8 +132,9 @@ namespace EmcureNPD.Business.Core.Implementation
             var PIDFList = await _repository.GetBySP("stp_npd_GetAuditLogList", System.Data.CommandType.StoredProcedure, osqlParameter);
 
             var TotalRecord = (PIDFList != null && PIDFList.Rows.Count > 0 ? Convert.ToInt32(PIDFList.Rows[0]["TotalRecord"]) : 0);
+            var TotalCount = (PIDFList != null && PIDFList.Rows.Count > 0 ? Convert.ToInt32(PIDFList.Rows[0]["TotalCount"]) : 0);
 
-            DataTableResponseModel oDataTableResponseModel = new DataTableResponseModel(model.draw, TotalRecord, TotalRecord, PIDFList.DataTableToList<AuditLogEntity>());
+            DataTableResponseModel oDataTableResponseModel = new DataTableResponseModel(model.draw, TotalRecord, TotalCount, PIDFList);
 
             return oDataTableResponseModel;
 
