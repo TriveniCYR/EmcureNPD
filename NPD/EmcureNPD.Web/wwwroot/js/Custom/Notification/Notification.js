@@ -1,4 +1,9 @@
-﻿$(document).ready(function () { GetAllNotifications(); });
+﻿$(document).ready(function () {
+    GetAllNotifications();
+    $(".notification").click(function () {
+        ajaxServiceMethod($('#hdnBaseURL').val() + NotificationsClickedByUser, 'GET', GetNotificationClickedSuccess, GetNotificationClickedError);
+    });
+});
 function GetAllNotifications() {
     let ColumnName = "CreatedDate", SortDir = "DESC", start = 0, length = 4;
     ajaxServiceMethod($('#hdnWebBaseURL').val() + GetWebFilteredNotifications + `?ColumnName=${ColumnName}&SortDir=${SortDir}&=start=${start}&length=${length}`, 'GET', GetAllNotificationListSuccess, GetAllNotificationListError);
@@ -9,9 +14,18 @@ function GetAllNotificationListSuccess(data) {
         let rowcount = 1;
         let result = JSON.parse(data)
         if (result != null) {
-            $('#NotificationNo').html(result.recordsTotal);
+            if (result.data.length > 0) {
+                if (result.data[0].pendingNotification > 0) {
+                    $('#NotificationNo').html(result.data[0].pendingNotification);
+                } else {
+                    $('#NotificationNo').hide();
+                }
+                
+            } else {
+                $('#NotificationNo').hide();
+            }
             $('#NotificationCount').html(result.recordsTotal + " Notifications");
-            for (var i = 0; i < result.recordsFiltered; i++) {
+            for (var i = 0; i < result.data.length; i++) {
                 let notificationTitle = result.data[i].notificationTitle.length > 40 ? result.data[i].notificationTitle.slice(0, 39) + '...' : result.data[i].notificationTitle;
                 /*<span class="badge badge-secondary"><i class="fas fa-envelope mr-1"></i>${rowcount} <b>${data.data[i].notificationTitle}</b></span>*/
                 elehtml += `<a href="#" class="dropdown-item">
@@ -30,7 +44,16 @@ function GetAllNotificationListError(x, y, z) {
     toastr.error(ErrorMessage);
 }
 
-
+function GetNotificationClickedSuccess(data) {
+    try {
+        let result = JSON.parse(data)
+    } catch (e) {
+        toastr.error('Error:' + e.message);
+    }
+}
+function GetNotificationClickedError(x, y, z) {
+    toastr.error(ErrorMessage);
+}
 //var signalRServer = $.connection.signalRServer;
 
 //signalRServer.client.ShowAllNotification = function () { GetAllNotifications(); }
