@@ -236,6 +236,11 @@ namespace EmcureNPD.Business.Core.ServiceImplementations
 
         public async Task<DBOperation> AddUpdateUser(MasterUserEntity entityUser)
         {
+            if (!string.IsNullOrEmpty(entityUser.Password) && entityUser.UserId <= 0)
+            {
+                entityUser.Password = Utility.Utility.UtilityHelper.GenerateSHA256String(entityUser.Password);
+                entityUser.ConfirmPassowrd = entityUser.Password;
+            }
             MasterUser objUser;
             var LoggedUserId = entityUser.LoggedUserId;
             if (entityUser.UserId > 0)
