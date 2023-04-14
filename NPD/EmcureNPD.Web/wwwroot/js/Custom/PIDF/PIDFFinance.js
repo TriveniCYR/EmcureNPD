@@ -3,15 +3,8 @@
 $(document).ready(function () {
     GetCurrencyList();
     GetDosageFormList();
- 
-    //for (var option of document.getElementById("DosageFrom").value) {
-    //    //alert(option.value);
-    //    if (option.value === selectedDosageFormId) {
-    //        option.selected = true;
-    //        return;
-    //    }
-    //}
-    //$("#FinanceTable tbody tr:first").find('.del-rows').hide();
+    GetSelectedMSPercent();
+    GetSelectedTargetPriceScanario();
     if (isView === "1") {
         $('.readOnlyUpdate').prop('readonly', true);
         $('select.form-control.readOnlyUpdate').attr("disabled", true);
@@ -27,11 +20,25 @@ $(document).ready(function () {
         $('.del-rows').css("display", "block");
         SetChildRowDeleteIcon();
     }
-})
+});
 
-//$(".btn-tool").click(function () {
-//  $(this).data('clicked', true);
-//});
+function GetSelectedMSPercent()
+{
+    $("select#MSPersentage option").each(function (index, value) {
+        if (this.value === selectedMsId) {
+            $("select#MSPersentage").prop('selectedIndex', index);
+            return;
+        }
+    });
+}
+function GetSelectedTargetPriceScanario() {
+    $("select#TargetPriceScenario option").each(function (index, value) {
+        if (this.value === selectedTargetPriceScenario) {
+            $("select#TargetPriceScenario").prop('selectedIndex', index);
+            return;
+        }
+    });
+}
 $("#btnApprove").click(function () {
     $('#ApproveModel').modal('show');
     $('#SaveType').val('approved');
@@ -234,6 +241,16 @@ $("i.fas.fa-plus").click(function () {
                if (!form.checkValidity()) {
                    event.preventDefault()
                    event.stopPropagation()
+               }
+               else if ($("select#Currency").val() == 0) {
+                   event.preventDefault()
+                   event.stopPropagation()
+                   toastr.error("please select currency", "Required");
+               }
+               else if ($("select#DosageFrom.form-control.readOnlyUpdate").val() == 0) {
+                   event.preventDefault()
+                   event.stopPropagation()
+                   toastr.error("please select DosageFrom", "Required");
                }
                $(".valid-feedback").hide();
                form.classList.add('was-validated')
