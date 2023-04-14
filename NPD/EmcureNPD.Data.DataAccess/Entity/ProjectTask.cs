@@ -23,6 +23,8 @@ namespace EmcureNPD.Data.DataAccess.Entity
         public DateTime? ModifyDate { get; set; }
         public int? ModifyBy { get; set; }
         public long? ParentId { get; set; }
+        public DateTime? PlannedStartDate { get; set; }
+        public DateTime? PlannedEndDate { get; set; }
 
         public virtual Pidf Pidf { get; set; }
         public virtual MasterProjectPriority Priority { get; set; }

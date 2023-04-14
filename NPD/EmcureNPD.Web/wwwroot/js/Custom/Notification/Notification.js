@@ -16,7 +16,7 @@ function GetAllNotificationListSuccess(data) {
         let result = JSON.parse(data)
         if (result != null) {           
             $('#NotificationCount').html(result.recordsTotal + " Notifications");
-            for (var i = 0; i < result.recordsFiltered; i++) {
+            for (var i = 0; i < result.data.length; i++) {
                 let notificationTitle = result.data[i].notificationTitle.length > 40 ? result.data[i].notificationTitle.slice(0, 39) + '...' : result.data[i].notificationTitle;
                 /*<span class="badge badge-secondary"><i class="fas fa-envelope mr-1"></i>${rowcount} <b>${data.data[i].notificationTitle}</b></span>*/
                 elehtml += `<a href="#" class="dropdown-item">

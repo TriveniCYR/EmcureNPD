@@ -4,7 +4,7 @@ $(document).ready(function () {
 });
 
 function InitializeAuditLogList() {
-    var setDefaultOrder = [2, 'desc'];
+    var setDefaultOrder = [1, 'desc'];
     var ajaxObject = {
         "url": $('#hdnBaseURL').val() + AllAuditLog,
         "type": "POST",

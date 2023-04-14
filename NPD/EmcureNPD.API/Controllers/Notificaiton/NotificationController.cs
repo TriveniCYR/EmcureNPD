@@ -53,15 +53,16 @@ namespace EmcureNPD.API.Controllers.Notificaiton {
         /// <response code="404">Not Found</response>
         /// <response code="405">Method Not Allowed</response>
         /// <response code="500">Internal Server</response>
-        [HttpGet, Route("GetAllNotification")]
-        public async Task<IActionResult> GetAllNotification() {
+        [HttpPost, Route("GetAllNotification")]
+        public async Task<IActionResult> GetAllNotification([FromForm] DataTableAjaxPostModel model) {
             try {
-                return _ObjectResponse.CreateData(await _NotificationService.GetAll(), (Int32)HttpStatusCode.OK);
+                return _ObjectResponse.CreateData(await _NotificationService.GetAll(model), (Int32)HttpStatusCode.OK);
             } catch (Exception ex) {
 				_logger.LogInformation($"ERROR:Notifications/GetAllNotification:{ex}");
 				return _ObjectResponse.Create(false, (Int32)HttpStatusCode.InternalServerError, Convert.ToString(ex.StackTrace));
             }
         }
+        
         [HttpGet, Route("GetFilteredNotifications/{ColumnName}/{SortDir}/{start}/{length}")]
         [OutputCache(Duration = 120, VaryByParam = "RoleId")]
         public async Task<IActionResult> GetFilteredNotifications(string ColumnName, string SortDir, int start, int length,int RoleId)
@@ -77,6 +78,7 @@ namespace EmcureNPD.API.Controllers.Notificaiton {
 				return _ObjectResponse.Create(false, (Int32)HttpStatusCode.InternalServerError, Convert.ToString(ex.StackTrace));
 			}
 		}
+        
         [HttpGet, Route("NotificationsClickedByUser")]
         //[OutputCache(Duration = 120, VaryByParam = "RoleId")]
         public async Task<IActionResult> NotificationsClickedByUser()

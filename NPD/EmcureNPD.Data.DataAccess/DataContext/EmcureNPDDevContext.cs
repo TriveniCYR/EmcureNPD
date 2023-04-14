@@ -55,6 +55,7 @@ namespace EmcureNPD.Data.DataAccess.DataContext
         public virtual DbSet<MasterNotificationUser> MasterNotificationUsers { get; set; }
         public virtual DbSet<MasterOral> MasterOrals { get; set; }
         public virtual DbSet<MasterPackagingType> MasterPackagingTypes { get; set; }
+        public virtual DbSet<MasterPackingType> MasterPackingTypes { get; set; }
         public virtual DbSet<MasterPidfstatus> MasterPidfstatuses { get; set; }
         public virtual DbSet<MasterPlant> MasterPlants { get; set; }
         public virtual DbSet<MasterProductStrength> MasterProductStrengths { get; set; }
@@ -688,6 +689,21 @@ namespace EmcureNPD.Data.DataAccess.DataContext
                 entity.Property(e => e.ModifyDate).HasColumnType("datetime");
 
                 entity.Property(e => e.PackagingTypeName).HasMaxLength(100);
+            });
+
+            modelBuilder.Entity<MasterPackingType>(entity =>
+            {
+                entity.HasKey(e => e.PackingTypeId);
+
+                entity.ToTable("Master_PackingType", "dbo");
+
+                entity.Property(e => e.CreatedDate).HasColumnType("datetime");
+
+                entity.Property(e => e.ModifyDate).HasColumnType("datetime");
+
+                entity.Property(e => e.PackingTypeName).HasMaxLength(100);
+
+                entity.Property(e => e.Unit).HasMaxLength(50);
             });
 
             modelBuilder.Entity<MasterPidfstatus>(entity =>
@@ -2647,6 +2663,10 @@ namespace EmcureNPD.Data.DataAccess.DataContext
                 entity.Property(e => e.ModifyDate).HasColumnType("datetime");
 
                 entity.Property(e => e.Pidfid).HasColumnName("PIDFId");
+
+                entity.Property(e => e.PlannedEndDate).HasColumnType("datetime");
+
+                entity.Property(e => e.PlannedStartDate).HasColumnType("datetime");
 
                 entity.Property(e => e.StartDate).HasColumnType("datetime");
 

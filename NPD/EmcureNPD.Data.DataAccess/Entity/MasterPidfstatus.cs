@@ -25,6 +25,7 @@ namespace EmcureNPD.Data.DataAccess.Entity
         public DateTime? ModifyDate { get; set; }
         public string StatusColor { get; set; }
         public bool? IsDashboard { get; set; }
+        public int? ModuleId { get; set; }
 
         public virtual ICollection<MasterNotification> MasterNotifications { get; set; }
         public virtual ICollection<Pidf> PidfLastStatuses { get; set; }

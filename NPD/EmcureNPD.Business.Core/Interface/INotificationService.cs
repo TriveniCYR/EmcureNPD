@@ -10,11 +10,14 @@ using static EmcureNPD.Utility.Enums.GeneralEnum;
 
 namespace EmcureNPD.Business.Core.Interface {
     public interface INotificationService {
-        Task<DataTableResponseModel> GetAll();
+        Task<DataTableResponseModel> GetAll(DataTableAjaxPostModel model);
+
         void dbChangeNotification(object sender, System.Data.SqlClient.SqlNotificationEventArgs e);
 
         Task<DBOperation> CreateNotification(long pidfId, int statusid, string notificatioTitle, string notificationDescription, int loggedinUserId);
+        
         Task<DBOperation> UpdateNotification(long notificationId,string notificationTitle, string notificationDescription, int loggedinUserId);
+        
         Task<DataTableResponseModel> GetFilteredNotifications(string ColumnName, string SortDir, int start, int length, int RoleId);
         Task<PendingNotification> ClickedNotification();
         Task<PendingNotification> NotificationCountForUser();
