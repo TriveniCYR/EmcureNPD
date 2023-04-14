@@ -61,6 +61,10 @@ namespace EmcureNPD.Web.Controllers
                 int rolId = (int)HttpContext.Session.GetInt32(UserHelper.LoggedInRoleId);
                 RolePermissionModel objPermssion = UtilityHelper.GetCntrActionAccess((int)ModulePermissionEnum.PIDF, rolId);
                 ViewBag.Access = objPermssion;
+                if (objPermssion == null || !(objPermssion.View || objPermssion.Add || objPermssion.Edit))
+                {
+                    return RedirectToAction("AccessRestriction", "Home");
+                }
                 string logUserId = Convert.ToString(HttpContext.Session.GetString(UserHelper.LoggedInUserId));
                 if (PIDFId == null || PIDFId <= 0)
                 {

@@ -22,13 +22,13 @@ namespace EmcureNPD.Web.Controllers
         [HttpGet]
         public IActionResult ProjectManagement(string pidfid, string bui, int? IsView)
         {
-            //int rolId = (int)HttpContext.Session.GetInt32(UserHelper.LoggedInRoleId);
-            //RolePermissionModel objPermssion = UtilityHelper.GetCntrActionAccess((int)ModulePermissionEnum.Project, rolId);
-            //if (objPermssion == null || (!objPermssion.View && IsView==1))
-            //{
-            //    return RedirectToAction("AccessRestriction", "Home");
-            //}
-            //ViewBag.Access = objPermssion;
+            int rolId = (int)HttpContext.Session.GetInt32(UserHelper.LoggedInRoleId);
+            RolePermissionModel objPermssion = UtilityHelper.GetCntrActionAccess((int)ModulePermissionEnum.Project, rolId);
+            if (objPermssion == null || (!objPermssion.View && IsView == 1))
+            {
+                return RedirectToAction("AccessRestriction", "Home");
+            }
+            ViewBag.Access = objPermssion;
 
             ViewBag.IsView = (IsView == null) ? 0 : (int)IsView;
 			var bid = long.Parse(UtilityHelper.Decreypt(bui));
