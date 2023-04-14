@@ -1,9 +1,11 @@
-﻿using EmcureNPD.Business.Core.Interface;
+﻿using Dapper;
+using EmcureNPD.Business.Core.Interface;
 using EmcureNPD.Business.Core.ModelMapper;
 using EmcureNPD.Business.Models;
 using EmcureNPD.Data.DataAccess.Core.Repositories;
 using EmcureNPD.Data.DataAccess.Core.UnitOfWork;
 using EmcureNPD.Data.DataAccess.Entity;
+using Microsoft.Extensions.Configuration;
 using System;
 using System.Collections.Generic;
 using System.Data;
@@ -18,12 +20,13 @@ namespace EmcureNPD.Business.Core.Implementation
     {
         private readonly IUnitOfWork _unitOfWork;
         private readonly IMapperFactory _mapperFactory;
+        private readonly IConfiguration _configuration;
         private IRepository<Pidf> _repository { get; set; }
         private IRepository<ProjectTask> _projectTaskRepository { get; set; }
         private IRepository<MasterUser> _masterUserRepository { get; set; }
         private IRepository<MasterProjectStatus> _masterProjectStatusRepository { get; set; }
         private IRepository<MasterProjectPriority> _masterProjectPriorityRepository { get; set; }
-        public ProjectService(IUnitOfWork unitOfWork, IMapperFactory mapperFactory)
+        public ProjectService(IUnitOfWork unitOfWork, IMapperFactory mapperFactory, IConfiguration configuration)
         {
             _projectTaskRepository = unitOfWork.GetRepository<ProjectTask>();
             _masterUserRepository = unitOfWork.GetRepository<MasterUser>();
@@ -32,6 +35,7 @@ namespace EmcureNPD.Business.Core.Implementation
             _unitOfWork = unitOfWork;
             _mapperFactory = mapperFactory;
             _repository = unitOfWork.GetRepository<Pidf>();
+            _configuration = configuration;
         }
         public ProjectTaskEntity GetDropDownsForTask()
         {
@@ -107,24 +111,35 @@ namespace EmcureNPD.Business.Core.Implementation
                     task.Pidfid = addTaskModel.Pidfid;
                     task.StartDate = addTaskModel.StartDate;
                     task.EndDate = addTaskModel.EndDate;
+                    task.PlannedStartDate = addTaskModel.PlannedStartDate;
+                    task.PlannedEndDate= addTaskModel.PlannedEndDate;
                     task.PriorityId = addTaskModel.PriorityId;
                     task.StatusId = addTaskModel.StatusId;
                     task.TaskDuration = addTaskModel.TaskDuration;
                     task.TotalPercentage = addTaskModel.TotalPercentage;
                     task.TaskOwnerId = addTaskModel.TaskOwnerId;
-                    //if (addTaskModel.IsGanttUpdate)
-                    //{
-                    //    if (await UpdateMainTaskProgressByParentId(task.ParentId.ToString(), addTaskModel.TotalPercentage))
-                    //    {
-                    //        _projectTaskRepository.UpdateAsync(task);
-                    //        await _unitOfWork.SaveChangesAsync();
-                    //    }
-                    //}
-                    //else
-                    //{
-                        _projectTaskRepository.UpdateAsync(task);
-                        await _unitOfWork.SaveChangesAsync();
-                    //}
+                    if (addTaskModel.IsGanttUpdate)
+                    {
+                        if (await UpdateMainTaskProgressByParentId(task.ParentId.ToString(), addTaskModel.TotalPercentage))
+                        {
+                            _projectTaskRepository.UpdateAsync(task);
+                            try
+                            {
+                                await _unitOfWork.SaveChangesAsync();
+                            }
+                            catch (Exception ex)
+                            {
+
+                                throw;
+                            }
+                           
+                        }
+                    }
+                    else
+                    {
+                      _projectTaskRepository.UpdateAsync(task);
+                      await _unitOfWork.SaveChangesAsync();
+                    }
                     return DBOperation.Success;
                 }
                 else
@@ -139,6 +154,8 @@ namespace EmcureNPD.Business.Core.Implementation
                 task.Pidfid = addTaskModel.Pidfid;
                 task.StartDate = addTaskModel.StartDate;
                 task.EndDate = addTaskModel.EndDate;
+                task.PlannedStartDate = addTaskModel.PlannedStartDate;
+                task.PlannedEndDate = addTaskModel.PlannedEndDate;
                 task.PriorityId = addTaskModel.PriorityId;
                 task.StatusId = addTaskModel.StatusId;
                 task.TaskDuration = addTaskModel.TaskDuration;
@@ -236,20 +253,28 @@ namespace EmcureNPD.Business.Core.Implementation
         }
         public async Task<dynamic> UpdateMainTaskProgressByParentId(string ParentId, double TotalPercentage)
         {
-            ProjectTask task;
+            try
+            {
             if (TotalPercentage > 0)
             {
-                task = await _projectTaskRepository.GetAsync(Convert.ToInt64(ParentId));
-                if (task != null)
-                    
-                {   //double totalPercentage=task.TaskLevel==1? TotalPercentage:(totalPercentage)
-                    task.TotalPercentage = TotalPercentage;
-                    _projectTaskRepository.UpdateAsync(task);
-                    await _unitOfWork.SaveChangesAsync();
-                    return true;
-                }
+                SqlConnection con = new SqlConnection(_configuration.GetSection("ConnectionStrings:DefaultConnection").Value);
+                DynamicParameters data = new DynamicParameters();
+                data.Add("@ParentId", Convert.ToInt64(ParentId));
+                data.Add("@TotalPercentage", TotalPercentage);
+                data.Add("@Success", "", direction: ParameterDirection.Output);
+                await con.ExecuteAsync("ProcUpdateParentTaskProgressByParentId", data, commandType: CommandType.StoredProcedure);
+                var result = data.Get<string>("Success").Trim();
+                if(result=="success") { return true; }
             }
             return false;
+
+
+            }
+            catch (Exception ex)
+            {
+
+                return false;
+            }
         }
     }
 }
