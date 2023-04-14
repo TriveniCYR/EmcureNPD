@@ -18,15 +18,18 @@ namespace EmcureNPD.API.Controllers.Scheduler
         private readonly ISchedulerService _reminderService;
 
         private readonly IResponseHandler<dynamic> _ObjectResponse;
+        private readonly IExceptionService _ExceptionService;
+
 
         #endregion Properties
 
         #region Constructor
 
-        public SchedulerController(ISchedulerService reminderService, IResponseHandler<dynamic> ObjectResponse)
+        public SchedulerController(ISchedulerService reminderService, IResponseHandler<dynamic> ObjectResponse, IExceptionService exceptionService)
         {
             _reminderService = reminderService;
             _ObjectResponse = ObjectResponse;
+            _ExceptionService = exceptionService;
         }
 
         #endregion Constructor
@@ -53,6 +56,7 @@ namespace EmcureNPD.API.Controllers.Scheduler
             }
             catch (Exception ex)
             {
+                await _ExceptionService.LogException(ex);
                 return _ObjectResponse.Create(false, (int)HttpStatusCode.InternalServerError, Convert.ToString(ex.StackTrace));
             }
         }
@@ -75,6 +79,7 @@ namespace EmcureNPD.API.Controllers.Scheduler
             try {
                 return _ObjectResponse.Create(_reminderService.AutoUpdatePIDFStatus(), (int)HttpStatusCode.OK);
             } catch (Exception ex) {
+                await _ExceptionService.LogException(ex);
                 return _ObjectResponse.Create(false, (int)HttpStatusCode.InternalServerError, Convert.ToString(ex.StackTrace));
             }
         }

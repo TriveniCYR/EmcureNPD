@@ -24,16 +24,18 @@ namespace EmcureNPD.API.Controllers.Account
         private readonly IResponseHandler<dynamic> _ObjectResponse;
         private readonly IMasterUserService _MasterUserService;
         private readonly IStringLocalizer<Errors> _stringLocalizerError;
+        private readonly IExceptionService _ExceptionService;
         #endregion Properties
 
         #region Constructor
 
-        public AccountController(IConfiguration configuration, IResponseHandler<dynamic> ObjectResponse, IMasterUserService MasterUserService, IStringLocalizer<Errors> stringLocalizerError)
+        public AccountController(IConfiguration configuration, IResponseHandler<dynamic> ObjectResponse, IMasterUserService MasterUserService, IStringLocalizer<Errors> stringLocalizerError, IExceptionService exceptionService)
         {
             _configuration = configuration;
             _ObjectResponse = ObjectResponse;
             _MasterUserService = MasterUserService;
             _stringLocalizerError = stringLocalizerError;
+            _ExceptionService = exceptionService;
         }
 
         #endregion Constructor
@@ -74,6 +76,7 @@ namespace EmcureNPD.API.Controllers.Account
             }
             catch (Exception ex)
             {
+                await _ExceptionService.LogException(ex);
                 return _ObjectResponse.Create(false, (Int32)HttpStatusCode.InternalServerError, Convert.ToString(ex.StackTrace));
             }
         }
@@ -91,6 +94,7 @@ namespace EmcureNPD.API.Controllers.Account
             }
             catch (Exception ex)
             {
+                await _ExceptionService.LogException(ex);
                 return _ObjectResponse.Create(false, (Int32)HttpStatusCode.InternalServerError, Convert.ToString(ex.StackTrace));
             }
         }
@@ -113,6 +117,7 @@ namespace EmcureNPD.API.Controllers.Account
             }
             catch (Exception ex)
             {
+                await _ExceptionService.LogException(ex);
                 return _ObjectResponse.Create(false, (Int32)HttpStatusCode.InternalServerError, Convert.ToString(ex.StackTrace));
             }
         }
@@ -126,6 +131,7 @@ namespace EmcureNPD.API.Controllers.Account
             }
             catch (Exception ex)
             {
+                await _ExceptionService.LogException(ex);
                 return false;
             }
         }
@@ -139,6 +145,7 @@ namespace EmcureNPD.API.Controllers.Account
             }
             catch (Exception ex)
             {
+                await _ExceptionService.LogException(ex);
                 return false;
             }
         }
@@ -161,6 +168,7 @@ namespace EmcureNPD.API.Controllers.Account
             }
             catch (Exception ex)
             {
+                await _ExceptionService.LogException(ex);
                 return _ObjectResponse.Create(false, (Int32)HttpStatusCode.InternalServerError, Convert.ToString(ex.StackTrace));
             }
         }

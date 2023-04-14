@@ -19,10 +19,12 @@ namespace EmcureNPD.API.Controllers.Project
         private readonly IProjectService _projectService;
 
         private readonly IResponseHandler<dynamic> _ObjectResponse;
-        public ProjectController(IProjectService projectService,IResponseHandler<dynamic> ObjectResponse)
+        private readonly IExceptionService _ExceptionService;
+        public ProjectController(IProjectService projectService,IResponseHandler<dynamic> ObjectResponse, IExceptionService exceptionService)
         {
             _projectService = projectService;
             _ObjectResponse = ObjectResponse;
+            _ExceptionService = exceptionService;
         }
         [HttpGet, Route("GetDropdownsForAddTask")]
         public ActionResult GetDropdownsForAddTask()
@@ -44,6 +46,7 @@ namespace EmcureNPD.API.Controllers.Project
             }
             catch (Exception ex)
             {
+                await _ExceptionService.LogException(ex);
                 return _ObjectResponse.Create(false, (int)HttpStatusCode.InternalServerError, Convert.ToString(ex.StackTrace));
             }
         }
@@ -60,6 +63,7 @@ namespace EmcureNPD.API.Controllers.Project
             }
             catch (Exception ex)
             {
+                await _ExceptionService.LogException(ex);
                 return _ObjectResponse.Create(false, (Int32)HttpStatusCode.InternalServerError, Convert.ToString(ex.StackTrace));
             }
             //var result = _projectService.GetTaskSubTaskList(long.Parse(UtilityHelper.Decreypt(pidfId)));
@@ -78,6 +82,7 @@ namespace EmcureNPD.API.Controllers.Project
             }
             catch (Exception ex)
             {
+                await _ExceptionService.LogException(ex);
                 return _ObjectResponse.Create(false, (Int32)HttpStatusCode.InternalServerError, Convert.ToString(ex.StackTrace));
             }
         }
@@ -95,6 +100,7 @@ namespace EmcureNPD.API.Controllers.Project
             }
             catch (Exception ex)
             {
+                await _ExceptionService.LogException(ex);
                 return _ObjectResponse.Create(false, (Int32)HttpStatusCode.InternalServerError, Convert.ToString(ex.StackTrace));
             }
         }
@@ -109,6 +115,7 @@ namespace EmcureNPD.API.Controllers.Project
             }
             catch (Exception ex)
             {
+                await _ExceptionService.LogException(ex);
                 return _ObjectResponse.Create(null, (Int32)HttpStatusCode.BadRequest, "No Records found");
             }
         }
@@ -121,6 +128,7 @@ namespace EmcureNPD.API.Controllers.Project
             }
             catch (Exception ex)
             {
+                await _ExceptionService.LogException(ex);
                 return _ObjectResponse.Create(null, (Int32)HttpStatusCode.BadRequest, "No Records found");
             }
         }

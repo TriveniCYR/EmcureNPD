@@ -47,11 +47,11 @@ namespace EmcureNPD.Business.Core.Implementation
         private readonly IMasterCountryService _countryService;
         private IRepository<Pidf> _pidfrepository { get; set; }
         private readonly INotificationService _notificationService;
-
+        private readonly IExceptionService _ExceptionService;
         public APIService(IUnitOfWork unitOfWork, IMapperFactory mapperFactory,
             Microsoft.Extensions.Configuration.IConfiguration configuration, IMasterProductTypeService masterProductTypeService,
              INotificationService notificationService,
-        IMasterCountryService countryService, IMasterAuditLogService auditLogService, IHelper helper)
+        IMasterCountryService countryService, IMasterAuditLogService auditLogService, IHelper helper, IExceptionService exceptionService)
         {
             _unitOfWork = unitOfWork;
             _mapperFactory = mapperFactory;
@@ -67,6 +67,7 @@ namespace EmcureNPD.Business.Core.Implementation
             _countryService = countryService;
             _pidfrepository = unitOfWork.GetRepository<Pidf>();
             _notificationService = notificationService;
+            _ExceptionService = exceptionService;
         }
 
         //------------Start------API_Functions_Kuldip--------------------------
@@ -95,6 +96,7 @@ namespace EmcureNPD.Business.Core.Implementation
             }
             catch (Exception ex)
             {
+                
                 fileUpload.ErrorMessage = "Upload Container Should Not Be Empty or Contact Admin";
                 return fileUpload.ErrorMessage;
             }

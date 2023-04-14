@@ -35,17 +35,19 @@ namespace EmcureNPD.API.Controllers.IPD
         private readonly IResponseHandler<dynamic> _ObjectResponse;
         private readonly IWebHostEnvironment _webHostEnvironment;
         private readonly ILogger<IPDController> _logger;
+        private readonly IExceptionService _ExceptionService;
 
         #endregion Properties
 
         #region Constructor
 
-        public IPDController(IIPDService IPDService, IResponseHandler<dynamic> ObjectResponse, IWebHostEnvironment webHostEnvironment, ILogger<IPDController> logger)
+        public IPDController(IIPDService IPDService, IResponseHandler<dynamic> ObjectResponse, IWebHostEnvironment webHostEnvironment, ILogger<IPDController> logger, IExceptionService exceptionService)
         {
             _IPDService = IPDService;
             _ObjectResponse = ObjectResponse;
             _webHostEnvironment = webHostEnvironment;
             _logger = logger;
+            _ExceptionService = exceptionService;
         }
 
         #endregion Constructor
@@ -111,6 +113,7 @@ namespace EmcureNPD.API.Controllers.IPD
             }
             catch (Exception ex)
             {
+                await _ExceptionService.LogException(ex);
                 return _ObjectResponse.Create(false, (int)HttpStatusCode.InternalServerError, Convert.ToString(ex.StackTrace));
             }
         }
@@ -141,6 +144,7 @@ namespace EmcureNPD.API.Controllers.IPD
             }
             catch (Exception ex)
             {
+                await _ExceptionService.LogException(ex);
                 return _ObjectResponse.Create(false, (int)HttpStatusCode.InternalServerError, Convert.ToString(ex.StackTrace));
             }
         }
@@ -165,6 +169,7 @@ namespace EmcureNPD.API.Controllers.IPD
             }
             catch (Exception ex)
             {
+                await _ExceptionService.LogException(ex);
                 return _ObjectResponse.Create(false, (int)HttpStatusCode.InternalServerError, Convert.ToString(ex.StackTrace));
             }
         }
@@ -194,6 +199,7 @@ namespace EmcureNPD.API.Controllers.IPD
             }
             catch (Exception ex)
             {
+                await _ExceptionService.LogException(ex);
                 return _ObjectResponse.Create(false, (int)HttpStatusCode.InternalServerError, Convert.ToString(ex.StackTrace));
             }
         }
@@ -210,6 +216,7 @@ namespace EmcureNPD.API.Controllers.IPD
             }
             catch (Exception ex)
             {
+                await _ExceptionService.LogException(ex);
                 return _ObjectResponse.Create(false, (int)HttpStatusCode.InternalServerError, Convert.ToString(ex.StackTrace));
             }
         }
@@ -227,6 +234,7 @@ namespace EmcureNPD.API.Controllers.IPD
             }
             catch (Exception ex)
             {
+                await _ExceptionService.LogException(ex);
                 return _ObjectResponse.Create(false, (int)HttpStatusCode.InternalServerError, Convert.ToString(ex.StackTrace));
             }
         }

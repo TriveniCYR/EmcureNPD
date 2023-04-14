@@ -21,15 +21,17 @@ namespace EmcureNPD.API.Controllers.PIDF
 
         private readonly IResponseHandler<dynamic> _ObjectResponse;
         private readonly IWebHostEnvironment _webHostEnvironment;
+        private readonly IExceptionService _ExceptionService;
         #endregion Properties
 
         #region Constructor
 
-        public ManagementApprovalController(IManagementApproval managementApproval, IResponseHandler<dynamic> ObjectResponse, IWebHostEnvironment webHostEnvironment)
+        public ManagementApprovalController(IManagementApproval managementApproval, IResponseHandler<dynamic> ObjectResponse, IWebHostEnvironment webHostEnvironment, IExceptionService exceptionService)
         {
             _managementApproval = managementApproval;
             _ObjectResponse = ObjectResponse;
             _webHostEnvironment = webHostEnvironment;
+            _ExceptionService = exceptionService;
         }
 
         #endregion Constructor
@@ -56,6 +58,7 @@ namespace EmcureNPD.API.Controllers.PIDF
             }
             catch (Exception ex)
             {
+                await _ExceptionService.LogException(ex);
                 return _ObjectResponse.Create(null, (Int32)HttpStatusCode.BadRequest, "No Records found");
             }
         }

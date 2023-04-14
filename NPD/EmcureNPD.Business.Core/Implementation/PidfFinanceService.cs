@@ -34,9 +34,10 @@ namespace EmcureNPD.Business.Core.Implementation
         private readonly IMasterAuditLogService _auditLogService;
         private IRepository<PidfFinanceBatchSizeCoating> _childrepository { get; set; }
         private readonly INotificationService _notificationService;
-        public PidfFinanceService(IUnitOfWork unitOfWork, IMapperFactory mapperFactory,
+		private readonly IExceptionService _ExceptionService;
+		public PidfFinanceService(IUnitOfWork unitOfWork, IMapperFactory mapperFactory,
              INotificationService notificationService,
-            IConfiguration configuration, DbContext dbContext, IMasterAuditLogService auditLogService)
+            IConfiguration configuration, DbContext dbContext, IMasterAuditLogService auditLogService, IExceptionService exceptionService)
 		{
 			_unitOfWork = unitOfWork;
 			_mapperFactory = mapperFactory;
@@ -47,7 +48,8 @@ namespace EmcureNPD.Business.Core.Implementation
 			_auditLogService = auditLogService;
             _pidfrepository= _unitOfWork.GetRepository<Pidf>();
             _notificationService = notificationService;
-        }
+			_ExceptionService = exceptionService;
+		}
 		public async Task<List<PidfFinance>> GetAll()
 		{
 			return await _repository.GetAllQuery().ToListAsync();
@@ -67,7 +69,7 @@ namespace EmcureNPD.Business.Core.Implementation
 			}
 			catch (Exception ex)
 			{
-
+				await _ExceptionService.LogException(ex);
 				return null;
 			}
 		}
@@ -85,7 +87,7 @@ namespace EmcureNPD.Business.Core.Implementation
 			}
 			catch (Exception ex)
 			{
-
+				await _ExceptionService.LogException(ex);
 				return null;
 			}
 		}
@@ -257,7 +259,8 @@ namespace EmcureNPD.Business.Core.Implementation
                     }
 					catch (Exception ex)
 					{
-                        return DBOperation.Error; 
+						await _ExceptionService.LogException(ex);
+						return DBOperation.Error; 
                     }
 					//Status update end//
                     return DBOperation.Success;
@@ -268,6 +271,7 @@ namespace EmcureNPD.Business.Core.Implementation
 
 			catch (Exception ex)
 			{
+				await _ExceptionService.LogException(ex);
 				return DBOperation.Error;
 			}
 		}
@@ -332,7 +336,7 @@ namespace EmcureNPD.Business.Core.Implementation
 			}
 			catch (Exception ex)
 			{
-
+				await _ExceptionService.LogException(ex);
 				return false;
 			}
 

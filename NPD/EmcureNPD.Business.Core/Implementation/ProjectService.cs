@@ -21,12 +21,13 @@ namespace EmcureNPD.Business.Core.Implementation
         private readonly IUnitOfWork _unitOfWork;
         private readonly IMapperFactory _mapperFactory;
         private readonly IConfiguration _configuration;
+        private readonly IExceptionService _ExceptionService;
         private IRepository<Pidf> _repository { get; set; }
         private IRepository<ProjectTask> _projectTaskRepository { get; set; }
         private IRepository<MasterUser> _masterUserRepository { get; set; }
         private IRepository<MasterProjectStatus> _masterProjectStatusRepository { get; set; }
         private IRepository<MasterProjectPriority> _masterProjectPriorityRepository { get; set; }
-        public ProjectService(IUnitOfWork unitOfWork, IMapperFactory mapperFactory, IConfiguration configuration)
+        public ProjectService(IUnitOfWork unitOfWork, IMapperFactory mapperFactory, IConfiguration configuration, IExceptionService exceptionService)
         {
             _projectTaskRepository = unitOfWork.GetRepository<ProjectTask>();
             _masterUserRepository = unitOfWork.GetRepository<MasterUser>();
@@ -36,6 +37,8 @@ namespace EmcureNPD.Business.Core.Implementation
             _mapperFactory = mapperFactory;
             _repository = unitOfWork.GetRepository<Pidf>();
             _configuration = configuration;
+            _ExceptionService = exceptionService;
+
         }
         public ProjectTaskEntity GetDropDownsForTask()
         {
@@ -272,7 +275,7 @@ namespace EmcureNPD.Business.Core.Implementation
             }
             catch (Exception ex)
             {
-
+                await _ExceptionService.LogException(ex);
                 return false;
             }
         }

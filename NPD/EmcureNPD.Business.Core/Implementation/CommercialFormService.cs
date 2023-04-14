@@ -30,6 +30,7 @@ namespace EmcureNPD.Business.Core.Implementation
         private readonly IMasterAuditLogService _auditLogService;
         private readonly IPidfProductStrengthService _productStrengthService;
         private readonly INotificationService _notificationService;
+        private readonly IExceptionService _ExceptionService;
         private IRepository<PidfIpd> _repository { get; set; }
         private IRepository<PidfCommercial> _commercialrepository { get; set; }
         private IRepository<PidfCommercialYear> _commercialYearrepository { get; set; }
@@ -47,7 +48,7 @@ namespace EmcureNPD.Business.Core.Implementation
         public CommercialFormService(IUnitOfWork unitOfWork, IMapperFactory mapperFactory,
             IMasterBusinessUnitService businessUnitService, IMasterCountryService countryService,
             INotificationService notificationService,
-            IMasterAuditLogService auditLogService, IPidfProductStrengthService productStrengthService)
+            IMasterAuditLogService auditLogService, IPidfProductStrengthService productStrengthService, IExceptionService exceptionService)
         {
             _unitOfWork = unitOfWork;
             _mapperFactory = mapperFactory;
@@ -70,7 +71,7 @@ namespace EmcureNPD.Business.Core.Implementation
             _businessUnitrepository = _unitOfWork.GetRepository<MasterBusinessUnit>();
             _pidfProductStrengthrepository = _unitOfWork.GetRepository<PidfproductStrength>();
             _countryrepository = _unitOfWork.GetRepository<MasterCountry>();
-            
+            _ExceptionService = exceptionService;
         }
 
         //public async Task<IPDEntity> FillDropdown()

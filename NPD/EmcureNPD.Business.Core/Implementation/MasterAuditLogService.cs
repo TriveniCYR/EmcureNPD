@@ -23,11 +23,12 @@ namespace EmcureNPD.Business.Core.Implementation
         private readonly IUnitOfWork _unitOfWork;
         private readonly IMapperFactory _mapperFactory;
         private readonly IHelper _helper;
+        private readonly IExceptionService _ExceptionService;
         private IRepository<MasterAuditLog> _repository { get; set; }
         private IRepository<MasterModule> _moduleRepository { get; set; }
         private IRepository<MasterUser> _userRepository { get; set; }
         private IRepository<Pidf> _pidfrepository { get; set; }
-        public MasterAuditLogService(IUnitOfWork unitOfWork, IMapperFactory mapperFactory, IHelper helper)
+        public MasterAuditLogService(IUnitOfWork unitOfWork, IMapperFactory mapperFactory, IHelper helper, IExceptionService exceptionService)
         {
             _unitOfWork = unitOfWork;
             _mapperFactory = mapperFactory;
@@ -36,6 +37,7 @@ namespace EmcureNPD.Business.Core.Implementation
             _userRepository = _unitOfWork.GetRepository<MasterUser>();
             _pidfrepository = unitOfWork.GetRepository<Pidf>();
             _helper = helper;
+            _ExceptionService = exceptionService;
         }
         public async Task<DBOperation> CreateAuditLog<TResult>(AuditActionType auditActionType,
             ModuleEnum moduleEnum, TResult Old, TResult New, int? PrimaryId) where TResult : new()
@@ -65,6 +67,7 @@ namespace EmcureNPD.Business.Core.Implementation
             }
             catch (Exception ex)
             {
+                await _ExceptionService.LogException(ex);
                 return DBOperation.Error;
             }
         }
@@ -86,6 +89,7 @@ namespace EmcureNPD.Business.Core.Implementation
             }
             catch (Exception ex)
             {
+                await _ExceptionService.LogException(ex);
                 return DBOperation.Error;
             }
         }

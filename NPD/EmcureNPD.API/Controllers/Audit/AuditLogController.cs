@@ -19,16 +19,18 @@ namespace EmcureNPD.API.Controllers.Masters
         private readonly IMasterAuditLogService _MasterAuditLogService;
 
         private readonly IResponseHandler<dynamic> _ObjectResponse;
+        private readonly IExceptionService _ExceptionService;
 
         #endregion Properties
 
         #region Constructor
 
-        public AuditLogController(IMasterAuditLogService AuditLogService, IResponseHandler<dynamic> ObjectResponse)
+        public AuditLogController(IMasterAuditLogService AuditLogService, IResponseHandler<dynamic> ObjectResponse, IExceptionService exceptionService)
         {
 
             _MasterAuditLogService = AuditLogService;
             _ObjectResponse = ObjectResponse;
+            _ExceptionService = exceptionService;
         }
         #endregion Constructor
 
@@ -58,6 +60,7 @@ namespace EmcureNPD.API.Controllers.Masters
             }
             catch (Exception ex)
             {
+                await _ExceptionService.LogException(ex);
                 return _ObjectResponse.Create(false, (Int32)HttpStatusCode.InternalServerError, Convert.ToString(ex.StackTrace));
             }
         }
@@ -83,6 +86,7 @@ namespace EmcureNPD.API.Controllers.Masters
             }
             catch (Exception ex)
             {
+                await _ExceptionService.LogException(ex);
                 return _ObjectResponse.Create(false, (Int32)HttpStatusCode.InternalServerError, Convert.ToString(ex.StackTrace));
             }
         }

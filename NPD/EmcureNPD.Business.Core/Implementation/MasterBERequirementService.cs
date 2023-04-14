@@ -14,13 +14,15 @@ namespace EmcureNPD.Business.Core.ServiceImplementations
     {
         private readonly IUnitOfWork _unitOfWork;
         private readonly IMapperFactory _mapperFactory;
+        private readonly IExceptionService _ExceptionService;
         private IRepository<MasterBerequirement> _repository { get; set; }
 
-        public MasterBERequirementService(IUnitOfWork unitOfWork, IMapperFactory mapperFactory)
+        public MasterBERequirementService(IUnitOfWork unitOfWork, IMapperFactory mapperFactory, IExceptionService exceptionService)
         {
             _unitOfWork = unitOfWork;
             _mapperFactory = mapperFactory;
             _repository = _unitOfWork.GetRepository<MasterBerequirement>();
+            _ExceptionService = exceptionService;
         }
 
         public async Task<List<MasterBERequirementEntity>> GetAll()
@@ -67,7 +69,7 @@ namespace EmcureNPD.Business.Core.ServiceImplementations
             }
             catch (System.Exception ex)
             {
-
+                await _ExceptionService.LogException(ex);
                 return DBOperation.Error;
             }
         }

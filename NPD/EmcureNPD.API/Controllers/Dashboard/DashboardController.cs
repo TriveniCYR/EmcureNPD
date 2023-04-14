@@ -24,18 +24,20 @@ namespace EmcureNPD.API.Controllers.Dashboard
         private readonly IDashboardService _dashboardService;
 
         private readonly IResponseHandler<dynamic> _ObjectResponse;
-      //  private readonly IDashboardReportService _dashboardReportService;
+        private readonly IExceptionService _ExceptionService;
+        //  private readonly IDashboardReportService _dashboardReportService;
 
         #endregion Properties
 
         #region Constructor
 
-        public DashboardController(IDashboardService DashboardService, IResponseHandler<dynamic> ObjectResponse) //IDashboardReportService dashboardReportService)
+        public DashboardController(IDashboardService DashboardService, IResponseHandler<dynamic> ObjectResponse, IExceptionService exceptionService) //IDashboardReportService dashboardReportService, IExceptionService exceptionService)
         {
            
             _ObjectResponse = ObjectResponse;
             _dashboardService = DashboardService;
-           // _dashboardReportService = dashboardReportService;
+            _ExceptionService = exceptionService;
+            // _dashboardReportService = dashboardReportService;
         }
 
         #endregion Constructor
@@ -60,8 +62,9 @@ namespace EmcureNPD.API.Controllers.Dashboard
                 var data = await _dashboardService.FillDropdown();
                 return _ObjectResponse.CreateData(data, (Int32)HttpStatusCode.OK);
             }
-            catch (Exception e)
+            catch (Exception ex)
             {
+                await _ExceptionService.LogException(ex);
                 return _ObjectResponse.Create(null, (Int32)HttpStatusCode.BadRequest, "No Records found");
             }
         }
@@ -74,8 +77,9 @@ namespace EmcureNPD.API.Controllers.Dashboard
                 var data = await _dashboardService.GetPIDFByYearAndBusinessUnit(id,fromDate,toDate);
                 return _ObjectResponse.CreateData(data, (Int32)HttpStatusCode.OK);
             }
-            catch (Exception e)
+            catch (Exception ex)
             {
+                await _ExceptionService.LogException(ex);
                 return _ObjectResponse.Create(null, (Int32)HttpStatusCode.BadRequest, "No Records found");
             }
         }

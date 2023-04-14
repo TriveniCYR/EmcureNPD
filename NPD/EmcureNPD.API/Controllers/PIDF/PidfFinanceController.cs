@@ -26,15 +26,18 @@ namespace EmcureNPD.API.Controllers.PIDF
 
 		private readonly IResponseHandler<dynamic> _ObjectResponse;
 		private readonly IWebHostEnvironment _webHostEnvironment;
+		private readonly IExceptionService _ExceptionService;
+
 		#endregion Properties
 
 		#region Constructor
 
-		public PidfFinanceController(IPidfFinanceService pidfFinanceService, IResponseHandler<dynamic> ObjectResponse, IWebHostEnvironment webHostEnvironment)
+		public PidfFinanceController(IPidfFinanceService pidfFinanceService, IResponseHandler<dynamic> ObjectResponse, IWebHostEnvironment webHostEnvironment, IExceptionService exceptionService)
 		{
 			_pidfFinanceService = pidfFinanceService;
 			_ObjectResponse = ObjectResponse;
 			_webHostEnvironment = webHostEnvironment;
+			_ExceptionService = exceptionService;
 		}
 
 		#endregion Constructor
@@ -64,6 +67,7 @@ namespace EmcureNPD.API.Controllers.PIDF
 			}
 			catch (Exception ex)
 			{
+				await _ExceptionService.LogException(ex);
 				return _ObjectResponse.Create(false, (Int32)HttpStatusCode.InternalServerError, Convert.ToString(ex.StackTrace));
 			}
 		}
@@ -90,6 +94,7 @@ namespace EmcureNPD.API.Controllers.PIDF
 			}
 			catch (Exception ex)
 			{
+				await _ExceptionService.LogException(ex);
 				return _ObjectResponse.Create(null, (Int32)HttpStatusCode.BadRequest, "No Records found");
 			}
 		}
@@ -115,6 +120,7 @@ namespace EmcureNPD.API.Controllers.PIDF
 			}
 			catch (Exception ex)
 			{
+				await _ExceptionService.LogException(ex);
 				return _ObjectResponse.Create(null, (Int32)HttpStatusCode.BadRequest, "No Records found");
 			}
 		}

@@ -19,11 +19,13 @@ namespace EmcureNPD.Business.Core.Implementation
         private IRepository<ProjectsModel> _repository { get; set; }
         private readonly IConfiguration _configuration;
         private readonly IMasterAuditLogService _auditLogService;
-        public ManagementApproval(IUnitOfWork unitOfWork, IConfiguration configuration, IMasterAuditLogService auditLogService)
+        private readonly IExceptionService _ExceptionService;
+        public ManagementApproval(IUnitOfWork unitOfWork, IConfiguration configuration, IMasterAuditLogService auditLogService, IExceptionService exceptionService)
         {
             _unitOfWork = unitOfWork;
             _repository = _unitOfWork.GetRepository<ProjectsModel>();
             _configuration = configuration;
+            _ExceptionService = exceptionService;
 
         }
         public async Task<dynamic> GetProjectNameAndStrength(int Pidfid = 0)
@@ -41,7 +43,7 @@ namespace EmcureNPD.Business.Core.Implementation
             }
             catch (Exception ex)
             {
-
+                await _ExceptionService.LogException(ex);
                 return null;
             }
         }

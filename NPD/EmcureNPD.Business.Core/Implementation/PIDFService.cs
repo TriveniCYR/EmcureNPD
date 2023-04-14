@@ -29,6 +29,7 @@ namespace EmcureNPD.Business.Core.Implementation
         private readonly IMasterAuditLogService _auditLogService;
         private readonly IHelper _helper;
         private readonly INotificationService _notificationService;
+        private readonly IExceptionService _ExceptionService;
         private IRepository<Pidf> _repository { get; set; }
         private IRepository<Pidfapidetail> _pidfApiRepository { get; set; }
         private IRepository<PidfproductStrength> _pidfProductStrength { get; set; }
@@ -36,7 +37,7 @@ namespace EmcureNPD.Business.Core.Implementation
         public PIDFService(IUnitOfWork unitOfWork, IMapperFactory mapperFactory, 
             IPidfApiDetailsService pidfApiDetailsService, IPidfProductStrengthService pidfProductStrengthService,
              INotificationService notificationService,
-            IMasterAuditLogService auditLogService, IHelper helper)
+            IMasterAuditLogService auditLogService, IHelper helper, IExceptionService exceptionService)
         {
             _unitOfWork = unitOfWork;
             _mapperFactory = mapperFactory;
@@ -50,6 +51,7 @@ namespace EmcureNPD.Business.Core.Implementation
             _pidfProductStrength = unitOfWork.GetRepository<PidfproductStrength>();
 
             _helper = helper;
+            _ExceptionService = exceptionService;
         }
 
         public async Task<dynamic> FillDropdown(int userid)
@@ -259,6 +261,7 @@ namespace EmcureNPD.Business.Core.Implementation
             }
             catch (Exception ex)
             {
+                await _ExceptionService.LogException(ex);
                 return DBOperation.Error;
             }
         }
@@ -300,8 +303,9 @@ namespace EmcureNPD.Business.Core.Implementation
                 }
                 return true;
             }
-            catch (Exception)
+            catch (Exception ex)
             {
+                await _ExceptionService.LogException(ex);
                 return false;
             }
         }

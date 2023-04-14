@@ -32,17 +32,19 @@ namespace EmcureNPD.API.Controllers.IPD
         private readonly IWebHostEnvironment _webHostEnvironment;
         private readonly ILogger<MedicalController> _logger;
         private readonly IConfiguration _configuration;
+        private readonly IExceptionService _ExceptionService;
         #endregion Properties
 
         #region Constructor
 
-        public MedicalController(IMedicalService MedicalService, IResponseHandler<dynamic> ObjectResponse, IWebHostEnvironment webHostEnvironment, ILogger<MedicalController> logger, IConfiguration configuration)
+        public MedicalController(IMedicalService MedicalService, IResponseHandler<dynamic> ObjectResponse, IWebHostEnvironment webHostEnvironment, ILogger<MedicalController> logger, IConfiguration configuration, IExceptionService exceptionService)
         {
             _MedicalService = MedicalService;
             _ObjectResponse = ObjectResponse;
             _webHostEnvironment = webHostEnvironment;
             _logger = logger;
             _configuration = configuration;
+            _ExceptionService = exceptionService;
         }
 
         #endregion Constructor
@@ -136,6 +138,8 @@ namespace EmcureNPD.API.Controllers.IPD
             }
             catch (Exception ex)
             {
+
+                await _ExceptionService.LogException(ex);
                 _logger.LogInformation("Exception occured in PIDMedicalForm controller ended");
                 return _ObjectResponse.Create(false, (int)HttpStatusCode.InternalServerError, Convert.ToString(ex.StackTrace));
             }
@@ -161,6 +165,7 @@ namespace EmcureNPD.API.Controllers.IPD
             }
             catch (Exception ex)
             {
+                await _ExceptionService.LogException(ex);
                 _logger.LogInformation("Exception occured in GetPIDFMedicalFormData controller ended");
                 return _ObjectResponse.Create(false, (int)HttpStatusCode.InternalServerError, Convert.ToString(ex.StackTrace));
             }

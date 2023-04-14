@@ -25,12 +25,13 @@ namespace EmcureNPD.Business.Core.Implementation {
         private readonly IMapperFactory _mapperFactory;
         private readonly IStringLocalizer<Errors> _stringLocalizerError;
         private readonly Microsoft.Extensions.Configuration.IConfiguration configuration;
+        private readonly IExceptionService _ExceptionService;
         private IRepository<MasterNotification> _repository { get; set; }
         private IRepository<MasterNotificationUser> _repositoryNotificationUser { get; set; }
         private readonly IHelper _helper;
 
         public NotificationService(IUnitOfWork unitOfWork, IMapperFactory mapperFactory, IStringLocalizer<Errors> stringLocalizerError,
-                                 Microsoft.Extensions.Configuration.IConfiguration _configuration, IHelper helper)
+                                 Microsoft.Extensions.Configuration.IConfiguration _configuration, IHelper helper, IExceptionService exceptionService)
         {
             _unitOfWork = unitOfWork;
             _mapperFactory = mapperFactory;
@@ -38,6 +39,7 @@ namespace EmcureNPD.Business.Core.Implementation {
             _repositoryNotificationUser = _unitOfWork.GetRepository<MasterNotificationUser>();
             configuration = _configuration;
             _helper = helper;
+            _ExceptionService = exceptionService;
         }
         public async Task<DataTableResponseModel> GetAll(DataTableAjaxPostModel model) {
             DataTableResponseModel oDataTableResponseModel = null;
@@ -126,6 +128,7 @@ namespace EmcureNPD.Business.Core.Implementation {
             }
             catch (Exception ex)
             {
+                await _ExceptionService.LogException(ex);
                 return DBOperation.Error;
             }            
         }

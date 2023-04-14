@@ -17,7 +17,6 @@ namespace EmcureNPD.Business.Core.Implementation
     {
         private readonly IUnitOfWork _unitOfWork;
         private IRepository<Pidf> _repository { get; set; }
-
         //Market Extension & In House
 
         public APIListService(IUnitOfWork unitOfWork)
@@ -48,6 +47,7 @@ namespace EmcureNPD.Business.Core.Implementation
             DataTableResponseModel oDataTableResponseModel = new DataTableResponseModel(model.draw, TotalRecord, TotalCount, APIListList.DataTableToList<APIListEntity>());
 
             return oDataTableResponseModel;
+
         }
     }
 }
