@@ -206,8 +206,8 @@ namespace EmcureNPD.Business.Models
         public long PBFGeneralId { get; set; }
         public long StrengthId { get; set; }
         public int ActivityTypeId { get; set; }
-        public int PackagingTypeId { get; set; }
-        public double? UnitOfMeasurement { get; set; }
+        public int PackingTypeId { get; set; }
+        public string UnitOfMeasurement { get; set; }
         public double? PackagingDevelopment { get; set; }
         public double? RsPerUnit { get; set; }
         public int? Quantity { get; set; }
