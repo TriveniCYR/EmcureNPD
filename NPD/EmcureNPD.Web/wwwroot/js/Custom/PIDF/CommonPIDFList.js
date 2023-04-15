@@ -1,7 +1,6 @@
 ﻿var tableId = "PIDFTable";
 var objApprRejList = [];
 $(document).ready(function () {
-    
     InitializePIDFList();
 });
 
@@ -17,13 +16,13 @@ function InitializePIDFList() {
         "datatype": "json"
     };
 
-    var columnObject = [      
+    var columnObject = [
             {
             className: 'dt-control',
             orderable: false,
             defaultContent: '',
             "data": null,
-            'render': function (data, type, row, meta) {              
+            'render': function (data, type, row, meta) {
                     //return '<input type="button"  id="chk_' + row.pidfid + '" onclick="chkClick(this,' + row.pidfid + ');" value="' + $('<div/>').text(data).html() + '">';
                 }
             },

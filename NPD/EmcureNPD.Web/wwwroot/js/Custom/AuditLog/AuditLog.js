@@ -43,14 +43,13 @@ function InitializeAuditLogList() {
 }
 
 function Viewlog(log, createdDate, createdBy) {
-    
     //const date = new Date(createdDate);
     //const day = date.getDate().toString().padStart(2, '0');
     //const month = (date.getMonth() + 1).toString().padStart(2, '0');
     //const year = date.getFullYear().toString().slice(-2);
     //var formateddate = formatDate(createdDate)
     log = JSON.stringify(log);
-  
+
     $.ajax({
         url: "/AuditLog/AuditLogPartialView",
         type: "POST",
@@ -63,5 +62,4 @@ function Viewlog(log, createdDate, createdBy) {
             console.log("Error: " + textStatus + " - " + errorThrown);
         }
     });
-
 }

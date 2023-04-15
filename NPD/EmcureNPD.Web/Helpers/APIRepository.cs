@@ -1,5 +1,4 @@
 ﻿using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using System;
 using System.Collections.Generic;
@@ -20,7 +19,7 @@ namespace EmcureNPD.Web.Helpers
         {
             Configuration = configuration;
             baseURL = Configuration.GetSection("Apiconfig").GetSection("baseurl").Value;
-           // _httpContextAccessor = httpContextAccessor;
+            // _httpContextAccessor = httpContextAccessor;
         }
 
         #region APICommunication - Common Method for API calling
@@ -73,9 +72,9 @@ namespace EmcureNPD.Web.Helpers
             {
                 oHttpResponseMessage.StatusCode = HttpStatusCode.InternalServerError;
             }
-            if(oHttpResponseMessage.StatusCode==HttpStatusCode.Unauthorized)
+            if (oHttpResponseMessage.StatusCode == HttpStatusCode.Unauthorized)
             {
-               // RedirectToAction("Login", "Account");
+                // RedirectToAction("Login", "Account");
             }
             return oHttpResponseMessage;
         }
@@ -98,21 +97,21 @@ namespace EmcureNPD.Web.Helpers
 
                     if (invokeType.Method == HttpMethod.Get.ToString())
                     {
-                        oHttpResponseMessage= await client.GetAsync(URL);
+                        oHttpResponseMessage = await client.GetAsync(URL);
                     }
                     else if (invokeType.Method == HttpMethod.Post.ToString())
                     {
                         if (body != null)
-                            oHttpResponseMessage= await client.PostAsync(URL, body);
+                            oHttpResponseMessage = await client.PostAsync(URL, body);
                     }
                     else if (invokeType.Method == HttpMethod.Put.ToString())
                     {
                         if (body != null)
-                            oHttpResponseMessage= await client.PostAsync(URL, body);
+                            oHttpResponseMessage = await client.PostAsync(URL, body);
                     }
                     else if (invokeType.Method == HttpMethod.Delete.ToString())
                     {
-                        oHttpResponseMessage=await client.DeleteAsync(URL);
+                        oHttpResponseMessage = await client.DeleteAsync(URL);
                     }
                 }
             }
@@ -125,7 +124,7 @@ namespace EmcureNPD.Web.Helpers
                 string redirecturl = "/Home/AccessRestriction";
                 string scheme = httpContextAccessor.HttpContext.Request.Scheme;
                 string Host = httpContextAccessor.HttpContext.Request.Host.ToUriComponent();
-                var absoluteUri = string.Concat(scheme,"://",Host,redirecturl);
+                var absoluteUri = string.Concat(scheme, "://", Host, redirecturl);
                 httpContextAccessor.HttpContext.Response.Redirect(absoluteUri);
             }
             return oHttpResponseMessage;

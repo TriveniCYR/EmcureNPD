@@ -42,6 +42,7 @@ namespace EmcureNPD.Data.DataAccess.DataContext
         public virtual DbSet<MasterDium> MasterDia { get; set; }
         public virtual DbSet<MasterDosage> MasterDosages { get; set; }
         public virtual DbSet<MasterDosageForm> MasterDosageForms { get; set; }
+        public virtual DbSet<MasterException> MasterExceptions { get; set; }
         public virtual DbSet<MasterExipient> MasterExipients { get; set; }
         public virtual DbSet<MasterExpenseRegion> MasterExpenseRegions { get; set; }
         public virtual DbSet<MasterExtensionApplication> MasterExtensionApplications { get; set; }
@@ -499,6 +500,23 @@ namespace EmcureNPD.Data.DataAccess.DataContext
                 entity.Property(e => e.DosageFormName).HasMaxLength(100);
 
                 entity.Property(e => e.ModifyDate).HasColumnType("datetime");
+            });
+
+            modelBuilder.Entity<MasterException>(entity =>
+            {
+                entity.HasKey(e => e.ExceptionId);
+
+                entity.ToTable("Master_Exception", "dbo");
+
+                entity.Property(e => e.CreatedDate).HasColumnType("datetime");
+
+                entity.Property(e => e.InnerException).HasMaxLength(1000);
+
+                entity.Property(e => e.Message).HasMaxLength(500);
+
+                entity.Property(e => e.Source).HasMaxLength(500);
+
+                entity.Property(e => e.StrackTrace).HasMaxLength(4000);
             });
 
             modelBuilder.Entity<MasterExipient>(entity =>

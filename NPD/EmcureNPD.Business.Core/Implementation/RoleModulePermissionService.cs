@@ -27,7 +27,6 @@ namespace EmcureNPD.Business.Core.Implementation
 
         public async Task<DBOperation> AddUpdateRoleModulePermission(List<RoleModulePermissionEntity> roleModulePermissionEntitys)
         {
-
             List<RoleModulePermission> objRoleModulePermission;
             if (roleModulePermissionEntitys.Count > 0)
             {

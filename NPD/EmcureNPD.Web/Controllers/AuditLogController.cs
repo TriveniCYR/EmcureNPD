@@ -3,26 +3,25 @@ using EmcureNPD.Utility.Enums;
 using EmcureNPD.Utility.Models;
 using EmcureNPD.Utility.Utility;
 using EmcureNPD.Web.Helpers;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Newtonsoft.Json;
-using System;
-using System.Collections.Generic;
-using System.Globalization;
-using System.Net.Http;
 
 namespace EmcureNPD.Web.Controllers
 {
     public class AuditLogController : BaseController
     {
         #region Properties
-        private readonly IConfiguration _cofiguration;
-        #endregion
 
-        public AuditLogController(IConfiguration configuration)
+        private readonly IConfiguration _cofiguration;
+        private readonly IHelper _helper;
+
+        #endregion Properties
+
+        public AuditLogController(IConfiguration configuration, IHelper helper)
         {
             _cofiguration = configuration;
+            _helper = helper;
         }
 
         public IActionResult AuditLogs()
@@ -41,7 +40,7 @@ namespace EmcureNPD.Web.Controllers
             //}
             //else
             //{
-            int rolId = (int)HttpContext.Session.GetInt32(UserHelper.LoggedInRoleId);
+            int rolId = _helper.GetLoggedInRoleId();
             RolePermissionModel objPermssion = UtilityHelper.GetCntrActionAccess((int)ModulePermissionEnum.Auditlogs, rolId);
             if (objPermssion == null || !objPermssion.View)
             {
@@ -50,16 +49,17 @@ namespace EmcureNPD.Web.Controllers
             return View();
             //}
         }
-		public ActionResult AuditLogPartialView(string createdDate, string createdBy,string log)
-		{
+
+        public ActionResult AuditLogPartialView(string createdDate, string createdBy, string log)
+        {
             ViewBag.log = JsonConvert.DeserializeObject(log);
-            if(createdBy=="null" || createdBy==null || createdBy == " ")
+            if (createdBy == "null" || createdBy == null || createdBy == " ")
             {
                 createdBy = "";
             }
             //createdBy = !string.IsNullOrEmpty(createdBy) ? createdBy : "";
             var Model = new AuditLogEntity { CreatedDate = createdDate, CreatedBy = createdBy };
-			return PartialView("_AuditLogPartialView", Model);
-		}
-	}
+            return PartialView("_AuditLogPartialView", Model);
+        }
+    }
 }

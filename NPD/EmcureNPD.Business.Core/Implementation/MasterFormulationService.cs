@@ -17,7 +17,6 @@ namespace EmcureNPD.Business.Core.ServiceImplementations
         private IRepository<MasterFormulation> _repository { get; set; }
         private readonly IMasterAuditLogService _auditLogService;
 
-
         public MasterFormulationService(IUnitOfWork unitOfWork, IMapperFactory mapperFactory, IMasterAuditLogService auditLogService)
         {
             _unitOfWork = unitOfWork;
@@ -59,7 +58,6 @@ namespace EmcureNPD.Business.Core.ServiceImplementations
             {
                 objFormulation = _mapperFactory.Get<MasterFormulationEntity, MasterFormulation>(entityFormulation);
                 _repository.AddAsync(objFormulation);
-
             }
 
             await _unitOfWork.SaveChangesAsync();
@@ -67,7 +65,6 @@ namespace EmcureNPD.Business.Core.ServiceImplementations
             if (objFormulation.FormulationId == 0)
                 return DBOperation.Error;
 
-         
             return DBOperation.Success;
         }
 

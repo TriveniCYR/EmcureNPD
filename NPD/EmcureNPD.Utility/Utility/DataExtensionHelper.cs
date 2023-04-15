@@ -3,8 +3,6 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace EmcureNPD.Utility.Utility
 {
@@ -27,7 +25,6 @@ namespace EmcureNPD.Utility.Utility
                     if (row.Table.Columns.Contains(typeProperty.PropertyInfo.Name))
                     {
                         object value = row[typeProperty.PropertyInfo.Name];
-
 
                         object safeValue = value == null || DBNull.Value.Equals(value)
                             ? null

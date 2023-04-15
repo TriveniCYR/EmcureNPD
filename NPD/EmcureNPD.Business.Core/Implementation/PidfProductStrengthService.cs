@@ -4,10 +4,8 @@ using EmcureNPD.Business.Models;
 using EmcureNPD.Data.DataAccess.Core.Repositories;
 using EmcureNPD.Data.DataAccess.Core.UnitOfWork;
 using EmcureNPD.Data.DataAccess.Entity;
-using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace EmcureNPD.Business.Core.Implementation
@@ -33,7 +31,7 @@ namespace EmcureNPD.Business.Core.Implementation
         public async Task<PidfProductStregthEntity> GetById(int id)
         {
             return _mapperFactory.Get<PidfproductStrength, PidfProductStregthEntity>(await _repository.GetAsync(id));
-        }     
+        }
 
         public async Task<List<PidfProductStregthEntity>> GetStrengthByPIDFId(long pidfid)
         {

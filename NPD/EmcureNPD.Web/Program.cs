@@ -25,7 +25,6 @@ namespace EmcureNPD.Web
             }
             catch
             {
-
             }
             finally
             {

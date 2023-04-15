@@ -1,5 +1,4 @@
 ﻿using EmcureNPD.API.Helpers.Response;
-using EmcureNPD.Business.Core.Implementation;
 using EmcureNPD.Business.Core.Interface;
 using EmcureNPD.Business.Models;
 using Microsoft.AspNetCore.Mvc;
@@ -11,7 +10,6 @@ namespace EmcureNPD.API.Controllers.Masters
 {
     [Route("api/[controller]")]
     [ApiController]
-
     public class AuditLogController : ControllerBase
     {
         #region Properties
@@ -19,17 +17,19 @@ namespace EmcureNPD.API.Controllers.Masters
         private readonly IMasterAuditLogService _MasterAuditLogService;
 
         private readonly IResponseHandler<dynamic> _ObjectResponse;
+        private readonly IExceptionService _ExceptionService;
 
         #endregion Properties
 
         #region Constructor
 
-        public AuditLogController(IMasterAuditLogService AuditLogService, IResponseHandler<dynamic> ObjectResponse)
+        public AuditLogController(IMasterAuditLogService AuditLogService, IResponseHandler<dynamic> ObjectResponse, IExceptionService exceptionService)
         {
-
             _MasterAuditLogService = AuditLogService;
             _ObjectResponse = ObjectResponse;
+            _ExceptionService = exceptionService;
         }
+
         #endregion Constructor
 
         /// <summary>
@@ -49,7 +49,6 @@ namespace EmcureNPD.API.Controllers.Masters
         {
             try
             {
-
                 var oAuditLogEntity = await _MasterAuditLogService.GetByModuleId(id, moduleId);
                 if (oAuditLogEntity != null)
                     return _ObjectResponse.Create(oAuditLogEntity, (Int32)HttpStatusCode.OK);
@@ -58,6 +57,7 @@ namespace EmcureNPD.API.Controllers.Masters
             }
             catch (Exception ex)
             {
+                await _ExceptionService.LogException(ex);
                 return _ObjectResponse.Create(false, (Int32)HttpStatusCode.InternalServerError, Convert.ToString(ex.StackTrace));
             }
         }
@@ -78,11 +78,12 @@ namespace EmcureNPD.API.Controllers.Masters
         public async Task<IActionResult> GetAllAuditLog([FromForm] DataTableAjaxPostModel model)
         {
             try
-            {                
+            {
                 return _ObjectResponse.CreateData(await _MasterAuditLogService.GetAll(model), (Int32)HttpStatusCode.OK);
             }
             catch (Exception ex)
             {
+                await _ExceptionService.LogException(ex);
                 return _ObjectResponse.Create(false, (Int32)HttpStatusCode.InternalServerError, Convert.ToString(ex.StackTrace));
             }
         }

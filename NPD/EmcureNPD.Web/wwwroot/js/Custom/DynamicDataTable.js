@@ -41,7 +41,6 @@
             //"fnRowCallback": rowCallBack,
             "columns": columnObject,
             initComplete: function (settings, json) {
-
             },
             //"drawCallback": function (settings) {
             //    if (drawCallback != null)

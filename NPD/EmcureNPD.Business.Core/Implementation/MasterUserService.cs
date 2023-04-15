@@ -4,27 +4,19 @@ using EmcureNPD.Business.Models;
 using EmcureNPD.Data.DataAccess.Core.Repositories;
 using EmcureNPD.Data.DataAccess.Core.UnitOfWork;
 using EmcureNPD.Data.DataAccess.Entity;
+using EmcureNPD.Resource;
+using EmcureNPD.Utility.Helpers;
+using EmcureNPD.Utility.Utility;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Localization;
+using System;
 using System.Collections.Generic;
+using System.Data;
+using System.Data.SqlClient;
+using System.Dynamic;
+using System.Linq;
 using System.Threading.Tasks;
 using static EmcureNPD.Utility.Enums.GeneralEnum;
-using EmcureNPD.Utility.Utility;
-using System.Linq;
-using System.Data.SqlClient;
-using System.Data;
-using System;
-using System.Dynamic;
-using Microsoft.Extensions.Localization;
-using EmcureNPD.Resource;
-using EmcureNPD.Web;
-using Microsoft.EntityFrameworkCore.Metadata.Internal;
-using static Microsoft.EntityFrameworkCore.DbLoggerCategory;
-using Microsoft.AspNetCore.Mvc;
-using EmcureNPD.Utility.Helpers;
-using System.IO;
-using System.IO.Pipes;
-using AutoMapper.Configuration;
-using Microsoft.Extensions.Configuration;
-using Microsoft.EntityFrameworkCore;
 
 namespace EmcureNPD.Business.Core.ServiceImplementations
 {
@@ -84,7 +76,7 @@ namespace EmcureNPD.Business.Core.ServiceImplementations
 
             UserSessionEntity oUser = null;
 
-            SqlParameter[] osqlParameter = {              
+            SqlParameter[] osqlParameter = {
                 //new SqlParameter("@BusinessUnitId", oLogin.BusinessUnitId),
                 new SqlParameter("@Email", oLogin.Email),
                 new SqlParameter("@Password", Utility.Utility.UtilityHelper.GenerateSHA256String(oLogin.Password))
@@ -152,6 +144,7 @@ namespace EmcureNPD.Business.Core.ServiceImplementations
 
             return DropdownObjects;
         }
+
         public async Task<dynamic> GetRegionByBusinessUnit(string BusinessUnitIds)
         {
             SqlParameter[] osqlParameter = {
@@ -171,8 +164,8 @@ namespace EmcureNPD.Business.Core.ServiceImplementations
             }
 
             return DropdownObjects;
-
         }
+
         public async Task<dynamic> GetCountryByRegion(string RegionIds)
         {
             SqlParameter[] osqlParameter = {
@@ -192,9 +185,7 @@ namespace EmcureNPD.Business.Core.ServiceImplementations
             }
 
             return DropdownObjects;
-
         }
-
 
         public async Task<dynamic> GetDepartmentCountryByBusinessUnit(int BusinessUnitId)
         {
@@ -255,7 +246,7 @@ namespace EmcureNPD.Business.Core.ServiceImplementations
                     objUser.Address = entityUser.Address;
                     objUser.IsActive = entityUser.IsActive;
                     objUser.IsManagement = entityUser.IsManagement;
-                    objUser.Apiuser  = entityUser.APIUser;
+                    objUser.Apiuser = entityUser.APIUser;
                     objUser.FormulationGl = entityUser.FormulationGL;
                     objUser.AnalyticalGl = entityUser.AnalyticalGL;
                     objUser.DesignationName = entityUser.DesignationName;
@@ -266,11 +257,10 @@ namespace EmcureNPD.Business.Core.ServiceImplementations
                 new SqlParameter("@UserId", entityUser.UserId)
             };
                     var result = await _repository.GetDataSetBySP("stp_npd_RemoveAllMultipleMappingofMasterUser", System.Data.CommandType.StoredProcedure, osqlParameter);
-                     objUser = FillMappingData(entityUser, objUser);
+                    objUser = FillMappingData(entityUser, objUser);
                     _repository.UpdateAsync(objUser);
-                  //  var isSuccess = await _auditLogService.CreateAuditLog<MasterUser>(Utility.Audit.AuditActionType.Update,
-                  //Utility.Enums.ModuleEnum.UserManagement, OldObjUser, objUser, 0);
-
+                    //  var isSuccess = await _auditLogService.CreateAuditLog<MasterUser>(Utility.Audit.AuditActionType.Update,
+                    //Utility.Enums.ModuleEnum.UserManagement, OldObjUser, objUser, 0);
                 }
                 else
                 {
@@ -284,7 +274,6 @@ namespace EmcureNPD.Business.Core.ServiceImplementations
                 objUser.CreatedBy = LoggedUserId;
                 objUser.CreatedDate = DateTime.Now;
                 _repository.AddAsync(objUser);
-                
             }
             await _unitOfWork.SaveChangesAsync();
             SendUserCreateMail(entityUser, LoggedUserId);
@@ -293,6 +282,7 @@ namespace EmcureNPD.Business.Core.ServiceImplementations
 
             return DBOperation.Success;
         }
+
         public void SendUserCreateMail(MasterUserEntity entityUser, int LoggedUserId)
         {
             try
@@ -314,6 +304,7 @@ namespace EmcureNPD.Business.Core.ServiceImplementations
             }
             catch (Exception ex) { }
         }
+
         private MasterUser FillMappingData(MasterUserEntity entityUser, MasterUser objUser)
         {
             if (entityUser.BusinessUnitId != null)
@@ -380,6 +371,7 @@ namespace EmcureNPD.Business.Core.ServiceImplementations
 
             return DBOperation.Success;
         }
+
         public async Task<DBOperation> ChangeUserPassword(MasterUserChangePasswordEntity oUser)
         {
             var entityUser = _repository.Get(x => x.UserId == oUser.UserId);
@@ -400,16 +392,19 @@ namespace EmcureNPD.Business.Core.ServiceImplementations
             }
             return DBOperation.Success;
         }
+
         public async Task<bool> CheckEmailAddressExists(string emailAddress)
         {
             var isExists = await _repository.GetAllQuery().AnyAsync(x => x.EmailAddress.ToLower() == emailAddress.ToLower());
             return isExists;
         }
+
         public async Task<bool> IsTokenValid(string token)
         {
             var isExists = await _repository.GetAllQuery().AnyAsync(x => x.ForgotPasswordToken == token);
             return isExists;
         }
+
         //public Task<bool> IsTokenExpired(string emailAddress)
         //{
         //    var isExists = _repository.GetAllQuery().Where(x => x.EmailAddress.ToLower() == emailAddress.ToLower()).FirstOrDefault();
@@ -443,6 +438,7 @@ namespace EmcureNPD.Business.Core.ServiceImplementations
             email.SendMail(entityUser.EmailAddress, string.Empty, "Emcure NPD - Forgot Password", strHtml, GetSMTPConfiguration());
             return DBOperation.Success;
         }
+
         public async Task<string> ResetPassword(MasterUserResetPasswordEntity resetPasswordentity)
         {
             var entityUser = _repository.Get(x => x.ForgotPasswordToken == resetPasswordentity.ForgotPasswordToken);

@@ -1,5 +1,4 @@
-﻿
-$('#btnExportToPdf').click(() => {
+﻿$('#btnExportToPdf').click(() => {
     //$('#btnExportToPdf').css("display", "none");
     //$('aside.main-sidebar.sidebar-dark-primary.elevation-4').css("display", "none");
     //$("i.fas.fa-bars").css("display", "none");
@@ -15,7 +14,7 @@ $('#btnExportToPdf').click(() => {
     //$("span#NotificationNo.badge.badge-warning.navbar-badge").css("display", "block");
 
     /**/
-    
+
     let width = $("#frmMA").width();
     let options = {
         pagesplit: true,
@@ -30,7 +29,4 @@ $('#btnExportToPdf').click(() => {
     pdf.addHTML($("#frmMA"), options, function () {
         pdf.save('PIDFManagementApproval.pdf');
     });
-
-   
-    
 })

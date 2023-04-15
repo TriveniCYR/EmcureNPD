@@ -19,15 +19,17 @@ namespace EmcureNPD.API.Controllers.Masters
         private readonly IAPIListService _APIListService;
 
         private readonly IResponseHandler<dynamic> _ObjectResponse;
+        private readonly IExceptionService _ExceptionService;
 
         #endregion Properties
 
         #region Constructor
 
-        public APIListController(IAPIListService APIListService, IResponseHandler<dynamic> ObjectResponse)
+        public APIListController(IAPIListService APIListService, IResponseHandler<dynamic> ObjectResponse, IExceptionService exceptionService)
         {
             _APIListService = APIListService;
             _ObjectResponse = ObjectResponse;
+            _ExceptionService = exceptionService;
         }
 
         #endregion Constructor
@@ -53,6 +55,7 @@ namespace EmcureNPD.API.Controllers.Masters
             }
             catch (Exception ex)
             {
+                await _ExceptionService.LogException(ex);
                 return _ObjectResponse.Create(false, (Int32)HttpStatusCode.InternalServerError, Convert.ToString(ex.StackTrace));
             }
         }

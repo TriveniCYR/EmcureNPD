@@ -1,5 +1,4 @@
-﻿using EmcureNPD.API.Filters;
-using EmcureNPD.API.Helpers.Response;
+﻿using EmcureNPD.API.Helpers.Response;
 using EmcureNPD.Business.Core.Interface;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -18,15 +17,17 @@ namespace EmcureNPD.API.Controllers.Scheduler
         private readonly ISchedulerService _reminderService;
 
         private readonly IResponseHandler<dynamic> _ObjectResponse;
+        private readonly IExceptionService _ExceptionService;
 
         #endregion Properties
 
         #region Constructor
 
-        public SchedulerController(ISchedulerService reminderService, IResponseHandler<dynamic> ObjectResponse)
+        public SchedulerController(ISchedulerService reminderService, IResponseHandler<dynamic> ObjectResponse, IExceptionService exceptionService)
         {
             _reminderService = reminderService;
             _ObjectResponse = ObjectResponse;
+            _ExceptionService = exceptionService;
         }
 
         #endregion Constructor
@@ -53,6 +54,7 @@ namespace EmcureNPD.API.Controllers.Scheduler
             }
             catch (Exception ex)
             {
+                await _ExceptionService.LogException(ex);
                 return _ObjectResponse.Create(false, (int)HttpStatusCode.InternalServerError, Convert.ToString(ex.StackTrace));
             }
         }
@@ -71,13 +73,17 @@ namespace EmcureNPD.API.Controllers.Scheduler
         /// <response code="500">Internal Server</response>
         [AllowAnonymous]
         [HttpPost, Route("AutoUpdatePIDFStatus")]
-        public async Task<IActionResult> AutoUpdatePIDFStatus() {
-            try {
+        public async Task<IActionResult> AutoUpdatePIDFStatus()
+        {
+            try
+            {
                 return _ObjectResponse.Create(_reminderService.AutoUpdatePIDFStatus(), (int)HttpStatusCode.OK);
-            } catch (Exception ex) {
+            }
+            catch (Exception ex)
+            {
+                await _ExceptionService.LogException(ex);
                 return _ObjectResponse.Create(false, (int)HttpStatusCode.InternalServerError, Convert.ToString(ex.StackTrace));
             }
         }
-
     }
 }

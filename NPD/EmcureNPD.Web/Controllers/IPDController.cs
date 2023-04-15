@@ -1,35 +1,31 @@
 ﻿using EmcureNPD.Business.Models;
-using EmcureNPD.Data.DataAccess.Entity;
 using EmcureNPD.Resource;
-using EmcureNPD.Utility.Audit;
 using EmcureNPD.Utility.Enums;
 using EmcureNPD.Utility.Models;
 using EmcureNPD.Utility.Utility;
 using EmcureNPD.Web.Helpers;
-using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Localization;
 using Newtonsoft.Json;
-using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
 using System.Net.Http;
-using System.Net.Http.Headers;
 
 namespace EmcureNPD.Web.Controllers
 {
     public class IPDController : BaseController
     {
         #region Properties
+
         private readonly IConfiguration _cofiguration;
         private readonly IStringLocalizer<Errors> _stringLocalizerError;
         private readonly IStringLocalizer<Shared> _stringLocalizerShared;
         private readonly IHelper _helper;
         //private IHostingEnvironment _env;
-        #endregion
+
+        #endregion Properties
 
         public IPDController(IConfiguration configuration,// IHostingEnvironment env,
             IStringLocalizer<Errors> stringLocalizerError, IStringLocalizer<Shared> stringLocalizerShared, IHelper helper)
@@ -44,18 +40,18 @@ namespace EmcureNPD.Web.Controllers
         [HttpGet]
         public IActionResult IPD(string pidfid, string bui, bool _Partial = false, bool IsViewMode = false)
         {
-
             ModelState.Clear();
             IPDEntity oIPD = new();
             try
-            {               
-                string logUserId = Convert.ToString(HttpContext.Session.GetString(UserHelper.LoggedInUserId));
-                int rolId = (int)HttpContext.Session.GetInt32(UserHelper.LoggedInRoleId);
+            {
+                int rolId = _helper.GetLoggedInRoleId();
                 RolePermissionModel objPermssion = UtilityHelper.GetCntrActionAccess((int)ModulePermissionEnum.IPD, rolId);
-                if (objPermssion == null || !(objPermssion.View || objPermssion.Add || objPermssion.Edit))
+                if (!_Partial)
                 {
-                    return RedirectToAction("AccessRestriction", "Home");
-
+                    if (objPermssion == null || !(objPermssion.View || objPermssion.Add || objPermssion.Edit))
+                    {
+                        return RedirectToAction("AccessRestriction", "Home");
+                    }
                 }
                 ViewBag.Access = objPermssion;
                 pidfid = UtilityHelper.Decreypt(pidfid);
@@ -77,7 +73,6 @@ namespace EmcureNPD.Web.Controllers
                 ViewBag.errormessage = Convert.ToString(e.StackTrace);
                 return View("Login");
             }
-
         }
 
         [HttpGet]
@@ -85,17 +80,15 @@ namespace EmcureNPD.Web.Controllers
         {
             IPDEntity oIPD = new();
             try
-                {
-                string logUserId = Convert.ToString(HttpContext.Session.GetString(UserHelper.LoggedInUserId));
-                int rolId = (int)HttpContext.Session.GetInt32(UserHelper.LoggedInRoleId);
+            {
+                int rolId = _helper.GetLoggedInRoleId();
                 RolePermissionModel objPermssion = UtilityHelper.GetCntrActionAccess((int)ModulePermissionEnum.IPD, rolId);
                 if (objPermssion == null || !(objPermssion.View || objPermssion.Add || objPermssion.Edit))
                 {
                     return RedirectToAction("AccessRestriction", "Home");
-
                 }
                 ViewBag.Access = objPermssion;
-            
+
                 oIPD = GetModelForIPDForm(pidfid.ToString(), bui.ToString());
 
                 return PartialView("_IPDPartial", oIPD);
@@ -105,16 +98,14 @@ namespace EmcureNPD.Web.Controllers
                 ViewBag.errormessage = Convert.ToString(e.StackTrace);
                 return View("Login");
             }
-
         }
 
-        [NonAction] // Get Model for View IPD.cshtml 
+        [NonAction] // Get Model for View IPD.cshtml
         private IPDEntity GetModelForIPDForm(string pidfid, string bussnessId)
         {
             IPDEntity oIPD = new();
             try
-            {                
-                string logUserId = Convert.ToString(HttpContext.Session.GetString(UserHelper.LoggedInUserId));
+            {
                 HttpContext.Request.Cookies.TryGetValue(UserHelper.EmcureNPDToken, out string token);
                 APIRepository objapi = new(_cofiguration);
                 HttpResponseMessage responseMessage = objapi.APICommunication(APIURLHelper.GetIPDFormData + "/" + pidfid + "/" + bussnessId, HttpMethod.Get, token).Result;
@@ -125,7 +116,7 @@ namespace EmcureNPD.Web.Controllers
                     oIPD = data._object;
                     oIPD.BusinessUnitId = Convert.ToInt32(bussnessId);
                     oIPD.PIDFID = Convert.ToInt64(pidfid);
-                    oIPD.LogInId = Convert.ToInt32(logUserId);
+                    oIPD.LogInId = _helper.GetLoggedInUserId();
                     oIPD.BusinessUnitsByUser = _helper.GetAssignedBusinessUnit();
                     TempData["BusList"] = JsonConvert.SerializeObject(oIPD.MasterBusinessUnitEntities);
 
@@ -146,7 +137,6 @@ namespace EmcureNPD.Web.Controllers
                         string jsnRs = responseMS.Content.ReadAsStringAsync().Result;
                         var retPIDF = JsonConvert.DeserializeObject<APIResponseEntity<PIDFEntity>>(jsnRs);
                         oIPD.ProjectName = retPIDF._object.MoleculeName;
-
                     }
                 }
             }
@@ -156,15 +146,14 @@ namespace EmcureNPD.Web.Controllers
             }
             return oIPD;
         }
+
         public IActionResult IPDList()
         {
-
-            int rolId = (int)HttpContext.Session.GetInt32(UserHelper.LoggedInRoleId);
+            int rolId = _helper.GetLoggedInRoleId();
             RolePermissionModel objPermssion = UtilityHelper.GetCntrActionAccess((int)ModulePermissionEnum.IPD, rolId);
             if (objPermssion == null || !(objPermssion.View || objPermssion.Add || objPermssion.Edit))
             {
                 return RedirectToAction("AccessRestriction", "Home");
-
             }
             ViewBag.Access = objPermssion;
             return View();
@@ -181,13 +170,13 @@ namespace EmcureNPD.Web.Controllers
                 else
                     IPDEntity.StatusId = (Int32)Master_PIDFStatus.IPDInProgress;
 
-                IPDEntity.CreatedBy = Convert.ToInt32(HttpContext.Session.GetString(UserHelper.LoggedInUserId));
-                
+                IPDEntity.CreatedBy = _helper.GetLoggedInUserId();
+
                 HttpContext.Request.Cookies.TryGetValue(UserHelper.EmcureNPDToken, out string token);
                 APIRepository objapi = new(_cofiguration);
-                
+
                 string x = JsonConvert.SerializeObject(IPDEntity);
-                
+
                 HttpResponseMessage responseMessage = objapi.APICommunication(APIURLHelper.SaveIPDForm, HttpMethod.Post, token, new StringContent(JsonConvert.SerializeObject(IPDEntity))).Result;
 
                 if (responseMessage.IsSuccessStatusCode)

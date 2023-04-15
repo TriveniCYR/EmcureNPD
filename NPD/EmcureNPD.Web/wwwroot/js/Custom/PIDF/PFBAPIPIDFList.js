@@ -1,6 +1,4 @@
-﻿
-$(document).ready(function () {
-
+﻿$(document).ready(function () {
 });
 
 function tabClick(action ,val, pidfidval) {

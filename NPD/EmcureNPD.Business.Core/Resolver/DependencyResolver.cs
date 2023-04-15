@@ -70,6 +70,7 @@ namespace EmcureNPD.Business.Core.Resolver
             services.AddTransient<IManagementApproval, ManagementApproval>();
 
             services.AddTransient<IProjectService, ProjectService>();
+            services.AddTransient<IExceptionService, ExceptionService>();
 
             return services;
         }

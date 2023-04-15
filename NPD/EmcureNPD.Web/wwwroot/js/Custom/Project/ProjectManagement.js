@@ -1,10 +1,9 @@
 var _milestoneInstance;
 var _milestoneData = [];
 $(document).ready(function () {
-   
     GetProjectDetails(0);
     GetBusinessUnitDetails(bid);
-    
+
     // Add event listener for opening and closing details
     $('#Milestones tbody').on('click', 'td.dt-control', function () {
         var tr = $(this).closest('tr');
@@ -32,15 +31,14 @@ function HideIfEditPermissionOnly() {
     if (IsAddPermission != 'True') {
         $("#addTaskButton").prop('disabled', true);
         $(".addSubTaskBtn").prop('hidden', true);
-    } 
+    }
     if (IsUpdatePermission != 'True') {
         $(".editBtn").prop('hidden', true);
     }
     if (IsDeletePermission != 'True'){
         $(".deleteBtn").prop('hidden', true);
-    }   
+    }
 }
-
 
 function SetProjectFormReadonly() {
     $("#addTaskButton").prop('disabled', true);
@@ -51,14 +49,11 @@ function SetProjectFormReadonly() {
 function CustomizeChildContent(d) {
     try {
         var _projectTaskId = parseInt($(d[0]).val());
-        
+
         $.grep(data, function (n, i) {
             return n.prop_1 === 'val_11';
         });
-
-
     } catch (e) {
-
     }
 
     return (
@@ -113,7 +108,6 @@ function GetProjectDetails(filterId = 0) {
 }
 function GetProjectDetailsSuccess(data) {
     try {
-        
         //project details
         $('#loading').hide();
         localStorage.setItem("prjName", data.table[0].projectName);
@@ -124,8 +118,6 @@ function GetProjectDetailsSuccess(data) {
         $('#pidf_WorkflowName').text(data.table[0].workFlow);
         $(".StrengthandunitofMeasurementName").empty();
         $.each(data.table2, function (i, List) {
-
-            
             var newRow = $("<tr class='StrengthandunitofMeasurementName'>");
             var cols = "";
             cols += '<td>' + List.strength + '</td>';
@@ -151,7 +143,6 @@ function GetProjectDetailsSuccess(data) {
                 </li>`;
             var $li = $(liHtml);
             $li.click(function () {
-
                 $('.nav-link.active').removeClass('active');
                 // Add active class to highlight the selected item
                 $(this).find('a').addClass('active');
@@ -168,7 +159,6 @@ function GetProjectDetailsSuccess(data) {
             $('#custom-tabs-one-tab').append($li);
         });
         //end
-
 
         _milestoneData = data.table4;
 
@@ -202,7 +192,6 @@ function GetProjectDetailsSuccess(data) {
                 tableRow = '<tr class="treegrid-' + index + '"><td><input type="hidden" value="' + object.projectTaskId + '" />' + displaySubTaskListButton +'</td><td>' + object.taskName + '</td><td>' + object.fullName + '</td><td>' + object.statusName + '</td><td>' + object.priorityName + '</td><td>' + startDate + '</td><td>' + endDate + '</td><td>' + object.taskDuration + '</td><td><div class="progress"><div class="progress-bar" role="progressbar" style="width: ' + object.totalPercentage + '%;" aria-valuenow="' + object.totalPercentage + '" aria-valuemin="0" aria-valuemax="100">' + object.totalPercentage + '%</div></div></td><td>' + updatedDate + '</td><td>' + edit + deleteTag + addSubTaskButton+'</td></tr>';
             }
             $('#Milestones tbody').append(tableRow);
-            
         });
         $('.tree').treegrid();
 
@@ -266,13 +255,11 @@ function GetTaskSubTaskByIdSuccess(data) {
         $("#StartDate").val(formattedStartDate);
         $("#EndDate").val(formattedEndDate);
 
-
         $("#TaskDuration").val(data._object.taskDuration);
         $("#projectTaskId").val(data._object.projectTaskId)
         $("#pidfid").val(data._object.pidfid)
         $("#tasklevel").val(data._object.taskLevel)
         $("#parentId").val(data._object.parentId)
-
 
         if (data._object.editTaskStatusId == 1) {
             $(".disabledPercentage").prop("readOnly", true);
@@ -294,8 +281,6 @@ function GetTaskSubTaskByIdError(x, y, z) {
     toastr.error(ErrorMessage);
 }
 //end region
-
-
 
 //delete tasksubtask by
 function ConfirmationDeleteTaskSubTask(id) {
@@ -446,7 +431,6 @@ $('#AddSubTaskDuration').on('keypress', function () {
     return true;
 });
 
-
 $('#AddSubTaskPercentage').on('keypress', function () {
     var charCode = window.event.keyCode;
     if (charCode > 31 && (charCode < 48 || charCode > 57)) {
@@ -521,7 +505,6 @@ $('#AddTaskDuration').on('keypress', function () {
     return true;
 });
 
-
 $('#AddTaskPercentage').on('keypress', function () {
     var charCode = window.event.keyCode;
     if (charCode > 31 && (charCode < 48 || charCode > 57)) {
@@ -548,7 +531,7 @@ function calculateTaskDuration() {
         }
         var start = new Date(startDate);
         var end = new Date(endDate);
-        var duration = (end - start) / (1000 * 60 * 60 * 24); 
+        var duration = (end - start) / (1000 * 60 * 60 * 24);
         document.getElementById("AddTaskDuration").value = duration;
         document.getElementById("AddTaskDuration").readOnly = true;
     }

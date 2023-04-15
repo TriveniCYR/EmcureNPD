@@ -14,6 +14,7 @@ namespace EmcureNPD.Business.Core.Interface
         Task<DBOperation> AddUpdateRole(MasterRoleEntity masterRoleEntity);
 
         Task<DBOperation> DeleteRole(int id);
+
         Task<List<MasterRoleEntity>> GetActiveRole();
     }
 }

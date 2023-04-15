@@ -44,6 +44,13 @@ $(document)
         /*$('#mainLoader').height("0").find("img").hide();*/
         setTimeout(function () { $('#loading-wrapper').hide(); }, 500);
     });
+    //.ajaxError(function (event, jqxhr, settings, thrownError) {
+    //    alert(jqxhr.status);
+    //    //if (textStatus.status == 404) {
+    //    //    window.location.href = '/Home/AccessRestriction';
+    //    //}
+    //    console.log(event, jqxhr, settings, thrownError);
+    //});
 function getCookie(name) {
     const value = `; ${document.cookie}`;
     const parts = value.split(`; ${name}=`);
@@ -69,13 +76,13 @@ function setNavigation() {
         )
     };
     if (path.includes('PIDF') || path.includes('PBF') || path.includes('Audit')) {
-        $('#parentPIDF').addClass('menu-is-opening menu-open');        
+        $('#parentPIDF').addClass('menu-is-opening menu-open');
     }
 
     $(".nav-item a").each(function () {
         var IshrefFound = false;
         var href = $(this).attr('href');
-        if (href==undefined) {
+        if (href == undefined) {
             return;
         }
         var NavPathArr = href.split('/');
@@ -225,7 +232,7 @@ function ApproveRejectConfirm() {
         $('#ApproveRejectModel').modal('hide');
     }
     else {
-        toastr.error("Please Enter Comments!","ERROR:")
+        toastr.error("Please Enter Comments!", "ERROR:")
     }
 }
 function SaveApproveRejectSuccess(data) {

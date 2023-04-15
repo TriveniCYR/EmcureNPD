@@ -38,8 +38,7 @@ function setLicensevalues() {
     }
 }
 function SetBU_Strength() {
-    
-    var PIDFProductStrengthId = 0; PIDFBusinessUnitId = 0;  
+    var PIDFProductStrengthId = 0; PIDFBusinessUnitId = 0;
     if ($("#StrengthId").val() > 0)
         PIDFProductStrengthId = $("#StrengthId").val();
     else
@@ -65,7 +64,6 @@ function SetBU_Strength() {
     $(StrengthAnchorId).addClass('active');
     $(BUAnchorId).addClass('active');
     //window.location.href = 'PBFClinicalDetailsForm?pidfid=' + btoa(pidfId) + '&bui=' + btoa(SelectedBUValue) + '&strength=' + btoa(selectedStrength);
-
 }
 function IsViewModeClinical() {
     if ($("#hdnPBFClinicalIsView").val() == '1') {
@@ -78,7 +76,6 @@ function GetPBFDropdown() {
 function GetPBFDropdownSuccess(data) {
     try {
         if (data != null) {
-
             $(data.MasterDosage).each(function (index, item) {
                 $('#PbfDosageFormId').append('<option value="' + item.dosageId + '">' + item.dosageName + '</option>');
             });
@@ -125,9 +122,7 @@ function GetPBFDropdownSuccess(data) {
             });
             $(data.MasterFillingType).each(function (index, item) {
                 $('#FillingTypeId').append('<option value="' + item.filingTypeId + '">' + item.filingTypeName + '</option>');
-
             });
-            
         }
     } catch (e) {
         toastr.error('Error:' + e.message);
@@ -152,7 +147,6 @@ function BUtabClick(BUVal, pidfidval) {
     $(BUAnchorId).addClass('active');
 
     window.location.href = 'PBFClinicalDetailsForm?pidfid=' + btoa(pidfidval) + '&bui=' + btoa(BUVal) + '&strength=' + btoa(selectedStrength);
-
 }
 // #region Get ProductStrength By pidfId
 function GetProductStrengthById(id) {
@@ -191,7 +185,6 @@ function StrengthtabClick(strengthVal, pidfval) {
 }
 
 // #endregion
-
 
 //Table Binding for Clinical Start
 function PilotBioFastingaddRow(j) {
@@ -244,10 +237,7 @@ function PivotalBioFEDdeleteRow(j, element) {
 }
 //Table Binding for Clinical End
 
-
-
 function SetChildRowDeleteIcon() {
-
     //Clinical Table Start
     if ($('#PilotBioFastingTable tbody tr').length > 1) {
         $('.PilotBioFastingDeleteIcon').show();
@@ -275,9 +265,7 @@ function SetChildRowDeleteIcon() {
         $('.PivotalBioFEDTableDeleteIcon').hide();
     }
     //Clinical Table End
-
 }
-
 
 function SetChildRows() {
     //Clinical table set data start
@@ -320,19 +308,15 @@ function Calculate_Clinical_total() {
 
     $.each($('#PilotBioFastingTable tbody tr'), function (index, value) {
         pilotbiofastingsum += parseFloat($(this).find("td:eq(4) input").attr("name", "PidfPbfClinicals.pidfpbfClinicalpilotBioFastingEntity[" + index.toString() + "].TotalCost").val());
-
     });
     $.each($('#PilotBioFEDTable tbody tr'), function (index, value) {
         pilotbiofedsum += parseFloat($(this).find("td:eq(4) input").attr("name", "PidfPbfClinicals.pidfpbfClinicalPilotBioFedEntity[" + index.toString() + "].TotalCost").val());
-
     });
     $.each($('#PivotalBioFastingTable tbody tr'), function (index, value) {
         pivotalbiofastingsum += parseFloat($(this).find("td:eq(4) input").attr("name", "PidfPbfClinicals.pidfpbfClinicalPivotalBioFastingEntity[" + index.toString() + "].TotalCost").val());
-
     });
     $.each($('#PivotalBioFEDTable tbody tr'), function (index, value) {
         pivotalbiofedsum += parseFloat($(this).find("td:eq(4) input").attr("name", "PidfPbfClinicals.pidfpbfClinicalPivotalBioFedEntity[" + index.toString() + "].TotalCost").val());
-
     });
 
     totalsum = pilotbiofastingsum + pilotbiofedsum + pivotalbiofastingsum + pivotalbiofedsum;
@@ -344,14 +328,12 @@ function Calculate_Clinical_total() {
     $('#PidfPbfClinicals_pidfPbfClinicalCost_TotalCost').val(totalsum);
 }
 function preventSubmit() {
-
     $(document).on('submit', 'form', function (e) {
         e.preventDefault();
         e.stopPropagation()
         return;
     });
 }
-
 
 function ValidateMainForm() {
     var ArrofInvalid = []
@@ -361,7 +343,6 @@ function ValidateMainForm() {
     });
     $("#PidfPbfClinicals_TestLicenseAvailability").val(selected.join(", "))
     SetChildRows();
-
 
     var MainFormFeilds = ['PidfPbfClinicals_TestLicenseAvailability']
     $.each(MainFormFeilds, function (_, kv) {
@@ -378,7 +359,6 @@ function ValidateMainForm() {
     return status;
 }
 function ValidateBU_Strength() {
-    
     var status = true;
     var valMsg = '';
     if (SelectedBUValue == 0) {
@@ -397,13 +377,11 @@ function ValidateBU_Strength() {
 $("#save").click(function () {
     if (ValidateMainForm() && ValidateBU_Strength()) {
         $('#SaveSubmitType').val('Save');
-
     }
 });
 $("#savedraft").click(function () {
     if (ValidateMainForm() && ValidateBU_Strength()) {
         $('#SaveSubmitType').val('draft');
-
     }
 });
 //(function () {
@@ -425,4 +403,3 @@ $("#savedraft").click(function () {
 //            }, false)
 //        })
 //})()
-

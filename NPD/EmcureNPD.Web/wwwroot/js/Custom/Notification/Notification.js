@@ -14,7 +14,7 @@ function GetAllNotificationListSuccess(data) {
         let elehtml = '';
         let rowcount = 1;
         let result = JSON.parse(data)
-        if (result != null) {           
+        if (result != null) {
             $('#NotificationCount').html(result.recordsTotal + " Notifications");
             for (var i = 0; i < result.data.length; i++) {
                 let notificationTitle = result.data[i].notificationTitle.length > 40 ? result.data[i].notificationTitle.slice(0, 39) + '...' : result.data[i].notificationTitle;
@@ -54,8 +54,6 @@ function GetNotificationsForUserSuccess(data) {
 function GetNotificationsForUserError(x, y, z) {
     toastr.error(ErrorMessage);
 }
-
-
 
 function GetNotificationClickedSuccess(data) {
     try {
@@ -126,7 +124,6 @@ function timeDiffrance(_dateInput) {
         _suffix = "min :" + diffSec + "sec";
     }
    else if (diffHour < 24) {
-
         _suffix = "hour";
     }
     return diffHour + "" + _suffix;
