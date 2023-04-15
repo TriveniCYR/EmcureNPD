@@ -350,43 +350,91 @@ $(document).ready(function () {
     });
     /*Reference Product Details*/
     $(document).on("change", ".calcRNDRPDUnitCostOfReferenceProduct, .calcRNDRPDFormulationDevelopment, .calcRNDRPDPilotBe, .calcRNDRPDPharmasuiticalEquivalence, .calcRNDRPDPivotalBio", function () {
+
         var _BioStudyTypeId = $(this).parent().parent().attr("data-biostudytypeid");
-        var _StrengthId = $(this).parent().attr("data-strengthid");
-        var _RowId = $(this).parent().parent().attr("data-rowid");
-        var _RPDRows = $('.RPDcal_' + _BioStudyTypeId + '').find("[data-strengthid=" + _StrengthId + "]");
 
-        var UnitCostOfReferenceProduct = parseFloat(_RPDRows.find(".calcRNDRPDUnitCostOfReferenceProduct").val() == "" ? 0 : _RPDRows.find(".calcRNDRPDUnitCostOfReferenceProduct").val());
-        var FormulationDevelopment = parseFloat(_RPDRows.find(".calcRNDRPDFormulationDevelopment").val() == "" ? 0 : _RPDRows.find(".calcRNDRPDFormulationDevelopment").val());
-        var PilotBe = parseFloat(_RPDRows.find(".calcRNDRPDPilotBe").val() == "" ? 0 : _RPDRows.find(".calcRNDRPDPilotBe").val());
-        var PharmasuiticalEquivalence = parseFloat(_RPDRows.find(".calcRNDRPDPharmasuiticalEquivalence").val() == "" ? 0 : _RPDRows.find(".calcRNDRPDPharmasuiticalEquivalence").val());
-        var PivotalBio = parseFloat(_RPDRows.find(".calcRNDRPDPivotalBio").val() == "" ? 0 : _RPDRows.find(".calcRNDRPDPivotalBio").val());
-
-        var _StrengthSum = 0;
-        $.each($('.calcRNDRPDUnitCostOfReferenceProduct'), function (index, item) {
-            var ReferenceProduct = $(item).val();
-            if (_RowId == 1) _StrengthSum += parseFloat((FormulationDevelopment) * (ReferenceProduct));
-            else if (_RowId == 2) _StrengthSum += parseFloat((PilotBe) * (ReferenceProduct));
-            else if (_RowId == 3) _StrengthSum += parseFloat((PharmasuiticalEquivalence) * (ReferenceProduct));
-            else if (_RowId == 4) _StrengthSum += parseFloat((PivotalBio) * (ReferenceProduct));
-            else { }
-        });
-        // set total for the row
-        $(this).parent().parent().find(".TotalStrength").val(_StrengthSum);
-        //$(this).parent().find("[data-rowid=" + [_RowId + 1] + "]").find(".TotalStrength").val(_StrengthSum);
-
-        // formula to calculate the total cost for one strength (all the properties) (one column)
-        var totalrpd = ((UnitCostOfReferenceProduct) * ((FormulationDevelopment + PilotBe) + (PharmasuiticalEquivalence + PivotalBio)));
-
-        // set total for all the property in the table for one strength
-        $('.RPDcal_' + _BioStudyTypeId + 'Total').find("[data-strengthid=" + _StrengthId + "]").find(".calcTotalCostForStrength").val(totalrpd);
-
-        var _TotalSum = 0;
-        $.each($('.RPDcal_' + _BioStudyTypeId + 'Total').find(".calcTotalCostForStrength"), function (index, item) {
-            _TotalSum += parseFloat(($(item).val() == "" ? 0 : $(item).val()));
+        $.each($('.RPDcal_' + _BioStudyTypeId), function (index, item) {
+            var _TotalForStrength = 0;
+            $.each(_strengthArray, function (i, t) {
+                var _StrengthId = t.pidfProductStrengthId;
+                var strengthElement = $(item).find('[data-strengthid=' + _StrengthId + ']').find(".RPDStrengthValue");
+                if (!strengthElement.hasClass('calcRNDRPDUnitCostOfReferenceProduct')) {
+                    var UnitCost = $('#tablerndreferenceproductdetail').find('[data-strengthid=' + _StrengthId + ']').find('.calcRNDRPDUnitCostOfReferenceProduct').val();
+                    var _strengthValue = $(item).find('[data-strengthid=' + _StrengthId + ']').find(".RPDStrengthValue").val();
+                    _TotalForStrength += parseFloat(UnitCost == "" ? 0 : UnitCost) * parseFloat(_strengthValue == "" ? 0 : _strengthValue);
+                }
+            });
+            $(item).find(".TotalStrength").val((_TotalForStrength).toFixed(2));
         });
 
-        // set total for all the property in the table
-        $('.RPDcal_' + _BioStudyTypeId + 'Total').find(".calcTotalCostForStrengthTotal").val(_TotalSum);
+        var _TotalCostForAllStrength = 0;
+        $.each(_strengthArray, function (i, t) {
+            var _TotalCostForStrength = 0;
+            var _StrengthId = t.pidfProductStrengthId;
+            $.each($('.RPDcal_' + _BioStudyTypeId), function (index, item) {
+                var strengthElement = $(item).find('[data-strengthid=' + _StrengthId + ']').find(".RPDStrengthValue");
+                if (!strengthElement.hasClass('calcRNDRPDUnitCostOfReferenceProduct')) {
+                    var UnitCost = $('#tablerndreferenceproductdetail').find('[data-strengthid=' + _StrengthId + ']').find('.calcRNDRPDUnitCostOfReferenceProduct').val();
+                    var _strengthValue = $(item).find('[data-strengthid=' + _StrengthId + ']').find(".RPDStrengthValue").val();
+                    _TotalCostForStrength += parseFloat(UnitCost == "" ? 0 : UnitCost) * parseFloat(_strengthValue == "" ? 0 : _strengthValue);
+                }
+            });
+            _TotalCostForAllStrength += _TotalCostForStrength;
+            $('.RPDcal_' + _BioStudyTypeId + 'Total').find('[data-strengthid=' + _StrengthId + ']').find('.calcTotalCostForStrengthRPD').val(_TotalCostForStrength.toFixed(2));
+        });
+        $('.RPDcal_' + _BioStudyTypeId + 'Total').find('.calcTotalCostForStrengthTotalRPD').val(_TotalCostForAllStrength.toFixed(2));
+
+        //var _BioStudyTypeId = $(this).parent().parent().attr("data-biostudytypeid");
+        //var _StrengthId = $(this).parent().attr("data-strengthid");
+        //var _RowId = $(this).parent().parent().attr("data-rowid");
+        
+        //var UnitCostElement = $('.RPDcal_' + _BioStudyTypeId + '').find("[data-strengthid=" + _StrengthId + "]").find(".calcRNDRPDUnitCostOfReferenceProduct");
+        //var FormulationDevelopmentElement = $('.RPDcal_' + _BioStudyTypeId + '').find("[data-strengthid=" + _StrengthId + "]").find(".calcRNDRPDFormulationDevelopment");
+        //var PilotBEElement = $('.RPDcal_' + _BioStudyTypeId + '').find("[data-strengthid=" + _StrengthId + "]").find(".calcRNDRPDPilotBe");
+        //var PharmaEQElement = $('.RPDcal_' + _BioStudyTypeId + '').find("[data-strengthid=" + _StrengthId + "]").find(".calcRNDRPDPharmasuiticalEquivalence");
+        //var PivotalBioElement = $('.RPDcal_' + _BioStudyTypeId + '').find("[data-strengthid=" + _StrengthId + "]").find(".calcRNDRPDPivotalBio");
+
+        //var UnitCostOfReferenceProduct = parseFloat(UnitCostElement.val() == "" ? 0 : UnitCostElement.val());
+        //var FormulationDevelopment = parseFloat(FormulationDevelopmentElement.val() == "" ? 0 : FormulationDevelopmentElement.val());
+        //var PilotBe = parseFloat(PilotBEElement.val() == "" ? 0 : PilotBEElement.val());
+        //var PharmasuiticalEquivalence = parseFloat(PharmaEQElement.val() == "" ? 0 : PharmaEQElement.val());
+        //var PivotalBio = parseFloat(PivotalBioElement.val() == "" ? 0 : PivotalBioElement.val());
+
+        //$(this).val() * UnitCostOfReferenceProduct
+
+        //$(this).parent().parent().find(".TotalStrength").val(_StrengthSum);
+
+        //$.each($('#tablerndreferenceproductdetail .RPDcal_' + _BioStudyTypeId), function (index, item) {
+
+
+        //});
+
+        //var _StrengthSum = 0;
+        //$.each($('.calcRNDRPDUnitCostOfReferenceProduct'), function (index, item) {
+        //    var ReferenceProduct = $(item).val();
+        //    if (_RowId == 1) _StrengthSum += parseFloat((FormulationDevelopment) * (ReferenceProduct));
+        //    else if (_RowId == 2) _StrengthSum += parseFloat((PilotBe) * (ReferenceProduct));
+        //    else if (_RowId == 3) _StrengthSum += parseFloat((PharmasuiticalEquivalence) * (ReferenceProduct));
+        //    else if (_RowId == 4) _StrengthSum += parseFloat((PivotalBio) * (ReferenceProduct));
+        //    else { }
+        //});
+        //// set total for the row
+        //$(this).parent().parent().find(".TotalStrength").val(_StrengthSum);
+        ////$(this).parent().find("[data-rowid=" + [_RowId + 1] + "]").find(".TotalStrength").val(_StrengthSum);
+
+        //// formula to calculate the total cost for one strength (all the properties) (one column)
+        //var totalrpd = ((UnitCostOfReferenceProduct) * ((FormulationDevelopment + PilotBe) + (PharmasuiticalEquivalence + PivotalBio)));
+
+        //// set total for all the property in the table for one strength
+        //$('.RPDcal_' + _BioStudyTypeId + 'Total').find("[data-strengthid=" + _StrengthId + "]").find(".calcTotalCostForStrength").val(totalrpd);
+
+        //var _TotalSum = 0;
+        //$.each($('.RPDcal_' + _BioStudyTypeId + 'Total').find(".calcTotalCostForStrength"), function (index, item) {
+        //    _TotalSum += parseFloat(($(item).val() == "" ? 0 : $(item).val()));
+        //});
+
+        //// set total for all the property in the table
+        //$('.RPDcal_' + _BioStudyTypeId + 'Total').find(".calcTotalCostForStrengthTotal").val(_TotalSum);
     });
     /*Man power cost*/
     $(document).on("change", ".rndMPCDurationInDays, .rndMPCManPowerInDays", function () {
@@ -475,7 +523,7 @@ $(document).ready(function () {
             $.each($('.packagingActivity' + _ActivityTypeId), function (index, item) {
                 var _strengthValue = $(item).find('[data-strengthid=' + _StrengthId + ']').find(".rndPackagingStrengthValue").val();
                 var rsPerTest = parseFloat($(item).find(".rndPackagingRsperUnit").val() == "" ? 0 : $(item).find(".rndPackagingRsperUnit").val());
-                _TotalCostForStrength += (rsPerTest * _strengthValue);
+                _TotalCostForStrength += (rsPerTest * parseFloat(_strengthValue == "" ? 0 : _strengthValue));
             });
             _TotalCostForAllStrength += _TotalCostForStrength;
             $('.packagingActivity' + _ActivityTypeId + 'Total').find('[data-strengthid=' + _StrengthId + ']').find('.calcTotalCostForStrengthpackaging').val(_TotalCostForStrength.toFixed(2));
@@ -596,7 +644,102 @@ $(document).ready(function () {
             $('.analyticalTotalAMVCostStrength').val(_TotalAMVCost);
         }
     });
+    /*Tooling Change Part Cost*/
+    $(document).on("change", ".rndToolingChangePartCost, .ToolingChangePartStrengthValue", function () {
+        var _ActivityTypeId = $(this).parent().parent().attr("data-activitytypeid");
 
+        $.each($('.ToolingChangePartActivity' + _ActivityTypeId), function (index, item) {
+            var _TotalForStrength = 0;
+            $.each(_strengthArray, function (i, t) {
+                var _StrengthId = t.pidfProductStrengthId;
+                var _strengthValue = $(item).find('[data-strengthid=' + _StrengthId + ']').find(".ToolingChangePartStrengthValue").val();
+                var _ToolingCost = $(item).find(".rndToolingChangePartCost").val(); 
+                _TotalForStrength += parseFloat(_ToolingCost == "" ? 0 : _ToolingCost) * parseFloat(_strengthValue == "" ? 0 : _strengthValue);
+            });
+            $(item).find(".TotalStrength").val((_TotalForStrength).toFixed(2));
+        });
+
+        var _TotalCostForAllStrength = 0;
+        $.each(_strengthArray, function (i, t) {
+            var _TotalCostForStrength = 0;
+            var _StrengthId = t.pidfProductStrengthId;
+            $.each($('.ToolingChangePartActivity' + _ActivityTypeId), function (index, item) {
+                var _strengthValue = $(item).find('[data-strengthid=' + _StrengthId + ']').find(".ToolingChangePartStrengthValue").val();
+                var rsPerTest = parseFloat($(item).find(".rndToolingChangePartCost").val() == "" ? 0 : $(item).find(".rndToolingChangePartCost").val());
+                _TotalCostForStrength += (rsPerTest * (_strengthValue == "" ? 0 : _strengthValue));
+            });
+            _TotalCostForAllStrength += _TotalCostForStrength;
+            $('.ToolingChangePartActivity' + _ActivityTypeId + 'Total').find('[data-strengthid=' + _StrengthId + ']').find('.calcTotalCostForStrengthTooling').val(_TotalCostForStrength.toFixed(2));
+        });
+        $('.ToolingChangePartActivity' + _ActivityTypeId + 'Total').find('.calcTotalCostForTooling' + _ActivityTypeId).val(_TotalCostForAllStrength.toFixed(2));
+
+        var _FinalTCCost = 0;
+        $.each(_strengthArray, function (i, t) {
+            var _TotalCostForTC = 0;
+            $.each($('#tablerndtoolingchangepart').find('[data-strengthid=' + t.pidfProductStrengthId + ']').find('.calcTotalCostForStrengthTooling'), function (index, item) {
+                _TotalCostForTC += parseFloat($(item).val() == "" ? 0 : $(item).val());
+            });
+            $('.calcTotalCostTCRow').find('[data-strengthid=' + t.pidfProductStrengthId + ']').find('.calcFinalCostForStrength').val(_TotalCostForTC.toFixed(2));
+            _FinalTCCost += _TotalCostForTC;
+        });
+        $('.calcTotalCostTCRow').find('.ToolingFinalTotal').val(_FinalTCCost.toFixed(2));
+    });
+    $(document).on("change", ".PlantSupportCostStrengthValue", function () {
+        var _ActivityTypeId = $(this).parent().parent().attr("data-activitytypeid");
+        var _plantSupportCost = $('#RNDMasterEntities_PlanSupportCostRsPerDay').val();
+
+        $.each($('.PlantSupportCostActivity' + _ActivityTypeId), function (index, item) {
+            var _TotalForStrength = 0;
+            $.each(_strengthArray, function (i, t) {
+                var _StrengthId = t.pidfProductStrengthId;
+                var _strengthValue = $(item).find('[data-strengthid=' + _StrengthId + ']').find(".PlantSupportCostStrengthValue").val();
+                _TotalForStrength += parseFloat(_strengthValue == "" ? 0 : _strengthValue);
+            });
+            $(item).find(".TotalStrength").val((_TotalForStrength).toFixed(2));
+        });
+
+        var _TotalCostForAllStrength = 0;
+        $.each(_strengthArray, function (i, t) {
+            var _TotalCostForStrength = 0;
+            var _StrengthId = t.pidfProductStrengthId;
+            $.each($('.PlantSupportCostActivity' + _ActivityTypeId), function (index, item) {
+                var _strengthValue = $(item).find('[data-strengthid=' + _StrengthId + ']').find(".PlantSupportCostStrengthValue").val();
+                var rsPerTest = parseFloat(_plantSupportCost == "" ? 0 : _plantSupportCost);
+                _TotalCostForStrength += (rsPerTest * (_strengthValue == "" ? 0 : _strengthValue));
+            });
+            _TotalCostForAllStrength += _TotalCostForStrength;
+            $('.PlantSupportCostActivity' + _ActivityTypeId + 'Total').find('[data-strengthid=' + _StrengthId + ']').find('.calcTotalCostForStrengthPlantSupport').val(_TotalCostForStrength.toFixed(2));
+        });
+        $('.PlantSupportCostActivity' + _ActivityTypeId + 'Total').find('.calcTotalCostForPlantSupport' + _ActivityTypeId).val(_TotalCostForAllStrength.toFixed(2));
+
+    });
+    /*Capex Misc Cost*/
+    $(document).on("change", ".CapexMiscStrengthValue", function () {
+        var _ActivityTypeId = $(this).parent().parent().attr("data-activitytypeid");
+
+        $.each($('.CapexMiscActivity' + _ActivityTypeId), function (index, item) {
+            var _TotalForStrength = 0;
+            $.each(_strengthArray, function (i, t) {
+                var _StrengthId = t.pidfProductStrengthId;
+                var _strengthValue = $(item).find('[data-strengthid=' + _StrengthId + ']').find(".CapexMiscStrengthValue").val();
+                _TotalForStrength += parseFloat(_strengthValue == "" ? 0 : _strengthValue);
+            });
+            $(item).find(".TotalStrength").val((_TotalForStrength).toFixed(2));
+        });
+
+        var _TotalCostForAllStrength = 0;
+        $.each(_strengthArray, function (i, t) {
+            var _TotalCostForStrength = 0;
+            var _StrengthId = t.pidfProductStrengthId;
+            $.each($('.CapexMiscActivity' + _ActivityTypeId), function (index, item) {
+                var _strengthValue = $(item).find('[data-strengthid=' + _StrengthId + ']').find(".CapexMiscStrengthValue").val();
+                _TotalCostForStrength += parseFloat(_strengthValue == "" ? 0 : _strengthValue);
+            });
+            _TotalCostForAllStrength += _TotalCostForStrength;
+            $('.CapexMiscActivity' + _ActivityTypeId + 'Total').find('[data-strengthid=' + _StrengthId + ']').find('.calcTotalCostForStrengthMisc').val(_TotalCostForStrength.toFixed(2));
+        });
+        $('.CapexMiscActivity' + _ActivityTypeId + 'Total').find('.calcTotalCostForMisc' + _ActivityTypeId).val(_TotalCostForAllStrength.toFixed(2));
+    });
     getPIDFAccordion(_PIDFAccordionURL, _PIDFID, "dvPIDFAccrdion");
     getIPDAccordion(_IPDAccordionURL, _EncPIDFID, _PIDFBusinessUnitId, "dvIPDAccrdion");
     getCommercialAccordion(_CommercialAccordionURL, _EncPIDFID, _PIDFBusinessUnitId, "dvCommercialAccrdion");
@@ -1418,7 +1561,7 @@ function CreateRNDPackagingTable(data, activityTypeId) {
 
         objectname += '<tr  id="PackagingRow" class="packagingactivity packagingActivity' + (activityTypeId) + '" data-activitytypeid="' + activityTypeId + '">'
             + '<td><select class="form-control readOnlyUpdate rndPackingTypeId"><option value = "" > --Select --</option ></select><input type="hidden" value="' + (data.length > 0 ? data[a].packingTypeId : "") + '" /></td>'
-            + '<td><input type="text" class="form-control rndPackagingUnitofMeasurement" min="0"  value="' + (data.length > 0 ? data[a].unitOfMeasurement : "") + '"/></td>'
+            + '<td><input type="text" class="form-control rndPackagingUnitofMeasurement" value="' + (data.length > 0 ? data[a].unitOfMeasurement : "") + '"/></td>'
             + '<td><input type="number" class="form-control rndPackagingRsperUnit" min="0"  value="' + (data.length > 0 ? data[a].rsPerUnit : "") + '" /></td>';
         //+ '<td><input type="number" class="form-control rndPackagingQuantity" min="0" value="' + (data.length > 0 ? data[a].quantity : "") + '"  /></td>'
         for (var i = 0; i < _strengthArray.length; i++) {
@@ -1558,33 +1701,33 @@ function CreateAPIrequirementTable(data, bioStudyTypeId) {
 
     objectname += "<tr class='ApiRequirement_" + bioStudyTypeId + "' data-biostudytypeid='" + bioStudyTypeId + "'><td>Prototype</td>";
     for (var i = 0; i < _strengthArray.length; i++) {
-        objectname += '<td data-strengthid="' + _strengthArray[i].pidfProductStrengthId + '"><input type="hidden" id="RNDApirequirements[' + [(i + _iterator)] + '].StrengthId" name="RNDApirequirements[' + [(i + _iterator)] + '].StrengthId" value="' + _strengthArray[i].pidfProductStrengthId + '" /><input type="number" class="form-control calcRNDApirequirementsPrototype" id="RNDApirequirements[' + [(i + _iterator)] + '].Prototype" name="RNDApirequirements[' + [(i + _iterator)] + '].Prototype" placeholder="Prototype" min="0" value="' + (getValueFromStrengthId(data, _strengthArray[i].pidfProductStrengthId, "prototype")) + '" /></td>';
+        objectname += '<td data-strengthid="' + _strengthArray[i].pidfProductStrengthId + '"><input type="hidden" id="RNDApirequirements[' + [(i + _iterator)] + '].StrengthId" name="RNDApirequirements[' + [(i + _iterator)] + '].StrengthId" value="' + _strengthArray[i].pidfProductStrengthId + '" /><input type="number" class="form-control calcRNDApirequirementsPrototype" id="RNDApirequirements[' + [(i + _iterator)] + '].Prototype" name="RNDApirequirements[' + [(i + _iterator)] + '].Prototype" placeholder="Prototype" min="0" value="' + (getValueFromStrengthId(data, _strengthArray[i].pidfProductStrengthId, "prototype")) + '" /><span>Kg</span></td>';
     }
-    objectname += "<td><input type='number' class='form-control TotalStrength' readonly='readonly' tabindex=-1 /></td></tr>";
+    objectname += "<td><input type='number' class='form-control TotalStrength' readonly='readonly' tabindex=-1 /><span>Kg</span></td></tr>";
 
     objectname += "<tr class='ApiRequirement_" + bioStudyTypeId + "' data-biostudytypeid='" + bioStudyTypeId + "'><td>Scale Up </td>";
     for (var i = 0; i < _strengthArray.length; i++) {
-        objectname += '<td data-strengthid="' + _strengthArray[i].pidfProductStrengthId + '"><input type="number" class="form-control calcRNDApirequirementsScaleUp" id="RNDApirequirements[' + [(i + _iterator)] + '].ScaleUp" name="RNDApirequirements[' + [(i + _iterator)] + '].ScaleUp" placeholder="ScaleUp" min="0" value="' + (getValueFromStrengthId(data, _strengthArray[i].pidfProductStrengthId, "scaleUp")) + '"  /></td>';
+        objectname += '<td data-strengthid="' + _strengthArray[i].pidfProductStrengthId + '"><input type="number" class="form-control calcRNDApirequirementsScaleUp" id="RNDApirequirements[' + [(i + _iterator)] + '].ScaleUp" name="RNDApirequirements[' + [(i + _iterator)] + '].ScaleUp" placeholder="ScaleUp" min="0" value="' + (getValueFromStrengthId(data, _strengthArray[i].pidfProductStrengthId, "scaleUp")) + '"  /><span>Kg</span></td>';
     }
-    objectname += "<td><input type='number' class='form-control TotalStrength' readonly='readonly' tabindex=-1 /></td></tr>";
+    objectname += "<td><input type='number' class='form-control TotalStrength' readonly='readonly' tabindex=-1 /><span>Kg</span></td></tr>";
 
     objectname += "<tr class='ApiRequirement_" + bioStudyTypeId + "' data-biostudytypeid='" + bioStudyTypeId + "'><td>Exhibit Batch 1</td>";
     for (var i = 0; i < _strengthArray.length; i++) {
-        objectname += '<td data-strengthid="' + _strengthArray[i].pidfProductStrengthId + '"> <input type="number" class="form-control calcRNDApirequirementsExhibitBatch1" id="RNDApirequirements[' + [(i + _iterator)] + '].ExhibitBatch1" name="RNDApirequirements[' + [(i + _iterator)] + '].ExhibitBatch1" placeholder="Exhibit Batch 1" min="0" value="' + (getValueFromStrengthId(data, _strengthArray[i].pidfProductStrengthId, "exhibitBatch1")) + '" /></td>';
+        objectname += '<td data-strengthid="' + _strengthArray[i].pidfProductStrengthId + '"> <input type="number" class="form-control calcRNDApirequirementsExhibitBatch1" id="RNDApirequirements[' + [(i + _iterator)] + '].ExhibitBatch1" name="RNDApirequirements[' + [(i + _iterator)] + '].ExhibitBatch1" placeholder="Exhibit Batch 1" min="0" value="' + (getValueFromStrengthId(data, _strengthArray[i].pidfProductStrengthId, "exhibitBatch1")) + '" /><span>Kg</span></td>';
     }
-    objectname += "<td><input type='number' class='form-control TotalStrength' readonly='readonly' tabindex=-1 /></td></tr>";
+    objectname += "<td><input type='number' class='form-control TotalStrength' readonly='readonly' tabindex=-1 /><span>Kg</span></td></tr>";
 
     objectname += "<tr class='ApiRequirement_" + bioStudyTypeId + "' data-biostudytypeid='" + bioStudyTypeId + "'><td>Exhibit Batch 2</td>";
     for (var i = 0; i < _strengthArray.length; i++) {
-        objectname += '<td data-strengthid="' + _strengthArray[i].pidfProductStrengthId + '"> <input type="number" class="form-control calcRNDApirequirementsExhibitBatch2" id="RNDApirequirements[' + [(i + _iterator)] + '].ExhibitBatch2" name="RNDApirequirements[' + [(i + _iterator)] + '].ExhibitBatch2" placeholder="Exhibit Batch 2" min="0" value="' + (getValueFromStrengthId(data, _strengthArray[i].pidfProductStrengthId, "exhibitBatch2")) + '" /></td>';
+        objectname += '<td data-strengthid="' + _strengthArray[i].pidfProductStrengthId + '"> <input type="number" class="form-control calcRNDApirequirementsExhibitBatch2" id="RNDApirequirements[' + [(i + _iterator)] + '].ExhibitBatch2" name="RNDApirequirements[' + [(i + _iterator)] + '].ExhibitBatch2" placeholder="Exhibit Batch 2" min="0" value="' + (getValueFromStrengthId(data, _strengthArray[i].pidfProductStrengthId, "exhibitBatch2")) + '" /><span>Kg</span></td>';
     }
-    objectname += "<td><input type='number' class='form-control TotalStrength' readonly='readonly' tabindex=-1 /></td></tr>";
+    objectname += "<td><input type='number' class='form-control TotalStrength' readonly='readonly' tabindex=-1 /><span>Kg</span></td></tr>";
 
     objectname += "<tr class='ApiRequirement_" + bioStudyTypeId + "' data-biostudytypeid='" + bioStudyTypeId + "'><td>Exhibit Batch 3</td>";
     for (var i = 0; i < _strengthArray.length; i++) {
-        objectname += '<td data-strengthid="' + _strengthArray[i].pidfProductStrengthId + '"> <input type="number" class="form-control calcRNDApirequirementsExhibitBatch3" id="RNDApirequirements[' + [(i + _iterator)] + '].ExhibitBatch3" name="RNDApirequirements[' + [(i + _iterator)] + '].ExhibitBatch3" placeholder="Exhibit Batch 3" min="0" value="' + (getValueFromStrengthId(data, _strengthArray[i].pidfProductStrengthId, "exhibitBatch3")) + '"/></td>';
+        objectname += '<td data-strengthid="' + _strengthArray[i].pidfProductStrengthId + '"> <input type="number" class="form-control calcRNDApirequirementsExhibitBatch3" id="RNDApirequirements[' + [(i + _iterator)] + '].ExhibitBatch3" name="RNDApirequirements[' + [(i + _iterator)] + '].ExhibitBatch3" placeholder="Exhibit Batch 3" min="0" value="' + (getValueFromStrengthId(data, _strengthArray[i].pidfProductStrengthId, "exhibitBatch3")) + '"/><span>Kg</span></td>';
     }
-    objectname += "<td><input type='number' class='form-control TotalStrength' readonly='readonly' tabindex=-1 /></td></tr>";
+    objectname += "<td><input type='number' class='form-control TotalStrength' readonly='readonly' tabindex=-1 /><span>Kg</span></td></tr>";
     objectname += "<tr class='ApiRequirement_" + bioStudyTypeId + "' data-biostudytypeid='" + bioStudyTypeId + "'><td>Prototype Cost</td>";
     for (var i = 0; i < _strengthArray.length; i++) {
         objectname += '<td data-strengthid="' + _strengthArray[i].pidfProductStrengthId + '"> <input type="number" class="form-control calcRNDApirequirementsPrototypeCost" readonly="readonly" tabindex=-1 id="RNDApirequirements[' + [(i + _iterator)] + '].PrototypeCost" name="RNDApirequirements[' + [(i + _iterator)] + '].PrototypeCost" placeholder="Prototype Cost" min="0" value="' + (getValueFromStrengthId(data, _strengthArray[i].pidfProductStrengthId, "prototypeCost")) + '"/></td>';
@@ -1654,21 +1797,22 @@ function CreateToolingchangepartTable(data, activityTypeId) {
                 continue;
             }
         }
-        objectname += '<tr  id="ToolingChangePartRow" class="toolingchangepartactivity ToolingChangePartActivity' + (activityTypeId) + '">'
-            + '<td><input type="text" class="form-control totalTCP rndToolingChangePartPrototype" min="0" value="' + (data.length > 0 ? data[a].prototype : "") + '" /></td>'
+        objectname += '<tr  id="ToolingChangePartRow" class="toolingchangepartactivity ToolingChangePartActivity' + (activityTypeId) + '" data-activitytypeid="' + activityTypeId + '">'
+            + '<td><input type="text" class="form-control totalTCP rndToolingChangePartPrototype" value="' + (data.length > 0 ? data[a].prototype : "") + '" /></td>'
             + '<td><input type="number" class="form-control totalTCP rndToolingChangePartCost" min="0" value="' + (data.length > 0 ? data[a].cost : "") + '"  /></td>'
         for (var i = 0; i < _strengthArray.length; i++) {
-            objectname += '<td><input class="rndToolingChangePartActivityId" type="hidden" value="' + activityTypeId + '" /><input type="hidden" class="rndToolingChangePartStrengthId" value="' + _strengthArray[i].pidfProductStrengthId + '" /><input type="number" class="form-control ToolingChangePartStrengthValue" min="0"  value="' + (data.length > 0 ? getValueFromStrengthId(data, _strengthArray[i].pidfProductStrengthId, "strengthUnitQuantity") : "") + '" /></td>';
+            objectname += '<td data-strengthid="' + _strengthArray[i].pidfProductStrengthId + '"><input class="rndToolingChangePartActivityId" type="hidden" value="' + activityTypeId + '" /><input type="hidden" class="rndToolingChangePartStrengthId" value="' + _strengthArray[i].pidfProductStrengthId + '" /><input type="number" class="form-control ToolingChangePartStrengthValue" min="0"  value="' + (data.length > 0 ? getValueFromStrengthId(data, _strengthArray[i].pidfProductStrengthId, "strengthUnitQuantity") : "") + '" /></td>';
         }
-        objectname += "<td><input type='number' class='form-control totalTCP rndToolingChangePartFinalCost' readonly='readonly' tabindex=-1 /></td><td> <i class='fa-solid fa-circle-plus nav-icon text-success operationButton' id='addIcon' onclick='addRowToolingChangePart(this);'></i> <i class='fa-solid fa-trash nav-icon text-red strengthDeleteIcon operationButton DeleteIcon' onclick='deleteRowToolingChangePart(this);' ></i></td></tr>";
+        objectname += "<td><input type='number' class='form-control totalTCP TotalStrength' readonly='readonly' tabindex=-1 /></td><td> <i class='fa-solid fa-circle-plus nav-icon text-success operationButton' id='addIcon' onclick='addRowToolingChangePart(this);'></i> <i class='fa-solid fa-trash nav-icon text-red strengthDeleteIcon operationButton DeleteIcon' onclick='deleteRowToolingChangePart(this);' ></i></td></tr>";
         if (data.length > 0) {
             _activityType.push(data[a].prototype);
         }
     }
     objectname += "<tr class='ToolingChangePartActivity" + activityTypeId + "Total' data-activitytypeid='" + activityTypeId + "'><td class='text-bold'>Total Cost</td><td></td>";
     for (var i = 0; i < _strengthArray.length; i++) {
-        objectname += "<td data-strengthid='" + _strengthArray[i].pidfProductStrengthId + "'><input type='number' class='form-control calcTotalCostForStrength' readonly='readonly' tabindex=-1 min='0' /></td>";
+        objectname += "<td data-strengthid='" + _strengthArray[i].pidfProductStrengthId + "'><input type='number' class='form-control calcTotalCostForStrengthTooling' readonly='readonly' tabindex=-1 min='0' /></td>";
     }
+    objectname += "<td><input type='number' class='form-control TotalStrength calcTotalCostForTooling" + activityTypeId + "' readonly='readonly' tabindex=-1 /></td></tr>";
     objectname += "</tr>";
     return objectname;
 }
@@ -1684,11 +1828,17 @@ function BindRNDToolingchangepart(data) {
         toolingchangepartHTML += CreateToolingchangepartTable($.grep(data, function (n, x) { return n.activityTypeId == i; }), i);
     }
 
-    toolingchangepartHTML += "</tbody>";
+    toolingchangepartHTML += '<tr class="calcTotalCostTCRow"><td colspan="2">Total Cost</td>';
+    $.each(_strengthArray, function (index, item) {
+        toolingchangepartHTML += "<td data-strengthid='" + item.pidfProductStrengthId + "'><input type='number' class='form-control calcFinalCostForStrength' readonly='readonly' tabindex=-1 /></td>";
+    });
+    toolingchangepartHTML += "<td><input type='number' class='form-control ToolingFinalTotal' readonly='readonly' tabindex=-1 /></td></tr></tbody>";
 
     $('#tablerndtoolingchangepart').html(toolingchangepartHTML);
 
     SetChildRowDeleteIconPBF();
+
+    $("input[class~='ToolingChangePartStrengthValue']").trigger('change');
 }
 function addRowToolingChangePart(element) {
     var node = $(element).parent().parent().clone(true);
@@ -1719,12 +1869,12 @@ function CreateCapexMiscTable(data, activityTypeId) {
                 continue;
             }
         }
-        objectname += '<tr  id="CapexMiscRow" class="CapexMiscactivity CapexMiscActivity' + (activityTypeId) + '">'
+        objectname += '<tr  id="CapexMiscRow" class="CapexMiscactivity CapexMiscActivity' + (activityTypeId) + '" data-activitytypeid="' + activityTypeId + '">'
             + '<td><input type="text" class="form-control totalCapexMisc rndCapexMiscMiscellaneous" value="' + (data.length > 0 ? data[a].miscellaneousDevelopment : "") + '" /></td>'
         for (var i = 0; i < _strengthArray.length; i++) {
-            objectname += '<td><input class="rndCapexMiscActivityId" type="hidden" value="' + activityTypeId + '" /><input type="hidden" class="rndCapexMiscStrengthId" value="' + _strengthArray[i].pidfProductStrengthId + '" /><input type="number" class="form-control CapexMiscStrengthValue" min="0" value="' + (data.length > 0 ? getValueFromStrengthByMiscellaneousDevelopment(data, _strengthArray[i].pidfProductStrengthId, "strengthMiscellaneousExpense", data[a].miscellaneousDevelopment) : "") + '" /></td>';
+            objectname += '<td data-strengthid="' + _strengthArray[i].pidfProductStrengthId + '"><input class="rndCapexMiscActivityId" type="hidden" value="' + activityTypeId + '" /><input type="hidden" class="rndCapexMiscStrengthId" value="' + _strengthArray[i].pidfProductStrengthId + '" /><input type="number" class="form-control CapexMiscStrengthValue" min="0" value="' + (data.length > 0 ? getValueFromStrengthByMiscellaneousDevelopment(data, _strengthArray[i].pidfProductStrengthId, "strengthMiscellaneousExpense", data[a].miscellaneousDevelopment) : "") + '" /></td>';
         }
-        objectname += "<td><input type='number' class='form-control' readonly='readonly' tabindex=-1 min='0' /></td><td> <i class='fa-solid fa-circle-plus nav-icon text-success operationButton' id='addIcon' onclick='addRowCapexMisc(this);'></i> <i class='fa-solid fa-trash nav-icon text-red strengthDeleteIcon operationButton DeleteIcon' onclick='deleteRowCapexMisc(this);' ></i></td></tr>";
+        objectname += "<td><input type='number' class='form-control TotalStrength' readonly='readonly' tabindex=-1 min='0' /></td><td> <i class='fa-solid fa-circle-plus nav-icon text-success operationButton' id='addIcon' onclick='addRowCapexMisc(this);'></i> <i class='fa-solid fa-trash nav-icon text-red strengthDeleteIcon operationButton DeleteIcon' onclick='deleteRowCapexMisc(this);' ></i></td></tr>";
         if (data.length > 0) {
             _activityType.push(data[a].miscellaneousDevelopment);
         }
@@ -1743,17 +1893,19 @@ function BindRNDCapexMiscExpenses(data) {
         capexmiscexpensesHTML += CreateCapexMiscTable($.grep(data, function (n, x) { return n.activityTypeId == i; }), i);
     }
 
-    capexmiscexpensesHTML += '<tr><td class="text-bold">Total Cost</td>';
+    capexmiscexpensesHTML += '<tr class="CapexMiscActivity1Total"><td class="text-bold">Total Cost</td>';
 
     $.each(_strengthArray, function (index, item) {
-        capexmiscexpensesHTML += "<td><input type='number' class='form-control' readonly='readonly' tabindex=-1  min='0' /></td>";
+        capexmiscexpensesHTML += "<td data-strengthid='" + _strengthArray[index].pidfProductStrengthId + "'><input type='number' class='form-control calcTotalCostForStrengthMisc' readonly='readonly' tabindex=-1  min='0' /></td>";
     });
 
-    capexmiscexpensesHTML += "<td><input type='number' class='form-control' readonly='readonly' tabindex=-1 min='0'/><td></td></tr></tbody>";
+    capexmiscexpensesHTML += "<td><input type='number' class='form-control calcTotalCostForMisc1' readonly='readonly' tabindex=-1 min='0'/><td></td></tr></tbody>";
 
     $('#tablerndcapexmiscellaneousexpenses').html(capexmiscexpensesHTML);
 
     SetChildRowDeleteIconPBF();
+
+    $("input[class~='CapexMiscStrengthValue']").trigger('change');
 }
 function addRowCapexMisc(element) {
     var node = $(element).parent().parent().clone(true);
@@ -1784,12 +1936,12 @@ function CreatePlantSupportCostTable(data, activityTypeId) {
                 continue;
             }
         }
-        objectname += '<tr  id="PlantSupportCostRow" class="PlantSupportCostactivity PlantSupportCostActivity' + (activityTypeId) + '">'
-            + '<td><input type="text" class="form-control totalPlantSupportCost rndPlantSupportDevelopment" value="' + (data.length > 0 ? data[a].plantSupportDevelopment : "") + '" /></td>'
+        objectname += '<tr  id="PlantSupportCostRow" class="PlantSupportCostactivity PlantSupportCostActivity' + (activityTypeId) + '" data-activitytypeid="' + activityTypeId + '">'
+            + '<td><input type="text" style="display:none;" class="form-control totalPlantSupportCost rndPlantSupportDevelopment" value="' + (data.length > 0 ? data[a].plantSupportDevelopment : "") + '" /></td>'
         for (var i = 0; i < _strengthArray.length; i++) {
-            objectname += '<td><input class="rndPlantSupportActivityId" type="hidden" value="' + activityTypeId + '" /><input type="hidden" class="rndPlantSupportCostStrengthId" value="' + _strengthArray[i].pidfProductStrengthId + '" /><input type="number" class="form-control PlantSupportCostStrengthValue" min="0" value="' + (data.length > 0 ? getValueFromStrengthByPlantSupportDevelopment(data, _strengthArray[i].pidfProductStrengthId, "strengthPlantSupportDays", data[a].plantSupportDevelopment) : "") + '" /></td>';
+            objectname += '<td data-strengthid="' + _strengthArray[i].pidfProductStrengthId + '"><input class="rndPlantSupportActivityId" type="hidden" value="' + activityTypeId + '" /><input type="hidden" class="rndPlantSupportCostStrengthId" value="' + _strengthArray[i].pidfProductStrengthId + '" /><input type="number" class="form-control PlantSupportCostStrengthValue" min="0" value="' + (data.length > 0 ? getValueFromStrengthByPlantSupportDevelopment(data, _strengthArray[i].pidfProductStrengthId, "strengthPlantSupportDays", data[a].plantSupportDevelopment) : "") + '" /></td>';
         }
-        objectname += "<td><input type='number' class='form-control' readonly='readonly' tabindex=-1 /></td><td> <i class='fa-solid fa-circle-plus nav-icon text-success operationButton' id='addIcon' onclick='addRowPlantSupportCost(this);'></i> <i class='fa-solid fa-trash nav-icon text-red strengthDeleteIcon operationButton DeleteIcon' onclick='deleteRowPlantSupportCost(this);' ></i></td></tr>";
+        objectname += "<td><input type='number' class='form-control TotalStrength' readonly='readonly' tabindex=-1 /></td><td> <i class='fa-solid fa-circle-plus nav-icon text-success operationButton' id='addIcon' onclick='addRowPlantSupportCost(this);'></i> <i class='fa-solid fa-trash nav-icon text-red strengthDeleteIcon operationButton DeleteIcon' onclick='deleteRowPlantSupportCost(this);' ></i></td></tr>";
         if (data.length > 0) {
             _testType.push(data[a].plantSupportDevelopment);
         }
@@ -1799,7 +1951,7 @@ function CreatePlantSupportCostTable(data, activityTypeId) {
 }
 function BindRNDPlantSupportCost(data) {
     var plantsupportcostHTML = '<thead class="bg-primary text-bold"><tr>'
-        + '<td> Plant Support Cost </td>';
+        + '<td></td>';
     $.each(_strengthArray, function (index, item) {
         plantsupportcostHTML += '<td>' + getStrengthName(item.pidfProductStrengthId) + ' (Cost)</td>';
     });
@@ -1808,13 +1960,13 @@ function BindRNDPlantSupportCost(data) {
         plantsupportcostHTML += CreatePlantSupportCostTable($.grep(data, function (n, x) { return n.activityTypeId == i; }), i);
     }
 
-    plantsupportcostHTML += '<tr><td class="text-bold">Total Cost</td>';
+    plantsupportcostHTML += '<tr class="PlantSupportCostActivity1Total"><td class="text-bold">Total Cost</td>';
 
     $.each(_strengthArray, function (index, item) {
-        plantsupportcostHTML += "<td><input type='number' class='form-control' readonly='readonly' tabindex=-1 min='0'/></td>";
+        plantsupportcostHTML += "<td data-strengthid='" + _strengthArray[index].pidfProductStrengthId + "'><input type='number' class='form-control calcTotalCostForStrengthPlantSupport' readonly='readonly' tabindex=-1 min='0'/></td>";
     });
 
-    plantsupportcostHTML += "<td><input type='number' class='form-control' readonly='readonly' tabindex=-1 min='0'/><td></td></tr></tbody>";
+    plantsupportcostHTML += "<td><input type='number' class='form-control calcTotalCostForPlantSupport1' readonly='readonly' tabindex=-1 min='0'/><td></td></tr></tbody>";
 
     $('#tablerndplantsupportcost').html(plantsupportcostHTML);
 
@@ -1841,39 +1993,39 @@ function CreateReferenceProductDetailTable(data, bioStudyTypeId) {
 
     objectname += "<tr class=' RPDcal_" + bioStudyTypeId + "' data-biostudytypeid='" + bioStudyTypeId + "' data-rowid='0'><td>Unit Cost Of Reference Product</td>";
     for (var i = 0; i < _strengthArray.length; i++) {
-        objectname += '<td data-strengthid="' + _strengthArray[i].pidfProductStrengthId + '"><input type="hidden" id="RNDReferenceProductDetails[' + [(i + _iterator)] + '].StrengthId" name="RNDReferenceProductDetails[' + [(i + _iterator)] + '].StrengthId" value="' + _strengthArray[i].pidfProductStrengthId + '" /><input type="number" class="form-control calcRNDRPDUnitCostOfReferenceProduct" id="RNDReferenceProductDetails[' + [(i + _iterator)] + '].UnitCostOfReferenceProduct" name="RNDReferenceProductDetails[' + [(i + _iterator)] + '].UnitCostOfReferenceProduct" placeholder="UnitCostOfReferenceProduct" min="0" value="' + (getValueFromStrengthId(data, _strengthArray[i].pidfProductStrengthId, "unitCostOfReferenceProduct")) + '" /></td>';
+        objectname += '<td data-strengthid="' + _strengthArray[i].pidfProductStrengthId + '"><input type="hidden" id="RNDReferenceProductDetails[' + [(i + _iterator)] + '].StrengthId" name="RNDReferenceProductDetails[' + [(i + _iterator)] + '].StrengthId" value="' + _strengthArray[i].pidfProductStrengthId + '" /><input type="number" class="form-control calcRNDRPDUnitCostOfReferenceProduct RPDStrengthValue" id="RNDReferenceProductDetails[' + [(i + _iterator)] + '].UnitCostOfReferenceProduct" name="RNDReferenceProductDetails[' + [(i + _iterator)] + '].UnitCostOfReferenceProduct" placeholder="UnitCostOfReferenceProduct" min="0" value="' + (getValueFromStrengthId(data, _strengthArray[i].pidfProductStrengthId, "unitCostOfReferenceProduct")) + '" /></td>';
     }
     objectname += "<td></td></tr>";
 
     objectname += "<tr class='RPDcal_" + bioStudyTypeId + "' data-biostudytypeid='" + bioStudyTypeId + "' data-rowid='1'><td>Formulation Development</td>";
     for (var i = 0; i < _strengthArray.length; i++) {
-        objectname += '<td data-strengthid="' + _strengthArray[i].pidfProductStrengthId + '"><input type="number" class="form-control calcRNDRPDFormulationDevelopment" id="RNDReferenceProductDetails[' + [(i + _iterator)] + '].FormulationDevelopment" name="RNDReferenceProductDetails[' + [(i + _iterator)] + '].FormulationDevelopment" placeholder="Formulation Development" min="0" value="' + (getValueFromStrengthId(data, _strengthArray[i].pidfProductStrengthId, "formulationDevelopment")) + '"  /></td>';
+        objectname += '<td data-strengthid="' + _strengthArray[i].pidfProductStrengthId + '"><input type="number" class="form-control calcRNDRPDFormulationDevelopment RPDStrengthValue" id="RNDReferenceProductDetails[' + [(i + _iterator)] + '].FormulationDevelopment" name="RNDReferenceProductDetails[' + [(i + _iterator)] + '].FormulationDevelopment" placeholder="Formulation Development" min="0" value="' + (getValueFromStrengthId(data, _strengthArray[i].pidfProductStrengthId, "formulationDevelopment")) + '"  /></td>';
     }
     objectname += "<td><input type='number' class='form-control TotalStrength' readonly='readonly' tabindex=-1 min='0' /></td></tr>";
 
     objectname += "<tr class='RPDcal_" + bioStudyTypeId + "' data-biostudytypeid='" + bioStudyTypeId + "' data-rowid='2'><td>Pilot Be</td>";
     for (var i = 0; i < _strengthArray.length; i++) {
-        objectname += '<td data-strengthid="' + _strengthArray[i].pidfProductStrengthId + '"> <input type="number" class="form-control calcRNDRPDPilotBe" id="RNDReferenceProductDetails[' + [(i + _iterator)] + '].PilotBe" name="RNDReferenceProductDetails[' + [(i + _iterator)] + '].PilotBe" placeholder="Pilot Be" min="0" value="' + (getValueFromStrengthId(data, _strengthArray[i].pidfProductStrengthId, "pilotBE")) + '" /></td>';
+        objectname += '<td data-strengthid="' + _strengthArray[i].pidfProductStrengthId + '"> <input type="number" class="form-control calcRNDRPDPilotBe RPDStrengthValue" id="RNDReferenceProductDetails[' + [(i + _iterator)] + '].PilotBe" name="RNDReferenceProductDetails[' + [(i + _iterator)] + '].PilotBe" placeholder="Pilot Be" min="0" value="' + (getValueFromStrengthId(data, _strengthArray[i].pidfProductStrengthId, "pilotBE")) + '" /></td>';
     }
     objectname += "<td><input type='number' class='form-control TotalStrength' readonly='readonly' tabindex=-1 min='0' /></td></tr>";
 
     objectname += "<tr class='RPDcal_" + bioStudyTypeId + "' data-biostudytypeid='" + bioStudyTypeId + "' data-rowid='3'><td>Pharmasuitical Equivalence</td>";
     for (var i = 0; i < _strengthArray.length; i++) {
-        objectname += '<td data-strengthid="' + _strengthArray[i].pidfProductStrengthId + '"> <input type="number" class="form-control calcRNDRPDPharmasuiticalEquivalence" id="RNDReferenceProductDetails[' + [(i + _iterator)] + '].PharmasuiticalEquivalence" name="RNDReferenceProductDetails[' + [(i + _iterator)] + '].PharmasuiticalEquivalence" placeholder="Pharmasuitical Equivalence" min="0" value="' + (getValueFromStrengthId(data, _strengthArray[i].pidfProductStrengthId, "pharmasuiticalEquivalence")) + '" /></td>';
+        objectname += '<td data-strengthid="' + _strengthArray[i].pidfProductStrengthId + '"> <input type="number" class="form-control calcRNDRPDPharmasuiticalEquivalence RPDStrengthValue" id="RNDReferenceProductDetails[' + [(i + _iterator)] + '].PharmasuiticalEquivalence" name="RNDReferenceProductDetails[' + [(i + _iterator)] + '].PharmasuiticalEquivalence" placeholder="Pharmasuitical Equivalence" min="0" value="' + (getValueFromStrengthId(data, _strengthArray[i].pidfProductStrengthId, "pharmasuiticalEquivalence")) + '" /></td>';
     }
     objectname += "<td><input type='number' class='form-control TotalStrength' readonly='readonly' tabindex=-1 min='0' /></td></tr>";
 
     objectname += "<tr class='RPDcal_" + bioStudyTypeId + "' data-biostudytypeid='" + bioStudyTypeId + "' data-rowid='4'><td>Pivotal Bio</td>";
     for (var i = 0; i < _strengthArray.length; i++) {
-        objectname += '<td data-strengthid="' + _strengthArray[i].pidfProductStrengthId + '"> <input type="number" class="form-control calcRNDRPDPivotalBio" id="RNDReferenceProductDetails[' + [(i + _iterator)] + '].PivotalBio" name="RNDReferenceProductDetails[' + [(i + _iterator)] + '].PivotalBio" placeholder="Pivotal Bio" min="0" value="' + (getValueFromStrengthId(data, _strengthArray[i].pidfProductStrengthId, "pivotalBio")) + '"/></td>';
+        objectname += '<td data-strengthid="' + _strengthArray[i].pidfProductStrengthId + '"> <input type="number" class="form-control calcRNDRPDPivotalBio RPDStrengthValue" id="RNDReferenceProductDetails[' + [(i + _iterator)] + '].PivotalBio" name="RNDReferenceProductDetails[' + [(i + _iterator)] + '].PivotalBio" placeholder="Pivotal Bio" min="0" value="' + (getValueFromStrengthId(data, _strengthArray[i].pidfProductStrengthId, "pivotalBio")) + '"/></td>';
     }
     objectname += "<td><input type='number' class='form-control TotalStrength' readonly='readonly' tabindex=-1 min='0' /></td></tr>";
 
     objectname += "<tr class='RPDcal_" + bioStudyTypeId + "Total' data-biostudytypeid='" + bioStudyTypeId + "'><td class='text-bold'>Total Cost</td>";
     for (var i = 0; i < _strengthArray.length; i++) {
-        objectname += "<td data-strengthid='" + _strengthArray[i].pidfProductStrengthId + "'><input type='number' class='form-control calcTotalCostForStrength' readonly='readonly' tabindex=-1 min='0' /></td>";
+        objectname += "<td data-strengthid='" + _strengthArray[i].pidfProductStrengthId + "'><input type='number' class='form-control calcTotalCostForStrengthRPD' readonly='readonly' tabindex=-1 min='0' /></td>";
     }
-    objectname += "<td><input type='number' class='form-control calcTotalCostForStrengthTotal' readonly='readonly' tabindex=-1  min='0' /></td></tr>";
+    objectname += "<td><input type='number' class='form-control calcTotalCostForStrengthTotalRPD' readonly='readonly' tabindex=-1  min='0' /></td></tr>";
 
     return objectname;
 }
@@ -2265,4 +2417,15 @@ function GetValueFromBatchSize(_ActivityTypeId, _StrengthId) {
     } else {
         return 0;
     }
+}
+function formatNumber(value, round, code) {
+    if (code == null || code == undefined || code == "") {
+        code = "en-IN"
+    }
+    if (round == null || round == undefined || round == "") {
+        value = Math.round(value);
+    } else {
+        value = value.toFixed(2);
+    }
+    return new Intl.NumberFormat(code).format(value);
 }

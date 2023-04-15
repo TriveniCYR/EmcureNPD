@@ -240,3 +240,8 @@ form-control.is-valid, .was-validated .form-control:valid {
     width: 80% !important;
     display: inline-block !important;
 }
+.tableTDHint .form-control {
+    display: inline-block;
+    width: 70%;
+    margin-right: 5px;
+}
