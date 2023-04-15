@@ -455,59 +455,49 @@ $(document).ready(function () {
         $('.manpowercost_' + _BioStudyTypeId + 'Total').find(".calcTotalCostForStrength").val(_SumStrengths);
     });
     /*Pakaging Material*/
-    $(document).on("change", ".rndPackagingStrengthValue", function () {
+    $(document).on("change", ".rndPackingTypeId, .rndPackagingRsperUnit, .rndPackagingStrengthValue", function () {
         var _ActivityTypeId = $(this).parent().parent().attr("data-activitytypeid");
-        //var _StrengthId = $(this).parent().attr("data-strengthid");
 
-        var _PakagingRows = $('.packagingActivity' + _ActivityTypeId + '');
-        var totalpakagingCost = 0;
-        var totalPrototype = 0;
-        var totalscaleup = 0;
-        var totalexhibit = 0;
-        for (var i = 1; i < 4; i++) {
-            $.each($('.packagingActivity' + i + ''), function (index, item) {
-                var UnitofMeasurement = parseFloat($(this).find(".rndPackagingUnitofMeasurement").val() == "" ? 0 : $(this).find(".rndPackagingUnitofMeasurement").val());
-                var RsperUnit = parseFloat($(this).find(".rndPackagingRsperUnit").val() == "" ? 0 : $(this).find(".rndPackagingRsperUnit").val());
-                var StrengthValue = parseFloat($(this).find(".rndPackagingStrengthValue").val() == "" ? 0 : $(this).find(".rndPackagingStrengthValue").val());
-
-                //// formula to calculate the total cost for one strength (all the properties) (one column)
-                if (i == 1) {
-                    totalPrototype += ((UnitofMeasurement) * (RsperUnit));
-                    $('.packagingActivity' + i + 'Total').find(".calcTotalCostForStrength").val(totalPrototype);
-                }
-                else if (i == 2) {
-                    totalscaleup += ((UnitofMeasurement) * (RsperUnit));
-                    $('.packagingActivity' + i + 'Total').find(".calcTotalCostForStrength").val(totalscaleup);
-                }
-                else {
-                    totalexhibit += ((UnitofMeasurement) * (RsperUnit));
-                    $('.packagingActivity' + i + 'Total').find(".calcTotalCostForStrength").val(totalexhibit);
-                }
-
-                totalpakagingCost += ((UnitofMeasurement) * (RsperUnit));
-
-                var _Sum = 0;
-                $.each($(this).find(".rndPackagingStrengthValue"), function (index, item) {
-                    if ($(item).attr("class").indexOf("TotalStrength") === -1) {
-                        _Sum += parseFloat(($(item).val() == "" ? 0 : $(item).val()));
-                    }
-                });
-
-                // set total for the row
-                $(this).find(".TotalStrength").val(_Sum);
+        $.each($('.packagingActivity' + _ActivityTypeId), function (index, item) {
+            var _TotalForStrength = 0;
+            $.each(_strengthArray, function (i, t) {
+                var _StrengthId = t.pidfProductStrengthId;
+                var _strengthValue = $(item).find('[data-strengthid=' + _StrengthId + ']').find(".rndPackagingStrengthValue").val();
+                _TotalForStrength += parseFloat(_strengthValue == "" ? 0 : _strengthValue);
             });
-        }
+            $(item).find(".TotalStrength").val((_TotalForStrength).toFixed(2));
+        });
 
-        $('.PakagingMaterialTotal').val(totalpakagingCost * _strengthArray.length);
+        var _TotalCostForAllStrength = 0;
+        $.each(_strengthArray, function (i, t) {
+            var _TotalCostForStrength = 0;
+            var _StrengthId = t.pidfProductStrengthId;
+            $.each($('.packagingActivity' + _ActivityTypeId), function (index, item) {
+                var _strengthValue = $(item).find('[data-strengthid=' + _StrengthId + ']').find(".rndPackagingStrengthValue").val();
+                var rsPerTest = parseFloat($(item).find(".rndPackagingRsperUnit").val() == "" ? 0 : $(item).find(".rndPackagingRsperUnit").val());
+                _TotalCostForStrength += (rsPerTest * _strengthValue);
+            });
+            _TotalCostForAllStrength += _TotalCostForStrength;
+            $('.packagingActivity' + _ActivityTypeId + 'Total').find('[data-strengthid=' + _StrengthId + ']').find('.calcTotalCostForStrengthpackaging').val(_TotalCostForStrength.toFixed(2));
+        });
+        $('.packagingActivity' + _ActivityTypeId + 'Total').find('.calcTotalCostForPackaging' + _ActivityTypeId).val(_TotalCostForAllStrength.toFixed(2));
+
+        var _FinalPKCost = 0;
+        $.each(_strengthArray, function (i, t) {
+            var _TotalCostForPK = 0;
+            $.each($('#tablerndpackagingmaterialrequirement').find('[data-strengthid=' + t.pidfProductStrengthId + ']').find('.calcTotalCostForStrengthpackaging'), function (index, item) {
+                _TotalCostForPK += parseFloat($(item).val() == "" ? 0 : $(item).val());
+            });
+            $('.calcTotalCostPKRow').find('[data-strengthid=' + t.pidfProductStrengthId + ']').find('.calcFinalCostForStrength').val(_TotalCostForPK.toFixed(2));
+            _FinalPKCost += _TotalCostForPK;
+        });
+        $('.calcTotalCostPKRow').find('.PackagingFinalTotal').val(_FinalPKCost.toFixed(2));
     });
     /*Excipient Requirement*/
     $(document).on("change", ".rndExicipientPrototype, .rndExicipientRsperkg, .rndExicipientQuantity, .rndExicipientStrengthValue", function () {
         var _ActivityTypeId = $(this).parent().parent().attr("data-activitytypeid");
 
         var batchvalue = $("#RNDBatchSizeId option:selected").text();
-
-        var pickBatchSizeValue = (_ActivityTypeId == "1" ? "calcRNDBatchSizesPrototypeFormulation" :
-            (_ActivityTypeId == "2" ? "calcRNDBatchSizesScaleUpbatch" : ""));
 
         $.each($('.exicipientActivity' + _ActivityTypeId), function (index, item) {
             var _TotalForStrength = 0;
@@ -1442,8 +1432,9 @@ function CreateRNDPackagingTable(data, activityTypeId) {
     }
     objectname += "<tr class='packagingActivity" + activityTypeId + "Total' data-activitytypeid='" + activityTypeId + "'><td class='text-bold'>Total Cost</td><td></td><td></td>";
     for (var i = 0; i < _strengthArray.length; i++) {
-        objectname += "<td data-strengthid='" + _strengthArray[i].pidfProductStrengthId + "'><input type='number' class='form-control calcTotalCostForStrength' readonly='readonly' tabindex=-1 min='0' /></td>";
+        objectname += "<td data-strengthid='" + _strengthArray[i].pidfProductStrengthId + "'><input type='number' class='form-control calcTotalCostForStrengthpackaging' readonly='readonly' tabindex=-1 min='0' /></td>";
     }
+    objectname += "<td><input type='number' class='form-control TotalStrength calcTotalCostForPackaging" + activityTypeId + "' readonly='readonly' tabindex=-1 /></td></tr>";
     objectname += "</tr>";
 
     return objectname;
@@ -1461,15 +1452,19 @@ function BindRNDPackaging(data) {
     for (var i = 1; i < 4; i++) {
         PackagingActivityHTML += CreateRNDPackagingTable($.grep(data, function (n, x) { return n.activityTypeId == i; }), i);
     }
-    PackagingActivityHTML += '<tr><td class="text-left text-bold bg-light" colspan="10"></td></tr>';
-    PackagingActivityHTML += '<tr><td class="text-bold">Total Packaging Costs</td>';
-    PackagingActivityHTML += '<tr><td class="text-bold">Total Cost (for all Strength)</td>';
-    PackagingActivityHTML += "<td><input type='number' class='form-control PakagingMaterialTotal' readonly='readonly' tabindex=-1 /></td></tr></tbody>";
+    //PackagingActivityHTML += '<tr><td class="text-left text-bold bg-light" colspan="10"></td></tr>';
+    //PackagingActivityHTML += '<tr><td class="text-bold">Total Packaging Costs</td>';
+    //PackagingActivityHTML += '<tr><td class="text-bold">Total Cost (for all Strength)</td>';
+    //PackagingActivityHTML += "<td><input type='number' class='form-control PakagingMaterialTotal' readonly='readonly' tabindex=-1 /></td></tr></tbody>";
+    PackagingActivityHTML += '<tr class="calcTotalCostPKRow"><td colspan="3">Total Cost</td>';
+    $.each(_strengthArray, function (index, item) {
+        PackagingActivityHTML += "<td data-strengthid='" + item.pidfProductStrengthId + "'><input type='number' class='form-control calcFinalCostForStrength' readonly='readonly' tabindex=-1 /></td>";
+    });
+    PackagingActivityHTML += "<td><input type='number' class='form-control PackagingFinalTotal' readonly='readonly' tabindex=-1 /></td></tr></tbody>";
+
     $('#tablerndpackagingmaterialrequirement').html(PackagingActivityHTML);
     SetChildRowDeleteIconPBF();
 
-    //$("input[class~='rndPackagingUnitofMeasurement']").trigger('change');
-    //$("input[class~='rndPackagingRsperUnit']").trigger('change');
     $("input[class~='rndPackagingStrengthValue']").trigger('change');
 }
 function addRowRNDPackaging(element) {
