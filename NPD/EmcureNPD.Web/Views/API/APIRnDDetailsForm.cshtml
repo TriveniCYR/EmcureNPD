@@ -1,9 +1,11 @@
-﻿@using Microsoft.AspNetCore.Http
+﻿@using EmcureNPD.Utility.Models;
+@using Microsoft.AspNetCore.Http
 @using EmcureNPD.Web.Controllers
 @using Microsoft.AspNetCore.Mvc.Localization
 @using EmcureNPD.Utility.Utility
 @using EmcureNPD.Utility.Enums
-
+@using EmcureNPD.Web.Helpers;
+@inject IHelper Helper
 @inject IHttpContextAccessor HttpContextAccessor
 @inject Microsoft.Extensions.Localization.IStringLocalizer<EmcureNPD.Resource.Master> MasterLocalizer
 @inject Microsoft.Extensions.Localization.IStringLocalizer<EmcureNPD.Resource.Shared> SharedLocalizer
@@ -14,6 +16,8 @@
 @{
     ViewData["Title"] = @MasterLocalizer["APIRndDetails"];
     string jsVersion = @Configuration.GetSection("StaticJS")["version"];
+    bool IsEditAPIRnD = UtilityHelper.GetAccess((int)ModulePermissionEnum.APIListManagement, Helper.GetLoggedInRoleId(), (int)PermissionEnum.Edit, (int)SubModulePermissionEnum.APIRnD);
+    bool IsAddAPIRnD = UtilityHelper.GetAccess((int)ModulePermissionEnum.APIListManagement, Helper.GetLoggedInRoleId(), (int)PermissionEnum.Add, (int)SubModulePermissionEnum.APIRnD);
 }
 <div>
     <div id="dvPIDFAccrdion"></div>
@@ -29,7 +33,7 @@
                 <input type="hidden" asp-for="Pidfid" />
                 <input type="hidden" asp-for="PIDFAPIRnDFormID" />
                 <input type="hidden" asp-for="BusinessUnitId" />
-                <input type="hidden" asp-for="SaveType" id ="APIRnD_SaveType" />
+                <input type="hidden" asp-for="SaveType" id="APIRnD_SaveType" />
                 <input type="hidden" asp-for="StatusId" />
                 <div class="row">
                     <div class="col-md-4">
@@ -292,11 +296,14 @@
                 <div class="row">
                     <div class="col-12 text-end">
                         <div class="form-group">
-                            <button type="submit" id="Save" class="btn btn-success">@SharedLocalizer["Submit"]</button>
-                            @if (Convert.ToBoolean(Context.Request.Query["api"]) == false)
+                            @if (IsEditAPIRnD || IsAddAPIRnD)
+                            {
+                                <button type="submit" id="Save" class="btn btn-success">@SharedLocalizer["Submit"]</button>
+                                if (Convert.ToBoolean(Context.Request.Query["api"]) == false)
                                 {
-                            <button type="submit" id="SaveDraft" class="btn btn-primary">@SharedLocalizer["SaveDraft"]</button>
+                                    <button type="submit" id="SaveDraft" class="btn btn-primary">@SharedLocalizer["SaveDraft"]</button>
                                 }
+                            }
                             <a class="btn btn-danger" onclick="CancelPopup()">
                                 @SharedLocalizer["Cancel"]
                             </a>
@@ -310,7 +317,7 @@
 </div>
 @Html.Partial("_CancelRequest", (int)PIDFScreen.API)
 @section MyScripts {
-@*    <link href="/lib/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
+    @*    <link href="/lib/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
     <script src="/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>*@
     <script src="~/js/custom/api/apirnddetailsform.js?v=@jsVersion"></script>
 
@@ -348,7 +355,7 @@
         if (errorCallBack) {
             toastr.error(errorCallBack);
         }
-       
+
     </script>
 
 }
