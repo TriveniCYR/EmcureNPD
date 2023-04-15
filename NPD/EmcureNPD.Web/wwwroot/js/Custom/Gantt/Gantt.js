@@ -24,7 +24,6 @@ document.addEventListener("DOMContentLoaded", function () {
     gantt.config.work_time = true;
     //gantt.config.skip_off_time = true;
 
-
     gantt.setWorkTime({ day: 6 });
     gantt.setWorkTime({ day: 0 });
 
@@ -97,8 +96,7 @@ document.addEventListener("DOMContentLoaded", function () {
     for (var i = 0; i < radios.length; i++) {
         radios[i].onclick = func;
     }
-    //end 
-
+    //end
 
     function shouldHighlightTask(task) {
         var store = gantt.$resourcesStore;
@@ -175,8 +173,6 @@ document.addEventListener("DOMContentLoaded", function () {
         return className;
     };
     //end of task progress method
-
-
 
     gantt.templates.grid_row_class = function (start, end, task) {
         var css = [];
@@ -283,8 +279,6 @@ document.addEventListener("DOMContentLoaded", function () {
             //        child_progress += (child.progress * 100);
             //    }
             //}
-            
-           
         }, id)
         gantt.render();
         //setTimeout(reloadFunc, 3000);
@@ -313,7 +307,6 @@ document.addEventListener("DOMContentLoaded", function () {
             temptask = task;
         }, id)
         gantt.render();
-        
     }
     var resourceTemplates = {
         grid_row_class: function (start, end, resource) {
@@ -348,7 +341,7 @@ document.addEventListener("DOMContentLoaded", function () {
         { key: 5, label: "Low" },
         { key: 6, label: "Very Low" }
     ]);
-    
+
     gantt.locale.labels.section_owner = "Owner";
     gantt.locale.labels.section_priority = "Priority";
     gantt.config.lightbox.sections = [
@@ -364,7 +357,6 @@ document.addEventListener("DOMContentLoaded", function () {
         }
     ];
     gantt.locale.labels.section_baseline = "Planned";
-
 
     function getResourceTasks(resourceId) {
         var store = gantt.getDatastore(gantt.config.resource_store),
@@ -460,10 +452,10 @@ document.addEventListener("DOMContentLoaded", function () {
 
         task.planned_start = gantt.date.parseDate(task.planned_start, "xml_date");
         task.planned_end = gantt.date.parseDate(task.planned_end, "xml_date");
-        
+
         return true;
     });
-  
+
     var resourceMode = "hours";
     gantt.attachEvent("onGanttReady", function () {
         var tooltips = gantt.ext.tooltips;
@@ -535,10 +527,9 @@ document.addEventListener("DOMContentLoaded", function () {
     //OnAfterTaskUpdate for Parent Task progress
     gantt.attachEvent("onAfterTaskUpdate", function (id, task) {
         responsTtaskList = null;
-        
+
         parent_progress(id);
         saveUpdateGanttTask(task,id);
-        
 
         //$(".gantt_task_line").each(function (i, value) {
         //    console.log($(this).attr("aria-label").split(":")[1]);
@@ -579,7 +570,7 @@ document.addEventListener("DOMContentLoaded", function () {
         //alert('hi')
         deleteGanttTaskSubTask(id);
     });
-   
+
     function reloadFunc() {
         location.reload();
     }
@@ -682,24 +673,20 @@ document.addEventListener("DOMContentLoaded", function () {
                 //    alert($(this).attr("aria-label"))
                 //});
 
-
-
-
                 // gantt.parse({ data: ganttdata });
                 gantt.parse(gdata);
-                //gantt.task.progress = parseInt(data._object[i].totalPercentage); 
+                //gantt.task.progress = parseInt(data._object[i].totalPercentage);
             }
             responsTtaskList= data._object;
         }
         function GetTaskSubTaskListError() {
             toastr.error("Error");
         }
-        
     }
     function saveUpdateGanttTask(taskObjects, ProjectTaskId) {
        //let startDate = moment(taskObjects.start_date).format("MM/DD/YYYY hh:mm");
        //let endDate = moment(taskObjects.start_date).format("MM/DD/YYYY hh:mm");
-        const res = taskStatus.filter(x => x.projectTaskId === ProjectTaskId); 
+        const res = taskStatus.filter(x => x.projectTaskId === ProjectTaskId);
         let addTask = {
             ProjectTaskId: ProjectTaskId,
             TaskName: taskObjects.text,
@@ -720,11 +707,10 @@ document.addEventListener("DOMContentLoaded", function () {
         let pidfId = (new URL(location.href)).searchParams.get('pidfid');
         console.log(JSON.stringify(addTask))
        ajaxServiceMethod($('#hdnWebBaseURL').val() + "Project/AddUpdateGanttTask?id=" + pidfId + "&act=" + act, 'POST', SaveTaskSubTaskListSuccess, SaveTaskSubTaskListError, JSON.stringify(addTask), null, null, null,"application/json; charset=utf-8");
-     
+
         function SaveTaskSubTaskListSuccess(data) {
            // GetProjectGanttTaskList();
            toastr.success("Success");
-           
        }
        function SaveTaskSubTaskListError() {
            toastr.error("Error");
@@ -740,5 +726,3 @@ document.addEventListener("DOMContentLoaded", function () {
         toastr.error(`TaskId:${taskid} not deleted due to something wrong`);
     }
 });
-
-

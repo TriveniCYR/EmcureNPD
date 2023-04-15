@@ -1,5 +1,4 @@
-﻿
-(function ($) {
+﻿(function ($) {
     $.fn.serialize = function (options) {
         return $.param(this.serializeArray(options));
     };

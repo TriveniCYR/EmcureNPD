@@ -20,7 +20,6 @@ namespace EmcureNPD.Business.Core.ServiceImplementations
         private IRepository<MasterRegionCountryMapping> _repositoryMasterRegionCountryMapping { get; set; }
         private IRepository<MasterCountry> _countryRepository { get; set; }
 
-
         public MasterRegionService(IUnitOfWork unitOfWork, IMapperFactory mapperFactory)
         {
             _unitOfWork = unitOfWork;
@@ -37,7 +36,7 @@ namespace EmcureNPD.Business.Core.ServiceImplementations
 
         public async Task<MasterRegionEntity> GetById(int id)
         {
-            var  Region = _mapperFactory.Get<MasterRegion, MasterRegionEntity>(await _repository.GetAsync(id));
+            var Region = _mapperFactory.Get<MasterRegion, MasterRegionEntity>(await _repository.GetAsync(id));
             Region.CountryIds = string.Join(",", _repositoryMasterRegionCountryMapping.GetAllQuery().Where(x => x.RegionId == Region.RegionId).Select(x => x.CountryId.ToString()));
             Region.MasterBusinessCountryMappingIds = string.Join(",", _repositoryMasterRegionCountryMapping.GetAllQuery().Where(x => x.RegionId == Region.RegionId).Select(x => x.RegionCountryMappingId.ToString()));
             return Region;
@@ -48,7 +47,7 @@ namespace EmcureNPD.Business.Core.ServiceImplementations
             MasterRegion objRegion;
             var oMasterRegionCountryMapping = new MasterRegionCountryMappingEntity(); ;
             var objMasterRegionCountryMapping = new MasterRegionCountryMapping();
-            
+
             string[] countryList = entityRegion.CountryIds.Split(',');
             int[] countryIds = countryList.Select(int.Parse).ToArray();
 
@@ -106,7 +105,6 @@ namespace EmcureNPD.Business.Core.ServiceImplementations
                     await _unitOfWork.SaveChangesAsync();
                 }
                 else { return DBOperation.NotFound; }
-
             }
 
             if (objRegion.RegionId == 0)
@@ -135,6 +133,7 @@ namespace EmcureNPD.Business.Core.ServiceImplementations
 
             return DBOperation.Success;
         }
+
         public async Task<MasterCountryEntity> GetCountryByRegionId(int id)
         {
             var RegionCountryMapping = _repositoryMasterRegionCountryMapping.Get(x => x.RegionId == id);

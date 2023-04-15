@@ -1,34 +1,19 @@
-﻿using Microsoft.Extensions.Configuration;
-using EmcureNPD.Business.Core.Interface;
+﻿using EmcureNPD.Business.Core.Interface;
 using EmcureNPD.Business.Core.ModelMapper;
-using EmcureNPD.Business.Core.ServiceImplementations;
 using EmcureNPD.Business.Models;
 using EmcureNPD.Data.DataAccess.Core.Repositories;
 using EmcureNPD.Data.DataAccess.Core.UnitOfWork;
 using EmcureNPD.Data.DataAccess.Entity;
+using EmcureNPD.Utility.Enums;
 using EmcureNPD.Utility.Utility;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Primitives;
-using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
+using System.Data;
+using System.Data.SqlClient;
 using System.Dynamic;
-using System.IO;
 using System.Linq;
-using System.Linq.Expressions;
-using System.Text;
-using System.Text.Json.Nodes;
 using System.Threading.Tasks;
 using static EmcureNPD.Utility.Enums.GeneralEnum;
-using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.Http.Internal;
-using AutoMapper.Configuration;
-using System.Data.SqlClient;
-using EmcureNPD.Utility.Enums;
-using System.Data;
-using System.Reflection;
-using Microsoft.AspNetCore.Mvc.Razor.Internal;
 
 namespace EmcureNPD.Business.Core.Implementation
 {
@@ -37,62 +22,19 @@ namespace EmcureNPD.Business.Core.Implementation
         private readonly IUnitOfWork _unitOfWork;
         private readonly IMapperFactory _mapperFactory;
 
-        private readonly IMasterOralService _oralService;
-        private readonly IMasterUnitofMeasurementService _unitofMeasurementService;
-        private readonly IMasterDosageFormService _dosageFormService;
-        private readonly IMasterPackagingTypeService _packagingTypeService;
-        private readonly IMasterBusinessUnitService _businessUnitService;
-        private readonly IMasterCountryService _countryService;
-        private readonly IMasterAPISourcingService _APISourcingService;
-        private readonly IPidfApiDetailsService _PidfApiDetailsService;
-        private readonly IPidfProductStrengthService _pidfProductStrengthService;
-        private readonly IMasterDIAService _masterDIAService;
-        private readonly IMasterMarketExtensionService _masterMarketExtensionService;
-        private readonly IMasterBERequirementService _masterBERequirementService;
-        private readonly IMasterProductTypeService _masterProductTypeService;
-        private readonly IMasterPlantService _masterPlantService;
-        private readonly IMasterWorkflowService _masterWorkflowService;
-        private readonly IMasterFormRNDDivisionService _masterFormRNDDivisionService;
-        private readonly IMasterFormulationService _masterFormulationService;
-        private readonly IMasterAnalyticalGLService _masterAnalyticalGLService;
-        private readonly IPidfProductStrengthService _productStrengthService;
-        private readonly IMasterTestTypeService _masterTestTypeService;
-        private readonly IMasterTestLicenseService _masterTestLicenseService;
         private readonly INotificationService _notificationService;
-
-        private readonly Microsoft.Extensions.Configuration.IConfiguration _configuration;
-        private IRepository<PidfApiIpd> _pidf_API_IPD_repository { get; set; }
-        private IRepository<PidfApiRnD> _pidf_API_RnD_repository { get; set; }
-        private IRepository<PidfApiCharter> _pidf_API_Charter_repository { get; set; }
-        private IRepository<PidfApiCharterTimelineInMonth> _pidf_API_TimelineInMonth_repository { get; set; }
-        private IRepository<PidfPbf> _pbfRepository { get; set; }
-
         private readonly IMasterAuditLogService _auditLogService;
+        private readonly IHelper _helper;
+        private readonly IExceptionService _ExceptionService;
 
+        private IRepository<PidfPbf> _pbfRepository { get; set; }
         private IRepository<Pidf> _repository { get; set; }
-
-        private IRepository<Pidfapidetail> _pidfApiRepository { get; set; }
         private IRepository<PidfPbfAnalytical> _pidfPbfAnalyticalRepository { get; set; }
-        private IRepository<PidfPbfAnalyticalPrototype> _pidfPbfAnalyticalPrototypeRepository { get; set; }
-        private IRepository<PidfPbfAnalyticalScaleUp> _pidfPbfAnalyticalScaleUpRepository { get; set; }
-        private IRepository<PidfPbfAnalyticalExhibit> _pidfPbfAnalyticalExhibitRepository { get; set; }
         private IRepository<PidfPbfAnalyticalAmvcost> _PidfPbfAnalyticalAmvcostRepository { get; set; }
         private IRepository<PidfPbfClinical> _pidfPbfClinicalRepository { get; set; }
-        private IRepository<PidfPbfClinicalPilotBioFasting> _pidfPbfClinicalPilotBioFastingRepository { get; set; }
-        private IRepository<PidfPbfClinicalPilotBioFed> _pidfPbfClinicalPilotBioFedRepository { get; set; }
-        private IRepository<PidfPbfClinicalPivotalBioFasting> _pidfPbfClinicalPivotalBioFastingRepository { get; set; }
-        private IRepository<PidfPbfClinicalPivotalBioFed> _pidfPbfClinicalPivotalBioFedRepository { get; set; }
-        private IRepository<PidfPbfClinicalCost> _pidfPbfClinicalCostRepository { get; set; }
-
-        private IRepository<MasterDosage> _masterDosageRepository { get; set; }
-        private IRepository<PidfproductStrength> _pidfProductStrength { get; set; }
-        private readonly IHelper _helper;
         private IRepository<PidfPbfGeneral> _pidfPbfGeneralRepository { get; set; }
-        private IRepository<MasterFilingType> _masterFillingTypeRepository { get; set; }
         private IRepository<PidfPbfMarketMapping> _pidfPbfMarketMappingRepository { get; set; }
         private IRepository<PidfPbfGeneralStrength> _pidfPbfGeneralStrengthRepository { get; set; }
-        private IRepository<PidfPbfRnD> _pidfPbfRnDRepository { get; set; }
-        private IRepository<PidfPbfRnDExicipientPrototype> _pidfPbfRnDExicipientPrototype { get; set; }
         private IRepository<PidfPbfRnDExicipientRequirement> _pidfPbfRnDExicipientRequirementRepository { get; set; }
         private IRepository<PidfPbfRnDPackagingMaterial> _pidfPbfRnDPackagingMaterialRepository { get; set; }
         private IRepository<PidfPbfAnalyticalAmvcostStrengthMapping> _pidfPbfAnalyticalAmvcostStrengthMappingRepository { get; set; }
@@ -105,71 +47,24 @@ namespace EmcureNPD.Business.Core.Implementation
         private IRepository<PidfPbfRnDReferenceProductDetail> _pidfPbfRndReferenceProductDetailRepository { get; set; }
         private IRepository<PidfPbfRnDFillingExpense> _pidfPbfRndFillingExpenseRepository { get; set; }
         private IRepository<PidfPbfRnDManPowerCost> _pidfPbfRndPidfPbfRnDManPowerCostRepository { get; set; }
-        private readonly IExceptionService _ExceptionService;
-        //Market Extension & In House
 
-        public PBFService(IUnitOfWork unitOfWork, IMapperFactory mapperFactory, IMasterOralService oralService, IMasterUnitofMeasurementService unitofMeasurementService,
-            IMasterDosageFormService dosageFormService, IMasterPackagingTypeService packagingTypeService, IMasterBusinessUnitService businessUnitService,
-            IMasterCountryService countryService, IMasterAPISourcingService masterAPISourcingService, IPidfApiDetailsService pidfApiDetailsService,
-             INotificationService notificationService,
-            IPidfProductStrengthService pidfProductStrengthService, IMasterDIAService masterDium, IMasterMarketExtensionService masterMarketExtensionService,
-            IMasterBERequirementService masterBERequirementService, IMasterProductTypeService masterProductTypeService, IMasterPlantService masterPlantService,
-            IMasterWorkflowService masterWorkflowService, IMasterFormRNDDivisionService masterFormRNDDivisionService, IMasterFormulationService masterFormulationService,
-            IMasterAnalyticalGLService masterAnalyticalGLService, IPidfProductStrengthService productStrengthService, Microsoft.Extensions.Configuration.IConfiguration configuration,
-            IMasterTestTypeService masterTestTypeService, IMasterTestLicenseService masterTestLicenseService, IMasterAuditLogService auditLogService, IHelper helper, IExceptionService exceptionService)
+        public PBFService(IUnitOfWork unitOfWork, IMapperFactory mapperFactory, INotificationService notificationService, IMasterAuditLogService auditLogService, IHelper helper, IExceptionService exceptionService)
         {
             _unitOfWork = unitOfWork;
             _mapperFactory = mapperFactory;
-            _oralService = oralService;
-            _unitofMeasurementService = unitofMeasurementService;
-            _dosageFormService = dosageFormService;
-            _packagingTypeService = packagingTypeService;
-            _businessUnitService = businessUnitService;
-            _countryService = countryService;
-            _APISourcingService = masterAPISourcingService;
-            _PidfApiDetailsService = pidfApiDetailsService;
-            _pidfProductStrengthService = pidfProductStrengthService;
-            _repository = _unitOfWork.GetRepository<Pidf>();
-            _pidfApiRepository = unitOfWork.GetRepository<Pidfapidetail>();
-            _pidfProductStrength = unitOfWork.GetRepository<PidfproductStrength>();
-            _pidf_API_IPD_repository = _unitOfWork.GetRepository<PidfApiIpd>();
-            _pidf_API_RnD_repository = _unitOfWork.GetRepository<PidfApiRnD>();
-            _pidf_API_Charter_repository = _unitOfWork.GetRepository<PidfApiCharter>();
-            _pidf_API_TimelineInMonth_repository = _unitOfWork.GetRepository<PidfApiCharterTimelineInMonth>();
-            _masterDIAService = masterDium;
-            _masterMarketExtensionService = masterMarketExtensionService;
-            _masterBERequirementService = masterBERequirementService;
-            _masterProductTypeService = masterProductTypeService;
-            _masterPlantService = masterPlantService;
-            _masterWorkflowService = masterWorkflowService;
-            _masterFormRNDDivisionService = masterFormRNDDivisionService;
-            _masterFormulationService = masterFormulationService;
-            _masterAnalyticalGLService = masterAnalyticalGLService;
-            _pbfRepository = _unitOfWork.GetRepository<PidfPbf>();
-            _productStrengthService = productStrengthService;
             _auditLogService = auditLogService;
-            _configuration = configuration;
-            _masterTestTypeService = masterTestTypeService;
-            _masterTestLicenseService = masterTestLicenseService;
             _helper = helper;
+            _notificationService = notificationService;
+            _ExceptionService = exceptionService;
+
+            _repository = _unitOfWork.GetRepository<Pidf>();
+            _pbfRepository = _unitOfWork.GetRepository<PidfPbf>();
             _pidfPbfAnalyticalRepository = _unitOfWork.GetRepository<PidfPbfAnalytical>();
-            _pidfPbfAnalyticalPrototypeRepository = _unitOfWork.GetRepository<PidfPbfAnalyticalPrototype>();
-            _pidfPbfAnalyticalScaleUpRepository = _unitOfWork.GetRepository<PidfPbfAnalyticalScaleUp>();
-            _pidfPbfAnalyticalExhibitRepository = _unitOfWork.GetRepository<PidfPbfAnalyticalExhibit>();
             _PidfPbfAnalyticalAmvcostRepository = _unitOfWork.GetRepository<PidfPbfAnalyticalAmvcost>();
-            _masterDosageRepository = _unitOfWork.GetRepository<MasterDosage>();
             _pidfPbfClinicalRepository = _unitOfWork.GetRepository<PidfPbfClinical>();
-            _pidfPbfClinicalPilotBioFastingRepository = _unitOfWork.GetRepository<PidfPbfClinicalPilotBioFasting>();
-            _pidfPbfClinicalPilotBioFedRepository = _unitOfWork.GetRepository<PidfPbfClinicalPilotBioFed>();
-            _pidfPbfClinicalPivotalBioFastingRepository = _unitOfWork.GetRepository<PidfPbfClinicalPivotalBioFasting>();
-            _pidfPbfClinicalPivotalBioFedRepository = _unitOfWork.GetRepository<PidfPbfClinicalPivotalBioFed>();
-            _pidfPbfClinicalCostRepository = _unitOfWork.GetRepository<PidfPbfClinicalCost>();
             _pidfPbfGeneralRepository = _unitOfWork.GetRepository<PidfPbfGeneral>();
-            _masterFillingTypeRepository = _unitOfWork.GetRepository<MasterFilingType>();
             _pidfPbfMarketMappingRepository = _unitOfWork.GetRepository<PidfPbfMarketMapping>();
             _pidfPbfGeneralStrengthRepository = _unitOfWork.GetRepository<PidfPbfGeneralStrength>();
-            _pidfPbfRnDRepository = _unitOfWork.GetRepository<PidfPbfRnD>();
-            _pidfPbfRnDExicipientPrototype = _unitOfWork.GetRepository<PidfPbfRnDExicipientPrototype>();
             _pidfPbfAnalyticalAmvcostStrengthMappingRepository = _unitOfWork.GetRepository<PidfPbfAnalyticalAmvcostStrengthMapping>();
             _pidfPbfRnDExicipientRequirementRepository = _unitOfWork.GetRepository<PidfPbfRnDExicipientRequirement>();
             _pidfPbfRnDPackagingMaterialRepository = _unitOfWork.GetRepository<PidfPbfRnDPackagingMaterial>();
@@ -180,12 +75,9 @@ namespace EmcureNPD.Business.Core.Implementation
             _pidfPbfRndCapexMiscellaneousExpenseRepository = _unitOfWork.GetRepository<PidfPbfRnDCapexMiscellaneousExpense>();
             _pidfPbfRndPlantSupportCostRepository = _unitOfWork.GetRepository<PidfPbfRnDPlantSupportCost>();
             _pidfPbfRndReferenceProductDetailRepository = _unitOfWork.GetRepository<PidfPbfRnDReferenceProductDetail>();
-            _notificationService = notificationService;
             _pidfPbfRndPidfPbfRnDManPowerCostRepository = _unitOfWork.GetRepository<PidfPbfRnDManPowerCost>();
             _pidfPbfRndFillingExpenseRepository = _unitOfWork.GetRepository<PidfPbfRnDFillingExpense>();
-            _ExceptionService = exceptionService;
         }
-
 
         public async Task<dynamic> FillDropdown(int PIDFId)
         {
@@ -226,9 +118,9 @@ namespace EmcureNPD.Business.Core.Implementation
             var data = await GetPbfDetails(pidfId, buid, strengthid);
             return data;
         }
+
         public async Task<PBFFormEntity> GetPbfDetails(long pidfId, int buid, int? strengthid)
         {
-
             //PBF Entity Mapping
             var data = new PBFFormEntity();
             //data.MasterBusinessUnitEntities = _businessUnitService.GetAll().Result.Where(xx => xx.IsActive).ToList();
@@ -248,7 +140,7 @@ namespace EmcureNPD.Business.Core.Implementation
             //dynamic pbf = new ExpandoObject();
             //dynamic General = new ExpandoObject();
             //dynamic General_Strength = new ExpandoObject();
-            //dynamic pbfmarkettingmap = new ExpandoObject();           
+            //dynamic pbfmarkettingmap = new ExpandoObject();
             if (dbresult != null)
             {
                 if (dbresult.Tables[0] != null && dbresult.Tables[0].Rows.Count > 0)
@@ -262,6 +154,7 @@ namespace EmcureNPD.Business.Core.Implementation
             }
             return data;
         }
+
         public async Task<DBOperation> AddUpdatePBFDetails(PBFFormEntity pbfEntity)
         {
             try
@@ -293,7 +186,9 @@ namespace EmcureNPD.Business.Core.Implementation
                 return DBOperation.Error;
             }
         }
+
         #region saving RnD Details
+
         public async Task<DBOperation> AddUpdateRnD(PidfPbfGeneralEntity PidfPbfGeneralEntity)
         {
             //PidfPbfGeneral objpidfPbfGeneral;
@@ -310,7 +205,9 @@ namespace EmcureNPD.Business.Core.Implementation
 
             return DBOperation.Success;
         }
-        #endregion
+
+        #endregion saving RnD Details
+
         public async Task<dynamic> PBFAllTabDetails(int PIDFId, int BUId)
         {
             dynamic DropdownObjects = new ExpandoObject();
@@ -345,7 +242,9 @@ namespace EmcureNPD.Business.Core.Implementation
 
             return DropdownObjects;
         }
+
         #region Private Methods
+
         public async Task<long> SavePidfAndPBFCommanDetails(long pidfid, PBFFormEntity pbfentity)
         {
             long pidfpbfid = 0;
@@ -355,6 +254,7 @@ namespace EmcureNPD.Business.Core.Implementation
             try
             {
                 #region Section PBF Add Update
+
                 var loggedInUserId = _helper.GetLoggedInUser().UserId;
                 PidfPbf objPIDFPbf;
                 Pidf objPIDFupdate;
@@ -379,9 +279,11 @@ namespace EmcureNPD.Business.Core.Implementation
                     await _unitOfWork.SaveChangesAsync();
                 }
                 pidfpbfid = objPIDFPbf.Pidfpbfid;
-                #endregion
+
+                #endregion Section PBF Add Update
 
                 #region Marketting Mapping Add Update
+
                 if (pidfpbfid > 0 && pbfentity.MarketMappingId.Length > 0)
                 {
                     var marketmapping = _pidfPbfMarketMappingRepository.GetAllQuery().Where(x => x.Pidfpbfid == pidfpbfid).ToList();
@@ -405,9 +307,11 @@ namespace EmcureNPD.Business.Core.Implementation
                     _pidfPbfMarketMappingRepository.AddRange(objmapping);
                     await _unitOfWork.SaveChangesAsync();
                 }
-                #endregion
+
+                #endregion Marketting Mapping Add Update
 
                 #region Update PIDF
+
                 objPIDFupdate = _repository.GetAllQuery().Where(x => x.Pidfid == pidfid).FirstOrDefault();
                 //_repository.GetAll().Where(x => x.Pidfid == pidfid).FirstOrDefault();
                 if (objPIDFupdate != null)
@@ -421,9 +325,11 @@ namespace EmcureNPD.Business.Core.Implementation
                     _repository.UpdateAsync(objPIDFupdate);
                     await _unitOfWork.SaveChangesAsync();
                 }
-                #endregion
+
+                #endregion Update PIDF
 
                 #region Section PBF General Add Update
+
                 //PidfPbfGeneral objPIDFGeneralupdate;
                 var objPIDFGeneralupdate = _pidfPbfGeneralRepository.GetAllQuery().Where(x => x.Pidfpbfid == pbfentity.Pidfpbfid && x.BusinessUnitId == pbfentity.BusinessUnitId).FirstOrDefault();
                 if (objPIDFGeneralupdate != null)
@@ -444,7 +350,6 @@ namespace EmcureNPD.Business.Core.Implementation
                     _pidfPbfGeneralRepository.UpdateAsync(objPIDFGeneralupdate);
                     await _unitOfWork.SaveChangesAsync();
                     pbfgeneralid = objPIDFGeneralupdate.PbfgeneralId;
-
                 }
                 else
                 {
@@ -468,10 +373,10 @@ namespace EmcureNPD.Business.Core.Implementation
                     pbfgeneralid = objPIDFGeneraladd.PbfgeneralId;
                 }
 
-                #endregion
-
+                #endregion Section PBF General Add Update
 
                 #region GeneralProductStrength Add Update
+
                 if (pbfgeneralid > 0)
                 {
                     var generalStrength = _pidfPbfGeneralStrengthRepository.GetAllQuery().Where(x => x.PbfgeneralId == pbfgeneralid).ToList();
@@ -501,9 +406,11 @@ namespace EmcureNPD.Business.Core.Implementation
                     _pidfPbfGeneralStrengthRepository.AddRangeAsync(_objPidfPbfGeneralStrength);
                     await _unitOfWork.SaveChangesAsync();
                 }
-                #endregion
+
+                #endregion GeneralProductStrength Add Update
 
                 #region Section Clinical Add Update
+
                 List<PidfPbfClinical> objClinicallist = new();
                 if (pbfgeneralid > 0)
                 {
@@ -534,9 +441,10 @@ namespace EmcureNPD.Business.Core.Implementation
                     await _unitOfWork.SaveChangesAsync();
                 }
 
-                #endregion
+                #endregion Section Clinical Add Update
 
                 #region Section Analytical Add Update
+
                 List<PidfPbfAnalytical> objAnalyticallist = new();
                 List<PidfPbfAnalyticalAmvcostStrengthMapping> objAnalyticalAmvcostStrengthMappinglist = new();
                 if (pbfgeneralid > 0)
@@ -621,16 +529,15 @@ namespace EmcureNPD.Business.Core.Implementation
                         _pidfPbfAnalyticalAmvcostStrengthMappingRepository.AddRangeAsync(objAnalyticalAmvcostStrengthMappinglist);
                         await _unitOfWork.SaveChangesAsync();
                     }
-
                 }
 
                 //Save analytical cost end
-                #endregion
 
+                #endregion Section Analytical Add Update
 
                 #region RND Add Update
 
-                #region RND Master Add Update                
+                #region RND Master Add Update
 
                 PidfPbfRnDMaster objrndMaster;
                 objrndMaster = _pidfPbfRnDMasterRepository.GetAllQuery().Where(x => x.PbfgeneralId == pbfgeneralid).FirstOrDefault();
@@ -655,9 +562,11 @@ namespace EmcureNPD.Business.Core.Implementation
                     _pidfPbfRnDMasterRepository.AddAsync(objRndMaster);
                     await _unitOfWork.SaveChangesAsync();
                 }
-                #endregion
+
+                #endregion RND Master Add Update
 
                 #region Batch Size Add Update
+
                 List<PidfPbfRndBatchSize> objBatchSizelist = new();
 
                 var batchsize = _pidfPbfRndBatchSizeRepository.GetAllQuery().Where(x => x.PbfgeneralId == pbfgeneralid).ToList();
@@ -669,7 +578,6 @@ namespace EmcureNPD.Business.Core.Implementation
                     }
                     await _unitOfWork.SaveChangesAsync();
                 }
-
 
                 //Save batch size Entities
                 if (pbfentity.RNDBatchSizes != null && pbfentity.RNDBatchSizes.Count() > 0)
@@ -687,9 +595,10 @@ namespace EmcureNPD.Business.Core.Implementation
                     await _unitOfWork.SaveChangesAsync();
                 }
 
-                #endregion
+                #endregion Batch Size Add Update
 
                 #region API Requirement Add Update
+
                 List<PidfPbfRnDApirequirement> objApirequirementlist = new();
 
                 var apirequirement = _pidfPbfRndApirequirementRepository.GetAllQuery().Where(x => x.PbfgeneralId == pbfgeneralid).ToList();
@@ -701,7 +610,6 @@ namespace EmcureNPD.Business.Core.Implementation
                     }
                     await _unitOfWork.SaveChangesAsync();
                 }
-
 
                 //Save Api requirement Entities
                 if (pbfentity.RNDApirequirements != null && pbfentity.RNDApirequirements.Count() > 0)
@@ -719,8 +627,10 @@ namespace EmcureNPD.Business.Core.Implementation
                     await _unitOfWork.SaveChangesAsync();
                 }
 
-                #endregion
+                #endregion API Requirement Add Update
+
                 #region RND Excipient Add Update
+
                 List<PidfPbfRnDExicipientRequirement> objExicipientlist = new();
                 if (pbfgeneralid > 0)
                 {
@@ -751,8 +661,10 @@ namespace EmcureNPD.Business.Core.Implementation
                     await _unitOfWork.SaveChangesAsync();
                 }
 
-                #endregion
+                #endregion RND Excipient Add Update
+
                 #region RND Packaging Add Update
+
                 List<PidfPbfRnDPackagingMaterial> objPackaginglist = new();
                 if (pbfgeneralid > 0)
                 {
@@ -783,9 +695,10 @@ namespace EmcureNPD.Business.Core.Implementation
                     await _unitOfWork.SaveChangesAsync();
                 }
 
-                #endregion
+                #endregion RND Packaging Add Update
 
                 #region Tooling Change Part Add Update
+
                 List<PidfPbfRnDToolingChangepart> objToolingChangePartCostlist = new();
 
                 var toolongchangepart = _pidfPbfRndToolingChangePartCostRepository.GetAllQuery().Where(x => x.PbfgeneralId == pbfgeneralid).ToList();
@@ -797,7 +710,6 @@ namespace EmcureNPD.Business.Core.Implementation
                     }
                     await _unitOfWork.SaveChangesAsync();
                 }
-
 
                 //Save ToolingChangeparts Entities
                 if (pbfentity.RNDToolingChangeparts != null && pbfentity.RNDToolingChangeparts.Count() > 0)
@@ -815,8 +727,10 @@ namespace EmcureNPD.Business.Core.Implementation
                     await _unitOfWork.SaveChangesAsync();
                 }
 
-                #endregion
+                #endregion Tooling Change Part Add Update
+
                 #region Capex and Miscellaneous Expenses Add Update
+
                 List<PidfPbfRnDCapexMiscellaneousExpense> objCapexMiscellaneouslist = new();
 
                 var capexandmiscellaneous = _pidfPbfRndCapexMiscellaneousExpenseRepository.GetAllQuery().Where(x => x.PbfgeneralId == pbfgeneralid).ToList();
@@ -828,7 +742,6 @@ namespace EmcureNPD.Business.Core.Implementation
                     }
                     await _unitOfWork.SaveChangesAsync();
                 }
-
 
                 //Save CapexMiscellaneousExpenses Entities
                 if (pbfentity.RNDCapexMiscellaneousExpenses != null && pbfentity.RNDCapexMiscellaneousExpenses.Count() > 0)
@@ -846,8 +759,10 @@ namespace EmcureNPD.Business.Core.Implementation
                     await _unitOfWork.SaveChangesAsync();
                 }
 
-                #endregion
+                #endregion Capex and Miscellaneous Expenses Add Update
+
                 #region Plant Support Cost Add Update
+
                 List<PidfPbfRnDPlantSupportCost> objPlantSupportCostlist = new();
 
                 var plantsupportcost = _pidfPbfRndPlantSupportCostRepository.GetAllQuery().Where(x => x.PbfgeneralId == pbfgeneralid).ToList();
@@ -859,7 +774,6 @@ namespace EmcureNPD.Business.Core.Implementation
                     }
                     await _unitOfWork.SaveChangesAsync();
                 }
-
 
                 //Save PlantSupportCosts Entities
                 if (pbfentity.RNDPlantSupportCosts != null && pbfentity.RNDPlantSupportCosts.Count() > 0)
@@ -877,8 +791,10 @@ namespace EmcureNPD.Business.Core.Implementation
                     await _unitOfWork.SaveChangesAsync();
                 }
 
-                #endregion
+                #endregion Plant Support Cost Add Update
+
                 #region Reference Product Detail Add Update
+
                 List<PidfPbfRnDReferenceProductDetail> objReferenceProductDetaillist = new();
 
                 var referenceporduct = _pidfPbfRndReferenceProductDetailRepository.GetAllQuery().Where(x => x.PbfgeneralId == pbfgeneralid).ToList();
@@ -890,7 +806,6 @@ namespace EmcureNPD.Business.Core.Implementation
                     }
                     await _unitOfWork.SaveChangesAsync();
                 }
-
 
                 //Save ReferenceProductDetail Entities
                 if (pbfentity.RNDReferenceProductDetails != null && pbfentity.RNDReferenceProductDetails.Count() > 0)
@@ -908,9 +823,10 @@ namespace EmcureNPD.Business.Core.Implementation
                     await _unitOfWork.SaveChangesAsync();
                 }
 
-                #endregion
+                #endregion Reference Product Detail Add Update
 
                 #region Filling Expenses Add Update
+
                 List<PidfPbfRnDFillingExpense> objFillinfExpenseslist = new();
 
                 var fillingexpenses = _pidfPbfRndFillingExpenseRepository.GetAllQuery().Where(x => x.PbfgeneralId == pbfgeneralid).ToList();
@@ -922,7 +838,6 @@ namespace EmcureNPD.Business.Core.Implementation
                     }
                     await _unitOfWork.SaveChangesAsync();
                 }
-
 
                 //Save ReferenceProductDetail Entities
                 if (pbfentity.RNDFillingExpenses != null && pbfentity.RNDFillingExpenses.Count() > 0)
@@ -940,9 +855,10 @@ namespace EmcureNPD.Business.Core.Implementation
                     await _unitOfWork.SaveChangesAsync();
                 }
 
-                #endregion
+                #endregion Filling Expenses Add Update
 
                 #region Man Power Cost Add Update
+
                 List<PidfPbfRnDManPowerCost> objManPowerCostlist = new();
 
                 var manpowercost = _pidfPbfRndPidfPbfRnDManPowerCostRepository.GetAllQuery().Where(x => x.PbfgeneralId == pbfgeneralid).ToList();
@@ -954,7 +870,6 @@ namespace EmcureNPD.Business.Core.Implementation
                     }
                     await _unitOfWork.SaveChangesAsync();
                 }
-
 
                 //Save manpowercost Entities
                 if (pbfentity.RNDManPowerCosts != null && pbfentity.RNDManPowerCosts.Count() > 0)
@@ -972,8 +887,9 @@ namespace EmcureNPD.Business.Core.Implementation
                     await _unitOfWork.SaveChangesAsync();
                 }
 
-                #endregion
-                #endregion
+                #endregion Man Power Cost Add Update
+
+                #endregion RND Add Update
 
                 return pbfgeneralid;
             }
@@ -983,6 +899,7 @@ namespace EmcureNPD.Business.Core.Implementation
                 return pbfgeneralid;
             }
         }
-        #endregion
+
+        #endregion Private Methods
     }
 }

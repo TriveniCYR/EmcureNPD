@@ -56,7 +56,6 @@ $("#btnRejects").click(function () {
 function GetCurrencyList() {
     //ajaxServiceMethod($('#hdnBaseURL').val() + AllCurrency, 'GET', GetCurrencyListSuccess, GetCurrencyListError);
     ajaxServiceMethod($('#hdnBaseURL').val() + "api/Currency/GetCurrencyByLoggedInUser", 'GET', GetCurrencyListSuccess, GetCurrencyListError);
-
 }
 
 function GetCurrencyListSuccess(data) {
@@ -66,8 +65,6 @@ function GetCurrencyListSuccess(data) {
         $.each(data._object, function (index, object) {
             optionhtml +='<option value="' +
                 object.currencyId + '">' + object.currencyName + '</option>';
-           
-
         });
         $("#Currency").append(optionhtml);
         $("select#Currency option").each(function (index, value) {
@@ -119,7 +116,6 @@ function addRowFinanceDetails(j) {
     table.find('tr:last').after(node);
     table.find('tr:last').find("input").val("");
     SetChildRowDeleteIcon();
-
 }
 function SaveClick() {
     //if ($('.readOnlyUpdate').val() !== null && $('.readOnlyUpdate').val()!=="") {
@@ -176,9 +172,7 @@ function SetChildRows() {
         $(this).find("td:eq(17) input").attr("name", "lsPidfFinanceBatchSizeCoating[" + index.toString() + "].CcpcCad");
         $(this).find("td:eq(18) input").attr("name", "lsPidfFinanceBatchSizeCoating[" + index.toString() + "].FreightCad");
         $(this).find("td:eq(19) input").attr("name", "lsPidfFinanceBatchSizeCoating[" + index.toString() + "].EmcureCogsPack");
-        
     });
-   
 }
 function SetChildRowDeleteIcon() {
     if ($('tbody#FinanceTableBoy tr').length > 1) {
@@ -187,7 +181,6 @@ function SetChildRowDeleteIcon() {
         $('.del-rows').hide();
     }
     //$("#FinanceTable tbody tr:first").find('.del-rows').hide();
-    
 }
 function deleteRowFinance(j, element) {
     $(element).closest("tr").remove();
@@ -216,8 +209,6 @@ $("i.fas.fa-plus").click(function () {
     for (let i = 0; i < count; i++) {
         if (i == 0) { this.click(); }
     }
-   
-
 });
 //$(".readOnlyUpdate").keyup(function () {
 //    $(this).val($(this).val().replace(/ /g, ''));
@@ -225,7 +216,7 @@ $("i.fas.fa-plus").click(function () {
 //        $(this).attr("required", true)
 //        $(this).removeClass("valid");
 //    }
-    
+
 //});
 (function () {
     'use strict'
@@ -254,7 +245,6 @@ $("i.fas.fa-plus").click(function () {
                }
                $(".valid-feedback").hide();
                form.classList.add('was-validated')
-              
            }, false)
        })
 })()

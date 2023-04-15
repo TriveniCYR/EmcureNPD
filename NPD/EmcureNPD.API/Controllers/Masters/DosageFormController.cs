@@ -123,6 +123,7 @@ namespace EmcureNPD.API.Controllers.Masters
                 return _ObjectResponse.Create(false, (Int32)HttpStatusCode.InternalServerError, Convert.ToString(ex.StackTrace));
             }
         }
+
         [HttpGet, Route("GetAllActiveDosageFormFinance")]
         public async Task<IActionResult> GetAllActiveDosageFormFinance()
         {

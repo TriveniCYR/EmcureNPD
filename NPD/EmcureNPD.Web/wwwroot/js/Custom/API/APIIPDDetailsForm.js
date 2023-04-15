@@ -1,6 +1,4 @@
-﻿
-
-$(document).ready(function () {
+﻿$(document).ready(function () {
     SetDivReadonly();
     $("#IsModelValid").val('');
     if (SaveStatus != '' && SaveStatus != undefined) {
@@ -89,7 +87,6 @@ $('#MarketDetailsNewPortCGIDetails').change(function () {
 $('#imgPreviewMarketdetails').click(function () {
     var ImageUrl = $('#MarketDetailsFileName').val();
     if (ImageUrl == "" || ImageUrl == undefined) {
-
     }
     else {
         var win = window.open(ImageUrl, '');
@@ -102,7 +99,6 @@ $('#imgPreviewMarketdetails').click(function () {
         }
     }
 });
-
 
 $('#Save').click(function () {
     ValidateForm();
@@ -141,13 +137,13 @@ function ValidateForm() {
         IsInvalid = true;
         $("#MarketDetailsNewPortCGIDetails").focus();
     }
-    else if (!IsFileTypeImage() && !IsPrevImageExist) {        
+    else if (!IsFileTypeImage() && !IsPrevImageExist) {
         IsInvalid = true;
         IsInvalidImage = true;
         $("#MarketDetailsNewPortCGIDetails").addClass('InvalidBox');
         $("#MarketDetailsNewPortCGIDetails").focus();
     }
-    else {        
+    else {
         $("#valmsgMarketDetailsNewPortCGIDetails").text('');
         $("#MarketDetailsNewPortCGIDetails").removeClass('InvalidBox');
     }
@@ -164,7 +160,7 @@ function ValidateForm() {
     if ($("#ProductStrength").val() == '') {
         /*$("#valmsgProductStrength").text('Required')*/
         $("#ProductStrength").addClass('InvalidBox');
-        IsInvalid = true; 
+        IsInvalid = true;
         $("#ProductStrength").focus();
     }
     else {
@@ -201,9 +197,3 @@ function OpenImageInNewTab(url, FileName) {
         alert('Please allow popups for this website');
     }
 }
-
-
-
-
-
-

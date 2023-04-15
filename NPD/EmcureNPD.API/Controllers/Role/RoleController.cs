@@ -15,16 +15,17 @@ namespace EmcureNPD.API.Controllers.Masters
     [AuthorizeAttribute]
     public class RoleController : ControllerBase
     {
-
         #region Properties
+
         private readonly IMasterRoleService _MasterRoleService;
         private readonly IMasterModuleService _MasterModuleService;
         private readonly IResponseHandler<dynamic> _ObjectResponse;
         private readonly IExceptionService _ExceptionService;
 
-        #endregion
+        #endregion Properties
 
         #region Constructor
+
         public RoleController(IMasterRoleService MasterRoleService, IResponseHandler<dynamic> ObjectResponse, IMasterModuleService MasterModuleService, IExceptionService exceptionService)
         {
             _MasterRoleService = MasterRoleService;
@@ -32,7 +33,8 @@ namespace EmcureNPD.API.Controllers.Masters
             _MasterModuleService = MasterModuleService;
             _ExceptionService = exceptionService;
         }
-        #endregion
+
+        #endregion Constructor
 
         #region API Methods
 
@@ -128,6 +130,7 @@ namespace EmcureNPD.API.Controllers.Masters
                 return _ObjectResponse.Create(false, (Int32)HttpStatusCode.InternalServerError, Convert.ToString(ex.StackTrace));
             }
         }
+
         [HttpGet, Route("GetAllActiveRole")]
         public async Task<IActionResult> GetAllActiveRole()
         {
@@ -145,6 +148,7 @@ namespace EmcureNPD.API.Controllers.Masters
                 return _ObjectResponse.Create(false, (Int32)HttpStatusCode.InternalServerError, Convert.ToString(ex.StackTrace));
             }
         }
+
         /// <summary>
         /// Description - To Delete a Role by Id
         /// </summary>
@@ -165,7 +169,7 @@ namespace EmcureNPD.API.Controllers.Masters
                 DBOperation oResponse = await _MasterRoleService.DeleteRole(id);
                 if (oResponse == DBOperation.Success)
                     return _ObjectResponse.Create(true, (Int32)HttpStatusCode.OK, "Deleted Successfully");
-                else if(oResponse == DBOperation.NotFound)
+                else if (oResponse == DBOperation.NotFound)
                     return _ObjectResponse.Create(null, (Int32)HttpStatusCode.OK, "UserAssigned");
                 else
                     return _ObjectResponse.Create(null, (Int32)HttpStatusCode.BadRequest, "Record not found");
@@ -194,7 +198,6 @@ namespace EmcureNPD.API.Controllers.Masters
         {
             try
             {
-               
                 dynamic oRoleEntity = await _MasterModuleService.GetByPermisionRoleUsingRoleId(id);
 
                 if (oRoleEntity is not null)
@@ -209,7 +212,6 @@ namespace EmcureNPD.API.Controllers.Masters
             }
         }
 
-        #endregion
-
+        #endregion API Methods
     }
 }

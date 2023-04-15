@@ -1,23 +1,13 @@
 ﻿using EmcureNPD.API.Filters;
 using EmcureNPD.API.Helpers.Response;
-using EmcureNPD.Business.Core.Implementation;
 using EmcureNPD.Business.Core.Interface;
-using EmcureNPD.Business.Core.ServiceImplementations;
 using EmcureNPD.Business.Models;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
-using Microsoft.Extensions.Primitives;
-using Newtonsoft.Json;
-using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
-using System.IO;
-using System.Linq;
 using System.Net;
-using System.Net.Http;
-using System.Text.Json.Nodes;
 using System.Threading.Tasks;
 using static EmcureNPD.Utility.Enums.GeneralEnum;
 
@@ -52,7 +42,6 @@ namespace EmcureNPD.API.Controllers.IPD
 
         #endregion Constructor
 
-
         /// <summary>
         /// Description - To Get All Formulation
         /// </summary>
@@ -75,6 +64,7 @@ namespace EmcureNPD.API.Controllers.IPD
             else
                 return _ObjectResponse.Create(null, (int)HttpStatusCode.BadRequest, "No Records found");
         }
+
         /// <summary>
         /// Description - To Insert and Update IPD Form
         /// </summary>
@@ -135,7 +125,6 @@ namespace EmcureNPD.API.Controllers.IPD
         {
             try
             {
-
                 var oPIDFEntity = await _IPDService.GetIPDFormData(pidfId, bussnessId);
                 if (oPIDFEntity != null)
                     return _ObjectResponse.Create(oPIDFEntity, (int)HttpStatusCode.OK);
@@ -148,6 +137,7 @@ namespace EmcureNPD.API.Controllers.IPD
                 return _ObjectResponse.Create(false, (int)HttpStatusCode.InternalServerError, Convert.ToString(ex.StackTrace));
             }
         }
+
         /// <summary>
         /// Description - To Get All IPD PIDFList
         /// </summary>
@@ -203,6 +193,7 @@ namespace EmcureNPD.API.Controllers.IPD
                 return _ObjectResponse.Create(false, (int)HttpStatusCode.InternalServerError, Convert.ToString(ex.StackTrace));
             }
         }
+
         [HttpGet, Route("GetCountryRefByRegionIds/{regionIds}")]
         public async Task<IActionResult> GetCountryRefByRegionIds(string regionIds)
         {
@@ -220,6 +211,7 @@ namespace EmcureNPD.API.Controllers.IPD
                 return _ObjectResponse.Create(false, (int)HttpStatusCode.InternalServerError, Convert.ToString(ex.StackTrace));
             }
         }
+
         [HttpPost]
         [Route("ApproveRejectIpdPidf")]
         public async Task<IActionResult> ApproveRejectIpdPidf(EntryApproveRej oApprRej)

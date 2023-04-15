@@ -1,16 +1,10 @@
-﻿using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
-using System.Net;
-using System.Threading.Tasks;
-using System;
+﻿using EmcureNPD.API.Filters;
 using EmcureNPD.API.Helpers.Response;
 using EmcureNPD.Business.Core.Interface;
-using EmcureNPD.API.Filters;
-using EmcureNPD.Business.Core.Implementation;
-using Newtonsoft.Json;
-using System.Web.Http.ModelBinding;
-using EmcureNPD.Business.Models;
-using EmcureNPD.Data.DataAccess.Entity;
+using Microsoft.AspNetCore.Mvc;
+using System;
+using System.Net;
+using System.Threading.Tasks;
 
 namespace EmcureNPD.API.Controllers.Dashboard
 {
@@ -20,7 +14,7 @@ namespace EmcureNPD.API.Controllers.Dashboard
     public class DashboardController : ControllerBase
     {
         #region Properties
-       
+
         private readonly IDashboardService _dashboardService;
 
         private readonly IResponseHandler<dynamic> _ObjectResponse;
@@ -33,7 +27,6 @@ namespace EmcureNPD.API.Controllers.Dashboard
 
         public DashboardController(IDashboardService DashboardService, IResponseHandler<dynamic> ObjectResponse, IExceptionService exceptionService) //IDashboardReportService dashboardReportService, IExceptionService exceptionService)
         {
-           
             _ObjectResponse = ObjectResponse;
             _dashboardService = DashboardService;
             _ExceptionService = exceptionService;
@@ -70,11 +63,11 @@ namespace EmcureNPD.API.Controllers.Dashboard
         }
 
         [HttpGet, Route("GetPIDFByYearAndBusinessUnit/{id}/{fromDate}/{toDate}")]
-        public async Task<IActionResult> GetPIDFByYearAndBusinessUnit([FromRoute] int id,[FromRoute]string fromDate, [FromRoute]string toDate)
+        public async Task<IActionResult> GetPIDFByYearAndBusinessUnit([FromRoute] int id, [FromRoute] string fromDate, [FromRoute] string toDate)
         {
             try
             {
-                var data = await _dashboardService.GetPIDFByYearAndBusinessUnit(id,fromDate,toDate);
+                var data = await _dashboardService.GetPIDFByYearAndBusinessUnit(id, fromDate, toDate);
                 return _ObjectResponse.CreateData(data, (Int32)HttpStatusCode.OK);
             }
             catch (Exception ex)
@@ -105,7 +98,6 @@ namespace EmcureNPD.API.Controllers.Dashboard
             fromdate = dashboardRequestVM.fromDate;
             todate = dashboardRequestVM.toDate;
             countryName = dashboardRequestVM.countryName;
-
         }
 
         ModelState.Clear();

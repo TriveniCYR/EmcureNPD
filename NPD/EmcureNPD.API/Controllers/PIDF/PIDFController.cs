@@ -1,6 +1,5 @@
 ﻿using EmcureNPD.API.Filters;
 using EmcureNPD.API.Helpers.Response;
-using EmcureNPD.Business.Core.Implementation;
 using EmcureNPD.Business.Core.Interface;
 using EmcureNPD.Business.Models;
 using Microsoft.AspNetCore.Mvc;
@@ -35,7 +34,6 @@ namespace EmcureNPD.API.Controllers.Masters
         }
 
         #endregion Constructor
-
 
         /// <summary>
         /// Description - To Get All Formulation
@@ -88,6 +86,7 @@ namespace EmcureNPD.API.Controllers.Masters
                 return _ObjectResponse.Create(false, (Int32)HttpStatusCode.InternalServerError, Convert.ToString(ex.StackTrace));
             }
         }
+
         /// <summary>
         /// Description - To Get Commercial PIDF List
         /// </summary>
@@ -112,7 +111,8 @@ namespace EmcureNPD.API.Controllers.Masters
                 await _ExceptionService.LogException(ex);
                 return _ObjectResponse.Create(false, (Int32)HttpStatusCode.InternalServerError, Convert.ToString(ex.StackTrace));
             }
-        }        
+        }
+
         /// <summary>
         /// Description - To Insert and Update PIDF
         /// </summary>
@@ -190,14 +190,15 @@ namespace EmcureNPD.API.Controllers.Masters
                 await _ExceptionService.LogException(ex);
                 return _ObjectResponse.Create(false, (Int32)HttpStatusCode.InternalServerError, Convert.ToString(ex.StackTrace));
             }
-        }        
+        }
+
         [HttpPost]
         [Route("CommonApproveRejectDeletePidf")]
         public async Task<IActionResult> CommonApproveRejectDeletePidf(EntryApproveRej oApprRej, string ScreenName)
         {
             try
             {
-                DBOperation oResponse = await _PIDFService.CommonApproveRejectDeletePidf(oApprRej,ScreenName);
+                DBOperation oResponse = await _PIDFService.CommonApproveRejectDeletePidf(oApprRej, ScreenName);
                 if (oResponse == DBOperation.Success)
                     return _ObjectResponse.Create(true, (Int32)HttpStatusCode.OK, ("Save Successfully"));
                 else

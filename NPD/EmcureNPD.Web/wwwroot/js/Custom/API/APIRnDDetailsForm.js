@@ -9,7 +9,7 @@ $(document).ready(function () {
         else
             toastr.error(SaveStatus);
     }
-    InitializeMarketDropdown(); 
+    InitializeMarketDropdown();
 
     if ($('#MarketDetailsFileName').val() == '') {
         $('#imgPreviewMarketdetails').hide();
@@ -17,7 +17,7 @@ $(document).ready(function () {
     else {
         $('#imgPreviewMarketdetails').show();
     }
-    HideSaveAsDraft(); 
+    HideSaveAsDraft();
     getPIDFAccordion(_PIDFAccordionURL, _PIDFID, "dvPIDFAccrdion");
     getIPDAccordion(_IPDAccordionURL, _EncPIDFID, _PIDFBusinessUnitId, "dvIPDAccrdion");
     getCommercialAccordion(_CommercialAccordionURL, _EncPIDFID, _PIDFBusinessUnitId, "dvCommercialAccrdion");
@@ -33,14 +33,14 @@ function HideSaveAsDraft() {
 function InitializeMarketDropdown() {
     ajaxServiceMethod($('#hdnBaseURL').val() + GetAllMarketExtension, 'GET', GetMarketListSuccess, GetMarketListError);
 }
-function GetMarketListSuccess(data) {  
+function GetMarketListSuccess(data) {
     try {
         $.each(data._object, function (index, object) {
             $('#MarketID').append($('<option>').text(object.businessUnitName).attr('value', object.businessUnitId));
         });
 
         if ($("#PIDFAPIRnDFormID").val()>0) {
-            $("#MarketID").val(DBMarketID);  
+            $("#MarketID").val(DBMarketID);
         }
     } catch (e) {
         toastr.error('Error:' + e.message);
@@ -50,11 +50,9 @@ function GetMarketListError(x, y, z) {
     toastr.error(ErrorMessage);
 }
 
-
 $('#imgPreviewMarketdetails').click(function () {
-    var ImageUrl = $('#MarketDetailsFileName').val();   
+    var ImageUrl = $('#MarketDetailsFileName').val();
     if (ImageUrl == "" || ImageUrl == undefined) {
-
     }
     else {
         var win = window.open(ImageUrl, '');
@@ -68,10 +66,9 @@ $('#imgPreviewMarketdetails').click(function () {
     }
 });
 
-
 $('#Save').click(function () {
     ValidateForm();
-    $("#APIRnD_SaveType").val('Save');    
+    $("#APIRnD_SaveType").val('Save');
 });
 $('#SaveDraft').click(function () {
     ValidateForm();
@@ -83,10 +80,10 @@ function SetDivReadonly() {
     $("#PIDFScreen").find("#collapseButton").show();
     $("#PIDFScreen").find("#PIDFormcollapseButton").show();
     $("#CommercialPIDFScreen").find("#CommercialcollapseButton").show();
-    
+
     $("#CommercialcollapseButton").click();
     $("#PIDFormcollapseButton").click();
-    $("#collapseButton").click();    
+    $("#collapseButton").click();
 }
 function ShowPopUpAPIIPD() {
     $("#CancelModelAPIIPD").find("button, submit, a").show();
@@ -114,11 +111,10 @@ function ValidateForm() {
         $("#IsModelValid").val('')
     }
     else {
-        $("#IsModelValid").val('Valid')       
+        $("#IsModelValid").val('Valid')
     }
     return IsValid;
 }
-
 
 //function ValidateForm() {
 //    var IsInvalid = false;
@@ -151,10 +147,3 @@ function ValidateForm() {
 //    }
 //    return IsInvalid;
 //}
-
-
-
-
-  
-
-

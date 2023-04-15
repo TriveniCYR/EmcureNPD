@@ -1,24 +1,26 @@
-﻿using EmcureNPD.Resource;
+﻿using EmcureNPD.Business.Models;
+using EmcureNPD.Resource;
 using EmcureNPD.Web.Helpers;
-using EmcureNPD.Web.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Localization;
 using Newtonsoft.Json;
-using System.Net.Http;
 using System;
-using EmcureNPD.Business.Models;
+using System.Net.Http;
 
 namespace EmcureNPD.Web.Controllers
 {
     public class NotificationsController : Controller
     {
         #region Properties
+
         private readonly IConfiguration _cofiguration;
         private readonly IStringLocalizer<Errors> _stringLocalizerError;
         private readonly IStringLocalizer<Shared> _stringLocalizerShared;
         private readonly IStringLocalizer<Master> _stringLocalizerMaster;
-        #endregion
+
+        #endregion Properties
+
         public NotificationsController(IConfiguration configuration, IStringLocalizer<Master> stringLocalizerMaster,
 
             IStringLocalizer<Errors> stringLocalizerError, IStringLocalizer<Shared> stringLocalizerShared)
@@ -27,8 +29,8 @@ namespace EmcureNPD.Web.Controllers
             _stringLocalizerError = stringLocalizerError;
             _stringLocalizerShared = stringLocalizerShared;
             _stringLocalizerMaster = stringLocalizerMaster;
-
         }
+
         public IActionResult AllNotification()
         {
             try
@@ -41,12 +43,10 @@ namespace EmcureNPD.Web.Controllers
 
                 if (responseMessage.IsSuccessStatusCode)
                 {
-
                     string jsonResponse = responseMessage.Content.ReadAsStringAsync().Result;
                     var data = JsonConvert.DeserializeObject<DataTableResponseModel>(jsonResponse);
                     // return data.Data;
-                     return View(data);
-                   
+                    return View(data);
                 }
                 else
                 {
@@ -57,8 +57,8 @@ namespace EmcureNPD.Web.Controllers
             {
                 throw;
             }
-            
         }
+
         [OutputCache(Duration = 120, VaryByParam = "RoleId")]
         [HttpGet]
         public IActionResult GetFilteredNotifications(string ColumnName, string SortDir, int start, int length)
@@ -69,16 +69,14 @@ namespace EmcureNPD.Web.Controllers
                 HttpContext.Request.Cookies.TryGetValue(UserHelper.EmcureNPDToken, out string token);
                 APIRepository objapi = new(_cofiguration);
 
-                responseMessage = objapi.APICommunication(APIURLHelper.GetFilteredNotifications+"/"+ ColumnName+"/"+ SortDir+ "/"+ start+"/"+ length, HttpMethod.Get, token).Result;
+                responseMessage = objapi.APICommunication(APIURLHelper.GetFilteredNotifications + "/" + ColumnName + "/" + SortDir + "/" + start + "/" + length, HttpMethod.Get, token).Result;
 
                 if (responseMessage.IsSuccessStatusCode)
                 {
-
                     string jsonResponse = responseMessage.Content.ReadAsStringAsync().Result;
                     var data = jsonResponse; //JsonConvert.DeserializeObject<DataTableResponseModel>(jsonResponse);
                     //return data.Data;
                     return Json(data);
-
                 }
                 else
                 {
@@ -89,7 +87,6 @@ namespace EmcureNPD.Web.Controllers
             {
                 throw;
             }
-
         }
 
         public IActionResult ClickedNotification()
@@ -104,12 +101,10 @@ namespace EmcureNPD.Web.Controllers
 
                 if (responseMessage.IsSuccessStatusCode)
                 {
-                    
                     string jsonResponse = responseMessage.Content.ReadAsStringAsync().Result;
                     var data = JsonConvert.DeserializeObject<DataTableResponseModel>(jsonResponse);
                     // return data.Data;
                     return View(data);
-
                 }
                 else
                 {
@@ -120,7 +115,6 @@ namespace EmcureNPD.Web.Controllers
             {
                 throw;
             }
-
         }
     }
 }

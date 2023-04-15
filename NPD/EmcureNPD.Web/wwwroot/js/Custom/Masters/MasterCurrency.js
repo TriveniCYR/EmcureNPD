@@ -57,7 +57,6 @@ function GetCurrencyByIdSuccess(data) {
 
         $('#SaveCurrencyModel #CountryId').val(countryIds);
         $('#SaveCurrencyModel #CountryId').trigger('change');
-        
 
         $('#SaveCurrencyModel #CurrencyCountryMappingId').val(data._object.masterBusinessCountryMappingIds.toString());
 

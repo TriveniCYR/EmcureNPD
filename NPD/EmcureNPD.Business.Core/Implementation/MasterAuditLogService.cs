@@ -6,8 +6,6 @@ using EmcureNPD.Data.DataAccess.Core.UnitOfWork;
 using EmcureNPD.Data.DataAccess.Entity;
 using EmcureNPD.Utility.Audit;
 using EmcureNPD.Utility.Enums;
-using EmcureNPD.Utility.Utility;
-using Microsoft.AspNetCore.Http;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
@@ -28,6 +26,7 @@ namespace EmcureNPD.Business.Core.Implementation
         private IRepository<MasterModule> _moduleRepository { get; set; }
         private IRepository<MasterUser> _userRepository { get; set; }
         private IRepository<Pidf> _pidfrepository { get; set; }
+
         public MasterAuditLogService(IUnitOfWork unitOfWork, IMapperFactory mapperFactory, IHelper helper, IExceptionService exceptionService)
         {
             _unitOfWork = unitOfWork;
@@ -39,6 +38,7 @@ namespace EmcureNPD.Business.Core.Implementation
             _helper = helper;
             _ExceptionService = exceptionService;
         }
+
         public async Task<DBOperation> CreateAuditLog<TResult>(AuditActionType auditActionType,
             ModuleEnum moduleEnum, TResult Old, TResult New, int? PrimaryId) where TResult : new()
         {
@@ -71,6 +71,7 @@ namespace EmcureNPD.Business.Core.Implementation
                 return DBOperation.Error;
             }
         }
+
         public async Task<DBOperation> UpdatePIDFStatusCommon(long PidfId, int StatusId, int StatusUpdatedBy)
         {
             try
@@ -93,6 +94,7 @@ namespace EmcureNPD.Business.Core.Implementation
                 return DBOperation.Error;
             }
         }
+
         public Task<List<MasterAuditLogEntity>> GetAllAuditLog()
         {
             throw new NotImplementedException();
@@ -121,7 +123,6 @@ namespace EmcureNPD.Business.Core.Implementation
 
         public async Task<DataTableResponseModel> GetAll(DataTableAjaxPostModel model)
         {
-
             string ColumnName = (model.order.Count > 0 ? model.columns[model.order[0].column].data : string.Empty);
             string SortDir = (model.order.Count > 0 ? model.order[0].dir : string.Empty);
 
@@ -141,7 +142,6 @@ namespace EmcureNPD.Business.Core.Implementation
             DataTableResponseModel oDataTableResponseModel = new DataTableResponseModel(model.draw, TotalRecord, TotalCount, PIDFList);
 
             return oDataTableResponseModel;
-
         }
     }
 }

@@ -50,12 +50,14 @@ namespace EmcureNPD.Web.Controllers
             PIDFCommercialEntity oPIDForm = new();
             try
             {
-                string logUserId = Convert.ToString(HttpContext.Session.GetString(UserHelper.LoggedInUserId));
-                int rolId = (int)HttpContext.Session.GetInt32(UserHelper.LoggedInRoleId);
+                int rolId = _helper.GetLoggedInRoleId();
                 RolePermissionModel objPermssion = UtilityHelper.GetCntrActionAccess((int)ModulePermissionEnum.Commercial, rolId);
-                if (objPermssion == null || !(objPermssion.View || objPermssion.Add || objPermssion.Edit))
+                if (!_Partial)
                 {
-                    return RedirectToAction("AccessRestriction", "Home");
+                    if (objPermssion == null || !(objPermssion.View || objPermssion.Add || objPermssion.Edit))
+                    {
+                        return RedirectToAction("AccessRestriction", "Home");
+                    }
                 }
                 ViewBag.Access = objPermssion;
                 oPIDForm = GetPIDFCommercialModel(pidfid, bui);
@@ -77,7 +79,6 @@ namespace EmcureNPD.Web.Controllers
             pidfid = UtilityHelper.Decreypt(pidfid);
             bui = UtilityHelper.Decreypt(bui);
             string AssignedBusinessUnit = _helper.GetAssignedBusinessUnit();
-            string logUserId = Convert.ToString(HttpContext.Session.GetString(UserHelper.LoggedInUserId));
             HttpResponseMessage resMsg;
             //var _pidfEntity = GetPidfFormModel(int.Parse(pidfid), out resMsg); //PIDF Form data
             //var _ipdFormEntity = GetModelForIPDForm(pidfid, bui); //IPD Form Data
@@ -92,7 +93,7 @@ namespace EmcureNPD.Web.Controllers
                 var data = JsonConvert.DeserializeObject<APIResponseEntity<PIDFCommercialEntity>>(jsonResponse);
                 oPIDForm = data._object;
                 oPIDForm.Pidfid = Convert.ToInt64(pidfid);
-                oPIDForm.CreatedBy = Convert.ToInt32(logUserId);
+                oPIDForm.CreatedBy = _helper.GetLoggedInUserId();
                 TempData["BusList"] = JsonConvert.SerializeObject(oPIDForm.MasterBusinessUnitEntities);
 
                 HttpResponseMessage responseMS = objapi.APICommunication(APIURLHelper.GetPIDFById + "/" + pidfid, HttpMethod.Get, token).Result;
@@ -140,6 +141,5 @@ namespace EmcureNPD.Web.Controllers
                 throw;
             }
         }
-        
     }
 }

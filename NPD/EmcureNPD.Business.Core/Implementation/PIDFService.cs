@@ -6,7 +6,6 @@ using EmcureNPD.Data.DataAccess.Core.UnitOfWork;
 using EmcureNPD.Data.DataAccess.Entity;
 using EmcureNPD.Utility.Enums;
 using EmcureNPD.Utility.Utility;
-using Microsoft.AspNetCore.Http;
 using System;
 using System.Collections.Generic;
 using System.Data;
@@ -34,7 +33,7 @@ namespace EmcureNPD.Business.Core.Implementation
         private IRepository<Pidfapidetail> _pidfApiRepository { get; set; }
         private IRepository<PidfproductStrength> _pidfProductStrength { get; set; }
 
-        public PIDFService(IUnitOfWork unitOfWork, IMapperFactory mapperFactory, 
+        public PIDFService(IUnitOfWork unitOfWork, IMapperFactory mapperFactory,
             IPidfApiDetailsService pidfApiDetailsService, IPidfProductStrengthService pidfProductStrengthService,
              INotificationService notificationService,
             IMasterAuditLogService auditLogService, IHelper helper, IExceptionService exceptionService)
@@ -75,7 +74,7 @@ namespace EmcureNPD.Business.Core.Implementation
             DropdownObjects.MasterAPISourcing = dsDropdownOptions.Tables[6];
             DropdownObjects.MasterDIAs = dsDropdownOptions.Tables[7];
 
-            //DropdownObjects.MasterCountrys = GetCountryByUserId(userid).Result;            
+            //DropdownObjects.MasterCountrys = GetCountryByUserId(userid).Result;
             DropdownObjects.InHouses = new List<InHouseEntity> { new InHouseEntity { InHouseId = 1, InHouseName = "Yes" }, new InHouseEntity { InHouseId = 2, InHouseName = "No" } };
             return DropdownObjects;
         }
@@ -122,9 +121,9 @@ namespace EmcureNPD.Business.Core.Implementation
         {
             var loggedInUserId = _helper.GetLoggedInUser().UserId;
 
-            string ColumnName = (model.order!=null && model.order.Count > 0 ? model.columns[model.order[0].column].data : string.Empty);
+            string ColumnName = (model.order != null && model.order.Count > 0 ? model.columns[model.order[0].column].data : string.Empty);
             string SortDir = (model.order != null && model.order.Count > 0 ? model.order[0].dir : string.Empty);
-            string SearchText= (model.search != null ? model.search.value : string.Empty);
+            string SearchText = (model.search != null ? model.search.value : string.Empty);
             SqlParameter[] osqlParameter = {
                 new SqlParameter("@UserId", loggedInUserId),
                 new SqlParameter("@CurrentPageNumber", model.start),
@@ -253,7 +252,7 @@ namespace EmcureNPD.Business.Core.Implementation
                     await _unitOfWork.SaveChangesAsync();
 
                     await SaveChildDetails(objPIDF.Pidfid, loggedInUserId, entityPIDF.pidfApiDetailEntities, entityPIDF.pidfProductStregthEntities);
-                   
+
                     await _notificationService.CreateNotification(objPIDF.Pidfid, entityPIDF.StatusId, string.Empty, string.Empty, loggedInUserId);
 
                     return DBOperation.Success;
@@ -310,7 +309,7 @@ namespace EmcureNPD.Business.Core.Implementation
             }
         }
 
-        public async Task<PIDFEntity> GetById(int id)  
+        public async Task<PIDFEntity> GetById(int id)
         {
             var ids = Convert.ToInt64(id);
             var data = _mapperFactory.Get<Pidf, PIDFEntity>(await _repository.GetAsync(ids));

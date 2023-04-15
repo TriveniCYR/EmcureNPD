@@ -23,6 +23,7 @@ namespace EmcureNPD.Utility.Audit
 
             return JsonConvert.SerializeObject(auditlog);
         }
+
         public static List<AuditLog> ToAuditLogs<TResult>(this TResult Old, TResult New) where TResult : new()
         {
             var compare = new ObjectsComparer.Comparer<TResult>();

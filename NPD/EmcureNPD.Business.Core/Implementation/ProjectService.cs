@@ -27,6 +27,7 @@ namespace EmcureNPD.Business.Core.Implementation
         private IRepository<MasterUser> _masterUserRepository { get; set; }
         private IRepository<MasterProjectStatus> _masterProjectStatusRepository { get; set; }
         private IRepository<MasterProjectPriority> _masterProjectPriorityRepository { get; set; }
+
         public ProjectService(IUnitOfWork unitOfWork, IMapperFactory mapperFactory, IConfiguration configuration, IExceptionService exceptionService)
         {
             _projectTaskRepository = unitOfWork.GetRepository<ProjectTask>();
@@ -38,8 +39,8 @@ namespace EmcureNPD.Business.Core.Implementation
             _repository = unitOfWork.GetRepository<Pidf>();
             _configuration = configuration;
             _ExceptionService = exceptionService;
-
         }
+
         public ProjectTaskEntity GetDropDownsForTask()
         {
             ProjectTaskEntity TaskAddModel = new ProjectTaskEntity();
@@ -55,7 +56,7 @@ namespace EmcureNPD.Business.Core.Implementation
             TaskAddModel.Task = mainTasks;
 
             List<MasterUserEntity> taskOwner = new List<MasterUserEntity>();
-            var taskOwnerList = _masterUserRepository.GetAllQuery().Where(x=> x.IsActive == true && x.IsDeleted == false).ToList();
+            var taskOwnerList = _masterUserRepository.GetAllQuery().Where(x => x.IsActive == true && x.IsDeleted == false).ToList();
 
             foreach (var data in taskOwnerList)
             {
@@ -68,7 +69,7 @@ namespace EmcureNPD.Business.Core.Implementation
             TaskAddModel.TaskOwner = taskOwner;
 
             List<MasterProjectStatusEntity> projectStatus = new List<MasterProjectStatusEntity>();
-            //List<int> notIDS = new List<int> { 2, 3, 4, 5, 6, 7, 9, 10,12};//status ID array 
+            //List<int> notIDS = new List<int> { 2, 3, 4, 5, 6, 7, 9, 10,12};//status ID array
             var projectStatusList = _masterProjectStatusRepository.GetAllQuery().ToList();
 
             foreach (var data in projectStatusList)
@@ -94,14 +95,12 @@ namespace EmcureNPD.Business.Core.Implementation
 
             TaskAddModel.Priority = priority;
 
-
             return TaskAddModel;
             //return View();
         }
 
         public async Task<DBOperation> AddUpdateTaskDetail(ProjectTaskEntity addTaskModel)
         {
-
             ProjectTask task;
 
             if (addTaskModel.ProjectTaskId > 0)
@@ -115,7 +114,7 @@ namespace EmcureNPD.Business.Core.Implementation
                     task.StartDate = addTaskModel.StartDate;
                     task.EndDate = addTaskModel.EndDate;
                     task.PlannedStartDate = addTaskModel.PlannedStartDate;
-                    task.PlannedEndDate= addTaskModel.PlannedEndDate;
+                    task.PlannedEndDate = addTaskModel.PlannedEndDate;
                     task.PriorityId = addTaskModel.PriorityId;
                     task.StatusId = addTaskModel.StatusId;
                     task.TaskDuration = addTaskModel.TaskDuration;
@@ -132,16 +131,14 @@ namespace EmcureNPD.Business.Core.Implementation
                             }
                             catch (Exception ex)
                             {
-
                                 throw;
                             }
-                           
                         }
                     }
                     else
                     {
-                      _projectTaskRepository.UpdateAsync(task);
-                      await _unitOfWork.SaveChangesAsync();
+                        _projectTaskRepository.UpdateAsync(task);
+                        await _unitOfWork.SaveChangesAsync();
                     }
                     return DBOperation.Success;
                 }
@@ -174,14 +171,14 @@ namespace EmcureNPD.Business.Core.Implementation
                 return DBOperation.Error;
             }
         }
+
         public List<ProjectTaskEntity> GetTaskSubTaskList(long pidfId)
         {
             List<ProjectTask> projectTasks = _projectTaskRepository.GetAllQuery().Where(x => x.Pidfid == pidfId).ToList();
             var result = _mapperFactory.GetList<ProjectTask, ProjectTaskEntity>(projectTasks);
             result.ForEach(pt =>
             {
-               
-                pt.TaskOwnerName =  pt.TaskLevel == 1 ? _masterUserRepository.Get(pt.TaskOwnerId).FullName:"" ;
+                pt.TaskOwnerName = pt.TaskLevel == 1 ? _masterUserRepository.Get(pt.TaskOwnerId).FullName : "";
                 pt.StatusName = _masterProjectStatusRepository.Get(pt.StatusId).StatusName;
                 pt.PriorityName = _masterProjectPriorityRepository.Get(pt.PriorityId).PriorityName;
             }
@@ -203,7 +200,6 @@ namespace EmcureNPD.Business.Core.Implementation
                     {
                         _projectTaskRepository.Remove(child);
                     }
-
                 }
             }
             _projectTaskRepository.Remove(entityProject);
@@ -234,7 +230,7 @@ namespace EmcureNPD.Business.Core.Implementation
             return TaskAddModel;
         }
 
-        public async Task<dynamic> GetTaskSubTaskAndProjectDetails(long id,long ?FilterId=0)
+        public async Task<dynamic> GetTaskSubTaskAndProjectDetails(long id, long? FilterId = 0)
         {
             //id = 1;
             SqlParameter[] osqlParameter = {
@@ -254,24 +250,23 @@ namespace EmcureNPD.Business.Core.Implementation
             DataSet BusinesUnitDetails = await _repository.GetDataSetBySP("GetBusinessUnitDetails", System.Data.CommandType.StoredProcedure, osqlParameter);
             return BusinesUnitDetails;
         }
+
         public async Task<dynamic> UpdateMainTaskProgressByParentId(string ParentId, double TotalPercentage)
         {
             try
             {
-            if (TotalPercentage > 0)
-            {
-                SqlConnection con = new SqlConnection(_configuration.GetSection("ConnectionStrings:DefaultConnection").Value);
-                DynamicParameters data = new DynamicParameters();
-                data.Add("@ParentId", Convert.ToInt64(ParentId));
-                data.Add("@TotalPercentage", TotalPercentage);
-                data.Add("@Success", "", direction: ParameterDirection.Output);
-                await con.ExecuteAsync("ProcUpdateParentTaskProgressByParentId", data, commandType: CommandType.StoredProcedure);
-                var result = data.Get<string>("Success").Trim();
-                if(result=="success") { return true; }
-            }
-            return false;
-
-
+                if (TotalPercentage > 0)
+                {
+                    SqlConnection con = new SqlConnection(_configuration.GetSection("ConnectionStrings:DefaultConnection").Value);
+                    DynamicParameters data = new DynamicParameters();
+                    data.Add("@ParentId", Convert.ToInt64(ParentId));
+                    data.Add("@TotalPercentage", TotalPercentage);
+                    data.Add("@Success", "", direction: ParameterDirection.Output);
+                    await con.ExecuteAsync("ProcUpdateParentTaskProgressByParentId", data, commandType: CommandType.StoredProcedure);
+                    var result = data.Get<string>("Success").Trim();
+                    if (result == "success") { return true; }
+                }
+                return false;
             }
             catch (Exception ex)
             {

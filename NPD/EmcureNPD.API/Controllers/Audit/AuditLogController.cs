@@ -1,5 +1,4 @@
 ﻿using EmcureNPD.API.Helpers.Response;
-using EmcureNPD.Business.Core.Implementation;
 using EmcureNPD.Business.Core.Interface;
 using EmcureNPD.Business.Models;
 using Microsoft.AspNetCore.Mvc;
@@ -11,7 +10,6 @@ namespace EmcureNPD.API.Controllers.Masters
 {
     [Route("api/[controller]")]
     [ApiController]
-
     public class AuditLogController : ControllerBase
     {
         #region Properties
@@ -27,11 +25,11 @@ namespace EmcureNPD.API.Controllers.Masters
 
         public AuditLogController(IMasterAuditLogService AuditLogService, IResponseHandler<dynamic> ObjectResponse, IExceptionService exceptionService)
         {
-
             _MasterAuditLogService = AuditLogService;
             _ObjectResponse = ObjectResponse;
             _ExceptionService = exceptionService;
         }
+
         #endregion Constructor
 
         /// <summary>
@@ -51,7 +49,6 @@ namespace EmcureNPD.API.Controllers.Masters
         {
             try
             {
-
                 var oAuditLogEntity = await _MasterAuditLogService.GetByModuleId(id, moduleId);
                 if (oAuditLogEntity != null)
                     return _ObjectResponse.Create(oAuditLogEntity, (Int32)HttpStatusCode.OK);
@@ -81,7 +78,7 @@ namespace EmcureNPD.API.Controllers.Masters
         public async Task<IActionResult> GetAllAuditLog([FromForm] DataTableAjaxPostModel model)
         {
             try
-            {                
+            {
                 return _ObjectResponse.CreateData(await _MasterAuditLogService.GetAll(model), (Int32)HttpStatusCode.OK);
             }
             catch (Exception ex)

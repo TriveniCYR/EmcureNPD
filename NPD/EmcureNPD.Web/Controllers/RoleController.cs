@@ -19,17 +19,19 @@ namespace EmcureNPD.Web.Controllers
 {
     public class RoleController : BaseController
     {
-
         #region Properties
+
         private readonly IConfiguration _cofiguration;
         private readonly IStringLocalizer<Shared> _stringLocalizerShared;
-        #endregion
+        private readonly IHelper _helper;
 
+        #endregion Properties
 
-        public RoleController(IConfiguration configuration, IStringLocalizer<Shared> stringLocalizerShared)
+        public RoleController(IConfiguration configuration, IStringLocalizer<Shared> stringLocalizerShared, IHelper helper)
         {
             _cofiguration = configuration;
             _stringLocalizerShared = stringLocalizerShared;
+            _helper = helper;
         }
 
         public IActionResult Roles()
@@ -37,7 +39,7 @@ namespace EmcureNPD.Web.Controllers
             ModelState.Clear();
             try
             {
-                int rolId = (int)HttpContext.Session.GetInt32(UserHelper.LoggedInRoleId);
+                int rolId = _helper.GetLoggedInRoleId();
                 RolePermissionModel objPermssion = UtilityHelper.GetCntrActionAccess((int)ModulePermissionEnum.RoleManagement, rolId);
                 ViewBag._objPermission = objPermssion;
 
@@ -52,7 +54,6 @@ namespace EmcureNPD.Web.Controllers
                     oRoleList.Roles = data._object;
 
                     return View(oRoleList);
-
                 }
             }
             catch (Exception e)
@@ -62,7 +63,6 @@ namespace EmcureNPD.Web.Controllers
             }
             return View();
         }
-
 
         public IActionResult RoleManage(int? roleId)
         {
@@ -108,16 +108,13 @@ namespace EmcureNPD.Web.Controllers
             }
         }
 
-
         [HttpPost]
         [ValidateAntiForgeryToken]
         public IActionResult RoleManage(int roleId, MasterRoleEntity masterRole)
         {
             try
             {
-
-                string logUserId = Convert.ToString(HttpContext.Session.GetString(UserHelper.LoggedInUserId));
-                masterRole.LoggedUserId = int.Parse(logUserId);
+                masterRole.LoggedUserId = _helper.GetLoggedInUserId();
                 HttpContext.Request.Cookies.TryGetValue(UserHelper.EmcureNPDToken, out string token);
                 APIRepository objapi = new(_cofiguration);
                 HttpResponseMessage responseMessage = objapi.APICommunication(APIURLHelper.SaveRole, HttpMethod.Post, token, new StringContent(JsonConvert.SerializeObject(masterRole))).Result;
@@ -135,9 +132,7 @@ namespace EmcureNPD.Web.Controllers
                             string rolJson = resRoles.Content.ReadAsStringAsync().Result;
                             var data = JsonConvert.DeserializeObject<APIResponseEntity<IEnumerable<RolePermissionModel>>>(rolJson);
                             UtilityHelper.AddModuleRole(masterRole.RoleId, data._object);
-
                         }
-
                     }
 
                     string jsonResponse = responseMessage.Content.ReadAsStringAsync().Result;
@@ -146,8 +141,6 @@ namespace EmcureNPD.Web.Controllers
                 }
                 else
                     TempData["StatusMessage"] = "Some Eror Occured";
-
-
             }
             catch (Exception e)
             {
@@ -158,9 +151,5 @@ namespace EmcureNPD.Web.Controllers
             ModelState.Clear();
             return RedirectToAction(nameof(Roles));
         }
-
-
-
-
     }
 }

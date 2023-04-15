@@ -1,10 +1,8 @@
 ﻿using EmcureNPD.Business.Models;
 using EmcureNPD.Utility.Enums;
 using EmcureNPD.Utility.Models;
-using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
-using System.ComponentModel;
 using System.Data;
 using System.Linq;
 using System.Reflection;
@@ -38,6 +36,7 @@ namespace EmcureNPD.Utility.Utility
             }
             return oUserLoggedInModel;
         }
+
         public static string Encrypt(string password)
         {
             try
@@ -54,6 +53,7 @@ namespace EmcureNPD.Utility.Utility
                 throw new Exception("Error in base64Encode" + ex.Message);
             }
         }
+
         public static string Decreypt(string encodedData)
         {
             if (encodedData == null) throw new ArgumentNullException("plainText");
@@ -110,6 +110,7 @@ namespace EmcureNPD.Utility.Utility
             }
             return data;
         }
+
         private static T GetItem<T>(DataRow dr)
         {
             Type temp = typeof(T);
@@ -128,21 +129,21 @@ namespace EmcureNPD.Utility.Utility
             return obj;
         }
 
-        static Dictionary<int, object> _dict;
+        private static Dictionary<int, object> _dict;
+
         public static bool AddModuleRole<T>(int key, T value) where T : class
         {
             if (_dict == null)
             {
-                _dict = new Dictionary<int, object>();                
+                _dict = new Dictionary<int, object>();
             }
             object val;
             _dict.TryGetValue(key, out val);
-            if(val!=null)
+            if (val != null)
             {
-                 _dict.Remove(key);
+                _dict.Remove(key);
             }
             return _dict.TryAdd(key, value);
-            
         }
 
         public static T GetModuleRole<T>(int key) where T : class
@@ -154,8 +155,8 @@ namespace EmcureNPD.Utility.Utility
                 return val as T;
             }
             return null as T;
-            
         }
+
         public static bool RemoveModuleRole(int key)
         {
             if (_dict != null)
@@ -167,7 +168,7 @@ namespace EmcureNPD.Utility.Utility
                 return false;
             }
         }
-      
+
         public static bool GetMenuAccess(int ModuleId, int RoleId, int SubModuleId = 0)
         {
             IEnumerable<RolePermissionModel> objVal = GetModuleRole<IEnumerable<RolePermissionModel>>(RoleId);
@@ -199,21 +200,26 @@ namespace EmcureNPD.Utility.Utility
                         {
                             case (int)PermissionEnum.Add:
                                 return _permissionObject.Add;
+
                             case (int)PermissionEnum.Edit:
                                 return _permissionObject.Edit;
+
                             case (int)PermissionEnum.Delete:
                                 return _permissionObject.Delete;
+
                             case (int)PermissionEnum.View:
                                 return _permissionObject.View;
+
                             case (int)PermissionEnum.Approve:
                                 return _permissionObject.Approve;
+
                             default:
                                 break;
                         }
                     }
                 }
             }
-            catch (Exception ex) 
+            catch (Exception ex)
             {
                 return false;
             }
@@ -221,16 +227,14 @@ namespace EmcureNPD.Utility.Utility
         }
 
         public static RolePermissionModel GetCntrActionAccess(string controllerNm, int loginRoleId)
-        {            
+        {
             RolePermissionModel objList = new RolePermissionModel();
             IEnumerable<RolePermissionModel> obj = UtilityHelper.GetModuleRole<dynamic>(loginRoleId);
             if (obj != null)
             {
                 objList = obj.Where(o => o.ControlName != null && o.ControlName.Trim() == controllerNm).FirstOrDefault();
-                
             }
             return objList;
-
         }
 
         public static RolePermissionModel GetCntrActionAccess(int ModuleId, int loginRoleId, int SubModuleId = 0)
@@ -240,7 +244,6 @@ namespace EmcureNPD.Utility.Utility
             if (obj != null)
             {
                 objList = obj.Where(o => o.ControlName != null && o.MainModuleId == ModuleId && (o.SubModuleId == SubModuleId || SubModuleId == 0)).FirstOrDefault();
-
             }
             return objList;
         }

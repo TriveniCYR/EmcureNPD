@@ -10,7 +10,6 @@ using System.Collections.Generic;
 using System.Data;
 using System.Data.SqlClient;
 using System.Linq;
-using System.Security.Cryptography.X509Certificates;
 using System.Threading.Tasks;
 using static EmcureNPD.Utility.Enums.GeneralEnum;
 
@@ -37,13 +36,13 @@ namespace EmcureNPD.Business.Core.ServiceImplementations
 
         public async Task<List<MasterCurrencyEntity>> GetAll()
         {
-            var list = await _repository.GetAllAsync(x=>x.IsActive==true);
+            var list = await _repository.GetAllAsync(x => x.IsActive == true);
             return _mapperFactory.GetList<MasterCurrency, MasterCurrencyEntity>(list.ToList());
         }
 
         public async Task<MasterCurrencyEntity> GetById(int id)
         {
-            var  Currency = _mapperFactory.Get<MasterCurrency, MasterCurrencyEntity>(await _repository.GetAsync(id));
+            var Currency = _mapperFactory.Get<MasterCurrency, MasterCurrencyEntity>(await _repository.GetAsync(id));
             Currency.CountryIds = string.Join(",", _repositoryMasterCurrencyCountryMapping.GetAllQuery().Where(x => x.CurrencyId == Currency.CurrencyId).Select(x => x.CountryId.ToString()));
             Currency.MasterBusinessCountryMappingIds = string.Join(",", _repositoryMasterCurrencyCountryMapping.GetAllQuery().Where(x => x.CurrencyId == Currency.CurrencyId).Select(x => x.CurrencyCountryMappingId.ToString()));
             return Currency;
@@ -112,7 +111,6 @@ namespace EmcureNPD.Business.Core.ServiceImplementations
                     await _unitOfWork.SaveChangesAsync();
                 }
                 else { return DBOperation.NotFound; }
-
             }
 
             if (objCurrency.CurrencyId == 0)
@@ -141,12 +139,14 @@ namespace EmcureNPD.Business.Core.ServiceImplementations
 
             return DBOperation.Success;
         }
+
         public async Task<MasterCountryEntity> GetCountryByCurrencyId(int id)
         {
             var CurrencyCountryMapping = _repositoryMasterCurrencyCountryMapping.Get(x => x.CurrencyId == id);
             var country = _countryRepository.Get(x => x.CountryId == CurrencyCountryMapping.CountryId);
             return _mapperFactory.Get<MasterCountry, MasterCountryEntity>(country);
         }
+
         public async Task<List<MasterCurrencyEntity>> GetCurrencyByLoggedInUser()
         {
             var _loggedInUser = _helper.GetLoggedInUser();

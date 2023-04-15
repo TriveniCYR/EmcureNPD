@@ -1,11 +1,11 @@
-﻿
-using EmcureNPD.API.Filters;
+﻿using EmcureNPD.API.Filters;
 using EmcureNPD.API.Helpers.Response;
 using EmcureNPD.Business.Core.Interface;
 using EmcureNPD.Business.Models;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Primitives;
 using Newtonsoft.Json;
@@ -15,7 +15,6 @@ using System.Linq;
 using System.Net;
 using System.Threading.Tasks;
 using static EmcureNPD.Utility.Enums.GeneralEnum;
-using Microsoft.Extensions.Configuration;
 
 namespace EmcureNPD.API.Controllers.IPD
 {
@@ -33,6 +32,7 @@ namespace EmcureNPD.API.Controllers.IPD
         private readonly ILogger<MedicalController> _logger;
         private readonly IConfiguration _configuration;
         private readonly IExceptionService _ExceptionService;
+
         #endregion Properties
 
         #region Constructor
@@ -48,6 +48,7 @@ namespace EmcureNPD.API.Controllers.IPD
         }
 
         #endregion Constructor
+
         [HttpPost]
         [Route("PIDMedicalForm")]
         [Consumes("multipart/form-data")]
@@ -55,7 +56,7 @@ namespace EmcureNPD.API.Controllers.IPD
         {
             try
             {
-                DBOperation oResponse =new ();
+                DBOperation oResponse = new();
                 _logger.LogInformation("PIDMedicalForm controller started");
                 medicalModel.TryGetValue("Data", out StringValues Data);
                 dynamic jsonObject = JsonConvert.DeserializeObject(Data);
@@ -67,42 +68,39 @@ namespace EmcureNPD.API.Controllers.IPD
                 model.Remark = jsonObject.Remark;
                 model.CreatedBy = jsonObject.CreatedBy;
                 var files = medicalModel.Files;
-               
+
                 if (files.Count > 0 && jsonObject.FileName.HasValues)
                 {
-                    
                     object[] myarray = jsonObject.FileName.ToObject<object[]>();
-					int count = myarray.Count(s => s != null);
+                    int count = myarray.Count(s => s != null);
                     int totalCount = count + files.Count;
-					model.FileName = new string[totalCount];
+                    model.FileName = new string[totalCount];
                     int i = 0;
                     for (i = 0; i < files.Count; i++)
                     {
                         var file = files[i];
                         model.FileName[i] = "Medical\\" + file.FileName;
                     }
-					foreach (var item in myarray)
-					{
-						if (item != null)
-						{
-							var file = item.ToString();
-							model.FileName[i] = "Medical\\" + file;
-							i++;
-						}
-					}
-
-				}
-                else if(files.Count > 0)
+                    foreach (var item in myarray)
+                    {
+                        if (item != null)
+                        {
+                            var file = item.ToString();
+                            model.FileName[i] = "Medical\\" + file;
+                            i++;
+                        }
+                    }
+                }
+                else if (files.Count > 0)
                 {
-					model.FileName = new string[files.Count];
-					for (int i = 0; i < files.Count; i++)
-					{
-						var file = files[i];
-						model.FileName[i] = "Medical\\" + file.FileName;
-					}
-				}
-
-				else if (jsonObject.FileName.HasValues)
+                    model.FileName = new string[files.Count];
+                    for (int i = 0; i < files.Count; i++)
+                    {
+                        var file = files[i];
+                        model.FileName[i] = "Medical\\" + file.FileName;
+                    }
+                }
+                else if (jsonObject.FileName.HasValues)
                 {
                     object[] myarray = jsonObject.FileName.ToObject<object[]>();
                     int count = myarray.Count(s => s != null);
@@ -138,12 +136,12 @@ namespace EmcureNPD.API.Controllers.IPD
             }
             catch (Exception ex)
             {
-
                 await _ExceptionService.LogException(ex);
                 _logger.LogInformation("Exception occured in PIDMedicalForm controller ended");
                 return _ObjectResponse.Create(false, (int)HttpStatusCode.InternalServerError, Convert.ToString(ex.StackTrace));
             }
         }
+
         [HttpGet, Route("GetPIDFMedicalFormData/{pidfId}")]
         public async Task<IActionResult> GetPIDFMedicalFormData([FromRoute] long pidfId)
         {
@@ -161,7 +159,6 @@ namespace EmcureNPD.API.Controllers.IPD
                     _logger.LogInformation("_IPDService GetPIDFMedicalData failed and GetPIDFMedicalFormData controller ended");
                     return _ObjectResponse.Create(null, (int)HttpStatusCode.BadRequest, "Record not found");
                 }
-
             }
             catch (Exception ex)
             {
@@ -170,6 +167,5 @@ namespace EmcureNPD.API.Controllers.IPD
                 return _ObjectResponse.Create(false, (int)HttpStatusCode.InternalServerError, Convert.ToString(ex.StackTrace));
             }
         }
-
     }
 }

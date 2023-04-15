@@ -3,15 +3,11 @@ using EmcureNPD.API.Helpers.Response;
 using EmcureNPD.Business.Core.Interface;
 using EmcureNPD.Business.Models;
 using EmcureNPD.Resource;
-using EmcureNPD.Utility.Helpers;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Localization;
 using System;
-using System.Collections.Generic;
-using System.IO;
 using System.Net;
 using System.Threading.Tasks;
 using static EmcureNPD.Utility.Enums.GeneralEnum;
@@ -41,9 +37,8 @@ namespace EmcureNPD.API.Controllers.Masters
             _configuration = configuration;
             _MasterUserService = MasterUserService;
             _ObjectResponse = ObjectResponse;
-            _stringLocalizerError = stringLocalizerError; 
+            _stringLocalizerError = stringLocalizerError;
             _ExceptionService = exceptionService;
-
         }
 
         #endregion Constructor
@@ -69,8 +64,8 @@ namespace EmcureNPD.API.Controllers.Masters
             {
                 DBOperation oResponse = await _MasterUserService.AddUpdateUser(oUser);
                 if (oResponse == DBOperation.Success)
-                {                  
-                   return _ObjectResponse.Create(true, (Int32)HttpStatusCode.OK, (oUser.UserId > 0 ? "Updated Successfully" : "Inserted Successfully"));
+                {
+                    return _ObjectResponse.Create(true, (Int32)HttpStatusCode.OK, (oUser.UserId > 0 ? "Updated Successfully" : "Inserted Successfully"));
                 }
                 else
                     return _ObjectResponse.Create(false, (Int32)HttpStatusCode.BadRequest, (oResponse == DBOperation.NotFound ? "Record not found" : "Bad request"));
@@ -165,12 +160,12 @@ namespace EmcureNPD.API.Controllers.Masters
                 return _ObjectResponse.Create(false, (Int32)HttpStatusCode.InternalServerError, Convert.ToString(ex.StackTrace));
             }
         }
-        
+
         [HttpGet, Route("GetRegionByBusinessUnit")]
         public async Task<IActionResult> GetRegionByBusinessUnit(string BusinessUnitIds)
         {
             try
-            {                
+            {
                 return _ObjectResponse.CreateData(await _MasterUserService.GetRegionByBusinessUnit(BusinessUnitIds), (Int32)HttpStatusCode.OK);
             }
             catch (Exception ex)
@@ -179,6 +174,7 @@ namespace EmcureNPD.API.Controllers.Masters
                 return _ObjectResponse.Create(false, (Int32)HttpStatusCode.InternalServerError, Convert.ToString(ex.StackTrace));
             }
         }
+
         [HttpGet, Route("GetCountryByRegion")]
         public async Task<IActionResult> GetCountryByRegion(string RegionIds)
         {
@@ -192,7 +188,7 @@ namespace EmcureNPD.API.Controllers.Masters
                 return _ObjectResponse.Create(false, (Int32)HttpStatusCode.InternalServerError, Convert.ToString(ex.StackTrace));
             }
         }
-        
+
         /// <summary>
         /// Description - To Delete a User by Id
         /// </summary>
@@ -252,6 +248,7 @@ namespace EmcureNPD.API.Controllers.Masters
                 return _ObjectResponse.Create(false, (Int32)HttpStatusCode.InternalServerError, Convert.ToString(ex.StackTrace));
             }
         }
+
         /// <summary>
         /// Description - To Check Email exists or not
         /// </summary>
@@ -269,7 +266,7 @@ namespace EmcureNPD.API.Controllers.Masters
         {
             try
             {
-               return await _MasterUserService.CheckEmailAddressExists(emailAddress);
+                return await _MasterUserService.CheckEmailAddressExists(emailAddress);
             }
             catch (Exception ex)
             {
@@ -281,7 +278,6 @@ namespace EmcureNPD.API.Controllers.Masters
         [HttpGet, Route("GetBusinessUnitByUserId/{userid}")]
         public async Task<IActionResult> GetBusinessUnitByUserId(int userid)
         {
-         
             try
             {
                 var oBusinessUnitList = await _MasterUserService.GetBusinessUNitByUserId(userid);
@@ -296,7 +292,6 @@ namespace EmcureNPD.API.Controllers.Masters
                 return _ObjectResponse.Create(false, (Int32)HttpStatusCode.InternalServerError, Convert.ToString(ex.StackTrace));
             }
         }
-
 
         #endregion API Methods
     }

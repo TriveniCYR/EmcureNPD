@@ -18,18 +18,22 @@ namespace EmcureNPD.Web.Controllers
     public class MedicalController : BaseController
     {
         #region Properties
+
         private readonly IConfiguration _cofiguration;
         private readonly IStringLocalizer<Errors> _stringLocalizerError;
         private readonly IStringLocalizer<Shared> _stringLocalizerShared;
+        private readonly IHelper _helper;
         //private IHostingEnvironment _env;
-        #endregion
+
+        #endregion Properties
 
         public MedicalController(IConfiguration configuration,// IHostingEnvironment env,
-            IStringLocalizer<Errors> stringLocalizerError, IStringLocalizer<Shared> stringLocalizerShared)
+            IStringLocalizer<Errors> stringLocalizerError, IStringLocalizer<Shared> stringLocalizerShared, IHelper helper)
         {
             _cofiguration = configuration;
             _stringLocalizerError = stringLocalizerError;
             _stringLocalizerShared = stringLocalizerShared;
+            _helper = helper;
         }
 
         [HttpGet]
@@ -40,20 +44,18 @@ namespace EmcureNPD.Web.Controllers
             PIDFMedicalViewModel oMedical = new();
             try
             {
-                string logUserId = Convert.ToString(HttpContext.Session.GetString(UserHelper.LoggedInUserId));
-                int rolId = (int)HttpContext.Session.GetInt32(UserHelper.LoggedInRoleId);
+                int rolId = _helper.GetLoggedInRoleId();
                 RolePermissionModel objPermssion = UtilityHelper.GetCntrActionAccess((int)ModulePermissionEnum.Medical, rolId);
-                if (objPermssion == null || (!objPermssion.View && IsView==1))
+                if (objPermssion == null || (!objPermssion.View && IsView == 1))
                 {
                     return RedirectToAction("AccessRestriction", "Home");
-
                 }
                 ViewBag.Access = objPermssion;
-				pidfid = UtilityHelper.Decreypt(pidfid);
+                pidfid = UtilityHelper.Decreypt(pidfid);
                 oMedical = GetModelForMedicalForm(pidfid);
                 oMedical.Pidfid = Convert.ToInt32(pidfid);
                 oMedical.IsView = (IsView == null) ? 0 : (int)IsView;
-				if (oMedical.PidfmedicalId <= 0)
+                if (oMedical.PidfmedicalId <= 0)
                 {
                     oMedical.MedicalOpinion = 1;
                 }
@@ -65,13 +67,12 @@ namespace EmcureNPD.Web.Controllers
                 return View("MedicalList");
             }
         }
+
         private PIDFMedicalViewModel GetModelForMedicalForm(string pidfid)
         {
             PIDFMedicalViewModel oMedical = new();
             try
             {
-
-                string logUserId = Convert.ToString(HttpContext.Session.GetString(UserHelper.LoggedInUserId));
                 HttpContext.Request.Cookies.TryGetValue(UserHelper.EmcureNPDToken, out string token);
                 APIRepository objapi = new(_cofiguration);
                 HttpResponseMessage responseMessage = objapi.APICommunication(APIURLHelper.GetMedicalFormdata + "/" + pidfid, HttpMethod.Get, token).Result;
@@ -88,26 +89,24 @@ namespace EmcureNPD.Web.Controllers
             }
             return oMedical;
         }
+
         [HttpPost]
         public IActionResult Medical(string id, PIDFMedicalViewModel medicalEntity)
         {
-
             ViewBag.id = id;
             ViewBag.baseUrl = _cofiguration.GetSection("Apiconfig").GetSection("baseurl").Value;
-            string logUserId = Convert.ToString(HttpContext.Session.GetString(UserHelper.LoggedInUserId));
-            int rolId = (int)HttpContext.Session.GetInt32(UserHelper.LoggedInRoleId);
+            int rolId = _helper.GetLoggedInRoleId();
             RolePermissionModel objPermssion = UtilityHelper.GetCntrActionAccess((int)ModulePermissionEnum.Medical, rolId);
             if (objPermssion == null || (!objPermssion.View && medicalEntity.IsView == 1))
             {
                 return RedirectToAction("AccessRestriction", "Home");
-
             }
             ViewBag.Access = objPermssion;
-           
+
             if (ModelState.IsValid)
             {
                 medicalEntity.Pidfid = long.Parse(UtilityHelper.Decreypt(id));
-                medicalEntity.CreatedBy = Convert.ToInt32(HttpContext.Session.GetString(UserHelper.LoggedInUserId));
+                medicalEntity.CreatedBy = _helper.GetLoggedInUserId();
                 HttpContext.Request.Cookies.TryGetValue(UserHelper.EmcureNPDToken, out string token);
                 APIRepository objapi = new(_cofiguration);
                 string x = JsonConvert.SerializeObject(medicalEntity);
@@ -134,14 +133,14 @@ namespace EmcureNPD.Web.Controllers
                 if (responseMessage.IsSuccessStatusCode)
                 {
                     TempData[UserHelper.SuccessMessage] = data._Message;
-					return RedirectToAction("PIDFList", "PIDF", new { ScreenId = (int)PIDFScreen.Medical });
+                    return RedirectToAction("PIDFList", "PIDF", new { ScreenId = (int)PIDFScreen.Medical });
                 }
                 else
                 {
                     TempData[UserHelper.ErrorMessage] = data._Message;
                     ModelState.Clear();
-					return RedirectToAction("Medical", "Medical", new { pidfid = id });
-				}
+                    return RedirectToAction("Medical", "Medical", new { pidfid = id });
+                }
             }
             else
             {

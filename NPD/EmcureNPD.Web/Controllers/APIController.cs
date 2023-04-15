@@ -6,7 +6,6 @@ using EmcureNPD.Utility.Utility;
 using EmcureNPD.Web.Helpers;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.ModelBinding;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Localization;
 using Newtonsoft.Json;
@@ -15,18 +14,20 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Net.Http;
 using System.Net.Http.Headers;
-using System.Reflection;
 
 namespace EmcureNPD.Web.Controllers
 {
     public class APIController : BaseController
     {
         #region Properties
+
         private readonly IConfiguration _cofiguration;
         private readonly IStringLocalizer<Errors> _stringLocalizerError;
         private readonly IStringLocalizer<Shared> _stringLocalizerShared;
         private readonly IHelper _helper;
-        #endregion
+
+        #endregion Properties
+
         public APIController(IConfiguration configuration,
             IStringLocalizer<Errors> stringLocalizerError, IStringLocalizer<Shared> stringLocalizerShared, IHelper helper)
         {
@@ -35,7 +36,7 @@ namespace EmcureNPD.Web.Controllers
             _stringLocalizerShared = stringLocalizerShared;
             _helper = helper;
         }
-       
+
         [NonAction]
         private string GetUserWiseBusinessUnit(int userid)
         {
@@ -66,6 +67,7 @@ namespace EmcureNPD.Web.Controllers
                 throw;
             }
         }
+
         [NonAction]
         private PIDFEntity GetPidfFormModel(int? PIDFId, out HttpResponseMessage responseMessage)
         {
@@ -93,14 +95,15 @@ namespace EmcureNPD.Web.Controllers
             }
         }
 
-        #region API Details Form _KD 
+        #region API Details Form _KD
+
         public IActionResult APICharterSummaryDetailsForm(string pidfid, string bui)
         {
             ModelState.Clear();
             var _APICharterDetailsForm = new PIDFAPICharterFormEntity();
             try
             {
-                int rolId = (int)HttpContext.Session.GetInt32(UserHelper.LoggedInRoleId);
+                int rolId = _helper.GetLoggedInRoleId();
                 RolePermissionModel objPermssion = UtilityHelper.GetCntrActionAccess((int)ModulePermissionEnum.APIListManagement, rolId, (int)SubModulePermissionEnum.APICharterSummary);
                 if (objPermssion == null || !(objPermssion.View))
                 {
@@ -144,7 +147,7 @@ namespace EmcureNPD.Web.Controllers
             var _APICharterDetailsForm = new PIDFAPICharterFormEntity();
             try
             {
-                int rolId = (int)HttpContext.Session.GetInt32(UserHelper.LoggedInRoleId);
+                int rolId = _helper.GetLoggedInRoleId();
                 RolePermissionModel objPermssion = UtilityHelper.GetCntrActionAccess((int)ModulePermissionEnum.APIListManagement, rolId, (int)SubModulePermissionEnum.APICharter);
                 if (objPermssion == null || !(objPermssion.View || objPermssion.Add || objPermssion.Edit))
                 {
@@ -181,8 +184,8 @@ namespace EmcureNPD.Web.Controllers
             }
         }
 
-        [HttpPost]  
-        [ValidateAntiForgeryToken]                 
+        [HttpPost]
+        [ValidateAntiForgeryToken]
         public IActionResult APICharterDetailsForm(PIDFAPICharterFormEntity _Chartermodel)
         {
             _Chartermodel.Pidfid = UtilityHelper.Decreypt(_Chartermodel.Pidfid);
@@ -191,8 +194,7 @@ namespace EmcureNPD.Web.Controllers
             if (_Chartermodel.IsModelValid != "")
             {
                 //save logic
-                string logUserId = Convert.ToString(HttpContext.Session.GetString(UserHelper.LoggedInUserId));
-                _Chartermodel.LoggedInUserId = Convert.ToInt32(logUserId);
+                _Chartermodel.LoggedInUserId = _helper.GetLoggedInUserId();
                 HttpContext.Request.Cookies.TryGetValue(UserHelper.EmcureNPDToken, out string token);
                 APIRepository objapi = new(_cofiguration);
                 HttpResponseMessage responseMessage = objapi.APICommunication(APIURLHelper.InsertUpdateAPICharter, HttpMethod.Post, token, new StringContent(JsonConvert.SerializeObject(_Chartermodel))).Result;
@@ -202,7 +204,7 @@ namespace EmcureNPD.Web.Controllers
                     TempData[EmcureNPD.Web.Helpers.UserHelper.SuccessMessage] = Convert.ToString(_stringLocalizerShared["RecordInsertUpdate"]);
                     ModelState.Clear();
                     IsSaveError = false;
-                    return RedirectToAction("PIDFList", "PIDF",new { ScreenId = (int)PIDFScreen.API }); // return to PIDF List
+                    return RedirectToAction("PIDFList", "PIDF", new { ScreenId = (int)PIDFScreen.API }); // return to PIDF List
                     //var ScreenId = @Convert.ToString((int)EmcureNPD.Utility.Enums.PIDFScreen.API);
                 }
                 else
@@ -214,9 +216,7 @@ namespace EmcureNPD.Web.Controllers
                 TempData["SaveStatus"] = "Save Error Occured !";
 
             return View(_Chartermodel);
-
         }
-
 
         [HttpGet]
         public IActionResult APIRndDetailsForm(string pidfid, string bui)
@@ -225,7 +225,7 @@ namespace EmcureNPD.Web.Controllers
             var _APIRnDDetailsForm = new PIDFAPIRnDFormEntity();
             try
             {
-                int rolId = (int)HttpContext.Session.GetInt32(UserHelper.LoggedInRoleId);
+                int rolId = _helper.GetLoggedInRoleId();
                 RolePermissionModel objPermssion = UtilityHelper.GetCntrActionAccess((int)ModulePermissionEnum.APIListManagement, rolId, (int)SubModulePermissionEnum.APIRnD);
                 if (objPermssion == null || !(objPermssion.View || objPermssion.Add || objPermssion.Edit))
                 {
@@ -240,7 +240,6 @@ namespace EmcureNPD.Web.Controllers
                 }
                 else
                     bussnessId = UtilityHelper.Decreypt(bui);
-
 
                 HttpContext.Request.Cookies.TryGetValue(UserHelper.EmcureNPDToken, out string token);
                 APIRepository objapi = new(_cofiguration);
@@ -277,8 +276,7 @@ namespace EmcureNPD.Web.Controllers
             if (_RnDmodel.IsModelValid != "")
             {
                 //save logic
-                string logUserId = Convert.ToString(HttpContext.Session.GetString(UserHelper.LoggedInUserId));
-                _RnDmodel.LoggedInUserId = Convert.ToInt32(logUserId);
+                _RnDmodel.LoggedInUserId = _helper.GetLoggedInUserId();
                 HttpContext.Request.Cookies.TryGetValue(UserHelper.EmcureNPDToken, out string token);
                 APIRepository objapi = new(_cofiguration);
                 HttpResponseMessage responseMessage = objapi.APICommunication(APIURLHelper.InsertUpdateAPIRnD, HttpMethod.Post, token, new StringContent(JsonConvert.SerializeObject(_RnDmodel))).Result;
@@ -308,7 +306,6 @@ namespace EmcureNPD.Web.Controllers
             _RnDmodel.Pidfid = UtilityHelper.Encrypt(_RnDmodel.Pidfid);
             _RnDmodel.BusinessUnitId = UtilityHelper.Encrypt(_RnDmodel.BusinessUnitId);
             return View(_RnDmodel);
-
         }
 
         [HttpGet]
@@ -318,7 +315,7 @@ namespace EmcureNPD.Web.Controllers
             var _APIIPDDetailsForm = new PIDFAPIIPDFormEntity();
             try
             {
-                int rolId = (int)HttpContext.Session.GetInt32(UserHelper.LoggedInRoleId);
+                int rolId = _helper.GetLoggedInRoleId();
                 RolePermissionModel objPermssion = UtilityHelper.GetCntrActionAccess((int)ModulePermissionEnum.APIListManagement, rolId, (int)SubModulePermissionEnum.APIIPD);
                 if (objPermssion == null || !(objPermssion.View || objPermssion.Add || objPermssion.Edit))
                 {
@@ -333,7 +330,6 @@ namespace EmcureNPD.Web.Controllers
                 }
                 else
                     bussnessId = UtilityHelper.Decreypt(bui);
-
 
                 HttpContext.Request.Cookies.TryGetValue(UserHelper.EmcureNPDToken, out string token);
                 APIRepository objapi = new(_cofiguration);
@@ -370,8 +366,7 @@ namespace EmcureNPD.Web.Controllers
             if (_IPDmodel.IsModelValid != "")
             {
                 //save logic
-                string logUserId = Convert.ToString(HttpContext.Session.GetString(UserHelper.LoggedInUserId));
-                _IPDmodel.LoggedInUserId = Convert.ToInt32(logUserId);
+                _IPDmodel.LoggedInUserId = _helper.GetLoggedInUserId();
 
                 var form = new MultipartFormDataContent();
                 if (_IPDmodel.MarketDetailsNewPortCGIDetails != null)
@@ -395,8 +390,8 @@ namespace EmcureNPD.Web.Controllers
                     TempData[EmcureNPD.Web.Helpers.UserHelper.SuccessMessage] = Convert.ToString(_stringLocalizerShared["RecordInsertUpdate"]);
                     ModelState.Clear();
                     IsSaveError = false;
-                   // return RedirectToAction("APIIPDDetailsForm",new { pidfid = UtilityHelper.Encrypt(_IPDmodel.Pidfid), bui = UtilityHelper.Encrypt(_IPDmodel.BusinessUnitId) }); // return to PBFAPI List
-                    return RedirectToAction("PIDFList", "PIDF",new { ScreenId = (int)PIDFScreen.API }); // return to PIDF List
+                    // return RedirectToAction("APIIPDDetailsForm",new { pidfid = UtilityHelper.Encrypt(_IPDmodel.Pidfid), bui = UtilityHelper.Encrypt(_IPDmodel.BusinessUnitId) }); // return to PBFAPI List
+                    return RedirectToAction("PIDFList", "PIDF", new { ScreenId = (int)PIDFScreen.API }); // return to PIDF List
                 }
                 else
                 {
@@ -416,7 +411,6 @@ namespace EmcureNPD.Web.Controllers
             _IPDmodel.Pidfid = UtilityHelper.Encrypt(_IPDmodel.Pidfid);
             _IPDmodel.BusinessUnitId = UtilityHelper.Encrypt(_IPDmodel.BusinessUnitId);
             return View(_IPDmodel);
-
         }
 
         [NonAction] // Get Model for View PIDForm.cshtml (IP EVolution)
@@ -442,13 +436,11 @@ namespace EmcureNPD.Web.Controllers
             return oAPIIPDEntity;
         }
 
-
         [NonAction]
         private PIDFCommercialEntity GetPIDFCommercialModel(string pidfid, string bui)
         {
             PIDFCommercialEntity oPIDForm = new();
             //pidfid = UtilityHelper.Decreypt(pidfid);
-            string logUserId = Convert.ToString(HttpContext.Session.GetString(UserHelper.LoggedInUserId));
             HttpResponseMessage resMsg;
             var _pidfEntity = GetPidfFormModel(int.Parse(pidfid), out resMsg);
             var _IPDFormdata = GetModelForIPDForm(pidfid, bui); //IPD Form Data
@@ -463,7 +455,7 @@ namespace EmcureNPD.Web.Controllers
                 var data = JsonConvert.DeserializeObject<APIResponseEntity<PIDFCommercialEntity>>(jsonResponse);
                 oPIDForm = data._object;
                 oPIDForm.Pidfid = Convert.ToInt64(pidfid);
-                oPIDForm.CreatedBy = Convert.ToInt32(logUserId);
+                oPIDForm.CreatedBy = _helper.GetLoggedInUserId();
                 TempData["BusList"] = JsonConvert.SerializeObject(oPIDForm.MasterBusinessUnitEntities);
 
                 HttpResponseMessage responseMS = objapi.APICommunication(APIURLHelper.GetPIDFById + "/" + pidfid, HttpMethod.Get, token).Result;
@@ -476,19 +468,17 @@ namespace EmcureNPD.Web.Controllers
             }
             oPIDForm.pidfEntity = _pidfEntity;
             oPIDForm.IPDFormEntity = _IPDFormdata;
-            oPIDForm.BusinessUnitsByUser = GetUserWiseBusinessUnit(Convert.ToInt32(logUserId));
+            oPIDForm.BusinessUnitsByUser = GetUserWiseBusinessUnit(_helper.GetLoggedInUserId());
             oPIDForm.BusinessUnitId = oPIDForm.pidfEntity.BusinessUnitId;
             return oPIDForm;
         }
 
-        [NonAction] // Get Model for View PIDForm.cshtml 
+        [NonAction] // Get Model for View PIDForm.cshtml
         public IPDEntity GetModelForIPDForm(string pidfid, string bussnessId)
         {
             IPDEntity oPIDForm = new();
             try
             {
-
-                string logUserId = Convert.ToString(HttpContext.Session.GetString(UserHelper.LoggedInUserId));
                 HttpContext.Request.Cookies.TryGetValue(UserHelper.EmcureNPDToken, out string token);
                 APIRepository objapi = new(_cofiguration);
                 HttpResponseMessage responseMessage = objapi.APICommunication(APIURLHelper.GetIPDFormData + "/" + pidfid + "/" + bussnessId, HttpMethod.Get, token).Result;
@@ -499,7 +489,7 @@ namespace EmcureNPD.Web.Controllers
                     oPIDForm = data._object;
                     oPIDForm.BusinessUnitId = Convert.ToInt32(bussnessId);
                     oPIDForm.PIDFID = Convert.ToInt64(pidfid);
-                    oPIDForm.LogInId = Convert.ToInt32(logUserId);
+                    oPIDForm.LogInId = _helper.GetLoggedInUserId();
                     TempData["BusList"] = JsonConvert.SerializeObject(oPIDForm.MasterBusinessUnitEntities);
 
                     if (oPIDForm.pidf_IPD_PatentDetailsEntities == null || oPIDForm.pidf_IPD_PatentDetailsEntities.Count == 0)
@@ -528,8 +518,7 @@ namespace EmcureNPD.Web.Controllers
             }
             return oPIDForm;
         }
-        #endregion
 
+        #endregion API Details Form _KD
     }
-
 }

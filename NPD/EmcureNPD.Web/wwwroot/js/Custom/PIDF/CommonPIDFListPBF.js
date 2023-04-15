@@ -1,7 +1,6 @@
 ﻿var tableId = "PIDFTable";
 var objApprRejList = [];
 $(document).ready(function () {
-    
     if (SaveStatus != '' && SaveStatus != undefined) {
         if (SaveStatus == 'Saved successfully.')
             toastr.success(SaveStatus);
@@ -24,7 +23,7 @@ function InitializePIDFList() {
         "datatype": "json"
     };
 
-    var columnObject = [ 
+    var columnObject = [
         {
             "data": null,
             'render': function (data, type, row, meta) {
@@ -101,7 +100,6 @@ function approveRejDeleteConfirm(type) {
             pidfIds: objApprRejList
         };
         ajaxServiceMethod($('#hdnBaseURL').val() + CommonApproveRejectDeletePidf + "?ScreenName=" + ScreenName, 'POST', SaveAppRejSuccess, SaveApprRejFormError, JSON.stringify(objIds));
-
     }
     if (type == "A")
         $('#ApproveModel').modal('hide');
@@ -113,7 +111,6 @@ function approveRejDeleteConfirm(type) {
 function SaveAppRejSuccess(data) {
     try {
         if (data._Success === true) {
-
             toastr.success(data._Message);
             objApprRejList = [];
             $("#PIDFTable").dataTable().fnDestroy();

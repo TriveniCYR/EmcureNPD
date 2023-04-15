@@ -1,11 +1,8 @@
-﻿
-$(document).ready(function () {
-    
+﻿$(document).ready(function () {
    // SetupRoleTable();
 });
 
 $('#chkView').change(function () {
-
     if ($(this).is(':checked')) {
         $("input[name*='RoleModulePermission.View']").prop('checked', true);
     }
@@ -15,7 +12,6 @@ $('#chkView').change(function () {
 });
 
 $('#chkView').change(function () {
-
     if ($(this).is(':checked')) {
         $("input[name*='RoleModulePermission.View']").prop('checked', true);
     }
@@ -25,7 +21,6 @@ $('#chkView').change(function () {
 });
 
 $('#chkView').change(function () {
-
     if ($(this).is(':checked')) {
         $("input[name*='RoleModulePermission.View']").prop('checked', true);
     }
@@ -35,7 +30,6 @@ $('#chkView').change(function () {
 });
 
 $('#chkAdd').change(function () {
-
     if ($(this).is(':checked')) {
         $("input[name*='RoleModulePermission.Add']").prop('checked', true);
     }
@@ -45,7 +39,6 @@ $('#chkAdd').change(function () {
 });
 
 $('#chkEdit').change(function () {
-
     if ($(this).is(':checked')) {
         $("input[name*='RoleModulePermission.Edit']").prop('checked', true);
     }
@@ -54,7 +47,6 @@ $('#chkEdit').change(function () {
     }
 });
 $('#chkDelete').change(function () {
-
     if ($(this).is(':checked')) {
         $("input[name*='RoleModulePermission.Delete']").prop('checked', true);
     }
@@ -63,7 +55,6 @@ $('#chkDelete').change(function () {
     }
 });
 $('#chkApprove').change(function () {
-
     if ($(this).is(':checked')) {
         $("input[name*='RoleModulePermission.Approve']").prop('checked', true);
     }
@@ -71,4 +62,3 @@ $('#chkApprove').change(function () {
         $("input[name*='RoleModulePermission.Approve']").prop('checked', false);
     }
 });
-

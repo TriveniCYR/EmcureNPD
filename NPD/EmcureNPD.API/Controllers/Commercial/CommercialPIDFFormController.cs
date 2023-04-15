@@ -1,13 +1,10 @@
 ﻿using EmcureNPD.API.Filters;
 using EmcureNPD.API.Helpers.Response;
-using EmcureNPD.Business.Core.Implementation;
 using EmcureNPD.Business.Core.Interface;
-using EmcureNPD.Business.Core.ServiceImplementations;
 using EmcureNPD.Business.Models;
 using EmcureNPD.Utility.Utility;
 using Microsoft.AspNetCore.Mvc;
 using System;
-using System.Collections.Generic;
 using System.Net;
 using System.Threading.Tasks;
 using static EmcureNPD.Utility.Enums.GeneralEnum;
@@ -41,7 +38,6 @@ namespace EmcureNPD.API.Controllers.Commercial
         }
 
         #endregion Constructor
-
 
         /// <summary>
         /// Description - To Get All Formulation
@@ -132,6 +128,7 @@ namespace EmcureNPD.API.Controllers.Commercial
                 return _ObjectResponse.Create(false, (int)HttpStatusCode.InternalServerError, Convert.ToString(ex.StackTrace));
             }
         }
+
         [HttpGet, Route("GetCountryRefByRegionIds/{regionIds}")]
         public async Task<IActionResult> GetCountryRefByRegionIds(string regionIds)
         {
@@ -149,6 +146,7 @@ namespace EmcureNPD.API.Controllers.Commercial
                 return _ObjectResponse.Create(false, (int)HttpStatusCode.InternalServerError, Convert.ToString(ex.StackTrace));
             }
         }
+
         [HttpPost]
         [Route("ApproveRejectIpdPidf")]
         public async Task<IActionResult> ApproveRejectIpdPidf(EntryApproveRej oApprRej)
@@ -167,6 +165,7 @@ namespace EmcureNPD.API.Controllers.Commercial
                 return _ObjectResponse.Create(false, (int)HttpStatusCode.InternalServerError, Convert.ToString(ex.StackTrace));
             }
         }
+
         /// <summary>
         /// Description - To Get IPD Form By Id
         /// </summary>
@@ -237,6 +236,5 @@ namespace EmcureNPD.API.Controllers.Commercial
                 return _ObjectResponse.Create(false, (int)HttpStatusCode.InternalServerError, Convert.ToString(ex.StackTrace));
             }
         }
-
     }
 }

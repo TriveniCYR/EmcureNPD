@@ -1,43 +1,42 @@
-﻿using Microsoft.AspNetCore.Mvc;
-using System.Net;
-using System.Threading.Tasks;
-using System;
+﻿using EmcureNPD.API.Filters;
 using EmcureNPD.API.Helpers.Response;
 using EmcureNPD.Business.Core.Interface;
-using EmcureNPD.API.Filters;
 using EmcureNPD.Business.Models;
-using static EmcureNPD.Utility.Enums.GeneralEnum;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.Http.Extensions;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
+using System;
+using System.Net;
+using System.Threading.Tasks;
+using static EmcureNPD.Utility.Enums.GeneralEnum;
 
 namespace EmcureNPD.API.Controllers.API
 {
-	[Route("api/[controller]")]
-	[ApiController]
-	[AuthorizeAttribute]
-	public class APIController : ControllerBase
-	{
-		#region Properties
+    [Route("api/[controller]")]
+    [ApiController]
+    [AuthorizeAttribute]
+    public class APIController : ControllerBase
+    {
+        #region Properties
 
-		private readonly IAPIService _APIService;
-		private readonly IResponseHandler<dynamic> _ObjectResponse;
+        private readonly IAPIService _APIService;
+        private readonly IResponseHandler<dynamic> _ObjectResponse;
         private readonly IWebHostEnvironment _webHostEnvironment;
         private readonly IExceptionService _ExceptionService;
+
         #endregion Properties
 
         #region Constructor
 
         public APIController(IAPIService APIService, IResponseHandler<dynamic> ObjectResponse, IWebHostEnvironment webHostEnvironment, IExceptionService exceptionService)
-		{
-			_APIService = APIService;
-			_ObjectResponse = ObjectResponse;
-            _webHostEnvironment= webHostEnvironment;
+        {
+            _APIService = APIService;
+            _ObjectResponse = ObjectResponse;
+            _webHostEnvironment = webHostEnvironment;
             _ExceptionService = exceptionService;
         }
 
-		#endregion Constructor
-
+        #endregion Constructor
 
         [HttpPost]
         [Consumes("multipart/form-data")]
@@ -48,7 +47,7 @@ namespace EmcureNPD.API.Controllers.API
             {
                 DBOperation oResponse = await _APIService.AddUpdateAPIIPD(oAPIIPD, _webHostEnvironment.WebRootPath);
                 if (oResponse == DBOperation.Success)
-                    return _ObjectResponse.Create(true, (Int32)HttpStatusCode.OK,"");
+                    return _ObjectResponse.Create(true, (Int32)HttpStatusCode.OK, "");
                 else
                     return _ObjectResponse.Create(false, (Int32)HttpStatusCode.BadRequest, (oResponse == DBOperation.NotFound ? "Record not found" : "Bad request"));
             }
@@ -57,14 +56,14 @@ namespace EmcureNPD.API.Controllers.API
                 await _ExceptionService.LogException(ex);
                 return _ObjectResponse.Create(false, (Int32)HttpStatusCode.InternalServerError, Convert.ToString(ex.StackTrace));
             }
-        }        
+        }
 
         [HttpGet, Route("GetAPIIPDFormData/{pidfId}")]
         public async Task<IActionResult> GetAPIIPDFormData([FromRoute] long pidfId)
         {
             try
             {
-                var APIurl = HttpContext.Request.Scheme +"://" +HttpContext.Request.Host.Value;
+                var APIurl = HttpContext.Request.Scheme + "://" + HttpContext.Request.Host.Value;
                 var oPIDFEntity = await _APIService.GetAPIIPDFormData(pidfId, APIurl);
                 if (oPIDFEntity != null)
                     return _ObjectResponse.Create(oPIDFEntity, (Int32)HttpStatusCode.OK);
@@ -77,9 +76,10 @@ namespace EmcureNPD.API.Controllers.API
                 return _ObjectResponse.Create(false, (Int32)HttpStatusCode.InternalServerError, Convert.ToString(ex.StackTrace));
             }
         }
+
         [HttpGet, Route("GetAPICharterSummaryFormData/{pidfId}")]
         public async Task<IActionResult> GetAPICharterSummaryFormData([FromRoute] long pidfId)
-        {       
+        {
             try
             {
                 var oPIDFEntity = await _APIService.GetAPICharterSummaryFormData(pidfId);
@@ -94,6 +94,7 @@ namespace EmcureNPD.API.Controllers.API
                 return _ObjectResponse.Create(false, (Int32)HttpStatusCode.InternalServerError, Convert.ToString(ex.StackTrace));
             }
         }
+
         [HttpGet, Route("GetAPICharterFormData/{pidfId}/{IsCharter}")]
         public async Task<IActionResult> GetAPICharterFormData([FromRoute] long pidfId, [FromRoute] short IsCharter)
         {
@@ -111,6 +112,7 @@ namespace EmcureNPD.API.Controllers.API
                 return _ObjectResponse.Create(false, (Int32)HttpStatusCode.InternalServerError, Convert.ToString(ex.StackTrace));
             }
         }
+
         [HttpPost]
         [Route("InsertUpdateAPICharter")]
         public async Task<IActionResult> InsertUpdateAPICharter(PIDFAPICharterFormEntity oAPICharter)
@@ -186,7 +188,5 @@ namespace EmcureNPD.API.Controllers.API
                 return _ObjectResponse.Create(false, (Int32)HttpStatusCode.InternalServerError, Convert.ToString(ex.StackTrace));
             }
         }
-
-
-    }	
+    }
 }

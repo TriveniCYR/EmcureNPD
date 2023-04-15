@@ -5,20 +5,14 @@ using EmcureNPD.Data.DataAccess.Core.Repositories;
 using EmcureNPD.Data.DataAccess.Core.UnitOfWork;
 using EmcureNPD.Data.DataAccess.Entity;
 using EmcureNPD.Utility.Utility;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Metadata.Internal;
-using System;
-using System.Collections.Generic;
 using System.Data.SqlClient;
 using System.Dynamic;
-using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace EmcureNPD.Business.Core.Implementation
 {
     public class DashboardService : IDashboardService
-    {             
+    {
         private readonly IUnitOfWork _unitOfWork;
         private readonly IMapperFactory _mapperFactory;
         private readonly IMasterBusinessUnitService _businessUnitService;
@@ -43,7 +37,7 @@ namespace EmcureNPD.Business.Core.Implementation
             return DropdownObjects;
         }
 
-        public async Task<dynamic> GetPIDFByYearAndBusinessUnit(int id, string fromDate,string toDate)
+        public async Task<dynamic> GetPIDFByYearAndBusinessUnit(int id, string fromDate, string toDate)
         {
             dynamic DropdownObjects = new ExpandoObject();
             //var splitYear = years.Split('-');

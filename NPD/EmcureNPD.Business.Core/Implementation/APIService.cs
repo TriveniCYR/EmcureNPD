@@ -1,33 +1,22 @@
-﻿using Microsoft.Extensions.Configuration;
-using EmcureNPD.Business.Core.Interface;
+﻿using EmcureNPD.Business.Core.Interface;
 using EmcureNPD.Business.Core.ModelMapper;
-using EmcureNPD.Business.Core.ServiceImplementations;
 using EmcureNPD.Business.Models;
 using EmcureNPD.Data.DataAccess.Core.Repositories;
 using EmcureNPD.Data.DataAccess.Core.UnitOfWork;
 using EmcureNPD.Data.DataAccess.Entity;
+using EmcureNPD.Utility.Enums;
 using EmcureNPD.Utility.Utility;
 using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Primitives;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
-using System.Dynamic;
+using System.Data;
+using System.Data.SqlClient;
 using System.IO;
 using System.Linq;
-using System.Linq.Expressions;
-using System.Text;
-using System.Text.Json.Nodes;
 using System.Threading.Tasks;
 using static EmcureNPD.Utility.Enums.GeneralEnum;
-using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.Http.Internal;
-using AutoMapper.Configuration;
-using System.Data.SqlClient;
-using EmcureNPD.Utility.Enums;
-using System.Data;
-using System.Reflection;
 
 namespace EmcureNPD.Business.Core.Implementation
 {
@@ -48,6 +37,7 @@ namespace EmcureNPD.Business.Core.Implementation
         private IRepository<Pidf> _pidfrepository { get; set; }
         private readonly INotificationService _notificationService;
         private readonly IExceptionService _ExceptionService;
+
         public APIService(IUnitOfWork unitOfWork, IMapperFactory mapperFactory,
             Microsoft.Extensions.Configuration.IConfiguration configuration, IMasterProductTypeService masterProductTypeService,
              INotificationService notificationService,
@@ -96,11 +86,11 @@ namespace EmcureNPD.Business.Core.Implementation
             }
             catch (Exception ex)
             {
-                
                 fileUpload.ErrorMessage = "Upload Container Should Not Be Empty or Contact Admin";
                 return fileUpload.ErrorMessage;
             }
         }
+
         public async Task FileUpload(IFormFile files, string path, string uniqueFileName)
         {
             if (files != null)
@@ -115,9 +105,9 @@ namespace EmcureNPD.Business.Core.Implementation
                 {
                     await files.CopyToAsync(stream);
                 }
-
             }
         }
+
         private List<DM> FillObjData<VM, DM>(List<VM> _vmObj)
         {
             var _objPidfApiCharterTimelineInMonth = new List<DM>();
@@ -128,6 +118,7 @@ namespace EmcureNPD.Business.Core.Implementation
             }
             return _objPidfApiCharterTimelineInMonth;
         }
+
         private void RemoveChildDataAPICharter(long APICharterId)
         {
             PIDFAPICharterFormEntity _oCharterEntity = new PIDFAPICharterFormEntity();
@@ -137,11 +128,11 @@ namespace EmcureNPD.Business.Core.Implementation
             var dbresult = _pidf_API_Charter_repository.GetDataSetBySP("stp_npd_RemoveChildDataAPICharter",
                 System.Data.CommandType.StoredProcedure, osqlParameter);
         }
-       //---------------End Child Method-----------------------------------------------
-      
+
+        //---------------End Child Method-----------------------------------------------
+
         public async Task<PIDFAPIIPDFormEntity> GetAPIIPDFormData(long pidfId, string HostValue)
         {
-
             PIDFAPIIPDFormEntity _oApiIpdData = new PIDFAPIIPDFormEntity();
             var _oAPIIPD = await _pidf_API_IPD_repository.GetAsync(x => x.Pidfid == pidfId);
             if (_oAPIIPD != null)
@@ -209,13 +200,13 @@ namespace EmcureNPD.Business.Core.Implementation
                 var _objProductType = await _masterProductTypeService.GetById((int)_oAPIIpd.ProductTypeId);
                 if (_objProductType != null)
                     _oApiRnDData.ProductType = _objProductType.ProductTypeName;
-
             }
             _oApiRnDData.MasterCountries = _countryService.GetAll().Result.ToList();
             Pidf objPidf = await _pidfrepository.GetAsync(pidfId);
             _oApiRnDData.StatusId = objPidf.StatusId;
             return _oApiRnDData;
         }
+
         public async Task<PIDFAPICharterFormEntity> GetAPICharterFormData(long pidfId, short IsCharter)
         {
             PIDFAPICharterFormEntity _oCharterEntity = new PIDFAPICharterFormEntity();
@@ -260,6 +251,7 @@ namespace EmcureNPD.Business.Core.Implementation
 
             return _oCharterEntity;
         }
+
         public async Task<PIDFAPICharterFormEntity> GetAPICharterSummaryFormData(long pidfId)
         {
             PIDFAPICharterFormEntity _oCharterEntity = new PIDFAPICharterFormEntity();
@@ -315,7 +307,6 @@ namespace EmcureNPD.Business.Core.Implementation
             else
                 IskeepLastFile = false;
 
-
             if (hasNewUploadFile)
             {
                 var MarketCGIFile = _oAPIIPD_Form.Files[0];
@@ -326,8 +317,7 @@ namespace EmcureNPD.Business.Core.Implementation
                 var fullPath = path + "\\" + MarketCGIFile.FileName;
                 var itmFileName = "APIIPD\\" + MarketCGIFile.FileName;
 
-
-               // ErrorMsg = FileValidation(MarketCGIFile);
+                // ErrorMsg = FileValidation(MarketCGIFile);
             }
 
             PIDFAPIIPDFormEntity _oAPIIPD = new PIDFAPIIPDFormEntity();
@@ -397,12 +387,13 @@ namespace EmcureNPD.Business.Core.Implementation
                 _APIIPDDBEntity.CreatedDate = DateTime.Now;
                 _pidf_API_IPD_repository.AddAsync(_APIIPDDBEntity);
                 await _unitOfWork.SaveChangesAsync();
-            }            
+            }
             var _StatusID = (_oAPIIPD.SaveType == "Save") ? Master_PIDFStatus.APISubmitted : Master_PIDFStatus.APIInProgress;
             await _auditLogService.UpdatePIDFStatusCommon(long.Parse(_oAPIIPD.Pidfid), (int)_StatusID, _oAPIIPD.LoggedInUserId);
             await _notificationService.CreateNotification(long.Parse(_oAPIIPD.Pidfid), (int)_StatusID, string.Empty, string.Empty, _oAPIIPD.LoggedInUserId);
             return DBOperation.Success;
         }
+
         public async Task<DBOperation> AddUpdateAPIRnD(PIDFAPIRnDFormEntity _oAPIRnD)
         {
             //PIDFAPIIPDFormEntity _exsistingAPIRnD = new PIDFAPIIPDFormEntity();
@@ -427,8 +418,8 @@ namespace EmcureNPD.Business.Core.Implementation
                     lastApiRnD.ModifyDate = DateTime.Now;
                     _pidf_API_RnD_repository.UpdateAsync(lastApiRnD);
 
-                       var isSuccess = await _auditLogService.CreateAuditLog<PidfApiRnD>(Utility.Audit.AuditActionType.Update,
-                    Utility.Enums.ModuleEnum.APIListManagement, OldObjAPiIPD, lastApiRnD, loggedInUser.UserId);
+                    var isSuccess = await _auditLogService.CreateAuditLog<PidfApiRnD>(Utility.Audit.AuditActionType.Update,
+                 Utility.Enums.ModuleEnum.APIListManagement, OldObjAPiIPD, lastApiRnD, loggedInUser.UserId);
                 }
                 else
                 {
@@ -460,6 +451,7 @@ namespace EmcureNPD.Business.Core.Implementation
             await _notificationService.CreateNotification(long.Parse(_oAPIRnD.Pidfid), (int)_StatusID, string.Empty, string.Empty, _oAPIRnD.LoggedInUserId);
             return DBOperation.Success;
         }
+
         public async Task<DBOperation> AddUpdateAPICharter(PIDFAPICharterFormEntity _oAPICharter)
         {
             var loggedInUser = _helper.GetLoggedInUser();
@@ -470,7 +462,6 @@ namespace EmcureNPD.Business.Core.Implementation
             var _objPidfApiCharterPRDDepartment = FillObjData<PRDDepartment, PidfApiCharterPrddepartment>(_oAPICharter.PRDDepartment);
             var _objPidfApiCharterCapitalOtherExpenditure = FillObjData<CapitalOtherExpenditure, PidfApiCharterCapitalOtherExpenditure>(_oAPICharter.CapitalOtherExpenditure);
             var _objPidfApiCharterHeadwiseBudget = FillObjData<HeadwiseBudget, PidfApiCharterHeadwiseBudget>(_oAPICharter.HeadwiseBudget);
-
 
             if (_oAPICharter.PIDFAPICharterFormID > 0)
             {
@@ -487,7 +478,6 @@ namespace EmcureNPD.Business.Core.Implementation
                     lastApiCharter.PidfApiCharterCapitalOtherExpenditures = _objPidfApiCharterCapitalOtherExpenditure;
                     lastApiCharter.PidfApiCharterHeadwiseBudgets = _objPidfApiCharterHeadwiseBudget;
 
-
                     _oAPICharter.ManHourRates = (Convert.ToString(_oAPICharter.ManHourRates) == "" || _oAPICharter.ManHourRates == null) ? "0" : _oAPICharter.ManHourRates;
                     lastApiCharter.ManHourRates = int.Parse(_oAPICharter.ManHourRates);
                     lastApiCharter.ApigroupLeader = _oAPICharter.APIGroupLeader;
@@ -497,7 +487,7 @@ namespace EmcureNPD.Business.Core.Implementation
                     lastApiCharter.ModifyBy = _oAPICharter.LoggedInUserId;
                     lastApiCharter.ModifyDate = DateTime.Now;
                     _pidf_API_Charter_repository.UpdateAsync(lastApiCharter);
-                   
+
                     //Implement AuditLog
                     var isSuccess = await _auditLogService.CreateAuditLog<PidfApiCharter>(Utility.Audit.AuditActionType.Update,
                     ModuleEnum.APIListManagement, OldObjAPICharter, lastApiCharter, 0);
@@ -534,7 +524,6 @@ namespace EmcureNPD.Business.Core.Implementation
             await _auditLogService.UpdatePIDFStatusCommon(long.Parse(_oAPICharter.Pidfid), (int)_StatusID, _oAPICharter.LoggedInUserId);
             await _notificationService.CreateNotification(long.Parse(_oAPICharter.Pidfid), (int)_StatusID, string.Empty, string.Empty, _oAPICharter.LoggedInUserId);
             return DBOperation.Success;
-        }       
-        
+        }
     }
 }

@@ -9,7 +9,6 @@ namespace EmcureNPD.API.Controllers.Masters
 {
     [Route("api/[controller]")]
     [ApiController]
-
     public class ModuleController : ControllerBase
     {
         #region Properties
@@ -55,6 +54,5 @@ namespace EmcureNPD.API.Controllers.Masters
                 return _ObjectResponse.Create(false, (Int32)HttpStatusCode.InternalServerError, Convert.ToString(ex.StackTrace));
             }
         }
-
     }
 }

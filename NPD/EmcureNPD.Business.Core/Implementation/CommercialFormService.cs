@@ -6,16 +6,12 @@ using EmcureNPD.Data.DataAccess.Core.UnitOfWork;
 using EmcureNPD.Data.DataAccess.Entity;
 using EmcureNPD.Utility.Enums;
 using EmcureNPD.Utility.Utility;
-using Microsoft.AspNetCore.SignalR;
 using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Data.SqlClient;
 using System.Linq;
 using System.Linq.Expressions;
-using System.Net;
-using System.Runtime.CompilerServices;
-using System.Security.Cryptography.X509Certificates;
 using System.Threading.Tasks;
 using static EmcureNPD.Utility.Enums.GeneralEnum;
 
@@ -45,6 +41,7 @@ namespace EmcureNPD.Business.Core.Implementation
         private IRepository<MasterCountry> _countryrepository { get; set; }
         private IRepository<PidfproductStrength> _pidfProductStrengthrepository { get; set; }
         private IRepository<MasterFinalSelection> _finalSelectionrepository { get; set; }
+
         public CommercialFormService(IUnitOfWork unitOfWork, IMapperFactory mapperFactory,
             IMasterBusinessUnitService businessUnitService, IMasterCountryService countryService,
             INotificationService notificationService,
@@ -118,7 +115,7 @@ namespace EmcureNPD.Business.Core.Implementation
                 NewCommPIDF.PidfCommercialYears = listYear;
                 _commercialrepository.AddAsync(NewCommPIDF);
                 await _unitOfWork.SaveChangesAsync();
-                if(IsUpdateData)
+                if (IsUpdateData)
                 {
                     //await _auditLogService.CreateAuditLog<PidfCommercial>(Utility.Audit.AuditActionType.Update,
                     //                ModuleEnum.PIDF, OldObjpidfCommercial, NewCommPIDF, loggedInUserID);
@@ -149,6 +146,7 @@ namespace EmcureNPD.Business.Core.Implementation
             await _notificationService.CreateNotification(entitycommPIDF.Pidfid, (int)_StatusID, string.Empty, string.Empty, entitycommPIDF.CreatedBy);
             return DBOperation.Success;
         }
+
         public async Task<PIDFCommercialEntity> GetCommercialFormData(long pidfId, int buid, int? strengthid)
         {
             Expression<Func<PidfCommercial, bool>> expr;
@@ -189,7 +187,7 @@ namespace EmcureNPD.Business.Core.Implementation
 
             return data;
         }
-      
+
         public async Task<IEnumerable<dynamic>> GetAllRegion(int userId)
         {
             var dataRegion = _mapperFactory.GetList<MasterRegion, RegionEntity>(await _regionRepository.GetAllAsync());
@@ -203,7 +201,6 @@ namespace EmcureNPD.Business.Core.Implementation
                               {
                                   RegionId = p.RegionId,
                                   RegionName = m.RegionName,
-
                               }).ToList();
                 return person;
             }
@@ -212,6 +209,7 @@ namespace EmcureNPD.Business.Core.Implementation
                 return null;
             }
         }
+
         public async Task<IEnumerable<dynamic>> GetCountryRefByRegionIds(string regionIds)
         {
             //int[] intIDs = new[] { 1, 2 };
@@ -226,7 +224,6 @@ namespace EmcureNPD.Business.Core.Implementation
                     intIDs[i] = Convert.ToInt32(regionList[i]);
                 }
 
-
                 var dataCountry = _countryrepository.GetAllQuery().Where(xx => xx.IsActive).ToList();
 
                 var dataRegionCountry = _mapperFactory.GetList<MasterRegionCountryMapping, MasterRegionCountryMapping>(await _userRegionCountryRepository.FindAllAsync(xx => intIDs.Contains(xx.RegionId)));
@@ -239,7 +236,6 @@ namespace EmcureNPD.Business.Core.Implementation
                                        {
                                            CountryId = p.CountryId,
                                            CountryName = p.CountryName,
-
                                        }).ToList();
                     return countryList;
                 }
@@ -251,6 +247,7 @@ namespace EmcureNPD.Business.Core.Implementation
             else
                 return null;
         }
+
         public async Task<DataTableResponseModel> GetAllIPDPIDFList(DataTableAjaxPostModel model)
         {
             string ColumnName = (model.order.Count > 0 ? model.columns[model.order[0].column].data : string.Empty);
@@ -281,9 +278,9 @@ namespace EmcureNPD.Business.Core.Implementation
 
             return oDataTableResponseModel;
         }
+
         public async Task<DBOperation> ApproveRejectIpdPidf(EntryApproveRej oApprRej)
         {
-
             if (oApprRej != null && oApprRej.PidfIds.Count > 0)
             {
                 int saveTId = 0;
@@ -311,14 +308,11 @@ namespace EmcureNPD.Business.Core.Implementation
                 return DBOperation.NotFound;
             }
         }
+
         public async Task<List<MasterFinalSelectionEntity>> GetAllFinalSelection()
         {
             var list = await _finalSelectionrepository.GetAllAsync(x => x.IsActive == true);
             return _mapperFactory.GetList<MasterFinalSelection, MasterFinalSelectionEntity>(list.ToList());
         }
-
-
-
-
     }
 }

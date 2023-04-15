@@ -14,7 +14,9 @@ namespace EmcureNPD.Business.Core.Interface
         Task<DBOperation> AddUpdateDepartment(MasterDepartmentEntity entityDepartment);
 
         Task<DBOperation> DeleteDepartment(int id);
+
         Task<List<MasterDepartmentEntity>> GetAllActiveDepartment();
+
         Task<MasterBusinessUnitEntity> GetBusinessUnitByDepartmentId(int id);
     }
 }

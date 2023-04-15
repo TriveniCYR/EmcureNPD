@@ -39,33 +39,31 @@ namespace EmcureNPD.Business.Core.ServiceImplementations
         {
             try
             {
-
-            MasterBerequirement objBERequirement;
-            if (entityBERequirement.BERequirementId > 0)
-            {
-                objBERequirement = _repository.Get(entityBERequirement.BERequirementId);
-                if (objBERequirement != null)
+                MasterBerequirement objBERequirement;
+                if (entityBERequirement.BERequirementId > 0)
                 {
-                    objBERequirement = _mapperFactory.Get<MasterBERequirementEntity, MasterBerequirement>(entityBERequirement);
-                    _repository.UpdateAsync(objBERequirement);
+                    objBERequirement = _repository.Get(entityBERequirement.BERequirementId);
+                    if (objBERequirement != null)
+                    {
+                        objBERequirement = _mapperFactory.Get<MasterBERequirementEntity, MasterBerequirement>(entityBERequirement);
+                        _repository.UpdateAsync(objBERequirement);
+                    }
+                    else
+                    {
+                        return DBOperation.NotFound;
+                    }
                 }
                 else
                 {
-                    return DBOperation.NotFound;
+                    objBERequirement = _mapperFactory.Get<MasterBERequirementEntity, MasterBerequirement>(entityBERequirement);
+                    _repository.AddAsync(objBERequirement);
                 }
-            }
-            else
-            {
-                objBERequirement = _mapperFactory.Get<MasterBERequirementEntity, MasterBerequirement>(entityBERequirement);
-                _repository.AddAsync(objBERequirement);
-            }
-           
+
                 await _unitOfWork.SaveChangesAsync();
-            if (objBERequirement.BerequirementId == 0)
-                return DBOperation.Error;
+                if (objBERequirement.BerequirementId == 0)
+                    return DBOperation.Error;
 
-            return DBOperation.Success;
-
+                return DBOperation.Success;
             }
             catch (System.Exception ex)
             {

@@ -2,12 +2,11 @@
 
 namespace EmcureNPD.Web.Controllers
 {
-    public class GanttController: BaseController
+    public class GanttController : BaseController
     {
         [HttpGet]
         public IActionResult Ganttc()
         {
-            
             return View();
         }
     }

@@ -3,7 +3,6 @@
     gantt.config.work_time = true;
     //gantt.config.skip_off_time = true;
 
-
     gantt.setWorkTime({ day: 6 });
     gantt.setWorkTime({ day: 0 });
 
@@ -76,8 +75,7 @@
     for (var i = 0; i < radios.length; i++) {
         radios[i].onclick = func;
     }
-    //end 
-
+    //end
 
     function shouldHighlightTask(task) {
         var store = gantt.$resourcesStore;
@@ -154,8 +152,6 @@
         return className;
     };
     //end of task progress method
-
-
 
     gantt.templates.grid_row_class = function (start, end, task) {
         var css = [];
@@ -237,7 +233,6 @@
     function parent_progress(id) {
         var temptask;
         gantt.eachParent(function (task) {
-
             var children = gantt.getChildren(task.id);
             var child_progress = 0;
             for (var i = 0; i < children.length; i++) {
@@ -249,7 +244,6 @@
         }, id)
         gantt.render();
         //console.log(temptask);
-
 
         if (temptask != undefined) {
             var response1 = gantt.ajax.put({
@@ -270,7 +264,6 @@
             });
 
             // console.log(response1);
-
         }
         setTimeout(reloadFunc, 3000);
     }
@@ -324,7 +317,6 @@
         }
     ];
     gantt.locale.labels.section_baseline = "Planned";
-
 
     function getResourceTasks(resourceId) {
         var store = gantt.getDatastore(gantt.config.resource_store),
@@ -537,7 +529,6 @@
     // gantt.config.start_date = new Date(2021, 1, 1, 0, 1);
     //gantt.config.end_date = new Date(2022, 1, 1, 0, 1);
 
-
     //Default set to false for avoid multiple task update after load [DO NOT DELETE]
     gantt.config.auto_scheduling = false;
 
@@ -562,5 +553,4 @@
     var dp = new gantt.dataProcessor("/api")
     dp.init(JSON.parse(JSON.stringify(gantt)));
     dp.setTransactionMode("REST-JSON");
-
 });

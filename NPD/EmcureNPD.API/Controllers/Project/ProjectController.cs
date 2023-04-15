@@ -1,13 +1,13 @@
-﻿using EmcureNPD.Business.Models;
+﻿using EmcureNPD.API.Filters;
+using EmcureNPD.API.Helpers.Response;
+using EmcureNPD.Business.Core.Interface;
+using EmcureNPD.Business.Models;
+using EmcureNPD.Utility.Utility;
 using Microsoft.AspNetCore.Mvc;
-using static EmcureNPD.Utility.Enums.GeneralEnum;
+using System;
 using System.Net;
 using System.Threading.Tasks;
-using System;
-using EmcureNPD.Business.Core.Interface;
-using EmcureNPD.API.Helpers.Response;
-using EmcureNPD.API.Filters;
-using EmcureNPD.Utility.Utility;
+using static EmcureNPD.Utility.Enums.GeneralEnum;
 
 namespace EmcureNPD.API.Controllers.Project
 {
@@ -20,19 +20,21 @@ namespace EmcureNPD.API.Controllers.Project
 
         private readonly IResponseHandler<dynamic> _ObjectResponse;
         private readonly IExceptionService _ExceptionService;
-        public ProjectController(IProjectService projectService,IResponseHandler<dynamic> ObjectResponse, IExceptionService exceptionService)
+
+        public ProjectController(IProjectService projectService, IResponseHandler<dynamic> ObjectResponse, IExceptionService exceptionService)
         {
             _projectService = projectService;
             _ObjectResponse = ObjectResponse;
             _ExceptionService = exceptionService;
         }
+
         [HttpGet, Route("GetDropdownsForAddTask")]
         public ActionResult GetDropdownsForAddTask()
         {
             var oResponse = _projectService.GetDropDownsForTask();
             return Ok(oResponse);
-
         }
+
         [HttpPost, Route("AddUpdateTaskDetails")]
         public async Task<IActionResult> AddUpdateTaskDetails(ProjectTaskEntity TaskAddModel)
         {
@@ -50,6 +52,7 @@ namespace EmcureNPD.API.Controllers.Project
                 return _ObjectResponse.Create(false, (int)HttpStatusCode.InternalServerError, Convert.ToString(ex.StackTrace));
             }
         }
+
         [HttpGet, Route("GetTaskSubTask/{pidfId}")]
         public async Task<IActionResult> GetTaskSubTask([FromRoute] string pidfId)
         {
@@ -69,6 +72,7 @@ namespace EmcureNPD.API.Controllers.Project
             //var result = _projectService.GetTaskSubTaskList(long.Parse(UtilityHelper.Decreypt(pidfId)));
             //return Ok(result);
         }
+
         [HttpPost("DeleteTaskSubTask/{id}")]
         public async Task<IActionResult> DeleteTaskSubTask([FromRoute] int id)
         {
@@ -104,6 +108,7 @@ namespace EmcureNPD.API.Controllers.Project
                 return _ObjectResponse.Create(false, (Int32)HttpStatusCode.InternalServerError, Convert.ToString(ex.StackTrace));
             }
         }
+
         [HttpGet, Route("GetTaskSubTaskAndProjDetails/{id}")]
         public async Task<IActionResult> GetTaskSubTaskAndProjDetails([FromRoute] string id)
         {
@@ -119,6 +124,7 @@ namespace EmcureNPD.API.Controllers.Project
                 return _ObjectResponse.Create(null, (Int32)HttpStatusCode.BadRequest, "No Records found");
             }
         }
+
         [HttpGet, Route("GetBusinessUnitDetails/{buid}/{pidfid}")]
         public async Task<IActionResult> GetBusinessUnitDetails([FromRoute] long buid, string pidfid)
         {

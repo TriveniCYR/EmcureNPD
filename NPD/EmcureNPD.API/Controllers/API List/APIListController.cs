@@ -18,7 +18,7 @@ namespace EmcureNPD.API.Controllers.Masters
 
         private readonly IAPIListService _APIListService;
 
-        private readonly IResponseHandler<dynamic> _ObjectResponse; 
+        private readonly IResponseHandler<dynamic> _ObjectResponse;
         private readonly IExceptionService _ExceptionService;
 
         #endregion Properties

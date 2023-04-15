@@ -9,7 +9,6 @@ $(document).ready(function () {
     gantt.config.work_time = true;
     //gantt.config.skip_off_time = true;
 
-
     gantt.setWorkTime({ day: 6 });
     gantt.setWorkTime({ day: 0 });
 
@@ -82,8 +81,7 @@ $(document).ready(function () {
     for (var i = 0; i < radios.length; i++) {
         radios[i].onclick = func;
     }
-    //end 
-
+    //end
 
     function shouldHighlightTask(task) {
         var store = gantt.$resourcesStore;
@@ -160,8 +158,6 @@ $(document).ready(function () {
         return className;
     };
     //end of task progress method
-
-
 
     gantt.templates.grid_row_class = function (start, end, task) {
         var css = [];
@@ -256,7 +252,6 @@ $(document).ready(function () {
         //setTimeout(reloadFunc, 3000);
     }
 
-   
     gantt.config.lightbox.sections = [
         { name: "description", height: 38, map_to: "text", type: "textarea", focus: true },
         { name: "owner", height: 22, map_to: "owner_id", type: "select", options: gantt.serverList("people") },
@@ -270,7 +265,6 @@ $(document).ready(function () {
         }
     ];
     gantt.locale.labels.section_baseline = "Planned";
-
 
     function getResourceTasks(resourceId) {
         var store = gantt.getDatastore(gantt.config.resource_store),
@@ -356,7 +350,7 @@ $(document).ready(function () {
             var store = gantt.getDatastore("resource");
             //console.log(store);
             var assignments = task[gantt.config.resource_property] || [];
-           
+
             var owner = store.getItem(assignments);
             //owners.push(owner.text);
             //if (owners[0].taskLevel == 1) {
@@ -470,7 +464,7 @@ $(document).ready(function () {
     gantt.config.auto_scheduling = false;
     let gdata = {};
     gantt.init("ganttContainer");
-    
+
     gdata = {
         "tasks": [
             {

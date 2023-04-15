@@ -14,6 +14,7 @@ namespace EmcureNPD.Business.Core.Interface
         Task<DBOperation> AddUpdateRegion(MasterRegionEntity entityRegion);
 
         Task<DBOperation> DeleteRegion(int id);
+
         Task<MasterCountryEntity> GetCountryByRegionId(int id);
     }
 }

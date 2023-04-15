@@ -56,7 +56,6 @@ function GetBusinessUnitByIdSuccess(data) {
 
         $('#SaveBusinessUnitModel #RegionId').val(regionIds);
         $('#SaveBusinessUnitModel #RegionId').trigger('change');
-        
 
         $('#SaveBusinessUnitModel #BusinessUnitRegionMappingId').val(data._object.masterBusinessRegionMappingIds.toString());
 

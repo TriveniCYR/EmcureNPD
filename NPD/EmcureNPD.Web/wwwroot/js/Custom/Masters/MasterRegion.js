@@ -56,7 +56,6 @@ function GetRegionByIdSuccess(data) {
 
         $('#SaveRegionModel #CountryId').val(countryIds);
         $('#SaveRegionModel #CountryId').trigger('change');
-        
 
         $('#SaveRegionModel #RegionCountryMappingId').val(data._object.masterBusinessCountryMappingIds.toString());
 

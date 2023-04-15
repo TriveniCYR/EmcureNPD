@@ -13,11 +13,11 @@ namespace EmcureNPD.Web.Filters
     public class ExceptionsFilter : IExceptionFilter
     {
         private readonly ILogger<ExceptionsFilter> logger;
+
         public ExceptionsFilter(ILogger<ExceptionsFilter> logger)
         {
             this.logger = logger;
         }
-
 
         public void OnException(ExceptionContext context)
         {
@@ -32,7 +32,6 @@ namespace EmcureNPD.Web.Filters
 
             var responseModel = new APIResponseEntity<string>() { _errorMessages = new List<string> { context.Exception.Message }, _Success = false };
 
-
             var result = JsonConvert.SerializeObject(responseModel);
 
             logger.LogCritical(context.Exception, context.Exception.Message);
@@ -40,6 +39,7 @@ namespace EmcureNPD.Web.Filters
             response.ContentLength = result.Length;
             response.WriteAsync(result);
         }
+
         private HttpStatusCode getErrorCode(Type exceptionType)
         {
             Exceptions tryParseResult;
