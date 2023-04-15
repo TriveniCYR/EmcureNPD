@@ -6355,9 +6355,8 @@
 <div class="row">
 					<div class="col-12 text-end">
 						<div class="form-group">
-            @if(ViewBag.Access.Add == true)
-            {
-                if (DefaultStatus == 0 || Model.PIDFStatusId == (Int32)Master_PIDFStatus.FinanceInProgres)
+           
+                @if (DefaultStatus == 0 || Model.PIDFStatusId == (Int32)Master_PIDFStatus.FinanceInProgres)
                 {
                    
                 <button type="submit" id="btnSaveDraft" class="btn btn-primary btnControll" onclick="SaveDraftClick();">
@@ -6368,7 +6367,7 @@
                                 @* <i class="fa fa-save"></i> *@
                                 Submit
                             </button>
-            }
+            
             @if(ViewBag.Access.Approve == true)
             {
                 if (Model != null && Model.PIDFStatusId > 0 && Model.PIDFStatusId == (Int32)Master_PIDFStatus.FinanceSubmitted)
