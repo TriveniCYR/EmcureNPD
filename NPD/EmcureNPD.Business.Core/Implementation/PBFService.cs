@@ -239,6 +239,7 @@ namespace EmcureNPD.Business.Core.Implementation
             DropdownObjects.PBFRNDReferenceProductDetail = dsDropdownOptions.Tables[16];
             DropdownObjects.PBFRNDFillingExpenses = dsDropdownOptions.Tables[17];
             DropdownObjects.PBFRNDManPowerCost = dsDropdownOptions.Tables[18];
+            DropdownObjects.IPDCostOfLitigation = dsDropdownOptions.Tables[19];
 
             return DropdownObjects;
         }

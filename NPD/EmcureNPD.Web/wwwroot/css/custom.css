@@ -235,9 +235,8 @@ form-control.is-valid, .was-validated .form-control:valid {
     /*background-position: none !important;*/
     /*background-size: none !important;*/
 }
-}
 .inline-textbox {
-    width: 80% !important;
+    width: 70% !important;
     display: inline-block !important;
 }
 .tableTDHint .form-control {
