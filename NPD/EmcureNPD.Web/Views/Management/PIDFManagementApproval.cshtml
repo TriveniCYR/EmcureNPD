@@ -23,18 +23,20 @@
     RolePermissionModel objPermssion = (RolePermissionModel)ViewBag.Access;
     string IsApproveAllow = (objPermssion.Approve) ? "" : "display: none";
   }
-<div class="container-fluid d-flex justify-content-between">
-    <h3>Management Approval</h3>
-    <div>
-        <a class="btn btn-success mr-2" id="btnExportToPdf" title="ExportToPdf"><i class="fa fa-file-pdf-o" aria-hidden="true"></i>PDF</a>
-        <a class="btn btn-danger" href="@Url.Action("PIDFList","PIDF", new { ScreenId=Convert.ToString((int)EmcureNPD.Utility.Enums.PIDFScreen.Management)})">
-            Cancel
-        </a>
-        
-        <div class="export-btn mybtn-group"></div>
+
+<div class="content-header">
+    <div class="container-fluid d-flex justify-content-between">
+        <h3>Management Approval</h3>
+        <div>
+            @*<a class="btn btn-success mr-2" id="btnExportToPdf" title="ExportToPdf"><i class="fa fa-file-pdf-o" aria-hidden="true"></i>PDF</a>*@
+            <a class="btn btn-success mr-3" id="btnPrintPDF" title="Print"><i class="fa fa-file-pdf-o" aria-hidden="true"></i></a>
+            <a class="btn btn-danger" href="@Url.Action("PIDFList","PIDF", new { ScreenId=Convert.ToString((int)EmcureNPD.Utility.Enums.PIDFScreen.Management)})">
+                Cancel
+            </a>
+        </div>
     </div>
 </div>
-    <div class="container-fluid background-white-card">
+<div class="container-fluid background-white-card">
     <div class="row" id="frmMA">
             <div class="col-12 mb-4">
                 <table class="table table-bordered text-center m-0 levi-table">
@@ -44,7 +46,9 @@
                                 Project name
                             </th>
                             <th class="text-start" colspan="13">
+                                <span id="lblProjectName">
                                 Levetiracetam Tablets
+                                </span>
                             </th>
                             @*<th class="text-right">
                             <i id="btnExportToExcel" class="fa fa-file-excel-o" aria-hidden="true" ></i>
