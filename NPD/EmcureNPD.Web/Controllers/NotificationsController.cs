@@ -10,7 +10,7 @@ using System.Net.Http;
 
 namespace EmcureNPD.Web.Controllers
 {
-    public class NotificationsController : Controller
+    public class NotificationsController : BaseController
     {
         #region Properties
 
