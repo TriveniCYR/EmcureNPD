@@ -669,4 +669,7 @@
   <data name="Back" xml:space="preserve">
     <value>Back</value>
   </data>
+  <data name="CanNotInactiveRole" xml:space="preserve">
+    <value>Can not Inactive Role, User assigned to this Role.</value>
+  </data>
 </root>

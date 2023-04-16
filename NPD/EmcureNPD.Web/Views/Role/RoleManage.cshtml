@@ -43,10 +43,20 @@
                     </div>
                 </div>
                 <div class="col-md-12">
-                    <div class="required">
-                        @Html.CheckBoxFor(model => model.IsActive, new { @class = "checkbox-checked", @checked = "checked" })
-                        @Html.Label(@SharedLocalizer["IsActive"])
+                    <div class="required">                        
+                        @if (Model.IsUserAssigned && Model.IsActive)
+                        {
+                            @Html.CheckBoxFor(model => model.IsActive, new { @disabled="true",  @class = "checkbox-checked", @checked = "checked" })
+                            @Html.Label(@SharedLocalizer["IsActive"])
+                            <lable class="text-danger">@MasterLocalizer["CanNotInactiveRole"]</lable>
+                        }
+                        else
+                        {
+                            @Html.CheckBoxFor(model => model.IsActive, new { @class = "checkbox-checked", @checked = "checked" })
+                            @Html.Label(@SharedLocalizer["IsActive"])
+                        }
                     </div>
+                   
                 </div>
             </div>
 
