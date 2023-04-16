@@ -1,4 +1,5 @@
-﻿using EmcureNPD.API.Helpers.Response;
+﻿using EmcureNPD.API.Filters;
+using EmcureNPD.API.Helpers.Response;
 using EmcureNPD.Business.Core.Interface;
 using EmcureNPD.Business.Models;
 using Microsoft.AspNetCore.Mvc;
@@ -10,6 +11,7 @@ namespace EmcureNPD.API.Controllers.Masters
 {
     [Route("api/[controller]")]
     [ApiController]
+    [AuthorizeAttribute]
     public class AuditLogController : ControllerBase
     {
         #region Properties

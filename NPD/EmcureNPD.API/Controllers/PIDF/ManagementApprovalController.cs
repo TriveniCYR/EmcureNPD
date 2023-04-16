@@ -1,4 +1,5 @@
-﻿using EmcureNPD.API.Helpers.Response;
+﻿using EmcureNPD.API.Filters;
+using EmcureNPD.API.Helpers.Response;
 using EmcureNPD.Business.Core.Interface;
 using EmcureNPD.Utility.Utility;
 using Microsoft.AspNetCore.Hosting;
@@ -11,6 +12,7 @@ namespace EmcureNPD.API.Controllers.PIDF
 {
     [Route("api/[controller]")]
     [ApiController]
+    [AuthorizeAttribute]
     public class ManagementApprovalController : ControllerBase
     {
         #region Properties

@@ -32,6 +32,8 @@ function GetProductTypeByIdSuccess(data) {
         CleareProductTypeFields();
         $('#SaveProductTypeModel #ProductTypeID').val(data._object.productTypeId);
         $('#SaveProductTypeModel #ProductTypeName').val(data._object.productTypeName);
+        $('#SaveProductTypeModel #ProductTypeFactor').val(data._object.productTypeFactor);
+        $('#SaveProductTypeModel #ManPowerFactor').val(data._object.manPowerFactor);
         $('#SaveProductTypeModel #ProductTypeTitle').html(UpdateLabel);
         if (!data._object.isActive) {
             $('#SaveProductTypeModel #IsActive').prop('checked', false);
@@ -83,6 +85,8 @@ function CleareProductTypeFields() {
     $('#SaveProductTypeModel #IsActive').prop('checked', true);
     $('#SaveProductTypeModel #ProductTypeID').val("0");
     $('#SaveProductTypeModel #ProductTypeName').val("");
+    $('#SaveProductTypeModel #ProductTypeFactor').val(0);
+    $('#SaveProductTypeModel #ManPowerFactor').val(0);
     $('#DeleteProductTypeModel #ProductTypeID').val("0");
     var validationMessages = document.querySelectorAll(".field-validation-error");
 

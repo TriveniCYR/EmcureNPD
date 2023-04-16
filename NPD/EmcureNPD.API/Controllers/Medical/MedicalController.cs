@@ -20,7 +20,7 @@ namespace EmcureNPD.API.Controllers.IPD
 {
     [Route("api/[controller]")]
     [ApiController]
-    [Authorize]
+    [AuthorizeAttribute]
     public class MedicalController : ControllerBase
     {
         #region Properties
