@@ -244,3 +244,9 @@ form-control.is-valid, .was-validated .form-control:valid {
     width: 70%;
     margin-right: 5px;
 }
+.notification-dropdown {
+    max-width: 300px !important;
+    min-width: 280px !important;
+    padding: 0 !important;
+}
+.notification-dropdown .dropdown-footer{text-align:center !important;}

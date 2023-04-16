@@ -48,7 +48,7 @@ function GetRegionList() {
 }
 function GetRegionListSuccess(data) {
     try {
-        alert(_userRegion.length);
+        //alert(_userRegion.length);
         _userRegion = data._object;
         //setRegion();
     } catch (e) {
