@@ -27,6 +27,7 @@ namespace EmcureNPD.Web.Models
     public class StrengthView
     {
         public string strength { get; set; }
+        public string projectCode { get; set; }
     }
 
     public class ManagerView

@@ -86,7 +86,8 @@ namespace EmcureNPD.Web.Controllers
                         {
                             ListprojectStrengths.Add(new ProjectStrength
                             {
-                                Strength = item.strength
+                                Strength = item.strength,
+                                ProjectCode = item.projectCode
                             });
                         }
                         model.lsProjectStrength = ListprojectStrengths;

@@ -47,47 +47,42 @@
                             </th>
                             <th class="text-start" colspan="13">
                                 <span id="lblProjectName">
-                                Levetiracetam Tablets
-                                </span>
-                            </th>
-                            @*<th class="text-right">
-                            <i id="btnExportToExcel" class="fa fa-file-excel-o" aria-hidden="true" ></i>
-                            </th>*@
-                        </tr>
-                    </thead>
-                    <tbody>
-                        @if (Model!=null && Model.lsProjectName.Count > 0 && Model.lsProjectStrength.Count>0)
-                        {
-                            foreach (var item in Model.lsProjectName)
-                            {
-                                <tr>
-                                    <td class="text-start">
-                                        @item.ProjectName
-                                    </td>
-                                    @foreach (var item1 in Model.lsProjectStrength)
+                                @{
+                                    if(Model.lsProjectName != null && Model.lsProjectName.Count() > 0)
                                     {
-                                        <td>@item1.Strength</td>
+                                        @Model.lsProjectName[0].ProjectName;
                                     }
-                                </tr>
+                                }
+                            </span>
+                        </th>
+                    </tr>
+                </thead>
+                <tbody>
+
+                    <tr>
+                        <td class="text-start">
+                            Strength
+                        </td>
+                        @if (Model.lsProjectStrength.Count > 0)
+                        {
+                            @foreach (var item1 in Model.lsProjectStrength)
+                            {
+                                <td>@item1.Strength</td>
                             }
                         }
+                    </tr>
+                            
                         <tr>
                             <td class="text-start">
                                 Projects Code
                             </td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
+                        @if (Model.lsProjectStrength.Count > 0)
+                        {
+                            @foreach (var item1 in Model.lsProjectStrength)
+                            {
+                                <td>@item1.ProjectCode</td>
+                            }
+                        }
                         </tr>
                     </tbody>
                 </table>
