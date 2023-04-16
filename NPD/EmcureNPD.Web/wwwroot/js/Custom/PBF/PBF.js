@@ -2006,7 +2006,7 @@ function CreateFillingExpensesTable(data, activityTypeId) {
         }
 
         objectname += '<tr  id="FillingExpensesRow" class="FillingExpensesactivity FillingExpensesActivity' + (activityTypeId) + '">'
-            + '<td><input type="number" class="form-control totalFillingExpenses rndFillingExpensesTotalCost" min="0"/></td>'
+            + '<td><input type="number" class="form-control totalFillingExpenses rndFillingExpensesTotalCost" min="0" value="' + (data.length > 0 ? data[a].totalCost : "") + '"/></td>'
             + '<td><select class="form-control readOnlyUpdate rndFillingExpensesRegionId"><option value = "" > --Select --</option ></select><input type="hidden" value="' + (data.length > 0 ? data[a].businessUnitId : "") + '"/></td>'
         for (var i = 0; i < _strengthArray.length; i++) {
             objectname += '<td><input type="hidden" class="rndFillingExpensesStrengthId" value="' + _strengthArray[i].pidfProductStrengthId + '" /><input type="checkbox" id="rndFillingExpensesStrengthIsChecked' + _strengthArray[i].pidfProductStrengthId + '" class="rndFillingExpensesStrengthCheckbox rndFillingExpensesStrengthIsChecked' + _strengthArray[i].pidfProductStrengthId + '" ' + (data.length > 0 ? getValueFromStrengthBusinessUnitId(data, _strengthArray[i].pidfProductStrengthId, "isChecked", data[a].businessUnitId) : "") + '  > &nbsp; <input type="number" class="form-control FillingExpensesStrengthValue inline-textbox" readonly="readonly" tabindex=-1 disabled="true" min="0" /></td>';
@@ -2285,6 +2285,7 @@ function SetRNDChildRows() {
             var fillingcount = i
             $.each($('#tablerndfilingexpenses tbody tr.FillingExpensesActivity' + i + ''), function () {
                 var BusinessUnitId = $(this).find(".rndFillingExpensesRegionId").val();
+                var TotalCost = $(this).find(".rndFillingExpensesTotalCost").val();
 
                 $.each($(this).find(".rndFillingExpensesStrengthId"), function (index, item) {
                     var _rndFillingExpensesObject = new Object();
@@ -2292,6 +2293,7 @@ function SetRNDChildRows() {
                     _rndFillingExpensesObject.ExpensesStrengthValue = $(this).parent().find(".FillingExpensesStrengthValue").val();
                     _rndFillingExpensesObject.IsChecked = $(this).parent().find('#rndFillingExpensesStrengthIsChecked' + $(this).val()).is(":checked");
                     _rndFillingExpensesObject.BusinessUnitId = BusinessUnitId;
+                    _rndFillingExpensesObject.TotalCost = TotalCost;
                     if (_rndFillingExpensesObject.IsChecked == true) {
                         _RNDFillingExpensesArray.push(_rndFillingExpensesObject);
                     }

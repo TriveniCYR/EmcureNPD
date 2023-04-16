@@ -592,16 +592,19 @@ function CleareSubTaskFields() {
     }
 }
 function ShowChildRows(id) {
-    if ($(".clildrows" + id).is(':visible')) {
-        $(".clildrows" + id).hide();
-        $(".icoShowSubtask" + id).removeClass("fa fa-minus-circle")
-        $(".icoShowSubtask" + id).addClass("fa fa-plus-circle")
-        $(".icoShowSubtask" + id).css("color","#31b131")
-    }
-    else {
-        $(".clildrows" + id).show()
-        $(".icoShowSubtask" + id).removeClass("fa fa-plus-circle")
-        $(".icoShowSubtask" + id).addClass("fa fa-minus-circle")
-        $(".icoShowSubtask" + id).css("color", "#d33333")
-    }
+    if ($(".clildrows" + id).length > 0) {
+        if ($(".clildrows" + id).is(':visible')) {
+            $(".clildrows" + id).hide();
+            $(".icoShowSubtask" + id).removeClass("fa fa-minus-circle")
+            $(".icoShowSubtask" + id).addClass("fa fa-plus-circle")
+            $(".icoShowSubtask" + id).css("color", "#31b131")
+        }
+        else {
+            $(".clildrows" + id).show()
+            $(".icoShowSubtask" + id).removeClass("fa fa-plus-circle")
+            $(".icoShowSubtask" + id).addClass("fa fa-minus-circle")
+            $(".icoShowSubtask" + id).css("color", "#d33333")
+        }
+    } 
+    
 }
