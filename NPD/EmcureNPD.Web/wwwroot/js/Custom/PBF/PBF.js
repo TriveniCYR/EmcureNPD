@@ -68,7 +68,6 @@ $(document).ready(function () {
         $(this).parent().parent().find('.rndPackagingRsperUnit').val($(this).find(':selected').attr('data-packingcost'));
     });
     $(document).on("change", ".rndFillingExpensesRegionId", function () {
-        debugger;
         var _selectedBusinessUnit = $(this).val();
         if (_selectedBusinessUnit != "" && _selectedBusinessUnit != "0") {
             var returnFromFunction = 0;
@@ -349,66 +348,78 @@ $(document).ready(function () {
         var manhourrate = $("#RNDMasterEntities_ManHourRate").val();
         manhourrate = parseFloat((manhourrate == "" ? 0 : manhourrate));
         var _BioStudyTypeId = $(this).parent().parent().attr("data-biostudytypeid");
-        
         var _activityId = $(this).parent().parent().attr("data-activityid");
-        var _MPCRows = $('.manpowercost_' + _BioStudyTypeId + '').find("[data-activityid=" + _activityId + "]");;
-        var DurationInDays = parseFloat(_MPCRows.find(".rndMPCDurationInDays" + _activityId).val() == "" ? 0 : _MPCRows.find(".rndMPCDurationInDays" + _activityId).val());
-        var ManPowerInDays = parseFloat(_MPCRows.find(".rndMPCManPowerInDays" + _activityId).val() == "" ? 0 : _MPCRows.find(".rndMPCManPowerInDays" + _activityId).val());
 
-        var strength = Math.round((DurationInDays) * (ManPowerInDays));
-        $(this).parent().parent().find(".sumstrength").val(strength);
-        //NAstrength
+        var _duration =  $('#tablerrndmanpowercostprojectduration').find("[data-activityid=" + _activityId + "]").find(".rndMPCDurationInDays").val();
+        var _manPower =  $('#tablerrndmanpowercostprojectduration').find("[data-activityid=" + _activityId + "]").find(".rndMPCManPowerInDays").val();
+        var _calculateDays = parseFloat(_duration == "" ? 0 : _duration) * parseFloat(_manPower == "" ? 0 : _manPower);
+        $('#tablerrndmanpowercostprojectduration').find("[data-activityid=" + _activityId + "]").find(".sumstrength").val(_calculateDays);
 
-        //calculate column value for NAStrength
-        if (_activityId == 3 || _activityId == 4 || _activityId == 11) {
-            var NAStrength = (strength * ((100 - manhourrate) / 100));
-            $(this).parent().parent().find(".sumstrength").val(strength);
-        }
+        var totalHours = (_calculateDays * 8);
+        $('#tablerrndmanpowercostprojectduration').find("[data-activityid=" + _activityId + "]").find(".rndMPCStrengthValue").val((totalHours / _strengthArray.length).toFixed(2));
 
-        var strengthvalue = ((strength / _strengthArray.length) * 8);
-        $(this).parent().parent().find(".rndMPCStrengthValue").val(strengthvalue);
+        $('#tablerrndmanpowercostprojectduration').find("[data-activityid=" + _activityId + "]").find(".TotalStrength").val((totalHours).toFixed(2));
 
-        //side total
-        var _Sum = 0;
-        $.each($(this).parent().parent().find(".rndMPCDurationInDays" + _activityId + ", .rndMPCManPowerInDays" + _activityId), function (index, item) {
-            if ($(item).attr("class").indexOf("TotalStrength") === -1) {
-                _Sum += parseFloat(($(item).val() == "" ? 0 : $(item).val()));
-            }
-        });
-        // set total for the row
-        $(this).parent().parent().find(".TotalStrength").val(_Sum);
+        
 
-        //duration in days sum
-        var _SumDurationindays = 0;
-        $.each($('.rndMPCDurationInDays'), function (index, item) {
-            var _activityId = $(item).parent().attr("data-activityid");
-            _SumDurationindays += parseFloat(($(item).val() == "" ? 0 : $(item).val()));
-        });
+        //var _MPCRows = $('.manpowercost_' + _BioStudyTypeId + '').find("[data-activityid=" + _activityId + "]");;
+        //var DurationInDays = parseFloat(_MPCRows.find(".rndMPCDurationInDays" + _activityId).val() == "" ? 0 : _MPCRows.find(".rndMPCDurationInDays" + _activityId).val());
+        //var ManPowerInDays = parseFloat(_MPCRows.find(".rndMPCManPowerInDays" + _activityId).val() == "" ? 0 : _MPCRows.find(".rndMPCManPowerInDays" + _activityId).val());
 
-        $('.manpowercost_' + _BioStudyTypeId + 'Total').find(".calcDurationInDaysTotal").val(_SumDurationindays);
+        //var strength = Math.round((DurationInDays) * (ManPowerInDays));
+        //$(this).parent().parent().find(".sumstrength").val(strength);
+        ////NAstrength
 
-        //strength sum
-        var _SumStrengths = 0;
-        var _Sumprototype = 0;
-        var _SumScaleup = 0;
-        var _SumExhibit = 0;
-        $.each($('.rndMPCStrengthValue'), function (index, item) {
-            var _activityId = $(item).parent().attr("data-activityid");
-            if (_activityId == 1 || _activityId == 2 || _activityId == 3 || _activityId == 4 || _activityId == 5) {
-                _Sumprototype += parseFloat(($(item).val() == "" ? 0 : $(item).val()));
-            } else if (_activityId == 7 || _activityId == 8 || _activityId == 9 || _activityId == 10 || _activityId == 11) {
-                _SumExhibit += parseFloat(($(item).val() == "" ? 0 : $(item).val()));
-            } else {
-                _SumScaleup += parseFloat(($(item).val() == "" ? 0 : $(item).val()));
-            }
-            _SumStrengths += parseFloat(($(item).val() == "" ? 0 : $(item).val()));
-        });
-        _Sumprototype = (_Sumprototype) * (manhourrate);
-        _SumExhibit = (_SumExhibit) * (manhourrate);
-        _SumScaleup = (_SumScaleup) * (manhourrate);
+        ////calculate column value for NAStrength
+        //if (_activityId == 3 || _activityId == 4 || _activityId == 11) {
+        //    var NAStrength = (strength * ((100 - manhourrate) / 100));
+        //    $(this).parent().parent().find(".sumstrength").val(strength);
+        //}
 
-        _SumStrengths = ((_Sumprototype) + (_SumExhibit) + (_SumScaleup))
-        $('.manpowercost_' + _BioStudyTypeId + 'Total').find(".calcTotalCostForStrength").val(_SumStrengths);
+        //var strengthvalue = ((strength / _strengthArray.length) * 8);
+        //$(this).parent().parent().find(".rndMPCStrengthValue").val(strengthvalue);
+
+        ////side total
+        //var _Sum = 0;
+        //$.each($(this).parent().parent().find(".rndMPCDurationInDays" + _activityId + ", .rndMPCManPowerInDays" + _activityId), function (index, item) {
+        //    if ($(item).attr("class").indexOf("TotalStrength") === -1) {
+        //        _Sum += parseFloat(($(item).val() == "" ? 0 : $(item).val()));
+        //    }
+        //});
+        //// set total for the row
+        //$(this).parent().parent().find(".TotalStrength").val(_Sum);
+
+        ////duration in days sum
+        //var _SumDurationindays = 0;
+        //$.each($('.rndMPCDurationInDays'), function (index, item) {
+        //    var _activityId = $(item).parent().attr("data-activityid");
+        //    _SumDurationindays += parseFloat(($(item).val() == "" ? 0 : $(item).val()));
+        //});
+
+        //$('.manpowercost_' + _BioStudyTypeId + 'Total').find(".calcDurationInDaysTotal").val(_SumDurationindays);
+
+        ////strength sum
+        //var _SumStrengths = 0;
+        //var _Sumprototype = 0;
+        //var _SumScaleup = 0;
+        //var _SumExhibit = 0;
+        //$.each($('.rndMPCStrengthValue'), function (index, item) {
+        //    var _activityId = $(item).parent().attr("data-activityid");
+        //    if (_activityId == 1 || _activityId == 2 || _activityId == 3 || _activityId == 4 || _activityId == 5) {
+        //        _Sumprototype += parseFloat(($(item).val() == "" ? 0 : $(item).val()));
+        //    } else if (_activityId == 7 || _activityId == 8 || _activityId == 9 || _activityId == 10 || _activityId == 11) {
+        //        _SumExhibit += parseFloat(($(item).val() == "" ? 0 : $(item).val()));
+        //    } else {
+        //        _SumScaleup += parseFloat(($(item).val() == "" ? 0 : $(item).val()));
+        //    }
+        //    _SumStrengths += parseFloat(($(item).val() == "" ? 0 : $(item).val()));
+        //});
+        //_Sumprototype = (_Sumprototype) * (manhourrate);
+        //_SumExhibit = (_SumExhibit) * (manhourrate);
+        //_SumScaleup = (_SumScaleup) * (manhourrate);
+
+        //_SumStrengths = ((_Sumprototype) + (_SumExhibit) + (_SumScaleup))
+        //$('.manpowercost_' + _BioStudyTypeId + 'Total').find(".calcTotalCostForStrength").val(_SumStrengths);
     });
     /*Pakaging Material*/
     $(document).on("change", ".rndPackingTypeId, .rndPackagingRsperUnit, .rndPackagingStrengthValue", function () {
@@ -650,7 +661,6 @@ $(document).ready(function () {
     });
     // Filling Expense
     $(document).on("change", ".rndFillingExpensesStrengthCheckbox, .rndFillingExpensesRegionId, .rndFillingExpensesTotalCost", function () {
-        debugger;
         var _activityTypeId = $(this).parent().parent().attr("data-activitytypeid");
 
         if ($(this).hasClass("rndFillingExpensesStrengthCheckbox")) {
@@ -2066,7 +2076,6 @@ function BindRNDFillingExpenses(data, businessUnit) {
         }
     });
 
-    debugger;
     $("select[class~='rndFillingExpensesRegionId']").trigger('change');
 /*    $("input[class~='rndFillingExpensesStrengthCheckbox']").trigger('change');*/
 }
@@ -2087,7 +2096,7 @@ function CreateRNDManPowerCostTable(data) {
     var bioStudyTypeId = 1;
     var objectname = "";
 
-    objectname += '<tr><td class="text-left text-bold bg-light" colspan="' + (8 + _strengthArray.length + 2) + '">Project Activities</td></tr>';
+    objectname += '<tr><td class="text-left text-bold bg-light" colspan="' + (3 + _strengthArray.length + 1) + '">Project Activities</td></tr>';
     var _counter = (data.length == 0 ? 1 : data.length);
     var _projectActivities = [];
     for (var a = 0; a < _counter; a++) {
@@ -2100,16 +2109,16 @@ function CreateRNDManPowerCostTable(data) {
         for (var i = 0; i < _strengthArray.length; i++) {
             objectname += '<td data-strengthid="' + _strengthArray[i].pidfProductStrengthId + '"><input type="hidden" class="rndMPCStrengthId"  value="' + _strengthArray[i].pidfProductStrengthId + '" /><input type="number" class="form-control rndMPCStrengthValue" readonly="readonly" tabindex=-1 min="0"/></td>';
         }
-        objectname += "<td><input type='number' class='form-control TotalStrength' readonly='readonly' tabindex=-1 min='0' /></td><td><input type='number' class='form-control sumstrength' readonly='readonly' tabindex=-1 min='0' /></td><td><input type='number' class='form-control NAstrength' readonly='readonly' tabindex=-1 min='0' /></td><td><input type='number' class='form-control' readonly='readonly' tabindex=-1 min='0' /></td><td><input type='number' class='form-control' readonly='readonly' tabindex=-1 min='0' /></td><td><input type='number' class='form-control' readonly='readonly' tabindex=-1 min='0' /></td></tr>";
+        objectname += "<td><input type='number' class='form-control TotalStrength' readonly='readonly' tabindex=-1 min='0' /></td></tr>";
         if (data.length > 0) {
             _projectActivities.push(data[a].projectActivitiesId);
         }
     }
-    objectname += "<tr class='manpowercost_" + bioStudyTypeId + "Total' data-biostudytypeid='" + bioStudyTypeId + "'><td><input type='number' class='form-control calcDurationInDaysTotal' readonly='readonly' tabindex=-1  min='0' /></td><td><b>Total Cost</b></td><td><input type='number' class='form-control calcManPowerInDaysTotal' readonly='readonly' tabindex=-1  min='0' /></td>";
+    objectname += "<tr class='manpowercost_" + bioStudyTypeId + "Total' data-biostudytypeid='" + bioStudyTypeId + "'><td colspan='3'><b>Total Cost</b></td>";
     for (var i = 0; i < _strengthArray.length; i++) {
         objectname += "<td data-strengthid='" + _strengthArray[i].pidfProductStrengthId + "'><input type='number' class='form-control calcTotalCostForStrength' readonly='readonly' tabindex=-1 min='0' /></td>";
     }
-    objectname += "<td><input type='number' class='form-control calcTotalCostForStrengthTotal' readonly='readonly' tabindex=-1  min='0' /></td><td><input type='number' class='form-control' readonly='readonly' tabindex=-1  min='0' /></td><td><input type='number' class='form-control ' readonly='readonly' tabindex=-1  min='0' /></td><td><input type='number' class='form-control ' readonly='readonly' tabindex=-1  min='0' /></td><td><input type='number' class='form-control' readonly='readonly' tabindex=-1  min='0' /></td></tr>";
+    objectname += "<td><input type='number' class='form-control calcTotalCostForStrengthTotal' readonly='readonly' tabindex=-1  min='0' /></td></tr>";
 
     return objectname;
 }
@@ -2118,7 +2127,7 @@ function BindRNDManPowerCost(data) {
     $.each(_strengthArray, function (index, item) {
         RPDHTML += '<td>' + getStrengthName(item.pidfProductStrengthId) + '</td>';
     });
-    RPDHTML += '<td>Total</td><td>' + _strengthArray.length + ' Strength</td><td> NA </td><td>' + _strengthArray.length + ' RLD</td><td>NON RLD</td><td>RLD</td></tr></thead><tbody>';
+    RPDHTML += '<td>Total</td></tr></thead><tbody>';
 
     RPDHTML += CreateRNDManPowerCostTable(data);
 
