@@ -1,4 +1,5 @@
-﻿using EmcureNPD.API.Helpers.Response;
+﻿using EmcureNPD.API.Filters;
+using EmcureNPD.API.Helpers.Response;
 using EmcureNPD.Business.Core;
 using EmcureNPD.Business.Core.Interface;
 using EmcureNPD.Business.Models;
@@ -13,6 +14,7 @@ namespace EmcureNPD.API.Controllers.Notificaiton
 {
     [Route("api/[controller]")]
     [ApiController]
+    [AuthorizeAttribute]
     public class NotificationController : ControllerBase
     {
         #region Properties

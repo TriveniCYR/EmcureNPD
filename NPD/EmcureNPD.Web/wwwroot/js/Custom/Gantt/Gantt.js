@@ -1,4 +1,5 @@
 let taskStatus = [];
+var taskIdToBeDelete;
 $("i.fas.fa-compress").click(function () {
     $("#ganttContainer").css("width", "98%");
 });
@@ -536,6 +537,8 @@ document.addEventListener("DOMContentLoaded", function () {
         //});
        // setTimeout(reloadFunc, 2000);
     });
+    
+
 
     gantt.attachEvent("onParse", function () {
         var resources = gantt.serverList("resources");
@@ -717,12 +720,13 @@ document.addEventListener("DOMContentLoaded", function () {
        }
     }
     function deleteGanttTaskSubTask(taskid) {
+        taskIdToBeDelete = taskid;
         ajaxServiceMethod($('#hdnBaseURL').val() + "api/Project/DeleteTaskSubTask" + "/" + taskid, 'POST', deleteGanttTaskSubTaskSuccess, deleteGanttTaskSubTaskError);
     }
     function deleteGanttTaskSubTaskSuccess(response){
-        toastr.success(`TaskId:${taskid} Deleted SuccessFully...!`);
+        toastr.success(`TaskId:${taskIdToBeDelete} Deleted SuccessFully...!`);
     }
     function deleteGanttTaskSubTaskError() {
-        toastr.error(`TaskId:${taskid} not deleted due to something wrong`);
+        toastr.error(`TaskId:${taskIdToBeDelete} not deleted due to something wrong`);
     }
 });

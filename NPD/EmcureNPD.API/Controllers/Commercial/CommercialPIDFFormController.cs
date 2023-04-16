@@ -13,7 +13,7 @@ namespace EmcureNPD.API.Controllers.Commercial
 {
     [Route("api/[controller]")]
     [ApiController]
-    [Authorize]
+    [AuthorizeAttribute]
     public class CommercialPIDFFormController : ControllerBase
     {
         #region Properties
