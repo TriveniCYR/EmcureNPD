@@ -23,6 +23,7 @@ namespace EmcureNPD.Business.Models
 
         public bool IsDeleted { get; set; }
 
+        public bool IsUserAssigned { get; set; }
         public DateTime CreatedDate { get; set; }
 
 
