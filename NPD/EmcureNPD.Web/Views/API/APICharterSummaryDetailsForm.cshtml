@@ -15,16 +15,19 @@
     string jsVersion = @Configuration.GetSection("StaticJS")["version"];
 }
 <div class="content-header">
-    <h4 class="m-0">Active Pharmaceutical Ingredient Charter Detail Summary</h4>
+    <div class="container-fluid d-flex justify-content-between">
+        <h3>Active Pharmaceutical Ingredient (Charter Detail Summary)</h3>
+        <div>
+@*            <a class="btn btn-primary mr-3" id="btnExportToPdf_APICharter" title="ExportToPdf"><i class="fa fa-file-pdf-o" aria-hidden="true"></i></a>*@
+            <a class="btn btn-success mr-3" id="btnPrintPDF" title="Print"><i class="fa fa-file-pdf-o" aria-hidden="true"></i></a>
+            <a class="btn btn-danger" id="btnBack" asp-action="PIDFList" asp-controller="PIDF"
+               asp-route-ScreenId="@Convert.ToString((int)EmcureNPD.Utility.Enums.PIDFScreen.API)">@SharedLocalizer["Back"]</a>
+        </div>
+    </div>
 </div>
 <div class="container-fluid background-white-card">
     <div id="divToExport">
         <div class="">
-            <div class="col-12 text-end">
-                <a class="btn btn-primary mr-3" id="btnExportToPdf_APICharter" title="ExportToPdf"><i class="fa fa-file-pdf-o" aria-hidden="true"></i>PDF</a>
-                <a class="btn btn-danger" id="btnBack" asp-action="PIDFList" asp-controller="PIDF"
-                   asp-route-ScreenId="@Convert.ToString((int)EmcureNPD.Utility.Enums.PIDFScreen.API)">@SharedLocalizer["Back"]</a>
-            </div>
             <div class="" id="divToExportPage1" style="margin-left:15px;margin-right:15px;">
                 <input type="hidden" asp-for="Pidfid" />
                 <input type="hidden" asp-for="BusinessUnitId" />
@@ -44,7 +47,9 @@
                                     @Html.LabelFor(model => model.ProjectName,@MasterLocalizer["ProjectName"], new { @class = "control-label" })
                                 </td>
                                 <td>
+                                    <span id="lblProjectName">
                                     @Html.DisplayFor(model => model.ProjectName, new { @readonly = "readonly",  @class = "form-control"})
+                                    </span>
                                 </td>
                             </tr>
                             <tr>
@@ -146,8 +151,7 @@
                     </div>
                     @*--------------Finance Rates----------------------*@
                 </div>
-                 <br />
-
+                 
                 <div class="row mt-3">
                     @*--------Start----AnalyticalDepartment-------------*@
                     <div class="col-md-12" id="dvAnalyticalDepartment">
@@ -234,7 +238,6 @@
                     @*--------End----AnalyticalDepartment-------------*@
                 </div>
 
-                <br />
                 <div class="row mt-3">
                     @*--------Start----PRDDepartment-------------*@
                     <div class="col-md-4" id="dvPRDDepartment">
@@ -310,7 +313,6 @@
                     </div>
                     @*--------End----CapitalOtherExpenditure-------------*@
                 </div>
-                <br />
                 <div class="row mt-3">
                     @*--------Start----ManhourEstimates-------------*@
                     <div class="col-md-12" id="dvManhourEstimates">
@@ -365,9 +367,8 @@
                     </div>
                     @*--------End----ManhourEstimates-------------*@
                 </div>
-                <br />
-                <br />
                 <div class="row mt-3">
+                    <div id="dvSpace"></div>
                     @*--------Start----HeadwiseBudget-------------*@
                     <div class="col-md-8" id="dvHeadwiseBudget">
                         @if (Model.HeadwiseBudget != null)
@@ -422,10 +423,8 @@
     </div>
 </div>
 @section MyScripts {
-@*    <link href="/lib/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
-    <script src="/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>*@
-
-<script src="~/js/plugins/jspdf.min.js"></script>
+<script type="text/javascript" src="~/js/plugins/jspdf.debug.js"></script>
+<script type="text/javascript" src="https://html2canvas.hertzen.com/dist/html2canvas.js"></script>
 <script>
     var SaveStatus = "@TempData["SaveStatus"]";
     var ErrorMessage = "@SharedLocalizer["Error"]";
@@ -455,43 +454,51 @@
         toastr.success(successCallBack);
     }
 
+    $(document).ready(function() {
+        $('#btnPrintPDF').click(function(){
+            var ProjectName = $("#lblProjectName").text();
+                var tdate = new Date();
+                var dd = tdate.getDate(); //yields day
+                var MM = tdate.getMonth(); //yields month
+                var yyyy = tdate.getFullYear(); //yields year
+                var hh = tdate.getHours();
+                var mins = tdate.getMinutes();
+                var currentDate = dd + "-" + (MM + 1) + "-" + yyyy + "-" + hh + "-" + mins;
+                var fileName = 'APICharterSummary_' + (ProjectName == null || ProjectName == undefined ? "" : ProjectName.toString().trim()) + '_' + currentDate;
 
-    $('#btnExportToPdf_APICharter').click(() => {
-        $('btnExportToPdf_APICharter').hide();
-        $('btnBack').hide();
-        let width = $(".container-fluid").width();
-        let height = $("#divToExport").height();
-        var pidfid = $("#Pidfid").val();
-        //var ProjectName = "Paracetamo"$("#ProjectName").val();
-        var tdate = new Date();
-        var dd = tdate.getDate(); //yields day
-        var MM = tdate.getMonth(); //yields month
-        var yyyy = tdate.getFullYear(); //yields year
-        var currentDate= dd + "-" +( MM+1) + "-" + yyyy;
-        let options = {
-            pagesplit: true,
-            'background': "#ffffff"
-            //'width':width
-            //'fontname':"Times-Roman",
-            //'fontsize':"15"
-        }
-        var fileName = 'APICharterSummary_'+ _PIDFID +'_'+ currentDate +'.pdf';
-        //let pdf = new jsPDF('l', 'mm', 'a1');
-        let pdf = new jsPDF('p', 'pt', 'a4');
-        //pdf.setFontSize(22);
-        //pdf.setFontName('Times-Roman');            
-        //pdf.setFontStyle(true, false, false);
-        pdf.addHTML($("#divToExportPage1"), options, function () {
-           
-            pdf.save(fileName);
+                printElement(fileName);
         });
+            $('#btnExportToPdf_APICharter').click(function() {
+                $('btnExportToPdf_APICharter').hide();
+                $('btnBack').hide();
+                var pidfid = $("#Pidfid").val();
+                var ProjectName = $("#lblProjectName").text();
+                var tdate = new Date();
+                var dd = tdate.getDate(); //yields day
+                var MM = tdate.getMonth(); //yields month
+                var yyyy = tdate.getFullYear(); //yields year
+                var hh = tdate.getHours();
+                var mins = tdate.getMinutes();
+                var currentDate = dd + "-" + (MM + 1) + "-" + yyyy + "-" + hh + "-" + mins;
+                //let options = {
+                //    pagesplit: true,
+                //    'background': "#ffffff"
+                //}
+                var fileName = 'APICharterSummary_' + (ProjectName == null || ProjectName == undefined ? "" : ProjectName.toString().trim()) + '_' + currentDate + '.pdf';
+                ////let pdf = new jsPDF('l', 'mm', 'a1');
+                //let pdf = new jsPDF('p', 'pt', 'a4');
+                //pdf.setFontSize(22);
+                //pdf.setFontName('Times-Roman');
+                //pdf.setFontStyle(true, false, false);
+                //pdf.addHTML($("#divToExportPage1"), options, function () {
 
-        $('btnExportToPdf_APICharter').show();
-        $('btnBack').show();
-    })
-
-
-
+                //    pdf.save(fileName);
+                //});
+                CreatePDFfromHTML("#divToExportPage1", "1000px", fileName)
+                $('btnExportToPdf_APICharter').show();
+                $('btnBack').show();
+            });
+    });
 </script>
 
 }

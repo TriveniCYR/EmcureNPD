@@ -119,7 +119,13 @@ namespace EmcureNPD.Business.Core.Implementation
 
         public async Task<MasterRoleEntity> GetById(int id)
         {
-            return _mapperFactory.Get<MasterRole, MasterRoleEntity>(await _repository.GetAsync(id));
+            MasterRoleEntity _roleEntity = _mapperFactory.Get<MasterRole, MasterRoleEntity>(await _repository.GetAsync(id));
+            
+                var IsUserExist = _Userrepository.GetAllQuery().Where(x => x.RoleId == _roleEntity.RoleId).ToList();
+                if (IsUserExist !=null && IsUserExist.Count > 0)
+                _roleEntity.IsUserAssigned = true;
+           
+            return _roleEntity;
         }
     }
 }

@@ -68,6 +68,7 @@ $(document).ready(function () {
         $(this).parent().parent().find('.rndPackagingRsperUnit').val($(this).find(':selected').attr('data-packingcost'));
     });
     $(document).on("change", ".rndFillingExpensesRegionId", function () {
+        debugger;
         var _selectedBusinessUnit = $(this).val();
         if (_selectedBusinessUnit != "" && _selectedBusinessUnit != "0") {
             var returnFromFunction = 0;
@@ -649,6 +650,8 @@ $(document).ready(function () {
     });
     // Filling Expense
     $(document).on("change", ".rndFillingExpensesStrengthCheckbox, .rndFillingExpensesRegionId, .rndFillingExpensesTotalCost", function () {
+        debugger;
+        var _activityTypeId = $(this).parent().parent().attr("data-activitytypeid");
 
         if ($(this).hasClass("rndFillingExpensesStrengthCheckbox")) {
             if ($(this).is(":checked")) {
@@ -660,7 +663,7 @@ $(document).ready(function () {
                 }
             }
         }
-        
+
         var _cost = $(this).parent().parent().find(".rndFillingExpensesTotalCost").val();
         var _totalStrength = $(this).parent().parent().find('.rndFillingExpensesStrengthCheckbox:checked').length;
         if ($(this).parent().parent().find('.rndFillingExpensesStrengthCheckbox:checked').length > 0) {
@@ -673,6 +676,19 @@ $(document).ready(function () {
             });
             $(this).parent().parent().find('.rndTotalFillingExpenseStrength').val(parseFloat(_cost == "" ? 0 : _cost));
         }
+
+        var _TotalCostForAllStrength = 0;
+        $.each(_strengthArray, function (i, t) {
+            var _TotalCostForStrength = 0;
+            var _StrengthId = t.pidfProductStrengthId;
+            $.each($('.FillingExpensesActivity' + _activityTypeId), function (index, item) {
+                var _strengthValue = $(item).find('[data-strengthid=' + _StrengthId + ']').find(".FillingExpensesStrengthValue").val();
+                _TotalCostForStrength += parseFloat(_strengthValue == "" ? 0 : _strengthValue);
+            });
+            _TotalCostForAllStrength += _TotalCostForStrength;
+            $('.FillingExpensesActivity' + _activityTypeId + 'Total').find('[data-strengthid=' + _StrengthId + ']').find('.calcTotalCostForStrengthFilling').val(_TotalCostForStrength.toFixed(2));
+        });
+        $('.FillingExpensesActivity' + _activityTypeId + 'Total').find('.calcTotalCostForStrengthTotalFilling').val(_TotalCostForAllStrength.toFixed(2));
     });
     
     getPIDFAccordion(_PIDFAccordionURL, _PIDFID, "dvPIDFAccrdion");
@@ -841,7 +857,7 @@ function GetPBFTabDetailsSuccess(data) {
             BindRNDCapexMiscExpenses(data.PBFRNDCapexMiscExpenses);
             BindRNDPlantSupportCost(data.PBFRNDPlantSupportCost);
             BindRNDReferenceProductDetail(data.PBFRNDReferenceProductDetail);
-            BindRNDFillingExpenses(data.PBFRNDFillingExpenses);
+            BindRNDFillingExpenses(data.PBFRNDFillingExpenses, data.MasterBusinessUnit);
             BindRNDManPowerCost(data.PBFRNDManPowerCost)
             CreatePhaseWiseBudgetTable();
             $(data.MasterTestType).each(function (index, item) {
@@ -852,9 +868,6 @@ function GetPBFTabDetailsSuccess(data) {
             });
             $(data.MasterPackingType).each(function (index, item) {
                 $('.rndPackingTypeId').append('<option value="' + item.packingTypeId + '" data-PackingUnit="' + item.unit + '" data-PackingCost="' + item.packingCost + '">' + item.packingTypeName + '</option>');
-            });
-            $(data.MasterBusinessUnit).each(function (index, item) {
-                $('.rndFillingExpensesRegionId').append('<option value="' + item.businessUnitId + '">' + item.businessUnitName + '</option>');
             });
 
             $.each($('.AnalyticalTestTypeId'), function (index, item) {
@@ -868,11 +881,6 @@ function GetPBFTabDetailsSuccess(data) {
                 }
             });
 
-            $.each($('.rndFillingExpensesRegionId'), function (index, item) {
-                if ($(this).next().val() != undefined && $(this).next().val() != null) {
-                    $(this).val($(this).next().val());
-                }
-            });
             SetChildRowDeleteIconPBF();
             if (_mode == 1) {
                 PBFreadOnlyForm();
@@ -2009,7 +2017,7 @@ function CreateFillingExpensesTable(data, activityTypeId) {
             + '<td><input type="number" class="form-control totalFillingExpenses rndFillingExpensesTotalCost" min="0" value="' + (data.length > 0 ? data[a].totalCost : "") + '"/></td>'
             + '<td><select class="form-control readOnlyUpdate rndFillingExpensesRegionId"><option value = "" > --Select --</option ></select><input type="hidden" value="' + (data.length > 0 ? data[a].businessUnitId : "") + '"/></td>'
         for (var i = 0; i < _strengthArray.length; i++) {
-            objectname += '<td><input type="hidden" class="rndFillingExpensesStrengthId" value="' + _strengthArray[i].pidfProductStrengthId + '" /><input type="checkbox" id="rndFillingExpensesStrengthIsChecked' + _strengthArray[i].pidfProductStrengthId + '" class="rndFillingExpensesStrengthCheckbox rndFillingExpensesStrengthIsChecked' + _strengthArray[i].pidfProductStrengthId + '" ' + (data.length > 0 ? getValueFromStrengthBusinessUnitId(data, _strengthArray[i].pidfProductStrengthId, "isChecked", data[a].businessUnitId) : "") + '  > &nbsp; <input type="number" class="form-control FillingExpensesStrengthValue inline-textbox" readonly="readonly" tabindex=-1 disabled="true" min="0" /></td>';
+            objectname += '<td data-strengthid="' + _strengthArray[i].pidfProductStrengthId + '"><input type="hidden" class="rndFillingExpensesStrengthId" value="' + _strengthArray[i].pidfProductStrengthId + '" /><input type="checkbox" id="rndFillingExpensesStrengthIsChecked' + _strengthArray[i].pidfProductStrengthId + '" class="rndFillingExpensesStrengthCheckbox rndFillingExpensesStrengthIsChecked' + _strengthArray[i].pidfProductStrengthId + '" ' + (data.length > 0 ? getValueFromStrengthBusinessUnitId(data, _strengthArray[i].pidfProductStrengthId, "isChecked", data[a].businessUnitId) : "") + '  > &nbsp; <input type="number" class="form-control FillingExpensesStrengthValue inline-textbox" readonly="readonly" tabindex=-1 disabled="true" min="0" /></td>';
         }
         objectname += "<td><input type='number' class='form-control rndTotalFillingExpenseStrength' readonly='readonly' tabindex=-1 min='0' /></td><td> <i class='fa-solid fa-circle-plus nav-icon text-success operationButton' id='addIcon' onclick='addRowFillingExpenses(this);'></i> <i class='fa-solid fa-trash nav-icon text-red strengthDeleteIcon operationButton DeleteIcon' onclick='deleteRowFillingExpenses(this);' ></i></td></tr>";
         if (data.length > 0) {
@@ -2017,9 +2025,16 @@ function CreateFillingExpensesTable(data, activityTypeId) {
         }
     }
 
+    objectname += "<tr class='FillingExpensesActivity" + activityTypeId + "Total' data-activitytypeid='" + activityTypeId + "'><td colspan='2' class='text-bold'>Total Cost</td>";
+    for (var i = 0; i < _strengthArray.length; i++) {
+        objectname += "<td data-strengthid='" + _strengthArray[i].pidfProductStrengthId + "'><input type='number' class='form-control calcTotalCostForStrengthFilling' readonly='readonly' tabindex=-1 min='0' /></td>";
+    }
+    objectname += "<td><input type='number' class='form-control calcTotalCostForStrengthTotalFilling' readonly='readonly' tabindex=-1  min='0' /></td></tr>";
+
+
     return objectname;
 }
-function BindRNDFillingExpenses(data) {
+function BindRNDFillingExpenses(data, businessUnit) {
     var FillingExpensesexpensesHTML = '<thead class="bg-primary text-bold"><tr>'
         + '<td>Total Cost</td>'
         + '<td>Business Unit </td>';
@@ -2040,6 +2055,20 @@ function BindRNDFillingExpenses(data) {
     //FillingExpensesexpensesHTML += "<td><input type='number' class='form-control' readonly='readonly' tabindex=-1 /><td></td></tr></tbody>";
     $('#tablerndfilingexpenses').html(FillingExpensesexpensesHTML);
     SetChildRowDeleteIconPBF();
+
+    $(businessUnit).each(function (index, item) {
+        $('.rndFillingExpensesRegionId').append('<option value="' + item.businessUnitId + '">' + item.businessUnitName + '</option>');
+    });
+
+    $.each($('.rndFillingExpensesRegionId'), function (index, item) {
+        if ($(this).next().val() != undefined && $(this).next().val() != null) {
+            $(this).val($(this).next().val());
+        }
+    });
+
+    debugger;
+    $("select[class~='rndFillingExpensesRegionId']").trigger('change');
+/*    $("input[class~='rndFillingExpensesStrengthCheckbox']").trigger('change');*/
 }
 function addRowFillingExpenses(element) {
     var node = $(element).parent().parent().clone(true);
@@ -2331,7 +2360,6 @@ function SetRNDChildRows() {
         }
     }
 }
-
 //R&D End
 function PBFreadOnlyForm() {
     $('#AddPBFForm').find('input,select,textarea,checkbox').attr('readonly', true).attr('disabled', true);
@@ -2362,9 +2390,9 @@ function formatNumber(value, round, code) {
         code = "en-IN"
     }
     if (round == null || round == undefined || round == "") {
-        value = Math.round(value);
+        value = parseFloat(value).toFixed(2);
     } else {
-        value = value.toFixed(2);
+        value = Math.round(parseFloat(value));
     }
     return new Intl.NumberFormat(code).format(value);
 }
