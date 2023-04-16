@@ -291,3 +291,66 @@ function formatDate(dateStr) {
         ' ' + z(d.getHours() % 12 || 12) + ':' + z(d.getMinutes()) +
         ' ' + (d.getHours() < 12 ? 'am' : 'pm');
 }
+
+function printElement(filename) {
+    var currentTitle = document.title;
+    document.title = filename;
+    $('.main-footer').hide();
+    $('.operationButton').hide();
+    window.print();
+    $('.operationButton').show();
+    $('.main-footer').show();
+    document.title = currentTitle;
+}
+//Create PDf from HTML...
+function CreatePDFfromHTML(element, space, fileName) {
+    try {
+
+        var pdf = new jsPDF('p', 'mm', 'a4');
+        var width = pdf.internal.pageSize.getWidth() - 10;
+        var height = pdf.internal.pageSize.getHeight();
+
+        var HTML_Width = $(element).width();
+        var HTML_Height = $(element).height();
+        var top_left_margin = 20;
+        var PDF_Width = HTML_Width + (top_left_margin * 2);
+        var PDF_Height = (PDF_Width * 1.5) + (top_left_margin * 2);
+        var totalPDFPages = Math.ceil(HTML_Height / PDF_Height) - 1;
+        html2canvas($(element)[0]).then(function (canvas) {
+            var imgData = canvas.toDataURL("image/jpeg", 1.0);
+            for (var i = 1; i <= totalPDFPages; i++) {
+                pdf.addImage(imgData, 'JPG', 4, 1, width, height);
+            }
+            pdf.save(fileName);
+        });
+    }
+    catch (e) {
+    }
+}
+function CreatePDFFromHTML(element) {
+    var pdf = new jsPDF('p', 'pt', 'a4');
+    var source = $(element)[0];
+    var margins = {
+        top: 80,
+        bottom: 60,
+        left: 40,
+        width: 522
+    };
+
+    // all coords and widths are in jsPDF instance's declared units
+    // 'inches' in this case
+    pdf.fromHTML(
+        source // HTML string or DOM elem ref.
+        , margins.left // x coord
+        , margins.top // y coord
+        , {
+            'width': margins.width // max width of content on PDF
+        },
+        function (dispose) {
+            // dispose: object with X, Y of the last line add to the PDF
+            //          this allow the insertion of new lines after html
+            pdf.save('Test.pdf');
+        },
+        margins
+    );
+}
