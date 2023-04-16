@@ -281,6 +281,8 @@ namespace EmcureNPD.Business.Models
         public long StrengthId { get; set; }
         public int BusinessUnitId { get; set; }
         public bool? IsChecked { get; set; }
+        public double TotalCost { get; set; }
+
 
     }
 

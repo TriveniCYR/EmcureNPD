@@ -477,31 +477,35 @@ namespace EmcureNPD.Business.Core.Implementation
                     await _unitOfWork.SaveChangesAsync();
                 }
                 //Save analytical cost start
-                var analyticalamvcost = _PidfPbfAnalyticalAmvcostRepository.GetAllQuery().Where(x => x.PbfgeneralId == pbfgeneralid).FirstOrDefault();
                 long TotalAMVCostId = 0;
-                if (analyticalamvcost != null)
+                if (pbfentity.AnalyticalAMVCosts != null)
                 {
-                    analyticalamvcost.TotalAmvtitle = pbfentity.AnalyticalAMVCosts.TotalAmvtitle;
-                    analyticalamvcost.TotalAmvcost = pbfentity.AnalyticalAMVCosts.TotalAmvcost;
-                    analyticalamvcost.Remark = pbfentity.AnalyticalAMVCosts.Remark;
-                    analyticalamvcost.CreatedDate = DateTime.Now;
-                    analyticalamvcost.CreatedBy = loggedInUserId;
-                    _PidfPbfAnalyticalAmvcostRepository.UpdateAsync(analyticalamvcost);
-                    TotalAMVCostId = analyticalamvcost.TotalAmvcostId;
+                    var analyticalamvcost = _PidfPbfAnalyticalAmvcostRepository.GetAllQuery().Where(x => x.PbfgeneralId == pbfgeneralid).FirstOrDefault();
+                    if (analyticalamvcost != null)
+                    {
+                        analyticalamvcost.TotalAmvtitle = pbfentity.AnalyticalAMVCosts.TotalAmvtitle;
+                        analyticalamvcost.TotalAmvcost = pbfentity.AnalyticalAMVCosts.TotalAmvcost;
+                        analyticalamvcost.Remark = pbfentity.AnalyticalAMVCosts.Remark;
+                        analyticalamvcost.CreatedDate = DateTime.Now;
+                        analyticalamvcost.CreatedBy = loggedInUserId;
+                        _PidfPbfAnalyticalAmvcostRepository.UpdateAsync(analyticalamvcost);
+                        TotalAMVCostId = analyticalamvcost.TotalAmvcostId;
+                    }
+                    else
+                    {
+                        PidfPbfAnalyticalAmvcost obganalyticalamvcost = new PidfPbfAnalyticalAmvcost();
+                        obganalyticalamvcost.TotalAmvtitle = pbfentity.AnalyticalAMVCosts.TotalAmvtitle;
+                        obganalyticalamvcost.TotalAmvcost = pbfentity.AnalyticalAMVCosts.TotalAmvcost;
+                        obganalyticalamvcost.Remark = pbfentity.AnalyticalAMVCosts.Remark;
+                        obganalyticalamvcost.PbfgeneralId = pbfgeneralid;
+                        obganalyticalamvcost.CreatedDate = DateTime.Now;
+                        obganalyticalamvcost.CreatedBy = loggedInUserId;
+                        _PidfPbfAnalyticalAmvcostRepository.AddAsync(obganalyticalamvcost);
+                        TotalAMVCostId = obganalyticalamvcost.TotalAmvcostId;
+                    }
+                    await _unitOfWork.SaveChangesAsync();
                 }
-                else
-                {
-                    PidfPbfAnalyticalAmvcost obganalyticalamvcost = new PidfPbfAnalyticalAmvcost();
-                    obganalyticalamvcost.TotalAmvtitle = pbfentity.AnalyticalAMVCosts.TotalAmvtitle;
-                    obganalyticalamvcost.TotalAmvcost = pbfentity.AnalyticalAMVCosts.TotalAmvcost;
-                    obganalyticalamvcost.Remark = pbfentity.AnalyticalAMVCosts.Remark;
-                    obganalyticalamvcost.PbfgeneralId = pbfgeneralid;
-                    obganalyticalamvcost.CreatedDate = DateTime.Now;
-                    obganalyticalamvcost.CreatedBy = loggedInUserId;
-                    _PidfPbfAnalyticalAmvcostRepository.AddAsync(obganalyticalamvcost);
-                    TotalAMVCostId = obganalyticalamvcost.TotalAmvcostId;
-                }
-                await _unitOfWork.SaveChangesAsync();
+
                 //Save analytical cost end
 
                 //Save analytical Total strength mapping start
@@ -541,28 +545,32 @@ namespace EmcureNPD.Business.Core.Implementation
                 #region RND Master Add Update
 
                 PidfPbfRnDMaster objrndMaster;
-                objrndMaster = _pidfPbfRnDMasterRepository.GetAllQuery().Where(x => x.PbfgeneralId == pbfgeneralid).FirstOrDefault();
-                if (objrndMaster != null)
+                if (pbfentity.RNDMasterEntities != null)
                 {
-                    objrndMaster.BatchSizeId = pbfentity.RNDMasterEntities.BatchSizeId;
-                    objrndMaster.ApirequirementMarketPrice = pbfentity.RNDMasterEntities.ApirequirementMarketPrice;
-                    objrndMaster.ManHourRate = pbfentity.RNDMasterEntities.ManHourRate;
-                    objrndMaster.PlanSupportCostRsPerDay = pbfentity.RNDMasterEntities.PlanSupportCostRsPerDay;
-                    //objRndMaster.ModifyBy = loggedInUserId;
-                    //objRndMaster.ModifyDate = DateTime.Now;
-                    _pidfPbfRnDMasterRepository.UpdateAsync(objrndMaster);
-                    await _unitOfWork.SaveChangesAsync();
+                    objrndMaster = _pidfPbfRnDMasterRepository.GetAllQuery().Where(x => x.PbfgeneralId == pbfgeneralid).FirstOrDefault();
+                    if (objrndMaster != null)
+                    {
+                        objrndMaster.BatchSizeId = pbfentity.RNDMasterEntities.BatchSizeId;
+                        objrndMaster.ApirequirementMarketPrice = pbfentity.RNDMasterEntities.ApirequirementMarketPrice;
+                        objrndMaster.ManHourRate = pbfentity.RNDMasterEntities.ManHourRate;
+                        objrndMaster.PlanSupportCostRsPerDay = pbfentity.RNDMasterEntities.PlanSupportCostRsPerDay;
+                        //objRndMaster.ModifyBy = loggedInUserId;
+                        //objRndMaster.ModifyDate = DateTime.Now;
+                        _pidfPbfRnDMasterRepository.UpdateAsync(objrndMaster);
+                        await _unitOfWork.SaveChangesAsync();
+                    }
+                    else
+                    {
+                        PidfPbfRnDMaster objRndMaster = new PidfPbfRnDMaster();
+                        objRndMaster = _mapperFactory.Get<RNDMasterEntity, PidfPbfRnDMaster>(pbfentity.RNDMasterEntities);
+                        objRndMaster.PbfgeneralId = pbfgeneralid;
+                        objRndMaster.CreatedBy = loggedInUserId;
+                        objRndMaster.CreatedDate = DateTime.Now;
+                        _pidfPbfRnDMasterRepository.AddAsync(objRndMaster);
+                        await _unitOfWork.SaveChangesAsync();
+                    }
                 }
-                else
-                {
-                    PidfPbfRnDMaster objRndMaster = new PidfPbfRnDMaster();
-                    objRndMaster = _mapperFactory.Get<RNDMasterEntity, PidfPbfRnDMaster>(pbfentity.RNDMasterEntities);
-                    objRndMaster.PbfgeneralId = pbfgeneralid;
-                    objRndMaster.CreatedBy = loggedInUserId;
-                    objRndMaster.CreatedDate = DateTime.Now;
-                    _pidfPbfRnDMasterRepository.AddAsync(objRndMaster);
-                    await _unitOfWork.SaveChangesAsync();
-                }
+
 
                 #endregion RND Master Add Update
 
