@@ -7,6 +7,8 @@ using EmcureNPD.Resource;
 using Microsoft.Extensions.Localization;
 using System;
 using System.Threading.Tasks;
+using System.Data;
+using System.Data.SqlClient;
 using static EmcureNPD.Utility.Enums.GeneralEnum;
 
 namespace EmcureNPD.Business.Core.Implementation
@@ -34,22 +36,20 @@ namespace EmcureNPD.Business.Core.Implementation
         {
             try
             {
-                MasterException objException = new MasterException
-                {
-                    Message = exception.Message,
-                    Source = exception.Source,
-                    InnerException = Convert.ToString(exception.InnerException),
-                    StrackTrace = Convert.ToString(exception.StackTrace),
-                    CreatedDate = DateTime.Now,
-                    CreatedBy = _helper.GetLoggedInUser().UserId
-                };
 
-                _repository.AddAsync(objException);
+                SqlParameter[] osqlParameter = {
+                new SqlParameter("@Message", exception.Message),
+                new SqlParameter("@Source", exception.Source),
+                new SqlParameter("@InnerException", Convert.ToString(exception.InnerException)),
+                new SqlParameter("@StackTrace", Convert.ToString(exception.StackTrace)),
+                new SqlParameter("@CreatedBy", _helper.GetLoggedInUser().UserId)
+            };
+                DataTable dtOptions = await _repository.GetBySP("stp_npd_InsertException", System.Data.CommandType.StoredProcedure, osqlParameter);
 
-                await _unitOfWork.SaveChangesAsync();
-                if (objException.ExceptionId == 0)
-                    return DBOperation.Error;
-                return DBOperation.Success;
+                var result = Convert.ToBoolean(dtOptions.Rows[0][0]);
+                if (result)
+                    return DBOperation.Success;
+                return DBOperation.Error;
             }
             catch (Exception ex)
             {
