@@ -50,20 +50,20 @@ namespace EmcureNPD.Web.Helpers
         {
             return (_httpContextAccessor.HttpContext.Session.GetString(UserHelper.AssignedBusinessUnit));
         }
-        //public void LogExceptions(Exception ex)
-        //{
-        //    try
-        //    {
-        //        _httpContextAccessor.HttpContext.Request.Cookies.TryGetValue(UserHelper.EmcureNPDToken, out string token);
-        //        APIRepository objapi = new(_cofiguration);
-        //        System.Net.Http.HttpResponseMessage responseMessage = objapi.APICommunication(APIURLHelper.LogException, HttpMethod.Post, token, new StringContent(JsonConvert.SerializeObject(ex))).Result;
+        public void LogExceptions(Exception ex)
+        {
+            try
+            {
+                _httpContextAccessor.HttpContext.Request.Cookies.TryGetValue(UserHelper.EmcureNPDToken, out string token);
+                APIRepository objapi = new(_cofiguration);
+                System.Net.Http.HttpResponseMessage responseMessage = objapi.APICommunication(APIURLHelper.LogException, HttpMethod.Post, token, new StringContent(JsonConvert.SerializeObject(ex))).Result;
 
-        //    }
-        //    catch (Exception e)
-        //    {
+            }
+            catch (Exception e)
+            {
 
-        //    }
+            }
 
-        //}
+        }
     }
 }

@@ -12,6 +12,6 @@ namespace EmcureNPD.Web.Helpers
         string IsManagementUser();
 
         int GetLoggedInRoleId();
-        //void LogExceptions(Exception ex);
+        void LogExceptions(Exception ex);
     }
 }

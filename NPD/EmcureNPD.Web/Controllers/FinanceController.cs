@@ -201,6 +201,7 @@ namespace EmcureNPD.Web.Controllers
             }
             catch (Exception ex)
             {
+                _helper.LogExceptions(ex);
                 throw;
             }
         }

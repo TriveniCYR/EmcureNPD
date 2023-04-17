@@ -58,6 +58,7 @@ namespace EmcureNPD.Web.Controllers
             }
             catch (Exception e)
             {
+                _helper.LogExceptions(e);
                 ViewBag.errormessage = Convert.ToString(e.StackTrace);
                 return View("Login");
             }
@@ -144,6 +145,7 @@ namespace EmcureNPD.Web.Controllers
             }
             catch (Exception e)
             {
+                _helper.LogExceptions(e);
                 ViewBag.errormessage = Convert.ToString(e.StackTrace);
                 ModelState.Clear();
                 return View(nameof(Roles));
