@@ -672,4 +672,7 @@
   <data name="CanNotInactiveRole" xml:space="preserve">
     <value>Can not Inactive Role, User assigned to this Role.</value>
   </data>
+  <data name="ChangeProfile" xml:space="preserve">
+    <value>Change Profile</value>
+  </data>
 </root>

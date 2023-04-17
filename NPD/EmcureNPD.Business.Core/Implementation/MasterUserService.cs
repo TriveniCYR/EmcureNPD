@@ -33,9 +33,9 @@ namespace EmcureNPD.Business.Core.ServiceImplementations
         private IRepository<MasterUserDepartmentMapping> _masterUserDepartmentMappingrepository { get; set; }
         private IRepository<MasterBusinessUnit> _businessUnitRepository { get; set; }
         private readonly IMasterAuditLogService _auditLogService;
-
+        private readonly IHelper _helper;
         public MasterUserService(IUnitOfWork unitOfWork, IMapperFactory mapperFactory, IStringLocalizer<Errors> stringLocalizerError,
-                                 IMasterAuditLogService auditLogService,
+                                 IMasterAuditLogService auditLogService, IHelper helper,
                                  Microsoft.Extensions.Configuration.IConfiguration _configuration)
         {
             _unitOfWork = unitOfWork;
@@ -48,6 +48,7 @@ namespace EmcureNPD.Business.Core.ServiceImplementations
             _masterUserDepartmentMappingrepository = _unitOfWork.GetRepository<MasterUserDepartmentMapping>();
             configuration = _configuration;
             _auditLogService = auditLogService;
+            _helper = helper;
         }
 
         public SMTPEntityViewModel GetSMTPConfiguration()
@@ -305,6 +306,27 @@ namespace EmcureNPD.Business.Core.ServiceImplementations
             catch (Exception ex) { }
         }
 
+        public async Task<DBOperation> ChangeProfile(MasterUserEntityChangeProfile entityUser)
+        {           
+             MasterUser objUser;
+            var LoggedUserId = _helper.GetLoggedInUser().UserId;          
+            objUser = _repository.Get(LoggedUserId);
+            if (objUser != null)
+            {
+                objUser.FullName = entityUser.FullName;
+                objUser.MobileNumber = entityUser.MobileNumber;
+                objUser.Address = entityUser.Address;
+                objUser.ModifyBy = LoggedUserId;
+                objUser.ModifyDate = DateTime.Now;
+                _repository.UpdateAsync(objUser);
+            }
+            else
+            {
+                return DBOperation.NotFound;
+            }            
+            await _unitOfWork.SaveChangesAsync();
+            return DBOperation.Success;
+        }
         private MasterUser FillMappingData(MasterUserEntity entityUser, MasterUser objUser)
         {
             if (entityUser.BusinessUnitId != null)
