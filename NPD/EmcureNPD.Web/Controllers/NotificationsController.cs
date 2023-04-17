@@ -18,17 +18,19 @@ namespace EmcureNPD.Web.Controllers
         private readonly IStringLocalizer<Errors> _stringLocalizerError;
         private readonly IStringLocalizer<Shared> _stringLocalizerShared;
         private readonly IStringLocalizer<Master> _stringLocalizerMaster;
+        private readonly IHelper _helper;
 
         #endregion Properties
 
         public NotificationsController(IConfiguration configuration, IStringLocalizer<Master> stringLocalizerMaster,
 
-            IStringLocalizer<Errors> stringLocalizerError, IStringLocalizer<Shared> stringLocalizerShared)
+            IStringLocalizer<Errors> stringLocalizerError, IStringLocalizer<Shared> stringLocalizerShared, IHelper helper)
         {
             _cofiguration = configuration;
             _stringLocalizerError = stringLocalizerError;
             _stringLocalizerShared = stringLocalizerShared;
             _stringLocalizerMaster = stringLocalizerMaster;
+            _helper = helper;
         }
 
         public IActionResult AllNotification()
@@ -55,6 +57,7 @@ namespace EmcureNPD.Web.Controllers
             }
             catch (Exception ex)
             {
+                _helper.LogExceptions(ex);
                 throw;
             }
         }
@@ -85,6 +88,7 @@ namespace EmcureNPD.Web.Controllers
             }
             catch (Exception ex)
             {
+                _helper.LogExceptions(ex);
                 throw;
             }
         }
@@ -113,6 +117,7 @@ namespace EmcureNPD.Web.Controllers
             }
             catch (Exception ex)
             {
+                _helper.LogExceptions(ex);
                 throw;
             }
         }

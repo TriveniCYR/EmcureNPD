@@ -67,6 +67,7 @@ namespace EmcureNPD.Web.Controllers
             }
             catch (Exception e)
             {
+                _helper.LogExceptions(e);
                 ViewBag.errormessage = Convert.ToString(e.StackTrace);
                 return View("~/Views/Account/Login");
             }
@@ -138,6 +139,7 @@ namespace EmcureNPD.Web.Controllers
             }
             catch (Exception ex)
             {
+                _helper.LogExceptions(ex);
                 throw;
             }
         }

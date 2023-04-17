@@ -70,6 +70,7 @@ namespace EmcureNPD.Web.Controllers
             }
             catch (Exception e)
             {
+                _helper.LogExceptions(e);
                 ViewBag.errormessage = Convert.ToString(e.StackTrace);
                 return View("Login");
             }
@@ -95,6 +96,7 @@ namespace EmcureNPD.Web.Controllers
             }
             catch (Exception e)
             {
+                _helper.LogExceptions(e);
                 ViewBag.errormessage = Convert.ToString(e.StackTrace);
                 return View("Login");
             }
@@ -142,6 +144,7 @@ namespace EmcureNPD.Web.Controllers
             }
             catch (Exception ex)
             {
+                _helper.LogExceptions(ex);
                 throw ex;
             }
             return oIPD;
@@ -198,6 +201,7 @@ namespace EmcureNPD.Web.Controllers
             }
             catch (Exception e)
             {
+                _helper.LogExceptions(e);
                 TempData[UserHelper.ErrorMessage] = Convert.ToString(e.StackTrace);
                 //ModelState.Clear();
                 return View(nameof(IPDList));

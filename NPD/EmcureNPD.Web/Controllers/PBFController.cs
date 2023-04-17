@@ -92,6 +92,7 @@ namespace EmcureNPD.Web.Controllers
             }
             catch (Exception e)
             {
+                _helper.LogExceptions(e);
                 ViewBag.errormessage = Convert.ToString(e.StackTrace);
                 return View("Login");
             }
@@ -122,6 +123,7 @@ namespace EmcureNPD.Web.Controllers
             }
             catch (Exception e)
             {
+                _helper.LogExceptions(e);
                 ViewBag.errormessage = Convert.ToString(e.StackTrace);
                 return View("Login");
             }
@@ -208,6 +210,7 @@ namespace EmcureNPD.Web.Controllers
             }
             catch (Exception e)
             {
+                _helper.LogExceptions(e);
                 ViewBag.errormessage = Convert.ToString(e.StackTrace);
                 ModelState.Clear();
                 return RedirectToAction("PIDFList", "PIDF", new { ScreenId = 6 });
@@ -273,6 +276,7 @@ namespace EmcureNPD.Web.Controllers
             }
             catch (Exception ex)
             {
+                _helper.LogExceptions(ex);
                 throw;
             }
         }
@@ -308,6 +312,7 @@ namespace EmcureNPD.Web.Controllers
             }
             catch (Exception e)
             {
+                _helper.LogExceptions(e);
                 ViewBag.errormessage = Convert.ToString(e.StackTrace);
                 ModelState.Clear();
                 return RedirectToAction("PIDFList", "PIDF", new { ScreenId = 6 });
@@ -336,6 +341,7 @@ namespace EmcureNPD.Web.Controllers
             }
             catch (Exception e)
             {
+                _helper.LogExceptions(e);
                 ViewBag.errormessage = Convert.ToString(e.StackTrace);
                 return View("Login");
             }
@@ -363,6 +369,7 @@ namespace EmcureNPD.Web.Controllers
             }
             catch (Exception e)
             {
+                _helper.LogExceptions(e);
                 ViewBag.errormessage = Convert.ToString(e.StackTrace);
                 return View("Login");
             }
@@ -437,6 +444,7 @@ namespace EmcureNPD.Web.Controllers
             }
             catch (Exception ex)
             {
+                _helper.LogExceptions(ex);
                 throw;
             }
         }
@@ -460,6 +468,7 @@ namespace EmcureNPD.Web.Controllers
             }
             catch (Exception e)
             {
+                _helper.LogExceptions(e);
                 ViewBag.errormessage = Convert.ToString(e.StackTrace);
                 return View("Login");
             }
@@ -552,7 +561,7 @@ namespace EmcureNPD.Web.Controllers
             }
             catch (Exception e)
             {
-                //_helper.LogExceptions(e);
+                _helper.LogExceptions(e);
                 ViewBag.errormessage = Convert.ToString(e.StackTrace);
                 ModelState.Clear();
                 //return RedirectToAction("PIDFList", "PIDF", new { ScreenId = 6 });

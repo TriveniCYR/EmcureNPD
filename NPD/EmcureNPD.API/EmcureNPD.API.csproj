@@ -23,7 +23,6 @@
     <ProjectReference Include="..\EmcureNPD.Business.Core\EmcureNPD.Business.Core.csproj" />
     <ProjectReference Include="..\EmcureNPD.Business.Models\EmcureNPD.Business.Models.csproj" />
     <ProjectReference Include="..\EmcureNPD.Resource\EmcureNPD.Resource.csproj" />
-    <ProjectReference Include="..\EmcureNPD.Scheduler\EmcureNPD.Scheduler.csproj" />
     <ProjectReference Include="..\EmcureNPD.Utility\EmcureNPD.Utility.csproj" />
   </ItemGroup>
 
