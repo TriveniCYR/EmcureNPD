@@ -718,7 +718,8 @@ document.addEventListener("DOMContentLoaded", function () {
        ajaxServiceMethod($('#hdnWebBaseURL').val() + "Project/AddUpdateGanttTask?id=" + pidfId + "&act=" + act, 'POST', SaveTaskSubTaskListSuccess, SaveTaskSubTaskListError, JSON.stringify(addTask), null, null, null,"application/json; charset=utf-8");
 
         function SaveTaskSubTaskListSuccess(data) {
-           // GetProjectGanttTaskList();
+           GetProjectGanttTaskList();
+            setTimeout(reloadFunc, 500);
            toastr.success("Success");
        }
        function SaveTaskSubTaskListError() {
@@ -729,7 +730,8 @@ document.addEventListener("DOMContentLoaded", function () {
         taskIdToBeDelete = taskid;
         ajaxServiceMethod($('#hdnBaseURL').val() + "api/Project/DeleteTaskSubTask" + "/" + taskid, 'POST', deleteGanttTaskSubTaskSuccess, deleteGanttTaskSubTaskError);
     }
-    function deleteGanttTaskSubTaskSuccess(response){
+    function deleteGanttTaskSubTaskSuccess(response) {
+       // setTimeout(reloadFunc, 2000);
         toastr.success(`TaskId:${taskIdToBeDelete} Deleted SuccessFully...!`);
     }
     function deleteGanttTaskSubTaskError() {
