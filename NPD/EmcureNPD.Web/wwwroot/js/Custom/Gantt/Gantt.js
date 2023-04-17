@@ -727,14 +727,7 @@ document.addEventListener("DOMContentLoaded", function () {
                 //    taskOwnerName: data._object[i].taskOwnerName,
                 //    totalPercentage: data._object[i].totalPercentage
                 //}
-                //let ganttdata = JSON.stringify(gdata).replace("{", "").replace("}", "");
-                //$(".gantt_task_line").each(function (i, value) {
-                //    alert($(this).attr("aria-label"))
-                //});
-
-                // gantt.parse({ data: ganttdata });
                 gantt.parse(gdata);
-                //gantt.task.progress = parseInt(data._object[i].totalPercentage);
             }
             responsTtaskList = data._object;
         }

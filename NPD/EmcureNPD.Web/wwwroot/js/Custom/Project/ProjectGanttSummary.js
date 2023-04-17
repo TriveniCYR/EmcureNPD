@@ -4,7 +4,8 @@
 $("i.fas.fa-expand").click(function () {
     $("#ganttContainer").css("width", "100%");
 });
-$(document).ready(function () {
+document.addEventListener("DOMContentLoaded", function () {
+    let gdata = {};
     gantt.config.min_column_width = 50;
     gantt.config.work_time = true;
     //gantt.config.skip_off_time = true;
@@ -253,10 +254,10 @@ $(document).ready(function () {
     }
 
     gantt.config.lightbox.sections = [
-        { name: "description", height: 38, map_to: "text", type: "textarea", focus: true },
+        { name: "description", label:"Project Name", height: 38, map_to: "text", type: "textarea", focus: true },
         { name: "owner", height: 22, map_to: "owner_id", type: "select", options: gantt.serverList("people") },
         { name: "priority", height: 22, map_to: "priority", type: "select", options: gantt.serverList("priority") },
-        { name: "time", type: "duration", map_to: "auto" },
+        { name: "time", type: "duration", map_to: "auto",visible:false },
         {
             name: "baseline",
             map_to: { start_date: "planned_start", end_date: "planned_end" },
@@ -294,11 +295,11 @@ $(document).ready(function () {
     gantt.config.auto_scheduling_strict = true;
     gantt.config.work_time = true;
     gantt.config.columns = [
-        { name: "pidf_number", tree: true, width: 200, resize: true },
-        { name: "project_name", align: "center", width: 80, resize: true },
-        { name: "brand_name", align: "center", width: 80, resize: true },
-        { name: "created_date", align: "center", width: 80, resize: true },
-        { name: "duration", width: 60, align: "center", resize: true },
+        { name: "text", label:"Project Name", tree: true, width: 200, resize: true },
+        { name: "owner", label: "Created By", align: "center", width: 80, resize: true },
+        { name: "priority", label: "Brand Name", align: "center", width: 80, resize: true },
+        { name: "duration", label: "Duration", align: "center", width: 80, resize: true, hide: true },
+        { name: "start_date", label: "CreatedOn", align: "center", width: 80, resize: true },
         //{ name: "add", width: 44 }
     ];
     gantt.plugins({
@@ -352,15 +353,16 @@ $(document).ready(function () {
             var assignments = task[gantt.config.resource_property] || [];
 
             var owner = store.getItem(assignments);
+            let pidfData = gdata.tasks.find(x => x.pidfid == id.split(":")[1])
             //owners.push(owner.text);
-            //if (owners[0].taskLevel == 1) {
-            //    return "<b>Task:</b> " + task.text + "<br/>" +
-            //        "<b>Owner:</b>" + owners[0].taskOwnerName + "<br/>" +
-            //        "<b>Start date:</b> " +
-            //        gantt.templates.tooltip_date_format(start)
-            //        + "<br/><b>End date:</b> " + gantt.templates.tooltip_date_format(end) + "<br/>" +
-            //        "<b>Progress:</b> " + Math.round(owners[0].totalPercentage) + "%";
-            //}
+          // if (owners[0].taskLevel == 1) {
+            return "<b>Project Name:</b> " + task.text + "<br/>" +
+                "<b>Created By:</b>" + pidfData.owner + "<br/>" +
+                "<b>Created date:</b> " +
+                gantt.templates.tooltip_date_format(start)
+                + "<br/><b>Brand Name:</b> " + pidfData.priority + "<br/>" ;
+                   //"<b>Progress:</b> " + Math.round(owners[0].totalPercentage) + "%";
+          // }
             //else if (owners[0].taskLevel > 1) {
             //    return "<b>Task:</b> " + task.text + "<br/>" +
             //        "<b>Start date:</b> " +
@@ -445,7 +447,13 @@ $(document).ready(function () {
        // alert('hi')
         deleteGanttTaskSubTask(id);
     });
-
+    gantt.attachEvent("onTaskDblClick", function (id, e) {
+        //any custom logic here
+        $("div.gantt_cal_light").hide();
+       // alert('hi')
+        location.href = "Gantt?pidfid="+id.split(":")[0];
+        //return true;
+    });
     function reloadFunc() {
         location.reload();
     }
@@ -462,43 +470,46 @@ $(document).ready(function () {
     gantt.locale.labels.baseline_enable_button = 'Set';
     gantt.locale.labels.baseline_disable_button = 'Remove';
     gantt.config.auto_scheduling = false;
-    let gdata = {};
+    
     gantt.init("ganttContainer");
 
-    gdata = {
-        "tasks": [
-            {
-                "id": 1, "pidf_number": "Project #1", "project_name": "abc", "brand_name": "zyz", "created_date": "01-04-2023", "duration": 1, "parent": 1
-            },
-            {
-                "id": 2, "pidf_number": "Project #1", "project_name": "abc", "brand_name": "zyz", "created_date": "01-04-2023", "duration": 1, "parent": 1
-            },
-            {
-                "id": 3, "pidf_number": "Project #1", "project_name": "abc", "brand_name": "zyz", "created_date": "01-04-2023", "duration": 1, "parent": 1
-            },
-        ],
-        "links": [
-            { "id": 1, "source": 1, "target": 2, "type": "1" },
-            { "id": 2, "source": 2, "target": 3, "type": "0" }
-        ]
+   
+    
+    let param = {
+        column: "createdDate",
+        draw: 1,
+        length: 100,
+        order: "desc",
+        page: 0,
+        pages: 0,
+        start:0
     }
-    //gantt.parse(gdata);
-    //let param = {
-    //    column: "createdDate",
-    //    draw: 1,
-    //    length: 100,
-    //    order: "desc",
-    //    page: 0,
-    //    pages: 0,
-    //    start:0
-    //}
-    //$.ajax({
-    //    url: $('#hdnBaseURL').val() + AllPIDF + "?ScreenId=" + id,
-    //    type: "POST",
-    //    data: { model: JSON.stringify(param) },
-    //    cache: false,
-    //    success: function (data) {
-    //        console.log(data)
-    //    }
-    //});
+    $.ajax({
+        url: $('#hdnBaseURL').val() + AllPIDF + "?ScreenId=" + id,
+        type: "POST",
+        data: { model: param},
+        cache: false,
+        success: function (data) {
+            console.log(data)
+           // gantt.parse({ data: data[0] });
+            for (var i = 0; i < data['data'].length; i++) {
+                let crDate = moment(data["data"][i].createdDate).format("YYYY-MM-DD hh:mm")
+                gdata = {
+                    "tasks": [
+                        {
+                            "id": data["data"][i].encpidfid + ":" + String(data["data"][i].pidfid), "text": data["data"][i].moleculeName, "start_date": crDate, "owner": data["data"][i].createdBy, "priority": data["data"][i].brandName, "duration": 1
+                           // "id": data["data"][i].rowNumber, "pidf_number": data["data"][i].pidfNo, "project_name": data["data"][i].moleculeName, "brand_name": data["data"][i].rfdBrand, "created_date": "01-04-2023", "duration": 1, "parent": data["data"][i].pidfid
+                        },
+                        
+                    ],
+                    //"links": [
+                    //    { "id": data["data"][i].rowNumber, "source": 1, "target": 2, "type": "1" },
+                    //    //{ "id": 2, "source": 2, "target": 3, "type": "0" }
+                    //]
+                }
+            }
+            gantt.parse(gdata);
+        }
+    });
+    
 });
