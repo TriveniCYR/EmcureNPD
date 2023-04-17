@@ -31,9 +31,8 @@ $.fn.tableTotal = function tableTotal(args) {
 
         $cells.each(function eachCell(i) {
             const $cell = $(this);
-           
+
             if ($.isNumeric($cell.val())) {
-               
                 const n = +$cell.val();
 
                 if (typeof colTotals[i] === 'undefined') {

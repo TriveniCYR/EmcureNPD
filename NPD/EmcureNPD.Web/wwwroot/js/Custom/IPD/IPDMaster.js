@@ -17,7 +17,6 @@ function fnGetActiveBusinessUnit() {
     ajaxServiceMethod($('#hdnBaseURL').val() + GetActiveBusinessUnit, 'GET', GetActiveBusinessUnitSuccess, GetActiveBusinessUnitError);
 }
 function GetActiveBusinessUnitSuccess(data) {
-    
     var businessUnitHTML = "";
     var businessUnitPanel = "";
     $.each(data._object, function (index, item) {
@@ -27,9 +26,8 @@ function GetActiveBusinessUnitSuccess(data) {
     });
     $('#custom-tabs-two-tab').html(businessUnitHTML);
     $('#custom-tabs-two-tabContent').html(businessUnitPanel);
-    
-    
-    LoadIPDForm(_PIDFID, _selectBusinessUnit); 
+   
+    LoadIPDForm(_PIDFID, _selectBusinessUnit);
 }
 function GetActiveBusinessUnitError(x, y, z) {
     toastr.error(ErrorMessage);
@@ -50,7 +48,9 @@ function GetRegionList() {
 }
 function GetRegionListSuccess(data) {
     try {
+        //alert(_userRegion.length);
         _userRegion = data._object;
+        //setRegion();
     } catch (e) {
         toastr.error('Error:' + e.message);
     }
@@ -70,7 +70,7 @@ function setRegion() {
         getParentFormId().find('.regionCombo').val(arr).trigger('change');
     }
     else {
-        getParentFormId().find('.regionCombo').val("-").trigger('change');    
+        getParentFormId().find('.regionCombo').val("-").trigger('change');
     }
 }
 
@@ -185,7 +185,7 @@ function SetDisableForOtherUserBU(_selectBusinessUnit) {
     }
 }
 
-function readOnlyIPDFormForOtherBU(flag) {    
+function readOnlyIPDFormForOtherBU(flag) {
     $('#ProjectName').attr('readonly', flag);
     $('#dvIPDContainer').find('input').attr('readonly', flag).attr('disabled', flag);
     $('#dvIPDContainer').find('textarea').attr('readonly', flag).attr('disabled', flag);
@@ -197,7 +197,6 @@ function readOnlyIPDFormForOtherBU(flag) {
         $('#dvIPDContainer').find('.operationButton').show();
 }
 function checkRadioCheckOrNot() {
-    
     if ($(".IPDIsComment").is(":checked")) { $(".IPDCommentText").attr("readonly", false); $(".IPDCommentText").attr("disabled", false  ) }
     else {
         $(".IPDCommentText").val("");

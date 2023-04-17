@@ -34,15 +34,26 @@ $.ajaxSetup({
 });
 //Attach the event handler to any element
 $(document)
+    .ajaxSend(function (event, jqxhr, settings) {
+        $('.notification').click(function () {
+            $('#loading-wrapper').hide();
+        });
+    })
     .ajaxStart(function () {
         //ajax request went so show the loading image
         /*$('#mainLoader').height("100vh").find("img").show();*/
+       
         $('#loading-wrapper').show();
     })
     .ajaxStop(function () {
         //got response so hide the loading image
         /*$('#mainLoader').height("0").find("img").hide();*/
         setTimeout(function () { $('#loading-wrapper').hide(); }, 500);
+    })
+    .ajaxError(function (event, jqxhr, settings, thrownError) {
+        if (jqxhr.status == 401) {
+            window.location.href = '/Home/AccessRestriction';
+        }
     });
 function getCookie(name) {
     const value = `; ${document.cookie}`;
@@ -69,13 +80,13 @@ function setNavigation() {
         )
     };
     if (path.includes('PIDF') || path.includes('PBF') || path.includes('Audit')) {
-        $('#parentPIDF').addClass('menu-is-opening menu-open');        
+        $('#parentPIDF').addClass('menu-is-opening menu-open');
     }
 
     $(".nav-item a").each(function () {
         var IshrefFound = false;
         var href = $(this).attr('href');
-        if (href==undefined) {
+        if (href == undefined) {
             return;
         }
         var NavPathArr = href.split('/');
@@ -225,7 +236,7 @@ function ApproveRejectConfirm() {
         $('#ApproveRejectModel').modal('hide');
     }
     else {
-        toastr.error("Please Enter Comments!","ERROR:")
+        toastr.error("Please Enter Comments!", "ERROR:")
     }
 }
 function SaveApproveRejectSuccess(data) {
@@ -283,4 +294,67 @@ function formatDate(dateStr) {
     return d.getDate() + ' ' + months[d.getMonth()] + ' ' + d.getFullYear() +
         ' ' + z(d.getHours() % 12 || 12) + ':' + z(d.getMinutes()) +
         ' ' + (d.getHours() < 12 ? 'am' : 'pm');
+}
+
+function printElement(filename) {
+    var currentTitle = document.title;
+    document.title = filename;
+    $('.main-footer').hide();
+    $('.operationButton').hide();
+    window.print();
+    $('.operationButton').show();
+    $('.main-footer').show();
+    document.title = currentTitle;
+}
+//Create PDf from HTML...
+function CreatePDFfromHTML(element, space, fileName) {
+    try {
+
+        var pdf = new jsPDF('p', 'mm', 'a4');
+        var width = pdf.internal.pageSize.getWidth() - 10;
+        var height = pdf.internal.pageSize.getHeight();
+
+        var HTML_Width = $(element).width();
+        var HTML_Height = $(element).height();
+        var top_left_margin = 20;
+        var PDF_Width = HTML_Width + (top_left_margin * 2);
+        var PDF_Height = (PDF_Width * 1.5) + (top_left_margin * 2);
+        var totalPDFPages = Math.ceil(HTML_Height / PDF_Height) - 1;
+        html2canvas($(element)[0]).then(function (canvas) {
+            var imgData = canvas.toDataURL("image/jpeg", 1.0);
+            for (var i = 1; i <= totalPDFPages; i++) {
+                pdf.addImage(imgData, 'JPG', 4, 1, width, height);
+            }
+            pdf.save(fileName);
+        });
+    }
+    catch (e) {
+    }
+}
+function CreatePDFFromHTML(element) {
+    var pdf = new jsPDF('p', 'pt', 'a4');
+    var source = $(element)[0];
+    var margins = {
+        top: 80,
+        bottom: 60,
+        left: 40,
+        width: 522
+    };
+
+    // all coords and widths are in jsPDF instance's declared units
+    // 'inches' in this case
+    pdf.fromHTML(
+        source // HTML string or DOM elem ref.
+        , margins.left // x coord
+        , margins.top // y coord
+        , {
+            'width': margins.width // max width of content on PDF
+        },
+        function (dispose) {
+            // dispose: object with X, Y of the last line add to the PDF
+            //          this allow the insertion of new lines after html
+            pdf.save('Test.pdf');
+        },
+        margins
+    );
 }

@@ -5,8 +5,6 @@ using EmcureNPD.Data.DataAccess.Core.Repositories;
 using EmcureNPD.Data.DataAccess.Core.UnitOfWork;
 using EmcureNPD.Data.DataAccess.Entity;
 using System.Collections.Generic;
-using System.Data.SqlClient;
-using System.Dynamic;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -32,7 +30,6 @@ namespace EmcureNPD.Business.Core.Implementation
 
         public async Task<List<MasterModuleEntity>> GetAll()
         {
-
             var MasterModuleData = _mapperFactory.GetList<MasterModule, MasterModuleEntity>(await _repository.GetAllAsync()).OrderBy(x => x.SortOrder).ToList();
 
             var MasterSubModuleData = _mapperFactory.GetList<MasterSubModule, MasterSubModuleEntity>(await _repositorySub.GetAllAsync());
@@ -101,14 +98,14 @@ namespace EmcureNPD.Business.Core.Implementation
                                    ModuleId = c.ModuleId,
                                    CreatedDate = c.CreatedDate,
                                    IsActive = c.IsActive,
-                                   SortOrder= c.SortOrder,
+                                   SortOrder = c.SortOrder,
                                    RoleModulePermission = Permissions.FirstOrDefault(xx => xx.ModuleId == c.ModuleId && xx.SubModuleId == 0),
                                    MasterSubModules = o.ToList()
                                }).ToList();
 
-                foreach(var item in MasterModuleData)
+                foreach (var item in MasterModuleData)
                 {
-                   if(item.RoleModulePermission ==null)
+                    if (item.RoleModulePermission == null)
                     {
                         var _roleModulepermission = new RoleModulePermissionEntity();
                         _roleModulepermission.Add = false;
@@ -117,7 +114,7 @@ namespace EmcureNPD.Business.Core.Implementation
                         _roleModulepermission.Edit = false;
                         _roleModulepermission.Approve = false;
                         _roleModulepermission.RoleId = roleId;
-                        _roleModulepermission.ModuleId = item.ModuleId; 
+                        _roleModulepermission.ModuleId = item.ModuleId;
                         item.RoleModulePermission = _roleModulepermission;
                     }
                 }
@@ -128,6 +125,7 @@ namespace EmcureNPD.Business.Core.Implementation
                 return await GetAll();
             }
         }
+
         public async Task<IEnumerable<dynamic>> GetByPermisionRoleUsingRoleId(int roleId)
         {
             var Permissions = _mapperFactory.GetList<RoleModulePermission, RoleModulePermissionEntity>(await _repositoryRolePermission.FindAllAsync(xx => xx.RoleId == roleId));
@@ -147,17 +145,15 @@ namespace EmcureNPD.Business.Core.Implementation
                                   ModuleId = p.ModuleId,
                                   MainModuleName = m.ModuleName,
                                   SubModuleName = SubM?.SubModuleName ?? string.Empty,
-                                  SubModuleId= p.SubModuleId,
-                                  MainModuleId=p.ModuleId,
-                                  ControlName= SubM?.ControlName ?? m.ControlName,
+                                  SubModuleId = p.SubModuleId,
+                                  MainModuleId = p.ModuleId,
+                                  ControlName = SubM?.ControlName ?? m.ControlName,
                                   Add = p.Add,
                                   View = p.View,
                                   Edit = p.Edit,
                                   Delete = p.Delete,
                                   Approve = p.Approve
-
                               }).ToList();
-
 
                 return person;
             }
@@ -165,6 +161,6 @@ namespace EmcureNPD.Business.Core.Implementation
             {
                 return null;
             }
-        }        
+        }
     }
 }

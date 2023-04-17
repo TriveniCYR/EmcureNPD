@@ -6,10 +6,10 @@
     ViewData["Title"] = "Project Show Details";
     var id = ViewBag.bid;
     string jsVersion = @Configuration.GetSection("StaticJS")["version"];
-    //RolePermissionModel objPermssion = (RolePermissionModel)ViewBag.Access;
-    //string IsAddAllow = (objPermssion.Add) ? "" : "display: none";
-    //string IsEditAllow = (objPermssion.Edit) ? "" : "display: none";
-    //string IsDeleteAllow = (objPermssion.Delete) ? "" : "display: none";
+    RolePermissionModel objPermssion = (RolePermissionModel)ViewBag.Access;
+    bool IsAddAllow = (objPermssion.Add) ;
+    bool IsEditAllow = (objPermssion.Edit);
+    bool IsDeleteAllow = (objPermssion.Delete);
 }
 @model EmcureNPD.Business.Models.ProjectTaskEntity
 @inject Microsoft.Extensions.Localization.IStringLocalizer<EmcureNPD.Resource.Shared> SharedLocalizer
@@ -184,10 +184,6 @@
                                     <div class="card-tools md-left">
                                         <div class="mybtn-group">
                                             <input type="hidden" name="CurrentUserRole" id="CurrentUserRole" value="@ViewBag.CurrentUserRolePIDF" />
-                                            @*  @if (User.IsInRole("Prescriber") || User.IsInRole("Regulatory Manager") || User.IsInRole("Senior Project Manager"))
-                                            {*@
-                                            <button id="addTaskButton" IsAddAllow type="button" onclick="ShowAddTaskForm()" class="btn btn-primary">@SharedLocalizer["Add Task"].Value</button>
-                                            @* }*@
                                             <button type="button" class="btn btn-tool p-0 mr-3 ml-3" data-card-widget="maximize">
                                                 <i class="fas fa-expand"></i>
                                             </button>
@@ -202,7 +198,7 @@
 
                                 <div class="card-body">
                                     <div class="row shorting_btns" style="margin-bottom:10px;">
-                                                <div class="mybtn-group taskTabs">
+                                                <div class="mybtn-group taskTabs col-8">
                                             <a class="btn btn-primary status_filter active" id="btnAll" href="Javascript:void(0)" onclick="GetProjectDetails(0)"><i class="far fa-list-alt mr-1"></i>All</a>
                                                         
                                                         <a class="btn btn-primary status_filter" id="btnMonthly" href="Javascript:void(0)" onclick="GetProjectDetails(1)"><i class="far fa-list-alt mr-1"></i>Monthly</a>
@@ -213,6 +209,9 @@
 
                                             <a class="btn btn-primary status_filter " id="btnAnnualy" href="Javascript:void(0)" onclick="GetProjectDetails(4)"><i class="far fa-list-alt mr-1"></i>Annualy</a>
                                                     
+                                                </div>
+                                                <div class="col-4 text-right">
+                                                    <button id="addTaskButton" IsAddAllow type="button" onclick="ShowAddTaskForm()" class="btn btn-primary">@SharedLocalizer["Add Task"].Value</button>
                                                 </div>
                                             </div>
                                     <div class="table-responsive">
@@ -577,9 +576,9 @@
             toastr.success(successCallBack);
         }
         var bid = @Html.Raw(Json.Serialize(id));
-        //var IsAdd = IsAddAllow;
-        //var IsUpdate = IsEditAllow;
-        //var IsDelete = IsDeleteAllow;
+        var IsAddPermission = '@IsAddAllow';
+        var IsUpdatePermission = '@IsEditAllow';
+        var IsDeletePermission = '@IsDeleteAllow';
     </script>
 }
 

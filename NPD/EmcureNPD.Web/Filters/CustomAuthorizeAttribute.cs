@@ -1,18 +1,13 @@
 ﻿using EmcureNPD.Business.Models;
-using EmcureNPD.Resource;
 using EmcureNPD.Utility.Models;
 using EmcureNPD.Utility.Utility;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
-using Microsoft.AspNetCore.Mvc.ViewFeatures;
 using Microsoft.Extensions.Caching.Distributed;
-using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.Localization;
 using Newtonsoft.Json;
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net.Http;
@@ -37,12 +32,12 @@ namespace EmcureNPD.Web.Helpers
                 else
                 {
                     UserSessionEntity oUserLoggedInModel = UtilityHelper.GetUserFromClaims(user.Claims);
-                    
+
                     context.HttpContext.Session.SetString(UserHelper.LoggedInUserEmailAddress, oUserLoggedInModel.Email);
                     context.HttpContext.Session.SetString(UserHelper.LoggedInUserName, oUserLoggedInModel.FullName);
                     context.HttpContext.Session.SetInt32(UserHelper.LoggedInRoleId, oUserLoggedInModel.RoleId);
                     context.HttpContext.Session.SetString(UserHelper.AssignedBusinessUnit, oUserLoggedInModel.AssignedBusinessUnit);
-                    context.HttpContext.Session.SetString(UserHelper.IsManagement,Convert.ToString(oUserLoggedInModel.IsManagement));
+                    context.HttpContext.Session.SetString(UserHelper.IsManagement, Convert.ToString(oUserLoggedInModel.IsManagement));
                     if (oUserLoggedInModel.UserId > 0)
                     {
                         context.HttpContext.Session.SetString(UserHelper.LoggedInUserId, oUserLoggedInModel.UserId.ToString());
@@ -68,7 +63,6 @@ namespace EmcureNPD.Web.Helpers
                     oUserLoggedInModel.UserToken = string.Empty;
 
                     IsUserAuthorized(context);
-
                 }
             }
             catch (Exception)
@@ -76,6 +70,7 @@ namespace EmcureNPD.Web.Helpers
                 throw;
             }
         }
+
         private void IsUserAuthorized(AuthorizationFilterContext context)
         {
             try
@@ -91,8 +86,8 @@ namespace EmcureNPD.Web.Helpers
                         var action = context.RouteData.Values["action"];
                         if (obj != null)
                         {
-                            RolePermissionModel objList = obj.Where(o => o.ControlName !=null && o.ControlName.Trim() == Convert.ToString(controllerName).Trim()).FirstOrDefault();
-                            if (objList == null && Convert.ToString(controllerName) != "Home")
+                            RolePermissionModel objList = obj.Where(o => o.ControlName != null && o.ControlName.Trim() == Convert.ToString(controllerName).Trim()).FirstOrDefault();
+                            if (objList == null && Convert.ToString(controllerName) != "Home" && Convert.ToString(controllerName) != "Notifications")
                                 context.Result = new RedirectResult("~/Home/AccessRestriction");
                         }
                     }
@@ -100,7 +95,6 @@ namespace EmcureNPD.Web.Helpers
             }
             catch (Exception)
             {
-
                 throw;
             }
         }

@@ -21,6 +21,8 @@ namespace EmcureNPD.Data.DataAccess.Entity
         public DateTime CreatedDate { get; set; }
         public int? ModifyBy { get; set; }
         public DateTime? ModifyDate { get; set; }
+        public int? ProductTypeFactor { get; set; }
+        public double? ManPowerFactor { get; set; }
 
         public virtual ICollection<PidfApiIpd> PidfApiIpds { get; set; }
         public virtual ICollection<PidfPbfGeneral> PidfPbfGenerals { get; set; }

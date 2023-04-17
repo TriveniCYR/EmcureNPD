@@ -394,6 +394,15 @@ namespace EmcureNPD.Resource.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Can not Inactive Role, User assigned to this Role..
+        /// </summary>
+        public static string CanNotInactiveRole {
+            get {
+                return ResourceManager.GetString("CanNotInactiveRole", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Capital Other Expenditure.
         /// </summary>
         public static string CapitalOtherExpenditure {

@@ -24,16 +24,19 @@ namespace EmcureNPD.API.Controllers.Account
         private readonly IResponseHandler<dynamic> _ObjectResponse;
         private readonly IMasterUserService _MasterUserService;
         private readonly IStringLocalizer<Errors> _stringLocalizerError;
+        private readonly IExceptionService _ExceptionService;
+
         #endregion Properties
 
         #region Constructor
 
-        public AccountController(IConfiguration configuration, IResponseHandler<dynamic> ObjectResponse, IMasterUserService MasterUserService, IStringLocalizer<Errors> stringLocalizerError)
+        public AccountController(IConfiguration configuration, IResponseHandler<dynamic> ObjectResponse, IMasterUserService MasterUserService, IStringLocalizer<Errors> stringLocalizerError, IExceptionService exceptionService)
         {
             _configuration = configuration;
             _ObjectResponse = ObjectResponse;
             _MasterUserService = MasterUserService;
             _stringLocalizerError = stringLocalizerError;
+            _ExceptionService = exceptionService;
         }
 
         #endregion Constructor
@@ -74,9 +77,11 @@ namespace EmcureNPD.API.Controllers.Account
             }
             catch (Exception ex)
             {
+                await _ExceptionService.LogException(ex);
                 return _ObjectResponse.Create(false, (Int32)HttpStatusCode.InternalServerError, Convert.ToString(ex.StackTrace));
             }
         }
+
         [AllowAnonymous]
         [HttpGet, Route("GetAllBusinessUnit")]
         public async Task<IActionResult> GetAllBusinessUnit()
@@ -91,6 +96,7 @@ namespace EmcureNPD.API.Controllers.Account
             }
             catch (Exception ex)
             {
+                await _ExceptionService.LogException(ex);
                 return _ObjectResponse.Create(false, (Int32)HttpStatusCode.InternalServerError, Convert.ToString(ex.StackTrace));
             }
         }
@@ -102,10 +108,10 @@ namespace EmcureNPD.API.Controllers.Account
             try
             {
                 var _forgotPasswordOperation = await _MasterUserService.ForgotPassword(forgotPasswordViewModel.Email);
-              
+
                 if (_forgotPasswordOperation == DBOperation.Success)
                     return _ObjectResponse.Create(_forgotPasswordOperation, (Int32)HttpStatusCode.OK);
-                else if(_forgotPasswordOperation == DBOperation.NotFound)
+                else if (_forgotPasswordOperation == DBOperation.NotFound)
                 {
                     return _ObjectResponse.Create(null, (Int32)HttpStatusCode.BadRequest, "No Records found");
                 }
@@ -113,9 +119,11 @@ namespace EmcureNPD.API.Controllers.Account
             }
             catch (Exception ex)
             {
+                await _ExceptionService.LogException(ex);
                 return _ObjectResponse.Create(false, (Int32)HttpStatusCode.InternalServerError, Convert.ToString(ex.StackTrace));
             }
         }
+
         [AllowAnonymous]
         [HttpGet, Route("CheckEmailAddressExists/{emailAddress}")]
         public async Task<bool> CheckEmailAddressExists([FromRoute] string emailAddress)
@@ -126,9 +134,11 @@ namespace EmcureNPD.API.Controllers.Account
             }
             catch (Exception ex)
             {
+                await _ExceptionService.LogException(ex);
                 return false;
             }
         }
+
         [AllowAnonymous]
         [HttpGet, Route("IsTokenValid/{token}")]
         public async Task<bool> IsTokenValid([FromRoute] string token)
@@ -139,32 +149,34 @@ namespace EmcureNPD.API.Controllers.Account
             }
             catch (Exception ex)
             {
+                await _ExceptionService.LogException(ex);
                 return false;
             }
         }
+
         [AllowAnonymous]
         [HttpPost, Route("ResetPassword")]
         public async Task<IActionResult> ResetPassword([FromBody] MasterUserResetPasswordEntity ResetPasswordViewModel)
         {
             try
             {
-                var resetOperation = await _MasterUserService.ResetPassword(ResetPasswordViewModel);                
+                var resetOperation = await _MasterUserService.ResetPassword(ResetPasswordViewModel);
                 if (resetOperation == "ResetSuccessfully")
                     return _ObjectResponse.Create(resetOperation, (Int32)HttpStatusCode.OK);
-                else if(resetOperation == "TokenExpired")
+                else if (resetOperation == "TokenExpired")
                 {
-                    return _ObjectResponse.Create(resetOperation, (Int32)HttpStatusCode.NotExtended,"TokenExpired");
+                    return _ObjectResponse.Create(resetOperation, (Int32)HttpStatusCode.NotExtended, "TokenExpired");
                 }
                 else
                     return _ObjectResponse.Create(null, (Int32)HttpStatusCode.BadRequest, "No Records found");
-
             }
             catch (Exception ex)
             {
+                await _ExceptionService.LogException(ex);
                 return _ObjectResponse.Create(false, (Int32)HttpStatusCode.InternalServerError, Convert.ToString(ex.StackTrace));
             }
         }
-        
+
         #endregion API Methods
     }
 }

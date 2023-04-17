@@ -6,6 +6,7 @@ namespace EmcureNPD.Web.Models
     public class ProjectViewModel
     {
     }
+
     // Root myDeserializedClass = JsonConvert.DeserializeObject<Root>(myJsonResponse);
     public class ProjectsView
     {
@@ -26,16 +27,18 @@ namespace EmcureNPD.Web.Models
     public class StrengthView
     {
         public string strength { get; set; }
+        public string projectCode { get; set; }
     }
 
     public class ManagerView
     {
-        public long userId { get; set; } 
+        public long userId { get; set; }
         public string managerName { get; set; }
         public string designationName { get; set; }
         public int statusId { get; set; }
         public DateTime CreatedDate { get; set; }
     }
+
     public class HeadWiseBudgetView
     {
         public string BudgetsHeades { get; set; }
@@ -44,18 +47,21 @@ namespace EmcureNPD.Web.Models
         public string Exhibit { get; set; }
         public string TOTAL { get; set; }
     }
+
     public class ProjectDetailsView
     {
         public string Market { get; set; }
         public string Row { get; set; }
         public string colspan { get; set; }
     }
+
     public class CumulativePhaseWiseBudgetView
     {
         public string CostHeads { get; set; }
         public string PercentOfTotal { get; set; }
         public string CostRsLacs { get; set; }
     }
+
     public class DeliverablesView
     {
         public string PharmacoepialStandardsonQuality { get; set; }

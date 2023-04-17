@@ -37,7 +37,7 @@ namespace EmcureNPD.Business.Core.ServiceImplementations
         public async Task<List<MasterDepartmentEntity>> GetAllActiveDepartment()
         {
             var objDepartmentList = new List<MasterDepartmentEntity>();
-            var departmentList = _repository.GetAllQuery().Where(x=>x.IsActive == true);
+            var departmentList = _repository.GetAllQuery().Where(x => x.IsActive == true);
             foreach (var department in departmentList)
             {
                 var department1 = _mapperFactory.Get<MasterDepartment, MasterDepartmentEntity>(department);
@@ -92,7 +92,6 @@ namespace EmcureNPD.Business.Core.ServiceImplementations
                         }
                     }
                     await _unitOfWork.SaveChangesAsync();
-
                 }
                 else
                 {
@@ -117,7 +116,6 @@ namespace EmcureNPD.Business.Core.ServiceImplementations
                     await _unitOfWork.SaveChangesAsync();
                 }
                 else { return DBOperation.NotFound; }
-
             }
 
             if (objDepartment.DepartmentId == 0)

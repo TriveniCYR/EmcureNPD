@@ -11,7 +11,6 @@ using System.Data.SqlClient;
 using System.Linq;
 using System.Threading.Tasks;
 using static EmcureNPD.Utility.Enums.GeneralEnum;
-using EmcureNPD.Utility.Utility;
 
 namespace EmcureNPD.Business.Core.ServiceImplementations
 {
@@ -24,7 +23,6 @@ namespace EmcureNPD.Business.Core.ServiceImplementations
         private IRepository<MasterRegion> _regionRepository { get; set; }
         private readonly IHelper _helper;
 
-
         public MasterBusinessUnitService(IUnitOfWork unitOfWork, IMapperFactory mapperFactory, IHelper helper)
         {
             _unitOfWork = unitOfWork;
@@ -33,7 +31,6 @@ namespace EmcureNPD.Business.Core.ServiceImplementations
             _repository = _unitOfWork.GetRepository<MasterBusinessUnit>();
             _regionRepository = _unitOfWork.GetRepository<MasterRegion>();
             _repositoryMasterBusinessUnitRegionMapping = _unitOfWork.GetRepository<MasterBusinessUnitRegionMapping>();
-
         }
 
         public async Task<List<MasterBusinessUnitEntity>> GetAll()
@@ -43,7 +40,7 @@ namespace EmcureNPD.Business.Core.ServiceImplementations
 
         public async Task<MasterBusinessUnitEntity> GetById(int id)
         {
-            var  businessUnit = _mapperFactory.Get<MasterBusinessUnit, MasterBusinessUnitEntity>(await _repository.GetAsync(id));
+            var businessUnit = _mapperFactory.Get<MasterBusinessUnit, MasterBusinessUnitEntity>(await _repository.GetAsync(id));
             businessUnit.RegionIds = string.Join(",", _repositoryMasterBusinessUnitRegionMapping.GetAllQuery().Where(x => x.BusinessUnitId == businessUnit.BusinessUnitId).Select(x => x.RegionId.ToString()));
             businessUnit.MasterBusinessRegionMappingIds = string.Join(",", _repositoryMasterBusinessUnitRegionMapping.GetAllQuery().Where(x => x.BusinessUnitId == businessUnit.BusinessUnitId).Select(x => x.BusinessUnitCountryMappingId.ToString()));
             return businessUnit;
@@ -54,7 +51,7 @@ namespace EmcureNPD.Business.Core.ServiceImplementations
             MasterBusinessUnit objBusinessUnit;
             var oMasterBusinessUnitRegionMapping = new MasterBusinessUnitRegionMappingEntity(); ;
             var objMasterBusinessUnitRegionMapping = new MasterBusinessUnitRegionMapping();
-            
+
             string[] regionList = entityBusinessUnit.RegionIds.Split(',');
             int[] regionIds = regionList.Select(int.Parse).ToArray();
 
@@ -112,7 +109,6 @@ namespace EmcureNPD.Business.Core.ServiceImplementations
                     await _unitOfWork.SaveChangesAsync();
                 }
                 else { return DBOperation.NotFound; }
-
             }
 
             if (objBusinessUnit.BusinessUnitId == 0)
@@ -141,6 +137,7 @@ namespace EmcureNPD.Business.Core.ServiceImplementations
 
             return DBOperation.Success;
         }
+
         public async Task<MasterRegionEntity> GetRegionByBusinessUnitId(int id)
         {
             var businessUnitRegionMapping = _repositoryMasterBusinessUnitRegionMapping.Get(x => x.BusinessUnitId == id);
@@ -164,6 +161,5 @@ namespace EmcureNPD.Business.Core.ServiceImplementations
         {
             return _repository.GetDataBySP("SP_GetActiveBusinessUnit");
         }
-
     }
 }

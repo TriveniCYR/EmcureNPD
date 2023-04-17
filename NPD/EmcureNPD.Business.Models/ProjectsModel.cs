@@ -23,6 +23,7 @@ namespace EmcureNPD.Business.Models
     public class ProjectStrength
     {
         public string Strength { get; set; }
+        public string ProjectCode { get; set; }
     }
     public class Manager
     {

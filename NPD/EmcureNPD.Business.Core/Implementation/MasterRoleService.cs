@@ -7,7 +7,6 @@ using EmcureNPD.Data.DataAccess.Entity;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Security.Cryptography.X509Certificates;
 using System.Threading.Tasks;
 using static EmcureNPD.Utility.Enums.GeneralEnum;
 
@@ -40,8 +39,8 @@ namespace EmcureNPD.Business.Core.Implementation
                 if (!masterRoleEntity.IsActive)
                 {
                     var IsUserExist = _Userrepository.GetAllQuery().Where(x => x.RoleId == masterRoleEntity.RoleId).ToList();
-                    if (IsUserExist.Count>0)
-                     masterRoleEntity.IsActive = true;                    
+                    if (IsUserExist.Count > 0)
+                        masterRoleEntity.IsActive = true;
                 }
                 objRole = _repository.Get(masterRoleEntity.RoleId);
                 var OldObjRole = objRole;
@@ -68,7 +67,7 @@ namespace EmcureNPD.Business.Core.Implementation
                 objRole.CreatedDate = DateTime.Now;
                 _repository.AddAsync(objRole);
                 await _unitOfWork.SaveChangesAsync();
-            }          
+            }
 
             if (objRole.RoleId == 0)
                 return DBOperation.Error;
@@ -83,10 +82,9 @@ namespace EmcureNPD.Business.Core.Implementation
                 Permissions = Permissions.Select(xx => { xx.RoleId = objRole.RoleId; return xx; });
 
                 await _roleModulePermission.AddUpdateRoleModulePermission(Permissions.ToList());
-
             }
 
-            #endregion
+            #endregion Add Module Permsson
 
             return DBOperation.Success;
         }
@@ -107,21 +105,27 @@ namespace EmcureNPD.Business.Core.Implementation
             }
             return DBOperation.NotFound;
         }
+
         public async Task<List<MasterRoleEntity>> GetAll()
         {
             return _mapperFactory.GetList<MasterRole, MasterRoleEntity>(await _repository.GetAllAsync());
         }
+
         public async Task<List<MasterRoleEntity>> GetActiveRole()
         {
             var ActiveRole = await _repository.GetAllAsync(x => x.IsActive == true && x.IsDeleted == false);
             return _mapperFactory.GetList<MasterRole, MasterRoleEntity>(ActiveRole.ToList());
         }
+
         public async Task<MasterRoleEntity> GetById(int id)
         {
-            return _mapperFactory.Get<MasterRole, MasterRoleEntity>(await _repository.GetAsync(id));
+            MasterRoleEntity _roleEntity = _mapperFactory.Get<MasterRole, MasterRoleEntity>(await _repository.GetAsync(id));
+            
+                var IsUserExist = _Userrepository.GetAllQuery().Where(x => x.RoleId == _roleEntity.RoleId).ToList();
+                if (IsUserExist !=null && IsUserExist.Count > 0)
+                _roleEntity.IsUserAssigned = true;
+           
+            return _roleEntity;
         }
-
-
-
     }
 }

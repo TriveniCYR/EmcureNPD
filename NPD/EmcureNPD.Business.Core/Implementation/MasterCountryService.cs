@@ -26,7 +26,7 @@ namespace EmcureNPD.Business.Core.ServiceImplementations
 
         public async Task<List<MasterCountryEntity>> GetAll()
         {
-            var list = await _repository.GetAllAsync(x=>x.IsActive==true);
+            var list = await _repository.GetAllAsync(x => x.IsActive == true);
             return _mapperFactory.GetList<MasterCountry, MasterCountryEntity>(list.ToList());
         }
 

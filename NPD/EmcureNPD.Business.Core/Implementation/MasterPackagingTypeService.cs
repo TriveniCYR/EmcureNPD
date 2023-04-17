@@ -26,8 +26,8 @@ namespace EmcureNPD.Business.Core.ServiceImplementations
 
         public async Task<List<MasterPackagingTypeEntity>> GetAll()
         {
-            var PackagingTypeList =await _repository.GetAllAsync(x => x.IsActive == true);
-            return _mapperFactory.GetList<MasterPackagingType, MasterPackagingTypeEntity>(PackagingTypeList.ToList()) ;
+            var PackagingTypeList = await _repository.GetAllAsync(x => x.IsActive == true);
+            return _mapperFactory.GetList<MasterPackagingType, MasterPackagingTypeEntity>(PackagingTypeList.ToList());
         }
 
         public async Task<MasterPackagingTypeEntity> GetById(int id)

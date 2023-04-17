@@ -1,5 +1,4 @@
 ﻿using EmcureNPD.Business.Models;
-using EmcureNPD.Data.DataAccess.Entity;
 using EmcureNPD.Resource;
 using EmcureNPD.Utility.Enums;
 using EmcureNPD.Utility.Models;
@@ -11,9 +10,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Localization;
 using Newtonsoft.Json;
-using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Net.Http;
 
 namespace EmcureNPD.Web.Controllers
@@ -21,28 +18,34 @@ namespace EmcureNPD.Web.Controllers
     public class ManagementController : BaseController
     {
         #region Properties
+
         private readonly IConfiguration _cofiguration;
         private readonly IStringLocalizer<Errors> _stringLocalizerError;
         private readonly IStringLocalizer<Shared> _stringLocalizerShared;
         private readonly IStringLocalizer<Master> _stringLocalizerMaster;
-        #endregion
+        private readonly IHelper _helper;
+
+        #endregion Properties
+
         public ManagementController(IConfiguration configuration, IStringLocalizer<Master> stringLocalizerMaster,
 
-            IStringLocalizer<Errors> stringLocalizerError, IStringLocalizer<Shared> stringLocalizerShared)
+            IStringLocalizer<Errors> stringLocalizerError, IStringLocalizer<Shared> stringLocalizerShared, IHelper helper)
         {
             _cofiguration = configuration;
             _stringLocalizerError = stringLocalizerError;
             _stringLocalizerShared = stringLocalizerShared;
             _stringLocalizerMaster = stringLocalizerMaster;
-
+            _helper = helper;
         }
+
         public IActionResult Index()
         {
             return View();
         }
+
         public IActionResult PIDFManagementApproval()
         {
-            int rolId = (int)HttpContext.Session.GetInt32(UserHelper.LoggedInRoleId);
+            int rolId = _helper.GetLoggedInRoleId();
             RolePermissionModel objPermssion = UtilityHelper.GetCntrActionAccess((int)ModulePermissionEnum.ManagementHOD, rolId);
             ViewBag.Access = objPermssion;
             var pidfid = Request.Query["pidfid"];
@@ -73,11 +76,9 @@ namespace EmcureNPD.Web.Controllers
                             ListProjectName.Add(new ProjectNameModel
                             {
                                 ProjectName = item.projectName
-
                             });
                         }
                         model.lsProjectName = ListProjectName;
-
                     }
                     if (data.table1.Count > 0)
                     {
@@ -85,8 +86,8 @@ namespace EmcureNPD.Web.Controllers
                         {
                             ListprojectStrengths.Add(new ProjectStrength
                             {
-                                Strength = item.strength
-
+                                Strength = item.strength,
+                                ProjectCode = item.projectCode
                             });
                         }
                         model.lsProjectStrength = ListprojectStrengths;
@@ -102,8 +103,6 @@ namespace EmcureNPD.Web.Controllers
                                 DesignationName = item.designationName,
                                 StatusId = item.statusId,
                                 CreatedDate = item.CreatedDate
-
-
                             });
                         }
                         model.lsManager = Listmanager;

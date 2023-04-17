@@ -14,15 +14,15 @@ function GetAllNotificationListSuccess(data) {
         let elehtml = '';
         let rowcount = 1;
         let result = JSON.parse(data)
-        if (result != null) {           
+        if (result != null) {
             $('#NotificationCount').html(result.recordsTotal + " Notifications");
             for (var i = 0; i < result.data.length; i++) {
-                let notificationTitle = result.data[i].notificationTitle.length > 40 ? result.data[i].notificationTitle.slice(0, 39) + '...' : result.data[i].notificationTitle;
+                let notificationTitle = result.data[i].notificationTitle.length > 21 ? result.data[i].notificationTitle.slice(0, 21) + '...' : result.data[i].notificationTitle;
                 /*<span class="badge badge-secondary"><i class="fas fa-envelope mr-1"></i>${rowcount} <b>${data.data[i].notificationTitle}</b></span>*/
-                elehtml += `<a href="#" class="dropdown-item">
-                    <span class="badge badge-secondary" title=${result.data[i].notificationTitle}>${rowcount}:<i class="fas fa-envelope mr-1"></i>${notificationTitle}</span>
+                elehtml += `<a href="#" class="dropdown-item" title="${result.data[i].notificationTitle}">
+                    <i class="fas fa-envelope mr-2"></i>${notificationTitle}
                     <span class="float-right text-muted text-sm">${timeDiffrance(result.data[i].createdDate)}</span>
-                </a>`
+                </a><div class="dropdown-divider"></div>`
                 rowcount++;
             }
             $("#notificationCounter").html(elehtml);
@@ -32,6 +32,7 @@ function GetAllNotificationListSuccess(data) {
     }
 }
 function GetAllNotificationListError(x, y, z) {
+    console.log("GetAllNotificationListError");
     toastr.error(ErrorMessage);
 }
 
@@ -53,9 +54,8 @@ function GetNotificationsForUserSuccess(data) {
 }
 function GetNotificationsForUserError(x, y, z) {
     toastr.error(ErrorMessage);
+    console.log("GetNotificationsForUserError");
 }
-
-
 
 function GetNotificationClickedSuccess(data) {
     try {
@@ -73,6 +73,7 @@ function GetNotificationClickedSuccess(data) {
 }
 function GetNotificationClickedError(x, y, z) {
     toastr.error(ErrorMessage);
+    console.log("GetNotificationClickedError");
 }
 //var signalRServer = $.connection.signalRServer;
 
@@ -119,15 +120,14 @@ function timeDiffrance(_dateInput) {
     let diffSec = Math.floor((diffTime / 1000) % 60);
     if (diffHour >= 24) {
         diffHour = diffDays;
-        _suffix = "days";
+        _suffix = (diffDays > 1 ? " days" : " day");
     }
   else  if (diffHour < 24 && diffMin < 60) {
         diffHour = diffMin;
-        _suffix = "min :" + diffSec + "sec";
+        _suffix = (diffMin > 1 ? " mins" : " min"); //+ " " + diffSec + (diffSec > 1 ? "secs" : diffSec);
     }
    else if (diffHour < 24) {
-
-        _suffix = "hour";
+        _suffix = (diffHour > 1 ? " hours" : " hour");
     }
     return diffHour + "" + _suffix;
 }

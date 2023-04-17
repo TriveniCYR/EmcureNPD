@@ -1,6 +1,5 @@
 ﻿using EmcureNPD.API.Filters;
 using EmcureNPD.API.Helpers.Response;
-using EmcureNPD.Business.Core.Implementation;
 using EmcureNPD.Business.Core.Interface;
 using EmcureNPD.Business.Models;
 using Microsoft.AspNetCore.Mvc;
@@ -21,19 +20,20 @@ namespace EmcureNPD.API.Controllers.Masters
         private readonly IPIDFService _PIDFService;
 
         private readonly IResponseHandler<dynamic> _ObjectResponse;
+        private readonly IExceptionService _ExceptionService;
 
         #endregion Properties
 
         #region Constructor
 
-        public PIDFController(IPIDFService PIDFService, IResponseHandler<dynamic> ObjectResponse)
+        public PIDFController(IPIDFService PIDFService, IResponseHandler<dynamic> ObjectResponse, IExceptionService exceptionService)
         {
             _PIDFService = PIDFService;
             _ObjectResponse = ObjectResponse;
+            _ExceptionService = exceptionService;
         }
 
         #endregion Constructor
-
 
         /// <summary>
         /// Description - To Get All Formulation
@@ -56,6 +56,7 @@ namespace EmcureNPD.API.Controllers.Masters
             }
             catch (Exception e)
             {
+                await _ExceptionService.LogException(e);
                 return _ObjectResponse.Create(null, (Int32)HttpStatusCode.BadRequest, "No Records found");
             }
         }
@@ -81,9 +82,11 @@ namespace EmcureNPD.API.Controllers.Masters
             }
             catch (Exception ex)
             {
+                await _ExceptionService.LogException(ex);
                 return _ObjectResponse.Create(false, (Int32)HttpStatusCode.InternalServerError, Convert.ToString(ex.StackTrace));
             }
         }
+
         /// <summary>
         /// Description - To Get Commercial PIDF List
         /// </summary>
@@ -105,9 +108,11 @@ namespace EmcureNPD.API.Controllers.Masters
             }
             catch (Exception ex)
             {
+                await _ExceptionService.LogException(ex);
                 return _ObjectResponse.Create(false, (Int32)HttpStatusCode.InternalServerError, Convert.ToString(ex.StackTrace));
             }
-        }        
+        }
+
         /// <summary>
         /// Description - To Insert and Update PIDF
         /// </summary>
@@ -133,6 +138,7 @@ namespace EmcureNPD.API.Controllers.Masters
             }
             catch (Exception ex)
             {
+                await _ExceptionService.LogException(ex);
                 return _ObjectResponse.Create(false, (Int32)HttpStatusCode.InternalServerError, Convert.ToString(ex.StackTrace));
             }
         }
@@ -162,6 +168,7 @@ namespace EmcureNPD.API.Controllers.Masters
             }
             catch (Exception ex)
             {
+                await _ExceptionService.LogException(ex);
                 return _ObjectResponse.Create(false, (Int32)HttpStatusCode.InternalServerError, Convert.ToString(ex.StackTrace));
             }
         }
@@ -180,16 +187,18 @@ namespace EmcureNPD.API.Controllers.Masters
             }
             catch (Exception ex)
             {
+                await _ExceptionService.LogException(ex);
                 return _ObjectResponse.Create(false, (Int32)HttpStatusCode.InternalServerError, Convert.ToString(ex.StackTrace));
             }
-        }        
+        }
+
         [HttpPost]
         [Route("CommonApproveRejectDeletePidf")]
         public async Task<IActionResult> CommonApproveRejectDeletePidf(EntryApproveRej oApprRej, string ScreenName)
         {
             try
             {
-                DBOperation oResponse = await _PIDFService.CommonApproveRejectDeletePidf(oApprRej,ScreenName);
+                DBOperation oResponse = await _PIDFService.CommonApproveRejectDeletePidf(oApprRej, ScreenName);
                 if (oResponse == DBOperation.Success)
                     return _ObjectResponse.Create(true, (Int32)HttpStatusCode.OK, ("Save Successfully"));
                 else
@@ -197,6 +206,7 @@ namespace EmcureNPD.API.Controllers.Masters
             }
             catch (Exception ex)
             {
+                await _ExceptionService.LogException(ex);
                 return _ObjectResponse.Create(false, (Int32)HttpStatusCode.InternalServerError, Convert.ToString(ex.StackTrace));
             }
         }

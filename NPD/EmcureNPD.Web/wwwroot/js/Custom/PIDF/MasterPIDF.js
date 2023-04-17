@@ -10,7 +10,7 @@ $(document).ready(function () {
         _mode = getParameterByName("IsView");
         _PIDFId = parseInt(getParameterByName("PIDFId"));
     }
-    
+
     if (_mode == 1) {
         readOnlyForm();
     }
@@ -62,9 +62,7 @@ function GetCountryByBusinessUnitSuccess(data) {
                     $('#RFDCountryId').val($('#hdnRFDCountryId').val());
                 }
             } catch (e) {
-
             }
-
         }
     }
     catch (e) {
@@ -150,7 +148,6 @@ function GetPIDFDropdownSuccess(data) {
                     });
                 }
             } catch (e) {
-
             }
         }
     } catch (e) {
@@ -239,13 +236,12 @@ function deleteRowApiDetails(j, element) {
     SetChildRowDeleteIcon();
 }
 
-
 function readOnlyForm() {
     $('#dvPIDFContainer').find('input').attr('readonly', true).attr('disabled', true);
     //$('button').attr('readonly', true).attr('disabled', true);
     $('#dvPIDFContainer').find('select').attr('readonly', true).attr('disabled', true).trigger("change");
     $('#dvPIDFContainer').find('.operationButton').hide();
-    $('#btnPIDFCancel').show(); 
+    $('#btnPIDFCancel').show();
 }
 
 function SaveClick() {

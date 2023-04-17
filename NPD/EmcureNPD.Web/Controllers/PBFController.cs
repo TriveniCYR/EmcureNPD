@@ -6,8 +6,6 @@ using EmcureNPD.Utility.Utility;
 using EmcureNPD.Web.Helpers;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.ModelBinding;
-using Microsoft.DotNet.MSIdentity.Shared;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Localization;
 using Newtonsoft.Json;
@@ -15,20 +13,20 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net.Http;
-using System.Net.Http.Headers;
-using System.Reflection;
-using System.Security.Principal;
 
 namespace EmcureNPD.Web.Controllers
 {
     public class PBFController : BaseController
     {
         #region Properties
+
         private readonly IConfiguration _cofiguration;
         private readonly IStringLocalizer<Errors> _stringLocalizerError;
         private readonly IStringLocalizer<Shared> _stringLocalizerShared;
         private readonly IHelper _helper;
-        #endregion
+
+        #endregion Properties
+
         public PBFController(IConfiguration configuration,
             IStringLocalizer<Errors> stringLocalizerError, IStringLocalizer<Shared> stringLocalizerShared, IHelper helper)
         {
@@ -38,19 +36,17 @@ namespace EmcureNPD.Web.Controllers
             _helper = helper;
         }
 
-
-       
-
-
         public IActionResult PIDFList()
         {
             return View();
         }
+
         [HttpGet]
         public IActionResult PBFRnDForm(string pidfid, string bui)
         {
             return View();
         }
+
         [HttpGet]
         public IActionResult PBFAnaLyticalForm(string pidfid, string bui)
         {
@@ -69,9 +65,9 @@ namespace EmcureNPD.Web.Controllers
             //PnEntity.SAPProjectProjectCode = "Fill From DB";
             //PnEntity.ImprintingEmbossingCodes = "Fill From DB";
 
-
             return View();
         }
+
         public IActionResult PBFClinicalForm(string pidfid, string bui)
         {
             return View();
@@ -84,9 +80,9 @@ namespace EmcureNPD.Web.Controllers
             PidfPbfFormEntity oPIDForm = new();
             try
             {
-                int rolId = (int)HttpContext.Session.GetInt32(UserHelper.LoggedInRoleId);
+                int rolId = _helper.GetLoggedInRoleId();
                 RolePermissionModel objPermssion = UtilityHelper.GetCntrActionAccess((int)ModulePermissionEnum.PBF, rolId);
-                if (objPermssion == null || (!objPermssion.Add && !objPermssion.Edit))
+                if (objPermssion == null || !(objPermssion.View || objPermssion.Add || objPermssion.Edit))
                 {
                     return RedirectToAction("AccessRestriction", "Home");
                 }
@@ -100,6 +96,7 @@ namespace EmcureNPD.Web.Controllers
                 return View("Login");
             }
         }
+
         [HttpGet]
         public IActionResult PBFFormAnalytical(string pidfid, string bui, string? strengthId)
         {
@@ -109,9 +106,9 @@ namespace EmcureNPD.Web.Controllers
             try
             {
                 strengthId = (strengthId == null) ? "0" : strengthId;
-                int rolId = (int)HttpContext.Session.GetInt32(UserHelper.LoggedInRoleId);
+                int rolId = _helper.GetLoggedInRoleId();
                 RolePermissionModel objPermssion = UtilityHelper.GetCntrActionAccess((int)ModulePermissionEnum.PBF, rolId);
-                if (objPermssion == null || (!objPermssion.Add && !objPermssion.Edit))
+                if (objPermssion == null || !(objPermssion.View || objPermssion.Add || objPermssion.Edit))
                 {
                     return RedirectToAction("AccessRestriction", "Home");
                 }
@@ -120,7 +117,6 @@ namespace EmcureNPD.Web.Controllers
                 oPIDForm = GetPIDFPbfModelAnalytical(pidfid, bui, strengthId);
                 if (oPIDForm.MasterStrengthEntities.Count > 0 && oPIDForm.MasterStrengthEntities != null)
                     ViewBag.DefaultStrengthId = Convert.ToString(oPIDForm.MasterStrengthEntities[0].PidfproductStrengthId);
-
 
                 return View("PBFFormAnalytical", oPIDForm);
             }
@@ -150,7 +146,6 @@ namespace EmcureNPD.Web.Controllers
                 StrengthId = UtilityHelper.Decreypt(StrengthId);
             }
 
-            string logUserId = Convert.ToString(HttpContext.Session.GetString(UserHelper.LoggedInUserId));
             HttpResponseMessage resMsg;
             // var _pidfEntity = GetPidfFormModel(int.Parse(pidfid), out resMsg);
 
@@ -165,7 +160,7 @@ namespace EmcureNPD.Web.Controllers
                 var data = JsonConvert.DeserializeObject<APIResponseEntity<PidfPbfFormEntity>>(jsonResponse);
                 oPIDForm = data._object;
                 oPIDForm.Pidfid = Convert.ToInt64(pidfid);
-                oPIDForm.CreatedBy = Convert.ToInt32(logUserId);
+                oPIDForm.CreatedBy = _helper.GetLoggedInUserId();
                 TempData["BusList"] = JsonConvert.SerializeObject(oPIDForm.MasterBusinessUnitEntities);
 
                 HttpResponseMessage responseMS = objapi.APICommunication(APIURLHelper.GetPIDFById + "/" + pidfid, HttpMethod.Get, token).Result;
@@ -188,20 +183,18 @@ namespace EmcureNPD.Web.Controllers
         {
             try
             {
-                string logUserId = Convert.ToString(HttpContext.Session.GetString(UserHelper.LoggedInUserId));
-                int rolId = (int)HttpContext.Session.GetInt32(UserHelper.LoggedInRoleId);
+                int rolId = _helper.GetLoggedInRoleId();
                 RolePermissionModel objPermssion = UtilityHelper.GetCntrActionAccess((int)ModulePermissionEnum.PBF, rolId);
-                if (objPermssion == null || (!objPermssion.Add && !objPermssion.Edit))
+                if (objPermssion == null || !(objPermssion.View || objPermssion.Add || objPermssion.Edit))
                 {
                     return RedirectToAction("AccessRestriction", "Home");
-
                 }
 
                 if (pbfEntity.SaveSubmitType == "Save")
                     pbfEntity.StatusId = (Int32)Master_PIDFStatus.PIDFInProgress;
                 else
                     pbfEntity.StatusId = (Int32)Master_PIDFStatus.PIDFSubmitted;
-                pbfEntity.CreatedBy = Convert.ToInt32(HttpContext.Session.GetString(UserHelper.LoggedInUserId));
+                pbfEntity.CreatedBy = _helper.GetLoggedInUserId();
                 HttpContext.Request.Cookies.TryGetValue(UserHelper.EmcureNPDToken, out string token);
                 APIRepository objapi = new(_cofiguration);
                 HttpResponseMessage responseMessage = objapi.APICommunication(APIURLHelper.SavePBFAnalytical, HttpMethod.Post, token, new StringContent(JsonConvert.SerializeObject(pbfEntity))).Result;
@@ -212,8 +205,6 @@ namespace EmcureNPD.Web.Controllers
                     ModelState.Clear();
                     return RedirectToAction("PIDFList", "PIDF", new { ScreenId = 6 });
                 }
-
-
             }
             catch (Exception e)
             {
@@ -229,7 +220,6 @@ namespace EmcureNPD.Web.Controllers
         {
             PidfPbfFormEntity oPIDForm = new();
             pidfid = UtilityHelper.Decreypt(pidfid);
-            string logUserId = Convert.ToString(HttpContext.Session.GetString(UserHelper.LoggedInUserId));
             HttpResponseMessage resMsg;
             var _pidfEntity = GetPidfFormModel(int.Parse(pidfid), out resMsg);
             string bussnessId = _pidfEntity.BusinessUnitId.ToString();
@@ -243,7 +233,7 @@ namespace EmcureNPD.Web.Controllers
                 var data = JsonConvert.DeserializeObject<APIResponseEntity<PidfPbfFormEntity>>(jsonResponse);
                 oPIDForm = data._object;
                 oPIDForm.Pidfid = Convert.ToInt64(pidfid);
-                oPIDForm.CreatedBy = Convert.ToInt32(logUserId);
+                oPIDForm.CreatedBy = _helper.GetLoggedInUserId();
                 TempData["BusList"] = JsonConvert.SerializeObject(oPIDForm.MasterBusinessUnitEntities);
 
                 HttpResponseMessage responseMS = objapi.APICommunication(APIURLHelper.GetPIDFById + "/" + pidfid, HttpMethod.Get, token).Result;
@@ -286,27 +276,25 @@ namespace EmcureNPD.Web.Controllers
                 throw;
             }
         }
-        
+
         [HttpPost]
         [ValidateAntiForgeryToken]
         public IActionResult PBFClinical(int PIDFId, PIDFPBFClinicalFormEntity pbfEntity)
         {
             try
             {
-                string logUserId = Convert.ToString(HttpContext.Session.GetString(UserHelper.LoggedInUserId));
-                int rolId = (int)HttpContext.Session.GetInt32(UserHelper.LoggedInRoleId);
+                int rolId = _helper.GetLoggedInRoleId();
                 RolePermissionModel objPermssion = UtilityHelper.GetCntrActionAccess((int)ModulePermissionEnum.PBF, rolId);
-                if (objPermssion == null || (!objPermssion.Add && !objPermssion.Edit))
+                if (objPermssion == null || !(objPermssion.View || objPermssion.Add || objPermssion.Edit))
                 {
                     return RedirectToAction("AccessRestriction", "Home");
-
                 }
 
                 if (pbfEntity.SaveSubmitType == "Save")
                     pbfEntity.StatusId = (Int32)Master_PIDFStatus.PIDFInProgress;
                 else
                     pbfEntity.StatusId = (Int32)Master_PIDFStatus.PIDFSubmitted;
-                pbfEntity.CreatedBy = Convert.ToInt32(HttpContext.Session.GetString(UserHelper.LoggedInUserId));
+                pbfEntity.CreatedBy = _helper.GetLoggedInUserId();
                 HttpContext.Request.Cookies.TryGetValue(UserHelper.EmcureNPDToken, out string token);
                 APIRepository objapi = new(_cofiguration);
                 HttpResponseMessage responseMessage = objapi.APICommunication(APIURLHelper.SavePBFClinical, HttpMethod.Post, token, new StringContent(JsonConvert.SerializeObject(pbfEntity))).Result;
@@ -317,19 +305,17 @@ namespace EmcureNPD.Web.Controllers
                     ModelState.Clear();
                     return RedirectToAction("PIDFList", "PIDF", new { ScreenId = 6 });
                 }
-
-
             }
             catch (Exception e)
             {
                 ViewBag.errormessage = Convert.ToString(e.StackTrace);
                 ModelState.Clear();
-               return RedirectToAction("PIDFList", "PIDF", new { ScreenId = 6 });
+                return RedirectToAction("PIDFList", "PIDF", new { ScreenId = 6 });
             }
             return RedirectToAction("PIDFList", "PIDF", new { ScreenId = 6 });
         }
 
-        //-------------------------------------Start-----KUldip NEw PBF Modules---------------------      
+        //-------------------------------------Start-----KUldip NEw PBF Modules---------------------
 
         [HttpGet]
         public IActionResult PBFRnDDetailsForm(string pidfid, string bui)
@@ -338,9 +324,9 @@ namespace EmcureNPD.Web.Controllers
             PidfPbfFormEntity oPIDForm = new();
             try
             {
-                int rolId = (int)HttpContext.Session.GetInt32(UserHelper.LoggedInRoleId);
+                int rolId = _helper.GetLoggedInRoleId();
                 RolePermissionModel objPermssion = UtilityHelper.GetCntrActionAccess((int)ModulePermissionEnum.PBF, rolId);
-                if (objPermssion == null || (!objPermssion.Add && !objPermssion.Edit))
+                if (objPermssion == null || !(objPermssion.View || objPermssion.Add || objPermssion.Edit))
                 {
                     return RedirectToAction("AccessRestriction", "Home");
                 }
@@ -354,19 +340,20 @@ namespace EmcureNPD.Web.Controllers
                 return View("Login");
             }
         }
+
         [HttpGet]
         public IActionResult PBFClinicalDetailsForm(string pidfid, string bui, string strength)
         {
             ModelState.Clear();
             //ModelState.Remove("PidfPbfClinicals.TotalExpense");
             //ModelState.Remove("ProjectName");
-            
+
             PIDFPBFClinicalFormEntity oPIDForm = null;
             try
             {
-                int rolId = (int)HttpContext.Session.GetInt32(UserHelper.LoggedInRoleId);
+                int rolId = _helper.GetLoggedInRoleId();
                 RolePermissionModel objPermssion = UtilityHelper.GetCntrActionAccess((int)ModulePermissionEnum.PBF, rolId);
-                if (objPermssion == null || (!objPermssion.Add && !objPermssion.Edit))
+                if (objPermssion == null || !(objPermssion.View || objPermssion.Add || objPermssion.Edit))
                 {
                     return RedirectToAction("AccessRestriction", "Home");
                 }
@@ -381,18 +368,16 @@ namespace EmcureNPD.Web.Controllers
             }
         }
 
-       
         [NonAction]
         private PIDFPBFClinicalFormEntity GetPIDFPbfClinicalModel(string pidfid, string bui, string strength)
         {
-           var oPIDForm = new PIDFPBFClinicalFormEntity();
+            var oPIDForm = new PIDFPBFClinicalFormEntity();
             pidfid = UtilityHelper.Decreypt(pidfid);
-            string logUserId = Convert.ToString(HttpContext.Session.GetString(UserHelper.LoggedInUserId));
             HttpResponseMessage resMsg;
-            var _pidfEntity = GetPidfFormModel(int.Parse(pidfid), out resMsg);          
+            var _pidfEntity = GetPidfFormModel(int.Parse(pidfid), out resMsg);
             string bussnessId = UtilityHelper.Decreypt(bui);
             string StrengthId = "0";
-            if (strength !=null)
+            if (strength != null)
             {
                 StrengthId = UtilityHelper.Decreypt(strength);
             }
@@ -403,11 +388,11 @@ namespace EmcureNPD.Web.Controllers
             {
                 string jsonResponse = responseMessage.Content.ReadAsStringAsync().Result;
                 var data = JsonConvert.DeserializeObject<APIResponseEntity<PIDFPBFClinicalFormEntity>>(jsonResponse);
-                oPIDForm = data._object;                
+                oPIDForm = data._object;
                 oPIDForm.Pidfid = Convert.ToInt64(pidfid);
                 oPIDForm.BusinessUnitId = Convert.ToInt32(bussnessId);
-                oPIDForm.CreatedBy = Convert.ToInt32(logUserId);
-                oPIDForm.BusinessUnitsByUser = GetUserWiseBusinessUnit(Convert.ToInt32(logUserId));
+                oPIDForm.CreatedBy = _helper.GetLoggedInUserId();
+                oPIDForm.BusinessUnitsByUser = GetUserWiseBusinessUnit(_helper.GetLoggedInUserId());
                 TempData["BusList"] = JsonConvert.SerializeObject(oPIDForm.MasterBusinessUnitEntities);
 
                 HttpResponseMessage responseMS = objapi.APICommunication(APIURLHelper.GetPIDFById + "/" + pidfid, HttpMethod.Get, token).Result;
@@ -458,15 +443,14 @@ namespace EmcureNPD.Web.Controllers
 
         #region PBF
 
-       
         public IActionResult PBF(string pidfid, string bui)
         {
             try
             {
                 PBFFormEntity oPBForm = null;
-                int rolId = (int)HttpContext.Session.GetInt32(UserHelper.LoggedInRoleId);
+                int rolId = _helper.GetLoggedInRoleId();
                 RolePermissionModel objPermssion = UtilityHelper.GetCntrActionAccess((int)ModulePermissionEnum.PBF, rolId);
-                if (objPermssion == null || (!objPermssion.Add && !objPermssion.Edit))
+                if (objPermssion == null || !(objPermssion.View || objPermssion.Add || objPermssion.Edit))
                 {
                     return RedirectToAction("AccessRestriction", "Home");
                 }
@@ -480,7 +464,6 @@ namespace EmcureNPD.Web.Controllers
                 return View("Login");
             }
 
-
             return View();
         }
 
@@ -489,7 +472,6 @@ namespace EmcureNPD.Web.Controllers
         {
             var oPBForm = new PBFFormEntity();
             pidfid = UtilityHelper.Decreypt(pidfid);
-            string logUserId = Convert.ToString(HttpContext.Session.GetString(UserHelper.LoggedInUserId));
             HttpResponseMessage resMsg;
             string bussnessId = UtilityHelper.Decreypt(bui);
             string StrengthId = "0";
@@ -507,7 +489,7 @@ namespace EmcureNPD.Web.Controllers
                 oPBForm = data._object;
                 oPBForm.Pidfid = Convert.ToInt64(pidfid);
                 oPBForm.BusinessUnitId = Convert.ToInt32(bussnessId);
-                
+
                 //oPBForm.BusinessUnitsByUser = GetUserWiseBusinessUnit(Convert.ToInt32(logUserId));
 
                 HttpResponseMessage responseMS = objapi.APICommunication(APIURLHelper.GetPIDFById + "/" + pidfid, HttpMethod.Get, token).Result;
@@ -529,27 +511,25 @@ namespace EmcureNPD.Web.Controllers
             try
             {
                 //rnd json data
-                pbfEntity.RNDExicipients = JsonConvert.DeserializeObject<List<RNDExicipient>>(pbfEntity.RNDExicipientRawData);
-                pbfEntity.RNDPackagings = JsonConvert.DeserializeObject<List<RNDPackaging>>(pbfEntity.RNDPackagingRawData);
-                pbfEntity.RNDToolingChangeparts = JsonConvert.DeserializeObject<List<RNDToolingChangepart>>(pbfEntity.RNDToolingChangePartRawData);
-                pbfEntity.RNDCapexMiscellaneousExpenses = JsonConvert.DeserializeObject<List<RNDCapexMiscellaneousExpense>>(pbfEntity.RNDCapexMiscellaneousExpensesRawData);
-                pbfEntity.RNDPlantSupportCosts = JsonConvert.DeserializeObject<List<RNDPlantSupportCost>>(pbfEntity.RNDPlantSupportCostRawData);
-                pbfEntity.RNDFillingExpenses = JsonConvert.DeserializeObject<List<RNDFillingExpense>>(pbfEntity.RNDFillingExpensesRawData);
-                pbfEntity.RNDManPowerCosts = JsonConvert.DeserializeObject<List<RNDManPowerCost>>(pbfEntity.RNDManPowerCostProjectDurationRawData);
+                pbfEntity.RNDExicipients = pbfEntity.RNDExicipientRawData != null ? JsonConvert.DeserializeObject<List<RNDExicipient>>(pbfEntity.RNDExicipientRawData) : new List<RNDExicipient>();
+                pbfEntity.RNDPackagings = pbfEntity.RNDPackagingRawData != null ? JsonConvert.DeserializeObject<List<RNDPackaging>>(pbfEntity.RNDPackagingRawData) : new List<RNDPackaging>();
+                pbfEntity.RNDToolingChangeparts = pbfEntity.RNDToolingChangePartRawData != null ? JsonConvert.DeserializeObject<List<RNDToolingChangepart>>(pbfEntity.RNDToolingChangePartRawData) : new List<RNDToolingChangepart>();
+                pbfEntity.RNDCapexMiscellaneousExpenses = pbfEntity.RNDCapexMiscellaneousExpensesRawData != null ? JsonConvert.DeserializeObject<List<RNDCapexMiscellaneousExpense>>(pbfEntity.RNDCapexMiscellaneousExpensesRawData) : new List<RNDCapexMiscellaneousExpense>();
+                pbfEntity.RNDPlantSupportCosts = pbfEntity.RNDPlantSupportCostRawData != null ? JsonConvert.DeserializeObject<List<RNDPlantSupportCost>>(pbfEntity.RNDPlantSupportCostRawData) : new List<RNDPlantSupportCost>();
+                pbfEntity.RNDFillingExpenses = pbfEntity.RNDFillingExpensesRawData != null ? JsonConvert.DeserializeObject<List<RNDFillingExpense>>(pbfEntity.RNDFillingExpensesRawData) : new List<RNDFillingExpense>();
+                pbfEntity.RNDManPowerCosts = pbfEntity.RNDManPowerCostProjectDurationRawData != null ? JsonConvert.DeserializeObject<List<RNDManPowerCost>>(pbfEntity.RNDManPowerCostProjectDurationRawData) : new List<RNDManPowerCost>();
 
                 //Analytical json data
-                pbfEntity.AnalyticalEntities = JsonConvert.DeserializeObject<List<AnalyticalEntity>>(pbfEntity.AnalyticalRawData);
-                pbfEntity.AnalyticalStrengthMappingEntities = JsonConvert.DeserializeObject<List<AnalyticalAmvcostStrengthMappingEntity>>(pbfEntity.AnalyticalStrengthMappingRawData);
+                pbfEntity.AnalyticalEntities = pbfEntity.AnalyticalRawData != null ? JsonConvert.DeserializeObject<List<AnalyticalEntity>>(pbfEntity.AnalyticalRawData) : new List<AnalyticalEntity>();
+                pbfEntity.AnalyticalStrengthMappingEntities = pbfEntity.AnalyticalStrengthMappingRawData != null ? JsonConvert.DeserializeObject<List<AnalyticalAmvcostStrengthMappingEntity>>(pbfEntity.AnalyticalStrengthMappingRawData) : new List<AnalyticalAmvcostStrengthMappingEntity>();
 
-                string logUserId = Convert.ToString(HttpContext.Session.GetString(UserHelper.LoggedInUserId));
-                int rolId = (int)HttpContext.Session.GetInt32(UserHelper.LoggedInRoleId);
+                int rolId = _helper.GetLoggedInRoleId();
                 RolePermissionModel objPermssion = UtilityHelper.GetCntrActionAccess((int)ModulePermissionEnum.PBF, rolId);
-                if (objPermssion == null || (!objPermssion.Add && !objPermssion.Edit))
+                if (objPermssion == null || !(objPermssion.View || objPermssion.Add || objPermssion.Edit))
                 {
                     return RedirectToAction("AccessRestriction", "Home");
-
-                }               
-                //pbfEntity.CreatedBy = Convert.ToInt32(HttpContext.Session.GetString(UserHelper.LoggedInUserId));
+                }
+                //pbfEntity.CreatedBy = _helper.GetLoggedInUserId();
                 HttpContext.Request.Cookies.TryGetValue(UserHelper.EmcureNPDToken, out string token);
                 APIRepository objapi = new(_cofiguration);
                 HttpResponseMessage responseMessage = objapi.APICommunication(APIURLHelper.SavePBF, HttpMethod.Post, token, new StringContent(JsonConvert.SerializeObject(pbfEntity))).Result;
@@ -579,9 +559,6 @@ namespace EmcureNPD.Web.Controllers
             //return RedirectToAction("PIDFList", "PIDF", new { ScreenId = 6 });
         }
 
-
-
-        #endregion
+        #endregion PBF
     }
-
 }

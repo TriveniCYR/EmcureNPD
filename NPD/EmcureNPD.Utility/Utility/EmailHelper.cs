@@ -1,14 +1,10 @@
 ﻿using EmcureNPD.Business.Models;
-using EmcureNPD.Web.Models;
 using System;
-using System.Collections.Generic;
 using System.IO;
-using System.Linq;
 using System.Net;
 using System.Net.Mail;
 using System.Text;
 using System.Threading.Tasks;
-using System.Web;
 
 namespace EmcureNPD.Utility.Helpers
 {
@@ -30,12 +26,11 @@ namespace EmcureNPD.Utility.Helpers
                 message.Body = body;
                 message.IsBodyHtml = true;
 
-
                 using (SmtpClient smtpClient = new SmtpClient())
                 {
                     smtpClient.Host = _smtpEntity.Host;
                     smtpClient.Credentials = new System.Net.NetworkCredential(_smtpEntity.UserName, _smtpEntity.Password);
-                    smtpClient.Port =  Int32.Parse(_smtpEntity.Port) ;//put smtp port here
+                    smtpClient.Port = Int32.Parse(_smtpEntity.Port);//put smtp port here
                     smtpClient.EnableSsl = bool.Parse(_smtpEntity.EnableSsl);
                     smtpClient.UseDefaultCredentials = true;
                     smtpClient.DeliveryMethod = SmtpDeliveryMethod.Network;
@@ -48,7 +43,7 @@ namespace EmcureNPD.Utility.Helpers
                     {
                         using (FileStream fs = File.Create(fileName))
                         {
-                            // Add some text to file    
+                            // Add some text to file
                             Byte[] title = new UTF8Encoding(true).GetBytes(e.ToString());
                             fs.Write(title, 0, title.Length);
                         }
@@ -82,7 +77,6 @@ namespace EmcureNPD.Utility.Helpers
                     {
                         mm.To.Add(mailModel.ToMail);
                     }
-
                 }
 
                 mm.Subject = mailModel.Subject;
@@ -142,7 +136,6 @@ namespace EmcureNPD.Utility.Helpers
                     }
                 }
             }
-
 
             //TEST EMAIL SETTINGS : DO NOT USE
             //try
@@ -217,7 +210,6 @@ namespace EmcureNPD.Utility.Helpers
                     }
                 }
 
-
                 //Attachment
                 if (isAttachment == true)
                 {
@@ -226,7 +218,6 @@ namespace EmcureNPD.Utility.Helpers
                     attachment = new System.Net.Mail.Attachment(tempAttachFile);
                     mm.Attachments.Add(attachment);
                 }
-
 
                 using (SmtpClient smtp = new SmtpClient())
                 {

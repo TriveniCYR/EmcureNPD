@@ -28,7 +28,7 @@ function GetDashboardDropdown() {
 function GetDashboardDropdownSuccess(data) {
     try {
         $('#BusinessUnitId').append('<option value="0">-- All Business Unit --</option>');
-        if (data != null) {            
+        if (data != null) {
             $(data.MasterBusinessUnits).each(function (index, item) {
                 $('#BusinessUnitId').append('<option value="' + item.businessUnitId + '">' + item.businessUnitName + '</option>');
 
@@ -52,7 +52,7 @@ function GetPIDFListSuccess(data) {
     var xValues = [];
     var yValues = [];
     var barColors = [];
-    
+
     for (var i = 0; i < data.PIDFList.length;i++) {
         $("#PIDFContainer").append('<div class="col-lg-2 text-center dashboard-counters"><div class="ibox"><div class="ibox-content" style="padding:10px 10px;">\
                 <h2 class="no-margins counter" style="color:'+ data.PIDFList[i].statusColor + ';">' + data.PIDFList[i].statusCount + '</h2><h5>' + data.PIDFList[i].pidfStatus + '</h5></div></div></div>');
@@ -83,7 +83,6 @@ function GetPIDFListSuccess(data) {
             }
         }
     });
-
 }
 function GetFinanacialYear() {
     var mySelect = $('#years');
@@ -144,7 +143,6 @@ function RenderVectorMap() {
         map.addMarkers(markers);
         // refresh the map
         map.updateSize();
-
     });
 }
 
@@ -191,4 +189,3 @@ function getDashBoardData() {
     }
     ajaxServiceMethod($('#hdnBaseURL').val() + GetPIDFList + "/" + $("#BusinessUnitId").val() + "/" + fromDate + "/" + toDate, 'GET', GetPIDFListSuccess);
 }
-

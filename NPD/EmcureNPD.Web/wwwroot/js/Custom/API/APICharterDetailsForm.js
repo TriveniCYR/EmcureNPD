@@ -1,7 +1,6 @@
 ﻿var ControlsToValidate = ['APIGroupLeader','ManHourRates'];
 var DivsToValidate = ['dvTimelineInMonths', 'dvManhourEstimates', 'dvAnalyticalDepartment', 'dvPRDDepartment', 'dvCapitalOtherExpenditure', 'dvManhourEstimates','dvHeadwiseBudget'];
 
-
 $(document).ready(function () {
    // $("#ManhourEstimates_7__ManhourEstimatesMonthsValue").hide();
    // $("#ManhourEstimates_7__ManhourEstimatesNoOfEmployeeValue").hide();
@@ -44,7 +43,7 @@ function ValidateForm() {
             $('#valmsg' + kv).text('');
         }
     });
-    
+
     $.each(DivsToValidate, function (index, value) {
         $("#" + value +" :input[type=text]").each(function () {
             var ControlID = $(this).attr('id');
@@ -71,7 +70,6 @@ function ValidateForm() {
     return IsValid;
 }
 
-
 //--------------Calculation of Readoinly Feilds------------------------------------------
 //--------------Calculation of TimelineInMonthsValue----------------------
 $("[id*='TimelineInMonthsValue']").change(function () {
@@ -93,8 +91,8 @@ $("[id*='PRDDepartmentRawMaterialValue']").change(function () {
             sum = parseFloat(sum) + parseFloat(Value);
     });
     $("#PRDDepartment_4__PRDDepartmentRawMaterialValue").val(sum);
-    $("#HeadwiseBudget_1__HeadwiseBudgetValue").val(sum); 
-    $("[id*='HeadwiseBudgetValue']").change();    
+    $("#HeadwiseBudget_1__HeadwiseBudgetValue").val(sum);
+    $("[id*='HeadwiseBudgetValue']").change();
     CalculateTotalHeadwiseAnalytical();
 });
 //----------Impurity------------------------------
@@ -121,7 +119,6 @@ $("[id*='AnalyticalDepartmentImpurityValue']").change(function () {
 });
 //----------Stability------------------------------ AnalyticalDepartment_0__AnalyticalDepartmentStabilityValue
 $("[id*='AnalyticalDepartmentStabilityValue']").change(function () {
-
     var NoOfCols = $("#AnalyticalDepartment_1__AnalyticalDepartmentStabilityValue").val();
     var CostPerCols = $("#AnalyticalDepartment_2__AnalyticalDepartmentStabilityValue").val();
     var TotalCostPerColumn = parseFloat((NoOfCols == "" ? 0 : NoOfCols)) * parseFloat((CostPerCols == "" ? 0 : CostPerCols));
@@ -142,7 +139,6 @@ $("[id*='AnalyticalDepartmentStabilityValue']").change(function () {
 });
 //----------AMV------------------------------ AnalyticalDepartment_0__AnalyticalDepartmentAMVValue
 $("[id*='AnalyticalDepartmentAMVValue']").change(function () {
-
     var NoOfCols = $("#AnalyticalDepartment_1__AnalyticalDepartmentAMVValue").val();
     var CostPerCols = $("#AnalyticalDepartment_2__AnalyticalDepartmentAMVValue").val();
     var TotalCostPerColumn = parseFloat((NoOfCols == "" ? 0 : NoOfCols)) * parseFloat((CostPerCols == "" ? 0 : CostPerCols));
@@ -164,7 +160,6 @@ $("[id*='AnalyticalDepartmentAMVValue']").change(function () {
 
 //----------AMT------------------------------ AnalyticalDepartment_0__AnalyticalDepartmentAMTValue
 $("[id*='AnalyticalDepartmentAMTValue']").change(function () {
-
     var NoOfCols = $("#AnalyticalDepartment_1__AnalyticalDepartmentAMTValue").val();
     var CostPerCols = $("#AnalyticalDepartment_2__AnalyticalDepartmentAMTValue").val();
     var TotalCostPerColumn = parseFloat((NoOfCols == "" ? 0 : NoOfCols)) * parseFloat((CostPerCols == "" ? 0 : CostPerCols));
@@ -206,7 +201,6 @@ $("[id*='AnalyticalDepartmentARDValue']").change(function () {
     //});
     //cal_TotalcostofAnalyticalRawMaterial();
 
-
     CalculateTotalHeadwiseAnalytical();
 });
 //$("#AnalyticalDepartment_4__AnalyticalDepartmentARDValue").change(function () {
@@ -230,13 +224,13 @@ function CalculateTotalHeadwiseAnalytical () {
         var ControlId = '#AnalyticalDepartment_5__AnalyticalDepartment' + value + 'Value';
         var valueOfControl = ($(ControlId).val() == '') ? 0 : $(ControlId).val();
         if (!isNaN(valueOfControl))
-            sum = parseFloat(sum) + parseFloat(valueOfControl);        
+            sum = parseFloat(sum) + parseFloat(valueOfControl);
     });
     $("#HeadwiseBudget_0__HeadwiseBudgetValue").val(sum);    // Headwise -Total Cost Of Analytical Raw Material
 }
 //--------------ManhourEstimates--------------------------------------------------------------
 
-$("[id*='ManhourEstimatesNoOfEmployeeValue']").change(function () { 
+$("[id*='ManhourEstimatesNoOfEmployeeValue']").change(function () {
     var ControlID = $(this).attr('id');
     Calculate_ManhourEstimates(ControlID);
 });
@@ -265,7 +259,6 @@ function Calculate_ManhourEstimates(ControlID) {
     $(CostControlID).val(CostValue);
     $(HoursControlID).change();
     $(CostControlID).change();
-  
 }
 $("#ManHourRates").change(function () {
     $("[id*='ManhourEstimatesNoOfEmployeeValue']").change();
@@ -300,16 +293,16 @@ $("[id*='CapitalOtherExpenditureAmountValue']").change(function () {
     var Value = ($(this).val() == '') ? 0 : $(this).val();
     if (!isNaN(Value)) {
         if ($(this).attr('id').includes('0__CapitalOtherExpenditureAmountValue')) //capex value
-            $("#HeadwiseBudget_3__HeadwiseBudgetValue").val(Value);  
+            $("#HeadwiseBudget_3__HeadwiseBudgetValue").val(Value);
 
         else if ($(this).attr('id').includes('1__CapitalOtherExpenditureAmountValue')) //Other Expenses/Utility Cost
-            $("#HeadwiseBudget_4__HeadwiseBudgetValue").val(Value);  
+            $("#HeadwiseBudget_4__HeadwiseBudgetValue").val(Value);
 
         else if ($(this).attr('id').includes('2__CapitalOtherExpenditureAmountValue')) //DMF Filling Cost
-            $("#HeadwiseBudget_6__HeadwiseBudgetValue").val(Value);  
+            $("#HeadwiseBudget_6__HeadwiseBudgetValue").val(Value);
 
         else if ($(this).attr('id').includes('3__CapitalOtherExpenditureAmountValue')) //Litigation Cost / Patent Registration Cost
-            $("#HeadwiseBudget_5__HeadwiseBudgetValue").val(Value); 
+            $("#HeadwiseBudget_5__HeadwiseBudgetValue").val(Value);
 
         else if ($(this).attr('id').includes('4__CapitalOtherExpenditureAmountValue')) //Bio Cost
             $("#HeadwiseBudget_7__HeadwiseBudgetValue").val(Value);
@@ -319,7 +312,6 @@ $("[id*='CapitalOtherExpenditureAmountValue']").change(function () {
 });
 //---------------------Total of Headwise count value----------HeadwiseBudget_0__HeadwiseBudgetValue
 $("[id*='HeadwiseBudgetValue']").change(function () {
-
     $("[id*='HeadwiseBudgetValue']").change(function () {
         var sum = 0;
         $("[id*='HeadwiseBudgetValue']").each(function () {
@@ -331,5 +323,3 @@ $("[id*='HeadwiseBudgetValue']").change(function () {
     });
 });
 HeadwiseBudget_0__HeadwiseBudgetValue
-
-

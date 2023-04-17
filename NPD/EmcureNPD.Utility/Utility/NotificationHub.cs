@@ -1,5 +1,4 @@
 ﻿using Microsoft.AspNet.SignalR;
-using System.Runtime.InteropServices;
 
 namespace EmcureNPD.Utility.Helpers
 {

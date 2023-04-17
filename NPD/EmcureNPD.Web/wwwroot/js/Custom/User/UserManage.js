@@ -10,7 +10,6 @@ $(document).ready(function () {
         //GetRegionByBusinessUnit();
     }
     $('#BusinessUnitId').change(function () {
-        
         /*GetDepartmentCountryByBusinessUnit();*/  GetRegionByBusinessUnit();
     });
     $('#RegionId').change(function () {
@@ -18,7 +17,7 @@ $(document).ready(function () {
     });
 
    // $('#RegionId').css("height", "fit - content"); //height: fit - content
-   // $('#CountryId').css("height", "fit - content"); //height: fit - content  
+   // $('#CountryId').css("height", "fit - content"); //height: fit - content
     //$('#dvDesignatioName').hide();
     //IsDesignationVisible = false;
 });
@@ -30,7 +29,7 @@ function GetUserDropdownSuccess(data) {
     try {
         $.each(data.BusinessUnit, function (index, object) {
             $('#BusinessUnitId').append($('<option>').text(object.businessUnitName).attr('value', object.businessUnitId));
-           
+
            // $('#BusinessUnitId option:eq(0)').val(0);
             //$('#BusinessUnitId').val("-");
             //$('#BusinessUnitId').trigger('change');
@@ -41,7 +40,6 @@ function GetUserDropdownSuccess(data) {
         if (parseInt($('#UserId').val()) > 0) {
             $("#BusinessUnitId").val($("#hdnBusinessUnitId").val().split(',')).trigger('change');
         }
-       
     } catch (e) {
         toastr.error('Error:' + e.message);
     }
@@ -53,24 +51,23 @@ function GetUserDropdownError(x, y, z) {
 function GetRegionByBusinessUnit() {
     $('#RegionId option').remove();
    /* $('#RegionId').append($('<option>').text("--Select--").attr('value', 0));*/
-    if (parseInt($('#BusinessUnitId').val()) > 0) {        
+    if (parseInt($('#BusinessUnitId').val()) > 0) {
         ajaxServiceMethod($('#hdnBaseURL').val() + GetRegionByBusinessUnitURL + "?BusinessUnitIds=" + $('#BusinessUnitId').val(), 'GET', GetRegionByBusinessUnitSuccess, GetRegionByBusinessUnitError);
     }
 }
 function GetRegionByBusinessUnitSuccess(data) {
-
     try {
-        if (data != null) {            
+        if (data != null) {
             $(data.Region).each(function (index, item) {
                 $('#RegionId').append($('<option>').text(item.regionName).attr('value', item.regionId));
-               
+
                // $('#RegionId option:eq(0)').val(0);
-               // $('#RegionId').val("-"); 
+               // $('#RegionId').val("-");
                // $('#RegionId').trigger('change');
             });
             $('#RegionId').select2();
-            if (parseInt($('#UserId').val()) > 0 ) {              
-                $("#RegionId").val($("#hdnRegionId").val().split(',')).trigger('change') ;                
+            if (parseInt($('#UserId').val()) > 0 ) {
+                $("#RegionId").val($("#hdnRegionId").val().split(',')).trigger('change') ;
             }
         }
     } catch (e) {
@@ -83,22 +80,21 @@ function GetRegionByBusinessUnitError(x, y, z) {
 //#endregion
 // #region Get Country By Region
 function GetCountryByRegion() {
-    $('#CountryId option').remove();   
+    $('#CountryId option').remove();
    /* $('#CountryId').append($('<option>').text("--Select--").attr('value', 0));*/
         ajaxServiceMethod($('#hdnBaseURL').val() + GetCountryByRegionURL + "?RegionIds=" + $('#RegionId').val(), 'GET', GetCountryByRegionSuccess, GetCountryByRegionError);
     }
 function GetCountryByRegionSuccess(data) {
-
     try {
         if (data != null) {
             $(data.Country).each(function (index, item) {
                 $('#CountryId').append($('<option>').text(item.countryName).attr('value', item.countryId));
-              
+
                // $('#CountryId option:eq(0)').val(0);
               //  $('#CountryId').val("-");
             });
             $('#CountryId').select2();
-            if (parseInt($('#UserId').val()) > 0) {               
+            if (parseInt($('#UserId').val()) > 0) {
                 $("#CountryId").val($("#hdnCountryId").val().split(',')).trigger('change');
             }
         }
@@ -119,7 +115,7 @@ function GetDepartmentListSuccess(data) {
         if (data != null)
             $(data._object).each(function (index, item) {
                 $('#DepartmentId').append($('<option>').text(item.departmentName).attr('value', item.departmentId));
-                
+
                 //$('#DepartmentId option:eq(0)').val(0);
                 //$('#DepartmentId').val("-");
             });
@@ -166,12 +162,11 @@ function TriggerDesignationName() {
     var arrCheckBox = ['AnalyticalGL', 'FormulationGL', 'APIUser', 'IsManagement'];
     var IsAtleastOneChecked = false;
     $.each(arrCheckBox, function (index, value) {
-
         var control_chk = $('#' + value);
         if (control_chk.is(":checked") == true) {
             IsAtleastOneChecked = true;
         }
-    });  
+    });
 
     if (IsAtleastOneChecked) {
         $('#dvDesignatioName').show();
@@ -184,5 +179,3 @@ function TriggerDesignationName() {
         IsDesignationVisible = false;
     }
 }
-
-

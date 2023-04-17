@@ -1,14 +1,11 @@
 ﻿using EmcureNPD.Business.Core.Interface;
-using EmcureNPD.Business.Core.ModelMapper;
 using EmcureNPD.Business.Models;
 using EmcureNPD.Data.DataAccess.Core.Repositories;
 using EmcureNPD.Data.DataAccess.Core.UnitOfWork;
 using EmcureNPD.Data.DataAccess.Entity;
 using EmcureNPD.Utility.Utility;
 using System;
-using System.Collections.Generic;
 using System.Data.SqlClient;
-using System.Linq;
 using System.Threading.Tasks;
 
 namespace EmcureNPD.Business.Core.Implementation
@@ -17,7 +14,6 @@ namespace EmcureNPD.Business.Core.Implementation
     {
         private readonly IUnitOfWork _unitOfWork;
         private IRepository<Pidf> _repository { get; set; }
-
         //Market Extension & In House
 
         public APIListService(IUnitOfWork unitOfWork)

@@ -1,13 +1,10 @@
 ﻿using EmcureNPD.API.Filters;
 using EmcureNPD.API.Helpers.Response;
-using EmcureNPD.Business.Core.Implementation;
 using EmcureNPD.Business.Core.Interface;
-using EmcureNPD.Business.Core.ServiceImplementations;
 using EmcureNPD.Business.Models;
 using EmcureNPD.Utility.Utility;
 using Microsoft.AspNetCore.Mvc;
 using System;
-using System.Collections.Generic;
 using System.Net;
 using System.Threading.Tasks;
 using static EmcureNPD.Utility.Enums.GeneralEnum;
@@ -16,7 +13,7 @@ namespace EmcureNPD.API.Controllers.Commercial
 {
     [Route("api/[controller]")]
     [ApiController]
-    [Authorize]
+    [AuthorizeAttribute]
     public class CommercialPIDFFormController : ControllerBase
     {
         #region Properties
@@ -25,21 +22,22 @@ namespace EmcureNPD.API.Controllers.Commercial
         private readonly IMasterUserService _masterUserService;
 
         private readonly IResponseHandler<dynamic> _ObjectResponse;
+        private readonly IExceptionService _ExceptionService;
 
         #endregion Properties
 
         #region Constructor
 
         public CommercialPIDFFormController(ICommercialFormService PIDFormService, IResponseHandler<dynamic> ObjectResponse,
-            IMasterUserService masterUserService)
+            IMasterUserService masterUserService, IExceptionService exceptionService)
         {
             _pidfCommercialFormService = PIDFormService;
             _ObjectResponse = ObjectResponse;
             _masterUserService = masterUserService;
+            _ExceptionService = exceptionService;
         }
 
         #endregion Constructor
-
 
         /// <summary>
         /// Description - To Get All Formulation
@@ -96,6 +94,7 @@ namespace EmcureNPD.API.Controllers.Commercial
             }
             catch (Exception ex)
             {
+                await _ExceptionService.LogException(ex);
                 return _ObjectResponse.Create(false, (int)HttpStatusCode.InternalServerError, Convert.ToString(ex.StackTrace));
             }
         }
@@ -125,9 +124,11 @@ namespace EmcureNPD.API.Controllers.Commercial
             }
             catch (Exception ex)
             {
+                await _ExceptionService.LogException(ex);
                 return _ObjectResponse.Create(false, (int)HttpStatusCode.InternalServerError, Convert.ToString(ex.StackTrace));
             }
         }
+
         [HttpGet, Route("GetCountryRefByRegionIds/{regionIds}")]
         public async Task<IActionResult> GetCountryRefByRegionIds(string regionIds)
         {
@@ -141,9 +142,11 @@ namespace EmcureNPD.API.Controllers.Commercial
             }
             catch (Exception ex)
             {
+                await _ExceptionService.LogException(ex);
                 return _ObjectResponse.Create(false, (int)HttpStatusCode.InternalServerError, Convert.ToString(ex.StackTrace));
             }
         }
+
         [HttpPost]
         [Route("ApproveRejectIpdPidf")]
         public async Task<IActionResult> ApproveRejectIpdPidf(EntryApproveRej oApprRej)
@@ -158,9 +161,11 @@ namespace EmcureNPD.API.Controllers.Commercial
             }
             catch (Exception ex)
             {
+                await _ExceptionService.LogException(ex);
                 return _ObjectResponse.Create(false, (int)HttpStatusCode.InternalServerError, Convert.ToString(ex.StackTrace));
             }
         }
+
         /// <summary>
         /// Description - To Get IPD Form By Id
         /// </summary>
@@ -187,6 +192,7 @@ namespace EmcureNPD.API.Controllers.Commercial
             }
             catch (Exception ex)
             {
+                await _ExceptionService.LogException(ex);
                 return _ObjectResponse.Create(false, (int)HttpStatusCode.InternalServerError, Convert.ToString(ex.StackTrace));
             }
         }
@@ -208,6 +214,7 @@ namespace EmcureNPD.API.Controllers.Commercial
             }
             catch (Exception ex)
             {
+                await _ExceptionService.LogException(ex);
                 return _ObjectResponse.Create(false, (int)HttpStatusCode.InternalServerError, Convert.ToString(ex.StackTrace));
             }
         }
@@ -225,9 +232,9 @@ namespace EmcureNPD.API.Controllers.Commercial
             }
             catch (Exception ex)
             {
+                await _ExceptionService.LogException(ex);
                 return _ObjectResponse.Create(false, (int)HttpStatusCode.InternalServerError, Convert.ToString(ex.StackTrace));
             }
         }
-
     }
 }

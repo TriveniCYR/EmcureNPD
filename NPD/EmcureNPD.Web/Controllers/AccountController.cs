@@ -1,6 +1,5 @@
 ﻿using EmcureNPD.Business.Models;
 using EmcureNPD.Resource;
-using EmcureNPD.Utility.Enums;
 using EmcureNPD.Utility.Models;
 using EmcureNPD.Utility.Utility;
 using EmcureNPD.Web.Helpers;
@@ -12,16 +11,11 @@ using Microsoft.Extensions.Caching.Distributed;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Localization;
 using Newtonsoft.Json;
-using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
-using System.Net;
 using System.Net.Http;
-using System.Net.Mail;
 using System.Security.Claims;
 using System.Threading.Tasks;
-using System.Xml.Linq;
-
 
 namespace EmcureNPD.Web.Controllers
 {
@@ -32,7 +26,6 @@ namespace EmcureNPD.Web.Controllers
         private readonly IDistributedCache _cache;
         private readonly IConfiguration _cofiguration;
         private readonly IStringLocalizer<Account> _stringLocalizer;
-
 
         #endregion Properties
 
@@ -50,39 +43,39 @@ namespace EmcureNPD.Web.Controllers
             //HttpResponseMessage responseMessage = objapi.APICommunication(APIURLHelper.GetBusinessUnit, HttpMethod.Get, string.Empty).Result;
             ////if (responseMessage.IsSuccessStatusCode)
             //{
-                // string jsonResponse = responseMessage.Content.ReadAsStringAsync().Result;
-                // var data =JsonConvert.DeserializeObject<APIResponseEntity<List<MasterBusinessUnitEntity>>>(jsonResponse);
-                // loginViewModel.masterBusinessUnitEntities = data._object;
+            // string jsonResponse = responseMessage.Content.ReadAsStringAsync().Result;
+            // var data =JsonConvert.DeserializeObject<APIResponseEntity<List<MasterBusinessUnitEntity>>>(jsonResponse);
+            // loginViewModel.masterBusinessUnitEntities = data._object;
             //}
             //loginViewModel.masterBusinessUnitEntities = BindListBusinessUnit();
             return View(loginViewModel);
         }
-       
+
         #region Binding_Dropdown_code
+
         [NonAction] // if Method is not Action method then use NonAction
         public List<MasterBusinessUnitEntity> BindListBusinessUnit()
         {
-            List<MasterBusinessUnitEntity> listBusUnit= new List<MasterBusinessUnitEntity>();
+            List<MasterBusinessUnitEntity> listBusUnit = new List<MasterBusinessUnitEntity>();
             APIRepository objapi = new APIRepository(_cofiguration);
             HttpResponseMessage responseMessage = objapi.APICommunication(APIURLHelper.GetBusinessUnit, HttpMethod.Get, string.Empty).Result;
             if (responseMessage.IsSuccessStatusCode)
             {
                 string jsonResponse = responseMessage.Content.ReadAsStringAsync().Result;
                 var data = JsonConvert.DeserializeObject<APIResponseEntity<List<MasterBusinessUnitEntity>>>(jsonResponse);
-                listBusUnit= data._object;
+                listBusUnit = data._object;
             }
             return listBusUnit;
-            
+        }
 
-        }        
-        #endregion
+        #endregion Binding_Dropdown_code
+
         [HttpPost]
         public IActionResult Login(LoginViewModel loginViewModel)
         {
             try
             {
                 APIRepository objapi = new APIRepository(_cofiguration);
-
 
                 if (!(string.IsNullOrEmpty(loginViewModel.Email) && string.IsNullOrEmpty(loginViewModel.Password)))
                 {
@@ -93,22 +86,22 @@ namespace EmcureNPD.Web.Controllers
                         string jsonResponse = responseMessage.Content.ReadAsStringAsync().Result;
                         var oUserDetail = JsonConvert.DeserializeObject<APIResponseEntity<UserSessionEntity>>(jsonResponse);
                         SetUserClaim(oUserDetail._object);
-                        HttpContext.Session.SetInt32(UserHelper.LoggedInRoleId, oUserDetail._object.RoleId);                        
+                        HttpContext.Session.SetInt32(UserHelper.LoggedInRoleId, oUserDetail._object.RoleId);
                         var roles = UtilityHelper.GetModuleRole<dynamic>(oUserDetail._object.RoleId);
                         if (roles == null)
-                        {                            
+                        {
                             HttpContext.Request.Cookies.TryGetValue(UserHelper.EmcureNPDToken, out string token);
                             HttpResponseMessage resRoles = objapi.APICommunication(APIURLHelper.GetByPermisionRoleUsingRoleId + "/" + oUserDetail._object.RoleId, HttpMethod.Get, oUserDetail._object.UserToken).Result;
                             if (resRoles.IsSuccessStatusCode)
                             {
                                 string rolJson = resRoles.Content.ReadAsStringAsync().Result;
-                                var data = JsonConvert.DeserializeObject<APIResponseEntity<IEnumerable<RolePermissionModel>>>(rolJson);                              
+                                var data = JsonConvert.DeserializeObject<APIResponseEntity<IEnumerable<RolePermissionModel>>>(rolJson);
                                 UtilityHelper.AddModuleRole(oUserDetail._object.RoleId, data._object);
                                 roles = data._object;
                             }
                         }
                         //HttpContext.Session.SetObject(UserHelper.LoggedPermission, (object)(roles));
-                        
+
                         return RedirectToAction("Index", "Home");
                     }
                     else
@@ -127,7 +120,6 @@ namespace EmcureNPD.Web.Controllers
             }
             catch (Exception e)
             {
-
                 ViewBag.errormessage = Convert.ToString(e.StackTrace);
                 //loginViewModel.masterBusinessUnitEntities = BindListBusinessUnit();
                 return View(loginViewModel);
@@ -170,9 +162,10 @@ namespace EmcureNPD.Web.Controllers
             props.IsPersistent = true;
             props.ExpiresUtc = oUserDetail.VallidTo;
 
-            HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, principal, props);           
+            HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, principal, props);
             HttpContext.Session.SetString(UserHelper.LoggedInUserId, Convert.ToString(oUserDetail.UserId));
         }
+
         public IActionResult ForgotPassword()
         {
             return View();
@@ -197,9 +190,10 @@ namespace EmcureNPD.Web.Controllers
             else
             {
                 ViewBag.Message = _stringLocalizer["msgEmailAddressNotExistIndatabase"].Value;
-            }         
+            }
             return View(forgotPasswordViewModel);
         }
+
         // if CheckEmailAddressExists() is false then Email Id Exist in Db
         [NonAction]
         public bool CheckEmailAddressExists(string EmailAddress)
@@ -228,7 +222,7 @@ namespace EmcureNPD.Web.Controllers
         [NonAction]
         public bool CheckResetPasswordTokenExists(string token)
         {
-            bool TokenExist=false;
+            bool TokenExist = false;
             try
             {
                 APIRepository objapi = new(_cofiguration);
@@ -254,7 +248,7 @@ namespace EmcureNPD.Web.Controllers
             MasterUserResetPasswordEntity resetPasswordEntity = new MasterUserResetPasswordEntity();
             try
             {
-                if (CheckResetPasswordTokenExists(userToken)) 
+                if (CheckResetPasswordTokenExists(userToken))
                 {
                     string strValue = HttpContext.Request.Query["userToken"].ToString();
                     resetPasswordEntity.ForgotPasswordToken = strValue;
@@ -262,7 +256,7 @@ namespace EmcureNPD.Web.Controllers
                 }
                 else
                 {
-                   return RedirectToAction("Login");
+                    return RedirectToAction("Login");
                 }
             }
             catch (Exception e)
@@ -271,6 +265,7 @@ namespace EmcureNPD.Web.Controllers
                 return View();
             }
         }
+
         [HttpPost]
         public IActionResult ResetPassword(MasterUserResetPasswordEntity masterUserresetpassword)
         {
@@ -279,12 +274,12 @@ namespace EmcureNPD.Web.Controllers
                 APIRepository objapi = new APIRepository(_cofiguration);
                 HttpResponseMessage responseMessage = objapi.APICommunication(APIURLHelper.ResetPassword, HttpMethod.Post, string.Empty, new StringContent(JsonConvert.SerializeObject(masterUserresetpassword))).Result;
                 string jsonResponse = responseMessage.Content.ReadAsStringAsync().Result;
-                var data = JsonConvert.DeserializeObject<APIResponseEntity<string>>(jsonResponse);   
-                if (data._object== "ResetSuccessfully")
+                var data = JsonConvert.DeserializeObject<APIResponseEntity<string>>(jsonResponse);
+                if (data._object == "ResetSuccessfully")
                 {
                     ViewBag.Message = _stringLocalizer["msgPasswordResetSuccessfully"].Value;
                 }
-                else if(data._object== "TokenExpired")
+                else if (data._object == "TokenExpired")
                 {
                     ViewBag.Message = _stringLocalizer["msgResetPasswordTokenExpired"].Value;
                 }
@@ -300,6 +295,5 @@ namespace EmcureNPD.Web.Controllers
                 return View();
             }
         }
-        
     }
 }

@@ -14,15 +14,13 @@ namespace EmcureNPD.Utility.Utility
             PropertyInfo propInfo = null;
             foreach (var prop in pp)
             {
-               
                 propInfo = t.GetProperty(prop);
-               
+
                 if (propInfo != null)
                 {
                     instance = propInfo.GetValue(instance, null);
                     t = propInfo.PropertyType;
                 }
-                
             }
             return propInfo;
         }

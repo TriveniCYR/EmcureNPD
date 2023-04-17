@@ -134,9 +134,6 @@ namespace EmcureNPD.API.Controllers.Masters
         {
             try
             {
-
-
-
                 DBOperation oResponse = await _MasterFormulationService.DeleteFormulation(id);
                 if (oResponse == DBOperation.Success)
                     return _ObjectResponse.Create(true, (Int32)HttpStatusCode.OK, "Deleted Successfully");

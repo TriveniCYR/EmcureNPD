@@ -1,56 +1,52 @@
 ﻿using EmcureNPD.Business.Models;
 using EmcureNPD.Resource;
+using EmcureNPD.Utility.Enums;
+using EmcureNPD.Utility.Models;
+using EmcureNPD.Utility.Utility;
 using EmcureNPD.Web.Helpers;
+using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Localization;
 using Newtonsoft.Json;
-using System.Net.Http;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Http;
-using System.IO;
-using Microsoft.AspNetCore.Hosting;
-using EmcureNPD.Utility.Helpers;
-using System.Net.Mail;
-using EmcureNPD.Utility.Utility;
-using EmcureNPD.Utility.Models;
-using EmcureNPD.Utility.Enums;
+using System.Net.Http;
 
 namespace EmcureNPD.Web.Controllers
 {
     public class UserController : BaseController
     {
         #region Properties
+
         private readonly IConfiguration _cofiguration;
         private readonly IStringLocalizer<Errors> _stringLocalizerError;
         private readonly IStringLocalizer<Shared> _stringLocalizerShared;
         private IHostingEnvironment _env;
-        #endregion
+        private readonly IHelper _helper;
+
+        #endregion Properties
 
         public UserController(IConfiguration configuration, IHostingEnvironment env,
-            IStringLocalizer<Errors> stringLocalizerError, IStringLocalizer<Shared> stringLocalizerShared)
+            IStringLocalizer<Errors> stringLocalizerError, IStringLocalizer<Shared> stringLocalizerShared, IHelper helper)
         {
             _cofiguration = configuration;
             _stringLocalizerError = stringLocalizerError;
             _stringLocalizerShared = stringLocalizerShared;
             _env = env;
+            _helper = helper;
         }
 
         public IActionResult User()
         {
-			int rolId = (int)HttpContext.Session.GetInt32(UserHelper.LoggedInRoleId);
-			RolePermissionModel objPermssion = UtilityHelper.GetCntrActionAccess((int)ModulePermissionEnum.UserManagement, rolId);
+            int rolId = _helper.GetLoggedInRoleId();
+            RolePermissionModel objPermssion = UtilityHelper.GetCntrActionAccess((int)ModulePermissionEnum.UserManagement, rolId);
             ViewBag._objPermission = objPermssion;
-			return View();
+            return View();
         }
 
         public IActionResult UserManage(int? UserId)
         {
-            
             MasterUserEntity masterUser;
             if (UserId == null || UserId <= 0)
             {
@@ -82,9 +78,8 @@ namespace EmcureNPD.Web.Controllers
         {
             try
             {
-                masterUser.StringPassword = masterUser.Password;                
-                string logUserId = Convert.ToString(HttpContext.Session.GetString(UserHelper.LoggedInUserId));
-                masterUser.LoggedUserId = int.Parse(logUserId);
+                masterUser.StringPassword = masterUser.Password;
+                masterUser.LoggedUserId = _helper.GetLoggedInUserId();
                 if (UserId <= 0)
                 {
                     if (CheckEmailAddressExists(masterUser.EmailAddress))
@@ -108,8 +103,6 @@ namespace EmcureNPD.Web.Controllers
                 HttpContext.Request.Cookies.TryGetValue(UserHelper.EmcureNPDToken, out string token);
                 APIRepository objapi = new(_cofiguration);
 
-               
-
                 HttpResponseMessage responseMessage = objapi.APICommunication(APIURLHelper.SaveUser, HttpMethod.Post, token, new StringContent(JsonConvert.SerializeObject(masterUser))).Result;
 
                 if (responseMessage.IsSuccessStatusCode)
@@ -117,7 +110,6 @@ namespace EmcureNPD.Web.Controllers
                     string jsonResponse = responseMessage.Content.ReadAsStringAsync().Result;
                     TempData[UserHelper.SuccessMessage] = Convert.ToString(_stringLocalizerShared["RecordInsertUpdate"]);
 
-                    
                     return RedirectToAction(nameof(User));
                 }
                 else
@@ -150,7 +142,7 @@ namespace EmcureNPD.Web.Controllers
                     ViewBag.Message = _stringLocalizerError["OldNewPasswordSame"];
                     return View();
                 }
-                masterUser.UserId = Convert.ToInt32(HttpContext.Session.GetString(UserHelper.LoggedInUserId));
+                masterUser.UserId = _helper.GetLoggedInUserId();
                 HttpContext.Request.Cookies.TryGetValue(UserHelper.EmcureNPDToken, out string token);
                 APIRepository objapi = new(_cofiguration);
                 HttpResponseMessage responseMessage = objapi.APICommunication(APIURLHelper.ChangeUserPassword, HttpMethod.Post, token, new StringContent(JsonConvert.SerializeObject(masterUser))).Result;
@@ -177,10 +169,9 @@ namespace EmcureNPD.Web.Controllers
         }
 
         [NonAction]
-        // if CheckEmailAddressExists() is false then Email Id Exist in Db
         public bool CheckEmailAddressExists(string EmailAddress)
         {
-            bool EmailExist= true;
+            bool EmailExist = true;
             try
             {
                 HttpContext.Request.Cookies.TryGetValue(UserHelper.EmcureNPDToken, out string token);
@@ -200,6 +191,5 @@ namespace EmcureNPD.Web.Controllers
                 throw e;
             }
         }
-
     }
 }

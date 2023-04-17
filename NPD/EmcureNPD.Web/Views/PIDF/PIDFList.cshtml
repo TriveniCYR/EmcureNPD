@@ -63,29 +63,26 @@
         else if (Context.Request.Query["ScreenId"] == Convert.ToString((int)EmcureNPD.Utility.Enums.PIDFScreen.Project))
         {
             <h3>@SharedLocalizer["Project Management"]</h3>
-            <div class="md-right mb-1">
-                <div class="mybtn-group">
-                    <a class="btn btn-primary" href="@Url.Action("ProjectSummary","Project", new{ScreenId =Context.Request.Query["ScreenId"]})"><i class="fas fa-project-diagram mr-2"></i>Gantt Chart</a>
-                </div>
+            <div>
+                    @*<a class="btn btn-primary" href="@Url.Action("ProjectSummary","Project", new{ScreenId =Context.Request.Query["ScreenId"]})"><i class="fas fa-project-diagram mr-2"></i>Gantt Chart</a>*@
             </div>
         }
-        <div>
+        
             @if (Context.Request.Query["ScreenId"] == Convert.ToString((int)EmcureNPD.Utility.Enums.PIDFScreen.PIDF) || Context.Request.Query["ScreenId"] == Convert.ToString((int)EmcureNPD.Utility.Enums.PIDFScreen.IPD) || Context.Request.Query["ScreenId"] == Convert.ToString((int)EmcureNPD.Utility.Enums.PIDFScreen.Finance) || (Context.Request.Query["ScreenId"] == Convert.ToString((int)EmcureNPD.Utility.Enums.PIDFScreen.Management) && Ismanagement.Equals("True")))
             {
                 bool IsAccessToLoggedInUser = UtilityHelper.GetAccess(Int32.Parse(Convert.ToString(ScreenModuleID)), Helper.GetLoggedInRoleId(), (int)PermissionEnum.Approve);
+            <div>
                 @if(IsAccessToLoggedInUser)
                 {
                     <a class="btn btn-success" onClick="ApproveRejectPIDF('A', @(Context.Request.Query["ScreenId"]), '/PIDF/PIDFList?ScreenId=@(Context.Request.Query["ScreenId"])')"><i class="fa fa-check-circle mr-1"></i> @SharedLocalizer["Approve"]</a>
                     <a class="btn btn-danger" onClick="ApproveRejectPIDF('R', @(Context.Request.Query["ScreenId"]), '/PIDF/PIDFList?ScreenId=@(Context.Request.Query["ScreenId"])')"><i class="fa fa-ban mr-1"></i> @SharedLocalizer["Reject"]</a>
                 }
+                @if ((Context.Request.Query["ScreenId"] == Convert.ToString((int)EmcureNPD.Utility.Enums.PIDFScreen.PIDF)) && UtilityHelper.GetAccess(Int32.Parse(Convert.ToString(ScreenModuleID)), Helper.GetLoggedInRoleId(), (int)PermissionEnum.Add))
+                {
+                    <a class="btn btn-primary" asp-action="PIDF"><i class="far fa-plus-square mr-1"></i> @SharedLocalizer["Add"]</a>
+                }
+            </div>
             }
-            @*<a class="btn btn-danger" onClick="approveRejDeleteData('D')"><i class="far fa fa-trash mr-1"></i> @SharedLocalizer["Delete"]</a>*@
-            @if ((Context.Request.Query["ScreenId"] == Convert.ToString((int)EmcureNPD.Utility.Enums.PIDFScreen.PIDF)) && UtilityHelper.GetAccess(Int32.Parse(Convert.ToString(ScreenModuleID)), Helper.GetLoggedInRoleId(), (int)PermissionEnum.Add))
-            {
-                <a class="btn btn-primary" asp-action="PIDF"><i class="far fa-plus-square mr-1"></i> @SharedLocalizer["Add"]</a>
-            }
-            <div class="export-btn mybtn-group"></div>
-        </div>
     </div>
 </div>
 
@@ -235,43 +232,62 @@
         if (successCallBack) {
             toastr.success(successCallBack);
         }
-        var IsEditPIDF = '@UtilityHelper.GetCntrActionAccess((int)ModulePermissionEnum.PIDF, Helper.GetLoggedInRoleId()).Edit' == 'True'
-        var IsAddPIDF = '@UtilityHelper.GetCntrActionAccess((int)ModulePermissionEnum.PIDF, Helper.GetLoggedInRoleId()).Add' == 'True'
-        var IsApprovePIDF = '@UtilityHelper.GetCntrActionAccess((int)ModulePermissionEnum.PIDF, Helper.GetLoggedInRoleId()).Approve' == 'True'
-        var IsViewPIDF = '@UtilityHelper.GetCntrActionAccess((int)ModulePermissionEnum.PIDF, Helper.GetLoggedInRoleId()).View' == 'True'
 
-        var IsEditIPD = '@UtilityHelper.GetCntrActionAccess((int)ModulePermissionEnum.IPD, Helper.GetLoggedInRoleId()).Edit' == 'True'
-        var IsAddIPD = '@UtilityHelper.GetCntrActionAccess((int)ModulePermissionEnum.IPD, Helper.GetLoggedInRoleId()).Add' == 'True'
-        var IsApproveIPD = '@UtilityHelper.GetCntrActionAccess((int)ModulePermissionEnum.IPD, Helper.GetLoggedInRoleId()).Approve' == 'True'
-        var IsViewIPD = '@UtilityHelper.GetCntrActionAccess((int)ModulePermissionEnum.IPD, Helper.GetLoggedInRoleId()).View' == 'True'
 
-        var IsEditFinance = '@UtilityHelper.GetCntrActionAccess((int)ModulePermissionEnum.Finance, Helper.GetLoggedInRoleId()).Edit' == 'True'
-        var IsAddFinance = '@UtilityHelper.GetCntrActionAccess((int)ModulePermissionEnum.Finance, Helper.GetLoggedInRoleId()).Add' == 'True'
-        var IsApproveFinance = '@UtilityHelper.GetCntrActionAccess((int)ModulePermissionEnum.Finance, Helper.GetLoggedInRoleId()).Approve' == 'True'
-        var IsViewFinance = '@UtilityHelper.GetCntrActionAccess((int)ModulePermissionEnum.Finance, Helper.GetLoggedInRoleId()).View' == 'True'
 
-        var IsEditMedical = '@UtilityHelper.GetCntrActionAccess((int)ModulePermissionEnum.Medical, Helper.GetLoggedInRoleId()).Edit' == 'True'
-        var IsAddMedical = '@UtilityHelper.GetCntrActionAccess((int)ModulePermissionEnum.Medical, Helper.GetLoggedInRoleId()).Add' == 'True'
-        var IsViewMedical = '@UtilityHelper.GetCntrActionAccess((int)ModulePermissionEnum.Medical, Helper.GetLoggedInRoleId()).View' == 'True'
+        var IsEditPIDF = '@UtilityHelper.GetAccess((int)ModulePermissionEnum.PIDF, Helper.GetLoggedInRoleId(),(int)PermissionEnum.Edit)' == 'True'
+        var IsAddPIDF = '@UtilityHelper.GetAccess((int)ModulePermissionEnum.PIDF, Helper.GetLoggedInRoleId(),(int)PermissionEnum.Add)' == 'True'
+        var IsApprovePIDF = '@UtilityHelper.GetAccess((int)ModulePermissionEnum.PIDF,Helper.GetLoggedInRoleId(),(int)PermissionEnum.Approve)' == 'True'
+        var IsViewPIDF = '@UtilityHelper.GetAccess((int)ModulePermissionEnum.PIDF, Helper.GetLoggedInRoleId(),(int)PermissionEnum.View)' == 'True'
 
-        var IsEditCommercial = '@UtilityHelper.GetCntrActionAccess((int)ModulePermissionEnum.Commercial, Helper.GetLoggedInRoleId()).Edit' == 'True'
-        var IsAddCommercial = '@UtilityHelper.GetCntrActionAccess((int)ModulePermissionEnum.Commercial, Helper.GetLoggedInRoleId()).Add' == 'True'
-        var IsViewCommercial = '@UtilityHelper.GetCntrActionAccess((int)ModulePermissionEnum.Commercial, Helper.GetLoggedInRoleId()).View' == 'True'
+        var IsEditIPD = '@UtilityHelper.GetAccess((int)ModulePermissionEnum.IPD, Helper.GetLoggedInRoleId(),(int)PermissionEnum.Edit)' == 'True'
+        var IsAddIPD = '@UtilityHelper.GetAccess((int)ModulePermissionEnum.IPD, Helper.GetLoggedInRoleId(),(int)PermissionEnum.Add)' == 'True'
+        var IsApproveIPD = '@UtilityHelper.GetAccess((int)ModulePermissionEnum.IPD, Helper.GetLoggedInRoleId(), (int)PermissionEnum.Approve)' == 'True'
+        var IsViewIPD = '@UtilityHelper.GetAccess((int)ModulePermissionEnum.IPD, Helper.GetLoggedInRoleId(),(int)PermissionEnum.View)' == 'True'
 
-        var IsEditProject = '@UtilityHelper.GetCntrActionAccess((int)ModulePermissionEnum.Project, Helper.GetLoggedInRoleId()).Edit' == 'True'
+        var IsEditFinance = '@UtilityHelper.GetAccess((int)ModulePermissionEnum.Finance, Helper.GetLoggedInRoleId(),(int)PermissionEnum.Edit)' == 'True'
+        var IsAddFinance = '@UtilityHelper.GetAccess((int)ModulePermissionEnum.Finance, Helper.GetLoggedInRoleId(),(int)PermissionEnum.Add)' == 'True'
+        var IsApproveFinance = '@UtilityHelper.GetAccess((int)ModulePermissionEnum.Finance, Helper.GetLoggedInRoleId(),(int)PermissionEnum.Approve)' == 'True'
+        var IsViewFinance = '@UtilityHelper.GetAccess((int)ModulePermissionEnum.Finance, Helper.GetLoggedInRoleId(),(int)PermissionEnum.View)' == 'True'
 
-        var IsApproveManagementHOD = '@UtilityHelper.GetCntrActionAccess((int)ModulePermissionEnum.ManagementHOD, Helper.GetLoggedInRoleId()).Approve' == 'True'
-        var IsViewManagementHOD = '@UtilityHelper.GetCntrActionAccess((int)ModulePermissionEnum.ManagementHOD, Helper.GetLoggedInRoleId()).View' == 'True'
+        var IsEditMedical = '@UtilityHelper.GetAccess((int)ModulePermissionEnum.Medical, Helper.GetLoggedInRoleId(),(int)PermissionEnum.Edit)' == 'True'
+        var IsAddMedical = '@UtilityHelper.GetAccess((int)ModulePermissionEnum.Medical, Helper.GetLoggedInRoleId(),(int)PermissionEnum.Add)' == 'True'
+        var IsViewMedical = '@UtilityHelper.GetAccess((int)ModulePermissionEnum.Medical, Helper.GetLoggedInRoleId(),(int)PermissionEnum.View)' == 'True'
 
-        var IsViewAuditlogs = '@UtilityHelper.GetCntrActionAccess((int)ModulePermissionEnum.Auditlogs, Helper.GetLoggedInRoleId()).View' == 'True'
+        var IsEditCommercial = '@UtilityHelper.GetAccess((int)ModulePermissionEnum.Commercial, Helper.GetLoggedInRoleId(),(int)PermissionEnum.Edit)' == 'True'
+        var IsAddCommercial = '@UtilityHelper.GetAccess((int)ModulePermissionEnum.Commercial, Helper.GetLoggedInRoleId(),(int)PermissionEnum.Add)' == 'True'
+        var IsViewCommercial = '@UtilityHelper.GetAccess((int)ModulePermissionEnum.Commercial, Helper.GetLoggedInRoleId(),(int)PermissionEnum.View)' == 'True'
 
-        var IsEditAPIIPD = '@UtilityHelper.GetCntrActionAccess((int)ModulePermissionEnum.APIListManagement, Helper.GetLoggedInRoleId(),(int)SubModulePermissionEnum.APIIPD).Edit' == 'True'
-        var IsEditAPIRnD = '@UtilityHelper.GetCntrActionAccess((int)ModulePermissionEnum.APIListManagement, Helper.GetLoggedInRoleId(),(int)SubModulePermissionEnum.APIRnD).Edit' == 'True'
-        var IsEditAPICharter = '@UtilityHelper.GetCntrActionAccess((int)ModulePermissionEnum.APIListManagement, Helper.GetLoggedInRoleId(),(int)SubModulePermissionEnum.APICharter).Edit' == 'True'
-        var IsViewAPICharterSummary = '@UtilityHelper.GetCntrActionAccess((int)ModulePermissionEnum.APIListManagement, Helper.GetLoggedInRoleId(),(int)SubModulePermissionEnum.APICharterSummary).View' == 'True'
+        var IsEditProject = '@UtilityHelper.GetAccess((int)ModulePermissionEnum.Project, Helper.GetLoggedInRoleId(),(int)PermissionEnum.Edit)' == 'True'
+        var IsAddProject = '@UtilityHelper.GetAccess((int)ModulePermissionEnum.Project, Helper.GetLoggedInRoleId(),(int)PermissionEnum.Add)' == 'True'
+        var IsViewProject = '@UtilityHelper.GetAccess((int)ModulePermissionEnum.Project, Helper.GetLoggedInRoleId(),(int)PermissionEnum.View)' == 'True'
 
-        var IsEditPBF = '@UtilityHelper.GetCntrActionAccess((int)ModulePermissionEnum.PBF, Helper.GetLoggedInRoleId()).Edit' == 'True'
-        var IsViewPBF = '@UtilityHelper.GetCntrActionAccess((int)ModulePermissionEnum.PBF, Helper.GetLoggedInRoleId()).View' == 'True'
+        var IsApproveManagementHOD = '@UtilityHelper.GetAccess((int)ModulePermissionEnum.ManagementHOD, Helper.GetLoggedInRoleId(),(int)PermissionEnum.Approve)' == 'True'
+        var IsViewManagementHOD = '@UtilityHelper.GetAccess((int)ModulePermissionEnum.ManagementHOD, Helper.GetLoggedInRoleId(),(int)PermissionEnum.View)' == 'True'
+
+        var IsViewAuditlogs = '@UtilityHelper.GetAccess((int)ModulePermissionEnum.Auditlogs, Helper.GetLoggedInRoleId(),(int)PermissionEnum.View)' == 'True'
+        
+        var IsEditAPIIPD = '@UtilityHelper.GetAccess((int)ModulePermissionEnum.APIListManagement, Helper.GetLoggedInRoleId(),(int)PermissionEnum.Edit,(int)SubModulePermissionEnum.APIIPD)' == 'True'
+        var IsEditAPIRnD = '@UtilityHelper.GetAccess((int)ModulePermissionEnum.APIListManagement, Helper.GetLoggedInRoleId(),(int)PermissionEnum.Edit,(int)SubModulePermissionEnum.APIRnD)' == 'True'
+        var IsEditAPICharter = '@UtilityHelper.GetAccess((int)ModulePermissionEnum.APIListManagement, Helper.GetLoggedInRoleId(),(int)PermissionEnum.Edit,(int)SubModulePermissionEnum.APICharter)' == 'True'
+        var IsViewAPICharterSummary = '@UtilityHelper.GetAccess((int)ModulePermissionEnum.APIListManagement, Helper.GetLoggedInRoleId(),(int)PermissionEnum.View,(int)SubModulePermissionEnum.APICharterSummary)' == 'True'
+
+        var IsAddAPIIPD = '@UtilityHelper.GetAccess((int)ModulePermissionEnum.APIListManagement, Helper.GetLoggedInRoleId(),(int)PermissionEnum.Add,(int)SubModulePermissionEnum.APIIPD)' == 'True'
+        var IsAddAPIRnD = '@UtilityHelper.GetAccess((int)ModulePermissionEnum.APIListManagement, Helper.GetLoggedInRoleId(),(int)PermissionEnum.Add,(int)SubModulePermissionEnum.APIRnD)' == 'True'
+        var IsAddAPICharter = '@UtilityHelper.GetAccess((int)ModulePermissionEnum.APIListManagement, Helper.GetLoggedInRoleId(),(int)PermissionEnum.Add,(int)SubModulePermissionEnum.APICharter)' == 'True'
+
+        var IsViewAPIIPD = '@UtilityHelper.GetAccess((int)ModulePermissionEnum.APIListManagement, Helper.GetLoggedInRoleId(),(int)PermissionEnum.View,(int)SubModulePermissionEnum.APIIPD)' == 'True'
+        var IsViewAPIRnD = '@UtilityHelper.GetAccess((int)ModulePermissionEnum.APIListManagement, Helper.GetLoggedInRoleId(),(int)PermissionEnum.View,(int)SubModulePermissionEnum.APIRnD)' == 'True'
+        var IsViewAPICharter = '@UtilityHelper.GetAccess((int)ModulePermissionEnum.APIListManagement, Helper.GetLoggedInRoleId(),(int)PermissionEnum.View,(int)SubModulePermissionEnum.APICharter)' == 'True'
+       
+
+        var IsEditPBFAnalytical = '@UtilityHelper.GetAccess((int)ModulePermissionEnum.PBF, Helper.GetLoggedInRoleId(),(int)PermissionEnum.Edit,(int)SubModulePermissionEnum.Analytical)' == 'True'
+        var IsEditPBFRnD = '@UtilityHelper.GetAccess((int)ModulePermissionEnum.PBF, Helper.GetLoggedInRoleId(),(int)PermissionEnum.Edit,(int)SubModulePermissionEnum.RnD)' == 'True'
+        var IsEditPBFClinical = '@UtilityHelper.GetAccess((int)ModulePermissionEnum.PBF, Helper.GetLoggedInRoleId(),(int)PermissionEnum.Edit,(int)SubModulePermissionEnum.Clinical)' == 'True'
+
+        var IsViewPBF = '@UtilityHelper.GetAccess((int)ModulePermissionEnum.PBF, Helper.GetLoggedInRoleId(),(int)PermissionEnum.View)' == 'True'
+        var IsAddPBF = '@UtilityHelper.GetAccess((int)ModulePermissionEnum.PBF, Helper.GetLoggedInRoleId(),(int)PermissionEnum.Add)' == 'True'
+        var IsEditPBF = '@UtilityHelper.GetAccess((int)ModulePermissionEnum.PBF, Helper.GetLoggedInRoleId(),(int)PermissionEnum.Edit)' == 'True'
 
                         //#endregion
     </script>

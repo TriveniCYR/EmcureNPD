@@ -4,8 +4,6 @@ using EmcureNPD.API.Middlewares;
 using EmcureNPD.Business.Core.Resolver;
 using EmcureNPD.Resource;
 using EmcureNPD.Utility;
-using EmcureNPD.Utility.Helpers;
-using Microsoft.AspNet.SignalR;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
@@ -19,7 +17,7 @@ using System.IO;
 
 namespace EmcureNPD.API
 {
-	public class Startup
+    public class Startup
     {
         public Startup(IConfiguration configuration)
         {
@@ -105,7 +103,7 @@ namespace EmcureNPD.API
 
             services.AddCors();
             services.AddDistributedMemoryCache();
-            
+
             services.AddHttpContextAccessor();
 
             services.AddSignalR();
@@ -132,11 +130,10 @@ namespace EmcureNPD.API
             }
             else
             {
-               
                 app.UseExceptionHandler("/Home/Error");
                 app.UseHsts();
             }
-            
+
             app.UseStaticFiles();
 
             var allowedOrigins = Configuration.GetSection("AllowedOrigins").Value.Split(",");
@@ -157,29 +154,27 @@ namespace EmcureNPD.API
 
             app.UseAuthentication();
             app.UseAuthorization();
-			app.UseFileServer();
-			// custom jwt auth middleware
-			app.UseMiddleware<JwtMiddleware>();
+            app.UseFileServer();
+            // custom jwt auth middleware
+            app.UseMiddleware<JwtMiddleware>();
             //.UseMiddleware<ExceptionMiddleware>();
-
 
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllers();
-               // endpoints.MapHub<NotificationHub>("/signalR");
+                // endpoints.MapHub<NotificationHub>("/signalR");
+            });
+            //app.Use(async (context, next) =>
+            //{
+            //	var hubContext = context.RequestServices
+            //							.GetRequiredService<IHubContext<NotificationHub>>();
+            //	//...
 
-			});
-			//app.Use(async (context, next) =>
-			//{
-			//	var hubContext = context.RequestServices
-			//							.GetRequiredService<IHubContext<NotificationHub>>();
-			//	//...
-
-			//	if (next != null)
-			//	{
-			//		await next.Invoke();
-			//	}
-			//});
-		}
+            //	if (next != null)
+            //	{
+            //		await next.Invoke();
+            //	}
+            //});
+        }
     }
 }

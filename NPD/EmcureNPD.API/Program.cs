@@ -22,13 +22,11 @@ namespace EmcureNPD.API
             }
             catch
             {
-
             }
             finally
             {
                 Log.CloseAndFlush();
             }
-
         }
 
         public static IHostBuilder CreateHostBuilder(string[] args) =>
@@ -37,7 +35,6 @@ namespace EmcureNPD.API
                 .ConfigureWebHostDefaults(webBuilder =>
                 {
                     webBuilder.UseStartup<Startup>();
-
                 });
     }
 }

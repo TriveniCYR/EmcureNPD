@@ -1,5 +1,4 @@
 using EmcureNPD.Resource;
-using EmcureNPD.Utility.Helpers;
 using EmcureNPD.Web.Filters;
 using EmcureNPD.Web.Helpers;
 using Microsoft.AspNetCore.Authentication.Cookies;
@@ -13,8 +12,6 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using System;
-using Microsoft.AspNetCore.SignalR;
-
 
 namespace EmcureNPD.Web
 {
@@ -100,7 +97,6 @@ namespace EmcureNPD.Web
             //   new PhysicalFileProvider(
             //       Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/document")));
 
-
             services.AddResource();
 
             services.AddLocalization(o => { o.ResourcesPath = "Resources"; });
@@ -117,10 +113,6 @@ namespace EmcureNPD.Web
             services.AddControllersWithViews()
                 .AddViewLocalization(LanguageViewLocationExpanderFormat.Suffix)
                 .AddDataAnnotationsLocalization();
-
-
-
-
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -169,7 +161,6 @@ namespace EmcureNPD.Web
 
             app.UseRequestLocalization();
 
-           
             //app.Use(async (context, next) =>
             //{
             //    string CurrentUserIDSession = context.Session.GetString("CurrentUserID");
