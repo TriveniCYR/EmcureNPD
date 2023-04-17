@@ -511,6 +511,7 @@ namespace EmcureNPD.Web.Controllers
             try
             {
                 //rnd json data
+                pbfEntity.Pidfid = PIDFId;
                 pbfEntity.RNDExicipients = pbfEntity.RNDExicipientRawData != null ? JsonConvert.DeserializeObject<List<RNDExicipient>>(pbfEntity.RNDExicipientRawData) : new List<RNDExicipient>();
                 pbfEntity.RNDPackagings = pbfEntity.RNDPackagingRawData != null ? JsonConvert.DeserializeObject<List<RNDPackaging>>(pbfEntity.RNDPackagingRawData) : new List<RNDPackaging>();
                 pbfEntity.RNDToolingChangeparts = pbfEntity.RNDToolingChangePartRawData != null ? JsonConvert.DeserializeObject<List<RNDToolingChangepart>>(pbfEntity.RNDToolingChangePartRawData) : new List<RNDToolingChangepart>();
@@ -551,6 +552,7 @@ namespace EmcureNPD.Web.Controllers
             }
             catch (Exception e)
             {
+                //_helper.LogExceptions(e);
                 ViewBag.errormessage = Convert.ToString(e.StackTrace);
                 ModelState.Clear();
                 //return RedirectToAction("PIDFList", "PIDF", new { ScreenId = 6 });

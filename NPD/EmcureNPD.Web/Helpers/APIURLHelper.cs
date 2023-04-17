@@ -432,5 +432,8 @@ namespace EmcureNPD.Web.Helpers
         public static string GetBusinessUnitDeatil = "api/Project/GetBusinessUnitDetails";
 
         #endregion Project
+        #region LogExceptionMethod
+        public static string LogException = "api/LogException/LogException";
+        #endregion
     }
 }

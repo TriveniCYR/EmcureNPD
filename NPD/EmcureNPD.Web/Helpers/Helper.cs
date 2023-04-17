@@ -1,15 +1,21 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using EmcureNPD.Business.Models;
+using Microsoft.AspNetCore.Http;
+using Newtonsoft.Json;
 using System;
+using System.Net.Http;
 
 namespace EmcureNPD.Web.Helpers
 {
     public class Helper : IHelper
     {
         private readonly IHttpContextAccessor _httpContextAccessor;
-
-        public Helper(IHttpContextAccessor httpContextAccessor)
+        private readonly Microsoft.Extensions.Configuration.IConfiguration _cofiguration;
+        //private readonly IHelper _helper;
+        public Helper(IHttpContextAccessor httpContextAccessor, Microsoft.Extensions.Configuration.IConfiguration configuration)//, IHelper helper
         {
             _httpContextAccessor = httpContextAccessor;
+            _cofiguration = configuration;
+            //_helper = helper;
         }
 
         public int GetLoggedInUserId()
@@ -44,5 +50,20 @@ namespace EmcureNPD.Web.Helpers
         {
             return (_httpContextAccessor.HttpContext.Session.GetString(UserHelper.AssignedBusinessUnit));
         }
+        //public void LogExceptions(Exception ex)
+        //{
+        //    try
+        //    {
+        //        _httpContextAccessor.HttpContext.Request.Cookies.TryGetValue(UserHelper.EmcureNPDToken, out string token);
+        //        APIRepository objapi = new(_cofiguration);
+        //        System.Net.Http.HttpResponseMessage responseMessage = objapi.APICommunication(APIURLHelper.LogException, HttpMethod.Post, token, new StringContent(JsonConvert.SerializeObject(ex))).Result;
+
+        //    }
+        //    catch (Exception e)
+        //    {
+
+        //    }
+
+        //}
     }
 }
