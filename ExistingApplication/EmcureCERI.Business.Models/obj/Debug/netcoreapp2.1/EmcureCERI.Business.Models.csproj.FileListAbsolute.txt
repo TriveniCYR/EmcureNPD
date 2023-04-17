@@ -24,3 +24,16 @@ C:\Users\user\Desktop\Latest Emcure\ExistingApplication\EmcureCERI.Business.Mode
 C:\Users\user\Desktop\Latest Emcure\ExistingApplication\EmcureCERI.Business.Models\obj\Debug\netcoreapp2.1\EmcureCERI.Business.Models.csproj.CopyComplete
 C:\Users\user\Desktop\Latest Emcure\ExistingApplication\EmcureCERI.Business.Models\obj\Debug\netcoreapp2.1\EmcureCERI.Business.Models.dll
 C:\Users\user\Desktop\Latest Emcure\ExistingApplication\EmcureCERI.Business.Models\obj\Debug\netcoreapp2.1\EmcureCERI.Business.Models.pdb
+D:\work\EmcureGITRepo\EmcureNPD\ExistingApplication\EmcureCERI.Business.Models\bin\Debug\netcoreapp2.1\EmcureCERI.Business.Models.deps.json
+D:\work\EmcureGITRepo\EmcureNPD\ExistingApplication\EmcureCERI.Business.Models\bin\Debug\netcoreapp2.1\EmcureCERI.Business.Models.dll
+D:\work\EmcureGITRepo\EmcureNPD\ExistingApplication\EmcureCERI.Business.Models\bin\Debug\netcoreapp2.1\EmcureCERI.Business.Models.pdb
+D:\work\EmcureGITRepo\EmcureNPD\ExistingApplication\EmcureCERI.Business.Models\bin\Debug\netcoreapp2.1\EmcureCERI.Data.DataAccess.dll
+D:\work\EmcureGITRepo\EmcureNPD\ExistingApplication\EmcureCERI.Business.Models\bin\Debug\netcoreapp2.1\EmcureCERI.Data.DataAccess.pdb
+D:\work\EmcureGITRepo\EmcureNPD\ExistingApplication\EmcureCERI.Business.Models\obj\Debug\netcoreapp2.1\EmcureCERI.Business.Models.csproj.AssemblyReference.cache
+D:\work\EmcureGITRepo\EmcureNPD\ExistingApplication\EmcureCERI.Business.Models\obj\Debug\netcoreapp2.1\EmcureCERI.Business.Models.GeneratedMSBuildEditorConfig.editorconfig
+D:\work\EmcureGITRepo\EmcureNPD\ExistingApplication\EmcureCERI.Business.Models\obj\Debug\netcoreapp2.1\EmcureCERI.Business.Models.AssemblyInfoInputs.cache
+D:\work\EmcureGITRepo\EmcureNPD\ExistingApplication\EmcureCERI.Business.Models\obj\Debug\netcoreapp2.1\EmcureCERI.Business.Models.AssemblyInfo.cs
+D:\work\EmcureGITRepo\EmcureNPD\ExistingApplication\EmcureCERI.Business.Models\obj\Debug\netcoreapp2.1\EmcureCERI.Business.Models.csproj.CoreCompileInputs.cache
+D:\work\EmcureGITRepo\EmcureNPD\ExistingApplication\EmcureCERI.Business.Models\obj\Debug\netcoreapp2.1\EmcureCERI.Business.Models.csproj.CopyComplete
+D:\work\EmcureGITRepo\EmcureNPD\ExistingApplication\EmcureCERI.Business.Models\obj\Debug\netcoreapp2.1\EmcureCERI.Business.Models.dll
+D:\work\EmcureGITRepo\EmcureNPD\ExistingApplication\EmcureCERI.Business.Models\obj\Debug\netcoreapp2.1\EmcureCERI.Business.Models.pdb

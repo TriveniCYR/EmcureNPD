@@ -14295,19 +14295,19 @@
     ]
   },
   "packageFolders": {
-    "C:\\Users\\user\\.nuget\\packages\\": {}
+    "C:\\Users\\Neosoft\\.nuget\\packages\\": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\user\\Desktop\\Latest Emcure\\ExistingApplication\\EmcureCERI.ConsoleApp\\EmcureCERI.ConsoleApp.csproj",
+      "projectUniqueName": "D:\\work\\EmcureGITRepo\\EmcureNPD\\ExistingApplication\\EmcureCERI.ConsoleApp\\EmcureCERI.ConsoleApp.csproj",
       "projectName": "EmcureCERI.ConsoleApp",
-      "projectPath": "C:\\Users\\user\\Desktop\\Latest Emcure\\ExistingApplication\\EmcureCERI.ConsoleApp\\EmcureCERI.ConsoleApp.csproj",
-      "packagesPath": "C:\\Users\\user\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\user\\Desktop\\Latest Emcure\\ExistingApplication\\EmcureCERI.ConsoleApp\\obj\\",
+      "projectPath": "D:\\work\\EmcureGITRepo\\EmcureNPD\\ExistingApplication\\EmcureCERI.ConsoleApp\\EmcureCERI.ConsoleApp.csproj",
+      "packagesPath": "C:\\Users\\Neosoft\\.nuget\\packages\\",
+      "outputPath": "D:\\work\\EmcureGITRepo\\EmcureNPD\\ExistingApplication\\EmcureCERI.ConsoleApp\\obj\\",
       "projectStyle": "PackageReference",
       "configFilePaths": [
-        "C:\\Users\\user\\AppData\\Roaming\\NuGet\\NuGet.Config",
+        "C:\\Users\\Neosoft\\AppData\\Roaming\\NuGet\\NuGet.Config",
         "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
       ],
       "originalTargetFrameworks": [
@@ -14315,22 +14315,20 @@
       ],
       "sources": {
         "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
-        "C:\\Users\\user\\Desktop\\sampleNugetPackage": {},
-        "https://api.nuget.org/v3/index.json": {},
-        "https://pkgs.dev.azure.com/COERAJ/NugetDemo/_packaging/TestFeed1/nuget/v3/index.json": {}
+        "https://api.nuget.org/v3/index.json": {}
       },
       "frameworks": {
         "netcoreapp2.1": {
           "targetAlias": "netcoreapp2.1",
           "projectReferences": {
-            "C:\\Users\\user\\Desktop\\Latest Emcure\\ExistingApplication\\EmcureCERI.Business.Contract\\EmcureCERI.Business.Contract.csproj": {
-              "projectPath": "C:\\Users\\user\\Desktop\\Latest Emcure\\ExistingApplication\\EmcureCERI.Business.Contract\\EmcureCERI.Business.Contract.csproj"
+            "D:\\work\\EmcureGITRepo\\EmcureNPD\\ExistingApplication\\EmcureCERI.Business.Contract\\EmcureCERI.Business.Contract.csproj": {
+              "projectPath": "D:\\work\\EmcureGITRepo\\EmcureNPD\\ExistingApplication\\EmcureCERI.Business.Contract\\EmcureCERI.Business.Contract.csproj"
             },
-            "C:\\Users\\user\\Desktop\\Latest Emcure\\ExistingApplication\\EmcureCERI.Business.Core\\EmcureCERI.Business.Core.csproj": {
-              "projectPath": "C:\\Users\\user\\Desktop\\Latest Emcure\\ExistingApplication\\EmcureCERI.Business.Core\\EmcureCERI.Business.Core.csproj"
+            "D:\\work\\EmcureGITRepo\\EmcureNPD\\ExistingApplication\\EmcureCERI.Business.Core\\EmcureCERI.Business.Core.csproj": {
+              "projectPath": "D:\\work\\EmcureGITRepo\\EmcureNPD\\ExistingApplication\\EmcureCERI.Business.Core\\EmcureCERI.Business.Core.csproj"
             },
-            "C:\\Users\\user\\Desktop\\Latest Emcure\\ExistingApplication\\EmcureCERI.Business.Models\\EmcureCERI.Business.Models.csproj": {
-              "projectPath": "C:\\Users\\user\\Desktop\\Latest Emcure\\ExistingApplication\\EmcureCERI.Business.Models\\EmcureCERI.Business.Models.csproj"
+            "D:\\work\\EmcureGITRepo\\EmcureNPD\\ExistingApplication\\EmcureCERI.Business.Models\\EmcureCERI.Business.Models.csproj": {
+              "projectPath": "D:\\work\\EmcureGITRepo\\EmcureNPD\\ExistingApplication\\EmcureCERI.Business.Models\\EmcureCERI.Business.Models.csproj"
             }
           }
         }
@@ -14367,7 +14365,7 @@
         ],
         "assetTargetFallback": true,
         "warn": true,
-        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\7.0.201\\RuntimeIdentifierGraph.json"
+        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\7.0.202\\RuntimeIdentifierGraph.json"
       }
     }
   }
