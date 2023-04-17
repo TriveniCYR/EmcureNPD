@@ -1,8 +1,8 @@
 ﻿$("i.fas.fa-compress").click(function () {
-    $("#ganttContainer").css("width", "98%");
+    $("#ganttContainerSummery").css("width", "98%");
 });
 $("i.fas.fa-expand").click(function () {
-    $("#ganttContainer").css("width", "100%");
+    $("#ganttContainerSummery").css("width", "100%");
 });
 document.addEventListener("DOMContentLoaded", function () {
     let gdata = {};
@@ -471,7 +471,7 @@ document.addEventListener("DOMContentLoaded", function () {
     gantt.locale.labels.baseline_disable_button = 'Remove';
     gantt.config.auto_scheduling = false;
     
-    gantt.init("ganttContainer");
+    gantt.init("ganttContainerSummery");
 
    
     

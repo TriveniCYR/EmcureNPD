@@ -754,7 +754,7 @@ document.addEventListener("DOMContentLoaded", function () {
     function saveUpdateGanttTask(taskObjects, ProjectTaskId) {
        //let startDate = moment(taskObjects.start_date).format("MM/DD/YYYY hh:mm");
         //let endDate = moment(taskObjects.start_date).format("MM/DD/YYYY hh:mm");
-        let selectedOwner = taskObjects.owner_id == undefined || taskObjects.owner_id == "" ? taskObjects.owner : taskObjects.owner_id;
+        let selectedOwner = taskObjects.owner_id == undefined || taskObjects.owner_id == "null" ? taskObjects.owner : taskObjects.owner_id;
         const res = taskStatus.filter(x => x.projectTaskId === ProjectTaskId);
         let addTask = {
             ProjectTaskId: ProjectTaskId,
