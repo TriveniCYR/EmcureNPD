@@ -38,7 +38,7 @@
                     <div class="form-group required">
                         @Html.LabelFor(model => model.ProjectName,@MasterLocalizer["ProjectName"], new { @class = "control-label" })<span class="text-danger">*</span>
                         @Html.TextBoxFor(model => model.ProjectName, new {@class = "form-control", @placeholder = @MasterLocalizer["ProjectName"] ,@required="required",@readonly ="readonly",@tabindex=-1})
-                    @Html.ValidationMessageFor(model => model.ProjectName, "", new { @class = "text-danger" })
+                        @Html.ValidationMessageFor(model => model.ProjectName, "", new { @class = "text-danger" })
                     </div>
                 </div>
                 <div class="col-md-3">
@@ -63,7 +63,7 @@
                     <div class="form-group required">
                         @Html.LabelFor(model => model.PatentStatus,"Patent Status", new { @class = "control-label" })<span class="text-danger">*</span>
                         @Html.TextBoxFor(model => model.PatentStatus, new {@class = "form-control", @placeholder = "Patent Status" ,@required="required",@readonly ="readonly",@tabindex=-1})
-                        
+
                     </div>
                 </div>
                 <div class="col-md-3">
@@ -71,7 +71,7 @@
                         @Html.LabelFor(model => model.BerequirementId, "BE Requirement", new { @class = "control-label" })<span class="text-danger">*</span>
                         <input type="hidden" id="hdnBERequirementId" value="@Model.BerequirementId" />
                         <select id="BERequirementId" name="BerequirementId" class="form-control readOnlyUpdate" required></select>
-                    @Html.ValidationMessageFor(model => model.BerequirementId, "", new { @class = "text-danger" })
+                        @Html.ValidationMessageFor(model => model.BerequirementId, "", new { @class = "text-danger" })
 
                     </div>
                 </div>
@@ -184,7 +184,7 @@
                                         @Html.LabelFor(model => model.FormRnDdivisionId, "Form R&D Division", new { @class = "control-label" })<span class="text-danger">*</span>
                                         <input type="hidden" id="hdnPbfFormRNDDivisionId" value="@Model.FormRnDdivisionId" />
                                         <select id="PbfFormRNDDivisionId" name="FormRnDdivisionId" class="form-control readOnlyUpdate" required></select>
-                        @Html.ValidationMessageFor(model => model.FormRnDdivisionId, "", new { @class = "text-danger" })
+                                        @Html.ValidationMessageFor(model => model.FormRnDdivisionId, "", new { @class = "text-danger" })
 
                                     </div>
                                 </div>
@@ -193,7 +193,7 @@
                                     <div class="form-group required">
                                         @Html.LabelFor(model => model.ProjectInitiationDate,"Project Initiation Date", new { @class = "control-label" })<span class="text-danger">*</span>
                                         @Html.TextBoxFor(@modal=> modal.ProjectInitiationDate,"{0:yyyy-MM-dd}",new{@type="date",@class="form-control readOnlyUpdate", @placeholder = "Project Initiation Date",@required="required"})
-                        @Html.ValidationMessageFor(model => model.ProjectInitiationDate, "", new { @class = "text-danger" })
+                                        @Html.ValidationMessageFor(model => model.ProjectInitiationDate, "", new { @class = "text-danger" })
 
                                     </div>
                                 </div>
@@ -201,15 +201,15 @@
                                     <div class="form-group required">
                                         @Html.LabelFor(model => model.RnDhead,"R&D Head", new { @class = "control-label" })<span class="text-danger">*</span>
                                         @Html.TextBoxFor(model => model.RnDhead, new {@class = "form-control", @placeholder = "R&D Head",@required="required" })
-                        @Html.ValidationMessageFor(model => model.RnDhead, "", new { @class = "text-danger" })
-                                    
+                                        @Html.ValidationMessageFor(model => model.RnDhead, "", new { @class = "text-danger" })
+
                                     </div>
                                 </div>
                                 <div class="col-md-3">
                                     <div class="form-group required">
                                         @Html.LabelFor(model => model.ProjectManager,"Project Manager", new { @class = "control-label" })<span class="text-danger">*</span>
                                         @Html.TextBoxFor(model => model.ProjectManager, new {@class = "form-control", @placeholder = "Project Manager" ,@required="required"})
-                        @Html.ValidationMessageFor(model => model.ProjectManager, "", new { @class = "text-danger" })
+                                        @Html.ValidationMessageFor(model => model.ProjectManager, "", new { @class = "text-danger" })
 
                                     </div>
                                 </div>
@@ -218,7 +218,7 @@
                                         @Html.LabelFor(model => model.PackagingTypeId, "Packaging type", new { @class = "control-label" })<span class="text-danger">*</span>
                                         <input type="hidden" id="hdnPbfPackagingTypeId" value="@Model.PackagingTypeId" />
                                         <select id="PbfPackagingTypeId" name="PackagingTypeId" class="form-control readOnlyUpdate" required></select>
-                        @Html.ValidationMessageFor(model => model.PackagingTypeId, "", new { @class = "text-danger" })
+                                        @Html.ValidationMessageFor(model => model.PackagingTypeId, "", new { @class = "text-danger" })
 
                                     </div>
                                 </div>
@@ -227,7 +227,7 @@
                                         @Html.LabelFor(model => model.ManufacturingId, "Manufacturing Plant", new { @class = "control-label" })<span class="text-danger">*</span>
                                         <input type="hidden" id="hdnPbfManufacturingId" value="@Model.ManufacturingId" />
                                         <select id="PbfManufacturingId" name="ManufacturingId" class="form-control readOnlyUpdate" required></select>
-                        @Html.ValidationMessageFor(model => model.ManufacturingId, "", new { @class = "text-danger" })
+                                        @Html.ValidationMessageFor(model => model.ManufacturingId, "", new { @class = "text-danger" })
 
                                     </div>
                                 </div>
@@ -264,7 +264,7 @@
                                         @Html.LabelFor(model => model.BrandName,"Brand", new { @class = "control-label" })<span class="text-danger">*</span>
                                         <input type="hidden" id="hdnBrandName" value="@Model.BrandName" />
                                         @Html.TextBoxFor(model => model.BrandName, new {@class = "form-control", @placeholder = "Brand" ,@required="required"})
-                        @Html.ValidationMessageFor(model => model.BrandName, "", new { @class = "text-danger" })
+                                        @Html.ValidationMessageFor(model => model.BrandName, "", new { @class = "text-danger" })
 
                                     </div>
                                 </div>
@@ -276,7 +276,7 @@
                                         <input type="hidden" id="hdnRFDApplicant" value="@Model.RFDApplicant" />
 
                                         @Html.TextBoxFor(model => model.RFDApplicant, new {@class = "form-control", @placeholder = "Applicant" ,@required="required"})
-                        @Html.ValidationMessageFor(model => model.RFDApplicant, "", new { @class = "text-danger" })
+                                        @Html.ValidationMessageFor(model => model.RFDApplicant, "", new { @class = "text-danger" })
 
                                     </div>
                                 </div>
@@ -285,7 +285,7 @@
                                         @Html.LabelFor(model => model.RFDCountryId, "Country", new { @class = "control-label" })<span class="text-danger">*</span>
                                         <input type="hidden" id="hdnPbfRFDCountryId" value="@Model.RFDCountryId" />
                                         <select id="PbfRFDCountryId" name="RFDCountryId" class="form-control readOnlyUpdate" required></select>
-                        @Html.ValidationMessageFor(model => model.RFDCountryId, "", new { @class = "text-danger" })
+                                        @Html.ValidationMessageFor(model => model.RFDCountryId, "", new { @class = "text-danger" })
 
                                     </div>
                                 </div>
@@ -295,8 +295,8 @@
                                         <input type="hidden" id="hdnRFDIndication" value="@Model.RFDIndication" />
 
                                         @Html.TextBoxFor(model => model.RFDIndication, new {@class = "form-control", @placeholder = "Indication",@required="required" })
-                        @Html.ValidationMessageFor(model => model.RFDIndication, "", new { @class = "text-danger" })
-                                    
+                                        @Html.ValidationMessageFor(model => model.RFDIndication, "", new { @class = "text-danger" })
+
                                     </div>
                                 </div>
                             </div>
@@ -339,7 +339,7 @@
                                     <div class="form-group required">
                                         @Html.LabelFor(model => model.Capex,"Capex", new { @class = "control-label" })<span class="text-danger">*</span>
                                         @Html.TextBoxFor(model => model.Capex, new {@class = "form-control", @placeholder = "Capex" ,@required="required"})
-                        @Html.ValidationMessageFor(model => model.Capex, "", new { @class = "text-danger" })
+                                        @Html.ValidationMessageFor(model => model.Capex, "", new { @class = "text-danger" })
 
                                     </div>
                                 </div>
@@ -355,8 +355,8 @@
                                     <div class="form-group required">
                                         @Html.LabelFor(model => model.ProjectComplexity,"Project Complexity", new { @class = "control-label" })<span class="text-danger">*</span>
                                         @Html.TextBoxFor(model => model.ProjectComplexity, new { @class = "form-control", @placeholder = "Project Complexity" ,@required="required"})
-                        @Html.ValidationMessageFor(model => model.ProjectComplexity, "", new { @class = "text-danger" })
-                                    
+                                        @Html.ValidationMessageFor(model => model.ProjectComplexity, "", new { @class = "text-danger" })
+
                                     </div>
                                 </div>
                                 <div class="col-md-3">
@@ -364,8 +364,8 @@
                                         @Html.LabelFor(model => model.GeneralProductTypeId, "Product Type", new { @class = "control-label" })<span class="text-danger">*</span>
                                         <input type="hidden" id="hdnGeneralProductTypeId" value="@Model.GeneralProductTypeId" />
                                         <select id="GeneralProductTypeId" name="GeneralProductTypeId" class="form-control readOnlyUpdate" required></select>
-                        @Html.ValidationMessageFor(model => model.GeneralProductTypeId, "", new { @class = "text-danger" })
-                                    
+                                        @Html.ValidationMessageFor(model => model.GeneralProductTypeId, "", new { @class = "text-danger" })
+
                                     </div>
                                 </div>
 
@@ -373,16 +373,16 @@
                                     <div class="form-group required">
                                         <label class="control-label">Budget and Timeline Submission</label><span class="text-danger">*</span>
                                         @Html.TextBoxFor(@modal=> modal.BudgetTimelineSubmissionDate,"{0:yyyy-MM-dd}",new{@type="date",@class="form-control readOnlyUpdate",@required="required"})
-                        @Html.ValidationMessageFor(model => model.BudgetTimelineSubmissionDate, "", new { @class = "text-danger" })
-                                    
+                                        @Html.ValidationMessageFor(model => model.BudgetTimelineSubmissionDate, "", new { @class = "text-danger" })
+
                                     </div>
                                 </div>
                                 <div class="col-md-3">
                                     <div class="form-group required">
                                         <label class="control-label">Project Development Initial</label><span class="text-danger">*</span>
                                         @Html.TextBoxFor(@modal=> modal.ProjectDevelopmentInitialDate,"{0:yyyy-MM-dd}",new{@type="date",@class="form-control readOnlyUpdate",@required="required"})
-                        @Html.ValidationMessageFor(model => model.ProjectDevelopmentInitialDate, "", new { @class = "text-danger" })
-                                    
+                                        @Html.ValidationMessageFor(model => model.ProjectDevelopmentInitialDate, "", new { @class = "text-danger" })
+
                                     </div>
                                 </div>
                                 <div class="col-md-3">
@@ -390,8 +390,8 @@
                                         @Html.LabelFor(model => model.FormulationGLId, "Formulation GL", new { @class = "control-label" })<span class="text-danger">*</span>
                                         <input type="hidden" id="hdnGeneralFormulationGLId" value="@Model.FormulationGLId" />
                                         <select id="GeneralFormulationGLId" name="FormulationGLId" class="form-control readOnlyUpdate" required></select>
-                        @Html.ValidationMessageFor(model => model.FormulationGLId, "", new { @class = "text-danger" })
-                                    
+                                        @Html.ValidationMessageFor(model => model.FormulationGLId, "", new { @class = "text-danger" })
+
                                     </div>
                                 </div>
                                 <div class="col-md-3">
@@ -399,8 +399,8 @@
                                         @Html.LabelFor(model => model.AnalyticalGLId, "Analytical GL", new { @class = "control-label" })<span class="text-danger">*</span>
                                         <input type="hidden" id="hdnGeneralAnalyticalGLId" value="@Model.AnalyticalGLId" />
                                         <select id="GeneralAnalyticalGLId" name="AnalyticalGLId" class="form-control readOnlyUpdate" required></select>
-                        @Html.ValidationMessageFor(model => model.AnalyticalGLId, "", new { @class = "text-danger" })
-                                    
+                                        @Html.ValidationMessageFor(model => model.AnalyticalGLId, "", new { @class = "text-danger" })
+
                                     </div>
                                 </div>
                                 <div class="col-md-3">
@@ -445,23 +445,24 @@
             </div>
 
 
-            
+
 
             <div class="card card-maroon card-outline card-outline-tabs m-0">
                 <div class="card-header p-0">
                     <ul class="nav nav-tabs m-0"
                         id="custom-tabs-department-tab" role="tablist">
-                        @if(UtilityHelper.GetAccess((int)EmcureNPD.Utility.Enums.ModuleEnum.PBF, Helper.GetLoggedInRoleId(), (int)EmcureNPD.Utility.Enums.PermissionEnum.View, (int)EmcureNPD.Utility.Enums.SubModulePermissionEnum.RnD)){
-                         <li class="nav-item p-0">
-                            <a class="nav-link active px-2"
+                        @if (UtilityHelper.GetAccess((int)EmcureNPD.Utility.Enums.ModuleEnum.PBF, Helper.GetLoggedInRoleId(), (int)EmcureNPD.Utility.Enums.PermissionEnum.View, (int)EmcureNPD.Utility.Enums.SubModulePermissionEnum.RnD) || UtilityHelper.GetAccess((int)EmcureNPD.Utility.Enums.ModuleEnum.PBF, Helper.GetLoggedInRoleId(), (int)EmcureNPD.Utility.Enums.PermissionEnum.Edit, (int)EmcureNPD.Utility.Enums.SubModulePermissionEnum.RnD) || UtilityHelper.GetAccess((int)EmcureNPD.Utility.Enums.ModuleEnum.PBF, Helper.GetLoggedInRoleId(), (int)EmcureNPD.Utility.Enums.PermissionEnum.Add, (int)EmcureNPD.Utility.Enums.SubModulePermissionEnum.RnD))
+                        {
+                            <li class="nav-item p-0">
+                                <a class="nav-link active px-2"
                                id="custom-tabs-department-RnD-tab"
                                data-toggle="pill"
                                href="#custom-tabs-RnD" role="tab"
                                aria-controls="custom-tabs-RnD"
                                aria-selected="true">RnD</a>
-                        </li>
+                            </li>
                         }
-                        @if (UtilityHelper.GetAccess((int)EmcureNPD.Utility.Enums.ModuleEnum.PBF, Helper.GetLoggedInRoleId(), (int)EmcureNPD.Utility.Enums.PermissionEnum.View, (int)EmcureNPD.Utility.Enums.SubModulePermissionEnum.Analytical))
+                        @if (UtilityHelper.GetAccess((int)EmcureNPD.Utility.Enums.ModuleEnum.PBF, Helper.GetLoggedInRoleId(), (int)EmcureNPD.Utility.Enums.PermissionEnum.View, (int)EmcureNPD.Utility.Enums.SubModulePermissionEnum.Analytical) || UtilityHelper.GetAccess((int)EmcureNPD.Utility.Enums.ModuleEnum.PBF, Helper.GetLoggedInRoleId(), (int)EmcureNPD.Utility.Enums.PermissionEnum.Edit, (int)EmcureNPD.Utility.Enums.SubModulePermissionEnum.Analytical) || UtilityHelper.GetAccess((int)EmcureNPD.Utility.Enums.ModuleEnum.PBF, Helper.GetLoggedInRoleId(), (int)EmcureNPD.Utility.Enums.PermissionEnum.Add, (int)EmcureNPD.Utility.Enums.SubModulePermissionEnum.Analytical))
                         {
                             <li class="nav-item p-0">
                                 <a class="nav-link px-2"
@@ -471,9 +472,9 @@
                                role="tab"
                                aria-controls="custom-tabs-Analytical"
                                aria-selected="false">Analytical</a>
-                        </li>
+                            </li>
                         }
-                        @if (UtilityHelper.GetAccess((int)EmcureNPD.Utility.Enums.ModuleEnum.PBF, Helper.GetLoggedInRoleId(), (int)EmcureNPD.Utility.Enums.PermissionEnum.View, (int)EmcureNPD.Utility.Enums.SubModulePermissionEnum.Clinical))
+                        @if (UtilityHelper.GetAccess((int)EmcureNPD.Utility.Enums.ModuleEnum.PBF, Helper.GetLoggedInRoleId(), (int)EmcureNPD.Utility.Enums.PermissionEnum.View, (int)EmcureNPD.Utility.Enums.SubModulePermissionEnum.Clinical) || UtilityHelper.GetAccess((int)EmcureNPD.Utility.Enums.ModuleEnum.PBF, Helper.GetLoggedInRoleId(), (int)EmcureNPD.Utility.Enums.PermissionEnum.Edit, (int)EmcureNPD.Utility.Enums.SubModulePermissionEnum.Clinical) || UtilityHelper.GetAccess((int)EmcureNPD.Utility.Enums.ModuleEnum.PBF, Helper.GetLoggedInRoleId(), (int)EmcureNPD.Utility.Enums.PermissionEnum.Add, (int)EmcureNPD.Utility.Enums.SubModulePermissionEnum.Clinical))
                         {
                             <li class="nav-item p-0">
                                 <a class="nav-link px-2"
@@ -482,17 +483,21 @@
                                href="#custom-tabs-Clinical" role="tab"
                                aria-controls="custom-tabs-Clinical"
                                aria-selected="false">Clinical</a>
-                        </li>
+                            </li>
                         }
 
                     </ul>
                 </div>
-                @if (UtilityHelper.GetAccess((int)EmcureNPD.Utility.Enums.ModuleEnum.PBF, Helper.GetLoggedInRoleId(), (int)EmcureNPD.Utility.Enums.PermissionEnum.View, (int)EmcureNPD.Utility.Enums.SubModulePermissionEnum.RnD) || UtilityHelper.GetAccess((int)EmcureNPD.Utility.Enums.ModuleEnum.PBF, Helper.GetLoggedInRoleId(), (int)EmcureNPD.Utility.Enums.PermissionEnum.View, (int)EmcureNPD.Utility.Enums.SubModulePermissionEnum.Analytical) || UtilityHelper.GetAccess((int)EmcureNPD.Utility.Enums.ModuleEnum.PBF, Helper.GetLoggedInRoleId(), (int)EmcureNPD.Utility.Enums.PermissionEnum.View, (int)EmcureNPD.Utility.Enums.SubModulePermissionEnum.Clinical))
+                @if ((UtilityHelper.GetAccess((int)EmcureNPD.Utility.Enums.ModuleEnum.PBF, Helper.GetLoggedInRoleId(), (int)EmcureNPD.Utility.Enums.PermissionEnum.View, (int)EmcureNPD.Utility.Enums.SubModulePermissionEnum.RnD) || UtilityHelper.GetAccess((int)EmcureNPD.Utility.Enums.ModuleEnum.PBF, Helper.GetLoggedInRoleId(), (int)EmcureNPD.Utility.Enums.PermissionEnum.Edit, (int)EmcureNPD.Utility.Enums.SubModulePermissionEnum.RnD) || UtilityHelper.GetAccess((int)EmcureNPD.Utility.Enums.ModuleEnum.PBF, Helper.GetLoggedInRoleId(), (int)EmcureNPD.Utility.Enums.PermissionEnum.Add, (int)EmcureNPD.Utility.Enums.SubModulePermissionEnum.RnD)) ||
+                (UtilityHelper.GetAccess((int)EmcureNPD.Utility.Enums.ModuleEnum.PBF, Helper.GetLoggedInRoleId(), (int)EmcureNPD.Utility.Enums.PermissionEnum.View, (int)EmcureNPD.Utility.Enums.SubModulePermissionEnum.Clinical) || UtilityHelper.GetAccess((int)EmcureNPD.Utility.Enums.ModuleEnum.PBF, Helper.GetLoggedInRoleId(), (int)EmcureNPD.Utility.Enums.PermissionEnum.Edit, (int)EmcureNPD.Utility.Enums.SubModulePermissionEnum.Clinical) || UtilityHelper.GetAccess((int)EmcureNPD.Utility.Enums.ModuleEnum.PBF, Helper.GetLoggedInRoleId(), (int)EmcureNPD.Utility.Enums.PermissionEnum.Add, (int)EmcureNPD.Utility.Enums.SubModulePermissionEnum.Clinical)) ||
+                (UtilityHelper.GetAccess((int)EmcureNPD.Utility.Enums.ModuleEnum.PBF, Helper.GetLoggedInRoleId(), (int)EmcureNPD.Utility.Enums.PermissionEnum.View, (int)EmcureNPD.Utility.Enums.SubModulePermissionEnum.Analytical) || UtilityHelper.GetAccess((int)EmcureNPD.Utility.Enums.ModuleEnum.PBF, Helper.GetLoggedInRoleId(), (int)EmcureNPD.Utility.Enums.PermissionEnum.Edit, (int)EmcureNPD.Utility.Enums.SubModulePermissionEnum.Analytical) || UtilityHelper.GetAccess((int)EmcureNPD.Utility.Enums.ModuleEnum.PBF, Helper.GetLoggedInRoleId(), (int)EmcureNPD.Utility.Enums.PermissionEnum.Add, (int)EmcureNPD.Utility.Enums.SubModulePermissionEnum.Analytical))
+                )
 
-{                    <div class="card-body" id="dvAllBottomTabsPBF">
+                {
+                    <div class="card-body" id="dvAllBottomTabsPBF">
                         <div class="tab-content"
-                         id="custom-tabs-department-tabContent"> 
-                            @if (UtilityHelper.GetAccess((int)EmcureNPD.Utility.Enums.ModuleEnum.PBF, Helper.GetLoggedInRoleId(), (int)EmcureNPD.Utility.Enums.PermissionEnum.View, (int)EmcureNPD.Utility.Enums.SubModulePermissionEnum.RnD))
+                         id="custom-tabs-department-tabContent">
+                            @if (UtilityHelper.GetAccess((int)EmcureNPD.Utility.Enums.ModuleEnum.PBF, Helper.GetLoggedInRoleId(), (int)EmcureNPD.Utility.Enums.PermissionEnum.View, (int)EmcureNPD.Utility.Enums.SubModulePermissionEnum.RnD) || UtilityHelper.GetAccess((int)EmcureNPD.Utility.Enums.ModuleEnum.PBF, Helper.GetLoggedInRoleId(), (int)EmcureNPD.Utility.Enums.PermissionEnum.Edit, (int)EmcureNPD.Utility.Enums.SubModulePermissionEnum.RnD) || UtilityHelper.GetAccess((int)EmcureNPD.Utility.Enums.ModuleEnum.PBF, Helper.GetLoggedInRoleId(), (int)EmcureNPD.Utility.Enums.PermissionEnum.Add, (int)EmcureNPD.Utility.Enums.SubModulePermissionEnum.RnD))
                             {
                                 <div class="tab-pane fade show active"
                              id="custom-tabs-RnD" role="tabpanel"
@@ -819,7 +824,7 @@
                                     </div>
                                 </div>
                             }
-                            @if (UtilityHelper.GetAccess((int)EmcureNPD.Utility.Enums.ModuleEnum.PBF, Helper.GetLoggedInRoleId(), (int)EmcureNPD.Utility.Enums.PermissionEnum.View, (int)EmcureNPD.Utility.Enums.SubModulePermissionEnum.Analytical))
+                            @if (UtilityHelper.GetAccess((int)EmcureNPD.Utility.Enums.ModuleEnum.PBF, Helper.GetLoggedInRoleId(), (int)EmcureNPD.Utility.Enums.PermissionEnum.View, (int)EmcureNPD.Utility.Enums.SubModulePermissionEnum.Analytical) || UtilityHelper.GetAccess((int)EmcureNPD.Utility.Enums.ModuleEnum.PBF, Helper.GetLoggedInRoleId(), (int)EmcureNPD.Utility.Enums.PermissionEnum.Edit, (int)EmcureNPD.Utility.Enums.SubModulePermissionEnum.Analytical) || UtilityHelper.GetAccess((int)EmcureNPD.Utility.Enums.ModuleEnum.PBF, Helper.GetLoggedInRoleId(), (int)EmcureNPD.Utility.Enums.PermissionEnum.Add, (int)EmcureNPD.Utility.Enums.SubModulePermissionEnum.Analytical))
                             {
                                 <div class="tab-pane fade show"
                              id="custom-tabs-Analytical" role="tabpanel"
@@ -835,7 +840,7 @@
                                     </div>
                                 </div>
                             }
-                            @if (UtilityHelper.GetAccess((int)EmcureNPD.Utility.Enums.ModuleEnum.PBF, Helper.GetLoggedInRoleId(), (int)EmcureNPD.Utility.Enums.PermissionEnum.View, (int)EmcureNPD.Utility.Enums.SubModulePermissionEnum.Clinical))
+                            @if (UtilityHelper.GetAccess((int)EmcureNPD.Utility.Enums.ModuleEnum.PBF, Helper.GetLoggedInRoleId(), (int)EmcureNPD.Utility.Enums.PermissionEnum.View, (int)EmcureNPD.Utility.Enums.SubModulePermissionEnum.Clinical) || UtilityHelper.GetAccess((int)EmcureNPD.Utility.Enums.ModuleEnum.PBF, Helper.GetLoggedInRoleId(), (int)EmcureNPD.Utility.Enums.PermissionEnum.Edit, (int)EmcureNPD.Utility.Enums.SubModulePermissionEnum.Clinical) || UtilityHelper.GetAccess((int)EmcureNPD.Utility.Enums.ModuleEnum.PBF, Helper.GetLoggedInRoleId(), (int)EmcureNPD.Utility.Enums.PermissionEnum.Add, (int)EmcureNPD.Utility.Enums.SubModulePermissionEnum.Clinical))
                             {
                                 <div class="tab-pane fade show"
                              id="custom-tabs-Clinical" role="tabpanel"
@@ -859,11 +864,18 @@
             <div class="row">
                 <div class="col-12 text-end">
                     <div class="form-group" id="dvMainButton">
-                        <button type="submit" class="btn btn-success me-3 outside-buttons operationButton" id="save" onclick="SavePBFForm('Save')">@SharedLocalizer["Submit"]</button>
-
-                        @if (Convert.ToBoolean(Context.Request.Query["pbf"]) == false)
+                        @if ((UtilityHelper.GetAccess((int)EmcureNPD.Utility.Enums.ModuleEnum.PBF, Helper.GetLoggedInRoleId(), (int)EmcureNPD.Utility.Enums.PermissionEnum.Edit, (int)EmcureNPD.Utility.Enums.SubModulePermissionEnum.RnD) || UtilityHelper.GetAccess((int)EmcureNPD.Utility.Enums.ModuleEnum.PBF, Helper.GetLoggedInRoleId(), (int)EmcureNPD.Utility.Enums.PermissionEnum.Add, (int)EmcureNPD.Utility.Enums.SubModulePermissionEnum.RnD)) ||
+                        (UtilityHelper.GetAccess((int)EmcureNPD.Utility.Enums.ModuleEnum.PBF, Helper.GetLoggedInRoleId(), (int)EmcureNPD.Utility.Enums.PermissionEnum.Edit, (int)EmcureNPD.Utility.Enums.SubModulePermissionEnum.Clinical) || UtilityHelper.GetAccess((int)EmcureNPD.Utility.Enums.ModuleEnum.PBF, Helper.GetLoggedInRoleId(), (int)EmcureNPD.Utility.Enums.PermissionEnum.Add, (int)EmcureNPD.Utility.Enums.SubModulePermissionEnum.Clinical)) ||
+                        (UtilityHelper.GetAccess((int)EmcureNPD.Utility.Enums.ModuleEnum.PBF, Helper.GetLoggedInRoleId(), (int)EmcureNPD.Utility.Enums.PermissionEnum.Edit, (int)EmcureNPD.Utility.Enums.SubModulePermissionEnum.Analytical) || UtilityHelper.GetAccess((int)EmcureNPD.Utility.Enums.ModuleEnum.PBF, Helper.GetLoggedInRoleId(), (int)EmcureNPD.Utility.Enums.PermissionEnum.Add, (int)EmcureNPD.Utility.Enums.SubModulePermissionEnum.Analytical))
+                        )
                         {
-                            <button type="submit" class="btn btn-primary me-3 outside-buttons operationButton" id="savedraft" onclick="SavePBFForm('Draft')">@SharedLocalizer["SaveDraft"]</button>
+                            <button type="submit" class="btn btn-success me-3 outside-buttons operationButton" id="save" onclick="SavePBFForm('Save')">@SharedLocalizer["Submit"]</button>
+
+                            @if (Convert.ToBoolean(Context.Request.Query["pbf"]) == false)
+                            {
+                                <button type="submit" class="btn btn-primary me-3 outside-buttons operationButton" id="savedraft" onclick="SavePBFForm('Draft')">@SharedLocalizer["SaveDraft"]</button>
+                            }
+
                         }
                         <a id="btnPBFCancel" class="btn btn-danger me-3 outside-buttons operationButton" onclick="CancelPopup()">@SharedLocalizer["Cancel"]</a>
                     </div>

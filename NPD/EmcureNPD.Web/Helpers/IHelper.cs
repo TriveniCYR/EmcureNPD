@@ -1,4 +1,5 @@
-﻿namespace EmcureNPD.Web.Helpers
+﻿using System;
+namespace EmcureNPD.Web.Helpers
 {
     public interface IHelper
     {
@@ -11,5 +12,6 @@
         string IsManagementUser();
 
         int GetLoggedInRoleId();
+        //void LogExceptions(Exception ex);
     }
 }
