@@ -1,5 +1,4 @@
-let taskStatus = [];
-var taskIdToBeDelete;
+
 $("i.fas.fa-compress").click(function () {
     $("#ganttContainer").css("width", "98%");
 });
@@ -7,6 +6,7 @@ $("i.fas.fa-expand").click(function () {
     $("#ganttContainer").css("width", "100%");
 });
 document.addEventListener("DOMContentLoaded", function () {
+    let taskStatus = [];
     let responsTtaskList = null;
     $("#lblProjectName").text(localStorage.getItem("prjName"));
     //gantt.config.columns = [
@@ -267,7 +267,7 @@ document.addEventListener("DOMContentLoaded", function () {
                 for (var i = 0; i < children.length; i++) {
                     var child = gantt.getTask(children[i])
                    // getchild_progress(child.id);
-                    child_progress += parseInt(response[i].totalPercentage);
+                    child_progress += parseInt(progrss.totalPercentage);
                 }
                 task.progress = child_progress / children.length  / 100;//**To be continue..Kp*/
                 temptask = task;
@@ -401,7 +401,7 @@ document.addEventListener("DOMContentLoaded", function () {
                 }
                 var store = gantt.getDatastore(gantt.config.resource_store);
                 var owner = taskStatus.filter(x => x.projectTaskId === task.id);
-                if (owner) {
+                if (owner.length>0) {
                     return owner[0].taskOwnerName;
                 } else {
                     return "Unassigned";
@@ -468,7 +468,7 @@ document.addEventListener("DOMContentLoaded", function () {
             var owners = taskStatus.filter(x => x.projectTaskId === task.id);
             var owner = store.getItem(assignments);
             //owners.push(owner.text);
-            if (owners[0].taskLevel == 1) {
+            if (owners.length>0 && owners[0].taskLevel == 1) {
                 return "<b>Task:</b> " + task.text + "<br/>" +
                     "<b>Owner:</b>" + owners[0].taskOwnerName + "<br/>" +
                     "<b>Start date:</b> " +
@@ -476,7 +476,7 @@ document.addEventListener("DOMContentLoaded", function () {
                     + "<br/><b>End date:</b> " + gantt.templates.tooltip_date_format(end) + "<br/>" +
                     "<b>Progress:</b> " + Math.round(owners[0].totalPercentage) + "%";
             }
-            else if (owners[0].taskLevel > 1) {
+            else if (owners.length > 0 && owners[0].taskLevel > 1) {
                 return "<b>Task:</b> " + task.text + "<br/>" +
                     "<b>Start date:</b> " +
                     gantt.templates.tooltip_date_format(start)
@@ -573,7 +573,13 @@ document.addEventListener("DOMContentLoaded", function () {
         //alert('hi')
         deleteGanttTaskSubTask(id);
     });
+    gantt.attachEvent("onAfterTaskAdd", function (id, item) {
+        //any custom logic here
+        //alert('hi')
+        console.log(JSON.stringify(responsTtaskList));
+        saveUpdateGanttTask(item, 0);
 
+    });
     function reloadFunc() {
         location.reload();
     }
@@ -697,14 +703,14 @@ document.addEventListener("DOMContentLoaded", function () {
             PriorityId: taskObjects.priority,
             StartDate: taskObjects.start_date,
             EndDate: taskObjects.end_date,
-            StatusId: res[0].statusId,
-            TaskOwnerId: taskObjects.owner,
+            StatusId: res.length > 0 ? res[0].statusId : 1,
+            TaskOwnerId: taskObjects.owner == undefined ? 0 : taskObjects.owner,
             TotalPercentage: Math.round((taskObjects.progress * 100)),
             ParentId: taskObjects.parent,
             TaskDuration: taskObjects.duration,
             IsGanttUpdate: true,
             PlannedStartDate: taskObjects.planned_start,
-            PlannedEndDate:taskObjects.planned_end,
+            PlannedEndDate: taskObjects.planned_end == undefined ? null : taskObjects.planned_end
         }
         let act = taskObjects.parent == 0 ? "Task" : "SubTask";
         let pidfId = (new URL(location.href)).searchParams.get('pidfid');

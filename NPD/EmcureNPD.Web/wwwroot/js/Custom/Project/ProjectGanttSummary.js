@@ -468,7 +468,7 @@ $(document).ready(function () {
     gdata = {
         "tasks": [
             {
-                "id": 1, "pidf_number": "Project #1", "project_name": "abc", "brand_name": "zyz", "created_date": "01-04-2023", "duration": 1
+                "id": 1, "pidf_number": "Project #1", "project_name": "abc", "brand_name": "zyz", "created_date": "01-04-2023", "duration": 1, "parent": 1
             },
             {
                 "id": 2, "pidf_number": "Project #1", "project_name": "abc", "brand_name": "zyz", "created_date": "01-04-2023", "duration": 1, "parent": 1
@@ -482,23 +482,23 @@ $(document).ready(function () {
             { "id": 2, "source": 2, "target": 3, "type": "0" }
         ]
     }
-    gantt.parse(gdata);
-    let param = {
-        column: "createdDate",
-        draw: 1,
-        length: 100,
-        order: "desc",
-        page: 0,
-        pages: 0,
-        start:0
-    }
-    $.ajax({
-        url: $('#hdnBaseURL').val() + AllPIDF + "?ScreenId=" + id,
-        type: "POST",
-        data: { model: JSON.stringify(param) },
-        cache: false,
-        success: function (data) {
-            console.log(data)
-        }
-    });
+    //gantt.parse(gdata);
+    //let param = {
+    //    column: "createdDate",
+    //    draw: 1,
+    //    length: 100,
+    //    order: "desc",
+    //    page: 0,
+    //    pages: 0,
+    //    start:0
+    //}
+    //$.ajax({
+    //    url: $('#hdnBaseURL').val() + AllPIDF + "?ScreenId=" + id,
+    //    type: "POST",
+    //    data: { model: JSON.stringify(param) },
+    //    cache: false,
+    //    success: function (data) {
+    //        console.log(data)
+    //    }
+    //});
 });
