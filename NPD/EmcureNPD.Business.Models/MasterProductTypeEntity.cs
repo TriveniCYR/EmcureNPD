@@ -17,6 +17,8 @@ namespace EmcureNPD.Business.Models
 		public string ProductTypeName { get; set; }
         [Display(Name = "Active", ResourceType = typeof(Master))]
         public bool IsActive { get; set; }
+        public int? ProductTypeFactor { get; set; }
+        public double? ManPowerFactor { get; set; }
         public DateTime CreatedDate { get; set; }
     }
 }

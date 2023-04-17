@@ -201,7 +201,7 @@ function InitializePIDFList() {
                     if (IsEditAPIIPD || IsViewAPIIPD || IsAddAPIIPD) { html += '<a class="large-font" title="IPD" style="color:' + (_enable ? "#007bff" : "grey") + '" href="' + (_enable ? _APIForm + "APIIPDDetailsForm" + _APIQS : "#") + '"><i class="fa fa-fw fa-columns mr-1"></i></a>'; }
                     if (IsEditAPIRnD || IsViewAPIRnD || IsAddAPIRnD) { html += '<a class="large-font" title="RnD" style="color:' + (_enable ? "#007bff" : "grey") + '" href="' + (_enable ? _APIForm + "APIRndDetailsForm" + _APIQS : "#") + '"><i class="fa fa-fw fa-flask mr-1"></i></a>'; }
                     if (IsEditAPICharter || IsViewAPICharter || IsAddAPICharter) { html += '<a class="large-font" title="Charter" style="color:' + (_enable ? "#007bff" : "grey") + '" href="' + (_enable ? _APIForm + "APICharterDetailsForm" + _APIQS : "#") + '"><i class="fa fa-fw fa-map-marker mr-1"></i></a>'; }
-                    if (IsViewAPICharterSummary) { html += '<a class="large-font" title="Charter Summary" style="color:' + (_enable ? "#007bff" : "grey") + '" href="' + (_enable ? _APIForm + "APICharterSummaryDetailsForm" + _APIQS : "#") + '"><i class="fa fa-fw fa-chart-line mr-1"></i></a>'; }
+                    if (IsViewAPICharterSummary) { html += '<a class="large-font" title="Charter Summary" href="' + (_APIForm + "APICharterSummaryDetailsForm" + _APIQS) + '"><i class="fa fa-fw fa-chart-line mr-1"></i></a>'; }
                 } else if (_screenId == "6") {
                     //var _PBFForm = '/PIDF/';
                     var _NewPBFForm = '/PBF/';

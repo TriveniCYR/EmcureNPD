@@ -134,6 +134,11 @@ namespace EmcureNPD.Business.Core.Implementation
                                 throw;
                             }
                         }
+                        else
+                        {
+                            _projectTaskRepository.UpdateAsync(task);
+                            await _unitOfWork.SaveChangesAsync();
+                        }
                     }
                     else
                     {
@@ -160,10 +165,21 @@ namespace EmcureNPD.Business.Core.Implementation
                 task.StatusId = addTaskModel.StatusId;
                 task.TaskDuration = addTaskModel.TaskDuration;
                 task.TotalPercentage = addTaskModel.TotalPercentage;
-                task.TaskOwnerId = addTaskModel.TaskOwnerId;
+                task.TaskOwnerId = addTaskModel.TaskOwnerId==0? addTaskModel.CreatedBy: addTaskModel.TaskOwnerId;
                 task.ParentId = addTaskModel.ParentId;
+                task.CreatedBy = addTaskModel.CreatedBy;
+                task.CreatedDate = addTaskModel.CreatedDate;
                 _projectTaskRepository.AddAsync(task);
-                await _unitOfWork.SaveChangesAsync();
+                try
+                {
+                    await _unitOfWork.SaveChangesAsync();
+                }
+                catch (Exception ex)
+                {
+
+                    throw;
+                }
+                
                 return DBOperation.Success;
             }
             else

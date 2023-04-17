@@ -10,6 +10,7 @@ namespace EmcureNPD.API.Controllers.Scheduler
 {
     [Route("api/[controller]")]
     [ApiController]
+    [AuthorizeAttribute]
     public class SchedulerController : ControllerBase
     {
         #region Properties

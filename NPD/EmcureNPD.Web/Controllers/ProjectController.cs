@@ -12,7 +12,7 @@ using System.Net.Http;
 
 namespace EmcureNPD.Web.Controllers
 {
-    public class ProjectController : Controller
+    public class ProjectController : BaseController
     {
         private readonly IConfiguration _configuration;
         private readonly IHelper _helper;

@@ -87,7 +87,7 @@ namespace EmcureNPD.Web.Helpers
                         if (obj != null)
                         {
                             RolePermissionModel objList = obj.Where(o => o.ControlName != null && o.ControlName.Trim() == Convert.ToString(controllerName).Trim()).FirstOrDefault();
-                            if (objList == null && Convert.ToString(controllerName) != "Home")
+                            if (objList == null && Convert.ToString(controllerName) != "Home" && Convert.ToString(controllerName) != "Notifications")
                                 context.Result = new RedirectResult("~/Home/AccessRestriction");
                         }
                     }

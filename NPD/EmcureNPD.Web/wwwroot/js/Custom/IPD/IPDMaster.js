@@ -26,7 +26,7 @@ function GetActiveBusinessUnitSuccess(data) {
     });
     $('#custom-tabs-two-tab').html(businessUnitHTML);
     $('#custom-tabs-two-tabContent').html(businessUnitPanel);
-
+   
     LoadIPDForm(_PIDFID, _selectBusinessUnit);
 }
 function GetActiveBusinessUnitError(x, y, z) {
@@ -48,7 +48,9 @@ function GetRegionList() {
 }
 function GetRegionListSuccess(data) {
     try {
+        //alert(_userRegion.length);
         _userRegion = data._object;
+        //setRegion();
     } catch (e) {
         toastr.error('Error:' + e.message);
     }

@@ -34,23 +34,27 @@ $.ajaxSetup({
 });
 //Attach the event handler to any element
 $(document)
+    .ajaxSend(function (event, jqxhr, settings) {
+        $('.notification').click(function () {
+            $('#loading-wrapper').hide();
+        });
+    })
     .ajaxStart(function () {
         //ajax request went so show the loading image
         /*$('#mainLoader').height("100vh").find("img").show();*/
+       
         $('#loading-wrapper').show();
     })
     .ajaxStop(function () {
         //got response so hide the loading image
         /*$('#mainLoader').height("0").find("img").hide();*/
         setTimeout(function () { $('#loading-wrapper').hide(); }, 500);
+    })
+    .ajaxError(function (event, jqxhr, settings, thrownError) {
+        if (jqxhr.status == 401) {
+            window.location.href = '/Home/AccessRestriction';
+        }
     });
-    //.ajaxError(function (event, jqxhr, settings, thrownError) {
-    //    alert(jqxhr.status);
-    //    //if (textStatus.status == 404) {
-    //    //    window.location.href = '/Home/AccessRestriction';
-    //    //}
-    //    console.log(event, jqxhr, settings, thrownError);
-    //});
 function getCookie(name) {
     const value = `; ${document.cookie}`;
     const parts = value.split(`; ${name}=`);

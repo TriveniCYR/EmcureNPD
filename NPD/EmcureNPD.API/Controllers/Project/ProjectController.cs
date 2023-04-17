@@ -13,7 +13,7 @@ namespace EmcureNPD.API.Controllers.Project
 {
     [Route("api/[controller]")]
     [ApiController]
-    [Authorize]
+    [AuthorizeAttribute]
     public class ProjectController : ControllerBase
     {
         private readonly IProjectService _projectService;
