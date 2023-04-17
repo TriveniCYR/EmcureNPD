@@ -363,8 +363,8 @@ namespace EmcureNPD.Business.Core.Implementation
                     _pidf_API_IPD_repository.UpdateAsync(lastApiIpd);
                     await _unitOfWork.SaveChangesAsync();
 
-                    var isSuccess = await _auditLogService.CreateAuditLog<PidfApiIpd>(Utility.Audit.AuditActionType.Update,
-                    Utility.Enums.ModuleEnum.APIListManagement, OldObjAPIIPD, lastApiIpd, loggedInUser.UserId);
+                    //var isSuccess = await _auditLogService.CreateAuditLog<PidfApiIpd>(Utility.Audit.AuditActionType.Update,
+                    //Utility.Enums.ModuleEnum.APIListManagement, OldObjAPIIPD, lastApiIpd, loggedInUser.UserId);
                 }
                 else
                 {
@@ -419,8 +419,8 @@ namespace EmcureNPD.Business.Core.Implementation
                     lastApiRnD.ModifyDate = DateTime.Now;
                     _pidf_API_RnD_repository.UpdateAsync(lastApiRnD);
 
-                    var isSuccess = await _auditLogService.CreateAuditLog<PidfApiRnD>(Utility.Audit.AuditActionType.Update,
-                 Utility.Enums.ModuleEnum.APIListManagement, OldObjAPiIPD, lastApiRnD, loggedInUser.UserId);
+                 //   var isSuccess = await _auditLogService.CreateAuditLog<PidfApiRnD>(Utility.Audit.AuditActionType.Update,
+                 //Utility.Enums.ModuleEnum.APIListManagement, OldObjAPiIPD, lastApiRnD, loggedInUser.UserId);
                 }
                 else
                 {
@@ -490,8 +490,8 @@ namespace EmcureNPD.Business.Core.Implementation
                     _pidf_API_Charter_repository.UpdateAsync(lastApiCharter);
 
                     //Implement AuditLog
-                    var isSuccess = await _auditLogService.CreateAuditLog<PidfApiCharter>(Utility.Audit.AuditActionType.Update,
-                    ModuleEnum.APIListManagement, OldObjAPICharter, lastApiCharter, 0);
+                    //var isSuccess = await _auditLogService.CreateAuditLog<PidfApiCharter>(Utility.Audit.AuditActionType.Update,
+                    //ModuleEnum.APIListManagement, OldObjAPICharter, lastApiCharter, 0);
                 }
                 else
                 {
