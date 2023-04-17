@@ -5,22 +5,21 @@ $("i.fas.fa-compress").click(function () {
 $("i.fas.fa-expand").click(function () {
     $("#ganttContainer").css("width", "100%");
 });
+
+
+
+
 document.addEventListener("DOMContentLoaded", function () {
+    
+    let arrPeople = [{ key: null, label: "-select-" }];
+   
     let taskStatus = [];
     let responsTtaskList = null;
+   
+    
     $("#lblProjectName").text(localStorage.getItem("prjName"));
-    //gantt.config.columns = [
-    //    { name: "taskName", label: "Task name", width: "150", resize: true, tree: true },
-    //    { name: "startDate", label: "Start date", width: "80", resize: true, align: "center" },
-    //    { name: "endDate", label: "End Date", align: "center", hide: true },
-    //    { name: "totalPercentage", label: "Percent", align: "center", hide: true },
-    //    { name: "priorityName", label: "Priority", width: "80", resize: true, align: "center" },
-    //    { name: "taskDuration", label: "Duration", width: "80", resize: true, align: "center" },
-    //    { name: "taskOwnerName", label: "Owner", width: "80", resize: true, aligh: "center" },
-    //    { name: "add", width: 44 }
-    //];
+ 
 
-   // gantt.config.xml_date = "%Y-%m-%d";
     gantt.config.min_column_width = 50;
     gantt.config.work_time = true;
     //gantt.config.skip_off_time = true;
@@ -342,12 +341,47 @@ document.addEventListener("DOMContentLoaded", function () {
         { key: 5, label: "Low" },
         { key: 6, label: "Very Low" }
     ]);
+   // gantt.serverList("people",[]);// placeholder to load woner in /api/data request
+    //{ "owner_id": data._object[i].taskOwnerId, "owner": data._object[i].taskOwnerName
 
+    //gantt.serverList("people", [
+    //    { key: 1, label: "Kamal" }
+    //]);
+   
+    //
+    //GetOwners//
+   ajaxServiceMethod($('#hdnBaseURL').val() + FillTaskDropdown, 'GET', 
+    
+        function GetOwnersSuccess(data) {
+            try {
+
+
+                $.each(data.taskOwner, function (i, List) {
+                    arrPeople.push(
+                        {
+                            key: List.userId,
+                            label: List.fullName
+                        }
+                    )
+                });
+               
+                console.log("arrPeople:" + JSON.stringify(arrPeople))
+            }
+            catch (e) {
+                toastr.error('Error:' + e.message);
+            }
+        }
+    , GetOwnersError);
+    function GetOwnersError(x, y, z) {
+        toastr.error(ErrorMessage);
+    }
+    // end GetOwners//
+    gantt.serverList("people", arrPeople);
     gantt.locale.labels.section_owner = "Owner";
     gantt.locale.labels.section_priority = "Priority";
     gantt.config.lightbox.sections = [
         { name: "description", height: 38, map_to: "text", type: "textarea", focus: true },
-        { name: "owner", height: 22, map_to: "owner_id", type: "select", options: gantt.serverList("people") },
+        { name: "owner", height: 22, map_to: "owner_id", type: "select", options: arrPeople },
         { name: "priority", height: 22, map_to: "priority", type: "select", options: gantt.serverList("priority") },
         { name: "time", type: "duration", map_to: "auto" },
         {
@@ -543,26 +577,33 @@ document.addEventListener("DOMContentLoaded", function () {
     gantt.attachEvent("onParse", function () {
         var resources = gantt.serverList("resources");
         gantt.$resourcesStore.parse(resources);
+        //gantt.serverList("people", [{
+        //    key: null, label:"--Select--"
+        //}]);
+       
+        //gantt.serverList("people", arrPeople);
         //console.log(gantt.$resourcesStore);
 
-        taskStatus.forEach(function (item) { console.log(item) });
+       // taskStatus.forEach(function (item) { console.log(item) });
 
-        var lightboxOptions = [];
-        gantt.$resourcesStore.eachItem(function (res) {
+       var lightboxOptions = [];
+       let res= taskStatus.forEach(function (res) {
             //console.log(res);
-            if (!gantt.$resourcesStore.hasChild(res.id)) {
-                var copy = gantt.copy(res);
-                copy.key = parseInt(res.id);
-                //copy.label = res.text;
-                copy.label = res.name;
-                copy.text = res.name;
-                copy.owner_id = parseInt(res.id);
-                copy.name = res.name;
-                lightboxOptions.push(copy);
-            }
-        });
-       // gantt.updateCollection("people", lightboxOptions);
-        console.log(gantt.serverList("people"));
+           if (res.taskLevel==1) {
+               var copy = gantt.copy(res);
+               copy.key = parseInt(res.projectTaskId);
+               //copy.label = res.text;
+               copy.label = res.taskOwnerName;
+               copy.text = res.taskOwnerName;
+               copy.owner_id = parseInt(res.taskOwnerId);
+               copy.name = res.taskOwnerName;
+               lightboxOptions.push(copy);
+           }
+       });
+      //  gantt.updateCollection("people", lightboxOptions);
+
+        //let resval = taskStatus.find(res => res.taskLevel == 1);
+        //if (resval != undefined) { arrPeople.push({ key: resval.taskOwnerId, label: resval.taskOwnerName }) }
     });
 
     gantt.attachEvent("onAfterLinkAdd", function (id, item) {
@@ -573,6 +614,7 @@ document.addEventListener("DOMContentLoaded", function () {
         //alert('hi')
         deleteGanttTaskSubTask(id);
     });
+
     gantt.attachEvent("onAfterTaskAdd", function (id, item) {
         //any custom logic here
         //alert('hi')
@@ -655,6 +697,14 @@ document.addEventListener("DOMContentLoaded", function () {
                     plannedStartDate: data._object[i].PlannedStartDate,
                     plannedEndDate: data._object[i].PlannedEndDate
                 });
+               
+                // { key: 1, label: "Normal" }
+                //name: "owner", height: 22, map_to: "owner_id",
+                if (data._object[i].taskLevel == 1) { 
+                    people = { "owner_id": data._object[i].taskOwnerId, "owner": data._object[i].taskOwnerName };
+                    gantt.serverList("people", [people]);
+               
+            }
                 //    createdDate: crDate,
                 //    editTaskOwnerId: data._object[i].editTaskOwnerId,
                 //    editTaskPriorityId: data._object[i].editTaskPriorityId,
@@ -686,7 +736,7 @@ document.addEventListener("DOMContentLoaded", function () {
                 gantt.parse(gdata);
                 //gantt.task.progress = parseInt(data._object[i].totalPercentage);
             }
-            responsTtaskList= data._object;
+            responsTtaskList = data._object;
         }
         function GetTaskSubTaskListError() {
             toastr.error("Error");
@@ -694,7 +744,8 @@ document.addEventListener("DOMContentLoaded", function () {
     }
     function saveUpdateGanttTask(taskObjects, ProjectTaskId) {
        //let startDate = moment(taskObjects.start_date).format("MM/DD/YYYY hh:mm");
-       //let endDate = moment(taskObjects.start_date).format("MM/DD/YYYY hh:mm");
+        //let endDate = moment(taskObjects.start_date).format("MM/DD/YYYY hh:mm");
+        let selectedOwner = taskObjects.owner_id == undefined || taskObjects.owner_id == "" ? taskObjects.owner : taskObjects.owner_id;
         const res = taskStatus.filter(x => x.projectTaskId === ProjectTaskId);
         let addTask = {
             ProjectTaskId: ProjectTaskId,
@@ -704,7 +755,7 @@ document.addEventListener("DOMContentLoaded", function () {
             StartDate: taskObjects.start_date,
             EndDate: taskObjects.end_date,
             StatusId: res.length > 0 ? res[0].statusId : 1,
-            TaskOwnerId: taskObjects.owner == undefined ? 0 : taskObjects.owner,
+            TaskOwnerId: selectedOwner, //.owner == undefined ? 0 : taskObjects.owner,
             TotalPercentage: Math.round((taskObjects.progress * 100)),
             ParentId: taskObjects.parent,
             TaskDuration: taskObjects.duration,
@@ -731,7 +782,7 @@ document.addEventListener("DOMContentLoaded", function () {
         ajaxServiceMethod($('#hdnBaseURL').val() + "api/Project/DeleteTaskSubTask" + "/" + taskid, 'POST', deleteGanttTaskSubTaskSuccess, deleteGanttTaskSubTaskError);
     }
     function deleteGanttTaskSubTaskSuccess(response) {
-       // setTimeout(reloadFunc, 2000);
+        setTimeout(reloadFunc, 500);
         toastr.success(`TaskId:${taskIdToBeDelete} Deleted SuccessFully...!`);
     }
     function deleteGanttTaskSubTaskError() {
