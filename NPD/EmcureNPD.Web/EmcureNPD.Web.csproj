@@ -6,20 +6,57 @@
 
   <ItemGroup>
     <Compile Remove="Resources\**" />
+    <Compile Remove="wwwroot\js\Custom\APIList\**" />
+    <Compile Remove="wwwroot\js\Custom\PBF\Analytical\**" />
+    <Compile Remove="wwwroot\js\Custom\PBF\Clinical\**" />
     <Content Remove="Resources\**" />
+    <Content Remove="wwwroot\js\Custom\APIList\**" />
+    <Content Remove="wwwroot\js\Custom\PBF\Analytical\**" />
+    <Content Remove="wwwroot\js\Custom\PBF\Clinical\**" />
     <EmbeddedResource Remove="Resources\**" />
+    <EmbeddedResource Remove="wwwroot\js\Custom\APIList\**" />
+    <EmbeddedResource Remove="wwwroot\js\Custom\PBF\Analytical\**" />
+    <EmbeddedResource Remove="wwwroot\js\Custom\PBF\Clinical\**" />
     <None Remove="Resources\**" />
+    <None Remove="wwwroot\js\Custom\APIList\**" />
+    <None Remove="wwwroot\js\Custom\PBF\Analytical\**" />
+    <None Remove="wwwroot\js\Custom\PBF\Clinical\**" />
   </ItemGroup>
 
   <ItemGroup>
+    <Compile Remove="Controllers\APIListController.cs" />
     <Compile Remove="Filters\ExceptionsEnum.cs" />
     <Compile Remove="Helpers\StaticFilesHelper.cs" />
+    <Compile Remove="Models\EmailModel.cs" />
+    
   </ItemGroup>
 
   <ItemGroup>
     <Content Remove="appsettings.json" />
+    <Content Remove="Views\APIList\APIList.cshtml" />
     <Content Remove="Views\Commercial\PIDFCommercial.cshtml" />
     <Content Remove="Views\Dashboard\Dashboard.cshtml" />
+    <Content Remove="Views\IPD\PIDFormList.cshtml" />
+    <Content Remove="Views\PBF\PBFClinicalDetailsForm.cshtml" />
+    <Content Remove="Views\PBF\PBFFormAnalytical.cshtml" />
+    <Content Remove="Views\PBF\_PBFAnalyticalForm.cshtml" />
+    <Content Remove="Views\PBF\_PBFPartial.cshtml" />
+    <Content Remove="Views\PIDF\IPDManagement.cshtml" />
+    <Content Remove="Views\PIDF\ManagementPIDF.cshtml" />
+    <Content Remove="Views\PIDF\PBFAPI.cshtml" />
+    <Content Remove="Views\PIDF\PBFClinicalForm.cshtml" />
+    <Content Remove="Views\PIDF\PBFForm.cshtml" />
+    <Content Remove="Views\PIDF\PBFRnDForm.cshtml" />
+    <Content Remove="Views\PIDF\PBFRndView.cshtml" />
+    <Content Remove="Views\PIDF\PIDFManagement.cshtml" />
+    <Content Remove="Views\PIDF\_PBFForm.cshtml" />
+    <Content Remove="wwwroot\js\Custom\IPD\IPD.js" />
+    <Content Remove="wwwroot\js\Custom\PIDF\CommonPIDFList.js" />
+    <Content Remove="wwwroot\js\Custom\PIDF\CommonPIDFListPBF.js" />
+    <Content Remove="wwwroot\js\Custom\PIDF\MasterPIDF_IPDList.js" />
+    <Content Remove="wwwroot\js\Custom\PIDF\PBFForm.js" />
+    <Content Remove="wwwroot\js\Custom\PIDF\PBFFormAnalytical.js" />
+    <Content Remove="wwwroot\js\Custom\PIDF\PFBAPIPIDFList.js" />
   </ItemGroup>
 
   <ItemGroup>
@@ -59,6 +96,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Folder Include="Views\APIList\" />
     <Folder Include="Views\Dashboard\" />
     <Folder Include="wwwroot\js\Custom\Medical\" />
   </ItemGroup>
