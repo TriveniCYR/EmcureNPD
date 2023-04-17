@@ -15,7 +15,7 @@ document.addEventListener("DOMContentLoaded", function () {
    
     let taskStatus = [];
     let responsTtaskList = null;
-   
+    let isAdd = false;
     
     $("#lblProjectName").text(localStorage.getItem("prjName"));
  
@@ -194,7 +194,12 @@ document.addEventListener("DOMContentLoaded", function () {
         }
         return "";
     };
-
+    gantt.templates.grid_row_class = function (start, end, task) {
+        if (task.$level > 0) {//task.$level > 1
+            return "nested_task"
+        }
+        return "";
+    };
     gantt.templates.scale_cell_class = function (date) {
         if (!gantt.isWorkTime(date)) {
             return "weekend";
@@ -435,7 +440,7 @@ document.addEventListener("DOMContentLoaded", function () {
                 }
                 var store = gantt.getDatastore(gantt.config.resource_store);
                 var owner = taskStatus.filter(x => x.projectTaskId === task.id);
-                if (owner.length>0) {
+                if (owner.length > 0) {
                     return owner[0].taskOwnerName;
                 } else {
                     return "Unassigned";
@@ -448,7 +453,17 @@ document.addEventListener("DOMContentLoaded", function () {
             }, resize: true
         },
         { name: "duration", width: 60, align: "center", resize: true },
-        { name: "add", width: 44 }
+       
+          { name: "add", width: 44 }
+        //{
+        //    name: "add", width: 44, align: "center", onrender: function (task, node) {
+        //        debugger
+        //        console.log(node)
+        //        if (item.taskLevel == 1) { node.setAttribute("visible", false); }
+        //        else { node.setAttribute("visible", true); }
+        //    }
+        //}
+
     ];
     gantt.plugins({
         grouping: true,
@@ -730,6 +745,7 @@ document.addEventListener("DOMContentLoaded", function () {
                 gantt.parse(gdata);
             }
             responsTtaskList = data._object;
+            isAdd=taskStatus.find(x => x.taskLevel == 1) ? false : true;
         }
         function GetTaskSubTaskListError() {
             toastr.error("Error");
