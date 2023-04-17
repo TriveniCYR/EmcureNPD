@@ -95,6 +95,7 @@ namespace EmcureNPD.Web.Controllers
             }
             catch (Exception e)
             {
+                _helper.LogExceptions(e);
                 TempData[UserHelper.ErrorMessage] = Convert.ToString(e.StackTrace);
                 return RedirectToAction("UserManage", new { UserId = masterUser.UserId });
             }
@@ -120,6 +121,7 @@ namespace EmcureNPD.Web.Controllers
             }
             catch (Exception e)
             {
+                _helper.LogExceptions(e);
                 TempData[UserHelper.ErrorMessage] = Convert.ToString(e.StackTrace);
                 return RedirectToAction("UserManage", new { UserId = masterUser.UserId });
             }
@@ -157,6 +159,7 @@ namespace EmcureNPD.Web.Controllers
             }
             catch (Exception e)
             {
+                _helper.LogExceptions(e);
                 TempData[UserHelper.ErrorMessage] = Convert.ToString(e.StackTrace);
                 return View(masterUser);
             }
@@ -186,6 +189,7 @@ namespace EmcureNPD.Web.Controllers
             }
             catch (Exception e)
             {
+                _helper.LogExceptions(e);
                 ViewBag.Message = Convert.ToString(e.StackTrace);                
             }
             return View();
@@ -222,6 +226,7 @@ namespace EmcureNPD.Web.Controllers
             }
             catch (Exception e)
             {
+                _helper.LogExceptions(e);
                 ViewBag.Message = Convert.ToString(e.StackTrace);
                 return View();
             }
@@ -249,6 +254,7 @@ namespace EmcureNPD.Web.Controllers
             }
             catch (Exception e)
             {
+                _helper.LogExceptions(e);
                 throw e;
             }
         }

@@ -26,14 +26,16 @@ namespace EmcureNPD.Web.Controllers
         private readonly IDistributedCache _cache;
         private readonly IConfiguration _cofiguration;
         private readonly IStringLocalizer<Account> _stringLocalizer;
+        private readonly IHelper _helper;
 
         #endregion Properties
 
-        public AccountController(IDistributedCache cache, IConfiguration configuration, IStringLocalizer<Account> stringLocalizer)
+        public AccountController(IDistributedCache cache, IConfiguration configuration, IStringLocalizer<Account> stringLocalizer, IHelper helper)
         {
             _cache = cache;
             _cofiguration = configuration;
             _stringLocalizer = stringLocalizer;
+            _helper = helper;
         }
 
         public IActionResult Login()
@@ -120,6 +122,7 @@ namespace EmcureNPD.Web.Controllers
             }
             catch (Exception e)
             {
+                _helper.LogExceptions(e);
                 ViewBag.errormessage = Convert.ToString(e.StackTrace);
                 //loginViewModel.masterBusinessUnitEntities = BindListBusinessUnit();
                 return View(loginViewModel);
@@ -214,6 +217,7 @@ namespace EmcureNPD.Web.Controllers
             }
             catch (Exception e)
             {
+                _helper.LogExceptions(e);
                 throw e;
             }
         }
@@ -238,6 +242,7 @@ namespace EmcureNPD.Web.Controllers
             }
             catch (Exception e)
             {
+                _helper.LogExceptions(e);
                 throw e;
             }
         }
@@ -261,6 +266,7 @@ namespace EmcureNPD.Web.Controllers
             }
             catch (Exception e)
             {
+                _helper.LogExceptions(e);
                 ViewBag.Message = Convert.ToString(e.StackTrace);
                 return View();
             }
@@ -291,6 +297,7 @@ namespace EmcureNPD.Web.Controllers
             }
             catch (Exception e)
             {
+                _helper.LogExceptions(e);
                 ViewBag.Message = Convert.ToString(e.StackTrace);
                 return View();
             }
