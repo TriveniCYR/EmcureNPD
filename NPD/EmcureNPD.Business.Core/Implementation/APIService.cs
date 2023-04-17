@@ -333,8 +333,9 @@ namespace EmcureNPD.Business.Core.Implementation
             var _APIIPDDBEntity = new PidfApiIpd();
             if (_oAPIIPD.APIIPDDetailsFormID > 0)
             {
-                PidfApiIpd lastApiIpd = _pidf_API_IPD_repository.GetAllQuery().Where(x => x.PidfApiIpdId == _oAPIIPD.APIIPDDetailsFormID).FirstOrDefault();
-                PidfApiIpd OldObjAPIIPD = _pidf_API_IPD_repository.GetAllQuery().Where(x => x.PidfApiIpdId == _oAPIIPD.APIIPDDetailsFormID).FirstOrDefault();
+                PidfApiIpd OldObjAPIIPD = new PidfApiIpd();
+                PidfApiIpd lastApiIpd = await _pidf_API_IPD_repository.GetAsync(x => x.PidfApiIpdId == _oAPIIPD.APIIPDDetailsFormID);
+                OldObjAPIIPD = await _pidf_API_IPD_repository.GetAsync(x => x.PidfApiIpdId == _oAPIIPD.APIIPDDetailsFormID);
                 if (lastApiIpd != null)
                 {
                     if (!IskeepLastFile)

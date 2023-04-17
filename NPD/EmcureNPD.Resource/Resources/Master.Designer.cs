@@ -421,6 +421,15 @@ namespace EmcureNPD.Resource.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Change Profile.
+        /// </summary>
+        public static string ChangeProfile {
+            get {
+                return ResourceManager.GetString("ChangeProfile", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Comments.
         /// </summary>
         public static string Comments {
