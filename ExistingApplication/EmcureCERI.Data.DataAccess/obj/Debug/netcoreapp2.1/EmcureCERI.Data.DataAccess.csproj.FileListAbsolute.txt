@@ -24,16 +24,3 @@ C:\Users\user\Desktop\Latest Emcure\ExistingApplication\EmcureCERI.Data.DataAcce
 C:\Users\user\Desktop\Latest Emcure\ExistingApplication\EmcureCERI.Data.DataAccess\obj\Debug\netcoreapp2.1\EmcureCERI.Data.DataAccess.dll
 C:\Users\user\Desktop\Latest Emcure\ExistingApplication\EmcureCERI.Data.DataAccess\obj\Debug\netcoreapp2.1\EmcureCERI.Data.DataAccess.pdb
 C:\Users\user\Desktop\Latest Emcure\ExistingApplication\EmcureCERI.Data.DataAccess\obj\Debug\netcoreapp2.1\EmcureCERI.Data.DataAccess.genruntimeconfig.cache
-D:\work\EmcureGITRepo\EmcureNPD\ExistingApplication\EmcureCERI.Data.DataAccess\bin\Debug\netcoreapp2.1\EmcureCERI.Data.DataAccess.deps.json
-D:\work\EmcureGITRepo\EmcureNPD\ExistingApplication\EmcureCERI.Data.DataAccess\bin\Debug\netcoreapp2.1\EmcureCERI.Data.DataAccess.runtimeconfig.json
-D:\work\EmcureGITRepo\EmcureNPD\ExistingApplication\EmcureCERI.Data.DataAccess\bin\Debug\netcoreapp2.1\EmcureCERI.Data.DataAccess.runtimeconfig.dev.json
-D:\work\EmcureGITRepo\EmcureNPD\ExistingApplication\EmcureCERI.Data.DataAccess\bin\Debug\netcoreapp2.1\EmcureCERI.Data.DataAccess.dll
-D:\work\EmcureGITRepo\EmcureNPD\ExistingApplication\EmcureCERI.Data.DataAccess\bin\Debug\netcoreapp2.1\EmcureCERI.Data.DataAccess.pdb
-D:\work\EmcureGITRepo\EmcureNPD\ExistingApplication\EmcureCERI.Data.DataAccess\obj\Debug\netcoreapp2.1\EmcureCERI.Data.DataAccess.csproj.AssemblyReference.cache
-D:\work\EmcureGITRepo\EmcureNPD\ExistingApplication\EmcureCERI.Data.DataAccess\obj\Debug\netcoreapp2.1\EmcureCERI.Data.DataAccess.GeneratedMSBuildEditorConfig.editorconfig
-D:\work\EmcureGITRepo\EmcureNPD\ExistingApplication\EmcureCERI.Data.DataAccess\obj\Debug\netcoreapp2.1\EmcureCERI.Data.DataAccess.AssemblyInfoInputs.cache
-D:\work\EmcureGITRepo\EmcureNPD\ExistingApplication\EmcureCERI.Data.DataAccess\obj\Debug\netcoreapp2.1\EmcureCERI.Data.DataAccess.AssemblyInfo.cs
-D:\work\EmcureGITRepo\EmcureNPD\ExistingApplication\EmcureCERI.Data.DataAccess\obj\Debug\netcoreapp2.1\EmcureCERI.Data.DataAccess.csproj.CoreCompileInputs.cache
-D:\work\EmcureGITRepo\EmcureNPD\ExistingApplication\EmcureCERI.Data.DataAccess\obj\Debug\netcoreapp2.1\EmcureCERI.Data.DataAccess.dll
-D:\work\EmcureGITRepo\EmcureNPD\ExistingApplication\EmcureCERI.Data.DataAccess\obj\Debug\netcoreapp2.1\EmcureCERI.Data.DataAccess.pdb
-D:\work\EmcureGITRepo\EmcureNPD\ExistingApplication\EmcureCERI.Data.DataAccess\obj\Debug\netcoreapp2.1\EmcureCERI.Data.DataAccess.genruntimeconfig.cache

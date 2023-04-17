@@ -24,16 +24,3 @@ C:\Users\user\Desktop\Latest Emcure\ExistingApplication\EmcureCERI.Data.Reposito
 C:\Users\user\Desktop\Latest Emcure\ExistingApplication\EmcureCERI.Data.Repository\obj\Debug\netcoreapp2.1\EmcureCERI.Data.Repository.csproj.CopyComplete
 C:\Users\user\Desktop\Latest Emcure\ExistingApplication\EmcureCERI.Data.Repository\obj\Debug\netcoreapp2.1\EmcureCERI.Data.Repository.dll
 C:\Users\user\Desktop\Latest Emcure\ExistingApplication\EmcureCERI.Data.Repository\obj\Debug\netcoreapp2.1\EmcureCERI.Data.Repository.pdb
-D:\work\EmcureGITRepo\EmcureNPD\ExistingApplication\EmcureCERI.Data.Repository\bin\Debug\netcoreapp2.1\EmcureCERI.Data.Repository.deps.json
-D:\work\EmcureGITRepo\EmcureNPD\ExistingApplication\EmcureCERI.Data.Repository\bin\Debug\netcoreapp2.1\EmcureCERI.Data.Repository.dll
-D:\work\EmcureGITRepo\EmcureNPD\ExistingApplication\EmcureCERI.Data.Repository\bin\Debug\netcoreapp2.1\EmcureCERI.Data.Repository.pdb
-D:\work\EmcureGITRepo\EmcureNPD\ExistingApplication\EmcureCERI.Data.Repository\bin\Debug\netcoreapp2.1\EmcureCERI.Data.DataAccess.dll
-D:\work\EmcureGITRepo\EmcureNPD\ExistingApplication\EmcureCERI.Data.Repository\bin\Debug\netcoreapp2.1\EmcureCERI.Data.DataAccess.pdb
-D:\work\EmcureGITRepo\EmcureNPD\ExistingApplication\EmcureCERI.Data.Repository\obj\Debug\netcoreapp2.1\EmcureCERI.Data.Repository.csproj.AssemblyReference.cache
-D:\work\EmcureGITRepo\EmcureNPD\ExistingApplication\EmcureCERI.Data.Repository\obj\Debug\netcoreapp2.1\EmcureCERI.Data.Repository.GeneratedMSBuildEditorConfig.editorconfig
-D:\work\EmcureGITRepo\EmcureNPD\ExistingApplication\EmcureCERI.Data.Repository\obj\Debug\netcoreapp2.1\EmcureCERI.Data.Repository.AssemblyInfoInputs.cache
-D:\work\EmcureGITRepo\EmcureNPD\ExistingApplication\EmcureCERI.Data.Repository\obj\Debug\netcoreapp2.1\EmcureCERI.Data.Repository.AssemblyInfo.cs
-D:\work\EmcureGITRepo\EmcureNPD\ExistingApplication\EmcureCERI.Data.Repository\obj\Debug\netcoreapp2.1\EmcureCERI.Data.Repository.csproj.CoreCompileInputs.cache
-D:\work\EmcureGITRepo\EmcureNPD\ExistingApplication\EmcureCERI.Data.Repository\obj\Debug\netcoreapp2.1\EmcureCERI.Data.Repository.csproj.CopyComplete
-D:\work\EmcureGITRepo\EmcureNPD\ExistingApplication\EmcureCERI.Data.Repository\obj\Debug\netcoreapp2.1\EmcureCERI.Data.Repository.dll
-D:\work\EmcureGITRepo\EmcureNPD\ExistingApplication\EmcureCERI.Data.Repository\obj\Debug\netcoreapp2.1\EmcureCERI.Data.Repository.pdb

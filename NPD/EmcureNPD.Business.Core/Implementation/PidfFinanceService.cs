@@ -12,7 +12,6 @@ using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Data.SqlClient;
-using System.Linq;
 using System.Threading.Tasks;
 using static Dapper.SqlMapper;
 using static EmcureNPD.Utility.Enums.GeneralEnum;
@@ -98,14 +97,10 @@ namespace EmcureNPD.Business.Core.Implementation
         {
             try
             {
-                bool IsUpdateFinancePIDF = false;
                 SqlConnection con = new SqlConnection(_configuration.GetSection("ConnectionStrings:DefaultConnection").Value);
                 PidfFinance _previousFinanceEntity = new PidfFinance();
                 if (entityPidfFinance.PidffinaceId > 0)
-                {
-                    IsUpdateFinancePIDF = true;
                     _previousFinanceEntity = await _repository.GetAsync(entityPidfFinance.PidffinaceId);
-                }                  
 
                 DynamicParameters data = new DynamicParameters();
                 data.Add("@PIDFId", entityPidfFinance.Pidfid);
@@ -234,12 +229,8 @@ namespace EmcureNPD.Business.Core.Implementation
                         await AddUpdatePidfFinanceBatchSizeCoating(entityPidfFinance.lsPidfFinanceBatchSizeCoating, Convert.ToInt32(entityPidfFinance.CreatedBy), PidffinaceId);
                     }
                     //*Audit log//
-                    if (IsUpdateFinancePIDF)
-                    {
-                        var isAuditSuccess = await _auditLogService.CreateAuditLog<PidfFinance>(Utility.Audit.AuditActionType.Update,
-                                            ModuleEnum.Finance, _previousFinanceEntity, newFinanceEntity, Convert.ToInt32(entityPidfFinance.Pidfid));
-
-                    }
+                    var isAuditSuccess = await _auditLogService.CreateAuditLog<PidfFinance>(Convert.ToInt32(PidffinaceId) > 0 ? Utility.Audit.AuditActionType.Update : Utility.Audit.AuditActionType.Create,
+                                       Utility.Enums.ModuleEnum.Finance, _previousFinanceEntity, newFinanceEntity, Convert.ToInt32(entityPidfFinance.Pidfid));
                     //*Status update start//
                     try
                     {

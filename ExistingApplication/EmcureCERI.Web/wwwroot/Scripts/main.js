@@ -1,5 +1,4 @@
 ﻿document.addEventListener("DOMContentLoaded", function () {
-    
     gantt.config.min_column_width = 50;
     gantt.config.work_time = true;
     //gantt.config.skip_off_time = true;
@@ -513,8 +512,7 @@
         console.log(gantt.serverList("people"));
     });
 
-    gantt.attachEvent("onAfterLinkAdd", function (id, item) {  
-       
+    gantt.attachEvent("onAfterLinkAdd", function (id, item) {        
         setTimeout(reloadFunc, 2000);
     });
 
