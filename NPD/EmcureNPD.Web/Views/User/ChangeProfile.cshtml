@@ -4,17 +4,16 @@
 @inject Microsoft.Extensions.Localization.IStringLocalizer<EmcureNPD.Resource.Shared> SharedLocalizer
 @using Microsoft.Extensions.Configuration
 @inject IConfiguration Configuration
-
-@model EmcureNPD.Business.Models.MasterUserChangePasswordEntity
+@model EmcureNPD.Business.Models.MasterUserEntityChangeProfile
 @{
-    ViewData["Title"] = @MasterLocalizer["ChangePassword"];
+    ViewData["Title"] = @MasterLocalizer["ChangeProfile"];
     string jsVersion = @Configuration.GetSection("StaticJS")["version"];
 }
-<div id="SaveChangePasswordModel">
-    <form asp-action="ChangePassword">
+<div id="SaveChangeProfileModel">
+    <form asp-action="ChangeProfile">
         <div class="content-header">
             <div class="container-fluid d-flex justify-content-between">
-                <h3>@MasterLocalizer["Change Password"].Value</h3>
+                <h3>@MasterLocalizer["ChangeProfile"].Value</h3>
             </div>
         </div>
         @if (ViewBag.Message != null)
@@ -37,28 +36,29 @@
             <div class="row">
                 <div class="col-md-6">
                     <div class="form-group required">
-                        @Html.LabelFor(model => model.Oldpassword, "Old Password", new { @class = "control-label" })
-                        @Html.EditorFor(model => model.Oldpassword, new { htmlAttributes = new { @autocomplete = "off", @class = "form-control checkbox-checked", @placeholder = @SharedLocalizer["Old password"] } })
-                        @Html.ValidationMessageFor(model => model.Oldpassword, "", new { @class = "text-danger" })
+                            @Html.LabelFor(model => model.FullName,"Full Name", new { @class = "control-label" })
+                            <span class="text-danger">*</span>
+                            @Html.TextBoxFor(model => model.FullName, new {@autocomplete = "off", @class = "form-control checkbox-checked",  @placeholder = @SharedLocalizer["FullName"] })
+                            @Html.ValidationMessageFor(model => model.FullName, "", new { @class = "text-danger" })
+                        </div>                   
+                </div>
+            </div>
+           
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="form-group required">
+                        @Html.LabelFor(model => model.MobileNumber, @SharedLocalizer["MobileNumber"],new { @class = "control-label" })
+                        @Html.TextBoxFor(model => model.MobileNumber, new { @autocomplete = "off", @class = "form-control checkbox-checked", @placeholder = @SharedLocalizer["MobileNumber"] })
+                        @Html.ValidationMessageFor(model => model.MobileNumber, "", new { @class = "text-danger" })
                     </div>
                 </div>
-
             </div>
             <div class="row">
                 <div class="col-md-6">
                     <div class="form-group required">
-                        @Html.LabelFor(model => model.Password, "New Password", new { @class = "control-label" })
-                        @Html.EditorFor(model => model.Password, new { htmlAttributes = new { @autocomplete = "off", @class = "form-control checkbox-checked", @placeholder = @SharedLocalizer["New password"] } })
-                        @Html.ValidationMessageFor(model => model.Password, "", new { @class = "text-danger" })
-                    </div>
-                </div>
-            </div>
-            <div class="row">
-                <div class="col-md-6">
-                    <div class="form-group required">
-                        @Html.LabelFor(model => model.ConfirmNewPassowrd, "Confirm New Password", new { @class = "control-label" })
-                        @Html.EditorFor(model => model.ConfirmNewPassowrd, new { htmlAttributes = new { @autocomplete = "off", @class = "form-control checkbox-checked", @placeholder = @SharedLocalizer["Confirm New password"] } })
-                        @Html.ValidationMessageFor(model => model.ConfirmNewPassowrd, "", new { @class = "text-danger" })
+                        @Html.LabelFor(model => model.Address, new { @class = "control-label" })
+                        @Html.TextBoxFor(model => model.Address, new { @autocomplete = "off", @class = "form-control checkbox-checked", @placeholder = @SharedLocalizer["Address"] })
+                        @Html.ValidationMessageFor(model => model.Address, "", new { @class = "text-danger" })
                     </div>
                 </div>
             </div>

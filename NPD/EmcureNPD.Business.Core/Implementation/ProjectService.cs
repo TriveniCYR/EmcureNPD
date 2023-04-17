@@ -134,6 +134,11 @@ namespace EmcureNPD.Business.Core.Implementation
                                 throw;
                             }
                         }
+                        else
+                        {
+                            _projectTaskRepository.UpdateAsync(task);
+                            await _unitOfWork.SaveChangesAsync();
+                        }
                     }
                     else
                     {

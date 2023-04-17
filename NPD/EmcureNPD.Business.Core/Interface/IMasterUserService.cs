@@ -14,7 +14,7 @@ namespace EmcureNPD.Business.Core.Interface
         Task<MasterUserEntity> GetById(int id);
 
         Task<DBOperation> AddUpdateUser(MasterUserEntity entityUser);
-
+        Task<DBOperation> ChangeProfile(MasterUserEntityChangeProfile entityUser);        
         Task<DBOperation> DeleteUser(int id);
 
         Task<DBOperation> ChangeUserPassword(MasterUserChangePasswordEntity entityUser);

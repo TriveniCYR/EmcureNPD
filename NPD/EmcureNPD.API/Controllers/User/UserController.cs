@@ -76,7 +76,26 @@ namespace EmcureNPD.API.Controllers.Masters
                 return _ObjectResponse.Create(false, (Int32)HttpStatusCode.InternalServerError, Convert.ToString(ex.StackTrace));
             }
         }
-
+        [HttpPost]
+        [Route("ChangeProfile")]
+        public async Task<IActionResult> ChangeProfile(MasterUserEntityChangeProfile oUser)
+        {
+            try
+            {
+                DBOperation oResponse = await _MasterUserService.ChangeProfile(oUser);
+                if (oResponse == DBOperation.Success)
+                {
+                    return _ObjectResponse.Create(true, (Int32)HttpStatusCode.OK, (oUser.UserId > 0 ? "Updated Successfully" : "Inserted Successfully"));
+                }
+                else
+                    return _ObjectResponse.Create(false, (Int32)HttpStatusCode.BadRequest, (oResponse == DBOperation.NotFound ? "Record not found" : "Bad request"));
+            }
+            catch (Exception ex)
+            {
+                await _ExceptionService.LogException(ex);
+                return _ObjectResponse.Create(false, (Int32)HttpStatusCode.InternalServerError, Convert.ToString(ex.StackTrace));
+            }
+        }
         /// <summary>
         /// Description - To Get User By Id
         /// </summary>

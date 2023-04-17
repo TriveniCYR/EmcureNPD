@@ -129,6 +129,67 @@ namespace EmcureNPD.Web.Controllers
         {
             return View();
         }
+        [HttpGet]
+        public IActionResult ChangeProfile()
+        {
+            var UserId = _helper.GetLoggedInUserId();
+            MasterUserEntity masterUser = new MasterUserEntity();
+            try
+            { 
+                HttpContext.Request.Cookies.TryGetValue(UserHelper.EmcureNPDToken, out string token);
+                APIRepository objapi = new(_cofiguration);
+                HttpResponseMessage responseMessage = objapi.APICommunication(APIURLHelper.GetUserById + "/" + UserId, HttpMethod.Get, token).Result;
+
+                if (responseMessage.IsSuccessStatusCode)
+                {
+                    string jsonResponse = responseMessage.Content.ReadAsStringAsync().Result;
+                    var data = JsonConvert.DeserializeObject<APIResponseEntity<MasterUserEntity>>(jsonResponse);
+                    if (data._object is null)
+                        return NotFound();
+
+                    MasterUserEntityChangeProfile user = new MasterUserEntityChangeProfile();
+                    user.FullName = data._object.FullName;
+                    user.Address = data._object.Address;
+                    user.MobileNumber = data._object.MobileNumber;
+                    return View(user);
+                }
+                return NotFound();
+            }
+            catch (Exception e)
+            {
+                TempData[UserHelper.ErrorMessage] = Convert.ToString(e.StackTrace);
+                return View(masterUser);
+            }
+        }
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public IActionResult ChangeProfile(MasterUserEntityChangeProfile masterUser)
+        {
+            try
+            {
+                ViewBag.Message = null;                
+                masterUser.UserId = _helper.GetLoggedInUserId();
+                HttpContext.Request.Cookies.TryGetValue(UserHelper.EmcureNPDToken, out string token);
+                APIRepository objapi = new(_cofiguration);
+                HttpResponseMessage responseMessage = objapi.APICommunication(APIURLHelper.ChangeUserProfile, HttpMethod.Post, token, new StringContent(JsonConvert.SerializeObject(masterUser))).Result;
+                if (responseMessage.IsSuccessStatusCode)
+                {
+                    string jsonResponse = responseMessage.Content.ReadAsStringAsync().Result;
+                    ViewBag.Message = _stringLocalizerError["ProfileChanged"];
+                    return View();
+                }
+                else
+                {
+                    ViewBag.Message = _stringLocalizerError["SomeErrorOccured"];
+                    return View();
+                }
+            }
+            catch (Exception e)
+            {
+                ViewBag.Message = Convert.ToString(e.StackTrace);                
+            }
+            return View();
+        }
 
         [HttpPost]
         [ValidateAntiForgeryToken]

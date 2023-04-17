@@ -261,6 +261,7 @@ namespace EmcureNPD.Web.Helpers
         public static string GetRegionByBusinessUnit = "api/User/GetRegionByBusinessUnit";
         public static string DeleteUserById = "api/User/DeleteUser";
         public static string ChangeUserPassword = "api/User/ChangePassword";
+        public static string ChangeUserProfile = "api/User/ChangeProfile";
         public static string CheckEmailAddressExists = "api/User/CheckEmailAddressExists";
         public static string GetCountryByRegion = "api/User/GetCountryByRegion";
         public static string GetDepartmentList = "api/User/GetDepartmentList";

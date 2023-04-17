@@ -129,4 +129,10 @@
   <data name="PasswordChanged" xml:space="preserve">
     <value>Password Changed Successfully</value>
   </data>
+  <data name="ProfileChanged" xml:space="preserve">
+    <value>Profile details Changed Successfully</value>
+  </data>
+  <data name="SomeErrorOccured" xml:space="preserve">
+    <value>Some Error Occured</value>
+  </data>
 </root>
