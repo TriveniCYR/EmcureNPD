@@ -26,7 +26,7 @@ namespace EmcureNPD.Business.Core.ServiceImplementations
 
         public async Task<List<MasterProductTypeEntity>> GetAll()
         {
-            var list = await _repository.GetAllAsync(x => x.IsActive == true);
+            var list = await _repository.GetAllAsync();
             return _mapperFactory.GetList<MasterProductType, MasterProductTypeEntity>(list.ToList());
         }
 
