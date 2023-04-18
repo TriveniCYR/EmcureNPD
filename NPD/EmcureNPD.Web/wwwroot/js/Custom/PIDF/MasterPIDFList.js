@@ -40,7 +40,7 @@ function InitializePIDFList() {
                             _flag = true;
                         }
                     } else if (_screenId == "7") {
-                        if ((row.pidfStatusID == 17 || (row.finance)) && (row.api || row.inHouses == false)) {
+                        if ((row.pidfStatusID == 17 || (row.finance))) {
                             _flag = true;
                         }
                         $("#DvApproveReject").show();
@@ -70,13 +70,13 @@ function InitializePIDFList() {
             "data": "dosageFormName", "name": "Dosage Form"
         },
         {
-            "data": "businessUnitName", "name": "Dosage Form"
+            "data": "businessUnitName", "name": "Business Unit"
         },
         {
-            "data": "oralName", "name": "Dosage Form"
+            "data": "oralName", "name": "Oral Name"
         },
         {
-            "data": "inHouses", "name": "Dosage Form", "render": function (data, type, row, meta) {
+            "data": "inHouses", "name": "In House", "render": function (data, type, row, meta) {
                 return (data ? "Yes" : "No");
             }
         },
@@ -157,7 +157,7 @@ function InitializePIDFList() {
                 if (_screenId == "1") {
                     var _PIDFForm = '/PIDF/PIDF?PIDFId=' + row.pidfid;
                     var _enable = (row.pidfStatusID == 1 || row.pidfStatusID == 2);
-                    if (IsEditPIDF || IsAddPIDF || IsApprovePIDF) {
+                    if (IsEditPIDF || IsApprovePIDF) {
                         html += '<a class="large-font" style="color:' + (_enable ? "#007bff" : "grey") + '" href="' + (_enable ? _PIDFForm : "#") + '"><i class="fa fa-fw fa-edit mr-1"></i></a>';
                     }
                     if (IsViewPIDF) {

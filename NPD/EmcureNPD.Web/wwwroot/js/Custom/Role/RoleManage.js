@@ -1,15 +1,21 @@
 ﻿$(document).ready(function () {
-   // SetupRoleTable();
+    // SetupRoleTable();
     $("[id^=MasterModules][type=checkbox]").change();
 });
 
 $('#chkView').change(function () {
-    if ($(this).is(':checked')) {
-        $("input[name*='RoleModulePermission.View']").prop('checked', true);
-    }
-    else {
-        $("input[name*='RoleModulePermission.View']").prop('checked', false);
-    }
+    $.each($("input[name*='RoleModulePermission.View']"), function (index, item) {
+        var Is_Disabled = $(item).prop('disabled');
+        if (!Is_Disabled) {
+            if ($('#chkView').is(':checked')) {
+                $(item).prop('checked', true);
+            }
+            else {
+                $(item).prop('checked', false);
+            }
+        }
+    });
+
 });
 $('#chkAdd').change(function () {
     if ($(this).is(':checked')) {
@@ -48,18 +54,19 @@ $('#chkApprove').change(function () {
     }
     $("[id^=MasterModules][type=checkbox]").change();
 });
-
-
+$('#btnSaveRole').click(function () {
+    $("[type=checkbox]").attr("disabled", false);
+});
 $("[id^=MasterModules][type=checkbox]").change(function () {
     var str_chkBoxId = $(this).attr('id');
     var strPartialId = '';
     var Arr_str_chkBoxId = str_chkBoxId.split('_');
     if (Arr_str_chkBoxId.length == 5)
-            strPartialId = Arr_str_chkBoxId[0] + '_' + Arr_str_chkBoxId[1] + '_' + Arr_str_chkBoxId[2] + '_' + Arr_str_chkBoxId[3] + '_';
-     else {
+        strPartialId = Arr_str_chkBoxId[0] + '_' + Arr_str_chkBoxId[1] + '_' + Arr_str_chkBoxId[2] + '_' + Arr_str_chkBoxId[3] + '_';
+    else {
         strPartialId = Arr_str_chkBoxId[0] + '_' + Arr_str_chkBoxId[1] + '_' + Arr_str_chkBoxId[2] + '_' + Arr_str_chkBoxId[3] + '_'
-                        + Arr_str_chkBoxId[4] + '_' + Arr_str_chkBoxId[5] + '_' + Arr_str_chkBoxId[6] + '_';
-          }
+            + Arr_str_chkBoxId[4] + '_' + Arr_str_chkBoxId[5] + '_' + Arr_str_chkBoxId[6] + '_';
+    }
 
 
     if (!str_chkBoxId.includes("RoleModulePermission_View")) { // if chchbox is Other than View
@@ -70,10 +77,10 @@ $("[id^=MasterModules][type=checkbox]").change(function () {
 
         }
         else {
-           //checkForOtherNonViewCheckBox
+            //checkForOtherNonViewCheckBox
             CheckForOtherNonViewCheckBox(strPartialId);
         }
-    }    
+    }
 });
 
 function CheckForOtherNonViewCheckBox(strPartialId) {

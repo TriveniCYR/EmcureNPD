@@ -5,6 +5,13 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Controllers\API List\**" />
+    <Content Remove="Controllers\API List\**" />
+    <EmbeddedResource Remove="Controllers\API List\**" />
+    <None Remove="Controllers\API List\**" />
+  </ItemGroup>
+
+  <ItemGroup>
     <Compile Remove="Filters\ExceptionsEnum.cs" />
     <Compile Remove="Helpers\CustomJsonConverterForType.cs" />
   </ItemGroup>
