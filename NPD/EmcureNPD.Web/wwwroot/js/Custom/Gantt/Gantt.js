@@ -753,8 +753,8 @@ document.addEventListener("DOMContentLoaded", function () {
         }
     }
     function saveUpdateGanttTask(taskObjects, ProjectTaskId) {
-       //let startDate = moment(taskObjects.start_date).format("MM/DD/YYYY hh:mm");
-        //let endDate = moment(taskObjects.start_date).format("MM/DD/YYYY hh:mm");
+       let startDate =new Date(moment(taskObjects.start_date).format("MM/DD/YYYY hh:mm"));
+        let endDate = new Date(moment(taskObjects.start_date).format("MM/DD/YYYY hh:mm"));
         let selectedOwner = taskObjects.owner_id == undefined || taskObjects.owner_id == "null" ? taskObjects.owner : taskObjects.owner_id;
         const res = taskStatus.filter(x => x.projectTaskId === ProjectTaskId);
         if (taskObjects.text == "null" || taskObjects.text == "") {
@@ -773,8 +773,8 @@ document.addEventListener("DOMContentLoaded", function () {
                 TaskName: taskObjects.text,
                 Pidfid: 0,
                 PriorityId: taskObjects.priority,
-                StartDate: taskObjects.start_date,
-                EndDate: taskObjects.end_date,
+                StartDate: startDate,
+                EndDate: endDate,
                 StatusId: res.length > 0 ? res[0].statusId : 1,
                 TaskOwnerId: selectedOwner, //.owner == undefined ? 0 : taskObjects.owner,
                 TotalPercentage: Math.round((taskObjects.progress * 100)),

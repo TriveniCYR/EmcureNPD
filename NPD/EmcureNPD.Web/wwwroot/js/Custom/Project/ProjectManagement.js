@@ -167,13 +167,13 @@ function GetProjectDetailsSuccess(data) {
         //$('#ChildMilestones tbody').html('');
         var childRow = "";
         $.each(data.table4, function (index, object) {
-            //var start = new Date(object.startDate);
-            var startDate = moment(object.startDate).format("DD/MM/YYYY") //start.toLocaleDateString('en-US', { year: 'numeric', month: '2-digit', day: '2-digit' });
-           // var end = new Date(object.endDate);
-            var endDate = moment(object.endDate).format("DD/MM/YYYY")// end.toLocaleDateString('en-US', { year: 'numeric', month: '2-digit', day: '2-digit' });
+            var start = new Date(object.startDate);
+            var startDate =start.toLocaleDateString('en-US', { year: 'numeric', month: '2-digit', day: '2-digit' });
+            var end = new Date(object.endDate);
+            var endDate = end.toLocaleDateString('en-US', { year: 'numeric', month: '2-digit', day: '2-digit' });
             if (object.modifyDate != null) {
-               // var updated = new Date(object.modifyDate);
-                var updatedDate = moment(object.modifyDate).format("DD/MM/YYYY") //updated.toLocaleDateString('en-US', { year: 'numeric', month: '2-digit', day: '2-digit' });
+               var updated = new Date(object.modifyDate);
+                var updatedDate =updated.toLocaleDateString('en-US', { year: 'numeric', month: '2-digit', day: '2-digit' });
             }
             else
                 var updatedDate = "";
