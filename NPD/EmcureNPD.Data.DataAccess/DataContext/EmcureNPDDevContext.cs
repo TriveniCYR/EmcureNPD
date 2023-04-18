@@ -133,7 +133,6 @@ namespace EmcureNPD.Data.DataAccess.DataContext
             if (!optionsBuilder.IsConfigured)
             {
 #warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see http://go.microsoft.com/fwlink/?LinkId=723263.
-                //optionsBuilder.UseSqlServer("Data Source=180.149.241.172;Initial Catalog=EmcureNPDDev;Persist Security Info=True;User ID=emcurenpddev_dbUser;pwd=emcure123!@#");
                 optionsBuilder.UseSqlServer(DatabaseConnection.NPDDatabaseConnection);
             }
         }
@@ -511,7 +510,7 @@ namespace EmcureNPD.Data.DataAccess.DataContext
 
                 entity.Property(e => e.CreatedDate).HasColumnType("datetime");
 
-                entity.Property(e => e.InnerException).HasMaxLength(1000);
+                entity.Property(e => e.InnerException).HasMaxLength(4000);
 
                 entity.Property(e => e.Message).HasMaxLength(500);
 
@@ -1650,6 +1649,8 @@ namespace EmcureNPD.Data.DataAccess.DataContext
                     .HasColumnType("datetime")
                     .HasDefaultValueSql("(getdate())");
 
+                entity.Property(e => e.Currencyid).HasMaxLength(50);
+
                 entity.Property(e => e.DeletedDate).HasColumnType("datetime");
 
                 entity.Property(e => e.DiscountRate).HasColumnType("numeric(18, 2)");
@@ -1750,6 +1751,10 @@ namespace EmcureNPD.Data.DataAccess.DataContext
 
                 entity.Property(e => e.ApiCad).HasColumnName("API_CAD");
 
+                entity.Property(e => e.BatchsizeinLtrTabs).HasColumnName("Batchsizein_ltr_tabs");
+
+                entity.Property(e => e.Cagrover2016By12estMatunits).HasColumnName("CAGRover2016_By_12EstMATunits");
+
                 entity.Property(e => e.CcpcCad).HasColumnName("CCPC_CAD");
 
                 entity.Property(e => e.CreatedDate)
@@ -1757,6 +1762,10 @@ namespace EmcureNPD.Data.DataAccess.DataContext
                     .HasDefaultValueSql("(getdate())");
 
                 entity.Property(e => e.EmcureCogsPack).HasColumnName("EmcureCOGs_pack");
+
+                entity.Property(e => e.EstMat2016By12units).HasColumnName("EstMAT2016_BY_12Units");
+
+                entity.Property(e => e.EstMat2020By12units).HasColumnName("EstMAT2020_BY_12Units");
 
                 entity.Property(e => e.ExcipientsCad).HasColumnName("Excipients_CAD");
 

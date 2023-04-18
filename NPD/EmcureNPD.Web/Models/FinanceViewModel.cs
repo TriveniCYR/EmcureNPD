@@ -101,7 +101,7 @@ namespace EmcureNPD.Web.Models
         public string entity { get; set; }
         public string product { get; set; }
         public DateTime forecastDate { get; set; }
-        public int Currencyid { get; set; }
+        public string Currencyid { get; set; }
         public int dosageFrom { get; set; }
         public string manufacturingSiteOrPartner { get; set; }
         public string skus { get; set; }
