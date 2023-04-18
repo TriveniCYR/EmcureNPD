@@ -13,9 +13,9 @@ body {
   height: 82vh;
 }
 
-.card {
-  width: 350px;
-  border-top: 2px solid #0d6efd;
+.login-card .card {
+    width: 350px;
+    border-top: 2px solid #0d6efd;
 }
 
 .login-card-title {

@@ -40,7 +40,7 @@ function InitializePIDFList() {
                             _flag = true;
                         }
                     } else if (_screenId == "7") {
-                        if ((row.pidfStatusID == 17 || (row.finance)) && (row.api || row.inHouses == false)) {
+                        if ((row.pidfStatusID == 17 || (row.finance))) {
                             _flag = true;
                         }
                         $("#DvApproveReject").show();
@@ -70,13 +70,13 @@ function InitializePIDFList() {
             "data": "dosageFormName", "name": "Dosage Form"
         },
         {
-            "data": "businessUnitName", "name": "Dosage Form"
+            "data": "businessUnitName", "name": "Business Unit"
         },
         {
-            "data": "oralName", "name": "Dosage Form"
+            "data": "oralName", "name": "Oral Name"
         },
         {
-            "data": "inHouses", "name": "Dosage Form", "render": function (data, type, row, meta) {
+            "data": "inHouses", "name": "In House", "render": function (data, type, row, meta) {
                 return (data ? "Yes" : "No");
             }
         },
