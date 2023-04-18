@@ -4,6 +4,7 @@
 @{
     ViewData["Title"] = "Gantt Chart";
     var id = ViewBag.id;
+    var encBuid = Context.Request.Query["bui"];
     string jsVersion = @Configuration.GetSection("StaticJS")["version"];
 }
 <link href="https://cdn.dhtmlx.com/gantt/edge/dhtmlxgantt.css" rel="stylesheet" type="text/css" />
@@ -119,7 +120,8 @@
         <h2 class="m-0">Management Gantt Chart</h2>
         <div class="md-left mb-1">
             <div class="mybtn-group">
-                <button class="btn btn-danger" onclick="javascript:window.history.back();"><i class="fas fa-undo mr-1"></i> Back</button>
+                <a class="btn btn-danger" href="@Url.Action("ProjectManagement","Project", new{pidfid =@ViewBag.id,bui=encBuid})"><i class="fas fa-undo mr-1"></i>Back</a>
+                @*<button class="btn btn-danger" onclick="javascript:window.history.back();"><i class="fas fa-undo mr-1"></i> Back</button>*@
                @* <button class="btn btn-danger" onclick="location.href='@Url.Action("PIDFList", "PIDF", new { ScreenId = 9 })'"><i class="fas fa-undo mr-1"></i> Back</button>*@
             </div>
         </div>

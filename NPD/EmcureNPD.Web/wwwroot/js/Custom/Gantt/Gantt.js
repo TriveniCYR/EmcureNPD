@@ -684,7 +684,7 @@ document.addEventListener("DOMContentLoaded", function () {
         function GetTaskSubTaskListSuccess(data) {
             let restructeredData = {}
             for (var i = 0; i < data._object.length; i++) {
-                let crDate = moment(data._object[i].createdDate).format("YYYY-MM-DD hh:mm")
+                let strtDate = moment(data._object[i].startDate).format("YYYY-MM-DD hh:mm")
                 let enDate = moment(data._object[i].endDate).format("YYYY-MM-DD hh:mm")
                 let modifyDate = moment(data._object[i].modifyDate).format("YYYY-MM-DD hh:mm")
                 let startDate = moment(data._object[i].startDate).format("YYYY-MM-DD hh:mm")
@@ -693,7 +693,7 @@ document.addEventListener("DOMContentLoaded", function () {
                 gdata = {
                     "tasks": [
                         //{ "id": data._object[i].pidfid, "text": "Project #1", "start_date": startDate, "owner": data._object[i].taskOwnerName, "priority": data._object[i].priorityId, "duration": data._object[i].taskDuration },
-                        { "id": data._object[i].projectTaskId, "text": data._object[i].taskName, "start_date": crDate, "owner": data._object[i].taskOwnerId, "priority": data._object[i].priorityId, "duration": data._object[i].taskDuration, "parent": data._object[i].parentId },
+                        { "id": data._object[i].projectTaskId, "text": data._object[i].taskName, "start_date": strtDate, "owner": data._object[i].taskOwnerId, "priority": data._object[i].priorityId, "duration": data._object[i].taskDuration, "parent": data._object[i].parentId },
 
                     ],
                     "links": [
@@ -705,6 +705,7 @@ document.addEventListener("DOMContentLoaded", function () {
                 taskStatus.push({
                     statusId: data._object[i].statusId,
                     projectTaskId: data._object[i].projectTaskId,
+                    taskName: data._object[i].taskName,
                     taskOwnerId: data._object[i].taskOwnerId,
                     taskOwnerName: data._object[i].taskOwnerName,
                     taskLevel: data._object[i].taskLevel,
@@ -756,35 +757,48 @@ document.addEventListener("DOMContentLoaded", function () {
         //let endDate = moment(taskObjects.start_date).format("MM/DD/YYYY hh:mm");
         let selectedOwner = taskObjects.owner_id == undefined || taskObjects.owner_id == "null" ? taskObjects.owner : taskObjects.owner_id;
         const res = taskStatus.filter(x => x.projectTaskId === ProjectTaskId);
-        let addTask = {
-            ProjectTaskId: ProjectTaskId,
-            TaskName: taskObjects.text,
-            Pidfid: 0,
-            PriorityId: taskObjects.priority,
-            StartDate: taskObjects.start_date,
-            EndDate: taskObjects.end_date,
-            StatusId: res.length > 0 ? res[0].statusId : 1,
-            TaskOwnerId: selectedOwner, //.owner == undefined ? 0 : taskObjects.owner,
-            TotalPercentage: Math.round((taskObjects.progress * 100)),
-            ParentId: taskObjects.parent,
-            TaskDuration: taskObjects.duration,
-            IsGanttUpdate: true,
-            PlannedStartDate: taskObjects.planned_start,
-            PlannedEndDate: taskObjects.planned_end == undefined ? null : taskObjects.planned_end
+        if (taskObjects.text == "null" || taskObjects.text == "") {
+            //toastr.error("TaskName could not be empty!", "Input Validation Error");
+            //$("div.gantt_cal_light").show();
+            if (res.length > 0)
+                taskObjects.text = res[0].taskName;
+            else {
+                taskObjects.text = "New Task";
+            }
+            //return false;
         }
-        let act = taskObjects.parent == 0 ? "Task" : "SubTask";
-        let pidfId = (new URL(location.href)).searchParams.get('pidfid');
-        console.log(JSON.stringify(addTask))
-       ajaxServiceMethod($('#hdnWebBaseURL').val() + "Project/AddUpdateGanttTask?id=" + pidfId + "&act=" + act, 'POST', SaveTaskSubTaskListSuccess, SaveTaskSubTaskListError, JSON.stringify(addTask), null, null, null,"application/json; charset=utf-8");
+     
+            let addTask = {
+                ProjectTaskId: ProjectTaskId,
+                TaskName: taskObjects.text,
+                Pidfid: 0,
+                PriorityId: taskObjects.priority,
+                StartDate: taskObjects.start_date,
+                EndDate: taskObjects.end_date,
+                StatusId: res.length > 0 ? res[0].statusId : 1,
+                TaskOwnerId: selectedOwner, //.owner == undefined ? 0 : taskObjects.owner,
+                TotalPercentage: Math.round((taskObjects.progress * 100)),
+                ParentId: taskObjects.parent,
+                TaskDuration: taskObjects.duration,
+                IsGanttUpdate: true,
+                PlannedStartDate: taskObjects.planned_start,
+                PlannedEndDate: taskObjects.planned_end == undefined ? null : taskObjects.planned_end
+            }
+            let act = taskObjects.parent == 0 ? "Task" : "SubTask";
+            let pidfId = (new URL(location.href)).searchParams.get('pidfid');
+            console.log(JSON.stringify(addTask))
+            ajaxServiceMethod($('#hdnWebBaseURL').val() + "Project/AddUpdateGanttTask?id=" + pidfId + "&act=" + act, 'POST', SaveTaskSubTaskListSuccess, SaveTaskSubTaskListError, JSON.stringify(addTask), null, null, null, "application/json; charset=utf-8");
 
-        function SaveTaskSubTaskListSuccess(data) {
-           GetProjectGanttTaskList();
-            setTimeout(reloadFunc, 500);
-           toastr.success("Success");
-       }
-       function SaveTaskSubTaskListError() {
-           toastr.error("Error");
-       }
+            function SaveTaskSubTaskListSuccess(data) {
+
+                GetProjectGanttTaskList();
+                setTimeout(reloadFunc, 500);
+                toastr.success("Success");
+            }
+            function SaveTaskSubTaskListError(err) {
+                toastr.error(`${err}`, "Input Validation Error");
+            }
+        
     }
     function deleteGanttTaskSubTask(taskid) {
         taskIdToBeDelete = taskid;
