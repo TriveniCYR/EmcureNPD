@@ -684,7 +684,7 @@ document.addEventListener("DOMContentLoaded", function () {
         function GetTaskSubTaskListSuccess(data) {
             let restructeredData = {}
             for (var i = 0; i < data._object.length; i++) {
-                let crDate = moment(data._object[i].createdDate).format("YYYY-MM-DD hh:mm")
+                let strtDate = moment(data._object[i].startDate).format("YYYY-MM-DD hh:mm")
                 let enDate = moment(data._object[i].endDate).format("YYYY-MM-DD hh:mm")
                 let modifyDate = moment(data._object[i].modifyDate).format("YYYY-MM-DD hh:mm")
                 let startDate = moment(data._object[i].startDate).format("YYYY-MM-DD hh:mm")
@@ -693,7 +693,7 @@ document.addEventListener("DOMContentLoaded", function () {
                 gdata = {
                     "tasks": [
                         //{ "id": data._object[i].pidfid, "text": "Project #1", "start_date": startDate, "owner": data._object[i].taskOwnerName, "priority": data._object[i].priorityId, "duration": data._object[i].taskDuration },
-                        { "id": data._object[i].projectTaskId, "text": data._object[i].taskName, "start_date": crDate, "owner": data._object[i].taskOwnerId, "priority": data._object[i].priorityId, "duration": data._object[i].taskDuration, "parent": data._object[i].parentId },
+                        { "id": data._object[i].projectTaskId, "text": data._object[i].taskName, "start_date": strtDate, "owner": data._object[i].taskOwnerId, "priority": data._object[i].priorityId, "duration": data._object[i].taskDuration, "parent": data._object[i].parentId },
 
                     ],
                     "links": [
