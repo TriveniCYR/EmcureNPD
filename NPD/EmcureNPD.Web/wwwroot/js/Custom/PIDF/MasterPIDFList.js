@@ -157,7 +157,7 @@ function InitializePIDFList() {
                 if (_screenId == "1") {
                     var _PIDFForm = '/PIDF/PIDF?PIDFId=' + row.pidfid;
                     var _enable = (row.pidfStatusID == 1 || row.pidfStatusID == 2);
-                    if (IsEditPIDF || IsAddPIDF || IsApprovePIDF) {
+                    if (IsEditPIDF || IsApprovePIDF) {
                         html += '<a class="large-font" style="color:' + (_enable ? "#007bff" : "grey") + '" href="' + (_enable ? _PIDFForm : "#") + '"><i class="fa fa-fw fa-edit mr-1"></i></a>';
                     }
                     if (IsViewPIDF) {
