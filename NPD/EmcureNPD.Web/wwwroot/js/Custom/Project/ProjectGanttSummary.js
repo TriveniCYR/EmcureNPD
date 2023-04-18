@@ -507,8 +507,9 @@ document.addEventListener("DOMContentLoaded", function () {
                     //    //{ "id": 2, "source": 2, "target": 3, "type": "0" }
                     //]
                 }
+                gantt.parse(gdata);
             }
-            gantt.parse(gdata);
+           
         }
     });
     
