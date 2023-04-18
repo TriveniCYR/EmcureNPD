@@ -5,7 +5,7 @@ var ColumnObjUpcase = ['CommercialPackagingTypeId', 'CommercialBatchSize', 'Pric
 /*var ColumnObjLowcase = ['packagingTypeId', 'commercialBatchSize', 'priceDiscounting', 'totalApireq', 'apireq', 'suimsvolume', 'marketGrowth', 'marketSize', 'priceErosion', 'finalSelectionId'];*/
 var SelectedBUValue = 0;
 var selectedStrength = 0;
-
+var EditIndex = -1;
 $(document).ready(function () {
     InitializeProductTypeDropdown();
     //SetCommercialDivReadonly();
@@ -194,7 +194,7 @@ function ResetYearFormValues() {
     });
 }
 
-function AddYearClick() {
+function AddYearClick() { //SaveYearClick
     //var year = $('#AddYearForm').serializeArray();
     var valBUStrength = ValidateBU_Strength();
     if (ValidateYearForm() && valBUStrength && ValidateMainForm()) {
@@ -208,15 +208,18 @@ function AddYearClick() {
             }
             entityYear[kv.name] = kv.value;
         });
-
-        //console.log(entityYear);
-        //entityYear['YearIndex'] = objYears.length + 1;
-        objYears.push(entityYear);
+       
+        if (EditIndex == -1)
+            objYears.push(entityYear);
+        else
+            objYears[EditIndex] = entityYear;
+        
         UpdateYearTable(ColumnObjUpcase);
         ClearValidationForYearForm();
         $("#AddYearForm").hide();
         IsShowCancel_Save_buttons(true);
         ResetYearFormValues();
+        EditIndex = -1;
     }
 }
 function AddCommercialRow(i) {
@@ -228,8 +231,19 @@ function AddColToRow(i, tdvalue) {
     var rowid = 'AddYearRow' + i;
     $('#' + rowid).append('<td>' + tdvalue + '</td>')
 }
-
+function editCommercialRow(i) {
+    EditIndex = i;
+    ShowYearForm(i + 1);
+   // $('#NspunitsHigh').focus();
+   // $('#btnCancelYearForm').focus();
+    var entityYear = objYears[i];
+    $.each($('#AddYearForm').serializeArray(), function (_, kv) {
+        $('#' + kv.name).val(entityYear[kv.name]);
+    });
+    $('#CommercialPackagingTypeId').focus();
+}
 function deleteCommercialRow(i) {
+    console.log(objYears);
     objYears.pop(i);
     UpdateYearTable(ColumnObjUpcase);
 }
@@ -305,7 +319,9 @@ function UpdateYearTable(columns) {
             }
         });
         AddtblRevenueRow(objYears[i], i, columns);
-        $('#AddYearRow' + i).append('<td> <spam><i class="fas fa-trash-alt" id="deleteIconAddyear_' + i + '" onclick="deleteCommercialRow(' + i + ')"></i></spam></td>')
+        $('#AddYearRow' + i).append
+            ('<td> <spam class="text-primary"> <i class="fas fa-edit mr-1" id="editIconAddyear_' + i + '" onclick="editCommercialRow(' + i + ')"></i></spam >' +       
+         '<spam class="text-danger" ><i class="fa fa-fw fa-trash" id="deleteIconAddyear_' + i + '" onclick="deleteCommercialRow(' + i + ')"></i></spam></td>')
 
         $('#AddYearRow' + i + ' td:eq(10) spam i').prop('id', 'deleteIconAPI_' + i + '');
         $('#AddYearRow' + i + ' td:eq(10) spam i').attr('onclick', 'deleteRowApiDetails(' + i + ')');
@@ -448,21 +464,22 @@ function SetCommercialDisableForOtherUserBU() {
 }
 
 // ----------Calulations Methods--------------
+
+
 //----------- Market Size-----------------------
-$('#MarketGrowth').focusout(function () {
+$('input[type="number"]').focusout(function () {
     var result = 0;
     var MarketSizeAsLaunch;
     var MarketGrowth;
-    var objyearLen = objYears.length;
-
-    if (objyearLen == 0) {
+    var currentIndex = (EditIndex == -1) ? objYears.length : EditIndex;
+    if (currentIndex == 0) {
         MarketSizeAsLaunch = $('#MarketSizeInUnit').val();
         MarketGrowth = $('#MarketGrowth').val();
         result = MarketSizeAsLaunch * (1 + (MarketGrowth / 100))
         $('#MarketSize').val(result.toFixed());
     }
-    if (objyearLen > 0) {
-        MarketSizeAsLaunch = objYears[objyearLen - 1]['MarketSize']
+    if (currentIndex > 0) {
+        MarketSizeAsLaunch = objYears[currentIndex - 1]['MarketSize']
         MarketGrowth = $('#MarketGrowth').val();
         result = MarketSizeAsLaunch * (1 + (MarketGrowth / 100))
         $('#MarketSize').val(result.toFixed());
@@ -470,13 +487,13 @@ $('#MarketGrowth').focusout(function () {
     // $('#MarketGrowth').val(MarketGrowth + '%');
 });
 //--------- Estimated Market Share Units--------------------
-$('#MarketSharePercentageLow').focusout(function () {
+$('input[type="number"]').focusout(function () {
     EstimatedMarketShareUnits('Low');
 });
-$('#MarketSharePercentageMedium').focusout(function () {
+$('input[type="number"]').focusout(function () {
     EstimatedMarketShareUnits('Medium');
 });
-$('#MarketSharePercentageHigh').focusout(function () {
+$('input[type="number"]').focusout(function () {
     EstimatedMarketShareUnits('High');
 });
 function EstimatedMarketShareUnits(variable) {
@@ -486,25 +503,26 @@ function EstimatedMarketShareUnits(variable) {
     $('#MarketShareUnit' + variable).val(result.toFixed());
 }
 //---------NSP------------------------------------
-$('#NspunitsLow').focusout(function () {
+$('input[type="number"]').focusout(function () {
     NSP('Low');
 });
-$('#NspunitsMedium').focusout(function () {
+$('input[type="number"]').focusout(function () {
     NSP('Medium');
 });
-$('#NspunitsHigh').focusout(function () {
+$('input[type="number"]').focusout(function () {
     NSP('High');
 });
 function NSP(variable) {
     var result = 0;
     var Nspunits;
     var PriceErosion = $('#PriceErosion').val();
-    var objyearLen = objYears.length;
-    if (objyearLen == 0) {
+    
+    var currentIndex = (EditIndex == -1) ? objYears.length : EditIndex;
+    if (currentIndex == 0) {
         Nspunits = $('#Nspunits' + variable).val();
     }
-    if (objyearLen > 0) {
-        Nspunits = objYears[objyearLen - 1]['Nsp' + variable];
+    if (currentIndex > 0) {
+        Nspunits = objYears[currentIndex - 1]['Nsp' + variable];
     }
     result = Nspunits * (1 + (PriceErosion / 100))
     $('#Nsp' + variable).val(result.toFixed(3));
@@ -513,12 +531,20 @@ function ShowPopUpCommercial() {
     $("#CancelModelCommercial").find("button, submit, a").show();
     $('#CancelModel').modal('show');
 }
-function ShowYearForm() {
+function ShowYearForm(yearIndex) {
     if (ValidateBU_Strength()) {
         $("#AddYearForm").show();
         IsShowCancel_Save_buttons(false);
     }
-    var Count_Of_Next_year = objYears.length + 1;
+    var Count_Of_Next_year;
+    if (yearIndex == 0) {
+        EditIndex = -1;
+        Count_Of_Next_year = objYears.length + 1;
+    }
+    else {
+        Count_Of_Next_year = yearIndex;
+    }
+    
     var SaveButtonText = 'Save Year';
     $("#btnSaveYear").text(SaveButtonText + Count_Of_Next_year);
 }
