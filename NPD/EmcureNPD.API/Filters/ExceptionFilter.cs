@@ -1,4 +1,5 @@
-﻿using EmcureNPD.Business.Models;
+﻿using EmcureNPD.Business.Core.Interface;
+using EmcureNPD.Business.Models;
 using EmcureNPD.Utility.Enums;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc.Filters;
@@ -13,10 +14,11 @@ namespace EmcureNPD.API.Filter
     public class ExceptionFilter : IExceptionFilter
     {
         private readonly ILogger<ExceptionFilter> logger;
-
-        public ExceptionFilter(ILogger<ExceptionFilter> logger)
+        private readonly IExceptionService _ExceptionService;
+        public ExceptionFilter(ILogger<ExceptionFilter> logger, IExceptionService exceptionService)
         {
             this.logger = logger;
+            _ExceptionService = exceptionService;
         }
 
         public void OnException(ExceptionContext context)
@@ -35,7 +37,7 @@ namespace EmcureNPD.API.Filter
             var result = JsonConvert.SerializeObject(responseModel);
 
             logger.LogCritical(context.Exception, context.Exception.Message);
-
+            _ExceptionService.LogException(context.Exception);
             response.ContentLength = result.Length;
             response.WriteAsync(result);
         }
