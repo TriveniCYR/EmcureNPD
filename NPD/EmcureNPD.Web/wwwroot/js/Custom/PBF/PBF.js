@@ -2,6 +2,9 @@
 var UserwiseBusinessUnit;
 var _PIDFPBFId = 0;
 var _mode = 0;
+var _rndView = 0;
+var _analyticalView = 0;
+var _clinicalView = 0;
 var _pbf = true;
 var _strengthArray = [];
 var _CostOfLitigationArray = [];
@@ -896,6 +899,7 @@ function GetPBFTabDetailsSuccess(data) {
             SetPBFDisableForOtherUserBU();
 
             SetPhaseWiseBudget();
+            PBFTabsReadOnly();
         }
     } catch (e) {
         toastr.error('Error:' + e.message);
@@ -2393,12 +2397,34 @@ function SetRNDChildRows() {
 }
 //R&D End
 function PBFreadOnlyForm() {
+   
     $('#AddPBFForm').find('input,select,textarea,checkbox').attr('readonly', true).attr('disabled', true);
     //$('#tableGeneralStrength, #tablerndbatchsize, #tablerndapirequirement, #tablerndexicipientrequirement, #tablerndpackagingmaterialrequirement, #tablerndtoolingchangepart, #tablerndcapexmiscellaneousexpenses, #tablerndplantsupportcost, #tablerndreferenceproductdetail, #tablerrndmanpowercostprojectduration, #tblFillingExpensesBody').find('input').attr('readonly', true).attr('disabled', true);
     ////$('button').attr('readonly', true).attr('disabled', true);
     //$('#AddPBFForm').find('select').attr('readonly', true).attr('disabled', true).trigger("change");
     $('#AddPBFForm').find('.operationButton').hide();
     $('#btnPBFCancel').show();
+}
+function PBFTabsReadOnly() {
+    _analyticalView = $('#hdnPBFAnalyticalPermission').val();
+    _clinicalView = $('#hdnPBFClinicalPermission').val();
+    _rndView = $('#hdnPBFRNDPermission').val();
+    
+    if (_analyticalView) {
+        $('#custom-tabs-Analytical').find('input,select,textarea,checkbox').attr('readonly', true).attr('disabled', true);
+        $('#custom-tabs-Analytical').find('.operationButton').hide();
+    }
+    if (_clinicalView) {
+        $('#custom-tabs-Clinical').find('input,select,textarea,checkbox').attr('readonly', true).attr('disabled', true);
+        $('#custom-tabs-Clinical').find('.operationButton').hide();
+
+    }
+    if (_rndView) {
+        $('#custom-tabs-RnD').find('input,select,textarea,checkbox').attr('readonly', true).attr('disabled', true);
+        $('#custom-tabs-RnD').find('.operationButton').hide();
+
+    }
+   
 }
 function GetValueFromBatchSize(_ActivityTypeId, _StrengthId) {
     if (parseInt(_ActivityTypeId) == 1) {
