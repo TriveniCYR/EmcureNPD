@@ -5,6 +5,7 @@
 @{
     ViewData["Title"] = "Project Show Details";
     var id = ViewBag.bid;
+    var encBuid = Context.Request.Query["bui"];
     string jsVersion = @Configuration.GetSection("StaticJS")["version"];
     RolePermissionModel objPermssion = (RolePermissionModel)ViewBag.Access;
     bool IsAddAllow = (objPermssion.Add) ;
@@ -19,7 +20,7 @@
         <h2 class="m-0">Project Management</h2>
         <div class="md-left mb-1">
             <div class="mybtn-group">
-                <a class="btn btn-primary" href="@Url.Action("Gantt","Project", new{pidfid =@ViewBag.id})"><i class="fas fa-project-diagram mr-2"></i>Gantt Chart</a>
+                <a class="btn btn-primary" href="@Url.Action("Gantt","Project", new{pidfid =@ViewBag.id,bui=encBuid})"><i class="fas fa-project-diagram mr-2"></i>Gantt Chart</a>
 
                 <button class="btn btn-primary" onclick="location.href='@Url.Action("PIDFList", "PIDF", new { ScreenId = 9 })'"><i class="fas fa-undo mr-1"></i> Back</button>
             </div>
