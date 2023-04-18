@@ -319,8 +319,9 @@ function UpdateYearTable(columns) {
             }
         });
         AddtblRevenueRow(objYears[i], i, columns);
-        $('#AddYearRow' + i).append('<td> <spam><i class="fa fa-fw fa-trash mr-1" id="deleteIconAddyear_' + i + '" onclick="deleteCommercialRow(' + i + ')"></i></spam>'+       
-        '<spam><i class="fas fa-edit" id="editIconAddyear_' + i + '" onclick="editCommercialRow(' + i + ')"></i></spam></td>')
+        $('#AddYearRow' + i).append
+            ('<td> <spam class="text-primary"> <i class="fas fa-edit mr-1" id="editIconAddyear_' + i + '" onclick="editCommercialRow(' + i + ')"></i></spam >' +       
+         '<spam class="text-danger" ><i class="fa fa-fw fa-trash" id="deleteIconAddyear_' + i + '" onclick="deleteCommercialRow(' + i + ')"></i></spam></td>')
 
         $('#AddYearRow' + i + ' td:eq(10) spam i').prop('id', 'deleteIconAPI_' + i + '');
         $('#AddYearRow' + i + ' td:eq(10) spam i').attr('onclick', 'deleteRowApiDetails(' + i + ')');
@@ -465,22 +466,20 @@ function SetCommercialDisableForOtherUserBU() {
 // ----------Calulations Methods--------------
 
 
-
 //----------- Market Size-----------------------
-$('#MarketGrowth').focusout(function () {
+$('input[type="number"]').focusout(function () {
     var result = 0;
     var MarketSizeAsLaunch;
     var MarketGrowth;
-    var objyearLen = objYears.length;
-
-    if (objyearLen == 0) {
+    var currentIndex = (EditIndex == -1) ? objYears.length : EditIndex;
+    if (currentIndex == 0) {
         MarketSizeAsLaunch = $('#MarketSizeInUnit').val();
         MarketGrowth = $('#MarketGrowth').val();
         result = MarketSizeAsLaunch * (1 + (MarketGrowth / 100))
         $('#MarketSize').val(result.toFixed());
     }
-    if (objyearLen > 0) {
-        MarketSizeAsLaunch = objYears[objyearLen - 1]['MarketSize']
+    if (currentIndex > 0) {
+        MarketSizeAsLaunch = objYears[currentIndex - 1]['MarketSize']
         MarketGrowth = $('#MarketGrowth').val();
         result = MarketSizeAsLaunch * (1 + (MarketGrowth / 100))
         $('#MarketSize').val(result.toFixed());
@@ -488,13 +487,13 @@ $('#MarketGrowth').focusout(function () {
     // $('#MarketGrowth').val(MarketGrowth + '%');
 });
 //--------- Estimated Market Share Units--------------------
-$('#MarketSharePercentageLow').focusout(function () {
+$('input[type="number"]').focusout(function () {
     EstimatedMarketShareUnits('Low');
 });
-$('#MarketSharePercentageMedium').focusout(function () {
+$('input[type="number"]').focusout(function () {
     EstimatedMarketShareUnits('Medium');
 });
-$('#MarketSharePercentageHigh').focusout(function () {
+$('input[type="number"]').focusout(function () {
     EstimatedMarketShareUnits('High');
 });
 function EstimatedMarketShareUnits(variable) {
@@ -504,13 +503,13 @@ function EstimatedMarketShareUnits(variable) {
     $('#MarketShareUnit' + variable).val(result.toFixed());
 }
 //---------NSP------------------------------------
-$('#NspunitsLow').focusout(function () {
+$('input[type="number"]').focusout(function () {
     NSP('Low');
 });
-$('#NspunitsMedium').focusout(function () {
+$('input[type="number"]').focusout(function () {
     NSP('Medium');
 });
-$('#NspunitsHigh').focusout(function () {
+$('input[type="number"]').focusout(function () {
     NSP('High');
 });
 function NSP(variable) {
