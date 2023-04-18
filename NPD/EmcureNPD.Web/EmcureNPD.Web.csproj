@@ -48,6 +48,7 @@
     <Content Remove="Views\PIDF\PBFForm.cshtml" />
     <Content Remove="Views\PIDF\PBFRnDForm.cshtml" />
     <Content Remove="Views\PIDF\PBFRndView.cshtml" />
+    <Content Remove="Views\PIDF\PIDFFinance.cshtml" />
     <Content Remove="Views\PIDF\PIDFManagement.cshtml" />
     <Content Remove="Views\PIDF\_PBFForm.cshtml" />
     <Content Remove="wwwroot\js\Custom\IPD\IPD.js" />

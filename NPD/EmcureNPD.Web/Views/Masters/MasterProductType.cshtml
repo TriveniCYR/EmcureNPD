@@ -91,7 +91,7 @@
                             <div class="form-group required">
                                 @Html.LabelFor(model => model.ProductTypeFactor,"Product Type Factor", new { @class = "control-label" })
 
-                                @Html.EditorFor(model => model.ProductTypeFactor, new { htmlAttributes = new { @autocomplete = "off", @class = "form-control checkbox-checked",type = "number", min = 0 , @placeholder = @SharedLocalizer["Product Type Factor"] } })
+                                @Html.EditorFor(model => model.ProductTypeFactor, new { htmlAttributes = new { @autocomplete = "off", @class = "form-control checkbox-checked numberonly",type = "number", min = 0 , @placeholder = @SharedLocalizer["Product Type Factor"] } })
                                 @Html.ValidationMessageFor(model => model.ProductTypeFactor, "", new { @class = "text-danger"})
                             </div>
                             <div class="form-group required">
