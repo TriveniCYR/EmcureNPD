@@ -17,7 +17,7 @@
     string jsVersion = @Configuration.GetSection("StaticJS")["version"];
     var PidfNumber=UtilityHelper.Decreypt(Convert.ToString(PidafId));
     var DefaultStatus = Model == null ? 0 : Model.PIDFStatusId;
-    var CurrencyId=Model == null ? 0 : Model.Currencyid;
+    var CurrencyId=Model == null ? "" : Model.Currencyid;
     var DosageFormId=Model == null ? 0 : Model.DosageFrom;
     var MSPercent=Model==null?0:Model.Mspersentage;
     var TargetPriceScenario=Model==null?0:Model.TargetPriceScenario;
@@ -25,6 +25,7 @@
     string IsApproveAllow = (objPermssion.Approve) ? "" : "display: none";
 }
 
+<link rel="stylesheet" href="~/AdminLTE/plugins/select2/css/select2.min.css" />
 <div class="content-header">
         <h2 class="m-0">Finance Management</h2>
 </div>
@@ -86,8 +87,11 @@
 				<div class="col-md-3">
 					<div class="form-group required">
 						<label class="control-label">Currency<span style="color:red;">*</span></label>
-							@Html.DropDownListFor(model => model.Currencyid,
-							new List<SelectListItem> { new SelectListItem { Value = "0", Text = "Plese Select Currency" } },new { @class="form-control readOnlyUpdate",@required="required",@id="Currency"})
+                            @*@Html.HiddenFor(model => model.Currencyid);*@
+                            <input type="hidden" name="Currencyid" id="Currencyid"/>
+                            <select class="form-control readOnlyUpdate" id="Currency" required="required" multiple="multiple"></select>
+							@*@Html.DropDownListFor(model => model.Currencyid,
+                                new List<SelectListItem> { new SelectListItem { Value = "0", Text = "Plese Select Currency" } },new { @class="form-control readOnlyUpdate",@required="required",@name="Currency",@id="Currency",multiple = "multiple"})*@
 							<div class="invalid-feedback">
                                 Please select Currency.
                        </div>
@@ -145,8 +149,8 @@
 
 								<table style="width:100%;">
 									<tr>
-										<th>MS %*</th>
-										<th>Target Price Scenario*</th>
+										<th>MS %<span style="color:red;">*</span></th>
+										<th>Target Price Scenario<span style="color:red;">*</span></th>
 									</tr>
 									<tbody>
 										<tr>
@@ -586,7 +590,7 @@
 							<td>
 								<div class="">
 									<div class="form-group required">
-										@Html.TextBoxFor(@modal=>modal.RandDanalyticalcost,new{@class="form-control readOnlyUpdate",@required="required",@type="number",@min="0"})
+										@Html.TextBoxFor(@modal=>modal.RandDanalyticalcost,new{@class="form-control deal-term readOnlyUpdate",@required="required",@type="number",@min="0",@onchange="calculateDealTerm();"})
 									<div class="invalid-feedback">
                                             Please enter R&D/Analytical cost.
                                            </div>
@@ -621,7 +625,7 @@
 							<td>
 								<div class="">
 									<div class="form-group required">
-										@Html.TextBoxFor(@modal=>modal.Rldsamplecost,new{@class="form-control readOnlyUpdate",@required="required",@type="number",@min="0"})
+										@Html.TextBoxFor(@modal=>modal.Rldsamplecost,new{@class="form-control deal-term readOnlyUpdate",@required="required",@type="number",@min="0",@onchange="calculateDealTerm();"})
 									<div class="invalid-feedback">
                                             Please enter RLD sample cost.
                                            </div>
@@ -656,7 +660,7 @@
 							<td>
 								<div class="">
 									<div class="form-group required">
-										@Html.TextBoxFor(@modal=>modal.BatchmanufacturingcostOrApiactualsEst,new{@class="form-control readOnlyUpdate",@required="required",@type="number",@min="0"})
+										@Html.TextBoxFor(@modal=>modal.BatchmanufacturingcostOrApiactualsEst,new{@class="form-control deal-term readOnlyUpdate",@required="required",@type="number",@min="0",@onchange="calculateDealTerm();"})
 									<div class="invalid-feedback">
                                             Please enter Batch manufacturing cost/ API Actuals Est.
                                            </div>
@@ -691,7 +695,7 @@
 							<td>
 								<div class="">
 									<div class="form-group required">
-										@Html.TextBoxFor(@modal=>modal.Sixmonthsstabilitycost,new{@class="form-control readOnlyUpdate",@required="required",@type="number",@min="0"})
+										@Html.TextBoxFor(@modal=>modal.Sixmonthsstabilitycost,new{@class="form-control deal-term readOnlyUpdate",@required="required",@type="number",@min="0",@onchange="calculateDealTerm();"})
 									<div class="invalid-feedback">
                                             Please enter 6 months stability cost.
                                            </div>
@@ -726,7 +730,7 @@
 							<td>
 								<div class="">
 									<div class="form-group required">
-										@Html.TextBoxFor(@modal=>modal.TechTransfer,new{@class="form-control readOnlyUpdate",@required="required",@type="number",@min="0"})
+										@Html.TextBoxFor(@modal=>modal.TechTransfer,new{@class="form-control deal-term readOnlyUpdate",@required="required",@type="number",@min="0",@onchange="calculateDealTerm();"})
 									<div class="invalid-feedback">
                                             Please enter Tech Transfer.
                                            </div>
@@ -761,7 +765,7 @@
 							<td>
 								<div class="">
 									<div class="form-group required">
-										@Html.TextBoxFor(@modal=>modal.Bestudies,new{@class="form-control readOnlyUpdate",@required="required",@type="number",@min="0"})
+										@Html.TextBoxFor(@modal=>modal.Bestudies,new{@class="form-control deal-term readOnlyUpdate",@required="required",@type="number",@min="0",@onchange="calculateDealTerm();"})
 									<div class="invalid-feedback">
                                             Please enter BE studies.
                                            </div>
@@ -796,7 +800,7 @@
 							<td>
 								<div class="">
 									<div class="form-group required">
-										@Html.TextBoxFor(@modal=>modal.Filingfees,new{@class="form-control readOnlyUpdate",@required="required",@type="number",@min="0"})
+										@Html.TextBoxFor(@modal=>modal.Filingfees,new{@class="form-control deal-term readOnlyUpdate",@required="required",@type="number",@min="0",@onchange="calculateDealTerm();"})
 									<div class="invalid-feedback">
                                             Please enter Filing fees.
                                            </div>
@@ -831,7 +835,7 @@
 							<td>
 								<div class="">
 									<div class="form-group required">
-										@Html.TextBoxFor(@modal=>modal.BioStuddyCost,new{@class="form-control readOnlyUpdate",@required="required",@type="number",@min="0"})
+										@Html.TextBoxFor(@modal=>modal.BioStuddyCost,new{@class="form-control deal-term readOnlyUpdate",@required="required",@type="number",@min="0",@onchange="calculateDealTerm();"})
 									<div class="invalid-feedback">
                                             Please enter Bio Study Cost.
                                            </div>
@@ -866,7 +870,7 @@
 							<td>
 								<div class="">
 									<div class="form-group required">
-										@Html.TextBoxFor(@modal=>modal.Capex,new{@class="form-control readOnlyUpdate",@required="required",@type="number",@min="0"})
+                                            @Html.TextBoxFor(@modal=>modal.Capex,new{@class="form-control deal-term readOnlyUpdate",@required="required",@type="number",@min="0",@onchange="calculateDealTerm();"})
 									<div class="invalid-feedback">
                                             Please enter Capex.
                                            </div>
@@ -901,7 +905,7 @@
 							<td>
 								<div class="">
 									<div class="form-group required">
-										@Html.TextBoxFor(@modal=>modal.ToolingAndChangeParts,new{@class="form-control readOnlyUpdate",@required="required",@type="number",@min="0"})
+                                            @Html.TextBoxFor(@modal=>modal.ToolingAndChangeParts,new{@class="form-control deal-term readOnlyUpdate",@required="required",@type="number",@min="0",@onchange="calculateDealTerm();"})
 									<div class="invalid-feedback">
                                             Please enter Tooling & Change Parts.
                                            </div>
@@ -929,13 +933,20 @@
 							<td>
 								<div class="">
 									<div class="form-group required">
-										<label class="control-label">Total</label>
-										<span id="Total" name="Total"></span>
-										@Html.HiddenFor(@modal=>modal.Total)
+										<label class="control-label">Total:</label>
+                                           
 									</div>
 								</div>
 							</td>
-							
+							<td>
+								<div class="">
+									<div class="form-group required">
+                                        @*<input type="text" id="spanTotal" readonly="true"/>*@
+                                            <b>= <span id="spanTotal" name="Total"></span></b>
+                                            @Html.HiddenFor(@modal=>modal.Total)
+									</div>
+								</div>
+							</td>
 						</tr>
 					</tbody>
 				</table>
@@ -971,15 +982,15 @@
                                                     <th>CAGR over 2016/12 Est MAT units</th>
                                                     <th>Market in packs</th>
                                                     <th>Batch size in ltr/tabs</th>
-                                                    <th>Batch size*</th>
-                                                    <th style="width: 50px;">Yield*</th>
-                                                    <th>Batch output*</th>
-                                                    <th>API (CAD)*</th>
-                                                    <th>Excipients (CAD)*</th>
-                                                    <th>PM (CAD)*</th>
-                                                    <th>CCPC (CAD)*</th>
-                                                    <th>Freight (CAD)*</th>
-                                                    <th>Emcure COGs/pack*</th>
+                                                    <th>Batch size<span style="color:red;">*</span></th>
+                                                    <th style="width: 50px;">Yield<span style="color:red;">*</span></th>
+                                                    <th>Batch output<span style="color:red;">*</span></th>
+                                                    <th>API (CAD)<span style="color:red;">*</span></th>
+                                                    <th>Excipients (CAD)<span style="color:red;">*</span></th>
+                                                    <th>PM (CAD)<span style="color:red;">*</span></th>
+                                                    <th>CCPC (CAD)<span style="color:red;">*</span></th>
+                                                    <th>Freight (CAD)<span style="color:red;">*</span></th>
+                                    <th>Emcure COGs/pack<span style="color:red;">*</span></th>
                                 <th class="dtfc-fixed-right">Action</th>
                                                 </tr>
                                             </thead>
@@ -6370,7 +6381,7 @@
             
             @if(ViewBag.Access.Approve == true)
             {
-                if ((Model != null && Model.PIDFStatusId > 0 && Model.PIDFStatusId == (Int32)Master_PIDFStatus.FinanceSubmitted) || (Convert.ToBoolean(Context.Request.Query["finance"])) && (Convert.ToBoolean(Context.Request.Query["api"]) || Convert.ToBoolean(Context.Request.Query["inHouses"]) == false))
+                if ((Model != null && Model.PIDFStatusId > 0 && Model.PIDFStatusId == (Int32)Master_PIDFStatus.FinanceSubmitted) || (Convert.ToBoolean(Context.Request.Query["finance"])))
                 {       
                     <a style="@IsApproveAllow" class="btn btn-success operationButton btnControll" onClick="ApproveRejectClick('A', '@PidfNumber', @((int)EmcureNPD.Utility.Enums.PIDFScreen.Finance), '/PIDF/PIDFList?ScreenId=@((int)EmcureNPD.Utility.Enums.PIDFScreen.Finance)')"><i class="fa fa-check-circle mr-1"></i> @SharedLocalizer["Approve"]</a>
                     <a style="@IsApproveAllow" class="btn btn-danger  operationButton btnControll" onClick="ApproveRejectClick('R', '@PidfNumber', @((int)EmcureNPD.Utility.Enums.PIDFScreen.Finance), '/PIDF/PIDFList?ScreenId=@((int)EmcureNPD.Utility.Enums.PIDFScreen.Finance)')"><i class="fa fa-ban mr-1"></i> @SharedLocalizer["Reject"]</a>
@@ -6391,7 +6402,7 @@
      @Html.Partial("_CancelRequest", (int)PIDFScreen.Finance)
 @section MyScripts {
 	@*@Html.Partial("_DataTablePartial")*@
-<link rel="stylesheet" href="~/AdminLTE/plugins/select2/css/select2.min.css" />
+
 	<script src="~/js/custom/pidf/PIDFFinance.js?v=@jsVersion"></script>
 <script type="text/javascript" src="~/AdminLTE/plugins/select2/js/select2.min.js"></script>
 <script>

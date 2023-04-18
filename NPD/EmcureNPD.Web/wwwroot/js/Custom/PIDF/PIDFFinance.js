@@ -2,6 +2,7 @@
 
 $(document).ready(function () {
     GetCurrencyList();
+    calculateDealTerm();
     GetDosageFormList();
     GetSelectedMSPercent();
     GetSelectedTargetPriceScanario();
@@ -20,6 +21,11 @@ $(document).ready(function () {
         $('.del-rows').css("display", "block");
         SetChildRowDeleteIcon();
     }
+
+    $("#Currency").select2({
+        placeholder: "Select Currency..",
+        allowClear: true
+    });
 });
 
 function GetSelectedMSPercent()
@@ -54,7 +60,7 @@ $("#btnRejects").click(function () {
     }
 })
 function GetCurrencyList() {
-    //ajaxServiceMethod($('#hdnBaseURL').val() + AllCurrency, 'GET', GetCurrencyListSuccess, GetCurrencyListError);
+   //ajaxServiceMethod($('#hdnBaseURL').val() + AllCurrency, 'GET', GetCurrencyListSuccess, GetCurrencyListError);
     ajaxServiceMethod($('#hdnBaseURL').val() + "api/Currency/GetCurrencyByLoggedInUser", 'GET', GetCurrencyListSuccess, GetCurrencyListError);
 }
 
@@ -63,16 +69,12 @@ function GetCurrencyListSuccess(data) {
         $('#Currency').html('')
         let optionhtml = '<option value = "0">--Select--</option>';
         $.each(data._object, function (index, object) {
-            optionhtml +='<option value="' +
+            optionhtml += '<option value="' +
                 object.currencyId + '">' + object.currencyName + '</option>';
         });
         $("#Currency").append(optionhtml);
-        $("select#Currency option").each(function (index, value) {
-            if (this.value === selectedCurrencyId) {
-                $("select#Currency").prop('selectedIndex', index);
-                return;
-            }
-        });
+        let arrCur = JSON.parse(JSON.stringify(selectedCurrencyId.split(',')));
+        $('select#Currency').select2().val(arrCur).trigger('change'); 
     } catch (e) {
         toastr.error('Error:' + e.message);
     }
@@ -120,6 +122,7 @@ function addRowFinanceDetails(j) {
 function SaveClick() {
     //if ($('.readOnlyUpdate').val() !== null && $('.readOnlyUpdate').val()!=="") {
     $('#SaveType').val('submit');
+    $("#Currencyid").val($("#Currency").val().join(','));
     /*$("#HfStatusRemark").val("Submitted");*/
         SetChildRows();
     //}
@@ -130,6 +133,8 @@ function SaveClick() {
 function SaveDraftClick() {
     //if ($('.readOnlyUpdate').val() !== null && $('.readOnlyUpdate').val() !== "") {
     $('#SaveType').val('draft');
+    //let selectedCurrencyId = $("#Currency").val().join(',');
+    $("#Currencyid").val($("#Currency").val().join(','));
     /*$("#HfStatusRemark").val("SavedAsDraft");*/
         SetChildRows();
     //}
@@ -140,6 +145,7 @@ function SaveDraftClick() {
 function ApproveClick() {
     //if ($('.readOnlyUpdate').val() !== null && $('.readOnlyUpdate').val() !== "") {
     $('#SaveType').val('approved');
+    $("#Currencyid").val($("#Currency").val().join(','));
     $("#HfStatusRemark").val($("#textApproveStatusRemark").val());
         SetChildRows();
     //}
@@ -151,6 +157,7 @@ function ApproveClick() {
 function RejectClick() {
     //if ($('.readOnlyUpdate').val() !== null && $('.readOnlyUpdate').val() !== "") {
     $('#SaveType').val('rejected');
+    $("#Currencyid").val($("#Currency").val().join(','));
     $("#HfStatusRemark").val($("#textRejectStatusRemark").val());
         SetChildRows();
     //}
@@ -204,6 +211,16 @@ function grantSubmit() {
         //return;
     });
 }
+
+function calculateDealTerm(id) {
+    let totaldealterm = 0;
+    $('.deal-term').each(function () {
+        if ($(this).val() >0) {
+            totaldealterm += parseInt($(this).val());
+        }
+    });
+    $("#spanTotal").text(totaldealterm)
+}
 $("i.fas.fa-plus").click(function () {
     let count = 1;
     for (let i = 0; i < count; i++) {
@@ -233,7 +250,7 @@ $("i.fas.fa-plus").click(function () {
                    event.preventDefault()
                    event.stopPropagation()
                }
-               else if ($("select#Currency").val() == 0) {
+               else if ($("select#Currency").val() == "") {
                    event.preventDefault()
                    event.stopPropagation()
                    toastr.error("please select currency", "Required");

@@ -17,7 +17,7 @@ namespace EmcureNPD.Data.DataAccess.Entity
         public string Entity { get; set; }
         public string Product { get; set; }
         public DateTime? ForecastDate { get; set; }
-        public int Currencyid { get; set; }
+        public string Currencyid { get; set; }
         public int? DosageFrom { get; set; }
         public string ManufacturingSiteOrPartner { get; set; }
         public string Skus { get; set; }

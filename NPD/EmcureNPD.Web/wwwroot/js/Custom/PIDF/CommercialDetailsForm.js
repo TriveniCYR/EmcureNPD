@@ -243,7 +243,7 @@ function editCommercialRow(i) {
     $('#CommercialPackagingTypeId').focus();
 }
 function deleteCommercialRow(i) {
-    console.log(objYears);
+   
     objYears.pop(i);
     UpdateYearTable(ColumnObjUpcase);
 }
