@@ -78,6 +78,7 @@ namespace EmcureNPD.Business.Models
         public int? CapitalOtherExpenditureId { get; set; }        
         public string Name { get; set; }
         public string CapitalOtherExpenditureAmountValue { get; set; }
+        [StringLength(50)]
         public string CapitalOtherExpenditureRemarkValue { get; set; }      
     }
     public class ManhourEstimates

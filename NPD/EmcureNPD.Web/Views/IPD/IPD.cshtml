@@ -62,7 +62,7 @@
                 {
 
                     <button style="@IsApproveAllow" type="submit" class="btn btn-success me-3 outside-buttons operationButton" onClick="ApproveRejectClick('A', '@Model.PIDFID', @((int)EmcureNPD.Utility.Enums.PIDFScreen.IPD), '/PIDF/PIDFList?ScreenId=@((int)EmcureNPD.Utility.Enums.PIDFScreen.IPD)')"><i class="fa fa-check-circle mr-1"></i>@SharedLocalizer["Approve"]</button>
-                    <button style="@IsApproveAllow" type="submit" class="btn btn-danger me-3 outside-buttons operationButton" onClick="ApproveRejectClick('R', @Model.PIDFID, @EmcureNPD.Utility.Enums.PIDFScreen.IPD, '/PIDF/PIDFList?ScreenId=@((int)EmcureNPD.Utility.Enums.PIDFScreen.IPD)');"><i class="fa fa-ban mr-1"></i>@SharedLocalizer["Reject"]</button>
+                    <button style="@IsApproveAllow" type="submit" class="btn btn-danger me-3 outside-buttons operationButton" onClick="ApproveRejectClick('R', @Model.PIDFID, @((int)EmcureNPD.Utility.Enums.PIDFScreen.IPD), '/PIDF/PIDFList?ScreenId=@((int)EmcureNPD.Utility.Enums.PIDFScreen.IPD)');"><i class="fa fa-ban mr-1"></i>@SharedLocalizer["Reject"]</button>
                 }
                 @if (!Model._Partial)
                 {
@@ -82,6 +82,7 @@
         var AllRegion = "@EmcureNPD.Web.Helpers.APIURLHelper.GetAllRegionIPD";
         var AllRegionCountry = "@EmcureNPD.Web.Helpers.APIURLHelper.GetCountryRefByRegionIds";
         var GetActiveBusinessUnit = "@EmcureNPD.Web.Helpers.APIURLHelper.GetActiveBusinessUnit";
+    var ApproveRejectDeletePidf = "@EmcureNPD.Web.Helpers.APIURLHelper.ApproveRejectDeletePidf";
         var _selectBusinessUnit = "@Model.BusinessUnitId";
         var _PIDFID = "@Model.PIDFID";
         var _IPDPartialURL = "@Url.Action("IPDPartial", "IPD")";
