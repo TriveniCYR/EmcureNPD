@@ -5,7 +5,7 @@ using EmcureNPD.Web.Filters;
 namespace EmcureNPD.Web.Controllers
 {
     [CustomAuthorizeAttribute]
-    [ExceptionsFilter]
+    //[ExceptionsFilter]
     public class BaseController : Controller
     {
     }

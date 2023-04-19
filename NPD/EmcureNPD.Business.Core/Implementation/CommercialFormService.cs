@@ -98,7 +98,8 @@ namespace EmcureNPD.Business.Core.Implementation
             var IsUpdateData = (_commercialrepository.Get(x => x.Pidfid == entitycommPIDF.Pidfid) == null);
             Expression<Func<PidfCommercial, bool>> expr = u => u.BusinessUnitId == entitycommPIDF.BusinessUnitId && u.Pidfid == entitycommPIDF.Pidfid && u.PidfproductStrengthId == entitycommPIDF.PidfproductStrengthId;
             var objFetchData = await _commercialrepository.GetAsync(expr);
-            var OldObjpidfCommercial = objFetchData;
+            var OldObjpidfCommercial = _mapperFactory.Get<PidfCommercial, PIDFCommercialEntity>(objFetchData);
+            OldObjpidfCommercial.PidfCommercialYears = entitycommPIDF.PidfCommercialYears;
             if (objFetchData == null)
             {
                 var NewCommPIDF = new PidfCommercial();
@@ -115,11 +116,11 @@ namespace EmcureNPD.Business.Core.Implementation
                 NewCommPIDF.PidfCommercialYears = listYear;
                 _commercialrepository.AddAsync(NewCommPIDF);
                 await _unitOfWork.SaveChangesAsync();
-                if (IsUpdateData)
-                {
-                    //await _auditLogService.CreateAuditLog<PidfCommercial>(Utility.Audit.AuditActionType.Update,
-                    //                ModuleEnum.PIDF, OldObjpidfCommercial, NewCommPIDF, loggedInUserID);
-                }
+                //if (IsUpdateData)
+                //{
+                //    await _auditLogService.CreateAuditLog<PidfCommercial>(Utility.Audit.AuditActionType.Update,
+                //                    ModuleEnum.PIDF, OldObjpidfCommercial, NewCommPIDF, loggedInUserID);
+                //}
             }
             else
             {
@@ -138,8 +139,8 @@ namespace EmcureNPD.Business.Core.Implementation
                 objFetchData.ModifyDate = DateTime.Now;
                 _commercialrepository.UpdateAsync(objFetchData);
                 await _unitOfWork.SaveChangesAsync();
-                //var isSuccess = await _auditLogService.CreateAuditLog<PidfCommercial>(Utility.Audit.AuditActionType.Update,
-                //ModuleEnum.PIDF, OldObjpidfCommercial, objFetchData, loggedInUserID);
+                var isSuccess = await _auditLogService.CreateAuditLog(Utility.Audit.AuditActionType.Update,
+                ModuleEnum.CommercialManagement, OldObjpidfCommercial, entitycommPIDF, loggedInUserID);
             }
             var _StatusID = (entitycommPIDF.SaveType == "Sv") ? Master_PIDFStatus.CommercialSubmitted : Master_PIDFStatus.CommercialInProgress;
             await _auditLogService.UpdatePIDFStatusCommon(entitycommPIDF.Pidfid, (int)_StatusID, entitycommPIDF.CreatedBy);

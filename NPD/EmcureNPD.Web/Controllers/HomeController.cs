@@ -34,5 +34,9 @@ namespace EmcureNPD.Web.Controllers
         {
             return View();
         }
+        public IActionResult InternalServerError()
+        {
+            return View();
+        }
     }
 }

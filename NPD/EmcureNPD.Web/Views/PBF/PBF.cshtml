@@ -500,7 +500,7 @@
                          id="custom-tabs-department-tabContent">
                             @if (UtilityHelper.GetAccess((int)EmcureNPD.Utility.Enums.ModuleEnum.PBF, Helper.GetLoggedInRoleId(), (int)EmcureNPD.Utility.Enums.PermissionEnum.View, (int)EmcureNPD.Utility.Enums.SubModulePermissionEnum.RnD) || UtilityHelper.GetAccess((int)EmcureNPD.Utility.Enums.ModuleEnum.PBF, Helper.GetLoggedInRoleId(), (int)EmcureNPD.Utility.Enums.PermissionEnum.Edit, (int)EmcureNPD.Utility.Enums.SubModulePermissionEnum.RnD) || UtilityHelper.GetAccess((int)EmcureNPD.Utility.Enums.ModuleEnum.PBF, Helper.GetLoggedInRoleId(), (int)EmcureNPD.Utility.Enums.PermissionEnum.Add, (int)EmcureNPD.Utility.Enums.SubModulePermissionEnum.RnD))
                             {
-                                 if (UtilityHelper.GetAccess((int)EmcureNPD.Utility.Enums.ModuleEnum.PBF, Helper.GetLoggedInRoleId(), (int)EmcureNPD.Utility.Enums.PermissionEnum.View, (int)EmcureNPD.Utility.Enums.SubModulePermissionEnum.RnD))
+                                 if (UtilityHelper.GetAccess((int)EmcureNPD.Utility.Enums.ModuleEnum.PBF, Helper.GetLoggedInRoleId(), (int)EmcureNPD.Utility.Enums.PermissionEnum.Edit, (int)EmcureNPD.Utility.Enums.SubModulePermissionEnum.RnD))
                                 {
                                      <input type="hidden" id="hdnPBFRNDPermission" value="true" />
                                 }
@@ -831,7 +831,7 @@
                             }
                             @if (UtilityHelper.GetAccess((int)EmcureNPD.Utility.Enums.ModuleEnum.PBF, Helper.GetLoggedInRoleId(), (int)EmcureNPD.Utility.Enums.PermissionEnum.View, (int)EmcureNPD.Utility.Enums.SubModulePermissionEnum.Analytical) || UtilityHelper.GetAccess((int)EmcureNPD.Utility.Enums.ModuleEnum.PBF, Helper.GetLoggedInRoleId(), (int)EmcureNPD.Utility.Enums.PermissionEnum.Edit, (int)EmcureNPD.Utility.Enums.SubModulePermissionEnum.Analytical) || UtilityHelper.GetAccess((int)EmcureNPD.Utility.Enums.ModuleEnum.PBF, Helper.GetLoggedInRoleId(), (int)EmcureNPD.Utility.Enums.PermissionEnum.Add, (int)EmcureNPD.Utility.Enums.SubModulePermissionEnum.Analytical))
                             {
-                                if (UtilityHelper.GetAccess((int)EmcureNPD.Utility.Enums.ModuleEnum.PBF, Helper.GetLoggedInRoleId(), (int)EmcureNPD.Utility.Enums.PermissionEnum.View, (int)EmcureNPD.Utility.Enums.SubModulePermissionEnum.Analytical))
+                                if (UtilityHelper.GetAccess((int)EmcureNPD.Utility.Enums.ModuleEnum.PBF, Helper.GetLoggedInRoleId(), (int)EmcureNPD.Utility.Enums.PermissionEnum.Edit, (int)EmcureNPD.Utility.Enums.SubModulePermissionEnum.Analytical))
                                 {
                                      <input type="hidden" id="hdnPBFAnalyticalPermission" value="true" />
                                 }
@@ -851,7 +851,7 @@
                             }
                             @if (UtilityHelper.GetAccess((int)EmcureNPD.Utility.Enums.ModuleEnum.PBF, Helper.GetLoggedInRoleId(), (int)EmcureNPD.Utility.Enums.PermissionEnum.View, (int)EmcureNPD.Utility.Enums.SubModulePermissionEnum.Clinical) || UtilityHelper.GetAccess((int)EmcureNPD.Utility.Enums.ModuleEnum.PBF, Helper.GetLoggedInRoleId(), (int)EmcureNPD.Utility.Enums.PermissionEnum.Edit, (int)EmcureNPD.Utility.Enums.SubModulePermissionEnum.Clinical) || UtilityHelper.GetAccess((int)EmcureNPD.Utility.Enums.ModuleEnum.PBF, Helper.GetLoggedInRoleId(), (int)EmcureNPD.Utility.Enums.PermissionEnum.Add, (int)EmcureNPD.Utility.Enums.SubModulePermissionEnum.Clinical))
                             {
-                                 if (UtilityHelper.GetAccess((int)EmcureNPD.Utility.Enums.ModuleEnum.PBF, Helper.GetLoggedInRoleId(), (int)EmcureNPD.Utility.Enums.PermissionEnum.View, (int)EmcureNPD.Utility.Enums.SubModulePermissionEnum.Clinical))
+                                 if (UtilityHelper.GetAccess((int)EmcureNPD.Utility.Enums.ModuleEnum.PBF, Helper.GetLoggedInRoleId(), (int)EmcureNPD.Utility.Enums.PermissionEnum.Edit, (int)EmcureNPD.Utility.Enums.SubModulePermissionEnum.Clinical))
                                 {
                                      <input type="hidden" id="hdnPBFClinicalPermission" value="true" />
                                 }
@@ -877,10 +877,6 @@
             <div class="row">
                 <div class="col-12 text-end">
                     <div class="form-group" id="dvMainButton">
-                        @*@if ((UtilityHelper.GetAccess((int)EmcureNPD.Utility.Enums.ModuleEnum.PBF, Helper.GetLoggedInRoleId(), (int)EmcureNPD.Utility.Enums.PermissionEnum.Edit, (int)EmcureNPD.Utility.Enums.SubModulePermissionEnum.RnD) || UtilityHelper.GetAccess((int)EmcureNPD.Utility.Enums.ModuleEnum.PBF, Helper.GetLoggedInRoleId(), (int)EmcureNPD.Utility.Enums.PermissionEnum.Add, (int)EmcureNPD.Utility.Enums.SubModulePermissionEnum.RnD)) ||
-                        (UtilityHelper.GetAccess((int)EmcureNPD.Utility.Enums.ModuleEnum.PBF, Helper.GetLoggedInRoleId(), (int)EmcureNPD.Utility.Enums.PermissionEnum.Edit, (int)EmcureNPD.Utility.Enums.SubModulePermissionEnum.Clinical) || UtilityHelper.GetAccess((int)EmcureNPD.Utility.Enums.ModuleEnum.PBF, Helper.GetLoggedInRoleId(), (int)EmcureNPD.Utility.Enums.PermissionEnum.Add, (int)EmcureNPD.Utility.Enums.SubModulePermissionEnum.Clinical)) ||
-                        (UtilityHelper.GetAccess((int)EmcureNPD.Utility.Enums.ModuleEnum.PBF, Helper.GetLoggedInRoleId(), (int)EmcureNPD.Utility.Enums.PermissionEnum.Edit, (int)EmcureNPD.Utility.Enums.SubModulePermissionEnum.Analytical) || UtilityHelper.GetAccess((int)EmcureNPD.Utility.Enums.ModuleEnum.PBF, Helper.GetLoggedInRoleId(), (int)EmcureNPD.Utility.Enums.PermissionEnum.Add, (int)EmcureNPD.Utility.Enums.SubModulePermissionEnum.Analytical))
-                        )*@
                         @if ((UtilityHelper.GetAccess((int)EmcureNPD.Utility.Enums.ModuleEnum.PBF, Helper.GetLoggedInRoleId(),(int)EmcureNPD.Utility.Enums.PermissionEnum.Edit) || UtilityHelper.GetAccess((int)EmcureNPD.Utility.Enums.ModuleEnum.PBF, Helper.GetLoggedInRoleId(), (int)EmcureNPD.Utility.Enums.PermissionEnum.Add)))
                         {
                             <button type="submit" class="btn btn-success me-3 outside-buttons operationButton" id="save" onclick="SavePBFForm('Save')">@SharedLocalizer["Submit"]</button>
