@@ -179,5 +179,14 @@ namespace EmcureNPD.Web.Models
         public int? emcureCOGs_pack { get; set; }
         public DateTime createdDate { get; set; }
         public int createdBy { get; set; }
+        public long? Skus { get; set; }
+        public int? PakeSize { get; set; }
+        public double? BrandPrice { get; set; }
+        public double? GenericListprice { get; set; }
+        public double? EstMat2016By12units { get; set; }
+        public double? EstMat2020By12units { get; set; }
+        public double? Cagrover2016By12estMatunits { get; set; }
+        public double? Marketinpacks { get; set; }
+        public double? BatchsizeinLtrTabs { get; set; }
     }
 }

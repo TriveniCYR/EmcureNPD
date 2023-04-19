@@ -40,7 +40,7 @@ function InitializePIDFList() {
                             _flag = true;
                         }
                     } else if (_screenId == "7") {
-                        if ((row.pidfStatusID == 17 || (row.finance))) {
+                        if ((row.pidfStatusID == 17 && (row.finance))) {
                             _flag = true;
                         }
                         $("#DvApproveReject").show();
