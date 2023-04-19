@@ -12,8 +12,10 @@
 @inject IConfiguration Configuration
 @model EmcureNPD.Business.Models.FinanceModel
 @{
+    
     ViewData["Title"] = @MasterLocalizer["Finance Management"];
     var PidafId=Context.Request.Query["pidfid"];
+    var selectedSkus = string.Join(",", Model.lsPidfFinanceBatchSizeCoating.Select(x => x.Skus));
     string jsVersion = @Configuration.GetSection("StaticJS")["version"];
     var PidfNumber=UtilityHelper.Decreypt(Convert.ToString(PidafId));
     var DefaultStatus = Model == null ? 0 : Model.PIDFStatusId;
@@ -23,6 +25,7 @@
     var TargetPriceScenario=Model==null?0:Model.TargetPriceScenario;
     RolePermissionModel objPermssion = (RolePermissionModel)ViewBag.Access;
     string IsApproveAllow = (objPermssion.Approve) ? "" : "display: none";
+
 }
 
 <link rel="stylesheet" href="~/AdminLTE/plugins/select2/css/select2.min.css" />
@@ -971,8 +974,7 @@
                                         <table class="table table-bordered text-center m-0">
                                             <thead>
                                                 <tr>
-                                                    <th>#</th>
-                                                    <th>SKU</th>
+                                    <th style="width: 100px;">SKU <span style="color:red;">*</span></th>
                                                     <th>Pack size</th>
                                                     <th>Brand Price</th>
                                                     <th>Generic List price</th>
@@ -1003,22 +1005,25 @@
 								
 								    <tr id="financeDetailsRow_0">
 									
-									    <td>1
-										    <input type="hidden" id="PidffinaceId" name="lsPidfFinanceBatchSizeCoating[@j].PidffinaceId" value="@item.PidffinaceId">
-										   
-									    </td>
-									    <td>100mg
+									   
+									    <td>
+                                            <select id="Skus" name="lsPidfFinanceBatchSizeCoating[@j].Skus" style="width: 100px;" value="@item.Skus" class="Skus form-control readOnlyUpdate" required>
+                                                </select>
+                                            <input type="hidden" id="PidffinaceId" name="lsPidfFinanceBatchSizeCoating[@j].PidffinaceId" value="@item.PidffinaceId">
                                              <input type="hidden" id="PidffinaceBatchSizeCoatingId" name="lsPidfFinanceBatchSizeCoating[@j].PidffinaceBatchSizeCoatingId" value="@item.PidffinaceBatchSizeCoatingId"> 
                                         </td>
-									    <td>100</td>
-									    <td>-</td>
-									    <td>1.65</td>
-									    <td>0.66</td>
-									    <td></td>
-									    <td>3,523,554</td>
-									    <td></td>
-									    <td>3,523,554</td>
-									    <td>500,000</td>
+									    <td><input type="number" id="PakeSize" name="lsPidfFinanceBatchSizeCoating[@j].PakeSize" value="@item.PakeSize" class="PakeSize form-control readOnlyUpdate" /></td>
+                                        <td><input type="number" id="BrandPrice" name="lsPidfFinanceBatchSizeCoating[@j].BrandPrice" value="@item.BrandPrice" class="BrandPrice form-control readOnlyUpdate" /></td>
+									     <td><input type="number" id="GenericListprice" name="lsPidfFinanceBatchSizeCoating[@j].GenericListprice" value="@item.GenericListprice" class="GenericListprice form-control readOnlyUpdate" /></td>
+									     <td>-</td>
+                                         <td><input type="number" id="EstMat2016By12units" name="lsPidfFinanceBatchSizeCoating[@j].EstMat2016By12units" value="@item.EstMat2016By12units" class="EstMat2016By12units form-control readOnlyUpdate"  /></td>
+									     
+									     <td><input type="number" id="EstMat2020By12units" name="lsPidfFinanceBatchSizeCoating[@j].EstMat2020By12units" value="@item.EstMat2020By12units" class="EstMat2020By12units form-control readOnlyUpdate" /></td>
+									     
+									     <td><input type="number" id="Cagrover2016By12estMatunits" name="lsPidfFinanceBatchSizeCoating[@j].Cagrover2016By12estMatunits" value="@item.Cagrover2016By12estMatunits" class="Cagrover2016By12estMatunits form-control readOnlyUpdate" /></td>
+									     <td><input type="number" id="Marketinpacks" name="lsPidfFinanceBatchSizeCoating[@j].Marketinpacks" value="@item.Marketinpacks"  class="Marketinpacks form-control readOnlyUpdate" /></td>
+                                            <td><input type="number" id="BatchsizeinLtrTabs" name="lsPidfFinanceBatchSizeCoating[@j].BatchsizeinLtrTabs" value="@item.BatchsizeinLtrTabs" class="BatchsizeinLtrTabs form-control readOnlyUpdate" /></td>
+									
 
 									    <td>
 
@@ -1063,22 +1068,24 @@
 							int j = 0;
 							<tr id="financeDetailsRow_@j">
 								
-									<td>1
-                                        <input type="hidden" id="PidffinaceId" name="lsPidfFinanceBatchSizeCoating[@j].PidffinaceId">
-									</td>
-									<td>100mg
-                                        <input type="hidden" id="PidffinaceBatchSizeCoatingId" name="lsPidfFinanceBatchSizeCoating[@j].PidffinaceBatchSizeCoatingId">
-                                    </td>
-									<td>100</td>
-									<td>-</td>
-									<td>1.65</td>
-									<td>0.66</td>
-									<td></td>
-									<td>3,523,554</td>
-									<td></td>
-									<td>3,523,554</td>
-									<td>500,000</td>
+									<td>
+                                            <select id="Skus" name="lsPidfFinanceBatchSizeCoating[@j].Skus" style="width: 100px;" class="Skus form-control readOnlyUpdate" required>
+                                                </select>
+                                            <input type="hidden" id="PidffinaceId" name="lsPidfFinanceBatchSizeCoating[@j].PidffinaceId">
+                                             <input type="hidden" id="PidffinaceBatchSizeCoatingId" name="lsPidfFinanceBatchSizeCoating[@j].PidffinaceBatchSizeCoatingId"> 
+                                        </td>
 
+                                        <td><input type="number" id="PakeSize" name="lsPidfFinanceBatchSizeCoating[@j].PakeSize" class="PakeSize form-control readOnlyUpdate" /></td>
+                                        <td><input type="number" id="BrandPrice" name="lsPidfFinanceBatchSizeCoating[@j].BrandPrice" class="BrandPrice form-control readOnlyUpdate" /></td>
+									    <td><input type="number" id="GenericListprice" name="lsPidfFinanceBatchSizeCoating[@j].GenericListprice" class="GenericListprice form-control readOnlyUpdate" /></td>
+                                        <td>-</td>
+                                        <td><input type="number" id="EstMat2016By12units" name="lsPidfFinanceBatchSizeCoating[@j].EstMat2016By12units" class="EstMat2016By12units form-control readOnlyUpdate" /></td>
+									   
+									    <td><input type="number" id="EstMat2020By12units" name="lsPidfFinanceBatchSizeCoating[@j].EstMat2020By12units" class="EstMat2020By12units form-control readOnlyUpdate" /></td>
+									    
+									    <td><input type="number" id="Cagrover2016By12estMatunits" name="lsPidfFinanceBatchSizeCoating[@j].Cagrover2016By12estMatunits" class="Cagrover2016By12estMatunits form-control readOnlyUpdate" required /></td>
+									    <td><input type="number" id="Marketinpacks" name="lsPidfFinanceBatchSizeCoating[@j].Marketinpacks" class="Marketinpacks form-control readOnlyUpdate" required /></td>
+                                        <td><input type="number" id="BatchsizeinLtrTabs" name="lsPidfFinanceBatchSizeCoating[@j].BatchsizeinLtrTabs" class="BatchsizeinLtrTabs form-control readOnlyUpdate" required /></td>
 									<td>
 										<input type="number" id="Batchsize" name="lsPidfFinanceBatchSizeCoating[@j].Batchsize" class="Batchsize form-control readOnlyUpdate" required />
 									</td> 
@@ -1100,7 +1107,7 @@
 									<td>
 									<input type="number" id="CCPC_CAD" name="lsPidfFinanceBatchSizeCoating[@j].CcpcCad" class="CCPC_CAD form-control readOnlyUpdate" required />
 									</td>
-									<td>
+                                    <td>
 									<input type="number" id="Freight_CAD" name="lsPidfFinanceBatchSizeCoating[@j].FreightCad" class="Freight_CAD form-control readOnlyUpdate" required />
 									</td>
 									<td>
@@ -6413,6 +6420,9 @@
     const selectedDosageFormId="@DosageFormId";
     const selectedCurrencyId="@CurrencyId";
     const selectedMsId="@MSPercent";
-        const selectedTargetPriceScenario = "@TargetPriceScenario";
+    const selectedTargetPriceScenario = "@TargetPriceScenario";
+    const pidfId="@PidafId";
+    const selectedSKUs="@selectedSkus";
+
 </script>
 }

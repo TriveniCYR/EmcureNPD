@@ -12,6 +12,7 @@ using Microsoft.Extensions.Localization;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Net.Http;
 
 namespace EmcureNPD.Web.Controllers
@@ -134,7 +135,16 @@ namespace EmcureNPD.Web.Controllers
                                     FreightCad = item.freight_CAD,
                                     EmcureCogsPack = item.emcureCOGs_pack,
                                     CreatedDate = item.createdDate,
-                                    CreatedBy = item.createdBy
+                                    CreatedBy = item.createdBy,
+                                    Skus=item.Skus,
+                                    PakeSize=item.PakeSize,
+                                    BrandPrice=item.BrandPrice,
+                                    GenericListprice=item.GenericListprice,
+                                    EstMat2016By12units=item.EstMat2016By12units,
+                                    EstMat2020By12units=item.EstMat2020By12units,
+                                    Cagrover2016By12estMatunits=item.Cagrover2016By12estMatunits,
+                                    Marketinpacks=item.Marketinpacks,
+                                    BatchsizeinLtrTabs=item.BatchsizeinLtrTabs
                                 });
                             }
                             catch (Exception ex)
