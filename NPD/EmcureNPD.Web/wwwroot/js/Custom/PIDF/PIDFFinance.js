@@ -120,7 +120,7 @@ function GetDosageFormListError(x, y, z) {
 }
 // #endregion
 function addRowFinanceDetails(j) {
-    j = $('.Batchsize').length + 1;
+    j = $('.Skus').length + 1;
     var table = $('#FinanceTableBoy');
     var node = $('#financeDetailsRow_0').clone(true);
     table.find('tr:last').after(node);
@@ -176,10 +176,12 @@ function RejectClick() {
 }
 function SetChildRows() {
     $.each($('#FinanceTableBoy tr'), function (index, value) {
-        $(this).find("td:eq(0) input").attr("name", "lsPidfFinanceBatchSizeCoating[" + index.toString() + "].PidffinaceId");
+        
         $(this).find("td:eq(0) select").attr("name", "lsPidfFinanceBatchSizeCoating[" + index.toString() + "].Skus");
-        $(this).find("td:eq(0) input").attr("name", "lsPidfFinanceBatchSizeCoating[" + index.toString() + "].PidffinaceBatchSizeCoatingId");
+        $(this).find("td:eq(0) input").attr("name", "lsPidfFinanceBatchSizeCoating[" + index.toString() + "].PidffinaceId");
+        
         $(this).find("td:eq(1) input").attr("name", "lsPidfFinanceBatchSizeCoating[" + index.toString() + "].PakeSize");
+
         $(this).find("td:eq(2) input").attr("name", "lsPidfFinanceBatchSizeCoating[" + index.toString() + "].BrandPrice");
         $(this).find("td:eq(3) input").attr("name", "lsPidfFinanceBatchSizeCoating[" + index.toString() + "].GenericListprice");
         $(this).find("td:eq(5) input").attr("name", "lsPidfFinanceBatchSizeCoating[" + index.toString() + "].EstMat2016By12units");
@@ -197,6 +199,8 @@ function SetChildRows() {
         $(this).find("td:eq(16) input").attr("name", "lsPidfFinanceBatchSizeCoating[" + index.toString() + "].CcpcCad");
         $(this).find("td:eq(17) input").attr("name", "lsPidfFinanceBatchSizeCoating[" + index.toString() + "].FreightCad");
         $(this).find("td:eq(18) input").attr("name", "lsPidfFinanceBatchSizeCoating[" + index.toString() + "].EmcureCogsPack");
+        $(this).find("td:eq(19) input").attr("name", "lsPidfFinanceBatchSizeCoating[" + index.toString() + "].PidffinaceBatchSizeCoatingId");
+       // console.log($(this).find("td:eq(0) input").attr("name", "lsPidfFinanceBatchSizeCoating[" + index.toString() + "].PidffinaceBatchSizeCoatingId").value())
     });
 }
 function SetChildRowDeleteIcon() {
@@ -254,14 +258,20 @@ function GetSkus(pidfId) {
             });
             $("select#Skus").append(optionhtml);
 
-            $("select#Skus option").each(function (index, value) {
-                let arrselectedSKUs = JSON.parse(selectedSKUs.split(','));
-                //  arrselectedSKUs.forEach(function (item, i) {
-                if (this.value === selectedSKUs) {
-                    //$('select#Skus').prop("SelectedIndex", index);
-                    $('select#Skus').val(this.value);
+            
+                let arrselectedSKUs =selectedSKUs.split(',');
+                if (arrselectedSKUs.length > 1) {
+                    arrselectedSKUs.forEach(function (item, i) {
+                        $("select#Skus option").each(function (index, value) {
+                            if (this.value[index] === item) {
+                                //$('select#Skus').prop("SelectedIndex", index);
+                                $('select#Skus').val(item);
+                            }
+                        
+                       })
+                    })
                 }
-            })
+           
         } catch (e) {
             toastr.error('Error:' + e.message);
         }

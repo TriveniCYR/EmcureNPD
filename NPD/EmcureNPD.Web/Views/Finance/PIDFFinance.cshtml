@@ -1010,7 +1010,7 @@
                                             <select id="Skus" name="lsPidfFinanceBatchSizeCoating[@j].Skus" style="width: 100px;" value="@item.Skus" class="Skus form-control readOnlyUpdate" required>
                                                 </select>
                                             <input type="hidden" id="PidffinaceId" name="lsPidfFinanceBatchSizeCoating[@j].PidffinaceId" value="@item.PidffinaceId">
-                                             <input type="hidden" id="PidffinaceBatchSizeCoatingId" name="lsPidfFinanceBatchSizeCoating[@j].PidffinaceBatchSizeCoatingId" value="@item.PidffinaceBatchSizeCoatingId"> 
+                                             
                                         </td>
 									    <td><input type="number" id="PakeSize" name="lsPidfFinanceBatchSizeCoating[@j].PakeSize" value="@item.PakeSize" class="PakeSize form-control readOnlyUpdate" /></td>
                                         <td><input type="number" id="BrandPrice" name="lsPidfFinanceBatchSizeCoating[@j].BrandPrice" value="@item.BrandPrice" class="BrandPrice form-control readOnlyUpdate" /></td>
@@ -1054,6 +1054,7 @@
                                                 <input type="number" id="EmcureCOGs_pack" name="lsPidfFinanceBatchSizeCoating[@j].EmcureCogsPack" value="@item.EmcureCogsPack" class="EmcureCOGs_pack form-control readOnlyUpdate" required />
 									    </td>
 									    <td class="align-middle abc">
+                                            <input type="hidden" id="PidffinaceBatchSizeCoatingId" name="lsPidfFinanceBatchSizeCoating[@j].PidffinaceBatchSizeCoatingId" value="@item.PidffinaceBatchSizeCoatingId"> 
                                                             <div class="d-flex justify-content-center">
                                                                 <i class="fa-solid fa-circle-plus nav-icon mx-3 text-success add-rows" onclick="addRowFinanceDetails(@j)"></i>
                                                                 <i class="fa-solid fa-trash nav-icon me-3 text-red del-rows" id="del_row_@j" onclick="deleteRowFinance(@j,this)"></i>
@@ -1071,8 +1072,8 @@
 									<td>
                                             <select id="Skus" name="lsPidfFinanceBatchSizeCoating[@j].Skus" style="width: 100px;" class="Skus form-control readOnlyUpdate" required>
                                                 </select>
-                                            <input type="hidden" id="PidffinaceId" name="lsPidfFinanceBatchSizeCoating[@j].PidffinaceId">
-                                             <input type="hidden" id="PidffinaceBatchSizeCoatingId" name="lsPidfFinanceBatchSizeCoating[@j].PidffinaceBatchSizeCoatingId"> 
+                                            <input type="hidden" id="PidffinaceId" name="lsPidfFinanceBatchSizeCoating[@j].PidffinaceId" value="0">
+                                            
                                         </td>
 
                                         <td><input type="number" id="PakeSize" name="lsPidfFinanceBatchSizeCoating[@j].PakeSize" class="PakeSize form-control readOnlyUpdate" /></td>
@@ -1114,6 +1115,7 @@
                                         <input type="number" id="EmcureCOGs_pack" name="lsPidfFinanceBatchSizeCoating[@j].EmcureCogsPack" class="EmcureCOGs_pack form-control readOnlyUpdate" required />
 									</td>
                                     <td class="align-middle abc">
+                                            <input type="hidden" id="PidffinaceBatchSizeCoatingId" name="lsPidfFinanceBatchSizeCoating[@j].PidffinaceBatchSizeCoatingId" value="0">
                                                         <div class="d-flex justify-content-center">
                                                             <i class="fa-solid fa-circle-plus nav-icon mx-3 text-success add-rows" onclick="addRowFinanceDetails(@j)"></i>
                                                             <i class="fa-solid fa-trash nav-icon me-3 text-red del-rows" id="del_row_@j" onclick="deleteRowFinance(@j,this)"></i>
