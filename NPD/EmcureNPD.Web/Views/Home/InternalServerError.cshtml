@@ -1,0 +1,69 @@
+﻿@{
+    Layout = null;
+}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Internal Server Error - Emcure NPD</title>
+    <!-- Google Font: Source Sans Pro -->
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="~/AdminLTE/plugins/fontawesome-free/css/all.min.css">
+    <!-- iCheck -->
+    <link rel="stylesheet" href="~/AdminLTE/plugins/icheck-bootstrap/icheck-bootstrap.min.css">
+    <!-- Theme style -->
+    <link rel="stylesheet" href="~/AdminLTE/dist/css/adminlte.min.css">
+    <!-- Custom css by developer-->
+    <link rel="stylesheet" href="~/css/custom.css">
+
+    <!-- IonIcons -->
+    <link rel="stylesheet" href="https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css">
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet"
+          crossorigin="anonymous">
+
+    <link rel="stylesheet" href="~/css/login.css">
+
+</head>
+<body class="hold-transition sidebar-mini sidebar-collapse">
+    <div class="wrapper">
+        <!-- Navbar -->
+        <nav class="navbar navbar-expand navbar-white navbar-light mx-3">
+            <a href="#">
+                <img src="~/images/Emcure-logo.png" alt="Emcure-logo" class="navbar-logo">
+            </a>
+        </nav>
+
+        <div class="login-card d-flex flex-column justify-content-center align-items-center">
+            <div class="card">
+                <h2 class="login-card-title m-0 text-center text-danger">Internal Server Error</h2>
+                <div class="card-body login-card-body">
+                   
+                            <p>
+                                Requested page by you is Generating Internal Server Error, Please contact with administrator to get access of the same.
+                        Meanwhile, you may return to 
+                        <br />
+                        <br />
+                        <a class="btn btn-success" href="@Url.Action("Index", "Home")">Dashboard</a>
+                        <a class="btn btn-danger" href="@Url.Action("Login", "Account")">Login</a>
+                            </p>
+                            </div>
+                    </div>
+                  
+
+     
+    </div>
+    </div>
+    <!-- ./wrapper -->
+    <!-- jQuery -->
+    <script src="~/AdminLTE/plugins/jquery/jquery.min.js"></script>
+    <!-- Bootstrap 4 -->
+    <script src="~/AdminLTE/plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
+
+    <!-- AdminLTE App -->
+    <script src="~/AdminLTE/dist/js/adminlte.js"></script>
+
+</body>
+</html>

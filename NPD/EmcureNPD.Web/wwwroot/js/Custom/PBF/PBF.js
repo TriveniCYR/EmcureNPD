@@ -2409,22 +2409,22 @@ function PBFTabsReadOnly() {
     _analyticalView = $('#hdnPBFAnalyticalPermission').val();
     _clinicalView = $('#hdnPBFClinicalPermission').val();
     _rndView = $('#hdnPBFRNDPermission').val();
-    
-    if (_analyticalView) {
+
+    if (!_analyticalView || _analyticalView == undefined) {
         $('#custom-tabs-Analytical').find('input,select,textarea,checkbox').attr('readonly', true).attr('disabled', true);
         $('#custom-tabs-Analytical').find('.operationButton').hide();
     }
-    if (_clinicalView) {
+    if (!_clinicalView || _clinicalView == undefined) {
         $('#custom-tabs-Clinical').find('input,select,textarea,checkbox').attr('readonly', true).attr('disabled', true);
         $('#custom-tabs-Clinical').find('.operationButton').hide();
 
     }
-    if (_rndView) {
+    if (!_rndView || _rndView == undefined) {
         $('#custom-tabs-RnD').find('input,select,textarea,checkbox').attr('readonly', true).attr('disabled', true);
         $('#custom-tabs-RnD').find('.operationButton').hide();
 
     }
-   
+
 }
 function GetValueFromBatchSize(_ActivityTypeId, _StrengthId) {
     if (parseInt(_ActivityTypeId) == 1) {

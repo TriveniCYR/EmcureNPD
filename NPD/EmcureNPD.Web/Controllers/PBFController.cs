@@ -454,9 +454,6 @@ namespace EmcureNPD.Web.Controllers
 
         public IActionResult PBF(string pidfid, string bui)
         {
-            //int a = 1;
-            //int b = 0;
-            //var c = a / b;
             try
             {
                 PBFFormEntity oPBForm = null;
