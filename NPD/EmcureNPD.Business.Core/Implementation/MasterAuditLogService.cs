@@ -11,6 +11,7 @@ using System;
 using System.Collections.Generic;
 using System.Data.SqlClient;
 using System.Linq;
+using System.Reflection;
 using System.Threading.Tasks;
 using static EmcureNPD.Utility.Enums.GeneralEnum;
 
@@ -45,14 +46,14 @@ namespace EmcureNPD.Business.Core.Implementation
             try
             {
                 MasterAuditLog objAuditLog;
-                var entityAuditLog = new MasterAuditLogEntity
-                {
-                    CreatedBy = _helper.GetLoggedInUser().UserId,
-                    ActionType = Enum.GetName(typeof(AuditActionType), auditActionType),
-                    Log = Old.ToAuditLog(New),
-                    ModuleId = (int)moduleEnum,
-                    EntityId = (int)PrimaryId
-                };
+                var entityAuditLog = new MasterAuditLogEntity();
+
+                entityAuditLog.CreatedBy = _helper.GetLoggedInUser().UserId;
+                entityAuditLog.ActionType = Enum.GetName(typeof(AuditActionType), auditActionType);
+                entityAuditLog.Log = Old.ToAuditLog(New);
+                entityAuditLog.ModuleId = (int)moduleEnum;
+                entityAuditLog.EntityId = (int)PrimaryId;
+
                 if (entityAuditLog.Log != "[]")
                 {
                     objAuditLog = _mapperFactory.Get<MasterAuditLogEntity, MasterAuditLog>(entityAuditLog);

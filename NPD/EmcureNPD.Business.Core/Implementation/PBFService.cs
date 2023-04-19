@@ -269,7 +269,7 @@ namespace EmcureNPD.Business.Core.Implementation
                     _pbfRepository.UpdateAsync(objPIDFPbf);
                     await _unitOfWork.SaveChangesAsync();
                     var isSuccess = await _auditLogService.CreateAuditLog<PBFFormEntity>(Utility.Audit.AuditActionType.Update,
-                  ModuleEnum.PBF, OldPBFEntity, pbfentity, loggedInUserId);
+                  ModuleEnum.PBF, OldPBFEntity, pbfentity,(int)pbfentity.Pidfid);
                 }
                 else
                 {
@@ -350,6 +350,7 @@ namespace EmcureNPD.Business.Core.Implementation
                     //objPIDFGeneralupdate = _mapperFactory.Get<PBFFormEntity, PidfPbfGeneral>(pbfentity);
                     _pidfPbfGeneralRepository.UpdateAsync(objPIDFGeneralupdate);
                     await _unitOfWork.SaveChangesAsync();
+
                     pbfgeneralid = objPIDFGeneralupdate.PbfgeneralId;
                 }
                 else
@@ -481,6 +482,7 @@ namespace EmcureNPD.Business.Core.Implementation
                 if (pbfentity.AnalyticalAMVCosts != null)
                 {
                     var analyticalamvcost = _PidfPbfAnalyticalAmvcostRepository.GetAllQuery().Where(x => x.PbfgeneralId == pbfgeneralid).FirstOrDefault();
+                    var OldPBFAnalyticalAmvcost = _mapperFactory.Get<PidfPbfAnalyticalAmvcost, AnalyticalAmvcost>(analyticalamvcost);
                     if (analyticalamvcost != null)
                     {
                         analyticalamvcost.TotalAmvtitle = pbfentity.AnalyticalAMVCosts.TotalAmvtitle;
@@ -490,6 +492,9 @@ namespace EmcureNPD.Business.Core.Implementation
                         analyticalamvcost.CreatedBy = loggedInUserId;
                         _PidfPbfAnalyticalAmvcostRepository.UpdateAsync(analyticalamvcost);
                         TotalAMVCostId = analyticalamvcost.TotalAmvcostId;
+
+                        await _auditLogService.CreateAuditLog(Utility.Audit.AuditActionType.Update,
+                                        ModuleEnum.PBF, OldPBFAnalyticalAmvcost, pbfentity.AnalyticalAMVCosts,(int)pbfgeneralid);
                     }
                     else
                     {
@@ -548,6 +553,7 @@ namespace EmcureNPD.Business.Core.Implementation
                 if (pbfentity.RNDMasterEntities != null)
                 {
                     objrndMaster = _pidfPbfRnDMasterRepository.GetAllQuery().Where(x => x.PbfgeneralId == pbfgeneralid).FirstOrDefault();
+                  var OldPBFRndEntity =  _mapperFactory.Get<PidfPbfRnDMaster, RNDMasterEntity>(objrndMaster);
                     if (objrndMaster != null)
                     {
                         objrndMaster.BatchSizeId = pbfentity.RNDMasterEntities.BatchSizeId;
@@ -558,6 +564,9 @@ namespace EmcureNPD.Business.Core.Implementation
                         //objRndMaster.ModifyDate = DateTime.Now;
                         _pidfPbfRnDMasterRepository.UpdateAsync(objrndMaster);
                         await _unitOfWork.SaveChangesAsync();
+
+                        await _auditLogService.CreateAuditLog<RNDMasterEntity>(Utility.Audit.AuditActionType.Update,
+                                        ModuleEnum.PBF, OldPBFRndEntity, pbfentity.RNDMasterEntities, (int)pbfgeneralid);
                     }
                     else
                     {

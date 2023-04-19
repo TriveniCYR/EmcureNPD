@@ -15,7 +15,9 @@ namespace EmcureNPD.Utility.Enums
         Medical = 9,
         APIListManagement = 10,
         Formulation = 11,
-        ManagementHOD = 12
+        ManagementHOD = 12,
+        CommercialManagement = 15,
+        APIManagement =13
     }
 
     public enum ModulePermissionEnum

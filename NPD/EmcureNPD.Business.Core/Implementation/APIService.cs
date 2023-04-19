@@ -333,9 +333,8 @@ namespace EmcureNPD.Business.Core.Implementation
             var _APIIPDDBEntity = new PidfApiIpd();
             if (_oAPIIPD.APIIPDDetailsFormID > 0)
             {
-                PidfApiIpd OldObjAPIIPD = new PidfApiIpd();
                 PidfApiIpd lastApiIpd = await _pidf_API_IPD_repository.GetAsync(x => x.PidfApiIpdId == _oAPIIPD.APIIPDDetailsFormID);
-                OldObjAPIIPD = await _pidf_API_IPD_repository.GetAsync(x => x.PidfApiIpdId == _oAPIIPD.APIIPDDetailsFormID);
+                var OldObjAPIIPD = _mapperFactory.Get<PidfApiIpd, PIDFAPIIPDFormEntity>(lastApiIpd);
                 if (lastApiIpd != null)
                 {
                     if (!IskeepLastFile)
@@ -363,8 +362,8 @@ namespace EmcureNPD.Business.Core.Implementation
                     _pidf_API_IPD_repository.UpdateAsync(lastApiIpd);
                     await _unitOfWork.SaveChangesAsync();
 
-                    //var isSuccess = await _auditLogService.CreateAuditLog<PidfApiIpd>(Utility.Audit.AuditActionType.Update,
-                    //Utility.Enums.ModuleEnum.APIListManagement, OldObjAPIIPD, lastApiIpd, loggedInUser.UserId);
+                    var isSuccess = await _auditLogService.CreateAuditLog(Utility.Audit.AuditActionType.Update,
+                    Utility.Enums.ModuleEnum.APIManagement, OldObjAPIIPD, _oAPIIPD,(int)_oAPIIPD.APIIPDDetailsFormID);
                 }
                 else
                 {
@@ -402,7 +401,9 @@ namespace EmcureNPD.Business.Core.Implementation
             if (_oAPIRnD.PIDFAPIRnDFormID > 0)
             {
                 var lastApiRnD = _pidf_API_RnD_repository.GetAllQuery().First(x => x.PidfApiRnDId == _oAPIRnD.PIDFAPIRnDFormID);
-                var OldObjAPiIPD = lastApiRnD;
+                var OldObjAPiRnD = _mapperFactory.Get<PidfApiRnD, PIDFAPIRnDFormEntity>(lastApiRnD);
+                OldObjAPiRnD.APITargetRMC_CCPC = lastApiRnD.ApitargetRmcCcpc;
+                OldObjAPiRnD.MarketID = lastApiRnD.MarketExtenstionId;
                 if (lastApiRnD != null)
                 {
                     lastApiRnD.PlantQc = _oAPIRnD.PlantQC;
@@ -419,8 +420,8 @@ namespace EmcureNPD.Business.Core.Implementation
                     lastApiRnD.ModifyDate = DateTime.Now;
                     _pidf_API_RnD_repository.UpdateAsync(lastApiRnD);
 
-                 //   var isSuccess = await _auditLogService.CreateAuditLog<PidfApiRnD>(Utility.Audit.AuditActionType.Update,
-                 //Utility.Enums.ModuleEnum.APIListManagement, OldObjAPiIPD, lastApiRnD, loggedInUser.UserId);
+                    var isSuccess = await _auditLogService.CreateAuditLog(Utility.Audit.AuditActionType.Update,
+                       Utility.Enums.ModuleEnum.APIManagement, OldObjAPiRnD, _oAPIRnD, (int)_oAPIRnD.PIDFAPIRnDFormID);
                 }
                 else
                 {
@@ -455,7 +456,7 @@ namespace EmcureNPD.Business.Core.Implementation
 
         public async Task<DBOperation> AddUpdateAPICharter(PIDFAPICharterFormEntity _oAPICharter)
         {
-            var loggedInUser = _helper.GetLoggedInUser();
+            var loggedInUser = _helper.GetLoggedInUser();  
             var _objPidfApiCharterTimelineInMonth = FillObjData<TimelineInMonths, PidfApiCharterTimelineInMonth>(_oAPICharter.TimelineInMonths);
             var _objPidfApiCharterManhourEstimates = FillObjData<ManhourEstimates, PidfApiCharterManhourEstimate>(_oAPICharter.ManhourEstimates);
             var _objPidfApiCharterAnalyticalDepartment = FillObjData<AnalyticalDepartment, PidfApiCharterAnalyticalDepartment>(_oAPICharter.AnalyticalDepartment);
@@ -465,9 +466,11 @@ namespace EmcureNPD.Business.Core.Implementation
             var _objPidfApiCharterHeadwiseBudget = FillObjData<HeadwiseBudget, PidfApiCharterHeadwiseBudget>(_oAPICharter.HeadwiseBudget);
 
             if (_oAPICharter.PIDFAPICharterFormID > 0)
-            {
+            {                
+                var _oldObjAPIcharter = await GetAPICharterFormData(Int32.Parse(_oAPICharter.Pidfid),1); // IsCharter = 1;
+
                 var lastApiCharter = _pidf_API_Charter_repository.GetAllQuery().First(x => x.PidfApiCharterId == _oAPICharter.PIDFAPICharterFormID);
-                var OldObjAPICharter = lastApiCharter;
+               
                 if (lastApiCharter != null)
                 {
                     RemoveChildDataAPICharter(_oAPICharter.PIDFAPICharterFormID); // Remove child table data
@@ -488,10 +491,10 @@ namespace EmcureNPD.Business.Core.Implementation
                     lastApiCharter.ModifyBy = _oAPICharter.LoggedInUserId;
                     lastApiCharter.ModifyDate = DateTime.Now;
                     _pidf_API_Charter_repository.UpdateAsync(lastApiCharter);
-
+                    await _unitOfWork.SaveChangesAsync();
                     //Implement AuditLog
-                    //var isSuccess = await _auditLogService.CreateAuditLog<PidfApiCharter>(Utility.Audit.AuditActionType.Update,
-                    //ModuleEnum.APIListManagement, OldObjAPICharter, lastApiCharter, 0);
+                    var isSuccess = await _auditLogService.CreateAuditLog(Utility.Audit.AuditActionType.Update,
+                    ModuleEnum.APIManagement, _oldObjAPIcharter, _oAPICharter,(int)_oAPICharter.PIDFAPICharterFormID);
                 }
                 else
                 {
@@ -519,8 +522,9 @@ namespace EmcureNPD.Business.Core.Implementation
                 _oDBApiCharter.CreatedDate = DateTime.Now;
                 _pidf_API_Charter_repository.AddAsync(_oDBApiCharter);
                 //Implement PIDF staurs change
+                await _unitOfWork.SaveChangesAsync();
             }
-            await _unitOfWork.SaveChangesAsync();
+            
             var _StatusID = (_oAPICharter.SaveType == "Save") ? Master_PIDFStatus.APISubmitted : Master_PIDFStatus.APIInProgress;
             await _auditLogService.UpdatePIDFStatusCommon(long.Parse(_oAPICharter.Pidfid), (int)_StatusID, _oAPICharter.LoggedInUserId);
             await _notificationService.CreateNotification(long.Parse(_oAPICharter.Pidfid), (int)_StatusID, string.Empty, string.Empty, _oAPICharter.LoggedInUserId);
