@@ -20,7 +20,7 @@ namespace EmcureNPD.API.Controllers.PIDF
         #region Properties
 
         private readonly IPidfFinanceService _pidfFinanceService;
-
+        private readonly IPidfProductStrengthService _pidfProductStrengthService;
         private readonly IResponseHandler<dynamic> _ObjectResponse;
         private readonly IWebHostEnvironment _webHostEnvironment;
         private readonly IExceptionService _ExceptionService;
@@ -29,12 +29,13 @@ namespace EmcureNPD.API.Controllers.PIDF
 
         #region Constructor
 
-        public PidfFinanceController(IPidfFinanceService pidfFinanceService, IResponseHandler<dynamic> ObjectResponse, IWebHostEnvironment webHostEnvironment, IExceptionService exceptionService)
+        public PidfFinanceController(IPidfFinanceService pidfFinanceService, IResponseHandler<dynamic> ObjectResponse, IWebHostEnvironment webHostEnvironment, IExceptionService exceptionService, IPidfProductStrengthService pidfProductStrengthService)
         {
             _pidfFinanceService = pidfFinanceService;
             _ObjectResponse = ObjectResponse;
             _webHostEnvironment = webHostEnvironment;
             _ExceptionService = exceptionService;
+            _pidfProductStrengthService = pidfProductStrengthService;
         }
 
         #endregion Constructor
@@ -115,6 +116,32 @@ namespace EmcureNPD.API.Controllers.PIDF
             try
             {
                 return _ObjectResponse.CreateData(await _pidfFinanceService.GetFinanceBatchSizeCoating(PidffinaceId), (Int32)HttpStatusCode.OK);
+            }
+            catch (Exception ex)
+            {
+                await _ExceptionService.LogException(ex);
+                return _ObjectResponse.Create(null, (Int32)HttpStatusCode.BadRequest, "No Records found");
+            }
+        }
+        /// <summary>
+        /// Description - To Get GetStrengthByPIDFId
+        /// </summary>
+        /// <param name="oGetStrengthByPIDFId"></param>
+        /// <returns></returns>
+        /// <response code="200">OK</response>
+        /// <response code="400">Bad Request</response>
+        /// <response code="403">Forbidden</response>
+        /// <response code="404">Not Found</response>
+        /// <response code="405">Method Not Allowed</response>
+        /// <response code="500">Internal Server</response>
+        [HttpGet]
+        [Route("GetStrengthByPIDFId/{Pidfid}")]
+        public async Task<IActionResult> GetStrengthByPIDFId(string Pidfid)
+        {
+            try
+            {
+                Pidfid = UtilityHelper.Decreypt(Convert.ToString(Pidfid));
+                return _ObjectResponse.CreateData(await _pidfProductStrengthService.GetStrengthByPIDFId(Convert.ToInt32(Pidfid)), (Int32)HttpStatusCode.OK);
             }
             catch (Exception ex)
             {

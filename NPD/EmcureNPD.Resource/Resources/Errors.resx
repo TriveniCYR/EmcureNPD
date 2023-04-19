@@ -133,6 +133,6 @@
     <value>Profile details Changed Successfully</value>
   </data>
   <data name="SomeErrorOccured" xml:space="preserve">
-    <value>Some Error Occured</value>
+    <value>Some Error Occurred</value>
   </data>
 </root>

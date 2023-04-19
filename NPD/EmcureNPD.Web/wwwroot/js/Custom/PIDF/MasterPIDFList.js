@@ -40,7 +40,7 @@ function InitializePIDFList() {
                             _flag = true;
                         }
                     } else if (_screenId == "7") {
-                        if ((row.pidfStatusID == 17 || (row.finance))) {
+                        if ((row.pidfStatusID == 17 && (row.finance))) {
                             _flag = true;
                         }
                         $("#DvApproveReject").show();
@@ -157,7 +157,7 @@ function InitializePIDFList() {
                 if (_screenId == "1") {
                     var _PIDFForm = '/PIDF/PIDF?PIDFId=' + row.pidfid;
                     var _enable = (row.pidfStatusID == 1 || row.pidfStatusID == 2);
-                    if (IsEditPIDF || IsApprovePIDF) {
+                    if (IsEditPIDF) {
                         html += '<a class="large-font" style="color:' + (_enable ? "#007bff" : "grey") + '" href="' + (_enable ? _PIDFForm : "#") + '"><i class="fa fa-fw fa-edit mr-1"></i></a>';
                     }
                     if (IsViewPIDF) {
@@ -167,7 +167,7 @@ function InitializePIDFList() {
                     var _IPDForm = '/IPD/IPD?pidfid=' + row.encpidfid + '&bui=' + row.encbud + '&ipd=' + row.ipd;
 
                     var _enable = (row.pidfStatusID == 3 || row.pidfStatusID == 5 || row.pidfStatusID == 6 || row.pidfStatusID == 9);
-                    if (IsEditIPD || IsAddIPD || IsApproveIPD) {
+                    if (IsEditIPD || IsAddIPD) {
                         html += '<a class="large-font" style="color:' + (_enable ? "#007bff" : "grey") + '" href="' + (_enable ? _IPDForm : "#") + '"><i class="fa fa-fw fa-edit mr-1"></i></a>';
                     }
                     var _enableView = (row.pidfStatusID > 4);

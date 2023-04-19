@@ -1,11 +1,14 @@
 ﻿let rowcount = 0;
 
 $(document).ready(function () {
+    console.log("selectedSKUs" + selectedSKUs);
+    getSelectedSkus();
     GetCurrencyList();
     calculateDealTerm();
     GetDosageFormList();
     GetSelectedMSPercent();
     GetSelectedTargetPriceScanario();
+    GetSkus(pidfId);
     if (isView === "1") {
         $('.readOnlyUpdate').prop('readonly', true);
         $('select.form-control.readOnlyUpdate').attr("disabled", true);
@@ -27,6 +30,11 @@ $(document).ready(function () {
         allowClear: true
     });
 });
+function getSelectedSkus() {
+    //for (var i = 0; i < $('.Skus').length; i++) {
+    
+    //}
+}
 
 function GetSelectedMSPercent()
 {
@@ -168,17 +176,27 @@ function RejectClick() {
 }
 function SetChildRows() {
     $.each($('#FinanceTableBoy tr'), function (index, value) {
-       $(this).find("td:eq(0) input").attr("name", "lsPidfFinanceBatchSizeCoating[" + index.toString() + "].PidffinaceId");
-        $(this).find("td:eq(1) input").attr("name", "lsPidfFinanceBatchSizeCoating[" + index.toString() + "].PidffinaceBatchSizeCoatingId");
-        $(this).find("td:eq(11) input").attr("name", "lsPidfFinanceBatchSizeCoating[" + index.toString() + "].Batchsize");
-        $(this).find("td:eq(12) input").attr("name", "lsPidfFinanceBatchSizeCoating[" + index.toString() + "].Yield");
-        $(this).find("td:eq(13) input").attr("name", "lsPidfFinanceBatchSizeCoating[" + index.toString() + "].Batchoutput");
-        $(this).find("td:eq(14) input").attr("name", "lsPidfFinanceBatchSizeCoating[" + index.toString() + "].ApiCad");
-        $(this).find("td:eq(15) input").attr("name", "lsPidfFinanceBatchSizeCoating[" + index.toString() + "].ExcipientsCad");
-        $(this).find("td:eq(16) input").attr("name", "lsPidfFinanceBatchSizeCoating[" + index.toString() + "].PmCad");
-        $(this).find("td:eq(17) input").attr("name", "lsPidfFinanceBatchSizeCoating[" + index.toString() + "].CcpcCad");
-        $(this).find("td:eq(18) input").attr("name", "lsPidfFinanceBatchSizeCoating[" + index.toString() + "].FreightCad");
-        $(this).find("td:eq(19) input").attr("name", "lsPidfFinanceBatchSizeCoating[" + index.toString() + "].EmcureCogsPack");
+        $(this).find("td:eq(0) input").attr("name", "lsPidfFinanceBatchSizeCoating[" + index.toString() + "].PidffinaceId");
+        $(this).find("td:eq(0) select").attr("name", "lsPidfFinanceBatchSizeCoating[" + index.toString() + "].Skus");
+        $(this).find("td:eq(0) input").attr("name", "lsPidfFinanceBatchSizeCoating[" + index.toString() + "].PidffinaceBatchSizeCoatingId");
+        $(this).find("td:eq(1) input").attr("name", "lsPidfFinanceBatchSizeCoating[" + index.toString() + "].PakeSize");
+        $(this).find("td:eq(2) input").attr("name", "lsPidfFinanceBatchSizeCoating[" + index.toString() + "].BrandPrice");
+        $(this).find("td:eq(3) input").attr("name", "lsPidfFinanceBatchSizeCoating[" + index.toString() + "].GenericListprice");
+        $(this).find("td:eq(5) input").attr("name", "lsPidfFinanceBatchSizeCoating[" + index.toString() + "].EstMat2016By12units");
+        $(this).find("td:eq(6) input").attr("name", "lsPidfFinanceBatchSizeCoating[" + index.toString() + "].EstMat2020By12units");
+        $(this).find("td:eq(7) input").attr("name", "lsPidfFinanceBatchSizeCoating[" + index.toString() + "].Cagrover2016By12estMatunits");
+        $(this).find("td:eq(8) input").attr("name", "lsPidfFinanceBatchSizeCoating[" + index.toString() + "].Marketinpacks");
+        $(this).find("td:eq(9) input").attr("name", "lsPidfFinanceBatchSizeCoating[" + index.toString() + "].BatchsizeinLtrTabs");
+
+        $(this).find("td:eq(10) input").attr("name", "lsPidfFinanceBatchSizeCoating[" + index.toString() + "].Batchsize");
+        $(this).find("td:eq(11) input").attr("name", "lsPidfFinanceBatchSizeCoating[" + index.toString() + "].Yield");
+        $(this).find("td:eq(12) input").attr("name", "lsPidfFinanceBatchSizeCoating[" + index.toString() + "].Batchoutput");
+        $(this).find("td:eq(13) input").attr("name", "lsPidfFinanceBatchSizeCoating[" + index.toString() + "].ApiCad");
+        $(this).find("td:eq(14) input").attr("name", "lsPidfFinanceBatchSizeCoating[" + index.toString() + "].ExcipientsCad");
+        $(this).find("td:eq(15) input").attr("name", "lsPidfFinanceBatchSizeCoating[" + index.toString() + "].PmCad");
+        $(this).find("td:eq(16) input").attr("name", "lsPidfFinanceBatchSizeCoating[" + index.toString() + "].CcpcCad");
+        $(this).find("td:eq(17) input").attr("name", "lsPidfFinanceBatchSizeCoating[" + index.toString() + "].FreightCad");
+        $(this).find("td:eq(18) input").attr("name", "lsPidfFinanceBatchSizeCoating[" + index.toString() + "].EmcureCogsPack");
     });
 }
 function SetChildRowDeleteIcon() {
@@ -220,6 +238,37 @@ function calculateDealTerm(id) {
         }
     });
     $("#spanTotal").text(totaldealterm)
+}
+function calculateBatchSizeCaoting() {
+
+}
+function GetSkus(pidfId) {
+    ajaxServiceMethod($('#hdnBaseURL').val() + "api/PidfFinance/GetStrengthByPIDFId" + "/" + pidfId, 'GET', GetSkusListSuccess, GetSkusListError);
+    function GetSkusListSuccess(data) {
+        try {
+            $('select#Skus').html('')
+            let optionhtml = '<option value = "0">--Select--</option>';
+            $.each(data, function (index, object) {
+                optionhtml += '<option value="' +
+                    object.pidfproductStrengthId + '">' + object.strength + 'mg </option>';
+            });
+            $("select#Skus").append(optionhtml);
+
+            $("select#Skus option").each(function (index, value) {
+                let arrselectedSKUs = JSON.parse(selectedSKUs.split(','));
+                //  arrselectedSKUs.forEach(function (item, i) {
+                if (this.value === selectedSKUs) {
+                    //$('select#Skus').prop("SelectedIndex", index);
+                    $('select#Skus').val(this.value);
+                }
+            })
+        } catch (e) {
+            toastr.error('Error:' + e.message);
+        }
+    }
+    function GetSkusListError() {
+        toastr.error("Error");
+    }
 }
 $("i.fas.fa-plus").click(function () {
     let count = 1;
