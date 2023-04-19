@@ -1002,12 +1002,10 @@
 							    int j = 0;
 							    foreach (var item in Model.lsPidfFinanceBatchSizeCoating)
 							    {
-								
-								    <tr id="financeDetailsRow_0">
-									
-									   
+                                        string dbSkubalue = "DbSkus"+@j;
+                                        <tr id="financeDetailsRow_0">
 									    <td>
-                                            <select id="Skus" name="lsPidfFinanceBatchSizeCoating[@j].Skus" style="width: 100px;" value="@item.Skus" class="Skus form-control readOnlyUpdate" required>
+                                                <select id="@dbSkubalue" name="lsPidfFinanceBatchSizeCoating[@j].Skus" style="width: 100px;" value="@item.Skus" class="Skus DbSkus form-control readOnlyUpdate" required>
                                                 </select>
                                             <input type="hidden" id="PidffinaceId" name="lsPidfFinanceBatchSizeCoating[@j].PidffinaceId" value="@item.PidffinaceId">
                                              

@@ -2,7 +2,7 @@
 
 $(document).ready(function () {
     console.log("selectedSKUs" + selectedSKUs);
-    getSelectedSkus();
+   
     GetCurrencyList();
     calculateDealTerm();
     GetDosageFormList();
@@ -30,11 +30,7 @@ $(document).ready(function () {
         allowClear: true
     });
 });
-function getSelectedSkus() {
-    //for (var i = 0; i < $('.Skus').length; i++) {
-    
-    //}
-}
+
 
 function GetSelectedMSPercent()
 {
@@ -250,27 +246,31 @@ function GetSkus(pidfId) {
     ajaxServiceMethod($('#hdnBaseURL').val() + "api/PidfFinance/GetStrengthByPIDFId" + "/" + pidfId, 'GET', GetSkusListSuccess, GetSkusListError);
     function GetSkusListSuccess(data) {
         try {
-            $('select#Skus').html('')
-            let optionhtml = '<option value = "0">--Select--</option>';
-            $.each(data, function (index, object) {
-                optionhtml += '<option value="' +
-                    object.pidfproductStrengthId + '">' + object.strength + 'mg </option>';
-            });
-            $("select#Skus").append(optionhtml);
-
-            
-                let arrselectedSKUs =selectedSKUs.split(',');
-                if (arrselectedSKUs.length > 1) {
-                    arrselectedSKUs.forEach(function (item, i) {
-                        $("select#Skus option").each(function (index, value) {
-                            if (this.value[index] === item) {
-                                //$('select#Skus').prop("SelectedIndex", index);
-                                $('select#Skus').val(item);
-                            }
-                        
-                       })
-                    })
-                }
+            let arrselectedSKUs = selectedSKUs.split(',');
+            if (arrselectedSKUs[0]!='' && arrselectedSKUs.length > 0) {
+                $('select.DbSkus').html('')
+                let optionhtml = '<option value = "0">--Select--</option>';
+                $.each(data, function (index, object) {
+                    optionhtml += '<option value="' +
+                        object.pidfproductStrengthId + '">' + object.strength + 'mg </option>';
+                    
+                });
+                $("select.DbSkus").append(optionhtml);
+                arrselectedSKUs.forEach(function (val, i) {
+                    if (val == arrselectedSKUs[i]) {
+                        $(`select#DbSkus${i}.Skus.DbSkus`).val(val);
+                    }
+                });
+            }
+            else {
+                $('select#Skus').html('')
+                let optionhtml = '<option value = "0">--Select--</option>';
+                $.each(data, function (index, object) {
+                    optionhtml += '<option value="' +
+                        object.pidfproductStrengthId + '">' + object.strength + 'mg </option>';
+                });
+                $("select#Skus").append(optionhtml);
+            }
            
         } catch (e) {
             toastr.error('Error:' + e.message);
@@ -279,7 +279,9 @@ function GetSkus(pidfId) {
     function GetSkusListError() {
         toastr.error("Error");
     }
+   
 }
+
 $("i.fas.fa-plus").click(function () {
     let count = 1;
     for (let i = 0; i < count; i++) {
