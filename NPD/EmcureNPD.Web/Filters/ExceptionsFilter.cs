@@ -2,7 +2,9 @@
 using EmcureNPD.Utility.Enums;
 using EmcureNPD.Web.Helpers;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
+using Microsoft.AspNetCore.Routing;
 using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
 using System;
@@ -15,80 +17,46 @@ namespace EmcureNPD.Web.Filters
     [AttributeUsage(AttributeTargets.Class | AttributeTargets.Method, AllowMultiple = true, Inherited = true)]
     public class ExceptionsFilter : ExceptionFilterAttribute,IExceptionFilter, IAsyncExceptionFilter
     {
-        //private readonly ILogger<ExceptionsFilter> logger;
        
-        public ExceptionsFilter()//ILogger<ExceptionsFilter> logger
+        public ExceptionsFilter()
         {
-            //this.logger = logger;
            
         }
 
-        public void OnException(ExceptionContext context)
+        public override void OnException(ExceptionContext context)
         {
+            var routeData = new RouteValueDictionary();
             HttpStatusCode statusCode = (context.Exception as WebException != null &&
                        ((HttpWebResponse)(context.Exception as WebException).Response) != null) ?
                         ((HttpWebResponse)(context.Exception as WebException).Response).StatusCode
                         : getErrorCode(context.Exception.GetType());
 
-            HttpResponse response = context.HttpContext.Response;
-            response.StatusCode = (int)statusCode;
-            response.ContentType = "application/json";
-
             var responseModel = new APIResponseEntity<string>() { _errorMessages = new List<string> { context.Exception.Message }, _Success = false };
-
             var result = JsonConvert.SerializeObject(responseModel);
-
-            //logger.LogCritical(context.Exception, context.Exception.Message);
             try
             {
                 APIRepository objapi = new APIRepository(APIURLHelper.Configuration);
-
                 context.HttpContext.Request.Cookies.TryGetValue(UserHelper.EmcureNPDToken, out string token);
-
                 HttpResponseMessage responseMessage = objapi.APICommunication(APIURLHelper.LogException, HttpMethod.Post, token, new StringContent(JsonConvert.SerializeObject(context.Exception))).Result;
-
-
             }
             catch (Exception e)
             {
 
             }
-            response.ContentLength = result.Length;
-            response.WriteAsync(result);
-        }
-        public void OnExceptionAsync(ExceptionContext context)
-        {
-            HttpStatusCode statusCode = (context.Exception as WebException != null &&
-                       ((HttpWebResponse)(context.Exception as WebException).Response) != null) ?
-                        ((HttpWebResponse)(context.Exception as WebException).Response).StatusCode
-                        : getErrorCode(context.Exception.GetType());
-
-            HttpResponse response = context.HttpContext.Response;
-            response.StatusCode = (int)statusCode;
-            response.ContentType = "application/json";
-
-            var responseModel = new APIResponseEntity<string>() { _errorMessages = new List<string> { context.Exception.Message }, _Success = false };
-
-            var result = JsonConvert.SerializeObject(responseModel);
-
-            //logger.LogCritical(context.Exception, context.Exception.Message);
-            try
+           
+            if (statusCode == HttpStatusCode.InternalServerError)
             {
-                APIRepository objapi = new APIRepository(APIURLHelper.Configuration);
-
-                context.HttpContext.Request.Cookies.TryGetValue(UserHelper.EmcureNPDToken, out string token);
-
-                HttpResponseMessage responseMessage = objapi.APICommunication(APIURLHelper.LogException, HttpMethod.Post, token, new StringContent(JsonConvert.SerializeObject(context.Exception))).Result;
-
-
+                routeData = new RouteValueDictionary(new
+                {
+                    controller = "Home",
+                    action = "InternalServerError"
+                });
             }
-            catch (Exception e)
-            {
-
-            }
-            response.ContentLength = result.Length;
-            response.WriteAsync(result);
+            context.ExceptionHandled = true;
+            context.Result = new RedirectToRouteResult(routeData);
+            context.Result.ExecuteResultAsync(context);
         }
+        
         private HttpStatusCode getErrorCode(Type exceptionType)
         {
             Exceptions tryParseResult;
