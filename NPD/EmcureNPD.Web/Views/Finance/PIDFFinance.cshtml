@@ -12,10 +12,15 @@
 @inject IConfiguration Configuration
 @model EmcureNPD.Business.Models.FinanceModel
 @{
-    
+
     ViewData["Title"] = @MasterLocalizer["Finance Management"];
     var PidafId=Context.Request.Query["pidfid"];
-    var selectedSkus = string.Join(",", Model.lsPidfFinanceBatchSizeCoating.Select(x => x.Skus));
+    var selectedSkus = string.Empty;
+    if(Model != null && Model.lsPidfFinanceBatchSizeCoating != null){
+        if(Model.lsPidfFinanceBatchSizeCoating.Count() > 0){
+            selectedSkus = string.Join(",", Model.lsPidfFinanceBatchSizeCoating.Select(x => x.Skus));
+        }
+    }
     string jsVersion = @Configuration.GetSection("StaticJS")["version"];
     var PidfNumber=UtilityHelper.Decreypt(Convert.ToString(PidafId));
     var DefaultStatus = Model == null ? 0 : Model.PIDFStatusId;
