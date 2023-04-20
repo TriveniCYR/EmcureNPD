@@ -195,7 +195,7 @@
 					</div>
 			</div>
 		</div>
-		<div class="card">
+            <div class="card collapsed-card">
 			<div class="card-header bg-primary">
 			<h3 class="card-title mb-0"><button type="button" class="btn btn-tool" data-card-widget="collapse">Project Timelines</button></h3>
 				<div class="card-tools">
@@ -345,7 +345,7 @@
 				</div>
 		</div>
 		</div>
-		<div class="card">
+		<div class="card collapsed-card">
             <div class="card-header bg-primary">
 			<h3 class="card-title mb-0"><button type="button" class="btn btn-tool" data-card-widget="collapse">Finance Inputs</button></h3>
 				<div class="card-tools">
@@ -494,7 +494,7 @@
 				</div>
 			</div>
 		</div>
-		<div class="card">
+            <div class="card collapsed-card">
 			
             <div class="card-header bg-primary">
 			<h3 class="card-title mb-0"><button type="button" class="btn btn-tool" data-card-widget="collapse">Deal Terms</button></h3>
@@ -963,7 +963,7 @@
 
 		
 
-        <div class="card">
+        <div class="card collapsed-card">
             
              <div class="card-header bg-primary">
 			<h3 class="card-title mb-0"><button type="button" class="btn btn-tool" data-card-widget="collapse">Batch Size Coating</button></h3>
@@ -1017,15 +1017,15 @@
                                         </td>
 									    <td><input type="number" id="PakeSize" name="lsPidfFinanceBatchSizeCoating[@j].PakeSize" value="@item.PakeSize" class="PakeSize form-control readOnlyUpdate" /></td>
                                         <td><input type="number" id="BrandPrice" name="lsPidfFinanceBatchSizeCoating[@j].BrandPrice" value="@item.BrandPrice" class="BrandPrice form-control readOnlyUpdate" /></td>
-									     <td><input type="number" id="GenericListprice" name="lsPidfFinanceBatchSizeCoating[@j].GenericListprice" value="@item.GenericListprice" class="GenericListprice form-control readOnlyUpdate" /></td>
-									     <td><input type="number" id="NetRealisation" name="lsPidfFinanceBatchSizeCoating[@j].NetRealisation" value="@item.NetRealisation" class="NetRealisation form-control readOnlyUpdate" readonly="readonly" ></td>
+									     <td><input type="number" id="GenericListprice" name="lsPidfFinanceBatchSizeCoating[@j].GenericListprice" value="@item.GenericListprice" onchange="calculateBatchSizeCaoting(this);" class="GenericListprice form-control readOnlyUpdate" /></td>
+									     <td><input type="text" id="NetRealisation" name="lsPidfFinanceBatchSizeCoating[@j].NetRealisation" value="@item.NetRealisation" class="NetRealisation form-control readOnlyUpdate" readonly></td>
                                          <td><input type="number" id="EstMat2016By12units" name="lsPidfFinanceBatchSizeCoating[@j].EstMat2016By12units" value="@item.EstMat2016By12units" class="EstMat2016By12units form-control readOnlyUpdate"  /></td>
 									     
-									     <td><input type="number" id="EstMat2020By12units" name="lsPidfFinanceBatchSizeCoating[@j].EstMat2020By12units" value="@item.EstMat2020By12units" class="EstMat2020By12units form-control readOnlyUpdate" /></td>
+									     <td><input type="number" id="EstMat2020By12units" name="lsPidfFinanceBatchSizeCoating[@j].EstMat2020By12units" value="@item.EstMat2020By12units" onchange="calculateBatchSizeCaoting(this);" class="EstMat2020By12units form-control readOnlyUpdate" /></td>
 									     
-									     <td><input type="number" id="Cagrover2016By12estMatunits" name="lsPidfFinanceBatchSizeCoating[@j].Cagrover2016By12estMatunits" value="@item.Cagrover2016By12estMatunits" class="Cagrover2016By12estMatunits form-control readOnlyUpdate" /></td>
+									     <td><input type="number" id="Cagrover2016By12estMatunits" name="lsPidfFinanceBatchSizeCoating[@j].Cagrover2016By12estMatunits" value="@item.Cagrover2016By12estMatunits"  class="Cagrover2016By12estMatunits form-control readOnlyUpdate" /></td>
 									     <td><input type="number" id="Marketinpacks" name="lsPidfFinanceBatchSizeCoating[@j].Marketinpacks" value="@item.Marketinpacks"  class="Marketinpacks form-control readOnlyUpdate" /></td>
-                                            <td><input type="number" id="BatchsizeinLtrTabs" name="lsPidfFinanceBatchSizeCoating[@j].BatchsizeinLtrTabs" value="@item.BatchsizeinLtrTabs" class="BatchsizeinLtrTabs form-control readOnlyUpdate" /></td>
+                                            <td><input type="number" id="BatchsizeinLtrTabs" name="lsPidfFinanceBatchSizeCoating[@j].BatchsizeinLtrTabs" value="@item.BatchsizeinLtrTabs" onchange="calculateBatchSizeCaoting(this);" class="BatchsizeinLtrTabs form-control readOnlyUpdate" /></td>
 									
 
 									    <td>
@@ -1033,25 +1033,25 @@
 										    <input type="number" id="Batchsize" name="lsPidfFinanceBatchSizeCoating[@j].Batchsize" value="@item.Batchsize" class="Batchsize form-control readOnlyUpdate" required />
 									    </td>
 									    <td>
-										    <input type="number" style="width: 50px;" id="Yield" name="lsPidfFinanceBatchSizeCoating[@j].Yield" value="@item.Yield" class="Yield form-control readOnlyUpdate" required />
+										    <input type="number" style="width: 100px;" id="Yield" name="lsPidfFinanceBatchSizeCoating[@j].Yield" value="@item.Yield" onchange="calculateBatchSizeCaoting(this);" class="Yield form-control readOnlyUpdate" required />
 									    </td>
 									    <td>
-										    <input type="number" id="Batchoutput" name="lsPidfFinanceBatchSizeCoating[@j].Batchoutput" value="@item.Batchoutput" class=" Batchoutput form-control readOnlyUpdate" required />
+										    <input type="number" id="Batchoutput" name="lsPidfFinanceBatchSizeCoating[@j].Batchoutput" value="@item.Batchoutput"  class=" Batchoutput form-control readOnlyUpdate" required />
 									    </td>
 									    <td>
-										    <input type="number" id="API_CAD" name="lsPidfFinanceBatchSizeCoating[@j].ApiCad" value="@item.ApiCad" class="API_CAD form-control readOnlyUpdate" required />
+										    <input type="number" id="API_CAD" name="lsPidfFinanceBatchSizeCoating[@j].ApiCad" value="@item.ApiCad" onchange="calculateBatchSizeCaoting(this);" class="API_CAD form-control readOnlyUpdate" required />
 									    </td>
 									    <td>
-										    <input type="number" id="Excipients_CAD" name="lsPidfFinanceBatchSizeCoating[@j].ExcipientsCad" value="@item.ExcipientsCad" class=" Excipients_CAD form-control readOnlyUpdate" required />
+										    <input type="number" id="Excipients_CAD" name="lsPidfFinanceBatchSizeCoating[@j].ExcipientsCad" value="@item.ExcipientsCad" onchange="calculateBatchSizeCaoting(this);" class=" Excipients_CAD form-control readOnlyUpdate" required />
 									    </td>
 									    <td>
-										    <input type="number" id="PM_CAD" name="lsPidfFinanceBatchSizeCoating[@j].PmCad" value="@item.PmCad" class="PM_CAD form-control readOnlyUpdate" required />
+										    <input type="number" id="PM_CAD" name="lsPidfFinanceBatchSizeCoating[@j].PmCad" value="@item.PmCad" onchange="calculateBatchSizeCaoting(this);" class="PM_CAD form-control readOnlyUpdate" required />
 									    </td>
 									    <td>
-										    <input type="number" id="CCPC_CAD" name="lsPidfFinanceBatchSizeCoating[@j].CcpcCad" value="@item.CcpcCad" class="CCPC_CAD form-control readOnlyUpdate" required />
+										    <input type="number" id="CCPC_CAD" name="lsPidfFinanceBatchSizeCoating[@j].CcpcCad" value="@item.CcpcCad" onchange="calculateBatchSizeCaoting(this);" class="CCPC_CAD form-control readOnlyUpdate" required />
 									    </td>
 									    <td>
-										    <input type="number" id="Freight_CAD" name="lsPidfFinanceBatchSizeCoating[@j].FreightCad" value="@item.FreightCad" class="Freight_CAD form-control readOnlyUpdate" required />
+                                                <input type="number" id="Freight_CAD" name="lsPidfFinanceBatchSizeCoating[@j].FreightCad" value="@item.FreightCad" onchange="calculateBatchSizeCaoting(this);" class="Freight_CAD form-control readOnlyUpdate" required />
 									    </td>
 									    <td>
                                                 <input type="number" id="EmcureCOGs_pack" name="lsPidfFinanceBatchSizeCoating[@j].EmcureCogsPack" value="@item.EmcureCogsPack" class="EmcureCOGs_pack form-control readOnlyUpdate" required />
@@ -1081,38 +1081,38 @@
 
                                         <td><input type="number" id="PakeSize" name="lsPidfFinanceBatchSizeCoating[@j].PakeSize" class="PakeSize form-control readOnlyUpdate" /></td>
                                         <td><input type="number" id="BrandPrice" name="lsPidfFinanceBatchSizeCoating[@j].BrandPrice" class="BrandPrice form-control readOnlyUpdate" /></td>
-									    <td><input type="number" id="GenericListprice" name="lsPidfFinanceBatchSizeCoating[@j].GenericListprice" class="GenericListprice form-control readOnlyUpdate" /></td>
-                                        <td><input type="number" id="NetRealisation" name="lsPidfFinanceBatchSizeCoating[@j].NetRealisation" class="NetRealisation form-control readOnlyUpdate" readonly="readonly"></td>
+									    <td><input type="number" id="GenericListprice" name="lsPidfFinanceBatchSizeCoating[@j].GenericListprice"  onchange="calculateBatchSizeCaoting(this);" class="GenericListprice form-control readOnlyUpdate"  ></td>
+                                        <td><input type="text" id="NetRealisation" name="lsPidfFinanceBatchSizeCoating[@j].NetRealisation" class="NetRealisation form-control readOnlyUpdate"  readonly></td>
                                         <td><input type="number" id="EstMat2016By12units" name="lsPidfFinanceBatchSizeCoating[@j].EstMat2016By12units" class="EstMat2016By12units form-control readOnlyUpdate" /></td>
-									   
-									    <td><input type="number" id="EstMat2020By12units" name="lsPidfFinanceBatchSizeCoating[@j].EstMat2020By12units" class="EstMat2020By12units form-control readOnlyUpdate" /></td>
+
+                                        <td><input type="number" id="EstMat2020By12units" name="lsPidfFinanceBatchSizeCoating[@j].EstMat2020By12units" onchange="calculateBatchSizeCaoting(this);" class="EstMat2020By12units form-control readOnlyUpdate" /></td>
 									    
 									    <td><input type="number" id="Cagrover2016By12estMatunits" name="lsPidfFinanceBatchSizeCoating[@j].Cagrover2016By12estMatunits" class="Cagrover2016By12estMatunits form-control readOnlyUpdate" required /></td>
 									    <td><input type="number" id="Marketinpacks" name="lsPidfFinanceBatchSizeCoating[@j].Marketinpacks" class="Marketinpacks form-control readOnlyUpdate" required /></td>
-                                        <td><input type="number" id="BatchsizeinLtrTabs" name="lsPidfFinanceBatchSizeCoating[@j].BatchsizeinLtrTabs" class="BatchsizeinLtrTabs form-control readOnlyUpdate" required /></td>
+                                        <td><input type="number" id="BatchsizeinLtrTabs" name="lsPidfFinanceBatchSizeCoating[@j].BatchsizeinLtrTabs" onchange="calculateBatchSizeCaoting(this);" class="BatchsizeinLtrTabs form-control readOnlyUpdate" required /></td>
 									<td>
 										<input type="number" id="Batchsize" name="lsPidfFinanceBatchSizeCoating[@j].Batchsize" class="Batchsize form-control readOnlyUpdate" required />
 									</td> 
 									<td>
-									<input type="number" style="width: 50px;" id="Yield" name="lsPidfFinanceBatchSizeCoating[@j].Yield" class="Yield form-control readOnlyUpdate" required />
+									<input type="number" style="width: 100px;" id="Yield" name="lsPidfFinanceBatchSizeCoating[@j].Yield" onchange="calculateBatchSizeCaoting(this);" class="Yield form-control readOnlyUpdate" required />
 									</td>
 									<td>
 									<input type="number" id="Batchoutput" name="lsPidfFinanceBatchSizeCoating[@j].Batchoutput" class=" Batchoutput form-control readOnlyUpdate" required />
 									</td>
 									<td>
-									<input type="number" id="API_CAD" name="lsPidfFinanceBatchSizeCoating[@j].ApiCad" class="API_CAD form-control readOnlyUpdate" required />
+									<input type="number" id="API_CAD" name="lsPidfFinanceBatchSizeCoating[@j].ApiCad" class="API_CAD onchange="calculateBatchSizeCaoting(this);" form-control readOnlyUpdate" required />
 									</td>
 									<td>
-									<input type="number" id="Excipients_CAD" name="lsPidfFinanceBatchSizeCoating[@j].ExcipientsCad" class=" Excipients_CAD form-control readOnlyUpdate" required />
+									<input type="number" id="Excipients_CAD" name="lsPidfFinanceBatchSizeCoating[@j].ExcipientsCad" onchange="calculateBatchSizeCaoting(this);" class=" Excipients_CAD form-control readOnlyUpdate" required />
 									</td>
 									<td>
-									<input type="number" id="PM_CAD" name="lsPidfFinanceBatchSizeCoating[@j].PmCad" class="PM_CAD form-control readOnlyUpdate" required />
+									<input type="number" id="PM_CAD" name="lsPidfFinanceBatchSizeCoating[@j].PmCad" onchange="calculateBatchSizeCaoting(this);" class="PM_CAD form-control readOnlyUpdate" required />
 									</td>
 									<td>
-									<input type="number" id="CCPC_CAD" name="lsPidfFinanceBatchSizeCoating[@j].CcpcCad" class="CCPC_CAD form-control readOnlyUpdate" required />
+									<input type="number" id="CCPC_CAD" name="lsPidfFinanceBatchSizeCoating[@j].CcpcCad" onchange="calculateBatchSizeCaoting(this);" class="CCPC_CAD form-control readOnlyUpdate" required />
 									</td>
                                     <td>
-									<input type="number" id="Freight_CAD" name="lsPidfFinanceBatchSizeCoating[@j].FreightCad" class="Freight_CAD form-control readOnlyUpdate" required />
+                                            <input type="number" id="Freight_CAD" name="lsPidfFinanceBatchSizeCoating[@j].FreightCad" onchange="calculateBatchSizeCaoting(this);" class="Freight_CAD form-control readOnlyUpdate" required />
 									</td>
 									<td>
                                         <input type="number" id="EmcureCOGs_pack" name="lsPidfFinanceBatchSizeCoating[@j].EmcureCogsPack" class="EmcureCOGs_pack form-control readOnlyUpdate" required />
@@ -1131,7 +1131,7 @@
                                     </div>
             </div>
 		</div>
-        <div class="card">
+        <div class="card collapsed-card">
 			
              <div class="card-header bg-primary">
 			<h3 class="card-title mb-0"><button type="button" class="btn btn-tool" data-card-widget="collapse">Projections</button></h3>
@@ -5720,7 +5720,7 @@
 				
 			</div>
 		</div>
-        <div class="card">
+            <div class="card collapsed-card">
                 <div class="card-header bg-primary">
 			<h3 class="card-title mb-0"><button type="button" class="btn btn-tool" data-card-widget="collapse">Commercial Per Pack</button></h3>
 				<div class="card-tools">
