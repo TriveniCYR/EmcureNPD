@@ -98,8 +98,7 @@ namespace EmcureNPD.Business.Core.Implementation
             var IsUpdateData = (_commercialrepository.Get(x => x.Pidfid == entitycommPIDF.Pidfid) == null);
             Expression<Func<PidfCommercial, bool>> expr = u => u.BusinessUnitId == entitycommPIDF.BusinessUnitId && u.Pidfid == entitycommPIDF.Pidfid && u.PidfproductStrengthId == entitycommPIDF.PidfproductStrengthId;
             var objFetchData = await _commercialrepository.GetAsync(expr);
-            var OldObjpidfCommercial = _mapperFactory.Get<PidfCommercial, PIDFCommercialEntity>(objFetchData);
-            OldObjpidfCommercial.PidfCommercialYears = entitycommPIDF.PidfCommercialYears;
+           
             if (objFetchData == null)
             {
                 var NewCommPIDF = new PidfCommercial();
@@ -124,6 +123,8 @@ namespace EmcureNPD.Business.Core.Implementation
             }
             else
             {
+                var OldObjpidfCommercial = _mapperFactory.Get<PidfCommercial, PIDFCommercialEntity>(objFetchData);
+                OldObjpidfCommercial.PidfCommercialYears = entitycommPIDF.PidfCommercialYears;
                 //Remove all Already mapped Years data
                 var CommercialYears = await _commercialYearrepository.GetAllAsync(x => x.PidfcommercialId == objFetchData.PidfcommercialId);
                 foreach (var item in CommercialYears)
