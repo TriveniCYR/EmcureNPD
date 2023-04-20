@@ -1061,7 +1061,7 @@ function PBFBindBusinessUnit(data) {
         businessUnitHTML += '<li class="nav-item p-0">\
             <a class="nav-link '+ (item.businessUnitId == _selectBusinessUnit ? "active" : "") + ' px-2" href="#custom-tabs-' + item.businessUnitId + '" data-toggle="pill" aria-selected="true" onclick="PBFBUtabClick(' + _PIDFID + ', ' + item.businessUnitId + ')" id="custom-tabs-two-' + item.businessUnitId + '-tab">' + item.businessUnitName + '</a></li>';
     });
-    $('#custom-tabs-two-tab').html(businessUnitHTML);
+    $('#dvPBFContainer').find('#custom-tabs-two-tab').html(businessUnitHTML);
 }
 function PBFBindStrength(data) {
     var strengthHTML = '<thead class="bg-primary"><tr>';

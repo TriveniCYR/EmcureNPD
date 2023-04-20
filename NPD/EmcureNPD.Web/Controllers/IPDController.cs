@@ -84,10 +84,10 @@ namespace EmcureNPD.Web.Controllers
             {
                 int rolId = _helper.GetLoggedInRoleId();
                 RolePermissionModel objPermssion = UtilityHelper.GetCntrActionAccess((int)ModulePermissionEnum.IPD, rolId);
-                if (objPermssion == null || !(objPermssion.View || objPermssion.Add || objPermssion.Edit))
-                {
-                    return RedirectToAction("AccessRestriction", "Home");
-                }
+                //if (objPermssion == null || !(objPermssion.View || objPermssion.Add || objPermssion.Edit))
+                //{
+                //    return RedirectToAction("AccessRestriction", "Home");
+                //}
                 ViewBag.Access = objPermssion;
 
                 oIPD = GetModelForIPDForm(pidfid.ToString(), bui.ToString());

@@ -1,4 +1,5 @@
 ﻿using EmcureNPD.Business.Models;
+using EmcureNPD.Data.DataAccess.Entity;
 using EmcureNPD.Resource;
 using EmcureNPD.Utility.Models;
 using EmcureNPD.Utility.Utility;
@@ -179,6 +180,7 @@ namespace EmcureNPD.Web.Controllers
         {
             if (CheckEmailAddressExists(forgotPasswordViewModel.Email))
             {
+                forgotPasswordViewModel.WebApplicationUrl = HttpContext.Request.Scheme + "://" + HttpContext.Request.Host.Value;
                 APIRepository objapi = new APIRepository(_cofiguration);
                 HttpResponseMessage responseMessage = objapi.APICommunication(APIURLHelper.ForgotPassword, HttpMethod.Post, string.Empty, new StringContent(JsonConvert.SerializeObject(forgotPasswordViewModel))).Result;
                 if (responseMessage.IsSuccessStatusCode)

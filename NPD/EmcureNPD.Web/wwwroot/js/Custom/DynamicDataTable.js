@@ -32,7 +32,7 @@
             buttons: [
                 {
                     extend: 'excel', text: '<i class="far fa-file-excel"></i> Export In Excel ', className: "btn-primary", exportOptions: {
-                        columns: ':visible'
+                        columns: ':not(.notexport)'
                     }
                 },
                 { extend: 'colvis', className: "btn-primary" }

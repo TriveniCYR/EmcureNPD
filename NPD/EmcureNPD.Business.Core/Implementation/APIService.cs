@@ -334,9 +334,10 @@ namespace EmcureNPD.Business.Core.Implementation
             if (_oAPIIPD.APIIPDDetailsFormID > 0)
             {
                 PidfApiIpd lastApiIpd = await _pidf_API_IPD_repository.GetAsync(x => x.PidfApiIpdId == _oAPIIPD.APIIPDDetailsFormID);
-                var OldObjAPIIPD = _mapperFactory.Get<PidfApiIpd, PIDFAPIIPDFormEntity>(lastApiIpd);
+                
                 if (lastApiIpd != null)
                 {
+                    var OldObjAPIIPD = _mapperFactory.Get<PidfApiIpd, PIDFAPIIPDFormEntity>(lastApiIpd);
                     if (!IskeepLastFile)
                     {
                         var exsistingFilePath = path + "\\" + lastApiIpd.MarketDetailsFileName;
@@ -400,12 +401,13 @@ namespace EmcureNPD.Business.Core.Implementation
             var loggedInUser = _helper.GetLoggedInUser();
             if (_oAPIRnD.PIDFAPIRnDFormID > 0)
             {
-                var lastApiRnD = _pidf_API_RnD_repository.GetAllQuery().First(x => x.PidfApiRnDId == _oAPIRnD.PIDFAPIRnDFormID);
-                var OldObjAPiRnD = _mapperFactory.Get<PidfApiRnD, PIDFAPIRnDFormEntity>(lastApiRnD);
-                OldObjAPiRnD.APITargetRMC_CCPC = lastApiRnD.ApitargetRmcCcpc;
-                OldObjAPiRnD.MarketID = lastApiRnD.MarketExtenstionId;
+                var lastApiRnD = _pidf_API_RnD_repository.GetAllQuery().First(x => x.PidfApiRnDId == _oAPIRnD.PIDFAPIRnDFormID);               
                 if (lastApiRnD != null)
                 {
+                    var OldObjAPiRnD = _mapperFactory.Get<PidfApiRnD, PIDFAPIRnDFormEntity>(lastApiRnD);
+                    OldObjAPiRnD.APITargetRMC_CCPC = lastApiRnD.ApitargetRmcCcpc;
+                    OldObjAPiRnD.MarketID = lastApiRnD.MarketExtenstionId;
+
                     lastApiRnD.PlantQc = _oAPIRnD.PlantQC;
                     lastApiRnD.Development = _oAPIRnD.Development;
                     lastApiRnD.Total = _oAPIRnD.Total;
@@ -466,13 +468,12 @@ namespace EmcureNPD.Business.Core.Implementation
             var _objPidfApiCharterHeadwiseBudget = FillObjData<HeadwiseBudget, PidfApiCharterHeadwiseBudget>(_oAPICharter.HeadwiseBudget);
 
             if (_oAPICharter.PIDFAPICharterFormID > 0)
-            {                
-                var _oldObjAPIcharter = await GetAPICharterFormData(Int32.Parse(_oAPICharter.Pidfid),1); // IsCharter = 1;
-
+            {  
                 var lastApiCharter = _pidf_API_Charter_repository.GetAllQuery().First(x => x.PidfApiCharterId == _oAPICharter.PIDFAPICharterFormID);
-               
                 if (lastApiCharter != null)
                 {
+                    var _oldObjAPIcharter = await GetAPICharterFormData(Int32.Parse(_oAPICharter.Pidfid), 1); // IsCharter = 1;
+
                     RemoveChildDataAPICharter(_oAPICharter.PIDFAPICharterFormID); // Remove child table data
                     lastApiCharter.PidfApiCharterTimelineInMonths = _objPidfApiCharterTimelineInMonth;
                     lastApiCharter.PidfApiCharterManhourEstimates = _objPidfApiCharterManhourEstimates;

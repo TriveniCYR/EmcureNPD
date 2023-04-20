@@ -107,7 +107,7 @@ namespace EmcureNPD.API.Controllers.Account
         {
             try
             {
-                var _forgotPasswordOperation = await _MasterUserService.ForgotPassword(forgotPasswordViewModel.Email);
+                var _forgotPasswordOperation = await _MasterUserService.ForgotPassword(forgotPasswordViewModel);
 
                 if (_forgotPasswordOperation == DBOperation.Success)
                     return _ObjectResponse.Create(_forgotPasswordOperation, (Int32)HttpStatusCode.OK);

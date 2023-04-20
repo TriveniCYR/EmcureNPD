@@ -101,6 +101,7 @@ namespace EmcureNPD.Web.Controllers
             }
             try
             {
+                masterUser.WebApplicationUrl = HttpContext.Request.Scheme + "://" + HttpContext.Request.Host.Value;
                 HttpContext.Request.Cookies.TryGetValue(UserHelper.EmcureNPDToken, out string token);
                 APIRepository objapi = new(_cofiguration);
 

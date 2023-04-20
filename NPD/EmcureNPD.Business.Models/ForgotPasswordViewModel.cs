@@ -13,5 +13,6 @@ namespace EmcureNPD.Business.Models
         [Required(ErrorMessageResourceType = typeof(Validation), ErrorMessageResourceName = "Required")]
         [EmailAddress(ErrorMessageResourceType = typeof(Validation), ErrorMessageResourceName = "EmailValid")]
         public string Email { get; set; }
+        public string WebApplicationUrl { get; set; }
     }
 }

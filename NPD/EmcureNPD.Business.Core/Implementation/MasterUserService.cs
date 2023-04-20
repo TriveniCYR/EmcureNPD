@@ -275,9 +275,9 @@ namespace EmcureNPD.Business.Core.ServiceImplementations
                 objUser.CreatedBy = LoggedUserId;
                 objUser.CreatedDate = DateTime.Now;
                 _repository.AddAsync(objUser);
+                SendUserCreateMail(entityUser, LoggedUserId);
             }
-            await _unitOfWork.SaveChangesAsync();
-            SendUserCreateMail(entityUser, LoggedUserId);
+            await _unitOfWork.SaveChangesAsync();            
             if (objUser.UserId == 0)
                 return DBOperation.Error;
 
@@ -300,7 +300,7 @@ namespace EmcureNPD.Business.Core.ServiceImplementations
                 strHtml = strHtml.Replace("{FullName}", entityUser.FullName);
                 strHtml = strHtml.Replace("{Email}", entityUser.EmailAddress);
                 strHtml = strHtml.Replace("{Password}", entityUser.StringPassword);
-                // strHtml = strHtml.Replace("{ApplicationLoginURL}", WebURL);
+                 strHtml = strHtml.Replace("{ApplicationLoginURL}", entityUser.WebApplicationUrl);
                 email.SendMail(entityUser.EmailAddress, string.Empty, "Emcure NPD - User Created", strHtml, GetSMTPConfiguration());
             }
             catch (Exception ex) { }
@@ -439,11 +439,11 @@ namespace EmcureNPD.Business.Core.ServiceImplementations
             return _mapperFactory.GetList<MasterBusinessUnit, MasterBusinessUnitEntity>(await _businessUnitRepository.GetAllAsync());
         }
 
-        public async Task<DBOperation> ForgotPassword(string emailAddress)
+        public async Task<DBOperation> ForgotPassword(ForgotPasswordViewModel forgotPasswordViewModel)
         {
             EmailHelper email = new EmailHelper();
-            string baseURL = ""; //configuration.GetSection("Apiconfig").GetSection("EmcureNPDWebUrl").Value;
-            var entityUser = _repository.Get(x => x.EmailAddress == emailAddress);
+            string baseURL = forgotPasswordViewModel.WebApplicationUrl;
+            var entityUser = _repository.Get(x => x.EmailAddress == forgotPasswordViewModel.Email);
             if (entityUser == null)
                 return DBOperation.NotFound;
 

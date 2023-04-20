@@ -1,5 +1,6 @@
 ﻿using EmcureNPD.Business.Models;
 using EmcureNPD.Web.Models;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace EmcureNPD.Business.Core.Interface
@@ -8,7 +9,7 @@ namespace EmcureNPD.Business.Core.Interface
     {
         Task<SendReminderModel> SendReminder();
 
-        void SendReminderMail(SendReminderModel sendReminderModel);
+        void SendReminderMail(List<SendReminderModel> sendReminderModel_list);
 
         Task<SendReminderModel> AutoUpdatePIDFStatus();
 

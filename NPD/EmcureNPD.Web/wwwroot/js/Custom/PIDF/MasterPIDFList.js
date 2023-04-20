@@ -31,13 +31,14 @@ function InitializePIDFList() {
 
     var columnObject = [
         {
-            className: 'dt-control',
+            className: 'dt-control notexport',
             orderable: false,
             defaultContent: '',
             "data": null
         },
         {
             orderable: false,
+            className: 'notexport',
             "data": null,
             'render': function (data, type, row, meta) {
                 if (_screenId == "1" || _screenId == "2" || _screenId == "7" || _screenId == "8") {
@@ -94,32 +95,32 @@ function InitializePIDFList() {
         },
         {
             "data": "ipd", "name": "IPD", "render": function (data, type, row, meta) {
-                return '<a class="small-button btn btn-' + (row.ipd ? "success" : "danger") + '"><i class="fa ' + (row.ipd ? "fa-check" : "fa-remove") + '"></i></a>';
+                return '<span style="display:none;">'+(data ? "Yes" : "No")+'</span><a class="small-button btn btn-' + (row.ipd ? "success" : "danger") + '"><i class="fa ' + (row.ipd ? "fa-check" : "fa-remove") + '"></i></a>';
             }
         },
         {
             "data": "medical", "name": "medical", "render": function (data, type, row, meta) {
-                return '<a class="small-button btn btn-' + (row.medical ? "success" : "danger") + '"><i class="fa ' + (row.medical ? "fa-check" : "fa-remove") + '"></i></a>';
+                return '<span style="display:none;">' + (data ? "Yes" : "No") +'</span><a class="small-button btn btn-' + (row.medical ? "success" : "danger") + '"><i class="fa ' + (row.medical ? "fa-check" : "fa-remove") + '"></i></a>';
             }
         },
         {
             "data": "commercial", "name": "Commercial", "render": function (data, type, row, meta) {
-                return '<a class="small-button btn btn-' + (row.commercial ? "success" : "danger") + '"><i class="fa ' + (row.commercial ? "fa-check" : "fa-remove") + '"></i></a>';
+                return '<span style="display:none;">' + (data ? "Yes" : "No") +'</span><a class="small-button btn btn-' + (row.commercial ? "success" : "danger") + '"><i class="fa ' + (row.commercial ? "fa-check" : "fa-remove") + '"></i></a>';
             }
         },
         {
             "data": "pbf", "name": "PBF", "render": function (data, type, row, meta) {
-                return '<a class="small-button btn btn-' + (row.pbf ? "success" : "danger") + '"><i class="fa ' + (row.pbf ? "fa-check" : "fa-remove") + '"></i></a>';
+                return '<span style="display:none;">' + (data ? "Yes" : "No") +'</span><a class="small-button btn btn-' + (row.pbf ? "success" : "danger") + '"><i class="fa ' + (row.pbf ? "fa-check" : "fa-remove") + '"></i></a>';
             }
         },
         {
             "data": "api", "name": "api", "render": function (data, type, row, meta) {
-                return '<a class="small-button btn btn-' + (row.api ? "success" : "danger") + '"><i class="fa ' + (row.api ? "fa-check" : "fa-remove") + '"></i></a>';
+                return '<span style="display:none;">' + (data ? "Yes" : "No") +'</span><a class="small-button btn btn-' + (row.api ? "success" : "danger") + '"><i class="fa ' + (row.api ? "fa-check" : "fa-remove") + '"></i></a>';
             }
         },
         {
             "data": "finance", "name": "Finance", "render": function (data, type, row, meta) {
-                return '<a class="small-button btn btn-' + (row.finance ? "success" : "danger") + '"><i class="fa ' + (row.finance ? "fa-check" : "fa-remove") + '"></i></a>';
+                return '<span style="display:none;">' + (data ? "Yes" : "No") +'</span><a class="small-button btn btn-' + (row.finance ? "success" : "danger") + '"><i class="fa ' + (row.finance ? "fa-check" : "fa-remove") + '"></i></a>';
             }
         },
         //{
@@ -164,7 +165,7 @@ function InitializePIDFList() {
             }
         },
         {
-            "data": null, "name": "Action", "render": function (data, type, row, meta) {
+            "data": null, className:'notexport', "name": "Action", "render": function (data, type, row, meta) {
                 var html = '';
                 if (_screenId == "1") {
                     var _PIDFForm = '/PIDF/PIDF?PIDFId=' + row.pidfid;
