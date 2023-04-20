@@ -6,6 +6,8 @@ using EmcureNPD.Data.DataAccess.Entity;
 using EmcureNPD.Utility.Helpers;
 using EmcureNPD.Utility.Utility;
 using EmcureNPD.Web.Models;
+using System;
+using System.Collections.Generic;
 using System.Dynamic;
 using System.Threading.Tasks;
 
@@ -31,18 +33,18 @@ namespace EmcureNPD.Business.Core.Implementation
         public async Task<SendReminderModel> SendReminder()
         {
             var dbresult = await _masterUser.GetDataSetBySP("GetUserForReminder", System.Data.CommandType.StoredProcedure, null);
-            dynamic _BUObjects = new ExpandoObject();
+            dynamic UserList = new ExpandoObject();
             if (dbresult != null)
             {
                 if (dbresult.Tables[0] != null && dbresult.Tables[0].Rows.Count > 0)
                 {
-                    _BUObjects = dbresult.Tables[0].DataTableToList<SendReminderModel>();
+                    UserList = dbresult.Tables[0].DataTableToList<SendReminderModel>();
                     //foreach (var user in _BUObjects) {
-                    SendReminderMail(_BUObjects[1]);
+                    SendReminderMail(UserList);
                     //}
                 }
             }
-            return _BUObjects;
+            return UserList;
         }
 
         public async Task<SendReminderModel> AutoUpdatePIDFStatus()
@@ -63,17 +65,25 @@ namespace EmcureNPD.Business.Core.Implementation
             return _BUObjects;
         }
 
-        public void SendReminderMail(SendReminderModel sendReminderModel)
+        public void SendReminderMail(List<SendReminderModel> sendReminderModel_list)
         {
-            EmailHelper email = new EmailHelper();
-            string strHtml = System.IO.File.ReadAllText(@"wwwroot\Uploads\HTMLTemplates\SendReminderMailTemplate.html");
+            foreach (var sendReminderModel in sendReminderModel_list)
+            {
+                try
+                {
+                    EmailHelper email = new EmailHelper();
+                    string strHtml = System.IO.File.ReadAllText(@"wwwroot\Uploads\HTMLTemplates\SendReminderMailTemplate.html");
 
-            strHtml = strHtml.Replace("{PIDFNumber}", sendReminderModel.PIDFNO);
-            strHtml = strHtml.Replace("{Email}", sendReminderModel.EmailAddress);
-            strHtml = strHtml.Replace("{DateTime}", sendReminderModel.RejectedDateTime.ToString());
-            strHtml = strHtml.Replace("{FullName}", sendReminderModel.FullName);
-            strHtml = strHtml.Replace("{MoleculeName}", sendReminderModel.MoleculeName);
-            email.SendMail(sendReminderModel.EmailAddress, string.Empty, "PIDF : {" + sendReminderModel.PIDFNO + "} - Molecule Name : {" + sendReminderModel.MoleculeName + "} Commercial Detail pending", strHtml, _MasterUserService.GetSMTPConfiguration());
+                    strHtml = strHtml.Replace("{PIDFNumber}", sendReminderModel.PIDFNO);
+                    strHtml = strHtml.Replace("{Email}", sendReminderModel.EmailAddress);
+                    strHtml = strHtml.Replace("{DateTime}", ((DateTime)sendReminderModel.IPDApprovedDate).AddDays(15).ToString());
+                    strHtml = strHtml.Replace("{FullName}", sendReminderModel.FullName);
+                    strHtml = strHtml.Replace("{MoleculeName}", sendReminderModel.MoleculeName);
+                    string str_subject = "PIDF : {" + sendReminderModel.PIDFNO + "} - Molecule Name : {" + sendReminderModel.MoleculeName + "} Commercial Detail pending";
+                    email.SendMail(sendReminderModel.EmailAddress, string.Empty, str_subject, strHtml, _MasterUserService.GetSMTPConfiguration());
+                }
+                catch (Exception ex) { }
+            }
         }
 
         public void AutoUpdatePIDFStatusMail(AutoUpdatePIDFStatusModel autoUpdatePIDFStatusModel)
