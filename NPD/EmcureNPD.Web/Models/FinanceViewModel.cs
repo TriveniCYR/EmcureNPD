@@ -182,6 +182,7 @@ namespace EmcureNPD.Web.Models
         public long? Skus { get; set; }
         public int? PakeSize { get; set; }
         public double? BrandPrice { get; set; }
+        public double? NetRealisation { get; set; }
         public double? GenericListprice { get; set; }
         public double? EstMat2016By12units { get; set; }
         public double? EstMat2020By12units { get; set; }
