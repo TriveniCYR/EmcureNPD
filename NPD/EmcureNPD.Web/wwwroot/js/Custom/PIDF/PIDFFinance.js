@@ -239,8 +239,51 @@ function calculateDealTerm(id) {
     });
     $("#spanTotal").text(totaldealterm)
 }
-function calculateBatchSizeCaoting() {
+function calculateBatchSizeCaoting(ele) {
+    let netRealisation = 0;
+    let EstMat2020By12units = 0;
+    let BatchsizeinLtrTabs = 0;
+    let Batchsize = 0;
+    let Yield = 0;
+    let Batchoutput = 0;
+    let sumforEmcureCogsPack = 0;
 
+    let ApiCad = 0;
+    let ExcipientsCad = 0;
+    let PmCad = 0;
+    let CcpcCad = 0;
+    let FreightCad = 0;
+
+    $.each($('#FinanceTableBoy tr'), function (index, value) {
+        if (ele.valueAsNumber >= 0 && $(this).find("td:eq(3) input").attr("name", "lsPidfFinanceBatchSizeCoating[" + index.toString() + "].GenericListprice").val() == ele.value) {
+            netRealisation = (ele.valueAsNumber * 40) / 100;
+            // $(".NetRealisation#NetRealisation").val(netRealisation);
+            $(this).find("td:eq(4) input").attr("name", "lsPidfFinanceBatchSizeCoating[" + index.toString() + "].NetRealisation").val(netRealisation);
+        }
+        if ($(this).find("td:eq(6) input").attr("name", "lsPidfFinanceBatchSizeCoating[" + index.toString() + "].EstMat2020By12units").val() > 0) {
+              EstMat2020By12units = $(this).find("td:eq(6) input").attr("name", "lsPidfFinanceBatchSizeCoating[" + index.toString() + "].EstMat2020By12units").val();
+            $(this).find("td:eq(8) input").attr("name", "lsPidfFinanceBatchSizeCoating[" + index.toString() + "].NetRMarketinpacksealisation").val(EstMat2020By12units);
+        }
+        if ($(this).find("td:eq(9) input").attr("name", "lsPidfFinanceBatchSizeCoating[" + index.toString() + "].BatchsizeinLtrTabs").val() > 0) {
+             BatchsizeinLtrTabs = $(this).find("td:eq(9) input").attr("name", "lsPidfFinanceBatchSizeCoating[" + index.toString() + "].BatchsizeinLtrTabs").val();
+             Batchsize = (BatchsizeinLtrTabs) / parseFloat($(this).find("td:eq(0) select option:selected").attr("name", "lsPidfFinanceBatchSizeCoating[" + index.toString() + "].Skus").text().replace("mg", "").trim())
+            $(this).find("td:eq(10) input").attr("name", "lsPidfFinanceBatchSizeCoating[" + index.toString() + "].Batchsize").val(Batchsize);
+        }
+        if ($(this).find("td:eq(11) input").attr("name", "lsPidfFinanceBatchSizeCoating[" + index.toString() + "].Yield").val() > 0) {
+             Yield = $(this).find("td:eq(11) input").attr("name", "lsPidfFinanceBatchSizeCoating[" + index.toString() + "].Yield").val();
+             Batchoutput = (Yield) * parseFloat($(this).find("td:eq(0) select option:selected").attr("name", "lsPidfFinanceBatchSizeCoating[" + index.toString() + "].Skus").text().replace("mg", "").trim())
+            $(this).find("td:eq(12) input").attr("name", "lsPidfFinanceBatchSizeCoating[" + index.toString() + "].Batchoutput").val(Batchoutput);
+        }
+       // $(document).on("change", ".ApiCad, .ExcipientsCad, .PmCad, .CcpcCad, .FreightCad", function () {
+            ApiCad = $(this).find("td:eq(13) input").attr("name", "lsPidfFinanceBatchSizeCoating[" + index.toString() + "].ApiCad").val();
+            ExcipientsCad = $(this).find("td:eq(14) input").attr("name", "lsPidfFinanceBatchSizeCoating[" + index.toString() + "].ExcipientsCad").val();
+            PmCad = $(this).find("td:eq(15) input").attr("name", "lsPidfFinanceBatchSizeCoating[" + index.toString() + "].PmCad").val();
+            CcpcCad = $(this).find("td:eq(16) input").attr("name", "lsPidfFinanceBatchSizeCoating[" + index.toString() + "].CcpcCad").val();
+        FreightCad = $(this).find("td:eq(16) input").attr("name", "lsPidfFinanceBatchSizeCoating[" + index.toString() + "].FreightCad").val();
+        sumforEmcureCogsPack = parseInt(Batchsize) + parseInt(Yield) + parseInt(Batchoutput) + parseInt(ApiCad) + parseInt(ExcipientsCad) + parseInt(PmCad) + parseInt(CcpcCad) + parseInt(FreightCad);
+            $(this).find("td:eq(18) input").attr("name", "lsPidfFinanceBatchSizeCoating[" + index.toString() + "].EmcureCogsPack").val(sumforEmcureCogsPack);
+       // });
+    })
 }
 function GetSkus(pidfId) {
     ajaxServiceMethod($('#hdnBaseURL').val() + "api/PidfFinance/GetStrengthByPIDFId" + "/" + pidfId, 'GET', GetSkusListSuccess, GetSkusListError);
@@ -282,12 +325,12 @@ function GetSkus(pidfId) {
    
 }
 
-$("i.fas.fa-plus").click(function () {
-    let count = 1;
-    for (let i = 0; i < count; i++) {
-        if (i == 0) { this.click(); }
-    }
-});
+//$("i.fas.fa-plus").click(function () {
+//    let count = 1;
+//    for (let i = 0; i < count; i++) {
+//        if (i == 0) { this.click(); }
+//    }
+//});
 //$(".readOnlyUpdate").keyup(function () {
 //    $(this).val($(this).val().replace(/ /g, ''));
 //    if ($("#Entity").val().length == 1 && $(this).val()=="") {
