@@ -306,6 +306,7 @@ namespace EmcureNPD.Business.Core.Implementation
                 recordsTable.Columns.Add("Skus", typeof(int));
                 recordsTable.Columns.Add("PakeSize", typeof(int));
                 recordsTable.Columns.Add("BrandPrice", typeof(int));
+                recordsTable.Columns.Add("NetRealisation", typeof(float));
                 recordsTable.Columns.Add("GenericListprice", typeof(float));
                 recordsTable.Columns.Add("EstMAT2016_BY_12Units", typeof(float));
                 recordsTable.Columns.Add("EstMAT2020_BY_12Units", typeof(float));
@@ -333,6 +334,7 @@ namespace EmcureNPD.Business.Core.Implementation
                     row["Skus"] = item.Skus == null ? DBNull.Value : item.Skus;
                     row["PakeSize"] = item.PakeSize == null ? DBNull.Value : item.PakeSize;
                     row["BrandPrice"] = item.BrandPrice == null ? DBNull.Value : item.BrandPrice;
+                    row["NetRealisation"] = item.NetRealisation == null ? DBNull.Value : item.NetRealisation;
                     row["GenericListprice"] = item.GenericListprice == null ? DBNull.Value : item.GenericListprice;
                     row["EstMAT2016_BY_12Units"] = item.EstMat2016By12units == null ? DBNull.Value : item.EstMat2016By12units;
                     row["EstMAT2020_BY_12Units"] = item.EstMat2020By12units == null ? DBNull.Value : item.EstMat2020By12units;
