@@ -553,11 +553,13 @@ $(document).ready(function () {
     $(document).on("change", ".analyticalTotalAMVCost, .rndanalyticalStrengthIsChecked", function () {
         var _TotalAMVCost = ($('.analyticalTotalAMVCost').val() == "" ? 0 : $('.analyticalTotalAMVCost').val());
         $('.analyticalAMVStrengthValue').val("");
-        if ($('.rndanalyticalStrengthIsChecked:checked').length > 0) {
             $.each($('.rndanalyticalStrengthIsChecked:checked'), function () {
                 $(this).parent().find(".analyticalAMVStrengthValue").val(formatNumber((_TotalAMVCost / $('.rndanalyticalStrengthIsChecked:checked').length)));
             });
+        if ($('.rndanalyticalStrengthIsChecked:checked').length > 0) {
             $('.analyticalTotalAMVCostStrength').val(formatNumber(_TotalAMVCost));
+        } else {
+            $('.analyticalTotalAMVCostStrength').val("");
         }
     });
     /*Tooling Change Part Cost*/
@@ -678,7 +680,7 @@ $(document).ready(function () {
 
         var _cost = $(this).parent().parent().find(".rndFillingExpensesTotalCost").val();
         var _totalStrength = $(this).parent().parent().find('.rndFillingExpensesStrengthCheckbox:checked').length;
-        if ($(this).parent().parent().find('.rndFillingExpensesStrengthCheckbox:checked').length > 0) {
+        /*if ($(this).parent().parent().find('.rndFillingExpensesStrengthCheckbox:checked').length > 0) {*/
             $.each($(this).parent().parent().find('.rndFillingExpensesStrengthCheckbox'), function (index, it) {
                     if ($(it).is(":checked")) {
                         $(it).parent().find(".FillingExpensesStrengthValue").val((_cost == "" ? 0 : _cost) / _totalStrength);
@@ -687,8 +689,12 @@ $(document).ready(function () {
                     }
                 
             });
+        if ($(this).parent().parent().find('.rndFillingExpensesStrengthCheckbox:checked').length > 0) {
             $(this).parent().parent().find('.rndTotalFillingExpenseStrength').val((_cost == "" ? 0 : _cost));
+        } else {
+            $(this).parent().parent().find('.rndTotalFillingExpenseStrength').val("");
         }
+        /*}*/
 
         var _TotalCostForAllStrength = 0;
         $.each(_strengthArray, function (i, t) {
@@ -1265,7 +1271,7 @@ function BindAnalytical(data, costData) {
     });
     analyticalactivityHTML += "<td>" + _currencySymbol + "<input type='text' class='form-control AnalyticalFinalTotal' readonly='readonly' tabindex=-1 /><td></td></tr></tbody>";
 
-    analyticalactivityHTML += '<tr><td colspan="' + (6 + _strengthArray.length) + '"><label>Remark</label><textarea id="remark" class="form-control" id="AnalyticalAMVCosts.Remark" name="AnalyticalAMVCosts.Remark" placeholder="Remark">' + (costData.length > 0 ? (costData[0].remark == null ? "" : costData[0].remark) : "") + '</textarea></td> </tr>';
+    analyticalactivityHTML += '<tr><td colspan="' + (6 + _strengthArray.length) + '"><label style="vertical-align: top;margin-right: 10px;">Remark</label><textarea id="remark" class="form-control" id="AnalyticalAMVCosts.Remark" name="AnalyticalAMVCosts.Remark" placeholder="Remark">' + (costData.length > 0 ? (costData[0].remark == null ? "" : costData[0].remark) : "") + '</textarea></td> </tr>';
 
     $('#tableanalytical').html(analyticalactivityHTML);
 
@@ -1449,7 +1455,7 @@ function CreateRNDExicipientTable(data, activityTypeId) {
         objectname += '<tr  id="ExicipientRow" class="exicipientactivity exicipientActivity' + (activityTypeId) + '" data-activitytypeid="' + activityTypeId + '">'
             + '<td><input type="text" class="form-control rndExicipientPrototype" value="' + (data.length > 0 ? data[a].exicipientPrototype : "") + '"  /></td>'
             + '<td><input type="number" class="form-control rndExicipientRsperkg" min="0" value="' + (data.length > 0 ? data[a].rsPerKg : "") + '"  /></td>'
-            + '<td><input type="number" class="form-control rndExicipientQuantity" min="0" readonly="readonly" tabindex=-1 /><span>Kg</span></td>';//value="' + (data.length > 0 ? data[a].mgPerUnitDosage : "") + '"
+            + '<td><input type="text" class="form-control rndExicipientQuantity" min="0" readonly="readonly" tabindex=-1 /><span>Kg</span></td>';//value="' + (data.length > 0 ? data[a].mgPerUnitDosage : "") + '"
         for (var i = 0; i < _strengthArray.length; i++) {
             objectname += '<td data-strengthid="' + _strengthArray[i].pidfProductStrengthId + '"><input class="rndExicipientTypeId" type="hidden" value="' + activityTypeId + '" /><input type="hidden" class="rndExicipientStrengthId" value="' + _strengthArray[i].pidfProductStrengthId + '" /><input type="number" class="form-control rndExicipientStrengthValue" min="0" value="' + (data.length > 0 ? getValueFromStrengthByProrotype(data, _strengthArray[i].pidfProductStrengthId, "exicipientDevelopment", data[a].exicipientPrototype) : "") + '" /><span>Mg</span></td>';
         }
@@ -2488,6 +2494,9 @@ function SetPhaseWiseBudget() {
 function ConvertToNumber(number, type) {
     //number = number.toString().replace(",", "");
     number = ReplaceSelector(number);
+    if (number == "") {
+        number = "0";
+    }
     if (type == null || type == undefined || type == 1) {
         return parseFloat(number);
 

@@ -241,7 +241,12 @@ form-control.is-valid, .was-validated .form-control:valid {
 }
 .tableTDHint .form-control {
     display: inline-block;
-    width: 70%;
+    width: calc(100% - 40px);
+    margin-right: 5px;
+}
+.tableTDHintManHrs .form-control {
+    display: inline-block;
+    width: calc(100% - 60px);
     margin-right: 5px;
 }
 .notification-dropdown {
