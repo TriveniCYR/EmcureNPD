@@ -151,18 +151,19 @@
 						
 					</div>
 					<div class="row">
-						<div class="col-md-3">
+						<div class="col-md-12">
 							<div class="form-group required">
 								<label class="control-label">Input Values</label>
-
-								<table style="width:100%;">
-									<tr>
-										<th>MS %<span style="color:red;">*</span></th>
-										<th>Target Price Scenario<span style="color:red;">*</span></th>
-									</tr>
-									<tbody>
-										<tr>
-											<td><select id="MSPersentage" name="MSPersentage" class="form-control readOnlyUpdate" required>
+                                <hr class="my-12"/>
+								
+							</div>
+						</div>
+                        </div>
+                        <div class="row">
+                        <div class="col-md-3">
+							<div class="form-group required">
+								<label class="control-label">MS %<span style="color:red;">*</span></label>
+							    <select id="MSPersentage" name="MSPersentage" class="form-control readOnlyUpdate" required>
 												<option value="1">Low</option>
 												<option value="2">Medium</option>
 												<option value="3">High</option>
@@ -172,10 +173,13 @@
                                    </div>
                                    <div class="valid-feedback"> 
                                    MS % Looks good!
-                                   </div>    
-                                        </td>
-										<td>
-											<select id="TargetPriceScenario" name="TargetPriceScenario" class="form-control readOnlyUpdate" required>
+                                   </div>
+							</div>
+						</div>
+                         <div class="col-md-3">
+							<div class="form-group required">
+								<label class="control-label">Target Price Scenario<span style="color:red;">*</span></label>
+							    <select id="TargetPriceScenario" name="TargetPriceScenario" class="form-control readOnlyUpdate" required>
 												<option value="1">Low</option>
 												<option value="2">Medium</option>
 												<option value="3">High</option>
@@ -186,10 +190,6 @@
                                            <div class="valid-feedback"> 
                                            Target Price Scenario Looks good!
                                            </div>       
-                                        </td>
-										</tr>
-									</tbody>
-								</table>
 							</div>
 						</div>
 					</div>
@@ -206,9 +206,15 @@
 			</div>
 			<div class="card-body collapse" id="TimelinesCollapse" style="background-color:white">
 				<input type="hidden" />
-				<div class="">
-					<h5 class="mb-0"><b>Project Timelines</b></h5>
-				</div>
+                	<div class="row">
+						<div class="col-md-12">
+							<div class="form-group required">
+								<h5 class="mb-0"><b>Project Timelines</b></h5>
+                                <hr class="my-12"/>
+								
+							</div>
+						</div>
+                        </div>
 				<div class="row">
 					<div class="col-md-3">
 						<div class="form-group required">
@@ -300,9 +306,16 @@
 					</div>
 
 				</div>
-				<div class=" ">
-					<h5 class="mb-0"><b>Commercials</b></h5>
-				</div>
+				
+                <div class="row">
+						<div class="col-md-12">
+							<div class="form-group required">
+								<h5 class="mb-0"><b>Commercials</b></h5>
+                                <hr class="my-12"/>
+								
+							</div>
+						</div>
+                        </div>
 				<div class="row">
 					<div class="col-md-3">
 						<div class="form-group required">
@@ -357,9 +370,16 @@
 
 			<div class="card-body collapse" id="FinanceCollapse" style="background-color:white">
 				<input type="hidden" />
-				<div class=" ">
-					<h5 class="mb-0"><b>Financial Assumptions</b></h5>
-				</div>
+				
+                  <div class="row">
+						<div class="col-md-12">
+							<div class="form-group required">
+								<h5 class="mb-0"><b>Financial Assumptions</b></h5>
+                                <hr class="my-12"/>
+								
+							</div>
+						</div>
+                        </div>
 				<div class="row">
 					<div class="col-md-3">
 						<div class="form-group required">
@@ -980,24 +1000,24 @@
                                             <thead>
                                                 <tr>
                                     <th style="width: 100px;">SKU <span style="color:red;">*</span></th>
-                                                    <th>Pack size</th>
-                                                    <th>Brand Price</th>
-                                                    <th>Generic List price</th>
-                                                    <th>Net Realisation</th>
-                                                    <th>Est MAT 2016/12 Units</th>
-                                                    <th>Est MAT 2020/12 Units</th>
-                                                    <th>CAGR over 2016/12 Est MAT units</th>
-                                                    <th>Market in packs</th>
-                                                    <th>Batch size in ltr/tabs</th>
-                                                    <th>Batch size<span style="color:red;">*</span></th>
-                                                    <th style="width: 50px;">Yield<span style="color:red;">*</span></th>
-                                                    <th>Batch output<span style="color:red;">*</span></th>
-                                                    <th>API (CAD)<span style="color:red;">*</span></th>
-                                                    <th>Excipients (CAD)<span style="color:red;">*</span></th>
-                                                    <th>PM (CAD)<span style="color:red;">*</span></th>
-                                                    <th>CCPC (CAD)<span style="color:red;">*</span></th>
-                                                    <th>Freight (CAD)<span style="color:red;">*</span></th>
-                                    <th>Emcure COGs/pack<span style="color:red;">*</span></th>
+                                                    <th>Pack size <span style="color:red;">*</span></th>
+                                                    <th>Brand Price <span style="color:red;">*</span></th>
+                                                    <th>Generic List price <span style="color:red;">*</span></th>
+                                                    <th>Net Realisation <span style="color:red;">*</span></th>
+                                                    <th>Est MAT 2016/12 Units <span style="color:red;">*</span></th>
+                                                    <th>Est MAT 2020/12 Units <span style="color:red;">*</span></th>
+                                                    <th>CAGR over 2016/12 Est MAT units <span style="color:red;">*</span></th>
+                                                    <th>Market in packs <span style="color:red;">*</span></th>
+                                                    <th>Batch size in ltr/tabs <span style="color:red;">*</span></th>
+                                                    <th>Batch size <span style="color:red;">*</span></th>
+                                                    <th style="width: 50px;">Yield <span style="color:red;">*</span></th>
+                                                    <th>Batch output <span style="color:red;">*</span></th>
+                                                    <th>API (CAD) <span style="color:red;">*</span></th>
+                                                    <th>Excipients (CAD) <span style="color:red;">*</span></th>
+                                                    <th>PM (CAD) <span style="color:red;">*</span></th>
+                                                    <th>CCPC (CAD) <span style="color:red;">*</span></th>
+                                                    <th>Freight (CAD) <span style="color:red;">*</span></th>
+                                    <th>Emcure COGs/pack <span style="color:red;">*</span></th>
                                 <th class="dtfc-fixed-right">Action</th>
                                                 </tr>
                                             </thead>
@@ -1094,7 +1114,7 @@
 										<input type="number" id="Batchsize" name="lsPidfFinanceBatchSizeCoating[@j].Batchsize" class="Batchsize form-control readOnlyUpdate" required />
 									</td> 
 									<td>
-									<input type="number" style="width: 100px;" id="Yield" name="lsPidfFinanceBatchSizeCoating[@j].Yield" onchange="calculateBatchSizeCaoting(this);" class="Yield form-control readOnlyUpdate" required />
+                                            <input type="number" style="width: 100px;" id="Yield" name="lsPidfFinanceBatchSizeCoating[@j].Yield" onchange="calculateBatchSizeCaoting(this);" class="Yield form-control readOnlyUpdate" required />
 									</td>
 									<td>
 									<input type="number" id="Batchoutput" name="lsPidfFinanceBatchSizeCoating[@j].Batchoutput" class=" Batchoutput form-control readOnlyUpdate" required />
@@ -5731,8 +5751,17 @@
 			</div>
             <div class="card-body collapse" id="CommercialPerPack" style="background-color:white;overflow-x:auto;">
 				<input type="hidden" />
+                 <div class="row">
+						<div class="col-md-12">
+							<div class="form-group required">
+								<h5 class="fw-bold mb-2">Commercial Per Pack</h5>
+                                <hr class="my-12"/>
+								
+							</div>
+						</div>
+                        </div>
                 <div class="accordion-body row">
-                                    <h5 class="fw-bold mb-2">Commercial Per Pack</h5>
+                                    
                                           <div class="col-2">
                                               <table class="table table-bordered text-center commercial-left-table m-0">
                                                      <thead>
