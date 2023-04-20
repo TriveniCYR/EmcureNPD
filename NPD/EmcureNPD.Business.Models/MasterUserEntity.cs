@@ -77,7 +77,7 @@ namespace EmcureNPD.Business.Models
         public string Address { get; set; }
         public int LoggedUserId { get; set; }
         public DateTime CreatedDate { get; set; }
-
+        public string WebApplicationUrl { get; set; }
         //public List<MasterUserEntity> Users { get; set; }
         //public List<SelectListItem> Departments { get; set; }
         //public List<SelectListItem> Roles { get; set; }

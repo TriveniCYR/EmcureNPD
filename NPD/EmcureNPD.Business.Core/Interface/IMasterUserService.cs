@@ -31,7 +31,7 @@ namespace EmcureNPD.Business.Core.Interface
 
         Task<dynamic> GetCountryByRegion(string RegionIds);
 
-        Task<DBOperation> ForgotPassword(string emailAddress);
+        Task<DBOperation> ForgotPassword(ForgotPasswordViewModel forgotPasswordViewModel);
 
         Task<string> ResetPassword(MasterUserResetPasswordEntity entity);
 
