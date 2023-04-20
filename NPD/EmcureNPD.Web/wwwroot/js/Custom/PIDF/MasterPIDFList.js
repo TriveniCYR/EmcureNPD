@@ -2,6 +2,18 @@
 var objApprRejList = [];
 $(document).ready(function () {
     InitializePIDFList();
+
+    $('#chkAllPIDF').change(function (index, item) {
+        $.each($('.chkPIDFRow'), function (i, it) {
+            if ($(it).attr("disabled")) {
+                console.log();
+            } else {
+                //$(it).attr("checked", true);
+                //$(it).attr("checked", true);
+                $(it).click();
+            }
+        });
+    });
 });
 
 function InitializePIDFList() {
@@ -51,7 +63,7 @@ function InitializePIDFList() {
                             isManagement = _flag;
                         }
                     }
-                    return '<input type="checkbox" class="ml-2 custom-list-checkbox" id="chk_' + row.pidfid + '" name="id[]" onclick="chkClick(this,' + row.pidfid + ');" value="' + $('<div/>').text(data).html() + '" ' + (_flag ? "" : "disabled") + '>';
+                    return '<input type="checkbox" class="ml-2 custom-list-checkbox chkPIDFRow" id="chk_' + row.pidfid + '" name="id[]" onclick="chkClick(this,' + row.pidfid + ');" value="' + $('<div/>').text(data).html() + '" ' + (_flag ? "" : "disabled") + '>';
                 } else {
                     return "";
                 }
@@ -307,7 +319,9 @@ function CustomizeChildContent(d) {
 
 function chkClick(cb, pidfId) {
     if (cb.checked) {
-        objApprRejList.push({ pidfId: pidfId })
+        if (objApprRejList.findIndex(o => o.pidfId == pidfId) === -1) {
+            objApprRejList.push({ pidfId: pidfId })
+        }
     }
     else {
         var ind1 = objApprRejList.findIndex(o => o.pidfId == pidfId);
