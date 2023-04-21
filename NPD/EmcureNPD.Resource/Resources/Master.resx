@@ -673,6 +673,6 @@
     <value>Can not Inactive Role, User assigned to this Role.</value>
   </data>
   <data name="ChangeProfile" xml:space="preserve">
-    <value>Change Profile</value>
+    <value>Manage Profile</value>
   </data>
 </root>

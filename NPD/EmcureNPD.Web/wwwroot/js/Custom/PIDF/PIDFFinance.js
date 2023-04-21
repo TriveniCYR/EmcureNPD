@@ -145,6 +145,8 @@ function SaveDraftClick() {
     //else {
     //    preventSubmit();
     //}
+   // $('.readOnlyUpdate').removeAttr('required');
+   // grantSubmit();
 }
 function ApproveClick() {
     //if ($('.readOnlyUpdate').val() !== null && $('.readOnlyUpdate').val() !== "") {
@@ -227,6 +229,7 @@ function grantSubmit() {
         //toastr.error('Error:required input fields could not be empty');
         //100% works
         //return;
+        
     });
 }
 
@@ -266,7 +269,7 @@ function calculateBatchSizeCaoting(ele) {
         if ($(this).find("td:eq(9) input").attr("name", "lsPidfFinanceBatchSizeCoating[" + index.toString() + "].BatchsizeinLtrTabs").val() > 0) {
              BatchsizeinLtrTabs = $(this).find("td:eq(9) input").attr("name", "lsPidfFinanceBatchSizeCoating[" + index.toString() + "].BatchsizeinLtrTabs").val();
             Batchsize = parseFloat(BatchsizeinLtrTabs) / parseFloat($(this).find("td:eq(0) select option:selected").attr("name", "lsPidfFinanceBatchSizeCoating[" + index.toString() + "].Skus").text().replace("mg", "").trim())
-            $(this).find("td:eq(10) input").attr("name", "lsPidfFinanceBatchSizeCoating[" + index.toString() + "].Batchsize").val(Batchsize);
+            $(this).find("td:eq(10) input").attr("name", "lsPidfFinanceBatchSizeCoating[" + index.toString() + "].Batchsize").val(parseInt(Batchsize));
         }
         if ($(this).find("td:eq(11) input").attr("name", "lsPidfFinanceBatchSizeCoating[" + index.toString() + "].Yield").val() > 0) {
              Yield = $(this).find("td:eq(11) input").attr("name", "lsPidfFinanceBatchSizeCoating[" + index.toString() + "].Yield").val();

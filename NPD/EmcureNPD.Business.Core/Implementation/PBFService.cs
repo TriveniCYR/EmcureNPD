@@ -197,8 +197,8 @@ namespace EmcureNPD.Business.Core.Implementation
             var pbfgeneralid = await SavePidfAndPBFCommanDetails(PidfPbfGeneralEntity.PIDFID, PidfPbfGeneralEntity.objPBFFormEntity);
             //objpidfPbfGeneral=_pidfPbfGeneralRepository.GetAll().Where(x=>x.PbfgeneralId== pbfgeneralid).First();
 
-            var isSuccess = await _auditLogService.CreateAuditLog<PidfPbfGeneralEntity>(pbfgeneralid > 0 ? Utility.Audit.AuditActionType.Update : Utility.Audit.AuditActionType.Create,
-                          Utility.Enums.ModuleEnum.PBF, PidfPbfGeneralEntity, PidfPbfGeneralEntity, Convert.ToInt32(pbfgeneralid));
+            //var isSuccess = await _auditLogService.CreateAuditLog<PidfPbfGeneralEntity>(pbfgeneralid > 0 ? Utility.Audit.AuditActionType.Update : Utility.Audit.AuditActionType.Create,
+            //              Utility.Enums.ModuleEnum.PBF, PidfPbfGeneralEntity, PidfPbfGeneralEntity, Convert.ToInt32(pbfgeneralid));
             await _unitOfWork.SaveChangesAsync();
             var _StatusID = (PidfPbfGeneralEntity.SaveType == "Save") ? Master_PIDFStatus.PBFSubmitted : Master_PIDFStatus.PBFInProgress;
             await _auditLogService.UpdatePIDFStatusCommon(pbfgeneralid, (int)_StatusID, loggedInUserId);
@@ -493,8 +493,8 @@ namespace EmcureNPD.Business.Core.Implementation
                         _PidfPbfAnalyticalAmvcostRepository.UpdateAsync(analyticalamvcost);
                         TotalAMVCostId = analyticalamvcost.TotalAmvcostId;
 
-                        await _auditLogService.CreateAuditLog(Utility.Audit.AuditActionType.Update,
-                                        ModuleEnum.PBF, OldPBFAnalyticalAmvcost, pbfentity.AnalyticalAMVCosts,(int)pbfgeneralid);
+                        //await _auditLogService.CreateAuditLog(Utility.Audit.AuditActionType.Update,
+                        //                ModuleEnum.PBF, OldPBFAnalyticalAmvcost, pbfentity.AnalyticalAMVCosts,(int)pbfgeneralid);
                     }
                     else
                     {
@@ -565,8 +565,8 @@ namespace EmcureNPD.Business.Core.Implementation
                         _pidfPbfRnDMasterRepository.UpdateAsync(objrndMaster);
                         await _unitOfWork.SaveChangesAsync();
 
-                        await _auditLogService.CreateAuditLog<RNDMasterEntity>(Utility.Audit.AuditActionType.Update,
-                                        ModuleEnum.PBF, OldPBFRndEntity, pbfentity.RNDMasterEntities, (int)pbfgeneralid);
+                        //await _auditLogService.CreateAuditLog<RNDMasterEntity>(Utility.Audit.AuditActionType.Update,
+                        //                ModuleEnum.PBF, OldPBFRndEntity, pbfentity.RNDMasterEntities, (int)pbfgeneralid);
                     }
                     else
                     {

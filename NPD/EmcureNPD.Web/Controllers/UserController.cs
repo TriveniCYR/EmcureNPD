@@ -178,6 +178,7 @@ namespace EmcureNPD.Web.Controllers
                 HttpResponseMessage responseMessage = objapi.APICommunication(APIURLHelper.ChangeUserProfile, HttpMethod.Post, token, new StringContent(JsonConvert.SerializeObject(masterUser))).Result;
                 if (responseMessage.IsSuccessStatusCode)
                 {
+                   HttpContext.Session.SetString(UserHelper.LoggedInUserName, masterUser.FullName);
                     string jsonResponse = responseMessage.Content.ReadAsStringAsync().Result;
                     ViewBag.Message = _stringLocalizerError["ProfileChanged"];
                     return View();

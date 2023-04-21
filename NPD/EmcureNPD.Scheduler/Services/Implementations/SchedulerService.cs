@@ -25,25 +25,27 @@ namespace EmcureNPD.Schedule.Services.Implementations {
 
         public void GetToken() {
             try {
-                var loginViewModel = new LoginViewModel();
-                loginViewModel.Email = configuration.GetSection("UserCredentials:Email").Value;
-                loginViewModel.Password = configuration.GetSection("UserCredentials:Password").Value;
-                if (!(string.IsNullOrEmpty(loginViewModel.Email) && string.IsNullOrEmpty(loginViewModel.Password))) {
-                    HttpResponseMessage responseMessage = apiService.APICommunication(APIURLHelper.LoginURL, HttpMethod.Post, string.Empty, new StringContent(JsonConvert.SerializeObject(loginViewModel))).Result;
-                    if (responseMessage.IsSuccessStatusCode) {
-                        string jsonResponse = responseMessage.Content.ReadAsStringAsync().Result;
-                        var oUserDetail = JsonConvert.DeserializeObject<APIResponseEntity<UserSessionEntity>>(jsonResponse);
-                        SendReminderAPI(oUserDetail._object);
-                    } 
-                }
+                //var loginViewModel = new LoginViewModel();
+                //loginViewModel.Email = configuration.GetSection("UserCredentials:Email").Value;
+                //loginViewModel.Password = configuration.GetSection("UserCredentials:Password").Value;
+                //if (!(string.IsNullOrEmpty(loginViewModel.Email) && string.IsNullOrEmpty(loginViewModel.Password))) {
+                //    HttpResponseMessage responseMessage = apiService.APICommunication(APIURLHelper.LoginURL, HttpMethod.Post, string.Empty, new StringContent(JsonConvert.SerializeObject(loginViewModel))).Result;
+                //    if (responseMessage.IsSuccessStatusCode) {
+                //        string jsonResponse = responseMessage.Content.ReadAsStringAsync().Result;
+                //        var oUserDetail = JsonConvert.DeserializeObject<APIResponseEntity<UserSessionEntity>>(jsonResponse);
+                //       // SendReminderAPI(oUserDetail._object);
+                //    } 
+                //}
+                SendReminderAPI();
             } catch (Exception ex) {
                 loggerService.Log(ex);
             }
         }
-        public void SendReminderAPI(UserSessionEntity oUserDetail) {
+        //public void SendReminderAPI(UserSessionEntity oUserDetail)}       
+            public void SendReminderAPI() {
             try {
-                var token = oUserDetail.UserToken;
-                HttpResponseMessage responseMessage = apiService.APICommunication(APIURLHelper.SendReminder, HttpMethod.Post,"",null).Result;
+                //var token = oUserDetail.UserToken;
+                HttpResponseMessage responseMessage = apiService.APICommunication(APIURLHelper.SendReminder, HttpMethod.Post,string.Empty).Result;
                 if (responseMessage.IsSuccessStatusCode) {
                     string jsonResponse = responseMessage.Content.ReadAsStringAsync().Result;
                 }

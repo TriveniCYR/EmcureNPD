@@ -463,8 +463,7 @@ function SetCommercialDisableForOtherUserBU() {
     }
 }
 
-// ----------Calulations Methods--------------
-
+// ----------Calulations Methods----All formulam taken from--"Revenue -Dummy Calculations (1).xlsx"----------
 
 //----------- Market Size-----------------------
 $('input[type="number"]').focusout(function () {

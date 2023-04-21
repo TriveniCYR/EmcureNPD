@@ -9,10 +9,10 @@ namespace EmcureNPD.Business.Core.Interface
     {
         Task<SendReminderModel> SendReminder();
 
-        void SendReminderMail(List<SendReminderModel> sendReminderModel_list);
+       // void SendReminderMail(List<SendReminderModel> sendReminderModel_list);
 
         Task<SendReminderModel> AutoUpdatePIDFStatus();
 
-        void AutoUpdatePIDFStatusMail(AutoUpdatePIDFStatusModel autoUpdatePIDFStatusModel);
+       // void AutoUpdatePIDFStatusMail(AutoUpdatePIDFStatusModel autoUpdatePIDFStatusModel);
     }
 }
