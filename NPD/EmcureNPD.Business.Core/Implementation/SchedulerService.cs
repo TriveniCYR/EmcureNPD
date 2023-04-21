@@ -44,27 +44,9 @@ namespace EmcureNPD.Business.Core.Implementation
                     //}
                 }
             }
+           await AutoUpdatePIDFStatus();
             return UserList;
         }
-
-        public async Task<SendReminderModel> AutoUpdatePIDFStatus()
-        {
-            var dbresult = await _masterUser.GetDataSetBySP("AutoUpdatePIDFStatus", System.Data.CommandType.StoredProcedure, null);
-            dynamic _BUObjects = new ExpandoObject();
-            if (dbresult != null)
-            {
-                if (dbresult.Tables[0] != null && dbresult.Tables[0].Rows.Count > 0)
-                {
-                    _BUObjects = dbresult.Tables[0].DataTableToList<SendReminderModel>();
-                    foreach (var user in _BUObjects)
-                    {
-                        AutoUpdatePIDFStatusMail(user);
-                    }
-                }
-            }
-            return _BUObjects;
-        }
-
         public void SendReminderMail(List<SendReminderModel> sendReminderModel_list)
         {
             foreach (var sendReminderModel in sendReminderModel_list)
@@ -79,13 +61,30 @@ namespace EmcureNPD.Business.Core.Implementation
                     strHtml = strHtml.Replace("{DateTime}", ((DateTime)sendReminderModel.IPDApprovedDate).AddDays(15).ToString());
                     strHtml = strHtml.Replace("{FullName}", sendReminderModel.FullName);
                     strHtml = strHtml.Replace("{MoleculeName}", sendReminderModel.MoleculeName);
-                    string str_subject = "PIDF : {" + sendReminderModel.PIDFNO + "} - Molecule Name : {" + sendReminderModel.MoleculeName + "} Commercial Detail pending";
+                    string str_subject = "PIDF : " + sendReminderModel.PIDFNO + " - Molecule Name : " + sendReminderModel.MoleculeName + " Commercial Detail pending";
                     email.SendMail(sendReminderModel.EmailAddress, string.Empty, str_subject, strHtml, _MasterUserService.GetSMTPConfiguration());
                 }
                 catch (Exception ex) { }
             }
         }
 
+        public async Task<SendReminderModel> AutoUpdatePIDFStatus()
+        {
+            var dbresult = await _masterUser.GetDataSetBySP("AutoUpdatePIDFStatus", System.Data.CommandType.StoredProcedure, null);
+            dynamic _BUObjects = new ExpandoObject();
+            if (dbresult != null)
+            {
+                if (dbresult.Tables[0] != null && dbresult.Tables[0].Rows.Count > 0)
+                {
+                    _BUObjects = dbresult.Tables[0].DataTableToList<AutoUpdatePIDFStatusModel>();
+                    foreach (var user in _BUObjects)
+                    {
+                        AutoUpdatePIDFStatusMail(user);
+                    }
+                }
+            }
+            return _BUObjects;
+        }               
         public void AutoUpdatePIDFStatusMail(AutoUpdatePIDFStatusModel autoUpdatePIDFStatusModel)
         {
             EmailHelper email = new EmailHelper();
@@ -95,7 +94,8 @@ namespace EmcureNPD.Business.Core.Implementation
             strHtml = strHtml.Replace("{PIDFStatus}", autoUpdatePIDFStatusModel.PIDFStatus);
             strHtml = strHtml.Replace("{MoleculeName}", autoUpdatePIDFStatusModel.MoleculeName);
             strHtml = strHtml.Replace("{FullName}", autoUpdatePIDFStatusModel.FullName);
-            email.SendMail(autoUpdatePIDFStatusModel.EmailAddress, string.Empty, " PIDF : {" + autoUpdatePIDFStatusModel.PIDFNO + "} - Molecule Name : {" + autoUpdatePIDFStatusModel.MoleculeName + "} - Auto Updated status : {" + autoUpdatePIDFStatusModel.PIDFStatus + "}", strHtml, _MasterUserService.GetSMTPConfiguration());
+            string str_subject = " PIDF : " + autoUpdatePIDFStatusModel.PIDFNO + " - Molecule Name : " + autoUpdatePIDFStatusModel.MoleculeName + " - Auto Updated status : " + autoUpdatePIDFStatusModel.PIDFStatus;
+            email.SendMail(autoUpdatePIDFStatusModel.EmailAddress, string.Empty, str_subject, strHtml, _MasterUserService.GetSMTPConfiguration());
         }
     }
 }

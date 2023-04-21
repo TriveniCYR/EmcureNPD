@@ -8,6 +8,6 @@ using System.Threading.Tasks;
 namespace EmcureNPD.Schedule.Services.Interfaces {
     public interface ISchedulerService {
         void GetToken();
-        void SendReminderAPI(UserSessionEntity oUserDetail);
+        void SendReminderAPI();
     }
 }
