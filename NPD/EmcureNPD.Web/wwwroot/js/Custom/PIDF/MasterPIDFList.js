@@ -277,9 +277,41 @@ function InitializePIDFList() {
         left: 3,
         right: 2
     });
+    $(dataTableInst.columns(1).header()).addClass('pidf-25');
+    $(dataTableInst.columns(0).header()).addClass('pidf-25');
+    $(dataTableInst.columns(2).header()).addClass('pidf-90');
+    $(dataTableInst.columns(3).header()).addClass('pidf-110');
+    $(dataTableInst.columns(4).header()).addClass('pidf-110');
+    $(dataTableInst.columns(5).header()).addClass('pidf-110');
+    $(dataTableInst.columns(6).header()).addClass('pidf-110');
+    $(dataTableInst.columns(7).header()).addClass('pidf-110');
+    $(dataTableInst.columns(8).header()).addClass('pidf-80');
+    $(dataTableInst.columns(9).header()).addClass('pidf-50');
+    $(dataTableInst.columns(10).header()).addClass('pidf-50');
+    $(dataTableInst.columns(11).header()).addClass('pidf-50');
+    $(dataTableInst.columns(12).header()).addClass('pidf-50');
+    $(dataTableInst.columns(13).header()).addClass('pidf-50');
+    $(dataTableInst.columns(14).header()).addClass('pidf-50');
+    $(dataTableInst.columns(15).header()).addClass('pidf-140');
+    $(dataTableInst.columns(16).header()).addClass('pidf-140');
+    $(dataTableInst.columns(17).header()).addClass('pidf-140');
+    $(dataTableInst.columns(18).header()).addClass('pidf-100');
+    $(dataTableInst.columns(19).header()).addClass('pidf-80');
+    $(dataTableInst.columns(20).header()).addClass('pidf-80');
+    $(dataTableInst.columns(21).header()).addClass('pidf-120');
+    $(dataTableInst.columns(22).header()).addClass('pidf-100');
+    $(dataTableInst.columns(23).header()).addClass('pidf-100');
+    $(dataTableInst.columns(24).header()).addClass('pidf-150');
+    $(dataTableInst.columns(25).header()).addClass('pidf-100');
+
+
+
+
     var head_item = dataTableInst.columns(1).header();
     $(head_item).html('<input type="checkbox" class="custom-list-checkbox" id="chkAllPIDF" />');
+
     dataTableInst.on('draw', function () {
+       
         if ($('#chkAllPIDF').is(':checked')) {
             $.each($('.chkPIDFRow'), function (i, it) {
                 if ($(it).attr("disabled")) {
