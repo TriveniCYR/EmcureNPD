@@ -4,16 +4,26 @@ $(document).ready(function () {
     InitializePIDFList();
 
     $('#chkAllPIDF').change(function (index, item) {
-        $.each($('.chkPIDFRow'), function (i, it) {
-            if ($(it).attr("disabled")) {
-                console.log();
-            } else {
-                //$(it).attr("checked", true);
-                //$(it).attr("checked", true);
-                $(it).click();
-            }
-        });
+        if ($(this).is(':checked')) {
+            $.each($('.chkPIDFRow'), function (i, it) {
+                if ($(it).attr("disabled")) {
+                    console.log();
+                } else {
+                    $(this).click();
+                }
+            });
+        } else {
+            $.each($('.chkPIDFRow'), function (i, it) {
+                if ($(it).attr("disabled")) {
+                    console.log();
+                } else {
+                    $(this).click();
+                }
+            });
+        }
+        
     });
+    
 });
 
 function InitializePIDFList() {
@@ -39,6 +49,7 @@ function InitializePIDFList() {
         {
             orderable: false,
             className: 'notexport',
+            "title": "PIDF No",
             "data": null,
             'render': function (data, type, row, meta) {
                 if (_screenId == "1" || _screenId == "2" || _screenId == "7" || _screenId == "8") {
@@ -71,101 +82,101 @@ function InitializePIDFList() {
             }
         },
         {
-            "data": "pidfNo", "name": "PIDF No"
+            "data": "pidfNo", "title": "PIDF No","width":"110px"
         },
         {
-            "data": "moleculeName", "name": "Project Name"
+            "data": "moleculeName", "title": "Project Name"
         },
         {
-            "data": "brandName", "name": "Brand Name"
+            "data": "brandName", "title": "Brand Name"
         },
         {
-            "data": "dosageFormName", "name": "Dosage Form"
+            "data": "dosageFormName", "title": "Dosage Form"
         },
         {
-            "data": "businessUnitName", "name": "Business Unit"
+            "data": "businessUnitName", "title": "Business Unit"
         },
         {
-            "data": "oralName", "name": "Oral Name"
+            "data": "oralName", "title": "Oral Name"
         },
         {
-            "data": "inHouses", "name": "In House", "render": function (data, type, row, meta) {
+            "data": "inHouses", "title": "In House", "render": function (data, type, row, meta) {
                 return (data ? "Yes" : "No");
             }
         },
         {
-            "data": "ipd", "name": "IPD", "render": function (data, type, row, meta) {
-                return '<span style="display:none;">'+(data ? "Yes" : "No")+'</span><a class="small-button btn btn-' + (row.ipd ? "success" : "danger") + '"><i class="fa ' + (row.ipd ? "fa-check" : "fa-remove") + '"></i></a>';
+            "data": "ipd", "title": "IPD", "render": function (data, type, row, meta) {
+                return '<span style="display:none;">' + (data ? "Yes" : "No") + '</span><a class="small-button btn btn-' + (row.ipd ? "success" : "danger") + '"><i class="fa ' + (row.ipd ? "fa-check" : "fa-remove") + '"></i></a>';
             }
         },
         {
-            "data": "medical", "name": "medical", "render": function (data, type, row, meta) {
-                return '<span style="display:none;">' + (data ? "Yes" : "No") +'</span><a class="small-button btn btn-' + (row.medical ? "success" : "danger") + '"><i class="fa ' + (row.medical ? "fa-check" : "fa-remove") + '"></i></a>';
+            "data": "medical", "title": "Medical", "render": function (data, type, row, meta) {
+                return '<span style="display:none;">' + (data ? "Yes" : "No") + '</span><a class="small-button btn btn-' + (row.medical ? "success" : "danger") + '"><i class="fa ' + (row.medical ? "fa-check" : "fa-remove") + '"></i></a>';
             }
         },
         {
-            "data": "commercial", "name": "Commercial", "render": function (data, type, row, meta) {
-                return '<span style="display:none;">' + (data ? "Yes" : "No") +'</span><a class="small-button btn btn-' + (row.commercial ? "success" : "danger") + '"><i class="fa ' + (row.commercial ? "fa-check" : "fa-remove") + '"></i></a>';
+            "data": "commercial", "title": "Commercial", "render": function (data, type, row, meta) {
+                return '<span style="display:none;">' + (data ? "Yes" : "No") + '</span><a class="small-button btn btn-' + (row.commercial ? "success" : "danger") + '"><i class="fa ' + (row.commercial ? "fa-check" : "fa-remove") + '"></i></a>';
             }
         },
         {
-            "data": "pbf", "name": "PBF", "render": function (data, type, row, meta) {
-                return '<span style="display:none;">' + (data ? "Yes" : "No") +'</span><a class="small-button btn btn-' + (row.pbf ? "success" : "danger") + '"><i class="fa ' + (row.pbf ? "fa-check" : "fa-remove") + '"></i></a>';
+            "data": "pbf", "title": "PBF", "render": function (data, type, row, meta) {
+                return '<span style="display:none;">' + (data ? "Yes" : "No") + '</span><a class="small-button btn btn-' + (row.pbf ? "success" : "danger") + '"><i class="fa ' + (row.pbf ? "fa-check" : "fa-remove") + '"></i></a>';
             }
         },
         {
-            "data": "api", "name": "api", "render": function (data, type, row, meta) {
-                return '<span style="display:none;">' + (data ? "Yes" : "No") +'</span><a class="small-button btn btn-' + (row.api ? "success" : "danger") + '"><i class="fa ' + (row.api ? "fa-check" : "fa-remove") + '"></i></a>';
+            "data": "api", "title": "API", "render": function (data, type, row, meta) {
+                return '<span style="display:none;">' + (data ? "Yes" : "No") + '</span><a class="small-button btn btn-' + (row.api ? "success" : "danger") + '"><i class="fa ' + (row.api ? "fa-check" : "fa-remove") + '"></i></a>';
             }
         },
         {
-            "data": "finance", "name": "Finance", "render": function (data, type, row, meta) {
-                return '<span style="display:none;">' + (data ? "Yes" : "No") +'</span><a class="small-button btn btn-' + (row.finance ? "success" : "danger") + '"><i class="fa ' + (row.finance ? "fa-check" : "fa-remove") + '"></i></a>';
+            "data": "finance", "title": "Finance", "render": function (data, type, row, meta) {
+                return '<span style="display:none;">' + (data ? "Yes" : "No") + '</span><a class="small-button btn btn-' + (row.finance ? "success" : "danger") + '"><i class="fa ' + (row.finance ? "fa-check" : "fa-remove") + '"></i></a>';
             }
         },
         //{
-        //    "data": "management", "name": "Management", "render": function (data, type, row, meta) {
+        //    "data": "management", "title": "Management", "render": function (data, type, row, meta) {
         //        return '<a class="small-button btn btn-' + (row.management ? "success" : "danger") + '"><i class="fa ' + (row.management ? "fa-check" : "fa-remove") + '"></i></a>';
         //    }
         //},
         {
-            "data": "marketExtension", "name": "Market Extension"
+            "data": "marketExtension", "title": "Market Extension"
         },
         {
-            "data": "productPackagingName", "name": "Product Packaging"
+            "data": "productPackagingName", "title": "Product Packaging"
         },
         {
-            "data": "rfdBrand", "name": "RFDBrand"
+            "data": "rfdBrand", "title": "RFDBrand"
         },
         {
-            "data": "applicant", "name": "Applicant"
+            "data": "applicant", "title": "Applicant"
         },
         {
-            "data": "countryName", "name": "Country Name"
+            "data": "countryName", "title": "Country Name"
         },
         {
-            "data": "inidication", "name": "Inidication"
+            "data": "inidication", "title": "Inidication"
         },
         {
-            "data": "diaName", "name": "DIA "
+            "data": "diaName", "title": "DIA "
         },
         {
-            "data": "createdBy", "name": "Created By"
+            "data": "createdBy", "title": "Created By"
         },
         {
-            "data": "createdDate", "name": "createdDate", "render": function (data, type, row, meta) {
+            "data": "createdDate", "title": "createdDate", "render": function (data, type, row, meta) {
                 return moment(data).format("DD MMM YYYY h:m");
             }
         },
         {
-            "data": "status", "name": "Status", "render": function (data, type, row, meta) {
+            "data": "status", "title": "Status", "render": function (data, type, row, meta) {
                 var html = '';
                 html = '<span style="background-color:' + row.statusColor + ';padding:5px;border-radius:10px;">' + data + '</span>';
                 return html;
             }
         },
         {
-            "data": null, className:'notexport', "name": "Action", "render": function (data, type, row, meta) {
+            "data": null, className: 'notexport', "title": "Action", "render": function (data, type, row, meta) {
                 var html = '';
                 if (_screenId == "1") {
                     var _PIDFForm = '/PIDF/PIDF?PIDFId=' + row.pidfid;
@@ -266,7 +277,21 @@ function InitializePIDFList() {
         left: 3,
         right: 2
     });
-
+    var head_item = dataTableInst.columns(1).header();
+    $(head_item).html('<input type="checkbox" class="custom-list-checkbox" id="chkAllPIDF" />');
+    dataTableInst.on('draw', function () {
+        if ($('#chkAllPIDF').is(':checked')) {
+            $.each($('.chkPIDFRow'), function (i, it) {
+                if ($(it).attr("disabled")) {
+                    console.log();
+                } else {
+                    $(this).click();
+                }
+            });
+        }
+        
+        // your code here
+    });
     // Add event listener for opening and closing details
     $('#' + tableId + ' tbody').on('click', 'td.dt-control', function () {
         var tr = $(this).closest('tr');

@@ -201,7 +201,9 @@ $(document).ready(function () {
         if (String.fromCharCode(charCode).match(/[^0-9]/g))
             return false;
     });
-   
+    $(document).bind("contextmenu", function (e) {
+        return false;
+    });
 });
 function ApproveRejectClick(type, PIDFID, ScreenId, URL) {
     if (PIDFID != undefined && PIDFID != "" && PIDFID != null) {
