@@ -421,7 +421,7 @@ namespace EmcureNPD.Resource.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Change Profile.
+        ///   Looks up a localized string similar to Manage Profile.
         /// </summary>
         public static string ChangeProfile {
             get {

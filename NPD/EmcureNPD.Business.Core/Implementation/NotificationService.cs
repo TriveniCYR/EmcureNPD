@@ -102,7 +102,7 @@ namespace EmcureNPD.Business.Core.Implementation
 
         public void dbChangeNotification(object sender, SqlNotificationEventArgs e)
         {
-            NotificationHub.Show();
+            //NotificationHub.Show();
         }
 
         public async Task<DBOperation> CreateNotification(long pidfId, int statusid, string notificationTitle, string notificationDescription, int loggedinUserId)

@@ -255,3 +255,30 @@ form-control.is-valid, .was-validated .form-control:valid {
     padding: 0 !important;
 }
 .notification-dropdown .dropdown-footer{text-align:center !important;}
+.pidf-25 {
+    min-width: 25px;
+}
+.pidf-50 {
+    min-width: 50px;
+}
+.pidf-80 {
+    min-width: 80px;
+}
+.pidf-90 {
+    min-width: 90px;
+}
+.pidf-100 {
+    min-width: 100px;
+}
+.pidf-110 {
+    min-width: 110px;
+}
+.pidf-120 {
+    min-width: 120px;
+}
+.pidf-140 {
+    min-width: 140px;
+}
+.pidf-150 {
+    min-width: 150px;
+}

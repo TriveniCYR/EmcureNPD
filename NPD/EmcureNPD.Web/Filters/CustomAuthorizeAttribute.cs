@@ -31,10 +31,15 @@ namespace EmcureNPD.Web.Helpers
                     context.Result = new RedirectResult("~/Account/Login");
                 else
                 {
+
+
                     UserSessionEntity oUserLoggedInModel = UtilityHelper.GetUserFromClaims(user.Claims);
 
                     context.HttpContext.Session.SetString(UserHelper.LoggedInUserEmailAddress, oUserLoggedInModel.Email);
-                    context.HttpContext.Session.SetString(UserHelper.LoggedInUserName, oUserLoggedInModel.FullName);
+                    if (String.IsNullOrEmpty(context.HttpContext.Session.GetString(UserHelper.LoggedInUserName)))
+                    {
+                        context.HttpContext.Session.SetString(UserHelper.LoggedInUserName, oUserLoggedInModel.FullName);
+                    }
                     context.HttpContext.Session.SetInt32(UserHelper.LoggedInRoleId, oUserLoggedInModel.RoleId);
                     context.HttpContext.Session.SetString(UserHelper.AssignedBusinessUnit, oUserLoggedInModel.AssignedBusinessUnit);
                     context.HttpContext.Session.SetString(UserHelper.IsManagement, Convert.ToString(oUserLoggedInModel.IsManagement));

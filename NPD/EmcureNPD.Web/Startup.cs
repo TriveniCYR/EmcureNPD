@@ -12,6 +12,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using System;
+using EmcureNPD.Utility.Helpers;
 
 namespace EmcureNPD.Web
 {
@@ -136,16 +137,16 @@ namespace EmcureNPD.Web
             app.UseRouting();
             app.UseAuthentication();
             app.UseAuthorization();
-
-            //app.UseEndpoints(routes =>
-            //{
-            //    routes.MapHub<NotificationHub>("/notificationHub");
-            //});
+           
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllerRoute(
                     name: "default",
                     pattern: "{controller=Home}/{action=Index}/{id?}");
+            });
+            app.UseEndpoints(hubs =>
+            {
+                hubs.MapHub<NotificationHub>("/NotificationHub");
             });
 
             //var allowedOrigins = Configuration.GetSection("AllowedOrigins").Value.Split(",");
