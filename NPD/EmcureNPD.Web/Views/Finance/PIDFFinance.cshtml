@@ -15,6 +15,7 @@
 
     ViewData["Title"] = @MasterLocalizer["Finance Management"];
     var PidafId=Context.Request.Query["pidfid"];
+    var SelectedBuId=Model.BussinessUnitId;
     var selectedSkus = string.Empty;
     if(Model != null && Model.lsPidfFinanceBatchSizeCoating != null){
         if(Model.lsPidfFinanceBatchSizeCoating.Count() > 0){
@@ -1035,7 +1036,7 @@
                                             <input type="hidden" id="PidffinaceId" name="lsPidfFinanceBatchSizeCoating[@j].PidffinaceId" value="@item.PidffinaceId">
                                              
                                         </td>
-									    <td><input type="number" id="PakeSize" name="lsPidfFinanceBatchSizeCoating[@j].PakeSize" value="@item.PakeSize" class="PakeSize form-control readOnlyUpdate" /></td>
+									    <td><input type="number" id="PakeSize" name="lsPidfFinanceBatchSizeCoating[@j].PakeSize" value="@item.PakeSize" class="PakeSize form-control readOnlyUpdate" onchange="calculateBatchSizeCaoting(this);" /></td>
                                         <td><input type="number" id="BrandPrice" name="lsPidfFinanceBatchSizeCoating[@j].BrandPrice" value="@item.BrandPrice" class="BrandPrice form-control readOnlyUpdate" /></td>
 									     <td><input type="number" id="GenericListprice" name="lsPidfFinanceBatchSizeCoating[@j].GenericListprice" value="@item.GenericListprice" onchange="calculateBatchSizeCaoting(this);" class="GenericListprice form-control readOnlyUpdate" /></td>
 									     <td><input type="text" id="NetRealisation" name="lsPidfFinanceBatchSizeCoating[@j].NetRealisation" value="@item.NetRealisation" class="NetRealisation form-control readOnlyUpdate" readonly></td>
@@ -1044,7 +1045,7 @@
 									     <td><input type="number" id="EstMat2020By12units" name="lsPidfFinanceBatchSizeCoating[@j].EstMat2020By12units" value="@item.EstMat2020By12units" onchange="calculateBatchSizeCaoting(this);" class="EstMat2020By12units form-control readOnlyUpdate" /></td>
 									     
 									     <td><input type="number" id="Cagrover2016By12estMatunits" name="lsPidfFinanceBatchSizeCoating[@j].Cagrover2016By12estMatunits" value="@item.Cagrover2016By12estMatunits"  class="Cagrover2016By12estMatunits form-control readOnlyUpdate" /></td>
-									     <td><input type="number" id="Marketinpacks" name="lsPidfFinanceBatchSizeCoating[@j].Marketinpacks" value="@item.Marketinpacks"  class="Marketinpacks form-control readOnlyUpdate" /></td>
+									     <td><input type="text" id="Marketinpacks" name="lsPidfFinanceBatchSizeCoating[@j].Marketinpacks" value="@item.Marketinpacks"  class="Marketinpacks form-control readOnlyUpdate" /></td>
                                             <td><input type="number" id="BatchsizeinLtrTabs" name="lsPidfFinanceBatchSizeCoating[@j].BatchsizeinLtrTabs" value="@item.BatchsizeinLtrTabs" onchange="calculateBatchSizeCaoting(this);" class="BatchsizeinLtrTabs form-control readOnlyUpdate" /></td>
 									
 
@@ -1099,7 +1100,7 @@
                                             
                                         </td>
 
-                                        <td><input type="number" id="PakeSize" name="lsPidfFinanceBatchSizeCoating[@j].PakeSize" class="PakeSize form-control readOnlyUpdate" /></td>
+                                        <td><input type="number" id="PakeSize" name="lsPidfFinanceBatchSizeCoating[@j].PakeSize" class="PakeSize form-control readOnlyUpdate" onchange="calculateBatchSizeCaoting(this);" /></td>
                                         <td><input type="number" id="BrandPrice" name="lsPidfFinanceBatchSizeCoating[@j].BrandPrice" class="BrandPrice form-control readOnlyUpdate" /></td>
 									    <td><input type="number" id="GenericListprice" name="lsPidfFinanceBatchSizeCoating[@j].GenericListprice"  onchange="calculateBatchSizeCaoting(this);" class="GenericListprice form-control readOnlyUpdate"  ></td>
                                         <td><input type="text" id="NetRealisation" name="lsPidfFinanceBatchSizeCoating[@j].NetRealisation" class="NetRealisation form-control readOnlyUpdate"  readonly></td>
@@ -1108,7 +1109,7 @@
                                         <td><input type="number" id="EstMat2020By12units" name="lsPidfFinanceBatchSizeCoating[@j].EstMat2020By12units" onchange="calculateBatchSizeCaoting(this);" class="EstMat2020By12units form-control readOnlyUpdate" /></td>
 									    
 									    <td><input type="number" id="Cagrover2016By12estMatunits" name="lsPidfFinanceBatchSizeCoating[@j].Cagrover2016By12estMatunits" class="Cagrover2016By12estMatunits form-control readOnlyUpdate" required /></td>
-									    <td><input type="number" id="Marketinpacks" name="lsPidfFinanceBatchSizeCoating[@j].Marketinpacks" class="Marketinpacks form-control readOnlyUpdate" required /></td>
+									    <td><input type="text" id="Marketinpacks" name="lsPidfFinanceBatchSizeCoating[@j].Marketinpacks" class="Marketinpacks form-control readOnlyUpdate" required /></td>
                                         <td><input type="number" id="BatchsizeinLtrTabs" name="lsPidfFinanceBatchSizeCoating[@j].BatchsizeinLtrTabs" onchange="calculateBatchSizeCaoting(this);" class="BatchsizeinLtrTabs form-control readOnlyUpdate" required /></td>
 									<td>
 										<input type="number" id="Batchsize" name="lsPidfFinanceBatchSizeCoating[@j].Batchsize" class="Batchsize form-control readOnlyUpdate" required />
@@ -1193,7 +1194,7 @@
                                         <div class="card card-primary card-outline card-outline-tabs">
                                             <div class="card-header p-0 border-bottom-0">
                                                 <ul class="nav nav-tabs" id="custom-tabs-business-tab" role="tablist">
-                                                    <li class="nav-item p-0">
+                                                    @*<li class="nav-item p-0">
                                                         <a class="nav-link active px-2"
                                                             id="custom-tabs-business-usa-tab" data-toggle="pill"
                                                             href="#custom-tabs-usa" role="tab"
@@ -1221,7 +1222,7 @@
                                                             data-toggle="pill" href="#custom-tabs-ind" role="tab"
                                                             aria-controls="custom-tabs-ind"
                                                             aria-selected="false">INDIA</a>
-                                                    </li>
+                                                    </li>*@
                                                 </ul>
                                             </div>
                                             <div class="card-body">
@@ -6448,15 +6449,17 @@
 <script type="text/javascript" src="~/AdminLTE/plugins/select2/js/select2.min.js"></script>
 <script>
 	const AllCurrency = "@EmcureNPD.Web.Helpers.APIURLHelper.GetAllCurrency";
-        const AllDosageForm = "@EmcureNPD.Web.Helpers.APIURLHelper.GetAllActiveDosageFormFinance";
+    const AllDosageForm = "@EmcureNPD.Web.Helpers.APIURLHelper.GetAllActiveDosageFormFinance";
 	const isView = "@Context.Request.Query["IsView"]";
     const  ApproveRejectDeletePidf = "@EmcureNPD.Web.Helpers.APIURLHelper.ApproveRejectDeletePidf";
+    const GetActiveBusinessUnit = "@EmcureNPD.Web.Helpers.APIURLHelper.GetActiveBusinessUnit";
     const selectedDosageFormId="@DosageFormId";
     const selectedCurrencyId="@CurrencyId";
     const selectedMsId="@MSPercent";
     const selectedTargetPriceScenario = "@TargetPriceScenario";
     const pidfId="@PidafId";
     const selectedSKUs="@selectedSkus";
+    const _selectBusinessUnit="@SelectedBuId";
 
 </script>
 }

@@ -42,6 +42,7 @@ namespace EmcureNPD.Web.Controllers
         public IActionResult PIDFFinance()
         {
             var pidfid = Request.Query["pidfid"];
+            var bui = Request.Query["bui"];
             if (pidfid != "")
             {
                 FinanceModel model = new FinanceModel();
@@ -57,6 +58,7 @@ namespace EmcureNPD.Web.Controllers
                     var data = JsonConvert.DeserializeObject<Root>(jsonResponse);
                     if (data.table.Count > 0)
                     {
+                        model.BussinessUnitId = Convert.ToInt32(UtilityHelper.Decreypt(Convert.ToString(pidfid))); 
                         model.PidffinaceId = data.table[0].pidffinaceId;
                         model.Pidfid = UtilityHelper.Encrypt(Convert.ToString(data.table[0].pidfid));
                         model.Entity = data.table[0].entity;

@@ -9,6 +9,7 @@ $(document).ready(function () {
     GetSelectedMSPercent();
     GetSelectedTargetPriceScanario();
     GetSkus(pidfId);
+    fnGetActiveBusinessUnit();
     if (isView === "1") {
         $('.readOnlyUpdate').prop('readonly', true);
         $('select.form-control.readOnlyUpdate').attr("disabled", true);
@@ -256,19 +257,22 @@ function calculateBatchSizeCaoting(ele) {
     let PmCad = 0;
     let CcpcCad = 0;
     let FreightCad = 0;
-
+    let packSize = 0;
     $.each($('#FinanceTableBoy tr'), function (index, value) {
+        packSize = $(this).find("td:eq(1) input").attr("name", "lsPidfFinanceBatchSizeCoating[" + index.toString() + "].PakeSize").val();
         if (ele.valueAsNumber >= 0 && $(this).find("td:eq(3) input").attr("name", "lsPidfFinanceBatchSizeCoating[" + index.toString() + "].GenericListprice").val() == ele.value) {
             netRealisation = (ele.valueAsNumber * 40) / 100;
-            $(this).find("td:eq(4) input").attr("name", "lsPidfFinanceBatchSizeCoating[" + index.toString() + "].NetRealisation").val(netRealisation);
+            let textnetRealisation = netRealisation.toLocaleString("en");
+            $(this).find("td:eq(4) input").attr("name", "lsPidfFinanceBatchSizeCoating[" + index.toString() + "].NetRealisation").val(textnetRealisation);
         }
         if ($(this).find("td:eq(6) input").attr("name", "lsPidfFinanceBatchSizeCoating[" + index.toString() + "].EstMat2020By12units").val() > 0) {
             EstMat2020By12units = parseFloat($(this).find("td:eq(6) input").attr("name", "lsPidfFinanceBatchSizeCoating[" + index.toString() + "].EstMat2020By12units").val());
-            $(this).find("td:eq(8) input").attr("name", "lsPidfFinanceBatchSizeCoating[" + index.toString() + "].NetRMarketinpacksealisation").val(EstMat2020By12units);
+            let textEstMat2020By12units = EstMat2020By12units.toLocaleString("en");
+            $(this).find("td:eq(8) input").attr("name", "lsPidfFinanceBatchSizeCoating[" + index.toString() + "].Marketinpacks").val(textEstMat2020By12units);
         }
         if ($(this).find("td:eq(9) input").attr("name", "lsPidfFinanceBatchSizeCoating[" + index.toString() + "].BatchsizeinLtrTabs").val() > 0) {
-             BatchsizeinLtrTabs = $(this).find("td:eq(9) input").attr("name", "lsPidfFinanceBatchSizeCoating[" + index.toString() + "].BatchsizeinLtrTabs").val();
-            Batchsize = parseFloat(BatchsizeinLtrTabs) / parseFloat($(this).find("td:eq(0) select option:selected").attr("name", "lsPidfFinanceBatchSizeCoating[" + index.toString() + "].Skus").text().replace("mg", "").trim())
+            BatchsizeinLtrTabs = $(this).find("td:eq(9) input").attr("name", "lsPidfFinanceBatchSizeCoating[" + index.toString() + "].BatchsizeinLtrTabs").val();
+            Batchsize = parseInt(BatchsizeinLtrTabs) / parseInt(packSize); //parseFloat($(this).find("td:eq(0) select option:selected").attr("name", "lsPidfFinanceBatchSizeCoating[" + index.toString() + "].Skus").text().replace("mg", "").trim())
             $(this).find("td:eq(10) input").attr("name", "lsPidfFinanceBatchSizeCoating[" + index.toString() + "].Batchsize").val(parseInt(Batchsize));
         }
         if ($(this).find("td:eq(11) input").attr("name", "lsPidfFinanceBatchSizeCoating[" + index.toString() + "].Yield").val() > 0) {
@@ -325,7 +329,25 @@ function GetSkus(pidfId) {
     }
    
 }
+function fnGetActiveBusinessUnit() {
+    ajaxServiceMethod($('#hdnBaseURL').val() + GetActiveBusinessUnit, 'GET', GetActiveBusinessUnitSuccess, GetActiveBusinessUnitError);
+}
+function GetActiveBusinessUnitSuccess(data) {
+    var businessUnitHTML = "";
+    var businessUnitPanel = "";
+    $.each(data._object, function (index, item) {
+        businessUnitHTML += '<li class="nav-item p-0">\
+            <a class="nav-link '+ (item.businessUnitId == _selectBusinessUnit ? "active" : "") + ' px-2" href="#custom-tabs-' + item.businessUnitId + '" data-toggle="pill" aria-selected="true" onclick="LoadIPDForm(' + pidfId + ', ' + item.businessUnitId + ')" id="custom-tabs-two-' + item.businessUnitId + '-tab">' + item.businessUnitName + '</a></li>';
+        businessUnitPanel += '<div class="tab-pane ' + ((item.businessUnitId == _selectBusinessUnit ? "fade show active" : "")) + '" id="custom-tabs-' + item.businessUnitId + '" role="tabpanel" aria-labelledby="custom-tabs-two-' + item.businessUnitId + '-tab"></div>';
+    });
+    $('#custom-tabs-business-tab').html(businessUnitHTML);
+    $('#custom-tabs-two-tabContent').html(businessUnitPanel);
 
+   // LoadIPDForm(_PIDFID, _selectBusinessUnit);
+}
+function GetActiveBusinessUnitError(x, y, z) {
+    toastr.error(ErrorMessage);
+}
 //$("i.fas.fa-plus").click(function () {
 //    let count = 1;
 //    for (let i = 0; i < count; i++) {
