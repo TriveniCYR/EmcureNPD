@@ -675,4 +675,7 @@
   <data name="ChangeProfile" xml:space="preserve">
     <value>Manage Profile</value>
   </data>
+  <data name="PackStyle" xml:space="preserve">
+    <value>Pack Style</value>
+  </data>
 </root>

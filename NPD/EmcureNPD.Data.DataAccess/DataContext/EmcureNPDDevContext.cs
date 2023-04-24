@@ -56,6 +56,7 @@ namespace EmcureNPD.Data.DataAccess.DataContext
         public virtual DbSet<MasterNotification> MasterNotifications { get; set; }
         public virtual DbSet<MasterNotificationUser> MasterNotificationUsers { get; set; }
         public virtual DbSet<MasterOral> MasterOrals { get; set; }
+        public virtual DbSet<MasterPackSize> MasterPackSizes { get; set; }
         public virtual DbSet<MasterPackagingType> MasterPackagingTypes { get; set; }
         public virtual DbSet<MasterPackingType> MasterPackingTypes { get; set; }
         public virtual DbSet<MasterPidfstatus> MasterPidfstatuses { get; set; }
@@ -712,6 +713,20 @@ namespace EmcureNPD.Data.DataAccess.DataContext
                 entity.Property(e => e.ModifyDate).HasColumnType("datetime");
 
                 entity.Property(e => e.OralName).HasMaxLength(100);
+            });
+
+            modelBuilder.Entity<MasterPackSize>(entity =>
+            {
+                entity.HasKey(e => e.PackSizeId)
+                    .HasName("PK_Tbl_Master_PackSize");
+
+                entity.ToTable("Master_PackSize", "dbo");
+
+                entity.Property(e => e.CreatedDate).HasColumnType("datetime");
+
+                entity.Property(e => e.ModifyDate).HasColumnType("datetime");
+
+                entity.Property(e => e.PackSize).HasMaxLength(100);
             });
 
             modelBuilder.Entity<MasterPackagingType>(entity =>
@@ -1501,6 +1516,11 @@ namespace EmcureNPD.Data.DataAccess.DataContext
                     .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("FK_PIDF_Commercial_Master_BusinessUnit");
 
+                entity.HasOne(d => d.PackSize)
+                    .WithMany(p => p.PidfCommercials)
+                    .HasForeignKey(d => d.PackSizeId)
+                    .HasConstraintName("FK_PIDF_Commercial_Master_PackSize");
+
                 entity.HasOne(d => d.Pidf)
                     .WithMany(p => p.PidfCommercials)
                     .HasForeignKey(d => d.Pidfid)
@@ -1524,9 +1544,13 @@ namespace EmcureNPD.Data.DataAccess.DataContext
                     .HasMaxLength(20)
                     .HasColumnName("APIReq");
 
+                entity.Property(e => e.BrandPrice).HasMaxLength(20);
+
                 entity.Property(e => e.CommercialBatchSize).HasMaxLength(20);
 
                 entity.Property(e => e.FreeOfCost).HasMaxLength(20);
+
+                entity.Property(e => e.GenericPrice).HasMaxLength(20);
 
                 entity.Property(e => e.MarketGrowth).HasMaxLength(20);
 

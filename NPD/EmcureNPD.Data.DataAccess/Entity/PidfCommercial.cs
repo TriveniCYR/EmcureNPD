@@ -24,8 +24,10 @@ namespace EmcureNPD.Data.DataAccess.Entity
         public int? ModifyBy { get; set; }
         public bool? IsDeleted { get; set; }
         public DateTime? DeletedDate { get; set; }
+        public int? PackSizeId { get; set; }
 
         public virtual MasterBusinessUnit BusinessUnit { get; set; }
+        public virtual MasterPackSize PackSize { get; set; }
         public virtual Pidf Pidf { get; set; }
         public virtual PidfproductStrength PidfproductStrength { get; set; }
         public virtual ICollection<PidfCommercialYear> PidfCommercialYears { get; set; }

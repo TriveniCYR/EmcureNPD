@@ -1141,6 +1141,15 @@ namespace EmcureNPD.Resource.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Pack Style.
+        /// </summary>
+        public static string PackStyle {
+            get {
+                return ResourceManager.GetString("PackStyle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Password.
         /// </summary>
         public static string Password {

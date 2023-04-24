@@ -1,4 +1,7 @@
-﻿var objYears = [];
+﻿var ArrMainCommercial = [];
+var objMainCommercial = {};
+
+var objYears = [];
 var objMainForm = {};
 var objdropdownYearControls_array = ['CommercialPackagingTypeId', 'CurrencyId','FinalSelectionId'];
 var ColumnObjUpcase = ['CommercialPackagingTypeId', 'CommercialBatchSize', 'PriceDiscounting', 'TotalApireq', 'Apireq', 'Suimsvolume', 'MarketGrowth', 'MarketSize', 'PriceErosion', 'FinalSelectionId'];
@@ -18,6 +21,43 @@ $(document).ready(function () {
     if ($('#hdnIsPartial').val() != '1') {
         getPIDFAccordion(_PIDFAccordionURL, _PIDFID, "dvPIDFAccrdion");
         getIPDAccordion(_IPDAccordionURL, _EncPIDFID, _PIDFBusinessUnitId, "dvIPDAccrdion");
+    }
+});
+function BUstregthPack_AddButtonClick() { 
+    var valBUStrength = ValidateBU_Strength();
+    if (ValidateMainForm()) {
+        var ent_BuStrPack = {};
+        $.each($('#frmMainBUstrengthPackCommercial').serializeArray(), function (index, item) {           
+            ent_BuStrPack[item.name] = item.value;
+        });
+        var IndexofMaintable = ArrMainCommercial.length + 1;
+        ent_BuStrPack['IndexofMaintable'] = IndexofMaintable;
+        ArrMainCommercial.push(ent_BuStrPack);
+    }
+}
+function Update_BUstregthPackTable(_objArrMainCommercial) {
+    let tableRow = null;
+    $.each(_objArrMainCommercial, function (index, object) {
+
+        tableRow = '<tr> <td>' + object .packagingTypeId+'</td>   </tr>'
+                    
+
+    $('#tblMainCommercial tbody').append(tableRow);
+}
+
+
+$('#tblMainCommercial tbody').on('click', 'td.dt-control', function () {
+    var tr = $(this).closest('tr');
+    var row = _milestoneInstance.row(tr);
+
+    if (row.child.isShown()) {
+        // This row is already open - close it
+        row.child.hide();
+        tr.removeClass('shown');
+    } else {
+        // Open this row
+        row.child(CustomizeChildContent(row.data())).show();
+        tr.addClass('shown');
     }
 });
 //function HideSaveAsDraft() {
