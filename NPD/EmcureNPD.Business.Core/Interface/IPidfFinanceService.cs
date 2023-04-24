@@ -17,5 +17,6 @@ namespace EmcureNPD.Business.Core.Interface
         Task<dynamic> GetPidfFinance(int Pidfid = 0);
 
         Task<dynamic> GetFinanceBatchSizeCoating(int PidffinaceId = 0);
-    }
+        Task<dynamic> GetFinaceProjectionYear(int monthTobeDeduct = 0);
+     }
 }

@@ -15,8 +15,10 @@
 
     ViewData["Title"] = @MasterLocalizer["Finance Management"];
     var PidafId=Context.Request.Query["pidfid"];
-    var SelectedBuId=Model.BussinessUnitId;
+    var SelectedBuId=Model!=null? Model.BussinessUnitId:Convert.ToInt32(UtilityHelper.Decreypt(Convert.ToString(Context.Request.Query["bui"])));
+    var selectedPidafId =Model!=null ?Model.dycrPidfid:Convert.ToInt32(UtilityHelper.Decreypt(Convert.ToString(PidafId)));
     var selectedSkus = string.Empty;
+    var ProjectStartDate=Model!=null?Model.ProjectStartDate:DateTime.Now;
     if(Model != null && Model.lsPidfFinanceBatchSizeCoating != null){
         if(Model.lsPidfFinanceBatchSizeCoating.Count() > 0){
             selectedSkus = string.Join(",", Model.lsPidfFinanceBatchSizeCoating.Select(x => x.Skus));
@@ -220,7 +222,7 @@
 					<div class="col-md-3">
 						<div class="form-group required">
 							<label class="control-label">Project Start Date<span style="color:red;">*</span></label>
-							@Html.TextBoxFor(@modal=>modal.ProjectStartDate,"{0:yyyy-MM-dd}",new{@type="date",@class="form-control readOnlyUpdate",@required="required"})
+							@Html.TextBoxFor(@modal=>modal.ProjectStartDate,"{0:yyyy-MM-dd}",new{@type="date",@class="form-control readOnlyUpdate",@required="required",@onchange="GetFinancialProjectionYear(this.value);"})
 						                    <div class="invalid-feedback">
                                             Please select Project Start Date.
                                            </div>
@@ -1194,35 +1196,7 @@
                                         <div class="card card-primary card-outline card-outline-tabs">
                                             <div class="card-header p-0 border-bottom-0">
                                                 <ul class="nav nav-tabs" id="custom-tabs-business-tab" role="tablist">
-                                                    @*<li class="nav-item p-0">
-                                                        <a class="nav-link active px-2"
-                                                            id="custom-tabs-business-usa-tab" data-toggle="pill"
-                                                            href="#custom-tabs-usa" role="tab"
-                                                            aria-controls="custom-tabs-usa" aria-selected="true">USA</a>
-                                                    </li>
-                                                    <li class="nav-item p-0">
-                                                        <a class="nav-link px-2" id="custom-tabs-business-eu-tab"
-                                                            data-toggle="pill" href="#custom-tabs-eu" role="tab"
-                                                            aria-controls="custom-tabs-eu" aria-selected="false">EU</a>
-                                                    </li>
-                                                    <li class="nav-item p-0">
-                                                        <a class="nav-link px-2" id="custom-tabs-business-row-tab"
-                                                            data-toggle="pill" href="#custom-tabs-row" role="tab"
-                                                            aria-controls="custom-tabs-row"
-                                                            aria-selected="false">ROW</a>
-                                                    </li>
-                                                    <li class="nav-item p-0">
-                                                        <a class="nav-link px-2" id="custom-tabs-business-can-tab"
-                                                            data-toggle="pill" href="#custom-tabs-can" role="tab"
-                                                            aria-controls="custom-tabs-can"
-                                                            aria-selected="false">CANADA</a>
-                                                    </li>
-                                                    <li class="nav-item p-0">
-                                                        <a class="nav-link px-2" id="custom-tabs-business-ind-tab"
-                                                            data-toggle="pill" href="#custom-tabs-ind" role="tab"
-                                                            aria-controls="custom-tabs-ind"
-                                                            aria-selected="false">INDIA</a>
-                                                    </li>*@
+                                                  
                                                 </ul>
                                             </div>
                                             <div class="card-body">
@@ -1248,18 +1222,13 @@
                                                                     </tr>
                                                                 </thead>
                                                                 <tbody>
-                                                                    <tr>
-                                                                        <td>CAD/EURO/USD/INR</td>
-                                                                        <td>Mar-20</td>
-                                                                        <td>Mar-21</td>
-                                                                        <td>Mar-22</td>
-                                                                        <td>Mar-23</td>
-                                                                        <td>Mar-24</td>
-                                                                        <td>Mar-25</td>
-                                                                        <td>Mar-26</td>
-                                                                        <td>Mar-27</td>
-                                                                        <td>Mar-28</td>
-                                                                        <td>Mar-29</td>
+                                                                    <tr class="trProjectionYear">
+                                                                       @* <td>CAD/EURO/USD/INR</td>*@
+                                                                   @*@if(Model!=null){
+                                                                        foreach(var item in Model.lsFinaceProjectionYear) 
+                                                                        {<td>@item.Years</td>}
+                                                                       }*@
+                                                                      
                                                                     </tr>
                                                                     <tr>
                                                                         <td># operating months</td>
@@ -2149,18 +2118,8 @@
                                                                     </tr>
                                                                 </thead>
                                                                 <tbody>
-                                                                    <tr>
-                                                                        <td>CAD/EURO/USD/INR</td>
-                                                                        <td>Mar-20</td>
-                                                                        <td>Mar-21</td>
-                                                                        <td>Mar-22</td>
-                                                                        <td>Mar-23</td>
-                                                                        <td>Mar-24</td>
-                                                                        <td>Mar-25</td>
-                                                                        <td>Mar-26</td>
-                                                                        <td>Mar-27</td>
-                                                                        <td>Mar-28</td>
-                                                                        <td>Mar-29</td>
+                                                                    <tr class="trProjectionYear">
+                                                                        
                                                                     </tr>
                                                                     <tr>
                                                                         <td># operating months</td>
@@ -3050,18 +3009,8 @@
                                                                     </tr>
                                                                 </thead>
                                                                 <tbody>
-                                                                    <tr>
-                                                                        <td>CAD/EURO/USD/INR</td>
-                                                                        <td>Mar-20</td>
-                                                                        <td>Mar-21</td>
-                                                                        <td>Mar-22</td>
-                                                                        <td>Mar-23</td>
-                                                                        <td>Mar-24</td>
-                                                                        <td>Mar-25</td>
-                                                                        <td>Mar-26</td>
-                                                                        <td>Mar-27</td>
-                                                                        <td>Mar-28</td>
-                                                                        <td>Mar-29</td>
+                                                                    <tr class="trProjectionYear">
+                                                                        
                                                                     </tr>
                                                                     <tr>
                                                                         <td># operating months</td>
@@ -3951,18 +3900,8 @@
                                                                     </tr>
                                                                 </thead>
                                                                 <tbody>
-                                                                    <tr>
-                                                                        <td>CAD/EURO/USD/INR</td>
-                                                                        <td>Mar-20</td>
-                                                                        <td>Mar-21</td>
-                                                                        <td>Mar-22</td>
-                                                                        <td>Mar-23</td>
-                                                                        <td>Mar-24</td>
-                                                                        <td>Mar-25</td>
-                                                                        <td>Mar-26</td>
-                                                                        <td>Mar-27</td>
-                                                                        <td>Mar-28</td>
-                                                                        <td>Mar-29</td>
+                                                                    <tr class="trProjectionYear">
+                                                                       
                                                                     </tr>
                                                                     <tr>
                                                                         <td># operating months</td>
@@ -4852,18 +4791,8 @@
                                                                     </tr>
                                                                 </thead>
                                                                 <tbody>
-                                                                    <tr>
-                                                                        <td>CAD/EURO/USD/INR</td>
-                                                                        <td>Mar-20</td>
-                                                                        <td>Mar-21</td>
-                                                                        <td>Mar-22</td>
-                                                                        <td>Mar-23</td>
-                                                                        <td>Mar-24</td>
-                                                                        <td>Mar-25</td>
-                                                                        <td>Mar-26</td>
-                                                                        <td>Mar-27</td>
-                                                                        <td>Mar-28</td>
-                                                                        <td>Mar-29</td>
+                                                                    <tr class="trProjectionYear">
+                                                                        
                                                                     </tr>
                                                                     <tr>
                                                                         <td># operating months</td>
@@ -6403,6 +6332,7 @@
                                 </div>
             </div>
 		</div>
+            
         @Html.Partial("_PIDFApproveReject")
 
 <div class="row">
@@ -6460,6 +6390,7 @@
     const pidfId="@PidafId";
     const selectedSKUs="@selectedSkus";
     const _selectBusinessUnit="@SelectedBuId";
-
+    const _selectedPidfId="@selectedPidafId";
+    const _selectedProjectStartDate="@ProjectStartDate";
 </script>
 }

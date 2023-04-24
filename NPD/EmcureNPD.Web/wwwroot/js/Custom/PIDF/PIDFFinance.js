@@ -10,6 +10,7 @@ $(document).ready(function () {
     GetSelectedTargetPriceScanario();
     GetSkus(pidfId);
     fnGetActiveBusinessUnit();
+    GetFinancialProjectionYear(_selectedProjectStartDate);
     if (isView === "1") {
         $('.readOnlyUpdate').prop('readonly', true);
         $('select.form-control.readOnlyUpdate').attr("disabled", true);
@@ -371,6 +372,48 @@ function GetActiveBusinessUnitError(x, y, z) {
 //    }
 
 //});
+function GetFinancialProjectionYear(dates) {
+    $(".trProjectionYear").empty();
+    let selectedCurrency = $(`#Currency option:selected`).text().split('-')[0];
+    let td = `<td>${selectedCurrency}</td>`;
+    for (var i = 0; i < 10; i++) {
+        if (i == 0) {
+            td += `<td>Mar-${getYearByLast3Months(dates)}</td>`;
+        }
+        else {
+            td += `<td>Mar-${parseInt(getYearByLast3Months(dates)) + i
+        }</td >`;
+        }
+    }
+    //alert(getYearByLast3Months(ele.value))
+    $(".trProjectionYear").append(td);
+}
+function getYearByLast3Months(date) {
+
+    const today = new Date(date);
+    let lastSixMonths = []
+
+    for (var i = 10; i > 0; i -= 1) {
+        if (i == 3) {
+            const date = new Date(today.getFullYear(), today.getMonth() - i, 1);
+            lastSixMonths.push(moment(date).format("YY"))
+        }
+    }
+
+    return lastSixMonths.reverse() // Result
+    
+    //var today = new Date(date);
+    //for (i = 0; i < 4; i++) {
+    //    if (i == 4) {
+    //        if (i > today.getMonth())
+    //            today = i - today.getMonth;
+    //        else
+    //            today = today.getMonth() - i;
+    //    }
+    //}
+    //return today.getFullYear();
+}
+
 (function () {
     'use strict'
 

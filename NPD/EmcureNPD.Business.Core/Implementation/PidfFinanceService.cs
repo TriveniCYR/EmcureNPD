@@ -366,5 +366,22 @@ namespace EmcureNPD.Business.Core.Implementation
                 return false;
             }
         }
+        public async Task<dynamic> GetFinaceProjectionYear(int monthTobeDeduct = 0)
+        {
+            try
+            {
+                SqlParameter[] osqlParameter = {
+                new SqlParameter("@monthTobeDeduct", monthTobeDeduct)
+            };
+
+                DataSet dsFinanceBatchSizeCoating = await _repository.GetDataSetBySP("GetFinaceProjectionYear", System.Data.CommandType.StoredProcedure, osqlParameter);
+                return dsFinanceBatchSizeCoating;
+            }
+            catch (Exception ex)
+            {
+                await _ExceptionService.LogException(ex);
+                return null;
+            }
+        }
     }
 }
