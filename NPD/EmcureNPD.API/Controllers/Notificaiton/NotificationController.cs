@@ -14,7 +14,7 @@ namespace EmcureNPD.API.Controllers.Notificaiton
 {
     [Route("api/[controller]")]
     [ApiController]
-    [AuthorizeAttribute]
+    //[AuthorizeAttribute]
     public class NotificationController : ControllerBase
     {
         #region Properties
@@ -70,7 +70,7 @@ namespace EmcureNPD.API.Controllers.Notificaiton
         }
 
         [HttpGet, Route("GetFilteredNotifications/{ColumnName}/{SortDir}/{start}/{length}")]
-        [OutputCache(Duration = 120, VaryByParam = "RoleId")]
+        //[OutputCache(Duration = 120, VaryByParam = "RoleId")]
         public async Task<IActionResult> GetFilteredNotifications(string ColumnName, string SortDir, int start, int length, int RoleId)
         {
             try
@@ -115,5 +115,20 @@ namespace EmcureNPD.API.Controllers.Notificaiton
                 return _ObjectResponse.Create(false, (Int32)HttpStatusCode.InternalServerError, Convert.ToString(ex.StackTrace));
             }
         }
+        [HttpPost, Route("CreateNotification")]
+        public async Task<IActionResult> CreateNotification([FromForm] MasterNotificationEntity model)
+        {
+            try
+            {
+                return _ObjectResponse.CreateData(await _NotificationService.CreateNotification((long)model.PIDFId,(int)model.StatusId,model.NotificationTitle,model.NotificationDescription,model.CreatedBy), (Int32)HttpStatusCode.OK);
+            }
+            catch (Exception ex)
+            {
+                await _ExceptionService.LogException(ex);
+                _logger.LogInformation($"ERROR:Notifications/CreateNotification:{ex}");
+                return _ObjectResponse.Create(false, (Int32)HttpStatusCode.InternalServerError, Convert.ToString(ex.StackTrace));
+            }
+        }
+
     }
 }

@@ -5,6 +5,7 @@ using EmcureNPD.Data.DataAccess.Core.Repositories;
 using EmcureNPD.Data.DataAccess.Core.UnitOfWork;
 using EmcureNPD.Data.DataAccess.Entity;
 using EmcureNPD.Resource;
+using EmcureNPD.Utility;
 using EmcureNPD.Utility.Helpers;
 using EmcureNPD.Utility.Utility;
 using Microsoft.Extensions.Localization;
@@ -12,6 +13,7 @@ using System;
 using System.Data.SqlClient;
 using System.Linq;
 using System.Threading.Tasks;
+using TableDependency.SqlClient;
 using static EmcureNPD.Utility.Enums.GeneralEnum;
 
 namespace EmcureNPD.Business.Core.Implementation
@@ -23,6 +25,8 @@ namespace EmcureNPD.Business.Core.Implementation
         private readonly IStringLocalizer<Errors> _stringLocalizerError;
         private readonly Microsoft.Extensions.Configuration.IConfiguration configuration;
         private readonly IExceptionService _ExceptionService;
+        SqlTableDependency<MasterNotification> tableDependency;
+        NotificationHub notificationHub;
         private IRepository<MasterNotification> _repository { get; set; }
         private IRepository<MasterNotificationUser> _repositoryNotificationUser { get; set; }
         private readonly IHelper _helper;
@@ -68,8 +72,8 @@ namespace EmcureNPD.Business.Core.Implementation
 
             oDataTableResponseModel = new DataTableResponseModel(model.draw, TotalRecord, TotalCount, NotificationList);
 
-            SqlDependency sqlDependency = new SqlDependency();
-            sqlDependency.OnChange += new OnChangeEventHandler(dbChangeNotification);
+            //SqlDependency sqlDependency = new SqlDependency();
+            //sqlDependency.OnChange += new OnChangeEventHandler(dbChangeNotification);
             return oDataTableResponseModel;
         }
 
@@ -95,14 +99,18 @@ namespace EmcureNPD.Business.Core.Implementation
 
             DataTableResponseModel oDataTableResponseModel = new DataTableResponseModel(model.draw, TotalRecord, TotalCount, NotificationList.DataTableToList<MasterNotification>());
 
-            SqlDependency sqlDependency = new SqlDependency();
-            sqlDependency.OnChange += new OnChangeEventHandler(dbChangeNotification);
+            //SqlDependency sqlDependency = new SqlDependency();
+            //sqlDependency.OnChange += new OnChangeEventHandler(dbChangeNotification);
             return oDataTableResponseModel;
         }
 
-        public void dbChangeNotification(object sender, SqlNotificationEventArgs e)
+        public async void dbChangeNotification(object sender, TableDependency.SqlClient.Base.EventArgs.RecordChangedEventArgs<MasterNotification> e)
         {
-            //NotificationHub.Show();
+            if (e.ChangeType != TableDependency.SqlClient.Base.Enums.ChangeType.None)
+            {
+                var pendingnotification = await this.NotificationCountForUser();
+                await notificationHub.GetNotification();//pendingnotification.Count
+            }
         }
 
         public async Task<DBOperation> CreateNotification(long pidfId, int statusid, string notificationTitle, string notificationDescription, int loggedinUserId)
@@ -125,6 +133,13 @@ namespace EmcureNPD.Business.Core.Implementation
                 await _unitOfWork.SaveChangesAsync();
                 if (objNotification.NotificationId == 0)
                     return DBOperation.Error;
+                //SqlDependency sqlDependency = new SqlDependency();
+                //sqlDependency.OnChange += new OnChangeEventHandler(dbChangeNotification);
+
+
+                tableDependency = new SqlTableDependency<MasterNotification>(DatabaseConnection.NPDDatabaseConnection);
+                tableDependency.OnChanged += dbChangeNotification;
+                tableDependency.Start();
                 return DBOperation.Success;
             }
             catch (Exception ex)
@@ -184,8 +199,8 @@ namespace EmcureNPD.Business.Core.Implementation
 
             PendingNotification oResponseModel = new PendingNotification { Count = count };
 
-            SqlDependency sqlDependency = new SqlDependency();
-            sqlDependency.OnChange += new OnChangeEventHandler(dbChangeNotification);
+            //SqlDependency sqlDependency = new SqlDependency();
+            //sqlDependency.OnChange += new OnChangeEventHandler(dbChangeNotification);
             return oResponseModel;
         }
     }
