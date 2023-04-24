@@ -6343,7 +6343,7 @@
             
             @if(ViewBag.Access.Approve == true)
             {
-                if ((Model != null && Model.PIDFStatusId > 0 && Model.PIDFStatusId == (Int32)Master_PIDFStatus.FinanceSubmitted) || (Convert.ToBoolean(Context.Request.Query["finance"])))
+                if ((Model != null && Model.PIDFStatusId > 0 && (Model.PIDFStatusId == (Int32)Master_PIDFStatus.FinanceSubmitted || Model.PIDFStatusId == (Int32)Master_PIDFStatus.CommercialSubmitted || Model.PIDFStatusId == (Int32)Master_PIDFStatus.APISubmitted || Model.PIDFStatusId == (Int32)Master_PIDFStatus.PBFSubmitted || Model.PIDFStatusId == (Int32)Master_PIDFStatus.APIInProgress)) && (Convert.ToBoolean(Context.Request.Query["finance"])))
                 {       
                     <a style="@IsApproveAllow" class="btn btn-success operationButton btnControll" onClick="ApproveRejectClick('A', '@PidfNumber', @((int)EmcureNPD.Utility.Enums.PIDFScreen.Finance), '/PIDF/PIDFList?ScreenId=@((int)EmcureNPD.Utility.Enums.PIDFScreen.Finance)')"><i class="fa fa-check-circle mr-1"></i> @SharedLocalizer["Approve"]</a>
                     <a style="@IsApproveAllow" class="btn btn-danger  operationButton btnControll" onClick="ApproveRejectClick('R', '@PidfNumber', @((int)EmcureNPD.Utility.Enums.PIDFScreen.Finance), '/PIDF/PIDFList?ScreenId=@((int)EmcureNPD.Utility.Enums.PIDFScreen.Finance)')"><i class="fa fa-ban mr-1"></i> @SharedLocalizer["Reject"]</a>

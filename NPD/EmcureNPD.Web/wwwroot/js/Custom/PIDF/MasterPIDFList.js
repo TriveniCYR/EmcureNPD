@@ -45,14 +45,14 @@ function InitializePIDFList() {
 
     var columnObject = [
         {
-            className: 'dt-control notexport',
+            className: 'dt-control notexport pidf-25',
             orderable: false,
             defaultContent: '',
             "data": null
         },
         {
             orderable: false,
-            className: 'notexport',
+            className: 'notexport pidf-25',
             "title": "PIDF No",
             "data": null,
             'render': function (data, type, row, meta) {
@@ -68,7 +68,7 @@ function InitializePIDFList() {
                             _flag = true;
                         }
                     } else if (_screenId == "7") {
-                        if ((row.pidfStatusID == 17 && (row.finance))) {
+                        if (((row.pidfStatusID == 10 || row.pidfStatusID == 11 || row.pidfStatusID == 12 || row.pidfStatusID == 13 || row.pidfStatusID == 14 || row.pidfStatusID == 15 || row.pidfStatusID == 16 || row.pidfStatusID == 17) && (row.finance))) {
                             _flag = true;
                         }
                         $("#DvApproveReject").show();
@@ -86,55 +86,55 @@ function InitializePIDFList() {
             }
         },
         {
-            "data": "pidfNo", "title": "PIDF No","width":"110px"
+            "data": "pidfNo", "title": "PIDF No", "sClass": "pidf-90"
         },
         {
-            "data": "moleculeName", "title": "Project Name"
+            "data": "moleculeName", "title": "Project Name", "sClass": "pidf-110"
         },
         {
-            "data": "brandName", "title": "Brand Name"
+            "data": "brandName", "title": "Brand Name", "sClass": "pidf-110"
         },
         {
-            "data": "dosageFormName", "title": "Dosage Form"
+            "data": "dosageFormName", "title": "Dosage Form", "sClass": "pidf-110"
         },
         {
-            "data": "businessUnitName", "title": "Business Unit"
+            "data": "businessUnitName", "title": "Business Unit", "sClass": "pidf-110"
         },
         {
-            "data": "oralName", "title": "Oral Name"
+            "data": "oralName", "title": "Oral Name", "sClass": "pidf-110"
         },
         {
-            "data": "inHouses", "title": "In House", "render": function (data, type, row, meta) {
+            "data": "inHouses", "title": "In House", "sClass": "pidf-80", "render": function (data, type, row, meta) {
                 return (data ? "Yes" : "No");
             }
         },
         {
-            "data": "ipd", "title": "IPD", "render": function (data, type, row, meta) {
+            "data": "ipd", "title": "IPD", "sClass": "pidf-50", "render": function (data, type, row, meta) {
                 return '<span style="display:none;">' + (data ? "Yes" : "No") + '</span><a class="small-button btn btn-' + (row.ipd ? "success" : "danger") + '"><i class="fa ' + (row.ipd ? "fa-check" : "fa-remove") + '"></i></a>';
             }
         },
         {
-            "data": "medical", "title": "Medical", "render": function (data, type, row, meta) {
+            "data": "medical", "title": "Medical", "sClass": "pidf-50", "render": function (data, type, row, meta) {
                 return '<span style="display:none;">' + (data ? "Yes" : "No") + '</span><a class="small-button btn btn-' + (row.medical ? "success" : "danger") + '"><i class="fa ' + (row.medical ? "fa-check" : "fa-remove") + '"></i></a>';
             }
         },
         {
-            "data": "commercial", "title": "Commercial", "render": function (data, type, row, meta) {
+            "data": "commercial", "title": "Commercial", "sClass": "pidf-50", "render": function (data, type, row, meta) {
                 return '<span style="display:none;">' + (data ? "Yes" : "No") + '</span><a class="small-button btn btn-' + (row.commercial ? "success" : "danger") + '"><i class="fa ' + (row.commercial ? "fa-check" : "fa-remove") + '"></i></a>';
             }
         },
         {
-            "data": "pbf", "title": "PBF", "render": function (data, type, row, meta) {
+            "data": "pbf", "title": "PBF", "sClass": "pidf-50", "render": function (data, type, row, meta) {
                 return '<span style="display:none;">' + (data ? "Yes" : "No") + '</span><a class="small-button btn btn-' + (row.pbf ? "success" : "danger") + '"><i class="fa ' + (row.pbf ? "fa-check" : "fa-remove") + '"></i></a>';
             }
         },
         {
-            "data": "api", "title": "API", "render": function (data, type, row, meta) {
+            "data": "api", "title": "API", "sClass": "pidf-50", "render": function (data, type, row, meta) {
                 return '<span style="display:none;">' + (data ? "Yes" : "No") + '</span><a class="small-button btn btn-' + (row.api ? "success" : "danger") + '"><i class="fa ' + (row.api ? "fa-check" : "fa-remove") + '"></i></a>';
             }
         },
         {
-            "data": "finance", "title": "Finance", "render": function (data, type, row, meta) {
+            "data": "finance", "title": "Finance", "sClass": "pidf-50", "render": function (data, type, row, meta) {
                 return '<span style="display:none;">' + (data ? "Yes" : "No") + '</span><a class="small-button btn btn-' + (row.finance ? "success" : "danger") + '"><i class="fa ' + (row.finance ? "fa-check" : "fa-remove") + '"></i></a>';
             }
         },
@@ -144,43 +144,43 @@ function InitializePIDFList() {
         //    }
         //},
         {
-            "data": "marketExtension", "title": "Market Extension"
+            "data": "marketExtension", "title": "Market Extension", "sClass": "pidf-140"
         },
         {
-            "data": "productPackagingName", "title": "Product Packaging"
+            "data": "productPackagingName", "title": "Product Packaging", "sClass": "pidf-140"
         },
         {
-            "data": "rfdBrand", "title": "RFDBrand"
+            "data": "rfdBrand", "title": "RFD Brand", "sClass": "pidf-120"
         },
         {
-            "data": "applicant", "title": "Applicant"
+            "data": "applicant", "title": "Applicant", "sClass": "pidf-100"
         },
         {
-            "data": "countryName", "title": "Country Name"
+            "data": "countryName", "title": "Country Name", "sClass": "pidf-110"
         },
         {
-            "data": "inidication", "title": "Inidication"
+            "data": "inidication", "title": "Inidication", "sClass": "pidf-80"
         },
         {
-            "data": "diaName", "title": "DIA "
+            "data": "diaName", "title": "DIA ", "sClass": "pidf-80"
         },
         {
-            "data": "createdBy", "title": "Created By"
+            "data": "createdBy", "title": "Created By", "sClass": "pidf-100"
         },
         {
-            "data": "createdDate", "title": "createdDate", "render": function (data, type, row, meta) {
+            "data": "createdDate", "title": "Created Date", "sClass": "pidf-110", "render": function (data, type, row, meta) {
                 return moment(data).format("DD MMM YYYY h:m");
             }
         },
         {
-            "data": "status", "title": "Status", "render": function (data, type, row, meta) {
+            "data": "status", "title": "Status", "sClass": "pidf-150 statusColumn", "render": function (data, type, row, meta) {
                 var html = '';
                 html = '<span style="background-color:' + row.statusColor + ';padding:5px;border-radius:10px;">' + data + '</span>';
                 return html;
             }
         },
         {
-            "data": null, className: 'notexport', "title": "Action", "render": function (data, type, row, meta) {
+            "data": null, className: 'notexport', "title": "Action", "sClass": "pidf-100 actionColumn", "render": function (data, type, row, meta) {
                 var html = '';
                 if (_screenId == "1") {
                     var _PIDFForm = '/PIDF/PIDF?PIDFId=' + row.pidfid;
@@ -281,35 +281,37 @@ function InitializePIDFList() {
         left: 3,
         right: 2
     });
-    $(dataTableInst.columns(1).header()).addClass('pidf-25');
-    $(dataTableInst.columns(0).header()).addClass('pidf-25');
-    $(dataTableInst.columns(2).header()).addClass('pidf-90');
-    $(dataTableInst.columns(3).header()).addClass('pidf-110');
-    $(dataTableInst.columns(4).header()).addClass('pidf-110');
-    $(dataTableInst.columns(5).header()).addClass('pidf-110');
-    $(dataTableInst.columns(6).header()).addClass('pidf-110');
-    $(dataTableInst.columns(7).header()).addClass('pidf-110');
-    $(dataTableInst.columns(8).header()).addClass('pidf-80');
-    $(dataTableInst.columns(9).header()).addClass('pidf-50');
-    $(dataTableInst.columns(10).header()).addClass('pidf-50');
-    $(dataTableInst.columns(11).header()).addClass('pidf-50');
-    $(dataTableInst.columns(12).header()).addClass('pidf-50');
-    $(dataTableInst.columns(13).header()).addClass('pidf-50');
-    $(dataTableInst.columns(14).header()).addClass('pidf-50');
-    $(dataTableInst.columns(15).header()).addClass('pidf-140');
-    $(dataTableInst.columns(16).header()).addClass('pidf-140');
-    $(dataTableInst.columns(17).header()).addClass('pidf-140');
-    $(dataTableInst.columns(18).header()).addClass('pidf-100');
-    $(dataTableInst.columns(19).header()).addClass('pidf-80');
-    $(dataTableInst.columns(20).header()).addClass('pidf-80');
-    $(dataTableInst.columns(21).header()).addClass('pidf-120');
-    $(dataTableInst.columns(22).header()).addClass('pidf-100');
-    $(dataTableInst.columns(23).header()).addClass('pidf-100');
-    $(dataTableInst.columns(24).header()).addClass('pidf-150');
-    $(dataTableInst.columns(25).header()).addClass('pidf-100');
+    //$(dataTableInst.columns(1).header()).addClass('pidf-25');
+    //$(dataTableInst.columns(0).header()).addClass('pidf-25');
+    //$(dataTableInst.columns(2).header()).addClass('pidf-90');
+    //$(dataTableInst.columns(3).header()).addClass('pidf-110');
+    //$(dataTableInst.columns(4).header()).addClass('pidf-110');
+    //$(dataTableInst.columns(5).header()).addClass('pidf-110');
+    //$(dataTableInst.columns(6).header()).addClass('pidf-110');
+    //$(dataTableInst.columns(7).header()).addClass('pidf-110');
+    //$(dataTableInst.columns(8).header()).addClass('pidf-80');
+    //$(dataTableInst.columns(9).header()).addClass('pidf-50');
+    //$(dataTableInst.columns(10).header()).addClass('pidf-50');
+    //$(dataTableInst.columns(11).header()).addClass('pidf-50');
+    //$(dataTableInst.columns(12).header()).addClass('pidf-50');
+    //$(dataTableInst.columns(13).header()).addClass('pidf-50');
+    //$(dataTableInst.columns(14).header()).addClass('pidf-50');
+    //$(dataTableInst.columns(15).header()).addClass('pidf-140');
+    //$(dataTableInst.columns(16).header()).addClass('pidf-140');
+    //$(dataTableInst.columns(17).header()).addClass('pidf-140');
+    //$(dataTableInst.columns(18).header()).addClass('pidf-100');
+    //$(dataTableInst.columns(19).header()).addClass('pidf-80');
+    //$(dataTableInst.columns(20).header()).addClass('pidf-80');
+    //$(dataTableInst.columns(21).header()).addClass('pidf-120');
+    //$(dataTableInst.columns(22).header()).addClass('pidf-100');
+    //$(dataTableInst.columns(23).header()).addClass('pidf-100');
+    /*$(dataTableInst.columns(24).header()).addClass('pidf-150');*/
+    //$(dataTableInst.columns(25).header()).addClass('pidf-100');
 
-
-
+    $('#' + tableId).on('column-visibility.dt', function (e, settings, column, state) {
+        $('#' + tableId).find('.statusColumn').css("right", "140px").css("position", "sticky").css("width", "150px");
+        $('#' + tableId).find('.actionColumn').css("right", "0px").css("position", "sticky").css("width", "100px");
+    });
 
     var head_item = dataTableInst.columns(1).header();
     $(head_item).html('<input type="checkbox" class="custom-list-checkbox" id="chkAllPIDF" />');
