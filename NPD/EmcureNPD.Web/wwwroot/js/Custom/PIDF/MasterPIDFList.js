@@ -9,15 +9,19 @@ $(document).ready(function () {
                 if ($(it).attr("disabled")) {
                     console.log();
                 } else {
-                    $(this).click();
+                    $(it).click();
                 }
             });
-        } else {
+        }
+        else {
             $.each($('.chkPIDFRow'), function (i, it) {
                 if ($(it).attr("disabled")) {
                     console.log();
                 } else {
-                    $(this).click();
+                    if ($(it).is(':checked')) {
+                        $(it).click();
+                    }
+                   
                 }
             });
         }
@@ -313,16 +317,10 @@ function InitializePIDFList() {
     dataTableInst.on('draw', function () {
        
         if ($('#chkAllPIDF').is(':checked')) {
-            $.each($('.chkPIDFRow'), function (i, it) {
-                if ($(it).attr("disabled")) {
-                    console.log();
-                } else {
-                    $(this).click();
-                }
-            });
+            $('#chkAllPIDF').prop('checked', false);
+            objApprRejList = [];
         }
-        
-        // your code here
+       
     });
     // Add event listener for opening and closing details
     $('#' + tableId + ' tbody').on('click', 'td.dt-control', function () {

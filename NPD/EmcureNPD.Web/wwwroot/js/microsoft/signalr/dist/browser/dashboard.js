@@ -16,17 +16,17 @@ $(function () {
 
 // Product
 function InvokePostLocation() {
-	connection.invoke("GetLocation").catch(function (err) {
+	connection.invoke("GetNotification").catch(function (err) {
 		return console.error(err.toString());
 	});
 }
 
-connection.on("ReceiveLocation", function (latitude, longitude) {
-	BindLocation(latitude, longitude);
+connection.on("ReceiveNotification", function (count) {
+	BindLocation(count);
 });
 
-function BindLocation(latitude, longitude) {
-	//alert(latitude);
+function BindLocation(count) {
+	alert(count);
 	//alert(ongitude);
 	
 }
