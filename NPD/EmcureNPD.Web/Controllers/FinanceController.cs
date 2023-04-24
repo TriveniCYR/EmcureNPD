@@ -58,9 +58,10 @@ namespace EmcureNPD.Web.Controllers
                     var data = JsonConvert.DeserializeObject<Root>(jsonResponse);
                     if (data.table.Count > 0)
                     {
-                        model.BussinessUnitId = Convert.ToInt32(UtilityHelper.Decreypt(Convert.ToString(pidfid))); 
+                        model.BussinessUnitId = Convert.ToInt32(UtilityHelper.Decreypt(Convert.ToString(bui))); 
                         model.PidffinaceId = data.table[0].pidffinaceId;
                         model.Pidfid = UtilityHelper.Encrypt(Convert.ToString(data.table[0].pidfid));
+                        model.dycrPidfid = data.table[0].pidfid;
                         model.Entity = data.table[0].entity;
                         model.Product = data.table[0].product;
                         model.ForecastDate = data.table[0].forecastDate;
@@ -155,6 +156,27 @@ namespace EmcureNPD.Web.Controllers
                             }
                         }
                         model.lsPidfFinanceBatchSizeCoating = ls;
+                        //**Start:get Financial Projection Years**//
+                        //try
+                        //{
+                        //    var lsPrjectionYear = GetFinaceProjectionYear(3);
+                        //    List<FinaceProjectionYear> lsProjYear = new List<FinaceProjectionYear>();
+                        //    foreach (var item in lsPrjectionYear)
+                        //    {
+                        //        lsProjYear.Add(new FinaceProjectionYear
+                        //        {
+                        //            Years = item.years
+                        //        });
+                        //    }
+                        //    model.lsFinaceProjectionYear = lsProjYear;
+                        //}
+                        //catch (Exception ex)
+                        //{
+
+                            
+                        //}
+                        
+                        //**End:get Financial Projection Years**//
                     }
                     int rolId = _helper.GetLoggedInRoleId();
                     RolePermissionModel objPermssion = UtilityHelper.GetCntrActionAccess((int)ModulePermissionEnum.Finance, rolId);
@@ -218,5 +240,33 @@ namespace EmcureNPD.Web.Controllers
                 throw;
             }
         }
+        //[NonAction]
+        //private List<ProjectionYaerTable> GetFinaceProjectionYear(int monthTobeDeduct)
+        //{
+        //    try
+        //    {
+        //        HttpResponseMessage responseMessage = new HttpResponseMessage();
+        //        HttpContext.Request.Cookies.TryGetValue(UserHelper.EmcureNPDToken, out string token);
+        //        APIRepository objapi = new(_cofiguration);
+
+        //        responseMessage = objapi.APICommunication(APIURLHelper.GetFinaceProjectionYear + "/" + monthTobeDeduct, HttpMethod.Get, token).Result;
+
+        //        if (responseMessage.IsSuccessStatusCode)
+        //        {
+        //            string jsonResponse = responseMessage.Content.ReadAsStringAsync().Result;
+        //            var data = JsonConvert.DeserializeObject<ProjectionYearRoot>(jsonResponse);
+        //            return data.table;
+        //        }
+        //        else
+        //        {
+        //            return null;
+        //        }
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        _helper.LogExceptions(ex);
+        //        throw;
+        //    }
+        //}
     }
 }

@@ -10,7 +10,8 @@ namespace EmcureNPD.Business.Models
 	{
 		public int PidffinaceId { get; set; }
 		public string Pidfid { get; set; }
-		public string Entity { get; set; }
+		public int dycrPidfid { get; set; }
+        public string Entity { get; set; }
 		public string Product { get; set; }
 		public DateTime ForecastDate { get; set; }
 		public string Currencyid { get; set; }
@@ -71,7 +72,8 @@ namespace EmcureNPD.Business.Models
 		public string StatusRemark { get; set; }
 		public List<ChildPidfFinanceBatchSizeCoating> lsPidfFinanceBatchSizeCoating { get; set; }
 		public int BussinessUnitId { get; set; }
-	}
+        public List<FinaceProjectionYear> lsFinaceProjectionYear { get; set; }
+    }
 	public partial class ChildPidfFinanceBatchSizeCoating
 	{
 		public int PidffinaceBatchSizeCoatingId { get; set; }
@@ -99,4 +101,8 @@ namespace EmcureNPD.Business.Models
 		public double? Marketinpacks { get; set; }
 		public double? BatchsizeinLtrTabs { get; set; }
 	}
+	public class FinaceProjectionYear
+	{
+		public string Years { get; set; }
+    }
 }

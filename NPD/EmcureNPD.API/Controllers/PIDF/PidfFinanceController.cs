@@ -149,5 +149,31 @@ namespace EmcureNPD.API.Controllers.PIDF
                 return _ObjectResponse.Create(null, (Int32)HttpStatusCode.BadRequest, "No Records found");
             }
         }
+        /// <summary>
+        /// Description - To Get GetFinaceProjectionYear
+        /// </summary>
+        /// <param name="oGetFinaceProjectionYear"></param>
+        /// <returns></returns>
+        /// <response code="200">OK</response>
+        /// <response code="400">Bad Request</response>
+        /// <response code="403">Forbidden</response>
+        /// <response code="404">Not Found</response>
+        /// <response code="405">Method Not Allowed</response>
+        /// <response code="500">Internal Server</response>
+        [HttpGet]
+        [Route("GetFinaceProjectionYear/{monthTobeDeduct}")]
+        public async Task<IActionResult> GetFinaceProjectionYear(int monthTobeDeduct)
+        {
+            try
+            {
+               
+                return _ObjectResponse.CreateData(await _pidfFinanceService.GetFinaceProjectionYear(monthTobeDeduct), (Int32)HttpStatusCode.OK);
+            }
+            catch (Exception ex)
+            {
+                await _ExceptionService.LogException(ex);
+                return _ObjectResponse.Create(null, (Int32)HttpStatusCode.BadRequest, "No Records found");
+            }
+        }
     }
 }

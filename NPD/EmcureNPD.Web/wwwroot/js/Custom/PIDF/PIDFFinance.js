@@ -10,6 +10,7 @@ $(document).ready(function () {
     GetSelectedTargetPriceScanario();
     GetSkus(pidfId);
     fnGetActiveBusinessUnit();
+    GetFinancialProjectionYear(_selectedProjectStartDate);
     if (isView === "1") {
         $('.readOnlyUpdate').prop('readonly', true);
         $('select.form-control.readOnlyUpdate').attr("disabled", true);
@@ -65,21 +66,28 @@ $("#btnRejects").click(function () {
     }
 })
 function GetCurrencyList() {
-   //ajaxServiceMethod($('#hdnBaseURL').val() + AllCurrency, 'GET', GetCurrencyListSuccess, GetCurrencyListError);
-    ajaxServiceMethod($('#hdnBaseURL').val() + "api/Currency/GetCurrencyByLoggedInUser", 'GET', GetCurrencyListSuccess, GetCurrencyListError);
+  // ajaxServiceMethod($('#hdnBaseURL').val() + AllCurrency, 'GET', GetCurrencyListSuccess, GetCurrencyListError);
+     ajaxServiceMethod($('#hdnBaseURL').val() + "api/Currency/GetCurrencyByLoggedInUser", 'GET', GetCurrencyListSuccess, GetCurrencyListError);
 }
 
 function GetCurrencyListSuccess(data) {
     try {
         $('#Currency').html('')
-        let optionhtml = '<option value = "0">--Select--</option>';
+        let optionhtml = ''; //'<option value = "0">--Select--</option>';
         $.each(data._object, function (index, object) {
+            let currencyText = object.currencyCode == null ? object.currencyName : object.currencyCode + "-" + object.currencyName;
             optionhtml += '<option value="' +
-                object.currencyId + '">' + object.currencyName + '</option>';
+                object.currencyId + '">' + currencyText + '</option>';
         });
         $("#Currency").append(optionhtml);
+
         let arrCur = JSON.parse(JSON.stringify(selectedCurrencyId.split(',')));
-        $('select#Currency').select2().val(arrCur).trigger('change'); 
+        $('select#Currency').select2(
+            {
+                placeholder: "Select Currency..",
+                allowClear: true
+            }
+        ).val(arrCur).trigger('change'); 
     } catch (e) {
         toastr.error('Error:' + e.message);
     }
@@ -336,12 +344,14 @@ function GetActiveBusinessUnitSuccess(data) {
     var businessUnitHTML = "";
     var businessUnitPanel = "";
     $.each(data._object, function (index, item) {
+        let buClassName = item.businessUnitName.toLowerCase() ==='india'?'in': item.businessUnitName.toLowerCase();
         businessUnitHTML += '<li class="nav-item p-0">\
-            <a class="nav-link '+ (item.businessUnitId == _selectBusinessUnit ? "active" : "") + ' px-2" href="#custom-tabs-' + item.businessUnitId + '" data-toggle="pill" aria-selected="true" onclick="LoadIPDForm(' + pidfId + ', ' + item.businessUnitId + ')" id="custom-tabs-two-' + item.businessUnitId + '-tab">' + item.businessUnitName + '</a></li>';
+            <a class="nav-link '+ (item.businessUnitId == _selectBusinessUnit ? "active" : "") + ' px-2" href="#custom-tabs-' + buClassName + '" data-toggle="pill" aria-selected="true" onclick="loadFInanceProjectionData(' + _selectedPidfId + ',' + item.businessUnitId + ')" id="custom-tabs-two-' + item.businessUnitId + '-tab">' + item.businessUnitName + '</a></li>';
         businessUnitPanel += '<div class="tab-pane ' + ((item.businessUnitId == _selectBusinessUnit ? "fade show active" : "")) + '" id="custom-tabs-' + item.businessUnitId + '" role="tabpanel" aria-labelledby="custom-tabs-two-' + item.businessUnitId + '-tab"></div>';
     });
     $('#custom-tabs-business-tab').html(businessUnitHTML);
-    $('#custom-tabs-two-tabContent').html(businessUnitPanel);
+    
+   // $('#custom-tabs-business-tabContent').html(businessUnitPanel);
 
    // LoadIPDForm(_PIDFID, _selectBusinessUnit);
 }
@@ -362,6 +372,48 @@ function GetActiveBusinessUnitError(x, y, z) {
 //    }
 
 //});
+function GetFinancialProjectionYear(dates) {
+    $(".trProjectionYear").empty();
+    let selectedCurrency = $(`#Currency option:selected`).text().split('-')[0];
+    let td = `<td>${selectedCurrency}</td>`;
+    for (var i = 0; i < 10; i++) {
+        if (i == 0) {
+            td += `<td>Mar-${getYearByLast3Months(dates)}</td>`;
+        }
+        else {
+            td += `<td>Mar-${parseInt(getYearByLast3Months(dates)) + i
+        }</td >`;
+        }
+    }
+    //alert(getYearByLast3Months(ele.value))
+    $(".trProjectionYear").append(td);
+}
+function getYearByLast3Months(date) {
+
+    const today = new Date(date);
+    let lastSixMonths = []
+
+    for (var i = 10; i > 0; i -= 1) {
+        if (i == 3) {
+            const date = new Date(today.getFullYear(), today.getMonth() - i, 1);
+            lastSixMonths.push(moment(date).format("YY"))
+        }
+    }
+
+    return lastSixMonths.reverse() // Result
+    
+    //var today = new Date(date);
+    //for (i = 0; i < 4; i++) {
+    //    if (i == 4) {
+    //        if (i > today.getMonth())
+    //            today = i - today.getMonth;
+    //        else
+    //            today = today.getMonth() - i;
+    //    }
+    //}
+    //return today.getFullYear();
+}
+
 (function () {
     'use strict'
 

@@ -162,7 +162,14 @@ namespace EmcureNPD.Web.Models
     {
         public List<ChildTable> table { get; set; }
     }
-
+    public class ProjectionYearRoot
+    {
+        public List<ProjectionYaerTable> table { get; set; }
+    }
+    public class ProjectionYaerTable
+    {
+        public string years { get; set; }
+    }
     public class ChildTable
     {
         public int pidfFinaceBatchSizeCoatingId { get; set; }
