@@ -1,4 +1,5 @@
 ﻿using EmcureNPD.Business.Models;
+using EmcureNPD.Data.DataAccess.Entity;
 using System.Threading.Tasks;
 using static EmcureNPD.Utility.Enums.GeneralEnum;
 
@@ -8,7 +9,7 @@ namespace EmcureNPD.Business.Core.Interface
     {
         Task<DataTableResponseModel> GetAll(DataTableAjaxPostModel model);
 
-        void dbChangeNotification(object sender, System.Data.SqlClient.SqlNotificationEventArgs e);
+        void dbChangeNotification(object sender, TableDependency.SqlClient.Base.EventArgs.RecordChangedEventArgs<MasterNotification> e);
 
         Task<DBOperation> CreateNotification(long pidfId, int statusid, string notificatioTitle, string notificationDescription, int loggedinUserId);
 

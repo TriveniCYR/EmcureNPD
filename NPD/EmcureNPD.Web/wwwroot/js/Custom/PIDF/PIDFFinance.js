@@ -1,8 +1,8 @@
 ﻿let rowcount = 0;
-
+let selectedCurrencyText = "";
 $(document).ready(function () {
     console.log("selectedSKUs" + selectedSKUs);
-   
+  
     GetCurrencyList();
     calculateDealTerm();
     GetDosageFormList();
@@ -10,7 +10,7 @@ $(document).ready(function () {
     GetSelectedTargetPriceScanario();
     GetSkus(pidfId);
     fnGetActiveBusinessUnit();
-    GetFinancialProjectionYear(_selectedProjectStartDate);
+   
     if (isView === "1") {
         $('.readOnlyUpdate').prop('readonly', true);
         $('select.form-control.readOnlyUpdate').attr("disabled", true);
@@ -31,6 +31,7 @@ $(document).ready(function () {
         placeholder: "Select Currency..",
         allowClear: true
     });
+
 });
 
 
@@ -66,8 +67,8 @@ $("#btnRejects").click(function () {
     }
 })
 function GetCurrencyList() {
-  // ajaxServiceMethod($('#hdnBaseURL').val() + AllCurrency, 'GET', GetCurrencyListSuccess, GetCurrencyListError);
-     ajaxServiceMethod($('#hdnBaseURL').val() + "api/Currency/GetCurrencyByLoggedInUser", 'GET', GetCurrencyListSuccess, GetCurrencyListError);
+      //ajaxServiceMethod($('#hdnBaseURL').val() + AllCurrency, 'GET', GetCurrencyListSuccess, GetCurrencyListError);
+       ajaxServiceMethod($('#hdnBaseURL').val() + "api/Currency/GetCurrencyByLoggedInUser", 'GET', GetCurrencyListSuccess, GetCurrencyListError);
 }
 
 function GetCurrencyListSuccess(data) {
@@ -77,7 +78,7 @@ function GetCurrencyListSuccess(data) {
         $.each(data._object, function (index, object) {
             let currencyText = object.currencyCode == null ? object.currencyName : object.currencyCode + "-" + object.currencyName;
             optionhtml += '<option value="' +
-                object.currencyId + '">' + currencyText + '</option>';
+                object.currencyId + '" title="' + object.currencyCode+'">' + currencyText + '</option>';
         });
         $("#Currency").append(optionhtml);
 
@@ -87,7 +88,16 @@ function GetCurrencyListSuccess(data) {
                 placeholder: "Select Currency..",
                 allowClear: true
             }
-        ).val(arrCur).trigger('change'); 
+        ).val(arrCur).trigger('change');
+        var data = $('#Currency').select2('data');
+        if (data) {
+            for (var i = 0; i < data.length; i++) {
+                if (i < data.length-1) { selectedCurrencyText += data[i].title + "/"; }
+                if (i == data.length-1) { selectedCurrencyText += data[i].title; }
+            }
+        }
+      
+        GetFinancialProjectionYear(_selectedProjectStartDate);
     } catch (e) {
         toastr.error('Error:' + e.message);
     }
@@ -374,8 +384,8 @@ function GetActiveBusinessUnitError(x, y, z) {
 //});
 function GetFinancialProjectionYear(dates) {
     $(".trProjectionYear").empty();
-    let selectedCurrency = $(`#Currency option:selected`).text().split('-')[0];
-    let td = `<td>${selectedCurrency}</td>`;
+    //selectedCurrencyText = $(`#Currency option:selected`).text().split('-')[0];
+    let td = `<td>${selectedCurrencyText}</td>`;
     for (var i = 0; i < 10; i++) {
         if (i == 0) {
             td += `<td>Mar-${getYearByLast3Months(dates)}</td>`;

@@ -62,7 +62,7 @@ namespace EmcureNPD.Web.Controllers
             }
         }
 
-        [OutputCache(Duration = 120, VaryByParam = "RoleId")]
+        //[OutputCache(Duration = 120, VaryByParam = "RoleId")]
         [HttpGet]
         public IActionResult GetFilteredNotifications(string ColumnName, string SortDir, int start, int length)
         {
