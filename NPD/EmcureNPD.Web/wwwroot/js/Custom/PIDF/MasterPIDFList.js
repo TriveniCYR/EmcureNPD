@@ -180,7 +180,7 @@ function InitializePIDFList() {
             }
         },
         {
-            "data": null, className: 'notexport', "title": "Action", "sClass": "pidf-100 actionColumn", "render": function (data, type, row, meta) {
+            "data": null, className: 'notexport pidf-100 actionColumn', "title": "Action", "render": function (data, type, row, meta) {
                 var html = '';
                 if (_screenId == "1") {
                     var _PIDFForm = '/PIDF/PIDF?PIDFId=' + row.pidfid;

@@ -1,9 +1,6 @@
-﻿var ArrMainCommercial = [];
-var objMainCommercial = {};
-
-var objYears = [];
+﻿var objYears = [];
 var objMainForm = {};
-var objdropdownYearControls_array = ['CommercialPackagingTypeId', 'CurrencyId','FinalSelectionId'];
+var objdropdownYearControls_array = ['CommercialPackagingTypeId', 'CurrencyId', 'FinalSelectionId'];
 var ColumnObjUpcase = ['CommercialPackagingTypeId', 'CommercialBatchSize', 'PriceDiscounting', 'TotalApireq', 'Apireq', 'Suimsvolume', 'MarketGrowth', 'MarketSize', 'PriceErosion', 'FinalSelectionId'];
 /*var ColumnObjLowcase = ['packagingTypeId', 'commercialBatchSize', 'priceDiscounting', 'totalApireq', 'apireq', 'suimsvolume', 'marketGrowth', 'marketSize', 'priceErosion', 'finalSelectionId'];*/
 var SelectedBUValue = 0;
@@ -14,50 +11,13 @@ $(document).ready(function () {
     //SetCommercialDivReadonly();
     InitializeCurrencyDropdown();
     InitializeFinalSelectionDropdown();
-  //  $("#AddYearForm").hide();
+    //  $("#AddYearForm").hide();
     IsViewModeCommercial();
     SetBU_Strength();
-/*    HideSaveAsDraft();*/
+    /*    HideSaveAsDraft();*/
     if ($('#hdnIsPartial').val() != '1') {
         getPIDFAccordion(_PIDFAccordionURL, _PIDFID, "dvPIDFAccrdion");
         getIPDAccordion(_IPDAccordionURL, _EncPIDFID, _PIDFBusinessUnitId, "dvIPDAccrdion");
-    }
-});
-function BUstregthPack_AddButtonClick() { 
-    var valBUStrength = ValidateBU_Strength();
-    if (ValidateMainForm()) {
-        var ent_BuStrPack = {};
-        $.each($('#frmMainBUstrengthPackCommercial').serializeArray(), function (index, item) {           
-            ent_BuStrPack[item.name] = item.value;
-        });
-        var IndexofMaintable = ArrMainCommercial.length + 1;
-        ent_BuStrPack['IndexofMaintable'] = IndexofMaintable;
-        ArrMainCommercial.push(ent_BuStrPack);
-    }
-}
-function Update_BUstregthPackTable(_objArrMainCommercial) {
-    let tableRow = null;
-    $.each(_objArrMainCommercial, function (index, object) {
-
-        tableRow = '<tr> <td>' + object .packagingTypeId+'</td>   </tr>'
-                    
-
-    $('#tblMainCommercial tbody').append(tableRow);
-}
-
-
-$('#tblMainCommercial tbody').on('click', 'td.dt-control', function () {
-    var tr = $(this).closest('tr');
-    var row = _milestoneInstance.row(tr);
-
-    if (row.child.isShown()) {
-        // This row is already open - close it
-        row.child.hide();
-        tr.removeClass('shown');
-    } else {
-        // Open this row
-        row.child(CustomizeChildContent(row.data())).show();
-        tr.addClass('shown');
     }
 });
 //function HideSaveAsDraft() {
@@ -95,7 +55,7 @@ function InitializeCurrencyDropdown() {
 }
 function GetCurrencyListSuccess(data) {
     try {
-        $('#CurrencyId').append($('<option>').text('--Select--').attr('value','0'));
+        $('#CurrencyId').append($('<option>').text('--Select--').attr('value', '0'));
         $.each(data._object, function (index, object) {
             $('#CurrencyId').append($('<option>').text(object.currencyName).attr('value', object.currencyId));
         });
@@ -147,19 +107,18 @@ function ValidateYearForm() {
     $.each($('#AddYearForm').serializeArray(), function (_, kv) {
         if (jQuery.inArray(kv.name, objdropdownYearControls_array) != -1) {
             if (kv.value == 0) {
-/*                $('#valmsg' + kv.name).text('Required');*/
+                /*                $('#valmsg' + kv.name).text('Required');*/
                 $('#' + kv.name).addClass('InvalidBox');
                 //IsValid = false;
                 ArrofInvalid.push(kv.name);
             }
             else {
-/*                $('#valmsg' + kv.name).text('');*/
+                /*                $('#valmsg' + kv.name).text('');*/
                 $('#' + kv.name).removeClass('InvalidBox');
             }
         }
-        else
-        {
-            if (kv.value == '' ) {
+        else {
+            if (kv.value == '') {
                 /*$('#valmsg' + kv.name).text('Required');*/
                 $('#' + kv.name).addClass('InvalidBox');
                 //IsValid = false;
@@ -173,7 +132,7 @@ function ValidateYearForm() {
     });
     var status = (ArrofInvalid.length == 0) ? true : false;
     if (!status) {
-        var controltobeFocus = ArrofInvalid[ArrofInvalid.length-1];
+        var controltobeFocus = ArrofInvalid[ArrofInvalid.length - 1];
         $('#' + controltobeFocus).focus();
         toastr.error('Some fields are missing !');
     }
@@ -248,12 +207,12 @@ function AddYearClick() { //SaveYearClick
             }
             entityYear[kv.name] = kv.value;
         });
-       
+
         if (EditIndex == -1)
             objYears.push(entityYear);
         else
             objYears[EditIndex] = entityYear;
-        
+
         UpdateYearTable(ColumnObjUpcase);
         ClearValidationForYearForm();
         $("#AddYearForm").hide();
@@ -274,8 +233,8 @@ function AddColToRow(i, tdvalue) {
 function editCommercialRow(i) {
     EditIndex = i;
     ShowYearForm(i + 1);
-   // $('#NspunitsHigh').focus();
-   // $('#btnCancelYearForm').focus();
+    // $('#NspunitsHigh').focus();
+    // $('#btnCancelYearForm').focus();
     var entityYear = objYears[i];
     $.each($('#AddYearForm').serializeArray(), function (_, kv) {
         $('#' + kv.name).val(entityYear[kv.name]);
@@ -283,7 +242,7 @@ function editCommercialRow(i) {
     $('#CommercialPackagingTypeId').focus();
 }
 function deleteCommercialRow(i) {
-   
+
     objYears.pop(i);
     UpdateYearTable(ColumnObjUpcase);
 }
@@ -345,7 +304,7 @@ function UpdateYearTable(columns) {
             var cntrlName = columns[item]
             var result = objYears[i][cntrlName]
             if (cntrlName == 'CommercialPackagingTypeId')
-                result = $("#CommercialPackagingTypeId option[value=" + result +"]").text();
+                result = $("#CommercialPackagingTypeId option[value=" + result + "]").text();
             else if (cntrlName == 'CurrencyId')
                 result = $("#CurrencyId option[value=" + result + "]").text();
             else if (cntrlName == 'FinalSelectionId')
@@ -360,8 +319,8 @@ function UpdateYearTable(columns) {
         });
         AddtblRevenueRow(objYears[i], i, columns);
         $('#AddYearRow' + i).append
-            ('<td> <spam class="text-primary"> <i class="fas fa-edit mr-1" id="editIconAddyear_' + i + '" onclick="editCommercialRow(' + i + ')"></i></spam >' +       
-         '<spam class="text-danger" ><i class="fa fa-fw fa-trash" id="deleteIconAddyear_' + i + '" onclick="deleteCommercialRow(' + i + ')"></i></spam></td>')
+            ('<td> <spam class="text-primary"> <i class="fas fa-edit mr-1" id="editIconAddyear_' + i + '" onclick="editCommercialRow(' + i + ')"></i></spam >' +
+                '<spam class="text-danger" ><i class="fa fa-fw fa-trash" id="deleteIconAddyear_' + i + '" onclick="deleteCommercialRow(' + i + ')"></i></spam></td>')
 
         $('#AddYearRow' + i + ' td:eq(10) spam i').prop('id', 'deleteIconAPI_' + i + '');
         $('#AddYearRow' + i + ' td:eq(10) spam i').attr('onclick', 'deleteRowApiDetails(' + i + ')');
@@ -555,7 +514,7 @@ function NSP(variable) {
     var result = 0;
     var Nspunits;
     var PriceErosion = $('#PriceErosion').val();
-    
+
     var currentIndex = (EditIndex == -1) ? objYears.length : EditIndex;
     if (currentIndex == 0) {
         Nspunits = $('#Nspunits' + variable).val();
@@ -583,7 +542,7 @@ function ShowYearForm(yearIndex) {
     else {
         Count_Of_Next_year = yearIndex;
     }
-    
+
     var SaveButtonText = 'Save Year';
     $("#btnSaveYear").text(SaveButtonText + Count_Of_Next_year);
 }
