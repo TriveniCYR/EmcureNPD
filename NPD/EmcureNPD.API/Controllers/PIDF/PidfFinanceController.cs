@@ -175,5 +175,60 @@ namespace EmcureNPD.API.Controllers.PIDF
                 return _ObjectResponse.Create(null, (Int32)HttpStatusCode.BadRequest, "No Records found");
             }
         }
+
+        /// <summary>
+        /// Description - To Get GetStrengthByPIDFAnddBuId
+        /// </summary>
+        /// <param name="oGetStrengthByPIDFAnddBuId"></param>
+        /// <returns></returns>
+        /// <response code="200">OK</response>
+        /// <response code="400">Bad Request</response>
+        /// <response code="403">Forbidden</response>
+        /// <response code="404">Not Found</response>
+        /// <response code="405">Method Not Allowed</response>
+        /// <response code="500">Internal Server</response>
+        [HttpGet]
+        [Route("GetStrengthByPIDFAnddBuId/{pidfid}/{buid}")]
+        public async Task<IActionResult> GetStrengthByPIDFAnddBuId(string pidfid, string buid)
+        {
+            try
+            {
+                pidfid = UtilityHelper.Decreypt(Convert.ToString(pidfid));
+                buid = UtilityHelper.Decreypt(Convert.ToString(buid));
+                return _ObjectResponse.CreateData(await _pidfProductStrengthService.GetStrengthByPIDFAnddBuId(Convert.ToInt32(pidfid), Convert.ToInt32(buid)), (Int32)HttpStatusCode.OK);
+            }
+            catch (Exception ex)
+            {
+                await _ExceptionService.LogException(ex);
+                return _ObjectResponse.Create(null, (Int32)HttpStatusCode.BadRequest, "No Records found");
+            }
+        }
+        /// <summary>
+        /// Description - To Get GetPackSizeByStrengthId
+        /// </summary>
+        /// <param name="oGetPackSizeByStrengthId"></param>
+        /// <returns></returns>
+        /// <response code="200">OK</response>
+        /// <response code="400">Bad Request</response>
+        /// <response code="403">Forbidden</response>
+        /// <response code="404">Not Found</response>
+        /// <response code="405">Method Not Allowed</response>
+        /// <response code="500">Internal Server</response>
+        [HttpGet]
+        [Route("GetPackSizeByStrengthId/{pidfid}/{buid}/{StrengthId}")]
+        public async Task<IActionResult> GetPackSizeByStrengthId(string pidfid, string buid,int StrengthId)
+        {
+            try
+            {
+                pidfid = UtilityHelper.Decreypt(Convert.ToString(pidfid));
+                buid = UtilityHelper.Decreypt(Convert.ToString(buid));
+                return _ObjectResponse.CreateData(await _pidfFinanceService.GetPackSizeByStrengthId(Convert.ToInt32(pidfid), Convert.ToInt32(buid), StrengthId), (Int32)HttpStatusCode.OK);
+            }
+            catch (Exception ex)
+            {
+                await _ExceptionService.LogException(ex);
+                return _ObjectResponse.Create(null, (Int32)HttpStatusCode.BadRequest, "No Records found");
+            }
+        }
     }
 }

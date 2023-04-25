@@ -383,5 +383,24 @@ namespace EmcureNPD.Business.Core.Implementation
                 return null;
             }
         }
+        public async Task<dynamic> GetPackSizeByStrengthId(int PidfId = 0,int Buid=0,int StrengthId=0)
+        {
+            try
+            {
+                SqlParameter[] osqlParameter = {
+                new SqlParameter("@PIDFId", PidfId),
+                 new SqlParameter("@Buid", Buid),
+                  new SqlParameter("@StrengthId", StrengthId),
+            };
+
+                DataSet dsPackSize = await _repository.GetDataSetBySP("ProcGetPackSizeByStrengthId", System.Data.CommandType.StoredProcedure, osqlParameter);
+                return dsPackSize;
+            }
+            catch (Exception ex)
+            {
+                await _ExceptionService.LogException(ex);
+                return null;
+            }
+        }
     }
 }

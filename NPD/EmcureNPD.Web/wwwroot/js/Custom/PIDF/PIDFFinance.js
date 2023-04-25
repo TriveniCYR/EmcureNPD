@@ -67,8 +67,8 @@ $("#btnRejects").click(function () {
     }
 })
 function GetCurrencyList() {
-      //ajaxServiceMethod($('#hdnBaseURL').val() + AllCurrency, 'GET', GetCurrencyListSuccess, GetCurrencyListError);
-       ajaxServiceMethod($('#hdnBaseURL').val() + "api/Currency/GetCurrencyByLoggedInUser", 'GET', GetCurrencyListSuccess, GetCurrencyListError);
+      ajaxServiceMethod($('#hdnBaseURL').val() + AllCurrency, 'GET', GetCurrencyListSuccess, GetCurrencyListError);
+       //ajaxServiceMethod($('#hdnBaseURL').val() + "api/Currency/GetCurrencyByLoggedInUser", 'GET', GetCurrencyListSuccess, GetCurrencyListError);
 }
 
 function GetCurrencyListSuccess(data) {
@@ -135,12 +135,19 @@ function GetDosageFormListError(x, y, z) {
 }
 // #endregion
 function addRowFinanceDetails(j) {
-    j = $('.Skus').length + 1;
+    j = $('.Skus').length;//+ 1;
     var table = $('#FinanceTableBoy');
     var node = $('#financeDetailsRow_0').clone(true);
     table.find('tr:last').after(node);
     table.find('tr:last').find("input").val("");
+    //table.find('tr:last').find("select").val("0");
+    //table.find('tr:last').find("select.PakeSize").attr("id", "PakeSize" + j);
+    //let id = table.find('tr:last').find("input").attr('id');
+    //table.find('tr:last').find("input").attr("id", id + j);
+    SetChildRows();
     SetChildRowDeleteIcon();
+    
+    
 }
 function SaveClick() {
     //if ($('.readOnlyUpdate').val() !== null && $('.readOnlyUpdate').val()!=="") {
@@ -195,28 +202,47 @@ function SetChildRows() {
     $.each($('#FinanceTableBoy tr'), function (index, value) {
         
         $(this).find("td:eq(0) select").attr("name", "lsPidfFinanceBatchSizeCoating[" + index.toString() + "].Skus");
+        $(this).find("td:eq(0) select").attr("id", "Skus" + index.toString());
         $(this).find("td:eq(0) input").attr("name", "lsPidfFinanceBatchSizeCoating[" + index.toString() + "].PidffinaceId");
-        $(this).find("td:eq(1) input").attr("name", "lsPidfFinanceBatchSizeCoating[" + index.toString() + "].PakeSize");
-
+        $(this).find("td:eq(0) input").attr("id", "PidffinaceId" + index.toString());
+        $(this).find("td:eq(1) select").attr("name", "lsPidfFinanceBatchSizeCoating[" + index.toString() + "].PakeSize");
+        $(this).find("td:eq(1) select").attr("id", "PakeSize" + index.toString());
         $(this).find("td:eq(2) input").attr("name", "lsPidfFinanceBatchSizeCoating[" + index.toString() + "].BrandPrice");
+        $(this).find("td:eq(2) input").attr("id", "BrandPrice" + index.toString());
         $(this).find("td:eq(3) input").attr("name", "lsPidfFinanceBatchSizeCoating[" + index.toString() + "].GenericListprice");
+        $(this).find("td:eq(3) input").attr("id", "GenericListprice" + index.toString());
         $(this).find("td:eq(4) input").attr("name", "lsPidfFinanceBatchSizeCoating[" + index.toString() + "].NetRealisation");
+        $(this).find("td:eq(4) input").attr("id", "NetRealisation" + index.toString());
         $(this).find("td:eq(5) input").attr("name", "lsPidfFinanceBatchSizeCoating[" + index.toString() + "].EstMat2016By12units");
+        $(this).find("td:eq(5) input").attr("id", "EstMat2016By12units" + index.toString());
         $(this).find("td:eq(6) input").attr("name", "lsPidfFinanceBatchSizeCoating[" + index.toString() + "].EstMat2020By12units");
+        $(this).find("td:eq(6) input").attr("id", "EstMat2020By12units" + index.toString());
         $(this).find("td:eq(7) input").attr("name", "lsPidfFinanceBatchSizeCoating[" + index.toString() + "].Cagrover2016By12estMatunits");
+        $(this).find("td:eq(7) input").attr("id", "Cagrover2016By12estMatunits" + index.toString());
         $(this).find("td:eq(8) input").attr("name", "lsPidfFinanceBatchSizeCoating[" + index.toString() + "].Marketinpacks");
+        $(this).find("td:eq(8) input").attr("id", "Marketinpacks" + index.toString());
         $(this).find("td:eq(9) input").attr("name", "lsPidfFinanceBatchSizeCoating[" + index.toString() + "].BatchsizeinLtrTabs");
-
+        $(this).find("td:eq(9) input").attr("id", "BatchsizeinLtrTabs" + index.toString());
         $(this).find("td:eq(10) input").attr("name", "lsPidfFinanceBatchSizeCoating[" + index.toString() + "].Batchsize");
+        $(this).find("td:eq(10) input").attr("id", "Batchsize" + index.toString());
         $(this).find("td:eq(11) input").attr("name", "lsPidfFinanceBatchSizeCoating[" + index.toString() + "].Yield");
+        $(this).find("td:eq(11) input").attr("id", "Yield" + index.toString());
         $(this).find("td:eq(12) input").attr("name", "lsPidfFinanceBatchSizeCoating[" + index.toString() + "].Batchoutput");
+        $(this).find("td:eq(12) input").attr("id", "Batchoutput" + index.toString());
         $(this).find("td:eq(13) input").attr("name", "lsPidfFinanceBatchSizeCoating[" + index.toString() + "].ApiCad");
+        $(this).find("td:eq(13) input").attr("id", "ApiCad" + index.toString());
         $(this).find("td:eq(14) input").attr("name", "lsPidfFinanceBatchSizeCoating[" + index.toString() + "].ExcipientsCad");
+        $(this).find("td:eq(14) input").attr("id", "ExcipientsCad" + index.toString());
         $(this).find("td:eq(15) input").attr("name", "lsPidfFinanceBatchSizeCoating[" + index.toString() + "].PmCad");
+        $(this).find("td:eq(15) input").attr("id", "PmCad" + index.toString());
         $(this).find("td:eq(16) input").attr("name", "lsPidfFinanceBatchSizeCoating[" + index.toString() + "].CcpcCad");
+        $(this).find("td:eq(16) input").attr("id", "CcpcCad" + index.toString());
         $(this).find("td:eq(17) input").attr("name", "lsPidfFinanceBatchSizeCoating[" + index.toString() + "].FreightCad");
+        $(this).find("td:eq(17) input").attr("id", "FreightCad" + index.toString());
         $(this).find("td:eq(18) input").attr("name", "lsPidfFinanceBatchSizeCoating[" + index.toString() + "].EmcureCogsPack");
+        $(this).find("td:eq(18) input").attr("id", "EmcureCogsPack" + index.toString());
         $(this).find("td:eq(19) input").attr("name", "lsPidfFinanceBatchSizeCoating[" + index.toString() + "].PidffinaceBatchSizeCoatingId");
+        $(this).find("td:eq(19) input").attr("id", "PidffinaceBatchSizeCoatingId" + index.toString());
        // console.log($(this).find("td:eq(0) input").attr("name", "lsPidfFinanceBatchSizeCoating[" + index.toString() + "].PidffinaceBatchSizeCoatingId").value())
     });
 }
@@ -276,8 +302,12 @@ function calculateBatchSizeCaoting(ele) {
     let CcpcCad = 0;
     let FreightCad = 0;
     let packSize = 0;
+    let strengthId = 0;
     $.each($('#FinanceTableBoy tr'), function (index, value) {
-        packSize = $(this).find("td:eq(1) input").attr("name", "lsPidfFinanceBatchSizeCoating[" + index.toString() + "].PakeSize").val();
+        strengthId = $(this).find("td:eq(0) select option:selected").attr("name", "lsPidfFinanceBatchSizeCoating[" + index.toString() + "].Skus").val();
+        //getPackSize(strengthId);
+        packSize = $(this).find("td:eq(1) select option:selected").attr("name", "lsPidfFinanceBatchSizeCoating[" + index.toString() + "].PakeSize").val();
+        //$(this).find("td:eq(1) input").attr("name", "lsPidfFinanceBatchSizeCoating[" + index.toString() + "].PakeSize").val(packSize);
         if (ele.valueAsNumber >= 0 && $(this).find("td:eq(3) input").attr("name", "lsPidfFinanceBatchSizeCoating[" + index.toString() + "].GenericListprice").val() == ele.value) {
             netRealisation = (ele.valueAsNumber * 40) / 100;
             let textnetRealisation = netRealisation.toLocaleString("en");
@@ -294,8 +324,8 @@ function calculateBatchSizeCaoting(ele) {
             $(this).find("td:eq(10) input").attr("name", "lsPidfFinanceBatchSizeCoating[" + index.toString() + "].Batchsize").val(parseInt(Batchsize));
         }
         if ($(this).find("td:eq(11) input").attr("name", "lsPidfFinanceBatchSizeCoating[" + index.toString() + "].Yield").val() > 0) {
-             Yield = $(this).find("td:eq(11) input").attr("name", "lsPidfFinanceBatchSizeCoating[" + index.toString() + "].Yield").val();
-            Batchoutput = parseFloat(Yield) * parseFloat($(this).find("td:eq(0) select option:selected").attr("name", "lsPidfFinanceBatchSizeCoating[" + index.toString() + "].Skus").text().replace("mg", "").trim())
+            Yield = $(this).find("td:eq(11) input").attr("name", "lsPidfFinanceBatchSizeCoating[" + index.toString() + "].Yield").val();
+            Batchoutput = parseFloat(Yield) * parseFloat(packSize); //parseFloat($(this).find("td:eq(0) select option:selected").attr("name", "lsPidfFinanceBatchSizeCoating[" + index.toString() + "].Skus").text().replace("mg", "").trim())
             $(this).find("td:eq(12) input").attr("name", "lsPidfFinanceBatchSizeCoating[" + index.toString() + "].Batchoutput").val(Batchoutput);
         }
             ApiCad = $(this).find("td:eq(13) input").attr("name", "lsPidfFinanceBatchSizeCoating[" + index.toString() + "].ApiCad").val();
@@ -309,16 +339,17 @@ function calculateBatchSizeCaoting(ele) {
     })
 }
 function GetSkus(pidfId) {
-    ajaxServiceMethod($('#hdnBaseURL').val() + "api/PidfFinance/GetStrengthByPIDFId" + "/" + pidfId, 'GET', GetSkusListSuccess, GetSkusListError);
+    //ajaxServiceMethod($('#hdnBaseURL').val() + "api/PidfFinance/GetStrengthByPIDFId" + "/" + pidfId, 'GET', GetSkusListSuccess, GetSkusListError);
+    ajaxServiceMethod($('#hdnBaseURL').val() + `api/PidfFinance/GetStrengthByPIDFAnddBuId/${pidfId}/${_encBuid}`, 'GET', GetSkusListSuccess, GetSkusListError);
     function GetSkusListSuccess(data) {
         try {
             let arrselectedSKUs = selectedSKUs.split(',');
             if (arrselectedSKUs[0]!='' && arrselectedSKUs.length > 0) {
                 $('select.DbSkus').html('')
-                let optionhtml = '<option value = "0">--Select--</option>';
-                $.each(data, function (index, object) {
+                let optionhtml = '<option value = "0" selected="selected">--Select--</option>';
+                $.each(data.table, function (index, object) {
                     optionhtml += '<option value="' +
-                        object.pidfproductStrengthId + '">' + object.strength + 'mg </option>';
+                        object.pidfProductStrengthId + '" pack-size-id=' + object.packSizeId + '>' + object.strength + 'mg </option>';
                     
                 });
                 $("select.DbSkus").append(optionhtml);
@@ -327,13 +358,22 @@ function GetSkus(pidfId) {
                         $(`select#DbSkus${i}.Skus.DbSkus`).val(val);
                     }
                 });
+                let arrselectedPackSize = _selectedPackSize.split(',');
+                if (arrselectedPackSize[0] != '' && arrselectedPackSize.length > 0) {
+                    arrselectedPackSize.forEach(function (val, i) {
+                        if (val == arrselectedPackSize[i]) {
+                            $(`select#PakeSize${i}.PakeSize.form-control.readOnlyUpdate`).val(val);
+
+                        }
+                    });
+                }
             }
             else {
                 $('select#Skus').html('')
                 let optionhtml = '<option value = "0">--Select--</option>';
-                $.each(data, function (index, object) {
+                $.each(data.table, function (index, object) {
                     optionhtml += '<option value="' +
-                        object.pidfproductStrengthId + '">' + object.strength + 'mg </option>';
+                        object.pidfProductStrengthId + '" pack-size-id=' + object.packSizeId + '>' + object.strength + 'mg </option>';
                 });
                 $("select#Skus").append(optionhtml);
             }
@@ -346,6 +386,71 @@ function GetSkus(pidfId) {
         toastr.error("Error");
     }
    
+}
+function getPackSize(ele) {
+    if (ele.value == undefined) {
+        toastr.error("Please select SKU first", "ERROR:")
+        return false;
+    }
+    ajaxServiceMethod($('#hdnBaseURL').val() + `api/PidfFinance/GetPackSizeByStrengthId/${pidfId}/${_encBuid}/${ele.value}`, 'GET', getPackSizeSuccess, getPackSizeError);
+    function getPackSizeSuccess(data) {
+        try {
+            
+            var row_index = $(ele).closest('tr').index();
+         
+                $(`select#PakeSize${row_index}.PakeSize`).html('')
+                let optionhtml = '';
+                $.each(data.table, function (index, object) {
+                    optionhtml += '<option value="' +
+                        object.packSize + '" pack-size-id=' + object.packSize + '>' + object.packSizeName + ' </option>';
+                    $(`input#BrandPrice${row_index}.BrandPrice`).val(parseFloat(object.brandPrice));
+                    $(`input#GenericListprice${row_index}.GenericListprice`).val(parseFloat(object.genericPrice));
+                    let netRealisation = parseFloat(object.genericPrice) * 40 / 100;
+                    $(`input#NetRealisation${row_index}.NetRealisation`).val(netRealisation);
+                    //calculateBatchSizeCaoting(ele);
+                });
+                $(`select#PakeSize${row_index}.PakeSize`).append(optionhtml);
+               
+             
+            }
+         catch (e) {
+            toastr.error('Error:' + e.message);
+        }
+    }
+    function getPackSizeError() {
+        toastr.error("Error");
+    }
+}
+function getAddPackSize(index) {
+   
+    ajaxServiceMethod($('#hdnBaseURL').val() + `api/PidfFinance/GetPackSizeByStrengthId/${pidfId}/${_encBuid}/${ele.value}`, 'GET', getPackSizeSuccess, getPackSizeError);
+    function getPackSizeSuccess(data) {
+        try {
+
+            var row_index = index; //$(ele).closest('tr').index();
+
+            $(`select#PakeSize${row_index}.PakeSize`).html('')
+            let optionhtml = '';
+            $.each(data.table, function (index, object) {
+                optionhtml += '<option value="' +
+                    object.packSize + '" pack-size-id=' + object.packSize + '>' + object.packSizeName + ' </option>';
+                $(`input#BrandPrice${row_index}.BrandPrice`).val(parseFloat(object.brandPrice));
+                $(`input#GenericListprice${row_index}.GenericListprice`).val(parseFloat(object.genericPrice));
+                let netRealisation = parseFloat(object.genericPrice) * 40 / 100;
+                $(`input#NetRealisation${row_index}.NetRealisation`).val(netRealisation);
+                //calculateBatchSizeCaoting(ele);
+            });
+            $(`select#PakeSize${row_index}.PakeSize`).append(optionhtml);
+
+
+        }
+        catch (e) {
+            toastr.error('Error:' + e.message);
+        }
+    }
+    function getPackSizeError() {
+        toastr.error("Error");
+    }
 }
 function fnGetActiveBusinessUnit() {
     ajaxServiceMethod($('#hdnBaseURL').val() + GetActiveBusinessUnit, 'GET', GetActiveBusinessUnitSuccess, GetActiveBusinessUnitError);
@@ -368,6 +473,48 @@ function GetActiveBusinessUnitSuccess(data) {
 function GetActiveBusinessUnitError(x, y, z) {
     toastr.error(ErrorMessage);
 }
+//$('select#Currency').change(function () {
+//    var data = $('#Currency').select2('data');
+//    if (data) {
+//        for (var i = 0; i < data.length; i++) {
+//            if (i < data.length - 1) { selectedCurrencyText += data[i].title + "/"; }
+//            if (i == data.length - 1) { selectedCurrencyText += data[i].title; }
+//        }
+//    }
+
+//    GetFinancialProjectionYear(_selectedProjectStartDate);
+//})
+$("select#Currency").on("select2:select select2:unselecting", function (e) {
+    selectedCurrencyText = ""; 
+    $(".tdCurrency").text(selectedCurrencyText);
+    let event = e;
+    if (event.params._type == "unselecting") {
+        var data = $('#Currency').select2('data');
+        if (data) {
+            data.pop(event.params.args.data.id);
+            for (var i = 0; i < data.length; i++) {
+                if (i < data.length - 1) { selectedCurrencyText += data[i].title + "/"; }
+                if (i == data.length - 1) { selectedCurrencyText += data[i].title; }
+            }
+        }
+        else {
+            $(".tdCurrency").text("");
+        }
+    }
+   else if (event.params._type == "select") {
+        var data = $('#Currency').select2('data');
+        if (data) {
+            for (var i = 0; i < data.length; i++) {
+                if (i < data.length - 1) { selectedCurrencyText += data[i].title + "/"; }
+                if (i == data.length - 1) { selectedCurrencyText += data[i].title; }
+            }
+        }
+        else {
+            $(".tdCurrency").text("");
+        }
+    }
+    GetFinancialProjectionYear(_selectedProjectStartDate);
+});
 //$("i.fas.fa-plus").click(function () {
 //    let count = 1;
 //    for (let i = 0; i < count; i++) {
@@ -385,7 +532,7 @@ function GetActiveBusinessUnitError(x, y, z) {
 function GetFinancialProjectionYear(dates) {
     $(".trProjectionYear").empty();
     //selectedCurrencyText = $(`#Currency option:selected`).text().split('-')[0];
-    let td = `<td>${selectedCurrencyText}</td>`;
+    let td = `<td class="tdCurrency">${selectedCurrencyText}</td>`;
     for (var i = 0; i < 10; i++) {
         if (i == 0) {
             td += `<td>Mar-${getYearByLast3Months(dates)}</td>`;
@@ -410,18 +557,7 @@ function getYearByLast3Months(date) {
         }
     }
 
-    return lastSixMonths.reverse() // Result
-    
-    //var today = new Date(date);
-    //for (i = 0; i < 4; i++) {
-    //    if (i == 4) {
-    //        if (i > today.getMonth())
-    //            today = i - today.getMonth;
-    //        else
-    //            today = today.getMonth() - i;
-    //    }
-    //}
-    //return today.getFullYear();
+    return lastSixMonths.reverse() 
 }
 
 (function () {

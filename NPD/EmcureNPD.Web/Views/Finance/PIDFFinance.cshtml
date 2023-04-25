@@ -15,13 +15,16 @@
 
     ViewData["Title"] = @MasterLocalizer["Finance Management"];
     var PidafId=Context.Request.Query["pidfid"];
+    var encBuid = Context.Request.Query["bui"];
     var SelectedBuId=Model!=null? Model.BussinessUnitId:Convert.ToInt32(UtilityHelper.Decreypt(Convert.ToString(Context.Request.Query["bui"])));
     var selectedPidafId =Model!=null ?Model.dycrPidfid:Convert.ToInt32(UtilityHelper.Decreypt(Convert.ToString(PidafId)));
     var selectedSkus = string.Empty;
+    var selectedPackSize=string.Empty;
     var ProjectStartDate=Model!=null?Model.ProjectStartDate:DateTime.Now;
     if(Model != null && Model.lsPidfFinanceBatchSizeCoating != null){
         if(Model.lsPidfFinanceBatchSizeCoating.Count() > 0){
             selectedSkus = string.Join(",", Model.lsPidfFinanceBatchSizeCoating.Select(x => x.Skus));
+            selectedPackSize=string.Join(",", Model.lsPidfFinanceBatchSizeCoating.Select(x => x.PakeSize));
         }
     }
     string jsVersion = @Configuration.GetSection("StaticJS")["version"];
@@ -989,7 +992,7 @@
         <div class="card collapsed-card">
             
              <div class="card-header bg-primary">
-			<h3 class="card-title mb-0"><button type="button" class="btn btn-tool" data-card-widget="collapse">Batch Size Coating</button></h3>
+			<h3 class="card-title mb-0"><button type="button" class="btn btn-tool" data-card-widget="collapse">Batch Size Costing</button></h3>
 				<div class="card-tools">
 					<button type="button" class="btn btn-tool" data-card-widget="collapse" data-target="#BatchSizeCollapse" title="Collapse">
                            <i class="fas fa-plus"></i>
@@ -1028,20 +1031,25 @@
 						    @if (Model!=null && Model.lsPidfFinanceBatchSizeCoating != null && Model.lsPidfFinanceBatchSizeCoating.Count() > 0)
 						    {
 							    int j = 0;
+                                
 							    foreach (var item in Model.lsPidfFinanceBatchSizeCoating)
 							    {
-                                        string dbSkubalue = "DbSkus"+@j;
+                                    string dbPakeSize = "PakeSize"+@j;
+                                    string dbSkubalue = "DbSkus"+@j;
+                                    string dbBrandPrice="BrandPrice" + @j;
+                                    string dbGenericListprice="GenericListprice"+@j;
+                                    string dbNetRealisation="NetRealisation"+@j;
                                         <tr id="financeDetailsRow_0">
 									    <td>
-                                                <select id="@dbSkubalue" name="lsPidfFinanceBatchSizeCoating[@j].Skus" style="width: 100px;" value="@item.Skus" class="Skus DbSkus form-control readOnlyUpdate" required>
+                                                <select id="@dbSkubalue" name="lsPidfFinanceBatchSizeCoating[@j].Skus" style="width: 100px;" value="@item.Skus" class="Skus DbSkus form-control readOnlyUpdate" onchange="getPackSize(this);" required>
                                                 </select>
                                             <input type="hidden" id="PidffinaceId" name="lsPidfFinanceBatchSizeCoating[@j].PidffinaceId" value="@item.PidffinaceId">
                                              
                                         </td>
-									    <td><input type="number" id="PakeSize" name="lsPidfFinanceBatchSizeCoating[@j].PakeSize" value="@item.PakeSize" class="PakeSize form-control readOnlyUpdate" onchange="calculateBatchSizeCaoting(this);" /></td>
-                                        <td><input type="number" id="BrandPrice" name="lsPidfFinanceBatchSizeCoating[@j].BrandPrice" value="@item.BrandPrice" class="BrandPrice form-control readOnlyUpdate" /></td>
-									     <td><input type="number" id="GenericListprice" name="lsPidfFinanceBatchSizeCoating[@j].GenericListprice" value="@item.GenericListprice" onchange="calculateBatchSizeCaoting(this);" class="GenericListprice form-control readOnlyUpdate" /></td>
-									     <td><input type="text" id="NetRealisation" name="lsPidfFinanceBatchSizeCoating[@j].NetRealisation" value="@item.NetRealisation" class="NetRealisation form-control readOnlyUpdate" readonly></td>
+                                            <td><select id="@dbPakeSize" name="lsPidfFinanceBatchSizeCoating[@j].PakeSize" value="@item.PakeSize" class="PakeSize form-control readOnlyUpdate" style="width: 100px;" onchange="calculateBatchSizeCaoting(this);"></select></td>
+                                        <td><input type="number" id="@dbBrandPrice" name="lsPidfFinanceBatchSizeCoating[@j].BrandPrice" value="@item.BrandPrice" class="BrandPrice form-control readOnlyUpdate" /></td>
+									     <td><input type="number" id="@dbGenericListprice" name="lsPidfFinanceBatchSizeCoating[@j].GenericListprice" value="@item.GenericListprice" onchange="calculateBatchSizeCaoting(this);" class="GenericListprice form-control readOnlyUpdate" /></td>
+                                            <td><input type="text" id="@dbNetRealisation" name="lsPidfFinanceBatchSizeCoating[@j].NetRealisation" value="@item.NetRealisation" class="NetRealisation form-control readOnlyUpdate" readonly></td>
                                          <td><input type="number" id="EstMat2016By12units" name="lsPidfFinanceBatchSizeCoating[@j].EstMat2016By12units" value="@item.EstMat2016By12units" class="EstMat2016By12units form-control readOnlyUpdate"  /></td>
 									     
 									     <td><input type="number" id="EstMat2020By12units" name="lsPidfFinanceBatchSizeCoating[@j].EstMat2020By12units" value="@item.EstMat2020By12units" onchange="calculateBatchSizeCaoting(this);" class="EstMat2020By12units form-control readOnlyUpdate" /></td>
@@ -1093,19 +1101,23 @@
 						    else
 						    {
 							int j = 0;
+                                    string dbPakeSize = "PakeSize" + @j;
+                                    string dbBrandPrice="BrandPrice" + @j;
+                                    string dbGenericListprice="GenericListprice"+@j;
+                                    string dbNetRealisation="NetRealisation"+@j;
 							<tr id="financeDetailsRow_@j">
 								
 									<td>
-                                            <select id="Skus" name="lsPidfFinanceBatchSizeCoating[@j].Skus" style="width: 100px;" class="Skus form-control readOnlyUpdate" required>
+                                            <select id="Skus" name="lsPidfFinanceBatchSizeCoating[@j].Skus" style="width: 100px;" class="Skus form-control readOnlyUpdate" onchange="getPackSize(this);" required>
                                                 </select>
                                             <input type="hidden" id="PidffinaceId" name="lsPidfFinanceBatchSizeCoating[@j].PidffinaceId" value="0">
                                             
                                         </td>
 
-                                        <td><input type="number" id="PakeSize" name="lsPidfFinanceBatchSizeCoating[@j].PakeSize" class="PakeSize form-control readOnlyUpdate" onchange="calculateBatchSizeCaoting(this);" /></td>
-                                        <td><input type="number" id="BrandPrice" name="lsPidfFinanceBatchSizeCoating[@j].BrandPrice" class="BrandPrice form-control readOnlyUpdate" /></td>
-									    <td><input type="number" id="GenericListprice" name="lsPidfFinanceBatchSizeCoating[@j].GenericListprice"  onchange="calculateBatchSizeCaoting(this);" class="GenericListprice form-control readOnlyUpdate"  ></td>
-                                        <td><input type="text" id="NetRealisation" name="lsPidfFinanceBatchSizeCoating[@j].NetRealisation" class="NetRealisation form-control readOnlyUpdate"  readonly></td>
+                                        <td><select  id="@dbPakeSize" name="lsPidfFinanceBatchSizeCoating[@j].PakeSize" class="PakeSize form-control readOnlyUpdate" style="width: 100px;" onchange="calculateBatchSizeCaoting(this);" ></select></td>
+                                        <td><input type="number" id="@dbBrandPrice" name="lsPidfFinanceBatchSizeCoating[@j].BrandPrice" class="BrandPrice form-control readOnlyUpdate" /></td>
+									    <td><input type="number" id="@dbGenericListprice" name="lsPidfFinanceBatchSizeCoating[@j].GenericListprice"  onchange="calculateBatchSizeCaoting(this);" class="GenericListprice form-control readOnlyUpdate"  ></td>
+                                        <td><input type="text" id="@dbNetRealisation" name="lsPidfFinanceBatchSizeCoating[@j].NetRealisation" class="NetRealisation form-control readOnlyUpdate"  readonly></td>
                                         <td><input type="number" id="EstMat2016By12units" name="lsPidfFinanceBatchSizeCoating[@j].EstMat2016By12units" class="EstMat2016By12units form-control readOnlyUpdate" /></td>
 
                                         <td><input type="number" id="EstMat2020By12units" name="lsPidfFinanceBatchSizeCoating[@j].EstMat2020By12units" onchange="calculateBatchSizeCaoting(this);" class="EstMat2020By12units form-control readOnlyUpdate" /></td>
@@ -6379,8 +6391,10 @@
     const selectedTargetPriceScenario = "@TargetPriceScenario";
     const pidfId="@PidafId";
     const selectedSKUs="@selectedSkus";
+    const _selectedPackSize="@selectedPackSize";
     const _selectBusinessUnit="@SelectedBuId";
     const _selectedPidfId="@selectedPidafId";
     const _selectedProjectStartDate="@ProjectStartDate";
+    const _encBuid="@encBuid";
 </script>
 }
