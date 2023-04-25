@@ -55,7 +55,7 @@ function GetPIDFListSuccess(data) {
 
     for (var i = 0; i < data.PIDFList.length;i++) {
         $("#PIDFContainer").append('<div class="col-lg-2 text-center dashboard-counters"><div class="ibox"><div class="ibox-content" style="padding:10px 10px;">\
-                <h2 class="no-margins counter" style="color:'+ data.PIDFList[i].statusColor + '">' + data.PIDFList[i].statusCount + '</h2><h5>' + data.PIDFList[i].pidfStatus + '</h5></div></div></div>');
+                <h2 class="no-margins counter" style="color:'+ data.PIDFList[i].statusTextColor + '">' + data.PIDFList[i].statusCount + '</h2><h5>' + data.PIDFList[i].pidfStatus + '</h5></div></div></div>');
 
         xValues.push(data.PIDFList[i].pidfStatus);
         yValues.push(data.PIDFList[i].statusCount);

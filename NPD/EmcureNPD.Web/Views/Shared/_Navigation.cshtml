@@ -11,10 +11,11 @@
 <!-- Main Sidebar Container -->
 <aside class="main-sidebar sidebar-dark-primary elevation-4">
 			<!-- Brand Logo -->
-			<a href="~/Home/Index" class="brand-link text-decoration-none">
+	<a href="~/Home/Index" class="brand-link text-decoration-none emcure-logo">
 				<i class="fa-solid fa-e fs-3 nav-icon brand-image text-red" style="padding: 9px 10px;"></i>
 				<div class="logo">
-					<span class="ms-2">Emcure</span><sub>Success Through Innovation</sub>
+					@*<span class="ms-2">Emcure</span><sub>Success Through Innovation</sub>*@
+			<span class="ms-2"><img src="~/images/logo.png"></span>
 				</div>
 			</a>
 
@@ -96,7 +97,7 @@
 									<a id="Commercial" href="@Url.Action("PIDFList","PIDF", new { ScreenId = Convert.ToString((int)EmcureNPD.Utility.Enums.PIDFScreen.Commercial)})" class="nav-link">
 										<i class="nav-icon fas fa fa-certificate"></i>
 										<p>
-											@SharedLocalizer["Commercial Management"]
+											@SharedLocalizer["Commercial"]
 										</p>
 									</a>
 								</li>
