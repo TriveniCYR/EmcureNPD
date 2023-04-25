@@ -67,8 +67,8 @@ $("#btnRejects").click(function () {
     }
 })
 function GetCurrencyList() {
-      ajaxServiceMethod($('#hdnBaseURL').val() + AllCurrency, 'GET', GetCurrencyListSuccess, GetCurrencyListError);
-       //ajaxServiceMethod($('#hdnBaseURL').val() + "api/Currency/GetCurrencyByLoggedInUser", 'GET', GetCurrencyListSuccess, GetCurrencyListError);
+      //ajaxServiceMethod($('#hdnBaseURL').val() + AllCurrency, 'GET', GetCurrencyListSuccess, GetCurrencyListError);
+        ajaxServiceMethod($('#hdnBaseURL').val() + "api/Currency/GetCurrencyByLoggedInUser", 'GET', GetCurrencyListSuccess, GetCurrencyListError);
 }
 
 function GetCurrencyListSuccess(data) {
@@ -135,19 +135,16 @@ function GetDosageFormListError(x, y, z) {
 }
 // #endregion
 function addRowFinanceDetails(j) {
-    j = $('.Skus').length;//+ 1;
-    var table = $('#FinanceTableBoy');
-    var node = $('#financeDetailsRow_0').clone(true);
-    table.find('tr:last').after(node);
-    table.find('tr:last').find("input").val("");
-    //table.find('tr:last').find("select").val("0");
-    //table.find('tr:last').find("select.PakeSize").attr("id", "PakeSize" + j);
-    //let id = table.find('tr:last').find("input").attr('id');
-    //table.find('tr:last').find("input").attr("id", id + j);
+    //if (validateDuplicateSKUs()) {
+        j = $('.Skus').length;//+ 1;
+        var table = $('#FinanceTableBoy');
+        var node = $('#financeDetailsRow_0').clone(true);
+        table.find('tr:last').after(node);
+        table.find('tr:last').find("input").val("");
+   
     SetChildRows();
     SetChildRowDeleteIcon();
-    
-    
+    //}
 }
 function SaveClick() {
     //if ($('.readOnlyUpdate').val() !== null && $('.readOnlyUpdate').val()!=="") {
@@ -356,13 +353,17 @@ function GetSkus(pidfId) {
                 arrselectedSKUs.forEach(function (val, i) {
                     if (val == arrselectedSKUs[i]) {
                         $(`select#DbSkus${i}.Skus.DbSkus`).val(val);
+                        getEditPackSize(val, i);
+                        $(`input#BrandPrice${i}.BrandPrice`).attr("readonly", true);
+                        $(`input#GenericListprice${i}.GenericListprice`).attr("readonly", true);
+                        $(`input#NetRealisation${i}.NetRealisation`).attr("readonly", true);
                     }
                 });
                 let arrselectedPackSize = _selectedPackSize.split(',');
                 if (arrselectedPackSize[0] != '' && arrselectedPackSize.length > 0) {
                     arrselectedPackSize.forEach(function (val, i) {
                         if (val == arrselectedPackSize[i]) {
-                            $(`select#PakeSize${i}.PakeSize.form-control.readOnlyUpdate`).val(val);
+                            $(`select#PakeSize${i}.PakeSize option:selected`).val(val);
 
                         }
                     });
@@ -403,14 +404,18 @@ function getPackSize(ele) {
                 $.each(data.table, function (index, object) {
                     optionhtml += '<option value="' +
                         object.packSize + '" pack-size-id=' + object.packSize + '>' + object.packSizeName + ' </option>';
-                    $(`input#BrandPrice${row_index}.BrandPrice`).val(parseFloat(object.brandPrice));
-                    $(`input#GenericListprice${row_index}.GenericListprice`).val(parseFloat(object.genericPrice));
+                    $(`input#BrandPrice${row_index}.BrandPrice`).val(parseInt(object.brandPrice));
+                    $(`input#GenericListprice${row_index}.GenericListprice`).val(parseInt(object.genericPrice));
                     let netRealisation = parseFloat(object.genericPrice) * 40 / 100;
                     $(`input#NetRealisation${row_index}.NetRealisation`).val(netRealisation);
+
+                    $(`input#BrandPrice${row_index}.BrandPrice`).attr("readonly", true);
+                    $(`input#GenericListprice${row_index}.GenericListprice`).attr("readonly", true);
+                    $(`input#NetRealisation${row_index}.NetRealisation`).attr("readonly", true);
                     //calculateBatchSizeCaoting(ele);
                 });
                 $(`select#PakeSize${row_index}.PakeSize`).append(optionhtml);
-               
+            
              
             }
          catch (e) {
@@ -421,26 +426,26 @@ function getPackSize(ele) {
         toastr.error("Error");
     }
 }
-function getAddPackSize(index) {
+function getEditPackSize(strengthId,rowIndex) {
    
-    ajaxServiceMethod($('#hdnBaseURL').val() + `api/PidfFinance/GetPackSizeByStrengthId/${pidfId}/${_encBuid}/${ele.value}`, 'GET', getPackSizeSuccess, getPackSizeError);
+    ajaxServiceMethod($('#hdnBaseURL').val() + `api/PidfFinance/GetPackSizeByStrengthId/${pidfId}/${_encBuid}/${strengthId}`, 'GET', getPackSizeSuccess, getPackSizeError);
     function getPackSizeSuccess(data) {
         try {
 
-            var row_index = index; //$(ele).closest('tr').index();
+            /*var row_index = $(ele).closest('tr').index();*/
 
-            $(`select#PakeSize${row_index}.PakeSize`).html('')
+            $(`select#PakeSize${rowIndex}.PakeSize`).html('')
             let optionhtml = '';
             $.each(data.table, function (index, object) {
                 optionhtml += '<option value="' +
                     object.packSize + '" pack-size-id=' + object.packSize + '>' + object.packSizeName + ' </option>';
-                $(`input#BrandPrice${row_index}.BrandPrice`).val(parseFloat(object.brandPrice));
-                $(`input#GenericListprice${row_index}.GenericListprice`).val(parseFloat(object.genericPrice));
+                $(`input#BrandPrice${rowIndex}.BrandPrice`).val(parseInt(object.brandPrice));
+                $(`input#GenericListprice${rowIndex}.GenericListprice`).val(parseInt(object.genericPrice));
                 let netRealisation = parseFloat(object.genericPrice) * 40 / 100;
-                $(`input#NetRealisation${row_index}.NetRealisation`).val(netRealisation);
+                $(`input#NetRealisation${rowIndex}.NetRealisation`).val(netRealisation);
                 //calculateBatchSizeCaoting(ele);
             });
-            $(`select#PakeSize${row_index}.PakeSize`).append(optionhtml);
+            $(`select#PakeSize${rowIndex}.PakeSize`).append(optionhtml);
 
 
         }
@@ -515,6 +520,29 @@ $("select#Currency").on("select2:select select2:unselecting", function (e) {
     }
     GetFinancialProjectionYear(_selectedProjectStartDate);
 });
+function validateDuplicateSKUs() {
+    let packSize = 0;
+    let strengthId = 0;
+    let previousstrengthId = 0;
+    let previouspackSize = 0;
+    $.each($('#FinanceTableBoy tr'), function (index, value) {
+        if ($('#FinanceTableBoy tr').length > 1) {
+            strengthId = $(this).find("td:eq(0) select option:selected").attr("name", "lsPidfFinanceBatchSizeCoating[" + index.toString() + "].Skus").val();
+            previousstrengthId = $(this).find("td:eq(0) select option:selected").attr("name", "lsPidfFinanceBatchSizeCoating[" + parseInt(index - 1).toString() + "].Skus").val();
+            //getPackSize(strengthId);
+            previouspackSize = $(this).find("td:eq(1) select option:selected").attr("name", "lsPidfFinanceBatchSizeCoating[" + parseInt(index - 1).toString() + "].PakeSize").val();
+            packSize = $(this).find("td:eq(1) select option:selected").attr("name", "lsPidfFinanceBatchSizeCoating[" + index.toString() + "].PakeSize").val();
+            //if (previousstrengthId > 0 && strengthId > 0 && previouspackSize > 0 && packSize > 0 && previousstrengthId == strengthId && previouspackSize == packSize) {
+                if (previousstrengthId > 0 && strengthId > 0 && previousstrengthId == strengthId ) {
+                toastr.error("duplicate SKU not alowed", "Error:");
+                deleteRowFinance(0, this);
+                return false;
+            }
+        }
+        else { return true; }
+    });
+   // return false;
+}
 //$("i.fas.fa-plus").click(function () {
 //    let count = 1;
 //    for (let i = 0; i < count; i++) {
