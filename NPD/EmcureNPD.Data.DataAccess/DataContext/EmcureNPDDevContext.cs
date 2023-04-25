@@ -726,7 +726,9 @@ namespace EmcureNPD.Data.DataAccess.DataContext
 
                 entity.Property(e => e.ModifyDate).HasColumnType("datetime");
 
-                entity.Property(e => e.PackSize).HasMaxLength(100);
+                entity.Property(e => e.PackSizeName)
+                    .IsRequired()
+                    .HasMaxLength(100);
             });
 
             modelBuilder.Entity<MasterPackagingType>(entity =>
@@ -776,6 +778,10 @@ namespace EmcureNPD.Data.DataAccess.DataContext
                     .HasColumnName("PIDFStatus");
 
                 entity.Property(e => e.StatusColor)
+                    .HasMaxLength(10)
+                    .IsUnicode(false);
+
+                entity.Property(e => e.StatusTextColor)
                     .HasMaxLength(10)
                     .IsUnicode(false);
             });
