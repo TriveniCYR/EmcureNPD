@@ -15,6 +15,7 @@
 
     ViewData["Title"] = @MasterLocalizer["Finance Management"];
     var PidafId=Context.Request.Query["pidfid"];
+    var encBuid = Context.Request.Query["bui"];
     var SelectedBuId=Model!=null? Model.BussinessUnitId:Convert.ToInt32(UtilityHelper.Decreypt(Convert.ToString(Context.Request.Query["bui"])));
     var selectedPidafId =Model!=null ?Model.dycrPidfid:Convert.ToInt32(UtilityHelper.Decreypt(Convert.ToString(PidafId)));
     var selectedSkus = string.Empty;
@@ -989,7 +990,7 @@
         <div class="card collapsed-card">
             
              <div class="card-header bg-primary">
-			<h3 class="card-title mb-0"><button type="button" class="btn btn-tool" data-card-widget="collapse">Batch Size Coating</button></h3>
+			<h3 class="card-title mb-0"><button type="button" class="btn btn-tool" data-card-widget="collapse">Batch Size Costing</button></h3>
 				<div class="card-tools">
 					<button type="button" class="btn btn-tool" data-card-widget="collapse" data-target="#BatchSizeCollapse" title="Collapse">
                            <i class="fas fa-plus"></i>
@@ -1033,7 +1034,7 @@
                                         string dbSkubalue = "DbSkus"+@j;
                                         <tr id="financeDetailsRow_0">
 									    <td>
-                                                <select id="@dbSkubalue" name="lsPidfFinanceBatchSizeCoating[@j].Skus" style="width: 100px;" value="@item.Skus" class="Skus DbSkus form-control readOnlyUpdate" required>
+                                                <select id="@dbSkubalue" name="lsPidfFinanceBatchSizeCoating[@j].Skus" style="width: 100px;" value="@item.Skus" class="Skus DbSkus form-control readOnlyUpdate" onchange="getPackSize(this);" required>
                                                 </select>
                                             <input type="hidden" id="PidffinaceId" name="lsPidfFinanceBatchSizeCoating[@j].PidffinaceId" value="@item.PidffinaceId">
                                              
@@ -1096,7 +1097,7 @@
 							<tr id="financeDetailsRow_@j">
 								
 									<td>
-                                            <select id="Skus" name="lsPidfFinanceBatchSizeCoating[@j].Skus" style="width: 100px;" class="Skus form-control readOnlyUpdate" required>
+                                            <select id="Skus" name="lsPidfFinanceBatchSizeCoating[@j].Skus" style="width: 100px;" class="Skus form-control readOnlyUpdate" onchange="getPackSize(this);" required>
                                                 </select>
                                             <input type="hidden" id="PidffinaceId" name="lsPidfFinanceBatchSizeCoating[@j].PidffinaceId" value="0">
                                             
@@ -6382,5 +6383,6 @@
     const _selectBusinessUnit="@SelectedBuId";
     const _selectedPidfId="@selectedPidafId";
     const _selectedProjectStartDate="@ProjectStartDate";
+    const _encBuid="@encBuid";
 </script>
 }
