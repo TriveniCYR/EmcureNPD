@@ -2100,6 +2100,7 @@ function BindRNDFillingExpenses(data, businessUnit) {
 function addRowFillingExpenses(element) {
     var node = $(element).parent().parent().clone(true);
     node.find("input.form-control").val("");
+    node.find("input.rndFillingExpensesStrengthCheckbox").prop("checked",false);
     $(element).parent().parent().after(node);
     SetChildRowDeleteIconPBF();
 }

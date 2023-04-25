@@ -34,6 +34,8 @@ namespace EmcureNPD.Data.DataAccess.Entity
         public string Nsplow { get; set; }
         public string Nspmedium { get; set; }
         public string Nsphigh { get; set; }
+        public string BrandPrice { get; set; }
+        public string GenericPrice { get; set; }
 
         public virtual MasterCurrency Currency { get; set; }
         public virtual MasterFinalSelection FinalSelection { get; set; }

@@ -646,6 +646,15 @@ namespace EmcureNPD.Resource.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Dosage Name.
+        /// </summary>
+        public static string DosageName {
+            get {
+                return ResourceManager.GetString("DosageName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Drugs Category.
         /// </summary>
         public static string DrugsCategory {
@@ -705,6 +714,15 @@ namespace EmcureNPD.Resource.Resources {
         public static string ExtensionExpiryDate {
             get {
                 return ResourceManager.GetString("ExtensionExpiryDate", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Filing Type Name.
+        /// </summary>
+        public static string FilingTypeName {
+            get {
+                return ResourceManager.GetString("FilingTypeName", resourceCulture);
             }
         }
         
@@ -961,6 +979,15 @@ namespace EmcureNPD.Resource.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Manufacturing Name.
+        /// </summary>
+        public static string ManufacturingName {
+            get {
+                return ResourceManager.GetString("ManufacturingName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Market.
         /// </summary>
         public static string Market {
@@ -1137,6 +1164,24 @@ namespace EmcureNPD.Resource.Resources {
         public static string PackagingTypes {
             get {
                 return ResourceManager.GetString("PackagingTypes", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Packing Type Name.
+        /// </summary>
+        public static string PackingTypeName {
+            get {
+                return ResourceManager.GetString("PackingTypeName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Pack Size Name.
+        /// </summary>
+        public static string PackSizeName {
+            get {
+                return ResourceManager.GetString("PackSizeName", resourceCulture);
             }
         }
         
@@ -1605,6 +1650,33 @@ namespace EmcureNPD.Resource.Resources {
         public static string SU_IMSVolume_ {
             get {
                 return ResourceManager.GetString("SU(IMSVolume)", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Test Type Code.
+        /// </summary>
+        public static string TestTypeCode {
+            get {
+                return ResourceManager.GetString("TestTypeCode", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Test Type Name.
+        /// </summary>
+        public static string TestTypeName {
+            get {
+                return ResourceManager.GetString("TestTypeName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to TestT ype Price.
+        /// </summary>
+        public static string TestTypePrice {
+            get {
+                return ResourceManager.GetString("TestTypePrice", resourceCulture);
             }
         }
         

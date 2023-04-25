@@ -1,0 +1,135 @@
+﻿@using EmcureNPD.Utility.Models
+@using Microsoft.AspNetCore.Http
+@using EmcureNPD.Web.Controllers
+@using Microsoft.AspNetCore.Mvc.Localization
+@inject IHttpContextAccessor HttpContextAccessor
+@inject Microsoft.Extensions.Localization.IStringLocalizer<MastersController> MasterLocalizer
+@inject Microsoft.Extensions.Localization.IStringLocalizer<EmcureNPD.Resource.Shared> SharedLocalizer
+@using Microsoft.Extensions.Configuration
+@inject IConfiguration Configuration
+
+@model EmcureNPD.Business.Models.MasterManufacturingEntity
+@{
+	ViewData["Title"] = @MasterLocalizer["Manufacturing - Emcure NPD"];
+	RolePermissionModel objPermssion = (RolePermissionModel)ViewBag.Access;
+	string IsAddAllow = (objPermssion.Add) ? "" : "display: none";
+	string IsEditAllow = (objPermssion.Edit) ? "" : "display: none";
+	string IsDeleteAllow = (objPermssion.Delete) ? "" : "display: none";
+	string jsVersion = @Configuration.GetSection("StaticJS")["version"];
+}
+<div class="content-header">
+	<div class="container-fluid d-flex justify-content-between">
+		<h3>@MasterLocalizer["Manufacturing"]</h3>
+		<div>
+			<a style="@IsAddAllow" class="btn btn-primary" data-toggle="modal" data-target="#SaveManufacturingModel" data-backdrop="static" data-keyboard="false" onclick="AddManufacturing();"><i class="far fa-plus-square mr-1"></i> @SharedLocalizer["Add"]</a>
+		</div>
+	</div>
+</div>
+<div class="container-fluid overflow-auto background-white-card">
+	<table id="ManufacturingTable" class="table table-bordered table-striped table-hover" style="width:100%">
+		<thead>
+			<tr>
+				<th>@MasterLocalizer["Manufacturing"]</th>
+				<th>@SharedLocalizer["Status"]</th>
+				<th class="text-center">@SharedLocalizer["Action"]</th>
+			</tr>
+		</thead>
+		<tbody>
+		</tbody>
+	</table>
+</div>
+
+@*DeleteManufacturingModel*@
+<div id="DeleteManufacturingModel" class="modal themeModal " role="dialog">
+	<div class="modal-dialog">
+		<!-- Modal content-->
+		<div class="modal-content">
+			<div class="modal-header">
+				<h4 class="modal-title">@SharedLocalizer["Delete"]</h4>
+				<button type="button" class="close" data-dismiss="modal">&times;</button>
+			</div>
+			<div class="modal-body">
+				<div class="row">
+					<div class="col-md-12">
+						<div class="form-group">
+							@Html.Label(@SharedLocalizer["DeleteConfirm"])
+						</div>
+					</div>
+				</div>
+				@Html.Hidden("ManufacturingID")
+				<div class="card-footer text-center">
+					<button type="button" onclick="DeleteManufacturing()" data-dismiss="modal" class="btn btn-primary mr-2">@SharedLocalizer["Yes"]</button>
+					<a class="btn btn-danger" data-dismiss="modal">@SharedLocalizer["No"]</a>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+
+@*AddUpdateModel*@
+<div id="SaveManufacturingModel" class="modal themeModal " role="dialog">
+	<form asp-route-returnUrl="@ViewData["ReturnUrl"]" method="POST" onsubmit="return SaveMasterManufacturing(this);">
+		<!-- Small boxes (Stat box) -->
+		<!-- Main row -->
+		<input type="hidden" id="ManufacturingID" name="ManufacturingID" value="0" />
+		<div class="modal-dialog">
+			<!-- Modal content-->
+			<div class="modal-content">
+				<div class="modal-header">
+					<h4 class="modal-title" id="ManufacturingTitle"></h4>
+					<button type="button" class="close" data-dismiss="modal">&times;</button>
+				</div>
+				<div class="modal-body">
+					<div class="row">
+						<div class="col-md-12">
+							<div class="form-group required">
+								@Html.LabelFor(model => model.ManufacturingName,"Manufacturing Name", new { @class = "control-label" })
+								<span class="text-danger">*</span>
+								@Html.EditorFor(model => model.ManufacturingName, new { htmlAttributes = new { @autocomplete = "off", @class = "form-control checkbox-checked", @placeholder = "Manufacturing Name" } })
+								@Html.ValidationMessageFor(model => model.ManufacturingName, "", new { @class = "text-danger" })
+							</div>
+						</div>
+					</div>
+					<div class="row">
+						<div class="col-md-12">
+							<div class="required">
+								@Html.CheckBoxFor(model => model.IsActive, new { @class = "checkbox-checked", @checked = "checked" })
+								@Html.Label(@SharedLocalizer["IsActive"],"Active")
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="card-footer text-end card-margin">
+					<button type="submit" class="btn btn-success me-3 large-button">@SharedLocalizer["Save"]</button>
+					<a class="btn btn-danger ms-3 large-button" data-dismiss="modal">@SharedLocalizer["Cancel"]</a>
+				</div>
+			</div>
+		</div>
+	</form>
+</div>
+@section MyScripts {
+
+	@Html.Partial("_DataTablePartial")
+
+	<script type="text/javascript" src="~/js/Custom/Masters/MasterManufacturing.js?v=@jsVersion"></script>
+	<script>
+
+		//#region Setup API Url
+		var AllManufacturing = "@EmcureNPD.Web.Helpers.APIURLHelper.GetAllManufacturing";
+		var SaveManufacturing = "@EmcureNPD.Web.Helpers.APIURLHelper.SaveManufacturing";
+		var GetManufacturingByIdUrl = "@EmcureNPD.Web.Helpers.APIURLHelper.GetManufacturingById";
+		var DeleteManufacturingByIdUrl = "@EmcureNPD.Web.Helpers.APIURLHelper.DeleteManufacturingById";
+		// #endregion
+		var IsEditAllow = "@IsEditAllow";
+		var IsDeleteAllow = "@IsDeleteAllow";
+		//#region Static Messae Init
+		var EditLabel = "@SharedLocalizer["Edit"]";
+		var DeleteLabel = "@SharedLocalizer["Delete"]";
+		var ErrorMessage = "@SharedLocalizer["Error"]";
+		var RecordInsertUpdate = "@SharedLocalizer["RecordInsertUpdate"]";
+		var RecordDelete = "@SharedLocalizer["RecordDelete"]";
+		var AddLabel = "@SharedLocalizer["Add Manufacturing"]";
+		var UpdateLabel = "@SharedLocalizer["Edit Manufacturing"]";
+				//#endregion
+	</script>
+}

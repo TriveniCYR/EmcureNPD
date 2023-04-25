@@ -10,17 +10,14 @@ using System.Xml.Linq;
 
 namespace EmcureNPD.Business.Models
 {
-    public class MasterTestTypeEntity
+    public class MasterPackSizeEntity
     {
-        public int TestTypeId { get; set; }
+        public int PackSizeId { get; set; }
         [Required(ErrorMessageResourceType = typeof(Validation), ErrorMessageResourceName = "Required")]
-        [Display(Name = "TestTypeName", ResourceType = typeof(Master))]
+        [Display(Name = "PackSizeName", ResourceType = typeof(Master))]
         [RegularExpression(@"^(?!\s*$).+", ErrorMessage = "The field cannot contain only spaces.")]
-        public string TestTypeName { get; set; }
-        [Display(Name = "TestTypeCode", ResourceType = typeof(Master))]
-        public string TestTypeCode { get; set; }
-        [Display(Name = "TestTypePrice", ResourceType = typeof(Master))]
-        public int? TestTypePrice { get; set; }
+        public string PackSizeName { get; set; }
+        public int PackSize { get; set; }
         [Display(Name = "Active", ResourceType = typeof(Master))]
         public bool IsActive { get; set; }
         public DateTime CreatedDate { get; set; }
