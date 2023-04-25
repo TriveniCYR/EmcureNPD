@@ -10,5 +10,6 @@ namespace EmcureNPD.Business.Core.Interface
 
         Task<PidfProductStregthEntity> GetById(int id);
         Task<List<PidfProductStregthEntity>> GetStrengthByPIDFId(long pidfid);
+        Task<dynamic> GetStrengthByPIDFAnddBuId(long pidfid, long buid);
     }
 }

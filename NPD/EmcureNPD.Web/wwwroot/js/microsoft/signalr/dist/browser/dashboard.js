@@ -27,7 +27,7 @@ connection.on("ReceiveNotification", function (count) {
 });
 
 function BindLocation(count) {
-	alert(count);
+	//alert(count);
 	//alert(ongitude);
 	
 }

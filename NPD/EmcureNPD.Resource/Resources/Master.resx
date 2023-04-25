@@ -699,4 +699,7 @@
   <data name="PackSizeName" xml:space="preserve">
     <value>Pack Size Name</value>
   </data>
+  <data name="PackStyle" xml:space="preserve">
+    <value>Pack Style</value>
+  </data>
 </root>

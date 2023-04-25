@@ -43,6 +43,7 @@ namespace EmcureNPD.Business.Models
         //Year Entities
 
         public int CommercialPackagingTypeId { get; set; }
+        public int CommercialPackSizeId { get; set; }
         public int CurrencyId { get; set; }
         public string CommercialBatchSize { get; set; }
         public string PriceDiscounting { get; set; }
