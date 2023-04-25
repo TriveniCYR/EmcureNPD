@@ -36,7 +36,7 @@ namespace EmcureNPD.Business.Core.ServiceImplementations
 
         public async Task<List<MasterCurrencyEntity>> GetAll()
         {
-            var list = await _repository.GetAllAsync(x => x.IsActive == true);
+            var list = await _repository.GetAllAsync();
             return _mapperFactory.GetList<MasterCurrency, MasterCurrencyEntity>(list.ToList());
         }
 

@@ -142,6 +142,16 @@ namespace EmcureNPD.Web.Helpers
 
         #endregion Role Management
 
+        #region Dosage
+
+        public static string GetAllDosage = "api/Dosage/GetAllDosage";
+        public static string SaveDosage = "api/Dosage/InsertUpdateDosage";
+        public static string GetDosageById = "api/Dosage/GetDosageById";
+        public static string DeleteDosageById = "api/Dosage/DeleteDosage";
+        public static string GetAllActiveDosageFinance = "api/Dosage/GetAllActiveDosageFinance";
+
+        #endregion Dosage
+
         #region Dosage Form
 
         public static string GetAllDosageForm = "api/DosageForm/GetAllDosageForm";
@@ -151,6 +161,48 @@ namespace EmcureNPD.Web.Helpers
         public static string GetAllActiveDosageFormFinance = "api/DosageForm/GetAllActiveDosageFormFinance";
 
         #endregion Dosage Form
+
+
+        #region FilingType
+
+        public static string GetAllFilingType = "api/FilingType/GetAllFilingType";
+        public static string SaveFilingType = "api/FilingType/InsertUpdateFilingType";
+        public static string GetFilingTypeById = "api/FilingType/GetFilingTypeById";
+        public static string DeleteFilingTypeById = "api/FilingType/DeleteFilingType";
+
+        #endregion FilingType
+        #region Manufacturing
+
+        public static string GetAllManufacturing = "api/Manufacturing/GetAllManufacturing";
+        public static string SaveManufacturing = "api/Manufacturing/InsertUpdateManufacturing";
+        public static string GetManufacturingById = "api/Manufacturing/GetManufacturingById";
+        public static string DeleteManufacturingById = "api/Manufacturing/DeleteManufacturing";
+
+        #endregion Manufacturing
+        #region TestType
+
+        public static string GetAllTestType = "api/TestType/GetAllTestType";
+        public static string SaveTestType = "api/TestType/InsertUpdateTestType";
+        public static string GetTestTypeById = "api/TestType/GetTestTypeById";
+        public static string DeleteTestTypeById = "api/TestType/DeleteTestType";
+
+        #endregion TestType
+        #region PackingType
+
+        public static string GetAllPackingType = "api/PackingType/GetAllPackingType";
+        public static string SavePackingType = "api/PackingType/InsertUpdatePackingType";
+        public static string GetPackingTypeById = "api/PackingType/GetPackingTypeById";
+        public static string DeletePackingTypeById = "api/PackingType/DeletePackingType";
+
+        #endregion PackingType
+        #region PackSize
+
+        public static string GetAllPackSize = "api/PackSize/GetAllPackSize";
+        public static string SavePackSize = "api/PackSize/InsertUpdatePackSize";
+        public static string GetPackSizeById = "api/PackSize/GetPackSizeById";
+        public static string DeletePackSizeById = "api/PackSize/DeletePackSize";
+
+        #endregion PackSize
 
         #region Oral
 
@@ -303,6 +355,7 @@ namespace EmcureNPD.Web.Helpers
         public static string GetPBFDropdown = "api/PBF/FillDropdown";
         public static string SavePBFRnD = "api/PBF/InsertUpdatePBF";
         public static string SaveCommercialPIDF = "api/CommercialPIDFForm/SaveCommercialPIDF";
+        public static string GetAllPackSize = "api/CommercialPIDFForm/GetAllPackSize";
         public static string GetPbfFormData = "api/PBF/GetPbfFormData";
         public static string SavePBF = "api/PBF/InsertUpdatePBFDetails";
         public static string SavePBFAnatical = "api/PBF/PBFAnaLytical";

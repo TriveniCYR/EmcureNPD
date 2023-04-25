@@ -14,7 +14,7 @@ namespace EmcureNPD.API.Controllers.Notificaiton
 {
     [Route("api/[controller]")]
     [ApiController]
-    //[AuthorizeAttribute]
+    [AuthorizeAttribute]
     public class NotificationController : ControllerBase
     {
         #region Properties

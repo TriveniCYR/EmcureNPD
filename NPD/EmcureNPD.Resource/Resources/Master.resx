@@ -675,6 +675,30 @@
   <data name="ChangeProfile" xml:space="preserve">
     <value>Manage Profile</value>
   </data>
+  <data name="DosageName" xml:space="preserve">
+    <value>Dosage Name</value>
+  </data>
+  <data name="FilingTypeName" xml:space="preserve">
+    <value>Filing Type Name</value>
+  </data>
+  <data name="ManufacturingName" xml:space="preserve">
+    <value>Manufacturing Name</value>
+  </data>
+  <data name="TestTypeCode" xml:space="preserve">
+    <value>Test Type Code</value>
+  </data>
+  <data name="TestTypeName" xml:space="preserve">
+    <value>Test Type Name</value>
+  </data>
+  <data name="TestTypePrice" xml:space="preserve">
+    <value>TestT ype Price</value>
+  </data>
+  <data name="PackingTypeName" xml:space="preserve">
+    <value>Packing Type Name</value>
+  </data>
+  <data name="PackSizeName" xml:space="preserve">
+    <value>Pack Size Name</value>
+  </data>
   <data name="PackStyle" xml:space="preserve">
     <value>Pack Style</value>
   </data>

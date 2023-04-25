@@ -6,15 +6,20 @@ namespace EmcureNPD.Utility.Helpers
     // [Route("/notificationHub")]
     public class NotificationHub : Hub
     {
+        private readonly IHubContext<NotificationHub> _hubContext;
         //public static void Show()
         //{
         //    IHubContext context = GlobalHost.ConnectionManager.GetHubContext<NotificationHub>();
         //    context.Clients.All.ShowAllNotifications();
         //}
-        
-        public async Task GetNotification()
+        public NotificationHub(IHubContext<NotificationHub> hubContext)
         {
-          await Clients.All.SendAsync("ReceiveNotification",100);
+            //_repository = repository;
+            _hubContext = hubContext;
+        }
+        public async Task GetNotification(int count)
+        {
+          await _hubContext.Clients.All.SendAsync("ReceiveNotification", count);
         }
     }
 }

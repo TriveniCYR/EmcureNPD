@@ -236,5 +236,23 @@ namespace EmcureNPD.API.Controllers.Commercial
                 return _ObjectResponse.Create(false, (int)HttpStatusCode.InternalServerError, Convert.ToString(ex.StackTrace));
             }
         }
+
+        [HttpGet, Route("GetAllPackSize")]
+        public async Task<IActionResult> GetAllPackSize()
+        {
+            try
+            {
+                var oFSList = await _pidfCommercialFormService.GetAllPackSize();
+                if (oFSList != null)
+                    return _ObjectResponse.Create(oFSList, (int)HttpStatusCode.OK);
+                else
+                    return _ObjectResponse.Create(null, (int)HttpStatusCode.BadRequest, "No Records found");
+            }
+            catch (Exception ex)
+            {
+                await _ExceptionService.LogException(ex);
+                return _ObjectResponse.Create(false, (int)HttpStatusCode.InternalServerError, Convert.ToString(ex.StackTrace));
+            }
+        }
     }
 }

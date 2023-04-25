@@ -354,5 +354,71 @@ namespace EmcureNPD.Web.Controllers
             ViewBag.Access = objPermssion;
             return View();
         }
+        public IActionResult MasterDosage()
+        {
+            int rolId = _helper.GetLoggedInRoleId();
+            RolePermissionModel objPermssion = UtilityHelper.GetCntrActionAccess((int)ModulePermissionEnum.MasterManagement, rolId);
+            if (objPermssion == null || !(objPermssion.View || objPermssion.Add || objPermssion.Edit || objPermssion.Delete))
+            {
+                return RedirectToAction("AccessRestriction", "Home");
+            }
+            ViewBag.Access = objPermssion;
+            return View();
+        }
+        public IActionResult MasterFilingType()
+        {
+            int rolId = _helper.GetLoggedInRoleId();
+            RolePermissionModel objPermssion = UtilityHelper.GetCntrActionAccess((int)ModulePermissionEnum.MasterManagement, rolId);
+            if (objPermssion == null || !(objPermssion.View || objPermssion.Add || objPermssion.Edit || objPermssion.Delete))
+            {
+                return RedirectToAction("AccessRestriction", "Home");
+            }
+            ViewBag.Access = objPermssion;
+            return View();
+        }
+        public IActionResult MasterManufacturing()
+        {
+            int rolId = _helper.GetLoggedInRoleId();
+            RolePermissionModel objPermssion = UtilityHelper.GetCntrActionAccess((int)ModulePermissionEnum.MasterManagement, rolId);
+            if (objPermssion == null || !(objPermssion.View || objPermssion.Add || objPermssion.Edit || objPermssion.Delete))
+            {
+                return RedirectToAction("AccessRestriction", "Home");
+            }
+            ViewBag.Access = objPermssion;
+            return View();
+        }
+        public IActionResult MasterTestType()
+        {
+            int rolId = _helper.GetLoggedInRoleId();
+            RolePermissionModel objPermssion = UtilityHelper.GetCntrActionAccess((int)ModulePermissionEnum.MasterManagement, rolId);
+            if (objPermssion == null || !(objPermssion.View || objPermssion.Add || objPermssion.Edit || objPermssion.Delete))
+            {
+                return RedirectToAction("AccessRestriction", "Home");
+            }
+            ViewBag.Access = objPermssion;
+            return View();
+        }
+        public IActionResult MasterPackingType()
+        {
+            int rolId = _helper.GetLoggedInRoleId();
+            RolePermissionModel objPermssion = UtilityHelper.GetCntrActionAccess((int)ModulePermissionEnum.MasterManagement, rolId);
+            if (objPermssion == null || !(objPermssion.View || objPermssion.Add || objPermssion.Edit || objPermssion.Delete))
+            {
+                return RedirectToAction("AccessRestriction", "Home");
+            }
+            ViewBag.Access = objPermssion;
+            return View();
+        }
+        public IActionResult MasterPackSize()
+        {
+            int rolId = _helper.GetLoggedInRoleId();
+            RolePermissionModel objPermssion = UtilityHelper.GetCntrActionAccess((int)ModulePermissionEnum.MasterManagement, rolId);
+            if (objPermssion == null || !(objPermssion.View || objPermssion.Add || objPermssion.Edit || objPermssion.Delete))
+            {
+                return RedirectToAction("AccessRestriction", "Home");
+            }
+            ViewBag.Access = objPermssion;
+            return View();
+        }
     }
 }

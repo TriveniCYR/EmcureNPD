@@ -41,7 +41,7 @@ namespace EmcureNPD.Business.Core.Implementation
         private IRepository<MasterCountry> _countryrepository { get; set; }
         private IRepository<PidfproductStrength> _pidfProductStrengthrepository { get; set; }
         private IRepository<MasterFinalSelection> _finalSelectionrepository { get; set; }
-
+        private IRepository<MasterPackSize> _masterPackSizeEepository { get; set; }
         public CommercialFormService(IUnitOfWork unitOfWork, IMapperFactory mapperFactory,
             IMasterBusinessUnitService businessUnitService, IMasterCountryService countryService,
             INotificationService notificationService,
@@ -64,6 +64,7 @@ namespace EmcureNPD.Business.Core.Implementation
             _commercialrepository = _unitOfWork.GetRepository<PidfCommercial>();
             _commercialYearrepository = _unitOfWork.GetRepository<PidfCommercialYear>();
             _finalSelectionrepository = _unitOfWork.GetRepository<MasterFinalSelection>();
+            _masterPackSizeEepository = _unitOfWork.GetRepository<MasterPackSize>();
             _notificationService = notificationService;
             _businessUnitrepository = _unitOfWork.GetRepository<MasterBusinessUnit>();
             _pidfProductStrengthrepository = _unitOfWork.GetRepository<PidfproductStrength>();
@@ -315,6 +316,11 @@ namespace EmcureNPD.Business.Core.Implementation
         {
             var list = await _finalSelectionrepository.GetAllAsync(x => x.IsActive == true);
             return _mapperFactory.GetList<MasterFinalSelection, MasterFinalSelectionEntity>(list.ToList());
+        }
+        public async Task<List<MasterPackSizeViewModelEntity>> GetAllPackSize()
+        {
+            var list = await _masterPackSizeEepository.GetAllAsync(x => x.IsActive == true);
+            return _mapperFactory.GetList<MasterPackSize, MasterPackSizeViewModelEntity>(list.ToList());
         }
     }
 }

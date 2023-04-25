@@ -26,6 +26,7 @@ namespace EmcureNPD.Data.DataAccess.Entity
         public string StatusColor { get; set; }
         public bool? IsDashboard { get; set; }
         public int? ModuleId { get; set; }
+        public string StatusTextColor { get; set; }
 
         public virtual ICollection<MasterNotification> MasterNotifications { get; set; }
         public virtual ICollection<Pidf> PidfLastStatuses { get; set; }

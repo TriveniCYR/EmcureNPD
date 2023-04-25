@@ -23,5 +23,6 @@ namespace EmcureNPD.Business.Core.Interface
         Task<DBOperation> ApproveRejectIpdPidf(EntryApproveRej oApprRej);
 
         Task<List<MasterFinalSelectionEntity>> GetAllFinalSelection();
+        Task<List<MasterPackSizeViewModelEntity>> GetAllPackSize();        
     }
 }

@@ -16,7 +16,8 @@ $(function () {
 
 // Product
 function InvokePostLocation() {
-	connection.invoke("GetNotification").catch(function (err) {
+	let count = 100;
+	connection.invoke('GetNotification', count).catch(function (err) {
 		return console.error(err.toString());
 	});
 }

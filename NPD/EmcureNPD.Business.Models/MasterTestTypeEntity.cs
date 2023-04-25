@@ -12,13 +12,17 @@ namespace EmcureNPD.Business.Models
 {
     public class MasterTestTypeEntity
     {
-            public int TestTypeId { get; set; }
-            [Required(ErrorMessageResourceType = typeof(Validation), ErrorMessageResourceName = "Required")]
-            [Display(Name = "TestTypeName", ResourceType = typeof(Master))]
-            [RegularExpression(@"^(?!\s*$).+", ErrorMessage = "The field cannot contain only spaces.")]
-            public string TestTypeName { get; set; }
-            [Display(Name = "Active", ResourceType = typeof(Master))]
-            public bool IsActive { get; set; }
-            public DateTime CreatedDate { get; set; }
+        public int TestTypeId { get; set; }
+        [Required(ErrorMessageResourceType = typeof(Validation), ErrorMessageResourceName = "Required")]
+        [Display(Name = "TestTypeName", ResourceType = typeof(Master))]
+        [RegularExpression(@"^(?!\s*$).+", ErrorMessage = "The field cannot contain only spaces.")]
+        public string TestTypeName { get; set; }
+        [Display(Name = "TestTypeCode", ResourceType = typeof(Master))]
+        public string TestTypeCode { get; set; }
+        [Display(Name = "TestTypePrice", ResourceType = typeof(Master))]
+        public int? TestTypePrice { get; set; }
+        [Display(Name = "Active", ResourceType = typeof(Master))]
+        public bool IsActive { get; set; }
+        public DateTime CreatedDate { get; set; }
     }
 }

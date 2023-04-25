@@ -1,0 +1,143 @@
+﻿@using EmcureNPD.Utility.Models
+@using Microsoft.AspNetCore.Http
+@using EmcureNPD.Web.Controllers
+@using Microsoft.AspNetCore.Mvc.Localization
+@inject IHttpContextAccessor HttpContextAccessor
+@inject Microsoft.Extensions.Localization.IStringLocalizer<MastersController> MasterLocalizer
+@inject Microsoft.Extensions.Localization.IStringLocalizer<EmcureNPD.Resource.Shared> SharedLocalizer
+@using Microsoft.Extensions.Configuration
+@inject IConfiguration Configuration
+
+@model EmcureNPD.Business.Models.MasterPackSizeEntity
+@{
+	ViewData["Title"] = @MasterLocalizer["PackSize - Emcure NPD"];
+	RolePermissionModel objPermssion = (RolePermissionModel)ViewBag.Access;
+	string IsAddAllow = (objPermssion.Add) ? "" : "display: none";
+	string IsEditAllow = (objPermssion.Edit) ? "" : "display: none";
+	string IsDeleteAllow = (objPermssion.Delete) ? "" : "display: none";
+	string jsVersion = @Configuration.GetSection("StaticJS")["version"];
+}
+<div class="content-header">
+	<div class="container-fluid d-flex justify-content-between">
+		<h3>@MasterLocalizer["PackSize"]</h3>
+		<div>
+			<a style="@IsAddAllow" class="btn btn-primary" data-toggle="modal" data-target="#SavePackSizeModel" data-backdrop="static" data-keyboard="false" onclick="AddPackSize();"><i class="far fa-plus-square mr-1"></i> @SharedLocalizer["Add"]</a>
+		</div>
+	</div>
+</div>
+<div class="container-fluid overflow-auto background-white-card">
+	<table id="PackSizeTable" class="table table-bordered table-striped table-hover" style="width:100%">
+		<thead>
+			<tr>
+				<th>@MasterLocalizer["Pack Size Name"]</th>
+				<th>@MasterLocalizer["Pack Size"]</th>
+				<th>@SharedLocalizer["Status"]</th>
+				<th class="text-center">@SharedLocalizer["Action"]</th>
+			</tr>
+		</thead>
+		<tbody>
+		</tbody>
+	</table>
+</div>
+
+@*DeletePackSizeModel*@
+<div id="DeletePackSizeModel" class="modal themeModal " role="dialog">
+	<div class="modal-dialog">
+		<!-- Modal content-->
+		<div class="modal-content">
+			<div class="modal-header">
+				<h4 class="modal-title">@SharedLocalizer["Delete"]</h4>
+				<button type="button" class="close" data-dismiss="modal">&times;</button>
+			</div>
+			<div class="modal-body">
+				<div class="row">
+					<div class="col-md-12">
+						<div class="form-group">
+							@Html.Label(@SharedLocalizer["DeleteConfirm"])
+						</div>
+					</div>
+				</div>
+				@Html.Hidden("PackSizeID")
+				<div class="card-footer text-center">
+					<button type="button" onclick="DeletePackSize()" data-dismiss="modal" class="btn btn-primary mr-2">@SharedLocalizer["Yes"]</button>
+					<a class="btn btn-danger" data-dismiss="modal">@SharedLocalizer["No"]</a>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+
+@*AddUpdateModel*@
+<div id="SavePackSizeModel" class="modal themeModal " role="dialog">
+	<form asp-route-returnUrl="@ViewData["ReturnUrl"]" method="POST" onsubmit="return SaveMasterPackSize(this);">
+		<!-- Small boxes (Stat box) -->
+		<!-- Main row -->
+		<input type="hidden" id="PackSizeID" name="PackSizeID" value="0" />
+		<div class="modal-dialog">
+			<!-- Modal content-->
+			<div class="modal-content">
+				<div class="modal-header">
+					<h4 class="modal-title" id="PackSizeTitle"></h4>
+					<button type="button" class="close" data-dismiss="modal">&times;</button>
+				</div>
+				<div class="modal-body">
+					<div class="row">
+						<div class="col-md-12">
+							<div class="form-group required">
+								@Html.LabelFor(model => model.PackSizeName,"Packing Name", new { @class = "control-label" })
+								<span class="text-danger">*</span>
+								@Html.EditorFor(model => model.PackSizeName, new { htmlAttributes = new { @autocomplete = "off", @class = "form-control checkbox-checked", @placeholder = "Packing Name" } })
+								@Html.ValidationMessageFor(model => model.PackSizeName, "", new { @class = "text-danger" })
+							</div>
+							
+							<div class="form-group required">
+								@Html.LabelFor(model => model.PackSize,"Pack Size", new { @class = "control-label" })
+								<span class="text-danger">*</span>
+								@Html.EditorFor(model => model.PackSize, new { htmlAttributes = new { @autocomplete = "off", @class = "form-control checkbox-checked numberonly", @placeholder = "Pack Size" } })
+								@Html.ValidationMessageFor(model => model.PackSize, "", new { @class = "text-danger" })
+							</div>							
+						</div>
+					</div>
+					<div class="row">
+						<div class="col-md-12">
+							<div class="required">
+								@Html.CheckBoxFor(model => model.IsActive, new { @class = "checkbox-checked", @checked = "checked" })
+								@Html.Label(@SharedLocalizer["IsActive"],"Active")
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="card-footer text-end card-margin">
+					<button type="submit" class="btn btn-success me-3 large-button">@SharedLocalizer["Save"]</button>
+					<a class="btn btn-danger ms-3 large-button" data-dismiss="modal">@SharedLocalizer["Cancel"]</a>
+				</div>
+			</div>
+		</div>
+	</form>
+</div>
+@section MyScripts {
+
+	@Html.Partial("_DataTablePartial")
+
+	<script type="text/javascript" src="~/js/Custom/Masters/MasterPackSize.js?v=@jsVersion"></script>
+	<script>
+
+		//#region Setup API Url
+		var AllPackSize = "@EmcureNPD.Web.Helpers.APIURLHelper.GetAllPackSize";
+		var SavePackSize = "@EmcureNPD.Web.Helpers.APIURLHelper.SavePackSize";
+		var GetPackSizeByIdUrl = "@EmcureNPD.Web.Helpers.APIURLHelper.GetPackSizeById";
+		var DeletePackSizeByIdUrl = "@EmcureNPD.Web.Helpers.APIURLHelper.DeletePackSizeById";
+		// #endregion
+		var IsEditAllow = "@IsEditAllow";
+		var IsDeleteAllow = "@IsDeleteAllow";
+		//#region Static Messae Init
+		var EditLabel = "@SharedLocalizer["Edit"]";
+		var DeleteLabel = "@SharedLocalizer["Delete"]";
+		var ErrorMessage = "@SharedLocalizer["Error"]";
+		var RecordInsertUpdate = "@SharedLocalizer["RecordInsertUpdate"]";
+		var RecordDelete = "@SharedLocalizer["RecordDelete"]";
+		var AddLabel = "@SharedLocalizer["Add PackSize"]";
+		var UpdateLabel = "@SharedLocalizer["Edit PackSize"]";
+				//#endregion
+	</script>
+}

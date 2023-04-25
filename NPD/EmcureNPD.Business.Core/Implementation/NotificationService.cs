@@ -8,12 +8,15 @@ using EmcureNPD.Resource;
 using EmcureNPD.Utility;
 using EmcureNPD.Utility.Helpers;
 using EmcureNPD.Utility.Utility;
+using Microsoft.AspNetCore.SignalR;
 using Microsoft.Extensions.Localization;
 using System;
 using System.Data.SqlClient;
 using System.Linq;
 using System.Threading.Tasks;
 using TableDependency.SqlClient;
+using TableDependency.SqlClient.Base.Enums;
+using TableDependency.SqlClient.Base.EventArgs;
 using static EmcureNPD.Utility.Enums.GeneralEnum;
 
 namespace EmcureNPD.Business.Core.Implementation
@@ -27,12 +30,14 @@ namespace EmcureNPD.Business.Core.Implementation
         private readonly IExceptionService _ExceptionService;
         SqlTableDependency<MasterNotification> tableDependency;
         NotificationHub notificationHub;
+        private readonly IDatabaseSubscription _databaseSubscription;
+
         private IRepository<MasterNotification> _repository { get; set; }
         private IRepository<MasterNotificationUser> _repositoryNotificationUser { get; set; }
         private readonly IHelper _helper;
 
         public NotificationService(IUnitOfWork unitOfWork, IMapperFactory mapperFactory, IStringLocalizer<Errors> stringLocalizerError,
-                                 Microsoft.Extensions.Configuration.IConfiguration _configuration, IHelper helper, IExceptionService exceptionService)
+                                 Microsoft.Extensions.Configuration.IConfiguration _configuration, IHelper helper, IExceptionService exceptionService)//, IDatabaseSubscription databaseSubscription
         {
             _unitOfWork = unitOfWork;
             _mapperFactory = mapperFactory;
@@ -41,6 +46,9 @@ namespace EmcureNPD.Business.Core.Implementation
             configuration = _configuration;
             _helper = helper;
             _ExceptionService = exceptionService;
+            //_databaseSubscription.Configure(DatabaseConnection.NPDDatabaseConnection);
+            //tableDependency = new SqlTableDependency<MasterNotification>(DatabaseConnection.NPDDatabaseConnection, "Master_Notification", null, null, null, null, DmlTriggerType.Insert);
+            //tableDependency.Start();
         }
 
         public async Task<DataTableResponseModel> GetAll(DataTableAjaxPostModel model)
@@ -109,7 +117,8 @@ namespace EmcureNPD.Business.Core.Implementation
             if (e.ChangeType != TableDependency.SqlClient.Base.Enums.ChangeType.None)
             {
                 var pendingnotification = await this.NotificationCountForUser();
-                await notificationHub.GetNotification();//pendingnotification.Count
+                //await _hubContext.Clients.All.SendAsync("ReceiveNotification", pendingnotification.Count);
+                await notificationHub.GetNotification(pendingnotification.Count);//
             }
         }
 
@@ -137,9 +146,10 @@ namespace EmcureNPD.Business.Core.Implementation
                 //sqlDependency.OnChange += new OnChangeEventHandler(dbChangeNotification);
 
 
-                tableDependency = new SqlTableDependency<MasterNotification>(DatabaseConnection.NPDDatabaseConnection);
-                tableDependency.OnChanged += dbChangeNotification;
-                tableDependency.Start();
+                //tableDependency = new SqlTableDependency<MasterNotification>(DatabaseConnection.NPDDatabaseConnection, "Master_Notification", null, null, null, null, DmlTriggerType.Insert);
+                //tableDependency.OnChanged += dbChangeNotification;
+                //tableDependency.Start();
+                //_databaseSubscription.Changed += dbChangeNotification;
                 return DBOperation.Success;
             }
             catch (Exception ex)
