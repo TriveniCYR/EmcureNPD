@@ -240,7 +240,7 @@
                                                     <div class="form-group required">
                                                         @Html.LabelFor(model => model.PriceDiscounting,@MasterLocalizer["PriceDiscounting"], new { @class = "control-label" })
                                                         <span class="text-danger">*</span>
-                                                        @Html.TextBoxFor(model => model.PriceDiscounting, new { @autocomplete = "off", @class = "form-control checkbox-checked", @placeholder = @MasterLocalizer["PriceDiscounting"] })
+                                                        @Html.TextBoxFor(model => model.PriceDiscounting, new { @autocomplete = "off", @min="0", @max="100", @maxlength="3", @class = "form-control checkbox-checked", @placeholder = @MasterLocalizer["PriceDiscounting"] })
                                                         @Html.ValidationMessageFor(model => model.PriceDiscounting, "", new { @class = "text-danger" })
                                                         <lable id="valmsgPriceDiscounting" class="text-danger"></lable>
                                                     </div>
@@ -295,7 +295,7 @@
                                                     <div class="form-group required">
                                                         @Html.LabelFor(model => model.PriceErosion,@MasterLocalizer["PriceErosion"], new { @class = "control-label" })
                                                         <span class="text-danger">*</span>
-                                                        @Html.TextBoxFor(model => model.PriceErosion, new { @type="number",@autocomplete = "off", @class = "form-control checkbox-checked", @placeholder = @MasterLocalizer["PriceErosion"] })
+                                                        @Html.TextBoxFor(model => model.PriceErosion, new { @min="0", @max="100", @maxlength="3",@type="number",@autocomplete = "off", @class = "form-control checkbox-checked", @placeholder = @MasterLocalizer["PriceErosion"] })
                                                         <lable id="valmsgPriceErosion" class="text-danger"></lable>
                                                     </div>
                                                 </div>
