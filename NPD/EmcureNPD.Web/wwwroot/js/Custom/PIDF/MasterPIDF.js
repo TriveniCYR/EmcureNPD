@@ -39,6 +39,14 @@ $(document).ready(function () {
     });
 });
 
+$('#RFDPriceDiscounting').focusout(function () {
+    var ControlID = $(this).attr('id');
+    var cntrlvalue = parseInt($(this).val());
+    if (cntrlvalue < 0 || cntrlvalue > 100) {
+       
+        $(this).val('');
+    }
+});
 $("[id*='].Strength']").blur(function () {
     var strengthval = $(this).val();
     $(this).val($.trim(strengthval));

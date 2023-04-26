@@ -12,10 +12,10 @@ namespace EmcureNPD.Business.Models
     {
         public long Pidfapiid { get; set; }
         public long Pidfid { get; set; }
-		[Required(ErrorMessageResourceType = typeof(Validation), ErrorMessageResourceName = "Required")]
+		
 		public string Apiname { get; set; }
         public int ApisourcingId { get; set; }
-		[Required(ErrorMessageResourceType = typeof(Validation), ErrorMessageResourceName = "Required")]
+		
 		public string Apivendor { get; set; }
         public DateTime ModifyDate { get; set; }
         public int ModifyBy { get; set; }
