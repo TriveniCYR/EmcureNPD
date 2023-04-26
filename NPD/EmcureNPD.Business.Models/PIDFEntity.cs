@@ -65,7 +65,7 @@ namespace EmcureNPD.Business.Models
         [Display(Name = "RFDInitialRevenuePotential", ResourceType = typeof(Master))]
         public string RFDInitialRevenuePotential { get; set; }
 
-        [Required(ErrorMessageResourceType = typeof(Validation), ErrorMessageResourceName = "Required")]
+        [Required(ErrorMessage = "This field required with value within 0-100")]
         [Display(Name = "RFDPriceDiscounting", ResourceType = typeof(Master))]
         public string RFDPriceDiscounting { get; set; }
 
