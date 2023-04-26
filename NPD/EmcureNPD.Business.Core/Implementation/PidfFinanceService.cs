@@ -402,5 +402,25 @@ namespace EmcureNPD.Business.Core.Implementation
                 return null;
             }
         }
+        public async Task<dynamic> GetSUIMSVolumeYearWiseByPackSize(int PidfId = 0, int Buid = 0, int StrengthId = 0,int PackSize=0)
+        {
+            try
+            {
+                SqlParameter[] osqlParameter = {
+                new SqlParameter("@PIDFId", PidfId),
+                new SqlParameter("@Buid", Buid),
+                new SqlParameter("@StrengthId", StrengthId),
+                new SqlParameter("@PackSize", PackSize),
+            };
+
+                DataSet dsPackSize = await _repository.GetDataSetBySP("ProcGetSUIMSVolumeYearWiseByPackSize", System.Data.CommandType.StoredProcedure, osqlParameter);
+                return dsPackSize;
+            }
+            catch (Exception ex)
+            {
+                await _ExceptionService.LogException(ex);
+                return null;
+            }
+        }
     }
 }

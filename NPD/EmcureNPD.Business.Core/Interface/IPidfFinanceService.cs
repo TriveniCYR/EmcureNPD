@@ -19,5 +19,6 @@ namespace EmcureNPD.Business.Core.Interface
         Task<dynamic> GetFinanceBatchSizeCoating(int PidffinaceId = 0);
         Task<dynamic> GetFinaceProjectionYear(int monthTobeDeduct = 0);
         Task<dynamic> GetPackSizeByStrengthId(int PidfId = 0, int Buid = 0, int StrengthId = 0);
+        Task<dynamic> GetSUIMSVolumeYearWiseByPackSize(int PidfId = 0, int Buid = 0, int StrengthId = 0, int PackSize = 0);
      }
 }

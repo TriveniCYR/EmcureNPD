@@ -44,11 +44,12 @@ function BUstregthPack_AddButtonClick() {
 }
 
 function Update_BUstregthPackTable(_objArrMainCommercial) {
-    let tableRow = null;
-    let tablechildRow = null;
+   
     $("#tblMainCommercial tbody tr").remove();
     $.each(_objArrMainCommercial, function (index, object) {
         let i = object.IndexofMaintable;
+        let tableRow = null;
+        let tablechildRow = null;
         var editbtn = '<a class="large-font editBtn" style="" href="" title="Edit"   onclick="btnEditBUStrengthPack(' + i + ')"><i class="fa fa-fw fa-edit mr-1"></i> ' + '</a>';
         var deletebtn = '<a class="large-font text-danger deleteBtn" style="" href="" title="Delete" data-keyboard="false" onclick="btnDeleteBUStrengthPack(' + i + ')"><i class="fa fa-fw fa-trash mr-1"></i> ' + '</a>';
 
@@ -57,15 +58,16 @@ function Update_BUstregthPackTable(_objArrMainCommercial) {
         let addYearbtn = '<a class="large-font addYearBtn" name="addYearBtn" style="" href="" title="Add Year Details" onclick="ShowYearForm(' + i + ',' + 0 +');return false;"><i class="fa fa-fw fa-plus mr-1"></i> ' + '</a>';
         tableRow = '<tr><td colspan="1">' + ExpandRowBtn + '</td> <td colspan="3" >' + object.MarketSizeInUnit + '</td><td <td colspan="3" >' + object.ShelfLife + '</td><td <td colspan="3" >' + object.CommercialPackSizeId + '</td> <td <td colspan="2" >' + editbtn + deletebtn + addYearbtn + '</td> </tr>';
         
-
+        $('#tblMainCommercial tbody').append(tableRow);
         UpdateYearTable(ColumnObjUpcase, object.PidfCommercialYears, i);
         var YearInnerHtml = $('#dvYearsTable').html()
         var RevenueInnerHtml = $('#dvtblRevenue').html()
         tablechildRow = '<tr style="display:none;background: aliceblue" class="clildrows_' + i + '" id="Yearclildrows_' + i + '"><td colspan="12" >' + YearInnerHtml + '</td> </tr> <tr style="display:none;background: aliceblue" class="clildrows_' + i + '" id="Revenueclildrows_' + i + '"><td colspan="12" >' + RevenueInnerHtml + '</td> </tr>'
-        tableRow += tablechildRow;
-        $('#tblMainCommercial tbody').append(tableRow);
+       // tableRow += tablechildRow;
+        $('#tblMainCommercial tbody').append(tablechildRow);
         
     });
+   // $('.tree').treegrid();
 }
 function ShowChildRows(id) {
     if (id >= 0) {
@@ -327,21 +329,23 @@ function AddColToRow(i, tdvalue) {
     var rowid = 'AddYearRow' + i;
     $('#' + rowid).append('<td>' + tdvalue + '</td>')
 }
-function editCommercialRow(i) {
+function editCommercialRow(mainIndex,i) {
     EditIndex = i;
-    ShowYearForm(0,i + 1);
+    MainRowEditIndex = mainIndex;
+    ShowYearForm(mainIndex,i + 1);
     // $('#NspunitsHigh').focus();
     // $('#btnCancelYearForm').focus();
-    var entityYear = objYears[i];
+    
+    var entityYear = ArrMainCommercial[mainIndex].PidfCommercialYears[i];
     $.each($('#AddYearForm').serializeArray(), function (_, kv) {
         $('#' + kv.name).val(entityYear[kv.name]);
     });
     $('#CommercialPackagingTypeId').focus();
 }
-function deleteCommercialRow(i) {
+function deleteCommercialRow(mainIndex,i) {
 
-    objYears.pop(i);
-    UpdateYearTable(ColumnObjUpcase);
+    ArrMainCommercial[mainIndex].PidfCommercialYears.pop(i);
+    Update_BUstregthPackTable(ArrMainCommercial);
 }
 function AddtblRevenueRow(year, i, columns) {
     var finalSelection = columns[9];
@@ -367,13 +371,16 @@ function SetCommercialDivReadonly() {
 }
 $('#mainDivCommercial').find("#btnSubmit").click(function () {
     if (ValidateMainForm() && ValidateBU_Strength()) {
-        if (objYears.length > 0) {
-            $.extend(objMainForm, { 'SaveType': 'Sv' });
-            SaveCommertialPIDFForm();
-        }
-        else {
-            toastr.error('No Year Data Added');
-        }
+
+        $.extend(objMainForm, { 'SaveType': 'Sv' });
+        SaveCommertialPIDFForm();
+        //if (objYears.length > 0) {
+        //    $.extend(objMainForm, { 'SaveType': 'Sv' });
+        //    SaveCommertialPIDFForm();
+        //}
+        //else {
+        //    toastr.error('No Year Data Added');
+        //}
     }
 });
 $('#mainDivCommercial').find("#btnSaveAsDraft").click(function () {
@@ -416,8 +423,8 @@ function UpdateYearTable(columns, objYeardetails,indexofMainTable) {
         });
         AddtblRevenueRow(objYeardetails[i], i, columns);
         $('#AddYearRow' + i).append
-            ('<td> <spam class="text-primary"> <i class="fas fa-edit mr-1" id="editIconAddyear_' + indexofMainTable + '_' + i + '" onclick="editCommercialRow(' + indexofMainTable + '_' + i + ')"></i></spam >' +
-            '<spam class="text-danger" ><i class="fa fa-fw fa-trash" id="deleteIconAddyear_' + indexofMainTable + '_' + i + '" onclick="deleteCommercialRow(' + indexofMainTable + '_' + i + ')"></i></spam></td>')
+            ('<td> <spam class="text-primary"> <i class="fas fa-edit mr-1" id="editIconAddyear_' + indexofMainTable + '_' + i + '" onclick="editCommercialRow(' + indexofMainTable + ',' + i + ')"></i></spam >' +
+            '<spam class="text-danger" ><i class="fa fa-fw fa-trash" id="deleteIconAddyear_' + indexofMainTable + '_' + i + '" onclick="deleteCommercialRow(' + indexofMainTable + ',' + i + ')"></i></spam></td>')
 
         $('#AddYearRow' + i + ' td:eq(10) spam i').prop('id', 'deleteIconAPI_' + indexofMainTable + '_' + i + '');
         $('#AddYearRow' + i + ' td:eq(10) spam i').attr('onclick', 'deleteRowApiDetails(' + indexofMainTable + '_' + i + ')');
@@ -431,9 +438,9 @@ function SaveCommertialPIDFForm() {
     $.extend(objMainForm, { 'MarketSizeInUnit': $("#MarketSizeInUnit").val() });
     $.extend(objMainForm, { 'ShelfLife': $("#ShelfLife").val() });
     $.extend(objMainForm, { 'encCreatedBy': $("#LoggedInUserId").val() });
-    $.extend(objMainForm, { 'PidfCommercialYears': objYears });
+    $.extend(objMainForm, { 'PIDFArrMainCommercial': ArrMainCommercial });
 
-    //console.log(JSON.stringify(objMainForm));
+    console.log(JSON.stringify(objMainForm));
     ajaxServiceMethod($('#hdnBaseURL').val() + SaveCommercialPIDF, 'POST', SaveCommertialPIDFFormSuccess, SaveCommertialPIDFFormError, JSON.stringify(objMainForm));
 }
 function SaveCommertialPIDFFormSuccess(data) {
