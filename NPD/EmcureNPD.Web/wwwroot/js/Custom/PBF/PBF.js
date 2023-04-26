@@ -24,7 +24,7 @@ $(document).ready(function () {
         PBFreadOnlyForm();
     }
     GetPBFDropdown();
-
+   
     $(document).on("change", ".AnalyticalTestTypeId", function () {
         var _selectedTestType = $(this).val();
         if (_selectedTestType != "" && _selectedTestType != "0") {
@@ -908,6 +908,16 @@ function GetPBFTabDetailsSuccess(data) {
 
             SetPhaseWiseBudget();
             PBFTabsReadOnly();
+            $('input[type="number"]').on("keypress keyup blur", function (event) {
+                var patt = new RegExp(/[0-9]*[.]{1}[0-9]{2}/i);
+                var matchedString = $(this).val().match(patt);
+                if (matchedString) {
+                    $(this).val(matchedString);
+                }
+                if ((event.which != 46 || $(this).val().indexOf('.') != -1) && (event.which < 48 || event.which > 57)) {
+                    event.preventDefault();
+                }
+            });
         }
     } catch (e) {
         toastr.error('Error:' + e.message);
