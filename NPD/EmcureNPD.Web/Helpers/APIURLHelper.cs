@@ -355,7 +355,7 @@ namespace EmcureNPD.Web.Helpers
         public static string GetPBFDropdown = "api/PBF/FillDropdown";
         public static string SavePBFRnD = "api/PBF/InsertUpdatePBF";
         public static string SaveCommercialPIDF = "api/CommercialPIDFForm/SaveCommercialPIDF";
-        public static string GetAllPackSize = "api/CommercialPIDFForm/GetAllPackSize";
+        //public static string GetAllPackSize = "api/CommercialPIDFForm/GetAllPackSize";
         public static string GetPbfFormData = "api/PBF/GetPbfFormData";
         public static string SavePBF = "api/PBF/InsertUpdatePBFDetails";
         public static string SavePBFAnatical = "api/PBF/PBFAnaLytical";
