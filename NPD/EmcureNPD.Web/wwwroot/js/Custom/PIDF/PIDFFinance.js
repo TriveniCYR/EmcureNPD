@@ -1,5 +1,6 @@
 ﻿let rowcount = 0;
 let selectedCurrencyText = "";
+let el = document.querySelectorAll('input[type="number"]');
 $(document).ready(function () {
     console.log("selectedSKUs" + selectedSKUs);
   
@@ -37,7 +38,7 @@ $(document).ready(function () {
         placeholder: "Select Currency..",
         allowClear: true
     });
-
+    
 });
 
 
@@ -469,31 +470,32 @@ function GetSUIMSVolumeYearWiseByPackSize(ele) {
     skuElements = row_index == 0 ? $(`select#Skus.Skus`).val() : $(`select#Skus${row_index}.Skus`).val();
     let packSizeId = $(`select#PakeSize${row_index}.PakeSize option:selected`).attr('data');
     let strengthId = $(`select#Skus${row_index}.Skus.DbSkus option:selected`).val() == undefined ? skuElements : $(`select#Skus${row_index}.Skus.DbSkus option:selected`).val();
-    if (packSizeId > 0 && strengthId > 0) {
-        ajaxServiceMethod($('#hdnBaseURL').val() + `api/PidfFinance/GetSUIMSVolumeYearWiseByPackSize/${pidfId}/${_encBuid}/${strengthId}/${packSizeId}`, 'GET', SUIMSVolumeYearWiseByPackSizeSuccess, SUIMSVolumeYearWiseByPackSizeError);
-        function SUIMSVolumeYearWiseByPackSizeSuccess(data) {
-            try {
+    if (validateDuplicateSKUs()) {
+        if (packSizeId > 0 && strengthId > 0) {
+            ajaxServiceMethod($('#hdnBaseURL').val() + `api/PidfFinance/GetSUIMSVolumeYearWiseByPackSize/${pidfId}/${_encBuid}/${strengthId}/${packSizeId}`, 'GET', SUIMSVolumeYearWiseByPackSizeSuccess, SUIMSVolumeYearWiseByPackSizeError);
+            function SUIMSVolumeYearWiseByPackSizeSuccess(data) {
+                try {
 
-                $.each(data.table, function (index, object) {
-                    $(`input#BrandPrice${row_index}.BrandPrice`).val(parseInt(object.brandPrice));
-                    $(`input#GenericListprice${row_index}.GenericListprice`).val(parseInt(object.genericPrice));
-                    let netRealisation = parseFloat(object.genericPrice) * 40 / 100;
-                    $(`input#NetRealisation${row_index}.NetRealisation`).val(netRealisation);
-                    $(`input#EstMat2020By12units${row_index}.EstMat2020By12units`).val(parseInt(object.suimsVolume));
-                    $(`input#Marketinpacks${row_index}.Marketinpacks`).val(parseInt(object.suimsVolume));
-                   
-                    //calculateBatchSizeCaoting(ele);
-                });
-                if (validateDuplicateSKUs()) {
+                    $.each(data.table, function (index, object) {
+                        $(`input#BrandPrice${row_index}.BrandPrice`).val(parseInt(object.brandPrice));
+                        $(`input#GenericListprice${row_index}.GenericListprice`).val(parseInt(object.genericPrice));
+                        let netRealisation = parseFloat(object.genericPrice) * 40 / 100;
+                        $(`input#NetRealisation${row_index}.NetRealisation`).val(netRealisation);
+                        $(`input#EstMat2020By12units${row_index}.EstMat2020By12units`).val(parseInt(object.suimsVolume));
+                        $(`input#Marketinpacks${row_index}.Marketinpacks`).val(parseInt(object.suimsVolume));
+
+                        //calculateBatchSizeCaoting(ele);
+                    });
+
                     calculateBatchSizeCaoting(ele);
                 }
+                catch (e) {
+                    toastr.error('Error:' + e.message);
+                }
             }
-            catch (e) {
-                toastr.error('Error:' + e.message);
+            function SUIMSVolumeYearWiseByPackSizeError() {
+                toastr.error("Error");
             }
-        }
-        function SUIMSVolumeYearWiseByPackSizeError() {
-            toastr.error("Error");
         }
     }
 }
@@ -628,6 +630,26 @@ function getYearByLast3Months(date) {
     return lastSixMonths.reverse() 
 }
 
+$(el).focus(function () {
+    let num = this.value;
+    if (num.toString() == "E" || num.toString() == "e") {
+        this.value = null;
+    }
+});
+$(el).focusout(function () {
+
+    let num = this.value;
+    if (num.toString() == "E" || num.toString() == "e") {
+        this.value = null;
+    }
+    if (num.toString() == "") {
+        this.value = null;
+        $(this).attr("required", true);
+    }
+    if (num.toString()!="") {
+        this.value = parseFloat(num).toFixed(0);
+    }
+});
 (function () {
     'use strict'
 
@@ -658,3 +680,4 @@ function getYearByLast3Months(date) {
            }, false)
        })
 })()
+

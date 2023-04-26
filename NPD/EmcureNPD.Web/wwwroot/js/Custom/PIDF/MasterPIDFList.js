@@ -269,7 +269,7 @@ function InitializePIDFList() {
                     var _ProjectManagementForm = '/Project/ProjectManagement?pidfid=' + row.encpidfid + '&bui=' + row.encbud;
                     var _enable = (row.pidfStatusID == 22);
                     if (IsEditProject || IsAddProject || IsViewProject) {
-                        html += '<a class="large-font" style="color:' + (_enable ? "#007bff" : "grey") + '" href="' + (_enable ? _ProjectManagementForm : "#") + '"><i class="fa fa-fw fa-edit mr-1"></i></a>';
+                        html += '<a class="large-font" style="color:' + (_enable ? "#007bff" : "grey") + '" href="' + (_enable ? _ProjectManagementForm : "#") + '"><i title="Add Task" class="fa fa-fw fa-plus-circle mr-1"></i></a>';
                     }
                 }
                 return html;
