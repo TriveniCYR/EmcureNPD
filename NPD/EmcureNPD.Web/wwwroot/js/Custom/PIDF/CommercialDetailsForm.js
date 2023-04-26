@@ -558,3 +558,21 @@ $('#btnCancelYearForm').click(function () {
     IsShowCancel_Save_buttons(true);
     ResetYearFormValues();
 });
+
+
+$('#PriceErosion').focusout(function () {
+    var ControlID = $(this).attr('id');
+    var cntrlvalue = parseInt($(this).val());
+    if (cntrlvalue < 0 || cntrlvalue > 100) {
+        $('#valmsg' + ControlID).text('Select value within 0-100');
+        $(this).val('');
+    }
+});
+$('#PriceDiscounting').focusout(function () {
+    var ControlID = $(this).attr('id');
+    var cntrlvalue = parseInt($(this).val());
+    if (cntrlvalue < 0 || cntrlvalue > 100) {
+        $('#valmsg' + ControlID).text('Select value within 0-100');
+        $(this).val('');
+    }
+});
