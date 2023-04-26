@@ -350,7 +350,7 @@ function GetSkus(pidfId) {
                 let optionhtml = '<option value = "0" selected="selected">--Select--</option>';
                 $.each(data.table, function (index, object) {
                     optionhtml += '<option value="' +
-                        object.pidfProductStrengthId + '" pack-size-id=' + object.packSizeId + '>' + object.strength + 'mg </option>';
+                        object.pidfProductStrengthId + '" data=' + object.packSizeId + '>' + object.strength + 'mg </option>';
                     
                 });
                 $("select.DbSkus").append(optionhtml);
@@ -373,7 +373,7 @@ function GetSkus(pidfId) {
                 let optionhtml = '<option value = "0">--Select--</option>';
                 $.each(data.table, function (index, object) {
                     optionhtml += '<option value="' +
-                        object.pidfProductStrengthId + '" pack-size-id=' + object.packSizeId + '>' + object.strength + 'mg </option>';
+                        object.pidfProductStrengthId + '" data=' + object.packSizeId + '>' + object.strength + 'mg </option>';
                 });
                 $("select#Skus").append(optionhtml);
             }
@@ -466,13 +466,9 @@ function getEditPackSize(strengthId,rowIndex) {
 
 function GetSUIMSVolumeYearWiseByPackSize(ele) {
     var row_index = $(ele).closest('tr').index();
-    //$(`input#BrandPrice${row_index}.BrandPrice`).attr("readonly", true);
-    //$(`input#GenericListprice${row_index}.GenericListprice`).attr("readonly", true);
-    //$(`input#NetRealisation${row_index}.NetRealisation`).attr("readonly", true);
-    //$(`input#EstMat2020By12units${row_index}.EstMat2020By12units`).attr("readonly", true);
-    //$(`input#Marketinpacks${row_index}.Marketinpacks`).attr("readonly", true);
+    skuElements = row_index == 0 ? $(`select#Skus.Skus`).val() : $(`select#Skus${row_index}.Skus`).val();
     let packSizeId = $(`select#PakeSize${row_index}.PakeSize option:selected`).attr('data');
-    let strengthId =$(`select#Skus${row_index}.Skus.DbSkus option:selected`).val()
+    let strengthId = $(`select#Skus${row_index}.Skus.DbSkus option:selected`).val() == undefined ? skuElements : $(`select#Skus${row_index}.Skus.DbSkus option:selected`).val();
     if (packSizeId > 0 && strengthId > 0) {
         ajaxServiceMethod($('#hdnBaseURL').val() + `api/PidfFinance/GetSUIMSVolumeYearWiseByPackSize/${pidfId}/${_encBuid}/${strengthId}/${packSizeId}`, 'GET', SUIMSVolumeYearWiseByPackSizeSuccess, SUIMSVolumeYearWiseByPackSizeError);
         function SUIMSVolumeYearWiseByPackSizeSuccess(data) {
