@@ -210,36 +210,34 @@ function SetChildRows() {
         $(this).find("td:eq(3) input").attr("id", "GenericListprice" + index.toString());
         $(this).find("td:eq(4) input").attr("name", "lsPidfFinanceBatchSizeCoating[" + index.toString() + "].NetRealisation");
         $(this).find("td:eq(4) input").attr("id", "NetRealisation" + index.toString());
-        $(this).find("td:eq(5) input").attr("name", "lsPidfFinanceBatchSizeCoating[" + index.toString() + "].EstMat2016By12units");
-        $(this).find("td:eq(5) input").attr("id", "EstMat2016By12units" + index.toString());
-        $(this).find("td:eq(6) input").attr("name", "lsPidfFinanceBatchSizeCoating[" + index.toString() + "].EstMat2020By12units");
-        $(this).find("td:eq(6) input").attr("id", "EstMat2020By12units" + index.toString());
-        $(this).find("td:eq(7) input").attr("name", "lsPidfFinanceBatchSizeCoating[" + index.toString() + "].Cagrover2016By12estMatunits");
-        $(this).find("td:eq(7) input").attr("id", "Cagrover2016By12estMatunits" + index.toString());
-        $(this).find("td:eq(8) input").attr("name", "lsPidfFinanceBatchSizeCoating[" + index.toString() + "].Marketinpacks");
-        $(this).find("td:eq(8) input").attr("id", "Marketinpacks" + index.toString());
-        $(this).find("td:eq(9) input").attr("name", "lsPidfFinanceBatchSizeCoating[" + index.toString() + "].BatchsizeinLtrTabs");
-        $(this).find("td:eq(9) input").attr("id", "BatchsizeinLtrTabs" + index.toString());
-        $(this).find("td:eq(10) input").attr("name", "lsPidfFinanceBatchSizeCoating[" + index.toString() + "].Batchsize");
-        $(this).find("td:eq(10) input").attr("id", "Batchsize" + index.toString());
-        $(this).find("td:eq(11) input").attr("name", "lsPidfFinanceBatchSizeCoating[" + index.toString() + "].Yield");
-        $(this).find("td:eq(11) input").attr("id", "Yield" + index.toString());
-        $(this).find("td:eq(12) input").attr("name", "lsPidfFinanceBatchSizeCoating[" + index.toString() + "].Batchoutput");
-        $(this).find("td:eq(12) input").attr("id", "Batchoutput" + index.toString());
-        $(this).find("td:eq(13) input").attr("name", "lsPidfFinanceBatchSizeCoating[" + index.toString() + "].ApiCad");
-        $(this).find("td:eq(13) input").attr("id", "ApiCad" + index.toString());
-        $(this).find("td:eq(14) input").attr("name", "lsPidfFinanceBatchSizeCoating[" + index.toString() + "].ExcipientsCad");
-        $(this).find("td:eq(14) input").attr("id", "ExcipientsCad" + index.toString());
-        $(this).find("td:eq(15) input").attr("name", "lsPidfFinanceBatchSizeCoating[" + index.toString() + "].PmCad");
-        $(this).find("td:eq(15) input").attr("id", "PmCad" + index.toString());
-        $(this).find("td:eq(16) input").attr("name", "lsPidfFinanceBatchSizeCoating[" + index.toString() + "].CcpcCad");
-        $(this).find("td:eq(16) input").attr("id", "CcpcCad" + index.toString());
-        $(this).find("td:eq(17) input").attr("name", "lsPidfFinanceBatchSizeCoating[" + index.toString() + "].FreightCad");
-        $(this).find("td:eq(17) input").attr("id", "FreightCad" + index.toString());
-        $(this).find("td:eq(18) input").attr("name", "lsPidfFinanceBatchSizeCoating[" + index.toString() + "].EmcureCogsPack");
-        $(this).find("td:eq(18) input").attr("id", "EmcureCogsPack" + index.toString());
-        $(this).find("td:eq(19) input").attr("name", "lsPidfFinanceBatchSizeCoating[" + index.toString() + "].PidffinaceBatchSizeCoatingId");
-        $(this).find("td:eq(19) input").attr("id", "PidffinaceBatchSizeCoatingId" + index.toString());
+        
+        $(this).find("td:eq(5) input").attr("name", "lsPidfFinanceBatchSizeCoating[" + index.toString() + "].EstMat2020By12units");
+        $(this).find("td:eq(5) input").attr("id", "EstMat2020By12units" + index.toString());
+       
+        $(this).find("td:eq(6) input").attr("name", "lsPidfFinanceBatchSizeCoating[" + index.toString() + "].Marketinpacks");
+        $(this).find("td:eq(6) input").attr("id", "Marketinpacks" + index.toString());
+        $(this).find("td:eq(7) input").attr("name", "lsPidfFinanceBatchSizeCoating[" + index.toString() + "].BatchsizeinLtrTabs");
+        $(this).find("td:eq(7) input").attr("id", "BatchsizeinLtrTabs" + index.toString());
+        $(this).find("td:eq(8) input").attr("name", "lsPidfFinanceBatchSizeCoating[" + index.toString() + "].Batchsize");
+        $(this).find("td:eq(8) input").attr("id", "Batchsize" + index.toString());
+        $(this).find("td:eq(9) input").attr("name", "lsPidfFinanceBatchSizeCoating[" + index.toString() + "].Yield");
+        $(this).find("td:eq(9) input").attr("id", "Yield" + index.toString());
+        $(this).find("td:eq(10) input").attr("name", "lsPidfFinanceBatchSizeCoating[" + index.toString() + "].Batchoutput");
+        $(this).find("td:eq(10) input").attr("id", "Batchoutput" + index.toString());
+        $(this).find("td:eq(11) input").attr("name", "lsPidfFinanceBatchSizeCoating[" + index.toString() + "].ApiCad");
+        $(this).find("td:eq(11) input").attr("id", "ApiCad" + index.toString());
+        $(this).find("td:eq(12) input").attr("name", "lsPidfFinanceBatchSizeCoating[" + index.toString() + "].ExcipientsCad");
+        $(this).find("td:eq(12) input").attr("id", "ExcipientsCad" + index.toString());
+        $(this).find("td:eq(13) input").attr("name", "lsPidfFinanceBatchSizeCoating[" + index.toString() + "].PmCad");
+        $(this).find("td:eq(13) input").attr("id", "PmCad" + index.toString());
+        $(this).find("td:eq(14) input").attr("name", "lsPidfFinanceBatchSizeCoating[" + index.toString() + "].CcpcCad");
+        $(this).find("td:eq(14) input").attr("id", "CcpcCad" + index.toString());
+        $(this).find("td:eq(15) input").attr("name", "lsPidfFinanceBatchSizeCoating[" + index.toString() + "].FreightCad");
+        $(this).find("td:eq(15) input").attr("id", "FreightCad" + index.toString());
+        $(this).find("td:eq(16) input").attr("name", "lsPidfFinanceBatchSizeCoating[" + index.toString() + "].EmcureCogsPack");
+        $(this).find("td:eq(16) input").attr("id", "EmcureCogsPack" + index.toString());
+        $(this).find("td:eq(17) input").attr("name", "lsPidfFinanceBatchSizeCoating[" + index.toString() + "].PidffinaceBatchSizeCoatingId");
+        $(this).find("td:eq(17) input").attr("id", "PidffinaceBatchSizeCoatingId" + index.toString());
        // console.log($(this).find("td:eq(0) input").attr("name", "lsPidfFinanceBatchSizeCoating[" + index.toString() + "].PidffinaceBatchSizeCoatingId").value())
     });
 }
@@ -310,28 +308,28 @@ function calculateBatchSizeCaoting(ele) {
             let textnetRealisation = netRealisation.toLocaleString("en");
             $(this).find("td:eq(4) input").attr("name", "lsPidfFinanceBatchSizeCoating[" + index.toString() + "].NetRealisation").val(textnetRealisation);
         }
-        if ($(this).find("td:eq(6) input").attr("name", "lsPidfFinanceBatchSizeCoating[" + index.toString() + "].EstMat2020By12units").val() > 0) {
-            EstMat2020By12units = parseFloat($(this).find("td:eq(6) input").attr("name", "lsPidfFinanceBatchSizeCoating[" + index.toString() + "].EstMat2020By12units").val());
+        if ($(this).find("td:eq(5) input").attr("name", "lsPidfFinanceBatchSizeCoating[" + index.toString() + "].EstMat2020By12units").val() > 0) {
+            EstMat2020By12units = parseFloat($(this).find("td:eq(5) input").attr("name", "lsPidfFinanceBatchSizeCoating[" + index.toString() + "].EstMat2020By12units").val());
             let textEstMat2020By12units = EstMat2020By12units.toLocaleString("en");
-            $(this).find("td:eq(8) input").attr("name", "lsPidfFinanceBatchSizeCoating[" + index.toString() + "].Marketinpacks").val(textEstMat2020By12units);
+            $(this).find("td:eq(6) input").attr("name", "lsPidfFinanceBatchSizeCoating[" + index.toString() + "].Marketinpacks").val(textEstMat2020By12units);
         }
-        if ($(this).find("td:eq(9) input").attr("name", "lsPidfFinanceBatchSizeCoating[" + index.toString() + "].BatchsizeinLtrTabs").val() > 0) {
-            BatchsizeinLtrTabs = $(this).find("td:eq(9) input").attr("name", "lsPidfFinanceBatchSizeCoating[" + index.toString() + "].BatchsizeinLtrTabs").val();
+        if ($(this).find("td:eq(7) input").attr("name", "lsPidfFinanceBatchSizeCoating[" + index.toString() + "].BatchsizeinLtrTabs").val() > 0) {
+            BatchsizeinLtrTabs = $(this).find("td:eq(7) input").attr("name", "lsPidfFinanceBatchSizeCoating[" + index.toString() + "].BatchsizeinLtrTabs").val();
             Batchsize = parseInt(BatchsizeinLtrTabs) / parseInt(packSize); //parseFloat($(this).find("td:eq(0) select option:selected").attr("name", "lsPidfFinanceBatchSizeCoating[" + index.toString() + "].Skus").text().replace("mg", "").trim())
-            $(this).find("td:eq(10) input").attr("name", "lsPidfFinanceBatchSizeCoating[" + index.toString() + "].Batchsize").val(parseInt(Batchsize));
+            $(this).find("td:eq(8) input").attr("name", "lsPidfFinanceBatchSizeCoating[" + index.toString() + "].Batchsize").val(parseInt(Batchsize));
         }
-        if ($(this).find("td:eq(11) input").attr("name", "lsPidfFinanceBatchSizeCoating[" + index.toString() + "].Yield").val() > 0) {
-            Yield = $(this).find("td:eq(11) input").attr("name", "lsPidfFinanceBatchSizeCoating[" + index.toString() + "].Yield").val();
+        if ($(this).find("td:eq(9) input").attr("name", "lsPidfFinanceBatchSizeCoating[" + index.toString() + "].Yield").val() > 0) {
+            Yield = $(this).find("td:eq(9) input").attr("name", "lsPidfFinanceBatchSizeCoating[" + index.toString() + "].Yield").val();
             Batchoutput = parseFloat(Yield) * parseFloat(packSize); //parseFloat($(this).find("td:eq(0) select option:selected").attr("name", "lsPidfFinanceBatchSizeCoating[" + index.toString() + "].Skus").text().replace("mg", "").trim())
-            $(this).find("td:eq(12) input").attr("name", "lsPidfFinanceBatchSizeCoating[" + index.toString() + "].Batchoutput").val(Batchoutput);
+            $(this).find("td:eq(10) input").attr("name", "lsPidfFinanceBatchSizeCoating[" + index.toString() + "].Batchoutput").val(Batchoutput);
         }
-            ApiCad = $(this).find("td:eq(13) input").attr("name", "lsPidfFinanceBatchSizeCoating[" + index.toString() + "].ApiCad").val();
-            ExcipientsCad = $(this).find("td:eq(14) input").attr("name", "lsPidfFinanceBatchSizeCoating[" + index.toString() + "].ExcipientsCad").val();
-            PmCad = $(this).find("td:eq(15) input").attr("name", "lsPidfFinanceBatchSizeCoating[" + index.toString() + "].PmCad").val();
-            CcpcCad = $(this).find("td:eq(16) input").attr("name", "lsPidfFinanceBatchSizeCoating[" + index.toString() + "].CcpcCad").val();
-            FreightCad = $(this).find("td:eq(17) input").attr("name", "lsPidfFinanceBatchSizeCoating[" + index.toString() + "].FreightCad").val();
+            ApiCad = $(this).find("td:eq(11) input").attr("name", "lsPidfFinanceBatchSizeCoating[" + index.toString() + "].ApiCad").val();
+            ExcipientsCad = $(this).find("td:eq(12) input").attr("name", "lsPidfFinanceBatchSizeCoating[" + index.toString() + "].ExcipientsCad").val();
+            PmCad = $(this).find("td:eq(13) input").attr("name", "lsPidfFinanceBatchSizeCoating[" + index.toString() + "].PmCad").val();
+            CcpcCad = $(this).find("td:eq(14) input").attr("name", "lsPidfFinanceBatchSizeCoating[" + index.toString() + "].CcpcCad").val();
+            FreightCad = $(this).find("td:eq(15) input").attr("name", "lsPidfFinanceBatchSizeCoating[" + index.toString() + "].FreightCad").val();
             sumforEmcureCogsPack = parseInt(Batchsize) + parseInt(Yield) + parseInt(Batchoutput) + parseInt(ApiCad) + parseInt(ExcipientsCad) + parseInt(PmCad) + parseInt(CcpcCad) + parseInt(FreightCad);
-            $(this).find("td:eq(18) input").attr("name", "lsPidfFinanceBatchSizeCoating[" + index.toString() + "].EmcureCogsPack").val(sumforEmcureCogsPack);
+            $(this).find("td:eq(16) input").attr("name", "lsPidfFinanceBatchSizeCoating[" + index.toString() + "].EmcureCogsPack").val(sumforEmcureCogsPack);
        // });
     })
 }
@@ -357,17 +355,12 @@ function GetSkus(pidfId) {
                         $(`input#BrandPrice${i}.BrandPrice`).attr("readonly", true);
                         $(`input#GenericListprice${i}.GenericListprice`).attr("readonly", true);
                         $(`input#NetRealisation${i}.NetRealisation`).attr("readonly", true);
+                        $(`input#EstMat2020By12units${i}.EstMat2020By12units`).attr("readonly", true);
+                        $(`input#Marketinpacks${i}.Marketinpacks`).attr("readonly", true);
+
                     }
                 });
-                let arrselectedPackSize = _selectedPackSize.split(',');
-                if (arrselectedPackSize[0] != '' && arrselectedPackSize.length > 0) {
-                    arrselectedPackSize.forEach(function (val, i) {
-                        if (val == arrselectedPackSize[i]) {
-                            $(`select#PakeSize${i}.PakeSize option:selected`).val(val);
-
-                        }
-                    });
-                }
+                
             }
             else {
                 $('select#Skus').html('')
@@ -400,23 +393,25 @@ function getPackSize(ele) {
             var row_index = $(ele).closest('tr').index();
          
                 $(`select#PakeSize${row_index}.PakeSize`).html('')
-                let optionhtml = '';
+                let optionhtml = '<option value = "0">--Select--</option>';
                 $.each(data.table, function (index, object) {
                     optionhtml += '<option value="' +
-                        object.packSize + '" pack-size-id=' + object.packSize + '>' + object.packSizeName + ' </option>';
-                    $(`input#BrandPrice${row_index}.BrandPrice`).val(parseInt(object.brandPrice));
-                    $(`input#GenericListprice${row_index}.GenericListprice`).val(parseInt(object.genericPrice));
-                    let netRealisation = parseFloat(object.genericPrice) * 40 / 100;
-                    $(`input#NetRealisation${row_index}.NetRealisation`).val(netRealisation);
-
-                    $(`input#BrandPrice${row_index}.BrandPrice`).attr("readonly", true);
-                    $(`input#GenericListprice${row_index}.GenericListprice`).attr("readonly", true);
-                    $(`input#NetRealisation${row_index}.NetRealisation`).attr("readonly", true);
+                        object.packSize + '" data=' + object.packSizeId+ '>' + object.packSizeName + ' </option>';
+                    
                     //calculateBatchSizeCaoting(ele);
+                   
                 });
-                $(`select#PakeSize${row_index}.PakeSize`).append(optionhtml);
-            
-             
+            let arrselectedPackSize = _selectedPackSize.split(',');
+            if (arrselectedPackSize[0] != '' && arrselectedPackSize.length > 0) {
+                arrselectedPackSize.forEach(function (val, i) {
+                    if (val == arrselectedPackSize[i]) {
+                        $(`select#PakeSize${i}.PakeSize option:selected`).val(val);
+
+                    }
+                });
+            }
+            $(`select#PakeSize${row_index}.PakeSize`).append(optionhtml);
+            validateDuplicateSKUs();
             }
          catch (e) {
             toastr.error('Error:' + e.message);
@@ -426,6 +421,7 @@ function getPackSize(ele) {
         toastr.error("Error");
     }
 }
+
 function getEditPackSize(strengthId,rowIndex) {
    
     ajaxServiceMethod($('#hdnBaseURL').val() + `api/PidfFinance/GetPackSizeByStrengthId/${pidfId}/${_encBuid}/${strengthId}`, 'GET', getPackSizeSuccess, getPackSizeError);
@@ -435,16 +431,21 @@ function getEditPackSize(strengthId,rowIndex) {
             /*var row_index = $(ele).closest('tr').index();*/
 
             $(`select#PakeSize${rowIndex}.PakeSize`).html('')
-            let optionhtml = '';
+            let optionhtml = '<option value = "0">--Select--</option>';
             $.each(data.table, function (index, object) {
                 optionhtml += '<option value="' +
-                    object.packSize + '" pack-size-id=' + object.packSize + '>' + object.packSizeName + ' </option>';
-                $(`input#BrandPrice${rowIndex}.BrandPrice`).val(parseInt(object.brandPrice));
-                $(`input#GenericListprice${rowIndex}.GenericListprice`).val(parseInt(object.genericPrice));
-                let netRealisation = parseFloat(object.genericPrice) * 40 / 100;
-                $(`input#NetRealisation${rowIndex}.NetRealisation`).val(netRealisation);
-                //calculateBatchSizeCaoting(ele);
+                    object.packSize + '" data=' + object.packSizeId+ '>' + object.packSizeName + ' </option>';
             });
+            let arrselectedPackSize = _selectedPackSize.split(',');
+            if (arrselectedPackSize[0] != '' && arrselectedPackSize.length > 0) {
+                arrselectedPackSize.forEach(function (val, i) {
+                    if (val == arrselectedPackSize[i]) {
+                        $(`select#PakeSize${i}.PakeSize`).val(val);
+                        $(`select#PakeSize${i}.PakeSize`).find('option[value="' + val + '"]').attr('selected', 'selected'); 
+
+                    }
+                });
+            }
             $(`select#PakeSize${rowIndex}.PakeSize`).append(optionhtml);
 
 
@@ -455,6 +456,43 @@ function getEditPackSize(strengthId,rowIndex) {
     }
     function getPackSizeError() {
         toastr.error("Error");
+    }
+}
+
+function GetSUIMSVolumeYearWiseByPackSize(ele) {
+    var row_index = $(ele).closest('tr').index();
+    let packSizeId = $(`select#PakeSize${row_index}.PakeSize option:selected`).attr('data');
+    let strengthId =$(`select#Skus${row_index}.Skus.DbSkus option:selected`).val()
+    if (packSizeId > 0 && strengthId > 0) {
+        ajaxServiceMethod($('#hdnBaseURL').val() + `api/PidfFinance/GetSUIMSVolumeYearWiseByPackSize/${pidfId}/${_encBuid}/${strengthId}/${packSizeId}`, 'GET', SUIMSVolumeYearWiseByPackSizeSuccess, SUIMSVolumeYearWiseByPackSizeError);
+        function SUIMSVolumeYearWiseByPackSizeSuccess(data) {
+            try {
+
+                $.each(data.table, function (index, object) {
+                    $(`input#BrandPrice${row_index}.BrandPrice`).val(parseInt(object.brandPrice));
+                    $(`input#GenericListprice${row_index}.GenericListprice`).val(parseInt(object.genericPrice));
+                    let netRealisation = parseFloat(object.genericPrice) * 40 / 100;
+                    $(`input#NetRealisation${row_index}.NetRealisation`).val(netRealisation);
+                    $(`input#EstMat2020By12units${row_index}.EstMat2020By12units`).val(parseInt(object.suimsVolume));
+                    $(`input#Marketinpacks${row_index}.Marketinpacks`).val(parseInt(object.suimsVolume));
+                    $(`input#BrandPrice${row_index}.BrandPrice`).attr("readonly", true);
+                    $(`input#GenericListprice${row_index}.GenericListprice`).attr("readonly", true);
+                    $(`input#NetRealisation${row_index}.NetRealisation`).attr("readonly", true);
+                    $(`input#EstMat2020By12units${row_index}.EstMat2020By12units`).attr("readonly", true);
+                    $(`input#Marketinpacks${row_index}.Marketinpacks`).attr("readonly", true);
+                    //calculateBatchSizeCaoting(ele);
+                });
+                if (validateDuplicateSKUs()) {
+                    calculateBatchSizeCaoting(ele);
+                }
+            }
+            catch (e) {
+                toastr.error('Error:' + e.message);
+            }
+        }
+        function SUIMSVolumeYearWiseByPackSizeError() {
+            toastr.error("Error");
+        }
     }
 }
 function fnGetActiveBusinessUnit() {
@@ -521,21 +559,21 @@ $("select#Currency").on("select2:select select2:unselecting", function (e) {
     GetFinancialProjectionYear(_selectedProjectStartDate);
 });
 function validateDuplicateSKUs() {
-    let packSize = 0;
-    let strengthId = 0;
-    let previousstrengthId = 0;
-    let previouspackSize = 0;
+    let packSize = [];
+    let strengthId = [];
     $.each($('#FinanceTableBoy tr'), function (index, value) {
         if ($('#FinanceTableBoy tr').length > 1) {
-            strengthId = $(this).find("td:eq(0) select option:selected").attr("name", "lsPidfFinanceBatchSizeCoating[" + index.toString() + "].Skus").val();
-            previousstrengthId = $(this).find("td:eq(0) select option:selected").attr("name", "lsPidfFinanceBatchSizeCoating[" + parseInt(index - 1).toString() + "].Skus").val();
-            //getPackSize(strengthId);
-            previouspackSize = $(this).find("td:eq(1) select option:selected").attr("name", "lsPidfFinanceBatchSizeCoating[" + parseInt(index - 1).toString() + "].PakeSize").val();
-            packSize = $(this).find("td:eq(1) select option:selected").attr("name", "lsPidfFinanceBatchSizeCoating[" + index.toString() + "].PakeSize").val();
-            //if (previousstrengthId > 0 && strengthId > 0 && previouspackSize > 0 && packSize > 0 && previousstrengthId == strengthId && previouspackSize == packSize) {
-                if (previousstrengthId > 0 && strengthId > 0 && previousstrengthId == strengthId ) {
-                toastr.error("duplicate SKU not alowed", "Error:");
-                deleteRowFinance(0, this);
+            strengthId.push($(this).find("td:eq(0) select option:selected").attr("name", "lsPidfFinanceBatchSizeCoating[" + parseInt(index).toString() + "].Skus").val());
+            packSize.push($(this).find("td:eq(1) select option:selected").attr("name", "lsPidfFinanceBatchSizeCoating[" + parseInt(index).toString() + "].PakeSize").val())
+            if (strengthId.includes($(`select#Skus${index + 1}`).val()) && packSize.includes($(`select#PakeSize${index + 1}`).val())) {
+                $(`select#Skus${index + 1}`).prop('selectedIndex', 0);
+                $(`select#PakeSize${index + 1}`).val(0);
+                $(`#BrandPrice${index + 1}`).val(null);
+                $(`#GenericListprice${index + 1}`).val(null);
+                $(`#NetRealisation${index + 1}`).val(null);
+                $(`#EstMat2020By12units${index + 1}`).val(null);
+                $(`#Marketinpacks${index + 1}`).val(null);
+                toastr.error("duplicate SKU and PackSize not allowed", "Error:");
                 return false;
             }
         }

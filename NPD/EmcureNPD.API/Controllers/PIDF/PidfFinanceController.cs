@@ -230,5 +230,32 @@ namespace EmcureNPD.API.Controllers.PIDF
                 return _ObjectResponse.Create(null, (Int32)HttpStatusCode.BadRequest, "No Records found");
             }
         }
+        /// <summary>
+        /// Description - To Get GetPackSizeByStrengthId
+        /// </summary>
+        /// <param name="oGetPackSizeByStrengthId"></param>
+        /// <returns></returns>
+        /// <response code="200">OK</response>
+        /// <response code="400">Bad Request</response>
+        /// <response code="403">Forbidden</response>
+        /// <response code="404">Not Found</response>
+        /// <response code="405">Method Not Allowed</response>
+        /// <response code="500">Internal Server</response>
+        [HttpGet]
+        [Route("GetSUIMSVolumeYearWiseByPackSize/{pidfid}/{buid}/{StrengthId}/{PackSize}")]
+        public async Task<IActionResult> GetSUIMSVolumeYearWiseByPackSize(string pidfid, string buid, int StrengthId,int PackSize)
+        {
+            try
+            {
+                pidfid = UtilityHelper.Decreypt(Convert.ToString(pidfid));
+                buid = UtilityHelper.Decreypt(Convert.ToString(buid));
+                return _ObjectResponse.CreateData(await _pidfFinanceService.GetSUIMSVolumeYearWiseByPackSize(Convert.ToInt32(pidfid), Convert.ToInt32(buid), StrengthId, PackSize), (Int32)HttpStatusCode.OK);
+            }
+            catch (Exception ex)
+            {
+                await _ExceptionService.LogException(ex);
+                return _ObjectResponse.Create(null, (Int32)HttpStatusCode.BadRequest, "No Records found");
+            }
+        }
     }
 }
