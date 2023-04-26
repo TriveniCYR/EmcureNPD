@@ -25,6 +25,12 @@ $(document).ready(function () {
         $('.add-rows').css("display", "block");
         $('.del-rows').css("display", "block");
         SetChildRowDeleteIcon();
+        //var row_index = $(ele).closest('tr').index();
+        $(`.BrandPrice`).attr("readonly", true);
+        $(`.GenericListprice`).attr("readonly", true);
+        $(`.NetRealisation`).attr("readonly", true);
+        $(`.EstMat2020By12units`).attr("readonly", true);
+        $(`.Marketinpacks`).attr("readonly", true);
     }
 
     $("#Currency").select2({
@@ -334,7 +340,7 @@ function calculateBatchSizeCaoting(ele) {
     })
 }
 function GetSkus(pidfId) {
-    //ajaxServiceMethod($('#hdnBaseURL').val() + "api/PidfFinance/GetStrengthByPIDFId" + "/" + pidfId, 'GET', GetSkusListSuccess, GetSkusListError);
+    
     ajaxServiceMethod($('#hdnBaseURL').val() + `api/PidfFinance/GetStrengthByPIDFAnddBuId/${pidfId}/${_encBuid}`, 'GET', GetSkusListSuccess, GetSkusListError);
     function GetSkusListSuccess(data) {
         try {
@@ -460,6 +466,11 @@ function getEditPackSize(strengthId,rowIndex) {
 
 function GetSUIMSVolumeYearWiseByPackSize(ele) {
     var row_index = $(ele).closest('tr').index();
+    //$(`input#BrandPrice${row_index}.BrandPrice`).attr("readonly", true);
+    //$(`input#GenericListprice${row_index}.GenericListprice`).attr("readonly", true);
+    //$(`input#NetRealisation${row_index}.NetRealisation`).attr("readonly", true);
+    //$(`input#EstMat2020By12units${row_index}.EstMat2020By12units`).attr("readonly", true);
+    //$(`input#Marketinpacks${row_index}.Marketinpacks`).attr("readonly", true);
     let packSizeId = $(`select#PakeSize${row_index}.PakeSize option:selected`).attr('data');
     let strengthId =$(`select#Skus${row_index}.Skus.DbSkus option:selected`).val()
     if (packSizeId > 0 && strengthId > 0) {
@@ -474,11 +485,7 @@ function GetSUIMSVolumeYearWiseByPackSize(ele) {
                     $(`input#NetRealisation${row_index}.NetRealisation`).val(netRealisation);
                     $(`input#EstMat2020By12units${row_index}.EstMat2020By12units`).val(parseInt(object.suimsVolume));
                     $(`input#Marketinpacks${row_index}.Marketinpacks`).val(parseInt(object.suimsVolume));
-                    $(`input#BrandPrice${row_index}.BrandPrice`).attr("readonly", true);
-                    $(`input#GenericListprice${row_index}.GenericListprice`).attr("readonly", true);
-                    $(`input#NetRealisation${row_index}.NetRealisation`).attr("readonly", true);
-                    $(`input#EstMat2020By12units${row_index}.EstMat2020By12units`).attr("readonly", true);
-                    $(`input#Marketinpacks${row_index}.Marketinpacks`).attr("readonly", true);
+                   
                     //calculateBatchSizeCaoting(ele);
                 });
                 if (validateDuplicateSKUs()) {
