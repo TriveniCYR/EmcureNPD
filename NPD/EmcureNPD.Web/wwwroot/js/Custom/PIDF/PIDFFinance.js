@@ -1,5 +1,6 @@
 ﻿let rowcount = 0;
 let selectedCurrencyText = "";
+let el = document.querySelectorAll('input[type="number"]');
 $(document).ready(function () {
     console.log("selectedSKUs" + selectedSKUs);
   
@@ -37,7 +38,7 @@ $(document).ready(function () {
         placeholder: "Select Currency..",
         allowClear: true
     });
-
+    
 });
 
 
@@ -629,6 +630,26 @@ function getYearByLast3Months(date) {
     return lastSixMonths.reverse() 
 }
 
+$(el).focus(function () {
+    let num = this.value;
+    if (num.toString() == "E" || num.toString() == "e") {
+        this.value = null;
+    }
+});
+$(el).focusout(function () {
+
+    let num = this.value;
+    if (num.toString() == "E" || num.toString() == "e") {
+        this.value = null;
+    }
+    if (num.toString() == "") {
+        this.value = null;
+        $(this).attr("required", true);
+    }
+    if (num.toString()!="") {
+        this.value = parseFloat(num).toFixed(0);
+    }
+});
 (function () {
     'use strict'
 
@@ -659,3 +680,4 @@ function getYearByLast3Months(date) {
            }, false)
        })
 })()
+
