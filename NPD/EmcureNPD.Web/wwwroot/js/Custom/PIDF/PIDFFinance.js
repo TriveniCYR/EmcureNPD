@@ -436,18 +436,17 @@ function getEditPackSize(strengthId,rowIndex) {
                 optionhtml += '<option value="' +
                     object.packSize + '" data=' + object.packSizeId+ '>' + object.packSizeName + ' </option>';
             });
+            
+            $(`select#PakeSize${rowIndex}.PakeSize`).append(optionhtml);
             let arrselectedPackSize = _selectedPackSize.split(',');
             if (arrselectedPackSize[0] != '' && arrselectedPackSize.length > 0) {
                 arrselectedPackSize.forEach(function (val, i) {
                     if (val == arrselectedPackSize[i]) {
                         $(`select#PakeSize${i}.PakeSize`).val(val);
-                        $(`select#PakeSize${i}.PakeSize`).find('option[value="' + val + '"]').attr('selected', 'selected'); 
-
+                        $(`select#PakeSize${i}.PakeSize`).find('option[value="' + val + '"]').prop('selected',true);
                     }
                 });
             }
-            $(`select#PakeSize${rowIndex}.PakeSize`).append(optionhtml);
-
 
         }
         catch (e) {
