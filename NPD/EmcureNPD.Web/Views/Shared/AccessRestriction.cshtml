@@ -40,21 +40,21 @@
             <div class="card">
                 <h2 class="login-card-title m-0 text-center text-danger">Unauthorized</h2>
                 <div class="card-body login-card-body">
-                   
-                            <p>
-                                Requested page by you is unauthorized, Please contact with administrator to get access of the same.
-                        Meanwhile, you may return to 
+
+                    <p>
+                        Requested page by you is unauthorized, Please contact with administrator to get access of the same.
+                        Meanwhile, you may return to
                         <br />
                         <br />
                         <a class="btn btn-success" href="@Url.Action("Index", "Home")">Dashboard</a>
                         <a class="btn btn-danger" href="@Url.Action("Login", "Account")">Login</a>
-                            </p>
-                            </div>
-                    </div>
-                  
+                    </p>
+                </div>
+            </div>
 
-     
-    </div>
+
+
+        </div>
     </div>
     <!-- ./wrapper -->
     <!-- jQuery -->
@@ -64,6 +64,13 @@
 
     <!-- AdminLTE App -->
     <script src="~/AdminLTE/dist/js/adminlte.js"></script>
+    <script>
+        $(document).ready(function () {
+         $(document).bind("contextmenu", function (e) {
+            return false;
+        });
+         });
+    </script>
 
 </body>
 </html>
