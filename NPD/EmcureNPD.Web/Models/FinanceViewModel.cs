@@ -36,19 +36,19 @@ namespace EmcureNPD.Web.Models
         public decimal DiscountRate { get; set; }
         public decimal Incometaxrate { get; set; }
         public int Opexasapercenttosale { get; set; }
-        public int ExternalProfitSharepercent { get; set; }
-        public int CollectioninDays { get; set; }
-        public int InventoryinDays { get; set; }
-        public int CreditorinDays { get; set; }
+        public double? ExternalProfitSharepercent { get; set; }
+        public double? CollectioninDays { get; set; }
+        public double? InventoryinDays { get; set; }
+        public double? CreditorinDays { get; set; }
         public decimal MarketingAllowance { get; set; }
         public decimal RegulatoryMaintenanceCost { get; set; }
         public decimal GrosstoNet { get; set; }
 
         //DealTermsViewModel
-        public int Noofbatchestobemanufactured { get; set; }
+        public double? Noofbatchestobemanufactured { get; set; }
 
         public DateTime NoofbatchestobemanufacturedPhaseEndDate { get; set; }
-        public int NoSKUs { get; set; }
+        public double? NoSKUs { get; set; }
         public DateTime NoSKUsPhaseEndDate { get; set; }
         public decimal RandDAnalyticalcost { get; set; }
         public DateTime RandDAnalyticalcostPhaseEndDate { get; set; }
@@ -119,17 +119,17 @@ namespace EmcureNPD.Web.Models
         public string EscalationinCOGS { get; set; }
         public double discountRate { get; set; }
         public double incometaxrate { get; set; }
-        public int  opexasapercenttosale { get; set; }
-        public int externalProfitSharepercent { get; set; }
-        public int collectioninDays { get; set; }
-        public int inventoryinDays { get; set; }
-        public int creditorinDays { get; set; }
+        public double? opexasapercenttosale { get; set; }
+        public double? externalProfitSharepercent { get; set; }
+        public double collectioninDays { get; set; }
+        public double inventoryinDays { get; set; }
+        public double creditorinDays { get; set; }
         public double marketingAllowance { get; set; }
         public double regulatoryMaintenanceCost { get; set; }
         public double grosstoNet { get; set; }
-        public object noofbatchestobemanufactured { get; set; }
+        public double noofbatchestobemanufactured { get; set; }
         public DateTime noofbatchestobemanufacturedPhaseEndDate { get; set; }
-        public object noSkus { get; set; }
+        public double noSkus { get; set; }
         public DateTime noSkusPhaseEndDate { get; set; }
         public double randDanalyticalcost { get; set; }
         public DateTime randDanalyticalcostPhaseEndDate { get; set; }
