@@ -1,5 +1,6 @@
 ﻿var _userRegion = [];
 var _IPDMode = 0;
+var ExpirydateErrorMsg = 'Extension Expiry Date should greater than Original Expiry Date';
 $(document).ready(function () {
     fnGetActiveBusinessUnit();
     GetRegionList();
@@ -13,33 +14,31 @@ $(document).ready(function () {
         getPIDFAccordion(_PIDFAccordionURL, _PIDFID, "dvPIDFAccrdion");
     }
 
-    $(document).on("change", "[id*='ExtensionExpiryDate']", function () {
-    
-        var ControlID = $(this).attr('id');
-        var arr_id = ControlID.split('.');
-        var prefixofID = arr_id[0];
-
+    $(document).on("change", "[id*='ExtensionExpiryDate']", function () {   
         var _extensionExpiryDate = new Date($(this).val());
-        var originalExpirateDateControlId = prefixofID + '.OriginalExpiryDate';
-
-        var _originalExpiryDate = new Date($('.originalDate').val());
-
+        var _originalExpiryDate = new Date($(this).closest('tr').find('.originalDate').val());
         if (_extensionExpiryDate <= _originalExpiryDate) {
             $(this).val('');
             $(this).css("border-color", "red");
+            toastr.error(ExpirydateErrorMsg);
         }
         else {
             $(this).css("border-color", "");
         }
-
-
-        //var added_A_day_Date = originalExiprayDate;
-        //added_A_day_Date.setDate(originalExiprayDate.getDate() + 1);
-        //var setminval = $.datepicker.formatDate("yy-mm-dd", added_A_day_Date).toString();
-        //var extentionExpirateDateControlId = prefixofID + '.ExtensionExpiryDate';
-        //$("#" + extentionExpirateDateControlId).prop("min", setminval);
-
     });
+    $(document).on("change", "[id*='OriginalExpiryDate']", function () {
+        var _originalExpiryDate  = new Date($(this).val());
+        var _extensionExpiryDate = new Date($(this).closest('tr').find('.extendedDate').val());
+        if (_extensionExpiryDate <= _originalExpiryDate) {
+            $(this).val('');
+            $(this).css("border-color", "red");
+            toastr.error(ExpirydateErrorMsg);
+        }
+        else {
+            $(this).css("border-color", "");
+        }
+    });
+
 });
 
 
