@@ -290,3 +290,9 @@ form-control.is-valid, .was-validated .form-control:valid {
         width: 150px;
         height: 43px;
     }
+.large-popup{max-width:88% !important}
+.highlight-tr {
+    background-color: rgba(0,0,0,.05);
+    font-weight: bold;
+}
+/*.large-popup .form-group{margin-bottom:0.2rem !important;}*/

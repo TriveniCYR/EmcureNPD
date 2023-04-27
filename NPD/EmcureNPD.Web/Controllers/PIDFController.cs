@@ -211,14 +211,14 @@ namespace EmcureNPD.Web.Controllers
             pidfid = UtilityHelper.Decreypt(pidfid);
             bui = UtilityHelper.Decreypt(bui);
             string AssignedBusinessUnit = _helper.GetAssignedBusinessUnit();
-            HttpResponseMessage resMsg;
-            var _pidfEntity = GetPidfFormModel(int.Parse(pidfid), out resMsg); //PIDF Form data
-            var _ipdFormEntity = GetModelForIPDForm(pidfid, bui); //IPD Form Data
-            string bussnessId = _pidfEntity.BusinessUnitId.ToString();
+            //HttpResponseMessage resMsg;
+            //var _pidfEntity = GetPidfFormModel(int.Parse(pidfid), out resMsg); //PIDF Form data
+            //var _ipdFormEntity = GetModelForIPDForm(pidfid, bui); //IPD Form Data
+            //string bussnessId = _pidfEntity.BusinessUnitId.ToString();
             var StrengthId = 0;
             HttpContext.Request.Cookies.TryGetValue(UserHelper.EmcureNPDToken, out string token);
             APIRepository objapi = new(_cofiguration);
-            HttpResponseMessage responseMessage = objapi.APICommunication(APIURLHelper.GetCommercialFormData + "/" + pidfid + "/" + bussnessId + "/" + StrengthId, HttpMethod.Get, token).Result;
+            HttpResponseMessage responseMessage = objapi.APICommunication(APIURLHelper.GetCommercialFormData + "/" + pidfid + "/" + bui + "/" + StrengthId, HttpMethod.Get, token).Result;
             if (responseMessage.IsSuccessStatusCode)
             {
                 string jsonResponse = responseMessage.Content.ReadAsStringAsync().Result;
@@ -226,7 +226,7 @@ namespace EmcureNPD.Web.Controllers
                 oPIDForm = data._object;
                 oPIDForm.Pidfid = Convert.ToInt64(pidfid);
                 oPIDForm.CreatedBy = _helper.GetLoggedInUserId();
-                TempData["BusList"] = JsonConvert.SerializeObject(oPIDForm.MasterBusinessUnitEntities);
+                //TempData["BusList"] = JsonConvert.SerializeObject(oPIDForm.MasterBusinessUnitEntities);
 
                 HttpResponseMessage responseMS = objapi.APICommunication(APIURLHelper.GetPIDFById + "/" + pidfid, HttpMethod.Get, token).Result;
 
@@ -236,10 +236,10 @@ namespace EmcureNPD.Web.Controllers
                     var retPIDF = JsonConvert.DeserializeObject<APIResponseEntity<PIDFEntity>>(jsnRs);
                 }
             }
-            oPIDForm.pidfEntity = _pidfEntity;
-            oPIDForm.IPDFormEntity = _ipdFormEntity;
+            //oPIDForm.pidfEntity = _pidfEntity;
+            //oPIDForm.IPDFormEntity = _ipdFormEntity;
             oPIDForm.BusinessUnitsByUser = AssignedBusinessUnit; //GetUserWiseBusinessUnit(Convert.ToInt32(logUserId));
-            oPIDForm.BusinessUnitId = oPIDForm.pidfEntity.BusinessUnitId;
+            oPIDForm.BusinessUnitId = Convert.ToInt32(bui); //oPIDForm.pidfEntity.BusinessUnitId;
             return oPIDForm;
         }
 
@@ -352,7 +352,7 @@ namespace EmcureNPD.Web.Controllers
             PidfPbfFormEntity oPIDForm = new();
             pidfid = UtilityHelper.Decreypt(pidfid);
             bui = UtilityHelper.Decreypt(bui);
-            HttpResponseMessage resMsg;
+            //HttpResponseMessage resMsg;
             // var _pidfEntity = GetPidfFormModel(int.Parse(pidfid), out resMsg);
 
             //pidfid = int.Parse(pidfid) ? UtilityHelper.Decreypt(pidfid) : pidfid;

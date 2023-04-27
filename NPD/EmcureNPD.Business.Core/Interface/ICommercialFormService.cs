@@ -9,10 +9,10 @@ namespace EmcureNPD.Business.Core.Interface
     {
         //Task<IPDEntity> FillDropdown();
         // Task<DBOperation> AddUpdateIPD(PIDFormEntity entityIPD);
-        Task<DBOperation> AddUpdateCommercialPIDF(PIDFCommercialEntity entityIPD);
+        Task<DBOperation> AddUpdateCommercialPIDF(PIDFCommercialViewModel entityIPD);
 
         //Task<PIDFormEntity> GetIPDFormData(long pidfId, int buid);
-        Task<PIDFCommercialEntity> GetCommercialFormData(long pidfId, int buid, int? strengthid);
+        Task<dynamic> GetCommercialFormData(long pidfId, int buid, int? strengthid);
 
         Task<DataTableResponseModel> GetAllIPDPIDFList(DataTableAjaxPostModel model);
 

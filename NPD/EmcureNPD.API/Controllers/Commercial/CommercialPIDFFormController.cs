@@ -199,7 +199,7 @@ namespace EmcureNPD.API.Controllers.Commercial
 
         [HttpPost]
         [Route("SaveCommercialPIDF")]
-        public async Task<IActionResult> SaveCommercialPIDF(PIDFCommercialEntity commercialpidfobj)
+        public async Task<IActionResult> SaveCommercialPIDF(PIDFCommercialViewModel commercialpidfobj)
         {
             try
             {

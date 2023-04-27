@@ -80,35 +80,10 @@ namespace EmcureNPD.Web.Controllers
             pidfid = UtilityHelper.Decreypt(pidfid);
             bui = UtilityHelper.Decreypt(bui);
             string AssignedBusinessUnit = _helper.GetAssignedBusinessUnit();
-            HttpResponseMessage resMsg;
-            //var _pidfEntity = GetPidfFormModel(int.Parse(pidfid), out resMsg); //PIDF Form data
-            //var _ipdFormEntity = GetModelForIPDForm(pidfid, bui); //IPD Form Data
-            //string bussnessId = _pidfEntity.BusinessUnitId.ToString();
-            var StrengthId = 0;
-            HttpContext.Request.Cookies.TryGetValue(UserHelper.EmcureNPDToken, out string token);
-            APIRepository objapi = new(_cofiguration);
-            HttpResponseMessage responseMessage = objapi.APICommunication(APIURLHelper.GetCommercialFormData + "/" + pidfid + "/" + bui + "/" + StrengthId, HttpMethod.Get, token).Result;
-            if (responseMessage.IsSuccessStatusCode)
-            {
-                string jsonResponse = responseMessage.Content.ReadAsStringAsync().Result;
-                var data = JsonConvert.DeserializeObject<APIResponseEntity<PIDFCommercialEntity>>(jsonResponse);
-                oPIDForm = data._object;
-                oPIDForm.Pidfid = Convert.ToInt64(pidfid);
-                oPIDForm.CreatedBy = _helper.GetLoggedInUserId();
-                TempData["BusList"] = JsonConvert.SerializeObject(oPIDForm.MasterBusinessUnitEntities);
-
-                HttpResponseMessage responseMS = objapi.APICommunication(APIURLHelper.GetPIDFById + "/" + pidfid, HttpMethod.Get, token).Result;
-
-                if (responseMS.IsSuccessStatusCode)
-                {
-                    string jsnRs = responseMS.Content.ReadAsStringAsync().Result;
-                    var retPIDF = JsonConvert.DeserializeObject<APIResponseEntity<PIDFEntity>>(jsnRs);
-                }
-            }
-            //oPIDForm.pidfEntity = _pidfEntity;
-            //oPIDForm.IPDFormEntity = _ipdFormEntity;
-            oPIDForm.BusinessUnitsByUser = AssignedBusinessUnit;//GetUserWiseBusinessUnit(Convert.ToInt32(logUserId));
-            oPIDForm.BusinessUnitId = Convert.ToInt32(bui); //oPIDForm.pidfEntity.BusinessUnitId;
+            oPIDForm.Pidfid = Convert.ToInt64(pidfid);
+            oPIDForm.CreatedBy = _helper.GetLoggedInUserId();
+            oPIDForm.BusinessUnitsByUser = AssignedBusinessUnit;
+            oPIDForm.BusinessUnitId = Convert.ToInt32(bui);
             return oPIDForm;
         }
 

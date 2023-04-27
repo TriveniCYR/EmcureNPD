@@ -303,7 +303,7 @@ namespace EmcureNPD.Web.Controllers
                 TempData["SaveStatus"] = "Save Error Occured !";
 
             // return back with Invalid Model
-            _RnDmodel._commercialFormEntity = GetPIDFCommercialModel(_RnDmodel.Pidfid, _RnDmodel.BusinessUnitId);
+            //_RnDmodel._commercialFormEntity = GetPIDFCommercialModel(_RnDmodel.Pidfid, _RnDmodel.BusinessUnitId);
             APIIPDEntity oAPIIPDEntity = GetModelForPIDForm(_RnDmodel.Pidfid);
             _RnDmodel.ProjectName = oAPIIPDEntity.ProjectName;
             _RnDmodel.IPEvalution = oAPIIPDEntity.IPDList;
@@ -443,42 +443,42 @@ namespace EmcureNPD.Web.Controllers
             return oAPIIPDEntity;
         }
 
-        [NonAction]
-        private PIDFCommercialEntity GetPIDFCommercialModel(string pidfid, string bui)
-        {
-            PIDFCommercialEntity oPIDForm = new();
-            //pidfid = UtilityHelper.Decreypt(pidfid);
-            HttpResponseMessage resMsg;
-            var _pidfEntity = GetPidfFormModel(int.Parse(pidfid), out resMsg);
-            var _IPDFormdata = GetModelForIPDForm(pidfid, bui); //IPD Form Data
-            string bussnessId = _pidfEntity.BusinessUnitId.ToString();
-            var StrengthId = 0;
-            HttpContext.Request.Cookies.TryGetValue(UserHelper.EmcureNPDToken, out string token);
-            APIRepository objapi = new(_cofiguration);
-            HttpResponseMessage responseMessage = objapi.APICommunication(APIURLHelper.GetCommercialFormData + "/" + pidfid + "/" + bussnessId + "/" + StrengthId, HttpMethod.Get, token).Result;
-            if (responseMessage.IsSuccessStatusCode)
-            {
-                string jsonResponse = responseMessage.Content.ReadAsStringAsync().Result;
-                var data = JsonConvert.DeserializeObject<APIResponseEntity<PIDFCommercialEntity>>(jsonResponse);
-                oPIDForm = data._object;
-                oPIDForm.Pidfid = Convert.ToInt64(pidfid);
-                oPIDForm.CreatedBy = _helper.GetLoggedInUserId();
-                TempData["BusList"] = JsonConvert.SerializeObject(oPIDForm.MasterBusinessUnitEntities);
+        //[NonAction]
+        //private PIDFCommercialEntity GetPIDFCommercialModel(string pidfid, string bui)
+        //{
+        //    PIDFCommercialEntity oPIDForm = new();
+        //    //pidfid = UtilityHelper.Decreypt(pidfid);
+        //    HttpResponseMessage resMsg;
+        //    //var _pidfEntity = GetPidfFormModel(int.Parse(pidfid), out resMsg);
+        //    //var _IPDFormdata = GetModelForIPDForm(pidfid, bui); //IPD Form Data
+        //    string bussnessId = _pidfEntity.BusinessUnitId.ToString();
+        //    var StrengthId = 0;
+        //    HttpContext.Request.Cookies.TryGetValue(UserHelper.EmcureNPDToken, out string token);
+        //    APIRepository objapi = new(_cofiguration);
+        //    HttpResponseMessage responseMessage = objapi.APICommunication(APIURLHelper.GetCommercialFormData + "/" + pidfid + "/" + bussnessId + "/" + StrengthId, HttpMethod.Get, token).Result;
+        //    if (responseMessage.IsSuccessStatusCode)
+        //    {
+        //        string jsonResponse = responseMessage.Content.ReadAsStringAsync().Result;
+        //        var data = JsonConvert.DeserializeObject<APIResponseEntity<PIDFCommercialEntity>>(jsonResponse);
+        //        oPIDForm = data._object;
+        //        oPIDForm.Pidfid = Convert.ToInt64(pidfid);
+        //        oPIDForm.CreatedBy = _helper.GetLoggedInUserId();
+        //        TempData["BusList"] = JsonConvert.SerializeObject(oPIDForm.MasterBusinessUnitEntities);
 
-                HttpResponseMessage responseMS = objapi.APICommunication(APIURLHelper.GetPIDFById + "/" + pidfid, HttpMethod.Get, token).Result;
+        //        HttpResponseMessage responseMS = objapi.APICommunication(APIURLHelper.GetPIDFById + "/" + pidfid, HttpMethod.Get, token).Result;
 
-                if (responseMS.IsSuccessStatusCode)
-                {
-                    string jsnRs = responseMS.Content.ReadAsStringAsync().Result;
-                    var retPIDF = JsonConvert.DeserializeObject<APIResponseEntity<PIDFEntity>>(jsnRs);
-                }
-            }
-            oPIDForm.pidfEntity = _pidfEntity;
-            oPIDForm.IPDFormEntity = _IPDFormdata;
-            oPIDForm.BusinessUnitsByUser = GetUserWiseBusinessUnit(_helper.GetLoggedInUserId());
-            oPIDForm.BusinessUnitId = oPIDForm.pidfEntity.BusinessUnitId;
-            return oPIDForm;
-        }
+        //        if (responseMS.IsSuccessStatusCode)
+        //        {
+        //            string jsnRs = responseMS.Content.ReadAsStringAsync().Result;
+        //            var retPIDF = JsonConvert.DeserializeObject<APIResponseEntity<PIDFEntity>>(jsnRs);
+        //        }
+        //    }
+        //    //oPIDForm.pidfEntity = _pidfEntity;
+        //    //oPIDForm.IPDFormEntity = _IPDFormdata;
+        //    oPIDForm.BusinessUnitsByUser = GetUserWiseBusinessUnit(_helper.GetLoggedInUserId());
+        //    oPIDForm.BusinessUnitId = oPIDForm.pidfEntity.BusinessUnitId;
+        //    return oPIDForm;
+        //}
 
         [NonAction] // Get Model for View PIDForm.cshtml
         public IPDEntity GetModelForIPDForm(string pidfid, string bussnessId)

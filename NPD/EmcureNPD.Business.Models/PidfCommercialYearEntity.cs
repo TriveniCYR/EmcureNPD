@@ -11,7 +11,7 @@ namespace EmcureNPD.Business.Models
         public long PidfcommercialYearId { get; set; }
         public long PidfcommercialId { get; set; }
         public int YearIndex { get; set; }
-        public int CommercialPackagingTypeId { get; set; }
+        public int PackagingTypeId { get; set; }
         public int CurrencyId { get; set; }
         public string CommercialBatchSize { get; set; }
         public string PriceDiscounting { get; set; }
@@ -35,5 +35,11 @@ namespace EmcureNPD.Business.Models
         public string NspLow { get; set; }
         public string NspMedium { get; set; }
         public string NspHigh { get; set; }
+
+        public int BusinessUnitId { get; set; }
+        public int packSizeId { get; set; }
+        public long pidfProductStrengthId { get; set; }
+        public string BrandPrice { get; set; }
+        public string GenericPrice { get; set; }
     }
 }
