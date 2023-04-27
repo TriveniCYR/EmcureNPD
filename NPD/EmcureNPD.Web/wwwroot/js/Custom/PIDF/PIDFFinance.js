@@ -472,9 +472,9 @@ function GetSUIMSVolumeYearWiseByPackSize(ele) {
     skuElements = row_index == 0 ? $(ele).val() : $(`select#Skus${row_index}.Skus`).val();
     let packSizeId = $(`select#PakeSize${row_index}.PakeSize option:selected`).attr('data');
     let strengthId = $(`select#Skus${row_index}.Skus.DbSkus option:selected`).val() == undefined ? skuElements : $(`select#Skus${row_index}.Skus.DbSkus option:selected`).val();
-    //validateDuplicateSKUs();    
-    //if (isValidSku) {
-        if (packSizeId > 0 && strengthId > 0) {
+    validateDuplicateSKUs();    
+    if (isValidSku) {
+      if (packSizeId > 0 && strengthId > 0) {
             ajaxServiceMethod($('#hdnBaseURL').val() + `api/PidfFinance/GetSUIMSVolumeYearWiseByPackSize/${pidfId}/${_encBuid}/${strengthId}/${packSizeId}`, 'GET', SUIMSVolumeYearWiseByPackSizeSuccess, SUIMSVolumeYearWiseByPackSizeError);
             function SUIMSVolumeYearWiseByPackSizeSuccess(data) {
                 try {
@@ -500,7 +500,7 @@ function GetSUIMSVolumeYearWiseByPackSize(ele) {
                 toastr.error("Error");
             }
         }
-    //}
+    }
 }
 function fnGetActiveBusinessUnit() {
     ajaxServiceMethod($('#hdnBaseURL').val() + GetActiveBusinessUnit, 'GET', GetActiveBusinessUnitSuccess, GetActiveBusinessUnitError);
