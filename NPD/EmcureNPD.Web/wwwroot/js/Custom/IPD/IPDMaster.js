@@ -11,7 +11,7 @@ $(document).ready(function () {
     }
     if ($('#hdnIsPartial').val() != '1') {
         getPIDFAccordion(_PIDFAccordionURL, _PIDFID, "dvPIDFAccrdion");
-    }
+    } 
 });
 function fnGetActiveBusinessUnit() {
     ajaxServiceMethod($('#hdnBaseURL').val() + GetActiveBusinessUnit, 'GET', GetActiveBusinessUnitSuccess, GetActiveBusinessUnitError);
@@ -101,6 +101,7 @@ function GetCountryListError(x, y, z) {
     toastr.error(ErrorMessage);
 }
 function SaveIPDClick(type) {
+    validatePatentDetails();
     getParentFormId().find('#SaveType').val(type);
     getParentFormId().find('#RegionIds').val(getParentFormId().find('.regionCombo').val());
     getParentFormId().find('#CountryIds').val(getParentFormId().find('#CountryId').val());
@@ -132,6 +133,7 @@ function IPDSetChildRowDeleteIcon() {
     }
 }
 function SaveIPDForm(form) {
+   
     $.validator.unobtrusive.parse(form);
     if ($(form).valid()) {
         ajaxServiceMethod(_IPDSaveUpdateURL, 'POST', SaveIPDFormSuccess, SaveIPDFormError, JSON.stringify(getFormData($(form))));
@@ -204,3 +206,29 @@ function checkRadioCheckOrNot() {
         $(".IPDCommentText").attr("readonly", true)
     }
 }
+
+// Validation For Paten Details
+
+function validatePatentDetails() {
+
+    $("[id^='pidf_IPD_PatentDetailsEntities']").each(function () {     
+
+        if ($(this).val() == '') {
+            $(this).css("border-color", "red");
+            $(this).focus();
+        }
+        else {
+            $(this).css("border-color", "");
+        }
+    });   
+}
+// pidf_IPD_PatentDetailsEntities[0].OriginalExpiryDate
+//$("[id*='OriginalExpiryDate']").focusout(function () {
+//  var ControlID =  $(this).attr('id');
+//    var arr_id = ControlID.split('.');
+//    var prefixofID = arr_id[0];
+
+//    var originalExiprayDate = new Date($(this).val());
+//    console.log(originalExiprayDate)
+    
+// });

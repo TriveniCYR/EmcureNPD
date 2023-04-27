@@ -69,6 +69,16 @@ function ValidateForm() {
     }
     return IsValid;
 }
+$('input[type="number"]').on("keypress keyup blur", function (event) {
+    var patt = new RegExp(/[0-9]*[.]{1}[0-9]{2}/i);
+    var matchedString = $(this).val().match(patt);
+    if (matchedString) {
+        $(this).val(matchedString);
+    }
+    if ((event.which != 46 || $(this).val().indexOf('.') != -1) && (event.which < 48 || event.which > 57)) {
+        event.preventDefault();
+    }
+});
 
 //--------------Calculation of Readoinly Feilds------------------------------------------
 //--------------Calculation of TimelineInMonthsValue----------------------
@@ -322,4 +332,3 @@ $("[id*='HeadwiseBudgetValue']").change(function () {
         $("#HeadwiseBudget_8__HeadwiseBudgetValue").val(sum);
     });
 });
-HeadwiseBudget_0__HeadwiseBudgetValue
