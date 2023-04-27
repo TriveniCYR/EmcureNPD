@@ -10,19 +10,19 @@ namespace EmcureNPD.Data.DataAccess.Entity
         public int PidffinaceBatchSizeCoatingId { get; set; }
         public int PidffinaceId { get; set; }
         public int? BusinessUnitId { get; set; }
-        public int? Batchsize { get; set; }
-        public int? Yield { get; set; }
-        public int? Batchoutput { get; set; }
-        public int? ApiCad { get; set; }
-        public int? ExcipientsCad { get; set; }
-        public int? PmCad { get; set; }
-        public int? CcpcCad { get; set; }
-        public int? FreightCad { get; set; }
-        public int? EmcureCogsPack { get; set; }
+        public double? Batchsize { get; set; }
+        public double? Yield { get; set; }
+        public double? Batchoutput { get; set; }
+        public double? ApiCad { get; set; }
+        public double? ExcipientsCad { get; set; }
+        public double? PmCad { get; set; }
+        public double? CcpcCad { get; set; }
+        public double? FreightCad { get; set; }
+        public double? EmcureCogsPack { get; set; }
         public DateTime CreatedDate { get; set; }
         public int? CreatedBy { get; set; }
         public long? Skus { get; set; }
-        public int? PakeSize { get; set; }
+        public double? PakeSize { get; set; }
         public double? BrandPrice { get; set; }
         public double? NetRealisation { get; set; }
         public double? GenericListprice { get; set; }

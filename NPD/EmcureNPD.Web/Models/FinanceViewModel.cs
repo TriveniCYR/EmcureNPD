@@ -78,15 +78,15 @@ namespace EmcureNPD.Web.Models
 
     public class BatchSizeCoatingViewModel
     {
-        public int? Batchsize { get; set; }
-        public int? Yield { get; set; }
-        public int? Batchoutput { get; set; }
-        public int? API_CAD { get; set; }
-        public int? Excipients_CAD { get; set; }
-        public int? PM_CAD { get; set; }
-        public int? CCPC_CAD { get; set; }
-        public int? Freight_CAD { get; set; }
-        public int? EmcureCOGs_pack { get; set; }
+        public double? Batchsize { get; set; }
+        public double? Yield { get; set; }
+        public double? Batchoutput { get; set; }
+        public double? API_CAD { get; set; }
+        public double? Excipients_CAD { get; set; }
+        public double? PM_CAD { get; set; }
+        public double? CCPC_CAD { get; set; }
+        public double? Freight_CAD { get; set; }
+        public double? EmcureCOGs_pack { get; set; }
     }
 
     public class Root
@@ -119,7 +119,7 @@ namespace EmcureNPD.Web.Models
         public string EscalationinCOGS { get; set; }
         public double discountRate { get; set; }
         public double incometaxrate { get; set; }
-        public int opexasapercenttosale { get; set; }
+        public int  opexasapercenttosale { get; set; }
         public int externalProfitSharepercent { get; set; }
         public int collectioninDays { get; set; }
         public int inventoryinDays { get; set; }
@@ -175,19 +175,19 @@ namespace EmcureNPD.Web.Models
         public int pidfFinaceBatchSizeCoatingId { get; set; }
         public int pidfFinaceId { get; set; }
         public int BusinessUnitId { get; set; }
-        public int batchsize { get; set; }
-        public int Yield { get; set; }
-        public int batchoutput { get; set; }
-        public int apI_CAD { get; set; }
-        public int excipients_CAD { get; set; }
-        public int pM_CAD { get; set; }
-        public int ccpC_CAD { get; set; }
-        public int freight_CAD { get; set; }
-        public int? emcureCOGs_pack { get; set; }
+        public double batchsize { get; set; }
+        public double Yield { get; set; }
+        public double batchoutput { get; set; }
+        public double apI_CAD { get; set; }
+        public double excipients_CAD { get; set; }
+        public double pM_CAD { get; set; }
+        public double ccpC_CAD { get; set; }
+        public double freight_CAD { get; set; }
+        public double? emcureCOGs_pack { get; set; }
         public DateTime createdDate { get; set; }
         public int createdBy { get; set; }
         public long? Skus { get; set; }
-        public int? PakeSize { get; set; }
+        public double? PakeSize { get; set; }
         public double? BrandPrice { get; set; }
         public double? NetRealisation { get; set; }
         public double? GenericListprice { get; set; }

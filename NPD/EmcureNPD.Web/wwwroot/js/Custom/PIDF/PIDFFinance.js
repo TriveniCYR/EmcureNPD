@@ -642,7 +642,7 @@ $(el).focus(function () {
     }
 });
 $(el).focusout(function () {
-
+    $(this).attr("step", .01);
     let num = this.value;
     if (num.toString() == "E" || num.toString() == "e") {
         this.value = null;
@@ -652,7 +652,7 @@ $(el).focusout(function () {
         $(this).attr("required", true);
     }
     if (num.toString()!="") {
-        this.value = parseFloat(num).toFixed(0);
+        this.value = parseFloat(num).toFixed(2);
     }
 });
 (function () {
