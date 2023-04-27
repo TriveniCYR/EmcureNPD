@@ -168,6 +168,7 @@ function GetProjectDetailsSuccess(data) {
         //$('#ChildMilestones tbody').html('');
         var childRow = "";
         let tableRow = null;
+        let mainTaskRowIndex = 0;
         $.each(data.table4, function (index, object) {
             var start = new Date(object.startDate);
             var startDate =start.toLocaleDateString('en-US', { year: 'numeric', month: '2-digit', day: '2-digit' });
@@ -179,27 +180,19 @@ function GetProjectDetailsSuccess(data) {
             }
             else
                 var updatedDate = "";
-            
+            if (object.taskLevel == 1) {
+                mainTaskRowIndex++;
+            }
             var edit = '<a class="large-font editBtn" style="" href="" title="Edit" data-toggle="modal" data-target="#UpdateModel" data-backdrop="static" data-keyboard="false"  onclick="GetTaskSubTaskById(' + object.projectTaskId + '); return false;"><i class="fa fa-fw fa-edit mr-1"></i> ' + '</a>';
             var deleteTag = '<a class="large-font text-danger deleteBtn" style="" href="" title="Delete" data-toggle="modal" data-target="#DeleteModel" data-backdrop="static" data-keyboard="false" onclick="ConfirmationDeleteTaskSubTask(' + object.projectTaskId + '); return false;"><i class="fa fa-fw fa-trash mr-1"></i> ' + '</a>';
 
             let addSubTaskButton = '<a class="large-font addSubTaskBtn" name="btnaddSubTask" style="" href="" title="Add SubTask" onclick="ShowAddSubTaskForm(\'' + object.projectTaskId + '\', \'' + object.taskName + '\',\'' + object.taskLevel + '\'); return false;"><i class="fa fa-fw fa-plus mr-1"></i> ' + '</a>';
-            //let displaySubTaskListButton = '<a class="large-font" style="" href="javascript:ShowChildRows(' + object.projectTaskId + ');" title="Show Sub task"><i class="fa fa-caret-down" aria-hidden="true"></i>' + '</a>';
-            let displaySubTaskListButton = '<a class="large-font" style="" href="javascript:ShowChildRows(' + object.projectTaskId+');" title="Show Sub task"><i class="fa fa-plus-circle icoShowSubtask' + object.projectTaskId+ '" aria-hidden="true" style="color:#31b131;"></i>' + '</a>';
+            
+            //let displaySubTaskListButton = '<a class="large-font" style="" href="javascript:ShowChildRows(' + object.projectTaskId+');" title="Show Sub task"><i class="fa fa-plus-circle icoShowSubtask' + object.projectTaskId+ '" aria-hidden="true" style="color:#31b131;"></i>' + '</a>';
+            let displaySubTaskListButton = '<a class="large-font" style="" href="javascript:ShowChildRows(' + mainTaskRowIndex + ');" title="Show Sub task"><i class="fa fa-plus-circle icoShowSubtask' + mainTaskRowIndex +'" aria-hidden="true" style="color:#31b131;"></i>' + '</a>';
+
             var _parentClass = (object.taskLevel > 1 ? "treegrid-parent-" + object.parentId + "" : "");
-           // if (object.taskLevel == 2) {
-           //     tableRow = '<tr style="display:none;background: aliceblue" class="clildrows' + object.parentId + ' treegrid-' + index + ' ' + _parentClass + '"><td><input type="hidden" value="' + object.projectTaskId + '" />' + (object.taskLevel > 1 ? displaySubTaskListButton : displaySubTaskListButton) + '</td><td>' + object.taskName + '</td><td>' + object.fullName + '</td><td>' + object.statusName + '</td><td>' + object.priorityName + '</td><td>' + startDate + '</td><td>' + endDate + '</td><td>' + object.taskDuration + '</td><td><div class="progress"><div class="progress-bar" role="progressbar" style="width: ' + object.totalPercentage + '%;" aria-valuenow="' + object.totalPercentage + '" aria-valuemin="0" aria-valuemax="100">' + object.totalPercentage + '%</div></div></td><td>' + updatedDate + '</td><td>' + edit + deleteTag + addSubTaskButton+ '</td></tr>';
-           // }
-           //else if (object.taskLevel == 3) {
-           //     tableRow = '<tr style="display:none;background:#94dfe4" class="clildrows' + object.parentId + ' treegrid-' + index + ' ' + _parentClass + '"><td><input type="hidden" value="' + object.projectTaskId + '" />' + (object.taskLevel > 1 ? displaySubTaskListButton : displaySubTaskListButton) + '</td><td>' + object.taskName + '</td><td>' + object.fullName + '</td><td>' + object.statusName + '</td><td>' + object.priorityName + '</td><td>' + startDate + '</td><td>' + endDate + '</td><td>' + object.taskDuration + '</td><td><div class="progress"><div class="progress-bar" role="progressbar" style="width: ' + object.totalPercentage + '%;" aria-valuenow="' + object.totalPercentage + '" aria-valuemin="0" aria-valuemax="100">' + object.totalPercentage + '%</div></div></td><td>' + updatedDate + '</td><td>' + edit + deleteTag + addSubTaskButton + '</td></tr>';
-           // }
-           // else if (object.taskLevel == 4) {
-           //     tableRow = '<tr style="display:none;background: #0dcaf0" class="clildrows' + object.parentId + ' treegrid-' + index + ' ' + _parentClass + '"><td><input type="hidden" value="' + object.projectTaskId + '" />' + (object.taskLevel > 1 ? displaySubTaskListButton : displaySubTaskListButton) + '</td><td>' + object.taskName + '</td><td>' + object.fullName + '</td><td>' + object.statusName + '</td><td>' + object.priorityName + '</td><td>' + startDate + '</td><td>' + endDate + '</td><td>' + object.taskDuration + '</td><td><div class="progress"><div class="progress-bar" role="progressbar" style="width: ' + object.totalPercentage + '%;" aria-valuenow="' + object.totalPercentage + '" aria-valuemin="0" aria-valuemax="100">' + object.totalPercentage + '%</div></div></td><td>' + updatedDate + '</td><td>' + edit + deleteTag + addSubTaskButton + '</td></tr>';
-           // }
-           // else if (object.taskLevel > 4) {
-           //     arrtasklevel.push(object.taskLevel);
-           //    // tableRow = '<tr style="display:none;background: #a1d954" class="clildrows' + object.parentId + ' treegrid-' + index + ' ' + _parentClass + '"><td><input type="hidden" value="' + object.projectTaskId + '" />' + (object.taskLevel > 1 ? displaySubTaskListButton : displaySubTaskListButton) + '</td><td>' + object.taskName + '</td><td>' + object.fullName + '</td><td>' + object.statusName + '</td><td>' + object.priorityName + '</td><td>' + startDate + '</td><td>' + endDate + '</td><td>' + object.taskDuration + '</td><td><div class="progress"><div class="progress-bar" role="progressbar" style="width: ' + object.totalPercentage + '%;" aria-valuenow="' + object.totalPercentage + '" aria-valuemin="0" aria-valuemax="100">' + object.totalPercentage + '%</div></div></td><td>' + updatedDate + '</td><td>' + edit + deleteTag + addSubTaskButton + '</td></tr>';
-            // }
+          
             if (object.taskLevel > 1)
             {
                 let colorCode =1;
@@ -209,13 +202,15 @@ function GetProjectDetailsSuccess(data) {
                    
                     let bgColor = "#000" + colorCode + "00d;"
                     if (i == 0) {
-                        tableRow += '<tr title="Sub Task Level:' + object.taskLevel + '" style="display:none;background: ' + bgColor.toString() + '" class="clildrows' + object.parentId + ' treegrid-' + index + ' ' + _parentClass + '"><td><input type="hidden" value="' + object.projectTaskId + '" />' + (object.taskLevel > 1 ? displaySubTaskListButton : displaySubTaskListButton) + '</td><td><b>Sub Task Level:' + object.taskLevel + ':-</b>' + object.taskName + '</td><td>' + object.fullName + '</td><td>' + object.statusName + '</td><td>' + object.priorityName + '</td><td>' + startDate + '</td><td>' + endDate + '</td><td>' + object.taskDuration + '</td><td><div class="progress"><div class="progress-bar" role="progressbar" style="width: ' + object.totalPercentage + '%;" aria-valuenow="' + object.totalPercentage + '" aria-valuemin="0" aria-valuemax="100">' + object.totalPercentage + '%</div></div></td><td>' + updatedDate + '</td><td>' + edit + deleteTag + addSubTaskButton + '</td></tr>';
+                        //tableRow += '<tr title="Sub Task Level:' + object.taskLevel + '" style="display:none;background: ' + bgColor.toString() + '" class="clildrows' + object.parentId + ' treegrid-' + index + ' ' + _parentClass + '"><td><input type="hidden" value="' + object.projectTaskId + '" />' + (object.taskLevel > 1 ? "" : displaySubTaskListButton) + '</td><td><b>Sub Task Level:' + object.taskLevel + ':-</b>' + object.taskName + '</td><td>' + object.fullName + '</td><td>' + object.statusName + '</td><td>' + object.priorityName + '</td><td>' + startDate + '</td><td>' + endDate + '</td><td>' + object.taskDuration + '</td><td><div class="progress"><div class="progress-bar" role="progressbar" style="width: ' + object.totalPercentage + '%;" aria-valuenow="' + object.totalPercentage + '" aria-valuemin="0" aria-valuemax="100">' + object.totalPercentage + '%</div></div></td><td>' + updatedDate + '</td><td>' + edit + deleteTag + addSubTaskButton + '</td></tr>';
+                        tableRow += '<tr title="Sub Task Level:' + object.taskLevel + '" style="display:none;background: ' + bgColor.toString() + '" class="clildrows' + mainTaskRowIndex + ' treegrid-' + index + ' ' + _parentClass + '"><td><input type="hidden" value="' + object.projectTaskId + '" />' + (object.taskLevel > 1 ? "" : displaySubTaskListButton) + '</td><td><b>Sub Task Level:' + object.taskLevel + ':-</b>' + object.taskName + '</td><td>' + object.fullName + '</td><td>' + object.statusName + '</td><td>' + object.priorityName + '</td><td>' + startDate + '</td><td>' + endDate + '</td><td>' + object.taskDuration + '</td><td><div class="progress"><div class="progress-bar" role="progressbar" style="width: ' + object.totalPercentage + '%;" aria-valuenow="' + object.totalPercentage + '" aria-valuemin="0" aria-valuemax="100">' + object.totalPercentage + '%</div></div></td><td>' + updatedDate + '</td><td>' + edit + deleteTag + addSubTaskButton + '</td></tr>';
                     }
                     colorCode++;
                  }
             }
             else {
                 tableRow += '<tr class="treegrid-' + index + '"><td><input type="hidden" value="' + object.projectTaskId + '" />' + displaySubTaskListButton +'</td><td>' + object.taskName + '</td><td>' + object.fullName + '</td><td>' + object.statusName + '</td><td>' + object.priorityName + '</td><td>' + startDate + '</td><td>' + endDate + '</td><td>' + object.taskDuration + '</td><td><div class="progress"><div class="progress-bar" role="progressbar" style="width: ' + object.totalPercentage + '%;" aria-valuenow="' + object.totalPercentage + '" aria-valuemin="0" aria-valuemax="100">' + object.totalPercentage + '%</div></div></td><td>' + updatedDate + '</td><td>' + edit + deleteTag + addSubTaskButton+'</td></tr>';
+                
             }
            
         });
@@ -625,20 +620,34 @@ function CleareSubTaskFields() {
         validationMessages[i].textContent = "";
     }
 }
-function ShowChildRows(id) {
-    if (id > 0) {
-        if ($(".clildrows" + id).is(':visible')) {
-            $(".clildrows" + id).hide();
-            $(".icoShowSubtask" + id).removeClass("fa fa-minus-circle")
-            $(".icoShowSubtask" + id).addClass("fa fa-plus-circle")
-            $(".icoShowSubtask" + id).css("color", "#31b131")
+function ShowChildRows(rowindex) {
+    //if (id > 0) {
+    //    if ($(".clildrows" + id).is(':visible')) {
+    //        $(".clildrows" + id).hide();
+    //        $(".icoShowSubtask" + id).removeClass("fa fa-minus-circle")
+    //        $(".icoShowSubtask" + id).addClass("fa fa-plus-circle")
+    //        $(".icoShowSubtask" + id).css("color", "#31b131")
+    //    }
+    //    else {
+    //        $(".clildrows" + id).show()
+    //        $(".icoShowSubtask" + id).removeClass("fa fa-plus-circle")
+    //        $(".icoShowSubtask" + id).addClass("fa fa-minus-circle")
+    //        $(".icoShowSubtask" + id).css("color", "#d33333")
+    //    }
+    //} 
+  
+    if ($(".clildrows" + rowindex).is(':visible')) {
+        $(".clildrows" + rowindex).hide();
+        $(".icoShowSubtask" + rowindex).removeClass("fa fa-minus-circle")
+        $(".icoShowSubtask" + rowindex).addClass("fa fa-plus-circle")
+        $(".icoShowSubtask" + rowindex).css("color", "#31b131")
         }
         else {
-            $(".clildrows" + id).show()
-            $(".icoShowSubtask" + id).removeClass("fa fa-plus-circle")
-            $(".icoShowSubtask" + id).addClass("fa fa-minus-circle")
-            $(".icoShowSubtask" + id).css("color", "#d33333")
+        $(".clildrows" + rowindex).show()
+        $(".icoShowSubtask" + rowindex).removeClass("fa fa-plus-circle")
+        $(".icoShowSubtask" + rowindex).addClass("fa fa-minus-circle")
+        $(".icoShowSubtask" + rowindex).css("color", "#d33333")
         }
-    } 
+  
     
 }
