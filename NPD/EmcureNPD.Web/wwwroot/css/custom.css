@@ -295,4 +295,5 @@ form-control.is-valid, .was-validated .form-control:valid {
     background-color: rgba(0,0,0,.05);
     font-weight: bold;
 }
+.bootbox-confirm .bootbox-close-button{font-size:1rem;}
 /*.large-popup .form-group{margin-bottom:0.2rem !important;}*/

@@ -425,7 +425,10 @@ function Update_BUstregthPackTable(_objArrMainCommercial) {
 
         var deletebtn = '<a class="large-font text-danger deleteBtn operationButton" style="" title="Delete" data-keyboard="false" onclick="btnDeleteBUStrengthPack(' + i + ')"><i class="fa fa-fw fa-trash mr-1"></i> ' + '</a>';
 
-        let addYearbtn = '<a class="large-font addYearBtn operationButton" name="addYearBtn" style="" title="Add Year Details" onclick="OpenYearForm(' + i + ');return false;"><i class="fa fa-fw fa-plus mr-1"></i> ' + '</a>';
+        let addYearbtn = "";
+        if (object.PidfCommercialYears != null && object.PidfCommercialYears != undefined && object.PidfCommercialYears.length < 3) {
+            addYearbtn = '<a class="large-font addYearBtn operationButton" name="addYearBtn" style="" title="Add Year Details" onclick="OpenYearForm(' + i + ');return false;"><i class="fa fa-fw fa-plus mr-1"></i> ' + '</a>';
+        }
 
         let ExpandRowBtn = '<a class="large-font" style="" onclick="ShowChildRows(\'Yearclildrows_' + object.packSizeId + '\', this);" title="Show Year Details"><i class="fa fa-minus-circle text-danger icoShowSubRow' + i + '" aria-hidden="true"></i>' + '</a>';
 
@@ -436,7 +439,7 @@ function Update_BUstregthPackTable(_objArrMainCommercial) {
 
         var YearInnerHtml = $('#dvYearsTable').clone();
         var RevenueInnerHtml = $('#dvtblRevenue').clone();
-        tablechildRow = '<tr style="" class="clildrows_' + i + '" id="Yearclildrows_' + object.packSizeId + '"><td colspan="12" >' + YearInnerHtml.html() + RevenueInnerHtml.html() + '</td> </tr>';
+        tablechildRow = '<tr style="" class="clildrows_' + i + '" id="Yearclildrows_' + object.packSizeId + '"><td class="p-3" colspan="12" >' + YearInnerHtml.html() + RevenueInnerHtml.html() + '</td> </tr>';
 
         $('#tblMainCommercial #mainCommercialRows').append(tablechildRow);
 
@@ -460,10 +463,28 @@ function btnEditBUStrengthPack(packSizeId, businessUnitId, pidfProductStrengthId
     $('#dvCommercialPackStyle').modal('show');
 }
 function btnDeleteBUStrengthPack(packSizeId) {
-    ArrMainCommercial = $.grep(ArrMainCommercial, function (n, i) {
-        return n.packSizeId != packSizeId;
+    bootbox.confirm({
+        title: 'Delete',
+        message: 'Are you sure, you want to delete ?',
+        buttons: {
+            confirm: {
+                label: 'Yes',
+                className: 'btn-success'
+            },
+            cancel: {
+                label: 'No',
+                className: 'btn-danger'
+            }
+        },
+        callback: function (result) {
+            if (result) {
+                ArrMainCommercial = $.grep(ArrMainCommercial, function (n, i) {
+                    return n.packSizeId != packSizeId && n.businessUnitId == SelectedBUValue && n.pidfProductStrengthId == selectedStrength;
+                });
+                Update_BUstregthPackTable(ArrMainCommercial);
+            }
+        }
     });
-    Update_BUstregthPackTable(ArrMainCommercial);
 }
 
 function OpenYearForm(packSizeId, yearIndex) {
@@ -473,7 +494,7 @@ function OpenYearForm(packSizeId, yearIndex) {
         $('#dvCommercialAddYear').modal('show'); 
         IsShowCancel_Save_buttons(false);
     }
-    MainRowEditIndex = ArrMainCommercial.findIndex((obj => obj.packSizeId == packSizeId));
+    MainRowEditIndex = ArrMainCommercial.findIndex((obj => obj.packSizeId == packSizeId && obj.businessUnitId == SelectedBUValue && obj.pidfProductStrengthId == selectedStrength));
     EditIndex = (yearIndex == null || yearIndex == undefined ? -1 : yearIndex);
 
     if ((yearIndex == null || yearIndex == undefined)) {
@@ -628,4 +649,3 @@ function IsShowCancel_Save_buttons(flag) {
     else
         $("#dvMainButton").hide();
 }
-
