@@ -154,6 +154,7 @@ namespace EmcureNPD.Web.Controllers
                     user.FullName = data._object.FullName;
                     user.Address = data._object.Address;
                     user.MobileNumber = data._object.MobileNumber;
+                    user.MobileCountryId = data._object.MobileCountryId;
                     return View(user);
                 }
                 return NotFound();

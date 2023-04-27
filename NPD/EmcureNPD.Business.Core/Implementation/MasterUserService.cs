@@ -316,6 +316,7 @@ namespace EmcureNPD.Business.Core.ServiceImplementations
             {
                 objUser.FullName = entityUser.FullName;
                 objUser.MobileNumber = entityUser.MobileNumber;
+                objUser.MobileCountryId = entityUser.MobileCountryId;
                 objUser.Address = entityUser.Address;
                 objUser.ModifyBy = LoggedUserId;
                 objUser.ModifyDate = DateTime.Now;
