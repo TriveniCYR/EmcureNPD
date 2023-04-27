@@ -1,6 +1,7 @@
 ﻿let rowcount = 0;
 let selectedCurrencyText = "";
 let el = document.querySelectorAll('input[type="number"]');
+let isValidSku = false;
 $(document).ready(function () {
     console.log("selectedSKUs" + selectedSKUs);
   
@@ -259,6 +260,7 @@ function SetChildRowDeleteIcon() {
 function deleteRowFinance(j, element) {
     $(element).closest("tr").remove();
     SetChildRowDeleteIcon();
+    SetChildRows();
 }
 function preventSubmit() {
     $(document).on('submit', 'form', function (e) {
@@ -418,7 +420,7 @@ function getPackSize(ele) {
                 });
             }
             $(`select#PakeSize${row_index}.PakeSize`).append(optionhtml);
-            validateDuplicateSKUs();
+            //validateDuplicateSKUs();
             }
          catch (e) {
             toastr.error('Error:' + e.message);
@@ -467,11 +469,12 @@ function getEditPackSize(strengthId,rowIndex) {
 
 function GetSUIMSVolumeYearWiseByPackSize(ele) {
     var row_index = $(ele).closest('tr').index();
-    skuElements = row_index == 0 ? $(`select#Skus.Skus`).val() : $(`select#Skus${row_index}.Skus`).val();
+    skuElements = row_index == 0 ? $(ele).val() : $(`select#Skus${row_index}.Skus`).val();
     let packSizeId = $(`select#PakeSize${row_index}.PakeSize option:selected`).attr('data');
     let strengthId = $(`select#Skus${row_index}.Skus.DbSkus option:selected`).val() == undefined ? skuElements : $(`select#Skus${row_index}.Skus.DbSkus option:selected`).val();
-    if (validateDuplicateSKUs()) {
-        if (packSizeId > 0 && strengthId > 0) {
+    validateDuplicateSKUs();    
+    if (isValidSku) {
+      if (packSizeId > 0 && strengthId > 0) {
             ajaxServiceMethod($('#hdnBaseURL').val() + `api/PidfFinance/GetSUIMSVolumeYearWiseByPackSize/${pidfId}/${_encBuid}/${strengthId}/${packSizeId}`, 'GET', SUIMSVolumeYearWiseByPackSizeSuccess, SUIMSVolumeYearWiseByPackSizeError);
             function SUIMSVolumeYearWiseByPackSizeSuccess(data) {
                 try {
@@ -578,10 +581,12 @@ function validateDuplicateSKUs() {
                 $(`#EstMat2020By12units${index + 1}`).val(null);
                 $(`#Marketinpacks${index + 1}`).val(null);
                 toastr.error("duplicate SKU and PackSize not allowed", "Error:");
+                isValidSku = false;
                 return false;
             }
         }
-        else { return true; }
+        isValidSku = true;
+        return isValidSku;
     });
    // return false;
 }
