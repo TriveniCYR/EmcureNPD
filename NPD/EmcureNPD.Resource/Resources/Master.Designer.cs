@@ -250,7 +250,7 @@ namespace EmcureNPD.Resource.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to API Req.
+        ///   Looks up a localized string similar to API Req (Emcure KG).
         /// </summary>
         public static string APIReq {
             get {
@@ -259,7 +259,7 @@ namespace EmcureNPD.Resource.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Api Req (EmcureKg).
+        ///   Looks up a localized string similar to API Req (Emcure KG).
         /// </summary>
         public static string APiReq_EmcureKg_ {
             get {
@@ -457,7 +457,7 @@ namespace EmcureNPD.Resource.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Commercial Batch Size.
+        ///   Looks up a localized string similar to Commercial Batch Size (Qtr).
         /// </summary>
         public static string CommercialBatchSize {
             get {
@@ -507,6 +507,15 @@ namespace EmcureNPD.Resource.Resources {
         public static string CostOfLitication {
             get {
                 return ResourceManager.GetString("CostOfLitication", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Country Code.
+        /// </summary>
+        public static string CountryCode {
+            get {
+                return ResourceManager.GetString("CountryCode", resourceCulture);
             }
         }
         
@@ -912,6 +921,15 @@ namespace EmcureNPD.Resource.Resources {
         public static string IPEvalution {
             get {
                 return ResourceManager.GetString("IPEvalution", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to ISD country Code.
+        /// </summary>
+        public static string IsdcountryCode {
+            get {
+                return ResourceManager.GetString("IsdcountryCode", resourceCulture);
             }
         }
         
@@ -1330,7 +1348,7 @@ namespace EmcureNPD.Resource.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Price Discounting.
+        ///   Looks up a localized string similar to Price Discounting %.
         /// </summary>
         public static string PriceDiscounting {
             get {
@@ -1339,7 +1357,7 @@ namespace EmcureNPD.Resource.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Price Erosion.
+        ///   Looks up a localized string similar to Price Erosion %.
         /// </summary>
         public static string PriceErosion {
             get {
@@ -1501,7 +1519,7 @@ namespace EmcureNPD.Resource.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Commercial Batch Size.
+        ///   Looks up a localized string similar to Commercial Batch Size (Qtr).
         /// </summary>
         public static string RFDCommercialBatchSize {
             get {
@@ -1537,7 +1555,7 @@ namespace EmcureNPD.Resource.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Price Discounting.
+        ///   Looks up a localized string similar to Price Discounting %.
         /// </summary>
         public static string RFDPriceDiscounting {
             get {
@@ -1645,7 +1663,7 @@ namespace EmcureNPD.Resource.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to SU_IMS.
+        ///   Looks up a localized string similar to SU (IMS Volume).
         /// </summary>
         public static string SU_IMS {
             get {
@@ -1654,7 +1672,7 @@ namespace EmcureNPD.Resource.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to SU (IMSVolume).
+        ///   Looks up a localized string similar to SU (IMS Volume).
         /// </summary>
         public static string SU_IMSVolume_ {
             get {
@@ -1708,7 +1726,7 @@ namespace EmcureNPD.Resource.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Total API Req.
+        ///   Looks up a localized string similar to Total API Req (IMS KG).
         /// </summary>
         public static string TotalAPIReq {
             get {
@@ -1717,7 +1735,7 @@ namespace EmcureNPD.Resource.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Total API Req (IMSKg).
+        ///   Looks up a localized string similar to Total API Req (IMS KG).
         /// </summary>
         public static string TotalAPIReq_IMSKg_ {
             get {

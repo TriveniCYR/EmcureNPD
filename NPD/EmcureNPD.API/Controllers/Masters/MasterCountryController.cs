@@ -123,20 +123,36 @@ namespace EmcureNPD.API.Controllers.Masters
                 return _ObjectResponse.Create(false, (Int32)HttpStatusCode.InternalServerError, Convert.ToString(ex.StackTrace));
             }
         }
+		[HttpGet, Route("GetAllActiveCountry")]
+		public async Task<IActionResult> GetAllActiveCountry()
+		{
+			try
+			{
+				var oCountryList = await _MasterCountryService.GetAllActiveCountry();
+				if (oCountryList != null)
+					return _ObjectResponse.Create(oCountryList, (Int32)HttpStatusCode.OK);
+				else
+					return _ObjectResponse.Create(null, (Int32)HttpStatusCode.BadRequest, "No Records found");
+			}
+			catch (Exception ex)
+			{
+				return _ObjectResponse.Create(false, (Int32)HttpStatusCode.InternalServerError, Convert.ToString(ex.StackTrace));
+			}
+		}
 
-        /// <summary>
-        /// Description - To Delete a Country by Id
-        /// </summary>
-        /// <param name="id"></param>
-        /// <returns></returns>
-        /// <response code="200">OK</response>
-        /// <response code="400">Bad Request</response>
-        /// <response code="401">Unauthorized</response>
-        /// <response code="403">Forbidden</response>
-        /// <response code="404">Not Found</response>
-        /// <response code="405">Method Not Allowed</response>
-        /// <response code="500">Internal Server</response>
-        [HttpPost("DeleteCountry/{id}")]
+		/// <summary>
+		/// Description - To Delete a Country by Id
+		/// </summary>
+		/// <param name="id"></param>
+		/// <returns></returns>
+		/// <response code="200">OK</response>
+		/// <response code="400">Bad Request</response>
+		/// <response code="401">Unauthorized</response>
+		/// <response code="403">Forbidden</response>
+		/// <response code="404">Not Found</response>
+		/// <response code="405">Method Not Allowed</response>
+		/// <response code="500">Internal Server</response>
+		[HttpPost("DeleteCountry/{id}")]
         public async Task<IActionResult> DeleteCountry([FromRoute] int id)
         {
             try

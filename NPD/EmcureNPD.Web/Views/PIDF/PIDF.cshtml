@@ -189,7 +189,7 @@
 														<td>
 															<div class="col-md">
 																<div class="form-group required">
-																	@Html.EditorFor(model => Model.pidfProductStregthEntities[i].Strength, new { htmlAttributes = new { @autocomplete = "off", @class = "txtclsStrngth form-control checkbox-checked", id = "pidfProductStregthEntities[" + i + "].Strength", @placeholder = @MasterLocalizer["Product Strength"] } })
+																	@Html.EditorFor(model => Model.pidfProductStregthEntities[i].Strength, new { htmlAttributes = new {@required="required", @autocomplete = "off", @class = "txtclsStrngth form-control checkbox-checked", id = "pidfProductStregthEntities[" + i + "].Strength", @placeholder = @MasterLocalizer["Product Strength"] } })
 																</div>
 															</div>
 														</td>
@@ -198,7 +198,7 @@
 																<div class="form-group required">
 																	<input type="hidden" id="hdnProductStrengthUnit" value="@Model.pidfProductStregthEntities[i].UnitofMeasurementId" />
 																	<select id="productStrengthUnit_0" name="pidfProductStregthEntities[@i].UnitofMeasurementId" class="form-control readOnlyUpdate productStrengthUnit" required></select>
-															@Html.ValidationMessageFor(model => model.pidfProductStregthEntities[i].UnitofMeasurementId, "", new { @class = "text-danger" })
+															@*@Html.ValidationMessageFor(model => model.pidfProductStregthEntities[i].UnitofMeasurementId, "", new { @class = "text-danger" })*@
 																</div>
 															</div>
 														</td>
@@ -223,8 +223,8 @@
 												<td>
 													<div class="col-md">
 														<div class="form-group required">
-															@Html.EditorFor(model => model.pidfProductStregthEntities[j].Strength, new { htmlAttributes = new { @autocomplete = "off", @class = "form-control checkbox-checked", id = "pidfProductStregthEntities[" + j + "].Strength", @placeholder = @MasterLocalizer["Product Strength"] } })
-															@Html.ValidationMessageFor(model => model.pidfProductStregthEntities[j].Strength, "", new { @class = "text-danger" })
+													@Html.EditorFor(model => model.pidfProductStregthEntities[j].Strength, new { htmlAttributes = new {@required="required", @autocomplete = "off", @class = "form-control checkbox-checked", id = "pidfProductStregthEntities[" + j + "].Strength", @placeholder = @MasterLocalizer["Product Strength"] } })
+															@*@Html.ValidationMessageFor(model => model.pidfProductStregthEntities[j].Strength, "", new { @class = "text-danger" })*@
 														</div>
 													</div>
 												</td>
@@ -232,7 +232,7 @@
 													<div class="col-md">
 														<div class="form-group required">
 															<select id="productStrengthUnit_@j" name="pidfProductStregthEntities[@j].UnitofMeasurementId" class="form-control readOnlyUpdate productStrengthUnit" required></select>
-												@Html.ValidationMessageFor(model => model.pidfProductStregthEntities[j].UnitofMeasurementId, "", new { @class = "text-danger" })
+												@*@Html.ValidationMessageFor(model => model.pidfProductStregthEntities[j].UnitofMeasurementId, "", new { @class = "text-danger" })*@
 														</div>
 													</div>
 												</td>
@@ -288,7 +288,7 @@
 														<td>
 															<div class="col-md">
 																<div class="form-group required">
-																	@Html.EditorFor(model => Model.pidfApiDetailEntities[j].Apiname, new { htmlAttributes = new { @autocomplete = "off", @class = "form-control checkbox-checked", @placeholder = @MasterLocalizer["API Name"] } })
+																	@Html.EditorFor(model => Model.pidfApiDetailEntities[j].Apiname, new { htmlAttributes = new { @required="required",@autocomplete = "off", @class = "form-control checkbox-checked", @placeholder = @MasterLocalizer["API Name"] } })
 																</div>
 															</div>
 														</td>
@@ -297,14 +297,14 @@
 																<div class="form-group required">
 																	<input type="hidden" id="hdnAPISourcing" value="@Model.pidfApiDetailEntities[j].ApisourcingId" />
 																	<select id="apiSourcingData_0" name="pidfApiDetailEntities[@j].ApisourcingId" class="form-control readOnlyUpdate productApiSourcing" required></select>
-															@Html.ValidationMessageFor(model => model.pidfApiDetailEntities[j].ApisourcingId, "", new { @class = "text-danger" })
+															@*@Html.ValidationMessageFor(model => model.pidfApiDetailEntities[j].ApisourcingId, "", new { @class = "text-danger" })*@
 																</div>
 															</div>
 														</td>
 														<td>
 															<div class="col-md">
 																<div class="form-group required">
-																	@Html.EditorFor(model => model.pidfApiDetailEntities[j].Apivendor, new { htmlAttributes = new { @autocomplete = "off", @class = "form-control checkbox-checked", @placeholder = @MasterLocalizer["API Vendor"] } })
+															@Html.EditorFor(model => model.pidfApiDetailEntities[j].Apivendor, new { htmlAttributes = new { @required="required", @autocomplete = "off", @class = "form-control checkbox-checked", @placeholder = @MasterLocalizer["API Vendor"] } })
 																</div>
 															</div>
 														</td>
@@ -328,7 +328,7 @@
 												<td>
 													<div class="col-md">
 														<div class="form-group required">
-															@Html.EditorFor(model => model.pidfApiDetailEntities[j].Apiname, new { htmlAttributes = new { @autocomplete = "off", @class = "form-control checkbox-checked", @placeholder = @MasterLocalizer["API Name"] } })
+															@Html.EditorFor(model => model.pidfApiDetailEntities[j].Apiname, new {@required="required", htmlAttributes = new { @autocomplete = "off", @class = "form-control checkbox-checked", @placeholder = @MasterLocalizer["API Name"] } })
 															@Html.ValidationMessageFor(model => model.pidfApiDetailEntities[j].Apiname, "", new { @class = "text-danger" })
 														</div>
 													</div>
@@ -337,14 +337,14 @@
 													<div class="col-md">
 														<div class="form-group required">
 															<select id="apiSourcingData_@j" name="pidfApiDetailEntities[@j].ApisourcingId" class="form-control readOnlyUpdate productApiSourcing" required></select>
-													@Html.ValidationMessageFor(model => model.pidfApiDetailEntities[j].ApisourcingId, "", new { @class = "text-danger" })
+													@*@Html.ValidationMessageFor(model => model.pidfApiDetailEntities[j].ApisourcingId, "", new { @class = "text-danger" })*@
 														</div>
 													</div>
 												</td>
 												<td>
 													<div class="col-md">
 														<div class="form-group required">
-															@Html.EditorFor(model => model.pidfApiDetailEntities[j].Apivendor, new { htmlAttributes = new { @autocomplete = "off", @class = "form-control checkbox-checked", @placeholder = @MasterLocalizer["API Vendor"] } })
+													@Html.EditorFor(model => model.pidfApiDetailEntities[j].Apivendor, new { htmlAttributes = new {@required="required", @autocomplete = "off", @class = "form-control checkbox-checked", @placeholder = @MasterLocalizer["API Vendor"] } })
 															@Html.ValidationMessageFor(model => model.pidfApiDetailEntities[j].Apivendor, "", new { @class = "text-danger" })
 														</div>
 													</div>
@@ -433,8 +433,8 @@
 									<div class="col-md-3">
 										<div class="form-group required">
 											@Html.LabelFor(model => model.RFDPriceDiscounting, new { @class = "control-label" }) <span class="text-danger">*</span>
-											@Html.EditorFor(model => model.RFDPriceDiscounting, new { htmlAttributes = new { @autocomplete = "off", @class = "form-control checkbox-checked", @placeholder = @MasterLocalizer["RFDPriceDiscounting"] } })
-											@Html.ValidationMessageFor(model => model.RFDPriceDiscounting, "", new { @class = "text-danger" })
+											@Html.EditorFor(model => model.RFDPriceDiscounting, new { htmlAttributes = new { @autocomplete = "off",@type="number", @class = "form-control checkbox-checked", @placeholder = @MasterLocalizer["RFDPriceDiscounting"] } })
+											@Html.ValidationMessageFor(model => model.RFDPriceDiscounting,"", new { @class = "text-danger" })
 										</div>
 									</div>
 

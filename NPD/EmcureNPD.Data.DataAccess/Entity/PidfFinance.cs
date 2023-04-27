@@ -35,17 +35,17 @@ namespace EmcureNPD.Data.DataAccess.Entity
         public string EscalationinCogs { get; set; }
         public decimal? DiscountRate { get; set; }
         public decimal? Incometaxrate { get; set; }
-        public int? Opexasapercenttosale { get; set; }
-        public int? ExternalProfitSharepercent { get; set; }
-        public int? CollectioninDays { get; set; }
-        public int? InventoryinDays { get; set; }
-        public int? CreditorinDays { get; set; }
+        public double? Opexasapercenttosale { get; set; }
+        public double? ExternalProfitSharepercent { get; set; }
+        public double? CollectioninDays { get; set; }
+        public double? InventoryinDays { get; set; }
+        public double? CreditorinDays { get; set; }
         public decimal? MarketingAllowance { get; set; }
         public decimal? RegulatoryMaintenanceCost { get; set; }
         public decimal? GrosstoNet { get; set; }
-        public int? Noofbatchestobemanufactured { get; set; }
+        public double? Noofbatchestobemanufactured { get; set; }
         public DateTime? NoofbatchestobemanufacturedPhaseEndDate { get; set; }
-        public int? NoSkus { get; set; }
+        public double? NoSkus { get; set; }
         public DateTime? NoSkusPhaseEndDate { get; set; }
         public decimal? RandDanalyticalcost { get; set; }
         public DateTime? RandDanalyticalcostPhaseEndDate { get; set; }

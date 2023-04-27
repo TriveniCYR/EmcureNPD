@@ -22,11 +22,14 @@ function HideSaveAsDraft() {
 }
 
 $('#Save').click(function () {
+    RoundUPReadonlyValues();
     ValidateForm();
+   
     $("#SaveType_APICharter").val('Save');
 });
 $('#SaveDraft').click(function () {
-    ValidateForm();// $("#IsModelValid").val('Valid')
+    RoundUPReadonlyValues();
+    ValidateForm();// $("#IsModelValid").val('Valid')    
     $("#SaveType_APICharter").val('SaveDraft');
 });
 
@@ -68,6 +71,23 @@ function ValidateForm() {
         $("#IsModelValid").val('Valid')
     }
     return IsValid;
+}
+$('input[type="number"]').on("keypress keyup blur", function (event) {
+    var patt = new RegExp(/[0-9]*[.]{1}[0-9]{2}/i);
+    var matchedString = $(this).val().match(patt);
+    if (matchedString) {
+        $(this).val(matchedString);
+    }
+    if ((event.which != 46 || $(this).val().indexOf('.') != -1) && (event.which < 48 || event.which > 57)) {
+        event.preventDefault();
+    }
+});
+function RoundUPReadonlyValues() {
+    $('input[type=number][readonly]').each(function () {
+        var Value = $(this).val();
+        var floatval = parseFloat(Value);
+        $(this).val(floatval.toFixed(2));
+    });
 }
 
 //--------------Calculation of Readoinly Feilds------------------------------------------
@@ -322,4 +342,3 @@ $("[id*='HeadwiseBudgetValue']").change(function () {
         $("#HeadwiseBudget_8__HeadwiseBudgetValue").val(sum);
     });
 });
-HeadwiseBudget_0__HeadwiseBudgetValue

@@ -757,6 +757,8 @@ document.addEventListener("DOMContentLoaded", function () {
         let endDate = new Date(moment(taskObjects.start_date).format("MM/DD/YYYY hh:mm"));
         let selectedOwner = taskObjects.owner_id == undefined || taskObjects.owner_id == "null" ? taskObjects.owner : taskObjects.owner_id;
         const res = taskStatus.filter(x => x.projectTaskId === ProjectTaskId);
+        const taskLevels = taskStatus.filter(x => x.projectTaskId == taskObjects.parent);
+        let newTaskLevel = res.length==0 ? parseInt(taskLevels[0].taskLevel) + 1 : taskLevels[0].taskLevel;
         if (taskObjects.text == "null" || taskObjects.text == "") {
             //toastr.error("TaskName could not be empty!", "Input Validation Error");
             //$("div.gantt_cal_light").show();
@@ -782,7 +784,8 @@ document.addEventListener("DOMContentLoaded", function () {
                 TaskDuration: taskObjects.duration,
                 IsGanttUpdate: true,
                 PlannedStartDate: taskObjects.planned_start,
-                PlannedEndDate: taskObjects.planned_end == undefined ? null : taskObjects.planned_end
+                PlannedEndDate: taskObjects.planned_end == undefined ? null : taskObjects.planned_end,
+                TaskLevel: newTaskLevel
             }
             let act = taskObjects.parent == 0 ? "Task" : "SubTask";
             let pidfId = (new URL(location.href)).searchParams.get('pidfid');

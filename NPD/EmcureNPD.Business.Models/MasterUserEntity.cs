@@ -45,6 +45,8 @@ namespace EmcureNPD.Business.Models
 
         public int RoleId { get; set; }
 
+        public int MobileCountryId { get; set; }
+
         [Display(Name = "EmailAddress", ResourceType = typeof(Master))]
         [Required(ErrorMessageResourceType = typeof(Validation), ErrorMessageResourceName = "Required")]
         [EmailAddress(ErrorMessage = "Invalid Email Address")]

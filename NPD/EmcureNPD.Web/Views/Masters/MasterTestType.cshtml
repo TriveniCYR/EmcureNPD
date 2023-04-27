@@ -10,7 +10,7 @@
 
 @model EmcureNPD.Business.Models.MasterTestTypeEntity
 @{
-	ViewData["Title"] = @MasterLocalizer["TestType - Emcure NPD"];
+	ViewData["Title"] = @MasterLocalizer["Test Type - Emcure NPD"];
 	RolePermissionModel objPermssion = (RolePermissionModel)ViewBag.Access;
 	string IsAddAllow = (objPermssion.Add) ? "" : "display: none";
 	string IsEditAllow = (objPermssion.Edit) ? "" : "display: none";
@@ -91,15 +91,13 @@
 								@Html.ValidationMessageFor(model => model.TestTypeName, "", new { @class = "text-danger" })
 							</div>
 							<div class="form-group required">
-								@Html.LabelFor(model => model.TestTypeCode,"Test Type Code", new { @class = "control-label" })
-								
-								@Html.EditorFor(model => model.TestTypeCode, new { htmlAttributes = new { @autocomplete = "off", @class = "form-control checkbox-checked", @placeholder = "Test Type Code" } })
+								@Html.LabelFor(model => model.TestTypeCode,"Test Type Code", new { @class = "control-label" })								
+								@Html.EditorFor(model => model.TestTypeCode, new { htmlAttributes = new { @autocomplete = "off", @class = "form-control checkbox-checked", @placeholder = "Test Type Code",maxlength="6" } })
 								@Html.ValidationMessageFor(model => model.TestTypeCode, "", new { @class = "text-danger" })
 							</div>
 							<div class="form-group required">
-								@Html.LabelFor(model => model.TestTypePrice,"Test Type Price", new { @class = "control-label" })
-								
-								@Html.EditorFor(model => model.TestTypePrice, new { htmlAttributes = new { @autocomplete = "off", @class = "form-control checkbox-checked numberonly", @placeholder = "Test Type Price" } })
+								@Html.LabelFor(model => model.TestTypePrice,"Test Type Price", new { @class = "control-label" })								
+								@Html.EditorFor(model => model.TestTypePrice, new { htmlAttributes = new { @autocomplete = "off", @class = "form-control checkbox-checked numberonly", @placeholder = "Test Type Price",type="number",min="0" } })
 								@Html.ValidationMessageFor(model => model.TestTypePrice, "", new { @class = "text-danger" })
 							</div>
 						</div>
@@ -142,8 +140,8 @@
 		var ErrorMessage = "@SharedLocalizer["Error"]";
 		var RecordInsertUpdate = "@SharedLocalizer["RecordInsertUpdate"]";
 		var RecordDelete = "@SharedLocalizer["RecordDelete"]";
-		var AddLabel = "@SharedLocalizer["Add TestType"]";
-		var UpdateLabel = "@SharedLocalizer["Edit TestType"]";
+		var AddLabel = "@SharedLocalizer["Add Test Type"]";
+		var UpdateLabel = "@SharedLocalizer["Edit Test Type"]";
 				//#endregion
 	</script>
 }

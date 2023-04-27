@@ -52,17 +52,17 @@ namespace EmcureNPD.Web.Controllers
                 addTask.Pidfid = long.Parse(UtilityHelper.Decreypt(id));
                 addTask.ModifyBy = _helper.GetLoggedInUserId();
                 addTask.ModifyDate = DateTime.Now;
-                if (act == "Task")
-                    addTask.TaskLevel = 1;
-                else if (act == "SubTask")
-                    addTask.TaskLevel = 2;
+                if (act == "Task") { }
+                // addTask.TaskLevel = 1;
+                else if (act == "SubTask") { }
+                    //addTask.TaskLevel = 2;
             }
             else
             {
-                if (act == "Task")
-                    addTask.TaskLevel = 1;
-                else if (act == "SubTask")
-                    addTask.TaskLevel = 2;
+                if (act == "Task") { }
+                    //addTask.TaskLevel = 1;
+                else if (act == "SubTask") { }
+                    //addTask.TaskLevel = 2;
                 addTask.Pidfid = long.Parse(UtilityHelper.Decreypt(id));
                 addTask.CreatedBy = _helper.GetLoggedInUserId();
                 addTask.CreatedDate = DateTime.Now;
@@ -101,10 +101,8 @@ namespace EmcureNPD.Web.Controllers
             }
             else
             {
-                if (act == "Task")
-                    addTask.TaskLevel = 1;
-                else if (act == "SubTask")
-                    addTask.TaskLevel = 2;
+                if (act == "Task") { addTask.TaskLevel = 1; }
+                else if (act == "SubTask") { addTask.TaskLevel = addTask.SubTaskLevel; }
                 addTask.Pidfid = long.Parse(UtilityHelper.Decreypt(id));
                 addTask.CreatedBy = _helper.GetLoggedInUserId();
                 addTask.CreatedDate = DateTime.Now;

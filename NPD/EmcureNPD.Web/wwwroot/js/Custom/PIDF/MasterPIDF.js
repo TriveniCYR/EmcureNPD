@@ -39,6 +39,14 @@ $(document).ready(function () {
     });
 });
 
+$('#RFDPriceDiscounting').focusout(function () {
+    var ControlID = $(this).attr('id');
+    var cntrlvalue = parseInt($(this).val());
+    if (cntrlvalue < 0 || cntrlvalue > 100) {
+       
+        $(this).val('');
+    }
+});
 $("[id*='].Strength']").blur(function () {
     var strengthval = $(this).val();
     $(this).val($.trim(strengthval));
@@ -245,10 +253,12 @@ function readOnlyForm() {
 }
 
 function SaveClick() {
+    validateDynamicControldDetails();
     $('#SaveType').val('submit');
     SetChildRows();
 }
 function SaveDraftClick() {
+    validateDynamicControldDetails();
     $('#SaveType').val('draft');
     SetChildRows();
 }
@@ -274,5 +284,35 @@ function SetChildRowDeleteIcon() {
         $('.strengthDeleteIcon').show();
     } else {
         $('.strengthDeleteIcon').hide();
+    }
+}
+
+
+function validateDynamicControldDetails() {
+
+    $("[id^='pidfProductStregthEntities']").each(function () {
+        validatecontrols(this);
+    });
+
+    $("[id^='pidfApiDetailEntities']").each(function () {
+        validatecontrols(this);
+    });
+
+    $('select[name$="UnitofMeasurementId"]').each(function () {
+        validatecontrols(this);
+    });
+
+    $('select[name$="ApisourcingId"]').each(function () {
+        validatecontrols(this);
+    });
+}
+
+function validatecontrols(control) {
+    if ($(control).val() == '') {
+        $(control).css("border-color", "red");
+        $(control).focus();
+    }
+    else {
+        $(control).css("border-color", "");
     }
 }

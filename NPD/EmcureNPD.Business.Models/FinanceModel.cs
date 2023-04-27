@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -32,17 +33,17 @@ namespace EmcureNPD.Business.Models
 		public string EscalationinCOGS { get; set; }
 		public decimal? DiscountRate { get; set; }
 		public decimal? Incometaxrate { get; set; }
-		public int? Opexasapercenttosale { get; set; }
-		public int? ExternalProfitSharepercent { get; set; }
-		public int? CollectioninDays { get; set; }
-		public int? InventoryinDays { get; set; }
-		public int? CreditorinDays { get; set; }
+		public double? Opexasapercenttosale { get; set; }
+		public double? ExternalProfitSharepercent { get; set; }
+		public double? CollectioninDays { get; set; }
+		public double? InventoryinDays { get; set; }
+		public double? CreditorinDays { get; set; }
 		public decimal? MarketingAllowance { get; set; }
 		public decimal? RegulatoryMaintenanceCost { get; set; }
 		public decimal? GrosstoNet { get; set; }
-		public int? Noofbatchestobemanufactured { get; set; }
+		public double? Noofbatchestobemanufactured { get; set; }
 		public DateTime NoofbatchestobemanufacturedPhaseEndDate { get; set; }
-		public int? NoSkus { get; set; }
+		public double? NoSkus { get; set; }
 		public DateTime NoSkusPhaseEndDate { get; set; }
 		public decimal? RandDanalyticalcost { get; set; }
 		public DateTime RandDanalyticalcostPhaseEndDate { get; set; }
@@ -79,19 +80,19 @@ namespace EmcureNPD.Business.Models
 		public int PidffinaceBatchSizeCoatingId { get; set; }
 		public int? PidffinaceId { get; set; }
 		public int? BusinessUnitId { get; set; }
-		public int? Batchsize { get; set; }
-		public int? Yield { get; set; }
-		public int? Batchoutput { get; set; }
-		public int? ApiCad { get; set; }
-		public int? ExcipientsCad { get; set; }
-		public int? PmCad { get; set; }
-		public int? CcpcCad { get; set; }
-		public int? FreightCad { get; set; }
-		public int? EmcureCogsPack { get; set; }
+		public double? Batchsize { get; set; }
+		public double? Yield { get; set; }
+		public double? Batchoutput { get; set; }
+		public double? ApiCad { get; set; }
+		public double? ExcipientsCad { get; set; }
+		public double? PmCad { get; set; }
+		public double? CcpcCad { get; set; }
+		public double? FreightCad { get; set; }
+		public double? EmcureCogsPack { get; set; }
 		public DateTime CreatedDate { get; set; }
 		public int? CreatedBy { get; set; }
 		public long? Skus { get; set; }
-		public int? PakeSize { get; set; }
+		public double? PakeSize { get; set; }
 		public double? BrandPrice { get; set; }
 		public double? NetRealisation { get; set; }
 		public double? GenericListprice { get; set; }

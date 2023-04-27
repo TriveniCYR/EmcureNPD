@@ -217,9 +217,9 @@ namespace EmcureNPD.Web.Controllers
                 }
             }
             if (IsSaveError)
-                TempData["SaveStatus"] = "Save Error Occured !";
+                TempData["SaveStatus"] = Convert.ToString(_stringLocalizerShared["Error"]);
 
-            return View(_Chartermodel);
+			return View(_Chartermodel);
         }
 
         [HttpGet]
@@ -300,7 +300,7 @@ namespace EmcureNPD.Web.Controllers
                 }
             }
             if (IsSaveError)
-                TempData["SaveStatus"] = "Save Error Occured !";
+                TempData["SaveStatus"] = Convert.ToString(_stringLocalizerShared["Error"]);
 
             // return back with Invalid Model
             //_RnDmodel._commercialFormEntity = GetPIDFCommercialModel(_RnDmodel.Pidfid, _RnDmodel.BusinessUnitId);
@@ -405,11 +405,11 @@ namespace EmcureNPD.Web.Controllers
                 }
             }
             if (IsSaveError)
-                TempData["SaveStatus"] = "Save Error Occured !";
+                TempData["SaveStatus"] = Convert.ToString(_stringLocalizerShared["Error"]);
 
-            // return back with Invalid Model
-            //_IPDmodel._commercialFormEntity = GetPIDFCommercialModel(_IPDmodel.Pidfid, _IPDmodel.BusinessUnitId);
-            APIIPDEntity oAPIIPDEntity = GetModelForPIDForm(_IPDmodel.Pidfid);
+			// return back with Invalid Model
+			//_IPDmodel._commercialFormEntity = GetPIDFCommercialModel(_IPDmodel.Pidfid, _IPDmodel.BusinessUnitId);
+			APIIPDEntity oAPIIPDEntity = GetModelForPIDForm(_IPDmodel.Pidfid);
 
             _IPDmodel.IPD_PatentDetailsList = oAPIIPDEntity.IPD_PatentDetailsList;
             _IPDmodel.ProjectName = oAPIIPDEntity.ProjectName;

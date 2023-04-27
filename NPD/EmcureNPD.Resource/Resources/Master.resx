@@ -235,7 +235,7 @@
     <value>Brand</value>
   </data>
   <data name="RFDCommercialBatchSize" xml:space="preserve">
-    <value>Commercial Batch Size</value>
+    <value>Commercial Batch Size (Qtr)</value>
   </data>
   <data name="RFDIndication" xml:space="preserve">
     <value>Indication</value>
@@ -247,7 +247,7 @@
     <value>Innovators</value>
   </data>
   <data name="RFDPriceDiscounting" xml:space="preserve">
-    <value>Price Discounting</value>
+    <value>Price Discounting %</value>
   </data>
   <data name="RoleManagement" xml:space="preserve">
     <value>Role Management</value>
@@ -322,13 +322,13 @@
     <value>API IPD Details Form</value>
   </data>
   <data name="APIReq" xml:space="preserve">
-    <value>API Req</value>
+    <value>API Req (Emcure KG)</value>
   </data>
   <data name="APiReq(EmcureKg)" xml:space="preserve">
-    <value>Api Req (EmcureKg)</value>
+    <value>API Req (Emcure KG)</value>
   </data>
   <data name="CommercialBatchSize" xml:space="preserve">
-    <value>Commercial Batch Size</value>
+    <value>Commercial Batch Size (Qtr)</value>
   </data>
   <data name="CommercialBatchSize(Qtr)" xml:space="preserve">
     <value>Commercial Batch Size (Qtr)</value>
@@ -379,10 +379,10 @@
     <value>Plant QC</value>
   </data>
   <data name="PriceDiscounting" xml:space="preserve">
-    <value>Price Discounting</value>
+    <value>Price Discounting %</value>
   </data>
   <data name="PriceErosion" xml:space="preserve">
-    <value>Price Erosion</value>
+    <value>Price Erosion %</value>
   </data>
   <data name="ProductPackaging" xml:space="preserve">
     <value>Product Packaging</value>
@@ -403,19 +403,19 @@
     <value>Scale Up</value>
   </data>
   <data name="SU(IMSVolume)" xml:space="preserve">
-    <value>SU (IMSVolume)</value>
+    <value>SU (IMS Volume)</value>
   </data>
   <data name="SU_IMS" xml:space="preserve">
-    <value>SU_IMS</value>
+    <value>SU (IMS Volume)</value>
   </data>
   <data name="Total" xml:space="preserve">
     <value>Total</value>
   </data>
   <data name="TotalAPIReq" xml:space="preserve">
-    <value>Total API Req</value>
+    <value>Total API Req (IMS KG)</value>
   </data>
   <data name="TotalAPIReq(IMSKg)" xml:space="preserve">
-    <value>Total API Req (IMSKg)</value>
+    <value>Total API Req (IMS KG)</value>
   </data>
   <data name="FormulationDetails" xml:space="preserve">
     <value> Formulation Details</value>
@@ -701,5 +701,11 @@
   </data>
   <data name="PackStyle" xml:space="preserve">
     <value>Pack Style</value>
+  </data>
+  <data name="CountryCode" xml:space="preserve">
+    <value>Country Code</value>
+  </data>
+  <data name="IsdcountryCode" xml:space="preserve">
+    <value>ISD country Code</value>
   </data>
 </root>

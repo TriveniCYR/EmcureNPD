@@ -90,7 +90,18 @@
 										</p>
 									</a>
 								</li>
-							}	
+							}
+							@if (UtilityHelper.GetMenuAccess((int)ModulePermissionEnum.PBF, _roleId))
+							{
+								<li class="nav-item">
+									<a href="@Url.Action("PIDFList","PIDF", new { ScreenId = Convert.ToString((int)EmcureNPD.Utility.Enums.PIDFScreen.PBF)})" class="nav-link">
+										<i class="nav-icon fas fa fa-cube"></i>
+										<p>
+											@SharedLocalizer["PBF Management"]
+										</p>
+									</a>
+								</li>
+							}
 							@if (UtilityHelper.GetMenuAccess((int)ModulePermissionEnum.Commercial, _roleId))
 							{
 								<li class="nav-item">
@@ -113,17 +124,7 @@
 									</a>
 								</li>
 							}
-							@if (UtilityHelper.GetMenuAccess((int)ModulePermissionEnum.PBF, _roleId))
-							{
-								<li class="nav-item">
-									<a href="@Url.Action("PIDFList","PIDF", new { ScreenId = Convert.ToString((int)EmcureNPD.Utility.Enums.PIDFScreen.PBF)})" class="nav-link">
-										<i class="nav-icon fas fa fa-cube"></i>
-										<p>
-											@SharedLocalizer["PBF Management"]
-										</p>
-									</a>
-								</li>
-							}
+							
 							@if (UtilityHelper.GetMenuAccess((int)ModulePermissionEnum.Finance, _roleId))
 							{
 								<li class="nav-item">

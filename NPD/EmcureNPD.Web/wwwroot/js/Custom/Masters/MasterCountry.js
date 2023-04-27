@@ -10,12 +10,12 @@ function GetCountryListSuccess(data) {
     try {
         destoryStaticDataTable('#CountryTable');
         $('#CountryTable tbody').html('');
-        $.each(data._object, function (index, object) {
-            $('#CountryTable tbody').append('<tr><td>' + object.countryName + '</td><td><span style="color:' + (object.isActive ? "green" : "red") + '">' + (object.isActive ? "Active" : "InActive") + '</span></td><td>  <a class="large-font" style="' + IsEditAllow + '" href="" title="Edit" data-toggle="modal" data-target="#SaveCountryModel" data-backdrop="static" data-keyboard="false"  onclick="GetCountryById(' + object.countryId + '); return false;"><i class="fa fa-fw fa-edit mr-1"></i> ' + '</a> <a class="large-font text-danger" style="' + IsDeleteAllow +'" href="" title="Delete" data-toggle="modal" data-target="#DeleteCountryModel" data-backdrop="static" data-keyboard="false" onclick="ConfirmationDeleteCountry(' + object.countryId + '); return false;"><i class="fa fa-fw fa-trash mr-1"></i> ' + '</a>  </td></tr>');
+        $.each(data._object, function (index, object) { //  <td>' + object.countryCode + '</td>  <td>' + object.isdcountryCode + '</td>  
+            $('#CountryTable tbody').append('<tr><td>' + object.countryName + '</td>  <td><span style="color:' + (object.isActive ? "green" : "red") + '">' + (object.isActive ? "Active" : "InActive") + '</span></td><td>  <a class="large-font" style="' + IsEditAllow + '" href="" title="Edit" data-toggle="modal" data-target="#SaveCountryModel" data-backdrop="static" data-keyboard="false"  onclick="GetCountryById(' + object.countryId + '); return false;"><i class="fa fa-fw fa-edit mr-1"></i> ' + '</a> <a class="large-font text-danger" style="' + IsDeleteAllow +'" href="" title="Delete" data-toggle="modal" data-target="#DeleteCountryModel" data-backdrop="static" data-keyboard="false" onclick="ConfirmationDeleteCountry(' + object.countryId + '); return false;"><i class="fa fa-fw fa-trash mr-1"></i> ' + '</a>  </td></tr>');
         });
         StaticDataTable("#CountryTable");
     } catch (e) {
-        toastr.error('Error:' + e.message);
+        toastr.error('Error:' + e.message); 
     }
 }
 function GetCountryListError(x, y, z) {
@@ -31,7 +31,9 @@ function GetCountryByIdSuccess(data) {
     try {
         CleareCountryFields();
         $('#SaveCountryModel #CountryID').val(data._object.countryId);
-        $('#SaveCountryModel #CountryName').val(data._object.countryName);
+        $('#SaveCountryModel #CountryName').val(data._object.countryName); 
+        $('#SaveCountryModel #CountryCode').val(data._object.countryCode);
+        $('#SaveCountryModel #IsdcountryCode').val(data._object.isdcountryCode);
         $('#SaveCountryModel #CountryTitle').html(UpdateLabel);
         if (!data._object.isActive) {
             $('#SaveCountryModel #IsActive').prop('checked', false);
@@ -80,9 +82,11 @@ function SaveCountryFormError(x, y, z) {
     toastr.error(ErrorMessage);
 }
 function CleareCountryFields() {
-    $('#SaveCountryModel #IsActive').prop('checked', true);
+    $('#SaveCountryModel #IsActive').prop('checked', true);    
     $('#SaveCountryModel #CountryID').val("0");
     $('#SaveCountryModel #CountryName').val("");
+    $('#SaveCountryModel #CountryCode').val("");
+    $('#SaveCountryModel #IsdcountryCode').val("");
     $('#DeleteCountryModel #CountryID').val("0");
     var validationMessages = document.querySelectorAll(".field-validation-error");
 

@@ -27,14 +27,15 @@ namespace EmcureNPD.Business.Core.Implementation
         private readonly IDatabaseSubscription _databaseSubscription;
         private IRepository<MasterNotification> _repository { get; set; }
         NotificationHub notificationHub;
-        //private readonly string _connectionstring;
+        private readonly string _connectionstring;
         public DatabaseSubscription(IUnitOfWork unitOfWork, IHubContext<NotificationHub> hubContext,INotificationService notificationService)
         {
             _unitOfWork = unitOfWork;
             _repository = _unitOfWork.GetRepository<MasterNotification>();
             _hubContext = hubContext;
             _notificationService = notificationService;
-            _databaseSubscription.Configure(DatabaseConnection.NPDDatabaseConnection);
+            //_connectionstring = DatabaseConnection.NPDDatabaseConnection;
+            //_databaseSubscription.Configure(DatabaseConnection.NPDDatabaseConnection);
         }
 
         public void Configure(string connectionString)

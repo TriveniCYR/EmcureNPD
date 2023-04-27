@@ -20,7 +20,7 @@
 }
 
 <div class="content-header">
-    <h4 class="m-0">Active Pharmaceutical Ingredient Charter Detail</h4>
+    <h4 class="m-0">API Charter Detail</h4>
 </div>
 <div class="container-fluid background-white-card">
     <div class="card card-outline">
@@ -109,7 +109,7 @@
                                             @if (i == 6)
                                             {
                                                 <td style="width:50%">
-                                                    @Html.TextBoxFor(model => model.TimelineInMonths[i].TimelineInMonthsValue, new {@readonly = "readonly" ,@tabindex="-1", @class = "form-control" , @placeholder="" })
+                                                    @Html.TextBoxFor(model => model.TimelineInMonths[i].TimelineInMonthsValue, new {@readonly = "readonly" ,@type="number",@tabindex="-1", @class = "form-control" , @placeholder="" })
                                                     <label class="text-danger" style="display:contents"></label>
                                                 </td>
                                             }
@@ -174,23 +174,23 @@
                                             <label class="control-label">@Model.AnalyticalDepartment[i].Name </label>
                                         </td>
                                         <td>
-                                            @Html.TextBoxFor(model => model.AnalyticalDepartment[i].AnalyticalDepartmentARDValue, ((i == 5 || i == 3) ? new {@readonly = "readonly", @tabindex="-1", @class = "form-control" , @placeholder="" } : new {@type="number",@class = "form-control" , @placeholder="" }))
+                                            @Html.TextBoxFor(model => model.AnalyticalDepartment[i].AnalyticalDepartmentARDValue, ((i == 5 || i == 3) ? new {@type="number",@readonly = "readonly", @tabindex="-1", @class = "form-control" , @placeholder="" } : new {@type="number",@class = "form-control" , @placeholder="" }))
                                             <label class="text-danger" style="display:contents"></label>
                                         </td>
                                         <td>
-                                            @Html.TextBoxFor(model => model.AnalyticalDepartment[i].AnalyticalDepartmentImpurityValue, ((i == 5 || i == 3) ? new {@readonly = "readonly", @tabindex="-1", @class = "form-control" , @placeholder="" } : new {@type="number",@class = "form-control" , @placeholder="" }))
+                                            @Html.TextBoxFor(model => model.AnalyticalDepartment[i].AnalyticalDepartmentImpurityValue, ((i == 5 || i == 3) ? new {@type="number",@readonly = "readonly", @tabindex="-1", @class = "form-control" , @placeholder="" } : new {@type="number",@class = "form-control" , @placeholder="" }))
                                             <label class="text-danger" style="display:contents"></label>
                                         </td>
                                         <td>
-                                            @Html.TextBoxFor(model => model.AnalyticalDepartment[i].AnalyticalDepartmentStabilityValue, ((i == 5 || i == 3) ? new {@readonly = "readonly", @tabindex="-1", @class = "form-control" , @placeholder="" } : new {@type="number",@class = "form-control" , @placeholder="" }))
+                                            @Html.TextBoxFor(model => model.AnalyticalDepartment[i].AnalyticalDepartmentStabilityValue, ((i == 5 || i == 3) ? new {@type="number",@readonly = "readonly", @tabindex="-1", @class = "form-control" , @placeholder="" } : new {@type="number",@class = "form-control" , @placeholder="" }))
                                             <label class="text-danger" style="display:contents"></label>
                                         </td>
                                         <td>
-                                            @Html.TextBoxFor(model => model.AnalyticalDepartment[i].AnalyticalDepartmentAMVValue, ((i == 5 || i == 3) ? new {@readonly = "readonly", @tabindex="-1", @class = "form-control" , @placeholder="" } : new {@type="number",@class = "form-control" , @placeholder="" }))
+                                            @Html.TextBoxFor(model => model.AnalyticalDepartment[i].AnalyticalDepartmentAMVValue, ((i == 5 || i == 3) ? new {@type="number",@readonly = "readonly", @tabindex="-1", @class = "form-control" , @placeholder="" } : new {@type="number",@class = "form-control" , @placeholder="" }))
                                             <label class="text-danger" style="display:contents"></label>
                                         </td>
                                         <td>
-                                            @Html.TextBoxFor(model => model.AnalyticalDepartment[i].AnalyticalDepartmentAMTValue, ((i == 5 || i == 3) ? new {@readonly = "readonly", @tabindex="-1", @class = "form-control" , @placeholder="" } : new {@type="number",@class = "form-control" , @placeholder="" }))
+                                            @Html.TextBoxFor(model => model.AnalyticalDepartment[i].AnalyticalDepartmentAMTValue, ((i == 5 || i == 3) ? new {@type="number",@readonly = "readonly", @tabindex="-1", @class = "form-control" , @placeholder="" } : new {@type="number",@class = "form-control" , @placeholder="" }))
                                             <label class="text-danger" style="display:contents"></label>
                                         </td>
                                     </tr>
@@ -324,11 +324,11 @@
                                             <td></td>
                                         }
                                         <td>
-                                            @Html.TextBoxFor(model => model.ManhourEstimates[i].ManhourEstimatesHoursValue, new { @readonly = "readonly", @tabindex="-1", @class = "form-control" , @placeholder="" })
+                                            @Html.TextBoxFor(model => model.ManhourEstimates[i].ManhourEstimatesHoursValue, new { @type="number",@readonly = "readonly", @tabindex="-1", @class = "form-control" , @placeholder="" })
                                             <label class="text-danger" style="display:contents"></label>
                                         </td>
                                         <td>
-                                            @Html.TextBoxFor(model => model.ManhourEstimates[i].ManhourEstimatesCostValue, new {@readonly = "readonly", @tabindex="-1", @class = "form-control" , @placeholder="" })
+                                            @Html.TextBoxFor(model => model.ManhourEstimates[i].ManhourEstimatesCostValue, new {@type="number",@readonly = "readonly", @tabindex="-1", @class = "form-control" , @placeholder="" })
                                             <label class="text-danger" style="display:contents"></label>
                                         </td>
                                     </tr>
@@ -359,7 +359,7 @@
                                             <label class="control-label">@Model.HeadwiseBudget[i].Name </label>
                                         </td>
                                         <td>
-                                            @Html.TextBoxFor(model => model.HeadwiseBudget[i].HeadwiseBudgetValue, new {@readonly = "readonly", @tabindex="-1", @class = "form-control" , @placeholder="" })
+                                            @Html.TextBoxFor(model => model.HeadwiseBudget[i].HeadwiseBudgetValue, new {@type="number",@readonly = "readonly", @tabindex="-1", @class = "form-control" , @placeholder="" })
                                             <label class="text-danger" style="display:contents"></label>
                                         </td>
                                     </tr>
