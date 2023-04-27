@@ -8,8 +8,9 @@ namespace EmcureNPD.Business.Core.Interface
     public interface IMasterCountryService
     {
         Task<List<MasterCountryEntity>> GetAll();
+        Task<List<MasterCountryEntity>> GetAllActiveCountry();
 
-        Task<MasterCountryEntity> GetById(int id);
+		Task<MasterCountryEntity> GetById(int id);
 
         Task<DBOperation> AddUpdateCountry(MasterCountryEntity entityCountry);
 

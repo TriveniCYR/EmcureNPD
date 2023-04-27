@@ -702,4 +702,10 @@
   <data name="PackStyle" xml:space="preserve">
     <value>Pack Style</value>
   </data>
+  <data name="CountryCode" xml:space="preserve">
+    <value>Country Code</value>
+  </data>
+  <data name="IsdcountryCode" xml:space="preserve">
+    <value>ISD country Code</value>
+  </data>
 </root>

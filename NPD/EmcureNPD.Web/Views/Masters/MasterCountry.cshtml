@@ -92,6 +92,26 @@
 					</div>
 					<div class="row">
 						<div class="col-md-12">
+							<div class="form-group required">
+								@Html.LabelFor(model => model.CountryCode,"Country Code", new { @class = "control-label" })
+								<span class="text-danger">*</span>
+								@Html.EditorFor(model => model.CountryCode, new { htmlAttributes = new { @autocomplete = "off", @class = "form-control checkbox-checked", @placeholder = @MasterLocalizer["CountryCode"] } })
+								@Html.ValidationMessageFor(model => model.CountryCode, "", new { @class = "text-danger" })
+							</div>
+						</div>
+					</div>
+					<div class="row">
+						<div class="col-md-12">
+							<div class="form-group required">
+								@Html.LabelFor(model => model.IsdcountryCode,"ISD Country Code", new { @class = "control-label" })
+								<span class="text-danger">*</span>
+								@Html.EditorFor(model => model.IsdcountryCode, new { htmlAttributes = new { @autocomplete = "off", @class = "form-control checkbox-checked", @placeholder = @MasterLocalizer["IsdcountryCode"] } })
+								@Html.ValidationMessageFor(model => model.IsdcountryCode, "", new { @class = "text-danger" })
+							</div>
+						</div>
+					</div>
+					<div class="row">
+						<div class="col-md-12">
 							<div class="required">
 								@Html.CheckBoxFor(model => model.IsActive, new { @class = "checkbox-checked", @checked = "checked" })
 								@Html.Label(@SharedLocalizer["IsActive"],"Active")

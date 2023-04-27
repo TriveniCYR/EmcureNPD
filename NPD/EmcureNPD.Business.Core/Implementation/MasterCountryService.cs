@@ -29,8 +29,12 @@ namespace EmcureNPD.Business.Core.ServiceImplementations
             var list = await _repository.GetAllAsync();
             return _mapperFactory.GetList<MasterCountry, MasterCountryEntity>(list.ToList());
         }
-
-        public async Task<MasterCountryEntity> GetById(int id)
+		public async Task<List<MasterCountryEntity>> GetAllActiveCountry()
+		{
+			var list = await _repository.GetAllAsync(x => x.IsActive == true && x.CountryCode !=null && x.IsdcountryCode != null);
+			return _mapperFactory.GetList<MasterCountry, MasterCountryEntity>(list.ToList());
+		}
+		public async Task<MasterCountryEntity> GetById(int id)
         {
             return _mapperFactory.Get<MasterCountry, MasterCountryEntity>(await _repository.GetAsync(id));
         }
