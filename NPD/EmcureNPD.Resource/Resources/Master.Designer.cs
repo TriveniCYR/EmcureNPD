@@ -511,6 +511,15 @@ namespace EmcureNPD.Resource.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Country Code.
+        /// </summary>
+        public static string CountryCode {
+            get {
+                return ResourceManager.GetString("CountryCode", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Country Name.
         /// </summary>
         public static string CountryName {
@@ -912,6 +921,15 @@ namespace EmcureNPD.Resource.Resources {
         public static string IPEvalution {
             get {
                 return ResourceManager.GetString("IPEvalution", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to ISD country Code.
+        /// </summary>
+        public static string IsdcountryCode {
+            get {
+                return ResourceManager.GetString("IsdcountryCode", resourceCulture);
             }
         }
         

@@ -377,9 +377,15 @@ namespace EmcureNPD.Data.DataAccess.DataContext
 
                 entity.Property(e => e.CountryId).HasColumnName("CountryID");
 
+                entity.Property(e => e.CountryCode).HasMaxLength(5);
+
                 entity.Property(e => e.CountryName).HasMaxLength(100);
 
                 entity.Property(e => e.CreatedDate).HasColumnType("datetime");
+
+                entity.Property(e => e.IsdcountryCode)
+                    .HasMaxLength(4)
+                    .HasColumnName("ISDCountryCode");
 
                 entity.Property(e => e.ModifyDate).HasColumnType("datetime");
             });

@@ -242,8 +242,9 @@ namespace EmcureNPD.Web.Helpers
 
         #region Country
 
-        public static string GetAllCountry = "api/Country/GetAllCountry";
-        public static string SaveCountry = "api/Country/InsertUpdateCountry";
+        public static string GetAllCountry = "api/Country/GetAllCountry"; 
+		public static string GetAllActiveCountry = "api/Country/GetAllActiveCountry";
+		public static string SaveCountry = "api/Country/InsertUpdateCountry";
         public static string GetCountryById = "api/Country/GetCountryById";
         public static string DeleteCountryById = "api/Country/DeleteCountry";
 

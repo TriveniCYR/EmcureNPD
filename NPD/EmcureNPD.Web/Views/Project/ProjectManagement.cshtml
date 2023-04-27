@@ -378,7 +378,7 @@
                         </div>
                         @Html.HiddenFor(o => o.Pidfid, new{id="pidfid"})
                         @Html.HiddenFor(o => o.ProjectTaskId, new{id="projectTaskId"})
-                        @Html.HiddenFor(o => o.TaskLevel, new{id="tasklevel"})
+                        @Html.HiddenFor(o => o.TaskLevel, new{id="taskLevel"})
                         @Html.HiddenFor(o => o.ParentId, new{id="parentId"})
                     </div>
                     <div class="modal-footer">
@@ -525,7 +525,7 @@
                     <div class="modal-body p-4">
                         <div class="row">
                             <div class="col-sm-6">
-                                <div class="form-group required">
+                                <div class="form-group required" style="display:none;">
                                     @Html.LabelFor(t => t.ParentId,"Main Task", new { @class = "control-label" })
                                     @Html.DropDownListFor(t => t.ParentId, new SelectList(string.Empty, "Value", "Text"), "Please select option", htmlAttributes: new { @class = "form-control input-sm f-s-15 bg-eff4f55c w100per", id = "AddSubTaskofTask" })
                                     @Html.ValidationMessageFor(t => t.ParentId, "", new { @class = "text-danger" })
@@ -589,6 +589,7 @@
                             </div>
                         </div>
                         @Html.HiddenFor(t => t.Pidfid, new { id = "pidfId" })
+                        @Html.HiddenFor(t => t.SubTaskLevel)
                     </div>
                     <div class="modal-footer">
                         <button type="submit" class="btn btn-primary ">@SharedLocalizer["Save"].Value</button>

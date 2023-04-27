@@ -22,11 +22,14 @@ function HideSaveAsDraft() {
 }
 
 $('#Save').click(function () {
+    RoundUPReadonlyValues();
     ValidateForm();
+   
     $("#SaveType_APICharter").val('Save');
 });
 $('#SaveDraft').click(function () {
-    ValidateForm();// $("#IsModelValid").val('Valid')
+    RoundUPReadonlyValues();
+    ValidateForm();// $("#IsModelValid").val('Valid')    
     $("#SaveType_APICharter").val('SaveDraft');
 });
 
@@ -79,6 +82,13 @@ $('input[type="number"]').on("keypress keyup blur", function (event) {
         event.preventDefault();
     }
 });
+function RoundUPReadonlyValues() {
+    $('input[type=number][readonly]').each(function () {
+        var Value = $(this).val();
+        var floatval = parseFloat(Value);
+        $(this).val(floatval.toFixed(2));
+    });
+}
 
 //--------------Calculation of Readoinly Feilds------------------------------------------
 //--------------Calculation of TimelineInMonthsValue----------------------

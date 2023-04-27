@@ -16,6 +16,7 @@
                 <h3>@MasterLocalizer["ChangeProfile"].Value</h3>
             </div>
         </div>
+        <input type="hidden" asp-for="UserId" />
         @if (ViewBag.Message != null)
         {
             string _Message = ViewBag.Message;
@@ -45,7 +46,16 @@
             </div>
            
             <div class="row">
-                <div class="col-md-6">
+                <div class="col-md-1">
+                    <div class="form-group required">
+                        @Html.LabelFor(model => model.MobileCountryId, "ISD",new { @class = "control-label" })
+                        <span class="text-danger">*</span>
+                        <select id="MobileCountryId" name="MobileCountryId" class="form-control"></select>
+                        <input type="hidden" asp-for="MobileCountryId" id="hdnMobileCountryId" />
+                        @Html.ValidationMessageFor(model => model.MobileCountryId, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+                <div class="col-md-5">
                     <div class="form-group required">
                         @Html.LabelFor(model => model.MobileNumber, @SharedLocalizer["MobileNumber"],new { @class = "control-label" })
                         @Html.TextBoxFor(model => model.MobileNumber, new { @autocomplete = "off", @class = "form-control checkbox-checked", @placeholder = @SharedLocalizer["MobileNumber"] })
@@ -73,3 +83,12 @@
         </div>       
     </form>
 </div>
+
+@section MyScripts {
+    <script type="text/javascript" src="~/js/Custom/User/UserChangeProfile.js?v=@jsVersion"></script>
+    <script>
+       
+        var GetAllActiveCountryURL = "@EmcureNPD.Web.Helpers.APIURLHelper.GetAllActiveCountry";
+       
+    </script>
+}
