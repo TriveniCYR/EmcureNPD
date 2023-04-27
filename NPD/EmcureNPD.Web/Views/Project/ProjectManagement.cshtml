@@ -378,7 +378,7 @@
                         </div>
                         @Html.HiddenFor(o => o.Pidfid, new{id="pidfid"})
                         @Html.HiddenFor(o => o.ProjectTaskId, new{id="projectTaskId"})
-                        @Html.HiddenFor(o => o.TaskLevel, new{id="tasklevel"})
+                        @Html.HiddenFor(o => o.TaskLevel, new{id="taskLevel"})
                         @Html.HiddenFor(o => o.ParentId, new{id="parentId"})
                     </div>
                     <div class="modal-footer">
@@ -589,6 +589,7 @@
                             </div>
                         </div>
                         @Html.HiddenFor(t => t.Pidfid, new { id = "pidfId" })
+                        @Html.HiddenFor(t => t.SubTaskLevel)
                     </div>
                     <div class="modal-footer">
                         <button type="submit" class="btn btn-primary ">@SharedLocalizer["Save"].Value</button>

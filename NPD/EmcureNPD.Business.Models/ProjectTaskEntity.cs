@@ -18,6 +18,7 @@ namespace EmcureNPD.Business.Models
         public string TaskOwnerName { get; set; }
         public int EditTaskOwnerId { get; set; }
         public int TaskLevel { get; set; }
+        public int SubTaskLevel { get; set; }
         [Required(ErrorMessage = "Start Date is required")]
         public DateTime StartDate { get; set; }
 
