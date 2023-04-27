@@ -581,7 +581,7 @@ function validateDuplicateSKUs() {
                 return false;
             }
         }
-        else { return true; }
+        return true;
     });
    // return false;
 }
