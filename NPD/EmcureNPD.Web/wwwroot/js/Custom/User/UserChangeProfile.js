@@ -15,7 +15,7 @@ function GetAllMobileCountryIdListSuccess(data) {
         $(data._object).each(function (index, item) {
             $('#MobileCountryId').append('<option value="' + item.countryId + '">' + item.countryCode + '-' + item.isdcountryCode + '</option>');
         });
-        if (parseInt($('#UserId').val()) > 0) {
+        if (parseInt($("#hdnMobileCountryId").val()) > 0) {
             $("#MobileCountryId").val($("#hdnMobileCountryId").val());
         }
     } catch (e) {

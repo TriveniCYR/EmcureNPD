@@ -16,6 +16,7 @@
                 <h3>@MasterLocalizer["ChangeProfile"].Value</h3>
             </div>
         </div>
+        <input type="hidden" asp-for="UserId" />
         @if (ViewBag.Message != null)
         {
             string _Message = ViewBag.Message;
@@ -50,7 +51,7 @@
                         @Html.LabelFor(model => model.MobileCountryId, "ISD",new { @class = "control-label" })
                         <span class="text-danger">*</span>
                         <select id="MobileCountryId" name="MobileCountryId" class="form-control"></select>
-                        <input type="hidden" id="hdnMobileCountryId" value="@Model.MobileCountryId" />
+                        <input type="hidden" asp-for="MobileCountryId" id="hdnMobileCountryId" />
                         @Html.ValidationMessageFor(model => model.MobileCountryId, "", new { @class = "text-danger" })
                     </div>
                 </div>
