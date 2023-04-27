@@ -19,10 +19,10 @@ namespace EmcureNPD.Business.Models
         public bool IsActive { get; set; }
         public DateTime CreatedDate { get; set; }
 		[Required(ErrorMessageResourceType = typeof(Validation), ErrorMessageResourceName = "Required")]
-		[Display(Name = "CountryName", ResourceType = typeof(Master))]
+		[Display(Name = "CountryCode", ResourceType = typeof(Master))]
 		public string CountryCode { get; set; }
 		[Required(ErrorMessageResourceType = typeof(Validation), ErrorMessageResourceName = "Required")]
-		[Display(Name = "CountryName", ResourceType = typeof(Master))]
+		[Display(Name = "IsdcountryCode", ResourceType = typeof(Master))]
 		public string IsdcountryCode { get; set; }
     }
 }

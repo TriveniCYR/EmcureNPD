@@ -297,3 +297,4 @@ form-control.is-valid, .was-validated .form-control:valid {
 }
 .bootbox-confirm .bootbox-close-button{font-size:1rem;}
 /*.large-popup .form-group{margin-bottom:0.2rem !important;}*/
+.batch-size-coating-table input[type=number].form-control{padding-right:5px !important;}

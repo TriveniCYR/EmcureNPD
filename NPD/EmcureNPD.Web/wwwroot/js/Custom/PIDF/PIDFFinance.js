@@ -3,7 +3,7 @@ let selectedCurrencyText = "";
 let el = document.querySelectorAll('input[type="number"]');
 let isValidSku = false;
 $(document).ready(function () {
-    console.log("selectedSKUs" + selectedSKUs);
+ /*   console.log("selectedSKUs" + selectedSKUs);*/
   
     GetCurrencyList();
     calculateDealTerm();
@@ -299,7 +299,6 @@ function calculateBatchSizeCaoting(ele) {
     let Yield = 0;
     let Batchoutput = 0;
     let sumforEmcureCogsPack = 0;
-
     let ApiCad = 0;
     let ExcipientsCad = 0;
     let PmCad = 0;
@@ -308,37 +307,60 @@ function calculateBatchSizeCaoting(ele) {
     let packSize = 0;
     let strengthId = 0;
     $.each($('#FinanceTableBoy tr'), function (index, value) {
-        strengthId = $(this).find("td:eq(0) select option:selected").attr("name", "lsPidfFinanceBatchSizeCoating[" + index.toString() + "].Skus").val();
-        //getPackSize(strengthId);
-        packSize = $(this).find("td:eq(1) select option:selected").attr("name", "lsPidfFinanceBatchSizeCoating[" + index.toString() + "].PakeSize").val();
-        //$(this).find("td:eq(1) input").attr("name", "lsPidfFinanceBatchSizeCoating[" + index.toString() + "].PakeSize").val(packSize);
-        if (ele.valueAsNumber >= 0 && $(this).find("td:eq(3) input").attr("name", "lsPidfFinanceBatchSizeCoating[" + index.toString() + "].GenericListprice").val() == ele.value) {
-            netRealisation = (ele.valueAsNumber * 40) / 100;
-            let textnetRealisation = netRealisation.toLocaleString("en");
-            $(this).find("td:eq(4) input").attr("name", "lsPidfFinanceBatchSizeCoating[" + index.toString() + "].NetRealisation").val(textnetRealisation);
-        }
-        if ($(this).find("td:eq(5) input").attr("name", "lsPidfFinanceBatchSizeCoating[" + index.toString() + "].EstMat2020By12units").val() > 0) {
-            EstMat2020By12units = parseFloat($(this).find("td:eq(5) input").attr("name", "lsPidfFinanceBatchSizeCoating[" + index.toString() + "].EstMat2020By12units").val());
-            let textEstMat2020By12units = EstMat2020By12units.toLocaleString("en");
-            $(this).find("td:eq(6) input").attr("name", "lsPidfFinanceBatchSizeCoating[" + index.toString() + "].Marketinpacks").val(textEstMat2020By12units);
-        }
-        if ($(this).find("td:eq(7) input").attr("name", "lsPidfFinanceBatchSizeCoating[" + index.toString() + "].BatchsizeinLtrTabs").val() > 0) {
-            BatchsizeinLtrTabs = $(this).find("td:eq(7) input").attr("name", "lsPidfFinanceBatchSizeCoating[" + index.toString() + "].BatchsizeinLtrTabs").val();
-            Batchsize = parseInt(BatchsizeinLtrTabs) / parseInt(packSize); //parseFloat($(this).find("td:eq(0) select option:selected").attr("name", "lsPidfFinanceBatchSizeCoating[" + index.toString() + "].Skus").text().replace("mg", "").trim())
-            $(this).find("td:eq(8) input").attr("name", "lsPidfFinanceBatchSizeCoating[" + index.toString() + "].Batchsize").val(parseInt(Batchsize));
-        }
-        if ($(this).find("td:eq(9) input").attr("name", "lsPidfFinanceBatchSizeCoating[" + index.toString() + "].Yield").val() > 0) {
-            Yield = $(this).find("td:eq(9) input").attr("name", "lsPidfFinanceBatchSizeCoating[" + index.toString() + "].Yield").val();
-            Batchoutput = parseFloat(Yield) * parseFloat(packSize); //parseFloat($(this).find("td:eq(0) select option:selected").attr("name", "lsPidfFinanceBatchSizeCoating[" + index.toString() + "].Skus").text().replace("mg", "").trim())
-            $(this).find("td:eq(10) input").attr("name", "lsPidfFinanceBatchSizeCoating[" + index.toString() + "].Batchoutput").val(Batchoutput);
-        }
-            ApiCad = $(this).find("td:eq(11) input").attr("name", "lsPidfFinanceBatchSizeCoating[" + index.toString() + "].ApiCad").val();
-            ExcipientsCad = $(this).find("td:eq(12) input").attr("name", "lsPidfFinanceBatchSizeCoating[" + index.toString() + "].ExcipientsCad").val();
-            PmCad = $(this).find("td:eq(13) input").attr("name", "lsPidfFinanceBatchSizeCoating[" + index.toString() + "].PmCad").val();
-            CcpcCad = $(this).find("td:eq(14) input").attr("name", "lsPidfFinanceBatchSizeCoating[" + index.toString() + "].CcpcCad").val();
-            FreightCad = $(this).find("td:eq(15) input").attr("name", "lsPidfFinanceBatchSizeCoating[" + index.toString() + "].FreightCad").val();
-            sumforEmcureCogsPack = parseInt(Batchsize) + parseInt(Yield) + parseInt(Batchoutput) + parseInt(ApiCad) + parseInt(ExcipientsCad) + parseInt(PmCad) + parseInt(CcpcCad) + parseInt(FreightCad);
-            $(this).find("td:eq(16) input").attr("name", "lsPidfFinanceBatchSizeCoating[" + index.toString() + "].EmcureCogsPack").val(sumforEmcureCogsPack);
+
+        strengthId = $(this).find("select.Skus").val();
+        packSize = $(this).find("select.PakeSize").val();
+        BatchsizeinLtrTabs = $(this).find("input.BatchsizeinLtrTabs").val();
+
+        $(this).find("input.Batchsize").val((parseFloat(BatchsizeinLtrTabs) / parseFloat(packSize)).toFixed(2));
+
+        Batchsize = $(this).find("input.Batchsize").val();
+        Yield = $(this).find("input.Yield").val();
+
+        $(this).find("input.Batchoutput").val(((parseFloat(Batchsize == "" ? 0 : Batchsize) * parseFloat(Yield == "" ? 0 : Yield)) / 100).toFixed(2));
+        ApiCad = $(this).find("input.API_CAD").val();
+        ExcipientsCad = $(this).find("input.Excipients_CAD").val();
+        PmCad = $(this).find("input.PM_CAD").val();
+        CcpcCad = $(this).find("input.CCPC_CAD").val();
+        FreightCad = $(this).find("input.Freight_CAD").val();
+
+        sumforEmcureCogsPack = parseFloat(ApiCad == "" ? 0 : ApiCad) + parseFloat(ExcipientsCad == "" ? 0 : ExcipientsCad) + parseFloat(PmCad == "" ? 0 : PmCad) + parseFloat(CcpcCad == "" ? 0 : CcpcCad) + parseFloat(FreightCad == "" ? 0 : FreightCad);
+
+        $(this).find("input.EmcureCOGs_pack").val(sumforEmcureCogsPack.toFixed(2));
+
+        
+
+        //strengthId = $(this).find("td:eq(0) select option:selected").attr("name", "lsPidfFinanceBatchSizeCoating[" + index.toString() + "].Skus").val();
+        ////getPackSize(strengthId);
+        //packSize = $(this).find("td:eq(1) select option:selected").attr("name", "lsPidfFinanceBatchSizeCoating[" + index.toString() + "].PakeSize").val();
+        ////$(this).find("td:eq(1) input").attr("name", "lsPidfFinanceBatchSizeCoating[" + index.toString() + "].PakeSize").val(packSize);
+        //if (ele.valueAsNumber >= 0 && $(this).find("td:eq(3) input").attr("name", "lsPidfFinanceBatchSizeCoating[" + index.toString() + "].GenericListprice").val() == ele.value) {
+        //    netRealisation = (ele.valueAsNumber * 40) / 100;
+        //    let textnetRealisation = netRealisation.toLocaleString("en");
+        //    $(this).find("td:eq(4) input").attr("name", "lsPidfFinanceBatchSizeCoating[" + index.toString() + "].NetRealisation").val(textnetRealisation);
+        //}
+        //if ($(this).find("td:eq(5) input").attr("name", "lsPidfFinanceBatchSizeCoating[" + index.toString() + "].EstMat2020By12units").val() > 0) {
+        //    EstMat2020By12units = parseFloat($(this).find("td:eq(5) input").attr("name", "lsPidfFinanceBatchSizeCoating[" + index.toString() + "].EstMat2020By12units").val());
+        //    let textEstMat2020By12units = EstMat2020By12units.toLocaleString("en");
+        //    $(this).find("td:eq(6) input").attr("name", "lsPidfFinanceBatchSizeCoating[" + index.toString() + "].Marketinpacks").val(textEstMat2020By12units);
+        //}
+        //if ($(this).find("td:eq(7) input").attr("name", "lsPidfFinanceBatchSizeCoating[" + index.toString() + "].BatchsizeinLtrTabs").val() > 0) {
+        //    BatchsizeinLtrTabs = $(this).find("td:eq(7) input").attr("name", "lsPidfFinanceBatchSizeCoating[" + index.toString() + "].BatchsizeinLtrTabs").val();
+        //    Batchsize = parseInt(BatchsizeinLtrTabs) / parseInt(packSize); //parseFloat($(this).find("td:eq(0) select option:selected").attr("name", "lsPidfFinanceBatchSizeCoating[" + index.toString() + "].Skus").text().replace("mg", "").trim())
+        //    $(this).find("td:eq(8) input").attr("name", "lsPidfFinanceBatchSizeCoating[" + index.toString() + "].Batchsize").val(parseInt(Batchsize));
+        //}
+        //if ($(this).find("td:eq(9) input").attr("name", "lsPidfFinanceBatchSizeCoating[" + index.toString() + "].Yield").val() > 0) {
+        //    Yield = $(this).find("td:eq(9) input").attr("name", "lsPidfFinanceBatchSizeCoating[" + index.toString() + "].Yield").val();
+        //    Batchoutput = parseFloat(Yield) * parseFloat(packSize); //parseFloat($(this).find("td:eq(0) select option:selected").attr("name", "lsPidfFinanceBatchSizeCoating[" + index.toString() + "].Skus").text().replace("mg", "").trim())
+        //    $(this).find("td:eq(10) input").attr("name", "lsPidfFinanceBatchSizeCoating[" + index.toString() + "].Batchoutput").val(Batchoutput);
+        //}
+        //    ApiCad = $(this).find("td:eq(11) input").attr("name", "lsPidfFinanceBatchSizeCoating[" + index.toString() + "].ApiCad").val();
+        //    ExcipientsCad = $(this).find("td:eq(12) input").attr("name", "lsPidfFinanceBatchSizeCoating[" + index.toString() + "].ExcipientsCad").val();
+        //    PmCad = $(this).find("td:eq(13) input").attr("name", "lsPidfFinanceBatchSizeCoating[" + index.toString() + "].PmCad").val();
+        //    CcpcCad = $(this).find("td:eq(14) input").attr("name", "lsPidfFinanceBatchSizeCoating[" + index.toString() + "].CcpcCad").val();
+        //    FreightCad = $(this).find("td:eq(15) input").attr("name", "lsPidfFinanceBatchSizeCoating[" + index.toString() + "].FreightCad").val();
+        //    sumforEmcureCogsPack = parseInt(Batchsize) + parseInt(Yield) + parseInt(Batchoutput) + parseInt(ApiCad) + parseInt(ExcipientsCad) + parseInt(PmCad) + parseInt(CcpcCad) + parseInt(FreightCad);
+        //    $(this).find("td:eq(16) input").attr("name", "lsPidfFinanceBatchSizeCoating[" + index.toString() + "].EmcureCogsPack").val(sumforEmcureCogsPack);
        // });
     })
 }
@@ -353,7 +375,7 @@ function GetSkus(pidfId) {
                 let optionhtml = '<option value = "0" selected="selected">--Select--</option>';
                 $.each(data.table, function (index, object) {
                     optionhtml += '<option value="' +
-                        object.pidfProductStrengthId + '" data=' + object.packSizeId + '>' + object.strength + 'mg </option>';
+                        object.pidfProductStrengthId + '">' + object.strength + object.unitofMeasurementName + '</option>';
                     
                 });
                 $("select.DbSkus").append(optionhtml);
@@ -452,7 +474,7 @@ function getEditPackSize(strengthId,rowIndex) {
                 arrselectedPackSize.forEach(function (val, i) {
                     if (val == arrselectedPackSize[i]) {
                         $(`select#PakeSize${i}.PakeSize`).val(val);
-                        $(`select#PakeSize${i}.PakeSize`).find('option[value="' + val + '"]').prop('selected',true);
+                        $(`select#PakeSize${i}.PakeSize`).find('option[value="' + val + '"]').prop('selected',true).trigger("change");
                     }
                 });
             }
@@ -469,27 +491,25 @@ function getEditPackSize(strengthId,rowIndex) {
 
 function GetSUIMSVolumeYearWiseByPackSize(ele) {
     var row_index = $(ele).closest('tr').index();
-    skuElements = row_index == 0 ? $(ele).val() : $(`select#Skus${row_index}.Skus`).val();
-    let packSizeId = $(`select#PakeSize${row_index}.PakeSize option:selected`).attr('data');
-    let strengthId = $(`select#Skus${row_index}.Skus.DbSkus option:selected`).val() == undefined ? skuElements : $(`select#Skus${row_index}.Skus.DbSkus option:selected`).val();
+    //skuElements = row_index == 0 ? $(ele).val() : $(`select#Skus${row_index}.Skus`).val();
+    //let packSizeId = $(`select#PakeSize${row_index}.PakeSize option:selected`).attr('data');
+    //let strengthId = $(`select#Skus${row_index}.Skus.DbSkus option:selected`).val() == undefined ? skuElements : $(`select#Skus${row_index}.Skus.DbSkus option:selected`).val();
+
+    let packSizeId = $(ele).closest('tr').find("select.PakeSize option:selected").attr("data");
+    let strengthId =$(ele).closest('tr').find("select.Skus").val();
     validateDuplicateSKUs();    
     if (isValidSku) {
       if (packSizeId > 0 && strengthId > 0) {
             ajaxServiceMethod($('#hdnBaseURL').val() + `api/PidfFinance/GetSUIMSVolumeYearWiseByPackSize/${pidfId}/${_encBuid}/${strengthId}/${packSizeId}`, 'GET', SUIMSVolumeYearWiseByPackSizeSuccess, SUIMSVolumeYearWiseByPackSizeError);
             function SUIMSVolumeYearWiseByPackSizeSuccess(data) {
                 try {
-
-                    $.each(data.table, function (index, object) {
-                        $(`input#BrandPrice${row_index}.BrandPrice`).val(parseInt(object.brandPrice));
-                        $(`input#GenericListprice${row_index}.GenericListprice`).val(parseInt(object.genericPrice));
-                        let netRealisation = parseFloat(object.genericPrice) * 40 / 100;
-                        $(`input#NetRealisation${row_index}.NetRealisation`).val(netRealisation);
-                        $(`input#EstMat2020By12units${row_index}.EstMat2020By12units`).val(parseInt(object.suimsVolume));
-                        $(`input#Marketinpacks${row_index}.Marketinpacks`).val(parseInt(object.suimsVolume));
-
-                        //calculateBatchSizeCaoting(ele);
-                    });
-
+                    $(`input#BrandPrice${row_index}.BrandPrice`).val((data.table.length > 0 ? parseFloat(data.table[0].brandPrice) : 0).toFixed(2));
+                    $(`input#GenericListprice${row_index}.GenericListprice`).val((data.table.length > 0 ? parseFloat(data.table[0].genericPrice) : 0).toFixed(2));
+                    let netRealisation = parseFloat((data.table.length > 0 ? data.table[0].genericPrice : 0)) * parseFloat((data.table.length > 0 ? data.table[0].priceDiscounting : 0)) / 100;
+                    $(`input#NetRealisation${row_index}.NetRealisation`).val(netRealisation.toFixed(2));
+                    $(`input#EstMat2020By12units${row_index}.EstMat2020By12units`).val(parseFloat((data.table.length > 0 ? data.table[0].suimsVolume : 0)).toFixed(2));
+                    $(`input#Marketinpacks${row_index}.Marketinpacks`).val(parseFloat((data.table.length > 0 ? data.table[0].suimsVolume : 0)).toFixed(2));
+                    $(`input#Marketinpacks${row_index}.Marketinpacks`).closest("tr").find(".BatchsizeinLtrTabs").val(parseFloat(data.table.length > 0 ? data.table[0].commercialBatchSize : 0).toFixed(2));
                     calculateBatchSizeCaoting(ele);
                 }
                 catch (e) {

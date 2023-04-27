@@ -57,6 +57,9 @@ function InitializeUserList () {
             "data": "departmentName", "name": "Department Name"
         },
         {
+            "data": "mobileNumber", "name": "Mobile Number"
+        },
+        {
             "data": "createdDate", "name": "createdDate", "render": function (data, type, row, meta) {
                 if (data != 0) {
                     return "<span>" + CustomDateFormat(row.createdDate, 2) + "</span>";
@@ -66,7 +69,16 @@ function InitializeUserList () {
             }
         },
         {
-            "data": "Action", "name": "Action", "render": function (data, type, row, meta) {
+            "data": "isActive", "name": "Active", "render": function (data, type, row, meta) {
+                if (data) {
+                    return "<span class='text-success text-bold'>Yes</span>";
+                } else {
+                    return "<span class='text-danger text-bold'>No</span>";
+                }
+            }
+        },
+        {
+            "data": "userId", "name": "Action", "render": function (data, type, row, meta) {
                 var html = '';
 
                 html += '<a title="Edit" class="large-font" style="'+IsEditAllow+'" href="/User/UserManage?UserId='+row.userId+'"><i class="fa fa-fw fa-edit mr-1"></i></a>';
@@ -77,7 +89,10 @@ function InitializeUserList () {
         }
     ];
 
-    IntializingDataTable(tableId, setDefaultOrder, ajaxObject, columnObject);
+    IntializingDataTable(tableId, setDefaultOrder, ajaxObject, columnObject, {
+        left: 2,
+        right: 2
+    });
 }
 
 //#endregion

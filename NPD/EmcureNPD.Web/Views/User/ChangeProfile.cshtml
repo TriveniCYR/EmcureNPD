@@ -46,7 +46,7 @@
             </div>
            
             <div class="row">
-                <div class="col-md-1">
+                <div class="col-md-2">
                     <div class="form-group required">
                         @Html.LabelFor(model => model.MobileCountryId, "ISD",new { @class = "control-label" })
                         <span class="text-danger">*</span>
@@ -55,7 +55,7 @@
                         @Html.ValidationMessageFor(model => model.MobileCountryId, "", new { @class = "text-danger" })
                     </div>
                 </div>
-                <div class="col-md-5">
+                <div class="col-md-4">
                     <div class="form-group required">
                         @Html.LabelFor(model => model.MobileNumber, @SharedLocalizer["MobileNumber"],new { @class = "control-label" })
                         @Html.TextBoxFor(model => model.MobileNumber, new { @autocomplete = "off", @class = "form-control checkbox-checked", @placeholder = @SharedLocalizer["MobileNumber"] })
