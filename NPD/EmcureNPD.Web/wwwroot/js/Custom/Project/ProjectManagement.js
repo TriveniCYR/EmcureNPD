@@ -132,7 +132,7 @@ function GetProjectDetailsSuccess(data) {
         $.each(data.table1, function (index, file) {
             var link = $('#hdnBaseURL').val() + '/Uploads/PIDF/Medical/' + file.fileName;
             $('#files tbody').append('<tr><td><a href="' + link + '" target="_blank">' + file.fileName + '</a></td></tr>');
-            console.log("Files:" + link)
+            //console.log("Files:" + link)
         });
         //end
         //Businessunit details
@@ -203,7 +203,7 @@ function GetProjectDetailsSuccess(data) {
                     let bgColor = "#000" + colorCode + "00d;"
                     if (i == 0) {
                         //tableRow += '<tr title="Sub Task Level:' + object.taskLevel + '" style="display:none;background: ' + bgColor.toString() + '" class="clildrows' + object.parentId + ' treegrid-' + index + ' ' + _parentClass + '"><td><input type="hidden" value="' + object.projectTaskId + '" />' + (object.taskLevel > 1 ? "" : displaySubTaskListButton) + '</td><td><b>Sub Task Level:' + object.taskLevel + ':-</b>' + object.taskName + '</td><td>' + object.fullName + '</td><td>' + object.statusName + '</td><td>' + object.priorityName + '</td><td>' + startDate + '</td><td>' + endDate + '</td><td>' + object.taskDuration + '</td><td><div class="progress"><div class="progress-bar" role="progressbar" style="width: ' + object.totalPercentage + '%;" aria-valuenow="' + object.totalPercentage + '" aria-valuemin="0" aria-valuemax="100">' + object.totalPercentage + '%</div></div></td><td>' + updatedDate + '</td><td>' + edit + deleteTag + addSubTaskButton + '</td></tr>';
-                        tableRow += '<tr title="Sub Task Level:' + object.taskLevel + '" style="display:none;background: ' + bgColor.toString() + '" class="clildrows' + mainTaskRowIndex + ' treegrid-' + index + ' ' + _parentClass + '"><td><input type="hidden" value="' + object.projectTaskId + '" />' + (object.taskLevel > 1 ? "" : displaySubTaskListButton) + '</td><td><b>Sub Task Level:' + object.taskLevel + ':-</b>' + object.taskName + '</td><td>' + object.fullName + '</td><td>' + object.statusName + '</td><td>' + object.priorityName + '</td><td>' + startDate + '</td><td>' + endDate + '</td><td>' + object.taskDuration + '</td><td><div class="progress"><div class="progress-bar" role="progressbar" style="width: ' + object.totalPercentage + '%;" aria-valuenow="' + object.totalPercentage + '" aria-valuemin="0" aria-valuemax="100">' + object.totalPercentage + '%</div></div></td><td>' + updatedDate + '</td><td>' + edit + deleteTag + addSubTaskButton + '</td></tr>';
+                        tableRow += '<tr style="display:none;background: ' + bgColor.toString() + '" class="clildrows' + mainTaskRowIndex + ' treegrid-' + index + ' ' + _parentClass + '"><td><input type="hidden" value="' + object.projectTaskId + '" />' + (object.taskLevel > 1 ? "" : displaySubTaskListButton) + '</td><td class="task-level-' + object.taskLevel +'">' + object.taskName + '</td><td>' + object.fullName + '</td><td>' + object.statusName + '</td><td>' + object.priorityName + '</td><td>' + startDate + '</td><td>' + endDate + '</td><td>' + object.taskDuration + '</td><td><div class="progress"><div class="progress-bar" role="progressbar" style="width: ' + object.totalPercentage + '%;" aria-valuenow="' + object.totalPercentage + '" aria-valuemin="0" aria-valuemax="100">' + object.totalPercentage + '%</div></div></td><td>' + updatedDate + '</td><td>' + edit + deleteTag + addSubTaskButton + '</td></tr>';
                     }
                     colorCode++;
                  }

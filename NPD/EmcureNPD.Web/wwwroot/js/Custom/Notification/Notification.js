@@ -32,7 +32,7 @@ function GetAllNotificationListSuccess(data) {
     }
 }
 function GetAllNotificationListError(x, y, z) {
-    console.log("GetAllNotificationListError");
+    //console.log("GetAllNotificationListError");
     toastr.error(ErrorMessage);
 }
 
@@ -54,7 +54,7 @@ function GetNotificationsForUserSuccess(data) {
 }
 function GetNotificationsForUserError(x, y, z) {
     toastr.error(ErrorMessage);
-    console.log("GetNotificationsForUserError");
+    //console.log("GetNotificationsForUserError");
 }
 
 function GetNotificationClickedSuccess(data) {
@@ -73,7 +73,7 @@ function GetNotificationClickedSuccess(data) {
 }
 function GetNotificationClickedError(x, y, z) {
     toastr.error(ErrorMessage);
-    console.log("GetNotificationClickedError");
+    //console.log("GetNotificationClickedError");
 }
 //var signalRServer = $.connection.signalRServer;
 

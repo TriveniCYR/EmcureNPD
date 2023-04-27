@@ -501,7 +501,7 @@
             }
         });
         gantt.updateCollection("people", lightboxOptions);
-        console.log(gantt.serverList("people"));
+        //console.log(gantt.serverList("people"));
     });
 
     gantt.attachEvent("onAfterLinkAdd", function (id, item) {

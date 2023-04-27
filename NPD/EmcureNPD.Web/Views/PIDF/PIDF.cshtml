@@ -555,10 +555,10 @@
 				<div class="row" id="pidfButtonhide">
 					<div class="col-12 text-end">
 						<div class="form-group">
-					<button type="submit" class="btn btn-success me-3 outside-buttons operationButton" onClick="SaveClick();">@SharedLocalizer["Submit"]</button>
+					<button type="submit" class="btn btn-success me-3 outside-buttons operationButton" onClick="return SaveClick();">@SharedLocalizer["Submit"]</button>
 							@if (Model.StatusId == (Int32)Master_PIDFStatus.PIDFInProgress || Model.StatusId == 0)
 							{
-						<button type="submit" class="btn btn-primary me-3 outside-buttons operationButton" onClick="SaveDraftClick();">@SharedLocalizer["SaveDraft"]</button>
+						<button type="submit" class="btn btn-primary me-3 outside-buttons operationButton" onClick="return SaveDraftClick();">@SharedLocalizer["SaveDraft"]</button>
 							}
 							@if (Model.StatusId == (Int32)Master_PIDFStatus.PIDFSubmitted)
 							{

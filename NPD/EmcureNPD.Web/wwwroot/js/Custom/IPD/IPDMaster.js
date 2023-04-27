@@ -1,6 +1,7 @@
 ﻿var _userRegion = [];
 var _IPDMode = 0;
 var ExpirydateErrorMsg = 'Extension Expiry Date should greater than Original Expiry Date';
+var isValidIPDForm = true;
 $(document).ready(function () {
     fnGetActiveBusinessUnit();
     GetRegionList();
@@ -132,11 +133,13 @@ function GetCountryListError(x, y, z) {
 }
 function SaveIPDClick(type) {
   //  validatedate();
+    isValidIPDForm = true;
     validatePatentDetails();
     getParentFormId().find('#SaveType').val(type);
     getParentFormId().find('#RegionIds').val(getParentFormId().find('.regionCombo').val());
     getParentFormId().find('#CountryIds').val(getParentFormId().find('#CountryId').val());
     SetIPDChildRows();
+    return isValidIPDForm;
 }
 
 function addRowParent(j) {
@@ -164,7 +167,6 @@ function IPDSetChildRowDeleteIcon() {
     }
 }
 function SaveIPDForm(form) {
-   
     $.validator.unobtrusive.parse(form);
     if ($(form).valid()) {
         ajaxServiceMethod(_IPDSaveUpdateURL, 'POST', SaveIPDFormSuccess, SaveIPDFormError, JSON.stringify(getFormData($(form))));
@@ -241,12 +243,12 @@ function checkRadioCheckOrNot() {
 // Validation For Paten Details
 
 function validatePatentDetails() {
-
-    $("[id^='pidf_IPD_PatentDetailsEntities']").each(function () {     
-
-        if ($(this).val() == '') {
+    isValidIPDForm = true;
+    $('#dvIPDContainer').find('.validateChildDetails').each(function () {     
+        if ($(this).val().trim() == '') {
             $(this).css("border-color", "red");
             $(this).focus();
+            isValidIPDForm = false;
         }
         else {
             $(this).css("border-color", "");

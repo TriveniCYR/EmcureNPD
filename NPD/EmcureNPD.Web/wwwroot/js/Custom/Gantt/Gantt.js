@@ -370,7 +370,7 @@ document.addEventListener("DOMContentLoaded", function () {
                     )
                 });
                
-                console.log("arrPeople:" + JSON.stringify(arrPeople))
+                //console.log("arrPeople:" + JSON.stringify(arrPeople))
             }
             catch (e) {
                 toastr.error('Error:' + e.message);
@@ -633,7 +633,7 @@ document.addEventListener("DOMContentLoaded", function () {
     gantt.attachEvent("onAfterTaskAdd", function (id, item) {
         //any custom logic here
         //alert('hi')
-        console.log(JSON.stringify(responsTtaskList));
+        //console.log(JSON.stringify(responsTtaskList));
         saveUpdateGanttTask(item, 0);
 
     });
@@ -789,7 +789,7 @@ document.addEventListener("DOMContentLoaded", function () {
             }
             let act = taskObjects.parent == 0 ? "Task" : "SubTask";
             let pidfId = (new URL(location.href)).searchParams.get('pidfid');
-            console.log(JSON.stringify(addTask))
+            //console.log(JSON.stringify(addTask))
             ajaxServiceMethod($('#hdnWebBaseURL').val() + "Project/AddUpdateGanttTask?id=" + pidfId + "&act=" + act, 'POST', SaveTaskSubTaskListSuccess, SaveTaskSubTaskListError, JSON.stringify(addTask), null, null, null, "application/json; charset=utf-8");
 
             function SaveTaskSubTaskListSuccess(data) {

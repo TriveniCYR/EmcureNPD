@@ -436,7 +436,7 @@ document.addEventListener("DOMContentLoaded", function () {
             }
         });
         // gantt.updateCollection("people", lightboxOptions);
-        console.log(gantt.serverList("people"));
+        //console.log(gantt.serverList("people"));
     });
 
     gantt.attachEvent("onAfterLinkAdd", function (id, item) {
@@ -490,7 +490,7 @@ document.addEventListener("DOMContentLoaded", function () {
         data: { model: param},
         cache: false,
         success: function (data) {
-            console.log(data)
+            //console.log(data)
            // gantt.parse({ data: data[0] });
             for (var i = 0; i < data['data'].length; i++) {
                 let crDate = moment(data["data"][i].createdDate).format("YYYY-MM-DD hh:mm")

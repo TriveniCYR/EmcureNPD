@@ -59,7 +59,7 @@ function Viewlog(log, createdDate, createdBy) {
             $("#AuditLogViewModel").modal('show');
         },
         error: function (xhr, textStatus, errorThrown) {
-            console.log("Error: " + textStatus + " - " + errorThrown);
+            //console.log("Error: " + textStatus + " - " + errorThrown);
         }
     });
 }

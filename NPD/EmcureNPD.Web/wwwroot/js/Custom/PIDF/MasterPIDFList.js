@@ -7,7 +7,7 @@ $(document).ready(function () {
         if ($(this).is(':checked')) {
             $.each($('.chkPIDFRow'), function (i, it) {
                 if ($(it).attr("disabled")) {
-                    console.log();
+                    //console.log();
                 } else {
                     $(it).click();
                 }
@@ -16,7 +16,7 @@ $(document).ready(function () {
         else {
             $.each($('.chkPIDFRow'), function (i, it) {
                 if ($(it).attr("disabled")) {
-                    console.log();
+                    //console.log();
                 } else {
                     if ($(it).is(':checked')) {
                         $(it).click();
@@ -313,9 +313,10 @@ function InitializePIDFList() {
         $('#' + tableId).find('.actionColumn').css("right", "0px").css("position", "sticky").css("width", "100px");
     });
 
-    var head_item = dataTableInst.columns(1).header();
-    $(head_item).html('<input type="checkbox" class="custom-list-checkbox" id="chkAllPIDF" />');
-
+    if (_screenId == "1" || _screenId == "2" || _screenId == "7" || _screenId == "8") {
+        var head_item = dataTableInst.columns(1).header();
+        $(head_item).html('<input type="checkbox" class="custom-list-checkbox" id="chkAllPIDF" />');
+    }
     dataTableInst.on('draw', function () {
        
         if ($('#chkAllPIDF').is(':checked')) {

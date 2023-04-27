@@ -187,7 +187,7 @@
                                                 <td>
                                                     <div class="">
                                                         <div class="form-group required">
-                                                            @Html.EditorFor(model => model.pidf_IPD_PatentDetailsEntities[i].PatentNumber, new { htmlAttributes = new { @autocomplete = "off", @class = "form-control checkbox-checked",  @placeholder = @MasterLocalizer["PatentNumber"],@required="required" } })
+                                                            @Html.EditorFor(model => model.pidf_IPD_PatentDetailsEntities[i].PatentNumber, new { htmlAttributes = new { @autocomplete = "off", @class = "form-control checkbox-checked validateChildDetails",  @placeholder = @MasterLocalizer["PatentNumber"],@required="required" } })
                                                             @*@Html.ValidationMessageFor(model => model.pidf_IPD_PatentDetailsEntities[i].PatentNumber, "", new { @class = "text-danger" })*@
                                                         </div>
                                                     </div>
@@ -195,7 +195,7 @@
                                                 <td>
                                                     <div class="">
                                                         <div class="form-group required">
-                                                            @Html.EditorFor(model => model.pidf_IPD_PatentDetailsEntities[i].Type, new { htmlAttributes = new { @autocomplete = "off", @class = "form-control checkbox-checked", id = "pidf_IPD_PatentDetailsEntities[" + i + "].Type", @placeholder = @MasterLocalizer["Type"],@required="required" } })
+                                                            @Html.EditorFor(model => model.pidf_IPD_PatentDetailsEntities[i].Type, new { htmlAttributes = new { @autocomplete = "off", @class = "form-control checkbox-checked validateChildDetails", id = "pidf_IPD_PatentDetailsEntities[" + i + "].Type", @placeholder = @MasterLocalizer["Type"],@required="required" } })
                                                             @*@Html.ValidationMessageFor(model => model.pidf_IPD_PatentDetailsEntities[i].Type, "", new { @class = "text-danger", id = "pidf_IPD_PatentDetailsEntities[" + i + "].ValidationType" })*@
                                                         </div>
                                                     </div>
@@ -203,14 +203,14 @@
                                                 <td>
                                                     <div class="">
                                                         <div class="form-group required">
-                                                            @Html.EditorFor(model => model.pidf_IPD_PatentDetailsEntities[i].OriginalExpiryDate, new { htmlAttributes = new { @min=@dateRange, @autocomplete = "off", @class = "form-control checkbox-checked originalDate", id = "pidf_IPD_PatentDetailsEntities[" + i + "].OriginalExpiryDate", @placeholder = @MasterLocalizer["Original Expiry Date"],@required="required" } })
+                                                            @Html.EditorFor(model => model.pidf_IPD_PatentDetailsEntities[i].OriginalExpiryDate, new { htmlAttributes = new { @min=@dateRange, @autocomplete = "off", @class = "form-control checkbox-checked originalDate validateChildDetails", id = "pidf_IPD_PatentDetailsEntities[" + i + "].OriginalExpiryDate", @placeholder = @MasterLocalizer["Original Expiry Date"],@required="required" } })
                                                         </div>
                                                     </div>
                                                 </td>
                                                 <td>
                                                     <div class="">
                                                         <div class="form-group required">
-                                                            @Html.EditorFor(model => model.pidf_IPD_PatentDetailsEntities[i].ExtensionExpiryDate, new { htmlAttributes = new { @min=@dateRange, @autocomplete = "off", @class = "form-control checkbox-checked extendedDate", id = "pidf_IPD_PatentDetailsEntities[" + i + "].ExtensionExpiryDate", @placeholder = @MasterLocalizer["Extension Expiry Date"],@required="required" } })
+                                                            @Html.EditorFor(model => model.pidf_IPD_PatentDetailsEntities[i].ExtensionExpiryDate, new { htmlAttributes = new { @min=@dateRange, @autocomplete = "off", @class = "form-control checkbox-checked extendedDate validateChildDetails", id = "pidf_IPD_PatentDetailsEntities[" + i + "].ExtensionExpiryDate", @placeholder = @MasterLocalizer["Extension Expiry Date"],@required="required" } })
                                                                 
                                                         </div>
                                                     </div>
@@ -218,14 +218,14 @@
                                                 <td>
                                                     <div class="">
                                                         <div class="form-group required">
-                                                            @Html.EditorFor(model => model.pidf_IPD_PatentDetailsEntities[i].Comments, new { htmlAttributes = new { @autocomplete = "off", @class = "form-control checkbox-checked", id = "pidf_IPD_PatentDetailsEntities[" + i + "].Comments", @placeholder = @MasterLocalizer["Comments (Patent Specific)"],@required="required" } })
+                                                            @Html.EditorFor(model => model.pidf_IPD_PatentDetailsEntities[i].Comments, new { htmlAttributes = new { @autocomplete = "off", @class = "form-control checkbox-checked validateChildDetails", id = "pidf_IPD_PatentDetailsEntities[" + i + "].Comments", @placeholder = @MasterLocalizer["Comments (Patent Specific)"],@required="required" } })
                                                         </div>
                                                     </div>
                                                 </td>
                                                 <td>
                                                     <div class="">
                                                         <div class="form-group required">
-                                                            @Html.EditorFor(model => model.pidf_IPD_PatentDetailsEntities[i].Strategy, new { htmlAttributes = new { @autocomplete = "off", @class = "form-control checkbox-checked", id = "pidf_IPD_PatentDetailsEntities[" + i + "].Strategy", @placeholder = @MasterLocalizer["Strategy"],@required="required" } })
+                                                            @Html.EditorFor(model => model.pidf_IPD_PatentDetailsEntities[i].Strategy, new { htmlAttributes = new { @autocomplete = "off", @class = "form-control checkbox-checked validateChildDetails", id = "pidf_IPD_PatentDetailsEntities[" + i + "].Strategy", @placeholder = @MasterLocalizer["Strategy"],@required="required" } })
                                                         </div>
                                                     </div>
                                                 </td>                                                 
@@ -256,10 +256,10 @@
     <div class="row">
         <div class="col-12 text-end">
             <div class="form-group">
-                <button type="submit" class="btn btn-success me-3 outside-buttons operationButton" onClick="SaveIPDClick('Sv');">@SharedLocalizer["Submit"]</button>
+                <button type="submit" class="btn btn-success me-3 outside-buttons operationButton" onClick="return SaveIPDClick('Sv');">@SharedLocalizer["Submit"]</button>
                 @if (Model.StatusId == (Int32)Master_PIDFStatus.IPDInProgress || Model.StatusId == (Int32)Master_PIDFStatus.PIDFApproved || Model.StatusId == (Int32)Master_PIDFStatus.MedicalSubmitted)
                 {
-                    <button type="submit" id="btnIPDSaveAsDraft" class="btn btn-primary me-3 outside-buttons operationButton" onClick="SaveIPDClick('Drf');">@SharedLocalizer["SaveDraft"]</button>
+                    <button type="submit" id="btnIPDSaveAsDraft" class="btn btn-primary me-3 outside-buttons operationButton" onClick="return SaveIPDClick('Drf');">@SharedLocalizer["SaveDraft"]</button>
                 }
             </div>
         </div>
