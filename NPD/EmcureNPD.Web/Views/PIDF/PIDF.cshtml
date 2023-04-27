@@ -189,7 +189,7 @@
 														<td>
 															<div class="col-md">
 																<div class="form-group required">
-																	@Html.EditorFor(model => Model.pidfProductStregthEntities[i].Strength, new { htmlAttributes = new { @autocomplete = "off", @class = "txtclsStrngth form-control checkbox-checked", id = "pidfProductStregthEntities[" + i + "].Strength", @placeholder = @MasterLocalizer["Product Strength"] } })
+																	@Html.EditorFor(model => Model.pidfProductStregthEntities[i].Strength, new { htmlAttributes = new {@required="required", @autocomplete = "off", @class = "txtclsStrngth form-control checkbox-checked", id = "pidfProductStregthEntities[" + i + "].Strength", @placeholder = @MasterLocalizer["Product Strength"] } })
 																</div>
 															</div>
 														</td>
@@ -198,7 +198,7 @@
 																<div class="form-group required">
 																	<input type="hidden" id="hdnProductStrengthUnit" value="@Model.pidfProductStregthEntities[i].UnitofMeasurementId" />
 																	<select id="productStrengthUnit_0" name="pidfProductStregthEntities[@i].UnitofMeasurementId" class="form-control readOnlyUpdate productStrengthUnit" required></select>
-															@Html.ValidationMessageFor(model => model.pidfProductStregthEntities[i].UnitofMeasurementId, "", new { @class = "text-danger" })
+															@*@Html.ValidationMessageFor(model => model.pidfProductStregthEntities[i].UnitofMeasurementId, "", new { @class = "text-danger" })*@
 																</div>
 															</div>
 														</td>
@@ -223,8 +223,8 @@
 												<td>
 													<div class="col-md">
 														<div class="form-group required">
-															@Html.EditorFor(model => model.pidfProductStregthEntities[j].Strength, new { htmlAttributes = new { @autocomplete = "off", @class = "form-control checkbox-checked", id = "pidfProductStregthEntities[" + j + "].Strength", @placeholder = @MasterLocalizer["Product Strength"] } })
-															@Html.ValidationMessageFor(model => model.pidfProductStregthEntities[j].Strength, "", new { @class = "text-danger" })
+													@Html.EditorFor(model => model.pidfProductStregthEntities[j].Strength, new { htmlAttributes = new {@required="required", @autocomplete = "off", @class = "form-control checkbox-checked", id = "pidfProductStregthEntities[" + j + "].Strength", @placeholder = @MasterLocalizer["Product Strength"] } })
+															@*@Html.ValidationMessageFor(model => model.pidfProductStregthEntities[j].Strength, "", new { @class = "text-danger" })*@
 														</div>
 													</div>
 												</td>
@@ -232,7 +232,7 @@
 													<div class="col-md">
 														<div class="form-group required">
 															<select id="productStrengthUnit_@j" name="pidfProductStregthEntities[@j].UnitofMeasurementId" class="form-control readOnlyUpdate productStrengthUnit" required></select>
-												@Html.ValidationMessageFor(model => model.pidfProductStregthEntities[j].UnitofMeasurementId, "", new { @class = "text-danger" })
+												@*@Html.ValidationMessageFor(model => model.pidfProductStregthEntities[j].UnitofMeasurementId, "", new { @class = "text-danger" })*@
 														</div>
 													</div>
 												</td>
