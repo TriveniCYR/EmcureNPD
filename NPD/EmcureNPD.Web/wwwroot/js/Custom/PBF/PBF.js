@@ -915,6 +915,11 @@ function GetPBFTabDetailsSuccess(data) {
                     $(this).val(matchedString);
                 }
                 if ((event.which != 46 || $(this).val().indexOf('.') != -1) && (event.which < 48 || event.which > 57)) {
+                        let checkval = parseInt($(this).val());
+                        if (checkval < 0) {
+                            $(this).val("");
+                        }
+                        
                     event.preventDefault();
                 }
             });

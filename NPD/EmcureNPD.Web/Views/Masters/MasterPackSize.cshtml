@@ -10,7 +10,7 @@
 
 @model EmcureNPD.Business.Models.MasterPackSizeEntity
 @{
-	ViewData["Title"] = @MasterLocalizer["PackSize - Emcure NPD"];
+	ViewData["Title"] = @MasterLocalizer["Pack Size - Emcure NPD"];
 	RolePermissionModel objPermssion = (RolePermissionModel)ViewBag.Access;
 	string IsAddAllow = (objPermssion.Add) ? "" : "display: none";
 	string IsEditAllow = (objPermssion.Edit) ? "" : "display: none";
@@ -93,7 +93,7 @@
 							<div class="form-group required">
 								@Html.LabelFor(model => model.PackSize,"Pack Size", new { @class = "control-label" })
 								<span class="text-danger">*</span>
-								@Html.EditorFor(model => model.PackSize, new { htmlAttributes = new { @autocomplete = "off", @class = "form-control checkbox-checked numberonly", @placeholder = "Pack Size" } })
+								@Html.EditorFor(model => model.PackSize, new { htmlAttributes = new { @autocomplete = "off", @class = "form-control checkbox-checked numberonly", @placeholder = "Pack Size" ,min="0"} })
 								@Html.ValidationMessageFor(model => model.PackSize, "", new { @class = "text-danger" })
 							</div>							
 						</div>
@@ -136,8 +136,8 @@
 		var ErrorMessage = "@SharedLocalizer["Error"]";
 		var RecordInsertUpdate = "@SharedLocalizer["RecordInsertUpdate"]";
 		var RecordDelete = "@SharedLocalizer["RecordDelete"]";
-		var AddLabel = "@SharedLocalizer["Add PackSize"]";
-		var UpdateLabel = "@SharedLocalizer["Edit PackSize"]";
+		var AddLabel = "@SharedLocalizer["Add Pack Size"]";
+		var UpdateLabel = "@SharedLocalizer["Edit Pack Size"]";
 				//#endregion
 	</script>
 }
