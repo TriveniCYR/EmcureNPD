@@ -254,7 +254,7 @@
                                                     <div class="form-group required">
                                                         @Html.LabelFor(model => model.PriceDiscounting,@MasterLocalizer["PriceDiscounting"], new { @class = "control-label" })
                                                         <span class="text-danger">*</span>
-                                                        @Html.TextBoxFor(model => model.PriceDiscounting, new { @autocomplete = "off", @class = "form-control checkbox-checked", @placeholder = @MasterLocalizer["PriceDiscounting"] })
+                                                        @Html.TextBoxFor(model => model.PriceDiscounting, new { @type="number", @autocomplete = "off", @class = "form-control checkbox-checked", @placeholder = @MasterLocalizer["PriceDiscounting"] })
                                                         @Html.ValidationMessageFor(model => model.PriceDiscounting, "", new { @class = "text-danger" })
                                                         <label id="valmsgPriceDiscounting" class="text-danger"></label>
                                                     </div>
@@ -263,7 +263,7 @@
                                                     <div class="form-group required">
                                                         @Html.LabelFor(model => model.TotalApireq,@MasterLocalizer["TotalAPIReq"], new { @class = "control-label" })
                                                         <span class="text-danger">*</span>
-                                                        @Html.TextBoxFor(model => model.TotalApireq, new { @autocomplete = "off", @class = "form-control checkbox-checked", @placeholder = @MasterLocalizer["TotalAPIReq"] })
+                                                @Html.TextBoxFor(model => model.TotalApireq, new { @type="number", @autocomplete = "off", @class = "form-control checkbox-checked", @placeholder = @MasterLocalizer["TotalAPIReq"] })
                                                         <label id="valmsgTotalApireq" class="text-danger"></label>
                                                     </div>
                                                 </div>
@@ -271,7 +271,7 @@
                                                     <div class="form-group required">
                                                         @Html.LabelFor(model => model.Apireq,@MasterLocalizer["APIReq"], new { @class = "control-label" })
                                                         <span class="text-danger">*</span>
-                                                        @Html.TextBoxFor(model => model.Apireq, new { @autocomplete = "off", @class = "form-control checkbox-checked", @placeholder = @MasterLocalizer["APIReq"] })
+                                                        @Html.TextBoxFor(model => model.Apireq, new { @type="number", @autocomplete = "off", @class = "form-control checkbox-checked", @placeholder = @MasterLocalizer["APIReq"] })
                                                         <label id="valmsgApireq" class="text-danger"></label>
                                                     </div>
                                                 </div>
@@ -279,7 +279,7 @@
                                                     <div class="form-group required">
                                                         @Html.LabelFor(model => model.Suimsvolume,@MasterLocalizer["SU_IMS"], new { @class = "control-label" })
                                                         <span class="text-danger">*</span>
-                                                        @Html.TextBoxFor(model => model.Suimsvolume, new { @autocomplete = "off", @class = "form-control checkbox-checked", @placeholder = @MasterLocalizer["SU_IMS"] })
+                                                        @Html.TextBoxFor(model => model.Suimsvolume, new { @type="number", @autocomplete = "off", @class = "form-control checkbox-checked", @placeholder = @MasterLocalizer["SU_IMS"] })
                                                         <label id="valmsgSuimsvolume" class="text-danger"></label>
                                                     </div>
                                                 </div>

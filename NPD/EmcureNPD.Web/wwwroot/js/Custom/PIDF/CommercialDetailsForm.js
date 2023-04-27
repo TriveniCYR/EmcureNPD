@@ -168,6 +168,17 @@ $('#btnCancelYearForm').click(function () {
     IsShowCancel_Save_buttons(true);
     ResetYearFormValues();
 });
+$('#PriceErosion,#PriceDiscounting').focusout(function () {
+    var ControlID = $(this).attr('id');
+    var cntrlvalue = parseInt($(this).val());
+    if (cntrlvalue < 0 || cntrlvalue > 100) {
+        $('#valmsg' + ControlID).text('Select value within 0-100').show();
+        $(this).val('');
+    } else {
+        $('#valmsg' + ControlID).text('').hide();
+    }
+});
+
 
 function SaveCommertialPIDFForm() {
     $.extend(objMainForm, { 'encCreatedBy': $("#LoggedInUserId").val() });
@@ -617,3 +628,4 @@ function IsShowCancel_Save_buttons(flag) {
     else
         $("#dvMainButton").hide();
 }
+
