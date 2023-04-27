@@ -42,6 +42,7 @@ namespace EmcureNPD.Data.DataAccess.Entity
         public bool? FormulationGl { get; set; }
         public bool? AnalyticalGl { get; set; }
         public string DesignationName { get; set; }
+        public string MobileCountryId { get; set; }
 
         public virtual MasterRole Role { get; set; }
         public virtual ICollection<MasterNotificationUser> MasterNotificationUsers { get; set; }

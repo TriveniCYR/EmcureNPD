@@ -11,8 +11,39 @@ $(document).ready(function () {
     }
     if ($('#hdnIsPartial').val() != '1') {
         getPIDFAccordion(_PIDFAccordionURL, _PIDFID, "dvPIDFAccrdion");
-    } 
+    }
+
+    $(document).on("change", "[id*='ExtensionExpiryDate']", function () {
+    
+        var ControlID = $(this).attr('id');
+        var arr_id = ControlID.split('.');
+        var prefixofID = arr_id[0];
+
+        var _extensionExpiryDate = new Date($(this).val());
+        var originalExpirateDateControlId = prefixofID + '.OriginalExpiryDate';
+
+        var _originalExpiryDate = new Date($('.originalDate').val());
+
+        if (_extensionExpiryDate <= _originalExpiryDate) {
+            $(this).val('');
+            $(this).css("border-color", "red");
+        }
+        else {
+            $(this).css("border-color", "");
+        }
+
+
+        //var added_A_day_Date = originalExiprayDate;
+        //added_A_day_Date.setDate(originalExiprayDate.getDate() + 1);
+        //var setminval = $.datepicker.formatDate("yy-mm-dd", added_A_day_Date).toString();
+        //var extentionExpirateDateControlId = prefixofID + '.ExtensionExpiryDate';
+        //$("#" + extentionExpirateDateControlId).prop("min", setminval);
+
+    });
 });
+
+
+
 function fnGetActiveBusinessUnit() {
     ajaxServiceMethod($('#hdnBaseURL').val() + GetActiveBusinessUnit, 'GET', GetActiveBusinessUnitSuccess, GetActiveBusinessUnitError);
 }
@@ -101,6 +132,7 @@ function GetCountryListError(x, y, z) {
     toastr.error(ErrorMessage);
 }
 function SaveIPDClick(type) {
+  //  validatedate();
     validatePatentDetails();
     getParentFormId().find('#SaveType').val(type);
     getParentFormId().find('#RegionIds').val(getParentFormId().find('.regionCombo').val());
@@ -222,13 +254,3 @@ function validatePatentDetails() {
         }
     });   
 }
-// pidf_IPD_PatentDetailsEntities[0].OriginalExpiryDate
-//$("[id*='OriginalExpiryDate']").focusout(function () {
-//  var ControlID =  $(this).attr('id');
-//    var arr_id = ControlID.split('.');
-//    var prefixofID = arr_id[0];
-
-//    var originalExiprayDate = new Date($(this).val());
-//    console.log(originalExiprayDate)
-    
-// });

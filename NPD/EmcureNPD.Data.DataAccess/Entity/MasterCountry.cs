@@ -23,6 +23,8 @@ namespace EmcureNPD.Data.DataAccess.Entity
         public DateTime CreatedDate { get; set; }
         public int? ModifyBy { get; set; }
         public DateTime? ModifyDate { get; set; }
+        public string CountryCode { get; set; }
+        public string IsdcountryCode { get; set; }
 
         public virtual ICollection<MasterCurrencyCountryMapping> MasterCurrencyCountryMappings { get; set; }
         public virtual ICollection<MasterRegionCountryMapping> MasterRegionCountryMappings { get; set; }
