@@ -10,7 +10,7 @@
 
 @model EmcureNPD.Business.Models.MasterFilingTypeEntity
 @{
-	ViewData["Title"] = @MasterLocalizer["FilingType - Emcure NPD"];
+	ViewData["Title"] = @MasterLocalizer["Filing Type - Emcure NPD"];
 	RolePermissionModel objPermssion = (RolePermissionModel)ViewBag.Access;
 	string IsAddAllow = (objPermssion.Add) ? "" : "display: none";
 	string IsEditAllow = (objPermssion.Edit) ? "" : "display: none";
@@ -128,8 +128,8 @@
 		var ErrorMessage = "@SharedLocalizer["Error"]";
 		var RecordInsertUpdate = "@SharedLocalizer["RecordInsertUpdate"]";
 		var RecordDelete = "@SharedLocalizer["RecordDelete"]";
-		var AddLabel = "@SharedLocalizer["Add FilingType"]";
-		var UpdateLabel = "@SharedLocalizer["Edit FilingType"]";
+		var AddLabel = "@SharedLocalizer["Add Filing Type"]";
+		var UpdateLabel = "@SharedLocalizer["Edit Filing Type"]";
 				//#endregion
 	</script>
 }
