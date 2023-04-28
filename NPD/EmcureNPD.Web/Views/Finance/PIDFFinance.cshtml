@@ -1090,10 +1090,11 @@
                                                 <input type="number" id="EmcureCOGs_pack" name="lsPidfFinanceBatchSizeCoating[@j].EmcureCogsPack" value="@item.EmcureCogsPack" class="EmcureCOGs_pack form-control readOnlyUpdate" required />
 									    </td>
 									    <td class="align-middle abc">
+                                               
                                             <input type="hidden" id="PidffinaceBatchSizeCoatingId" name="lsPidfFinanceBatchSizeCoating[@j].PidffinaceBatchSizeCoatingId" value="@item.PidffinaceBatchSizeCoatingId"> 
                                                             <div class="d-flex justify-content-center">
                                                                 <i class="fa-solid fa-circle-plus nav-icon mx-3 text-success add-rows" onclick="addRowFinanceDetails(@j)"></i>
-                                                                <i class="fa-solid fa-trash nav-icon me-3 text-red del-rows" id="del_row_@j" onclick="deleteRowFinance(@j,this)"></i>
+                                                    <i class="fa-solid fa-trash nav-icon me-3 text-red del-rows" id="del_row_@j" onclick="deleteRowFinance(@j,this,@item.PidffinaceBatchSizeCoatingId)"></i>
                                                             </div>
                                            </td>
 								    </tr>
@@ -1158,10 +1159,11 @@
                                         <input type="number" id="EmcureCOGs_pack" name="lsPidfFinanceBatchSizeCoating[@j].EmcureCogsPack" class="EmcureCOGs_pack form-control readOnlyUpdate" required />
 									</td>
                                     <td class="align-middle abc">
+                                            
                                             <input type="hidden" id="PidffinaceBatchSizeCoatingId" name="lsPidfFinanceBatchSizeCoating[@j].PidffinaceBatchSizeCoatingId" value="0">
                                                         <div class="d-flex justify-content-center">
                                                             <i class="fa-solid fa-circle-plus nav-icon mx-3 text-success add-rows" onclick="addRowFinanceDetails(@j)"></i>
-                                                            <i class="fa-solid fa-trash nav-icon me-3 text-red del-rows" id="del_row_@j" onclick="deleteRowFinance(@j,this)"></i>
+                                                            <i class="fa-solid fa-trash nav-icon me-3 text-red del-rows" id="del_row_@j" onclick="deleteRowFinance(@j,this,0)"></i>
                                                         </div>
                                                     </td>
 								</tr>
