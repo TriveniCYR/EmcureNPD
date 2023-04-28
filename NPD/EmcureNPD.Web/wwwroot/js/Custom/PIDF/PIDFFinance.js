@@ -39,7 +39,8 @@ $(document).ready(function () {
         placeholder: "Select Currency..",
         allowClear: true
     });
-    
+    $(el).attr("step", "any");
+   
 });
 
 
