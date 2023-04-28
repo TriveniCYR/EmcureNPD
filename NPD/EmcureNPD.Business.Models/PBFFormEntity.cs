@@ -106,7 +106,7 @@ namespace EmcureNPD.Business.Models
         public List<RNDCapexMiscellaneousExpense> RNDCapexMiscellaneousExpenses { get; set; }
         public string RNDCapexMiscellaneousExpensesRawData { get; set; }
         public List<RNDPlantSupportCost> RNDPlantSupportCosts { get; set; }
-        public string RNDPlantSupportCostRawData { get; set; }
+        //public string RNDPlantSupportCostRawData { get; set; }
         public List<RNDReferenceProductDetail> RNDReferenceProductDetails { get; set; }
         public string RNDFillingExpensesRawData { get; set; }
         public List<RNDFillingExpense> RNDFillingExpenses { get; set; }
@@ -256,8 +256,8 @@ namespace EmcureNPD.Business.Models
         public long PbfgeneralId { get; set; }
         public long StrengthId { get; set; }
         public int? ActivityTypeId { get; set; }
-        public string PlantSupportDevelopment { get; set; }
-        public double? StrengthPlantSupportDays { get; set; }
+        public double? ScaleUp { get; set; }
+        public double? Exhibit { get; set; }
 
 
     }

@@ -10,9 +10,8 @@ namespace EmcureNPD.Data.DataAccess.Entity
         public long PlantSupportCostId { get; set; }
         public long PbfgeneralId { get; set; }
         public long StrengthId { get; set; }
-        public int? ActivityTypeId { get; set; }
-        public string PlantSupportDevelopment { get; set; }
-        public double? StrengthPlantSupportDays { get; set; }
+        public double? ScaleUp { get; set; }
+        public double? Exhibit { get; set; }
         public DateTime CreatedDate { get; set; }
         public int CreatedBy { get; set; }
 

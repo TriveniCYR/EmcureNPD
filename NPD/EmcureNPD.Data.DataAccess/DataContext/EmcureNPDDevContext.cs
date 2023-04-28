@@ -2,7 +2,6 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata;
 using EmcureNPD.Data.DataAccess.Entity;
-using EmcureNPD.Utility;
 
 #nullable disable
 
@@ -134,7 +133,7 @@ namespace EmcureNPD.Data.DataAccess.DataContext
             if (!optionsBuilder.IsConfigured)
             {
 #warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see http://go.microsoft.com/fwlink/?LinkId=723263.
-                optionsBuilder.UseSqlServer(DatabaseConnection.NPDDatabaseConnection);
+                optionsBuilder.UseSqlServer("Data Source=180.149.241.172;Initial Catalog=EmcureNPDDev;Persist Security Info=True;User ID=emcurenpddev_dbUser;pwd=emcure123!@#");
             }
         }
 
@@ -384,7 +383,7 @@ namespace EmcureNPD.Data.DataAccess.DataContext
                 entity.Property(e => e.CreatedDate).HasColumnType("datetime");
 
                 entity.Property(e => e.IsdcountryCode)
-                    .HasMaxLength(4)
+                    .HasMaxLength(5)
                     .HasColumnName("ISDCountryCode");
 
                 entity.Property(e => e.ModifyDate).HasColumnType("datetime");
@@ -1531,6 +1530,7 @@ namespace EmcureNPD.Data.DataAccess.DataContext
                 entity.HasOne(d => d.PackSize)
                     .WithMany(p => p.PidfCommercials)
                     .HasForeignKey(d => d.PackSizeId)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("FK_PIDF_Commercial_Master_PackSize");
 
                 entity.HasOne(d => d.Pidf)
@@ -2558,8 +2558,6 @@ namespace EmcureNPD.Data.DataAccess.DataContext
                 entity.Property(e => e.CreatedDate).HasColumnType("datetime");
 
                 entity.Property(e => e.PbfgeneralId).HasColumnName("PBFGeneralId");
-
-                entity.Property(e => e.PlantSupportDevelopment).HasMaxLength(200);
 
                 entity.HasOne(d => d.Pbfgeneral)
                     .WithMany(p => p.PidfPbfRnDPlantSupportCosts)

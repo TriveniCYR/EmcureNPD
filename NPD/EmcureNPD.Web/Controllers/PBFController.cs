@@ -526,7 +526,7 @@ namespace EmcureNPD.Web.Controllers
                 pbfEntity.RNDPackagings = pbfEntity.RNDPackagingRawData != null ? JsonConvert.DeserializeObject<List<RNDPackaging>>(pbfEntity.RNDPackagingRawData) : new List<RNDPackaging>();
                 pbfEntity.RNDToolingChangeparts = pbfEntity.RNDToolingChangePartRawData != null ? JsonConvert.DeserializeObject<List<RNDToolingChangepart>>(pbfEntity.RNDToolingChangePartRawData) : new List<RNDToolingChangepart>();
                 pbfEntity.RNDCapexMiscellaneousExpenses = pbfEntity.RNDCapexMiscellaneousExpensesRawData != null ? JsonConvert.DeserializeObject<List<RNDCapexMiscellaneousExpense>>(pbfEntity.RNDCapexMiscellaneousExpensesRawData) : new List<RNDCapexMiscellaneousExpense>();
-                pbfEntity.RNDPlantSupportCosts = pbfEntity.RNDPlantSupportCostRawData != null ? JsonConvert.DeserializeObject<List<RNDPlantSupportCost>>(pbfEntity.RNDPlantSupportCostRawData) : new List<RNDPlantSupportCost>();
+                //pbfEntity.RNDPlantSupportCosts = pbfEntity.RNDPlantSupportCostRawData != null ? JsonConvert.DeserializeObject<List<RNDPlantSupportCost>>(pbfEntity.RNDPlantSupportCostRawData) : new List<RNDPlantSupportCost>();
                 pbfEntity.RNDFillingExpenses = pbfEntity.RNDFillingExpensesRawData != null ? JsonConvert.DeserializeObject<List<RNDFillingExpense>>(pbfEntity.RNDFillingExpensesRawData) : new List<RNDFillingExpense>();
                 pbfEntity.RNDManPowerCosts = pbfEntity.RNDManPowerCostProjectDurationRawData != null ? JsonConvert.DeserializeObject<List<RNDManPowerCost>>(pbfEntity.RNDManPowerCostProjectDurationRawData) : new List<RNDManPowerCost>();
 
