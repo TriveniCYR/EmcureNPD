@@ -316,49 +316,55 @@ namespace EmcureNPD.Business.Core.Implementation
                 DataRow row;
                 foreach (var item in ls)
                 {
-                    row = recordsTable.NewRow();
-                    row["PIDFFinaceBatchSizeCoatingId"] = item.PidffinaceBatchSizeCoatingId;
-                    row["PIDFFinaceId"] = PIDFFinaceId;
-                    row["BusinessUnitId"] = item.BusinessUnitId == null ? DBNull.Value : item.BusinessUnitId;
-                    row["Batchsize"] = item.Batchsize == null ? DBNull.Value : item.Batchsize;
-                    row["Yield"] = item.Yield == null ? DBNull.Value : item.Yield;
-                    row["Batchoutput"] = item.Batchoutput == null ? DBNull.Value : item.Batchoutput;
-                    row["API_CAD"] = item.ApiCad == null ? DBNull.Value : item.ApiCad;
-                    row["Excipients_CAD"] = item.ExcipientsCad == null ? DBNull.Value : item.ExcipientsCad;
-                    row["PM_CAD"] = item.PmCad == null ? DBNull.Value : item.PmCad;
-                    row["CCPC_CAD"] = item.CcpcCad == null ? DBNull.Value : item.CcpcCad;
-                    row["Freight_CAD"] = item.FreightCad == null ? DBNull.Value : item.FreightCad;
-                    row["EmcureCOGs_pack"] = item.EmcureCogsPack == null ? DBNull.Value : item.EmcureCogsPack;
-                    row["CreatedDate"] = DateTime.Now;
-                    row["CreatedBy"] = CreatedBy;
-                    row["Skus"] = item.Skus == null ? DBNull.Value : item.Skus;
-                    row["PakeSize"] = item.PakeSize == null ? DBNull.Value : item.PakeSize;
-                    row["BrandPrice"] = item.BrandPrice == null ? DBNull.Value : item.BrandPrice;
-                    row["NetRealisation"] = item.NetRealisation == null ? DBNull.Value : item.NetRealisation;
-                    row["GenericListprice"] = item.GenericListprice == null ? DBNull.Value : item.GenericListprice;
-                    row["EstMAT2016_BY_12Units"] = item.EstMat2016By12units == null ? DBNull.Value : item.EstMat2016By12units;
-                    row["EstMAT2020_BY_12Units"] = item.EstMat2020By12units == null ? DBNull.Value : item.EstMat2020By12units;
-                    row["CAGRover2016_By_12EstMATunits"] = item.Cagrover2016By12estMatunits == null ? DBNull.Value : item.Cagrover2016By12estMatunits;
-                    row["Marketinpacks"] = item.Marketinpacks == null ? DBNull.Value : item.Marketinpacks;
-                    row["Batchsizein_ltr_tabs"] = item.BatchsizeinLtrTabs == null ? DBNull.Value : item.BatchsizeinLtrTabs;
-                    recordsTable.Rows.Add(row);
+                    if (item.DeletePidffinaceBatchSizeCoatingId > 0)
+                    { await DeleteBatchSizeCosting(item.DeletePidffinaceBatchSizeCoatingId); }
+                    if (item.Batchsize != null && item.Batchsize.Value > 0 && item.Yield != null && item.Yield > 0 && item.Batchoutput != null) {
+                        row = recordsTable.NewRow();
+                        row["PIDFFinaceBatchSizeCoatingId"] = item.PidffinaceBatchSizeCoatingId;
+                        row["PIDFFinaceId"] = PIDFFinaceId;
+                        row["BusinessUnitId"] = item.BusinessUnitId == null ? DBNull.Value : item.BusinessUnitId;
+                        row["Batchsize"] = item.Batchsize == null ? DBNull.Value : item.Batchsize;
+                        row["Yield"] = item.Yield == null ? DBNull.Value : item.Yield;
+                        row["Batchoutput"] = item.Batchoutput == null ? DBNull.Value : item.Batchoutput;
+                        row["API_CAD"] = item.ApiCad == null ? DBNull.Value : item.ApiCad;
+                        row["Excipients_CAD"] = item.ExcipientsCad == null ? DBNull.Value : item.ExcipientsCad;
+                        row["PM_CAD"] = item.PmCad == null ? DBNull.Value : item.PmCad;
+                        row["CCPC_CAD"] = item.CcpcCad == null ? DBNull.Value : item.CcpcCad;
+                        row["Freight_CAD"] = item.FreightCad == null ? DBNull.Value : item.FreightCad;
+                        row["EmcureCOGs_pack"] = item.EmcureCogsPack == null ? DBNull.Value : item.EmcureCogsPack;
+                        row["CreatedDate"] = DateTime.Now;
+                        row["CreatedBy"] = CreatedBy;
+                        row["Skus"] = item.Skus == null ? DBNull.Value : item.Skus;
+                        row["PakeSize"] = item.PakeSize == null ? DBNull.Value : item.PakeSize;
+                        row["BrandPrice"] = item.BrandPrice == null ? DBNull.Value : item.BrandPrice;
+                        row["NetRealisation"] = item.NetRealisation == null ? DBNull.Value : item.NetRealisation;
+                        row["GenericListprice"] = item.GenericListprice == null ? DBNull.Value : item.GenericListprice;
+                        row["EstMAT2016_BY_12Units"] = item.EstMat2016By12units == null ? DBNull.Value : item.EstMat2016By12units;
+                        row["EstMAT2020_BY_12Units"] = item.EstMat2020By12units == null ? DBNull.Value : item.EstMat2020By12units;
+                        row["CAGRover2016_By_12EstMATunits"] = item.Cagrover2016By12estMatunits == null ? DBNull.Value : item.Cagrover2016By12estMatunits;
+                        row["Marketinpacks"] = item.Marketinpacks == null ? DBNull.Value : item.Marketinpacks;
+                        row["Batchsizein_ltr_tabs"] = item.BatchsizeinLtrTabs == null ? DBNull.Value : item.BatchsizeinLtrTabs;
+                        recordsTable.Rows.Add(row);
+                    }
                 }
-
-                recordsTable.EndLoadData();
-                var data = new DynamicParameters(new
-                {
-                    table = recordsTable.AsTableValuedParameter("PIDF_Finance_BatchSizeCoatingTable_Type")
-                });
-                data.Add("@Success", "", direction: ParameterDirection.Output);
-                count = await con.ExecuteAsync("AddUpdatePIDF_Finance_BatchSizeCoating", data, commandType: CommandType.StoredProcedure);
-                if (count > 0 && data.Get<string>("Success").Trim() == "success")
-                {
-                    return true;
+                if (recordsTable.Rows.Count > 0) {
+                    recordsTable.EndLoadData();
+                    var data = new DynamicParameters(new
+                    {
+                        table = recordsTable.AsTableValuedParameter("PIDF_Finance_BatchSizeCoatingTable_Type")
+                    });
+                    data.Add("@Success", "", direction: ParameterDirection.Output);
+                    count = await con.ExecuteAsync("AddUpdatePIDF_Finance_BatchSizeCoating", data, commandType: CommandType.StoredProcedure);
+                    if (count > 0 && data.Get<string>("Success").Trim() == "success")
+                    {
+                        return true;
+                    }
+                    else
+                    {
+                        return false;
+                    }
                 }
-                else
-                {
-                    return false;
-                }
+                else { return false; }
             }
             catch (Exception ex)
             {
@@ -383,7 +389,7 @@ namespace EmcureNPD.Business.Core.Implementation
                 return null;
             }
         }
-        public async Task<dynamic> GetPackSizeByStrengthId(int PidfId = 0,int Buid=0,int StrengthId=0)
+        public async Task<dynamic> GetPackSizeByStrengthId(int PidfId = 0, int Buid = 0, int StrengthId = 0)
         {
             try
             {
@@ -402,7 +408,7 @@ namespace EmcureNPD.Business.Core.Implementation
                 return null;
             }
         }
-        public async Task<dynamic> GetSUIMSVolumeYearWiseByPackSize(int PidfId = 0, int Buid = 0, int StrengthId = 0,int PackSize=0)
+        public async Task<dynamic> GetSUIMSVolumeYearWiseByPackSize(int PidfId = 0, int Buid = 0, int StrengthId = 0, int PackSize = 0)
         {
             try
             {
@@ -421,6 +427,16 @@ namespace EmcureNPD.Business.Core.Implementation
                 await _ExceptionService.LogException(ex);
                 return null;
             }
+        }
+        public async Task<bool> DeleteBatchSizeCosting(int PIDFFinaceBatchSizeCoatingIdForDelete)
+        {
+            SqlConnection con = new SqlConnection(_configuration.GetSection("ConnectionStrings:DefaultConnection").Value);
+            DynamicParameters data = new DynamicParameters();
+            data.Add("@PIDFFinaceBatchSizeCoatingId", PIDFFinaceBatchSizeCoatingIdForDelete);
+            data.Add("@Success", "", direction: ParameterDirection.Output);
+            await con.ExecuteAsync("RemovePIDF_Finance_BatchSizeCoatingById", data, commandType: CommandType.StoredProcedure);
+            var result = data.Get<string>("Success").Trim();
+            return result == "deleted" ? true : false;
         }
     }
 }

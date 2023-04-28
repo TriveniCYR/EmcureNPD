@@ -488,16 +488,17 @@
                                     @Html.ValidationMessageFor(t => t.TaskName, "", new { @class = "text-danger" })
                                 </div>
                                 <div class="form-group required">
-                                    @Html.LabelFor(t => t.EndDate,"End Date", new { @class = "control-label" })<span style="color:red;">*</span>
-                                    <div class="input-group date" id="addTaskEndDate" data-target-input="nearest">
+                                    @Html.LabelFor(t => t.StartDate,"Start Date", new { @class = "control-label" })<span style="color:red;">*</span>
+                                    <div class="input-group date" id="addTaskStartDate" data-target-input="nearest">
 
-                                        @Html.TextBoxFor(t => t.EndDate, new { @class = "form-control datetimepicker",onchange = "calculateSubTaskDuration()", type = "date", autocomplete = "off", @id = "AddSubTaskEndDate" })
+                                        @Html.TextBoxFor(t => t.StartDate, new { @class = "form-control datetimepicker",type = "date",onchange = "calculateSubTaskDuration()", autocomplete = "off", @id = "AddSubTaskStartDate" })
                                         <div class="input-group-append" data-toggle="datetimepicker">
                                         </div><br>
 
                                     </div>
-                                    @Html.ValidationMessageFor(t => t.EndDate, "", new { @class = "text-danger" })
+                                    @Html.ValidationMessageFor(t => t.StartDate, "", new { @class = "text-danger" })
                                 </div>
+                              
                                 <div class="form-group required">
                                     @Html.LabelFor(t => t.PriorityId,"Priority", new { @class = "control-label" })<span style="color:red;">*</span>
                                     @Html.DropDownListFor(t => t.PriorityId, new SelectList(string.Empty, "Value", "Text"), "Please select option", htmlAttributes: new { @class = "form-control input-sm f-s-15 bg-eff4f55c w100per", id = "AddSubTaskPriority" })
@@ -517,15 +518,15 @@
                                     @Html.ValidationMessageFor(t => t.TaskOwnerId, "", new { @class = "text-danger" })
                                 </div>
                                 <div class="form-group required">
-                                    @Html.LabelFor(t => t.StartDate,"Start Date", new { @class = "control-label" })<span style="color:red;">*</span>
-                                    <div class="input-group date" id="addTaskStartDate" data-target-input="nearest">
+                                    @Html.LabelFor(t => t.EndDate,"End Date", new { @class = "control-label" })<span style="color:red;">*</span>
+                                    <div class="input-group date" id="addTaskEndDate" data-target-input="nearest">
 
-                                        @Html.TextBoxFor(t => t.StartDate, new { @class = "form-control datetimepicker",type = "date",onchange = "calculateSubTaskDuration()", autocomplete = "off", @id = "AddSubTaskStartDate" })
+                                        @Html.TextBoxFor(t => t.EndDate, new { @class = "form-control datetimepicker",onchange = "calculateSubTaskDuration()", type = "date", autocomplete = "off", @id = "AddSubTaskEndDate" })
                                         <div class="input-group-append" data-toggle="datetimepicker">
                                         </div><br>
 
                                     </div>
-                                    @Html.ValidationMessageFor(t => t.StartDate, "", new { @class = "text-danger" })
+                                    @Html.ValidationMessageFor(t => t.EndDate, "", new { @class = "text-danger" })
                                 </div>
                                 <div class="form-group required">
                                     @Html.LabelFor(t => t.StatusId,"Status", new { @class = "control-label" })<span style="color:red;">*</span>

@@ -78,7 +78,8 @@ namespace EmcureNPD.Business.Models
 	public partial class ChildPidfFinanceBatchSizeCoating
 	{
 		public int PidffinaceBatchSizeCoatingId { get; set; }
-		public int? PidffinaceId { get; set; }
+        public int DeletePidffinaceBatchSizeCoatingId { get; set; }
+        public int? PidffinaceId { get; set; }
 		public int? BusinessUnitId { get; set; }
 		public double? Batchsize { get; set; }
 		public double? Yield { get; set; }

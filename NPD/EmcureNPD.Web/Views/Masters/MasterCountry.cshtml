@@ -95,7 +95,7 @@
 							<div class="form-group required">
 								@Html.LabelFor(model => model.CountryCode,"Country Code", new { @class = "control-label" })
 								<span class="text-danger">*</span>
-								@Html.EditorFor(model => model.CountryCode, new { htmlAttributes = new { @autocomplete = "off", @class = "form-control checkbox-checked", @placeholder = @MasterLocalizer["CountryCode"] } })
+								@Html.EditorFor(model => model.CountryCode, new { htmlAttributes = new { @autocomplete = "off", @class = "form-control checkbox-checked", @placeholder = @MasterLocalizer["CountryCode"],@maxlength="5" } })
 								@Html.ValidationMessageFor(model => model.CountryCode, "", new { @class = "text-danger" })
 							</div>
 						</div>
@@ -105,7 +105,7 @@
 							<div class="form-group required">
 								@Html.LabelFor(model => model.IsdcountryCode,"ISD Country Code", new { @class = "control-label" })
 								<span class="text-danger">*</span>
-								@Html.EditorFor(model => model.IsdcountryCode, new { htmlAttributes = new { @autocomplete = "off", @class = "form-control checkbox-checked", @placeholder = @MasterLocalizer["IsdcountryCode"] } })
+								@Html.EditorFor(model => model.IsdcountryCode, new { htmlAttributes = new { @autocomplete = "off", @class = "form-control checkbox-checked", @placeholder = @MasterLocalizer["IsdcountryCode"],@maxlength="5" } })
 								@Html.ValidationMessageFor(model => model.IsdcountryCode, "", new { @class = "text-danger" })
 							</div>
 						</div>

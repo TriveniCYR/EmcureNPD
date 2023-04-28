@@ -39,7 +39,8 @@ $(document).ready(function () {
         placeholder: "Select Currency..",
         allowClear: true
     });
-    
+    $(el).attr("step", "any");
+   
 });
 
 
@@ -149,7 +150,8 @@ function addRowFinanceDetails(j) {
         var node = $('#financeDetailsRow_0').clone(true);
         table.find('tr:last').after(node);
         table.find('tr:last').find("input").val("");
-   
+    table.find('tr:last').find("input").val("");
+    table.find('tr:last').find('input[type = "number"]').val(0);
     SetChildRows();
     SetChildRowDeleteIcon();
     //}
@@ -246,6 +248,7 @@ function SetChildRows() {
         $(this).find("td:eq(16) input").attr("id", "EmcureCogsPack" + index.toString());
         $(this).find("td:eq(17) input").attr("name", "lsPidfFinanceBatchSizeCoating[" + index.toString() + "].PidffinaceBatchSizeCoatingId");
         $(this).find("td:eq(17) input").attr("id", "PidffinaceBatchSizeCoatingId" + index.toString());
+       
        // console.log($(this).find("td:eq(0) input").attr("name", "lsPidfFinanceBatchSizeCoating[" + index.toString() + "].PidffinaceBatchSizeCoatingId").value())
     });
 }
@@ -257,10 +260,15 @@ function SetChildRowDeleteIcon() {
     }
     //$("#FinanceTable tbody tr:first").find('.del-rows').hide();
 }
-function deleteRowFinance(j, element) {
+function deleteRowFinance(j, element, id) {
+    let deleteableId = id;
     $(element).closest("tr").remove();
     SetChildRowDeleteIcon();
     SetChildRows();
+    if (deleteableId > 0) {
+        let deletehtml = `<input type="hidden" id="DeletePidffinaceBatchSizeCoatingId${j}" name="lsPidfFinanceBatchSizeCoating[${j}].DeletePidffinaceBatchSizeCoatingId" value="${deleteableId}">`;
+        $("#FinanceTableBoy").append(deletehtml);
+     }
 }
 function preventSubmit() {
     $(document).on('submit', 'form', function (e) {
@@ -509,7 +517,7 @@ function GetSUIMSVolumeYearWiseByPackSize(ele) {
                     $(`input#NetRealisation${row_index}.NetRealisation`).val(netRealisation.toFixed(2));
                     $(`input#EstMat2020By12units${row_index}.EstMat2020By12units`).val(parseFloat((data.table.length > 0 ? data.table[0].suimsVolume : 0)).toFixed(2));
                     $(`input#Marketinpacks${row_index}.Marketinpacks`).val(parseFloat((data.table.length > 0 ? data.table[0].suimsVolume : 0)).toFixed(2));
-                    $(`input#Marketinpacks${row_index}.Marketinpacks`).closest("tr").find(".BatchsizeinLtrTabs").val(parseFloat(data.table.length > 0 ? data.table[0].commercialBatchSize : 0).toFixed(2));
+                    $(`input#BatchsizeinLtrTabs${row_index}.BatchsizeinLtrTabs`).val((data.table.length > 0 ? data.table[0].commercialBatchSize : 0).toFixed(2));
                     calculateBatchSizeCaoting(ele);
                 }
                 catch (e) {
@@ -656,13 +664,18 @@ function getYearByLast3Months(date) {
 }
 
 $(el).focus(function () {
+    $(this).attr("step","any");
     let num = this.value;
+    
     if (num.toString() == "E" || num.toString() == "e") {
         this.value = null;
     }
+    if (num.toString() != "") {
+        this.value = parseFloat(num).toFixed(2);
+    }
 });
 $(el).focusout(function () {
-    $(this).attr("step", .01);
+    $(this).attr("step", "any");
     let num = this.value;
     if (num.toString() == "E" || num.toString() == "e") {
         this.value = null;
