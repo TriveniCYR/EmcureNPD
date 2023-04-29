@@ -871,7 +871,7 @@ function GetPBFTabDetails() {
 function GetPBFTabDetailsSuccess(data) {
     try {
         if (data != null) {
-            _currencySymbol = data.IPDCostOfLitigation[0].currencySymbol;
+            _currencySymbol = (data.IPDCostOfLitigation.length > 0 ? data.IPDCostOfLitigation[0].currencySymbol : "$");
             _CostOfLitigationArray = data.IPDCostOfLitigation;
             CreatePhaseWiseBudgetTable();
             CreateTotalExpensesTable();
@@ -2619,7 +2619,7 @@ function SetPhaseWiseBudget() {
         
         var _PlantSupportTotalScaleUp = (ConvertToNumber(_PlantSupportScaleUp) * ConvertToNumber(_plantsupportcost));
 
-        var _APIScaleup = $('#tablerndapirequirement').find('[data-strengthid=' + item.pidfProductStrengthId + ']').find('.calcRNDApirequirementsScaleUp').val();
+        var _APIScaleup = $('#tablerndapirequirement').find('[data-strengthid=' + item.pidfProductStrengthId + ']').find('.calcRNDApirequirementsScaleUpCost').val();
 
         var _ExcipientScaleup = $('#tablerndexicipientrequirement').find(".exicipientActivity" + _ScaleupActivityTypeId + "Total").find('[data-strengthid=' + item.pidfProductStrengthId + ']').find('.calcTotalCostForStrengthexicipient').val();
 
