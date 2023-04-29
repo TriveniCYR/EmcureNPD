@@ -1204,7 +1204,7 @@ namespace EmcureNPD.Resource.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Pack Style.
+        ///   Looks up a localized string similar to Pack Size.
         /// </summary>
         public static string PackStyle {
             get {
