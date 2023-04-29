@@ -80,9 +80,9 @@ function ClearValidationForYearForm() {
     });
 }
 function ClearValidationForMainForm() {
-    var MainFormFeilds = ['MarketSizeInUnit', 'ShelfLife']
+    var MainFormFeilds = ['MarketSizeInUnit', 'ShelfLife', 'PackSizeId']
     $.each(MainFormFeilds, function (_, kv) {
-        $('#valmsg' + kv.name).text('').hide();
+        $('#valmsg' + kv).text('').hide();
     });
 }
 function ValidateMainForm() {
@@ -127,6 +127,16 @@ function ValidateBU_Strength() {
     }
     return status;
 }
+function ValidateYearDataExist() {
+    var status = true;
+    $.each(ArrMainCommercial, function (index, item) {
+        if (item.PidfCommercialYears.length <= 0) {
+            toastr.error('Please fill year detail for Business Unit: ' + $('#BUtab_' + item.businessUnitId).text() + ' & Strength: ' + $('#Strengthtab_' + item.pidfProductStrengthId).text());
+            status = false;
+        }
+    });
+    return status;
+}
 function ResetYearFormValues() {
     $.each($('#AddYearForm').serializeArray(), function (_, kv) {
         if (jQuery.inArray(kv.name, objdropdownYearControls_array) != -1) {
@@ -141,8 +151,10 @@ function ResetYearFormValues() {
 $('#mainDivCommercial').find("#btnSubmit").click(function () {
     if (ValidateBU_Strength()) {
         if (ArrMainCommercial.length > 0) {
-            $.extend(objMainForm, { 'SaveType': 'Sv' });
-            SaveCommertialPIDFForm();
+            if (ValidateYearDataExist()) {
+                $.extend(objMainForm, { 'SaveType': 'Sv' });
+                SaveCommertialPIDFForm();
+            }
         } else {
             toastr.error('No Data Added');
         }
@@ -377,7 +389,8 @@ function AddPackStyle() {
     $('#ShelfLife').val("");
     $('#MarketSizeInUnit').val("");
     $('#hdnPackSizeMode').val("0");
-    $('#PackSizeId').val("").removeAttr("readonly", "readonly");
+    $('#PackSizeId').val("").removeAttr("disabled");
+    ClearValidationForMainForm();
     $('#dvCommercialPackStyle').modal('show');
 }
 
@@ -388,6 +401,7 @@ function BUstregthPack_AddButtonClick() {
             ent_BuStrPack[getPropertyName(item.name)] = item.value;
         });
         ent_BuStrPack["packSizeName"] = $("#PackSizeId option:selected").text();
+        ent_BuStrPack["packSizeId"] = $("#PackSizeId option:selected").val();
         //var IndexofMaintable = ArrMainCommercial.length;
         //ent_BuStrPack['IndexofMaintable'] = IndexofMaintable;
         ent_BuStrPack['PidfCommercialYears'] = [];
@@ -459,21 +473,23 @@ function btnEditBUStrengthPack(packSizeId, businessUnitId, pidfProductStrengthId
     $('#ShelfLife').val($(element).parent().parent().find(".shelfLife").text());
     $('#MarketSizeInUnit').val($(element).parent().parent().find(".marketSize").text());
     $('#hdnPackSizeMode').val("1");
-    $('#PackSizeId').val(packSizeId).attr("readonly", "readonly");
+    $('#PackSizeId').val(packSizeId).attr("disabled", "disabled");
+    ClearValidationForMainForm();
     $('#dvCommercialPackStyle').modal('show');
 }
 function btnDeleteBUStrengthPack(packSizeId) {
     bootbox.confirm({
         title: 'Delete',
         message: 'Are you sure, you want to delete ?',
+        swapButtonOrder: true,
         buttons: {
             confirm: {
                 label: 'Yes',
-                className: 'btn-success'
+                className: 'btn-danger'
             },
             cancel: {
                 label: 'No',
-                className: 'btn-danger'
+                className: 'btn-success'
             }
         },
         callback: function (result) {
