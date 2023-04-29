@@ -348,7 +348,7 @@
                                     <div class="form-group required tableTDHint">
                                         @Html.LabelFor(model => model.TotalExpense,"Total Expenses", new { @class = "control-label" })<span class="text-danger">*</span>
                                         @Html.TextBoxFor(model => model.TotalExpense, new { @class = "form-control", @placeholder = "Total Expenses", @readonly ="readonly",@required="required",@tabindex=-1 })
-                                        <span>lacs</span>
+                                        <span>Lacs</span>
                                     </div>
                                 </div>
 
@@ -438,6 +438,34 @@
                                     </div>
 
                                 </div>
+
+                                @*  Total Expenses*@
+                                <div class="col-12">
+                                    <div class="card">
+                                        <div class="card-header bg-primary">
+                                            <h3 class="card-title mb-0">
+                                                <button type="button" class="btn btn-tool" data-card-widget="collapse">
+                                                    Total Expenses
+                                                </button>
+                                            </h3>
+                                            <div class="card-tools">
+                                                <button type="button" class="btn btn-tool" data-card-widget="collapse" title="Collapse">
+                                                    <i class="fas fa-plus" aria-hidden="true"></i>
+                                                </button>
+                                            </div>
+                                        </div>
+                                        <div class="card-body">
+                                            <div class="row">
+
+                                                <div class="clearfix bg-dark mb-2 pb-1 pt-1">TOTAL PROJECT COST: <span class="pbfTotalExpense" id="lblTotalExpenseForPIDF"></span> Lacs Includes Cost all R&amp;D division + Litigation cost (if any)</div>
+                                                <table id="tablerndtotalexpenses" class="table text-center tableTDHintDays" style="width:100%">
+                                                </table>
+                                            </div>
+
+                                        </div>
+                                    </div>
+                                </div>
+
                             </div>
                         </div>
                     </div>
@@ -706,7 +734,7 @@
                                                                     @Html.TextBoxFor(@modal=> modal.RNDMasterEntities.PlanSupportCostRsPerDay,new{@class="form-control",type = "number", min = 0})
                                                                 </div>
                                                             </div>
-                                                            <table id="tablerndplantsupportcost" class="table text-center tableTDHint" style="width:100%">
+                                                            <table id="tablerndplantsupportcost" class="table text-center tableTDHintDays" style="width:100%">
                                                             </table>
                                                             @*<input type="hidden" id="hdnrndPlantSupportCostData" name="RNDPlantSupportCostRawData" />*@
 
@@ -819,32 +847,6 @@
                                                     <div class="card-body">
                                                         <div class="row">
                                                             <table id="tablerndphasewisebudget" class="table text-center tableTDHint" style="width:100%">
-                                                            </table>
-                                                        </div>
-
-                                                    </div>
-                                                </div>
-                                            </div>
-                                             @*  Total Expenses*@
-                                            <div class="col-12">
-                                                <div class="card collapsed-card">
-                                                    <div class="card-header bg-primary">
-                                                        <h3 class="card-title mb-0">
-
-                                                            <button type="button" class="btn btn-tool" data-card-widget="collapse">
-                                                                Total Expenses
-                                                            </button>
-
-                                                        </h3>
-                                                        <div class="card-tools">
-                                                            <button type="button" class="btn btn-tool" data-card-widget="collapse" title="Collapse">
-                                                                <i class="fas fa-plus" aria-hidden="true"></i>
-                                                            </button>
-                                                        </div>
-                                                    </div>
-                                                    <div class="card-body">
-                                                        <div class="row">
-                                                            <table id="tablerndtotalexpenses" class="table text-center tableTDHint" style="width:100%">
                                                             </table>
                                                         </div>
 
