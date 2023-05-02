@@ -313,9 +313,12 @@ form-control.is-valid, .was-validated .form-control:valid {
 .task-level-5 {
     padding-left: 2.7rem !important;
 }
-div#dvAllBottomTabsPBF table {
+/*div#dvPBFContainer table {
     overflow-x: scroll;
 }
+div#dvPBFContainer .form-control {
+    min-width: 80px;
+}*/
 .pbfTotalExpense {
     color: yellow;
     font-size: 25px;

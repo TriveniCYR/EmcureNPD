@@ -9,6 +9,7 @@ var _pbf = true;
 var _strengthArray = [];
 var _CostOfLitigationArray = [];
 var _currencySymbol = '';
+var _firstLoad = true;
 $(document).ready(function () {
     try {
         _PIDFPBFId = parseInt($('#hdnPIDFPBFId').val());
@@ -28,7 +29,7 @@ $(document).ready(function () {
     GetPBFDropdown();
 
     $(document).on("change", ".calcRNDBatchSizesPrototypeFormulation, .calcRNDBatchSizesScaleUpbatch, .calcRNDBatchSizesExhibitBatch1, .calcRNDBatchSizesExhibitBatch2, .calcRNDBatchSizesExhibitBatch3", function () {
-        $("input[class~='rndExicipientStrengthValue']").trigger('change');
+        $("input[class~='rndExicipientRsperkg']").trigger('change');
         SetPhaseWiseBudget();
     });
 
@@ -468,7 +469,7 @@ $(document).ready(function () {
     });
     /*Excipient Requirement*/
     $(document).on("change", "#RNDBatchSizeId", function () {
-        $("input[class~='rndExicipientStrengthValue']").trigger('change');
+        $("input[class~='rndExicipientRsperkg']").trigger('change');
     });
     $(document).on("change", ".rndExicipientPrototype, .rndExicipientRsperkg, .rndExicipientQuantity, .rndExicipientStrengthValue", function () {
         var _ActivityTypeId = $(this).parent().parent().attr("data-activitytypeid");
@@ -621,7 +622,7 @@ $(document).ready(function () {
     /*Plant support cost*/
     $(document).on("change", "#RNDMasterEntities_PlanSupportCostRsPerDay", function () {
         $("input[class~='calcRNDPlantSupportCostsScaleUp']").trigger('change');
-
+        $("input[class~='calcRNDPlantSupportCostsExhibit']").trigger('change');
     });
     $(document).on("change", ".calcRNDPlantSupportCostsScaleUp, .calcRNDPlantSupportCostsExhibit", function () {
         var rsPerTest = $("#RNDMasterEntities_PlanSupportCostRsPerDay").val() == "" ? 0 : $("#RNDMasterEntities_PlanSupportCostRsPerDay").val();
@@ -924,7 +925,7 @@ function GetPBFTabDetailsSuccess(data) {
                 PBFreadOnlyForm();
             }
             SetPBFDisableForOtherUserBU();
-
+            _firstLoad = false;
             SetPhaseWiseBudget();
             PBFTabsReadOnly();
             $('input[type="number"]').on("keypress keyup blur", function (event) {
@@ -938,7 +939,6 @@ function GetPBFTabDetailsSuccess(data) {
                         if (checkval < 0) {
                             $(this).val("");
                         }
-                        
                     event.preventDefault();
                 }
             });
@@ -1310,9 +1310,9 @@ function BindAnalytical(data, costData) {
     $('#tableanalytical').html(analyticalactivityHTML);
 
     SetChildRowDeleteIconPBF();
-    $("input[class~='AnalyticalTestTypeId']").trigger('change');
+    //$("input[class~='AnalyticalTestTypeId']").trigger('change');
     $("input[class~='analyticalStrengthValue']").trigger('change');
-    $("input[class~='analyticalTotalAMVCost']").trigger('change');
+    //$("input[class~='analyticalTotalAMVCost']").trigger('change');
 }
 
 function addRowanalytical(element) {
@@ -1529,9 +1529,9 @@ function BindRNDExicipient(data) {
     $('#tablerndexicipientrequirement').html(ExicipientActivityHTML);
     SetChildRowDeleteIconPBF();
     //$("input[class~='rndExicipientPrototype']").trigger('change');
-    //$("input[class~='rndExicipientRsperkg']").trigger('change');
+    $("input[class~='rndExicipientRsperkg']").trigger('change');
     //$("input[class~='rndExicipientQuantity']").trigger('change');
-    $("input[class~='rndExicipientStrengthValue']").trigger('change');
+    /*$("input[class~='rndExicipientStrengthValue']").trigger('change');*/
 }
 function addRowRNDExicipient(element) {
     var node = $(element).parent().parent().clone(true);
@@ -1617,6 +1617,7 @@ function BindRNDPackaging(data) {
     SetChildRowDeleteIconPBF();
 
     $("input[class~='rndPackagingStrengthValue']").trigger('change');
+    //$("input[class~='rndPackingTypeId']").trigger('change');
 }
 function addRowRNDPackaging(element) {
     var node = $(element).parent().parent().clone(true);
@@ -1847,7 +1848,8 @@ function BindRNDToolingchangepart(data) {
 
     SetChildRowDeleteIconPBF();
 
-    $("input[class~='ToolingChangePartStrengthValue']").trigger('change');
+    /*$("input[class~='ToolingChangePartStrengthValue']").trigger('change');*/
+    $("input[class~='rndToolingChangePartCost']").trigger('change');
 }
 function addRowToolingChangePart(element) {
     var node = $(element).parent().parent().clone(true);
@@ -2109,10 +2111,10 @@ function BindRNDReferenceProductDetail(data) {
     $('#tablerndreferenceproductdetail').html(RPDHTML);
 
     $("input[class~='calcRNDRPDUnitCostOfReferenceProduct']").trigger('change');
-    $("input[class~='calcRNDRPDFormulationDevelopment']").trigger('change');
-    $("input[class~='calcRNDRPDPilotBe']").trigger('change');
-    $("input[class~='calcRNDRPDPharmasuiticalEquivalence']").trigger('change');
-    $("input[class~='calcRNDRPDPivotalBio']").trigger('change');
+    //$("input[class~='calcRNDRPDFormulationDevelopment']").trigger('change');
+    //$("input[class~='calcRNDRPDPilotBe']").trigger('change');
+    //$("input[class~='calcRNDRPDPharmasuiticalEquivalence']").trigger('change');
+    //$("input[class~='calcRNDRPDPivotalBio']").trigger('change');
 }
 //RPD table end
 // Filling Expenses table Start
@@ -2346,8 +2348,6 @@ function CreateTotalExpensesTable() {
 }
 //Phase Wise Budget table end
 
-
-
 function SetRNDChildRows() {
     var _RNDexicipientArray = [];
     var _RNDpackagingArray = [];
@@ -2561,150 +2561,152 @@ function GetValueFromBatchSize(_ActivityTypeId, _StrengthId) {
     }
 }
 function SetPhaseWiseBudget() {
-    var _manHourRate = $('#RNDMasterEntities_ManHourRate').val();
-    var _plantsupportcost = $('#RNDMasterEntities_PlanSupportCostRsPerDay').val();
-    var _FormulationActivityTypeId = 1;
-    var _ScaleupActivityTypeId = 2;
-    var _ExhibitActivityTypeId = 3;
-    var _PivotalBioFedId = 4;
+    if (!_firstLoad) {
+        var _manHourRate = $('#RNDMasterEntities_ManHourRate').val();
+        var _plantsupportcost = $('#RNDMasterEntities_PlanSupportCostRsPerDay').val();
+        var _FormulationActivityTypeId = 1;
+        var _ScaleupActivityTypeId = 2;
+        var _ExhibitActivityTypeId = 3;
+        var _PivotalBioFedId = 4;
 
-    $.each(_strengthArray, function (index, item) {
-        /*Set Feasibility*/
-        var _projectInitiation = $('.MPCActivity[data-activityid=1]').find('[data-strengthid=' + item.pidfProductStrengthId + ']').find('.rndMPCStrengthValue').val();
-        var _literatureReview = $('.MPCActivity[data-activityid=2]').find('[data-strengthid=' + item.pidfProductStrengthId + ']').find('.rndMPCStrengthValue').val();
-
-        var PWFeasibility = (ConvertToNumber(_projectInitiation == "" ? 0 : _projectInitiation) + ConvertToNumber(_literatureReview == "" ? 0 : _literatureReview)) * ConvertToNumber(_manHourRate == "" ? 0 : _manHourRate);
-        $('.phasewisebudget_1').find('[data-strengthid=' + item.pidfProductStrengthId + ']').find('.calcPWBRNDFeasability').val(formatNumber(PWFeasibility));
-        /*End of Set Feasibility*/
-
-        /*Protoype Development*/
-        var _formulationManPower = $('.MPCActivity[data-activityid=3]').find('[data-strengthid=' + item.pidfProductStrengthId + ']').find('.rndMPCStrengthValue').val();
-        var _analyticalManPower = $('.MPCActivity[data-activityid=4]').find('[data-strengthid=' + item.pidfProductStrengthId + ']').find('.rndMPCStrengthValue').val();
-        var _pilotBioManPower = $('.MPCActivity[data-activityid=5]').find('[data-strengthid=' + item.pidfProductStrengthId + ']').find('.rndMPCStrengthValue').val();
-
-        var _manPowerTotalFormulation = ((ConvertToNumber(_formulationManPower) + ConvertToNumber(_analyticalManPower) + ConvertToNumber(_pilotBioManPower)) * ConvertToNumber(_manHourRate));
-
-        var _RPDFormulation = $('#tablerndreferenceproductdetail').find('[data-strengthid=' + item.pidfProductStrengthId + ']').find('.calcRNDRPDFormulationDevelopment').val();
-        var _RPDPilot = $('#tablerndreferenceproductdetail').find('[data-strengthid=' + item.pidfProductStrengthId + ']').find('.calcRNDRPDPilotBe').val();
-        var _RPDUnit = $('#tablerndreferenceproductdetail').find('[data-strengthid=' + item.pidfProductStrengthId + ']').find('.calcRNDRPDUnitCostOfReferenceProduct').val();
-
-        var _RPDTotalFormulation = ((ConvertToNumber(_RPDFormulation) + ConvertToNumber(_RPDPilot)) * ConvertToNumber(_RPDUnit));
-
-        var _APIFormulation = $('#tablerndapirequirement').find('[data-strengthid=' + item.pidfProductStrengthId + ']').find('.calcRNDApirequirementsPrototypeCost').val();
-
-        var _ExcipientFormulation = $('#tablerndexicipientrequirement').find(".exicipientActivity" + _FormulationActivityTypeId + "Total").find('[data-strengthid=' + item.pidfProductStrengthId + ']').find('.calcTotalCostForStrengthexicipient').val();
-
-        var _PackagingFormulation = $('#tablerndpackagingmaterialrequirement').find(".packagingActivity" + _FormulationActivityTypeId + "Total").find('[data-strengthid=' + item.pidfProductStrengthId + ']').find('.calcTotalCostForStrengthpackaging').val();
-
-        var _AnalyticalFormulation = $('#tableanalytical').find(".analyticalActivity" + _FormulationActivityTypeId + "Total").find('[data-strengthid=' + item.pidfProductStrengthId + ']').find('.calcTotalCostForStrengthAnalytical').val();
-
-        var _PilotBioFastingClinical = $('#tableclinical').find(".clinicalcal_" + _FormulationActivityTypeId + "Total").find('[data-strengthid=' + item.pidfProductStrengthId + ']').find('.calcTotalCostForStrengthClinical').val();
-
-        var _PilotBioFedClinical = $('#tableclinical').find(".clinicalcal_" + _ScaleupActivityTypeId + "Total").find('[data-strengthid=' + item.pidfProductStrengthId + ']').find('.calcTotalCostForStrengthClinical').val();
-
-        var _ToolingChangePart = $('#tablerndtoolingchangepart').find(".ToolingChangePartActivity" + _FormulationActivityTypeId + "Total").find('[data-strengthid=' + item.pidfProductStrengthId + ']').find('.calcTotalCostForStrengthTooling').val();
-
-        var _CapexMisc = $('#tablerndcapexmiscellaneousexpenses').find(".CapexMiscActivity" + _FormulationActivityTypeId + "Total").find('[data-strengthid=' + item.pidfProductStrengthId + ']').find('.calcTotalCostForStrengthMisc').val();
-
-        $('.phasewisebudget_1').find('[data-strengthid=' + item.pidfProductStrengthId + ']').find('.calcRNDPWBPrototypedevelopment').val(formatNumber(_manPowerTotalFormulation + _RPDTotalFormulation + ConvertToNumber(_APIFormulation) + ConvertToNumber(_ExcipientFormulation) + ConvertToNumber(_PackagingFormulation) + ConvertToNumber(_AnalyticalFormulation) + ConvertToNumber(_PilotBioFastingClinical) + ConvertToNumber(_PilotBioFedClinical) + ConvertToNumber(_ToolingChangePart) + ConvertToNumber(_CapexMisc)));
-        /*end of Protoype Development*/
-
-
-        /*Scale Up*/
-        var _scaleupManPower = $('.MPCActivity[data-activityid=6]').find('[data-strengthid=' + item.pidfProductStrengthId + ']').find('.rndMPCStrengthValue').val();
-
-        var _manPowerTotalScaleUp = ((ConvertToNumber(_scaleupManPower)) * ConvertToNumber(_manHourRate));
-
-        var _PlantSupportScaleUp = $('#tablerndplantsupportcost').find(".PlantSupportCost_1").find('[data-strengthid=' + item.pidfProductStrengthId + ']').find(".calcRNDPlantSupportCostsScaleUp").val();
-        
-        var _PlantSupportTotalScaleUp = (ConvertToNumber(_PlantSupportScaleUp) * ConvertToNumber(_plantsupportcost));
-
-        var _APIScaleup = $('#tablerndapirequirement').find('[data-strengthid=' + item.pidfProductStrengthId + ']').find('.calcRNDApirequirementsScaleUpCost').val();
-
-        var _ExcipientScaleup = $('#tablerndexicipientrequirement').find(".exicipientActivity" + _ScaleupActivityTypeId + "Total").find('[data-strengthid=' + item.pidfProductStrengthId + ']').find('.calcTotalCostForStrengthexicipient').val();
-
-        var _PackagingScaleup = $('#tablerndpackagingmaterialrequirement').find(".packagingActivity" + _ScaleupActivityTypeId + "Total").find('[data-strengthid=' + item.pidfProductStrengthId + ']').find('.calcTotalCostForStrengthpackaging').val();
-
-        var _AnalyticalScaleup = $('#tableanalytical').find(".analyticalActivity" + _ScaleupActivityTypeId + "Total").find('[data-strengthid=' + item.pidfProductStrengthId + ']').find('.calcTotalCostForStrengthAnalytical').val();
-
-        var _ToolingChangePartScaleup = $('#tablerndtoolingchangepart').find(".ToolingChangePartActivity" + _ScaleupActivityTypeId + "Total").find('[data-strengthid=' + item.pidfProductStrengthId + ']').find('.calcTotalCostForStrengthTooling').val();
-
-        $('.phasewisebudget_1').find('[data-strengthid=' + item.pidfProductStrengthId + ']').find('.calcRNDPWBScaleUp').val(formatNumber(_manPowerTotalScaleUp + _PlantSupportTotalScaleUp + ConvertToNumber(_APIScaleup) + ConvertToNumber(_ExcipientScaleup) + ConvertToNumber(_PackagingScaleup) + ConvertToNumber(_AnalyticalScaleup) + ConvertToNumber(_ToolingChangePartScaleup)));
-        /*end of Scale up*/
-
-
-        /*Set AMV ATT*/
-        var _AMVATT = $('.MPCActivity[data-activityid=7]').find('[data-strengthid=' + item.pidfProductStrengthId + ']').find('.rndMPCStrengthValue').val();
-        var _analyticalAMV = $('#tableanalytical').find('.analyticalActivity4').find('[data-strengthid=' + item.pidfProductStrengthId + ']').find('.analyticalAMVStrengthValue').val();
-        var PWAMV = ((ConvertToNumber(_AMVATT == "" ? 0 : _AMVATT)) * ConvertToNumber(_manHourRate == "" ? 0 : _manHourRate)) + ConvertToNumber(_analyticalAMV == "" ? 0 : _analyticalAMV);
-
-        $('.phasewisebudget_1').find('[data-strengthid=' + item.pidfProductStrengthId + ']').find('.calcRNDPWBAMV').val(formatNumber(PWAMV));
-        /*End AMV ATT*/
-
-
-        /*Exhibit Development*/
-        var _ExhibitManPower = $('.MPCActivity[data-activityid=8]').find('[data-strengthid=' + item.pidfProductStrengthId + ']').find('.rndMPCStrengthValue').val();
-        var _pivotalManPower = $('.MPCActivity[data-activityid=9]').find('[data-strengthid=' + item.pidfProductStrengthId + ']').find('.rndMPCStrengthValue').val();
-        var _stabilityManPower = $('.MPCActivity[data-activityid=10]').find('[data-strengthid=' + item.pidfProductStrengthId + ']').find('.rndMPCStrengthValue').val();
-
-        var _manPowerTotalExhibit = ((ConvertToNumber(_ExhibitManPower) + ConvertToNumber(_pivotalManPower) + ConvertToNumber(_stabilityManPower)) * ConvertToNumber(_manHourRate));
-
-        var _PlantSupportExhibit = $('#tablerndplantsupportcost').find(".PlantSupportCost_1").find('[data-strengthid=' + item.pidfProductStrengthId + ']').find(".calcRNDPlantSupportCostsExhibit").val();
-
-        var _PlantSupportTotalExhibit = (ConvertToNumber(_PlantSupportExhibit) * ConvertToNumber(_plantsupportcost));
-
-        var _RPDExhibit = $('#tablerndreferenceproductdetail').find('[data-strengthid=' + item.pidfProductStrengthId + ']').find('.calcRNDRPDPharmasuiticalEquivalence').val();
-        var _RPDPivotal = $('#tablerndreferenceproductdetail').find('[data-strengthid=' + item.pidfProductStrengthId + ']').find('.calcRNDRPDPivotalBio').val();
-
-        var _RPDTotalExhibit = ((ConvertToNumber(_RPDExhibit) + ConvertToNumber(_RPDPivotal)) * ConvertToNumber(_RPDUnit));
-
-        var _APIExhibit = $('#tablerndapirequirement').find('[data-strengthid=' + item.pidfProductStrengthId + ']').find('.calcRNDApirequirementsExhibitBatchCost').val();
-
-        var _ExcipientExhibit = $('#tablerndexicipientrequirement').find(".exicipientActivity" + _ExhibitActivityTypeId + "Total").find('[data-strengthid=' + item.pidfProductStrengthId + ']').find('.calcTotalCostForStrengthexicipient').val();
-
-        var _PackagingExhibit = $('#tablerndpackagingmaterialrequirement').find(".packagingActivity" + _ExhibitActivityTypeId + "Total").find('[data-strengthid=' + item.pidfProductStrengthId + ']').find('.calcTotalCostForStrengthpackaging').val();
-
-        var _AnalyticalExhibit = $('#tableanalytical').find(".analyticalActivity" + _ExhibitActivityTypeId + "Total").find('[data-strengthid=' + item.pidfProductStrengthId + ']').find('.calcTotalCostForStrengthAnalytical').val();
-
-        var _PilotBioFastingClinicalExhibit = $('#tableclinical').find(".clinicalcal_" + _ExhibitActivityTypeId + "Total").find('[data-strengthid=' + item.pidfProductStrengthId + ']').find('.calcTotalCostForStrengthClinical').val();
-
-        var _PilotBioFedClinicalExhibit = $('#tableclinical').find(".clinicalcal_" + _PivotalBioFedId + "Total").find('[data-strengthid=' + item.pidfProductStrengthId + ']').find('.calcTotalCostForStrengthClinical').val();
-
-        var _ToolingChangePartExhibit = $('#tablerndtoolingchangepart').find(".ToolingChangePartActivity" + _ExhibitActivityTypeId + "Total").find('[data-strengthid=' + item.pidfProductStrengthId + ']').find('.calcTotalCostForStrengthTooling').val();
-
-        $('.phasewisebudget_1').find('[data-strengthid=' + item.pidfProductStrengthId + ']').find('.calcRNDPWBExhibitScalability').val(formatNumber(_manPowerTotalExhibit + _PlantSupportTotalExhibit + _RPDTotalExhibit + ConvertToNumber(_APIExhibit) + ConvertToNumber(_ExcipientExhibit) + ConvertToNumber(_PackagingExhibit) + ConvertToNumber(_AnalyticalExhibit) + ConvertToNumber(_PilotBioFastingClinicalExhibit) + ConvertToNumber(_PilotBioFedClinicalExhibit) + ConvertToNumber(_ToolingChangePartExhibit)));
-        /*end of Exhibit Development*/
-
-        /*Set Filling*/
-        var _Filing = $('.MPCActivity[data-activityid=11]').find('[data-strengthid=' + item.pidfProductStrengthId + ']').find('.rndMPCStrengthValue').val();
-        var filingExpense = $('#tablerndfilingexpenses').find('.FillingExpensesActivity1Total').find('[data-strengthid=' + item.pidfProductStrengthId + ']').find(".calcTotalCostForStrengthFilling").val();
-        var PWFiling = ((ConvertToNumber(_Filing == "" ? 0 : _Filing)) * ConvertToNumber(_manHourRate == "" ? 0 : _manHourRate)) + ConvertToNumber(filingExpense == "" ? 0 : filingExpense);
-
-        $('.phasewisebudget_1').find('[data-strengthid=' + item.pidfProductStrengthId + ']').find('.calcRNDPWBFiling').val(formatNumber(PWFiling));
-        /*End of Set Filling*/
-
-        /*Total for Strength*/
-        var _TotalCostForStrength = 0;
-        $('#tablerndphasewisebudget').find(".phasewisebudget_1").each(function (i, t) {
-            _TotalCostForStrength += ConvertToNumber($(t).find('[data-strengthid=' + item.pidfProductStrengthId + ']').find("input[type='text']").val());
-        });
-        //tempaorary setting the total value
-        $('.phasewisebudget_1Total').find('[data-strengthid=' + item.pidfProductStrengthId + ']').find('.calcTotalCostForStrength').val(formatNumber(_TotalCostForStrength));
-        /*End of Total for Strength*/
-    });
-
-    var FinalTotalForPWBStrength = 0;
-    $('#tablerndphasewisebudget').find(".phasewisebudget_1").each(function (x, y) {
-        var _TotalForSection = 0;
         $.each(_strengthArray, function (index, item) {
-            _TotalForSection += ConvertToNumber($(y).find('[data-strengthid=' + item.pidfProductStrengthId + ']').find("input[type=text]:not('.totalRPD')").val());
-        });
-        FinalTotalForPWBStrength += _TotalForSection;
-        $(y).find(".totalRPD").val(formatNumber(_TotalForSection));
-    });
-    $('#tablerndphasewisebudget').find(".phasewisebudget_1Total").find(".calcTotalCostForStrengthTotal").val(formatNumber(FinalTotalForPWBStrength)); 
+            /*Set Feasibility*/
+            var _projectInitiation = $('.MPCActivity[data-activityid=1]').find('[data-strengthid=' + item.pidfProductStrengthId + ']').find('.rndMPCStrengthValue').val();
+            var _literatureReview = $('.MPCActivity[data-activityid=2]').find('[data-strengthid=' + item.pidfProductStrengthId + ']').find('.rndMPCStrengthValue').val();
 
-    SetTotalExpenses();
+            var PWFeasibility = (ConvertToNumber(_projectInitiation == "" ? 0 : _projectInitiation) + ConvertToNumber(_literatureReview == "" ? 0 : _literatureReview)) * ConvertToNumber(_manHourRate == "" ? 0 : _manHourRate);
+            $('.phasewisebudget_1').find('[data-strengthid=' + item.pidfProductStrengthId + ']').find('.calcPWBRNDFeasability').val(formatNumber(PWFeasibility));
+            /*End of Set Feasibility*/
+
+            /*Protoype Development*/
+            var _formulationManPower = $('.MPCActivity[data-activityid=3]').find('[data-strengthid=' + item.pidfProductStrengthId + ']').find('.rndMPCStrengthValue').val();
+            var _analyticalManPower = $('.MPCActivity[data-activityid=4]').find('[data-strengthid=' + item.pidfProductStrengthId + ']').find('.rndMPCStrengthValue').val();
+            var _pilotBioManPower = $('.MPCActivity[data-activityid=5]').find('[data-strengthid=' + item.pidfProductStrengthId + ']').find('.rndMPCStrengthValue').val();
+
+            var _manPowerTotalFormulation = ((ConvertToNumber(_formulationManPower) + ConvertToNumber(_analyticalManPower) + ConvertToNumber(_pilotBioManPower)) * ConvertToNumber(_manHourRate));
+
+            var _RPDFormulation = $('#tablerndreferenceproductdetail').find('[data-strengthid=' + item.pidfProductStrengthId + ']').find('.calcRNDRPDFormulationDevelopment').val();
+            var _RPDPilot = $('#tablerndreferenceproductdetail').find('[data-strengthid=' + item.pidfProductStrengthId + ']').find('.calcRNDRPDPilotBe').val();
+            var _RPDUnit = $('#tablerndreferenceproductdetail').find('[data-strengthid=' + item.pidfProductStrengthId + ']').find('.calcRNDRPDUnitCostOfReferenceProduct').val();
+
+            var _RPDTotalFormulation = ((ConvertToNumber(_RPDFormulation) + ConvertToNumber(_RPDPilot)) * ConvertToNumber(_RPDUnit));
+
+            var _APIFormulation = $('#tablerndapirequirement').find('[data-strengthid=' + item.pidfProductStrengthId + ']').find('.calcRNDApirequirementsPrototypeCost').val();
+
+            var _ExcipientFormulation = $('#tablerndexicipientrequirement').find(".exicipientActivity" + _FormulationActivityTypeId + "Total").find('[data-strengthid=' + item.pidfProductStrengthId + ']').find('.calcTotalCostForStrengthexicipient').val();
+
+            var _PackagingFormulation = $('#tablerndpackagingmaterialrequirement').find(".packagingActivity" + _FormulationActivityTypeId + "Total").find('[data-strengthid=' + item.pidfProductStrengthId + ']').find('.calcTotalCostForStrengthpackaging').val();
+
+            var _AnalyticalFormulation = $('#tableanalytical').find(".analyticalActivity" + _FormulationActivityTypeId + "Total").find('[data-strengthid=' + item.pidfProductStrengthId + ']').find('.calcTotalCostForStrengthAnalytical').val();
+
+            var _PilotBioFastingClinical = $('#tableclinical').find(".clinicalcal_" + _FormulationActivityTypeId + "Total").find('[data-strengthid=' + item.pidfProductStrengthId + ']').find('.calcTotalCostForStrengthClinical').val();
+
+            var _PilotBioFedClinical = $('#tableclinical').find(".clinicalcal_" + _ScaleupActivityTypeId + "Total").find('[data-strengthid=' + item.pidfProductStrengthId + ']').find('.calcTotalCostForStrengthClinical').val();
+
+            var _ToolingChangePart = $('#tablerndtoolingchangepart').find(".ToolingChangePartActivity" + _FormulationActivityTypeId + "Total").find('[data-strengthid=' + item.pidfProductStrengthId + ']').find('.calcTotalCostForStrengthTooling').val();
+
+            var _CapexMisc = $('#tablerndcapexmiscellaneousexpenses').find(".CapexMiscActivity" + _FormulationActivityTypeId + "Total").find('[data-strengthid=' + item.pidfProductStrengthId + ']').find('.calcTotalCostForStrengthMisc').val();
+
+            $('.phasewisebudget_1').find('[data-strengthid=' + item.pidfProductStrengthId + ']').find('.calcRNDPWBPrototypedevelopment').val(formatNumber(_manPowerTotalFormulation + _RPDTotalFormulation + ConvertToNumber(_APIFormulation) + ConvertToNumber(_ExcipientFormulation) + ConvertToNumber(_PackagingFormulation) + ConvertToNumber(_AnalyticalFormulation) + ConvertToNumber(_PilotBioFastingClinical) + ConvertToNumber(_PilotBioFedClinical) + ConvertToNumber(_ToolingChangePart) + ConvertToNumber(_CapexMisc)));
+            /*end of Protoype Development*/
+
+
+            /*Scale Up*/
+            var _scaleupManPower = $('.MPCActivity[data-activityid=6]').find('[data-strengthid=' + item.pidfProductStrengthId + ']').find('.rndMPCStrengthValue').val();
+
+            var _manPowerTotalScaleUp = ((ConvertToNumber(_scaleupManPower)) * ConvertToNumber(_manHourRate));
+
+            var _PlantSupportScaleUp = $('#tablerndplantsupportcost').find(".PlantSupportCost_1").find('[data-strengthid=' + item.pidfProductStrengthId + ']').find(".calcRNDPlantSupportCostsScaleUp").val();
+
+            var _PlantSupportTotalScaleUp = (ConvertToNumber(_PlantSupportScaleUp) * ConvertToNumber(_plantsupportcost));
+
+            var _APIScaleup = $('#tablerndapirequirement').find('[data-strengthid=' + item.pidfProductStrengthId + ']').find('.calcRNDApirequirementsScaleUpCost').val();
+
+            var _ExcipientScaleup = $('#tablerndexicipientrequirement').find(".exicipientActivity" + _ScaleupActivityTypeId + "Total").find('[data-strengthid=' + item.pidfProductStrengthId + ']').find('.calcTotalCostForStrengthexicipient').val();
+
+            var _PackagingScaleup = $('#tablerndpackagingmaterialrequirement').find(".packagingActivity" + _ScaleupActivityTypeId + "Total").find('[data-strengthid=' + item.pidfProductStrengthId + ']').find('.calcTotalCostForStrengthpackaging').val();
+
+            var _AnalyticalScaleup = $('#tableanalytical').find(".analyticalActivity" + _ScaleupActivityTypeId + "Total").find('[data-strengthid=' + item.pidfProductStrengthId + ']').find('.calcTotalCostForStrengthAnalytical').val();
+
+            var _ToolingChangePartScaleup = $('#tablerndtoolingchangepart').find(".ToolingChangePartActivity" + _ScaleupActivityTypeId + "Total").find('[data-strengthid=' + item.pidfProductStrengthId + ']').find('.calcTotalCostForStrengthTooling').val();
+
+            $('.phasewisebudget_1').find('[data-strengthid=' + item.pidfProductStrengthId + ']').find('.calcRNDPWBScaleUp').val(formatNumber(_manPowerTotalScaleUp + _PlantSupportTotalScaleUp + ConvertToNumber(_APIScaleup) + ConvertToNumber(_ExcipientScaleup) + ConvertToNumber(_PackagingScaleup) + ConvertToNumber(_AnalyticalScaleup) + ConvertToNumber(_ToolingChangePartScaleup)));
+            /*end of Scale up*/
+
+
+            /*Set AMV ATT*/
+            var _AMVATT = $('.MPCActivity[data-activityid=7]').find('[data-strengthid=' + item.pidfProductStrengthId + ']').find('.rndMPCStrengthValue').val();
+            var _analyticalAMV = $('#tableanalytical').find('.analyticalActivity4').find('[data-strengthid=' + item.pidfProductStrengthId + ']').find('.analyticalAMVStrengthValue').val();
+            var PWAMV = ((ConvertToNumber(_AMVATT == "" ? 0 : _AMVATT)) * ConvertToNumber(_manHourRate == "" ? 0 : _manHourRate)) + ConvertToNumber(_analyticalAMV == "" ? 0 : _analyticalAMV);
+
+            $('.phasewisebudget_1').find('[data-strengthid=' + item.pidfProductStrengthId + ']').find('.calcRNDPWBAMV').val(formatNumber(PWAMV));
+            /*End AMV ATT*/
+
+
+            /*Exhibit Development*/
+            var _ExhibitManPower = $('.MPCActivity[data-activityid=8]').find('[data-strengthid=' + item.pidfProductStrengthId + ']').find('.rndMPCStrengthValue').val();
+            var _pivotalManPower = $('.MPCActivity[data-activityid=9]').find('[data-strengthid=' + item.pidfProductStrengthId + ']').find('.rndMPCStrengthValue').val();
+            var _stabilityManPower = $('.MPCActivity[data-activityid=10]').find('[data-strengthid=' + item.pidfProductStrengthId + ']').find('.rndMPCStrengthValue').val();
+
+            var _manPowerTotalExhibit = ((ConvertToNumber(_ExhibitManPower) + ConvertToNumber(_pivotalManPower) + ConvertToNumber(_stabilityManPower)) * ConvertToNumber(_manHourRate));
+
+            var _PlantSupportExhibit = $('#tablerndplantsupportcost').find(".PlantSupportCost_1").find('[data-strengthid=' + item.pidfProductStrengthId + ']').find(".calcRNDPlantSupportCostsExhibit").val();
+
+            var _PlantSupportTotalExhibit = (ConvertToNumber(_PlantSupportExhibit) * ConvertToNumber(_plantsupportcost));
+
+            var _RPDExhibit = $('#tablerndreferenceproductdetail').find('[data-strengthid=' + item.pidfProductStrengthId + ']').find('.calcRNDRPDPharmasuiticalEquivalence').val();
+            var _RPDPivotal = $('#tablerndreferenceproductdetail').find('[data-strengthid=' + item.pidfProductStrengthId + ']').find('.calcRNDRPDPivotalBio').val();
+
+            var _RPDTotalExhibit = ((ConvertToNumber(_RPDExhibit) + ConvertToNumber(_RPDPivotal)) * ConvertToNumber(_RPDUnit));
+
+            var _APIExhibit = $('#tablerndapirequirement').find('[data-strengthid=' + item.pidfProductStrengthId + ']').find('.calcRNDApirequirementsExhibitBatchCost').val();
+
+            var _ExcipientExhibit = $('#tablerndexicipientrequirement').find(".exicipientActivity" + _ExhibitActivityTypeId + "Total").find('[data-strengthid=' + item.pidfProductStrengthId + ']').find('.calcTotalCostForStrengthexicipient').val();
+
+            var _PackagingExhibit = $('#tablerndpackagingmaterialrequirement').find(".packagingActivity" + _ExhibitActivityTypeId + "Total").find('[data-strengthid=' + item.pidfProductStrengthId + ']').find('.calcTotalCostForStrengthpackaging').val();
+
+            var _AnalyticalExhibit = $('#tableanalytical').find(".analyticalActivity" + _ExhibitActivityTypeId + "Total").find('[data-strengthid=' + item.pidfProductStrengthId + ']').find('.calcTotalCostForStrengthAnalytical').val();
+
+            var _PilotBioFastingClinicalExhibit = $('#tableclinical').find(".clinicalcal_" + _ExhibitActivityTypeId + "Total").find('[data-strengthid=' + item.pidfProductStrengthId + ']').find('.calcTotalCostForStrengthClinical').val();
+
+            var _PilotBioFedClinicalExhibit = $('#tableclinical').find(".clinicalcal_" + _PivotalBioFedId + "Total").find('[data-strengthid=' + item.pidfProductStrengthId + ']').find('.calcTotalCostForStrengthClinical').val();
+
+            var _ToolingChangePartExhibit = $('#tablerndtoolingchangepart').find(".ToolingChangePartActivity" + _ExhibitActivityTypeId + "Total").find('[data-strengthid=' + item.pidfProductStrengthId + ']').find('.calcTotalCostForStrengthTooling').val();
+
+            $('.phasewisebudget_1').find('[data-strengthid=' + item.pidfProductStrengthId + ']').find('.calcRNDPWBExhibitScalability').val(formatNumber(_manPowerTotalExhibit + _PlantSupportTotalExhibit + _RPDTotalExhibit + ConvertToNumber(_APIExhibit) + ConvertToNumber(_ExcipientExhibit) + ConvertToNumber(_PackagingExhibit) + ConvertToNumber(_AnalyticalExhibit) + ConvertToNumber(_PilotBioFastingClinicalExhibit) + ConvertToNumber(_PilotBioFedClinicalExhibit) + ConvertToNumber(_ToolingChangePartExhibit)));
+            /*end of Exhibit Development*/
+
+            /*Set Filling*/
+            var _Filing = $('.MPCActivity[data-activityid=11]').find('[data-strengthid=' + item.pidfProductStrengthId + ']').find('.rndMPCStrengthValue').val();
+            var filingExpense = $('#tablerndfilingexpenses').find('.FillingExpensesActivity1Total').find('[data-strengthid=' + item.pidfProductStrengthId + ']').find(".calcTotalCostForStrengthFilling").val();
+            var PWFiling = ((ConvertToNumber(_Filing == "" ? 0 : _Filing)) * ConvertToNumber(_manHourRate == "" ? 0 : _manHourRate)) + ConvertToNumber(filingExpense == "" ? 0 : filingExpense);
+
+            $('.phasewisebudget_1').find('[data-strengthid=' + item.pidfProductStrengthId + ']').find('.calcRNDPWBFiling').val(formatNumber(PWFiling));
+            /*End of Set Filling*/
+
+            /*Total for Strength*/
+            var _TotalCostForStrength = 0;
+            $('#tablerndphasewisebudget').find(".phasewisebudget_1").each(function (i, t) {
+                _TotalCostForStrength += ConvertToNumber($(t).find('[data-strengthid=' + item.pidfProductStrengthId + ']').find("input[type='text']").val());
+            });
+            //tempaorary setting the total value
+            $('.phasewisebudget_1Total').find('[data-strengthid=' + item.pidfProductStrengthId + ']').find('.calcTotalCostForStrength').val(formatNumber(_TotalCostForStrength));
+            /*End of Total for Strength*/
+        });
+
+        var FinalTotalForPWBStrength = 0;
+        $('#tablerndphasewisebudget').find(".phasewisebudget_1").each(function (x, y) {
+            var _TotalForSection = 0;
+            $.each(_strengthArray, function (index, item) {
+                _TotalForSection += ConvertToNumber($(y).find('[data-strengthid=' + item.pidfProductStrengthId + ']').find("input[type=text]:not('.totalRPD')").val());
+            });
+            FinalTotalForPWBStrength += _TotalForSection;
+            $(y).find(".totalRPD").val(formatNumber(_TotalForSection));
+        });
+        $('#tablerndphasewisebudget').find(".phasewisebudget_1Total").find(".calcTotalCostForStrengthTotal").val(formatNumber(FinalTotalForPWBStrength));
+
+        SetTotalExpenses();
+    }
 }
 function SetTotalExpenses() {
     //var _manHourRate = $('#RNDMasterEntities_ManHourRate').val();
