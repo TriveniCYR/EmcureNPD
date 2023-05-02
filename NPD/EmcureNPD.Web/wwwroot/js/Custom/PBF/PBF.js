@@ -622,7 +622,7 @@ $(document).ready(function () {
     /*Plant support cost*/
     $(document).on("change", "#RNDMasterEntities_PlanSupportCostRsPerDay", function () {
         $("input[class~='calcRNDPlantSupportCostsScaleUp']").trigger('change');
-
+        $("input[class~='calcRNDPlantSupportCostsExhibit']").trigger('change');
     });
     $(document).on("change", ".calcRNDPlantSupportCostsScaleUp, .calcRNDPlantSupportCostsExhibit", function () {
         var rsPerTest = $("#RNDMasterEntities_PlanSupportCostRsPerDay").val() == "" ? 0 : $("#RNDMasterEntities_PlanSupportCostRsPerDay").val();
@@ -928,20 +928,20 @@ function GetPBFTabDetailsSuccess(data) {
             _firstLoad = false;
             SetPhaseWiseBudget();
             PBFTabsReadOnly();
-            //$('input[type="number"]').on("keypress keyup blur", function (event) {
-            //    var patt = new RegExp(/[0-9]*[.]{1}[0-9]{2}/i);
-            //    var matchedString = $(this).val().match(patt);
-            //    if (matchedString) {
-            //        $(this).val(matchedString);
-            //    }
-            //    if ((event.which != 46 || $(this).val().indexOf('.') != -1) && (event.which < 48 || event.which > 57)) {
-            //            let checkval = parseInt($(this).val());
-            //            if (checkval < 0) {
-            //                $(this).val("");
-            //            }
-            //        event.preventDefault();
-            //    }
-            //});
+            $('input[type="number"]').on("keypress keyup blur", function (event) {
+                var patt = new RegExp(/[0-9]*[.]{1}[0-9]{2}/i);
+                var matchedString = $(this).val().match(patt);
+                if (matchedString) {
+                    $(this).val(matchedString);
+                }
+                if ((event.which != 46 || $(this).val().indexOf('.') != -1) && (event.which < 48 || event.which > 57)) {
+                        let checkval = parseInt($(this).val());
+                        if (checkval < 0) {
+                            $(this).val("");
+                        }
+                    event.preventDefault();
+                }
+            });
         }
     } catch (e) {
         toastr.error('Error:' + e.message);
