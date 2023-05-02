@@ -60,8 +60,8 @@ table, th, td {
 
 .large-font {
     font-size: 20px;
-    text-decoration:none;
-    cursor:pointer;
+    text-decoration: none;
+    cursor: pointer;
 }
 
 .custom-list-checkbox {
@@ -80,13 +80,25 @@ table, th, td {
     border: none;
     margin-right: 25px;
 }
-.select2-dropdown{z-index:9999 !important;}
-.large-button{min-width:150px;}
-.card-margin{margin-right:20px;margin-bottom:20px;}
+
+.select2-dropdown {
+    z-index: 9999 !important;
+}
+
+.large-button {
+    min-width: 150px;
+}
+
+.card-margin {
+    margin-right: 20px;
+    margin-bottom: 20px;
+}
+
 .select2-selection--multiple {
     overflow: hidden !important;
     height: auto !important;
 }
+
 .dashboard-counters {
     background-color: white;
     height: 110px;
@@ -94,32 +106,49 @@ table, th, td {
     margin-bottom: 20px;
     width: 19% !important;
     border: var(--bs-border-width) solid var(--bs-border-color);
-    border-radius:15px;
-    box-shadow:5px 5px 5px #e8e8e8;
+    border-radius: 15px;
+    box-shadow: 5px 5px 5px #e8e8e8;
 }
+
 .operationButton {
     cursor: pointer;
 }
-.card-header.bg-primary button{color:#fff;}
-.filename{cursor:pointer;border:none;}
-.card.card-outline-tabs .card-tools {
-margin:auto;
+
+.card-header.bg-primary button {
+    color: #fff;
 }
+
+.filename {
+    cursor: pointer;
+    border: none;
+}
+
+.card.card-outline-tabs .card-tools {
+    margin: auto;
+}
+
 .card .card-tools {
     margin: auto !important;
 }
+
 .select2-container--default .select2-selection--multiple .select2-selection__choice {
     background-color: #f7f7f7 !important;
     color: black;
 }
+
 select.form-control {
     appearance: auto;
 }
+
 #ApproveRejectModel .card-footer {
     background-color: #fff;
     border-top: none;
 }
-.InvalidBox{border:solid 1px red !important;}
+
+.InvalidBox {
+    border: solid 1px red !important;
+}
+
 #loading-wrapper {
     position: fixed;
     width: 100%;
@@ -130,6 +159,7 @@ select.form-control {
     background-color: #7fbafa;
     opacity: 0.5;
 }
+
 .loaderAnimation {
     background-color: red;
     height: 35px;
@@ -201,18 +231,23 @@ select.form-control {
 #loading-wrapper ul li:nth-child(4) {
     animation-delay: -0.6s;
 }
+
 .apiIPDTable th, .apiIPDTable td {
     min-width: 153px;
 }
+
 .os-theme-dark > .os-scrollbar > .os-scrollbar-track > .os-scrollbar-handle {
     background: #0d6efd;
 }
-.os-theme-dark > .os-scrollbar > .os-scrollbar-track > .os-scrollbar-handle:hover {
-    background: #0d6efd;
-}
+
+    .os-theme-dark > .os-scrollbar > .os-scrollbar-track > .os-scrollbar-handle:hover {
+        background: #0d6efd;
+    }
+
 tr.bg-primary td, thead.bg-primary th {
     padding: 0.5rem;
 }
+
 .select2-selection--multiple:before {
     content: "";
     position: absolute;
@@ -222,11 +257,13 @@ tr.bg-primary td, thead.bg-primary th {
     border-left: 4px solid transparent;
     border-right: 4px solid transparent;
 }
+
 .ApproveRejectText {
     max-width: 250px;
     border-radius: 10px;
     margin: auto;
 }
+
 form-control.is-valid, .was-validated .form-control:valid {
     border: var(--bs-border-width) solid var(--bs-border-color) !important;
     padding-right: calc(1.5em + 0.75rem);
@@ -235,89 +272,152 @@ form-control.is-valid, .was-validated .form-control:valid {
     /*background-position: none !important;*/
     /*background-size: none !important;*/
 }
+
 .inline-textbox {
     width: 70% !important;
     display: inline-block !important;
 }
+
 .tableTDHint .form-control {
     display: inline-block;
     width: calc(100% - 31px);
     margin-right: 5px;
 }
+
 .tableTDHintDays .form-control {
     display: inline-block;
     width: calc(100% - 45px);
     margin-right: 5px;
 }
+
 .tableTDHintManHrs .form-control {
     display: inline-block;
     width: calc(100% - 60px);
     margin-right: 5px;
 }
+
 .notification-dropdown {
     max-width: 300px !important;
     min-width: 280px !important;
     padding: 0 !important;
 }
-.notification-dropdown .dropdown-footer{text-align:center !important;}
+
+    .notification-dropdown .dropdown-footer {
+        text-align: center !important;
+    }
+
 .pidf-25 {
     min-width: 25px;
 }
+
 .pidf-50 {
     min-width: 50px;
 }
+
 .pidf-80 {
     min-width: 80px;
 }
+
 .pidf-90 {
     min-width: 90px;
 }
+
 .pidf-100 {
     min-width: 100px;
 }
+
 .pidf-110 {
     min-width: 110px;
 }
+
 .pidf-120 {
     min-width: 120px;
 }
+
 .pidf-140 {
     min-width: 140px;
 }
+
 .pidf-150 {
     min-width: 150px;
 }
+
 .emcure-logo {
     height: 57px;
     background-color: #fff;
 }
+
     .emcure-logo img {
         width: 150px;
         height: 43px;
     }
-.large-popup{max-width:88% !important}
+
+.large-popup {
+    max-width: 88% !important
+}
+
 .highlight-tr {
     background-color: rgba(0,0,0,.05);
     font-weight: bold;
 }
-.bootbox-confirm .bootbox-close-button{font-size:1rem;}
+
+.bootbox-confirm .bootbox-close-button {
+    font-size: 1rem;
+}
 /*.large-popup .form-group{margin-bottom:0.2rem !important;}*/
-.batch-size-coating-table input[type=number].form-control{padding-right:5px !important;}
-.task-level-2{padding-left:1.2rem !important;}
+.batch-size-coating-table input[type=number].form-control {
+    padding-right: 5px !important;
+}
+
+.task-level-2 {
+    padding-left: 1.2rem !important;
+}
+
 .task-level-3 {
     padding-left: 1.7rem !important;
 }
+
 .task-level-4 {
     padding-left: 2.2rem !important;
 }
+
 .task-level-5 {
     padding-left: 2.7rem !important;
 }
+
 div#dvAllBottomTabsPBF table {
     overflow-x: scroll;
 }
+
 .pbfTotalExpense {
     color: yellow;
     font-size: 25px;
     font-weight: bold;
+}
+
+#dvPBFContainer input.form-control, select.form-control {
+    min-width: 100px;
+}
+
+.pbftables {
+    display: block;
+    overflow-x: auto;
+    white-space: nowrap;
+}
+
+.pbftables::-webkit-scrollbar-track {
+    -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
+    background-color: #f5f5f5;
+    /* margin: 0 12px; */
+    padding: 0;
+}
+
+.pbftables::-webkit-scrollbar {
+    height: 8px;
+}
+
+.pbftables::-webkit-scrollbar-thumb {
+    background-color: #0d6efd;
+    background-image: -webkit-gradient( linear, 0 0, 0 100%, color-stop(0.5, rgba(255, 255, 255, 0.2)), color-stop(0.5, transparent), to(transparent) );
+    border-radius: 10px;
 }

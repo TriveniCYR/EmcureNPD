@@ -164,17 +164,17 @@ namespace EmcureNPD.Business.Core.Implementation
                 PidfPbf objPIDFPbf;
                 var loggedInUserId = _helper.GetLoggedInUser().UserId;
                 pbfgeneralid = await SavePidfAndPBFCommanDetails(pbfEntity.Pidfid, pbfEntity);
-                
+
                 if (pbfgeneralid > 0)
                 {
-                   // var isSuccess = await _auditLogService.CreateAuditLog<PBFFormEntity>(pbfEntity.Pidfpbfid > 0 ? Utility.Audit.AuditActionType.Update : Utility.Audit.AuditActionType.Create,
-                   //Utility.Enums.ModuleEnum.PBF, pbfEntity, pbfEntity, Convert.ToInt32(pbfEntity.Pidfid));
+                    // var isSuccess = await _auditLogService.CreateAuditLog<PBFFormEntity>(pbfEntity.Pidfpbfid > 0 ? Utility.Audit.AuditActionType.Update : Utility.Audit.AuditActionType.Create,
+                    //Utility.Enums.ModuleEnum.PBF, pbfEntity, pbfEntity, Convert.ToInt32(pbfEntity.Pidfid));
                     await _unitOfWork.SaveChangesAsync();
                     var _StatusID = (pbfEntity.SaveType == "Save") ? Master_PIDFStatus.PBFSubmitted : Master_PIDFStatus.PBFInProgress;
                     await _auditLogService.UpdatePIDFStatusCommon(pbfEntity.Pidfid, (int)_StatusID, loggedInUserId);
                     await _notificationService.CreateNotification(pbfEntity.Pidfid, (int)_StatusID, string.Empty, string.Empty, loggedInUserId);
                     return DBOperation.Success;
-                   
+
                 }
                 else
                 {
@@ -270,7 +270,7 @@ namespace EmcureNPD.Business.Core.Implementation
                     _pbfRepository.UpdateAsync(objPIDFPbf);
                     await _unitOfWork.SaveChangesAsync();
                     var isSuccess = await _auditLogService.CreateAuditLog<PBFFormEntity>(Utility.Audit.AuditActionType.Update,
-                  ModuleEnum.PBF, OldPBFEntity, pbfentity,(int)pbfentity.Pidfid);
+                  ModuleEnum.PBF, OldPBFEntity, pbfentity, (int)pbfentity.Pidfid);
                 }
                 else
                 {
@@ -554,7 +554,7 @@ namespace EmcureNPD.Business.Core.Implementation
                 if (pbfentity.RNDMasterEntities != null)
                 {
                     objrndMaster = _pidfPbfRnDMasterRepository.GetAllQuery().Where(x => x.PbfgeneralId == pbfgeneralid).FirstOrDefault();
-                  var OldPBFRndEntity =  _mapperFactory.Get<PidfPbfRnDMaster, RNDMasterEntity>(objrndMaster);
+                    var OldPBFRndEntity = _mapperFactory.Get<PidfPbfRnDMaster, RNDMasterEntity>(objrndMaster);
                     if (objrndMaster != null)
                     {
                         objrndMaster.BatchSizeId = pbfentity.RNDMasterEntities.BatchSizeId;
@@ -1706,6 +1706,648 @@ namespace EmcureNPD.Business.Core.Implementation
             {
                 await _ExceptionService.LogException(ex);
                 return pbfgeneralid;
+            }
+        }
+
+        public async Task<long> SavePidfAndPBFCommanDetailsnew1(long pidfid, PBFFormEntity pbfentity)
+        {
+            long pidfpbfid = 0;
+            long pbfgeneralid = 0;
+            List<PidfPbfMarketMapping> objmapping = new();
+            List<PidfPbfAnalyticalCostStrengthMapping> objACSMList = new();
+            try
+            {
+                #region Section PBF Add Update
+
+                var loggedInUserId = _helper.GetLoggedInUser().UserId;
+                PidfPbf objPIDFPbf;
+                Pidf objPIDFupdate;
+                objPIDFPbf = _pbfRepository.GetAllQuery().Where(x => x.Pidfid == pbfentity.Pidfid).FirstOrDefault();
+                var OldPBFEntity = _mapperFactory.Get<PidfPbf, PBFFormEntity>(objPIDFPbf);
+                if (objPIDFPbf != null)
+                {
+                    objPIDFPbf = _mapperFactory.Get<PBFFormEntity, PidfPbf>(pbfentity);
+                    objPIDFPbf.ModifyBy = loggedInUserId;
+                    objPIDFPbf.ModifyDate = DateTime.Now;
+                    _pbfRepository.UpdateAsync(objPIDFPbf);
+                    await _unitOfWork.SaveChangesAsync();
+                    var isSuccess = await _auditLogService.CreateAuditLog<PBFFormEntity>(Utility.Audit.AuditActionType.Update,
+                  ModuleEnum.PBF, OldPBFEntity, pbfentity, (int)pbfentity.Pidfid);
+                }
+                else
+                {
+                    objPIDFPbf = _mapperFactory.Get<PBFFormEntity, PidfPbf>(pbfentity);
+                    objPIDFPbf.CreatedBy = loggedInUserId;
+                    objPIDFPbf.CreatedDate = DateTime.Now;
+                    _pbfRepository.AddAsync(objPIDFPbf);
+                    await _unitOfWork.SaveChangesAsync();
+                }
+                pidfpbfid = objPIDFPbf.Pidfpbfid;
+
+                #endregion Section PBF Add Update
+
+                #region Marketting Mapping Add Update
+
+                if (pidfpbfid > 0 && pbfentity.MarketMappingId.Length > 0)
+                {
+                    var marketmapping = _pidfPbfMarketMappingRepository.GetAllQuery().Where(x => x.Pidfpbfid == pidfpbfid).ToList();
+                    if (marketmapping.Count > 0)
+                    {
+                        foreach (var item in marketmapping)
+                        {
+                            _pidfPbfMarketMappingRepository.Remove(item);
+                        }
+                        await _unitOfWork.SaveChangesAsync();
+                    }
+                    foreach (var item in pbfentity.MarketMappingId)
+                    {
+                        PidfPbfMarketMapping objMM = new();
+                        objMM.BusinessUnitId = item;
+                        objMM.Pidfpbfid = pidfpbfid;
+                        objMM.CreatedBy = loggedInUserId;
+                        objMM.CreatedDate = DateTime.Now;
+                        objmapping.Add(objMM);
+                    }
+                    _pidfPbfMarketMappingRepository.AddRange(objmapping);
+                    await _unitOfWork.SaveChangesAsync();
+                }
+
+                #endregion Marketting Mapping Add Update
+
+                #region Update PIDF
+
+                objPIDFupdate = _repository.GetAllQuery().Where(x => x.Pidfid == pidfid).FirstOrDefault();
+                if (objPIDFupdate != null)
+                {
+                    objPIDFupdate.Rfdbrand = pbfentity.BrandName;
+                    objPIDFupdate.Rfdindication = pbfentity.RFDIndication;
+                    objPIDFupdate.Rfdapplicant = pbfentity.RFDApplicant;
+                    objPIDFupdate.RfdcountryId = pbfentity.RFDCountryId;
+                    objPIDFupdate.ModifyBy = loggedInUserId;
+                    objPIDFupdate.ModifyDate = DateTime.Now;
+                    _repository.UpdateAsync(objPIDFupdate);
+                    await _unitOfWork.SaveChangesAsync();
+                }
+
+                #endregion Update PIDF
+
+                #region Section PBF General Add Update
+
+                #region GeneralProductStrength Add Update
+                List<PidfPbfGeneralStrength> _objPidfPbfGeneralStrength = new List<PidfPbfGeneralStrength>();
+
+                //Save General Strength Entities Table
+                if (pbfentity.GeneralStrengthEntities != null && pbfentity.GeneralStrengthEntities.Count() > 0)
+                {
+                    foreach (var item in pbfentity.GeneralStrengthEntities)
+                    {
+                        PidfPbfGeneralStrength pidfPbfGeneralStrength = new PidfPbfGeneralStrength();
+                        pidfPbfGeneralStrength = _mapperFactory.Get<GeneralStrengthEntity, PidfPbfGeneralStrength>(item);
+                        pidfPbfGeneralStrength.PbfgeneralId = pbfgeneralid;
+                        pidfPbfGeneralStrength.CreatedDate = DateTime.Now;
+                        pidfPbfGeneralStrength.CreatedBy = loggedInUserId;
+                        _objPidfPbfGeneralStrength.Add(pidfPbfGeneralStrength);
+                    }
+                }
+                #endregion GeneralProductStrength Add Update
+
+                #region Section Clinical Add Update
+
+                List<PidfPbfClinical> objClinicallist = new();
+               
+                //Save clinical Entities
+                if (pbfentity.ClinicalEntities != null && pbfentity.ClinicalEntities.Count() > 0)
+                {
+                    foreach (var item in pbfentity.ClinicalEntities)
+                    {
+                        PidfPbfClinical obgclinical = new PidfPbfClinical();
+                        obgclinical = _mapperFactory.Get<ClinicalEntity, PidfPbfClinical>(item);
+                        obgclinical.PbfgeneralId = pbfgeneralid;
+                        obgclinical.CreatedDate = DateTime.Now;
+                        obgclinical.CreatedBy = loggedInUserId;
+                        objClinicallist.Add(obgclinical);
+                    }
+                }
+
+                #endregion Section Clinical Add Update
+
+                #region Section Analytical Add Update
+
+                List<PidfPbfAnalytical> objAnalyticallist = new();
+                List<PidfPbfAnalyticalAmvcost> objAnalyticalAmvcosts = new();
+                List<PidfPbfAnalyticalAmvcostStrengthMapping> objAnalyticalAmvcostStrengthMappinglist = new();
+               
+                //Save analytical Entities
+                if (pbfentity.AnalyticalEntities != null && pbfentity.AnalyticalEntities.Count() > 0)
+                {
+                    foreach (var item in pbfentity.AnalyticalEntities)
+                    {
+                        PidfPbfAnalytical obganalytical = new PidfPbfAnalytical();
+                        obganalytical = _mapperFactory.Get<AnalyticalEntity, PidfPbfAnalytical>(item);
+                        obganalytical.PbfgeneralId = pbfgeneralid;
+                        obganalytical.CreatedDate = DateTime.Now;
+                        obganalytical.CreatedBy = loggedInUserId;
+                        objAnalyticallist.Add(obganalytical);
+                    }
+                }
+                //Save analytical Total strength mapping start
+                if (pbfentity.AnalyticalStrengthMappingEntities != null && pbfentity.AnalyticalStrengthMappingEntities.Count() > 0)
+                {
+                    foreach (var item in pbfentity.AnalyticalStrengthMappingEntities)
+                    {
+                        PidfPbfAnalyticalAmvcostStrengthMapping objstrengthmapping = new PidfPbfAnalyticalAmvcostStrengthMapping();
+                        objstrengthmapping = _mapperFactory.Get<AnalyticalAmvcostStrengthMappingEntity, PidfPbfAnalyticalAmvcostStrengthMapping>(item);
+                        // objstrengthmapping.TotalAmvcostId = TotalAMVCostId;
+                        objstrengthmapping.CreatedDate = DateTime.Now;
+                        objstrengthmapping.CreatedBy = loggedInUserId;
+                        objAnalyticalAmvcostStrengthMappinglist.Add(objstrengthmapping);
+                    }
+                }
+                //Save analytical cost end
+
+                //Save analytical cost start
+                long TotalAMVCostId = 0;
+                if (pbfentity.AnalyticalAMVCosts != null)
+                {
+                    PidfPbfAnalyticalAmvcost obganalyticalamvcost = new PidfPbfAnalyticalAmvcost();
+                    obganalyticalamvcost.TotalAmvtitle = pbfentity.AnalyticalAMVCosts.TotalAmvtitle;
+                    obganalyticalamvcost.TotalAmvcost = pbfentity.AnalyticalAMVCosts.TotalAmvcost;
+                    obganalyticalamvcost.Remark = pbfentity.AnalyticalAMVCosts.Remark;
+                    obganalyticalamvcost.PbfgeneralId = pbfgeneralid;
+                    obganalyticalamvcost.CreatedDate = DateTime.Now;
+                    obganalyticalamvcost.CreatedBy = loggedInUserId;
+                    obganalyticalamvcost.PidfPbfAnalyticalAmvcostStrengthMappings = objAnalyticalAmvcostStrengthMappinglist;
+                    objAnalyticalAmvcosts.Add(obganalyticalamvcost);
+                }
+                //Save analytical cost end
+
+                #endregion Section Analytical Add Update
+
+                #region RND Add Update
+
+                #region RND Master Add Update
+                List<PidfPbfRnDMaster> objrndMasters = new();
+                if (pbfentity.RNDMasterEntities != null)
+                {
+                    PidfPbfRnDMaster objMaster = new PidfPbfRnDMaster();
+                    objMaster = _mapperFactory.Get<RNDMasterEntity, PidfPbfRnDMaster>(pbfentity.RNDMasterEntities);
+                    objMaster.PbfgeneralId = pbfgeneralid;
+                    objMaster.CreatedBy = loggedInUserId;
+                    objMaster.CreatedDate = DateTime.Now;
+                    objrndMasters.Add(objMaster);
+                }
+
+
+                #endregion RND Master Add Update
+
+                #region Batch Size Add Update
+
+                List<PidfPbfRndBatchSize> objBatchSizelist = new();
+
+                //Save batch size Entities
+                if (pbfentity.RNDBatchSizes != null && pbfentity.RNDBatchSizes.Count() > 0)
+                {
+                    foreach (var item in pbfentity.RNDBatchSizes)
+                    {
+                        PidfPbfRndBatchSize objbatchsize = new PidfPbfRndBatchSize();
+                        objbatchsize = _mapperFactory.Get<RNDBatchSize, PidfPbfRndBatchSize>(item);
+                        objbatchsize.PbfgeneralId = pbfgeneralid;
+                        objbatchsize.CreatedDate = DateTime.Now;
+                        objbatchsize.CreatedBy = loggedInUserId;
+                        objBatchSizelist.Add(objbatchsize);
+                    }
+                   
+                }
+
+                #endregion Batch Size Add Update
+
+                #region API Requirement Add Update
+
+                List<PidfPbfRnDApirequirement> objApirequirementlist = new();
+
+               
+
+                //Save Api requirement Entities
+                if (pbfentity.RNDApirequirements != null && pbfentity.RNDApirequirements.Count() > 0)
+                {
+                    foreach (var item in pbfentity.RNDApirequirements)
+                    {
+                        PidfPbfRnDApirequirement objapirequirement = new PidfPbfRnDApirequirement();
+                        objapirequirement = _mapperFactory.Get<RNDApirequirement, PidfPbfRnDApirequirement>(item);
+                        objapirequirement.PbfgeneralId = pbfgeneralid;
+                        objapirequirement.CreatedDate = DateTime.Now;
+                        objapirequirement.CreatedBy = loggedInUserId;
+                        objApirequirementlist.Add(objapirequirement);
+                    }
+                    //_pidfPbfRndApirequirementRepository.AddRangeAsync(objApirequirementlist);
+                    //await _unitOfWork.SaveChangesAsync();
+                }
+
+                #endregion API Requirement Add Update
+
+                #region RND Excipient Add Update
+
+                List<PidfPbfRnDExicipientRequirement> objExicipientlist = new();
+               
+                //Save Exicipient Entities
+                if (pbfentity.RNDExicipients != null && pbfentity.RNDExicipients.Count() > 0)
+                {
+                    foreach (var item in pbfentity.RNDExicipients)
+                    {
+                        PidfPbfRnDExicipientRequirement obgexcipient = new PidfPbfRnDExicipientRequirement();
+                        obgexcipient = _mapperFactory.Get<RNDExicipient, PidfPbfRnDExicipientRequirement>(item);
+                        obgexcipient.PbfgeneralId = pbfgeneralid;
+                        obgexcipient.CreatedDate = DateTime.Now;
+                        obgexcipient.CreatedBy = loggedInUserId;
+                        objExicipientlist.Add(obgexcipient);
+                    }
+                    //_pidfPbfRnDExicipientRequirementRepository.AddRangeAsync(objExicipientlist);
+                    //await _unitOfWork.SaveChangesAsync();
+                }
+
+                #endregion RND Excipient Add Update
+
+                #region RND Packaging Add Update
+
+                List<PidfPbfRnDPackagingMaterial> objPackaginglist = new();
+                
+                //Save Packaging Entities
+                if (pbfentity.RNDPackagings != null && pbfentity.RNDPackagings.Count() > 0)
+                {
+                    foreach (var item in pbfentity.RNDPackagings)
+                    {
+                        PidfPbfRnDPackagingMaterial obgpackaging = new PidfPbfRnDPackagingMaterial();
+                        obgpackaging = _mapperFactory.Get<RNDPackaging, PidfPbfRnDPackagingMaterial>(item);
+                        obgpackaging.PbfgeneralId = pbfgeneralid;
+                        obgpackaging.CreatedDate = DateTime.Now;
+                        obgpackaging.CreatedBy = loggedInUserId;
+                        objPackaginglist.Add(obgpackaging);
+                    }
+                    //_pidfPbfRnDPackagingMaterialRepository.AddRangeAsync(objPackaginglist);
+                    //await _unitOfWork.SaveChangesAsync();
+                }
+
+                #endregion RND Packaging Add Update
+
+                #region Tooling Change Part Add Update
+
+                List<PidfPbfRnDToolingChangepart> objToolingChangePartCostlist = new();
+                                
+                //Save ToolingChangeparts Entities
+                if (pbfentity.RNDToolingChangeparts != null && pbfentity.RNDToolingChangeparts.Count() > 0)
+                {
+                    foreach (var item in pbfentity.RNDToolingChangeparts)
+                    {
+                        PidfPbfRnDToolingChangepart objtoolingcgangepart = new PidfPbfRnDToolingChangepart();
+                        objtoolingcgangepart = _mapperFactory.Get<RNDToolingChangepart, PidfPbfRnDToolingChangepart>(item);
+                        objtoolingcgangepart.PbfgeneralId = pbfgeneralid;
+                        objtoolingcgangepart.CreatedDate = DateTime.Now;
+                        objtoolingcgangepart.CreatedBy = loggedInUserId;
+                        objToolingChangePartCostlist.Add(objtoolingcgangepart);
+                    }
+                    //_pidfPbfRndToolingChangePartCostRepository.AddRangeAsync(objToolingChangePartCostlist);
+                    //await _unitOfWork.SaveChangesAsync();
+                }
+
+                #endregion Tooling Change Part Add Update
+
+                #region Capex and Miscellaneous Expenses Add Update
+
+                List<PidfPbfRnDCapexMiscellaneousExpense> objCapexMiscellaneouslist = new();
+                               
+                //Save CapexMiscellaneousExpenses Entities
+                if (pbfentity.RNDCapexMiscellaneousExpenses != null && pbfentity.RNDCapexMiscellaneousExpenses.Count() > 0)
+                {
+                    foreach (var item in pbfentity.RNDCapexMiscellaneousExpenses)
+                    {
+                        PidfPbfRnDCapexMiscellaneousExpense objcapex = new PidfPbfRnDCapexMiscellaneousExpense();
+                        objcapex = _mapperFactory.Get<RNDCapexMiscellaneousExpense, PidfPbfRnDCapexMiscellaneousExpense>(item);
+                        objcapex.PbfgeneralId = pbfgeneralid;
+                        objcapex.CreatedDate = DateTime.Now;
+                        objcapex.CreatedBy = loggedInUserId;
+                        objCapexMiscellaneouslist.Add(objcapex);
+                    }
+                    //_pidfPbfRndCapexMiscellaneousExpenseRepository.AddRangeAsync(objCapexMiscellaneouslist);
+                    //await _unitOfWork.SaveChangesAsync();
+                }
+
+                #endregion Capex and Miscellaneous Expenses Add Update
+
+                #region Plant Support Cost Add Update
+
+                List<PidfPbfRnDPlantSupportCost> objPlantSupportCostlist = new();
+                               
+                //Save PlantSupportCosts Entities
+                if (pbfentity.RNDPlantSupportCosts != null && pbfentity.RNDPlantSupportCosts.Count() > 0)
+                {
+                    foreach (var item in pbfentity.RNDPlantSupportCosts)
+                    {
+                        PidfPbfRnDPlantSupportCost objplantsupportcost = new PidfPbfRnDPlantSupportCost();
+                        objplantsupportcost = _mapperFactory.Get<RNDPlantSupportCost, PidfPbfRnDPlantSupportCost>(item);
+                        objplantsupportcost.PbfgeneralId = pbfgeneralid;
+                        objplantsupportcost.CreatedDate = DateTime.Now;
+                        objplantsupportcost.CreatedBy = loggedInUserId;
+                        objPlantSupportCostlist.Add(objplantsupportcost);
+                    }
+                    //_pidfPbfRndPlantSupportCostRepository.AddRangeAsync(objPlantSupportCostlist);
+                    //await _unitOfWork.SaveChangesAsync();
+                }
+
+                #endregion Plant Support Cost Add Update
+
+                #region Reference Product Detail Add Update
+
+                List<PidfPbfRnDReferenceProductDetail> objReferenceProductDetaillist = new();
+                               
+                //Save ReferenceProductDetail Entities
+                if (pbfentity.RNDReferenceProductDetails != null && pbfentity.RNDReferenceProductDetails.Count() > 0)
+                {
+                    foreach (var item in pbfentity.RNDReferenceProductDetails)
+                    {
+                        PidfPbfRnDReferenceProductDetail objreferenceporduct = new PidfPbfRnDReferenceProductDetail();
+                        objreferenceporduct = _mapperFactory.Get<RNDReferenceProductDetail, PidfPbfRnDReferenceProductDetail>(item);
+                        objreferenceporduct.PbfgeneralId = pbfgeneralid;
+                        objreferenceporduct.CreatedDate = DateTime.Now;
+                        objreferenceporduct.CreatedBy = loggedInUserId;
+                        objReferenceProductDetaillist.Add(objreferenceporduct);
+                    }
+                    //_pidfPbfRndReferenceProductDetailRepository.AddRangeAsync(objReferenceProductDetaillist);
+                    //await _unitOfWork.SaveChangesAsync();
+                }
+
+                #endregion Reference Product Detail Add Update
+
+                #region Filling Expenses Add Update
+
+                List<PidfPbfRnDFillingExpense> objFillinfExpenseslist = new();
+                               
+                //Save ReferenceProductDetail Entities
+                if (pbfentity.RNDFillingExpenses != null && pbfentity.RNDFillingExpenses.Count() > 0)
+                {
+                    foreach (var item in pbfentity.RNDFillingExpenses)
+                    {
+                        PidfPbfRnDFillingExpense objfillingexpense = new PidfPbfRnDFillingExpense();
+                        objfillingexpense = _mapperFactory.Get<RNDFillingExpense, PidfPbfRnDFillingExpense>(item);
+                        objfillingexpense.PbfgeneralId = pbfgeneralid;
+                        objfillingexpense.CreatedDate = DateTime.Now;
+                        objfillingexpense.CreatedBy = loggedInUserId;
+                        objFillinfExpenseslist.Add(objfillingexpense);
+                    }
+                    //_pidfPbfRndFillingExpenseRepository.AddRangeAsync(objFillinfExpenseslist);
+                    //await _unitOfWork.SaveChangesAsync();
+                }
+
+                #endregion Filling Expenses Add Update
+
+                #region Man Power Cost Add Update
+
+                List<PidfPbfRnDManPowerCost> objManPowerCostlist = new();
+                               
+                //Save manpowercost Entities
+                if (pbfentity.RNDManPowerCosts != null && pbfentity.RNDManPowerCosts.Count() > 0)
+                {
+                    foreach (var item in pbfentity.RNDManPowerCosts)
+                    {
+                        PidfPbfRnDManPowerCost objmanpowercost = new PidfPbfRnDManPowerCost();
+                        objmanpowercost = _mapperFactory.Get<RNDManPowerCost, PidfPbfRnDManPowerCost>(item);
+                        objmanpowercost.PbfgeneralId = pbfgeneralid;
+                        objmanpowercost.CreatedDate = DateTime.Now;
+                        objmanpowercost.CreatedBy = loggedInUserId;
+                        objManPowerCostlist.Add(objmanpowercost);
+                    }
+                    //_pidfPbfRndPidfPbfRnDManPowerCostRepository.AddRangeAsync(objManPowerCostlist);
+                    //await _unitOfWork.SaveChangesAsync();
+                }
+
+                #endregion Man Power Cost Add Update
+
+                #endregion RND Add Update
+                //PidfPbfGeneral objPIDFGeneralupdate;
+                var objPIDFGeneralupdate = _pidfPbfGeneralRepository.GetAllQuery().Where(x => x.Pidfpbfid == pbfentity.Pidfpbfid && x.BusinessUnitId == pbfentity.BusinessUnitId).FirstOrDefault();
+                if (objPIDFGeneralupdate != null)
+                {
+                    //objPIDFGeneralupdate = _mapperFactory.Get<PBFFormEntity, PidfPbfGeneral>(pbfentity);
+
+                    //objPIDFGeneralupdate.BusinessUnitId = pbfentity.BusinessUnitId;
+                    objPIDFGeneralupdate.Capex = pbfentity.Capex;
+                    objPIDFGeneralupdate.TotalExpense = pbfentity.TotalExpense;
+                    objPIDFGeneralupdate.ProjectComplexity = pbfentity.ProjectComplexity;
+                    objPIDFGeneralupdate.ProductTypeId = pbfentity.GeneralProductTypeId;
+                    objPIDFGeneralupdate.TestLicenseAvailability = pbfentity.TestLicenseAvailability;
+                    objPIDFGeneralupdate.BudgetTimelineSubmissionDate = pbfentity.BudgetTimelineSubmissionDate;
+                    objPIDFGeneralupdate.ProjectDevelopmentInitialDate = pbfentity.ProjectDevelopmentInitialDate;
+                    objPIDFGeneralupdate.FormulationGlid = pbfentity.FormulationGLId;
+                    objPIDFGeneralupdate.AnalyticalGlid = pbfentity.AnalyticalGLId;
+                    objPIDFGeneralupdate.PidfPbfGeneralStrengths = _objPidfPbfGeneralStrength;
+                    objPIDFGeneralupdate.PidfPbfClinicals = objClinicallist;
+                    objPIDFGeneralupdate.PidfPbfAnalyticals = objAnalyticallist;
+                    objPIDFGeneralupdate.PidfPbfAnalyticalAmvcosts = objAnalyticalAmvcosts;
+                    objPIDFGeneralupdate.PidfPbfRnDMasters = objrndMasters;
+                    objPIDFGeneralupdate.PidfPbfRndBatchSizes = objBatchSizelist;
+                    objPIDFGeneralupdate.PidfPbfRnDApirequirements = objApirequirementlist;
+                    objPIDFGeneralupdate.PidfPbfRnDExicipientRequirements = objExicipientlist;
+                    objPIDFGeneralupdate.PidfPbfRnDPackagingMaterials = objPackaginglist;
+                    objPIDFGeneralupdate.PidfPbfRnDToolingChangeparts = objToolingChangePartCostlist;
+                    objPIDFGeneralupdate.PidfPbfRnDCapexMiscellaneousExpenses = objCapexMiscellaneouslist;
+                    objPIDFGeneralupdate.PidfPbfRnDPlantSupportCosts = objPlantSupportCostlist;
+                    objPIDFGeneralupdate.PidfPbfRnDReferenceProductDetails = objReferenceProductDetaillist;
+                    objPIDFGeneralupdate.PidfPbfRnDFillingExpenses = objFillinfExpenseslist;
+                    objPIDFGeneralupdate.PidfPbfRnDManPowerCosts = objManPowerCostlist;
+                    DeleteGeneralChildRecords(objPIDFGeneralupdate.PbfgeneralId);
+                    _pidfPbfGeneralRepository.UpdateAsync(objPIDFGeneralupdate);
+                    await _unitOfWork.SaveChangesAsync();
+                    pbfgeneralid = objPIDFGeneralupdate.PbfgeneralId;
+                }
+                else
+                {
+                    PidfPbfGeneral objPIDFGeneraladd = new PidfPbfGeneral();
+                    objPIDFGeneraladd.Pidfpbfid = pidfpbfid;
+                    objPIDFGeneraladd.BusinessUnitId = pbfentity.BusinessUnitId;
+                    objPIDFGeneraladd.Capex = pbfentity.Capex;
+                    objPIDFGeneraladd.TotalExpense = pbfentity.TotalExpense;
+                    objPIDFGeneraladd.ProjectComplexity = pbfentity.ProjectComplexity;
+                    objPIDFGeneraladd.ProductTypeId = pbfentity.GeneralProductTypeId;
+                    objPIDFGeneraladd.TestLicenseAvailability = pbfentity.TestLicenseAvailability;
+                    objPIDFGeneraladd.BudgetTimelineSubmissionDate = pbfentity.BudgetTimelineSubmissionDate;
+                    objPIDFGeneraladd.ProjectDevelopmentInitialDate = pbfentity.ProjectDevelopmentInitialDate;
+                    objPIDFGeneraladd.FormulationGlid = pbfentity.FormulationGLId;
+                    objPIDFGeneraladd.AnalyticalGlid = pbfentity.AnalyticalGLId;
+                    objPIDFGeneraladd.CreatedBy = loggedInUserId;
+                    objPIDFGeneraladd.CreatedDate = DateTime.Now;
+                    objPIDFGeneraladd.PidfPbfGeneralStrengths = _objPidfPbfGeneralStrength;
+                    objPIDFGeneraladd.PidfPbfClinicals = objClinicallist;
+                    objPIDFGeneraladd.PidfPbfAnalyticals = objAnalyticallist;
+                    objPIDFGeneraladd.PidfPbfAnalyticalAmvcosts = objAnalyticalAmvcosts;
+                    objPIDFGeneraladd.PidfPbfRnDMasters = objrndMasters;
+                    objPIDFGeneraladd.PidfPbfRndBatchSizes = objBatchSizelist;
+                    objPIDFGeneraladd.PidfPbfRnDApirequirements = objApirequirementlist;
+                    objPIDFGeneraladd.PidfPbfRnDExicipientRequirements = objExicipientlist;
+                    objPIDFGeneraladd.PidfPbfRnDPackagingMaterials = objPackaginglist;
+                    objPIDFGeneraladd.PidfPbfRnDToolingChangeparts = objToolingChangePartCostlist;
+                    objPIDFGeneraladd.PidfPbfRnDCapexMiscellaneousExpenses = objCapexMiscellaneouslist;
+                    objPIDFGeneraladd.PidfPbfRnDPlantSupportCosts = objPlantSupportCostlist;
+                    objPIDFGeneraladd.PidfPbfRnDReferenceProductDetails = objReferenceProductDetaillist;
+                    objPIDFGeneraladd.PidfPbfRnDFillingExpenses = objFillinfExpenseslist;
+                    objPIDFGeneraladd.PidfPbfRnDManPowerCosts = objManPowerCostlist;
+                    _pidfPbfGeneralRepository.AddAsync(objPIDFGeneraladd);
+                    await _unitOfWork.SaveChangesAsync();
+                    pbfgeneralid = objPIDFGeneraladd.PbfgeneralId;
+                }
+
+                #endregion Section PBF General Add Update
+                return pbfgeneralid;
+            }
+            catch (Exception ex)
+            {
+                await _ExceptionService.LogException(ex);
+                return pbfgeneralid;
+            }
+        }
+
+        public void DeleteGeneralChildRecords(long pbfgeneralid)
+        {
+
+            try
+            {
+                var generalStrength = _pidfPbfGeneralStrengthRepository.GetAllQuery().Where(x => x.PbfgeneralId == pbfgeneralid).ToList();
+                if (generalStrength.Count > 0)
+                {
+                    foreach (var item in generalStrength)
+                    {
+                        _pidfPbfGeneralStrengthRepository.Remove(item);
+                    }
+                }
+
+                var clinical = _pidfPbfClinicalRepository.GetAllQuery().Where(x => x.PbfgeneralId == pbfgeneralid).ToList();
+                if (clinical.Count > 0)
+                {
+                    foreach (var item in clinical)
+                    {
+                        _pidfPbfClinicalRepository.Remove(item);
+                    }
+                    //await _unitOfWork.SaveChangesAsync();
+                }
+                var analytical = _pidfPbfAnalyticalRepository.GetAllQuery().Where(x => x.PbfgeneralId == pbfgeneralid).ToList();
+                if (analytical.Count > 0)
+                {
+                    foreach (var item in analytical)
+                    {
+                        _pidfPbfAnalyticalRepository.Remove(item);
+                    }
+                    // await _unitOfWork.SaveChangesAsync();
+                }
+                var analyticalCost = _PidfPbfAnalyticalAmvcostRepository.GetAllQuery().Where(x => x.PbfgeneralId == pbfgeneralid).ToList();
+                if (analyticalCost.Count > 0)
+                {
+                    foreach (var item in analyticalCost)
+                    {
+                       var amvstrengthmapping =  _pidfPbfAnalyticalAmvcostStrengthMappingRepository.GetAllQuery().Where(x => x.TotalAmvcostId == item.TotalAmvcostId).ToList();
+                        if (amvstrengthmapping.Count > 0)
+                        {
+                            foreach (var it in amvstrengthmapping)
+                            {
+                                _pidfPbfAnalyticalAmvcostStrengthMappingRepository.Remove(it);
+                            }
+                        }
+                        //_PidfPbfAnalyticalAmvcostRepository.Remove(item);
+                    }
+                    // await _unitOfWork.SaveChangesAsync();
+                }
+                var batchsize = _pidfPbfRndBatchSizeRepository.GetAllQuery().Where(x => x.PbfgeneralId == pbfgeneralid).ToList();
+                if (batchsize.Count > 0)
+                {
+                    foreach (var item in batchsize)
+                    {
+                        _pidfPbfRndBatchSizeRepository.Remove(item);
+                    }
+                   // await _unitOfWork.SaveChangesAsync();
+                }
+                var apirequirement = _pidfPbfRndApirequirementRepository.GetAllQuery().Where(x => x.PbfgeneralId == pbfgeneralid).ToList();
+                if (apirequirement.Count > 0)
+                {
+                    foreach (var item in apirequirement)
+                    {
+                        _pidfPbfRndApirequirementRepository.Remove(item);
+                    }
+                    //await _unitOfWork.SaveChangesAsync();
+                }
+                var exicipient = _pidfPbfRnDExicipientRequirementRepository.GetAllQuery().Where(x => x.PbfgeneralId == pbfgeneralid).ToList();
+                if (exicipient.Count > 0)
+                {
+                    foreach (var item in exicipient)
+                    {
+                        _pidfPbfRnDExicipientRequirementRepository.Remove(item);
+                    }
+                    //await _unitOfWork.SaveChangesAsync();
+                }
+                var packging = _pidfPbfRnDPackagingMaterialRepository.GetAllQuery().Where(x => x.PbfgeneralId == pbfgeneralid).ToList();
+                if (packging.Count > 0)
+                {
+                    foreach (var item in packging)
+                    {
+                        _pidfPbfRnDPackagingMaterialRepository.Remove(item);
+                    }
+                    //await _unitOfWork.SaveChangesAsync();
+                }
+                var toolongchangepart = _pidfPbfRndToolingChangePartCostRepository.GetAllQuery().Where(x => x.PbfgeneralId == pbfgeneralid).ToList();
+                if (toolongchangepart.Count > 0)
+                {
+                    foreach (var item in toolongchangepart)
+                    {
+                        _pidfPbfRndToolingChangePartCostRepository.Remove(item);
+                    }
+                    //await _unitOfWork.SaveChangesAsync();
+                }
+                var capexandmiscellaneous = _pidfPbfRndCapexMiscellaneousExpenseRepository.GetAllQuery().Where(x => x.PbfgeneralId == pbfgeneralid).ToList();
+                if (capexandmiscellaneous.Count > 0)
+                {
+                    foreach (var item in capexandmiscellaneous)
+                    {
+                        _pidfPbfRndCapexMiscellaneousExpenseRepository.Remove(item);
+                    }
+                    //await _unitOfWork.SaveChangesAsync();
+                }
+                var plantsupportcost = _pidfPbfRndPlantSupportCostRepository.GetAllQuery().Where(x => x.PbfgeneralId == pbfgeneralid).ToList();
+                if (plantsupportcost.Count > 0)
+                {
+                    foreach (var item in plantsupportcost)
+                    {
+                        _pidfPbfRndPlantSupportCostRepository.Remove(item);
+                    }
+                   // await _unitOfWork.SaveChangesAsync();
+                }
+                var referenceporduct = _pidfPbfRndReferenceProductDetailRepository.GetAllQuery().Where(x => x.PbfgeneralId == pbfgeneralid).ToList();
+                if (referenceporduct.Count > 0)
+                {
+                    foreach (var item in referenceporduct)
+                    {
+                        _pidfPbfRndReferenceProductDetailRepository.Remove(item);
+                    }
+                   // await _unitOfWork.SaveChangesAsync();
+                }
+                var fillingexpenses = _pidfPbfRndFillingExpenseRepository.GetAllQuery().Where(x => x.PbfgeneralId == pbfgeneralid).ToList();
+                if (fillingexpenses.Count > 0)
+                {
+                    foreach (var item in fillingexpenses)
+                    {
+                        _pidfPbfRndFillingExpenseRepository.Remove(item);
+                    }
+                    //await _unitOfWork.SaveChangesAsync();
+                }
+                var manpowercost = _pidfPbfRndPidfPbfRnDManPowerCostRepository.GetAllQuery().Where(x => x.PbfgeneralId == pbfgeneralid).ToList();
+                if (manpowercost.Count > 0)
+                {
+                    foreach (var item in manpowercost)
+                    {
+                        _pidfPbfRndPidfPbfRnDManPowerCostRepository.Remove(item);
+                    }
+                    //await _unitOfWork.SaveChangesAsync();
+                }
+
+            }
+            catch (Exception ex)
+            {
+                _ExceptionService.LogException(ex);
             }
         }
 
