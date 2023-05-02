@@ -180,7 +180,7 @@ $('#btnCancelYearForm').click(function () {
     IsShowCancel_Save_buttons(true);
     ResetYearFormValues();
 });
-$('#PriceErosion,#PriceDiscounting').focusout(function () {
+$('#PriceDiscounting').focusout(function () {
     var ControlID = $(this).attr('id');
     var cntrlvalue = parseInt($(this).val());
     if (cntrlvalue < 0 || cntrlvalue > 100) {
@@ -347,6 +347,53 @@ function NSP(variable) {
     result = Nspunits * (1 + (PriceErosion / 100))
     $('#Nsp' + variable).val(result.toFixed(3));
 }
+function UpdateOtherYearData(currentEditingYearIndex) {
+    var yearlength = ArrMainCommercial[MainRowEditIndex].PidfCommercialYears.length;
+
+    if (!(yearlength - 1 == currentEditingYearIndex)) {
+
+        var result = 0;
+
+        var _foundObject = (ArrMainCommercial[MainRowEditIndex] == null || ArrMainCommercial[MainRowEditIndex] == undefined);
+
+        var MarketSizeAsLaunch = parseFloat(_foundObject ? 0 : ArrMainCommercial[MainRowEditIndex].marketSizeInUnit);
+        var MarketGrowth = parseFloat(ArrMainCommercial[MainRowEditIndex].PidfCommercialYears[currentEditingYearIndex+1]['marketGrowth']);
+       
+            MarketSizeAsLaunch = ArrMainCommercial[MainRowEditIndex].PidfCommercialYears[currentEditingYearIndex]['marketSize']
+            result = MarketSizeAsLaunch * (1 + (MarketGrowth / 100))
+        
+        ArrMainCommercial[MainRowEditIndex].PidfCommercialYears[currentEditingYearIndex + 1]['marketSize'] = result.toFixed();
+      //  $('#MarketSize').val(result.toFixed());
+      //-----------------------------------------------
+        var MarketSize = result;
+        var MarketShare = parseFloat(ArrMainCommercial[MainRowEditIndex].PidfCommercialYears[currentEditingYearIndex + 1]['marketSharePercentageLow']);
+         result = MarketSize * MarketShare / 100;
+        ArrMainCommercial[MainRowEditIndex].PidfCommercialYears[currentEditingYearIndex + 1]['marketShareUnitLow'] = result.toFixed();
+
+        MarketShare = parseFloat(ArrMainCommercial[MainRowEditIndex].PidfCommercialYears[currentEditingYearIndex + 1]['marketSharePercentageMedium']);
+        result = MarketSize * MarketShare / 100;
+        ArrMainCommercial[MainRowEditIndex].PidfCommercialYears[currentEditingYearIndex + 1]['marketShareUnitMedium'] = result.toFixed();
+
+        MarketShare = parseFloat(ArrMainCommercial[MainRowEditIndex].PidfCommercialYears[currentEditingYearIndex + 1]['marketSharePercentageHigh']);
+        result = MarketSize * MarketShare / 100;
+        ArrMainCommercial[MainRowEditIndex].PidfCommercialYears[currentEditingYearIndex + 1]['marketShareUnitHigh'] = result.toFixed();
+        
+        ReEditingNSP('Low', currentEditingYearIndex);
+        ReEditingNSP('Medium', currentEditingYearIndex);
+        ReEditingNSP('High', currentEditingYearIndex);
+    }
+}
+function ReEditingNSP(variable, currentEditingYearIndex) {
+    var result = 0;
+    var Nspunits;
+    var PriceErosion = parseFloat(ArrMainCommercial[MainRowEditIndex].PidfCommercialYears[currentEditingYearIndex + 1]['priceErosion']);
+    Nspunits = ArrMainCommercial[MainRowEditIndex].PidfCommercialYears[currentEditingYearIndex]['nsp' + variable];
+
+    result = Nspunits * (1 + (PriceErosion / 100))
+    ArrMainCommercial[MainRowEditIndex].PidfCommercialYears[currentEditingYearIndex + 1]['nsp' + variable] = result.toFixed(3);
+
+}
+
 
 function AddYearClick() { //SaveYearClick
     //var year = $('#AddYearForm').serializeArray();
@@ -371,8 +418,14 @@ function AddYearClick() { //SaveYearClick
 
         if (EditIndex == -1)
             ArrMainCommercial[MainRowEditIndex].PidfCommercialYears.push(entityYear);
-        else
+        else {
             ArrMainCommercial[MainRowEditIndex].PidfCommercialYears[EditIndex] = entityYear;
+            var yearlength = ArrMainCommercial[MainRowEditIndex].PidfCommercialYears.length;
+            for (var k = EditIndex; k < yearlength; k++) {
+                UpdateOtherYearData(k);
+            }
+            
+        }     
 
         Update_BUstregthPackTable(ArrMainCommercial);
         //UpdateYearTable(ColumnObjUpcase);
@@ -385,6 +438,7 @@ function AddYearClick() { //SaveYearClick
         $('#dvCommercialAddYear').modal('hide');
     }
 }
+
 function AddPackStyle() {
     $('#ShelfLife').val("");
     $('#MarketSizeInUnit').val("");
