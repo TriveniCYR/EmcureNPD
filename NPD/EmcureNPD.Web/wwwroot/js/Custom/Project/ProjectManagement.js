@@ -21,6 +21,7 @@ $(document).ready(function () {
         }
     });
     HideIfEditPermissionOnly();
+    
 });
 function IsViewModeProject() {
     if ($("#IsView").val() == '1') {
@@ -294,6 +295,7 @@ function GetTaskSubTaskByIdSuccess(data) {
             $(".disabledPercentage").prop("readOnly", true);
             $("#TaskPercentage").val(data._object.totalPercentage);
         }
+        setTabIndex("UpdateModel");
     }
     catch (e) {
         toastr.error('Error:' + e.message);
@@ -334,11 +336,13 @@ function DeleteTaskSubError(x, y, z) {
 function AddTaskSubTask() {
     
     $('#AddModel').modal('show');
+    setTabIndex("AddModel");
 }
 
 function ShowAddTaskForm() {
     CleareTaskFields();
     $('#AddTaskModel').modal('show');
+    setTabIndex("AddTaskModel");
     $('#loading').show();
     ajaxServiceMethod($('#hdnBaseURL').val() + FillTaskDropdown, 'GET', GetDropdownsForAddTaskSuccess, GetDropdownsForAddTaskError);
 }
@@ -394,6 +398,7 @@ function ShowAddSubTaskForm(parentId, taskName,taskLevel) {
     let newTaskLevel = parseInt(taskLevel) + 1;
     
     $('#AddSubTaskModel').modal('show');
+    setTabIndex("AddSubTaskModel");
     $('#AddSubTaskofTask').empty().append(
         "<option selected readonly value='" + parentId + "'>" + taskName + "</option>"
     );
@@ -650,4 +655,39 @@ function ShowChildRows(rowindex) {
         }
   
     
+}
+function setTabIndex(ModelId) {
+    if (ModelId == "AddTaskModel") {
+        $(`#${ModelId} input#TaskName.form-control`).attr("tabindex", 1);
+        $(`#${ModelId} input#AddTaskStartDate.form-control`).attr("tabindex", 3);
+        $(`#${ModelId} select#AddTaskPriority.form-control`).attr("tabindex", 5);
+        $(`#${ModelId} input#AddTaskDuration.form-control`).attr("tabindex", 7);
+        $(`#${ModelId} select#AddTaskOwner.form-control`).attr("tabindex", 2);
+        $(`#${ModelId} input#AddTaskEndDate.form-control`).attr("tabindex", 4);
+        $(`#${ModelId} select#AddTaskStatus.form-control`).attr("tabindex", 6);
+        $(`#${ModelId} input#AddTaskPercentage.form-control`).attr("tabindex", 8);
+    }
+    else if (ModelId == "AddSubTaskModel") {
+        $(`#${ModelId} input#TaskName.form-control`).attr("tabindex", 1);
+        $(`#${ModelId} select#AddSubTaskOwner.form-control`).attr("tabindex", 2);
+        $(`#${ModelId} input#AddSubTaskStartDate.form-control`).attr("tabindex", 3);
+        $(`#${ModelId} input#AddSubTaskEndDate.form-control`).attr("tabindex", 4);
+        $(`#${ModelId} select#AddSubTaskPriority.form-control`).attr("tabindex", 5);
+        $(`#${ModelId} select#AddSubTaskStatus.form-control`).attr("tabindex", 6);
+        $(`#${ModelId} input#AddSubTaskDuration.form-control`).attr("tabindex", 7);
+        $(`#${ModelId} input#AddSubTaskPercentage.form-control`).attr("tabindex", 8);
+    }
+    else if (ModelId == "UpdateModel") {
+        $(`#${ModelId} input#TaskName.form-control`).attr("tabindex", 1);
+        $(`#${ModelId} select#TaskOwner.form-control`).attr("tabindex", 2);
+        $(`#${ModelId} input#StartDate.form-control`).attr("tabindex", 3);
+        $(`#${ModelId} input#EndDate.form-control`).attr("tabindex", 4);
+        $(`#${ModelId} select#TaskPriority.form-control`).attr("tabindex", 5);
+        $(`#${ModelId} select#TaskStatus.form-control`).attr("tabindex", 6);
+        $(`#${ModelId} input#TaskDuration.form-control`).attr("tabindex", 7);
+        $(`#${ModelId} input#TaskPercentage.form-control`).attr("tabindex", 8);
+    }
+
+    $(`#${ModelId} button.btn.btn-primary`).attr("tabindex", 9);
+    $(`#${ModelId} a.btn.btn-danger`).attr("tabindex", 10);
 }
