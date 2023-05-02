@@ -48,7 +48,7 @@ $(document)
     .ajaxStop(function () {
         //got response so hide the loading image
         /*$('#mainLoader').height("0").find("img").hide();*/
-        setTimeout(function () { $('#loading-wrapper').hide(); }, 500);
+        setTimeout(function () { $('#loading-wrapper').hide(); }, 300);
     })
     .ajaxError(function (event, jqxhr, settings, thrownError) {
         if (jqxhr.status == 401) {

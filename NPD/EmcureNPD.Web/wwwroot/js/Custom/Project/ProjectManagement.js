@@ -150,7 +150,7 @@ function GetProjectDetailsSuccess(data) {
                 $(this).find('a').addClass('active');
                 GetBusinessUnitDetails(bunits.businessUnitId);
                 var $span = $('<span>').text(bunits.businessUnitName);
-                $('#BHeading').empty().append($span);
+                /*$('#BHeading').empty().append($span);*/
             });
             return $li;
         }

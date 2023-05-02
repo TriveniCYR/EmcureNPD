@@ -384,7 +384,7 @@ namespace EmcureNPD.Data.DataAccess.DataContext
                 entity.Property(e => e.CreatedDate).HasColumnType("datetime");
 
                 entity.Property(e => e.IsdcountryCode)
-                    .HasMaxLength(4)
+                    .HasMaxLength(5)
                     .HasColumnName("ISDCountryCode");
 
                 entity.Property(e => e.ModifyDate).HasColumnType("datetime");
@@ -1531,6 +1531,7 @@ namespace EmcureNPD.Data.DataAccess.DataContext
                 entity.HasOne(d => d.PackSize)
                     .WithMany(p => p.PidfCommercials)
                     .HasForeignKey(d => d.PackSizeId)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("FK_PIDF_Commercial_Master_PackSize");
 
                 entity.HasOne(d => d.Pidf)
@@ -2558,8 +2559,6 @@ namespace EmcureNPD.Data.DataAccess.DataContext
                 entity.Property(e => e.CreatedDate).HasColumnType("datetime");
 
                 entity.Property(e => e.PbfgeneralId).HasColumnName("PBFGeneralId");
-
-                entity.Property(e => e.PlantSupportDevelopment).HasMaxLength(200);
 
                 entity.HasOne(d => d.Pbfgeneral)
                     .WithMany(p => p.PidfPbfRnDPlantSupportCosts)
