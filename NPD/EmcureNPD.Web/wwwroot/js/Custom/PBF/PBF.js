@@ -1119,6 +1119,8 @@ function PBFBindStrength(data) {
 
 function SavePBFForm(_SaveType) {
     if ($("#AddPBFForm").valid()) {
+        //var abc = new Date();
+        //toastr.error(abc.toString());
         $('#loading-wrapper').show();
     }
     setlicense();
@@ -1312,7 +1314,7 @@ function BindAnalytical(data, costData) {
     SetChildRowDeleteIconPBF();
     //$("input[class~='AnalyticalTestTypeId']").trigger('change');
     $("input[class~='analyticalStrengthValue']").trigger('change');
-    //$("input[class~='analyticalTotalAMVCost']").trigger('change');
+    $("input[class~='rndanalyticalStrengthIsChecked']").trigger('change');
 }
 
 function addRowanalytical(element) {
