@@ -286,6 +286,57 @@ function SetCommercialDisableForOtherUserBU() {
     }
 }
 
+function UpdateYearOnMarketSizeUnitEdited() {
+    var result = 0;
+   /* ----------------Update - marketSize--------------------------*/
+    var _foundObject = (ArrMainCommercial[MainRowEditIndex] == null || ArrMainCommercial[MainRowEditIndex] == undefined);
+    var MarketSizeAsLaunch = parseFloat(_foundObject ? 0 : ArrMainCommercial[MainRowEditIndex].marketSizeInUnit);
+    var MarketGrowth = parseFloat(ArrMainCommercial[MainRowEditIndex].PidfCommercialYears[EditIndex]['marketGrowth']); 
+    var currentIndex = (EditIndex == -1) ? (_foundObject ? 0 : ArrMainCommercial[MainRowEditIndex].PidfCommercialYears.length) : EditIndex;
+    if (currentIndex == 0) {
+        result = MarketSizeAsLaunch * (1 + (MarketGrowth / 100))
+    }
+    if (currentIndex > 0) {
+        MarketSizeAsLaunch = ArrMainCommercial[MainRowEditIndex].PidfCommercialYears[currentIndex - 1]['marketSize']
+        result = MarketSizeAsLaunch * (1 + (MarketGrowth / 100))
+    }
+    ArrMainCommercial[MainRowEditIndex].PidfCommercialYears[currentIndex]['marketSize'] = result.toFixed();
+    /* ---------------End-------------------------*/
+
+    EstimatedMarketShareUnits_OnMarketSizeUnitEdited('Low');
+    EstimatedMarketShareUnits_OnMarketSizeUnitEdited('Medium');
+    EstimatedMarketShareUnits_OnMarketSizeUnitEdited('High');
+
+    NSP_OnMarketSizeUnitEdited('Low');
+    NSP_OnMarketSizeUnitEdited('Medium');
+    NSP_OnMarketSizeUnitEdited('High');   
+
+}
+function EstimatedMarketShareUnits_OnMarketSizeUnitEdited(variable) {
+    var MarketSize = ArrMainCommercial[MainRowEditIndex].PidfCommercialYears[EditIndex]['marketSize']
+    var MarketShare = ArrMainCommercial[MainRowEditIndex].PidfCommercialYears[EditIndex]['marketSharePercentage' + variable];
+    var result = MarketSize * MarketShare / 100;
+    ArrMainCommercial[MainRowEditIndex].PidfCommercialYears[EditIndex]['marketShareUnit' + variable] = result.toFixed();
+   // $('#MarketShareUnit' + variable).val(result.toFixed());
+}
+function NSP_OnMarketSizeUnitEdited(variable) {
+    var result = 0;
+    var Nspunits;
+    var PriceErosion = ArrMainCommercial[MainRowEditIndex].PidfCommercialYears[EditIndex]['priceErosion'];
+    var _foundObject = (ArrMainCommercial[MainRowEditIndex] == null || ArrMainCommercial[MainRowEditIndex] == undefined);
+
+    var currentIndex = (EditIndex == -1) ? (_foundObject ? 0 : ArrMainCommercial[MainRowEditIndex].PidfCommercialYears.length) : EditIndex;
+    if (currentIndex == 0) {
+        Nspunits = ArrMainCommercial[MainRowEditIndex].PidfCommercialYears[currentIndex]['nspunits' + variable];
+    }
+    if (currentIndex > 0) {
+        Nspunits = ArrMainCommercial[MainRowEditIndex].PidfCommercialYears[currentIndex - 1]['nsp' + variable];
+    }
+    result = Nspunits * (1 + (PriceErosion / 100))
+    ArrMainCommercial[MainRowEditIndex].PidfCommercialYears[currentIndex]['nsp' + variable] = result.toFixed(5);
+   // $('#Nsp' + variable).val(result.toFixed(5));
+}
+
 // ----------Calulations Methods----All formulam taken from--"Revenue -Dummy Calculations (1).xlsx"----------
 //----------- Market Size-----------------------
 $('input[type="number"]').focusout(function () {
@@ -345,7 +396,7 @@ function NSP(variable) {
         Nspunits = ArrMainCommercial[MainRowEditIndex].PidfCommercialYears[currentIndex - 1]['nsp' + variable];
     }
     result = Nspunits * (1 + (PriceErosion / 100))
-    $('#Nsp' + variable).val(result.toFixed(3));
+    $('#Nsp' + variable).val(result.toFixed(5));
 }
 function UpdateOtherYearData(currentEditingYearIndex) {
     var yearlength = ArrMainCommercial[MainRowEditIndex].PidfCommercialYears.length;
@@ -390,7 +441,7 @@ function ReEditingNSP(variable, currentEditingYearIndex) {
     Nspunits = ArrMainCommercial[MainRowEditIndex].PidfCommercialYears[currentEditingYearIndex]['nsp' + variable];
 
     result = Nspunits * (1 + (PriceErosion / 100))
-    ArrMainCommercial[MainRowEditIndex].PidfCommercialYears[currentEditingYearIndex + 1]['nsp' + variable] = result.toFixed(3);
+    ArrMainCommercial[MainRowEditIndex].PidfCommercialYears[currentEditingYearIndex + 1]['nsp' + variable] = result.toFixed(5);
 
 }
 
@@ -416,8 +467,10 @@ function AddYearClick() { //SaveYearClick
         entityYear.packSizeId = ArrMainCommercial[MainRowEditIndex].packSizeId;
         entityYear.yearIndex = (EditIndex + 1);
 
-        if (EditIndex == -1)
+        if (EditIndex == -1) {
+             entityYear.yearIndex = ArrMainCommercial[MainRowEditIndex].PidfCommercialYears.length + 1;
             ArrMainCommercial[MainRowEditIndex].PidfCommercialYears.push(entityYear);
+        }            
         else {
             ArrMainCommercial[MainRowEditIndex].PidfCommercialYears[EditIndex] = entityYear;
             var yearlength = ArrMainCommercial[MainRowEditIndex].PidfCommercialYears.length;
@@ -469,9 +522,23 @@ function BUstregthPack_AddButtonClick() {
             ArrMainCommercial[objIndex].marketSizeInUnit = ent_BuStrPack.marketSizeInUnit;
             ArrMainCommercial[objIndex].packSizeName = ent_BuStrPack.packSizeName;
             ArrMainCommercial[objIndex].shelfLife = ent_BuStrPack.shelfLife;
+            //--------Update PidfCommercialYears onject when MarketSizeUnit is Edited----------------------------------------            
+            var yearlen = ArrMainCommercial[objIndex].PidfCommercialYears.length;
+            if (yearlen > 0) {
+                MainRowEditIndex = objIndex;
+                for (var k = 0; k < yearlen; k++) {
+                    EditIndex = k;
+                    UpdateYearOnMarketSizeUnitEdited(k);                   
+                }
+                MainRowEditIndex = -1;
+                EditIndex = -1;
+            }
+            //------------------------------------------------------------------------------------------------
+
         } else {
             ArrMainCommercial.push(ent_BuStrPack);
         }
+       
         Update_BUstregthPackTable(ArrMainCommercial);
         $('#dvCommercialPackStyle').modal('hide');
     }
