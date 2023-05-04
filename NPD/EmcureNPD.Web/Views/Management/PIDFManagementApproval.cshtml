@@ -17,12 +17,19 @@
 @{
     ViewData["Title"] = @MasterLocalizer["Management Approval"];
     int CurrentUserId = Helper.GetLoggedInUserId();
-    var PidafId=Context.Request.Query["pidfid"];
+    var PidafId = Context.Request.Query["pidfid"];
     var PidfNumber = UtilityHelper.Decreypt(Convert.ToString(PidafId));
     string jsVersion = @Configuration.GetSection("StaticJS")["version"];
     RolePermissionModel objPermssion = (RolePermissionModel)ViewBag.Access;
     string IsApproveAllow = (objPermssion.Approve) ? "" : "display: none";
-  }
+    var CurrencyCode = "";
+    var CurrencySymbol = "";
+    if (Model.lsProjectName != null && Model.lsProjectName.Count() > 0)
+    {
+        CurrencyCode = @Model.lsProjectName[0].CurrencyCode;
+        CurrencySymbol = @Model.lsProjectName[0].CurrencySymbol;
+    }
+}
 
 <div class="content-header">
     <div class="container-fluid d-flex justify-content-between">
@@ -38,19 +45,20 @@
 </div>
 <div class="container-fluid background-white-card">
     <div class="row" id="frmMA">
-            <div class="col-12 mb-4">
-                <table class="table table-bordered text-center m-0 levi-table">
-                    <thead class="bg-primary">
-                        <tr>
-                            <th class="text-start">
-                                Project name
-                            </th>
-                            <th class="text-start" colspan="13">
-                                <span id="lblProjectName">
+        <div class="col-12 mb-4">
+            <table class="table table-bordered text-center m-0 levi-table">
+                <thead class="bg-primary">
+                    <tr>
+                        <th class="text-start" style="width:10%;">
+                            Project name
+                        </th>
+                        <th class="text-start" style="width:90%;" colspan=@Model.lsProjectStrength.Count>
+                            <span id="lblProjectName">
                                 @{
-                                    if(Model.lsProjectName != null && Model.lsProjectName.Count() > 0)
+                                    if (Model.lsProjectName != null && Model.lsProjectName.Count() > 0)
                                     {
-                                        @Model.lsProjectName[0].ProjectName;
+                                        @Model.lsProjectName[0].ProjectName
+                                        ;
                                     }
                                 }
                             </span>
@@ -65,546 +73,612 @@
                         </td>
                         @if (Model.lsProjectStrength.Count > 0)
                         {
+
                             @foreach (var item1 in Model.lsProjectStrength)
                             {
-                                <td>@item1.Strength</td>
+                                <td class="text-start">
+                                    <span id="lblStrength">
+                                        @item1.Strength
+                                    </span>
+                                </td>
                             }
                         }
                     </tr>
-                            
-                        <tr>
-                            <td class="text-start">
-                                Projects Code
-                            </td>
+
+                    <tr>
+                        <td class="text-start">
+                            Projects Code
+                        </td>
                         @if (Model.lsProjectStrength.Count > 0)
                         {
                             @foreach (var item1 in Model.lsProjectStrength)
                             {
-                                <td>@item1.ProjectCode</td>
+                                <td class="text-start">
+                                    <span id="lblProjectCode">
+                                        @item1.ProjectCode
+                                    </span>
+                                </td>
                             }
                         }
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
-            <div class="col-6 mb-4 d-flex flex-column justify-content-between">
-                <table class="table table-bordered text-center head-wise-table m-0">
-                    <thead class="bg-primary">
-                        <tr>
-                            <th colspan="5">
-                                Head-Wise Budget (INR Lacs)
-                            </th>
-                        </tr>
-                        <tr>
-                            <th class="text-start">
-                                Budget Heads
-                            </th>
-                            <th>
-                                Prototype
-                            </th>
-                            <th>
-                                Scale Up
-                            </th>
-                            <th>
-                                Exhibit
-                            </th>
-                            <th>
-                                TOTAL
-                            </th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        @if (Model != null && Model.lsHeadWiseBudget .Count>0)
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        <div class="col-6 mb-4 d-flex flex-column justify-content-between">
+            <table class="table table-bordered text-center head-wise-table m-0">
+                <thead class="bg-primary">
+                    <tr>
+                        <th colspan="5">
+                            Head-Wise Budget (<span>@CurrencyCode</span> Lacs)
+                        </th>
+                    </tr>
+                    <tr>
+                        <th class="text-start">
+                            Budget Heads
+                        </th>
+                        <th>
+                            Prototype
+                        </th>
+                        <th>
+                            Scale Up
+                        </th>
+                        <th>
+                            Exhibit
+                        </th>
+                        <th>
+                            TOTAL
+                        </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @if (Model != null && Model.lsHeadWiseBudget.Count > 0)
+                    {
+                        for (int i = 0; i < Model.lsHeadWiseBudget.Count; i++)
                         {
-                            for (int i = 0; i < Model.lsHeadWiseBudget.Count; i++)
+                            if (Model.lsHeadWiseBudget[i].BudgetsHeades.ToLower().Equals("total"))
                             {
-                                if (Model.lsHeadWiseBudget[i].BudgetsHeades.ToLower().Equals("total"))
-                                {
-                                    <tr class="fw-bold">
-                                        <td class="text-start">
-                                            @Model.lsHeadWiseBudget[i].BudgetsHeades
-                                        </td>
-                                        <td>₹ @Model.lsHeadWiseBudget[i].Prototype</td>
-                                        <td>₹ @Model.lsHeadWiseBudget[i].ScaleUp</td>
-                                        <td>₹ @Model.lsHeadWiseBudget[i].Exhibit</td>
-                                        <td>₹ @Model.lsHeadWiseBudget[i].TOTAL</td>
-                                    </tr>
-                                }
-                                else
-                                {
-                                    <tr>
-                                        <td class="text-start">
-                                            @Model.lsHeadWiseBudget[i].BudgetsHeades
-                                        </td>
-                                        <td>₹ @Model.lsHeadWiseBudget[i].Prototype</td>
-                                        <td>₹ @Model.lsHeadWiseBudget[i].ScaleUp</td>
-                                        <td>₹ @Model.lsHeadWiseBudget[i].Exhibit</td>
-                                        <td>₹ @Model.lsHeadWiseBudget[i].TOTAL</td>
-                                    </tr>
-                                }
+                                <tr class="fw-bold">
+                                    <td class="text-start">
+                                        @Model.lsHeadWiseBudget[i].BudgetsHeades
+                                    </td>
+                                    <td><span>@CurrencySymbol</span> @Model.lsHeadWiseBudget[i].Prototype</td>
+                                    <td><span>@CurrencySymbol</span> @Model.lsHeadWiseBudget[i].ScaleUp</td>
+                                    <td><span>@CurrencySymbol</span> @Model.lsHeadWiseBudget[i].Exhibit</td>
+                                    <td><span>@CurrencySymbol</span> @Model.lsHeadWiseBudget[i].TOTAL</td>
+                                </tr>
                             }
+                            else
+                            {
+                                <tr>
+                                    <td class="text-start">
+                                        @Model.lsHeadWiseBudget[i].BudgetsHeades
+                                    </td>
+                                    <td><span>@CurrencySymbol</span> @Model.lsHeadWiseBudget[i].Prototype</td>
+                                    <td><span>@CurrencySymbol</span> @Model.lsHeadWiseBudget[i].ScaleUp</td>
+                                    <td><span>@CurrencySymbol</span> @Model.lsHeadWiseBudget[i].Exhibit</td>
+                                    <td><span>@CurrencySymbol</span> @Model.lsHeadWiseBudget[i].TOTAL</td>
+                                </tr>
+                            }
+                        }
+                    }
+
+                    @* <tr>
+                        <td class="text-start">
+                        Total Raw material Cost
+                        </td>
+                        <td>₹ 4.85</td>
+                        <td>₹ 9.66</td>
+                        <td>₹ 33.91</td>
+                        <td>₹ 48.42</td>
+                        </tr>
+                        <tr>
+                        <td class="text-start">
+                        Plant Support Cost
+                        </td>
+                        <td>₹ -</td>
+                        <td>₹ 6.72</td>
+                        <td>₹ 20.16</td>
+                        <td>₹ 26.88</td>
+                        </tr>
+                        <tr>
+                        <td class="text-start">
+                        Reference Product Cost
+                        </td>
+                        <td>₹ -</td>
+                        <td>₹ -</td>
+                        <td>₹ 3.00</td>
+                        <td>₹ 4.00</td>
+                        </tr>
+                        <tr>
+                        <td class="text-start">
+                        Analytical Cost
+                        </td>
+                        <td>₹ 12.63</td>
+                        <td>₹ 7.15</td>
+                        <td>₹ 31.03</td>
+                        <td>₹ 50.81</td>
+                        </tr>
+                        <tr>
+                        <td class="text-start">
+                        Bio Study Cost*
+                        </td>
+                        <td>₹ 20.00</td>
+                        <td>₹ -</td>
+                        <td>₹ -</td>
+                        <td>₹ 20.00</td>
+                        </tr>
+                        <tr>
+                        <td class="text-start">
+                        Tooling & Change Parts
+                        </td>
+                        <td>₹ -</td>
+                        <td>₹ 5.64</td>
+                        <td>₹ -</td>
+                        <td>₹ 5.64</td>
+                        </tr>
+                        <tr>
+                        <td class="text-start">
+                        Other Expenses
+                        </td>
+                        <td>₹ 4.85</td>
+                        <td>₹ 9.66</td>
+                        <td>₹ 33.91</td>
+                        <td>₹ 48.42</td>
+                        </tr>
+                        <tr>
+                        <td class="text-start">
+                        Filling Expenses
+                        </td>
+                        <td>₹ 2.00</td>
+                        <td>₹ -</td>
+                        <td>₹ -</td>
+                        <td>₹ 2.00</td>
+                        </tr>*@
+                </tbody>
+            </table>
+
+            <table class="table table-bordered text-center cumulative-phase-wise-budget-table m-0">
+                <thead class="bg-primary">
+                    <tr>
+                        <th colspan="3">
+                            Cumulative Phase-Wise Budget (<span>@CurrencyCode</span> Lacs)
+                        </th>
+                    </tr>
+                    <tr>
+                        <th class="text-start">
+                            Cost Heads
+                        </th>
+                        <th>
+                            % of Total
+                        </th>
+                        <th>
+                            Cost (<span>@CurrencySymbol</span>. Lacs)
+                        </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @if (Model != null && Model.lsCumulativePhaseWiseBudget.Count > 0)
+                    {
+                        for (int i = 0; i < Model.lsCumulativePhaseWiseBudget.Count; i++)
+                        {
+                            <tr>
+                                <td class="text-start">
+                                    @Model.lsCumulativePhaseWiseBudget[i].CostHeads
+                                </td>
+                                <td>@Model.lsCumulativePhaseWiseBudget[i].PercentOfTotal</td>
+                                <td>₹ @Model.lsCumulativePhaseWiseBudget[i].CostRsLacs</td>
+                            </tr>
                         }
 
-                        @* <tr>
-                                    <td class="text-start">
-                                        Total Raw material Cost
-                                    </td>
-                                    <td>₹ 4.85</td>
-                                    <td>₹ 9.66</td>
-                                    <td>₹ 33.91</td>
-                                    <td>₹ 48.42</td>
-                                </tr>
-                                <tr>
-                                    <td class="text-start">
-                                        Plant Support Cost
-                                    </td>
-                                    <td>₹ -</td>
-                                    <td>₹ 6.72</td>
-                                    <td>₹ 20.16</td>
-                                    <td>₹ 26.88</td>
-                                </tr>
-                                <tr>
-                                    <td class="text-start">
-                                        Reference Product Cost
-                                    </td>
-                                    <td>₹ -</td>
-                                    <td>₹ -</td>
-                                    <td>₹ 3.00</td>
-                                    <td>₹ 4.00</td>
-                                </tr>
-                                <tr>
-                                    <td class="text-start">
-                                        Analytical Cost
-                                    </td>
-                                    <td>₹ 12.63</td>
-                                    <td>₹ 7.15</td>
-                                    <td>₹ 31.03</td>
-                                    <td>₹ 50.81</td>
-                                </tr>
-                                <tr>
-                                    <td class="text-start">
-                                        Bio Study Cost*
-                                    </td>
-                                    <td>₹ 20.00</td>
-                                    <td>₹ -</td>
-                                    <td>₹ -</td>
-                                    <td>₹ 20.00</td>
-                                </tr>
-                                <tr>
-                                    <td class="text-start">
-                                        Tooling & Change Parts
-                                    </td>
-                                    <td>₹ -</td>
-                                    <td>₹ 5.64</td>
-                                    <td>₹ -</td>
-                                    <td>₹ 5.64</td>
-                                </tr>
-                                <tr>
-                                    <td class="text-start">
-                                        Other Expenses
-                                    </td>
-                                    <td>₹ 4.85</td>
-                                    <td>₹ 9.66</td>
-                                    <td>₹ 33.91</td>
-                                    <td>₹ 48.42</td>
-                                </tr>
-                                <tr>
-                                    <td class="text-start">
-                                        Filling Expenses
-                                    </td>
-                                    <td>₹ 2.00</td>
-                                    <td>₹ -</td>
-                                    <td>₹ -</td>
-                                    <td>₹ 2.00</td>
-                                </tr>*@
-                    </tbody>
-                </table>
-               
-                <table class="table table-bordered text-center cumulative-phase-wise-budget-table m-0">
-                    <thead class="bg-primary">
-                        <tr>
-                            <th colspan="3">
-                                Cumulative Phase-Wise Budget (INR Lacs)
-                            </th>
-                        </tr>
-                        <tr>
-                            <th class="text-start">
-                                Cost Heads
-                            </th>
-                            <th>
-                                % of Total
-                            </th>
-                            <th>
-                                Cost (Rs. Lacs)
-                            </th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        @if (Model != null && Model.lsCumulativePhaseWiseBudget.Count > 0)
-                        {
-                            for (int i = 0; i < Model.lsCumulativePhaseWiseBudget.Count; i++)
-                            {
-                                <tr>
-                                    <td class="text-start">
-                                        @Model.lsCumulativePhaseWiseBudget[i].CostHeads
-                                    </td>
-                                    <td>@Model.lsCumulativePhaseWiseBudget[i].PercentOfTotal</td>
-                                    <td>₹ @Model.lsCumulativePhaseWiseBudget[i].CostRsLacs</td>
-                                </tr>
-                            }
-                            
-                        }
-                    </tbody>
-                </table>
-                <table class="table table-bordered text-center domestic-market-table m-0">
-                    <thead class="bg-primary">
-                        <tr>
-                            <th colspan="2">
-                                ADDITIONAL COST TO INCUR FOR ROW AND DOMESTIC MARKET (INR Lacs)
-                            </th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td class="text-start">
-                                Reference Product Cost
-                            </td>
-                            <td>₹ -</td>
-                        </tr>
-                        <tr>
-                            <td class="text-start">
-                                Bio Study Cost
-                            </td>
-                            <td>₹ -</td>
-                        </tr>
-                        <tr>
-                            <td class="text-start">
-                                Capex & Misc Cost
-                            </td>
-                            <td>₹ -</td>
-                        </tr>
-                        <tr>
-                            <td class="text-start">
-                                Filling Cost
-                            </td>
-                            <td>₹ -</td>
-                        </tr>
-                        <tr class="fw-bold">
-                            <td class="text-start">
-                                Total
-                            </td>
-                            <td>₹ -</td>
-                        </tr>
-                    </tbody>
-                </table>
-                <table class="table table-bordered m-0 text-center domestic-market-table">
-                    <tbody>
-                        <tr class="fw-bold">
-                            <td class="text-start">
-                                Total
-                            </td>
-                            <td>₹ 203.38 lacs</td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
-            <div class="col-6 mb-4 d-flex flex-column justify-content-between right-container">
-                <table class="table table-bordered project-details-table m-0">
-                    <thead class="bg-primary">
-                        <tr>
-                            <th colspan="7" class="text-center">
-                                Project Details
-                            </th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td>
-                                Market
-                            </td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td>Row</td>
-                            <td></td>
-                        </tr>
-                        @if (Model != null && Model.lsProjectDetails.Count > 0)
-                        {
-                            for (int i = 0; i < Model.lsProjectDetails.Count; i++)
-                            {
-                                <tr>
-                                    <td>
-                                        @Model.lsProjectDetails[i].Market
-                                    </td>
-                                    <td colspan="5"> @Model.lsProjectDetails[i].Row</td>
-                                </tr>
-                            }
-                        }
-                        @*<tr>
-                            <td>
-                                Sponsor/Business Partner
-                            </td>
-                            <td colspan="5">Emcure</td>
-                        </tr>
-                        <tr>
-                            <td>
-                                Group Leader
-                            </td>
-                            <td colspan="5">Dr. Rushil Shah</td>
-                        </tr>
-                        <tr>
-                            <td>
-                                Project Complexity
-                            </td>
-                            <td colspan="5">3 (on 1-5 Scale)</td>
-                        </tr>
-                        <tr>
-                            <td>
-                                Total Project Duration
-                            </td>
-                            <td colspan="5">308 Days</td>
-                        </tr>
-                        <tr>
-                            <td>
-                                API
-                            </td>
-                            <td colspan="2">Levetiracetam Tablets</td>
-                            <td></td>
-                            <td colspan="2"></td>
-                        </tr>
-                        <tr>
-                            <td>
-                                API Source
-                            </td>
-                            <td>Outsourced</td>
-                            <td></td>
-                            <td></td>
-                            <td colspan="2"></td>
-                        </tr>
-                        <tr>
-                            <td>
-                                API Commercial Quantity
-                            </td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td colspan="2"></td>
-                        </tr>
-                        <tr>
-                            <td>
-                                API price in (*/kg)
-                            </td>
-                            <td colspan="5">3600.0 kg</td>
-                        </tr>
-                        <tr>
-                            <td>
-                                API Requirement (kg)
-                            </td>
-                            <td colspan="2">Levetiracetam Tablets</td>
-                            <td></td>
-                            <td colspan="2"></td>
-                        </tr>
-                        <tr>
-                            <td>
-                                Prototype
-                            </td>
-                            <td>125</td>
-                            <td></td>
-                            <td></td>
-                            <td colspan="2"></td>
-                        </tr>
-                        <tr>
-                            <td>
-                                Scale Up
-                            </td>
-                            <td>250</td>
-                            <td></td>
-                            <td></td>
-                            <td colspan="2"></td>
-                        </tr>
-                        <tr>
-                            <td>
-                                Exhibit
-                            </td>
-                            <td>775</td>
-                            <td></td>
-                            <td></td>
-                            <td colspan="2"></td>
+                    }
+                </tbody>
+            </table>
+            <table class="table table-bordered text-center domestic-market-table m-0">
+                <thead class="bg-primary">
+                    <tr>
+                        <th colspan="2">
+                            ADDITIONAL COST TO INCUR FOR ROW AND DOMESTIC MARKET (<span>@CurrencyCode</span> Lacs)
+                        </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td class="text-start">
+                            Reference Product Cost
+                        </td>
+                        <td><span>@CurrencySymbol</span> -</td>
+                    </tr>
+                    <tr>
+                        <td class="text-start">
+                            Bio Study Cost
+                        </td>
+                        <td><span>@CurrencySymbol</span> -</td>
+                    </tr>
+                    <tr>
+                        <td class="text-start">
+                            Capex & Misc Cost
+                        </td>
+                        <td><span>@CurrencySymbol</span> -</td>
+                    </tr>
+                    <tr>
+                        <td class="text-start">
+                            Filling Cost
+                        </td>
+                        <td><span>@CurrencySymbol</span> -</td>
+                    </tr>
+                    <tr class="fw-bold">
+                        <td class="text-start">
+                            Total
+                        </td>
+                        <td><span>@CurrencySymbol</span> -</td>
+                    </tr>
+                </tbody>
+            </table>
+            <table class="table table-bordered m-0 text-center domestic-market-table">
+                <tbody>
+                    <tr class="fw-bold">
+                        <td class="text-start">
+                            Total
+                        </td>
+                        <td><span>@CurrencySymbol</span> 203.38 lacs</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        <div class="col-6 mb-4 d-flex flex-column justify-content-between right-container">
+            <table class="table table-bordered project-details-table m-0">
+                <thead class="bg-primary">
+                    <tr>
+                        <th colspan="7" class="text-center">
+                            Project Details
+                        </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @*<tr style="display:none;">
+                        <td>
+                        Market
+                        </td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td>Row</td>
+                        <td></td>
                         </tr>*@
-                    </tbody>
-                </table>
-                <table class="table table-bordered text-center deliverables-table m-0">
-                    <thead class="bg-primary">
-                        <tr>
-                            <th colspan="6">
-                                Deliverables
-                            </th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td class="text-start">
-                                Pharmacoepial Standards on Quality
-                            </td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td class="align-middle">Row</td>
-                            <td></td>
+                    @if (Model.lsProjectDetails != null && Model.lsProjectDetails.Count > 0)
+                    {
+                        for (int i = 0; i < Model.lsProjectDetails.Count; i++)
+                        {
+                            <tr>
+                                <td colspan="2">
+                                    Market
+                                </td>
+                                @if (!string.IsNullOrEmpty(@Model.lsProjectDetails[i].Market))
+                                {
+                                    var str = @Model.lsProjectDetails[i].Market.Split(",");
+                                    foreach(string mar in str)
+                                    {
+                                        <td>@mar</td>
+                                    }
+                                }
+                               @* <td colspan="5" class="col-lg-4"></td>*@
+                            </tr>
+                            <tr>
+                                <td colspan="2">
+                                    Sponsor/Business Partner
+                                </td>
+                                <td colspan="5">@Model.lsProjectDetails[i].SponsorBusinessPartner</td>
+                            </tr>
+                            <tr>
+                                <td colspan="2">
+                                    Group Leader
+                                </td>
+                                <td colspan="5">@Model.lsProjectDetails[i].GroupLeader</td>
+                            </tr>
+                            <tr>
+                                <td colspan="2">
+                                    Project Complexity
+                                </td>
+                                <td colspan="5">@Model.lsProjectDetails[i].ProjectComplexity (on 1-5 Scale)</td>
+                            </tr>
+                            <tr>
+                                <td colspan="2">
+                                    Total Project Duration
+                                </td>
+                                <td colspan="5">@Model.lsProjectDetails[i].TotalProjectDuration</td>
+                            </tr>
+                            <tr>
+                                <td colspan="2">
+                                    API
+                                </td>
+                                <td colspan="5">@Model.lsProjectDetails[i].API</td>
+                            </tr>
+                            <tr>
+                                <td colspan="2">
+                                    API Source
+                                </td>
+
+                                 @if (!string.IsNullOrEmpty(@Model.lsProjectDetails[i].APISource))
+                                {
+                                    var str = @Model.lsProjectDetails[i].APISource.Split(",");
+                                    foreach(string api in str)
+                                    {
+                                        <td>@api</td>
+                                    }
+                                }
+                                @*<td colspan="5">@Model.lsProjectDetails[i].APISource</td>*@
+                                @* <td></td>
+                                    <td></td>
+                                    <td colspan="2"></td>*@
+                            </tr>
+                            <tr>
+                                <td colspan="2">
+                                    API Commercial Quantity
+                                </td>
+                                <td colspan="5">@Model.lsProjectDetails[i].APICommercialQuantity</td>
+                                @*  <td></td>
+                                    <td></td>
+                                    <td colspan="2"></td>*@
+                            </tr>
+                            <tr>
+                                <td colspan="2">
+                                    API price in (<span>@CurrencySymbol</span>/kg)
+                                </td>
+                                <td colspan="5">@Model.lsProjectDetails[i].APIPrice</td>
+                            </tr>
+                            <tr>
+                                <td colspan="2">
+                                    API Requirement (kg)
+                                </td>
+                                <td colspan="5">@Model.lsProjectDetails[i].APIRequirement</td>
+                                @*<td colspan="2">Levetiracetam Tablets</td>
+                                    <td></td>
+                                    <td colspan="2"></td>*@
+                            </tr>
+                            <tr>
+                                <td colspan="2">
+                                    Prototype
+                                </td>
+                                <td colspan="5">@Model.lsProjectDetails[i].Prototype</td>
+                                @* <td>125</td>
+                                    <td></td>
+                                    <td></td>
+                                    <td colspan="2"></td>*@
+                            </tr>
+                            <tr>
+                                <td colspan="2">
+                                    Scale Up
+                                </td>
+                                <td colspan="5">@Model.lsProjectDetails[i].ScaleUp</td>
+                                @*<td>250</td>
+                                    <td></td>
+                                    <td></td>
+                                    <td colspan="2"></td>*@
+                            </tr>
+                            <tr>
+                                <td colspan="2">
+                                    Exhibit
+                                </td>
+                                <td colspan="5">@Model.lsProjectDetails[i].Exhibit</td>
+                                @* <td>775</td>
+                                    <td></td>
+                                    <td></td>
+                                    <td colspan="2"></td>*@
+                            </tr>
+                        }
+                    }
+                </tbody>
+            </table>
+            <table class="table table-bordered text-center deliverables-table m-0">
+                <thead class="bg-primary">
+                    <tr>
+                        <th colspan="6">
+                            Deliverables
+                        </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @if (Model.lsProjectDetails != null && Model.lsProjectDetails.Count > 0)
+                    {
+                        for (int i = 0; i < Model.lsProjectDetails.Count; i++)
+                        {
+                            <tr>
+                                <td colspan="2">
+                                    Pharmacoepial Standards on Quality
+                                </td>
+                               @* <td colspan="4" class="col-lg-4">@Model.lsProjectDetails[i].Market</td>*@
+                                 @if (!string.IsNullOrEmpty(@Model.lsProjectDetails[i].Market))
+                                {
+                                    var str = @Model.lsProjectDetails[i].Market.Split(",");
+                                   foreach(string mar in str)
+                                    {
+                                        <td>@mar</td>
+                                    }
+                                }
+                            </tr>
+                            <tr>
+                                <td colspan="2">
+                                    Project Budget (<span>@CurrencyCode</span> Lacs)
+                                </td>
+                                <td colspan="4">@Model.lsProjectDetails[i].ProjectBudget</td>
+                            </tr>
+                            <tr>
+                                <td colspan="2">
+                                    Project Completion/Filing Date
+                                </td>
+                                <td colspan="4">@Model.lsProjectDetails[i].ProjectCompletionFilingDate.ToString("dd MMMM yyyy")</td>
+                            </tr>
+                            <tr>
+                                <td colspan="2">
+                                    BE Studies
+                                </td>
+                                <td colspan="4">@Model.lsProjectDetails[i].BEStudies</td>
+                            </tr>
+                        }
+                    }
+                    @*<tr>
+                        <td class="text-start">
+                        Pharmacoepial Standards on Quality
+                        </td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td class="align-middle">Row</td>
+                        <td></td>
                         </tr>
                         @if (Model != null && Model.lsDeliverables.Count > 0)
                         {
-                            foreach (var item in Model.lsDeliverables)
-                            {
-                                if (item.PharmacoepialStandardsonQuality.Equals("Project Budjet (INR Lacs)"))
-                                {
-                                    <tr>
-                                        <td class="text-start">
-                                            @item.PharmacoepialStandardsonQuality
-                                        </td>
-                                        <td style="width: 18%;">₹ @item.Row lacs</td>
-                                        <td></td>
-                                        <td></td>
-                                        <td></td>
-                                        <td></td>
-                                    </tr>
-                                }
-                                else
-                                {
-                                    <tr>
-                                        <td class="text-start">
-                                            @item.PharmacoepialStandardsonQuality
-                                        </td>
-                                        <td style="width: 18%;">₹ @item.Row</td>
-                                        <td></td>
-                                        <td></td>
-                                        <td></td>
-                                        <td></td>
-                                    </tr>
-                                }
-                            }
-                            
+                        foreach (var item in Model.lsDeliverables)
+                        {
+                        if (item.PharmacoepialStandardsonQuality.Equals("Project Budjet (INR Lacs)"))
+                        {
+                        <tr>
+                        <td class="text-start">
+                        @item.PharmacoepialStandardsonQuality
+                        </td>
+                        <td style="width: 18%;">₹ @item.Row lacs</td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        </tr>
+                        }
+                        else
+                        {
+                        <tr>
+                        <td class="text-start">
+                        @item.PharmacoepialStandardsonQuality
+                        </td>
+                        <td style="width: 18%;">₹ @item.Row</td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        </tr>
+                        }
+                        }
+
                         }
                         @*<tr>
-                            <td class="text-start">
-                                Project Completion/Filing Date
-                            </td>
-                            <td colspan="5">31 May 2022</td>
+                        <td class="text-start">
+                        Project Completion/Filing Date
+                        </td>
+                        <td colspan="5">31 May 2022</td>
                         </tr>
                         <tr>
-                            <td class="text-start">
-                                BE Studies
-                            </td>
-                            <td colspan="5">FTR</td>
+                        <td class="text-start">
+                        BE Studies
+                        </td>
+                        <td colspan="5">FTR</td>
                         </tr>*@
-                    </tbody>
-                </table>
-                <table class="table table-bordered text-center eu-market-table m-0">
-                    <thead class="bg-primary">
-                        <tr>
-                            <th colspan="2">
-                                ADDITIONAL COST TO INCUR FOR EU MARKET (INR Lacs)
-                            </th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td class="text-start">
-                                Reference Product Cost
-                            </td>
-                            <td>₹ -</td>
-                        </tr>
-                        <tr>
-                            <td class="text-start">
-                                Bio Study Cost
-                            </td>
-                            <td>₹ -</td>
-                        </tr>
-                        <tr>
-                            <td class="text-start">
-                                Capex & Misc Cost
-                            </td>
-                            <td>₹ -</td>
-                        </tr>
-                        <tr>
-                            <td class="text-start">
-                                Filling Cost
-                            </td>
-                            <td>₹ -</td>
-                        </tr>
-                        <tr class="fw-bold">
-                            <td class="text-start">
-                                Total
-                            </td>
-                            <td>₹ -</td>
-                        </tr>
-                    </tbody>
-                </table>
-                <table class="table table-bordered text-center m-0 canada-market-table">
-                    <thead class="bg-primary">
-                        <tr>
-                            <th colspan="2">
-                                ADDITIONAL COST TO INCUR FOR CANADA MARKET (INR Lacs)
-                            </th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td class="text-start">
-                                Reference Product Cost
-                            </td>
-                            <td>₹ -</td>
-                        </tr>
-                        <tr>
-                            <td class="text-start">
-                                Bio Study Cost
-                            </td>
-                            <td>₹ -</td>
-                        </tr>
-                        <tr>
-                            <td class="text-start">
-                                Capex & Misc Cost
-                            </td>
-                            <td>₹ -</td>
-                        </tr>
-                        <tr>
-                            <td class="text-start">
-                                Filling Cost
-                            </td>
-                            <td>₹ -</td>
-                        </tr>
-                        <tr class="fw-bold">
-                            <td class="text-start">
-                                Total
-                            </td>
-                            <td>₹ -</td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
-           <div class="col-12 mb-4">
-                 <br />
+                </tbody>
+            </table>
+            <table class="table table-bordered text-center eu-market-table m-0">
+                <thead class="bg-primary">
+                    <tr>
+                        <th colspan="2">
+                            ADDITIONAL COST TO INCUR FOR EU MARKET (<span>@CurrencyCode</span> Lacs)
+                        </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td class="text-start">
+                            Reference Product Cost
+                        </td>
+                        <td><span>@CurrencySymbol</span> -</td>
+                    </tr>
+                    <tr>
+                        <td class="text-start">
+                            Bio Study Cost
+                        </td>
+                        <td><span>@CurrencySymbol</span> -</td>
+                    </tr>
+                    <tr>
+                        <td class="text-start">
+                            Capex & Misc Cost
+                        </td>
+                        <td><span>@CurrencySymbol</span> -</td>
+                    </tr>
+                    <tr>
+                        <td class="text-start">
+                            Filling Cost
+                        </td>
+                        <td><span>@CurrencySymbol</span> -</td>
+                    </tr>
+                    <tr class="fw-bold">
+                        <td class="text-start">
+                            Total
+                        </td>
+                        <td><span>@CurrencySymbol</span> -</td>
+                    </tr>
+                </tbody>
+            </table>
+            <table class="table table-bordered text-center m-0 canada-market-table">
+                <thead class="bg-primary">
+                    <tr>
+                        <th colspan="2">
+                            ADDITIONAL COST TO INCUR FOR CANADA MARKET (<span>@CurrencyCode</span> Lacs)
+                        </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td class="text-start">
+                            Reference Product Cost
+                        </td>
+                        <td><span>@CurrencySymbol</span> -</td>
+                    </tr>
+                    <tr>
+                        <td class="text-start">
+                            Bio Study Cost
+                        </td>
+                        <td><span>@CurrencySymbol</span> -</td>
+                    </tr>
+                    <tr>
+                        <td class="text-start">
+                            Capex & Misc Cost
+                        </td>
+                        <td><span>@CurrencySymbol</span> -</td>
+                    </tr>
+                    <tr>
+                        <td class="text-start">
+                            Filling Cost
+                        </td>
+                        <td><span>@CurrencySymbol</span> -</td>
+                    </tr>
+                    <tr class="fw-bold">
+                        <td class="text-start">
+                            Total
+                        </td>
+                        <td><span>@CurrencySymbol</span> -</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        <div class="col-12 mb-4">
             <br />
-             <br />
-             </div>
-            <div class="col-12 mb-4">
-                <p class="text-decoration-underline fw-bold m-0">Please Note:</p>
-                <p class="m-0">Pilot Bio Cost Considered in Budget.</p>
-                <p class="m-0">
-                    Bio Cost Not Considered in R&D budget, and same is considered in
-                    'Business Unit Cost
-                    Center' of Emerging Market.
-                </p>
-            </div>
-           
-                <div class="col-12 d-flex flex-wrap mb-4">
-                @if (Model!=null && Model.lsManager != null)
+            <br />
+            <br />
+        </div>
+        <div class="col-12 mb-4">
+            <p class="text-decoration-underline fw-bold m-0">Please Note:</p>
+            <p class="m-0">Pilot Bio Cost Considered in Budget.</p>
+            <p class="m-0">
+                Bio Cost Not Considered in R&D budget, and same is considered in
+                'Business Unit Cost
+                Center' of Emerging Market.
+            </p>
+        </div>
+
+        <div class="col-12 d-flex flex-wrap mb-4">
+            @if (Model != null && Model.lsManager != null)
+            {
+                foreach (var item in Model.lsManager)
                 {
-                    foreach (var item in Model.lsManager)
-                    {
-                        <div class="col-4 text-center mt-5">
+                    <div class="col-4 text-center mt-5">
                         @if (item.UserId == CurrentUserId && ((Int32)item.StatusId != (Int32)Master_PIDFStatus.ManagementApproved && (Int32)item.StatusId != (Int32)Master_PIDFStatus.ManagementRejected)) //CurrentUserId)1048
-                            {
+                        {
 
                             <a style="@IsApproveAllow" class="btn btn-success operationButton" onClick="ApproveRejectClick('A', '@PidfNumber', @((int)EmcureNPD.Utility.Enums.PIDFScreen.Management), '/PIDF/PIDFList?ScreenId=@((int)EmcureNPD.Utility.Enums.PIDFScreen.Management)')"><i class="fa fa-check-circle mr-1"></i> @SharedLocalizer["Approve"]</a>
                             <a style="@IsApproveAllow" class="btn btn-danger  operationButton" onClick="ApproveRejectClick('R', '@PidfNumber', @((int)EmcureNPD.Utility.Enums.PIDFScreen.Management), '/PIDF/PIDFList?ScreenId=@((int)EmcureNPD.Utility.Enums.PIDFScreen.Management)')"><i class="fa fa-ban mr-1"></i> @SharedLocalizer["Reject"]</a>
@@ -613,36 +687,36 @@
                         {
 
                             <div class="bg-success ApproveRejectText p-2 mb-1">Approved On: @item.CreatedDate.ToString("dd MMMM yyyy hh:mm")</div>
-                            
+
                         }
                         else if ((Int32)item.StatusId == (Int32)Master_PIDFStatus.ManagementRejected)
                         {
 
                             <div class="bg-danger ApproveRejectText p-2 mb-1">Rejected On: @item.CreatedDate.ToString("dd MMMM yyyy hh:mm")</div>
-                            
+
                         }
                         <h6 class="m-0 fw-bold">@item.ManagerName</h6>
-                            <p class="m-0 fw-bold">@item.DesignationName</p>
-                        </div>
-                      
-                    }
+                        <p class="m-0 fw-bold">@item.DesignationName</p>
+                    </div>
+
                 }
-            </div>
-    </div>
-            @Html.Partial("_PIDFApproveReject")
+            }
         </div>
+    </div>
+    @Html.Partial("_PIDFApproveReject")
+</div>
 
 
 @section MyScripts {
 	@*@Html.Partial("_DataTablePartial")*@
 <link rel="stylesheet" href="~/AdminLTE/plugins/select2/css/select2.min.css" />
-    <script type="text/javascript" src="~/AdminLTE/plugins/select2/js/select2.min.js"></script>
-    <script src="~/js/plugins/jspdf.min.js"></script>
+<script type="text/javascript" src="~/AdminLTE/plugins/select2/js/select2.min.js"></script>
+<script src="~/js/plugins/jspdf.min.js"></script>
   @*  <script src="~/js/plugins/html2canvas.js"></script>*@
-    <script src="~/js/custom/managementapproval/managementapproval.js?v=@jsVersion"></script>
+<script src="~/js/custom/managementapproval/managementapproval.js?v=@jsVersion"></script>
 <script>
-	
-		const isView = "@Context.Request.Query["IsView"]";
-        const ApproveRejectDeletePidf = "@EmcureNPD.Web.Helpers.APIURLHelper.ApproveRejectDeletePidf";
+
+    const isView = "@Context.Request.Query["IsView"]";
+    const ApproveRejectDeletePidf = "@EmcureNPD.Web.Helpers.APIURLHelper.ApproveRejectDeletePidf";
 </script>
 }

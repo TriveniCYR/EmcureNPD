@@ -9,6 +9,8 @@ using EmcureNPD.Web.Models;
 using System;
 using System.Collections.Generic;
 using System.Dynamic;
+using System.Linq;
+using System.Net.Mail;
 using System.Threading.Tasks;
 
 namespace EmcureNPD.Business.Core.Implementation
@@ -32,6 +34,8 @@ namespace EmcureNPD.Business.Core.Implementation
 
         public async Task<SendReminderModel> SendReminder()
         {
+            string _logMessage = string.Empty;
+            SendReminderModel model = new SendReminderModel();
             var dbresult = await _masterUser.GetDataSetBySP("GetUserForReminder", System.Data.CommandType.StoredProcedure, null);
             dynamic UserList = new ExpandoObject();
             if (dbresult != null)
@@ -40,14 +44,26 @@ namespace EmcureNPD.Business.Core.Implementation
                 {
                     UserList = dbresult.Tables[0].DataTableToList<SendReminderModel>();
                     //foreach (var user in _BUObjects) {
-                    SendReminderMail(UserList);
+                    string commasepretedUserList = string.Empty;
+                    List<SendReminderModel> _UserLIst = UserList;
+                    foreach(var u in _UserLIst)
+                    {
+                        commasepretedUserList += u.FullName + ",";
+                    }
+                    _logMessage += "Fetch list of user to send reminder { " + commasepretedUserList + "} \n";
+                    SendReminderMail(UserList, ref _logMessage);
                     //}
                 }
             }
-           await AutoUpdatePIDFStatus();
-            return UserList;
+          var AutoUpdatePIDFObj= await AutoUpdatePIDFStatus();
+            if (AutoUpdatePIDFObj != null)
+            {
+                _logMessage += AutoUpdatePIDFObj.LogMessage;
+            }
+            model.LogMessage = _logMessage;
+            return model;
         }
-        public void SendReminderMail(List<SendReminderModel> sendReminderModel_list)
+        public void SendReminderMail(List<SendReminderModel> sendReminderModel_list,ref string _logMessage)
         {
             foreach (var sendReminderModel in sendReminderModel_list)
             {
@@ -63,13 +79,19 @@ namespace EmcureNPD.Business.Core.Implementation
                     strHtml = strHtml.Replace("{MoleculeName}", sendReminderModel.MoleculeName);
                     string str_subject = "PIDF : " + sendReminderModel.PIDFNO + " - Molecule Name : " + sendReminderModel.MoleculeName + " Commercial Detail pending";
                     email.SendMail(sendReminderModel.EmailAddress, string.Empty, str_subject, strHtml, _MasterUserService.GetSMTPConfiguration());
+                    _logMessage += " Email Sent to { " + sendReminderModel.EmailAddress + " } on "+ DateTime.Now.ToString() + "" + "\n";
                 }
-                catch (Exception ex) { }
+                catch (Exception ex) 
+                {
+                    _logMessage += "Email failed to sent {" + sendReminderModel.EmailAddress +"} on "+ DateTime.Now.ToString()+ ex.InnerException.ToString() + "\n";
+                }
             }
         }
 
         public async Task<SendReminderModel> AutoUpdatePIDFStatus()
         {
+            var sentreminderModel = new SendReminderModel();
+            string _logMessagePIDFreject = string.Empty;
             var dbresult = await _masterUser.GetDataSetBySP("AutoUpdatePIDFStatus", System.Data.CommandType.StoredProcedure, null);
             dynamic _BUObjects = new ExpandoObject();
             if (dbresult != null)
@@ -77,25 +99,42 @@ namespace EmcureNPD.Business.Core.Implementation
                 if (dbresult.Tables[0] != null && dbresult.Tables[0].Rows.Count > 0)
                 {
                     _BUObjects = dbresult.Tables[0].DataTableToList<AutoUpdatePIDFStatusModel>();
+
+                    string commasepretedPIDFList = string.Empty;
+                    List<AutoUpdatePIDFStatusModel> _pidfList = _BUObjects;
+                    foreach (var p in _pidfList)
+                    {
+                        commasepretedPIDFList += p.PIDFNO + ",";
+                    }
+                    _logMessagePIDFreject += "Auto updated PIDF status for  { " + commasepretedPIDFList + "} \n";
                     foreach (var user in _BUObjects)
                     {
-                        AutoUpdatePIDFStatusMail(user);
+                        AutoUpdatePIDFStatusMail(user,ref _logMessagePIDFreject);
                     }
                 }
             }
-            return _BUObjects;
+            sentreminderModel.LogMessage = _logMessagePIDFreject;
+            return sentreminderModel;
         }               
-        public void AutoUpdatePIDFStatusMail(AutoUpdatePIDFStatusModel autoUpdatePIDFStatusModel)
+        public void AutoUpdatePIDFStatusMail(AutoUpdatePIDFStatusModel autoUpdatePIDFStatusModel, ref string _logMessagePIDFreject)
         {
-            EmailHelper email = new EmailHelper();
-            string strHtml = System.IO.File.ReadAllText(@"wwwroot\Uploads\HTMLTemplates\AutoUpdatePIDFStatusMailTemplate.html");
+            try
+            {
+                EmailHelper email = new EmailHelper();
+                string strHtml = System.IO.File.ReadAllText(@"wwwroot\Uploads\HTMLTemplates\AutoUpdatePIDFStatusMailTemplate.html");
 
-            strHtml = strHtml.Replace("{PIDFNumber}", autoUpdatePIDFStatusModel.PIDFNO);
-            strHtml = strHtml.Replace("{PIDFStatus}", autoUpdatePIDFStatusModel.PIDFStatus);
-            strHtml = strHtml.Replace("{MoleculeName}", autoUpdatePIDFStatusModel.MoleculeName);
-            strHtml = strHtml.Replace("{FullName}", autoUpdatePIDFStatusModel.FullName);
-            string str_subject = " PIDF : " + autoUpdatePIDFStatusModel.PIDFNO + " - Molecule Name : " + autoUpdatePIDFStatusModel.MoleculeName + " - Auto Updated status : " + autoUpdatePIDFStatusModel.PIDFStatus;
-            email.SendMail(autoUpdatePIDFStatusModel.EmailAddress, string.Empty, str_subject, strHtml, _MasterUserService.GetSMTPConfiguration());
+                strHtml = strHtml.Replace("{PIDFNumber}", autoUpdatePIDFStatusModel.PIDFNO);
+                strHtml = strHtml.Replace("{PIDFStatus}", autoUpdatePIDFStatusModel.PIDFStatus);
+                strHtml = strHtml.Replace("{MoleculeName}", autoUpdatePIDFStatusModel.MoleculeName);
+                strHtml = strHtml.Replace("{FullName}", autoUpdatePIDFStatusModel.FullName);
+                string str_subject = " PIDF : " + autoUpdatePIDFStatusModel.PIDFNO + " - Molecule Name : " + autoUpdatePIDFStatusModel.MoleculeName + " - Auto Updated status : " + autoUpdatePIDFStatusModel.PIDFStatus;
+                email.SendMail(autoUpdatePIDFStatusModel.EmailAddress, string.Empty, str_subject, strHtml, _MasterUserService.GetSMTPConfiguration());
+                _logMessagePIDFreject += " Sent email to user { " + autoUpdatePIDFStatusModel.EmailAddress + " } for reject PIDF number { " + autoUpdatePIDFStatusModel.PIDFNO + "} on " + DateTime.Now.ToString() + "" + "\n";
+            }
+            catch (Exception ex)
+            {
+                _logMessagePIDFreject += "PIDF No.{" + autoUpdatePIDFStatusModel.PIDFNO + "} Reject Email failed to sent {" + autoUpdatePIDFStatusModel.EmailAddress + "} on " + DateTime.Now.ToString() + ex.InnerException.ToString() + "\n";
+            }
         }
     }
 }

@@ -26,12 +26,13 @@ namespace EmcureNPD.Business.Core.Implementation
             _ExceptionService = exceptionService;
         }
 
-        public async Task<dynamic> GetProjectNameAndStrength(int Pidfid = 0)
+        public async Task<dynamic> GetProjectNameAndStrength(int Pidfid = 0, int Buid = 0)
         {
             try
             {
                 SqlParameter[] osqlParameter = {
-                new SqlParameter("@PIDFID",Pidfid)
+                new SqlParameter("@PIDFID",Pidfid),
+                new SqlParameter("@BUID",Buid)
             };
 
                 DataSet dsPidfFinance = await _repository.GetDataSetBySP("ProcGetProjectNameAndStrength", System.Data.CommandType.StoredProcedure, osqlParameter);

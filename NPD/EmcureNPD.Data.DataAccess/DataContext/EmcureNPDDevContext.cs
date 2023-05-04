@@ -2228,41 +2228,11 @@ namespace EmcureNPD.Data.DataAccess.DataContext
 
                 entity.Property(e => e.Pidfpbfid).HasColumnName("PIDFPBFId");
 
-                entity.Property(e => e.ProjectComplexity).HasMaxLength(50);
-
                 entity.Property(e => e.ProjectDevelopmentInitialDate).HasColumnType("datetime");
 
                 entity.Property(e => e.TestLicenseAvailability)
                     .HasMaxLength(100)
                     .IsUnicode(false);
-
-                entity.HasOne(d => d.AnalyticalGl)
-                    .WithMany(p => p.PidfPbfGeneralAnalyticalGls)
-                    .HasForeignKey(d => d.AnalyticalGlid)
-                    .HasConstraintName("FK_PIDF_PBF_General_Master_User1");
-
-                entity.HasOne(d => d.BusinessUnit)
-                    .WithMany(p => p.PidfPbfGenerals)
-                    .HasForeignKey(d => d.BusinessUnitId)
-                    .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK_PIDF_PBF_General_Master_BusinessUnit");
-
-                entity.HasOne(d => d.FormulationGl)
-                    .WithMany(p => p.PidfPbfGeneralFormulationGls)
-                    .HasForeignKey(d => d.FormulationGlid)
-                    .HasConstraintName("FK_PIDF_PBF_General_Master_User");
-
-                entity.HasOne(d => d.Pidfpbf)
-                    .WithMany(p => p.PidfPbfGenerals)
-                    .HasForeignKey(d => d.Pidfpbfid)
-                    .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK_PIDF_PBF_General_PIDF_PBF");
-
-                entity.HasOne(d => d.ProductType)
-                    .WithMany(p => p.PidfPbfGenerals)
-                    .HasForeignKey(d => d.ProductTypeId)
-                    .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK_PIDF_PBF_General_Master_ProductType");
             });
 
             modelBuilder.Entity<PidfPbfGeneralStrength>(entity =>

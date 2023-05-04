@@ -33,7 +33,7 @@ namespace EmcureNPD.Data.DataAccess.Entity
         public int BusinessUnitId { get; set; }
         public string Capex { get; set; }
         public double? TotalExpense { get; set; }
-        public string ProjectComplexity { get; set; }
+        public int? ProjectComplexity { get; set; }
         public int ProductTypeId { get; set; }
         public string TestLicenseAvailability { get; set; }
         public DateTime? BudgetTimelineSubmissionDate { get; set; }
@@ -43,11 +43,6 @@ namespace EmcureNPD.Data.DataAccess.Entity
         public DateTime CreatedDate { get; set; }
         public int CreatedBy { get; set; }
 
-        public virtual MasterUser AnalyticalGl { get; set; }
-        public virtual MasterBusinessUnit BusinessUnit { get; set; }
-        public virtual MasterUser FormulationGl { get; set; }
-        public virtual PidfPbf Pidfpbf { get; set; }
-        public virtual MasterProductType ProductType { get; set; }
         public virtual ICollection<PidfPbfAnalyticalAmvcost> PidfPbfAnalyticalAmvcosts { get; set; }
         public virtual ICollection<PidfPbfAnalytical> PidfPbfAnalyticals { get; set; }
         public virtual ICollection<PidfPbfClinical> PidfPbfClinicals { get; set; }

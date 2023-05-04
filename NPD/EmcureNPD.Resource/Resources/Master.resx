@@ -364,7 +364,7 @@
     <value>Market Details (New Port / CGI Details)</value>
   </data>
   <data name="MarketGrowth" xml:space="preserve">
-    <value>Market Growth</value>
+    <value>Market Growth %</value>
   </data>
   <data name="MarketSize" xml:space="preserve">
     <value>Market Size</value>

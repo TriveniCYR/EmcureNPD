@@ -17,5 +17,17 @@ namespace EmcureNPD.Scheduler.Services.Implementations {
                 sw.WriteLine("Stack Trace: " + ex.StackTrace);
             }
         }
+        public void ServiceLog(string message)
+        {
+            string strPath = Environment.CurrentDirectory + configuration.GetSection("Logs:LogFile").Value;
+            if (!File.Exists(strPath))
+            {
+                File.Create(strPath).Dispose();
+            }
+            using (StreamWriter sw = File.AppendText(strPath))
+            {
+                sw.WriteLine(message);
+            }
+        }
     }
 }

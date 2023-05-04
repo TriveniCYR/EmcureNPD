@@ -19,6 +19,8 @@ namespace EmcureNPD.Business.Models
     public class ProjectNameModel
     {
         public string ProjectName { get; set; }
+        public string CurrencyCode { get; set; }
+        public string CurrencySymbol { get; set; }
     }
     public class ProjectStrength
     {
@@ -43,9 +45,25 @@ namespace EmcureNPD.Business.Models
     }
     public class ProjectDetails
     {
+        //public string Market { get; set; }
+        //public string Row { get; set; }
+        //public string colspan { get; set; }
         public string Market { get; set; }
-        public string Row { get; set; }
-        public string colspan { get; set; }
+        public string SponsorBusinessPartner { get; set; }
+        public string GroupLeader { get; set; }
+        public string ProjectComplexity { get; set; }
+        public string TotalProjectDuration { get; set; }
+        public string API { get; set; }
+        public string APISource { get; set; }
+        public string APICommercialQuantity { get; set; }
+        public string APIPrice { get; set; }
+        public string APIRequirement { get; set; }
+        public string Prototype { get; set; }
+        public string ScaleUp { get; set; }
+        public string Exhibit { get; set; }
+        public string ProjectBudget { get; set; }
+        public DateTime ProjectCompletionFilingDate { get; set; }
+        public string BEStudies { get; set; }
     }
     public class CumulativePhaseWiseBudget
     {
