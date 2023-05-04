@@ -2253,6 +2253,15 @@ namespace EmcureNPD.Business.Core.Implementation
                     }
                     // await _unitOfWork.SaveChangesAsync();
                 }
+                var rndmaster = _pidfPbfRnDMasterRepository.GetAllQuery().Where(x => x.PbfgeneralId == pbfgeneralid).ToList();
+                if (rndmaster.Count > 0)
+                {
+                    foreach (var item in rndmaster)
+                    {
+                        _pidfPbfRnDMasterRepository.Remove(item);
+                    }
+                }
+
                 var batchsize = _pidfPbfRndBatchSizeRepository.GetAllQuery().Where(x => x.PbfgeneralId == pbfgeneralid).ToList();
                 if (batchsize.Count > 0)
                 {

@@ -69,7 +69,7 @@ namespace EmcureNPD.Business.Models
         public string Capex { get; set; }
         public double TotalExpense { get; set; }
         [Required(ErrorMessageResourceType = typeof(Validation), ErrorMessageResourceName = "Required")]
-        public string ProjectComplexity { get; set; }
+        public int? ProjectComplexity { get; set; }
         [Required(ErrorMessageResourceType = typeof(Validation), ErrorMessageResourceName = "Required")]
         public int GeneralProductTypeId { get; set; }
         public string TestLicenseAvailability { get; set; }

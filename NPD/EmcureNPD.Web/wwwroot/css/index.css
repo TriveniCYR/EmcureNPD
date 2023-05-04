@@ -228,19 +228,19 @@ tr {
 }
 
 .project-details-table tr td:first-child {
-  width: 34%;
+  width: 3%;
 }
 
 .project-details-table tr td:not(:first-child) {
-  width: calc(66% / 6);
+  width: calc(97% / 6);
 }
 
 .deliverables-table tr td:first-child {
-  width: 39%;
+  width: 3%;
 }
 
 .deliverables-table tr td:not(:first-child, :nth-child(2)) {
-  width: calc(43% / 4);
+  width: calc(98% / 4);
 }
 
 .deliverables-table tr td:nth-child(2) {

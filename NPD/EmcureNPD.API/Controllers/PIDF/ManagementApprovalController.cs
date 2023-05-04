@@ -49,13 +49,14 @@ namespace EmcureNPD.API.Controllers.PIDF
 		/// <response code="405">Method Not Allowed</response>
 		/// <response code="500">Internal Server</response>
 		[HttpGet]
-        [Route("GetProjectNameAndStrength/{Pidfid}")]
-        public async Task<IActionResult> GetProjectNameAndStrength(string Pidfid)
+        [Route("GetProjectNameAndStrength/{Pidfid}/{BUId}")]
+        public async Task<IActionResult> GetProjectNameAndStrength(string Pidfid, string BUId)
         {
             try
             {
                 Pidfid = UtilityHelper.Decreypt(Convert.ToString(Pidfid));
-                return _ObjectResponse.CreateData(await _managementApproval.GetProjectNameAndStrength(Convert.ToInt32(Pidfid)), (Int32)HttpStatusCode.OK);
+                BUId = UtilityHelper.Decreypt(Convert.ToString(BUId));
+                return _ObjectResponse.CreateData(await _managementApproval.GetProjectNameAndStrength(Convert.ToInt32(Pidfid), Convert.ToInt32(BUId)), (Int32)HttpStatusCode.OK);
             }
             catch (Exception ex)
             {

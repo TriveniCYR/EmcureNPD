@@ -4,6 +4,6 @@ namespace EmcureNPD.Business.Core.Interface
 {
     public interface IManagementApproval
     {
-        Task<dynamic> GetProjectNameAndStrength(int Pidfid = 0);
+        Task<dynamic> GetProjectNameAndStrength(int Pidfid = 0, int Buid = 0);
     }
 }

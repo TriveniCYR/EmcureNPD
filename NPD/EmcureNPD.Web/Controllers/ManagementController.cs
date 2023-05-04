@@ -49,6 +49,7 @@ namespace EmcureNPD.Web.Controllers
             RolePermissionModel objPermssion = UtilityHelper.GetCntrActionAccess((int)ModulePermissionEnum.ManagementHOD, rolId);
             ViewBag.Access = objPermssion;
             var pidfid = Request.Query["pidfid"];
+            var buid = Request.Query["bui"];
             if (pidfid != "")
             {
                 ProjectsModel model = new ProjectsModel();
@@ -63,7 +64,7 @@ namespace EmcureNPD.Web.Controllers
                 HttpContext.Request.Cookies.TryGetValue(UserHelper.EmcureNPDToken, out string token);
                 APIRepository objapi = new(_cofiguration);
 
-                responseMessage = objapi.APICommunication(APIURLHelper.GetProjectNameAndStrength + "/" + pidfid, HttpMethod.Get, token).Result;
+                responseMessage = objapi.APICommunication(APIURLHelper.GetProjectNameAndStrength + "/" + pidfid + "/" + buid, HttpMethod.Get, token).Result;
 
                 if (responseMessage.IsSuccessStatusCode)
                 {
@@ -129,7 +130,21 @@ namespace EmcureNPD.Web.Controllers
                             ListProjectDetails.Add(new ProjectDetails
                             {
                                 Market = data.table4[i].Market,
-                                Row = data.table4[i].Row
+                                SponsorBusinessPartner = data.table4[i].SponsorBusinessPartner,
+                                GroupLeader = data.table4[i].GroupLeader,
+                                ProjectComplexity = data.table4[i].ProjectComplexity,
+                                TotalProjectDuration = data.table4[i].TotalProjectDuration,
+                                API = data.table4[i].API,
+                                APISource = data.table4[i].APISource,
+                                APICommercialQuantity = data.table4[i].APICommercialQuantity,
+                                APIPrice = data.table4[i].APIPrice,
+                                APIRequirement = data.table4[i].APIRequirement,
+                                Prototype = data.table4[i].Prototype,
+                                ScaleUp = data.table4[i].ScaleUp,
+                                Exhibit = data.table4[i].Exhibit,
+                                ProjectBudget = data.table4[i].ProjectBudget,
+                                ProjectCompletionFilingDate = data.table4[i].ProjectCompletionFilingDate,
+                                BEStudies = data.table4[i].BEStudies,
                             });
                         }
                         model.lsProjectDetails = ListProjectDetails;
