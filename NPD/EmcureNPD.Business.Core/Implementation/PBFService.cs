@@ -163,7 +163,7 @@ namespace EmcureNPD.Business.Core.Implementation
                 long pbfgeneralid = 0;
                 PidfPbf objPIDFPbf;
                 var loggedInUserId = _helper.GetLoggedInUser().UserId;
-                pbfgeneralid = await SavePidfAndPBFCommanDetails(pbfEntity.Pidfid, pbfEntity);
+                pbfgeneralid = await SavePidfAndPBFCommanDetailsnew1(pbfEntity.Pidfid, pbfEntity);
 
                 if (pbfgeneralid > 0)
                 {
@@ -2249,10 +2249,19 @@ namespace EmcureNPD.Business.Core.Implementation
                                 _pidfPbfAnalyticalAmvcostStrengthMappingRepository.Remove(it);
                             }
                         }
-                        //_PidfPbfAnalyticalAmvcostRepository.Remove(item);
+                        _PidfPbfAnalyticalAmvcostRepository.Remove(item);
                     }
                     // await _unitOfWork.SaveChangesAsync();
                 }
+                var rndmaster = _pidfPbfRnDMasterRepository.GetAllQuery().Where(x => x.PbfgeneralId == pbfgeneralid).ToList();
+                if (rndmaster.Count > 0)
+                {
+                    foreach (var item in rndmaster)
+                    {
+                        _pidfPbfRnDMasterRepository.Remove(item);
+                    }
+                }
+
                 var batchsize = _pidfPbfRndBatchSizeRepository.GetAllQuery().Where(x => x.PbfgeneralId == pbfgeneralid).ToList();
                 if (batchsize.Count > 0)
                 {

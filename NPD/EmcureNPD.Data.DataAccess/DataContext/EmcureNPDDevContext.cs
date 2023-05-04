@@ -2,7 +2,6 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata;
 using EmcureNPD.Data.DataAccess.Entity;
-using EmcureNPD.Utility;
 
 #nullable disable
 
@@ -134,7 +133,7 @@ namespace EmcureNPD.Data.DataAccess.DataContext
             if (!optionsBuilder.IsConfigured)
             {
 #warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see http://go.microsoft.com/fwlink/?LinkId=723263.
-                optionsBuilder.UseSqlServer(DatabaseConnection.NPDDatabaseConnection);
+                optionsBuilder.UseSqlServer("Data Source=180.149.241.172;Initial Catalog=EmcureNPDDev;Persist Security Info=True;User ID=emcurenpddev_dbUser;pwd=emcure123!@#");
             }
         }
 
@@ -2228,41 +2227,11 @@ namespace EmcureNPD.Data.DataAccess.DataContext
 
                 entity.Property(e => e.Pidfpbfid).HasColumnName("PIDFPBFId");
 
-                entity.Property(e => e.ProjectComplexity).HasMaxLength(50);
-
                 entity.Property(e => e.ProjectDevelopmentInitialDate).HasColumnType("datetime");
 
                 entity.Property(e => e.TestLicenseAvailability)
                     .HasMaxLength(100)
                     .IsUnicode(false);
-
-                entity.HasOne(d => d.AnalyticalGl)
-                    .WithMany(p => p.PidfPbfGeneralAnalyticalGls)
-                    .HasForeignKey(d => d.AnalyticalGlid)
-                    .HasConstraintName("FK_PIDF_PBF_General_Master_User1");
-
-                entity.HasOne(d => d.BusinessUnit)
-                    .WithMany(p => p.PidfPbfGenerals)
-                    .HasForeignKey(d => d.BusinessUnitId)
-                    .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK_PIDF_PBF_General_Master_BusinessUnit");
-
-                entity.HasOne(d => d.FormulationGl)
-                    .WithMany(p => p.PidfPbfGeneralFormulationGls)
-                    .HasForeignKey(d => d.FormulationGlid)
-                    .HasConstraintName("FK_PIDF_PBF_General_Master_User");
-
-                entity.HasOne(d => d.Pidfpbf)
-                    .WithMany(p => p.PidfPbfGenerals)
-                    .HasForeignKey(d => d.Pidfpbfid)
-                    .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK_PIDF_PBF_General_PIDF_PBF");
-
-                entity.HasOne(d => d.ProductType)
-                    .WithMany(p => p.PidfPbfGenerals)
-                    .HasForeignKey(d => d.ProductTypeId)
-                    .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK_PIDF_PBF_General_Master_ProductType");
             });
 
             modelBuilder.Entity<PidfPbfGeneralStrength>(entity =>

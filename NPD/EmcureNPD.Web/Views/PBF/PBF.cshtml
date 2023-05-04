@@ -355,7 +355,8 @@
                                 <div class="col-md-3">
                                     <div class="form-group required">
                                         @Html.LabelFor(model => model.ProjectComplexity,"Project Complexity", new { @class = "control-label" })<span class="text-danger">*</span>
-                                        @Html.TextBoxFor(model => model.ProjectComplexity, new { @class = "form-control", @placeholder = "Project Complexity" ,@required="required"})
+                                          <input type="hidden" id="hdnGeneralProjectComplexity" value="@Model.ProjectComplexity" />
+                                        <select id="GeneralProjectComplexity" name="ProjectComplexity" class="form-control readOnlyUpdate" required></select>
                                         @Html.ValidationMessageFor(model => model.ProjectComplexity, "", new { @class = "text-danger" })
 
                                     </div>
