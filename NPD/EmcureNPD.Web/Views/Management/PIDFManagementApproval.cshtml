@@ -22,6 +22,13 @@
     string jsVersion = @Configuration.GetSection("StaticJS")["version"];
     RolePermissionModel objPermssion = (RolePermissionModel)ViewBag.Access;
     string IsApproveAllow = (objPermssion.Approve) ? "" : "display: none";
+    var CurrencyCode = "";
+    var CurrencySymbol = "";
+    if (Model.lsProjectName != null && Model.lsProjectName.Count() > 0)
+    {
+        CurrencyCode = @Model.lsProjectName[0].CurrencyCode;
+        CurrencySymbol = @Model.lsProjectName[0].CurrencySymbol;
+    }
 }
 
 <div class="content-header">
@@ -42,10 +49,10 @@
             <table class="table table-bordered text-center m-0 levi-table">
                 <thead class="bg-primary">
                     <tr>
-                        <th class="text-start" style="width:20%;">
+                        <th class="text-start" style="width:10%;">
                             Project name
                         </th>
-                        <th class="text-start" style="width:80%;" colspan=@Model.lsProjectStrength.Count>
+                        <th class="text-start" style="width:90%;" colspan=@Model.lsProjectStrength.Count>
                             <span id="lblProjectName">
                                 @{
                                     if (Model.lsProjectName != null && Model.lsProjectName.Count() > 0)
@@ -64,34 +71,35 @@
                         <td class="text-start">
                             Strength
                         </td>
-                        <td class="text-start" colspan=@Model.lsProjectStrength.Count>
-                            @if (Model.lsProjectStrength.Count > 0)
+                        @if (Model.lsProjectStrength.Count > 0)
+                        {
+
+                            @foreach (var item1 in Model.lsProjectStrength)
                             {
-                                @foreach (var item1 in Model.lsProjectStrength)
-                                {
-                                    <span id="lblStrength" class="col-lg-4">
+                                <td class="text-start">
+                                    <span id="lblStrength">
                                         @item1.Strength
                                     </span>
-                                }
+                                </td>
                             }
-                        </td>
+                        }
                     </tr>
 
                     <tr>
                         <td class="text-start">
                             Projects Code
                         </td>
-                        <td class="text-start" colspan=@Model.lsProjectStrength.Count>
-                            @if (Model.lsProjectStrength.Count > 0)
+                        @if (Model.lsProjectStrength.Count > 0)
+                        {
+                            @foreach (var item1 in Model.lsProjectStrength)
                             {
-                                @foreach (var item1 in Model.lsProjectStrength)
-                                {
+                                <td class="text-start">
                                     <span id="lblProjectCode">
                                         @item1.ProjectCode
                                     </span>
-                                }
+                                </td>
                             }
-                        </td>
+                        }
                     </tr>
                 </tbody>
             </table>
@@ -101,7 +109,7 @@
                 <thead class="bg-primary">
                     <tr>
                         <th colspan="5">
-                            Head-Wise Budget (INR Lacs)
+                            Head-Wise Budget (<span>@CurrencyCode</span> Lacs)
                         </th>
                     </tr>
                     <tr>
@@ -133,10 +141,10 @@
                                     <td class="text-start">
                                         @Model.lsHeadWiseBudget[i].BudgetsHeades
                                     </td>
-                                    <td>₹ @Model.lsHeadWiseBudget[i].Prototype</td>
-                                    <td>₹ @Model.lsHeadWiseBudget[i].ScaleUp</td>
-                                    <td>₹ @Model.lsHeadWiseBudget[i].Exhibit</td>
-                                    <td>₹ @Model.lsHeadWiseBudget[i].TOTAL</td>
+                                    <td><span>@CurrencySymbol</span> @Model.lsHeadWiseBudget[i].Prototype</td>
+                                    <td><span>@CurrencySymbol</span> @Model.lsHeadWiseBudget[i].ScaleUp</td>
+                                    <td><span>@CurrencySymbol</span> @Model.lsHeadWiseBudget[i].Exhibit</td>
+                                    <td><span>@CurrencySymbol</span> @Model.lsHeadWiseBudget[i].TOTAL</td>
                                 </tr>
                             }
                             else
@@ -145,10 +153,10 @@
                                     <td class="text-start">
                                         @Model.lsHeadWiseBudget[i].BudgetsHeades
                                     </td>
-                                    <td>₹ @Model.lsHeadWiseBudget[i].Prototype</td>
-                                    <td>₹ @Model.lsHeadWiseBudget[i].ScaleUp</td>
-                                    <td>₹ @Model.lsHeadWiseBudget[i].Exhibit</td>
-                                    <td>₹ @Model.lsHeadWiseBudget[i].TOTAL</td>
+                                    <td><span>@CurrencySymbol</span> @Model.lsHeadWiseBudget[i].Prototype</td>
+                                    <td><span>@CurrencySymbol</span> @Model.lsHeadWiseBudget[i].ScaleUp</td>
+                                    <td><span>@CurrencySymbol</span> @Model.lsHeadWiseBudget[i].Exhibit</td>
+                                    <td><span>@CurrencySymbol</span> @Model.lsHeadWiseBudget[i].TOTAL</td>
                                 </tr>
                             }
                         }
@@ -233,7 +241,7 @@
                 <thead class="bg-primary">
                     <tr>
                         <th colspan="3">
-                            Cumulative Phase-Wise Budget (INR Lacs)
+                            Cumulative Phase-Wise Budget (<span>@CurrencyCode</span> Lacs)
                         </th>
                     </tr>
                     <tr>
@@ -244,7 +252,7 @@
                             % of Total
                         </th>
                         <th>
-                            Cost (Rs. Lacs)
+                            Cost (<span>@CurrencySymbol</span>. Lacs)
                         </th>
                     </tr>
                 </thead>
@@ -269,7 +277,7 @@
                 <thead class="bg-primary">
                     <tr>
                         <th colspan="2">
-                            ADDITIONAL COST TO INCUR FOR ROW AND DOMESTIC MARKET (INR Lacs)
+                            ADDITIONAL COST TO INCUR FOR ROW AND DOMESTIC MARKET (<span>@CurrencyCode</span> Lacs)
                         </th>
                     </tr>
                 </thead>
@@ -278,31 +286,31 @@
                         <td class="text-start">
                             Reference Product Cost
                         </td>
-                        <td>₹ -</td>
+                        <td><span>@CurrencySymbol</span> -</td>
                     </tr>
                     <tr>
                         <td class="text-start">
                             Bio Study Cost
                         </td>
-                        <td>₹ -</td>
+                        <td><span>@CurrencySymbol</span> -</td>
                     </tr>
                     <tr>
                         <td class="text-start">
                             Capex & Misc Cost
                         </td>
-                        <td>₹ -</td>
+                        <td><span>@CurrencySymbol</span> -</td>
                     </tr>
                     <tr>
                         <td class="text-start">
                             Filling Cost
                         </td>
-                        <td>₹ -</td>
+                        <td><span>@CurrencySymbol</span> -</td>
                     </tr>
                     <tr class="fw-bold">
                         <td class="text-start">
                             Total
                         </td>
-                        <td>₹ -</td>
+                        <td><span>@CurrencySymbol</span> -</td>
                     </tr>
                 </tbody>
             </table>
@@ -312,7 +320,7 @@
                         <td class="text-start">
                             Total
                         </td>
-                        <td>₹ 203.38 lacs</td>
+                        <td><span>@CurrencySymbol</span> 203.38 lacs</td>
                     </tr>
                 </tbody>
             </table>
@@ -337,7 +345,7 @@
                         <td>Row</td>
                         <td></td>
                         </tr>*@
-                    @if (Model != null && Model.lsProjectDetails.Count > 0)
+                    @if (Model.lsProjectDetails != null && Model.lsProjectDetails.Count > 0)
                     {
                         for (int i = 0; i < Model.lsProjectDetails.Count; i++)
                         {
@@ -345,7 +353,15 @@
                                 <td colspan="2">
                                     Market
                                 </td>
-                                <td colspan="5" class="col-lg-4">@Model.lsProjectDetails[i].Market</td>
+                                @if (!string.IsNullOrEmpty(@Model.lsProjectDetails[i].Market))
+                                {
+                                    var str = @Model.lsProjectDetails[i].Market.Split(",");
+                                    foreach(string mar in str)
+                                    {
+                                        <td>@mar</td>
+                                    }
+                                }
+                               @* <td colspan="5" class="col-lg-4"></td>*@
                             </tr>
                             <tr>
                                 <td colspan="2">
@@ -381,7 +397,16 @@
                                 <td colspan="2">
                                     API Source
                                 </td>
-                                <td colspan="5">@Model.lsProjectDetails[i].APISource</td>
+
+                                 @if (!string.IsNullOrEmpty(@Model.lsProjectDetails[i].APISource))
+                                {
+                                    var str = @Model.lsProjectDetails[i].APISource.Split(",");
+                                    foreach(string api in str)
+                                    {
+                                        <td>@api</td>
+                                    }
+                                }
+                                @*<td colspan="5">@Model.lsProjectDetails[i].APISource</td>*@
                                 @* <td></td>
                                     <td></td>
                                     <td colspan="2"></td>*@
@@ -397,7 +422,7 @@
                             </tr>
                             <tr>
                                 <td colspan="2">
-                                    API price in (*/kg)
+                                    API price in (<span>@CurrencySymbol</span>/kg)
                                 </td>
                                 <td colspan="5">@Model.lsProjectDetails[i].APIPrice</td>
                             </tr>
@@ -453,27 +478,35 @@
                     </tr>
                 </thead>
                 <tbody>
-                    @if (Model != null && Model.lsProjectDetails.Count > 0)
+                    @if (Model.lsProjectDetails != null && Model.lsProjectDetails.Count > 0)
                     {
                         for (int i = 0; i < Model.lsProjectDetails.Count; i++)
                         {
-                             <tr>
+                            <tr>
                                 <td colspan="2">
                                     Pharmacoepial Standards on Quality
                                 </td>
-                                <td colspan="4" class="col-lg-4">@Model.lsProjectDetails[i].Market</td>
+                               @* <td colspan="4" class="col-lg-4">@Model.lsProjectDetails[i].Market</td>*@
+                                 @if (!string.IsNullOrEmpty(@Model.lsProjectDetails[i].Market))
+                                {
+                                    var str = @Model.lsProjectDetails[i].Market.Split(",");
+                                   foreach(string mar in str)
+                                    {
+                                        <td>@mar</td>
+                                    }
+                                }
                             </tr>
-                             <tr>
+                            <tr>
                                 <td colspan="2">
-                                    Project Budget (INR Lacs)
+                                    Project Budget (<span>@CurrencyCode</span> Lacs)
                                 </td>
                                 <td colspan="4">@Model.lsProjectDetails[i].ProjectBudget</td>
                             </tr>
-                             <tr>
+                            <tr>
                                 <td colspan="2">
                                     Project Completion/Filing Date
                                 </td>
-                                <td colspan="4">@Model.lsProjectDetails[i].ProjectCompletionFilingDate</td>
+                                <td colspan="4">@Model.lsProjectDetails[i].ProjectCompletionFilingDate.ToString("dd MMMM yyyy")</td>
                             </tr>
                             <tr>
                                 <td colspan="2">
@@ -485,48 +518,48 @@
                     }
                     @*<tr>
                         <td class="text-start">
-                            Pharmacoepial Standards on Quality
+                        Pharmacoepial Standards on Quality
                         </td>
                         <td></td>
                         <td></td>
                         <td></td>
                         <td class="align-middle">Row</td>
                         <td></td>
-                    </tr>
-                    @if (Model != null && Model.lsDeliverables.Count > 0)
-                    {
+                        </tr>
+                        @if (Model != null && Model.lsDeliverables.Count > 0)
+                        {
                         foreach (var item in Model.lsDeliverables)
                         {
-                            if (item.PharmacoepialStandardsonQuality.Equals("Project Budjet (INR Lacs)"))
-                            {
-                                <tr>
-                                    <td class="text-start">
-                                        @item.PharmacoepialStandardsonQuality
-                                    </td>
-                                    <td style="width: 18%;">₹ @item.Row lacs</td>
-                                    <td></td>
-                                    <td></td>
-                                    <td></td>
-                                    <td></td>
-                                </tr>
-                            }
-                            else
-                            {
-                                <tr>
-                                    <td class="text-start">
-                                        @item.PharmacoepialStandardsonQuality
-                                    </td>
-                                    <td style="width: 18%;">₹ @item.Row</td>
-                                    <td></td>
-                                    <td></td>
-                                    <td></td>
-                                    <td></td>
-                                </tr>
-                            }
+                        if (item.PharmacoepialStandardsonQuality.Equals("Project Budjet (INR Lacs)"))
+                        {
+                        <tr>
+                        <td class="text-start">
+                        @item.PharmacoepialStandardsonQuality
+                        </td>
+                        <td style="width: 18%;">₹ @item.Row lacs</td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        </tr>
+                        }
+                        else
+                        {
+                        <tr>
+                        <td class="text-start">
+                        @item.PharmacoepialStandardsonQuality
+                        </td>
+                        <td style="width: 18%;">₹ @item.Row</td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        </tr>
+                        }
                         }
 
-                    }
-                    @*<tr>
+                        }
+                        @*<tr>
                         <td class="text-start">
                         Project Completion/Filing Date
                         </td>
@@ -544,7 +577,7 @@
                 <thead class="bg-primary">
                     <tr>
                         <th colspan="2">
-                            ADDITIONAL COST TO INCUR FOR EU MARKET (INR Lacs)
+                            ADDITIONAL COST TO INCUR FOR EU MARKET (<span>@CurrencyCode</span> Lacs)
                         </th>
                     </tr>
                 </thead>
@@ -553,31 +586,31 @@
                         <td class="text-start">
                             Reference Product Cost
                         </td>
-                        <td>₹ -</td>
+                        <td><span>@CurrencySymbol</span> -</td>
                     </tr>
                     <tr>
                         <td class="text-start">
                             Bio Study Cost
                         </td>
-                        <td>₹ -</td>
+                        <td><span>@CurrencySymbol</span> -</td>
                     </tr>
                     <tr>
                         <td class="text-start">
                             Capex & Misc Cost
                         </td>
-                        <td>₹ -</td>
+                        <td><span>@CurrencySymbol</span> -</td>
                     </tr>
                     <tr>
                         <td class="text-start">
                             Filling Cost
                         </td>
-                        <td>₹ -</td>
+                        <td><span>@CurrencySymbol</span> -</td>
                     </tr>
                     <tr class="fw-bold">
                         <td class="text-start">
                             Total
                         </td>
-                        <td>₹ -</td>
+                        <td><span>@CurrencySymbol</span> -</td>
                     </tr>
                 </tbody>
             </table>
@@ -585,7 +618,7 @@
                 <thead class="bg-primary">
                     <tr>
                         <th colspan="2">
-                            ADDITIONAL COST TO INCUR FOR CANADA MARKET (INR Lacs)
+                            ADDITIONAL COST TO INCUR FOR CANADA MARKET (<span>@CurrencyCode</span> Lacs)
                         </th>
                     </tr>
                 </thead>
@@ -594,31 +627,31 @@
                         <td class="text-start">
                             Reference Product Cost
                         </td>
-                        <td>₹ -</td>
+                        <td><span>@CurrencySymbol</span> -</td>
                     </tr>
                     <tr>
                         <td class="text-start">
                             Bio Study Cost
                         </td>
-                        <td>₹ -</td>
+                        <td><span>@CurrencySymbol</span> -</td>
                     </tr>
                     <tr>
                         <td class="text-start">
                             Capex & Misc Cost
                         </td>
-                        <td>₹ -</td>
+                        <td><span>@CurrencySymbol</span> -</td>
                     </tr>
                     <tr>
                         <td class="text-start">
                             Filling Cost
                         </td>
-                        <td>₹ -</td>
+                        <td><span>@CurrencySymbol</span> -</td>
                     </tr>
                     <tr class="fw-bold">
                         <td class="text-start">
                             Total
                         </td>
-                        <td>₹ -</td>
+                        <td><span>@CurrencySymbol</span> -</td>
                     </tr>
                 </tbody>
             </table>

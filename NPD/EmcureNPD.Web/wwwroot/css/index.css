@@ -216,11 +216,11 @@ tr {
 }
 
 .levi-table tr td:first-child {
-  width: 15%;
+  width: 0%;
 }
 
 .levi-table tr td:not(:first-child) {
-  width: calc(85% / 13);
+  width: calc(98% / 15);
 }
 
 .domestic-market-table tr td {
@@ -228,23 +228,23 @@ tr {
 }
 
 .project-details-table tr td:first-child {
-  width: 3%;
+    width: 10%;
 }
 
 .project-details-table tr td:not(:first-child) {
-  width: calc(97% / 6);
+  width: calc(90% / 6);
 }
 
 .deliverables-table tr td:first-child {
-  width: 3%;
+  width: 30%;
 }
 
 .deliverables-table tr td:not(:first-child, :nth-child(2)) {
-  width: calc(98% / 4);
+  width: calc(70% / 4);
 }
 
 .deliverables-table tr td:nth-child(2) {
-  width: 18%;
+  width: 15%;
 }
 
 .eu-market-table tr td {

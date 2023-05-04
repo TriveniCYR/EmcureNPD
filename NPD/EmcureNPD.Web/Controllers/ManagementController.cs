@@ -76,7 +76,9 @@ namespace EmcureNPD.Web.Controllers
                         {
                             ListProjectName.Add(new ProjectNameModel
                             {
-                                ProjectName = item.projectName
+                                ProjectName = item.projectName,
+                                CurrencyCode = item.CurrencyCode,
+                                CurrencySymbol = item.CurrencySymbol
                             });
                         }
                         model.lsProjectName = ListProjectName;

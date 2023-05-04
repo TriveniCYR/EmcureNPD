@@ -19,6 +19,8 @@ namespace EmcureNPD.Business.Models
     public class ProjectNameModel
     {
         public string ProjectName { get; set; }
+        public string CurrencyCode { get; set; }
+        public string CurrencySymbol { get; set; }
     }
     public class ProjectStrength
     {
@@ -60,7 +62,7 @@ namespace EmcureNPD.Business.Models
         public string ScaleUp { get; set; }
         public string Exhibit { get; set; }
         public string ProjectBudget { get; set; }
-        public string ProjectCompletionFilingDate { get; set; }
+        public DateTime ProjectCompletionFilingDate { get; set; }
         public string BEStudies { get; set; }
     }
     public class CumulativePhaseWiseBudget

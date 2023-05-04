@@ -22,6 +22,8 @@ namespace EmcureNPD.Web.Models
     public class Projects
     {
         public string projectName { get; set; }
+        public string CurrencyCode { get; set; }
+        public string CurrencySymbol { get; set; }
     }
 
     public class StrengthView
@@ -67,7 +69,7 @@ namespace EmcureNPD.Web.Models
         public string ScaleUp { get; set; }
         public string Exhibit { get; set; }
         public string ProjectBudget { get; set; }
-        public string ProjectCompletionFilingDate { get; set; }
+        public DateTime ProjectCompletionFilingDate { get; set; }
         public string BEStudies { get; set; }
     }
 
