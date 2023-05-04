@@ -1,6 +1,7 @@
 ﻿var _userRegion = [];
 var _IPDMode = 0;
 var ExpirydateErrorMsg = 'Extension Expiry Date should greater than Original Expiry Date';
+var PastdateErrorMsg = 'Can not select Past date';
 var isValidIPDForm = true;
 $(document).ready(function () {
     fnGetActiveBusinessUnit();
@@ -15,7 +16,8 @@ $(document).ready(function () {
         getPIDFAccordion(_PIDFAccordionURL, _PIDFID, "dvPIDFAccrdion");
     }
 
-    $(document).on("change", "[id*='ExtensionExpiryDate']", function () {   
+    $(document).on("change", "[id*='ExtensionExpiryDate']", function () {  
+        var todaysDate = new Date();
         var _extensionExpiryDate = new Date($(this).val());
         var _originalExpiryDate = new Date($(this).closest('tr').find('.originalDate').val());
         if (_extensionExpiryDate <= _originalExpiryDate) {
@@ -23,17 +25,26 @@ $(document).ready(function () {
             $(this).css("border-color", "red");
             toastr.error(ExpirydateErrorMsg);
         }
+        else if (_extensionExpiryDate < todaysDate) {
+            $(this).css("border-color", "red");
+            toastr.error(PastdateErrorMsg);  
+        }
         else {
             $(this).css("border-color", "");
         }
     });
     $(document).on("change", "[id*='OriginalExpiryDate']", function () {
+        var todaysDate = new Date();
         var _originalExpiryDate  = new Date($(this).val());
         var _extensionExpiryDate = new Date($(this).closest('tr').find('.extendedDate').val());
         if (_extensionExpiryDate <= _originalExpiryDate) {
             $(this).val('');
             $(this).css("border-color", "red");
             toastr.error(ExpirydateErrorMsg);
+        }
+        else if (_originalExpiryDate < todaysDate) {
+            $(this).css("border-color", "red");
+            toastr.error(PastdateErrorMsg);            
         }
         else {
             $(this).css("border-color", "");

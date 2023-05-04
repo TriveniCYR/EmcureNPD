@@ -7,5 +7,6 @@ namespace EmcureNPD.Web.Models {
         public string PIDFNO { get; set; }
         public string MoleculeName { get; set; }
         public DateTime? IPDApprovedDate { get; set; }
+        public string LogMessage { get; set; }
     }
 }

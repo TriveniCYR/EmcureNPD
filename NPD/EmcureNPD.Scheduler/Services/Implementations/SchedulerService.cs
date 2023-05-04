@@ -7,6 +7,7 @@ using Microsoft.Extensions.Configuration;
 using Newtonsoft.Json;
 using System.Security.Claims;
 using EmcureNPD.Scheduler.Helpers;
+using EmcureNPD.Web.Models;
 
 namespace EmcureNPD.Schedule.Services.Implementations {
     public class SchedulerService : ISchedulerService {
@@ -36,7 +37,9 @@ namespace EmcureNPD.Schedule.Services.Implementations {
                 //       // SendReminderAPI(oUserDetail._object);
                 //    } 
                 //}
+                loggerService.ServiceLog("\n------------------------Scheduler Started on { " + DateTime.Now.ToString()+" }---------------------------");                
                 SendReminderAPI();
+                loggerService.ServiceLog("------------------------Scheduler End on { " + DateTime.Now.ToString() + " }---------------------------");
             } catch (Exception ex) {
                 loggerService.Log(ex);
             }
@@ -45,11 +48,16 @@ namespace EmcureNPD.Schedule.Services.Implementations {
             public void SendReminderAPI() {
             try {
                 //var token = oUserDetail.UserToken;
+                loggerService.ServiceLog("Scheduler Called API for Send Reminder");
                 HttpResponseMessage responseMessage = apiService.APICommunication(APIURLHelper.SendReminder, HttpMethod.Post,string.Empty).Result;
                 if (responseMessage.IsSuccessStatusCode) {
+                    loggerService.ServiceLog("Scheduler Called API Responded with Success Status Code");
                     string jsonResponse = responseMessage.Content.ReadAsStringAsync().Result;
+                    var data = JsonConvert.DeserializeObject<APIResponseEntity<SendReminderModel>>(jsonResponse);
+                    SendReminderModel ObjRemoinderModel = data._object;
+                    loggerService.ServiceLog(ObjRemoinderModel.LogMessage);
                 }
-            } catch (Exception ex) { 
+            } catch (Exception ex) {
                 loggerService.Log(ex); 
             }
         }
