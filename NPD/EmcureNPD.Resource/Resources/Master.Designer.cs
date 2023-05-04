@@ -1042,7 +1042,7 @@ namespace EmcureNPD.Resource.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Market Growth.
+        ///   Looks up a localized string similar to Market Growth %.
         /// </summary>
         public static string MarketGrowth {
             get {

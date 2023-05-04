@@ -51,7 +51,8 @@ namespace EmcureNPD.API.Controllers.Scheduler
         {
             try
             {
-                return _ObjectResponse.Create(_reminderService.SendReminder(), (int)HttpStatusCode.OK);
+                var returnobj = await _reminderService.SendReminder();
+                return _ObjectResponse.Create(returnobj, (int)HttpStatusCode.OK, returnobj.LogMessage);
             }
             catch (Exception ex)
             {

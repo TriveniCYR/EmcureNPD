@@ -97,13 +97,13 @@ namespace EmcureNPD.Business.Core.Implementation
                 var listYear = new List<PidfCommercialYear>();
                 int i = 1;
 
-                foreach (var year in item.PidfCommercialYears)
+                foreach (var year in item.PidfCommercialYears.OrderBy(x=>x.YearIndex))
                 {
                     var Yeardata = _mapperFactory.Get<PidfCommercialYearEntity, PidfCommercialYear>(year);
                     //Yeardata.PackagingTypeId = year.CommercialPackagingTypeId;
                     Yeardata.PidfcommercialYearId = 0;
                     Yeardata.PidfcommercialId = 0;
-                    Yeardata.YearIndex = i;
+                   // Yeardata.YearIndex = year.YearIndex;
                     listYear.Add(Yeardata);
                     i++;
                 }

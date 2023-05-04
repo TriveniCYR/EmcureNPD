@@ -8,5 +8,6 @@ namespace EmcureNPD.Scheduler.Services.Interfaces {
     public interface ILoggerService 
     {
         void Log(Exception exception);
+        void ServiceLog(string message);
     }
 }
