@@ -144,6 +144,8 @@ function GetCountryListError(x, y, z) {
 }
 function SaveIPDClick(type) {
   //  validatedate();
+    $('.originalDate').trigger("change");
+    $('.extendedDate').trigger("change");
     isValidIPDForm = true;
     validatePatentDetails();
     getParentFormId().find('#SaveType').val(type);
