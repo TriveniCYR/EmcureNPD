@@ -91,19 +91,19 @@ namespace EmcureNPD.Business.Core.Implementation
         public async Task<DBOperation> AddUpdateCommercialPIDF(PIDFCommercialViewModel entitycommPIDF)
         {
             var loggedInUserID = _helper.GetLoggedInUser().UserId;
-            
+
             foreach (var item in entitycommPIDF.PIDFArrMainCommercial)
             {
                 var listYear = new List<PidfCommercialYear>();
                 int i = 1;
 
-                foreach (var year in item.PidfCommercialYears.OrderBy(x=>x.YearIndex))
+                foreach (var year in item.PidfCommercialYears.OrderBy(x => x.YearIndex))
                 {
                     var Yeardata = _mapperFactory.Get<PidfCommercialYearEntity, PidfCommercialYear>(year);
                     //Yeardata.PackagingTypeId = year.CommercialPackagingTypeId;
                     Yeardata.PidfcommercialYearId = 0;
                     Yeardata.PidfcommercialId = 0;
-                   // Yeardata.YearIndex = year.YearIndex;
+                    // Yeardata.YearIndex = year.YearIndex;
                     listYear.Add(Yeardata);
                     i++;
                 }
@@ -130,12 +130,16 @@ namespace EmcureNPD.Business.Core.Implementation
                 else
                 {
                     var OldObjpidfCommercial = _mapperFactory.Get<PidfCommercial, PIDFCommercialEntity>(objFetchData);
-                    OldObjpidfCommercial.PidfCommercialYears = item.PidfCommercialYears;
+
+                    //OldObjpidfCommercial.PidfCommercialYears = item.PidfCommercialYears;
                     //Remove all Already mapped Years data
                     var CommercialYears = await _commercialYearrepository.GetAllAsync(x => x.PidfcommercialId == objFetchData.PidfcommercialId);
 
-                    foreach (var it in CommercialYears)
+                    foreach (var it in CommercialYears.OrderBy(x => x.YearIndex))
+                    {
+                        OldObjpidfCommercial.PidfCommercialYears.Add(_mapperFactory.Get<PidfCommercialYear, PidfCommercialYearEntity>(it));
                         _commercialYearrepository.Remove(it);
+                    }
 
                     objFetchData.PidfCommercialYears = listYear;
                     objFetchData.MarketSizeInUnit = item.MarketSizeInUnit;
