@@ -529,6 +529,8 @@ namespace EmcureNPD.Web.Controllers
                 //pbfEntity.RNDPlantSupportCosts = pbfEntity.RNDPlantSupportCostRawData != null ? JsonConvert.DeserializeObject<List<RNDPlantSupportCost>>(pbfEntity.RNDPlantSupportCostRawData) : new List<RNDPlantSupportCost>();
                 pbfEntity.RNDFillingExpenses = pbfEntity.RNDFillingExpensesRawData != null ? JsonConvert.DeserializeObject<List<RNDFillingExpense>>(pbfEntity.RNDFillingExpensesRawData) : new List<RNDFillingExpense>();
                 pbfEntity.RNDManPowerCosts = pbfEntity.RNDManPowerCostProjectDurationRawData != null ? JsonConvert.DeserializeObject<List<RNDManPowerCost>>(pbfEntity.RNDManPowerCostProjectDurationRawData) : new List<RNDManPowerCost>();
+                pbfEntity.RNDHeadWiseBudgets = pbfEntity.RNDHeadWiseBudgetRawData != null ? JsonConvert.DeserializeObject<List<RNDHeadWiseBudget>>(pbfEntity.RNDHeadWiseBudgetRawData) : new List<RNDHeadWiseBudget>();
+                pbfEntity.RNDPhaseWiseBudgets = pbfEntity.RNDPhaseWiseBudgetRawData != null ? JsonConvert.DeserializeObject<List<RNDPhaseWiseBudget>>(pbfEntity.RNDPhaseWiseBudgetRawData) : new List<RNDPhaseWiseBudget>();
 
                 //Analytical json data
                 pbfEntity.AnalyticalEntities = pbfEntity.AnalyticalRawData != null ? JsonConvert.DeserializeObject<List<AnalyticalEntity>>(pbfEntity.AnalyticalRawData) : new List<AnalyticalEntity>();

@@ -263,10 +263,47 @@
                         {
                             <tr>
                                 <td class="text-start">
-                                    @Model.lsCumulativePhaseWiseBudget[i].CostHeads
+                                    Feasibility
                                 </td>
-                                <td>@Model.lsCumulativePhaseWiseBudget[i].PercentOfTotal</td>
-                                <td>₹ @Model.lsCumulativePhaseWiseBudget[i].CostRsLacs</td>
+                                 <td><span>@CurrencySymbol</span>@Model.lsCumulativePhaseWiseBudget[i].Feasibility</td>
+                                <td><span>@CurrencySymbol</span> (@Model.lsCumulativePhaseWiseBudget[i].Feasibility)/100000</td>
+                                
+                            </tr>
+                            <tr>
+                               <td class="text-start">
+                                    Prototype Devt
+                                </td>
+                                 <td><span>@CurrencySymbol</span>@Model.lsCumulativePhaseWiseBudget[i].Prototype</td>
+                                <td><span>@CurrencySymbol</span> (@Model.lsCumulativePhaseWiseBudget[i].Prototype)/100000</td>
+                            </tr>
+                            <tr>
+                                <td class="text-start">
+                                    R&D Scale Up
+                                </td>
+                                 <td><span>@CurrencySymbol</span>@Model.lsCumulativePhaseWiseBudget[i].ScaleUp</td>
+                                <td><span>@CurrencySymbol</span> (@Model.lsCumulativePhaseWiseBudget[i].ScaleUp)/100000</td>
+                            </tr>
+                            <tr>
+                               <td class="text-start">
+                                    AMV/AMT
+                                </td>
+                                 <td><span>@CurrencySymbol</span>@Model.lsCumulativePhaseWiseBudget[i].AMV</td>
+                                <td><span>@CurrencySymbol</span> (@Model.lsCumulativePhaseWiseBudget[i].AMV)/10000</td>
+                            </tr>
+
+                            <tr>
+                               <td class="text-start">
+                                    Exhibit/Stability
+                                </td>
+                                 <td><span>@CurrencySymbol</span>@Model.lsCumulativePhaseWiseBudget[i].Exhibit</td>
+                                <td><span>@CurrencySymbol</span> (@Model.lsCumulativePhaseWiseBudget[i].Exhibit)/100000</td>
+                            </tr>
+                             <tr>
+                               <td class="text-start">
+                                    Filing
+                                </td>
+                                 <td><span>@CurrencySymbol</span>@Model.lsCumulativePhaseWiseBudget[i].Filing</td>
+                                <td><span>@CurrencySymbol</span> (@Model.lsCumulativePhaseWiseBudget[i].Filing)/100000</td>
                             </tr>
                         }
 
@@ -356,12 +393,12 @@
                                 @if (!string.IsNullOrEmpty(@Model.lsProjectDetails[i].Market))
                                 {
                                     var str = @Model.lsProjectDetails[i].Market.Split(",");
-                                    foreach(string mar in str)
+                                    foreach (string mar in str)
                                     {
                                         <td>@mar</td>
                                     }
                                 }
-                               @* <td colspan="5" class="col-lg-4"></td>*@
+                                @* <td colspan="5" class="col-lg-4"></td>*@
                             </tr>
                             <tr>
                                 <td colspan="2">
@@ -398,10 +435,10 @@
                                     API Source
                                 </td>
 
-                                 @if (!string.IsNullOrEmpty(@Model.lsProjectDetails[i].APISource))
+                                @if (!string.IsNullOrEmpty(@Model.lsProjectDetails[i].APISource))
                                 {
                                     var str = @Model.lsProjectDetails[i].APISource.Split(",");
-                                    foreach(string api in str)
+                                    foreach (string api in str)
                                     {
                                         <td>@api</td>
                                     }
@@ -486,11 +523,11 @@
                                 <td colspan="2">
                                     Pharmacoepial Standards on Quality
                                 </td>
-                               @* <td colspan="4" class="col-lg-4">@Model.lsProjectDetails[i].Market</td>*@
-                                 @if (!string.IsNullOrEmpty(@Model.lsProjectDetails[i].Market))
+                                @* <td colspan="4" class="col-lg-4">@Model.lsProjectDetails[i].Market</td>*@
+                                @if (!string.IsNullOrEmpty(@Model.lsProjectDetails[i].Market))
                                 {
                                     var str = @Model.lsProjectDetails[i].Market.Split(",");
-                                   foreach(string mar in str)
+                                    foreach (string mar in str)
                                     {
                                         <td>@mar</td>
                                     }
