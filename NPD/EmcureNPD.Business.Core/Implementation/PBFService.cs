@@ -47,6 +47,10 @@ namespace EmcureNPD.Business.Core.Implementation
         private IRepository<PidfPbfRnDReferenceProductDetail> _pidfPbfRndReferenceProductDetailRepository { get; set; }
         private IRepository<PidfPbfRnDFillingExpense> _pidfPbfRndFillingExpenseRepository { get; set; }
         private IRepository<PidfPbfRnDManPowerCost> _pidfPbfRndPidfPbfRnDManPowerCostRepository { get; set; }
+        private IRepository<PidfPbfHeadWiseBudget> _pidfPbfHeadWiseBudgetRepository { get; set; }
+        private IRepository<PidfPbfPhaseWiseBudget> _pidfPbfPhaseWiseBudgetRepository { get; set; }
+
+
 
         public PBFService(IUnitOfWork unitOfWork, IMapperFactory mapperFactory, INotificationService notificationService, IMasterAuditLogService auditLogService, IHelper helper, IExceptionService exceptionService)
         {
@@ -77,6 +81,8 @@ namespace EmcureNPD.Business.Core.Implementation
             _pidfPbfRndReferenceProductDetailRepository = _unitOfWork.GetRepository<PidfPbfRnDReferenceProductDetail>();
             _pidfPbfRndPidfPbfRnDManPowerCostRepository = _unitOfWork.GetRepository<PidfPbfRnDManPowerCost>();
             _pidfPbfRndFillingExpenseRepository = _unitOfWork.GetRepository<PidfPbfRnDFillingExpense>();
+            _pidfPbfHeadWiseBudgetRepository = _unitOfWork.GetRepository<PidfPbfHeadWiseBudget>();
+            _pidfPbfPhaseWiseBudgetRepository = _unitOfWork.GetRepository<PidfPbfPhaseWiseBudget>();
         }
 
         public async Task<dynamic> FillDropdown(int PIDFId)
@@ -241,6 +247,7 @@ namespace EmcureNPD.Business.Core.Implementation
             DropdownObjects.PBFRNDFillingExpenses = dsDropdownOptions.Tables[17];
             DropdownObjects.PBFRNDManPowerCost = dsDropdownOptions.Tables[18];
             DropdownObjects.IPDCostOfLitigation = dsDropdownOptions.Tables[19];
+            DropdownObjects.HeadWiseBudget = dsDropdownOptions.Tables[20];
 
             return DropdownObjects;
         }
@@ -2120,6 +2127,46 @@ namespace EmcureNPD.Business.Core.Implementation
                 }
 
                 #endregion Man Power Cost Add Update
+                
+                #region Head Wise Budget Add Update
+
+                List<PidfPbfHeadWiseBudget> objHeadWiseBudgetlist = new();
+
+                //Save headwisebudget Entities
+                if (pbfentity.RNDHeadWiseBudgets != null && pbfentity.RNDHeadWiseBudgets.Count() > 0)
+                {
+                    foreach (var item in pbfentity.RNDHeadWiseBudgets)
+                    {
+                        PidfPbfHeadWiseBudget objheadwisebudget = new PidfPbfHeadWiseBudget();
+                        objheadwisebudget = _mapperFactory.Get<RNDHeadWiseBudget, PidfPbfHeadWiseBudget>(item);
+                        objheadwisebudget.PbfgeneralId = pbfgeneralid;
+                        objheadwisebudget.CreatedDate = DateTime.Now;
+                        objheadwisebudget.CreatedBy = loggedInUserId;
+                        objHeadWiseBudgetlist.Add(objheadwisebudget);
+                    }
+                }
+
+                #endregion Head Wise Budget Add Update
+
+                #region Phase Wise Budget Add Update
+
+                List<PidfPbfPhaseWiseBudget> objPhaseWiseBudgetlist = new();
+
+                //Save headwisebudget Entities
+                if (pbfentity.RNDPhaseWiseBudgets != null && pbfentity.RNDPhaseWiseBudgets.Count() > 0)
+                {
+                    foreach (var item in pbfentity.RNDPhaseWiseBudgets)
+                    {
+                        PidfPbfPhaseWiseBudget objphasewisebudget = new PidfPbfPhaseWiseBudget();
+                        objphasewisebudget = _mapperFactory.Get<RNDPhaseWiseBudget, PidfPbfPhaseWiseBudget>(item);
+                        objphasewisebudget.PbfgeneralId = pbfgeneralid;
+                        objphasewisebudget.CreatedDate = DateTime.Now;
+                        objphasewisebudget.CreatedBy = loggedInUserId;
+                        objPhaseWiseBudgetlist.Add(objphasewisebudget);
+                    }
+                }
+
+                #endregion Head Wise Budget Add Update
 
                 #endregion RND Add Update
                 //PidfPbfGeneral objPIDFGeneralupdate;
@@ -2153,6 +2200,8 @@ namespace EmcureNPD.Business.Core.Implementation
                     objPIDFGeneralupdate.PidfPbfRnDReferenceProductDetails = objReferenceProductDetaillist;
                     objPIDFGeneralupdate.PidfPbfRnDFillingExpenses = objFillinfExpenseslist;
                     objPIDFGeneralupdate.PidfPbfRnDManPowerCosts = objManPowerCostlist;
+                    objPIDFGeneralupdate.PidfPbfHeadWiseBudgets = objHeadWiseBudgetlist;
+                    objPIDFGeneralupdate.PidfPbfPhaseWiseBudgets = objPhaseWiseBudgetlist;
                     DeleteGeneralChildRecords(objPIDFGeneralupdate.PbfgeneralId);
                     _pidfPbfGeneralRepository.UpdateAsync(objPIDFGeneralupdate);
                     await _unitOfWork.SaveChangesAsync();
@@ -2189,6 +2238,8 @@ namespace EmcureNPD.Business.Core.Implementation
                     objPIDFGeneraladd.PidfPbfRnDReferenceProductDetails = objReferenceProductDetaillist;
                     objPIDFGeneraladd.PidfPbfRnDFillingExpenses = objFillinfExpenseslist;
                     objPIDFGeneraladd.PidfPbfRnDManPowerCosts = objManPowerCostlist;
+                    objPIDFGeneraladd.PidfPbfHeadWiseBudgets = objHeadWiseBudgetlist;
+                    objPIDFGeneraladd.PidfPbfPhaseWiseBudgets = objPhaseWiseBudgetlist;
                     _pidfPbfGeneralRepository.AddAsync(objPIDFGeneraladd);
                     await _unitOfWork.SaveChangesAsync();
                     pbfgeneralid = objPIDFGeneraladd.PbfgeneralId;
@@ -2225,7 +2276,6 @@ namespace EmcureNPD.Business.Core.Implementation
                     {
                         _pidfPbfClinicalRepository.Remove(item);
                     }
-                    //await _unitOfWork.SaveChangesAsync();
                 }
                 var analytical = _pidfPbfAnalyticalRepository.GetAllQuery().Where(x => x.PbfgeneralId == pbfgeneralid).ToList();
                 if (analytical.Count > 0)
@@ -2234,7 +2284,6 @@ namespace EmcureNPD.Business.Core.Implementation
                     {
                         _pidfPbfAnalyticalRepository.Remove(item);
                     }
-                    // await _unitOfWork.SaveChangesAsync();
                 }
                 var analyticalCost = _PidfPbfAnalyticalAmvcostRepository.GetAllQuery().Where(x => x.PbfgeneralId == pbfgeneralid).ToList();
                 if (analyticalCost.Count > 0)
@@ -2251,7 +2300,6 @@ namespace EmcureNPD.Business.Core.Implementation
                         }
                         _PidfPbfAnalyticalAmvcostRepository.Remove(item);
                     }
-                    // await _unitOfWork.SaveChangesAsync();
                 }
                 var rndmaster = _pidfPbfRnDMasterRepository.GetAllQuery().Where(x => x.PbfgeneralId == pbfgeneralid).ToList();
                 if (rndmaster.Count > 0)
@@ -2269,7 +2317,6 @@ namespace EmcureNPD.Business.Core.Implementation
                     {
                         _pidfPbfRndBatchSizeRepository.Remove(item);
                     }
-                   // await _unitOfWork.SaveChangesAsync();
                 }
                 var apirequirement = _pidfPbfRndApirequirementRepository.GetAllQuery().Where(x => x.PbfgeneralId == pbfgeneralid).ToList();
                 if (apirequirement.Count > 0)
@@ -2278,7 +2325,6 @@ namespace EmcureNPD.Business.Core.Implementation
                     {
                         _pidfPbfRndApirequirementRepository.Remove(item);
                     }
-                    //await _unitOfWork.SaveChangesAsync();
                 }
                 var exicipient = _pidfPbfRnDExicipientRequirementRepository.GetAllQuery().Where(x => x.PbfgeneralId == pbfgeneralid).ToList();
                 if (exicipient.Count > 0)
@@ -2287,7 +2333,6 @@ namespace EmcureNPD.Business.Core.Implementation
                     {
                         _pidfPbfRnDExicipientRequirementRepository.Remove(item);
                     }
-                    //await _unitOfWork.SaveChangesAsync();
                 }
                 var packging = _pidfPbfRnDPackagingMaterialRepository.GetAllQuery().Where(x => x.PbfgeneralId == pbfgeneralid).ToList();
                 if (packging.Count > 0)
@@ -2296,7 +2341,6 @@ namespace EmcureNPD.Business.Core.Implementation
                     {
                         _pidfPbfRnDPackagingMaterialRepository.Remove(item);
                     }
-                    //await _unitOfWork.SaveChangesAsync();
                 }
                 var toolongchangepart = _pidfPbfRndToolingChangePartCostRepository.GetAllQuery().Where(x => x.PbfgeneralId == pbfgeneralid).ToList();
                 if (toolongchangepart.Count > 0)
@@ -2305,7 +2349,6 @@ namespace EmcureNPD.Business.Core.Implementation
                     {
                         _pidfPbfRndToolingChangePartCostRepository.Remove(item);
                     }
-                    //await _unitOfWork.SaveChangesAsync();
                 }
                 var capexandmiscellaneous = _pidfPbfRndCapexMiscellaneousExpenseRepository.GetAllQuery().Where(x => x.PbfgeneralId == pbfgeneralid).ToList();
                 if (capexandmiscellaneous.Count > 0)
@@ -2314,7 +2357,6 @@ namespace EmcureNPD.Business.Core.Implementation
                     {
                         _pidfPbfRndCapexMiscellaneousExpenseRepository.Remove(item);
                     }
-                    //await _unitOfWork.SaveChangesAsync();
                 }
                 var plantsupportcost = _pidfPbfRndPlantSupportCostRepository.GetAllQuery().Where(x => x.PbfgeneralId == pbfgeneralid).ToList();
                 if (plantsupportcost.Count > 0)
@@ -2323,7 +2365,6 @@ namespace EmcureNPD.Business.Core.Implementation
                     {
                         _pidfPbfRndPlantSupportCostRepository.Remove(item);
                     }
-                   // await _unitOfWork.SaveChangesAsync();
                 }
                 var referenceporduct = _pidfPbfRndReferenceProductDetailRepository.GetAllQuery().Where(x => x.PbfgeneralId == pbfgeneralid).ToList();
                 if (referenceporduct.Count > 0)
@@ -2332,7 +2373,6 @@ namespace EmcureNPD.Business.Core.Implementation
                     {
                         _pidfPbfRndReferenceProductDetailRepository.Remove(item);
                     }
-                   // await _unitOfWork.SaveChangesAsync();
                 }
                 var fillingexpenses = _pidfPbfRndFillingExpenseRepository.GetAllQuery().Where(x => x.PbfgeneralId == pbfgeneralid).ToList();
                 if (fillingexpenses.Count > 0)
@@ -2341,7 +2381,6 @@ namespace EmcureNPD.Business.Core.Implementation
                     {
                         _pidfPbfRndFillingExpenseRepository.Remove(item);
                     }
-                    //await _unitOfWork.SaveChangesAsync();
                 }
                 var manpowercost = _pidfPbfRndPidfPbfRnDManPowerCostRepository.GetAllQuery().Where(x => x.PbfgeneralId == pbfgeneralid).ToList();
                 if (manpowercost.Count > 0)
@@ -2350,9 +2389,24 @@ namespace EmcureNPD.Business.Core.Implementation
                     {
                         _pidfPbfRndPidfPbfRnDManPowerCostRepository.Remove(item);
                     }
-                    //await _unitOfWork.SaveChangesAsync();
                 }
-
+                var headwisebudget = _pidfPbfHeadWiseBudgetRepository.GetAllQuery().Where(x => x.PbfgeneralId == pbfgeneralid).ToList();
+                if (headwisebudget.Count > 0)
+                {
+                    foreach (var item in headwisebudget)
+                    {
+                        _pidfPbfHeadWiseBudgetRepository.Remove(item);
+                    }
+                }
+                var phasewisebudget = _pidfPbfPhaseWiseBudgetRepository.GetAllQuery().Where(x => x.PbfgeneralId == pbfgeneralid).ToList();
+                if (phasewisebudget.Count > 0)
+                {
+                    foreach (var item in phasewisebudget)
+                    {
+                        _pidfPbfPhaseWiseBudgetRepository.Remove(item);
+                    }
+                }
+                
             }
             catch (Exception ex)
             {

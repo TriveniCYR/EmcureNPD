@@ -13,6 +13,8 @@ namespace EmcureNPD.Data.DataAccess.Entity
             PidfPbfAnalyticals = new HashSet<PidfPbfAnalytical>();
             PidfPbfClinicals = new HashSet<PidfPbfClinical>();
             PidfPbfGeneralStrengths = new HashSet<PidfPbfGeneralStrength>();
+            PidfPbfHeadWiseBudgets = new HashSet<PidfPbfHeadWiseBudget>();
+            PidfPbfPhaseWiseBudgets = new HashSet<PidfPbfPhaseWiseBudget>();
             PidfPbfRnDApirequirements = new HashSet<PidfPbfRnDApirequirement>();
             PidfPbfRnDCapexMiscellaneousExpenses = new HashSet<PidfPbfRnDCapexMiscellaneousExpense>();
             PidfPbfRnDExicipientPrototypes = new HashSet<PidfPbfRnDExicipientPrototype>();
@@ -47,6 +49,8 @@ namespace EmcureNPD.Data.DataAccess.Entity
         public virtual ICollection<PidfPbfAnalytical> PidfPbfAnalyticals { get; set; }
         public virtual ICollection<PidfPbfClinical> PidfPbfClinicals { get; set; }
         public virtual ICollection<PidfPbfGeneralStrength> PidfPbfGeneralStrengths { get; set; }
+        public virtual ICollection<PidfPbfHeadWiseBudget> PidfPbfHeadWiseBudgets { get; set; }
+        public virtual ICollection<PidfPbfPhaseWiseBudget> PidfPbfPhaseWiseBudgets { get; set; }
         public virtual ICollection<PidfPbfRnDApirequirement> PidfPbfRnDApirequirements { get; set; }
         public virtual ICollection<PidfPbfRnDCapexMiscellaneousExpense> PidfPbfRnDCapexMiscellaneousExpenses { get; set; }
         public virtual ICollection<PidfPbfRnDExicipientPrototype> PidfPbfRnDExicipientPrototypes { get; set; }

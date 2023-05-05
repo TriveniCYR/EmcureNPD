@@ -112,7 +112,10 @@ namespace EmcureNPD.Business.Models
         public List<RNDFillingExpense> RNDFillingExpenses { get; set; }
         public string RNDManPowerCostProjectDurationRawData { get; set; }
         public List<RNDManPowerCost> RNDManPowerCosts { get; set; }
-
+        public string RNDHeadWiseBudgetRawData { get; set; }
+        public List<RNDHeadWiseBudget> RNDHeadWiseBudgets { get; set; }
+        public string RNDPhaseWiseBudgetRawData { get; set; }
+        public List<RNDPhaseWiseBudget> RNDPhaseWiseBudgets { get; set; }
 
         #endregion
     }
@@ -294,6 +297,27 @@ namespace EmcureNPD.Business.Models
         public long StrengthId { get; set; }
         public double? DurationInDays { get; set; }
         public double? ManPowerInDays { get; set; }
+    }
+
+    public class RNDHeadWiseBudget
+    {
+        public int HeadWiseBudgetId { get; set; }
+        public int ProjectActivitiesId { get; set; }
+        public long PbfgeneralId { get; set; }
+        public double? Prototype { get; set; }
+        public double? ScaleUp { get; set; }
+        public double? Exhibit { get; set; }
+    }
+    public class RNDPhaseWiseBudget
+    {
+        public int PhaseWiseBudgetId { get; set; }
+        public long PbfgeneralId { get; set; }
+        public double? FeasabilityCumTotal { get; set; }
+        public double? PrototypeCumTotal { get; set; }
+        public double? ScaleUpCumTotal { get; set; }
+        public double? AmvcumTotal { get; set; }
+        public double? ExhibitCumTotal { get; set; }
+        public double? FilingCumTotal { get; set; }
     }
     #endregion
 }

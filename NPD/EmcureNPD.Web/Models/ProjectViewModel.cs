@@ -75,9 +75,15 @@ namespace EmcureNPD.Web.Models
 
     public class CumulativePhaseWiseBudgetView
     {
-        public string CostHeads { get; set; }
-        public string PercentOfTotal { get; set; }
-        public string CostRsLacs { get; set; }
+        public float Feasibility { get; set; }
+        public float Prototype { get; set; }
+        public float ScaleUp { get; set; }
+        public float AMV { get; set; }
+        public float Exhibit { get; set; }
+        public float Filing { get; set; }
+        //public string CostHeads { get; set; }
+        //public string PercentOfTotal { get; set; }
+        //public string CostRsLacs { get; set; }
     }
 
     public class DeliverablesView

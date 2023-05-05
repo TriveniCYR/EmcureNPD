@@ -157,9 +157,12 @@ namespace EmcureNPD.Web.Controllers
                         {
                             ListCumulativePhaseWiseBudget.Add(new CumulativePhaseWiseBudget
                             {
-                                CostHeads = data.table5[i].CostHeads,
-                                PercentOfTotal = data.table5[i].PercentOfTotal,
-                                CostRsLacs = data.table5[i].CostRsLacs,
+                                Feasibility = data.table5[i].Feasibility,
+                                Prototype = data.table5[i].Prototype,
+                                ScaleUp = data.table5[i].ScaleUp,
+                                AMV = data.table5[i].AMV,
+                                Exhibit = data.table5[i].Exhibit,
+                                Filing = data.table5[i].Filing
                             });
                         }
                         model.lsCumulativePhaseWiseBudget = ListCumulativePhaseWiseBudget;
