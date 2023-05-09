@@ -247,12 +247,35 @@ tr {
   width: 15%;
 }
 
-.eu-market-table tr td {
-  width: calc(100% / 2);
+.cumulative-phase-wise-budget--table tr td:first-child {
+    width: 30%;
 }
 
-.canada-market-table tr td {
-  width: calc(100% / 2);
+.cumulative-phase-wise-budget--table tr td:not(:first-child, :nth-child(2)) {
+    width: calc(70% / 4);
+}
+
+.cumulative-phase-wise-budget--table tr td:nth-child(2) {
+    width: 15%;
+}
+
+.EU-market-table tr td {
+    width: calc(100% / 2);
+}
+
+.CANADA-market-table tr td {
+    width: calc(100% / 2);
+}
+
+.USA-market-table tr td {
+    width: calc(100% / 2);
+}
+
+.INDIA-market-table tr td {
+    width: calc(100% / 2);
+}
+.ROW-market-table tr td {
+    width: calc(100% / 2);
 }
 
 /* API Charter */
