@@ -304,7 +304,7 @@ tr {
 /* Clinical */
 
 #custom-tabs-business-tab .nav-item {
-  width: calc(100% / 5);
+  width: calc(100% / 8);
   text-align: center;
 }
 
@@ -328,7 +328,7 @@ tr {
 /* Analytical */
 
 #custom-tabs-business-tab .nav-item {
-  width: calc(100% / 5);
+  width: calc(100% / 8);
   text-align: center;
 }
 
@@ -379,7 +379,7 @@ tr {
 }
 
 #custom-tabs-business-tab .nav-item {
-  width: calc(100% / 5);
+  width: calc(100% / 8);
   text-align: center;
 }
 
