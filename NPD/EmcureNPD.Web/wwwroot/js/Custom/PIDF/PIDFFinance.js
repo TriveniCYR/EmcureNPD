@@ -781,7 +781,8 @@ function RenderCommercialPerPack() {
             html += "<td class='trRevenueMonths'>" + ((_projectionDate < _ProjectLaunchDate) ? "0" : (diffMonths > 12 ? 12 : diffMonths)) + "</td>";
         }
         html += "</tr>";
-
+        $('#tblCommercialPerPack').html(html);
+        //html = '';
         $('#FinanceTableBoy tr').each(function (index, value) {
 
             let SKU = $(this).find("select.Skus option:selected").text();
@@ -793,15 +794,16 @@ function RenderCommercialPerPack() {
 
             html += "<tr class='" + _uniqueClass + "'><td>MS%</td><td>" + $(this).find("#hdnMSLow").val() + "</td><td>" + $(this).find("#hdnMSMid").val() + "</td><td>" + $(this).find("#hdnMSHigh").val() + "</td><td>Units</td>";
 
-            var marketSharePercentage = GetMarketSharePercentage($(this).find("#hdnMSLow").val(), $(this).find("#hdnMSMid").val(), $(this).find("#hdnMSHigh").val());
+            var marketSharePercentage =  GetMarketSharePercentage($(this).find("#hdnMSLow").val(), $(this).find("#hdnMSMid").val(), $(this).find("#hdnMSHigh").val());
             let marketInPacks = formatToNumber($(this).find('.Marketinpacks').val());
             let msErosion = formatToNumber($("#MarketShareErosionrate").val(), true);
 
             for (var i = 0; i < 10; i++) {
-                var trYearIndex = formatToNumber($('#tblCommercialPerPack .thYearCounter:eq(' + i + ')').text());
-                var trRevenueMonths = formatToNumber($('#tblCommercialPerPack .trRevenueMonths:eq(' + i + ')').text());
-                let _units = ((marketInPacks * (marketSharePercentage / 100)) * (((1 - (msErosion / 100)) ^ trYearIndex) * (trRevenueMonths / 12)));
-                html += "<td>" + _units +"</td>";
+                var Row_th_Index = $('#tblCommercialPerPack').find('.thYearCounter:eq(' + i + ')').text();                
+                var trYearIndex = formatToNumber((Row_th_Index == '-') ? '0' : Row_th_Index);
+                var trRevenueMonths =  formatToNumber($('#tblCommercialPerPack').find('.trRevenueMonths:eq(' + i + ')').text());
+                let _units = ((marketInPacks * (marketSharePercentage / 100)) * (Math.pow((1 - (msErosion / 100)),  trYearIndex))) * (trRevenueMonths / 12);
+                html += "<td>" + _units.toFixed(3) +"</td>";
             }
             html += "</tr>";
 
