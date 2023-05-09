@@ -519,6 +519,15 @@ function GetSUIMSVolumeYearWiseByPackSize(ele) {
                     $(`input#Marketinpacks${row_index}.Marketinpacks`).val(parseFloat((data.table.length > 0 ? data.table[0].suimsVolume : 0)).toFixed(2));
                     $(`input#BatchsizeinLtrTabs${row_index}.BatchsizeinLtrTabs`).val((data.table.length > 0 ? data.table[0].commercialBatchSize : 0).toFixed(2));
                     calculateBatchSizeCaoting(ele);
+
+                    $(ele).closest('tr').find("#hdnMSLow").val((data.table.length > 0 ? data.table[0].marketSharePercentageLow : 0).toFixed(2));
+                    $(ele).closest('tr').find("#hdnMSMid").val((data.table.length > 0 ? data.table[0].marketSharePercentageMedium : 0).toFixed(2));
+                    $(ele).closest('tr').find("#hdnMSHigh").val((data.table.length > 0 ? data.table[0].marketSharePercentageHigh : 0).toFixed(2));
+                    $(ele).closest('tr').find("#hdnNSPLow").val((data.table.length > 0 ? data.table[0].nspUnitsLow : 0).toFixed(2));
+                    $(ele).closest('tr').find("#hdnNSPMid").val((data.table.length > 0 ? data.table[0].nspUnitsMedium : 0).toFixed(2));
+                    $(ele).closest('tr').find("#hdnNSPHigh").val((data.table.length > 0 ? data.table[0].nspUnitsHigh : 0).toFixed(2));
+
+                    RenderCommercialPerPack();
                 }
                 catch (e) {
                     toastr.error('Error:' + e.message);
@@ -719,3 +728,144 @@ $(el).focusout(function () {
        })
 })()
 
+
+
+function RenderCommercialPerPack() {
+    $('#tblCommercialPerPack').html('');
+
+    let html = "";
+    let _startDate = $('#ProjectStartDate').val();
+    let _launchDate = $('#ProductLaunchDate').val();
+    if (_startDate != "" && _launchDate != "") {
+        let _ProjectStartDate = new Date(_startDate);
+        let _ProjectLaunchDate = new Date(_launchDate);
+        let tentativeStartDate = _ProjectStartDate;
+
+        tentativeStartDate.setMonth(_ProjectStartDate.getMonth() - 3);
+
+        let _FinancialYearStartDate = new Date(tentativeStartDate.getFullYear() + "/03/31");
+        let _BeginYear = tentativeStartDate.getFullYear();
+        if (_FinancialYearStartDate > tentativeStartDate) {
+            _BeginYear = tentativeStartDate.getFullYear() - 1;
+        }
+
+        var _financialYearLaunchDate = new Date(_ProjectLaunchDate.getFullYear() + "/03/31");
+        var _SalesBeginYear = _financialYearLaunchDate.getFullYear();
+        if (_financialYearLaunchDate < _ProjectLaunchDate) {
+            _SalesBeginYear = _ProjectLaunchDate.getFullYear() + 1;
+        }
+
+        html += '<thead class="bg-light">';
+        html += '<tr><th colspan="4">Commercials per pack</th><th></th>';
+        var counter = 0;
+        for (var i = 0; i < 10; i++) {
+            if ((_BeginYear + i) >= _SalesBeginYear) {
+                counter++;
+            }
+            html += "<th class='thYearCounter'>" + (counter > 0 ? counter : "-") + "</th>";
+        }
+        html += "</tr>";
+
+        html += "<tr><th>Scenarios</th><th class='scenario1'>Low</th><th class='scenario2'>Medium</th><th class='scenario3'>High</th><th></th>";
+        for (var i = 0; i < 10; i++) {
+            html += "<th>" + "Mar-" + (_BeginYear + i).toString().substr(-2) + "</th>";
+        }
+        html += "</tr>";
+        html += "</thead><tbody>";
+
+        html += '<tr><td colspan="4"></td><td>Revenue Months</td>';
+        for (var i = 0; i < 10; i++) {
+            var _projectionDate = new Date((_BeginYear + i) + "/03/31");
+            const diffTime = Math.abs(_projectionDate - _ProjectLaunchDate);
+            const diffMonths = Math.round(diffTime / (1000 * 60 * 60 * 24 * 30)); 
+            html += "<td class='trRevenueMonths'>" + ((_projectionDate < _ProjectLaunchDate) ? "0" : (diffMonths > 12 ? 12 : diffMonths)) + "</td>";
+        }
+        html += "</tr>";
+        $('#tblCommercialPerPack').html(html);
+        //html = '';
+        $('#FinanceTableBoy tr').each(function (index, value) {
+
+            let SKU = $(this).find("select.Skus option:selected").text();
+            let PackSize = $(this).find("select.PakeSize option:selected").text();
+
+            html += '<tr class="bg-light"><td class="text-left" colspan="15"><b>' + SKU + " - " + PackSize + '</b></td></tr>';
+
+            var _uniqueClass = "tr_" + $(this).find("select.Skus option:selected").val() + "_" + $(this).find("select.PakeSize option:selected").val();
+
+            html += "<tr class='" + _uniqueClass + "'><td>MS%</td><td>" + $(this).find("#hdnMSLow").val() + "</td><td>" + $(this).find("#hdnMSMid").val() + "</td><td>" + $(this).find("#hdnMSHigh").val() + "</td><td>Units</td>";
+
+            var marketSharePercentage =  GetMarketSharePercentage($(this).find("#hdnMSLow").val(), $(this).find("#hdnMSMid").val(), $(this).find("#hdnMSHigh").val());
+            let marketInPacks = formatToNumber($(this).find('.Marketinpacks').val());
+            let msErosion = formatToNumber($("#MarketShareErosionrate").val(), true);
+
+            for (var i = 0; i < 10; i++) {
+                var Row_th_Index = $('#tblCommercialPerPack').find('.thYearCounter:eq(' + i + ')').text();                
+                var trYearIndex = formatToNumber((Row_th_Index == '-') ? '0' : Row_th_Index);
+                var trRevenueMonths =  formatToNumber($('#tblCommercialPerPack').find('.trRevenueMonths:eq(' + i + ')').text());
+                let _units = ((marketInPacks * (marketSharePercentage / 100)) * (Math.pow((1 - (msErosion / 100)),  trYearIndex))) * (trRevenueMonths / 12);
+                html += "<td>" + _units.toFixed(3) +"</td>";
+            }
+            html += "</tr>";
+
+            html += "<tr class='" + _uniqueClass +"'><td>NSP</td><td>" + $(this).find("#hdnNSPLow").val() + "</td><td>" + $(this).find("#hdnNSPMid").val() + "</td><td>" + $(this).find("#hdnNSPHigh").val() +"</td><td>NSP</td>";
+            for (var i = 0; i < 10; i++) {
+                html += "<td></td>";
+            }
+            html += "</tr>";
+
+            html += "<tr class='" + _uniqueClass +"'><td>COGS</td><td>" + $(this).find(".EmcureCOGs_pack").val() + "</td><td>" + $(this).find(".EmcureCOGs_pack").val() + "</td><td>" + $(this).find(".EmcureCOGs_pack").val() + "</td><td>COGS/Unit</td>";
+            html += "</tr>";
+            html += "<tr class='" + _uniqueClass +"'><td></td><td></td><td></td><td></td><td>Sales</td>";
+            for (var i = 0; i < 10; i++) {
+                html += "<td></td>";
+            }
+            html += "</tr>";
+            html += "<tr class='" + _uniqueClass +"'><td></td><td></td><td></td><td></td><td>COGS</td>";
+            for (var i = 0; i < 10; i++) {
+                html += "<td></td>";
+            }
+            html += "</tr>";
+            html += "<tr class='" + _uniqueClass +"'><td></td><td></td><td></td><td></td><td>GC</td>";
+            for (var i = 0; i < 10; i++) {
+                html += "<td></td>";
+            }
+            html += "</tr>";
+            html += "<tr class='" + _uniqueClass +"'><td></td><td></td><td></td><td></td><td>GC%</td>";
+            for (var i = 0; i < 10; i++) {
+                html += "<td></td>";
+            }
+            html += "</tr>";            
+        });
+        if ($('#FinanceTableBoy tr').length > 0) {
+
+        }
+        html += "</tbody>";
+    }
+
+    $('#tblCommercialPerPack').html(html);
+}
+function GetMarketSharePercentage(low, mid, high) {
+    let marketSharePercentage = 0;
+    try {
+        if ($('#MSPersentage').val() == "1") {
+            marketSharePercentage = parseInt(low);
+        } else if ($('#MSPersentage').val() == "2") {
+            marketSharePercentage = parseInt(mid);
+        } else if ($('#MSPersentage').val() == "3") {
+            marketSharePercentage = parseInt(high);
+        }
+    } catch (e) {
+    }
+    return marketSharePercentage;
+}
+function formatToNumber(input, isFloat) {
+    try {
+        if (isFloat) {
+            return parseFloat(input);
+        } else {
+            return parseInt(input);
+        }
+    } catch (e) {
+        return 0;
+    }
+}
