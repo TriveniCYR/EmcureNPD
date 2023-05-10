@@ -933,6 +933,7 @@ function GetPBFTabDetailsSuccess(data) {
             SetPBFDisableForOtherUserBU();
             _firstLoad = false;
             SetPhaseWiseBudget();
+            SetHeadWiseBudget();
             PBFTabsReadOnly();
             $('input[type="number"]').on("keypress keyup blur", function (event) {
                 var patt = new RegExp(/[0-9]*[.]{1}[0-9]{2}/i);
@@ -1196,7 +1197,7 @@ function CreateClinicalTable(data, bioStudyTypeId) {
     for (var i = 0; i < _strengthArray.length; i++) {
         objectname += "<td data-strengthid='" + _strengthArray[i].pidfProductStrengthId + "'>" + _currencySymbol + "<input type='text' class='form-control calcTotalCostForStrengthClinical' readonly='readonly' tabindex=-1 /></td>";
     }
-    objectname += "<td>" + _currencySymbol + "<input type='text' class='form-control calcTotalCostForStrengthClinicalTotal' readonly='readonly' tabindex=-1  min='0' /></td></tr>";
+    objectname += "<td>" + _currencySymbol + "<input type='text' class='form-control calcTotalCostForStrengthClinicalTotal' readonly='readonly' tabindex=-1 /></td></tr>";
 
     return objectname;
 }
@@ -1282,7 +1283,7 @@ function CreateAnalyticalTable(costData, data, activityTypeId) {
             + '<td><input type="text" class="form-control analyticalTotalAMVTitle" id="AnalyticalAMVCosts.TotalAmvtitle" name="AnalyticalAMVCosts.TotalAmvtitle" placeholder="" value="' + (costData.length > 0 ? (costData[0].totalAMVTitle == null ? "" : costData[0].totalAMVTitle) : "") + '" /></td>'
             + '<td>' + _currencySymbol + '<input type="number" class="form-control analyticalTotalAMVCost" min="0" id="AnalyticalAMVCosts.TotalAmvcost" name="AnalyticalAMVCosts.TotalAmvcost"  placeholder="" value="' + (costData.length > 0 ? costData[0].totalAMVCost : "") + '"  /></td>'
         for (var i = 0; i < _strengthArray.length; i++) {
-            objectname += '<td data-strengthid="' + _strengthArray[i].pidfProductStrengthId + '"><input class="analyticalTypeId" type="hidden" value="' + activityTypeId + '" /><input type="hidden" class="analyticalStrengthId" value="' + _strengthArray[i].pidfProductStrengthId + '" /><input type="checkbox" id="rndanalyticalStrengthIsChecked' + _strengthArray[i].pidfProductStrengthId + '" class="rndanalyticalStrengthIsChecked rndanalyticalStrengthIsChecked' + _strengthArray[i].pidfProductStrengthId + '" ' + (costData.length > 0 ? getCheckboxCheckedStrength(costData, _strengthArray[i].pidfProductStrengthId, "isChecked") : "") + '> &nbsp; ' + _currencySymbol + '<input type="text" class="form-control analyticalAMVStrengthValue inline-textbox" readonly="readonly" tabindex=-1 disabled="true" min="0" /></td>';
+            objectname += '<td data-strengthid="' + _strengthArray[i].pidfProductStrengthId + '"><input class="analyticalTypeId" type="hidden" value="' + activityTypeId + '" /><input type="hidden" class="analyticalStrengthId" value="' + _strengthArray[i].pidfProductStrengthId + '" /><input type="checkbox" id="rndanalyticalStrengthIsChecked' + _strengthArray[i].pidfProductStrengthId + '" class="rndanalyticalStrengthIsChecked rndanalyticalStrengthIsChecked' + _strengthArray[i].pidfProductStrengthId + '" ' + (costData.length > 0 ? getCheckboxCheckedStrength(costData, _strengthArray[i].pidfProductStrengthId, "isChecked") : "") + '> &nbsp; ' + _currencySymbol + '<input type="text" class="form-control analyticalAMVStrengthValue inline-textbox" readonly="readonly" tabindex=-1 disabled="true" /></td>';
         }
         objectname += "<td>" + _currencySymbol + "<input type='text' class='form-control analyticalTotalAMVCostStrength' readonly='readonly' tabindex=-1 /></td><td></td></tr>";
 
@@ -1957,13 +1958,13 @@ function CreatePlantSupportCostTable(data, activityTypeId) {
     for (var i = 0; i < _strengthArray.length; i++) {
         objectname += '<td data-strengthid="' + _strengthArray[i].pidfProductStrengthId + '"><input type="hidden" id="RNDPlantSupportCosts[' + [(i + _iterator)] + '].StrengthId" name="RNDPlantSupportCosts[' + [(i + _iterator)] + '].StrengthId" value="' + _strengthArray[i].pidfProductStrengthId + '" /><input type="number" class="form-control calcRNDPlantSupportCostsScaleUp" id="RNDPlantSupportCosts[' + [(i + _iterator)] + '].ScaleUp" name="RNDPlantSupportCosts[' + [(i + _iterator)] + '].ScaleUp" placeholder="Scale Up" min="0" value="' + (getValueFromStrengthId(data, _strengthArray[i].pidfProductStrengthId, "scaleUp")) + '"  /><span>days</span></td>';
     }
-    objectname += "<td>" + _currencySymbol + "<input type='text' class='form-control TotalStrength' readonly='readonly' tabindex=-1 /><span>days</span></td></tr>";
+    objectname += "<td>" + _currencySymbol + "<input type='text' class='form-control TotalStrength TotalPSCScaleUp' readonly='readonly' tabindex=-1 /><span>days</span></td></tr>";
 
     objectname += "<tr class='PlantSupportCost_" + activityTypeId + "' data-activitytypeid='" + activityTypeId + "'><td>Exhibit</td>";
     for (var i = 0; i < _strengthArray.length; i++) {
         objectname += '<td data-strengthid="' + _strengthArray[i].pidfProductStrengthId + '"> <input type="number" class="form-control calcRNDPlantSupportCostsExhibit" id="RNDPlantSupportCosts[' + [(i + _iterator)] + '].Exhibit" name="RNDPlantSupportCosts[' + [(i + _iterator)] + '].Exhibit" placeholder="Exhibit" min="0" value="' + (getValueFromStrengthId(data, _strengthArray[i].pidfProductStrengthId, "exhibit")) + '" /><span>days</span></td>';
     }
-    objectname += "<td>" + _currencySymbol + "<input type='text' class='form-control TotalStrength' readonly='readonly' tabindex=-1 /><span>days</span></td></tr>";
+    objectname += "<td>" + _currencySymbol + "<input type='text' class='form-control TotalStrength TotalPSCExhibit' readonly='readonly' tabindex=-1 /><span>days</span></td></tr>";
 
     objectname += "<tr class='PlantSupportCost_" + activityTypeId + "Total' data-activitytypeid='" + activityTypeId + "'><td class='text-bold'>Total Cost</td>";
     for (var i = 0; i < _strengthArray.length; i++) {
@@ -2007,25 +2008,25 @@ function CreateReferenceProductDetailTable(data, bioStudyTypeId) {
     for (var i = 0; i < _strengthArray.length; i++) {
         objectname += '<td data-strengthid="' + _strengthArray[i].pidfProductStrengthId + '"><input type="number" class="form-control calcRNDRPDFormulationDevelopment RPDStrengthValue" id="RNDReferenceProductDetails[' + [(i + _iterator)] + '].FormulationDevelopment" name="RNDReferenceProductDetails[' + [(i + _iterator)] + '].FormulationDevelopment" placeholder="Formulation Development" min="0" value="' + (getValueFromStrengthId(data, _strengthArray[i].pidfProductStrengthId, "formulationDevelopment")) + '"  /></td>';
     }
-    objectname += "<td>" + _currencySymbol + "<input type='text' class='form-control TotalStrength' readonly='readonly' tabindex=-1 /></td></tr>";
+    objectname += "<td>" + _currencySymbol + "<input type='text' class='form-control TotalStrength TotalFormulation' readonly='readonly' tabindex=-1 /></td></tr>";
 
     objectname += "<tr class='RPDcal_" + bioStudyTypeId + "' data-biostudytypeid='" + bioStudyTypeId + "' data-rowid='2'><td>Pilot Be</td>";
     for (var i = 0; i < _strengthArray.length; i++) {
         objectname += '<td data-strengthid="' + _strengthArray[i].pidfProductStrengthId + '"> <input type="number" class="form-control calcRNDRPDPilotBe RPDStrengthValue" id="RNDReferenceProductDetails[' + [(i + _iterator)] + '].PilotBe" name="RNDReferenceProductDetails[' + [(i + _iterator)] + '].PilotBe" placeholder="Pilot Be" min="0" value="' + (getValueFromStrengthId(data, _strengthArray[i].pidfProductStrengthId, "pilotBE")) + '" /></td>';
     }
-    objectname += "<td>" + _currencySymbol + "<input type='text' class='form-control TotalStrength' readonly='readonly' tabindex=-1 /></td></tr>";
+    objectname += "<td>" + _currencySymbol + "<input type='text' class='form-control TotalStrength TotalPilotBe' readonly='readonly' tabindex=-1 /></td></tr>";
 
-    objectname += "<tr class='RPDcal_" + bioStudyTypeId + "' data-biostudytypeid='" + bioStudyTypeId + "' data-rowid='3'><td>Pharmasuitical Equivalence</td>";
+    objectname += "<tr class='RPDcal_" + bioStudyTypeId + "' data-biostudytypeid='" + bioStudyTypeId + "' data-rowid='3'><td>Pharmaceutical Equivalence</td>";
     for (var i = 0; i < _strengthArray.length; i++) {
         objectname += '<td data-strengthid="' + _strengthArray[i].pidfProductStrengthId + '"> <input type="number" class="form-control calcRNDRPDPharmasuiticalEquivalence RPDStrengthValue" id="RNDReferenceProductDetails[' + [(i + _iterator)] + '].PharmasuiticalEquivalence" name="RNDReferenceProductDetails[' + [(i + _iterator)] + '].PharmasuiticalEquivalence" placeholder="Pharmasuitical Equivalence" min="0" value="' + (getValueFromStrengthId(data, _strengthArray[i].pidfProductStrengthId, "pharmasuiticalEquivalence")) + '" /></td>';
     }
-    objectname += "<td>" + _currencySymbol + "<input type='text' class='form-control TotalStrength' readonly='readonly' tabindex=-1 /></td></tr>";
+    objectname += "<td>" + _currencySymbol + "<input type='text' class='form-control TotalStrength TotalPharmasuiticalEquivalence' readonly='readonly' tabindex=-1 /></td></tr>";
 
     objectname += "<tr class='RPDcal_" + bioStudyTypeId + "' data-biostudytypeid='" + bioStudyTypeId + "' data-rowid='4'><td>Pivotal Bio</td>";
     for (var i = 0; i < _strengthArray.length; i++) {
         objectname += '<td data-strengthid="' + _strengthArray[i].pidfProductStrengthId + '"> <input type="number" class="form-control calcRNDRPDPivotalBio RPDStrengthValue" id="RNDReferenceProductDetails[' + [(i + _iterator)] + '].PivotalBio" name="RNDReferenceProductDetails[' + [(i + _iterator)] + '].PivotalBio" placeholder="Pivotal Bio" min="0" value="' + (getValueFromStrengthId(data, _strengthArray[i].pidfProductStrengthId, "pivotalBio")) + '"/></td>';
     }
-    objectname += "<td>" + _currencySymbol + "<input type='text' class='form-control TotalStrength' readonly='readonly' tabindex=-1 /></td></tr>";
+    objectname += "<td>" + _currencySymbol + "<input type='text' class='form-control TotalStrength TotalPivotalBio' readonly='readonly' tabindex=-1 /></td></tr>";
 
     objectname += "<tr class='RPDcal_" + bioStudyTypeId + "Total' data-biostudytypeid='" + bioStudyTypeId + "'><td class='text-bold'>Total Cost</td>";
     for (var i = 0; i < _strengthArray.length; i++) {
@@ -2221,37 +2222,37 @@ function CreatePhaseWiseBudgetTable() {
     for (var i = 0; i < _strengthArray.length; i++) {
         PWBHTML += '<td data-strengthid="' + _strengthArray[i].pidfProductStrengthId + '"><input type="hidden" value="' + _strengthArray[i].pidfProductStrengthId + '" />' + _currencySymbol + '<input type="text" class="form-control calcPWBRNDFeasability"  readonly="readonly" tabindex=-1 /></td>';
     }
-    PWBHTML += "<td>" + _currencySymbol + "<input type='text' class='form-control totalPWB' readonly='readonly' tabindex=-1 /></td><td>" + _currencySymbol + "<input type='text' class='form-control CumtotalPWBFeasability' readonly='readonly' tabindex=-1 /></td><td>" + _currencySymbol + "<input type='text' class='form-control PercenttotalPWB' readonly='readonly' tabindex=-1 /></td></tr>";
+    PWBHTML += "<td>" + _currencySymbol + "<input type='text' class='form-control totalPWB' readonly='readonly' tabindex=-1 /></td><td>" + _currencySymbol + "<input type='text' class='form-control CumtotalPWBFeasability CumTotalPWB' readonly='readonly' tabindex=-1 /></td><td>" + _currencySymbol + "<input type='text' class='form-control PercenttotalPWB' readonly='readonly' tabindex=-1 /></td></tr>";
 
     PWBHTML += "<tr class='phasewisebudget_" + bioStudyTypeId + "' data-biostudytypeid='" + bioStudyTypeId + "'><td>Prototype development</td>";
     for (var i = 0; i < _strengthArray.length; i++) {
         PWBHTML += '<td data-strengthid="' + _strengthArray[i].pidfProductStrengthId + '"><input type="hidden" value="' + _strengthArray[i].pidfProductStrengthId + '" />' + _currencySymbol + '<input type="text" class="form-control calcRNDPWBPrototypedevelopment" readonly="readonly" tabindex=-1 /></td>';
     }
-    PWBHTML += "<td>" + _currencySymbol + "<input type='text' class='form-control totalPWB' readonly='readonly' tabindex=-1 /></td><td>" + _currencySymbol + "<input type='text' class='form-control CumtotalPWBPrototype' readonly='readonly' tabindex=-1 /></td><td>" + _currencySymbol + "<input type='text' class='form-control PercenttotalPWB' readonly='readonly' tabindex=-1 /></td></tr>";
+    PWBHTML += "<td>" + _currencySymbol + "<input type='text' class='form-control totalPWB' readonly='readonly' tabindex=-1 /></td><td>" + _currencySymbol + "<input type='text' class='form-control CumtotalPWBPrototype CumTotalPWB' readonly='readonly' tabindex=-1 /></td><td>" + _currencySymbol + "<input type='text' class='form-control PercenttotalPWB' readonly='readonly' tabindex=-1 /></td></tr>";
 
     PWBHTML += "<tr class='phasewisebudget_" + bioStudyTypeId + "' data-biostudytypeid='" + bioStudyTypeId + "'><td>R&D Scale Up</td>";
     for (var i = 0; i < _strengthArray.length; i++) {
         PWBHTML += '<td data-strengthid="' + _strengthArray[i].pidfProductStrengthId + '"><input type="hidden" value="' + _strengthArray[i].pidfProductStrengthId + '" />' + _currencySymbol + '<input type="text" class="form-control calcRNDPWBScaleUp"  readonly="readonly" tabindex=-1 /></td>';
     }
-    PWBHTML += "<td>" + _currencySymbol + "<input type='text' class='form-control totalPWB' readonly='readonly' tabindex=-1 /></td><td>" + _currencySymbol + "<input type='text' class='form-control CumtotalPWBScaleUp' readonly='readonly' tabindex=-1 /></td><td>" + _currencySymbol + "<input type='text' class='form-control PercenttotalPWB' readonly='readonly' tabindex=-1 /></td></tr>";
+    PWBHTML += "<td>" + _currencySymbol + "<input type='text' class='form-control totalPWB' readonly='readonly' tabindex=-1 /></td><td>" + _currencySymbol + "<input type='text' class='form-control CumtotalPWBScaleUp CumTotalPWB' readonly='readonly' tabindex=-1 /></td><td>" + _currencySymbol + "<input type='text' class='form-control PercenttotalPWB' readonly='readonly' tabindex=-1 /></td></tr>";
 
     PWBHTML += "<tr class='phasewisebudget_" + bioStudyTypeId + "' data-biostudytypeid='" + bioStudyTypeId + "'><td>AMV / AMT</td>";
     for (var i = 0; i < _strengthArray.length; i++) {
         PWBHTML += '<td data-strengthid="' + _strengthArray[i].pidfProductStrengthId + '"><input type="hidden" value="' + _strengthArray[i].pidfProductStrengthId + '" />' + _currencySymbol + '<input type="text" class="form-control calcRNDPWBAMV"  readonly="readonly" tabindex=-1 /></td>';
     }
-    PWBHTML += "<td>" + _currencySymbol + "<input type='text' class='form-control totalPWB' readonly='readonly' tabindex=-1 /></td><td>" + _currencySymbol + "<input type='text' class='form-control CumtotalPWBPWBAMV' readonly='readonly' tabindex=-1 /></td><td>" + _currencySymbol + "<input type='text' class='form-control PercenttotalPWB' readonly='readonly' tabindex=-1 /></td></tr>";
+    PWBHTML += "<td>" + _currencySymbol + "<input type='text' class='form-control totalPWB' readonly='readonly' tabindex=-1 /></td><td>" + _currencySymbol + "<input type='text' class='form-control CumtotalPWBPWBAMV CumTotalPWB' readonly='readonly' tabindex=-1 /></td><td>" + _currencySymbol + "<input type='text' class='form-control PercenttotalPWB' readonly='readonly' tabindex=-1 /></td></tr>";
 
     PWBHTML += "<tr class='phasewisebudget_" + bioStudyTypeId + "' data-biostudytypeid='" + bioStudyTypeId + "'><td>Exhibit and Scalability</td>";
     for (var i = 0; i < _strengthArray.length; i++) {
         PWBHTML += '<td data-strengthid="' + _strengthArray[i].pidfProductStrengthId + '"><input type="hidden" value="' + _strengthArray[i].pidfProductStrengthId + '" />' + _currencySymbol + '<input type="text" class="form-control calcRNDPWBExhibitScalability" readonly="readonly" tabindex=-1 /></td>';
     }
-    PWBHTML += "<td>" + _currencySymbol + "<input type='text' class='form-control totalPWB' readonly='readonly' tabindex=-1 /></td><td>" + _currencySymbol + "<input type='text' class='form-control CumtotalPWBExhibitScalability' readonly='readonly' tabindex=-1 /></td><td>" + _currencySymbol + "<input type='text' class='form-control PercenttotalPWB' readonly='readonly' tabindex=-1 /></td></tr>";
+    PWBHTML += "<td>" + _currencySymbol + "<input type='text' class='form-control totalPWB' readonly='readonly' tabindex=-1 /></td><td>" + _currencySymbol + "<input type='text' class='form-control CumtotalPWBExhibitScalability CumTotalPWB' readonly='readonly' tabindex=-1 /></td><td>" + _currencySymbol + "<input type='text' class='form-control PercenttotalPWB' readonly='readonly' tabindex=-1 /></td></tr>";
 
     PWBHTML += "<tr class='phasewisebudget_" + bioStudyTypeId + "' data-biostudytypeid='" + bioStudyTypeId + "'><td>Filing</td>";
     for (var i = 0; i < _strengthArray.length; i++) {
         PWBHTML += '<td data-strengthid="' + _strengthArray[i].pidfProductStrengthId + '"><input type="hidden" value="' + _strengthArray[i].pidfProductStrengthId + '" />' + _currencySymbol + '<input type="text" class="form-control calcRNDPWBFiling" readonly="readonly" tabindex=-1 /></td>';
     }
-    PWBHTML += "<td>" + _currencySymbol + "<input type='text' class='form-control totalPWB' readonly='readonly' tabindex=-1 /></td><td>" + _currencySymbol + "<input type='text' class='form-control CumtotalPWBFiling' readonly='readonly' tabindex=-1 /></td><td>" + _currencySymbol + "<input type='text' class='form-control PercenttotalPWB' readonly='readonly' tabindex=-1 /></td></tr>";
+    PWBHTML += "<td>" + _currencySymbol + "<input type='text' class='form-control totalPWB' readonly='readonly' tabindex=-1 /></td><td>" + _currencySymbol + "<input type='text' class='form-control CumtotalPWBFiling CumTotalPWB' readonly='readonly' tabindex=-1 /></td><td>" + _currencySymbol + "<input type='text' class='form-control PercenttotalPWB' readonly='readonly' tabindex=-1 /></td></tr>";
 
     PWBHTML += "<tr class='phasewisebudget_" + bioStudyTypeId + "Total' data-biostudytypeid='" + bioStudyTypeId + "'><td class='text-bold'>Total Cost</td>";
     for (var i = 0; i < _strengthArray.length; i++) {
@@ -2310,7 +2311,7 @@ function CreateHeadWiseBudgetTable(data) {
     }
     objectname += "<tr class='headwisebudget_" + bioStudyTypeId + "Total' data-biostudytypeid='" + bioStudyTypeId + "'><td><b>Total Cost</b></td>";
     objectname += "<td>" + _currencySymbol + "<input type='text' class='form-control calcTotalCostForPrototype' readonly='readonly' tabindex=-1 /></td> <td>" + _currencySymbol + "<input type='text' class='form-control calcTotalCostForScaleUp' readonly='readonly' tabindex=-1 /></td><td>" + _currencySymbol + "<input type='text' class='form-control calcTotalCostForExhibit' readonly='readonly' tabindex=-1 /></td>";
-    objectname += "<td>" + _currencySymbol + "<input type='text' class='form-control calcTotalCostPhaseWiseBudget' readonly='readonly' tabindex=-1   /></td></tr>";
+    objectname += "<td>" + _currencySymbol + "<input type='text' class='form-control calcTotalCostHeadWiseBudget' readonly='readonly' tabindex=-1   /></td></tr>";
 
     return objectname;
 }
@@ -2502,23 +2503,42 @@ function SetRNDChildRows() {
 
             $('#hdnrndHeadWiseBudget').val(JSON.stringify(_RNDHeadWiseBudgetArray));
 
-            $.each($('#tablerndphasewisebudget tbody tr.phasewisebudget_' + i), function () {
-                var _rndPWBObject = new Object();
-                var FeasabilityCumTotal = $(this).find(".CumtotalPWBFeasability").val();
-                var PrototypeCumTotal = $(this).find(".CumtotalPWBPrototype").val();
-                var ScaleUpCumTotal = $(this).find(".CumtotalPWBScaleUp").val();
-                var AMVCumTotal = $(this).find(".CumtotalPWBPWBAMV").val();
-                var ExhibitCumTotal = $(this).find(".CumtotalPWBExhibitScalability").val();
-                var FilingCumTotal = $(this).find(".CumtotalPWBFiling").val();
+            var FeasabilityCumTotal = $('#tablerndphasewisebudget tbody tr.phasewisebudget_' + i).find(".CumtotalPWBFeasability").val();
+            var PrototypeCumTotal = $('#tablerndphasewisebudget tbody tr.phasewisebudget_' + i).find(".CumtotalPWBPrototype").val();
+            var ScaleUpCumTotal = $('#tablerndphasewisebudget tbody tr.phasewisebudget_' + i).find(".CumtotalPWBScaleUp").val();
+            var AMVCumTotal = $('#tablerndphasewisebudget tbody tr.phasewisebudget_' + i).find(".CumtotalPWBPWBAMV").val();
+            var ExhibitCumTotal = $('#tablerndphasewisebudget tbody tr.phasewisebudget_' + i).find(".CumtotalPWBExhibitScalability").val();
+            var FilingCumTotal = $('#tablerndphasewisebudget tbody tr.phasewisebudget_' + i).find(".CumtotalPWBFiling").val();
+            var _rndPWBObject = new Object();
+            _rndPWBObject.FeasabilityCumTotal = ConvertToNumber(FeasabilityCumTotal == "" ? 0 : FeasabilityCumTotal);
+            _rndPWBObject.PrototypeCumTotal = ConvertToNumber(PrototypeCumTotal == "" ? 0 : PrototypeCumTotal);
+            _rndPWBObject.ScaleUpCumTotal = ConvertToNumber(ScaleUpCumTotal == "" ? 0 : ScaleUpCumTotal);
+            _rndPWBObject.AMVCumTotal = ConvertToNumber(AMVCumTotal == "" ? 0 : AMVCumTotal);
+            _rndPWBObject.ExhibitCumTotal = ConvertToNumber(ExhibitCumTotal == "" ? 0 : ExhibitCumTotal);
+            _rndPWBObject.FilingCumTotal = ConvertToNumber(FilingCumTotal == "" ? 0 : FilingCumTotal);
+            _RNDPhaseWiseBudgetArray.push(_rndPWBObject);
 
-                _rndPWBObject.FeasabilityCumTotal = ConvertToNumber(FeasabilityCumTotal == "" ? 0 : FeasabilityCumTotal);
-                _rndPWBObject.PrototypeCumTotal = ConvertToNumber(PrototypeCumTotal == "" ? 0 : PrototypeCumTotal);
-                _rndPWBObject.ScaleUpCumTotal = ConvertToNumber(ScaleUpCumTotal == "" ? 0 : ScaleUpCumTotal);
-                _rndPWBObject.AMVCumTotal = ConvertToNumber(AMVCumTotal == "" ? 0 : AMVCumTotal);
-                _rndPWBObject.ExhibitCumTotal = ConvertToNumber(ExhibitCumTotal == "" ? 0 : ExhibitCumTotal);
-                _rndPWBObject.FilingCumTotal = ConvertToNumber(FilingCumTotal == "" ? 0 : FilingCumTotal);
-                _RNDPhaseWiseBudgetArray.push(_rndPWBObject);
-            });
+            //$.each($('#tablerndphasewisebudget tbody tr.phasewisebudget_' + i), function () {
+            //    var flag = true;
+            //    var _rndPWBObject = new Object();
+            //    var FeasabilityCumTotal = $(this).find(".CumtotalPWBFeasability").val();
+            //    var PrototypeCumTotal = $(this).find(".CumtotalPWBPrototype").val();
+            //    var ScaleUpCumTotal = $(this).find(".CumtotalPWBScaleUp").val();
+            //    var AMVCumTotal = $(this).find(".CumtotalPWBPWBAMV").val();
+            //    var ExhibitCumTotal = $(this).find(".CumtotalPWBExhibitScalability").val();
+            //    var FilingCumTotal = $(this).find(".CumtotalPWBFiling").val();
+
+            //    _rndPWBObject.FeasabilityCumTotal = ConvertToNumber(FeasabilityCumTotal == "" ? 0 : FeasabilityCumTotal);
+            //    _rndPWBObject.PrototypeCumTotal = ConvertToNumber(PrototypeCumTotal == "" ? 0 : PrototypeCumTotal);
+            //    _rndPWBObject.ScaleUpCumTotal = ConvertToNumber(ScaleUpCumTotal == "" ? 0 : ScaleUpCumTotal);
+            //    _rndPWBObject.AMVCumTotal = ConvertToNumber(AMVCumTotal == "" ? 0 : AMVCumTotal);
+            //    _rndPWBObject.ExhibitCumTotal = ConvertToNumber(ExhibitCumTotal == "" ? 0 : ExhibitCumTotal);
+            //    _rndPWBObject.FilingCumTotal = ConvertToNumber(FilingCumTotal == "" ? 0 : FilingCumTotal);
+            //    _RNDPhaseWiseBudgetArray.push(_rndPWBObject);
+            //    //if (_RNDPhaseWiseBudgetArray.length > 0) {
+            //    //    return false;
+            //    //}
+            //});
 
             $('#hdnrndPhaseWiseBudget').val(JSON.stringify(_RNDPhaseWiseBudgetArray));
         }
@@ -2713,10 +2733,161 @@ function SetPhaseWiseBudget() {
             });
             FinalTotalForPWBStrength += _TotalForSection;
             $(y).find(".totalPWB").val(formatNumber(_TotalForSection));
+            $(y).find(".CumTotalPWB").val(formatNumber(FinalTotalForPWBStrength));
+            //$(y).find(".PercenttotalPWB").val(ConvertToNumber(_TotalForSection));
+        });
+        $('#tablerndphasewisebudget').find(".phasewisebudget_1").each(function (x, y) {
+            var _cumTotal = ConvertToNumber($(y).find(".CumTotalPWB").val());
+            $(y).find(".PercenttotalPWB").val(((_cumTotal / FinalTotalForPWBStrength) * 100).toFixed(2));
         });
         $('#tablerndphasewisebudget').find(".phasewisebudget_1Total").find(".calcTotalCostForStrengthTotal").val(formatNumber(FinalTotalForPWBStrength));
 
         SetTotalExpenses();
+    }
+}
+function SetHeadWiseBudget() {
+    if (!_firstLoad) {
+        var _manHourRate = $('#RNDMasterEntities_ManHourRate').val();
+        var _plantsupportcost = $('#RNDMasterEntities_PlanSupportCostRsPerDay').val();
+        var _FormulationActivityTypeId = 1;
+        var _ScaleupActivityTypeId = 2;
+        var _ExhibitActivityTypeId = 3;
+        var _PivotalBioFedId = 4;
+
+
+        /*Protoype Development*/
+        var _totalManpowerCostPrototype = $('#tablerrndmanpowercostprojectduration').find('.manpowercost_1Total').find('.calcTotalPrototypeCostForStrengthTotal').val();
+
+        $('#tableHeadWiseBudget').find('.headwisebudget_1[data-activityid=1]').find('.rndHWBPrototype').val(_totalManpowerCostPrototype);
+
+        var _APIReqCostPrototype = $('#tablerndapirequirement').find('.ApiRequirement_1').find('.APIReqPrototypeCostTotalCost').val();
+        var _exicipientPrototype = $('#tablerndexicipientrequirement').find('.exicipientActivity1Total').find('.calcTotalCostForexicipient1').val();
+        var _packagingPrototype = $('#tablerndpackagingmaterialrequirement').find('.packagingActivity1Total').find('.calcTotalCostForPackaging1').val();
+
+        var TotalMaterialCostPrototype = (ConvertToNumber(_APIReqCostPrototype) + ConvertToNumber(_exicipientPrototype) + ConvertToNumber(_packagingPrototype));
+
+        $('#tableHeadWiseBudget').find('.headwisebudget_1[data-activityid=2]').find('.rndHWBPrototype').val(formatNumber(TotalMaterialCostPrototype));
+        var _plantSupportCostPrototype = 0;
+        $('#tableHeadWiseBudget').find('.headwisebudget_1[data-activityid=3]').find('.rndHWBPrototype').val(formatNumber(_plantSupportCostPrototype));
+
+        var _referenceProductFormulationCost = $('#tablerndreferenceproductdetail').find('.RPDcal_1').find('.TotalFormulation').val();
+        var _referenceProductPilotBeCost = $('#tablerndreferenceproductdetail').find('.RPDcal_1').find('.TotalPilotBe').val();
+        var _referenceProductDetailsCostPrototype = (ConvertToNumber(_referenceProductFormulationCost) + ConvertToNumber(_referenceProductPilotBeCost));
+        $('#tableHeadWiseBudget').find('.headwisebudget_1[data-activityid=4]').find('.rndHWBPrototype').val(formatNumber(_referenceProductDetailsCostPrototype));
+
+        var analyticalCostPrototype = $('#tableanalytical').find('.analyticalActivity1Total').find('.calcTotalCostForAnalytical1').val();
+        $('#tableHeadWiseBudget').find('.headwisebudget_1[data-activityid=5]').find('.rndHWBPrototype').val(analyticalCostPrototype);
+
+        var _clinicalTotalPilotFasting = $('#tableclinical').find('.clinicalcal_1Total').find('.calcTotalCostForStrengthClinicalTotal').val();
+        var _clinicalTotalPilotFed = $('#tableclinical').find('.clinicalcal_2Total').find('.calcTotalCostForStrengthClinicalTotal').val();
+        var bioStudyCostprototype = ((ConvertToNumber(_clinicalTotalPilotFasting) + ConvertToNumber(_clinicalTotalPilotFed)));
+        $('#tableHeadWiseBudget').find('.headwisebudget_1[data-activityid=6]').find('.rndHWBPrototype').val(formatNumber(bioStudyCostprototype));
+
+        var toolingchangepartprototype = $('#tablerndtoolingchangepart').find('.ToolingChangePartActivity1Total').find('.calcTotalCostForTooling1').val();
+        $('#tableHeadWiseBudget').find('.headwisebudget_1[data-activityid=7]').find('.rndHWBPrototype').val(formatNumber(toolingchangepartprototype));
+
+        var OtherExpensesprototype = $('#tablerndcapexmiscellaneousexpenses').find('.CapexMiscActivity1Total').find('.calcTotalCostForMisc1').val();
+        $('#tableHeadWiseBudget').find('.headwisebudget_1[data-activityid=8]').find('.rndHWBPrototype').val(formatNumber(OtherExpensesprototype));
+        
+        var FilingExpensesprototype = 0;
+        $('#tableHeadWiseBudget').find('.headwisebudget_1[data-activityid=9]').find('.rndHWBPrototype').val(FilingExpensesprototype);
+        /*end of Protoype Development*/
+
+        /*ScaleUp Development*/
+        var _totalManpowerCostScaleUp = $('#tablerrndmanpowercostprojectduration').find('.manpowercost_1Total').find('.calcTotalScaleupCostForStrengthTotal').val();
+        $('#tableHeadWiseBudget').find('.headwisebudget_1[data-activityid=1]').find('.rndHWBScaleUp').val(_totalManpowerCostScaleUp);
+
+        var _APIReqCostScaleUp = $('#tablerndapirequirement').find('.ApiRequirement_1').find('.APIReqScaleupCostTotalCost').val();
+        var _exicipientScaleUp = $('#tablerndexicipientrequirement').find('.exicipientActivity2Total').find('.calcTotalCostForexicipient2').val();
+        var _packagingScaleUp = $('#tablerndpackagingmaterialrequirement').find('.packagingActivity2Total').find('.calcTotalCostForPackaging2').val();
+        var TotalMaterialCostScaleUp = (ConvertToNumber(_APIReqCostScaleUp) + ConvertToNumber(_exicipientScaleUp) + ConvertToNumber(_packagingScaleUp));
+        $('#tableHeadWiseBudget').find('.headwisebudget_1[data-activityid=2]').find('.rndHWBScaleUp').val(formatNumber(TotalMaterialCostScaleUp));
+        
+        var _plantSupportCostScaleUp = $('#tablerndplantsupportcost').find('.PlantSupportCost_1').find('.TotalPSCScaleUp').val();
+        $('#tableHeadWiseBudget').find('.headwisebudget_1[data-activityid=3]').find('.rndHWBScaleUp').val(formatNumber(ConvertToNumber(_plantSupportCostScaleUp) * _plantsupportcost));
+
+        var _referenceProductDetailsCostScaleUp = 0;
+        $('#tableHeadWiseBudget').find('.headwisebudget_1[data-activityid=4]').find('.rndHWBScaleUp').val(ConvertToNumber(_referenceProductDetailsCostScaleUp));
+
+        var analyticalCostScaleUp = $('#tableanalytical').find('.analyticalActivity2Total').find('.calcTotalCostForAnalytical2').val();
+        $('#tableHeadWiseBudget').find('.headwisebudget_1[data-activityid=5]').find('.rndHWBScaleUp').val(analyticalCostScaleUp);
+
+        var bioStudyCostScaleUp = 0;
+        $('#tableHeadWiseBudget').find('.headwisebudget_1[data-activityid=6]').find('.rndHWBScaleUp').val(bioStudyCostScaleUp);
+
+        var toolingchangepartScaleUp = $('#tablerndtoolingchangepart').find('.ToolingChangePartActivity2Total').find('.calcTotalCostForTooling2').val();
+        $('#tableHeadWiseBudget').find('.headwisebudget_1[data-activityid=7]').find('.rndHWBScaleUp').val(formatNumber(toolingchangepartScaleUp));
+
+        var OtherExpensesScaleUp = 0;
+        $('#tableHeadWiseBudget').find('.headwisebudget_1[data-activityid=8]').find('.rndHWBScaleUp').val(OtherExpensesScaleUp);
+
+        var FilingExpensesScaleUp = 0;
+        $('#tableHeadWiseBudget').find('.headwisebudget_1[data-activityid=9]').find('.rndHWBScaleUp').val(FilingExpensesScaleUp);
+
+        /*end of ScaleUp Development*/
+
+        /*Exhibit Development*/
+        var _totalManpowerCostExhibit = $('#tablerrndmanpowercostprojectduration').find('.manpowercost_1Total').find('.calcTotalExhibitCostForStrengthTotal').val();
+        $('#tableHeadWiseBudget').find('.headwisebudget_1[data-activityid=1]').find('.rndHWBExhibit').val(_totalManpowerCostExhibit);
+
+        var _APIReqCostExhibit = $('#tablerndapirequirement').find('.ApiRequirement_1').find('.APIReqExhibitBatchTotalCost').val();
+        var _exicipientExhibit = $('#tablerndexicipientrequirement').find('.exicipientActivity3Total').find('.calcTotalCostForexicipient3').val();
+        var _packagingExhibit = $('#tablerndpackagingmaterialrequirement').find('.packagingActivity3Total').find('.calcTotalCostForPackaging3').val();
+
+        var TotalMaterialCostExhibit = (ConvertToNumber(_APIReqCostExhibit) + ConvertToNumber(_exicipientExhibit) + ConvertToNumber(_packagingExhibit));
+        $('#tableHeadWiseBudget').find('.headwisebudget_1[data-activityid=2]').find('.rndHWBExhibit').val(formatNumber(TotalMaterialCostExhibit));
+
+        var _plantSupportCostExhibit = $('#tablerndplantsupportcost').find('.PlantSupportCost_1').find('.TotalPSCExhibit').val();
+        $('#tableHeadWiseBudget').find('.headwisebudget_1[data-activityid=3]').find('.rndHWBExhibit').val(formatNumber(ConvertToNumber(_plantSupportCostExhibit) * _plantsupportcost));
+
+        var _referenceProductDetailsCost = $('#tablerndreferenceproductdetail').find('.RPDcal_1Total').find('.calcTotalCostForStrengthTotalRPD').val();
+        $('#tableHeadWiseBudget').find('.headwisebudget_1[data-activityid=4]').find('.rndHWBExhibit').val(_referenceProductDetailsCost);
+
+        var analyticalCostExhibit = $('#tableanalytical').find('.analyticalActivity3Total').find('.calcTotalCostForAnalytical3').val();
+        $('#tableHeadWiseBudget').find('.headwisebudget_1[data-activityid=5]').find('.rndHWBExhibit').val(analyticalCostExhibit);
+
+        var _clinicalTotalPivotalFasting = $('#tableclinical').find('.clinicalcal_3Total').find('.calcTotalCostForStrengthClinicalTotal').val();
+        var _clinicalTotalPivotalFed = $('#tableclinical').find('.clinicalcal_4Total').find('.calcTotalCostForStrengthClinicalTotal').val();
+        var bioStudyCostExhibit = ((ConvertToNumber(_clinicalTotalPivotalFasting) + ConvertToNumber(_clinicalTotalPivotalFed)));
+        $('#tableHeadWiseBudget').find('.headwisebudget_1[data-activityid=6]').find('.rndHWBExhibit').val(formatNumber(bioStudyCostExhibit));
+
+        var toolingchangepartExhibit = 0;
+        $('#tableHeadWiseBudget').find('.headwisebudget_1[data-activityid=7]').find('.rndHWBExhibit').val(toolingchangepartExhibit);
+
+        var OtherExpensesExhibit = 0;
+        $('#tableHeadWiseBudget').find('.headwisebudget_1[data-activityid=8]').find('.rndHWBExhibit').val(OtherExpensesExhibit);
+
+        var FilingExpensesExhibit = $('#tablerndfilingexpenses').find('.FillingExpensesActivity1Total').find('.calcTotalCostForStrengthTotalFilling').val();
+        $('#tableHeadWiseBudget').find('.headwisebudget_1[data-activityid=9]').find('.rndHWBExhibit').val(FilingExpensesExhibit);
+        
+        /*end of Exhibit Development*/
+
+        /*Total for Strength*/
+        var _totalCostforPrototype = 0;
+        var _totalCostforScaleUp = 0;
+        var _totalCostforExhibit = 0;
+        var _totalCostForRow = 0;
+        for (var i = 1; i < 10; i++) {
+            var _prototypeval = $('#tableHeadWiseBudget').find('.rndHWBPrototype' + i).val();
+            _totalCostforPrototype += ConvertToNumber(_prototypeval);
+
+            var _scaleupval = $('#tableHeadWiseBudget').find('.rndHWBScaleUp' + i).val();
+            _totalCostforScaleUp += ConvertToNumber(_scaleupval);
+
+            var _exhibitval = $('#tableHeadWiseBudget').find('.rndHWBExhibit' + i).val();
+            _totalCostforExhibit += ConvertToNumber(_exhibitval);
+
+            _totalCostForRow = ConvertToNumber(_prototypeval) + ConvertToNumber(_scaleupval) + ConvertToNumber(_exhibitval);
+            $('#tableHeadWiseBudget').find('[data-activityid=' + i + ']').find('.TotalStrength').val(formatNumber(_totalCostForRow));
+
+        }
+        $('#tableHeadWiseBudget').find('.calcTotalCostForPrototype').val(formatNumber(_totalCostforPrototype));
+        $('#tableHeadWiseBudget').find('.calcTotalCostForScaleUp').val(formatNumber(_totalCostforScaleUp));
+        $('#tableHeadWiseBudget').find('.calcTotalCostForExhibit').val(formatNumber(_totalCostforExhibit));
+        $('#tableHeadWiseBudget').find('.calcTotalCostHeadWiseBudget').val(formatNumber(_totalCostforPrototype + _totalCostforScaleUp + _totalCostforExhibit));
+        
+
+        /*End of Total for Strength*/
     }
 }
 function SetTotalExpenses() {

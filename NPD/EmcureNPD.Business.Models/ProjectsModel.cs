@@ -14,7 +14,7 @@ namespace EmcureNPD.Business.Models
         public List<HeadWiseBudget> lsHeadWiseBudget { get; set; } 
         public List<ProjectDetails> lsProjectDetails { get; set; }
         public List<CumulativePhaseWiseBudget> lsCumulativePhaseWiseBudget { get; set; }
-        public List<Deliverables> lsDeliverables { get; set; }
+        public List<AdditionalCost> lsAdditionalCost { get; set; }
     }
     public class ProjectNameModel
     {
@@ -67,16 +67,22 @@ namespace EmcureNPD.Business.Models
     }
     public class CumulativePhaseWiseBudget
     {
-        public float Feasibility { get; set; }
-        public float Prototype { get; set; }
-        public float ScaleUp { get; set; }
-        public float AMV { get; set; }
-        public float Exhibit { get; set; }
-        public float Filing { get; set; }
+        public double Feasability { get; set; }
+        public double Prototype { get; set; }
+        public double ScaleUp { get; set; }
+        public double AMV { get; set; }
+        public double Exhibit { get; set; }
+        public double Filing { get; set; }
+        public double Total { get; set; }
     }
-    public class Deliverables
+    public class AdditionalCost
     {
-        public string PharmacoepialStandardsonQuality { get; set; }
-        public string Row { get; set; }
+        public int BusinessUnitId { get; set; }
+        public string BusinessUnitName { get; set; }
+        public float ReferenceProductCost { get; set; }
+        public float BioStudyCost { get; set; }
+        public float CapexMiscCost { get; set; }
+        public float FillingCost { get; set; }
+        public float Total { get; set; }
     }
 }

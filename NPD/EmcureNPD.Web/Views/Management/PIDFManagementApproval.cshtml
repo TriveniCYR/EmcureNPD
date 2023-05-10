@@ -24,6 +24,7 @@
     string IsApproveAllow = (objPermssion.Approve) ? "" : "display: none";
     var CurrencyCode = "";
     var CurrencySymbol = "";
+    var FinalTotal = 0.0;
     if (Model.lsProjectName != null && Model.lsProjectName.Count() > 0)
     {
         CurrencyCode = @Model.lsProjectName[0].CurrencyCode;
@@ -104,8 +105,8 @@
                 </tbody>
             </table>
         </div>
-        <div class="col-6 mb-4 d-flex flex-column justify-content-between">
-            <table class="table table-bordered text-center head-wise-table m-0">
+        <div class="col-6 mb-4 d-flex flex-column">
+            <table class="table table-bordered text-center head-wise-table mb-5">
                 <thead class="bg-primary">
                     <tr>
                         <th colspan="5">
@@ -131,113 +132,89 @@
                     </tr>
                 </thead>
                 <tbody>
-                    @if (Model != null && Model.lsHeadWiseBudget.Count > 0)
+                    @if (Model.lsHeadWiseBudget != null && Model.lsHeadWiseBudget.Count > 0)
                     {
+                        double prototype = 0;
+                        double scaleup = 0;
+                        double exhibit = 0;
+                        double total = 0;
+                        double totalprototype = 0;
+                        double totalscaleup = 0;
+                        double totalexhibit = 0;
+                        double finaltotal = 0;
                         for (int i = 0; i < Model.lsHeadWiseBudget.Count; i++)
                         {
-                            if (Model.lsHeadWiseBudget[i].BudgetsHeades.ToLower().Equals("total"))
-                            {
-                                <tr class="fw-bold">
-                                    <td class="text-start">
-                                        @Model.lsHeadWiseBudget[i].BudgetsHeades
-                                    </td>
-                                    <td><span>@CurrencySymbol</span> @Model.lsHeadWiseBudget[i].Prototype</td>
-                                    <td><span>@CurrencySymbol</span> @Model.lsHeadWiseBudget[i].ScaleUp</td>
-                                    <td><span>@CurrencySymbol</span> @Model.lsHeadWiseBudget[i].Exhibit</td>
-                                    <td><span>@CurrencySymbol</span> @Model.lsHeadWiseBudget[i].TOTAL</td>
-                                </tr>
-                            }
-                            else
-                            {
-                                <tr>
-                                    <td class="text-start">
-                                        @Model.lsHeadWiseBudget[i].BudgetsHeades
-                                    </td>
-                                    <td><span>@CurrencySymbol</span> @Model.lsHeadWiseBudget[i].Prototype</td>
-                                    <td><span>@CurrencySymbol</span> @Model.lsHeadWiseBudget[i].ScaleUp</td>
-                                    <td><span>@CurrencySymbol</span> @Model.lsHeadWiseBudget[i].Exhibit</td>
-                                    <td><span>@CurrencySymbol</span> @Model.lsHeadWiseBudget[i].TOTAL</td>
-                                </tr>
-                            }
+
+                            <tr>
+                                <td class="text-start">
+                                    @Model.lsHeadWiseBudget[i].BudgetsHeades
+                                </td>
+                                <td>
+
+                                    @{
+                                        if (Convert.ToDouble(@Model.lsHeadWiseBudget[i].Prototype) > 0)
+                                            prototype = Convert.ToDouble(@Model.lsHeadWiseBudget[i].Prototype) / 100000;
+                                        else
+                                            prototype = Convert.ToDouble(@Model.lsHeadWiseBudget[i].Prototype);
+
+                                        totalprototype += @Math.Round(@prototype, 2);
+                                    }
+                                    <span>@CurrencySymbol</span> @Math.Round(@prototype,2)
+                                </td>
+                                <td>
+                                    @{
+                                        if (Convert.ToDouble(@Model.lsHeadWiseBudget[i].ScaleUp) > 0)
+                                            scaleup = Convert.ToDouble(@Model.lsHeadWiseBudget[i].ScaleUp) / 100000;
+                                        else
+                                            scaleup = Convert.ToDouble(@Model.lsHeadWiseBudget[i].ScaleUp);
+
+                                        totalscaleup += @Math.Round(@scaleup, 2);
+                                    }
+                                    <span>@CurrencySymbol</span> @Math.Round(@scaleup,2)
+                                </td>
+                                <td>
+                                    @{
+                                        if (Convert.ToDouble(@Model.lsHeadWiseBudget[i].Exhibit) > 0)
+                                            exhibit = Convert.ToDouble(@Model.lsHeadWiseBudget[i].Exhibit) / 100000;
+                                        else
+                                            exhibit = Convert.ToDouble(@Model.lsHeadWiseBudget[i].Exhibit);
+
+                                        totalexhibit += @Math.Round(@exhibit, 2);
+                                    }
+
+                                    <span>@CurrencySymbol</span> @Math.Round(@exhibit,2)
+                                </td>
+                                <td>
+
+                                    @{
+                                        if (Convert.ToDouble(@Model.lsHeadWiseBudget[i].TOTAL) > 0)
+                                            total = Convert.ToDouble(@Model.lsHeadWiseBudget[i].TOTAL) / 100000;
+                                        else
+                                            total = Convert.ToDouble(@Model.lsHeadWiseBudget[i].TOTAL);
+                                        finaltotal += @Math.Round(@total, 2);
+                                    }
+
+                                    <span>@CurrencySymbol</span> @Math.Round(@total,2)
+                                </td>
+
+                            </tr>
+
                         }
+                        <tr class="fw-bold">
+                            <td class="text-start">
+                                Total
+                            </td>
+                            <td><span>@CurrencySymbol</span> @Math.Round(@totalprototype,2)</td>
+                            <td><span>@CurrencySymbol</span> @Math.Round(@totalscaleup,2)</td>
+                            <td><span>@CurrencySymbol</span> @Math.Round(@totalexhibit,2)</td>
+                            <td><span>@CurrencySymbol</span> @Math.Round(@finaltotal,2)</td>
+                        </tr>
                     }
 
-                    @* <tr>
-                        <td class="text-start">
-                        Total Raw material Cost
-                        </td>
-                        <td>₹ 4.85</td>
-                        <td>₹ 9.66</td>
-                        <td>₹ 33.91</td>
-                        <td>₹ 48.42</td>
-                        </tr>
-                        <tr>
-                        <td class="text-start">
-                        Plant Support Cost
-                        </td>
-                        <td>₹ -</td>
-                        <td>₹ 6.72</td>
-                        <td>₹ 20.16</td>
-                        <td>₹ 26.88</td>
-                        </tr>
-                        <tr>
-                        <td class="text-start">
-                        Reference Product Cost
-                        </td>
-                        <td>₹ -</td>
-                        <td>₹ -</td>
-                        <td>₹ 3.00</td>
-                        <td>₹ 4.00</td>
-                        </tr>
-                        <tr>
-                        <td class="text-start">
-                        Analytical Cost
-                        </td>
-                        <td>₹ 12.63</td>
-                        <td>₹ 7.15</td>
-                        <td>₹ 31.03</td>
-                        <td>₹ 50.81</td>
-                        </tr>
-                        <tr>
-                        <td class="text-start">
-                        Bio Study Cost*
-                        </td>
-                        <td>₹ 20.00</td>
-                        <td>₹ -</td>
-                        <td>₹ -</td>
-                        <td>₹ 20.00</td>
-                        </tr>
-                        <tr>
-                        <td class="text-start">
-                        Tooling & Change Parts
-                        </td>
-                        <td>₹ -</td>
-                        <td>₹ 5.64</td>
-                        <td>₹ -</td>
-                        <td>₹ 5.64</td>
-                        </tr>
-                        <tr>
-                        <td class="text-start">
-                        Other Expenses
-                        </td>
-                        <td>₹ 4.85</td>
-                        <td>₹ 9.66</td>
-                        <td>₹ 33.91</td>
-                        <td>₹ 48.42</td>
-                        </tr>
-                        <tr>
-                        <td class="text-start">
-                        Filling Expenses
-                        </td>
-                        <td>₹ 2.00</td>
-                        <td>₹ -</td>
-                        <td>₹ -</td>
-                        <td>₹ 2.00</td>
-                        </tr>*@
                 </tbody>
             </table>
 
-            <table class="table table-bordered text-center cumulative-phase-wise-budget-table m-0">
+            <table class="table table-bordered text-center cumulative-phase-wise-budget-table mb-3">
                 <thead class="bg-primary">
                     <tr>
                         <th colspan="3">
@@ -257,113 +234,178 @@
                     </tr>
                 </thead>
                 <tbody>
-                    @if (Model != null && Model.lsCumulativePhaseWiseBudget.Count > 0)
+                    @if (Model.lsCumulativePhaseWiseBudget != null && Model.lsCumulativePhaseWiseBudget.Count > 0)
                     {
                         for (int i = 0; i < Model.lsCumulativePhaseWiseBudget.Count; i++)
                         {
+                            double costfeasibility = 0;
+                            double perfeasibility = 0;
+                            double costprototype = 0;
+                            double perprototype = 0;
+                            double costscaleup = 0;
+                            double perscaleup = 0;
+                            double costamvamt = 0;
+                            double peramvamt = 0;
+                            double costexhibit = 0;
+                            double perexhibit = 0;
+                            double costfiling = 0;
+                            double perfiling = 0;
                             <tr>
                                 <td class="text-start">
                                     Feasibility
                                 </td>
-                                 <td><span>@CurrencySymbol</span>@Model.lsCumulativePhaseWiseBudget[i].Feasibility</td>
-                                <td><span>@CurrencySymbol</span> (@Model.lsCumulativePhaseWiseBudget[i].Feasibility)/100000</td>
-                                
+                                <td>
+                                    @{
+                                        if (Convert.ToDouble(@Model.lsCumulativePhaseWiseBudget[i].Feasability) > 0)
+                                            perfeasibility = (Convert.ToDouble(@Model.lsCumulativePhaseWiseBudget[i].Feasability) / Convert.ToDouble(@Model.lsCumulativePhaseWiseBudget[i].Total)) * 100;
+                                        else
+                                            perfeasibility = Convert.ToDouble(@Model.lsCumulativePhaseWiseBudget[i].Feasability);
+                                    }
+                                    @Math.Round(@perfeasibility,2)  <span>%</span>
+                                </td>
+                                <td>
+                                    <span>@CurrencySymbol</span>
+                                    @{
+                                        if (Convert.ToDouble(@Model.lsCumulativePhaseWiseBudget[i].Feasability) > 0)
+                                            costfeasibility = Convert.ToDouble(@Model.lsCumulativePhaseWiseBudget[i].Feasability) / 100000;
+                                        else
+                                            costfeasibility = Convert.ToDouble(@Model.lsCumulativePhaseWiseBudget[i].Feasability);
+                                    }
+                                    @Math.Round(@costfeasibility,2)
+                                </td>
+
                             </tr>
                             <tr>
-                               <td class="text-start">
+                                <td class="text-start">
                                     Prototype Devt
                                 </td>
-                                 <td><span>@CurrencySymbol</span>@Model.lsCumulativePhaseWiseBudget[i].Prototype</td>
-                                <td><span>@CurrencySymbol</span> (@Model.lsCumulativePhaseWiseBudget[i].Prototype)/100000</td>
+                                <td>
+                                    @{
+                                        if (Convert.ToDouble(@Model.lsCumulativePhaseWiseBudget[i].Prototype) > 0)
+                                            perprototype = (Convert.ToDouble(@Model.lsCumulativePhaseWiseBudget[i].Prototype) / Convert.ToDouble(@Model.lsCumulativePhaseWiseBudget[i].Total)) * 100;
+                                        else
+                                            perprototype = Convert.ToDouble(@Model.lsCumulativePhaseWiseBudget[i].Prototype);
+                                    }
+                                    @Math.Round(@perprototype,2) <span>%</span>
+                                </td>
+                                <td>
+                                    <span>@CurrencySymbol</span>
+                                    @{
+                                        if (Convert.ToDouble(@Model.lsCumulativePhaseWiseBudget[i].Prototype) > 0)
+                                            costprototype = Convert.ToDouble(@Model.lsCumulativePhaseWiseBudget[i].Prototype) / 100000;
+                                        else
+                                            costprototype = Convert.ToDouble(@Model.lsCumulativePhaseWiseBudget[i].Prototype);
+                                    }
+                                    @Math.Round(@costprototype,2)
+                                </td>
                             </tr>
                             <tr>
                                 <td class="text-start">
                                     R&D Scale Up
                                 </td>
-                                 <td><span>@CurrencySymbol</span>@Model.lsCumulativePhaseWiseBudget[i].ScaleUp</td>
-                                <td><span>@CurrencySymbol</span> (@Model.lsCumulativePhaseWiseBudget[i].ScaleUp)/100000</td>
+                                <td>
+                                    @{
+                                        if (Convert.ToDouble(@Model.lsCumulativePhaseWiseBudget[i].ScaleUp) > 0)
+                                            perscaleup = (Convert.ToDouble(@Model.lsCumulativePhaseWiseBudget[i].ScaleUp) / Convert.ToDouble(@Model.lsCumulativePhaseWiseBudget[i].Total)) * 100;
+                                        else
+                                            perscaleup = Convert.ToDouble(@Model.lsCumulativePhaseWiseBudget[i].ScaleUp);
+                                    }
+                                    @Math.Round(@perscaleup,2) <span>%</span>
+                                </td>
+                                <td>
+                                    <span>@CurrencySymbol</span>
+                                    @{
+                                        if (Convert.ToDouble(@Model.lsCumulativePhaseWiseBudget[i].ScaleUp) > 0)
+                                            costscaleup = Convert.ToDouble(@Model.lsCumulativePhaseWiseBudget[i].ScaleUp) / 100000;
+                                        else
+                                            costscaleup = Convert.ToDouble(@Model.lsCumulativePhaseWiseBudget[i].ScaleUp);
+                                    }
+                                    @Math.Round(@costscaleup,2)
+                                </td>
                             </tr>
                             <tr>
-                               <td class="text-start">
+                                <td class="text-start">
                                     AMV/AMT
                                 </td>
-                                 <td><span>@CurrencySymbol</span>@Model.lsCumulativePhaseWiseBudget[i].AMV</td>
-                                <td><span>@CurrencySymbol</span> (@Model.lsCumulativePhaseWiseBudget[i].AMV)/10000</td>
+                                <td>
+                                    @{
+                                        if (Convert.ToDouble(@Model.lsCumulativePhaseWiseBudget[i].AMV) > 0)
+                                            peramvamt = (Convert.ToDouble(@Model.lsCumulativePhaseWiseBudget[i].AMV) / Convert.ToDouble(@Model.lsCumulativePhaseWiseBudget[i].Total)) * 100;
+                                        else
+                                            peramvamt = Convert.ToDouble(@Model.lsCumulativePhaseWiseBudget[i].AMV);
+                                    }
+                                    @Math.Round(@peramvamt,2) <span>%</span>
+                                </td>
+                                <td>
+                                    <span>@CurrencySymbol</span>
+                                    @{
+                                        if (Convert.ToDouble(@Model.lsCumulativePhaseWiseBudget[i].AMV) > 0)
+                                            costamvamt = Convert.ToDouble(@Model.lsCumulativePhaseWiseBudget[i].AMV) / 100000;
+                                        else
+                                            costamvamt = Convert.ToDouble(@Model.lsCumulativePhaseWiseBudget[i].AMV);
+                                    }
+                                    @Math.Round(@costamvamt,2)
+                                </td>
                             </tr>
 
                             <tr>
-                               <td class="text-start">
+                                <td class="text-start">
                                     Exhibit/Stability
                                 </td>
-                                 <td><span>@CurrencySymbol</span>@Model.lsCumulativePhaseWiseBudget[i].Exhibit</td>
-                                <td><span>@CurrencySymbol</span> (@Model.lsCumulativePhaseWiseBudget[i].Exhibit)/100000</td>
+                                <td>
+                                    @{
+                                        if (Convert.ToDouble(@Model.lsCumulativePhaseWiseBudget[i].Exhibit) > 0)
+                                            perexhibit = (Convert.ToDouble(@Model.lsCumulativePhaseWiseBudget[i].Exhibit) / Convert.ToDouble(@Model.lsCumulativePhaseWiseBudget[i].Total)) * 100;
+                                        else
+                                            perexhibit = Convert.ToDouble(@Model.lsCumulativePhaseWiseBudget[i].Exhibit);
+                                    }
+                                    @Math.Round(@perexhibit,2) <span>%</span>
+                                </td>
+                                <td>
+                                    <span>@CurrencySymbol</span>
+                                    @{
+                                        if (Convert.ToDouble(@Model.lsCumulativePhaseWiseBudget[i].Exhibit) > 0)
+                                            costexhibit = Convert.ToDouble(@Model.lsCumulativePhaseWiseBudget[i].Exhibit) / 100000;
+                                        else
+                                            costexhibit = Convert.ToDouble(@Model.lsCumulativePhaseWiseBudget[i].Exhibit);
+                                    }
+                                    @Math.Round(@costexhibit,2)
+                                </td>
                             </tr>
-                             <tr>
-                               <td class="text-start">
+                            <tr>
+                                <td class="text-start">
                                     Filing
                                 </td>
-                                 <td><span>@CurrencySymbol</span>@Model.lsCumulativePhaseWiseBudget[i].Filing</td>
-                                <td><span>@CurrencySymbol</span> (@Model.lsCumulativePhaseWiseBudget[i].Filing)/100000</td>
+                                <td>
+                                    @{
+                                        if (Convert.ToDouble(@Model.lsCumulativePhaseWiseBudget[i].Filing) > 0)
+                                            perfiling = (Convert.ToDouble(@Model.lsCumulativePhaseWiseBudget[i].Filing) / Convert.ToDouble(@Model.lsCumulativePhaseWiseBudget[i].Total)) * 100;
+                                        else
+                                            perfiling = Convert.ToDouble(@Model.lsCumulativePhaseWiseBudget[i].Filing);
+                                    }
+                                    @Math.Round(@perfiling,2) <span>%</span>
+                                </td>
+                                <td>
+                                    <span>@CurrencySymbol</span>
+                                    @{
+                                        if (Convert.ToDouble(@Model.lsCumulativePhaseWiseBudget[i].Filing) > 0)
+                                            costfiling = Convert.ToDouble(@Model.lsCumulativePhaseWiseBudget[i].Filing) / 100000;
+                                        else
+                                            costfiling = Convert.ToDouble(@Model.lsCumulativePhaseWiseBudget[i].Filing);
+                                    }
+
+                                    @Math.Round(@costfiling,2)
+                                </td>
                             </tr>
                         }
-
                     }
                 </tbody>
             </table>
-            <table class="table table-bordered text-center domestic-market-table m-0">
-                <thead class="bg-primary">
-                    <tr>
-                        <th colspan="2">
-                            ADDITIONAL COST TO INCUR FOR ROW AND DOMESTIC MARKET (<span>@CurrencyCode</span> Lacs)
-                        </th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td class="text-start">
-                            Reference Product Cost
-                        </td>
-                        <td><span>@CurrencySymbol</span> -</td>
-                    </tr>
-                    <tr>
-                        <td class="text-start">
-                            Bio Study Cost
-                        </td>
-                        <td><span>@CurrencySymbol</span> -</td>
-                    </tr>
-                    <tr>
-                        <td class="text-start">
-                            Capex & Misc Cost
-                        </td>
-                        <td><span>@CurrencySymbol</span> -</td>
-                    </tr>
-                    <tr>
-                        <td class="text-start">
-                            Filling Cost
-                        </td>
-                        <td><span>@CurrencySymbol</span> -</td>
-                    </tr>
-                    <tr class="fw-bold">
-                        <td class="text-start">
-                            Total
-                        </td>
-                        <td><span>@CurrencySymbol</span> -</td>
-                    </tr>
-                </tbody>
-            </table>
-            <table class="table table-bordered m-0 text-center domestic-market-table">
-                <tbody>
-                    <tr class="fw-bold">
-                        <td class="text-start">
-                            Total
-                        </td>
-                        <td><span>@CurrencySymbol</span> 203.38 lacs</td>
-                    </tr>
-                </tbody>
-            </table>
+
+
         </div>
-        <div class="col-6 mb-4 d-flex flex-column justify-content-between right-container">
-            <table class="table table-bordered project-details-table m-0">
+        <div class="col-6 mb-4 d-flex flex-column right-container">
+            <table class="table table-bordered project-details-table mb-2">
                 <thead class="bg-primary">
                     <tr>
                         <th colspan="7" class="text-center">
@@ -372,16 +414,7 @@
                     </tr>
                 </thead>
                 <tbody>
-                    @*<tr style="display:none;">
-                        <td>
-                        Market
-                        </td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td>Row</td>
-                        <td></td>
-                        </tr>*@
+
                     @if (Model.lsProjectDetails != null && Model.lsProjectDetails.Count > 0)
                     {
                         for (int i = 0; i < Model.lsProjectDetails.Count; i++)
@@ -506,7 +539,7 @@
                     }
                 </tbody>
             </table>
-            <table class="table table-bordered text-center deliverables-table m-0">
+            <table class="table table-bordered text-center deliverables-table mb-2">
                 <thead class="bg-primary">
                     <tr>
                         <th colspan="6">
@@ -537,7 +570,12 @@
                                 <td colspan="2">
                                     Project Budget (<span>@CurrencyCode</span> Lacs)
                                 </td>
-                                <td colspan="4">@Model.lsProjectDetails[i].ProjectBudget</td>
+                                <td colspan="4">
+                                    @Model.lsProjectDetails[i].ProjectBudget
+                                    @{
+                                        FinalTotal += Convert.ToDouble(@Model.lsProjectDetails[i].ProjectBudget);
+                                    }
+                                </td>
                             </tr>
                             <tr>
                                 <td colspan="2">
@@ -553,147 +591,134 @@
                             </tr>
                         }
                     }
-                    @*<tr>
-                        <td class="text-start">
-                        Pharmacoepial Standards on Quality
-                        </td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td class="align-middle">Row</td>
-                        <td></td>
-                        </tr>
-                        @if (Model != null && Model.lsDeliverables.Count > 0)
-                        {
-                        foreach (var item in Model.lsDeliverables)
-                        {
-                        if (item.PharmacoepialStandardsonQuality.Equals("Project Budjet (INR Lacs)"))
-                        {
-                        <tr>
-                        <td class="text-start">
-                        @item.PharmacoepialStandardsonQuality
-                        </td>
-                        <td style="width: 18%;">₹ @item.Row lacs</td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        </tr>
-                        }
-                        else
-                        {
-                        <tr>
-                        <td class="text-start">
-                        @item.PharmacoepialStandardsonQuality
-                        </td>
-                        <td style="width: 18%;">₹ @item.Row</td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        </tr>
-                        }
-                        }
 
-                        }
-                        @*<tr>
-                        <td class="text-start">
-                        Project Completion/Filing Date
-                        </td>
-                        <td colspan="5">31 May 2022</td>
-                        </tr>
-                        <tr>
-                        <td class="text-start">
-                        BE Studies
-                        </td>
-                        <td colspan="5">FTR</td>
-                        </tr>*@
-                </tbody>
-            </table>
-            <table class="table table-bordered text-center eu-market-table m-0">
-                <thead class="bg-primary">
-                    <tr>
-                        <th colspan="2">
-                            ADDITIONAL COST TO INCUR FOR EU MARKET (<span>@CurrencyCode</span> Lacs)
-                        </th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td class="text-start">
-                            Reference Product Cost
-                        </td>
-                        <td><span>@CurrencySymbol</span> -</td>
-                    </tr>
-                    <tr>
-                        <td class="text-start">
-                            Bio Study Cost
-                        </td>
-                        <td><span>@CurrencySymbol</span> -</td>
-                    </tr>
-                    <tr>
-                        <td class="text-start">
-                            Capex & Misc Cost
-                        </td>
-                        <td><span>@CurrencySymbol</span> -</td>
-                    </tr>
-                    <tr>
-                        <td class="text-start">
-                            Filling Cost
-                        </td>
-                        <td><span>@CurrencySymbol</span> -</td>
-                    </tr>
-                    <tr class="fw-bold">
-                        <td class="text-start">
-                            Total
-                        </td>
-                        <td><span>@CurrencySymbol</span> -</td>
-                    </tr>
-                </tbody>
-            </table>
-            <table class="table table-bordered text-center m-0 canada-market-table">
-                <thead class="bg-primary">
-                    <tr>
-                        <th colspan="2">
-                            ADDITIONAL COST TO INCUR FOR CANADA MARKET (<span>@CurrencyCode</span> Lacs)
-                        </th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td class="text-start">
-                            Reference Product Cost
-                        </td>
-                        <td><span>@CurrencySymbol</span> -</td>
-                    </tr>
-                    <tr>
-                        <td class="text-start">
-                            Bio Study Cost
-                        </td>
-                        <td><span>@CurrencySymbol</span> -</td>
-                    </tr>
-                    <tr>
-                        <td class="text-start">
-                            Capex & Misc Cost
-                        </td>
-                        <td><span>@CurrencySymbol</span> -</td>
-                    </tr>
-                    <tr>
-                        <td class="text-start">
-                            Filling Cost
-                        </td>
-                        <td><span>@CurrencySymbol</span> -</td>
-                    </tr>
-                    <tr class="fw-bold">
-                        <td class="text-start">
-                            Total
-                        </td>
-                        <td><span>@CurrencySymbol</span> -</td>
-                    </tr>
                 </tbody>
             </table>
         </div>
+
+        @if (Model.lsAdditionalCost != null && Model.lsAdditionalCost.Count > 0)
+        {
+            for (int i = 0; i < Model.lsAdditionalCost.Count; i++)
+            {
+                double referenceproductcost = 0;
+                double biostudycost = 0;
+                double capexmisccost = 0;
+                double filingcost = 0;
+                double totalcost = 0;
+                var check = (@Model.lsAdditionalCost.Count / 2);
+                var tablealignment = "right-container";
+                if (check > 0)
+                {
+                    tablealignment = "";
+                }
+                <div class="col-6 mb-4 d-flex flex-column @tablealignment">
+                    <table class="table table-bordered text-center mb-2 @Model.lsAdditionalCost[i].BusinessUnitName-market-table">
+                        <thead class="bg-primary">
+                            <tr>
+                                <th colspan="2">
+                                    ADDITIONAL COST TO INCUR FOR  @Model.lsAdditionalCost[i].BusinessUnitName MARKET (<span>@CurrencyCode</span> Lacs)
+                                </th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td class="text-start">
+                                    Reference Product Cost
+                                </td>
+                                <td>
+
+                                    @{
+                                        if (Convert.ToDouble(@Model.lsAdditionalCost[i].ReferenceProductCost) > 0)
+                                            referenceproductcost = Convert.ToDouble(@Model.lsAdditionalCost[i].ReferenceProductCost) / 100000;
+                                        else
+                                            referenceproductcost = Convert.ToDouble(@Model.lsAdditionalCost[i].ReferenceProductCost);
+
+                                    }
+                                    <span>@CurrencySymbol</span> @Math.Round(@referenceproductcost,2)
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="text-start">
+                                    Bio Study Cost
+                                </td>
+                                <td>
+
+                                    @{
+                                        if (Convert.ToDouble(@Model.lsAdditionalCost[i].BioStudyCost) > 0)
+                                            biostudycost = Convert.ToDouble(@Model.lsAdditionalCost[i].BioStudyCost) / 100000;
+                                        else
+                                            biostudycost = Convert.ToDouble(@Model.lsAdditionalCost[i].BioStudyCost);
+
+                                    }
+                                    <span>@CurrencySymbol</span> @Math.Round(@biostudycost,2)
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="text-start">
+                                    Capex & Misc Cost
+                                </td>
+                                <td>
+
+                                    @{
+                                        if (Convert.ToDouble(@Model.lsAdditionalCost[i].CapexMiscCost) > 0)
+                                            capexmisccost = Convert.ToDouble(@Model.lsAdditionalCost[i].CapexMiscCost) / 100000;
+                                        else
+                                            capexmisccost = Convert.ToDouble(@Model.lsAdditionalCost[i].CapexMiscCost);
+
+                                    }
+                                    <span>@CurrencySymbol</span> @Math.Round(@capexmisccost,2)
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="text-start">
+                                    Filling Cost
+                                </td>
+                                <td>
+
+                                    @{
+                                        if (Convert.ToDouble(@Model.lsAdditionalCost[i].FillingCost) > 0)
+                                            filingcost = Convert.ToDouble(@Model.lsAdditionalCost[i].FillingCost) / 100000;
+                                        else
+                                            filingcost = Convert.ToDouble(@Model.lsAdditionalCost[i].FillingCost);
+
+                                    }
+                                    <span>@CurrencySymbol</span> @Math.Round(@filingcost,2)
+                                </td>
+                            </tr>
+                            <tr class="fw-bold">
+                                <td class="text-start">
+                                    Total
+                                </td>
+                                <td>
+                                    
+                                    @{
+                                        if (Convert.ToDouble(@Model.lsAdditionalCost[i].Total) > 0)
+                                            totalcost = Convert.ToDouble(@Model.lsAdditionalCost[i].Total) / 100000;
+                                        else
+                                            totalcost = Convert.ToDouble(@Model.lsAdditionalCost[i].Total);
+
+                                        FinalTotal += @Math.Round(@totalcost, 2);
+                                    }
+                                    <span>@CurrencySymbol</span>  @Math.Round(@totalcost,2)
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            }
+        }
+
         <div class="col-12 mb-4">
+            <table class="table table-bordered m-0 text-center domestic-market-table">
+                <tbody>
+                    <tr class="fw-bold">
+                        <td class="text-start">
+                            Total
+                        </td>
+                        <td><span>@CurrencySymbol</span> @Math.Round(@FinalTotal, 2) lacs</td>
+                    </tr>
+                </tbody>
+            </table>
             <br />
             <br />
             <br />

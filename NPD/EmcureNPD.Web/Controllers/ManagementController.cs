@@ -12,6 +12,7 @@ using Microsoft.Extensions.Localization;
 using Newtonsoft.Json;
 using System.Collections.Generic;
 using System.Net.Http;
+using AdditionalCost = EmcureNPD.Business.Models.AdditionalCost;
 
 namespace EmcureNPD.Web.Controllers
 {
@@ -59,7 +60,7 @@ namespace EmcureNPD.Web.Controllers
                 List<HeadWiseBudget> ListHeadWiseBudget = new List<HeadWiseBudget>();
                 List<ProjectDetails> ListProjectDetails = new List<ProjectDetails>();
                 List<CumulativePhaseWiseBudget> ListCumulativePhaseWiseBudget = new List<CumulativePhaseWiseBudget>();
-                List<Deliverables> ListDeliverables = new List<Deliverables>();
+                List<AdditionalCost> ListAdditionalCost = new List<AdditionalCost>();
                 HttpResponseMessage responseMessage = new HttpResponseMessage();
                 HttpContext.Request.Cookies.TryGetValue(UserHelper.EmcureNPDToken, out string token);
                 APIRepository objapi = new(_cofiguration);
@@ -157,12 +158,13 @@ namespace EmcureNPD.Web.Controllers
                         {
                             ListCumulativePhaseWiseBudget.Add(new CumulativePhaseWiseBudget
                             {
-                                Feasibility = data.table5[i].Feasibility,
+                                Feasability = data.table5[i].Feasability,
                                 Prototype = data.table5[i].Prototype,
                                 ScaleUp = data.table5[i].ScaleUp,
                                 AMV = data.table5[i].AMV,
                                 Exhibit = data.table5[i].Exhibit,
-                                Filing = data.table5[i].Filing
+                                Filing = data.table5[i].Filing,
+                                Total = (data.table5[i].Filing),
                             });
                         }
                         model.lsCumulativePhaseWiseBudget = ListCumulativePhaseWiseBudget;
@@ -171,13 +173,18 @@ namespace EmcureNPD.Web.Controllers
                     {
                         for (int i = 0; i < data.table6.Count; i++)
                         {
-                            ListDeliverables.Add(new Deliverables
+                            ListAdditionalCost.Add(new AdditionalCost
                             {
-                                PharmacoepialStandardsonQuality = data.table6[i].PharmacoepialStandardsonQuality,
-                                Row = data.table6[i].Row
+                                BusinessUnitId = data.table6[i].BusinessUnitId,
+                                BusinessUnitName = data.table6[i].BusinessUnitName,
+                                ReferenceProductCost = data.table6[i].ReferenceProductCost,
+                                BioStudyCost = data.table6[i].BioStudyCost,
+                                CapexMiscCost = data.table6[i].CapexMiscCost,
+                                FillingCost = data.table6[i].FillingCost,
+                                Total = data.table6[i].Total
                             });
                         }
-                        model.lsDeliverables = ListDeliverables;
+                        model.lsAdditionalCost = ListAdditionalCost;
                     }
                     return View(model);
                 }

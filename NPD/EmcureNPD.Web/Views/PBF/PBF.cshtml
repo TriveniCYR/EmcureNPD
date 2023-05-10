@@ -32,7 +32,7 @@
         <input type="hidden" id="hdnPBFGeneralId" value="@(Model.PBFGeneralId)" />
         <input type="hidden" id="hdnPIDFPBFId" value="@(Model.Pidfpbfid)" />
         <input type="hidden" id="hdnPBFIsView" value="@(Context.Request.Query["IsView"] == "1" ? "1" : "0")" />
-      
+
         <div class="container-fluid background-white-card">
             <div class="row">
                 <div class="col-md-3">
@@ -79,10 +79,10 @@
 
             </div>
             <div class="row">
-                <div class="col-md-3">
+                <div class="col-md-3" style="display:none;">
                     <div class="form-group required">
                         @Html.LabelFor(model => model.NumberOfApprovedAnda,"No. of  Approved ANDAs", new { @class = "control-label" })<span class="text-danger">*</span>
-                        @Html.TextBoxFor(model => model.NumberOfApprovedAnda, new {@class = "form-control", @placeholder = "No. of  Approved ANDAs" ,@required="required",type = "number", min = 0})
+                        @Html.TextBoxFor(model => model.NumberOfApprovedAnda, new {@class = "form-control", @placeholder = "No. of  Approved ANDAs" ,@required="required",type = "number", min = 0, Value = 0})
                         @Html.ValidationMessageFor(model => model.NumberOfApprovedAnda, "", new { @class = "text-danger" })
                     </div>
                 </div>
@@ -114,8 +114,6 @@
 
                     </div>
                 </div>
-            </div>
-            <div class="row">
                 <div class="col-md-3">
                     <div class="form-group required">
                         @Html.LabelFor(model => model.DosageId, "Dosage", new { @class = "control-label" })<span class="text-danger">*</span>
@@ -125,6 +123,8 @@
 
                     </div>
                 </div>
+            </div>
+            <div class="row">
                 <div class="col-md-3">
                     <div class="form-group required">
                         @Html.LabelFor(model => model.SponsorBusinessPartner,"Sponsor / Business Partner", new { @class = "control-label" })<span class="text-danger">*</span>
@@ -142,6 +142,8 @@
 
                     </div>
                 </div>
+            </div>
+            <div class="row">
                 <div class="col-md-6">
                     <div class="form-group required">
                         @Html.LabelFor(model => model.BusinessRelationable,@MasterLocalizer["Business Rationable"], new { @class = "control-label" })<span class="text-danger">*</span>
@@ -355,7 +357,7 @@
                                 <div class="col-md-3">
                                     <div class="form-group required">
                                         @Html.LabelFor(model => model.ProjectComplexity,"Project Complexity", new { @class = "control-label" })<span class="text-danger">*</span>
-                                          <input type="hidden" id="hdnGeneralProjectComplexity" value="@Model.ProjectComplexity" />
+                                        <input type="hidden" id="hdnGeneralProjectComplexity" value="@Model.ProjectComplexity" />
                                         <select id="GeneralProjectComplexity" name="ProjectComplexity" class="form-control readOnlyUpdate" required></select>
                                         @Html.ValidationMessageFor(model => model.ProjectComplexity, "", new { @class = "text-danger" })
 
@@ -489,7 +491,7 @@
                                data-toggle="pill"
                                href="#custom-tabs-RnD" role="tab"
                                aria-controls="custom-tabs-RnD"
-                               aria-selected="true">RnD</a>
+                               aria-selected="true">PBF/RnD</a>
                             </li>
                         }
                         @if (UtilityHelper.GetAccess((int)EmcureNPD.Utility.Enums.ModuleEnum.PBF, Helper.GetLoggedInRoleId(), (int)EmcureNPD.Utility.Enums.PermissionEnum.View, (int)EmcureNPD.Utility.Enums.SubModulePermissionEnum.Analytical) || UtilityHelper.GetAccess((int)EmcureNPD.Utility.Enums.ModuleEnum.PBF, Helper.GetLoggedInRoleId(), (int)EmcureNPD.Utility.Enums.PermissionEnum.Edit, (int)EmcureNPD.Utility.Enums.SubModulePermissionEnum.Analytical) || UtilityHelper.GetAccess((int)EmcureNPD.Utility.Enums.ModuleEnum.PBF, Helper.GetLoggedInRoleId(), (int)EmcureNPD.Utility.Enums.PermissionEnum.Add, (int)EmcureNPD.Utility.Enums.SubModulePermissionEnum.Analytical))
@@ -529,9 +531,9 @@
                          id="custom-tabs-department-tabContent">
                             @if (UtilityHelper.GetAccess((int)EmcureNPD.Utility.Enums.ModuleEnum.PBF, Helper.GetLoggedInRoleId(), (int)EmcureNPD.Utility.Enums.PermissionEnum.View, (int)EmcureNPD.Utility.Enums.SubModulePermissionEnum.RnD) || UtilityHelper.GetAccess((int)EmcureNPD.Utility.Enums.ModuleEnum.PBF, Helper.GetLoggedInRoleId(), (int)EmcureNPD.Utility.Enums.PermissionEnum.Edit, (int)EmcureNPD.Utility.Enums.SubModulePermissionEnum.RnD) || UtilityHelper.GetAccess((int)EmcureNPD.Utility.Enums.ModuleEnum.PBF, Helper.GetLoggedInRoleId(), (int)EmcureNPD.Utility.Enums.PermissionEnum.Add, (int)EmcureNPD.Utility.Enums.SubModulePermissionEnum.RnD))
                             {
-                                 if (UtilityHelper.GetAccess((int)EmcureNPD.Utility.Enums.ModuleEnum.PBF, Helper.GetLoggedInRoleId(), (int)EmcureNPD.Utility.Enums.PermissionEnum.Edit, (int)EmcureNPD.Utility.Enums.SubModulePermissionEnum.RnD))
+                                if (UtilityHelper.GetAccess((int)EmcureNPD.Utility.Enums.ModuleEnum.PBF, Helper.GetLoggedInRoleId(), (int)EmcureNPD.Utility.Enums.PermissionEnum.Edit, (int)EmcureNPD.Utility.Enums.SubModulePermissionEnum.RnD))
                                 {
-                                     <input type="hidden" id="hdnPBFRNDPermission" value="true" />
+                                    <input type="hidden" id="hdnPBFRNDPermission" value="true" />
                                 }
                                 <div class="tab-pane fade show active"
                              id="custom-tabs-RnD" role="tabpanel"
@@ -828,7 +830,34 @@
                                                     </div>
                                                 </div>
                                             </div>
-                                             @*  Head Wise Budget*@
+                                            @*  Phase Wise Budget*@
+                                            <div class="col-12">
+                                                <div class="card collapsed-card">
+                                                    <div class="card-header bg-primary">
+                                                        <h3 class="card-title mb-0">
+
+                                                            <button type="button" class="btn btn-tool" data-card-widget="collapse">
+                                                                Phase Wise Budget
+                                                            </button>
+
+                                                        </h3>
+                                                        <div class="card-tools">
+                                                            <button type="button" class="btn btn-tool" data-card-widget="collapse" title="Collapse">
+                                                                <i class="fas fa-plus" aria-hidden="true"></i>
+                                                            </button>
+                                                        </div>
+                                                    </div>
+                                                    <div class="card-body pbftables">
+                                                        <div class="row">
+                                                            <table id="tablerndphasewisebudget" class="table text-center tableTDHint" style="width:100%">
+                                                            </table>
+                                                        </div>
+                                                        <input type="hidden" id="hdnrndPhaseWiseBudget" name="RNDPhaseWiseBudgetRawData" />
+
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            @*  Head Wise Budget*@
                                             <div class="col-12">
                                                 <div class="card collapsed-card">
                                                     <div class="card-header bg-primary">
@@ -854,33 +883,7 @@
                                                     </div>
                                                 </div>
                                             </div>
-                                            @*  Phase Wise Budget*@
-                                            <div class="col-12">
-                                                <div class="card collapsed-card">
-                                                    <div class="card-header bg-primary">
-                                                        <h3 class="card-title mb-0">
-
-                                                            <button type="button" class="btn btn-tool" data-card-widget="collapse">
-                                                                Phase Wise Budget
-                                                            </button>
-
-                                                        </h3>
-                                                        <div class="card-tools">
-                                                            <button type="button" class="btn btn-tool" data-card-widget="collapse" title="Collapse">
-                                                                <i class="fas fa-plus" aria-hidden="true"></i>
-                                                            </button>
-                                                        </div>
-                                                    </div>
-                                                    <div class="card-body pbftables">
-                                                        <div class="row">
-                                                            <table id="tablerndphasewisebudget" class="table text-center tableTDHint" style="width:100%">
-                                                            </table>
-                                                        </div>
-                                                         <input type="hidden" id="hdnrndPhaseWiseBudget" name="RNDPhaseWiseBudgetRawData" />
-
-                                                    </div>
-                                                </div>
-                                            </div>
+                                            
                                         </div>
                                     </div>
                                 </div>
@@ -889,7 +892,7 @@
                             {
                                 if (UtilityHelper.GetAccess((int)EmcureNPD.Utility.Enums.ModuleEnum.PBF, Helper.GetLoggedInRoleId(), (int)EmcureNPD.Utility.Enums.PermissionEnum.Edit, (int)EmcureNPD.Utility.Enums.SubModulePermissionEnum.Analytical))
                                 {
-                                     <input type="hidden" id="hdnPBFAnalyticalPermission" value="true" />
+                                    <input type="hidden" id="hdnPBFAnalyticalPermission" value="true" />
                                 }
                                 <div class="tab-pane fade show"
                              id="custom-tabs-Analytical" role="tabpanel"
@@ -907,9 +910,9 @@
                             }
                             @if (UtilityHelper.GetAccess((int)EmcureNPD.Utility.Enums.ModuleEnum.PBF, Helper.GetLoggedInRoleId(), (int)EmcureNPD.Utility.Enums.PermissionEnum.View, (int)EmcureNPD.Utility.Enums.SubModulePermissionEnum.Clinical) || UtilityHelper.GetAccess((int)EmcureNPD.Utility.Enums.ModuleEnum.PBF, Helper.GetLoggedInRoleId(), (int)EmcureNPD.Utility.Enums.PermissionEnum.Edit, (int)EmcureNPD.Utility.Enums.SubModulePermissionEnum.Clinical) || UtilityHelper.GetAccess((int)EmcureNPD.Utility.Enums.ModuleEnum.PBF, Helper.GetLoggedInRoleId(), (int)EmcureNPD.Utility.Enums.PermissionEnum.Add, (int)EmcureNPD.Utility.Enums.SubModulePermissionEnum.Clinical))
                             {
-                                 if (UtilityHelper.GetAccess((int)EmcureNPD.Utility.Enums.ModuleEnum.PBF, Helper.GetLoggedInRoleId(), (int)EmcureNPD.Utility.Enums.PermissionEnum.Edit, (int)EmcureNPD.Utility.Enums.SubModulePermissionEnum.Clinical))
+                                if (UtilityHelper.GetAccess((int)EmcureNPD.Utility.Enums.ModuleEnum.PBF, Helper.GetLoggedInRoleId(), (int)EmcureNPD.Utility.Enums.PermissionEnum.Edit, (int)EmcureNPD.Utility.Enums.SubModulePermissionEnum.Clinical))
                                 {
-                                     <input type="hidden" id="hdnPBFClinicalPermission" value="true" />
+                                    <input type="hidden" id="hdnPBFClinicalPermission" value="true" />
                                 }
                                 <div class="tab-pane fade show"
                              id="custom-tabs-Clinical" role="tabpanel"
@@ -933,7 +936,7 @@
             <div class="row">
                 <div class="col-12 text-end">
                     <div class="form-group" id="dvMainButton">
-                        @if ((UtilityHelper.GetAccess((int)EmcureNPD.Utility.Enums.ModuleEnum.PBF, Helper.GetLoggedInRoleId(),(int)EmcureNPD.Utility.Enums.PermissionEnum.Edit) || UtilityHelper.GetAccess((int)EmcureNPD.Utility.Enums.ModuleEnum.PBF, Helper.GetLoggedInRoleId(), (int)EmcureNPD.Utility.Enums.PermissionEnum.Add)))
+                        @if ((UtilityHelper.GetAccess((int)EmcureNPD.Utility.Enums.ModuleEnum.PBF, Helper.GetLoggedInRoleId(), (int)EmcureNPD.Utility.Enums.PermissionEnum.Edit) || UtilityHelper.GetAccess((int)EmcureNPD.Utility.Enums.ModuleEnum.PBF, Helper.GetLoggedInRoleId(), (int)EmcureNPD.Utility.Enums.PermissionEnum.Add)))
                         {
                             <button type="submit" class="btn btn-success me-3 outside-buttons operationButton" id="save" onclick="SavePBFForm('Save')">@SharedLocalizer["Submit"]</button>
 
