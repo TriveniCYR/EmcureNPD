@@ -226,6 +226,13 @@ tr {
 .domestic-market-table tr td {
   width: calc(100% / 2);
 }
+.head-wise-table tr td:first-child {
+    width: 32%;
+}
+
+.head-wise-table tr td:not(:first-child) {
+    width: calc(68% / 4);
+}
 
 .project-details-table tr td:first-child {
     width: 10%;

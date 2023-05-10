@@ -134,14 +134,14 @@
                 <tbody>
                     @if (Model.lsHeadWiseBudget != null && Model.lsHeadWiseBudget.Count > 0)
                     {
-                        decimal prototype = 0;
-                        decimal scaleup = 0;
-                        decimal exhibit = 0;
-                        decimal total = 0;
-                        decimal totalprototype = 0;
-                        decimal totalscaleup = 0;
-                        decimal totalexhibit = 0;
-                        decimal finaltotal = 0;
+                        double prototype = 0;
+                        double scaleup = 0;
+                        double exhibit = 0;
+                        double total = 0;
+                        double totalprototype = 0;
+                        double totalscaleup = 0;
+                        double totalexhibit = 0;
+                        double finaltotal = 0;
                         for (int i = 0; i < Model.lsHeadWiseBudget.Count; i++)
                         {
 
@@ -152,10 +152,10 @@
                                 <td>
 
                                     @{
-                                        if (Convert.ToDecimal(@Model.lsHeadWiseBudget[i].Prototype) > 0)
-                                            prototype = Convert.ToDecimal(@Model.lsHeadWiseBudget[i].Prototype) / 100000;
+                                        if (Convert.ToDouble(@Model.lsHeadWiseBudget[i].Prototype) > 0)
+                                            prototype = Convert.ToDouble(@Model.lsHeadWiseBudget[i].Prototype) / 100000;
                                         else
-                                            prototype = Convert.ToDecimal(@Model.lsHeadWiseBudget[i].Prototype);
+                                            prototype = Convert.ToDouble(@Model.lsHeadWiseBudget[i].Prototype);
 
                                         totalprototype += @Math.Round(@prototype, 2);
                                     }
@@ -163,10 +163,10 @@
                                 </td>
                                 <td>
                                     @{
-                                        if (Convert.ToDecimal(@Model.lsHeadWiseBudget[i].ScaleUp) > 0)
-                                            scaleup = Convert.ToDecimal(@Model.lsHeadWiseBudget[i].ScaleUp) / 100000;
+                                        if (Convert.ToDouble(@Model.lsHeadWiseBudget[i].ScaleUp) > 0)
+                                            scaleup = Convert.ToDouble(@Model.lsHeadWiseBudget[i].ScaleUp) / 100000;
                                         else
-                                            scaleup = Convert.ToDecimal(@Model.lsHeadWiseBudget[i].ScaleUp);
+                                            scaleup = Convert.ToDouble(@Model.lsHeadWiseBudget[i].ScaleUp);
 
                                         totalscaleup += @Math.Round(@scaleup, 2);
                                     }
@@ -174,10 +174,10 @@
                                 </td>
                                 <td>
                                     @{
-                                        if (Convert.ToDecimal(@Model.lsHeadWiseBudget[i].Exhibit) > 0)
-                                            exhibit = Convert.ToDecimal(@Model.lsHeadWiseBudget[i].Exhibit) / 100000;
+                                        if (Convert.ToDouble(@Model.lsHeadWiseBudget[i].Exhibit) > 0)
+                                            exhibit = Convert.ToDouble(@Model.lsHeadWiseBudget[i].Exhibit) / 100000;
                                         else
-                                            exhibit = Convert.ToDecimal(@Model.lsHeadWiseBudget[i].Exhibit);
+                                            exhibit = Convert.ToDouble(@Model.lsHeadWiseBudget[i].Exhibit);
 
                                         totalexhibit += @Math.Round(@exhibit, 2);
                                     }
@@ -187,10 +187,10 @@
                                 <td>
 
                                     @{
-                                        if (Convert.ToDecimal(@Model.lsHeadWiseBudget[i].TOTAL) > 0)
-                                            total = Convert.ToDecimal(@Model.lsHeadWiseBudget[i].TOTAL) / 100000;
+                                        if (Convert.ToDouble(@Model.lsHeadWiseBudget[i].TOTAL) > 0)
+                                            total = Convert.ToDouble(@Model.lsHeadWiseBudget[i].TOTAL) / 100000;
                                         else
-                                            total = Convert.ToDecimal(@Model.lsHeadWiseBudget[i].TOTAL);
+                                            total = Convert.ToDouble(@Model.lsHeadWiseBudget[i].TOTAL);
                                         finaltotal += @Math.Round(@total, 2);
                                     }
 
@@ -204,10 +204,10 @@
                             <td class="text-start">
                                 Total
                             </td>
-                            <td><span>@CurrencySymbol</span> @totalprototype</td>
-                            <td><span>@CurrencySymbol</span> @totalscaleup</td>
-                            <td><span>@CurrencySymbol</span> @totalexhibit</td>
-                            <td><span>@CurrencySymbol</span> @finaltotal</td>
+                            <td><span>@CurrencySymbol</span> @Math.Round(@totalprototype,2)</td>
+                            <td><span>@CurrencySymbol</span> @Math.Round(@totalscaleup,2)</td>
+                            <td><span>@CurrencySymbol</span> @Math.Round(@totalexhibit,2)</td>
+                            <td><span>@CurrencySymbol</span> @Math.Round(@finaltotal,2)</td>
                         </tr>
                     }
 
@@ -238,38 +238,38 @@
                     {
                         for (int i = 0; i < Model.lsCumulativePhaseWiseBudget.Count; i++)
                         {
-                            decimal costfeasibility = 0;
-                            decimal perfeasibility = 0;
-                            decimal costprototype = 0;
-                            decimal perprototype = 0;
-                            decimal costscaleup = 0;
-                            decimal perscaleup = 0;
-                            decimal costamvamt = 0;
-                            decimal peramvamt = 0;
-                            decimal costexhibit = 0;
-                            decimal perexhibit = 0;
-                            decimal costfiling = 0;
-                            decimal perfiling = 0;
+                            double costfeasibility = 0;
+                            double perfeasibility = 0;
+                            double costprototype = 0;
+                            double perprototype = 0;
+                            double costscaleup = 0;
+                            double perscaleup = 0;
+                            double costamvamt = 0;
+                            double peramvamt = 0;
+                            double costexhibit = 0;
+                            double perexhibit = 0;
+                            double costfiling = 0;
+                            double perfiling = 0;
                             <tr>
                                 <td class="text-start">
                                     Feasibility
                                 </td>
                                 <td>
                                     @{
-                                        if (Convert.ToDecimal(@Model.lsCumulativePhaseWiseBudget[i].Feasability) > 0)
-                                            perfeasibility = Convert.ToDecimal(@Model.lsCumulativePhaseWiseBudget[i].Feasability) / Convert.ToDecimal(@Model.lsCumulativePhaseWiseBudget[i].Total);
+                                        if (Convert.ToDouble(@Model.lsCumulativePhaseWiseBudget[i].Feasability) > 0)
+                                            perfeasibility = (Convert.ToDouble(@Model.lsCumulativePhaseWiseBudget[i].Feasability) / Convert.ToDouble(@Model.lsCumulativePhaseWiseBudget[i].Total)) * 100;
                                         else
-                                            perfeasibility = Convert.ToDecimal(@Model.lsCumulativePhaseWiseBudget[i].Feasability);
+                                            perfeasibility = Convert.ToDouble(@Model.lsCumulativePhaseWiseBudget[i].Feasability);
                                     }
-                                    @Math.Round(@perfeasibility,2)
+                                    @Math.Round(@perfeasibility,2)  <span>%</span>
                                 </td>
                                 <td>
                                     <span>@CurrencySymbol</span>
                                     @{
-                                        if (Convert.ToDecimal(@Model.lsCumulativePhaseWiseBudget[i].Feasability) > 0)
-                                            costfeasibility = Convert.ToDecimal(@Model.lsCumulativePhaseWiseBudget[i].Feasability) / 100000;
+                                        if (Convert.ToDouble(@Model.lsCumulativePhaseWiseBudget[i].Feasability) > 0)
+                                            costfeasibility = Convert.ToDouble(@Model.lsCumulativePhaseWiseBudget[i].Feasability) / 100000;
                                         else
-                                            costfeasibility = Convert.ToDecimal(@Model.lsCumulativePhaseWiseBudget[i].Feasability);
+                                            costfeasibility = Convert.ToDouble(@Model.lsCumulativePhaseWiseBudget[i].Feasability);
                                     }
                                     @Math.Round(@costfeasibility,2)
                                 </td>
@@ -281,20 +281,20 @@
                                 </td>
                                 <td>
                                     @{
-                                        if (Convert.ToDecimal(@Model.lsCumulativePhaseWiseBudget[i].Prototype) > 0)
-                                            perprototype = Convert.ToDecimal(@Model.lsCumulativePhaseWiseBudget[i].Prototype) / Convert.ToDecimal(@Model.lsCumulativePhaseWiseBudget[i].Total);
+                                        if (Convert.ToDouble(@Model.lsCumulativePhaseWiseBudget[i].Prototype) > 0)
+                                            perprototype = (Convert.ToDouble(@Model.lsCumulativePhaseWiseBudget[i].Prototype) / Convert.ToDouble(@Model.lsCumulativePhaseWiseBudget[i].Total)) * 100;
                                         else
-                                            perprototype = Convert.ToDecimal(@Model.lsCumulativePhaseWiseBudget[i].Prototype);
+                                            perprototype = Convert.ToDouble(@Model.lsCumulativePhaseWiseBudget[i].Prototype);
                                     }
-                                    @Math.Round(@perprototype,2)
+                                    @Math.Round(@perprototype,2) <span>%</span>
                                 </td>
                                 <td>
                                     <span>@CurrencySymbol</span>
                                     @{
-                                        if (Convert.ToDecimal(@Model.lsCumulativePhaseWiseBudget[i].Prototype) > 0)
-                                            costprototype = Convert.ToDecimal(@Model.lsCumulativePhaseWiseBudget[i].Prototype) / 100000;
+                                        if (Convert.ToDouble(@Model.lsCumulativePhaseWiseBudget[i].Prototype) > 0)
+                                            costprototype = Convert.ToDouble(@Model.lsCumulativePhaseWiseBudget[i].Prototype) / 100000;
                                         else
-                                            costprototype = Convert.ToDecimal(@Model.lsCumulativePhaseWiseBudget[i].Prototype);
+                                            costprototype = Convert.ToDouble(@Model.lsCumulativePhaseWiseBudget[i].Prototype);
                                     }
                                     @Math.Round(@costprototype,2)
                                 </td>
@@ -305,20 +305,20 @@
                                 </td>
                                 <td>
                                     @{
-                                        if (Convert.ToDecimal(@Model.lsCumulativePhaseWiseBudget[i].ScaleUp) > 0)
-                                            perscaleup = Convert.ToDecimal(@Model.lsCumulativePhaseWiseBudget[i].ScaleUp) / Convert.ToDecimal(@Model.lsCumulativePhaseWiseBudget[i].Total);
+                                        if (Convert.ToDouble(@Model.lsCumulativePhaseWiseBudget[i].ScaleUp) > 0)
+                                            perscaleup = (Convert.ToDouble(@Model.lsCumulativePhaseWiseBudget[i].ScaleUp) / Convert.ToDouble(@Model.lsCumulativePhaseWiseBudget[i].Total)) * 100;
                                         else
-                                            perscaleup = Convert.ToDecimal(@Model.lsCumulativePhaseWiseBudget[i].ScaleUp);
+                                            perscaleup = Convert.ToDouble(@Model.lsCumulativePhaseWiseBudget[i].ScaleUp);
                                     }
-                                    @Math.Round(@perscaleup,2)
+                                    @Math.Round(@perscaleup,2) <span>%</span>
                                 </td>
                                 <td>
                                     <span>@CurrencySymbol</span>
                                     @{
-                                        if (Convert.ToDecimal(@Model.lsCumulativePhaseWiseBudget[i].ScaleUp) > 0)
-                                            costscaleup = Convert.ToDecimal(@Model.lsCumulativePhaseWiseBudget[i].ScaleUp) / 100000;
+                                        if (Convert.ToDouble(@Model.lsCumulativePhaseWiseBudget[i].ScaleUp) > 0)
+                                            costscaleup = Convert.ToDouble(@Model.lsCumulativePhaseWiseBudget[i].ScaleUp) / 100000;
                                         else
-                                            costscaleup = Convert.ToDecimal(@Model.lsCumulativePhaseWiseBudget[i].ScaleUp);
+                                            costscaleup = Convert.ToDouble(@Model.lsCumulativePhaseWiseBudget[i].ScaleUp);
                                     }
                                     @Math.Round(@costscaleup,2)
                                 </td>
@@ -329,20 +329,20 @@
                                 </td>
                                 <td>
                                     @{
-                                        if (Convert.ToDecimal(@Model.lsCumulativePhaseWiseBudget[i].AMV) > 0)
-                                            peramvamt = Convert.ToDecimal(@Model.lsCumulativePhaseWiseBudget[i].AMV) / Convert.ToDecimal(@Model.lsCumulativePhaseWiseBudget[i].Total);
+                                        if (Convert.ToDouble(@Model.lsCumulativePhaseWiseBudget[i].AMV) > 0)
+                                            peramvamt = (Convert.ToDouble(@Model.lsCumulativePhaseWiseBudget[i].AMV) / Convert.ToDouble(@Model.lsCumulativePhaseWiseBudget[i].Total)) * 100;
                                         else
-                                            peramvamt = Convert.ToDecimal(@Model.lsCumulativePhaseWiseBudget[i].AMV);
+                                            peramvamt = Convert.ToDouble(@Model.lsCumulativePhaseWiseBudget[i].AMV);
                                     }
-                                    @Math.Round(@peramvamt,2)
+                                    @Math.Round(@peramvamt,2) <span>%</span>
                                 </td>
                                 <td>
                                     <span>@CurrencySymbol</span>
                                     @{
-                                        if (Convert.ToDecimal(@Model.lsCumulativePhaseWiseBudget[i].AMV) > 0)
-                                            costamvamt = Convert.ToDecimal(@Model.lsCumulativePhaseWiseBudget[i].AMV) / 100000;
+                                        if (Convert.ToDouble(@Model.lsCumulativePhaseWiseBudget[i].AMV) > 0)
+                                            costamvamt = Convert.ToDouble(@Model.lsCumulativePhaseWiseBudget[i].AMV) / 100000;
                                         else
-                                            costamvamt = Convert.ToDecimal(@Model.lsCumulativePhaseWiseBudget[i].AMV);
+                                            costamvamt = Convert.ToDouble(@Model.lsCumulativePhaseWiseBudget[i].AMV);
                                     }
                                     @Math.Round(@costamvamt,2)
                                 </td>
@@ -354,20 +354,20 @@
                                 </td>
                                 <td>
                                     @{
-                                        if (Convert.ToDecimal(@Model.lsCumulativePhaseWiseBudget[i].Exhibit) > 0)
-                                            perexhibit = Convert.ToDecimal(@Model.lsCumulativePhaseWiseBudget[i].Exhibit) / Convert.ToDecimal(@Model.lsCumulativePhaseWiseBudget[i].Total);
+                                        if (Convert.ToDouble(@Model.lsCumulativePhaseWiseBudget[i].Exhibit) > 0)
+                                            perexhibit = (Convert.ToDouble(@Model.lsCumulativePhaseWiseBudget[i].Exhibit) / Convert.ToDouble(@Model.lsCumulativePhaseWiseBudget[i].Total)) * 100;
                                         else
-                                            perexhibit = Convert.ToDecimal(@Model.lsCumulativePhaseWiseBudget[i].Exhibit);
+                                            perexhibit = Convert.ToDouble(@Model.lsCumulativePhaseWiseBudget[i].Exhibit);
                                     }
-                                    @Math.Round(@perexhibit,2)
+                                    @Math.Round(@perexhibit,2) <span>%</span>
                                 </td>
                                 <td>
                                     <span>@CurrencySymbol</span>
                                     @{
-                                        if (Convert.ToDecimal(@Model.lsCumulativePhaseWiseBudget[i].Exhibit) > 0)
-                                            costexhibit = Convert.ToDecimal(@Model.lsCumulativePhaseWiseBudget[i].Exhibit) / 100000;
+                                        if (Convert.ToDouble(@Model.lsCumulativePhaseWiseBudget[i].Exhibit) > 0)
+                                            costexhibit = Convert.ToDouble(@Model.lsCumulativePhaseWiseBudget[i].Exhibit) / 100000;
                                         else
-                                            costexhibit = Convert.ToDecimal(@Model.lsCumulativePhaseWiseBudget[i].Exhibit);
+                                            costexhibit = Convert.ToDouble(@Model.lsCumulativePhaseWiseBudget[i].Exhibit);
                                     }
                                     @Math.Round(@costexhibit,2)
                                 </td>
@@ -378,20 +378,20 @@
                                 </td>
                                 <td>
                                     @{
-                                        if (Convert.ToDecimal(@Model.lsCumulativePhaseWiseBudget[i].Filing) > 0)
-                                            perfiling = Convert.ToDecimal(@Model.lsCumulativePhaseWiseBudget[i].Filing) / Convert.ToDecimal(@Model.lsCumulativePhaseWiseBudget[i].Total);
+                                        if (Convert.ToDouble(@Model.lsCumulativePhaseWiseBudget[i].Filing) > 0)
+                                            perfiling = (Convert.ToDouble(@Model.lsCumulativePhaseWiseBudget[i].Filing) / Convert.ToDouble(@Model.lsCumulativePhaseWiseBudget[i].Total)) * 100;
                                         else
-                                            perfiling = Convert.ToDecimal(@Model.lsCumulativePhaseWiseBudget[i].Filing);
+                                            perfiling = Convert.ToDouble(@Model.lsCumulativePhaseWiseBudget[i].Filing);
                                     }
-                                    @Math.Round(@perfiling,2)
+                                    @Math.Round(@perfiling,2) <span>%</span>
                                 </td>
                                 <td>
                                     <span>@CurrencySymbol</span>
                                     @{
-                                        if (Convert.ToDecimal(@Model.lsCumulativePhaseWiseBudget[i].Filing) > 0)
-                                            costfiling = Convert.ToDecimal(@Model.lsCumulativePhaseWiseBudget[i].Filing) / 100000;
+                                        if (Convert.ToDouble(@Model.lsCumulativePhaseWiseBudget[i].Filing) > 0)
+                                            costfiling = Convert.ToDouble(@Model.lsCumulativePhaseWiseBudget[i].Filing) / 100000;
                                         else
-                                            costfiling = Convert.ToDecimal(@Model.lsCumulativePhaseWiseBudget[i].Filing);
+                                            costfiling = Convert.ToDouble(@Model.lsCumulativePhaseWiseBudget[i].Filing);
                                     }
 
                                     @Math.Round(@costfiling,2)
@@ -600,10 +600,10 @@
         {
             for (int i = 0; i < Model.lsAdditionalCost.Count; i++)
             {
-                decimal referenceproductcost = 0;
-                decimal biostudycost = 0;
-                decimal capexmisccost = 0;
-                decimal filingcost = 0;
+                double referenceproductcost = 0;
+                double biostudycost = 0;
+                double capexmisccost = 0;
+                double filingcost = 0;
                 double totalcost = 0;
                 var check = (@Model.lsAdditionalCost.Count / 2);
                 var tablealignment = "right-container";
@@ -628,10 +628,10 @@
                                 <td>
 
                                     @{
-                                        if (Convert.ToDecimal(@Model.lsAdditionalCost[i].ReferenceProductCost) > 0)
-                                            referenceproductcost = Convert.ToDecimal(@Model.lsAdditionalCost[i].ReferenceProductCost) / 100000;
+                                        if (Convert.ToDouble(@Model.lsAdditionalCost[i].ReferenceProductCost) > 0)
+                                            referenceproductcost = Convert.ToDouble(@Model.lsAdditionalCost[i].ReferenceProductCost) / 100000;
                                         else
-                                            referenceproductcost = Convert.ToDecimal(@Model.lsAdditionalCost[i].ReferenceProductCost);
+                                            referenceproductcost = Convert.ToDouble(@Model.lsAdditionalCost[i].ReferenceProductCost);
 
                                     }
                                     <span>@CurrencySymbol</span> @Math.Round(@referenceproductcost,2)
@@ -644,10 +644,10 @@
                                 <td>
 
                                     @{
-                                        if (Convert.ToDecimal(@Model.lsAdditionalCost[i].BioStudyCost) > 0)
-                                            biostudycost = Convert.ToDecimal(@Model.lsAdditionalCost[i].BioStudyCost) / 100000;
+                                        if (Convert.ToDouble(@Model.lsAdditionalCost[i].BioStudyCost) > 0)
+                                            biostudycost = Convert.ToDouble(@Model.lsAdditionalCost[i].BioStudyCost) / 100000;
                                         else
-                                            biostudycost = Convert.ToDecimal(@Model.lsAdditionalCost[i].BioStudyCost);
+                                            biostudycost = Convert.ToDouble(@Model.lsAdditionalCost[i].BioStudyCost);
 
                                     }
                                     <span>@CurrencySymbol</span> @Math.Round(@biostudycost,2)
@@ -660,10 +660,10 @@
                                 <td>
 
                                     @{
-                                        if (Convert.ToDecimal(@Model.lsAdditionalCost[i].CapexMiscCost) > 0)
-                                            capexmisccost = Convert.ToDecimal(@Model.lsAdditionalCost[i].CapexMiscCost) / 100000;
+                                        if (Convert.ToDouble(@Model.lsAdditionalCost[i].CapexMiscCost) > 0)
+                                            capexmisccost = Convert.ToDouble(@Model.lsAdditionalCost[i].CapexMiscCost) / 100000;
                                         else
-                                            capexmisccost = Convert.ToDecimal(@Model.lsAdditionalCost[i].CapexMiscCost);
+                                            capexmisccost = Convert.ToDouble(@Model.lsAdditionalCost[i].CapexMiscCost);
 
                                     }
                                     <span>@CurrencySymbol</span> @Math.Round(@capexmisccost,2)
@@ -676,10 +676,10 @@
                                 <td>
 
                                     @{
-                                        if (Convert.ToDecimal(@Model.lsAdditionalCost[i].FillingCost) > 0)
-                                            filingcost = Convert.ToDecimal(@Model.lsAdditionalCost[i].FillingCost) / 100000;
+                                        if (Convert.ToDouble(@Model.lsAdditionalCost[i].FillingCost) > 0)
+                                            filingcost = Convert.ToDouble(@Model.lsAdditionalCost[i].FillingCost) / 100000;
                                         else
-                                            filingcost = Convert.ToDecimal(@Model.lsAdditionalCost[i].FillingCost);
+                                            filingcost = Convert.ToDouble(@Model.lsAdditionalCost[i].FillingCost);
 
                                     }
                                     <span>@CurrencySymbol</span> @Math.Round(@filingcost,2)
@@ -690,15 +690,16 @@
                                     Total
                                 </td>
                                 <td>
-                                    <span>@CurrencySymbol</span> @Model.lsAdditionalCost[i].Total
+                                    
                                     @{
-                                        if (Convert.ToDecimal(@Model.lsAdditionalCost[i].Total) > 0)
+                                        if (Convert.ToDouble(@Model.lsAdditionalCost[i].Total) > 0)
                                             totalcost = Convert.ToDouble(@Model.lsAdditionalCost[i].Total) / 100000;
                                         else
                                             totalcost = Convert.ToDouble(@Model.lsAdditionalCost[i].Total);
 
                                         FinalTotal += @Math.Round(@totalcost, 2);
                                     }
+                                    <span>@CurrencySymbol</span>  @Math.Round(@totalcost,2)
                                 </td>
                             </tr>
                         </tbody>

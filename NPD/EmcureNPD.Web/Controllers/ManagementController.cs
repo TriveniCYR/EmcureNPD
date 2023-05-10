@@ -164,7 +164,7 @@ namespace EmcureNPD.Web.Controllers
                                 AMV = data.table5[i].AMV,
                                 Exhibit = data.table5[i].Exhibit,
                                 Filing = data.table5[i].Filing,
-                                Total = (data.table5[i].Feasability + data.table5[i].Prototype + data.table5[i].ScaleUp + data.table5[i].AMV + data.table5[i].Exhibit + data.table5[i].Filing),
+                                Total = (data.table5[i].Filing),
                             });
                         }
                         model.lsCumulativePhaseWiseBudget = ListCumulativePhaseWiseBudget;
