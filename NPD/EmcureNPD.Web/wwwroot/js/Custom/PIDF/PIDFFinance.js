@@ -548,7 +548,7 @@ function GetActiveBusinessUnitSuccess(data) {
     $.each(data._object, function (index, item) {
         let buClassName = item.businessUnitName.toLowerCase() ==='india'?'in': item.businessUnitName.toLowerCase();
         businessUnitHTML += '<li class="nav-item p-0">\
-            <a class="nav-link '+ (item.businessUnitId == _selectBusinessUnit ? "active" : "") + ' px-2" href="#custom-tabs-' + buClassName + '" data-toggle="pill" aria-selected="true" onclick="loadFInanceProjectionData(' + _selectedPidfId + ',' + item.businessUnitId + ')" id="custom-tabs-two-' + item.businessUnitId + '-tab">' + item.businessUnitName + '</a></li>';
+            <a class="nav-link '+ (item.businessUnitId == _selectBusinessUnit ? "active" : "") + ' px-2" href="#custom-tabs-' + buClassName + '" data-toggle="pill" aria-selected="true" onclick="loadFinanceProjectionData(' + _selectedPidfId + ',' + item.businessUnitId + ')" id="custom-tabs-two-' + item.businessUnitId + '-tab">' + item.businessUnitName + '</a></li>';
         businessUnitPanel += '<div class="tab-pane ' + ((item.businessUnitId == _selectBusinessUnit ? "fade show active" : "")) + '" id="custom-tabs-' + item.businessUnitId + '" role="tabpanel" aria-labelledby="custom-tabs-two-' + item.businessUnitId + '-tab"></div>';
     });
     $('#custom-tabs-business-tab').html(businessUnitHTML);
@@ -782,7 +782,10 @@ function RenderCommercialPerPack() {
         }
         html += "</tr>";
         $('#tblCommercialPerPack').html(html);
-        //html = '';
+        var SumOfSales =    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
+        var SumOfCOGS =     [0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
+        var SumOfGC =       [0, 0, 0, 0, 0, 0, 0, 0, 0, 0];      
+
         $('#FinanceTableBoy tr').each(function (index, value) {
 
             let SKU = $(this).find("select.Skus option:selected").text();
@@ -791,7 +794,10 @@ function RenderCommercialPerPack() {
             html += '<tr class="bg-light"><td class="text-left" colspan="15"><b>' + SKU + " - " + PackSize + '</b></td></tr>';
 
             var _uniqueClass = "tr_" + $(this).find("select.Skus option:selected").val() + "_" + $(this).find("select.PakeSize option:selected").val();
-
+            var MS_td_data = [];
+            var NSP_td_data = [];
+            var COGS_td_data = [];
+             //---------------------Start-MS%_Row-------------------------------------------------------
             html += "<tr class='" + _uniqueClass + "'><td>MS%</td><td>" + $(this).find("#hdnMSLow").val() + "</td><td>" + $(this).find("#hdnMSMid").val() + "</td><td>" + $(this).find("#hdnMSHigh").val() + "</td><td>Units</td>";
 
             var marketSharePercentage =  GetMarketSharePercentage($(this).find("#hdnMSLow").val(), $(this).find("#hdnMSMid").val(), $(this).find("#hdnMSHigh").val());
@@ -803,45 +809,109 @@ function RenderCommercialPerPack() {
                 var trYearIndex = formatToNumber((Row_th_Index == '-') ? '0' : Row_th_Index);
                 var trRevenueMonths =  formatToNumber($('#tblCommercialPerPack').find('.trRevenueMonths:eq(' + i + ')').text());
                 let _units = ((marketInPacks * (marketSharePercentage / 100)) * (Math.pow((1 - (msErosion / 100)),  trYearIndex))) * (trRevenueMonths / 12);
-                html += "<td>" + _units.toFixed(3) +"</td>";
+                html += "<td>" + _units.toFixed(3) + "</td>";
+                MS_td_data.push(_units);
             }
             html += "</tr>";
-
+             //---------------------End-MS%_Row-------------------------------------------------------           
+            //---------------------Start-NSP_Row-------------------------------------------------------
             html += "<tr class='" + _uniqueClass +"'><td>NSP</td><td>" + $(this).find("#hdnNSPLow").val() + "</td><td>" + $(this).find("#hdnNSPMid").val() + "</td><td>" + $(this).find("#hdnNSPHigh").val() +"</td><td>NSP</td>";
+            var nsp_Percentage = GetNSPPercentage($(this).find("#hdnNSPLow").val(), $(this).find("#hdnNSPMid").val(), $(this).find("#hdnNSPHigh").val());
+           // let marketInPacks = formatToNumber($(this).find('.Marketinpacks').val());
+            let nsp_Erosion = formatToNumber($("#PriceErosion").val(), true);   
+
             for (var i = 0; i < 10; i++) {
-                html += "<td></td>";
+                var Row_th_Index = $('#tblCommercialPerPack').find('.thYearCounter:eq(' + i + ')').text();
+                var trYearIndex = formatToNumber((Row_th_Index == '-') ? '0' : Row_th_Index);              
+                let _units = (nsp_Percentage / 100) * (Math.pow((1 - (nsp_Erosion / 100)), trYearIndex))               
+                html += "<td>" + _units.toFixed(3) + "</td>";
+                NSP_td_data.push(_units);
             }
             html += "</tr>";
-
+            //---------------------End-NSP_Row-------------------------------------------------------
+            //---------------------Start-COGS_Row-------------------------------------------------------
             html += "<tr class='" + _uniqueClass +"'><td>COGS</td><td>" + $(this).find(".EmcureCOGs_pack").val() + "</td><td>" + $(this).find(".EmcureCOGs_pack").val() + "</td><td>" + $(this).find(".EmcureCOGs_pack").val() + "</td><td>COGS/Unit</td>";
+            let COGS_Escalation = formatToNumber($("#EscalationinCOGS").val(), true);
+            var COGS_Percentage = GetCOGSPercentage($(this).find(".EmcureCOGs_pack").val(), $(this).find(".EmcureCOGs_pack").val(), $(this).find(".EmcureCOGs_pack").val());
+            for (var i = 0; i < 10; i++) {
+                var Row_th_Index = $('#tblCommercialPerPack').find('.thYearCounter:eq(' + i + ')').text();
+                var trYearIndex = formatToNumber((Row_th_Index == '-') ? '0' : Row_th_Index);
+                
+                let _units = (COGS_Percentage / 100) * (Math.pow((1 + (COGS_Escalation / 100)), trYearIndex))
+                html += "<td>" + _units.toFixed(3) + "</td>";
+                COGS_td_data.push(_units);
+            }
             html += "</tr>";
+            //---------------------END-COGS_Row-------------------------------------------------------
+            //--------------------Sales-------------------------------------------------------
+            var Sales_data = [];
             html += "<tr class='" + _uniqueClass +"'><td></td><td></td><td></td><td></td><td>Sales</td>";
             for (var i = 0; i < 10; i++) {
-                html += "<td></td>";
+                let result = MS_td_data[i] * NSP_td_data[i];
+                html += "<td>" + result.toFixed(3) + "</td>";
+                Sales_data.push(result);
+                SumOfSales[i] = SumOfSales[i] + result;               
             }
             html += "</tr>";
+            //--------------------COGS-------------------------------------------------------
+            var COGS_data = [];
             html += "<tr class='" + _uniqueClass +"'><td></td><td></td><td></td><td></td><td>COGS</td>";
             for (var i = 0; i < 10; i++) {
-                html += "<td></td>";
+                let result = MS_td_data[i] * COGS_td_data[i];
+                html += "<td>" + result.toFixed(3) + "</td>";
+                COGS_data.push(result);
+                SumOfCOGS[i] = SumOfCOGS[i] + result;                 
             }
             html += "</tr>";
+            //--------------------GC-------------------------------------------------------
+            var GC_data = [];
             html += "<tr class='" + _uniqueClass +"'><td></td><td></td><td></td><td></td><td>GC</td>";
             for (var i = 0; i < 10; i++) {
-                html += "<td></td>";
+                let result = Sales_data[i] - COGS_data[i];
+                html += "<td>" + result.toFixed(3) + "</td>";
+                GC_data.push(result);
+                SumOfGC[i] = SumOfGC[i] + result;
             }
             html += "</tr>";
-            html += "<tr class='" + _uniqueClass +"'><td></td><td></td><td></td><td></td><td>GC%</td>";
+            //--------------------GC%-------------------------------------------------------
+            html += "<tr class='" + _uniqueClass + "'><td></td><td></td><td></td><td></td><td>GC%</td>";
             for (var i = 0; i < 10; i++) {
-                html += "<td></td>";
+                let result = GC_data[i] / Sales_data[i];
+                result = (result == Infinity || isNaN(result)) ? 0 : result;
+                html += "<td>" + result.toFixed(3) + "</td>";
+               
             }
             html += "</tr>";            
         });
+        /* -----------Grand SUM-Rows--------------------*/
+        html += "<tr><td></td></tr>"; 
+       /*---------------Sales------------------------------*/
+        html += "<tr class='SumOfSales bg-light'><td></td><td></td><td></td><td></td><td>Sales</td>";
+        for (var i = 0; i < 10; i++) {
+            let result = SumOfSales[i];
+            html += "<td>" + result.toFixed(3) + "</td>";
+        }
+        html += "</tr>";
+        /*---------------COGS--------------------------*/
+        html += "<tr class='SumOfCOGS bg-light'><td></td><td></td><td></td><td></td><td>COGS</td>";
+        for (var i = 0; i < 10; i++) {
+            let result = SumOfCOGS[i];
+            html += "<td>" + result.toFixed(3) + "</td>";
+        }
+        html += "</tr>";
+        /*-----------------GC------------------------*/
+        html += "<tr class='SumOfGC bg-light'><td></td><td></td><td></td><td></td><td>GC</td>";
+        for (var i = 0; i < 10; i++) {
+            let result = SumOfGC[i];
+            html += "<td>" + result.toFixed(3) + "</td>";
+        }
+        html += "</tr>";
+
         if ($('#FinanceTableBoy tr').length > 0) {
 
         }
         html += "</tbody>";
     }
-
     $('#tblCommercialPerPack').html(html);
 }
 function GetMarketSharePercentage(low, mid, high) {
@@ -857,6 +927,34 @@ function GetMarketSharePercentage(low, mid, high) {
     } catch (e) {
     }
     return marketSharePercentage;
+}
+function GetNSPPercentage(low, mid, high) {
+    let NSPPercentage = 0;
+    try {
+        if ($('#TargetPriceScenario').val() == "1") {
+            NSPPercentage = parseInt(low);
+        } else if ($('#TargetPriceScenario').val() == "2") {
+            NSPPercentage = parseInt(mid);
+        } else if ($('#TargetPriceScenario').val() == "3") {
+            NSPPercentage = parseInt(high);
+        }
+    } catch (e) {
+    }
+    return NSPPercentage;
+}
+function GetCOGSPercentage(low, mid, high) {
+    let COGSPercentage = 0;
+    try {
+        if ($('#TargetPriceScenario').val() == "1") {
+            COGSPercentage = parseInt(low);
+        } else if ($('#TargetPriceScenario').val() == "2") {
+            COGSPercentage = parseInt(mid);
+        } else if ($('#TargetPriceScenario').val() == "3") {
+            COGSPercentage = parseInt(high);
+        }
+    } catch (e) {
+    }
+    return COGSPercentage;
 }
 function formatToNumber(input, isFloat) {
     try {

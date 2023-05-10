@@ -10,6 +10,7 @@ namespace EmcureNPD.Data.DataAccess.Entity
         public PidfFinance()
         {
             PidfFinanceBatchSizeCoatings = new HashSet<PidfFinanceBatchSizeCoating>();
+            PidfFinanceProjections = new HashSet<PidfFinanceProjection>();
         }
 
         public int PidffinaceId { get; set; }
@@ -75,5 +76,6 @@ namespace EmcureNPD.Data.DataAccess.Entity
         public DateTime? DeletedDate { get; set; }
 
         public virtual ICollection<PidfFinanceBatchSizeCoating> PidfFinanceBatchSizeCoatings { get; set; }
+        public virtual ICollection<PidfFinanceProjection> PidfFinanceProjections { get; set; }
     }
 }
