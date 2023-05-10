@@ -9,8 +9,5 @@ namespace EmcureNPD.Data.DataAccess.Entity
     {
         public int ProjectActivitiesId { get; set; }
         public string ProjectActivitiesName { get; set; }
-        public bool IsActive { get; set; }
-        public int? CreatedBy { get; set; }
-        public DateTime CreatedDate { get; set; }
     }
 }

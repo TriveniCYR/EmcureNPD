@@ -13,6 +13,7 @@ namespace EmcureNPD.Data.DataAccess.Entity
             PidfApiCharters = new HashSet<PidfApiCharter>();
             PidfApiIpds = new HashSet<PidfApiIpd>();
             PidfCommercials = new HashSet<PidfCommercial>();
+            PidfFinanceProjections = new HashSet<PidfFinanceProjection>();
             PidfIpds = new HashSet<PidfIpd>();
             PidfManagementApprovalStatusHistories = new HashSet<PidfManagementApprovalStatusHistory>();
             PidfMedicals = new HashSet<PidfMedical>();
@@ -70,6 +71,7 @@ namespace EmcureNPD.Data.DataAccess.Entity
         public virtual ICollection<PidfApiCharter> PidfApiCharters { get; set; }
         public virtual ICollection<PidfApiIpd> PidfApiIpds { get; set; }
         public virtual ICollection<PidfCommercial> PidfCommercials { get; set; }
+        public virtual ICollection<PidfFinanceProjection> PidfFinanceProjections { get; set; }
         public virtual ICollection<PidfIpd> PidfIpds { get; set; }
         public virtual ICollection<PidfManagementApprovalStatusHistory> PidfManagementApprovalStatusHistories { get; set; }
         public virtual ICollection<PidfMedical> PidfMedicals { get; set; }

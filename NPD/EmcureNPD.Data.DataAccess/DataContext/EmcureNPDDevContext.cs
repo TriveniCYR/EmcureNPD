@@ -94,6 +94,7 @@ namespace EmcureNPD.Data.DataAccess.DataContext
         public virtual DbSet<PidfCommercialYear> PidfCommercialYears { get; set; }
         public virtual DbSet<PidfFinance> PidfFinances { get; set; }
         public virtual DbSet<PidfFinanceBatchSizeCoating> PidfFinanceBatchSizeCoatings { get; set; }
+        public virtual DbSet<PidfFinanceProjection> PidfFinanceProjections { get; set; }
         public virtual DbSet<PidfIpd> PidfIpds { get; set; }
         public virtual DbSet<PidfIpdCountry> PidfIpdCountries { get; set; }
         public virtual DbSet<PidfIpdPatentDetail> PidfIpdPatentDetails { get; set; }
@@ -629,13 +630,11 @@ namespace EmcureNPD.Data.DataAccess.DataContext
 
             modelBuilder.Entity<MasterHeadWiseBudgetActivity>(entity =>
             {
-                entity.HasNoKey();
+                entity.HasKey(e => e.ProjectActivitiesId);
 
                 entity.ToTable("Master_HeadWiseBudgetActivities", "dbo");
 
-                entity.Property(e => e.CreatedDate).HasColumnType("datetime");
-
-                entity.Property(e => e.ProjectActivitiesId).ValueGeneratedOnAdd();
+                entity.Property(e => e.ProjectActivitiesId).ValueGeneratedNever();
 
                 entity.Property(e => e.ProjectActivitiesName).HasMaxLength(100);
             });
@@ -1832,6 +1831,35 @@ namespace EmcureNPD.Data.DataAccess.DataContext
                     .HasForeignKey(d => d.PidffinaceId)
                     .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("FK_PIDF_Finance_BatchSizeCoating_PIDF_Finance");
+            });
+
+            modelBuilder.Entity<PidfFinanceProjection>(entity =>
+            {
+                entity.HasKey(e => e.FinanceProjectionId)
+                    .HasName("PK__PIDF_Fin__ADB1CEA69D0BFD5C");
+
+                entity.ToTable("PIDF_Finance_Projection", "dbo");
+
+                entity.Property(e => e.CreatedDate)
+                    .HasColumnType("datetime")
+                    .HasDefaultValueSql("(getdate())");
+
+                entity.Property(e => e.PidffinaceId).HasColumnName("PIDFFinaceId");
+
+                entity.Property(e => e.Pidfid).HasColumnName("PIDFID");
+
+                entity.Property(e => e.Year).HasMaxLength(50);
+
+                entity.HasOne(d => d.Pidffinace)
+                    .WithMany(p => p.PidfFinanceProjections)
+                    .HasForeignKey(d => d.PidffinaceId)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("FK_PIDF_Finance_Projection_PIDF_Finance");
+
+                entity.HasOne(d => d.Pidf)
+                    .WithMany(p => p.PidfFinanceProjections)
+                    .HasForeignKey(d => d.Pidfid)
+                    .HasConstraintName("FK_PIDF_Finance_Projection_PIDF");
             });
 
             modelBuilder.Entity<PidfIpd>(entity =>
