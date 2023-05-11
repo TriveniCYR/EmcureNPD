@@ -2,6 +2,11 @@
 let selectedCurrencyText = "";
 let el = document.querySelectorAll('input[type="number"]');
 let isValidSku = false;
+var SumOfSales = [];
+var SumOfCOGS = []; 
+var SumOfGC = [];
+var Expiries_Yearwise_Data = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
+var AnnualConfirmatoryRelease_Data = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
 $(document).ready(function () {
  /*   console.log("selectedSKUs" + selectedSKUs);*/
   
@@ -528,6 +533,7 @@ function GetSUIMSVolumeYearWiseByPackSize(ele) {
                     $(ele).closest('tr').find("#hdnNSPHigh").val((data.table.length > 0 ? data.table[0].nspUnitsHigh : 0).toFixed(2));
 
                     RenderCommercialPerPack();
+                    RenderFinanceProjection();
                 }
                 catch (e) {
                     toastr.error('Error:' + e.message);
@@ -727,7 +733,227 @@ $(el).focusout(function () {
            }, false)
        })
 })()
+function ExpiriesValueChange(ele, index) {
+    Expiries_Yearwise_Data[index] = ele.value;
+    RenderFinanceProjection();
+}
+function RenderFinanceProjection() {
+    $('#tblFinanceProjection').html('');
 
+    let html = "";
+    let _startDate = $('#ProjectStartDate').val();
+    let _launchDate = $('#ProductLaunchDate').val();
+    if (_startDate != "" && _launchDate != "") {
+        let _ProjectStartDate = new Date(_startDate);
+        let _ProjectLaunchDate = new Date(_launchDate);
+        let tentativeStartDate = _ProjectStartDate;
+
+        tentativeStartDate.setMonth(_ProjectStartDate.getMonth() - 3);
+
+        let _FinancialYearStartDate = new Date(tentativeStartDate.getFullYear() + "/03/31");
+        let _BeginYear = tentativeStartDate.getFullYear();
+        if (_FinancialYearStartDate > tentativeStartDate) {
+            _BeginYear = tentativeStartDate.getFullYear() - 1;
+        }
+
+        var _financialYearLaunchDate = new Date(_ProjectLaunchDate.getFullYear() + "/03/31");
+        var _SalesBeginYear = _financialYearLaunchDate.getFullYear();
+        if (_financialYearLaunchDate < _ProjectLaunchDate) {
+            _SalesBeginYear = _ProjectLaunchDate.getFullYear() + 1;
+        }
+
+        html += '<thead class="bg-light">';
+        html += '<tr><th colspan="3">Finance Projection</th>';
+        var counter = 0;
+        for (var i = 0; i < 10; i++) {
+            if ((_BeginYear + i) >= _SalesBeginYear) {
+                counter++;
+            }
+            html += "<th class='thYearCounter'>" + (counter > 0 ? counter : "-") + "</th>";
+        }
+        html += "</tr>";
+
+        html += "<tr><th colspan='3' >NPV calculations CAD</th>";
+        for (var i = 0; i < 10; i++) {
+            html += "<th>" + "Mar-" + (_BeginYear + i).toString().substr(-2) + "</th>";
+        }
+        html += "</tr>";
+        html += "</thead><tbody>";
+
+        html += '<tr><td colspan="3" >#Operating Months</td>';
+        for (var i = 0; i < 10; i++) {
+            var _projectionDate = new Date((_BeginYear + i) + "/03/31");
+            const diffTime = Math.abs(_projectionDate - _ProjectLaunchDate);
+            const diffMonths = Math.round(diffTime / (1000 * 60 * 60 * 24 * 30));
+            html += "<td class='trRevenueMonths'>" + ((_projectionDate < _ProjectLaunchDate) ? "0" : (diffMonths > 12 ? 12 : diffMonths)) + "</td>";
+        }
+        html += "</tr>";
+        $('#tblFinanceProjection').html(html);
+        var SumOfGrossSales = SumOfSales;
+        /*---------------Gross Sales--------------------------*/
+        html += "<tr class='bg-light'><td colspan='3'>Gross Sales</td>";
+        for (var i = 0; i < 10; i++) {
+            let result = SumOfGrossSales[i];
+            html += "<td>" + result.toFixed(3) + "</td>";
+        }
+        html += "</tr>";
+        /*---------------Net Sales--------------------------*/
+        html += "<tr class='bg-light'><td colspan='3' >Net Sales</td>";
+        for (var i = 0; i < 10; i++) {
+            let result = SumOfSales[i];
+            html += "<td>" + result.toFixed(3) + "</td>";
+        }
+        /*------------[COGS]-Cost of goods sold--------------------------*/
+        html += "<tr class=''><td colspan='3' >Cost of goods sold</td>";
+        for (var i = 0; i < 10; i++) {
+            let result = SumOfCOGS[i];
+            html += "<td>" + result.toFixed(3) + "</td>";
+        }
+        html += "</tr>";
+        /*---------------Expiries-----------------------*/
+        html += "<tr class='Expiries'><td colspan='3' >Expiries</td>";
+        for (var i = 0; i < 10; i++) {           
+            html += "<td> <input onchange='ExpiriesValueChange(this,"+i+");' type='number' value='" + Expiries_Yearwise_Data[i] +"' class='form-control Expiriestxtbox' id='ProjectionExpiries_" + i +"' > </td>";
+        }
+        html += "</tr>";        
+        /*-----------[GC]-Gross margin--------------------------*/
+        var GC_Projection = [];
+        html += "<tr class='lblHeading'><td colspan='3' >Gross margin</td>";
+        for (var i = 0; i < 10; i++) {
+            let result = SumOfSales[i] - (SumOfCOGS[i] + Expiries_Yearwise_Data[i]);
+            html += "<td>" + result.toFixed(3) + "</td>";
+            GC_Projection.push(result);
+        }
+        html += "</tr>";
+        /*-----------[GC%]-Gross margin%--------------------------*/
+        var CGPercentage = [];
+        html += "<tr class='lblHeading percentage'><td colspan='3' >Gross margin%</td>";
+        for (var i = 0; i < 10; i++) {
+            let result = GC_Projection[i] / SumOfSales[i];
+            result = (result == Infinity || isNaN(result) || result == -Infinity) ? 0 : result;
+            html += "<td>" + result.toFixed(3) + "</td>";
+            CGPercentage.push(result);
+        }
+        html += "</tr>";
+        html += "<tr class='lblHeading bg-light'><td colspan='13' >Expenses as defined as per profit share agreement</td>";
+        
+        /*-----------MA Annual fees--------------------------*/
+        var Marketing_Allowance_Value = $('#MarketingAllowance').val(); // G20
+        html += "<tr class='lblHeading'><td colspan='3' >MA Annual fees</td>";
+        for (var i = 0; i < 10; i++) {
+            let result = Marketing_Allowance_Value * SumOfGrossSales[i];
+            html += "<td>" + result.toFixed(3) + "</td>";
+        }
+        html += "</tr>";
+        /*---------------Annual confirmatory release testing-----------------------*/
+        html += "<tr class='Expiries'><td colspan='3' >Annual confirmatory release testing</td>";
+        for (var i = 0; i < 10; i++) {
+            html += "<td> <input type='number' value='" + AnnualConfirmatoryRelease_Data[i] + "' class='form-control AnnualConfirmatoryRtxtbox' id='ProjectionAnnualConfirmatoryRelease_" + i + "' > </td>";
+        }
+        html += "</tr>";
+        /*-----------Opex--------------------------*/
+        var Opexasapercenttosale = $('#Opexasapercenttosale').val(); // G21
+        html += "<tr class='lblHeading'><td colspan='3' >Opex</td>";
+        for (var i = 0; i < 10; i++) {
+            let result = Opexasapercenttosale * SumOfGrossSales[i];
+            html += "<td>" + result.toFixed(3) + "</td>";
+        }
+        html += "</tr>";
+        /*----------- EBITDA - before Profit share--------------------------*/
+        var EBITDA_projection = [];
+        html += "<tr class='lblHeading'><td colspan='3' > EBITDA - before Profit share</td>";
+        for (var i = 0; i < 10; i++) {
+            let result = GC_Projection[i] - ((Marketing_Allowance_Value * SumOfGrossSales[i]) + AnnualConfirmatoryRelease_Data[i] + (Opexasapercenttosale * SumOfGrossSales[i]))
+            EBITDA_projection.push(result);
+            html += "<td>" + result.toFixed(3) + "</td>";
+            
+        }
+        html += "</tr>";
+        /*-----------EBITDA % (before PS)--------------------------*/
+        html += "<tr class='lblHeading percentage'><td colspan='3' > EBITDA % (before PS)</td>";
+        for (var i = 0; i < 10; i++) {
+            let result = EBITDA_projection[i] / SumOfSales[i];
+            result = (result == Infinity || isNaN(result)) ? 0 : result;
+            html += "<td>" + result.toFixed(3) + "</td>";
+        }
+        html += "</tr>";
+        /*-----------Profit Share--------------------------*/
+        var Profit_Share_Value = $('#ExternalProfitSharepercent').val(); // G16
+        html += "<tr class='lblHeading'><td colspan='3' > Profit Share</td>";
+        for (var i = 0; i < 10; i++) {
+            let result = EBITDA_projection[i] * Profit_Share_Value;
+            html += "<td>" + result.toFixed(3) + "</td>";
+        }
+        html += "</tr>";
+        html += "<tr class='lblHeading bg-light emptyRow'><td colspan='13' ></td>";
+        /*-----------MA Annual fees--------------------------*/
+        var Marketing_Allowance_Value = $('#MarketingAllowance').val(); // G20
+        html += "<tr class='lblHeading'><td colspan='3' >MA Annual fees</td>";
+        for (var i = 0; i < 10; i++) {
+            let result = Marketing_Allowance_Value * SumOfGrossSales[i];
+            html += "<td>" + result.toFixed(3) + "</td>";
+        }
+        html += "</tr>";
+        /*-----------Net Income - PBT--------------------------*/
+        var Net_Income_PBT_projection_data = [];
+        html += "<tr class='lblHeading'><td colspan='3' > Net Income - PBT</td>";
+        for (var i = 0; i < 10; i++) {
+            let result = EBITDA_projection[i] - (EBITDA_projection[i] * Profit_Share_Value) + (Marketing_Allowance_Value * SumOfGrossSales[i]);
+            html += "<td>" + result.toFixed(3) + "</td>";
+            Net_Income_PBT_projection_data.push(result);
+        }
+        html += "</tr>";
+        /*-----------% Margin--------------------------*/
+        html += "<tr class='lblHeading percentage'><td colspan='3' >% Margin</td>";
+        for (var i = 0; i < 10; i++) {
+            let result = Net_Income_PBT_projection_data[i] / SumOfSales[i];
+            result = (result == Infinity || isNaN(result)) ? 0 : result;
+            html += "<td>" + result.toFixed(3) + "</td>";
+        }
+        html += "</tr>";
+        html += "<tr class='lblHeading bg-light emptyRow'><td colspan='13' ></td>";
+        /*-----------Tax--------------------------*/
+        var Incometaxrate_Value = $('#Incometaxrate').val(); // G14
+        html += "<tr class='lblHeading'><td colspan='3' >Tax</td>";
+        for (var i = 0; i < 10; i++) {
+            let result = Net_Income_PBT_projection_data[i] / Incometaxrate_Value;
+            html += "<td>" + result.toFixed(3) + "</td>";
+        }
+        html += "</tr>";
+        html += "<tr class='lblHeading bg-light emptyRow'><td colspan='13' ></td>";
+
+        /*-----------Net Income - PAT--------------------------*/
+        var Net_Income_PAT_projection_data = [];
+        html += "<tr class='lblHeading'><td colspan='3' >Net Income - PAT</td>";
+        for (var i = 0; i < 10; i++) {
+            let result = Net_Income_PBT_projection_data[i] - (Net_Income_PBT_projection_data[i] / Incometaxrate_Value);
+            Net_Income_PAT_projection_data.push(result);
+            html += "<td>" + result.toFixed(3) + "</td>";
+        }
+        html += "</tr>";
+        /*-----------% PAT Margin--------------------------*/
+        html += "<tr class='lblHeading percentage'><td colspan='3' >% PAT Margin</td>";
+        for (var i = 0; i < 10; i++) {
+            let result = Net_Income_PAT_projection_data[i] / SumOfSales[i];
+            result = (result == Infinity || isNaN(result)) ? 0 : result;
+            html += "<td>" + result.toFixed(3) + "</td>";
+        }
+        html += "</tr>";
+        html += "<tr class='lblHeading bg-light emptyRow'><td colspan='13' ></td>";
+
+
+
+
+
+
+
+
+
+
+        html += "</tbody>";
+    }
+    $('#tblFinanceProjection').html(html);
+}
 
 
 function RenderCommercialPerPack() {
@@ -782,9 +1008,9 @@ function RenderCommercialPerPack() {
         }
         html += "</tr>";
         $('#tblCommercialPerPack').html(html);
-        var SumOfSales =    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
-        var SumOfCOGS =     [0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
-        var SumOfGC =       [0, 0, 0, 0, 0, 0, 0, 0, 0, 0];      
+        SumOfSales =    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
+        SumOfCOGS =     [0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
+        SumOfGC =       [0, 0, 0, 0, 0, 0, 0, 0, 0, 0];      
 
         $('#FinanceTableBoy tr').each(function (index, value) {
 
