@@ -28,9 +28,9 @@ namespace EmcureNPD.Utility.Audit
             bool ISmatched = false;
             ObjectCompare.CompareNew( Old,  New, out ISmatched);
             //var anotherJsononj = JsonConvert.SerializeObject(differences);
-            //string comparison = string.Empty;
-            //bool strDiff = DeepCompare(Old, New,out comparison);
-            return JsonConvert.SerializeObject(ObjectCompare.GetAudtiLogs());
+            var obj = ObjectCompare.auditlogList;
+            ObjectCompare.auditlogList = null;
+            return JsonConvert.SerializeObject(obj);
         }
 
         public static bool DeepCompare(object Old_obj, object New_Obj, out string comparison)
@@ -66,11 +66,11 @@ namespace EmcureNPD.Utility.Audit
 
     public static class ObjectCompare
     {
-       static List<AuditLog> auditlogList = new List<AuditLog>();
-        public static List<AuditLog> GetAudtiLogs()
-        {
-            return auditlogList;
-        }
+       public static List<AuditLog> auditlogList = new List<AuditLog>();
+        //public static List<AuditLog> GetAudtiLogs()
+        //{
+        //    return auditlogList;
+        //}
 
         public static bool CompareList(dynamic object1, dynamic object2)
         {
@@ -119,12 +119,7 @@ namespace EmcureNPD.Utility.Audit
             bool flag = true;
             match = flag;
             foreach (PropertyInfo propObj1 in e1.GetType().GetProperties())
-            {
-                if (propObj1.Name.Contains("ears"))
-                {
-                    string s = "";
-                }
-               
+            {                
                 var propObj2 = e2.GetType().GetProperty(propObj1.Name);            
                 var E1_val = propObj1.GetValue(e1, null);
                 var E2_val = propObj2.GetValue(e2, null);
@@ -137,10 +132,15 @@ namespace EmcureNPD.Utility.Audit
                     List<dynamic> objList2 = new List<object>() {
                     propObj2.GetValue(e2, null)
                 };
-                    if (!CompareList(objList1[0], objList2[0]))
+                    if (objList1[0] !=null && objList2[0] != null)
                     {
-                        match= false;
+                        if (!CompareList(objList1[0], objList2[0]))
+                        {
+                            match = false;
+                        }
+
                     }
+                    
                 }     
                 else if (!(Convert.ToString(E1_val).Equals(Convert.ToString(E2_val))))
                 {
