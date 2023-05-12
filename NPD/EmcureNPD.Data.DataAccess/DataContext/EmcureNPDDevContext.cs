@@ -4,7 +4,6 @@ using Microsoft.EntityFrameworkCore.Metadata;
 using EmcureNPD.Data.DataAccess.Entity;
 using EmcureNPD.Utility;
 
-
 #nullable disable
 
 namespace EmcureNPD.Data.DataAccess.DataContext
@@ -1296,6 +1295,8 @@ namespace EmcureNPD.Data.DataAccess.DataContext
                     .HasColumnName("APIGroupLeader");
 
                 entity.Property(e => e.CreatedDate).HasColumnType("datetime");
+
+                entity.Property(e => e.ManHourRates).HasMaxLength(100);
 
                 entity.Property(e => e.ModifyDate).HasColumnType("datetime");
 

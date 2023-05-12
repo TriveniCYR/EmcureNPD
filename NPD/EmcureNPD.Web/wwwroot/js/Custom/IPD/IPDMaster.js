@@ -23,11 +23,13 @@ $(document).ready(function () {
         if (_extensionExpiryDate <= _originalExpiryDate) {
             $(this).val('');
             $(this).css("border-color", "red");
+            isValidIPDForm = false;
             toastr.error(ExpirydateErrorMsg);
         }
         else if (_extensionExpiryDate < new Date(todaysDate.getFullYear(), todaysDate.getMonth(), todaysDate.getDate())) {
             $(this).css("border-color", "red");
             $(this).val('');
+            isValidIPDForm = false;
             toastr.error(PastdateErrorMsg);  
         }
         else {
@@ -41,11 +43,13 @@ $(document).ready(function () {
         if (_extensionExpiryDate <= _originalExpiryDate) {
             $(this).val('');
             $(this).css("border-color", "red");
+            isValidIPDForm = false;
             toastr.error(ExpirydateErrorMsg);
         }
         else if (_originalExpiryDate < new Date(todaysDate.getFullYear(), todaysDate.getMonth(), todaysDate.getDate())) {
             $(this).css("border-color", "red");
             $(this).val('');
+            isValidIPDForm = false;
             toastr.error(PastdateErrorMsg);            
         }
         else {
@@ -75,7 +79,7 @@ function GetActiveBusinessUnitSuccess(data) {
 function GetActiveBusinessUnitError(x, y, z) {
     toastr.error(ErrorMessage);
 }
-function LoadIPDForm(pidfId, BusinessUnitId) {
+function LoadIPDForm(pidfId, BusinessUnitId) {  
     _selectBusinessUnit = BusinessUnitId;
     if ($("#custom-tabs-" + BusinessUnitId).html() == "") {
         $.get(_IPDPartialURL, { pidfid: pidfId, bui: BusinessUnitId }, function (content) {
@@ -262,10 +266,13 @@ function validatePatentDetails() {
         if ($(this).val().trim() == '') {
             $(this).css("border-color", "red");
             $(this).focus();
-            isValidIPDForm = false;
+            isValidIPDForm = false;           
         }
         else {
             $(this).css("border-color", "");
         }
-    });   
+    });  
+    if (!isValidIPDForm) {
+        toastr.error("Some fields are missing values,Fill all Business Unit Tab details !");  
+    }
 }
