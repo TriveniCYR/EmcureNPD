@@ -216,7 +216,7 @@
 					<div class="col-md-3">
 						<div class="form-group required">
 							<label class="control-label">Project Start Date<span style="color:red;">*</span></label>
-							@Html.TextBoxFor(@modal=>modal.ProjectStartDate,"{0:yyyy-MM-dd}",new{@type="date",@class="form-control readOnlyUpdate",@required="required",@onchange="GetFinancialProjectionYear(this.value);"})
+							@Html.TextBoxFor(@modal=>modal.ProjectStartDate,"{0:yyyy-MM-dd}",new{@type="date",@class="form-control readOnlyUpdate UpdateProjectionCommercial",@required="required",@onchange="GetFinancialProjectionYear(this.value);"})
 						                    <div class="invalid-feedback">
                                             Please select Project Start Date.
                                            </div>
@@ -280,7 +280,7 @@
 					<div class="col-md-3">
 						<div class="form-group required">
 							<label class="control-label">Product Launch Date<span style="color:red;">*</span></label>
-							@Html.TextBoxFor(@modal=>modal.ProductLaunchDate,"{0:yyyy-MM-dd}",new{@type="date",@class="form-control readOnlyUpdate",@required="required"})
+								@Html.TextBoxFor(@modal=>modal.ProductLaunchDate,"{0:yyyy-MM-dd}",new{@type="date",@class="form-control readOnlyUpdate UpdateProjectionCommercial",@required="required"})
 						                <div class="invalid-feedback">
                                             Please enter Product Launch Date.
                                            </div>
@@ -317,7 +317,7 @@
 					<div class="col-md-3">
 						<div class="form-group required">
 							<label class="control-label">Market Share Erosion Rate % <span style="color:red;">*</span></label>
-							@Html.TextBoxFor(@modal=>modal.MarketShareErosionrate,new{@class="form-control readOnlyUpdate",@required="required",@type="number"})
+							@Html.TextBoxFor(@modal=>modal.MarketShareErosionrate,new{@class="form-control readOnlyUpdate UpdateProjectionCommercial",@required="required",@type="number"})
                                            <div class="invalid-feedback">
                                             Please enter Market Share Erosion rate.
                                            </div>
@@ -342,7 +342,7 @@
 					<div class="col-md-3">
 						<div class="form-group required">
 							<label class="control-label">Escalation in COGS % <span style="color:red;">*</span></label>
-							@Html.TextBoxFor(@modal=>modal.EscalationinCOGS,new{@class="form-control readOnlyUpdate",@required="required",@type="number"})
+							@Html.TextBoxFor(@modal=>modal.EscalationinCOGS,new{@class="form-control readOnlyUpdate UpdateProjectionCommercial",@required="required",@type="number"})
                                           <div class="invalid-feedback">
                                             Please enter Escalation in COGS.
                                            </div>
@@ -384,7 +384,7 @@
 					<div class="col-md-3">
 						<div class="form-group required">
 							<label class="control-label">Income tax rate<span style="color:red;">*</span></label>
-							@Html.TextBoxFor(@modal=>modal.Incometaxrate,new{@class="form-control readOnlyUpdate",@required="required",@type="number"})
+							@Html.TextBoxFor(@modal=>modal.Incometaxrate,new{@class="form-control readOnlyUpdate UpdateProjectionCommercial",@required="required",@type="number"})
                                           <div class="invalid-feedback">
                                             Please enter Income tax rate.
                                            </div>
@@ -396,7 +396,7 @@
 					<div class="col-md-3">
 						<div class="form-group required">
 							<label class="control-label">Opex as a % to sales <span style="color:red;">*</span></label>
-							@Html.TextBoxFor(@modal=>modal.Opexasapercenttosale,new{@class="form-control readOnlyUpdate",@required="required",@type="number"})
+							@Html.TextBoxFor(@modal=>modal.Opexasapercenttosale,new{@class="form-control readOnlyUpdate UpdateProjectionCommercial",@required="required",@type="number"})
                                           <div class="invalid-feedback">
                                             Please enter Opex as a % to sales.
                                            </div>
@@ -408,7 +408,7 @@
 					<div class="col-md-3">
 						<div class="form-group required">
 							<label class="control-label">External Profit Share % <span style="color:red;">*</span></label>
-							@Html.TextBoxFor(@modal=>modal.ExternalProfitSharepercent,new{@class="form-control readOnlyUpdate",@required="required",@type="number"})
+							@Html.TextBoxFor(@modal=>modal.ExternalProfitSharepercent,new{@class="form-control readOnlyUpdate UpdateProjectionCommercial",@required="required",@type="number"})
                                            <div class="invalid-feedback">
                                             Please enter External Profit Share %.
                                            </div>
@@ -459,7 +459,7 @@
 					<div class="col-md-3">
 						<div class="form-group required">
 							<label class="control-label">Marketing Allowance<span style="color:red;">*</span></label>
-							@Html.TextBoxFor(@modal=>modal.MarketingAllowance,new{@class="form-control readOnlyUpdate",@required="required",@type="number"})
+							@Html.TextBoxFor(@modal=>modal.MarketingAllowance,new{@class="form-control readOnlyUpdate UpdateProjectionCommercial",@required="required",@type="number"})
                                        <div class="invalid-feedback">
                                             Please enter Marketing Allowance.
                                            </div>
@@ -640,7 +640,7 @@
 							<td>
 								<div class="">
 									<div class="form-group required">
-										@Html.TextBoxFor(@modal=>modal.Rldsamplecost,new{@class="form-control deal-term readOnlyUpdate",@required="required",@type="number",@min="0",@onchange="calculateDealTerm();"})
+										@Html.TextBoxFor(@modal=>modal.Rldsamplecost,new{@class="form-control deal-term readOnlyUpdate UpdateProjectionCommercial",@required="required",@type="number",@min="0",@onchange="calculateDealTerm();"})
 									<div class="invalid-feedback">
                                             Please enter RLD sample cost.
                                            </div>
@@ -653,7 +653,7 @@
 							<td>
 								<div class="">
 									<div class="form-group required">
-										@Html.TextBoxFor(@modal=>modal.RldsamplecostPhaseEndDate,"{0:yyyy-MM-dd}",new{@type="date",@class="form-control readOnlyUpdate",@required="required"})
+										@Html.TextBoxFor(@modal=>modal.RldsamplecostPhaseEndDate,"{0:yyyy-MM-dd}",new{@type="date",@class="form-control readOnlyUpdate UpdateProjectionCommercial",@required="required"})
 									<div class="invalid-feedback">
                                             Please enter RLD sample cost phase end date.
                                            </div>
@@ -1077,7 +1077,7 @@
                                                 <input type="number" id="Freight_CAD" name="lsPidfFinanceBatchSizeCoating[@j].FreightCad" value="@item.FreightCad" onchange="calculateBatchSizeCaoting(this);" class="Freight_CAD form-control readOnlyUpdate" required />
 									    </td>
 									    <td>
-                                                <input type="number" id="EmcureCOGs_pack" name="lsPidfFinanceBatchSizeCoating[@j].EmcureCogsPack" value="@item.EmcureCogsPack" class="EmcureCOGs_pack form-control readOnlyUpdate" required />
+												<input type="number" id="EmcureCOGs_pack" name="lsPidfFinanceBatchSizeCoating[@j].EmcureCogsPack" value="@item.EmcureCogsPack" onchange="UpdateProjectionCommercial()" class="EmcureCOGs_pack form-control readOnlyUpdate" required />
 									    </td>
 									    <td class="align-middle abc">
                                                
@@ -1235,23 +1235,7 @@
 				
 			</div>
 		</div>
-            <div class="card collapsed-card">
-                <div class="card-header bg-primary">
-			<h3 class="card-title mb-0"><button type="button" class="btn btn-tool" data-card-widget="collapse">Commercial Per Pack</button></h3>
-				<div class="card-tools">
-					<button type="button" class="btn btn-tool" data-card-widget="collapse" data-target="#CommercialPerPack" title="Collapse">
-                           <i class="fas fa-plus"></i>
-					</button>
-				</div>
-			</div>
-            <div class="card-body collapse" id="CommercialPerPack" style="background-color:white;overflow-x:auto;">
-				<input type="hidden" />
-                <div class="accordion-body row">
-                       @* <table id="tblCommercialPerPack" class="table table-bordered text-center mb-4">
-                                               </table>*@
-                                </div>
-            </div>
-		</div>
+          
             
         @Html.Partial("_PIDFApproveReject")
 
