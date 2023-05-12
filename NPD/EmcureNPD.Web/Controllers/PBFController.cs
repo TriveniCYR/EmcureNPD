@@ -522,6 +522,7 @@ namespace EmcureNPD.Web.Controllers
             {
                 //rnd json data
                 pbfEntity.Pidfid = PIDFId;
+                pbfEntity.NumberOfApprovedAnda = "0";//CLIENT IS ASKING TO HIDE THIS FIELD SO DEFAULT VALUE IS PASSED
                 pbfEntity.RNDExicipients = pbfEntity.RNDExicipientRawData != null ? JsonConvert.DeserializeObject<List<RNDExicipient>>(pbfEntity.RNDExicipientRawData) : new List<RNDExicipient>();
                 pbfEntity.RNDPackagings = pbfEntity.RNDPackagingRawData != null ? JsonConvert.DeserializeObject<List<RNDPackaging>>(pbfEntity.RNDPackagingRawData) : new List<RNDPackaging>();
                 pbfEntity.RNDToolingChangeparts = pbfEntity.RNDToolingChangePartRawData != null ? JsonConvert.DeserializeObject<List<RNDToolingChangepart>>(pbfEntity.RNDToolingChangePartRawData) : new List<RNDToolingChangepart>();
