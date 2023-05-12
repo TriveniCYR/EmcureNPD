@@ -21,7 +21,7 @@ namespace EmcureNPD.Data.DataAccess.Entity
         public long Pidfid { get; set; }
         public string ApigroupLeader { get; set; }
         public int ProjectComplexityId { get; set; }
-        public int ManHourRates { get; set; }
+        public string ManHourRates { get; set; }
         public int? CreatedBy { get; set; }
         public DateTime CreatedDate { get; set; }
         public int? ModifyBy { get; set; }

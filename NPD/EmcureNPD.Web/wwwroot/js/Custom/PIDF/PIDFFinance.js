@@ -48,7 +48,13 @@ $(document).ready(function () {
    
 });
 
-
+function UpdateProjectionCommercial(){
+    RenderCommercialPerPack();
+    RenderFinanceProjection();
+}
+$('.UpdateProjectionCommercial').on('change', function () {
+    UpdateProjectionCommercial();
+});
 function GetSelectedMSPercent()
 {
     $("select#MSPersentage option").each(function (index, value) {
@@ -456,7 +462,9 @@ function getPackSize(ele) {
             }
             $(`select#PakeSize${row_index}.PakeSize`).append(optionhtml);
             //validateDuplicateSKUs();
-            }
+            RenderCommercialPerPack();
+            RenderFinanceProjection();
+        }
          catch (e) {
             toastr.error('Error:' + e.message);
         }
@@ -776,10 +784,11 @@ function RenderFinanceProjection() {
             html += "<th class='thYearCounter'>" + (counter > 0 ? counter : "-") + "</th>";
         }
         html += "</tr>";
-
+        var Projection_Year_data = [];
         html += "<tr><th colspan='3' >NPV calculations CAD</th>";
         for (var i = 0; i < 10; i++) {
             html += "<th>" + "Mar-" + (_BeginYear + i).toString().substr(-2) + "</th>";
+            Projection_Year_data.push((_BeginYear + i).toString(),'02','31');
         }
         html += "</tr>";
         html += "</thead><tbody>";
@@ -943,22 +952,61 @@ function RenderFinanceProjection() {
             html += "<td>" + result.toFixed(3) + "</td>";
         }
         html += "</tr>";
-        html += "<tr class='lblHeading bg-light emptyRow'><td colspan='13' ></td>";
-
-
-
-
-
-
-
+        html += "<tr class='lblHeading bg-light emptyRow'><td colspan='13' ></td></tr>";
+        html += "<tr class='lblHeading bg-light emptyRow'><td colspan='13' ></td></tr>";
+        /*-----------Incremental working capital--------------------------*/
+        html += "<tr class='lblHeading '><td colspan='3' >Incremental working capital</td>";
+        for (var i = 0; i < 10; i++) {
+            let result = Net_Income_PAT_projection_data[i] / SumOfSales[i];
+            result = (result == Infinity || isNaN(result)) ? 0 : result;
+            html += "<td>" + 0 + "</td>";
+        }
+        html += "</tr>";
+        html += "<tr class='lblHeading bg-light emptyRow'><td>Deal Terms</td><td colspan='12' ></td></tr>";
+        /*-----------R&D analytical cost--------------------------*/
+        html += "<tr class='lblHeading '><td colspan='3' >R&D analytical cost</td>";
+        var On_Agreement_Signing_Value = 1000; // this need to evaluate;
+        
+        for (var i = 0; i < 10; i++) {
+            let result = 0;
+            if (i == 0) {
+                result = 0;
+            } else {
+                if (_ProjectStartDate <= Projection_Year_data[i] && _ProjectStartDate > Projection_Year_data[i - 1]) {
+                    result = -On_Agreement_Signing_Value;
+                }
+                else {
+                    result = 0;
+                }
+            }
+            html += "<td>" + result.toFixed(3) + "</td>";
+        }
+        html += "</tr>";
+        /*-----------RLD sample cost--------------------------*/
+        html += "<tr class='lblHeading '><td colspan='3' >RLD sample cost</td>";
+        var cost_Value = $('#Rldsamplecost').val();
+        var compareDate_string = $('#RldsamplecostPhaseEndDate').val();
+        var compareDate = (compareDate_string != "") ? new Date(compareDate_string) : new Date();        
+        for (var i = 0; i < 10; i++) {
+            let result = 0;
+            if (i == 0) {
+                result = 0;
+            } else {
+                result = (compareDate <= Projection_Year_data[i] && compareDate > Projection_Year_data[i - 1]) ? -Rldsamplecost_Value : 0;
+            }
+            result = result - (1 - (Incometaxrate_Value / 100))
+            html += "<td>" + result.toFixed(3) + "</td>";
+        }
+        html += "</tr>";    
+        
 
 
 
         html += "</tbody>";
     }
     $('#tblFinanceProjection').html(html);
+   
 }
-
 
 function RenderCommercialPerPack() {
     $('#tblCommercialPerPack').html('');

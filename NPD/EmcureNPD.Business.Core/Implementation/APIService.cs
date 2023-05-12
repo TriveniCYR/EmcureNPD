@@ -484,7 +484,7 @@ namespace EmcureNPD.Business.Core.Implementation
                     lastApiCharter.PidfApiCharterHeadwiseBudgets = _objPidfApiCharterHeadwiseBudget;
 
                     _oAPICharter.ManHourRates = (Convert.ToString(_oAPICharter.ManHourRates) == "" || _oAPICharter.ManHourRates == null) ? "0" : _oAPICharter.ManHourRates;
-                    lastApiCharter.ManHourRates = int.Parse(_oAPICharter.ManHourRates);
+                    lastApiCharter.ManHourRates = _oAPICharter.ManHourRates;
                     lastApiCharter.ApigroupLeader = _oAPICharter.APIGroupLeader;
                     lastApiCharter.ProjectComplexityId = _oAPICharter.ProjectComplexityId;
 
@@ -514,7 +514,7 @@ namespace EmcureNPD.Business.Core.Implementation
                 _oDBApiCharter.PidfApiCharterHeadwiseBudgets = _objPidfApiCharterHeadwiseBudget;
 
                 _oAPICharter.ManHourRates = (Convert.ToString(_oAPICharter.ManHourRates) == "" || _oAPICharter.ManHourRates == null) ? "0" : _oAPICharter.ManHourRates;
-                _oDBApiCharter.ManHourRates = int.Parse(_oAPICharter.ManHourRates);
+                _oDBApiCharter.ManHourRates = _oAPICharter.ManHourRates;
                 _oDBApiCharter.ApigroupLeader = _oAPICharter.APIGroupLeader;
                 _oDBApiCharter.ProjectComplexityId = _oAPICharter.ProjectComplexityId;
                 _oDBApiCharter.Pidfid = long.Parse(_oAPICharter.Pidfid);
