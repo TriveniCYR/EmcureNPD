@@ -12,6 +12,7 @@ namespace EmcureNPD.Business.Models
     {
         public long Pidfpbfid { get; set; }
         public long Pidfid { get; set; }
+        public string OralName { get; set; }
         public string ProjectName { get; set; }
         public string MarketIds { get; set; }
         public int[] MarketMappingId { get; set; }//insert into seperate table with business unit id

@@ -10,9 +10,11 @@ var _strengthArray = [];
 var _CostOfLitigationArray = [];
 var _currencySymbol = '';
 var _firstLoad = true;
+var _oralName ='';
 $(document).ready(function () {
     try {
         _PIDFPBFId = parseInt($('#hdnPIDFPBFId').val());
+        _oralName = $('#OralName').val();      
         $('#hdnPIDFId').val(_PIDFID);
         $('#Pidfid').val(_PIDFID);
        // _mode = $('#hdnIsView').val(); //parseInt($('#hdnPIDFId').val());
@@ -2463,9 +2465,12 @@ function SetRNDChildRows() {
                     _rndFillingExpensesObject.IsChecked = $(this).parent().find('#rndFillingExpensesStrengthIsChecked' + $(this).val()).is(":checked");
                     _rndFillingExpensesObject.BusinessUnitId = BusinessUnitId;
                     _rndFillingExpensesObject.TotalCost = TotalCost;
-                    if (_rndFillingExpensesObject.IsChecked == true) {
+                    if (_rndFillingExpensesObject.BusinessUnitId > 0) {
                         _RNDFillingExpensesArray.push(_rndFillingExpensesObject);
                     }
+                    //if (_rndFillingExpensesObject.IsChecked == true) {
+                    //    _RNDFillingExpensesArray.push(_rndFillingExpensesObject);
+                    //}
                 });
                 fillingcount++;
             });
@@ -2572,6 +2577,11 @@ function PBFTabsReadOnly() {
         $('#custom-tabs-RnD').find('input,select,textarea,checkbox').attr('readonly', true).attr('disabled', true);
         $('#custom-tabs-RnD').find('.operationButton').hide();
 
+    }
+    if (_oralName == "Injectable") {
+        $('#msgclinicalnote').show();
+        $('#custom-tabs-Clinical').find('input,select,textarea').val('');
+        $('#custom-tabs-Clinical').find('input,select,textarea,checkbox').attr('readonly', true).attr('disabled', true);       
     }
 
 }

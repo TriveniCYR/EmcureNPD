@@ -408,7 +408,7 @@
             <table class="table table-bordered project-details-table mb-2">
                 <thead class="bg-primary">
                     <tr>
-                        <th colspan="7" class="text-center">
+                        <th colspan="10" class="text-center">
                             Project Details
                         </th>
                     </tr>
@@ -437,31 +437,31 @@
                                 <td colspan="2">
                                     Sponsor/Business Partner
                                 </td>
-                                <td colspan="5">@Model.lsProjectDetails[i].SponsorBusinessPartner</td>
+                                <td colspan="8">@Model.lsProjectDetails[i].SponsorBusinessPartner</td>
                             </tr>
                             <tr>
                                 <td colspan="2">
                                     Group Leader
                                 </td>
-                                <td colspan="5">@Model.lsProjectDetails[i].GroupLeader</td>
+                                <td colspan="8">@Model.lsProjectDetails[i].GroupLeader</td>
                             </tr>
                             <tr>
                                 <td colspan="2">
                                     Project Complexity
                                 </td>
-                                <td colspan="5">@Model.lsProjectDetails[i].ProjectComplexity (on 1-5 Scale)</td>
+                                <td colspan="8">@Model.lsProjectDetails[i].ProjectComplexity (on 1-5 Scale)</td>
                             </tr>
                             <tr>
                                 <td colspan="2">
                                     Total Project Duration
                                 </td>
-                                <td colspan="5">@Model.lsProjectDetails[i].TotalProjectDuration</td>
+                                <td colspan="8">@Model.lsProjectDetails[i].TotalProjectDuration</td>
                             </tr>
                             <tr>
                                 <td colspan="2">
                                     API
                                 </td>
-                                <td colspan="5">@Model.lsProjectDetails[i].API</td>
+                                <td colspan="8">@Model.lsProjectDetails[i].API</td>
                             </tr>
                             <tr>
                                 <td colspan="2">
@@ -485,7 +485,7 @@
                                 <td colspan="2">
                                     API Commercial Quantity
                                 </td>
-                                <td colspan="5">@Model.lsProjectDetails[i].APICommercialQuantity</td>
+                                <td colspan="8">@Model.lsProjectDetails[i].APICommercialQuantity</td>
                                 @*  <td></td>
                                     <td></td>
                                     <td colspan="2"></td>*@
@@ -494,7 +494,7 @@
                                 <td colspan="2">
                                     API price in (<span>@CurrencySymbol</span>/kg)
                                 </td>
-                                <td colspan="5">@Model.lsProjectDetails[i].APIPrice</td>
+                                <td colspan="8">@Model.lsProjectDetails[i].APIPrice</td>
                             </tr>
                             <tr>
                                 <td colspan="2">
@@ -509,7 +509,7 @@
                                 <td colspan="2">
                                     Prototype
                                 </td>
-                                <td colspan="5">@Model.lsProjectDetails[i].Prototype</td>
+                                <td colspan="8">@Model.lsProjectDetails[i].Prototype</td>
                                 @* <td>125</td>
                                     <td></td>
                                     <td></td>
@@ -519,7 +519,7 @@
                                 <td colspan="2">
                                     Scale Up
                                 </td>
-                                <td colspan="5">@Model.lsProjectDetails[i].ScaleUp</td>
+                                <td colspan="8">@Model.lsProjectDetails[i].ScaleUp</td>
                                 @*<td>250</td>
                                     <td></td>
                                     <td></td>
@@ -529,7 +529,7 @@
                                 <td colspan="2">
                                     Exhibit
                                 </td>
-                                <td colspan="5">@Model.lsProjectDetails[i].Exhibit</td>
+                                <td colspan="8">@Model.lsProjectDetails[i].Exhibit</td>
                                 @* <td>775</td>
                                     <td></td>
                                     <td></td>
@@ -542,7 +542,7 @@
             <table class="table table-bordered text-center deliverables-table mb-2">
                 <thead class="bg-primary">
                     <tr>
-                        <th colspan="6">
+                        <th colspan="12">
                             Deliverables
                         </th>
                     </tr>
@@ -570,7 +570,7 @@
                                 <td colspan="2">
                                     Project Budget (<span>@CurrencyCode</span> Lacs)
                                 </td>
-                                <td colspan="4">
+                                <td colspan="8">
                                     @Model.lsProjectDetails[i].ProjectBudget
                                     @{
                                         FinalTotal += Convert.ToDouble(@Model.lsProjectDetails[i].ProjectBudget);
@@ -581,13 +581,13 @@
                                 <td colspan="2">
                                     Project Completion/Filing Date
                                 </td>
-                                <td colspan="4">@Model.lsProjectDetails[i].ProjectCompletionFilingDate.ToString("dd MMMM yyyy")</td>
+                                <td colspan="8">@Model.lsProjectDetails[i].ProjectCompletionFilingDate.ToString("dd MMMM yyyy")</td>
                             </tr>
                             <tr>
                                 <td colspan="2">
                                     BE Studies
                                 </td>
-                                <td colspan="4">@Model.lsProjectDetails[i].BEStudies</td>
+                                <td colspan="8">@Model.lsProjectDetails[i].BEStudies</td>
                             </tr>
                         }
                     }

@@ -29,6 +29,7 @@
         <input type="hidden" asp-for="BusinessUnitsByUser" id="PBF_BusinessUnitsByUser" />
         <input type="hidden" asp-for="StrengthId" />
         <input type="hidden" asp-for="SaveType" />
+        <input type="hidden" asp-for="OralName" />
         <input type="hidden" id="hdnPBFGeneralId" value="@(Model.PBFGeneralId)" />
         <input type="hidden" id="hdnPIDFPBFId" value="@(Model.Pidfpbfid)" />
         <input type="hidden" id="hdnPBFIsView" value="@(Context.Request.Query["IsView"] == "1" ? "1" : "0")" />
@@ -883,7 +884,7 @@
                                                     </div>
                                                 </div>
                                             </div>
-                                            
+
                                         </div>
                                     </div>
                                 </div>
@@ -918,7 +919,11 @@
                              id="custom-tabs-Clinical" role="tabpanel"
                              aria-labelledby="custom-tabs-department-clinical-tab">
                                     <div class="container-fluid">
+
                                         <div class="row">
+                                            <span id="msgclinicalnote" class="text-danger" style="display:none;"><span class="text-bold">Note:</span> Not Applicable</span>
+                                            <br />
+                                            <br />
                                             <table id="tableclinical" class="table text-center tableTDHint" style="width:100%">
                                             </table>
                                         </div>
