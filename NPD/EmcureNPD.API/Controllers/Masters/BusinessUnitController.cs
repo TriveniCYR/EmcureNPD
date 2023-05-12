@@ -140,20 +140,35 @@ namespace EmcureNPD.API.Controllers.Masters
                 return _ObjectResponse.Create(false, (Int32)HttpStatusCode.InternalServerError, Convert.ToString(ex.StackTrace));
             }
         }
-
-        /// <summary>
-        /// Description - To Delete a BusinessUnit by Id
-        /// </summary>
-        /// <param name="id"></param>
-        /// <returns></returns>
-        /// <response code="200">OK</response>
-        /// <response code="400">Bad Request</response>
-        /// <response code="401">Unauthorized</response>
-        /// <response code="403">Forbidden</response>
-        /// <response code="404">Not Found</response>
-        /// <response code="405">Method Not Allowed</response>
-        /// <response code="500">Internal Server</response>
-        [HttpPost("DeleteBusinessUnit/{id}")]
+		[HttpGet, Route("GetActiveEncryptedBusinessUnit")]
+		public IActionResult GetActiveEncryptedBusinessUnit()
+		{
+			try
+			{
+				var oBusinessUnitList = _MasterBusinessUnitService.GetActiveEncryptedBusinessUnit();
+				if (oBusinessUnitList != null)
+					return _ObjectResponse.Create(oBusinessUnitList, (Int32)HttpStatusCode.OK);
+				else
+					return _ObjectResponse.Create(null, (Int32)HttpStatusCode.BadRequest, "No Records found");
+			}
+			catch (Exception ex)
+			{
+				return _ObjectResponse.Create(false, (Int32)HttpStatusCode.InternalServerError, Convert.ToString(ex.StackTrace));
+			}
+		}
+		/// <summary>
+		/// Description - To Delete a BusinessUnit by Id
+		/// </summary>
+		/// <param name="id"></param>
+		/// <returns></returns>
+		/// <response code="200">OK</response>
+		/// <response code="400">Bad Request</response>
+		/// <response code="401">Unauthorized</response>
+		/// <response code="403">Forbidden</response>
+		/// <response code="404">Not Found</response>
+		/// <response code="405">Method Not Allowed</response>
+		/// <response code="500">Internal Server</response>
+		[HttpPost("DeleteBusinessUnit/{id}")]
         public async Task<IActionResult> DeleteBusinessUnit([FromRoute] int id)
         {
             try

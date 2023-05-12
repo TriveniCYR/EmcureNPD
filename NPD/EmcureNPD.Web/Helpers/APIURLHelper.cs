@@ -68,12 +68,14 @@ namespace EmcureNPD.Web.Helpers
         public static string DeleteBusinessUnitById = "api/BusinessUnit/DeleteBusinessUnit";
         public static string GetCountryByBusinessUnitId = "api/BusinessUnit/GetCountryByBusinessUnitId";
         public static string GetActiveBusinessUnit = "api/BusinessUnit/GetActiveBusinessUnit";
+		public static string GetActiveEncryptedBusinessUnit = "api/BusinessUnit/GetActiveEncryptedBusinessUnit";
+		
 
-        #endregion BusinessUnit
+		#endregion BusinessUnit
 
-        #region Region
+		#region Region
 
-        public static string GetAllRegion = "api/Region/GetAllRegion";
+		public static string GetAllRegion = "api/Region/GetAllRegion";
         public static string GetAllActiveRegion = "api/Region/GetAllActiveRegion";
         public static string SaveRegion = "api/Region/InsertUpdateRegion";
         public static string GetRegionById = "api/Region/GetRegionById";

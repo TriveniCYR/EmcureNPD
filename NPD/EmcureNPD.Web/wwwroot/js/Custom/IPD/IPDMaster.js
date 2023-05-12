@@ -25,8 +25,9 @@ $(document).ready(function () {
             $(this).css("border-color", "red");
             toastr.error(ExpirydateErrorMsg);
         }
-        else if (_extensionExpiryDate < todaysDate) {
+        else if (_extensionExpiryDate < new Date(todaysDate.getFullYear(), todaysDate.getMonth(), todaysDate.getDate())) {
             $(this).css("border-color", "red");
+            $(this).val('');
             toastr.error(PastdateErrorMsg);  
         }
         else {
@@ -42,15 +43,15 @@ $(document).ready(function () {
             $(this).css("border-color", "red");
             toastr.error(ExpirydateErrorMsg);
         }
-        else if (_originalExpiryDate < todaysDate) {
+        else if (_originalExpiryDate < new Date(todaysDate.getFullYear(), todaysDate.getMonth(), todaysDate.getDate())) {
             $(this).css("border-color", "red");
+            $(this).val('');
             toastr.error(PastdateErrorMsg);            
         }
         else {
             $(this).css("border-color", "");
         }
     });
-
 });
 
 

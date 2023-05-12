@@ -546,7 +546,7 @@ function GetSUIMSVolumeYearWiseByPackSize(ele) {
     }
 }
 function fnGetActiveBusinessUnit() {
-    ajaxServiceMethod($('#hdnBaseURL').val() + GetActiveBusinessUnit, 'GET', GetActiveBusinessUnitSuccess, GetActiveBusinessUnitError);
+    ajaxServiceMethod($('#hdnBaseURL').val() + GetActiveEncryptedBusinessUnit, 'GET', GetActiveBusinessUnitSuccess, GetActiveBusinessUnitError);
 }
 function GetActiveBusinessUnitSuccess(data) {
     var businessUnitHTML = "";
@@ -554,7 +554,7 @@ function GetActiveBusinessUnitSuccess(data) {
     $.each(data._object, function (index, item) {
         let buClassName = item.businessUnitName.toLowerCase() ==='india'?'in': item.businessUnitName.toLowerCase();
         businessUnitHTML += '<li class="nav-item p-0">\
-            <a class="nav-link '+ (item.businessUnitId == _selectBusinessUnit ? "active" : "") + ' px-2" href="#custom-tabs-' + buClassName + '" data-toggle="pill" aria-selected="true" onclick="loadFinanceProjectionData(' + _selectedPidfId + ',' + item.businessUnitId + ')" id="custom-tabs-two-' + item.businessUnitId + '-tab">' + item.businessUnitName + '</a></li>';
+            <a class="nav-link '+ (item.businessUnitId == _selectBusinessUnit ? "active" : "") + ' px-2" href="#custom-tabs-' + buClassName + '" data-toggle="pill" aria-selected="true" onclick="loadFinanceProjectionData(' + _selectedPidfId + ',\'' + item.encBusinessUnitId + '\')" id="custom-tabs-two-' + item.businessUnitId + '-tab">' + item.businessUnitName + '</a></li>';
         businessUnitPanel += '<div class="tab-pane ' + ((item.businessUnitId == _selectBusinessUnit ? "fade show active" : "")) + '" id="custom-tabs-' + item.businessUnitId + '" role="tabpanel" aria-labelledby="custom-tabs-two-' + item.businessUnitId + '-tab"></div>';
     });
     $('#custom-tabs-business-tab').html(businessUnitHTML);
@@ -736,6 +736,10 @@ $(el).focusout(function () {
 function ExpiriesValueChange(ele, index) {
     Expiries_Yearwise_Data[index] = ele.value;
     RenderFinanceProjection();
+}
+function loadFinanceProjectionData(pidfid, encBUId){
+    _encBuid = encBUId;
+    $('.PakeSize').trigger("change");
 }
 function RenderFinanceProjection() {
     $('#tblFinanceProjection').html('');
@@ -1023,6 +1027,9 @@ function RenderCommercialPerPack() {
             var MS_td_data = [];
             var NSP_td_data = [];
             var COGS_td_data = [];
+           /* ---------------Get values from Commercial Module--------------------------------------------------------*/
+
+
              //---------------------Start-MS%_Row-------------------------------------------------------
             html += "<tr class='" + _uniqueClass + "'><td>MS%</td><td>" + $(this).find("#hdnMSLow").val() + "</td><td>" + $(this).find("#hdnMSMid").val() + "</td><td>" + $(this).find("#hdnMSHigh").val() + "</td><td>Units</td>";
 

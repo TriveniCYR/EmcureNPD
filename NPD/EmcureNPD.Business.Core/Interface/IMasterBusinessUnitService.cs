@@ -21,5 +21,7 @@ namespace EmcureNPD.Business.Core.Interface
         Task<dynamic> GetCountryByBusinessUnitId(int BusinessUnitId);
 
         DataTable GetActiveBusinessUnit();
-    }
+        List<MasterBusinessUnitEntity> GetActiveEncryptedBusinessUnit();
+
+	}
 }

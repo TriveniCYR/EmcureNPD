@@ -4,6 +4,7 @@ using EmcureNPD.Business.Models;
 using EmcureNPD.Data.DataAccess.Core.Repositories;
 using EmcureNPD.Data.DataAccess.Core.UnitOfWork;
 using EmcureNPD.Data.DataAccess.Entity;
+using EmcureNPD.Utility.Utility;
 using System;
 using System.Collections.Generic;
 using System.Data;
@@ -161,5 +162,24 @@ namespace EmcureNPD.Business.Core.ServiceImplementations
         {
             return _repository.GetDataBySP("SP_GetActiveBusinessUnit");
         }
+        public List<MasterBusinessUnitEntity> GetActiveEncryptedBusinessUnit()
+        {
+            var BU_List = _repository.GetAllQuery().Where(x => x.IsActive == true).ToList();
+            var _objBusinessUnitEntity = _mapperFactory.GetList<MasterBusinessUnit, MasterBusinessUnitEntity>(BU_List);
+            var _objBusinessUnitEntity_list = new List<MasterBusinessUnitEntity>();
+
+			foreach (var item in _objBusinessUnitEntity)
+            {
+                _objBusinessUnitEntity_list.Add(
+                    new MasterBusinessUnitEntity()
+                    {
+                        BusinessUnitId = item.BusinessUnitId,
+                        BusinessUnitName = item.BusinessUnitName,
+                        EncBusinessUnitId = UtilityHelper.Encrypt(Convert.ToString(item.BusinessUnitId))
+                    });
+
+			}
+            return _objBusinessUnitEntity_list;
+		}
     }
 }
