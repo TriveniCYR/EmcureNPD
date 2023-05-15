@@ -6,8 +6,10 @@ using EmcureNPD.Data.DataAccess.Core.Repositories;
 using EmcureNPD.Data.DataAccess.Core.UnitOfWork;
 using EmcureNPD.Data.DataAccess.Entity;
 using EmcureNPD.Utility.Enums;
+using EmcureNPD.Utility.Utility;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Data;
@@ -29,18 +31,21 @@ namespace EmcureNPD.Business.Core.Implementation
         private readonly IConfiguration _configuration;
         private readonly IMasterAuditLogService _auditLogService;
         private IRepository<PidfFinanceBatchSizeCoating> _childrepository { get; set; }
-        private readonly INotificationService _notificationService;
+		private IRepository<PidfFinanceProjection> _Projectionrepository { get; set; }
+		
+		private readonly INotificationService _notificationService;
         private readonly IExceptionService _ExceptionService;
 
         public PidfFinanceService(IUnitOfWork unitOfWork, IMapperFactory mapperFactory,
-             INotificationService notificationService,
+			 INotificationService notificationService,
             IConfiguration configuration, DbContext dbContext, IMasterAuditLogService auditLogService, IExceptionService exceptionService)
         {
             _unitOfWork = unitOfWork;
             _mapperFactory = mapperFactory;
             _repository = _unitOfWork.GetRepository<PidfFinance>();
             _childrepository = _unitOfWork.GetRepository<PidfFinanceBatchSizeCoating>();
-            _configuration = configuration;
+			_Projectionrepository = _unitOfWork.GetRepository<PidfFinanceProjection>();
+			_configuration = configuration;
             _dbContext = dbContext;
             _auditLogService = auditLogService;
             _pidfrepository = _unitOfWork.GetRepository<Pidf>();
@@ -233,8 +238,10 @@ namespace EmcureNPD.Business.Core.Implementation
                     {
                         await AddUpdatePidfFinanceBatchSizeCoating(entityPidfFinance.lsPidfFinanceBatchSizeCoating, Convert.ToInt32(entityPidfFinance.CreatedBy), PidffinaceId);
                     }
-                    //*Audit log//
-                    if (IsUpdateFinancePIDF)
+                    AddUpdateFinanceProjectTabData(entityPidfFinance.hdnDynamicControlData, Convert.ToInt32(entityPidfFinance.Pidfid), entityPidfFinance.hdnSelectedBussinesUnit, PidffinaceId);
+
+					//*Audit log//
+					if (IsUpdateFinancePIDF)
                     {
                         var isAuditSuccess = await _auditLogService.CreateAuditLog<PidfFinance>(Utility.Audit.AuditActionType.Update,
                                             ModuleEnum.Finance, _previousFinanceEntity, newFinanceEntity, Convert.ToInt32(entityPidfFinance.Pidfid));
@@ -280,6 +287,37 @@ namespace EmcureNPD.Business.Core.Implementation
                 return DBOperation.Error;
             }
         }
+
+        private void AddUpdateFinanceProjectTabData(string jsonData, long pidfid, string encBuid, int _PidffinaceId)
+        {
+            try {
+            int Buid = int.Parse(UtilityHelper.Decreypt(encBuid));
+
+            var OldEntity = _Projectionrepository.GetAllQuery().
+                Where(x => x.Pidfid == pidfid && x.BusinessUnitId == Buid && x.PidffinaceId == _PidffinaceId);
+            _Projectionrepository.RemoveRange(OldEntity);
+            _unitOfWork.SaveChangesAsync();
+
+            var data = JsonConvert.DeserializeObject<List<PIDFFinanceProjectionEntity>>(jsonData);
+            foreach (var item in data)
+            {
+                PidfFinanceProjection dbObj = new PidfFinanceProjection();
+                dbObj.Pidfid = pidfid;
+                dbObj.BusinessUnitId = Buid;
+                dbObj.PidffinaceId = _PidffinaceId;
+                dbObj.Year = item.Year;
+                dbObj.Expiries = item.Expiries;
+                dbObj.AnnualConfirmatoryRelease = item.AnnualConfirmatoryRelease;
+                _Projectionrepository.Add(dbObj);
+            }
+            _unitOfWork.SaveChangesAsync();
+        }
+              catch (Exception ex)
+            {
+				_ExceptionService.LogException(ex);
+			}
+		}
+
 
         public async Task<bool> AddUpdatePidfFinanceBatchSizeCoating(List<ChildPidfFinanceBatchSizeCoating> ls, int CreatedBy, int PIDFFinaceId = 0)
         {

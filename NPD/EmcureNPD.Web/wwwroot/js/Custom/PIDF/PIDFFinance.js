@@ -7,6 +7,7 @@ var SumOfCOGS = [];
 var SumOfGC = [];
 var Expiries_Yearwise_Data = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
 var AnnualConfirmatoryRelease_Data = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
+var Global_Projection_Year_data = [];
 $(document).ready(function () {
  /*   console.log("selectedSKUs" + selectedSKUs);*/
   
@@ -172,11 +173,28 @@ function SaveClick() {
     $('#SaveType').val('submit');
     $("#Currencyid").val($("#Currency").val().join(','));
     /*$("#HfStatusRemark").val("Submitted");*/
-        SetChildRows();
+    SetChildRows();
+    SetProjectionDynamicValues();
     //}
     //else {
     //    preventSubmit();
     //}
+}
+function SetProjectionDynamicValues() {
+    var Project_txtbox_ControlArray = [];
+    for (var i = 0; i < 10; i++) {
+        var controlExpiries = $('#ProjectionExpiries_' + i);
+        var controlAnnualConfirmatory = $('#ProjectionAnnualConfirmatoryRelease_' + i);
+
+        var _Project_txtbox_Object = new Object();
+        _Project_txtbox_Object.AnnualConfirmatoryRelease = controlAnnualConfirmatory.val();
+        _Project_txtbox_Object.Expiries = controlExpiries.val();
+        _Project_txtbox_Object.Year = Global_Projection_Year_data[i];
+        _Project_txtbox_Object.BusinessUnitId = _encBuid;
+        _Project_txtbox_Object.PIDFID = pidfId;
+        Project_txtbox_ControlArray.push(_Project_txtbox_Object);
+    }
+    $('#hdnDynamicControlData').val(JSON.stringify(Project_txtbox_ControlArray));
 }
 function SaveDraftClick() {
     //if ($('.readOnlyUpdate').val() !== null && $('.readOnlyUpdate').val() !== "") {
@@ -184,7 +202,9 @@ function SaveDraftClick() {
     //let selectedCurrencyId = $("#Currency").val().join(',');
     $("#Currencyid").val($("#Currency").val().join(','));
     /*$("#HfStatusRemark").val("SavedAsDraft");*/
-        SetChildRows();
+    SetChildRows();
+    $('#hdnSelectedBussinesUnit').val(_encBuid);
+    SetProjectionDynamicValues();    
     //}
     //else {
     //    preventSubmit();
@@ -790,6 +810,7 @@ function RenderFinanceProjection() {
             html += "<th>" + "Mar-" + (_BeginYear + i).toString().substr(-2) + "</th>";
             Projection_Year_data.push((_BeginYear + i).toString(),'02','31');
         }
+        Global_Projection_Year_data = Projection_Year_data;
         html += "</tr>";
         html += "</thead><tbody>";
 
@@ -829,7 +850,7 @@ function RenderFinanceProjection() {
         /*---------------Expiries-----------------------*/
         html += "<tr class='Expiries'><td colspan='3' >Expiries</td>";
         for (var i = 0; i < 10; i++) {           
-            html += "<td> <input onchange='ExpiriesValueChange(this,"+i+");' type='number' value='" + Expiries_Yearwise_Data[i] +"' class='form-control Expiriestxtbox' id='ProjectionExpiries_" + i +"' > </td>";
+            html += "<td> <input onchange='ExpiriesValueChange(this," + i + ");' type='number' name='" + Global_Projection_Year_data[i] +"' value='" + Expiries_Yearwise_Data[i] +"' class='form-control Expiriestxtbox UpdateProjectionCommercial' id='ProjectionExpiries_" + i +"' > </td>";
         }
         html += "</tr>";        
         /*-----------[GC]-Gross margin--------------------------*/
@@ -864,7 +885,7 @@ function RenderFinanceProjection() {
         /*---------------Annual confirmatory release testing-----------------------*/
         html += "<tr class='Expiries'><td colspan='3' >Annual confirmatory release testing</td>";
         for (var i = 0; i < 10; i++) {
-            html += "<td> <input type='number' value='" + AnnualConfirmatoryRelease_Data[i] + "' class='form-control AnnualConfirmatoryRtxtbox' id='ProjectionAnnualConfirmatoryRelease_" + i + "' > </td>";
+            html += "<td> <input type='number' name='" + Global_Projection_Year_data[i] +"' value='" + AnnualConfirmatoryRelease_Data[i] + "' class='form-control AnnualConfirmatoryRtxtbox UpdateProjectionCommercial' id='ProjectionAnnualConfirmatoryRelease_" + i + "' > </td>";
         }
         html += "</tr>";
         /*-----------Opex--------------------------*/
