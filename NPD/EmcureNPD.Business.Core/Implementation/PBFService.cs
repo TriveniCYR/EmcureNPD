@@ -157,6 +157,10 @@ namespace EmcureNPD.Business.Core.Implementation
                 {
                     data.GeneralStrengthEntities = dbresult.Tables[1].DataTableToList<GeneralStrengthEntity>();
                 }
+                if (dbresult.Tables[2] != null && dbresult.Tables[2].Rows.Count > 0)
+                {
+                    data.OralName = dbresult.Tables[2].Rows[0]["OralName"].ToString();
+                }
             }
             return data;
         }
