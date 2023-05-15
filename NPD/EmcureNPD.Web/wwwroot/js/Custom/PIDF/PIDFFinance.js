@@ -794,11 +794,14 @@ function RenderFinanceProjection() {
         html += "</thead><tbody>";
 
         html += '<tr><td colspan="3" >#Operating Months</td>';
+        var Operating_Months_Projection_data = [];
         for (var i = 0; i < 10; i++) {
             var _projectionDate = new Date((_BeginYear + i) + "/03/31");
             const diffTime = Math.abs(_projectionDate - _ProjectLaunchDate);
             const diffMonths = Math.round(diffTime / (1000 * 60 * 60 * 24 * 30));
-            html += "<td class='trRevenueMonths'>" + ((_projectionDate < _ProjectLaunchDate) ? "0" : (diffMonths > 12 ? 12 : diffMonths)) + "</td>";
+            let result = ((_projectionDate < _ProjectLaunchDate) ? "0" : (diffMonths > 12 ? 12 : diffMonths));
+            Operating_Months_Projection_data.push(result);
+            html += "<td class='trRevenueMonths'>" + result + "</td>";
         }
         html += "</tr>";
         $('#tblFinanceProjection').html(html);
@@ -954,17 +957,69 @@ function RenderFinanceProjection() {
         html += "</tr>";
         html += "<tr class='lblHeading bg-light emptyRow'><td colspan='13' ></td></tr>";
         html += "<tr class='lblHeading bg-light emptyRow'><td colspan='13' ></td></tr>";
-        /*-----------Incremental working capital--------------------------*/
-        html += "<tr class='lblHeading '><td colspan='3' >Incremental working capital</td>";
+
+        /*-----------Receivables--------------------------*/
+        var Temp_WCT_html = "";
+        Temp_WCT_html += "<tr class='lblHeading'><td colspan='3' > Receivables </td>";
+        var CollectioninDays_Value = $('#CollectioninDays').val();
+        var Receivables_Projection = [];
         for (var i = 0; i < 10; i++) {
-            let result = Net_Income_PAT_projection_data[i] / SumOfSales[i];
-            result = (result == Infinity || isNaN(result)) ? 0 : result;
-            html += "<td>" + 0 + "</td>";
+            let result = 0;
+            result = SumOfSales[i] * CollectioninDays_Value / 365;
+            Receivables_Projection.push(result);
+            Temp_WCT_html += "<td>" + result.toFixed(3) + "</td>";
+        }
+        Temp_WCT_html += "</tr>";
+        /*-----------Inventory--------------------------*/
+        Temp_WCT_html += "<tr class='lblHeading'><td colspan='3' > Inventory </td>";
+        var InventoryinDays_Value = $('#InventoryinDays').val();
+        var Inventory_Projection = [];
+        for (var i = 0; i < 10; i++) {
+            let result = 0;
+            result = SumOfCOGS[i] * InventoryinDays_Value / 365;
+            Inventory_Projection.push(result);
+            Temp_WCT_html += "<td>" + result.toFixed(3) + "</td>";
+        }
+        Temp_WCT_html += "</tr>";
+        /*-----------Creditors--------------------------*/
+        Temp_WCT_html += "<tr class='lblHeading'><td colspan='3' > Creditors </td>";
+        var CreditorinDays_Value = $('#CreditorinDays').val();
+        var Creditors_Projection = [];
+        for (var i = 0; i < 10; i++) {
+            let result = 0;
+            result = -(SumOfCOGS[i] + (EBITDA_projection[i] * Profit_Share_Value)) * CreditorinDays_Value / 365
+            Creditors_Projection.push(result);
+            Temp_WCT_html += "<td>" + result.toFixed(3) + "</td>";
+        }
+        Temp_WCT_html += "</tr>";
+        /*-----------Working capital Total--------------------------*/
+        Temp_WCT_html += "<tr class='lblHeading'><td colspan='3' > Working capital Total  </td>";
+        var Working_capital_Total = [];
+        for (var i = 0; i < 10; i++) {
+            let result = 0;
+            result = Receivables_Projection[i] + Inventory_Projection[i] + Creditors_Projection[i];
+            Working_capital_Total.push(result);
+            Temp_WCT_html += "<td>" + result.toFixed(3) + "</td>";
+        }
+        Temp_WCT_html += "</tr>";
+        /*-----------Incremental working capital--------------------------*/
+        html += "<tr class='lblHeading'><td colspan='3' > Incremental working capital  </td>";
+        var Incremental_working_capital_projection_data =[];
+        for (var i = 0; i < 10; i++) {
+            let result = 0;
+            if (i > 0) {
+                result = Working_capital_Total[i - 1] - Working_capital_Total[i];
+            }
+            Incremental_working_capital_projection_data.push(result);
+            html += "<td>" + result.toFixed(3) + "</td>";
         }
         html += "</tr>";
+
+        
         html += "<tr class='lblHeading bg-light emptyRow'><td>Deal Terms</td><td colspan='12' ></td></tr>";
         /*-----------R&D analytical cost--------------------------*/
         html += "<tr class='lblHeading '><td colspan='3' >R&D analytical cost</td>";
+        var RnD_analytical_cost_projection_data = [];
         var On_Agreement_Signing_Value = 1000; // this need to evaluate;
         
         for (var i = 0; i < 10; i++) {
@@ -979,11 +1034,13 @@ function RenderFinanceProjection() {
                     result = 0;
                 }
             }
+            RnD_analytical_cost_projection_data.push(result);
             html += "<td>" + result.toFixed(3) + "</td>";
         }
         html += "</tr>";
         /*-----------RLD sample cost--------------------------*/
         html += "<tr class='lblHeading '><td colspan='3' >RLD sample cost</td>";
+        var RLD_sample_projection_data = [];
         var cost_Value = $('#Rldsamplecost').val();
         var compareDate_string = $('#RldsamplecostPhaseEndDate').val();
         var compareDate = (compareDate_string != "") ? new Date(compareDate_string) : new Date();        
@@ -992,15 +1049,248 @@ function RenderFinanceProjection() {
             if (i == 0) {
                 result = 0;
             } else {
-                result = (compareDate <= Projection_Year_data[i] && compareDate > Projection_Year_data[i - 1]) ? -Rldsamplecost_Value : 0;
+                result = (compareDate <= Projection_Year_data[i] && compareDate > Projection_Year_data[i - 1]) ? -cost_Value : 0;
             }
             result = result - (1 - (Incometaxrate_Value / 100))
+            RLD_sample_projection_data.push(result);
             html += "<td>" + result.toFixed(3) + "</td>";
         }
         html += "</tr>";    
+        /*-----------Batch manufacturing cost--------------------------*/
+        html += "<tr class='lblHeading '><td colspan='3' >Batch manufacturing cost</td>";
+        var Batch_manufacturing_projection_data = [];
+        var cost_Value = $('#BatchmanufacturingcostOrApiactualsEst').val();
+        var compareDate_string = $('#BatchmanufacturingcostOrApiactualsEstPhaseEndDate').val();
+        var compareDate = (compareDate_string != "") ? new Date(compareDate_string) : new Date();
+        for (var i = 0; i < 10; i++) {
+            let result = 0;
+            if (i == 0) {
+                result = 0;
+            } else {
+                result = (compareDate <= Projection_Year_data[i] && compareDate > Projection_Year_data[i - 1]) ? -cost_Value : 0;
+            }
+            result = result - (1 - (Incometaxrate_Value / 100))
+            Batch_manufacturing_projection_data.push(result);
+            html += "<td>" + result.toFixed(3) + "</td>";
+        }
+        html += "</tr>";  
+        /*-----------6 months stability cost--------------------------*/
+        html += "<tr class='lblHeading '><td colspan='3' >6 months stability cost</td>";
+        var Sixmonths_stability_costprojection_data = [];
+        var cost_Value = $('#Sixmonthsstabilitycost').val();
+        var compareDate_string = $('#SixmonthsstabilitycostPhaseEndDate').val();
+        var compareDate = (compareDate_string != "") ? new Date(compareDate_string) : new Date();
+        for (var i = 0; i < 10; i++) {
+            let result = 0;
+            if (i == 0) {
+                result = 0;
+            } else {
+                result = (compareDate <= Projection_Year_data[i] && compareDate > Projection_Year_data[i - 1]) ? -cost_Value : 0;
+            }
+            result = result - (1 - (Incometaxrate_Value / 100))
+            Sixmonths_stability_costprojection_data.push(result);
+            html += "<td>" + result.toFixed(3) + "</td>";
+        }
+        html += "</tr>"; 
+        /*-----------Tech Transfer--------------------------*/
+        html += "<tr class='lblHeading '><td colspan='3' >Tech Transfer</td>";
+        var Tech_Transfer_projection_data = [];
+        var cost_Value = $('#TechTransfer').val();
+        var compareDate_string = $('#TechTransferPhaseEndDate').val();
+        var compareDate = (compareDate_string != "") ? new Date(compareDate_string) : new Date();
+        for (var i = 0; i < 10; i++) {
+            let result = 0;
+            if (i == 0) {
+                result = 0;
+            } else {
+                result = (compareDate <= Projection_Year_data[i] && compareDate > Projection_Year_data[i - 1]) ? -cost_Value : 0;
+            }
+            result = result - (1 - (Incometaxrate_Value / 100))
+            Tech_Transfer_projection_data.push(result);
+            html += "<td>" + result.toFixed(3) + "</td>";
+        }
+        html += "</tr>"; 
+        /*-----------BE studies--------------------------*/
+        html += "<tr class='lblHeading '><td colspan='3' >  BE studies  </td>";
+        var BE_studies_projection_data = [];
+        var cost_Value = $('#Bestudies').val();
+        var compareDate_string = $('#BestudiesPhaseEndDate').val();
+        var compareDate = (compareDate_string != "") ? new Date(compareDate_string) : new Date();
+        for (var i = 0; i < 10; i++) {
+            let result = 0;
+            if (i == 0) {
+                result = 0;
+            } else {
+                result = (compareDate <= Projection_Year_data[i] && compareDate > Projection_Year_data[i - 1]) ? -cost_Value : 0;
+            }
+            result = result - (1 - (Incometaxrate_Value / 100))
+            BE_studies_projection_data.push(result);
+            html += "<td>" + result.toFixed(3) + "</td>";
+        }
+        html += "</tr>"; 
+        /*-----------Filing fees--------------------------*/
+        html += "<tr class='lblHeading '><td colspan='3' >  Filing fees  </td>";
+        var Filing_fees_projection_data = [];
+        var cost_Value = $('#Filingfees').val();
+        var compareDate_string = $('#FilingfeesPhaseEndDate').val();
+        var compareDate = (compareDate_string != "") ? new Date(compareDate_string) : new Date();
+        for (var i = 0; i < 10; i++) {
+            let result = 0;
+            if (i == 0) {
+                result = 0;
+            } else {
+                result = (compareDate <= Projection_Year_data[i] && compareDate > Projection_Year_data[i - 1]) ? -cost_Value : 0;
+            }
+            result = result - (1 - (Incometaxrate_Value / 100))
+            Filing_fees_projection_data.push(result);
+            html += "<td>" + result.toFixed(3) + "</td>";
+        }
+        html += "</tr>";
+        /*-----------Other fees--------------------------*/
+        html += "<tr class='lblHeading '><td colspan='3' >  Other fees </td>";
+        var Other_fees_projection_data = [];
+        var cost_Value = $('#ToolingAndChangeParts').val();
+        var compareDate_string = $('#ToolingAndChangePartsPhaseEndDate').val();
+        var compareDate = (compareDate_string != "") ? new Date(compareDate_string) : new Date();
+        for (var i = 0; i < 10; i++) {
+            let result = 0;
+            if (i == 0) {
+                result = 0;
+            } else {
+                result = (compareDate <= Projection_Year_data[i] && compareDate > Projection_Year_data[i - 1]) ? -cost_Value : 0;
+            }
+            result = result - (1 - (Incometaxrate_Value / 100))
+            Other_fees_projection_data.push(result);
+            html += "<td>" + result.toFixed(3) + "</td>";
+        }
+        html += "</tr>";
         
+        /*-----------Total investment--------------------------*/
+        html += "<tr class='lblHeading bg-light'><td colspan='3' >  Other fees </td>";
+        var TotalInvestment_projection_data = [];
+        for (var i = 0; i < 10; i++) {
+            let result = 0;           
+            result = Other_fees_projection_data[i] +
+                Filing_fees_projection_data[i] +
+                BE_studies_projection_data[i] +
+                Tech_Transfer_projection_data[i] +
+                Sixmonths_stability_costprojection_data[i] +
+                Batch_manufacturing_projection_data[i] +
+                RLD_sample_projection_data[i] +
+                RnD_analytical_cost_projection_data[i];
 
+            TotalInvestment_projection_data.push(result);
+            html += "<td>" + result.toFixed(3) + "</td>";
+        }
+        html += "</tr>";
+        /*-----------Net Cash Flow--------------------------*/
+        html += "<tr class='lblHeading bg-light'><td colspan='3' >  Other fees </td>";
+        var NetCashFlow_projection_data = [];
+        for (var i = 0; i < 10; i++) {
+            let result = 0;
+            result = Incremental_working_capital_projection_data[i]+
+                Net_Income_PAT_projection_data[i] +
+                TotalInvestment_projection_data[i] +
 
+            NetCashFlow_projection_data.push(result);
+            html += "<td>" + result.toFixed(3) + "</td>";
+        }
+        html += "</tr>";       
+        /*-----------Cumulative cash flow -Combined--------------------------*/
+        html += "<tr class='lblHeading bg-light'><td colspan='3' > Cumulative cash flow -Combined </td>";
+        var Cumulative_cash_flow_projection_data = [];
+        for (var i = 0; i < 10; i++) {
+            let result = 0;
+            if (i > 0) {
+                result = NetCashFlow_projection_data[i] + Cumulative_cash_flow_projection_data[i - 1];
+            }
+            Cumulative_cash_flow_projection_data.push(result);
+            html += "<td>" + result.toFixed(3) + "</td>";
+        }
+        html += "</tr>";
+    /*-----------Discount Factor Projection--------------------------*/
+        html += "<tr class='lblHeading percentage'><td colspan='3' > Discount Factor Projection </td>"; 
+        var DiscountRate_Value = $('#DiscountRate').val();
+        var Discount_Factor_Projection = [];
+        for (var i = 0; i < 10; i++) {
+            var Row_Projection_th_Index = $('#tblFinanceProjection').find('.thYearCounter:eq(' + i + ')').text();
+            var trProjectionYearIndex = formatToNumber((Row_Projection_th_Index == '-') ? '0' : Row_Projection_th_Index);
+            let result = 0;
+            result = 1 / (Math.pow((1 + DiscountRate_Value / 100), trProjectionYearIndex));
+            Discount_Factor_Projection.push(result);
+            html += "<td>" + result.toFixed(3) + "</td>";
+        }
+        html += "</tr>";
+        /*-----------Discount Cash Flow--------------------------*/
+        html += "<tr class='lblHeading bg-light'><td colspan='3' > Discount Cash Flow </td>";
+        var Discount_Cash_Flow_Projection = [];
+        for (var i = 0; i < 10; i++) {
+            let result = 0;
+            result = Discount_Factor_Projection[i] * NetCashFlow_projection_data[i];
+            Discount_Cash_Flow_Projection.push(result);
+            html += "<td>" + result.toFixed(3) + "</td>";
+        }
+        html += "</tr>";  
+        /*-----------Cumulative Discount Cash Flow--------------------------*/
+        html += "<tr class='lblHeading bg-light'><td colspan='3' > Cumulative Discount cash flow </td>";
+        var Cumulative_Discount_cash_flow_projection_data = [];
+        for (var i = 0; i < 10; i++) {
+            let result = 0;
+            if (i > 0) {
+                result = Discount_Cash_Flow_Projection[i] + Cumulative_Discount_cash_flow_projection_data[i - 1];
+            }
+            Cumulative_Discount_cash_flow_projection_data.push(result);
+            html += "<td>" + result.toFixed(3) + "</td>";
+        }
+        html += "</tr>";
+        /*-----------Simple payback in # of months--------------------------*/
+        html += "<tr class='lblHeading bg-light'><td colspan='3' > Simple payback in # of months </td>";
+        var Simple_payback_Projection = [];
+        for (var i = 0; i < 10; i++) {
+            let result = 0;
+            if (i > 0) {
+                if (Cumulative_cash_flow_projection_data[i - 1]>0) {
+                    result = 0;
+                }
+                else {
+                    if (Cumulative_cash_flow_projection_data[i] > 0) {
+                        result = -Cumulative_cash_flow_projection_data[i - 1] / NetCashFlow_projection_data[i] * 12;
+                    }
+                    else {
+                        Operating_Months_Projection_data[i];
+                    }
+                }
+            }
+
+            Simple_payback_Projection.push(result);
+            html += "<td>" + result.toFixed(3) + "</td>";
+        }
+        html += "</tr>"; 
+        /*-----------Discounted Payback in # of months--------------------------*/
+        html += "<tr class='lblHeading bg-light'><td colspan='3' > Discounted payback in # of months </td>";
+        var Discounted_payback_Projection = [];
+        for (var i = 0; i < 10; i++) {
+            let result = 0;
+            if (i > 0) {
+                if (Cumulative_Discount_cash_flow_projection_data[i - 1] > 0) {
+                    result = 0;
+                }
+                else {
+                    if (Cumulative_Discount_cash_flow_projection_data[i] > 0) {
+                        result = -Cumulative_Discount_cash_flow_projection_data[i - 1] / Discount_Cash_Flow_Projection[i] * 12;
+                    }
+                    else {
+                        Operating_Months_Projection_data[i];
+                    }
+                }
+            }
+            Discounted_payback_Projection.push(result);
+            html += "<td>" + result.toFixed(3) + "</td>";
+        }
+        html += "</tr>";       
+        html += "<tr class='lblHeading bg-light emptyRow'><td>Working capital</td><td colspan='12' ></td></tr>";
+       
+        html += Temp_WCT_html;
 
         html += "</tbody>";
     }
