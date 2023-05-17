@@ -174,6 +174,7 @@ function SaveClick() {
     $("#Currencyid").val($("#Currency").val().join(','));
     /*$("#HfStatusRemark").val("Submitted");*/
     SetChildRows();
+    $('#hdnSelectedBussinesUnit').val(_encBuid);
     SetProjectionDynamicValues();
     //}
     //else {
@@ -560,6 +561,9 @@ function GetSUIMSVolumeYearWiseByPackSize(ele) {
                     $(ele).closest('tr').find("#hdnNSPMid").val((data.table.length > 0 ? data.table[0].nspUnitsMedium : 0).toFixed(2));
                     $(ele).closest('tr').find("#hdnNSPHigh").val((data.table.length > 0 ? data.table[0].nspUnitsHigh : 0).toFixed(2));
 
+                    if (data.table1.length>0)
+                        UpdateDynamicTextBoxValues(data.table1);
+
                     RenderCommercialPerPack();
                     RenderFinanceProjection();
                 }
@@ -572,6 +576,15 @@ function GetSUIMSVolumeYearWiseByPackSize(ele) {
             }
         }
     }
+}
+function UpdateDynamicTextBoxValues(table) {
+    if (table.length == 10) {
+        for (var i = 0; i < 10; i++) {
+            Expiries_Yearwise_Data[i] = table[i].expiries;
+            AnnualConfirmatoryRelease_Data[i] = table[i].annualConfirmatoryRelease;
+        }
+    }
+    
 }
 function fnGetActiveBusinessUnit() {
     ajaxServiceMethod($('#hdnBaseURL').val() + GetActiveEncryptedBusinessUnit, 'GET', GetActiveBusinessUnitSuccess, GetActiveBusinessUnitError);
@@ -765,6 +778,10 @@ function ExpiriesValueChange(ele, index) {
     Expiries_Yearwise_Data[index] = ele.value;
     RenderFinanceProjection();
 }
+function AnnualconfirmatoryValueChange(ele, index) {
+    AnnualConfirmatoryRelease_Data[index] = ele.value;
+    RenderFinanceProjection();
+}
 function loadFinanceProjectionData(pidfid, encBUId){
     _encBuid = encBUId;
     $('.PakeSize').trigger("change");
@@ -808,9 +825,10 @@ function RenderFinanceProjection() {
         html += "<tr><th colspan='3' >NPV calculations CAD</th>";
         for (var i = 0; i < 10; i++) {
             html += "<th>" + "Mar-" + (_BeginYear + i).toString().substr(-2) + "</th>";
-            Projection_Year_data.push((_BeginYear + i).toString(),'02','31');
+            Global_Projection_Year_data.push((_BeginYear + i).toString());
+            Projection_Year_data.push((_BeginYear + i).toString(), '02', '31');
         }
-        Global_Projection_Year_data = Projection_Year_data;
+        
         html += "</tr>";
         html += "</thead><tbody>";
 
@@ -885,7 +903,7 @@ function RenderFinanceProjection() {
         /*---------------Annual confirmatory release testing-----------------------*/
         html += "<tr class='Expiries'><td colspan='3' >Annual confirmatory release testing</td>";
         for (var i = 0; i < 10; i++) {
-            html += "<td> <input type='number' name='" + Global_Projection_Year_data[i] +"' value='" + AnnualConfirmatoryRelease_Data[i] + "' class='form-control AnnualConfirmatoryRtxtbox UpdateProjectionCommercial' id='ProjectionAnnualConfirmatoryRelease_" + i + "' > </td>";
+            html += "<td> <input type='number' onchange='AnnualconfirmatoryValueChange(this," + i + ");' name='" + Global_Projection_Year_data[i] +"' value='" + AnnualConfirmatoryRelease_Data[i] + "' class='form-control AnnualConfirmatoryRtxtbox UpdateProjectionCommercial' id='ProjectionAnnualConfirmatoryRelease_" + i + "' > </td>";
         }
         html += "</tr>";
         /*-----------Opex--------------------------*/

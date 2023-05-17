@@ -293,9 +293,12 @@ namespace EmcureNPD.Business.Core.Implementation
             try {
             int Buid = int.Parse(UtilityHelper.Decreypt(encBuid));
 
-            var OldEntity = _Projectionrepository.GetAllQuery().
-                Where(x => x.Pidfid == pidfid && x.BusinessUnitId == Buid && x.PidffinaceId == _PidffinaceId);
-            _Projectionrepository.RemoveRange(OldEntity);
+                var OldEntities = _Projectionrepository.GetAllQuery().
+                    Where(x => x.Pidfid == pidfid && x.BusinessUnitId == Buid && x.PidffinaceId == _PidffinaceId);
+           foreach(var _obj in OldEntities)
+                {
+                    _Projectionrepository.Remove(_obj);
+				}
             _unitOfWork.SaveChangesAsync();
 
             var data = JsonConvert.DeserializeObject<List<PIDFFinanceProjectionEntity>>(jsonData);
