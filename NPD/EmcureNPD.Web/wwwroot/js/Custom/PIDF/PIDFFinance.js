@@ -775,12 +775,16 @@ $(el).focusout(function () {
        })
 })()
 function ExpiriesValueChange(ele, index) {
+    ele.value = (ele.value == undefined || ele.value == '') ? 0 : ele.value;
     Expiries_Yearwise_Data[index] = ele.value;
     RenderFinanceProjection();
+    $('#ProjectionExpiries_' + index).focus();
 }
 function AnnualconfirmatoryValueChange(ele, index) {
+    ele.value = (ele.value == undefined || ele.value == '') ? 0 : ele.value;
     AnnualConfirmatoryRelease_Data[index] = ele.value;
     RenderFinanceProjection();
+    $('#ProjectionAnnualConfirmatoryRelease' + index).focus();    
 }
 function loadFinanceProjectionData(pidfid, encBUId){
     _encBuid = encBUId;
@@ -1206,7 +1210,7 @@ function RenderFinanceProjection() {
         html += "</tr>";
         
         /*-----------Total investment--------------------------*/
-        html += "<tr class='lblHeading bg-light'><td colspan='3' >  Other fees </td>";
+        html += "<tr class='lblHeading bg-light'><td colspan='3' > Total investment </td>";
         var TotalInvestment_projection_data = [];
         for (var i = 0; i < 10; i++) {
             let result = 0;           
@@ -1224,7 +1228,7 @@ function RenderFinanceProjection() {
         }
         html += "</tr>";
         /*-----------Net Cash Flow--------------------------*/
-        html += "<tr class='lblHeading bg-light'><td colspan='3' >  Other fees </td>";
+        html += "<tr class='lblHeading bg-light'><td colspan='3' > Net Cash Flow </td>";
         var NetCashFlow_projection_data = [];
         for (var i = 0; i < 10; i++) {
             let result = 0;
@@ -1341,16 +1345,13 @@ function RenderFinanceProjection() {
         TempHtml += '<thead class="bg-light">';
         TempHtml += '<tr><th>Output grid</th> <th></th> <th>From launch</th></tr>';
         TempHtml += "</thead><tbody>";
-        TempHtml += "<tr> <td>10-Year NPV to Emcure</td> <td> " + eval(Discount_Cash_Flow_Projection.join('+')) + " </td><td></td></tr>";
+        TempHtml += "<tr> <td>10-Year NPV to Emcure</td> <td> " + eval(Discount_Cash_Flow_Projection.join('+')).toFixed(3) + " </td><td></td></tr>";
                 let Year5Result = DCFP[0] + DCFP[1] + DCFP[2] + DCFP[3] + DCFP[4];
-        TempHtml += "<tr> <td>5-Year NPV to Emcure</td> <td> " + Year5Result + " </td><td></td></tr>";
-        TempHtml += "<tr> <td>Discounted payback in yrs</td> <td> " + eval(Discounted_payback_Projection.join('+')) / 12 + " </td>";
-        TempHtml += "<td> " + ((eval(Discounted_payback_Projection.join('+')) / 12) - GestationPeriodinYears_value) + "</td></tr>";
-        TempHtml += "<tr> <td>Total investment</td> <td> " + eval(TotalInvestment_projection_data.join('+')) + " </td><td></td></tr>";
-
-        TempHtml += "</tbody>";
-
-        
+        TempHtml += "<tr> <td>5-Year NPV to Emcure</td> <td> " + Year5Result.toFixed(3) + " </td><td></td></tr>";
+        TempHtml += "<tr> <td>Discounted payback in yrs</td> <td> " + (eval(Discounted_payback_Projection.join('+')) / 12).toFixed(3) + " </td>";
+        TempHtml += "<td> " + ((eval(Discounted_payback_Projection.join('+')) / 12) - GestationPeriodinYears_value).toFixed(3) + "</td></tr>";
+        TempHtml += "<tr> <td>Total investment</td> <td> " + eval(TotalInvestment_projection_data.join('+')).toFixed(3) + " </td><td></td></tr>";
+        TempHtml += "</tbody>";        
         $('#tblOutputGridFinanceProjection').html(TempHtml);
     }
     $('#tblFinanceProjection').html(html);
