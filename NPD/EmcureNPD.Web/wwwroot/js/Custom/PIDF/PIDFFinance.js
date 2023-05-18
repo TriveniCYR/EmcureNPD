@@ -811,6 +811,7 @@ function RenderFinanceProjection() {
             _SalesBeginYear = _ProjectLaunchDate.getFullYear() + 1;
         }
 
+
         html += '<thead class="bg-light">';
         html += '<tr><th colspan="3">Finance Projection</th>';
         var counter = 0;
@@ -874,8 +875,8 @@ function RenderFinanceProjection() {
         /*-----------[GC]-Gross margin--------------------------*/
         var GC_Projection = [];
         html += "<tr class='lblHeading'><td colspan='3' >Gross margin</td>";
-        for (var i = 0; i < 10; i++) {
-            let result = SumOfSales[i] - (SumOfCOGS[i] + Expiries_Yearwise_Data[i]);
+        for (var i = 0; i < 10; i++) {              
+            let result = SumOfSales[i] - (SumOfCOGS[i] + formatToNumber(Expiries_Yearwise_Data[i], true));
             html += "<td>" + result.toFixed(3) + "</td>";
             GC_Projection.push(result);
         }
@@ -885,7 +886,7 @@ function RenderFinanceProjection() {
         html += "<tr class='lblHeading percentage'><td colspan='3' >Gross margin%</td>";
         for (var i = 0; i < 10; i++) {
             let result = GC_Projection[i] / SumOfSales[i];
-            result = (result == Infinity || isNaN(result) || result == -Infinity) ? 0 : result;
+            result = (Math.abs(result) == Infinity || isNaN(result) || result == -Infinity) ? 0 : result;
             html += "<td>" + result.toFixed(3) + "</td>";
             CGPercentage.push(result);
         }
@@ -918,7 +919,7 @@ function RenderFinanceProjection() {
         var EBITDA_projection = [];
         html += "<tr class='lblHeading'><td colspan='3' > EBITDA - before Profit share</td>";
         for (var i = 0; i < 10; i++) {
-            let result = GC_Projection[i] - ((Marketing_Allowance_Value * SumOfGrossSales[i]) + AnnualConfirmatoryRelease_Data[i] + (Opexasapercenttosale * SumOfGrossSales[i]))
+            let result = GC_Projection[i] - ((Marketing_Allowance_Value * SumOfGrossSales[i]) + formatToNumber(AnnualConfirmatoryRelease_Data[i],true) + (Opexasapercenttosale * SumOfGrossSales[i]))
             EBITDA_projection.push(result);
             html += "<td>" + result.toFixed(3) + "</td>";
             
@@ -928,7 +929,7 @@ function RenderFinanceProjection() {
         html += "<tr class='lblHeading percentage'><td colspan='3' > EBITDA % (before PS)</td>";
         for (var i = 0; i < 10; i++) {
             let result = EBITDA_projection[i] / SumOfSales[i];
-            result = (result == Infinity || isNaN(result)) ? 0 : result;
+            result = (Math.abs(result) == Infinity || isNaN(result)) ? 0 : result;
             html += "<td>" + result.toFixed(3) + "</td>";
         }
         html += "</tr>";
@@ -962,7 +963,7 @@ function RenderFinanceProjection() {
         html += "<tr class='lblHeading percentage'><td colspan='3' >% Margin</td>";
         for (var i = 0; i < 10; i++) {
             let result = Net_Income_PBT_projection_data[i] / SumOfSales[i];
-            result = (result == Infinity || isNaN(result)) ? 0 : result;
+            result = (Math.abs(result) == Infinity || isNaN(result)) ? 0 : result;
             html += "<td>" + result.toFixed(3) + "</td>";
         }
         html += "</tr>";
@@ -990,7 +991,7 @@ function RenderFinanceProjection() {
         html += "<tr class='lblHeading percentage'><td colspan='3' >% PAT Margin</td>";
         for (var i = 0; i < 10; i++) {
             let result = Net_Income_PAT_projection_data[i] / SumOfSales[i];
-            result = (result == Infinity || isNaN(result)) ? 0 : result;
+            result = (Math.abs(result) == Infinity || isNaN(result)) ? 0 : result;
             html += "<td>" + result.toFixed(3) + "</td>";
         }
         html += "</tr>";
@@ -1332,6 +1333,25 @@ function RenderFinanceProjection() {
         html += Temp_WCT_html;
 
         html += "</tbody>";
+
+        /*-------------------------->> Output grid--------------------------------*/
+        var TempHtml = "";
+        var GestationPeriodinYears_value = formatToNumber($("#GestationPeriodinYears").val(), true);        
+        var DCFP = Discount_Cash_Flow_Projection;
+        TempHtml += '<thead class="bg-light">';
+        TempHtml += '<tr><th>Output grid</th> <th></th> <th>From launch</th></tr>';
+        TempHtml += "</thead><tbody>";
+        TempHtml += "<tr> <td>10-Year NPV to Emcure</td> <td> " + eval(Discount_Cash_Flow_Projection.join('+')) + " </td><td></td></tr>";
+                let Year5Result = DCFP[0] + DCFP[1] + DCFP[2] + DCFP[3] + DCFP[4];
+        TempHtml += "<tr> <td>5-Year NPV to Emcure</td> <td> " + Year5Result + " </td><td></td></tr>";
+        TempHtml += "<tr> <td>Discounted payback in yrs</td> <td> " + eval(Discounted_payback_Projection.join('+')) / 12 + " </td>";
+        TempHtml += "<td> " + ((eval(Discounted_payback_Projection.join('+')) / 12) - GestationPeriodinYears_value) + "</td></tr>";
+        TempHtml += "<tr> <td>Total investment</td> <td> " + eval(TotalInvestment_projection_data.join('+')) + " </td><td></td></tr>";
+
+        TempHtml += "</tbody>";
+
+        
+        $('#tblOutputGridFinanceProjection').html(TempHtml);
     }
     $('#tblFinanceProjection').html(html);
    
@@ -1487,7 +1507,7 @@ function RenderCommercialPerPack() {
             html += "<tr class='" + _uniqueClass + "'><td></td><td></td><td></td><td></td><td>GC%</td>";
             for (var i = 0; i < 10; i++) {
                 let result = GC_data[i] / Sales_data[i];
-                result = (result == Infinity || isNaN(result)) ? 0 : result;
+                result = (Math.abs(result) == Infinity || isNaN(result)) ? 0 : result;
                 html += "<td>" + result.toFixed(3) + "</td>";
                
             }

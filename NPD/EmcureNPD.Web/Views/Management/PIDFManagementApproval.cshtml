@@ -44,7 +44,21 @@
         </div>
     </div>
 </div>
-<div class="container-fluid background-white-card">
+
+<div class="card card-primary card-tabs">
+    <div class="card-header p-0 pt-1">
+        <ul class="nav nav-tabs text-center m-0" id="MangmentApprovalTabs">           
+            <li class="nav-item p-0">
+                <a id="dvPBFCharter" class="nav-link" onClick="Project_ChartertabClick()" > Project Charter </a>
+                </li>
+            <li class="nav-item p-0">
+                <a id="dvProjectCharter" class="nav-link" onClick="PBFtabClick()"> PBF Charter </a>
+            </li>           
+        </ul>
+    </div>
+</div>
+
+<div  class="container-fluid background-white-card PBFCharter">
     <div class="row" id="frmMA">
         <div class="col-12 mb-4">
             <table class="table table-bordered text-center m-0 levi-table">
@@ -767,6 +781,22 @@
     </div>
     @Html.Partial("_PIDFApproveReject")
 </div>
+
+
+
+
+
+
+
+
+<div   class="ProjectCharter" > <h2>Project Charter</h2> </div>
+
+
+
+
+
+
+
 
 
 @section MyScripts {
