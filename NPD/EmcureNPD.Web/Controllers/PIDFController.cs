@@ -137,10 +137,13 @@ namespace EmcureNPD.Web.Controllers
         {
             try
             {
+               
                 if (pIDFEntity.SaveType == "submit")
                     pIDFEntity.StatusId = (Int32)Master_PIDFStatus.PIDFSubmitted;
-                else
+                else {
                     pIDFEntity.StatusId = (Int32)Master_PIDFStatus.PIDFInProgress;
+                }
+                   
 
                 if (pIDFEntity.PIDFID <= 0)
                     pIDFEntity.LastStatusId = pIDFEntity.StatusId;
@@ -149,9 +152,8 @@ namespace EmcureNPD.Web.Controllers
 
                 string token = _helper.GetToken();
                 APIRepository objapi = new(_cofiguration);
-
+               
                 HttpResponseMessage responseMessage = objapi.APICommunication(APIURLHelper.SavePIDF, HttpMethod.Post, token, new StringContent(JsonConvert.SerializeObject(pIDFEntity))).Result;
-
                 string jsonResponse = responseMessage.Content.ReadAsStringAsync().Result;
                 ModelState.Clear();
                 var data = JsonConvert.DeserializeObject<APIResponseEntity<dynamic>>(jsonResponse);

@@ -297,7 +297,7 @@ namespace EmcureNPD.Business.Core.Implementation
 
                 #region Marketting Mapping Add Update
 
-                if (pidfpbfid > 0 && pbfentity.MarketMappingId.Length > 0)
+                if (pidfpbfid > 0 && pbfentity.MarketMappingId!=null && pbfentity.MarketMappingId.Length > 0)
                 {
                     var marketmapping = _pidfPbfMarketMappingRepository.GetAllQuery().Where(x => x.Pidfpbfid == pidfpbfid).ToList();
                     if (marketmapping.Count > 0)
@@ -311,7 +311,7 @@ namespace EmcureNPD.Business.Core.Implementation
                     foreach (var item in pbfentity.MarketMappingId)
                     {
                         PidfPbfMarketMapping objMM = new();
-                        objMM.BusinessUnitId = item;
+                        objMM.BusinessUnitId = (int)item;
                         objMM.Pidfpbfid = pidfpbfid;
                         objMM.CreatedBy = loggedInUserId;
                         objMM.CreatedDate = DateTime.Now;
@@ -969,7 +969,7 @@ namespace EmcureNPD.Business.Core.Implementation
 
                 #region Marketting Mapping Add Update
 
-                if (pidfpbfid > 0 && pbfentity.MarketMappingId.Length > 0)
+                if (pidfpbfid > 0 && pbfentity.MarketMappingId!=null && pbfentity.MarketMappingId.Length > 0)
                 {
                     var marketmapping = _pidfPbfMarketMappingRepository.GetAllQuery().Where(x => x.Pidfpbfid == pidfpbfid).ToList();
                     if (marketmapping.Count > 0)
@@ -983,7 +983,7 @@ namespace EmcureNPD.Business.Core.Implementation
                     foreach (var item in pbfentity.MarketMappingId)
                     {
                         PidfPbfMarketMapping objMM = new();
-                        objMM.BusinessUnitId = item;
+                        objMM.BusinessUnitId = (int)item;
                         objMM.Pidfpbfid = pidfpbfid;
                         objMM.CreatedBy = loggedInUserId;
                         objMM.CreatedDate = DateTime.Now;
@@ -1759,7 +1759,7 @@ namespace EmcureNPD.Business.Core.Implementation
 
                 #region Marketting Mapping Add Update
 
-                if (pidfpbfid > 0 && pbfentity.MarketMappingId.Length > 0)
+                if (pidfpbfid > 0 && pbfentity.MarketMappingId!=null && pbfentity.MarketMappingId.Length > 0)
                 {
                     var marketmapping = _pidfPbfMarketMappingRepository.GetAllQuery().Where(x => x.Pidfpbfid == pidfpbfid).ToList();
                     if (marketmapping.Count > 0)
@@ -1773,7 +1773,7 @@ namespace EmcureNPD.Business.Core.Implementation
                     foreach (var item in pbfentity.MarketMappingId)
                     {
                         PidfPbfMarketMapping objMM = new();
-                        objMM.BusinessUnitId = item;
+                        objMM.BusinessUnitId = (int)item;
                         objMM.Pidfpbfid = pidfpbfid;
                         objMM.CreatedBy = loggedInUserId;
                         objMM.CreatedDate = DateTime.Now;

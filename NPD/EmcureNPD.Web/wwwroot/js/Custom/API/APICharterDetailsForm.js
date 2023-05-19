@@ -29,7 +29,7 @@ $('#Save').click(function () {
 });
 $('#SaveDraft').click(function () {
     RoundUPReadonlyValues();
-    ValidateForm();// $("#IsModelValid").val('Valid')    
+    $('#frmAPICharterDetails').validate().settings.ignore = "*";
     $("#SaveType_APICharter").val('SaveDraft');
 });
 

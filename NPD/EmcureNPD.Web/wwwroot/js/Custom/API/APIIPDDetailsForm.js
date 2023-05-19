@@ -105,7 +105,7 @@ $('#Save').click(function () {
     $("#APIIPD_SaveType").val('Save');
 });
 $('#SaveDraft').click(function () {
-    ValidateForm(); //$("#IsModelValid").val('Valid')
+    $('#frmAPIIPDDetailsForm').validate().settings.ignore = "*";
     $("#APIIPD_SaveType").val('SaveDraft');
 });
 function SetDivReadonly() {

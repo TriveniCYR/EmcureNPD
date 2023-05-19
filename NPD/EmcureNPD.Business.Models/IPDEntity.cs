@@ -11,30 +11,30 @@ namespace EmcureNPD.Business.Models
         public long IPDID { get; set; }
         public long PIDFID { get; set; }
 
-        [Required(ErrorMessageResourceType = typeof(Validation), ErrorMessageResourceName = "Required")]
+        //[Required(ErrorMessageResourceType = typeof(Validation), ErrorMessageResourceName = "Required")]
         [Display(Name = "BusinessUnitName", ResourceType = typeof(Master))]
-        public int BusinessUnitId { get; set; }
+        public int? BusinessUnitId { get; set; }
 
-        [Required(ErrorMessageResourceType = typeof(Validation), ErrorMessageResourceName = "Required")]
+        //[Required(ErrorMessageResourceType = typeof(Validation), ErrorMessageResourceName = "Required")]
         [Display(Name = "Market Name")]
         public string MarketName { get; set; }
 
-        [Required(ErrorMessageResourceType = typeof(Validation), ErrorMessageResourceName = "Required")]
+        //[Required(ErrorMessageResourceType = typeof(Validation), ErrorMessageResourceName = "Required")]
         public string DataExclusivity { get; set; }
 
-        [Required(ErrorMessageResourceType = typeof(Validation), ErrorMessageResourceName = "Required")]
+        //[Required(ErrorMessageResourceType = typeof(Validation), ErrorMessageResourceName = "Required")]
         public string FillingType { get; set; }
 
-        [Required(ErrorMessageResourceType = typeof(Validation), ErrorMessageResourceName = "Required")]
+        //[Required(ErrorMessageResourceType = typeof(Validation), ErrorMessageResourceName = "Required")]
         public string ApprovedGenetics { get; set; }
 
-        [Required(ErrorMessageResourceType = typeof(Validation), ErrorMessageResourceName = "Required")]
+        //[Required(ErrorMessageResourceType = typeof(Validation), ErrorMessageResourceName = "Required")]
         public string LaunchedGenetics { get; set; }
 
         [Display(Name = "Region")]
         public string RegionId { get; set; }
         public string BusinessUnitsByUser { get; set; }
-        public int SelectedTabBusinessUnit { get; set; }
+        public int? SelectedTabBusinessUnit { get; set; }
         public bool _Partial { get; set; }
         public bool IsViewMode { get; set; }
         public string RegionIds { get; set; }
@@ -42,15 +42,15 @@ namespace EmcureNPD.Business.Models
         public string CountryId { get; set; }
         public string CountryIds { get; set; }
 
-        [Required(ErrorMessageResourceType = typeof(Validation), ErrorMessageResourceName = "Required")]
+        //[Required(ErrorMessageResourceType = typeof(Validation), ErrorMessageResourceName = "Required")]
         public string Innovators { get; set; }
-        [Required(ErrorMessageResourceType = typeof(Validation), ErrorMessageResourceName = "Required")]
+        //[Required(ErrorMessageResourceType = typeof(Validation), ErrorMessageResourceName = "Required")]
         public string PatentStatus { get; set; }
 
-        [Required(ErrorMessageResourceType = typeof(Validation), ErrorMessageResourceName = "Required")]
+        //[Required(ErrorMessageResourceType = typeof(Validation), ErrorMessageResourceName = "Required")]
         public string LegalStatus { get; set; }
 
-        [Required(ErrorMessageResourceType = typeof(Validation), ErrorMessageResourceName = "Required")]
+        //[Required(ErrorMessageResourceType = typeof(Validation), ErrorMessageResourceName = "Required")]
         public int CostOfLitication { get; set; }
         public bool IsComment { get; set; } = true;
         public string Comments { get; set; }
@@ -90,27 +90,27 @@ namespace EmcureNPD.Business.Models
         public long? PatentDetailsID { get; set; }
         public long? IPDID { get; set; }
 
-        [Required(ErrorMessageResourceType = typeof(Validation), ErrorMessageResourceName = "Required")]
+        //[Required(ErrorMessageResourceType = typeof(Validation), ErrorMessageResourceName = "Required")]
         [Display(Name = "Type")]
         public string Type { get; set; }
 
-        [Required(ErrorMessageResourceType = typeof(Validation), ErrorMessageResourceName = "Required")]
+        //[Required(ErrorMessageResourceType = typeof(Validation), ErrorMessageResourceName = "Required")]
         [DataType(DataType.Date, ErrorMessage = "Original Expiry Date")]
         [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:yyyy-MM-dd}")]
         public DateTime? OriginalExpiryDate { get; set; }
 
-        [Required(ErrorMessageResourceType = typeof(Validation), ErrorMessageResourceName = "Required")]
+        //[Required(ErrorMessageResourceType = typeof(Validation), ErrorMessageResourceName = "Required")]
         [DataType(DataType.Date, ErrorMessage = "Extension Expiry Date")]
         [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:yyyy-MM-dd}")]
         public DateTime? ExtensionExpiryDate { get; set; }
 
-        [Required(ErrorMessageResourceType = typeof(Validation), ErrorMessageResourceName = "Required")]
+        //[Required(ErrorMessageResourceType = typeof(Validation), ErrorMessageResourceName = "Required")]
         public string Comments { get; set; }
 
-        [Required(ErrorMessageResourceType = typeof(Validation), ErrorMessageResourceName = "Required")]
+        //[Required(ErrorMessageResourceType = typeof(Validation), ErrorMessageResourceName = "Required")]
         public string Strategy { get; set; }
 
-        [Required(ErrorMessageResourceType = typeof(Validation), ErrorMessageResourceName = "Required")]
+        //[Required(ErrorMessageResourceType = typeof(Validation), ErrorMessageResourceName = "Required")]
         public string PatentNumber { get; set; }
         public string BusinessUnitName { get; set; }
 
@@ -118,7 +118,7 @@ namespace EmcureNPD.Business.Models
     public partial class IPDPIDFListEntity
     {
         public int PIDFID { get; set; }
-        public int BusinessUnitId { get; set; }
+        public int? BusinessUnitId { get; set; }
         public string PIDFNO { get; set; }
         public string DosageFormName { get; set; }
         public string PackagingTypeName { get; set; }
@@ -142,7 +142,7 @@ namespace EmcureNPD.Business.Models
     }
     public class RegionEntity
     {
-        public int RegionId { get; set; }
+        public int? RegionId { get; set; }
         public string RegionName { get; set; }
     }
     public class UserRegionMappingEntity

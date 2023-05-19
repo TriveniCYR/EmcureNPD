@@ -250,7 +250,7 @@ namespace EmcureNPD.Web.Controllers
             }
             //oPIDForm.pidfEntity = _pidfEntity;
 
-            oPIDForm.BusinessUnitId = _pidfEntity.BusinessUnitId;
+            oPIDForm.BusinessUnitId = (int)_pidfEntity.BusinessUnitId;
             return oPIDForm;
         }
 

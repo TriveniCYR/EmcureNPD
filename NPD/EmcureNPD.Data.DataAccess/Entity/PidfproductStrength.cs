@@ -29,7 +29,7 @@ namespace EmcureNPD.Data.DataAccess.Entity
         public long PidfproductStrengthId { get; set; }
         public long Pidfid { get; set; }
         public string Strength { get; set; }
-        public int UnitofMeasurementId { get; set; }
+        public int? UnitofMeasurementId { get; set; }
         public DateTime ModifyDate { get; set; }
         public int ModifyBy { get; set; }
 

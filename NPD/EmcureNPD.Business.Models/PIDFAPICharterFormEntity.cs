@@ -24,11 +24,10 @@ namespace EmcureNPD.Business.Models
         public string ProjectEndDate { get; set; }
         public string ManHourRates { get; set; }
         public string APIGroupLeader { get; set; }
-        public int ProjectComplexityId { get; set; }
+        public int? ProjectComplexityId { get; set; }
         public string ProjectComplexity { get; set; }
         public int LoggedInUserId { get; set; }
         //public List<PIDF_IPD_PatentDetailsEntity> IPD_PatentDetailsList { get; set; }
-        [Required]
         public string IsModelValid { get; set; }
         //-------------------Child Table-------------------------- 
         public List<ManagmentTeam> ManagmentTeams { get; set; }

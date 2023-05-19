@@ -36,7 +36,7 @@ namespace EmcureNPD.Data.DataAccess.Entity
         public string Capex { get; set; }
         public double? TotalExpense { get; set; }
         public int? ProjectComplexity { get; set; }
-        public int ProductTypeId { get; set; }
+        public int? ProductTypeId { get; set; }
         public string TestLicenseAvailability { get; set; }
         public DateTime? BudgetTimelineSubmissionDate { get; set; }
         public DateTime? ProjectDevelopmentInitialDate { get; set; }

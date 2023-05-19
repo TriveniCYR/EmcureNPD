@@ -9,7 +9,7 @@ namespace EmcureNPD.Data.DataAccess.Entity
     {
         public long IpdregionId { get; set; }
         public long Ipdid { get; set; }
-        public int RegionId { get; set; }
+        public int? RegionId { get; set; }
         public DateTime CreatedDate { get; set; }
 
         public virtual PidfIpd Ipd { get; set; }

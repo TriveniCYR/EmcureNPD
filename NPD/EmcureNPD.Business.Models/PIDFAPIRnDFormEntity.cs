@@ -20,7 +20,7 @@ namespace EmcureNPD.Business.Models
         public int? StatusId { get; set; }
         public string BusinessUnitId { get; set; }
         public string MarketDetailsFileName { get; set; }
-        public int ProductTypeId { get; set; }
+        public int? ProductTypeId { get; set; }
         public string ProductType { get; set; }
         public string DrugsCategory { get; set; }
         public string ProductStrength { get; set; }
@@ -29,7 +29,7 @@ namespace EmcureNPD.Business.Models
         public List<MasterCountryEntity> MasterCountries { get; set; }
         public List<PIDF_IPD_PatentDetailsEntity> IPD_PatentDetailsList { get; set; }
         public PIDFCommercialEntity _commercialFormEntity { get; set; }
-        [Required]
+        
         public string IsModelValid { get; set; }
         /// <summary>
         /// //Formulation Quantity
@@ -40,7 +40,7 @@ namespace EmcureNPD.Business.Models
         public string PlantQC { get; set; }
         public string Total { get; set; }
 
-        public int MarketID { get; set; }
+        public int? MarketID { get; set; }
         public string SponsorBusinessPartner { get; set; }
         public string APIMarketPrice { get; set; }
         public string APITargetRMC_CCPC { get; set; }

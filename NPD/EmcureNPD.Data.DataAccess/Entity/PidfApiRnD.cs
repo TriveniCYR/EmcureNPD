@@ -12,7 +12,7 @@ namespace EmcureNPD.Data.DataAccess.Entity
         public string SponsorBusinessPartner { get; set; }
         public string ApimarketPrice { get; set; }
         public string ApitargetRmcCcpc { get; set; }
-        public int MarketExtenstionId { get; set; }
+        public int? MarketExtenstionId { get; set; }
         public string Development { get; set; }
         public string ScaleUp { get; set; }
         public string Exhibit { get; set; }

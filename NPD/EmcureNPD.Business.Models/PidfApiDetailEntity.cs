@@ -14,7 +14,7 @@ namespace EmcureNPD.Business.Models
         public long Pidfid { get; set; }
 		
 		public string Apiname { get; set; }
-        public int ApisourcingId { get; set; }
+        public int? ApisourcingId { get; set; }
 		
 		public string Apivendor { get; set; }
         public DateTime ModifyDate { get; set; }

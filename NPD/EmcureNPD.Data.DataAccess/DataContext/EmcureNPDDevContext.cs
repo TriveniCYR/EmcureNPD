@@ -2,7 +2,6 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata;
 using EmcureNPD.Data.DataAccess.Entity;
-using EmcureNPD.Utility;
 
 #nullable disable
 
@@ -138,8 +137,8 @@ namespace EmcureNPD.Data.DataAccess.DataContext
             if (!optionsBuilder.IsConfigured)
             {
 #warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see http://go.microsoft.com/fwlink/?LinkId=723263.
-				optionsBuilder.UseSqlServer(DatabaseConnection.NPDDatabaseConnection);
-			}
+                optionsBuilder.UseSqlServer("Data Source=180.149.241.172;Initial Catalog=EmcureNPDDev;Persist Security Info=True;User ID=emcurenpddev_dbUser;pwd=emcure123!@#");
+            }
         }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
@@ -1168,9 +1167,7 @@ namespace EmcureNPD.Data.DataAccess.DataContext
 
                 entity.Property(e => e.ApprovedGenerics).HasMaxLength(100);
 
-                entity.Property(e => e.BrandName)
-                    .IsRequired()
-                    .HasMaxLength(100);
+                entity.Property(e => e.BrandName).HasMaxLength(100);
 
                 entity.Property(e => e.CreatedDate).HasColumnType("datetime");
 
@@ -1182,9 +1179,7 @@ namespace EmcureNPD.Data.DataAccess.DataContext
 
                 entity.Property(e => e.ModifyDate).HasColumnType("datetime");
 
-                entity.Property(e => e.MoleculeName)
-                    .IsRequired()
-                    .HasMaxLength(100);
+                entity.Property(e => e.MoleculeName).HasMaxLength(100);
 
                 entity.Property(e => e.Pidfno)
                     .IsRequired()
@@ -1228,7 +1223,6 @@ namespace EmcureNPD.Data.DataAccess.DataContext
                 entity.HasOne(d => d.BusinessUnit)
                     .WithMany(p => p.Pidfs)
                     .HasForeignKey(d => d.BusinessUnitId)
-                    .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("FK_PIDF_Master_BusinessUnit");
 
                 entity.HasOne(d => d.Dia)
@@ -1239,13 +1233,11 @@ namespace EmcureNPD.Data.DataAccess.DataContext
                 entity.HasOne(d => d.DosageForm)
                     .WithMany(p => p.Pidfs)
                     .HasForeignKey(d => d.DosageFormId)
-                    .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("FK_PIDF_Master_DosageForm");
 
                 entity.HasOne(d => d.LastStatus)
                     .WithMany(p => p.PidfLastStatuses)
                     .HasForeignKey(d => d.LastStatusId)
-                    .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("FK_PIDF_Master_PIDFStatus1");
 
                 entity.HasOne(d => d.MarketExtenstion)
@@ -1256,7 +1248,6 @@ namespace EmcureNPD.Data.DataAccess.DataContext
                 entity.HasOne(d => d.Oral)
                     .WithMany(p => p.Pidfs)
                     .HasForeignKey(d => d.OralId)
-                    .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("FK_PIDF_Master_Oral");
 
                 entity.HasOne(d => d.PackagingType)
@@ -1267,7 +1258,6 @@ namespace EmcureNPD.Data.DataAccess.DataContext
                 entity.HasOne(d => d.Rfdcountry)
                     .WithMany(p => p.Pidfs)
                     .HasForeignKey(d => d.RfdcountryId)
-                    .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("FK_PIDF_Master_Country");
 
                 entity.HasOne(d => d.Status)
@@ -1279,7 +1269,6 @@ namespace EmcureNPD.Data.DataAccess.DataContext
                 entity.HasOne(d => d.UnitofMeasurement)
                     .WithMany(p => p.Pidfs)
                     .HasForeignKey(d => d.UnitofMeasurementId)
-                    .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("FK_PIDF_Master_UnitofMeasurement");
             });
 
@@ -1290,7 +1279,6 @@ namespace EmcureNPD.Data.DataAccess.DataContext
                 entity.Property(e => e.PidfApiCharterId).HasColumnName("PIDF_API_CharterId");
 
                 entity.Property(e => e.ApigroupLeader)
-                    .IsRequired()
                     .HasMaxLength(100)
                     .HasColumnName("APIGroupLeader");
 
@@ -1922,7 +1910,6 @@ namespace EmcureNPD.Data.DataAccess.DataContext
                 entity.HasOne(d => d.Country)
                     .WithMany(p => p.PidfIpdCountries)
                     .HasForeignKey(d => d.CountryId)
-                    .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("FK_PIDF_IPD_Country_Master_Country");
 
                 entity.HasOne(d => d.Ipd)
@@ -1986,7 +1973,6 @@ namespace EmcureNPD.Data.DataAccess.DataContext
                 entity.HasOne(d => d.Region)
                     .WithMany(p => p.PidfIpdRegions)
                     .HasForeignKey(d => d.RegionId)
-                    .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("FK_PIDF_IPD_Region_Master_Region");
             });
 
@@ -2075,9 +2061,7 @@ namespace EmcureNPD.Data.DataAccess.DataContext
 
                 entity.Property(e => e.ProjectManager).HasMaxLength(100);
 
-                entity.Property(e => e.ProjectName)
-                    .IsRequired()
-                    .HasMaxLength(100);
+                entity.Property(e => e.ProjectName).HasMaxLength(100);
 
                 entity.Property(e => e.RnDhead)
                     .HasMaxLength(100)
@@ -2090,7 +2074,6 @@ namespace EmcureNPD.Data.DataAccess.DataContext
                 entity.HasOne(d => d.Berequirement)
                     .WithMany(p => p.PidfPbfs)
                     .HasForeignKey(d => d.BerequirementId)
-                    .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("FK_PIDF_PBF_Master_BERequirement");
 
                 entity.HasOne(d => d.Dosage)
@@ -2106,7 +2089,6 @@ namespace EmcureNPD.Data.DataAccess.DataContext
                 entity.HasOne(d => d.FormRnDdivision)
                     .WithMany(p => p.PidfPbfs)
                     .HasForeignKey(d => d.FormRnDdivisionId)
-                    .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("FK_PIDF_PBF_Master_FormRnDDivision");
 
                 entity.HasOne(d => d.Manufacturing)
@@ -2117,7 +2099,6 @@ namespace EmcureNPD.Data.DataAccess.DataContext
                 entity.HasOne(d => d.PackagingType)
                     .WithMany(p => p.PidfPbfs)
                     .HasForeignKey(d => d.PackagingTypeId)
-                    .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("FK_PIDF_PBF_Master_PackagingType1");
 
                 entity.HasOne(d => d.Pidf)
@@ -2129,13 +2110,11 @@ namespace EmcureNPD.Data.DataAccess.DataContext
                 entity.HasOne(d => d.Plant)
                     .WithMany(p => p.PidfPbfs)
                     .HasForeignKey(d => d.PlantId)
-                    .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("FK_PIDF_PBF_Master_Plant1");
 
                 entity.HasOne(d => d.ProductType)
                     .WithMany(p => p.PidfPbfs)
                     .HasForeignKey(d => d.ProductTypeId)
-                    .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("FK_PIDF_PBF_Master_ProductType1");
 
                 entity.HasOne(d => d.Workflow)
@@ -2707,14 +2686,12 @@ namespace EmcureNPD.Data.DataAccess.DataContext
                 entity.Property(e => e.Pidfapiid).HasColumnName("PIDFAPIId");
 
                 entity.Property(e => e.Apiname)
-                    .IsRequired()
                     .HasMaxLength(100)
                     .HasColumnName("APIName");
 
                 entity.Property(e => e.ApisourcingId).HasColumnName("APISourcingId");
 
                 entity.Property(e => e.Apivendor)
-                    .IsRequired()
                     .HasMaxLength(100)
                     .HasColumnName("APIVendor");
 
@@ -2725,7 +2702,6 @@ namespace EmcureNPD.Data.DataAccess.DataContext
                 entity.HasOne(d => d.Apisourcing)
                     .WithMany(p => p.Pidfapidetails)
                     .HasForeignKey(d => d.ApisourcingId)
-                    .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("FK_PIDFAPIDetails_Master_APISourcing");
 
                 entity.HasOne(d => d.Pidf)
@@ -2745,9 +2721,7 @@ namespace EmcureNPD.Data.DataAccess.DataContext
 
                 entity.Property(e => e.Pidfid).HasColumnName("PIDFID");
 
-                entity.Property(e => e.Strength)
-                    .IsRequired()
-                    .HasMaxLength(100);
+                entity.Property(e => e.Strength).HasMaxLength(100);
 
                 entity.HasOne(d => d.Pidf)
                     .WithMany(p => p.PidfproductStrengths)
@@ -2758,7 +2732,6 @@ namespace EmcureNPD.Data.DataAccess.DataContext
                 entity.HasOne(d => d.UnitofMeasurement)
                     .WithMany(p => p.PidfproductStrengths)
                     .HasForeignKey(d => d.UnitofMeasurementId)
-                    .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("FK_PIDFProductStrength_Master_UnitofMeasurement");
             });
 

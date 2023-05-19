@@ -140,7 +140,7 @@ namespace EmcureNPD.Business.Core.Implementation
                 string baseURL = HostValue + "/Uploads/PIDF/APIIPD";
                 var fullPath = baseURL + "/" + _oAPIIPD.MarketDetailsFileName;
                 _oApiIpdData.DrugsCategory = _oAPIIPD.DrugsCategory;
-                _oApiIpdData.ProductTypeId = (int)_oAPIIPD.ProductTypeId;
+                _oApiIpdData.ProductTypeId = _oAPIIPD.ProductTypeId;
                 _oApiIpdData.APIIPDDetailsFormID = _oAPIIPD.PidfApiIpdId;
                 _oApiIpdData.ProductStrength = _oAPIIPD.ProductStrength;
                 _oApiIpdData.MarketDetailsFileName = (Convert.ToString(_oAPIIPD.MarketDetailsFileName) == "") ? "" : fullPath;
