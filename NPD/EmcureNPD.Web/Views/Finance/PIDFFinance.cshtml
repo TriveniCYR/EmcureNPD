@@ -29,7 +29,6 @@
     }
     string jsVersion = @Configuration.GetSection("StaticJS")["version"];
     var PidfNumber=UtilityHelper.Decreypt(Convert.ToString(PidafId));
-    var DefaultStatus = Model == null ? 0 : Model.PIDFStatusId;
     var CurrencyId=Model == null ? "" : Model.Currencyid;
     var DosageFormId=Model == null ? 0 : Model.DosageFrom;
     var MSPercent=Model==null?0:Model.Mspersentage;
@@ -59,8 +58,8 @@
 				<input type="hidden" id="Pidfid" name="Pidfid" value="@PidafId" />
                 <input type="hidden" id="SaveType" name="SaveType" />
                 <input type="hidden" id="HfStatusRemark" name="StatusRemark" />
-					<input type="hidden" id="hdnDynamicControlData" name="hdnDynamicControlDataName" value="@Model.hdnDynamicControlData" />
-					<input type="hidden" id="hdnSelectedBussinesUnit" name="hdnSelectedBussinesUnit" value="@Model.hdnSelectedBussinesUnit" />
+				 <input type="hidden" asp-for="hdnDynamicControlData" />
+				<input type="hidden" asp-for="hdnSelectedBussinesUnit" />
 			<div class="row">
 				<div class="col-md-3">
 					<div class="form-group required">
@@ -373,7 +372,7 @@
 					<div class="col-md-3">
 						<div class="form-group required">
 							<label class="control-label">Discount Rate<span style="color:red;">*</span></label>
-							@Html.TextBoxFor(@modal=>modal.DiscountRate,new{@class="form-control readOnlyUpdate",@required="required",@type="number"})
+								@Html.TextBoxFor(@modal=>modal.DiscountRate,new{@class="form-control readOnlyUpdate UpdateProjectionCommercial",@required="required",@type="number"})
                                          <div class="invalid-feedback">
                                             Please enter Discount Rate.
                                            </div>
@@ -677,7 +676,7 @@
 							<td>
 								<div class="">
 									<div class="form-group required">
-										@Html.TextBoxFor(@modal=>modal.BatchmanufacturingcostOrApiactualsEst,new{@class="form-control deal-term readOnlyUpdate",@required="required",@type="number",@min="0",@onchange="calculateDealTerm();"})
+										@Html.TextBoxFor(@modal=>modal.BatchmanufacturingcostOrApiactualsEst,new{@class="form-control deal-term readOnlyUpdate UpdateProjectionCommercial",@required="required",@type="number",@min="0",@onchange="calculateDealTerm();"})
 									<div class="invalid-feedback">
                                             Please enter Batch manufacturing cost/ API Actuals Est.
                                            </div>
@@ -690,7 +689,7 @@
 							<td>
 								<div class="">
 									<div class="form-group required">
-										@Html.TextBoxFor(@modal=>modal.BatchmanufacturingcostOrApiactualsEstPhaseEndDate,"{0:yyyy-MM-dd}",new{@type="date",@class="form-control readOnlyUpdate",@required="required"})
+										@Html.TextBoxFor(@modal=>modal.BatchmanufacturingcostOrApiactualsEstPhaseEndDate,"{0:yyyy-MM-dd}",new{@type="date",@class="form-control readOnlyUpdate UpdateProjectionCommercial",@required="required"})
 									<div class="invalid-feedback">
                                             Please enter Batch manufacturing cost/ API Actuals Est phase end date.
                                            </div>
@@ -712,7 +711,7 @@
 							<td>
 								<div class="">
 									<div class="form-group required">
-										@Html.TextBoxFor(@modal=>modal.Sixmonthsstabilitycost,new{@class="form-control deal-term readOnlyUpdate",@required="required",@type="number",@min="0",@onchange="calculateDealTerm();"})
+										@Html.TextBoxFor(@modal=>modal.Sixmonthsstabilitycost,new{@class="form-control deal-term readOnlyUpdate UpdateProjectionCommercial",@required="required",@type="number",@min="0",@onchange="calculateDealTerm();"})
 									<div class="invalid-feedback">
                                             Please enter 6 months stability cost.
                                            </div>
@@ -725,7 +724,7 @@
 							<td>
 								<div class="">
 									<div class="form-group required">
-										@Html.TextBoxFor(@modal=>modal.SixmonthsstabilitycostPhaseEndDate,"{0:yyyy-MM-dd}",new{@type="date",@class="form-control readOnlyUpdate",@required="required"})
+										@Html.TextBoxFor(@modal=>modal.SixmonthsstabilitycostPhaseEndDate,"{0:yyyy-MM-dd}",new{@type="date",@class="form-control readOnlyUpdate UpdateProjectionCommercial",@required="required"})
 									<div class="invalid-feedback">
                                             Please enter 6 months stability cost phase end date.
                                            </div>
@@ -747,7 +746,7 @@
 							<td>
 								<div class="">
 									<div class="form-group required">
-										@Html.TextBoxFor(@modal=>modal.TechTransfer,new{@class="form-control deal-term readOnlyUpdate",@required="required",@type="number",@min="0",@onchange="calculateDealTerm();"})
+										@Html.TextBoxFor(@modal=>modal.TechTransfer,new{@class="form-control deal-term readOnlyUpdate UpdateProjectionCommercial",@required="required",@type="number",@min="0",@onchange="calculateDealTerm();"})
 									<div class="invalid-feedback">
                                             Please enter Tech Transfer.
                                            </div>
@@ -760,7 +759,7 @@
 							<td>
 								<div class="">
 									<div class="form-group required">
-										@Html.TextBoxFor(@modal=>modal.TechTransferPhaseEndDate,"{0:yyyy-MM-dd}",new{@type="date",@class="form-control readOnlyUpdate",@required="required"})
+										@Html.TextBoxFor(@modal=>modal.TechTransferPhaseEndDate,"{0:yyyy-MM-dd}",new{@type="date",@class="form-control readOnlyUpdate UpdateProjectionCommercial",@required="required"})
 									<div class="invalid-feedback">
                                             Please enter Tech Transfer phase end date.
                                            </div>
@@ -782,7 +781,7 @@
 							<td>
 								<div class="">
 									<div class="form-group required">
-										@Html.TextBoxFor(@modal=>modal.Bestudies,new{@class="form-control deal-term readOnlyUpdate",@required="required",@type="number",@min="0",@onchange="calculateDealTerm();"})
+										@Html.TextBoxFor(@modal=>modal.Bestudies,new{@class="form-control deal-term readOnlyUpdate UpdateProjectionCommercial",@required="required",@type="number",@min="0",@onchange="calculateDealTerm();"})
 									<div class="invalid-feedback">
                                             Please enter BE studies.
                                            </div>
@@ -795,7 +794,7 @@
 							<td>
 								<div class="">
 									<div class="form-group required">
-										@Html.TextBoxFor(@modal=>modal.BestudiesPhaseEndDate,"{0:yyyy-MM-dd}",new{@type="date",@class="form-control readOnlyUpdate",@required="required"})
+										@Html.TextBoxFor(@modal=>modal.BestudiesPhaseEndDate,"{0:yyyy-MM-dd}",new{@type="date",@class="form-control readOnlyUpdate UpdateProjectionCommercial",@required="required"})
 									<div class="invalid-feedback">
                                             Please enter BE studies phase end date.
                                            </div>
@@ -817,7 +816,7 @@
 							<td>
 								<div class="">
 									<div class="form-group required">
-										@Html.TextBoxFor(@modal=>modal.Filingfees,new{@class="form-control deal-term readOnlyUpdate",@required="required",@type="number",@min="0",@onchange="calculateDealTerm();"})
+										@Html.TextBoxFor(@modal=>modal.Filingfees,new{@class="form-control deal-term readOnlyUpdate UpdateProjectionCommercial",@required="required",@type="number",@min="0",@onchange="calculateDealTerm();"})
 									<div class="invalid-feedback">
                                             Please enter Filing fees.
                                            </div>
@@ -830,7 +829,7 @@
 							<td>
 								<div class="">
 									<div class="form-group required">
-										@Html.TextBoxFor(@modal=>modal.FilingfeesPhaseEndDate,"{0:yyyy-MM-dd}",new{@type="date",@class="form-control readOnlyUpdate",@required="required"})
+										@Html.TextBoxFor(@modal=>modal.FilingfeesPhaseEndDate,"{0:yyyy-MM-dd}",new{@type="date",@class="form-control readOnlyUpdate UpdateProjectionCommercial",@required="required"})
 									<div class="invalid-feedback">
                                             Please enter Filing fees phase end date.
                                            </div>
@@ -887,7 +886,7 @@
 							<td>
 								<div class="">
 									<div class="form-group required">
-                                            @Html.TextBoxFor(@modal=>modal.Capex,new{@class="form-control deal-term readOnlyUpdate",@required="required",@type="number",@min="0",@onchange="calculateDealTerm();"})
+                                            @Html.TextBoxFor(@modal=>modal.Capex,new{@class="form-control deal-term readOnlyUpdate UpdateProjectionCommercial",@required="required",@type="number",@min="0",@onchange="calculateDealTerm();"})
 									<div class="invalid-feedback">
                                             Please enter Capex.
                                            </div>
@@ -900,7 +899,7 @@
 							<td>
 								<div class="">
 									<div class="form-group required">
-										@Html.TextBoxFor(@modal=>modal.CapexPhaseEndDate,"{0:yyyy-MM-dd}",new{@type="date",@class="form-control readOnlyUpdate",@required="required"})
+										@Html.TextBoxFor(@modal=>modal.CapexPhaseEndDate,"{0:yyyy-MM-dd}",new{@type="date",@class="form-control readOnlyUpdate UpdateProjectionCommercial",@required="required"})
 								<div class="invalid-feedback">
                                             Please enter Capex phase end date.
                                            </div>
@@ -922,7 +921,7 @@
 							<td>
 								<div class="">
 									<div class="form-group required">
-                                            @Html.TextBoxFor(@modal=>modal.ToolingAndChangeParts,new{@class="form-control deal-term readOnlyUpdate",@required="required",@type="number",@min="0",@onchange="calculateDealTerm();"})
+                                            @Html.TextBoxFor(@modal=>modal.ToolingAndChangeParts,new{@class="form-control deal-term readOnlyUpdate UpdateProjectionCommercial",@required="required",@type="number",@min="0",@onchange="calculateDealTerm();"})
 									<div class="invalid-feedback">
                                             Please enter Tooling & Change Parts.
                                            </div>
@@ -935,7 +934,7 @@
 							<td>
 								<div class="">
 									<div class="form-group required">
-										@Html.TextBoxFor(@modal=>modal.ToolingAndChangePartsPhaseEndDate,"{0:yyyy-MM-dd}",new{@type="date",@class="form-control readOnlyUpdate",@required="required"})
+											@Html.TextBoxFor(@modal=>modal.ToolingAndChangePartsPhaseEndDate,"{0:yyyy-MM-dd}",new{@type="date",@class="form-control readOnlyUpdate UpdateProjectionCommercial",@required="required"})
                                         <div class="invalid-feedback">
                                             Please enter Tooling & Change Parts phase end date.
                                         </div>
@@ -1079,7 +1078,7 @@
                                                 <input type="number" id="Freight_CAD" name="lsPidfFinanceBatchSizeCoating[@j].FreightCad" value="@item.FreightCad" onchange="calculateBatchSizeCaoting(this);" class="Freight_CAD form-control readOnlyUpdate" required />
 									    </td>
 									    <td>
-												<input type="number" id="EmcureCOGs_pack" name="lsPidfFinanceBatchSizeCoating[@j].EmcureCogsPack" value="@item.EmcureCogsPack" onchange="UpdateProjectionCommercial()" class="EmcureCOGs_pack form-control readOnlyUpdate" required />
+												<input type="number" id="EmcureCOGs_pack" name="lsPidfFinanceBatchSizeCoating[@j].EmcureCogsPack" value="@item.EmcureCogsPack"  class="EmcureCOGs_pack form-control readOnlyUpdate UpdateProjectionCommercial" required />
 									    </td>
 									    <td class="align-middle abc">
                                                
@@ -1224,6 +1223,8 @@
                                                         <div class="col-12">
                                                              <table id="tblCommercialPerPack" class="table table-bordered text-center mb-4">
                                                              </table>
+															 <table id="tblOutputGridFinanceProjection" class="table table-bordered text-center mb-4">
+                                                             </table>
                                                             <table id="tblFinanceProjection" class="table table-bordered text-center mb-4">
                                                              </table>
                                                         </div>
@@ -1244,8 +1245,8 @@
 <div class="row">
 					<div class="col-12 text-end">
 						<div class="form-group">
-           
-                @if (DefaultStatus == 0 || Model.PIDFStatusId == (Int32)Master_PIDFStatus.FinanceInProgres)
+
+						@if (Convert.ToBoolean(Context.Request.Query["finance"]) == false)
                 {
                    
                 <button type="submit" id="btnSaveDraft" class="btn btn-primary btnControll" onclick="SaveDraftClick();">

@@ -44,4 +44,20 @@
         var fileName = 'ManagementApproval_' + (ProjectName == null || ProjectName == undefined ? "" : ProjectName.toString().trim()) + '_' + currentDate;
         printElement(fileName);
     });
+    PBFtabClick();
 });
+function Project_ChartertabClick() {
+    $('.PBFCharter').hide();
+    $('#dvPBFCharter').addClass('active');
+
+    $('.ProjectCharter').show();    
+    $('#dvProjectCharter').removeClass('active');
+}
+
+function PBFtabClick() {
+    $('.ProjectCharter').hide();
+    $('#dvProjectCharter').addClass('active');
+
+    $('.PBFCharter').show();
+    $('#dvPBFCharter').removeClass('active');
+}
