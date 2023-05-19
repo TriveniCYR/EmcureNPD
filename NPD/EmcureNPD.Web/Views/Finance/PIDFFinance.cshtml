@@ -170,7 +170,7 @@
                         <div class="col-md-3">
 							<div class="form-group required">
 								<label class="control-label">MS %<span style="color:red;">*</span></label>
-							    <select id="MSPersentage" name="MSPersentage" class="form-control readOnlyUpdate" required>
+							    <select id="MSPersentage" name="MSPersentage" class="form-control readOnlyUpdate UpdateProjectionCommercial" required>
 												<option value="1">Low</option>
 												<option value="2">Medium</option>
 												<option value="3">High</option>
@@ -186,7 +186,7 @@
                          <div class="col-md-3">
 							<div class="form-group required">
 								<label class="control-label">Target Price Scenario<span style="color:red;">*</span></label>
-							    <select id="TargetPriceScenario" name="TargetPriceScenario" class="form-control readOnlyUpdate" required>
+								<select id="TargetPriceScenario" name="TargetPriceScenario" class="form-control readOnlyUpdate UpdateProjectionCommercial" required>
 												<option value="1">Low</option>
 												<option value="2">Medium</option>
 												<option value="3">High</option>
@@ -1174,9 +1174,9 @@
         <div class="card collapsed-card">
 			
              <div class="card-header bg-primary">
-			<h3 class="card-title mb-0"><button type="button" class="btn btn-tool" data-card-widget="collapse">Projections</button></h3>
+			<h3 class="card-title mb-0"><button type="button" onclick="ValidateSKU_dropdown();" class="btn btn-tool" data-card-widget="collapse">Projections</button></h3>
 				<div class="card-tools">
-					<button type="button" class="btn btn-tool" data-card-widget="collapse" data-target="#ProjectionsCollapse" title="Collapse">
+					<button type="button" class="btn btn-tool" onclick="ValidateSKU_dropdown();" data-card-widget="collapse" data-target="#ProjectionsCollapse" title="Collapse">
                            <i class="fas fa-plus"></i>
 					</button>
 				</div>
@@ -1253,7 +1253,7 @@
                     @*<i class="fab fa-firstdraft"></i>*@
                     Save as Draft</button>
                  }
-                            <button type="submit" id="btnSave" class="btn btn-success operationButton btnControll" onclick="SaveClick();">
+                            <button type="submit" id="btnSave" class="btn btn-success operationButton btnControll" onclick=" return SaveClick();">
                                 @* <i class="fa fa-save"></i> *@
                                 Submit
                             </button>

@@ -46,8 +46,39 @@ $(document).ready(function () {
         allowClear: true
     });
     $(el).attr("step", "any");
-   
+
+    $(document).on("change", "input[type = 'number']", function () {        
+     var selectedVal =   $(this).val()
+        if (selectedVal == '')
+            $(this).val('0');
+    });
+    //$(document).on("change", "$('.EmcureCOGs_pack')", function () {
+    //    ValidateSKU_dropdown();
+    //});
+    
 });
+function ValidateSKU_dropdown(){
+    var ArrayofInvalid = [];
+    var isValidIPDForm = true;
+    $('.batch-size-coating-table').find("select").each(function () {
+        var selectedval =   $(this).val()
+        if (selectedval == 0) {
+            ArrayofInvalid.push($(this).attr('id'));
+            $(this).focus();
+            $(this).css("border-color", "red");
+            isValidIPDForm = false;
+            //toastr.error(ExpirydateErrorMsg);
+        }
+        else {
+            $(this).css("border-color", "");
+        }
+    });
+    if (ArrayofInvalid.length > 0) {
+        isValidIPDForm = false;
+        toastr.error('Some required fields are missing!');
+    }
+    return isValidIPDForm;
+}
 
 function UpdateProjectionCommercial(){
     RenderCommercialPerPack();
@@ -170,16 +201,21 @@ function addRowFinanceDetails(j) {
 }
 function SaveClick() {
     //if ($('.readOnlyUpdate').val() !== null && $('.readOnlyUpdate').val()!=="") {
-    $('#SaveType').val('submit');
-    $("#Currencyid").val($("#Currency").val().join(','));
-    /*$("#HfStatusRemark").val("Submitted");*/
-    SetChildRows();
-    $('#hdnSelectedBussinesUnit').val(_encBuid);
-    SetProjectionDynamicValues();
-    //}
-    //else {
-    //    preventSubmit();
-    //}
+    var isValidFinanaceForm = ValidateSKU_dropdown();
+    if (isValidFinanaceForm) {
+
+        $('#SaveType').val('submit');
+        $("#Currencyid").val($("#Currency").val().join(','));
+        /*$("#HfStatusRemark").val("Submitted");*/
+        SetChildRows();
+        $('#hdnSelectedBussinesUnit').val(_encBuid);
+        SetProjectionDynamicValues();
+        //}
+        //else {
+        //    preventSubmit();
+        //}
+    }
+    return isValidFinanaceForm;
 }
 function SetProjectionDynamicValues() {
     var Project_txtbox_ControlArray = [];
@@ -855,20 +891,20 @@ function RenderFinanceProjection() {
         html += "<tr class='bg-light'><td colspan='3'>Gross Sales</td>";
         for (var i = 0; i < 10; i++) {
             let result = SumOfGrossSales[i];
-            html += "<td>" + result.toFixed(3) + "</td>";
+            result = isNaN(result) ? 0 : result;   html += "<td>" + result.toFixed(3) + "</td>";
         }
         html += "</tr>";
         /*---------------Net Sales--------------------------*/
         html += "<tr class='bg-light'><td colspan='3' >Net Sales</td>";
         for (var i = 0; i < 10; i++) {
             let result = SumOfSales[i];
-            html += "<td>" + result.toFixed(3) + "</td>";
+            result = isNaN(result) ? 0 : result;   html += "<td>" + result.toFixed(3) + "</td>";
         }
         /*------------[COGS]-Cost of goods sold--------------------------*/
         html += "<tr class=''><td colspan='3' >Cost of goods sold</td>";
         for (var i = 0; i < 10; i++) {
             let result = SumOfCOGS[i];
-            html += "<td>" + result.toFixed(3) + "</td>";
+            result = isNaN(result) ? 0 : result; html += "<td>" + result.toFixed(3) + "</td>";
         }
         html += "</tr>";
         /*---------------Expiries-----------------------*/
@@ -882,7 +918,8 @@ function RenderFinanceProjection() {
         html += "<tr class='lblHeading'><td colspan='3' >Gross margin</td>";
         for (var i = 0; i < 10; i++) {              
             let result = SumOfSales[i] - (SumOfCOGS[i] + formatToNumber(Expiries_Yearwise_Data[i], true));
-            html += "<td>" + result.toFixed(3) + "</td>";
+            result = (isNaN(result) ? 0 : result)
+              html += "<td>" + result.toFixed(3) + "</td>";
             GC_Projection.push(result);
         }
         html += "</tr>";
@@ -892,7 +929,8 @@ function RenderFinanceProjection() {
         for (var i = 0; i < 10; i++) {
             let result = GC_Projection[i] / SumOfSales[i];
             result = (Math.abs(result) == Infinity || isNaN(result) || result == -Infinity) ? 0 : result;
-            html += "<td>" + result.toFixed(3) + "</td>";
+            result =  isNaN(result) ? 0 : result;
+           html += "<td>" + result.toFixed(3) + "</td>";
             CGPercentage.push(result);
         }
         html += "</tr>";
@@ -903,6 +941,7 @@ function RenderFinanceProjection() {
         html += "<tr class='lblHeading'><td colspan='3' >MA Annual fees</td>";
         for (var i = 0; i < 10; i++) {
             let result = Marketing_Allowance_Value * SumOfGrossSales[i];
+            result =  isNaN(result) ? 0 : result;
             html += "<td>" + result.toFixed(3) + "</td>";
         }
         html += "</tr>";
@@ -917,6 +956,7 @@ function RenderFinanceProjection() {
         html += "<tr class='lblHeading'><td colspan='3' >Opex</td>";
         for (var i = 0; i < 10; i++) {
             let result = Opexasapercenttosale * SumOfGrossSales[i];
+           result = isNaN(result) ? 0 : result;
             html += "<td>" + result.toFixed(3) + "</td>";
         }
         html += "</tr>";
@@ -926,6 +966,7 @@ function RenderFinanceProjection() {
         for (var i = 0; i < 10; i++) {
             let result = GC_Projection[i] - ((Marketing_Allowance_Value * SumOfGrossSales[i]) + formatToNumber(AnnualConfirmatoryRelease_Data[i],true) + (Opexasapercenttosale * SumOfGrossSales[i]))
             EBITDA_projection.push(result);
+             result = isNaN(result) ? 0 : result;
             html += "<td>" + result.toFixed(3) + "</td>";
             
         }
@@ -935,6 +976,7 @@ function RenderFinanceProjection() {
         for (var i = 0; i < 10; i++) {
             let result = EBITDA_projection[i] / SumOfSales[i];
             result = (Math.abs(result) == Infinity || isNaN(result)) ? 0 : result;
+             result = isNaN(result) ? 0 : result;
             html += "<td>" + result.toFixed(3) + "</td>";
         }
         html += "</tr>";
@@ -943,6 +985,7 @@ function RenderFinanceProjection() {
         html += "<tr class='lblHeading'><td colspan='3' > Profit Share</td>";
         for (var i = 0; i < 10; i++) {
             let result = EBITDA_projection[i] * Profit_Share_Value;
+             result = isNaN(result) ? 0 : result;
             html += "<td>" + result.toFixed(3) + "</td>";
         }
         html += "</tr>";
@@ -952,7 +995,7 @@ function RenderFinanceProjection() {
         html += "<tr class='lblHeading'><td colspan='3' >MA Annual fees</td>";
         for (var i = 0; i < 10; i++) {
             let result = Marketing_Allowance_Value * SumOfGrossSales[i];
-            html += "<td>" + result.toFixed(3) + "</td>";
+            result = isNaN(result) ? 0 : result;   html += "<td>" + result.toFixed(3) + "</td>";
         }
         html += "</tr>";
         /*-----------Net Income - PBT--------------------------*/
@@ -960,7 +1003,7 @@ function RenderFinanceProjection() {
         html += "<tr class='lblHeading'><td colspan='3' > Net Income - PBT</td>";
         for (var i = 0; i < 10; i++) {
             let result = EBITDA_projection[i] - (EBITDA_projection[i] * Profit_Share_Value) + (Marketing_Allowance_Value * SumOfGrossSales[i]);
-            html += "<td>" + result.toFixed(3) + "</td>";
+            result = isNaN(result) ? 0 : result;   html += "<td>" + result.toFixed(3) + "</td>";
             Net_Income_PBT_projection_data.push(result);
         }
         html += "</tr>";
@@ -969,7 +1012,7 @@ function RenderFinanceProjection() {
         for (var i = 0; i < 10; i++) {
             let result = Net_Income_PBT_projection_data[i] / SumOfSales[i];
             result = (Math.abs(result) == Infinity || isNaN(result)) ? 0 : result;
-            html += "<td>" + result.toFixed(3) + "</td>";
+            result = isNaN(result) ? 0 : result;   html += "<td>" + result.toFixed(3) + "</td>";
         }
         html += "</tr>";
         html += "<tr class='lblHeading bg-light emptyRow'><td colspan='13' ></td>";
@@ -978,7 +1021,7 @@ function RenderFinanceProjection() {
         html += "<tr class='lblHeading'><td colspan='3' >Tax</td>";
         for (var i = 0; i < 10; i++) {
             let result = Net_Income_PBT_projection_data[i] / Incometaxrate_Value;
-            html += "<td>" + result.toFixed(3) + "</td>";
+            result = isNaN(result) ? 0 : result;   html += "<td>" + result.toFixed(3) + "</td>";
         }
         html += "</tr>";
         html += "<tr class='lblHeading bg-light emptyRow'><td colspan='13' ></td>";
@@ -989,7 +1032,7 @@ function RenderFinanceProjection() {
         for (var i = 0; i < 10; i++) {
             let result = Net_Income_PBT_projection_data[i] - (Net_Income_PBT_projection_data[i] / Incometaxrate_Value);
             Net_Income_PAT_projection_data.push(result);
-            html += "<td>" + result.toFixed(3) + "</td>";
+            result = isNaN(result) ? 0 : result;   html += "<td>" + result.toFixed(3) + "</td>";
         }
         html += "</tr>";
         /*-----------% PAT Margin--------------------------*/
@@ -997,7 +1040,7 @@ function RenderFinanceProjection() {
         for (var i = 0; i < 10; i++) {
             let result = Net_Income_PAT_projection_data[i] / SumOfSales[i];
             result = (Math.abs(result) == Infinity || isNaN(result)) ? 0 : result;
-            html += "<td>" + result.toFixed(3) + "</td>";
+            result = isNaN(result) ? 0 : result;   html += "<td>" + result.toFixed(3) + "</td>";
         }
         html += "</tr>";
         html += "<tr class='lblHeading bg-light emptyRow'><td colspan='13' ></td></tr>";
@@ -1012,6 +1055,7 @@ function RenderFinanceProjection() {
             let result = 0;
             result = SumOfSales[i] * CollectioninDays_Value / 365;
             Receivables_Projection.push(result);
+            result = isNaN(result) ? 0 : result;
             Temp_WCT_html += "<td>" + result.toFixed(3) + "</td>";
         }
         Temp_WCT_html += "</tr>";
@@ -1023,6 +1067,7 @@ function RenderFinanceProjection() {
             let result = 0;
             result = SumOfCOGS[i] * InventoryinDays_Value / 365;
             Inventory_Projection.push(result);
+            result = isNaN(result) ? 0 : result;
             Temp_WCT_html += "<td>" + result.toFixed(3) + "</td>";
         }
         Temp_WCT_html += "</tr>";
@@ -1034,6 +1079,7 @@ function RenderFinanceProjection() {
             let result = 0;
             result = -(SumOfCOGS[i] + (EBITDA_projection[i] * Profit_Share_Value)) * CreditorinDays_Value / 365
             Creditors_Projection.push(result);
+            result = isNaN(result) ? 0 : result;
             Temp_WCT_html += "<td>" + result.toFixed(3) + "</td>";
         }
         Temp_WCT_html += "</tr>";
@@ -1044,6 +1090,7 @@ function RenderFinanceProjection() {
             let result = 0;
             result = Receivables_Projection[i] + Inventory_Projection[i] + Creditors_Projection[i];
             Working_capital_Total.push(result);
+            result = isNaN(result) ? 0 : result;
             Temp_WCT_html += "<td>" + result.toFixed(3) + "</td>";
         }
         Temp_WCT_html += "</tr>";
@@ -1055,8 +1102,9 @@ function RenderFinanceProjection() {
             if (i > 0) {
                 result = Working_capital_Total[i - 1] - Working_capital_Total[i];
             }
+           
+            result = isNaN(result) ? 0 : result; html += "<td>" + result.toFixed(3) + "</td>";
             Incremental_working_capital_projection_data.push(result);
-            html += "<td>" + result.toFixed(3) + "</td>";
         }
         html += "</tr>";
 
@@ -1078,9 +1126,10 @@ function RenderFinanceProjection() {
                 else {
                     result = 0;
                 }
-            }
-            RnD_analytical_cost_projection_data.push(result);
+            }          
+            result = isNaN(result) ? 0 : result; 
             html += "<td>" + result.toFixed(3) + "</td>";
+            RnD_analytical_cost_projection_data.push(result);
         }
         html += "</tr>";
         /*-----------RLD sample cost--------------------------*/
@@ -1097,8 +1146,10 @@ function RenderFinanceProjection() {
                 result = (compareDate <= Projection_Year_data[i] && compareDate > Projection_Year_data[i - 1]) ? -cost_Value : 0;
             }
             result = result - (1 - (Incometaxrate_Value / 100))
-            RLD_sample_projection_data.push(result);
+          
+            result = isNaN(result) ? 0 : result; 
             html += "<td>" + result.toFixed(3) + "</td>";
+            RLD_sample_projection_data.push(result);
         }
         html += "</tr>";    
         /*-----------Batch manufacturing cost--------------------------*/
@@ -1115,8 +1166,10 @@ function RenderFinanceProjection() {
                 result = (compareDate <= Projection_Year_data[i] && compareDate > Projection_Year_data[i - 1]) ? -cost_Value : 0;
             }
             result = result - (1 - (Incometaxrate_Value / 100))
+           
+
+            result = isNaN(result) ? 0 : result;   html += "<td>" + result.toFixed(3) + "</td>";
             Batch_manufacturing_projection_data.push(result);
-            html += "<td>" + result.toFixed(3) + "</td>";
         }
         html += "</tr>";  
         /*-----------6 months stability cost--------------------------*/
@@ -1133,8 +1186,9 @@ function RenderFinanceProjection() {
                 result = (compareDate <= Projection_Year_data[i] && compareDate > Projection_Year_data[i - 1]) ? -cost_Value : 0;
             }
             result = result - (1 - (Incometaxrate_Value / 100))
+            
+            result = isNaN(result) ? 0 : result;   html += "<td>" + result.toFixed(3) + "</td>";
             Sixmonths_stability_costprojection_data.push(result);
-            html += "<td>" + result.toFixed(3) + "</td>";
         }
         html += "</tr>"; 
         /*-----------Tech Transfer--------------------------*/
@@ -1151,8 +1205,9 @@ function RenderFinanceProjection() {
                 result = (compareDate <= Projection_Year_data[i] && compareDate > Projection_Year_data[i - 1]) ? -cost_Value : 0;
             }
             result = result - (1 - (Incometaxrate_Value / 100))
+            
+            result = isNaN(result) ? 0 : result;   html += "<td>" + result.toFixed(3) + "</td>";
             Tech_Transfer_projection_data.push(result);
-            html += "<td>" + result.toFixed(3) + "</td>";
         }
         html += "</tr>"; 
         /*-----------BE studies--------------------------*/
@@ -1169,8 +1224,9 @@ function RenderFinanceProjection() {
                 result = (compareDate <= Projection_Year_data[i] && compareDate > Projection_Year_data[i - 1]) ? -cost_Value : 0;
             }
             result = result - (1 - (Incometaxrate_Value / 100))
+           
+            result = isNaN(result) ? 0 : result;   html += "<td>" + result.toFixed(3) + "</td>";
             BE_studies_projection_data.push(result);
-            html += "<td>" + result.toFixed(3) + "</td>";
         }
         html += "</tr>"; 
         /*-----------Filing fees--------------------------*/
@@ -1187,8 +1243,9 @@ function RenderFinanceProjection() {
                 result = (compareDate <= Projection_Year_data[i] && compareDate > Projection_Year_data[i - 1]) ? -cost_Value : 0;
             }
             result = result - (1 - (Incometaxrate_Value / 100))
+           
+            result = isNaN(result) ? 0 : result;   html += "<td>" + result.toFixed(3) + "</td>";
             Filing_fees_projection_data.push(result);
-            html += "<td>" + result.toFixed(3) + "</td>";
         }
         html += "</tr>";
         /*-----------Other fees--------------------------*/
@@ -1205,8 +1262,9 @@ function RenderFinanceProjection() {
                 result = (compareDate <= Projection_Year_data[i] && compareDate > Projection_Year_data[i - 1]) ? -cost_Value : 0;
             }
             result = result - (1 - (Incometaxrate_Value / 100))
+           
+            result = isNaN(result) ? 0 : result;   html += "<td>" + result.toFixed(3) + "</td>";
             Other_fees_projection_data.push(result);
-            html += "<td>" + result.toFixed(3) + "</td>";
         }
         html += "</tr>";
         
@@ -1224,8 +1282,9 @@ function RenderFinanceProjection() {
                 RLD_sample_projection_data[i] +
                 RnD_analytical_cost_projection_data[i];
 
+            result = isNaN(result) ? 0 : result;   html += "<td>" + result.toFixed(3) + "</td>";
             TotalInvestment_projection_data.push(result);
-            html += "<td>" + result.toFixed(3) + "</td>";
+           
         }
         html += "</tr>";
         /*-----------Net Cash Flow--------------------------*/
@@ -1233,12 +1292,10 @@ function RenderFinanceProjection() {
         var NetCashFlow_projection_data = [];
         for (var i = 0; i < 10; i++) {
             let result = 0;
-            result = Incremental_working_capital_projection_data[i]+
-                Net_Income_PAT_projection_data[i] +
-                TotalInvestment_projection_data[i] +
-
+            result = Incremental_working_capital_projection_data[i] + Net_Income_PAT_projection_data[i] + TotalInvestment_projection_data[i];
+          
+                result = isNaN(result) ? 0 : result;   html += "<td>" + result.toFixed(3) + "</td>";
             NetCashFlow_projection_data.push(result);
-            html += "<td>" + result.toFixed(3) + "</td>";
         }
         html += "</tr>";       
         /*-----------Cumulative cash flow -Combined--------------------------*/
@@ -1249,8 +1306,9 @@ function RenderFinanceProjection() {
             if (i > 0) {
                 result = NetCashFlow_projection_data[i] + Cumulative_cash_flow_projection_data[i - 1];
             }
+            
+            result = isNaN(result) ? 0 : result;   html += "<td>" + result.toFixed(3) + "</td>";
             Cumulative_cash_flow_projection_data.push(result);
-            html += "<td>" + result.toFixed(3) + "</td>";
         }
         html += "</tr>";
     /*-----------Discount Factor Projection--------------------------*/
@@ -1262,8 +1320,9 @@ function RenderFinanceProjection() {
             var trProjectionYearIndex = formatToNumber((Row_Projection_th_Index == '-') ? '0' : Row_Projection_th_Index);
             let result = 0;
             result = 1 / (Math.pow((1 + DiscountRate_Value / 100), trProjectionYearIndex));
+           
+            result = isNaN(result) ? 0 : result;   html += "<td>" + result.toFixed(3) + "</td>";
             Discount_Factor_Projection.push(result);
-            html += "<td>" + result.toFixed(3) + "</td>";
         }
         html += "</tr>";
         /*-----------Discount Cash Flow--------------------------*/
@@ -1272,8 +1331,9 @@ function RenderFinanceProjection() {
         for (var i = 0; i < 10; i++) {
             let result = 0;
             result = Discount_Factor_Projection[i] * NetCashFlow_projection_data[i];
+            
+            result = isNaN(result) ? 0 : result;   html += "<td>" + result.toFixed(3) + "</td>";
             Discount_Cash_Flow_Projection.push(result);
-            html += "<td>" + result.toFixed(3) + "</td>";
         }
         html += "</tr>";  
         /*-----------Cumulative Discount Cash Flow--------------------------*/
@@ -1284,8 +1344,9 @@ function RenderFinanceProjection() {
             if (i > 0) {
                 result = Discount_Cash_Flow_Projection[i] + Cumulative_Discount_cash_flow_projection_data[i - 1];
             }
+            
+            result = isNaN(result) ? 0 : result;   html += "<td>" + result.toFixed(3) + "</td>";
             Cumulative_Discount_cash_flow_projection_data.push(result);
-            html += "<td>" + result.toFixed(3) + "</td>";
         }
         html += "</tr>";
         /*-----------Simple payback in # of months--------------------------*/
@@ -1307,8 +1368,9 @@ function RenderFinanceProjection() {
                 }
             }
 
+           
+            result = isNaN(result) ? 0 : result;   html += "<td>" + result.toFixed(3) + "</td>";
             Simple_payback_Projection.push(result);
-            html += "<td>" + result.toFixed(3) + "</td>";
         }
         html += "</tr>"; 
         /*-----------Discounted Payback in # of months--------------------------*/
@@ -1329,8 +1391,9 @@ function RenderFinanceProjection() {
                     }
                 }
             }
+           
+            result = isNaN(result) ? 0 : result;   html += "<td>" + result.toFixed(3) + "</td>";
             Discounted_payback_Projection.push(result);
-            html += "<td>" + result.toFixed(3) + "</td>";
         }
         html += "</tr>";       
         html += "<tr class='lblHeading bg-light emptyRow'><td>Working capital</td><td colspan='12' ></td></tr>";
@@ -1441,6 +1504,7 @@ function RenderCommercialPerPack() {
                 var trYearIndex = formatToNumber((Row_th_Index == '-') ? '0' : Row_th_Index);
                 var trRevenueMonths =  formatToNumber($('#tblCommercialPerPack').find('.trRevenueMonths:eq(' + i + ')').text());
                 let _units = ((marketInPacks * (marketSharePercentage / 100)) * (Math.pow((1 - (msErosion / 100)),  trYearIndex))) * (trRevenueMonths / 12);
+                _units = isNaN(_units) ? 0 : _units;
                 html += "<td>" + _units.toFixed(3) + "</td>";
                 MS_td_data.push(_units);
             }
@@ -1456,6 +1520,7 @@ function RenderCommercialPerPack() {
                 var Row_th_Index = $('#tblCommercialPerPack').find('.thYearCounter:eq(' + i + ')').text();
                 var trYearIndex = formatToNumber((Row_th_Index == '-') ? '0' : Row_th_Index);              
                 let _units = (nsp_Percentage / 100) * (Math.pow((1 - (nsp_Erosion / 100)), trYearIndex))               
+                _units = isNaN(_units) ? 0 : _units;
                 html += "<td>" + _units.toFixed(3) + "</td>";
                 NSP_td_data.push(_units);
             }
@@ -1470,6 +1535,8 @@ function RenderCommercialPerPack() {
                 var trYearIndex = formatToNumber((Row_th_Index == '-') ? '0' : Row_th_Index);
                 
                 let _units = (COGS_Percentage / 100) * (Math.pow((1 + (COGS_Escalation / 100)), trYearIndex))
+
+                _units = isNaN(_units) ? 0 : _units; 
                 html += "<td>" + _units.toFixed(3) + "</td>";
                 COGS_td_data.push(_units);
             }
@@ -1480,7 +1547,8 @@ function RenderCommercialPerPack() {
             html += "<tr class='" + _uniqueClass +"'><td></td><td></td><td></td><td></td><td>Sales</td>";
             for (var i = 0; i < 10; i++) {
                 let result = MS_td_data[i] * NSP_td_data[i];
-                html += "<td>" + result.toFixed(3) + "</td>";
+                
+                result = isNaN(result) ? 0 : result; html += "<td>" + result.toFixed(3) + "</td>";
                 Sales_data.push(result);
                 SumOfSales[i] = SumOfSales[i] + result;               
             }
@@ -1490,7 +1558,7 @@ function RenderCommercialPerPack() {
             html += "<tr class='" + _uniqueClass +"'><td></td><td></td><td></td><td></td><td>COGS</td>";
             for (var i = 0; i < 10; i++) {
                 let result = MS_td_data[i] * COGS_td_data[i];
-                html += "<td>" + result.toFixed(3) + "</td>";
+                result = isNaN(result) ? 0 : result;   html += "<td>" + result.toFixed(3) + "</td>";
                 COGS_data.push(result);
                 SumOfCOGS[i] = SumOfCOGS[i] + result;                 
             }
@@ -1500,7 +1568,7 @@ function RenderCommercialPerPack() {
             html += "<tr class='" + _uniqueClass +"'><td></td><td></td><td></td><td></td><td>GC</td>";
             for (var i = 0; i < 10; i++) {
                 let result = Sales_data[i] - COGS_data[i];
-                html += "<td>" + result.toFixed(3) + "</td>";
+                result = isNaN(result) ? 0 : result;   html += "<td>" + result.toFixed(3) + "</td>";
                 GC_data.push(result);
                 SumOfGC[i] = SumOfGC[i] + result;
             }
@@ -1510,7 +1578,7 @@ function RenderCommercialPerPack() {
             for (var i = 0; i < 10; i++) {
                 let result = GC_data[i] / Sales_data[i];
                 result = (Math.abs(result) == Infinity || isNaN(result)) ? 0 : result;
-                html += "<td>" + result.toFixed(3) + "</td>";
+                result = isNaN(result) ? 0 : result;   html += "<td>" + result.toFixed(3) + "</td>";
                
             }
             html += "</tr>";            
@@ -1521,21 +1589,21 @@ function RenderCommercialPerPack() {
         html += "<tr class='SumOfSales bg-light'><td></td><td></td><td></td><td></td><td>Sales</td>";
         for (var i = 0; i < 10; i++) {
             let result = SumOfSales[i];
-            html += "<td>" + result.toFixed(3) + "</td>";
+            result = isNaN(result) ? 0 : result;   html += "<td>" + result.toFixed(3) + "</td>";
         }
         html += "</tr>";
         /*---------------COGS--------------------------*/
         html += "<tr class='SumOfCOGS bg-light'><td></td><td></td><td></td><td></td><td>COGS</td>";
         for (var i = 0; i < 10; i++) {
             let result = SumOfCOGS[i];
-            html += "<td>" + result.toFixed(3) + "</td>";
+            result = isNaN(result) ? 0 : result;   html += "<td>" + result.toFixed(3) + "</td>";
         }
         html += "</tr>";
         /*-----------------GC------------------------*/
         html += "<tr class='SumOfGC bg-light'><td></td><td></td><td></td><td></td><td>GC</td>";
         for (var i = 0; i < 10; i++) {
             let result = SumOfGC[i];
-            html += "<td>" + result.toFixed(3) + "</td>";
+            result = isNaN(result) ? 0 : result;   html += "<td>" + result.toFixed(3) + "</td>";
         }
         html += "</tr>";
 
