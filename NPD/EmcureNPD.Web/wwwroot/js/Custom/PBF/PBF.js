@@ -10,7 +10,8 @@ var _strengthArray = [];
 var _CostOfLitigationArray = [];
 var _currencySymbol = '';
 var _firstLoad = true;
-var _oralName ='';
+var _oralName = '';
+var isValidPBFForm = true;
 $(document).ready(function () {
     try {
         _PIDFPBFId = parseInt($('#hdnPIDFPBFId').val());
@@ -1127,6 +1128,13 @@ function PBFBindStrength(data) {
 }
 
 function SavePBFForm(_SaveType) {
+    if (_SaveType == 'Draft') {
+        $('#AddPBFForm').validate().settings.ignore = "*";
+
+    } else {
+        validateDynamicControldDetails();
+    }
+
     if ($("#AddPBFForm").valid()) {
         //var abc = new Date();
         //toastr.error(abc.toString());
@@ -2952,4 +2960,21 @@ function ReplaceSelector(value, selector, newvalue) {
     }
     return value.toString().replaceAll(selector, newvalue);
 
+}
+
+function validateDynamicControldDetails() {
+    isValidPBFForm = true;
+    $('.customvalidateformcontrol').each(function () {
+        validatecontrols(this);
+    });
+}
+function validatecontrols(control) {
+    if ($(control).val().trim() == '') {
+        $(control).css("border-color", "red");
+        $(control).focus();
+        isValidPBFForm = false;
+    }
+    else {
+        $(control).css("border-color", "");
+    }
 }

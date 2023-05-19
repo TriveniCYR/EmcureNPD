@@ -20,7 +20,7 @@ namespace EmcureNPD.Data.DataAccess.Entity
         public long PidfApiCharterId { get; set; }
         public long Pidfid { get; set; }
         public string ApigroupLeader { get; set; }
-        public int ProjectComplexityId { get; set; }
+        public int? ProjectComplexityId { get; set; }
         public string ManHourRates { get; set; }
         public int? CreatedBy { get; set; }
         public DateTime CreatedDate { get; set; }

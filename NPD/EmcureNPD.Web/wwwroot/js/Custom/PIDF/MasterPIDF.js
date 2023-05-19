@@ -262,8 +262,9 @@ function SaveClick() {
 }
 function SaveDraftClick() {
     isValidPIDFForm = true;
-    validateDynamicControldDetails();
+    mandateDynamicControl();
     $('#SaveType').val('draft');
+    $("#frmPIDF").validate().settings.ignore = "*";
     SetChildRows();
     return isValidPIDFForm;
 }
@@ -310,6 +311,9 @@ function validateDynamicControldDetails() {
     $('input[name$="Apiname"]').each(function () {
         validatecontrols(this);
     });
+    $('.customvalidateformcontrol').each(function () {
+        validatecontrols(this);
+    });
 }
 
 function validatecontrols(control) {
@@ -322,3 +326,11 @@ function validatecontrols(control) {
         $(control).css("border-color", "");
     }
 }
+function mandateDynamicControl() {
+    isValidPIDFForm = true;    
+    $('.mandatoryformcontrol').each(function () {
+        validatecontrols(this);
+    });
+}
+
+

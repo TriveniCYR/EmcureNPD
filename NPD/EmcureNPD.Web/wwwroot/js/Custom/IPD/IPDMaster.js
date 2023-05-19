@@ -152,7 +152,13 @@ function SaveIPDClick(type) {
     $('.originalDate').trigger("change");
     $('.extendedDate').trigger("change");
     isValidIPDForm = true;
-    validatePatentDetails();
+    if (type == 'Drf') {
+        $('#fIPDForm_' + _selectBusinessUnit).validate().settings.ignore = "*";
+
+    } else {
+        validatePatentDetails();
+        validateDynamicControldDetails();
+    }
     getParentFormId().find('#SaveType').val(type);
     getParentFormId().find('#RegionIds').val(getParentFormId().find('.regionCombo').val());
     getParentFormId().find('#CountryIds').val(getParentFormId().find('#CountryId').val());
@@ -274,5 +280,21 @@ function validatePatentDetails() {
     });  
     if (!isValidIPDForm) {
         toastr.error("Some fields are missing values,Fill all Business Unit Tab details !");  
+    }
+}
+function validateDynamicControldDetails() {
+    isValidIPDForm = true;
+    $('.customvalidateformcontrol').each(function () {
+        validatecontrols(this);
+    });
+}
+function validatecontrols(control) {
+    if ($(control).val().trim() == '') {
+        $(control).css("border-color", "red");
+        $(control).focus();
+        isValidIPDForm = false;
+    }
+    else {
+        $(control).css("border-color", "");
     }
 }

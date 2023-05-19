@@ -31,7 +31,7 @@
         <div class="card card-outline">
             @*<div class="card-header bg-primary"></div>*@
             <div class="card-body" style="display: block;">
-                <form asp-action="APIIPDDetailsForm" asp-controller="API" enctype="multipart/form-data" method="post">
+                <form id ="frmAPIIPDDetailsForm" asp-action="APIIPDDetailsForm" asp-controller="API" enctype="multipart/form-data" method="post">
                     <input type="hidden" asp-for="Pidfid" />
                     <input type="hidden" asp-for="APIIPDDetailsFormID" />
                     <input type="hidden" asp-for="BusinessUnitId" />

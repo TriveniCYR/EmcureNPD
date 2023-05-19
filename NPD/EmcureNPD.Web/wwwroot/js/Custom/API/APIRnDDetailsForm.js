@@ -71,7 +71,7 @@ $('#Save').click(function () {
     $("#APIRnD_SaveType").val('Save');
 });
 $('#SaveDraft').click(function () {
-    ValidateForm();
+    $('#frmAPIRnDDetails').validate().settings.ignore = "*";
     $("#APIRnD_SaveType").val('SaveDraft');
 });
 function SetDivReadonly() {

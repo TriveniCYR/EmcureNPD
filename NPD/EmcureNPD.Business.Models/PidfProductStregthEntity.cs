@@ -14,9 +14,9 @@ namespace EmcureNPD.Business.Models
     {
         public long PidfproductStrengthId { get; set; }
         public long Pidfid { get; set; }
-        [Required(ErrorMessageResourceType = typeof(Validation), ErrorMessageResourceName = "Required")]
+        //[Required(ErrorMessageResourceType = typeof(Validation), ErrorMessageResourceName = "Required")]
 		public string Strength { get; set; }
-        public int UnitofMeasurementId { get; set; }
+        public int? UnitofMeasurementId { get; set; }
         public DateTime ModifyDate { get; set; }
         public int ModifyBy { get; set; }
     }
