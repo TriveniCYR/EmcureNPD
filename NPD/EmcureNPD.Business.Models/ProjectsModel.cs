@@ -15,6 +15,8 @@ namespace EmcureNPD.Business.Models
         public List<ProjectDetails> lsProjectDetails { get; set; }
         public List<CumulativePhaseWiseBudget> lsCumulativePhaseWiseBudget { get; set; }
         public List<AdditionalCost> lsAdditionalCost { get; set; }
+        public FinanceModel financeModel { get; set; }
+        
     }
     public class ProjectNameModel
     {

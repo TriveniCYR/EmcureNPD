@@ -783,9 +783,15 @@
 </div>
 
 
-<div   class="ProjectCharter" > <h2>Project Charter</h2> </div>
+<div class="ProjectCharter" > <h2>Project Charter</h2>
+    <table id="tblOutputGridFinanceProjection" class="table table-bordered text-center mb-4"> </table>
+    <table id="tblFinanceProjection" class="table table-bordered text-center mb-4">  </table>
+</div>
 
 
+<div class="ProjectCharterControls">
+     
+</div>
 
 @section MyScripts {
 	@*@Html.Partial("_DataTablePartial")*@
@@ -798,5 +804,7 @@
 
     const isView = "@Context.Request.Query["IsView"]";
     const ApproveRejectDeletePidf = "@EmcureNPD.Web.Helpers.APIURLHelper.ApproveRejectDeletePidf";
+        var PidafId = "@Context.Request.Query["pidfid"]";
+        var encBuid = "@Context.Request.Query["bui"]";
 </script>
 }

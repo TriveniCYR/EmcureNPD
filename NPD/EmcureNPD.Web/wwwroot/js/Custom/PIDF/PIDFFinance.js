@@ -300,7 +300,8 @@ function deleteRowFinance(j, element, id) {
     if (deleteableId > 0) {
         let deletehtml = `<input type="hidden" id="DeletePidffinaceBatchSizeCoatingId${j}" name="lsPidfFinanceBatchSizeCoating[${j}].DeletePidffinaceBatchSizeCoatingId" value="${deleteableId}">`;
         $("#FinanceTableBoy").append(deletehtml);
-     }
+    }
+    UpdateProjectionCommercial();
 }
 function preventSubmit() {
     $(document).on('submit', 'form', function (e) {
