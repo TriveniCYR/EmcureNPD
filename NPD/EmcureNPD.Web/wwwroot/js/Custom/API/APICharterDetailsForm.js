@@ -22,10 +22,16 @@ function HideSaveAsDraft() {
 }
 
 $('#Save').click(function () {
+    var IsValid = false;
     RoundUPReadonlyValues();
-    ValidateForm();
+    IsValid = ValidateForm();
    
     $("#SaveType_APICharter").val('Save');
+    if (IsValid) {
+        return true;
+    } else {
+        return false;
+    }
 });
 $('#SaveDraft').click(function () {
     RoundUPReadonlyValues();
