@@ -15,6 +15,7 @@ using System.Dynamic;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
+using System.Threading.Tasks.Dataflow;
 using static EmcureNPD.Utility.Enums.GeneralEnum;
 
 namespace EmcureNPD.Business.Core.Implementation
@@ -92,70 +93,85 @@ namespace EmcureNPD.Business.Core.Implementation
         {
             var loggedInUserID = _helper.GetLoggedInUser().UserId;
 
-            foreach (var item in entitycommPIDF.PIDFArrMainCommercial)
+            var AllObjofPidfId = _commercialrepository.GetAllQuery().Where(x => x.Pidfid == entitycommPIDF.Pidfid).ToList();
+            if(AllObjofPidfId != null)
             {
-                var listYear = new List<PidfCommercialYear>();
-                int i = 1;
-
-                foreach (var year in item.PidfCommercialYears.OrderBy(x => x.YearIndex))
+                foreach(var _obj in AllObjofPidfId)
                 {
-                    var Yeardata = _mapperFactory.Get<PidfCommercialYearEntity, PidfCommercialYear>(year);
-                    //Yeardata.PackagingTypeId = year.CommercialPackagingTypeId;
-                    Yeardata.PidfcommercialYearId = 0;
-                    Yeardata.PidfcommercialId = 0;
-                    // Yeardata.YearIndex = year.YearIndex;
-                    listYear.Add(Yeardata);
-                    i++;
-                }
+					var IsExist =  entitycommPIDF.PIDFArrMainCommercial.Any(x=>x.BusinessUnitId == _obj.BusinessUnitId 
+                            && x.PidfproductStrengthId == _obj.PidfproductStrengthId && x.PackSizeId == _obj.PackSizeId);
 
-                Expression<Func<PidfCommercial, bool>> expr = u => u.BusinessUnitId == item.BusinessUnitId && u.Pidfid == entitycommPIDF.Pidfid && u.PidfproductStrengthId == item.PidfproductStrengthId && u.PackSizeId == item.PackSizeId;
-                var objFetchData = await _commercialrepository.GetAsync(expr);
-
-                if (objFetchData == null)
-                {
-                    var NewCommPIDF = new PidfCommercial();
-                    NewCommPIDF.Pidfid = item.Pidfid;
-                    NewCommPIDF.BusinessUnitId = item.BusinessUnitId;
-                    NewCommPIDF.PidfproductStrengthId = item.PidfproductStrengthId;
-                    NewCommPIDF.PackSizeId = item.PackSizeId;
-                    NewCommPIDF.MarketSizeInUnit = item.MarketSizeInUnit;
-                    NewCommPIDF.ShelfLife = item.ShelfLife;
-                    NewCommPIDF.CreatedDate = DateTime.Now;
-                    NewCommPIDF.CreatedBy = loggedInUserID;
-                    NewCommPIDF.IsDeleted = false;
-                    NewCommPIDF.PidfCommercialYears = listYear;
-                    _commercialrepository.AddAsync(NewCommPIDF);
-                    await _unitOfWork.SaveChangesAsync();
-                }
-                else
-                {
-                    var OldObjpidfCommercial = _mapperFactory.Get<PidfCommercial, PIDFCommercialEntity>(objFetchData);
-
-                    //OldObjpidfCommercial.PidfCommercialYears = item.PidfCommercialYears;
-                    //Remove all Already mapped Years data
-                    var CommercialYears = await _commercialYearrepository.GetAllAsync(x => x.PidfcommercialId == objFetchData.PidfcommercialId);
-
-                    foreach (var it in CommercialYears.OrderBy(x => x.YearIndex))
-                    {
-                        OldObjpidfCommercial.PidfCommercialYears.Add(_mapperFactory.Get<PidfCommercialYear, PidfCommercialYearEntity>(it));
-                        _commercialYearrepository.Remove(it);
-                    }
-
-                    objFetchData.PidfCommercialYears = listYear;
-                    objFetchData.MarketSizeInUnit = item.MarketSizeInUnit;
-                    objFetchData.ShelfLife = item.ShelfLife;
-                    objFetchData.ModifyBy = loggedInUserID;
-                    objFetchData.ModifyDate = DateTime.Now;
-
-                    _commercialrepository.UpdateAsync(objFetchData);
-                    await _unitOfWork.SaveChangesAsync();
-
-                    var isSuccess = await _auditLogService.CreateAuditLog(Utility.Audit.AuditActionType.Update,
-                    ModuleEnum.CommercialManagement, OldObjpidfCommercial, item, loggedInUserID);
-                }
+                    if (!IsExist) // if not IsExist then Delete
+					{
+						_commercialrepository.Remove(_obj);
+						await _unitOfWork.SaveChangesAsync();
+					}
+				}
             }
+			foreach (var item in entitycommPIDF.PIDFArrMainCommercial)
+			{
+				var listYear = new List<PidfCommercialYear>();
+				int i = 1;
 
-            var _StatusID = (entitycommPIDF.SaveType == "Sv") ? Master_PIDFStatus.CommercialSubmitted : Master_PIDFStatus.CommercialInProgress;
+				foreach (var year in item.PidfCommercialYears.OrderBy(x => x.YearIndex))
+				{
+					var Yeardata = _mapperFactory.Get<PidfCommercialYearEntity, PidfCommercialYear>(year);
+					//Yeardata.PackagingTypeId = year.CommercialPackagingTypeId;
+					Yeardata.PidfcommercialYearId = 0;
+					Yeardata.PidfcommercialId = 0;
+					// Yeardata.YearIndex = year.YearIndex;
+					listYear.Add(Yeardata);
+					i++;
+				}
+
+				Expression<Func<PidfCommercial, bool>> expr = u => u.BusinessUnitId == item.BusinessUnitId && u.Pidfid == entitycommPIDF.Pidfid && u.PidfproductStrengthId == item.PidfproductStrengthId && u.PackSizeId == item.PackSizeId;
+				var objFetchData = await _commercialrepository.GetAsync(expr);
+
+				if (objFetchData == null)
+				{
+					var NewCommPIDF = new PidfCommercial();
+					NewCommPIDF.Pidfid = item.Pidfid;
+					NewCommPIDF.BusinessUnitId = item.BusinessUnitId;
+					NewCommPIDF.PidfproductStrengthId = item.PidfproductStrengthId;
+					NewCommPIDF.PackSizeId = item.PackSizeId;
+					NewCommPIDF.MarketSizeInUnit = item.MarketSizeInUnit;
+					NewCommPIDF.ShelfLife = item.ShelfLife;
+					NewCommPIDF.CreatedDate = DateTime.Now;
+					NewCommPIDF.CreatedBy = loggedInUserID;
+					NewCommPIDF.IsDeleted = false;
+					NewCommPIDF.PidfCommercialYears = listYear;
+					_commercialrepository.AddAsync(NewCommPIDF);
+					await _unitOfWork.SaveChangesAsync();
+				}
+				else
+				{
+					var OldObjpidfCommercial = _mapperFactory.Get<PidfCommercial, PIDFCommercialEntity>(objFetchData);
+
+					//OldObjpidfCommercial.PidfCommercialYears = item.PidfCommercialYears;
+					//Remove all Already mapped Years data
+					var CommercialYears = await _commercialYearrepository.GetAllAsync(x => x.PidfcommercialId == objFetchData.PidfcommercialId);
+
+					foreach (var it in CommercialYears.OrderBy(x => x.YearIndex))
+					{
+						OldObjpidfCommercial.PidfCommercialYears.Add(_mapperFactory.Get<PidfCommercialYear, PidfCommercialYearEntity>(it));
+						_commercialYearrepository.Remove(it);
+					}
+
+					objFetchData.PidfCommercialYears = listYear;
+					objFetchData.MarketSizeInUnit = item.MarketSizeInUnit;
+					objFetchData.ShelfLife = item.ShelfLife;
+					objFetchData.ModifyBy = loggedInUserID;
+					objFetchData.ModifyDate = DateTime.Now;
+
+					_commercialrepository.UpdateAsync(objFetchData);
+					await _unitOfWork.SaveChangesAsync();
+
+					var isSuccess = await _auditLogService.CreateAuditLog(Utility.Audit.AuditActionType.Update,
+					ModuleEnum.CommercialManagement, OldObjpidfCommercial, item, loggedInUserID);
+				}
+			}
+
+			var _StatusID = (entitycommPIDF.SaveType == "Sv") ? Master_PIDFStatus.CommercialSubmitted : Master_PIDFStatus.CommercialInProgress;
             await _auditLogService.UpdatePIDFStatusCommon(entitycommPIDF.Pidfid, (int)_StatusID, loggedInUserID);
             await _notificationService.CreateNotification(entitycommPIDF.Pidfid, (int)_StatusID, string.Empty, string.Empty, loggedInUserID);
 
