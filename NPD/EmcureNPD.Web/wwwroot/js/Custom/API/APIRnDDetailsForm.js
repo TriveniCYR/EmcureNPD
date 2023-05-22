@@ -1,5 +1,5 @@
 ﻿var ControlsToValidate = ['Development', 'ScaleUp', 'Exhibit', 'PlantQC', 'Total', 'SponsorBusinessPartner', 'APIMarketPrice', 'APITargetRMC_CCPC'];
-
+var IsValid = false;
 $(document).ready(function () {
     SetDivReadonly();
     $("#IsModelValid").val('');
@@ -67,8 +67,17 @@ $('#imgPreviewMarketdetails').click(function () {
 });
 
 $('#Save').click(function () {
-    ValidateForm();
+    var IsValid = false;
+    IsValid = ValidateForm();
+    IsValid = validateDynamicControldDetails();
     $("#APIRnD_SaveType").val('Save');
+    if (IsValid) {
+        return true;
+    } else {
+        return false;
+    }
+    
+
 });
 $('#SaveDraft').click(function () {
     $('#frmAPIRnDDetails').validate().settings.ignore = "*";
@@ -116,34 +125,19 @@ function ValidateForm() {
     return IsValid;
 }
 
-//function ValidateForm() {
-//    var IsInvalid = false;
-//    if ($("#MarketDetailsNewPortCGIDetails")[0].files.length <= 0) {
-//        $("#valmsgMarketDetailsNewPortCGIDetails").text('Required')
-//        IsInvalid = true;
-//    }
-//    else {
-//        $("#valmsgMarketDetailsNewPortCGIDetails").text('')
-//    }
-//    if ($("#DrugsCategory").val() == '') {
-//        $("#valmsgDrugsCategory").text('Required')
-//        IsInvalid = true;
-//    }
-//    else {
-//        $("#valmsgDrugsCategory").text('')
-//    }
-//    if ($("#ProductStrength").val() == '') {
-//        $("#valmsgProductStrength").text('Required')
-//        IsInvalid = true;
-//    }
-//    else {
-//        $("#valmsgProductStrength").text('')
-//    }
-//    if (IsInvalid) {
-//        $("#IsModelValid").val('')
-//    }
-//    else {
-//        $("#IsModelValid").val('Valid')
-//    }
-//    return IsInvalid;
-//}
+function validateDynamicControldDetails() {
+    IsValid = true;
+    $('.customvalidateformcontrol').each(function () {
+        validatecontrols(this);
+    });
+}
+function validatecontrols(control) {
+    if ($(control).val().trim() == '') {
+        $(control).css("border-color", "red");
+        $(control).focus();
+        IsValid = false;
+    }
+    else {
+        $(control).css("border-color", "");
+    }
+}
