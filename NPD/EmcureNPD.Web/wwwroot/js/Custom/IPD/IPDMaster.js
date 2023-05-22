@@ -148,22 +148,28 @@ function GetCountryListError(x, y, z) {
     toastr.error(ErrorMessage);
 }
 function SaveIPDClick(type) {
-  //  validatedate();
+ 
     $('.originalDate').trigger("change");
     $('.extendedDate').trigger("change");
-    isValidIPDForm = true;
+   
     if (type == 'Drf') {
         $('#fIPDForm_' + _selectBusinessUnit).validate().settings.ignore = "*";
 
     } else {
-        validatePatentDetails();
-        validateDynamicControldDetails();
+        isValidIPDForm = validatePatentDetails();
+        isValidIPDForm = validateDynamicControldDetailsIPD();
     }
     getParentFormId().find('#SaveType').val(type);
     getParentFormId().find('#RegionIds').val(getParentFormId().find('.regionCombo').val());
     getParentFormId().find('#CountryIds').val(getParentFormId().find('#CountryId').val());
     SetIPDChildRows();
-    return isValidIPDForm;
+    alert(isValidIPDForm);
+    if (isValidIPDForm) {
+        return true;
+    } else {
+        return false;
+    }
+    
 }
 
 function addRowParent(j) {
@@ -267,26 +273,35 @@ function checkRadioCheckOrNot() {
 // Validation For Paten Details
 
 function validatePatentDetails() {
-    isValidIPDForm = true;
+    var flag = true;
     $('#dvIPDContainer').find('.validateChildDetails').each(function () {     
         if ($(this).val().trim() == '') {
             $(this).css("border-color", "red");
             $(this).focus();
-            isValidIPDForm = false;           
+            flag = false;
         }
         else {
             $(this).css("border-color", "");
         }
     });  
-    if (!isValidIPDForm) {
+    if (!flag) {
         toastr.error("Some fields are missing values,Fill all Business Unit Tab details !");  
     }
+    return flag;
 }
-function validateDynamicControldDetails() {
-    isValidIPDForm = true;
-    $('.customvalidateformcontrol').each(function () {
-        validatecontrols(this);
+function validateDynamicControldDetailsIPD() {
+    var flag = true;
+    $('#dvIPDContainer').find('.customvalidateformcontrol').each(function () {
+        if ($(this).val().trim() == '') {
+            $(this).css("border-color", "red");
+            $(this).focus();
+            flag = false;
+        } else {
+            $(this).css("border-color", "");
+        }
     });
+    return flag;
+   
 }
 function validatecontrols(control) {
     if ($(control).val().trim() == '') {
