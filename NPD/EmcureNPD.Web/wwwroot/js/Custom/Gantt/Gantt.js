@@ -161,7 +161,7 @@ document.addEventListener("DOMContentLoaded", function () {
         //text in progress
         let bdProgress = taskStatus.filter(x => x.projectTaskId == task.id)
         // let progress = task.progress == 0 ? bdProgress.TotalPercentage : task.progress;
-        let progressPercents = task.progress == 0 ? parseInt(bdProgress[0].totalPercentage): task.progress * 100;
+        let progressPercents = task.progress == 0 && bdProgress.length>0 ? parseInt(bdProgress[0].totalPercentage) : task.progress * 100;
         let className = "";
         if (progressPercents == 0) {
             className += " task-no-progress";
@@ -649,7 +649,7 @@ document.addEventListener("DOMContentLoaded", function () {
         parent_progress(task.id);
         let bdProgress = taskStatus.filter(x => x.projectTaskId == task.id);
         //alert(bdProgress[0].totalPercentage)
-        let progress = Math.round(task.progress == 0 ? bdProgress[0].totalPercentage : task.progress * 100)
+        let progress = Math.round(task.progress == 0 && bdProgress.length>0 ? bdProgress[0].totalPercentage : task.progress * 100)
         return "<span style='text-align:left;padding-left: 10px;box-sizing: border-box;color: white;font-weight: bold;'>" + progress + "% </span>";
     };
 
