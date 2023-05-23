@@ -148,7 +148,7 @@ function GetCountryListError(x, y, z) {
     toastr.error(ErrorMessage);
 }
 function SaveIPDClick(type) {
- 
+    isValidIPDForm = true;
     $('.originalDate').trigger("change");
     $('.extendedDate').trigger("change");
    
@@ -163,7 +163,6 @@ function SaveIPDClick(type) {
     getParentFormId().find('#RegionIds').val(getParentFormId().find('.regionCombo').val());
     getParentFormId().find('#CountryIds').val(getParentFormId().find('#CountryId').val());
     SetIPDChildRows();
-    alert(isValidIPDForm);
     if (isValidIPDForm) {
         return true;
     } else {
