@@ -159,7 +159,9 @@ document.addEventListener("DOMContentLoaded", function () {
     //Task Progress method
     gantt.templates.task_class = function (start, end, task) {
         //text in progress
-        let progressPercents = task.progress * 100;
+        let bdProgress = taskStatus.filter(x => x.projectTaskId == task.id)
+        // let progress = task.progress == 0 ? bdProgress.TotalPercentage : task.progress;
+        let progressPercents = task.progress == 0 ? parseInt(bdProgress[0].totalPercentage): task.progress * 100;
         let className = "";
         if (progressPercents == 0) {
             className += " task-no-progress";
@@ -170,6 +172,7 @@ document.addEventListener("DOMContentLoaded", function () {
         if (progressPercents == 100) {
             className += " task-full-progress";
         }
+
         return className;
     };
     //end of task progress method
@@ -527,6 +530,7 @@ document.addEventListener("DOMContentLoaded", function () {
             }
             else if (owners.length > 0 && owners[0].taskLevel > 1) {
                 return "<b>Task:</b> " + task.text + "<br/>" +
+                    "<b>Owner:</b>" + owners[0].taskOwnerName + "<br/>" +
                     "<b>Start date:</b> " +
                     gantt.templates.tooltip_date_format(start)
                     + "<br/><b>End date:</b> " + gantt.templates.tooltip_date_format(end) + "<br/>" +
@@ -643,7 +647,10 @@ document.addEventListener("DOMContentLoaded", function () {
 
     gantt.templates.progress_text = function (start, end, task) {
         parent_progress(task.id);
-        return "<span style='text-align:left;padding-left: 10px;box-sizing: border-box;color: white;font-weight: bold;'>" + Math.round(task.progress * 100) + "% </span>";
+        let bdProgress = taskStatus.filter(x => x.projectTaskId == task.id);
+        //alert(bdProgress[0].totalPercentage)
+        let progress = Math.round(task.progress == 0 ? bdProgress[0].totalPercentage : task.progress * 100)
+        return "<span style='text-align:left;padding-left: 10px;box-sizing: border-box;color: white;font-weight: bold;'>" + progress + "% </span>";
     };
 
     gantt.config.xml_date = "%Y-%m-%d %H:%i"; // format of dates in XML
@@ -758,7 +765,8 @@ document.addEventListener("DOMContentLoaded", function () {
         let selectedOwner = taskObjects.owner_id == undefined || taskObjects.owner_id == "null" ? taskObjects.owner : taskObjects.owner_id;
         const res = taskStatus.filter(x => x.projectTaskId === ProjectTaskId);
         const taskLevels = taskStatus.filter(x => x.projectTaskId == taskObjects.parent);
-        let newTaskLevel = res.length==0 ? parseInt(taskLevels[0].taskLevel) + 1 : taskLevels[0].taskLevel;
+        let finalTaskLevel = taskLevels.length == 0 ? 1 : taskLevels[0].taskLevel;
+        let newTaskLevel = res.length == 0 ? parseInt(finalTaskLevel) + 1 : finalTaskLevel;
         if (taskObjects.text == "null" || taskObjects.text == "") {
             //toastr.error("TaskName could not be empty!", "Input Validation Error");
             //$("div.gantt_cal_light").show();
