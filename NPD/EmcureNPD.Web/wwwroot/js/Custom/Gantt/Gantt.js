@@ -10,15 +10,15 @@ $("i.fas.fa-expand").click(function () {
 
 
 document.addEventListener("DOMContentLoaded", function () {
-    
+
     let arrPeople = [{ key: null, label: "-select-" }];
-   
+
     let taskStatus = [];
     let responsTtaskList = null;
     let isAdd = false;
-    
+
     $("#lblProjectName").text(localStorage.getItem("prjName"));
- 
+
 
     gantt.config.min_column_width = 50;
     gantt.config.work_time = true;
@@ -159,7 +159,8 @@ document.addEventListener("DOMContentLoaded", function () {
     //Task Progress method
     gantt.templates.task_class = function (start, end, task) {
         //text in progress
-        let progressPercents = task.progress * 100;
+        let dBprogress = taskStatus.filter(x => x.projectTaskId == task.id)
+        let progressPercents = task.progress == 0 && dBprogress.length>0 ? task.progress = dBprogress[0].totalPercentage / 100 : task.progress * 100;
         let className = "";
         if (progressPercents == 0) {
             className += " task-no-progress";
@@ -260,20 +261,20 @@ document.addEventListener("DOMContentLoaded", function () {
         var temptask;
         gantt.eachParent(function (task) {
             let response = responsTtaskList;
-           let progrss = taskStatus.find(x => x.projectTaskId === task.id);
-           // let c = taskStatus.find(x => x.projectTaskId === task.id && x.taskLevel>1);
+            let progrss = taskStatus.find(x => x.projectTaskId === task.id);
+            // let c = taskStatus.find(x => x.projectTaskId === task.id && x.taskLevel>1);
             if (response != undefined && response.length > 1) {
                 var children = [];
                 //if (progrss.taskLevel > 1) {
-                    children = gantt.getChildren(task.id);
+                children = gantt.getChildren(task.id);
                 //}
                 var child_progress = 0;
                 for (var i = 0; i < children.length; i++) {
                     var child = gantt.getTask(children[i])
-                   // getchild_progress(child.id);
+                    // getchild_progress(child.id);
                     child_progress += parseInt(progrss.totalPercentage);
                 }
-                task.progress = child_progress / children.length  / 100;//**To be continue..Kp*/
+                task.progress = child_progress / children.length / 100;//**To be continue..Kp*/
                 temptask = task;
             }
             //else {
@@ -346,17 +347,17 @@ document.addEventListener("DOMContentLoaded", function () {
         { key: 5, label: "Low" },
         { key: 6, label: "Very Low" }
     ]);
-   // gantt.serverList("people",[]);// placeholder to load woner in /api/data request
+    // gantt.serverList("people",[]);// placeholder to load woner in /api/data request
     //{ "owner_id": data._object[i].taskOwnerId, "owner": data._object[i].taskOwnerName
 
     //gantt.serverList("people", [
     //    { key: 1, label: "Kamal" }
     //]);
-   
+
     //
     //GetOwners//
-   ajaxServiceMethod($('#hdnBaseURL').val() + FillTaskDropdown, 'GET', 
-    
+    ajaxServiceMethod($('#hdnBaseURL').val() + FillTaskDropdown, 'GET',
+
         function GetOwnersSuccess(data) {
             try {
 
@@ -369,14 +370,14 @@ document.addEventListener("DOMContentLoaded", function () {
                         }
                     )
                 });
-               
+
                 //console.log("arrPeople:" + JSON.stringify(arrPeople))
             }
             catch (e) {
                 toastr.error('Error:' + e.message);
             }
         }
-    , GetOwnersError);
+        , GetOwnersError);
     function GetOwnersError(x, y, z) {
         toastr.error(ErrorMessage);
     }
@@ -453,8 +454,8 @@ document.addEventListener("DOMContentLoaded", function () {
             }, resize: true
         },
         { name: "duration", width: 60, align: "center", resize: true },
-       
-          { name: "add", width: 44 }
+
+        { name: "add", width: 44 }
         //{
         //    name: "add", width: 44, align: "center", onrender: function (task, node) {
         //        debugger
@@ -510,14 +511,14 @@ document.addEventListener("DOMContentLoaded", function () {
     gantt.attachEvent("onGanttReady", function () {
         var tooltips = gantt.ext.tooltips;
 
-        gantt.templates.tooltip_text = function (start,end,task) {
+        gantt.templates.tooltip_text = function (start, end, task) {
             var store = gantt.getDatastore("resource");
             //console.log(store);
             var assignments = task[gantt.config.resource_property] || [];
             var owners = taskStatus.filter(x => x.projectTaskId === task.id);
             var owner = store.getItem(assignments);
             //owners.push(owner.text);
-            if (owners.length>0 && owners[0].taskLevel == 1) {
+            if (owners.length > 0 && owners[0].taskLevel == 1) {
                 return "<b>Task:</b> " + task.text + "<br/>" +
                     "<b>Owner:</b>" + owners[0].taskOwnerName + "<br/>" +
                     "<b>Start date:</b> " +
@@ -579,14 +580,14 @@ document.addEventListener("DOMContentLoaded", function () {
         responsTtaskList = null;
 
         parent_progress(id);
-        saveUpdateGanttTask(task,id);
+        saveUpdateGanttTask(task, id);
 
         //$(".gantt_task_line").each(function (i, value) {
         //    console.log($(this).attr("aria-label").split(":")[1]);
         //});
-       // setTimeout(reloadFunc, 2000);
+        // setTimeout(reloadFunc, 2000);
     });
-    
+
 
 
     gantt.attachEvent("onParse", function () {
@@ -595,27 +596,27 @@ document.addEventListener("DOMContentLoaded", function () {
         //gantt.serverList("people", [{
         //    key: null, label:"--Select--"
         //}]);
-       
+
         //gantt.serverList("people", arrPeople);
         //console.log(gantt.$resourcesStore);
 
-       // taskStatus.forEach(function (item) { console.log(item) });
+        // taskStatus.forEach(function (item) { console.log(item) });
 
-       var lightboxOptions = [];
-       let res= taskStatus.forEach(function (res) {
+        var lightboxOptions = [];
+        let res = taskStatus.forEach(function (res) {
             //console.log(res);
-           if (res.taskLevel==1) {
-               var copy = gantt.copy(res);
-               copy.key = parseInt(res.projectTaskId);
-               //copy.label = res.text;
-               copy.label = res.taskOwnerName;
-               copy.text = res.taskOwnerName;
-               copy.owner_id = parseInt(res.taskOwnerId);
-               copy.name = res.taskOwnerName;
-               lightboxOptions.push(copy);
-           }
-       });
-      //  gantt.updateCollection("people", lightboxOptions);
+            if (res.taskLevel == 1) {
+                var copy = gantt.copy(res);
+                copy.key = parseInt(res.projectTaskId);
+                //copy.label = res.text;
+                copy.label = res.taskOwnerName;
+                copy.text = res.taskOwnerName;
+                copy.owner_id = parseInt(res.taskOwnerId);
+                copy.name = res.taskOwnerName;
+                lightboxOptions.push(copy);
+            }
+        });
+        //  gantt.updateCollection("people", lightboxOptions);
 
         //let resval = taskStatus.find(res => res.taskLevel == 1);
         //if (resval != undefined) { arrPeople.push({ key: resval.taskOwnerId, label: resval.taskOwnerName }) }
@@ -668,19 +669,19 @@ document.addEventListener("DOMContentLoaded", function () {
     //}
     //gantt.parse(gdata);
     GetProjectGanttTaskList();
-   // gantt.config.auto_scheduling = false;
+    // gantt.config.auto_scheduling = false;
 
-   // var obj = gantt.json;
-   // gantt.init("ganttContainer")//, new Date(2021, 1, 1,0,0,0), new Date(2022, 1, 1,0,0,0)); // initialize gantt
-   // gantt.load(JSON.stringify(gdata), "json");
+    // var obj = gantt.json;
+    // gantt.init("ganttContainer")//, new Date(2021, 1, 1,0,0,0), new Date(2022, 1, 1,0,0,0)); // initialize gantt
+    // gantt.load(JSON.stringify(gdata), "json");
 
-   // var dp = new gantt.dataProcessor($('#hdnBaseURL').val() + "/api/Project/GetTaskSubTask" + "/" + id);
-   //// var dp = new gantt.dataProcessor("/api")
-   // dp.init(gantt);
-   // dp.setTransactionMode("REST-JSON");
+    // var dp = new gantt.dataProcessor($('#hdnBaseURL').val() + "/api/Project/GetTaskSubTask" + "/" + id);
+    //// var dp = new gantt.dataProcessor("/api")
+    // dp.init(gantt);
+    // dp.setTransactionMode("REST-JSON");
 
-     function GetProjectGanttTaskList() {
-         ajaxServiceMethod($('#hdnBaseURL').val() + "api/Project/GetTaskSubTask" + "/" + id, 'GET', GetTaskSubTaskListSuccess, GetTaskSubTaskListError);
+    function GetProjectGanttTaskList() {
+        ajaxServiceMethod($('#hdnBaseURL').val() + "api/Project/GetTaskSubTask" + "/" + id, 'GET', GetTaskSubTaskListSuccess, GetTaskSubTaskListError);
         function GetTaskSubTaskListSuccess(data) {
             let restructeredData = {}
             for (var i = 0; i < data._object.length; i++) {
@@ -713,14 +714,14 @@ document.addEventListener("DOMContentLoaded", function () {
                     plannedStartDate: data._object[i].PlannedStartDate,
                     plannedEndDate: data._object[i].PlannedEndDate
                 });
-               
+
                 // { key: 1, label: "Normal" }
                 //name: "owner", height: 22, map_to: "owner_id",
-                if (data._object[i].taskLevel == 1) { 
+                if (data._object[i].taskLevel == 1) {
                     people = { "owner_id": data._object[i].taskOwnerId, "owner": data._object[i].taskOwnerName };
                     gantt.serverList("people", [people]);
-               
-            }
+
+                }
                 //    createdDate: crDate,
                 //    editTaskOwnerId: data._object[i].editTaskOwnerId,
                 //    editTaskPriorityId: data._object[i].editTaskPriorityId,
@@ -746,19 +747,20 @@ document.addEventListener("DOMContentLoaded", function () {
                 gantt.parse(gdata);
             }
             responsTtaskList = data._object;
-            isAdd=taskStatus.find(x => x.taskLevel == 1) ? false : true;
+            isAdd = taskStatus.find(x => x.taskLevel == 1) ? false : true;
         }
         function GetTaskSubTaskListError() {
             toastr.error("Error");
         }
     }
     function saveUpdateGanttTask(taskObjects, ProjectTaskId) {
-       let startDate =new Date(moment(taskObjects.start_date).format("MM/DD/YYYY hh:mm"));
+        let startDate = new Date(moment(taskObjects.start_date).format("MM/DD/YYYY hh:mm"));
         let endDate = new Date(moment(taskObjects.start_date).format("MM/DD/YYYY hh:mm"));
         let selectedOwner = taskObjects.owner_id == undefined || taskObjects.owner_id == "null" ? taskObjects.owner : taskObjects.owner_id;
-        const res = taskStatus.filter(x => x.projectTaskId === ProjectTaskId);
-        const taskLevels = taskStatus.filter(x => x.projectTaskId == taskObjects.parent);
-        let newTaskLevel = res.length==0 ? parseInt(taskLevels[0].taskLevel) + 1 : taskLevels[0].taskLevel;
+        let res = taskStatus.filter(x => x.projectTaskId === ProjectTaskId);
+        let taskLevels = taskStatus.filter(x => x.projectTaskId == taskObjects.parent);
+        let mainTasklevel = taskLevels == undefined || taskLevels.length == 0 ? 0 : taskLevels[0].taskLevel;
+        let newTaskLevel = res.length == 0 ? parseInt(mainTasklevel) + 1 : parseInt(mainTasklevel) + 1;
         if (taskObjects.text == "null" || taskObjects.text == "") {
             //toastr.error("TaskName could not be empty!", "Input Validation Error");
             //$("div.gantt_cal_light").show();
@@ -769,39 +771,39 @@ document.addEventListener("DOMContentLoaded", function () {
             }
             //return false;
         }
-     
-            let addTask = {
-                ProjectTaskId: ProjectTaskId,
-                TaskName: taskObjects.text,
-                Pidfid: 0,
-                PriorityId: taskObjects.priority,
-                StartDate: startDate,
-                EndDate: endDate,
-                StatusId: res.length > 0 ? res[0].statusId : 1,
-                TaskOwnerId: selectedOwner, //.owner == undefined ? 0 : taskObjects.owner,
-                TotalPercentage: Math.round((taskObjects.progress * 100)),
-                ParentId: taskObjects.parent,
-                TaskDuration: taskObjects.duration,
-                IsGanttUpdate: true,
-                PlannedStartDate: taskObjects.planned_start,
-                PlannedEndDate: taskObjects.planned_end == undefined ? null : taskObjects.planned_end,
-                TaskLevel: newTaskLevel
-            }
-            let act = taskObjects.parent == 0 ? "Task" : "SubTask";
-            let pidfId = (new URL(location.href)).searchParams.get('pidfid');
-            //console.log(JSON.stringify(addTask))
-            ajaxServiceMethod($('#hdnWebBaseURL').val() + "Project/AddUpdateGanttTask?id=" + pidfId + "&act=" + act, 'POST', SaveTaskSubTaskListSuccess, SaveTaskSubTaskListError, JSON.stringify(addTask), null, null, null, "application/json; charset=utf-8");
 
-            function SaveTaskSubTaskListSuccess(data) {
+        let addTask = {
+            ProjectTaskId: ProjectTaskId,
+            TaskName: taskObjects.text,
+            Pidfid: 0,
+            PriorityId: taskObjects.priority,
+            StartDate: startDate,
+            EndDate: endDate,
+            StatusId: res.length > 0 ? res[0].statusId : 1,
+            TaskOwnerId: selectedOwner, //.owner == undefined ? 0 : taskObjects.owner,
+            TotalPercentage: Math.round((taskObjects.progress * 100)),
+            ParentId: taskObjects.parent,
+            TaskDuration: taskObjects.duration,
+            IsGanttUpdate: true,
+            PlannedStartDate: taskObjects.planned_start,
+            PlannedEndDate: taskObjects.planned_end == undefined ? null : taskObjects.planned_end,
+            TaskLevel: newTaskLevel
+        }
+        let act = taskObjects.parent == 0 ? "Task" : "SubTask";
+        let pidfId = (new URL(location.href)).searchParams.get('pidfid');
+        //console.log(JSON.stringify(addTask))
+        ajaxServiceMethod($('#hdnWebBaseURL').val() + "Project/AddUpdateGanttTask?id=" + pidfId + "&act=" + act, 'POST', SaveTaskSubTaskListSuccess, SaveTaskSubTaskListError, JSON.stringify(addTask), null, null, null, "application/json; charset=utf-8");
 
-                GetProjectGanttTaskList();
-                setTimeout(reloadFunc, 500);
-                toastr.success("Success");
-            }
-            function SaveTaskSubTaskListError(err) {
-                toastr.error(`${err}`, "Input Validation Error");
-            }
-        
+        function SaveTaskSubTaskListSuccess(data) {
+
+            GetProjectGanttTaskList();
+            setTimeout(reloadFunc, 500);
+            toastr.success("Success");
+        }
+        function SaveTaskSubTaskListError(err) {
+            toastr.error(`${err}`, "Input Validation Error");
+        }
+
     }
     function deleteGanttTaskSubTask(taskid) {
         taskIdToBeDelete = taskid;
