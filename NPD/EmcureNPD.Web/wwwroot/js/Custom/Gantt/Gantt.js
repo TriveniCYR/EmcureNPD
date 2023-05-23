@@ -757,10 +757,10 @@ document.addEventListener("DOMContentLoaded", function () {
         let startDate = new Date(moment(taskObjects.start_date).format("MM/DD/YYYY hh:mm"));
         let endDate = new Date(moment(taskObjects.start_date).format("MM/DD/YYYY hh:mm"));
         let selectedOwner = taskObjects.owner_id == undefined || taskObjects.owner_id == "null" ? taskObjects.owner : taskObjects.owner_id;
-        const res = taskStatus.filter(x => x.projectTaskId === ProjectTaskId);
-        const taskLevels = taskStatus.filter(x => x.projectTaskId == taskObjects.parent);
+        let res = taskStatus.filter(x => x.projectTaskId === ProjectTaskId);
+        let taskLevels = taskStatus.filter(x => x.projectTaskId == taskObjects.parent);
         let mainTasklevel = taskLevels == undefined || taskLevels.length == 0 ? 0 : taskLevels[0].taskLevel;
-        let newTaskLevel = res.length == 0 ? parseInt(mainTasklevel) + 1 : mainTasklevel;
+        let newTaskLevel = res.length == 0 ? parseInt(mainTasklevel) + 1 : parseInt(mainTasklevel) + 1;
         if (taskObjects.text == "null" || taskObjects.text == "") {
             //toastr.error("TaskName could not be empty!", "Input Validation Error");
             //$("div.gantt_cal_light").show();

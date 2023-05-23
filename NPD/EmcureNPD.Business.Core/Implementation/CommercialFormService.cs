@@ -103,6 +103,14 @@ namespace EmcureNPD.Business.Core.Implementation
 
                     if (!IsExist) // if not IsExist then Delete
 					{
+						//Remove all Already mapped Years data
+						var CommercialYears = await _commercialYearrepository.GetAllAsync(x => x.PidfcommercialId == _obj.PidfcommercialId);
+						foreach (var it in CommercialYears.OrderBy(x => x.YearIndex))
+						{							
+							_commercialYearrepository.Remove(it);
+							await _unitOfWork.SaveChangesAsync();
+						}
+
 						_commercialrepository.Remove(_obj);
 						await _unitOfWork.SaveChangesAsync();
 					}

@@ -238,7 +238,7 @@ namespace EmcureNPD.Business.Core.Implementation
                     {
                         await AddUpdatePidfFinanceBatchSizeCoating(entityPidfFinance.lsPidfFinanceBatchSizeCoating, Convert.ToInt32(entityPidfFinance.CreatedBy), PidffinaceId);
                     }
-                    AddUpdateFinanceProjectTabData(entityPidfFinance.hdnDynamicControlData, Convert.ToInt32(entityPidfFinance.Pidfid), entityPidfFinance.hdnSelectedBussinesUnit, PidffinaceId);
+                   await  AddUpdateFinanceProjectTabData(entityPidfFinance.hdnDynamicControlData, Convert.ToInt32(entityPidfFinance.Pidfid), entityPidfFinance.hdnSelectedBussinesUnit, PidffinaceId);
 
 					//*Audit log//
 					if (IsUpdateFinancePIDF)
@@ -288,7 +288,7 @@ namespace EmcureNPD.Business.Core.Implementation
             }
         }
 
-        private void AddUpdateFinanceProjectTabData(string jsonData, long pidfid, string encBuid, int _PidffinaceId)
+        private async Task<bool> AddUpdateFinanceProjectTabData(string jsonData, long pidfid, string encBuid, int _PidffinaceId)
         {
             try {
             int Buid = int.Parse(UtilityHelper.Decreypt(encBuid));
@@ -299,7 +299,7 @@ namespace EmcureNPD.Business.Core.Implementation
                 {
                     _Projectionrepository.Remove(_obj);
 				}
-            _unitOfWork.SaveChangesAsync();
+          await  _unitOfWork.SaveChangesAsync();
 
             var data = JsonConvert.DeserializeObject<List<PIDFFinanceProjectionEntity>>(jsonData);
             foreach (var item in data)
@@ -313,12 +313,14 @@ namespace EmcureNPD.Business.Core.Implementation
                 dbObj.AnnualConfirmatoryRelease = item.AnnualConfirmatoryRelease;
                 _Projectionrepository.Add(dbObj);
             }
-            _unitOfWork.SaveChangesAsync();
+				await _unitOfWork.SaveChangesAsync();
         }
               catch (Exception ex)
             {
 				_ExceptionService.LogException(ex);
+                return false;
 			}
+			return true;
 		}
 
 
