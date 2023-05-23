@@ -159,7 +159,8 @@ document.addEventListener("DOMContentLoaded", function () {
     //Task Progress method
     gantt.templates.task_class = function (start, end, task) {
         //text in progress
-        let progressPercents = task.progress * 100;
+        let dBprogress = taskStatus.filter(x => x.projectTaskId == task.id)
+        let progressPercents = task.progress == 0 && dBprogress.length>0 ? task.progress = dBprogress[0].totalPercentage / 100 : task.progress * 100;
         let className = "";
         if (progressPercents == 0) {
             className += " task-no-progress";
