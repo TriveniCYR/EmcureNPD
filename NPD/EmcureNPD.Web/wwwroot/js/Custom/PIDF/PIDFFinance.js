@@ -504,7 +504,7 @@ function getPackSize(ele) {
                 let optionhtml = '<option value = "0">--Select--</option>';
                 $.each(data.table, function (index, object) {
                     optionhtml += '<option value="' +
-                        object.packSize + '" data=' + object.packSizeId+ '>' + object.packSizeName + ' </option>';
+                        object.packSizeId + '" data=' + object.packSize+ '>' + object.packSizeName + ' </option>';
                     
                     //calculateBatchSizeCaoting(ele);
                    
@@ -544,7 +544,7 @@ function getEditPackSize(strengthId,rowIndex) {
             let optionhtml = '<option value = "0">--Select--</option>';
             $.each(data.table, function (index, object) {
                 optionhtml += '<option value="' +
-                    object.packSize + '" data=' + object.packSizeId+ '>' + object.packSizeName + ' </option>';
+                    object.packSizeId + '" data=' + object.packSize+ '>' + object.packSizeName + ' </option>';
             });
             
             $(`select#PakeSize${rowIndex}.PakeSize`).append(optionhtml);
@@ -868,7 +868,7 @@ function RenderFinanceProjection() {
         for (var i = 0; i < 10; i++) {
             html += "<th>" + "Mar-" + (_BeginYear + i).toString().substr(-2) + "</th>";
             Global_Projection_Year_data.push((_BeginYear + i).toString());
-            Projection_Year_data.push((_BeginYear + i).toString(), '02', '31');
+            Projection_Year_data.push(new Date(((_BeginYear + i).toString()+'-03-31').toString()) );
         }
         
         html += "</tr>";
@@ -1113,25 +1113,23 @@ function RenderFinanceProjection() {
         /*-----------R&D analytical cost--------------------------*/
         html += "<tr class='lblHeading '><td colspan='3' >R&D analytical cost</td>";
         var RnD_analytical_cost_projection_data = [];
-        var On_Agreement_Signing_Value = 1000; // this need to evaluate;
-        
+        var cost_Value = $('#RandDanalyticalcost').val();
+        var compareDate_string = $('#RandDanalyticalcostPhaseEndDate').val();
+        var compareDate = (compareDate_string != "") ? new Date(compareDate_string) : new Date();  
         for (var i = 0; i < 10; i++) {
             let result = 0;
             if (i == 0) {
                 result = 0;
             } else {
-                if (_ProjectStartDate <= Projection_Year_data[i] && _ProjectStartDate > Projection_Year_data[i - 1]) {
-                    result = -On_Agreement_Signing_Value;
-                }
-                else {
-                    result = 0;
-                }
-            }          
-            result = isNaN(result) ? 0 : result; 
+                result = (compareDate <= Projection_Year_data[i] && compareDate > Projection_Year_data[i - 1]) ? -cost_Value : 0;
+            }
+            result = result - (1 - (Incometaxrate_Value / 100))
+
+            result = isNaN(result) ? 0 : result;
             html += "<td>" + result.toFixed(3) + "</td>";
             RnD_analytical_cost_projection_data.push(result);
         }
-        html += "</tr>";
+        html += "</tr>"; 
         /*-----------RLD sample cost--------------------------*/
         html += "<tr class='lblHeading '><td colspan='3' >RLD sample cost</td>";
         var RLD_sample_projection_data = [];
