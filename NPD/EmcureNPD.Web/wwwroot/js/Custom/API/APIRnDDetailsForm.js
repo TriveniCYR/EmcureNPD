@@ -67,9 +67,9 @@ $('#imgPreviewMarketdetails').click(function () {
 });
 
 $('#Save').click(function () {
-    var IsValid = false;
+     IsValid = false;
     IsValid = ValidateForm();
-    IsValid = validateDynamicControldDetails();
+    IsValid = validateDynamicControldDetailsRND();
     $("#APIRnD_SaveType").val('Save');
     if (IsValid) {
         return true;
@@ -125,19 +125,17 @@ function ValidateForm() {
     return IsValid;
 }
 
-function validateDynamicControldDetails() {
-    IsValid = true;
-    $('.customvalidateformcontrol').each(function () {
-        validatecontrols(this);
+function validateDynamicControldDetailsRND() {
+    var IsValid = true;
+    $('#frmAPIRnDDetails').find('.customvalidateformcontrol').each(function () {
+        if ($(this).val().trim() == '') {
+            $(this).css("border-color", "red");
+            $(this).focus();
+            IsValid = false;
+        }
+        else {
+            $(this).css("border-color", "");
+        }
     });
-}
-function validatecontrols(control) {
-    if ($(control).val().trim() == '') {
-        $(control).css("border-color", "red");
-        $(control).focus();
-        IsValid = false;
-    }
-    else {
-        $(control).css("border-color", "");
-    }
+    return IsValid
 }

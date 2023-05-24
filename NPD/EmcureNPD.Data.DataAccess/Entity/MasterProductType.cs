@@ -10,6 +10,7 @@ namespace EmcureNPD.Data.DataAccess.Entity
         public MasterProductType()
         {
             PidfApiIpds = new HashSet<PidfApiIpd>();
+            PidfPbfGenerals = new HashSet<PidfPbfGeneral>();
             PidfPbfs = new HashSet<PidfPbf>();
         }
 
@@ -24,6 +25,7 @@ namespace EmcureNPD.Data.DataAccess.Entity
         public double? ManPowerFactor { get; set; }
 
         public virtual ICollection<PidfApiIpd> PidfApiIpds { get; set; }
+        public virtual ICollection<PidfPbfGeneral> PidfPbfGenerals { get; set; }
         public virtual ICollection<PidfPbf> PidfPbfs { get; set; }
     }
 }
