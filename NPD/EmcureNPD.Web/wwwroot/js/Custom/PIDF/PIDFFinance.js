@@ -571,10 +571,10 @@ function getEditPackSize(strengthId,rowIndex) {
 function GetSUIMSVolumeYearWiseByPackSize(ele) {
     var row_index = $(ele).closest('tr').index();
     //skuElements = row_index == 0 ? $(ele).val() : $(`select#Skus${row_index}.Skus`).val();
-    //let packSizeId = $(`select#PakeSize${row_index}.PakeSize option:selected`).attr('data');
+    //let packSizeId = $(`select#PakeSize${row_index}.PakeSize option:selected`).attr('value');
     //let strengthId = $(`select#Skus${row_index}.Skus.DbSkus option:selected`).val() == undefined ? skuElements : $(`select#Skus${row_index}.Skus.DbSkus option:selected`).val();
 
-    let packSizeId = $(ele).closest('tr').find("select.PakeSize option:selected").attr("data");
+    let packSizeId = $(ele).closest('tr').find("select.PakeSize option:selected").attr("value");
     let strengthId =$(ele).closest('tr').find("select.Skus").val();
     validateDuplicateSKUs();    
     if (isValidSku) {
@@ -1419,6 +1419,33 @@ function RenderFinanceProjection() {
     $('#tblFinanceProjection').html(html);
    
 }
+function GetBatchSizeCostingTRValues() {
+    var Arr_FinanceTable_tr = [];
+    $('#FinanceTableBoy tr').each(function (index, value) {
+        var trObj =
+        {
+            SKU: $(this).find("select.Skus option:selected").text(),
+            PackSize: $(this).find("select.PakeSize option:selected").text(),
+
+            hdnMSLow: $(this).find("#hdnMSLow").val(),
+            hdnMSMid: $(this).find("#hdnMSMid").val(),
+            hdnMSHigh: $(this).find("#hdnMSHigh").val(),
+
+            marketInPacks: $(this).find('.Marketinpacks').val(),
+
+            hdnNSPLow: $(this).find("#hdnNSPLow").val(),
+            hdnNSPMid: $(this).find("#hdnNSPMid").val(),
+            hdnNSPHigh: $(this).find("#hdnNSPHigh").val(),
+
+            emcureCOGs_pack: $(this).find(".EmcureCOGs_pack").val(),
+
+        }
+
+        Arr_FinanceTable_tr.push(trObj);
+
+    });
+    return Arr_FinanceTable_tr;
+}
 
 function RenderCommercialPerPack() {
     $('#tblCommercialPerPack').html('');
@@ -1476,14 +1503,17 @@ function RenderCommercialPerPack() {
         SumOfCOGS =     [0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
         SumOfGC =       [0, 0, 0, 0, 0, 0, 0, 0, 0, 0];      
 
-        $('#FinanceTableBoy tr').each(function (index, value) {
+        var Arr_FinanceTable_tr = GetBatchSizeCostingTRValues();
+        
+        jQuery.each(Arr_FinanceTable_tr, function (index, trObj) {
+        //$('#FinanceTableBoy tr').each(function (index, value) {
 
-            let SKU = $(this).find("select.Skus option:selected").text();
-            let PackSize = $(this).find("select.PakeSize option:selected").text();
+            let SKU = trObj.SKU;
+            let PackSize = trObj.PackSize;
 
             html += '<tr class="bg-light"><td class="text-left" colspan="15"><b>' + SKU + " - " + PackSize + '</b></td></tr>';
 
-            var _uniqueClass = "tr_" + $(this).find("select.Skus option:selected").val() + "_" + $(this).find("select.PakeSize option:selected").val();
+            var _uniqueClass = "tr_" + SKU + "_" + PackSize;
             var MS_td_data = [];
             var NSP_td_data = [];
             var COGS_td_data = [];
@@ -1491,10 +1521,10 @@ function RenderCommercialPerPack() {
 
 
              //---------------------Start-MS%_Row-------------------------------------------------------
-            html += "<tr class='" + _uniqueClass + "'><td>MS%</td><td>" + $(this).find("#hdnMSLow").val() + "</td><td>" + $(this).find("#hdnMSMid").val() + "</td><td>" + $(this).find("#hdnMSHigh").val() + "</td><td>Units</td>";
+            html += "<tr class='" + _uniqueClass + "'><td>MS%</td><td>" + trObj.hdnMSLow + "</td><td>" + trObj.hdnMSMid + "</td><td>" + trObj.hdnMSHigh + "</td><td>Units</td>";
 
-            var marketSharePercentage =  GetMarketSharePercentage($(this).find("#hdnMSLow").val(), $(this).find("#hdnMSMid").val(), $(this).find("#hdnMSHigh").val());
-            let marketInPacks = formatToNumber($(this).find('.Marketinpacks').val());
+            var marketSharePercentage = GetMarketSharePercentage(trObj.hdnMSLow, trObj.hdnMSMid, trObj.hdnMSHigh);
+            let marketInPacks = formatToNumber(trObj.marketInPacks);
             let msErosion = formatToNumber($("#MarketShareErosionrate").val(), true);
 
             for (var i = 0; i < 10; i++) {
@@ -1507,10 +1537,10 @@ function RenderCommercialPerPack() {
                 MS_td_data.push(_units);
             }
             html += "</tr>";
-             //---------------------End-MS%_Row-------------------------------------------------------           
+             //---------------------End-MS%_Row-------------------------------------------------------   
             //---------------------Start-NSP_Row-------------------------------------------------------
-            html += "<tr class='" + _uniqueClass +"'><td>NSP</td><td>" + $(this).find("#hdnNSPLow").val() + "</td><td>" + $(this).find("#hdnNSPMid").val() + "</td><td>" + $(this).find("#hdnNSPHigh").val() +"</td><td>NSP</td>";
-            var nsp_Percentage = GetNSPPercentage($(this).find("#hdnNSPLow").val(), $(this).find("#hdnNSPMid").val(), $(this).find("#hdnNSPHigh").val());
+            html += "<tr class='" + _uniqueClass + "'><td>NSP</td><td>" + trObj.hdnNSPLow + "</td><td>" + trObj.hdnNSPMid + "</td><td>" + trObj.hdnNSPHigh +"</td><td>NSP</td>";
+            var nsp_Percentage = GetNSPPercentage(trObj.hdnNSPLow, trObj.hdnNSPMid, trObj.hdnNSPHigh);
            // let marketInPacks = formatToNumber($(this).find('.Marketinpacks').val());
             let nsp_Erosion = formatToNumber($("#PriceErosion").val(), true);   
 
@@ -1525,9 +1555,9 @@ function RenderCommercialPerPack() {
             html += "</tr>";
             //---------------------End-NSP_Row-------------------------------------------------------
             //---------------------Start-COGS_Row-------------------------------------------------------
-            html += "<tr class='" + _uniqueClass +"'><td>COGS</td><td>" + $(this).find(".EmcureCOGs_pack").val() + "</td><td>" + $(this).find(".EmcureCOGs_pack").val() + "</td><td>" + $(this).find(".EmcureCOGs_pack").val() + "</td><td>COGS/Unit</td>";
+            html += "<tr class='" + _uniqueClass + "'><td>COGS</td><td>" + trObj.emcureCOGs_pack + "</td><td>" + trObj.emcureCOGs_pack + "</td><td>" + trObj.emcureCOGs_pack + "</td><td>COGS/Unit</td>";
             let COGS_Escalation = formatToNumber($("#EscalationinCOGS").val(), true);
-            var COGS_Percentage = GetCOGSPercentage($(this).find(".EmcureCOGs_pack").val(), $(this).find(".EmcureCOGs_pack").val(), $(this).find(".EmcureCOGs_pack").val());
+            var COGS_Percentage = GetCOGSPercentage(trObj.emcureCOGs_pack, trObj.emcureCOGs_pack, trObj.emcureCOGs_pack);
             for (var i = 0; i < 10; i++) {
                 var Row_th_Index = $('#tblCommercialPerPack').find('.thYearCounter:eq(' + i + ')').text();
                 var trYearIndex = formatToNumber((Row_th_Index == '-') ? '0' : Row_th_Index);
@@ -1622,6 +1652,9 @@ function GetMarketSharePercentage(low, mid, high) {
         } else if ($('#MSPersentage').val() == "3") {
             marketSharePercentage = parseInt(high);
         }
+        else {
+            marketSharePercentage = parseInt(low);
+        }
     } catch (e) {
     }
     return marketSharePercentage;
@@ -1635,6 +1668,8 @@ function GetNSPPercentage(low, mid, high) {
             NSPPercentage = parseInt(mid);
         } else if ($('#TargetPriceScenario').val() == "3") {
             NSPPercentage = parseInt(high);
+        } else {
+            NSPPercentage = parseInt(low);
         }
     } catch (e) {
     }
@@ -1649,6 +1684,8 @@ function GetCOGSPercentage(low, mid, high) {
             COGSPercentage = parseInt(mid);
         } else if ($('#TargetPriceScenario').val() == "3") {
             COGSPercentage = parseInt(high);
+        } else {
+            COGSPercentage = parseInt(low);
         }
     } catch (e) {
     }
