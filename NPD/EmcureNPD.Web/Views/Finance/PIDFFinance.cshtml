@@ -1281,9 +1281,9 @@
      @Html.Partial("_CancelRequest", (int)PIDFScreen.Finance)
 @section MyScripts {
 	@*@Html.Partial("_DataTablePartial")*@
-
 	<script src="~/js/custom/pidf/PIDFFinance.js?v=@jsVersion"></script>
-<script type="text/javascript" src="~/AdminLTE/plugins/select2/js/select2.min.js"></script>
+	<script src="~/js/custom/managementapproval/financechartercommon.js"></script>
+	<script type="text/javascript" src="~/AdminLTE/plugins/select2/js/select2.min.js"></script>
 <script>
 	const AllCurrency = "@EmcureNPD.Web.Helpers.APIURLHelper.GetAllCurrency";
     const AllDosageForm = "@EmcureNPD.Web.Helpers.APIURLHelper.GetAllActiveDosageFormFinance";

@@ -55,7 +55,7 @@ $(document).ready(function () {
     //$(document).on("change", "$('.EmcureCOGs_pack')", function () {
     //    ValidateSKU_dropdown();
     //});
-    
+    UpdateProjectionCommercial();
 });
 function ValidateSKU_dropdown(){
     var ArrayofInvalid = [];
@@ -827,6 +827,33 @@ function loadFinanceProjectionData(pidfid, encBUId){
     _encBuid = encBUId;
     $('.PakeSize').trigger("change");
 }
+function GetBatchSizeCostingTRValues() {
+    var Arr_FinanceTable_tr = [];
+    $('#FinanceTableBoy tr').each(function (index, value) {
+        var trObj =
+        {
+            SKU: $(this).find("select.Skus option:selected").text(),
+            PackSize: $(this).find("select.PakeSize option:selected").text(),
+
+            hdnMSLow: $(this).find("#hdnMSLow").val(),
+            hdnMSMid: $(this).find("#hdnMSMid").val(),
+            hdnMSHigh: $(this).find("#hdnMSHigh").val(),
+
+            marketInPacks: $(this).find('.Marketinpacks').val(),
+
+            hdnNSPLow: $(this).find("#hdnNSPLow").val(),
+            hdnNSPMid: $(this).find("#hdnNSPMid").val(),
+            hdnNSPHigh: $(this).find("#hdnNSPHigh").val(),
+
+            emcureCOGs_pack: $(this).find(".EmcureCOGs_pack").val(),
+
+        }
+
+        Arr_FinanceTable_tr.push(trObj);
+
+    });
+    return Arr_FinanceTable_tr;
+}
 function RenderFinanceProjection() {
     $('#tblFinanceProjection').html('');
 
@@ -868,9 +895,9 @@ function RenderFinanceProjection() {
         for (var i = 0; i < 10; i++) {
             html += "<th>" + "Mar-" + (_BeginYear + i).toString().substr(-2) + "</th>";
             Global_Projection_Year_data.push((_BeginYear + i).toString());
-            Projection_Year_data.push(new Date(((_BeginYear + i).toString()+'-03-31').toString()) );
+            Projection_Year_data.push(new Date(((_BeginYear + i).toString() + '-03-31').toString()));
         }
-        
+
         html += "</tr>";
         html += "</thead><tbody>";
 
@@ -891,14 +918,14 @@ function RenderFinanceProjection() {
         html += "<tr class='bg-light'><td colspan='3'>Gross Sales</td>";
         for (var i = 0; i < 10; i++) {
             let result = SumOfGrossSales[i];
-            result = isNaN(result) ? 0 : result;   html += "<td>" + result.toFixed(3) + "</td>";
+            result = isNaN(result) ? 0 : result; html += "<td>" + result.toFixed(3) + "</td>";
         }
         html += "</tr>";
         /*---------------Net Sales--------------------------*/
         html += "<tr class='bg-light'><td colspan='3' >Net Sales</td>";
         for (var i = 0; i < 10; i++) {
             let result = SumOfSales[i];
-            result = isNaN(result) ? 0 : result;   html += "<td>" + result.toFixed(3) + "</td>";
+            result = isNaN(result) ? 0 : result; html += "<td>" + result.toFixed(3) + "</td>";
         }
         /*------------[COGS]-Cost of goods sold--------------------------*/
         html += "<tr class=''><td colspan='3' >Cost of goods sold</td>";
@@ -909,17 +936,17 @@ function RenderFinanceProjection() {
         html += "</tr>";
         /*---------------Expiries-----------------------*/
         html += "<tr class='Expiries'><td colspan='3' >Expiries</td>";
-        for (var i = 0; i < 10; i++) {           
-            html += "<td> <input onchange='ExpiriesValueChange(this," + i + ");' type='number' name='" + Global_Projection_Year_data[i] +"' value='" + Expiries_Yearwise_Data[i] +"' class='form-control Expiriestxtbox UpdateProjectionCommercial' id='ProjectionExpiries_" + i +"' > </td>";
+        for (var i = 0; i < 10; i++) {
+            html += "<td> <input onchange='ExpiriesValueChange(this," + i + ");' type='number' name='" + Global_Projection_Year_data[i] + "' value='" + Expiries_Yearwise_Data[i] + "' class='form-control Expiriestxtbox UpdateProjectionCommercial' id='ProjectionExpiries_" + i + "' > </td>";
         }
-        html += "</tr>";        
+        html += "</tr>";
         /*-----------[GC]-Gross margin--------------------------*/
         var GC_Projection = [];
         html += "<tr class='lblHeading'><td colspan='3' >Gross margin</td>";
-        for (var i = 0; i < 10; i++) {              
+        for (var i = 0; i < 10; i++) {
             let result = SumOfSales[i] - (SumOfCOGS[i] + formatToNumber(Expiries_Yearwise_Data[i], true));
             result = (isNaN(result) ? 0 : result)
-              html += "<td>" + result.toFixed(3) + "</td>";
+            html += "<td>" + result.toFixed(3) + "</td>";
             GC_Projection.push(result);
         }
         html += "</tr>";
@@ -929,26 +956,26 @@ function RenderFinanceProjection() {
         for (var i = 0; i < 10; i++) {
             let result = GC_Projection[i] / SumOfSales[i];
             result = (Math.abs(result) == Infinity || isNaN(result) || result == -Infinity) ? 0 : result;
-            result =  isNaN(result) ? 0 : result;
-           html += "<td>" + result.toFixed(3) + "</td>";
+            result = isNaN(result) ? 0 : result;
+            html += "<td>" + result.toFixed(3) + "</td>";
             CGPercentage.push(result);
         }
         html += "</tr>";
         html += "<tr class='lblHeading bg-light'><td colspan='13' >Expenses as defined as per profit share agreement</td>";
-        
+
         /*-----------MA Annual fees--------------------------*/
         var Marketing_Allowance_Value = $('#MarketingAllowance').val(); // G20
         html += "<tr class='lblHeading'><td colspan='3' >MA Annual fees</td>";
         for (var i = 0; i < 10; i++) {
             let result = Marketing_Allowance_Value * SumOfGrossSales[i];
-            result =  isNaN(result) ? 0 : result;
+            result = isNaN(result) ? 0 : result;
             html += "<td>" + result.toFixed(3) + "</td>";
         }
         html += "</tr>";
         /*---------------Annual confirmatory release testing-----------------------*/
         html += "<tr class='Expiries'><td colspan='3' >Annual confirmatory release testing</td>";
         for (var i = 0; i < 10; i++) {
-            html += "<td> <input type='number' onchange='AnnualconfirmatoryValueChange(this," + i + ");' name='" + Global_Projection_Year_data[i] +"' value='" + AnnualConfirmatoryRelease_Data[i] + "' class='form-control AnnualConfirmatoryRtxtbox UpdateProjectionCommercial' id='ProjectionAnnualConfirmatoryRelease_" + i + "' > </td>";
+            html += "<td> <input type='number' onchange='AnnualconfirmatoryValueChange(this," + i + ");' name='" + Global_Projection_Year_data[i] + "' value='" + AnnualConfirmatoryRelease_Data[i] + "' class='form-control AnnualConfirmatoryRtxtbox UpdateProjectionCommercial' id='ProjectionAnnualConfirmatoryRelease_" + i + "' > </td>";
         }
         html += "</tr>";
         /*-----------Opex--------------------------*/
@@ -956,7 +983,7 @@ function RenderFinanceProjection() {
         html += "<tr class='lblHeading'><td colspan='3' >Opex</td>";
         for (var i = 0; i < 10; i++) {
             let result = Opexasapercenttosale * SumOfGrossSales[i];
-           result = isNaN(result) ? 0 : result;
+            result = isNaN(result) ? 0 : result;
             html += "<td>" + result.toFixed(3) + "</td>";
         }
         html += "</tr>";
@@ -964,11 +991,11 @@ function RenderFinanceProjection() {
         var EBITDA_projection = [];
         html += "<tr class='lblHeading'><td colspan='3' > EBITDA - before Profit share</td>";
         for (var i = 0; i < 10; i++) {
-            let result = GC_Projection[i] - ((Marketing_Allowance_Value * SumOfGrossSales[i]) + formatToNumber(AnnualConfirmatoryRelease_Data[i],true) + (Opexasapercenttosale * SumOfGrossSales[i]))
+            let result = GC_Projection[i] - ((Marketing_Allowance_Value * SumOfGrossSales[i]) + formatToNumber(AnnualConfirmatoryRelease_Data[i], true) + (Opexasapercenttosale * SumOfGrossSales[i]))
             EBITDA_projection.push(result);
-             result = isNaN(result) ? 0 : result;
+            result = isNaN(result) ? 0 : result;
             html += "<td>" + result.toFixed(3) + "</td>";
-            
+
         }
         html += "</tr>";
         /*-----------EBITDA % (before PS)--------------------------*/
@@ -976,7 +1003,7 @@ function RenderFinanceProjection() {
         for (var i = 0; i < 10; i++) {
             let result = EBITDA_projection[i] / SumOfSales[i];
             result = (Math.abs(result) == Infinity || isNaN(result)) ? 0 : result;
-             result = isNaN(result) ? 0 : result;
+            result = isNaN(result) ? 0 : result;
             html += "<td>" + result.toFixed(3) + "</td>";
         }
         html += "</tr>";
@@ -985,7 +1012,7 @@ function RenderFinanceProjection() {
         html += "<tr class='lblHeading'><td colspan='3' > Profit Share</td>";
         for (var i = 0; i < 10; i++) {
             let result = EBITDA_projection[i] * Profit_Share_Value;
-             result = isNaN(result) ? 0 : result;
+            result = isNaN(result) ? 0 : result;
             html += "<td>" + result.toFixed(3) + "</td>";
         }
         html += "</tr>";
@@ -995,7 +1022,7 @@ function RenderFinanceProjection() {
         html += "<tr class='lblHeading'><td colspan='3' >MA Annual fees</td>";
         for (var i = 0; i < 10; i++) {
             let result = Marketing_Allowance_Value * SumOfGrossSales[i];
-            result = isNaN(result) ? 0 : result;   html += "<td>" + result.toFixed(3) + "</td>";
+            result = isNaN(result) ? 0 : result; html += "<td>" + result.toFixed(3) + "</td>";
         }
         html += "</tr>";
         /*-----------Net Income - PBT--------------------------*/
@@ -1003,7 +1030,7 @@ function RenderFinanceProjection() {
         html += "<tr class='lblHeading'><td colspan='3' > Net Income - PBT</td>";
         for (var i = 0; i < 10; i++) {
             let result = EBITDA_projection[i] - (EBITDA_projection[i] * Profit_Share_Value) + (Marketing_Allowance_Value * SumOfGrossSales[i]);
-            result = isNaN(result) ? 0 : result;   html += "<td>" + result.toFixed(3) + "</td>";
+            result = isNaN(result) ? 0 : result; html += "<td>" + result.toFixed(3) + "</td>";
             Net_Income_PBT_projection_data.push(result);
         }
         html += "</tr>";
@@ -1012,7 +1039,7 @@ function RenderFinanceProjection() {
         for (var i = 0; i < 10; i++) {
             let result = Net_Income_PBT_projection_data[i] / SumOfSales[i];
             result = (Math.abs(result) == Infinity || isNaN(result)) ? 0 : result;
-            result = isNaN(result) ? 0 : result;   html += "<td>" + result.toFixed(3) + "</td>";
+            result = isNaN(result) ? 0 : result; html += "<td>" + result.toFixed(3) + "</td>";
         }
         html += "</tr>";
         html += "<tr class='lblHeading bg-light emptyRow'><td colspan='13' ></td>";
@@ -1021,7 +1048,7 @@ function RenderFinanceProjection() {
         html += "<tr class='lblHeading'><td colspan='3' >Tax</td>";
         for (var i = 0; i < 10; i++) {
             let result = Net_Income_PBT_projection_data[i] / Incometaxrate_Value;
-            result = isNaN(result) ? 0 : result;   html += "<td>" + result.toFixed(3) + "</td>";
+            result = isNaN(result) ? 0 : result; html += "<td>" + result.toFixed(3) + "</td>";
         }
         html += "</tr>";
         html += "<tr class='lblHeading bg-light emptyRow'><td colspan='13' ></td>";
@@ -1032,7 +1059,7 @@ function RenderFinanceProjection() {
         for (var i = 0; i < 10; i++) {
             let result = Net_Income_PBT_projection_data[i] - (Net_Income_PBT_projection_data[i] / Incometaxrate_Value);
             Net_Income_PAT_projection_data.push(result);
-            result = isNaN(result) ? 0 : result;   html += "<td>" + result.toFixed(3) + "</td>";
+            result = isNaN(result) ? 0 : result; html += "<td>" + result.toFixed(3) + "</td>";
         }
         html += "</tr>";
         /*-----------% PAT Margin--------------------------*/
@@ -1040,7 +1067,7 @@ function RenderFinanceProjection() {
         for (var i = 0; i < 10; i++) {
             let result = Net_Income_PAT_projection_data[i] / SumOfSales[i];
             result = (Math.abs(result) == Infinity || isNaN(result)) ? 0 : result;
-            result = isNaN(result) ? 0 : result;   html += "<td>" + result.toFixed(3) + "</td>";
+            result = isNaN(result) ? 0 : result; html += "<td>" + result.toFixed(3) + "</td>";
         }
         html += "</tr>";
         html += "<tr class='lblHeading bg-light emptyRow'><td colspan='13' ></td></tr>";
@@ -1096,26 +1123,26 @@ function RenderFinanceProjection() {
         Temp_WCT_html += "</tr>";
         /*-----------Incremental working capital--------------------------*/
         html += "<tr class='lblHeading'><td colspan='3' > Incremental working capital  </td>";
-        var Incremental_working_capital_projection_data =[];
+        var Incremental_working_capital_projection_data = [];
         for (var i = 0; i < 10; i++) {
             let result = 0;
             if (i > 0) {
                 result = Working_capital_Total[i - 1] - Working_capital_Total[i];
             }
-           
+
             result = isNaN(result) ? 0 : result; html += "<td>" + result.toFixed(3) + "</td>";
             Incremental_working_capital_projection_data.push(result);
         }
         html += "</tr>";
 
-        
+
         html += "<tr class='lblHeading bg-light emptyRow'><td>Deal Terms</td><td colspan='12' ></td></tr>";
         /*-----------R&D analytical cost--------------------------*/
         html += "<tr class='lblHeading '><td colspan='3' >R&D analytical cost</td>";
         var RnD_analytical_cost_projection_data = [];
         var cost_Value = $('#RandDanalyticalcost').val();
         var compareDate_string = $('#RandDanalyticalcostPhaseEndDate').val();
-        var compareDate = (compareDate_string != "") ? new Date(compareDate_string) : new Date();  
+        var compareDate = (compareDate_string != "") ? new Date(compareDate_string) : new Date();
         for (var i = 0; i < 10; i++) {
             let result = 0;
             if (i == 0) {
@@ -1129,13 +1156,13 @@ function RenderFinanceProjection() {
             html += "<td>" + result.toFixed(3) + "</td>";
             RnD_analytical_cost_projection_data.push(result);
         }
-        html += "</tr>"; 
+        html += "</tr>";
         /*-----------RLD sample cost--------------------------*/
         html += "<tr class='lblHeading '><td colspan='3' >RLD sample cost</td>";
         var RLD_sample_projection_data = [];
         var cost_Value = $('#Rldsamplecost').val();
         var compareDate_string = $('#RldsamplecostPhaseEndDate').val();
-        var compareDate = (compareDate_string != "") ? new Date(compareDate_string) : new Date();        
+        var compareDate = (compareDate_string != "") ? new Date(compareDate_string) : new Date();
         for (var i = 0; i < 10; i++) {
             let result = 0;
             if (i == 0) {
@@ -1144,12 +1171,12 @@ function RenderFinanceProjection() {
                 result = (compareDate <= Projection_Year_data[i] && compareDate > Projection_Year_data[i - 1]) ? -cost_Value : 0;
             }
             result = result - (1 - (Incometaxrate_Value / 100))
-          
-            result = isNaN(result) ? 0 : result; 
+
+            result = isNaN(result) ? 0 : result;
             html += "<td>" + result.toFixed(3) + "</td>";
             RLD_sample_projection_data.push(result);
         }
-        html += "</tr>";    
+        html += "</tr>";
         /*-----------Batch manufacturing cost--------------------------*/
         html += "<tr class='lblHeading '><td colspan='3' >Batch manufacturing cost</td>";
         var Batch_manufacturing_projection_data = [];
@@ -1164,12 +1191,12 @@ function RenderFinanceProjection() {
                 result = (compareDate <= Projection_Year_data[i] && compareDate > Projection_Year_data[i - 1]) ? -cost_Value : 0;
             }
             result = result - (1 - (Incometaxrate_Value / 100))
-           
 
-            result = isNaN(result) ? 0 : result;   html += "<td>" + result.toFixed(3) + "</td>";
+
+            result = isNaN(result) ? 0 : result; html += "<td>" + result.toFixed(3) + "</td>";
             Batch_manufacturing_projection_data.push(result);
         }
-        html += "</tr>";  
+        html += "</tr>";
         /*-----------6 months stability cost--------------------------*/
         html += "<tr class='lblHeading '><td colspan='3' >6 months stability cost</td>";
         var Sixmonths_stability_costprojection_data = [];
@@ -1184,11 +1211,11 @@ function RenderFinanceProjection() {
                 result = (compareDate <= Projection_Year_data[i] && compareDate > Projection_Year_data[i - 1]) ? -cost_Value : 0;
             }
             result = result - (1 - (Incometaxrate_Value / 100))
-            
-            result = isNaN(result) ? 0 : result;   html += "<td>" + result.toFixed(3) + "</td>";
+
+            result = isNaN(result) ? 0 : result; html += "<td>" + result.toFixed(3) + "</td>";
             Sixmonths_stability_costprojection_data.push(result);
         }
-        html += "</tr>"; 
+        html += "</tr>";
         /*-----------Tech Transfer--------------------------*/
         html += "<tr class='lblHeading '><td colspan='3' >Tech Transfer</td>";
         var Tech_Transfer_projection_data = [];
@@ -1203,11 +1230,11 @@ function RenderFinanceProjection() {
                 result = (compareDate <= Projection_Year_data[i] && compareDate > Projection_Year_data[i - 1]) ? -cost_Value : 0;
             }
             result = result - (1 - (Incometaxrate_Value / 100))
-            
-            result = isNaN(result) ? 0 : result;   html += "<td>" + result.toFixed(3) + "</td>";
+
+            result = isNaN(result) ? 0 : result; html += "<td>" + result.toFixed(3) + "</td>";
             Tech_Transfer_projection_data.push(result);
         }
-        html += "</tr>"; 
+        html += "</tr>";
         /*-----------BE studies--------------------------*/
         html += "<tr class='lblHeading '><td colspan='3' >  BE studies  </td>";
         var BE_studies_projection_data = [];
@@ -1222,11 +1249,11 @@ function RenderFinanceProjection() {
                 result = (compareDate <= Projection_Year_data[i] && compareDate > Projection_Year_data[i - 1]) ? -cost_Value : 0;
             }
             result = result - (1 - (Incometaxrate_Value / 100))
-           
-            result = isNaN(result) ? 0 : result;   html += "<td>" + result.toFixed(3) + "</td>";
+
+            result = isNaN(result) ? 0 : result; html += "<td>" + result.toFixed(3) + "</td>";
             BE_studies_projection_data.push(result);
         }
-        html += "</tr>"; 
+        html += "</tr>";
         /*-----------Filing fees--------------------------*/
         html += "<tr class='lblHeading '><td colspan='3' >  Filing fees  </td>";
         var Filing_fees_projection_data = [];
@@ -1241,8 +1268,8 @@ function RenderFinanceProjection() {
                 result = (compareDate <= Projection_Year_data[i] && compareDate > Projection_Year_data[i - 1]) ? -cost_Value : 0;
             }
             result = result - (1 - (Incometaxrate_Value / 100))
-           
-            result = isNaN(result) ? 0 : result;   html += "<td>" + result.toFixed(3) + "</td>";
+
+            result = isNaN(result) ? 0 : result; html += "<td>" + result.toFixed(3) + "</td>";
             Filing_fees_projection_data.push(result);
         }
         html += "</tr>";
@@ -1260,17 +1287,17 @@ function RenderFinanceProjection() {
                 result = (compareDate <= Projection_Year_data[i] && compareDate > Projection_Year_data[i - 1]) ? -cost_Value : 0;
             }
             result = result - (1 - (Incometaxrate_Value / 100))
-           
-            result = isNaN(result) ? 0 : result;   html += "<td>" + result.toFixed(3) + "</td>";
+
+            result = isNaN(result) ? 0 : result; html += "<td>" + result.toFixed(3) + "</td>";
             Other_fees_projection_data.push(result);
         }
         html += "</tr>";
-        
+
         /*-----------Total investment--------------------------*/
         html += "<tr class='lblHeading bg-light'><td colspan='3' > Total investment </td>";
         var TotalInvestment_projection_data = [];
         for (var i = 0; i < 10; i++) {
-            let result = 0;           
+            let result = 0;
             result = Other_fees_projection_data[i] +
                 Filing_fees_projection_data[i] +
                 BE_studies_projection_data[i] +
@@ -1280,9 +1307,9 @@ function RenderFinanceProjection() {
                 RLD_sample_projection_data[i] +
                 RnD_analytical_cost_projection_data[i];
 
-            result = isNaN(result) ? 0 : result;   html += "<td>" + result.toFixed(3) + "</td>";
+            result = isNaN(result) ? 0 : result; html += "<td>" + result.toFixed(3) + "</td>";
             TotalInvestment_projection_data.push(result);
-           
+
         }
         html += "</tr>";
         /*-----------Net Cash Flow--------------------------*/
@@ -1291,11 +1318,11 @@ function RenderFinanceProjection() {
         for (var i = 0; i < 10; i++) {
             let result = 0;
             result = Incremental_working_capital_projection_data[i] + Net_Income_PAT_projection_data[i] + TotalInvestment_projection_data[i];
-          
-                result = isNaN(result) ? 0 : result;   html += "<td>" + result.toFixed(3) + "</td>";
+
+            result = isNaN(result) ? 0 : result; html += "<td>" + result.toFixed(3) + "</td>";
             NetCashFlow_projection_data.push(result);
         }
-        html += "</tr>";       
+        html += "</tr>";
         /*-----------Cumulative cash flow -Combined--------------------------*/
         html += "<tr class='lblHeading bg-light'><td colspan='3' > Cumulative cash flow -Combined </td>";
         var Cumulative_cash_flow_projection_data = [];
@@ -1304,13 +1331,13 @@ function RenderFinanceProjection() {
             if (i > 0) {
                 result = NetCashFlow_projection_data[i] + Cumulative_cash_flow_projection_data[i - 1];
             }
-            
-            result = isNaN(result) ? 0 : result;   html += "<td>" + result.toFixed(3) + "</td>";
+
+            result = isNaN(result) ? 0 : result; html += "<td>" + result.toFixed(3) + "</td>";
             Cumulative_cash_flow_projection_data.push(result);
         }
         html += "</tr>";
-    /*-----------Discount Factor Projection--------------------------*/
-        html += "<tr class='lblHeading percentage'><td colspan='3' > Discount Factor Projection </td>"; 
+        /*-----------Discount Factor Projection--------------------------*/
+        html += "<tr class='lblHeading percentage'><td colspan='3' > Discount Factor Projection </td>";
         var DiscountRate_Value = $('#DiscountRate').val();
         var Discount_Factor_Projection = [];
         for (var i = 0; i < 10; i++) {
@@ -1318,8 +1345,8 @@ function RenderFinanceProjection() {
             var trProjectionYearIndex = formatToNumber((Row_Projection_th_Index == '-') ? '0' : Row_Projection_th_Index);
             let result = 0;
             result = 1 / (Math.pow((1 + DiscountRate_Value / 100), trProjectionYearIndex));
-           
-            result = isNaN(result) ? 0 : result;   html += "<td>" + result.toFixed(3) + "</td>";
+
+            result = isNaN(result) ? 0 : result; html += "<td>" + result.toFixed(3) + "</td>";
             Discount_Factor_Projection.push(result);
         }
         html += "</tr>";
@@ -1329,11 +1356,11 @@ function RenderFinanceProjection() {
         for (var i = 0; i < 10; i++) {
             let result = 0;
             result = Discount_Factor_Projection[i] * NetCashFlow_projection_data[i];
-            
-            result = isNaN(result) ? 0 : result;   html += "<td>" + result.toFixed(3) + "</td>";
+
+            result = isNaN(result) ? 0 : result; html += "<td>" + result.toFixed(3) + "</td>";
             Discount_Cash_Flow_Projection.push(result);
         }
-        html += "</tr>";  
+        html += "</tr>";
         /*-----------Cumulative Discount Cash Flow--------------------------*/
         html += "<tr class='lblHeading bg-light'><td colspan='3' > Cumulative Discount cash flow </td>";
         var Cumulative_Discount_cash_flow_projection_data = [];
@@ -1342,8 +1369,8 @@ function RenderFinanceProjection() {
             if (i > 0) {
                 result = Discount_Cash_Flow_Projection[i] + Cumulative_Discount_cash_flow_projection_data[i - 1];
             }
-            
-            result = isNaN(result) ? 0 : result;   html += "<td>" + result.toFixed(3) + "</td>";
+
+            result = isNaN(result) ? 0 : result; html += "<td>" + result.toFixed(3) + "</td>";
             Cumulative_Discount_cash_flow_projection_data.push(result);
         }
         html += "</tr>";
@@ -1353,7 +1380,7 @@ function RenderFinanceProjection() {
         for (var i = 0; i < 10; i++) {
             let result = 0;
             if (i > 0) {
-                if (Cumulative_cash_flow_projection_data[i - 1]>0) {
+                if (Cumulative_cash_flow_projection_data[i - 1] > 0) {
                     result = 0;
                 }
                 else {
@@ -1366,11 +1393,11 @@ function RenderFinanceProjection() {
                 }
             }
 
-           
-            result = isNaN(result) ? 0 : result;   html += "<td>" + result.toFixed(3) + "</td>";
+
+            result = isNaN(result) ? 0 : result; html += "<td>" + result.toFixed(3) + "</td>";
             Simple_payback_Projection.push(result);
         }
-        html += "</tr>"; 
+        html += "</tr>";
         /*-----------Discounted Payback in # of months--------------------------*/
         html += "<tr class='lblHeading bg-light'><td colspan='3' > Discounted payback in # of months </td>";
         var Discounted_payback_Projection = [];
@@ -1389,316 +1416,33 @@ function RenderFinanceProjection() {
                     }
                 }
             }
-           
-            result = isNaN(result) ? 0 : result;   html += "<td>" + result.toFixed(3) + "</td>";
+
+            result = isNaN(result) ? 0 : result; html += "<td>" + result.toFixed(3) + "</td>";
             Discounted_payback_Projection.push(result);
         }
-        html += "</tr>";       
+        html += "</tr>";
         html += "<tr class='lblHeading bg-light emptyRow'><td>Working capital</td><td colspan='12' ></td></tr>";
-       
+
         html += Temp_WCT_html;
 
         html += "</tbody>";
 
         /*-------------------------->> Output grid--------------------------------*/
         var TempHtml = "";
-        var GestationPeriodinYears_value = formatToNumber($("#GestationPeriodinYears").val(), true);        
+        var GestationPeriodinYears_value = formatToNumber($("#GestationPeriodinYears").val(), true);
         var DCFP = Discount_Cash_Flow_Projection;
         TempHtml += '<thead class="bg-light">';
         TempHtml += '<tr><th>Output grid</th> <th></th> <th>From launch</th></tr>';
         TempHtml += "</thead><tbody>";
         TempHtml += "<tr> <td>10-Year NPV to Emcure</td> <td> " + eval(Discount_Cash_Flow_Projection.join('+')).toFixed(3) + " </td><td></td></tr>";
-                let Year5Result = DCFP[0] + DCFP[1] + DCFP[2] + DCFP[3] + DCFP[4];
+        let Year5Result = DCFP[0] + DCFP[1] + DCFP[2] + DCFP[3] + DCFP[4];
         TempHtml += "<tr> <td>5-Year NPV to Emcure</td> <td> " + Year5Result.toFixed(3) + " </td><td></td></tr>";
         TempHtml += "<tr> <td>Discounted payback in yrs</td> <td> " + (eval(Discounted_payback_Projection.join('+')) / 12).toFixed(3) + " </td>";
         TempHtml += "<td> " + ((eval(Discounted_payback_Projection.join('+')) / 12) - GestationPeriodinYears_value).toFixed(3) + "</td></tr>";
         TempHtml += "<tr> <td>Total investment</td> <td> " + eval(TotalInvestment_projection_data.join('+')).toFixed(3) + " </td><td></td></tr>";
-        TempHtml += "</tbody>";        
+        TempHtml += "</tbody>";
         $('#tblOutputGridFinanceProjection').html(TempHtml);
     }
     $('#tblFinanceProjection').html(html);
-   
-}
-function GetBatchSizeCostingTRValues() {
-    var Arr_FinanceTable_tr = [];
-    $('#FinanceTableBoy tr').each(function (index, value) {
-        var trObj =
-        {
-            SKU: $(this).find("select.Skus option:selected").text(),
-            PackSize: $(this).find("select.PakeSize option:selected").text(),
 
-            hdnMSLow: $(this).find("#hdnMSLow").val(),
-            hdnMSMid: $(this).find("#hdnMSMid").val(),
-            hdnMSHigh: $(this).find("#hdnMSHigh").val(),
-
-            marketInPacks: $(this).find('.Marketinpacks').val(),
-
-            hdnNSPLow: $(this).find("#hdnNSPLow").val(),
-            hdnNSPMid: $(this).find("#hdnNSPMid").val(),
-            hdnNSPHigh: $(this).find("#hdnNSPHigh").val(),
-
-            emcureCOGs_pack: $(this).find(".EmcureCOGs_pack").val(),
-
-        }
-
-        Arr_FinanceTable_tr.push(trObj);
-
-    });
-    return Arr_FinanceTable_tr;
-}
-
-function RenderCommercialPerPack() {
-    $('#tblCommercialPerPack').html('');
-
-    let html = "";
-    let _startDate = $('#ProjectStartDate').val();
-    let _launchDate = $('#ProductLaunchDate').val();
-    if (_startDate != "" && _launchDate != "") {
-        let _ProjectStartDate = new Date(_startDate);
-        let _ProjectLaunchDate = new Date(_launchDate);
-        let tentativeStartDate = _ProjectStartDate;
-
-        tentativeStartDate.setMonth(_ProjectStartDate.getMonth() - 3);
-
-        let _FinancialYearStartDate = new Date(tentativeStartDate.getFullYear() + "/03/31");
-        let _BeginYear = tentativeStartDate.getFullYear();
-        if (_FinancialYearStartDate > tentativeStartDate) {
-            _BeginYear = tentativeStartDate.getFullYear() - 1;
-        }
-
-        var _financialYearLaunchDate = new Date(_ProjectLaunchDate.getFullYear() + "/03/31");
-        var _SalesBeginYear = _financialYearLaunchDate.getFullYear();
-        if (_financialYearLaunchDate < _ProjectLaunchDate) {
-            _SalesBeginYear = _ProjectLaunchDate.getFullYear() + 1;
-        }
-
-        html += '<thead class="bg-light">';
-        html += '<tr><th colspan="4">Commercials per pack</th><th></th>';
-        var counter = 0;
-        for (var i = 0; i < 10; i++) {
-            if ((_BeginYear + i) >= _SalesBeginYear) {
-                counter++;
-            }
-            html += "<th class='thYearCounter'>" + (counter > 0 ? counter : "-") + "</th>";
-        }
-        html += "</tr>";
-
-        html += "<tr><th>Scenarios</th><th class='scenario1'>Low</th><th class='scenario2'>Medium</th><th class='scenario3'>High</th><th></th>";
-        for (var i = 0; i < 10; i++) {
-            html += "<th>" + "Mar-" + (_BeginYear + i).toString().substr(-2) + "</th>";
-        }
-        html += "</tr>";
-        html += "</thead><tbody>";
-
-        html += '<tr><td colspan="4"></td><td>Revenue Months</td>';
-        for (var i = 0; i < 10; i++) {
-            var _projectionDate = new Date((_BeginYear + i) + "/03/31");
-            const diffTime = Math.abs(_projectionDate - _ProjectLaunchDate);
-            const diffMonths = Math.round(diffTime / (1000 * 60 * 60 * 24 * 30)); 
-            html += "<td class='trRevenueMonths'>" + ((_projectionDate < _ProjectLaunchDate) ? "0" : (diffMonths > 12 ? 12 : diffMonths)) + "</td>";
-        }
-        html += "</tr>";
-        $('#tblCommercialPerPack').html(html);
-        SumOfSales =    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
-        SumOfCOGS =     [0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
-        SumOfGC =       [0, 0, 0, 0, 0, 0, 0, 0, 0, 0];      
-
-        var Arr_FinanceTable_tr = GetBatchSizeCostingTRValues();
-        
-        jQuery.each(Arr_FinanceTable_tr, function (index, trObj) {
-        //$('#FinanceTableBoy tr').each(function (index, value) {
-
-            let SKU = trObj.SKU;
-            let PackSize = trObj.PackSize;
-
-            html += '<tr class="bg-light"><td class="text-left" colspan="15"><b>' + SKU + " - " + PackSize + '</b></td></tr>';
-
-            var _uniqueClass = "tr_" + SKU + "_" + PackSize;
-            var MS_td_data = [];
-            var NSP_td_data = [];
-            var COGS_td_data = [];
-           /* ---------------Get values from Commercial Module--------------------------------------------------------*/
-
-
-             //---------------------Start-MS%_Row-------------------------------------------------------
-            html += "<tr class='" + _uniqueClass + "'><td>MS%</td><td>" + trObj.hdnMSLow + "</td><td>" + trObj.hdnMSMid + "</td><td>" + trObj.hdnMSHigh + "</td><td>Units</td>";
-
-            var marketSharePercentage = GetMarketSharePercentage(trObj.hdnMSLow, trObj.hdnMSMid, trObj.hdnMSHigh);
-            let marketInPacks = formatToNumber(trObj.marketInPacks);
-            let msErosion = formatToNumber($("#MarketShareErosionrate").val(), true);
-
-            for (var i = 0; i < 10; i++) {
-                var Row_th_Index = $('#tblCommercialPerPack').find('.thYearCounter:eq(' + i + ')').text();                
-                var trYearIndex = formatToNumber((Row_th_Index == '-') ? '0' : Row_th_Index);
-                var trRevenueMonths =  formatToNumber($('#tblCommercialPerPack').find('.trRevenueMonths:eq(' + i + ')').text());
-                let _units = ((marketInPacks * (marketSharePercentage / 100)) * (Math.pow((1 - (msErosion / 100)),  trYearIndex))) * (trRevenueMonths / 12);
-                _units = isNaN(_units) ? 0 : _units;
-                html += "<td>" + _units.toFixed(3) + "</td>";
-                MS_td_data.push(_units);
-            }
-            html += "</tr>";
-             //---------------------End-MS%_Row-------------------------------------------------------   
-            //---------------------Start-NSP_Row-------------------------------------------------------
-            html += "<tr class='" + _uniqueClass + "'><td>NSP</td><td>" + trObj.hdnNSPLow + "</td><td>" + trObj.hdnNSPMid + "</td><td>" + trObj.hdnNSPHigh +"</td><td>NSP</td>";
-            var nsp_Percentage = GetNSPPercentage(trObj.hdnNSPLow, trObj.hdnNSPMid, trObj.hdnNSPHigh);
-           // let marketInPacks = formatToNumber($(this).find('.Marketinpacks').val());
-            let nsp_Erosion = formatToNumber($("#PriceErosion").val(), true);   
-
-            for (var i = 0; i < 10; i++) {
-                var Row_th_Index = $('#tblCommercialPerPack').find('.thYearCounter:eq(' + i + ')').text();
-                var trYearIndex = formatToNumber((Row_th_Index == '-') ? '0' : Row_th_Index);              
-                let _units = (nsp_Percentage / 100) * (Math.pow((1 - (nsp_Erosion / 100)), trYearIndex))               
-                _units = isNaN(_units) ? 0 : _units;
-                html += "<td>" + _units.toFixed(3) + "</td>";
-                NSP_td_data.push(_units);
-            }
-            html += "</tr>";
-            //---------------------End-NSP_Row-------------------------------------------------------
-            //---------------------Start-COGS_Row-------------------------------------------------------
-            html += "<tr class='" + _uniqueClass + "'><td>COGS</td><td>" + trObj.emcureCOGs_pack + "</td><td>" + trObj.emcureCOGs_pack + "</td><td>" + trObj.emcureCOGs_pack + "</td><td>COGS/Unit</td>";
-            let COGS_Escalation = formatToNumber($("#EscalationinCOGS").val(), true);
-            var COGS_Percentage = GetCOGSPercentage(trObj.emcureCOGs_pack, trObj.emcureCOGs_pack, trObj.emcureCOGs_pack);
-            for (var i = 0; i < 10; i++) {
-                var Row_th_Index = $('#tblCommercialPerPack').find('.thYearCounter:eq(' + i + ')').text();
-                var trYearIndex = formatToNumber((Row_th_Index == '-') ? '0' : Row_th_Index);
-                
-                let _units = (COGS_Percentage / 100) * (Math.pow((1 + (COGS_Escalation / 100)), trYearIndex))
-
-                _units = isNaN(_units) ? 0 : _units; 
-                html += "<td>" + _units.toFixed(3) + "</td>";
-                COGS_td_data.push(_units);
-            }
-            html += "</tr>";
-            //---------------------END-COGS_Row-------------------------------------------------------
-            //--------------------Sales-------------------------------------------------------
-            var Sales_data = [];
-            html += "<tr class='" + _uniqueClass +"'><td></td><td></td><td></td><td></td><td>Sales</td>";
-            for (var i = 0; i < 10; i++) {
-                let result = MS_td_data[i] * NSP_td_data[i];
-                
-                result = isNaN(result) ? 0 : result; html += "<td>" + result.toFixed(3) + "</td>";
-                Sales_data.push(result);
-                SumOfSales[i] = SumOfSales[i] + result;               
-            }
-            html += "</tr>";
-            //--------------------COGS-------------------------------------------------------
-            var COGS_data = [];
-            html += "<tr class='" + _uniqueClass +"'><td></td><td></td><td></td><td></td><td>COGS</td>";
-            for (var i = 0; i < 10; i++) {
-                let result = MS_td_data[i] * COGS_td_data[i];
-                result = isNaN(result) ? 0 : result;   html += "<td>" + result.toFixed(3) + "</td>";
-                COGS_data.push(result);
-                SumOfCOGS[i] = SumOfCOGS[i] + result;                 
-            }
-            html += "</tr>";
-            //--------------------GC-------------------------------------------------------
-            var GC_data = [];
-            html += "<tr class='" + _uniqueClass +"'><td></td><td></td><td></td><td></td><td>GC</td>";
-            for (var i = 0; i < 10; i++) {
-                let result = Sales_data[i] - COGS_data[i];
-                result = isNaN(result) ? 0 : result;   html += "<td>" + result.toFixed(3) + "</td>";
-                GC_data.push(result);
-                SumOfGC[i] = SumOfGC[i] + result;
-            }
-            html += "</tr>";
-            //--------------------GC%-------------------------------------------------------
-            html += "<tr class='" + _uniqueClass + "'><td></td><td></td><td></td><td></td><td>GC%</td>";
-            for (var i = 0; i < 10; i++) {
-                let result = GC_data[i] / Sales_data[i];
-                result = (Math.abs(result) == Infinity || isNaN(result)) ? 0 : result;
-                result = isNaN(result) ? 0 : result;   html += "<td>" + result.toFixed(3) + "</td>";
-               
-            }
-            html += "</tr>";            
-        });
-        /* -----------Grand SUM-Rows--------------------*/
-        html += "<tr><td></td></tr>"; 
-       /*---------------Sales------------------------------*/
-        html += "<tr class='SumOfSales bg-light'><td></td><td></td><td></td><td></td><td>Sales</td>";
-        for (var i = 0; i < 10; i++) {
-            let result = SumOfSales[i];
-            result = isNaN(result) ? 0 : result;   html += "<td>" + result.toFixed(3) + "</td>";
-        }
-        html += "</tr>";
-        /*---------------COGS--------------------------*/
-        html += "<tr class='SumOfCOGS bg-light'><td></td><td></td><td></td><td></td><td>COGS</td>";
-        for (var i = 0; i < 10; i++) {
-            let result = SumOfCOGS[i];
-            result = isNaN(result) ? 0 : result;   html += "<td>" + result.toFixed(3) + "</td>";
-        }
-        html += "</tr>";
-        /*-----------------GC------------------------*/
-        html += "<tr class='SumOfGC bg-light'><td></td><td></td><td></td><td></td><td>GC</td>";
-        for (var i = 0; i < 10; i++) {
-            let result = SumOfGC[i];
-            result = isNaN(result) ? 0 : result;   html += "<td>" + result.toFixed(3) + "</td>";
-        }
-        html += "</tr>";
-
-        if ($('#FinanceTableBoy tr').length > 0) {
-
-        }
-        html += "</tbody>";
-    }
-    $('#tblCommercialPerPack').html(html);
-}
-function GetMarketSharePercentage(low, mid, high) {
-    let marketSharePercentage = 0;
-    try {
-        if ($('#MSPersentage').val() == "1") {
-            marketSharePercentage = parseInt(low);
-        } else if ($('#MSPersentage').val() == "2") {
-            marketSharePercentage = parseInt(mid);
-        } else if ($('#MSPersentage').val() == "3") {
-            marketSharePercentage = parseInt(high);
-        }
-        else {
-            marketSharePercentage = parseInt(low);
-        }
-    } catch (e) {
-    }
-    return marketSharePercentage;
-}
-function GetNSPPercentage(low, mid, high) {
-    let NSPPercentage = 0;
-    try {
-        if ($('#TargetPriceScenario').val() == "1") {
-            NSPPercentage = parseInt(low);
-        } else if ($('#TargetPriceScenario').val() == "2") {
-            NSPPercentage = parseInt(mid);
-        } else if ($('#TargetPriceScenario').val() == "3") {
-            NSPPercentage = parseInt(high);
-        } else {
-            NSPPercentage = parseInt(low);
-        }
-    } catch (e) {
-    }
-    return NSPPercentage;
-}
-function GetCOGSPercentage(low, mid, high) {
-    let COGSPercentage = 0;
-    try {
-        if ($('#TargetPriceScenario').val() == "1") {
-            COGSPercentage = parseInt(low);
-        } else if ($('#TargetPriceScenario').val() == "2") {
-            COGSPercentage = parseInt(mid);
-        } else if ($('#TargetPriceScenario').val() == "3") {
-            COGSPercentage = parseInt(high);
-        } else {
-            COGSPercentage = parseInt(low);
-        }
-    } catch (e) {
-    }
-    return COGSPercentage;
-}
-function formatToNumber(input, isFloat) {
-    try {
-        if (isFloat) {
-            return parseFloat(input);
-        } else {
-            return parseInt(input);
-        }
-    } catch (e) {
-        return 0;
-    }
 }
