@@ -1488,11 +1488,11 @@ function CreateRNDExicipientTable(data, activityTypeId) {
     var tableTitle = "";
 
     if (activityTypeId == 1) {
-        tableTitle = "Exicipient Protoype";
+        tableTitle = "Excipient Protoype";
     } else if (activityTypeId == 2) {
-        tableTitle = "Exicipient Scale Up";
+        tableTitle = "Excipient Scale Up";
     } else {
-        tableTitle = "Exicipient Exhibit";
+        tableTitle = "Excipient Exhibit";
     }
 
     objectname += '<tr><td class="text-left text-bold bg-light" colspan="' + (6 + _strengthArray.length) + '">' + tableTitle + '</td>';
@@ -1528,7 +1528,7 @@ function CreateRNDExicipientTable(data, activityTypeId) {
 }
 function BindRNDExicipient(data) {
     var ExicipientActivityHTML = '<thead class="bg-primary text-bold"><tr>'
-        + '<td>Exicipient Prototype</td>'
+        + '<td>Excipient Prototype</td>'
         + '<td>Rs / Kg</td>'
         + '<td>Quantity</td>';
     $.each(_strengthArray, function (index, item) {
