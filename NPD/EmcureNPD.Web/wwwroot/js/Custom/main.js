@@ -204,6 +204,36 @@ $(document).ready(function () {
     $(document).bind("contextmenu", function (e) {
         return false;
     });
+    //--find all number type---//
+    $('input[type=number]').each(function (index, element) {
+        /*if ($(this).attr('type') == 'number') {*/
+
+            //console.log($(this).val(), index)
+            //if ((navigator.userAgent.indexOf("Opera") || navigator.userAgent.indexOf('OPR')) != -1) {
+                $(this).attr('pattern', '[0-9]')
+                $(this).attr('onkeypress', 'preventCharacters(event)');
+            //}
+            //else if (navigator.userAgent.indexOf("Chrome") != -1) {
+            //    //alert('Chrome');
+            //}
+            //else if (navigator.userAgent.indexOf("Safari") != -1) {
+            //    //alert('Safari');
+            //}
+            //else if (navigator.userAgent.indexOf("Firefox") != -1) {
+            //    //alert('Firefox');
+            //    $(this).attr('pattern', '[0-9]')
+            //    $(this).attr('onkeypress','preventCharacters(event)');
+
+            //}
+            //else if ((navigator.userAgent.indexOf("MSIE") != -1) || (!!document.documentMode == true)) {
+            //    //alert('IE');
+            //}
+            //else {
+            //    //alert('unknown');
+            //}
+       // }
+       
+    })
 });
 function ApproveRejectClick(type, PIDFID, ScreenId, URL) {
     if (PIDFID != undefined && PIDFID != "" && PIDFID != null) {
@@ -379,3 +409,10 @@ $('.decimalTwo').on("keypress keyup blur", function (event) {
         event.preventDefault();
     }
 });
+//---preventCharacters--//
+function preventCharacters(evt) {
+    if (evt.key == 'a') {
+        evt.preventDefault()
+    }
+    else { !/(^\d*\.?\d*$)|(Backspace|Control|Meta|a)/.test(evt.key) && evt.preventDefault() }
+}

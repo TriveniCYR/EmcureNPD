@@ -208,7 +208,14 @@ function getDashBoardData() {
     if ($("#years").val() != null) {
         dateRangeOrYear = $("#years").val();
         const [fromYear, toYear] = dateRangeOrYear.split("-");
-        fromDate = `04-01-${fromYear}`;
+        
+            if (isNaN(fromYear)) {
+                fromDate = `04-01-1970`;
+            }
+            else {
+                fromDate = `04-01-${fromYear}`;
+            }
+       
         toDate = `03-31-${toYear}`;
     }
     else if ($("#years").val() == null) {
