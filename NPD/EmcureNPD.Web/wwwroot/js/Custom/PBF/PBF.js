@@ -479,6 +479,12 @@ $(document).ready(function () {
 
         var batchvalue = $("#RNDBatchSizeId option:selected").text();
 
+        if (batchvalue.toString().toLowerCase() == "liters") {
+            $('#spAPIRequirementMarketPrice').text("(Rs/gm)");
+        } else {
+            $('#spAPIRequirementMarketPrice').text("(Rs/kg)");
+        }
+
         $.each($('.exicipientActivity' + _ActivityTypeId), function (index, item) {
             var _TotalForStrength = 0;
             $.each(_strengthArray, function (i, t) {

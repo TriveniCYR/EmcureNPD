@@ -596,7 +596,7 @@
                                                         <div class="row">
                                                             <div class="col-md-3">
                                                                 <div class="form-group required">
-                                                                    @Html.LabelFor(model => model.RNDMasterEntities.ApirequirementMarketPrice, "Market Price (Rs/kg)", new { @class = "control-label" })
+                                                                    @Html.LabelFor(model => model.RNDMasterEntities.ApirequirementMarketPrice, "Market Price ", new { @class = "control-label" }) <span id="spAPIRequirementMarketPrice">(Rs/kg)</span>
                                                                     @Html.TextBoxFor(@modal=> modal.RNDMasterEntities.ApirequirementMarketPrice,new{@class="form-control calcRNDApirequirementsMarketPrice",type = "number", min = 0})
                                                                 </div>
                                                             </div>
