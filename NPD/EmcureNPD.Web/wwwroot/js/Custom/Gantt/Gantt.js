@@ -163,10 +163,20 @@ document.addEventListener("DOMContentLoaded", function () {
         let progressPercents = task.progress == 0 && dBprogress.length>0 ? task.progress = dBprogress[0].totalPercentage / 100 : task.progress * 100;
         let className = "";
         if (progressPercents == 0) {
-            className += " task-no-progress";
+            if (task.$level > 0) {
+                className += "sub-task-no-progress"
+            }
+            else {
+                className += " task-no-progress";
+            }
         }
         if (progressPercents > 0 && progressPercents < 100) {
-            className += " task-in-progress";
+            if (dBprogress[0].taskLevel > 1) {
+                className += "sub-task-in-progress"
+            }
+            else {
+                className += " task-in-progress";
+            }
         }
         if (progressPercents == 100) {
             className += " task-full-progress";
@@ -519,19 +529,19 @@ document.addEventListener("DOMContentLoaded", function () {
             var owner = store.getItem(assignments);
             //owners.push(owner.text);
             if (owners.length > 0 && owners[0].taskLevel == 1) {
-                return "<b>Task:</b> " + task.text + "<br/>" +
-                    "<b>Owner:</b>" + owners[0].taskOwnerName + "<br/>" +
-                    "<b>Start date:</b> " +
+                return "<b><i class='fa fa-tasks' style='color:limegreen' title='Task'></i> Task Name:</b>" + task.text + "<br/>" +
+                    "<b> <i class='fa fa-user-circle-o' style='color:limegreen' aria-hidden='true'></i> Owner:</b>" + owners[0].taskOwnerName + "<br/>" +
+                    "<b> <i class='fa fa-clock-o' style='color:limegreen' aria-hidden='true'></i> Start date:</b> " +
                     gantt.templates.tooltip_date_format(start)
-                    + "<br/><b>End date:</b> " + gantt.templates.tooltip_date_format(end) + "<br/>" +
-                    "<b>Progress:</b> " + Math.round(owners[0].totalPercentage) + "%";
+                    + "<br/><b> <i class='fa fa-history' style='color:limegreen' aria-hidden='true'></i> End date:</b> " + gantt.templates.tooltip_date_format(end) + "<br/>" +
+                    "<b><i class='fa fa-code-fork' style='color:limegreen' aria-hidden='true'></i> Progress:</b> " + Math.round(owners[0].totalPercentage) + "%";
             }
             else if (owners.length > 0 && owners[0].taskLevel > 1) {
-                return "<b>Task:</b> " + task.text + "<br/>" +
-                    "<b>Start date:</b> " +
+                return "<b><i class='fa fa-tasks' style='color:orange' title='Sub Task'></i> Sub Task Name:</b> " + task.text + "<br/>" +
+                    "<b><i class='fa fa-clock-o' style='color:orange' aria-hidden='true'></i> Start date:</b> " +
                     gantt.templates.tooltip_date_format(start)
-                    + "<br/><b>End date:</b> " + gantt.templates.tooltip_date_format(end) + "<br/>" +
-                    "<b>Progress:</b> " + Math.round(owners[0].totalPercentage) + "%";
+                    + "<br/><b><i class='fa fa-history' style='color:orange' aria-hidden='true'></i> End date:</b> " + gantt.templates.tooltip_date_format(end) + "<br/>" +
+                    "<b><i class='fa fa-code-fork'style='color:orange' aria-hidden='true'></i> Progress:</b> " + Math.round(owners[0].totalPercentage) + "%";
             }
         };
 
@@ -644,7 +654,13 @@ document.addEventListener("DOMContentLoaded", function () {
 
     gantt.templates.progress_text = function (start, end, task) {
         parent_progress(task.id);
-        return "<span style='text-align:left;padding-left: 10px;box-sizing: border-box;color: white;font-weight: bold;'>" + Math.round(task.progress * 100) + "% </span>";
+        let icon = "";
+        if (task.$level > 0) {
+            icon += `<i class="fa fa-spinner fa-spin"></i>`;
+        }
+        else { icon += `<i class="fa fa-tasks"></i>`;}
+       
+        return "<span style='text-align:left;padding-left: 10px;box-sizing: border-box;color: white;font-weight: bold;'>" +Math.round(task.progress * 100) + "% </span>";
     };
 
     gantt.config.xml_date = "%Y-%m-%d %H:%i"; // format of dates in XML
