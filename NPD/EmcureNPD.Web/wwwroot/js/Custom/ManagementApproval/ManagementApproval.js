@@ -3,7 +3,8 @@ var SumOfCOGS = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
 var SumOfGC = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
 var Expiries_Yearwise_Data = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
 var AnnualConfirmatoryRelease_Data = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
-
+var Global_Projection_Year_data = [];
+var obj = [];
 $(document).ready(function () {
     $('#btnExportToPdf').click(() => {
         //$('#btnExportToPdf').css("display", "none");
@@ -51,9 +52,9 @@ $(document).ready(function () {
         printElement(fileName);
     });
     PBFtabClick();
-
+    
     UpdateProjectionCommercial();
-    GetSUIMSVolumeYearWiseByPackSize();
+   // GetSUIMSVolumeYearWiseByPackSize();
 });
 function Project_ChartertabClick() {
     $('.PBFCharter').hide();
@@ -114,27 +115,34 @@ function UpdateSUM_of_Values(table) {
 
 function UpdateProjectionCommercial() {
     RenderCommercialPerPack();
-   //RenderFinanceProjection();
+    RenderFinanceProjection();
+    $('.Expiriestxtbox').prop('readonly', true);
+    $('.AnnualConfirmatoryRtxtbox').prop('readonly', true);
 }
 function GetBatchSizeCostingTRValues() {
+
+    var jsonObj = $.parseJSON($('#JsonlsPidfFinanceBatchSizeCoating').val()); 
     var Arr_FinanceTable_tr = [];
-    jQuery.each(Arr_FinanceTable_tr, function (index, item) {
+    jQuery.each(jsonObj, function (index, item) {
+
+        var comm_Obj = GetCommercialDetailsByPackSize(item.PakeSize,item.Skus);
+
         var trObj =
         {
-            SKU: $(this).find("select.Skus option:selected").text(),
-            PackSize: $(this).find("select.PakeSize option:selected").text(),
+            SKU: '200mg',//item.SkusName,
+            PackSize: '1x20',// item.PakeSizeName,
 
-            hdnMSLow: $(this).find("#hdnMSLow").val(),
-            hdnMSMid: $(this).find("#hdnMSMid").val(),
-            hdnMSHigh: $(this).find("#hdnMSHigh").val(),
+            hdnMSLow: '2.4',// comm_Obj.hdnMSLow,
+            hdnMSMid: '1.4',//comm_Obj.hdnMSMid,
+            hdnMSHigh: '6.4',//comm_Obj.hdnMSHigh,
 
             marketInPacks: item.Marketinpacks,
 
-            hdnNSPLow: $(this).find("#hdnNSPLow").val(),
-            hdnNSPMid: $(this).find("#hdnNSPMid").val(),
-            hdnNSPHigh: $(this).find("#hdnNSPHigh").val(),
+            hdnNSPLow: '2.4',//comm_Obj.hdnMSLow,
+            hdnNSPMid: '4.4',//comm_Obj.hdnNSPMid,
+            hdnNSPHigh: '3.4',//comm_Obj.hdnNSPHigh,
 
-            emcureCOGs_pack: item.EmcureCogsPack,
+            emcureCOGs_pack: '5.4',// item.EmcureCogsPack,
 
         }
 
@@ -142,6 +150,39 @@ function GetBatchSizeCostingTRValues() {
 
     });
     return Arr_FinanceTable_tr;
+}
+
+function GetCommercialDetailsByPackSize(packSizeId, strengthId) { 
+     
+        if (packSizeId > 0 && strengthId > 0) {
+           ajaxServiceMethod($('#hdnBaseURL').val() + `api/PidfFinance/GetSUIMSVolumeYearWiseByPackSize/${PidafId}/${encBuid}/${strengthId}/${packSizeId}`, 'GET', GetCommercialDetailsByPackSizeSuccess, GetCommercialDetailsByPackSizeError);
+            function GetCommercialDetailsByPackSizeSuccess(data) {
+                try {                  
+                    var CommercialObj =
+                    {
+                        hdnMSLow :   (data.table.length > 0 ? data.table[0].marketSharePercentageLow : 0).toFixed(2),
+                        hdnMSMid :     (data.table.length > 0 ? data.table[0].marketSharePercentageMedium : 0).toFixed(2),
+                        hdnMSHigh:   (data.table.length > 0 ? data.table[0].marketSharePercentageHigh : 0).toFixed(2),
+
+                        hdnNSPLow: (data.table.length > 0 ? data.table[0].nspUnitsLow : 0).toFixed(2),
+                        hdnNSPMid: (data.table.length > 0 ? data.table[0].nspUnitsMedium : 0).toFixed(2),
+                        hdnNSPHigh:    (data.table.length > 0 ? data.table[0].nspUnitsHigh : 0).toFixed(2)
+                    }
+                    obj = [];
+                    obj.push(CommercialObj);
+                    return obj;
+                }
+                catch (e) {
+                    toastr.error('Error:' + e.message);
+                    return obj;
+                }
+            }
+            function GetCommercialDetailsByPackSizeError() {
+                toastr.error("Error");
+                return obj;
+            }
+        }
+    return obj;
 }
 
 
