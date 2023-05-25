@@ -21,16 +21,16 @@ namespace EmcureNPD.Data.DataAccess.Entity
         public double? EmcureCogsPack { get; set; }
         public DateTime CreatedDate { get; set; }
         public int? CreatedBy { get; set; }
-        public long? Skus { get; set; }
+        public int? Skus { get; set; }
         public double? PakeSize { get; set; }
         public double? BrandPrice { get; set; }
-        public double? NetRealisation { get; set; }
         public double? GenericListprice { get; set; }
         public double? EstMat2016By12units { get; set; }
         public double? EstMat2020By12units { get; set; }
         public double? Cagrover2016By12estMatunits { get; set; }
         public double? Marketinpacks { get; set; }
         public double? BatchsizeinLtrTabs { get; set; }
+        public double? NetRealisation { get; set; }
 
         public virtual PidfFinance Pidffinace { get; set; }
     }

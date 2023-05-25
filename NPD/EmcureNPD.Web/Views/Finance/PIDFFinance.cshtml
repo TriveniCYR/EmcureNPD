@@ -536,7 +536,7 @@
 							<td>
 								<div class="">
 									<div class="form-group required">
-										@Html.TextBoxFor(@modal=>modal.Noofbatchestobemanufactured,new{@class="form-control readOnlyUpdate",@required="required",@type="number",@min="0"})
+										@Html.TextBoxFor(@modal=>modal.Noofbatchestobemanufactured,new{@class="form-control readOnlyUpdate UpdateProjectionCommercial",@required="required",@type="number",@min="0"})
                                         <div class="invalid-feedback">
                                             Please enter No of batches to be manufactured.
                                            </div>
@@ -549,7 +549,7 @@
 							<td>
 								<div class="">
 									<div class="form-group required">
-										@Html.TextBoxFor(@modal=>modal.NoofbatchestobemanufacturedPhaseEndDate,"{0:yyyy-MM-dd}",new{@type="date",@class="form-control readOnlyUpdate",@required="required"})
+										@Html.TextBoxFor(@modal=>modal.NoofbatchestobemanufacturedPhaseEndDate,"{0:yyyy-MM-dd}",new{@type="date",@class="form-control readOnlyUpdate UpdateProjectionCommercial",@required="required"})
 									<div class="invalid-feedback">
                                             Please enter No of batches to be manufactured phase end date.
                                            </div>
@@ -571,7 +571,7 @@
 							<td>
 								<div class="">
 									<div class="form-group required">
-										@Html.TextBoxFor(@modal=>modal.NoSkus,new{@class="form-control readOnlyUpdate",@required="required",@type="number",@min="0"})
+										@Html.TextBoxFor(@modal=>modal.NoSkus,new{@class="form-control readOnlyUpdate UpdateProjectionCommercial",@required="required",@type="number",@min="0"})
 									<div class="invalid-feedback">
                                             Please enter No of SKUs.
                                            </div>
@@ -584,7 +584,7 @@
 							<td>
 								<div class="">
 									<div class="form-group required">
-										@Html.TextBoxFor(@modal=>modal.NoSkusPhaseEndDate,"{0:yyyy-MM-dd}",new{@type="date",@class="form-control readOnlyUpdate",@required="required"})
+										@Html.TextBoxFor(@modal=>modal.NoSkusPhaseEndDate,"{0:yyyy-MM-dd}",new{@type="date",@class="form-control readOnlyUpdate UpdateProjectionCommercial",@required="required"})
 									<div class="invalid-feedback">
                                             Please enter SKUs phase end date.
                                            </div>
@@ -606,7 +606,7 @@
 							<td>
 								<div class="">
 									<div class="form-group required">
-										@Html.TextBoxFor(@modal=>modal.RandDanalyticalcost,new{@class="form-control deal-term readOnlyUpdate",@required="required",@type="number",@min="0",@onchange="calculateDealTerm();"})
+											@Html.TextBoxFor(@modal=>modal.RandDanalyticalcost,new{@class="form-control deal-term readOnlyUpdate UpdateProjectionCommercial",@required="required",@type="number",@min="0",@onchange="calculateDealTerm();"})
 									<div class="invalid-feedback">
                                             Please enter R&D/Analytical cost.
                                            </div>
@@ -619,7 +619,7 @@
 							<td>
 								<div class="">
 									<div class="form-group required">
-										@Html.TextBoxFor(@modal=>modal.RandDanalyticalcostPhaseEndDate,"{0:yyyy-MM-dd}",new{@type="date",@class="form-control readOnlyUpdate",@required="required"})
+											@Html.TextBoxFor(@modal=>modal.RandDanalyticalcostPhaseEndDate,"{0:yyyy-MM-dd}",new{@type="date",@class="form-control readOnlyUpdate UpdateProjectionCommercial",@required="required"})
 									<div class="invalid-feedback">
                                             Please enter R&D/Analytical cost phase end date.
                                            </div>
@@ -1281,9 +1281,9 @@
      @Html.Partial("_CancelRequest", (int)PIDFScreen.Finance)
 @section MyScripts {
 	@*@Html.Partial("_DataTablePartial")*@
-
 	<script src="~/js/custom/pidf/PIDFFinance.js?v=@jsVersion"></script>
-<script type="text/javascript" src="~/AdminLTE/plugins/select2/js/select2.min.js"></script>
+	<script src="~/js/custom/managementapproval/financechartercommon.js"></script>
+	<script type="text/javascript" src="~/AdminLTE/plugins/select2/js/select2.min.js"></script>
 <script>
 	const AllCurrency = "@EmcureNPD.Web.Helpers.APIURLHelper.GetAllCurrency";
     const AllDosageForm = "@EmcureNPD.Web.Helpers.APIURLHelper.GetAllActiveDosageFormFinance";

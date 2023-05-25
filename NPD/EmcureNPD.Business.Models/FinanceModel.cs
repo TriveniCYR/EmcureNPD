@@ -74,7 +74,8 @@ namespace EmcureNPD.Business.Models
 		public string hdnDynamicControlData { get; set; }
 		public string hdnSelectedBussinesUnit { get; set; }
 		public List<ChildPidfFinanceBatchSizeCoating> lsPidfFinanceBatchSizeCoating { get; set; }
-		public int BussinessUnitId { get; set; }
+        public string JsonlsPidfFinanceBatchSizeCoating { get; set; }
+        public int BussinessUnitId { get; set; }
         public List<FinaceProjectionYear> lsFinaceProjectionYear { get; set; }
     }
 	public partial class ChildPidfFinanceBatchSizeCoating

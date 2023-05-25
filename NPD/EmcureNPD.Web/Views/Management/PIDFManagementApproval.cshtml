@@ -790,7 +790,7 @@
 
 
 <div class="ProjectCharterControls">
-     
+    @Html.Partial("ProjectCharterControlsMA", Model.financeModel)
 </div>
 
 @section MyScripts {
@@ -800,6 +800,7 @@
 <script src="~/js/plugins/jspdf.min.js"></script>
   @*  <script src="~/js/plugins/html2canvas.js"></script>*@
 <script src="~/js/custom/managementapproval/managementapproval.js?v=@jsVersion"></script>
+    <script src="~/js/custom/managementapproval/financechartercommon.js"></script>
 <script>
 
     const isView = "@Context.Request.Query["IsView"]";

@@ -12,9 +12,9 @@ namespace EmcureNPD.Data.DataAccess.Entity
         public long StrengthId { get; set; }
         public int BusinessUnitId { get; set; }
         public bool? IsChecked { get; set; }
-        public double? TotalCost { get; set; }
         public DateTime CreatedDate { get; set; }
         public int CreatedBy { get; set; }
+        public double? TotalCost { get; set; }
 
         public virtual MasterBusinessUnit BusinessUnit { get; set; }
         public virtual PidfPbfGeneral Pbfgeneral { get; set; }

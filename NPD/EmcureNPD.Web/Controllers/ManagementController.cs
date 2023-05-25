@@ -187,7 +187,7 @@ namespace EmcureNPD.Web.Controllers
                         }
                         model.lsAdditionalCost = ListAdditionalCost;
                     }
-                  // model.financeModel= PIDFFinance(pidfid.ToString(), pidfid.ToString());
+                   model.financeModel= PIDFFinance(pidfid.ToString(), pidfid.ToString());
                     return View(model);
                 }
             }
@@ -312,7 +312,7 @@ namespace EmcureNPD.Web.Controllers
                             }
                         }
                         model.lsPidfFinanceBatchSizeCoating = ls;
-                       
+                        model.JsonlsPidfFinanceBatchSizeCoating = JsonConvert.SerializeObject(ls);
                     }
                     int rolId = _helper.GetLoggedInRoleId();
                     RolePermissionModel objPermssion = UtilityHelper.GetCntrActionAccess((int)ModulePermissionEnum.Finance, rolId);

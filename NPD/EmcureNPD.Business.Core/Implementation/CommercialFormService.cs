@@ -93,7 +93,7 @@ namespace EmcureNPD.Business.Core.Implementation
         {
             var loggedInUserID = _helper.GetLoggedInUser().UserId;
 
-            var AllObjofPidfId = _commercialrepository.GetAllQuery().Where(x => x.Pidfid == entitycommPIDF.Pidfid).ToList();
+            var AllObjofPidfId = _commercialrepository.GetAllQuery().Where(x => x.Pidfid == entitycommPIDF.Pidfid && x.IsDeleted == false).ToList();
             if(AllObjofPidfId != null)
             {
                 foreach(var _obj in AllObjofPidfId)
@@ -103,6 +103,14 @@ namespace EmcureNPD.Business.Core.Implementation
 
                     if (!IsExist) // if not IsExist then Delete
 					{
+						//Remove all Already mapped Years data
+						var CommercialYears = await _commercialYearrepository.GetAllAsync(x => x.PidfcommercialId == _obj.PidfcommercialId);
+						foreach (var it in CommercialYears.OrderBy(x => x.YearIndex))
+						{							
+							_commercialYearrepository.Remove(it);
+							await _unitOfWork.SaveChangesAsync();
+						}
+
 						_commercialrepository.Remove(_obj);
 						await _unitOfWork.SaveChangesAsync();
 					}
@@ -124,7 +132,8 @@ namespace EmcureNPD.Business.Core.Implementation
 					i++;
 				}
 
-				Expression<Func<PidfCommercial, bool>> expr = u => u.BusinessUnitId == item.BusinessUnitId && u.Pidfid == entitycommPIDF.Pidfid && u.PidfproductStrengthId == item.PidfproductStrengthId && u.PackSizeId == item.PackSizeId;
+				Expression<Func<PidfCommercial, bool>> expr = u => u.BusinessUnitId == item.BusinessUnitId && u.Pidfid == entitycommPIDF.Pidfid 
+                && u.PidfproductStrengthId == item.PidfproductStrengthId && u.PackSizeId == item.PackSizeId && u.IsDeleted == false;
 				var objFetchData = await _commercialrepository.GetAsync(expr);
 
 				if (objFetchData == null)

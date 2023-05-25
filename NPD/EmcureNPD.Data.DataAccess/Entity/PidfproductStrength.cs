@@ -11,6 +11,7 @@ namespace EmcureNPD.Data.DataAccess.Entity
         {
             PidfCommercials = new HashSet<PidfCommercial>();
             PidfPbfAnalyticalAmvcostStrengthMappings = new HashSet<PidfPbfAnalyticalAmvcostStrengthMapping>();
+            PidfPbfAnalyticalCostStrengthMappings = new HashSet<PidfPbfAnalyticalCostStrengthMapping>();
             PidfPbfAnalyticals = new HashSet<PidfPbfAnalytical>();
             PidfPbfClinicals = new HashSet<PidfPbfClinical>();
             PidfPbfGeneralStrengths = new HashSet<PidfPbfGeneralStrength>();
@@ -37,6 +38,7 @@ namespace EmcureNPD.Data.DataAccess.Entity
         public virtual MasterUnitofMeasurement UnitofMeasurement { get; set; }
         public virtual ICollection<PidfCommercial> PidfCommercials { get; set; }
         public virtual ICollection<PidfPbfAnalyticalAmvcostStrengthMapping> PidfPbfAnalyticalAmvcostStrengthMappings { get; set; }
+        public virtual ICollection<PidfPbfAnalyticalCostStrengthMapping> PidfPbfAnalyticalCostStrengthMappings { get; set; }
         public virtual ICollection<PidfPbfAnalytical> PidfPbfAnalyticals { get; set; }
         public virtual ICollection<PidfPbfClinical> PidfPbfClinicals { get; set; }
         public virtual ICollection<PidfPbfGeneralStrength> PidfPbfGeneralStrengths { get; set; }
