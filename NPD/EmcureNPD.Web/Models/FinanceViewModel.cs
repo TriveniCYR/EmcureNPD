@@ -187,7 +187,9 @@ namespace EmcureNPD.Web.Models
         public DateTime createdDate { get; set; }
         public int createdBy { get; set; }
         public long? Skus { get; set; }
-        public double? PakeSize { get; set; }
+		//public int PackSizeId { get; set; }
+		public int PackSizeValue { get; set; }
+		public double? PakeSize { get; set; }
         public string SkusName { get; set; }
         public string PakeSizeName { get; set; }
         public double? BrandPrice { get; set; }

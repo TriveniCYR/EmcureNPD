@@ -988,7 +988,8 @@
                                             <thead>
                                                 <tr>
                                     <th style="width: 100px;">SKU <span style="color:red;">*</span></th>
-                                                    <th>Pack size <span style="color:red;">*</span></th>
+                                                    <th>Packsize <span style="color:red;">*</span></th>
+													 <th>Packsize Value <span style="color:red;">*</span></th>
                                                     <th>Brand Price <span style="color:red;">*</span></th>
                                                     <th>Generic List price <span style="color:red;">*</span></th>
                                                     <th>Net Realisation <span style="color:red;">*</span></th>
@@ -1017,6 +1018,7 @@
 							    foreach (var item in Model.lsPidfFinanceBatchSizeCoating)
 							    {
                                     string dbPakeSize = "PakeSize"+@j;
+									string dbPackSizeValue = "PackSizeValue" + @j;
                                     string dbSkubalue = "DbSkus"+@j;
                                     string dbBrandPrice="BrandPrice" + @j;
                                     string dbGenericListprice="GenericListprice"+@j;
@@ -1040,6 +1042,7 @@
                                         <input type="hidden" id="hdnNSPHigh" />
 
                                             </td>
+											<td><input type="number" id="@dbPackSizeValue" readonly name="lsPidfFinanceBatchSizeCoating[@j].PackSizeValue" value="@item.PackSizeValue" class="PackSizeValue form-control readOnlyUpdate" /></td>
                                         <td><input type="number" id="@dbBrandPrice" readonly name="lsPidfFinanceBatchSizeCoating[@j].BrandPrice" value="@item.BrandPrice" class="BrandPrice form-control readOnlyUpdate" /></td>
 									     <td><input type="number" id="@dbGenericListprice" readonly name="lsPidfFinanceBatchSizeCoating[@j].GenericListprice" value="@item.GenericListprice" onchange="calculateBatchSizeCaoting(this);" class="GenericListprice form-control readOnlyUpdate" /></td>
                                             <td><input type="text" id="@dbNetRealisation" readonly name="lsPidfFinanceBatchSizeCoating[@j].NetRealisation" value="@item.NetRealisation" class="NetRealisation form-control readOnlyUpdate"></td>
@@ -1181,34 +1184,10 @@
 					</button>
 				</div>
 			</div>
-			<div class="card-body collapse" id="ProjectionsCollapse" style="background-color:white">
+				<div class="card-body collapse" id="ProjectionsCollapse" style="background-color:white;overflow-x:auto;">
 				
-                                <div class="accordion-body row">
-                                    <div class="col-6 mb-4">
-                                       @* <table class="table table-bordered text-center m-0 projections-table">
-                                            <thead>
-                                                <tr>
-                                                    <th>Output grid</th>
-                                                    <th></th>
-                                                    <th>From launch</th>
-                                                </tr>
-                                            </thead>
-                                            <tbody>
-                                                <tr>
-                                                    <td>Discounted payback in yrs</td>
-                                                    <td>2.01</td>
-                                                    <td>2.01</td>
-                                                </tr>
-                                                <tr>
-                                                    <td>Total investment</td>
-                                                    <td>734,234</td>
-                                                    <td></td>
-                                                </tr>
-                                            </tbody>
-                                        </table>*@
-                                    </div>
-                                    <div class="col-6 mb-4"></div>
-                                    <div class="col-12">
+                                @*<div class="accordion-body row">*@                                   
+                                   <div class="col-12 table-overflow">
                                         <h5 class="fw-bold mb-3">Business Unit Projection</h5>
                                         <div class="card card-primary card-outline card-outline-tabs">
                                             <div class="card-header p-0 border-bottom-0">
@@ -1218,9 +1197,9 @@
                                             </div>
                                             <div class="card-body">
                                                 <div class="tab-content" id="custom-tabs-business-tabContent">
-                                                    <div class="tab-pane fade show active" id="custom-tabs-usa"
+									<div class="tab-pane fade show active" id="custom-tabs-usa" style="background-color:white;overflow-x:auto;"
                                                         role="tabpanel" aria-labelledby="custom-tabs-business-usa-tab">
-                                                        <div class="col-12">
+										<div class="col-12 table-overflow">
                                                              <table id="tblCommercialPerPack" class="table table-bordered text-center mb-4">
                                                              </table>
 															 <table id="tblOutputGridFinanceProjection" class="table table-bordered text-center mb-4">
@@ -1233,7 +1212,7 @@
                                             </div>
                                         </div>
                                     </div>
-                                </div>
+                               @* </div>*@
                             
 				
 			</div>

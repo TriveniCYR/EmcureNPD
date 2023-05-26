@@ -32,9 +32,12 @@
      @Html.HiddenFor(x => x.CreditorinDays                                                    )
      @Html.HiddenFor(x => x.DiscountRate                                                      )
      @Html.HiddenFor(x => x.GestationPeriodinYears                                            )
+    @Html.HiddenFor(x => x.RandDanalyticalcost                                                     )
+    @Html.TextBoxFor(@modal=>modal.RandDanalyticalcostPhaseEndDate,"{0:yyyy-MM-dd}",new{@type="date"})
      @Html.HiddenFor(x => x.Rldsamplecost                                                     )
         @Html.TextBoxFor(@modal=>modal.RldsamplecostPhaseEndDate,"{0:yyyy-MM-dd}",new{@type="date"})
-     @Html.HiddenFor(x => x.BatchmanufacturingcostOrApiactualsEst                             )
+   
+        @Html.HiddenFor(x => x.BatchmanufacturingcostOrApiactualsEst                             )
     @Html.TextBoxFor(@modal=>modal.BatchmanufacturingcostOrApiactualsEstPhaseEndDate,"{0:yyyy-MM-dd}",new{@type="date"})
     @Html.TextBoxFor(@modal=>modal.SixmonthsstabilitycostPhaseEndDate,"{0:yyyy-MM-dd}",new{@type="date"})
      @Html.HiddenFor(x => x.TechTransfer                                                      )
@@ -45,6 +48,7 @@
    @Html.TextBoxFor(@modal=>modal.FilingfeesPhaseEndDate,"{0:yyyy-MM-dd}",new{@type="date"})
      @Html.HiddenFor(x => x.ToolingAndChangeParts                                             )
    @Html.TextBoxFor(@modal=>modal.ToolingAndChangePartsPhaseEndDate,"{0:yyyy-MM-dd}",new{@type="date"})
-     @Html.HiddenFor(x => x.JsonlsPidfFinanceBatchSizeCoating                                 )
+    @* @Html.HiddenFor(x => x.JsonlsPidfFinanceBatchSizeCoating                                 )*@
+    @Html.HiddenFor(x => x.JsonCommercialData                                                 )
     @Html.HiddenFor(x => x.GestationPeriodinYears                                             ) 
 </div>

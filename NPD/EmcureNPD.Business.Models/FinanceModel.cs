@@ -75,6 +75,7 @@ namespace EmcureNPD.Business.Models
 		public string hdnSelectedBussinesUnit { get; set; }
 		public List<ChildPidfFinanceBatchSizeCoating> lsPidfFinanceBatchSizeCoating { get; set; }
         public string JsonlsPidfFinanceBatchSizeCoating { get; set; }
+        public string JsonCommercialData { get; set; }
         public int BussinessUnitId { get; set; }
         public List<FinaceProjectionYear> lsFinaceProjectionYear { get; set; }
     }
@@ -96,6 +97,8 @@ namespace EmcureNPD.Business.Models
 		public DateTime CreatedDate { get; set; }
 		public int? CreatedBy { get; set; }
 		public long? Skus { get; set; }
+        public int PackeSizeId { get; set; }
+		public int PackSizeValue { get; set; }
 		public double? PakeSize { get; set; }
 		public double? BrandPrice { get; set; }
 		public double? NetRealisation { get; set; }
