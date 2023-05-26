@@ -790,8 +790,15 @@ function RenderFinanceProjection() {
 
 
 
+function UpdateDynamicTextBoxValues(table) {
+    if (table.length == 10) {
+        for (var i = 0; i < 10; i++) {
+            Expiries_Yearwise_Data[i] = table[i].expiries;
+            AnnualConfirmatoryRelease_Data[i] = table[i].annualConfirmatoryRelease;
+        }
+    }
 
-
+}
 function GetMarketSharePercentage(low, mid, high) {
     let marketSharePercentage = 0;
     try {

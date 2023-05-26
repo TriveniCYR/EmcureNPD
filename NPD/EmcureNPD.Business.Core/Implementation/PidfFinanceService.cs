@@ -94,6 +94,24 @@ namespace EmcureNPD.Business.Core.Implementation
             }
         }
 
+        public async Task<dynamic> GetManagmentApprovalBatchSizeCoating(int PidffinaceId = 0)
+        {
+            try
+            {
+                SqlParameter[] osqlParameter = {
+                new SqlParameter("@PIDFFinaceId", PidffinaceId)
+            };
+
+                DataSet dsFinanceBatchSizeCoating = await _repository.GetDataSetBySP("ProcGetCommercialPackSizeForManagmentApproval", System.Data.CommandType.StoredProcedure, osqlParameter);
+                return dsFinanceBatchSizeCoating;
+            }
+            catch (Exception ex)
+            {
+                await _ExceptionService.LogException(ex);
+                return null;
+            }
+        }
+
         public async Task<PidfFinance> GetById(int id)
         {
             return await _repository.GetAsync(id);

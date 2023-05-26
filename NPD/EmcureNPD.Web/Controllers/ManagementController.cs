@@ -313,6 +313,8 @@ namespace EmcureNPD.Web.Controllers
                         }
                         model.lsPidfFinanceBatchSizeCoating = ls;
                         model.JsonlsPidfFinanceBatchSizeCoating = JsonConvert.SerializeObject(ls);
+                        model.JsonCommercialData = GetManagmentApprovalBatchSizeCoating(model.PidffinaceId);
+
                     }
                     int rolId = _helper.GetLoggedInRoleId();
                     RolePermissionModel objPermssion = UtilityHelper.GetCntrActionAccess((int)ModulePermissionEnum.Finance, rolId);
@@ -342,6 +344,34 @@ namespace EmcureNPD.Web.Controllers
                     string jsonResponse = responseMessage.Content.ReadAsStringAsync().Result;
                     var data = JsonConvert.DeserializeObject<ChildRoot>(jsonResponse);
                     return data.table;
+                }
+                else
+                {
+                    return null;
+                }
+            }
+            catch (Exception ex)
+            {
+                _helper.LogExceptions(ex);
+                throw;
+            }
+        }
+
+        [NonAction]
+        private string GetManagmentApprovalBatchSizeCoating(int? PidfFinaceid)
+        {
+            try
+            {
+                HttpResponseMessage responseMessage = new HttpResponseMessage();
+                HttpContext.Request.Cookies.TryGetValue(UserHelper.EmcureNPDToken, out string token);
+                APIRepository objapi = new(_cofiguration);
+
+                responseMessage = objapi.APICommunication(APIURLHelper.GetManagmentApprovalBatchSizeCoating + "/" + PidfFinaceid, HttpMethod.Get, token).Result;
+
+                if (responseMessage.IsSuccessStatusCode)
+                {
+                    string jsonResponse = responseMessage.Content.ReadAsStringAsync().Result;
+                    return jsonResponse;
                 }
                 else
                 {

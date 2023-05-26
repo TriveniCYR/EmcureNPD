@@ -474,6 +474,7 @@ namespace EmcureNPD.Web.Helpers
         public static string AddUpdatePidfFinanceBatchSizeCoating = "api/PidfFinance/AddUpdatePidfFinanceBatchSizeCoating";
         public static string GetPidfFinance = "api/PidfFinance/GetPidfFinance";
         public static string GetFinanceBatchSizeCoating = "api/PidfFinance/GetFinanceBatchSizeCoating";
+        public static string GetManagmentApprovalBatchSizeCoating = "api/PidfFinance/GetManagmentApprovalBatchSizeCoating";        
         public static string GetProjectNameAndStrength = "api/ManagementApproval/GetProjectNameAndStrength";
         public static string GetFinaceProjectionYear = "api/PidfFinance/GetFinaceProjectionYear";
 

@@ -415,14 +415,15 @@ function calculateBatchSizeCaoting(ele) {
     let CcpcCad = 0;
     let FreightCad = 0;
     let packSize = 0;
+    let PackSizeValue = 0;    
     let strengthId = 0;
     $.each($('#FinanceTableBoy tr'), function (index, value) {
 
         strengthId = $(this).find("select.Skus").val();
-        packSize = $(this).find("select.PakeSize").val();
+        PackSizeValue = $(this).find("input.PackSizeValue").val();
         BatchsizeinLtrTabs = $(this).find("input.BatchsizeinLtrTabs").val();
 
-        $(this).find("input.Batchsize").val((parseFloat(BatchsizeinLtrTabs) / parseFloat(packSize)).toFixed(2));
+        $(this).find("input.Batchsize").val((parseFloat(BatchsizeinLtrTabs) / parseFloat(PackSizeValue)).toFixed(2));
 
         Batchsize = $(this).find("input.Batchsize").val();
         Yield = $(this).find("input.Yield").val();
@@ -622,6 +623,9 @@ function GetSUIMSVolumeYearWiseByPackSize(ele) {
                     $(`input#EstMat2020By12units${row_index}.EstMat2020By12units`).val(parseFloat((data.table.length > 0 ? data.table[0].suimsVolume : 0)).toFixed(2));
                     $(`input#Marketinpacks${row_index}.Marketinpacks`).val(parseFloat((data.table.length > 0 ? data.table[0].suimsVolume : 0)).toFixed(2));
                     $(`input#BatchsizeinLtrTabs${row_index}.BatchsizeinLtrTabs`).val((data.table.length > 0 ? data.table[0].commercialBatchSize : 0).toFixed(2));
+
+                    $(`input#PackSizeValue${row_index}.PackSizeValue`).val((data.table.length > 0 ? data.table[0].packSizeValue : 0));
+                    
                     calculateBatchSizeCaoting(ele);
 
                     $(ele).closest('tr').find("#hdnMSLow").val((data.table.length > 0 ? data.table[0].marketSharePercentageLow : 0).toFixed(2));
@@ -647,15 +651,7 @@ function GetSUIMSVolumeYearWiseByPackSize(ele) {
         }
     }
 }
-function UpdateDynamicTextBoxValues(table) {
-    if (table.length == 10) {
-        for (var i = 0; i < 10; i++) {
-            Expiries_Yearwise_Data[i] = table[i].expiries;
-            AnnualConfirmatoryRelease_Data[i] = table[i].annualConfirmatoryRelease;
-        }
-    }
-    
-}
+
 function fnGetActiveBusinessUnit() {
     ajaxServiceMethod($('#hdnBaseURL').val() + GetActiveEncryptedBusinessUnit, 'GET', GetActiveBusinessUnitSuccess, GetActiveBusinessUnitError);
 }

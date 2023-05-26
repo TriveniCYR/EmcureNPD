@@ -121,68 +121,33 @@ function UpdateProjectionCommercial() {
 }
 function GetBatchSizeCostingTRValues() {
 
-    var jsonObj = $.parseJSON($('#JsonlsPidfFinanceBatchSizeCoating').val()); 
+  //JsonlsPidfFinanceBatchSizeCoating  var jsonBatcSizeData = $.parseJSON($('#JsonlsPidfFinanceBatchSizeCoating').val()); 
+    var JsonCommercialData = $.parseJSON($('#JsonCommercialData').val()); 
+    UpdateDynamicTextBoxValues(JsonCommercialData.table1);
     var Arr_FinanceTable_tr = [];
-    jQuery.each(jsonObj, function (index, item) {
-
-        var comm_Obj = GetCommercialDetailsByPackSize(item.PakeSize,item.Skus);
+    jQuery.each(JsonCommercialData.table, function (index, item) {
 
         var trObj =
         {
-            SKU: '200mg',//item.SkusName,
-            PackSize: '1x20',// item.PakeSizeName,
+            SKU: item.skusName +'mg',
+            PackSize: item.packSizeName,
 
-            hdnMSLow: '2.4',// comm_Obj.hdnMSLow,
-            hdnMSMid: '1.4',//comm_Obj.hdnMSMid,
-            hdnMSHigh: '6.4',//comm_Obj.hdnMSHigh,
+            hdnMSLow: item.marketSharePercentageLow,
+            hdnMSMid: item.marketSharePercentageMedium,
+            hdnMSHigh: item.marketSharePercentageHigh,
 
-            marketInPacks: item.Marketinpacks,
+            marketInPacks: item.marketinpacks,
 
-            hdnNSPLow: '2.4',//comm_Obj.hdnMSLow,
-            hdnNSPMid: '4.4',//comm_Obj.hdnNSPMid,
-            hdnNSPHigh: '3.4',//comm_Obj.hdnNSPHigh,
+            hdnNSPLow: item.nspUnitsLow,
+            hdnNSPMid: item.nspUnitsMedium,
+            hdnNSPHigh: item.nspUnitsHigh,
 
-            emcureCOGs_pack: '5.4',// item.EmcureCogsPack,
-
+            emcureCOGs_pack: item.emcureCOGs_pack
         }
-
         Arr_FinanceTable_tr.push(trObj);
 
     });
     return Arr_FinanceTable_tr;
-}
-
-function GetCommercialDetailsByPackSize(packSizeId, strengthId) { 
-     
-        if (packSizeId > 0 && strengthId > 0) {
-           ajaxServiceMethod($('#hdnBaseURL').val() + `api/PidfFinance/GetSUIMSVolumeYearWiseByPackSize/${PidafId}/${encBuid}/${strengthId}/${packSizeId}`, 'GET', GetCommercialDetailsByPackSizeSuccess, GetCommercialDetailsByPackSizeError);
-            function GetCommercialDetailsByPackSizeSuccess(data) {
-                try {                  
-                    var CommercialObj =
-                    {
-                        hdnMSLow :   (data.table.length > 0 ? data.table[0].marketSharePercentageLow : 0).toFixed(2),
-                        hdnMSMid :     (data.table.length > 0 ? data.table[0].marketSharePercentageMedium : 0).toFixed(2),
-                        hdnMSHigh:   (data.table.length > 0 ? data.table[0].marketSharePercentageHigh : 0).toFixed(2),
-
-                        hdnNSPLow: (data.table.length > 0 ? data.table[0].nspUnitsLow : 0).toFixed(2),
-                        hdnNSPMid: (data.table.length > 0 ? data.table[0].nspUnitsMedium : 0).toFixed(2),
-                        hdnNSPHigh:    (data.table.length > 0 ? data.table[0].nspUnitsHigh : 0).toFixed(2)
-                    }
-                    obj = [];
-                    obj.push(CommercialObj);
-                    return obj;
-                }
-                catch (e) {
-                    toastr.error('Error:' + e.message);
-                    return obj;
-                }
-            }
-            function GetCommercialDetailsByPackSizeError() {
-                toastr.error("Error");
-                return obj;
-            }
-        }
-    return obj;
 }
 
 

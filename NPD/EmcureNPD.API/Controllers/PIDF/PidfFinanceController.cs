@@ -81,7 +81,7 @@ namespace EmcureNPD.API.Controllers.PIDF
         /// <response code="403">Forbidden</response>
         /// <response code="404">Not Found</response>
         /// <response code="405">Method Not Allowed</response>
-        /// <response code="500">Internal Server</response>
+        /// <response code="500">Internal Server</response> 
         [HttpGet]
         [Route("GetPidfFinance/{Pidfid}")]
         public async Task<IActionResult> GetPidfFinance(string Pidfid)
@@ -108,7 +108,7 @@ namespace EmcureNPD.API.Controllers.PIDF
         /// <response code="403">Forbidden</response>
         /// <response code="404">Not Found</response>
         /// <response code="405">Method Not Allowed</response>
-        /// <response code="500">Internal Server</response>
+        /// <response code="500">Internal Server</response> 
         [HttpGet]
         [Route("GetFinanceBatchSizeCoating/{PidffinaceId}")]
         public async Task<IActionResult> GetFinanceBatchSizeCoating(int PidffinaceId = 0)
@@ -116,6 +116,20 @@ namespace EmcureNPD.API.Controllers.PIDF
             try
             {
                 return _ObjectResponse.CreateData(await _pidfFinanceService.GetFinanceBatchSizeCoating(PidffinaceId), (Int32)HttpStatusCode.OK);
+            }
+            catch (Exception ex)
+            {
+                await _ExceptionService.LogException(ex);
+                return _ObjectResponse.Create(null, (Int32)HttpStatusCode.BadRequest, "No Records found");
+            }
+        }
+        [HttpGet]
+        [Route("GetManagmentApprovalBatchSizeCoating/{PidffinaceId}")]
+        public async Task<IActionResult> GetManagmentApprovalBatchSizeCoating(int PidffinaceId = 0)
+        {
+            try
+            {
+                return _ObjectResponse.CreateData(await _pidfFinanceService.GetManagmentApprovalBatchSizeCoating(PidffinaceId), (Int32)HttpStatusCode.OK);
             }
             catch (Exception ex)
             {
