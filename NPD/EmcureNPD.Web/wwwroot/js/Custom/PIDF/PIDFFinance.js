@@ -45,6 +45,7 @@ $(document).ready(function () {
         placeholder: "Select Currency..",
         allowClear: true
     });
+    
     $(el).attr("step", "any");
 
     $(document).on("change", "input[type = 'number']", function () {        
@@ -158,7 +159,7 @@ function GetCurrencyList() {
 function GetCurrencyListSuccess(data) {
     try {
         $('#Currency').html('')
-        let optionhtml = ''; //'<option value = "0">--Select--</option>';
+        let optionhtml ='<option value = "-1">Select All</option>';
         $.each(data._object, function (index, object) {
             let currencyText = object.currencyCode == null ? object.currencyName : object.currencyCode + "-" + object.currencyName;
             optionhtml += '<option value="' +
@@ -692,6 +693,10 @@ $("select#Currency").on("select2:select select2:unselecting", function (e) {
     $(".tdCurrency").text(selectedCurrencyText);
     let event = e;
     if (event.params._type == "unselecting") {
+        let val = $('#Currency').val();
+        if ($('#Currency').val() == -1 || val.includes('-1')) {
+            selectAll('Currency', false);
+        }
         var data = $('#Currency').select2('data');
         if (data) {
             data.pop(event.params.args.data.id);
@@ -704,7 +709,11 @@ $("select#Currency").on("select2:select select2:unselecting", function (e) {
             $(".tdCurrency").text("");
         }
     }
-   else if (event.params._type == "select") {
+    else if (event.params._type == "select") {
+        let val = $('#Currency').val();
+        if (val.includes('-1')) {
+          selectAll('Currency',true);
+       }
         var data = $('#Currency').select2('data');
         if (data) {
             for (var i = 0; i < data.length; i++) {
@@ -718,6 +727,16 @@ $("select#Currency").on("select2:select select2:unselecting", function (e) {
     }
     GetFinancialProjectionYear(_selectedProjectStartDate);
 });
+$("select#Currency").change(function () {
+    let id = $(this).attr('id');
+    let val = $(this).val();
+    if (val.includes('-1')) {
+        selectAll(id,true)
+          
+    }
+  
+})
+
 function validateDuplicateSKUs() {
     let packSize = [];
     let strengthId = [];

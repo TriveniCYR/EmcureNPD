@@ -234,6 +234,19 @@ $(document).ready(function () {
        // }
        
     })
+    //$('select.select2-hidden-accessible').each(function (index, element) {
+       
+    //    if ($(this).prop('multiple')) {
+    //        //let optionhtml = '<option value = "-1">Select All</option>';
+    //        let id = $(this).attr('id');
+    //        let isSelected = true;
+    //        $(`#${id}`).find('option')
+    //            .eq(2).before($("<option></option>").val("-1").text("Select"));
+    //        console.log($(this).length)
+    //             $(this).attr('onchange', 'selectAll("' + id + '",' + isSelected + ')');  
+             
+    //    }
+    //})
 });
 function ApproveRejectClick(type, PIDFID, ScreenId, URL) {
     if (PIDFID != undefined && PIDFID != "" && PIDFID != null) {
@@ -415,4 +428,18 @@ function preventCharacters(evt) {
         evt.preventDefault()
     }
     else { !/(^\d*\.?\d*$)|(Backspace|Control|Meta|a)/.test(evt.key) && evt.preventDefault() }
+}
+//--select all mutilple option--//
+function selectAll(id, isSelect) {
+
+    if ($(`#${id}`).select2('data').length > 0) {
+
+        $(`#${id}`).val(null);
+        $(`#${id} > option`).prop("selected", isSelect);
+        $(`#${id} > option`).eq(0).prop("selected", false);
+    }
+    else {
+        $(`#${id} > option`).prop("selected", isSelect);
+        $(`#${id} > option`).eq(0).prop("selected", false);
+    }
 }
