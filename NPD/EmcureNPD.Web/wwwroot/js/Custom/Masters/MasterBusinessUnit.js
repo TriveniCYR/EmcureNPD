@@ -10,7 +10,9 @@ function GetRegionListSuccess(data) {
     try {
         $.each(data._object, function (index, object) {
             $('#RegionId').append($('<option>').text(object.regionName).attr('value', object.regionId));
-            $('#RegionId').select2();
+            $('#RegionId').select2({
+                dropdownAdapter: $.fn.select2.amd.require('select2/selectAllAdapter')
+            });
             //$('#RegionId option:eq(0)').val(0);
             //$('#RegionId').val("-");
             $('#RegionId').trigger('change');
