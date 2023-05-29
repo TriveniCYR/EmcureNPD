@@ -970,7 +970,7 @@ namespace EmcureNPD.Resource.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Management Approval.
+        ///   Looks up a localized string similar to Budget Approval.
         /// </summary>
         public static string Management {
             get {
