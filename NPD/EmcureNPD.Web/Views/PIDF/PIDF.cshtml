@@ -40,8 +40,16 @@
         <input type="hidden" asp-for="SaveType" />
         <input type="hidden" asp-for="LogInId" />
         <div class="row">
+           
+                <div class="col-md-3">
+                    <div class="form-group required">
+                        @Html.LabelFor(model => model.BusinessUnitId, Master.BusinessUnitName , new { @class = "control-label" }) <span class="text-danger">*</span>
+                        <input type="hidden" id="hdnBusinessUnitId" value="@Model.BusinessUnitId" />
+                        <select id="BusinessUnitId" name="BusinessUnitId" class="form-control readOnlyUpdate customvalidateformcontrol mandatoryformcontrol" required></select>
+                        @Html.ValidationMessageFor(model => model.BusinessUnitId, "", new { @class = "text-danger" })
+                    </div>
+                </div>
             <div class="col-md-3">
-
                 <div class="form-group required">
                     @Html.LabelFor(model => model.OralId, Master.OralName, new { @class = "control-label" }) <span class="text-danger">*</span>
                     <input type="hidden" id="hdnOralId" value="@Model.OralId" />
@@ -49,15 +57,7 @@
                     @Html.ValidationMessageFor(model => model.OralId, "", new { @class = "text-danger" })
                 </div>
             </div>
-            <div class="col-md-3">
-                <div class="form-group required">
-                    @Html.LabelFor(model => model.UnitofMeasurementId, Master.UnitofMeasurements , new { @class = "control-label" }) <span class="text-danger">*</span>
-                    <input type="hidden" id="hdnUnitofMeasurementId" value="@Model.UnitofMeasurementId" />
-                    <select id="UnitofMeasurementId" name="UnitofMeasurementId" class="form-control readOnlyUpdate customvalidateformcontrol" required></select>
-                    @Html.ValidationMessageFor(model => model.UnitofMeasurementId, "", new { @class = "text-danger" })
-                </div>
-            </div>
-            <div class="col-md-3">
+             <div class="col-md-3">
                 <div class="form-group required">
                     @Html.LabelFor(model => model.MoleculeName, new { @class = "control-label" }) <span class="text-danger">*</span>
                     @Html.EditorFor(model => model.MoleculeName, new { htmlAttributes = new { @autocomplete = "off", @class = "form-control checkbox-checked customvalidateformcontrol", @placeholder = @MasterLocalizer["MoleculeName"] } })
@@ -66,21 +66,21 @@
             </div>
             <div class="col-md-3">
                 <div class="form-group required">
-                    @Html.LabelFor(model => model.BrandName, new { @class = "control-label" }) <span class="text-danger">*</span>
-                    @Html.EditorFor(model => model.BrandName, new { htmlAttributes = new { @autocomplete = "off", @class = "form-control checkbox-checked customvalidateformcontrol", @placeholder = @MasterLocalizer["BrandName"] } })
-                    @Html.ValidationMessageFor(model => model.BrandName, "", new { @class = "text-danger" })
+                    @Html.LabelFor(model => model.DosageFormId, Master.DosageForms, new { @class = "control-label" }) <span class="text-danger">*</span>
+                    <input type="hidden" id="hdnDosageFormId" value="@Model.DosageFormId" />
+                    <select id="DosageFormId" name="DosageFormId" class="form-control readOnlyUpdate customvalidateformcontrol" required></select>
+                    @Html.ValidationMessageFor(model => model.DosageFormId, "", new { @class = "text-danger" })
                 </div>
             </div>
-
+       
         </div>
 
         <div class="row">
             <div class="col-md-3">
                 <div class="form-group required">
-                    @Html.LabelFor(model => model.DosageFormId, Master.DosageForms, new { @class = "control-label" }) <span class="text-danger">*</span>
-                    <input type="hidden" id="hdnDosageFormId" value="@Model.DosageFormId" />
-                    <select id="DosageFormId" name="DosageFormId" class="form-control readOnlyUpdate customvalidateformcontrol" required></select>
-                    @Html.ValidationMessageFor(model => model.DosageFormId, "", new { @class = "text-danger" })
+                    @Html.LabelFor(model => model.BrandName, new { @class = "control-label" }) <span class="text-danger">*</span>
+                    @Html.EditorFor(model => model.BrandName, new { htmlAttributes = new { @autocomplete = "off", @class = "form-control checkbox-checked customvalidateformcontrol", @placeholder = @MasterLocalizer["BrandName"] } })
+                    @Html.ValidationMessageFor(model => model.BrandName, "", new { @class = "text-danger" })
                 </div>
             </div>
             <div class="col-md-3">
@@ -102,55 +102,16 @@
             </div>
             <div class="col-md-3">
                 <div class="form-group required">
-                    @Html.LabelFor(model => model.Diaid, Master.DIAName, new { @class = "control-label" }) <span class="text-danger">*</span>
-                    <input type="hidden" id="hdnDiaid" value="@Model.Diaid" />
-                    <select id="Diaid" name="Diaid" class="form-control readOnlyUpdate customvalidateformcontrol" required></select>
-                    @Html.ValidationMessageFor(model => model.Diaid, "", new { @class = "text-danger" })
-                </div>
-                <div class="form-group required" hidden>
-                    @Html.LabelFor(model => model.PIDFNO, new { @class = "control-label" })
-                    @Html.EditorFor(model => model.PIDFNO, new { htmlAttributes = new { @autocomplete = "off", @class = "form-control checkbox-checked", @placeholder = @MasterLocalizer["PIDFNO"] } })
-                    @Html.ValidationMessageFor(model => model.PIDFNO, "", new { @class = "text-danger" })
+                    @Html.LabelFor(model => model.UnitofMeasurementId, Master.UnitofMeasurements , new { @class = "control-label" }) <span class="text-danger">*</span>
+                    <input type="hidden" id="hdnUnitofMeasurementId" value="@Model.UnitofMeasurementId" />
+                    <select id="UnitofMeasurementId" name="UnitofMeasurementId" class="form-control readOnlyUpdate customvalidateformcontrol" required></select>
+                    @Html.ValidationMessageFor(model => model.UnitofMeasurementId, "", new { @class = "text-danger" })
                 </div>
             </div>
+       
         </div>
 
-        <div class="row">
-            <div class="col-md-3">
-                <div class="form-group required">
-                    @Html.LabelFor(model => model.BusinessUnitId, Master.BusinessUnitName , new { @class = "control-label" }) <span class="text-danger">*</span>
-                    <input type="hidden" id="hdnBusinessUnitId" value="@Model.BusinessUnitId" />
-                    <select id="BusinessUnitId" name="BusinessUnitId" class="form-control readOnlyUpdate customvalidateformcontrol mandatoryformcontrol" required></select>
-                    @Html.ValidationMessageFor(model => model.BusinessUnitId, "", new { @class = "text-danger" })
-                </div>
-            </div>
-            <div class="col-md-3">
-                <div class="form-group required">
-                    <label class="control-label">In house</label> <span class="text-danger">*</span>
-                    <input type="hidden" id="hdnInhouseDropdownId" value="@(Model.InHouses ? "1" : "2")" checked="@(Model.InHouses ? "checked" : "")" />
-                    <input type="checkbox" id="InHouses" name="InHouses" value="@(Model.InHouses)" style="display:none;" />
-                    <select id="InhouseDropdownId" name="InhouseDropdownId" class="form-control readOnlyUpdate" required></select>
-
-                </div>
-            </div>
-
-            <div class="col-md-3">
-                <div class="form-group required">
-                    @Html.LabelFor(model => model.ApprovedGenerics, new { @class = "control-label" }) <span class="text-danger">*</span>
-                    @Html.EditorFor(model => model.ApprovedGenerics, new { htmlAttributes = new { @autocomplete = "off", @class = "form-control checkbox-checked customvalidateformcontrol", @placeholder = @MasterLocalizer["ApprovedGenerics"] } })
-                    @Html.ValidationMessageFor(model => model.ApprovedGenerics, "", new { @class = "text-danger" })
-                </div>
-            </div>
-
-            <div class="col-md-3">
-                <div class="form-group required">
-                    @Html.LabelFor(model => model.LaunchedGenerics, new { @class = "control-label" }) <span class="text-danger">*</span>
-                    @Html.EditorFor(model => model.LaunchedGenerics, new { htmlAttributes = new { @autocomplete = "off", @class = "form-control checkbox-checked customvalidateformcontrol", @placeholder = @MasterLocalizer["LaunchedGenerics"] } })
-                    @Html.ValidationMessageFor(model => model.LaunchedGenerics, "", new { @class = "text-danger" })
-                </div>
-            </div>
-
-        </div>
+     
 
         <div class="row">
             <div class="col-12">
@@ -262,7 +223,48 @@
 
             </div>
         </div>
+       @* ---Rest all other Fields-----*@
+        <div class="row">
+            <div class="col-md-4">
+                <div class="form-group required">
+                    @Html.LabelFor(model => model.Diaid, Master.DIAName, new { @class = "control-label" }) <span class="text-danger">*</span>
+                    <input type="hidden" id="hdnDiaid" value="@Model.Diaid" />
+                    <select id="Diaid" name="Diaid" class="form-control readOnlyUpdate customvalidateformcontrol" required></select>
+                    @Html.ValidationMessageFor(model => model.Diaid, "", new { @class = "text-danger" })
+                </div>
+                <div class="form-group required" hidden>
+                    @Html.LabelFor(model => model.PIDFNO, new { @class = "control-label" })
+                    @Html.EditorFor(model => model.PIDFNO, new { htmlAttributes = new { @autocomplete = "off", @class = "form-control checkbox-checked", @placeholder = @MasterLocalizer["PIDFNO"] } })
+                    @Html.ValidationMessageFor(model => model.PIDFNO, "", new { @class = "text-danger" })
+                </div>
+            </div>
+            <div class="col-md-4" style="display:none">
+                <div class="form-group required">
+                    <label class="control-label">In house</label> <span class="text-danger">*</span>
+                    <input type="hidden" id="hdnInhouseDropdownId" value="@(true ? "1" : "2")" checked="@(Model.InHouses ? "checked" : "")" />
+                    <input type="checkbox" id="InHouses" name="InHouses" value="@(Model.InHouses)" style="display:none;" />
+                    <select id="InhouseDropdownId" name="InhouseDropdownId" class="form-control readOnlyUpdate"></select>
 
+                </div>
+            </div>
+
+            <div class="col-md-4">
+                <div class="form-group required">
+                    @Html.LabelFor(model => model.ApprovedGenerics, new { @class = "control-label" }) <span class="text-danger">*</span>
+                    @Html.EditorFor(model => model.ApprovedGenerics, new { htmlAttributes = new { @autocomplete = "off", @class = "form-control checkbox-checked customvalidateformcontrol", @placeholder = @MasterLocalizer["ApprovedGenerics"] } })
+                    @Html.ValidationMessageFor(model => model.ApprovedGenerics, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+            <div class="col-md-4">
+                <div class="form-group required">
+                    @Html.LabelFor(model => model.LaunchedGenerics, new { @class = "control-label" }) <span class="text-danger">*</span>
+                    @Html.EditorFor(model => model.LaunchedGenerics, new { htmlAttributes = new { @autocomplete = "off", @class = "form-control checkbox-checked customvalidateformcontrol", @placeholder = @MasterLocalizer["LaunchedGenerics"] } })
+                    @Html.ValidationMessageFor(model => model.LaunchedGenerics, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+        </div>
         <div class="row">
             <div class="col-12">
                 <div class="card">

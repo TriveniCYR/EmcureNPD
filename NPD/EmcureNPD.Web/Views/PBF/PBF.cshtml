@@ -226,15 +226,15 @@
 
                                     </div>
                                 </div>
-                                <div class="col-md-3">
+                               @* <div class="col-md-3">
                                     <div class="form-group required">
                                         @Html.LabelFor(model => model.ManufacturingId, "Manufacturing Plant", new { @class = "control-label" })<span class="text-danger">*</span>
                                         <input type="hidden" id="hdnPbfManufacturingId" value="@Model.ManufacturingId" />
-                                        <select id="PbfManufacturingId" name="ManufacturingId" class="form-control readOnlyUpdate customvalidateformcontrol" required></select>
+                                        <select id="PbfManufacturingId" name="ManufacturingId" class="form-control readOnlyUpdate customvalidateformcontrol" ></select>
                                         @Html.ValidationMessageFor(model => model.ManufacturingId, "", new { @class = "text-danger" })
 
                                     </div>
-                                </div>
+                                </div>*@
                             </div>
                         </div>
                     </div>
@@ -417,7 +417,7 @@
                                         @Html.ValidationMessageFor(model => model.TestLicenseAvailability, "", new { @class = "text-danger" })
                                     </div>
                                 </div>
-                                <div class="col-md-12">
+                               @* <div class="col-md-12">
                                     <div class="card">
                                         <div class="card-header bg-primary">
                                             <h3 class="card-title mb-0">
@@ -441,7 +441,7 @@
                                         </div>
                                     </div>
 
-                                </div>
+                                </div>*@
 
                                 @*  Total Expenses*@
                                 <div class="col-12">
@@ -549,7 +549,7 @@
                                                         <h3 class="card-title mb-0">
 
                                                             <button type="button" class="btn btn-tool" data-card-widget="collapse">
-                                                                Batch Size
+                                                                Dosage Formulation
                                                             </button>
 
                                                         </h3>
@@ -563,7 +563,7 @@
                                                         <div class="row">
                                                             <div class="col-md-3">
                                                                 <div class="form-group required">
-                                                                    @Html.LabelFor(model => model.RNDMasterEntities.BatchSizeId, "Batch Size", new { @class = "control-label" })
+                                                                    @Html.LabelFor(model => model.RNDMasterEntities.BatchSizeId, "Dosage Formulation", new { @class = "control-label" })
                                                                     @*<input type="hidden" id="hdnBatchSizeId" value="@Model.RNDMasterEntities.BatchSizeId" />*@
                                                                     <select id="RNDBatchSizeId" name="RNDMasterEntities.BatchSizeId" class="form-control readOnlyUpdate" required></select>
                                                                 </div>
