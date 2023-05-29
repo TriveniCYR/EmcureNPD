@@ -12,10 +12,10 @@ $.fn.select2.amd.define('select2/selectAllAdapter', [
         var self = this,
             $rendered = decorated.call(this),
             $selectAll = $(
-                '<button class="btn btn-xs btn-default" type="button" style="margin-left:6px;"><i class="fa fa-check-square-o"></i> Select All</button>'
+                '<button class="btn btn-sm btn-secondary" type="button" style="margin-left:6px;"><i class="fa fa-check-square-o"></i> Select All</button>'
             ),
             $unselectAll = $(
-                '<button class="btn btn-xs btn-default" type="button" style="margin-left:6px;"><i class="fa fa-square-o"></i> Unselect All</button>'
+                '<button class="btn btn-sm btn-secondary" type="button" style="margin-left:6px;"><i class="fa fa-square-o"></i> Unselect All</button>'
             ),
             $btnContainer = $('<div style="margin-top:3px;">').append($selectAll).append($unselectAll);
         if (!this.$element.prop("multiple")) {
