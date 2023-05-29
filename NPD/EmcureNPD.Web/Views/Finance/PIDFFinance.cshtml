@@ -1264,7 +1264,8 @@
 	@*@Html.Partial("_DataTablePartial")*@
 	<script src="~/js/custom/pidf/PIDFFinance.js?v=@jsVersion"></script>
 	<script src="~/js/custom/managementapproval/financechartercommon.js"></script>
-	<script type="text/javascript" src="~/AdminLTE/plugins/select2/js/select2.min.js"></script>
+	<script type="text/javascript" src="~/AdminLTE/plugins/select2/js/select2.full.min.js"></script>
+	<script type="text/javascript" src="~/js/Custom/SelectAllAdaptor.js?v=@jsVersion"></script>
 <script>
 	const AllCurrency = "@EmcureNPD.Web.Helpers.APIURLHelper.GetAllCurrency";
     const AllDosageForm = "@EmcureNPD.Web.Helpers.APIURLHelper.GetAllActiveDosageFormFinance";

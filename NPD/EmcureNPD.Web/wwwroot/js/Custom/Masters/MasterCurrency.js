@@ -10,7 +10,7 @@ function GetCountryListSuccess(data) {
     try {
         $.each(data._object, function (index, object) {
             $('#CountryId').append($('<option>').text(object.countryName).attr('value', object.countryId));
-            $('#CountryId').select2();
+            $('#CountryId').select2({ dropdownAdapter: $.fn.select2.amd.require('select2/selectAllAdapter') });
             //$('#CountryId option:eq(0)').val(0);
             //$('#CountryId').val("-");
             $('#CountryId').trigger('change');

@@ -35,9 +35,9 @@ function GetUserDropdownSuccess(data) {
             //$('#BusinessUnitId').val("-");
             //$('#BusinessUnitId').trigger('change');
         });
-        $('#BusinessUnitId').select2();
-        $('#RegionId').select2();
-        $('#CountryId').select2();
+        $('#BusinessUnitId').select2({ dropdownAdapter: $.fn.select2.amd.require('select2/selectAllAdapter') });
+        $('#RegionId').select2({ dropdownAdapter: $.fn.select2.amd.require('select2/selectAllAdapter') });
+        $('#CountryId').select2({ dropdownAdapter: $.fn.select2.amd.require('select2/selectAllAdapter') });
         if (parseInt($('#UserId').val()) > 0) {
             $("#BusinessUnitId").val($("#hdnBusinessUnitId").val().split(',')).trigger('change');
         }
@@ -66,7 +66,7 @@ function GetRegionByBusinessUnitSuccess(data) {
                // $('#RegionId').val("-");
                // $('#RegionId').trigger('change');
             });
-            $('#RegionId').select2();
+            $('#RegionId').select2({ dropdownAdapter: $.fn.select2.amd.require('select2/selectAllAdapter') });
             if (parseInt($('#UserId').val()) > 0 ) {
                 $("#RegionId").val($("#hdnRegionId").val().split(',')).trigger('change') ;
             }
@@ -94,7 +94,7 @@ function GetCountryByRegionSuccess(data) {
                // $('#CountryId option:eq(0)').val(0);
               //  $('#CountryId').val("-");
             });
-            $('#CountryId').select2();
+            $('#CountryId').select2({ dropdownAdapter: $.fn.select2.amd.require('select2/selectAllAdapter') });
             if (parseInt($('#UserId').val()) > 0) {
                 $("#CountryId").val($("#hdnCountryId").val().split(',')).trigger('change');
             }
@@ -120,7 +120,7 @@ function GetDepartmentListSuccess(data) {
                 //$('#DepartmentId option:eq(0)').val(0);
                 //$('#DepartmentId').val("-");
             });
-        $('#DepartmentId').select2();
+        $('#DepartmentId').select2({ dropdownAdapter: $.fn.select2.amd.require('select2/selectAllAdapter') });
         if (parseInt($('#UserId').val()) > 0) {
             $("#DepartmentId").val($("#hdnDepartmentId").val().split(',')).trigger('change');
         }

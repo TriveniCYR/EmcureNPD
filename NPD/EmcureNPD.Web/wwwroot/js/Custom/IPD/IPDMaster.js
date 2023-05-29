@@ -111,7 +111,7 @@ function setRegion() {
     $.each(_userRegion, function (index, object) {
         getParentFormId().find('.regionCombo').append($('<option>').text(object.regionName).attr('value', object.regionId));
     });
-    getParentFormId().find('.regionCombo').select2();
+    getParentFormId().find('.regionCombo').select2({ dropdownAdapter: $.fn.select2.amd.require('select2/selectAllAdapter') });
     if (selRegion != undefined && selRegion != "") {
         let arr = selRegion.split(',');
         getParentFormId().find('.regionCombo').val(arr).trigger('change');
@@ -139,7 +139,7 @@ function GetCountryListSuccess(data) {
                 getParentFormId().find('#CountryId').val(arr).trigger('change');
             }
         });
-        getParentFormId().find(('.countryCombo')).select2();
+        getParentFormId().find(('.countryCombo')).select2({ dropdownAdapter: $.fn.select2.amd.require('select2/selectAllAdapter') });
     } catch (e) {
         toastr.error('Error:' + e.message);
     }

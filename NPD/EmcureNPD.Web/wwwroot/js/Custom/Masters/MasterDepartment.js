@@ -11,7 +11,7 @@ function GetBusinessUnitListSuccess(data) {
     try {
         $.each(data._object, function (index, object) {
             $('#DepartmentBusinessUnitMappingId').append($('<option>').text(object.businessUnitName).attr('value', object.businessUnitId));
-            $('#DepartmentBusinessUnitMappingId').select2();
+            $('#DepartmentBusinessUnitMappingId').select2({ dropdownAdapter: $.fn.select2.amd.require('select2/selectAllAdapter') });
             //$('#DepartmentBusinessUnitMappingId option:eq(0)').val(0);
             //$('#DepartmentBusinessUnitMappingId').val("-");
             $('#DepartmentBusinessUnitMappingId').trigger('change');
