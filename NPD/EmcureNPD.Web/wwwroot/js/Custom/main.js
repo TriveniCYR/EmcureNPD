@@ -429,17 +429,3 @@ function preventCharacters(evt) {
     }
     else { !/(^\d*\.?\d*$)|(Backspace|Control|Meta|a)/.test(evt.key) && evt.preventDefault() }
 }
-//--select all mutilple option--//
-function selectAll(id, isSelect) {
-
-    if ($(`#${id}`).select2('data').length > 0) {
-
-        $(`#${id}`).val(null);
-        $(`#${id} > option`).prop("selected", isSelect);
-        $(`#${id} > option`).eq(0).prop("selected", false);
-    }
-    else {
-        $(`#${id} > option`).prop("selected", isSelect);
-        $(`#${id} > option`).eq(0).prop("selected", false);
-    }
-}
