@@ -51,6 +51,9 @@ namespace EmcureNPD.Business.Core.ServiceImplementations
             }
             else
             {
+                var objModelData = _repository.Exists(x => x.MarketExtenstionName.ToLower() == entityMarketExtension.MarketExtenstionName.ToLower());
+                if (objModelData)
+                { return DBOperation.AlreadyExist; }
                 objMarketExtension = _mapperFactory.Get<MarketExtensionEntity, MasterMarketExtenstion>(entityMarketExtension);
                 _repository.AddAsync(objMarketExtension);
             }

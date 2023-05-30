@@ -51,6 +51,9 @@ namespace EmcureNPD.Business.Core.ServiceImplementations
             }
             else
             {
+                var objModelData = _repository.Exists(x => x.OralName.ToLower() == entityOral.OralName.ToLower());
+                if (objModelData)
+                { return DBOperation.AlreadyExist; }
                 objOral = _mapperFactory.Get<MasterOralEntity, MasterOral>(entityOral);
                 _repository.AddAsync(objOral);
             }

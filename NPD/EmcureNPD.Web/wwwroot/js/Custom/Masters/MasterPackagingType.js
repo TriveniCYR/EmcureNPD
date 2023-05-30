@@ -77,6 +77,7 @@ function SavePackagingTypeFormSuccess(data) {
     }
 }
 function SavePackagingTypeFormError(x, y, z) {
+    ErrorMessage = x.responseJSON._Message;
     toastr.error(ErrorMessage);
 }
 function ClearePackagingTypeFields() {

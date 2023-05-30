@@ -51,6 +51,9 @@ namespace EmcureNPD.Business.Core.Implementation
             }
             else
             {
+                var objModelData = _repository.Exists(x => x.TestTypeName.ToLower() == entityTestType.TestTypeName.ToLower());
+                if (objModelData)
+                { return DBOperation.AlreadyExist; }
                 objTestType = _mapperFactory.Get<MasterTestTypeEntity, MasterTestType>(entityTestType);
                 _repository.AddAsync(objTestType);
             }

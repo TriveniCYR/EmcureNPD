@@ -77,6 +77,7 @@ function SaveMarketExtensionFormSuccess(data) {
     }
 }
 function SaveMarketExtensionFormError(x, y, z) {
+    ErrorMessage = x.responseJSON._Message;
     toastr.error(ErrorMessage);
 }
 function CleareMarketExtensionFields() {

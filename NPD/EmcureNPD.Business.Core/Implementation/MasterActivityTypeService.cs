@@ -5,6 +5,7 @@ using EmcureNPD.Data.DataAccess.Core.Repositories;
 using EmcureNPD.Data.DataAccess.Core.UnitOfWork;
 using EmcureNPD.Data.DataAccess.Entity;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using static EmcureNPD.Utility.Enums.GeneralEnum;
 
@@ -51,6 +52,11 @@ namespace EmcureNPD.Business.Core.ServiceImplementations
             }
             else
             {
+                var ObjMolelData =  _repository.FindAllAsync(x=>x.ActivityTypeName== entityActivityType.ActivityTypeName).Result.FirstOrDefault();
+                if(ObjMolelData!=null)
+                {
+                    return DBOperation.AlreadyExist;
+                }
                 objActivityType = _mapperFactory.Get<MasterActivityTypeEntity, MasterActivityType>(entityActivityType);
                 _repository.AddAsync(objActivityType);
             }

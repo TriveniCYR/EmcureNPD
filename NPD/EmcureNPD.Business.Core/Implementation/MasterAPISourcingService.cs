@@ -51,6 +51,9 @@ namespace EmcureNPD.Business.Core.ServiceImplementations
             }
             else
             {
+                var objModelData = _repository.Exists(x => x.ApisourcingName.ToLower() == entityAPISourcing.APISourcingName.ToLower());
+                if (objModelData)
+                { return DBOperation.AlreadyExist; }
                 objAPISourcing = _mapperFactory.Get<MasterAPISourcingEntity, MasterApisourcing>(entityAPISourcing);
                 _repository.AddAsync(objAPISourcing);
             }

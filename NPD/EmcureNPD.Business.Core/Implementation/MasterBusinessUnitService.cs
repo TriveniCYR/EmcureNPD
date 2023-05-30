@@ -93,6 +93,9 @@ namespace EmcureNPD.Business.Core.ServiceImplementations
             }
             else
             {
+              var  objBusinessUnitModelDate = _repository.Exists(x=>x.BusinessUnitName.ToLower()== entityBusinessUnit.BusinessUnitName.ToLower());
+                if(objBusinessUnitModelDate)
+                { return DBOperation.AlreadyExist; }
                 objBusinessUnit = _mapperFactory.Get<MasterBusinessUnitEntity, MasterBusinessUnit>(entityBusinessUnit);
                 _repository.AddAsync(objBusinessUnit);
 

@@ -53,6 +53,9 @@ namespace EmcureNPD.Business.Core.ServiceImplementations
             }
             else
             {
+                var objModelData = _repository.Exists(x => x.ProductTypeName.ToLower() == entityProductType.ProductTypeName.ToLower());
+                if (objModelData)
+                { return DBOperation.AlreadyExist; }
                 objProductType = _mapperFactory.Get<MasterProductTypeEntity, MasterProductType>(entityProductType);
                 _repository.AddAsync(objProductType);
             }

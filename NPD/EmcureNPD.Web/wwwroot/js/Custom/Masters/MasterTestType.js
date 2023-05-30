@@ -80,6 +80,7 @@ function SaveTestTypeSuccess(data) {
     }
 }
 function SaveTestTypeError(x, y, z) {
+    ErrorMessage = x.responseJSON._Message;
     toastr.error(ErrorMessage);
 }
 function CleareTestTypeFields() {

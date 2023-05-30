@@ -118,6 +118,7 @@ function SaveBusinessUnitFormSuccess(data) {
     }
 }
 function SaveBusinessUnitFormError(x, y, z) {
+    ErrorMessage = x.responseJSON._Message;
     toastr.error(ErrorMessage);
 }
 function CleareBusinessUnitFields() {

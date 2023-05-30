@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using System;
 using System.Net;
+using System.Numerics;
 using System.Threading.Tasks;
 using static EmcureNPD.Utility.Enums.GeneralEnum;
 
@@ -57,6 +58,8 @@ namespace EmcureNPD.API.Controllers.Masters
                 DBOperation oResponse = await _MasterFormRNDDivisionService.AddUpdateFormRNDDivision(oFormRNDDivision);
                 if (oResponse == DBOperation.Success)
                     return _ObjectResponse.Create(true, (Int32)HttpStatusCode.OK, (oFormRNDDivision.FormRNDDivisionId > 0 ? "Updated Successfully" : "Inserted Successfully"));
+                else if (oResponse == DBOperation.AlreadyExist)
+                { return _ObjectResponse.Create(false, (Int32)HttpStatusCode.BadRequest, (oResponse == DBOperation.AlreadyExist ? "Form RND Division Name'<b>" + oFormRNDDivision.FormRNDDivisionName + "</b>' Already Exist" : "Bad request")); }
                 else
                     return _ObjectResponse.Create(false, (Int32)HttpStatusCode.BadRequest, (oResponse == DBOperation.NotFound ? "Record not found" : "Bad request"));
             }
