@@ -317,40 +317,42 @@ function SetChildRows() {
         $(this).find("td:eq(0) input").attr("id", "PidffinaceId" + index.toString());
         $(this).find("td:eq(1) select").attr("name", "lsPidfFinanceBatchSizeCoating[" + index.toString() + "].PakeSize");
         $(this).find("td:eq(1) select").attr("id", "PakeSize" + index.toString());
-        $(this).find("td:eq(2) input").attr("name", "lsPidfFinanceBatchSizeCoating[" + index.toString() + "].BrandPrice");
-        $(this).find("td:eq(2) input").attr("id", "BrandPrice" + index.toString());
-        $(this).find("td:eq(3) input").attr("name", "lsPidfFinanceBatchSizeCoating[" + index.toString() + "].GenericListprice");
-        $(this).find("td:eq(3) input").attr("id", "GenericListprice" + index.toString());
-        $(this).find("td:eq(4) input").attr("name", "lsPidfFinanceBatchSizeCoating[" + index.toString() + "].NetRealisation");
-        $(this).find("td:eq(4) input").attr("id", "NetRealisation" + index.toString());
+        $(this).find("td:eq(2) input").attr("name", "lsPidfFinanceBatchSizeCoating[" + index.toString() + "].PackSizeValue");
+        $(this).find("td:eq(2) input").attr("id", "PackSizeValue" + index.toString());
+        $(this).find("td:eq(3) input").attr("name", "lsPidfFinanceBatchSizeCoating[" + index.toString() + "].BrandPrice");
+        $(this).find("td:eq(3) input").attr("id", "BrandPrice" + index.toString());
+        $(this).find("td:eq(4) input").attr("name", "lsPidfFinanceBatchSizeCoating[" + index.toString() + "].GenericListprice");
+        $(this).find("td:eq(4) input").attr("id", "GenericListprice" + index.toString());
+        $(this).find("td:eq(5) input").attr("name", "lsPidfFinanceBatchSizeCoating[" + index.toString() + "].NetRealisation");
+        $(this).find("td:eq(5) input").attr("id", "NetRealisation" + index.toString());
         
-        $(this).find("td:eq(5) input").attr("name", "lsPidfFinanceBatchSizeCoating[" + index.toString() + "].EstMat2020By12units");
-        $(this).find("td:eq(5) input").attr("id", "EstMat2020By12units" + index.toString());
+        $(this).find("td:eq(6) input").attr("name", "lsPidfFinanceBatchSizeCoating[" + index.toString() + "].EstMat2020By12units");
+        $(this).find("td:eq(6) input").attr("id", "EstMat2020By12units" + index.toString());
        
-        $(this).find("td:eq(6) input").attr("name", "lsPidfFinanceBatchSizeCoating[" + index.toString() + "].Marketinpacks");
-        $(this).find("td:eq(6) input").attr("id", "Marketinpacks" + index.toString());
-        $(this).find("td:eq(7) input").attr("name", "lsPidfFinanceBatchSizeCoating[" + index.toString() + "].BatchsizeinLtrTabs");
-        $(this).find("td:eq(7) input").attr("id", "BatchsizeinLtrTabs" + index.toString());
-        $(this).find("td:eq(8) input").attr("name", "lsPidfFinanceBatchSizeCoating[" + index.toString() + "].Batchsize");
-        $(this).find("td:eq(8) input").attr("id", "Batchsize" + index.toString());
-        $(this).find("td:eq(9) input").attr("name", "lsPidfFinanceBatchSizeCoating[" + index.toString() + "].Yield");
-        $(this).find("td:eq(9) input").attr("id", "Yield" + index.toString());
-        $(this).find("td:eq(10) input").attr("name", "lsPidfFinanceBatchSizeCoating[" + index.toString() + "].Batchoutput");
-        $(this).find("td:eq(10) input").attr("id", "Batchoutput" + index.toString());
-        $(this).find("td:eq(11) input").attr("name", "lsPidfFinanceBatchSizeCoating[" + index.toString() + "].ApiCad");
-        $(this).find("td:eq(11) input").attr("id", "ApiCad" + index.toString());
-        $(this).find("td:eq(12) input").attr("name", "lsPidfFinanceBatchSizeCoating[" + index.toString() + "].ExcipientsCad");
-        $(this).find("td:eq(12) input").attr("id", "ExcipientsCad" + index.toString());
-        $(this).find("td:eq(13) input").attr("name", "lsPidfFinanceBatchSizeCoating[" + index.toString() + "].PmCad");
-        $(this).find("td:eq(13) input").attr("id", "PmCad" + index.toString());
-        $(this).find("td:eq(14) input").attr("name", "lsPidfFinanceBatchSizeCoating[" + index.toString() + "].CcpcCad");
-        $(this).find("td:eq(14) input").attr("id", "CcpcCad" + index.toString());
-        $(this).find("td:eq(15) input").attr("name", "lsPidfFinanceBatchSizeCoating[" + index.toString() + "].FreightCad");
-        $(this).find("td:eq(15) input").attr("id", "FreightCad" + index.toString());
-        $(this).find("td:eq(16) input").attr("name", "lsPidfFinanceBatchSizeCoating[" + index.toString() + "].EmcureCogsPack");
-        $(this).find("td:eq(16) input").attr("id", "EmcureCogsPack" + index.toString());
-        $(this).find("td:eq(17) input").attr("name", "lsPidfFinanceBatchSizeCoating[" + index.toString() + "].PidffinaceBatchSizeCoatingId");
-        $(this).find("td:eq(17) input").attr("id", "PidffinaceBatchSizeCoatingId" + index.toString());
+        $(this).find("td:eq(7) input").attr("name", "lsPidfFinanceBatchSizeCoating[" + index.toString() + "].Marketinpacks");
+        $(this).find("td:eq(7) input").attr("id", "Marketinpacks" + index.toString());
+        $(this).find("td:eq(8) input").attr("name", "lsPidfFinanceBatchSizeCoating[" + index.toString() + "].BatchsizeinLtrTabs");
+        $(this).find("td:eq(8) input").attr("id", "BatchsizeinLtrTabs" + index.toString());
+        $(this).find("td:eq(9) input").attr("name", "lsPidfFinanceBatchSizeCoating[" + index.toString() + "].Batchsize");
+        $(this).find("td:eq(9) input").attr("id", "Batchsize" + index.toString());
+        $(this).find("td:eq(10) input").attr("name", "lsPidfFinanceBatchSizeCoating[" + index.toString() + "].Yield");
+        $(this).find("td:eq(10) input").attr("id", "Yield" + index.toString());
+        $(this).find("td:eq(11) input").attr("name", "lsPidfFinanceBatchSizeCoating[" + index.toString() + "].Batchoutput");
+        $(this).find("td:eq(11) input").attr("id", "Batchoutput" + index.toString());
+        $(this).find("td:eq(12) input").attr("name", "lsPidfFinanceBatchSizeCoating[" + index.toString() + "].ApiCad");
+        $(this).find("td:eq(13) input").attr("id", "ApiCad" + index.toString());
+        $(this).find("td:eq(13) input").attr("name", "lsPidfFinanceBatchSizeCoating[" + index.toString() + "].ExcipientsCad");
+        $(this).find("td:eq(13) input").attr("id", "ExcipientsCad" + index.toString());
+        $(this).find("td:eq(14) input").attr("name", "lsPidfFinanceBatchSizeCoating[" + index.toString() + "].PmCad");
+        $(this).find("td:eq(14) input").attr("id", "PmCad" + index.toString());
+        $(this).find("td:eq(15) input").attr("name", "lsPidfFinanceBatchSizeCoating[" + index.toString() + "].CcpcCad");
+        $(this).find("td:eq(15) input").attr("id", "CcpcCad" + index.toString());
+        $(this).find("td:eq(16) input").attr("name", "lsPidfFinanceBatchSizeCoating[" + index.toString() + "].FreightCad");
+        $(this).find("td:eq(16) input").attr("id", "FreightCad" + index.toString());
+        $(this).find("td:eq(17) input").attr("name", "lsPidfFinanceBatchSizeCoating[" + index.toString() + "].EmcureCogsPack");
+        $(this).find("td:eq(17) input").attr("id", "EmcureCogsPack" + index.toString());
+        $(this).find("td:eq(18) input").attr("name", "lsPidfFinanceBatchSizeCoating[" + index.toString() + "].PidffinaceBatchSizeCoatingId");
+        $(this).find("td:eq(18) input").attr("id", "PidffinaceBatchSizeCoatingId" + index.toString());
        
        // console.log($(this).find("td:eq(0) input").attr("name", "lsPidfFinanceBatchSizeCoating[" + index.toString() + "].PidffinaceBatchSizeCoatingId").value())
     });
@@ -760,9 +762,22 @@ function validateDuplicateSKUs() {
 //    }
 
 //});
+
+function SetExpectedFillingBatchManufacturingDate(_projStartDate){
+    var DateType = new Date(_projStartDate);
+    var _StratDate = DateType; //new Date(DateType.getFullYear() + '-' + DateType.getDate() + '-' + (DateType.getMonth() + 1));
+    var _BatchManufacturing = new Date(_StratDate.setDate(_StratDate.getDate() + 120));
+    var _ExpectedFilling = new Date(_StratDate.setDate(_StratDate.getDate() + 90));
+    $("#ExpectedFilling").val(moment(_ExpectedFilling).format("YYYY-MM-DD"));
+    $("#BatchManufacturing").val(moment(_BatchManufacturing).format("YYYY-MM-DD"));
+    GetFinancialProjectionYear(_projStartDate)
+    UpdateProjectionCommercial();
+}
+
 function GetFinancialProjectionYear(dates) {
     $(".trProjectionYear").empty();
-    //selectedCurrencyText = $(`#Currency option:selected`).text().split('-')[0];
+    //selectedCurrencyText = $(`#Currency option:selected`).text().split('-')[0];       new Date('2023-05-11')
+  
     let td = `<td class="tdCurrency">${selectedCurrencyText}</td>`;
     for (var i = 0; i < 10; i++) {
         if (i == 0) {

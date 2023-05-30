@@ -646,6 +646,15 @@ namespace EmcureNPD.Resource.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Domestic.
+        /// </summary>
+        public static string Domestic {
+            get {
+                return ResourceManager.GetString("Domestic", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Dosage Form Name.
         /// </summary>
         public static string DosageFormName {

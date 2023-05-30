@@ -56,6 +56,20 @@ namespace EmcureNPD.Business.Core.ServiceImplementations
             string[] regionList = entityBusinessUnit.RegionIds.Split(',');
             int[] regionIds = regionList.Select(int.Parse).ToArray();
 
+            if (entityBusinessUnit.IsDomestic)
+            {
+                var ListOfDomesticBU = await _repository.GetAllAsync(x => x.IsDomestic == true);
+                if (ListOfDomesticBU != null && ListOfDomesticBU.Count() > 0)
+                {
+                    foreach(var item in ListOfDomesticBU)
+                    {
+                        item.IsDomestic = false;
+						_repository.UpdateAsync(item);
+					}
+					await _unitOfWork.SaveChangesAsync();
+				}
+			}
+			
             if (entityBusinessUnit.BusinessUnitId > 0)
             {
                 objBusinessUnit = _repository.Get(entityBusinessUnit.BusinessUnitId);

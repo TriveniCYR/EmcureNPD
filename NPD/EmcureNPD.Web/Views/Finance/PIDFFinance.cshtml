@@ -217,7 +217,7 @@
 					<div class="col-md-3">
 						<div class="form-group required">
 							<label class="control-label">Project Start Date<span style="color:red;">*</span></label>
-							@Html.TextBoxFor(@modal=>modal.ProjectStartDate,"{0:yyyy-MM-dd}",new{@type="date",@class="form-control readOnlyUpdate UpdateProjectionCommercial",@required="required",@onchange="GetFinancialProjectionYear(this.value);"})
+								@Html.TextBoxFor(@modal=>modal.ProjectStartDate,"{0:yyyy-MM-dd}",new{@type="date",@class="form-control readOnlyUpdate",@required="required",@onchange="SetExpectedFillingBatchManufacturingDate(this.value);"})
 						                    <div class="invalid-feedback">
                                             Please select Project Start Date.
                                            </div>
@@ -230,7 +230,7 @@
 					<div class="col-md-3">
 						<div class="form-group required">
 							<label class="control-label">Batch Manufacturing<span style="color:red;">*</span></label>
-							@Html.TextBoxFor(@modal=>modal.BatchManufacturing,new{@class="form-control readOnlyUpdate",@required="required"})
+								@Html.TextBoxFor(@modal=>modal.BatchManufacturing,"{0:yyyy-MM-dd}",new{@type="date",@class="form-control readOnlyUpdate",@required="required"})
 						                 <div class="invalid-feedback">
                                             Please enter Batch Manufacturing.
                                            </div>
@@ -242,7 +242,7 @@
 					<div class="col-md-3">
 						<div class="form-group required">
 							<label class="control-label">Expected Filling<span style="color:red;">*</span></label>
-							@Html.TextBoxFor(@modal=>modal.ExpectedFilling,new{@class="form-control readOnlyUpdate",@required="required"})
+								@Html.TextBoxFor(@modal=>modal.ExpectedFilling,"{0:yyyy-MM-dd}",new{@type="date",@class="form-control readOnlyUpdate",@required="required"})
                                           <div class="invalid-feedback">
                                             Please enter Expected Filling.
                                            </div>

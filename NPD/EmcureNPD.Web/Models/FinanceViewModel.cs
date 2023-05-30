@@ -108,8 +108,8 @@ namespace EmcureNPD.Web.Models
         public int mspersentage { get; set; }
         public int targetPriceScenario { get; set; }
         public DateTime projectStartDate { get; set; }
-        public string batchManufacturing { get; set; }
-        public string expectedFilling { get; set; }
+        public DateTime batchManufacturing { get; set; }
+        public DateTime expectedFilling { get; set; }
         public string approvalPeriodinDays { get; set; }
         public DateTime approvalDate { get; set; }
         public DateTime productLaunchDate { get; set; }

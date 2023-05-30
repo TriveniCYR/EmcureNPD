@@ -708,4 +708,7 @@
   <data name="IsdcountryCode" xml:space="preserve">
     <value>ISD country Code</value>
   </data>
+  <data name="Domestic" xml:space="preserve">
+    <value>Domestic</value>
+  </data>
 </root>
