@@ -88,6 +88,11 @@ namespace EmcureNPD.Business.Core.ServiceImplementations
             }
             else
             {
+                var objModalData = _repository.Exists(x => x.RegionName.ToLower() == entityRegion.RegionName.ToLower());
+                if(objModalData)
+                {
+                    return DBOperation.AlreadyExist;
+                }
                 objRegion = _mapperFactory.Get<MasterRegionEntity, MasterRegion>(entityRegion);
                 _repository.AddAsync(objRegion);
 

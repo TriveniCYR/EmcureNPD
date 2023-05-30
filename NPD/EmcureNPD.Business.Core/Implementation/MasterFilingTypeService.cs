@@ -51,6 +51,9 @@ namespace EmcureNPD.Business.Core.Implementation
             }
             else
             {
+                var objModelData = _repository.Exists(x => x.FilingTypeName.ToLower() == entityFilingType.FilingTypeName.ToLower());
+                if (objModelData)
+                { return DBOperation.AlreadyExist; }
                 objFilingType = _mapperFactory.Get<MasterFilingTypeEntity, MasterFilingType>(entityFilingType);
                 _repository.AddAsync(objFilingType);
             }

@@ -51,6 +51,9 @@ namespace EmcureNPD.Business.Core.ServiceImplementations
             }
             else
             {
+                var objModelData = _repository.Exists(x => x.FormRnDdivisionName.ToLower() == entityFormRNDDivision.FormRNDDivisionName.ToLower());
+                if (objModelData)
+                { return DBOperation.AlreadyExist; }
                 objFormRNDDivision = _mapperFactory.Get<MasterFormRNDDivisionEntity, MasterFormRnDdivision>(entityFormRNDDivision);
                 _repository.AddAsync(objFormRNDDivision);
             }

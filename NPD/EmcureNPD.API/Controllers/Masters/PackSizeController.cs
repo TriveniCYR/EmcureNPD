@@ -57,6 +57,8 @@ namespace EmcureNPD.API.Controllers.Masters
                 DBOperation oResponse = await _MasterPackSizeService.AddUpdatePackSize(oPackSize);
                 if (oResponse == DBOperation.Success)
                     return _ObjectResponse.Create(true, (Int32)HttpStatusCode.OK, (oPackSize.PackSizeId > 0 ? "Updated Successfully" : "Inserted Successfully"));
+                else if (oResponse == DBOperation.AlreadyExist)
+                { return _ObjectResponse.Create(false, (Int32)HttpStatusCode.BadRequest, (oResponse == DBOperation.AlreadyExist ? "Pack Size Name'<b>" + oPackSize.PackSizeName + "</b>' Already Exist" : "Bad request")); }
                 else
                     return _ObjectResponse.Create(false, (Int32)HttpStatusCode.BadRequest, (oResponse == DBOperation.NotFound ? "Record not found" : "Bad request"));
             }

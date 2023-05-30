@@ -56,8 +56,11 @@ namespace EmcureNPD.Business.Core.ServiceImplementations
                 }
             }
             else
-            {
-                objDosageForm = _mapperFactory.Get<MasterDosageFormEntity, MasterDosageForm>(entityDosageForm);
+            { 
+                var objModelData = _repository.Exists(x => x.DosageFormName.ToLower() == entityDosageForm.DosageFormName.ToLower());
+            if (objModelData)
+            { return DBOperation.AlreadyExist; }
+            objDosageForm = _mapperFactory.Get<MasterDosageFormEntity, MasterDosageForm>(entityDosageForm);
                 _repository.AddAsync(objDosageForm);
             }
 

@@ -94,6 +94,9 @@ namespace EmcureNPD.Business.Core.ServiceImplementations
             }
             else
             {
+                var objModelData = _repository.Exists(x => x.CurrencyName.ToLower() == entityCurrency.CurrencyName.ToLower());
+                if (objModelData)
+                { return DBOperation.AlreadyExist; }
                 objCurrency = _mapperFactory.Get<MasterCurrencyEntity, MasterCurrency>(entityCurrency);
                 _repository.AddAsync(objCurrency);
 

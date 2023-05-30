@@ -79,6 +79,7 @@ function SavePackSizeSuccess(data) {
     }
 }
 function SavePackSizeError(x, y, z) {
+    ErrorMessage = x.responseJSON._Message;
     toastr.error(ErrorMessage);
 }
 function ClearePackSizeFields() {

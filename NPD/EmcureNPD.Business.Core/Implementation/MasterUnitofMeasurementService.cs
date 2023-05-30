@@ -51,6 +51,9 @@ namespace EmcureNPD.Business.Core.ServiceImplementations
             }
             else
             {
+                var objModelData = _repository.Exists(x => x.UnitofMeasurementName.ToLower() == entityUnitofMeasurement.UnitofMeasurementName.ToLower());
+                if (objModelData)
+                { return DBOperation.AlreadyExist; }
                 objUnitofMeasurement = _mapperFactory.Get<MasterUnitofMeasurementEntity, MasterUnitofMeasurement>(entityUnitofMeasurement);
                 _repository.AddAsync(objUnitofMeasurement);
             }

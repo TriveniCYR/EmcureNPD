@@ -77,6 +77,7 @@ function SaveDosageFormFormSuccess(data) {
     }
 }
 function SaveDosageFormFormError(x, y, z) {
+    ErrorMessage = x.responseJSON._Message;
     toastr.error(ErrorMessage);
 }
 function CleareDosageFormFields() {

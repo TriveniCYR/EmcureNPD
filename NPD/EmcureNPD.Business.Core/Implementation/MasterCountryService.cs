@@ -57,6 +57,9 @@ namespace EmcureNPD.Business.Core.ServiceImplementations
             }
             else
             {
+                var objModelData = _repository.Exists(x=>x.CountryName.ToLower()== entityCountry.CountryName.ToLower());
+                if(objModelData)
+                { return DBOperation.AlreadyExist; }
                 objCountry = _mapperFactory.Get<MasterCountryEntity, MasterCountry>(entityCountry);
                 _repository.AddAsync(objCountry);
             }

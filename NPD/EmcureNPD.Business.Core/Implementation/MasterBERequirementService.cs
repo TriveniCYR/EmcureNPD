@@ -55,6 +55,9 @@ namespace EmcureNPD.Business.Core.ServiceImplementations
                 }
                 else
                 {
+                    var objModelData = _repository.Exists(x => x.BerequirementName.ToLower() == entityBERequirement.BERequirementName.ToLower());
+                    if (objModelData)
+                    { return DBOperation.AlreadyExist; }
                     objBERequirement = _mapperFactory.Get<MasterBERequirementEntity, MasterBerequirement>(entityBERequirement);
                     _repository.AddAsync(objBERequirement);
                 }

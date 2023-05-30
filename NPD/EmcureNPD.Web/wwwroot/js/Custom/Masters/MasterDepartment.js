@@ -115,6 +115,7 @@ function SaveDepartmentFormSuccess(data) {
     }
 }
 function SaveDepartmentFormError(x, y, z) {
+    ErrorMessage = x.responseJSON._Message;
     toastr.error(ErrorMessage);
 }
 function CleareDepartmentFields() {

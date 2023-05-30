@@ -57,6 +57,9 @@ namespace EmcureNPD.Business.Core.ServiceImplementations
             }
             else
             {
+                var objModelData = _repository.Exists(x => x.DosageName.ToLower() == entityDosage.DosageName.ToLower());
+                if (objModelData)
+                { return DBOperation.AlreadyExist; }
                 objDosage = _mapperFactory.Get<MasterDosageEntity, MasterDosage>(entityDosage);
                 _repository.AddAsync(objDosage);
             }
