@@ -763,7 +763,7 @@ function GetPBFDropdownSuccess(data) {
             $('#FillingTypeId').append(_emptyOption);
             $('#PbfFormRNDDivisionId').append(_emptyOption);
             $('#PbfPackagingTypeId').append(_emptyOption);
-            $('#PbfManufacturingId').append(_emptyOption);
+           // $('#PbfManufacturingId').append(_emptyOption);
             $('#PbfRFDCountryId').append(_emptyOption);
             $('#ProductTypeId').append(_emptyOption);
             $('#GeneralProjectComplexity').append(_emptyOption);
@@ -791,9 +791,9 @@ function GetPBFDropdownSuccess(data) {
             $(data.MasterPackagingType).each(function (index, item) {
                 $('#PbfPackagingTypeId').append('<option value="' + item.packagingTypeId + '">' + item.packagingTypeName + '</option>');
             });
-            $(data.MasterManufacturing).each(function (index, item) {
-                $('#PbfManufacturingId').append('<option value="' + item.manufacturingId + '">' + item.manufacturingName + '</option>');
-            });
+            //$(data.MasterManufacturing).each(function (index, item) {
+            //    $('#PbfManufacturingId').append('<option value="' + item.manufacturingId + '">' + item.manufacturingName + '</option>');
+            //});
             $(data.MasterCountry).each(function (index, item) {
                 $('#PbfRFDCountryId').append('<option value="' + item.countryID + '">' + item.countryName + '</option>');
             });
@@ -849,7 +849,7 @@ function GetPBFDropdownSuccess(data) {
                     $('#FillingTypeId').val($('#hdnFillingTypeId').val() == 0 ? "" : $('#hdnFillingTypeId').val());
                     $('#PbfFormRNDDivisionId').val($('#hdnPbfFormRNDDivisionId').val() == 0 ? "" : $('#hdnPbfFormRNDDivisionId').val());
                     $('#PbfPackagingTypeId').val($('#hdnPbfPackagingTypeId').val() == 0 ? "" : $('#hdnPbfPackagingTypeId').val());
-                    $('#PbfManufacturingId').val($('#hdnPbfManufacturingId').val() == 0 ? "" : $('#hdnPbfManufacturingId').val());
+                   // $('#PbfManufacturingId').val($('#hdnPbfManufacturingId').val() == 0 ? "" : $('#hdnPbfManufacturingId').val());
                     $('#PbfRFDCountryId').val($('#hdnPbfRFDCountryId').val() == 0 ? "" : $('#hdnPbfRFDCountryId').val());
                     $('#ProductTypeId').val($('#hdnProductTypeId').val() == 0 ? "" : $('#hdnProductTypeId').val());
                     $('#GeneralProjectComplexity').val($('#hdnGeneralProjectComplexity').val() == 0 ? "" : $('#hdnGeneralProjectComplexity').val());
@@ -891,7 +891,7 @@ function GetPBFTabDetailsSuccess(data) {
             CreatePhaseWiseBudgetTable();
             CreateTotalExpensesTable();
             var _emptyOption = '<option value="">-- Select --</option>';
-            PBFBindStrength(data.PIDFPBFGeneralStrength);
+           // PBFBindStrength(data.PIDFPBFGeneralStrength);
             BindClinical(data.PBFClinicalEntity);
             BindAnalytical(data.PBFAnalyticalEntity, data.PBFAnalyticalCostEntity);
             $('#RNDBatchSizeId').append(_emptyOption);
@@ -1273,7 +1273,7 @@ function CreateAnalyticalTable(costData, data, activityTypeId) {
             objectname += '<tr  id="analyticalRow" class="analyticalactivity analyticalActivity' + (activityTypeId) + '" data-activitytypeid="' + activityTypeId + '">'
                 + '<td><select class="form-control readonlyUpdate AnalyticalTestTypeId"><option value = "" > --Select --</option ></select><input type="hidden" value="' + (data.length > 0 ? data[a].testTypeId : "") + '" /></td>'
                 + '<td><input type="number" class="form-control totalAnalytical analyticalNumberOfTest" min="0" value="' + (data.length > 0 ? data[a].numberoftests : "") + '"  /></td>'
-                + '<td><input type="text" class="form-control totalAnalytical analyticalPrototypeDevelopment" value="' + (data.length > 0 ? data[a].prototypeDevelopment : "") + '"  /></td>'
+               /* + '<td><input type="text" class="form-control totalAnalytical analyticalPrototypeDevelopment" value="' + (data.length > 0 ? data[a].prototypeDevelopment : "") + '"  /></td>'*/
                 + '<td><input type="number" class="form-control totalAnalytical analyticalRsTest" min="0" value="' + (data.length > 0 ? data[a].costPerTest : "") + '"  /></td>'
             for (var i = 0; i < _strengthArray.length; i++) {
                 objectname += '<td data-strengthid="' + _strengthArray[i].pidfProductStrengthId + '"><input class="analyticalTypeId" type="hidden" value="' + activityTypeId + '" /><input type="hidden" class="analyticalStrengthId" value="' + _strengthArray[i].pidfProductStrengthId + '" /><input type="number" class="form-control analyticalStrengthValue" min="0" value="' + (data.length > 0 ? getValueFromStrengthTestTypeId(data, _strengthArray[i].pidfProductStrengthId, "prototypeCost", data[a].testTypeId) : "") + '" /></td>';
@@ -1312,8 +1312,8 @@ function CreateAnalyticalTable(costData, data, activityTypeId) {
 function BindAnalytical(data, costData) {
     var analyticalactivityHTML = '<thead class="bg-primary text-bold"><tr>'
         + '<td>Test Type</td>'
-        + '<td>Number of tests</td>'
-        + '<td>Prototype Development</td>'
+        + '<td>Number of sample</td>'
+       /* + '<td>Prototype Development</td>'*/
         + '<td>Rs /test</td>'
     $.each(_strengthArray, function (index, item) {
         analyticalactivityHTML += '<td>' + getStrengthName(item.pidfProductStrengthId) + ' (Prototype Cost)</td>';
@@ -1449,7 +1449,7 @@ function SetAnalyticalChildRows() {
             var TestTypeId = $(this).find(".AnalyticalTestTypeId").val();
             var ActivityTypeId = $(this).find(".analyticalTypeId").val();
             var Numberoftests = $(this).find(".analyticalNumberOfTest").val();
-            var PrototypeDevelopment = $(this).find(".analyticalPrototypeDevelopment").val();
+            var PrototypeDevelopment = '100' // $(this).find(".analyticalPrototypeDevelopment").val();
             var CostPerTest = $(this).find(".analyticalRsTest").val();
 
             $.each($(this).find(".analyticalStrengthId"), function (index, item) {

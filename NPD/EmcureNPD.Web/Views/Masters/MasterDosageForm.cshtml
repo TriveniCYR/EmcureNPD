@@ -3,14 +3,14 @@
 @using EmcureNPD.Web.Controllers
 @using Microsoft.AspNetCore.Mvc.Localization
 @inject IHttpContextAccessor HttpContextAccessor
-@inject Microsoft.Extensions.Localization.IStringLocalizer<MastersController> MasterLocalizer
+@inject Microsoft.Extensions.Localization.IStringLocalizer<EmcureNPD.Resource.Master> MasterLocalizer
 @inject Microsoft.Extensions.Localization.IStringLocalizer<EmcureNPD.Resource.Shared> SharedLocalizer
 @using Microsoft.Extensions.Configuration
 @inject IConfiguration Configuration
 
 @model EmcureNPD.Business.Models.MasterDosageFormEntity
 @{
-	ViewData["Title"] = @MasterLocalizer["Dosage Form - Emcure NPD"];
+	ViewData["Title"] = @MasterLocalizer["Dosage Type - Emcure NPD"];
 	RolePermissionModel objPermssion = (RolePermissionModel)ViewBag.Access;
 	string IsAddAllow = (objPermssion.Add) ? "" : "display: none";
 	string IsEditAllow = (objPermssion.Edit) ? "" : "display: none";
@@ -19,7 +19,7 @@
 }
 <div class="content-header">
 	<div class="container-fluid d-flex justify-content-between">
-		<h3>@MasterLocalizer["Dosage Form"]</h3>
+		<h3>@MasterLocalizer["DosageForms"]</h3>
 		<div>
 			<a style="@IsAddAllow" class="btn btn-primary" data-toggle="modal" data-target="#SaveDosageFormModel" data-backdrop="static" data-keyboard="false" onclick="AddDosageForm();"><i class="far fa-plus-square mr-1"></i> @SharedLocalizer["Add"]</a>
 		</div>
@@ -29,7 +29,7 @@
 	<table id="DosageFormTable" class="table table-bordered table-striped table-hover" style="width:100%">
 		<thead>
 			<tr>
-				<th>@MasterLocalizer["Dosage Form"]</th>
+				<th>@MasterLocalizer["DosageForms"]</th>
 				<th>@SharedLocalizer["Status"]</th>
 				<th class="text-center">@SharedLocalizer["Action"]</th>
 			</tr>
@@ -83,9 +83,9 @@
 					<div class="row">
 						<div class="col-md-12">
 							<div class="form-group required">
-								@Html.LabelFor(model => model.DosageFormName,"Dosage Form Name", new { @class = "control-label" })
+								@Html.LabelFor(model => model.DosageFormName,"Dosage Type Name", new { @class = "control-label" })
 								<span class="text-danger">*</span>
-								@Html.EditorFor(model => model.DosageFormName, new { htmlAttributes = new { @autocomplete = "off", @class = "form-control checkbox-checked", @placeholder = @SharedLocalizer["Dosage Form Name"] } })
+								@Html.EditorFor(model => model.DosageFormName, new { htmlAttributes = new { @autocomplete = "off", @class = "form-control checkbox-checked", @placeholder = @SharedLocalizer["Dosage Type Name"] } })
 								@Html.ValidationMessageFor(model => model.DosageFormName, "", new { @class = "text-danger" })
 							</div>
 						</div>
@@ -128,8 +128,8 @@
 		var ErrorMessage = "@SharedLocalizer["Error"]";
 		var RecordInsertUpdate = "@SharedLocalizer["RecordInsertUpdate"]";
 		var RecordDelete = "@SharedLocalizer["RecordDelete"]";
-		var AddLabel = "@SharedLocalizer["Add Dosage Form"]";
-		var UpdateLabel = "@SharedLocalizer["Edit Dosage Form"]";
+		var AddLabel = "@SharedLocalizer["Add Dosage Type"]";
+		var UpdateLabel = "@SharedLocalizer["Edit Dosage Type"]";
 				//#endregion
 	</script>
 }

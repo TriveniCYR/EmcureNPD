@@ -91,14 +91,14 @@
             //---------------------End-MS%_Row-------------------------------------------------------   
             //---------------------Start-NSP_Row-------------------------------------------------------
             html += "<tr class='" + _uniqueClass + "'><td>NSP</td><td>" + trObj.hdnNSPLow + "</td><td>" + trObj.hdnNSPMid + "</td><td>" + trObj.hdnNSPHigh + "</td><td>NSP</td>";
-            var nsp_Percentage = GetNSPPercentage(trObj.hdnNSPLow, trObj.hdnNSPMid, trObj.hdnNSPHigh);
+            var nsp_val = GetNSPPercentage(trObj.hdnNSPLow, trObj.hdnNSPMid, trObj.hdnNSPHigh);
             // let marketInPacks = formatToNumber($(this).find('.Marketinpacks').val());
             let nsp_Erosion = formatToNumber($("#PriceErosion").val(), true);
 
             for (var i = 0; i < 10; i++) {
                 var Row_th_Index = $('#tblCommercialPerPack').find('.thYearCounter:eq(' + i + ')').text();
                 var trYearIndex = formatToNumber((Row_th_Index == '-') ? '0' : Row_th_Index);
-                let _units = (nsp_Percentage / 100) * (Math.pow((1 - (nsp_Erosion / 100)), trYearIndex))
+                let _units = (nsp_val) * (Math.pow((1 - (nsp_Erosion / 100)), trYearIndex))
                 _units = isNaN(_units) ? 0 : _units;
                 html += "<td>" + _units.toFixed(3) + "</td>";
                 NSP_td_data.push(_units);
@@ -108,12 +108,12 @@
             //---------------------Start-COGS_Row-------------------------------------------------------
             html += "<tr class='" + _uniqueClass + "'><td>COGS</td><td>" + trObj.emcureCOGs_pack + "</td><td>" + trObj.emcureCOGs_pack + "</td><td>" + trObj.emcureCOGs_pack + "</td><td>COGS/Unit</td>";
             let COGS_Escalation = formatToNumber($("#EscalationinCOGS").val(), true);
-            var COGS_Percentage = GetCOGSPercentage(trObj.emcureCOGs_pack, trObj.emcureCOGs_pack, trObj.emcureCOGs_pack);
+            var COGS_val = GetCOGSPercentage(trObj.emcureCOGs_pack, trObj.emcureCOGs_pack, trObj.emcureCOGs_pack);
             for (var i = 0; i < 10; i++) {
                 var Row_th_Index = $('#tblCommercialPerPack').find('.thYearCounter:eq(' + i + ')').text();
                 var trYearIndex = formatToNumber((Row_th_Index == '-') ? '0' : Row_th_Index);
 
-                let _units = (COGS_Percentage / 100) * (Math.pow((1 + (COGS_Escalation / 100)), trYearIndex))
+                let _units = (COGS_val) * (Math.pow((1 + (COGS_Escalation / 100)), trYearIndex))
 
                 _units = isNaN(_units) ? 0 : _units;
                 html += "<td>" + _units.toFixed(3) + "</td>";

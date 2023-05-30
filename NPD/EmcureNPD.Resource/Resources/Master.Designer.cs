@@ -385,6 +385,15 @@ namespace EmcureNPD.Resource.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Budget Approval.
+        /// </summary>
+        public static string BudgetApproval {
+            get {
+                return ResourceManager.GetString("BudgetApproval", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Business Unit Name.
         /// </summary>
         public static string BusinessUnitName {
@@ -646,7 +655,7 @@ namespace EmcureNPD.Resource.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Dosage Form.
+        ///   Looks up a localized string similar to Dosage Type.
         /// </summary>
         public static string DosageForms {
             get {
@@ -970,15 +979,6 @@ namespace EmcureNPD.Resource.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Management Approval.
-        /// </summary>
-        public static string Management {
-            get {
-                return ResourceManager.GetString("Management", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to Manhour Estimates.
         /// </summary>
         public static string ManhourEstimates {
@@ -1150,7 +1150,7 @@ namespace EmcureNPD.Resource.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Oral Name.
+        ///   Looks up a localized string similar to Dosage Form.
         /// </summary>
         public static string OralName {
             get {
