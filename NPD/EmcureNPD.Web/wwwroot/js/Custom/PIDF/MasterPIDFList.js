@@ -31,7 +31,7 @@ $(document).ready(function () {
 });
 
 function InitializePIDFList() {
-    var setDefaultOrder = [23, 'desc'];
+    var setDefaultOrder = [22, 'desc'];
     var ajaxObject = {
         "url": $('#hdnBaseURL').val() + AllPIDF + "?ScreenId=" + _screenId,
         "type": "POST",
