@@ -39,6 +39,8 @@ $(document).ready(function () {
         $(`.NetRealisation`).attr("readonly", true);
         $(`.EstMat2020By12units`).attr("readonly", true);
         $(`.Marketinpacks`).attr("readonly", true);
+        $(`.BatchsizeinLtrTabs`).attr("readonly", true);
+        $(`.PackSizeValue`).attr("readonly", true);
     }
 
     $("#Currency").select2({
@@ -503,7 +505,9 @@ function GetSkus(pidfId) {
                         $(`input#NetRealisation${i}.NetRealisation`).attr("readonly", true);
                         $(`input#EstMat2020By12units${i}.EstMat2020By12units`).attr("readonly", true);
                         $(`input#Marketinpacks${i}.Marketinpacks`).attr("readonly", true);
-
+                        $(`input#PackSizeValue${i}.PackSizeValue`).attr("readonly", true);
+                        $(`input#BatchsizeinLtrTabs${i}.BatchsizeinLtrTabs`).attr("readonly", true);
+                        
                     }
                 });
                 
