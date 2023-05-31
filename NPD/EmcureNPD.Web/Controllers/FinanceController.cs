@@ -77,7 +77,7 @@ namespace EmcureNPD.Web.Controllers
                         model.ApprovalPeriodinDays = data.table[0].approvalPeriodinDays;
                         model.ApprovalDate = data.table[0].approvalDate;
                         model.ProductLaunchDate = data.table[0].productLaunchDate;
-                        model.GestationPeriodinYears = data.table[0].gestationPeriodinYears;
+                        model.GestationPeriodinYears = Convert.ToDecimal(data.table[0].gestationPeriodinYears);
                         model.MarketShareErosionrate = Convert.ToDecimal(data.table[0].marketShareErosionrate);
                         model.PriceErosion = Convert.ToDecimal(data.table[0].priceErosion);
                         model.EscalationinCOGS = data.table[0].EscalationinCOGS;

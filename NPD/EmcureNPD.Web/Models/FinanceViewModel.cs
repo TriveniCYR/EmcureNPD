@@ -113,7 +113,7 @@ namespace EmcureNPD.Web.Models
         public string approvalPeriodinDays { get; set; }
         public DateTime approvalDate { get; set; }
         public DateTime productLaunchDate { get; set; }
-        public int gestationPeriodinYears { get; set; }
+        public double gestationPeriodinYears { get; set; }
         public double marketShareErosionrate { get; set; }
         public double priceErosion { get; set; }
         public string EscalationinCOGS { get; set; }
