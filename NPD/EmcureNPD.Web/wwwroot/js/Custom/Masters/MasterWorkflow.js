@@ -77,6 +77,7 @@ function SaveWorkflowFormSuccess(data) {
     }
 }
 function SaveWorkflowFormError(x, y, z) {
+    ErrorMessage = x.responseJSON._Message;
     toastr.error(ErrorMessage);
 }
 function CleareWorkflowFields() {

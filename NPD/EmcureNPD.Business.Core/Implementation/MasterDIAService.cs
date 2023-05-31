@@ -51,6 +51,9 @@ namespace EmcureNPD.Business.Core.ServiceImplementations
             }
             else
             {
+                var objModelData = _repository.Exists(x => x.Dianame.ToLower() == entityDIA.DIAName.ToLower());
+                if (objModelData)
+                { return DBOperation.AlreadyExist; }
                 objDIA = _mapperFactory.Get<MasterDIAEntity, MasterDium>(entityDIA);
                 _repository.AddAsync(objDIA);
             }

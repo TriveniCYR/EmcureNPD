@@ -32,6 +32,7 @@
 			<tr>
 				<th>@MasterLocalizer["Business Unit"]</th>
 				<th>@SharedLocalizer["Status"]</th>
+				<th>@SharedLocalizer["IsDomestic"]</th>
 				<th class="text-center">@SharedLocalizer["Action"]</th>
 			</tr>
 		</thead>
@@ -112,10 +113,16 @@
 						</div>
 					</div>
 					<div class="row">
-						<div class="col-md-12">
+						<div class="col-md-6">
 							<div class="required">
 								@Html.CheckBoxFor(model => model.MasterBusinessUnitEntity.IsActive, new { @class = "checkbox-checked", @role="switch", @checked = "checked" })
 								@Html.LabelFor(model => model.MasterBusinessUnitEntity.IsActive)
+							</div>
+						</div>
+						<div class="col-md-6">
+							<div class="required">
+								@Html.CheckBoxFor(model => model.MasterBusinessUnitEntity.IsDomestic, new { @class = "checkbox-checked", @role="switch", @checked = "checked" })
+								@Html.LabelFor(model => model.MasterBusinessUnitEntity.IsDomestic)
 							</div>
 						</div>
 					</div>

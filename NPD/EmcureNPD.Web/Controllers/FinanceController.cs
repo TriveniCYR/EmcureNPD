@@ -72,12 +72,12 @@ namespace EmcureNPD.Web.Controllers
                         model.Mspersentage = data.table[0].mspersentage;
                         model.TargetPriceScenario = data.table[0].targetPriceScenario;
                         model.ProjectStartDate = data.table[0].projectStartDate;
-                        model.BatchManufacturing = data.table[0].batchManufacturing;
-                        model.ExpectedFilling = data.table[0].expectedFilling;
+                        model.BatchManufacturing = (data.table[0].batchManufacturing);
+                        model.ExpectedFilling = (data.table[0].expectedFilling);
                         model.ApprovalPeriodinDays = data.table[0].approvalPeriodinDays;
                         model.ApprovalDate = data.table[0].approvalDate;
                         model.ProductLaunchDate = data.table[0].productLaunchDate;
-                        model.GestationPeriodinYears = data.table[0].gestationPeriodinYears;
+                        model.GestationPeriodinYears = Convert.ToDecimal(data.table[0].gestationPeriodinYears);
                         model.MarketShareErosionrate = Convert.ToDecimal(data.table[0].marketShareErosionrate);
                         model.PriceErosion = Convert.ToDecimal(data.table[0].priceErosion);
                         model.EscalationinCOGS = data.table[0].EscalationinCOGS;

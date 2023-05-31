@@ -100,6 +100,9 @@ namespace EmcureNPD.Business.Core.ServiceImplementations
             }
             else
             {
+                var objModelData = _repository.Exists(x => x.DepartmentName.ToLower() == entityDepartment.DepartmentName.ToLower());
+                if (objModelData)
+                { return DBOperation.AlreadyExist; }
                 objDepartment = _mapperFactory.Get<MasterDepartmentEntity, MasterDepartment>(entityDepartment);
                 _repository.AddAsync(objDepartment);
 

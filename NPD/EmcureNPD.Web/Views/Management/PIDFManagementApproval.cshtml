@@ -5,17 +5,16 @@
 @inject IHttpContextAccessor HttpContextAccessor
 @inject IHelper Helper
 @inject IConfiguration Configuration
-@inject Microsoft.Extensions.Localization.IStringLocalizer<MastersController> MasterLocalizer
+@inject Microsoft.Extensions.Localization.IStringLocalizer<EmcureNPD.Resource.Master> MasterLocalizer
 @inject Microsoft.Extensions.Localization.IStringLocalizer<EmcureNPD.Resource.Shared> SharedLocalizer
 @using EmcureNPD.Utility.Utility
 @using EmcureNPD.Utility.Enums
-@using Microsoft.AspNetCore.Mvc.Localization
 @using EmcureNPD.Utility.Models;
 @using EmcureNPD.Business.Models
 @using Microsoft.Extensions.Configuration;
 @model EmcureNPD.Business.Models.ProjectsModel
 @{
-    ViewData["Title"] = @MasterLocalizer["Management Approval"];
+    ViewData["Title"] = @MasterLocalizer["BudgetApproval"];
     int CurrentUserId = Helper.GetLoggedInUserId();
     var PidafId = Context.Request.Query["pidfid"];
     var PidfNumber = UtilityHelper.Decreypt(Convert.ToString(PidafId));
@@ -34,7 +33,7 @@
 
 <div class="content-header">
     <div class="container-fluid d-flex justify-content-between">
-        <h3>Management Approval</h3>
+        <h3>@MasterLocalizer["BudgetApproval"]</h3>
         <div>
             @*<a class="btn btn-success mr-2" id="btnExportToPdf" title="ExportToPdf"><i class="fa fa-file-pdf-o" aria-hidden="true"></i>PDF</a>*@
             <a class="btn btn-success mr-3" id="btnPrintPDF" title="Print"><i class="fa fa-file-pdf-o" aria-hidden="true"></i></a>
@@ -49,7 +48,7 @@
     <div class="card-header p-0 pt-1">
         <ul class="nav nav-tabs text-center m-0" id="MangmentApprovalTabs">           
             <li class="nav-item p-0">
-                <a id="dvPBFCharter" class="nav-link" onClick="Project_ChartertabClick()" > Project Charter </a>
+                <a id="dvPBFCharter" class="nav-link" onClick="Project_ChartertabClick()" > Finance Charter </a>
                 </li>
             <li class="nav-item p-0">
                 <a id="dvProjectCharter" class="nav-link" onClick="PBFtabClick()"> PBF Charter </a>
@@ -110,7 +109,23 @@
                             {
                                 <td class="text-start">
                                     <span id="lblProjectCode">
-                                        @item1.ProjectCode
+                                       @* @item1.ProjectCode*@
+                                    </span>
+                                </td>
+                            }
+                        }
+                    </tr>
+                    <tr>
+                        <td class="text-start">
+                            Imprinting Embossing Code
+                        </td>
+                        @if (Model.lsProjectStrength.Count > 0)
+                        {
+                            @foreach (var item1 in Model.lsProjectStrength)
+                            {
+                                <td class="text-start">
+                                    <span id="lblImprintingEmbossingCode">
+                                       @* @item1.ProjectCode*@
                                     </span>
                                 </td>
                             }
@@ -783,8 +798,9 @@
 </div>
 
 
-<div class="ProjectCharter" > <h2>Project Charter</h2>
-    <div class="col-12">
+<div class="ProjectCharter" style="background-color:white;overflow-x:auto;">
+    <h2>Finance Charter</h2>
+    <div class="col-12 table-overflow">
         <table id="tblCommercialPerPack" class="table table-bordered text-center mb-4">
         </table>
         <table id="tblOutputGridFinanceProjection" class="table table-bordered text-center mb-4">

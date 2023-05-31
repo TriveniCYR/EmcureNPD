@@ -166,7 +166,7 @@
     <value>Email Address</value>
   </data>
   <data name="DosageForms" xml:space="preserve">
-    <value>Dosage Form</value>
+    <value>Dosage Type</value>
   </data>
   <data name="ExipientName" xml:space="preserve">
     <value>Exipient Name</value>
@@ -205,7 +205,7 @@
     <value>Molecule Name</value>
   </data>
   <data name="OralName" xml:space="preserve">
-    <value>Oral Name</value>
+    <value>Dosage Form</value>
   </data>
   <data name="PackagingTypeName" xml:space="preserve">
     <value>Packaging Type Name</value>
@@ -297,8 +297,8 @@
   <data name="IPDManagement" xml:space="preserve">
     <value>IPD Management</value>
   </data>
-  <data name="Management" xml:space="preserve">
-    <value>Management Approval</value>
+  <data name="BudgetApproval" xml:space="preserve">
+    <value>Budget Approval</value>
   </data>
   <data name="PBFAPI" xml:space="preserve">
     <value>PBF &amp; API</value>
@@ -707,5 +707,8 @@
   </data>
   <data name="IsdcountryCode" xml:space="preserve">
     <value>ISD country Code</value>
+  </data>
+  <data name="Domestic" xml:space="preserve">
+    <value>Domestic</value>
   </data>
 </root>

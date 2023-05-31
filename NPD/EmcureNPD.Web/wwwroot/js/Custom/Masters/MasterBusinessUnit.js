@@ -34,7 +34,7 @@ function GetBusinessUnitListSuccess(data) {
         destoryStaticDataTable('#BusinessUnitTable');
         $('#BusinessUnitTable tbody').html('');
         $.each(data._object, function (index, object) {
-            $('#BusinessUnitTable tbody').append('<tr><td>' + object.businessUnitName + '</td><td><span style="color:' + (object.isActive ? "green" : "red") + '">' + (object.isActive ? "Active" : "InActive") + '</span></td><td>  <a class="large-font" style="' + IsEditAllow + '" href="" title="Edit" data-toggle="modal" data-target="#SaveBusinessUnitModel" data-backdrop="static" data-keyboard="false"  onclick="GetBusinessUnitById(' + object.businessUnitId + '); return false;"><i class="fa fa-fw fa-edit mr-1"></i> ' + '</a><a class="large-font text-danger" style="' + IsDeleteAllow +'" href="" title="Delete" data-toggle="modal" data-target="#DeleteBusinessUnitModel" data-backdrop="static" data-keyboard="false" onclick="ConfirmationDeleteBusinessUnit(' + object.businessUnitId + '); return false;"><i class="fa fa-fw fa-trash mr-1"></i> ' + '</a>  </td></tr>');
+            $('#BusinessUnitTable tbody').append('<tr><td>' + object.businessUnitName + '</td><td><span style="color:' + (object.isActive ? "green" : "red") + '">' + (object.isActive ? "Active" : "InActive") + '</span></td><td><span style="color:' + (object.isDomestic ? "green" : "red") + '">' + (object.isDomestic ? "Domestic" : "NonDomestic") + '</span></td><td>  <a class="large-font" style="' + IsEditAllow + '" href="" title="Edit" data-toggle="modal" data-target="#SaveBusinessUnitModel" data-backdrop="static" data-keyboard="false"  onclick="GetBusinessUnitById(' + object.businessUnitId + '); return false;"><i class="fa fa-fw fa-edit mr-1"></i> ' + '</a><a class="large-font text-danger" style="' + IsDeleteAllow +'" href="" title="Delete" data-toggle="modal" data-target="#DeleteBusinessUnitModel" data-backdrop="static" data-keyboard="false" onclick="ConfirmationDeleteBusinessUnit(' + object.businessUnitId + '); return false;"><i class="fa fa-fw fa-trash mr-1"></i> ' + '</a>  </td></tr>');
         });
         StaticDataTable("#BusinessUnitTable");
     } catch (e) {
@@ -72,6 +72,12 @@ function GetBusinessUnitByIdSuccess(data) {
         else {
             $('#SaveBusinessUnitModel #MasterBusinessUnitEntity_IsActive').prop('checked', true);
         }
+        if (!data._object.isDomestic) {
+            $('#SaveBusinessUnitModel #MasterBusinessUnitEntity_IsDomestic').prop('checked', false);
+        }
+        else {
+            $('#SaveBusinessUnitModel #MasterBusinessUnitEntity_IsDomestic').prop('checked', true);
+        }
     }
     catch (e) {
         toastr.error('Error:' + e.message);
@@ -92,6 +98,7 @@ function SaveBusinessUnitForm(form) {
         businessUnitId: $('#SaveBusinessUnitModel #BusinessUnitID').val(),
         businessUnitName: $('#SaveBusinessUnitModel #MasterBusinessUnitEntity_BusinessUnitName').val(),
         isActive: $('#SaveBusinessUnitModel #MasterBusinessUnitEntity_IsActive').prop('checked'),
+        isDomestic: $('#SaveBusinessUnitModel #MasterBusinessUnitEntity_IsDomestic').prop('checked'),
         regionIds: $('#RegionId').val().toString(),
         masterBusinessRegionMappingIds: $('#SaveBusinessUnitModel #BusinessUnitRegionMappingId').val(),
         Latitude: $('#SaveBusinessUnitModel #MasterBusinessUnitEntity_Latitude').val(),
@@ -118,10 +125,12 @@ function SaveBusinessUnitFormSuccess(data) {
     }
 }
 function SaveBusinessUnitFormError(x, y, z) {
+    ErrorMessage = x.responseJSON._Message;
     toastr.error(ErrorMessage);
 }
 function CleareBusinessUnitFields() {
     $('#SaveBusinessUnitModel #MasterBusinessUnitEntity_IsActive').prop('checked', true);
+    $('#SaveBusinessUnitModel #MasterBusinessUnitEntity_IsDomestic').prop('checked', true);
     $('#SaveBusinessUnitModel #BusinessUnitID').val("0");
     $('#SaveBusinessUnitModel #MasterBusinessUnitEntity_BusinessUnitName').val("");
     $('#SaveBusinessUnitModel #MasterBusinessUnitEntity_Latitude').val("");

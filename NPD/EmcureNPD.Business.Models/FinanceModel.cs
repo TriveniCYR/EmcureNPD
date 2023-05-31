@@ -22,12 +22,12 @@ namespace EmcureNPD.Business.Models
 		public int? Mspersentage { get; set; }
 		public int? TargetPriceScenario { get; set; }
 		public DateTime ProjectStartDate { get; set; }
-		public string BatchManufacturing { get; set; }
-		public string ExpectedFilling { get; set; }
+		public DateTime BatchManufacturing { get; set; }
+		public DateTime ExpectedFilling { get; set; }
 		public string ApprovalPeriodinDays { get; set; }
 		public DateTime ApprovalDate { get; set; }
 		public DateTime? ProductLaunchDate { get; set; }
-		public int? GestationPeriodinYears { get; set; }
+		public decimal? GestationPeriodinYears { get; set; }
 		public decimal? MarketShareErosionrate { get; set; }
 		public decimal? PriceErosion { get; set; }
 		public string EscalationinCOGS { get; set; }

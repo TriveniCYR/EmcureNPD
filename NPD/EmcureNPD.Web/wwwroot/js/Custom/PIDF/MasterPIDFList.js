@@ -95,19 +95,19 @@ function InitializePIDFList() {
             "data": "brandName", "title": "Brand Name", "sClass": "pidf-110"
         },
         {
-            "data": "dosageFormName", "title": "Dosage Form", "sClass": "pidf-110"
+            "data": "dosageFormName", "title": "Dosage Type", "sClass": "pidf-110"
         },
         {
             "data": "businessUnitName", "title": "Business Unit", "sClass": "pidf-110"
         },
         {
-            "data": "oralName", "title": "Oral Name", "sClass": "pidf-110"
+            "data": "oralName", "title": "Dosage Form", "sClass": "pidf-110"
         },
-        {
-            "data": "inHouses", "title": "In House", "sClass": "pidf-80", "render": function (data, type, row, meta) {
-                return (data ? "Yes" : "No");
-            }
-        },
+        //{
+        //    "data": "inHouses", "title": "In House", "sClass": "pidf-80", "render": function (data, type, row, meta) {
+        //        return (data ? "Yes" : "No");
+        //    }
+        //},
         {
             "data": "ipd", "title": "IPD", "sClass": "pidf-50", "render": function (data, type, row, meta) {
                 return '<span style="display:none;">' + (data ? "Yes" : "No") + '</span><a class="small-button btn btn-' + (row.ipd ? "success" : "danger") + '"><i class="fa ' + (row.ipd ? "fa-check" : "fa-remove") + '"></i></a>';

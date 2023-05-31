@@ -57,6 +57,8 @@ namespace EmcureNPD.API.Controllers.Masters
                 DBOperation oResponse = await _MasterWorkflowService.AddUpdateWorkflow(oWorkflow);
                 if (oResponse == DBOperation.Success)
                     return _ObjectResponse.Create(true, (Int32)HttpStatusCode.OK, (oWorkflow.WorkflowId > 0 ? "Updated Successfully" : "Inserted Successfully"));
+                else if (oResponse == DBOperation.AlreadyExist)
+                { return _ObjectResponse.Create(false, (Int32)HttpStatusCode.BadRequest, (oResponse == DBOperation.AlreadyExist ? "Work Flow Name'<b>" + oWorkflow.WorkflowName + "</b>' Already Exist" : "Bad request")); }
                 else
                     return _ObjectResponse.Create(false, (Int32)HttpStatusCode.BadRequest, (oResponse == DBOperation.NotFound ? "Record not found" : "Bad request"));
             }

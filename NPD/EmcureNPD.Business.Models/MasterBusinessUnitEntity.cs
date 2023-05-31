@@ -23,6 +23,8 @@ namespace EmcureNPD.Business.Models
 		public float? Latitude { get; set; }
 		public float? Longitude { get; set; }
 		public string EncBusinessUnitId { get; set; }
+		[Display(Name = "Domestic", ResourceType = typeof(Master))]
+		public bool IsDomestic { get; set; }
 	}
 
     public class BusinessUnitViewModel

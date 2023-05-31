@@ -117,6 +117,7 @@ function SaveCurrencyFormSuccess(data) {
     }
 }
 function SaveCurrencyFormError(x, y, z) {
+    ErrorMessage = x.responseJSON._Message;
     toastr.error(ErrorMessage);
 }
 function CleareCurrencyFields() {

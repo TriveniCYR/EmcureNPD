@@ -206,7 +206,7 @@ namespace EmcureNPD.Business.Core.Implementation
                     newFinanceEntity.TargetPriceScenario = entityPidfFinance.TargetPriceScenario;
                     newFinanceEntity.ProjectStartDate = entityPidfFinance.ProjectStartDate;
                     newFinanceEntity.BatchManufacturing = entityPidfFinance.BatchManufacturing;
-                    newFinanceEntity.ExpectedFilling = entityPidfFinance.ExpectedFilling;
+                    newFinanceEntity.ExpectedFilling = (entityPidfFinance.ExpectedFilling);
                     newFinanceEntity.ApprovalPeriodinDays = entityPidfFinance.ApprovalPeriodinDays;
                     newFinanceEntity.ApprovalDate = entityPidfFinance.ApprovalDate;
                     newFinanceEntity.ProductLaunchDate = entityPidfFinance.ProductLaunchDate;

@@ -30,6 +30,7 @@ namespace EmcureNPD.Data.DataAccess.Entity
         public DateTime? ModifyDate { get; set; }
         public float? Latitude { get; set; }
         public float? Longitude { get; set; }
+        public bool? IsDomestic { get; set; }
 
         public virtual ICollection<MasterBusinessUnitRegionMapping> MasterBusinessUnitRegionMappings { get; set; }
         public virtual ICollection<MasterDepartmentBusinessUnitMapping> MasterDepartmentBusinessUnitMappings { get; set; }

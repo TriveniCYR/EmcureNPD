@@ -217,7 +217,7 @@
 					<div class="col-md-3">
 						<div class="form-group required">
 							<label class="control-label">Project Start Date<span style="color:red;">*</span></label>
-							@Html.TextBoxFor(@modal=>modal.ProjectStartDate,"{0:yyyy-MM-dd}",new{@type="date",@class="form-control readOnlyUpdate UpdateProjectionCommercial",@required="required",@onchange="GetFinancialProjectionYear(this.value);"})
+								@Html.TextBoxFor(@modal=>modal.ProjectStartDate,"{0:yyyy-MM-dd}",new{@type="date",@class="form-control readOnlyUpdate",@required="required",@onchange="SetExpectedFillingBatchManufacturingDate(this.value);"})
 						                    <div class="invalid-feedback">
                                             Please select Project Start Date.
                                            </div>
@@ -230,7 +230,7 @@
 					<div class="col-md-3">
 						<div class="form-group required">
 							<label class="control-label">Batch Manufacturing<span style="color:red;">*</span></label>
-							@Html.TextBoxFor(@modal=>modal.BatchManufacturing,new{@class="form-control readOnlyUpdate",@required="required"})
+								@Html.TextBoxFor(@modal=>modal.BatchManufacturing,"{0:yyyy-MM-dd}",new{@type="date",@class="form-control readOnlyUpdate",@required="required"})
 						                 <div class="invalid-feedback">
                                             Please enter Batch Manufacturing.
                                            </div>
@@ -242,7 +242,7 @@
 					<div class="col-md-3">
 						<div class="form-group required">
 							<label class="control-label">Expected Filling<span style="color:red;">*</span></label>
-							@Html.TextBoxFor(@modal=>modal.ExpectedFilling,new{@class="form-control readOnlyUpdate",@required="required"})
+								@Html.TextBoxFor(@modal=>modal.ExpectedFilling,"{0:yyyy-MM-dd}",new{@type="date",@class="form-control readOnlyUpdate",@required="required"})
                                           <div class="invalid-feedback">
                                             Please enter Expected Filling.
                                            </div>
@@ -1052,7 +1052,7 @@
 									     
 									     @*<td><input type="number" id="Cagrover2016By12estMatunits" name="lsPidfFinanceBatchSizeCoating[@j].Cagrover2016By12estMatunits" value="@item.Cagrover2016By12estMatunits"  class="Cagrover2016By12estMatunits form-control readOnlyUpdate" /></td>*@
 									     <td><input type="text" id="@dbMarketinpacks" readonly="readonly" name="lsPidfFinanceBatchSizeCoating[@j].Marketinpacks" value="@item.Marketinpacks"  class="Marketinpacks form-control readOnlyUpdate" /></td>
-                                            <td><input type="number" id="BatchsizeinLtrTabs" name="lsPidfFinanceBatchSizeCoating[@j].BatchsizeinLtrTabs" value="@item.BatchsizeinLtrTabs" onchange="calculateBatchSizeCaoting(this);" class="BatchsizeinLtrTabs form-control readOnlyUpdate" /></td>
+											<td><input type="number" readonly id="BatchsizeinLtrTabs" name="lsPidfFinanceBatchSizeCoating[@j].BatchsizeinLtrTabs" value="@item.BatchsizeinLtrTabs" onchange="calculateBatchSizeCaoting(this);" class="BatchsizeinLtrTabs form-control readOnlyUpdate" /></td>
 									
 
 									    <td>
@@ -1100,6 +1100,7 @@
 							int j = 0;
 
                                     string dbPakeSize = "PakeSize" + @j;
+									string dbPackSizeValue = "PackSizeValue" + @j;
                                     string dbBrandPrice="BrandPrice" + @j;
                                     string dbGenericListprice="GenericListprice"+@j;
                                     string dbNetRealisation="NetRealisation"+@j;
@@ -1122,6 +1123,7 @@
                                         <input type="hidden" id="hdnNSPMid" />
                                         <input type="hidden" id="hdnNSPHigh" />
                                         </td>
+										<td><input type="number" id="@dbPackSizeValue" readonly name="lsPidfFinanceBatchSizeCoating[@j].PackSizeValue" class="PackSizeValue form-control readOnlyUpdate" /></td>
                                         <td><input type="number" id="@dbBrandPrice" readonly name="lsPidfFinanceBatchSizeCoating[@j].BrandPrice" class="BrandPrice form-control readOnlyUpdate" /></td>
 									    <td><input type="number" id="@dbGenericListprice" readonly name="lsPidfFinanceBatchSizeCoating[@j].GenericListprice"  onchange="calculateBatchSizeCaoting(this);" class="GenericListprice form-control readOnlyUpdate"  ></td>
                                         <td><input type="text" id="@dbNetRealisation" readonly name="lsPidfFinanceBatchSizeCoating[@j].NetRealisation" class="NetRealisation form-control readOnlyUpdate"></td>

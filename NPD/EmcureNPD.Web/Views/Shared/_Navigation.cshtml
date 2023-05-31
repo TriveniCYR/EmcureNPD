@@ -142,7 +142,7 @@
 									<a href="@Url.Action("PIDFList","PIDF", new { ScreenId = Convert.ToString((int)EmcureNPD.Utility.Enums.PIDFScreen.Management)})" class="nav-link">
 										<i class="nav-icon fas fa-book"></i>
 										<p>
-											@MasterLocalizer["Management"]
+											@MasterLocalizer["BudgetApproval"]
 										</p>
 									</a>
 								</li>
@@ -283,18 +283,25 @@
 									<p>Dosage</p>
 								</a>
 							</li>
+								<li class="nav-item">
+									<a href="@Url.Action("MasterOral", "Masters")" class="nav-link">
+										<i class="far fa-circle nav-icon text-info"></i>
+										<p>Dosage Form</p>
+									</a>
+								</li>
 							<li class="nav-item">
 								<a href="@Url.Action("MasterDosageForm", "Masters")" class="nav-link">
 									<i class="far fa-circle nav-icon text-info"></i>
-									<p>Dosage Form</p>
+									<p>Dosage Type</p>
 								</a>
 							</li>
-							<li class="nav-item">
-								<a href="@Url.Action("MasterOral", "Masters")" class="nav-link">
-									<i class="far fa-circle nav-icon text-info"></i>
-									<p>Oral</p>
-								</a>
-							</li>
+							
+								<li class="nav-item">
+									<a href="@Url.Action("MasterBatchSizeNumber", "Masters")" class="nav-link">
+										<i class="far fa-circle nav-icon text-info"></i>
+										<p>Dosage Formulation</p>
+									</a>
+								</li>
 							<li class="nav-item">
 								<a href="@Url.Action("MasterAPISourcing", "Masters")" class="nav-link">
 									<i class="far fa-circle nav-icon text-info"></i>
@@ -326,12 +333,7 @@
 									<p>Analytical GL</p>
 								</a>
 							</li>*@
-							<li class="nav-item">
-								<a href="@Url.Action("MasterBatchSizeNumber", "Masters")" class="nav-link">
-									<i class="far fa-circle nav-icon text-info"></i>
-									<p>Batch Size Number</p>
-								</a>
-							</li>
+						
 							@*<li class="nav-item">
 								<a href="@Url.Action("MasterProductStrength", "Masters")" class="nav-link">
 									<i class="far fa-circle nav-icon text-info"></i>

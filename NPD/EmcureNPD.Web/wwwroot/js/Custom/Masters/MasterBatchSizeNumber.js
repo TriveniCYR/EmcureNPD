@@ -77,6 +77,7 @@ function SaveBatchSizeNumberFormSuccess(data) {
     }
 }
 function SaveBatchSizeNumberFormError(x, y, z) {
+    ErrorMessage = x.responseJSON._Message;
     toastr.error(ErrorMessage);
 }
 function CleareBatchSizeNumberFields() {

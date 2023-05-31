@@ -79,6 +79,7 @@ function SaveCountryFormSuccess(data) {
     }
 }
 function SaveCountryFormError(x, y, z) {
+    ErrorMessage = x.responseJSON._Message;
     toastr.error(ErrorMessage);
 }
 function CleareCountryFields() {

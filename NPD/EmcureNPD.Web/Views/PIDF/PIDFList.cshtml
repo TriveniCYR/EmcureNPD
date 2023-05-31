@@ -6,7 +6,7 @@
 @using EmcureNPD.Web.Helpers;
 
 @inject IHttpContextAccessor HttpContextAccessor
-@inject Microsoft.Extensions.Localization.IStringLocalizer<MastersController> MasterLocalizer
+@inject Microsoft.Extensions.Localization.IStringLocalizer<EmcureNPD.Resource.Master> MasterLocalizer
 @inject Microsoft.Extensions.Localization.IStringLocalizer<EmcureNPD.Resource.Shared> SharedLocalizer
 @inject IHelper Helper
 @using Microsoft.Extensions.Configuration
@@ -56,7 +56,7 @@
         }
         else if (Context.Request.Query["ScreenId"] == Convert.ToString((int)EmcureNPD.Utility.Enums.PIDFScreen.Management))
         {
-            <h3>@SharedLocalizer["Management"]</h3>
+            <h3>@MasterLocalizer["BudgetApproval"]</h3>
             ScreenModuleID = (int)ModulePermissionEnum.ManagementHOD;
             
         } 

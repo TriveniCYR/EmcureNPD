@@ -91,14 +91,14 @@
             //---------------------End-MS%_Row-------------------------------------------------------   
             //---------------------Start-NSP_Row-------------------------------------------------------
             html += "<tr class='" + _uniqueClass + "'><td>NSP</td><td>" + trObj.hdnNSPLow + "</td><td>" + trObj.hdnNSPMid + "</td><td>" + trObj.hdnNSPHigh + "</td><td>NSP</td>";
-            var nsp_Percentage = GetNSPPercentage(trObj.hdnNSPLow, trObj.hdnNSPMid, trObj.hdnNSPHigh);
+            var nsp_val = GetNSPPercentage(trObj.hdnNSPLow, trObj.hdnNSPMid, trObj.hdnNSPHigh);
             // let marketInPacks = formatToNumber($(this).find('.Marketinpacks').val());
             let nsp_Erosion = formatToNumber($("#PriceErosion").val(), true);
 
             for (var i = 0; i < 10; i++) {
                 var Row_th_Index = $('#tblCommercialPerPack').find('.thYearCounter:eq(' + i + ')').text();
                 var trYearIndex = formatToNumber((Row_th_Index == '-') ? '0' : Row_th_Index);
-                let _units = (nsp_Percentage / 100) * (Math.pow((1 - (nsp_Erosion / 100)), trYearIndex))
+                let _units = (nsp_val) * (Math.pow((1 - (nsp_Erosion / 100)), trYearIndex))
                 _units = isNaN(_units) ? 0 : _units;
                 html += "<td>" + _units.toFixed(3) + "</td>";
                 NSP_td_data.push(_units);
@@ -108,12 +108,12 @@
             //---------------------Start-COGS_Row-------------------------------------------------------
             html += "<tr class='" + _uniqueClass + "'><td>COGS</td><td>" + trObj.emcureCOGs_pack + "</td><td>" + trObj.emcureCOGs_pack + "</td><td>" + trObj.emcureCOGs_pack + "</td><td>COGS/Unit</td>";
             let COGS_Escalation = formatToNumber($("#EscalationinCOGS").val(), true);
-            var COGS_Percentage = GetCOGSPercentage(trObj.emcureCOGs_pack, trObj.emcureCOGs_pack, trObj.emcureCOGs_pack);
+            var COGS_val = GetCOGSPercentage(trObj.emcureCOGs_pack, trObj.emcureCOGs_pack, trObj.emcureCOGs_pack);
             for (var i = 0; i < 10; i++) {
                 var Row_th_Index = $('#tblCommercialPerPack').find('.thYearCounter:eq(' + i + ')').text();
                 var trYearIndex = formatToNumber((Row_th_Index == '-') ? '0' : Row_th_Index);
 
-                let _units = (COGS_Percentage / 100) * (Math.pow((1 + (COGS_Escalation / 100)), trYearIndex))
+                let _units = (COGS_val) * (Math.pow((1 + (COGS_Escalation / 100)), trYearIndex))
 
                 _units = isNaN(_units) ? 0 : _units;
                 html += "<td>" + _units.toFixed(3) + "</td>";
@@ -304,7 +304,7 @@ function RenderFinanceProjection() {
         html += "<tr class='lblHeading bg-light'><td colspan='13' >Expenses as defined as per profit share agreement</td>";
 
         /*-----------MA Annual fees--------------------------*/
-        var Marketing_Allowance_Value = $('#MarketingAllowance').val(); // G20
+        var Marketing_Allowance_Value = formatToNumber($('#MarketingAllowance').val()) / 100; // G20
         html += "<tr class='lblHeading'><td colspan='3' >MA Annual fees</td>";
         for (var i = 0; i < 10; i++) {
             let result = Marketing_Allowance_Value * SumOfGrossSales[i];
@@ -319,7 +319,7 @@ function RenderFinanceProjection() {
         }
         html += "</tr>";
         /*-----------Opex--------------------------*/
-        var Opexasapercenttosale = $('#Opexasapercenttosale').val(); // G21
+        var Opexasapercenttosale =  formatToNumber($('#Opexasapercenttosale').val())/100; // G21
         html += "<tr class='lblHeading'><td colspan='3' >Opex</td>";
         for (var i = 0; i < 10; i++) {
             let result = Opexasapercenttosale * SumOfGrossSales[i];
@@ -348,7 +348,7 @@ function RenderFinanceProjection() {
         }
         html += "</tr>";
         /*-----------Profit Share--------------------------*/
-        var Profit_Share_Value = $('#ExternalProfitSharepercent').val(); // G16
+        var Profit_Share_Value = formatToNumber($('#ExternalProfitSharepercent').val()) / 100; // G16
         html += "<tr class='lblHeading'><td colspan='3' > Profit Share</td>";
         for (var i = 0; i < 10; i++) {
             let result = EBITDA_projection[i] * Profit_Share_Value;
@@ -358,12 +358,12 @@ function RenderFinanceProjection() {
         html += "</tr>";
         html += "<tr class='lblHeading bg-light emptyRow'><td colspan='13' ></td>";
         /*-----------MA Annual fees--------------------------*/
-        var Marketing_Allowance_Value = $('#MarketingAllowance').val(); // G20
-        html += "<tr class='lblHeading'><td colspan='3' >MA Annual fees</td>";
-        for (var i = 0; i < 10; i++) {
-            let result = Marketing_Allowance_Value * SumOfGrossSales[i];
-            result = isNaN(result) ? 0 : result; html += "<td>" + result.toFixed(3) + "</td>";
-        }
+        //var Marketing_Allowance_Value = $('#MarketingAllowance').val(); // G20
+        //html += "<tr class='lblHeading'><td colspan='3' >MA Annual fees</td>";
+        //for (var i = 0; i < 10; i++) {
+        //    let result = Marketing_Allowance_Value * SumOfGrossSales[i];
+        //    result = isNaN(result) ? 0 : result; html += "<td>" + result.toFixed(3) + "</td>";
+        //}
         html += "</tr>";
         /*-----------Net Income - PBT--------------------------*/
         var Net_Income_PBT_projection_data = [];
@@ -384,10 +384,10 @@ function RenderFinanceProjection() {
         html += "</tr>";
         html += "<tr class='lblHeading bg-light emptyRow'><td colspan='13' ></td>";
         /*-----------Tax--------------------------*/
-        var Incometaxrate_Value = $('#Incometaxrate').val(); // G14
+        var Incometaxrate_Value = formatToNumber($('#Incometaxrate').val())/100 ; // G14
         html += "<tr class='lblHeading'><td colspan='3' >Tax</td>";
         for (var i = 0; i < 10; i++) {
-            let result = Net_Income_PBT_projection_data[i] / Incometaxrate_Value;
+            let result = Net_Income_PBT_projection_data[i] * Incometaxrate_Value;
             result = isNaN(result) ? 0 : result; html += "<td>" + result.toFixed(3) + "</td>";
         }
         html += "</tr>";
@@ -397,7 +397,7 @@ function RenderFinanceProjection() {
         var Net_Income_PAT_projection_data = [];
         html += "<tr class='lblHeading'><td colspan='3' >Net Income - PAT</td>";
         for (var i = 0; i < 10; i++) {
-            let result = Net_Income_PBT_projection_data[i] - (Net_Income_PBT_projection_data[i] / Incometaxrate_Value);
+            let result = Net_Income_PBT_projection_data[i] - (Net_Income_PBT_projection_data[i]*Incometaxrate_Value);
             Net_Income_PAT_projection_data.push(result);
             result = isNaN(result) ? 0 : result; html += "<td>" + result.toFixed(3) + "</td>";
         }
@@ -483,6 +483,7 @@ function RenderFinanceProjection() {
         var cost_Value = $('#RandDanalyticalcost').val();
         var compareDate_string = $('#RandDanalyticalcostPhaseEndDate').val();
         var compareDate = (compareDate_string != "") ? new Date(compareDate_string) : new Date();
+        compareDate.setMonth(compareDate.getMonth() + 1);
         for (var i = 0; i < 10; i++) {
             let result = 0;
             if (i == 0) {
@@ -490,10 +491,10 @@ function RenderFinanceProjection() {
             } else {
                 result = (compareDate <= Projection_Year_data[i] && compareDate > Projection_Year_data[i - 1]) ? -cost_Value : 0;
             }
-            result = result - (1 - (Incometaxrate_Value / 100))
+            result = result * (1 - (Incometaxrate_Value))
 
             result = isNaN(result) ? 0 : result;
-            html += "<td>" + result.toFixed(3) + "</td>";
+            html += "<td>" + result.toFixed() + "</td>";
             RnD_analytical_cost_projection_data.push(result);
         }
         html += "</tr>";
@@ -503,6 +504,7 @@ function RenderFinanceProjection() {
         var cost_Value = $('#Rldsamplecost').val();
         var compareDate_string = $('#RldsamplecostPhaseEndDate').val();
         var compareDate = (compareDate_string != "") ? new Date(compareDate_string) : new Date();
+        compareDate.setMonth(compareDate.getMonth() + 1);
         for (var i = 0; i < 10; i++) {
             let result = 0;
             if (i == 0) {
@@ -510,10 +512,10 @@ function RenderFinanceProjection() {
             } else {
                 result = (compareDate <= Projection_Year_data[i] && compareDate > Projection_Year_data[i - 1]) ? -cost_Value : 0;
             }
-            result = result - (1 - (Incometaxrate_Value / 100))
+            result = result * (1 - (Incometaxrate_Value))
 
             result = isNaN(result) ? 0 : result;
-            html += "<td>" + result.toFixed(3) + "</td>";
+            html += "<td>" + result.toFixed() + "</td>";
             RLD_sample_projection_data.push(result);
         }
         html += "</tr>";
@@ -523,6 +525,7 @@ function RenderFinanceProjection() {
         var cost_Value = $('#BatchmanufacturingcostOrApiactualsEst').val();
         var compareDate_string = $('#BatchmanufacturingcostOrApiactualsEstPhaseEndDate').val();
         var compareDate = (compareDate_string != "") ? new Date(compareDate_string) : new Date();
+        compareDate.setMonth(compareDate.getMonth() + 1);
         for (var i = 0; i < 10; i++) {
             let result = 0;
             if (i == 0) {
@@ -530,10 +533,10 @@ function RenderFinanceProjection() {
             } else {
                 result = (compareDate <= Projection_Year_data[i] && compareDate > Projection_Year_data[i - 1]) ? -cost_Value : 0;
             }
-            result = result - (1 - (Incometaxrate_Value / 100))
+            result = result *(1 - (Incometaxrate_Value))
 
 
-            result = isNaN(result) ? 0 : result; html += "<td>" + result.toFixed(3) + "</td>";
+            result = isNaN(result) ? 0 : result; html += "<td>" + result.toFixed() + "</td>";
             Batch_manufacturing_projection_data.push(result);
         }
         html += "</tr>";
@@ -543,6 +546,7 @@ function RenderFinanceProjection() {
         var cost_Value = $('#Sixmonthsstabilitycost').val();
         var compareDate_string = $('#SixmonthsstabilitycostPhaseEndDate').val();
         var compareDate = (compareDate_string != "") ? new Date(compareDate_string) : new Date();
+        compareDate.setMonth(compareDate.getMonth() + 1);
         for (var i = 0; i < 10; i++) {
             let result = 0;
             if (i == 0) {
@@ -550,9 +554,9 @@ function RenderFinanceProjection() {
             } else {
                 result = (compareDate <= Projection_Year_data[i] && compareDate > Projection_Year_data[i - 1]) ? -cost_Value : 0;
             }
-            result = result - (1 - (Incometaxrate_Value / 100))
+            result = result * (1 - (Incometaxrate_Value))
 
-            result = isNaN(result) ? 0 : result; html += "<td>" + result.toFixed(3) + "</td>";
+            result = isNaN(result) ? 0 : result; html += "<td>" + result.toFixed() + "</td>";
             Sixmonths_stability_costprojection_data.push(result);
         }
         html += "</tr>";
@@ -562,6 +566,7 @@ function RenderFinanceProjection() {
         var cost_Value = $('#TechTransfer').val();
         var compareDate_string = $('#TechTransferPhaseEndDate').val();
         var compareDate = (compareDate_string != "") ? new Date(compareDate_string) : new Date();
+        compareDate.setMonth(compareDate.getMonth() + 1);
         for (var i = 0; i < 10; i++) {
             let result = 0;
             if (i == 0) {
@@ -569,9 +574,9 @@ function RenderFinanceProjection() {
             } else {
                 result = (compareDate <= Projection_Year_data[i] && compareDate > Projection_Year_data[i - 1]) ? -cost_Value : 0;
             }
-            result = result - (1 - (Incometaxrate_Value / 100))
+            result = result * (1 - (Incometaxrate_Value))
 
-            result = isNaN(result) ? 0 : result; html += "<td>" + result.toFixed(3) + "</td>";
+            result = isNaN(result) ? 0 : result; html += "<td>" + result.toFixed() + "</td>";
             Tech_Transfer_projection_data.push(result);
         }
         html += "</tr>";
@@ -581,6 +586,7 @@ function RenderFinanceProjection() {
         var cost_Value = $('#Bestudies').val();
         var compareDate_string = $('#BestudiesPhaseEndDate').val();
         var compareDate = (compareDate_string != "") ? new Date(compareDate_string) : new Date();
+        compareDate.setMonth(compareDate.getMonth() + 1);
         for (var i = 0; i < 10; i++) {
             let result = 0;
             if (i == 0) {
@@ -588,9 +594,9 @@ function RenderFinanceProjection() {
             } else {
                 result = (compareDate <= Projection_Year_data[i] && compareDate > Projection_Year_data[i - 1]) ? -cost_Value : 0;
             }
-            result = result - (1 - (Incometaxrate_Value / 100))
+            result = result * (1 - (Incometaxrate_Value))
 
-            result = isNaN(result) ? 0 : result; html += "<td>" + result.toFixed(3) + "</td>";
+            result = isNaN(result) ? 0 : result; html += "<td>" + result.toFixed() + "</td>";
             BE_studies_projection_data.push(result);
         }
         html += "</tr>";
@@ -600,6 +606,7 @@ function RenderFinanceProjection() {
         var cost_Value = $('#Filingfees').val();
         var compareDate_string = $('#FilingfeesPhaseEndDate').val();
         var compareDate = (compareDate_string != "") ? new Date(compareDate_string) : new Date();
+        compareDate.setMonth(compareDate.getMonth() + 1);
         for (var i = 0; i < 10; i++) {
             let result = 0;
             if (i == 0) {
@@ -607,9 +614,9 @@ function RenderFinanceProjection() {
             } else {
                 result = (compareDate <= Projection_Year_data[i] && compareDate > Projection_Year_data[i - 1]) ? -cost_Value : 0;
             }
-            result = result - (1 - (Incometaxrate_Value / 100))
+            result = result * (1 - (Incometaxrate_Value))
 
-            result = isNaN(result) ? 0 : result; html += "<td>" + result.toFixed(3) + "</td>";
+            result = isNaN(result) ? 0 : result; html += "<td>" + result.toFixed() + "</td>";
             Filing_fees_projection_data.push(result);
         }
         html += "</tr>";
@@ -619,6 +626,7 @@ function RenderFinanceProjection() {
         var cost_Value = $('#ToolingAndChangeParts').val();
         var compareDate_string = $('#ToolingAndChangePartsPhaseEndDate').val();
         var compareDate = (compareDate_string != "") ? new Date(compareDate_string) : new Date();
+        compareDate.setMonth(compareDate.getMonth() + 1);
         for (var i = 0; i < 10; i++) {
             let result = 0;
             if (i == 0) {
@@ -626,9 +634,9 @@ function RenderFinanceProjection() {
             } else {
                 result = (compareDate <= Projection_Year_data[i] && compareDate > Projection_Year_data[i - 1]) ? -cost_Value : 0;
             }
-            result = result - (1 - (Incometaxrate_Value / 100))
+            result = result * (1 - (Incometaxrate_Value))
 
-            result = isNaN(result) ? 0 : result; html += "<td>" + result.toFixed(3) + "</td>";
+            result = isNaN(result) ? 0 : result; html += "<td>" + result.toFixed() + "</td>";
             Other_fees_projection_data.push(result);
         }
         html += "</tr>";
@@ -728,13 +736,13 @@ function RenderFinanceProjection() {
                         result = -Cumulative_cash_flow_projection_data[i - 1] / NetCashFlow_projection_data[i] * 12;
                     }
                     else {
-                        Operating_Months_Projection_data[i];
+                        result = Operating_Months_Projection_data[i];
                     }
                 }
             }
 
 
-            result = isNaN(result) ? 0 : result; html += "<td>" + result.toFixed(3) + "</td>";
+            result = isNaN(result) ? 0 : result; html += "<td>" + result + "</td>";
             Simple_payback_Projection.push(result);
         }
         html += "</tr>";
@@ -752,12 +760,12 @@ function RenderFinanceProjection() {
                         result = -Cumulative_Discount_cash_flow_projection_data[i - 1] / Discount_Cash_Flow_Projection[i] * 12;
                     }
                     else {
-                        Operating_Months_Projection_data[i];
+                        result =   Operating_Months_Projection_data[i];
                     }
                 }
             }
 
-            result = isNaN(result) ? 0 : result; html += "<td>" + result.toFixed(3) + "</td>";
+            result = isNaN(result) ? 0 : result; html += "<td>" + result + "</td>";
             Discounted_payback_Projection.push(result);
         }
         html += "</tr>";
@@ -803,14 +811,14 @@ function GetMarketSharePercentage(low, mid, high) {
     let marketSharePercentage = 0;
     try {
         if ($('#MSPersentage').val() == "1") {
-            marketSharePercentage = parseInt(low);
+            marketSharePercentage = parseFloat(low);
         } else if ($('#MSPersentage').val() == "2") {
-            marketSharePercentage = parseInt(mid);
+            marketSharePercentage = parseFloat(mid);
         } else if ($('#MSPersentage').val() == "3") {
-            marketSharePercentage = parseInt(high);
+            marketSharePercentage = parseFloat(high);
         }
         else {
-            marketSharePercentage = parseInt(low);
+            marketSharePercentage = parseFloat(low);
         }
     } catch (e) {
     }
@@ -820,13 +828,13 @@ function GetNSPPercentage(low, mid, high) {
     let NSPPercentage = 0;
     try {
         if ($('#TargetPriceScenario').val() == "1") {
-            NSPPercentage = parseInt(low);
+            NSPPercentage = parseFloat(low);
         } else if ($('#TargetPriceScenario').val() == "2") {
-            NSPPercentage = parseInt(mid);
+            NSPPercentage = parseFloat(mid);
         } else if ($('#TargetPriceScenario').val() == "3") {
-            NSPPercentage = parseInt(high);
+            NSPPercentage = parseFloat(high);
         } else {
-            NSPPercentage = parseInt(low);
+            NSPPercentage = parseFloat(low);
         }
     } catch (e) {
     }
@@ -836,13 +844,13 @@ function GetCOGSPercentage(low, mid, high) {
     let COGSPercentage = 0;
     try {
         if ($('#TargetPriceScenario').val() == "1") {
-            COGSPercentage = parseInt(low);
+            COGSPercentage = parseFloat(low);
         } else if ($('#TargetPriceScenario').val() == "2") {
-            COGSPercentage = parseInt(mid);
+            COGSPercentage = parseFloat(mid);
         } else if ($('#TargetPriceScenario').val() == "3") {
-            COGSPercentage = parseInt(high);
+            COGSPercentage = parseFloat(high);
         } else {
-            COGSPercentage = parseInt(low);
+            COGSPercentage = parseFloat(low);
         }
     } catch (e) {
     }
@@ -853,7 +861,7 @@ function formatToNumber(input, isFloat) {
         if (isFloat) {
             return parseFloat(input);
         } else {
-            return parseInt(input);
+            return parseFloat(input);
         }
     } catch (e) {
         return 0;

@@ -96,6 +96,7 @@ function SavePackingTypeSuccess(data) {
     }
 }
 function SavePackingTypeError(x, y, z) {
+    ErrorMessage = x.responseJSON._Message;
     toastr.error(ErrorMessage);
 }
 function ClearePackingTypeFields() {
