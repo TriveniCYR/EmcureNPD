@@ -24,21 +24,28 @@ $.fn.select2.amd.define('select2/selectAllAdapter', [
         }
         $rendered.find('.select2-dropdown').prepend($btnContainer);
         $selectAll.on('click', function (e) {
-            var $results = $rendered.find('.select2-results__option[aria-selected=false]');
-            $results.each(function () {
-                self.trigger('select', {
-                    data: $(this).data('data')
-                });
-            });
+            //var allOption = [];
+            //var $results = $rendered.find('.select2-results__option[aria-selected=false]');
+            //$results.each(function () {
+            //    allOption.push($(this).data('data').id);
+            //    //self.trigger('select', {
+            //    //    data: $(this).data('data')
+            //    //});
+            //});
+            //self.$element.val(allOption).trigger("change");
+            self.$element.find("option").prop('selected', true);
+            self.$element.trigger("change");
             self.trigger('close');
         });
         $unselectAll.on('click', function (e) {
-            var $results = $rendered.find('.select2-results__option[aria-selected=true]');
-            $results.each(function () {
-                self.trigger('unselect', {
-                    data: $(this).data('data')
-                });
-            });
+            var allOption = [];
+            self.$element.val(allOption).trigger("change");     
+            //var $results = $rendered.find('.select2-results__option[aria-selected=true]');
+            //$results.each(function () {
+            //    self.trigger('unselect', {
+            //        data: $(this).data('data')
+            //    });
+            //});
             self.trigger('close');
         });
         return $rendered;
