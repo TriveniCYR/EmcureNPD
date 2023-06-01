@@ -435,5 +435,18 @@ $('.form-control').focusout(function () {
     if (str.slice(-1) == " ") {
         text = str.slice(0, -1) + "";
     }
-    $(this).val(text);
+    if (str.charAt(0) == " ") {
+        text = str.substr(1);
+    }
+    let newValue = text.trim();
+    $(this).val(newValue);
+})
+$('.form-control').keyup(function () {
+    let str = $(this).val();
+    let newValue=str
+        .replace(/\b\s+/g, " ")
+        .trimStart()
+        .trimEnd();
+    $(this).val(newValue);
+  
 })
