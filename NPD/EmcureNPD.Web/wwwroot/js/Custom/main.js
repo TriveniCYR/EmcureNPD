@@ -429,3 +429,11 @@ function preventCharacters(evt) {
     }
     else { !/(^\d*\.?\d*$)|(Backspace|Control|Meta|a)/.test(evt.key) && evt.preventDefault() }
 }
+$('.form-control').focusout(function () {
+    let str = $(this).val();
+    let text = str;
+    if (str.slice(-1) == " ") {
+        text = str.slice(0, -1) + "";
+    }
+    $(this).val(text);
+})
