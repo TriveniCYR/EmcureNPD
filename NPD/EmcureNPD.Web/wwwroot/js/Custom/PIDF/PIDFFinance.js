@@ -39,7 +39,7 @@ $(document).ready(function () {
         $(`.NetRealisation`).attr("readonly", true);
         $(`.EstMat2020By12units`).attr("readonly", true);
         $(`.Marketinpacks`).attr("readonly", true);
-        $(`.BatchsizeinLtrTabs`).attr("readonly", true);
+        //$(`.BatchsizeinLtrTabs`).attr("readonly", true);
         $(`.PackSizeValue`).attr("readonly", true);
     }
 
@@ -444,7 +444,7 @@ function calculateBatchSizeCaoting(ele) {
         sumforEmcureCogsPack = parseFloat(ApiCad == "" ? 0 : ApiCad) + parseFloat(ExcipientsCad == "" ? 0 : ExcipientsCad) + parseFloat(PmCad == "" ? 0 : PmCad) + parseFloat(CcpcCad == "" ? 0 : CcpcCad) + parseFloat(FreightCad == "" ? 0 : FreightCad);
 
         $(this).find("input.EmcureCOGs_pack").val(sumforEmcureCogsPack.toFixed(2));
-
+        UpdateProjectionCommercial();
         
 
         //strengthId = $(this).find("td:eq(0) select option:selected").attr("name", "lsPidfFinanceBatchSizeCoating[" + index.toString() + "].Skus").val();
@@ -506,7 +506,7 @@ function GetSkus(pidfId) {
                         $(`input#EstMat2020By12units${i}.EstMat2020By12units`).attr("readonly", true);
                         $(`input#Marketinpacks${i}.Marketinpacks`).attr("readonly", true);
                         $(`input#PackSizeValue${i}.PackSizeValue`).attr("readonly", true);
-                        $(`input#BatchsizeinLtrTabs${i}.BatchsizeinLtrTabs`).attr("readonly", true);
+                      //  $(`input#BatchsizeinLtrTabs${i}.BatchsizeinLtrTabs`).attr("readonly", true);
                         
                     }
                 });
