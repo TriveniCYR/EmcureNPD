@@ -445,8 +445,7 @@ $('.form-control').keyup(function () {
     let str = $(this).val();
     let newValue=str
         .replace(/\b\s+/g, " ")
-        .trimStart()
-        .trimEnd();
+        
     $(this).val(newValue);
   
 })
