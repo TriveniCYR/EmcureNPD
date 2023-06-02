@@ -430,22 +430,26 @@ function preventCharacters(evt) {
     else { !/(^\d*\.?\d*$)|(Backspace|Control|Meta|a)/.test(evt.key) && evt.preventDefault() }
 }
 $('.form-control').focusout(function () {
-    let str = $(this).val();
-    let text = str;
-    if (str.slice(-1) == " ") {
-        text = str.slice(0, -1) + "";
+    if ($(this).attr('type') == "text") {
+        let str = $(this).val();
+        let text = str;
+        if (str.slice(-1) == " ") {
+            text = str.slice(0, -1) + "";
+        }
+        if (str.charAt(0) == " ") {
+            text = str.substr(1);
+        }
+        let newValue = text.trim();
+        $(this).val(newValue);
     }
-    if (str.charAt(0) == " ") {
-        text = str.substr(1);
-    }
-    let newValue = text.trim();
-    $(this).val(newValue);
 })
 $('.form-control').keyup(function () {
-    let str = $(this).val();
-    let newValue=str
-        .replace(/\b\s+/g, " ")
-        
-    $(this).val(newValue);
+    if ($(this).attr('type') == "text") {
+        let str = $(this).val();
+        let newValue = str
+            .replace(/\b\s+/g, " ")
+
+        $(this).val(newValue);
+    }
   
 })
