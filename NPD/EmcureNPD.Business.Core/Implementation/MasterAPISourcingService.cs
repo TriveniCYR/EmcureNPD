@@ -38,6 +38,9 @@ namespace EmcureNPD.Business.Core.ServiceImplementations
             MasterApisourcing objAPISourcing;
             if (entityAPISourcing.APISourcingId > 0)
             {
+                var objModelData = _repository.Exists(x => x.ApisourcingName.ToLower() == entityAPISourcing.APISourcingName.ToLower() && x.ApisourcingId!= entityAPISourcing.APISourcingId);
+                if (objModelData)
+                { return DBOperation.AlreadyExist; }
                 objAPISourcing = _repository.Get(entityAPISourcing.APISourcingId);
                 if (objAPISourcing != null)
                 {

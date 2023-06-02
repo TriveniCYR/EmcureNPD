@@ -38,6 +38,9 @@ namespace EmcureNPD.Business.Core.ServiceImplementations
             MasterBatchSizeNumber objBatchSizeNumber;
             if (entityBatchSizeNumber.BatchSizeNumberId > 0)
             {
+                var objModelData = _repository.Exists(x => x.BatchSizeNumberName.ToLower() == entityBatchSizeNumber.BatchSizeNumberName.ToLower() && x.BatchSizeNumberId!= entityBatchSizeNumber.BatchSizeNumberId);
+                if (objModelData)
+                { return DBOperation.AlreadyExist; }
                 objBatchSizeNumber = _repository.Get(entityBatchSizeNumber.BatchSizeNumberId);
                 if (objBatchSizeNumber != null)
                 {

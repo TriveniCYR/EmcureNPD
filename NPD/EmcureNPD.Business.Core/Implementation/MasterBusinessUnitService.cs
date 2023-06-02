@@ -69,9 +69,12 @@ namespace EmcureNPD.Business.Core.ServiceImplementations
 					await _unitOfWork.SaveChangesAsync();
 				}
 			}
-			
+            
             if (entityBusinessUnit.BusinessUnitId > 0)
             {
+                var objBusinessUnitModelDate = _repository.Exists(x => x.BusinessUnitName.ToLower() == entityBusinessUnit.BusinessUnitName.ToLower() && x.BusinessUnitId!= entityBusinessUnit.BusinessUnitId);
+                if (objBusinessUnitModelDate)
+                { return DBOperation.AlreadyExist; }
                 objBusinessUnit = _repository.Get(entityBusinessUnit.BusinessUnitId);
                 if (objBusinessUnit != null)
                 {
@@ -107,8 +110,8 @@ namespace EmcureNPD.Business.Core.ServiceImplementations
             }
             else
             {
-              var  objBusinessUnitModelDate = _repository.Exists(x=>x.BusinessUnitName.ToLower()== entityBusinessUnit.BusinessUnitName.ToLower());
-                if(objBusinessUnitModelDate)
+                var objBusinessUnitModelDate = _repository.Exists(x => x.BusinessUnitName.ToLower() == entityBusinessUnit.BusinessUnitName.ToLower());
+                if (objBusinessUnitModelDate)
                 { return DBOperation.AlreadyExist; }
                 objBusinessUnit = _mapperFactory.Get<MasterBusinessUnitEntity, MasterBusinessUnit>(entityBusinessUnit);
                 _repository.AddAsync(objBusinessUnit);

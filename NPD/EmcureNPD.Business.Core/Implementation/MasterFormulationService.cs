@@ -42,6 +42,9 @@ namespace EmcureNPD.Business.Core.ServiceImplementations
 
             if (entityFormulation.FormulationId > 0)
             {
+                var objModelData = _repository.Exists(x => x.FormulationName.ToLower() == entityFormulation.FormulationName.ToLower() && x.FormulationId!= entityFormulation.FormulationId);
+                if (objModelData)
+                { return DBOperation.AlreadyExist; }
                 objFormulation = _repository.Get(entityFormulation.FormulationId);
                 if (objFormulation != null)
                 {

@@ -38,6 +38,9 @@ namespace EmcureNPD.Business.Core.Implementation
             MasterManufacturing objManufacturing;
             if (entityManufacturing.ManufacturingId > 0)
             {
+                var objModelData = _repository.Exists(x => x.ManufacturingName.ToLower() == entityManufacturing.ManufacturingName.ToLower() && x.ManufacturingId!= entityManufacturing.ManufacturingId);
+                if (objModelData)
+                { return DBOperation.AlreadyExist; }
                 objManufacturing = _repository.Get(entityManufacturing.ManufacturingId);
                 if (objManufacturing != null)
                 {
