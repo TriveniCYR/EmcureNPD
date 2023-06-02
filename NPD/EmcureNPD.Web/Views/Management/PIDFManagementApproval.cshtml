@@ -20,7 +20,7 @@
     var PidfNumber = UtilityHelper.Decreypt(Convert.ToString(PidafId));
     string jsVersion = @Configuration.GetSection("StaticJS")["version"];
     RolePermissionModel objPermssion = (RolePermissionModel)ViewBag.Access;
-    string IsApproveAllow = (objPermssion.Approve) ? "" : "display: none";
+    string IsApproveAllow = (objPermssion.Approve || objPermssion.MainModuleId == 8) ?  "" : "display: none";
     var CurrencyCode = "";
     var CurrencySymbol = "";
     var FinalTotal = 0.0;
