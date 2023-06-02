@@ -491,6 +491,7 @@ function RenderFinanceProjection() {
             } else {
                 result = (compareDate <= Projection_Year_data[i] && compareDate > Projection_Year_data[i - 1]) ? -cost_Value : 0;
             }
+            if (i < 2)
             result = result * (1 - (Incometaxrate_Value))
 
             result = isNaN(result) ? 0 : result;
@@ -512,6 +513,7 @@ function RenderFinanceProjection() {
             } else {
                 result = (compareDate <= Projection_Year_data[i] && compareDate > Projection_Year_data[i - 1]) ? -cost_Value : 0;
             }
+            if(i<2)
             result = result * (1 - (Incometaxrate_Value))
 
             result = isNaN(result) ? 0 : result;
@@ -533,6 +535,7 @@ function RenderFinanceProjection() {
             } else {
                 result = (compareDate <= Projection_Year_data[i] && compareDate > Projection_Year_data[i - 1]) ? -cost_Value : 0;
             }
+            if (i < 2)
             result = result *(1 - (Incometaxrate_Value))
 
 
@@ -554,6 +557,7 @@ function RenderFinanceProjection() {
             } else {
                 result = (compareDate <= Projection_Year_data[i] && compareDate > Projection_Year_data[i - 1]) ? -cost_Value : 0;
             }
+            if (i < 2)
             result = result * (1 - (Incometaxrate_Value))
 
             result = isNaN(result) ? 0 : result; html += "<td>" + result.toFixed() + "</td>";
@@ -574,6 +578,8 @@ function RenderFinanceProjection() {
             } else {
                 result = (compareDate <= Projection_Year_data[i] && compareDate > Projection_Year_data[i - 1]) ? -cost_Value : 0;
             }
+
+            if (i < 2)
             result = result * (1 - (Incometaxrate_Value))
 
             result = isNaN(result) ? 0 : result; html += "<td>" + result.toFixed() + "</td>";
@@ -594,6 +600,8 @@ function RenderFinanceProjection() {
             } else {
                 result = (compareDate <= Projection_Year_data[i] && compareDate > Projection_Year_data[i - 1]) ? -cost_Value : 0;
             }
+
+            if (i < 2)
             result = result * (1 - (Incometaxrate_Value))
 
             result = isNaN(result) ? 0 : result; html += "<td>" + result.toFixed() + "</td>";
@@ -614,6 +622,8 @@ function RenderFinanceProjection() {
             } else {
                 result = (compareDate <= Projection_Year_data[i] && compareDate > Projection_Year_data[i - 1]) ? -cost_Value : 0;
             }
+
+            if (i < 2)
             result = result * (1 - (Incometaxrate_Value))
 
             result = isNaN(result) ? 0 : result; html += "<td>" + result.toFixed() + "</td>";
@@ -634,6 +644,8 @@ function RenderFinanceProjection() {
             } else {
                 result = (compareDate <= Projection_Year_data[i] && compareDate > Projection_Year_data[i - 1]) ? -cost_Value : 0;
             }
+
+            if (i < 2)
             result = result * (1 - (Incometaxrate_Value))
 
             result = isNaN(result) ? 0 : result; html += "<td>" + result.toFixed() + "</td>";
