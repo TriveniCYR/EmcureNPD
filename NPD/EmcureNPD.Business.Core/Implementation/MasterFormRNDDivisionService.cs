@@ -38,6 +38,9 @@ namespace EmcureNPD.Business.Core.ServiceImplementations
             MasterFormRnDdivision objFormRNDDivision;
             if (entityFormRNDDivision.FormRNDDivisionId > 0)
             {
+                var objModelData = _repository.Exists(x => x.FormRnDdivisionName.ToLower() == entityFormRNDDivision.FormRNDDivisionName.ToLower() && x.FormRnDdivisionId!= entityFormRNDDivision.FormRNDDivisionId);
+                if (objModelData)
+                { return DBOperation.AlreadyExist; }
                 objFormRNDDivision = _repository.Get(entityFormRNDDivision.FormRNDDivisionId);
                 if (objFormRNDDivision != null)
                 {

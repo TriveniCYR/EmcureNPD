@@ -38,6 +38,9 @@ namespace EmcureNPD.Business.Core.Implementation
             MasterFilingType objFilingType;
             if (entityFilingType.FilingTypeId > 0)
             {
+                var objModelData = _repository.Exists(x => x.FilingTypeName.ToLower() == entityFilingType.FilingTypeName.ToLower() && x.FilingTypeId!= entityFilingType.FilingTypeId);
+                if (objModelData)
+                { return DBOperation.AlreadyExist; }
                 objFilingType = _repository.Get(entityFilingType.FilingTypeId);
                 if (objFilingType != null)
                 {

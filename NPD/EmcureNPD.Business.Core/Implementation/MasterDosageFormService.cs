@@ -44,6 +44,9 @@ namespace EmcureNPD.Business.Core.ServiceImplementations
             MasterDosageForm objDosageForm;
             if (entityDosageForm.DosageFormId > 0)
             {
+                var objModelData = _repository.Exists(x => x.DosageFormName.ToLower() == entityDosageForm.DosageFormName.ToLower() && x.DosageFormId!= entityDosageForm.DosageFormId);
+                if (objModelData)
+                { return DBOperation.AlreadyExist; }
                 objDosageForm = _repository.Get(entityDosageForm.DosageFormId);
                 if (objDosageForm != null)
                 {

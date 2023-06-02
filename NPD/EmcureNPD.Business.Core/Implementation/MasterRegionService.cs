@@ -53,6 +53,11 @@ namespace EmcureNPD.Business.Core.ServiceImplementations
 
             if (entityRegion.RegionId > 0)
             {
+                var objModalData = _repository.Exists(x => x.RegionName.ToLower() == entityRegion.RegionName.ToLower() && x.RegionId!= entityRegion.RegionId);
+                if (objModalData)
+                {
+                    return DBOperation.AlreadyExist;
+                }
                 objRegion = _repository.Get(entityRegion.RegionId);
                 if (objRegion != null)
                 {

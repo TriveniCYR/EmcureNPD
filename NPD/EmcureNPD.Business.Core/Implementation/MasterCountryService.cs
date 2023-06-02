@@ -44,6 +44,9 @@ namespace EmcureNPD.Business.Core.ServiceImplementations
             MasterCountry objCountry;
             if (entityCountry.CountryId > 0)
             {
+                var objModelData = _repository.Exists(x => x.CountryName.ToLower() == entityCountry.CountryName.ToLower() && x.CountryId!= entityCountry.CountryId);
+                if (objModelData)
+                { return DBOperation.AlreadyExist; }
                 objCountry = _repository.Get(entityCountry.CountryId);
                 if (objCountry != null)
                 {

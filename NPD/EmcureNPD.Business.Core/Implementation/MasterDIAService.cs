@@ -38,6 +38,9 @@ namespace EmcureNPD.Business.Core.ServiceImplementations
             MasterDium objDIA;
             if (entityDIA.DIAId > 0)
             {
+                var objModelData = _repository.Exists(x => x.Dianame.ToLower() == entityDIA.DIAName.ToLower() && x.Diaid!= entityDIA.DIAId);
+                if (objModelData)
+                { return DBOperation.AlreadyExist; }
                 objDIA = _repository.Get(entityDIA.DIAId);
                 if (objDIA != null)
                 {

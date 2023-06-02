@@ -38,6 +38,9 @@ namespace EmcureNPD.Business.Core.ServiceImplementations
             MasterOral objOral;
             if (entityOral.OralId > 0)
             {
+                var objModelData = _repository.Exists(x => x.OralName.ToLower() == entityOral.OralName.ToLower() && x.OralId!= entityOral.OralId);
+                if (objModelData)
+                { return DBOperation.AlreadyExist; }
                 objOral = _repository.Get(entityOral.OralId);
                 if (objOral != null)
                 {
