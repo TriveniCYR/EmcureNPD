@@ -317,13 +317,18 @@ function validateDynamicControldDetails() {
 }
 
 function validatecontrols(control) {
-    if ($(control).val().trim() == '') {
-        $(control).css("border-color", "red");
-        $(control).focus();
-        isValidPIDFForm = false;
+    try {
+        if ($(control).val().trim() == '') {
+            $(control).css("border-color", "red");
+            $(control).focus();
+            isValidPIDFForm = false;
+        }
+        else {
+            $(control).css("border-color", "");
+        }
     }
-    else {
-        $(control).css("border-color", "");
+    catch {
+        isValidPIDFForm = false;
     }
 }
 function mandateDynamicControl() {
