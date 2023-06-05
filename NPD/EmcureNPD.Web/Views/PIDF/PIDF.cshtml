@@ -60,7 +60,7 @@
              <div class="col-md-3">
                 <div class="form-group required">
                     @Html.LabelFor(model => model.MoleculeName, new { @class = "control-label" }) <span class="text-danger">*</span>
-                    @Html.EditorFor(model => model.MoleculeName, new { htmlAttributes = new { @autocomplete = "off", @class = "form-control checkbox-checked customvalidateformcontrol", @placeholder = @MasterLocalizer["MoleculeName"] } })
+                    @Html.EditorFor(model => model.MoleculeName, new { htmlAttributes = new { @autocomplete = "off", @class = "form-control checkbox-checked customvalidateformcontrol", @placeholder = @MasterLocalizer["MoleculeName"],@maxlength="100" } })
                     @Html.ValidationMessageFor(model => model.MoleculeName, "", new { @class = "text-danger" })
                 </div>
             </div>
@@ -79,7 +79,7 @@
             <div class="col-md-3">
                 <div class="form-group required">
                     @Html.LabelFor(model => model.BrandName, new { @class = "control-label" }) <span class="text-danger">*</span>
-                    @Html.EditorFor(model => model.BrandName, new { htmlAttributes = new { @autocomplete = "off", @class = "form-control checkbox-checked customvalidateformcontrol", @placeholder = @MasterLocalizer["BrandName"] } })
+                    @Html.EditorFor(model => model.BrandName, new { htmlAttributes = new { @autocomplete = "off", @class = "form-control checkbox-checked customvalidateformcontrol", @placeholder = @MasterLocalizer["BrandName"],@maxlength="100" } })
                     @Html.ValidationMessageFor(model => model.BrandName, "", new { @class = "text-danger" })
                 </div>
             </div>
@@ -251,7 +251,7 @@
             <div class="col-md-4">
                 <div class="form-group required">
                     @Html.LabelFor(model => model.ApprovedGenerics, new { @class = "control-label" }) <span class="text-danger">*</span>
-                    @Html.EditorFor(model => model.ApprovedGenerics, new { htmlAttributes = new { @autocomplete = "off", @class = "form-control checkbox-checked customvalidateformcontrol", @placeholder = @MasterLocalizer["ApprovedGenerics"] } })
+                    @Html.EditorFor(model => model.ApprovedGenerics, new { htmlAttributes = new { @autocomplete = "off", @class = "form-control checkbox-checked customvalidateformcontrol", @placeholder = @MasterLocalizer["ApprovedGenerics"],@maxlength="100" } })
                     @Html.ValidationMessageFor(model => model.ApprovedGenerics, "", new { @class = "text-danger" })
                 </div>
             </div>
@@ -259,7 +259,7 @@
             <div class="col-md-4">
                 <div class="form-group required">
                     @Html.LabelFor(model => model.LaunchedGenerics, new { @class = "control-label" }) <span class="text-danger">*</span>
-                    @Html.EditorFor(model => model.LaunchedGenerics, new { htmlAttributes = new { @autocomplete = "off", @class = "form-control checkbox-checked customvalidateformcontrol", @placeholder = @MasterLocalizer["LaunchedGenerics"] } })
+                    @Html.EditorFor(model => model.LaunchedGenerics, new { htmlAttributes = new { @autocomplete = "off", @class = "form-control checkbox-checked customvalidateformcontrol", @placeholder = @MasterLocalizer["LaunchedGenerics"],@maxlength="100" } })
                     @Html.ValidationMessageFor(model => model.LaunchedGenerics, "", new { @class = "text-danger" })
                 </div>
             </div>
@@ -405,14 +405,14 @@
                             <div class="col-md-3">
                                 <div class="form-group required">
                                     @Html.LabelFor(model => model.RFDBrand, new { @class = "control-label" }) <span class="text-danger">*</span>
-                                    @Html.EditorFor(model => model.RFDBrand, new { htmlAttributes = new { @autocomplete = "off", @class = "form-control checkbox-checked customvalidateformcontrol", @placeholder = @MasterLocalizer["RFDBrand"] } })
+                                    @Html.EditorFor(model => model.RFDBrand, new { htmlAttributes = new { @autocomplete = "off", @class = "form-control checkbox-checked customvalidateformcontrol", @placeholder = @MasterLocalizer["RFDBrand"],@maxlength="100" } })
                                     @Html.ValidationMessageFor(model => model.RFDBrand, "", new { @class = "text-danger" })
                                 </div>
                             </div>
                             <div class="col-md-3">
                                 <div class="form-group required">
                                     @Html.LabelFor(model => model.RFDApplicant, new { @class = "control-label" }) <span class="text-danger">*</span>
-                                    @Html.EditorFor(model => model.RFDApplicant, new { htmlAttributes = new { @autocomplete = "off", @class = "form-control checkbox-checked customvalidateformcontrol", @placeholder = @MasterLocalizer["RFDApplicant"] } })
+                                    @Html.EditorFor(model => model.RFDApplicant, new { htmlAttributes = new { @autocomplete = "off", @class = "form-control checkbox-checked customvalidateformcontrol", @placeholder = @MasterLocalizer["RFDApplicant"],@maxlength="100" } })
                                     @Html.ValidationMessageFor(model => model.RFDApplicant, "", new { @class = "text-danger" })
                                 </div>
                             </div>
@@ -427,7 +427,7 @@
                             <div class="col-md-3">
                                 <div class="form-group required">
                                     @Html.LabelFor(model => model.RFDIndication, new { @class = "control-label" }) <span class="text-danger">*</span>
-                                    @Html.EditorFor(model => model.RFDIndication, new { htmlAttributes = new { @autocomplete = "off", @class = "form-control checkbox-checked customvalidateformcontrol", @placeholder = @MasterLocalizer["RFDIndication"] } })
+                                    @Html.EditorFor(model => model.RFDIndication, new { htmlAttributes = new { @autocomplete = "off", @class = "form-control checkbox-checked customvalidateformcontrol", @placeholder = @MasterLocalizer["RFDIndication"],@maxlength="100" } })
                                     @Html.ValidationMessageFor(model => model.RFDIndication, "", new { @class = "text-danger" })
                                 </div>
                             </div>
@@ -436,14 +436,14 @@
                             <div class="col-md-3">
                                 <div class="form-group required">
                                     @Html.LabelFor(model => model.RFDInnovators, new { @class = "control-label" }) <span class="text-danger">*</span>
-                                    @Html.EditorFor(model => model.RFDInnovators, new { htmlAttributes = new { @autocomplete = "off", @class = "form-control checkbox-checked customvalidateformcontrol", @placeholder = @MasterLocalizer["RFDInnovators"] } })
+                                    @Html.EditorFor(model => model.RFDInnovators, new { htmlAttributes = new { @autocomplete = "off", @class = "form-control checkbox-checked customvalidateformcontrol", @placeholder = @MasterLocalizer["RFDInnovators"],@maxlength="100" } })
                                     @Html.ValidationMessageFor(model => model.RFDInnovators, "", new { @class = "text-danger" })
                                 </div>
                             </div>
                             <div class="col-md-3">
                                 <div class="form-group required">
                                     @Html.LabelFor(model => model.RFDInitialRevenuePotential, new { @class = "control-label" }) <span class="text-danger">*</span>
-                                    @Html.EditorFor(model => model.RFDInitialRevenuePotential, new { htmlAttributes = new { @autocomplete = "off", @class = "form-control checkbox-checked customvalidateformcontrol", @placeholder = @MasterLocalizer["RFDInitialRevenuePotential"] } })
+                                    @Html.EditorFor(model => model.RFDInitialRevenuePotential, new { htmlAttributes = new { @autocomplete = "off", @class = "form-control checkbox-checked customvalidateformcontrol", @placeholder = @MasterLocalizer["RFDInitialRevenuePotential"],@maxlength="100" } })
                                     @Html.ValidationMessageFor(model => model.RFDInitialRevenuePotential, "", new { @class = "text-danger" })
                                 </div>
                             </div>
@@ -451,7 +451,7 @@
                             <div class="col-md-3">
                                 <div class="form-group required">
                                     @Html.LabelFor(model => model.RFDPriceDiscounting, new { @class = "control-label" }) <span class="text-danger">*</span>
-                                    @Html.EditorFor(model => model.RFDPriceDiscounting, new { htmlAttributes = new { @autocomplete = "off",@type="number", @class = "form-control checkbox-checked customvalidateformcontrol", @placeholder = @MasterLocalizer["RFDPriceDiscounting"] } })
+                                    @Html.EditorFor(model => model.RFDPriceDiscounting, new { htmlAttributes = new { @autocomplete = "off",@type="number", @class = "form-control checkbox-checked customvalidateformcontrol", @placeholder = @MasterLocalizer["RFDPriceDiscounting"],@maxlength="100" } })
                                     @Html.ValidationMessageFor(model => model.RFDPriceDiscounting,"", new { @class = "text-danger" })
                                 </div>
                             </div>
@@ -459,7 +459,7 @@
                             <div class="col-md-3">
                                 <div class="form-group required">
                                     @Html.LabelFor(model => model.RFDCommercialBatchSize, new { @class = "control-label" }) <span class="text-danger">*</span>
-                                    @Html.EditorFor(model => model.RFDCommercialBatchSize, new { htmlAttributes = new { @autocomplete = "off", @class = "form-control checkbox-checked customvalidateformcontrol", @placeholder = @MasterLocalizer["RFDCommercialBatchSize"] } })
+                                    @Html.EditorFor(model => model.RFDCommercialBatchSize, new { htmlAttributes = new { @autocomplete = "off", @class = "form-control checkbox-checked customvalidateformcontrol", @placeholder = @MasterLocalizer["RFDCommercialBatchSize"],@maxlength="100" } })
                                     @Html.ValidationMessageFor(model => model.RFDCommercialBatchSize, "", new { @class = "text-danger" })
                                 </div>
                             </div>
