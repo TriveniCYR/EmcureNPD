@@ -13,6 +13,7 @@ namespace EmcureNPD.Data.DataAccess.Entity
             MasterDepartmentBusinessUnitMappings = new HashSet<MasterDepartmentBusinessUnitMapping>();
             MasterUserBusinessUnitMappings = new HashSet<MasterUserBusinessUnitMapping>();
             PidfApiIpds = new HashSet<PidfApiIpd>();
+            PidfCommercialMasters = new HashSet<PidfCommercialMaster>();
             PidfCommercials = new HashSet<PidfCommercial>();
             PidfIpds = new HashSet<PidfIpd>();
             PidfPbfGenerals = new HashSet<PidfPbfGeneral>();
@@ -36,6 +37,7 @@ namespace EmcureNPD.Data.DataAccess.Entity
         public virtual ICollection<MasterDepartmentBusinessUnitMapping> MasterDepartmentBusinessUnitMappings { get; set; }
         public virtual ICollection<MasterUserBusinessUnitMapping> MasterUserBusinessUnitMappings { get; set; }
         public virtual ICollection<PidfApiIpd> PidfApiIpds { get; set; }
+        public virtual ICollection<PidfCommercialMaster> PidfCommercialMasters { get; set; }
         public virtual ICollection<PidfCommercial> PidfCommercials { get; set; }
         public virtual ICollection<PidfIpd> PidfIpds { get; set; }
         public virtual ICollection<PidfPbfGeneral> PidfPbfGenerals { get; set; }

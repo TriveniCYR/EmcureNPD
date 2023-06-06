@@ -63,6 +63,27 @@
 
             </div>
             @*------------End----BU tabs--------------------------------*@
+            <div class="row" >
+               <div class="col-md-4">
+                    <div class="form-group required">
+                        <label class = "control-label">Is Interested</label>
+                         <input type="radio" name="Interested">Yes<br>
+                        <input type="radio" name="Interested">No<br>
+
+                        @*@Html.RadioButtonFor(model => model.Interested, true, new { @class="IsInterested" }) @Html.LabelFor(model => model.Interested, "Yes")
+                        @Html.RadioButtonFor(model => model.Interested, false) @Html.Label("No")*@
+                        <br />
+                            <label id="valmsgInterested" class="text-danger"></label>
+                        </div>
+                    </div>
+                
+                  <div class="col-md-8">
+                    <div class="form-group required">
+                        @Html.LabelFor(model => model.Remark, "Remark", new { @class = "control-label" })
+                        @Html.TextAreaFor(model => model.Remark, new { @class = "form-control RemarkText" })
+                    </div>
+                </div>
+            </div>
             @*-----------------Strength---------------------*@
 
             <div class="card card-maroon card-outline card-outline-tabs m-0">

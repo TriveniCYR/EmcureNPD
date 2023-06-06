@@ -14,6 +14,9 @@ namespace EmcureNPD.Business.Models
         public string encCreatedBy { get; set; }
         public List<PIDFCommercialEntity> PIDFArrMainCommercial { get; set; }
         public long Pidfid { get; set; }
+        public Boolean Interested { get; set; }
+        public string Remark { get; set; }
+        public int MainBusinessUnitId { get; set; }
     }
 
 
@@ -28,9 +31,8 @@ namespace EmcureNPD.Business.Models
         public string ShelfLife { get; set; }
         public DateTime CreatedDate { get; set; }
         public int CreatedBy { get; set; }
-        
-        //public DateTime? ModifyDate { get; set; }
-        //public int? ModifyBy { get; set; }
+
+        public string Remark { get; set; }
         public ICollection<PidfCommercialYearEntity> PidfCommercialYears { get; set; }
         
         public string encCreatedBy { get; set; }

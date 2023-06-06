@@ -85,19 +85,19 @@ namespace EmcureNPD.API.Controllers.Commercial
         /// <response code="404">Not Found</response>
         /// <response code="405">Method Not Allowed</response>
         /// <response code="500">Internal Server</response>
-        [HttpPost, Route("GetAllIPDPIDFList")]
-        public async Task<IActionResult> GetAllIPDPIDFList([FromForm] DataTableAjaxPostModel model)
-        {
-            try
-            {
-                return _ObjectResponse.CreateData(await _pidfCommercialFormService.GetAllIPDPIDFList(model), (int)HttpStatusCode.OK);
-            }
-            catch (Exception ex)
-            {
-                await _ExceptionService.LogException(ex);
-                return _ObjectResponse.Create(false, (int)HttpStatusCode.InternalServerError, Convert.ToString(ex.StackTrace));
-            }
-        }
+        //[HttpPost, Route("GetAllIPDPIDFList")]
+        //public async Task<IActionResult> GetAllIPDPIDFList([FromForm] DataTableAjaxPostModel model)
+        //{
+        //    try
+        //    {
+        //        return _ObjectResponse.CreateData(await _pidfCommercialFormService.GetAllIPDPIDFList(model), (int)HttpStatusCode.OK);
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        await _ExceptionService.LogException(ex);
+        //        return _ObjectResponse.Create(false, (int)HttpStatusCode.InternalServerError, Convert.ToString(ex.StackTrace));
+        //    }
+        //}
 
         /// <summary>
         /// Description - To Get All Region Base on User
@@ -147,24 +147,24 @@ namespace EmcureNPD.API.Controllers.Commercial
             }
         }
 
-        [HttpPost]
-        [Route("ApproveRejectIpdPidf")]
-        public async Task<IActionResult> ApproveRejectIpdPidf(EntryApproveRej oApprRej)
-        {
-            try
-            {
-                DBOperation oResponse = await _pidfCommercialFormService.ApproveRejectIpdPidf(oApprRej);
-                if (oResponse == DBOperation.Success)
-                    return _ObjectResponse.Create(true, (int)HttpStatusCode.OK, "Save Successfully");
-                else
-                    return _ObjectResponse.Create(false, (int)HttpStatusCode.BadRequest, oResponse == DBOperation.NotFound ? "Record not found" : "Bad request");
-            }
-            catch (Exception ex)
-            {
-                await _ExceptionService.LogException(ex);
-                return _ObjectResponse.Create(false, (int)HttpStatusCode.InternalServerError, Convert.ToString(ex.StackTrace));
-            }
-        }
+        //[HttpPost]
+        //[Route("ApproveRejectIpdPidf")]
+        //public async Task<IActionResult> ApproveRejectIpdPidf(EntryApproveRej oApprRej)
+        //{
+        //    try
+        //    {
+        //        DBOperation oResponse = await _pidfCommercialFormService.ApproveRejectIpdPidf(oApprRej);
+        //        if (oResponse == DBOperation.Success)
+        //            return _ObjectResponse.Create(true, (int)HttpStatusCode.OK, "Save Successfully");
+        //        else
+        //            return _ObjectResponse.Create(false, (int)HttpStatusCode.BadRequest, oResponse == DBOperation.NotFound ? "Record not found" : "Bad request");
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        await _ExceptionService.LogException(ex);
+        //        return _ObjectResponse.Create(false, (int)HttpStatusCode.InternalServerError, Convert.ToString(ex.StackTrace));
+        //    }
+        //}
 
         /// <summary>
         /// Description - To Get IPD Form By Id
