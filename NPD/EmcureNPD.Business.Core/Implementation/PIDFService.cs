@@ -32,7 +32,7 @@ namespace EmcureNPD.Business.Core.Implementation
         private IRepository<Pidf> _repository { get; set; }
         private IRepository<Pidfapidetail> _pidfApiRepository { get; set; }
         private IRepository<PidfproductStrength> _pidfProductStrength { get; set; }
-
+        private IRepository<Pidfimsdatum> _pidfPidfimsdata { get; set; }
         public PIDFService(IUnitOfWork unitOfWork, IMapperFactory mapperFactory,
             IPidfApiDetailsService pidfApiDetailsService, IPidfProductStrengthService pidfProductStrengthService,
              INotificationService notificationService,
@@ -44,7 +44,7 @@ namespace EmcureNPD.Business.Core.Implementation
             _PidfApiDetailsService = pidfApiDetailsService;
             _pidfProductStrengthService = pidfProductStrengthService;
             _auditLogService = auditLogService;
-
+            _pidfPidfimsdata = unitOfWork.GetRepository<Pidfimsdatum>();
             _repository = _unitOfWork.GetRepository<Pidf>();
             _pidfApiRepository = unitOfWork.GetRepository<Pidfapidetail>();
             _pidfProductStrength = unitOfWork.GetRepository<PidfproductStrength>();
@@ -219,10 +219,14 @@ namespace EmcureNPD.Business.Core.Implementation
                         {
                             _pidfProductStrength.Remove(item);
                         }
-
+                        var imsDataList = _pidfPidfimsdata.GetAllQuery().Where(x => x.Pidfid == entityPIDF.PIDFID).ToList();
+                        foreach (var item in imsDataList)
+                        {
+                            _pidfPidfimsdata.Remove(item);
+                        }
                         await _unitOfWork.SaveChangesAsync();
 
-                        await SaveChildDetails(objPIDF.Pidfid, loggedInUserId, entityPIDF.pidfApiDetailEntities, entityPIDF.pidfProductStregthEntities);
+                        await SaveChildDetails(objPIDF.Pidfid, loggedInUserId, entityPIDF.pidfApiDetailEntities, entityPIDF.pidfProductStregthEntities, entityPIDF.IMSDataEntities);
 
                         var isSuccess = await _auditLogService.CreateAuditLog<PIDFEntity>(entityPIDF.PIDFID > 0 ? Utility.Audit.AuditActionType.Update : Utility.Audit.AuditActionType.Create,
                            Utility.Enums.ModuleEnum.PIDF, _previousPIDFEntity, entityPIDF, Convert.ToInt32(objPIDF.Pidfid));
@@ -251,7 +255,7 @@ namespace EmcureNPD.Business.Core.Implementation
 
                     await _unitOfWork.SaveChangesAsync();
 
-                    await SaveChildDetails(objPIDF.Pidfid, loggedInUserId, entityPIDF.pidfApiDetailEntities, entityPIDF.pidfProductStregthEntities);
+                    await SaveChildDetails(objPIDF.Pidfid, loggedInUserId, entityPIDF.pidfApiDetailEntities, entityPIDF.pidfProductStregthEntities,entityPIDF.IMSDataEntities);
 
                     await _notificationService.CreateNotification(objPIDF.Pidfid, entityPIDF.StatusId, string.Empty, string.Empty, loggedInUserId);
 
@@ -265,7 +269,7 @@ namespace EmcureNPD.Business.Core.Implementation
             }
         }
 
-        private async Task<bool> SaveChildDetails(long Pidfid, int loggedInUserId, List<PidfApiDetailEntity> pidfApiDetailEntities, List<PidfProductStregthEntity> pidfProductStregthEntities)
+        private async Task<bool> SaveChildDetails(long Pidfid, int loggedInUserId, List<PidfApiDetailEntity> pidfApiDetailEntities, List<PidfProductStregthEntity> pidfProductStregthEntities,List<IMSDataEntity> IMSDataEntities)
         {
             try
             {
@@ -300,6 +304,21 @@ namespace EmcureNPD.Business.Core.Implementation
                     _pidfProductStrength.AddRangeAsync(_ProductStrengthList);
                     await _unitOfWork.SaveChangesAsync();
                 }
+                if (IMSDataEntities != null && IMSDataEntities.Count() > 0)
+                {
+                    List<Pidfimsdatum> _IMSDataEntitiesList = new List<Pidfimsdatum>();
+                    foreach (var item in IMSDataEntities)
+                    {
+                        Pidfimsdatum pidfImsData = new Pidfimsdatum();
+                        item.Pidfid = Pidfid;
+                        item.ModifyDate = DateTime.Now;
+                        item.ModifyBy = loggedInUserId;
+                        pidfImsData = _mapperFactory.Get<IMSDataEntity, Pidfimsdatum>(item);
+                        _IMSDataEntitiesList.Add(pidfImsData);
+                    }
+                    _pidfPidfimsdata.AddRangeAsync(_IMSDataEntitiesList);
+                    await _unitOfWork.SaveChangesAsync();
+                }
                 return true;
             }
             catch (Exception ex)
@@ -315,6 +334,7 @@ namespace EmcureNPD.Business.Core.Implementation
             var data = _mapperFactory.Get<Pidf, PIDFEntity>(await _repository.GetAsync(ids));
             data.pidfApiDetailEntities = _mapperFactory.GetList<Pidfapidetail, PidfApiDetailEntity>(_pidfApiRepository.GetAllQuery().Where(x => x.Pidfid == ids).ToList());
             data.pidfProductStregthEntities = _mapperFactory.GetList<PidfproductStrength, PidfProductStregthEntity>(_pidfProductStrength.GetAllQuery().Where(x => x.Pidfid == ids).ToList());
+            data.IMSDataEntities = _mapperFactory.GetList<Pidfimsdatum, IMSDataEntity>(_pidfPidfimsdata.GetAllQuery().Where(x => x.Pidfid == ids).ToList());
             return data;
         }
 

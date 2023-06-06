@@ -494,6 +494,118 @@
 
             </div>
         </div>
+        <div class="row">
+            <div class="col-12">
+                <div class="card">
+                    <div class="card-header bg-primary">
+                        <h3 class="card-title mb-0">
+
+                            <button type="button" class="btn btn-tool" data-card-widget="collapse">
+                                IMS Data
+                            </button>
+
+                        </h3>
+                        <div class="card-tools">
+                            <button type="button" class="btn btn-tool" data-card-widget="collapse" title="Collapse">
+                                <i class="fas fa-minus"></i>
+                            </button>
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <table id="IMSDataTable" class="table table-bordered table-striped table-hover">
+                            <thead>
+                                <tr>
+                                    <th>IMS Value <span class="text-danger">*</span></th>
+                                    <th>IMS Volume <span class="text-danger">*</span></th>
+                                    <th class="text-center">@SharedLocalizer["Action"]</th>
+                                </tr>
+                            </thead>
+                            <tbody id="IMSDataTableBody">
+
+                                @{
+                                    bool flagIms = true;
+
+                                    if (Model.PIDFID > 0)
+                                    {
+                                        if (Model.IMSDataEntities != null && Model.IMSDataEntities.Count() > 0)
+                                        {
+                                            flagIms = false;
+                                        }
+                                    }
+                                    if (flagIms)
+                                    {
+                                        int j = 0;
+                                        <tr id="ImsDataRow_@j">
+                                            <td>
+                                                <div class="col-md">
+                                                    <div class="form-group required">
+                                                        @Html.EditorFor(model => model.IMSDataEntities[j].Imsvalue, new { htmlAttributes = new {@required="required",@type="number", @autocomplete = "off", @class = "form-control checkbox-checked", id = "IMSDataEntities[" + j + "].Imsvalue", @placeholder = @MasterLocalizer["IMS Value"] } })
+                                                    </div>
+                                                </div>
+                                            </td>
+                                            <td>
+                                                <div class="col-md">
+                                                    <div class="form-group required">
+                                                        @Html.EditorFor(model => model.IMSDataEntities[j].Imsvolume, new { htmlAttributes = new {@required="required",@type="number", @autocomplete = "off", @class = "form-control checkbox-checked", id = "IMSDataEntities[" + j + "].Imsvolume", @placeholder = @MasterLocalizer["IMS Volume"] } })
+                                                    </div>
+                                                </div>
+                                            </td>
+                                            <td>
+                                                <div class="col-md">
+                                                    <div class="col-md">
+                                                        
+                                                    </div>
+                                                    <div class="form-group">
+                                                        <i class="fa-solid fa-circle-plus nav-icon text-success operationButton" id="addIconMis_@j" onclick="addRowIMSData(@j)"></i>
+                                                        &nbsp;&nbsp;&nbsp;&nbsp;
+                                                        <span><i class="fa-solid fa-trash nav-icon text-red imsDeleteIcon operationButton" id="deleteIconIms_@j" onclick="deleteRowIMSData(@j, this)"></i></span>
+                                                        @Html.HiddenFor(model => model.IMSDataEntities[j].PidfimsdataId, new { id = "IMSDataEntities[" + j + "].PidfimsdataId"})
+                                                    </div>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    }
+                                    else
+                                    {
+                                        for (int i = 0; i < Model.pidfProductStregthEntities.Count(); i++)
+                                        {
+                                            <tr id="ImsDataRow_0">
+                                                <td>
+                                                    <div class="col-md">
+                                                        <div class="form-group required">
+                                                            @Html.EditorFor(model => model.IMSDataEntities[i].Imsvalue, new { htmlAttributes = new {@required="required",@type="number", @autocomplete = "off", @class = "form-control checkbox-checked", id = "IMSDataEntities[" + i + "].Imsvalue", @placeholder = @MasterLocalizer["IMS Value"] } })
+                                                        </div>
+                                                    </div>
+                                                </td>
+                                                <td>
+                                                    <div class="col-md">
+                                                        <div class="form-group required">
+                                                            @Html.EditorFor(model => model.IMSDataEntities[i].Imsvolume, new { htmlAttributes = new {@required="required",@type="number", @autocomplete = "off", @class = "form-control checkbox-checked", id = "IMSDataEntities[" + i + "].Imsvolume", @placeholder = @MasterLocalizer["IMS Volume"] } })
+                                                        </div>
+                                                    </div>
+                                                </td>
+                                                <td>
+                                                    <div class="col-md">
+                                                        <div class="form-group">
+                                                            <i class="fa-solid fa-circle-plus nav-icon text-success operationButton" id="addIconMis_@i" onclick="addRowIMSData(@i)"></i>
+                                                            &nbsp;&nbsp;&nbsp;&nbsp;
+                                                            <span><i class="fa-solid fa-trash nav-icon text-red imsDeleteIcon operationButton" id="deleteIconIms_@i" onclick="deleteRowIMSData(@i, this)"></i></span>
+                                                        </div>
+
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                        }
+                                    }
+
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+            </div>
+        </div>
         @*ApproveModel*@
         @*<div id="ApproveModel" class="modal themeModal" role="dialog">
             <div class="modal-dialog">
