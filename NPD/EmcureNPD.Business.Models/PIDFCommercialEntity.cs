@@ -32,6 +32,7 @@ namespace EmcureNPD.Business.Models
         public DateTime CreatedDate { get; set; }
         public int CreatedBy { get; set; }
 
+        public Boolean Interested { get; set; }
         public string Remark { get; set; }
         public ICollection<PidfCommercialYearEntity> PidfCommercialYears { get; set; }
         
