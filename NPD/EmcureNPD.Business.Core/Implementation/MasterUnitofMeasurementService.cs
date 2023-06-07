@@ -38,6 +38,9 @@ namespace EmcureNPD.Business.Core.ServiceImplementations
             MasterUnitofMeasurement objUnitofMeasurement;
             if (entityUnitofMeasurement.UnitofMeasurementId > 0)
             {
+                var objModelData = _repository.Exists(x => x.UnitofMeasurementName.ToLower() == entityUnitofMeasurement.UnitofMeasurementName.ToLower() && x.UnitofMeasurementId!= entityUnitofMeasurement.UnitofMeasurementId);
+                if (objModelData)
+                { return DBOperation.AlreadyExist; }
                 objUnitofMeasurement = _repository.Get(entityUnitofMeasurement.UnitofMeasurementId);
                 if (objUnitofMeasurement != null)
                 {

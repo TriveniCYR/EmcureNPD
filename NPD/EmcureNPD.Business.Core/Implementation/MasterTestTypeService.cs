@@ -38,6 +38,9 @@ namespace EmcureNPD.Business.Core.Implementation
             MasterTestType objTestType;
             if (entityTestType.TestTypeId > 0)
             {
+                var objModelData = _repository.Exists(x => x.TestTypeName.ToLower() == entityTestType.TestTypeName.ToLower() && x.TestTypeId!= entityTestType.TestTypeId);
+                if (objModelData)
+                { return DBOperation.AlreadyExist; }
                 objTestType = _repository.Get(entityTestType.TestTypeId);
                 if (objTestType != null)
                 {

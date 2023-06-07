@@ -98,6 +98,7 @@ namespace EmcureNPD.Business.Models
 		public List<PIDFEntity> PIDFEntities { get; set; }
         public List<PidfApiDetailEntity> pidfApiDetailEntities { get; set; }
         public List<PidfProductStregthEntity> pidfProductStregthEntities { get; set; }
+        public List<IMSDataEntity> IMSDataEntities { get; set; }
 
     }
 }

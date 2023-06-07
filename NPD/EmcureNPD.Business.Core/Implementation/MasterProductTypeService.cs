@@ -40,6 +40,9 @@ namespace EmcureNPD.Business.Core.ServiceImplementations
             MasterProductType objProductType;
             if (entityProductType.ProductTypeId > 0)
             {
+                var objModelData = _repository.Exists(x => x.ProductTypeName.ToLower() == entityProductType.ProductTypeName.ToLower() && x.ProductTypeId!= entityProductType.ProductTypeId);
+                if (objModelData)
+                { return DBOperation.AlreadyExist; }
                 objProductType = _repository.Get(entityProductType.ProductTypeId);
                 if (objProductType != null)
                 {

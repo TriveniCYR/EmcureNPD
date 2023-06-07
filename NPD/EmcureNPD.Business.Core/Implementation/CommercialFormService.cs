@@ -48,7 +48,7 @@ namespace EmcureNPD.Business.Core.Implementation
         private IRepository<PidfproductStrength> _pidfProductStrengthrepository { get; set; }
         private IRepository<MasterFinalSelection> _finalSelectionrepository { get; set; }
         private IRepository<MasterPackSize> _masterPackSizeEepository { get; set; }
-
+        private IRepository<PidfCommercialMaster> _PidfCommercialMasterRepository { get; set; }
         public CommercialFormService(IUnitOfWork unitOfWork, IMapperFactory mapperFactory,
             IMasterBusinessUnitService businessUnitService, IMasterCountryService countryService,
             INotificationService notificationService,
@@ -72,6 +72,7 @@ namespace EmcureNPD.Business.Core.Implementation
             _commercialYearrepository = _unitOfWork.GetRepository<PidfCommercialYear>();
             _finalSelectionrepository = _unitOfWork.GetRepository<MasterFinalSelection>();
             _masterPackSizeEepository = _unitOfWork.GetRepository<MasterPackSize>();
+            _PidfCommercialMasterRepository = _unitOfWork.GetRepository<PidfCommercialMaster>();
             _notificationService = notificationService;
             _businessUnitrepository = _unitOfWork.GetRepository<MasterBusinessUnit>();
             _pidfProductStrengthrepository = _unitOfWork.GetRepository<PidfproductStrength>();
@@ -88,10 +89,34 @@ namespace EmcureNPD.Business.Core.Implementation
         //        MasterCountries = _countryService.GetAll().Result.Where(xx => xx.IsActive).ToList(),
         //    };
         //    return PIDForm;
-        //}
+        
+       private async Task<DBOperation> AddUpdate_PIDF_Commercial_Master(PIDFCommercialViewModel entitycommPIDF)
+        {
+            var loggedInUserID = _helper.GetLoggedInUser().UserId;
+            var dbObj = await _PidfCommercialMasterRepository.GetAsync(x => x.BusinessUnitId == entitycommPIDF.MainBusinessUnitId && x.Pidfid == entitycommPIDF.Pidfid);
+           if (dbObj != null)
+            {
+                dbObj.Interested = entitycommPIDF.Interested;
+                dbObj.Remark = entitycommPIDF.Remark;
+                _PidfCommercialMasterRepository.UpdateAsync(dbObj);
+            }
+            else
+            {
+                var NewObject = new PidfCommercialMaster();
+                NewObject.Interested = entitycommPIDF.Interested;
+                NewObject.Remark = entitycommPIDF.Remark;
+                NewObject.CreatedBy  = loggedInUserID;
+                NewObject.CreatedDate = DateTime.Now;
+                _PidfCommercialMasterRepository.AddAsync(NewObject);
+            }
+            await _unitOfWork.SaveChangesAsync();
+            return DBOperation.Success;
+        }
         public async Task<DBOperation> AddUpdateCommercialPIDF(PIDFCommercialViewModel entitycommPIDF)
         {
             var loggedInUserID = _helper.GetLoggedInUser().UserId;
+
+            await AddUpdate_PIDF_Commercial_Master(entitycommPIDF);
 
             var AllObjofPidfId = _commercialrepository.GetAllQuery().Where(x => x.Pidfid == entitycommPIDF.Pidfid && x.IsDeleted == false).ToList();
             if(AllObjofPidfId != null)
@@ -208,6 +233,7 @@ namespace EmcureNPD.Business.Core.Implementation
             DropdownObjects.PackagingType = dsCommercial.Tables[6];
             DropdownObjects.PackSize = dsCommercial.Tables[7];
             DropdownObjects.FinalSelection = dsCommercial.Tables[8];
+            DropdownObjects.PIDFCommercialMaster = dsCommercial.Tables[9];
             return DropdownObjects;
         }
 
@@ -269,67 +295,6 @@ namespace EmcureNPD.Business.Core.Implementation
             }
             else
                 return null;
-        }
-
-        public async Task<DataTableResponseModel> GetAllIPDPIDFList(DataTableAjaxPostModel model)
-        {
-            string ColumnName = (model.order.Count > 0 ? model.columns[model.order[0].column].data : string.Empty);
-            string SortDir = (model.order.Count > 0 ? model.order[0].dir : string.Empty);
-
-            SqlParameter[] osqlParameter = {
-                new SqlParameter("@StatusId", Master_PIDFStatus.PIDFApproved),
-                new SqlParameter("@CurrentPageNumber", model.start),
-                    new SqlParameter("@PageSize", model.length),
-                    new SqlParameter("@SortColumn", ColumnName),
-                    new SqlParameter("@SortDirection", SortDir),
-                    new SqlParameter("@SearchText", model.search.value)
-            };
-
-            var PIDFList = await _repository.GetBySP("stp_npd_GetIpdPIDFList", System.Data.CommandType.StoredProcedure, osqlParameter);
-
-            var TotalRecord = (PIDFList != null && PIDFList.Rows.Count > 0 ? Convert.ToInt32(PIDFList.Rows[0]["TotalRecord"]) : 0);
-            var TotalCount = (PIDFList != null && PIDFList.Rows.Count > 0 ? Convert.ToInt32(PIDFList.Rows[0]["TotalCount"]) : 0);
-
-            List<IPDPIDFListEntity> objList = PIDFList.DataTableToList<IPDPIDFListEntity>();
-            for (int i = 0; i < objList.Count(); i++)
-            {
-                objList[i].encpidfid = UtilityHelper.Encrypt(Convert.ToString(objList[i].PIDFID));
-                objList[i].encbud = UtilityHelper.Encrypt(Convert.ToString(objList[i].BusinessUnitId));
-            }
-
-            DataTableResponseModel oDataTableResponseModel = new DataTableResponseModel(model.draw, TotalRecord, TotalCount, objList);
-
-            return oDataTableResponseModel;
-        }
-
-        public async Task<DBOperation> ApproveRejectIpdPidf(EntryApproveRej oApprRej)
-        {
-            if (oApprRej != null && oApprRej.PidfIds.Count > 0)
-            {
-                int saveTId = 0;
-                if (oApprRej.SaveType == "R")
-                    saveTId = 5;
-                else
-                    saveTId = 6;
-
-                for (int i = 0; i < oApprRej.PidfIds.Count; i++)
-                {
-                    Pidf objPidf = await _pidfrepository.GetAsync(oApprRej.PidfIds[i].pidfId);
-                    objPidf.LastStatusId = objPidf.StatusId;
-                    objPidf.StatusId = saveTId;
-                    _pidfrepository.UpdateAsync(objPidf);
-
-                    await _unitOfWork.SaveChangesAsync();
-                }
-                //var isSuccess = await _auditLogService.CreateAuditLog<EntryApproveRej>(Utility.Audit.AuditActionType.Update,
-                //   Utility.Enums.ModuleEnum.IPD, oApprRej, oApprRej, 0);
-
-                return DBOperation.Success;
-            }
-            else
-            {
-                return DBOperation.NotFound;
-            }
         }
 
         public async Task<List<MasterFinalSelectionEntity>> GetAllFinalSelection()

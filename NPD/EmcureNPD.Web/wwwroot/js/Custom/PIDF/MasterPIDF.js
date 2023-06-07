@@ -203,6 +203,17 @@ function deleteRowProductStrength(j, element) {
     $(element).closest("tr").remove();
     SetChildRowDeleteIcon();
 }
+function addRowIMSData(j) {
+    var table = $('#IMSDataTableBody');
+    var node = $('#ImsDataRow_0').clone(true);
+    table.find('tr:last').after(node);
+    table.find('tr:last').find("input").val("");
+    SetChildRowDeleteIcon();
+}
+function deleteRowIMSData(j, element) {
+    $(element).closest("tr").remove();
+    SetChildRowDeleteIcon();
+}
 
 function approveRejDeleteData(type) {
     if (type == "A")
@@ -291,6 +302,11 @@ function SetChildRowDeleteIcon() {
     } else {
         $('.strengthDeleteIcon').hide();
     }
+    if ($('#IMSDataTable tbody tr').length > 1 && _mode != 1) {
+        $('.imsDeleteIcon').show();
+    } else {
+        $('.imsDeleteIcon').hide();
+    }
 }
 
 
@@ -317,13 +333,18 @@ function validateDynamicControldDetails() {
 }
 
 function validatecontrols(control) {
-    if ($(control).val().trim() == '') {
-        $(control).css("border-color", "red");
-        $(control).focus();
-        isValidPIDFForm = false;
+    try {
+        if ($(control).val().trim() == '') {
+            $(control).css("border-color", "red");
+            $(control).focus();
+            isValidPIDFForm = false;
+        }
+        else {
+            $(control).css("border-color", "");
+        }
     }
-    else {
-        $(control).css("border-color", "");
+    catch {
+        isValidPIDFForm = false;
     }
 }
 function mandateDynamicControl() {

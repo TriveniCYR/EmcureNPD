@@ -38,6 +38,9 @@ namespace EmcureNPD.Business.Core.Implementation
             MasterPackingType objPackingType;
             if (entityPackingType.PackingTypeId > 0)
             {
+                var objModelData = _repository.Exists(x => x.PackingTypeName.ToLower() == entityPackingType.PackingTypeName.ToLower() && x.PackingTypeId!= entityPackingType.PackingTypeId);
+                if (objModelData)
+                { return DBOperation.AlreadyExist; }
                 objPackingType = _repository.Get(entityPackingType.PackingTypeId);
                 if (objPackingType != null)
                 {

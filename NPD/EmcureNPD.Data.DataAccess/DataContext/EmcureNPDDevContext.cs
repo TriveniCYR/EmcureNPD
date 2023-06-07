@@ -4,7 +4,6 @@ using Microsoft.EntityFrameworkCore.Metadata;
 using EmcureNPD.Data.DataAccess.Entity;
 using EmcureNPD.Utility;
 
-
 #nullable disable
 
 namespace EmcureNPD.Data.DataAccess.DataContext
@@ -92,6 +91,7 @@ namespace EmcureNPD.Data.DataAccess.DataContext
         public virtual DbSet<PidfApiIpd> PidfApiIpds { get; set; }
         public virtual DbSet<PidfApiRnD> PidfApiRnDs { get; set; }
         public virtual DbSet<PidfCommercial> PidfCommercials { get; set; }
+        public virtual DbSet<PidfCommercialMaster> PidfCommercialMasters { get; set; }
         public virtual DbSet<PidfCommercialYear> PidfCommercialYears { get; set; }
         public virtual DbSet<PidfFinance> PidfFinances { get; set; }
         public virtual DbSet<PidfFinanceBatchSizeCoating> PidfFinanceBatchSizeCoatings { get; set; }
@@ -129,6 +129,7 @@ namespace EmcureNPD.Data.DataAccess.DataContext
         public virtual DbSet<PidfPbfRnDToolingChangepart> PidfPbfRnDToolingChangeparts { get; set; }
         public virtual DbSet<PidfPbfRndBatchSize> PidfPbfRndBatchSizes { get; set; }
         public virtual DbSet<Pidfapidetail> Pidfapidetails { get; set; }
+        public virtual DbSet<Pidfimsdatum> Pidfimsdata { get; set; }
         public virtual DbSet<PidfproductStrength> PidfproductStrengths { get; set; }
         public virtual DbSet<PidfstatusHistory> PidfstatusHistories { get; set; }
         public virtual DbSet<ProjectTask> ProjectTasks { get; set; }
@@ -140,8 +141,8 @@ namespace EmcureNPD.Data.DataAccess.DataContext
             if (!optionsBuilder.IsConfigured)
             {
 #warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see http://go.microsoft.com/fwlink/?LinkId=723263.
-				optionsBuilder.UseSqlServer(DatabaseConnection.NPDDatabaseConnection);
-			}
+                optionsBuilder.UseSqlServer(DatabaseConnection.NPDDatabaseConnection);
+            }
         }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
@@ -1536,6 +1537,31 @@ namespace EmcureNPD.Data.DataAccess.DataContext
                     .HasConstraintName("FK_PIDF_Commercial_PIDFProductStrength");
             });
 
+            modelBuilder.Entity<PidfCommercialMaster>(entity =>
+            {
+                entity.ToTable("PIDF_Commercial_Master", "dbo");
+
+                entity.Property(e => e.PidfcommercialMasterId).HasColumnName("PIDFCommercialMasterId");
+
+                entity.Property(e => e.CreatedDate).HasColumnType("datetime");
+
+                entity.Property(e => e.Pidfid).HasColumnName("PIDFId");
+
+                entity.Property(e => e.Remark).HasMaxLength(500);
+
+                entity.HasOne(d => d.BusinessUnit)
+                    .WithMany(p => p.PidfCommercialMasters)
+                    .HasForeignKey(d => d.BusinessUnitId)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("FK_PIDF_Commercial_Master_Master_BusinessUnit");
+
+                entity.HasOne(d => d.Pidf)
+                    .WithMany(p => p.PidfCommercialMasters)
+                    .HasForeignKey(d => d.Pidfid)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("FK_PIDF_Commercial_Master_PIDF");
+            });
+
             modelBuilder.Entity<PidfCommercialYear>(entity =>
             {
                 entity.ToTable("PIDF_Commercial_Years", "dbo");
@@ -2772,6 +2798,29 @@ namespace EmcureNPD.Data.DataAccess.DataContext
                     .HasForeignKey(d => d.Pidfid)
                     .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("FK_PIDFAPIDetails_PIDF");
+            });
+
+            modelBuilder.Entity<Pidfimsdatum>(entity =>
+            {
+                entity.HasKey(e => e.PidfimsdataId);
+
+                entity.ToTable("PIDFIMSData", "dbo");
+
+                entity.Property(e => e.PidfimsdataId).HasColumnName("PIDFIMSDataId");
+
+                entity.Property(e => e.Imsvalue).HasColumnName("IMSValue");
+
+                entity.Property(e => e.Imsvolume).HasColumnName("IMSVolume");
+
+                entity.Property(e => e.ModifyDate).HasColumnType("datetime");
+
+                entity.Property(e => e.Pidfid).HasColumnName("PIDFId");
+
+                entity.HasOne(d => d.Pidf)
+                    .WithMany(p => p.Pidfimsdata)
+                    .HasForeignKey(d => d.Pidfid)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("FK_PIDFIMSData_PIDF");
             });
 
             modelBuilder.Entity<PidfproductStrength>(entity =>

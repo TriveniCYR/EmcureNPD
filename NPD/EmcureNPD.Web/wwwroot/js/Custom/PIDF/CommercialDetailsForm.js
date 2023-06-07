@@ -7,6 +7,7 @@ var SelectedBUValue = 0;
 var selectedStrength = 0;
 var EditIndex = -1;
 var MainRowEditIndex = -1;
+var PIDFCommercialMaster ;
 
 $(document).ready(function () {
     $('#mainDivCommercial').find('label[id^="valmsg"]').hide();
@@ -195,6 +196,11 @@ $('#PriceDiscounting').focusout(function () {
 function SaveCommertialPIDFForm() {
     $.extend(objMainForm, { 'encCreatedBy': $("#LoggedInUserId").val() });
     $.extend(objMainForm, { 'Pidfid': parseInt($("#PIDFId").val()) });
+   /* -------------------------------*/
+    $.extend(objMainForm, { 'Interested': parseBool($("#Interested").val()) });
+    $.extend(objMainForm, { 'Remark': $("#Remark").val() });
+    $.extend(objMainForm, { 'MainBusinessUnitId': parseInt(SelectedBUValue) });
+   /* ---------------------------------*/
     $.extend(objMainForm, { 'PIDFArrMainCommercial': ArrMainCommercial });
     ajaxServiceMethod($('#hdnBaseURL').val() + SaveCommercialPIDF, 'POST', SaveCommertialPIDFFormSuccess, SaveCommertialPIDFFormError, JSON.stringify(objMainForm));
 }
@@ -223,8 +229,19 @@ function BUtabClick(BUVal, pidfidval) {
     ClearValidationForYearForm();
     ClearValidationForMainForm();
     Update_BUstregthPackTable(ArrMainCommercial);
+    Update_IsInterested_Remark();
     SetCommercialDisableForOtherUserBU();
     IsShowCancel_Save_buttons(true);
+}
+function Update_IsInterested_Remark() {
+    if (PIDFCommercialMaster != undefined) {
+    var object_CommercialMaster = $.grep(PIDFCommercialMaster, function (n, i) {
+        return n.businessUnitId == SelectedBUValue
+    });
+       // Interested.cheked = true;
+        $('#Remark').val(object_CommercialMaster.remark);
+        $('#Interested').val(object_CommercialMaster.interested);
+    }
 }
 function StrengthtabClick(strengthVal, pidfidval) {
     $('[id^="Strengthtab_"]').removeClass('active');
@@ -250,6 +267,7 @@ function GetCommercialPIDFByBUSuccess(data) {
 
         renderBusinessUnit(data._object.BusinessUnit);
         renderPIDFStrength(data._object.PIDFStrength);
+        PIDFCommercialMaster = data._object.PIDFCommercialMaster;
         setCommercialArray(data._object.Commercial, data._object.CommercialYear);
         Update_BUstregthPackTable(ArrMainCommercial);
         SetCommercialDisableForOtherUserBU();

@@ -51,5 +51,7 @@
    @Html.TextBoxFor(@modal=>modal.ToolingAndChangePartsPhaseEndDate,"{0:yyyy-MM-dd}",new{@type="date"})
     @* @Html.HiddenFor(x => x.JsonlsPidfFinanceBatchSizeCoating                                 )*@
     @Html.HiddenFor(x => x.JsonCommercialData                                                 )
-    @Html.HiddenFor(x => x.GestationPeriodinYears                                             ) 
+    @Html.HiddenFor(x => x.GestationPeriodinYears                                             )
+    <input type="hidden" id="TargetPriceScenario" value="@Model.TargetPriceScenario" />
+    <input type="hidden" id="MSPersentage" value="@Model.Mspersentage" />
 </div>

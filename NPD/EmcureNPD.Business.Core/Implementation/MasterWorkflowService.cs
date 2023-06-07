@@ -38,6 +38,9 @@ namespace EmcureNPD.Business.Core.ServiceImplementations
             MasterWorkflow objWorkflow;
             if (entityWorkflow.WorkflowId > 0)
             {
+                var objModelData = _repository.Exists(x => x.WorkflowName.ToLower() == entityWorkflow.WorkflowName.ToLower() && x.WorkflowId!= entityWorkflow.WorkflowId);
+                if (objModelData)
+                { return DBOperation.AlreadyExist; }
                 objWorkflow = _repository.Get(entityWorkflow.WorkflowId);
                 if (objWorkflow != null)
                 {

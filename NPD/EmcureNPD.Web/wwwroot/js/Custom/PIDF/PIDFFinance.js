@@ -8,6 +8,8 @@ var SumOfGC = [];
 var Expiries_Yearwise_Data = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
 var AnnualConfirmatoryRelease_Data = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
 var Global_Projection_Year_data = [];
+var ExpiriestxtboxFocusId = "";
+var AnnualConfirmatoryRtxtboxFocusId = "";
 $(document).ready(function () {
  /*   console.log("selectedSKUs" + selectedSKUs);*/
   
@@ -56,11 +58,45 @@ $(document).ready(function () {
         if (selectedVal == '')
             $(this).val('0');
     });
-    //$(document).on("change", "$('.EmcureCOGs_pack')", function () {
-    //    ValidateSKU_dropdown();
+    //$(document).on("keydown", ".Expiriestxtbox", function (e) {
+    //    if (e.keyCode === 9) {
+    //        e.preventDefault();
+    //        ExpiriestxtboxFocusId = $(this).closest('td').next('td').find('input').attr('id');
+    //      //  console.log('This is Keydown: ' + $(this).attr('id'));
+    //        $(this).trigger('change');
+    //    }
+    //});
+    //$(document).on("keydown", ".AnnualConfirmatoryRtxtbox", function (e) {
+    //    if (e.keyCode === 9) {
+    //        e.preventDefault();
+    //        AnnualConfirmatoryRtxtboxFocusId = $(this).closest('td').next('td').find('input').attr('id');
+    //       // console.log('This is Keydown: ' + $(this).attr('id'));
+    //        $(this).trigger('change');
+    //    }
     //});
     UpdateProjectionCommercial();
 });
+function ExpiriesValueChange(ele, index) {
+    ele.value = (ele.value == undefined || ele.value == '') ? 0 : ele.value;
+    Expiries_Yearwise_Data[index] = ele.value;
+    RenderFinanceProjection();
+    if (ExpiriestxtboxFocusId != '') {
+      //  console.log('This is onchnage: ' + ExpiriestxtboxFocusId);
+        $('#' + ExpiriestxtboxFocusId).focus();
+        ExpiriestxtboxFocusId = '';
+    }
+}
+function AnnualconfirmatoryValueChange(ele, index) {
+    ele.value = (ele.value == undefined || ele.value == '') ? 0 : ele.value;
+    AnnualConfirmatoryRelease_Data[index] = ele.value;
+    RenderFinanceProjection();  
+    if (AnnualConfirmatoryRtxtboxFocusId != '') {
+        $('#' + AnnualConfirmatoryRtxtboxFocusId).focus();
+       // console.log('This is OnChnage: ' + AnnualConfirmatoryRtxtboxFocusId);
+        AnnualConfirmatoryRtxtboxFocusId = '';
+    }    
+}
+
 function ValidateSKU_dropdown(){
     var ArrayofInvalid = [];
     var ArrayofZeroInvalidValues = [];
@@ -865,18 +901,8 @@ $(el).focusout(function () {
            }, false)
        })
 })()
-function ExpiriesValueChange(ele, index) {
-    ele.value = (ele.value == undefined || ele.value == '') ? 0 : ele.value;
-    Expiries_Yearwise_Data[index] = ele.value;
-    RenderFinanceProjection();
-    $('#ProjectionExpiries_' + index).focus();
-}
-function AnnualconfirmatoryValueChange(ele, index) {
-    ele.value = (ele.value == undefined || ele.value == '') ? 0 : ele.value;
-    AnnualConfirmatoryRelease_Data[index] = ele.value;
-    RenderFinanceProjection();
-    $('#ProjectionAnnualConfirmatoryRelease' + index).focus();    
-}
+
+
 function loadFinanceProjectionData(pidfid, encBUId){
     _encBuid = encBUId;
     $('.PakeSize').trigger("change");

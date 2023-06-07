@@ -12,6 +12,7 @@ namespace EmcureNPD.Data.DataAccess.Entity
             MasterNotifications = new HashSet<MasterNotification>();
             PidfApiCharters = new HashSet<PidfApiCharter>();
             PidfApiIpds = new HashSet<PidfApiIpd>();
+            PidfCommercialMasters = new HashSet<PidfCommercialMaster>();
             PidfCommercials = new HashSet<PidfCommercial>();
             PidfFinanceProjections = new HashSet<PidfFinanceProjection>();
             PidfIpds = new HashSet<PidfIpd>();
@@ -19,6 +20,7 @@ namespace EmcureNPD.Data.DataAccess.Entity
             PidfMedicals = new HashSet<PidfMedical>();
             PidfPbfs = new HashSet<PidfPbf>();
             Pidfapidetails = new HashSet<Pidfapidetail>();
+            Pidfimsdata = new HashSet<Pidfimsdatum>();
             PidfproductStrengths = new HashSet<PidfproductStrength>();
             PidfstatusHistories = new HashSet<PidfstatusHistory>();
             ProjectTasks = new HashSet<ProjectTask>();
@@ -70,6 +72,7 @@ namespace EmcureNPD.Data.DataAccess.Entity
         public virtual ICollection<MasterNotification> MasterNotifications { get; set; }
         public virtual ICollection<PidfApiCharter> PidfApiCharters { get; set; }
         public virtual ICollection<PidfApiIpd> PidfApiIpds { get; set; }
+        public virtual ICollection<PidfCommercialMaster> PidfCommercialMasters { get; set; }
         public virtual ICollection<PidfCommercial> PidfCommercials { get; set; }
         public virtual ICollection<PidfFinanceProjection> PidfFinanceProjections { get; set; }
         public virtual ICollection<PidfIpd> PidfIpds { get; set; }
@@ -77,6 +80,7 @@ namespace EmcureNPD.Data.DataAccess.Entity
         public virtual ICollection<PidfMedical> PidfMedicals { get; set; }
         public virtual ICollection<PidfPbf> PidfPbfs { get; set; }
         public virtual ICollection<Pidfapidetail> Pidfapidetails { get; set; }
+        public virtual ICollection<Pidfimsdatum> Pidfimsdata { get; set; }
         public virtual ICollection<PidfproductStrength> PidfproductStrengths { get; set; }
         public virtual ICollection<PidfstatusHistory> PidfstatusHistories { get; set; }
         public virtual ICollection<ProjectTask> ProjectTasks { get; set; }

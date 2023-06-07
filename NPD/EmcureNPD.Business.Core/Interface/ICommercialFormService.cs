@@ -14,13 +14,13 @@ namespace EmcureNPD.Business.Core.Interface
         //Task<PIDFormEntity> GetIPDFormData(long pidfId, int buid);
         Task<dynamic> GetCommercialFormData(long pidfId, int buid, int? strengthid);
 
-        Task<DataTableResponseModel> GetAllIPDPIDFList(DataTableAjaxPostModel model);
+        //Task<DataTableResponseModel> GetAllIPDPIDFList(DataTableAjaxPostModel model);
 
         Task<IEnumerable<dynamic>> GetAllRegion(int userId);
 
         Task<IEnumerable<dynamic>> GetCountryRefByRegionIds(string regionIds);
 
-        Task<DBOperation> ApproveRejectIpdPidf(EntryApproveRej oApprRej);
+        //Task<DBOperation> ApproveRejectIpdPidf(EntryApproveRej oApprRej);
 
         Task<List<MasterFinalSelectionEntity>> GetAllFinalSelection();
         Task<List<MasterPackSizeViewModelEntity>> GetAllPackSize();        

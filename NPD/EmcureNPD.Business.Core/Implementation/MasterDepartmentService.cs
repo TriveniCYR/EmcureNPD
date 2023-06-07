@@ -65,6 +65,9 @@ namespace EmcureNPD.Business.Core.ServiceImplementations
 
             if (entityDepartment.DepartmentId > 0)
             {
+                var objModelData = _repository.Exists(x => x.DepartmentName.ToLower() == entityDepartment.DepartmentName.ToLower() && x.DepartmentId!= entityDepartment.DepartmentId);
+                if (objModelData)
+                { return DBOperation.AlreadyExist; }
                 objDepartment = _repository.Get(entityDepartment.DepartmentId);
                 if (objDepartment != null)
                 {

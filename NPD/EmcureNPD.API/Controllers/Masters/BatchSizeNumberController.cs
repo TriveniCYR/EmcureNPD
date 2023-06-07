@@ -59,7 +59,7 @@ namespace EmcureNPD.API.Controllers.Masters
                 if (oResponse == DBOperation.Success)
                     return _ObjectResponse.Create(true, (Int32)HttpStatusCode.OK, (oBatchSizeNumber.BatchSizeNumberId > 0 ? "Updated Successfully" : "Inserted Successfully"));
                 else if (oResponse == DBOperation.AlreadyExist)
-                { return _ObjectResponse.Create(false, (Int32)HttpStatusCode.BadRequest, (oResponse == DBOperation.AlreadyExist ? "BatchSize Number Name'<b>" + oBatchSizeNumber.BatchSizeNumberName + "</b>' Already Exist" : "Bad request")); }
+                { return _ObjectResponse.Create(false, (Int32)HttpStatusCode.BadRequest, (oResponse == DBOperation.AlreadyExist ? "Dosage Formulation Name'<b>" + oBatchSizeNumber.BatchSizeNumberName + "</b>' Already Exist" : "Bad request")); }
                 else
                     return _ObjectResponse.Create(false, (Int32)HttpStatusCode.BadRequest, (oResponse == DBOperation.NotFound ? "Record not found" : "Bad request"));
             }

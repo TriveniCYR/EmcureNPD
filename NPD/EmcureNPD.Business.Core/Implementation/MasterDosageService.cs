@@ -44,6 +44,9 @@ namespace EmcureNPD.Business.Core.ServiceImplementations
             MasterDosage objDosage;
             if (entityDosage.DosageId > 0)
             {
+                var objModelData = _repository.Exists(x => x.DosageName.ToLower() == entityDosage.DosageName.ToLower() && x.DosageId!= entityDosage.DosageId);
+                if (objModelData)
+                { return DBOperation.AlreadyExist; }
                 objDosage = _repository.Get(entityDosage.DosageId);
                 if (objDosage != null)
                 {
