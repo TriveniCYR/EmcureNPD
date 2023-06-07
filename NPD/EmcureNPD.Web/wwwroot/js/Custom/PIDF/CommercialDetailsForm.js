@@ -14,8 +14,8 @@ $(document).ready(function () {
     IsViewModeCommercial();
     SetBU_Strength();
     if ($('#hdnIsPartial').val() != '1') {
-        getPIDFAccordion(_PIDFAccordionURL, _PIDFID, "dvPIDFAccrdion");
-        getIPDAccordion(_IPDAccordionURL, _EncPIDFID, _PIDFBusinessUnitId, "dvIPDAccrdion");
+      //  getPIDFAccordion(_PIDFAccordionURL, _PIDFID, "dvPIDFAccrdion");
+      //  getIPDAccordion(_IPDAccordionURL, _EncPIDFID, _PIDFBusinessUnitId, "dvIPDAccrdion");
     }
 });
 
@@ -81,7 +81,7 @@ function ClearValidationForYearForm() {
     });
 }
 function ClearValidationForMainForm() {
-    var MainFormFeilds = ['MarketSizeInUnit', 'ShelfLife', 'PackSizeId']
+    var MainFormFeilds = ['MarketSizeInUnit', 'ShelfLife', 'PackSizeId', 'MarketSizeInUnit','Interested']
     $.each(MainFormFeilds, function (_, kv) {
         $('#valmsg' + kv).text('').hide();
     });
@@ -98,6 +98,16 @@ function ValidateMainForm() {
             $('#valmsg' + kv).text('').hide();
         }
     });
+    let IsInterestedYes = $('.IsInterestedYes').prop('checked');
+    let IsInterestedNo = $('.IsInterestedNo').prop('checked');
+    if (!IsInterestedYes && !IsInterestedNo) {
+        $('#valmsgInterested').text('Required').show();
+        ArrofInvalid.push('Interested');
+    }
+    else {
+        $('#valmsgInterested').text('').show();       
+    }
+
     var status = (ArrofInvalid.length == 0) ? true : false;
     if (!status) { toastr.error('Some fields are missing !'); }
 
@@ -197,7 +207,7 @@ function SaveCommertialPIDFForm() {
     $.extend(objMainForm, { 'encCreatedBy': $("#LoggedInUserId").val() });
     $.extend(objMainForm, { 'Pidfid': parseInt($("#PIDFId").val()) });
    /* -------------------------------*/
-    $.extend(objMainForm, { 'Interested': parseBool($("#Interested").val()) });
+    $.extend(objMainForm, { 'Interested': $("#Interested").prop('checked') }); 
     $.extend(objMainForm, { 'Remark': $("#Remark").val() });
     $.extend(objMainForm, { 'MainBusinessUnitId': parseInt(SelectedBUValue) });
    /* ---------------------------------*/
@@ -238,9 +248,21 @@ function Update_IsInterested_Remark() {
     var object_CommercialMaster = $.grep(PIDFCommercialMaster, function (n, i) {
         return n.businessUnitId == SelectedBUValue
     });
-       // Interested.cheked = true;
-        $('#Remark').val(object_CommercialMaster.remark);
-        $('#Interested').val(object_CommercialMaster.interested);
+        if (object_CommercialMaster.length > 0) {
+            $('#Remark').val(object_CommercialMaster[0].remark);
+            if (object_CommercialMaster[0].interested) {
+                $('.IsInterestedYes').prop('checked', true);
+                $('.IsInterestedNo').prop('checked', false);
+            } else {
+                $('.IsInterestedYes').prop('checked', false);
+                $('.IsInterestedNo').prop('checked', true);
+            }
+        }
+        else {
+            $("#Remark").val('');
+            $('.IsInterestedYes').prop('checked', false);
+            $('.IsInterestedNo').prop('checked', false);
+        }
     }
 }
 function StrengthtabClick(strengthVal, pidfidval) {
@@ -270,6 +292,7 @@ function GetCommercialPIDFByBUSuccess(data) {
         PIDFCommercialMaster = data._object.PIDFCommercialMaster;
         setCommercialArray(data._object.Commercial, data._object.CommercialYear);
         Update_BUstregthPackTable(ArrMainCommercial);
+        Update_IsInterested_Remark();
         SetCommercialDisableForOtherUserBU();
     } catch (e) {
         toastr.error('Get Commercial Error:' + e.message);
@@ -281,6 +304,9 @@ function GetCommercialPIDFByBUError(x, y, z) {
 function ResetMainFormForm() {
     $("#MarketSizeInUnit").val('');
     $("#ShelfLife").val('');
+    $('.IsInterestedYes').prop('checked', false);
+    $('.IsInterestedNo').prop('checked', false);
+    $("#Remark").val("");
 }
 function SetCommercialFormReadonly() {
     $("#mainDivCommercial").find("input, button, submit, textarea, select").prop('disabled', true);

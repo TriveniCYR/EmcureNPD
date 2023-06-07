@@ -103,6 +103,8 @@ namespace EmcureNPD.Business.Core.Implementation
             else
             {
                 var NewObject = new PidfCommercialMaster();
+                NewObject.BusinessUnitId = entitycommPIDF.MainBusinessUnitId;
+                NewObject.Pidfid = entitycommPIDF.Pidfid;
                 NewObject.Interested = entitycommPIDF.Interested;
                 NewObject.Remark = entitycommPIDF.Remark;
                 NewObject.CreatedBy  = loggedInUserID;
