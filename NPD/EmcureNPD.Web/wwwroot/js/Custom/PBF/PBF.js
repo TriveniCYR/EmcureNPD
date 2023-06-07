@@ -8,7 +8,7 @@ var _clinicalView = 0;
 var _pbf = true;
 var _strengthArray = [];
 var _CostOfLitigationArray = [];
-var _currencySymbol = '';
+var _currencySymbol = '₹';
 var _firstLoad = true;
 var _oralName = '';
 var isValidPBFForm = true;
@@ -886,7 +886,7 @@ function GetPBFTabDetails() {
 function GetPBFTabDetailsSuccess(data) {
     try {
         if (data != null) {
-            _currencySymbol = (data.IPDCostOfLitigation.length > 0 ? data.IPDCostOfLitigation[0].currencySymbol : "$");
+            //_currencySymbol = (data.IPDCostOfLitigation.length > 0 ? data.IPDCostOfLitigation[0].currencySymbol : "$");
             _CostOfLitigationArray = data.IPDCostOfLitigation;
             CreatePhaseWiseBudgetTable();
             CreateTotalExpensesTable();
