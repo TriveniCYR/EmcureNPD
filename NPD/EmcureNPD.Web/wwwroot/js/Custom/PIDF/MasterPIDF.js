@@ -289,6 +289,10 @@ function SetChildRows() {
         $(this).find("td:first input").attr("name", "pidfProductStregthEntities[" + index.toString() + "].Strength");
         $(this).find("td:eq(1) select").attr("name", "pidfProductStregthEntities[" + index.toString() + "].UnitofMeasurementId");
     });
+    $.each($('#IMSDataTable tbody tr'), function (index, value) {
+        $(this).find("td:first input").attr("name", "IMSDataEntities[" + index.toString() + "].Imsvalue");
+        $(this).find("td:eq(1) input").attr("name", "IMSDataEntities[" + index.toString() + "].Imsvolume");
+    });
 }
 function SetChildRowDeleteIcon() {
     if ($('#APIDetailsTable tbody tr').length > 1 && _mode != 1) {
