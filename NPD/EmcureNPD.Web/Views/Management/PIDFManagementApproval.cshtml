@@ -482,6 +482,20 @@
                             </tr>
                             <tr>
                                 <td colspan="2">
+                                    Plant      
+                                </td>
+                                <td colspan="8">@Model.lsProjectDetails[i].PlantName</td>
+                            </tr>
+                            <tr>
+                                <td colspan="2">
+                                    Project Date
+                                </td>
+                                <td colspan="8">@Model.lsProjectDetails[i].ProjectInitiationDate.ToString("dd MMMM yyyy")
+                                    - @Model.lsProjectDetails[i].ProjectCompletionFilingDate.ToString("dd MMMM yyyy")
+                                </td>
+                            </tr>
+                            <tr>
+                                <td colspan="2">
                                     Total Project Duration
                                 </td>
                                 <td colspan="8">@Model.lsProjectDetails[i].TotalProjectDuration</td>
@@ -581,20 +595,20 @@
                     {
                         for (int i = 0; i < Model.lsProjectDetails.Count; i++)
                         {
-                            <tr>
-                                <td colspan="2">
-                                    Pharmacoepial Standards on Quality
-                                </td>
-                                @* <td colspan="4" class="col-lg-4">@Model.lsProjectDetails[i].Market</td>*@
-                                @if (!string.IsNullOrEmpty(@Model.lsProjectDetails[i].Market))
-                                {
-                                    var str = @Model.lsProjectDetails[i].Market.Split(",");
-                                    foreach (string mar in str)
-                                    {
-                                        <td>@mar</td>
-                                    }
-                                }
-                            </tr>
+                            //<tr>
+                            //    <td colspan="2">
+                            //        Pharmacoepial Standards on Quality
+                            //    </td>
+                            //    @* <td colspan="4" class="col-lg-4">@Model.lsProjectDetails[i].Market</td>*@
+                            //    @if (!string.IsNullOrEmpty(@Model.lsProjectDetails[i].Market))
+                            //    {
+                            //        var str = @Model.lsProjectDetails[i].Market.Split(",");
+                            //        foreach (string mar in str)
+                            //        {
+                            //            <td>@mar</td>
+                            //        }
+                            //    }
+                            //</tr>
                             <tr>
                                 <td colspan="2">
                                     Project Budget (<span>@CurrencyCode</span> Lacs)
@@ -753,12 +767,12 @@
             <br />
         </div>
         <div class="col-12 mb-4">
-            <p class="text-decoration-underline fw-bold m-0">Please Note:</p>
-            <p class="m-0">Pilot Bio Cost Considered in Budget.</p>
+            <p class="text-decoration-underline fw-bold m-0">Please Note:</p>            
             <p class="m-0">
-                Bio Cost Not Considered in R&D budget, and same is considered in
-                'Business Unit Cost
-                Center' of Emerging Market.
+               @if (Model.lsProjectDetails != null && Model.lsProjectDetails.Count > 0)
+                {
+                    @Model.lsProjectDetails[0].Note_Remark
+                }
             </p>
         </div>
 

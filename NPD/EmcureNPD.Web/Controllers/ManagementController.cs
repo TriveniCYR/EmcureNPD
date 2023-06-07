@@ -149,6 +149,9 @@ namespace EmcureNPD.Web.Controllers
                                 ProjectBudget = data.table4[i].ProjectBudget,
                                 ProjectCompletionFilingDate = data.table4[i].ProjectCompletionFilingDate,
                                 BEStudies = data.table4[i].BEStudies,
+                                Note_Remark = data.table4[i].Note_Remark,
+                                PlantName = data.table4[i].PlantName,
+                                ProjectInitiationDate = data.table4[i].ProjectInitiationDate,
                             });
                         }
                         model.lsProjectDetails = ListProjectDetails;
