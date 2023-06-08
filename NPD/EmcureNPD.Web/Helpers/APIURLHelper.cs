@@ -321,6 +321,8 @@ namespace EmcureNPD.Web.Helpers
         public static string GetCountryByRegion = "api/User/GetCountryByRegion";
         public static string GetDepartmentList = "api/User/GetDepartmentList";
         public static string GetBusinessUnitByUserId = "api/User/GetBusinessUnitByUserId";
+        public static string GetUserForAPIInterested = "api/User/GetUserForAPIInterested";
+        
 
         // Anonymous_Access API for Forgot Passsword
         public static string Anonymous_CheckEmailAddressExists = "api/Account/CheckEmailAddressExists";

@@ -225,6 +225,14 @@ namespace EmcureNPD.Business.Core.ServiceImplementations
 
             return _userEntity;
         }
+        public async Task<List<MasterUserEntity>> GetUserForAPIInterested()
+        {
+            var _userEntities = new List<MasterUserEntity>();
+            var _userDBEntity =   await _repository.GetAllAsync(x => x.IsActive == true && x.IsDeleted == false);
+            _userEntities = _mapperFactory.GetList<MasterUser,MasterUserEntity> (_userDBEntity.ToList());
+            return _userEntities;
+        }
+
 
         public async Task<DBOperation> AddUpdateUser(MasterUserEntity entityUser)
         {

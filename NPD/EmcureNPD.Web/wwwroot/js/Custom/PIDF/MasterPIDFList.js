@@ -226,6 +226,7 @@ function InitializePIDFList() {
                     var _APIForm = '/API/';
                     var _APIQS = '?pidfid=' + row.encpidfid + '&bui=' + row.encbud + '&api=' + row.api;
                     var _enable = (row.pidfStatusID == 7 || row.pidfStatusID == 10 || row.pidfStatusID == 11 || row.pidfStatusID == 12 || row.pidfStatusID == 13 || row.pidfStatusID == 14 || row.pidfStatusID == 15 || row.pidfStatusID == 16 || row.pidfStatusID == 17);//|| row.pidfStatusID == 9
+                    if (IsEditAPIIPD || IsViewAPIIPD || IsAddAPIIPD) { html += '<a class="large-font" title="IPD" style="color:' + (_enable ? "#007bff" : "grey") + '" onclick="ShowAddAPIUserPopUp(`' + row.encpidfid +'`)"><i class="fa fa-fw fa-plus mr-1"></i></a>'; }
                     if (IsEditAPIIPD || IsViewAPIIPD || IsAddAPIIPD) { html += '<a class="large-font" title="IPD" style="color:' + (_enable ? "#007bff" : "grey") + '" href="' + (_enable ? _APIForm + "APIIPDDetailsForm" + _APIQS : "#") + '"><i class="fa fa-fw fa-columns mr-1"></i></a>'; }
                     if (IsEditAPIRnD || IsViewAPIRnD || IsAddAPIRnD) { html += '<a class="large-font" title="RnD" style="color:' + (_enable ? "#007bff" : "grey") + '" href="' + (_enable ? _APIForm + "APIRndDetailsForm" + _APIQS : "#") + '"><i class="fa fa-fw fa-flask mr-1"></i></a>'; }
                     if (IsEditAPICharter || IsViewAPICharter || IsAddAPICharter) { html += '<a class="large-font" title="Charter" style="color:' + (_enable ? "#007bff" : "grey") + '" href="' + (_enable ? _APIForm + "APICharterDetailsForm" + _APIQS : "#") + '"><i class="fa fa-fw fa-map-marker mr-1"></i></a>'; }
@@ -341,6 +342,12 @@ function InitializePIDFList() {
         }
     });
 }
+function ShowAddAPIUserPopUp(pidfid) {
+  //  $('#dvCommercialPackStyle').modal('show');
+    GetUserForAPIInterested();
+    $('#dvAddAPIPopUpModel').modal('show');
+}
+
 /* Formatting function for row details - modify as you need */
 function CustomizeChildContent(d) {
     // `d` is the original data object for the row
@@ -440,4 +447,25 @@ function ApproveRejectPIDF(type, ScreenId, URL) {
     });
 
     ApproveRejectClick(type, _selectedPIDFId, ScreenId, URL);
+}
+
+function GetUserForAPIInterested() {
+    ajaxServiceMethod($('#hdnBaseURL').val() + GetUserForAPIInterestedURL, 'GET', GetUserForAPIInterestedSuccess, GetUserForAPIInterestedError);
+    }
+function GetUserForAPIInterestedSuccess(data) {
+        try {
+            if (data != null)
+                $(data._object).each(function (index, item) {
+                    $('#InterestedAPIUser').append($('<option>').text(item.fullName).attr('value', item.userId));
+
+                    //$('#DepartmentId option:eq(0)').val(0);
+                    //$('#DepartmentId').val("-");
+                });
+            $('#InterestedAPIUser').select2({ dropdownAdapter: $.fn.select2.amd.require('select2/selectAllAdapter') });
+        } catch (e) {
+            toastr.error('Error:' + e.message);
+        }
+    }
+function GetUserForAPIInterestedError(x, y, z) {
+        toastr.error(ErrorMessage);
 }
