@@ -232,6 +232,15 @@ namespace EmcureNPD.Resource.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Domestic.
+        /// </summary>
+        internal static string Domestic {
+            get {
+                return ResourceManager.GetString("Domestic", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Edit.
         /// </summary>
         internal static string Edit {
