@@ -1,0 +1,152 @@
+﻿@using EmcureNPD.Utility.Models
+@using Microsoft.AspNetCore.Http
+@using EmcureNPD.Web.Controllers
+@using Microsoft.AspNetCore.Mvc.Localization
+@inject IHttpContextAccessor HttpContextAccessor
+@inject Microsoft.Extensions.Localization.IStringLocalizer<MastersController> MasterLocalizer
+@inject Microsoft.Extensions.Localization.IStringLocalizer<EmcureNPD.Resource.Shared> SharedLocalizer
+@using Microsoft.Extensions.Configuration
+@inject IConfiguration Configuration
+
+@model EmcureNPD.Business.Models.MasterPlantLineEntity
+@{
+	ViewData["Title"] = @MasterLocalizer[" Plant Line - Emcure NPD"];
+	RolePermissionModel objPermssion = (RolePermissionModel)ViewBag.Access;
+	string IsAddAllow = (objPermssion.Add) ? "" : "display: none";
+	string IsEditAllow = (objPermssion.Edit) ? "" : "display: none";
+	string IsDeleteAllow = (objPermssion.Delete) ? "" : "display: none";
+	string jsVersion = @Configuration.GetSection("StaticJS")["version"];
+	var PlantId = Model == null ? 0 : Model.PlantId;
+}
+<div class="content-header">
+	<div class="container-fluid d-flex justify-content-between">
+		<h3>@MasterLocalizer[" Plant Line"]</h3>
+		<div>
+			<a style="@IsAddAllow" class="btn btn-primary" data-toggle="modal" data-target="#PlantLineModel" data-backdrop="static" data-keyboard="false" onclick="AddPlantLine();"><i class="far fa-plus-square mr-1"></i> @SharedLocalizer["Add"]</a>
+		</div>
+	</div>
+</div>
+<div class="container-fluid overflow-auto background-white-card">
+	<table id="PlantLineTable" class="table table-bordered table-striped table-hover" style="width:100%">
+		<thead>
+			<tr>
+				<th>@MasterLocalizer[" Plant Line Name"]</th>
+				<th>@MasterLocalizer[" Plant Line Cost"]</th>
+				<th>@SharedLocalizer["Status"]</th>
+				<th class="text-center">@SharedLocalizer["Action"]</th>
+			</tr>
+		</thead>
+		<tbody>
+		</tbody>
+	</table>
+</div>
+
+@*DeletePlantLineModel*@
+<div id="DeletePlantLineModel" class="modal themeModal " role="dialog">
+	<div class="modal-dialog">
+		<!-- Modal content-->
+		<div class="modal-content">
+			<div class="modal-header">
+				<h4 class="modal-title">@SharedLocalizer["Delete"]</h4>
+				<button type="button" class="close" data-dismiss="modal">&times;</button>
+			</div>
+			<div class="modal-body">
+				<div class="row">
+					<div class="col-md-12">
+						<div class="form-group">
+							@Html.Label(@SharedLocalizer["DeleteConfirm"])
+						</div>
+					</div>
+				</div>
+				@Html.Hidden("LineId")
+				<div class="card-footer text-center">
+					<button type="button" onclick="DeletePlantLine()" data-dismiss="modal" class="btn btn-primary mr-2">@SharedLocalizer["Yes"]</button>
+					<a class="btn btn-danger" data-dismiss="modal">@SharedLocalizer["No"]</a>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+
+@*AddUpdateModel*@
+<div id="PlantLineModel" class="modal themeModal " role="dialog">
+	<form asp-route-returnUrl="@ViewData["ReturnUrl"]" method="POST" onsubmit="return SaveMasterPlantLine(this);">
+		<!-- Small boxes (Stat box) -->
+		<!-- Main row -->
+		<input type="hidden" id="LineId" name="LineId" value="0" />
+		<div class="modal-dialog">
+			<!-- Modal content-->
+			<div class="modal-content">
+				<div class="modal-header">
+					<h4 class="modal-title" id="PackSizeTitle"></h4>
+					<button type="button" class="close" data-dismiss="modal">&times;</button>
+				</div>
+				<div class="modal-body">
+					<div class="row">
+						<div class="col-md-12">
+							<div class="form-group required">
+								@Html.LabelFor(model => model.LineName," Plant Line Name", new { @class = "control-label" })
+								<span class="text-danger">*</span>
+								@Html.EditorFor(model => model.LineName, new { htmlAttributes = new { @autocomplete = "off", @class = "form-control checkbox-checked", @placeholder = " Plant Line Name" } })
+								@Html.ValidationMessageFor(model => model.LineName, "", new { @class = "text-danger" })
+							</div>
+							<div class="form-group required">
+								
+								@Html.LabelFor(model => model.PlantId,"Plant Name", new { @class = "control-label" })
+								<span class="text-danger">*</span>
+								@Html.DropDownListFor(model => model.PlantId, new List<SelectListItem> { }, new { @class = "form-control" })
+								@Html.ValidationMessageFor(model => model.PlantId, "", new { @class = "text-danger" })
+							</div>
+							<div class="form-group required">
+								@Html.LabelFor(model => model.LineCost," Plant Line Cost", new { @class = "control-label" })
+								<span class="text-danger">*</span>
+								@Html.EditorFor(model => model.LineCost, new { htmlAttributes = new { @autocomplete = "off", @class = "form-control checkbox-checked",@type="number", @placeholder = " Plant Line Cost" ,min="0"} })
+								@Html.ValidationMessageFor(model => model.LineCost, "", new { @class = "text-danger" })
+							</div>
+						</div>
+					</div>
+					<div class="row">
+						<div class="col-md-12">
+							<div class="required">
+								@Html.CheckBoxFor(model => model.IsActive, new { @class = "checkbox-checked", @checked = "checked" })
+								@Html.Label(@SharedLocalizer["IsActive"],"Active")
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="card-footer text-end card-margin">
+					<button type="submit" class="btn btn-success me-3 large-button">@SharedLocalizer["Save"]</button>
+					<a class="btn btn-danger ms-3 large-button" data-dismiss="modal">@SharedLocalizer["Cancel"]</a>
+				</div>
+			</div>
+		</div>
+	</form>
+</div>
+@section MyScripts {
+
+	@Html.Partial("_DataTablePartial")
+
+	<script type="text/javascript" src="~/js/Custom/Masters/MasterPlantLine.js?v=@jsVersion"></script>
+	<script>
+
+		//#region Setup API Url
+		var AllPlantLine = "@EmcureNPD.Web.Helpers.APIURLHelper.GetAllPlantLine";
+		var SavePlantLine = "@EmcureNPD.Web.Helpers.APIURLHelper.SavePlantLine";
+		var GetPlantLineByIdUrl = "@EmcureNPD.Web.Helpers.APIURLHelper.GetPlantLineById";
+		var DeletePlantLineByIdUrl = "@EmcureNPD.Web.Helpers.APIURLHelper.DeletePlantLineId";
+		var GetAllActivePlants = "@EmcureNPD.Web.Helpers.APIURLHelper.GetAllActivePlants";
+		// #endregion
+		var IsEditAllow = "@IsEditAllow";
+		var IsDeleteAllow = "@IsDeleteAllow";
+		//#region Static Messae Init
+		var EditLabel = "@SharedLocalizer["Edit"]";
+		var DeleteLabel = "@SharedLocalizer["Delete"]";
+		var ErrorMessage = "@SharedLocalizer["Error"]";
+		var RecordInsertUpdate = "@SharedLocalizer["RecordInsertUpdate"]";
+		var RecordDelete = "@SharedLocalizer["RecordDelete"]";
+		var AddLabel = "@SharedLocalizer["Add  Plant Line"]";
+		var UpdateLabel = "@SharedLocalizer["Edit  Plant Line"]";
+		const selectedPlantId = "@PlantId";
+								//#endregion
+	</script>
+}

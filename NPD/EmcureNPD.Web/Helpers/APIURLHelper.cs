@@ -501,5 +501,12 @@ namespace EmcureNPD.Web.Helpers
 		public static string SaveExcipientRequirement = "api/ExcipientRequirement/AddUpdateExcipientRequirement";
 		public static string DeleteSaveExcipientRequirementId = "api/ExcipientRequirement/DeleteExcipientRequirement";
 		#endregion
+		#region MasterPlantLine
+		public static string GetAllPlantLine = "api/PlantLine/GetAllPlantLine";
+		public static string GetPlantLineById = "api/PlantLine/PlantLineById";
+		public static string SavePlantLine = "api/PlantLine/AddUpdatePlantLine";
+		public static string DeletePlantLineId = "api/PlantLine/DeletePlantLine";
+		public static string GetAllActivePlants = "api/PlantLine/GetAllActivePlants";
+		#endregion
 	}
 }

@@ -4,6 +4,7 @@ using Microsoft.EntityFrameworkCore.Metadata;
 using EmcureNPD.Data.DataAccess.Entity;
 using EmcureNPD.Utility;
 
+
 #nullable disable
 
 namespace EmcureNPD.Data.DataAccess.DataContext
@@ -62,6 +63,7 @@ namespace EmcureNPD.Data.DataAccess.DataContext
         public virtual DbSet<MasterPackingType> MasterPackingTypes { get; set; }
         public virtual DbSet<MasterPidfstatus> MasterPidfstatuses { get; set; }
         public virtual DbSet<MasterPlant> MasterPlants { get; set; }
+        public virtual DbSet<MasterPlantLine> MasterPlantLines { get; set; }
         public virtual DbSet<MasterProductStrength> MasterProductStrengths { get; set; }
         public virtual DbSet<MasterProductType> MasterProductTypes { get; set; }
         public virtual DbSet<MasterProjectActivity> MasterProjectActivities { get; set; }
@@ -142,8 +144,8 @@ namespace EmcureNPD.Data.DataAccess.DataContext
             if (!optionsBuilder.IsConfigured)
             {
 #warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see http://go.microsoft.com/fwlink/?LinkId=723263.
-                optionsBuilder.UseSqlServer(DatabaseConnection.NPDDatabaseConnection);
-            }
+				optionsBuilder.UseSqlServer(DatabaseConnection.NPDDatabaseConnection);
+			}
         }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
@@ -817,6 +819,21 @@ namespace EmcureNPD.Data.DataAccess.DataContext
                 entity.Property(e => e.ModifyDate).HasColumnType("datetime");
 
                 entity.Property(e => e.PlantNameName).HasMaxLength(100);
+            });
+
+            modelBuilder.Entity<MasterPlantLine>(entity =>
+            {
+                entity.HasKey(e => e.LineId);
+
+                entity.ToTable("Master_PlantLine", "dbo");
+
+                entity.Property(e => e.CreatedDate)
+                    .HasColumnType("datetime")
+                    .HasDefaultValueSql("(getdate())");
+
+                entity.Property(e => e.LineName).HasMaxLength(70);
+
+                entity.Property(e => e.ModifyDate).HasColumnType("datetime");
             });
 
             modelBuilder.Entity<MasterProductStrength>(entity =>
