@@ -139,7 +139,7 @@ namespace EmcureNPD.API.Controllers.Masters
         /// <response code="405">Method Not Allowed</response>
         /// <response code="500">Internal Server</response>
         [HttpPost("DeleteExcipientRequirement/{id}")]
-        public async Task<IActionResult> DeleteCurrency([FromRoute] int id)
+        public async Task<IActionResult> DeleteExcipientRequirement([FromRoute] int id)
         {
             try
             {
