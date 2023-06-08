@@ -493,6 +493,13 @@ namespace EmcureNPD.Web.Helpers
         #endregion Project
         #region LogExceptionMethod
         public static string LogException = "api/LogException/LogException";
-        #endregion
-    }
+		#endregion
+
+		#region ExcipientRequirement
+		public static string GetAllExcipientRequirement = "api/ExcipientRequirement/GetAllExcipientRequirement";
+		public static string GetExcipientRequirementById = "api/ExcipientRequirement/ExcipientRequirementById";
+		public static string SaveExcipientRequirement = "api/ExcipientRequirement/AddUpdateExcipientRequirement";
+		public static string DeleteSaveExcipientRequirementId = "api/ExcipientRequirement/DeleteExcipientRequirement";
+		#endregion
+	}
 }

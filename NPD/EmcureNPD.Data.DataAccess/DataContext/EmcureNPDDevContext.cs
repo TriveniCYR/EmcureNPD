@@ -42,6 +42,7 @@ namespace EmcureNPD.Data.DataAccess.DataContext
         public virtual DbSet<MasterDosage> MasterDosages { get; set; }
         public virtual DbSet<MasterDosageForm> MasterDosageForms { get; set; }
         public virtual DbSet<MasterException> MasterExceptions { get; set; }
+        public virtual DbSet<MasterExcipientRequirement> MasterExcipientRequirements { get; set; }
         public virtual DbSet<MasterExipient> MasterExipients { get; set; }
         public virtual DbSet<MasterExpenseRegion> MasterExpenseRegions { get; set; }
         public virtual DbSet<MasterExtensionApplication> MasterExtensionApplications { get; set; }
@@ -512,6 +513,20 @@ namespace EmcureNPD.Data.DataAccess.DataContext
                 entity.Property(e => e.Source).HasMaxLength(500);
 
                 entity.Property(e => e.StrackTrace).HasMaxLength(4000);
+            });
+
+            modelBuilder.Entity<MasterExcipientRequirement>(entity =>
+            {
+                entity.HasKey(e => e.ExcipientRequirementId)
+                    .HasName("PK__Master_E__F840444962441DA4");
+
+                entity.ToTable("Master_ExcipientRequirement", "dbo");
+
+                entity.Property(e => e.CreatedDate).HasColumnType("datetime");
+
+                entity.Property(e => e.ExcipientRequirementName).HasMaxLength(70);
+
+                entity.Property(e => e.ModifyDate).HasColumnType("datetime");
             });
 
             modelBuilder.Entity<MasterExipient>(entity =>
