@@ -14,18 +14,18 @@ namespace EmcureNPD.Business.Models
 		public int dycrPidfid { get; set; }
         public string Entity { get; set; }
 		public string Product { get; set; }
-		public DateTime ForecastDate { get; set; }
+		public DateTime ?ForecastDate { get; set; }
 		public string Currencyid { get; set; }
 		public int? DosageFrom { get; set; }
 		public string ManufacturingSiteOrPartner { get; set; }
 		public string Skus { get; set; }
 		public int? Mspersentage { get; set; }
 		public int? TargetPriceScenario { get; set; }
-		public DateTime ProjectStartDate { get; set; }
-		public DateTime BatchManufacturing { get; set; }
-		public DateTime ExpectedFilling { get; set; }
+		public DateTime ?ProjectStartDate { get; set; }
+		public DateTime ?BatchManufacturing { get; set; }
+		public DateTime ?ExpectedFilling { get; set; }
 		public string ApprovalPeriodinDays { get; set; }
-		public DateTime ApprovalDate { get; set; }
+		public DateTime ?ApprovalDate { get; set; }
 		public DateTime? ProductLaunchDate { get; set; }
 		public decimal? GestationPeriodinYears { get; set; }
 		public decimal? MarketShareErosionrate { get; set; }
@@ -42,29 +42,29 @@ namespace EmcureNPD.Business.Models
 		public decimal? RegulatoryMaintenanceCost { get; set; }
 		public decimal? GrosstoNet { get; set; }
 		public double? Noofbatchestobemanufactured { get; set; }
-		public DateTime NoofbatchestobemanufacturedPhaseEndDate { get; set; }
+		public DateTime ?NoofbatchestobemanufacturedPhaseEndDate { get; set; }
 		public double? NoSkus { get; set; }
-		public DateTime NoSkusPhaseEndDate { get; set; }
+		public DateTime ?NoSkusPhaseEndDate { get; set; }
 		public decimal? RandDanalyticalcost { get; set; }
-		public DateTime RandDanalyticalcostPhaseEndDate { get; set; }
+		public DateTime ?RandDanalyticalcostPhaseEndDate { get; set; }
 		public decimal? Rldsamplecost { get; set; }
-		public DateTime RldsamplecostPhaseEndDate { get; set; }
+		public DateTime ?RldsamplecostPhaseEndDate { get; set; }
 		public decimal? BatchmanufacturingcostOrApiactualsEst { get; set; }
-		public DateTime BatchmanufacturingcostOrApiactualsEstPhaseEndDate { get; set; }
+		public DateTime ?BatchmanufacturingcostOrApiactualsEstPhaseEndDate { get; set; }
 		public decimal? Sixmonthsstabilitycost { get; set; }
-		public DateTime SixmonthsstabilitycostPhaseEndDate { get; set; }
+		public DateTime ?SixmonthsstabilitycostPhaseEndDate { get; set; }
 		public decimal? TechTransfer { get; set; }
-		public DateTime TechTransferPhaseEndDate { get; set; }
+		public DateTime ?TechTransferPhaseEndDate { get; set; }
 		public decimal? Bestudies { get; set; }
-		public DateTime BestudiesPhaseEndDate { get; set; }
+		public DateTime ?BestudiesPhaseEndDate { get; set; }
 		public decimal? Filingfees { get; set; }
-		public DateTime FilingfeesPhaseEndDate { get; set; }
+		public DateTime ?FilingfeesPhaseEndDate { get; set; }
 		public decimal? BioStuddyCost { get; set; }
-		public DateTime BioStuddyCostPhaseEndDate { get; set; }
+		public DateTime ?BioStuddyCostPhaseEndDate { get; set; }
 		public decimal? Capex { get; set; }
-		public DateTime CapexPhaseEndDate { get; set; }
+		public DateTime ?CapexPhaseEndDate { get; set; }
 		public decimal? ToolingAndChangeParts { get; set; }
-		public DateTime ToolingAndChangePartsPhaseEndDate { get; set; }
+		public DateTime ?ToolingAndChangePartsPhaseEndDate { get; set; }
 		public decimal? Total { get; set; }
 		public DateTime? CreatedDate { get; set; }
 		public int? CreatedBy { get; set; }
