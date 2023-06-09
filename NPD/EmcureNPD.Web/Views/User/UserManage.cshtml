@@ -154,37 +154,47 @@
 
 
             <div class="row">
-                <div class="col-2">
+                <div class="col-4">
+                    <div class="row">
+                <div class="col-12">
                     <div class="form-group required">
                         @Html.CheckBoxFor(model => model.IsActive, new { @class = "checkbox-checked", @checked = "checked" })
                         @Html.LabelFor(model => model.IsActive)
                     </div>
                 </div>
-                <div class="col-2">
+                <div class="col-12">
                     <div class="form-group required">
                         @Html.CheckBoxFor(model => model.IsManagement, new {  @class = "checkbox-checked", @checked = "checked" })
-                        @Html.LabelFor(model => model.IsManagement)
+                                @Html.LabelFor(model => model.IsManagement)
                     </div>
                 </div>
-                <div class="col-2">
+                <div class="col-12">
                     <div class="form-group required">
                         @Html.CheckBoxFor(model => model.APIUser, new { @class = "checkbox-checked", @checked = "checked" })
                         @Html.LabelFor(model => model.APIUser)
                     </div>
                 </div>
-                <div class="col-2">
+                        <div class="col-12">
+                            <div class="form-group required">
+                                @Html.CheckBoxFor(model => model.ApigroupLeader, new { @class = "checkbox-checked", @checked = "checked" })
+                                @Html.LabelFor(model => model.ApigroupLeader)
+                            </div>
+                        </div>
+                <div class="col-12">
                     <div class="form-group required">
                         @Html.CheckBoxFor(model => model.FormulationGL, new { @class = "checkbox-checked", @checked = "checked" })
                         @Html.LabelFor(model => model.FormulationGL)
                     </div>
                 </div>
-                <div class="col-2">
+                <div class="col-12">
                     <div class="form-group required">
                         @Html.CheckBoxFor(model => model.AnalyticalGL, new { @class = "checkbox-checked", @checked = "checked" })
                         @Html.LabelFor(model => model.AnalyticalGL)
                     </div>
                 </div>
-
+                        
+                    </div>
+                </div>
             </div>
             <div class="row">
                 <div class="col-12 mb-4 text-end">

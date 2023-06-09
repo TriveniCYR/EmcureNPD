@@ -21,11 +21,16 @@ namespace EmcureNPD.Business.Models
         
         [Display(Name = "Active", ResourceType = typeof(Master))]
         public bool IsActive { get; set; }
-        [Display(Name = "Management")]
+        [Display(Name = "Management User")]
         public bool IsManagement { get; set; }
+        [Display(Name = "API Head")]
         public bool APIUser { get; set; }
+        [Display(Name = "PBF Formulation Group Leader")]
         public bool FormulationGL { get; set; }
+        [Display(Name = "PBF Analytical Group Leader")]
         public bool AnalyticalGL { get; set; }
+        [Display(Name = "API Group Leader")]
+        public bool ApigroupLeader { get; set; }
         public string DesignationName { get; set; }
         public int[] DepartmentId { get; set; }
                
