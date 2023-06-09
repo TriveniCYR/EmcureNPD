@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Localization;
 using System;
+using System.Collections.Generic;
 using System.Net;
 using System.Threading.Tasks;
 using static EmcureNPD.Utility.Enums.GeneralEnum;
@@ -126,6 +127,20 @@ namespace EmcureNPD.API.Controllers.Masters
             }
         }
 
+        [HttpGet, Route("GetUserForAPIInterested")]
+        public async Task<IActionResult> GetUserForAPIInterested()
+        {
+            try
+            {
+                return _ObjectResponse.Create(await _MasterUserService.GetUserForAPIInterested(), (Int32)HttpStatusCode.OK);
+            }
+            catch (Exception ex)
+            {
+                await _ExceptionService.LogException(ex);
+                return _ObjectResponse.Create(false, (Int32)HttpStatusCode.InternalServerError, Convert.ToString(ex.StackTrace));
+            }
+        }
+       
         /// <summary>
         /// Description - To Get All User
         /// </summary>

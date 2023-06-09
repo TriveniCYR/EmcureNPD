@@ -126,84 +126,53 @@
     </table>
 </div>
 
+<div id="dvAddAPIPopUpModel" class="modal themeModal " role="dialog">
+    <div class="modal-dialog">
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">@SharedLocalizer["Add Pack Size"]</h4>
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+            </div>
+            <div class="modal-body">
+                <form id="frmAddInterestedAPIUser">
+                    <div class="row">
+                        <div class="col-12">
+                            <div class="form-group required">
+                                <lable class="control-label"> Interested </lable>
+                                 <span class="text-danger">*</span>
+                                <input type="radio" name="Interested" id="IsAPIIntrestedYes" > Yes
+                                <input type="radio" name="Interested" id="IsAPIIntrestedNo" > No
+                                <label id="valmsgIsAPIIntrested" class="text-danger"></label>
+                            </div>
+                        </div>
+                        <div class="col-12">
+                            <div class="form-group required">
+                                <lable class="control-label"> Remark </lable>
+                                <textarea id="API_Remark" class="form-control"> </textarea>
+                            </div>
+                        </div>
+                        <div class="col-12" id="dvInterestedAPIUser">
+                            <div class="form-group required">
+                                <lable class="control-label"> Users </lable>
+                                <span class="text-danger">*</span>
 
-@*ApproveModel*@
-@*        <div id="ApproveModel" class="modal themeModal" role="dialog">
-            <div class="modal-dialog">
-                <!-- Modal content-->
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h4 class="modal-title">@SharedLocalizer["Approve"]</h4>
-                        <button type="button" class="close" data-dismiss="modal">&times;</button>
-                    </div>
-                    <div class="modal-body">
-                        <div class="row">
-                            <div class="col-md-12">
-                                <div class="form-group">
-                                    @Html.Label(@SharedLocalizer["ApproveConfirm"])
-                                </div>
-                            </div>
-                        </div>
-                        <div class="card-footer text-center">
-                            <button type="button" onclick="approveRejDeleteConfirm('A')" data-dismiss="modal" class="btn btn-primary mr-2">@SharedLocalizer["Yes"]</button>
-                            <a class="btn btn-danger" data-dismiss="modal">@SharedLocalizer["No"]</a>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>*@
-@*RejectModel*@
-@*<div id="RejectModel" class="modal themeModal" role="dialog">
-            <div class="modal-dialog">
-                <!-- Modal content-->
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h4 class="modal-title">@SharedLocalizer["Reject"]</h4>
-                        <button type="button" class="close" data-dismiss="modal">&times;</button>
-                    </div>
-                    <div class="modal-body">
-                        <div class="row">
-                            <div class="col-md-12">
-                                <div class="form-group">
-                                    @Html.Label(@SharedLocalizer["RejectConfirm"])
-                                </div>
-                            </div>
-                        </div>
-                        <div class="card-footer text-center">
-                            <button type="button" onclick="approveRejDeleteConfirm('R')" data-dismiss="modal" class="btn btn-primary mr-2">@SharedLocalizer["Yes"]</button>
-                            <a class="btn btn-danger" data-dismiss="modal">@SharedLocalizer["No"]</a>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>*@
-@*DeletePIDFModel*@
-@*<div id="DeleteModel" class="modal themeModal " role="dialog">
-            <div class="modal-dialog">
-                <!-- Modal content-->
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h4 class="modal-title">@SharedLocalizer["Delete"]</h4>
-                        <button type="button" class="close" data-dismiss="modal">&times;</button>
-                    </div>
-                    <div class="modal-body">
-                        <div class="row">
-                            <div class="col-md-12">
-                                <div class="form-group">
-                                    @Html.Label(@SharedLocalizer["DeleteConfirm"])
-                                </div>
-                            </div>
-                        </div>
-                        @Html.Hidden("PIDFID")
-                        <div class="card-footer text-center">
-                            <button type="button" onclick="approveRejDeleteConfirm('D')" data-dismiss="modal" class="btn btn-primary mr-2">@SharedLocalizer["Yes"]</button>
-                            <a class="btn btn-danger" data-dismiss="modal">@SharedLocalizer["No"]</a>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>*@
+                                @Html.DropDownList("InterestedAPIUser", new List<SelectListItem> { }, new {@id="InterestedAPIUser", @class = "form-control", @multiple = "multiple"})
 
+                                @*<select multiple="multiple" id="InterestedAPIUser" name="InterestedAPIUser" class="form-control"></select>*@
+                                <label id="valmsgInterestedAPIUser" class="text-danger"></label>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+                <div class="card-footer text-end mt-2">
+                    <button type="button" class="btn btn-success operationButton" value="Save" onClick="BUstregthPack_AddButtonClick()">@MasterLocalizer["Save"]</button>
+                    <a class="btn btn-danger" data-dismiss="modal">@SharedLocalizer["Cancel"]</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
 
 @Html.Partial("_PIDFApproveReject")
 
@@ -212,12 +181,16 @@
     @Html.Partial("_DataTablePartial")
     <script type="text/javascript" src="~/js/Custom/DynamicDataTable.js?v=@jsVersion"></script>
     <script type="text/javascript" src="~/js/Custom/PIDF/MasterPIDFList.js?v=@jsVersion"></script>
-
+    <link rel="stylesheet" href="~/AdminLTE/plugins/select2/css/select2.min.css" />
+    <script type="text/javascript" src="~/AdminLTE/plugins/select2/js/select2.full.min.js"></script>
+    <script type="text/javascript" src="~/js/Custom/SelectAllAdaptor.js?v=@jsVersion"></script>
     <script>
 
         //#region Setup API Url
         var AllPIDF = "@EmcureNPD.Web.Helpers.APIURLHelper.GetAllPIDF";
         var ApproveRejectDeletePidf = "@EmcureNPD.Web.Helpers.APIURLHelper.ApproveRejectDeletePidf";
+
+        var GetUserForAPIInterestedURL = "@EmcureNPD.Web.Helpers.APIURLHelper.GetUserForAPIInterested";
         // #endregion
         const currentUserId = "@CurrentUserId";
         //#region Static Messae Init
