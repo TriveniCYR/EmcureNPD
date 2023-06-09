@@ -4,7 +4,7 @@ var APISelectedPIDFID = '';
 var ObjAPIIsInterested = {};
 $(document).ready(function () {
     InitializePIDFList();
-
+    GetUserForAPIInterested();
     $('#chkAllPIDF').change(function (index, item) {
         if ($(this).is(':checked')) {
             $.each($('.chkPIDFRow'), function (i, it) {
@@ -510,9 +510,9 @@ function SaveAPIInterestedUserError(x, y, z) {
     toastr.error(ErrorMessage);
 }
 function ShowAddAPIUserPopUp(pidfid) {
-    APISelectedPIDFID = pidfid;
-    GetUserForAPIInterested();
+    APISelectedPIDFID = pidfid;   
     $('#dvAddAPIPopUpModel').modal('show');
+    ResetIsAPIInterestedForm();
     $('#dvInterestedAPIUser').hide();
 }
 function ValidateISInterestedAPIUserForm(IsInterested) {    
