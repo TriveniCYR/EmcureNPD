@@ -1,5 +1,7 @@
 ﻿var tableId = "PIDFTable";
 var objApprRejList = [];
+var APISelectedPIDFID = '';
+var ObjAPIIsInterested = {};
 $(document).ready(function () {
     InitializePIDFList();
 
@@ -226,11 +228,15 @@ function InitializePIDFList() {
                     var _APIForm = '/API/';
                     var _APIQS = '?pidfid=' + row.encpidfid + '&bui=' + row.encbud + '&api=' + row.api;
                     var _enable = (row.pidfStatusID == 7 || row.pidfStatusID == 10 || row.pidfStatusID == 11 || row.pidfStatusID == 12 || row.pidfStatusID == 13 || row.pidfStatusID == 14 || row.pidfStatusID == 15 || row.pidfStatusID == 16 || row.pidfStatusID == 17);//|| row.pidfStatusID == 9
-                    if (IsEditAPIIPD || IsViewAPIIPD || IsAddAPIIPD) { html += '<a class="large-font" title="IPD" style="color:' + (_enable ? "#007bff" : "grey") + '" onclick="ShowAddAPIUserPopUp(`' + row.encpidfid +'`)"><i class="fa fa-fw fa-plus mr-1"></i></a>'; }
-                    if (IsEditAPIIPD || IsViewAPIIPD || IsAddAPIIPD) { html += '<a class="large-font" title="IPD" style="color:' + (_enable ? "#007bff" : "grey") + '" href="' + (_enable ? _APIForm + "APIIPDDetailsForm" + _APIQS : "#") + '"><i class="fa fa-fw fa-columns mr-1"></i></a>'; }
-                    if (IsEditAPIRnD || IsViewAPIRnD || IsAddAPIRnD) { html += '<a class="large-font" title="RnD" style="color:' + (_enable ? "#007bff" : "grey") + '" href="' + (_enable ? _APIForm + "APIRndDetailsForm" + _APIQS : "#") + '"><i class="fa fa-fw fa-flask mr-1"></i></a>'; }
-                    if (IsEditAPICharter || IsViewAPICharter || IsAddAPICharter) { html += '<a class="large-font" title="Charter" style="color:' + (_enable ? "#007bff" : "grey") + '" href="' + (_enable ? _APIForm + "APICharterDetailsForm" + _APIQS : "#") + '"><i class="fa fa-fw fa-map-marker mr-1"></i></a>'; }
-                    if (IsViewAPICharterSummary) { html += '<a class="large-font" title="Charter Summary" href="' + (_APIForm + "APICharterSummaryDetailsForm" + _APIQS) + '"><i class="fa fa-fw fa-chart-line mr-1"></i></a>'; }
+                    if (row.apiInterested == false) {
+                        if (IsEditAPIIPD || IsViewAPIIPD || IsAddAPIIPD) { html += '<a class="large-font" title="IPD" style="color:' + (_enable ? "#007bff" : "grey") + '" onclick="ShowAddAPIUserPopUp(`' + row.encpidfid + '`)"><i class="fa fa-fw fa-plus mr-1"></i></a>'; }
+                    }
+                    else {
+                            if (IsEditAPIIPD || IsViewAPIIPD || IsAddAPIIPD) { html += '<a class="large-font" title="IPD" style="color:' + (_enable ? "#007bff" : "grey") + '" href="' + (_enable ? _APIForm + "APIIPDDetailsForm" + _APIQS : "#") + '"><i class="fa fa-fw fa-columns mr-1"></i></a>'; }
+                            if (IsEditAPIRnD || IsViewAPIRnD || IsAddAPIRnD) { html += '<a class="large-font" title="RnD" style="color:' + (_enable ? "#007bff" : "grey") + '" href="' + (_enable ? _APIForm + "APIRndDetailsForm" + _APIQS : "#") + '"><i class="fa fa-fw fa-flask mr-1"></i></a>'; }
+                            if (IsEditAPICharter || IsViewAPICharter || IsAddAPICharter) { html += '<a class="large-font" title="Charter" style="color:' + (_enable ? "#007bff" : "grey") + '" href="' + (_enable ? _APIForm + "APICharterDetailsForm" + _APIQS : "#") + '"><i class="fa fa-fw fa-map-marker mr-1"></i></a>'; }
+                            if (IsViewAPICharterSummary) { html += '<a class="large-font" title="Charter Summary" href="' + (_APIForm + "APICharterSummaryDetailsForm" + _APIQS) + '"><i class="fa fa-fw fa-chart-line mr-1"></i></a>'; }
+                        }
                 } else if (_screenId == "6") {
                     //var _PBFForm = '/PIDF/';
                     var _NewPBFForm = '/PBF/';
@@ -342,12 +348,6 @@ function InitializePIDFList() {
         }
     });
 }
-function ShowAddAPIUserPopUp(pidfid) {
-  //  $('#dvCommercialPackStyle').modal('show');
-    GetUserForAPIInterested();
-    $('#dvAddAPIPopUpModel').modal('show');
-}
-
 /* Formatting function for row details - modify as you need */
 function CustomizeChildContent(d) {
     // `d` is the original data object for the row
@@ -453,7 +453,8 @@ function GetUserForAPIInterested() {
     ajaxServiceMethod($('#hdnBaseURL').val() + GetUserForAPIInterestedURL, 'GET', GetUserForAPIInterestedSuccess, GetUserForAPIInterestedError);
     }
 function GetUserForAPIInterestedSuccess(data) {
-        try {
+    try {
+        $('#InterestedAPIUser').append($('<option>').text('--Select--').attr('value', '0'));
             if (data != null)
                 $(data._object).each(function (index, item) {
                     $('#InterestedAPIUser').append($('<option>').text(item.fullName).attr('value', item.userId));
@@ -468,4 +469,92 @@ function GetUserForAPIInterestedSuccess(data) {
     }
 function GetUserForAPIInterestedError(x, y, z) {
         toastr.error(ErrorMessage);
+}
+
+function IsAPIInterested_AddButtonClick(){
+    //APISelectedPIDFID
+    var IsInterested = false;
+    var fnresult = ValidateISInterestedAPIUserForm(IsInterested);
+    IsInterested = fnresult[1];
+    var IsValidForm = fnresult[0];
+    if (IsValidForm) {
+        var AssignedAPIUser = 0;        
+        if (IsInterested) {
+            AssignedAPIUser = $('#InterestedAPIUser').val();
+        }
+        $.extend(ObjAPIIsInterested, {
+            'PIDFID': APISelectedPIDFID,
+            'IsAPIIntrested': IsInterested,
+            'ApiRemark': $('#API_Remark').val(),
+            'AssignedAPIUser': AssignedAPIUser
+        });
+        ajaxServiceMethod($('#hdnBaseURL').val() + SaveAPIInterestedUser, 'POST', SaveAPIInterestedUserSuccess, SaveAPIInterestedUserError, JSON.stringify(ObjAPIIsInterested));
+    }
+}
+function SaveAPIInterestedUserSuccess(data) {
+    try {
+        $('#dvAddAPIPopUpModel').modal('hide');
+        if (data._Success === true) {
+            toastr.success(data._Message);
+            ResetIsAPIInterestedForm();
+            location.reload(true);
+        }
+        else {
+            toastr.error(data._Message);
+        }
+    } catch (e) {
+        toastr.error('Save API Intrested Error:' + e.message);
+    }
+}
+function SaveAPIInterestedUserError(x, y, z) {
+    toastr.error(ErrorMessage);
+}
+function ShowAddAPIUserPopUp(pidfid) {
+    APISelectedPIDFID = pidfid;
+    GetUserForAPIInterested();
+    $('#dvAddAPIPopUpModel').modal('show');
+    $('#dvInterestedAPIUser').hide();
+}
+function ValidateISInterestedAPIUserForm(IsInterested) {    
+    let IsValid = true;
+    if ($('#IsAPIIntrestedYes').prop('checked')) {
+        IsInterested = true;
+        IsValid = true;
+
+        var UserSelectedval = $('#InterestedAPIUser').val();
+        if (UserSelectedval == 0) {
+            $('#valmsgInterestedAPIUser').text('Required');
+            IsValid = false;
+        }
+        else {
+            $('#valmsgInterestedAPIUser').text('');
+        }
+
+    }
+    else if ($('#IsAPIIntrestedNo').prop('checked')) {
+        IsInterested = false;
+        IsValid = true;
+        $('#valmsgIsAPIIntrested').text('');
+    }
+    else {
+        IsValid = false;
+        $('#IsAPIIntrestedYes').focus();
+        $('#valmsgIsAPIIntrested').text('Required');
+    }
+    return [IsValid, IsInterested];
+}
+$("input[name='Interested']").change(function () {
+    if ($('#IsAPIIntrestedYes').prop('checked')) {
+        $('#dvInterestedAPIUser').show();
+    }
+    if ($('#IsAPIIntrestedNo').prop('checked')) {
+        $('#dvInterestedAPIUser').hide();
+    }
+});
+
+function ResetIsAPIInterestedForm() {
+    $('#API_Remark').val('');
+    $('#InterestedAPIUser').val(0);
+    $('#IsAPIIntrestedYes').prop('checked', false);
+    $('#IsAPIIntrestedNo').prop('checked', false);
 }

@@ -10,7 +10,7 @@ namespace EmcureNPD.Data.DataAccess.Entity
         public long ExcipientRequirementId { get; set; }
         public string ExcipientRequirementName { get; set; }
         public double? ExcipientRequirementCost { get; set; }
-        public bool IsActive { get; set; }
+        public bool? IsActive { get; set; }
         public int? CreatedBy { get; set; }
         public DateTime CreatedDate { get; set; }
         public int? ModifyBy { get; set; }

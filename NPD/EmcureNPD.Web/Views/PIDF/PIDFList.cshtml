@@ -1,4 +1,4 @@
-﻿@using EmcureNPD.Utility.Enums;
+﻿    @using EmcureNPD.Utility.Enums;
 @using EmcureNPD.Utility.Utility;
 @using Microsoft.AspNetCore.Http
 @using EmcureNPD.Web.Controllers
@@ -131,7 +131,7 @@
         <!-- Modal content-->
         <div class="modal-content">
             <div class="modal-header">
-                <h4 class="modal-title">@SharedLocalizer["Add Pack Size"]</h4>
+                <h4 class="modal-title">Add API Group Leader</h4>
                 <button type="button" class="close" data-dismiss="modal">&times;</button>
             </div>
             <div class="modal-body">
@@ -139,12 +139,11 @@
                     <div class="row">
                         <div class="col-12">
                             <div class="form-group required">
-                                <lable class="control-label"> Interested </lable>
                                  <span class="text-danger">*</span>
-                                <input type="radio" name="Interested" id="IsAPIIntrestedYes" > Yes
-                                <input type="radio" name="Interested" id="IsAPIIntrestedNo" > No
-                                <label id="valmsgIsAPIIntrested" class="text-danger"></label>
+                                <input type="radio" name="Interested" id="IsAPIIntrestedYes" /> Interested   
+                                <input type="radio" name="Interested" id="IsAPIIntrestedNo" > Not Interested                                
                             </div>
+                            <label id="valmsgIsAPIIntrested" class="text-danger"></label>
                         </div>
                         <div class="col-12">
                             <div class="form-group required">
@@ -157,16 +156,14 @@
                                 <lable class="control-label"> Users </lable>
                                 <span class="text-danger">*</span>
 
-                                @Html.DropDownList("InterestedAPIUser", new List<SelectListItem> { }, new {@id="InterestedAPIUser", @class = "form-control", @multiple = "multiple"})
-
-                                @*<select multiple="multiple" id="InterestedAPIUser" name="InterestedAPIUser" class="form-control"></select>*@
+                                <select id="InterestedAPIUser" name="InterestedAPIUser" class="form-control"></select>
                                 <label id="valmsgInterestedAPIUser" class="text-danger"></label>
                             </div>
                         </div>
                     </div>
                 </form>
                 <div class="card-footer text-end mt-2">
-                    <button type="button" class="btn btn-success operationButton" value="Save" onClick="BUstregthPack_AddButtonClick()">@MasterLocalizer["Save"]</button>
+                    <button type="button" class="btn btn-success operationButton" value="Save" onClick="IsAPIInterested_AddButtonClick()">@MasterLocalizer["Save"]</button>
                     <a class="btn btn-danger" data-dismiss="modal">@SharedLocalizer["Cancel"]</a>
                 </div>
             </div>
@@ -189,7 +186,7 @@
         //#region Setup API Url
         var AllPIDF = "@EmcureNPD.Web.Helpers.APIURLHelper.GetAllPIDF";
         var ApproveRejectDeletePidf = "@EmcureNPD.Web.Helpers.APIURLHelper.ApproveRejectDeletePidf";
-
+        var SaveAPIInterestedUser = "@EmcureNPD.Web.Helpers.APIURLHelper.SaveAPIInterestedUser";
         var GetUserForAPIInterestedURL = "@EmcureNPD.Web.Helpers.APIURLHelper.GetUserForAPIInterested";
         // #endregion
         const currentUserId = "@CurrentUserId";
