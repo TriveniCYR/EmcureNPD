@@ -137,6 +137,7 @@ function ValidateSKU_dropdown(){
             isValidIPDForm = false;
            // toastr.error('Batchsize should not have "0" Value !');
         }
+
         else {
             $(this).css("border-color", "");            
         }
@@ -147,7 +148,7 @@ function ValidateSKU_dropdown(){
     }
     if (ArrayofInvalid.length > 0) {
         isValidIPDForm = false;
-        toastr.error('Some required fields are missing!');
+        toastr.error('Some required fields are missing!',"Batch Size Costing Validation");
     }
     return isValidIPDForm;
 }
@@ -273,6 +274,8 @@ function addRowFinanceDetails(j) {
     //}
 }
 function SaveClick() {
+    $('.readOnlyUpdate').prop('required', true);
+    $("#ForecastDate").prop('required', true);
     //if ($('.readOnlyUpdate').val() !== null && $('.readOnlyUpdate').val()!=="") {
     var isValidFinanaceForm = ValidateSKU_dropdown();
     if (isValidFinanaceForm) {
@@ -308,6 +311,8 @@ function SetProjectionDynamicValues() {
 }
 function SaveDraftClick() {
     //if ($('.readOnlyUpdate').val() !== null && $('.readOnlyUpdate').val() !== "") {
+    $('.readOnlyUpdate').prop('required', false);
+    $("#ForecastDate").prop('required', true);
     $('#SaveType').val('draft');
     //let selectedCurrencyId = $("#Currency").val().join(',');
     $("#Currencyid").val($("#Currency").val().join(','));
