@@ -21,7 +21,7 @@ namespace EmcureNPD.Business.Models
         
         [Display(Name = "Active", ResourceType = typeof(Master))]
         public bool IsActive { get; set; }
-        [Display(Name = "Management User")]
+        [Display(Name = "Budget Approval User")]
         public bool IsManagement { get; set; }
         [Display(Name = "API Head")]
         public bool APIUser { get; set; }
