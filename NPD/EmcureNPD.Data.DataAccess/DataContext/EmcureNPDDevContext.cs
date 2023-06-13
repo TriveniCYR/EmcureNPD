@@ -1517,11 +1517,6 @@ namespace EmcureNPD.Data.DataAccess.DataContext
                     .HasForeignKey(d => d.Pidfid)
                     .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("FK_PIDF_API_Master_PIDF");
-
-                entity.HasOne(d => d.User)
-                    .WithMany(p => p.PidfApiMasters)
-                    .HasForeignKey(d => d.UserId)
-                    .HasConstraintName("FK_PIDF_API_Master_Master_User");
             });
 
             modelBuilder.Entity<PidfApiRnD>(entity =>
@@ -3001,11 +2996,19 @@ namespace EmcureNPD.Data.DataAccess.DataContext
             {
                 entity.HasKey(e => e.TokenId);
 
-                entity.ToTable("Tbl_SessionManager");
+                entity.ToTable("Tbl_SessionManager", "dbo");
+
+                entity.Property(e => e.Email).HasMaxLength(50);
 
                 entity.Property(e => e.TokenIssuedAt).HasColumnType("datetime");
 
                 entity.Property(e => e.VallidTo).HasColumnType("datetime");
+
+                entity.HasOne(d => d.User)
+                    .WithMany(p => p.TblSessionManagers)
+                    .HasForeignKey(d => d.UserId)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("FK_Tbl_SessionManager_Master_User");
             });
 
             modelBuilder.Entity<UserSessionLogMaster>(entity =>

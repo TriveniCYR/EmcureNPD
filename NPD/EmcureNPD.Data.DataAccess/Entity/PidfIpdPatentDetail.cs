@@ -15,6 +15,7 @@ namespace EmcureNPD.Data.DataAccess.Entity
         public string Comments { get; set; }
         public string Strategy { get; set; }
         public string PatentNumber { get; set; }
+        public short? PatentType { get; set; }
 
         public virtual PidfIpd Ipd { get; set; }
     }
