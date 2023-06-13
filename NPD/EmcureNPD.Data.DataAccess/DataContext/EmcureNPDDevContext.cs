@@ -92,6 +92,7 @@ namespace EmcureNPD.Data.DataAccess.DataContext
         public virtual DbSet<PidfApiCharterPrddepartment> PidfApiCharterPrddepartments { get; set; }
         public virtual DbSet<PidfApiCharterTimelineInMonth> PidfApiCharterTimelineInMonths { get; set; }
         public virtual DbSet<PidfApiIpd> PidfApiIpds { get; set; }
+        public virtual DbSet<PidfApiMaster> PidfApiMasters { get; set; }
         public virtual DbSet<PidfApiRnD> PidfApiRnDs { get; set; }
         public virtual DbSet<PidfCommercial> PidfCommercials { get; set; }
         public virtual DbSet<PidfCommercialMaster> PidfCommercialMasters { get; set; }
@@ -137,6 +138,7 @@ namespace EmcureNPD.Data.DataAccess.DataContext
         public virtual DbSet<PidfstatusHistory> PidfstatusHistories { get; set; }
         public virtual DbSet<ProjectTask> ProjectTasks { get; set; }
         public virtual DbSet<RoleModulePermission> RoleModulePermissions { get; set; }
+        public virtual DbSet<TblSessionManager> TblSessionManagers { get; set; }
         public virtual DbSet<UserSessionLogMaster> UserSessionLogMasters { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
@@ -528,6 +530,10 @@ namespace EmcureNPD.Data.DataAccess.DataContext
 
                 entity.Property(e => e.ExcipientRequirementName).HasMaxLength(70);
 
+                entity.Property(e => e.IsActive)
+                    .IsRequired()
+                    .HasDefaultValueSql("((1))");
+
                 entity.Property(e => e.ModifyDate).HasColumnType("datetime");
             });
 
@@ -831,6 +837,10 @@ namespace EmcureNPD.Data.DataAccess.DataContext
                     .HasColumnType("datetime")
                     .HasDefaultValueSql("(getdate())");
 
+                entity.Property(e => e.IsActive)
+                    .IsRequired()
+                    .HasDefaultValueSql("((1))");
+
                 entity.Property(e => e.LineName).HasMaxLength(70);
 
                 entity.Property(e => e.ModifyDate).HasColumnType("datetime");
@@ -1035,6 +1045,8 @@ namespace EmcureNPD.Data.DataAccess.DataContext
                 entity.Property(e => e.Address).HasMaxLength(200);
 
                 entity.Property(e => e.AnalyticalGl).HasColumnName("AnalyticalGL");
+
+                entity.Property(e => e.ApigroupLeader).HasColumnName("APIGroupLeader");
 
                 entity.Property(e => e.Apiuser).HasColumnName("APIUser");
 
@@ -1487,6 +1499,30 @@ namespace EmcureNPD.Data.DataAccess.DataContext
                     .WithMany(p => p.PidfApiIpds)
                     .HasForeignKey(d => d.ProductTypeId)
                     .HasConstraintName("FK_PIDF_API_IPD_ProductTypeId");
+            });
+
+            modelBuilder.Entity<PidfApiMaster>(entity =>
+            {
+                entity.ToTable("PIDF_API_Master", "dbo");
+
+                entity.Property(e => e.PidfapimasterId).HasColumnName("PIDFAPIMasterId");
+
+                entity.Property(e => e.CreatedDate).HasColumnType("datetime");
+
+                entity.Property(e => e.Pidfid).HasColumnName("PIDFId");
+
+                entity.Property(e => e.Remark).HasMaxLength(500);
+
+                entity.HasOne(d => d.Pidf)
+                    .WithMany(p => p.PidfApiMasters)
+                    .HasForeignKey(d => d.Pidfid)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("FK_PIDF_API_Master_PIDF");
+
+                entity.HasOne(d => d.User)
+                    .WithMany(p => p.PidfApiMasters)
+                    .HasForeignKey(d => d.UserId)
+                    .HasConstraintName("FK_PIDF_API_Master_Master_User");
             });
 
             modelBuilder.Entity<PidfApiRnD>(entity =>
@@ -2960,6 +2996,25 @@ namespace EmcureNPD.Data.DataAccess.DataContext
                 entity.Property(e => e.CreatedDate).HasColumnType("datetime");
 
                 entity.Property(e => e.ModifyDate).HasColumnType("datetime");
+            });
+
+            modelBuilder.Entity<TblSessionManager>(entity =>
+            {
+                entity.HasKey(e => e.TokenId);
+
+                entity.ToTable("Tbl_SessionManager", "dbo");
+
+                entity.Property(e => e.Email).HasMaxLength(50);
+
+                entity.Property(e => e.TokenIssuedAt).HasColumnType("datetime");
+
+                entity.Property(e => e.VallidTo).HasColumnType("datetime");
+
+                entity.HasOne(d => d.User)
+                    .WithMany(p => p.TblSessionManagers)
+                    .HasForeignKey(d => d.UserId)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("FK_Tbl_SessionManager_Master_User");
             });
 
             modelBuilder.Entity<UserSessionLogMaster>(entity =>

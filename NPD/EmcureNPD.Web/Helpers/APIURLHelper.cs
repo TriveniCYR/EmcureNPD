@@ -5,7 +5,8 @@ namespace EmcureNPD.Web.Helpers
     public static class APIURLHelper
     {
         public static string LoginURL = "/api/Account/Login";
-        public static string GetBusinessUnit = "/api/Account/GetAllBusinessUnit";
+		public static string ValidateToken = "/api/Account/ValidateToken";
+		public static string GetBusinessUnit = "/api/Account/GetAllBusinessUnit";
         public static string GetRegion = "/api/Account/GetAllRegion";
         public static string GetCurrency = "/api/Account/GetAllCurrency";
         public static string GetByPermisionRoleUsingRoleId = "api/Role/GetByPermisionRoleUsingRoleId";

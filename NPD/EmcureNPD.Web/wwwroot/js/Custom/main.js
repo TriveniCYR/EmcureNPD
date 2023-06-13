@@ -235,7 +235,7 @@ $(document).ready(function () {
        
     })
     //$('select.select2-hidden-accessible').each(function (index, element) {
-       
+
     //    if ($(this).prop('multiple')) {
     //        //let optionhtml = '<option value = "-1">Select All</option>';
     //        let id = $(this).attr('id');
@@ -243,10 +243,11 @@ $(document).ready(function () {
     //        $(`#${id}`).find('option')
     //            .eq(2).before($("<option></option>").val("-1").text("Select"));
     //        console.log($(this).length)
-    //             $(this).attr('onchange', 'selectAll("' + id + '",' + isSelected + ')');  
-             
+    //             $(this).attr('onchange', 'selectAll("' + id + '",' + isSelected + ')');
+
     //    }
     //})
+    //checkDuplicateLogin();
 });
 function ApproveRejectClick(type, PIDFID, ScreenId, URL) {
     if (PIDFID != undefined && PIDFID != "" && PIDFID != null) {
@@ -453,3 +454,14 @@ $('.form-control').keyup(function () {
     }
   
 })
+//--check duplidate login----//
+function checkDuplicateLogin() {
+    $.ajax({
+        url: $('#hdnWebBaseURL').val() + "Home/IsDuplidateLogin",
+        type: 'GET',
+        success: function (res) {
+           // console.log(res._object);
+            
+        }
+    });
+}

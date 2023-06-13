@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Http;
 using Newtonsoft.Json;
 using System;
+using System.IdentityModel.Tokens.Jwt;
 using System.Net.Http;
 
 namespace EmcureNPD.Web.Helpers
@@ -65,5 +66,15 @@ namespace EmcureNPD.Web.Helpers
             }
 
         }
-    }
+		public bool _isEmptyOrInvalid(string token,DateTime VallidTo)
+		{
+			if (string.IsNullOrEmpty(token))
+			{
+				return true;
+			}
+
+			var jwtToken = new JwtSecurityToken(token);
+			return (jwtToken == null) || (jwtToken.ValidFrom > DateTime.UtcNow) || (VallidTo < jwtToken.ValidTo);
+		}
+	}
 }
