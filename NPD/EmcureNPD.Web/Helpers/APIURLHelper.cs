@@ -457,7 +457,7 @@ namespace EmcureNPD.Web.Helpers
         #region Dashboard
 
         public static string GetAllDashboard = "api/Dashboard/FillDropdown";
-        public static string GetPIDFList = "api/Dashboard/GetPIDFByYearAndBusinessUnit";
+        public static string GetPIDFDashBoardData = "api/Dashboard/GetPIDFByYearAndBusinessUnit";
 
         #endregion Dashboard
 
