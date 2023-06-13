@@ -2762,7 +2762,9 @@ function SetPhaseWiseBudget() {
         });
         $('#tablerndphasewisebudget').find(".phasewisebudget_1").each(function (x, y) {
             var _cumTotal = ConvertToNumber($(y).find(".CumTotalPWB").val());
-            $(y).find(".PercenttotalPWB").val(((_cumTotal / FinalTotalForPWBStrength) * 100).toFixed(2));
+            var PercenttotalPWBresult = ((_cumTotal / FinalTotalForPWBStrength) * 100).toFixed(2);
+            PercenttotalPWBresult = isNaN(PercenttotalPWBresult)? 0 : PercenttotalPWBresult;
+            $(y).find(".PercenttotalPWB").val(PercenttotalPWBresult);
         });
         $('#tablerndphasewisebudget').find(".phasewisebudget_1Total").find(".calcTotalCostForStrengthTotal").val(formatNumber(FinalTotalForPWBStrength));
 
