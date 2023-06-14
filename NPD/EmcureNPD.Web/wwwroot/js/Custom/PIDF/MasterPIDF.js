@@ -27,13 +27,13 @@ $(document).ready(function () {
         readOnlyForm();
     }
 
-    $('#BusinessUnitId').change(function (e) {
-        if ($(this).val() != "") {
-            if (parseInt($(this).val()) > 0) {
-                ajaxServiceMethod($('#hdnBaseURL').val() + getCountryByBusinessUnitId + "/" + $(this).val(), 'GET', GetCountryByBusinessUnitSuccess, GetCountryByBusinessUnitError);
-            }
-        }
-    });
+    //$('#BusinessUnitId').change(function (e) {
+    //    if ($(this).val() != "") {
+    //        if (parseInt($(this).val()) > 0) {
+    //            ajaxServiceMethod($('#hdnBaseURL').val() + getCountryByBusinessUnitId + "/" + $(this).val(), 'GET', GetCountryByBusinessUnitSuccess, GetCountryByBusinessUnitError);
+    //        }
+    //    }
+    //});
     $('#InhouseDropdownId').change(function (e) {
         var _selected = ($(this).val() == "1" ? true : false);
         $('#InHouses').prop("checked", _selected).val(_selected);

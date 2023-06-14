@@ -827,16 +827,17 @@ function GetPBFDropdownSuccess(data) {
                     }
                 }
                 if (data.PIDFEntity.length > 0) {
-                    $('#dvPBFContainer').find('#BrandName').val(data.PIDFEntity[0].rfdBrand);
-                    $('#dvPBFContainer').find('#RFDApplicant').val(data.PIDFEntity[0].rfdApplicant);
-                    $('#dvPBFContainer').find('#RFDIndication').val(data.PIDFEntity[0].rfdIndication);
+                  //refereceProduct details _ old Code
+                    //$('#dvPBFContainer').find('#BrandName').val(data.PIDFEntity[0].rfdBrand);
+                    //$('#dvPBFContainer').find('#RFDApplicant').val(data.PIDFEntity[0].rfdApplicant);
+                    //$('#dvPBFContainer').find('#RFDIndication').val(data.PIDFEntity[0].rfdIndication);
 
-                    $('#hdnBrandName').val(data.PIDFEntity[0].rfdBrand);
-                    $('#hdnPbfRFDCountryId').val(data.PIDFEntity[0].rfdCountryId);
-                    $('#PbfRFDCountryId').val($('#hdnPbfRFDCountryId').val() == 0 ? "" : $('#hdnPbfRFDCountryId').val());
-                    $('#RFDCountryId').val(data.PIDFEntity[0].rfdCountryId);
-                    $('#hdnRFDApplicant').val(data.PIDFEntity[0].rfdApplicant);
-                    $('#hdnRFDIndication').val(data.PIDFEntity[0].rfdIndication);
+                    //$('#hdnBrandName').val(data.PIDFEntity[0].rfdBrand);
+                    //$('#hdnPbfRFDCountryId').val(data.PIDFEntity[0].rfdCountryId);
+                    //$('#PbfRFDCountryId').val($('#hdnPbfRFDCountryId').val() == 0 ? "" : $('#hdnPbfRFDCountryId').val());
+                    //$('#RFDCountryId').val(data.PIDFEntity[0].rfdCountryId);
+                    //$('#hdnRFDApplicant').val(data.PIDFEntity[0].rfdApplicant);
+                    //$('#hdnRFDIndication').val(data.PIDFEntity[0].rfdIndication);
                 }
 
                 if (_PIDFPBFId > 0) {
@@ -879,7 +880,19 @@ function GetPBFDropdownSuccess(data) {
 function GetPBFDropdownError(x, y, z) {
     toastr.error(ErrorMessage);
 }
+function BindReferenceProductDetails(data) {
+    if (data.length > 0) {
+        $('#dvPBFContainer').find('#BrandName').val(data[0].rfdBrand);
+        $('#dvPBFContainer').find('#RFDApplicant').val(data[0].rfdApplicant);
+        $('#dvPBFContainer').find('#RFDIndication').val(data[0].rfdIndication);
+        $('#PbfRFDCountryId').val(data[0].rfdCountryId);
 
+        $('#dvPBFContainer').find('#RFDInnovators').val(data[0].rfdInnovators);
+        $('#dvPBFContainer').find('#RFDInitialRevenuePotential').val(data[0].rfdInitialRevenuePotential);
+        $('#dvPBFContainer').find('#RFDPriceDiscounting').val(data[0].rfdPriceDiscounting);
+        $('#dvPBFContainer').find('#RFDCommercialBatchSize').val(data[0].rfdCommercialBatchSize);
+    }
+}
 function GetPBFTabDetails() {
     ajaxServiceMethod($('#hdnBaseURL').val() + GetPBFAllTabDetails + "/" + _PIDFID + "/" + _selectBusinessUnit, 'GET', GetPBFTabDetailsSuccess, GetPBFTabDetailsError);
 }
@@ -914,6 +927,7 @@ function GetPBFTabDetailsSuccess(data) {
             BindRNDFillingExpenses(data.PBFRNDFillingExpenses, data.MasterBusinessUnit);
             BindRNDManPowerCost(data.PBFRNDManPowerCost)
             BindHeadWiseBudget(data.HeadWiseBudget)
+            BindReferenceProductDetails(data.PBFReferenceProductDetail)
             $(data.MasterTestType).each(function (index, item) {
                 $('.AnalyticalTestTypeId').append('<option value="' + item.testTypeId + '" data-TestTypeCode="' + item.testTypeCode + '" data-TestTypePrice="' + item.testTypePrice + '">' + item.testTypeCode + ": " + item.testTypeName + '</option>');
             });

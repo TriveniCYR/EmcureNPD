@@ -29,6 +29,7 @@ namespace EmcureNPD.Business.Core.Implementation
 
         private IRepository<PidfPbf> _pbfRepository { get; set; }
         private IRepository<Pidf> _repository { get; set; }
+        private IRepository<PidfPbfReferenceProductDetail> _repositoryPidfPbfReferenceProductDetail { get; set; }
         private IRepository<PidfPbfAnalytical> _pidfPbfAnalyticalRepository { get; set; }
         private IRepository<PidfPbfAnalyticalAmvcost> _PidfPbfAnalyticalAmvcostRepository { get; set; }
         private IRepository<PidfPbfClinical> _pidfPbfClinicalRepository { get; set; }
@@ -52,7 +53,9 @@ namespace EmcureNPD.Business.Core.Implementation
 
 
 
-        public PBFService(IUnitOfWork unitOfWork, IMapperFactory mapperFactory, INotificationService notificationService, IMasterAuditLogService auditLogService, IHelper helper, IExceptionService exceptionService)
+        public PBFService(IUnitOfWork unitOfWork, IMapperFactory mapperFactory, INotificationService notificationService, IMasterAuditLogService auditLogService, 
+
+            IHelper helper, IExceptionService exceptionService)
         {
             _unitOfWork = unitOfWork;
             _mapperFactory = mapperFactory;
@@ -61,6 +64,7 @@ namespace EmcureNPD.Business.Core.Implementation
             _notificationService = notificationService;
             _ExceptionService = exceptionService;
 
+            _repositoryPidfPbfReferenceProductDetail = _unitOfWork.GetRepository<PidfPbfReferenceProductDetail>();
             _repository = _unitOfWork.GetRepository<Pidf>();
             _pbfRepository = _unitOfWork.GetRepository<PidfPbf>();
             _pidfPbfAnalyticalRepository = _unitOfWork.GetRepository<PidfPbfAnalytical>();
@@ -252,6 +256,7 @@ namespace EmcureNPD.Business.Core.Implementation
             DropdownObjects.PBFRNDManPowerCost = dsDropdownOptions.Tables[18];
             DropdownObjects.IPDCostOfLitigation = dsDropdownOptions.Tables[19];
             DropdownObjects.HeadWiseBudget = dsDropdownOptions.Tables[20];
+            DropdownObjects.PBFReferenceProductDetail = dsDropdownOptions.Tables[21];
 
             return DropdownObjects;
         }
@@ -323,23 +328,7 @@ namespace EmcureNPD.Business.Core.Implementation
 
                 #endregion Marketting Mapping Add Update
 
-                #region Update PIDF
-
-                objPIDFupdate = _repository.GetAllQuery().Where(x => x.Pidfid == pidfid).FirstOrDefault();
-                //_repository.GetAll().Where(x => x.Pidfid == pidfid).FirstOrDefault();
-                if (objPIDFupdate != null)
-                {
-                    objPIDFupdate.Rfdbrand = pbfentity.BrandName;
-                    objPIDFupdate.Rfdindication = pbfentity.RFDIndication;
-                    objPIDFupdate.Rfdapplicant = pbfentity.RFDApplicant;
-                    objPIDFupdate.RfdcountryId = pbfentity.RFDCountryId;
-                    objPIDFupdate.ModifyBy = loggedInUserId;
-                    objPIDFupdate.ModifyDate = DateTime.Now;
-                    _repository.UpdateAsync(objPIDFupdate);
-                    await _unitOfWork.SaveChangesAsync();
-                }
-
-                #endregion Update PIDF
+                
 
                 #region Section PBF General Add Update
 
@@ -388,6 +377,9 @@ namespace EmcureNPD.Business.Core.Implementation
                 }
 
                 #endregion Section PBF General Add Update
+                #region Update PBF Reference Product Details
+                await SaveUpdateReferenceProductDetails(pbfgeneralid, pbfentity);
+                #endregion Update PBF Reference Product Details
 
                 #region GeneralProductStrength Add Update
 
@@ -929,6 +921,43 @@ namespace EmcureNPD.Business.Core.Implementation
                 return pbfgeneralid;
             }
         }
+        private async Task<long> SaveUpdateReferenceProductDetails(long PbfGeneralId, PBFFormEntity pbfentity)
+        {
+            var New_ObjProductRefDetails = new PidfPbfReferenceProductDetail();
+           
+                var ObjProductRefDetails = _repositoryPidfPbfReferenceProductDetail.GetAllQuery().
+                    Where(x => x.Pidfid == pbfentity.Pidfid && x.BusinessUnitId == pbfentity.BusinessUnitId).ToList();
+                if (ObjProductRefDetails != null)
+                {
+                    foreach (var item in ObjProductRefDetails)
+                    {
+                        _repositoryPidfPbfReferenceProductDetail.Remove(item);
+                    }
+                    await _unitOfWork.SaveChangesAsync();
+                }
+            try
+            {
+                New_ObjProductRefDetails.BusinessUnitId = pbfentity.BusinessUnitId;
+                //New_ObjProductRefDetails.PbfgeneralId = 0;
+                New_ObjProductRefDetails.Pidfid = pbfentity.Pidfid;
+                New_ObjProductRefDetails.Rfdbrand = pbfentity.BrandName;
+                New_ObjProductRefDetails.Rfdindication = pbfentity.RFDIndication;
+                New_ObjProductRefDetails.Rfdapplicant = pbfentity.RFDApplicant;
+                New_ObjProductRefDetails.RfdcountryId = pbfentity.RFDCountryId;
+                New_ObjProductRefDetails.Rfdinnovators = pbfentity.RFDInnovators;
+                New_ObjProductRefDetails.RfdinitialRevenuePotential = pbfentity.RFDInitialRevenuePotential;
+                New_ObjProductRefDetails.RfdpriceDiscounting = pbfentity.RFDPriceDiscounting;
+                New_ObjProductRefDetails.RfdcommercialBatchSize = pbfentity.RFDCommercialBatchSize;
+                _repositoryPidfPbfReferenceProductDetail.AddAsync(New_ObjProductRefDetails);
+                await _unitOfWork.SaveChangesAsync();
+
+            }
+            catch (Exception ex){
+                return 0;
+            }
+            return New_ObjProductRefDetails.PidfpbfreferenceProductdetailId;
+           
+        }
 
         public async Task<long> SavePidfAndPBFCommanDetailsnew(long pidfid, PBFFormEntity pbfentity)
         {
@@ -995,23 +1024,7 @@ namespace EmcureNPD.Business.Core.Implementation
 
                 #endregion Marketting Mapping Add Update
 
-                #region Update PIDF
-
-                objPIDFupdate = _repository.GetAllQuery().Where(x => x.Pidfid == pidfid).FirstOrDefault();
-                //_repository.GetAll().Where(x => x.Pidfid == pidfid).FirstOrDefault();
-                if (objPIDFupdate != null)
-                {
-                    objPIDFupdate.Rfdbrand = pbfentity.BrandName;
-                    objPIDFupdate.Rfdindication = pbfentity.RFDIndication;
-                    objPIDFupdate.Rfdapplicant = pbfentity.RFDApplicant;
-                    objPIDFupdate.RfdcountryId = pbfentity.RFDCountryId;
-                    objPIDFupdate.ModifyBy = loggedInUserId;
-                    objPIDFupdate.ModifyDate = DateTime.Now;
-                    _repository.UpdateAsync(objPIDFupdate);
-                    await _unitOfWork.SaveChangesAsync();
-                }
-
-                #endregion Update PIDF
+               
 
                 #region Section PBF General Add Update
 
@@ -1711,6 +1724,10 @@ namespace EmcureNPD.Business.Core.Implementation
 
                 #endregion RND Add Update
 
+                #region Update PBF Reference Product Details
+                await SaveUpdateReferenceProductDetails(pbfgeneralid, pbfentity);
+                #endregion Update PBF Reference Product Details
+
                 return pbfgeneralid;
             }
             catch (Exception ex)
@@ -1785,23 +1802,6 @@ namespace EmcureNPD.Business.Core.Implementation
 
                 #endregion Marketting Mapping Add Update
 
-                #region Update PIDF
-
-                objPIDFupdate = _repository.GetAllQuery().Where(x => x.Pidfid == pidfid).FirstOrDefault();
-                if (objPIDFupdate != null)
-                {
-                    objPIDFupdate.Rfdbrand = pbfentity.BrandName;
-                    objPIDFupdate.Rfdindication = pbfentity.RFDIndication;
-                    objPIDFupdate.Rfdapplicant = pbfentity.RFDApplicant;
-                    objPIDFupdate.RfdcountryId = pbfentity.RFDCountryId;
-                    objPIDFupdate.ModifyBy = loggedInUserId;
-                    objPIDFupdate.ModifyDate = DateTime.Now;
-                    _repository.UpdateAsync(objPIDFupdate);
-                    await _unitOfWork.SaveChangesAsync();
-                }
-
-                #endregion Update PIDF
-
                 #region Section PBF General Add Update
 
                 #region GeneralProductStrength Add Update
@@ -1821,6 +1821,10 @@ namespace EmcureNPD.Business.Core.Implementation
                     }
                 }
                 #endregion GeneralProductStrength Add Update
+
+                #region Update PBF Reference Product Details
+                await SaveUpdateReferenceProductDetails(pbfgeneralid, pbfentity);
+                #endregion Update PBF Reference Product Details
 
                 #region Section Clinical Add Update
 
