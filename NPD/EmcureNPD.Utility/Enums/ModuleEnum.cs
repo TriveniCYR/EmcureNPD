@@ -70,4 +70,9 @@ namespace EmcureNPD.Utility.Enums
         Delete = 4,
         Approve = 5
     }
+    public enum IPDPatenDetailsType
+    {
+        PatenDetailsForFormulation = 1,
+        PatientDetailsForAPI = 2,
+    }
 }

@@ -132,6 +132,16 @@ namespace EmcureNPD.Web.Controllers
                     {
                         oIPD.TotalParent = oIPD.pidf_IPD_PatentDetailsEntities.Count - 1;
                     }
+                    if (oIPD.pidf_IPD_PatentDetailsEntitiesAPI == null || oIPD.pidf_IPD_PatentDetailsEntitiesAPI.Count == 0)
+                    {
+                        oIPD.pidf_IPD_PatentDetailsEntitiesAPI = new List<PIDF_IPD_PatentDetailsEntity>();
+                        oIPD.pidf_IPD_PatentDetailsEntitiesAPI.Add(new PIDF_IPD_PatentDetailsEntity());
+                        oIPD.TotalParent = oIPD.pidf_IPD_PatentDetailsEntitiesAPI.Count;
+                    }
+                    else
+                    {
+                        oIPD.TotalParent = oIPD.pidf_IPD_PatentDetailsEntitiesAPI.Count - 1;
+                    }
                     HttpResponseMessage responseMS = objapi.APICommunication(APIURLHelper.GetPIDFById + "/" + pidfid, HttpMethod.Get, token).Result;
 
                     if (responseMS.IsSuccessStatusCode)

@@ -163,6 +163,7 @@ function SaveIPDClick(type) {
     getParentFormId().find('#RegionIds').val(getParentFormId().find('.regionCombo').val());
     getParentFormId().find('#CountryIds').val(getParentFormId().find('#CountryId').val());
     SetIPDChildRows();
+    SetIPDChildRowsAPI();
     if (isValidIPDForm) {
         return true;
     } else {
@@ -311,4 +312,34 @@ function validatecontrols(control) {
     else {
         $(control).css("border-color", "");
     }
+}
+
+//-----------------patent Details API---------------------------------------
+function addRowParentAPI(j) {
+    var table = getParentFormId().find('#parentBodyAPI');
+    var node = getParentFormId().find('#parentRowAPI_0').clone(true);
+    table.find('tr:last').after((node.length > 1 ? node[0] : node));
+    table.find('tr:last').find("input").val("");
+    IPDSetChildRowDeleteIconAPI();
+}
+function removeRowParentAPI(j, element) {
+    $(element).closest("tr").remove();
+    IPDSetChildRowDeleteIconAPI();
+}
+function IPDSetChildRowDeleteIconAPI() {
+    if (getParentFormId().find('#PIDFTableAPI tbody tr').length > 1 && _IPDMode != 1) {
+        getParentFormId().find('.apiDeleteIconAPI').show();
+    } else {
+        getParentFormId().find('.apiDeleteIconAPI').hide();
+    }
+}
+function SetIPDChildRowsAPI() {
+    $.each(getParentFormId().find('#PIDFTableAPI tbody tr'), function (index, value) {
+        $(this).find("td:first input").attr("name", "pidf_IPD_PatentDetailsEntitiesAPI[" + index.toString() + "].PatentNumber");
+        $(this).find("td:eq(1) input").attr("name", "pidf_IPD_PatentDetailsEntitiesAPI[" + index.toString() + "].Type");
+        $(this).find("td:eq(2) input").attr("name", "pidf_IPD_PatentDetailsEntitiesAPI[" + index.toString() + "].OriginalExpiryDate");
+        $(this).find("td:eq(3) input").attr("name", "pidf_IPD_PatentDetailsEntitiesAPI[" + index.toString() + "].ExtensionExpiryDate");
+        $(this).find("td:eq(4) input").attr("name", "pidf_IPD_PatentDetailsEntitiesAPI[" + index.toString() + "].Comments");
+        $(this).find("td:eq(5) input").attr("name", "pidf_IPD_PatentDetailsEntitiesAPI[" + index.toString() + "].Strategy");
+    });
 }

@@ -257,7 +257,7 @@
                 <div class="col-12">
                     <div class="card">
                         <div class="card-header bg-primary">
-                            <h3 class="card-title mb-0"><button type="button" class="btn btn-tool" data-card-widget="collapse">Patent Details for API</button></h3>
+                            <h3 class="card-title mb-0"><button type="button" id="PatentAPI" class="btn btn-tool" data-card-widget="collapse">Patent Details for API</button></h3>
                             <div class="card-tools">
                                 <button type="button" class="btn btn-tool" data-card-widget="collapse" title="Collapse">
                                     <i class="fas fa-minus"></i>
@@ -265,7 +265,7 @@
                             </div>
                         </div>
                         <div class="card-body" style="display: block;">
-                            <table id="PIDFTable" class="table table-bordered table-striped table-hover" style="width:100%">
+                            <table id="PIDFTableAPI" class="table table-bordered table-striped table-hover" style="width:100%">
                                 <thead>
                                     <tr>
                                         <th width="13%">@MasterLocalizer["Patent Number"] <span class="text-danger">*</span></th>
@@ -277,12 +277,12 @@
                                         <th width="6%" class="text-center">@SharedLocalizer["Action"]</th>
                                     </tr>
                                 </thead>
-                                <tbody id="parentBody">
+                                <tbody id="parentBodyAPI">
                                     @if (Model.pidf_IPD_PatentDetailsEntitiesAPI != null && Model.pidf_IPD_PatentDetailsEntitiesAPI.Count() > 0)
                                     {
                                         for (int i = 0; i < Model.pidf_IPD_PatentDetailsEntitiesAPI.Count(); i++)
                                         {
-                                            <tr id="parentRow_@i">
+                                            <tr id="parentRowAPI_@i">
                                                 @*  <td style="display:none;">
                                         <div class="">
                                         <div class="form-group required">
@@ -340,11 +340,11 @@
                                                     <div class="col-md">
                                                         <div class="form-group">
 
-                                                            <i class="fa-solid fa-circle-plus nav-icon text-success operationButton" id="addIcon_@i" onclick="addRowParent(@i)"></i>
+                                                            <i class="fa-solid fa-circle-plus nav-icon text-success operationButton" id="addIconAPI_@i" onclick="addRowParentAPI(@i)"></i>
 
-                                                            <span><i class="fa-solid fa-trash nav-icon text-red apiDeleteIcon operationButton" id="deleteIcon_@i" onclick="removeRowParent(@i, this)"></i></span>
+                                                            <span><i class="fa-solid fa-trash nav-icon text-red apiDeleteIconAPI operationButton" id="deleteIconAPI_@i" onclick="removeRowParentAPI(@i, this)"></i></span>
                                                             @Html.HiddenFor(model => model.pidf_IPD_PatentDetailsEntitiesAPI[i].PatentDetailsID, new { id = "pidf_IPD_PatentDetailsEntitiesAPI[" + i + "].PatentDetailsID"})
-                                                        </div>
+                                                        </div>                                                       
                                                     </div>
                                                 </td>
                                             </tr>
