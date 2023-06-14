@@ -764,6 +764,21 @@
                                                     </div>
                                                     <div class="card-body pbftables">
                                                         <div class="row">
+                                                              <div class="col-md-3">
+                                                                 <div class="form-group required">
+                                                                    @Html.LabelFor(model => model.RNDMasterEntities.ProductTypeId_Tab, "Product Type", new { @class = "control-label" })<span class="text-danger">*</span>
+                                                                     <input type="hidden" id="hdnProductTypeId_Tab" />
+                                                                    <select id="ProductTypeId_Tab" name="ProductTypeId_Tab" class="form-control readOnlyUpdate customvalidateformcontrol ProductTypeId_Tab" required></select>
+                                                                     @Html.ValidationMessageFor(model => model.RNDMasterEntities.ProductTypeId_Tab, "", new { @class = "text-danger" })
+                                                                 </div>
+                                                             </div>
+                                                              <div class="col-md-3">
+                                                                 <div class="form-group required">
+                                                                    @Html.LabelFor(model => model.RNDMasterEntities.PBFLine, "Line", new { @class = "control-label" })<span class="text-danger">*</span>                                                                     
+                                                                    <select id="PBFLine" name="PBFLine" class="form-control readOnlyUpdate customvalidateformcontrol PBFLine" required></select>
+                                                                    @Html.ValidationMessageFor(model => model.RNDMasterEntities.PBFLine, "", new { @class = "text-danger" })
+                                                                 </div>
+                                                             </div>
                                                             <div class="col-md-3">
                                                                 <div class="form-group required">
                                                                     @Html.LabelFor(model => model.RNDMasterEntities.PlanSupportCostRsPerDay, "Plant Utilization rate Rs/Day", new { @class = "control-label" })
