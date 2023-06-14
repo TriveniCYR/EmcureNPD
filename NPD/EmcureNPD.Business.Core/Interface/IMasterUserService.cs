@@ -12,7 +12,7 @@ namespace EmcureNPD.Business.Core.Interface
         Task<DataTableResponseModel> GetAll(DataTableAjaxPostModel model);
 
         Task<MasterUserEntity> GetById(int id);
-
+        Task<List<MasterUserEntity>> GetUserForAPIInterested();
         Task<DBOperation> AddUpdateUser(MasterUserEntity entityUser);
         Task<DBOperation> ChangeProfile(MasterUserEntityChangeProfile entityUser);        
         Task<DBOperation> DeleteUser(int id);

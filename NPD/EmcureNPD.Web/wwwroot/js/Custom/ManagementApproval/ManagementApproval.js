@@ -48,7 +48,7 @@ $(document).ready(function () {
         var hh = tdate.getHours();
         var mins = tdate.getMinutes();
         var currentDate = dd + "-" + (MM + 1) + "-" + yyyy + "-" + hh + "-" + mins;
-        var fileName = 'ManagementApproval_' + (ProjectName == null || ProjectName == undefined ? "" : ProjectName.toString().trim()) + '_' + currentDate;
+        var fileName = 'BudgetApproval_' + (ProjectName == null || ProjectName == undefined ? "" : ProjectName.toString().trim()) + '_' + currentDate;
         printElement(fileName);
     });
     PBFtabClick();

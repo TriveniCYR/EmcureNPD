@@ -77,6 +77,8 @@ namespace EmcureNPD.Business.Core.Resolver
             services.AddTransient<IMasterPackSizeService, MasterPackSizeService>();
             services.AddTransient<IMasterManufacturingService, MasterManufacturingService>();
             services.AddTransient<IDatabaseSubscription, DatabaseSubscription>();
+            services.AddTransient<IMasterExcipientRequirement, MasterExcipientRequirementService>();
+            services.AddTransient<IMasterPlantLine, MasterPlantLineService>();
             return services;
         }
     }

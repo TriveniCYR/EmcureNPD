@@ -42,6 +42,7 @@ namespace EmcureNPD.Data.DataAccess.DataContext
         public virtual DbSet<MasterDosage> MasterDosages { get; set; }
         public virtual DbSet<MasterDosageForm> MasterDosageForms { get; set; }
         public virtual DbSet<MasterException> MasterExceptions { get; set; }
+        public virtual DbSet<MasterExcipientRequirement> MasterExcipientRequirements { get; set; }
         public virtual DbSet<MasterExipient> MasterExipients { get; set; }
         public virtual DbSet<MasterExpenseRegion> MasterExpenseRegions { get; set; }
         public virtual DbSet<MasterExtensionApplication> MasterExtensionApplications { get; set; }
@@ -61,6 +62,7 @@ namespace EmcureNPD.Data.DataAccess.DataContext
         public virtual DbSet<MasterPackingType> MasterPackingTypes { get; set; }
         public virtual DbSet<MasterPidfstatus> MasterPidfstatuses { get; set; }
         public virtual DbSet<MasterPlant> MasterPlants { get; set; }
+        public virtual DbSet<MasterPlantLine> MasterPlantLines { get; set; }
         public virtual DbSet<MasterProductStrength> MasterProductStrengths { get; set; }
         public virtual DbSet<MasterProductType> MasterProductTypes { get; set; }
         public virtual DbSet<MasterProjectActivity> MasterProjectActivities { get; set; }
@@ -89,6 +91,7 @@ namespace EmcureNPD.Data.DataAccess.DataContext
         public virtual DbSet<PidfApiCharterPrddepartment> PidfApiCharterPrddepartments { get; set; }
         public virtual DbSet<PidfApiCharterTimelineInMonth> PidfApiCharterTimelineInMonths { get; set; }
         public virtual DbSet<PidfApiIpd> PidfApiIpds { get; set; }
+        public virtual DbSet<PidfApiMaster> PidfApiMasters { get; set; }
         public virtual DbSet<PidfApiRnD> PidfApiRnDs { get; set; }
         public virtual DbSet<PidfCommercial> PidfCommercials { get; set; }
         public virtual DbSet<PidfCommercialMaster> PidfCommercialMasters { get; set; }
@@ -115,6 +118,7 @@ namespace EmcureNPD.Data.DataAccess.DataContext
         public virtual DbSet<PidfPbfHeadWiseBudget> PidfPbfHeadWiseBudgets { get; set; }
         public virtual DbSet<PidfPbfMarketMapping> PidfPbfMarketMappings { get; set; }
         public virtual DbSet<PidfPbfPhaseWiseBudget> PidfPbfPhaseWiseBudgets { get; set; }
+        public virtual DbSet<PidfPbfReferenceProductDetail> PidfPbfReferenceProductDetails { get; set; }
         public virtual DbSet<PidfPbfRnDApirequirement> PidfPbfRnDApirequirements { get; set; }
         public virtual DbSet<PidfPbfRnDCapexMiscellaneousExpense> PidfPbfRnDCapexMiscellaneousExpenses { get; set; }
         public virtual DbSet<PidfPbfRnDExicipientPrototype> PidfPbfRnDExicipientPrototypes { get; set; }
@@ -134,6 +138,7 @@ namespace EmcureNPD.Data.DataAccess.DataContext
         public virtual DbSet<PidfstatusHistory> PidfstatusHistories { get; set; }
         public virtual DbSet<ProjectTask> ProjectTasks { get; set; }
         public virtual DbSet<RoleModulePermission> RoleModulePermissions { get; set; }
+        public virtual DbSet<TblSessionManager> TblSessionManagers { get; set; }
         public virtual DbSet<UserSessionLogMaster> UserSessionLogMasters { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
@@ -514,6 +519,24 @@ namespace EmcureNPD.Data.DataAccess.DataContext
                 entity.Property(e => e.StrackTrace).HasMaxLength(4000);
             });
 
+            modelBuilder.Entity<MasterExcipientRequirement>(entity =>
+            {
+                entity.HasKey(e => e.ExcipientRequirementId)
+                    .HasName("PK__Master_E__F840444962441DA4");
+
+                entity.ToTable("Master_ExcipientRequirement", "dbo");
+
+                entity.Property(e => e.CreatedDate).HasColumnType("datetime");
+
+                entity.Property(e => e.ExcipientRequirementName).HasMaxLength(70);
+
+                entity.Property(e => e.IsActive)
+                    .IsRequired()
+                    .HasDefaultValueSql("((1))");
+
+                entity.Property(e => e.ModifyDate).HasColumnType("datetime");
+            });
+
             modelBuilder.Entity<MasterExipient>(entity =>
             {
                 entity.HasKey(e => e.ExipientId)
@@ -804,6 +827,25 @@ namespace EmcureNPD.Data.DataAccess.DataContext
                 entity.Property(e => e.PlantNameName).HasMaxLength(100);
             });
 
+            modelBuilder.Entity<MasterPlantLine>(entity =>
+            {
+                entity.HasKey(e => e.LineId);
+
+                entity.ToTable("Master_PlantLine", "dbo");
+
+                entity.Property(e => e.CreatedDate)
+                    .HasColumnType("datetime")
+                    .HasDefaultValueSql("(getdate())");
+
+                entity.Property(e => e.IsActive)
+                    .IsRequired()
+                    .HasDefaultValueSql("((1))");
+
+                entity.Property(e => e.LineName).HasMaxLength(70);
+
+                entity.Property(e => e.ModifyDate).HasColumnType("datetime");
+            });
+
             modelBuilder.Entity<MasterProductStrength>(entity =>
             {
                 entity.HasKey(e => e.ProductStrengthId);
@@ -1003,6 +1045,8 @@ namespace EmcureNPD.Data.DataAccess.DataContext
                 entity.Property(e => e.Address).HasMaxLength(200);
 
                 entity.Property(e => e.AnalyticalGl).HasColumnName("AnalyticalGL");
+
+                entity.Property(e => e.ApigroupLeader).HasColumnName("APIGroupLeader");
 
                 entity.Property(e => e.Apiuser).HasColumnName("APIUser");
 
@@ -1455,6 +1499,25 @@ namespace EmcureNPD.Data.DataAccess.DataContext
                     .WithMany(p => p.PidfApiIpds)
                     .HasForeignKey(d => d.ProductTypeId)
                     .HasConstraintName("FK_PIDF_API_IPD_ProductTypeId");
+            });
+
+            modelBuilder.Entity<PidfApiMaster>(entity =>
+            {
+                entity.ToTable("PIDF_API_Master", "dbo");
+
+                entity.Property(e => e.PidfapimasterId).HasColumnName("PIDFAPIMasterId");
+
+                entity.Property(e => e.CreatedDate).HasColumnType("datetime");
+
+                entity.Property(e => e.Pidfid).HasColumnName("PIDFId");
+
+                entity.Property(e => e.Remark).HasMaxLength(500);
+
+                entity.HasOne(d => d.Pidf)
+                    .WithMany(p => p.PidfApiMasters)
+                    .HasForeignKey(d => d.Pidfid)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("FK_PIDF_API_Master_PIDF");
             });
 
             modelBuilder.Entity<PidfApiRnD>(entity =>
@@ -2437,6 +2500,45 @@ namespace EmcureNPD.Data.DataAccess.DataContext
                     .HasConstraintName("FK_PIDF_PBF_PhaseWiseBudget_PIDF_PBF_General");
             });
 
+            modelBuilder.Entity<PidfPbfReferenceProductDetail>(entity =>
+            {
+                entity.ToTable("PIDF_PBF_Reference_Product_detail", "dbo");
+
+                entity.Property(e => e.PidfpbfreferenceProductdetailId).HasColumnName("PIDFPBFReferenceProductdetailId");
+
+                entity.Property(e => e.Pidfid).HasColumnName("PIDFID");
+
+                entity.Property(e => e.Rfdapplicant)
+                    .HasMaxLength(100)
+                    .HasColumnName("RFDApplicant");
+
+                entity.Property(e => e.Rfdbrand)
+                    .HasMaxLength(100)
+                    .HasColumnName("RFDBrand");
+
+                entity.Property(e => e.RfdcommercialBatchSize)
+                    .HasMaxLength(100)
+                    .HasColumnName("RFDCommercialBatchSize");
+
+                entity.Property(e => e.RfdcountryId).HasColumnName("RFDCountryId");
+
+                entity.Property(e => e.Rfdindication)
+                    .HasMaxLength(100)
+                    .HasColumnName("RFDIndication");
+
+                entity.Property(e => e.RfdinitialRevenuePotential)
+                    .HasMaxLength(100)
+                    .HasColumnName("RFDInitialRevenuePotential");
+
+                entity.Property(e => e.Rfdinnovators)
+                    .HasMaxLength(100)
+                    .HasColumnName("RFDInnovators");
+
+                entity.Property(e => e.RfdpriceDiscounting)
+                    .HasMaxLength(100)
+                    .HasColumnName("RFDPriceDiscounting");
+            });
+
             modelBuilder.Entity<PidfPbfRnDApirequirement>(entity =>
             {
                 entity.HasKey(e => e.ApirequirementId);
@@ -2928,6 +3030,25 @@ namespace EmcureNPD.Data.DataAccess.DataContext
                 entity.Property(e => e.CreatedDate).HasColumnType("datetime");
 
                 entity.Property(e => e.ModifyDate).HasColumnType("datetime");
+            });
+
+            modelBuilder.Entity<TblSessionManager>(entity =>
+            {
+                entity.HasKey(e => e.TokenId);
+
+                entity.ToTable("Tbl_SessionManager", "dbo");
+
+                entity.Property(e => e.Email).HasMaxLength(50);
+
+                entity.Property(e => e.TokenIssuedAt).HasColumnType("datetime");
+
+                entity.Property(e => e.VallidTo).HasColumnType("datetime");
+
+                entity.HasOne(d => d.User)
+                    .WithMany(p => p.TblSessionManagers)
+                    .HasForeignKey(d => d.UserId)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("FK_Tbl_SessionManager_Master_User");
             });
 
             modelBuilder.Entity<UserSessionLogMaster>(entity =>

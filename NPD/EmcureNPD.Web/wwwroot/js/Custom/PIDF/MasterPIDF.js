@@ -27,13 +27,13 @@ $(document).ready(function () {
         readOnlyForm();
     }
 
-    $('#BusinessUnitId').change(function (e) {
-        if ($(this).val() != "") {
-            if (parseInt($(this).val()) > 0) {
-                ajaxServiceMethod($('#hdnBaseURL').val() + getCountryByBusinessUnitId + "/" + $(this).val(), 'GET', GetCountryByBusinessUnitSuccess, GetCountryByBusinessUnitError);
-            }
-        }
-    });
+    //$('#BusinessUnitId').change(function (e) {
+    //    if ($(this).val() != "") {
+    //        if (parseInt($(this).val()) > 0) {
+    //            ajaxServiceMethod($('#hdnBaseURL').val() + getCountryByBusinessUnitId + "/" + $(this).val(), 'GET', GetCountryByBusinessUnitSuccess, GetCountryByBusinessUnitError);
+    //        }
+    //    }
+    //});
     $('#InhouseDropdownId').change(function (e) {
         var _selected = ($(this).val() == "1" ? true : false);
         $('#InHouses').prop("checked", _selected).val(_selected);
@@ -280,22 +280,26 @@ function SaveDraftClick() {
     return isValidPIDFForm;
 }
 function SetChildRows() {
-    $.each($('#APIDetailsTable tbody tr'), function (index, value) {
-        $(this).find("td:first input").attr("name", "pidfApiDetailEntities[" + index.toString() + "].Apiname");
-        $(this).find("td:eq(1) select").attr("name", "pidfApiDetailEntities[" + index.toString() + "].ApisourcingId");
-        $(this).find("td:eq(2) input").attr("name", "pidfApiDetailEntities[" + index.toString() + "].Apivendor");
-    });
+    //$.each($('#APIDetailsTable tbody tr'), function (index, value) {
+    //    $(this).find("td:first input").attr("name", "pidfApiDetailEntities[" + index.toString() + "].Apiname");
+    //    $(this).find("td:eq(1) select").attr("name", "pidfApiDetailEntities[" + index.toString() + "].ApisourcingId");
+    //    $(this).find("td:eq(2) input").attr("name", "pidfApiDetailEntities[" + index.toString() + "].Apivendor");
+    //});
     $.each($('#ProductStrengthTable tbody tr'), function (index, value) {
         $(this).find("td:first input").attr("name", "pidfProductStregthEntities[" + index.toString() + "].Strength");
         $(this).find("td:eq(1) select").attr("name", "pidfProductStregthEntities[" + index.toString() + "].UnitofMeasurementId");
     });
+    $.each($('#IMSDataTable tbody tr'), function (index, value) {
+        $(this).find("td:first input").attr("name", "IMSDataEntities[" + index.toString() + "].Imsvalue");
+        $(this).find("td:eq(1) input").attr("name", "IMSDataEntities[" + index.toString() + "].Imsvolume");
+    });
 }
 function SetChildRowDeleteIcon() {
-    if ($('#APIDetailsTable tbody tr').length > 1 && _mode != 1) {
-        $('.apiDeleteIcon').show();
-    } else {
-        $('.apiDeleteIcon').hide();
-    }
+    //if ($('#APIDetailsTable tbody tr').length > 1 && _mode != 1) {
+    //    $('.apiDeleteIcon').show();
+    //} else {
+    //    $('.apiDeleteIcon').hide();
+    //}
 
     if ($('#ProductStrengthTable tbody tr').length > 1 && _mode != 1) {
         $('.strengthDeleteIcon').show();

@@ -1,0 +1,143 @@
+﻿@using EmcureNPD.Utility.Models
+@using Microsoft.AspNetCore.Http
+@using EmcureNPD.Web.Controllers
+@using Microsoft.AspNetCore.Mvc.Localization
+@inject IHttpContextAccessor HttpContextAccessor
+@inject Microsoft.Extensions.Localization.IStringLocalizer<MastersController> MasterLocalizer
+@inject Microsoft.Extensions.Localization.IStringLocalizer<EmcureNPD.Resource.Shared> SharedLocalizer
+@using Microsoft.Extensions.Configuration
+@inject IConfiguration Configuration
+
+@model EmcureNPD.Business.Models.MasterExcipientRequirementEntity
+@{
+	ViewData["Title"] = @MasterLocalizer["Excipient Requirement - Emcure NPD"];
+	RolePermissionModel objPermssion = (RolePermissionModel)ViewBag.Access;
+	string IsAddAllow = (objPermssion.Add) ? "" : "display: none";
+	string IsEditAllow = (objPermssion.Edit) ? "" : "display: none";
+	string IsDeleteAllow = (objPermssion.Delete) ? "" : "display: none";
+	string jsVersion = @Configuration.GetSection("StaticJS")["version"];
+}
+<div class="content-header">
+	<div class="container-fluid d-flex justify-content-between">
+		<h3>@MasterLocalizer["Excipient Requirement"]</h3>
+		<div>
+			<a style="@IsAddAllow" class="btn btn-primary" data-toggle="modal" data-target="#ExcipientRequirementModel" data-backdrop="static" data-keyboard="false" onclick="AddExcipientRequirement();"><i class="far fa-plus-square mr-1"></i> @SharedLocalizer["Add"]</a>
+		</div>
+	</div>
+</div>
+<div class="container-fluid overflow-auto background-white-card">
+	<table id="ExcipientRequirementTable" class="table table-bordered table-striped table-hover" style="width:100%">
+		<thead>
+			<tr>
+				<th>@MasterLocalizer["Excipient Requirement Name"]</th>
+				<th>@MasterLocalizer["Excipient Requirement Cost"]</th>
+				<th>@SharedLocalizer["Status"]</th>
+				<th class="text-center">@SharedLocalizer["Action"]</th>
+			</tr>
+		</thead>
+		<tbody>
+		</tbody>
+	</table>
+</div>
+
+@*DeleteExcipientRequirementModel*@
+<div id="DeleteExcipientRequirementModel" class="modal themeModal " role="dialog">
+	<div class="modal-dialog">
+		<!-- Modal content-->
+		<div class="modal-content">
+			<div class="modal-header">
+				<h4 class="modal-title">@SharedLocalizer["Delete"]</h4>
+				<button type="button" class="close" data-dismiss="modal">&times;</button>
+			</div>
+			<div class="modal-body">
+				<div class="row">
+					<div class="col-md-12">
+						<div class="form-group">
+							@Html.Label(@SharedLocalizer["DeleteConfirm"])
+						</div>
+					</div>
+				</div>
+				@Html.Hidden("ExcipientRequirementId")
+				<div class="card-footer text-center">
+					<button type="button" onclick="DeleteExcipientRequirement()" data-dismiss="modal" class="btn btn-primary mr-2">@SharedLocalizer["Yes"]</button>
+					<a class="btn btn-danger" data-dismiss="modal">@SharedLocalizer["No"]</a>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+
+@*AddUpdateModel*@
+<div id="ExcipientRequirementModel" class="modal themeModal " role="dialog">
+	<form asp-route-returnUrl="@ViewData["ReturnUrl"]" method="POST" onsubmit="return SaveMasterExcipientRequirement(this);">
+		<!-- Small boxes (Stat box) -->
+		<!-- Main row -->
+		<input type="hidden" id="ExcipientRequirementId" name="ExcipientRequirementId" value="0" />
+		<div class="modal-dialog">
+			<!-- Modal content-->
+			<div class="modal-content">
+				<div class="modal-header">
+					<h4 class="modal-title" id="PackSizeTitle"></h4>
+					<button type="button" class="close" data-dismiss="modal">&times;</button>
+				</div>
+				<div class="modal-body">
+					<div class="row">
+						<div class="col-md-12">
+							<div class="form-group required">
+								@Html.LabelFor(model => model.ExcipientRequirementName,"Excipient Requirement Name", new { @class = "control-label" })
+								<span class="text-danger">*</span>
+								@Html.EditorFor(model => model.ExcipientRequirementName, new { htmlAttributes = new { @autocomplete = "off", @class = "form-control checkbox-checked", @placeholder = "Excipient Requirement Name" } })
+								@Html.ValidationMessageFor(model => model.ExcipientRequirementName, "", new { @class = "text-danger" })
+							</div>
+
+							<div class="form-group required">
+								@Html.LabelFor(model => model.ExcipientRequirementCost,"Excipient Requirement Cost", new { @class = "control-label" })
+								<span class="text-danger">*</span>
+								@Html.EditorFor(model => model.ExcipientRequirementCost, new { htmlAttributes = new { @autocomplete = "off", @class = "form-control checkbox-checked",@type="number", @placeholder = "Excipient Requirement Cost" ,min="0"} })
+								@Html.ValidationMessageFor(model => model.ExcipientRequirementCost, "", new { @class = "text-danger" })
+							</div>
+						</div>
+					</div>
+					<div class="row">
+						<div class="col-md-12">
+							<div class="required">
+								@Html.CheckBoxFor(model => model.IsActive, new { @class = "checkbox-checked", @checked = "checked" })
+								@Html.Label(@SharedLocalizer["IsActive"],"Active")
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="card-footer text-end card-margin">
+					<button type="submit" class="btn btn-success me-3 large-button">@SharedLocalizer["Save"]</button>
+					<a class="btn btn-danger ms-3 large-button" data-dismiss="modal">@SharedLocalizer["Cancel"]</a>
+				</div>
+			</div>
+		</div>
+	</form>
+</div>
+@section MyScripts {
+
+	@Html.Partial("_DataTablePartial")
+
+	<script type="text/javascript" src="~/js/Custom/Masters/ExcipientRequirement.js?v=@jsVersion"></script>
+	<script>
+
+		//#region Setup API Url
+		var AllExcipientRequirement = "@EmcureNPD.Web.Helpers.APIURLHelper.GetAllExcipientRequirement";
+		var SaveExcipientRequirement = "@EmcureNPD.Web.Helpers.APIURLHelper.SaveExcipientRequirement";
+		var GetExcipientRequirementByIdUrl = "@EmcureNPD.Web.Helpers.APIURLHelper.GetExcipientRequirementById";
+		var DeleteExcipientRequirementByIdUrl = "@EmcureNPD.Web.Helpers.APIURLHelper.DeleteSaveExcipientRequirementId";
+		// #endregion
+		var IsEditAllow = "@IsEditAllow";
+		var IsDeleteAllow = "@IsDeleteAllow";
+		//#region Static Messae Init
+		var EditLabel = "@SharedLocalizer["Edit"]";
+		var DeleteLabel = "@SharedLocalizer["Delete"]";
+		var ErrorMessage = "@SharedLocalizer["Error"]";
+		var RecordInsertUpdate = "@SharedLocalizer["RecordInsertUpdate"]";
+		var RecordDelete = "@SharedLocalizer["RecordDelete"]";
+		var AddLabel = "@SharedLocalizer["Add Excipient Requirement"]";
+		var UpdateLabel = "@SharedLocalizer["Edit Excipient Requirement"]";
+						//#endregion
+	</script>
+}

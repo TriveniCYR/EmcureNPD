@@ -100,61 +100,61 @@ namespace EmcureNPD.Web.Models
         public int pidfid { get; set; }
         public string entity { get; set; }
         public string product { get; set; }
-        public DateTime forecastDate { get; set; }
+        public DateTime? forecastDate { get; set; }
         public string Currencyid { get; set; }
         public int dosageFrom { get; set; }
         public string manufacturingSiteOrPartner { get; set; }
         public string skus { get; set; }
         public int mspersentage { get; set; }
         public int targetPriceScenario { get; set; }
-        public DateTime projectStartDate { get; set; }
-        public DateTime batchManufacturing { get; set; }
-        public DateTime expectedFilling { get; set; }
+        public DateTime ?projectStartDate { get; set; }
+        public DateTime ?batchManufacturing { get; set; }
+        public DateTime ?expectedFilling { get; set; }
         public string approvalPeriodinDays { get; set; }
-        public DateTime approvalDate { get; set; }
-        public DateTime productLaunchDate { get; set; }
+        public DateTime ?approvalDate { get; set; }
+        public DateTime ?productLaunchDate { get; set; }
         public double gestationPeriodinYears { get; set; }
-        public double marketShareErosionrate { get; set; }
-        public double priceErosion { get; set; }
+        public double ?marketShareErosionrate { get; set; }
+        public double ?priceErosion { get; set; }
         public string EscalationinCOGS { get; set; }
-        public double discountRate { get; set; }
-        public double incometaxrate { get; set; }
+        public double ?discountRate { get; set; }
+        public double ?incometaxrate { get; set; }
         public double? opexasapercenttosale { get; set; }
         public double? externalProfitSharepercent { get; set; }
-        public double collectioninDays { get; set; }
-        public double inventoryinDays { get; set; }
-        public double creditorinDays { get; set; }
-        public double marketingAllowance { get; set; }
-        public double regulatoryMaintenanceCost { get; set; }
-        public double grosstoNet { get; set; }
-        public double noofbatchestobemanufactured { get; set; }
-        public DateTime noofbatchestobemanufacturedPhaseEndDate { get; set; }
-        public double noSkus { get; set; }
-        public DateTime noSkusPhaseEndDate { get; set; }
-        public double randDanalyticalcost { get; set; }
-        public DateTime randDanalyticalcostPhaseEndDate { get; set; }
-        public double rldsamplecost { get; set; }
-        public DateTime rldsamplecostPhaseEndDate { get; set; }
-        public double batchmanufacturingcostOrApiactualsEst { get; set; }
-        public DateTime batchmanufacturingcostOrApiactualsEstPhaseEndDate { get; set; }
-        public double sixmonthsstabilitycost { get; set; }
-        public DateTime sixmonthsstabilitycostPhaseEndDate { get; set; }
-        public double techTransfer { get; set; }
-        public DateTime techTransferPhaseEndDate { get; set; }
-        public double bestudies { get; set; }
-        public DateTime bestudiesPhaseEndDate { get; set; }
-        public double filingfees { get; set; }
-        public DateTime filingfeesPhaseEndDate { get; set; }
-        public double bioStuddyCost { get; set; }
-        public DateTime bioStuddyCostPhaseEndDate { get; set; }
-        public double capex { get; set; }
-        public DateTime capexPhaseEndDate { get; set; }
-        public double toolingAndChangeParts { get; set; }
-        public DateTime toolingAndChangePartsPhaseEndDate { get; set; }
-        public object total { get; set; }
+        public double ?collectioninDays { get; set; }
+        public double ?inventoryinDays { get; set; }
+        public double ?creditorinDays { get; set; }
+        public double ?marketingAllowance { get; set; }
+        public double ?regulatoryMaintenanceCost { get; set; }
+        public double ?grosstoNet { get; set; }
+        public double ?noofbatchestobemanufactured { get; set; }
+        public DateTime ?noofbatchestobemanufacturedPhaseEndDate { get; set; }
+        public double ?noSkus { get; set; }
+        public DateTime ?noSkusPhaseEndDate { get; set; }
+        public double ?randDanalyticalcost { get; set; }
+        public DateTime ?randDanalyticalcostPhaseEndDate { get; set; }
+        public double ?rldsamplecost { get; set; }
+        public DateTime ?rldsamplecostPhaseEndDate { get; set; }
+        public double ?batchmanufacturingcostOrApiactualsEst { get; set; }
+        public DateTime ?batchmanufacturingcostOrApiactualsEstPhaseEndDate { get; set; }
+        public double ?sixmonthsstabilitycost { get; set; }
+        public DateTime ?sixmonthsstabilitycostPhaseEndDate { get; set; }
+        public double ?techTransfer { get; set; }
+        public DateTime ?techTransferPhaseEndDate { get; set; }
+        public double ?bestudies { get; set; }
+        public DateTime ?bestudiesPhaseEndDate { get; set; }
+        public double ?filingfees { get; set; }
+        public DateTime ?filingfeesPhaseEndDate { get; set; }
+        public double ?bioStuddyCost { get; set; }
+        public DateTime ?bioStuddyCostPhaseEndDate { get; set; }
+        public double ?capex { get; set; }
+        public DateTime ?capexPhaseEndDate { get; set; }
+        public double ?toolingAndChangeParts { get; set; }
+        public DateTime ?toolingAndChangePartsPhaseEndDate { get; set; }
+        public object ?total { get; set; }
         public int PIDFStatusId { get; set; }
 
-        public DateTime createdDate { get; set; }
+        public DateTime? createdDate { get; set; }
         public int createdBy { get; set; }
     }
 

@@ -225,6 +225,14 @@ namespace EmcureNPD.Business.Core.ServiceImplementations
 
             return _userEntity;
         }
+        public async Task<List<MasterUserEntity>> GetUserForAPIInterested()
+        {
+            var _userEntities = new List<MasterUserEntity>();
+            var _userDBEntity =   await _repository.GetAllAsync(x => x.IsActive == true && x.IsDeleted == false && x.ApigroupLeader == true);
+            _userEntities = _mapperFactory.GetList<MasterUser,MasterUserEntity> (_userDBEntity.ToList());
+            return _userEntities;
+        }
+
 
         public async Task<DBOperation> AddUpdateUser(MasterUserEntity entityUser)
         {
@@ -250,6 +258,7 @@ namespace EmcureNPD.Business.Core.ServiceImplementations
                     objUser.IsManagement = entityUser.IsManagement;
                     objUser.Apiuser = entityUser.APIUser;
                     objUser.FormulationGl = entityUser.FormulationGL;
+                    objUser.ApigroupLeader = entityUser.ApigroupLeader;                    
                     objUser.AnalyticalGl = entityUser.AnalyticalGL;
                     objUser.DesignationName = entityUser.DesignationName;
                     objUser.ModifyBy = LoggedUserId;

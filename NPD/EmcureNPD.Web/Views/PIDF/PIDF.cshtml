@@ -265,7 +265,7 @@
             </div>
 
         </div>
-        <div class="row">
+        @*<div class="row">
             <div class="col-12">
                 <div class="card">
                     <div class="card-header bg-primary">
@@ -313,7 +313,7 @@
                                             <div class="col-md">
                                                 <div class="form-group required">
                                                     <select id="apiSourcingData_@j" name="pidfApiDetailEntities[@j].ApisourcingId" class="form-control readOnlyUpdate productApiSourcing" required></select>
-                                                    @*@Html.ValidationMessageFor(model => model.pidfApiDetailEntities[j].ApisourcingId, "", new { @class = "text-danger" })*@
+                                                    @Html.ValidationMessageFor(model => model.pidfApiDetailEntities[j].ApisourcingId, "", new { @class = "text-danger" })
                                                 </div>
                                             </div>
                                         </td>
@@ -354,7 +354,7 @@
                                                         <div class="form-group required">
                                                             <input type="hidden" id="hdnAPISourcing" value="@Model.pidfApiDetailEntities[j].ApisourcingId" />
                                                             <select id="apiSourcingData_0" name="pidfApiDetailEntities[@j].ApisourcingId" class="form-control readOnlyUpdate productApiSourcing" required></select>
-                                                            @*@Html.ValidationMessageFor(model => model.pidfApiDetailEntities[j].ApisourcingId, "", new { @class = "text-danger" })*@
+                                                            @Html.ValidationMessageFor(model => model.pidfApiDetailEntities[j].ApisourcingId, "", new { @class = "text-danger" })
                                                         </div>
                                                     </div>
                                                 </td>
@@ -385,9 +385,10 @@
                 </div>
 
             </div>
-        </div>
+        </div>*@
 
-        <div class="row">
+        @* -----start Reference Product Detail------------------------------*@
+       @* <div class="row">
             <div class="col-12">
                 <div class="card">
                     <div class="card-header bg-primary">
@@ -493,7 +494,8 @@
                 </div>
 
             </div>
-        </div>
+        </div>*@
+         @* -----End Reference Product Detail------------------------------*@
         <div class="row">
             <div class="col-12">
                 <div class="card">
@@ -536,38 +538,41 @@
                                     {
                                         int j = 0;
                                         <tr id="ImsDataRow_@j">
-                                            <td>
-                                                <div class="col-md">
-                                                    <div class="form-group required">
-                                                        @Html.EditorFor(model => model.IMSDataEntities[j].Imsvalue, new { htmlAttributes = new {@required="required",@type="number", @autocomplete = "off", @class = "form-control checkbox-checked", id = "IMSDataEntities[" + j + "].Imsvalue", @placeholder = @MasterLocalizer["IMS Value"] } })
-                                                    </div>
-                                                </div>
-                                            </td>
-                                            <td>
-                                                <div class="col-md">
-                                                    <div class="form-group required">
-                                                        @Html.EditorFor(model => model.IMSDataEntities[j].Imsvolume, new { htmlAttributes = new {@required="required",@type="number", @autocomplete = "off", @class = "form-control checkbox-checked", id = "IMSDataEntities[" + j + "].Imsvolume", @placeholder = @MasterLocalizer["IMS Volume"] } })
-                                                    </div>
-                                                </div>
-                                            </td>
-                                            <td>
-                                                <div class="col-md">
+                                                <td>
                                                     <div class="col-md">
-                                                        
+                                                        <div class="form-group required">
+                                                            <input autocomplete="off" class="txtclsStrngth form-control checkbox-checked text-box single-line" id="IMSDataEntities[@j].Imsvalue" name="IMSDataEntities[@j].Imsvalue" placeholder="IMS Value" required="required" type="number" value="">
+
+                                                        </div>
                                                     </div>
-                                                    <div class="form-group">
-                                                        <i class="fa-solid fa-circle-plus nav-icon text-success operationButton" id="addIconMis_@j" onclick="addRowIMSData(@j)"></i>
-                                                        &nbsp;&nbsp;&nbsp;&nbsp;
-                                                        <span><i class="fa-solid fa-trash nav-icon text-red imsDeleteIcon operationButton" id="deleteIconIms_@j" onclick="deleteRowIMSData(@j, this)"></i></span>
-                                                        @Html.HiddenFor(model => model.IMSDataEntities[j].PidfimsdataId, new { id = "IMSDataEntities[" + j + "].PidfimsdataId"})
+                                                </td>
+                                                <td>
+                                                    <div class="col-md">
+                                                        <div class="form-group required">
+                                                            <input autocomplete="off" class="txtclsStrngth form-control checkbox-checked text-box single-line" id="IMSDataEntities[@j].Imsvolume" name="IMSDataEntities[@j].Imsvolume" placeholder="IMS Volume" required="required" type="number" value="">
+                                                            
+                                                        </div>
                                                     </div>
-                                                </div>
-                                            </td>
-                                        </tr>
+                                                </td>
+                                                <td>
+                                                    <div class="col-md">
+                                                        <div class="col-md">
+
+                                                        </div>
+                                                        <div class="form-group">
+                                                            <i class="fa-solid fa-circle-plus nav-icon text-success operationButton" id="addIconMis_@j" onclick="addRowIMSData(@j)"></i>
+                                                            &nbsp;&nbsp;&nbsp;&nbsp;
+                                                            <span><i class="fa-solid fa-trash nav-icon text-red imsDeleteIcon operationButton" id="deleteIconIms_@j" onclick="deleteRowIMSData(@j, this)"></i></span>
+                                                           <input type="hidden" name="IMSDataEntities[@j].PidfimsdataId" id="IMSDataEntities[@j].PidfimsdataId">
+                                                        </div>
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                        
                                     }
                                     else
                                     {
-                                        for (int i = 0; i < Model.pidfProductStregthEntities.Count(); i++)
+                                        for (int i = 0; i < Model.IMSDataEntities.Count(); i++)
                                         {
                                             <tr id="ImsDataRow_0">
                                                 <td>

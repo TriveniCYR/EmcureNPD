@@ -241,10 +241,10 @@
 
                 @* ----------End -IPEvalution-------------*@
 
-                @* ----------Start -Patent Details-------------*@
+                @* ----------Start -Patent Details Formulation-------------*@
                 <div class="card card-outline card-primary">
                     <div class="card-header bg-primary">
-                        <h3 class="card-title mb-0"><button type="button" class="btn btn-tool" data-card-widget="collapse">@MasterLocalizer["PatentDetails"]</button></h3>
+                        <h3 class="card-title mb-0"><button type="button" class="btn btn-tool" data-card-widget="collapse">Patent Details for Formulation</button></h3>
                         <div class="card-tools">
                             <button type="button" class="btn btn-tool" data-card-widget="collapse" title="Collapse">
                                 <i class="fas fa-minus"></i>
@@ -268,7 +268,7 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    @foreach (var item in Model.IPD_PatentDetailsList)
+                                    @foreach (var item in Model.IPD_PatentDetailsList.Where(x => x.PatentType == (short)IPDPatenDetailsType.PatenDetailsForFormulation))
                                     {
                                         <tr>
                                             <td> @item.BusinessUnitName              </td>
@@ -290,7 +290,57 @@
                         </div>
                     </div>
                 </div>
-                @* ----------End -Patent Details-------------*@
+                @* ----------End -Patent Details  Formulation-------------*@
+                @* ----------Start -Patent Details-API------------*@
+                <div class="card card-outline card-primary">
+                    <div class="card-header bg-primary">
+                        <h3 class="card-title mb-0"><button type="button" class="btn btn-tool" data-card-widget="collapse">Patent Details for API </button></h3>
+                        <div class="card-tools">
+                            <button type="button" class="btn btn-tool" data-card-widget="collapse" title="Collapse">
+                                <i class="fas fa-minus"></i>
+                            </button>
+                        </div>
+                    </div>
+                    <div class="card-body" style="display: block;">
+                        <div style="overflow-x:auto;">
+                            <table class="table table-bordered">
+                                <thead>
+                                    <tr>
+                                        <th>       @MasterLocalizer["Business Unit"]                 </th>
+                                        <th>       @MasterLocalizer["PatentNumber"]                 </th>
+                                        <th>        @MasterLocalizer["Type"]                        </th>
+                                        <th>       @MasterLocalizer["OriginalExpiraDate"]         </th>
+                                        <th>       @MasterLocalizer["ExtensionExpiryDate"]         </th>
+                                        <th>       @MasterLocalizer["CommentsPatentSpecific"]      </th>
+                                        <th>       @MasterLocalizer["Strategy"]                  </th>
+
+
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach (var item in Model.IPD_PatentDetailsList.Where(x => x.PatentType == (short)IPDPatenDetailsType.PatientDetailsForAPI))
+                                    {
+                                        <tr>
+                                            <td> @item.BusinessUnitName              </td>
+                                            <td> @item.PatentNumber              </td>
+                                            <td> @item.Type                      </td>
+                                            <td> @item.OriginalExpiryDate        </td>
+                                            <td> @item.ExtensionExpiryDate       </td>
+                                            <td> @item.Comments                  </td>
+                                            <td> @item.Strategy                  </td>
+                                        </tr>
+                                        @* <tr>
+                                    <td>
+                                    @Html.TextBox(item.PatentNumber, new { @readonly = "readonly",@class = "form-control "})
+                                    </td>
+                                    </tr>*@
+                                    }
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+                @* ----------End -Patent Details-API------------*@
 
                 @* ----------Start -Save buttons-------------*@
                 <div class="row">

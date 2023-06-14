@@ -420,5 +420,27 @@ namespace EmcureNPD.Web.Controllers
             ViewBag.Access = objPermssion;
             return View();
         }
-    }
+        public IActionResult MasterExcipientRequirement()
+        {
+            int rolId = _helper.GetLoggedInRoleId();
+            RolePermissionModel objPermssion = UtilityHelper.GetCntrActionAccess((int)ModulePermissionEnum.MasterManagement, rolId);
+            if (objPermssion == null || !(objPermssion.View || objPermssion.Add || objPermssion.Edit || objPermssion.Delete))
+            {
+                return RedirectToAction("AccessRestriction", "Home");
+            }
+            ViewBag.Access = objPermssion;
+            return View();
+        }
+		public IActionResult PlantLine()
+		{
+			int rolId = _helper.GetLoggedInRoleId();
+			RolePermissionModel objPermssion = UtilityHelper.GetCntrActionAccess((int)ModulePermissionEnum.MasterManagement, rolId);
+			if (objPermssion == null || !(objPermssion.View || objPermssion.Add || objPermssion.Edit || objPermssion.Delete))
+			{
+				return RedirectToAction("AccessRestriction", "Home");
+			}
+			ViewBag.Access = objPermssion;
+			return View();
+		}
+	}
 }

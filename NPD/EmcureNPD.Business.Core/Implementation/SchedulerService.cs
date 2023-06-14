@@ -55,11 +55,11 @@ namespace EmcureNPD.Business.Core.Implementation
                     //}
                 }
             }
-          var AutoUpdatePIDFObj= await AutoUpdatePIDFStatus();
-            if (AutoUpdatePIDFObj != null)
-            {
-                _logMessage += AutoUpdatePIDFObj.LogMessage;
-            }
+          //var AutoUpdatePIDFObj= await AutoUpdatePIDFStatus();
+          //  if (AutoUpdatePIDFObj != null)
+          //  {
+          //      _logMessage += AutoUpdatePIDFObj.LogMessage;
+          //  }
             model.LogMessage = _logMessage;
             return model;
         }

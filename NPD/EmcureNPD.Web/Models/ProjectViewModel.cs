@@ -71,6 +71,9 @@ namespace EmcureNPD.Web.Models
         public string ProjectBudget { get; set; }
         public DateTime ProjectCompletionFilingDate { get; set; }
         public string BEStudies { get; set; }
+        public string Note_Remark { get; set; }
+        public string PlantName { get; set; }
+        public DateTime ProjectInitiationDate { get; set; }
     }
 
     public class CumulativePhaseWiseBudgetView
