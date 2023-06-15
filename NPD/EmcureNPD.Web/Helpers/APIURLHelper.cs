@@ -445,6 +445,7 @@ namespace EmcureNPD.Web.Helpers
         public static string GetAPICharterFormData = "api/API/GetAPICharterFormData";
         public static string InsertUpdateAPICharter = "api/API/InsertUpdateAPICharter";
         public static string GetIPDByPIDF = "api/API/GetIPDByPIDF";
+        public static string SaveAPIInterestedUser = "api/API/SaveAPIInterestedUser";
 
         #endregion API
 
@@ -457,7 +458,7 @@ namespace EmcureNPD.Web.Helpers
         #region Dashboard
 
         public static string GetAllDashboard = "api/Dashboard/FillDropdown";
-        public static string GetPIDFList = "api/Dashboard/GetPIDFByYearAndBusinessUnit";
+        public static string GetPIDFDashBoardData = "api/Dashboard/GetPIDFByYearAndBusinessUnit";
 
         #endregion Dashboard
 

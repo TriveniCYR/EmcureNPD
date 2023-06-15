@@ -75,7 +75,7 @@
                                     @Html.LabelFor(model => model.APIGroupLeader,@MasterLocalizer["APIGroupLeader"], new { @class = "control-label" })
                                 </td>
                                 <td>
-                                    @Html.TextBoxFor(model => model.APIGroupLeader, new { @class = "form-control" })
+                                    @Html.TextBoxFor(model => model.APIGroupLeader, new {@readonly = "readonly", @class = "form-control" })
                                     <label class="text-danger" id="valmsgAPIGroupLeader" style="display:contents"></label>
                                 </td>
                             </tr>

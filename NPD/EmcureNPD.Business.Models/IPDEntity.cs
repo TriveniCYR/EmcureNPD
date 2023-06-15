@@ -60,7 +60,7 @@ namespace EmcureNPD.Business.Models
         public DateTime? ModifyDate { get; set; }
         public int? ModifyBy { get; set; }
         public List<PIDF_IPD_PatentDetailsEntity> pidf_IPD_PatentDetailsEntities { get; set; }
-
+        public List<PIDF_IPD_PatentDetailsEntity> pidf_IPD_PatentDetailsEntitiesAPI { get; set; }
 
         public string ProjectName { get; set; }
         public List<MasterBusinessUnitEntity> MasterBusinessUnitEntities { get; set; }
@@ -93,6 +93,7 @@ namespace EmcureNPD.Business.Models
         //[Required(ErrorMessageResourceType = typeof(Validation), ErrorMessageResourceName = "Required")]
         [Display(Name = "Type")]
         public string Type { get; set; }
+        public int PatentType { get; set; }
 
         //[Required(ErrorMessageResourceType = typeof(Validation), ErrorMessageResourceName = "Required")]
         [DataType(DataType.Date, ErrorMessage = "Original Expiry Date")]

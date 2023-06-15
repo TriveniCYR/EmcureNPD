@@ -4,7 +4,6 @@ using Microsoft.EntityFrameworkCore.Metadata;
 using EmcureNPD.Data.DataAccess.Entity;
 using EmcureNPD.Utility;
 
-
 #nullable disable
 
 namespace EmcureNPD.Data.DataAccess.DataContext
@@ -119,6 +118,7 @@ namespace EmcureNPD.Data.DataAccess.DataContext
         public virtual DbSet<PidfPbfHeadWiseBudget> PidfPbfHeadWiseBudgets { get; set; }
         public virtual DbSet<PidfPbfMarketMapping> PidfPbfMarketMappings { get; set; }
         public virtual DbSet<PidfPbfPhaseWiseBudget> PidfPbfPhaseWiseBudgets { get; set; }
+        public virtual DbSet<PidfPbfReferenceProductDetail> PidfPbfReferenceProductDetails { get; set; }
         public virtual DbSet<PidfPbfRnDApirequirement> PidfPbfRnDApirequirements { get; set; }
         public virtual DbSet<PidfPbfRnDCapexMiscellaneousExpense> PidfPbfRnDCapexMiscellaneousExpenses { get; set; }
         public virtual DbSet<PidfPbfRnDExicipientPrototype> PidfPbfRnDExicipientPrototypes { get; set; }
@@ -146,8 +146,8 @@ namespace EmcureNPD.Data.DataAccess.DataContext
             if (!optionsBuilder.IsConfigured)
             {
 #warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see http://go.microsoft.com/fwlink/?LinkId=723263.
-				optionsBuilder.UseSqlServer(DatabaseConnection.NPDDatabaseConnection);
-			}
+                optionsBuilder.UseSqlServer(DatabaseConnection.NPDDatabaseConnection);
+            }
         }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
@@ -1518,11 +1518,6 @@ namespace EmcureNPD.Data.DataAccess.DataContext
                     .HasForeignKey(d => d.Pidfid)
                     .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("FK_PIDF_API_Master_PIDF");
-
-                entity.HasOne(d => d.User)
-                    .WithMany(p => p.PidfApiMasters)
-                    .HasForeignKey(d => d.UserId)
-                    .HasConstraintName("FK_PIDF_API_Master_Master_User");
             });
 
             modelBuilder.Entity<PidfApiRnD>(entity =>
@@ -2503,6 +2498,45 @@ namespace EmcureNPD.Data.DataAccess.DataContext
                     .HasForeignKey(d => d.PbfgeneralId)
                     .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("FK_PIDF_PBF_PhaseWiseBudget_PIDF_PBF_General");
+            });
+
+            modelBuilder.Entity<PidfPbfReferenceProductDetail>(entity =>
+            {
+                entity.ToTable("PIDF_PBF_Reference_Product_detail", "dbo");
+
+                entity.Property(e => e.PidfpbfreferenceProductdetailId).HasColumnName("PIDFPBFReferenceProductdetailId");
+
+                entity.Property(e => e.Pidfid).HasColumnName("PIDFID");
+
+                entity.Property(e => e.Rfdapplicant)
+                    .HasMaxLength(100)
+                    .HasColumnName("RFDApplicant");
+
+                entity.Property(e => e.Rfdbrand)
+                    .HasMaxLength(100)
+                    .HasColumnName("RFDBrand");
+
+                entity.Property(e => e.RfdcommercialBatchSize)
+                    .HasMaxLength(100)
+                    .HasColumnName("RFDCommercialBatchSize");
+
+                entity.Property(e => e.RfdcountryId).HasColumnName("RFDCountryId");
+
+                entity.Property(e => e.Rfdindication)
+                    .HasMaxLength(100)
+                    .HasColumnName("RFDIndication");
+
+                entity.Property(e => e.RfdinitialRevenuePotential)
+                    .HasMaxLength(100)
+                    .HasColumnName("RFDInitialRevenuePotential");
+
+                entity.Property(e => e.Rfdinnovators)
+                    .HasMaxLength(100)
+                    .HasColumnName("RFDInnovators");
+
+                entity.Property(e => e.RfdpriceDiscounting)
+                    .HasMaxLength(100)
+                    .HasColumnName("RFDPriceDiscounting");
             });
 
             modelBuilder.Entity<PidfPbfRnDApirequirement>(entity =>

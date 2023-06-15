@@ -2,6 +2,7 @@
 using EmcureNPD.API.Helpers.Response;
 using EmcureNPD.Business.Core.Interface;
 using EmcureNPD.Business.Models;
+using EmcureNPD.Utility.Utility;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -181,6 +182,26 @@ namespace EmcureNPD.API.Controllers.API
                     return _ObjectResponse.Create(oPIDFEntity, (Int32)HttpStatusCode.OK);
                 else
                     return _ObjectResponse.Create(null, (Int32)HttpStatusCode.BadRequest, "Record not found");
+            }
+            catch (Exception ex)
+            {
+                await _ExceptionService.LogException(ex);
+                return _ObjectResponse.Create(false, (Int32)HttpStatusCode.InternalServerError, Convert.ToString(ex.StackTrace));
+            }
+        }
+
+        [HttpPost]
+        [Route("SaveAPIInterestedUser")]
+        public async Task<IActionResult> SaveAPIInterestedUser(APIInterestedUserEntity oAPIInterestedUserObj)
+        {
+            try
+            {
+                int pidfid = int.Parse(UtilityHelper.Decreypt(oAPIInterestedUserObj.PIDFID)); 
+                DBOperation oResponse = await _APIService.AddUpdateAPIGroupLeader(oAPIInterestedUserObj, pidfid);
+                if (oResponse == DBOperation.Success)
+                    return _ObjectResponse.Create(true, (Int32)HttpStatusCode.OK, "Record Insert Successfully");
+                else
+                    return _ObjectResponse.Create(false, (Int32)HttpStatusCode.BadRequest, (oResponse == DBOperation.NotFound ? "Record not found" : "Bad request"));
             }
             catch (Exception ex)
             {

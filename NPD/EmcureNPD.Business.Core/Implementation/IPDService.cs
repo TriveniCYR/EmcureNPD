@@ -125,7 +125,15 @@ namespace EmcureNPD.Business.Core.Implementation
                             PidfIpdPatentDetail pidf_ipd_PDetail;
                             item.IPDID = objIPD.Ipdid;
                             pidf_ipd_PDetail = _mapperFactory.Get<PIDF_IPD_PatentDetailsEntity, PidfIpdPatentDetail>(item);
-
+                            pidf_ipd_PDetail.PatentType = (short?)IPDPatenDetailsType.PatenDetailsForFormulation;
+                            _ipdParentRepository.AddAsync(pidf_ipd_PDetail);
+                        }
+                        foreach (var item in entityIPD.pidf_IPD_PatentDetailsEntitiesAPI)
+                        {
+                            PidfIpdPatentDetail pidf_ipd_PDetail;
+                            item.IPDID = objIPD.Ipdid;
+                            pidf_ipd_PDetail = _mapperFactory.Get<PIDF_IPD_PatentDetailsEntity, PidfIpdPatentDetail>(item);
+                            pidf_ipd_PDetail.PatentType = (short?)IPDPatenDetailsType.PatientDetailsForAPI;
                             _ipdParentRepository.AddAsync(pidf_ipd_PDetail);
                         }
                         await _unitOfWork.SaveChangesAsync();
@@ -212,11 +220,26 @@ namespace EmcureNPD.Business.Core.Implementation
                         item.IPDID = id;
                         pidf_ipd_PDetail = _mapperFactory.Get<PIDF_IPD_PatentDetailsEntity, PidfIpdPatentDetail>(item);
                         pidf_ipd_PDetail.Ipdid = id;
+                        pidf_ipd_PDetail.PatentType = (short?)IPDPatenDetailsType.PatenDetailsForFormulation;
                         _ipdParentRepository.AddAsync(pidf_ipd_PDetail);
                     }
                     await _unitOfWork.SaveChangesAsync();
                 }
-
+                //For PAtent Details API
+                if (entityIPD.pidf_IPD_PatentDetailsEntitiesAPI != null && entityIPD.pidf_IPD_PatentDetailsEntitiesAPI.Count() > 0)
+                {
+                    oldIPDFEntity.pidf_IPD_PatentDetailsEntitiesAPI = new List<PIDF_IPD_PatentDetailsEntity>();
+                    foreach (var item in entityIPD.pidf_IPD_PatentDetailsEntitiesAPI)
+                    {
+                        PidfIpdPatentDetail pidf_ipd_PDetail;
+                        item.IPDID = id;
+                        pidf_ipd_PDetail = _mapperFactory.Get<PIDF_IPD_PatentDetailsEntity, PidfIpdPatentDetail>(item);
+                        pidf_ipd_PDetail.Ipdid = id;
+                        pidf_ipd_PDetail.PatentType = (short?)IPDPatenDetailsType.PatientDetailsForAPI;
+                        _ipdParentRepository.AddAsync(pidf_ipd_PDetail);
+                    }
+                    await _unitOfWork.SaveChangesAsync();
+                }
                 if (!string.IsNullOrEmpty(entityIPD.RegionIds))
                 {
                     var regionRemove = _ipdRegionRepository.GetAllQuery().Where(x => x.Ipdid == entityIPD.IPDID);
@@ -283,8 +306,8 @@ namespace EmcureNPD.Business.Core.Implementation
             if (objData != null && objData.Count > 0)
             {
                 data = _mapperFactory.Get<PidfIpd, IPDEntity>(objData[0]);
-                data.pidf_IPD_PatentDetailsEntities = _mapperFactory.GetList<PidfIpdPatentDetail, PIDF_IPD_PatentDetailsEntity>(_ipdParentRepository.GetAllQuery().Where(x => x.Ipdid == data.IPDID).ToList());
-
+                data.pidf_IPD_PatentDetailsEntities = _mapperFactory.GetList<PidfIpdPatentDetail, PIDF_IPD_PatentDetailsEntity>(_ipdParentRepository.GetAllQuery().Where(x => x.Ipdid == data.IPDID && x.PatentType == (short?)IPDPatenDetailsType.PatenDetailsForFormulation).ToList());
+                data.pidf_IPD_PatentDetailsEntitiesAPI = _mapperFactory.GetList<PidfIpdPatentDetail, PIDF_IPD_PatentDetailsEntity>(_ipdParentRepository.GetAllQuery().Where(x => x.Ipdid == data.IPDID && x.PatentType == (short?)IPDPatenDetailsType.PatientDetailsForAPI).ToList());
                 data.RegionIds = string.Join(",", _ipdRegionRepository.GetAllQuery().Where(x => x.Ipdid == data.IPDID).Select(x => x.RegionId.ToString()));
                 data.RegionId = data.RegionIds;
                 data.CountryIds = string.Join(",", _ipdCountryRepository.GetAllQuery().Where(x => x.Ipdid == data.IPDID).Select(x => x.CountryId.ToString()));

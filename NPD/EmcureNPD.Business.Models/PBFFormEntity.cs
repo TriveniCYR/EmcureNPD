@@ -63,6 +63,27 @@ namespace EmcureNPD.Business.Models
         public int RFDCountryId { get; set; }
         //[Required(ErrorMessageResourceType = typeof(Validation), ErrorMessageResourceName = "Required")]
         public string RFDIndication { get; set; }
+
+        //--------------------Reference detail------------------------------
+           [Display(Name = "RFDInnovators", ResourceType = typeof(Master))]
+        public string RFDInnovators { get; set; }
+
+        //[Required(ErrorMessageResourceType = typeof(Validation), ErrorMessageResourceName = "Required")]
+        [Display(Name = "RFDInitialRevenuePotential", ResourceType = typeof(Master))]
+        public string RFDInitialRevenuePotential { get; set; }
+
+        //[Required(ErrorMessage = "This field required with value within 0-100")]
+        [Display(Name = "RFDPriceDiscounting", ResourceType = typeof(Master))]
+        public string RFDPriceDiscounting { get; set; }
+
+        //[Required(ErrorMessageResourceType = typeof(Validation), ErrorMessageResourceName = "Required")]
+        [Display(Name = "RFDCommercialBatchSize", ResourceType = typeof(Master))]
+        public string RFDCommercialBatchSize { get; set; }
+        public bool IsActive { get; set; }
+        public int StatusId { get; set; }
+
+
+        //--------------------Reference detail------------------------------
         //General section 
         public long PBFGeneralId { get; set; }
         public int BusinessUnitId { get; set; }
@@ -180,6 +201,8 @@ namespace EmcureNPD.Business.Models
         public long BatchSizeId { get; set; }
         public double? ApirequirementMarketPrice { get; set; }
         public double? PlanSupportCostRsPerDay { get; set; }
+        public int? ProductTypeId_Tab { get; set; }
+        public int? PBFLine { get; set; }
         public double? ManHourRate { get; set; }
     }
     public class RNDBatchSize

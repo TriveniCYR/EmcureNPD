@@ -151,7 +151,7 @@
                 <div class="col-12">
                     <div class="card">
                         <div class="card-header bg-primary">
-                            <h3 class="card-title mb-0"><button type="button" class="btn btn-tool" data-card-widget="collapse">Patent Details</button></h3>
+                            <h3 class="card-title mb-0"><button type="button" class="btn btn-tool" data-card-widget="collapse">Patent Details for Formulation</button></h3>
                             <div class="card-tools">
                                 <button type="button" class="btn btn-tool" data-card-widget="collapse" title="Collapse">
                                     <i class="fas fa-minus"></i>
@@ -190,6 +190,7 @@
                                                             @Html.EditorFor(model => model.pidf_IPD_PatentDetailsEntities[i].PatentNumber, new { htmlAttributes = new { @autocomplete = "off", @class = "form-control checkbox-checked validateChildDetails",  @placeholder = @MasterLocalizer["PatentNumber"],@required="required" } })
                                                             @*@Html.ValidationMessageFor(model => model.pidf_IPD_PatentDetailsEntities[i].PatentNumber, "", new { @class = "text-danger" })*@
                                                         </div>
+                                                        @Html.HiddenFor(model=>model.pidf_IPD_PatentDetailsEntities[i].PatentType)
                                                     </div>
                                                 </td>
                                                 <td>
@@ -250,6 +251,113 @@
 
                 </div>
             </div>
+
+          @*  -------------------Patent API--------------------------*@
+            <div class="row">
+                <div class="col-12">
+                    <div class="card">
+                        <div class="card-header bg-primary">
+                            <h3 class="card-title mb-0"><button type="button" id="PatentAPI" class="btn btn-tool" data-card-widget="collapse">Patent Details for API</button></h3>
+                            <div class="card-tools">
+                                <button type="button" class="btn btn-tool" data-card-widget="collapse" title="Collapse">
+                                    <i class="fas fa-minus"></i>
+                                </button>
+                            </div>
+                        </div>
+                        <div class="card-body" style="display: block;">
+                            <table id="PIDFTableAPI" class="table table-bordered table-striped table-hover" style="width:100%">
+                                <thead>
+                                    <tr>
+                                        <th width="13%">@MasterLocalizer["Patent Number"] <span class="text-danger">*</span></th>
+                                        <th width="13%">@MasterLocalizer["Type"] <span class="text-danger">*</span></th>
+                                        <th width="15%">@SharedLocalizer["Original Expiry Date"] <span class="text-danger">*</span></th>
+                                        <th width="17%">@SharedLocalizer["Extension Expiry Date"] <span class="text-danger">*</span></th>
+                                        <th width="21%">@SharedLocalizer["Comments (Patent Specific)"] <span class="text-danger">*</span></th>
+                                        <th width="15%">@SharedLocalizer["Strategy"] <span class="text-danger">*</span></th>
+                                        <th width="6%" class="text-center">@SharedLocalizer["Action"]</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="parentBodyAPI">
+                                    @if (Model.pidf_IPD_PatentDetailsEntitiesAPI != null && Model.pidf_IPD_PatentDetailsEntitiesAPI.Count() > 0)
+                                    {
+                                        for (int i = 0; i < Model.pidf_IPD_PatentDetailsEntitiesAPI.Count(); i++)
+                                        {
+                                            <tr id="parentRowAPI_@i">
+                                                @*  <td style="display:none;">
+                                        <div class="">
+                                        <div class="form-group required">
+                                        @Html.EditorFor(model => model.pidf_IPD_PatentDetailsEntitiesAPI[i].PatentNumber, new { htmlAttributes = new { @autocomplete = "off",@readonly = true, @class = "form-control checkbox-checked", id = "pidf_IPD_PatentDetailsEntitiesAPI[" + i + "].PatentNumber", @placeholder = @MasterLocalizer["Patent Number"]} })
+                                        </div>
+                                        </div>
+                                        </td>*@
+                                                <td>
+                                                    <div class="">
+                                                        <div class="form-group required">
+                                                            @Html.EditorFor(model => model.pidf_IPD_PatentDetailsEntitiesAPI[i].PatentNumber, new { htmlAttributes = new { @autocomplete = "off", @class = "form-control checkbox-checked validateChildDetails",  @placeholder = @MasterLocalizer["PatentNumber"],@required="required" } })
+                                                            @*@Html.ValidationMessageFor(model => model.pidf_IPD_PatentDetailsEntitiesAPI[i].PatentNumber, "", new { @class = "text-danger" })*@
+                                                        </div>
+                                                        @Html.HiddenFor(model=>model.pidf_IPD_PatentDetailsEntitiesAPI[i].PatentType)
+                                                    </div>
+                                                </td>
+                                                <td>
+                                                    <div class="">
+                                                        <div class="form-group required">
+                                                            @Html.EditorFor(model => model.pidf_IPD_PatentDetailsEntitiesAPI[i].Type, new { htmlAttributes = new { @autocomplete = "off", @class = "form-control checkbox-checked validateChildDetails", id = "pidf_IPD_PatentDetailsEntitiesAPI[" + i + "].Type", @placeholder = @MasterLocalizer["Type"],@required="required" } })
+                                                            @*@Html.ValidationMessageFor(model => model.pidf_IPD_PatentDetailsEntitiesAPI[i].Type, "", new { @class = "text-danger", id = "pidf_IPD_PatentDetailsEntitiesAPI[" + i + "].ValidationType" })*@
+                                                        </div>
+                                                    </div>
+                                                </td>
+                                                <td>
+                                                    <div class="">
+                                                        <div class="form-group required">
+                                                            @Html.EditorFor(model => model.pidf_IPD_PatentDetailsEntitiesAPI[i].OriginalExpiryDate, new { htmlAttributes = new { @min=@dateRange, @autocomplete = "off", @class = "form-control checkbox-checked originalDate validateChildDetails", id = "pidf_IPD_PatentDetailsEntitiesAPI[" + i + "].OriginalExpiryDate", @placeholder = @MasterLocalizer["Original Expiry Date"],@required="required" } })
+                                                        </div>
+                                                    </div>
+                                                </td>
+                                                <td>
+                                                    <div class="">
+                                                        <div class="form-group required">
+                                                            @Html.EditorFor(model => model.pidf_IPD_PatentDetailsEntitiesAPI[i].ExtensionExpiryDate, new { htmlAttributes = new { @min=@dateRange, @autocomplete = "off", @class = "form-control checkbox-checked extendedDate validateChildDetails", id = "pidf_IPD_PatentDetailsEntitiesAPI[" + i + "].ExtensionExpiryDate", @placeholder = @MasterLocalizer["Extension Expiry Date"],@required="required" } })
+
+                                                        </div>
+                                                    </div>
+                                                </td>
+                                                <td>
+                                                    <div class="">
+                                                        <div class="form-group required">
+                                                            @Html.EditorFor(model => model.pidf_IPD_PatentDetailsEntitiesAPI[i].Comments, new { htmlAttributes = new { @autocomplete = "off", @class = "form-control checkbox-checked validateChildDetails", id = "pidf_IPD_PatentDetailsEntitiesAPI[" + i + "].Comments", @placeholder = @MasterLocalizer["Comments (Patent Specific)"],@required="required" } })
+                                                        </div>
+                                                    </div>
+                                                </td>
+                                                <td>
+                                                    <div class="">
+                                                        <div class="form-group required">
+                                                            @Html.EditorFor(model => model.pidf_IPD_PatentDetailsEntitiesAPI[i].Strategy, new { htmlAttributes = new { @autocomplete = "off", @class = "form-control checkbox-checked validateChildDetails", id = "pidf_IPD_PatentDetailsEntitiesAPI[" + i + "].Strategy", @placeholder = @MasterLocalizer["Strategy"],@required="required" } })
+                                                        </div>
+                                                    </div>
+                                                </td>
+                                                <td>
+                                                    <div class="col-md">
+                                                        <div class="form-group">
+
+                                                            <i class="fa-solid fa-circle-plus nav-icon text-success operationButton" id="addIconAPI_@i" onclick="addRowParentAPI(@i)"></i>
+
+                                                            <span><i class="fa-solid fa-trash nav-icon text-red apiDeleteIconAPI operationButton" id="deleteIconAPI_@i" onclick="removeRowParentAPI(@i, this)"></i></span>
+                                                            @Html.HiddenFor(model => model.pidf_IPD_PatentDetailsEntitiesAPI[i].PatentDetailsID, new { id = "pidf_IPD_PatentDetailsEntitiesAPI[" + i + "].PatentDetailsID"})
+                                                        </div>                                                       
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                        }
+                                    }
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+          @*  ----------------------------------------------*@
         </div>
     </div>
 

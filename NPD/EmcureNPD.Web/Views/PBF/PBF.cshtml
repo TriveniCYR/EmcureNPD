@@ -242,74 +242,6 @@
                 </div>
             </div>
 
-
-            <div class="row">
-                <div class="col-12">
-                    <div class="card">
-                        <div class="card-header bg-primary">
-                            <h3 class="card-title mb-0">
-
-                                <button type="button" class="btn btn-tool" data-card-widget="collapse">
-                                    Reference Product Detail
-                                </button>
-
-                            </h3>
-                            <div class="card-tools">
-                                <button type="button" class="btn btn-tool" data-card-widget="collapse" title="Collapse">
-                                    <i class="fas fa-minus"></i>
-                                </button>
-                            </div>
-                        </div>
-                        <div class="card-body">
-                            <div class="row">
-
-                                <div class="col-md-3">
-                                    <div class="form-group required">
-                                        @Html.LabelFor(model => model.BrandName,"Brand", new { @class = "control-label" })<span class="text-danger">*</span>
-                                        <input type="hidden" id="hdnBrandName" value="@Model.BrandName" />
-                                        @Html.TextBoxFor(model => model.BrandName, new {@class = "form-control customvalidateformcontrol", @placeholder = "Brand" ,@required="required"})
-                                        @Html.ValidationMessageFor(model => model.BrandName, "", new { @class = "text-danger" })
-
-                                    </div>
-                                </div>
-
-                                <div class="col-md-3">
-                                    <div class="form-group required">
-
-                                        @Html.LabelFor(model => model.RFDApplicant,"Applicant", new { @class = "control-label" })<span class="text-danger">*</span>
-                                        <input type="hidden" id="hdnRFDApplicant" value="@Model.RFDApplicant" />
-
-                                        @Html.TextBoxFor(model => model.RFDApplicant, new {@class = "form-control customvalidateformcontrol", @placeholder = "Applicant" ,@required="required"})
-                                        @Html.ValidationMessageFor(model => model.RFDApplicant, "", new { @class = "text-danger" })
-
-                                    </div>
-                                </div>
-                                <div class="col-md-3">
-                                    <div class="form-group required">
-                                        @Html.LabelFor(model => model.RFDCountryId, "Country", new { @class = "control-label" })<span class="text-danger">*</span>
-                                        <input type="hidden" id="hdnPbfRFDCountryId" value="@Model.RFDCountryId" />
-                                        <select id="PbfRFDCountryId" name="RFDCountryId" class="form-control readOnlyUpdate customvalidateformcontrol" required></select>
-                                        @Html.ValidationMessageFor(model => model.RFDCountryId, "", new { @class = "text-danger" })
-
-                                    </div>
-                                </div>
-                                <div class="col-md-3">
-                                    <div class="form-group required">
-                                        @Html.LabelFor(model => model.RFDIndication,"Indication", new { @class = "control-label" })<span class="text-danger">*</span>
-                                        <input type="hidden" id="hdnRFDIndication" value="@Model.RFDIndication" />
-
-                                        @Html.TextBoxFor(model => model.RFDIndication, new {@class = "form-control customvalidateformcontrol", @placeholder = "Indication",@required="required" })
-                                        @Html.ValidationMessageFor(model => model.RFDIndication, "", new { @class = "text-danger" })
-
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                </div>
-            </div>
-
             <div id="divbusinessunit" class="card card-primary card-tabs">
                 <input type="hidden" id="PIDFBusinessUnitId" value="@Model.BusinessUnitId" />
                 <input type="hidden" id="PIDFId" value="@Model.Pidfid" />
@@ -442,7 +374,107 @@
                                     </div>
 
                                 </div>*@
+                              @*  --------------Start--Reference Product Detail-------------------------------------*@
+                                 <div class="row">
+                <div class="col-12">
+                    <div class="card">
+                        <div class="card-header bg-primary">
+                            <h3 class="card-title mb-0">
 
+                                <button type="button" class="btn btn-tool" data-card-widget="collapse">
+                                    Reference Product Detail
+                                </button>
+
+                            </h3>
+                            <div class="card-tools">
+                                <button type="button" class="btn btn-tool" data-card-widget="collapse" title="Collapse">
+                                    <i class="fas fa-minus"></i>
+                                </button>
+                            </div>
+                        </div>
+                        <div class="card-body">
+                            <div class="row">
+                                <div class="col-md-3">
+                                    <div class="form-group required">
+                                        @Html.LabelFor(model => model.BrandName,"Brand", new { @class = "control-label" })<span class="text-danger">*</span>
+                                        <input type="hidden" id="hdnBrandName" value="@Model.BrandName" />
+                                        @Html.TextBoxFor(model => model.BrandName, new {@class = "form-control customvalidateformcontrol", @placeholder = "Brand" ,@required="required"})
+                                        @Html.ValidationMessageFor(model => model.BrandName, "", new { @class = "text-danger" })
+
+                                    </div>
+                                </div>
+
+                                <div class="col-md-3">
+                                    <div class="form-group required">
+
+                                        @Html.LabelFor(model => model.RFDApplicant,"Applicant", new { @class = "control-label" })<span class="text-danger">*</span>
+                                        <input type="hidden" id="hdnRFDApplicant" value="@Model.RFDApplicant" />
+
+                                        @Html.TextBoxFor(model => model.RFDApplicant, new {@class = "form-control customvalidateformcontrol", @placeholder = "Applicant" ,@required="required"})
+                                        @Html.ValidationMessageFor(model => model.RFDApplicant, "", new { @class = "text-danger" })
+
+                                    </div>
+                                </div>
+                                <div class="col-md-3">
+                                    <div class="form-group required">
+                                        @Html.LabelFor(model => model.RFDCountryId, "Country", new { @class = "control-label" })<span class="text-danger">*</span>
+                                        <input type="hidden" id="hdnPbfRFDCountryId" value="@Model.RFDCountryId" />
+                                        <select id="PbfRFDCountryId" name="RFDCountryId" class="form-control readOnlyUpdate customvalidateformcontrol" required></select>
+                                        @Html.ValidationMessageFor(model => model.RFDCountryId, "", new { @class = "text-danger" })
+
+                                    </div>
+                                </div>
+                                <div class="col-md-3">
+                                    <div class="form-group required">
+                                        @Html.LabelFor(model => model.RFDIndication,"Indication", new { @class = "control-label" })<span class="text-danger">*</span>
+                                        <input type="hidden" id="hdnRFDIndication" value="@Model.RFDIndication" />
+
+                                        @Html.TextBoxFor(model => model.RFDIndication, new {@class = "form-control customvalidateformcontrol", @placeholder = "Indication",@required="required" })
+                                        @Html.ValidationMessageFor(model => model.RFDIndication, "", new { @class = "text-danger" })
+
+                                    </div>
+                                </div>
+                            </div>
+                             <div class="row">
+                                  <div class="col-md-3">
+                                      <div class="form-group required">
+                                          @Html.LabelFor(model => model.RFDInnovators, new { @class = "control-label" }) <span class="text-danger">*</span>
+                                          <input type="hidden" id="hdnRFDInnovators" value="@Model.RFDInnovators" />
+                                          @Html.TextBoxFor(model => model.RFDInnovators, new { @class = "form-control  customvalidateformcontrol", @placeholder = @MasterLocalizer["RFDInnovators"],@maxlength="100",@required="required"})
+                                          @Html.ValidationMessageFor(model => model.RFDInnovators, "", new { @class = "text-danger" })
+                                      </div>
+                                  </div>
+                                  <div class="col-md-3">
+                                      <div class="form-group required">
+                                          @Html.LabelFor(model => model.RFDInitialRevenuePotential, new { @class = "control-label" }) <span class="text-danger">*</span>
+                                          @Html.TextBoxFor(model => model.RFDInitialRevenuePotential, new { @autocomplete = "off", @class = "form-control checkbox-checked customvalidateformcontrol", @placeholder = @MasterLocalizer["RFDInitialRevenuePotential"],@maxlength="100",@required="required" })
+                                          @Html.ValidationMessageFor(model => model.RFDInitialRevenuePotential, "", new { @class = "text-danger" })
+                                      </div>
+                                  </div>
+
+                                  <div class="col-md-3">
+                                      <div class="form-group required">
+                                          @Html.LabelFor(model => model.RFDPriceDiscounting, new { @class = "control-label" }) <span class="text-danger">*</span>
+                                          @Html.TextBoxFor(model => model.RFDPriceDiscounting, new { @autocomplete = "off",@type="number", @class = "form-control checkbox-checked customvalidateformcontrol", @placeholder = @MasterLocalizer["RFDPriceDiscounting"],@maxlength="100",@required="required" })
+                                          @Html.ValidationMessageFor(model => model.RFDPriceDiscounting,"", new { @class = "text-danger" })
+                                      </div>
+                                  </div>
+
+                                  <div class="col-md-3">
+                                      <div class="form-group required">
+                                          @Html.LabelFor(model => model.RFDCommercialBatchSize, new { @class = "control-label" }) <span class="text-danger">*</span>
+                                                            @Html.TextBoxFor(model => model.RFDCommercialBatchSize,  new { @autocomplete = "off", @class = "form-control checkbox-checked customvalidateformcontrol", @placeholder = @MasterLocalizer["RFDCommercialBatchSize"],@maxlength="100",@required="required" })
+                                          @Html.ValidationMessageFor(model => model.RFDCommercialBatchSize, "", new { @class = "text-danger" })
+                                      </div>
+                                  </div>
+
+                          </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+                              @*  --------------End--Reference Product Detail-------------------------------------*@
                                 @*  Total Expenses*@
                                 <div class="col-12">
                                     <div class="card">
@@ -732,6 +764,21 @@
                                                     </div>
                                                     <div class="card-body pbftables">
                                                         <div class="row">
+                                                              <div class="col-md-3">
+                                                                 <div class="form-group required">
+                                                                    @Html.LabelFor(model => model.RNDMasterEntities.ProductTypeId_Tab, "Product Type", new { @class = "control-label" })<span class="text-danger">*</span>
+                                                                     <input type="hidden" id="hdnProductTypeId_Tab" />
+                                                                    <select id="ProductTypeId_Tab" name="ProductTypeId_Tab" class="form-control readOnlyUpdate customvalidateformcontrol ProductTypeId_Tab" required></select>
+                                                                     @Html.ValidationMessageFor(model => model.RNDMasterEntities.ProductTypeId_Tab, "", new { @class = "text-danger" })
+                                                                 </div>
+                                                             </div>
+                                                              <div class="col-md-3">
+                                                                 <div class="form-group required">
+                                                                    @Html.LabelFor(model => model.RNDMasterEntities.PBFLine, "Line", new { @class = "control-label" })<span class="text-danger">*</span>                                                                     
+                                                                    <select id="PBFLine" name="PBFLine" class="form-control readOnlyUpdate customvalidateformcontrol PBFLine" required></select>
+                                                                    @Html.ValidationMessageFor(model => model.RNDMasterEntities.PBFLine, "", new { @class = "text-danger" })
+                                                                 </div>
+                                                             </div>
                                                             <div class="col-md-3">
                                                                 <div class="form-group required">
                                                                     @Html.LabelFor(model => model.RNDMasterEntities.PlanSupportCostRsPerDay, "Plant Utilization rate Rs/Day", new { @class = "control-label" })
