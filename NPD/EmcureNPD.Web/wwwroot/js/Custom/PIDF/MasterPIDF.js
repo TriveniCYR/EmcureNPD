@@ -322,6 +322,12 @@ function validateDynamicControldDetails() {
     $('input[name$="Strength"]').each(function () {
         validatecontrols(this);
     });
+    $('input[name$="Imsvalue"]').each(function () {
+        validatecontrols(this);
+    });
+    $('input[name$="Imsvolume"]').each(function () {
+        validatecontrols(this);
+    });
     $('select[name$="ApisourcingId"]').each(function () {
         validatecontrols(this);
     });

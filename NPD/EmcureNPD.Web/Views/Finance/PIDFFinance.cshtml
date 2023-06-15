@@ -118,13 +118,16 @@
 			</div>
 					<div class="row">
 						<div class="col-md-3">
-							<div class ="form-group required">
+							<div class="form-group required">
 								<label class="control-label">Dosage Form<span style="color:red;">*</span></label>
+								 <div id="DvDosageFrom">
 							@Html.DropDownListFor(model => model.DosageFrom,
 							new List<SelectListItem> { new SelectListItem { Value = "0", Text = "Plese Select DosageFrom"} },new { @class="form-control readOnlyUpdate",@required="required"})
+
                                 <div class="invalid-feedback">
                                 Please select Dosage Form.
                        </div>
+								</div>
                        <div class="valid-feedback">
                        Dosage Form Looks good!
                        </div>

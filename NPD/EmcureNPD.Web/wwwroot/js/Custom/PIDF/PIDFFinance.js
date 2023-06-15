@@ -894,13 +894,22 @@ $(el).focusout(function () {
                else if ($("select#Currency").val() == "") {
                    event.preventDefault()
                    event.stopPropagation()
-                   toastr.error("please select currency", "Required");
+                  // toastr.error("please select currency", "Required");
+                   $("select#Currency").siblings(".select2-container").css('border', '0.5px solid red');
+                   $("select#Currency").focus();
                }
-               else if ($("select#DosageFrom.form-control.readOnlyUpdate").val() == 0) {
-                   event.preventDefault()
-                   event.stopPropagation()
-                   toastr.error("please select DosageFrom", "Required");
+               else if ($("select#Currency").val() != "") {
+                   $("select#Currency").siblings(".select2-container").css('border', '0px');
                }
+                if ($("select#DosageFrom.form-control.readOnlyUpdate").val() == 0) {
+                    $("#DvDosageFrom").css("border", "0.5px solid red");
+                    $("#select#DosageFrom.form-control.readOnlyUpdate").focus();
+                    event.preventDefault()
+                    event.stopPropagation()
+                    //toastr.error("please select DosageFrom", "Required");
+
+               }
+               
                $(".valid-feedback").hide();
                form.classList.add('was-validated')
            }, false)
@@ -939,4 +948,6 @@ function GetBatchSizeCostingTRValues() {
     });
     return Arr_FinanceTable_tr;
 }
+
+
 
