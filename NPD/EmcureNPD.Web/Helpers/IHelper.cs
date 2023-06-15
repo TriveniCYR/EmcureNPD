@@ -13,5 +13,7 @@ namespace EmcureNPD.Web.Helpers
 
         int GetLoggedInRoleId();
         void LogExceptions(Exception ex);
-    }
+        bool _isEmptyOrInvalid(string token, DateTime VallidTo);
+
+	}
 }

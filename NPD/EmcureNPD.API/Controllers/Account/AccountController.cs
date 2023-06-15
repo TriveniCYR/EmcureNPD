@@ -25,18 +25,20 @@ namespace EmcureNPD.API.Controllers.Account
         private readonly IMasterUserService _MasterUserService;
         private readonly IStringLocalizer<Errors> _stringLocalizerError;
         private readonly IExceptionService _ExceptionService;
+        private readonly ISessionManager _sessionManager;
 
-        #endregion Properties
+		#endregion Properties
 
-        #region Constructor
+		#region Constructor
 
-        public AccountController(IConfiguration configuration, IResponseHandler<dynamic> ObjectResponse, IMasterUserService MasterUserService, IStringLocalizer<Errors> stringLocalizerError, IExceptionService exceptionService)
+		public AccountController(IConfiguration configuration, IResponseHandler<dynamic> ObjectResponse, IMasterUserService MasterUserService, IStringLocalizer<Errors> stringLocalizerError, IExceptionService exceptionService, ISessionManager sessionManager)
         {
             _configuration = configuration;
             _ObjectResponse = ObjectResponse;
             _MasterUserService = MasterUserService;
             _stringLocalizerError = stringLocalizerError;
             _ExceptionService = exceptionService;
+            _sessionManager = sessionManager;
         }
 
         #endregion Constructor
@@ -69,8 +71,16 @@ namespace EmcureNPD.API.Controllers.Account
 
                     var userEntity = JwtAuthenticationServiceConfig.ValidateToken(_User, _configuration["jwt:audience"].ToString(),
                         _configuration["jwt:issuer"].ToString(), Guid.NewGuid(), DateTime.Now.AddMinutes(expMinutes), _configuration["jwt:secretKey"]);
+                    
+                //   SessionManagerEntity model= new SessionManagerEntity();
+                //   model.UserId = userEntity.UserId;
+                //   model.UserToken = userEntity.UserToken;
+                //   model.TokenIssuedAt = DateTime.Now;
+                //   model.VallidTo = userEntity.VallidTo;
+                //   model.Email = userEntity.Email;
+                // await  _sessionManager.AddUpdateSession(model);
 
-                    return _ObjectResponse.Create(userEntity, (Int32)HttpStatusCode.OK);
+					return _ObjectResponse.Create(userEntity, (Int32)HttpStatusCode.OK);
                 }
                 else
                     return _ObjectResponse.Create(string.Empty, (Int32)HttpStatusCode.Unauthorized, _stringLocalizerError["LoinFailed"]);
@@ -176,7 +186,25 @@ namespace EmcureNPD.API.Controllers.Account
                 return _ObjectResponse.Create(false, (Int32)HttpStatusCode.InternalServerError, Convert.ToString(ex.StackTrace));
             }
         }
-
-        #endregion API Methods
-    }
+		//[AuthorizeAttribute]
+		[AllowAnonymous]
+		[HttpGet, Route("ValidateToken/{UserId}")]
+		public async Task<IActionResult> ValidateToken(int UserId)
+		{
+			try
+			{
+				var oToken = await _sessionManager.ValidateActiveToken(UserId);
+				if (oToken != null)
+					return _ObjectResponse.Create(oToken, (Int32)HttpStatusCode.OK);
+				else
+					return _ObjectResponse.Create(null, (Int32)HttpStatusCode.BadRequest, "No Records found");
+			}
+			catch (Exception ex)
+			{
+				await _ExceptionService.LogException(ex);
+				return _ObjectResponse.Create(false, (Int32)HttpStatusCode.InternalServerError, Convert.ToString(ex.StackTrace));
+			}
+		}
+		#endregion API Methods
+	}
 }
