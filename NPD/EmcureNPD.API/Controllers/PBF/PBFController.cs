@@ -1,6 +1,7 @@
 ﻿using EmcureNPD.API.Filters;
 using EmcureNPD.API.Helpers.Response;
 using EmcureNPD.Business.Core.Interface;
+using EmcureNPD.Business.Core.ServiceImplementations;
 using EmcureNPD.Business.Models;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
@@ -99,6 +100,20 @@ namespace EmcureNPD.API.Controllers.PBF
             catch (Exception ex)
             {
                 await _ExceptionService.LogException(ex);
+                return _ObjectResponse.Create(false, (Int32)HttpStatusCode.InternalServerError, Convert.ToString(ex.StackTrace));
+            }
+        }
+
+        [HttpGet("GetLineByPlantId/{id}")]
+        public async Task<IActionResult> GetLineByPlantId([FromRoute] int id)
+        {
+            try
+            {
+                var oPlantLineEntity = await _PBFService.GetLineByPlantId(id); 
+                return _ObjectResponse.Create(oPlantLineEntity, (Int32)HttpStatusCode.OK);                
+            }
+            catch (Exception ex)
+            {
                 return _ObjectResponse.Create(false, (Int32)HttpStatusCode.InternalServerError, Convert.ToString(ex.StackTrace));
             }
         }

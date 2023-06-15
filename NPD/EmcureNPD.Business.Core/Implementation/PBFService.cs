@@ -50,7 +50,7 @@ namespace EmcureNPD.Business.Core.Implementation
         private IRepository<PidfPbfRnDManPowerCost> _pidfPbfRndPidfPbfRnDManPowerCostRepository { get; set; }
         private IRepository<PidfPbfHeadWiseBudget> _pidfPbfHeadWiseBudgetRepository { get; set; }
         private IRepository<PidfPbfPhaseWiseBudget> _pidfPbfPhaseWiseBudgetRepository { get; set; }
-
+        private IRepository<MasterPlantLine> _MasterPlantLineRepository { get; set; }
 
 
         public PBFService(IUnitOfWork unitOfWork, IMapperFactory mapperFactory, INotificationService notificationService, IMasterAuditLogService auditLogService, 
@@ -67,6 +67,7 @@ namespace EmcureNPD.Business.Core.Implementation
             _repositoryPidfPbfReferenceProductDetail = _unitOfWork.GetRepository<PidfPbfReferenceProductDetail>();
             _repository = _unitOfWork.GetRepository<Pidf>();
             _pbfRepository = _unitOfWork.GetRepository<PidfPbf>();
+            _MasterPlantLineRepository = _unitOfWork.GetRepository<MasterPlantLine>();
             _pidfPbfAnalyticalRepository = _unitOfWork.GetRepository<PidfPbfAnalytical>();
             _PidfPbfAnalyticalAmvcostRepository = _unitOfWork.GetRepository<PidfPbfAnalyticalAmvcost>();
             _pidfPbfClinicalRepository = _unitOfWork.GetRepository<PidfPbfClinical>();
@@ -260,6 +261,14 @@ namespace EmcureNPD.Business.Core.Implementation
 
             return DropdownObjects;
         }
+
+
+        public async Task<List<MasterPlantLineEntity>> GetLineByPlantId(int id)
+        {
+            var dbObj = await _MasterPlantLineRepository.GetAllAsync(x => x.PlantId == id);
+            return _mapperFactory.GetList<MasterPlantLine,MasterPlantLineEntity>(dbObj.ToList());
+        }
+
 
         #region Private Methods
 

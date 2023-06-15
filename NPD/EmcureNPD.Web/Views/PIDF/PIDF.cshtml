@@ -464,37 +464,39 @@
                                     @Html.ValidationMessageFor(model => model.RFDCommercialBatchSize, "", new { @class = "text-danger" })
                                 </div>
                             </div>
-                            <div style="display: none;">
-                                <div class="col-md-3">
-                                    <div class="form-group required">
-                                        @Html.LabelFor(model => model.StatusId, new { @class = "control-label" })
-                                        @Html.EditorFor(model => model.StatusId, new { htmlAttributes = new { @autocomplete = "off", @class = "form-control checkbox-checked", @placeholder = @MasterLocalizer["StatusId"] } })
-                                        @Html.ValidationMessageFor(model => model.StatusId, "", new { @class = "text-danger" })
-                                    </div>
-                                </div>
-
-                                <div class="col-md-3">
-                                    <div class="form-group required">
-                                        @Html.LabelFor(model => model.LastStatusId, new { @class = "control-label" })
-                                        @Html.EditorFor(model => model.LastStatusId, new { htmlAttributes = new { @autocomplete = "off", @class = "form-control checkbox-checked", @placeholder = @MasterLocalizer["LastStatusId"] } })
-                                        @Html.ValidationMessageFor(model => model.LastStatusId, "", new { @class = "text-danger" })
-                                    </div>
-                                </div>
-
-                                <div class="col-md-3">
-                                    <div class="form-group required">
-                                        @Html.LabelFor(model => model.IsActive, new { @class = "control-label" })
-                                        @Html.EditorFor(model => model.IsActive, new { htmlAttributes = new { @autocomplete = "off", @class = "form-control checkbox-checked", @placeholder = @MasterLocalizer["IsActive"] } })
-                                        @Html.ValidationMessageFor(model => model.IsActive, "", new { @class = "text-danger" })
-                                    </div>
-                                </div>
-                            </div>
+                           
                         </div>
                     </div>
                 </div>
 
             </div>
         </div>*@
+
+        <div style="display: none;">
+            <div class="col-md-3">
+                <div class="form-group required">
+                    @Html.LabelFor(model => model.StatusId, new { @class = "control-label" })
+                    @Html.EditorFor(model => model.StatusId, new { htmlAttributes = new { @autocomplete = "off", @class = "form-control checkbox-checked", @placeholder = @MasterLocalizer["StatusId"] } })
+                    @Html.ValidationMessageFor(model => model.StatusId, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+            <div class="col-md-3">
+                <div class="form-group required">
+                    @Html.LabelFor(model => model.LastStatusId, new { @class = "control-label" })
+                    @Html.EditorFor(model => model.LastStatusId, new { htmlAttributes = new { @autocomplete = "off", @class = "form-control checkbox-checked", @placeholder = @MasterLocalizer["LastStatusId"] } })
+                    @Html.ValidationMessageFor(model => model.LastStatusId, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+            <div class="col-md-3">
+                <div class="form-group required">
+                    @Html.LabelFor(model => model.IsActive, new { @class = "control-label" })
+                    @Html.EditorFor(model => model.IsActive, new { htmlAttributes = new { @autocomplete = "off", @class = "form-control checkbox-checked", @placeholder = @MasterLocalizer["IsActive"] } })
+                    @Html.ValidationMessageFor(model => model.IsActive, "", new { @class = "text-danger" })
+                </div>
+            </div>
+        </div>
          @* -----End Reference Product Detail------------------------------*@
         <div class="row">
             <div class="col-12">

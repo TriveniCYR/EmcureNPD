@@ -12,6 +12,7 @@ var _currencySymbol = '₹';
 var _firstLoad = true;
 var _oralName = '';
 var isValidPBFForm = true;
+var PBFLinesArr = [];
 $(document).ready(function () {
     try {
         _PIDFPBFId = parseInt($('#hdnPIDFPBFId').val());
@@ -759,6 +760,7 @@ function GetPBFDropdownSuccess(data) {
             $('#BERequirementId').append(_emptyOption);
             $('#PbfDosageFormId').append(_emptyOption);
             $('#PlantId').append(_emptyOption);
+            $('#ProductTypeId_Tab').append(_emptyOption);
             $('#WorkflowId').append(_emptyOption);
             $('#FillingTypeId').append(_emptyOption);
             $('#PbfFormRNDDivisionId').append(_emptyOption);
@@ -778,6 +780,9 @@ function GetPBFDropdownSuccess(data) {
             });
             $(data.MasterPlant).each(function (index, item) {
                 $('#PlantId').append('<option value="' + item.plantId + '">' + item.plantNameName + '</option>');
+            });
+            $(data.MasterPlant).each(function (index, item) {
+                $('#ProductTypeId_Tab').append('<option value="' + item.plantId + '">' + item.plantNameName + '</option>');
             });
             $(data.MasterWorkflow).each(function (index, item) {
                 $('#WorkflowId').append('<option value="' + item.workflowId + '">' + item.workflowName + '</option>');
@@ -846,6 +851,7 @@ function GetPBFDropdownSuccess(data) {
                     $('#BERequirementId').val($('#hdnBERequirementId').val() == 0 ? "" : $('#hdnBERequirementId').val());
                     $('#PbfDosageFormId').val($('#hdnPbfDosageFormId').val() == 0 ? "" : $('#hdnPbfDosageFormId').val());
                     $('#PlantId').val($('#hdnPlantId').val() == 0 ? "" : $('#hdnPlantId').val());
+                    $('#ProductTypeId_Tab').val($('#PlantId').val());
                     $('#WorkflowId').val($('#hdnWorkflowId').val() == 0 ? "" : $('#hdnWorkflowId').val());
                     $('#FillingTypeId').val($('#hdnFillingTypeId').val() == 0 ? "" : $('#hdnFillingTypeId').val());
                     $('#PbfFormRNDDivisionId').val($('#hdnPbfFormRNDDivisionId').val() == 0 ? "" : $('#hdnPbfFormRNDDivisionId').val());
@@ -878,6 +884,52 @@ function GetPBFDropdownSuccess(data) {
     }
 }
 function GetPBFDropdownError(x, y, z) {
+    toastr.error(ErrorMessage);
+}
+$('#PlantId').on('change', function () {
+    $('#ProductTypeId_Tab').val($('#PlantId').val()).trigger("change");
+});
+$('#PBFLine').on('change', function () {
+    var SelectedLineid = parseInt($('#PBFLine').val());
+   
+    var filterPlantLine = $.grep(PBFLinesArr, function (n) {
+            return n.lineId === SelectedLineid
+    }); 
+    if (filterPlantLine != undefined && filterPlantLine.length>0)
+    $('#RNDMasterEntities_PlanSupportCostRsPerDay').val(filterPlantLine[0].lineCost);
+    
+}); 
+$('#ProductTypeId_Tab').change(function (e) {
+        if ($(this).val() != "") {
+            if (parseInt($(this).val()) > 0) {
+                ajaxServiceMethod($('#hdnBaseURL').val() + getLineByPlantId + "/" + parseInt($(this).val()), 'GET', getLineByPlantIdSuccess, getLineByPlantIdError);
+            }
+        }
+    });
+function getLineByPlantIdSuccess(data) {
+    try {
+        $('#PBFLine').find('option').remove()
+        PBFLinesArr = data._object;
+        if (data._object != null && data._object.length > 0) {
+            var _emptyOption = '<option value="">-- Select --</option>';
+            $('#PBFLine').append(_emptyOption);
+            $(data._object).each(function (index, item) {
+                $('#PBFLine').append('<option value="' + item.lineId + '">' + item.lineName + '</option>');
+            });
+
+            try {
+                if (_PIDFId > 0) {
+                  //  $('#PBFLine').val($('#hdnRFDCountryId').val());
+                }
+            } catch (e) {   
+            }
+        }
+    }
+    catch (e) {
+        toastr.error(ErrorMessage);
+    }
+}
+function getLineByPlantIdError(x, y, z) {
     toastr.error(ErrorMessage);
 }
 function BindReferenceProductDetails(data) {

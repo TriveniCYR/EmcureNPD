@@ -1,4 +1,5 @@
 ﻿using EmcureNPD.Business.Models;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using static EmcureNPD.Utility.Enums.GeneralEnum;
 
@@ -30,5 +31,6 @@ namespace EmcureNPD.Business.Core.Interface
         Task<PBFFormEntity> GetPbfFormDetails(long pidfId, int buid, int? strengthid);
 
         Task<dynamic> PBFAllTabDetails(int PIDFId, int BUId);
+        Task<List<MasterPlantLineEntity>> GetLineByPlantId(int id);
     }
 }
