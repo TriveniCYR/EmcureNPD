@@ -57,6 +57,15 @@ namespace EmcureNPD.Web.Controllers
             PIDFEntity pidf;
             try
             {
+                if (!IsViewMode)
+                {
+                    if(!_helper.IsAccessToPIDF((int)ModuleEnum.PIDF, PIDFId))
+                    {
+                        return RedirectToAction("PIDFList","PIDF",new { screenId =1 });
+                    }
+                }
+
+
                 int rolId = _helper.GetLoggedInRoleId();
                 RolePermissionModel objPermssion = UtilityHelper.GetCntrActionAccess((int)ModulePermissionEnum.PIDF, rolId);
                 ViewBag.Access = objPermssion;

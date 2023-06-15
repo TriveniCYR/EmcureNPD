@@ -67,9 +67,7 @@
                 <div class="col-md-4">
                     <div class="form-group required">
                         @Html.LabelFor(model => model.Interested, "Interested", new { @class = "control-label" })
-
-
-
+                         <span class="text-danger">*</span>
                         @Html.RadioButtonFor(model => model.Interested, true, new { @class="IsInterestedYes" }) @Html.LabelFor(model => model.Interested, "Yes")
                         @Html.RadioButtonFor(model => model.Interested, false, new { @class="IsInterestedNo" }) @Html.Label("No")
                         <br />

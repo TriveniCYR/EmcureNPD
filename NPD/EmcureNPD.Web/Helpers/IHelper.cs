@@ -1,4 +1,5 @@
-﻿using System;
+﻿using EmcureNPD.Data.DataAccess.Entity;
+using System;
 namespace EmcureNPD.Web.Helpers
 {
     public interface IHelper
@@ -14,6 +15,8 @@ namespace EmcureNPD.Web.Helpers
         int GetLoggedInRoleId();
         void LogExceptions(Exception ex);
         bool _isEmptyOrInvalid(string token, DateTime VallidTo);
+        bool IsAccessToPIDF(int ModuleId, int? PidfId);
 
-	}
+
+    }
 }
