@@ -753,7 +753,7 @@ function GetPBFDropdownSuccess(data) {
             $.each(data.MasterBusinessUnit, function (index, object) {
                 $('#MarketMappingId').append($('<option>').text(object.businessUnitName).attr('value', object.businessUnitId));
             });
-            $('#MarketMappingId').select2({ dropdownAdapter: $.fn.select2.amd.require('select2/selectAllAdapter') });
+            $('#MarketMappingId').select2({ dropdownAdapter: $.fn.select2.amd.require('select2/selectAllAdapter'), placeholder: "Select Market..", });
 
             var _emptyOption = '<option value="">-- Select --</option>';
             $('#BERequirementId').append(_emptyOption);
