@@ -97,16 +97,7 @@ function ValidateMainForm() {
         else {
             $('#valmsg' + kv).text('').hide();
         }
-    });
-    let IsInterestedYes = $('.IsInterestedYes').prop('checked');
-    let IsInterestedNo = $('.IsInterestedNo').prop('checked');
-    if (!IsInterestedYes && !IsInterestedNo) {
-        $('#valmsgInterested').text('Required').show();
-        ArrofInvalid.push('Interested');
-    }
-    else {
-        $('#valmsgInterested').text('').show();       
-    }
+    });  
 
     var status = (ArrofInvalid.length == 0) ? true : false;
     if (!status) { toastr.error('Some fields are missing !'); }
@@ -122,6 +113,23 @@ function ValidateMainForm() {
     }
     return status;
 }
+function ValidateIsInterested() {
+    var status = true;
+    let IsInterestedYes = $('.IsInterestedYes').prop('checked');
+    let IsInterestedNo = $('.IsInterestedNo').prop('checked');
+    if (!IsInterestedYes && !IsInterestedNo) {
+        $('#valmsgInterested').text('Required').show();
+        $('.IsInterestedYes').focus();
+        status = false;
+        toastr.error('Please Select Is Interested ! ');
+    }
+    else {
+        $('#valmsgInterested').text('').show();
+        status = true;
+    }
+    return status;
+}
+
 function ValidateBU_Strength() {
     var status = true;
     var valMsg = '';
@@ -160,7 +168,8 @@ function ResetYearFormValues() {
 }
 
 $('#mainDivCommercial').find("#btnSubmit").click(function () {
-    if (ValidateBU_Strength()) {
+    let InterestedStatus = ValidateIsInterested();
+    if (InterestedStatus && ValidateBU_Strength()) {
         if (ArrMainCommercial.length > 0) {
             if (ValidateYearDataExist()) {
                 $.extend(objMainForm, { 'SaveType': 'Sv' });

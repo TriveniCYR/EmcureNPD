@@ -195,6 +195,7 @@ function IPDSetChildRowDeleteIcon() {
     } else {
         getParentFormId().find('.apiDeleteIcon').hide();
     }
+    IPDSetChildRowDeleteIconAPI();
 }
 function SaveIPDForm(form) {
     $.validator.unobtrusive.parse(form);

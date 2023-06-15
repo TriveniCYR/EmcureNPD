@@ -767,7 +767,7 @@
                                                               <div class="col-md-3">
                                                                  <div class="form-group required">
                                                                     @Html.LabelFor(model => model.RNDMasterEntities.ProductTypeId_Tab, "Product Type", new { @class = "control-label" })<span class="text-danger">*</span>
-                                                                     <input type="hidden" id="hdnProductTypeId_Tab" />
+                                                                     @*<input type="hidden" id="hdnProductTypeId_Tab" value="@Model.RNDMasterEntities.ProductTypeId_Tab" />*@
                                                                     <select id="ProductTypeId_Tab" name="ProductTypeId_Tab" class="form-control readOnlyUpdate customvalidateformcontrol ProductTypeId_Tab" required></select>
                                                                      @Html.ValidationMessageFor(model => model.RNDMasterEntities.ProductTypeId_Tab, "", new { @class = "text-danger" })
                                                                  </div>
@@ -1017,6 +1017,7 @@
 
 <script>
     var GetAllPBF = "@EmcureNPD.Web.Helpers.APIURLHelper.GetPBFDropdown";
+    var getLineByPlantId = "@EmcureNPD.Web.Helpers.APIURLHelper.GetLineByPlantId";
     var UserWiseBUList="@Model.BusinessUnitsByUser";
     var _selectBusinessUnit = "@UtilityHelper.Decreypt(Convert.ToString(Context.Request.Query["bui"]))";
     var _PIDFID = "@UtilityHelper.Decreypt(Convert.ToString(Context.Request.Query["pidfid"]))";

@@ -164,7 +164,7 @@ namespace EmcureNPD.Business.Core.ServiceImplementations
             var businessUnitRegionMapping = _repositoryMasterBusinessUnitRegionMapping.Get(x => x.BusinessUnitId == id);
             var region = _regionRepository.Get(x => x.RegionId == businessUnitRegionMapping.RegionId);
             return _mapperFactory.Get<MasterRegion, MasterRegionEntity>(region);
-        }
+        }       
 
         public async Task<dynamic> GetCountryByBusinessUnitId(int BusinessUnitId)
         {
