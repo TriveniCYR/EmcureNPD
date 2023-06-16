@@ -82,7 +82,7 @@ namespace EmcureNPD.Web.Helpers
 
         public bool IsAccessToPIDF(int MoudleId,int? PIDFID)    //         //  row
         {
-            if (PIDFID <= 0)
+            if (PIDFID == null ||  PIDFID <= 0 )
                 return true;
 
             var pidfStatusID = GetPidfStatus(PIDFID);

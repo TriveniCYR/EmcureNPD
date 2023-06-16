@@ -45,6 +45,16 @@ namespace EmcureNPD.Web.Controllers
             var bui = Request.Query["bui"];
             if (pidfid != "")
             {
+                string IsView = HttpContext.Request.Query["IsView"];
+                if (!(IsView == "1"))
+                {
+                    string PIDFID = UtilityHelper.Decreypt(pidfid);
+                    if (!_helper.IsAccessToPIDF((int)ModuleEnum.Finance, int.Parse(PIDFID)))
+                    {
+                        return RedirectToAction("PIDFList", "PIDF", new { screenId = PIDFScreen.Finance });
+                    }
+                }
+
                 FinanceModel model = new FinanceModel();
                 HttpResponseMessage responseMessage = new HttpResponseMessage();
                 HttpContext.Request.Cookies.TryGetValue(UserHelper.EmcureNPDToken, out string token);

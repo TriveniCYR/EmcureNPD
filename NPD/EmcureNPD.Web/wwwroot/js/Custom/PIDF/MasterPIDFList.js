@@ -458,11 +458,7 @@ function GetUserForAPIInterestedSuccess(data) {
             if (data != null)
                 $(data._object).each(function (index, item) {
                     $('#InterestedAPIUser').append($('<option>').text(item.fullName).attr('value', item.userId));
-
-                    //$('#DepartmentId option:eq(0)').val(0);
-                    //$('#DepartmentId').val("-");
                 });
-            $('#InterestedAPIUser').select2({ dropdownAdapter: $.fn.select2.amd.require('select2/selectAllAdapter') });
         } catch (e) {
             toastr.error('Error:' + e.message);
         }

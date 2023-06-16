@@ -44,6 +44,16 @@ namespace EmcureNPD.Web.Controllers
             IPDEntity oIPD = new();
             try
             {
+                string IsView = HttpContext.Request.Query["IsView"];
+                if (!IsViewMode && !(IsView == "1"))
+                {
+                    string PIDFID = UtilityHelper.Decreypt(pidfid);
+                    if (!_helper.IsAccessToPIDF((int)ModuleEnum.IPD, int.Parse(PIDFID)))
+                    {
+                        return RedirectToAction("PIDFList", "PIDF", new { screenId = PIDFScreen.IPD });
+                    }
+                }
+
                 int rolId = _helper.GetLoggedInRoleId();
                 RolePermissionModel objPermssion = UtilityHelper.GetCntrActionAccess((int)ModulePermissionEnum.IPD, rolId);
                 if (!_Partial)

@@ -137,23 +137,23 @@
             <div class="modal-body">
                 <form id="frmAddInterestedAPIUser">
                     <div class="row">
-                        <div class="col-12">
+                        <div class="col-md-12">
                             <div class="form-group required">
                                  <span class="text-danger">*</span>
-                                <input type="radio" name="Interested" id="IsAPIIntrestedYes" /> Interested   
-                                <input type="radio" name="Interested" id="IsAPIIntrestedNo" > Not Interested                                
+                                <input type="radio" name="Interested" id="IsAPIIntrestedYes" /> <b>Interested </b> 
+                                <input type="radio" name="Interested" id="IsAPIIntrestedNo">   <b> Not Interested </b>
                             </div>
                             <label id="valmsgIsAPIIntrested" class="text-danger"></label>
                         </div>
-                        <div class="col-12">
+                        <div class="col-md-12">
                             <div class="form-group required">
-                                <lable class="control-label"> Remark </lable>
+                                <lable class="control-label"><b>Remark</b>  </lable>
                                 <textarea id="API_Remark" maxlength="500" class="form-control"> </textarea>
                             </div>
                         </div>
-                        <div class="col-12" id="dvInterestedAPIUser">
+                        <div class="col-md-12" id="dvInterestedAPIUser">
                             <div class="form-group required">
-                                <lable class="control-label"> Users </lable>
+                                <lable class="control-label"> <b>Users</b> </lable>
                                 <span class="text-danger">*</span>
 
                                 <select id="InterestedAPIUser" name="InterestedAPIUser" class="form-control"></select>
@@ -178,9 +178,8 @@
     @Html.Partial("_DataTablePartial")
     <script type="text/javascript" src="~/js/Custom/DynamicDataTable.js?v=@jsVersion"></script>
     <script type="text/javascript" src="~/js/Custom/PIDF/MasterPIDFList.js?v=@jsVersion"></script>
-    <link rel="stylesheet" href="~/AdminLTE/plugins/select2/css/select2.min.css" />
-    <script type="text/javascript" src="~/AdminLTE/plugins/select2/js/select2.full.min.js"></script>
-    <script type="text/javascript" src="~/js/Custom/SelectAllAdaptor.js?v=@jsVersion"></script>
+
+
     <script>
 
         //#region Setup API Url

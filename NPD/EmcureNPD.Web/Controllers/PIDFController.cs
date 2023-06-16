@@ -54,14 +54,17 @@ namespace EmcureNPD.Web.Controllers
 
         public IActionResult PIDF(int? PIDFId, bool _Partial = false, bool IsViewMode = false)
         {
+
             PIDFEntity pidf;
+          
             try
             {
-                if (!IsViewMode)
+                string IsView = HttpContext.Request.Query["IsView"];
+                if (!IsViewMode && !(IsView =="1"))
                 {
-                    if(!_helper.IsAccessToPIDF((int)ModuleEnum.PIDF, PIDFId))
+                    if (!_helper.IsAccessToPIDF((int)ModuleEnum.PIDF, PIDFId))
                     {
-                        return RedirectToAction("PIDFList","PIDF",new { screenId =1 });
+                         return RedirectToAction("PIDFList","PIDF",new { screenId = PIDFScreen.PIDF });
                     }
                 }
 
