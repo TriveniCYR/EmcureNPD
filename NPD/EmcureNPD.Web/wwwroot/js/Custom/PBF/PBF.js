@@ -769,7 +769,7 @@ function GetPBFDropdownSuccess(data) {
             $('#PbfRFDCountryId').append(_emptyOption);
             $('#ProductTypeId').append(_emptyOption);
             $('#GeneralProjectComplexity').append(_emptyOption);
-            $('#GeneralProductTypeId').append(_emptyOption);
+           // $('#GeneralProductTypeId').append(_emptyOption);
             $('#GeneralFormulationGLId').append(_emptyOption);
             $('#GeneralAnalyticalGLId').append(_emptyOption);
             $(data.MasterBERequirement).each(function (index, item) {
@@ -808,9 +808,9 @@ function GetPBFDropdownSuccess(data) {
             $(data.MasterProductType).each(function (index, item) {
                 $('#ProductTypeId').append('<option value="' + item.productTypeId + '">' + item.productTypeName + '</option>');
             });
-            $(data.MasterProductType).each(function (index, item) {
-                $('#GeneralProductTypeId').append('<option value="' + item.productTypeId + '">' + item.productTypeName + '</option>');
-            });
+            //$(data.MasterProductType).each(function (index, item) {
+            //    $('#GeneralProductTypeId').append('<option value="' + item.productTypeId + '">' + item.productTypeName + '</option>');
+            //});
             $(data.MasterFormulationGL).each(function (index, item) {
                 $('#GeneralFormulationGLId').append('<option value="' + item.userId + '">' + item.fullName + '</option>');
             });
@@ -860,7 +860,7 @@ function GetPBFDropdownSuccess(data) {
                     $('#PbfRFDCountryId').val($('#hdnPbfRFDCountryId').val() == 0 ? "" : $('#hdnPbfRFDCountryId').val());
                     $('#ProductTypeId').val($('#hdnProductTypeId').val() == 0 ? "" : $('#hdnProductTypeId').val());
                     $('#GeneralProjectComplexity').val($('#hdnGeneralProjectComplexity').val() == 0 ? "" : $('#hdnGeneralProjectComplexity').val());
-                    $('#GeneralProductTypeId').val($('#hdnGeneralProductTypeId').val() == 0 ? "" : $('#hdnGeneralProductTypeId').val());
+                    //$('#GeneralProductTypeId').val($('#hdnGeneralProductTypeId').val() == 0 ? "" : $('#hdnGeneralProductTypeId').val());
                     $('#GeneralFormulationGLId').val($('#hdnGeneralFormulationGLId').val() == 0 ? "" : $('#hdnGeneralFormulationGLId').val());
                     $('#GeneralAnalyticalGLId').val($('#hdnGeneralAnalyticalGLId').val() == 0 ? "" : $('#hdnGeneralAnalyticalGLId').val());
                     $("#MarketMappingId").val($("#hdnMarketMappingIds").val().split(',')).trigger('change');
