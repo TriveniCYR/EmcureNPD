@@ -50,7 +50,7 @@ namespace EmcureNPD.Web.Controllers
                     string PIDFID = UtilityHelper.Decreypt(pidfid);
                     if (!_helper.IsAccessToPIDF((int)ModuleEnum.IPD, int.Parse(PIDFID)))
                     {
-                        return RedirectToAction("PIDFList", "PIDF", new { screenId = PIDFScreen.IPD });
+                        return RedirectToAction("PIDFList", "PIDF", new { ScreenId = Convert.ToString((int)EmcureNPD.Utility.Enums.PIDFScreen.IPD) });
                     }
                 }
 

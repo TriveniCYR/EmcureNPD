@@ -55,7 +55,7 @@ namespace EmcureNPD.Web.Controllers
                     string PIDFID = UtilityHelper.Decreypt(pidfid);
                     if (!_helper.IsAccessToPIDF((int)ModuleEnum.CommercialManagement, int.Parse(PIDFID)))
                     {
-                        return RedirectToAction("PIDFList", "PIDF", new { screenId = PIDFScreen.Commercial });
+                        return RedirectToAction("PIDFList", "PIDF", new { ScreenId = Convert.ToString((int)EmcureNPD.Utility.Enums.PIDFScreen.Commercial) });
                     }
                 }
                 int rolId = _helper.GetLoggedInRoleId();

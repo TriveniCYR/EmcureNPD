@@ -51,7 +51,7 @@ namespace EmcureNPD.Web.Controllers
                     string PIDFID = UtilityHelper.Decreypt(pidfid);
                     if (!_helper.IsAccessToPIDF((int)ModuleEnum.Finance, int.Parse(PIDFID)))
                     {
-                        return RedirectToAction("PIDFList", "PIDF", new { screenId = PIDFScreen.Finance });
+                        return RedirectToAction("PIDFList", "PIDF", new { ScreenId = Convert.ToString((int)EmcureNPD.Utility.Enums.PIDFScreen.Finance) });
                     }
                 }
 
