@@ -2,7 +2,6 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata;
 using EmcureNPD.Data.DataAccess.Entity;
-using EmcureNPD.Utility;
 
 #nullable disable
 
@@ -146,7 +145,7 @@ namespace EmcureNPD.Data.DataAccess.DataContext
             if (!optionsBuilder.IsConfigured)
             {
 #warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see http://go.microsoft.com/fwlink/?LinkId=723263.
-                optionsBuilder.UseSqlServer(DatabaseConnection.NPDDatabaseConnection);
+                optionsBuilder.UseSqlServer("Data Source=180.149.241.172;Initial Catalog=EmcureNPDDev;Persist Security Info=True;User ID=emcurenpddev_dbUser;pwd=emcure123!@#");
             }
         }
 
@@ -2737,6 +2736,11 @@ namespace EmcureNPD.Data.DataAccess.DataContext
                     .HasForeignKey(d => d.PbfgeneralId)
                     .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("FK_PIDF_PBF_RnD_Master_PIDF_PBF_General");
+
+                entity.HasOne(d => d.Plant)
+                    .WithMany(p => p.PidfPbfRnDMasters)
+                    .HasForeignKey(d => d.PlantId)
+                    .HasConstraintName("FK_PIDF_PBF_RnD_Master_Plant");
             });
 
             modelBuilder.Entity<PidfPbfRnDPackagingMaterial>(entity =>

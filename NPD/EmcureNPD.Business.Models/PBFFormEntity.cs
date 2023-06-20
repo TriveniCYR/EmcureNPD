@@ -201,7 +201,7 @@ namespace EmcureNPD.Business.Models
         public long BatchSizeId { get; set; }
         public double? ApirequirementMarketPrice { get; set; }
         public double? PlanSupportCostRsPerDay { get; set; }
-        public int? ProductTypeId_Tab { get; set; }
+        public int? PlantId_Tab { get; set; }
         public int? PBFLine { get; set; }
         public double? ManHourRate { get; set; }
     }

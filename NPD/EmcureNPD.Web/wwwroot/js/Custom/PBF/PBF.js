@@ -760,7 +760,7 @@ function GetPBFDropdownSuccess(data) {
             $('#BERequirementId').append(_emptyOption);
             $('#PbfDosageFormId').append(_emptyOption);
             $('#PlantId').append(_emptyOption);
-            $('#ProductTypeId_Tab').append(_emptyOption);
+            $('#ddlPlantId_Tab').append(_emptyOption);
             $('#WorkflowId').append(_emptyOption);
             $('#FillingTypeId').append(_emptyOption);
             $('#PbfFormRNDDivisionId').append(_emptyOption);
@@ -782,7 +782,7 @@ function GetPBFDropdownSuccess(data) {
                 $('#PlantId').append('<option value="' + item.plantId + '">' + item.plantNameName + '</option>');
             });
             $(data.MasterPlant).each(function (index, item) {
-                $('#ProductTypeId_Tab').append('<option value="' + item.plantId + '">' + item.plantNameName + '</option>');
+                $('#ddlPlantId_Tab').append('<option value="' + item.plantId + '">' + item.plantNameName + '</option>');
             });
             $(data.MasterWorkflow).each(function (index, item) {
                 $('#WorkflowId').append('<option value="' + item.workflowId + '">' + item.workflowName + '</option>');
@@ -850,8 +850,8 @@ function GetPBFDropdownSuccess(data) {
                     $("#PBFGeneralId").val($("#hdnPBFGeneralId").val() == 0 ? "" : $('#hdnPBFGeneralId').val());
                     $('#BERequirementId').val($('#hdnBERequirementId').val() == 0 ? "" : $('#hdnBERequirementId').val());
                     $('#PbfDosageFormId').val($('#hdnPbfDosageFormId').val() == 0 ? "" : $('#hdnPbfDosageFormId').val());
-                    $('#PlantId').val($('#hdnPlantId').val() == 0 ? "" : $('#hdnPlantId').val());
-                    $('#ProductTypeId_Tab').val($('#PlantId').val());
+                    $('#PlantId').val($('#hdnPlantId').val() == 0 ? "" : $('#hdnPlantId').val());                    
+
                     $('#WorkflowId').val($('#hdnWorkflowId').val() == 0 ? "" : $('#hdnWorkflowId').val());
                     $('#FillingTypeId').val($('#hdnFillingTypeId').val() == 0 ? "" : $('#hdnFillingTypeId').val());
                     $('#PbfFormRNDDivisionId').val($('#hdnPbfFormRNDDivisionId').val() == 0 ? "" : $('#hdnPbfFormRNDDivisionId').val());
@@ -887,11 +887,11 @@ function GetPBFDropdownError(x, y, z) {
     toastr.error(ErrorMessage);
 }
 $('#PlantId').on('change', function () {
-    $('#ProductTypeId_Tab').val($('#PlantId').val()).trigger("change");
+    $('#ddlPlantId_Tab').val($('#PlantId').val()).trigger("change");
 });
-$('#PBFLine').on('change', function () {
-    var SelectedLineid = parseInt($('#PBFLine').val());
-   
+$('#ddlPBFLine').on('change', function () {
+    var SelectedLineid = parseInt($('#ddlPBFLine').val());
+    $('#RNDMasterEntities_PBFLine').val(SelectedLineid);
     var filterPlantLine = $.grep(PBFLinesArr, function (n) {
             return n.lineId === SelectedLineid
     }); 
@@ -899,22 +899,23 @@ $('#PBFLine').on('change', function () {
     $('#RNDMasterEntities_PlanSupportCostRsPerDay').val(filterPlantLine[0].lineCost);
     
 }); 
-$('#ProductTypeId_Tab').change(function (e) {
+$('#ddlPlantId_Tab').change(function (e) {
         if ($(this).val() != "") {
             if (parseInt($(this).val()) > 0) {
+                $('#RNDMasterEntities_PlantId_Tab').val(parseInt($(this).val()));
                 ajaxServiceMethod($('#hdnBaseURL').val() + getLineByPlantId + "/" + parseInt($(this).val()), 'GET', getLineByPlantIdSuccess, getLineByPlantIdError);
             }
         }
     });
 function getLineByPlantIdSuccess(data) {
     try {
-        $('#PBFLine').find('option').remove()
+        $('#ddlPBFLine').find('option').remove()
         PBFLinesArr = data._object;
         if (data._object != null && data._object.length > 0) {
             var _emptyOption = '<option value="">-- Select --</option>';
-            $('#PBFLine').append(_emptyOption);
+            $('#ddlPBFLine').append(_emptyOption);
             $(data._object).each(function (index, item) {
-                $('#PBFLine').append('<option value="' + item.lineId + '">' + item.lineName + '</option>');
+                $('#ddlPBFLine').append('<option value="' + item.lineId + '">' + item.lineName + '</option>');
             });
 
             try {
@@ -1200,11 +1201,12 @@ function PBFBindStrength(data) {
 }
 
 function SavePBFForm(_SaveType) {
+    $('.pbftablesplantCost').show();
     if (_SaveType == 'Draft') {
         $('#AddPBFForm').validate().settings.ignore = "*";
 
     } else {
-        validateDynamicControldDetails();
+        validateDynamicControldDetailsPBF();
     }
 
     if ($("#AddPBFForm").valid()) {
@@ -1781,7 +1783,19 @@ function BindRNDBatchSize(data, rndmasterdata) {
     $('#tablerndbatchsize').html(batchSizeHTML);
 
     if (rndmasterdata.length > 0) {
-        $("#RNDMasterEntities_ApirequirementMarketPrice").val(rndmasterdata[0].apiRequirementMarketPrice);
+        $("#RNDMasterEntities_ApirequirementMarketPrice").val(rndmasterdata[0].apiRequirementMarketPrice);  
+        if (rndmasterdata[0].plantId > 0) {
+            $("#RNDMasterEntities_PlantId_Tab").val(rndmasterdata[0].plantId);
+            $('#ddlPlantId_Tab').val(rndmasterdata[0].plantId); 
+            $('#ddlPlantId_Tab').trigger('change');
+        }
+        else {
+            $('#ddlPlantId_Tab').val($('#PlantId').val()).trigger('change');
+        }
+        if (rndmasterdata[0].lineId > 0 && $('#ddlPBFLine').find('option').length >1) {
+            $("#ddlPBFLine").val(rndmasterdata[0].lineId); 
+            $("#RNDMasterEntities_PBFLine").val(rndmasterdata[0].lineId);
+        }      
         $("#RNDMasterEntities_PlanSupportCostRsPerDay").val(rndmasterdata[0].planSupportCostRsPerDay);
         $("#RNDMasterEntities_ManHourRate").val(rndmasterdata[0].manHourRate);
     }
@@ -3036,19 +3050,27 @@ function ReplaceSelector(value, selector, newvalue) {
 
 }
 
-function validateDynamicControldDetails() {
+function validateDynamicControldDetailsPBF() {
     isValidPBFForm = true;
     $('.customvalidateformcontrol').each(function () {
-        validatecontrols(this);
+        validatecontrolsPBF(this);
     });
 }
-function validatecontrols(control) {
-    if ($(control).val().trim() == '') {
+function validatecontrolsPBF(control) {
+
+    if ($(control).val() != null) {
+        if ($(control).val().trim() == '') {
+            $(control).css("border-color", "red");
+            $(control).focus();
+            isValidPBFForm = false;
+        }
+        else {
+            $(control).css("border-color", "");
+        }
+    }
+    else {
         $(control).css("border-color", "red");
         $(control).focus();
         isValidPBFForm = false;
-    }
-    else {
-        $(control).css("border-color", "");
     }
 }
