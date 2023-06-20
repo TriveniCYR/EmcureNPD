@@ -13,6 +13,7 @@ var _firstLoad = true;
 var _oralName = '';
 var isValidPBFForm = true;
 var PBFLinesArr = [];
+var rndmasterdata_dbValueOf_lineId = 0;
 $(document).ready(function () {
     try {
         _PIDFPBFId = parseInt($('#hdnPIDFPBFId').val());
@@ -896,7 +897,7 @@ $('#ddlPBFLine').on('change', function () {
             return n.lineId === SelectedLineid
     }); 
     if (filterPlantLine != undefined && filterPlantLine.length>0)
-    $('#RNDMasterEntities_PlanSupportCostRsPerDay').val(filterPlantLine[0].lineCost);
+        $('#RNDMasterEntities_PlanSupportCostRsPerDay').val(filterPlantLine[0].lineCost).trigger('change');
     
 }); 
 $('#ddlPlantId_Tab').change(function (e) {
@@ -919,8 +920,9 @@ function getLineByPlantIdSuccess(data) {
             });
 
             try {
-                if (_PIDFId > 0) {
-                  //  $('#PBFLine').val($('#hdnRFDCountryId').val());
+                if (rndmasterdata_dbValueOf_lineId > 0) {
+                    $('#ddlPBFLine').val(rndmasterdata_dbValueOf_lineId);
+                    $('#RNDMasterEntities_PBFLine').val(rndmasterdata_dbValueOf_lineId);
                 }
             } catch (e) {   
             }
@@ -1783,6 +1785,15 @@ function BindRNDBatchSize(data, rndmasterdata) {
     $('#tablerndbatchsize').html(batchSizeHTML);
 
     if (rndmasterdata.length > 0) {
+
+        if (rndmasterdata[0].lineId > 0) {
+            rndmasterdata_dbValueOf_lineId = rndmasterdata[0].lineId;
+        }  
+
+        //if (rndmasterdata[0].lineId > 0 && $('#ddlPBFLine').find('option').length > 1) {
+        //    $("#ddlPBFLine").val(rndmasterdata[0].lineId);
+        //    $("#RNDMasterEntities_PBFLine").val(rndmasterdata[0].lineId);
+        //} 
         $("#RNDMasterEntities_ApirequirementMarketPrice").val(rndmasterdata[0].apiRequirementMarketPrice);  
         if (rndmasterdata[0].plantId > 0) {
             $("#RNDMasterEntities_PlantId_Tab").val(rndmasterdata[0].plantId);
@@ -1791,11 +1802,7 @@ function BindRNDBatchSize(data, rndmasterdata) {
         }
         else {
             $('#ddlPlantId_Tab').val($('#PlantId').val()).trigger('change');
-        }
-        if (rndmasterdata[0].lineId > 0 && $('#ddlPBFLine').find('option').length >1) {
-            $("#ddlPBFLine").val(rndmasterdata[0].lineId); 
-            $("#RNDMasterEntities_PBFLine").val(rndmasterdata[0].lineId);
-        }      
+        }           
         $("#RNDMasterEntities_PlanSupportCostRsPerDay").val(rndmasterdata[0].planSupportCostRsPerDay);
         $("#RNDMasterEntities_ManHourRate").val(rndmasterdata[0].manHourRate);
     }
