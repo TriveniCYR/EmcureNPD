@@ -52,7 +52,7 @@ $(document).ready(function () {
         printElement(fileName);
     });
     PBFtabClick();
-    
+    fnGetActiveBusinessUnit();
     UpdateProjectionCommercial();
    // GetSUIMSVolumeYearWiseByPackSize();
 });
