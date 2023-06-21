@@ -26,6 +26,7 @@
 
         @{
             int i = 1;
+            if (@ViewBag.log!=null){
             foreach (var logs in @ViewBag.log)
             {
                 if (logs["Values"] != null)
@@ -46,20 +47,53 @@
                                         <div id="flush-collapseChild@(i)" class="accordion-collapse collapse border border-top-0"
                                  aria-labelledby="flush-headingChild@(i)" data-parent="#accordionChild@(i)">
                                             <div class="accordion-body row">
-                                                <div class="mb-4 col-4">
+                                                    @if (values.DisplayName == "CountryIds" || values.DisplayName == "BusinessUnitsByUser")
+                                                    {
+                                                        <div class="mb-4 col-4">
+
+
+                                                            <label for="propertyName" class="form-label">Property Name</label>
+                                                            <input type="text" class="form-control" id="propertyName" disabled value="@(values.DisplayName == null || values.DisplayName == " " ? values.PropertyName : values.DisplayName)">
+                                                        </div>
+                                                        <div class="mb-4 col-4">
+                                                            <label for="oldValue" class="form-label">Old Value</label>
+                                                            <select class="form-control select2" multiple="true">
+                                                            <option>
+                                                                    @values.OldValue
+                                                            </option>
+                                                            </select>
+                                                            <!-- <input type="text" class="form-control" id="oldValue" disabled value="@(values.OldValue !=" " ? (values.OldValue == "True" ? "Yes" : (values.OldValue == "False" ? "No" : values.OldValue)) : "" )"> -->
+                                                        </div>
+                                                        <div class="mb-4 col-4">
+                                                            <label for="newValue" class="form-label">New Value</label>
+                                                            <select class="form-control select2" multiple="true">
+                                                                <option>
+                                                                    @values.NewValue
+                                                                </option>
+                                                            </select>
+                                                            <!--<input type="text" class="form-control" id="newValue" disabled value="@(values.NewValue != " " ? (values.NewValue == "True" ? "Yes" : (values.NewValue == "False" ? "No" : values.NewValue)) : "")"> -->
+                                                        </div>
+                                                    }
+                                                    else
+                                                    {
+                                                      <div class="mb-4 col-4">
+                                                       
+                                              
                                                     <label for="propertyName" class="form-label">Property Name</label>
                                                     <input type="text" class="form-control" id="propertyName" disabled value="@(values.DisplayName == null || values.DisplayName == " " ? values.PropertyName : values.DisplayName)">
                                                 </div>
-                                                <div class="mb-4 col-4">
+                                                      <div class="mb-4 col-4">
                                                     <label for="oldValue" class="form-label">Old Value</label>
                                                     <input type="text" class="form-control" id="oldValue" disabled value="@(values.OldValue !=" " ? (values.OldValue == "True" ? "Yes" : (values.OldValue == "False" ? "No" : values.OldValue)) : "" )">
                                                 </div>
-                                                <div class="mb-4 col-4">
+                                                      <div class="mb-4 col-4">
                                                     <label for="newValue" class="form-label">New Value</label>
                                                     <input type="text" class="form-control" id="newValue" disabled value="@(values.NewValue !=" " ? (values.NewValue == "True" ? "Yes" : (values.NewValue == "False" ? "No" : values.NewValue)) : "" )">
                                                 </div>
+                                                    }
                                             </div>
                                         </div>
+                                        
                                     }
                                 }
                             </div>
@@ -83,6 +117,7 @@
                     </div>
                 }
             }
+           }
         }
     </form>
 </div>
