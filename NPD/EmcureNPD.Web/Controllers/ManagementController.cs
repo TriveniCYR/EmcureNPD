@@ -190,7 +190,7 @@ namespace EmcureNPD.Web.Controllers
                         }
                         model.lsAdditionalCost = ListAdditionalCost;
                     }
-                   model.financeModel= PIDFFinance(pidfid.ToString(), pidfid.ToString());
+                   model.financeModel= PIDFFinance(pidfid.ToString(), buid.ToString());
                     return View(model);
                 }
             }
@@ -200,7 +200,7 @@ namespace EmcureNPD.Web.Controllers
 
         //-------------Finanace Data----------------------
 
-        private FinanceModel PIDFFinance(string pidfid,string bui)
+        private FinanceModel PIDFFinance(string pidfid,string buid)
         {
             FinanceModel model = new FinanceModel();
             if (pidfid != "")
@@ -210,14 +210,13 @@ namespace EmcureNPD.Web.Controllers
                 APIRepository objapi = new(_cofiguration);
 
                 responseMessage = objapi.APICommunication(APIURLHelper.GetPidfFinance + "/" + pidfid, HttpMethod.Get, token).Result;
-
                 if (responseMessage.IsSuccessStatusCode)
                 {
                     string jsonResponse = responseMessage.Content.ReadAsStringAsync().Result;
                     var data = JsonConvert.DeserializeObject<Root>(jsonResponse);
                     if (data.table.Count > 0)
                     {
-                        model.BussinessUnitId = Convert.ToInt32(UtilityHelper.Decreypt(Convert.ToString(bui)));
+                        model.BussinessUnitId = Convert.ToInt32(UtilityHelper.Decreypt(Convert.ToString(buid)));
                         model.PidffinaceId = data.table[0].pidffinaceId;
                         model.Pidfid = UtilityHelper.Encrypt(Convert.ToString(data.table[0].pidfid));
                         model.dycrPidfid = data.table[0].pidfid;
@@ -277,7 +276,7 @@ namespace EmcureNPD.Web.Controllers
                         model.Total = Convert.ToDecimal(data.table[0].total);
                         model.PIDFStatusId = data.table[0].PIDFStatusId;
 
-                        var lsitem = GetFinanceBatchSizeCoating(model.PidffinaceId);
+                        var lsitem = GetFinanceBatchSizeCoating(model.PidffinaceId,buid);
                         List<ChildPidfFinanceBatchSizeCoating> ls = new List<ChildPidfFinanceBatchSizeCoating>();
                         foreach (var item in lsitem)
                         {
@@ -316,7 +315,7 @@ namespace EmcureNPD.Web.Controllers
                         }
                         model.lsPidfFinanceBatchSizeCoating = ls;
                         model.JsonlsPidfFinanceBatchSizeCoating = JsonConvert.SerializeObject(ls);
-                        model.JsonCommercialData = GetManagmentApprovalBatchSizeCoating(model.PidffinaceId);
+                        model.JsonCommercialData = GetManagmentApprovalBatchSizeCoating(pidfid, buid);
 
                     }
                     int rolId = _helper.GetLoggedInRoleId();
@@ -332,7 +331,7 @@ namespace EmcureNPD.Web.Controllers
         }
 
         [NonAction]
-        private List<ChildTable> GetFinanceBatchSizeCoating(int? PidfFinaceid)
+        private List<ChildTable> GetFinanceBatchSizeCoating(int? PidfFinaceid,string buid)
         {
             try
             {
@@ -361,15 +360,16 @@ namespace EmcureNPD.Web.Controllers
         }
 
         [NonAction]
-        private string GetManagmentApprovalBatchSizeCoating(int? PidfFinaceid)
+        private string GetManagmentApprovalBatchSizeCoating(string PIDFID, string buid)
         {
             try
             {
+                int _pidfid = Convert.ToInt32(UtilityHelper.Decreypt(Convert.ToString(PIDFID)));
                 HttpResponseMessage responseMessage = new HttpResponseMessage();
                 HttpContext.Request.Cookies.TryGetValue(UserHelper.EmcureNPDToken, out string token);
                 APIRepository objapi = new(_cofiguration);
 
-                responseMessage = objapi.APICommunication(APIURLHelper.GetManagmentApprovalBatchSizeCoating + "/" + PidfFinaceid, HttpMethod.Get, token).Result;
+                responseMessage = objapi.APICommunication(APIURLHelper.GetManagmentApprovalBatchSizeCoating + "/" + _pidfid + "/" + buid, HttpMethod.Get, token).Result;
 
                 if (responseMessage.IsSuccessStatusCode)
                 {

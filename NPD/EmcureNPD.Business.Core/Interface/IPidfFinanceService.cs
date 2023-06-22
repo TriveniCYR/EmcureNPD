@@ -15,7 +15,7 @@ namespace EmcureNPD.Business.Core.Interface
         Task<DBOperation> AddUpdatePidfFinance(FinanceModel EntitypidfFinance);
 
         Task<dynamic> GetPidfFinance(int Pidfid = 0);
-        Task<dynamic> GetManagmentApprovalBatchSizeCoating(int PidffinaceId = 0);
+        Task<dynamic> GetManagmentApprovalBatchSizeCoating(int PIDFID = 0,int BussinessUnitId=0);
         Task<dynamic> GetFinanceBatchSizeCoating(int PidffinaceId = 0);
         Task<dynamic> GetFinaceProjectionYear(int monthTobeDeduct = 0);
         Task<dynamic> GetPackSizeByStrengthId(int PidfId = 0, int Buid = 0, int StrengthId = 0);

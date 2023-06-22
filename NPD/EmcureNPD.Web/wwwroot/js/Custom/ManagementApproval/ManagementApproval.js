@@ -72,36 +72,33 @@ function PBFtabClick() {
     $('#dvPBFCharter').removeClass('active');
 }
 
-function GetSUIMSVolumeYearWiseByPackSize() {
+function GetManagmentApprovalBatchSizeCoating(PidafId, encBuid) {
+ ajaxServiceMethod($('#hdnBaseURL').val() + `api/PidfFinance/GetManagmentApprovalBatchSizeCoating/${PidafId}/${encBuid}`, 'GET', GetManagmentApprovalBatchSizeCoatingSuccess, GetManagmentApprovalBatchSizeCoatingError);
 
-    let packSizeId = '0';
-    let strengthId = '0';
-    ajaxServiceMethod($('#hdnBaseURL').val() + `api/PidfFinance/GetSUIMSVolumeYearWiseByPackSize/${PidafId}/${encBuid}/${strengthId}/${packSizeId}`, 'GET', SUIMSVolumeYearWiseByPackSizeSuccess, SUIMSVolumeYearWiseByPackSizeError);
-    function SUIMSVolumeYearWiseByPackSizeSuccess(data) {
+    function GetManagmentApprovalBatchSizeCoatingSuccess(data) {
         try {
-            if (data.table1.length > 0)
-                UpdateDynamicTextBoxValues(data.table1);
-
-            //if (data.table2.length > 0)
-            // UpdateSUM_of_Values(data.table2);
+            if (data.table.length > 0) {
+                $('#JsonCommercialData').val(JSON.stringify(data));
+                UpdateProjectionCommercial();
+            }
         }
         catch (e) {
             toastr.error('Error:' + e.message);
         }
     }
-    function SUIMSVolumeYearWiseByPackSizeError() {
+    function GetManagmentApprovalBatchSizeCoatingError() {
         toastr.error("Error");
     }
 }
 
-function UpdateDynamicTextBoxValues(table) {
-    if (table.length == 10) {
-        for (var i = 0; i < 10; i++) {
-            Expiries_Yearwise_Data[i] = table[i].expiries;
-            AnnualConfirmatoryRelease_Data[i] = table[i].annualConfirmatoryRelease;
-        }
-    }
-}
+//function UpdateDynamicTextBoxValues(table) {
+//    if (table.length == 10) {
+//        for (var i = 0; i < 10; i++) {
+//            Expiries_Yearwise_Data[i] = table[i].expiries;
+//            AnnualConfirmatoryRelease_Data[i] = table[i].annualConfirmatoryRelease;
+//        }
+//    }
+//}
 
 function UpdateSUM_of_Values(table) {
     if (table.length == 10) {
@@ -148,6 +145,11 @@ function GetBatchSizeCostingTRValues() {
 
     });
     return Arr_FinanceTable_tr;
+}
+
+function loadFinanceProjectionData(pidfid, encBUId) {
+   // _encBuid = encBUId;
+    GetManagmentApprovalBatchSizeCoating(pidfid, encBUId);
 }
 
 

@@ -124,12 +124,13 @@ namespace EmcureNPD.API.Controllers.PIDF
             }
         }
         [HttpGet]
-        [Route("GetManagmentApprovalBatchSizeCoating/{PidffinaceId}")]
-        public async Task<IActionResult> GetManagmentApprovalBatchSizeCoating(int PidffinaceId = 0)
+        [Route("GetManagmentApprovalBatchSizeCoating/{PIDFID}/{Bussinessunitid}")]
+        public async Task<IActionResult> GetManagmentApprovalBatchSizeCoating(int PIDFID = 0, string Bussinessunitid="")
         {
             try
             {
-                return _ObjectResponse.CreateData(await _pidfFinanceService.GetManagmentApprovalBatchSizeCoating(PidffinaceId), (Int32)HttpStatusCode.OK);
+               int BussinessUnitId = Convert.ToInt32(UtilityHelper.Decreypt(Convert.ToString(Bussinessunitid)));                
+                return _ObjectResponse.CreateData(await _pidfFinanceService.GetManagmentApprovalBatchSizeCoating(PIDFID, BussinessUnitId), (Int32)HttpStatusCode.OK);
             }
             catch (Exception ex)
             {
