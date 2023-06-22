@@ -22,7 +22,7 @@
     var PidfNumber = UtilityHelper.Decreypt(Convert.ToString(PidafId));
     string jsVersion = @Configuration.GetSection("StaticJS")["version"];
     RolePermissionModel objPermssion = (RolePermissionModel)ViewBag.Access;
-    string IsApproveAllow = (objPermssion.Approve || objPermssion.MainModuleId == 8) ?  "" : "display: none";
+    string IsApproveAllow = (objPermssion.Approve || objPermssion.MainModuleId == 8) ? "" : "display: none";
     var CurrencyCode = "";
     var CurrencySymbol = "";
     var FinalTotal = 0.0;
@@ -48,18 +48,18 @@
 
 <div class="card card-primary card-tabs">
     <div class="card-header p-0 pt-1">
-        <ul class="nav nav-tabs text-center m-0" id="MangmentApprovalTabs">           
+        <ul class="nav nav-tabs text-center m-0" id="MangmentApprovalTabs">
             <li class="nav-item p-0">
-                <a id="dvPBFCharter" class="nav-link" onClick="Project_ChartertabClick()" > Finance Charter </a>
-                </li>
+                <a id="dvPBFCharter" class="nav-link" onClick="Project_ChartertabClick()"> Finance Charter </a>
+            </li>
             <li class="nav-item p-0">
                 <a id="dvProjectCharter" class="nav-link" onClick="PBFtabClick()"> PBF Charter </a>
-            </li>           
+            </li>
         </ul>
     </div>
 </div>
 
-<div  class="container-fluid background-white-card PBFCharter">
+<div class="container-fluid background-white-card PBFCharter">
     <div class="row" id="frmMA">
         <div class="col-12 mb-4">
             <table class="table table-bordered text-center m-0 levi-table">
@@ -111,7 +111,7 @@
                             {
                                 <td class="text-start">
                                     <span id="lblProjectCode">
-                                       @* @item1.ProjectCode*@
+                                        @* @item1.ProjectCode*@
                                     </span>
                                 </td>
                             }
@@ -127,7 +127,7 @@
                             {
                                 <td class="text-start">
                                     <span id="lblImprintingEmbossingCode">
-                                       @* @item1.ProjectCode*@
+                                        @* @item1.ProjectCode*@
                                     </span>
                                 </td>
                             }
@@ -426,6 +426,9 @@
                                     }
 
                                     @Math.Round(@costfiling,2)
+                                    @{
+                                        FinalTotal += Math.Round(@costfiling, 2);
+                                    }
                                 </td>
                             </tr>
                         }
@@ -484,7 +487,7 @@
                             </tr>
                             <tr>
                                 <td colspan="2">
-                                    Plant      
+                                    Plant
                                 </td>
                                 <td colspan="8">@Model.lsProjectDetails[i].PlantName</td>
                             </tr>
@@ -492,7 +495,8 @@
                                 <td colspan="2">
                                     Project Date
                                 </td>
-                                <td colspan="8">@Model.lsProjectDetails[i].ProjectInitiationDate.ToString("dd MMMM yyyy")
+                                <td colspan="8">
+                                    @Model.lsProjectDetails[i].ProjectInitiationDate.ToString("dd MMMM yyyy")
                                     - @Model.lsProjectDetails[i].ProjectCompletionFilingDate.ToString("dd MMMM yyyy")
                                 </td>
                             </tr>
@@ -524,8 +528,8 @@
                                 }
                                 @*<td colspan="5">@Model.lsProjectDetails[i].APISource</td>*@
                                 @* <td></td>
-                                    <td></td>
-                                    <td colspan="2"></td>*@
+                        <td></td>
+                        <td colspan="2"></td>*@
                             </tr>
                             <tr>
                                 <td colspan="2">
@@ -533,8 +537,8 @@
                                 </td>
                                 <td colspan="8">@Model.lsProjectDetails[i].APICommercialQuantity</td>
                                 @*  <td></td>
-                                    <td></td>
-                                    <td colspan="2"></td>*@
+                        <td></td>
+                        <td colspan="2"></td>*@
                             </tr>
                             <tr>
                                 <td colspan="2">
@@ -548,8 +552,8 @@
                                 </td>
                                 <td colspan="5">@Model.lsProjectDetails[i].APIRequirement</td>
                                 @*<td colspan="2">Levetiracetam Tablets</td>
-                                    <td></td>
-                                    <td colspan="2"></td>*@
+                        <td></td>
+                        <td colspan="2"></td>*@
                             </tr>
                             <tr>
                                 <td colspan="2">
@@ -557,9 +561,9 @@
                                 </td>
                                 <td colspan="8">@Model.lsProjectDetails[i].Prototype</td>
                                 @* <td>125</td>
-                                    <td></td>
-                                    <td></td>
-                                    <td colspan="2"></td>*@
+                        <td></td>
+                        <td></td>
+                        <td colspan="2"></td>*@
                             </tr>
                             <tr>
                                 <td colspan="2">
@@ -567,9 +571,9 @@
                                 </td>
                                 <td colspan="8">@Model.lsProjectDetails[i].ScaleUp</td>
                                 @*<td>250</td>
-                                    <td></td>
-                                    <td></td>
-                                    <td colspan="2"></td>*@
+                        <td></td>
+                        <td></td>
+                        <td colspan="2"></td>*@
                             </tr>
                             <tr>
                                 <td colspan="2">
@@ -577,9 +581,9 @@
                                 </td>
                                 <td colspan="8">@Model.lsProjectDetails[i].Exhibit</td>
                                 @* <td>775</td>
-                                    <td></td>
-                                    <td></td>
-                                    <td colspan="2"></td>*@
+                        <td></td>
+                        <td></td>
+                        <td colspan="2"></td>*@
                             </tr>
                         }
                     }
@@ -736,7 +740,7 @@
                                     Total
                                 </td>
                                 <td>
-                                    
+
                                     @{
                                         if (Convert.ToDouble(@Model.lsAdditionalCost[i].Total) > 0)
                                             totalcost = Convert.ToDouble(@Model.lsAdditionalCost[i].Total) / 100000;
@@ -770,9 +774,9 @@
             <br />
         </div>
         <div class="col-12 mb-4">
-            <p class="text-decoration-underline fw-bold m-0">Please Note:</p>            
+            <p class="text-decoration-underline fw-bold m-0">Please Note:</p>
             <p class="m-0">
-               @if (Model.lsProjectDetails != null && Model.lsProjectDetails.Count > 0)
+                @if (Model.lsProjectDetails != null && Model.lsProjectDetails.Count > 0)
                 {
                     @Model.lsProjectDetails[0].Note_Remark
                 }
@@ -847,23 +851,23 @@
 </div>
 
 @section MyScripts {
-	@*@Html.Partial("_DataTablePartial")*@
-<link rel="stylesheet" href="~/AdminLTE/plugins/select2/css/select2.min.css" />
-<script type="text/javascript" src="~/AdminLTE/plugins/select2/js/select2.full.min.js"></script>
-<script src="~/js/plugins/jspdf.min.js"></script>
-  @*  <script src="~/js/plugins/html2canvas.js"></script>*@
-<script src="~/js/custom/managementapproval/managementapproval.js?v=@jsVersion"></script>
+    @*@Html.Partial("_DataTablePartial")*@
+    <link rel="stylesheet" href="~/AdminLTE/plugins/select2/css/select2.min.css" />
+    <script type="text/javascript" src="~/AdminLTE/plugins/select2/js/select2.full.min.js"></script>
+    <script src="~/js/plugins/jspdf.min.js"></script>
+    @*  <script src="~/js/plugins/html2canvas.js"></script>*@
+    <script src="~/js/custom/managementapproval/managementapproval.js?v=@jsVersion"></script>
     <script src="~/js/custom/managementapproval/financechartercommon.js"></script>
-             
 
-<script>
+
+    <script>
         const GetManagmentApprovalBatchSizeCoatingURL = "@EmcureNPD.Web.Helpers.APIURLHelper.GetManagmentApprovalBatchSizeCoating";
         const GetActiveEncryptedBusinessUnit = "@EmcureNPD.Web.Helpers.APIURLHelper.GetActiveEncryptedBusinessUnit";
-    const isView = "@Context.Request.Query["IsView"]";
-    const ApproveRejectDeletePidf = "@EmcureNPD.Web.Helpers.APIURLHelper.ApproveRejectDeletePidf";
+        const isView = "@Context.Request.Query["IsView"]";
+        const ApproveRejectDeletePidf = "@EmcureNPD.Web.Helpers.APIURLHelper.ApproveRejectDeletePidf";
         var PidafId = "@Context.Request.Query["pidfid"]";
         var encBuid = "@Context.Request.Query["bui"]";
         const _selectBusinessUnit = "@SelectedBuId";
         const _selectedPidfId = "@SelectedPidfId";
-</script>
+    </script>
 }
