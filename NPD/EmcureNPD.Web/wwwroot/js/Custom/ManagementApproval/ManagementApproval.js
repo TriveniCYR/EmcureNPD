@@ -72,8 +72,8 @@ function PBFtabClick() {
     $('#dvPBFCharter').removeClass('active');
 }
 
-function GetManagmentApprovalBatchSizeCoating(PidafId, encBuid) {
- ajaxServiceMethod($('#hdnBaseURL').val() + `api/PidfFinance/GetManagmentApprovalBatchSizeCoating/${PidafId}/${encBuid}`, 'GET', GetManagmentApprovalBatchSizeCoatingSuccess, GetManagmentApprovalBatchSizeCoatingError);
+function GetManagmentApprovalBatchSizeCoating(DycPidafId, encBuid) {
+    ajaxServiceMethod($('#hdnBaseURL').val() + GetManagmentApprovalBatchSizeCoatingURL+`/${DycPidafId}/${encBuid}`, 'GET', GetManagmentApprovalBatchSizeCoatingSuccess, GetManagmentApprovalBatchSizeCoatingError);
 
     function GetManagmentApprovalBatchSizeCoatingSuccess(data) {
         try {

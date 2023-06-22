@@ -854,9 +854,10 @@
   @*  <script src="~/js/plugins/html2canvas.js"></script>*@
 <script src="~/js/custom/managementapproval/managementapproval.js?v=@jsVersion"></script>
     <script src="~/js/custom/managementapproval/financechartercommon.js"></script>
-         
+             
 
 <script>
+        const GetManagmentApprovalBatchSizeCoatingURL = "@EmcureNPD.Web.Helpers.APIURLHelper.GetManagmentApprovalBatchSizeCoating";
         const GetActiveEncryptedBusinessUnit = "@EmcureNPD.Web.Helpers.APIURLHelper.GetActiveEncryptedBusinessUnit";
     const isView = "@Context.Request.Query["IsView"]";
     const ApproveRejectDeletePidf = "@EmcureNPD.Web.Helpers.APIURLHelper.ApproveRejectDeletePidf";

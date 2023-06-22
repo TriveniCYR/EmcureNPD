@@ -111,4 +111,43 @@ And B.PBFGeneralId = @PBFGeneralId
   
 select * from PIDF_PBF_Reference_Product_detail where BusinessUnitId = @BUId and  PIDFID = @PIDFID  
     
-END     
+END  
+
+go
+
+--  exec ProcGetCommercialPackSizeForManagmentApproval  83,16            
+                  
+alter  Proc [dbo].[ProcGetCommercialPackSizeForManagmentApproval] --135,16,5,2                        
+@PIDFId int=0,   
+@BusinessUnitId int=0   
+AS                        
+BEGIN                   
+            
+  declare @PIDFFinaceId as int
+  select @PIDFFinaceId = PIDFFinaceId from PIDF_Finance where PIDFId = @PIDFId
+  
+select  mps.PackSizeId,mps.PackSizeName, pc.PIDFProductStrengthId, strn.Strength [SkusName], batch.Marketinpacks,batch.EmcureCOGs_pack                    
+--,Convert(numeric(18,2),isnull(pcy.BrandPrice,0)) as BrandPrice                        
+--,Convert(numeric(18,2),isnull(pcy.GenericPrice,0)) as GenericPrice                        
+--,Convert(numeric(18,2),isnull(pcy.PriceDiscounting,0)) as PriceDiscounting                         
+--,Convert(numeric(18,2),ISNULL(pcy.SUIMSVolume,0)) as SUIMSVolume                        
+--,Convert(numeric(18,2),ISNULL(pcy.CommercialBatchSize,0)) as CommercialBatchSize                     
+,Convert(numeric(18,2),isnull(MarketSharePercentageLow,0)) As MarketSharePercentageLow                    
+,Convert(numeric(18,2),isnull(MarketSharePercentageMedium,0)) As MarketSharePercentageMedium                    
+,Convert(numeric(18,2),isnull(MarketSharePercentageHigh,0)) As MarketSharePercentageHigh                    
+,Convert(numeric(18,2),isnull(NSPUnitsLow,0)) As NSPUnitsLow                    
+,Convert(numeric(18,2),isnull(NSPUnitsMedium,0)) As NSPUnitsMedium                    
+,Convert(numeric(18,2),isnull(NSPUnitsHigh,0)) As NSPUnitsHigh                    
+from PIDF_Commercial as pc                        
+inner join Master_PackSize mps on mps.PackSizeId=pc.PackSizeId                        
+inner join PIDF_Commercial_Years as pcy on pcy.PIDFCommercialId=pc.PIDFCommercialId                
+inner join PIDF_Finance finance on finance.PIDFId = pc.PIDFId            
+inner join PIDF_Finance_BatchSizeCoating batch on batch.PIDFFinaceId = finance.PIDFFinaceId and batch.PakeSize =  pc.PackSizeId            
+inner join PIDFProductStrength strn on strn.PIDFProductStrengthId = batch.SKus and strn.PIDFProductStrengthId = pc.PIDFProductStrengthId         
+where finance.PIDFFinaceId=@PIDFFinaceId and pc.IsDeleted =0  and pcy.YearIndex =1 and pc.BusinessUnitId = @BusinessUnitId              
+                  
+select Expiries,AnnualConfirmatoryRelease,[Year] from PIDF_Finance_Projection projection            
+inner join PIDF p on p.PIDFID = projection.PIDFID and p.BusinessUnitId = projection.BusinessUnitId            
+where projection.PIDFFinaceId=@PIDFFinaceId order by [Year]                  
+                  
+END    
