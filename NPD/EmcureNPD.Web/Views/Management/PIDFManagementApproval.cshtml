@@ -619,11 +619,16 @@
                             <tr>
                                 <td colspan="2">
                                     Project Budget (<span>@CurrencyCode</span> Lacs)
+                                    
                                 </td>
                                 <td colspan="8">
-                                    @Model.lsProjectDetails[i].ProjectBudget
+                               
                                     @{
-                                        FinalTotal += Convert.ToDouble(@Model.lsProjectDetails[i].ProjectBudget);
+                                        double ProjectBudget = Convert.ToDouble(Model.lsProjectDetails[i].ProjectBudget) / 100000;
+                                        <span>@CurrencySymbol</span> @Math.Round(@ProjectBudget,2)
+                                    }                                    
+                                    @{
+                                        //FinalTotal += Convert.ToDouble(@Model.lsProjectDetails[i].ProjectBudget);
                                     }
                                 </td>
                             </tr>
