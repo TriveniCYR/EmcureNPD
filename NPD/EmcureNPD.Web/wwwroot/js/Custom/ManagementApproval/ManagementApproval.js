@@ -76,15 +76,17 @@ function GetManagmentApprovalBatchSizeCoating(DycPidafId, encBuid) {
     ajaxServiceMethod($('#hdnBaseURL').val() + GetManagmentApprovalBatchSizeCoatingURL+`/${DycPidafId}/${encBuid}`, 'GET', GetManagmentApprovalBatchSizeCoatingSuccess, GetManagmentApprovalBatchSizeCoatingError);
 
     function GetManagmentApprovalBatchSizeCoatingSuccess(data) {
-        try {
-            if (data.table.length > 0) {
-                $('#JsonCommercialData').val(JSON.stringify(data));
-                UpdateProjectionCommercial();
+        if (data != undefined) {
+            try {
+                if (data.table.length > 0) {
+                    $('#JsonCommercialData').val(JSON.stringify(data));
+                    UpdateProjectionCommercial();
+                }
             }
-        }
-        catch (e) {
-            toastr.error('Error:' + e.message);
-        }
+            catch (e) {
+                toastr.error('Error:' + e.message);
+            }
+        }       
     }
     function GetManagmentApprovalBatchSizeCoatingError() {
         toastr.error("Error");
@@ -117,11 +119,14 @@ function UpdateProjectionCommercial() {
     $('.AnnualConfirmatoryRtxtbox').prop('readonly', true);
 }
 function GetBatchSizeCostingTRValues() {
+    var Arr_FinanceTable_tr = [];
+  //JsonlsPidfFinanceBatchSizeCoating  var jsonBatcSizeData = $.parseJSON($('#JsonlsPidfFinanceBatchSizeCoating').val());
+    if ($('#JsonCommercialData').val() == '')
+        return Arr_FinanceTable_tr;
 
-  //JsonlsPidfFinanceBatchSizeCoating  var jsonBatcSizeData = $.parseJSON($('#JsonlsPidfFinanceBatchSizeCoating').val()); 
     var JsonCommercialData = $.parseJSON($('#JsonCommercialData').val()); 
     UpdateDynamicTextBoxValues(JsonCommercialData.table1);
-    var Arr_FinanceTable_tr = [];
+   
     jQuery.each(JsonCommercialData.table, function (index, item) {
 
         var trObj =
