@@ -1333,7 +1333,7 @@ function CreateAnalyticalTable(costData, data, activityTypeId) {
     var _testType = [];
 
     if (activityTypeId != 4) {
-        objectname += '<tr><td class="text-left text-bold bg-light" colspan="' + (6 + _strengthArray.length) + '">' + tableTitle + '</td>';
+        objectname += '<tr><td class="text-left text-bold bg-light" colspan="' + (4 + _strengthArray.length) + '">' + tableTitle + '</td>';
         for (var a = 0; a < _counter; a++) {
             if (data.length > 0) {
                 if (_testType.indexOf(data[a].testTypeId) !== -1) {
@@ -1342,7 +1342,7 @@ function CreateAnalyticalTable(costData, data, activityTypeId) {
             }
             objectname += '<tr  id="analyticalRow" class="analyticalactivity analyticalActivity' + (activityTypeId) + '" data-activitytypeid="' + activityTypeId + '">'
                 + '<td><select class="form-control readonlyUpdate AnalyticalTestTypeId"><option value = "" > --Select --</option ></select><input type="hidden" value="' + (data.length > 0 ? data[a].testTypeId : "") + '" /></td>'
-                + '<td><input type="number" class="form-control totalAnalytical analyticalNumberOfTest" min="0" value="' + (data.length > 0 ? data[a].numberoftests : "") + '"  /></td>'
+                + '<td style="display:none;"><input type="number" class="form-control totalAnalytical analyticalNumberOfTest" min="0" value="' + (data.length > 0 ? data[a].numberoftests : "") + '"  /></td>'
                /* + '<td><input type="text" class="form-control totalAnalytical analyticalPrototypeDevelopment" value="' + (data.length > 0 ? data[a].prototypeDevelopment : "") + '"  /></td>'*/
                 + '<td><input type="number" class="form-control totalAnalytical analyticalRsTest" min="0" value="' + (data.length > 0 ? data[a].costPerTest : "") + '"  /></td>'
             for (var i = 0; i < _strengthArray.length; i++) {
@@ -1355,17 +1355,15 @@ function CreateAnalyticalTable(costData, data, activityTypeId) {
             }
         }
 
-        objectname += "<tr class='analyticalActivity" + activityTypeId + "Total' data-activitytypeid='" + activityTypeId + "'><td class='text-bold'>Total Cost</td><td></td><td></td><td></td>";
+        objectname += "<tr class='analyticalActivity" + activityTypeId + "Total' data-activitytypeid='" + activityTypeId + "'><td class='text-bold'>Total Cost</td><td></td>";
         for (var i = 0; i < _strengthArray.length; i++) {
             objectname += "<td data-strengthid='" + _strengthArray[i].pidfProductStrengthId + "'>" + _currencySymbol + "<input type='text' class='form-control calcTotalCostForStrengthAnalytical' readonly='readonly' tabindex=-1 /></td>";
         }
         objectname += "<td>" + _currencySymbol + "<input type='text' class='form-control calcTotalCostForAnalytical" + activityTypeId + "' readonly='readonly' tabindex=-1 /></td><td></td>";
         objectname += "</tr>";
     } else {
-        objectname += '<tr><td class="text-left text-bold bg-light" colspan="' + (6 + _strengthArray.length) + '">' + tableTitle + '</td>';
+        objectname += '<tr><td class="text-left text-bold bg-light" colspan="' + (4 + _strengthArray.length) + '">' + tableTitle + '</td>';
         objectname += '<tr  id="analyticalRow" class="analyticalactivity analyticalActivity' + (activityTypeId) + '" data-activitytypeid="' + activityTypeId + '">'
-            + '<td></td>'
-            + '<td></td>'
             + '<td><input type="text" class="form-control analyticalTotalAMVTitle" id="AnalyticalAMVCosts.TotalAmvtitle" name="AnalyticalAMVCosts.TotalAmvtitle" placeholder="" value="' + (costData.length > 0 ? (costData[0].totalAMVTitle == null ? "" : costData[0].totalAMVTitle) : "") + '" /></td>'
             + '<td>' + _currencySymbol + '<input type="number" class="form-control analyticalTotalAMVCost" min="0" id="AnalyticalAMVCosts.TotalAmvcost" name="AnalyticalAMVCosts.TotalAmvcost"  placeholder="" value="' + (costData.length > 0 ? costData[0].totalAMVCost : "") + '"  /></td>'
         for (var i = 0; i < _strengthArray.length; i++) {
@@ -1382,7 +1380,7 @@ function CreateAnalyticalTable(costData, data, activityTypeId) {
 function BindAnalytical(data, costData) {
     var analyticalactivityHTML = '<thead class="bg-primary text-bold"><tr>'
         + '<td>Test Type</td>'
-        + '<td>Number of sample</td>'
+        + '<td style="display:none;">Number of sample</td>'
        /* + '<td>Prototype Development</td>'*/
         + '<td>Rs /test</td>'
     $.each(_strengthArray, function (index, item) {
@@ -1394,13 +1392,13 @@ function BindAnalytical(data, costData) {
         analyticalactivityHTML += CreateAnalyticalTable(costData, $.grep(data, function (n, x) { return n.activityTypeId == i; }), i);
     }
 
-    analyticalactivityHTML += '<tr class="calcTotalCostAnalyticalRow"><td colspan="4" class="text-bold">Total Cost</td>';
+    analyticalactivityHTML += '<tr class="calcTotalCostAnalyticalRow"><td colspan="2" class="text-bold">Total Cost</td>';
     $.each(_strengthArray, function (index, item) {
         analyticalactivityHTML += "<td data-strengthid='" + item.pidfProductStrengthId + "'>" + _currencySymbol + "<input type='text' class='form-control calcTotalCostForAnalytical' readonly='readonly' tabindex=-1/></td>";
     });
     analyticalactivityHTML += "<td>" + _currencySymbol + "<input type='text' class='form-control AnalyticalFinalTotal' readonly='readonly' tabindex=-1 /><td></td></tr></tbody>";
 
-    analyticalactivityHTML += '<tr><td colspan="' + (6 + _strengthArray.length) + '"><label style="vertical-align: top;margin-right: 10px;">Remark</label><textarea id="remark" class="form-control" id="AnalyticalAMVCosts.Remark" name="AnalyticalAMVCosts.Remark" maxlength="500" placeholder="Remark">' + (costData.length > 0 ? (costData[0].remark == null ? "" : costData[0].remark) : "") + '</textarea></td> </tr>';
+    analyticalactivityHTML += '<tr><td colspan="' + (4 + _strengthArray.length) + '"><label style="vertical-align: top;margin-right: 10px;">Remark</label><textarea style="width:90% !important;" id="remark" class="form-control" id="AnalyticalAMVCosts.Remark" name="AnalyticalAMVCosts.Remark" maxlength="500" placeholder="Remark">' + (costData.length > 0 ? (costData[0].remark == null ? "" : costData[0].remark) : "") + '</textarea></td> </tr>';
 
     $('#tableanalytical').html(analyticalactivityHTML);
 
@@ -2252,7 +2250,7 @@ function CreateRNDManPowerCostTable(data) {
     var bioStudyTypeId = 1;
     var objectname = "";
 
-    objectname += '<tr><td class="text-left text-bold bg-light" colspan="' + (3 + _strengthArray.length + 1) + '">Project Activities</td></tr>';
+    objectname += '<tr><td class="text-left text-bold bg-light" colspan="' + (3 + _strengthArray.length + 1) + '"></td></tr>';
     var _counter = (data.length == 0 ? 1 : data.length);
     var _projectActivities = [];
     for (var a = 0; a < _counter; a++) {
@@ -2298,7 +2296,7 @@ function CreateRNDManPowerCostTable(data) {
     return objectname;
 }
 function BindRNDManPowerCost(data) {
-    var RPDHTML = '<thead class="bg-primary text-bold"><tr><td>Duration in days </td><td>Project Activities </td><td>Man Power in days </td>';
+    var RPDHTML = '<thead class="bg-primary text-bold"><tr><td>Number Of Days </td><td>Project Activities </td><td>Number Of Manpower </td>';
     $.each(_strengthArray, function (index, item) {
         RPDHTML += '<td>' + getStrengthName(item.pidfProductStrengthId) + '</td>';
     });
