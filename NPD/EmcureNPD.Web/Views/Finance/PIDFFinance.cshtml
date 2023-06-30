@@ -1028,6 +1028,7 @@
                                     string dbNetRealisation="NetRealisation"+@j;
                                     string dbEstMat2020By12units="EstMat2020By12units"+@j;
                                     string dbMarketinpacks="Marketinpacks"+@j;
+										string dbBatchsizeinLtrTabs = "BatchsizeinLtrTabs" + @j;
                                         <tr id="financeDetailsRow_0">
 									    <td>
                                                 <select id="@dbSkubalue" name="lsPidfFinanceBatchSizeCoating[@j].Skus" style="width: 100px;" value="@item.Skus" class="Skus DbSkus form-control readOnlyUpdate" onchange="getPackSize(this);" required>
@@ -1055,8 +1056,8 @@
 									     
 									     @*<td><input type="number" id="Cagrover2016By12estMatunits" name="lsPidfFinanceBatchSizeCoating[@j].Cagrover2016By12estMatunits" value="@item.Cagrover2016By12estMatunits"  class="Cagrover2016By12estMatunits form-control readOnlyUpdate" /></td>*@
 									     <td><input type="text" id="@dbMarketinpacks" readonly="readonly" name="lsPidfFinanceBatchSizeCoating[@j].Marketinpacks" value="@item.Marketinpacks"  class="Marketinpacks form-control readOnlyUpdate" /></td>
-											<td><input type="number"  id="BatchsizeinLtrTabs" name="lsPidfFinanceBatchSizeCoating[@j].BatchsizeinLtrTabs" value="@item.BatchsizeinLtrTabs" onchange="calculateBatchSizeCaoting(this);" class="BatchsizeinLtrTabs form-control readOnlyUpdate" /></td>
-									
+											@*<td><input type="number"  id="BatchsizeinLtrTabs"	name="lsPidfFinanceBatchSizeCoating[@j].BatchsizeinLtrTabs" value="@item.BatchsizeinLtrTabs" onchange="calculateBatchSizeCaoting(this);" class="BatchsizeinLtrTabs form-control readOnlyUpdate" /></td>*@
+											<td><input type="number" id="@dbBatchsizeinLtrTabs" name="lsPidfFinanceBatchSizeCoating[@j].BatchsizeinLtrTabs" value="@item.BatchsizeinLtrTabs" onchange="calculateBatchSizeCaoting(this);" class="BatchsizeinLtrTabs form-control readOnlyUpdate" /></td>
 
 									    <td>
 
@@ -1108,7 +1109,8 @@
                                     string dbGenericListprice="GenericListprice"+@j;
                                     string dbNetRealisation="NetRealisation"+@j;
                                     string dbEstMat2020By12units="EstMat2020By12units"+@j;
-                                     string dbMarketinpacks="Marketinpacks"+@j;
+                                    string dbMarketinpacks="Marketinpacks"+@j;
+									string dbBatchsizeinLtrTabs="BatchsizeinLtrTabs"+@j; 
 							<tr id="financeDetailsRow_@j">
 								
 									<td>
@@ -1136,8 +1138,8 @@
 									    
 									    @*<td><input type="number" id="Cagrover2016By12estMatunits" name="lsPidfFinanceBatchSizeCoating[@j].Cagrover2016By12estMatunits" class="Cagrover2016By12estMatunits form-control readOnlyUpdate" required /></td>*@
                                         <td><input type="text" id="@dbMarketinpacks" readonly="readonly" name="lsPidfFinanceBatchSizeCoating[@j].Marketinpacks" class="Marketinpacks form-control readOnlyUpdate" required /></td>
-                                        <td><input type="number" id="BatchsizeinLtrTabs" name="lsPidfFinanceBatchSizeCoating[@j].BatchsizeinLtrTabs" onchange="calculateBatchSizeCaoting(this);" class="BatchsizeinLtrTabs form-control readOnlyUpdate"  /></td>
-									<td>
+										<td><input type="number" id="@dbBatchsizeinLtrTabs" name="lsPidfFinanceBatchSizeCoating[@j].BatchsizeinLtrTabs" onchange="calculateBatchSizeCaoting(this);" class="BatchsizeinLtrTabs form-control readOnlyUpdate" /></td>
+										<td>
 										<input type="number" id="Batchsize" name="lsPidfFinanceBatchSizeCoating[@j].Batchsize" class="Batchsize form-control readOnlyUpdate" required />
 									</td> 
 									<td>
