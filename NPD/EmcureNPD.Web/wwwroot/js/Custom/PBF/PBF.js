@@ -1216,9 +1216,11 @@ function SavePBFForm(_SaveType) {
         //toastr.error(abc.toString());
         $('#loading-wrapper').show();
     }
-    setlicense();
-    SetRNDChildRows();
+    setlicense();    
     SetAnalyticalChildRows();
+    SetPhaseWiseBudget();
+    SetHeadWiseBudget();
+    SetRNDChildRows();
     $('#AddPBFForm').find('#SaveType').val(_SaveType);
     return false;
 }
