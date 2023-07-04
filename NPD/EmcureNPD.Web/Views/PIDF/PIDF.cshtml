@@ -238,7 +238,7 @@
                     @Html.ValidationMessageFor(model => model.PIDFNO, "", new { @class = "text-danger" })
                 </div>
             </div>
-            <div class="col-md-4" style="display:none">
+            <div class="col-md-4">
                 <div class="form-group required">
                     <label class="control-label">In house</label> <span class="text-danger">*</span>
                     <input type="hidden" id="hdnInhouseDropdownId" value="@(true ? "1" : "2")" checked="@(Model.InHouses ? "checked" : "")" />
@@ -265,7 +265,7 @@
             </div>
 
         </div>
-        @*<div class="row">
+        <div class="row">
             <div class="col-12">
                 <div class="card">
                     <div class="card-header bg-primary">
@@ -299,82 +299,89 @@
                                     }
                                     if (flagapi)
                                     {
-                                         int j = 0;
-                                    <tr id="apiDetailsRow_@j">
+                                        var k = Convert.ToInt32(0);
+                                       // var selectName = Model.pidfApiDetailEntities[k].ApisourcingId;
+                                        <tr id="apiDetailsRow_@k">
                                         <td>
                                             <div class="col-md">
                                                 <div class="form-group required">
-                                                    @Html.EditorFor(model => model.pidfApiDetailEntities[j].Apiname, new {@required="required", htmlAttributes = new { @autocomplete = "off", @class = "form-control checkbox-checked", @placeholder = @MasterLocalizer["API Name"] } })
-                                                    @Html.ValidationMessageFor(model => model.pidfApiDetailEntities[j].Apiname, "", new { @class = "text-danger" })
+                                                        <input autocomplete="off" class="form-control checkbox-checked text-box single-line" id="pidfApiDetailEntities_0__Apiname" name="pidfApiDetailEntities[0].Apiname" placeholder="API Name" type="text" value="">
+                                                   
+                                                        @Html.ValidationMessageFor(model => model.pidfApiDetailEntities[Convert.ToInt32(0)].Apiname, "", new { @class = "text-danger" })
                                                 </div>
                                             </div>
                                         </td>
                                         <td>
                                             <div class="col-md">
                                                 <div class="form-group required">
-                                                    <select id="apiSourcingData_@j" name="pidfApiDetailEntities[@j].ApisourcingId" class="form-control readOnlyUpdate productApiSourcing" required></select>
-                                                    @Html.ValidationMessageFor(model => model.pidfApiDetailEntities[j].ApisourcingId, "", new { @class = "text-danger" })
+
+                                                        <select id="apiSourcingData_@k" name="pidfApiDetailEntities[0].ApisourcingId" class="form-control readOnlyUpdate productApiSourcing" required></select>
+                                                        @Html.ValidationMessageFor(model => model.pidfApiDetailEntities[Convert.ToInt32(0)].ApisourcingId, "", new { @class = "text-danger" })
                                                 </div>
                                             </div>
                                         </td>
                                         <td>
                                             <div class="col-md">
                                                 <div class="form-group required">
-                                                    @Html.EditorFor(model => model.pidfApiDetailEntities[j].Apivendor, new { htmlAttributes = new {@required="required", @autocomplete = "off", @class = "form-control checkbox-checked", @placeholder = @MasterLocalizer["API Vendor"] } })
-                                                    @Html.ValidationMessageFor(model => model.pidfApiDetailEntities[j].Apivendor, "", new { @class = "text-danger" })
+                                                        <input autocomplete="off" class="form-control checkbox-checked text-box single-line" id="pidfApiDetailEntities_0__Apivendor" name="pidfApiDetailEntities[0].Apivendor" placeholder="API Vendor" type="text" value="">
+                                                       
+                                                    @Html.ValidationMessageFor(model => model.pidfApiDetailEntities[Convert.ToInt32(0)].Apivendor, "", new { @class = "text-danger" })
                                                 </div>
                                             </div>
                                         </td>
                                         <td>
                                             <div class="col-md">
                                                 <div class="form-group">
-                                                    <i class="fa-solid fa-circle-plus nav-icon text-success operationButton" id="addIconAPI_@j" onclick="addRowApiDetails(@j)"></i>
+                                                    <i class="fa-solid fa-circle-plus nav-icon text-success operationButton" id="addIconAPI_@k" onclick="addRowApiDetails(@k)"></i>
                                                     &nbsp;&nbsp;&nbsp;&nbsp;
-                                                    <span><i class="fa-solid fa-trash nav-icon text-red apiDeleteIcon operationButton" id="deleteIconAPI_@j" onclick="deleteRowApiDetails(@j, this)"></i></span>
-                                                    @Html.HiddenFor(model => model.pidfApiDetailEntities[j].Pidfid, new { id = "pidfApiDetailEntities[" + j + "].Pidfid"})
+                                                    <span><i class="fa-solid fa-trash nav-icon text-red apiDeleteIcon operationButton" id="deleteIconAPI_@k" onclick="deleteRowApiDetails(@k, this)"></i></span>
+
+                                                        <input data-val="true" data-val-required="The Pidfid field is required." id="pidfApiDetailEntities[0].Pidfid" name="pidfApiDetailEntities[0].Pidfid" type="hidden" value="">
                                                 </div>
                                             </div>
                                         </td>
-                                    </tr>
+                                        </tr>
                                     }
                                     else
-                                    {
-                                         for (int j = 0; j < Model.pidfApiDetailEntities.Count(); j++)
+                                    { if (Model.pidfApiDetailEntities != null)
                                         {
-                                            <tr id="apiDetailsRow_@j">
-                                                <td>
-                                                    <div class="col-md">
-                                                        <div class="form-group required">
-                                                            @Html.EditorFor(model => Model.pidfApiDetailEntities[j].Apiname, new { htmlAttributes = new { @required="required",@autocomplete = "off", @class = "form-control checkbox-checked", @placeholder = @MasterLocalizer["API Name"] } })
+                                            for (int j = 0; j < Model.pidfApiDetailEntities.Count(); j++)
+                                            {
+                                                <tr id="apiDetailsRow_@j">
+                                                    <td>
+                                                        <div class="col-md">
+                                                            <div class="form-group required">
+                                                                @Html.EditorFor(model => Model.pidfApiDetailEntities[j].Apiname, new { htmlAttributes = new { @required="required",@autocomplete = "off", @class = "form-control checkbox-checked", @placeholder = @MasterLocalizer["API Name"] } })
+                                                            </div>
                                                         </div>
-                                                    </div>
-                                                </td>
-                                                <td>
-                                                    <div class="col-md">
-                                                        <div class="form-group required">
-                                                            <input type="hidden" id="hdnAPISourcing" value="@Model.pidfApiDetailEntities[j].ApisourcingId" />
-                                                            <select id="apiSourcingData_0" name="pidfApiDetailEntities[@j].ApisourcingId" class="form-control readOnlyUpdate productApiSourcing" required></select>
-                                                            @Html.ValidationMessageFor(model => model.pidfApiDetailEntities[j].ApisourcingId, "", new { @class = "text-danger" })
+                                                    </td>
+                                                    <td>
+                                                        <div class="col-md">
+                                                            <div class="form-group required">
+                                                                <input type="hidden" id="hdnAPISourcing" value="@Model.pidfApiDetailEntities[j].ApisourcingId" />
+                                                                <select id="apiSourcingData_0" name="pidfApiDetailEntities[@j].ApisourcingId" class="form-control readOnlyUpdate productApiSourcing" required></select>
+                                                                @Html.ValidationMessageFor(model => model.pidfApiDetailEntities[j].ApisourcingId, "", new { @class = "text-danger" })
+                                                            </div>
                                                         </div>
-                                                    </div>
-                                                </td>
-                                                <td>
-                                                    <div class="col-md">
-                                                        <div class="form-group required">
-                                                            @Html.EditorFor(model => model.pidfApiDetailEntities[j].Apivendor, new { htmlAttributes = new { @required="required", @autocomplete = "off", @class = "form-control checkbox-checked", @placeholder = @MasterLocalizer["API Vendor"] } })
+                                                    </td>
+                                                    <td>
+                                                        <div class="col-md">
+                                                            <div class="form-group required">
+                                                                @Html.EditorFor(model => model.pidfApiDetailEntities[j].Apivendor, new { htmlAttributes = new { @required="required", @autocomplete = "off", @class = "form-control checkbox-checked", @placeholder = @MasterLocalizer["API Vendor"] } })
+                                                            </div>
                                                         </div>
-                                                    </div>
-                                                </td>
-                                                <td>
-                                                    <div class="col-md">
-                                                        <div class="form-group">
-                                                            <i class="fa-solid fa-circle-plus nav-icon text-success operationButton" id="addIconAPI_@j" onclick="addRowApiDetails(@j)"></i>
-                                                            &nbsp;&nbsp;&nbsp;&nbsp;
-                                                            <span><i class="fa-solid fa-trash nav-icon text-red apiDeleteIcon operationButton" id="deleteIconAPI_@j" onclick="deleteRowApiDetails(@j, this)"></i></span>
+                                                    </td>
+                                                    <td>
+                                                        <div class="col-md">
+                                                            <div class="form-group">
+                                                                <i class="fa-solid fa-circle-plus nav-icon text-success operationButton" id="addIconAPI_@j" onclick="addRowApiDetails(@j)"></i>
+                                                                &nbsp;&nbsp;&nbsp;&nbsp;
+                                                                <span><i class="fa-solid fa-trash nav-icon text-red apiDeleteIcon operationButton" id="deleteIconAPI_@j" onclick="deleteRowApiDetails(@j, this)"></i></span>
+                                                            </div>
                                                         </div>
-                                                    </div>
-                                                </td>
-                                            </tr>
+                                                    </td>
+                                                </tr>
+                                            }
                                         }
                                     }
 
@@ -385,10 +392,10 @@
                 </div>
 
             </div>
-        </div>*@
+        </div>
 
         @* -----start Reference Product Detail------------------------------*@
-       @* <div class="row">
+       <div class="row">
             <div class="col-12">
                 <div class="card">
                     <div class="card-header bg-primary">
@@ -470,7 +477,7 @@
                 </div>
 
             </div>
-        </div>*@
+        </div>
 
         <div style="display: none;">
             <div class="col-md-3">

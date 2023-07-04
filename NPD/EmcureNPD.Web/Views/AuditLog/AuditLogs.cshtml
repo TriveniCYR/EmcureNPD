@@ -56,12 +56,16 @@
 	<script type="text/javascript" src="~/js/Custom/AuditLog/AuditLog.js?v=@jsVersion"></script>
 	<script src="~/js/jstree.min.js"></script>
 	<link rel="stylesheet" href="~/css/style.min.css" />
+	<link rel="stylesheet" href="~/AdminLTE/plugins/select2/css/select2.min.css" />
+	<script type="text/javascript" src="~/AdminLTE/plugins/select2/js/select2.full.min.js"></script>
+	<script type="text/javascript" src="~/js/Custom/SelectAllAdaptor.js?v=@jsVersion"></script>
 	<script>
 		//#region Static Label
 		var AllAuditLog = "@EmcureNPD.Web.Helpers.APIURLHelper.GetAllAuditlog";
 		var DeleteLabel = "@SharedLocalizer["Delete"]";
 		var ErrorMessage = "@SharedLocalizer["Error"]";
 		var RecordDelete = "@SharedLocalizer["RecordDelete"]";
+		const GetAllPBF = "@EmcureNPD.Web.Helpers.APIURLHelper.GetPBFDropdown";
 																	//#endregion
 	</script>
 

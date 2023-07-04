@@ -144,9 +144,19 @@ namespace EmcureNPD.Utility.Audit
                 }     
                 else if (!(Convert.ToString(E1_val).Equals(Convert.ToString(E2_val))))
                 {
-                    auditlogList.Add(new AuditLog { OldValue = Convert.ToString(E1_val), NewValue = Convert.ToString(E2_val), PropertyName = propObj1.Name, DisplayName = propObj1.Name });
-                     flag = false;
-                    match = flag;
+                    try
+                    {
+						auditlogList.Add(new AuditLog { OldValue = Convert.ToString(E1_val), NewValue = Convert.ToString(E2_val), PropertyName = propObj1.Name, DisplayName = propObj1.Name });
+						flag = false;
+						match = flag;
+					}
+                    catch (Exception ex)
+                    {
+
+                        
+                    }
+                    
+                    
                 }
             }
            var Comareobj = auditlogList;            

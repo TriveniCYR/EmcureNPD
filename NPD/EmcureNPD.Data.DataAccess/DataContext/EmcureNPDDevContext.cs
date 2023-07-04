@@ -81,6 +81,7 @@ namespace EmcureNPD.Data.DataAccess.DataContext
         public virtual DbSet<MasterUserCountryMapping> MasterUserCountryMappings { get; set; }
         public virtual DbSet<MasterUserDepartmentMapping> MasterUserDepartmentMappings { get; set; }
         public virtual DbSet<MasterUserRegionMapping> MasterUserRegionMappings { get; set; }
+        public virtual DbSet<MasterWishListType> MasterWishListTypes { get; set; }
         public virtual DbSet<MasterWorkflow> MasterWorkflows { get; set; }
         public virtual DbSet<Pidf> Pidfs { get; set; }
         public virtual DbSet<PidfApiCharter> PidfApiCharters { get; set; }
@@ -139,6 +140,7 @@ namespace EmcureNPD.Data.DataAccess.DataContext
         public virtual DbSet<ProjectTask> ProjectTasks { get; set; }
         public virtual DbSet<RoleModulePermission> RoleModulePermissions { get; set; }
         public virtual DbSet<TblSessionManager> TblSessionManagers { get; set; }
+        public virtual DbSet<TblWishList> TblWishLists { get; set; }
         public virtual DbSet<UserSessionLogMaster> UserSessionLogMasters { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
@@ -1173,6 +1175,28 @@ namespace EmcureNPD.Data.DataAccess.DataContext
                     .HasForeignKey(d => d.UserId)
                     .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("FK_Master_UserRegionMapping_Master_User");
+            });
+
+            modelBuilder.Entity<MasterWishListType>(entity =>
+            {
+                entity.HasKey(e => e.WishListTypeId)
+                    .HasName("PK__Master_W__15F0A6D83940699C");
+
+                entity.ToTable("Master_WishListType", "dbo");
+
+                entity.Property(e => e.CreatedOn)
+                    .HasColumnType("datetime")
+                    .HasDefaultValueSql("(getdate())");
+
+                entity.Property(e => e.DeletedOn).HasColumnType("datetime");
+
+                entity.Property(e => e.IsActive)
+                    .IsRequired()
+                    .HasDefaultValueSql("((1))");
+
+                entity.Property(e => e.UpdatedOn).HasColumnType("datetime");
+
+                entity.Property(e => e.WishListTyp).HasMaxLength(50);
             });
 
             modelBuilder.Entity<MasterWorkflow>(entity =>
@@ -3054,6 +3078,45 @@ namespace EmcureNPD.Data.DataAccess.DataContext
                     .HasForeignKey(d => d.UserId)
                     .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("FK_Tbl_SessionManager_Master_User");
+            });
+
+            modelBuilder.Entity<TblWishList>(entity =>
+            {
+                entity.HasKey(e => e.WishListId)
+                    .HasName("PK__Tbl_Wish__E41F87876701DC93");
+
+                entity.ToTable("Tbl_WishList", "dbo");
+
+                entity.Property(e => e.CreatedOn)
+                    .HasColumnType("datetime")
+                    .HasDefaultValueSql("(getdate())");
+
+                entity.Property(e => e.DateOfApproval).HasColumnType("datetime");
+
+                entity.Property(e => e.DateOfFiling).HasColumnType("datetime");
+
+                entity.Property(e => e.DeletedOn).HasColumnType("datetime");
+
+                entity.Property(e => e.IsActive)
+                    .IsRequired()
+                    .HasDefaultValueSql("((1))");
+
+                entity.Property(e => e.IsInhouseOrInLicensed)
+                    .HasMaxLength(20)
+                    .IsUnicode(false)
+                    .IsFixedLength(true);
+
+                entity.Property(e => e.MoleculeName).HasMaxLength(100);
+
+                entity.Property(e => e.NameofVendor).HasMaxLength(100);
+
+                entity.Property(e => e.ReferenceDrugProduct).HasMaxLength(200);
+
+                entity.Property(e => e.Strength).HasMaxLength(50);
+
+                entity.Property(e => e.UpdatedOn).HasColumnType("datetime");
+
+                entity.Property(e => e.VendorEvaluationRemark).HasMaxLength(50);
             });
 
             modelBuilder.Entity<UserSessionLogMaster>(entity =>
