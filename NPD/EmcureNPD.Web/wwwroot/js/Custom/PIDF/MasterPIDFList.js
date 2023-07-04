@@ -379,7 +379,8 @@ function CustomizeChildContent(d) {
     }
 
     return (
-        '<table class="custom-table-child"><thead><tr><th>Strength</th><th>Unit</th></tr></thead><tbody>' + _psHTML + '</tbody></table><table class="custom-table-child"><thead><tr><th>API Name</th><th>Sourcing Name</th><th>Vendor</th></tr></thead><tbody>' + _paHTML + '</tbody></table><table class="custom-table-child"><thead><tr><th>Status</th><th>Remark</th><th>Date</th><th>By</th></tr></thead><tbody>' + _phHTML + '</tbody></table>'
+        '<table class="custom-table-child"><thead><tr><th>Strength</th><th>Unit</th></tr></thead><tbody>' + _psHTML + '</tbody></table><table class="custom-table-child"><thead><tr><th>Status</th><th>Remark</th><th>Date</th><th>By</th></tr></thead><tbody>' + _phHTML + '</tbody></table>'
+       // < table class="custom-table-child" ><thead><tr><th>API Name</th><th>Sourcing Name</th><th>Vendor</th></tr></thead><tbody>' + _paHTML + '</tbody></table >
     );
 }
 

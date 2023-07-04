@@ -23,7 +23,7 @@
             _SalesBeginYear = _ProjectLaunchDate.getFullYear() + 1;
         }
 
-        html += '<thead class="bg-light">';
+        html += '<thead class="bg-primary">';
         html += '<tr><th colspan="4">Commercials per pack</th><th></th>';
         var counter = 0;
         for (var i = 0; i < 10; i++) {
@@ -163,23 +163,23 @@
             html += "</tr>";
         });
         /* -----------Grand SUM-Rows--------------------*/
-        html += "<tr><td></td></tr>";
+        html += "<tr><td>&nbsp</td></tr>";
         /*---------------Sales------------------------------*/
-        html += "<tr class='SumOfSales bg-light'><td></td><td></td><td></td><td></td><td>Sales</td>";
+        html += "<tr class='SumOfSales bg-lightgreen'><td></td><td></td><td></td><td></td><td><b>Sales</b></td>";
         for (var i = 0; i < 10; i++) {
             let result = SumOfSales[i];
             result = isNaN(result) ? 0 : result; html += "<td>" + result.toFixed(3) + "</td>";
         }
         html += "</tr>";
         /*---------------COGS--------------------------*/
-        html += "<tr class='SumOfCOGS bg-light'><td></td><td></td><td></td><td></td><td>COGS</td>";
+        html += "<tr class='SumOfCOGS bg-lightgreen'><td></td><td></td><td></td><td></td><td><b>COGS</b></td>";
         for (var i = 0; i < 10; i++) {
             let result = SumOfCOGS[i];
             result = isNaN(result) ? 0 : result; html += "<td>" + result.toFixed(3) + "</td>";
         }
         html += "</tr>";
         /*-----------------GC------------------------*/
-        html += "<tr class='SumOfGC bg-light'><td></td><td></td><td></td><td></td><td>GC</td>";
+        html += "<tr class='SumOfGC bg-lightgreen'><td></td><td></td><td></td><td></td><td><b>GC</b></td>";
         for (var i = 0; i < 10; i++) {
             let result = SumOfGC[i];
             result = isNaN(result) ? 0 : result; html += "<td>" + result.toFixed(3) + "</td>";
@@ -220,7 +220,7 @@ function RenderFinanceProjection() {
         }
 
 
-        html += '<thead class="bg-light">';
+        html += '<thead class="bg-primary">';
         html += '<tr><th colspan="3">Finance Projection</th>';
         var counter = 0;
         for (var i = 0; i < 10; i++) {
@@ -255,34 +255,34 @@ function RenderFinanceProjection() {
         $('#tblFinanceProjection').html(html);
         var SumOfGrossSales = SumOfSales;
         /*---------------Gross Sales--------------------------*/
-        html += "<tr class='bg-light'><td colspan='3'>Gross Sales</td>";
+        html += "<tr class=''><td colspan='3'>Gross Sales</td>";
         for (var i = 0; i < 10; i++) {
             let result = SumOfGrossSales[i];
             result = isNaN(result) ? 0 : result; html += "<td>" + result.toFixed(3) + "</td>";
         }
         html += "</tr>";
         /*---------------Net Sales--------------------------*/
-        html += "<tr class='bg-light'><td colspan='3' >Net Sales</td>";
+        html += "<tr class='bg-light'><td colspan='3' ><b>Net Sales</b></td>";
         for (var i = 0; i < 10; i++) {
             let result = SumOfSales[i];
             result = isNaN(result) ? 0 : result; html += "<td>" + result.toFixed(3) + "</td>";
         }
         /*------------[COGS]-Cost of goods sold--------------------------*/
-        html += "<tr class=''><td colspan='3' >Cost of goods sold</td>";
+        html += "<tr class='bg-light'><td colspan='3' ><b><b>Cost of goods sold</b></td>";
         for (var i = 0; i < 10; i++) {
             let result = SumOfCOGS[i];
             result = isNaN(result) ? 0 : result; html += "<td>" + result.toFixed(3) + "</td>";
         }
         html += "</tr>";
         /*---------------Expiries-----------------------*/
-        html += "<tr class='Expiries'><td colspan='3' >Expiries</td>";
+        html += "<tr class='Expiries'><td colspan='3' ><b>Expiries</b></td>";
         for (var i = 0; i < 10; i++) {
             html += "<td> <input onchange='ExpiriesValueChange(this," + i + ");' type='number' name='" + Global_Projection_Year_data[i] + "' value='" + Expiries_Yearwise_Data[i] + "' class='form-control Expiriestxtbox UpdateProjectionCommercial' id='ProjectionExpiries_" + i + "' > </td>";
         }
         html += "</tr>";
         /*-----------[GC]-Gross margin--------------------------*/
         var GC_Projection = [];
-        html += "<tr class='lblHeading'><td colspan='3' >Gross margin</td>";
+        html += "<tr class='lblHeading'><td colspan='3' ><b>Gross margin</b></td>";
         for (var i = 0; i < 10; i++) {
             let result = SumOfSales[i] - (SumOfCOGS[i] + formatToNumber(Expiries_Yearwise_Data[i], true));
             result = (isNaN(result) ? 0 : result)
@@ -301,8 +301,7 @@ function RenderFinanceProjection() {
             CGPercentage.push(result);
         }
         html += "</tr>";
-        html += "<tr class='lblHeading bg-light'><td colspan='13' >Expenses as defined as per profit share agreement</td>";
-
+        html += "<tr class='lblHeading txtColor-limegreen emptyRow'><td><b>Expenses as defined as per profit share agreement</b></td><td colspan='12' ></td></tr>";
         /*-----------MA Annual fees--------------------------*/
         var Marketing_Allowance_Value = formatToNumber($('#MarketingAllowance').val()) / 100; // G20
         html += "<tr class='lblHeading'><td colspan='3' >MA Annual fees</td>";
@@ -329,7 +328,7 @@ function RenderFinanceProjection() {
         html += "</tr>";
         /*----------- EBITDA - before Profit share--------------------------*/
         var EBITDA_projection = [];
-        html += "<tr class='lblHeading'><td colspan='3' > EBITDA - before Profit share</td>";
+        html += "<tr class='lblHeading'><td colspan='3' > <b> EBITDA - before Profit share</b></td>";
         for (var i = 0; i < 10; i++) {
             let result = GC_Projection[i] - ((Marketing_Allowance_Value * SumOfGrossSales[i]) + formatToNumber(AnnualConfirmatoryRelease_Data[i], true) + (Opexasapercenttosale * SumOfGrossSales[i]))
             EBITDA_projection.push(result);
@@ -349,14 +348,14 @@ function RenderFinanceProjection() {
         html += "</tr>";
         /*-----------Profit Share--------------------------*/
         var Profit_Share_Value = formatToNumber($('#ExternalProfitSharepercent').val()) / 100; // G16
-        html += "<tr class='lblHeading'><td colspan='3' > Profit Share</td>";
+        html += "<tr class='lblHeading'><td colspan='3' > <b>Profit Share</b></td>";
         for (var i = 0; i < 10; i++) {
             let result = EBITDA_projection[i] * Profit_Share_Value;
             result = isNaN(result) ? 0 : result;
             html += "<td>" + result.toFixed(3) + "</td>";
         }
         html += "</tr>";
-        html += "<tr class='lblHeading bg-light emptyRow'><td colspan='13' ></td>";
+        html += "<tr class='lblHeading bg-light emptyRow'><td colspan='13' >&nbsp</td>";
         /*-----------MA Annual fees--------------------------*/
         //var Marketing_Allowance_Value = $('#MarketingAllowance').val(); // G20
         //html += "<tr class='lblHeading'><td colspan='3' >MA Annual fees</td>";
@@ -367,7 +366,7 @@ function RenderFinanceProjection() {
         html += "</tr>";
         /*-----------Net Income - PBT--------------------------*/
         var Net_Income_PBT_projection_data = [];
-        html += "<tr class='lblHeading'><td colspan='3' > Net Income - PBT</td>";
+        html += "<tr class='lblHeading'><td colspan='3' ><b> Net Income - PBT</b></td>";
         for (var i = 0; i < 10; i++) {
             let result = EBITDA_projection[i] - (EBITDA_projection[i] * Profit_Share_Value) + (Marketing_Allowance_Value * SumOfGrossSales[i]);
             result = isNaN(result) ? 0 : result; html += "<td>" + result.toFixed(3) + "</td>";
@@ -382,20 +381,20 @@ function RenderFinanceProjection() {
             result = isNaN(result) ? 0 : result; html += "<td>" + result.toFixed(3) + "</td>";
         }
         html += "</tr>";
-        html += "<tr class='lblHeading bg-light emptyRow'><td colspan='13' ></td>";
+        html += "<tr class='lblHeading bg-light emptyRow'><td colspan='13' >&nbsp</td>";
         /*-----------Tax--------------------------*/
         var Incometaxrate_Value = formatToNumber($('#Incometaxrate').val())/100 ; // G14
-        html += "<tr class='lblHeading'><td colspan='3' >Tax</td>";
+        html += "<tr class='lblHeading'><td colspan='3' ><b>Tax</b></td>";
         for (var i = 0; i < 10; i++) {
             let result = Net_Income_PBT_projection_data[i] * Incometaxrate_Value;
             result = isNaN(result) ? 0 : result; html += "<td>" + result.toFixed(3) + "</td>";
         }
         html += "</tr>";
-        html += "<tr class='lblHeading bg-light emptyRow'><td colspan='13' ></td>";
+        html += "<tr class='lblHeading bg-light emptyRow'><td colspan='13' >&nbsp</td>";
 
         /*-----------Net Income - PAT--------------------------*/
         var Net_Income_PAT_projection_data = [];
-        html += "<tr class='lblHeading'><td colspan='3' >Net Income - PAT</td>";
+        html += "<tr class='lblHeading'><td colspan='3' ><b>Net Income - PAT</b></td>";
         for (var i = 0; i < 10; i++) {
             let result = Net_Income_PBT_projection_data[i] - (Net_Income_PBT_projection_data[i]*Incometaxrate_Value);
             Net_Income_PAT_projection_data.push(result);
@@ -410,9 +409,7 @@ function RenderFinanceProjection() {
             result = isNaN(result) ? 0 : result; html += "<td>" + result.toFixed(3) + "</td>";
         }
         html += "</tr>";
-        html += "<tr class='lblHeading bg-light emptyRow'><td colspan='13' ></td></tr>";
-        html += "<tr class='lblHeading bg-light emptyRow'><td colspan='13' ></td></tr>";
-
+        html += "<tr class='lblHeading bg-light emptyRow'><td colspan='13' >&nbsp</td></tr>";
         /*-----------Receivables--------------------------*/
         var Temp_WCT_html = "";
         Temp_WCT_html += "<tr class='lblHeading'><td colspan='3' > Receivables </td>";
@@ -451,7 +448,7 @@ function RenderFinanceProjection() {
         }
         Temp_WCT_html += "</tr>";
         /*-----------Working capital Total--------------------------*/
-        Temp_WCT_html += "<tr class='lblHeading'><td colspan='3' > Working capital Total  </td>";
+        Temp_WCT_html += "<tr class='lblHeading'><td colspan='3' ><b> Working capital Total </b> </td>";
         var Working_capital_Total = [];
         for (var i = 0; i < 10; i++) {
             let result = 0;
@@ -462,7 +459,7 @@ function RenderFinanceProjection() {
         }
         Temp_WCT_html += "</tr>";
         /*-----------Incremental working capital--------------------------*/
-        html += "<tr class='lblHeading'><td colspan='3' > Incremental working capital  </td>";
+        html += "<tr class='lblHeading'><td colspan='3' ><b> Incremental working capital</b>  </td>";
         var Incremental_working_capital_projection_data = [];
         for (var i = 0; i < 10; i++) {
             let result = 0;
@@ -476,7 +473,7 @@ function RenderFinanceProjection() {
         html += "</tr>";
 
 
-        html += "<tr class='lblHeading bg-light emptyRow'><td>Deal Terms</td><td colspan='12' ></td></tr>";
+        html += "<tr class='lblHeading bg-light emptyRow'><td><b>Deal Terms</b></td><td colspan='12' ></td></tr>";
         /*-----------R&D analytical cost--------------------------*/
         html += "<tr class='lblHeading '><td colspan='3' >R&D analytical cost</td>";
         var RnD_analytical_cost_projection_data = [];
@@ -654,7 +651,7 @@ function RenderFinanceProjection() {
         html += "</tr>";
 
         /*-----------Total investment--------------------------*/
-        html += "<tr class='lblHeading bg-light'><td colspan='3' > Total investment </td>";
+        html += "<tr class='lblHeading bg-light'><td colspan='3' ><b> Total investment </b></td>";
         var TotalInvestment_projection_data = [];
         for (var i = 0; i < 10; i++) {
             let result = 0;
@@ -673,18 +670,18 @@ function RenderFinanceProjection() {
         }
         html += "</tr>";
         /*-----------Net Cash Flow--------------------------*/
-        html += "<tr class='lblHeading bg-light'><td colspan='3' > Net Cash Flow </td>";
+        html += "<tr class='lblHeading bg-light'><td colspan='3' > <b>Net Cash Flow </b></td>";
         var NetCashFlow_projection_data = [];
         for (var i = 0; i < 10; i++) {
             let result = 0;
             result = Incremental_working_capital_projection_data[i] + Net_Income_PAT_projection_data[i] + TotalInvestment_projection_data[i];
 
-            result = isNaN(result) ? 0 : result; html += "<td>" + result.toFixed(3) + "</td>";
+            result = isNaN(result) ? 0 : result; html += "<td><b>" + result.toFixed(3) + "</b></td>";
             NetCashFlow_projection_data.push(result);
         }
         html += "</tr>";
         /*-----------Cumulative cash flow -Combined--------------------------*/
-        html += "<tr class='lblHeading bg-light'><td colspan='3' > Cumulative cash flow -Combined </td>";
+        html += "<tr class='lblHeading bg-light'><td colspan='3' > <b> Cumulative cash flow -Combined </b> </td>";
         var Cumulative_cash_flow_projection_data = [];
         for (var i = 0; i < 10; i++) {
             let result = 0;
@@ -711,18 +708,18 @@ function RenderFinanceProjection() {
         }
         html += "</tr>";
         /*-----------Discount Cash Flow--------------------------*/
-        html += "<tr class='lblHeading bg-light'><td colspan='3' > Discount Cash Flow </td>";
+        html += "<tr class='lblHeading bg-light'><td colspan='3' ><b> Discount Cash Flow</b> </td>";
         var Discount_Cash_Flow_Projection = [];
         for (var i = 0; i < 10; i++) {
             let result = 0;
             result = Discount_Factor_Projection[i] * NetCashFlow_projection_data[i];
 
-            result = isNaN(result) ? 0 : result; html += "<td>" + result.toFixed(3) + "</td>";
+            result = isNaN(result) ? 0 : result; html += "<td><b>" + result.toFixed(3) + "</b></td>";
             Discount_Cash_Flow_Projection.push(result);
         }
         html += "</tr>";
         /*-----------Cumulative Discount Cash Flow--------------------------*/
-        html += "<tr class='lblHeading bg-light'><td colspan='3' > Cumulative Discount cash flow </td>";
+        html += "<tr class='lblHeading bg-light'><td colspan='3' ><b> Cumulative Discount cash flow </b></td>";
         var Cumulative_Discount_cash_flow_projection_data = [];
         for (var i = 0; i < 10; i++) {
             let result = 0;
@@ -730,12 +727,12 @@ function RenderFinanceProjection() {
                 result = Discount_Cash_Flow_Projection[i] + Cumulative_Discount_cash_flow_projection_data[i - 1];
             }
 
-            result = isNaN(result) ? 0 : result; html += "<td>" + result.toFixed(3) + "</td>";
+            result = isNaN(result) ? 0 : result; html += "<td><b>" + result.toFixed(3) + "</b></td>";
             Cumulative_Discount_cash_flow_projection_data.push(result);
         }
         html += "</tr>";
         /*-----------Simple payback in # of months--------------------------*/
-        html += "<tr class='lblHeading bg-light'><td colspan='3' > Simple payback in # of months </td>";
+        html += "<tr class='lblHeading bg-light'><td colspan='3' ><b> Simple payback in # of months </b></td>";
         var Simple_payback_Projection = [];
         for (var i = 0; i < 10; i++) {
             let result = 0;
@@ -759,7 +756,7 @@ function RenderFinanceProjection() {
         }
         html += "</tr>";
         /*-----------Discounted Payback in # of months--------------------------*/
-        html += "<tr class='lblHeading bg-light'><td colspan='3' > Discounted payback in # of months </td>";
+        html += "<tr class='lblHeading bg-light'><td colspan='3' > <b>Discounted payback in # of months </b> </td>";
         var Discounted_payback_Projection = [];
         for (var i = 0; i < 10; i++) {
             let result = 0;
@@ -781,7 +778,7 @@ function RenderFinanceProjection() {
             Discounted_payback_Projection.push(result);
         }
         html += "</tr>";
-        html += "<tr class='lblHeading bg-light emptyRow'><td>Working capital</td><td colspan='12' ></td></tr>";
+        html += "<tr class='lblHeading bg-light emptyRow'><td><b>Working capital</b></td><td colspan='12' ></td></tr>";
 
         html += Temp_WCT_html;
 
@@ -791,14 +788,14 @@ function RenderFinanceProjection() {
         var TempHtml = "";
         var GestationPeriodinYears_value = formatToNumber($("#GestationPeriodinYears").val(), true);
         var DCFP = Discount_Cash_Flow_Projection;
-        TempHtml += '<thead class="bg-light">';
+        TempHtml += '<thead class="bg-primary">';
         TempHtml += '<tr><th>Output grid</th> <th></th> <th>From launch</th></tr>';
         TempHtml += "</thead><tbody>";
         TempHtml += "<tr> <td>10-Year NPV to Emcure</td> <td> " + eval(Discount_Cash_Flow_Projection.join('+')).toFixed(3) + " </td><td></td></tr>";
         let Year5Result = DCFP[0] + DCFP[1] + DCFP[2] + DCFP[3] + DCFP[4];
         TempHtml += "<tr> <td>5-Year NPV to Emcure</td> <td> " + Year5Result.toFixed(3) + " </td><td></td></tr>";
-        TempHtml += "<tr> <td>Discounted payback in yrs</td> <td> " + (eval(Discounted_payback_Projection.join('+')) / 12).toFixed(3) + " </td>";
-        TempHtml += "<td> " + ((eval(Discounted_payback_Projection.join('+')) / 12) - GestationPeriodinYears_value).toFixed(3) + "</td></tr>";
+        TempHtml += "<tr> <td>Discounted payback in yrs</td> <td> <b>" + (eval(Discounted_payback_Projection.join('+')) / 12).toFixed(3) + "</b> </td>";
+        TempHtml += "<td><b> " + ((eval(Discounted_payback_Projection.join('+')) / 12) - GestationPeriodinYears_value).toFixed(3) + "</b></td></tr>";
         TempHtml += "<tr> <td>Total investment</td> <td> " + eval(TotalInvestment_projection_data.join('+')).toFixed(3) + " </td><td></td></tr>";
         TempHtml += "</tbody>";
         $('#tblOutputGridFinanceProjection').html(TempHtml);
@@ -878,4 +875,26 @@ function formatToNumber(input, isFloat) {
     } catch (e) {
         return 0;
     }
+}
+
+function fnGetActiveBusinessUnit() {
+    ajaxServiceMethod($('#hdnBaseURL').val() + GetActiveEncryptedBusinessUnit, 'GET', GetActiveBusinessUnitSuccess, GetActiveBusinessUnitError);
+}
+function GetActiveBusinessUnitSuccess(data) {
+    var businessUnitHTML = "";
+    var businessUnitPanel = "";
+    $.each(data._object, function (index, item) {
+        let buClassName = item.businessUnitName.toLowerCase() === 'india' ? 'in' : item.businessUnitName.toLowerCase();
+        businessUnitHTML += '<li class="nav-item p-0">\
+            <a class="nav-link '+ (item.businessUnitId == _selectBusinessUnit ? "active" : "") + ' px-2" href="#custom-tabs-' + buClassName + '" data-toggle="pill" aria-selected="true" onclick="loadFinanceProjectionData(' + _selectedPidfId + ',\'' + item.encBusinessUnitId + '\')" id="custom-tabs-two-' + item.businessUnitId + '-tab">' + item.businessUnitName + '</a></li>';
+        businessUnitPanel += '<div class="tab-pane ' + ((item.businessUnitId == _selectBusinessUnit ? "fade show active" : "")) + '" id="custom-tabs-' + item.businessUnitId + '" role="tabpanel" aria-labelledby="custom-tabs-two-' + item.businessUnitId + '-tab"></div>';
+    });
+    $('#custom-tabs-business-tab').html(businessUnitHTML);
+
+    // $('#custom-tabs-business-tabContent').html(businessUnitPanel);
+
+    // LoadIPDForm(_PIDFID, _selectBusinessUnit);
+}
+function GetActiveBusinessUnitError(x, y, z) {
+    toastr.error(ErrorMessage);
 }

@@ -573,6 +573,9 @@ namespace EmcureNPD.Business.Core.Implementation
                         objrndMaster.ApirequirementMarketPrice = pbfentity.RNDMasterEntities.ApirequirementMarketPrice;
                         objrndMaster.ManHourRate = pbfentity.RNDMasterEntities.ManHourRate;
                         objrndMaster.PlanSupportCostRsPerDay = pbfentity.RNDMasterEntities.PlanSupportCostRsPerDay;
+
+                        objrndMaster.PlantId = pbfentity.RNDMasterEntities.PlantId_Tab;
+                        objrndMaster.LineId = pbfentity.RNDMasterEntities.PBFLine;
                         //objRndMaster.ModifyBy = loggedInUserId;
                         //objRndMaster.ModifyDate = DateTime.Now;
                         _pidfPbfRnDMasterRepository.UpdateAsync(objrndMaster);
@@ -585,6 +588,9 @@ namespace EmcureNPD.Business.Core.Implementation
                     {
                         PidfPbfRnDMaster objRndMaster = new PidfPbfRnDMaster();
                         objRndMaster = _mapperFactory.Get<RNDMasterEntity, PidfPbfRnDMaster>(pbfentity.RNDMasterEntities);
+                        objRndMaster.PlantId = pbfentity.RNDMasterEntities.PlantId_Tab;
+                        objRndMaster.LineId = pbfentity.RNDMasterEntities.PBFLine;
+
                         objRndMaster.PbfgeneralId = pbfgeneralid;
                         objRndMaster.CreatedBy = loggedInUserId;
                         objRndMaster.CreatedDate = DateTime.Now;
@@ -1300,6 +1306,8 @@ namespace EmcureNPD.Business.Core.Implementation
                         objrndMaster.ApirequirementMarketPrice = pbfentity.RNDMasterEntities.ApirequirementMarketPrice;
                         objrndMaster.ManHourRate = pbfentity.RNDMasterEntities.ManHourRate;
                         objrndMaster.PlanSupportCostRsPerDay = pbfentity.RNDMasterEntities.PlanSupportCostRsPerDay;
+                        objrndMaster.PlantId = pbfentity.RNDMasterEntities.PlantId_Tab;
+                        objrndMaster.LineId = pbfentity.RNDMasterEntities.PBFLine;
                         //objRndMaster.ModifyBy = loggedInUserId;
                         //objRndMaster.ModifyDate = DateTime.Now;
                         _pidfPbfRnDMasterRepository.UpdateAsync(objrndMaster);
@@ -1312,6 +1320,8 @@ namespace EmcureNPD.Business.Core.Implementation
                     {
                         PidfPbfRnDMaster objRndMaster = new PidfPbfRnDMaster();
                         objRndMaster = _mapperFactory.Get<RNDMasterEntity, PidfPbfRnDMaster>(pbfentity.RNDMasterEntities);
+                        objRndMaster.PlantId = pbfentity.RNDMasterEntities.PlantId_Tab;
+                        objRndMaster.LineId = pbfentity.RNDMasterEntities.PBFLine;
                         objRndMaster.PbfgeneralId = pbfgeneralid;
                         objRndMaster.CreatedBy = loggedInUserId;
                         objRndMaster.CreatedDate = DateTime.Now;
@@ -1915,6 +1925,8 @@ namespace EmcureNPD.Business.Core.Implementation
                 {
                     PidfPbfRnDMaster objMaster = new PidfPbfRnDMaster();
                     objMaster = _mapperFactory.Get<RNDMasterEntity, PidfPbfRnDMaster>(pbfentity.RNDMasterEntities);
+                    objMaster.PlantId = pbfentity.RNDMasterEntities.PlantId_Tab;
+                    objMaster.LineId = pbfentity.RNDMasterEntities.PBFLine;
                     objMaster.PbfgeneralId = pbfgeneralid;
                     objMaster.CreatedBy = loggedInUserId;
                     objMaster.CreatedDate = DateTime.Now;

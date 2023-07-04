@@ -52,7 +52,7 @@ $(document).ready(function () {
         printElement(fileName);
     });
     PBFtabClick();
-    
+    fnGetActiveBusinessUnit();
     UpdateProjectionCommercial();
    // GetSUIMSVolumeYearWiseByPackSize();
 });
@@ -72,36 +72,35 @@ function PBFtabClick() {
     $('#dvPBFCharter').removeClass('active');
 }
 
-function GetSUIMSVolumeYearWiseByPackSize() {
+function GetManagmentApprovalBatchSizeCoating(DycPidafId, encBuid) {
+    ajaxServiceMethod($('#hdnBaseURL').val() + GetManagmentApprovalBatchSizeCoatingURL+`/${DycPidafId}/${encBuid}`, 'GET', GetManagmentApprovalBatchSizeCoatingSuccess, GetManagmentApprovalBatchSizeCoatingError);
 
-    let packSizeId = '0';
-    let strengthId = '0';
-    ajaxServiceMethod($('#hdnBaseURL').val() + `api/PidfFinance/GetSUIMSVolumeYearWiseByPackSize/${PidafId}/${encBuid}/${strengthId}/${packSizeId}`, 'GET', SUIMSVolumeYearWiseByPackSizeSuccess, SUIMSVolumeYearWiseByPackSizeError);
-    function SUIMSVolumeYearWiseByPackSizeSuccess(data) {
-        try {
-            if (data.table1.length > 0)
-                UpdateDynamicTextBoxValues(data.table1);
-
-            //if (data.table2.length > 0)
-            // UpdateSUM_of_Values(data.table2);
-        }
-        catch (e) {
-            toastr.error('Error:' + e.message);
-        }
+    function GetManagmentApprovalBatchSizeCoatingSuccess(data) {
+        if (data != undefined) {
+            try {
+                if (data.table.length > 0) {
+                    $('#JsonCommercialData').val(JSON.stringify(data));
+                    UpdateProjectionCommercial();
+                }
+            }
+            catch (e) {
+                toastr.error('Error:' + e.message);
+            }
+        }       
     }
-    function SUIMSVolumeYearWiseByPackSizeError() {
+    function GetManagmentApprovalBatchSizeCoatingError() {
         toastr.error("Error");
     }
 }
 
-function UpdateDynamicTextBoxValues(table) {
-    if (table.length == 10) {
-        for (var i = 0; i < 10; i++) {
-            Expiries_Yearwise_Data[i] = table[i].expiries;
-            AnnualConfirmatoryRelease_Data[i] = table[i].annualConfirmatoryRelease;
-        }
-    }
-}
+//function UpdateDynamicTextBoxValues(table) {
+//    if (table.length == 10) {
+//        for (var i = 0; i < 10; i++) {
+//            Expiries_Yearwise_Data[i] = table[i].expiries;
+//            AnnualConfirmatoryRelease_Data[i] = table[i].annualConfirmatoryRelease;
+//        }
+//    }
+//}
 
 function UpdateSUM_of_Values(table) {
     if (table.length == 10) {
@@ -120,11 +119,14 @@ function UpdateProjectionCommercial() {
     $('.AnnualConfirmatoryRtxtbox').prop('readonly', true);
 }
 function GetBatchSizeCostingTRValues() {
+    var Arr_FinanceTable_tr = [];
+  //JsonlsPidfFinanceBatchSizeCoating  var jsonBatcSizeData = $.parseJSON($('#JsonlsPidfFinanceBatchSizeCoating').val());
+    if ($('#JsonCommercialData').val() == '')
+        return Arr_FinanceTable_tr;
 
-  //JsonlsPidfFinanceBatchSizeCoating  var jsonBatcSizeData = $.parseJSON($('#JsonlsPidfFinanceBatchSizeCoating').val()); 
     var JsonCommercialData = $.parseJSON($('#JsonCommercialData').val()); 
     UpdateDynamicTextBoxValues(JsonCommercialData.table1);
-    var Arr_FinanceTable_tr = [];
+   
     jQuery.each(JsonCommercialData.table, function (index, item) {
 
         var trObj =
@@ -148,6 +150,11 @@ function GetBatchSizeCostingTRValues() {
 
     });
     return Arr_FinanceTable_tr;
+}
+
+function loadFinanceProjectionData(pidfid, encBUId) {
+   // _encBuid = encBUId;
+    GetManagmentApprovalBatchSizeCoating(pidfid, encBUId);
 }
 
 

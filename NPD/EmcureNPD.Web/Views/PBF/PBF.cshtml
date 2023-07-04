@@ -271,21 +271,21 @@
                         </div>
                         <div class="card-body" id="dvGeneralPBF">
                             <div class="row">
-                                <div class="col-md-3">
+                              @*  <div class="col-md-3">
                                     <div class="form-group required">
                                         @Html.LabelFor(model => model.Capex,"Capex", new { @class = "control-label" })<span class="text-danger">*</span>
                                         @Html.TextBoxFor(model => model.Capex, new {@class = "form-control customvalidateformcontrol", @placeholder = "Capex" ,@required="required"})
                                         @Html.ValidationMessageFor(model => model.Capex, "", new { @class = "text-danger" })
 
                                     </div>
-                                </div>
-                                <div class="col-md-3">
+                                </div>*@
+                              @*  <div class="col-md-3">
                                     <div class="form-group required tableTDHintDays">
                                         @Html.LabelFor(model => model.TotalExpense,"Total Expenses", new { @class = "control-label" })<span class="text-danger">*</span>
                                         @Html.TextBoxFor(model => model.TotalExpense, new { @class = "form-control customvalidateformcontrol", @placeholder = "Total Expenses", @readonly ="readonly",@required="required",@tabindex=-1 })
                                         <span>Lacs</span>
                                     </div>
-                                </div>
+                                </div>*@
 
                                 <div class="col-md-3">
                                     <div class="form-group required">
@@ -296,7 +296,7 @@
 
                                     </div>
                                 </div>
-                                <div class="col-md-3">
+                               @* <div class="col-md-3">
                                     <div class="form-group required">
                                         @Html.LabelFor(model => model.GeneralProductTypeId, "Product Type", new { @class = "control-label" })<span class="text-danger">*</span>
                                         <input type="hidden" id="hdnGeneralProductTypeId" value="@Model.GeneralProductTypeId" />
@@ -304,7 +304,7 @@
                                         @Html.ValidationMessageFor(model => model.GeneralProductTypeId, "", new { @class = "text-danger" })
 
                                     </div>
-                                </div>
+                                </div>*@
 
                                 <div class="col-md-3">
                                     <div class="form-group required">
@@ -762,20 +762,22 @@
                                                             </button>
                                                         </div>
                                                     </div>
-                                                    <div class="card-body pbftables">
+                                                    <div class="card-body pbftablesplantCost">
                                                         <div class="row">
                                                               <div class="col-md-3">
                                                                  <div class="form-group required">
-                                                                    @Html.LabelFor(model => model.RNDMasterEntities.ProductTypeId_Tab, "Product Type", new { @class = "control-label" })<span class="text-danger">*</span>
-                                                                     @*<input type="hidden" id="hdnProductTypeId_Tab" value="@Model.RNDMasterEntities.ProductTypeId_Tab" />*@
-                                                                    <select id="ProductTypeId_Tab" name="ProductTypeId_Tab" class="form-control readOnlyUpdate customvalidateformcontrol ProductTypeId_Tab" required></select>
-                                                                     @Html.ValidationMessageFor(model => model.RNDMasterEntities.ProductTypeId_Tab, "", new { @class = "text-danger" })
+                                                                    @Html.LabelFor(model => model.RNDMasterEntities.PlantId_Tab, "Plant Name", new { @class = "control-label" })<span class="text-danger">*</span>
+                                                                    @Html.HiddenFor(model => model.RNDMasterEntities.PlantId_Tab)
+                                                                    @*<input type="hidden" id="hdnPlantId" value="@Model.PlantId" />*@
+                                                                    <select id="ddlPlantId_Tab" name="ddlPlantId_Tab" class="form-control readOnlyUpdate customvalidateformcontrol ddlPlantId_Tab" required></select>
+                                                                     @Html.ValidationMessageFor(model => model.RNDMasterEntities.PlantId_Tab, "", new { @class = "text-danger" })
                                                                  </div>
                                                              </div>
                                                               <div class="col-md-3">
                                                                  <div class="form-group required">
                                                                     @Html.LabelFor(model => model.RNDMasterEntities.PBFLine, "Line", new { @class = "control-label" })<span class="text-danger">*</span>                                                                     
-                                                                    <select id="PBFLine" name="PBFLine" class="form-control readOnlyUpdate customvalidateformcontrol PBFLine" required></select>
+                                                                    <select id="ddlPBFLine" name="ddlPBFLine" class="form-control readOnlyUpdate customvalidateformcontrol ddlPBFLine" required></select>
+                                                                    @Html.HiddenFor(model => model.RNDMasterEntities.PBFLine)
                                                                     @Html.ValidationMessageFor(model => model.RNDMasterEntities.PBFLine, "", new { @class = "text-danger" })
                                                                  </div>
                                                              </div>

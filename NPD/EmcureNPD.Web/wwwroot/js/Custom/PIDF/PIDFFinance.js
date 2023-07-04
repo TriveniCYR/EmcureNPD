@@ -41,7 +41,7 @@ $(document).ready(function () {
         $(`.NetRealisation`).attr("readonly", true);
         $(`.EstMat2020By12units`).attr("readonly", true);
         $(`.Marketinpacks`).attr("readonly", true);
-        //$(`.BatchsizeinLtrTabs`).attr("readonly", true);
+        $(`.BatchsizeinLtrTabs`).attr("readonly", true);
         $(`.PackSizeValue`).attr("readonly", true);
     }
 
@@ -547,7 +547,7 @@ function GetSkus(pidfId) {
                         $(`input#EstMat2020By12units${i}.EstMat2020By12units`).attr("readonly", true);
                         $(`input#Marketinpacks${i}.Marketinpacks`).attr("readonly", true);
                         $(`input#PackSizeValue${i}.PackSizeValue`).attr("readonly", true);
-                      //  $(`input#BatchsizeinLtrTabs${i}.BatchsizeinLtrTabs`).attr("readonly", true);
+                        $(`input#BatchsizeinLtrTabs${i}.BatchsizeinLtrTabs`).attr("readonly", true);
                         
                     }
                 });
@@ -671,8 +671,8 @@ function GetSUIMSVolumeYearWiseByPackSize(ele) {
                     $(`input#NetRealisation${row_index}.NetRealisation`).val(netRealisation.toFixed(2));
                     $(`input#EstMat2020By12units${row_index}.EstMat2020By12units`).val(parseFloat((data.table.length > 0 ? data.table[0].suimsVolume : 0)).toFixed(2));
                     $(`input#Marketinpacks${row_index}.Marketinpacks`).val(parseFloat((data.table.length > 0 ? data.table[0].suimsVolume : 0)).toFixed(2));
-                    $(`input#BatchsizeinLtrTabs${row_index}.BatchsizeinLtrTabs`).val((data.table.length > 0 ? data.table[0].commercialBatchSize : 0).toFixed(2));
-
+                    $(`input#BatchsizeinLtrTabs${row_index}.BatchsizeinLtrTabs`).val(parseFloat((data.table.length > 0 ? data.table[0].commercialBatchSize : 0)).toFixed(2));  
+                      
                     $(`input#PackSizeValue${row_index}.PackSizeValue`).val((data.table.length > 0 ? data.table[0].packSizeValue : 0));
                     
                     calculateBatchSizeCaoting(ele);
@@ -701,27 +701,7 @@ function GetSUIMSVolumeYearWiseByPackSize(ele) {
     }
 }
 
-function fnGetActiveBusinessUnit() {
-    ajaxServiceMethod($('#hdnBaseURL').val() + GetActiveEncryptedBusinessUnit, 'GET', GetActiveBusinessUnitSuccess, GetActiveBusinessUnitError);
-}
-function GetActiveBusinessUnitSuccess(data) {
-    var businessUnitHTML = "";
-    var businessUnitPanel = "";
-    $.each(data._object, function (index, item) {
-        let buClassName = item.businessUnitName.toLowerCase() ==='india'?'in': item.businessUnitName.toLowerCase();
-        businessUnitHTML += '<li class="nav-item p-0">\
-            <a class="nav-link '+ (item.businessUnitId == _selectBusinessUnit ? "active" : "") + ' px-2" href="#custom-tabs-' + buClassName + '" data-toggle="pill" aria-selected="true" onclick="loadFinanceProjectionData(' + _selectedPidfId + ',\'' + item.encBusinessUnitId + '\')" id="custom-tabs-two-' + item.businessUnitId + '-tab">' + item.businessUnitName + '</a></li>';
-        businessUnitPanel += '<div class="tab-pane ' + ((item.businessUnitId == _selectBusinessUnit ? "fade show active" : "")) + '" id="custom-tabs-' + item.businessUnitId + '" role="tabpanel" aria-labelledby="custom-tabs-two-' + item.businessUnitId + '-tab"></div>';
-    });
-    $('#custom-tabs-business-tab').html(businessUnitHTML);
-    
-   // $('#custom-tabs-business-tabContent').html(businessUnitPanel);
 
-   // LoadIPDForm(_PIDFID, _selectBusinessUnit);
-}
-function GetActiveBusinessUnitError(x, y, z) {
-    toastr.error(ErrorMessage);
-}
 //$('select#Currency').change(function () {
 //    var data = $('#Currency').select2('data');
 //    if (data) {

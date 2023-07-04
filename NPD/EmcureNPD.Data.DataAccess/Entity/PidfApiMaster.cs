@@ -16,6 +16,5 @@ namespace EmcureNPD.Data.DataAccess.Entity
         public int CreatedBy { get; set; }
 
         public virtual Pidf Pidf { get; set; }
-        public virtual MasterUser User { get; set; }
     }
 }

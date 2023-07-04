@@ -2737,6 +2737,11 @@ namespace EmcureNPD.Data.DataAccess.DataContext
                     .HasForeignKey(d => d.PbfgeneralId)
                     .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("FK_PIDF_PBF_RnD_Master_PIDF_PBF_General");
+
+                entity.HasOne(d => d.Plant)
+                    .WithMany(p => p.PidfPbfRnDMasters)
+                    .HasForeignKey(d => d.PlantId)
+                    .HasConstraintName("FK_PIDF_PBF_RnD_Master_Plant");
             });
 
             modelBuilder.Entity<PidfPbfRnDPackagingMaterial>(entity =>

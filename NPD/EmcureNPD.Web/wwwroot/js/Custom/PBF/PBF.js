@@ -13,6 +13,7 @@ var _firstLoad = true;
 var _oralName = '';
 var isValidPBFForm = true;
 var PBFLinesArr = [];
+var rndmasterdata_dbValueOf_lineId = 0;
 $(document).ready(function () {
     try {
         _PIDFPBFId = parseInt($('#hdnPIDFPBFId').val());
@@ -760,7 +761,7 @@ function GetPBFDropdownSuccess(data) {
             $('#BERequirementId').append(_emptyOption);
             $('#PbfDosageFormId').append(_emptyOption);
             $('#PlantId').append(_emptyOption);
-            $('#ProductTypeId_Tab').append(_emptyOption);
+            $('#ddlPlantId_Tab').append(_emptyOption);
             $('#WorkflowId').append(_emptyOption);
             $('#FillingTypeId').append(_emptyOption);
             $('#PbfFormRNDDivisionId').append(_emptyOption);
@@ -769,7 +770,7 @@ function GetPBFDropdownSuccess(data) {
             $('#PbfRFDCountryId').append(_emptyOption);
             $('#ProductTypeId').append(_emptyOption);
             $('#GeneralProjectComplexity').append(_emptyOption);
-            $('#GeneralProductTypeId').append(_emptyOption);
+           // $('#GeneralProductTypeId').append(_emptyOption);
             $('#GeneralFormulationGLId').append(_emptyOption);
             $('#GeneralAnalyticalGLId').append(_emptyOption);
             $(data.MasterBERequirement).each(function (index, item) {
@@ -782,7 +783,7 @@ function GetPBFDropdownSuccess(data) {
                 $('#PlantId').append('<option value="' + item.plantId + '">' + item.plantNameName + '</option>');
             });
             $(data.MasterPlant).each(function (index, item) {
-                $('#ProductTypeId_Tab').append('<option value="' + item.plantId + '">' + item.plantNameName + '</option>');
+                $('#ddlPlantId_Tab').append('<option value="' + item.plantId + '">' + item.plantNameName + '</option>');
             });
             $(data.MasterWorkflow).each(function (index, item) {
                 $('#WorkflowId').append('<option value="' + item.workflowId + '">' + item.workflowName + '</option>');
@@ -808,9 +809,9 @@ function GetPBFDropdownSuccess(data) {
             $(data.MasterProductType).each(function (index, item) {
                 $('#ProductTypeId').append('<option value="' + item.productTypeId + '">' + item.productTypeName + '</option>');
             });
-            $(data.MasterProductType).each(function (index, item) {
-                $('#GeneralProductTypeId').append('<option value="' + item.productTypeId + '">' + item.productTypeName + '</option>');
-            });
+            //$(data.MasterProductType).each(function (index, item) {
+            //    $('#GeneralProductTypeId').append('<option value="' + item.productTypeId + '">' + item.productTypeName + '</option>');
+            //});
             $(data.MasterFormulationGL).each(function (index, item) {
                 $('#GeneralFormulationGLId').append('<option value="' + item.userId + '">' + item.fullName + '</option>');
             });
@@ -850,8 +851,8 @@ function GetPBFDropdownSuccess(data) {
                     $("#PBFGeneralId").val($("#hdnPBFGeneralId").val() == 0 ? "" : $('#hdnPBFGeneralId').val());
                     $('#BERequirementId').val($('#hdnBERequirementId').val() == 0 ? "" : $('#hdnBERequirementId').val());
                     $('#PbfDosageFormId').val($('#hdnPbfDosageFormId').val() == 0 ? "" : $('#hdnPbfDosageFormId').val());
-                    $('#PlantId').val($('#hdnPlantId').val() == 0 ? "" : $('#hdnPlantId').val());
-                    $('#ProductTypeId_Tab').val($('#PlantId').val());
+                    $('#PlantId').val($('#hdnPlantId').val() == 0 ? "" : $('#hdnPlantId').val());                    
+
                     $('#WorkflowId').val($('#hdnWorkflowId').val() == 0 ? "" : $('#hdnWorkflowId').val());
                     $('#FillingTypeId').val($('#hdnFillingTypeId').val() == 0 ? "" : $('#hdnFillingTypeId').val());
                     $('#PbfFormRNDDivisionId').val($('#hdnPbfFormRNDDivisionId').val() == 0 ? "" : $('#hdnPbfFormRNDDivisionId').val());
@@ -860,7 +861,7 @@ function GetPBFDropdownSuccess(data) {
                     $('#PbfRFDCountryId').val($('#hdnPbfRFDCountryId').val() == 0 ? "" : $('#hdnPbfRFDCountryId').val());
                     $('#ProductTypeId').val($('#hdnProductTypeId').val() == 0 ? "" : $('#hdnProductTypeId').val());
                     $('#GeneralProjectComplexity').val($('#hdnGeneralProjectComplexity').val() == 0 ? "" : $('#hdnGeneralProjectComplexity').val());
-                    $('#GeneralProductTypeId').val($('#hdnGeneralProductTypeId').val() == 0 ? "" : $('#hdnGeneralProductTypeId').val());
+                    //$('#GeneralProductTypeId').val($('#hdnGeneralProductTypeId').val() == 0 ? "" : $('#hdnGeneralProductTypeId').val());
                     $('#GeneralFormulationGLId').val($('#hdnGeneralFormulationGLId').val() == 0 ? "" : $('#hdnGeneralFormulationGLId').val());
                     $('#GeneralAnalyticalGLId').val($('#hdnGeneralAnalyticalGLId').val() == 0 ? "" : $('#hdnGeneralAnalyticalGLId').val());
                     $("#MarketMappingId").val($("#hdnMarketMappingIds").val().split(',')).trigger('change');
@@ -887,39 +888,41 @@ function GetPBFDropdownError(x, y, z) {
     toastr.error(ErrorMessage);
 }
 $('#PlantId').on('change', function () {
-    $('#ProductTypeId_Tab').val($('#PlantId').val()).trigger("change");
+    $('#ddlPlantId_Tab').val($('#PlantId').val()).trigger("change");
 });
-$('#PBFLine').on('change', function () {
-    var SelectedLineid = parseInt($('#PBFLine').val());
-   
+$('#ddlPBFLine').on('change', function () {
+    var SelectedLineid = parseInt($('#ddlPBFLine').val());
+    $('#RNDMasterEntities_PBFLine').val(SelectedLineid);
     var filterPlantLine = $.grep(PBFLinesArr, function (n) {
             return n.lineId === SelectedLineid
     }); 
     if (filterPlantLine != undefined && filterPlantLine.length>0)
-    $('#RNDMasterEntities_PlanSupportCostRsPerDay').val(filterPlantLine[0].lineCost);
+        $('#RNDMasterEntities_PlanSupportCostRsPerDay').val(filterPlantLine[0].lineCost).trigger('change');
     
 }); 
-$('#ProductTypeId_Tab').change(function (e) {
+$('#ddlPlantId_Tab').change(function (e) {
         if ($(this).val() != "") {
             if (parseInt($(this).val()) > 0) {
+                $('#RNDMasterEntities_PlantId_Tab').val(parseInt($(this).val()));
                 ajaxServiceMethod($('#hdnBaseURL').val() + getLineByPlantId + "/" + parseInt($(this).val()), 'GET', getLineByPlantIdSuccess, getLineByPlantIdError);
             }
         }
     });
 function getLineByPlantIdSuccess(data) {
     try {
-        $('#PBFLine').find('option').remove()
+        $('#ddlPBFLine').find('option').remove()
         PBFLinesArr = data._object;
         if (data._object != null && data._object.length > 0) {
             var _emptyOption = '<option value="">-- Select --</option>';
-            $('#PBFLine').append(_emptyOption);
+            $('#ddlPBFLine').append(_emptyOption);
             $(data._object).each(function (index, item) {
-                $('#PBFLine').append('<option value="' + item.lineId + '">' + item.lineName + '</option>');
+                $('#ddlPBFLine').append('<option value="' + item.lineId + '">' + item.lineName + '</option>');
             });
 
             try {
-                if (_PIDFId > 0) {
-                  //  $('#PBFLine').val($('#hdnRFDCountryId').val());
+                if (rndmasterdata_dbValueOf_lineId > 0) {
+                    $('#ddlPBFLine').val(rndmasterdata_dbValueOf_lineId);
+                    $('#RNDMasterEntities_PBFLine').val(rndmasterdata_dbValueOf_lineId);
                 }
             } catch (e) {   
             }
@@ -1200,11 +1203,12 @@ function PBFBindStrength(data) {
 }
 
 function SavePBFForm(_SaveType) {
+    $('.pbftablesplantCost').show();
     if (_SaveType == 'Draft') {
         $('#AddPBFForm').validate().settings.ignore = "*";
 
     } else {
-        validateDynamicControldDetails();
+        validateDynamicControldDetailsPBF();
     }
 
     if ($("#AddPBFForm").valid()) {
@@ -1212,9 +1216,11 @@ function SavePBFForm(_SaveType) {
         //toastr.error(abc.toString());
         $('#loading-wrapper').show();
     }
-    setlicense();
-    SetRNDChildRows();
+    setlicense();    
     SetAnalyticalChildRows();
+    SetPhaseWiseBudget();
+    SetHeadWiseBudget();
+    SetRNDChildRows();
     $('#AddPBFForm').find('#SaveType').val(_SaveType);
     return false;
 }
@@ -1329,7 +1335,7 @@ function CreateAnalyticalTable(costData, data, activityTypeId) {
     var _testType = [];
 
     if (activityTypeId != 4) {
-        objectname += '<tr><td class="text-left text-bold bg-light" colspan="' + (6 + _strengthArray.length) + '">' + tableTitle + '</td>';
+        objectname += '<tr><td class="text-left text-bold bg-light" colspan="' + (4 + _strengthArray.length) + '">' + tableTitle + '</td>';
         for (var a = 0; a < _counter; a++) {
             if (data.length > 0) {
                 if (_testType.indexOf(data[a].testTypeId) !== -1) {
@@ -1338,7 +1344,7 @@ function CreateAnalyticalTable(costData, data, activityTypeId) {
             }
             objectname += '<tr  id="analyticalRow" class="analyticalactivity analyticalActivity' + (activityTypeId) + '" data-activitytypeid="' + activityTypeId + '">'
                 + '<td><select class="form-control readonlyUpdate AnalyticalTestTypeId"><option value = "" > --Select --</option ></select><input type="hidden" value="' + (data.length > 0 ? data[a].testTypeId : "") + '" /></td>'
-                + '<td><input type="number" class="form-control totalAnalytical analyticalNumberOfTest" min="0" value="' + (data.length > 0 ? data[a].numberoftests : "") + '"  /></td>'
+                + '<td style="display:none;"><input type="number" class="form-control totalAnalytical analyticalNumberOfTest" min="0" value="' + (data.length > 0 ? data[a].numberoftests : "") + '"  /></td>'
                /* + '<td><input type="text" class="form-control totalAnalytical analyticalPrototypeDevelopment" value="' + (data.length > 0 ? data[a].prototypeDevelopment : "") + '"  /></td>'*/
                 + '<td><input type="number" class="form-control totalAnalytical analyticalRsTest" min="0" value="' + (data.length > 0 ? data[a].costPerTest : "") + '"  /></td>'
             for (var i = 0; i < _strengthArray.length; i++) {
@@ -1351,17 +1357,15 @@ function CreateAnalyticalTable(costData, data, activityTypeId) {
             }
         }
 
-        objectname += "<tr class='analyticalActivity" + activityTypeId + "Total' data-activitytypeid='" + activityTypeId + "'><td class='text-bold'>Total Cost</td><td></td><td></td><td></td>";
+        objectname += "<tr class='analyticalActivity" + activityTypeId + "Total' data-activitytypeid='" + activityTypeId + "'><td class='text-bold'>Total Cost</td><td></td>";
         for (var i = 0; i < _strengthArray.length; i++) {
             objectname += "<td data-strengthid='" + _strengthArray[i].pidfProductStrengthId + "'>" + _currencySymbol + "<input type='text' class='form-control calcTotalCostForStrengthAnalytical' readonly='readonly' tabindex=-1 /></td>";
         }
         objectname += "<td>" + _currencySymbol + "<input type='text' class='form-control calcTotalCostForAnalytical" + activityTypeId + "' readonly='readonly' tabindex=-1 /></td><td></td>";
         objectname += "</tr>";
     } else {
-        objectname += '<tr><td class="text-left text-bold bg-light" colspan="' + (6 + _strengthArray.length) + '">' + tableTitle + '</td>';
+        objectname += '<tr><td class="text-left text-bold bg-light" colspan="' + (4 + _strengthArray.length) + '">' + tableTitle + '</td>';
         objectname += '<tr  id="analyticalRow" class="analyticalactivity analyticalActivity' + (activityTypeId) + '" data-activitytypeid="' + activityTypeId + '">'
-            + '<td></td>'
-            + '<td></td>'
             + '<td><input type="text" class="form-control analyticalTotalAMVTitle" id="AnalyticalAMVCosts.TotalAmvtitle" name="AnalyticalAMVCosts.TotalAmvtitle" placeholder="" value="' + (costData.length > 0 ? (costData[0].totalAMVTitle == null ? "" : costData[0].totalAMVTitle) : "") + '" /></td>'
             + '<td>' + _currencySymbol + '<input type="number" class="form-control analyticalTotalAMVCost" min="0" id="AnalyticalAMVCosts.TotalAmvcost" name="AnalyticalAMVCosts.TotalAmvcost"  placeholder="" value="' + (costData.length > 0 ? costData[0].totalAMVCost : "") + '"  /></td>'
         for (var i = 0; i < _strengthArray.length; i++) {
@@ -1378,7 +1382,7 @@ function CreateAnalyticalTable(costData, data, activityTypeId) {
 function BindAnalytical(data, costData) {
     var analyticalactivityHTML = '<thead class="bg-primary text-bold"><tr>'
         + '<td>Test Type</td>'
-        + '<td>Number of sample</td>'
+        + '<td style="display:none;">Number of sample</td>'
        /* + '<td>Prototype Development</td>'*/
         + '<td>Rs /test</td>'
     $.each(_strengthArray, function (index, item) {
@@ -1390,13 +1394,13 @@ function BindAnalytical(data, costData) {
         analyticalactivityHTML += CreateAnalyticalTable(costData, $.grep(data, function (n, x) { return n.activityTypeId == i; }), i);
     }
 
-    analyticalactivityHTML += '<tr class="calcTotalCostAnalyticalRow"><td colspan="4" class="text-bold">Total Cost</td>';
+    analyticalactivityHTML += '<tr class="calcTotalCostAnalyticalRow"><td colspan="2" class="text-bold">Total Cost</td>';
     $.each(_strengthArray, function (index, item) {
         analyticalactivityHTML += "<td data-strengthid='" + item.pidfProductStrengthId + "'>" + _currencySymbol + "<input type='text' class='form-control calcTotalCostForAnalytical' readonly='readonly' tabindex=-1/></td>";
     });
     analyticalactivityHTML += "<td>" + _currencySymbol + "<input type='text' class='form-control AnalyticalFinalTotal' readonly='readonly' tabindex=-1 /><td></td></tr></tbody>";
 
-    analyticalactivityHTML += '<tr><td colspan="' + (6 + _strengthArray.length) + '"><label style="vertical-align: top;margin-right: 10px;">Remark</label><textarea id="remark" class="form-control" id="AnalyticalAMVCosts.Remark" name="AnalyticalAMVCosts.Remark" maxlength="500" placeholder="Remark">' + (costData.length > 0 ? (costData[0].remark == null ? "" : costData[0].remark) : "") + '</textarea></td> </tr>';
+    analyticalactivityHTML += '<tr><td colspan="' + (4 + _strengthArray.length) + '"><label style="vertical-align: top;margin-right: 10px;">Remark</label><textarea style="width:90% !important;" id="remark" class="form-control" id="AnalyticalAMVCosts.Remark" name="AnalyticalAMVCosts.Remark" maxlength="500" placeholder="Remark">' + (costData.length > 0 ? (costData[0].remark == null ? "" : costData[0].remark) : "") + '</textarea></td> </tr>';
 
     $('#tableanalytical').html(analyticalactivityHTML);
 
@@ -1781,7 +1785,24 @@ function BindRNDBatchSize(data, rndmasterdata) {
     $('#tablerndbatchsize').html(batchSizeHTML);
 
     if (rndmasterdata.length > 0) {
-        $("#RNDMasterEntities_ApirequirementMarketPrice").val(rndmasterdata[0].apiRequirementMarketPrice);
+
+        if (rndmasterdata[0].lineId > 0) {
+            rndmasterdata_dbValueOf_lineId = rndmasterdata[0].lineId;
+        }  
+
+        //if (rndmasterdata[0].lineId > 0 && $('#ddlPBFLine').find('option').length > 1) {
+        //    $("#ddlPBFLine").val(rndmasterdata[0].lineId);
+        //    $("#RNDMasterEntities_PBFLine").val(rndmasterdata[0].lineId);
+        //} 
+        $("#RNDMasterEntities_ApirequirementMarketPrice").val(rndmasterdata[0].apiRequirementMarketPrice);  
+        if (rndmasterdata[0].plantId > 0) {
+            $("#RNDMasterEntities_PlantId_Tab").val(rndmasterdata[0].plantId);
+            $('#ddlPlantId_Tab').val(rndmasterdata[0].plantId); 
+            $('#ddlPlantId_Tab').trigger('change');
+        }
+        else {
+            $('#ddlPlantId_Tab').val($('#PlantId').val()).trigger('change');
+        }           
         $("#RNDMasterEntities_PlanSupportCostRsPerDay").val(rndmasterdata[0].planSupportCostRsPerDay);
         $("#RNDMasterEntities_ManHourRate").val(rndmasterdata[0].manHourRate);
     }
@@ -2231,7 +2252,7 @@ function CreateRNDManPowerCostTable(data) {
     var bioStudyTypeId = 1;
     var objectname = "";
 
-    objectname += '<tr><td class="text-left text-bold bg-light" colspan="' + (3 + _strengthArray.length + 1) + '">Project Activities</td></tr>';
+    objectname += '<tr><td class="text-left text-bold bg-light" colspan="' + (3 + _strengthArray.length + 1) + '"></td></tr>';
     var _counter = (data.length == 0 ? 1 : data.length);
     var _projectActivities = [];
     for (var a = 0; a < _counter; a++) {
@@ -2277,7 +2298,7 @@ function CreateRNDManPowerCostTable(data) {
     return objectname;
 }
 function BindRNDManPowerCost(data) {
-    var RPDHTML = '<thead class="bg-primary text-bold"><tr><td>Duration in days </td><td>Project Activities </td><td>Man Power in days </td>';
+    var RPDHTML = '<thead class="bg-primary text-bold"><tr><td>Number Of Days </td><td>Project Activities </td><td>Number Of Manpower </td>';
     $.each(_strengthArray, function (index, item) {
         RPDHTML += '<td>' + getStrengthName(item.pidfProductStrengthId) + '</td>';
     });
@@ -3036,19 +3057,27 @@ function ReplaceSelector(value, selector, newvalue) {
 
 }
 
-function validateDynamicControldDetails() {
+function validateDynamicControldDetailsPBF() {
     isValidPBFForm = true;
     $('.customvalidateformcontrol').each(function () {
-        validatecontrols(this);
+        validatecontrolsPBF(this);
     });
 }
-function validatecontrols(control) {
-    if ($(control).val().trim() == '') {
+function validatecontrolsPBF(control) {
+
+    if ($(control).val() != null) {
+        if ($(control).val().trim() == '') {
+            $(control).css("border-color", "red");
+            $(control).focus();
+            isValidPBFForm = false;
+        }
+        else {
+            $(control).css("border-color", "");
+        }
+    }
+    else {
         $(control).css("border-color", "red");
         $(control).focus();
         isValidPBFForm = false;
-    }
-    else {
-        $(control).css("border-color", "");
     }
 }
