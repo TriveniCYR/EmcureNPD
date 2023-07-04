@@ -133,7 +133,7 @@ $(document).ready(function () {
                     });
                     if (returnFromFunction > 1) {
                         $(this).val("");
-                        toastr.error("Same value can not be enter, Please Enter some different value");
+                        toastr.error("Same value can not be select, Please Select some different value");
                         return false;
                     }
                 }
@@ -992,13 +992,20 @@ function GetPBFTabDetailsSuccess(data) {
             $(data.MasterPackingType).each(function (index, item) {
                 $('.rndPackingTypeId').append('<option value="' + item.packingTypeId + '" data-PackingUnit="' + item.unit + '" data-PackingCost="' + item.packingCost + '">' + item.packingTypeName + '</option>');
             });
-
+            $(data.RNDExicipientPrototype).each(function (index, item) {
+                $('.rndExicipientPrototype').append('<option value="' + item.excipientRequirementId + '" data-ExcipientCost="' + item.excipientRequirementCost + '>' + item.excipientRequirementName + '</option>');
+            });
             $.each($('.AnalyticalTestTypeId'), function (index, item) {
                 if ($(this).next().val() != undefined && $(this).next().val() != null) {
                     $(this).val($(this).next().val());
                 }
             });
             $.each($('.rndPackingTypeId'), function (index, item) {
+                if ($(this).next().val() != undefined && $(this).next().val() != null) {
+                    $(this).val($(this).next().val());
+                }
+            });
+            $.each($('.rndExicipientPrototype'), function (index, item) {
                 if ($(this).next().val() != undefined && $(this).next().val() != null) {
                     $(this).val($(this).next().val());
                 }
@@ -1583,7 +1590,8 @@ function CreateRNDExicipientTable(data, activityTypeId) {
             }
         }
         objectname += '<tr  id="ExicipientRow" class="exicipientactivity exicipientActivity' + (activityTypeId) + '" data-activitytypeid="' + activityTypeId + '">'
-            + '<td><input type="text" class="form-control rndExicipientPrototype" value="' + (data.length > 0 ? data[a].exicipientPrototype : "") + '"  /></td>'
+           // + '<td><input type="text" class="form-control rndExicipientPrototype" value="' + (data.length > 0 ? data[a].exicipientPrototype : "") + '"  /></td>'
+            + '<td><select class="form-control readOnlyUpdate rndExicipientPrototype"><option value = "" > --Select --</option ></select><input type="hidden" value="' + (data.length > 0 ? data[a].exicipientPrototype : "") + '" /></td>'
             + '<td><input type="number" class="form-control rndExicipientRsperkg" min="0" value="' + (data.length > 0 ? data[a].rsPerKg : "") + '"  /></td>'
             + '<td><input type="text" class="form-control rndExicipientQuantity" min="0" readonly="readonly" tabindex=-1 /><span>Kg</span></td>';//value="' + (data.length > 0 ? data[a].mgPerUnitDosage : "") + '"
         for (var i = 0; i < _strengthArray.length; i++) {

@@ -258,8 +258,9 @@ namespace EmcureNPD.Business.Core.Implementation
             DropdownObjects.IPDCostOfLitigation = dsDropdownOptions.Tables[19];
             DropdownObjects.HeadWiseBudget = dsDropdownOptions.Tables[20];
             DropdownObjects.PBFReferenceProductDetail = dsDropdownOptions.Tables[21];
+			DropdownObjects.RNDExicipientPrototype = dsDropdownOptions.Tables[22];
 
-            return DropdownObjects;
+			return DropdownObjects;
         }
 
 
