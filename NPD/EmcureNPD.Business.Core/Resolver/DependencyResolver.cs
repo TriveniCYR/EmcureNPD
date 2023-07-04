@@ -80,6 +80,7 @@ namespace EmcureNPD.Business.Core.Resolver
             services.AddTransient<IMasterExcipientRequirement, MasterExcipientRequirementService>();
             services.AddTransient<IMasterPlantLine, MasterPlantLineService>();
             services.AddTransient<ISessionManager, SessionManagerService>();
+            services.AddTransient<IWishList, WishListService>();
             return services;
         }
     }
