@@ -125,18 +125,23 @@ $(document).ready(function () {
         if (_enteredText != "") {
             var returnFromFunction = 0;
             for (var i = 1; i < 4; i++) {
-                if ($(this).parent().parent().hasClass("exicipientActivity" + i + "")) {
+                //if ($(this).parent().parent().hasClass("exicipientActivity" + i + "")) {
                     $.each($('.exicipientActivity' + i + '').find(".rndExicipientPrototype"), function () {
                         if ($(this).val() == _enteredText) {
                             returnFromFunction++;
                         }
                     });
-                    if (returnFromFunction > 1) {
-                        $(this).val("");
-                        toastr.error("Same value can not be select, Please Select some different value");
-                        return false;
-                    }
-                }
+                 
+                //}
+            }
+            if (returnFromFunction > 1) {
+                $(this).val("");
+                toastr.error("Same Excipient Protoype can not be select, Please Select some different value");
+                return false;
+            }
+            else {
+                $(this).parent().parent().find('.rndExicipientRsperkg').val($(this).find(':selected').attr('data-excipientcost')).trigger('change');
+
             }
         }
     });
@@ -993,7 +998,7 @@ function GetPBFTabDetailsSuccess(data) {
                 $('.rndPackingTypeId').append('<option value="' + item.packingTypeId + '" data-PackingUnit="' + item.unit + '" data-PackingCost="' + item.packingCost + '">' + item.packingTypeName + '</option>');
             });
             $(data.RNDExicipientPrototype).each(function (index, item) {
-                $('.rndExicipientPrototype').append('<option value="' + item.excipientRequirementId + '" data-ExcipientCost="' + item.excipientRequirementCost + '>' + item.excipientRequirementName + '</option>');
+                $('.rndExicipientPrototype').append('<option value="' + item.excipientRequirementId + '" data-ExcipientCost="' + item.excipientRequirementCost + '">' + item.excipientRequirementName + '</option>');
             });
             $.each($('.AnalyticalTestTypeId'), function (index, item) {
                 if ($(this).next().val() != undefined && $(this).next().val() != null) {
@@ -1742,6 +1747,11 @@ function CreateBatchsizeTable(data, bioStudyTypeId) {
 
     var _iterator = (bioStudyTypeId - 1) * _strengthArray.length;
 
+    objectname += "<tr class='batchsize_" + bioStudyTypeId + "' data-biostudytypeid='" + bioStudyTypeId + "'><td>Salt</td>";
+    for (var i = 0; i < _strengthArray.length; i++) {
+        objectname += '<td data-strengthid="' + _strengthArray[i].pidfProductStrengthId + '"><input type="number" class="form-control calcRNDBatchSizesSalt" id="RNDBatchSizes[' + [(i + _iterator)] + '].salt" name="RNDBatchSizes[' + [(i + _iterator)] + '].salt" placeholder="salt" min="0" value="' + (getValueFromStrengthId(data, _strengthArray[i].pidfProductStrengthId, "salt")) + '"  /></td>';
+    }
+
     objectname += "<tr class='batchsize_" + bioStudyTypeId + "' data-biostudytypeid='" + bioStudyTypeId + "'><td>Prototype Formulation</td>";
     for (var i = 0; i < _strengthArray.length; i++) {
         objectname += '<td data-strengthid="' + _strengthArray[i].pidfProductStrengthId + '"><input type="hidden" id="RNDBatchSizes[' + [(i + _iterator)] + '].StrengthId" name="RNDBatchSizes[' + [(i + _iterator)] + '].StrengthId" value="' + _strengthArray[i].pidfProductStrengthId + '" /><input type="number" class="form-control BatchSize_Excipient_PrototypeFormulation_' + _strengthArray[i].pidfProductStrengthId + ' calcRNDBatchSizesPrototypeFormulation" id="RNDBatchSizes[' + [(i + _iterator)] + '].PrototypeFormulation" name="RNDBatchSizes[' + [(i + _iterator)] + '].PrototypeFormulation" placeholder="Prototype Formulation" min="0" value="' + (getValueFromStrengthId(data, _strengthArray[i].pidfProductStrengthId, "prototypeFormulation")) + '" /></td>';
@@ -1803,6 +1813,7 @@ function BindRNDBatchSize(data, rndmasterdata) {
         //    $("#RNDMasterEntities_PBFLine").val(rndmasterdata[0].lineId);
         //} 
         $("#RNDMasterEntities_ApirequirementMarketPrice").val(rndmasterdata[0].apiRequirementMarketPrice);  
+        $("#RNDMasterEntities_ApirequirementVendorName").val(rndmasterdata[0].apiRequirementVendorName); 
         if (rndmasterdata[0].plantId > 0) {
             $("#RNDMasterEntities_PlantId_Tab").val(rndmasterdata[0].plantId);
             $('#ddlPlantId_Tab').val(rndmasterdata[0].plantId); 

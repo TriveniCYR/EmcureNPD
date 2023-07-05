@@ -632,6 +632,12 @@
                                                                     @Html.TextBoxFor(@modal=> modal.RNDMasterEntities.ApirequirementMarketPrice,new{@class="form-control calcRNDApirequirementsMarketPrice",type = "number", min = 0})
                                                                 </div>
                                                             </div>
+                                                             <div class="col-md-3">
+                                                                <div class="form-group required">
+                                                                    @Html.LabelFor(model => model.RNDMasterEntities.ApirequirementVendorName, "Vendor Name", new { @class = "control-label" })
+                                                                    @Html.TextBoxFor(@modal=> modal.RNDMasterEntities.ApirequirementVendorName,new{@class="form-control RNDApirequirementVendorName"})
+                                                                </div>
+                                                            </div>
                                                             <table id="tablerndapirequirement" class="table text-center tableTDHint" style="width:100%">
                                                             </table>
                                                         </div>

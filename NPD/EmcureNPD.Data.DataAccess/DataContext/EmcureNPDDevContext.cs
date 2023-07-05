@@ -2752,6 +2752,10 @@ namespace EmcureNPD.Data.DataAccess.DataContext
 
                 entity.Property(e => e.ApirequirementMarketPrice).HasColumnName("APIRequirementMarketPrice");
 
+                entity.Property(e => e.ApirequirementVendorName)
+                    .HasMaxLength(100)
+                    .HasColumnName("APIRequirementVendorName");
+
                 entity.Property(e => e.CreatedDate).HasColumnType("datetime");
 
                 entity.Property(e => e.PbfgeneralId).HasColumnName("PBFGeneralId");

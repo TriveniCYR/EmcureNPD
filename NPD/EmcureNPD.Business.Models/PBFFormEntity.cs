@@ -200,7 +200,8 @@ namespace EmcureNPD.Business.Models
         public long PbfgeneralId { get; set; }
         public long BatchSizeId { get; set; }
         public double? ApirequirementMarketPrice { get; set; }
-        public double? PlanSupportCostRsPerDay { get; set; }
+		public string ApirequirementVendorName { get; set; }
+		public double? PlanSupportCostRsPerDay { get; set; }
         public int? PlantId_Tab { get; set; }
         public int? PBFLine { get; set; }
         public double? ManHourRate { get; set; }
@@ -215,6 +216,7 @@ namespace EmcureNPD.Business.Models
         public double? ExhibitBatch1 { get; set; }
         public double? ExhibitBatch2 { get; set; }
         public double? ExhibitBatch3 { get; set; }
+        public double? salt { get; set; }
     }
     public class RNDExicipient
     {
