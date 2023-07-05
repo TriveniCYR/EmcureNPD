@@ -55,12 +55,12 @@
                     </div>
                 </div>
                 @* <div class="col-md-3">
-                    <div class="form-group required">
-                    @Html.LabelFor(model => model.Market,@MasterLocalizer["Market"], new { @class = "control-label" })<span class="text-danger">*</span>
-                    @Html.TextBoxFor(model => model.Market, new {@class = "form-control", @placeholder = @MasterLocalizer["Market"] ,@required="required"})
+                <div class="form-group required">
+                @Html.LabelFor(model => model.Market,@MasterLocalizer["Market"], new { @class = "control-label" })<span class="text-danger">*</span>
+                @Html.TextBoxFor(model => model.Market, new {@class = "form-control", @placeholder = @MasterLocalizer["Market"] ,@required="required"})
 
-                    </div>
-                    </div>*@
+                </div>
+                </div>*@
                 <div class="col-md-3">
                     <div class="form-group required">
                         @Html.LabelFor(model => model.PatentStatus,"Patent Status", new { @class = "control-label" })<span class="text-danger">*</span>
@@ -226,14 +226,14 @@
 
                                     </div>
                                 </div>
-                               @* <div class="col-md-3">
-                                    <div class="form-group required">
-                                        @Html.LabelFor(model => model.ManufacturingId, "Manufacturing Plant", new { @class = "control-label" })<span class="text-danger">*</span>
-                                        <input type="hidden" id="hdnPbfManufacturingId" value="@Model.ManufacturingId" />
-                                        <select id="PbfManufacturingId" name="ManufacturingId" class="form-control readOnlyUpdate customvalidateformcontrol" ></select>
-                                        @Html.ValidationMessageFor(model => model.ManufacturingId, "", new { @class = "text-danger" })
+                                @* <div class="col-md-3">
+                                <div class="form-group required">
+                                @Html.LabelFor(model => model.ManufacturingId, "Manufacturing Plant", new { @class = "control-label" })<span class="text-danger">*</span>
+                                <input type="hidden" id="hdnPbfManufacturingId" value="@Model.ManufacturingId" />
+                                <select id="PbfManufacturingId" name="ManufacturingId" class="form-control readOnlyUpdate customvalidateformcontrol" ></select>
+                                @Html.ValidationMessageFor(model => model.ManufacturingId, "", new { @class = "text-danger" })
 
-                                    </div>
+                                </div>
                                 </div>*@
                             </div>
                         </div>
@@ -271,20 +271,20 @@
                         </div>
                         <div class="card-body" id="dvGeneralPBF">
                             <div class="row">
-                              @*  <div class="col-md-3">
-                                    <div class="form-group required">
-                                        @Html.LabelFor(model => model.Capex,"Capex", new { @class = "control-label" })<span class="text-danger">*</span>
-                                        @Html.TextBoxFor(model => model.Capex, new {@class = "form-control customvalidateformcontrol", @placeholder = "Capex" ,@required="required"})
-                                        @Html.ValidationMessageFor(model => model.Capex, "", new { @class = "text-danger" })
+                                @*  <div class="col-md-3">
+                                <div class="form-group required">
+                                @Html.LabelFor(model => model.Capex,"Capex", new { @class = "control-label" })<span class="text-danger">*</span>
+                                @Html.TextBoxFor(model => model.Capex, new {@class = "form-control customvalidateformcontrol", @placeholder = "Capex" ,@required="required"})
+                                @Html.ValidationMessageFor(model => model.Capex, "", new { @class = "text-danger" })
 
-                                    </div>
+                                </div>
                                 </div>*@
-                              @*  <div class="col-md-3">
-                                    <div class="form-group required tableTDHintDays">
-                                        @Html.LabelFor(model => model.TotalExpense,"Total Expenses", new { @class = "control-label" })<span class="text-danger">*</span>
-                                        @Html.TextBoxFor(model => model.TotalExpense, new { @class = "form-control customvalidateformcontrol", @placeholder = "Total Expenses", @readonly ="readonly",@required="required",@tabindex=-1 })
-                                        <span>Lacs</span>
-                                    </div>
+                                @*  <div class="col-md-3">
+                                <div class="form-group required tableTDHintDays">
+                                @Html.LabelFor(model => model.TotalExpense,"Total Expenses", new { @class = "control-label" })<span class="text-danger">*</span>
+                                @Html.TextBoxFor(model => model.TotalExpense, new { @class = "form-control customvalidateformcontrol", @placeholder = "Total Expenses", @readonly ="readonly",@required="required",@tabindex=-1 })
+                                <span>Lacs</span>
+                                </div>
                                 </div>*@
 
                                 <div class="col-md-3">
@@ -296,14 +296,14 @@
 
                                     </div>
                                 </div>
-                               @* <div class="col-md-3">
-                                    <div class="form-group required">
-                                        @Html.LabelFor(model => model.GeneralProductTypeId, "Product Type", new { @class = "control-label" })<span class="text-danger">*</span>
-                                        <input type="hidden" id="hdnGeneralProductTypeId" value="@Model.GeneralProductTypeId" />
-                                        <select id="GeneralProductTypeId" name="GeneralProductTypeId" class="form-control readOnlyUpdate customvalidateformcontrol" required></select>
-                                        @Html.ValidationMessageFor(model => model.GeneralProductTypeId, "", new { @class = "text-danger" })
+                                @* <div class="col-md-3">
+                                <div class="form-group required">
+                                @Html.LabelFor(model => model.GeneralProductTypeId, "Product Type", new { @class = "control-label" })<span class="text-danger">*</span>
+                                <input type="hidden" id="hdnGeneralProductTypeId" value="@Model.GeneralProductTypeId" />
+                                <select id="GeneralProductTypeId" name="GeneralProductTypeId" class="form-control readOnlyUpdate customvalidateformcontrol" required></select>
+                                @Html.ValidationMessageFor(model => model.GeneralProductTypeId, "", new { @class = "text-danger" })
 
-                                    </div>
+                                </div>
                                 </div>*@
 
                                 <div class="col-md-3">
@@ -349,132 +349,132 @@
                                         @Html.ValidationMessageFor(model => model.TestLicenseAvailability, "", new { @class = "text-danger" })
                                     </div>
                                 </div>
-                               @* <div class="col-md-12">
-                                    <div class="card">
-                                        <div class="card-header bg-primary">
-                                            <h3 class="card-title mb-0">
-
-                                                <button type="button" class="btn btn-tool" data-card-widget="collapse">
-                                                    Strength
-                                                </button>
-
-                                            </h3>
-                                            <div class="card-tools">
-                                                <button type="button" class="btn btn-tool" data-card-widget="collapse" title="Collapse">
-                                                    <i class="fas fa-minus"></i>
-                                                </button>
-                                            </div>
-                                        </div>
-                                        <div class="card-body pbftables">
-                                            <div class="row">
-                                                <table id="tableGeneralStrength" class="table text-center" style="width:100%">
-                                                </table>
-                                            </div>
-                                        </div>
-                                    </div>
-
-                                </div>*@
-                              @*  --------------Start--Reference Product Detail-------------------------------------*@
-                                 <div class="row">
-                <div class="col-12">
-                    <div class="card">
-                        <div class="card-header bg-primary">
-                            <h3 class="card-title mb-0">
+                                @* <div class="col-md-12">
+                                <div class="card">
+                                <div class="card-header bg-primary">
+                                <h3 class="card-title mb-0">
 
                                 <button type="button" class="btn btn-tool" data-card-widget="collapse">
-                                    Reference Product Detail
+                                Strength
                                 </button>
 
-                            </h3>
-                            <div class="card-tools">
+                                </h3>
+                                <div class="card-tools">
                                 <button type="button" class="btn btn-tool" data-card-widget="collapse" title="Collapse">
-                                    <i class="fas fa-minus"></i>
+                                <i class="fas fa-minus"></i>
                                 </button>
-                            </div>
-                        </div>
-                        <div class="card-body">
-                            <div class="row">
-                                <div class="col-md-3">
-                                    <div class="form-group required">
-                                        @Html.LabelFor(model => model.BrandName,"Brand", new { @class = "control-label" })<span class="text-danger">*</span>
-                                        <input type="hidden" id="hdnBrandName" value="@Model.BrandName" />
-                                        @Html.TextBoxFor(model => model.BrandName, new {@class = "form-control customvalidateformcontrol", @placeholder = "Brand" ,@required="required"})
-                                        @Html.ValidationMessageFor(model => model.BrandName, "", new { @class = "text-danger" })
-
-                                    </div>
+                                </div>
+                                </div>
+                                <div class="card-body pbftables">
+                                <div class="row">
+                                <table id="tableGeneralStrength" class="table text-center" style="width:100%">
+                                </table>
+                                </div>
+                                </div>
                                 </div>
 
-                                <div class="col-md-3">
-                                    <div class="form-group required">
+                                </div>*@
+                                @*  --------------Start--Reference Product Detail-------------------------------------*@
+                                <div class="row">
+                                    <div class="col-12">
+                                        <div class="card">
+                                            <div class="card-header bg-primary">
+                                                <h3 class="card-title mb-0">
 
-                                        @Html.LabelFor(model => model.RFDApplicant,"Applicant", new { @class = "control-label" })<span class="text-danger">*</span>
-                                        <input type="hidden" id="hdnRFDApplicant" value="@Model.RFDApplicant" />
+                                                    <button type="button" class="btn btn-tool" data-card-widget="collapse">
+                                                        Reference Product Detail
+                                                    </button>
 
-                                        @Html.TextBoxFor(model => model.RFDApplicant, new {@class = "form-control customvalidateformcontrol", @placeholder = "Applicant" ,@required="required"})
-                                        @Html.ValidationMessageFor(model => model.RFDApplicant, "", new { @class = "text-danger" })
+                                                </h3>
+                                                <div class="card-tools">
+                                                    <button type="button" class="btn btn-tool" data-card-widget="collapse" title="Collapse">
+                                                        <i class="fas fa-minus"></i>
+                                                    </button>
+                                                </div>
+                                            </div>
+                                            <div class="card-body">
+                                                <div class="row">
+                                                    <div class="col-md-3">
+                                                        <div class="form-group required">
+                                                            @Html.LabelFor(model => model.BrandName,"Brand", new { @class = "control-label" })<span class="text-danger">*</span>
+                                                            <input type="hidden" id="hdnBrandName" value="@Model.BrandName" />
+                                                            @Html.TextBoxFor(model => model.BrandName, new {@class = "form-control customvalidateformcontrol", @placeholder = "Brand" ,@required="required"})
+                                                            @Html.ValidationMessageFor(model => model.BrandName, "", new { @class = "text-danger" })
 
-                                    </div>
-                                </div>
-                                <div class="col-md-3">
-                                    <div class="form-group required">
-                                        @Html.LabelFor(model => model.RFDCountryId, "Country", new { @class = "control-label" })<span class="text-danger">*</span>
-                                        <input type="hidden" id="hdnPbfRFDCountryId" value="@Model.RFDCountryId" />
-                                        <select id="PbfRFDCountryId" name="RFDCountryId" class="form-control readOnlyUpdate customvalidateformcontrol" required></select>
-                                        @Html.ValidationMessageFor(model => model.RFDCountryId, "", new { @class = "text-danger" })
+                                                        </div>
+                                                    </div>
 
-                                    </div>
-                                </div>
-                                <div class="col-md-3">
-                                    <div class="form-group required">
-                                        @Html.LabelFor(model => model.RFDIndication,"Indication", new { @class = "control-label" })<span class="text-danger">*</span>
-                                        <input type="hidden" id="hdnRFDIndication" value="@Model.RFDIndication" />
+                                                    <div class="col-md-3">
+                                                        <div class="form-group required">
 
-                                        @Html.TextBoxFor(model => model.RFDIndication, new {@class = "form-control customvalidateformcontrol", @placeholder = "Indication",@required="required" })
-                                        @Html.ValidationMessageFor(model => model.RFDIndication, "", new { @class = "text-danger" })
+                                                            @Html.LabelFor(model => model.RFDApplicant,"Applicant", new { @class = "control-label" })<span class="text-danger">*</span>
+                                                            <input type="hidden" id="hdnRFDApplicant" value="@Model.RFDApplicant" />
 
-                                    </div>
-                                </div>
-                            </div>
-                             <div class="row">
-                                  <div class="col-md-3">
-                                      <div class="form-group required">
-                                          @Html.LabelFor(model => model.RFDInnovators, new { @class = "control-label" }) <span class="text-danger">*</span>
-                                          <input type="hidden" id="hdnRFDInnovators" value="@Model.RFDInnovators" />
-                                          @Html.TextBoxFor(model => model.RFDInnovators, new { @class = "form-control  customvalidateformcontrol", @placeholder = @MasterLocalizer["RFDInnovators"],@maxlength="100",@required="required"})
-                                          @Html.ValidationMessageFor(model => model.RFDInnovators, "", new { @class = "text-danger" })
-                                      </div>
-                                  </div>
-                                  <div class="col-md-3">
-                                      <div class="form-group required">
-                                          @Html.LabelFor(model => model.RFDInitialRevenuePotential, new { @class = "control-label" }) <span class="text-danger">*</span>
-                                          @Html.TextBoxFor(model => model.RFDInitialRevenuePotential, new { @autocomplete = "off", @class = "form-control checkbox-checked customvalidateformcontrol", @placeholder = @MasterLocalizer["RFDInitialRevenuePotential"],@maxlength="100",@required="required" })
-                                          @Html.ValidationMessageFor(model => model.RFDInitialRevenuePotential, "", new { @class = "text-danger" })
-                                      </div>
-                                  </div>
+                                                            @Html.TextBoxFor(model => model.RFDApplicant, new {@class = "form-control customvalidateformcontrol", @placeholder = "Applicant" ,@required="required"})
+                                                            @Html.ValidationMessageFor(model => model.RFDApplicant, "", new { @class = "text-danger" })
 
-                                  <div class="col-md-3">
-                                      <div class="form-group required">
-                                          @Html.LabelFor(model => model.RFDPriceDiscounting, new { @class = "control-label" }) <span class="text-danger">*</span>
-                                          @Html.TextBoxFor(model => model.RFDPriceDiscounting, new { @autocomplete = "off",@type="number", @class = "form-control checkbox-checked customvalidateformcontrol", @placeholder = @MasterLocalizer["RFDPriceDiscounting"],@maxlength="100",@required="required" })
-                                          @Html.ValidationMessageFor(model => model.RFDPriceDiscounting,"", new { @class = "text-danger" })
-                                      </div>
-                                  </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-3">
+                                                        <div class="form-group required">
+                                                            @Html.LabelFor(model => model.RFDCountryId, "Country", new { @class = "control-label" })<span class="text-danger">*</span>
+                                                            <input type="hidden" id="hdnPbfRFDCountryId" value="@Model.RFDCountryId" />
+                                                            <select id="PbfRFDCountryId" name="RFDCountryId" class="form-control readOnlyUpdate customvalidateformcontrol" required></select>
+                                                            @Html.ValidationMessageFor(model => model.RFDCountryId, "", new { @class = "text-danger" })
 
-                                  <div class="col-md-3">
-                                      <div class="form-group required">
-                                          @Html.LabelFor(model => model.RFDCommercialBatchSize, new { @class = "control-label" }) <span class="text-danger">*</span>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-3">
+                                                        <div class="form-group required">
+                                                            @Html.LabelFor(model => model.RFDIndication,"Indication", new { @class = "control-label" })<span class="text-danger">*</span>
+                                                            <input type="hidden" id="hdnRFDIndication" value="@Model.RFDIndication" />
+
+                                                            @Html.TextBoxFor(model => model.RFDIndication, new {@class = "form-control customvalidateformcontrol", @placeholder = "Indication",@required="required" })
+                                                            @Html.ValidationMessageFor(model => model.RFDIndication, "", new { @class = "text-danger" })
+
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="row">
+                                                    <div class="col-md-3">
+                                                        <div class="form-group required">
+                                                            @Html.LabelFor(model => model.RFDInnovators, new { @class = "control-label" }) <span class="text-danger">*</span>
+                                                            <input type="hidden" id="hdnRFDInnovators" value="@Model.RFDInnovators" />
+                                                            @Html.TextBoxFor(model => model.RFDInnovators, new { @class = "form-control  customvalidateformcontrol", @placeholder = @MasterLocalizer["RFDInnovators"],@maxlength="100",@required="required"})
+                                                            @Html.ValidationMessageFor(model => model.RFDInnovators, "", new { @class = "text-danger" })
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-3">
+                                                        <div class="form-group required">
+                                                            @Html.LabelFor(model => model.RFDInitialRevenuePotential, new { @class = "control-label" }) <span class="text-danger">*</span>
+                                                            @Html.TextBoxFor(model => model.RFDInitialRevenuePotential, new { @autocomplete = "off", @class = "form-control checkbox-checked customvalidateformcontrol", @placeholder = @MasterLocalizer["RFDInitialRevenuePotential"],@maxlength="100",@required="required" })
+                                                            @Html.ValidationMessageFor(model => model.RFDInitialRevenuePotential, "", new { @class = "text-danger" })
+                                                        </div>
+                                                    </div>
+
+                                                    <div class="col-md-3">
+                                                        <div class="form-group required">
+                                                            @Html.LabelFor(model => model.RFDPriceDiscounting, new { @class = "control-label" }) <span class="text-danger">*</span>
+                                                            @Html.TextBoxFor(model => model.RFDPriceDiscounting, new { @autocomplete = "off",@type="number", @class = "form-control checkbox-checked customvalidateformcontrol", @placeholder = @MasterLocalizer["RFDPriceDiscounting"],@maxlength="100",@required="required" })
+                                                            @Html.ValidationMessageFor(model => model.RFDPriceDiscounting,"", new { @class = "text-danger" })
+                                                        </div>
+                                                    </div>
+
+                                                    <div class="col-md-3">
+                                                        <div class="form-group required">
+                                                            @Html.LabelFor(model => model.RFDCommercialBatchSize, new { @class = "control-label" }) <span class="text-danger">*</span>
                                                             @Html.TextBoxFor(model => model.RFDCommercialBatchSize,  new { @autocomplete = "off", @class = "form-control checkbox-checked customvalidateformcontrol", @placeholder = @MasterLocalizer["RFDCommercialBatchSize"],@maxlength="100",@required="required" })
-                                          @Html.ValidationMessageFor(model => model.RFDCommercialBatchSize, "", new { @class = "text-danger" })
-                                      </div>
-                                  </div>
+                                                            @Html.ValidationMessageFor(model => model.RFDCommercialBatchSize, "", new { @class = "text-danger" })
+                                                        </div>
+                                                    </div>
 
-                          </div>
-                        </div>
-                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
 
-                </div>
-            </div>
-                              @*  --------------End--Reference Product Detail-------------------------------------*@
+                                    </div>
+                                </div>
+                                @*  --------------End--Reference Product Detail-------------------------------------*@
                                 @*  Total Expenses*@
                                 <div class="col-12">
                                     <div class="card">
@@ -509,7 +509,266 @@
                 </div>
             </div>
 
+            @* --start-New Tab chanes-----------------------*@
+            <div class="card card-maroon card-outline card-outline-tabs m-0">
+                <div class="card-header p-0">
+                    <ul class="nav nav-tabs m-0"
+                        id="custom-tabs-RNDdepartment-tab" role="tablist">
+                        <li class="nav-item p-0">
+                            <a class="nav-link active px-2"
+                               id="custom-tabs-department-RnD-tab-DosageFormulation"
+                               data-toggle="pill"
+                               href="#custom-tabs-RnD-DosageFormulation" role="tab"
+                               aria-controls="custom-tabs-RnD-DosageFormulation"
+                               aria-selected="true">Dosage Formulation</a>
+                        </li>
+                        <li class="nav-item p-0">
+                            <a class="nav-link px-2"
+                               id="custom-tabs-department-RnD-tab-APIRequirment"
+                               data-toggle="pill"
+                               href="#custom-tabs-RnD-APIRequirment" role="tab"
+                               aria-controls="custom-tabs-RnD-APIRequirment"
+                               aria-selected="false">API Requirment</a>
+                        </li>
+                        <li class="nav-item p-0">
+                            <a class="nav-link px-2"
+                               id="custom-tabs-department-RnD-tab-ExcipientRequirement"
+                               data-toggle="pill"
+                               href="#custom-tabs-RnD-ExcipientRequirement" role="tab"
+                               aria-controls="custom-tabs-RnD-ExcipientRequirement"
+                               aria-selected="false">Excipient Requirement</a>
+                        </li>
+                        <li class="nav-item p-0">
+                            <a class="nav-link px-2"
+                               id="custom-tabs-department-RnD-tab-PackagingMaterial"
+                               data-toggle="pill"
+                               href="#custom-tabs-RnD-PackagingMaterial" role="tab"
+                               aria-controls="custom-tabs-RnD-PackagingMaterial"
+                               aria-selected="false">Packaging Material</a>
+                        </li>
+                        <li class="nav-item p-0">
+                            <a class="nav-link px-2"
+                               id="custom-tabs-department-RnD-tab-ToolingandChangePartCost"
+                               data-toggle="pill"
+                               href="#custom-tabs-RnD-ToolingandChangePartCost" role="tab"
+                               aria-controls="custom-tabs-RnD-ToolingandChangePartCost"
+                               aria-selected="false">Tooling and Change Part Cost</a>
+                        </li>
 
+                        <li class="nav-item p-0">
+                            <a class="nav-link px-2"
+                               id="custom-tabs-department-RnD-tab-CapexMiscellaneouseExpenses"
+                               data-toggle="pill"
+                               href="#custom-tabs-RnD-CapexMiscellaneouseExpenses" role="tab"
+                               aria-controls="custom-tabs-RnD-CapexMiscellaneouseExpenses"
+                               aria-selected="false">Capex Miscellaneouse Expenses</a>
+                        </li>
+                        <li class="nav-item p-0">
+                            <a class="nav-link px-2"
+                               id="custom-tabs-department-RnD-tab-PlantSupportCost"
+                               data-toggle="pill"
+                               href="#custom-tabs-RnD-PlantSupportCost" role="tab"
+                               aria-controls="custom-tabs-RnD-PlantSupportCost"
+                               aria-selected="false">Plant Support Cost</a>
+                        </li>
+                        <li class="nav-item p-0">
+                            <a class="nav-link px-2"
+                               id="custom-tabs-department-RnD-tab-ReferenceProductDetail"
+                               data-toggle="pill"
+                               href="#custom-tabs-RnD-ReferenceProductDetail" role="tab"
+                               aria-controls="custom-tabs-RnD-ReferenceProductDetail"
+                               aria-selected="false">Reference Product Detail</a>
+                        </li>
+                        <li class="nav-item p-0">
+                            <a class="nav-link px-2"
+                               id="custom-tabs-department-RnD-tab-ManPowerCost&ProjectDuration"
+                               data-toggle="pill"
+                               href="#custom-tabs-RnD-ManPowerCost&ProjectDuration" role="tab"
+                               aria-controls="custom-tabs-RnD-ManPowerCost&ProjectDuration"
+                               aria-selected="false">Man Power Cost & Project Duration</a>
+                        </li>
+                        <li class="nav-item p-0">
+                            <a class="nav-link px-2"
+                               id="custom-tabs-department-RnD-tab-FillingExpenses"
+                               data-toggle="pill"
+                               href="#custom-tabs-RnD-FillingExpenses" role="tab"
+                               aria-controls="custom-tabs-RnD-FillingExpenses"
+                               aria-selected="false">Filling Expenses</a>
+                        </li>
+                        <li class="nav-item p-0">
+                            <a class="nav-link px-2"
+                               id="custom-tabs-department-RnD-tab-PhaseWiseBudget"
+                               data-toggle="pill"
+                               href="#custom-tabs-RnD-PhaseWiseBudget" role="tab"
+                               aria-controls="custom-tabs-RnD-PhaseWiseBudget"
+                               aria-selected="false">Phase Wise Budget</a>
+                        </li>
+                        <li class="nav-item p-0">
+                            <a class="nav-link px-2"
+                               id="custom-tabs-department-RnD-tab-HeadWiseBudget"
+                               data-toggle="pill"
+                               href="#custom-tabs-RnD-HeadWiseBudget" role="tab"
+                               aria-controls="custom-tabs-RnD-HeadWiseBudget"
+                               aria-selected="false">Head Wise Budget</a>
+                        </li>
+                    </ul>
+                </div>
+
+                <div class="card-body">
+                    <div class="tab-content" id="custom-tabs-RNDdepartment-tabContent">
+
+
+                        <div class="tab-pane fade show active"
+                             id="custom-tabs-RnD-DosageFormulation" role="tabpanel"
+                             aria-labelledby="custom-tabs-department-RnD-tab-DosageFormulation">
+                            <div class="container-fluid">
+                                <div class="row">
+                                    <div class="card-body pbftables ">
+                                        <div class="row">
+                                            <div class="col-md-3">
+                                                <div class="form-group required">
+                                                    @Html.LabelFor(model => model.RNDMasterEntities.BatchSizeId, "Dosage Formulation", new { @class = "control-label" })
+                                                    @*<input type="hidden" id="hdnBatchSizeId" value="@Model.RNDMasterEntities.BatchSizeId" />*@
+                                                    <select id="RNDBatchSizeId" name="RNDMasterEntities.BatchSizeId" class="form-control readOnlyUpdate" required></select>
+                                                </div>
+                                            </div>
+                                            <table id="tablerndbatchsize" class="table text-center" style="width:100%">
+                                            </table>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                           <div class="tab-pane fade show"
+                             id="custom-tabs-RnD-APIRequirment" role="tabpanel"
+                             aria-labelledby="custom-tabs-department-RnD-tab-APIRequirment">
+                            <div class="container-fluid">
+                                <div class="row">
+                                    <div class="card-body pbftables">
+                                        <div class="row">
+                                            <div class="col-md-3">
+                                                <div class="form-group required">
+                                                    @Html.LabelFor(model => model.RNDMasterEntities.ApirequirementMarketPrice, "Market Price ", new { @class = "control-label" }) <span id="spAPIRequirementMarketPrice">(Rs/kg)</span>
+                                                    @Html.TextBoxFor(@modal=> modal.RNDMasterEntities.ApirequirementMarketPrice,new{@class="form-control calcRNDApirequirementsMarketPrice",type = "number", min = 0})
+                                                </div>
+                                            </div>
+                                            <div class="col-md-3">
+                                                <div class="form-group required">
+                                                    @Html.LabelFor(model => model.RNDMasterEntities.ApirequirementVendorName, "Vendor Name", new { @class = "control-label" })
+                                                    @Html.TextBoxFor(@modal=> modal.RNDMasterEntities.ApirequirementVendorName,new{@class="form-control RNDApirequirementVendorName"})
+                                                </div>
+                                            </div>
+                                            <table id="tablerndapirequirement" class="table text-center tableTDHint" style="width:100%">
+                                            </table>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                             <div class="tab-pane fade show"
+                             id="custom-tabs-RnD-ExcipientRequirement" role="tabpanel"
+                             aria-labelledby="custom-tabs-department-RnD-tab-ExcipientRequirement">
+                            <div class="container-fluid">
+                                <div class="row">
+                                    // ExcipientRequirement
+                                </div>
+                            </div>
+                        </div>
+                        <div class="tab-pane fade show"
+                             id="custom-tabs-RnD-PackagingMaterial" role="tabpanel"
+                             aria-labelledby="custom-tabs-department-RnD-tab-PackagingMaterial">
+                            <div class="container-fluid">
+                                <div class="row">
+                                    // PackagingMaterial
+                                </div>
+                            </div>
+                        </div>
+                        <div class="tab-pane fade show"
+                             id="custom-tabs-RnD-ToolingandChangePartCost" role="tabpanel"
+                             aria-labelledby="custom-tabs-department-RnD-tab-ToolingandChangePartCost">
+                            <div class="container-fluid">
+                                <div class="row">
+                                    // ToolingandChangePartCost
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="tab-pane fade show"
+                             id="custom-tabs-RnD-CapexMiscellaneouseExpenses" role="tabpanel"
+                             aria-labelledby="custom-tabs-department-RnD-tab-CapexMiscellaneouseExpenses">
+                            <div class="container-fluid">
+                                <div class="row">
+                                    // CapexMiscellaneouseExpenses
+                                </div>
+                            </div>
+                        </div>
+                        <div class="tab-pane fade show"
+                             id="custom-tabs-RnD-PlantSupportCost" role="tabpanel"
+                             aria-labelledby="custom-tabs-department-RnD-tab-PlantSupportCost">
+                            <div class="container-fluid">
+                                <div class="row">
+                                    // PlantSupportCost
+                                </div>
+                            </div>
+                        </div>
+                        <div class="tab-pane fade show"
+                             id="custom-tabs-RnD-ReferenceProductDetail" role="tabpanel"
+                             aria-labelledby="custom-tabs-department-RnD-tab-ReferenceProductDetail">
+                            <div class="container-fluid">
+                                <div class="row">
+                                    // ReferenceProductDetail
+                                </div>
+                            </div>
+                        </div>
+                        <div class="tab-pane fade show"
+                             id="custom-tabs-RnD-ManPowerCost&ProjectDuration" role="tabpanel"
+                             aria-labelledby="custom-tabs-department-RnD-tab-ManPowerCost&ProjectDuration">
+                            <div class="container-fluid">
+                                <div class="row">
+                                    // ManPowerCost&ProjectDuration
+                                </div>
+                            </div>
+                        </div>
+                        <div class="tab-pane fade show"
+                             id="custom-tabs-RnD-FillingExpenses" role="tabpanel"
+                             aria-labelledby="custom-tabs-department-RnD-tab-FillingExpenses">
+                            <div class="container-fluid">
+                                <div class="row">
+                                    // FillingExpenses
+                                </div>
+                            </div>
+                        </div>
+                        <div class="tab-pane fade show"
+                             id="custom-tabs-RnD-PhaseWiseBudget" role="tabpanel"
+                             aria-labelledby="custom-tabs-department-RnD-tab-PhaseWiseBudget">
+                            <div class="container-fluid">
+                                <div class="row">
+                                    // PhaseWiseBudget
+                                </div>
+                            </div>
+                        </div>
+                        <div class="tab-pane fade show"
+                             id="custom-tabs-RnD-HeadWiseBudget" role="tabpanel"
+                             aria-labelledby="custom-tabs-department-RnD-tab-HeadWiseBudget">
+                            <div class="container-fluid">
+                                <div class="row">
+                                    // HeadWiseBudget
+                                </div>
+                            </div>
+                        </div>
+
+
+
+
+
+
+                    </div>
+                </div>
+            </div>
+
+
+            @*   -------end New Tab chanes-------------------*@
 
 
             <div class="card card-maroon card-outline card-outline-tabs m-0">
@@ -520,34 +779,34 @@
                         {
                             <li class="nav-item p-0">
                                 <a class="nav-link active px-2"
-                               id="custom-tabs-department-RnD-tab"
-                               data-toggle="pill"
-                               href="#custom-tabs-RnD" role="tab"
-                               aria-controls="custom-tabs-RnD"
-                               aria-selected="true">PBF/RnD</a>
+                                   id="custom-tabs-department-RnD-tab"
+                                   data-toggle="pill"
+                                   href="#custom-tabs-RnD" role="tab"
+                                   aria-controls="custom-tabs-RnD"
+                                   aria-selected="true">PBF/RnD</a>
                             </li>
                         }
                         @if (UtilityHelper.GetAccess((int)EmcureNPD.Utility.Enums.ModuleEnum.PBF, Helper.GetLoggedInRoleId(), (int)EmcureNPD.Utility.Enums.PermissionEnum.View, (int)EmcureNPD.Utility.Enums.SubModulePermissionEnum.Analytical) || UtilityHelper.GetAccess((int)EmcureNPD.Utility.Enums.ModuleEnum.PBF, Helper.GetLoggedInRoleId(), (int)EmcureNPD.Utility.Enums.PermissionEnum.Edit, (int)EmcureNPD.Utility.Enums.SubModulePermissionEnum.Analytical) || UtilityHelper.GetAccess((int)EmcureNPD.Utility.Enums.ModuleEnum.PBF, Helper.GetLoggedInRoleId(), (int)EmcureNPD.Utility.Enums.PermissionEnum.Add, (int)EmcureNPD.Utility.Enums.SubModulePermissionEnum.Analytical))
                         {
                             <li class="nav-item p-0">
                                 <a class="nav-link px-2"
-                               id="custom-tabs-department-Analytical-tab"
-                               data-toggle="pill"
-                               href="#custom-tabs-Analytical"
-                               role="tab"
-                               aria-controls="custom-tabs-Analytical"
-                               aria-selected="false">Analytical</a>
+                                   id="custom-tabs-department-Analytical-tab"
+                                   data-toggle="pill"
+                                   href="#custom-tabs-Analytical"
+                                   role="tab"
+                                   aria-controls="custom-tabs-Analytical"
+                                   aria-selected="false">Analytical</a>
                             </li>
                         }
                         @if (UtilityHelper.GetAccess((int)EmcureNPD.Utility.Enums.ModuleEnum.PBF, Helper.GetLoggedInRoleId(), (int)EmcureNPD.Utility.Enums.PermissionEnum.View, (int)EmcureNPD.Utility.Enums.SubModulePermissionEnum.Clinical) || UtilityHelper.GetAccess((int)EmcureNPD.Utility.Enums.ModuleEnum.PBF, Helper.GetLoggedInRoleId(), (int)EmcureNPD.Utility.Enums.PermissionEnum.Edit, (int)EmcureNPD.Utility.Enums.SubModulePermissionEnum.Clinical) || UtilityHelper.GetAccess((int)EmcureNPD.Utility.Enums.ModuleEnum.PBF, Helper.GetLoggedInRoleId(), (int)EmcureNPD.Utility.Enums.PermissionEnum.Add, (int)EmcureNPD.Utility.Enums.SubModulePermissionEnum.Clinical))
                         {
                             <li class="nav-item p-0">
                                 <a class="nav-link px-2"
-                               id="custom-tabs-department-Clinical-tab"
-                               data-toggle="pill"
-                               href="#custom-tabs-Clinical" role="tab"
-                               aria-controls="custom-tabs-Clinical"
-                               aria-selected="false">Clinical</a>
+                                   id="custom-tabs-department-Clinical-tab"
+                                   data-toggle="pill"
+                                   href="#custom-tabs-Clinical" role="tab"
+                                   aria-controls="custom-tabs-Clinical"
+                                   aria-selected="false">Clinical</a>
                             </li>
                         }
 
@@ -561,7 +820,7 @@
                 {
                     <div class="card-body pbftables" id="dvAllBottomTabsPBF">
                         <div class="tab-content"
-                         id="custom-tabs-department-tabContent">
+                             id="custom-tabs-department-tabContent">
                             @if (UtilityHelper.GetAccess((int)EmcureNPD.Utility.Enums.ModuleEnum.PBF, Helper.GetLoggedInRoleId(), (int)EmcureNPD.Utility.Enums.PermissionEnum.View, (int)EmcureNPD.Utility.Enums.SubModulePermissionEnum.RnD) || UtilityHelper.GetAccess((int)EmcureNPD.Utility.Enums.ModuleEnum.PBF, Helper.GetLoggedInRoleId(), (int)EmcureNPD.Utility.Enums.PermissionEnum.Edit, (int)EmcureNPD.Utility.Enums.SubModulePermissionEnum.RnD) || UtilityHelper.GetAccess((int)EmcureNPD.Utility.Enums.ModuleEnum.PBF, Helper.GetLoggedInRoleId(), (int)EmcureNPD.Utility.Enums.PermissionEnum.Add, (int)EmcureNPD.Utility.Enums.SubModulePermissionEnum.RnD))
                             {
                                 if (UtilityHelper.GetAccess((int)EmcureNPD.Utility.Enums.ModuleEnum.PBF, Helper.GetLoggedInRoleId(), (int)EmcureNPD.Utility.Enums.PermissionEnum.Edit, (int)EmcureNPD.Utility.Enums.SubModulePermissionEnum.RnD))
@@ -569,8 +828,8 @@
                                     <input type="hidden" id="hdnPBFRNDPermission" value="true" />
                                 }
                                 <div class="tab-pane fade show active"
-                             id="custom-tabs-RnD" role="tabpanel"
-                             aria-labelledby="custom-tabs-department-RnD-tab">
+                                     id="custom-tabs-RnD" role="tabpanel"
+                                     aria-labelledby="custom-tabs-department-RnD-tab">
                                     <div class="container-fluid">
                                         <div class="row">
                                             @* batch size*@
@@ -632,7 +891,7 @@
                                                                     @Html.TextBoxFor(@modal=> modal.RNDMasterEntities.ApirequirementMarketPrice,new{@class="form-control calcRNDApirequirementsMarketPrice",type = "number", min = 0})
                                                                 </div>
                                                             </div>
-                                                             <div class="col-md-3">
+                                                            <div class="col-md-3">
                                                                 <div class="form-group required">
                                                                     @Html.LabelFor(model => model.RNDMasterEntities.ApirequirementVendorName, "Vendor Name", new { @class = "control-label" })
                                                                     @Html.TextBoxFor(@modal=> modal.RNDMasterEntities.ApirequirementVendorName,new{@class="form-control RNDApirequirementVendorName"})
@@ -770,23 +1029,23 @@
                                                     </div>
                                                     <div class="card-body pbftablesplantCost">
                                                         <div class="row">
-                                                              <div class="col-md-3">
-                                                                 <div class="form-group required">
+                                                            <div class="col-md-3">
+                                                                <div class="form-group required">
                                                                     @Html.LabelFor(model => model.RNDMasterEntities.PlantId_Tab, "Plant Name", new { @class = "control-label" })<span class="text-danger">*</span>
                                                                     @Html.HiddenFor(model => model.RNDMasterEntities.PlantId_Tab)
                                                                     @*<input type="hidden" id="hdnPlantId" value="@Model.PlantId" />*@
                                                                     <select id="ddlPlantId_Tab" name="ddlPlantId_Tab" class="form-control readOnlyUpdate customvalidateformcontrol ddlPlantId_Tab" required></select>
-                                                                     @Html.ValidationMessageFor(model => model.RNDMasterEntities.PlantId_Tab, "", new { @class = "text-danger" })
-                                                                 </div>
-                                                             </div>
-                                                              <div class="col-md-3">
-                                                                 <div class="form-group required">
-                                                                    @Html.LabelFor(model => model.RNDMasterEntities.PBFLine, "Line", new { @class = "control-label" })<span class="text-danger">*</span>                                                                     
+                                                                    @Html.ValidationMessageFor(model => model.RNDMasterEntities.PlantId_Tab, "", new { @class = "text-danger" })
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-md-3">
+                                                                <div class="form-group required">
+                                                                    @Html.LabelFor(model => model.RNDMasterEntities.PBFLine, "Line", new { @class = "control-label" })<span class="text-danger">*</span>
                                                                     <select id="ddlPBFLine" name="ddlPBFLine" class="form-control readOnlyUpdate customvalidateformcontrol ddlPBFLine" required></select>
                                                                     @Html.HiddenFor(model => model.RNDMasterEntities.PBFLine)
                                                                     @Html.ValidationMessageFor(model => model.RNDMasterEntities.PBFLine, "", new { @class = "text-danger" })
-                                                                 </div>
-                                                             </div>
+                                                                </div>
+                                                            </div>
                                                             <div class="col-md-3">
                                                                 <div class="form-group required">
                                                                     @Html.LabelFor(model => model.RNDMasterEntities.PlanSupportCostRsPerDay, "Plant Utilization rate Rs/Day", new { @class = "control-label" })
@@ -951,8 +1210,8 @@
                                     <input type="hidden" id="hdnPBFAnalyticalPermission" value="true" />
                                 }
                                 <div class="tab-pane fade show"
-                             id="custom-tabs-Analytical" role="tabpanel"
-                             aria-labelledby="custom-tabs-department-Analytical-tab">
+                                     id="custom-tabs-Analytical" role="tabpanel"
+                                     aria-labelledby="custom-tabs-department-Analytical-tab">
                                     <div class="container-fluid">
                                         <div class="row">
 
@@ -971,8 +1230,8 @@
                                     <input type="hidden" id="hdnPBFClinicalPermission" value="true" />
                                 }
                                 <div class="tab-pane fade show"
-                             id="custom-tabs-Clinical" role="tabpanel"
-                             aria-labelledby="custom-tabs-department-clinical-tab">
+                                     id="custom-tabs-Clinical" role="tabpanel"
+                                     aria-labelledby="custom-tabs-department-clinical-tab">
                                     <div class="container-fluid">
 
                                         <div class="row">
@@ -1026,16 +1285,16 @@
 <script>
     var GetAllPBF = "@EmcureNPD.Web.Helpers.APIURLHelper.GetPBFDropdown";
     var getLineByPlantId = "@EmcureNPD.Web.Helpers.APIURLHelper.GetLineByPlantId";
-    var UserWiseBUList="@Model.BusinessUnitsByUser";
+    var UserWiseBUList = "@Model.BusinessUnitsByUser";
     var _selectBusinessUnit = "@UtilityHelper.Decreypt(Convert.ToString(Context.Request.Query["bui"]))";
     var _PIDFID = "@UtilityHelper.Decreypt(Convert.ToString(Context.Request.Query["pidfid"]))";
     var GetPBFAllTabDetails = "@EmcureNPD.Web.Helpers.APIURLHelper.GetPBFTabDetails";
     var ErrorMessage = "@SharedLocalizer["Error"]";
 
     var _EncPIDFID = "@Convert.ToString(Context.Request.Query["pidfid"])";
-        var _PIDFBusinessUnitId = "@Convert.ToString(Context.Request.Query["bui"])";
-        var _PIDFAccordionURL = "@Url.Action("PIDF", "PIDF")";
-        var _IPDAccordionURL = "@Url.Action("IPD", "IPD")";
+    var _PIDFBusinessUnitId = "@Convert.ToString(Context.Request.Query["bui"])";
+    var _PIDFAccordionURL = "@Url.Action("PIDF", "PIDF")";
+    var _IPDAccordionURL = "@Url.Action("IPD", "IPD")";
     var _CommercialAccordionURL = "@Url.Action("PIDFCommerciaLDetails", "Commercial")";
 
 </script>
