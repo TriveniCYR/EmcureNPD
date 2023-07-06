@@ -17,6 +17,7 @@ namespace EmcureNPD.Data.DataAccess.Entity
         public double? ExhibitBatch3 { get; set; }
         public DateTime CreatedDate { get; set; }
         public int CreatedBy { get; set; }
+        public double? Salt { get; set; }
 
         public virtual PidfPbfGeneral Pbfgeneral { get; set; }
         public virtual PidfproductStrength Strength { get; set; }

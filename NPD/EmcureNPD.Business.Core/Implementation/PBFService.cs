@@ -258,8 +258,9 @@ namespace EmcureNPD.Business.Core.Implementation
             DropdownObjects.IPDCostOfLitigation = dsDropdownOptions.Tables[19];
             DropdownObjects.HeadWiseBudget = dsDropdownOptions.Tables[20];
             DropdownObjects.PBFReferenceProductDetail = dsDropdownOptions.Tables[21];
+			DropdownObjects.RNDExicipientPrototype = dsDropdownOptions.Tables[22];
 
-            return DropdownObjects;
+			return DropdownObjects;
         }
 
 
@@ -571,7 +572,9 @@ namespace EmcureNPD.Business.Core.Implementation
                     {
                         objrndMaster.BatchSizeId = pbfentity.RNDMasterEntities.BatchSizeId;
                         objrndMaster.ApirequirementMarketPrice = pbfentity.RNDMasterEntities.ApirequirementMarketPrice;
-                        objrndMaster.ManHourRate = pbfentity.RNDMasterEntities.ManHourRate;
+						objrndMaster.ApirequirementVendorName = pbfentity.RNDMasterEntities.ApirequirementVendorName; 
+
+						objrndMaster.ManHourRate = pbfentity.RNDMasterEntities.ManHourRate;
                         objrndMaster.PlanSupportCostRsPerDay = pbfentity.RNDMasterEntities.PlanSupportCostRsPerDay;
 
                         objrndMaster.PlantId = pbfentity.RNDMasterEntities.PlantId_Tab;
@@ -1304,7 +1307,8 @@ namespace EmcureNPD.Business.Core.Implementation
                     {
                         objrndMaster.BatchSizeId = pbfentity.RNDMasterEntities.BatchSizeId;
                         objrndMaster.ApirequirementMarketPrice = pbfentity.RNDMasterEntities.ApirequirementMarketPrice;
-                        objrndMaster.ManHourRate = pbfentity.RNDMasterEntities.ManHourRate;
+						objrndMaster.ApirequirementVendorName = pbfentity.RNDMasterEntities.ApirequirementVendorName;
+						objrndMaster.ManHourRate = pbfentity.RNDMasterEntities.ManHourRate;
                         objrndMaster.PlanSupportCostRsPerDay = pbfentity.RNDMasterEntities.PlanSupportCostRsPerDay;
                         objrndMaster.PlantId = pbfentity.RNDMasterEntities.PlantId_Tab;
                         objrndMaster.LineId = pbfentity.RNDMasterEntities.PBFLine;
@@ -1362,6 +1366,7 @@ namespace EmcureNPD.Business.Core.Implementation
                             batchsize.ExhibitBatch1 = item.ExhibitBatch1;
                             batchsize.ExhibitBatch2 = item.ExhibitBatch2;
                             batchsize.ExhibitBatch3 = item.ExhibitBatch3;
+                            batchsize.Salt = item.salt;
                             batchsize.CreatedDate = DateTime.Now;
                             batchsize.CreatedBy = loggedInUserId;
                             _pidfPbfRndBatchSizeRepository.UpdateAsync(batchsize);
