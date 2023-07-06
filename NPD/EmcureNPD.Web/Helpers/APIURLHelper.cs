@@ -512,6 +512,12 @@ namespace EmcureNPD.Web.Helpers
 		public static string SavePlantLine = "api/PlantLine/AddUpdatePlantLine";
 		public static string DeletePlantLineId = "api/PlantLine/DeletePlantLine";
 		public static string GetAllActivePlants = "api/PlantLine/GetAllActivePlants";
-		#endregion
-	}
+        #endregion
+        #region WishList
+        public static string GetAllWishList = "api/WishList/GetAllWishList";
+        public static string GetAllWishListType = "api/WishList/GetWishListType";
+        public static string AddUpdateWishList = "api/WishList/AddUpdateWishList";
+        public static string GetWishListById = "api/WishList/GetWishListById";
+        #endregion
+    }
 }

@@ -47,8 +47,11 @@ namespace EmcureNPD.Utility.Enums
 
         Commercial = 15,
         ManagementHOD = 16,
-        Project = 17
-    }
+        Project = 17,
+      [Description("Wish List")]
+
+		WishList = 18,
+	}
 
     public enum SubModulePermissionEnum
     {

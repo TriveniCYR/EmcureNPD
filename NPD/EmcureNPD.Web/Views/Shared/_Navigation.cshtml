@@ -158,7 +158,17 @@
 									</a>
 								</li>
 							}
-
+							@if (UtilityHelper.GetMenuAccess((int)ModulePermissionEnum.WishList, _roleId))
+							{
+								<li class="nav-item">
+									<a href="@Url.Action("WishListView","WishList")" class="nav-link">
+										<i class="fa-solid fa fa-heart-o nav-icon"></i>
+										<p>
+											@MasterLocalizer["WishList"]
+										</p>
+									</a>
+								</li>
+							}
 						</ul>
 					</li>
 					@if (UtilityHelper.GetMenuAccess((int)ModulePermissionEnum.Project, _roleId)){

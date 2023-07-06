@@ -18,5 +18,9 @@ namespace EmcureNPD.Business.Core.Interface
         Task<DBOperation> AddUpdateWishList(WishListEntity model);
 
         Task<dynamic> GetWishListByTypeId(int id = 0);
+        Task<DataTableResponseModel> GetAllWishList(DataTableAjaxPostModel model);
+        Task<List<MasterWishListType>> GetWishListType();
+
+
     }
 }

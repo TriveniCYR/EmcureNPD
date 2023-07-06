@@ -1,0 +1,185 @@
+﻿@using EmcureNPD.Business.Models
+@using Microsoft.Extensions.Configuration
+@using EmcureNPD.Utility.Utility;
+@using EmcureNPD.Web.Helpers;
+@using EmcureNPD.Utility.Enums;
+@inject Microsoft.Extensions.Localization.IStringLocalizer<EmcureNPD.Resource.Master> MasterLocalizer
+@inject IHelper Helper
+@inject Microsoft.Extensions.Localization.IStringLocalizer<EmcureNPD.Resource.Shared> SharedLocalizer
+@inject IConfiguration Configuration
+@model EmcureNPD.Business.Models.WishListEntity
+@{
+    int CurrentUserId = Helper.GetLoggedInUserId();
+    var Ismanagement = Helper.IsManagementUser();
+    ViewData["Title"] = "WishList";
+    int i = 0;
+    string jsVersion = @Configuration.GetSection("StaticJS")["version"];
+    int ScreenModuleID = 0;
+}
+
+<div class="content-header">
+    <div class="container-fluid d-flex justify-content-between">
+        <h3>All Wish List</h3>
+        <div>
+            @*@if (UtilityHelper.GetAccess(Int32.Parse(Convert.ToString(ScreenModuleID)), Helper.GetLoggedInRoleId(), (int)PermissionEnum.Add))
+            {*@
+                @*<a class="btn btn-primary" asp-action="PIDF"><i class="far fa-plus-square mr-1"></i> @SharedLocalizer["Add"]</a>*@
+            <button class="btn btn-primary" id="btnAddWishList" onclick="ShowModal(0,false);"><i class="far fa-plus-square mr-1"></i> @SharedLocalizer["Add"]</button>
+            @*}*@
+        </div>
+    </div>
+</div>
+<div class="container-fluid overflow-auto background-white-card">
+    <table id="WishListTable" class="table dataTable table-bordered table-striped table-hover">
+        <thead>
+            <tr class="text-center">
+                <th>WishList Type</th>
+                <th>Molecule Name</th>
+                <th>Strength</th>
+                <th>Date Of Filing</th>
+                <th>Date Of Approval</th>
+                <th>IsInhouse Or InLicensed</th>
+                <th>Name of Vendor</th>
+                <th>Vendor Evaluation Remark</th>
+                <th>Created On</th>
+                <th>Action</th>
+            </tr>
+        </thead>
+        <tbody class="text-center">
+         
+
+        </tbody>
+    </table>
+</div>
+@*AddModel*@
+<div id="AddUpdateWishListModel" class="modal themeModal " role="dialog">
+  <form method="POST" id="frmWishList">
+        @*<div class="card-body">*@
+        <div class="modal-dialog modal-lg">
+            <!-- Modal content-->
+        <input type="hidden" id="LogInId" />
+            <div class="modal-content">
+                <div class="modal-header">
+                <h4 class="modal-title" id="wishListTitle">@SharedLocalizer["Add Wish List"].Value</h4>
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                </div>
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-sm-6">
+                        <div class="form-group required">
+                            <div class="form-group required">
+                                <input type="hidden" id="WishListId" name="WishListId" />
+                                <label class="control-label" for="WishListTypeId">Type</label>
+                                <span style="color:red;">*</span>
+                                <select class="form-control input-sm " data-val="true"
+                                        data-val-required="Type is required" id="WishListTypeId" name="WishListTypeId">
+                                </select>
+                                <span class="text-danger field-validation-valid" data-valmsg-for="WishListTypeId" data-valmsg-replace="true"></span>
+                            </div>
+                        </div>
+                        <div class="form-group required">
+                            <label class="control-label" for="CountryId">Country</label>
+                            <span style="color:red;">*</span>
+                            <select class="form-control input-sm " data-val="true"
+                                    data-val-required="Country is required" id="CountryId" name="CountryId">
+                            </select>
+                            <span class="text-danger field-validation-valid" data-valmsg-for="CountryId" data-valmsg-replace="true"></span>
+                            <input type="hidden" id="hdnCountryId" name="CountryId" />
+                            </div>
+                           
+                        
+                        <div class="form-group required">
+                            @Html.LabelFor(o => o.Strength, new { @class = "control-label" })<span style="color:red;">*</span>
+                            @Html.EditorFor(o => o.Strength, new { htmlAttributes = new { @autocomplete = "off", @class = "form-control" } })
+                            @Html.ValidationMessageFor(o => o.Strength, "", new { @class = "text-danger" })
+                        </div>
+                        <div class="form-group required">
+                            @Html.LabelFor(o => o.DateOfFiling, new { @class = "control-label" })<span style="color:red;">*</span>
+                            @Html.EditorFor(o => o.DateOfFiling, new { htmlAttributes = new { @autocomplete = "off", @class = "form-control",@type="date" } })
+                            @Html.ValidationMessageFor(o => o.DateOfFiling, "", new { @class = "text-danger" })
+                        </div>
+                        <div class="form-group required">
+                            @Html.LabelFor(o => o.NameofVendor, new { @class = "control-label" })<span style="color:red;">*</span>
+                            @Html.EditorFor(o => o.NameofVendor, new { htmlAttributes = new { @autocomplete = "off", @class = "form-control" } })
+                            @Html.ValidationMessageFor(o => o.NameofVendor, "", new { @class = "text-danger" })
+                        </div>
+                        <div class="form-group required">
+                            @Html.LabelFor(o => o.ReferenceDrugProduct, new { @class = "control-label" })<span style="color:red;">*</span>
+                            @Html.EditorFor(o => o.ReferenceDrugProduct, new { htmlAttributes = new { @autocomplete = "off", @class = "form-control" } })
+                            @Html.ValidationMessageFor(o => o.ReferenceDrugProduct, "", new { @class = "text-danger" })
+                        </div>
+                        </div>
+                        <div class="col-sm-6">
+                    <div class="form-group required">
+                        <label class="control-label" for="GeographyId">Geography</label>
+                        <span style="color:red;">*</span>
+                        <select class="form-control input-sm " data-val="true"
+                                data-val-required="Geography is required" id="GeographyId" name="GeographyId">
+                        </select>
+                        <span class="text-danger field-validation-valid" data-valmsg-for="GeographyId" data-valmsg-replace="true"></span>
+                            <input type="hidden" id="hdnGeographyId" name="GeographyId" />
+                    </div>
+                        <div class="form-group required">
+                            @Html.LabelFor(o => o.MoleculeName, new { @class = "control-label" })<span style="color:red;">*</span>
+                            @Html.EditorFor(o => o.MoleculeName, new { htmlAttributes = new { @autocomplete = "off", @class = "form-control" } })
+                            @Html.ValidationMessageFor(o => o.MoleculeName, "", new { @class = "text-danger" })
+                        </div>
+                       
+                        <div class="form-group required">
+                            @Html.LabelFor(o => o.DateOfApproval, new { @class = "control-label" })<span style="color:red;">*</span>
+                            @Html.EditorFor(o => o.DateOfApproval, new { htmlAttributes = new { @autocomplete = "off", @class = "form-control",@type="date" } })
+                            @Html.ValidationMessageFor(o => o.DateOfApproval, "", new { @class = "text-danger" })
+                        </div>
+                        <div class="form-group required">
+                            @Html.LabelFor(o => o.VendorEvaluationRemark, new { @class = "control-label" })<span style="color:red;">*</span>
+                            @Html.EditorFor(o => o.VendorEvaluationRemark, new { htmlAttributes = new { @autocomplete = "off", @class = "form-control",@type="color" } })
+                            @Html.ValidationMessageFor(o => o.VendorEvaluationRemark, "", new { @class = "text-danger" })
+                        </div>
+                        <div class="form-group required">
+                            @Html.LabelFor(o => o.Remarks, new { @class = "control-label" })<span style="color:red;">*</span>
+                            @Html.EditorFor(o => o.Remarks, new { htmlAttributes = new { @autocomplete = "off", @class = "form-control" } })
+                            @Html.ValidationMessageFor(o => o.Remarks, "", new { @class = "text-danger" })
+                        </div>
+                        <div class="form-group required">
+
+                                <input type="radio" id="chkInhouse" name="IsInhouseOrInLicensed" value="InHouse" />
+                            &nbsp;
+                                <label class="control-label" for="chkInhouse">
+                                In house &nbsp;&nbsp;&nbsp;&nbsp;
+                            </label>
+
+                                <input type="radio" id="chkInLicensed" name="IsInhouseOrInLicensed"  value="InLicensed" />
+                            &nbsp
+                                <label class="control-label" for="chkInLicensed">
+                                In Licensed &nbsp;&nbsp;&nbsp;&nbsp;
+                            </label>
+
+                        </div>
+                    </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" onclick="SaveAsDraft()" class="btn btn-primary model-btn">@SharedLocalizer["Save as Draft"].Value</button>
+                    <button type="submit" class="btn btn-success model-btn">@SharedLocalizer["Save"].Value</button>
+                    <a class="btn btn-danger" onclick="HideModel()">@SharedLocalizer["Cancel"].Value</a>
+                </div>
+
+            </div>
+        </div>
+   </form>
+</div>
+@section MyScripts {
+
+    @Html.Partial("_DataTablePartial")
+    <script type="text/javascript" src="~/js/Custom/DynamicDataTable.js?v=@jsVersion"></script>
+    <script src="~/js/custom/wishlist/wishlist.js?v=@jsVersion"></script>
+    <script>
+        const GetAllGetWishList = "@EmcureNPD.Web.Helpers.APIURLHelper.GetAllWishList";
+        const GetWishListTypeUrl = "@EmcureNPD.Web.Helpers.APIURLHelper.GetAllWishListType";
+        const GetAllPIDF = "@EmcureNPD.Web.Helpers.APIURLHelper.GetPIDFDropdown";
+        const getCountryByBusinessUnitId = "@EmcureNPD.Web.Helpers.APIURLHelper.GetCountryByBusinessUnitId";
+        const SaveWishListUrl = "@EmcureNPD.Web.Helpers.APIURLHelper.AddUpdateWishList";
+        const GetWishListByIdUrl = "@EmcureNPD.Web.Helpers.APIURLHelper.GetWishListById"
+        var ErrorMessage = "@SharedLocalizer["Error"]";
+    </script>
+}
