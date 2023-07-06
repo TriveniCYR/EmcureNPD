@@ -1,47 +1,28 @@
 ﻿let tableId = "WishListTable";
 let isView = false;
 var table = null;
+var wishListData = null;
 $(document).ready(function () {
     InitializeWishList();
-    //$('.btn-group').append("<div> <select><option>hi</option></select> </div>")
     GetWishListType();
     GetGeographyDropdown();
 
     table = $('#WishListTable').DataTable();
-  
+   
 });
 $(document).on('change', '#wishListTypeFilterId', function () {
-    var key =$("#wishListTypeFilterId option:selected").text(); 
-    //const myids = [0, 1, 2, 3, 25];
-   // var filters = [];
-   // filters.push(value);
-    //// Filter existing rows
-    //const filteted = table.data().filter((item, index) => myids.includes(index));
-
-    //// Update data
-    //table.clear();
-    //table.rows.add(filteted).draw();
-    //$.fn.dataTable.ext.search.push(
-    //    function (settings, data, dataIndex) {
-    //        return (data[0].indexOf(value) > -1) ? true : false;
-    //    }
-    //);
-    //table.clear();
-    //table.fnFilter(value, 0, true, false, false, false);
-    var filteredData = table.column(1).data().filter(function (value, index) {
-        return key == value;
-    }).toArray();
-    //table.clear();
-    table.rows.add(filteredData).draw()
-    //filteredData.draw();
-    //$.fn.dataTable.ext.search.pop();
+    var key = $("#wishListTypeFilterId option:selected").text();
+    if($(this).val()>0)
+        table.search(key, false).draw();
+    else
+        table.search("", false).draw();//table.clear().rows.add($('#WishListTable').DataTable().data).draw();
 });
 function GetWishListType() {
     ajaxServiceMethod($('#hdnBaseURL').val() + GetWishListTypeUrl, 'GET', GetWishListTypeSuccess, GetWishListTypeError);
 }
 function GetWishListTypeSuccess(data) {
     try {
-        var option = "<option value='0'>Select Wish List Type</option>";
+        var option = "<option value='0'>All Type</option>";
         if (data.length > 0) {
                     for (var j = 0; j < data.length; j++) {
                         
@@ -60,7 +41,8 @@ function GetWishListTypeError() {
 }
 
 function InitializeWishList() {
-    var setDefaultOrder = [2, 'desc'];
+   
+    var setDefaultOrder = [0, 'desc'];
     var ajaxObject = {
         "url": $('#hdnBaseURL').val() + GetAllGetWishList,
         "type": "POST",
@@ -84,12 +66,12 @@ function InitializeWishList() {
         },
         {
             "data": "dateOfFiling", "render": function (data, type, row, meta) {
-                return moment(data).format("DD MMM YYYY h:m");
+                return moment(data).format("DD MMM YYYY"); //h:m");
             }
         },
         {
             "data": "dateOfApproval", "render": function (data, type, row, meta) {
-                return moment(data).format("DD MMM YYYY h:m");
+                return moment(data).format("DD MMM YYYY"); //h:m");
             }
         },
         {
@@ -125,7 +107,8 @@ function InitializeWishList() {
         }
     ]
 
-    IntializingDataTable(tableId, setDefaultOrder, ajaxObject, columnObject);
+   IntializingDataTable(tableId, setDefaultOrder, ajaxObject, columnObject);
+    
 }
 
 function GetGeographyDropdown() {

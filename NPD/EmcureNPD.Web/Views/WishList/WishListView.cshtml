@@ -33,12 +33,12 @@
     <table id="WishListTable" class="table dataTable table-bordered table-striped table-hover">
         <thead>
             <tr class="text-center">
-                <th>WishList Type</th>
+                <th>Type</th>
                 <th>Molecule Name</th>
                 <th>Strength</th>
                 <th>Date Of Filing</th>
                 <th>Date Of Approval</th>
-                <th>IsInhouse Or InLicensed</th>
+                <th>IsInhouse</th>
                 <th>Name of Vendor</th>
                 <th>Vendor Evaluation Remark</th>
                 <th>Created On</th>
@@ -132,7 +132,7 @@
                         </div>
                         <div class="form-group required">
                             @Html.LabelFor(o => o.VendorEvaluationRemark, new { @class = "control-label" })<span style="color:red;">*</span>
-                            @Html.EditorFor(o => o.VendorEvaluationRemark, new { htmlAttributes = new { @autocomplete = "off", @class = "form-control",@type="color" } })
+                                @Html.EditorFor(o => o.VendorEvaluationRemark, new { htmlAttributes = new { @autocomplete = "off", @class = "form-control",@type="color" } })
                             @Html.ValidationMessageFor(o => o.VendorEvaluationRemark, "", new { @class = "text-danger" })
                         </div>
                         <div class="form-group required">
