@@ -23,8 +23,8 @@
         <div>
             @*@if (UtilityHelper.GetAccess(Int32.Parse(Convert.ToString(ScreenModuleID)), Helper.GetLoggedInRoleId(), (int)PermissionEnum.Add))
             {*@
-                @*<a class="btn btn-primary" asp-action="PIDF"><i class="far fa-plus-square mr-1"></i> @SharedLocalizer["Add"]</a>*@
-            <button class="btn btn-primary" id="btnAddWishList" onclick="ShowModal(0,false);"><i class="far fa-plus-square mr-1"></i> @SharedLocalizer["Add"]</button>
+            <a class="btn btn-primary" asp-action="AddWishList"><i class="far fa-plus-square mr-1"></i> @SharedLocalizer["Add"]</a>
+            @*<button class="btn btn-primary" id="btnAddWishList" onclick="ShowModal(0,false);"><i class="far fa-plus-square mr-1"></i> @SharedLocalizer["Add"]</button>*@
             @*}*@
         </div>
     </div>
@@ -74,7 +74,7 @@
                                 <select class="form-control input-sm " data-val="true"
                                         data-val-required="Type is required" id="WishListTypeId" name="WishListTypeId">
                                 </select>
-                                <span class="text-danger field-validation-valid" data-valmsg-for="WishListTypeId" data-valmsg-replace="true"></span>
+                                    <span class="text-danger" id="span-WishListTypeId" data-valmsg-for="WishListTypeId" data-valmsg-replace="true"></span>
                             </div>
                         </div>
                         <div class="form-group required">
@@ -91,22 +91,22 @@
                         <div class="form-group required">
                             @Html.LabelFor(o => o.Strength, new { @class = "control-label" })<span style="color:red;">*</span>
                             @Html.EditorFor(o => o.Strength, new { htmlAttributes = new { @autocomplete = "off", @class = "form-control" } })
-                            @Html.ValidationMessageFor(o => o.Strength, "", new { @class = "text-danger" })
+                                @Html.ValidationMessageFor(o => o.Strength, "", new { @class = "text-danger",@id="span-Strength" })
                         </div>
                         <div class="form-group required">
                             @Html.LabelFor(o => o.DateOfFiling, new { @class = "control-label" })<span style="color:red;">*</span>
                             @Html.EditorFor(o => o.DateOfFiling, new { htmlAttributes = new { @autocomplete = "off", @class = "form-control",@type="date" } })
-                            @Html.ValidationMessageFor(o => o.DateOfFiling, "", new { @class = "text-danger" })
+                                @Html.ValidationMessageFor(o => o.DateOfFiling, "", new { @class = "text-danger",@id="span-DateOfFiling" })
                         </div>
                         <div class="form-group required">
                             @Html.LabelFor(o => o.NameofVendor, new { @class = "control-label" })<span style="color:red;">*</span>
                             @Html.EditorFor(o => o.NameofVendor, new { htmlAttributes = new { @autocomplete = "off", @class = "form-control" } })
-                            @Html.ValidationMessageFor(o => o.NameofVendor, "", new { @class = "text-danger" })
+                                @Html.ValidationMessageFor(o => o.NameofVendor, "", new { @class = "text-danger",@id="span-NameofVendor" })
                         </div>
                         <div class="form-group required">
                             @Html.LabelFor(o => o.ReferenceDrugProduct, new { @class = "control-label" })<span style="color:red;">*</span>
                             @Html.EditorFor(o => o.ReferenceDrugProduct, new { htmlAttributes = new { @autocomplete = "off", @class = "form-control" } })
-                            @Html.ValidationMessageFor(o => o.ReferenceDrugProduct, "", new { @class = "text-danger" })
+                                @Html.ValidationMessageFor(o => o.ReferenceDrugProduct, "", new { @class = "text-danger",@id="span-ReferenceDrugProduct" })
                         </div>
                         </div>
                         <div class="col-sm-6">
@@ -122,23 +122,23 @@
                         <div class="form-group required">
                             @Html.LabelFor(o => o.MoleculeName, new { @class = "control-label" })<span style="color:red;">*</span>
                             @Html.EditorFor(o => o.MoleculeName, new { htmlAttributes = new { @autocomplete = "off", @class = "form-control" } })
-                            @Html.ValidationMessageFor(o => o.MoleculeName, "", new { @class = "text-danger" })
+                                @Html.ValidationMessageFor(o => o.MoleculeName, "", new { @class = "text-danger",@id="span-MoleculeName" })
                         </div>
                        
                         <div class="form-group required">
                             @Html.LabelFor(o => o.DateOfApproval, new { @class = "control-label" })<span style="color:red;">*</span>
                             @Html.EditorFor(o => o.DateOfApproval, new { htmlAttributes = new { @autocomplete = "off", @class = "form-control",@type="date" } })
-                            @Html.ValidationMessageFor(o => o.DateOfApproval, "", new { @class = "text-danger" })
+                                @Html.ValidationMessageFor(o => o.DateOfApproval, "", new { @class = "text-danger",@id="span-DateOfApproval" })
                         </div>
                         <div class="form-group required">
                             @Html.LabelFor(o => o.VendorEvaluationRemark, new { @class = "control-label" })<span style="color:red;">*</span>
                                 @Html.EditorFor(o => o.VendorEvaluationRemark, new { htmlAttributes = new { @autocomplete = "off", @class = "form-control",@type="color" } })
-                            @Html.ValidationMessageFor(o => o.VendorEvaluationRemark, "", new { @class = "text-danger" })
+                                @Html.ValidationMessageFor(o => o.VendorEvaluationRemark, "", new { @class = "text-danger",@id="span-VendorEvaluationRemark" })
                         </div>
                         <div class="form-group required">
                             @Html.LabelFor(o => o.Remarks, new { @class = "control-label" })<span style="color:red;">*</span>
                             @Html.EditorFor(o => o.Remarks, new { htmlAttributes = new { @autocomplete = "off", @class = "form-control" } })
-                            @Html.ValidationMessageFor(o => o.Remarks, "", new { @class = "text-danger" })
+                                @Html.ValidationMessageFor(o => o.Remarks, "", new { @class = "text-danger",@id="span-Remarks" })
                         </div>
                         <div class="form-group required">
 
@@ -160,7 +160,7 @@
                 </div>
                 <div class="modal-footer">
                     <button type="button" onclick="SaveAsDraft()" class="btn btn-primary model-btn">@SharedLocalizer["Save as Draft"].Value</button>
-                    <button type="submit" class="btn btn-success model-btn">@SharedLocalizer["Save"].Value</button>
+                    <button type="button" onclick="Save()" class="btn btn-success model-btn">@SharedLocalizer["Save"].Value</button>
                     <a class="btn btn-danger" onclick="HideModel()">@SharedLocalizer["Cancel"].Value</a>
                 </div>
 

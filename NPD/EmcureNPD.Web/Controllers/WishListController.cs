@@ -35,23 +35,6 @@ namespace EmcureNPD.Web.Controllers
         {
 			try
 			{
-				//HttpResponseMessage responseMessage = new HttpResponseMessage();
-				//HttpContext.Request.Cookies.TryGetValue(UserHelper.EmcureNPDToken, out string token);
-				//APIRepository objapi = new(_cofiguration);
-
-				//responseMessage = objapi.APICommunication(APIURLHelper.GetAllWishList, HttpMethod.Post, token).Result;
-
-				//if (responseMessage.IsSuccessStatusCode)
-				//{
-				//	string jsonResponse = responseMessage.Content.ReadAsStringAsync().Result;
-				//	var data = JsonConvert.DeserializeObject<DataTableResponseModel>(jsonResponse);
-				//	// return data.Data;
-				//	return View(data);
-				//}
-				//else
-				//{
-				//	return View();
-				//}
 				return View();
 			}
 			catch (Exception ex)
@@ -60,5 +43,17 @@ namespace EmcureNPD.Web.Controllers
 				throw;
 			}
 		}
+        public IActionResult AddWishList()
+        {
+            try
+            {
+                return View();
+            }
+            catch (Exception ex)
+            {
+                _helper.LogExceptions(ex);
+                throw;
+            }
+        }
     }
 }
