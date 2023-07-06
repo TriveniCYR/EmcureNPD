@@ -1,4 +1,5 @@
-﻿using EmcureNPD.API.Filters;
+﻿using EmcureNPD.API.Controllers.Notificaiton;
+using EmcureNPD.API.Filters;
 using EmcureNPD.API.Helpers.Response;
 using EmcureNPD.Business.Core.Implementation;
 using EmcureNPD.Business.Core.Interface;
@@ -6,6 +7,7 @@ using EmcureNPD.Business.Models;
 using EmcureNPD.Utility.Utility;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Logging;
 using System;
 using System.Net;
 using System.Threading.Tasks;
@@ -24,17 +26,18 @@ namespace EmcureNPD.API.Controllers.WishList
         private readonly IResponseHandler<dynamic> _ObjectResponse;
         private readonly IWebHostEnvironment _webHostEnvironment;
         private readonly IExceptionService _ExceptionService;
+		private readonly ILogger<WishListController> _logger;
+		#endregion Properties
+		#region Constructor
 
-        #endregion Properties
-        #region Constructor
-
-        public WishListController(IWishList wishListService, IResponseHandler<dynamic> ObjectResponse, IWebHostEnvironment webHostEnvironment, IExceptionService exceptionService)
+		public WishListController(IWishList wishListService, IResponseHandler<dynamic> ObjectResponse, IWebHostEnvironment webHostEnvironment, IExceptionService exceptionService,ILogger<WishListController> logger)
         {
             _wishListService = wishListService;
             _ObjectResponse = ObjectResponse;
             _webHostEnvironment = webHostEnvironment;
             _ExceptionService = exceptionService;
-        }
+			_logger = logger;
+		}
 
         #endregion Constructor
         /// <summary>
@@ -127,6 +130,34 @@ namespace EmcureNPD.API.Controllers.WishList
             try
             {
                 return _ObjectResponse.CreateData(await _wishListService.GetAll(), (Int32)HttpStatusCode.OK);
+            }
+            catch (Exception ex)
+            {
+                await _ExceptionService.LogException(ex);
+                return _ObjectResponse.Create(null, (Int32)HttpStatusCode.BadRequest, "No Records found");
+            }
+        }
+		[HttpPost, Route("GetAllWishList")]
+		public async Task<IActionResult> GetAllNotification([FromForm] DataTableAjaxPostModel model)
+		{
+			try
+			{
+				return _ObjectResponse.CreateData(await _wishListService.GetAllWishList(model), (Int32)HttpStatusCode.OK);
+			}
+			catch (Exception ex)
+			{
+				await _ExceptionService.LogException(ex);
+				_logger.LogInformation($"ERROR:WishList/GetAllWishList:{ex}");
+				return _ObjectResponse.Create(false, (Int32)HttpStatusCode.InternalServerError, Convert.ToString(ex.StackTrace));
+			}
+		}
+        [HttpGet]
+        [Route("GetWishListType")]
+        public async Task<IActionResult> GetWishListType()
+        {
+            try
+            {
+                return _ObjectResponse.CreateData(await _wishListService.GetWishListType(), (Int32)HttpStatusCode.OK);
             }
             catch (Exception ex)
             {

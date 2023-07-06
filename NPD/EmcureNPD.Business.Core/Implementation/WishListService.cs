@@ -23,6 +23,7 @@ namespace EmcureNPD.Business.Core.Implementation
         private readonly IUnitOfWork _unitOfWork;
         private readonly IMapperFactory _mapperFactory;
         private IRepository<TblWishList> _repository { get; set; }
+        private IRepository<MasterWishListType> _repositorywishType { get; set; }
         private readonly IConfiguration _configuration;
         private readonly IMasterAuditLogService _auditLogService;
         private readonly IExceptionService _ExceptionService;
@@ -34,6 +35,7 @@ namespace EmcureNPD.Business.Core.Implementation
             _configuration = configuration;
             _auditLogService = auditLogService;
             _repository = _unitOfWork.GetRepository<TblWishList>();
+            _repositorywishType = unitOfWork.GetRepository<MasterWishListType>();
             _ExceptionService = exceptionService;
             _helper = helper;
             _mapperFactory = mapperFactory;
@@ -91,8 +93,37 @@ namespace EmcureNPD.Business.Core.Implementation
         {
           return  _mapperFactory.GetList<TblWishList, WishListEntity>(await _repository.GetAllAsync());
         }
+		public async Task<DataTableResponseModel> GetAllWishList(DataTableAjaxPostModel model)
+		{
+			DataTableResponseModel oDataTableResponseModel = null;
+			if (model.columns == null)
+			{
+				return oDataTableResponseModel;
+			}
 
-        public async Task<TblWishList> GetById(int id)
+			string ColumnName = (model.order.Count > 0 ? model.columns[model.order[0].column].data : string.Empty);
+			string SortDir = (model.order.Count > 0 ? model.order[0].dir : string.Empty);
+
+			//int userId = _helper.GetLoggedInUser().UserId;
+
+			SqlParameter[] osqlParameter = {
+				//new SqlParameter("@UserId",userId),
+				new SqlParameter("@CurrentPageNumber", model.start),
+					new SqlParameter("@PageSize", model.length),
+					new SqlParameter("@SortColumn", ColumnName),
+					new SqlParameter("@SortDirection", SortDir),
+					new SqlParameter("@SearchText", model.search.value)
+			};
+
+			var wishLsit = await _repository.GetBySP("GetWishList", System.Data.CommandType.StoredProcedure, osqlParameter);
+
+			var TotalRecord = (wishLsit != null && wishLsit.Rows.Count > 0 ? Convert.ToInt32(wishLsit.Rows[0]["TotalRecord"]) : 0);
+			var TotalCount = (wishLsit != null && wishLsit.Rows.Count > 0 ? Convert.ToInt32(wishLsit.Rows[0]["TotalCount"]) : 0);
+
+			oDataTableResponseModel = new DataTableResponseModel(model.draw, TotalRecord, TotalCount, wishLsit);
+			return oDataTableResponseModel;
+		}
+		public async Task<TblWishList> GetById(int id)
         {
            return await _repository.GetAsync((long)id);
         }
@@ -107,6 +138,18 @@ namespace EmcureNPD.Business.Core.Implementation
 
                 DataSet data = await _repository.GetDataSetBySP("GetWishListByTypeId", System.Data.CommandType.StoredProcedure, osqlParameter);
                 return data;
+            }
+            catch (Exception ex)
+            {
+                await _ExceptionService.LogException(ex);
+                return null;
+            }
+        }
+        public async Task<List<MasterWishListType>> GetWishListType()
+        {
+            try
+            {
+              return await _repositorywishType.GetAllAsync();
             }
             catch (Exception ex)
             {
