@@ -435,3 +435,6 @@ div#dvPBFContainer .form-control {
 .txtColor-limegreen {
     color: limegreen;
 }
+.pbfRNDTab{
+    width:auto !important;
+}
