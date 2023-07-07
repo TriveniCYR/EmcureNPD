@@ -28,5 +28,6 @@ namespace EmcureNPD.Business.Core.Interface
         Task<IEnumerable<dynamic>> GetCountryRefByRegionIds(string regionIds);
 
         Task<DBOperation> ApproveRejectIpdPidf(EntryApproveRej oApprRej);
+        Task<dynamic> GetCountryByBussinessUnitIds(string BUId);
     }
 }

@@ -10,7 +10,9 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Configuration;
 using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Data.SqlClient;
+using System.Dynamic;
 using System.IO;
 using System.Linq;
 using System.Linq.Expressions;
@@ -738,6 +740,19 @@ namespace EmcureNPD.Business.Core.Implementation
                 }
             }
             return data;
+        }
+
+        public async Task<dynamic> GetCountryByBussinessUnitIds(string BUId)
+        {
+            dynamic DropdownObjects = new ExpandoObject();
+            SqlParameter[] osqlParameter = {
+                new SqlParameter("@BUId", BUId)
+            };
+            DataSet dsDropdownOptions = await _repository.GetDataSetBySP("stp_npd_GetIPDPatentDetailsCountryList", System.Data.CommandType.StoredProcedure, osqlParameter);
+
+            DropdownObjects = dsDropdownOptions.Tables[0];
+
+            return DropdownObjects;
         }
     }
 }

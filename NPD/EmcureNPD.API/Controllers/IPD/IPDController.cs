@@ -230,5 +230,24 @@ namespace EmcureNPD.API.Controllers.IPD
                 return _ObjectResponse.Create(false, (int)HttpStatusCode.InternalServerError, Convert.ToString(ex.StackTrace));
             }
         }
+
+        [HttpGet, Route("GetCountryByBussinessUnitIds/{BUId}")]
+        public async Task<IActionResult> GetCountryByBussinessUnitIds(string BUId)
+        {
+            try
+            {
+                var oCountryList = await _IPDService.GetCountryByBussinessUnitIds(BUId);
+                if (oCountryList != null)
+                    return _ObjectResponse.Create(oCountryList, (int)HttpStatusCode.OK);
+                else
+                    return _ObjectResponse.Create(null, (int)HttpStatusCode.BadRequest, "No Records found");
+            }
+            catch (Exception ex)
+            {
+                await _ExceptionService.LogException(ex);
+                return _ObjectResponse.Create(false, (int)HttpStatusCode.InternalServerError, Convert.ToString(ex.StackTrace));
+            }
+        }
+
     }
 }
