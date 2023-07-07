@@ -2,7 +2,7 @@
 let isView = false;
 let wishListId = 0;
 $(document).ready(function () {
-   
+
     let queryserch = location.search.split('&');
     if (queryserch[0] != "") {
         wishListId = queryserch[0].split('=')[1] == undefined ? 0 : queryserch[0].split('=')[1];
@@ -19,7 +19,7 @@ $(document).ready(function () {
             }
         }
     }
-     GetWishListType();
+    GetWishListType();
     GetGeographyDropdown();
 });
 
@@ -153,7 +153,7 @@ function GetWishListByIdSuccess(data) {
             $("#NameofVendor").val(data.nameofVendor);
             $("#VendorEvaluationRemark").val(data.vendorEvaluationRemark);
             $("#ReferenceDrugProduct").val(data.referenceDrugProduct);
-            $("#Remarks").val(data.referenceDrugProduct);
+            $("#Remarks").val(data.remarks);
             if (isView) {
                 $(".model-btn").css("display", "none");
                 $("#chkInhouse").prop("disabled", isView);
@@ -185,72 +185,111 @@ function Save() {
 function ValidateOnSave() {
     let isValidated = false;
     if ($("#WishListTypeId").val() == 0) {
-        $("#span-WishListTypeId").text("please select type!");
+        $("#span-WishListTypeId").text("please select type");
+        return false;
+    }
+    else if ($("#GeographyId").val() == 0) {
+        $("#span-WishListTypeId").text("");
+        $("#span-GeographyId").text("please select Geography");
         isValidated = false;
     }
-    if ($("#WishListTypeId").val() > 0) {
+    else if ($("#CountryId").val() == 0 || $("#CountryId").val() == "" || $("#CountryId").val() == null) {
         $("#span-WishListTypeId").text("");
-        isValidated = true;
+        $("#span-GeographyId").text("");
+        $("#span-CountryId").text("please select Country");
+        isValidated = false;
     }
-    if ($("#MoleculeName").val() == "") {
+    else if ($("#MoleculeName").val() == "") {
+        $("#span-WishListTypeId").text("");
+        $("#span-GeographyId").text("");
+        $("#span-CountryId").text("");
         $("#span-MoleculeName").text("Molecule Name is required");
         isValidated = false;
     }
-    if ($("#MoleculeName").val() != "") {
+    else if ($("#Strength").val() == "") {
+        $("#span-WishListTypeId").text("");
+        $("#span-GeographyId").text("");
+        $("#span-CountryId").text("");
         $("#span-MoleculeName").text("");
-        isValidated = true;
-    }
-    if ($("#Strength").val() == "") {
         $("#span-Strength").text("Strength is required");
         isValidated = false;
     }
-    if ($("#Strength").val() != "") {
+    else if ($("#DateOfApproval").val() == "") {
         $("#span-Strength").text("");
-        isValidated = true;
-    }
-    if ($("#DateOfApproval").val() == "") {
+        $("#span-WishListTypeId").text("");
+        $("#span-GeographyId").text("");
+        $("#span-CountryId").text("");
+        $("#span-MoleculeName").text("");
         $("#span-DateOfApproval").text("DateOfApproval is required");
         isValidated = false;
     }
-    if ($("#DateOfApproval").val() != "") {
+    else if ($("#DateOfFiling").val() == "") {
+        $("#span-Strength").text("");
+        $("#span-WishListTypeId").text("");
+        $("#span-GeographyId").text("");
+        $("#span-CountryId").text("");
+        $("#span-MoleculeName").text("");
         $("#span-DateOfApproval").text("");
-        isValidated = true;
-    }
-    if ($("#DateOfFiling").val() == "") {
         $("#span-DateOfFiling").text("DateOfFiling is required");
         isValidated = false;
     }
-    if ($("#DateOfFiling").val() != "") {
+    else if ($("#VendorEvaluationRemark").val() == "") {
+        $("#span-Strength").text("");
+        $("#span-WishListTypeId").text("");
+        $("#span-GeographyId").text("");
+        $("#span-CountryId").text("");
+        $("#span-MoleculeName").text("");
+        $("#span-DateOfApproval").text("");
         $("#span-DateOfFiling").text("");
-        isValidated = true;
-    }
-    if ($("#VendorEvaluationRemark").val() == "") {
         $("#span-VendorEvaluationRemark").text("VendorEvaluationRemark is required");
         isValidated = false;
     }
-    if ($("#VendorEvaluationRemark").val() != "") {
+    else if ($("#NameofVendor").val() == "") {
+        $("#span-Strength").text("");
+        $("#span-WishListTypeId").text("");
+        $("#span-GeographyId").text("");
+        $("#span-CountryId").text("");
+        $("#span-MoleculeName").text("");
+        $("#span-DateOfApproval").text("");
+        $("#span-DateOfFiling").text("");
         $("#span-VendorEvaluationRemark").text("");
-        isValidated = true;
-    }
-    if ($("#NameofVendor").val() == "") {
+        $("#span-DateOfFiling").text("");
         $("#span-NameofVendor").text("NameofVendor is required");
         isValidated = false;
     }
-    if ($("#NameofVendor").val() != "") {
+    else if ($("#Remarks").val() == "") {
+        $("#span-Strength").text("");
+        $("#span-WishListTypeId").text("");
+        $("#span-GeographyId").text("");
+        $("#span-CountryId").text("");
+        $("#span-MoleculeName").text("");
+        $("#span-DateOfApproval").text("");
+        $("#span-DateOfFiling").text("");
+        $("#span-VendorEvaluationRemark").text("");
+        $("#span-DateOfFiling").text("");
         $("#span-NameofVendor").text("");
-        isValidated = true;
-    }
-    if ($("#Remarks").val() == "") {
         $("#span-Remarks").text("Remarks is required");
         isValidated = false;
     }
-    if ($("#Remarks").val() != "") {
+    else if (!$('#chkInLicensed').is(':checked') && !$('#chkInhouse').is(':checked')) {
+        $("#span-Strength").text("");
+        $("#span-WishListTypeId").text("");
+        $("#span-GeographyId").text("");
+        $("#span-CountryId").text("");
+        $("#span-MoleculeName").text("");
+        $("#span-DateOfApproval").text("");
+        $("#span-DateOfFiling").text("");
+        $("#span-VendorEvaluationRemark").text("");
+        $("#span-DateOfFiling").text("");
+        $("#span-NameofVendor").text("");
         $("#span-Remarks").text("");
-        isValidated = true;
+        $("#span-InLicensed").text("Inhouse or InLicensed is required");
+        isValidated = false;
     }
-
+    else {
+        return true;
+    }
     return isValidated;
-
 }
 function SaveWishList() {
     let isInhouseOrInLicensed = "";
@@ -276,10 +315,10 @@ function SaveWishList() {
         Remarks: $("#Remarks").val()
     }
     console.log(JSON.stringify(param));
-    if ($('#frmWishList').valid()) {
-        ajaxServiceMethod($('#hdnBaseURL').val() + SaveWishListUrl, 'POST', SaveWishListSuccess, SaveWishListError, JSON.stringify(param));
-    }
-    return false;
+    //if ($('#frmWishList').valid()) {
+    ajaxServiceMethod($('#hdnBaseURL').val() + SaveWishListUrl, 'POST', SaveWishListSuccess, SaveWishListError, JSON.stringify(param));
+    //}
+    //return false;
 }
 function SaveWishListSuccess(data) {
     try {
