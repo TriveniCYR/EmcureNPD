@@ -2,16 +2,25 @@
 let isView = false;
 let wishListId = 0;
 $(document).ready(function () {
-    GetWishListType();
-    GetGeographyDropdown();
+   
     let queryserch = location.search.split('&');
-    wishListId = queryserch[0].split('=')[1] == undefined ? 0 : queryserch[0].split('=')[1];
-    strView = queryserch[1].split('=')[1] == undefined ? false : queryserch[1].split('=')[1];
-    var isTrueSet = (strView?.toLowerCase?.() === 'true');
-    isView = isTrueSet;
-    if (wishListId > 0) {
-        GetWishListById(wishListId);
+    if (queryserch[0] != "") {
+        wishListId = queryserch[0].split('=')[1] == undefined ? 0 : queryserch[0].split('=')[1];
+        strView = queryserch[1].split('=')[1] == undefined ? false : queryserch[1].split('=')[1];
+        var isTrueSet = (strView?.toLowerCase?.() === 'true');
+        isView = isTrueSet;
+        if (wishListId > 0) {
+            GetWishListById(wishListId);
+            if (isView) {
+                $("#headingId").text("View Wish List");
+            }
+            else {
+                $("#headingId").text("Update Wish List");
+            }
+        }
     }
+     GetWishListType();
+    GetGeographyDropdown();
 });
 
 function GetWishListType() {
