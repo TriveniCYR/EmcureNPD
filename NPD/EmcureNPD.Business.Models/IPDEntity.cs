@@ -115,6 +115,18 @@ namespace EmcureNPD.Business.Models
         public string PatentNumber { get; set; }
         public string BusinessUnitName { get; set; }
 
+        public DateTime? BasicPatentExpiry { get; set; }
+        public DateTime? OtherLmitingPatentDate1 { get; set; }
+        public DateTime? OtherLmitingPatentDate2 { get; set; }
+        public DateTime? EarliestLaunchDate { get; set; }
+        public bool? AnyPatentstobeFiled { get; set; }
+        public DateTime? EarliestMarketEntry { get; set; }
+        public string StimatedNumberofgenericsinthe { get; set; }
+        public string Lawfirmbeingused { get; set; }
+        public int? CountryId { get; set; }
+        public int? PatentStrategy { get; set; }
+        public string PatentStrategyOther { get; set; }
+
     }
     public partial class IPDPIDFListEntity
     {
