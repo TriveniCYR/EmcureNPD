@@ -231,3 +231,8 @@ GO
 
 insert into Master_Module([ModuleName]
       ,[IsActive],ControlName,SortOrder)values('Wish List',1,'WishList',10)
+
+	  INSERT INTO [dbo].[Master_WishListType](WishListTyp)values('Filed')
+INSERT INTO [dbo].[Master_WishListType](WishListTyp)values('Development')
+INSERT INTO [dbo].[Master_WishListType](WishListTyp)values('Wish list')
+INSERT INTO [dbo].[Master_WishListType](WishListTyp)values('Vendor Product list')
