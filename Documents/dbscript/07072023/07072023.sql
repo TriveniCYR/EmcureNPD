@@ -229,4 +229,5 @@ SELECT WishListId
   end
 GO
 
-
+insert into Master_Module([ModuleName]
+      ,[IsActive],ControlName,SortOrder)values('Wish List',1,'WishList',10)
