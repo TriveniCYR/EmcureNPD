@@ -18,7 +18,7 @@
 }
 <div class="content-header">
     <div class="container-fluid d-flex justify-content-between">
-        <h3>Add Wish List</h3>
+        <h3 id="headingId">Add Wish List</h3>
         <div>
             @*@if (UtilityHelper.GetAccess(Int32.Parse(Convert.ToString(ScreenModuleID)), Helper.GetLoggedInRoleId(), (int)PermissionEnum.Add))
             {
@@ -29,7 +29,7 @@
     </div>
 </div>
 <div class="container-fluid overflow-auto background-white-card">
-    <form method="POST" id="frmWishList">
+  @*  <form method="POST" id="frmWishList">*@
     <div class="row">
         <div class="col-sm-6">
             <div class="form-group required">
@@ -50,7 +50,7 @@
                 <select class="form-control input-sm " data-val="true"
                         data-val-required="Country is required" id="CountryId" name="CountryId">
                 </select>
-                <span class="text-danger field-validation-valid" data-valmsg-for="CountryId" data-valmsg-replace="true"></span>
+                <span class="text-danger field-validation-valid" data-valmsg-for="CountryId" id="span-CountryId" data-valmsg-replace="true"></span>
                 <input type="hidden" id="hdnCountryId" name="CountryId" />
             </div>
 
@@ -83,7 +83,7 @@
                 <select class="form-control input-sm " data-val="true"
                         data-val-required="Geography is required" id="GeographyId" name="GeographyId">
                 </select>
-                <span class="text-danger field-validation-valid" data-valmsg-for="GeographyId" data-valmsg-replace="true"></span>
+                <span class="text-danger field-validation-valid" data-valmsg-for="GeographyId" id="span-GeographyId" data-valmsg-replace="true"></span>
                 <input type="hidden" id="hdnGeographyId" />
             </div>
             <div class="form-group required">
@@ -120,7 +120,7 @@
                 <label class="control-label" for="chkInLicensed">
                     In Licensed &nbsp;&nbsp;&nbsp;&nbsp;
                 </label>
-
+                <span class="text-danger field-validation-valid" data-valmsg-for="InLicensed" id="span-InLicensed" data-valmsg-replace="true"></span>
             </div>
         </div>
             
@@ -134,7 +134,7 @@
                 </div>
             </div>
         </div>
-    </form>
+    @*</form>*@
     </div>
 @section MyScripts {
 
