@@ -2028,15 +2028,33 @@ namespace EmcureNPD.Data.DataAccess.DataContext
 
                 entity.Property(e => e.PatentDetailsId).HasColumnName("PatentDetailsID");
 
+                entity.Property(e => e.BasicPatentExpiry).HasColumnType("date");
+
                 entity.Property(e => e.Comments).HasMaxLength(100);
+
+                entity.Property(e => e.EarliestLaunchDate).HasColumnType("date");
+
+                entity.Property(e => e.EarliestMarketEntry).HasColumnType("date");
 
                 entity.Property(e => e.ExtensionExpiryDate).HasColumnType("date");
 
                 entity.Property(e => e.Ipdid).HasColumnName("IPDID");
 
+                entity.Property(e => e.Lawfirmbeingused).HasMaxLength(100);
+
                 entity.Property(e => e.OriginalExpiryDate).HasColumnType("date");
 
+                entity.Property(e => e.OtherLmitingPatentDate1).HasColumnType("date");
+
+                entity.Property(e => e.OtherLmitingPatentDate2).HasColumnType("date");
+
                 entity.Property(e => e.PatentNumber).HasMaxLength(50);
+
+                entity.Property(e => e.PatentStrategyOther).HasMaxLength(100);
+
+                entity.Property(e => e.StimatedNumberofgenericsinthe)
+                    .HasMaxLength(100)
+                    .HasColumnName("stimatedNumberofgenericsinthe");
 
                 entity.Property(e => e.Strategy)
                     .HasMaxLength(100)

@@ -125,14 +125,14 @@ $(document).ready(function () {
         if (_enteredText != "") {
             var returnFromFunction = 0;
             for (var i = 1; i < 4; i++) {
-                //if ($(this).parent().parent().hasClass("exicipientActivity" + i + "")) {
+                if ($(this).parent().parent().hasClass("exicipientActivity" + i + "")) {
                     $.each($('.exicipientActivity' + i + '').find(".rndExicipientPrototype"), function () {
                         if ($(this).val() == _enteredText) {
                             returnFromFunction++;
                         }
                     });
                  
-                //}
+                }
             }
             if (returnFromFunction > 1) {
                 $(this).val("");

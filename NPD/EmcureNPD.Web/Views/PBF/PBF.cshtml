@@ -510,263 +510,7 @@
             </div>
 
             @* --start-New Tab chanes-----------------------*@
-            <div class="card card-maroon card-outline card-outline-tabs m-0">
-                <div class="card-header p-0">
-                    <ul class="nav nav-tabs m-0"
-                        id="custom-tabs-RNDdepartment-tab" role="tablist">
-                        <li class="nav-item p-0">
-                            <a class="nav-link active px-2"
-                               id="custom-tabs-department-RnD-tab-DosageFormulation"
-                               data-toggle="pill"
-                               href="#custom-tabs-RnD-DosageFormulation" role="tab"
-                               aria-controls="custom-tabs-RnD-DosageFormulation"
-                               aria-selected="true">Dosage Formulation</a>
-                        </li>
-                        <li class="nav-item p-0">
-                            <a class="nav-link px-2"
-                               id="custom-tabs-department-RnD-tab-APIRequirment"
-                               data-toggle="pill"
-                               href="#custom-tabs-RnD-APIRequirment" role="tab"
-                               aria-controls="custom-tabs-RnD-APIRequirment"
-                               aria-selected="false">API Requirment</a>
-                        </li>
-                        <li class="nav-item p-0">
-                            <a class="nav-link px-2"
-                               id="custom-tabs-department-RnD-tab-ExcipientRequirement"
-                               data-toggle="pill"
-                               href="#custom-tabs-RnD-ExcipientRequirement" role="tab"
-                               aria-controls="custom-tabs-RnD-ExcipientRequirement"
-                               aria-selected="false">Excipient Requirement</a>
-                        </li>
-                        <li class="nav-item p-0">
-                            <a class="nav-link px-2"
-                               id="custom-tabs-department-RnD-tab-PackagingMaterial"
-                               data-toggle="pill"
-                               href="#custom-tabs-RnD-PackagingMaterial" role="tab"
-                               aria-controls="custom-tabs-RnD-PackagingMaterial"
-                               aria-selected="false">Packaging Material</a>
-                        </li>
-                        <li class="nav-item p-0">
-                            <a class="nav-link px-2"
-                               id="custom-tabs-department-RnD-tab-ToolingandChangePartCost"
-                               data-toggle="pill"
-                               href="#custom-tabs-RnD-ToolingandChangePartCost" role="tab"
-                               aria-controls="custom-tabs-RnD-ToolingandChangePartCost"
-                               aria-selected="false">Tooling and Change Part Cost</a>
-                        </li>
-
-                        <li class="nav-item p-0">
-                            <a class="nav-link px-2"
-                               id="custom-tabs-department-RnD-tab-CapexMiscellaneouseExpenses"
-                               data-toggle="pill"
-                               href="#custom-tabs-RnD-CapexMiscellaneouseExpenses" role="tab"
-                               aria-controls="custom-tabs-RnD-CapexMiscellaneouseExpenses"
-                               aria-selected="false">Capex Miscellaneouse Expenses</a>
-                        </li>
-                        <li class="nav-item p-0">
-                            <a class="nav-link px-2"
-                               id="custom-tabs-department-RnD-tab-PlantSupportCost"
-                               data-toggle="pill"
-                               href="#custom-tabs-RnD-PlantSupportCost" role="tab"
-                               aria-controls="custom-tabs-RnD-PlantSupportCost"
-                               aria-selected="false">Plant Support Cost</a>
-                        </li>
-                        <li class="nav-item p-0">
-                            <a class="nav-link px-2"
-                               id="custom-tabs-department-RnD-tab-ReferenceProductDetail"
-                               data-toggle="pill"
-                               href="#custom-tabs-RnD-ReferenceProductDetail" role="tab"
-                               aria-controls="custom-tabs-RnD-ReferenceProductDetail"
-                               aria-selected="false">Reference Product Detail</a>
-                        </li>
-                        <li class="nav-item p-0">
-                            <a class="nav-link px-2"
-                               id="custom-tabs-department-RnD-tab-ManPowerCost&ProjectDuration"
-                               data-toggle="pill"
-                               href="#custom-tabs-RnD-ManPowerCost&ProjectDuration" role="tab"
-                               aria-controls="custom-tabs-RnD-ManPowerCost&ProjectDuration"
-                               aria-selected="false">Man Power Cost & Project Duration</a>
-                        </li>
-                        <li class="nav-item p-0">
-                            <a class="nav-link px-2"
-                               id="custom-tabs-department-RnD-tab-FillingExpenses"
-                               data-toggle="pill"
-                               href="#custom-tabs-RnD-FillingExpenses" role="tab"
-                               aria-controls="custom-tabs-RnD-FillingExpenses"
-                               aria-selected="false">Filling Expenses</a>
-                        </li>
-                        <li class="nav-item p-0">
-                            <a class="nav-link px-2"
-                               id="custom-tabs-department-RnD-tab-PhaseWiseBudget"
-                               data-toggle="pill"
-                               href="#custom-tabs-RnD-PhaseWiseBudget" role="tab"
-                               aria-controls="custom-tabs-RnD-PhaseWiseBudget"
-                               aria-selected="false">Phase Wise Budget</a>
-                        </li>
-                        <li class="nav-item p-0">
-                            <a class="nav-link px-2"
-                               id="custom-tabs-department-RnD-tab-HeadWiseBudget"
-                               data-toggle="pill"
-                               href="#custom-tabs-RnD-HeadWiseBudget" role="tab"
-                               aria-controls="custom-tabs-RnD-HeadWiseBudget"
-                               aria-selected="false">Head Wise Budget</a>
-                        </li>
-                    </ul>
-                </div>
-
-                <div class="card-body">
-                    <div class="tab-content" id="custom-tabs-RNDdepartment-tabContent">
-
-
-                        <div class="tab-pane fade show active"
-                             id="custom-tabs-RnD-DosageFormulation" role="tabpanel"
-                             aria-labelledby="custom-tabs-department-RnD-tab-DosageFormulation">
-                            <div class="container-fluid">
-                                <div class="row">
-                                    <div class="card-body pbftables ">
-                                        <div class="row">
-                                            <div class="col-md-3">
-                                                <div class="form-group required">
-                                                    @Html.LabelFor(model => model.RNDMasterEntities.BatchSizeId, "Dosage Formulation", new { @class = "control-label" })
-                                                    @*<input type="hidden" id="hdnBatchSizeId" value="@Model.RNDMasterEntities.BatchSizeId" />*@
-                                                    <select id="RNDBatchSizeId" name="RNDMasterEntities.BatchSizeId" class="form-control readOnlyUpdate" required></select>
-                                                </div>
-                                            </div>
-                                            <table id="tablerndbatchsize" class="table text-center" style="width:100%">
-                                            </table>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
-                           <div class="tab-pane fade show"
-                             id="custom-tabs-RnD-APIRequirment" role="tabpanel"
-                             aria-labelledby="custom-tabs-department-RnD-tab-APIRequirment">
-                            <div class="container-fluid">
-                                <div class="row">
-                                    <div class="card-body pbftables">
-                                        <div class="row">
-                                            <div class="col-md-3">
-                                                <div class="form-group required">
-                                                    @Html.LabelFor(model => model.RNDMasterEntities.ApirequirementMarketPrice, "Market Price ", new { @class = "control-label" }) <span id="spAPIRequirementMarketPrice">(Rs/kg)</span>
-                                                    @Html.TextBoxFor(@modal=> modal.RNDMasterEntities.ApirequirementMarketPrice,new{@class="form-control calcRNDApirequirementsMarketPrice",type = "number", min = 0})
-                                                </div>
-                                            </div>
-                                            <div class="col-md-3">
-                                                <div class="form-group required">
-                                                    @Html.LabelFor(model => model.RNDMasterEntities.ApirequirementVendorName, "Vendor Name", new { @class = "control-label" })
-                                                    @Html.TextBoxFor(@modal=> modal.RNDMasterEntities.ApirequirementVendorName,new{@class="form-control RNDApirequirementVendorName"})
-                                                </div>
-                                            </div>
-                                            <table id="tablerndapirequirement" class="table text-center tableTDHint" style="width:100%">
-                                            </table>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                             <div class="tab-pane fade show"
-                             id="custom-tabs-RnD-ExcipientRequirement" role="tabpanel"
-                             aria-labelledby="custom-tabs-department-RnD-tab-ExcipientRequirement">
-                            <div class="container-fluid">
-                                <div class="row">
-                                    // ExcipientRequirement
-                                </div>
-                            </div>
-                        </div>
-                        <div class="tab-pane fade show"
-                             id="custom-tabs-RnD-PackagingMaterial" role="tabpanel"
-                             aria-labelledby="custom-tabs-department-RnD-tab-PackagingMaterial">
-                            <div class="container-fluid">
-                                <div class="row">
-                                    // PackagingMaterial
-                                </div>
-                            </div>
-                        </div>
-                        <div class="tab-pane fade show"
-                             id="custom-tabs-RnD-ToolingandChangePartCost" role="tabpanel"
-                             aria-labelledby="custom-tabs-department-RnD-tab-ToolingandChangePartCost">
-                            <div class="container-fluid">
-                                <div class="row">
-                                    // ToolingandChangePartCost
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="tab-pane fade show"
-                             id="custom-tabs-RnD-CapexMiscellaneouseExpenses" role="tabpanel"
-                             aria-labelledby="custom-tabs-department-RnD-tab-CapexMiscellaneouseExpenses">
-                            <div class="container-fluid">
-                                <div class="row">
-                                    // CapexMiscellaneouseExpenses
-                                </div>
-                            </div>
-                        </div>
-                        <div class="tab-pane fade show"
-                             id="custom-tabs-RnD-PlantSupportCost" role="tabpanel"
-                             aria-labelledby="custom-tabs-department-RnD-tab-PlantSupportCost">
-                            <div class="container-fluid">
-                                <div class="row">
-                                    // PlantSupportCost
-                                </div>
-                            </div>
-                        </div>
-                        <div class="tab-pane fade show"
-                             id="custom-tabs-RnD-ReferenceProductDetail" role="tabpanel"
-                             aria-labelledby="custom-tabs-department-RnD-tab-ReferenceProductDetail">
-                            <div class="container-fluid">
-                                <div class="row">
-                                    // ReferenceProductDetail
-                                </div>
-                            </div>
-                        </div>
-                        <div class="tab-pane fade show"
-                             id="custom-tabs-RnD-ManPowerCost&ProjectDuration" role="tabpanel"
-                             aria-labelledby="custom-tabs-department-RnD-tab-ManPowerCost&ProjectDuration">
-                            <div class="container-fluid">
-                                <div class="row">
-                                    // ManPowerCost&ProjectDuration
-                                </div>
-                            </div>
-                        </div>
-                        <div class="tab-pane fade show"
-                             id="custom-tabs-RnD-FillingExpenses" role="tabpanel"
-                             aria-labelledby="custom-tabs-department-RnD-tab-FillingExpenses">
-                            <div class="container-fluid">
-                                <div class="row">
-                                    // FillingExpenses
-                                </div>
-                            </div>
-                        </div>
-                        <div class="tab-pane fade show"
-                             id="custom-tabs-RnD-PhaseWiseBudget" role="tabpanel"
-                             aria-labelledby="custom-tabs-department-RnD-tab-PhaseWiseBudget">
-                            <div class="container-fluid">
-                                <div class="row">
-                                    // PhaseWiseBudget
-                                </div>
-                            </div>
-                        </div>
-                        <div class="tab-pane fade show"
-                             id="custom-tabs-RnD-HeadWiseBudget" role="tabpanel"
-                             aria-labelledby="custom-tabs-department-RnD-tab-HeadWiseBudget">
-                            <div class="container-fluid">
-                                <div class="row">
-                                    // HeadWiseBudget
-                                </div>
-                            </div>
-                        </div>
-
-
-
-
-
-
-                    </div>
-                </div>
-            </div>
-
+           
 
             @*   -------end New Tab chanes-------------------*@
 
@@ -832,373 +576,351 @@
                                      aria-labelledby="custom-tabs-department-RnD-tab">
                                     <div class="container-fluid">
                                         <div class="row">
-                                            @* batch size*@
-                                            <div class="col-12">
-                                                <div class="card collapsed-card">
+                                            <div class="card card-green card-outline card-outline-tabs m-0">
+                                                <div class="card-header p-0">
+                                                    <ul class="nav nav-tabs m-0"
+                                                        id="custom-tabs-RNDdepartment-tab" role="tablist">
+                                                        <li class="nav-item p-0 pbfRNDTab">
+                                                            <a class="nav-link active px-2"
+                                                               id="custom-tabs-department-RnD-tab-DosageFormulation"
+                                                               data-toggle="pill"
+                                                               href="#custom-tabs-RnD-DosageFormulation" role="tab"
+                                                               aria-controls="custom-tabs-RnD-DosageFormulation"
+                                                               aria-selected="true">Dosage Formulation</a>
+                                                        </li>
+                                                        <li class="nav-item p-0 pbfRNDTab">
+                                                            <a class="nav-link px-2"
+                                                               id="custom-tabs-department-RnD-tab-APIRequirment"
+                                                               data-toggle="pill"
+                                                               href="#custom-tabs-RnD-APIRequirment" role="tab"
+                                                               aria-controls="custom-tabs-RnD-APIRequirment"
+                                                               aria-selected="false">API Requirment</a>
+                                                        </li>
+                                                        <li class="nav-item p-0 pbfRNDTab">
+                                                            <a class="nav-link px-2"
+                                                               id="custom-tabs-department-RnD-tab-ExcipientRequirement"
+                                                               data-toggle="pill"
+                                                               href="#custom-tabs-RnD-ExcipientRequirement" role="tab"
+                                                               aria-controls="custom-tabs-RnD-ExcipientRequirement"
+                                                               aria-selected="false">Excipient Requirement</a>
+                                                        </li>
+                                                        <li class="nav-item p-0 pbfRNDTab">
+                                                            <a class="nav-link px-2"
+                                                               id="custom-tabs-department-RnD-tab-PackagingMaterial"
+                                                               data-toggle="pill"
+                                                               href="#custom-tabs-RnD-PackagingMaterial" role="tab"
+                                                               aria-controls="custom-tabs-RnD-PackagingMaterial"
+                                                               aria-selected="false">Packaging Material</a>
+                                                        </li>
+                                                        <li class="nav-item p-0 pbfRNDTab">
+                                                            <a class="nav-link px-2"
+                                                               id="custom-tabs-department-RnD-tab-ToolingandChangePartCost"
+                                                               data-toggle="pill"
+                                                               href="#custom-tabs-RnD-ToolingandChangePartCost" role="tab"
+                                                               aria-controls="custom-tabs-RnD-ToolingandChangePartCost"
+                                                               aria-selected="false">Tooling and Change Part Cost</a>
+                                                        </li>
 
-                                                    <div class="card-header bg-primary">
-                                                        <h3 class="card-title mb-0">
+                                                        <li class="nav-item p-0 pbfRNDTab">
+                                                            <a class="nav-link px-2"
+                                                               id="custom-tabs-department-RnD-tab-CapexMiscellaneouseExpenses"
+                                                               data-toggle="pill"
+                                                               href="#custom-tabs-RnD-CapexMiscellaneouseExpenses" role="tab"
+                                                               aria-controls="custom-tabs-RnD-CapexMiscellaneouseExpenses"
+                                                               aria-selected="false">Capex Miscellaneouse Expenses</a>
+                                                        </li>
+                                                        <li class="nav-item p-0 pbfRNDTab">
+                                                            <a class="nav-link px-2"
+                                                               id="custom-tabs-department-RnD-tab-PlantSupportCost"
+                                                               data-toggle="pill"
+                                                               href="#custom-tabs-RnD-PlantSupportCost" role="tab"
+                                                               aria-controls="custom-tabs-RnD-PlantSupportCost"
+                                                               aria-selected="false">Plant Support Cost</a>
+                                                        </li>
+                                                        <li class="nav-item p-0 pbfRNDTab">
+                                                            <a class="nav-link px-2"
+                                                               id="custom-tabs-department-RnD-tab-ReferenceProductDetail"
+                                                               data-toggle="pill"
+                                                               href="#custom-tabs-RnD-ReferenceProductDetail" role="tab"
+                                                               aria-controls="custom-tabs-RnD-ReferenceProductDetail"
+                                                               aria-selected="false">Reference Product Detail</a>
+                                                        </li>
+                                                        <li class="nav-item p-0 pbfRNDTab">
+                                                            <a class="nav-link px-2"
+                                                               id="custom-tabs-department-RnD-tab-ManPowerCostProjectDuration"
+                                                               data-toggle="pill"
+                                                               href="#custom-tabs-RnD-ManPowerCostProjectDuration" role="tab"
+                                                               aria-controls="custom-tabs-RnD-ManPowerCostProjectDuration"
+                                                               aria-selected="false">Man Power Cost & Project Duration</a>
+                                                        </li>
+                                                        <li class="nav-item p-0 pbfRNDTab">
+                                                            <a class="nav-link px-2"
+                                                               id="custom-tabs-department-RnD-tab-FillingExpenses"
+                                                               data-toggle="pill"
+                                                               href="#custom-tabs-RnD-FillingExpenses" role="tab"
+                                                               aria-controls="custom-tabs-RnD-FillingExpenses"
+                                                               aria-selected="false">Filling Expenses</a>
+                                                        </li>
+                                                        <li class="nav-item p-0 pbfRNDTab">
+                                                            <a class="nav-link px-2"
+                                                               id="custom-tabs-department-RnD-tab-PhaseWiseBudget"
+                                                               data-toggle="pill"
+                                                               href="#custom-tabs-RnD-PhaseWiseBudget" role="tab"
+                                                               aria-controls="custom-tabs-RnD-PhaseWiseBudget"
+                                                               aria-selected="false">Phase Wise Budget</a>
+                                                        </li>
+                                                        <li class="nav-item p-0 pbfRNDTab">
+                                                            <a class="nav-link px-2"
+                                                               id="custom-tabs-department-RnD-tab-HeadWiseBudget"
+                                                               data-toggle="pill"
+                                                               href="#custom-tabs-RnD-HeadWiseBudget" role="tab"
+                                                               aria-controls="custom-tabs-RnD-HeadWiseBudget"
+                                                               aria-selected="false">Head Wise Budget</a>
+                                                        </li>
+                                                    </ul>
+                                                </div>
 
-                                                            <button type="button" class="btn btn-tool" data-card-widget="collapse">
-                                                                Dosage Formulation
-                                                            </button>
+                                                <div class="card-body">
+                                                    <div class="tab-content" id="custom-tabs-RNDdepartment-tabContent">
 
-                                                        </h3>
-                                                        <div class="card-tools">
-                                                            <button type="button" class="btn btn-tool" data-card-widget="collapse" title="Collapse">
-                                                                <i class="fas fa-plus" aria-hidden="true"></i>
-                                                            </button>
-                                                        </div>
-                                                    </div>
-                                                    <div class="card-body pbftables ">
-                                                        <div class="row">
-                                                            <div class="col-md-3">
-                                                                <div class="form-group required">
-                                                                    @Html.LabelFor(model => model.RNDMasterEntities.BatchSizeId, "Dosage Formulation", new { @class = "control-label" })
-                                                                    @*<input type="hidden" id="hdnBatchSizeId" value="@Model.RNDMasterEntities.BatchSizeId" />*@
-                                                                    <select id="RNDBatchSizeId" name="RNDMasterEntities.BatchSizeId" class="form-control readOnlyUpdate" required></select>
+
+                                                        <div class="tab-pane fade show active"
+                                                             id="custom-tabs-RnD-DosageFormulation" role="tabpanel"
+                                                             aria-labelledby="custom-tabs-department-RnD-tab-DosageFormulation">
+                                                            <div class="container-fluid">
+                                                                <div class="row">
+                                                                    <div class="card-body pbftables ">
+                                                                        <div class="row">
+                                                                            <div class="col-md-3">
+                                                                                <div class="form-group required">
+                                                                                    @Html.LabelFor(model => model.RNDMasterEntities.BatchSizeId, "Dosage Formulation", new { @class = "control-label" })
+                                                                                    @*<input type="hidden" id="hdnBatchSizeId" value="@Model.RNDMasterEntities.BatchSizeId" />*@
+                                                                                    <select id="RNDBatchSizeId" name="RNDMasterEntities.BatchSizeId" class="form-control readOnlyUpdate" required></select>
+                                                                                </div>
+                                                                            </div>
+                                                                            <table id="tablerndbatchsize" class="table text-center" style="width:100%">
+                                                                            </table>
+                                                                        </div>
+                                                                    </div>
                                                                 </div>
                                                             </div>
-                                                            <table id="tablerndbatchsize" class="table text-center" style="width:100%">
-                                                            </table>
                                                         </div>
-                                                    </div>
-                                                </div>
-                                            </div>
 
-                                            @* api Requirement*@
-                                            <div class="col-12">
-                                                <div class="card collapsed-card">
-                                                    <div class="card-header bg-primary">
-                                                        <h3 class="card-title mb-0">
-
-                                                            <button type="button" class="btn btn-tool" data-card-widget="collapse">
-                                                                API Requirement
-                                                            </button>
-
-                                                        </h3>
-                                                        <div class="card-tools">
-                                                            <button type="button" class="btn btn-tool" data-card-widget="collapse" title="Collapse">
-                                                                <i class="fas fa-plus" aria-hidden="true"></i>
-                                                            </button>
-                                                        </div>
-                                                    </div>
-                                                    <div class="card-body pbftables">
-                                                        <div class="row">
-                                                            <div class="col-md-3">
-                                                                <div class="form-group required">
-                                                                    @Html.LabelFor(model => model.RNDMasterEntities.ApirequirementMarketPrice, "Market Price ", new { @class = "control-label" }) <span id="spAPIRequirementMarketPrice">(Rs/kg)</span>
-                                                                    @Html.TextBoxFor(@modal=> modal.RNDMasterEntities.ApirequirementMarketPrice,new{@class="form-control calcRNDApirequirementsMarketPrice",type = "number", min = 0})
+                                                        <div class="tab-pane fade show"
+                                                             id="custom-tabs-RnD-APIRequirment" role="tabpanel"
+                                                             aria-labelledby="custom-tabs-department-RnD-tab-APIRequirment">
+                                                            <div class="container-fluid">
+                                                                <div class="row">
+                                                                    <div class="card-body pbftables">
+                                                                        <div class="row">
+                                                                            <div class="col-md-3">
+                                                                                <div class="form-group required">
+                                                                                    @Html.LabelFor(model => model.RNDMasterEntities.ApirequirementMarketPrice, "Market Price ", new { @class = "control-label" }) <span id="spAPIRequirementMarketPrice">(Rs/kg)</span>
+                                                                                    @Html.TextBoxFor(@modal=> modal.RNDMasterEntities.ApirequirementMarketPrice,new{@class="form-control calcRNDApirequirementsMarketPrice",type = "number", min = 0})
+                                                                                </div>
+                                                                            </div>
+                                                                            <div class="col-md-3">
+                                                                                <div class="form-group required">
+                                                                                    @Html.LabelFor(model => model.RNDMasterEntities.ApirequirementVendorName, "Vendor Name", new { @class = "control-label" })
+                                                                                    @Html.TextBoxFor(@modal=> modal.RNDMasterEntities.ApirequirementVendorName,new{@class="form-control RNDApirequirementVendorName"})
+                                                                                </div>
+                                                                            </div>
+                                                                            <table id="tablerndapirequirement" class="table text-center tableTDHint" style="width:100%">
+                                                                            </table>
+                                                                        </div>
+                                                                    </div>
                                                                 </div>
                                                             </div>
-                                                            <div class="col-md-3">
-                                                                <div class="form-group required">
-                                                                    @Html.LabelFor(model => model.RNDMasterEntities.ApirequirementVendorName, "Vendor Name", new { @class = "control-label" })
-                                                                    @Html.TextBoxFor(@modal=> modal.RNDMasterEntities.ApirequirementVendorName,new{@class="form-control RNDApirequirementVendorName"})
+                                                        </div>
+                                                        <div class="tab-pane fade show"
+                                                             id="custom-tabs-RnD-ExcipientRequirement" role="tabpanel"
+                                                             aria-labelledby="custom-tabs-department-RnD-tab-ExcipientRequirement">
+                                                            <div class="container-fluid">
+                                                                <div class="row">
+                                                                    <div class="card-body pbftables">
+                                                                        <div class="row">
+                                                                            <table id="tablerndexicipientrequirement" class="table text-center tableTDHint" style="width:100%">
+                                                                            </table>
+                                                                            <input type="hidden" id="hdnrndExicipientData" name="RNDExicipientRawData" />
+                                                                        </div>
+                                                                    </div>
                                                                 </div>
                                                             </div>
-                                                            <table id="tablerndapirequirement" class="table text-center tableTDHint" style="width:100%">
-                                                            </table>
                                                         </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-
-                                            @* Exicipient Requirement*@
-                                            <div class="col-12">
-                                                <div class="card collapsed-card">
-                                                    <div class="card-header bg-primary">
-                                                        <h3 class="card-title mb-0">
-
-                                                            <button type="button" class="btn btn-tool" data-card-widget="collapse">
-                                                                Excipient Requirement
-                                                            </button>
-
-                                                        </h3>
-                                                        <div class="card-tools">
-                                                            <button type="button" class="btn btn-tool" data-card-widget="collapse" title="Collapse">
-                                                                <i class="fas fa-plus" aria-hidden="true"></i>
-                                                            </button>
-                                                        </div>
-                                                    </div>
-                                                    <div class="card-body pbftables">
-                                                        <div class="row">
-                                                            <table id="tablerndexicipientrequirement" class="table text-center tableTDHint" style="width:100%">
-                                                            </table>
-                                                            <input type="hidden" id="hdnrndExicipientData" name="RNDExicipientRawData" />
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            @* Packaging Material*@
-                                            <div class="col-12">
-                                                <div class="card collapsed-card">
-                                                    <div class="card-header bg-primary">
-                                                        <h3 class="card-title mb-0">
-
-                                                            <button type="button" class="btn btn-tool" data-card-widget="collapse">
-                                                                Packaging Material
-                                                            </button>
-
-                                                        </h3>
-                                                        <div class="card-tools">
-                                                            <button type="button" class="btn btn-tool" data-card-widget="collapse" title="Collapse">
-                                                                <i class="fas fa-plus" aria-hidden="true"></i>
-                                                            </button>
-                                                        </div>
-                                                    </div>
-                                                    <div class="card-body pbftables">
-                                                        <div class="row">
-                                                            <table id="tablerndpackagingmaterialrequirement" class="table text-center tableTDHint" style="width:100%">
-                                                            </table>
-                                                            <input type="hidden" id="hdnrndPackagingData" name="RNDPackagingRawData" />
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            @* Tooling Change Part*@
-                                            <div class="col-12">
-                                                <div class="card collapsed-card">
-                                                    <div class="card-header bg-primary">
-                                                        <h3 class="card-title mb-0">
-
-                                                            <button type="button" class="btn btn-tool" data-card-widget="collapse">
-                                                                Tooling and Change Part Cost
-                                                            </button>
-
-                                                        </h3>
-                                                        <div class="card-tools">
-                                                            <button type="button" class="btn btn-tool" data-card-widget="collapse" title="Collapse">
-                                                                <i class="fas fa-plus" aria-hidden="true"></i>
-                                                            </button>
-                                                        </div>
-                                                    </div>
-                                                    <div class="card-body pbftables">
-                                                        <div class="row">
-                                                            <table id="tablerndtoolingchangepart" class="table text-center tableTDHint" style="width:100%">
-                                                            </table>
-                                                            <input type="hidden" id="hdnrndToolingChangePartData" name="RNDToolingChangePartRawData" />
-
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            @* Capex Misc Expanses*@
-                                            <div class="col-12">
-                                                <div class="card collapsed-card">
-                                                    <div class="card-header bg-primary">
-                                                        <h3 class="card-title mb-0">
-
-                                                            <button type="button" class="btn btn-tool" data-card-widget="collapse">
-                                                                Capex Miscellaneouse Expenses
-                                                            </button>
-
-                                                        </h3>
-                                                        <div class="card-tools">
-                                                            <button type="button" class="btn btn-tool" data-card-widget="collapse" title="Collapse">
-                                                                <i class="fas fa-plus" aria-hidden="true"></i>
-                                                            </button>
-                                                        </div>
-                                                    </div>
-                                                    <div class="card-body pbftables">
-                                                        <div class="row">
-                                                            <table id="tablerndcapexmiscellaneousexpenses" class="table text-center tableTDHint" style="width:100%">
-                                                            </table>
-                                                            <input type="hidden" id="hdnrndCapexMiscellaneousExpensesData" name="RNDCapexMiscellaneousExpensesRawData" />
-
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            @* Plant Support Cost*@
-                                            <div class="col-12">
-                                                <div class="card collapsed-card">
-                                                    <div class="card-header bg-primary">
-                                                        <h3 class="card-title mb-0">
-
-                                                            <button type="button" class="btn btn-tool" data-card-widget="collapse">
-                                                                Plant Support Cost
-                                                            </button>
-
-                                                        </h3>
-                                                        <div class="card-tools">
-                                                            <button type="button" class="btn btn-tool" data-card-widget="collapse" title="Collapse">
-                                                                <i class="fas fa-plus" aria-hidden="true"></i>
-                                                            </button>
-                                                        </div>
-                                                    </div>
-                                                    <div class="card-body pbftablesplantCost">
-                                                        <div class="row">
-                                                            <div class="col-md-3">
-                                                                <div class="form-group required">
-                                                                    @Html.LabelFor(model => model.RNDMasterEntities.PlantId_Tab, "Plant Name", new { @class = "control-label" })<span class="text-danger">*</span>
-                                                                    @Html.HiddenFor(model => model.RNDMasterEntities.PlantId_Tab)
-                                                                    @*<input type="hidden" id="hdnPlantId" value="@Model.PlantId" />*@
-                                                                    <select id="ddlPlantId_Tab" name="ddlPlantId_Tab" class="form-control readOnlyUpdate customvalidateformcontrol ddlPlantId_Tab" required></select>
-                                                                    @Html.ValidationMessageFor(model => model.RNDMasterEntities.PlantId_Tab, "", new { @class = "text-danger" })
+                                                        <div class="tab-pane fade show"
+                                                             id="custom-tabs-RnD-PackagingMaterial" role="tabpanel"
+                                                             aria-labelledby="custom-tabs-department-RnD-tab-PackagingMaterial">
+                                                            <div class="container-fluid">
+                                                                <div class="row">
+                                                                    <div class="card-body pbftables">
+                                                                        <div class="row">
+                                                                            <table id="tablerndpackagingmaterialrequirement" class="table text-center tableTDHint" style="width:100%">
+                                                                            </table>
+                                                                            <input type="hidden" id="hdnrndPackagingData" name="RNDPackagingRawData" />
+                                                                        </div>
+                                                                    </div>
                                                                 </div>
                                                             </div>
-                                                            <div class="col-md-3">
-                                                                <div class="form-group required">
-                                                                    @Html.LabelFor(model => model.RNDMasterEntities.PBFLine, "Line", new { @class = "control-label" })<span class="text-danger">*</span>
-                                                                    <select id="ddlPBFLine" name="ddlPBFLine" class="form-control readOnlyUpdate customvalidateformcontrol ddlPBFLine" required></select>
-                                                                    @Html.HiddenFor(model => model.RNDMasterEntities.PBFLine)
-                                                                    @Html.ValidationMessageFor(model => model.RNDMasterEntities.PBFLine, "", new { @class = "text-danger" })
+                                                        </div>
+                                                        <div class="tab-pane fade show"
+                                                             id="custom-tabs-RnD-ToolingandChangePartCost" role="tabpanel"
+                                                             aria-labelledby="custom-tabs-department-RnD-tab-ToolingandChangePartCost">
+                                                            <div class="container-fluid">
+                                                                <div class="row">
+                                                                    <div class="card-body pbftables">
+                                                                        <div class="row">
+                                                                            <table id="tablerndtoolingchangepart" class="table text-center tableTDHint" style="width:100%">
+                                                                            </table>
+                                                                            <input type="hidden" id="hdnrndToolingChangePartData" name="RNDToolingChangePartRawData" />
+
+                                                                        </div>
+                                                                    </div>
                                                                 </div>
                                                             </div>
-                                                            <div class="col-md-3">
-                                                                <div class="form-group required">
-                                                                    @Html.LabelFor(model => model.RNDMasterEntities.PlanSupportCostRsPerDay, "Plant Utilization rate Rs/Day", new { @class = "control-label" })
-                                                                    @Html.TextBoxFor(@modal=> modal.RNDMasterEntities.PlanSupportCostRsPerDay,new{@class="form-control",type = "number", min = 0})
+                                                        </div>
+
+                                                        <div class="tab-pane fade show"
+                                                             id="custom-tabs-RnD-CapexMiscellaneouseExpenses" role="tabpanel"
+                                                             aria-labelledby="custom-tabs-department-RnD-tab-CapexMiscellaneouseExpenses">
+                                                            <div class="container-fluid">
+                                                                <div class="row">
+                                                                    <div class="card-body pbftables">
+                                                                        <div class="row">
+                                                                            <table id="tablerndcapexmiscellaneousexpenses" class="table text-center tableTDHint" style="width:100%">
+                                                                            </table>
+                                                                            <input type="hidden" id="hdnrndCapexMiscellaneousExpensesData" name="RNDCapexMiscellaneousExpensesRawData" />
+
+                                                                        </div>
+                                                                    </div>
                                                                 </div>
                                                             </div>
-                                                            <table id="tablerndplantsupportcost" class="table text-center tableTDHintDays" style="width:100%">
-                                                            </table>
-                                                            @*<input type="hidden" id="hdnrndPlantSupportCostData" name="RNDPlantSupportCostRawData" />*@
-
                                                         </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            @* Referense Product Details*@
-                                            <div class="col-12">
-                                                <div class="card collapsed-card">
-                                                    <div class="card-header bg-primary">
-                                                        <h3 class="card-title mb-0">
+                                                        <div class="tab-pane fade show"
+                                                             id="custom-tabs-RnD-PlantSupportCost" role="tabpanel"
+                                                             aria-labelledby="custom-tabs-department-RnD-tab-PlantSupportCost">
+                                                            <div class="container-fluid">
+                                                                <div class="row">
+                                                                    <div class="card-body pbftablesplantCost">
+                                                                        <div class="row">
+                                                                            <div class="col-md-3">
+                                                                                <div class="form-group required">
+                                                                                    @Html.LabelFor(model => model.RNDMasterEntities.PlantId_Tab, "Plant Name", new { @class = "control-label" })<span class="text-danger">*</span>
+                                                                                    @Html.HiddenFor(model => model.RNDMasterEntities.PlantId_Tab)
+                                                                                    @*<input type="hidden" id="hdnPlantId" value="@Model.PlantId" />*@
+                                                                                    <select id="ddlPlantId_Tab" name="ddlPlantId_Tab" class="form-control readOnlyUpdate customvalidateformcontrol ddlPlantId_Tab" required></select>
+                                                                                    @Html.ValidationMessageFor(model => model.RNDMasterEntities.PlantId_Tab, "", new { @class = "text-danger" })
+                                                                                </div>
+                                                                            </div>
+                                                                            <div class="col-md-3">
+                                                                                <div class="form-group required">
+                                                                                    @Html.LabelFor(model => model.RNDMasterEntities.PBFLine, "Line", new { @class = "control-label" })<span class="text-danger">*</span>
+                                                                                    <select id="ddlPBFLine" name="ddlPBFLine" class="form-control readOnlyUpdate customvalidateformcontrol ddlPBFLine" required></select>
+                                                                                    @Html.HiddenFor(model => model.RNDMasterEntities.PBFLine)
+                                                                                    @Html.ValidationMessageFor(model => model.RNDMasterEntities.PBFLine, "", new { @class = "text-danger" })
+                                                                                </div>
+                                                                            </div>
+                                                                            <div class="col-md-3">
+                                                                                <div class="form-group required">
+                                                                                    @Html.LabelFor(model => model.RNDMasterEntities.PlanSupportCostRsPerDay, "Plant Utilization rate Rs/Day", new { @class = "control-label" })
+                                                                                    @Html.TextBoxFor(@modal=> modal.RNDMasterEntities.PlanSupportCostRsPerDay,new{@class="form-control",type = "number", min = 0})
+                                                                                </div>
+                                                                            </div>
+                                                                            <table id="tablerndplantsupportcost" class="table text-center tableTDHintDays" style="width:100%">
+                                                                            </table>
+                                                                            @*<input type="hidden" id="hdnrndPlantSupportCostData" name="RNDPlantSupportCostRawData" />*@
 
-                                                            <button type="button" class="btn btn-tool" data-card-widget="collapse">
-                                                                Reference Product Detail
-                                                            </button>
-
-                                                        </h3>
-                                                        <div class="card-tools">
-                                                            <button type="button" class="btn btn-tool" data-card-widget="collapse" title="Collapse">
-                                                                <i class="fas fa-plus" aria-hidden="true"></i>
-                                                            </button>
-                                                        </div>
-                                                    </div>
-                                                    <div class="card-body pbftables">
-                                                        <div class="row">
-                                                            <table id="tablerndreferenceproductdetail" class="table text-center tableTDHint" style="width:100%">
-                                                            </table>
-
-
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            @*  Man Power Cost & Project Duration*@
-                                            <div class="col-12">
-                                                <div class="card collapsed-card">
-                                                    <div class="card-header bg-primary">
-                                                        <h3 class="card-title mb-0">
-
-                                                            <button type="button" class="btn btn-tool" data-card-widget="collapse">
-                                                                Man Power Cost & Project Duration
-                                                            </button>
-
-                                                        </h3>
-                                                        <div class="card-tools">
-                                                            <button type="button" class="btn btn-tool" data-card-widget="collapse" title="Collapse">
-                                                                <i class="fas fa-plus" aria-hidden="true"></i>
-                                                            </button>
-                                                        </div>
-                                                    </div>
-                                                    <div class="card-body pbftables">
-                                                        <div class="row">
-                                                            <div class="col-md-3">
-                                                                <div class="form-group required">
-                                                                    @Html.LabelFor(model => model.RNDMasterEntities.ManHourRate, "Man Hour Rate (Rs/hour)", new { @class = "control-label" })
-                                                                    @Html.TextBoxFor(@modal=> modal.RNDMasterEntities.ManHourRate,new{@class="form-control",type = "number", min = 0})
+                                                                        </div>
+                                                                    </div>
                                                                 </div>
                                                             </div>
-                                                            <table id="tablerrndmanpowercostprojectduration" class="table text-center tableTDHintManHrs" style="width:100%">
-                                                            </table>
                                                         </div>
-                                                        <input type="hidden" id="hdnrndManPowerCostProjectDuration" name="RNDManPowerCostProjectDurationRawData" />
+                                                        <div class="tab-pane fade show"
+                                                             id="custom-tabs-RnD-ReferenceProductDetail" role="tabpanel"
+                                                             aria-labelledby="custom-tabs-department-RnD-tab-ReferenceProductDetail">
+                                                            <div class="container-fluid">
+                                                                <div class="row">
+                                                                    <div class="pbftables">
+                                                                        <div class="row">
+                                                                            <table id="tablerndreferenceproductdetail" class="table text-center tableTDHint" style="width:100%">
+                                                                            </table>
+
+
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="tab-pane fade show"
+                                                             id="custom-tabs-RnD-ManPowerCostProjectDuration" role="tabpanel"
+                                                             aria-labelledby="custom-tabs-department-RnD-tab-ManPowerCostProjectDuration">
+                                                            <div class="container-fluid">
+                                                                <div class="row">
+                                                                    <div class="card-body pbftables">
+                                                                        <div class="row">
+                                                                            <div class="col-md-3">
+                                                                                <div class="form-group required">
+                                                                                    @Html.LabelFor(model => model.RNDMasterEntities.ManHourRate, "Man Hour Rate (Rs/hour)", new { @class = "control-label" })
+                                                                                    @Html.TextBoxFor(@modal=> modal.RNDMasterEntities.ManHourRate,new{@class="form-control",type = "number", min = 0})
+                                                                                </div>
+                                                                            </div>
+                                                                            <table id="tablerrndmanpowercostprojectduration" class="table text-center tableTDHintManHrs" style="width:100%">
+                                                                            </table>
+                                                                        </div>
+                                                                        <input type="hidden" id="hdnrndManPowerCostProjectDuration" name="RNDManPowerCostProjectDurationRawData" />
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="tab-pane fade show"
+                                                             id="custom-tabs-RnD-FillingExpenses" role="tabpanel"
+                                                             aria-labelledby="custom-tabs-department-RnD-tab-FillingExpenses">
+                                                            <div class="container-fluid">
+                                                                <div class="row">
+                                                                    <div class="card-body pbftables">
+                                                                        <div class="row">
+                                                                            <table id="tablerndfilingexpenses" class="table text-center tableTDHint" style="width:100%">
+                                                                            </table>
+                                                                        </div>
+                                                                        <input type="hidden" id="hdnrndFillingExpensesData" name="RNDFillingExpensesRawData" />
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="tab-pane fade show"
+                                                             id="custom-tabs-RnD-PhaseWiseBudget" role="tabpanel"
+                                                             aria-labelledby="custom-tabs-department-RnD-tab-PhaseWiseBudget">
+                                                            <div class="container-fluid">
+                                                                <div class="row">
+                                                                    <div class="card-body pbftables">
+                                                                        <div class="row">
+                                                                            <table id="tablerndphasewisebudget" class="table text-center tableTDHint" style="width:100%">
+                                                                            </table>
+                                                                        </div>
+                                                                        <input type="hidden" id="hdnrndPhaseWiseBudget" name="RNDPhaseWiseBudgetRawData" />
+
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="tab-pane fade show"
+                                                             id="custom-tabs-RnD-HeadWiseBudget" role="tabpanel"
+                                                             aria-labelledby="custom-tabs-department-RnD-tab-HeadWiseBudget">
+                                                            <div class="container-fluid">
+                                                                <div class="row">
+                                                                    <div class="card-body pbftables">
+                                                                        <div class="row">
+                                                                            <table id="tableHeadWiseBudget" class="table text-center tableTDHintManHrs" style="width:100%">
+                                                                            </table>
+                                                                        </div>
+                                                                        <input type="hidden" id="hdnrndHeadWiseBudget" name="RNDHeadWiseBudgetRawData" />
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+
                                                     </div>
                                                 </div>
                                             </div>
-                                            @*  Filling Expanses*@
-                                            <div class="col-12">
-                                                <div class="card collapsed-card">
-                                                    <div class="card-header bg-primary">
-                                                        <h3 class="card-title mb-0">
-
-                                                            <button type="button" class="btn btn-tool" data-card-widget="collapse">
-                                                                Filling Expenses
-                                                            </button>
-
-                                                        </h3>
-                                                        <div class="card-tools">
-                                                            <button type="button" class="btn btn-tool" data-card-widget="collapse" title="Collapse">
-                                                                <i class="fas fa-plus" aria-hidden="true"></i>
-                                                            </button>
-                                                        </div>
-                                                    </div>
-                                                    <div class="card-body pbftables">
-                                                        <div class="row">
-                                                            <table id="tablerndfilingexpenses" class="table text-center tableTDHint" style="width:100%">
-                                                            </table>
-                                                        </div>
-                                                        <input type="hidden" id="hdnrndFillingExpensesData" name="RNDFillingExpensesRawData" />
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            @*  Phase Wise Budget*@
-                                            <div class="col-12">
-                                                <div class="card collapsed-card">
-                                                    <div class="card-header bg-primary">
-                                                        <h3 class="card-title mb-0">
-
-                                                            <button type="button" class="btn btn-tool" data-card-widget="collapse">
-                                                                Phase Wise Budget
-                                                            </button>
-
-                                                        </h3>
-                                                        <div class="card-tools">
-                                                            <button type="button" class="btn btn-tool" data-card-widget="collapse" title="Collapse">
-                                                                <i class="fas fa-plus" aria-hidden="true"></i>
-                                                            </button>
-                                                        </div>
-                                                    </div>
-                                                    <div class="card-body pbftables">
-                                                        <div class="row">
-                                                            <table id="tablerndphasewisebudget" class="table text-center tableTDHint" style="width:100%">
-                                                            </table>
-                                                        </div>
-                                                        <input type="hidden" id="hdnrndPhaseWiseBudget" name="RNDPhaseWiseBudgetRawData" />
-
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            @*  Head Wise Budget*@
-                                            <div class="col-12">
-                                                <div class="card collapsed-card">
-                                                    <div class="card-header bg-primary">
-                                                        <h3 class="card-title mb-0">
-
-                                                            <button type="button" class="btn btn-tool" data-card-widget="collapse">
-                                                                Head Wise Budget
-                                                            </button>
-
-                                                        </h3>
-                                                        <div class="card-tools">
-                                                            <button type="button" class="btn btn-tool" data-card-widget="collapse" title="Collapse">
-                                                                <i class="fas fa-plus" aria-hidden="true"></i>
-                                                            </button>
-                                                        </div>
-                                                    </div>
-                                                    <div class="card-body pbftables">
-                                                        <div class="row">
-                                                            <table id="tableHeadWiseBudget" class="table text-center tableTDHintManHrs" style="width:100%">
-                                                            </table>
-                                                        </div>
-                                                        <input type="hidden" id="hdnrndHeadWiseBudget" name="RNDHeadWiseBudgetRawData" />
-                                                    </div>
-                                                </div>
-                                            </div>
-
                                         </div>
                                     </div>
                                 </div>
