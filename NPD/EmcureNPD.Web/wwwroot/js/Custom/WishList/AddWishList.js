@@ -2,7 +2,8 @@
 let isView = false;
 let wishListId = 0;
 $(document).ready(function () {
-
+    GetWishListType();
+    GetGeographyDropdown();
     let queryserch = location.search.split('&');
     if (queryserch[0] != "") {
         wishListId = queryserch[0].split('=')[1] == undefined ? 0 : queryserch[0].split('=')[1];
@@ -19,8 +20,7 @@ $(document).ready(function () {
             }
         }
     }
-    GetWishListType();
-    GetGeographyDropdown();
+    
 });
 
 function GetWishListType() {
@@ -28,7 +28,7 @@ function GetWishListType() {
 }
 function GetWishListTypeSuccess(data) {
     try {
-        var option = "<option value='0'>All Type</option>";
+        var option = "<option value='0'>--Select--</option>";
         if (data.length > 0) {
             for (var j = 0; j < data.length; j++) {
 
@@ -160,7 +160,7 @@ function GetWishListByIdSuccess(data) {
                 $("#chkInLicensed").prop("disabled", isView);
             }
             else if (!isView) {
-                $(".model-btn").css("display", "block");
+                //$(".model-btn").css("display", "block");
                 $("#chkInhouse").prop("disabled", isView);
                 $("#chkInLicensed").prop("disabled", isView);
             }
@@ -185,25 +185,25 @@ function Save() {
 function ValidateOnSave() {
     let isValidated = false;
     if ($("#WishListTypeId").val() == 0) {
-        $("#span-WishListTypeId").text("please select type");
+        $("#span-WishListTypeId").text("Please Select Type");
         return false;
     }
     else if ($("#GeographyId").val() == 0) {
         $("#span-WishListTypeId").text("");
-        $("#span-GeographyId").text("please select Geography");
+        $("#span-GeographyId").text("Please Select Geography");
         isValidated = false;
     }
     else if ($("#CountryId").val() == 0 || $("#CountryId").val() == "" || $("#CountryId").val() == null) {
         $("#span-WishListTypeId").text("");
         $("#span-GeographyId").text("");
-        $("#span-CountryId").text("please select Country");
+        $("#span-CountryId").text("Please Select Country");
         isValidated = false;
     }
     else if ($("#MoleculeName").val() == "") {
         $("#span-WishListTypeId").text("");
         $("#span-GeographyId").text("");
         $("#span-CountryId").text("");
-        $("#span-MoleculeName").text("Molecule Name is required");
+        $("#span-MoleculeName").text("Molecule Name is Required");
         isValidated = false;
     }
     else if ($("#Strength").val() == "") {
@@ -211,7 +211,7 @@ function ValidateOnSave() {
         $("#span-GeographyId").text("");
         $("#span-CountryId").text("");
         $("#span-MoleculeName").text("");
-        $("#span-Strength").text("Strength is required");
+        $("#span-Strength").text("Strength is Required");
         isValidated = false;
     }
     else if ($("#DateOfApproval").val() == "") {
@@ -220,7 +220,7 @@ function ValidateOnSave() {
         $("#span-GeographyId").text("");
         $("#span-CountryId").text("");
         $("#span-MoleculeName").text("");
-        $("#span-DateOfApproval").text("DateOfApproval is required");
+        $("#span-DateOfApproval").text("Date Of Approval is Required");
         isValidated = false;
     }
     else if ($("#DateOfFiling").val() == "") {
@@ -230,7 +230,7 @@ function ValidateOnSave() {
         $("#span-CountryId").text("");
         $("#span-MoleculeName").text("");
         $("#span-DateOfApproval").text("");
-        $("#span-DateOfFiling").text("DateOfFiling is required");
+        $("#span-DateOfFiling").text("Date Of Filing is Required");
         isValidated = false;
     }
     else if ($("#VendorEvaluationRemark").val() == "") {
@@ -241,7 +241,7 @@ function ValidateOnSave() {
         $("#span-MoleculeName").text("");
         $("#span-DateOfApproval").text("");
         $("#span-DateOfFiling").text("");
-        $("#span-VendorEvaluationRemark").text("VendorEvaluationRemark is required");
+        $("#span-VendorEvaluationRemark").text("Vendor Evaluation Remark is Required");
         isValidated = false;
     }
     else if ($("#NameofVendor").val() == "") {
@@ -254,7 +254,7 @@ function ValidateOnSave() {
         $("#span-DateOfFiling").text("");
         $("#span-VendorEvaluationRemark").text("");
         $("#span-DateOfFiling").text("");
-        $("#span-NameofVendor").text("NameofVendor is required");
+        $("#span-NameofVendor").text("Name of Vendor is Required");
         isValidated = false;
     }
     else if ($("#Remarks").val() == "") {
@@ -268,7 +268,7 @@ function ValidateOnSave() {
         $("#span-VendorEvaluationRemark").text("");
         $("#span-DateOfFiling").text("");
         $("#span-NameofVendor").text("");
-        $("#span-Remarks").text("Remarks is required");
+        $("#span-Remarks").text("Remarks is Required");
         isValidated = false;
     }
     else if (!$('#chkInLicensed').is(':checked') && !$('#chkInhouse').is(':checked')) {
@@ -283,7 +283,7 @@ function ValidateOnSave() {
         $("#span-DateOfFiling").text("");
         $("#span-NameofVendor").text("");
         $("#span-Remarks").text("");
-        $("#span-InLicensed").text("Inhouse or InLicensed is required");
+        $("#span-InLicensed").text("Inhouse or InLicensed is Required");
         isValidated = false;
     }
     else {

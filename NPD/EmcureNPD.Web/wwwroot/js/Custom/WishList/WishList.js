@@ -54,9 +54,16 @@ function InitializeWishList() {
         },
         "datatype": "json"
     };
+   
     var columnObject = [
         {
             "data": "wishListTyp"
+        },
+        {
+            "data": "countryName"
+        },
+        {
+            "data": "geography"
         },
         {
             "data": "moleculeName"
@@ -74,22 +81,22 @@ function InitializeWishList() {
                 return moment(data).format("DD MMM YYYY"); //h:m");
             }
         },
-        {
-            "data": "isInhouseOrInLicensed", "name": "IsInhouse/InLicensed"
-        },
-        {
-            "data": "nameofVendor", "name": "Name of Vendor"
-        },
+        //{
+        //    "data": "isInhouseOrInLicensed", "name": "IsInhouse/InLicensed"
+        //},
+        //{
+        //    "data": "nameofVendor", "name": "Name of Vendor"
+        //},
         {
             "data": "vendorEvaluationRemark", className: '', "title": "Evaluation Remark", "render": function (data, type, row, meta) {
                 return '<span class="btn btn-sm" style="background-color:' + data + ';color:whitesmoke;">' + data +'</span>';
             }
         },
-        {
-            "data": "createdOn", "render": function (data, type, row, meta) {
-                return moment(data).format("DD MMM YYYY h:m");
-            }
-        },
+        //{
+        //    "data": "createdOn", "render": function (data, type, row, meta) {
+        //        return moment(data).format("DD MMM YYYY h:m");
+        //    }
+        //},
         {
             "data": null, className: 'notexport pidf-100 actionColumn', "title": "Action", "render": function (data, type, row, meta) {
                 html = '';
