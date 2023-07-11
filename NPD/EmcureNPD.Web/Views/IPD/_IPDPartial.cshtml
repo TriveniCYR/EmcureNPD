@@ -158,7 +158,7 @@
                                 </button>
                             </div>
                         </div>
-                        <div class="card-body" style="display: block;">
+                        <div class="card-body table-overflow" style="display: block;">
                             <table id="PIDFTable" class="table table-bordered table-striped table-hover" style="width:100%">
                                 <thead>
                                     <tr>
@@ -168,6 +168,18 @@
                                         <th width="17%">@SharedLocalizer["Extension Expiry Date"] <span class="text-danger">*</span></th>
                                         <th width="21%">@SharedLocalizer["Comments (Patent Specific)"] <span class="text-danger">*</span></th>
                                         <th width="15%">@SharedLocalizer["Strategy"] <span class="text-danger">*</span></th>
+                                        <th width="20%">Country </th>
+                                        <th width="15%">Patent Strategy</th>
+                                        <th width="15%">Basic Patent Expiry </th>
+                                        <th width="15%">Other Lmiting Patent Date 1</th>
+                                        <th width="15%">Other Lmiting Patent Date 2 </th>
+                                        <th width="15%">Earliest Launch Date </th>
+                                        <th width="15%">Any Patents to be Filed </th>
+                                        <th width="15%">Earliest Market Entry</th>
+                                        <th width="15%">Estimated Number of generics in the market </th>
+                                        <th width="15%">Law firm being used </th>
+
+                                        
                                         <th width="6%" class="text-center">@SharedLocalizer["Action"]</th>
                                     </tr>
                                 </thead>
@@ -229,7 +241,80 @@
                                                             @Html.EditorFor(model => model.pidf_IPD_PatentDetailsEntities[i].Strategy, new { htmlAttributes = new { @autocomplete = "off", @class = "form-control checkbox-checked validateChildDetails", id = "pidf_IPD_PatentDetailsEntities[" + i + "].Strategy", @placeholder = @MasterLocalizer["Strategy"],@required="required" } })
                                                         </div>
                                                     </div>
-                                                </td>                                                 
+                                                </td> 
+                                                <td>
+                                                    <div class="">
+                                                        <div class="form-group required">
+                                                            <input type="hidden" id="hdnPatentFormulationCountryId" value="@Model.pidf_IPD_PatentDetailsEntities[i].CountryId" />
+                                                            @Html.DropDownListFor(model => model.pidf_IPD_PatentDetailsEntities[i].CountryId, new List<SelectListItem> { }, htmlAttributes: new { @class = "form-control SelectCountryPD", id = "pidf_IPD_PatentDetailsEntities[" + i + "].CountryId"})
+                                                        </div>
+                                                    </div>
+                                                </td>
+                                                <td>
+                                                    <div class="">
+                                                        <div class="form-group required">
+                                                            <input type="hidden" id="hdnPatentFormulationPatentStrategy" value="@Model.pidf_IPD_PatentDetailsEntities[i].PatentStrategy" />
+                                                            @Html.DropDownListFor(model => model.pidf_IPD_PatentDetailsEntities[i].PatentStrategy, new List<SelectListItem> { }, htmlAttributes: new { @class = "form-control SelectPatentStrategyPD", id = "pidf_IPD_PatentDetailsEntities[" + i + "].PatentStrategy"})
+                                                        </div>
+                                                    </div>
+                                                </td>
+                                              <td>
+                                                    <div class="">
+                                                        <div class="form-group required">
+                                                            @Html.EditorFor(model => model.pidf_IPD_PatentDetailsEntities[i].BasicPatentExpiry, new { htmlAttributes = new { @autocomplete = "off", @class = "form-control checkbox-checked", id = "pidf_IPD_PatentDetailsEntities[" + i + "].BasicPatentExpiry"}})
+                                                                
+                                                        </div>
+                                                    </div>
+                                                </td>
+                                                <td>
+                                                    <div class="">
+                                                        <div class="form-group required">
+                                                            @Html.EditorFor(model => model.pidf_IPD_PatentDetailsEntities[i].OtherLmitingPatentDate1, new { htmlAttributes = new { @autocomplete = "off", @class = "form-control",id = "pidf_IPD_PatentDetailsEntities[" + i + "].OtherLmitingPatentDate1"}})
+                                                        </div>
+                                                    </div>
+                                                </td>
+                                                <td>
+                                                    <div class="">
+                                                        <div class="form-group required">
+                                                            @Html.EditorFor(model => model.pidf_IPD_PatentDetailsEntities[i].OtherLmitingPatentDate2, new { htmlAttributes = new { @autocomplete = "off", @class = "form-control",id = "pidf_IPD_PatentDetailsEntities[" + i + "].OtherLmitingPatentDate2"}})
+                                                        </div>
+                                                    </div>
+                                                </td>
+                                                  <td>
+                                                    <div class="">
+                                                        <div class="form-group required">
+                                                            @Html.EditorFor(model => model.pidf_IPD_PatentDetailsEntities[i].EarliestLaunchDate, new { htmlAttributes = new { @autocomplete = "off", @class = "form-control",id = "pidf_IPD_PatentDetailsEntities[" + i + "].EarliestLaunchDate"}})
+                                                        </div>
+                                                    </div>
+                                                </td>
+                                                  <td>
+                                                    <div class="">
+                                                        <div class="form-group required">
+                                                            @Html.EditorFor(model => model.pidf_IPD_PatentDetailsEntities[i].AnyPatentstobeFiled, new { htmlAttributes = new { @autocomplete = "off", @class = "form-control",id = "pidf_IPD_PatentDetailsEntities[" + i + "].AnyPatentstobeFiled"}})
+                                                        </div>
+                                                    </div>
+                                                </td>
+                                                <td>
+                                                    <div class="">
+                                                        <div class="form-group required">
+                                                            @Html.EditorFor(model => model.pidf_IPD_PatentDetailsEntities[i].EarliestMarketEntry, new { htmlAttributes = new { @autocomplete = "off", @class = "form-control",id = "pidf_IPD_PatentDetailsEntities[" + i + "].EarliestMarketEntry"}})
+                                                        </div>
+                                                    </div>
+                                                </td>
+                                                      <td>
+                                                    <div class="">
+                                                        <div class="form-group required">
+                                                            @Html.EditorFor(model => model.pidf_IPD_PatentDetailsEntities[i].StimatedNumberofgenericsinthe, new { htmlAttributes = new { @autocomplete = "off", @class = "form-control",id = "pidf_IPD_PatentDetailsEntities[" + i + "].StimatedNumberofgenericsinthe"}})
+                                                        </div>
+                                                    </div>
+                                                </td>
+                                                <td>
+                                                    <div class="">
+                                                        <div class="form-group required">
+                                                            @Html.EditorFor(model => model.pidf_IPD_PatentDetailsEntities[i].Lawfirmbeingused, new { htmlAttributes = new { @autocomplete = "off", @class = "form-control",id = "pidf_IPD_PatentDetailsEntities[" + i + "].Lawfirmbeingused"}})
+                                                        </div>
+                                                    </div>
+                                                </td>
                                                 <td>
                                                     <div class="col-md">
                                                         <div class="form-group">
@@ -264,7 +349,7 @@
                                 </button>
                             </div>
                         </div>
-                        <div class="card-body" style="display: block;">
+                        <div class="card-body table-overflow" style="display: block;">
                             <table id="PIDFTableAPI" class="table table-bordered table-striped table-hover" style="width:100%">
                                 <thead>
                                     <tr>
@@ -274,6 +359,16 @@
                                         <th width="17%">@SharedLocalizer["Extension Expiry Date"] <span class="text-danger">*</span></th>
                                         <th width="21%">@SharedLocalizer["Comments (Patent Specific)"] <span class="text-danger">*</span></th>
                                         <th width="15%">@SharedLocalizer["Strategy"] <span class="text-danger">*</span></th>
+                                        <th width="20%">Country </th>
+                                        <th width="15%">Patent Strategy</th>
+                                        <th width="15%">Basic Patent Expiry </th>
+                                        <th width="15%">Other Lmiting Patent Date 1</th>
+                                        <th width="15%">Other Lmiting Patent Date 2 </th>
+                                        <th width="15%">Earliest Launch Date </th>
+                                        <th width="15%">Any Patents to be Filed </th>
+                                        <th width="15%">Earliest Market Entry</th>
+                                        <th width="15%">Estimated Number of generics in the market </th>
+                                        <th width="15%">Law firm being used </th>
                                         <th width="6%" class="text-center">@SharedLocalizer["Action"]</th>
                                     </tr>
                                 </thead>
@@ -333,6 +428,79 @@
                                                     <div class="">
                                                         <div class="form-group required">
                                                             @Html.EditorFor(model => model.pidf_IPD_PatentDetailsEntitiesAPI[i].Strategy, new { htmlAttributes = new { @autocomplete = "off", @class = "form-control checkbox-checked validateChildDetails", id = "pidf_IPD_PatentDetailsEntitiesAPI[" + i + "].Strategy", @placeholder = @MasterLocalizer["Strategy"],@required="required" } })
+                                                        </div>
+                                                    </div>
+                                                </td>
+                                                <td>
+                                                    <div class="">
+                                                        <div class="form-group required">
+                                                            <input type="hidden" id="hdnPatentFormulationCountryId" value="@Model.pidf_IPD_PatentDetailsEntities[i].CountryId" />
+                                                            @Html.DropDownListFor(model => model.pidf_IPD_PatentDetailsEntitiesAPI[i].CountryId, new List<SelectListItem> { }, htmlAttributes: new { @class = "form-control SelectCountryPDAPI", id = "pidf_IPD_PatentDetailsEntitiesAPI[" + i + "].CountryId"})
+                                                        </div>
+                                                    </div>
+                                                </td>
+                                                <td>
+                                                    <div class="">
+                                                        <div class="form-group required">
+                                                            <input type="hidden" id="hdnPatentFormulationPatentStrategy" value="@Model.pidf_IPD_PatentDetailsEntities[i].PatentStrategy" />
+                                                            @Html.DropDownListFor(model => model.pidf_IPD_PatentDetailsEntitiesAPI[i].PatentStrategy, new List<SelectListItem> { }, htmlAttributes: new { @class = "form-control SelectPatentStrategyPDAPI", id = "pidf_IPD_PatentDetailsEntitiesAPI[" + i + "].PatentStrategy"})
+                                                        </div>
+                                                    </div>
+                                                </td>
+                                                <td>
+                                                    <div class="">
+                                                        <div class="form-group required">
+                                                            @Html.EditorFor(model => model.pidf_IPD_PatentDetailsEntitiesAPI[i].BasicPatentExpiry, new { htmlAttributes = new { @autocomplete = "off", @class = "form-control checkbox-checked", id = "pidf_IPD_PatentDetailsEntitiesAPI[" + i + "].BasicPatentExpiry"}})
+
+                                                        </div>
+                                                    </div>
+                                                </td>
+                                                <td>
+                                                    <div class="">
+                                                        <div class="form-group required">
+                                                            @Html.EditorFor(model => model.pidf_IPD_PatentDetailsEntitiesAPI[i].OtherLmitingPatentDate1, new { htmlAttributes = new { @autocomplete = "off", @class = "form-control",id = "pidf_IPD_PatentDetailsEntitiesAPI[" + i + "].OtherLmitingPatentDate1"}})
+                                                        </div>
+                                                    </div>
+                                                </td>
+                                                <td>
+                                                    <div class="">
+                                                        <div class="form-group required">
+                                                            @Html.EditorFor(model => model.pidf_IPD_PatentDetailsEntitiesAPI[i].OtherLmitingPatentDate2, new { htmlAttributes = new { @autocomplete = "off", @class = "form-control",id = "pidf_IPD_PatentDetailsEntitiesAPI[" + i + "].OtherLmitingPatentDate2"}})
+                                                        </div>
+                                                    </div>
+                                                </td>
+                                                <td>
+                                                    <div class="">
+                                                        <div class="form-group required">
+                                                            @Html.EditorFor(model => model.pidf_IPD_PatentDetailsEntitiesAPI[i].EarliestLaunchDate, new { htmlAttributes = new { @autocomplete = "off", @class = "form-control",id = "pidf_IPD_PatentDetailsEntitiesAPI[" + i + "].EarliestLaunchDate"}})
+                                                        </div>
+                                                    </div>
+                                                </td>
+                                                <td>
+                                                    <div class="">
+                                                        <div class="form-group required">
+                                                            @Html.EditorFor(model => model.pidf_IPD_PatentDetailsEntitiesAPI[i].AnyPatentstobeFiled, new { htmlAttributes = new { @autocomplete = "off", @class = "form-control",id = "pidf_IPD_PatentDetailsEntitiesAPI[" + i + "].AnyPatentstobeFiled"}})
+                                                        </div>
+                                                    </div>
+                                                </td>
+                                                <td>
+                                                    <div class="">
+                                                        <div class="form-group required">
+                                                            @Html.EditorFor(model => model.pidf_IPD_PatentDetailsEntitiesAPI[i].EarliestMarketEntry, new { htmlAttributes = new { @autocomplete = "off", @class = "form-control",id = "pidf_IPD_PatentDetailsEntitiesAPI[" + i + "].EarliestMarketEntry"}})
+                                                        </div>
+                                                    </div>
+                                                </td>
+                                                <td>
+                                                    <div class="">
+                                                        <div class="form-group required">
+                                                            @Html.EditorFor(model => model.pidf_IPD_PatentDetailsEntitiesAPI[i].StimatedNumberofgenericsinthe, new { htmlAttributes = new { @autocomplete = "off", @class = "form-control",id = "pidf_IPD_PatentDetailsEntitiesAPI[" + i + "].StimatedNumberofgenericsinthe"}})
+                                                        </div>
+                                                    </div>
+                                                </td>
+                                                <td>
+                                                    <div class="">
+                                                        <div class="form-group required">
+                                                            @Html.EditorFor(model => model.pidf_IPD_PatentDetailsEntitiesAPI[i].Lawfirmbeingused, new { htmlAttributes = new { @autocomplete = "off", @class = "form-control",id = "pidf_IPD_PatentDetailsEntitiesAPI[" + i + "].Lawfirmbeingused"}})
                                                         </div>
                                                     </div>
                                                 </td>

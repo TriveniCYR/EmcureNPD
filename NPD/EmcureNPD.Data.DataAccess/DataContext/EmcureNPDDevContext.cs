@@ -2,7 +2,6 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata;
 using EmcureNPD.Data.DataAccess.Entity;
-using EmcureNPD.Utility;
 
 #nullable disable
 
@@ -60,6 +59,7 @@ namespace EmcureNPD.Data.DataAccess.DataContext
         public virtual DbSet<MasterPackSize> MasterPackSizes { get; set; }
         public virtual DbSet<MasterPackagingType> MasterPackagingTypes { get; set; }
         public virtual DbSet<MasterPackingType> MasterPackingTypes { get; set; }
+        public virtual DbSet<MasterPatentStrategy> MasterPatentStrategies { get; set; }
         public virtual DbSet<MasterPidfstatus> MasterPidfstatuses { get; set; }
         public virtual DbSet<MasterPlant> MasterPlants { get; set; }
         public virtual DbSet<MasterPlantLine> MasterPlantLines { get; set; }
@@ -148,7 +148,7 @@ namespace EmcureNPD.Data.DataAccess.DataContext
             if (!optionsBuilder.IsConfigured)
             {
 #warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see http://go.microsoft.com/fwlink/?LinkId=723263.
-                optionsBuilder.UseSqlServer(DatabaseConnection.NPDDatabaseConnection);
+                optionsBuilder.UseSqlServer("Data Source=180.149.241.172;Initial Catalog=EmcureNPDDev;Persist Security Info=True;User ID=emcurenpddev_dbUser;pwd=emcure123!@#");
             }
         }
 
@@ -787,6 +787,17 @@ namespace EmcureNPD.Data.DataAccess.DataContext
                 entity.Property(e => e.PackingTypeName).HasMaxLength(100);
 
                 entity.Property(e => e.Unit).HasMaxLength(50);
+            });
+
+            modelBuilder.Entity<MasterPatentStrategy>(entity =>
+            {
+                entity.HasKey(e => e.PatentStrategyId);
+
+                entity.ToTable("Master_Patent_Strategy", "dbo");
+
+                entity.Property(e => e.PatentStrategyId).HasColumnName("PatentStrategyID");
+
+                entity.Property(e => e.PatentStrategyName).HasMaxLength(100);
             });
 
             modelBuilder.Entity<MasterPidfstatus>(entity =>
