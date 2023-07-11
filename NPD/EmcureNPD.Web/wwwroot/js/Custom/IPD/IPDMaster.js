@@ -6,6 +6,7 @@ var isValidIPDForm = true;
 $(document).ready(function () {
     fnGetActiveBusinessUnit();
     GetRegionList();
+   
     try {
         _PIDFId = parseInt($('#hdnPIDFId').val());
         _IPDMode = $('#hdnIPDIsView').val(); //parseInt($('#hdnPIDFId').val());
@@ -15,7 +16,7 @@ $(document).ready(function () {
     if ($('#hdnIsPartial').val() != '1') {
         getPIDFAccordion(_PIDFAccordionURL, _PIDFID, "dvPIDFAccrdion");
     }
-
+    GetCountryList_PatentDetailsFormulation();
     $(document).on("change", "[id*='ExtensionExpiryDate']", function () {  
         var todaysDate = new Date();
         var _extensionExpiryDate = new Date($(this).val());
@@ -147,6 +148,55 @@ function GetCountryListSuccess(data) {
 function GetCountryListError(x, y, z) {
     toastr.error(ErrorMessage);
 }
+
+
+// # Patent Details Formulation- Get Country List
+function GetCountryList_PatentDetailsFormulation() {
+    ajaxServiceMethod($('#hdnBaseURL').val() + GetCountryForPatentDetails + "/" + _selectBusinessUnit, 'GET', GetCountryList_PatentDetailsFormulationSuccess, GetCountryList_PatentDetailsFormulationError);
+    
+}
+function GetCountryList_PatentDetailsFormulationSuccess(data) {
+    try {
+        //var selCountry = getParentFormId().find('#CountryIds').val();
+      //  getParentFormId().find('.SelectCountryPD').empty();
+
+        $.each(data._object, function (index, object) {
+          //  getParentFormId().find('.SelectCountryPD').append($('<option>').text(object.countryName).attr('value', object.countryId));
+            getParentFormId().find('.SelectCountryPD').append('<option value="' + object.countryId + '>' + object.countryName + '</option>');
+        });
+       // getParentFormId().find('.SelectCountryPD').val(arr).trigger('change');
+    } catch (e) {
+        toastr.error('Error:' + e.message);
+    }
+}
+function GetCountryList_PatentDetailsFormulationError(x, y, z) {
+    toastr.error(ErrorMessage);
+}
+//patent details Patent Strategy dropdown List
+
+function GetPatentStrategyList() {
+    ajaxServiceMethod($('#hdnBaseURL').val() + GetPatentStrategyList, 'GET', GetPatentStrategyListSuccess, GetPatentStrategyListError);
+
+}
+function GetPatentStrategyListSuccess(data) {
+    try {
+        //var selCountry = getParentFormId().find('#CountryIds').val();
+        getParentFormId().find('.SelectPatentStrategyPD').empty();
+
+        $.each(data._object, function (index, object) {
+            //getParentFormId().find('.SelectPatentStrategyPD').append($('<option>').text(object.countryName).attr('value', object.countryId)); 
+           //   getParentFormId().find('.SelectPatentStrategyPD').append('<option value="' + object.countryId + '>' + object.countryName + '</option>');
+        });
+        //getParentFormId().find('.SelectPatentStrategyPD').val(arr).trigger('change');
+    } catch (e) {
+        toastr.error('Error:' + e.message);
+    }
+}
+function GetPatentStrategyListError(x, y, z) {
+    toastr.error(ErrorMessage);
+}
+
+
 function SaveIPDClick(type) {
     isValidIPDForm = true;
     $('.originalDate').trigger("change");

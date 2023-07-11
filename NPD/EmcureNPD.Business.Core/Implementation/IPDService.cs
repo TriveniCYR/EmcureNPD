@@ -43,6 +43,7 @@ namespace EmcureNPD.Business.Core.Implementation
         private IRepository<PidfMedicalFile> _pidfMedicalFilerepository { get; set; }
         private IRepository<MasterBusinessUnit> _businessUnitrepository { get; set; }
         private IRepository<MasterCountry> _countryrepository { get; set; }
+        private IRepository<MasterPatentStrategy> _patentStrategyrepository { get; set; }
         private IRepository<MasterUserCountryMapping> _masterUserCountryMappingrepository { get; set; }
         private readonly IHelper _helper;
 
@@ -72,6 +73,7 @@ namespace EmcureNPD.Business.Core.Implementation
             _businessUnitrepository = _unitOfWork.GetRepository<MasterBusinessUnit>();
             _countryrepository = _unitOfWork.GetRepository<MasterCountry>();
             _masterUserCountryMappingrepository = _unitOfWork.GetRepository<MasterUserCountryMapping>();
+            _patentStrategyrepository = _unitOfWork.GetRepository<MasterPatentStrategy>();
         }
 
         public async Task<IPDEntity> FillDropdown()
@@ -751,6 +753,15 @@ namespace EmcureNPD.Business.Core.Implementation
             DataSet dsDropdownOptions = await _repository.GetDataSetBySP("stp_npd_GetIPDPatentDetailsCountryList", System.Data.CommandType.StoredProcedure, osqlParameter);
 
             DropdownObjects = dsDropdownOptions.Tables[0];
+
+            return DropdownObjects;
+        }
+
+        public async Task<dynamic> GetPatentStrategy()
+        {
+            dynamic DropdownObjects = new ExpandoObject();
+
+            DropdownObjects = await _patentStrategyrepository.GetAllAsync();
 
             return DropdownObjects;
         }

@@ -434,7 +434,8 @@ namespace EmcureNPD.Web.Helpers
         public static string GetAllFinalSelection = "api/CommercialPIDFForm/GetAllFinalSelection";
         public static string PIDMedicalForm = "api/Medical/PIDMedicalForm";
         public static string GetMedicalFormdata = "api/Medical/GetPIDFMedicalFormData";
-
+        public static string GetCountryByBussinessUnitIds = "api/IPD/GetCountryByBussinessUnitIds"; 
+        public static string GetPatentStrategyList = "api/IPD/GetPatentStrategyList";
         #endregion IPD
 
         #region API

@@ -117,6 +117,7 @@ namespace EmcureNPD.Business.Models
         [DataType(DataType.Date)]
         [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:yyyy-MM-dd}")]
         public DateTime? BasicPatentExpiry { get; set; }
+        [DataType(DataType.Date)]
         [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:yyyy-MM-dd}")]
         public DateTime? OtherLmitingPatentDate1 { get; set; }
         [DataType(DataType.Date)]
@@ -135,6 +136,9 @@ namespace EmcureNPD.Business.Models
         public int? PatentStrategy { get; set; }
         public string PatentStrategyOther { get; set; }
 
+        //---------API IPD entity---------
+        public string PatentStrategyName { get; set; }
+        public string CountryName { get; set; }
     }
     public partial class IPDPIDFListEntity
     {

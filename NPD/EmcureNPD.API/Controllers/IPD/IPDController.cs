@@ -249,5 +249,23 @@ namespace EmcureNPD.API.Controllers.IPD
             }
         }
 
+        [HttpGet, Route("GetPatentStrategyList")]
+        public async Task<IActionResult> GetPatentStrategyList()
+        {
+            try
+            {
+                var oPatentStrategyList = await _IPDService.GetPatentStrategy();
+                if (oPatentStrategyList != null)
+                    return _ObjectResponse.Create(oPatentStrategyList, (int)HttpStatusCode.OK);
+                else
+                    return _ObjectResponse.Create(null, (int)HttpStatusCode.BadRequest, "No Records found");
+            }
+            catch (Exception ex)
+            {
+                await _ExceptionService.LogException(ex);
+                return _ObjectResponse.Create(false, (int)HttpStatusCode.InternalServerError, Convert.ToString(ex.StackTrace));
+            }
+        }
+
     }
 }
