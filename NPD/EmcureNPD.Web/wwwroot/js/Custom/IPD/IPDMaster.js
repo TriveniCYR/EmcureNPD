@@ -16,7 +16,7 @@ $(document).ready(function () {
     if ($('#hdnIsPartial').val() != '1') {
         getPIDFAccordion(_PIDFAccordionURL, _PIDFID, "dvPIDFAccrdion");
     }
-    GetCountryList_PatentDetailsFormulation();
+   
     $(document).on("change", "[id*='ExtensionExpiryDate']", function () {  
         var todaysDate = new Date();
         var _extensionExpiryDate = new Date($(this).val());
@@ -76,6 +76,7 @@ function GetActiveBusinessUnitSuccess(data) {
     $('#custom-tabs-two-tabContent').html(businessUnitPanel);
    
     LoadIPDForm(_PIDFID, _selectBusinessUnit);
+    
 }
 function GetActiveBusinessUnitError(x, y, z) {
     toastr.error(ErrorMessage);
@@ -89,6 +90,7 @@ function LoadIPDForm(pidfId, BusinessUnitId) {
             SetDisableForOtherUserBU(_selectBusinessUnit);
         });
     }
+    GetCountryList_PatentDetailsFormulation();
 }
 // #region Get Region List
 function GetRegionList() {
@@ -158,12 +160,16 @@ function GetCountryList_PatentDetailsFormulation() {
 function GetCountryList_PatentDetailsFormulationSuccess(data) {
     try {
         //var selCountry = getParentFormId().find('#CountryIds').val();
-      //  getParentFormId().find('.SelectCountryPD').empty();
-
+        getParentFormId().find('.SelectCountryPD').empty();
+      //  getParentFormId().find('.SelectCountryPD').each(function () {
+        //    var selectControl = $(this);
+         //   selectControl.append('<option value="">--select--</option>');
         $.each(data._object, function (index, object) {
-          //  getParentFormId().find('.SelectCountryPD').append($('<option>').text(object.countryName).attr('value', object.countryId));
-            getParentFormId().find('.SelectCountryPD').append('<option value="' + object.countryId + '>' + object.countryName + '</option>');
+           getParentFormId().find('.SelectCountryPD').append('<option value="' + object.countryId + '">' + object.countryName + '</option>');
+           // let strhtml = '<option value="' + object.countryId + '">' + object.countryName + '</option>'
+           // selectControl.append(strhtml);
         });
+      //  });
        // getParentFormId().find('.SelectCountryPD').val(arr).trigger('change');
     } catch (e) {
         toastr.error('Error:' + e.message);

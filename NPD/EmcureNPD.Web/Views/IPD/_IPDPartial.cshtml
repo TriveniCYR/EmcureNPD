@@ -245,16 +245,16 @@
                                                 <td>
                                                     <div class="">
                                                         <div class="form-group required">
-                                                            <input type="hidden" id="hdnPatentFormulationCountryId" value="@Model.pidf_IPD_PatentDetailsEntities[i].CountryId" />
-                                                            @Html.DropDownListFor(model => model.pidf_IPD_PatentDetailsEntities[i].CountryId, new List<SelectListItem> { }, htmlAttributes: new { @class = "form-control SelectCountryPD", id = "pidf_IPD_PatentDetailsEntities[" + i + "].CountryId"})
+                                                            <select id="IDSelectCountryPD" class="form-control SelectCountryPD"></select>
+                                                            <input type="hidden" id="hdnPatentFormulationCountryId" value="@Model.pidf_IPD_PatentDetailsEntities[i].CountryId" />                                                           
                                                         </div>
                                                     </div>
                                                 </td>
                                                 <td>
                                                     <div class="">
                                                         <div class="form-group required">
-                                                            <input type="hidden" id="hdnPatentFormulationPatentStrategy" value="@Model.pidf_IPD_PatentDetailsEntities[i].PatentStrategy" />
-                                                            @Html.DropDownListFor(model => model.pidf_IPD_PatentDetailsEntities[i].PatentStrategy, new List<SelectListItem> { }, htmlAttributes: new { @class = "form-control SelectPatentStrategyPD", id = "pidf_IPD_PatentDetailsEntities[" + i + "].PatentStrategy"})
+                                                            <select id="IDSelectPatentStrategyPD" class="form-control SelectPatentStrategyPD"></select>
+                                                            <input type="hidden" id="hdnPatentFormulationPatentStrategy" value="@Model.pidf_IPD_PatentDetailsEntities[i].PatentStrategy" />                                                           
                                                         </div>
                                                     </div>
                                                 </td>
