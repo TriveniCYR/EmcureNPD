@@ -19,7 +19,7 @@
 
 <div class="content-header">
     <div class="container-fluid d-flex justify-content-between">
-        <h3>All Wish List</h3>
+        <h3>Wish List</h3>
         <div>
             @*@if (UtilityHelper.GetAccess(Int32.Parse(Convert.ToString(ScreenModuleID)), Helper.GetLoggedInRoleId(), (int)PermissionEnum.Add))
             {*@
@@ -34,14 +34,16 @@
         <thead>
             <tr class="text-center">
                 <th>Type</th>
+                <th>Geography</th>
+                <th>Country</th>
                 <th>Molecule Name</th>
                 <th>Strength</th>
                 <th>Date Of Filing</th>
                 <th>Date Of Approval</th>
-                <th>IsInhouse</th>
-                <th>Name of Vendor</th>
-                <th>Vendor Evaluation Remark</th>
-                <th>Created On</th>
+                @*<th>IsInhouse</th>
+                <th>Name of Vendor</th>*@
+                <th>Vendor Remark</th>
+                @*<th>Created On</th>*@
                 <th>Action</th>
             </tr>
         </thead>
