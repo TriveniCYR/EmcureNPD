@@ -245,7 +245,8 @@
                                                 <td>
                                                     <div class="">
                                                         <div class="form-group required">
-                                                            <select id="IDSelectCountryPD" class="form-control SelectCountryPD"></select>
+                                                           @* <select id="IDSelectCountryPD" class="form-control SelectCountryPD"></select>*@
+                                                            @Html.DropDownListFor(model => model.pidf_IPD_PatentDetailsEntities[i].CountryId, new List<SelectListItem> { }, htmlAttributes: new { @class = "form-control SelectCountryPD", id = "pidf_IPD_PatentDetailsEntities[" + i + "].CountryId"})
                                                             <input type="hidden" id="hdnPatentFormulationCountryId" value="@Model.pidf_IPD_PatentDetailsEntities[i].CountryId" />                                                           
                                                         </div>
                                                     </div>
@@ -253,8 +254,10 @@
                                                 <td>
                                                     <div class="">
                                                         <div class="form-group required">
-                                                            <select id="IDSelectPatentStrategyPD" class="form-control SelectPatentStrategyPD"></select>
-                                                            <input type="hidden" id="hdnPatentFormulationPatentStrategy" value="@Model.pidf_IPD_PatentDetailsEntities[i].PatentStrategy" />                                                           
+                                                           @* <select id="IDSelectPatentStrategyPD" class="form-control SelectPatentStrategyPD"></select>*@
+                                                            @Html.DropDownListFor(model => model.pidf_IPD_PatentDetailsEntities[i].PatentStrategy, new List<SelectListItem> { }, htmlAttributes: new { @class = "form-control SelectPatentStrategyPD SelectPatentStrategyCommon", id = "pidf_IPD_PatentDetailsEntities[" + i + "].PatentStrategy"})
+                                                            <input type="hidden" id="hdnPatentFormulationPatentStrategy" value="@Model.pidf_IPD_PatentDetailsEntities[i].PatentStrategy" />
+                                                            @Html.EditorFor(model => model.pidf_IPD_PatentDetailsEntities[i].PatentStrategyOther, new { htmlAttributes = new { @autocomplete = "off", @class = "form-control PatentStrategyOtherPD d-none",id = "pidf_IPD_PatentDetailsEntities[" + i + "].PatentStrategyOther"}})
                                                         </div>
                                                     </div>
                                                 </td>
@@ -434,16 +437,17 @@
                                                 <td>
                                                     <div class="">
                                                         <div class="form-group required">
-                                                            <input type="hidden" id="hdnPatentFormulationCountryId" value="@Model.pidf_IPD_PatentDetailsEntities[i].CountryId" />
                                                             @Html.DropDownListFor(model => model.pidf_IPD_PatentDetailsEntitiesAPI[i].CountryId, new List<SelectListItem> { }, htmlAttributes: new { @class = "form-control SelectCountryPDAPI", id = "pidf_IPD_PatentDetailsEntitiesAPI[" + i + "].CountryId"})
-                                                        </div>
+                                                             <input type="hidden" id="hdnPatentFormulationCountryId" value="@Model.pidf_IPD_PatentDetailsEntitiesAPI[i].CountryId" />
+                                                            </div>
                                                     </div>
                                                 </td>
                                                 <td>
                                                     <div class="">
                                                         <div class="form-group required">
-                                                            <input type="hidden" id="hdnPatentFormulationPatentStrategy" value="@Model.pidf_IPD_PatentDetailsEntities[i].PatentStrategy" />
-                                                            @Html.DropDownListFor(model => model.pidf_IPD_PatentDetailsEntitiesAPI[i].PatentStrategy, new List<SelectListItem> { }, htmlAttributes: new { @class = "form-control SelectPatentStrategyPDAPI", id = "pidf_IPD_PatentDetailsEntitiesAPI[" + i + "].PatentStrategy"})
+                                                            @Html.DropDownListFor(model => model.pidf_IPD_PatentDetailsEntitiesAPI[i].PatentStrategy, new List<SelectListItem> { }, htmlAttributes: new { @class = "form-control SelectPatentStrategyPDAPI SelectPatentStrategyCommon", id = "pidf_IPD_PatentDetailsEntitiesAPI[" + i + "].PatentStrategy"})
+                                                            <input type="hidden" id="hdnPatentFormulationPatentStrategyAPI" value="@Model.pidf_IPD_PatentDetailsEntitiesAPI[i].PatentStrategy" />
+                                                            @Html.EditorFor(model => model.pidf_IPD_PatentDetailsEntitiesAPI[i].PatentStrategyOther, new { htmlAttributes = new { @autocomplete = "off", @class = "form-control PatentStrategyOtherPDAPI d-none",id = "pidf_IPD_PatentDetailsEntitiesAPI[" + i + "].PatentStrategyOther"}})
                                                         </div>
                                                     </div>
                                                 </td>
