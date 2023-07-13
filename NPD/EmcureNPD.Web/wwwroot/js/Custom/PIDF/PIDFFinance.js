@@ -10,6 +10,8 @@ var AnnualConfirmatoryRelease_Data = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
 var Global_Projection_Year_data = [];
 var ExpiriestxtboxFocusId = "";
 var AnnualConfirmatoryRtxtboxFocusId = "";
+var TabKeyPressed_control = '';
+var TabKeyPressed_controlAnnualConf = '';
 $(document).ready(function () {
  /*   console.log("selectedSKUs" + selectedSKUs);*/
   
@@ -74,17 +76,57 @@ $(document).ready(function () {
     //        $(this).trigger('change');
     //    }
     //});
-    UpdateProjectionCommercial();
+    UpdateProjectionCommercial();   // Expiriestxtbox
+
+
+    $(".Expiriestxtbox").on('keydown', function (e) {
+
+        var keyCode = e.keyCode || e.which;
+        if (keyCode == 9) {
+            e.preventDefault();
+            TabKeyPressed_controlID = $(this).attr('id');
+            $(this).trigger('change');
+           //alert('Tab Pressed');
+        }
+    });
+
+    $(".AnnualConfirmatoryRtxtbox").on('keydown', function (e) {
+       // alert('Tab Pressed');
+        var keyCode = e.keyCode || e.which;
+        if (keyCode == 9) {
+            e.preventDefault();
+
+            TabKeyPressed_controlAnnualConf = $(this).attr('id');
+            $(this).trigger('change');
+            //alert('Tab Pressed');
+        }
+    });
+
 });
 function ExpiriesValueChange(ele, index) {
+   
     ele.value = (ele.value == undefined || ele.value == '') ? 0 : ele.value;
     Expiries_Yearwise_Data[index] = ele.value;
     RenderFinanceProjection();
     if (ExpiriestxtboxFocusId != '') {
       //  console.log('This is onchnage: ' + ExpiriestxtboxFocusId);
         $('#' + ExpiriestxtboxFocusId).focus();
-        ExpiriestxtboxFocusId = '';
+       // ExpiriestxtboxFocusId = '';
     }
+
+    $(".Expiriestxtbox").on('keydown', function (e) {
+        var keyCode = e.keyCode || e.which;
+        if (keyCode == 9) {
+            TabKeyPressed_controlID = $(this).attr('id');
+           // alert('Tab Pressed1');
+        }
+    });
+    if (TabKeyPressed_controlID != '' && TabKeyPressed_controlID != 'ProjectionExpiries_9') {
+        var nextcontrol = $('#' + TabKeyPressed_controlID).parent().next().find('.Expiriestxtbox');
+        nextcontrol.focus().select();
+        //TabKeyPressed_controlID = '';
+    }
+
 }
 function AnnualconfirmatoryValueChange(ele, index) {
     ele.value = (ele.value == undefined || ele.value == '') ? 0 : ele.value;
@@ -93,8 +135,21 @@ function AnnualconfirmatoryValueChange(ele, index) {
     if (AnnualConfirmatoryRtxtboxFocusId != '') {
         $('#' + AnnualConfirmatoryRtxtboxFocusId).focus();
        // console.log('This is OnChnage: ' + AnnualConfirmatoryRtxtboxFocusId);
-        AnnualConfirmatoryRtxtboxFocusId = '';
-    }    
+       // AnnualConfirmatoryRtxtboxFocusId = '';
+    }  
+
+    $(".AnnualConfirmatoryRtxtbox").on('keydown', function (e) {
+        var keyCode = e.keyCode || e.which;
+        if (keyCode == 9) {
+            TabKeyPressed_controlAnnualConf = $(this).attr('id');
+            // alert('Tab Pressed1');
+        }
+    });
+    if (TabKeyPressed_controlAnnualConf != '') {
+        var nextcontrol = $('#' + TabKeyPressed_controlAnnualConf).parent().next().find('.AnnualConfirmatoryRtxtbox');
+        nextcontrol.focus().select();
+        //TabKeyPressed_controlAnnualConf = '';
+    }
 }
 
 function ValidateSKU_dropdown(){
