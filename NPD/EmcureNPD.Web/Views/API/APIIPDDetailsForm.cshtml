@@ -217,12 +217,15 @@
 
                                                 <td> @item.CountryName				                  </td>
                                                 <td> @item.PatentStrategyName		                  </td>
-                                                <td> @item.BasicPatentExpiry.Value.ToString("MM/dd/yyyy")			                  </td>
-                                                <td> @item.OtherLmitingPatentDate1.Value.ToString("MM/dd/yyyy")		                  </td>
-                                                <td> @item.OtherLmitingPatentDate2.Value.ToString("MM/dd/yyyy")		                  </td>
-                                                <td> @item.EarliestLaunchDate.Value.ToString("MM/dd/yyyy")				                  </td>
+                                                <td> @((item.BasicPatentExpiry == null) ? ""        : item.BasicPatentExpiry.Value.ToString("MM/dd/yyyy"))   </td>
+                                                <td> @((item.OtherLmitingPatentDate1 == null) ? "" : item.OtherLmitingPatentDate1.Value.ToString("MM/dd/yyyy"))   </td>
+                                                <td> @((item.OtherLmitingPatentDate2 == null) ? "" : item.OtherLmitingPatentDate2.Value.ToString("MM/dd/yyyy"))   </td>
+
+
+                                                <td> @((item.EarliestLaunchDate == null) ? "" : item.EarliestLaunchDate.Value.ToString("MM/dd/yyyy"))   </td>
                                                 <td> @item.AnyPatentstobeFiled			                  </td>
-                                                <td> @item.EarliestMarketEntry.Value.ToString("MM/dd/yyyy")			                  </td>
+                                                <td> @((item.EarliestMarketEntry == null) ? "" : item.EarliestMarketEntry.Value.ToString("MM/dd/yyyy"))   </td>
+
                                                 <td> @item.StimatedNumberofgenericsinthe	                  </td>
                                                 <td> @item.Lawfirmbeingused				                  </td>
 
@@ -288,12 +291,15 @@
                                                 <td> @item.Strategy                  </td>
                                                 <td> @item.CountryName				                  </td>
                                                 <td> @item.PatentStrategyName		                  </td>
-                                                <td> @item.BasicPatentExpiry.Value.ToString("MM/dd/yyyy")			                  </td>
-                                                <td> @item.OtherLmitingPatentDate1.Value.ToString("MM/dd/yyyy")		                  </td>
-                                                <td> @item.OtherLmitingPatentDate2.Value.ToString("MM/dd/yyyy")		                  </td>
-                                                <td> @item.EarliestLaunchDate.Value.ToString("MM/dd/yyyy")				                  </td>
+                                                <td> @((item.BasicPatentExpiry == null) ? "" : item.BasicPatentExpiry.Value.ToString("MM/dd/yyyy"))   </td>
+                                                <td> @((item.OtherLmitingPatentDate1 == null) ? "" : item.OtherLmitingPatentDate1.Value.ToString("MM/dd/yyyy"))   </td>
+                                                <td> @((item.OtherLmitingPatentDate2 == null) ? "" : item.OtherLmitingPatentDate2.Value.ToString("MM/dd/yyyy"))   </td>
+
+
+                                                <td> @((item.EarliestLaunchDate == null) ? "" : item.EarliestLaunchDate.Value.ToString("MM/dd/yyyy"))   </td>
                                                 <td> @item.AnyPatentstobeFiled			                  </td>
-                                                <td> @item.EarliestMarketEntry.Value.ToString("MM/dd/yyyy")			                  </td>
+                                                <td> @((item.EarliestMarketEntry == null) ? "" : item.EarliestMarketEntry.Value.ToString("MM/dd/yyyy"))   </td>
+
                                                 <td> @item.StimatedNumberofgenericsinthe	                  </td>
                                                 <td> @item.Lawfirmbeingused				                  </td>
 
