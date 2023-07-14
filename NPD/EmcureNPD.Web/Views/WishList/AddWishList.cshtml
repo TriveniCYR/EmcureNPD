@@ -57,7 +57,7 @@
 
             <div class="form-group required">
                 @Html.LabelFor(o => o.Strength, new { @class = "control-label" })<span style="color:red;">*</span>
-                @Html.EditorFor(o => o.Strength, new { htmlAttributes = new { @autocomplete = "off", @class = "form-control",@maxlength="100" } })
+                @Html.EditorFor(o => o.Strength, new { htmlAttributes = new { @autocomplete = "off", @class = "form-control",@maxlength="50" } })
                 @Html.ValidationMessageFor(o => o.Strength, "", new { @class = "text-danger",@id="span-Strength" })
             </div>
             <div class="form-group required">
@@ -67,12 +67,12 @@
             </div>
             <div class="form-group required">
                 @Html.LabelFor(o => o.NameofVendor,"Name of Vendor", new { @class = "control-label" })<span style="color:red;">*</span>
-                @Html.EditorFor(o => o.NameofVendor, new { htmlAttributes = new { @autocomplete = "off", @class = "form-control",@maxlength="200" } })
+                @Html.EditorFor(o => o.NameofVendor, new { htmlAttributes = new { @autocomplete = "off", @class = "form-control",@maxlength="100" } })
                 @Html.ValidationMessageFor(o => o.NameofVendor, "", new { @class = "text-danger",@id="span-NameofVendor" })
             </div>
             <div class="form-group required">
                 @Html.LabelFor(o => o.ReferenceDrugProduct,"Reference Drug Product", new { @class = "control-label" })<span style="color:red;">*</span>
-                @Html.EditorFor(o => o.ReferenceDrugProduct, new { htmlAttributes = new { @autocomplete = "off", @class = "form-control",@maxlength="400" } })
+                @Html.EditorFor(o => o.ReferenceDrugProduct, new { htmlAttributes = new { @autocomplete = "off", @class = "form-control",@maxlength="200" } })
                 @Html.ValidationMessageFor(o => o.ReferenceDrugProduct, "", new { @class = "text-danger",@id="span-ReferenceDrugProduct" })
             </div>
         </div>
@@ -88,7 +88,7 @@
             </div>
             <div class="form-group required">
                 @Html.LabelFor(o => o.MoleculeName,"Molecule Name", new { @class = "control-label" })<span style="color:red;">*</span>
-                @Html.EditorFor(o => o.MoleculeName, new { htmlAttributes = new { @autocomplete = "off", @class = "form-control",@maxlength="200" } })
+                @Html.EditorFor(o => o.MoleculeName, new { htmlAttributes = new { @autocomplete = "off", @class = "form-control",@maxlength="100" } })
                 @Html.ValidationMessageFor(o => o.MoleculeName, "", new { @class = "text-danger",@id="span-MoleculeName" })
             </div>
 
