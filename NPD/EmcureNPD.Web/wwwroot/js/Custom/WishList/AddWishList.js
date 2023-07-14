@@ -294,10 +294,10 @@ function ValidateOnSave() {
 function SaveWishList() {
     let isInhouseOrInLicensed = "";
     if ($('#chkInhouse').is(':checked')) {
-        isInhouseOrInLicensed = $('#chkInhouse').val();
+        isInhouseOrInLicensed = "InHouse"; //$('#chkInhouse').val();
     }
     else if ($('#chkInLicensed').is(':checked')) {
-        isInhouseOrInLicensed = $('#chkInLicensed').val();
+        isInhouseOrInLicensed = "InLicensed"; //$('#chkInLicensed').val();
     }
     let param = {
         WishListId: $("#WishListId").val(),
