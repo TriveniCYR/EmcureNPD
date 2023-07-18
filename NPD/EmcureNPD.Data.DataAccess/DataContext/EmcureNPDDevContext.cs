@@ -2,6 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata;
 using EmcureNPD.Data.DataAccess.Entity;
+using EmcureNPD.Utility;
 
 #nullable disable
 
@@ -75,6 +76,7 @@ namespace EmcureNPD.Data.DataAccess.DataContext
         public virtual DbSet<MasterTestLicense> MasterTestLicenses { get; set; }
         public virtual DbSet<MasterTestType> MasterTestTypes { get; set; }
         public virtual DbSet<MasterTransform> MasterTransforms { get; set; }
+        public virtual DbSet<MasterTypeOfSubmission> MasterTypeOfSubmissions { get; set; }
         public virtual DbSet<MasterUnitofMeasurement> MasterUnitofMeasurements { get; set; }
         public virtual DbSet<MasterUser> MasterUsers { get; set; }
         public virtual DbSet<MasterUserBusinessUnitMapping> MasterUserBusinessUnitMappings { get; set; }
@@ -119,6 +121,7 @@ namespace EmcureNPD.Data.DataAccess.DataContext
         public virtual DbSet<PidfPbfHeadWiseBudget> PidfPbfHeadWiseBudgets { get; set; }
         public virtual DbSet<PidfPbfMarketMapping> PidfPbfMarketMappings { get; set; }
         public virtual DbSet<PidfPbfPhaseWiseBudget> PidfPbfPhaseWiseBudgets { get; set; }
+        public virtual DbSet<PidfPbfRa> PidfPbfRas { get; set; }
         public virtual DbSet<PidfPbfReferenceProductDetail> PidfPbfReferenceProductDetails { get; set; }
         public virtual DbSet<PidfPbfRnDApirequirement> PidfPbfRnDApirequirements { get; set; }
         public virtual DbSet<PidfPbfRnDCapexMiscellaneousExpense> PidfPbfRnDCapexMiscellaneousExpenses { get; set; }
@@ -148,7 +151,7 @@ namespace EmcureNPD.Data.DataAccess.DataContext
             if (!optionsBuilder.IsConfigured)
             {
 #warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see http://go.microsoft.com/fwlink/?LinkId=723263.
-                optionsBuilder.UseSqlServer("Data Source=180.149.241.172;Initial Catalog=EmcureNPDDev;Persist Security Info=True;User ID=emcurenpddev_dbUser;pwd=emcure123!@#");
+                optionsBuilder.UseSqlServer(DatabaseConnection.NPDDatabaseConnection);
             }
         }
 
@@ -1031,6 +1034,21 @@ namespace EmcureNPD.Data.DataAccess.DataContext
                 entity.Property(e => e.ModifyDate).HasColumnType("datetime");
 
                 entity.Property(e => e.TransformName).HasMaxLength(100);
+            });
+
+            modelBuilder.Entity<MasterTypeOfSubmission>(entity =>
+            {
+                entity.ToTable("Master_TypeOfSubmission", "dbo");
+
+                entity.Property(e => e.CreatedOn)
+                    .HasColumnType("datetime")
+                    .HasDefaultValueSql("(getdate())");
+
+                entity.Property(e => e.DeletedOn).HasColumnType("datetime");
+
+                entity.Property(e => e.TypeOfSubmission).HasMaxLength(20);
+
+                entity.Property(e => e.UpdatedOn).HasColumnType("datetime");
             });
 
             modelBuilder.Entity<MasterUnitofMeasurement>(entity =>
@@ -2553,6 +2571,55 @@ namespace EmcureNPD.Data.DataAccess.DataContext
                     .HasForeignKey(d => d.PbfgeneralId)
                     .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("FK_PIDF_PBF_PhaseWiseBudget_PIDF_PBF_General");
+            });
+
+            modelBuilder.Entity<PidfPbfRa>(entity =>
+            {
+                entity.ToTable("PIDF_PBF_RA", "dbo");
+
+                entity.Property(e => e.Pidfpbfraid).HasColumnName("PIDFPBFRAId");
+
+                entity.Property(e => e.BefinalReport)
+                    .HasColumnType("datetime")
+                    .HasColumnName("BEFinalReport");
+
+                entity.Property(e => e.CreatedOn)
+                    .HasColumnType("datetime")
+                    .HasDefaultValueSql("(getdate())");
+
+                entity.Property(e => e.DeletedOn).HasColumnType("datetime");
+
+                entity.Property(e => e.DossierReadyDate).HasColumnType("datetime");
+
+                entity.Property(e => e.EarliestLaunchDexcl)
+                    .HasColumnType("datetime")
+                    .HasColumnName("EarliestLaunchDExcl");
+
+                entity.Property(e => e.EarliestSubmissionDexcl)
+                    .HasColumnType("datetime")
+                    .HasColumnName("EarliestSubmissionDExcl");
+
+                entity.Property(e => e.LastDataFromRnD).HasColumnType("datetime");
+
+                entity.Property(e => e.Pbfid).HasColumnName("PBFId");
+
+                entity.Property(e => e.Pidfid).HasColumnName("PIDFId");
+
+                entity.Property(e => e.PivotalBatchManufactured).HasColumnType("datetime");
+
+                entity.Property(e => e.UpdatedOn).HasColumnType("datetime");
+
+                entity.HasOne(d => d.Pbf)
+                    .WithMany(p => p.PidfPbfRas)
+                    .HasForeignKey(d => d.Pbfid)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("FK_PIDF_PBF_RA_PIDF_PBF");
+
+                entity.HasOne(d => d.Pidf)
+                    .WithMany(p => p.PidfPbfRas)
+                    .HasForeignKey(d => d.Pidfid)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("FK_PIDF_PBF_RA_PIDF");
             });
 
             modelBuilder.Entity<PidfPbfReferenceProductDetail>(entity =>
