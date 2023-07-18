@@ -81,7 +81,7 @@ function ClearValidationForYearForm() {
     });
 }
 function ClearValidationForMainForm() {
-    var MainFormFeilds = ['MarketSizeInUnit', 'ShelfLife', 'PackSizeId', 'MarketSizeInUnit','Interested']
+    var MainFormFeilds = ['MarketSizeInUnit', 'ShelfLife', 'PackSizeId', 'MarketSizeInUnit']
     $.each(MainFormFeilds, function (_, kv) {
         $('#valmsg' + kv).text('').hide();
     });
@@ -168,7 +168,7 @@ function ResetYearFormValues() {
 }
 
 $('#mainDivCommercial').find("#btnSubmit").click(function () {
-    let InterestedStatus = ValidateIsInterested();
+    let InterestedStatus = true; // ValidateIsInterested();
     if (InterestedStatus && ValidateBU_Strength()) {
         if (ArrMainCommercial.length > 0) {
             if (ValidateYearDataExist()) {
@@ -216,7 +216,7 @@ function SaveCommertialPIDFForm() {
     $.extend(objMainForm, { 'encCreatedBy': $("#LoggedInUserId").val() });
     $.extend(objMainForm, { 'Pidfid': parseInt($("#PIDFId").val()) });
    /* -------------------------------*/
-    $.extend(objMainForm, { 'Interested': $("#Interested").prop('checked') }); 
+   // $.extend(objMainForm, { 'Interested': $("#Interested").prop('checked') }); 
     $.extend(objMainForm, { 'Remark': $("#Remark").val() });
     $.extend(objMainForm, { 'MainBusinessUnitId': parseInt(SelectedBUValue) });
    /* ---------------------------------*/
@@ -248,7 +248,7 @@ function BUtabClick(BUVal, pidfidval) {
     ClearValidationForYearForm();
     ClearValidationForMainForm();
     Update_BUstregthPackTable(ArrMainCommercial);
-    Update_IsInterested_Remark();
+   // Update_IsInterested_Remark();
     SetCommercialDisableForOtherUserBU();
     IsShowCancel_Save_buttons(true);
 }
@@ -301,7 +301,7 @@ function GetCommercialPIDFByBUSuccess(data) {
         PIDFCommercialMaster = data._object.PIDFCommercialMaster;
         setCommercialArray(data._object.Commercial, data._object.CommercialYear);
         Update_BUstregthPackTable(ArrMainCommercial);
-        Update_IsInterested_Remark();
+       // Update_IsInterested_Remark();
         SetCommercialDisableForOtherUserBU();
     } catch (e) {
         toastr.error('Get Commercial Error:' + e.message);
@@ -313,8 +313,8 @@ function GetCommercialPIDFByBUError(x, y, z) {
 function ResetMainFormForm() {
     $("#MarketSizeInUnit").val('');
     $("#ShelfLife").val('');
-    $('.IsInterestedYes').prop('checked', false);
-    $('.IsInterestedNo').prop('checked', false);
+    //$('.IsInterestedYes').prop('checked', false);
+    //$('.IsInterestedNo').prop('checked', false);
     $("#Remark").val("");
 }
 function SetCommercialFormReadonly() {

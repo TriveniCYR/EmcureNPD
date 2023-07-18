@@ -17,7 +17,6 @@ namespace EmcureNPD.Data.DataAccess.Entity
             PidfPbfGeneralAnalyticalGls = new HashSet<PidfPbfGeneral>();
             PidfPbfGeneralFormulationGls = new HashSet<PidfPbfGeneral>();
             ProjectTasks = new HashSet<ProjectTask>();
-            TblSessionManagers = new HashSet<TblSessionManager>();
             UserSessionLogMasters = new HashSet<UserSessionLogMaster>();
         }
 
@@ -55,7 +54,6 @@ namespace EmcureNPD.Data.DataAccess.Entity
         public virtual ICollection<PidfPbfGeneral> PidfPbfGeneralAnalyticalGls { get; set; }
         public virtual ICollection<PidfPbfGeneral> PidfPbfGeneralFormulationGls { get; set; }
         public virtual ICollection<ProjectTask> ProjectTasks { get; set; }
-        public virtual ICollection<TblSessionManager> TblSessionManagers { get; set; }
         public virtual ICollection<UserSessionLogMaster> UserSessionLogMasters { get; set; }
     }
 }

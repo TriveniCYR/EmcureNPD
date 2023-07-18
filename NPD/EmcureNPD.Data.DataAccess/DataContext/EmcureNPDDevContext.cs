@@ -2,7 +2,6 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata;
 using EmcureNPD.Data.DataAccess.Entity;
-using EmcureNPD.Utility;
 
 #nullable disable
 
@@ -149,7 +148,7 @@ namespace EmcureNPD.Data.DataAccess.DataContext
             if (!optionsBuilder.IsConfigured)
             {
 #warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see http://go.microsoft.com/fwlink/?LinkId=723263.
-                optionsBuilder.UseSqlServer(DatabaseConnection.NPDDatabaseConnection);
+                optionsBuilder.UseSqlServer("Data Source=180.149.241.172;Initial Catalog=EmcureNPDDev;Persist Security Info=True;User ID=emcurenpddev_dbUser;pwd=emcure123!@#");
             }
         }
 
@@ -1729,6 +1728,8 @@ namespace EmcureNPD.Data.DataAccess.DataContext
                     .HasMaxLength(20)
                     .HasColumnName("SUIMSVolume");
 
+                entity.Property(e => e.TargetCostOfGood).HasMaxLength(20);
+
                 entity.Property(e => e.TotalApireq)
                     .HasMaxLength(20)
                     .HasColumnName("TotalAPIReq");
@@ -3103,15 +3104,13 @@ namespace EmcureNPD.Data.DataAccess.DataContext
 
                 entity.Property(e => e.Email).HasMaxLength(50);
 
+                entity.Property(e => e.IsActive)
+                    .HasColumnName("isActive")
+                    .HasDefaultValueSql("((0))");
+
                 entity.Property(e => e.TokenIssuedAt).HasColumnType("datetime");
 
                 entity.Property(e => e.VallidTo).HasColumnType("datetime");
-
-                entity.HasOne(d => d.User)
-                    .WithMany(p => p.TblSessionManagers)
-                    .HasForeignKey(d => d.UserId)
-                    .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK_Tbl_SessionManager_Master_User");
             });
 
             modelBuilder.Entity<TblWishList>(entity =>

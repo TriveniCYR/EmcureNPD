@@ -53,6 +53,7 @@ namespace EmcureNPD.Business.Models
         public string TotalApireq { get; set; }
         public string Apireq { get; set; }
         public string Suimsvolume { get; set; }
+        public string TargetCostOfGood { get; set; }
         public string FreeOfCost { get; set; }
         public string MarketGrowth { get; set; }
         public string MarketSize { get; set; }

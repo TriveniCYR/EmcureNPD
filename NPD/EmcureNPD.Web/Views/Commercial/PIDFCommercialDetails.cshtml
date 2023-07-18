@@ -63,7 +63,7 @@
 
             </div>
             @*------------End----BU tabs--------------------------------*@
-            <div class="row">
+         @*   <div class="row">
                 <div class="col-md-4">
                     <div class="form-group required">
                         @Html.LabelFor(model => model.Interested, "Interested", new { @class = "control-label" })
@@ -80,7 +80,7 @@
                     @Html.TextAreaFor(model => model.Remark, new { @class = "form-control RemarkText" })
                 </div>
             </div>
-        </div>
+        </div>*@
             @*-----------------Strength---------------------*@
 
             <div class="card card-maroon card-outline card-outline-tabs m-0">
@@ -353,6 +353,14 @@
                                                 @Html.LabelFor(model => model.GenericPrice,@MasterLocalizer["Generic Price"], new { @class = "control-label" })
                                                 <span class="text-danger">*</span>
                                                 @Html.TextBoxFor(model => model.GenericPrice, new { @type="number", @min="0",@autocomplete = "off", @class = "decimalTwo positive form-control", @placeholder = @MasterLocalizer["Generic Price"] })
+                                                <label id="valmsgGenericPrice" class="text-danger"></label>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-3">
+                                            <div class="form-group required">
+                                                @Html.LabelFor(model => model.TargetCostOfGood,"Target Cost Of Good", new { @class = "control-label" })
+                                                <span class="text-danger">*</span>
+                                                @Html.TextBoxFor(model => model.TargetCostOfGood, new { @type="number", @min="0",@autocomplete = "off", @class = "decimalTwo positive form-control", @placeholder = @MasterLocalizer["Target Cost Of Good"] })
                                                 <label id="valmsgGenericPrice" class="text-danger"></label>
                                             </div>
                                         </div>

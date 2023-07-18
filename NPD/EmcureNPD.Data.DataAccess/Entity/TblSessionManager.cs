@@ -13,7 +13,6 @@ namespace EmcureNPD.Data.DataAccess.Entity
         public DateTime? VallidTo { get; set; }
         public string UserToken { get; set; }
         public string Email { get; set; }
-
-        public virtual MasterUser User { get; set; }
+        public bool? IsActive { get; set; }
     }
 }
