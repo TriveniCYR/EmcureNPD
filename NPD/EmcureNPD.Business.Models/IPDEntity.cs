@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.Security.Cryptography.X509Certificates;
 
 namespace EmcureNPD.Business.Models
 {
@@ -61,6 +62,7 @@ namespace EmcureNPD.Business.Models
         public int? ModifyBy { get; set; }
         public List<PIDF_IPD_PatentDetailsEntity> pidf_IPD_PatentDetailsEntities { get; set; }
         public List<PIDF_IPD_PatentDetailsEntity> pidf_IPD_PatentDetailsEntitiesAPI { get; set; }
+        public List<MasterCountryEntity> pidf_IPD_PatentDetailsCountries { get; set; }
 
         public string ProjectName { get; set; }
         public List<MasterBusinessUnitEntity> MasterBusinessUnitEntities { get; set; }

@@ -1,5 +1,6 @@
 ﻿using EmcureNPD.Business.Core.Interface;
 using EmcureNPD.Business.Core.ModelMapper;
+using EmcureNPD.Business.Core.ServiceImplementations;
 using EmcureNPD.Business.Models;
 using EmcureNPD.Data.DataAccess.Core.Repositories;
 using EmcureNPD.Data.DataAccess.Core.UnitOfWork;
@@ -305,6 +306,10 @@ namespace EmcureNPD.Business.Core.Implementation
         {
             Expression<Func<PidfIpd, bool>> expr = (buid == -1) ? u => u.Pidfid == pidfId : u => u.BusinessUnitId == buid && u.Pidfid == pidfId;
 
+            var dynamicObj = (DataTable) await GetCountryByBussinessUnitIds(buid.ToString()); // Business ID hardcoded to 1
+            List<MasterCountryEntity> CountryListForPatentDetails = dynamicObj.DataTableToList<MasterCountryEntity>();
+            //data.pidf_IPD_PatentDetailsCountries = CountryListForPatentDetails;
+            List<PIDF_IPD_PatentDetailsEntity> objPatentDetails = new();
             dynamic objData = (dynamic)await _repository.FindAllAsync(expr);
             IPDEntity data = new IPDEntity();
             if (objData != null && objData.Count > 0)
@@ -316,12 +321,33 @@ namespace EmcureNPD.Business.Core.Implementation
                 data.RegionId = data.RegionIds;
                 data.CountryIds = string.Join(",", _ipdCountryRepository.GetAllQuery().Where(x => x.Ipdid == data.IPDID).Select(x => x.CountryId.ToString()));
                 data.CountryId = data.RegionIds;
+
+
             }
+            if (CountryListForPatentDetails != null && CountryListForPatentDetails.Count > 0)
+            {
+                foreach (var country in CountryListForPatentDetails)
+                {
+                    var listitem = new PIDF_IPD_PatentDetailsEntity();
+                    listitem.CountryId = country.CountryId;
+                    objPatentDetails.Add(listitem);
+                }
+            }
+            if(data.pidf_IPD_PatentDetailsEntities==null || data.pidf_IPD_PatentDetailsEntities.Count == 0)
+            {
+                data.pidf_IPD_PatentDetailsEntities = objPatentDetails;
+            }
+            if (data.pidf_IPD_PatentDetailsEntitiesAPI == null || data.pidf_IPD_PatentDetailsEntitiesAPI.Count == 0)
+            {
+                data.pidf_IPD_PatentDetailsEntitiesAPI = objPatentDetails;
+            }
+
             data.MasterBusinessUnitEntities = _mapperFactory.GetList<MasterBusinessUnit, MasterBusinessUnitEntity>
                 (_businessUnitrepository.GetAllQuery().Where(xx => xx.IsActive).ToList());
 
             Pidf objPidf = await _pidfrepository.GetAsync(pidfId);
             data.StatusId = objPidf.StatusId;
+            
             return data;
         }
 
@@ -418,6 +444,21 @@ namespace EmcureNPD.Business.Core.Implementation
             DataTableResponseModel oDataTableResponseModel = new DataTableResponseModel(model.draw, TotalRecord, TotalCount, objList);
 
             return oDataTableResponseModel;
+        }
+
+        public async Task<List<MasterCountryEntity>> GetAllCountryListForPatentDetails(int BussinessUnitID)
+        {
+            SqlParameter[] osqlParameter = {
+                new SqlParameter("@BUID", BussinessUnitID)
+            };
+            var PIDFList = await _repository.GetBySP("stp_npd_GetIpdPatentDetailsBUssinessUnitWiseCountryList", System.Data.CommandType.StoredProcedure, osqlParameter);
+
+            var TotalRecord = (PIDFList != null && PIDFList.Rows.Count > 0 ? Convert.ToInt32(PIDFList.Rows[0]["TotalRecord"]) : 0);
+            var TotalCount = (PIDFList != null && PIDFList.Rows.Count > 0 ? Convert.ToInt32(PIDFList.Rows[0]["TotalCount"]) : 0);
+
+            List<MasterCountryEntity> objList = PIDFList.DataTableToList<MasterCountryEntity>();            
+
+            return objList;
         }
 
         public async Task<DBOperation> ApproveRejectIpdPidf(EntryApproveRej oApprRej)
