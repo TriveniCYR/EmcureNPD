@@ -17,15 +17,15 @@ var rndmasterdata_dbValueOf_lineId = 0;
 $(document).ready(function () {
     try {
         _PIDFPBFId = parseInt($('#hdnPIDFPBFId').val());
-        _oralName = $('#OralName').val();      
+        _oralName = $('#OralName').val();
         $('#hdnPIDFId').val(_PIDFID);
         $('#Pidfid').val(_PIDFID);
-       // _mode = $('#hdnIsView').val(); //parseInt($('#hdnPIDFId').val());
+        // _mode = $('#hdnIsView').val(); //parseInt($('#hdnPIDFId').val());
         _mode = getParameterByName("IsView");
         _pbf = getParameterByName("pbf");
     } catch (e) {
         _mode = getParameterByName("IsView");
-       /* _PIDFId = parseInt(getParameterByName("pidfid"));*/
+        /* _PIDFId = parseInt(getParameterByName("pidfid"));*/
     }
 
     if (_mode == 1) {
@@ -131,7 +131,7 @@ $(document).ready(function () {
                             returnFromFunction++;
                         }
                     });
-                 
+
                 }
             }
             if (returnFromFunction > 1) {
@@ -584,9 +584,9 @@ $(document).ready(function () {
     $(document).on("change", ".analyticalTotalAMVCost, .rndanalyticalStrengthIsChecked", function () {
         var _TotalAMVCost = ($('.analyticalTotalAMVCost').val() == "" ? 0 : $('.analyticalTotalAMVCost').val());
         $('.analyticalAMVStrengthValue').val("");
-            $.each($('.rndanalyticalStrengthIsChecked:checked'), function () {
-                $(this).parent().find(".analyticalAMVStrengthValue").val(formatNumber((_TotalAMVCost / $('.rndanalyticalStrengthIsChecked:checked').length)));
-            });
+        $.each($('.rndanalyticalStrengthIsChecked:checked'), function () {
+            $(this).parent().find(".analyticalAMVStrengthValue").val(formatNumber((_TotalAMVCost / $('.rndanalyticalStrengthIsChecked:checked').length)));
+        });
         if ($('.rndanalyticalStrengthIsChecked:checked').length > 0) {
             $('.analyticalTotalAMVCostStrength').val(formatNumber(_TotalAMVCost));
         } else {
@@ -716,14 +716,14 @@ $(document).ready(function () {
         var _cost = $(this).parent().parent().find(".rndFillingExpensesTotalCost").val();
         var _totalStrength = $(this).parent().parent().find('.rndFillingExpensesStrengthCheckbox:checked').length;
         /*if ($(this).parent().parent().find('.rndFillingExpensesStrengthCheckbox:checked').length > 0) {*/
-            $.each($(this).parent().parent().find('.rndFillingExpensesStrengthCheckbox'), function (index, it) {
-                    if ($(it).is(":checked")) {
-                        $(it).parent().find(".FillingExpensesStrengthValue").val((_cost == "" ? 0 : _cost) / _totalStrength);
-                    } else {
-                        $(it).parent().find(".FillingExpensesStrengthValue").val("");
-                    }
-                
-            });
+        $.each($(this).parent().parent().find('.rndFillingExpensesStrengthCheckbox'), function (index, it) {
+            if ($(it).is(":checked")) {
+                $(it).parent().find(".FillingExpensesStrengthValue").val((_cost == "" ? 0 : _cost) / _totalStrength);
+            } else {
+                $(it).parent().find(".FillingExpensesStrengthValue").val("");
+            }
+
+        });
         if ($(this).parent().parent().find('.rndFillingExpensesStrengthCheckbox:checked').length > 0) {
             $(this).parent().parent().find('.rndTotalFillingExpenseStrength').val((_cost == "" ? 0 : _cost));
         } else {
@@ -745,10 +745,12 @@ $(document).ready(function () {
         $('.FillingExpensesActivity' + _activityTypeId + 'Total').find('.calcTotalCostForStrengthTotalFilling').val(formatNumber(_TotalCostForAllStrength));
         SetPhaseWiseBudget();
     });
-    
+
     getPIDFAccordion(_PIDFAccordionURL, _PIDFID, "dvPIDFAccrdion");
     getIPDAccordion(_IPDAccordionURL, _EncPIDFID, _PIDFBusinessUnitId, "dvIPDAccrdion");
     getCommercialAccordion(_CommercialAccordionURL, _EncPIDFID, _PIDFBusinessUnitId, "dvCommercialAccrdion");
+    BindRA();
+    GetCountyByBussinessUnitId();
 });
 
 function GetPBFDropdown() {
@@ -771,15 +773,17 @@ function GetPBFDropdownSuccess(data) {
             $('#FillingTypeId').append(_emptyOption);
             $('#PbfFormRNDDivisionId').append(_emptyOption);
             $('#PbfPackagingTypeId').append(_emptyOption);
-           // $('#PbfManufacturingId').append(_emptyOption);
+            // $('#PbfManufacturingId').append(_emptyOption);
             $('#PbfRFDCountryId').append(_emptyOption);
+            $('#raAllCountryId').append(_emptyOption);
             $('#ProductTypeId').append(_emptyOption);
             $('#GeneralProjectComplexity').append(_emptyOption);
-           // $('#GeneralProductTypeId').append(_emptyOption);
+            // $('#GeneralProductTypeId').append(_emptyOption);
             $('#GeneralFormulationGLId').append(_emptyOption);
             $('#GeneralAnalyticalGLId').append(_emptyOption);
             $(data.MasterBERequirement).each(function (index, item) {
                 $('#BERequirementId').append('<option value="' + item.beRequirementId + '">' + item.beRequirementName + '</option>');
+               // BindRaCountry($("#BERequirementId").val());
             });
             $(data.MasterDosage).each(function (index, item) {
                 $('#PbfDosageFormId').append('<option value="' + item.dosageId + '">' + item.dosageName + '</option>');
@@ -807,10 +811,11 @@ function GetPBFDropdownSuccess(data) {
             //});
             $(data.MasterCountry).each(function (index, item) {
                 $('#PbfRFDCountryId').append('<option value="' + item.countryID + '">' + item.countryName + '</option>');
+                $('#raAllCountryId').append('<option value="' + item.countryID + '">' + item.countryName + '</option>');
             });
             for (var i = 1; i < 6; i++) {
                 $('#GeneralProjectComplexity').append('<option value="' + i + '">' + i + '</option>');
-            }           
+            }
             $(data.MasterProductType).each(function (index, item) {
                 $('#ProductTypeId').append('<option value="' + item.productTypeId + '">' + item.productTypeName + '</option>');
             });
@@ -838,7 +843,7 @@ function GetPBFDropdownSuccess(data) {
                     }
                 }
                 if (data.PIDFEntity.length > 0) {
-                  //refereceProduct details _ old Code
+                    //refereceProduct details _ old Code
                     //$('#dvPBFContainer').find('#BrandName').val(data.PIDFEntity[0].rfdBrand);
                     //$('#dvPBFContainer').find('#RFDApplicant').val(data.PIDFEntity[0].rfdApplicant);
                     //$('#dvPBFContainer').find('#RFDIndication').val(data.PIDFEntity[0].rfdIndication);
@@ -856,13 +861,13 @@ function GetPBFDropdownSuccess(data) {
                     $("#PBFGeneralId").val($("#hdnPBFGeneralId").val() == 0 ? "" : $('#hdnPBFGeneralId').val());
                     $('#BERequirementId').val($('#hdnBERequirementId').val() == 0 ? "" : $('#hdnBERequirementId').val());
                     $('#PbfDosageFormId').val($('#hdnPbfDosageFormId').val() == 0 ? "" : $('#hdnPbfDosageFormId').val());
-                    $('#PlantId').val($('#hdnPlantId').val() == 0 ? "" : $('#hdnPlantId').val());                    
+                    $('#PlantId').val($('#hdnPlantId').val() == 0 ? "" : $('#hdnPlantId').val());
 
                     $('#WorkflowId').val($('#hdnWorkflowId').val() == 0 ? "" : $('#hdnWorkflowId').val());
                     $('#FillingTypeId').val($('#hdnFillingTypeId').val() == 0 ? "" : $('#hdnFillingTypeId').val());
                     $('#PbfFormRNDDivisionId').val($('#hdnPbfFormRNDDivisionId').val() == 0 ? "" : $('#hdnPbfFormRNDDivisionId').val());
                     $('#PbfPackagingTypeId').val($('#hdnPbfPackagingTypeId').val() == 0 ? "" : $('#hdnPbfPackagingTypeId').val());
-                   // $('#PbfManufacturingId').val($('#hdnPbfManufacturingId').val() == 0 ? "" : $('#hdnPbfManufacturingId').val());
+                    // $('#PbfManufacturingId').val($('#hdnPbfManufacturingId').val() == 0 ? "" : $('#hdnPbfManufacturingId').val());
                     $('#PbfRFDCountryId').val($('#hdnPbfRFDCountryId').val() == 0 ? "" : $('#hdnPbfRFDCountryId').val());
                     $('#ProductTypeId').val($('#hdnProductTypeId').val() == 0 ? "" : $('#hdnProductTypeId').val());
                     $('#GeneralProjectComplexity').val($('#hdnGeneralProjectComplexity').val() == 0 ? "" : $('#hdnGeneralProjectComplexity').val());
@@ -899,20 +904,20 @@ $('#ddlPBFLine').on('change', function () {
     var SelectedLineid = parseInt($('#ddlPBFLine').val());
     $('#RNDMasterEntities_PBFLine').val(SelectedLineid);
     var filterPlantLine = $.grep(PBFLinesArr, function (n) {
-            return n.lineId === SelectedLineid
-    }); 
-    if (filterPlantLine != undefined && filterPlantLine.length>0)
-        $('#RNDMasterEntities_PlanSupportCostRsPerDay').val(filterPlantLine[0].lineCost).trigger('change');
-    
-}); 
-$('#ddlPlantId_Tab').change(function (e) {
-        if ($(this).val() != "") {
-            if (parseInt($(this).val()) > 0) {
-                $('#RNDMasterEntities_PlantId_Tab').val(parseInt($(this).val()));
-                ajaxServiceMethod($('#hdnBaseURL').val() + getLineByPlantId + "/" + parseInt($(this).val()), 'GET', getLineByPlantIdSuccess, getLineByPlantIdError);
-            }
-        }
+        return n.lineId === SelectedLineid
     });
+    if (filterPlantLine != undefined && filterPlantLine.length > 0)
+        $('#RNDMasterEntities_PlanSupportCostRsPerDay').val(filterPlantLine[0].lineCost).trigger('change');
+
+});
+$('#ddlPlantId_Tab').change(function (e) {
+    if ($(this).val() != "") {
+        if (parseInt($(this).val()) > 0) {
+            $('#RNDMasterEntities_PlantId_Tab').val(parseInt($(this).val()));
+            ajaxServiceMethod($('#hdnBaseURL').val() + getLineByPlantId + "/" + parseInt($(this).val()), 'GET', getLineByPlantIdSuccess, getLineByPlantIdError);
+        }
+    }
+});
 function getLineByPlantIdSuccess(data) {
     try {
         $('#ddlPBFLine').find('option').remove()
@@ -929,7 +934,7 @@ function getLineByPlantIdSuccess(data) {
                     $('#ddlPBFLine').val(rndmasterdata_dbValueOf_lineId);
                     $('#RNDMasterEntities_PBFLine').val(rndmasterdata_dbValueOf_lineId);
                 }
-            } catch (e) {   
+            } catch (e) {
             }
         }
     }
@@ -964,9 +969,10 @@ function GetPBFTabDetailsSuccess(data) {
             CreatePhaseWiseBudgetTable();
             CreateTotalExpensesTable();
             var _emptyOption = '<option value="">-- Select --</option>';
-           // PBFBindStrength(data.PIDFPBFGeneralStrength);
+            // PBFBindStrength(data.PIDFPBFGeneralStrength);
             BindClinical(data.PBFClinicalEntity);
             BindAnalytical(data.PBFAnalyticalEntity, data.PBFAnalyticalCostEntity);
+           // BindRA();
             $('#RNDBatchSizeId').append(_emptyOption);
             $(data.MasterBatchSize).each(function (index, item) {
                 $('#RNDBatchSizeId').append('<option value="' + item.batchSizeNumberId + '">' + item.batchSizeNumberName + '</option>');
@@ -1032,10 +1038,10 @@ function GetPBFTabDetailsSuccess(data) {
                     $(this).val(matchedString);
                 }
                 if ((event.which != 46 || $(this).val().indexOf('.') != -1) && (event.which < 48 || event.which > 57)) {
-                        let checkval = parseInt($(this).val());
-                        if (checkval < 0) {
-                            $(this).val("");
-                        }
+                    let checkval = parseInt($(this).val());
+                    if (checkval < 0) {
+                        $(this).val("");
+                    }
                     event.preventDefault();
                 }
             });
@@ -1143,7 +1149,7 @@ function SetPBFDisableForOtherUserBU() {
     //var IsViewInMode = ($("#hdnPBFIsView").val() == '1')
     /*if (status == -1 || IsViewInMode) {*/
     if (status == -1) {
-       // SetPBFFormReadonly();
+        // SetPBFFormReadonly();
         PBFreadOnlyForm();
     }
     //else {
@@ -1228,7 +1234,7 @@ function SavePBFForm(_SaveType) {
         //toastr.error(abc.toString());
         $('#loading-wrapper').show();
     }
-    setlicense();    
+    setlicense();
     SetAnalyticalChildRows();
     SetPhaseWiseBudget();
     SetHeadWiseBudget();
@@ -1357,7 +1363,7 @@ function CreateAnalyticalTable(costData, data, activityTypeId) {
             objectname += '<tr  id="analyticalRow" class="analyticalactivity analyticalActivity' + (activityTypeId) + '" data-activitytypeid="' + activityTypeId + '">'
                 + '<td><select class="form-control readonlyUpdate AnalyticalTestTypeId"><option value = "" > --Select --</option ></select><input type="hidden" value="' + (data.length > 0 ? data[a].testTypeId : "") + '" /></td>'
                 + '<td style="display:none;"><input type="number" class="form-control totalAnalytical analyticalNumberOfTest" min="0" value="' + (data.length > 0 ? data[a].numberoftests : "") + '"  /></td>'
-               /* + '<td><input type="text" class="form-control totalAnalytical analyticalPrototypeDevelopment" value="' + (data.length > 0 ? data[a].prototypeDevelopment : "") + '"  /></td>'*/
+                /* + '<td><input type="text" class="form-control totalAnalytical analyticalPrototypeDevelopment" value="' + (data.length > 0 ? data[a].prototypeDevelopment : "") + '"  /></td>'*/
                 + '<td><input type="number" class="form-control totalAnalytical analyticalRsTest" min="0" value="' + (data.length > 0 ? data[a].costPerTest : "") + '"  /></td>'
             for (var i = 0; i < _strengthArray.length; i++) {
                 objectname += '<td data-strengthid="' + _strengthArray[i].pidfProductStrengthId + '"><input class="analyticalTypeId" type="hidden" value="' + activityTypeId + '" /><input type="hidden" class="analyticalStrengthId" value="' + _strengthArray[i].pidfProductStrengthId + '" /><input type="number" class="form-control analyticalStrengthValue" min="0" value="' + (data.length > 0 ? getValueFromStrengthTestTypeId(data, _strengthArray[i].pidfProductStrengthId, "prototypeCost", data[a].testTypeId) : "") + '" /></td>';
@@ -1395,7 +1401,7 @@ function BindAnalytical(data, costData) {
     var analyticalactivityHTML = '<thead class="bg-primary text-bold"><tr>'
         + '<td>Test Type</td>'
         + '<td style="display:none;">Number of sample</td>'
-       /* + '<td>Prototype Development</td>'*/
+        /* + '<td>Prototype Development</td>'*/
         + '<td>Rs /test</td>'
     $.each(_strengthArray, function (index, item) {
         analyticalactivityHTML += '<td>' + getStrengthName(item.pidfProductStrengthId) + ' (Prototype Cost)</td>';
@@ -1539,12 +1545,12 @@ function SetAnalyticalChildRows() {
                     //var TotalAMVTitle = $(this).find(".analyticalTotalAMVTitle").val();
                     //var TotalAMVCost = $(this).find(".analyticalTotalAMVCost").val();
                     //$.each($(this).find(".analyticalStrengthId"), function (index, item) {
-                        var _AnalyticalAMVCostObject = new Object();
-                        _AnalyticalAMVCostObject.StrengthId = $(this).val();
-                        _AnalyticalAMVCostObject.IsChecked = $(this).parent().find('#rndanalyticalStrengthIsChecked' + $(this).val()).is(":checked");
-                        if (_AnalyticalAMVCostObject.IsChecked == true) {
-                            _AnalyticalAMVCostStrengthArray.push(_AnalyticalAMVCostObject);
-                        }
+                    var _AnalyticalAMVCostObject = new Object();
+                    _AnalyticalAMVCostObject.StrengthId = $(this).val();
+                    _AnalyticalAMVCostObject.IsChecked = $(this).parent().find('#rndanalyticalStrengthIsChecked' + $(this).val()).is(":checked");
+                    if (_AnalyticalAMVCostObject.IsChecked == true) {
+                        _AnalyticalAMVCostStrengthArray.push(_AnalyticalAMVCostObject);
+                    }
                     //});
                 } else {
                     var _AnalyticalObject = new Object();
@@ -1595,7 +1601,7 @@ function CreateRNDExicipientTable(data, activityTypeId) {
             }
         }
         objectname += '<tr  id="ExicipientRow" class="exicipientactivity exicipientActivity' + (activityTypeId) + '" data-activitytypeid="' + activityTypeId + '">'
-           // + '<td><input type="text" class="form-control rndExicipientPrototype" value="' + (data.length > 0 ? data[a].exicipientPrototype : "") + '"  /></td>'
+            // + '<td><input type="text" class="form-control rndExicipientPrototype" value="' + (data.length > 0 ? data[a].exicipientPrototype : "") + '"  /></td>'
             + '<td><select class="form-control readOnlyUpdate rndExicipientPrototype"><option value = "" > --Select --</option ></select><input type="hidden" value="' + (data.length > 0 ? data[a].exicipientPrototype : "") + '" /></td>'
             + '<td><input type="number" class="form-control rndExicipientRsperkg" min="0" value="' + (data.length > 0 ? data[a].rsPerKg : "") + '"  /></td>'
             + '<td><input type="text" class="form-control rndExicipientQuantity" min="0" readonly="readonly" tabindex=-1 /><span>Kg</span></td>';//value="' + (data.length > 0 ? data[a].mgPerUnitDosage : "") + '"
@@ -1806,22 +1812,22 @@ function BindRNDBatchSize(data, rndmasterdata) {
 
         if (rndmasterdata[0].lineId > 0) {
             rndmasterdata_dbValueOf_lineId = rndmasterdata[0].lineId;
-        }  
+        }
 
         //if (rndmasterdata[0].lineId > 0 && $('#ddlPBFLine').find('option').length > 1) {
         //    $("#ddlPBFLine").val(rndmasterdata[0].lineId);
         //    $("#RNDMasterEntities_PBFLine").val(rndmasterdata[0].lineId);
         //} 
-        $("#RNDMasterEntities_ApirequirementMarketPrice").val(rndmasterdata[0].apiRequirementMarketPrice);  
-        $("#RNDMasterEntities_ApirequirementVendorName").val(rndmasterdata[0].apiRequirementVendorName); 
+        $("#RNDMasterEntities_ApirequirementMarketPrice").val(rndmasterdata[0].apiRequirementMarketPrice);
+        $("#RNDMasterEntities_ApirequirementVendorName").val(rndmasterdata[0].apiRequirementVendorName);
         if (rndmasterdata[0].plantId > 0) {
             $("#RNDMasterEntities_PlantId_Tab").val(rndmasterdata[0].plantId);
-            $('#ddlPlantId_Tab').val(rndmasterdata[0].plantId); 
+            $('#ddlPlantId_Tab').val(rndmasterdata[0].plantId);
             $('#ddlPlantId_Tab').trigger('change');
         }
         else {
             $('#ddlPlantId_Tab').val($('#PlantId').val()).trigger('change');
-        }           
+        }
         $("#RNDMasterEntities_PlanSupportCostRsPerDay").val(rndmasterdata[0].planSupportCostRsPerDay);
         $("#RNDMasterEntities_ManHourRate").val(rndmasterdata[0].manHourRate);
     }
@@ -2255,7 +2261,7 @@ function BindRNDFillingExpenses(data, businessUnit) {
 function addRowFillingExpenses(element) {
     var node = $(element).parent().parent().clone(true);
     node.find("input.form-control").val("");
-    node.find("input.rndFillingExpensesStrengthCheckbox").prop("checked",false);
+    node.find("input.rndFillingExpensesStrengthCheckbox").prop("checked", false);
     $(element).parent().parent().after(node);
     SetChildRowDeleteIconPBF();
 }
@@ -2402,7 +2408,7 @@ function CreateTotalExpensesTable() {
     }
     PWBHTML += "<td>" + _currencySymbol + "<input type='text' class='form-control totalTE' readonly='readonly' tabindex=-1 /><span>Lacs</span></td></tr>";
 
-   
+
     PWBHTML += "</tbody>";
     $('#tablerndtotalexpenses').html(PWBHTML);
 }
@@ -2464,7 +2470,7 @@ function SetRNDChildRows() {
     var _RNDMenPowerCostArray = [];
     var _RNDHeadWiseBudgetArray = [];
     var _RNDPhaseWiseBudgetArray = [];
-    
+
     for (var i = 1; i < 4; i++) {
         $.each($('#tablerndexicipientrequirement tbody tr.exicipientActivity' + i + ''), function () {
             var ExicipientPrototype = $(this).find(".rndExicipientPrototype").val();
@@ -2607,7 +2613,7 @@ function SetRNDChildRows() {
                 _rndMPCObject.ProjectActivitiesId = ProjectActivitiesId;
                 _rndMPCObject.ManPowerInDays = ManPowerInDays;
                 _RNDMenPowerCostArray.push(_rndMPCObject);
-               
+
             });
 
             $('#hdnrndManPowerCostProjectDuration').val(JSON.stringify(_RNDMenPowerCostArray));
@@ -2671,7 +2677,7 @@ function SetRNDChildRows() {
 }
 //R&D End
 function PBFreadOnlyForm() {
-   
+
     $('#AddPBFForm').find('input,select,textarea,checkbox').attr('readonly', true).attr('disabled', true);
     //$('#tableGeneralStrength, #tablerndbatchsize, #tablerndapirequirement, #tablerndexicipientrequirement, #tablerndpackagingmaterialrequirement, #tablerndtoolingchangepart, #tablerndcapexmiscellaneousexpenses, #tablerndplantsupportcost, #tablerndreferenceproductdetail, #tablerrndmanpowercostprojectduration, #tblFillingExpensesBody').find('input').attr('readonly', true).attr('disabled', true);
     ////$('button').attr('readonly', true).attr('disabled', true);
@@ -2701,7 +2707,7 @@ function PBFTabsReadOnly() {
     if (_oralName == "Injectable") {
         $('#msgclinicalnote').show();
         $('#custom-tabs-Clinical').find('input,select,textarea').val('');
-        $('#custom-tabs-Clinical').find('input,select,textarea,checkbox').attr('readonly', true).attr('disabled', true);       
+        $('#custom-tabs-Clinical').find('input,select,textarea,checkbox').attr('readonly', true).attr('disabled', true);
     }
 
 }
@@ -2869,7 +2875,7 @@ function SetPhaseWiseBudget() {
         $('#tablerndphasewisebudget').find(".phasewisebudget_1").each(function (x, y) {
             var _cumTotal = ConvertToNumber($(y).find(".CumTotalPWB").val());
             var PercenttotalPWBresult = ((_cumTotal / FinalTotalForPWBStrength) * 100).toFixed(2);
-            PercenttotalPWBresult = isNaN(PercenttotalPWBresult)? 0 : PercenttotalPWBresult;
+            PercenttotalPWBresult = isNaN(PercenttotalPWBresult) ? 0 : PercenttotalPWBresult;
             $(y).find(".PercenttotalPWB").val(PercenttotalPWBresult);
         });
         $('#tablerndphasewisebudget').find(".phasewisebudget_1Total").find(".calcTotalCostForStrengthTotal").val(formatNumber(FinalTotalForPWBStrength));
@@ -2920,7 +2926,7 @@ function SetHeadWiseBudget() {
 
         var OtherExpensesprototype = $('#tablerndcapexmiscellaneousexpenses').find('.CapexMiscActivity1Total').find('.calcTotalCostForMisc1').val();
         $('#tableHeadWiseBudget').find('.headwisebudget_1[data-activityid=8]').find('.rndHWBPrototype').val(formatNumber(OtherExpensesprototype));
-        
+
         var FilingExpensesprototype = 0;
         $('#tableHeadWiseBudget').find('.headwisebudget_1[data-activityid=9]').find('.rndHWBPrototype').val(FilingExpensesprototype);
         /*end of Protoype Development*/
@@ -2934,7 +2940,7 @@ function SetHeadWiseBudget() {
         var _packagingScaleUp = $('#tablerndpackagingmaterialrequirement').find('.packagingActivity2Total').find('.calcTotalCostForPackaging2').val();
         var TotalMaterialCostScaleUp = (ConvertToNumber(_APIReqCostScaleUp) + ConvertToNumber(_exicipientScaleUp) + ConvertToNumber(_packagingScaleUp));
         $('#tableHeadWiseBudget').find('.headwisebudget_1[data-activityid=2]').find('.rndHWBScaleUp').val(formatNumber(TotalMaterialCostScaleUp));
-        
+
         var _plantSupportCostScaleUp = $('#tablerndplantsupportcost').find('.PlantSupportCost_1').find('.TotalPSCScaleUp').val();
         $('#tableHeadWiseBudget').find('.headwisebudget_1[data-activityid=3]').find('.rndHWBScaleUp').val(formatNumber(ConvertToNumber(_plantSupportCostScaleUp) * _plantsupportcost));
 
@@ -2991,7 +2997,7 @@ function SetHeadWiseBudget() {
 
         var FilingExpensesExhibit = $('#tablerndfilingexpenses').find('.FillingExpensesActivity1Total').find('.calcTotalCostForStrengthTotalFilling').val();
         $('#tableHeadWiseBudget').find('.headwisebudget_1[data-activityid=9]').find('.rndHWBExhibit').val(FilingExpensesExhibit);
-        
+
         /*end of Exhibit Development*/
 
         /*Total for Strength*/
@@ -3017,7 +3023,7 @@ function SetHeadWiseBudget() {
         $('#tableHeadWiseBudget').find('.calcTotalCostForScaleUp').val(formatNumber(_totalCostforScaleUp));
         $('#tableHeadWiseBudget').find('.calcTotalCostForExhibit').val(formatNumber(_totalCostforExhibit));
         $('#tableHeadWiseBudget').find('.calcTotalCostHeadWiseBudget').val(formatNumber(_totalCostforPrototype + _totalCostforScaleUp + _totalCostforExhibit));
-        
+
 
         /*End of Total for Strength*/
     }
@@ -3027,7 +3033,7 @@ function SetTotalExpenses() {
     var _TotalForStrength = 0;
     $.each(_strengthArray, function (index, item) {
         var totalPWB = $('.phasewisebudget_1Total').find('[data-strengthid=' + item.pidfProductStrengthId + ']').find('.calcTotalCostForStrength').val();
-        $('.totalexpenses_1').find('[data-strengthid=' + item.pidfProductStrengthId + ']').find('.calcTE').val(formatNumber((ConvertToNumber(totalPWB=="" ? 0 : totalPWB) / 100000)));
+        $('.totalexpenses_1').find('[data-strengthid=' + item.pidfProductStrengthId + ']').find('.calcTE').val(formatNumber((ConvertToNumber(totalPWB == "" ? 0 : totalPWB) / 100000)));
         var _strengthValue = $('.totalexpenses_1').find('[data-strengthid=' + item.pidfProductStrengthId + ']').find(".calcTE").val();
         _TotalForStrength += ConvertToNumber(_strengthValue == "" ? 0 : _strengthValue);
         $('.totalexpenses_1').find(".totalTE").val(formatNumber(_TotalForStrength));
@@ -3099,4 +3105,79 @@ function validatecontrolsPBF(control) {
         $(control).focus();
         isValidPBFForm = false;
     }
+}
+
+//** For RA Tab **//
+//
+function GetCountyByBussinessUnitId() {
+    let id = SelectedBUValue == 0 ? _selectBusinessUnit : SelectedBUValue;
+    ajaxServiceMethod($('#hdnBaseURL').val() + getCountryByBusinessUnitIdurl + "/" + id, 'GET', GetCountryByBusinessUnitSuccess, GetCountryByBusinessUnitError);
+}
+function GetCountryByBusinessUnitSuccess(data) {
+    //alert(data)
+    try {
+        $('#raCountryId').find('option').remove()
+        if (data._object != null && data._object.length > 0) {
+            var _emptyOption = '<option value="">-- Select --</option>';
+            $('#raCountryId').append(_emptyOption);
+            $(data._object).each(function (index, item) {
+                $('#raCountryId').append('<option value="' + item.countryId + '">' + item.countryName + '</option>');
+            });
+
+            //try {
+            //    if ($("#WishListId").val() > 0) {
+            //        $('#raCountryId').val($('#hdnCountryId').val());
+            //    }
+            //} catch (e) {
+            //}
+        }
+    }
+    catch (e) {
+        toastr.error(ErrorMessage);
+    }
+}
+function GetCountryByBusinessUnitError(x, y, z) {
+    toastr.error(ErrorMessage);
+}
+function BindRA() {
+    let tbody = $("#tableRABody");
+    let tr = `<tr>
+             <td><select id="raCountryId" name="CountryId" class="form-control readOnlyUpdate customvalidateformcontrol"></select></td>
+             <td><input type="date" id="Pivotalbatchmanufactured" name="Pivotalbatchmanufactured" class="form-control readOnlyUpdate customvalidateformcontrol"></td>
+             <td><input type="date" id="LastdatafromRnD" name="LastdatafromRnD" class="form-control readOnlyUpdate customvalidateformcontrol"></td>
+             <td><input type="date" id="LastdatafromRnD" name="LastdatafromRnD" class="form-control readOnlyUpdate customvalidateformcontrol"></td>
+             <td><select id="raAllCountryId" name="AllCountryId" class="form-control readOnlyUpdate customvalidateformcontrol"></select></td>
+             <td><select  id="TypeofSubmission" name="TypeofSubmission" class="form-control readOnlyUpdate customvalidateformcontrol"></select></td>
+             <td><input type="date" id="DossierReadyDate" name="DossierReadyDate" class="form-control readOnlyUpdate customvalidateformcontrol"></td>
+             <td><input type="date" id="EarliestSubmission_D_Excl" name="EarliestSubmission_D_Excl" class="form-control readOnlyUpdate customvalidateformcontrol"></td>
+              <td><input type="date" id="EarliestLaunch_D_Excl" name="EarliestLaunch_D_Excl" class="form-control readOnlyUpdate customvalidateformcontrol"></td>
+             <td> <i class="fa-solid fa-circle-plus nav-icon text-success operationButton" id="addIcon" onclick="addRowra(this);"></i> <i class="fa-solid fa-trash nav-icon text-red raDeleteIcon operationButton DeleteIcon" onclick="deleteRowra(this);" style="display: none;"></i></td>
+             </tr>`;
+          tbody.append(tr);
+
+    
+    
+}
+function addRowra(element) {
+    var node = $(element).parent().parent().clone(true);
+    node.find("input.form-control").val("");
+    $(element).parent().parent().after(node);
+    //SetChildRowDeleteIconPBF();
+    if ($("#tableRABody").find("tr").length > 1) {
+        $(".raDeleteIcon").show();
+    }
+    else {
+        $(".raDeleteIcon").hide();
+    }
+}
+function deleteRowra(element) {
+    $(element).closest("tr").remove();
+    //SetChildRowDeleteIconPBF();
+    if ($("#tableRABody").find("tr").length > 1) {
+        $(".raDeleteIcon").show();
+    }
+    else {
+        $(".raDeleteIcon").hide();
+    }
+    
 }

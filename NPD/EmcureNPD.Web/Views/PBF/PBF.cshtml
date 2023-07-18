@@ -553,6 +553,17 @@
                                    aria-selected="false">Clinical</a>
                             </li>
                         }
+                       @* @if (UtilityHelper.GetAccess((int)EmcureNPD.Utility.Enums.ModuleEnum.PBF, Helper.GetLoggedInRoleId(), (int)EmcureNPD.Utility.Enums.PermissionEnum.View, (int)EmcureNPD.Utility.Enums.SubModulePermissionEnum.Clinical) || UtilityHelper.GetAccess((int)EmcureNPD.Utility.Enums.ModuleEnum.PBF, Helper.GetLoggedInRoleId(), (int)EmcureNPD.Utility.Enums.PermissionEnum.Edit, (int)EmcureNPD.Utility.Enums.SubModulePermissionEnum.RA) || UtilityHelper.GetAccess((int)EmcureNPD.Utility.Enums.ModuleEnum.PBF, Helper.GetLoggedInRoleId(), (int)EmcureNPD.Utility.Enums.PermissionEnum.Add, (int)EmcureNPD.Utility.Enums.SubModulePermissionEnum.RA))
+                        {
+                            <li class="nav-item p-0">
+                                <a class="nav-link px-2"
+                                   id="custom-tabs-department-RA-tab"
+                                   data-toggle="pill"
+                                   href="#custom-tabs-RA" role="tab"
+                                   aria-controls="custom-tabs-RA"
+                                   aria-selected="false">RA</a>
+                            </li>
+                        }*@
 
                     </ul>
                 </div>
@@ -966,6 +977,42 @@
                                     </div>
                                 </div>
                             }
+                           @* @if (UtilityHelper.GetAccess((int)EmcureNPD.Utility.Enums.ModuleEnum.PBF, Helper.GetLoggedInRoleId(), (int)EmcureNPD.Utility.Enums.PermissionEnum.View, (int)EmcureNPD.Utility.Enums.SubModulePermissionEnum.RA) || UtilityHelper.GetAccess((int)EmcureNPD.Utility.Enums.ModuleEnum.PBF, Helper.GetLoggedInRoleId(), (int)EmcureNPD.Utility.Enums.PermissionEnum.Edit, (int)EmcureNPD.Utility.Enums.SubModulePermissionEnum.RA) || UtilityHelper.GetAccess((int)EmcureNPD.Utility.Enums.ModuleEnum.PBF, Helper.GetLoggedInRoleId(), (int)EmcureNPD.Utility.Enums.PermissionEnum.Add, (int)EmcureNPD.Utility.Enums.SubModulePermissionEnum.RA))
+                            {
+                                if (UtilityHelper.GetAccess((int)EmcureNPD.Utility.Enums.ModuleEnum.PBF, Helper.GetLoggedInRoleId(), (int)EmcureNPD.Utility.Enums.PermissionEnum.Edit, (int)EmcureNPD.Utility.Enums.SubModulePermissionEnum.RA))
+                                {*@
+                                    <input type="hidden" id="hdnPBFRAPermission" value="true" />
+                               @* }*@
+                                <div class="tab-pane fade show"
+                                     id="custom-tabs-RA" role="tabpanel"
+                                     aria-labelledby="custom-tabs-department-RA-tab">
+                                    <div class="container-fluid">
+                                      
+                                        <div class="row">
+                                            <span id="msgRAnote" class="text-danger" style="display:none;"><span class="text-bold">Note:</span> Not Applicable</span>
+                                            <br />
+                                            <br />
+                                            <table id="tableRA" class="table text-center tableTDHint" style="width:100%">
+                                            <thead class="bg-primary text-bold">
+                                                      <th>Country</th>
+                                                      <th>Pivotal batch manufactured</th>
+                                                      <th>Last data from R&D</th>
+                                                      <th>BE Final Report</th>
+                                                      <th>List of countries</th>
+                                                      <th>Type of Submission</th>
+                                                      <th>Dossier Ready Date</th>
+                                                      <th>Earliest Submission - D Excl</th>
+                                                      <th>Earliest Launch - D Excl</th>
+                                                       <th>Action</th>
+                                                </thead>
+                                                <tbody id="tableRABody">
+
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+                                </div>
+                            @*}*@
                         </div>
                     </div>
                 }
@@ -1018,5 +1065,6 @@
     var _PIDFAccordionURL = "@Url.Action("PIDF", "PIDF")";
     var _IPDAccordionURL = "@Url.Action("IPD", "IPD")";
     var _CommercialAccordionURL = "@Url.Action("PIDFCommerciaLDetails", "Commercial")";
+    const getCountryByBusinessUnitIdurl = "@EmcureNPD.Web.Helpers.APIURLHelper.GetCountryByBusinessUnitId";
 
 </script>

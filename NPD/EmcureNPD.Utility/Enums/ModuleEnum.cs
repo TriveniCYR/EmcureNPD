@@ -61,7 +61,8 @@ namespace EmcureNPD.Utility.Enums
         APIRnD = 4,
         APIIPD = 12,
         APICharter = 13,
-        APICharterSummary = 14
+        APICharterSummary = 14,
+        RA = 15
     }
 
     public enum PermissionEnum
