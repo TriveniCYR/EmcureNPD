@@ -162,13 +162,14 @@
                             <table id="PIDFTable" class="table table-bordered table-striped table-hover" style="width:100%">
                                 <thead>
                                     <tr>
+                                        <th width="20%">Country </th>
                                         <th width="13%">@MasterLocalizer["Patent Number"] <span class="text-danger">*</span></th>
                                         <th width="20%">Type <span class="text-danger">*</span> &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp</th>
                                         <th width="15%">@SharedLocalizer["Original Expiry Date"] <span class="text-danger">*</span></th>
                                         <th width="17%">@SharedLocalizer["Extension Expiry Date"] <span class="text-danger">*</span></th>
                                         <th width="21%">@SharedLocalizer["Comments (Patent Specific)"] <span class="text-danger">*</span></th>
                                         <th width="15%">@SharedLocalizer["Strategy"] <span class="text-danger">*</span></th>
-                                        <th width="20%">Country </th>
+                                         @*<th width="20%">Country </th>*@
                                         <th width="15%">Patent Strategy</th>
                                         <th width="15%">Basic Patent Expiry </th>
                                         <th width="15%">Other Lmiting Patent Date 1</th>
@@ -186,6 +187,7 @@
                                 <tbody id="parentBody">
                                     @if (Model.pidf_IPD_PatentDetailsEntities != null && Model.pidf_IPD_PatentDetailsEntities.Count() > 0)
                                     {
+                                        @*int loopCount = (Model.pidf_IPD_PatentDetailsEntities.Count() == 0) ? Model.pidf_IPD_PatentDetailsCountries.Count() : Model.pidf_IPD_PatentDetailsEntities.Count();*@
                                         for (int i = 0; i < Model.pidf_IPD_PatentDetailsEntities.Count(); i++)
                                         {
                                             <tr id="parentRow_@i">
@@ -196,6 +198,15 @@
                                                         </div>
                                                     </div>
                                                 </td>*@
+                                                <td>
+                                                    <div class="">
+                                                        <div class="form-group required">
+                                                            @* <select id="IDSelectCountryPD" class="form-control SelectCountryPD"></select>*@
+                                                            @Html.DropDownListFor(model => model.pidf_IPD_PatentDetailsEntities[i].CountryId, new List<SelectListItem> { }, htmlAttributes: new { @class = "form-control SelectCountryPD", id = "pidf_IPD_PatentDetailsEntities[" + i + "].CountryId"})
+                                                            <input type="hidden" id="hdnPatentFormulationCountryId" value="@Model.pidf_IPD_PatentDetailsEntities[i].CountryId" />
+                                                        </div>
+                                                    </div>
+                                                </td>
                                                 <td>
                                                     <div class="">
                                                         <div class="form-group required">
@@ -242,15 +253,7 @@
                                                         </div>
                                                     </div>
                                                 </td> 
-                                                <td>
-                                                    <div class="">
-                                                        <div class="form-group required">
-                                                           @* <select id="IDSelectCountryPD" class="form-control SelectCountryPD"></select>*@
-                                                            @Html.DropDownListFor(model => model.pidf_IPD_PatentDetailsEntities[i].CountryId, new List<SelectListItem> { }, htmlAttributes: new { @class = "form-control SelectCountryPD", id = "pidf_IPD_PatentDetailsEntities[" + i + "].CountryId"})
-                                                            <input type="hidden" id="hdnPatentFormulationCountryId" value="@Model.pidf_IPD_PatentDetailsEntities[i].CountryId" />                                                           
-                                                        </div>
-                                                    </div>
-                                                </td>
+                                             
                                                 <td>
                                                     <div class="">
                                                         <div class="form-group required">
@@ -356,13 +359,14 @@
                             <table id="PIDFTableAPI" class="table table-bordered table-striped table-hover" style="width:100%">
                                 <thead>
                                     <tr>
+                                        <th width="20%">Country </th>
                                         <th width="13%">@MasterLocalizer["Patent Number"] <span class="text-danger">*</span></th>
                                         <th width="20%">Type <span class="text-danger">*</span> &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp</th>
                                         <th width="15%">@SharedLocalizer["Original Expiry Date"] <span class="text-danger">*</span></th>
                                         <th width="17%">@SharedLocalizer["Extension Expiry Date"] <span class="text-danger">*</span></th>
                                         <th width="21%">@SharedLocalizer["Comments (Patent Specific)"] <span class="text-danger">*</span></th>
                                         <th width="15%">@SharedLocalizer["Strategy"] <span class="text-danger">*</span></th>
-                                        <th width="20%">Country </th>
+                                        
                                         <th width="15%">Patent Strategy</th>
                                         <th width="15%">Basic Patent Expiry </th>
                                         <th width="15%">Other Lmiting Patent Date 1</th>
@@ -388,6 +392,14 @@
                                         </div>
                                         </div>
                                         </td>*@
+                                                <td>
+                                                    <div class="">
+                                                        <div class="form-group required">
+                                                            @Html.DropDownListFor(model => model.pidf_IPD_PatentDetailsEntitiesAPI[i].CountryId, new List<SelectListItem> { }, htmlAttributes: new { @class = "form-control SelectCountryPDAPI", id = "pidf_IPD_PatentDetailsEntitiesAPI[" + i + "].CountryId"})
+                                                            <input type="hidden" id="hdnPatentFormulationCountryId" value="@Model.pidf_IPD_PatentDetailsEntitiesAPI[i].CountryId" />
+                                                        </div>
+                                                    </div>
+                                                </td>
                                                 <td>
                                                     <div class="">
                                                         <div class="form-group required">
@@ -434,14 +446,7 @@
                                                         </div>
                                                     </div>
                                                 </td>
-                                                <td>
-                                                    <div class="">
-                                                        <div class="form-group required">
-                                                            @Html.DropDownListFor(model => model.pidf_IPD_PatentDetailsEntitiesAPI[i].CountryId, new List<SelectListItem> { }, htmlAttributes: new { @class = "form-control SelectCountryPDAPI", id = "pidf_IPD_PatentDetailsEntitiesAPI[" + i + "].CountryId"})
-                                                             <input type="hidden" id="hdnPatentFormulationCountryId" value="@Model.pidf_IPD_PatentDetailsEntitiesAPI[i].CountryId" />
-                                                            </div>
-                                                    </div>
-                                                </td>
+                                               
                                                 <td>
                                                     <div class="">
                                                         <div class="form-group required">

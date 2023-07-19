@@ -16,6 +16,20 @@ var PBFLinesArr = [];
 var typeSubmissionIndexes = 0;
 var typeSubmissionOption = "";
 var rndmasterdata_dbValueOf_lineId = 0;
+var arrRnDTabList = [   //custom-tabs-department-RnD-tab-
+    'DosageFormulation',
+    'APIRequirment',
+    'ExcipientRequirement',
+    'PackagingMaterial',
+    'ToolingandChangePartCost',
+    'CapexMiscellaneouseExpenses',
+    'PlantSupportCost',
+    'ReferenceProductDetail',
+    'ManPowerCostProjectDuration',
+    'FillingExpenses',
+    'PhaseWiseBudget',
+    'HeadWiseBudget'
+]
 $(document).ready(function () {
     try {
         _PIDFPBFId = parseInt($('#hdnPIDFPBFId').val());
@@ -755,6 +769,21 @@ $(document).ready(function () {
     GetRa();
     GetCountyByBussinessUnitId();
     GetTypeOfSubmission();
+    $('#btnNextRnDTabSelectedValue').val(0); //custom-tabs-department-RnD-tab-
+});
+
+$('#btnNextRnDTab').click(function () {
+    var NextTabIndex = parseInt($('#btnNextRnDTabSelectedValue').val()) + 1;   
+    var newxtTabId = '#custom-tabs-department-RnD-tab-' + arrRnDTabList[NextTabIndex];
+    $('#btnNextRnDTabSelectedValue').val(NextTabIndex);
+    $(newxtTabId).click();
+});
+$('[id^=custom-tabs-department-RnD-tab-]').click(function () {
+    var tabid = $(this).attr('id');
+    var arrtabid = tabid.split('-')[5];
+   var indexOftab = arrRnDTabList.indexOf(arrtabid);
+    $('#btnNextRnDTabSelectedValue').val(indexOftab);
+   
    
 });
 
