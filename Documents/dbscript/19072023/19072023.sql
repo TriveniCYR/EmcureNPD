@@ -1,0 +1,1 @@
+alter table PIDF_Commercial_Years add TargetCostOfGood nvarchar(20) NULL
