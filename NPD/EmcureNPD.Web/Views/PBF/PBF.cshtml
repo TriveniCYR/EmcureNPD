@@ -553,7 +553,7 @@
                                    aria-selected="false">Clinical</a>
                             </li>
                         }
-                       @* @if (UtilityHelper.GetAccess((int)EmcureNPD.Utility.Enums.ModuleEnum.PBF, Helper.GetLoggedInRoleId(), (int)EmcureNPD.Utility.Enums.PermissionEnum.View, (int)EmcureNPD.Utility.Enums.SubModulePermissionEnum.Clinical) || UtilityHelper.GetAccess((int)EmcureNPD.Utility.Enums.ModuleEnum.PBF, Helper.GetLoggedInRoleId(), (int)EmcureNPD.Utility.Enums.PermissionEnum.Edit, (int)EmcureNPD.Utility.Enums.SubModulePermissionEnum.RA) || UtilityHelper.GetAccess((int)EmcureNPD.Utility.Enums.ModuleEnum.PBF, Helper.GetLoggedInRoleId(), (int)EmcureNPD.Utility.Enums.PermissionEnum.Add, (int)EmcureNPD.Utility.Enums.SubModulePermissionEnum.RA))
+                      @* @if (UtilityHelper.GetAccess((int)EmcureNPD.Utility.Enums.ModuleEnum.PBF, Helper.GetLoggedInRoleId(), (int)EmcureNPD.Utility.Enums.PermissionEnum.View, (int)EmcureNPD.Utility.Enums.SubModulePermissionEnum.Clinical) || UtilityHelper.GetAccess((int)EmcureNPD.Utility.Enums.ModuleEnum.PBF, Helper.GetLoggedInRoleId(), (int)EmcureNPD.Utility.Enums.PermissionEnum.Edit, (int)EmcureNPD.Utility.Enums.SubModulePermissionEnum.RA) || UtilityHelper.GetAccess((int)EmcureNPD.Utility.Enums.ModuleEnum.PBF, Helper.GetLoggedInRoleId(), (int)EmcureNPD.Utility.Enums.PermissionEnum.Add, (int)EmcureNPD.Utility.Enums.SubModulePermissionEnum.RA))
                         {
                             <li class="nav-item p-0">
                                 <a class="nav-link px-2"
@@ -1066,5 +1066,6 @@
     var _IPDAccordionURL = "@Url.Action("IPD", "IPD")";
     var _CommercialAccordionURL = "@Url.Action("PIDFCommerciaLDetails", "Commercial")";
     const getCountryByBusinessUnitIdurl = "@EmcureNPD.Web.Helpers.APIURLHelper.GetCountryByBusinessUnitId";
-
+    const getTypeOfSubmissionurl = "@EmcureNPD.Web.Helpers.APIURLHelper.GetTypeOfSubmission";
+    const GetRaurl = "@EmcureNPD.Web.Helpers.APIURLHelper.GetRa";
 </script>

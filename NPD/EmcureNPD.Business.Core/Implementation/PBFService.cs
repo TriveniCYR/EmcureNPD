@@ -1,4 +1,5 @@
-﻿using EmcureNPD.Business.Core.Interface;
+﻿using Dapper;
+using EmcureNPD.Business.Core.Interface;
 using EmcureNPD.Business.Core.ModelMapper;
 using EmcureNPD.Business.Models;
 using EmcureNPD.Data.DataAccess.Core.Repositories;
@@ -6,6 +7,7 @@ using EmcureNPD.Data.DataAccess.Core.UnitOfWork;
 using EmcureNPD.Data.DataAccess.Entity;
 using EmcureNPD.Utility.Enums;
 using EmcureNPD.Utility.Utility;
+using Microsoft.Extensions.Configuration;
 using System;
 using System.Collections.Generic;
 using System.Data;
@@ -26,7 +28,7 @@ namespace EmcureNPD.Business.Core.Implementation
         private readonly IMasterAuditLogService _auditLogService;
         private readonly IHelper _helper;
         private readonly IExceptionService _ExceptionService;
-
+        private readonly IConfiguration _configuration;
         private IRepository<PidfPbf> _pbfRepository { get; set; }
         private IRepository<Pidf> _repository { get; set; }
         private IRepository<PidfPbfReferenceProductDetail> _repositoryPidfPbfReferenceProductDetail { get; set; }
@@ -51,11 +53,12 @@ namespace EmcureNPD.Business.Core.Implementation
         private IRepository<PidfPbfHeadWiseBudget> _pidfPbfHeadWiseBudgetRepository { get; set; }
         private IRepository<PidfPbfPhaseWiseBudget> _pidfPbfPhaseWiseBudgetRepository { get; set; }
         private IRepository<MasterPlantLine> _MasterPlantLineRepository { get; set; }
-
+        private IRepository<PidfPbfRa> _pidfPbfRRepositiry { get; set; }
+        private IRepository<MasterTypeOfSubmission> _masterTypeOfSubmission { get; set; }
 
         public PBFService(IUnitOfWork unitOfWork, IMapperFactory mapperFactory, INotificationService notificationService, IMasterAuditLogService auditLogService, 
 
-            IHelper helper, IExceptionService exceptionService)
+            IHelper helper, IExceptionService exceptionService, IConfiguration configuration)
         {
             _unitOfWork = unitOfWork;
             _mapperFactory = mapperFactory;
@@ -63,7 +66,7 @@ namespace EmcureNPD.Business.Core.Implementation
             _helper = helper;
             _notificationService = notificationService;
             _ExceptionService = exceptionService;
-
+            _configuration= configuration;
             _repositoryPidfPbfReferenceProductDetail = _unitOfWork.GetRepository<PidfPbfReferenceProductDetail>();
             _repository = _unitOfWork.GetRepository<Pidf>();
             _pbfRepository = _unitOfWork.GetRepository<PidfPbf>();
@@ -88,6 +91,8 @@ namespace EmcureNPD.Business.Core.Implementation
             _pidfPbfRndFillingExpenseRepository = _unitOfWork.GetRepository<PidfPbfRnDFillingExpense>();
             _pidfPbfHeadWiseBudgetRepository = _unitOfWork.GetRepository<PidfPbfHeadWiseBudget>();
             _pidfPbfPhaseWiseBudgetRepository = _unitOfWork.GetRepository<PidfPbfPhaseWiseBudget>();
+            _pidfPbfRRepositiry = _unitOfWork.GetRepository<PidfPbfRa>();
+            _masterTypeOfSubmission = _unitOfWork.GetRepository<MasterTypeOfSubmission>();
         }
 
         public async Task<dynamic> FillDropdown(int PIDFId)
@@ -269,7 +274,16 @@ namespace EmcureNPD.Business.Core.Implementation
             var dbObj = await _MasterPlantLineRepository.GetAllAsync(x => x.PlantId == id);
             return _mapperFactory.GetList<MasterPlantLine,MasterPlantLineEntity>(dbObj.ToList());
         }
-
+        public async Task<List<PidfPbfRaEntity>> GetRa()
+        {
+            var dbObj = await _pidfPbfRRepositiry.GetAllAsync();
+            return _mapperFactory.GetList<PidfPbfRa, PidfPbfRaEntity>(dbObj.ToList());
+        }
+        public async Task<List<MasterTypeOfSubmissionEntity>> GetTypeOfSubmission()
+        {
+            var dbObj = await _masterTypeOfSubmission.GetAllAsync();
+            return _mapperFactory.GetList<MasterTypeOfSubmission, MasterTypeOfSubmissionEntity>(dbObj.ToList());
+        }
 
         #region Private Methods
 
@@ -2203,6 +2217,9 @@ namespace EmcureNPD.Business.Core.Implementation
                 #endregion Head Wise Budget Add Update
 
                 #endregion RND Add Update
+                #region RA Add Update
+               var IsRaSaved=await AddUpdateRa(pbfentity.RaEntities, loggedInUserId);
+                #endregion
                 //PidfPbfGeneral objPIDFGeneralupdate;
                 var objPIDFGeneralupdate = _pidfPbfGeneralRepository.GetAllQuery().Where(x => x.Pidfpbfid == pbfentity.Pidfpbfid && x.BusinessUnitId == pbfentity.BusinessUnitId).FirstOrDefault();
                 if (objPIDFGeneralupdate != null)
@@ -2445,6 +2462,81 @@ namespace EmcureNPD.Business.Core.Implementation
             catch (Exception ex)
             {
                 _ExceptionService.LogException(ex);
+            }
+        }
+        public async Task<bool> AddUpdateRa(List<PidfPbfRaEntity> ls, int CreatedBy)
+        {
+            try
+            {
+                SqlConnection con = new SqlConnection(_configuration.GetSection("ConnectionStrings:DefaultConnection").Value);
+                int count = 0;
+                var recordsTable = new DataTable();
+                recordsTable.Columns.Add("PIDFPBFRAId", typeof(double));
+                recordsTable.Columns.Add("PIDFId", typeof(double));
+                recordsTable.Columns.Add("PBFId", typeof(double));
+                recordsTable.Columns.Add("CountryIdBuId", typeof(int));
+                recordsTable.Columns.Add("PivotalBatchManufactured", typeof(DateTime));
+                recordsTable.Columns.Add("LastDataFromRnD", typeof(DateTime));
+                recordsTable.Columns.Add("BEFinalReport", typeof(DateTime));
+                recordsTable.Columns.Add("CountryId", typeof(int));
+                recordsTable.Columns.Add("TypeOfSubmissionId", typeof(int));
+                recordsTable.Columns.Add("DossierReadyDate", typeof(DateTime));
+                recordsTable.Columns.Add("EarliestSubmissionDExcl", typeof(DateTime));
+                recordsTable.Columns.Add("EarliestLaunchDExcl", typeof(DateTime));
+                recordsTable.Columns.Add("CreatedOn", typeof(DateTime));
+                recordsTable.Columns.Add("UpdatedOn", typeof(DateTime));
+                recordsTable.Columns.Add("DeletedOn", typeof(DateTime));
+                recordsTable.Columns.Add("CreatedBy", typeof(int));
+                DataRow row;
+                foreach (var item in ls)
+                {
+
+                    if (item.Pbfid > 0  && item.Pidfid > 0)
+                    {
+                        row = recordsTable.NewRow();
+                        row["PIDFPBFRAId"] = item.Pidfpbfraid;
+                        row["PIDFId"] = item.Pidfid;
+                        row["PBFId"] = item.Pbfid == 0 ? DBNull.Value : item.Pbfid;
+                        row["CountryIdBuId"] = item.CountryIdBuId == 0 ? DBNull.Value : item.CountryIdBuId;
+                        row["PivotalBatchManufactured"] = item.PivotalBatchManufactured == null ? DBNull.Value : item.PivotalBatchManufactured;
+                        row["LastDataFromRnD"] = item.LastDataFromRnD == null ? DBNull.Value : item.LastDataFromRnD;
+                        row["BEFinalReport"] = item.BefinalReport == null ? DBNull.Value : item.BefinalReport;
+                        row["CountryId"] = item.CountryId == 0 ? DBNull.Value : item.CountryId;
+                        row["TypeOfSubmissionId"] = item.TypeOfSubmissionId == 0 ? DBNull.Value : item.TypeOfSubmissionId;
+                        row["DossierReadyDate"] = item.DossierReadyDate == null ? DBNull.Value : item.DossierReadyDate;
+                        row["EarliestSubmissionDExcl"] = item.EarliestSubmissionDexcl == null ? DBNull.Value : item.EarliestSubmissionDexcl;
+                        row["EarliestLaunchDExcl"] = item.EarliestLaunchDexcl == null ? DBNull.Value : item.EarliestLaunchDexcl;
+                        row["CreatedOn"] = item.Pidfpbfraid > 0 ? DBNull.Value : DateTime.Now ;
+                        row["UpdatedOn"] =item.Pidfpbfraid>0 ?DateTime.Now: DBNull.Value;
+                        row["DeletedOn"] = item.Pidfpbfraid > 0 ? DateTime.Now : DBNull.Value;
+                        row["CreatedBy"] = CreatedBy;
+                        recordsTable.Rows.Add(row);
+                    }
+                }
+                if (recordsTable.Rows.Count > 0)
+                {
+                    recordsTable.EndLoadData();
+                    var data = new DynamicParameters(new
+                    {
+                        table = recordsTable.AsTableValuedParameter("Type_PIDF_PBF_RA")
+                    });
+                    data.Add("@Success", "", direction: ParameterDirection.Output);
+                    count = await con.ExecuteAsync("AddUpdatePIDF_Pbf_ra", data, commandType: CommandType.StoredProcedure);
+                    if (count > 0 && data.Get<string>("Success").Trim() == "success")
+                    {
+                        return true;
+                    }
+                    else
+                    {
+                        return false;
+                    }
+                }
+                else { return false; }
+            }
+            catch (Exception ex)
+            {
+                await _ExceptionService.LogException(ex);
+                return false;
             }
         }
 

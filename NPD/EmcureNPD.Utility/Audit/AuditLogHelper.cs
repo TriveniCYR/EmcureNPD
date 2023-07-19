@@ -146,7 +146,7 @@ namespace EmcureNPD.Utility.Audit
                 {
                     try
                     {
-						auditlogList.Add(new AuditLog { OldValue = Convert.ToString(E1_val), NewValue = Convert.ToString(E2_val), PropertyName = propObj1.Name, DisplayName = propObj1.Name });
+						//auditlogList.Add(new AuditLog { OldValue = Convert.ToString(E1_val), NewValue = Convert.ToString(E2_val), PropertyName = propObj1.Name, DisplayName = propObj1.Name });
 						flag = false;
 						match = flag;
 					}

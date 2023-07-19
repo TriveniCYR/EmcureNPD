@@ -1,4 +1,5 @@
 ﻿using EmcureNPD.Business.Models;
+using EmcureNPD.Data.DataAccess.Entity;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using static EmcureNPD.Utility.Enums.GeneralEnum;
@@ -32,5 +33,7 @@ namespace EmcureNPD.Business.Core.Interface
 
         Task<dynamic> PBFAllTabDetails(int PIDFId, int BUId);
         Task<List<MasterPlantLineEntity>> GetLineByPlantId(int id);
+        Task<List<PidfPbfRaEntity>> GetRa();
+        Task<List<MasterTypeOfSubmissionEntity>> GetTypeOfSubmission();
     }
 }
