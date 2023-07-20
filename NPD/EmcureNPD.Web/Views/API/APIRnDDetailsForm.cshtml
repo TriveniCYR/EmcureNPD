@@ -283,8 +283,9 @@
                                             <td> @item.BusinessUnitName              </td>
                                             <td> @item.PatentNumber              </td>
                                             <td> @item.Type                      </td>
-                                            <td> @item.OriginalExpiryDate.Value.ToString("MM/dd/yyyy")        </td>
-                                            <td> @item.ExtensionExpiryDate.Value.ToString("MM/dd/yyyy")       </td>
+                                            <td> @((item.OriginalExpiryDate == null) ? "" : item.OriginalExpiryDate.Value.ToString("MM/dd/yyyy"))   </td>
+                                            <td> @((item.ExtensionExpiryDate == null) ? "" : item.ExtensionExpiryDate.Value.ToString("MM/dd/yyyy"))   </td>
+
                                             <td> @item.Comments                  </td>
                                             <td> @item.Strategy                  </td>
 
@@ -358,8 +359,9 @@
                                             <td> @item.BusinessUnitName              </td>
                                             <td> @item.PatentNumber              </td>
                                             <td> @item.Type                      </td>
-                                            <td> @item.OriginalExpiryDate        </td>
-                                            <td> @item.ExtensionExpiryDate       </td>
+                                            <td> @((item.OriginalExpiryDate == null) ? "" : item.OriginalExpiryDate.Value.ToString("MM/dd/yyyy"))   </td>
+                                            <td> @((item.ExtensionExpiryDate == null) ? "" : item.ExtensionExpiryDate.Value.ToString("MM/dd/yyyy"))   </td>
+
                                             <td> @item.Comments                  </td>
                                             <td> @item.Strategy                  </td>
                                             <td> @item.CountryName				                  </td>
