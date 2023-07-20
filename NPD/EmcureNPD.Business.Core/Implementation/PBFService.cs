@@ -274,9 +274,9 @@ namespace EmcureNPD.Business.Core.Implementation
             var dbObj = await _MasterPlantLineRepository.GetAllAsync(x => x.PlantId == id);
             return _mapperFactory.GetList<MasterPlantLine,MasterPlantLineEntity>(dbObj.ToList());
         }
-        public async Task<List<PidfPbfRaEntity>> GetRa()
+        public async Task<List<PidfPbfRaEntity>> GetRa(int PidfId, int PifdPbfId)
         {
-            var dbObj = await _pidfPbfRRepositiry.GetAllAsync();
+            var dbObj = await _pidfPbfRRepositiry.GetAllAsync(x=>x.Pidfid== PidfId && x.Pbfid== PifdPbfId);
             return _mapperFactory.GetList<PidfPbfRa, PidfPbfRaEntity>(dbObj.ToList());
         }
         public async Task<List<MasterTypeOfSubmissionEntity>> GetTypeOfSubmission()

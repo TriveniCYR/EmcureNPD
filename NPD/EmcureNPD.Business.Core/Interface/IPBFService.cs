@@ -33,7 +33,7 @@ namespace EmcureNPD.Business.Core.Interface
 
         Task<dynamic> PBFAllTabDetails(int PIDFId, int BUId);
         Task<List<MasterPlantLineEntity>> GetLineByPlantId(int id);
-        Task<List<PidfPbfRaEntity>> GetRa();
+        Task<List<PidfPbfRaEntity>> GetRa(int PidfId, int PifdPbfId);
         Task<List<MasterTypeOfSubmissionEntity>> GetTypeOfSubmission();
     }
 }

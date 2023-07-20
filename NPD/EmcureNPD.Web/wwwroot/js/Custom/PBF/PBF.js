@@ -13,8 +13,7 @@ var _firstLoad = true;
 var _oralName = '';
 var isValidPBFForm = true;
 var PBFLinesArr = [];
-var typeSubmissionIndexes = 0;
-var typeSubmissionOption = "";
+let IsRaEditable = false;
 var rndmasterdata_dbValueOf_lineId = 0;
 var arrRnDTabList = [   //custom-tabs-department-RnD-tab-
     'DosageFormulation',
@@ -766,9 +765,7 @@ $(document).ready(function () {
     getIPDAccordion(_IPDAccordionURL, _EncPIDFID, _PIDFBusinessUnitId, "dvIPDAccrdion");
     getCommercialAccordion(_CommercialAccordionURL, _EncPIDFID, _PIDFBusinessUnitId, "dvCommercialAccrdion");
     //BindRA();
-    GetRa();
-    GetCountyByBussinessUnitId();
-    GetTypeOfSubmission();
+    GetRa(_PIDFID, _PIDFPBFId);
     $('#btnNextRnDTabSelectedValue').val(0); //custom-tabs-department-RnD-tab-
 });
 
@@ -1057,10 +1054,14 @@ function GetPBFTabDetailsSuccess(data) {
             });
            
                 //  alert('<option value="' + this.value + '">' + this.text + '</option>');
+            if (IsRaEditable) {
+                let selectedValue = 0;
                 for (let z = 0; z < $("#tableRABody").find("tr").length; z++) {
+
                     if (z > 0) {
                         $("#TypeOfSubmissionId0 option").each(function () {
                             $("#TypeOfSubmissionId" + z).append('<option value="' + this.value + '">' + this.text + '</option>');
+                           
                         });
                         $("#raAllCountryId0 option").each(function () {
                             $("#raAllCountryId" + z).append('<option value="' + this.value + '">' + this.text + '</option>');
@@ -1069,8 +1070,13 @@ function GetPBFTabDetailsSuccess(data) {
                             $("#raCountryId" + z).append('<option value="' + this.value + '">' + this.text + '</option>');
                         });
                     }
+                    $("#TypeOfSubmissionId" + z).val($("#TypeOfSubmissionId" + z).attr('value') == undefined ? 0 : $("#TypeOfSubmissionId" + z).attr('value'))
+
+                    $("#raAllCountryId" + z).val($("#raAllCountryId" + z).attr('value') == undefined ? 0 : $("#raAllCountryId" + z).attr('value'))
+
+                    $("#raCountryId" + z).val($("#raCountryId" + z).attr('value') == undefined ? 0 : $("#raCountryId" + z).attr('value'))
                 }
-           
+            }
             SetChildRowDeleteIconPBF();
             if (_mode == 1) {
                 PBFreadOnlyForm();
@@ -3202,7 +3208,6 @@ function GetTypeOfSubmissionSuccess(data) {
                 $(data).each(function (index, item) {
 
                     $('#TypeOfSubmissionId0').append('<option value="' + item.id + '">' + item.typeOfSubmission + '</option>');
-                    typeSubmissionOption += '<option value="' + item.id + '">' + item.typeOfSubmission + '</option>';
                 });
 
                 //try {
@@ -3225,7 +3230,7 @@ function GetTypeOfSubmissionError(x, y, z) {
 }
 function BindRA(data=null) {
     let tbody = $("#tableRABody");
-
+    IsRaEditable = false;
     let tr = '';
     if (data == null) {
         tr += `<tr>
@@ -3242,48 +3247,34 @@ function BindRA(data=null) {
              </tr>`;
        
     }
-    else {
-       
+    else if (data!=null) {
+        IsRaEditable = true;
         for (let e = 0; e < data.length; e++) {
             //var EarliestLaunchDexcl = data[e].earliestLaunchDexcl.split('T')[0];//data[e].earliestLaunchDexcl == null ?"":
             tr += `<tr>
-             <td><input type="hidden" id="Pidfpbfraid${e}" name="RaEntities[0].Pidfpbfraid" value="${data[e].pidfpbfraid}"><select id="raCountryId${e}" name="RaEntities[0].CountryIdBuId"  class="form-control readOnlyUpdate customvalidateformcontrol"></select></td>
+             <td><input type="hidden" id="Pidfpbfraid${e}" name="RaEntities[0].Pidfpbfraid" value="${data[e].pidfpbfraid}"><select id="raCountryId${e}" name="RaEntities[0].CountryIdBuId" value="${data[e].countryIdBuId}"  class="form-control readOnlyUpdate customvalidateformcontrol"></select></td>
              <td><input type="date" id="Pivotalbatchmanufactured${e}" name="RaEntities[0].PivotalBatchManufactured" value="${data[e].pivotalBatchManufactured.split('T')[0]}" class="form-control readOnlyUpdate customvalidateformcontrol"></td>
              <td><input type="date" id="LastdatafromRnD${e}" name="RaEntities[0].LastDataFromRnD" value="${data[e].lastDataFromRnD.split('T')[0]}" class="form-control readOnlyUpdate customvalidateformcontrol"></td>
              <td><input type="date" id="BEFinalReport${e}" name="RaEntities[0].BEFinalReport" value="${data[e].befinalReport.split('T')[0]}" class="form-control readOnlyUpdate customvalidateformcontrol"></td>
-             <td><select id="raAllCountryId${e}" name="RaEntities[0].CountryId"  class="form-control readOnlyUpdate customvalidateformcontrol"></select></td>
-             <td><select  id="TypeOfSubmissionId${e}" name="RaEntities[0].TypeOfSubmissionId" class="form-control readOnlyUpdate customvalidateformcontrol"></select></td>
+             <td><select id="raAllCountryId${e}" name="RaEntities[0].CountryId"  class="form-control readOnlyUpdate customvalidateformcontrol" value="${data[e].countryId}"></select></td>
+             <td><select  id="TypeOfSubmissionId${e}" name="RaEntities[0].TypeOfSubmissionId" class="form-control readOnlyUpdate customvalidateformcontrol" value="${data[e].typeOfSubmissionId}"></select></td>
              <td><input type="date" id="DossierReadyDate${e}" name="RaEntities[0].DossierReadyDate" value="${data[e].dossierReadyDate.split('T')[0]}" class="form-control readOnlyUpdate customvalidateformcontrol"></td>
              <td><input type="date" id="EarliestSubmissionDExcl${e}" name="RaEntities[0].EarliestSubmissionDExcl" value="${data[e].earliestSubmissionDexcl.split('T')[0]}" class="form-control readOnlyUpdate customvalidateformcontrol"></td>
               <td><input type="hidden" id="Pidfid${e}" name="RaEntities[0].Pidfid" value="${data[e].pidfid}"><input type="date" id="EarliestLaunchDExcl${e}" name="RaEntities[0].EarliestLaunchDExcl" value="${data[e].earliestLaunchDexcl.split('T')[0]}" class="form-control readOnlyUpdate customvalidateformcontrol"></td>
              <td><input type="hidden" id="Pbfid${e}" name="RaEntities[0].Pbfid" value="${data[e].pbfid}"> <i class="fa-solid fa-circle-plus nav-icon text-success operationButton" id="addIcon" onclick="addRowra(this);"></i> <i class="fa-solid fa-trash nav-icon text-red raDeleteIcon operationButton DeleteIcon" onclick="deleteRowra(this);" style="display: none;"></i></td>
              </tr>`;
-            //typeSubmissionIndexes=e;
-            //GetTypeOfSubmission();
-            
-            
-            //if (e > 0) {
-            //    $(`TypeOfSubmissionId${e}`).addClass("TypeOfSubmission");
-            //}
         }
 
-        tbody.append(tr);
-       
-
-        ShowHideRaDelete();
-        //var options = $(`#TypeOfSubmissionId0 > option`).clone();
-        ///*if (e > 0) {*/
-        //    $(`#TypeOfSubmissionId1.form-control.readOnlyUpdate.customvalidateformcontrol`).append($options);
-        ///*}*/
-       //let option = $("#TypeOfSubmissionId0 > option").clone();
-        
-
+      
     }
-
+    tbody.append(tr);
+    ShowHideRaDelete();
+    GetCountyByBussinessUnitId();
+    GetTypeOfSubmission();
 }
-function GetRa() {
+function GetRa(PidfId,PifdPbfId) {
 
-    ajaxServiceMethod($('#hdnBaseURL').val() + GetRaurl, 'GET', GetRaSuccess, GetRaError);
+    ajaxServiceMethod($('#hdnBaseURL').val() + GetRaurl + "/" + PidfId + "/" + PifdPbfId, 'GET', GetRaSuccess, GetRaError);
 }
 function GetRaSuccess(response) {
     try {
@@ -3294,7 +3285,7 @@ function GetRaSuccess(response) {
         else {
             BindRA();
         }
-        }
+    }
     
     catch (e) {
         toastr.error(ErrorMessage);
