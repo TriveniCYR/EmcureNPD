@@ -788,39 +788,9 @@
             </p>
         </div>
 
-        <div class="col-12 d-flex flex-wrap mb-4">
-            @if (Model != null && Model.lsManager != null)
-            {
-                foreach (var item in Model.lsManager)
-                {
-                    <div class="col-4 text-center mt-5">
-                        @if (item.UserId == CurrentUserId && ((Int32)item.StatusId != (Int32)Master_PIDFStatus.ManagementApproved && (Int32)item.StatusId != (Int32)Master_PIDFStatus.ManagementRejected)) //CurrentUserId)1048
-                        {
-
-                            <a style="@IsApproveAllow" class="btn btn-success operationButton" onClick="ApproveRejectClick('A', '@PidfNumber', @((int)EmcureNPD.Utility.Enums.PIDFScreen.Management), '/PIDF/PIDFList?ScreenId=@((int)EmcureNPD.Utility.Enums.PIDFScreen.Management)')"><i class="fa fa-check-circle mr-1"></i> @SharedLocalizer["Approve"]</a>
-                            <a style="@IsApproveAllow" class="btn btn-danger  operationButton" onClick="ApproveRejectClick('R', '@PidfNumber', @((int)EmcureNPD.Utility.Enums.PIDFScreen.Management), '/PIDF/PIDFList?ScreenId=@((int)EmcureNPD.Utility.Enums.PIDFScreen.Management)')"><i class="fa fa-ban mr-1"></i> @SharedLocalizer["Reject"]</a>
-                        }
-                        else if ((Int32)item.StatusId == (Int32)Master_PIDFStatus.ManagementApproved)
-                        {
-
-                            <div class="bg-success ApproveRejectText p-2 mb-1">Approved On: @item.CreatedDate.ToString("dd MMMM yyyy hh:mm")</div>
-
-                        }
-                        else if ((Int32)item.StatusId == (Int32)Master_PIDFStatus.ManagementRejected)
-                        {
-
-                            <div class="bg-danger ApproveRejectText p-2 mb-1">Rejected On: @item.CreatedDate.ToString("dd MMMM yyyy hh:mm")</div>
-
-                        }
-                        <h6 class="m-0 fw-bold">@item.ManagerName</h6>
-                        <p class="m-0 fw-bold">@item.DesignationName</p>
-                    </div>
-
-                }
-            }
-        </div>
+      
     </div>
-    @Html.Partial("_PIDFApproveReject")
+   
 </div>
 
 
@@ -854,6 +824,39 @@
 <div class="ProjectCharterControls">
     @Html.Partial("ProjectCharterControlsMA", Model.financeModel)
 </div>
+
+<div class="col-12 d-flex flex-wrap mb-4 background-white-card">
+    @if (Model != null && Model.lsManager != null)
+    {
+        foreach (var item in Model.lsManager)
+        {
+            <div class="col-4 text-center mt-5">
+                @if (item.UserId == CurrentUserId && ((Int32)item.StatusId != (Int32)Master_PIDFStatus.ManagementApproved && (Int32)item.StatusId != (Int32)Master_PIDFStatus.ManagementRejected)) //CurrentUserId)1048
+                {
+
+                    <a style="@IsApproveAllow" class="btn btn-success operationButton" onClick="ApproveRejectClick('A', '@PidfNumber', @((int)EmcureNPD.Utility.Enums.PIDFScreen.Management), '/PIDF/PIDFList?ScreenId=@((int)EmcureNPD.Utility.Enums.PIDFScreen.Management)')"><i class="fa fa-check-circle mr-1"></i> @SharedLocalizer["Approve"]</a>
+                    <a style="@IsApproveAllow" class="btn btn-danger  operationButton" onClick="ApproveRejectClick('R', '@PidfNumber', @((int)EmcureNPD.Utility.Enums.PIDFScreen.Management), '/PIDF/PIDFList?ScreenId=@((int)EmcureNPD.Utility.Enums.PIDFScreen.Management)')"><i class="fa fa-ban mr-1"></i> @SharedLocalizer["Reject"]</a>
+                }
+                else if ((Int32)item.StatusId == (Int32)Master_PIDFStatus.ManagementApproved)
+                {
+
+                    <div class="bg-success ApproveRejectText p-2 mb-1">Approved On: @item.CreatedDate.ToString("dd MMMM yyyy hh:mm")</div>
+
+                }
+                else if ((Int32)item.StatusId == (Int32)Master_PIDFStatus.ManagementRejected)
+                {
+
+                    <div class="bg-danger ApproveRejectText p-2 mb-1">Rejected On: @item.CreatedDate.ToString("dd MMMM yyyy hh:mm")</div>
+
+                }
+                <h6 class="m-0 fw-bold">@item.ManagerName</h6>
+                <p class="m-0 fw-bold">@item.DesignationName</p>
+            </div>
+
+        }
+    }
+</div>
+ @Html.Partial("_PIDFApproveReject")
 
 @section MyScripts {
     @*@Html.Partial("_DataTablePartial")*@
