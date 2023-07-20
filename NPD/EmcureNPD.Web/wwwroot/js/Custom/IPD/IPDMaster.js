@@ -303,14 +303,17 @@ function SaveIPDFormError(data) {
 }
 function SetIPDChildRows() {
     $.each(getParentFormId().find('#PIDFTable tbody tr'), function (index, value) {
-        $(this).find("td:first input").attr("name", "pidf_IPD_PatentDetailsEntities[" + index.toString() + "].PatentNumber");
-        $(this).find("td:eq(1) input").attr("name", "pidf_IPD_PatentDetailsEntities[" + index.toString() + "].Type");
-        $(this).find("td:eq(2) input").attr("name", "pidf_IPD_PatentDetailsEntities[" + index.toString() + "].OriginalExpiryDate");
-        $(this).find("td:eq(3) input").attr("name", "pidf_IPD_PatentDetailsEntities[" + index.toString() + "].ExtensionExpiryDate");
-        $(this).find("td:eq(4) input").attr("name", "pidf_IPD_PatentDetailsEntities[" + index.toString() + "].Comments");
-        $(this).find("td:eq(5) input").attr("name", "pidf_IPD_PatentDetailsEntities[" + index.toString() + "].Strategy");
 
-        $(this).find("td:eq(6) select").attr("name", "pidf_IPD_PatentDetailsEntities[" + index.toString() + "].CountryId");
+        $(this).find("td:first select").attr("name", "pidf_IPD_PatentDetailsEntities[" + index.toString() + "].CountryId");
+
+        $(this).find("td:eq(1) input").attr("name", "pidf_IPD_PatentDetailsEntities[" + index.toString() + "].PatentNumber");
+        $(this).find("td:eq(2) input").attr("name", "pidf_IPD_PatentDetailsEntities[" + index.toString() + "].Type");
+        $(this).find("td:eq(3) input").attr("name", "pidf_IPD_PatentDetailsEntities[" + index.toString() + "].OriginalExpiryDate");
+        $(this).find("td:eq(4) input").attr("name", "pidf_IPD_PatentDetailsEntities[" + index.toString() + "].ExtensionExpiryDate");
+        $(this).find("td:eq(5) input").attr("name", "pidf_IPD_PatentDetailsEntities[" + index.toString() + "].Comments");
+        $(this).find("td:eq(6) input").attr("name", "pidf_IPD_PatentDetailsEntities[" + index.toString() + "].Strategy");
+
+        //$(this).find("td:eq(6) select").attr("name", "pidf_IPD_PatentDetailsEntities[" + index.toString() + "].CountryId");
         $(this).find("td:eq(7) select[id$=PatentStrategy]").attr("name", "pidf_IPD_PatentDetailsEntities[" + index.toString() + "].PatentStrategy");
         $(this).find("td:eq(7) input[id$=PatentStrategyOther]").attr("name", "pidf_IPD_PatentDetailsEntities[" + index.toString() + "].PatentStrategyOther");
         $(this).find("td:eq(8) input").attr("name", "pidf_IPD_PatentDetailsEntities[" + index.toString() + "].BasicPatentExpiry");
@@ -432,15 +435,16 @@ function IPDSetChildRowDeleteIconAPI() {
 }
 function SetIPDChildRowsAPI() {
     $.each(getParentFormId().find('#PIDFTableAPI tbody tr'), function (index, value) {
-        $(this).find("td:first input").attr("name", "pidf_IPD_PatentDetailsEntitiesAPI[" + index.toString() + "].PatentNumber");
-        $(this).find("td:eq(1) input").attr("name", "pidf_IPD_PatentDetailsEntitiesAPI[" + index.toString() + "].Type");
-        $(this).find("td:eq(2) input").attr("name", "pidf_IPD_PatentDetailsEntitiesAPI[" + index.toString() + "].OriginalExpiryDate");
-        $(this).find("td:eq(3) input").attr("name", "pidf_IPD_PatentDetailsEntitiesAPI[" + index.toString() + "].ExtensionExpiryDate");
-        $(this).find("td:eq(4) input").attr("name", "pidf_IPD_PatentDetailsEntitiesAPI[" + index.toString() + "].Comments");
-        $(this).find("td:eq(5) input").attr("name", "pidf_IPD_PatentDetailsEntitiesAPI[" + index.toString() + "].Strategy");
+        $(this).find("td:first select").attr("name", "pidf_IPD_PatentDetailsEntitiesAPI[" + index.toString() + "].CountryId");
+        $(this).find("td:eq(1) input").attr("name", "pidf_IPD_PatentDetailsEntitiesAPI[" + index.toString() + "].PatentNumber");
+        $(this).find("td:eq(2) input").attr("name", "pidf_IPD_PatentDetailsEntitiesAPI[" + index.toString() + "].Type");
+        $(this).find("td:eq(3) input").attr("name", "pidf_IPD_PatentDetailsEntitiesAPI[" + index.toString() + "].OriginalExpiryDate");
+        $(this).find("td:eq(4) input").attr("name", "pidf_IPD_PatentDetailsEntitiesAPI[" + index.toString() + "].ExtensionExpiryDate");
+        $(this).find("td:eq(5) input").attr("name", "pidf_IPD_PatentDetailsEntitiesAPI[" + index.toString() + "].Comments");
+        $(this).find("td:eq(6) input").attr("name", "pidf_IPD_PatentDetailsEntitiesAPI[" + index.toString() + "].Strategy");
 
 
-        $(this).find("td:eq(6) select").attr("name", "pidf_IPD_PatentDetailsEntitiesAPI[" + index.toString() + "].CountryId");
+       // $(this).find("td:eq(6) select").attr("name", "pidf_IPD_PatentDetailsEntitiesAPI[" + index.toString() + "].CountryId");
         $(this).find("td:eq(7) select[id$=PatentStrategy]").attr("name", "pidf_IPD_PatentDetailsEntitiesAPI[" + index.toString() + "].PatentStrategy");
         $(this).find("td:eq(7) input[id$=PatentStrategyOther]").attr("name", "pidf_IPD_PatentDetailsEntitiesAPI[" + index.toString() + "].PatentStrategyOther");
         $(this).find("td:eq(8) input").attr("name", "pidf_IPD_PatentDetailsEntitiesAPI[" + index.toString() + "].BasicPatentExpiry");
