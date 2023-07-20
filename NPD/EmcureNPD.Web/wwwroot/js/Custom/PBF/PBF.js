@@ -3159,7 +3159,8 @@ function validatecontrolsPBF(control) {
         $(control).css("border-color", "red");
         $(control).focus();
         isValidPBFForm = false;
-    }
+    } //return isValidPBFForm;
+
 }
 
 //** For RA Tab **//
@@ -3252,22 +3253,23 @@ function BindRA(data=null) {
         for (let e = 0; e < data.length; e++) {
             //var EarliestLaunchDexcl = data[e].earliestLaunchDexcl.split('T')[0];//data[e].earliestLaunchDexcl == null ?"":
             tr += `<tr>
-             <td><input type="hidden" id="Pidfpbfraid${e}" name="RaEntities[0].Pidfpbfraid" value="${data[e].pidfpbfraid}"><select id="raCountryId${e}" name="RaEntities[0].CountryIdBuId" value="${data[e].countryIdBuId}"  class="form-control readOnlyUpdate customvalidateformcontrol"></select></td>
-             <td><input type="date" id="Pivotalbatchmanufactured${e}" name="RaEntities[0].PivotalBatchManufactured" value="${data[e].pivotalBatchManufactured.split('T')[0]}" class="form-control readOnlyUpdate customvalidateformcontrol"></td>
-             <td><input type="date" id="LastdatafromRnD${e}" name="RaEntities[0].LastDataFromRnD" value="${data[e].lastDataFromRnD.split('T')[0]}" class="form-control readOnlyUpdate customvalidateformcontrol"></td>
-             <td><input type="date" id="BEFinalReport${e}" name="RaEntities[0].BEFinalReport" value="${data[e].befinalReport.split('T')[0]}" class="form-control readOnlyUpdate customvalidateformcontrol"></td>
-             <td><select id="raAllCountryId${e}" name="RaEntities[0].CountryId"  class="form-control readOnlyUpdate customvalidateformcontrol" value="${data[e].countryId}"></select></td>
-             <td><select  id="TypeOfSubmissionId${e}" name="RaEntities[0].TypeOfSubmissionId" class="form-control readOnlyUpdate customvalidateformcontrol" value="${data[e].typeOfSubmissionId}"></select></td>
-             <td><input type="date" id="DossierReadyDate${e}" name="RaEntities[0].DossierReadyDate" value="${data[e].dossierReadyDate.split('T')[0]}" class="form-control readOnlyUpdate customvalidateformcontrol"></td>
-             <td><input type="date" id="EarliestSubmissionDExcl${e}" name="RaEntities[0].EarliestSubmissionDExcl" value="${data[e].earliestSubmissionDexcl.split('T')[0]}" class="form-control readOnlyUpdate customvalidateformcontrol"></td>
-              <td><input type="hidden" id="Pidfid${e}" name="RaEntities[0].Pidfid" value="${data[e].pidfid}"><input type="date" id="EarliestLaunchDExcl${e}" name="RaEntities[0].EarliestLaunchDExcl" value="${data[e].earliestLaunchDexcl.split('T')[0]}" class="form-control readOnlyUpdate customvalidateformcontrol"></td>
-             <td><input type="hidden" id="Pbfid${e}" name="RaEntities[0].Pbfid" value="${data[e].pbfid}"> <i class="fa-solid fa-circle-plus nav-icon text-success operationButton" id="addIcon" onclick="addRowra(this);"></i> <i class="fa-solid fa-trash nav-icon text-red raDeleteIcon operationButton DeleteIcon" onclick="deleteRowra(this);" style="display: none;"></i></td>
+             <td><input type="hidden" id="Pidfpbfraid${e}" name="RaEntities[${e}].Pidfpbfraid" value="${data[e].pidfpbfraid}"><select id="raCountryId${e}" name="RaEntities[${e}].CountryIdBuId" value="${data[e].countryIdBuId}"  class="form-control readOnlyUpdate customvalidateformcontrol"></select></td>
+             <td><input type="date" id="Pivotalbatchmanufactured${e}" name="RaEntities[${e}].PivotalBatchManufactured" value="${data[e].pivotalBatchManufactured.split('T')[0]}" class="form-control readOnlyUpdate customvalidateformcontrol"></td>
+             <td><input type="date" id="LastdatafromRnD${e}" name="RaEntities[${e}].LastDataFromRnD" value="${data[e].lastDataFromRnD.split('T')[0]}" class="form-control readOnlyUpdate customvalidateformcontrol"></td>
+             <td><input type="date" id="BEFinalReport${e}" name="RaEntities[${e}].BEFinalReport" value="${data[e].befinalReport.split('T')[0]}" class="form-control readOnlyUpdate customvalidateformcontrol"></td>
+             <td><select id="raAllCountryId${e}" name="RaEntities[${e}].CountryId"  class="form-control readOnlyUpdate customvalidateformcontrol" value="${data[e].countryId}"></select></td>
+             <td><select  id="TypeOfSubmissionId${e}" name="RaEntities[${e}].TypeOfSubmissionId" class="form-control readOnlyUpdate customvalidateformcontrol" value="${data[e].typeOfSubmissionId}"></select></td>
+             <td><input type="date" id="DossierReadyDate${e}" name="RaEntities[${e}].DossierReadyDate" value="${data[e].dossierReadyDate.split('T')[0]}" class="form-control readOnlyUpdate customvalidateformcontrol"></td>
+             <td><input type="date" id="EarliestSubmissionDExcl${e}" name="RaEntities[${e}].EarliestSubmissionDExcl" value="${data[e].earliestSubmissionDexcl.split('T')[0]}" class="form-control readOnlyUpdate customvalidateformcontrol"></td>
+              <td><input type="hidden" id="Pidfid${e}" name="RaEntities[${e}].Pidfid" value="${data[e].pidfid}"><input type="date" id="EarliestLaunchDExcl${e}" name="RaEntities[${e}].EarliestLaunchDExcl" value="${data[e].earliestLaunchDexcl.split('T')[0]}" class="form-control readOnlyUpdate customvalidateformcontrol"></td>
+             <td><input type="hidden" id="Pbfid${e}" name="RaEntities[${e}].Pbfid" value="${data[e].pbfid}"> <i class="fa-solid fa-circle-plus nav-icon text-success operationButton" id="addIcon" onclick="addRowra(this);"></i> <i class="fa-solid fa-trash nav-icon text-red raDeleteIcon operationButton DeleteIcon" onclick="deleteRowra(this);" style="display: none;"></i></td>
              </tr>`;
         }
 
       
     }
     tbody.append(tr);
+    //SetRaChildRow();
     ShowHideRaDelete();
     GetCountyByBussinessUnitId();
     GetTypeOfSubmission();
