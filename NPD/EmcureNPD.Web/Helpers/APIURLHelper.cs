@@ -372,7 +372,8 @@ namespace EmcureNPD.Web.Helpers
 
         public static string SavePBFClinical = "api/PBF/InsertUpdatePBFClinicalDetails";
         public static string GetPBFTabDetails = "api/PBF/PBFTabDetails";
-
+        public static string GetTypeOfSubmission = "api/PBF/GetTypeOfSubmission";
+        public static string GetRa = "api/PBF/GetRa";
         #endregion PIDF
 
         #region MarketExtension

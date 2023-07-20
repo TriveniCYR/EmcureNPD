@@ -112,6 +112,7 @@ namespace EmcureNPD.Business.Models
         public List<ClinicalEntity> ClinicalEntities { get; set; }
         public string AnalyticalRawData { get; set; }
         public List<AnalyticalEntity> AnalyticalEntities { get; set; }
+        public List<PidfPbfRaEntity> RaEntities { get; set; }
         public AnalyticalAmvcost AnalyticalAMVCosts { get; set; }
         public string AnalyticalStrengthMappingRawData { get; set; }
         public List<AnalyticalAmvcostStrengthMappingEntity> AnalyticalStrengthMappingEntities { get; set; }
