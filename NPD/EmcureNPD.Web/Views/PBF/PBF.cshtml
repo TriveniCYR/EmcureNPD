@@ -340,7 +340,7 @@
 
                                     </div>
                                 </div>
-                                <div class="col-md-3">
+                               @* <div class="col-md-3">
                                     <div class="form-group required">
                                         <label class="control-label">Test Licence Availability</label><span class="text-danger">*</span>
                                         @Html.HiddenFor(model => model.TestLicenseAvailability, new { @class = "control-label" ,@required="required"})
@@ -349,6 +349,39 @@
                                         @Html.ValidationMessageFor(model => model.TestLicenseAvailability, "", new { @class = "text-danger" })
                                     </div>
                                 </div>
+                                <div class="col-md-3">
+                                    <div class="form-group required">
+                                        <label class="control-label">R&D Responsible Person</label><span class="text-danger">*</span>
+                                        @Html.TextBoxFor(model => model.TestLicenseAvailability, new { @class = "form-control" ,@required="required"})
+                                       
+                                        @Html.ValidationMessageFor(model => model.TestLicenseAvailability, "", new { @class = "text-danger" })
+                                    </div>
+                                </div>
+                                <div class="col-md-3">
+                                    <div class="form-group required">
+                                        <label class="control-label">Type Of Development</label><span class="text-danger">*</span>
+                                        @Html.TextBoxFor(model => model.TestLicenseAvailability, new { @class = "form-control" ,@required="required"})
+
+                                        @Html.ValidationMessageFor(model => model.TestLicenseAvailability, "", new { @class = "text-danger" })
+                                    </div>
+                                </div>
+                                <div class="col-md-3">
+                                    <div class="form-group required">
+                                        <label class="control-label">Pivotal Batches Manufactured Completed</label><span class="text-danger">*</span>
+                                        @Html.TextBoxFor(model => model.TestLicenseAvailability, new { @class = "form-control" ,@required="required"})
+
+                                        @Html.ValidationMessageFor(model => model.TestLicenseAvailability, "", new { @class = "text-danger" })
+                                    </div>
+                                </div>
+                                <div class="col-md-3">
+                                    <div class="form-group required">
+                                        <label class="control-label">Pivotal Batches Manufactured Completed</label><span class="text-danger">*</span>
+                                        @Html.TextBoxFor(model => model.TestLicenseAvailability, new { @class = "form-control" ,@required="required"})
+
+                                        @Html.ValidationMessageFor(model => model.TestLicenseAvailability, "", new { @class = "text-danger" })
+                                    </div>
+                                </div>*@
+
                                 @* <div class="col-md-12">
                                 <div class="card">
                                 <div class="card-header bg-primary">
@@ -1014,11 +1047,12 @@
                                             <th>Pivotal batch manufactured</th>
                                             <th>Last data from R&D</th>
                                             <th>BE Final Report</th>
-                                            <th>List of countries</th>
+                                            @*<th>List of countries</th>*@
                                             <th>Type of Submission</th>
                                             <th>Dossier Ready Date</th>
                                             <th>Earliest Submission - D Excl</th>
                                             <th>Earliest Launch - D Excl</th>
+                                            <th>Las Date To Regulatory</th>
                                             <th>Action</th>
                                             </thead>
                                             <tbody id="tableRABody">

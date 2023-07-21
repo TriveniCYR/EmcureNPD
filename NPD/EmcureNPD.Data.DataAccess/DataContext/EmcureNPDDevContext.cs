@@ -2599,6 +2599,8 @@ namespace EmcureNPD.Data.DataAccess.DataContext
                     .HasColumnType("datetime")
                     .HasColumnName("EarliestSubmissionDExcl");
 
+                entity.Property(e => e.LasDateToRegulatory).HasColumnType("datetime");
+
                 entity.Property(e => e.LastDataFromRnD).HasColumnType("datetime");
 
                 entity.Property(e => e.Pbfid).HasColumnName("PBFId");

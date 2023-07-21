@@ -2218,7 +2218,7 @@ namespace EmcureNPD.Business.Core.Implementation
 
                 #endregion RND Add Update
                 #region RA Add Update
-               var IsRaSaved=await AddUpdateRa(pbfentity.RaEntities, loggedInUserId);
+               var IsRaSaved=await AddUpdateRa(pbfentity.RaEntities, loggedInUserId, pbfentity.Pidfid, pbfentity.Pidfpbfid);
                 #endregion
                 //PidfPbfGeneral objPIDFGeneralupdate;
                 var objPIDFGeneralupdate = _pidfPbfGeneralRepository.GetAllQuery().Where(x => x.Pidfpbfid == pbfentity.Pidfpbfid && x.BusinessUnitId == pbfentity.BusinessUnitId).FirstOrDefault();
@@ -2464,7 +2464,7 @@ namespace EmcureNPD.Business.Core.Implementation
                 _ExceptionService.LogException(ex);
             }
         }
-        public async Task<bool> AddUpdateRa(List<PidfPbfRaEntity> ls, int CreatedBy)
+        public async Task<bool> AddUpdateRa(List<PidfPbfRaEntity> ls, int CreatedBy,long pidfId,long pbfid=0)
         {
             try
             {
@@ -2483,6 +2483,7 @@ namespace EmcureNPD.Business.Core.Implementation
                 recordsTable.Columns.Add("DossierReadyDate", typeof(DateTime));
                 recordsTable.Columns.Add("EarliestSubmissionDExcl", typeof(DateTime));
                 recordsTable.Columns.Add("EarliestLaunchDExcl", typeof(DateTime));
+                recordsTable.Columns.Add("LasDateToRegulatory", typeof(DateTime));
                 recordsTable.Columns.Add("CreatedOn", typeof(DateTime));
                 recordsTable.Columns.Add("UpdatedOn", typeof(DateTime));
                 recordsTable.Columns.Add("DeletedOn", typeof(DateTime));
@@ -2491,21 +2492,22 @@ namespace EmcureNPD.Business.Core.Implementation
                 foreach (var item in ls)
                 {
 
-                    if (item.Pbfid > 0  && item.Pidfid > 0)
+                    if (pidfId > 0)
                     {
                         row = recordsTable.NewRow();
                         row["PIDFPBFRAId"] = item.Pidfpbfraid;
-                        row["PIDFId"] = item.Pidfid;
-                        row["PBFId"] = item.Pbfid == 0 ? DBNull.Value : item.Pbfid;
+                        row["PIDFId"] = pidfId;
+                        row["PBFId"] = pbfid;
                         row["CountryIdBuId"] = item.CountryIdBuId == 0 ? DBNull.Value : item.CountryIdBuId;
                         row["PivotalBatchManufactured"] = item.PivotalBatchManufactured == null ? DBNull.Value : item.PivotalBatchManufactured;
                         row["LastDataFromRnD"] = item.LastDataFromRnD == null ? DBNull.Value : item.LastDataFromRnD;
                         row["BEFinalReport"] = item.BefinalReport == null ? DBNull.Value : item.BefinalReport;
-                        row["CountryId"] = item.CountryId == 0 ? DBNull.Value : item.CountryId;
+                        row["CountryId"] = item.CountryId == 0 ? 0 : item.CountryId;
                         row["TypeOfSubmissionId"] = item.TypeOfSubmissionId == 0 ? DBNull.Value : item.TypeOfSubmissionId;
                         row["DossierReadyDate"] = item.DossierReadyDate == null ? DBNull.Value : item.DossierReadyDate;
                         row["EarliestSubmissionDExcl"] = item.EarliestSubmissionDexcl == null ? DBNull.Value : item.EarliestSubmissionDexcl;
                         row["EarliestLaunchDExcl"] = item.EarliestLaunchDexcl == null ? DBNull.Value : item.EarliestLaunchDexcl;
+                        row["LasDateToRegulatory"] = item.LasDateToRegulatory == null ? DBNull.Value : item.LasDateToRegulatory;
                         row["CreatedOn"] = item.Pidfpbfraid > 0 ? DBNull.Value : DateTime.Now ;
                         row["UpdatedOn"] =item.Pidfpbfraid>0 ?DateTime.Now: DBNull.Value;
                         row["DeletedOn"] = item.Pidfpbfraid > 0 ? DateTime.Now : DBNull.Value;
