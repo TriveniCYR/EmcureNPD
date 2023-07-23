@@ -20,6 +20,7 @@ namespace EmcureNPD.Business.Models
         public DateTime? DossierReadyDate { get; set; }
         public DateTime? EarliestSubmissionDexcl { get; set; }
         public DateTime? EarliestLaunchDexcl { get; set; }
+        public DateTime? LasDateToRegulatory { get; set; } 
         public DateTime CreatedOn { get; set; }
         public DateTime? UpdatedOn { get; set; }
         public DateTime? DeletedOn { get; set; }

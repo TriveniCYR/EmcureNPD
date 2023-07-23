@@ -809,7 +809,7 @@ function GetPBFDropdownSuccess(data) {
             $('#PbfPackagingTypeId').append(_emptyOption);
             // $('#PbfManufacturingId').append(_emptyOption);
             $('#PbfRFDCountryId').append(_emptyOption);
-            $('#raAllCountryId0').append(_emptyOption);
+            //$('#raAllCountryId0').append(_emptyOption);
             $('#ProductTypeId').append(_emptyOption);
             $('#GeneralProjectComplexity').append(_emptyOption);
             // $('#GeneralProductTypeId').append(_emptyOption);
@@ -845,7 +845,7 @@ function GetPBFDropdownSuccess(data) {
             //});
             $(data.MasterCountry).each(function (index, item) {
                 $('#PbfRFDCountryId').append('<option value="' + item.countryID + '">' + item.countryName + '</option>');
-                $('#raAllCountryId0').append('<option value="' + item.countryID + '">' + item.countryName + '</option>');
+                //$('#raAllCountryId0').append('<option value="' + item.countryID + '">' + item.countryName + '</option>');
             });
             for (var i = 1; i < 6; i++) {
                 $('#GeneralProjectComplexity').append('<option value="' + i + '">' + i + '</option>');
@@ -3221,12 +3221,13 @@ function BindRA(data=null) {
              <td><input type="date" id="Pivotalbatchmanufactured0" name="RaEntities[0].PivotalBatchManufactured" class="form-control readOnlyUpdate  valid"></td>
              <td><input type="date" id="LastdatafromRnD0" name="RaEntities[0].LastDataFromRnD" class="form-control readOnlyUpdate  valid"></td>
              <td><input type="date" id="BEFinalReport0" name="RaEntities[0].BEFinalReport" class="form-control readOnlyUpdate  valid"></td>
-             <td><select id="raAllCountryId0" name="RaEntities[0].CountryId" class="form-control readOnlyUpdate  valid"></select></td>
              <td><select  id="TypeOfSubmissionId0" name="RaEntities[0].TypeOfSubmissionId" class="form-control readOnlyUpdate  valid"></select></td>
              <td><input type="date" id="DossierReadyDate0" name="RaEntities[0].DossierReadyDate" class="form-control readOnlyUpdate  valid"></td>
              <td><input type="date" id="EarliestSubmissionDExcl0" name="RaEntities[0].EarliestSubmissionDExcl" class="form-control readOnlyUpdate  valid"></td>
-              <td><input type="hidden"  id="Pidfid0"  name="RaEntities[0].Pidfid" value="${_PIDFID}"><input type="date" id="EarliestLaunchDexcl0" name="RaEntities[0].EarliestLaunchDexcl" class="form-control readOnlyUpdate valid"></td>
-             <td><input type="hidden" id="Pbfid0"  name="RaEntities[0].Pbfid" value="${_PIDFPBFId}"> <i class="fa-solid fa-circle-plus nav-icon text-success operationButton" id="addIcon" onclick="addRowra(this);"></i> <i class="fa-solid fa-trash nav-icon text-red raDeleteIcon operationButton DeleteIcon" onclick="deleteRowra(this);" style="display: none;"></i></td>
+              <td><input type="date" id="EarliestLaunchDexcl0" name="RaEntities[0].EarliestLaunchDexcl" class="form-control readOnlyUpdate valid"></td>
+              <td> <input type="date" id="LasDateToRegulatory0" name="RaEntities[0].LasDateToRegulatory" class="form-control readOnlyUpdate valid"></td>
+             <td>  <i class="fa-solid fa-circle-plus nav-icon text-success operationButton" id="addIcon" onclick="addRowra(this);"></i> <i class="fa-solid fa-trash nav-icon text-red raDeleteIcon operationButton DeleteIcon" onclick="deleteRowra(this);" style="display: none;"></i>
+             </td>
              </tr>`;
        
     }
@@ -3238,12 +3239,14 @@ function BindRA(data=null) {
              <td><input type="date" id="Pivotalbatchmanufactured${e}" name="RaEntities[${e}].PivotalBatchManufactured" value="${data[e].pivotalBatchManufactured.split('T')[0]}" class="form-control readOnlyUpdate  valid"></td>
              <td><input type="date" id="LastdatafromRnD${e}" name="RaEntities[${e}].LastDataFromRnD" value="${data[e].lastDataFromRnD.split('T')[0]}" class="form-control readOnlyUpdate  valid"></td>
              <td><input type="date" id="BEFinalReport${e}" name="RaEntities[${e}].BEFinalReport" value="${data[e].befinalReport.split('T')[0]}" class="form-control readOnlyUpdate  valid"></td>
-             <td><select id="raAllCountryId${e}" name="RaEntities[${e}].CountryId"  class="form-control readOnlyUpdate  valid" value="${data[e].countryId}"></select></td>
+            
              <td><select  id="TypeOfSubmissionId${e}" name="RaEntities[${e}].TypeOfSubmissionId" class="form-control readOnlyUpdate  valid" value="${data[e].typeOfSubmissionId}"></select></td>
              <td><input type="date" id="DossierReadyDate${e}" name="RaEntities[${e}].DossierReadyDate" value="${data[e].dossierReadyDate.split('T')[0]}" class="form-control readOnlyUpdate  valid"></td>
              <td><input type="date" id="EarliestSubmissionDExcl${e}" name="RaEntities[${e}].EarliestSubmissionDExcl" value="${data[e].earliestSubmissionDexcl.split('T')[0]}" class="form-control readOnlyUpdate  valid"></td>
-              <td><input type="hidden" id="Pidfid${e}"  name="RaEntities[${e}].Pidfid" value="${data[e].pidfid}"><input type="date" id="EarliestLaunchDexcl${e}" name="RaEntities[${e}].EarliestLaunchDexcl" value="${data[e].earliestLaunchDexcl==null?'':data[e].earliestLaunchDexcl.split('T')[0]}" class="form-control readOnlyUpdate  valid"></td>
-             <td><input type="hidden" id="Pbfid${e}"  name="RaEntities[${e}].Pbfid" value="${data[e].pbfid}"> <i class="fa-solid fa-circle-plus nav-icon text-success operationButton" id="addIcon" onclick="addRowra(this);"></i> <i class="fa-solid fa-trash nav-icon text-red raDeleteIcon operationButton DeleteIcon" onclick="deleteRowra(this);" style="display: none;"></i></td>
+              <td><input type="date" id="EarliestLaunchDexcl${e}" name="RaEntities[${e}].EarliestLaunchDexcl" value="${data[e].earliestLaunchDexcl == null ? '' : data[e].earliestLaunchDexcl.split('T')[0]}" class="form-control readOnlyUpdate  valid"></td>
+              <td> <input type="date" id="LasDateToRegulatory${e}" name="RaEntities[${e}].LasDateToRegulatory" value="${data[e].lasDateToRegulatory == null ? '' : data[e].lasDateToRegulatory.split('T')[0]}" class="form-control readOnlyUpdate valid"></td>
+             <td> <i class="fa-solid fa-circle-plus nav-icon text-success operationButton" id="addIcon" onclick="addRowra(this);"></i> <i class="fa-solid fa-trash nav-icon text-red raDeleteIcon operationButton DeleteIcon" onclick="deleteRowra(this);" style="display: none;"></i>
+             </td>
              </tr>`;
         }
 
@@ -3312,28 +3315,29 @@ function SetRaChildRow() {
 
         $(this).find("td:eq(1) input").attr("name", "RaEntities[" + index.toString() + "].PivotalBatchManufactured");
         $(this).find("td:eq(1) input").attr("id", "PivotalBatchManufactured" + index.toString());
+
+
         $(this).find("td:eq(2) input").attr("name", "RaEntities[" + index.toString() + "].LastDataFromRnD");
         $(this).find("td:eq(2) input").attr("id", "LastDataFromRnD" + index.toString());
         $(this).find("td:eq(3) input").attr("name", "RaEntities[" + index.toString() + "].BEFinalReport");
         $(this).find("td:eq(3) input").attr("id", "BEFinalReport" + index.toString());
-        $(this).find("td:eq(4) select").attr("name", "RaEntities[" + index.toString() + "].CountryId");
-        $(this).find("td:eq(4) select").attr("id", "CountryId" + index.toString());
-        $(this).find("td:eq(5) select").attr("name", "RaEntities[" + index.toString() + "].TypeOfSubmissionId");
-        $(this).find("td:eq(5) select").attr("id", "TypeOfSubmissionId" + index.toString());
+        //$(this).find("td:eq(4) select").attr("name", "RaEntities[" + index.toString() + "].CountryId");
+        //$(this).find("td:eq(4) select").attr("id", "CountryId" + index.toString());
+        $(this).find("td:eq(4) select").attr("name", "RaEntities[" + index.toString() + "].TypeOfSubmissionId");
+        $(this).find("td:eq(4) select").attr("id", "TypeOfSubmissionId" + index.toString());
 
-        $(this).find("td:eq(6) input").attr("name", "RaEntities[" + index.toString() + "].DossierReadyDate");
-        $(this).find("td:eq(6) input").attr("id", "DossierReadyDate" + index.toString());
+        $(this).find("td:eq(5) input").attr("name", "RaEntities[" + index.toString() + "].DossierReadyDate");
+        $(this).find("td:eq(5) input").attr("id", "DossierReadyDate" + index.toString());
 
-        $(this).find("td:eq(7) input").attr("name", "RaEntities[" + index.toString() + "].EarliestSubmissionDExcl");
-        $(this).find("td:eq(7) input").attr("id", "EarliestSubmissionDExcl" + index.toString());
-        $(this).find("td:eq(8) input").attr("name", "RaEntities[" + index.toString() + "].EarliestLaunchDexcl");
-        $(this).find("td:eq(8) input").attr("id", "EarliestLaunchDexcl" + index.toString());
+        $(this).find("td:eq(6) input").attr("name", "RaEntities[" + index.toString() + "].EarliestSubmissionDExcl");
+        $(this).find("td:eq(6) input").attr("id", "EarliestSubmissionDExcl" + index.toString());
+        $(this).find("td:eq(7) input").attr("name", "RaEntities[" + index.toString() + "].EarliestLaunchDexcl");
+        $(this).find("td:eq(7) input").attr("id", "EarliestLaunchDexcl" + index.toString());
 
-        $(this).find("td:eq(8) input").attr("name", "RaEntities[" + index.toString() + "].Pidfid");
-        $(this).find("td:eq(8) input").attr("id", "Pidfid" + index.toString());
+        $(this).find("td:eq(8) input").attr("name", "RaEntities[" + index.toString() + "].LasDateToRegulatory");
+        $(this).find("td:eq(8) input").attr("id", "LasDateToRegulatory" + index.toString());
 
-        $(this).find("td:eq(9) input").attr("name", "RaEntities[" + index.toString() + "].Pbfid");
-        $(this).find("td:eq(9) input").attr("id", "Pbfid" + index.toString());
+        
     });
 }
 async function bindRaDropDowns() {
@@ -3346,16 +3350,16 @@ async function bindRaDropDowns() {
                     $("#TypeOfSubmissionId" + z).append('<option value="' + this.value + '">' + this.text + '</option>');
 
                 });
-                await $("#raAllCountryId0 option").each(function () {
-                    $("#raAllCountryId" + z).append('<option value="' + this.value + '">' + this.text + '</option>');
-                });
+                //await $("#raAllCountryId0 option").each(function () {
+                //    $("#raAllCountryId" + z).append('<option value="' + this.value + '">' + this.text + '</option>');
+                //});
                 await $("#raCountryId0 option").each(function () {
                     $("#raCountryId" + z).append('<option value="' + this.value + '">' + this.text + '</option>');
                 });
             }
             $("#TypeOfSubmissionId" + z).val($("#TypeOfSubmissionId" + z).attr('value') == undefined ? 0 : $("#TypeOfSubmissionId" + z).attr('value'))
 
-            $("#raAllCountryId" + z).val($("#raAllCountryId" + z).attr('value') == undefined ? 0 : $("#raAllCountryId" + z).attr('value'))
+            /*$("#raAllCountryId" + z).val($("#raAllCountryId" + z).attr('value') == undefined ? 0 : $("#raAllCountryId" + z).attr('value'))*/
 
             $("#raCountryId" + z).val($("#raCountryId" + z).attr('value') == undefined ? 0 : $("#raCountryId" + z).attr('value'))
         }
