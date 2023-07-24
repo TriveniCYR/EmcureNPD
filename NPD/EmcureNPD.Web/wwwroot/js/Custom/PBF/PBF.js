@@ -3340,20 +3340,20 @@ function SetRaChildRow() {
         
     });
 }
-async function bindRaDropDowns() {
+ function bindRaDropDowns() {
     if (IsRaEditable) {
 
         for (let z = 0; z < $("#tableRABody").find("tr").length; z++) {
 
             if (z > 0) {
-                await $("#TypeOfSubmissionId0 option").each(function () {
+                 $("#TypeOfSubmissionId0 option").each(function () {
                     $("#TypeOfSubmissionId" + z).append('<option value="' + this.value + '">' + this.text + '</option>');
 
                 });
                 //await $("#raAllCountryId0 option").each(function () {
                 //    $("#raAllCountryId" + z).append('<option value="' + this.value + '">' + this.text + '</option>');
                 //});
-                await $("#raCountryId0 option").each(function () {
+                 $("#raCountryId0 option").each(function () {
                     $("#raCountryId" + z).append('<option value="' + this.value + '">' + this.text + '</option>');
                 });
             }
