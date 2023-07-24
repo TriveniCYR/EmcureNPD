@@ -772,11 +772,47 @@ $(document).ready(function () {
     $('#btnNextRnDTabSelectedValue').val(0); //custom-tabs-department-RnD-tab-
 });
 
+function convertFormToJSON() {
+    const array = $('form').serializeArray(); 
+    const json = {};
+    $.each(array, function () {
+        json[this.name] = this.value;
+    });
+    return json;
+}
+function PostPBFFormbyNext() {
+    objMainForm = {};
+    var formdata = convertFormToJSON();
+    $.extend(objMainForm, { 'PIDFId': parseInt(_PIDFID) });
+    $.extend(objMainForm, { 'pbfEntity': formdata });
+    ajaxServiceMethod('/PBF/PBF', 'POST', PostPBFFormbyNextSuccess, PostPBFFormbyNextError, JSON.stringify(objMainForm));
+}
+function PostPBFFormbyNextSuccess(data) {
+    try {
+       // $('#SavePIDFModel').modal('hide');
+        if (data._Success === true) {
+            toastr.success(data._Message);
+            //IsShowCancel_Save_buttons(true);
+           // window.location.href = "/PIDF/PIDFList?ScreenId=4";
+        }
+        else {
+            toastr.error(data._Message);
+        }
+    } catch (e) {
+        toastr.error('Save Commercial Error:' + e.message);
+    }
+}
+
+function PostPBFFormbyNextError(x, y, z) {
+    toastr.error('');
+}
+
 $('#btnNextRnDTab').click(function () {
     var NextTabIndex = parseInt($('#btnNextRnDTabSelectedValue').val()) + 1;   
     var newxtTabId = '#custom-tabs-department-RnD-tab-' + arrRnDTabList[NextTabIndex];
     $('#btnNextRnDTabSelectedValue').val(NextTabIndex);
     $(newxtTabId).click();
+    PostPBFFormbyNext();
 });
 $('[id^=custom-tabs-department-RnD-tab-]').click(function () {
     var tabid = $(this).attr('id');

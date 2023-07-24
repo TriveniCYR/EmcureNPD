@@ -8,6 +8,7 @@ using EmcureNPD.Utility.Utility;
 using EmcureNPD.Web.Models;
 using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Dynamic;
 using System.Linq;
 using System.Net.Mail;
@@ -31,15 +32,99 @@ namespace EmcureNPD.Business.Core.Implementation
             configuration = _configuration;
             _MasterUserService = MasterUserService;
         }
+        public async Task<string> SendRemiderForPIDFSubmitted(DataSet dbresult)
+        {
+            string _logMessage = string.Empty;
+            var _objPIDFEntity = new List<PIDFEntity>();
+            var _objPidfProductStregthEntity = new List<PidfProductStregthEntity>();
+            var _objIMSDataEntity = new List<IMSDataEntity>();
+            var _objMasterUserEntity = new List<MasterUserEntity>();
+            if (dbresult != null)
+            {
+                // await SendRemiderForPIDFSubmitted();
+                if (dbresult.Tables[1] != null && dbresult.Tables[1].Rows.Count > 0)
+                {
+                    _objPIDFEntity = dbresult.Tables[1].DataTableToList<PIDFEntity>();
+                }
+                if (dbresult.Tables[2] != null && dbresult.Tables[2].Rows.Count > 0)
+                {
+                    _objPidfProductStregthEntity = dbresult.Tables[2].DataTableToList<PidfProductStregthEntity>();
+                }
+                if (dbresult.Tables[3] != null && dbresult.Tables[3].Rows.Count > 0)
+                {
+                    _objIMSDataEntity = dbresult.Tables[3].DataTableToList<IMSDataEntity>();
+                }
+                if (dbresult.Tables[4] != null && dbresult.Tables[4].Rows.Count > 0)
+                {
+                    _objMasterUserEntity = dbresult.Tables[4].DataTableToList<MasterUserEntity>();
+                }
 
+                //foreach (var user in _BUObjects) {
+                string commasepretedUserList = string.Empty;
+                List<string> _UserLIst = _objMasterUserEntity.Select(x => x.FullName).ToList();
+                commasepretedUserList = string.Join(',', _UserLIst);
+                 _logMessage += "Fetch list of user to send reminder for PIDF Submitted { " + commasepretedUserList + "} \n";
+                 //SendReminderMailForPIDFSubmitted(UserList, ref _logMessage);
+                foreach(var User in _objMasterUserEntity)
+                {
+                    foreach(var pidf in _objPIDFEntity)
+                    {
+                        try
+                        {
+                            EmailHelper email = new EmailHelper();
+                            string strHtml = System.IO.File.ReadAllText(@"wwwroot\Uploads\HTMLTemplates\SendReminderMailTemplate_PIDFSubmitted.html");
+
+                            strHtml = strHtml.Replace("{FullName}", User.FullName);
+                            strHtml = strHtml.Replace("{PIDFNumber}", pidf.PIDFNO);
+                            strHtml = strHtml.Replace("{MoleculeName}", pidf.MoleculeName);
+                            strHtml = strHtml.Replace("{BrandName}", pidf.MoleculeName);
+                            strHtml = strHtml.Replace("{BusinessUnitName}", pidf.MoleculeName);
+                            strHtml = strHtml.Replace("{DosageFormName}", pidf.MoleculeName);
+
+
+
+                            string strStrengthData = "";
+                            foreach (var strengthdata in _objPidfProductStregthEntity.FindAll(x => x.Pidfid == pidf.PIDFID).ToList())
+                            {
+                                strStrengthData += "" + strengthdata.Strength;
+                                strStrengthData += ",";
+                            }
+
+                            string strIMSData = "";
+                           foreach(var imsdata in _objIMSDataEntity.FindAll(x=>x.Pidfid == pidf.PIDFID).ToList())
+                            {
+                                strIMSData += "IMS Value :" + imsdata.Imsvalue;
+                                strIMSData += ", IMS Volume :" + imsdata.Imsvolume;
+                                strIMSData += "<br>";
+                            }
+                            strHtml = strHtml.Replace("{StrengthList}", strStrengthData);
+                            strHtml = strHtml.Replace("{IMSDatahList}", strIMSData);
+
+                            Console.WriteLine(strHtml);
+                            string str_subject = "PIDF : " + pidf.PIDFNO + " - Molecule Name : " + pidf.MoleculeName + " Submitted";
+                            email.SendMail(User.EmailAddress, string.Empty, str_subject, strHtml, _MasterUserService.GetSMTPConfiguration());
+                            _logMessage += " Email Sent to { " + User.EmailAddress + " } on " + DateTime.Now.ToString() + " for PIDFNO. :" + pidf.PIDFNO + "\n";
+                        }
+                        catch (Exception ex)
+                        {
+                            _logMessage += "Email failed to sent {" + User.EmailAddress + "} on " + DateTime.Now.ToString() + ex.InnerException.ToString() + "\n";
+                        }
+                    }
+                }
+                
+            }
+            return _logMessage;
+        }
         public async Task<SendReminderModel> SendReminder()
         {
             string _logMessage = string.Empty;
             SendReminderModel model = new SendReminderModel();
+            string _logMessage_PIDFSubmittted= "\n";
             var dbresult = await _masterUser.GetDataSetBySP("GetUserForReminder", System.Data.CommandType.StoredProcedure, null);
             dynamic UserList = new ExpandoObject();
             if (dbresult != null)
             {
+                _logMessage_PIDFSubmittted = await SendRemiderForPIDFSubmitted(dbresult);
                 if (dbresult.Tables[0] != null && dbresult.Tables[0].Rows.Count > 0)
                 {
                     UserList = dbresult.Tables[0].DataTableToList<SendReminderModel>();
@@ -61,6 +146,7 @@ namespace EmcureNPD.Business.Core.Implementation
           //      _logMessage += AutoUpdatePIDFObj.LogMessage;
           //  }
             model.LogMessage = _logMessage;
+            model.LogMessage += _logMessage_PIDFSubmittted;
             return model;
         }
         public void SendReminderMail(List<SendReminderModel> sendReminderModel_list,ref string _logMessage)

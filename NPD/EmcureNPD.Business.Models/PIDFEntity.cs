@@ -92,7 +92,10 @@ namespace EmcureNPD.Business.Models
         //[Required(ErrorMessageResourceType = typeof(Validation), ErrorMessageResourceName = "Required")]
         //[Display(Name = "MarketExtension", ResourceType = typeof(Master))]
         public int? MarketExtenstionId { get; set; }
-		
+
+        public string BusinessUnitName { get; set; }
+        public string DosageFormName { get; set; }
+
         public string SaveType { get; set; }
 		public int? LogInId { get; set; }
 		public List<PIDFEntity> PIDFEntities { get; set; }
