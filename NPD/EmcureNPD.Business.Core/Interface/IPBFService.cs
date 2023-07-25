@@ -31,7 +31,7 @@ namespace EmcureNPD.Business.Core.Interface
 
         Task<PBFFormEntity> GetPbfFormDetails(long pidfId, int buid, int? strengthid);
 
-        Task<dynamic> PBFAllTabDetails(int PIDFId, int BUId);
+        Task<dynamic> PBFAllTabDetails(int PIDFId, int BUId, int pbfId = 0, int PbfRndDetailsId = 0);
         Task<List<MasterPlantLineEntity>> GetLineByPlantId(int id);
         Task<List<PidfPbfRaEntity>> GetRa(int PidfId, int PifdPbfId);
         Task<List<MasterTypeOfSubmissionEntity>> GetTypeOfSubmission();

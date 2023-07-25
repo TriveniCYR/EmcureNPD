@@ -1028,8 +1028,38 @@ function BindReferenceProductDetails(data) {
         $('#dvPBFContainer').find('#RFDCommercialBatchSize').val(data[0].rfdCommercialBatchSize);
     }
 }
+function BindPbfGeneralRnd(data) {
+    console.log(data)
+    if (data.pbfRndDetailsId > 0) {
+        $("#PidfPbfGeneralRnd_RndResponsiblePerson").val(data.rndResponsiblePerson);
+        /*let dat = moment(data).format("DD MMM YYYY h:m");*/
+        $("#PidfPbfGeneralRnd_TypeOfDevelopmentDate").val(data.typeOfDevelopmentDate.split('T')[0])//moment(data.typeOfDevelopmentDate).format('DD MM YYYY'));
+        $("#PidfPbfGeneralRnd_PivotalBatchesManufacturedCompleted").val(data.pivotalBatchesManufacturedCompleted.split('T')[0])
+        $("#PidfPbfGeneralRnd_StabilityResultsDayZero").val(data.stabilityResultsDayZero.split('T')[0])
+        $("#PidfPbfGeneralRnd_StabilityResultsThreeMonth").val(data.stabilityResultsThreeMonth.split('T')[0])
+        $("#PidfPbfGeneralRnd_StabilityResultsSixMonth").val(data.stabilityResultsSixMonth.split('T')[0])
+        if (data.nonStandardProduct) {
+            $("#NonStandardProduct").prop('checked', true);
+            $("#NonStandardProduct").val(true);
+        }
+        else {
+            $("#NonStandardProduct").prop('checked', false);
+            $("#NonStandardProduct").val(false);
+        }
+        $("#PidfPbfGeneralRnd_Pivotals").val(data.pivotals)
+        $("#PidfPbfGeneralRnd_BatchSizes").val(data.batchSizes)
+        $("#PidfPbfGeneralRnd_NoMofBatchesPerStrength").val(data.noMofBatchesPerStrength)
+        $("#PidfPbfGeneralRnd_SiteTransferDate").val(data.siteTransferDate.split('T')[0])
+        $("#PidfPbfGeneralRnd_ApiOrderedDate").val(data.apiOrderedDate.split('T')[0])
+        $("#PidfPbfGeneralRnd_ApiReceivedDate").val(data.apiReceivedDate.split('T')[0])
+        $("#PidfPbfGeneralRnd_FinalFormulationApproved").val(data.finalFormulationApproved.split('T')[0])
+        $("#PbfRndDetailsId").val(data.pbfRndDetailsId)
+        $("#PidfPbfGeneralRnd_PidfId").val(data.pidfId)
+        $("#PidfPbfGeneralRnd_PbfId").val(data.pbfId)
+    }
+}
 function GetPBFTabDetails() {
-    ajaxServiceMethod($('#hdnBaseURL').val() + GetPBFAllTabDetails + "/" + _PIDFID + "/" + _selectBusinessUnit, 'GET', GetPBFTabDetailsSuccess, GetPBFTabDetailsError);
+    ajaxServiceMethod($('#hdnBaseURL').val() + GetPBFAllTabDetails + "/" + _PIDFID + "/" + _selectBusinessUnit + "/"+_PIDFPBFId + "/" + $("#PbfRndDetailsId").val(), 'GET', GetPBFTabDetailsSuccess, GetPBFTabDetailsError);
 }
 function GetPBFTabDetailsSuccess(data) {
     try {
@@ -1077,6 +1107,11 @@ function GetPBFTabDetailsSuccess(data) {
             $(data.RNDExicipientPrototype).each(function (index, item) {
                 $('.rndExicipientPrototype').append('<option value="' + item.excipientRequirementId + '" data-ExcipientCost="' + item.excipientRequirementCost + '">' + item.excipientRequirementName + '</option>');
             });
+            //**Start Date Formating for get GetPIDF_PBF_General_RND*/
+            //data.PidfPbfGeneralRnd
+            BindPbfGeneralRnd(data.PidfPbfGeneralRnd);
+            //
+            //**End Date Formating for get GetPIDF_PBF_General_RND*/
             $.each($('.AnalyticalTestTypeId'), function (index, item) {
                 if ($(this).next().val() != undefined && $(this).next().val() != null) {
                     $(this).val($(this).next().val());
@@ -3401,3 +3436,11 @@ function SetRaChildRow() {
         }
     }
 }
+$("#NonStandardProduct").click(function () {
+    if ($(this).is(":checked")) {
+        $(this).val(true);
+    }
+    else {
+        $(this).val(false);
+    }
+})

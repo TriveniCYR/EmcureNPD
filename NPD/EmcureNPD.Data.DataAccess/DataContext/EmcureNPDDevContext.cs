@@ -3,7 +3,6 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata;
 using EmcureNPD.Data.DataAccess.Entity;
 using EmcureNPD.Utility;
-
 #nullable disable
 
 namespace EmcureNPD.Data.DataAccess.DataContext
@@ -117,6 +116,7 @@ namespace EmcureNPD.Data.DataAccess.DataContext
         public virtual DbSet<PidfPbfAnalyticalCostStrengthMapping> PidfPbfAnalyticalCostStrengthMappings { get; set; }
         public virtual DbSet<PidfPbfClinical> PidfPbfClinicals { get; set; }
         public virtual DbSet<PidfPbfGeneral> PidfPbfGenerals { get; set; }
+        public virtual DbSet<PidfPbfGeneralRnd> PidfPbfGeneralRnds { get; set; }
         public virtual DbSet<PidfPbfGeneralStrength> PidfPbfGeneralStrengths { get; set; }
         public virtual DbSet<PidfPbfHeadWiseBudget> PidfPbfHeadWiseBudgets { get; set; }
         public virtual DbSet<PidfPbfMarketMapping> PidfPbfMarketMappings { get; set; }
@@ -2483,6 +2483,60 @@ namespace EmcureNPD.Data.DataAccess.DataContext
                     .WithMany(p => p.PidfPbfGenerals)
                     .HasForeignKey(d => d.ProductTypeId)
                     .HasConstraintName("FK_PIDF_PBF_General_Master_ProductType");
+            });
+
+            modelBuilder.Entity<PidfPbfGeneralRnd>(entity =>
+            {
+                entity.HasKey(e => e.PbfRndDetailsId)
+                    .HasName("PK__PIDF_PBF__5350EF231EB5A49E");
+
+                entity.ToTable("PIDF_PBF_General_RND", "dbo");
+
+                entity.Property(e => e.ApiOrderedDate).HasColumnType("datetime");
+
+                entity.Property(e => e.ApiReceivedDate).HasColumnType("datetime");
+
+                entity.Property(e => e.BatchSizes).HasMaxLength(100);
+
+                entity.Property(e => e.CreatedOn)
+                    .HasColumnType("datetime")
+                    .HasDefaultValueSql("(getdate())");
+
+                entity.Property(e => e.DeletedOn).HasColumnType("datetime");
+
+                entity.Property(e => e.FinalFormulationApproved).HasColumnType("datetime");
+
+                entity.Property(e => e.NoMofBatchesPerStrength).HasColumnName("NoMOfBatchesPerStrength");
+
+                entity.Property(e => e.PivotalBatchesManufacturedCompleted).HasColumnType("datetime");
+
+                entity.Property(e => e.Pivotals).HasMaxLength(100);
+
+                entity.Property(e => e.RndResponsiblePerson).HasMaxLength(100);
+
+                entity.Property(e => e.SiteTransferDate).HasColumnType("datetime");
+
+                entity.Property(e => e.StabilityResultsDayZero).HasColumnType("datetime");
+
+                entity.Property(e => e.StabilityResultsSixMonth).HasColumnType("datetime");
+
+                entity.Property(e => e.StabilityResultsThreeMonth).HasColumnType("datetime");
+
+                entity.Property(e => e.TypeOfDevelopmentDate).HasColumnType("datetime");
+
+                entity.Property(e => e.UpdatedOn).HasColumnType("datetime");
+
+                entity.HasOne(d => d.Pbf)
+                    .WithMany(p => p.PidfPbfGeneralRnds)
+                    .HasForeignKey(d => d.PbfId)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("FK_PIDF_PBF_General_RND_PIDF_PBF");
+
+                entity.HasOne(d => d.Pidf)
+                    .WithMany(p => p.PidfPbfGeneralRnds)
+                    .HasForeignKey(d => d.PidfId)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("FK_PIDF_PBF_General_RND_PIDF");
             });
 
             modelBuilder.Entity<PidfPbfGeneralStrength>(entity =>

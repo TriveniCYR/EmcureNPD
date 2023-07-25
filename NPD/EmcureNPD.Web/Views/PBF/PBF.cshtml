@@ -11,7 +11,9 @@
 @{
     ViewData["Title"] = "PBF";
     string jsVersion = @Configuration.GetSection("StaticJS")["version"];
-
+    long PbfRndDetailsId = Model.PidfPbfGeneralRnd == null ? 0 : Model.PidfPbfGeneralRnd.PbfRndDetailsId;
+    long valPidfId = Model.PidfPbfGeneralRnd == null ? 0 : Model.PidfPbfGeneralRnd.PidfId;
+    long valPbfId = Model.PidfPbfGeneralRnd == null ? 0 : Model.PidfPbfGeneralRnd.PbfId;
 }
 
 <div id="dvPIDFAccrdion"></div>
@@ -508,6 +510,7 @@
                                     </div>
                                 </div>
                                 @*  --------------End--Reference Product Detail-------------------------------------*@
+                               
                                 @*  Total Expenses*@
                                 <div class="col-12">
                                     <div class="card">
@@ -534,7 +537,156 @@
                                         </div>
                                     </div>
                                 </div>
+                                @*  --------------R&D Detail-------------------------------------*@
+                                <div class="row">
+                                    <div class="col-12">
+                                        <div class="card">
+                                            <div class="card-header bg-primary">
+                                                <h3 class="card-title mb-0">
 
+                                                    <button type="button" class="btn btn-tool" data-card-widget="collapse">
+                                                        R&D Detail
+                                                    </button>
+
+                                                </h3>
+                                                <div class="card-tools">
+                                                    <button type="button" class="btn btn-tool" data-card-widget="collapse" title="Collapse">
+                                                        <i class="fas fa-minus"></i>
+                                                    </button>
+                                                </div>
+                                            </div>
+                                            <div class="card-body">
+                                                <div class="row">
+                                                    <div class="col-md-3">
+                                                        <div class="form-group required">
+                                                            @Html.LabelFor(model => model.PidfPbfGeneralRnd.RndResponsiblePerson,"Rnd Responsible Person", new { @class = "control-label" })<span class="text-danger">*</span>
+                                                            <input type="hidden" id="PbfRndDetailsId" name="PidfPbfGeneralRnd.PbfRndDetailsId" value="@PbfRndDetailsId" />
+                                                            <input type="hidden" id="PidfPbfGeneralRnd_PidfId" name="PidfPbfGeneralRnd.PidfId" value="@valPidfId" />
+                                                            <input type="hidden" id="PidfPbfGeneralRnd_PbfId" name="PidfPbfGeneralRnd.PbfId" value="@valPbfId" />
+                                                            @Html.TextBoxFor(model => model.PidfPbfGeneralRnd.RndResponsiblePerson, new {@class = "form-control customvalidateformcontrol", @placeholder = "Rnd Responsible Person" ,@required="required"})
+                                                            @Html.ValidationMessageFor(model =>model.PidfPbfGeneralRnd.RndResponsiblePerson, "", new { @class = "text-danger" })
+
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-3">
+                                                        <div class="form-group required">
+
+                                                            @Html.LabelFor(model =>  model.PidfPbfGeneralRnd.TypeOfDevelopmentDate,"Type Of Development", new { @class = "control-label" })<span class="text-danger">*</span>
+                                                          
+                                                            @Html.TextBoxFor(model => model.PidfPbfGeneralRnd.TypeOfDevelopmentDate, new {@class = "form-control customvalidateformcontrol", @placeholder = "Type Of Development",@type="Date" ,@required="required"})
+                                                            @Html.ValidationMessageFor(model =>model.PidfPbfGeneralRnd.TypeOfDevelopmentDate, "", new { @class = "text-danger" })
+
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-3">
+                                                        <div class="form-group required">
+
+                                                            @Html.LabelFor(model =>  model.PidfPbfGeneralRnd.PivotalBatchesManufacturedCompleted,"Pivotal Batches Manufactured Completed", new { @class = "control-label" })<span class="text-danger">*</span>
+
+                                                            @Html.TextBoxFor(model => model.PidfPbfGeneralRnd.PivotalBatchesManufacturedCompleted, new {@class = "form-control customvalidateformcontrol", @placeholder = "Pivotal Batches Manufactured Completed",@type="Date" ,@required="required"})
+                                                            @Html.ValidationMessageFor(model =>model.PidfPbfGeneralRnd.PivotalBatchesManufacturedCompleted, "", new { @class = "text-danger" })
+
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-3">
+                                                        <div class="form-group required">
+                                                            @Html.LabelFor(model => model.PidfPbfGeneralRnd.StabilityResultsDayZero,"Stability Results Day 0", new { @class = "control-label" })<span class="text-danger">*</span>
+                                                            @Html.TextBoxFor(model => model.PidfPbfGeneralRnd.StabilityResultsDayZero, new {@class = "form-control customvalidateformcontrol", @placeholder = "Stability Results Day 0",@type="date",@required="required" })
+                                                            @Html.ValidationMessageFor(model =>model.PidfPbfGeneralRnd.StabilityResultsDayZero, "", new { @class = "text-danger" })
+
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="row">
+                                                    <div class="col-md-3">
+                                                        <div class="form-group required">
+                                                            @Html.LabelFor(model => model.PidfPbfGeneralRnd.StabilityResultsThreeMonth,"Stability Results 3 Month", new { @class = "control-label" })<span class="text-danger">*</span>
+                                                            @Html.TextBoxFor(model => model.PidfPbfGeneralRnd.StabilityResultsThreeMonth, new {@class = "form-control customvalidateformcontrol", @placeholder = "Stability Results 3 Month",@type="date",@required="required" })
+                                                            @Html.ValidationMessageFor(model =>model.PidfPbfGeneralRnd.StabilityResultsThreeMonth, "", new { @class = "text-danger" })
+
+                                                        </div>
+                                                    </div>
+                                                     <div class="col-md-3">
+                                                        <div class="form-group required">
+                                                            @Html.LabelFor(model => model.PidfPbfGeneralRnd.StabilityResultsSixMonth,"Stability Results 6 Month", new { @class = "control-label" })<span class="text-danger">*</span>
+                                                            @Html.TextBoxFor(model => model.PidfPbfGeneralRnd.StabilityResultsSixMonth, new {@class = "form-control customvalidateformcontrol", @placeholder = "Stability Results 6 Month",@type="date",@required="required" })
+                                                            @Html.ValidationMessageFor(model =>model.PidfPbfGeneralRnd.StabilityResultsSixMonth, "", new { @class = "text-danger" })
+
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-3">
+                                                        <div class="form-group required" style="margin-top: 40px;">
+                                                            @Html.LabelFor(model => model.PidfPbfGeneralRnd.NonStandardProduct,"Is Non-Standard Product", new { @class = "control-label" })
+                                                            <input type="checkbox" class="checkbox-checked" id="NonStandardProduct" name="PidfPbfGeneralRnd.NonStandardProduct" />
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-3">
+                                                        <div class="form-group required">
+                                                            @Html.LabelFor(model => model.PidfPbfGeneralRnd.Pivotals, new { @class = "control-label" }) 
+                                                            @Html.TextBoxFor(model => model.PidfPbfGeneralRnd.Pivotals,  new { @autocomplete = "off", @class = "form-control ",@placeholder="Pivotals (optional)" })
+                                                            @Html.ValidationMessageFor(model => model.PidfPbfGeneralRnd.Pivotals, "", new { @class = "text-danger" })
+                                                        </div>
+                                                    </div>
+
+                                                </div>
+                                                <div class="row">
+                                                    <div class="col-md-3">
+                                                        <div class="form-group required">
+                                                            @Html.LabelFor(model => model.PidfPbfGeneralRnd.BatchSizes,"Batch Sizes", new { @class = "control-label" })
+                                                            @Html.TextBoxFor(model => model.PidfPbfGeneralRnd.BatchSizes, new {@class = "form-control", @placeholder = "Batch Sizes (optional)"})
+                                                            @Html.ValidationMessageFor(model =>model.PidfPbfGeneralRnd.BatchSizes, "", new { @class = "text-danger" })
+
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-3">
+                                                        <div class="form-group required">
+                                                            @Html.LabelFor(model => model.PidfPbfGeneralRnd.NoMofBatchesPerStrength,"No. Of Batches/Strength", new { @class = "control-label" })
+                                                            @Html.TextBoxFor(model => model.PidfPbfGeneralRnd.NoMofBatchesPerStrength, new {@class = "form-control", @placeholder = "No. Of Batches/Strength (optional)",@type="number" })
+                                                            @Html.ValidationMessageFor(model =>model.PidfPbfGeneralRnd.NoMofBatchesPerStrength, "", new { @class = "text-danger" })
+
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-3">
+                                                        <div class="form-group required">
+                                                            @Html.LabelFor(model =>  model.PidfPbfGeneralRnd.SiteTransferDate,"Site Transfer", new { @class = "control-label" })
+                                                            @Html.TextBoxFor(model => model.PidfPbfGeneralRnd.SiteTransferDate, new {@class = "form-control", @placeholder = "Site Transfer",@type="Date"})
+                                                            @Html.ValidationMessageFor(model =>model.PidfPbfGeneralRnd.SiteTransferDate, "", new { @class = "text-danger" })
+                                                           
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-3">
+                                                        <div class="form-group required">
+                                                            @Html.LabelFor(model =>  model.PidfPbfGeneralRnd.ApiOrderedDate,"Api Ordered", new { @class = "control-label" })
+                                                            @Html.TextBoxFor(model => model.PidfPbfGeneralRnd.ApiOrderedDate, new {@class = "form-control", @placeholder = "Api Ordered",@type="Date"})
+                                                            @Html.ValidationMessageFor(model =>model.PidfPbfGeneralRnd.ApiOrderedDate, "", new { @class = "text-danger" })
+                                                        </div>
+                                                    </div>
+
+                                                </div>
+                                                <div class="row">
+                                                   
+                                                    <div class="col-md-3">
+                                                        <div class="form-group required">
+                                                            @Html.LabelFor(model =>  model.PidfPbfGeneralRnd.ApiReceivedDate,"Api Received", new { @class = "control-label" })
+                                                            @Html.TextBoxFor(model => model.PidfPbfGeneralRnd.ApiReceivedDate, new {@class = "form-control", @placeholder = "Api Received",@type="Date"})
+                                                            @Html.ValidationMessageFor(model =>model.PidfPbfGeneralRnd.ApiReceivedDate, "", new { @class = "text-danger" })
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-3">
+                                                        <div class="form-group required">
+                                                            @Html.LabelFor(model =>  model.PidfPbfGeneralRnd.FinalFormulationApproved,"Final Formulation Approved", new { @class = "control-label" })
+                                                            @Html.TextBoxFor(model => model.PidfPbfGeneralRnd.FinalFormulationApproved, new {@class = "form-control", @placeholder = "Final Formulation Approved",@type="Date"})
+                                                            @Html.ValidationMessageFor(model =>model.PidfPbfGeneralRnd.FinalFormulationApproved, "", new { @class = "text-danger" })
+                                                        </div>
+                                                    </div>
+
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                    </div>
+                                </div>
+                                @*  --------------R&D Product Detail-------------------------------------*@
                             </div>
                         </div>
                     </div>

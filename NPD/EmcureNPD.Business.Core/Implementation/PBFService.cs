@@ -13,6 +13,7 @@ using System.Collections.Generic;
 using System.Data;
 using System.Data.SqlClient;
 using System.Dynamic;
+using System.Globalization;
 using System.Linq;
 using System.Threading.Tasks;
 using static EmcureNPD.Utility.Enums.GeneralEnum;
@@ -56,6 +57,7 @@ namespace EmcureNPD.Business.Core.Implementation
         private IRepository<PidfPbfRa> _pidfPbfRRepositiry { get; set; }
         private IRepository<MasterTypeOfSubmission> _masterTypeOfSubmission { get; set; }
 
+        private IRepository<PidfPbfGeneralRnd> _repositoryPidfPbfGeneralRnd { get; set; }
         public PBFService(IUnitOfWork unitOfWork, IMapperFactory mapperFactory, INotificationService notificationService, IMasterAuditLogService auditLogService, 
 
             IHelper helper, IExceptionService exceptionService, IConfiguration configuration)
@@ -93,7 +95,8 @@ namespace EmcureNPD.Business.Core.Implementation
             _pidfPbfPhaseWiseBudgetRepository = _unitOfWork.GetRepository<PidfPbfPhaseWiseBudget>();
             _pidfPbfRRepositiry = _unitOfWork.GetRepository<PidfPbfRa>();
             _masterTypeOfSubmission = _unitOfWork.GetRepository<MasterTypeOfSubmission>();
-        }
+            _repositoryPidfPbfGeneralRnd = _unitOfWork.GetRepository<PidfPbfGeneralRnd>();
+    }
 
         public async Task<dynamic> FillDropdown(int PIDFId)
         {
@@ -141,6 +144,7 @@ namespace EmcureNPD.Business.Core.Implementation
             var data = new PBFFormEntity();
             //data.MasterBusinessUnitEntities = _businessUnitService.GetAll().Result.Where(xx => xx.IsActive).ToList();
             //data.MasterStrengthEntities = _productStrengthService.GetAll().Result.Where(x => x.Pidfid == pidfId).ToList();
+           
             data.BusinessUnitId = buid;
             data.Pidfid = pidfId;
             data.StrengthId = (int)strengthid;
@@ -174,7 +178,26 @@ namespace EmcureNPD.Business.Core.Implementation
             }
             return data;
         }
+        public async Task<PidfPbfGeneralRndEntity> GetPidfPbfGeneralRnd(long pidfId, long PbfId,long PbfRndDetailsId=0)
+        {
+            var data = new PidfPbfGeneralRndEntity();
+               SqlParameter[] osqlParameter = {
+                       new SqlParameter("@PbfRndDetailsId", PbfRndDetailsId),
+                       new SqlParameter("@PidfId", pidfId),
+                       new SqlParameter("@PbfId", PbfId)
+                   };
 
+            var dbresult = await _pbfRepository.GetDataSetBySP("SpGetPIDF_PBF_General_RND", System.Data.CommandType.StoredProcedure, osqlParameter);
+            if (dbresult != null)
+            {
+                if (dbresult.Tables[0] != null && dbresult.Tables[0].Rows.Count > 0)
+                {
+                    data = dbresult.Tables[0].DataTableToList<PidfPbfGeneralRndEntity>()[0];
+                   
+                }
+            }
+            return data;
+        }
         public async Task<DBOperation> AddUpdatePBFDetails(PBFFormEntity pbfEntity)
         {
             try
@@ -229,7 +252,7 @@ namespace EmcureNPD.Business.Core.Implementation
 
         #endregion saving RnD Details
 
-        public async Task<dynamic> PBFAllTabDetails(int PIDFId, int BUId)
+        public async Task<dynamic> PBFAllTabDetails(int PIDFId, int BUId,int pbfId=0,int PbfRndDetailsId=0)
         {
             dynamic DropdownObjects = new ExpandoObject();
 
@@ -264,8 +287,8 @@ namespace EmcureNPD.Business.Core.Implementation
             DropdownObjects.HeadWiseBudget = dsDropdownOptions.Tables[20];
             DropdownObjects.PBFReferenceProductDetail = dsDropdownOptions.Tables[21];
 			DropdownObjects.RNDExicipientPrototype = dsDropdownOptions.Tables[22];
-
-			return DropdownObjects;
+            DropdownObjects.PidfPbfGeneralRnd = await GetPidfPbfGeneralRnd(PIDFId, pbfId, PbfRndDetailsId);
+            return DropdownObjects;
         }
 
 
@@ -990,7 +1013,74 @@ namespace EmcureNPD.Business.Core.Implementation
             return New_ObjProductRefDetails.PidfpbfreferenceProductdetailId;
            
         }
+        private async Task<long> SaveGeneralRandDDetails(PBFFormEntity pbfentity)
+        {
+            var objPidfGeneralRnd = new PidfPbfGeneralRnd();
+            var loggedInUserId = _helper.GetLoggedInUser().UserId;
+            var objPidfGeneralRndDetails = _repositoryPidfPbfGeneralRnd.GetAllQuery().
+                Where(x => x.PidfId == pbfentity.Pidfid && x.PbfId == pbfentity.Pidfpbfid && x.PbfRndDetailsId== pbfentity.PidfPbfGeneralRnd.PbfRndDetailsId).FirstOrDefault();
+            if (objPidfGeneralRndDetails != null)
+            {
 
+                objPidfGeneralRndDetails.PidfId = pbfentity.Pidfid;
+                objPidfGeneralRndDetails.PbfId = pbfentity.Pidfpbfid;
+                objPidfGeneralRndDetails.RndResponsiblePerson = pbfentity.PidfPbfGeneralRnd.RndResponsiblePerson;
+                objPidfGeneralRndDetails.TypeOfDevelopmentDate = pbfentity.PidfPbfGeneralRnd.TypeOfDevelopmentDate;
+                objPidfGeneralRndDetails.PivotalBatchesManufacturedCompleted = pbfentity.PidfPbfGeneralRnd.PivotalBatchesManufacturedCompleted;
+                objPidfGeneralRndDetails.StabilityResultsDayZero = pbfentity.PidfPbfGeneralRnd.StabilityResultsDayZero;
+                objPidfGeneralRndDetails.StabilityResultsThreeMonth = pbfentity.PidfPbfGeneralRnd.StabilityResultsThreeMonth;
+                objPidfGeneralRndDetails.StabilityResultsSixMonth = pbfentity.PidfPbfGeneralRnd.StabilityResultsSixMonth;
+                objPidfGeneralRndDetails.NonStandardProduct = pbfentity.PidfPbfGeneralRnd.NonStandardProduct;
+                objPidfGeneralRndDetails.Pivotals = pbfentity.PidfPbfGeneralRnd.Pivotals;
+                objPidfGeneralRndDetails.BatchSizes = pbfentity.PidfPbfGeneralRnd.BatchSizes;
+                objPidfGeneralRndDetails.NoMofBatchesPerStrength = pbfentity.PidfPbfGeneralRnd.NoMofBatchesPerStrength;
+                objPidfGeneralRndDetails.SiteTransferDate = pbfentity.PidfPbfGeneralRnd.SiteTransferDate;
+                objPidfGeneralRndDetails.ApiOrderedDate = pbfentity.PidfPbfGeneralRnd.ApiOrderedDate;
+                objPidfGeneralRndDetails.ApiReceivedDate = pbfentity.PidfPbfGeneralRnd.ApiReceivedDate;
+                objPidfGeneralRndDetails.FinalFormulationApproved = pbfentity.PidfPbfGeneralRnd.FinalFormulationApproved;
+                objPidfGeneralRndDetails.UpdatedOn =DateTime.Now;
+                objPidfGeneralRndDetails.CreatedBy = loggedInUserId;
+
+                _repositoryPidfPbfGeneralRnd.UpdateAsync(objPidfGeneralRndDetails);
+                
+               
+            }
+            else
+            {
+                objPidfGeneralRnd.PidfId = pbfentity.Pidfid;
+                objPidfGeneralRnd.PbfId = pbfentity.Pidfpbfid;
+                objPidfGeneralRnd.RndResponsiblePerson = pbfentity.PidfPbfGeneralRnd.RndResponsiblePerson;
+                objPidfGeneralRnd.TypeOfDevelopmentDate = pbfentity.PidfPbfGeneralRnd.TypeOfDevelopmentDate;
+                objPidfGeneralRnd.PivotalBatchesManufacturedCompleted = pbfentity.PidfPbfGeneralRnd.PivotalBatchesManufacturedCompleted;
+                objPidfGeneralRnd.StabilityResultsDayZero = pbfentity.PidfPbfGeneralRnd.StabilityResultsDayZero;
+                objPidfGeneralRnd.StabilityResultsThreeMonth = pbfentity.PidfPbfGeneralRnd.StabilityResultsThreeMonth;
+                objPidfGeneralRnd.StabilityResultsSixMonth = pbfentity.PidfPbfGeneralRnd.StabilityResultsSixMonth;
+                objPidfGeneralRnd.NonStandardProduct = pbfentity.PidfPbfGeneralRnd.NonStandardProduct;
+                objPidfGeneralRnd.Pivotals = pbfentity.PidfPbfGeneralRnd.Pivotals;
+                objPidfGeneralRnd.BatchSizes = pbfentity.PidfPbfGeneralRnd.BatchSizes;
+                objPidfGeneralRnd.NoMofBatchesPerStrength = pbfentity.PidfPbfGeneralRnd.NoMofBatchesPerStrength;
+                objPidfGeneralRnd.SiteTransferDate = pbfentity.PidfPbfGeneralRnd.SiteTransferDate;
+                objPidfGeneralRnd.ApiOrderedDate = pbfentity.PidfPbfGeneralRnd.ApiOrderedDate;
+                objPidfGeneralRnd.ApiReceivedDate = pbfentity.PidfPbfGeneralRnd.ApiReceivedDate;
+                objPidfGeneralRnd.FinalFormulationApproved = pbfentity.PidfPbfGeneralRnd.FinalFormulationApproved;
+                objPidfGeneralRnd.CreatedOn =DateTime.Now;
+                objPidfGeneralRnd.CreatedBy = loggedInUserId;
+
+                _repositoryPidfPbfGeneralRnd.AddAsync(objPidfGeneralRnd);
+            }
+            try
+            {
+                
+                await _unitOfWork.SaveChangesAsync();
+
+            }
+            catch (Exception ex)
+            {
+                return 0;
+            }
+            return objPidfGeneralRnd.PbfRndDetailsId;
+
+        }
         public async Task<long> SavePidfAndPBFCommanDetailsnew(long pidfid, PBFFormEntity pbfentity)
         {
             long pidfpbfid = 0;
@@ -1765,7 +1855,9 @@ namespace EmcureNPD.Business.Core.Implementation
                 #region Update PBF Reference Product Details
                 await SaveUpdateReferenceProductDetails(pbfgeneralid, pbfentity);
                 #endregion Update PBF Reference Product Details
-
+                #region Update PBF genegral R&D Details
+                await SaveGeneralRandDDetails(pbfentity);
+                #endregion
                 return pbfgeneralid;
             }
             catch (Exception ex)
@@ -1863,7 +1955,9 @@ namespace EmcureNPD.Business.Core.Implementation
                 #region Update PBF Reference Product Details
                 await SaveUpdateReferenceProductDetails(pbfgeneralid, pbfentity);
                 #endregion Update PBF Reference Product Details
-
+                #region Update PBF genegral R&D Details
+                await SaveGeneralRandDDetails(pbfentity);
+                #endregion
                 #region Section Clinical Add Update
 
                 List<PidfPbfClinical> objClinicallist = new();

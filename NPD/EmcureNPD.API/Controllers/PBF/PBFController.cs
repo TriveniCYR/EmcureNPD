@@ -118,12 +118,12 @@ namespace EmcureNPD.API.Controllers.PBF
             }
         }
 
-        [HttpGet, Route("PBFTabDetails/{PIDFId}/{BUId}")]
-        public async Task<IActionResult> FillDropdown(int PIDFId, int BUId)
+        [HttpGet, Route("PBFTabDetails/{PIDFId}/{BUId}/{PbfId}/{PbfRndDetailsId}")]
+        public async Task<IActionResult> FillDropdown(int PIDFId, int BUId, int pbfId = 0, int PbfRndDetailsId = 0)
         {
             try
             {
-                return _ObjectResponse.CreateData(await _PBFService.PBFAllTabDetails(PIDFId, BUId), (Int32)HttpStatusCode.OK);
+                return _ObjectResponse.CreateData(await _PBFService.PBFAllTabDetails(PIDFId, BUId, pbfId, PbfRndDetailsId), (Int32)HttpStatusCode.OK);
             }
             catch (Exception e)
             {
