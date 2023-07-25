@@ -765,9 +765,9 @@ $(document).ready(function () {
     getIPDAccordion(_IPDAccordionURL, _EncPIDFID, _PIDFBusinessUnitId, "dvIPDAccrdion");
     getCommercialAccordion(_CommercialAccordionURL, _EncPIDFID, _PIDFBusinessUnitId, "dvCommercialAccrdion");
     //BindRA();
-    //$('#custom-tabs-department-RA-tab').click( function () {
-       // GetRa(_PIDFID, _PIDFPBFId);
-    //});
+    $('#custom-tabs-department-RA-tab').click( function () {
+        bindRaDropDowns();
+    });
    
     $('#btnNextRnDTabSelectedValue').val(0); //custom-tabs-department-RnD-tab-
 });
@@ -1073,7 +1073,7 @@ function GetPBFTabDetailsSuccess(data) {
             BindClinical(data.PBFClinicalEntity);
             BindAnalytical(data.PBFAnalyticalEntity, data.PBFAnalyticalCostEntity);
             // BindRA();
-            bindRaDropDowns();
+            //bindRaDropDowns();
             $('#RNDBatchSizeId').append(_emptyOption);
             $(data.MasterBatchSize).each(function (index, item) {
                 $('#RNDBatchSizeId').append('<option value="' + item.batchSizeNumberId + '">' + item.batchSizeNumberName + '</option>');
