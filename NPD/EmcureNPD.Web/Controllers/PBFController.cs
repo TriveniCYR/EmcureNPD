@@ -523,10 +523,10 @@ namespace EmcureNPD.Web.Controllers
             oPBForm.BusinessUnitsByUser = _helper.GetAssignedBusinessUnit();
             return oPBForm;
         }
-
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public IActionResult PBF(int PIDFId, PBFFormEntity pbfEntity)
+       
+            [HttpPost]
+       // [ValidateAntiForgeryToken]
+        public IActionResult PBF([FromRoute]  int PIDFId, [FromRoute] PBFFormEntity pbfEntity)
         {
             try
             {
