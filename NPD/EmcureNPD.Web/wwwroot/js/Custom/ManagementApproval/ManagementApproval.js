@@ -54,13 +54,13 @@ $(document).ready(function () {
     PBFtabClick();
     fnGetActiveBusinessUnit();
     UpdateProjectionCommercial();
-   // GetSUIMSVolumeYearWiseByPackSize();
+    // GetSUIMSVolumeYearWiseByPackSize();
 });
 function Project_ChartertabClick() {
     $('.PBFCharter').hide();
     $('#dvPBFCharter').addClass('active');
 
-    $('.ProjectCharter').show();    
+    $('.ProjectCharter').show();
     $('#dvProjectCharter').removeClass('active');
 }
 
@@ -73,20 +73,23 @@ function PBFtabClick() {
 }
 
 function GetManagmentApprovalBatchSizeCoating(DycPidafId, encBuid) {
-    ajaxServiceMethod($('#hdnBaseURL').val() + GetManagmentApprovalBatchSizeCoatingURL+`/${DycPidafId}/${encBuid}`, 'GET', GetManagmentApprovalBatchSizeCoatingSuccess, GetManagmentApprovalBatchSizeCoatingError);
+    ajaxServiceMethod($('#hdnBaseURL').val() + GetManagmentApprovalBatchSizeCoatingURL + `/${DycPidafId}/${encBuid}`, 'GET', GetManagmentApprovalBatchSizeCoatingSuccess, GetManagmentApprovalBatchSizeCoatingError);
 
     function GetManagmentApprovalBatchSizeCoatingSuccess(data) {
         if (data != undefined) {
             try {
                 if (data.table.length > 0) {
                     $('#JsonCommercialData').val(JSON.stringify(data));
-                    UpdateProjectionCommercial();
                 }
+                else {
+                    $('#JsonCommercialData').val('');
+                }
+                UpdateProjectionCommercial();
             }
             catch (e) {
                 toastr.error('Error:' + e.message);
             }
-        }       
+        }
     }
     function GetManagmentApprovalBatchSizeCoatingError() {
         toastr.error("Error");
@@ -120,40 +123,40 @@ function UpdateProjectionCommercial() {
 }
 function GetBatchSizeCostingTRValues() {
     var Arr_FinanceTable_tr = [];
-  //JsonlsPidfFinanceBatchSizeCoating  var jsonBatcSizeData = $.parseJSON($('#JsonlsPidfFinanceBatchSizeCoating').val());
+    //JsonlsPidfFinanceBatchSizeCoating  var jsonBatcSizeData = $.parseJSON($('#JsonlsPidfFinanceBatchSizeCoating').val());
     if ($('#JsonCommercialData').val() == '')
         return Arr_FinanceTable_tr;
 
-    var JsonCommercialData = $.parseJSON($('#JsonCommercialData').val()); 
-    UpdateDynamicTextBoxValues(JsonCommercialData.table1);
-   
-    jQuery.each(JsonCommercialData.table, function (index, item) {
+    var JsonCommercialData = $.parseJSON($('#JsonCommercialData').val());
+    UpdateDynamicTextBoxValues(JsonCommercialData.table2);
+    var commData = JsonCommercialData.table1;
+    jQuery.each(JsonCommercialData.table, function (index, FinanceBatchsize_item) {    
+        
+            var trObj =
+            {
+                SKU: FinanceBatchsize_item.skusName + 'mg',
+                PackSize: FinanceBatchsize_item.packSizeName,
 
-        var trObj =
-        {
-            SKU: item.skusName +'mg',
-            PackSize: item.packSizeName,
 
-            hdnMSLow: item.marketSharePercentageLow,
-            hdnMSMid: item.marketSharePercentageMedium,
-            hdnMSHigh: item.marketSharePercentageHigh,
+                hdnMSLow:       (commData.length > 0) ? commData[0].marketSharePercentageLow:0,
+                hdnMSMid:       (commData.length > 0) ? commData[0].marketSharePercentageMedium : 0,
+                hdnMSHigh:      (commData.length > 0) ? commData[0].marketSharePercentageHigh : 0,
+                marketInPacks:  (commData.length > 0) ? commData[0].marketinpacks : 0,
+                hdnNSPLow:      (commData.length > 0) ? commData[0].nspUnitsLow : 0,
+                hdnNSPMid:      (commData.length > 0) ? commData[0].nspUnitsMedium : 0,
+                hdnNSPHigh:     (commData.length > 0) ? commData[0].nspUnitsHigh : 0,
 
-            marketInPacks: item.marketinpacks,
+                emcureCOGs_pack: FinanceBatchsize_item.emcureCOGs_pack
+            }
+            Arr_FinanceTable_tr.push(trObj);
 
-            hdnNSPLow: item.nspUnitsLow,
-            hdnNSPMid: item.nspUnitsMedium,
-            hdnNSPHigh: item.nspUnitsHigh,
+        });
 
-            emcureCOGs_pack: item.emcureCOGs_pack
-        }
-        Arr_FinanceTable_tr.push(trObj);
-
-    });
     return Arr_FinanceTable_tr;
 }
 
 function loadFinanceProjectionData(pidfid, encBUId) {
-   // _encBuid = encBUId;
+    // _encBuid = encBUId;
     GetManagmentApprovalBatchSizeCoating(pidfid, encBUId);
 }
 

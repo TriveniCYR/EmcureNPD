@@ -776,22 +776,24 @@ function convertFormToJSON() {
     const array = $('form').serializeArray(); 
     const json = {};
     $.each(array, function () {
-        json[this.name] = this.value;
+        if (!(this.name =='__RequestVerificationToken'))
+            json[this.name] = this.value;
+
     });
     return json;
 }
 function PostPBFFormbyNext() {
     objMainForm = {};
     var formdata = convertFormToJSON();
-    $.extend(objMainForm, { 'PIDFId': parseInt(_PIDFID) });
+   $.extend(objMainForm, { 'PIDFId': parseInt(_PIDFID) });
     $.extend(objMainForm, { 'pbfEntity': formdata });
   //  ajaxServiceMethod('/PBF/PBF', 'POST', PostPBFFormbyNextSuccess, PostPBFFormbyNextError, JSON.stringify(objMainForm));
-
-    
+    var _objURL = '/PBF/PBF';
+    //objMainForm = formdata;
     $.ajax({
         type: 'POST',
-        url: '/PBF/PBF',
-        data: objMainForm,
+        url: _objURL,
+        data: JSON.stringify(objMainForm),
         contentType: "application/json;",
         async: true,
         dataType: "json",
