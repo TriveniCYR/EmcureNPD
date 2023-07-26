@@ -525,8 +525,8 @@ namespace EmcureNPD.Web.Controllers
         }
        
             [HttpPost]
-       // [ValidateAntiForgeryToken]
-        public IActionResult PBF([FromRoute]  int PIDFId, [FromRoute] PBFFormEntity pbfEntity)
+        [ValidateAntiForgeryToken]
+        public IActionResult PBF(int PIDFId, PBFFormEntity pbfEntity)
         {
             try
             {
