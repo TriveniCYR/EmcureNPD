@@ -438,3 +438,7 @@ div#dvPBFContainer .form-control {
 .pbfRNDTab{
     width:auto !important;
 }
+.budgetApprovalTabPBF {
+    margin: -11px !important;
+    margin-top: -25px !important;
+}
