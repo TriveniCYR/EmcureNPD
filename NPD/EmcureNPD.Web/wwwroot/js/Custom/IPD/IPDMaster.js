@@ -65,8 +65,39 @@ $(document).ready(function () {
             $(this).next().next().addClass('d-none');
         }
     });
+
+    $(document).on("change", ".SelectCountryPD", function () {       
+        if (!ValidateDuplicateCountryID(".SelectCountryPD"))
+            $(this).val(undefined)
+    });
+
+    $(document).on("change", ".SelectCountryPDAPI", function () {
+        if (!ValidateDuplicateCountryID(".SelectCountryPDAPI"))
+            $(this).val(undefined)
+    });
+
 });
 
+function ValidateDuplicateCountryID(controlclass) {
+    var arr = [];
+    var IsValid = true;
+    $(controlclass).each(function (ind, val) {
+        var i = arr.indexOf(parseInt(this.value));
+        if (i == -1)
+            arr.push(parseInt(this.value));
+        else {
+            IsValid = false;            
+        }
+        
+    });
+    if (IsValid) {
+        var IsValid = true;
+    } else {        
+        toastr.error("Duplicate Country not allowed", "Error:");
+    }       
+   
+    return IsValid;
+}
 
 
 function fnGetActiveBusinessUnit() {
