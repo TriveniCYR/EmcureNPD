@@ -1,0 +1,120 @@
+[2023-05-23 12:22:39.919 +05:30  INF]  ERROR:Notifications/GetFilteredNotifications:System.Data.SqlClient.SqlException (0x80131904): A network-related or instance-specific error occurred while establishing a connection to SQL Server. The server was not found or was not accessible. Verify that the instance name is correct and that SQL Server is configured to allow remote connections. (provider: Named Pipes Provider, error: 40 - Could not open a connection to SQL Server)
+ ---> System.ComponentModel.Win32Exception (53): The network path was not found.
+   at EmcureNPD.Data.DataAccess.Core.Repositories.Repository`1.GetBySP(String CommandText, CommandType commandType, SqlParameter[] sqlParameters) in D:\work\EmcureGITRepo\EmcureNPD\NPD\EmcureNPD.Data.DataAccess\Core\Repositories\Repository.cs:line 1033
+   at EmcureNPD.Business.Core.Implementation.NotificationService.NotificationCountForUser() in D:\work\EmcureGITRepo\EmcureNPD\NPD\EmcureNPD.Business.Core\Implementation\NotificationService.cs:line 206
+   at EmcureNPD.API.Controllers.Notificaiton.NotificationController.NotificationsCountUser() in D:\work\EmcureGITRepo\EmcureNPD\NPD\EmcureNPD.API\Controllers\Notificaiton\NotificationController.cs:line 109
+ClientConnectionId:00000000-0000-0000-0000-000000000000
+Error Number:53,State:0,Class:20
+[2023-05-23 12:24:58.346 +05:30  INF]  ERROR:Notifications/GetFilteredNotifications:System.Data.SqlClient.SqlException (0x80131904): A network-related or instance-specific error occurred while establishing a connection to SQL Server. The server was not found or was not accessible. Verify that the instance name is correct and that SQL Server is configured to allow remote connections. (provider: Named Pipes Provider, error: 40 - Could not open a connection to SQL Server)
+ ---> System.ComponentModel.Win32Exception (53): The network path was not found.
+   at EmcureNPD.Data.DataAccess.Core.Repositories.Repository`1.GetBySP(String CommandText, CommandType commandType, SqlParameter[] sqlParameters) in D:\work\EmcureGITRepo\EmcureNPD\NPD\EmcureNPD.Data.DataAccess\Core\Repositories\Repository.cs:line 1033
+   at EmcureNPD.Business.Core.Implementation.NotificationService.GetFilteredNotifications(String ColumnName, String SortDir, Int32 start, Int32 length, Int32 RoleId) in D:\work\EmcureGITRepo\EmcureNPD\NPD\EmcureNPD.Business.Core\Implementation\NotificationService.cs:line 103
+   at EmcureNPD.API.Controllers.Notificaiton.NotificationController.GetFilteredNotifications(String ColumnName, String SortDir, Int32 start, Int32 length, Int32 RoleId) in D:\work\EmcureGITRepo\EmcureNPD\NPD\EmcureNPD.API\Controllers\Notificaiton\NotificationController.cs:line 79
+ClientConnectionId:00000000-0000-0000-0000-000000000000
+Error Number:53,State:0,Class:20
+[2023-05-23 16:27:20.932 +05:30  INF]  ERROR:Notifications/GetFilteredNotifications:System.Data.SqlClient.SqlException (0x80131904): A network-related or instance-specific error occurred while establishing a connection to SQL Server. The server was not found or was not accessible. Verify that the instance name is correct and that SQL Server is configured to allow remote connections. (provider: Named Pipes Provider, error: 40 - Could not open a connection to SQL Server)
+ ---> System.ComponentModel.Win32Exception (53): The network path was not found.
+   at EmcureNPD.Data.DataAccess.Core.Repositories.Repository`1.GetBySP(String CommandText, CommandType commandType, SqlParameter[] sqlParameters) in D:\work\EmcureGITRepo\EmcureNPD\NPD\EmcureNPD.Data.DataAccess\Core\Repositories\Repository.cs:line 1033
+   at EmcureNPD.Business.Core.Implementation.NotificationService.NotificationCountForUser() in D:\work\EmcureGITRepo\EmcureNPD\NPD\EmcureNPD.Business.Core\Implementation\NotificationService.cs:line 206
+   at EmcureNPD.API.Controllers.Notificaiton.NotificationController.NotificationsCountUser() in D:\work\EmcureGITRepo\EmcureNPD\NPD\EmcureNPD.API\Controllers\Notificaiton\NotificationController.cs:line 109
+ClientConnectionId:00000000-0000-0000-0000-000000000000
+Error Number:53,State:0,Class:20
+[2023-05-23 16:27:20.932 +05:30  INF]  ERROR:Notifications/GetFilteredNotifications:System.Data.SqlClient.SqlException (0x80131904): A network-related or instance-specific error occurred while establishing a connection to SQL Server. The server was not found or was not accessible. Verify that the instance name is correct and that SQL Server is configured to allow remote connections. (provider: Named Pipes Provider, error: 40 - Could not open a connection to SQL Server)
+ ---> System.ComponentModel.Win32Exception (53): The network path was not found.
+   at EmcureNPD.Data.DataAccess.Core.Repositories.Repository`1.GetBySP(String CommandText, CommandType commandType, SqlParameter[] sqlParameters) in D:\work\EmcureGITRepo\EmcureNPD\NPD\EmcureNPD.Data.DataAccess\Core\Repositories\Repository.cs:line 1033
+   at EmcureNPD.Business.Core.Implementation.NotificationService.GetFilteredNotifications(String ColumnName, String SortDir, Int32 start, Int32 length, Int32 RoleId) in D:\work\EmcureGITRepo\EmcureNPD\NPD\EmcureNPD.Business.Core\Implementation\NotificationService.cs:line 103
+   at EmcureNPD.API.Controllers.Notificaiton.NotificationController.GetFilteredNotifications(String ColumnName, String SortDir, Int32 start, Int32 length, Int32 RoleId) in D:\work\EmcureGITRepo\EmcureNPD\NPD\EmcureNPD.API\Controllers\Notificaiton\NotificationController.cs:line 79
+ClientConnectionId:00000000-0000-0000-0000-000000000000
+Error Number:53,State:0,Class:20
+[2023-05-23 16:28:29.727 +05:30  INF]  ERROR:Notifications/GetFilteredNotifications:System.Data.SqlClient.SqlException (0x80131904): A network-related or instance-specific error occurred while establishing a connection to SQL Server. The server was not found or was not accessible. Verify that the instance name is correct and that SQL Server is configured to allow remote connections. (provider: Named Pipes Provider, error: 40 - Could not open a connection to SQL Server)
+ ---> System.ComponentModel.Win32Exception (53): The network path was not found.
+   at EmcureNPD.Data.DataAccess.Core.Repositories.Repository`1.GetBySP(String CommandText, CommandType commandType, SqlParameter[] sqlParameters) in D:\work\EmcureGITRepo\EmcureNPD\NPD\EmcureNPD.Data.DataAccess\Core\Repositories\Repository.cs:line 1033
+   at EmcureNPD.Business.Core.Implementation.NotificationService.GetFilteredNotifications(String ColumnName, String SortDir, Int32 start, Int32 length, Int32 RoleId) in D:\work\EmcureGITRepo\EmcureNPD\NPD\EmcureNPD.Business.Core\Implementation\NotificationService.cs:line 103
+   at EmcureNPD.API.Controllers.Notificaiton.NotificationController.GetFilteredNotifications(String ColumnName, String SortDir, Int32 start, Int32 length, Int32 RoleId) in D:\work\EmcureGITRepo\EmcureNPD\NPD\EmcureNPD.API\Controllers\Notificaiton\NotificationController.cs:line 79
+ClientConnectionId:00000000-0000-0000-0000-000000000000
+Error Number:53,State:0,Class:20
+[2023-05-23 16:28:29.727 +05:30  INF]  ERROR:Notifications/GetFilteredNotifications:System.Data.SqlClient.SqlException (0x80131904): A network-related or instance-specific error occurred while establishing a connection to SQL Server. The server was not found or was not accessible. Verify that the instance name is correct and that SQL Server is configured to allow remote connections. (provider: Named Pipes Provider, error: 40 - Could not open a connection to SQL Server)
+ ---> System.ComponentModel.Win32Exception (53): The network path was not found.
+   at EmcureNPD.Data.DataAccess.Core.Repositories.Repository`1.GetBySP(String CommandText, CommandType commandType, SqlParameter[] sqlParameters) in D:\work\EmcureGITRepo\EmcureNPD\NPD\EmcureNPD.Data.DataAccess\Core\Repositories\Repository.cs:line 1033
+   at EmcureNPD.Business.Core.Implementation.NotificationService.NotificationCountForUser() in D:\work\EmcureGITRepo\EmcureNPD\NPD\EmcureNPD.Business.Core\Implementation\NotificationService.cs:line 206
+   at EmcureNPD.API.Controllers.Notificaiton.NotificationController.NotificationsCountUser() in D:\work\EmcureGITRepo\EmcureNPD\NPD\EmcureNPD.API\Controllers\Notificaiton\NotificationController.cs:line 109
+ClientConnectionId:00000000-0000-0000-0000-000000000000
+Error Number:53,State:0,Class:20
+[2023-05-23 16:32:04.802 +05:30  INF]  ERROR:Notifications/GetFilteredNotifications:System.Data.SqlClient.SqlException (0x80131904): A network-related or instance-specific error occurred while establishing a connection to SQL Server. The server was not found or was not accessible. Verify that the instance name is correct and that SQL Server is configured to allow remote connections. (provider: Named Pipes Provider, error: 40 - Could not open a connection to SQL Server)
+ ---> System.ComponentModel.Win32Exception (53): The network path was not found.
+   at EmcureNPD.Data.DataAccess.Core.Repositories.Repository`1.GetBySP(String CommandText, CommandType commandType, SqlParameter[] sqlParameters) in D:\work\EmcureGITRepo\EmcureNPD\NPD\EmcureNPD.Data.DataAccess\Core\Repositories\Repository.cs:line 1033
+   at EmcureNPD.Business.Core.Implementation.NotificationService.GetFilteredNotifications(String ColumnName, String SortDir, Int32 start, Int32 length, Int32 RoleId) in D:\work\EmcureGITRepo\EmcureNPD\NPD\EmcureNPD.Business.Core\Implementation\NotificationService.cs:line 103
+   at EmcureNPD.API.Controllers.Notificaiton.NotificationController.GetFilteredNotifications(String ColumnName, String SortDir, Int32 start, Int32 length, Int32 RoleId) in D:\work\EmcureGITRepo\EmcureNPD\NPD\EmcureNPD.API\Controllers\Notificaiton\NotificationController.cs:line 79
+ClientConnectionId:00000000-0000-0000-0000-000000000000
+Error Number:53,State:0,Class:20
+[2023-05-23 16:32:04.802 +05:30  INF]  ERROR:Notifications/GetFilteredNotifications:System.Data.SqlClient.SqlException (0x80131904): A network-related or instance-specific error occurred while establishing a connection to SQL Server. The server was not found or was not accessible. Verify that the instance name is correct and that SQL Server is configured to allow remote connections. (provider: Named Pipes Provider, error: 40 - Could not open a connection to SQL Server)
+ ---> System.ComponentModel.Win32Exception (53): The network path was not found.
+   at EmcureNPD.Data.DataAccess.Core.Repositories.Repository`1.GetBySP(String CommandText, CommandType commandType, SqlParameter[] sqlParameters) in D:\work\EmcureGITRepo\EmcureNPD\NPD\EmcureNPD.Data.DataAccess\Core\Repositories\Repository.cs:line 1033
+   at EmcureNPD.Business.Core.Implementation.NotificationService.NotificationCountForUser() in D:\work\EmcureGITRepo\EmcureNPD\NPD\EmcureNPD.Business.Core\Implementation\NotificationService.cs:line 206
+   at EmcureNPD.API.Controllers.Notificaiton.NotificationController.NotificationsCountUser() in D:\work\EmcureGITRepo\EmcureNPD\NPD\EmcureNPD.API\Controllers\Notificaiton\NotificationController.cs:line 109
+ClientConnectionId:00000000-0000-0000-0000-000000000000
+Error Number:53,State:0,Class:20
+[2023-05-23 16:45:15.142 +05:30  INF]  ERROR:Notifications/GetFilteredNotifications:System.Data.SqlClient.SqlException (0x80131904): A network-related or instance-specific error occurred while establishing a connection to SQL Server. The server was not found or was not accessible. Verify that the instance name is correct and that SQL Server is configured to allow remote connections. (provider: Named Pipes Provider, error: 40 - Could not open a connection to SQL Server)
+ ---> System.ComponentModel.Win32Exception (53): The network path was not found.
+   at EmcureNPD.Data.DataAccess.Core.Repositories.Repository`1.GetBySP(String CommandText, CommandType commandType, SqlParameter[] sqlParameters) in D:\work\EmcureGITRepo\EmcureNPD\NPD\EmcureNPD.Data.DataAccess\Core\Repositories\Repository.cs:line 1033
+   at EmcureNPD.Business.Core.Implementation.NotificationService.NotificationCountForUser() in D:\work\EmcureGITRepo\EmcureNPD\NPD\EmcureNPD.Business.Core\Implementation\NotificationService.cs:line 206
+   at EmcureNPD.API.Controllers.Notificaiton.NotificationController.NotificationsCountUser() in D:\work\EmcureGITRepo\EmcureNPD\NPD\EmcureNPD.API\Controllers\Notificaiton\NotificationController.cs:line 109
+ClientConnectionId:00000000-0000-0000-0000-000000000000
+Error Number:53,State:0,Class:20
+[2023-05-23 16:45:15.143 +05:30  INF]  ERROR:Notifications/GetFilteredNotifications:System.Data.SqlClient.SqlException (0x80131904): A network-related or instance-specific error occurred while establishing a connection to SQL Server. The server was not found or was not accessible. Verify that the instance name is correct and that SQL Server is configured to allow remote connections. (provider: Named Pipes Provider, error: 40 - Could not open a connection to SQL Server)
+ ---> System.ComponentModel.Win32Exception (53): The network path was not found.
+   at EmcureNPD.Data.DataAccess.Core.Repositories.Repository`1.GetBySP(String CommandText, CommandType commandType, SqlParameter[] sqlParameters) in D:\work\EmcureGITRepo\EmcureNPD\NPD\EmcureNPD.Data.DataAccess\Core\Repositories\Repository.cs:line 1033
+   at EmcureNPD.Business.Core.Implementation.NotificationService.GetFilteredNotifications(String ColumnName, String SortDir, Int32 start, Int32 length, Int32 RoleId) in D:\work\EmcureGITRepo\EmcureNPD\NPD\EmcureNPD.Business.Core\Implementation\NotificationService.cs:line 103
+   at EmcureNPD.API.Controllers.Notificaiton.NotificationController.GetFilteredNotifications(String ColumnName, String SortDir, Int32 start, Int32 length, Int32 RoleId) in D:\work\EmcureGITRepo\EmcureNPD\NPD\EmcureNPD.API\Controllers\Notificaiton\NotificationController.cs:line 79
+ClientConnectionId:00000000-0000-0000-0000-000000000000
+Error Number:53,State:0,Class:20
+[2023-05-23 17:01:50.203 +05:30  INF]  ERROR:Notifications/GetFilteredNotifications:System.Data.SqlClient.SqlException (0x80131904): Could not find stored procedure 'stp_npd_GetRealTimeNotificationForUser'.
+   at EmcureNPD.Data.DataAccess.Core.Repositories.Repository`1.GetBySP(String CommandText, CommandType commandType, SqlParameter[] sqlParameters) in D:\work\EmcureGITRepo\EmcureNPD\NPD\EmcureNPD.Data.DataAccess\Core\Repositories\Repository.cs:line 1033
+   at EmcureNPD.Business.Core.Implementation.NotificationService.NotificationCountForUser() in D:\work\EmcureGITRepo\EmcureNPD\NPD\EmcureNPD.Business.Core\Implementation\NotificationService.cs:line 206
+   at EmcureNPD.API.Controllers.Notificaiton.NotificationController.NotificationsCountUser() in D:\work\EmcureGITRepo\EmcureNPD\NPD\EmcureNPD.API\Controllers\Notificaiton\NotificationController.cs:line 109
+ClientConnectionId:f732ade3-16a7-4477-849f-fffa1e277aae
+Error Number:2812,State:62,Class:16
+[2023-05-23 17:01:50.233 +05:30  INF]  ERROR:Notifications/GetFilteredNotifications:System.Data.SqlClient.SqlException (0x80131904): Could not find stored procedure 'stp_npd_GetNotificationList'.
+   at EmcureNPD.Data.DataAccess.Core.Repositories.Repository`1.GetBySP(String CommandText, CommandType commandType, SqlParameter[] sqlParameters) in D:\work\EmcureGITRepo\EmcureNPD\NPD\EmcureNPD.Data.DataAccess\Core\Repositories\Repository.cs:line 1033
+   at EmcureNPD.Business.Core.Implementation.NotificationService.GetFilteredNotifications(String ColumnName, String SortDir, Int32 start, Int32 length, Int32 RoleId) in D:\work\EmcureGITRepo\EmcureNPD\NPD\EmcureNPD.Business.Core\Implementation\NotificationService.cs:line 103
+   at EmcureNPD.API.Controllers.Notificaiton.NotificationController.GetFilteredNotifications(String ColumnName, String SortDir, Int32 start, Int32 length, Int32 RoleId) in D:\work\EmcureGITRepo\EmcureNPD\NPD\EmcureNPD.API\Controllers\Notificaiton\NotificationController.cs:line 79
+ClientConnectionId:b6e5abd8-0936-4e69-8700-9450dc73ef35
+Error Number:2812,State:62,Class:16
+[2023-05-23 17:02:00.347 +05:30  INF]  ERROR:Notifications/GetFilteredNotifications:System.Data.SqlClient.SqlException (0x80131904): Could not find stored procedure 'stp_npd_GetRealTimeNotificationForUser'.
+   at EmcureNPD.Data.DataAccess.Core.Repositories.Repository`1.GetBySP(String CommandText, CommandType commandType, SqlParameter[] sqlParameters) in D:\work\EmcureGITRepo\EmcureNPD\NPD\EmcureNPD.Data.DataAccess\Core\Repositories\Repository.cs:line 1033
+   at EmcureNPD.Business.Core.Implementation.NotificationService.NotificationCountForUser() in D:\work\EmcureGITRepo\EmcureNPD\NPD\EmcureNPD.Business.Core\Implementation\NotificationService.cs:line 206
+   at EmcureNPD.API.Controllers.Notificaiton.NotificationController.NotificationsCountUser() in D:\work\EmcureGITRepo\EmcureNPD\NPD\EmcureNPD.API\Controllers\Notificaiton\NotificationController.cs:line 109
+ClientConnectionId:f266bc12-05d0-4b5d-bfe1-a9c9925146c3
+Error Number:2812,State:62,Class:16
+[2023-05-23 17:02:00.366 +05:30  INF]  ERROR:Notifications/GetFilteredNotifications:System.Data.SqlClient.SqlException (0x80131904): Could not find stored procedure 'stp_npd_GetNotificationList'.
+   at EmcureNPD.Data.DataAccess.Core.Repositories.Repository`1.GetBySP(String CommandText, CommandType commandType, SqlParameter[] sqlParameters) in D:\work\EmcureGITRepo\EmcureNPD\NPD\EmcureNPD.Data.DataAccess\Core\Repositories\Repository.cs:line 1033
+   at EmcureNPD.Business.Core.Implementation.NotificationService.GetFilteredNotifications(String ColumnName, String SortDir, Int32 start, Int32 length, Int32 RoleId) in D:\work\EmcureGITRepo\EmcureNPD\NPD\EmcureNPD.Business.Core\Implementation\NotificationService.cs:line 103
+   at EmcureNPD.API.Controllers.Notificaiton.NotificationController.GetFilteredNotifications(String ColumnName, String SortDir, Int32 start, Int32 length, Int32 RoleId) in D:\work\EmcureGITRepo\EmcureNPD\NPD\EmcureNPD.API\Controllers\Notificaiton\NotificationController.cs:line 79
+ClientConnectionId:2c775860-add0-4760-b81f-53b08d385019
+Error Number:2812,State:62,Class:16
+[2023-05-23 17:03:04.565 +05:30  INF]  ERROR:Notifications/GetFilteredNotifications:System.Data.SqlClient.SqlException (0x80131904): Could not find stored procedure 'stp_npd_GetRealTimeNotificationForUser'.
+   at EmcureNPD.Data.DataAccess.Core.Repositories.Repository`1.GetBySP(String CommandText, CommandType commandType, SqlParameter[] sqlParameters) in D:\work\EmcureGITRepo\EmcureNPD\NPD\EmcureNPD.Data.DataAccess\Core\Repositories\Repository.cs:line 1033
+   at EmcureNPD.Business.Core.Implementation.NotificationService.NotificationCountForUser() in D:\work\EmcureGITRepo\EmcureNPD\NPD\EmcureNPD.Business.Core\Implementation\NotificationService.cs:line 206
+   at EmcureNPD.API.Controllers.Notificaiton.NotificationController.NotificationsCountUser() in D:\work\EmcureGITRepo\EmcureNPD\NPD\EmcureNPD.API\Controllers\Notificaiton\NotificationController.cs:line 109
+ClientConnectionId:9d440bfc-581f-42fd-a773-778bb7ab727f
+Error Number:2812,State:62,Class:16
+[2023-05-23 17:03:04.580 +05:30  INF]  ERROR:Notifications/GetFilteredNotifications:System.Data.SqlClient.SqlException (0x80131904): Could not find stored procedure 'stp_npd_GetNotificationList'.
+   at EmcureNPD.Data.DataAccess.Core.Repositories.Repository`1.GetBySP(String CommandText, CommandType commandType, SqlParameter[] sqlParameters) in D:\work\EmcureGITRepo\EmcureNPD\NPD\EmcureNPD.Data.DataAccess\Core\Repositories\Repository.cs:line 1033
+   at EmcureNPD.Business.Core.Implementation.NotificationService.GetFilteredNotifications(String ColumnName, String SortDir, Int32 start, Int32 length, Int32 RoleId) in D:\work\EmcureGITRepo\EmcureNPD\NPD\EmcureNPD.Business.Core\Implementation\NotificationService.cs:line 103
+   at EmcureNPD.API.Controllers.Notificaiton.NotificationController.GetFilteredNotifications(String ColumnName, String SortDir, Int32 start, Int32 length, Int32 RoleId) in D:\work\EmcureGITRepo\EmcureNPD\NPD\EmcureNPD.API\Controllers\Notificaiton\NotificationController.cs:line 79
+ClientConnectionId:3001cce9-120f-4d1f-9e21-dfe70a30fe96
+Error Number:2812,State:62,Class:16
+[2023-05-23 18:34:36.993 +05:30  INF]  ERROR:Notifications/GetFilteredNotifications:System.Data.SqlClient.SqlException (0x80131904): Connection Timeout Expired.  The timeout period elapsed while attempting to consume the pre-login handshake acknowledgement.  This could be because the pre-login handshake failed or the server was unable to respond back in time.  The duration spent while attempting to connect to this server was - [Pre-Login] initialization=42754; handshake=34; 
+ ---> System.ComponentModel.Win32Exception (258): The wait operation timed out.
+   at EmcureNPD.Data.DataAccess.Core.Repositories.Repository`1.GetBySP(String CommandText, CommandType commandType, SqlParameter[] sqlParameters) in D:\work\EmcureGITRepo\EmcureNPD\NPD\EmcureNPD.Data.DataAccess\Core\Repositories\Repository.cs:line 1033
+   at EmcureNPD.Business.Core.Implementation.NotificationService.GetFilteredNotifications(String ColumnName, String SortDir, Int32 start, Int32 length, Int32 RoleId) in D:\work\EmcureGITRepo\EmcureNPD\NPD\EmcureNPD.Business.Core\Implementation\NotificationService.cs:line 103
+   at EmcureNPD.API.Controllers.Notificaiton.NotificationController.GetFilteredNotifications(String ColumnName, String SortDir, Int32 start, Int32 length, Int32 RoleId) in D:\work\EmcureGITRepo\EmcureNPD\NPD\EmcureNPD.API\Controllers\Notificaiton\NotificationController.cs:line 79
+ClientConnectionId:bdf93427-ff13-4286-be97-122984040b55
+Error Number:-2,State:0,Class:11
+[2023-05-23 18:34:36.993 +05:30  INF]  ERROR:Notifications/GetFilteredNotifications:System.Data.SqlClient.SqlException (0x80131904): Connection Timeout Expired.  The timeout period elapsed while attempting to consume the pre-login handshake acknowledgement.  This could be because the pre-login handshake failed or the server was unable to respond back in time.  The duration spent while attempting to connect to this server was - [Pre-Login] initialization=42754; handshake=34; 
+ ---> System.ComponentModel.Win32Exception (258): The wait operation timed out.
+   at EmcureNPD.Data.DataAccess.Core.Repositories.Repository`1.GetBySP(String CommandText, CommandType commandType, SqlParameter[] sqlParameters) in D:\work\EmcureGITRepo\EmcureNPD\NPD\EmcureNPD.Data.DataAccess\Core\Repositories\Repository.cs:line 1033
+   at EmcureNPD.Business.Core.Implementation.NotificationService.NotificationCountForUser() in D:\work\EmcureGITRepo\EmcureNPD\NPD\EmcureNPD.Business.Core\Implementation\NotificationService.cs:line 206
+   at EmcureNPD.API.Controllers.Notificaiton.NotificationController.NotificationsCountUser() in D:\work\EmcureGITRepo\EmcureNPD\NPD\EmcureNPD.API\Controllers\Notificaiton\NotificationController.cs:line 109
+ClientConnectionId:bdf93427-ff13-4286-be97-122984040b55
+Error Number:-2,State:0,Class:11

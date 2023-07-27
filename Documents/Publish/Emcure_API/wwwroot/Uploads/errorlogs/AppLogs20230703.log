@@ -1,0 +1,7 @@
+[2023-07-03 14:43:54.574 +05:30  INF]  ERROR:Notifications/GetFilteredNotifications:System.Data.SqlClient.SqlException (0x80131904): A transport-level error has occurred when receiving results from the server. (provider: TCP Provider, error: 0 - The semaphore timeout period has expired.)
+ ---> System.ComponentModel.Win32Exception (121): The semaphore timeout period has expired.
+   at EmcureNPD.Data.DataAccess.Core.Repositories.Repository`1.GetBySP(String CommandText, CommandType commandType, SqlParameter[] sqlParameters) in D:\work\EmcureGITRepo\EmcureNPD\NPD\EmcureNPD.Data.DataAccess\Core\Repositories\Repository.cs:line 1033
+   at EmcureNPD.Business.Core.Implementation.NotificationService.GetFilteredNotifications(String ColumnName, String SortDir, Int32 start, Int32 length, Int32 RoleId) in D:\work\EmcureGITRepo\EmcureNPD\NPD\EmcureNPD.Business.Core\Implementation\NotificationService.cs:line 103
+   at EmcureNPD.API.Controllers.Notificaiton.NotificationController.GetFilteredNotifications(String ColumnName, String SortDir, Int32 start, Int32 length, Int32 RoleId) in D:\work\EmcureGITRepo\EmcureNPD\NPD\EmcureNPD.API\Controllers\Notificaiton\NotificationController.cs:line 79
+ClientConnectionId:006b7540-f10b-446e-8fe6-32bb5c2cd388
+Error Number:121,State:0,Class:20
