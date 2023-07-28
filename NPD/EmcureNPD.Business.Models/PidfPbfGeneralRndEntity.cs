@@ -30,5 +30,20 @@ namespace EmcureNPD.Business.Models
         public DateTime? DeletedOn { get; set; }
         public int? CreatedBy { get; set; }
     }
-   
+   public class PidfProductStrengthGeneralRanD
+    {
+        public int PIDFProductStrengthId { get; set; }
+        public int Strength { get; set; }
+        public int UnitofMeasurementId { get; set; }
+        public List<PidfPackSizeGeneralRanD> PidfPackSizeGeneralRanDList { get; set; }
+        public List<PidfProductStrengthGeneralRanD> PidfProductStrengthGeneralRanDList { get; set; }
+    }
+    public class PidfPackSizeGeneralRanD
+    {
+        public int PackSizeId { get; set; }
+        public int PIDFProductStrengthId { get; set; }
+        public string Value { get; set; }
+
+
+    }
 }

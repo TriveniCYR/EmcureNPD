@@ -768,7 +768,6 @@ $(document).ready(function () {
     $('#custom-tabs-department-RA-tab').click( function () {
         bindRaDropDowns();
     });
-   
     $('#btnNextRnDTabSelectedValue').val(0); //custom-tabs-department-RnD-tab-
 });
 
@@ -1058,6 +1057,39 @@ function BindPbfGeneralRnd(data) {
         $("#PidfPbfGeneralRnd_PbfId").val(data.pbfId)
     }
 }
+function BindGeneralPackSizeStability(data) {
+    $("DvPackSizeStability").empty();
+    let html = '<table id="tblPackSizeStability" class="table text-center tableTDHint"><thead class="bg-primary text-bold"><tr><td>PackSize Stability</td>';
+    let td = '';
+    let pidfProductStrengthId = [];
+    if (data != null && data != undefined) {
+        if (data.pidfPackSizeGeneralRanDList != null) {
+            for (var i = 0; i < data.pidfPackSizeGeneralRanDList.length; i++) {
+                html += `<td>Pack Size ${data.pidfPackSizeGeneralRanDList[i].packSizeId}</td>`;
+                td += `<td id="td${i}"> <input type="text" class="form-control" id="txt${i}" disabled="disabled" data-val="${data.pidfPackSizeGeneralRanDList[i].pidfProductStrengthId}"  value="${data.pidfPackSizeGeneralRanDList[i].value}"></td>`;
+               
+            }
+            html += '</tr></thead>'
+        }
+        for (var j = 0; j < data.pidfProductStrengthGeneralRanDList.length; j++) {
+            html += `<tr><td>Strength ${data.pidfProductStrengthGeneralRanDList[j].strength}</td>${td}</tr>`
+        }
+
+        html += '</table>';
+        $("#lblPackSizeStability").show();
+        $("#DvPackSizeStability").append(html);
+        for (var j = 0; j < data.pidfProductStrengthGeneralRanDList.length; j++) {
+            pidfProductStrengthId.push(data.pidfProductStrengthGeneralRanDList[j].pidfProductStrengthId);
+        }
+
+        for (var i = 0; i < data.pidfPackSizeGeneralRanDList.length; i++) {
+            if (pidfProductStrengthId[i]==data.pidfPackSizeGeneralRanDList[i].pidfProductStrengthId) {
+                $("#txt" + i).prop('disabled', false);
+            }
+        }
+        pidfProductStrengthId = [];
+    }
+}
 function GetPBFTabDetails() {
     ajaxServiceMethod($('#hdnBaseURL').val() + GetPBFAllTabDetails + "/" + _PIDFID + "/" + _selectBusinessUnit + "/"+_PIDFPBFId + "/" + $("#PbfRndDetailsId").val(), 'GET', GetPBFTabDetailsSuccess, GetPBFTabDetailsError);
 }
@@ -1110,7 +1142,9 @@ function GetPBFTabDetailsSuccess(data) {
             //**Start Date Formating for get GetPIDF_PBF_General_RND*/
             //data.PidfPbfGeneralRnd
             BindPbfGeneralRnd(data.PidfPbfGeneralRnd);
-            //
+            //PidfPbfGeneralPackSizeStability
+            BindGeneralPackSizeStability(data.PidfPbfGeneralPackSizeStability);
+            console.log(data.PidfPbfGeneralPackSizeStability)
             //**End Date Formating for get GetPIDF_PBF_General_RND*/
             $.each($('.AnalyticalTestTypeId'), function (index, item) {
                 if ($(this).next().val() != undefined && $(this).next().val() != null) {
@@ -3288,7 +3322,7 @@ function BindRA(data=null) {
     let tr = '';
     if (data == null) {
         tr += `<tr>
-             <td><input type="hidden" id="Pidfpbfraid0" class="ra" name="RaEntities[0].Pidfpbfraid" value="0"><select id="raCountryId0" name="RaEntities[0].CountryIdBuId" class="form-control readOnlyUpdate valid"></select></td>
+             <td><input type="hidden" id="Pidfpbfraid0" class="ra" name="RaEntities[0].Pidfpbfraid" value="0"><select id="raCountryId0" name="RaEntities[0].CountryIdBuId" class="form-control readOnlyUpdate clsCountry valid" onchange="checkDuplicateRaCountry(0);"></select></td>
              <td><input type="date" id="Pivotalbatchmanufactured0" name="RaEntities[0].PivotalBatchManufactured" class="form-control readOnlyUpdate  valid"></td>
              <td><input type="date" id="LastdatafromRnD0" name="RaEntities[0].LastDataFromRnD" class="form-control readOnlyUpdate  valid"></td>
              <td><input type="date" id="BEFinalReport0" name="RaEntities[0].BEFinalReport" class="form-control readOnlyUpdate  valid"></td>
@@ -3306,7 +3340,7 @@ function BindRA(data=null) {
         IsRaEditable = true;
         for (let e = 0; e < data.length; e++) {
             tr += `<tr>
-             <td><input type="hidden" id="Pidfpbfraid${e}" class="ra" name="RaEntities[${e}].Pidfpbfraid" value="${data[e].pidfpbfraid}"><select id="raCountryId${e}" name="RaEntities[${e}].CountryIdBuId" value="${data[e].countryIdBuId}"  class="form-control readOnlyUpdate  valid"></select></td>
+             <td><input type="hidden" id="Pidfpbfraid${e}" class="ra" name="RaEntities[${e}].Pidfpbfraid" value="${data[e].pidfpbfraid}"><select id="raCountryId${e}" name="RaEntities[${e}].CountryIdBuId" value="${data[e].countryIdBuId}"  class="form-control readOnlyUpdate clsCountry  valid" onchange="checkDuplicateRaCountry(${e});"></select></td>
              <td><input type="date" id="Pivotalbatchmanufactured${e}" name="RaEntities[${e}].PivotalBatchManufactured" value="${data[e].pivotalBatchManufactured.split('T')[0]}" class="form-control readOnlyUpdate  valid"></td>
              <td><input type="date" id="LastdatafromRnD${e}" name="RaEntities[${e}].LastDataFromRnD" value="${data[e].lastDataFromRnD.split('T')[0]}" class="form-control readOnlyUpdate  valid"></td>
              <td><input type="date" id="BEFinalReport${e}" name="RaEntities[${e}].BEFinalReport" value="${data[e].befinalReport.split('T')[0]}" class="form-control readOnlyUpdate  valid"></td>
@@ -3382,6 +3416,7 @@ function SetRaChildRow() {
         $(this).find("td:eq(0) input").attr("name", "RaEntities[" + index.toString() + "].Pidfpbfraid");
         $(this).find("td:eq(0) input").attr("id", "Pidfpbfraid" + index.toString());
         $(this).find("td:eq(0) select").attr("name", "RaEntities[" + index.toString() + "].CountryIdBuId");
+        $(this).find("td:eq(0) select").attr(`onchange`, `checkDuplicateRaCountry(${index})`);
         $(this).find("td:eq(0) select").attr("id", "raCountryId" + index.toString());
 
         $(this).find("td:eq(1) input").attr("name", "RaEntities[" + index.toString() + "].PivotalBatchManufactured");
@@ -3444,3 +3479,66 @@ $("#NonStandardProduct").click(function () {
         $(this).val(false);
     }
 })
+
+function checkDuplicateRaCountry(id) {
+  
+        let countryId = [];
+
+        //$.each($('#tableRABody tr'), function (index, value) {
+        //    if ($('#tableRABody tr').length > 1) {
+        //        countryId.push($(this).find("td:eq(0) option:selected").attr("name", "RaEntities[" + index.toString() + "].CountryIdBuId").val());
+
+        //        if (countryId[idex-1]==$(`select#raCountryId${index}`).val()) {
+        //            //$(`select#Skus${index + 1}`).prop('selectedIndex', 0);
+        //            //$(`select#PakeSize${index + 1}`).val(0);
+        //            //$(`#BrandPrice${index + 1}`).val(null);
+        //            //$(`#GenericListprice${index + 1}`).val(null);
+        //            //$(`#NetRealisation${index + 1}`).val(null);
+        //            //$(`#EstMat2020By12units${index + 1}`).val(null);
+        //            //$(`#Marketinpacks${index + 1}`).val(null);
+        //            $(`select#raCountryId${id}`).val("");
+        //            countryId.pop();
+        //            toastr.error("duplicate Country not allowed", "Error:");
+
+        //            return false;
+        //        }
+        //        else {
+        //            countryId.pop();
+        //            return true;
+        //        }
+        //    }
+
+        //});
+         //return false;
+
+    var duplicate = false;
+    $("#tableRABody tr").each(function (index, value) {
+        if ($('#tableRABody tr').length > 1) {
+            countryId.push($(this).find("td:eq(0) option:selected").attr("name", "RaEntities[" + index.toString() + "].CountryIdBuId").val());
+            var $current = $(this).find("td:eq(0) option:selected").attr("name", "RaEntities[" + index.toString() + "].CountryIdBuId").val();
+            var $next = $(this).next().find("td:eq(0) option:selected").attr("name", "RaEntities[" + index.toString() + "].CountryIdBuId").val() == undefined ? '0' : $(this).next().find("td:eq(0) option:selected").attr("name", "RaEntities[" + index.toString() + "].CountryIdBuId").val();
+            console.log($current);
+            console.log($next);
+            if (countryId.includes($next)) {
+                duplicate = true;
+                $(`select#raCountryId${id}`).val("");
+                toastr.error("duplicate Country not allowed", "Error:");
+                return false;
+            }
+            else if ($current === $next && !duplicate) {
+                duplicate = true;
+                $(`select#raCountryId${id}`).val("");
+                toastr.error("duplicate Country not allowed", "Error:");
+                return false;
+            } else if ($current === $next && duplicate) {
+                $(`select#raCountryId${id}`).val("");
+                toastr.error("duplicate Country not allowed", "Error:");
+                return false;
+            } else if ($current !== $next && duplicate) {
+                duplicate = false;
+                return true;
+            }
+        }
+    });
+    }
+    
