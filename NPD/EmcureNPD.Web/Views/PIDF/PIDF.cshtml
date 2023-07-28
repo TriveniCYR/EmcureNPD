@@ -263,6 +263,21 @@
                     @Html.ValidationMessageFor(model => model.LaunchedGenerics, "", new { @class = "text-danger" })
                 </div>
             </div>
+            <div class="col-md-4">
+                <div class="form-group required">
+                    @Html.LabelFor(model => model.TradeNameRequired, new { @class = "control-label" }) 
+                    @Html.CheckBoxFor(model => model.TradeNameRequired,  new { @class = "ml-2" } )
+                    @Html.TextBoxFor(@modal=> modal.TradeNameDate,"{0:yyyy-MM-dd}",new{@type="date",@class="form-control", @placeholder = "Trade Name Date"})
+                </div>
+            </div>
+           @* <div class="col-md-4">
+                <div class="form-group required clsTradeNameDate">
+                    @Html.LabelFor(model => model.TradeNameDate,"Trade Name Date", new { @class = "control-label" })
+                   
+          
+                </div>
+            </div>*@
+
 
         </div>
         <div class="row">
