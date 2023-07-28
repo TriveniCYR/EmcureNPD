@@ -198,6 +198,30 @@ namespace EmcureNPD.Business.Core.Implementation
             }
             return data;
         }
+        //GetGeneralPackSizeStability
+        public async Task<PidfProductStrengthGeneralRanD> GetGeneralPackSizeStability(long pidfId)
+        {
+           
+            var data = new PidfProductStrengthGeneralRanD();
+            SqlParameter[] osqlParameter = {
+                       new SqlParameter("@PIDFId", pidfId)
+                   };
+
+            var dbresult = await _pbfRepository.GetDataSetBySP("GetPackSizeStabilityData", System.Data.CommandType.StoredProcedure, osqlParameter);
+            if (dbresult != null)
+            {
+                if (dbresult.Tables[0] != null && dbresult.Tables[0].Rows.Count > 0)
+                {
+                  data.PidfProductStrengthGeneralRanDList = dbresult.Tables[0].DataTableToList<PidfProductStrengthGeneralRanD>();
+                }
+                if (dbresult.Tables[1] != null && dbresult.Tables[1].Rows.Count > 0)
+                {
+                    data.PidfPackSizeGeneralRanDList = dbresult.Tables[1].DataTableToList<PidfPackSizeGeneralRanD>();
+
+                }
+            }
+            return data;
+        }
         public async Task<DBOperation> AddUpdatePBFDetails(PBFFormEntity pbfEntity)
         {
             try
@@ -288,6 +312,7 @@ namespace EmcureNPD.Business.Core.Implementation
             DropdownObjects.PBFReferenceProductDetail = dsDropdownOptions.Tables[21];
 			DropdownObjects.RNDExicipientPrototype = dsDropdownOptions.Tables[22];
             DropdownObjects.PidfPbfGeneralRnd = await GetPidfPbfGeneralRnd(PIDFId, pbfId, PbfRndDetailsId);
+            DropdownObjects.PidfPbfGeneralPackSizeStability= await GetGeneralPackSizeStability(PIDFId);
             return DropdownObjects;
         }
 
