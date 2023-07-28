@@ -2,7 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata;
 using EmcureNPD.Data.DataAccess.Entity;
-using EmcureNPD.Utility;
+
 #nullable disable
 
 namespace EmcureNPD.Data.DataAccess.DataContext
@@ -131,6 +131,7 @@ namespace EmcureNPD.Data.DataAccess.DataContext
         public virtual DbSet<PidfPbfRnDFillingExpense> PidfPbfRnDFillingExpenses { get; set; }
         public virtual DbSet<PidfPbfRnDManPowerCost> PidfPbfRnDManPowerCosts { get; set; }
         public virtual DbSet<PidfPbfRnDMaster> PidfPbfRnDMasters { get; set; }
+        public virtual DbSet<PidfPbfRnDPackSizeStability> PidfPbfRnDPackSizeStabilities { get; set; }
         public virtual DbSet<PidfPbfRnDPackagingMaterial> PidfPbfRnDPackagingMaterials { get; set; }
         public virtual DbSet<PidfPbfRnDPlantSupportCost> PidfPbfRnDPlantSupportCosts { get; set; }
         public virtual DbSet<PidfPbfRnDReferenceProductDetail> PidfPbfRnDReferenceProductDetails { get; set; }
@@ -151,7 +152,7 @@ namespace EmcureNPD.Data.DataAccess.DataContext
             if (!optionsBuilder.IsConfigured)
             {
 #warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see http://go.microsoft.com/fwlink/?LinkId=723263.
-                optionsBuilder.UseSqlServer(DatabaseConnection.NPDDatabaseConnection);
+                optionsBuilder.UseSqlServer("Data Source=180.149.241.172;Initial Catalog=EmcureNPDDev;Persist Security Info=True;User ID=emcurenpddev_dbUser;pwd=emcure123!@#");
             }
         }
 
@@ -1301,6 +1302,8 @@ namespace EmcureNPD.Data.DataAccess.DataContext
                 entity.Property(e => e.StatusRemark).HasMaxLength(300);
 
                 entity.Property(e => e.StatusUpdatedDate).HasColumnType("datetime");
+
+                entity.Property(e => e.TradeNameDate).HasColumnType("datetime");
 
                 entity.HasOne(d => d.BusinessUnit)
                     .WithMany(p => p.Pidfs)
@@ -2924,6 +2927,36 @@ namespace EmcureNPD.Data.DataAccess.DataContext
                     .WithMany(p => p.PidfPbfRnDMasters)
                     .HasForeignKey(d => d.PlantId)
                     .HasConstraintName("FK_PIDF_PBF_RnD_Master_Plant");
+            });
+
+            modelBuilder.Entity<PidfPbfRnDPackSizeStability>(entity =>
+            {
+                entity.HasKey(e => e.PackSizeStabilityId)
+                    .HasName("PK__PIDF_PBF__5C057E65FAB7B4EF");
+
+                entity.ToTable("PIDF_PBF_RnD_PackSizeStability", "dbo");
+
+                entity.Property(e => e.CreatedOn)
+                    .HasColumnType("datetime")
+                    .HasDefaultValueSql("(getdate())");
+
+                entity.Property(e => e.PbfgeneralId).HasColumnName("PBFGeneralId");
+
+                entity.Property(e => e.Pidfid).HasColumnName("PIDFID");
+
+                entity.Property(e => e.Value).HasMaxLength(100);
+
+                entity.HasOne(d => d.Pbfgeneral)
+                    .WithMany(p => p.PidfPbfRnDPackSizeStabilities)
+                    .HasForeignKey(d => d.PbfgeneralId)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("FK_PIDF_PBF_RnD_PackSizeStability_PIDF_PBF_General");
+
+                entity.HasOne(d => d.Pidf)
+                    .WithMany(p => p.PidfPbfRnDPackSizeStabilities)
+                    .HasForeignKey(d => d.Pidfid)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("FK_PIDF_PBF_RnD_PackSizeStability_PIDF");
             });
 
             modelBuilder.Entity<PidfPbfRnDPackagingMaterial>(entity =>

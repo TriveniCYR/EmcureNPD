@@ -73,6 +73,9 @@ namespace EmcureNPD.Business.Models
         [Display(Name = "RFDCommercialBatchSize", ResourceType = typeof(Master))]
         public string RFDCommercialBatchSize { get; set; }
 
+        [Display(Name = "Trade Name Required")]
+        public bool TradeNameRequired { get; set; }
+        public DateTime? TradeNameDate { get; set; }
         public bool IsActive { get; set; }
   //      public DateTime CreatedDate { get; set; }
   //      public int? CreatedBy { get; set; }
