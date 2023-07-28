@@ -140,6 +140,7 @@ namespace EmcureNPD.Business.Models
         public string RNDPhaseWiseBudgetRawData { get; set; }
         public List<RNDPhaseWiseBudget> RNDPhaseWiseBudgets { get; set; }
         public PidfPbfGeneralRndEntity PidfPbfGeneralRnd { get; set; }
+        public List<PidfPbfRnDPackSizeStabilityEntity> PidfPbfRnDPackSizeStability { get; set; }
         #endregion
     }
     #region Clinical Classes 

@@ -21,6 +21,7 @@ namespace EmcureNPD.Data.DataAccess.Entity
             PidfMedicals = new HashSet<PidfMedical>();
             PidfPbfGeneralRnds = new HashSet<PidfPbfGeneralRnd>();
             PidfPbfRas = new HashSet<PidfPbfRa>();
+            PidfPbfRnDPackSizeStabilities = new HashSet<PidfPbfRnDPackSizeStability>();
             PidfPbfs = new HashSet<PidfPbf>();
             Pidfapidetails = new HashSet<Pidfapidetail>();
             Pidfimsdata = new HashSet<Pidfimsdatum>();
@@ -84,6 +85,7 @@ namespace EmcureNPD.Data.DataAccess.Entity
         public virtual ICollection<PidfMedical> PidfMedicals { get; set; }
         public virtual ICollection<PidfPbfGeneralRnd> PidfPbfGeneralRnds { get; set; }
         public virtual ICollection<PidfPbfRa> PidfPbfRas { get; set; }
+        public virtual ICollection<PidfPbfRnDPackSizeStability> PidfPbfRnDPackSizeStabilities { get; set; }
         public virtual ICollection<PidfPbf> PidfPbfs { get; set; }
         public virtual ICollection<Pidfapidetail> Pidfapidetails { get; set; }
         public virtual ICollection<Pidfimsdatum> Pidfimsdata { get; set; }

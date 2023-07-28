@@ -131,6 +131,7 @@ namespace EmcureNPD.Data.DataAccess.DataContext
         public virtual DbSet<PidfPbfRnDFillingExpense> PidfPbfRnDFillingExpenses { get; set; }
         public virtual DbSet<PidfPbfRnDManPowerCost> PidfPbfRnDManPowerCosts { get; set; }
         public virtual DbSet<PidfPbfRnDMaster> PidfPbfRnDMasters { get; set; }
+        public virtual DbSet<PidfPbfRnDPackSizeStability> PidfPbfRnDPackSizeStabilities { get; set; }
         public virtual DbSet<PidfPbfRnDPackagingMaterial> PidfPbfRnDPackagingMaterials { get; set; }
         public virtual DbSet<PidfPbfRnDPlantSupportCost> PidfPbfRnDPlantSupportCosts { get; set; }
         public virtual DbSet<PidfPbfRnDReferenceProductDetail> PidfPbfRnDReferenceProductDetails { get; set; }
@@ -2924,6 +2925,36 @@ namespace EmcureNPD.Data.DataAccess.DataContext
                     .WithMany(p => p.PidfPbfRnDMasters)
                     .HasForeignKey(d => d.PlantId)
                     .HasConstraintName("FK_PIDF_PBF_RnD_Master_Plant");
+            });
+
+            modelBuilder.Entity<PidfPbfRnDPackSizeStability>(entity =>
+            {
+                entity.HasKey(e => e.PackSizeStabilityId)
+                    .HasName("PK__PIDF_PBF__5C057E65FAB7B4EF");
+
+                entity.ToTable("PIDF_PBF_RnD_PackSizeStability", "dbo");
+
+                entity.Property(e => e.CreatedOn)
+                    .HasColumnType("datetime")
+                    .HasDefaultValueSql("(getdate())");
+
+                entity.Property(e => e.PbfgeneralId).HasColumnName("PBFGeneralId");
+
+                entity.Property(e => e.Pidfid).HasColumnName("PIDFID");
+
+                entity.Property(e => e.Value).HasMaxLength(100);
+
+                entity.HasOne(d => d.Pbfgeneral)
+                    .WithMany(p => p.PidfPbfRnDPackSizeStabilities)
+                    .HasForeignKey(d => d.PbfgeneralId)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("FK_PIDF_PBF_RnD_PackSizeStability_PIDF_PBF_General");
+
+                entity.HasOne(d => d.Pidf)
+                    .WithMany(p => p.PidfPbfRnDPackSizeStabilities)
+                    .HasForeignKey(d => d.Pidfid)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("FK_PIDF_PBF_RnD_PackSizeStability_PIDF");
             });
 
             modelBuilder.Entity<PidfPbfRnDPackagingMaterial>(entity =>

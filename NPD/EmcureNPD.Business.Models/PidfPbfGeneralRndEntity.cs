@@ -42,6 +42,7 @@ namespace EmcureNPD.Business.Models
     {
         public int PackSizeId { get; set; }
         public int PIDFProductStrengthId { get; set; }
+        public long PackSizeStabilityId { get; set; }
         public string Value { get; set; }
 
 

@@ -765,17 +765,17 @@ $(document).ready(function () {
     getIPDAccordion(_IPDAccordionURL, _EncPIDFID, _PIDFBusinessUnitId, "dvIPDAccrdion");
     getCommercialAccordion(_CommercialAccordionURL, _EncPIDFID, _PIDFBusinessUnitId, "dvCommercialAccrdion");
     //BindRA();
-    $('#custom-tabs-department-RA-tab').click( function () {
+    $('#custom-tabs-department-RA-tab').click(function () {
         bindRaDropDowns();
     });
     $('#btnNextRnDTabSelectedValue').val(0); //custom-tabs-department-RnD-tab-
 });
 
 function convertFormToJSON() {
-    const array = $('form').serializeArray(); 
+    const array = $('form').serializeArray();
     const json = {};
     $.each(array, function () {
-        if (!(this.name =='__RequestVerificationToken'))
+        if (!(this.name == '__RequestVerificationToken'))
             json[this.name] = this.value;
 
     });
@@ -784,9 +784,9 @@ function convertFormToJSON() {
 function PostPBFFormbyNext() {
     objMainForm = {};
     var formdata = convertFormToJSON();
-   $.extend(objMainForm, { 'PIDFId': parseInt(_PIDFID) });
+    $.extend(objMainForm, { 'PIDFId': parseInt(_PIDFID) });
     $.extend(objMainForm, { 'pbfEntity': formdata });
-  //  ajaxServiceMethod('/PBF/PBF', 'POST', PostPBFFormbyNextSuccess, PostPBFFormbyNextError, JSON.stringify(objMainForm));
+    //  ajaxServiceMethod('/PBF/PBF', 'POST', PostPBFFormbyNextSuccess, PostPBFFormbyNextError, JSON.stringify(objMainForm));
     var _objURL = '/PBF/PBF';
     //objMainForm = formdata;
     $.ajax({
@@ -809,11 +809,11 @@ function PostPBFFormbyNext() {
 }
 function PostPBFFormbyNextSuccess(data) {
     try {
-       // $('#SavePIDFModel').modal('hide');
+        // $('#SavePIDFModel').modal('hide');
         if (data._Success === true) {
             toastr.success(data._Message);
             //IsShowCancel_Save_buttons(true);
-           // window.location.href = "/PIDF/PIDFList?ScreenId=4";
+            // window.location.href = "/PIDF/PIDFList?ScreenId=4";
         }
         else {
             toastr.error(data._Message);
@@ -850,7 +850,7 @@ $('#btnNextRnDTab').click(function () {
     $('#AddPBFForm').find('#SaveType').val(_SaveType);
 
 
-    var NextTabIndex = parseInt($('#btnNextRnDTabSelectedValue').val()) + 1;   
+    var NextTabIndex = parseInt($('#btnNextRnDTabSelectedValue').val()) + 1;
     var newxtTabId = '#custom-tabs-department-RnD-tab-' + arrRnDTabList[NextTabIndex];
     $('#btnNextRnDTabSelectedValue').val(NextTabIndex);
     $(newxtTabId).click();
@@ -859,10 +859,10 @@ $('#btnNextRnDTab').click(function () {
 $('[id^=custom-tabs-department-RnD-tab-]').click(function () {
     var tabid = $(this).attr('id');
     var arrtabid = tabid.split('-')[5];
-   var indexOftab = arrRnDTabList.indexOf(arrtabid);
+    var indexOftab = arrRnDTabList.indexOf(arrtabid);
     $('#btnNextRnDTabSelectedValue').val(indexOftab);
-   
-   
+
+
 });
 
 function GetPBFDropdown() {
@@ -1075,11 +1075,11 @@ function BindPbfGeneralRnd(data) {
     if (data.pbfRndDetailsId > 0) {
         $("#PidfPbfGeneralRnd_RndResponsiblePerson").val(data.rndResponsiblePerson);
         /*let dat = moment(data).format("DD MMM YYYY h:m");*/
-        $("#PidfPbfGeneralRnd_TypeOfDevelopmentDate").val(data.typeOfDevelopmentDate.split('T')[0])//moment(data.typeOfDevelopmentDate).format('DD MM YYYY'));
-        $("#PidfPbfGeneralRnd_PivotalBatchesManufacturedCompleted").val(data.pivotalBatchesManufacturedCompleted.split('T')[0])
-        $("#PidfPbfGeneralRnd_StabilityResultsDayZero").val(data.stabilityResultsDayZero.split('T')[0])
-        $("#PidfPbfGeneralRnd_StabilityResultsThreeMonth").val(data.stabilityResultsThreeMonth.split('T')[0])
-        $("#PidfPbfGeneralRnd_StabilityResultsSixMonth").val(data.stabilityResultsSixMonth.split('T')[0])
+        $("#PidfPbfGeneralRnd_TypeOfDevelopmentDate").val(data.typeOfDevelopmentDate == undefined ? '' : data.typeOfDevelopmentDate.split('T')[0])//moment(data.typeOfDevelopmentDate).format('DD MM YYYY'));
+        $("#PidfPbfGeneralRnd_PivotalBatchesManufacturedCompleted").val(data.pivotalBatchesManufacturedCompleted == undefined ? '' : data.pivotalBatchesManufacturedCompleted.split('T')[0])
+        $("#PidfPbfGeneralRnd_StabilityResultsDayZero").val(data.stabilityResultsDayZero == undefined ? '' : data.stabilityResultsDayZero.split('T')[0])
+        $("#PidfPbfGeneralRnd_StabilityResultsThreeMonth").val(data.stabilityResultsThreeMonth == undefined ? '' : data.stabilityResultsThreeMonth.split('T')[0])
+        $("#PidfPbfGeneralRnd_StabilityResultsSixMonth").val(data.stabilityResultsSixMonth == undefined?'': data.stabilityResultsSixMonth.split('T')[0])
         if (data.nonStandardProduct) {
             $("#NonStandardProduct").prop('checked', true);
             $("#NonStandardProduct").val(true);
@@ -1091,10 +1091,10 @@ function BindPbfGeneralRnd(data) {
         $("#PidfPbfGeneralRnd_Pivotals").val(data.pivotals)
         $("#PidfPbfGeneralRnd_BatchSizes").val(data.batchSizes)
         $("#PidfPbfGeneralRnd_NoMofBatchesPerStrength").val(data.noMofBatchesPerStrength)
-        $("#PidfPbfGeneralRnd_SiteTransferDate").val(data.siteTransferDate.split('T')[0])
-        $("#PidfPbfGeneralRnd_ApiOrderedDate").val(data.apiOrderedDate.split('T')[0])
-        $("#PidfPbfGeneralRnd_ApiReceivedDate").val(data.apiReceivedDate.split('T')[0])
-        $("#PidfPbfGeneralRnd_FinalFormulationApproved").val(data.finalFormulationApproved.split('T')[0])
+        $("#PidfPbfGeneralRnd_SiteTransferDate").val(data.siteTransferDate == undefined ? '' : data.siteTransferDate.split('T')[0])
+        $("#PidfPbfGeneralRnd_ApiOrderedDate").val(data.apiOrderedDate == undefined ? '' : data.apiOrderedDate.split('T')[0])
+        $("#PidfPbfGeneralRnd_ApiReceivedDate").val(data.apiReceivedDate == undefined ? '' : data.apiReceivedDate.split('T')[0])
+        $("#PidfPbfGeneralRnd_FinalFormulationApproved").val(data.finalFormulationApproved == undefined?'': data.finalFormulationApproved.split('T')[0])
         $("#PbfRndDetailsId").val(data.pbfRndDetailsId)
         $("#PidfPbfGeneralRnd_PidfId").val(data.pidfId)
         $("#PidfPbfGeneralRnd_PbfId").val(data.pbfId)
@@ -1108,33 +1108,44 @@ function BindGeneralPackSizeStability(data) {
     if (data != null && data != undefined) {
         if (data.pidfPackSizeGeneralRanDList != null) {
             for (var i = 0; i < data.pidfPackSizeGeneralRanDList.length; i++) {
-                html += `<td>Pack Size ${data.pidfPackSizeGeneralRanDList[i].packSizeId}</td>`;
-                td += `<td id="td${i}"> <input type="text" class="form-control" id="txt${i}" disabled="disabled" data-val="${data.pidfPackSizeGeneralRanDList[i].pidfProductStrengthId}"  value="${data.pidfPackSizeGeneralRanDList[i].value}"></td>`;
-               
+                html += `<td>Pack Size ${data.pidfPackSizeGeneralRanDList[i].packSizeId}<input type="hidden" name="PidfPbfRnDPackSizeStability[${i}].PackSizeId" value="${data.pidfPackSizeGeneralRanDList[i].packSizeId}"></td>`;
+                td += `<td id="td${i}"><input type="hidden" name="PidfPbfRnDPackSizeStability[${i}].PackSizeStabilityId" value="${data.pidfPackSizeGeneralRanDList[i].packSizeStabilityId}"><input type="text" class="form-control clsValue" id="txt${data.pidfPackSizeGeneralRanDList[i].pidfProductStrengthId}${i}" disabled="disabled" data-val="${data.pidfPackSizeGeneralRanDList[i].pidfProductStrengthId}" name="PidfPbfRnDPackSizeStability[${i}].Value" value="${data.pidfPackSizeGeneralRanDList[i].value}"></td>`;
+
             }
             html += '</tr></thead>'
         }
-        for (var j = 0; j < data.pidfProductStrengthGeneralRanDList.length; j++) {
-            html += `<tr><td>Strength ${data.pidfProductStrengthGeneralRanDList[j].strength}</td>${td}</tr>`
+        if (data.pidfProductStrengthGeneralRanDList != null) {
+            for (var j = 0; j < data.pidfProductStrengthGeneralRanDList.length; j++) {
+                html += `<tr><td>Strength ${data.pidfProductStrengthGeneralRanDList[j].strength}<input type="hidden" name="PidfPbfRnDPackSizeStability[${j}].StrengthId" value="${data.pidfProductStrengthGeneralRanDList[j].strength}"></td>${td}</tr>`
+            }
         }
-
         html += '</table>';
         $("#lblPackSizeStability").show();
         $("#DvPackSizeStability").append(html);
-        for (var j = 0; j < data.pidfProductStrengthGeneralRanDList.length; j++) {
-            pidfProductStrengthId.push(data.pidfProductStrengthGeneralRanDList[j].pidfProductStrengthId);
-        }
-
-        for (var i = 0; i < data.pidfPackSizeGeneralRanDList.length; i++) {
-            if (pidfProductStrengthId[i]==data.pidfPackSizeGeneralRanDList[i].pidfProductStrengthId) {
-                $("#txt" + i).prop('disabled', false);
+        if (data.pidfProductStrengthGeneralRanDList != null) {
+            for (var j = 0; j < data.pidfProductStrengthGeneralRanDList.length; j++) {
+                pidfProductStrengthId.push(data.pidfProductStrengthGeneralRanDList[j].pidfProductStrengthId);
             }
         }
-        pidfProductStrengthId = [];
+        if (data.pidfPackSizeGeneralRanDList != null) {
+            for (var i = 0; i < data.pidfPackSizeGeneralRanDList.length; i++) {
+                if (pidfProductStrengthId[i] == data.pidfPackSizeGeneralRanDList[i].pidfProductStrengthId) {
+                    $("#txt" + pidfProductStrengthId[i] + "" + i).prop('disabled', false);
+
+                }
+            }
+            $(".clsValue").each(function (index, value) {
+                if ($(this).prop('disabled')) {
+                    $(this).val("");
+                    $(this).attr("value","");
+                }
+            });
     }
+    pidfProductStrengthId = [];
+}
 }
 function GetPBFTabDetails() {
-    ajaxServiceMethod($('#hdnBaseURL').val() + GetPBFAllTabDetails + "/" + _PIDFID + "/" + _selectBusinessUnit + "/"+_PIDFPBFId + "/" + $("#PbfRndDetailsId").val(), 'GET', GetPBFTabDetailsSuccess, GetPBFTabDetailsError);
+    ajaxServiceMethod($('#hdnBaseURL').val() + GetPBFAllTabDetails + "/" + _PIDFID + "/" + _selectBusinessUnit + "/" + _PIDFPBFId + "/" + $("#PbfRndDetailsId").val(), 'GET', GetPBFTabDetailsSuccess, GetPBFTabDetailsError);
 }
 function GetPBFTabDetailsSuccess(data) {
     try {
@@ -1204,9 +1215,9 @@ function GetPBFTabDetailsSuccess(data) {
                     $(this).val($(this).next().val());
                 }
             });
-           
+
             //  alert('<option value="' + this.value + '">' + this.text + '</option>');
-           
+
             SetChildRowDeleteIconPBF();
             if (_mode == 1) {
                 PBFreadOnlyForm();
@@ -3331,26 +3342,26 @@ async function GetTypeOfSubmission() {
 }
 function GetTypeOfSubmissionSuccess(data) {
     try {
-      
-            $('#TypeOfSubmissionId0').find('option').remove()
-            if (data != null && data.length > 0) {
-                var _emptyOption = '<option value="">-- Select --</option>';
-                $('#TypeOfSubmissionId0').append(_emptyOption);
-                $(data).each(function (index, item) {
 
-                    $('#TypeOfSubmissionId0').append('<option value="' + item.id + '">' + item.typeOfSubmission + '</option>');
-                });
+        $('#TypeOfSubmissionId0').find('option').remove()
+        if (data != null && data.length > 0) {
+            var _emptyOption = '<option value="">-- Select --</option>';
+            $('#TypeOfSubmissionId0').append(_emptyOption);
+            $(data).each(function (index, item) {
 
-                //try {
-                //    if ($("#WishListId").val() > 0) {
-                //        $('#raCountryId').val($('#hdnCountryId').val());
-                //    }
-                //} catch (e) {
-                //}
-            }
-        
-         
-        
+                $('#TypeOfSubmissionId0').append('<option value="' + item.id + '">' + item.typeOfSubmission + '</option>');
+            });
+
+            //try {
+            //    if ($("#WishListId").val() > 0) {
+            //        $('#raCountryId').val($('#hdnCountryId').val());
+            //    }
+            //} catch (e) {
+            //}
+        }
+
+
+
     }
     catch (e) {
         toastr.error(e.message);
@@ -3359,7 +3370,7 @@ function GetTypeOfSubmissionSuccess(data) {
 function GetTypeOfSubmissionError(x, y, z) {
     toastr.error(ErrorMessage);
 }
-function BindRA(data=null) {
+function BindRA(data = null) {
     let tbody = $("#tableRABody");
     IsRaEditable = false;
     let tr = '';
@@ -3377,9 +3388,9 @@ function BindRA(data=null) {
              <td>  <i class="fa-solid fa-circle-plus nav-icon text-success operationButton" id="addIcon" onclick="addRowra(this);"></i> <i class="fa-solid fa-trash nav-icon text-red raDeleteIcon operationButton DeleteIcon" onclick="deleteRowra(this);" style="display: none;"></i>
              </td>
              </tr>`;
-       
+
     }
-    else if (data!=null) {
+    else if (data != null) {
         IsRaEditable = true;
         for (let e = 0; e < data.length; e++) {
             tr += `<tr>
@@ -3398,15 +3409,15 @@ function BindRA(data=null) {
              </tr>`;
         }
 
-      
+
     }
     tbody.append(tr);
     ShowHideRaDelete();
-     GetCountyByBussinessUnitId();
-     GetTypeOfSubmission();
+    GetCountyByBussinessUnitId();
+    GetTypeOfSubmission();
     data = null;
 }
-function GetRa(PidfId,PifdPbfId) {
+function GetRa(PidfId, PifdPbfId) {
 
     ajaxServiceMethod($('#hdnBaseURL').val() + GetRaurl + "/" + PidfId + "/" + PifdPbfId, 'GET', GetRaSuccess, GetRaError);
 }
@@ -3420,7 +3431,7 @@ function GetRaSuccess(response) {
             BindRA();
         }
     }
-    
+
     catch (e) {
         toastr.error(ErrorMessage);
     }
@@ -3455,7 +3466,7 @@ function SetRaChildRow() {
     $.each($('#tableRABody tr'), function (index, value) {
 
 
-        
+
         $(this).find("td:eq(0) input").attr("name", "RaEntities[" + index.toString() + "].Pidfpbfraid");
         $(this).find("td:eq(0) input").attr("id", "Pidfpbfraid" + index.toString());
         $(this).find("td:eq(0) select").attr("name", "RaEntities[" + index.toString() + "].CountryIdBuId");
@@ -3486,23 +3497,23 @@ function SetRaChildRow() {
         $(this).find("td:eq(8) input").attr("name", "RaEntities[" + index.toString() + "].LasDateToRegulatory");
         $(this).find("td:eq(8) input").attr("id", "LasDateToRegulatory" + index.toString());
 
-        
+
     });
 }
- function bindRaDropDowns() {
+function bindRaDropDowns() {
     if (IsRaEditable) {
 
         for (let z = 0; z < $("#tableRABody").find("tr").length; z++) {
 
             if (z > 0) {
-                 $("#TypeOfSubmissionId0 option").each(function () {
+                $("#TypeOfSubmissionId0 option").each(function () {
                     $("#TypeOfSubmissionId" + z).append('<option value="' + this.value + '">' + this.text + '</option>');
 
                 });
                 //await $("#raAllCountryId0 option").each(function () {
                 //    $("#raAllCountryId" + z).append('<option value="' + this.value + '">' + this.text + '</option>');
                 //});
-                 $("#raCountryId0 option").each(function () {
+                $("#raCountryId0 option").each(function () {
                     $("#raCountryId" + z).append('<option value="' + this.value + '">' + this.text + '</option>');
                 });
             }
@@ -3524,36 +3535,8 @@ $("#NonStandardProduct").click(function () {
 })
 
 function checkDuplicateRaCountry(id) {
-  
-        let countryId = [];
 
-        //$.each($('#tableRABody tr'), function (index, value) {
-        //    if ($('#tableRABody tr').length > 1) {
-        //        countryId.push($(this).find("td:eq(0) option:selected").attr("name", "RaEntities[" + index.toString() + "].CountryIdBuId").val());
-
-        //        if (countryId[idex-1]==$(`select#raCountryId${index}`).val()) {
-        //            //$(`select#Skus${index + 1}`).prop('selectedIndex', 0);
-        //            //$(`select#PakeSize${index + 1}`).val(0);
-        //            //$(`#BrandPrice${index + 1}`).val(null);
-        //            //$(`#GenericListprice${index + 1}`).val(null);
-        //            //$(`#NetRealisation${index + 1}`).val(null);
-        //            //$(`#EstMat2020By12units${index + 1}`).val(null);
-        //            //$(`#Marketinpacks${index + 1}`).val(null);
-        //            $(`select#raCountryId${id}`).val("");
-        //            countryId.pop();
-        //            toastr.error("duplicate Country not allowed", "Error:");
-
-        //            return false;
-        //        }
-        //        else {
-        //            countryId.pop();
-        //            return true;
-        //        }
-        //    }
-
-        //});
-         //return false;
-
+    let countryId = [];
     var duplicate = false;
     $("#tableRABody tr").each(function (index, value) {
         if ($('#tableRABody tr').length > 1) {
@@ -3583,5 +3566,4 @@ function checkDuplicateRaCountry(id) {
             }
         }
     });
-    }
-    
+}
