@@ -1,0 +1,168 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <!--
+      RoxyFileman - web based file manager. Ready to use with CKEditor, TinyMCE.
+      Can be easily integrated with any other WYSIWYG editor or CMS.
+
+      Copyright (C) 2013, RoxyFileman.com - Lyubomir Arsov. All rights reserved.
+      For licensing, see LICENSE.txt or http://RoxyFileman.com/license
+
+      This program is free software: you can redistribute it and/or modify
+      it under the terms of the GNU General Public License as published by
+      the Free Software Foundation, either version 3 of the License.
+
+      This program is distributed in the hope that it will be useful,
+      but WITHOUT ANY WARRANTY; without even the implied warranty of
+      MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+      GNU General Public License for more details.
+
+      You should have received a copy of the GNU General Public License
+      along with this program.  If not, see <http://www.gnu.org/licenses/>.
+
+      Contact: Lyubomir Arsov, liubo (at) web-lobby.com
+    -->
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>Emcure file manager</title>
+    <link href="css/jquery-ui-1.10.4.custom.min.css" rel="stylesheet" type="text/css" />
+    <link href="css/main.min.css" rel="stylesheet" type="text/css" />
+    <link rel="stylesheet" href="~/css/stackpathbootstrap.min.css" integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous" />
+    <!--script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js" integrity="sha384-B4gt1jrGC7Jh4AgTPSdUtOBvfO8shuf57BaghqFfPlYxofvL8/KUEfYiJOMMV+rV" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.bundle.min.js" integrity="sha384-LtrjvnR4Twt/qOuYxE721u19sVFLVSA4hf/rRt6PrZTmiPltdZcI7q7PXQBYTKyf" crossorigin="anonymous"></script-->
+    <link rel="stylesheet" href="~/css/all.css" integrity="sha384-AYmEC3Yw5cVb3ZcuHtOA93w35dYTsvhLPVnYs9eStHfGJvOvKxVfELGroGkvsg+p" crossorigin="anonymous" />
+
+    <script type="text/javascript" src="~/js/jquery.min.js"></script>
+    <script type="text/javascript" src="js/jquery-ui-1.10.4.custom.min.js"></script>
+    <script type="text/javascript" src="js/custom.js"></script>
+    <script type="text/javascript" src="js/main.min.js"></script>
+    <script type="text/javascript" src="js/jquery-dateFormat.min.js"></script>
+
+</head>
+<body>
+    <div class="table-responsive">
+        <table cellpadding="0" cellspacing="0" id="wraper">
+            <tr>
+                <td valign="top" class="pnlDirs" id="dirActions">
+                    <div class="actions text-center border-bottom">
+                        <button type="button" class="btn btn-primary" title="Create new directory" onclick="addDir()" data-lang-v="CreateDir" data-lang-t="T_CreateDir"><i class="fas fa-folder-plus"></i> Create Folder</button>
+                        <!--<button type="button" class="btn btn-primary btn-sm" title="Rename directory" onclick="renameDir()" data-lang-v="RenameDir" data-lang-t="T_RenameDir"><i class="fas fa-edit"></i> Rename</button>
+                    <button type="button" class="btn btn-primary btn-sm" title="Delete selected directory" onclick="deleteDir()" data-lang-v="DeleteDir" data-lang-t="T_DeleteDir"><i class="fas fa-folder-minus"></i> Delete</button>-->
+                        <!--input type="button" id="btnAddDir" value="Create" title="Create new directory" onclick="addDir()" data-lang-v="CreateDir" data-lang-t="T_CreateDir" />
+                    <input type="button" id="btnRenameDir" value="Rename" title="Rename directory" onclick="renameDir()" data-lang-v="RenameDir" data-lang-t="T_RenameDir" />
+                    <input type="button" id="btnDeleteDir" value="Delete" title="Delete selected directory" onclick="deleteDir()" data-lang-v="DeleteDir" data-lang-t="T_DeleteDir" />-->
+                    </div>
+
+                    <div id="pnlLoadingDirs">
+                        <span>Loading directories...</span><br>
+                        <img src="images/loading.gif" title="Loading directory tree, please wait...">
+                    </div>
+                    <div class="scrollPane">
+                        <ul id="pnlDirList"></ul>
+                    </div>
+                </td>
+                <td valign="top" id="fileActions">
+                    <input type="hidden" id="hdViewType" value="list">
+                    <input type="hidden" id="hdOrder" value="asc">
+                    <div class="actions border-bottom" style="height:auto;float:left;min-height:100px;">
+                        <button type="button" class="btn btn-primary" title="Upload files" onclick="addFileClick()" data-lang-v="AddFile" data-lang-t="T_AddFile"><i class="fas fa-file-upload"></i> Add file</button>
+                        <button type="button" class="btn btn-primary" title="Preview selected file" onclick="previewFile()" data-lang-v="Preview" data-lang-t="T_Preview"><i class="far fa-eye"></i> Preview</button>
+                        <button type="button" class="btn btn-primary" title="Rename selected file" onclick="renameFile()" data-lang-v="RenameFile" data-lang-t="T_RenameFile"><i class="far fa-edit"></i> Rename</button>
+                        <button type="button" class="btn btn-primary" title="Download selected file" onclick="downloadFile()" data-lang-v="DownloadFile" data-lang-t="T_DownloadFile"><i class="fas fa-download"></i> Download</button>
+                        <button type="button" class="btn btn-primary" title="Delete selected file" onclick="deleteFile()" data-lang-v="DeleteFile" data-lang-t="T_DeleteFile"><i class="far fa-trash-alt"></i> Delete</button>
+                        <!--input type="button" id="btnAddFile" value="Add file" title="Upload files" onclick="addFileClick()" data-lang-v="AddFile" data-lang-t="T_AddFile" />
+                    <input type="button" id="btnPreviewFile" value="Preview" title="Preview selected file" onclick="previewFile()" data-lang-v="Preview" data-lang-t="T_Preview" />
+                    <input type="button" id="btnRenameFile" value="Rename" title="Rename selected file" onclick="renameFile()" data-lang-v="RenameFile" data-lang-t="T_RenameFile" />
+                    <input type="button" id="btnDownloadFile" value="Download" title="Download selected file" onclick="downloadFile()" data-lang-v="DownloadFile" data-lang-t="T_DownloadFile" />
+                    <input type="button" id="btnDeleteFile" value="Delete" title="Delete selected file" onclick="deleteFile()" data-lang-v="DeleteFile" data-lang-t="T_DeleteFile" />
+                    <input type="button" id="btnSelectFile" value="Select" title="Select highlighted file" onclick="setFile()" data-lang-v="SelectFile" data-lang-t="T_SelectFile" />-->
+                        <span data-lang="OrderBy">Order by</span>:
+                        <select id="ddlOrder" class="form-select form-control" style=" padding: 2px 10px; width:120px;display:inline-block;" onchange="sortFiles()">
+                            <option value="name" data-lang="Name_asc">&uarr;&nbsp;&nbsp;Name</option>
+                            <option value="size" data-lang="Size_asc">&uarr;&nbsp;&nbsp;Size</option>
+                            <option value="time" data-lang="Date_asc">&uarr;&nbsp;&nbsp;Date</option>
+                            <option value="name_desc" data-lang="Name_desc">&darr;&nbsp;&nbsp;Name</option>
+                            <option value="size_desc" data-lang="Size_desc">&darr;&nbsp;&nbsp;Size</option>
+                            <option value="time_desc" data-lang="Date_desc">&darr;&nbsp;&nbsp;Date</option>
+                        </select>&nbsp;&nbsp;
+
+                        <button type="button" class="btn btn-primary btn-sm" title="List view" onclick="switchView('list')" \ data-lang-t="T_ListView"><i class="fas fa-list"></i></button>
+                        <button type="button" class="btn btn-primary btn-sm" title="Thumbnails view" onclick="switchView('thumb')" \ data-lang-t="T_ThumbsView"><i class="fas fa-th"></i></button>
+                        <!--input type="button" id="btnListView" class="btnView" value=" " title="List view" onclick="switchView('list')" data-lang-t="T_ListView" />
+                    <input type="button" id="btnThumbView" class="btnView" value=" " title="Thumbnails view" onclick="switchView('thumb')" data-lang-t="T_ThumbsView" />&nbsp;&nbsp;-->
+                        <!--input type="text" id="txtSearch" onkeyup="filterFiles()" onchange="filterFiles()" />-->
+                        <div class="input-group input-group-sm" style="float:right;width:200px; margin-right:5px;margin-top:10px;">
+                            <input type="text" id="txtSearch" style="height:38px;" class="form-control" onkeyup="filterFiles()" onchange="filterFiles()" aria-label="Small" placeholder="Search" aria-describedby="inputGroup-sizing-sm">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text" id="inputGroup-sizing-sm"><i class="fas fa-search"></i></span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="pnlFiles">
+                        <div class="scrollPane">
+                            <div id="pnlLoading">
+                                <span data-lang="LoadingFiles">Loading files...</span><br>
+                                <img src="images/loading.gif" title="Loading files, please wait...">
+                            </div>
+                            <div id="pnlEmptyDir" data-lang="DirIsEmpty">
+                                This folder is empty
+                            </div>
+                            <div id="pnlSearchNoFiles" data-lang="NoFilesFound">
+                                No files found
+                            </div>
+                            <ul id="pnlFileList"></ul>
+                        </div>
+                    </div>
+                </td>
+            </tr>
+            <tr>
+                <td class="bottomLine" colspan="2">
+                    <div id="pnlStatus">Status bar</div>
+                </td>
+            </tr>
+        </table>
+    </div>
+
+<!-- Forms and other components -->
+<iframe name="frmUploadFile" width="0" height="0" style="display:none;border:0;"></iframe>
+<div id="dlgAddFile">
+  <form name="addfile" id="frmUpload" method="post" target="frmUploadFile" enctype="multipart/form-data">
+    <input type="hidden" name="d" id="hdDir" />
+    <div class="form"><br />
+      <input type="file" name="files[]" id="fileUploads" onchange="listUploadFiles(this.files)" multiple="multiple" />
+      <div id="uploadResult"></div>
+      <div class="uploadFilesList">
+        <div id="uploadFilesList"></div>
+      </div>
+    </div>
+  </form>
+</div>
+<div id="menuFile" class="contextMenu">
+  <a href="#" onclick="previewFile()" class="border-bottom" data-lang="Preview" id="btnPreviewFile"><i class="far fa-eye"></i> Preview </a>
+  <a href="#" onclick="downloadFile()" class="border-bottom" data-lang="DownloadFile" id="mnuDownload"> <i class="far fa-eye"></i>Download</a>
+  <a href="#" onclick="return pasteToFiles(event, this)" data-lang="Paste" class="paste pale border-bottom" id="mnuFilePaste">Paste</a>
+  <a href="#" onclick="cutFile()" class="border-bottom" data-lang="Cut" id="mnuFileCut">Cut</a>
+  <a href="#" onclick="copyFile()" class="border-bottom" data-lang="Copy" id="mnuFileCopy">Copy</a>
+  <a href="#" onclick="renameFile()" class="border-bottom" data-lang="RenameFile" id="mnuRenameFile">Rename</a>
+  <a href="#" onclick="deleteFile()"  data-lang="DeleteFile" id="mnuDeleteFile">Delete</a><!-- hr>
+  <a href="#" onclick="fileProperties()" id="mnuProp">Properties</a -->
+</div>
+<div id="menuDir" class="contextMenu">
+  <a href="#" onclick="downloadDir()" class="border-bottom" data-lang="Download" id="mnuDownloadDir">Download aaa</a>
+  <a href="#" onclick="addDir()" class="border-bottom" data-lang="T_CreateDir" id="mnuCreateDir">Create new</a>
+  <a href="#" onclick="return pasteToDirs(event, this)" data-lang="Paste" class="paste pale border-bottom" id="mnuDirPaste">Paste</a>
+  <a href="#" onclick="cutDir()" class="border-bottom" data-lang="Cut" id="mnuDirCut">Cut</a>
+  <a href="#" onclick="copyDir()" class="border-bottom" data-lang="Copy" id="mnuDirCopy">Copy</a>
+  <a href="#" onclick="renameDir()" class="border-bottom" data-lang="RenameDir" id="mnuRenameDir">Rename</a>
+  <a href="#" onclick="deleteDir()"  data-lang="DeleteDir" id="mnuDeleteDir">Delete</a>
+</div>
+<div id="pnlRenameFile" class="dialog">
+  <span class="name"></span><br>
+  <input type="text" id="txtFileName">
+</div>
+<div id="pnlDirName" class="dialog">
+  <span class="name"></span><br>
+  <input type="text" id="txtDirName">
+</div>
+
+</body>
+</html>

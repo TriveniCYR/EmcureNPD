@@ -1,0 +1,44 @@
+body {
+  font-family: "Source Sans Pro", -apple-system, BlinkMacSystemFont, "Segoe UI",
+    Roboto, "Helvetica Neue", Arial, sans-serif, "Apple Color Emoji",
+    "Segoe UI Emoji", "Segoe UI Symbol" !important;
+}
+
+.navbar-logo {
+  height: 50px;
+}
+
+.login-card {
+  background-color: #e9ecef;
+  height: 82vh;
+}
+
+.login-card .card {
+    width: 350px;
+    border-top: 2px solid #0d6efd;
+}
+
+.login-card-title {
+  border-bottom: 1px solid #0000001f;
+  padding: 10px;
+}
+
+.input-group-text {
+  height: 38px;
+}
+
+.input-group-append {
+  margin-left: -1px;
+}
+
+.input-group-append,
+.input-group-prepend {
+  display: flex;
+}
+
+.footer {
+  background-color: #fff;
+  border-top: 1px solid #dee2e6;
+  color: #869099;
+  padding: 1rem;
+}

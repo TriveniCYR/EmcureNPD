@@ -775,16 +775,37 @@ function convertFormToJSON() {
     const array = $('form').serializeArray(); 
     const json = {};
     $.each(array, function () {
-        json[this.name] = this.value;
+        if (!(this.name =='__RequestVerificationToken'))
+            json[this.name] = this.value;
+
     });
     return json;
 }
 function PostPBFFormbyNext() {
     objMainForm = {};
     var formdata = convertFormToJSON();
-    $.extend(objMainForm, { 'PIDFId': parseInt(_PIDFID) });
+   $.extend(objMainForm, { 'PIDFId': parseInt(_PIDFID) });
     $.extend(objMainForm, { 'pbfEntity': formdata });
-    ajaxServiceMethod('/PBF/PBF', 'POST', PostPBFFormbyNextSuccess, PostPBFFormbyNextError, JSON.stringify(objMainForm));
+  //  ajaxServiceMethod('/PBF/PBF', 'POST', PostPBFFormbyNextSuccess, PostPBFFormbyNextError, JSON.stringify(objMainForm));
+    var _objURL = '/PBF/PBF';
+    //objMainForm = formdata;
+    $.ajax({
+        type: 'POST',
+        url: _objURL,
+        data: JSON.stringify(objMainForm),
+        contentType: "application/json;",
+        async: true,
+        dataType: "json",
+        success: PostPBFFormbyNextSuccess,
+        error: PostPBFFormbyNextError
+        //function(xhr, textStatus, errorThrown) {
+        //    console.log('error');
+        //}
+    });
+
+
+
+
 }
 function PostPBFFormbyNextSuccess(data) {
     try {
@@ -807,6 +828,28 @@ function PostPBFFormbyNextError(x, y, z) {
 }
 
 $('#btnNextRnDTab').click(function () {
+    var _SaveType = 'Draft';
+    $('.pbftablesplantCost').show();
+    //if (_SaveType == 'Draft') {
+    //    $('#AddPBFForm').validate().settings.ignore = "*";
+
+    //} else {
+    //    validateDynamicControldDetailsPBF();
+    //}
+
+    //if ($("#AddPBFForm").valid()) {
+    //    //var abc = new Date();
+    //    //toastr.error(abc.toString());
+    //    $('#loading-wrapper').show();
+    //}
+    setlicense();
+    SetAnalyticalChildRows();
+    SetPhaseWiseBudget();
+    SetHeadWiseBudget();
+    SetRNDChildRows();
+    $('#AddPBFForm').find('#SaveType').val(_SaveType);
+
+
     var NextTabIndex = parseInt($('#btnNextRnDTabSelectedValue').val()) + 1;   
     var newxtTabId = '#custom-tabs-department-RnD-tab-' + arrRnDTabList[NextTabIndex];
     $('#btnNextRnDTabSelectedValue').val(NextTabIndex);
