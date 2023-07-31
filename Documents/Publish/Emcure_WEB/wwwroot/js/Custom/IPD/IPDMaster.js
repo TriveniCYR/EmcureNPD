@@ -75,8 +75,13 @@ $(document).ready(function () {
         if (!ValidateDuplicateCountryID(".SelectCountryPDAPI"))
             $(this).val(undefined)
     });
-
+    
 });
+function Set_optionTextforAnyPatentstobeFiled () {
+    $(".clsAnyPatentstobeFiled").each(function (ind, val) {
+        val.options[0].text = '--Select--'
+    });
+}
 
 function ValidateDuplicateCountryID(controlclass) {
     var arr = [];
@@ -129,6 +134,7 @@ function LoadIPDForm(pidfId, BusinessUnitId) {
             SetDisableForOtherUserBU(_selectBusinessUnit);
             GetCountryList_PatentDetailsFormulation();
             GetPatentStrategyDropdownList();
+            Set_optionTextforAnyPatentstobeFiled();
         });
     }
    

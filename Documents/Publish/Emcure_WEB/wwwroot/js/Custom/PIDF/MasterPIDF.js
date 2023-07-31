@@ -38,7 +38,21 @@ $(document).ready(function () {
         var _selected = ($(this).val() == "1" ? true : false);
         $('#InHouses').prop("checked", _selected).val(_selected);
     });
+    TradeNameRequired_change();
 });
+
+$("#TradeNameRequired").change(TradeNameRequired_change);
+
+function TradeNameRequired_change () {
+    var chkval = $('#TradeNameRequired').prop('checked');
+    if (chkval) {
+        $('#TradeNameDate').show();
+    }
+    else {
+        $('#TradeNameDate').hide();
+        $('#TradeNameDate').val(null);
+    }
+}
 
 $('#RFDPriceDiscounting').focusout(function () {
     var ControlID = $(this).attr('id');
