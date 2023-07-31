@@ -2,7 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata;
 using EmcureNPD.Data.DataAccess.Entity;
-
+using EmcureNPD.Utility;
 #nullable disable
 
 namespace EmcureNPD.Data.DataAccess.DataContext
@@ -60,6 +60,8 @@ namespace EmcureNPD.Data.DataAccess.DataContext
         public virtual DbSet<MasterPackagingType> MasterPackagingTypes { get; set; }
         public virtual DbSet<MasterPackingType> MasterPackingTypes { get; set; }
         public virtual DbSet<MasterPatentStrategy> MasterPatentStrategies { get; set; }
+        public virtual DbSet<MasterPbfworkFlow> MasterPbfworkFlows { get; set; }
+        public virtual DbSet<MasterPbfworkflowTask> MasterPbfworkflowTasks { get; set; }
         public virtual DbSet<MasterPidfstatus> MasterPidfstatuses { get; set; }
         public virtual DbSet<MasterPlant> MasterPlants { get; set; }
         public virtual DbSet<MasterPlantLine> MasterPlantLines { get; set; }
@@ -120,6 +122,8 @@ namespace EmcureNPD.Data.DataAccess.DataContext
         public virtual DbSet<PidfPbfGeneralStrength> PidfPbfGeneralStrengths { get; set; }
         public virtual DbSet<PidfPbfHeadWiseBudget> PidfPbfHeadWiseBudgets { get; set; }
         public virtual DbSet<PidfPbfMarketMapping> PidfPbfMarketMappings { get; set; }
+        public virtual DbSet<PidfPbfOutsource> PidfPbfOutsources { get; set; }
+        public virtual DbSet<PidfPbfOutsourceTask> PidfPbfOutsourceTasks { get; set; }
         public virtual DbSet<PidfPbfPhaseWiseBudget> PidfPbfPhaseWiseBudgets { get; set; }
         public virtual DbSet<PidfPbfRa> PidfPbfRas { get; set; }
         public virtual DbSet<PidfPbfReferenceProductDetail> PidfPbfReferenceProductDetails { get; set; }
@@ -152,7 +156,7 @@ namespace EmcureNPD.Data.DataAccess.DataContext
             if (!optionsBuilder.IsConfigured)
             {
 #warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see http://go.microsoft.com/fwlink/?LinkId=723263.
-                optionsBuilder.UseSqlServer("Data Source=180.149.241.172;Initial Catalog=EmcureNPDDev;Persist Security Info=True;User ID=emcurenpddev_dbUser;pwd=emcure123!@#");
+                optionsBuilder.UseSqlServer(DatabaseConnection.NPDDatabaseConnection);
             }
         }
 
@@ -802,6 +806,42 @@ namespace EmcureNPD.Data.DataAccess.DataContext
                 entity.Property(e => e.PatentStrategyId).HasColumnName("PatentStrategyID");
 
                 entity.Property(e => e.PatentStrategyName).HasMaxLength(100);
+            });
+
+            modelBuilder.Entity<MasterPbfworkFlow>(entity =>
+            {
+                entity.HasKey(e => e.PbfworkFlowId);
+
+                entity.ToTable("Master_PBFWorkFlow", "dbo");
+
+                entity.Property(e => e.PbfworkFlowId).HasColumnName("PBFWorkFlowId");
+
+                entity.Property(e => e.CreatedDate).HasColumnType("datetime");
+
+                entity.Property(e => e.ModifyDate).HasColumnType("datetime");
+
+                entity.Property(e => e.PbfworkFlowName)
+                    .HasMaxLength(100)
+                    .HasColumnName("PBFWorkFlowName");
+            });
+
+            modelBuilder.Entity<MasterPbfworkflowTask>(entity =>
+            {
+                entity.HasKey(e => e.PbfWorkFlowTaskId);
+
+                entity.ToTable("Master_PBFWorkflow_Task", "dbo");
+
+                entity.Property(e => e.PbfWorkFlowTaskId).HasColumnName("PBfWorkFlowTaskId");
+
+                entity.Property(e => e.CreatedDate).HasColumnType("datetime");
+
+                entity.Property(e => e.ModifyDate).HasColumnType("datetime");
+
+                entity.Property(e => e.PbfWorkFlowId).HasColumnName("PBfWorkFlowId");
+
+                entity.Property(e => e.PbfworkFlowTaskName)
+                    .HasMaxLength(100)
+                    .HasColumnName("PBFWorkFlowTaskName");
             });
 
             modelBuilder.Entity<MasterPidfstatus>(entity =>
@@ -2444,6 +2484,10 @@ namespace EmcureNPD.Data.DataAccess.DataContext
 
                 entity.Property(e => e.AnalyticalGlid).HasColumnName("AnalyticalGLId");
 
+                entity.Property(e => e.BestudyResults)
+                    .HasMaxLength(50)
+                    .HasColumnName("BEStudyResults");
+
                 entity.Property(e => e.BudgetTimelineSubmissionDate).HasColumnType("datetime");
 
                 entity.Property(e => e.Capex).HasMaxLength(50);
@@ -2609,6 +2653,48 @@ namespace EmcureNPD.Data.DataAccess.DataContext
                     .HasForeignKey(d => d.Pidfpbfid)
                     .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("FK_PIDF_PBF_MarketMapping_PIDF_PBF");
+            });
+
+            modelBuilder.Entity<PidfPbfOutsource>(entity =>
+            {
+                entity.ToTable("PIDF_PBF_Outsource", "dbo");
+
+                entity.Property(e => e.PidfpbfoutsourceId).HasColumnName("PIDFPBFOutsourceId");
+
+                entity.Property(e => e.CreatedDate).HasColumnType("datetime");
+
+                entity.Property(e => e.ModifyDate).HasColumnType("datetime");
+
+                entity.Property(e => e.PbfworkflowId).HasColumnName("PBFWorkflowId");
+
+                entity.Property(e => e.Pidfid).HasColumnName("PIDFID");
+
+                entity.HasOne(d => d.Pidf)
+                    .WithMany(p => p.PidfPbfOutsources)
+                    .HasForeignKey(d => d.Pidfid)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("FK_PIDF_PBF_Outsource_PIDFID");
+            });
+
+            modelBuilder.Entity<PidfPbfOutsourceTask>(entity =>
+            {
+                entity.ToTable("PIDF_PBF_Outsource_Task", "dbo");
+
+                entity.Property(e => e.PidfpbfoutsourceTaskId).HasColumnName("PIDFPBFOutsourceTaskId");
+
+                entity.Property(e => e.CreatedDate).HasColumnType("datetime");
+
+                entity.Property(e => e.ModifyDate).HasColumnType("datetime");
+
+                entity.Property(e => e.PbfWorkFlowId).HasColumnName("PBfWorkFlowId");
+
+                entity.Property(e => e.PbfworkFlowTaskName)
+                    .HasMaxLength(100)
+                    .HasColumnName("PBFWorkFlowTaskName");
+
+                entity.Property(e => e.PidfpbfoutsourceId).HasColumnName("PIDFPBFOutsourceId");
+
+                entity.Property(e => e.Tentative).HasMaxLength(100);
             });
 
             modelBuilder.Entity<PidfPbfPhaseWiseBudget>(entity =>

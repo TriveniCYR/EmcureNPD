@@ -2429,6 +2429,7 @@ namespace EmcureNPD.Business.Core.Implementation
                     objPIDFGeneralupdate.PidfPbfRnDManPowerCosts = objManPowerCostlist;
                     objPIDFGeneralupdate.PidfPbfHeadWiseBudgets = objHeadWiseBudgetlist;
                     objPIDFGeneralupdate.PidfPbfPhaseWiseBudgets = objPhaseWiseBudgetlist;
+                    objPIDFGeneralupdate.BestudyResults = pbfentity.BestudyResults;
                     DeleteGeneralChildRecords(objPIDFGeneralupdate.PbfgeneralId);
                     _pidfPbfGeneralRepository.UpdateAsync(objPIDFGeneralupdate);
                     await _unitOfWork.SaveChangesAsync();
@@ -2467,6 +2468,7 @@ namespace EmcureNPD.Business.Core.Implementation
                     objPIDFGeneraladd.PidfPbfRnDManPowerCosts = objManPowerCostlist;
                     objPIDFGeneraladd.PidfPbfHeadWiseBudgets = objHeadWiseBudgetlist;
                     objPIDFGeneraladd.PidfPbfPhaseWiseBudgets = objPhaseWiseBudgetlist;
+                    objPIDFGeneraladd.BestudyResults = pbfentity.BestudyResults;
                     _pidfPbfGeneralRepository.AddAsync(objPIDFGeneraladd);
                     await _unitOfWork.SaveChangesAsync();
                     pbfgeneralid = objPIDFGeneraladd.PbfgeneralId;
@@ -2679,7 +2681,7 @@ namespace EmcureNPD.Business.Core.Implementation
                         row["LastDataFromRnD"] = item.LastDataFromRnD == null ? DBNull.Value : item.LastDataFromRnD;
                         row["BEFinalReport"] = item.BefinalReport == null ? DBNull.Value : item.BefinalReport;
                         row["CountryId"] = item.CountryId == 0 ? 0 : item.CountryId;
-                        row["TypeOfSubmissionId"] = item.TypeOfSubmissionId == 0 ? DBNull.Value : item.TypeOfSubmissionId;
+                        row["TypeOfSubmissionId"] = item.TypeOfSubmissionId == null || item.TypeOfSubmissionId==0 ? DBNull.Value : item.TypeOfSubmissionId;
                         row["DossierReadyDate"] = item.DossierReadyDate == null ? DBNull.Value : item.DossierReadyDate;
                         row["EarliestSubmissionDExcl"] = item.EarliestSubmissionDexcl == null ? DBNull.Value : item.EarliestSubmissionDexcl;
                         row["EarliestLaunchDExcl"] = item.EarliestLaunchDexcl == null ? DBNull.Value : item.EarliestLaunchDexcl;

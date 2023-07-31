@@ -46,6 +46,7 @@ namespace EmcureNPD.Data.DataAccess.Entity
         public int? AnalyticalGlid { get; set; }
         public DateTime CreatedDate { get; set; }
         public int CreatedBy { get; set; }
+        public string BestudyResults { get; set; }
 
         public virtual MasterUser AnalyticalGl { get; set; }
         public virtual MasterBusinessUnit BusinessUnit { get; set; }
