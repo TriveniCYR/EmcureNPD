@@ -1510,7 +1510,7 @@ function BindClinical(data) {
         bioStudyHTML += '<td>' + getStrengthName(item.pidfProductStrengthId) + '</td>';
     });
     bioStudyHTML += '<td>Total</td></tr></thead><tbody>';
-    bioStudyHTML += '<tr><td class="text-left text-bold bg-light" colspan="4">BE Study Results:<input type="text" name="BestudyResults" class="form-control" style="width:20%"></td></tr>';
+    bioStudyHTML += '<tr><td class="text-left text-bold bg-light" colspan="4">BE Study Results:<input type="text" id="BestudyResults" name="BestudyResults" class="form-control" style="width:20%"></td></tr>';
     for (var i = 1; i < 5; i++) {
         bioStudyHTML += CreateClinicalTable($.grep(data, function (n, x) { return n.bioStudyTypeId == i; }), i);
     }
@@ -1527,6 +1527,8 @@ function BindClinical(data) {
     $("input[class~='calcClinicalCost']").trigger('change');
     $("input[class~='calcBioAnalyticalCost']").trigger('change');
     $("input[class~='calcDocCostandStudy']").trigger('change');
+    $("#BestudyResults").val(data[0].beStudyResults)
+    //alert(data[0].beStudyResults);
 }
 //Clinical End
 //Analytical Start
