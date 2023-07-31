@@ -20,6 +20,7 @@ namespace EmcureNPD.Data.DataAccess.Entity
             PidfManagementApprovalStatusHistories = new HashSet<PidfManagementApprovalStatusHistory>();
             PidfMedicals = new HashSet<PidfMedical>();
             PidfPbfGeneralRnds = new HashSet<PidfPbfGeneralRnd>();
+            PidfPbfOutsources = new HashSet<PidfPbfOutsource>();
             PidfPbfRas = new HashSet<PidfPbfRa>();
             PidfPbfRnDPackSizeStabilities = new HashSet<PidfPbfRnDPackSizeStability>();
             PidfPbfs = new HashSet<PidfPbf>();
@@ -86,6 +87,7 @@ namespace EmcureNPD.Data.DataAccess.Entity
         public virtual ICollection<PidfManagementApprovalStatusHistory> PidfManagementApprovalStatusHistories { get; set; }
         public virtual ICollection<PidfMedical> PidfMedicals { get; set; }
         public virtual ICollection<PidfPbfGeneralRnd> PidfPbfGeneralRnds { get; set; }
+        public virtual ICollection<PidfPbfOutsource> PidfPbfOutsources { get; set; }
         public virtual ICollection<PidfPbfRa> PidfPbfRas { get; set; }
         public virtual ICollection<PidfPbfRnDPackSizeStability> PidfPbfRnDPackSizeStabilities { get; set; }
         public virtual ICollection<PidfPbf> PidfPbfs { get; set; }

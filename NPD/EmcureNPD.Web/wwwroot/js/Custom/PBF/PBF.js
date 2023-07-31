@@ -870,6 +870,7 @@ function GetPBFDropdown() {
 }
 function GetPBFDropdownSuccess(data) {
     try {
+        
         if (data != null) {
             $.each(data.MasterBusinessUnit, function (index, object) {
                 $('#MarketMappingId').append($('<option>').text(object.businessUnitName).attr('value', object.businessUnitId));
@@ -1504,12 +1505,12 @@ function CreateClinicalTable(data, bioStudyTypeId) {
     return objectname;
 }
 function BindClinical(data) {
-    var bioStudyHTML = '<thead class="bg-primary text-bold"><tr><td>Bio Study Cost</td>';
+    var bioStudyHTML = '<thead class="bg-primary text-bold"><tr><td>Bio Study Cost </td>';
     $.each(_strengthArray, function (index, item) {
         bioStudyHTML += '<td>' + getStrengthName(item.pidfProductStrengthId) + '</td>';
     });
     bioStudyHTML += '<td>Total</td></tr></thead><tbody>';
-
+    bioStudyHTML += '<tr><td class="text-left text-bold bg-light" colspan="4">BE Study Results:<input type="text" name="BestudyResults" class="form-control" style="width:20%"></td></tr>';
     for (var i = 1; i < 5; i++) {
         bioStudyHTML += CreateClinicalTable($.grep(data, function (n, x) { return n.bioStudyTypeId == i; }), i);
     }
