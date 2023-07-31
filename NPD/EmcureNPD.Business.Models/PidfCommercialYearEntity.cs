@@ -34,12 +34,13 @@ namespace EmcureNPD.Business.Models
         public string NspunitsHigh { get; set; }
         public string NspLow { get; set; }
         public string NspMedium { get; set; }
-        public string NspHigh { get; set; }
-
+        public string NspHigh { get; set; }        
+       
         public int BusinessUnitId { get; set; }
         public int packSizeId { get; set; }
         public long pidfProductStrengthId { get; set; }
         public string BrandPrice { get; set; }
         public string GenericPrice { get; set; }
+        public string TargetCostOfGood { get; set; }
     }
 }

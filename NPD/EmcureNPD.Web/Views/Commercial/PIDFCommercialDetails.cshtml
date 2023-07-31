@@ -26,7 +26,7 @@
     <div id="dvPIDFAccrdion"></div>
     <div id="dvIPDAccrdion"></div>
     <div class="content-header">
-      @*  <h4 class="m-0">@MasterLocalizer["CommercialDetails"]</h4>*@
+        @*  <h4 class="m-0">@MasterLocalizer["CommercialDetails"]</h4>*@
     </div>
     @Html.Partial("_CancelRequest", (int)PIDFScreen.Commercial)
 }
@@ -36,7 +36,7 @@
     <div class="card-header p-0">
         <ul class="nav nav-tabs m-0"
             id="custom-tabs-BudgetApproval-tab" role="tablist">
-           
+
             <li class="nav-item p-0">
                 <a class="nav-link px-2 active"
                    id="custom-tabs-BudgetApproval-PBF-tab"
@@ -53,7 +53,7 @@
                    aria-controls="custom-tabs-Finance"
                    aria-selected="false">PBF Details</a>
             </li>
-        
+
         </ul>
     </div>
 
@@ -553,40 +553,36 @@
                 <div class="container-fluid">
                     <h1>PBF details</h1>
 
-                      <div class="">
-                                                <form id="frmPBFOutsource">
-                                                    <div class="row">
-                                                       <div class="col-12">
-                                                            <div class="form-group required">
-                                                                @Html.LabelFor(model => model.MarketSizeInUnit,@MasterLocalizer["MarketSizeInUnit"], new { @class = "control-label" })
-                                                                <span class="text-danger">*</span>
-                                                                @Html.TextBoxFor(model => model.MarketSizeInUnit, new {@type="number", @autocomplete = "off",  @class = "decimalTwo positive positive form-control checkbox-checked", @placeholder = @MasterLocalizer["MarketSizeInUnit"], @min="0" })
-                                                                <label id="valmsgMarketSizeInUnit" class="text-danger"></label>
-                                                            </div>
-                                                        </div>
-                                                        <div class="col-12">
-                                                            <div class="form-group required">
-                                                                @Html.LabelFor(model => model.ShelfLife,@MasterLocalizer["ShelfLife"], new { @class = "control-label" })
-                                                                <span class="text-danger">*</span>
-                                                                @Html.TextBoxFor(model => model.ShelfLife, new { @autocomplete = "off", @class = "form-control checkbox-checked", @placeholder = @MasterLocalizer["ShelfLife"] })
-                                                                <label id="valmsgShelfLife" class="text-danger"></label>
-                                                            </div>
-                                                        </div>
-                                                        <div class="col-12">
-                                                            <div class="form-group required">
-                                                                @Html.LabelFor(model => model.PackSizeId,@MasterLocalizer["PackStyle"], new { @class = "control-label" })
-                                                                <span class="text-danger">*</span>
-                                                                <select id="PackSizeId" name="PackSizeId" class="form-control"></select>
-                                                                <label id="valmsgPackSizeId" class="text-danger"></label>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </form>
-                                                <div class="card-footer text-end mt-2">
-                                                    <button type="button" class="btn btn-success operationButton" value="Save" onClick="BUstregthPack_AddButtonClick()">@MasterLocalizer["Save"]</button>
-                                                    <a class="btn btn-danger" data-dismiss="modal">@SharedLocalizer["Cancel"]</a>
-                                                </div>
-                                            </div>
+                    <div class="">
+                        <form id="frmPBFOutsource">
+                            <div class="row">
+                                <div class="col-4">
+                                    <div class="form-group required">
+                                        @Html.LabelFor(model => model.pidfPBFOutsourceEntity.ProjectWorkflowId,"Project Workflow", new { @class = "control-label" })
+                                        <span class="text-danger">*</span>
+                                        <select id="ddlProjectWorkflowId" name="selectProjectWorkflowId" class="form-control"></select>
+                                        <label id="valmsgddlProjectWorkflowId" class="text-danger"></label>
+                                    </div>
+                                </div>
+                                <div class="col-4">
+                                    <div class="form-group required">
+                                        @Html.LabelFor(model => model.pidfPBFOutsourceEntity.PbfworkflowId,"PBF Workflow", new { @class = "control-label" })
+                                        <span class="text-danger">*</span>
+                                        <select id="ddlPbfworkflowId" name="selectPbfworkflowId" class="form-control"></select>
+                                        <label id="valmsgddlPbfworkflowId" class="text-danger"></label>
+                                    </div>
+                                </div>
+                                <div class="col-12">
+
+
+                                </div>
+                            </div>
+                        </form>
+                        <div class="card-footer text-end mt-2">
+                            <button type="button" class="btn btn-success operationButton" value="Save" onClick="">@MasterLocalizer["Save"]</button>
+                            <a class="btn btn-danger" data-dismiss="modal">@SharedLocalizer["Cancel"]</a>
+                        </div>
+                    </div>
 
 
                 </div>

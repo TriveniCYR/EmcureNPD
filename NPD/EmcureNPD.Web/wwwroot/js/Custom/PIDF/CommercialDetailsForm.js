@@ -2,7 +2,7 @@
 var objYears = [];
 var objMainForm = {};
 var objdropdownYearControls_array = ['PackagingTypeId', 'CurrencyId', 'FinalSelectionId'];
-var ColumnObjUpcase = ['packagingTypeId', 'commercialBatchSize', 'priceDiscounting', 'totalApireq', 'apireq', 'suimsvolume', 'marketGrowth', 'marketSize', 'priceErosion', 'finalSelectionId'];
+var ColumnObjUpcase = ['packagingTypeId', 'commercialBatchSize', 'priceDiscounting', 'totalApireq', 'apireq', 'suimsvolume', 'marketGrowth', 'marketSize', 'priceErosion', 'finalSelectionId','targetCostOfGood'];
 var SelectedBUValue = 0;
 var selectedStrength = 0;
 var EditIndex = -1;
