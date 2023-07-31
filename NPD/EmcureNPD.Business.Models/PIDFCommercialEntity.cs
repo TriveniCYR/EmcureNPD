@@ -80,5 +80,16 @@ namespace EmcureNPD.Business.Models
         [ReadOnly(true)]
         public string NspHigh { get; set; }
         public bool _Partial { get; set; }
+
+
+    }
+
+    public class PIDFPBFOutsourceEntity
+    {
+        public long PidfcommercialId { get; set; }
+        public long Pidfid { get; set; }
+        public int BusinessUnitId { get; set; }
+
+
     }
 }

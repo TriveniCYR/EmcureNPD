@@ -17,6 +17,8 @@ $(document).ready(function () {
       //  getPIDFAccordion(_PIDFAccordionURL, _PIDFID, "dvPIDFAccrdion");
       //  getIPDAccordion(_IPDAccordionURL, _EncPIDFID, _PIDFBusinessUnitId, "dvIPDAccrdion");
     }
+    if(false)
+    $('.PBFDetailsTab').hide();
 });
 
 function SetBU_Strength() {
