@@ -2519,6 +2519,23 @@ function CreateRNDManPowerCostTable(data) {
     }
     objectname += "<td>" + _currencySymbol + "<input type='text' class='form-control calcTotalCostForStrengthTotal' readonly='readonly' tabindex=-1  /></td></tr>";
 
+    //---------------------------
+    //objectname += "<tr> <td><label class='control-label mr-2'> Total Duration (Days)</label>";
+    //objectname += "<input type='text' id='id_GrandTotalDuration_days' class='form-control mr-4' readonly='readonly' tabindex=-1  />";
+
+    //objectname += "<label class='control-label mr-2' id='id_GrandTotalDuration_years' > Total Duration (Years)</label>";
+    //objectname += "<input type='text' class='form-control' readonly='readonly' tabindex=-1  />";
+    //objectname += "<label class='control-label mr-4'> Years</label>";
+
+    //objectname += "<tr> <td><label class='control-label mr-2'> Total Manhours </label>";
+    //objectname += "<input type='text' id='id_GrandTotalManHours' class='form-control mr-4' readonly='readonly' tabindex=-1  />";
+
+
+    objectname += "</td></tr>";
+
+
+
+
     return objectname;
 }
 function BindRNDManPowerCost(data) {
