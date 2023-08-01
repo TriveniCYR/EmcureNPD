@@ -451,6 +451,7 @@ $(document).ready(function () {
 
         $('.manpowercost_' + _BioStudyTypeId + 'Total').find('.calcTotalCostForStrengthTotal').val(formatNumber(_TotalCostForAllStrength));
         SetPhaseWiseBudget();
+        GranTotal_RND_ManPowerCost();
     });
     /*Pakaging Material*/
     $(document).on("change", ".rndPackingTypeId, .rndPackagingRsperUnit, .rndPackagingStrengthValue", function () {
@@ -491,6 +492,7 @@ $(document).ready(function () {
         });
         $('.calcTotalCostPKRow').find('.PackagingFinalTotal').val(formatNumber(_FinalPKCost));
         SetPhaseWiseBudget();
+        
     });
     /*Excipient Requirement*/
     $(document).on("change", "#RNDBatchSizeId", function () {
@@ -2503,7 +2505,7 @@ function CreateRNDManPowerCostTable(data) {
         for (var i = 0; i < _strengthArray.length; i++) {
             objectname += '<td data-strengthid="' + _strengthArray[i].pidfProductStrengthId + '"><input type="hidden" class="rndMPCStrengthId"  value="' + _strengthArray[i].pidfProductStrengthId + '" /><input type="text" class="form-control rndMPCStrengthValue" readonly="readonly" tabindex=-1/><span>manhrs</span></td>';
         }
-        objectname += "<td><input type='text' class='form-control TotalStrength' readonly='readonly' tabindex=-1 /><span>manhrs</span></td></tr>";
+        objectname += "<td><input type='text' class='form-control TotalStrength TotalStrength_manpowerProjection' readonly='readonly' tabindex=-1 /><span>manhrs</span></td></tr>";
         if (data.length > 0) {
             _projectActivities.push(data[a].projectActivitiesId);
         }
@@ -2534,24 +2536,41 @@ function CreateRNDManPowerCostTable(data) {
     objectname += "<td>" + _currencySymbol + "<input type='text' class='form-control calcTotalCostForStrengthTotal' readonly='readonly' tabindex=-1  /></td></tr>";
 
     //---------------------------
-    //objectname += "<tr> <td><label class='control-label mr-2'> Total Duration (Days)</label>";
-    //objectname += "<input type='text' id='id_GrandTotalDuration_days' class='form-control mr-4' readonly='readonly' tabindex=-1  />";
+    objectname += "<tr> <td><label class='control-label mr-2'> Total Duration</label></td>";
+    objectname += "<td><input type='text' id='id_GrandTotalDuration_days' class='form-control' readonly='readonly' tabindex=-1 />";
+    objectname += "<label class='control-label mr-4'> days</label> </td> ";
 
-    //objectname += "<label class='control-label mr-2' id='id_GrandTotalDuration_years' > Total Duration (Years)</label>";
-    //objectname += "<input type='text' class='form-control' readonly='readonly' tabindex=-1  />";
-    //objectname += "<label class='control-label mr-4'> Years</label>";
+    objectname += "<td><label class='control-label mr-2'  > Total Duration</label></td>";
+    objectname += "<td><input type='text' class='form-control' id='id_GrandTotalDuration_years' readonly='readonly' tabindex=-1  />";
+    objectname += "<label class='control-label mr-4'> years</label> </td> ";
 
-    //objectname += "<tr> <td><label class='control-label mr-2'> Total Manhours </label>";
-    //objectname += "<input type='text' id='id_GrandTotalManHours' class='form-control mr-4' readonly='readonly' tabindex=-1  />";
+    objectname += "<td><label class='control-label mr-2'> Total Manhours </label></td> ";
+    objectname += "<td><input type='text' id='id_GrandTotalManHours' class='form-control' readonly='readonly' tabindex=-1  /> ";
+    objectname += "<label class='control-label mr-4'> </label> </td> ";
 
-
-    objectname += "</td></tr>";
-
-
-
+    objectname += "</tr>";
 
     return objectname;
 }
+function GranTotal_RND_ManPowerCost(){
+    //rndMPCDurationInDays2
+    var _id_GrandTotalDuration_days = 0;
+    var _id_GrandTotalDuration_years = 0;
+    var _id_GrandTotalManHours = 0;
+    for (let i = 1; i < 12; i++) {
+        _id_GrandTotalDuration_days += ($('.rndMPCDurationInDays' + i).val() == '') ? 0 : parseInt($('.rndMPCDurationInDays' + i).val());        
+    }
+    $('.TotalStrength_manpowerProjection').each(function () {
+        _id_GrandTotalManHours += ($(this).val() == '') ? 0 : parseInt($(this).val());
+    });
+
+    _id_GrandTotalDuration_years = (_id_GrandTotalDuration_days == 0) ? 0 : _id_GrandTotalDuration_days / 365;
+
+    $('#id_GrandTotalDuration_days').val(_id_GrandTotalDuration_days);
+    $('#id_GrandTotalDuration_years').val(_id_GrandTotalDuration_years.toFixed(2));
+    $('#id_GrandTotalManHours').val(_id_GrandTotalManHours);
+}
+
 function BindRNDManPowerCost(data) {
     var RPDHTML = '<thead class="bg-primary text-bold"><tr><td>Number Of Days </td><td>Project Activities </td><td>Number Of Manpower </td>';
     $.each(_strengthArray, function (index, item) {
