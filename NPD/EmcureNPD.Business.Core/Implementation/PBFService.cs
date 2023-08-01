@@ -201,12 +201,13 @@ namespace EmcureNPD.Business.Core.Implementation
             return data;
         }
         //GetGeneralPackSizeStability
-        public async Task<PidfProductStrengthGeneralRanD> GetGeneralPackSizeStability(long pidfId)
+        public async Task<PidfProductStrengthGeneralRanD> GetGeneralPackSizeStability(long pidfId,int BUId)
         {
 
             var data = new PidfProductStrengthGeneralRanD();
             SqlParameter[] osqlParameter = {
-                       new SqlParameter("@PIDFId", pidfId)
+                       new SqlParameter("@PIDFId", pidfId),
+                        new SqlParameter("@BUId", BUId)
                    };
 
             var dbresult = await _pbfRepository.GetDataSetBySP("GetPackSizeStabilityData", System.Data.CommandType.StoredProcedure, osqlParameter);
@@ -314,7 +315,7 @@ namespace EmcureNPD.Business.Core.Implementation
             DropdownObjects.PBFReferenceProductDetail = dsDropdownOptions.Tables[21];
             DropdownObjects.RNDExicipientPrototype = dsDropdownOptions.Tables[22];
             DropdownObjects.PidfPbfGeneralRnd = await GetPidfPbfGeneralRnd(PIDFId, pbfId, PbfRndDetailsId);
-            DropdownObjects.PidfPbfGeneralPackSizeStability = await GetGeneralPackSizeStability(PIDFId);
+            DropdownObjects.PidfPbfGeneralPackSizeStability = await GetGeneralPackSizeStability(PIDFId, BUId);
             return DropdownObjects;
         }
 
@@ -324,9 +325,9 @@ namespace EmcureNPD.Business.Core.Implementation
             var dbObj = await _MasterPlantLineRepository.GetAllAsync(x => x.PlantId == id);
             return _mapperFactory.GetList<MasterPlantLine, MasterPlantLineEntity>(dbObj.ToList());
         }
-        public async Task<List<PidfPbfRaEntity>> GetRa(int PidfId, int PifdPbfId)
+        public async Task<List<PidfPbfRaEntity>> GetRa(int PidfId, int PifdPbfId,int BuId)
         {
-            var dbObj = await _pidfPbfRRepositiry.GetAllAsync(x => x.Pidfid == PidfId && x.Pbfid == PifdPbfId);
+            var dbObj = await _pidfPbfRRepositiry.GetAllAsync(x => x.Pidfid == PidfId && x.Pbfid == PifdPbfId && x.BuId== BuId);
             return _mapperFactory.GetList<PidfPbfRa, PidfPbfRaEntity>(dbObj.ToList());
         }
         public async Task<List<MasterTypeOfSubmissionEntity>> GetTypeOfSubmission()
@@ -1110,20 +1111,20 @@ namespace EmcureNPD.Business.Core.Implementation
             return pbfentity.Pidfpbfid;
 
         }
-        private async Task<long> SavePackSizeStability(PBFFormEntity pbfentity)
+        private async Task<long> SavePackSizeStability(PBFFormEntity pbfentity,long pbfgeneralid)
         {
             var objPackSizeStability = new List<PidfPbfRnDPackSizeStability>();
             var loggedInUserId = _helper.GetLoggedInUser().UserId;
-
+            var FinalpbfGeneralid = pbfentity.PBFGeneralId == 0 ? pbfgeneralid : pbfentity.PBFGeneralId;
 
             foreach (var item in pbfentity.PidfPbfRnDPackSizeStability)
             {
                 var objPackSizeStabilityDetails = _repositoryPidfPbfRnDPackSizeStability.GetAllQuery().
-            Where(x => x.Pidfid == pbfentity.Pidfid && x.PbfgeneralId == pbfentity.PBFGeneralId && x.PackSizeStabilityId==item.PackSizeStabilityId).FirstOrDefault();
+            Where(x => x.Pidfid == pbfentity.Pidfid && x.PbfgeneralId == FinalpbfGeneralid && x.PackSizeStabilityId==item.PackSizeStabilityId).FirstOrDefault();
                 if (objPackSizeStabilityDetails != null && item.Value!=null)
                 {
                     objPackSizeStabilityDetails.Pidfid = pbfentity.Pidfid;
-                    objPackSizeStabilityDetails.PbfgeneralId = pbfentity.PBFGeneralId;
+                    objPackSizeStabilityDetails.PbfgeneralId = FinalpbfGeneralid;
                     objPackSizeStabilityDetails.StrengthId = item.StrengthId;
                     objPackSizeStabilityDetails.PackSizeId = item.PackSizeId;
                     objPackSizeStabilityDetails.Value = item.Value;
@@ -1137,7 +1138,7 @@ namespace EmcureNPD.Business.Core.Implementation
 
                     var objPidfPbfRnDPackSizeStability = new PidfPbfRnDPackSizeStability();
                     objPidfPbfRnDPackSizeStability.Pidfid = pbfentity.Pidfid;
-                    objPidfPbfRnDPackSizeStability.PbfgeneralId = pbfentity.PBFGeneralId;
+                    objPidfPbfRnDPackSizeStability.PbfgeneralId = FinalpbfGeneralid;
                     objPidfPbfRnDPackSizeStability.StrengthId = item.StrengthId;
                     objPidfPbfRnDPackSizeStability.PackSizeId = item.PackSizeId;
                     objPidfPbfRnDPackSizeStability.Value = item.Value;
@@ -1934,9 +1935,7 @@ namespace EmcureNPD.Business.Core.Implementation
                 #region Update PBF genegral R&D Details
                 await SaveGeneralRandDDetails(pbfentity);
                 #endregion
-                #region Update PBF genegral PackSizeStability Details
-                await SavePackSizeStability(pbfentity);
-                #endregion
+               
                 return pbfgeneralid;
             }
             catch (Exception ex)
@@ -2037,9 +2036,7 @@ namespace EmcureNPD.Business.Core.Implementation
                 #region Update PBF genegral R&D Details
                 await SaveGeneralRandDDetails(pbfentity);
                 #endregion
-                #region Update PBF genegral PackSizeStability Details
-                await SavePackSizeStability(pbfentity);
-                #endregion
+                
                 #region Section Clinical Add Update
 
                 List<PidfPbfClinical> objClinicallist = new();
@@ -2394,7 +2391,7 @@ namespace EmcureNPD.Business.Core.Implementation
 
                 #endregion RND Add Update
                 #region RA Add Update
-                var IsRaSaved = await AddUpdateRa(pbfentity.RaEntities, loggedInUserId, pbfentity.Pidfid, pbfentity.Pidfpbfid);
+                var IsRaSaved = await AddUpdateRa(pbfentity.RaEntities, loggedInUserId, pbfentity.Pidfid, pbfentity.Pidfpbfid,pbfentity.BusinessUnitId);
                 #endregion
                 //PidfPbfGeneral objPIDFGeneralupdate;
                 var objPIDFGeneralupdate = _pidfPbfGeneralRepository.GetAllQuery().Where(x => x.Pidfpbfid == pbfentity.Pidfpbfid && x.BusinessUnitId == pbfentity.BusinessUnitId).FirstOrDefault();
@@ -2475,6 +2472,9 @@ namespace EmcureNPD.Business.Core.Implementation
                 }
 
                 #endregion Section PBF General Add Update
+                #region Update PBF genegral PackSizeStability Details
+                await SavePackSizeStability(pbfentity, pbfgeneralid);
+                #endregion
                 return pbfgeneralid;
             }
             catch (Exception ex)
@@ -2642,7 +2642,7 @@ namespace EmcureNPD.Business.Core.Implementation
                 _ExceptionService.LogException(ex);
             }
         }
-        public async Task<bool> AddUpdateRa(List<PidfPbfRaEntity> ls, int CreatedBy, long pidfId, long pbfid = 0)
+        public async Task<bool> AddUpdateRa(List<PidfPbfRaEntity> ls, int CreatedBy, long pidfId, long pbfid = 0,int BusinessUnitId=0)
         {
             try
             {
@@ -2656,7 +2656,7 @@ namespace EmcureNPD.Business.Core.Implementation
                 recordsTable.Columns.Add("PivotalBatchManufactured", typeof(DateTime));
                 recordsTable.Columns.Add("LastDataFromRnD", typeof(DateTime));
                 recordsTable.Columns.Add("BEFinalReport", typeof(DateTime));
-                recordsTable.Columns.Add("CountryId", typeof(int));
+                recordsTable.Columns.Add("BuId", typeof(int));
                 recordsTable.Columns.Add("TypeOfSubmissionId", typeof(int));
                 recordsTable.Columns.Add("DossierReadyDate", typeof(DateTime));
                 recordsTable.Columns.Add("EarliestSubmissionDExcl", typeof(DateTime));
@@ -2680,7 +2680,7 @@ namespace EmcureNPD.Business.Core.Implementation
                         row["PivotalBatchManufactured"] = item.PivotalBatchManufactured == null ? DBNull.Value : item.PivotalBatchManufactured;
                         row["LastDataFromRnD"] = item.LastDataFromRnD == null ? DBNull.Value : item.LastDataFromRnD;
                         row["BEFinalReport"] = item.BefinalReport == null ? DBNull.Value : item.BefinalReport;
-                        row["CountryId"] = item.CountryId == 0 ? 0 : item.CountryId;
+                        row["BuId"] = BusinessUnitId; //item.BuId == 0 ? 0 : item.BuId;
                         row["TypeOfSubmissionId"] = item.TypeOfSubmissionId == null || item.TypeOfSubmissionId==0 ? DBNull.Value : item.TypeOfSubmissionId;
                         row["DossierReadyDate"] = item.DossierReadyDate == null ? DBNull.Value : item.DossierReadyDate;
                         row["EarliestSubmissionDExcl"] = item.EarliestSubmissionDexcl == null ? DBNull.Value : item.EarliestSubmissionDexcl;
