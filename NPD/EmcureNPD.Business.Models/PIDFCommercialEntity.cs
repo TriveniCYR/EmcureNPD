@@ -81,15 +81,15 @@ namespace EmcureNPD.Business.Models
         public string NspHigh { get; set; }
         public bool _Partial { get; set; }
 
-
+        public PIDFPBFOutsourceEntity pidfPBFOutsourceEntity { get; set; }
     }
 
     public class PIDFPBFOutsourceEntity
-    {
-        public long PidfcommercialId { get; set; }
+    {      
+        public int PidfpbfoutsourceId { get; set; }
         public long Pidfid { get; set; }
-        public int BusinessUnitId { get; set; }
-
+        public int ProjectWorkflowId { get; set; }
+        public int PbfworkflowId { get; set; }
 
     }
 }
