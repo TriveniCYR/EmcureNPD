@@ -875,8 +875,12 @@ function GetPBFDropdownSuccess(data) {
             $.each(data.MasterBusinessUnit, function (index, object) {
                 $('#MarketMappingId').append($('<option>').text(object.businessUnitName).attr('value', object.businessUnitId));
             });
-            $('#MarketMappingId').select2({ dropdownAdapter: $.fn.select2.amd.require('select2/selectAllAdapter'), placeholder: "Select Market..", });
+            try {
+                $('#MarketMappingId').select2({ dropdownAdapter: $.fn.select2.amd.require('select2/selectAllAdapter'), placeholder: "Select Market..", });
+            }
+            catch (e) {
 
+            }
             var _emptyOption = '<option value="">-- Select --</option>';
             $('#BERequirementId').append(_emptyOption);
             $('#PbfDosageFormId').append(_emptyOption);
@@ -1105,15 +1109,17 @@ function BindGeneralPackSizeStability(data) {
     $("DvPackSizeStability").empty();
     let html = '<table id="tblPackSizeStability" class="table text-center tableTDHint"><thead class="bg-primary text-bold"><tr><td>PackSize Stability</td>';
     let td = '';
+    let isShowHeader = false
     let pidfProductStrengthId = [];
     if (data != null && data != undefined) {
-        if (data.pidfPackSizeGeneralRanDList != null) {
+        if (data.pidfPackSizeGeneralRanDList != null && data.pidfPackSizeGeneralRanDList.length > 0) {
             for (var i = 0; i < data.pidfPackSizeGeneralRanDList.length; i++) {
                 html += `<td>Pack Size ${data.pidfPackSizeGeneralRanDList[i].packSizeId}<input type="hidden" name="PidfPbfRnDPackSizeStability[${i}].PackSizeId" value="${data.pidfPackSizeGeneralRanDList[i].packSizeId}"></td>`;
                 td += `<td id="td${i}"><input type="hidden" name="PidfPbfRnDPackSizeStability[${i}].PackSizeStabilityId" value="${data.pidfPackSizeGeneralRanDList[i].packSizeStabilityId}"><input type="text" class="form-control clsValue" id="txt${data.pidfPackSizeGeneralRanDList[i].pidfProductStrengthId}${i}" disabled="disabled" data-val="${data.pidfPackSizeGeneralRanDList[i].pidfProductStrengthId}" name="PidfPbfRnDPackSizeStability[${i}].Value" value="${data.pidfPackSizeGeneralRanDList[i].value}"></td>`;
-
+                
             }
             html += '</tr></thead>'
+            isShowHeader = true
         }
         if (data.pidfProductStrengthGeneralRanDList != null) {
             for (var j = 0; j < data.pidfProductStrengthGeneralRanDList.length; j++) {
@@ -1142,7 +1148,13 @@ function BindGeneralPackSizeStability(data) {
                 }
             });
     }
-    pidfProductStrengthId = [];
+        pidfProductStrengthId = [];
+        if (isShowHeader) {
+            $("#DvPackSizeStability").show();
+        }
+        else {
+            $("#DvPackSizeStability").hide();
+        }
 }
 }
 function GetPBFTabDetails() {
@@ -1527,7 +1539,9 @@ function BindClinical(data) {
     $("input[class~='calcClinicalCost']").trigger('change');
     $("input[class~='calcBioAnalyticalCost']").trigger('change');
     $("input[class~='calcDocCostandStudy']").trigger('change');
-    $("#BestudyResults").val(data[0].beStudyResults)
+    if (data != undefined && data.length > 0) {
+        $("#BestudyResults").val(data[0].beStudyResults)
+    }
     //alert(data[0].beStudyResults);
 }
 //Clinical End
@@ -3421,8 +3435,8 @@ function BindRA(data = null) {
     data = null;
 }
 function GetRa(PidfId, PifdPbfId) {
-
-    ajaxServiceMethod($('#hdnBaseURL').val() + GetRaurl + "/" + PidfId + "/" + PifdPbfId, 'GET', GetRaSuccess, GetRaError);
+    let buId = SelectedBUValue == 0 ? _selectBusinessUnit : SelectedBUValue;
+    ajaxServiceMethod($('#hdnBaseURL').val() + GetRaurl + "/" + PidfId + "/" + PifdPbfId + "/" + buId, 'GET', GetRaSuccess, GetRaError);
 }
 function GetRaSuccess(response) {
     try {

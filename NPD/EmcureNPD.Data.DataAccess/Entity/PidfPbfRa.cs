@@ -14,7 +14,7 @@ namespace EmcureNPD.Data.DataAccess.Entity
         public DateTime? PivotalBatchManufactured { get; set; }
         public DateTime? LastDataFromRnD { get; set; }
         public DateTime? BefinalReport { get; set; }
-        public int CountryId { get; set; }
+        public int BuId { get; set; }
         public int? TypeOfSubmissionId { get; set; }
         public DateTime? DossierReadyDate { get; set; }
         public DateTime? EarliestSubmissionDexcl { get; set; }

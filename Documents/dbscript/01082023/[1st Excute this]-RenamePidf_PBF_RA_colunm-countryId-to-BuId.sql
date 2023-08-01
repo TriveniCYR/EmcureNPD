@@ -1,0 +1,1 @@
+sp_rename '[dbo].[PIDF_PBF_RA].CountryId', 'BuId', 'COLUMN';
