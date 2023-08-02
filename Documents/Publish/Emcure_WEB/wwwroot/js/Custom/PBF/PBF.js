@@ -49,6 +49,7 @@ $(document).ready(function () {
     GetPBFDropdown();
 
     $(document).on("change", ".calcRNDBatchSizesPrototypeFormulation, .calcRNDBatchSizesScaleUpbatch, .calcRNDBatchSizesExhibitBatch1, .calcRNDBatchSizesExhibitBatch2, .calcRNDBatchSizesExhibitBatch3", function () {
+        ChangeAPIReq_OnChange_selectDosageFormula();
         $("input[class~='rndExicipientRsperkg']").trigger('change');
         SetPhaseWiseBudget();
     });
@@ -278,10 +279,60 @@ $(document).ready(function () {
         SetPhaseWiseBudget();
     });
     /*API Requirement*/
+    function ChangeAPIReq_OnChange_selectDosageFormula() {
+        var batchvalue = $("#RNDBatchSizeId option:selected").text();
+        var multFatcor = 0;
+        if (batchvalue.toString().toLowerCase() == "liters") {
+            multFatcor = 1000;
+           // $('.spnkg_mg').text("gm");
+
+        } else {
+            multFatcor = 1000000;
+           // $('.spnkg_mg').text("kg");
+        }
+
+        $.each(_strengthArray, function (ind, val) {
+            var strength = parseInt(val.strength);
+
+
+            var id_batchcontrol_proto = '.BatchSize_Excipient_PrototypeFormulation_' + val.pidfProductStrengthId;
+            var id_APIReqcontrol_proto = "[name='RNDApirequirements["+ind+"].Prototype']";
+            var result = (GetIntfromControlValue($(id_batchcontrol_proto).val()) * strength )/multFatcor;
+            $(id_APIReqcontrol_proto).val(result).trigger('change');
+
+            
+            id_batchcontrol_proto = "[name='RNDBatchSizes[" + ind + "].ScaleUpbatch']";
+            id_APIReqcontrol_proto = "[name='RNDApirequirements[" + ind + "].ScaleUp']";
+             result = (GetIntfromControlValue($(id_batchcontrol_proto).val()) * strength) / multFatcor;
+            $(id_APIReqcontrol_proto).val(result).trigger('change');
+
+            id_batchcontrol_proto = "[name='RNDBatchSizes[" + ind + "].ExhibitBatch1']";
+            id_APIReqcontrol_proto = "[name='RNDApirequirements[" + ind + "].ExhibitBatch1']";
+            result = (GetIntfromControlValue($(id_batchcontrol_proto).val()) * strength) / multFatcor;
+            $(id_APIReqcontrol_proto).val(result).trigger('change');
+
+
+            id_batchcontrol_proto = "[name='RNDBatchSizes[" + ind + "].ExhibitBatch2']";
+            id_APIReqcontrol_proto = "[name='RNDApirequirements[" + ind + "].ExhibitBatch2']";
+            result = (GetIntfromControlValue($(id_batchcontrol_proto).val()) * strength) / multFatcor;
+            $(id_APIReqcontrol_proto).val(result).trigger('change');
+
+            id_batchcontrol_proto = "[name='RNDBatchSizes[" + ind + "].ExhibitBatch3']";
+            id_APIReqcontrol_proto = "[name='RNDApirequirements[" + ind + "].ExhibitBatch3']";
+            result = (GetIntfromControlValue($(id_batchcontrol_proto).val()) * strength) / multFatcor;
+            $(id_APIReqcontrol_proto).val(result).trigger('change');
+
+
+        });
+    }
+    function GetIntfromControlValue(cntrlVal) {
+       return (cntrlVal == '') ? 0 : parseInt(cntrlVal);
+    }
     $(document).on("change", "#RNDMasterEntities_ApirequirementMarketPrice", function () {
         $("input[class~='calcRNDApirequirementsPrototype']").trigger('change');
     });
     $(document).on("change", ".calcRNDApirequirementsPrototype, .calcRNDApirequirementsScaleUp, .calcRNDApirequirementsExhibitBatch1, .calcRNDApirequirementsExhibitBatch2, .calcRNDApirequirementsExhibitBatch3, .calcRNDApirequirementsPrototypeCost, .calcRNDApirequirementsScaleUpCost, .calcRNDApirequirementsExhibitBatchCost, .calcRNDApirequirementsMarketPrice", function () {
+      
         var marketprice = $("#RNDMasterEntities_ApirequirementMarketPrice").val();
         marketprice = ConvertToNumber((marketprice == "" ? 0 : marketprice));
         var _BioStudyTypeId = $(this).parent().parent().attr("data-biostudytypeid");
@@ -497,7 +548,7 @@ $(document).ready(function () {
     /*Excipient Requirement*/
     $(document).on("change", "#RNDBatchSizeId", function () {
         $("input[class~='rndExicipientRsperkg']").trigger('change');
-
+        ChangeAPIReq_OnChange_selectDosageFormula();
     });
     $(document).on("change", ".rndExicipientPrototype, .rndExicipientRsperkg, .rndExicipientQuantity, .rndExicipientStrengthValue", function () {
         var _ActivityTypeId = $(this).parent().parent().attr("data-activitytypeid");
@@ -885,7 +936,7 @@ function GetPBFDropdownSuccess(data) {
                 $('#MarketMappingId').select2({ dropdownAdapter: $.fn.select2.amd.require('select2/selectAllAdapter'), placeholder: "Select Market..", });
             }
             catch (e) {
-
+                console.info(`select2/select2/selectAllAdapter:${e}`);
             }
             var _emptyOption = '<option value="">-- Select --</option>';
             $('#BERequirementId').append(_emptyOption);
@@ -1120,7 +1171,7 @@ function BindGeneralPackSizeStability(data) {
     if (data != null && data != undefined) {
         if (data.pidfPackSizeGeneralRanDList != null && data.pidfPackSizeGeneralRanDList.length > 0) {
             for (var i = 0; i < data.pidfPackSizeGeneralRanDList.length; i++) {
-                html += `<td>Pack Size ${data.pidfPackSizeGeneralRanDList[i].packSizeId}<input type="hidden" name="PidfPbfRnDPackSizeStability[${i}].PackSizeId" value="${data.pidfPackSizeGeneralRanDList[i].packSizeId}"></td>`;
+                html += `<td> ${data.pidfPackSizeGeneralRanDList[i].packSizeName}<input type="hidden" name="PidfPbfRnDPackSizeStability[${i}].PackSizeId" value="${data.pidfPackSizeGeneralRanDList[i].packSizeId}"></td>`;
                 td += `<td id="td${i}"><input type="hidden" name="PidfPbfRnDPackSizeStability[${i}].PackSizeStabilityId" value="${data.pidfPackSizeGeneralRanDList[i].packSizeStabilityId}"><input type="text" class="form-control clsValue" id="txt${data.pidfPackSizeGeneralRanDList[i].pidfProductStrengthId}${i}" disabled="disabled" data-val="${data.pidfPackSizeGeneralRanDList[i].pidfProductStrengthId}" name="PidfPbfRnDPackSizeStability[${i}].Value" value="${data.pidfPackSizeGeneralRanDList[i].value}"></td>`;
                 
             }
@@ -1129,11 +1180,11 @@ function BindGeneralPackSizeStability(data) {
         }
         if (data.pidfProductStrengthGeneralRanDList != null) {
             for (var j = 0; j < data.pidfProductStrengthGeneralRanDList.length; j++) {
-                html += `<tr><td>Strength ${data.pidfProductStrengthGeneralRanDList[j].strength}<input type="hidden" name="PidfPbfRnDPackSizeStability[${j}].StrengthId" value="${data.pidfProductStrengthGeneralRanDList[j].strength}"></td>${td}</tr>`
+                html += `<tr><td>${data.pidfProductStrengthGeneralRanDList[j].strength} ${data.pidfProductStrengthGeneralRanDList[j].unitofMeasurementName}<input type="hidden" name="PidfPbfRnDPackSizeStability[${j}].StrengthId" value="${data.pidfProductStrengthGeneralRanDList[j].strength}"></td>${td}</tr>`
             }
         }
         html += '</table>';
-        $("#lblPackSizeStability").show();
+       // $("#lblPackSizeStability").show();
         $("#DvPackSizeStability").append(html);
         if (data.pidfProductStrengthGeneralRanDList != null) {
             for (var j = 0; j < data.pidfProductStrengthGeneralRanDList.length; j++) {
@@ -1528,7 +1579,7 @@ function BindClinical(data) {
         bioStudyHTML += '<td>' + getStrengthName(item.pidfProductStrengthId) + '</td>';
     });
     bioStudyHTML += '<td>Total</td></tr></thead><tbody>';
-    bioStudyHTML += '<tr><td class="text-left text-bold bg-light" colspan="4">BE Study Results:<input type="text" id="BestudyResults" name="BestudyResults" class="form-control" style="width:20%"></td></tr>';
+    //bioStudyHTML += '<tr><td class="text-left text-bold bg-light" colspan="4"></td></tr>';
     for (var i = 1; i < 5; i++) {
         bioStudyHTML += CreateClinicalTable($.grep(data, function (n, x) { return n.bioStudyTypeId == i; }), i);
     }
