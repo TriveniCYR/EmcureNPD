@@ -559,11 +559,11 @@
                                                 <div class="row">
                                                     <div class="col-md-3">
                                                         <div class="form-group required">
-                                                            @Html.LabelFor(model => model.PidfPbfGeneralRnd.RndResponsiblePerson,"Rnd Responsible Person", new { @class = "control-label" })<span class="text-danger">*</span>
+                                                            @Html.LabelFor(model => model.PidfPbfGeneralRnd.RndResponsiblePerson,"Rnd Responsible Person", new { @class = "control-label" })
                                                             <input type="hidden" id="PbfRndDetailsId" name="PidfPbfGeneralRnd.PbfRndDetailsId" value="@PbfRndDetailsId" />
                                                             <input type="hidden" id="PidfPbfGeneralRnd_PidfId" name="PidfPbfGeneralRnd.PidfId" value="@valPidfId" />
                                                             <input type="hidden" id="PidfPbfGeneralRnd_PbfId" name="PidfPbfGeneralRnd.PbfId" value="@valPbfId" />
-                                                            @Html.TextBoxFor(model => model.PidfPbfGeneralRnd.RndResponsiblePerson, new {@class = "form-control customvalidateformcontrol", @placeholder = "Rnd Responsible Person" ,@required="required"})
+                                                            @Html.TextBoxFor(model => model.PidfPbfGeneralRnd.RndResponsiblePerson, new {@class = "form-control", @placeholder = "Rnd Responsible Person" ,@required="required"})
                                                             @Html.ValidationMessageFor(model =>model.PidfPbfGeneralRnd.RndResponsiblePerson, "", new { @class = "text-danger" })
 
                                                         </div>
@@ -571,9 +571,9 @@
                                                     <div class="col-md-3">
                                                         <div class="form-group required">
 
-                                                            @Html.LabelFor(model =>  model.PidfPbfGeneralRnd.TypeOfDevelopmentDate,"Type Of Development", new { @class = "control-label" })<span class="text-danger">*</span>
+                                                            @Html.LabelFor(model =>  model.PidfPbfGeneralRnd.TypeOfDevelopmentDate,"Type Of Development", new { @class = "control-label" })
                                                           
-                                                            @Html.TextBoxFor(model => model.PidfPbfGeneralRnd.TypeOfDevelopmentDate, new {@class = "form-control customvalidateformcontrol", @placeholder = "Type Of Development",@type="Date" ,@required="required"})
+                                                            @Html.TextBoxFor(model => model.PidfPbfGeneralRnd.TypeOfDevelopmentDate, new {@class = "form-control", @placeholder = "Type Of Development",@type="Date" ,@required="required"})
                                                             @Html.ValidationMessageFor(model =>model.PidfPbfGeneralRnd.TypeOfDevelopmentDate, "", new { @class = "text-danger" })
 
                                                         </div>
@@ -581,17 +581,17 @@
                                                     <div class="col-md-3">
                                                         <div class="form-group required">
 
-                                                            @Html.LabelFor(model =>  model.PidfPbfGeneralRnd.PivotalBatchesManufacturedCompleted,"Pivotal Batches Manufactured Completed", new { @class = "control-label" })<span class="text-danger">*</span>
+                                                            @Html.LabelFor(model =>  model.PidfPbfGeneralRnd.PivotalBatchesManufacturedCompleted,"Pivotal Batches Manufactured Completed", new { @class = "control-label" })
 
-                                                            @Html.TextBoxFor(model => model.PidfPbfGeneralRnd.PivotalBatchesManufacturedCompleted, new {@class = "form-control customvalidateformcontrol", @placeholder = "Pivotal Batches Manufactured Completed",@type="Date" ,@required="required"})
+                                                            @Html.TextBoxFor(model => model.PidfPbfGeneralRnd.PivotalBatchesManufacturedCompleted, new {@class = "form-control", @placeholder = "Pivotal Batches Manufactured Completed",@type="Date" ,@required="required"})
                                                             @Html.ValidationMessageFor(model =>model.PidfPbfGeneralRnd.PivotalBatchesManufacturedCompleted, "", new { @class = "text-danger" })
 
                                                         </div>
                                                     </div>
                                                     <div class="col-md-3">
                                                         <div class="form-group required">
-                                                            @Html.LabelFor(model => model.PidfPbfGeneralRnd.StabilityResultsDayZero,"Stability Results Day 0", new { @class = "control-label" })<span class="text-danger">*</span>
-                                                            @Html.TextBoxFor(model => model.PidfPbfGeneralRnd.StabilityResultsDayZero, new {@class = "form-control customvalidateformcontrol", @placeholder = "Stability Results Day 0",@type="date",@required="required" })
+                                                            @Html.LabelFor(model => model.PidfPbfGeneralRnd.StabilityResultsDayZero,"Stability Results Day 0", new { @class = "control-label" })
+                                                            @Html.TextBoxFor(model => model.PidfPbfGeneralRnd.StabilityResultsDayZero, new {@class = "form-control", @placeholder = "Stability Results Day 0",@type="date",@required="required" })
                                                             @Html.ValidationMessageFor(model =>model.PidfPbfGeneralRnd.StabilityResultsDayZero, "", new { @class = "text-danger" })
 
                                                         </div>
@@ -600,16 +600,16 @@
                                                 <div class="row">
                                                     <div class="col-md-3">
                                                         <div class="form-group required">
-                                                            @Html.LabelFor(model => model.PidfPbfGeneralRnd.StabilityResultsThreeMonth,"Stability Results 3 Month", new { @class = "control-label" })<span class="text-danger">*</span>
-                                                            @Html.TextBoxFor(model => model.PidfPbfGeneralRnd.StabilityResultsThreeMonth, new {@class = "form-control customvalidateformcontrol", @placeholder = "Stability Results 3 Month",@type="date",@required="required" })
+                                                            @Html.LabelFor(model => model.PidfPbfGeneralRnd.StabilityResultsThreeMonth,"Stability Results 3 Month", new { @class = "control-label" })
+                                                            @Html.TextBoxFor(model => model.PidfPbfGeneralRnd.StabilityResultsThreeMonth, new {@class = "form-control", @placeholder = "Stability Results 3 Month",@type="date",@required="required" })
                                                             @Html.ValidationMessageFor(model =>model.PidfPbfGeneralRnd.StabilityResultsThreeMonth, "", new { @class = "text-danger" })
 
                                                         </div>
                                                     </div>
                                                      <div class="col-md-3">
                                                         <div class="form-group required">
-                                                            @Html.LabelFor(model => model.PidfPbfGeneralRnd.StabilityResultsSixMonth,"Stability Results 6 Month", new { @class = "control-label" })<span class="text-danger">*</span>
-                                                            @Html.TextBoxFor(model => model.PidfPbfGeneralRnd.StabilityResultsSixMonth, new {@class = "form-control customvalidateformcontrol", @placeholder = "Stability Results 6 Month",@type="date",@required="required" })
+                                                            @Html.LabelFor(model => model.PidfPbfGeneralRnd.StabilityResultsSixMonth,"Stability Results 6 Month", new { @class = "control-label" })
+                                                            @Html.TextBoxFor(model => model.PidfPbfGeneralRnd.StabilityResultsSixMonth, new {@class = "form-control", @placeholder = "Stability Results 6 Month",@type="date",@required="required" })
                                                             @Html.ValidationMessageFor(model =>model.PidfPbfGeneralRnd.StabilityResultsSixMonth, "", new { @class = "text-danger" })
 
                                                         </div>
@@ -1178,6 +1178,13 @@
                                         <div class="row">
                                             <span id="msgclinicalnote" class="text-danger" style="display:none;"><span class="text-bold">Note:</span> Not Applicable</span>
                                             <br />
+                                            <div class="col-md-3">
+                                                <div class="form-group required">
+                                                    <label class="control-label"> BE Study Results</label>
+                                                    <input type="text" id="BestudyResults" name="BestudyResults" class="form-control">
+                                                </div>
+                                            </div>
+                                         
                                             <br />
                                             <table id="tableclinical" class="table text-center tableTDHint" style="width:100%">
                                             </table>
