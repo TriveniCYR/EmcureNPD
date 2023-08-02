@@ -35,12 +35,14 @@ namespace EmcureNPD.Business.Models
         public int PIDFProductStrengthId { get; set; }
         public int Strength { get; set; }
         public int UnitofMeasurementId { get; set; }
+        public string UnitofMeasurementName { get; set; }
         public List<PidfPackSizeGeneralRanD> PidfPackSizeGeneralRanDList { get; set; }
         public List<PidfProductStrengthGeneralRanD> PidfProductStrengthGeneralRanDList { get; set; }
     }
     public class PidfPackSizeGeneralRanD
     {
         public int PackSizeId { get; set; }
+        public string PackSizeName { get; set; }
         public int PIDFProductStrengthId { get; set; }
         public long PackSizeStabilityId { get; set; }
         public string Value { get; set; }

@@ -879,7 +879,7 @@ function GetPBFDropdownSuccess(data) {
                 $('#MarketMappingId').select2({ dropdownAdapter: $.fn.select2.amd.require('select2/selectAllAdapter'), placeholder: "Select Market..", });
             }
             catch (e) {
-
+                console.info(`select2/select2/selectAllAdapter:${e}`);
             }
             var _emptyOption = '<option value="">-- Select --</option>';
             $('#BERequirementId').append(_emptyOption);
@@ -1114,7 +1114,7 @@ function BindGeneralPackSizeStability(data) {
     if (data != null && data != undefined) {
         if (data.pidfPackSizeGeneralRanDList != null && data.pidfPackSizeGeneralRanDList.length > 0) {
             for (var i = 0; i < data.pidfPackSizeGeneralRanDList.length; i++) {
-                html += `<td>Pack Size ${data.pidfPackSizeGeneralRanDList[i].packSizeId}<input type="hidden" name="PidfPbfRnDPackSizeStability[${i}].PackSizeId" value="${data.pidfPackSizeGeneralRanDList[i].packSizeId}"></td>`;
+                html += `<td> ${data.pidfPackSizeGeneralRanDList[i].packSizeName}<input type="hidden" name="PidfPbfRnDPackSizeStability[${i}].PackSizeId" value="${data.pidfPackSizeGeneralRanDList[i].packSizeId}"></td>`;
                 td += `<td id="td${i}"><input type="hidden" name="PidfPbfRnDPackSizeStability[${i}].PackSizeStabilityId" value="${data.pidfPackSizeGeneralRanDList[i].packSizeStabilityId}"><input type="text" class="form-control clsValue" id="txt${data.pidfPackSizeGeneralRanDList[i].pidfProductStrengthId}${i}" disabled="disabled" data-val="${data.pidfPackSizeGeneralRanDList[i].pidfProductStrengthId}" name="PidfPbfRnDPackSizeStability[${i}].Value" value="${data.pidfPackSizeGeneralRanDList[i].value}"></td>`;
                 
             }
@@ -1123,11 +1123,11 @@ function BindGeneralPackSizeStability(data) {
         }
         if (data.pidfProductStrengthGeneralRanDList != null) {
             for (var j = 0; j < data.pidfProductStrengthGeneralRanDList.length; j++) {
-                html += `<tr><td>Strength ${data.pidfProductStrengthGeneralRanDList[j].strength}<input type="hidden" name="PidfPbfRnDPackSizeStability[${j}].StrengthId" value="${data.pidfProductStrengthGeneralRanDList[j].strength}"></td>${td}</tr>`
+                html += `<tr><td>${data.pidfProductStrengthGeneralRanDList[j].strength} ${data.pidfProductStrengthGeneralRanDList[j].unitofMeasurementName}<input type="hidden" name="PidfPbfRnDPackSizeStability[${j}].StrengthId" value="${data.pidfProductStrengthGeneralRanDList[j].strength}"></td>${td}</tr>`
             }
         }
         html += '</table>';
-        $("#lblPackSizeStability").show();
+       // $("#lblPackSizeStability").show();
         $("#DvPackSizeStability").append(html);
         if (data.pidfProductStrengthGeneralRanDList != null) {
             for (var j = 0; j < data.pidfProductStrengthGeneralRanDList.length; j++) {
@@ -1522,7 +1522,7 @@ function BindClinical(data) {
         bioStudyHTML += '<td>' + getStrengthName(item.pidfProductStrengthId) + '</td>';
     });
     bioStudyHTML += '<td>Total</td></tr></thead><tbody>';
-    bioStudyHTML += '<tr><td class="text-left text-bold bg-light" colspan="4">BE Study Results:<input type="text" id="BestudyResults" name="BestudyResults" class="form-control" style="width:20%"></td></tr>';
+    //bioStudyHTML += '<tr><td class="text-left text-bold bg-light" colspan="4"></td></tr>';
     for (var i = 1; i < 5; i++) {
         bioStudyHTML += CreateClinicalTable($.grep(data, function (n, x) { return n.bioStudyTypeId == i; }), i);
     }
