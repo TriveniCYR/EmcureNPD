@@ -49,6 +49,7 @@ $(document).ready(function () {
     GetPBFDropdown();
 
     $(document).on("change", ".calcRNDBatchSizesPrototypeFormulation, .calcRNDBatchSizesScaleUpbatch, .calcRNDBatchSizesExhibitBatch1, .calcRNDBatchSizesExhibitBatch2, .calcRNDBatchSizesExhibitBatch3", function () {
+        ChangeAPIReq_OnChange_selectDosageFormula();
         $("input[class~='rndExicipientRsperkg']").trigger('change');
         SetPhaseWiseBudget();
     });
@@ -278,10 +279,60 @@ $(document).ready(function () {
         SetPhaseWiseBudget();
     });
     /*API Requirement*/
+    function ChangeAPIReq_OnChange_selectDosageFormula() {
+        var batchvalue = $("#RNDBatchSizeId option:selected").text();
+        var multFatcor = 0;
+        if (batchvalue.toString().toLowerCase() == "liters") {
+            multFatcor = 1000;
+           // $('.spnkg_mg').text("gm");
+
+        } else {
+            multFatcor = 1000000;
+           // $('.spnkg_mg').text("kg");
+        }
+
+        $.each(_strengthArray, function (ind, val) {
+            var strength = parseInt(val.strength);
+
+
+            var id_batchcontrol_proto = '.BatchSize_Excipient_PrototypeFormulation_' + val.pidfProductStrengthId;
+            var id_APIReqcontrol_proto = "[name='RNDApirequirements["+ind+"].Prototype']";
+            var result = (GetIntfromControlValue($(id_batchcontrol_proto).val()) * strength )/multFatcor;
+            $(id_APIReqcontrol_proto).val(result).trigger('change');
+
+            
+            id_batchcontrol_proto = "[name='RNDBatchSizes[" + ind + "].ScaleUpbatch']";
+            id_APIReqcontrol_proto = "[name='RNDApirequirements[" + ind + "].ScaleUp']";
+             result = (GetIntfromControlValue($(id_batchcontrol_proto).val()) * strength) / multFatcor;
+            $(id_APIReqcontrol_proto).val(result).trigger('change');
+
+            id_batchcontrol_proto = "[name='RNDBatchSizes[" + ind + "].ExhibitBatch1']";
+            id_APIReqcontrol_proto = "[name='RNDApirequirements[" + ind + "].ExhibitBatch1']";
+            result = (GetIntfromControlValue($(id_batchcontrol_proto).val()) * strength) / multFatcor;
+            $(id_APIReqcontrol_proto).val(result).trigger('change');
+
+
+            id_batchcontrol_proto = "[name='RNDBatchSizes[" + ind + "].ExhibitBatch2']";
+            id_APIReqcontrol_proto = "[name='RNDApirequirements[" + ind + "].ExhibitBatch2']";
+            result = (GetIntfromControlValue($(id_batchcontrol_proto).val()) * strength) / multFatcor;
+            $(id_APIReqcontrol_proto).val(result).trigger('change');
+
+            id_batchcontrol_proto = "[name='RNDBatchSizes[" + ind + "].ExhibitBatch3']";
+            id_APIReqcontrol_proto = "[name='RNDApirequirements[" + ind + "].ExhibitBatch3']";
+            result = (GetIntfromControlValue($(id_batchcontrol_proto).val()) * strength) / multFatcor;
+            $(id_APIReqcontrol_proto).val(result).trigger('change');
+
+
+        });
+    }
+    function GetIntfromControlValue(cntrlVal) {
+       return (cntrlVal == '') ? 0 : parseInt(cntrlVal);
+    }
     $(document).on("change", "#RNDMasterEntities_ApirequirementMarketPrice", function () {
         $("input[class~='calcRNDApirequirementsPrototype']").trigger('change');
     });
     $(document).on("change", ".calcRNDApirequirementsPrototype, .calcRNDApirequirementsScaleUp, .calcRNDApirequirementsExhibitBatch1, .calcRNDApirequirementsExhibitBatch2, .calcRNDApirequirementsExhibitBatch3, .calcRNDApirequirementsPrototypeCost, .calcRNDApirequirementsScaleUpCost, .calcRNDApirequirementsExhibitBatchCost, .calcRNDApirequirementsMarketPrice", function () {
+      
         var marketprice = $("#RNDMasterEntities_ApirequirementMarketPrice").val();
         marketprice = ConvertToNumber((marketprice == "" ? 0 : marketprice));
         var _BioStudyTypeId = $(this).parent().parent().attr("data-biostudytypeid");
@@ -497,7 +548,7 @@ $(document).ready(function () {
     /*Excipient Requirement*/
     $(document).on("change", "#RNDBatchSizeId", function () {
         $("input[class~='rndExicipientRsperkg']").trigger('change');
-
+        ChangeAPIReq_OnChange_selectDosageFormula();
     });
     $(document).on("change", ".rndExicipientPrototype, .rndExicipientRsperkg, .rndExicipientQuantity, .rndExicipientStrengthValue", function () {
         var _ActivityTypeId = $(this).parent().parent().attr("data-activitytypeid");
