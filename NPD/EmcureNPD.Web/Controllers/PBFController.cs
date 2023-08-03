@@ -528,7 +528,8 @@ namespace EmcureNPD.Web.Controllers
         [ValidateAntiForgeryToken]
         public IActionResult PBF(int PIDFId, PBFFormEntity pbfEntity)
         {
-            try
+			var screenId = (int)PIDFScreen.PBF;
+			try
             {
                 //rnd json data
                 pbfEntity.Pidfid = PIDFId;
@@ -561,11 +562,12 @@ namespace EmcureNPD.Web.Controllers
                 string jsonResponse = responseMessage.Content.ReadAsStringAsync().Result;
                 ModelState.Clear();
                 var data = JsonConvert.DeserializeObject<APIResponseEntity<dynamic>>(jsonResponse);
+                
 
-                if (responseMessage.IsSuccessStatusCode)
+				if (responseMessage.IsSuccessStatusCode)
                 {
                     TempData[EmcureNPD.Web.Helpers.UserHelper.SuccessMessage] = data._Message;
-                    return RedirectToAction("PIDFList", "PIDF", new { ScreenId = 6 });
+                    return RedirectToAction("PIDFList", "PIDF", new { screenId });
                 }
                 else
                 {
@@ -573,12 +575,14 @@ namespace EmcureNPD.Web.Controllers
                     {
                        
                         ViewBag.errormessage = Convert.ToString(data._Message);
-                        return View(pbfEntity);
-                    }
+						// return View(pbfEntity);
+						return RedirectToAction("PIDFList", "PIDF", new { screenId });
+					}
                     catch
                     {
-                        return View(pbfEntity);
-                    }
+						// return View(pbfEntity);
+						return RedirectToAction("PIDFList", "PIDF", new { screenId });
+					}
                 }
             }
             catch (Exception e)
@@ -586,10 +590,10 @@ namespace EmcureNPD.Web.Controllers
                 _helper.LogExceptions(e);
                 ViewBag.errormessage = Convert.ToString(e.StackTrace);
                 ModelState.Clear();
-                //return RedirectToAction("PIDFList", "PIDF", new { ScreenId = 6 });
-                return View(pbfEntity);
+                return RedirectToAction("PIDFList", "PIDF", new { screenId });
+                //return View(pbfEntity);
             }
-            //return RedirectToAction("PIDFList", "PIDF", new { ScreenId = 6 });
+           // return RedirectToAction("PIDFList", "PIDF", new { ScreenId = 6 });
         }
 
         #endregion PBF
