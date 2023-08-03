@@ -180,13 +180,14 @@ namespace EmcureNPD.Business.Core.Implementation
             }
             return data;
         }
-        public async Task<PidfPbfGeneralRndEntity> GetPidfPbfGeneralRnd(long pidfId, long PbfId, long PbfRndDetailsId = 0)
+        public async Task<PidfPbfGeneralRndEntity> GetPidfPbfGeneralRnd(long pidfId, long PbfId, long PbfRndDetailsId = 0,long BusinessUnitId=0) 
         {
             var data = new PidfPbfGeneralRndEntity();
             SqlParameter[] osqlParameter = {
                        new SqlParameter("@PbfRndDetailsId", PbfRndDetailsId),
                        new SqlParameter("@PidfId", pidfId),
-                       new SqlParameter("@PbfId", PbfId)
+                       new SqlParameter("@PbfId", PbfId),
+                       new SqlParameter("@BusinessUnitId",BusinessUnitId)
                    };
 
             var dbresult = await _pbfRepository.GetDataSetBySP("SpGetPIDF_PBF_General_RND", System.Data.CommandType.StoredProcedure, osqlParameter);
@@ -321,7 +322,7 @@ namespace EmcureNPD.Business.Core.Implementation
             DropdownObjects.HeadWiseBudget = dsDropdownOptions.Tables[20];
             DropdownObjects.PBFReferenceProductDetail = dsDropdownOptions.Tables[21];
             DropdownObjects.RNDExicipientPrototype = dsDropdownOptions.Tables[22];
-            DropdownObjects.PidfPbfGeneralRnd = await GetPidfPbfGeneralRnd(PIDFId, pbfId, PbfRndDetailsId);
+            DropdownObjects.PidfPbfGeneralRnd = await GetPidfPbfGeneralRnd(PIDFId, pbfId, PbfRndDetailsId, BUId);
             DropdownObjects.PidfPbfGeneralPackSizeStability = await GetGeneralPackSizeStability(PIDFId, BUId);
             return DropdownObjects;
         }
@@ -1060,6 +1061,7 @@ namespace EmcureNPD.Business.Core.Implementation
 
                 objPidfGeneralRndDetails.PidfId = pbfentity.Pidfid;
                 objPidfGeneralRndDetails.PbfId = pbfentity.Pidfpbfid;
+                objPidfGeneralRndDetails.BusinessUnitId = pbfentity.BusinessUnitId;
                 objPidfGeneralRndDetails.RndResponsiblePerson = pbfentity.PidfPbfGeneralRnd.RndResponsiblePerson;
                 objPidfGeneralRndDetails.TypeOfDevelopmentDate = pbfentity.PidfPbfGeneralRnd.TypeOfDevelopmentDate;
                 objPidfGeneralRndDetails.PivotalBatchesManufacturedCompleted = pbfentity.PidfPbfGeneralRnd.PivotalBatchesManufacturedCompleted;
@@ -1085,7 +1087,8 @@ namespace EmcureNPD.Business.Core.Implementation
             {
                 objPidfGeneralRnd.PidfId = pbfentity.Pidfid;
                 objPidfGeneralRnd.PbfId = pbfentity.Pidfpbfid;
-                objPidfGeneralRnd.RndResponsiblePerson = pbfentity.PidfPbfGeneralRnd.RndResponsiblePerson;
+				objPidfGeneralRnd.BusinessUnitId = pbfentity.BusinessUnitId;
+				objPidfGeneralRnd.RndResponsiblePerson = pbfentity.PidfPbfGeneralRnd.RndResponsiblePerson;
                 objPidfGeneralRnd.TypeOfDevelopmentDate = pbfentity.PidfPbfGeneralRnd.TypeOfDevelopmentDate;
                 objPidfGeneralRnd.PivotalBatchesManufacturedCompleted = pbfentity.PidfPbfGeneralRnd.PivotalBatchesManufacturedCompleted;
                 objPidfGeneralRnd.StabilityResultsDayZero = pbfentity.PidfPbfGeneralRnd.StabilityResultsDayZero;

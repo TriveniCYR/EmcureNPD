@@ -623,7 +623,7 @@
                                                     <div class="col-md-3">
                                                         <div class="form-group required">
                                                             @Html.LabelFor(model => model.PidfPbfGeneralRnd.Pivotals, new { @class = "control-label" }) 
-                                                            @Html.TextBoxFor(model => model.PidfPbfGeneralRnd.Pivotals,  new { @autocomplete = "off", @class = "form-control ",@placeholder="Pivotals (optional)" })
+                                                            @Html.TextBoxFor(model => model.PidfPbfGeneralRnd.Pivotals,  new { @autocomplete = "off", @class = "form-control ",@placeholder="Pivotals" })
                                                             @Html.ValidationMessageFor(model => model.PidfPbfGeneralRnd.Pivotals, "", new { @class = "text-danger" })
                                                         </div>
                                                     </div>
@@ -633,7 +633,7 @@
                                                     <div class="col-md-3">
                                                         <div class="form-group required">
                                                             @Html.LabelFor(model => model.PidfPbfGeneralRnd.BatchSizes,"Batch Sizes", new { @class = "control-label" })
-                                                            @Html.TextBoxFor(model => model.PidfPbfGeneralRnd.BatchSizes, new {@class = "form-control", @placeholder = "Batch Sizes (optional)"})
+                                                            @Html.TextBoxFor(model => model.PidfPbfGeneralRnd.BatchSizes, new {@class = "form-control", @placeholder = "Batch Sizes"})
                                                             @Html.ValidationMessageFor(model =>model.PidfPbfGeneralRnd.BatchSizes, "", new { @class = "text-danger" })
 
                                                         </div>
@@ -641,7 +641,7 @@
                                                     <div class="col-md-3">
                                                         <div class="form-group required">
                                                             @Html.LabelFor(model => model.PidfPbfGeneralRnd.NoMofBatchesPerStrength,"No. Of Batches/Strength", new { @class = "control-label" })
-                                                            @Html.TextBoxFor(model => model.PidfPbfGeneralRnd.NoMofBatchesPerStrength, new {@class = "form-control", @placeholder = "No. Of Batches/Strength (optional)",@type="number" })
+                                                            @Html.TextBoxFor(model => model.PidfPbfGeneralRnd.NoMofBatchesPerStrength, new {@class = "form-control", @placeholder = "No. Of Batches/Strength",@type="number" })
                                                             @Html.ValidationMessageFor(model =>model.PidfPbfGeneralRnd.NoMofBatchesPerStrength, "", new { @class = "text-danger" })
 
                                                         </div>
