@@ -936,7 +936,7 @@ function GetPBFDropdownSuccess(data) {
                 $('#MarketMappingId').select2({ dropdownAdapter: $.fn.select2.amd.require('select2/selectAllAdapter'), placeholder: "Select Market..", });
             }
             catch (e) {
-                console.info(`select2/select2/selectAllAdapter:${e}`);
+                $('#MarketMappingId').select2();
             }
             var _emptyOption = '<option value="">-- Select --</option>';
             $('#BERequirementId').append(_emptyOption);
