@@ -569,8 +569,16 @@ namespace EmcureNPD.Web.Controllers
                 }
                 else
                 {
-                    ViewBag.errormessage = Convert.ToString(data._Message);
-                    return View(pbfEntity);
+                    try
+                    {
+                       
+                        ViewBag.errormessage = Convert.ToString(data._Message);
+                        return View(pbfEntity);
+                    }
+                    catch
+                    {
+                        return View(pbfEntity);
+                    }
                 }
             }
             catch (Exception e)

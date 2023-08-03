@@ -203,27 +203,34 @@ namespace EmcureNPD.Business.Core.Implementation
         //GetGeneralPackSizeStability
         public async Task<PidfProductStrengthGeneralRanD> GetGeneralPackSizeStability(long pidfId,int BUId)
         {
-
             var data = new PidfProductStrengthGeneralRanD();
-            SqlParameter[] osqlParameter = {
+            try
+            {
+                SqlParameter[] osqlParameter = {
                        new SqlParameter("@PIDFId", pidfId),
                         new SqlParameter("@BUId", BUId)
                    };
 
-            var dbresult = await _pbfRepository.GetDataSetBySP("GetPackSizeStabilityData", System.Data.CommandType.StoredProcedure, osqlParameter);
-            if (dbresult != null)
-            {
-                if (dbresult.Tables[0] != null && dbresult.Tables[0].Rows.Count > 0)
+                var dbresult = await _pbfRepository.GetDataSetBySP("GetPackSizeStabilityData", System.Data.CommandType.StoredProcedure, osqlParameter);
+                if (dbresult != null)
                 {
-                    data.PidfProductStrengthGeneralRanDList = dbresult.Tables[0].DataTableToList<PidfProductStrengthGeneralRanD>();
-                }
-                if (dbresult.Tables[1] != null && dbresult.Tables[1].Rows.Count > 0)
-                {
-                    data.PidfPackSizeGeneralRanDList = dbresult.Tables[1].DataTableToList<PidfPackSizeGeneralRanD>();
+                    if (dbresult.Tables[0] != null && dbresult.Tables[0].Rows.Count > 0)
+                    {
 
+                        data.PidfProductStrengthGeneralRanDList = dbresult.Tables[0].DataTableToList<PidfProductStrengthGeneralRanD>();
+                    }
+                    if (dbresult.Tables[1] != null && dbresult.Tables[1].Rows.Count > 0)
+                    {
+                        data.PidfPackSizeGeneralRanDList = dbresult.Tables[1].DataTableToList<PidfPackSizeGeneralRanD>();
+
+                    }
                 }
+                return data;
             }
-            return data;
+            catch(Exception ex)
+            {
+                return data;
+            }
         }
         public async Task<DBOperation> AddUpdatePBFDetails(PBFFormEntity pbfEntity)
         {
@@ -1933,7 +1940,10 @@ namespace EmcureNPD.Business.Core.Implementation
                 await SaveUpdateReferenceProductDetails(pbfgeneralid, pbfentity);
                 #endregion Update PBF Reference Product Details
                 #region Update PBF genegral R&D Details
-                await SaveGeneralRandDDetails(pbfentity);
+               // if (pbfentity.PidfPbfGeneralRnd.RndResponsiblePerson != null && pbfentity.PidfPbfGeneralRnd.RndResponsiblePerson != "")
+                //{
+                    await SaveGeneralRandDDetails(pbfentity);
+                //}
                 #endregion
                
                 return pbfgeneralid;
@@ -2034,9 +2044,12 @@ namespace EmcureNPD.Business.Core.Implementation
                 await SaveUpdateReferenceProductDetails(pbfgeneralid, pbfentity);
                 #endregion Update PBF Reference Product Details
                 #region Update PBF genegral R&D Details
-                await SaveGeneralRandDDetails(pbfentity);
+                //if (pbfentity.PidfPbfGeneralRnd.RndResponsiblePerson != null && pbfentity.PidfPbfGeneralRnd.RndResponsiblePerson != "")
+                //{
+                    await SaveGeneralRandDDetails(pbfentity);
+                //}
                 #endregion
-                
+
                 #region Section Clinical Add Update
 
                 List<PidfPbfClinical> objClinicallist = new();
