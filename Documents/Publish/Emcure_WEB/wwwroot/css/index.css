@@ -442,3 +442,9 @@ tr {
 #validateAPIRequirements tr td {
   width: 50%;
 }
+.CustomtabsdepartmenttabPBFMainTab {
+    width: calc(100% / 4) !important;
+}
+.CustomtabsdepartmenttabPBFMainTab_Totaltxtbox {
+    text-align: left !important;
+}
