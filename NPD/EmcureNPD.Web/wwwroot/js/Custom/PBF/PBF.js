@@ -2568,42 +2568,48 @@ function CreateRNDManPowerCostTable(data) {
 
     objectname += "<tr class='manpowercost_" + bioStudyTypeId + "Total' data-biostudytypeid='" + bioStudyTypeId + "'><td>Cost</td><td colspan='2'><b>Prototype</b></td>";
     for (var i = 0; i < _strengthArray.length; i++) {
-        objectname += "<td data-strengthid='" + _strengthArray[i].pidfProductStrengthId + "'><input type='text' class='form-control calcTotalPrototypeCostForStrength' readonly='readonly' tabindex=-1 /></td>";
+        objectname += "<td class='CustomtabsdepartmenttabPBFMainTab_Totaltxtbox' data-strengthid='" + _strengthArray[i].pidfProductStrengthId + "'><input type='text' class='form-control calcTotalPrototypeCostForStrength ' readonly='readonly' tabindex=-1 /></td>";
     }
-    objectname += "<td><input type='text' class='form-control calcTotalPrototypeCostForStrengthTotal' readonly='readonly' tabindex=-1  /></td></tr>";
+    objectname += "<td class='CustomtabsdepartmenttabPBFMainTab_Totaltxtbox' ><input type='text' class='form-control calcTotalPrototypeCostForStrengthTotal' readonly='readonly' tabindex=-1  /></td></tr>";
 
     objectname += "<tr class='manpowercost_" + bioStudyTypeId + "Total' data-biostudytypeid='" + bioStudyTypeId + "'><td>Cost</td><td colspan='2'><b>Scaleup</b></td>";
     for (var i = 0; i < _strengthArray.length; i++) {
-        objectname += "<td data-strengthid='" + _strengthArray[i].pidfProductStrengthId + "'><input type='text' class='form-control calcTotalScaleupCostForStrength' readonly='readonly' tabindex=-1 /></td>";
+        objectname += "<td class='CustomtabsdepartmenttabPBFMainTab_Totaltxtbox' data-strengthid='" + _strengthArray[i].pidfProductStrengthId + "'><input type='text' class='form-control calcTotalScaleupCostForStrength' readonly='readonly' tabindex=-1 /></td>";
     }
-    objectname += "<td><input type='text' class='form-control calcTotalScaleupCostForStrengthTotal' readonly='readonly' tabindex=-1   /></td></tr>";
+    objectname += "<td class='CustomtabsdepartmenttabPBFMainTab_Totaltxtbox' ><input type='text' class='form-control calcTotalScaleupCostForStrengthTotal' readonly='readonly' tabindex=-1   /></td></tr>";
 
     objectname += "<tr class='manpowercost_" + bioStudyTypeId + "Total' data-biostudytypeid='" + bioStudyTypeId + "'><td>Cost</td><td colspan='2'><b>Exhibit</b></td>";
     for (var i = 0; i < _strengthArray.length; i++) {
-        objectname += "<td data-strengthid='" + _strengthArray[i].pidfProductStrengthId + "'><input type='text' class='form-control calcTotalExhibitCostForStrength' readonly='readonly' tabindex=-1 /></td>";
+        objectname += "<td class='CustomtabsdepartmenttabPBFMainTab_Totaltxtbox' data-strengthid='" + _strengthArray[i].pidfProductStrengthId + "'><input type='text' class='form-control calcTotalExhibitCostForStrength' readonly='readonly' tabindex=-1 /></td>";
     }
-    objectname += "<td><input type='text' class='form-control calcTotalExhibitCostForStrengthTotal' readonly='readonly' tabindex=-1  /></td></tr>";
+    objectname += "<td class='CustomtabsdepartmenttabPBFMainTab_Totaltxtbox' ><input type='text' class='form-control calcTotalExhibitCostForStrengthTotal' readonly='readonly' tabindex=-1  /></td></tr>";
 
     objectname += "<tr class='manpowercost_" + bioStudyTypeId + "Total' data-biostudytypeid='" + bioStudyTypeId + "'><td colspan='3'><b>Total Cost</b></td>";
     for (var i = 0; i < _strengthArray.length; i++) {
-        objectname += "<td data-strengthid='" + _strengthArray[i].pidfProductStrengthId + "'>" + _currencySymbol + "<input type='text' class='form-control calcTotalCostForStrength' readonly='readonly' tabindex=-1 /></td>";
+        objectname += "<td class='CustomtabsdepartmenttabPBFMainTab_Totaltxtbox' data-strengthid='" + _strengthArray[i].pidfProductStrengthId + "'>" + _currencySymbol + "<input type='text' class='form-control calcTotalCostForStrength' readonly='readonly' tabindex=-1 /></td>";
     }
-    objectname += "<td>" + _currencySymbol + "<input type='text' class='form-control calcTotalCostForStrengthTotal' readonly='readonly' tabindex=-1  /></td></tr>";
+    objectname += "<td class='CustomtabsdepartmenttabPBFMainTab_Totaltxtbox' >" + _currencySymbol + "<input type='text' class='form-control calcTotalCostForStrengthTotal' readonly='readonly' tabindex=-1  /></td></tr>";
 
     //---------------------------
-    objectname += "<tr> <td><label class='control-label mr-2'> Total Duration</label></td>";
-    objectname += "<td><input type='text' id='id_GrandTotalDuration_days' class='form-control' readonly='readonly' tabindex=-1 />";
-    objectname += "<label class='control-label mr-4'> days</label> </td> ";
 
-    objectname += "<td><label class='control-label mr-2'  > Total Duration</label></td>";
-    objectname += "<td><input type='text' class='form-control' id='id_GrandTotalDuration_years' readonly='readonly' tabindex=-1  />";
-    objectname += "<label class='control-label mr-4'> years</label> </td> ";
-
-    objectname += "<td><label class='control-label mr-2'> Total Manhours </label></td> ";
+    objectname += "<tr>";
+    objectname += "<td colspan='2'><label class='control-label'> Total Manhours </label></td> ";
     objectname += "<td><input type='text' id='id_GrandTotalManHours' class='form-control' readonly='readonly' tabindex=-1  /> ";
-    objectname += "<label class='control-label mr-4'> </label> </td> ";
-
+    objectname += "<label class='control-label'> </label> </td> ";
     objectname += "</tr>";
+
+    objectname += "<tr> <td colspan='2'><label class='control-label'> Total Duration in days</label></td>";
+    objectname += "<td><input type='text' id='id_GrandTotalDuration_days' class='form-control' readonly='readonly' tabindex=-1 />";
+    objectname += "<label class='control-label'></label> </td> ";
+    objectname += "</tr>";
+
+    objectname += "<tr>";
+    objectname += "<td colspan='2'><label class='control-label' > Total Duration in years</label></td>";
+    objectname += "<td><input type='text' class='form-control' id='id_GrandTotalDuration_years' readonly='readonly' tabindex=-1  />";
+    objectname += "<label class='control-label'></label> </td> ";
+    objectname += "</tr>";
+
+  
 
     return objectname;
 }

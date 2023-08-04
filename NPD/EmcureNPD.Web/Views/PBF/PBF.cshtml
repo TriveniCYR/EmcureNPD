@@ -682,7 +682,7 @@
 
                                                 </div>
                                                 <hr/>
-                                                 <div class="row">
+                                                <div class="row" id="rw_DvPackSizeStability" style="display:none">
                                                     <label class="control-label" id="lblPackSizeStability" style="display:none;">Pack Size Stabilitys</label>
                                                      <div id="DvPackSizeStability">
 
@@ -713,7 +713,7 @@
                         id="custom-tabs-department-tab" role="tablist">
                         @if (UtilityHelper.GetAccess((int)EmcureNPD.Utility.Enums.ModuleEnum.PBF, Helper.GetLoggedInRoleId(), (int)EmcureNPD.Utility.Enums.PermissionEnum.View, (int)EmcureNPD.Utility.Enums.SubModulePermissionEnum.RnD) || UtilityHelper.GetAccess((int)EmcureNPD.Utility.Enums.ModuleEnum.PBF, Helper.GetLoggedInRoleId(), (int)EmcureNPD.Utility.Enums.PermissionEnum.Edit, (int)EmcureNPD.Utility.Enums.SubModulePermissionEnum.RnD) || UtilityHelper.GetAccess((int)EmcureNPD.Utility.Enums.ModuleEnum.PBF, Helper.GetLoggedInRoleId(), (int)EmcureNPD.Utility.Enums.PermissionEnum.Add, (int)EmcureNPD.Utility.Enums.SubModulePermissionEnum.RnD))
                         {
-                            <li class="nav-item p-0">
+                            <li class="nav-item p-0 CustomtabsdepartmenttabPBFMainTab">
                                 <a class="nav-link active px-2"
                                    id="custom-tabs-department-RnD-tab"
                                    data-toggle="pill"
@@ -724,7 +724,7 @@
                         }
                         @if (UtilityHelper.GetAccess((int)EmcureNPD.Utility.Enums.ModuleEnum.PBF, Helper.GetLoggedInRoleId(), (int)EmcureNPD.Utility.Enums.PermissionEnum.View, (int)EmcureNPD.Utility.Enums.SubModulePermissionEnum.Analytical) || UtilityHelper.GetAccess((int)EmcureNPD.Utility.Enums.ModuleEnum.PBF, Helper.GetLoggedInRoleId(), (int)EmcureNPD.Utility.Enums.PermissionEnum.Edit, (int)EmcureNPD.Utility.Enums.SubModulePermissionEnum.Analytical) || UtilityHelper.GetAccess((int)EmcureNPD.Utility.Enums.ModuleEnum.PBF, Helper.GetLoggedInRoleId(), (int)EmcureNPD.Utility.Enums.PermissionEnum.Add, (int)EmcureNPD.Utility.Enums.SubModulePermissionEnum.Analytical))
                         {
-                            <li class="nav-item p-0">
+                            <li class="nav-item p-0 CustomtabsdepartmenttabPBFMainTab">
                                 <a class="nav-link px-2"
                                    id="custom-tabs-department-Analytical-tab"
                                    data-toggle="pill"
@@ -736,7 +736,7 @@
                         }
                         @if (UtilityHelper.GetAccess((int)EmcureNPD.Utility.Enums.ModuleEnum.PBF, Helper.GetLoggedInRoleId(), (int)EmcureNPD.Utility.Enums.PermissionEnum.View, (int)EmcureNPD.Utility.Enums.SubModulePermissionEnum.Clinical) || UtilityHelper.GetAccess((int)EmcureNPD.Utility.Enums.ModuleEnum.PBF, Helper.GetLoggedInRoleId(), (int)EmcureNPD.Utility.Enums.PermissionEnum.Edit, (int)EmcureNPD.Utility.Enums.SubModulePermissionEnum.Clinical) || UtilityHelper.GetAccess((int)EmcureNPD.Utility.Enums.ModuleEnum.PBF, Helper.GetLoggedInRoleId(), (int)EmcureNPD.Utility.Enums.PermissionEnum.Add, (int)EmcureNPD.Utility.Enums.SubModulePermissionEnum.Clinical))
                         {
-                            <li class="nav-item p-0">
+                            <li class="nav-item p-0 CustomtabsdepartmenttabPBFMainTab">
                                 <a class="nav-link px-2"
                                    id="custom-tabs-department-Clinical-tab"
                                    data-toggle="pill"
@@ -747,7 +747,7 @@
                         }
                         @if (UtilityHelper.GetAccess((int)EmcureNPD.Utility.Enums.ModuleEnum.PBF, Helper.GetLoggedInRoleId(), (int)EmcureNPD.Utility.Enums.PermissionEnum.View, (int)EmcureNPD.Utility.Enums.SubModulePermissionEnum.Clinical) || UtilityHelper.GetAccess((int)EmcureNPD.Utility.Enums.ModuleEnum.PBF, Helper.GetLoggedInRoleId(), (int)EmcureNPD.Utility.Enums.PermissionEnum.Edit, (int)EmcureNPD.Utility.Enums.SubModulePermissionEnum.RA) || UtilityHelper.GetAccess((int)EmcureNPD.Utility.Enums.ModuleEnum.PBF, Helper.GetLoggedInRoleId(), (int)EmcureNPD.Utility.Enums.PermissionEnum.Add, (int)EmcureNPD.Utility.Enums.SubModulePermissionEnum.RA))
                         {
-                        <li class="nav-item p-0">
+                            <li class="nav-item p-0 CustomtabsdepartmenttabPBFMainTab">
                         <a class="nav-link px-2"
                         id="custom-tabs-department-RA-tab"
                         data-toggle="pill"
