@@ -38,6 +38,7 @@ $(document).ready(function () {
         // _mode = $('#hdnIsView').val(); //parseInt($('#hdnPIDFId').val());
         _mode = getParameterByName("IsView");
         _pbf = getParameterByName("pbf");
+        $('#DvPackSizeStability').hide();
     } catch (e) {
         _mode = getParameterByName("IsView");
         /* _PIDFId = parseInt(getParameterByName("pidfid"));*/
@@ -1185,7 +1186,7 @@ function BindGeneralPackSizeStability(data) {
         }
         html += '</table>';
        // $("#lblPackSizeStability").show();
-        $("#DvPackSizeStability").append(html);
+       // $("#DvPackSizeStability").append(html);
         if (data.pidfProductStrengthGeneralRanDList != null) {
             for (var j = 0; j < data.pidfProductStrengthGeneralRanDList.length; j++) {
                 pidfProductStrengthId.push(data.pidfProductStrengthGeneralRanDList[j].pidfProductStrengthId);
@@ -1207,10 +1208,10 @@ function BindGeneralPackSizeStability(data) {
     }
         pidfProductStrengthId = [];
         if (isShowHeader) {
-            $("#DvPackSizeStability").show();
+          //  $("#DvPackSizeStability").show();
         }
         else {
-            $("#DvPackSizeStability").hide();
+         //   $("#DvPackSizeStability").hide();
         }
 }
 }

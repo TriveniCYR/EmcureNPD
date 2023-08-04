@@ -180,7 +180,7 @@ namespace EmcureNPD.Business.Core.Implementation
             }
             return data;
         }
-        public async Task<PidfPbfGeneralRndEntity> GetPidfPbfGeneralRnd(long pidfId, long PbfId, long PbfRndDetailsId = 0,long BusinessUnitId=0) 
+        public async Task<PidfPbfGeneralRndEntity> GetPidfPbfGeneralRnd(long pidfId, long PbfId, long PbfRndDetailsId = 0, long BusinessUnitId = 0)
         {
             var data = new PidfPbfGeneralRndEntity();
             SqlParameter[] osqlParameter = {
@@ -202,7 +202,7 @@ namespace EmcureNPD.Business.Core.Implementation
             return data;
         }
         //GetGeneralPackSizeStability
-        public async Task<PidfProductStrengthGeneralRanD> GetGeneralPackSizeStability(long pidfId,int BUId)
+        public async Task<PidfProductStrengthGeneralRanD> GetGeneralPackSizeStability(long pidfId, int BUId)
         {
             var data = new PidfProductStrengthGeneralRanD();
             try
@@ -228,7 +228,7 @@ namespace EmcureNPD.Business.Core.Implementation
                 }
                 return data;
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 return data;
             }
@@ -333,9 +333,9 @@ namespace EmcureNPD.Business.Core.Implementation
             var dbObj = await _MasterPlantLineRepository.GetAllAsync(x => x.PlantId == id);
             return _mapperFactory.GetList<MasterPlantLine, MasterPlantLineEntity>(dbObj.ToList());
         }
-        public async Task<List<PidfPbfRaEntity>> GetRa(int PidfId, int PifdPbfId,int BuId)
+        public async Task<List<PidfPbfRaEntity>> GetRa(int PidfId, int PifdPbfId, int BuId)
         {
-            var dbObj = await _pidfPbfRRepositiry.GetAllAsync(x => x.Pidfid == PidfId && x.Pbfid == PifdPbfId && x.BuId== BuId);
+            var dbObj = await _pidfPbfRRepositiry.GetAllAsync(x => x.Pidfid == PidfId && x.Pbfid == PifdPbfId && x.BuId == BuId);
             return _mapperFactory.GetList<PidfPbfRa, PidfPbfRaEntity>(dbObj.ToList());
         }
         public async Task<List<MasterTypeOfSubmissionEntity>> GetTypeOfSubmission()
@@ -1054,66 +1054,66 @@ namespace EmcureNPD.Business.Core.Implementation
         {
             var objPidfGeneralRnd = new PidfPbfGeneralRnd();
             long PidfPbfId = 0;
-			try
-			{
-		    var loggedInUserId = _helper.GetLoggedInUser().UserId;
-            var pidfPbfDetails = _pbfRepository.GetAllQuery().Where(x => x.Pidfid == pbfentity.Pidfid).FirstOrDefault();
+            try
+            {
+                var loggedInUserId = _helper.GetLoggedInUser().UserId;
+                var pidfPbfDetails = _pbfRepository.GetAllQuery().Where(x => x.Pidfid == pbfentity.Pidfid).FirstOrDefault();
                 PidfPbfId = pbfentity.Pidfpbfid == 0 ? pidfPbfDetails.Pidfpbfid : pbfentity.Pidfpbfid;
 
-	              var objPidfGeneralRndDetails = _repositoryPidfPbfGeneralRnd.GetAllQuery().
-                Where(x => x.PidfId == pbfentity.Pidfid && x.PbfId == PidfPbfId && x.PbfRndDetailsId == pbfentity.PidfPbfGeneralRnd.PbfRndDetailsId).FirstOrDefault();
-            if (objPidfGeneralRndDetails != null)
-            {
+                var objPidfGeneralRndDetails = _repositoryPidfPbfGeneralRnd.GetAllQuery().
+              Where(x => x.PidfId == pbfentity.Pidfid && x.PbfId == PidfPbfId && x.PbfRndDetailsId == pbfentity.PidfPbfGeneralRnd.PbfRndDetailsId).FirstOrDefault();
+                if (objPidfGeneralRndDetails != null)
+                {
 
-                objPidfGeneralRndDetails.PidfId = pbfentity.Pidfid;
-                objPidfGeneralRndDetails.PbfId = PidfPbfId;
-                objPidfGeneralRndDetails.BusinessUnitId = pbfentity.BusinessUnitId;
-                objPidfGeneralRndDetails.RndResponsiblePerson = pbfentity.PidfPbfGeneralRnd.RndResponsiblePerson;
-                objPidfGeneralRndDetails.TypeOfDevelopmentDate = pbfentity.PidfPbfGeneralRnd.TypeOfDevelopmentDate;
-                objPidfGeneralRndDetails.PivotalBatchesManufacturedCompleted = pbfentity.PidfPbfGeneralRnd.PivotalBatchesManufacturedCompleted;
-                objPidfGeneralRndDetails.StabilityResultsDayZero = pbfentity.PidfPbfGeneralRnd.StabilityResultsDayZero;
-                objPidfGeneralRndDetails.StabilityResultsThreeMonth = pbfentity.PidfPbfGeneralRnd.StabilityResultsThreeMonth;
-                objPidfGeneralRndDetails.StabilityResultsSixMonth = pbfentity.PidfPbfGeneralRnd.StabilityResultsSixMonth;
-                objPidfGeneralRndDetails.NonStandardProduct = pbfentity.PidfPbfGeneralRnd.NonStandardProduct;
-                objPidfGeneralRndDetails.Pivotals = pbfentity.PidfPbfGeneralRnd.Pivotals;
-                objPidfGeneralRndDetails.BatchSizes = pbfentity.PidfPbfGeneralRnd.BatchSizes;
-                objPidfGeneralRndDetails.NoMofBatchesPerStrength = pbfentity.PidfPbfGeneralRnd.NoMofBatchesPerStrength;
-                objPidfGeneralRndDetails.SiteTransferDate = pbfentity.PidfPbfGeneralRnd.SiteTransferDate;
-                objPidfGeneralRndDetails.ApiOrderedDate = pbfentity.PidfPbfGeneralRnd.ApiOrderedDate;
-                objPidfGeneralRndDetails.ApiReceivedDate = pbfentity.PidfPbfGeneralRnd.ApiReceivedDate;
-                objPidfGeneralRndDetails.FinalFormulationApproved = pbfentity.PidfPbfGeneralRnd.FinalFormulationApproved;
-                objPidfGeneralRndDetails.UpdatedOn = DateTime.Now;
-                objPidfGeneralRndDetails.CreatedBy = loggedInUserId;
+                    objPidfGeneralRndDetails.PidfId = pbfentity.Pidfid;
+                    objPidfGeneralRndDetails.PbfId = PidfPbfId;
+                    objPidfGeneralRndDetails.BusinessUnitId = pbfentity.BusinessUnitId;
+                    objPidfGeneralRndDetails.RndResponsiblePerson = pbfentity.PidfPbfGeneralRnd.RndResponsiblePerson;
+                    objPidfGeneralRndDetails.TypeOfDevelopmentDate = pbfentity.PidfPbfGeneralRnd.TypeOfDevelopmentDate;
+                    objPidfGeneralRndDetails.PivotalBatchesManufacturedCompleted = pbfentity.PidfPbfGeneralRnd.PivotalBatchesManufacturedCompleted;
+                    objPidfGeneralRndDetails.StabilityResultsDayZero = pbfentity.PidfPbfGeneralRnd.StabilityResultsDayZero;
+                    objPidfGeneralRndDetails.StabilityResultsThreeMonth = pbfentity.PidfPbfGeneralRnd.StabilityResultsThreeMonth;
+                    objPidfGeneralRndDetails.StabilityResultsSixMonth = pbfentity.PidfPbfGeneralRnd.StabilityResultsSixMonth;
+                    objPidfGeneralRndDetails.NonStandardProduct = pbfentity.PidfPbfGeneralRnd.NonStandardProduct;
+                    objPidfGeneralRndDetails.Pivotals = pbfentity.PidfPbfGeneralRnd.Pivotals;
+                    objPidfGeneralRndDetails.BatchSizes = pbfentity.PidfPbfGeneralRnd.BatchSizes;
+                    objPidfGeneralRndDetails.NoMofBatchesPerStrength = pbfentity.PidfPbfGeneralRnd.NoMofBatchesPerStrength;
+                    objPidfGeneralRndDetails.SiteTransferDate = pbfentity.PidfPbfGeneralRnd.SiteTransferDate;
+                    objPidfGeneralRndDetails.ApiOrderedDate = pbfentity.PidfPbfGeneralRnd.ApiOrderedDate;
+                    objPidfGeneralRndDetails.ApiReceivedDate = pbfentity.PidfPbfGeneralRnd.ApiReceivedDate;
+                    objPidfGeneralRndDetails.FinalFormulationApproved = pbfentity.PidfPbfGeneralRnd.FinalFormulationApproved;
+                    objPidfGeneralRndDetails.UpdatedOn = DateTime.Now;
+                    objPidfGeneralRndDetails.CreatedBy = loggedInUserId;
 
-                _repositoryPidfPbfGeneralRnd.UpdateAsync(objPidfGeneralRndDetails);
+                    _repositoryPidfPbfGeneralRnd.UpdateAsync(objPidfGeneralRndDetails);
 
 
-            }
-            else
-            {
-                objPidfGeneralRnd.PidfId = pbfentity.Pidfid;
-                objPidfGeneralRnd.PbfId = PidfPbfId;
-				objPidfGeneralRnd.BusinessUnitId = pbfentity.BusinessUnitId;
-				objPidfGeneralRnd.RndResponsiblePerson = pbfentity.PidfPbfGeneralRnd.RndResponsiblePerson;
-                objPidfGeneralRnd.TypeOfDevelopmentDate = pbfentity.PidfPbfGeneralRnd.TypeOfDevelopmentDate;
-                objPidfGeneralRnd.PivotalBatchesManufacturedCompleted = pbfentity.PidfPbfGeneralRnd.PivotalBatchesManufacturedCompleted;
-                objPidfGeneralRnd.StabilityResultsDayZero = pbfentity.PidfPbfGeneralRnd.StabilityResultsDayZero;
-                objPidfGeneralRnd.StabilityResultsThreeMonth = pbfentity.PidfPbfGeneralRnd.StabilityResultsThreeMonth;
-                objPidfGeneralRnd.StabilityResultsSixMonth = pbfentity.PidfPbfGeneralRnd.StabilityResultsSixMonth;
-                objPidfGeneralRnd.NonStandardProduct = pbfentity.PidfPbfGeneralRnd.NonStandardProduct;
-                objPidfGeneralRnd.Pivotals = pbfentity.PidfPbfGeneralRnd.Pivotals;
-                objPidfGeneralRnd.BatchSizes = pbfentity.PidfPbfGeneralRnd.BatchSizes;
-                objPidfGeneralRnd.NoMofBatchesPerStrength = pbfentity.PidfPbfGeneralRnd.NoMofBatchesPerStrength;
-                objPidfGeneralRnd.SiteTransferDate = pbfentity.PidfPbfGeneralRnd.SiteTransferDate;
-                objPidfGeneralRnd.ApiOrderedDate = pbfentity.PidfPbfGeneralRnd.ApiOrderedDate;
-                objPidfGeneralRnd.ApiReceivedDate = pbfentity.PidfPbfGeneralRnd.ApiReceivedDate;
-                objPidfGeneralRnd.FinalFormulationApproved = pbfentity.PidfPbfGeneralRnd.FinalFormulationApproved;
-                objPidfGeneralRnd.CreatedOn = DateTime.Now;
-                objPidfGeneralRnd.CreatedBy = loggedInUserId;
+                }
+                else
+                {
+                    objPidfGeneralRnd.PidfId = pbfentity.Pidfid;
+                    objPidfGeneralRnd.PbfId = PidfPbfId;
+                    objPidfGeneralRnd.BusinessUnitId = pbfentity.BusinessUnitId;
+                    objPidfGeneralRnd.RndResponsiblePerson = pbfentity.PidfPbfGeneralRnd.RndResponsiblePerson;
+                    objPidfGeneralRnd.TypeOfDevelopmentDate = pbfentity.PidfPbfGeneralRnd.TypeOfDevelopmentDate;
+                    objPidfGeneralRnd.PivotalBatchesManufacturedCompleted = pbfentity.PidfPbfGeneralRnd.PivotalBatchesManufacturedCompleted;
+                    objPidfGeneralRnd.StabilityResultsDayZero = pbfentity.PidfPbfGeneralRnd.StabilityResultsDayZero;
+                    objPidfGeneralRnd.StabilityResultsThreeMonth = pbfentity.PidfPbfGeneralRnd.StabilityResultsThreeMonth;
+                    objPidfGeneralRnd.StabilityResultsSixMonth = pbfentity.PidfPbfGeneralRnd.StabilityResultsSixMonth;
+                    objPidfGeneralRnd.NonStandardProduct = pbfentity.PidfPbfGeneralRnd.NonStandardProduct;
+                    objPidfGeneralRnd.Pivotals = pbfentity.PidfPbfGeneralRnd.Pivotals;
+                    objPidfGeneralRnd.BatchSizes = pbfentity.PidfPbfGeneralRnd.BatchSizes;
+                    objPidfGeneralRnd.NoMofBatchesPerStrength = pbfentity.PidfPbfGeneralRnd.NoMofBatchesPerStrength;
+                    objPidfGeneralRnd.SiteTransferDate = pbfentity.PidfPbfGeneralRnd.SiteTransferDate;
+                    objPidfGeneralRnd.ApiOrderedDate = pbfentity.PidfPbfGeneralRnd.ApiOrderedDate;
+                    objPidfGeneralRnd.ApiReceivedDate = pbfentity.PidfPbfGeneralRnd.ApiReceivedDate;
+                    objPidfGeneralRnd.FinalFormulationApproved = pbfentity.PidfPbfGeneralRnd.FinalFormulationApproved;
+                    objPidfGeneralRnd.CreatedOn = DateTime.Now;
+                    objPidfGeneralRnd.CreatedBy = loggedInUserId;
 
-                _repositoryPidfPbfGeneralRnd.AddAsync(objPidfGeneralRnd);
-            }
-            
+                    _repositoryPidfPbfGeneralRnd.AddAsync(objPidfGeneralRnd);
+                }
+
 
                 await _unitOfWork.SaveChangesAsync();
 
@@ -1126,44 +1126,45 @@ namespace EmcureNPD.Business.Core.Implementation
             return PidfPbfId;
 
         }
-        private async Task<long> SavePackSizeStability(PBFFormEntity pbfentity,long pbfgeneralid)
+        private async Task<long> SavePackSizeStability(PBFFormEntity pbfentity, long pbfgeneralid)
         {
-            var objPackSizeStability = new List<PidfPbfRnDPackSizeStability>();
-            var loggedInUserId = _helper.GetLoggedInUser().UserId;
-            var FinalpbfGeneralid = pbfentity.PBFGeneralId == 0 ? pbfgeneralid : pbfentity.PBFGeneralId;
-
-            foreach (var item in pbfentity.PidfPbfRnDPackSizeStability)
-            {
-                var objPackSizeStabilityDetails = _repositoryPidfPbfRnDPackSizeStability.GetAllQuery().
-            Where(x => x.Pidfid == pbfentity.Pidfid && x.PbfgeneralId == FinalpbfGeneralid && x.PackSizeStabilityId==item.PackSizeStabilityId).FirstOrDefault();
-                if (objPackSizeStabilityDetails != null && item.Value!=null)
-                {
-                    objPackSizeStabilityDetails.Pidfid = pbfentity.Pidfid;
-                    objPackSizeStabilityDetails.PbfgeneralId = FinalpbfGeneralid;
-                    objPackSizeStabilityDetails.StrengthId = item.StrengthId;
-                    objPackSizeStabilityDetails.PackSizeId = item.PackSizeId;
-                    objPackSizeStabilityDetails.Value = item.Value;
-                    objPackSizeStabilityDetails.CreatedOn = DateTime.Now;
-                    objPackSizeStabilityDetails.CreatedBy = loggedInUserId;
-                    _repositoryPidfPbfRnDPackSizeStability.UpdateAsync(objPackSizeStabilityDetails);
-                }
-
-                else if(item.Value != null)
-                {
-
-                    var objPidfPbfRnDPackSizeStability = new PidfPbfRnDPackSizeStability();
-                    objPidfPbfRnDPackSizeStability.Pidfid = pbfentity.Pidfid;
-                    objPidfPbfRnDPackSizeStability.PbfgeneralId = FinalpbfGeneralid;
-                    objPidfPbfRnDPackSizeStability.StrengthId = item.StrengthId;
-                    objPidfPbfRnDPackSizeStability.PackSizeId = item.PackSizeId;
-                    objPidfPbfRnDPackSizeStability.Value = item.Value;
-                    objPidfPbfRnDPackSizeStability.CreatedOn = DateTime.Now;
-                    objPidfPbfRnDPackSizeStability.CreatedBy = loggedInUserId;
-                    _repositoryPidfPbfRnDPackSizeStability.AddAsync(objPidfPbfRnDPackSizeStability);
-                }
-            }
             try
             {
+                var objPackSizeStability = new List<PidfPbfRnDPackSizeStability>();
+                var loggedInUserId = _helper.GetLoggedInUser().UserId;
+                var FinalpbfGeneralid = pbfentity.PBFGeneralId == 0 ? pbfgeneralid : pbfentity.PBFGeneralId;
+
+                foreach (var item in pbfentity.PidfPbfRnDPackSizeStability)
+                {
+                    var objPackSizeStabilityDetails = _repositoryPidfPbfRnDPackSizeStability.GetAllQuery().
+                Where(x => x.Pidfid == pbfentity.Pidfid && x.PbfgeneralId == FinalpbfGeneralid && x.PackSizeStabilityId == item.PackSizeStabilityId).FirstOrDefault();
+                    if (objPackSizeStabilityDetails != null && item.Value != null)
+                    {
+                        objPackSizeStabilityDetails.Pidfid = pbfentity.Pidfid;
+                        objPackSizeStabilityDetails.PbfgeneralId = FinalpbfGeneralid;
+                        objPackSizeStabilityDetails.StrengthId = item.StrengthId;
+                        objPackSizeStabilityDetails.PackSizeId = item.PackSizeId;
+                        objPackSizeStabilityDetails.Value = item.Value;
+                        objPackSizeStabilityDetails.CreatedOn = DateTime.Now;
+                        objPackSizeStabilityDetails.CreatedBy = loggedInUserId;
+                        _repositoryPidfPbfRnDPackSizeStability.UpdateAsync(objPackSizeStabilityDetails);
+                    }
+
+                    else if (item.Value != null)
+                    {
+
+                        var objPidfPbfRnDPackSizeStability = new PidfPbfRnDPackSizeStability();
+                        objPidfPbfRnDPackSizeStability.Pidfid = pbfentity.Pidfid;
+                        objPidfPbfRnDPackSizeStability.PbfgeneralId = FinalpbfGeneralid;
+                        objPidfPbfRnDPackSizeStability.StrengthId = item.StrengthId;
+                        objPidfPbfRnDPackSizeStability.PackSizeId = item.PackSizeId;
+                        objPidfPbfRnDPackSizeStability.Value = item.Value;
+                        objPidfPbfRnDPackSizeStability.CreatedOn = DateTime.Now;
+                        objPidfPbfRnDPackSizeStability.CreatedBy = loggedInUserId;
+                        _repositoryPidfPbfRnDPackSizeStability.AddAsync(objPidfPbfRnDPackSizeStability);
+                    }
+                }
+
                 await _unitOfWork.SaveChangesAsync();
             }
             catch (Exception ex)
@@ -1946,12 +1947,12 @@ namespace EmcureNPD.Business.Core.Implementation
 
                 #region Update PBF Reference Product Details
                 await SaveUpdateReferenceProductDetails(pbfgeneralid, pbfentity);
-				#endregion Update PBF Reference Product Details
-				#region Update PBF genegral R&D Details
-				
-				await SaveGeneralRandDDetails(pbfentity);
+                #endregion Update PBF Reference Product Details
+                #region Update PBF genegral R&D Details
+
+                await SaveGeneralRandDDetails(pbfentity);
                 #endregion
-               
+
                 return pbfgeneralid;
             }
             catch (Exception ex)
@@ -2048,7 +2049,7 @@ namespace EmcureNPD.Business.Core.Implementation
 
                 #region Update PBF Reference Product Details
                 await SaveUpdateReferenceProductDetails(pbfgeneralid, pbfentity);
-				#endregion Update PBF Reference Product Details
+                #endregion Update PBF Reference Product Details
                 #region Section Clinical Add Update
 
                 List<PidfPbfClinical> objClinicallist = new();
@@ -2399,10 +2400,10 @@ namespace EmcureNPD.Business.Core.Implementation
                     }
                 }
 
-				#endregion Head Wise Budget Add Update
+                #endregion Head Wise Budget Add Update
 
-				#endregion RND Add Update
-				
+                #endregion RND Add Update
+
                 //PidfPbfGeneral objPIDFGeneralupdate;
                 var objPIDFGeneralupdate = _pidfPbfGeneralRepository.GetAllQuery().Where(x => x.Pidfpbfid == pbfentity.Pidfpbfid && x.BusinessUnitId == pbfentity.BusinessUnitId).FirstOrDefault();
                 if (objPIDFGeneralupdate != null)
@@ -2481,19 +2482,21 @@ namespace EmcureNPD.Business.Core.Implementation
                     pbfgeneralid = objPIDFGeneraladd.PbfgeneralId;
                 }
 
-				#endregion Section PBF General Add Update
-				#region Update PBF genegral R&D Details
+                #endregion Section PBF General Add Update
+                #region Update PBF genegral R&D Details
 
-				var Pidfpbfid=await SaveGeneralRandDDetails(pbfentity);
-				#endregion
-				
-				#region Update PBF genegral PackSizeStability Details
-				await SavePackSizeStability(pbfentity, pbfgeneralid);
-				#endregion
-				#region RA Add Update
-				await AddUpdateRa(pbfentity.RaEntities, loggedInUserId, pbfentity.Pidfid, Pidfpbfid, pbfentity.BusinessUnitId);
-				#endregion
-				return pbfgeneralid;
+                var Pidfpbfid = await SaveGeneralRandDDetails(pbfentity);
+                #endregion
+
+                
+                #region RA Add Update
+                await AddUpdateRa(pbfentity.RaEntities, loggedInUserId, pbfentity.Pidfid, Pidfpbfid, pbfentity.BusinessUnitId);
+                #endregion
+
+                #region Update PBF genegral PackSizeStability Details
+                //await SavePackSizeStability(pbfentity, pbfgeneralid);
+                #endregion
+                return pbfgeneralid;
             }
             catch (Exception ex)
             {
@@ -2660,7 +2663,7 @@ namespace EmcureNPD.Business.Core.Implementation
                 _ExceptionService.LogException(ex);
             }
         }
-        public async Task<bool> AddUpdateRa(List<PidfPbfRaEntity> ls, int CreatedBy, long pidfId, long pbfid = 0,int BusinessUnitId=0)
+        public async Task<bool> AddUpdateRa(List<PidfPbfRaEntity> ls, int CreatedBy, long pidfId, long pbfid = 0, int BusinessUnitId = 0)
         {
             try
             {
@@ -2699,7 +2702,7 @@ namespace EmcureNPD.Business.Core.Implementation
                         row["LastDataFromRnD"] = item.LastDataFromRnD == null ? DBNull.Value : item.LastDataFromRnD;
                         row["BEFinalReport"] = item.BefinalReport == null ? DBNull.Value : item.BefinalReport;
                         row["BuId"] = BusinessUnitId; //item.BuId == 0 ? 0 : item.BuId;
-                        row["TypeOfSubmissionId"] = item.TypeOfSubmissionId == null || item.TypeOfSubmissionId==0 ? DBNull.Value : item.TypeOfSubmissionId;
+                        row["TypeOfSubmissionId"] = item.TypeOfSubmissionId == null || item.TypeOfSubmissionId == 0 ? DBNull.Value : item.TypeOfSubmissionId;
                         row["DossierReadyDate"] = item.DossierReadyDate == null ? DBNull.Value : item.DossierReadyDate;
                         row["EarliestSubmissionDExcl"] = item.EarliestSubmissionDexcl == null ? DBNull.Value : item.EarliestSubmissionDexcl;
                         row["EarliestLaunchDExcl"] = item.EarliestLaunchDexcl == null ? DBNull.Value : item.EarliestLaunchDexcl;
