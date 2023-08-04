@@ -14,6 +14,9 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "2.Client", "2.Client", "{9A15A6A8-5E78-4B24-BF09-C34A157C2267}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "3.Business", "3.Business", "{D367DD28-F4FD-43B8-B2EB-15CBEFCD1E38}"
+	ProjectSection(SolutionItems) = preProject
+		EmcureNPD.Web\Views\Commercial\PIDFCommercialDetails.cshtml = EmcureNPD.Web\Views\Commercial\PIDFCommercialDetails.cshtml
+	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "4.Data", "4.Data", "{6CC95C96-9492-403A-870B-93D00368386C}"
 EndProject
