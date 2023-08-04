@@ -1053,14 +1053,20 @@ namespace EmcureNPD.Business.Core.Implementation
         private async Task<long> SaveGeneralRandDDetails(PBFFormEntity pbfentity)
         {
             var objPidfGeneralRnd = new PidfPbfGeneralRnd();
-            var loggedInUserId = _helper.GetLoggedInUser().UserId;
-            var objPidfGeneralRndDetails = _repositoryPidfPbfGeneralRnd.GetAllQuery().
-                Where(x => x.PidfId == pbfentity.Pidfid && x.PbfId == pbfentity.Pidfpbfid && x.PbfRndDetailsId == pbfentity.PidfPbfGeneralRnd.PbfRndDetailsId).FirstOrDefault();
+            long PidfPbfId = 0;
+			try
+			{
+		    var loggedInUserId = _helper.GetLoggedInUser().UserId;
+            var pidfPbfDetails = _pbfRepository.GetAllQuery().Where(x => x.Pidfid == pbfentity.Pidfid).FirstOrDefault();
+                PidfPbfId = pbfentity.Pidfpbfid == 0 ? pidfPbfDetails.Pidfpbfid : pbfentity.Pidfpbfid;
+
+	              var objPidfGeneralRndDetails = _repositoryPidfPbfGeneralRnd.GetAllQuery().
+                Where(x => x.PidfId == pbfentity.Pidfid && x.PbfId == PidfPbfId && x.PbfRndDetailsId == pbfentity.PidfPbfGeneralRnd.PbfRndDetailsId).FirstOrDefault();
             if (objPidfGeneralRndDetails != null)
             {
 
                 objPidfGeneralRndDetails.PidfId = pbfentity.Pidfid;
-                objPidfGeneralRndDetails.PbfId = pbfentity.Pidfpbfid;
+                objPidfGeneralRndDetails.PbfId = PidfPbfId;
                 objPidfGeneralRndDetails.BusinessUnitId = pbfentity.BusinessUnitId;
                 objPidfGeneralRndDetails.RndResponsiblePerson = pbfentity.PidfPbfGeneralRnd.RndResponsiblePerson;
                 objPidfGeneralRndDetails.TypeOfDevelopmentDate = pbfentity.PidfPbfGeneralRnd.TypeOfDevelopmentDate;
@@ -1086,7 +1092,7 @@ namespace EmcureNPD.Business.Core.Implementation
             else
             {
                 objPidfGeneralRnd.PidfId = pbfentity.Pidfid;
-                objPidfGeneralRnd.PbfId = pbfentity.Pidfpbfid;
+                objPidfGeneralRnd.PbfId = PidfPbfId;
 				objPidfGeneralRnd.BusinessUnitId = pbfentity.BusinessUnitId;
 				objPidfGeneralRnd.RndResponsiblePerson = pbfentity.PidfPbfGeneralRnd.RndResponsiblePerson;
                 objPidfGeneralRnd.TypeOfDevelopmentDate = pbfentity.PidfPbfGeneralRnd.TypeOfDevelopmentDate;
@@ -1107,8 +1113,7 @@ namespace EmcureNPD.Business.Core.Implementation
 
                 _repositoryPidfPbfGeneralRnd.AddAsync(objPidfGeneralRnd);
             }
-            try
-            {
+            
 
                 await _unitOfWork.SaveChangesAsync();
 
@@ -1118,7 +1123,7 @@ namespace EmcureNPD.Business.Core.Implementation
                 return 0;
             }
             // return objPidfGeneralRnd.PbfRndDetailsId;
-            return pbfentity.Pidfpbfid;
+            return PidfPbfId;
 
         }
         private async Task<long> SavePackSizeStability(PBFFormEntity pbfentity,long pbfgeneralid)
@@ -1941,12 +1946,10 @@ namespace EmcureNPD.Business.Core.Implementation
 
                 #region Update PBF Reference Product Details
                 await SaveUpdateReferenceProductDetails(pbfgeneralid, pbfentity);
-                #endregion Update PBF Reference Product Details
-                #region Update PBF genegral R&D Details
-               // if (pbfentity.PidfPbfGeneralRnd.RndResponsiblePerson != null && pbfentity.PidfPbfGeneralRnd.RndResponsiblePerson != "")
-                //{
-                    await SaveGeneralRandDDetails(pbfentity);
-                //}
+				#endregion Update PBF Reference Product Details
+				#region Update PBF genegral R&D Details
+				
+				await SaveGeneralRandDDetails(pbfentity);
                 #endregion
                
                 return pbfgeneralid;
@@ -2045,14 +2048,7 @@ namespace EmcureNPD.Business.Core.Implementation
 
                 #region Update PBF Reference Product Details
                 await SaveUpdateReferenceProductDetails(pbfgeneralid, pbfentity);
-                #endregion Update PBF Reference Product Details
-                #region Update PBF genegral R&D Details
-                //if (pbfentity.PidfPbfGeneralRnd.RndResponsiblePerson != null && pbfentity.PidfPbfGeneralRnd.RndResponsiblePerson != "")
-                //{
-                    await SaveGeneralRandDDetails(pbfentity);
-                //}
-                #endregion
-
+				#endregion Update PBF Reference Product Details
                 #region Section Clinical Add Update
 
                 List<PidfPbfClinical> objClinicallist = new();
@@ -2403,12 +2399,10 @@ namespace EmcureNPD.Business.Core.Implementation
                     }
                 }
 
-                #endregion Head Wise Budget Add Update
+				#endregion Head Wise Budget Add Update
 
-                #endregion RND Add Update
-                #region RA Add Update
-                var IsRaSaved = await AddUpdateRa(pbfentity.RaEntities, loggedInUserId, pbfentity.Pidfid, pbfentity.Pidfpbfid,pbfentity.BusinessUnitId);
-                #endregion
+				#endregion RND Add Update
+				
                 //PidfPbfGeneral objPIDFGeneralupdate;
                 var objPIDFGeneralupdate = _pidfPbfGeneralRepository.GetAllQuery().Where(x => x.Pidfpbfid == pbfentity.Pidfpbfid && x.BusinessUnitId == pbfentity.BusinessUnitId).FirstOrDefault();
                 if (objPIDFGeneralupdate != null)
@@ -2487,11 +2481,19 @@ namespace EmcureNPD.Business.Core.Implementation
                     pbfgeneralid = objPIDFGeneraladd.PbfgeneralId;
                 }
 
-                #endregion Section PBF General Add Update
-                #region Update PBF genegral PackSizeStability Details
-                await SavePackSizeStability(pbfentity, pbfgeneralid);
-                #endregion
-                return pbfgeneralid;
+				#endregion Section PBF General Add Update
+				#region Update PBF genegral R&D Details
+
+				var Pidfpbfid=await SaveGeneralRandDDetails(pbfentity);
+				#endregion
+				
+				#region Update PBF genegral PackSizeStability Details
+				await SavePackSizeStability(pbfentity, pbfgeneralid);
+				#endregion
+				#region RA Add Update
+				await AddUpdateRa(pbfentity.RaEntities, loggedInUserId, pbfentity.Pidfid, Pidfpbfid, pbfentity.BusinessUnitId);
+				#endregion
+				return pbfgeneralid;
             }
             catch (Exception ex)
             {
