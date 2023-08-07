@@ -9,6 +9,7 @@ using EmcureNPD.Utility.Enums;
 using EmcureNPD.Utility.Utility;
 using Microsoft.EntityFrameworkCore.Metadata.Internal;
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Data;
 using System.Data.SqlClient;
@@ -317,15 +318,16 @@ namespace EmcureNPD.Business.Core.Implementation
         }
 
         ////////PBFOutsourcing Methods------------------------------------------
-        //public async Task<dynamic> GetPBFOutsourcingTabDropDownData()
-        //{
-        //  var listWorkFlow = await _masterWorkflowService.GetAll();
-        //  var pbflistWorkFlow = _mapperFactory.GetList<MasterWorkflow, MasterWorkflowEntity>(await _masterPbfworkFlow.GetAllAsync());
-
-        //}
-
-
-
-
+        public async Task<dynamic> GetPBFOutsourcingTabDropDownData()
+        {
+            var listWorkFlow = await _masterWorkflowService.GetAll();
+            var _objPBFList = await _masterPbfworkFlow.GetAllAsync();
+            var pbflistWorkFlow = _mapperFactory.GetList<MasterPbfworkFlow, MasterPbfworkflowTask>(_objPBFList);
+            ArrayList arr = new ArrayList();
+            arr.Add(listWorkFlow);
+            arr.Add(pbflistWorkFlow);
+            dynamic Dropdowndata = arr;
+            return Dropdowndata;
+        }
     }
 }

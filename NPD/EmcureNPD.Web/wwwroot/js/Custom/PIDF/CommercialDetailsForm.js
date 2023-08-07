@@ -841,3 +841,23 @@ function IsShowCancel_Save_buttons(flag) {
     else
         $("#dvMainButton").hide();
 }
+
+/*------PBF OutSourcing-----------------------------------------*/
+
+    function GetPBFOutsourcingTabDDLdata() {
+        ajaxServiceMethod($('#hdnBaseURL').val() + GetPBFOutsourcingTabDropDownData, 'GET', GetPBFOutsourcingTabDDLdataSuccess, GetPBFOutsourcingTabDDLdataError);
+        
+    }
+function GetPBFOutsourcingTabDDLdataSuccess(data) {
+    try {
+        console.log(data);
+       // GetCurrencyList(data._object.Currency);
+       // GetProductTypeList(data._object.PackagingType);
+      
+    } catch (e) {
+        toastr.error('Get Commercial Error:' + e.message);
+    }
+}
+function GetPBFOutsourcingTabDDLdataError(x, y, z) {
+    toastr.error(ErrorMessage);
+}
