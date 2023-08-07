@@ -26,10 +26,11 @@ namespace EmcureNPD.Utility.Audit
                 }
             }
             bool ISmatched = false;
+            ObjectCompare.auditlogList = new List<AuditLog>();
             ObjectCompare.CompareNew( Old,  New, out ISmatched);
             //var anotherJsononj = JsonConvert.SerializeObject(differences);
             var obj = ObjectCompare.auditlogList;
-            ObjectCompare.auditlogList = null;
+            //ObjectCompare.auditlogList = null;
             return JsonConvert.SerializeObject(obj);
         }
 
@@ -66,7 +67,7 @@ namespace EmcureNPD.Utility.Audit
 
     public static class ObjectCompare
     {
-       public static List<AuditLog> auditlogList = new List<AuditLog>();
+        public static List<AuditLog> auditlogList;
         //public static List<AuditLog> GetAudtiLogs()
         //{
         //    return auditlogList;
@@ -146,7 +147,7 @@ namespace EmcureNPD.Utility.Audit
                 {
                     try
                     {
-						//auditlogList.Add(new AuditLog { OldValue = Convert.ToString(E1_val), NewValue = Convert.ToString(E2_val), PropertyName = propObj1.Name, DisplayName = propObj1.Name });
+						auditlogList.Add(new AuditLog { OldValue = Convert.ToString(E1_val), NewValue = Convert.ToString(E2_val), PropertyName = propObj1.Name, DisplayName = propObj1.Name });
 						flag = false;
 						match = flag;
 					}

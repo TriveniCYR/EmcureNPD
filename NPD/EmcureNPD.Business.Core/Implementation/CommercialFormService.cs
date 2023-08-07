@@ -1,5 +1,6 @@
 ﻿using EmcureNPD.Business.Core.Interface;
 using EmcureNPD.Business.Core.ModelMapper;
+using EmcureNPD.Business.Core.ServiceImplementations;
 using EmcureNPD.Business.Models;
 using EmcureNPD.Data.DataAccess.Core.Repositories;
 using EmcureNPD.Data.DataAccess.Core.UnitOfWork;
@@ -30,7 +31,8 @@ namespace EmcureNPD.Business.Core.Implementation
         private readonly IPidfProductStrengthService _productStrengthService;
         private readonly INotificationService _notificationService;
         private readonly IExceptionService _ExceptionService;
-
+        private readonly IMasterWorkflowService _masterWorkflowService;
+        
         private readonly IHelper _helper;
 
         private IRepository<PidfIpd> _repository { get; set; }
@@ -49,9 +51,11 @@ namespace EmcureNPD.Business.Core.Implementation
         private IRepository<MasterFinalSelection> _finalSelectionrepository { get; set; }
         private IRepository<MasterPackSize> _masterPackSizeEepository { get; set; }
         private IRepository<PidfCommercialMaster> _PidfCommercialMasterRepository { get; set; }
+         private IRepository<MasterPbfworkFlow> _masterPbfworkFlow { get; set; }
+        
         public CommercialFormService(IUnitOfWork unitOfWork, IMapperFactory mapperFactory,
             IMasterBusinessUnitService businessUnitService, IMasterCountryService countryService,
-            INotificationService notificationService,
+            INotificationService notificationService, IMasterWorkflowService masterWorkflowService,
             IMasterAuditLogService auditLogService, IPidfProductStrengthService productStrengthService, IExceptionService exceptionService, IHelper helper)
         {
             _unitOfWork = unitOfWork;
@@ -79,6 +83,8 @@ namespace EmcureNPD.Business.Core.Implementation
             _countryrepository = _unitOfWork.GetRepository<MasterCountry>();
             _ExceptionService = exceptionService;
             _helper = helper;
+            _masterWorkflowService = masterWorkflowService;
+            _masterPbfworkFlow = _unitOfWork.GetRepository<MasterPbfworkFlow>();
         }
 
         //public async Task<IPDEntity> FillDropdown()
@@ -309,5 +315,17 @@ namespace EmcureNPD.Business.Core.Implementation
             var list = await _masterPackSizeEepository.GetAllAsync(x => x.IsActive == true);
             return _mapperFactory.GetList<MasterPackSize, MasterPackSizeViewModelEntity>(list.ToList());
         }
+
+        ////////PBFOutsourcing Methods------------------------------------------
+        //public async Task<dynamic> GetPBFOutsourcingTabDropDownData()
+        //{
+        //  var listWorkFlow = await _masterWorkflowService.GetAll();
+        //  var pbflistWorkFlow = _mapperFactory.GetList<MasterWorkflow, MasterWorkflowEntity>(await _masterPbfworkFlow.GetAllAsync());
+
+        //}
+
+
+
+
     }
 }
