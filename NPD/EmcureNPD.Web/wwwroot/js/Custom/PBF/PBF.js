@@ -54,7 +54,6 @@ $(document).ready(function () {
         $("input[class~='rndExicipientRsperkg']").trigger('change');
         SetPhaseWiseBudget();
     });
-
     $(document).on("change", ".AnalyticalTestTypeId", function () {
         var _selectedTestType = $(this).val();
         if (_selectedTestType != "" && _selectedTestType != "0") {
@@ -823,9 +822,9 @@ $(document).ready(function () {
     getIPDAccordion(_IPDAccordionURL, _EncPIDFID, _PIDFBusinessUnitId, "dvIPDAccrdion");
     getCommercialAccordion(_CommercialAccordionURL, _EncPIDFID, _PIDFBusinessUnitId, "dvCommercialAccrdion");
     //BindRA();
-    $('#custom-tabs-department-RA-tab').click(function () {
-        bindRaDropDowns();
-    });
+    //$('#custom-tabs-department-RA-tab').click(function () {
+    //    bindRaDropDowns();
+    //});
     $('#btnNextRnDTabSelectedValue').val(0); //custom-tabs-department-RnD-tab-
 });
 
@@ -860,10 +859,6 @@ function PostPBFFormbyNext() {
         //    console.log('error');
         //}
     });
-
-
-
-
 }
 function PostPBFFormbyNextSuccess(data) {
     try {
@@ -880,7 +875,6 @@ function PostPBFFormbyNextSuccess(data) {
         toastr.error('Save Commercial Error:' + e.message);
     }
 }
-
 function PostPBFFormbyNextError(x, y, z) {
     toastr.error('');
 }
@@ -907,21 +901,18 @@ $('#btnNextRnDTab').click(function () {
     SetRNDChildRows();
     $('#AddPBFForm').find('#SaveType').val(_SaveType);
 
-
     var NextTabIndex = parseInt($('#btnNextRnDTabSelectedValue').val()) + 1;
     var newxtTabId = '#custom-tabs-department-RnD-tab-' + arrRnDTabList[NextTabIndex];
     $('#btnNextRnDTabSelectedValue').val(NextTabIndex);
     $(newxtTabId).click();
     PostPBFFormbyNext();
 });
-$('[id^=custom-tabs-department-RnD-tab-]').click(function () {
-    var tabid = $(this).attr('id');
-    var arrtabid = tabid.split('-')[5];
-    var indexOftab = arrRnDTabList.indexOf(arrtabid);
-    $('#btnNextRnDTabSelectedValue').val(indexOftab);
-
-
-});
+//$('[id^=custom-tabs-department-RnD-tab-]').click(function () {
+//    var tabid = $(this).attr('id');
+//    var arrtabid = tabid.split('-')[5];
+//    var indexOftab = arrRnDTabList.indexOf(arrtabid);
+//    $('#btnNextRnDTabSelectedValue').val(indexOftab);
+//});
 
 function GetPBFDropdown() {
     ajaxServiceMethod($('#hdnBaseURL').val() + GetAllPBF + "/" + _PIDFID, 'GET', GetPBFDropdownSuccess, GetPBFDropdownError);
@@ -3431,18 +3422,17 @@ async function GetCountyByBussinessUnitId() {
     ajaxServiceMethod($('#hdnBaseURL').val() + getCountryByBusinessUnitIdurl + "/" + id, 'GET', GetCountryByBusinessUnitSuccess, GetCountryByBusinessUnitError);
 }
 function GetCountryByBusinessUnitSuccess(data) {
-   //alert(data)
     try {
-        //$('#raCountryId0').empty();
-        $('#raCountryId0').find('option').remove()
-        if (data._object != null && data._object.length > 0) {
-            var _emptyOption = '<option value="">-- Select --</option>';
-            $('#raCountryId0').append(_emptyOption);
+        var element = $('#tableRA').find('.clsCountry');
+        element.find("option").remove();
+        var _emptyOption = '<option value="">-- Select --</option>';
+        element.append(_emptyOption);
+        if (data._object != null && data._object.length > 0) {            
             $(data._object).each(function (index, item) {
-                let itemText = item.countryName.trim();
-                $('#raCountryId0').append('<option value="' + item.countryId + '">' + itemText + '</option>');
+                element.append('<option value="' + item.countryId + '">' + item.countryName + '</option>');
             });
         }
+        bindRaDropDowns();
     }
     catch (e) {
         //toastr.error(ErrorMessage);
@@ -3457,26 +3447,16 @@ async function GetTypeOfSubmission() {
 }
 function GetTypeOfSubmissionSuccess(data) {
     try {
-
-        $('#TypeOfSubmissionId0').find('option').remove()
+        var element = $('#tableRA').find('.clsTypeOfSubmission');
+        element.find("option").remove();
+        var _emptyOption = '<option value="">-- Select --</option>';
+        element.append(_emptyOption);
         if (data != null && data.length > 0) {
-            var _emptyOption = '<option value="">-- Select --</option>';
-            $('#TypeOfSubmissionId0').append(_emptyOption);
             $(data).each(function (index, item) {
-
-                $('#TypeOfSubmissionId0').append('<option value="' + item.id + '">' + item.typeOfSubmission + '</option>');
+                element.append('<option value="' + item.id + '">' + item.typeOfSubmission + '</option>');
             });
-
-            //try {
-            //    if ($("#WishListId").val() > 0) {
-            //        $('#raCountryId').val($('#hdnCountryId').val());
-            //    }
-            //} catch (e) {
-            //}
         }
-
-
-
+        bindRaDropDowns();
     }
     catch (e) {
         toastr.error(e.message);
@@ -3495,7 +3475,7 @@ function BindRA(data = null) {
              <td><input type="date" id="Pivotalbatchmanufactured0" name="RaEntities[0].PivotalBatchManufactured" class="form-control readOnlyUpdate  valid"></td>
              <td><input type="date" id="LastdatafromRnD0" name="RaEntities[0].LastDataFromRnD" class="form-control readOnlyUpdate  valid"></td>
              <td><input type="date" id="BEFinalReport0" name="RaEntities[0].BEFinalReport" class="form-control readOnlyUpdate  valid"></td>
-             <td><select  id="TypeOfSubmissionId0" name="RaEntities[0].TypeOfSubmissionId" class="form-control readOnlyUpdate  valid"></select></td>
+             <td><select  id="TypeOfSubmissionId0" name="RaEntities[0].TypeOfSubmissionId" class="form-control readOnlyUpdate valid clsTypeOfSubmission"></select></td>
              <td><input type="date" id="DossierReadyDate0" name="RaEntities[0].DossierReadyDate" class="form-control readOnlyUpdate  valid"></td>
              <td><input type="date" id="EarliestSubmissionDExcl0" name="RaEntities[0].EarliestSubmissionDExcl" class="form-control readOnlyUpdate  valid"></td>
               <td><input type="date" id="EarliestLaunchDexcl0" name="RaEntities[0].EarliestLaunchDexcl" class="form-control readOnlyUpdate valid"></td>
@@ -3514,7 +3494,7 @@ function BindRA(data = null) {
              <td><input type="date" id="LastdatafromRnD${e}" name="RaEntities[${e}].LastDataFromRnD" value="${data[e].lastDataFromRnD.split('T')[0]}" class="form-control readOnlyUpdate  valid"></td>
              <td><input type="date" id="BEFinalReport${e}" name="RaEntities[${e}].BEFinalReport" value="${data[e].befinalReport.split('T')[0]}" class="form-control readOnlyUpdate  valid"></td>
             
-             <td><select  id="TypeOfSubmissionId${e}" name="RaEntities[${e}].TypeOfSubmissionId" class="form-control readOnlyUpdate  valid" value="${data[e].typeOfSubmissionId}"></select></td>
+             <td><select  id="TypeOfSubmissionId${e}" name="RaEntities[${e}].TypeOfSubmissionId" class="form-control readOnlyUpdate clsTypeOfSubmission  valid" value="${data[e].typeOfSubmissionId}"></select></td>
              <td><input type="date" id="DossierReadyDate${e}" name="RaEntities[${e}].DossierReadyDate" value="${data[e].dossierReadyDate.split('T')[0]}" class="form-control readOnlyUpdate  valid"></td>
              <td><input type="date" id="EarliestSubmissionDExcl${e}" name="RaEntities[${e}].EarliestSubmissionDExcl" value="${data[e].earliestSubmissionDexcl.split('T')[0]}" class="form-control readOnlyUpdate  valid"></td>
               <td><input type="date" id="EarliestLaunchDexcl${e}" name="RaEntities[${e}].EarliestLaunchDexcl" value="${data[e].earliestLaunchDexcl == null ? '' : data[e].earliestLaunchDexcl.split('T')[0]}" class="form-control readOnlyUpdate  valid"></td>
@@ -3586,7 +3566,7 @@ function SetRaChildRow() {
         $(this).find("td:eq(0) input").attr("id", "Pidfpbfraid" + index.toString());
         $(this).find("td:eq(0) select").attr("name", "RaEntities[" + index.toString() + "].CountryIdBuId");
         $(this).find("td:eq(0) select").attr(`onchange`, `checkDuplicateRaCountry(${index})`);
-        $(this).find("td:eq(0) select").attr("id", "raCountryId" + index.toString());
+        //$(this).find("td:eq(0) select").attr("id", "raCountryId" + index.toString());
 
         $(this).find("td:eq(1) input").attr("name", "RaEntities[" + index.toString() + "].PivotalBatchManufactured");
         $(this).find("td:eq(1) input").attr("id", "PivotalBatchManufactured" + index.toString());
@@ -3617,27 +3597,13 @@ function SetRaChildRow() {
 }
 function bindRaDropDowns() {
     if (IsRaEditable) {
+        $("#tableRA #tableRABody tr").each(function (index, item) {
+            var _selectedValue = $(this).find(".clsCountry").attr("value");
+            $(this).find(".clsCountry").val((_selectedValue == undefined ? "" : _selectedValue));
 
-        for (let z = 0; z < $("#tableRABody").find("tr").length; z++) {
-
-            if (z > 0) {
-                $("#TypeOfSubmissionId0 option").each(function () {
-                    $("#TypeOfSubmissionId" + z).append('<option value="' + this.value + '">' + this.text + '</option>');
-
-                });
-                //await $("#raAllCountryId0 option").each(function () {
-                //    $("#raAllCountryId" + z).append('<option value="' + this.value + '">' + this.text + '</option>');
-                //});
-                $("#raCountryId0 option").each(function () {
-                    $("#raCountryId" + z).append('<option value="' + this.value + '">' + this.text + '</option>');
-                });
-            }
-            $("#TypeOfSubmissionId" + z).val($("#TypeOfSubmissionId" + z).attr('value') == undefined ? 0 : $("#TypeOfSubmissionId" + z).attr('value'))
-
-            /*$("#raAllCountryId" + z).val($("#raAllCountryId" + z).attr('value') == undefined ? 0 : $("#raAllCountryId" + z).attr('value'))*/
-
-            $("#raCountryId" + z).val($("#raCountryId" + z).attr('value') == undefined ? 0 : $("#raCountryId" + z).attr('value'))
-        }
+            _selectedValue = $(this).find(".clsTypeOfSubmission").attr("value");
+            $(this).find(".clsTypeOfSubmission").val((_selectedValue == undefined ? "" : _selectedValue));
+        });
     }
 }
 $("#NonStandardProduct").click(function () {
@@ -3662,17 +3628,20 @@ function checkDuplicateRaCountry(id) {
             console.log($next);
             if (countryId.includes($next)) {
                 duplicate = true;
-                $(`select#raCountryId${id}`).val("");
+                /*$(`select#raCountryId${id}`).val("");*/
+                $(this).find(".clsCountry").val("");
                 toastr.error("duplicate Country not allowed", "Error:");
                 return false;
             }
             else if ($current === $next && !duplicate) {
                 duplicate = true;
-                $(`select#raCountryId${id}`).val("");
+                /*$(`select#raCountryId${id}`).val("");*/
+                $(this).find(".clsCountry").val("");
                 toastr.error("duplicate Country not allowed", "Error:");
                 return false;
             } else if ($current === $next && duplicate) {
-                $(`select#raCountryId${id}`).val("");
+                /*$(`select#raCountryId${id}`).val("");*/
+                $(this).find(".clsCountry").val("");
                 toastr.error("duplicate Country not allowed", "Error:");
                 return false;
             } else if ($current !== $next && duplicate) {
