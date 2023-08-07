@@ -38,7 +38,7 @@ $(document).ready(function () {
         // _mode = $('#hdnIsView').val(); //parseInt($('#hdnPIDFId').val());
         _mode = getParameterByName("IsView");
         _pbf = getParameterByName("pbf");
-        $('#DvPackSizeStability').hide();
+        
     } catch (e) {
         _mode = getParameterByName("IsView");
         /* _PIDFId = parseInt(getParameterByName("pidfid"));*/
@@ -1173,7 +1173,7 @@ function BindGeneralPackSizeStability(data) {
         if (data.pidfPackSizeGeneralRanDList != null && data.pidfPackSizeGeneralRanDList.length > 0) {
             for (var i = 0; i < data.pidfPackSizeGeneralRanDList.length; i++) {
                 html += `<td> ${data.pidfPackSizeGeneralRanDList[i].packSizeName}<input type="hidden" name="PidfPbfRnDPackSizeStability[${i}].PackSizeId" value="${data.pidfPackSizeGeneralRanDList[i].packSizeId}"></td>`;
-                td += `<td id="td${i}"><input type="hidden" name="PidfPbfRnDPackSizeStability[${i}].PackSizeStabilityId" value="${data.pidfPackSizeGeneralRanDList[i].packSizeStabilityId}"><input type="text" class="form-control clsValue" id="txt${data.pidfPackSizeGeneralRanDList[i].pidfProductStrengthId}${i}" disabled="disabled" data-val="${data.pidfPackSizeGeneralRanDList[i].pidfProductStrengthId}" name="PidfPbfRnDPackSizeStability[${i}].Value" value="${data.pidfPackSizeGeneralRanDList[i].value}"></td>`;
+                td += `<td id="td${i}"><input type="hidden" name="PidfPbfRnDPackSizeStability[${i}].PackSizeStabilityId" value="${data.pidfPackSizeGeneralRanDList[i].packSizeStabilityId}"><input type="text" class="form-control clsValue" id="txt${data.pidfPackSizeGeneralRanDList[i].pidfProductStrengthId}${i}" disabled="disabled"  data-val="${data.pidfPackSizeGeneralRanDList[i].pidfProductStrengthId}" name="PidfPbfRnDPackSizeStability[${i}].Value" value="${data.pidfPackSizeGeneralRanDList[i].value}"></td>`;
                 
             }
             html += '</tr></thead>'
@@ -1185,8 +1185,8 @@ function BindGeneralPackSizeStability(data) {
             }
         }
         html += '</table>';
-       // $("#lblPackSizeStability").show();
-       // $("#DvPackSizeStability").append(html);
+        $("#lblPackSizeStability").show();
+        $("#DvPackSizeStability").append(html);
         if (data.pidfProductStrengthGeneralRanDList != null) {
             for (var j = 0; j < data.pidfProductStrengthGeneralRanDList.length; j++) {
                 pidfProductStrengthId.push(data.pidfProductStrengthGeneralRanDList[j].pidfProductStrengthId);
@@ -1194,9 +1194,14 @@ function BindGeneralPackSizeStability(data) {
         }
         if (data.pidfPackSizeGeneralRanDList != null) {
             for (var i = 0; i < data.pidfPackSizeGeneralRanDList.length; i++) {
-                if (pidfProductStrengthId[i] == data.pidfPackSizeGeneralRanDList[i].pidfProductStrengthId) {
-                    $("#txt" + pidfProductStrengthId[i] + "" + i).prop('disabled', false);
-
+                for (let x = 0; x < pidfProductStrengthId.length; x++) {
+                    if (pidfProductStrengthId[x] == data.pidfPackSizeGeneralRanDList[i].pidfProductStrengthId) {
+                        $("#txt" + pidfProductStrengthId[x] + i).prop('disabled', false);
+                        console.log("#txt" + pidfProductStrengthId[x] + i)
+                    }
+                    else {
+                        $("#txt" + pidfProductStrengthId[x] + i).prop('disabled', true);
+                    }
                 }
             }
             $(".clsValue").each(function (index, value) {
@@ -1208,10 +1213,10 @@ function BindGeneralPackSizeStability(data) {
     }
         pidfProductStrengthId = [];
         if (isShowHeader) {
-          //  $("#DvPackSizeStability").show();
+           $("#DvPackSizeStability").show();
         }
         else {
-         //   $("#DvPackSizeStability").hide();
+          $("#DvPackSizeStability").hide();
         }
 }
 }
@@ -1268,8 +1273,8 @@ function GetPBFTabDetailsSuccess(data) {
             //data.PidfPbfGeneralRnd
             BindPbfGeneralRnd(data.PidfPbfGeneralRnd);
             //PidfPbfGeneralPackSizeStability
-            BindGeneralPackSizeStability(data.PidfPbfGeneralPackSizeStability);
-            console.log(data.PidfPbfGeneralPackSizeStability)
+            //BindGeneralPackSizeStability(data.PidfPbfGeneralPackSizeStability);
+            //console.log(data.PidfPbfGeneralPackSizeStability)
             //**End Date Formating for get GetPIDF_PBF_General_RND*/
             $.each($('.AnalyticalTestTypeId'), function (index, item) {
                 if ($(this).next().val() != undefined && $(this).next().val() != null) {
@@ -3426,26 +3431,21 @@ async function GetCountyByBussinessUnitId() {
     ajaxServiceMethod($('#hdnBaseURL').val() + getCountryByBusinessUnitIdurl + "/" + id, 'GET', GetCountryByBusinessUnitSuccess, GetCountryByBusinessUnitError);
 }
 function GetCountryByBusinessUnitSuccess(data) {
-    //alert(data)
+   //alert(data)
     try {
+        //$('#raCountryId0').empty();
         $('#raCountryId0').find('option').remove()
         if (data._object != null && data._object.length > 0) {
             var _emptyOption = '<option value="">-- Select --</option>';
             $('#raCountryId0').append(_emptyOption);
             $(data._object).each(function (index, item) {
-                $('#raCountryId0').append('<option value="' + item.countryId + '">' + item.countryName + '</option>');
+                let itemText = item.countryName.trim();
+                $('#raCountryId0').append('<option value="' + item.countryId + '">' + itemText + '</option>');
             });
-
-            //try {
-            //    if ($("#WishListId").val() > 0) {
-            //        $('#raCountryId').val($('#hdnCountryId').val());
-            //    }
-            //} catch (e) {
-            //}
         }
     }
     catch (e) {
-        toastr.error(ErrorMessage);
+        //toastr.error(ErrorMessage);
     }
 }
 function GetCountryByBusinessUnitError(x, y, z) {
