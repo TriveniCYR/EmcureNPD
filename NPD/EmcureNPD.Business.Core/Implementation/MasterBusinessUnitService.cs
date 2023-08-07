@@ -9,6 +9,7 @@ using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Data.SqlClient;
+using System.Dynamic;
 using System.Linq;
 using System.Threading.Tasks;
 using static EmcureNPD.Utility.Enums.GeneralEnum;
@@ -168,15 +169,24 @@ namespace EmcureNPD.Business.Core.ServiceImplementations
 
         public async Task<dynamic> GetCountryByBusinessUnitId(int BusinessUnitId)
         {
-            var loggedInUserId = _helper.GetLoggedInUser().UserId;
+            //var loggedInUserId = _helper.GetLoggedInUser().UserId;
 
-            SqlParameter[] osqlParameter = {
-                new SqlParameter("@BusinessUnitId", BusinessUnitId),
-                new SqlParameter("@UserId", loggedInUserId)
-            };
-            var _businessUnit = await _repository.GetBySP("SP_GetCountryByBusinessUnit", CommandType.StoredProcedure, osqlParameter);
-            return _businessUnit;
-        }
+			//SqlParameter[] osqlParameter = {
+			//    new SqlParameter("@BusinessUnitId", BusinessUnitId),
+			//    new SqlParameter("@UserId", loggedInUserId)
+			//};
+			//var _businessUnit = await _repository.GetBySP("SP_GetCountryByBusinessUnit", CommandType.StoredProcedure, osqlParameter);
+			//return _businessUnit;
+			dynamic DropdownObjects = new ExpandoObject();
+			SqlParameter[] osqlParameter = {
+				new SqlParameter("@BUId", BusinessUnitId)
+			};
+			DataSet dsDropdownOptions = await _repository.GetDataSetBySP("stp_npd_GetIPDPatentDetailsCountryList", System.Data.CommandType.StoredProcedure, osqlParameter);
+
+			DropdownObjects = dsDropdownOptions.Tables[0];
+
+			return DropdownObjects;
+		}
 
         public DataTable GetActiveBusinessUnit()
         {
