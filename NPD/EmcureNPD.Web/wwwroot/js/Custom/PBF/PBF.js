@@ -3566,7 +3566,7 @@ function SetRaChildRow() {
         $(this).find("td:eq(0) input").attr("id", "Pidfpbfraid" + index.toString());
         $(this).find("td:eq(0) select").attr("name", "RaEntities[" + index.toString() + "].CountryIdBuId");
         $(this).find("td:eq(0) select").attr(`onchange`, `checkDuplicateRaCountry(${index})`);
-        //$(this).find("td:eq(0) select").attr("id", "raCountryId" + index.toString());
+        $(this).find("td:eq(0) select").attr("id", "raCountryId" + index.toString());
 
         $(this).find("td:eq(1) input").attr("name", "RaEntities[" + index.toString() + "].PivotalBatchManufactured");
         $(this).find("td:eq(1) input").attr("id", "PivotalBatchManufactured" + index.toString());
@@ -3628,20 +3628,20 @@ function checkDuplicateRaCountry(id) {
             console.log($next);
             if (countryId.includes($next)) {
                 duplicate = true;
-                /*$(`select#raCountryId${id}`).val("");*/
-                $(this).find(".clsCountry").val("");
+                $(`select#raCountryId${id}`).val("");
+                //$(this).find(".clsCountry").val("");
                 toastr.error("duplicate Country not allowed", "Error:");
                 return false;
             }
             else if ($current === $next && !duplicate) {
                 duplicate = true;
-                /*$(`select#raCountryId${id}`).val("");*/
-                $(this).find(".clsCountry").val("");
+                $(`select#raCountryId${id}`).val("");
+                //$(this).find(".clsCountry").val("");
                 toastr.error("duplicate Country not allowed", "Error:");
                 return false;
             } else if ($current === $next && duplicate) {
-                /*$(`select#raCountryId${id}`).val("");*/
-                $(this).find(".clsCountry").val("");
+                $(`select#raCountryId${id}`).val("");
+               // $(this).find(".clsCountry").val("");
                 toastr.error("duplicate Country not allowed", "Error:");
                 return false;
             } else if ($current !== $next && duplicate) {
