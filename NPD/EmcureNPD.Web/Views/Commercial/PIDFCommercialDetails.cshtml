@@ -551,8 +551,6 @@
                  id="custom-tabs-Finance" role="tabpanel"
                  aria-labelledby="custom-tabs-BudgetApproval-Finance-tab">
                 <div class="container-fluid">
-                    <h1>PBF details</h1>
-
                     <div class="">
                         <form id="frmPBFOutsource">
                             <div class="row">
@@ -573,7 +571,23 @@
                                     </div>
                                 </div>
                                 <div class="col-12">
-
+                                    @*--------------Start--tblPBFOutsourcetask Table---------------*@
+                                    <div id="dvtblPBFOutsourcetask" class="row">
+                                       <div class="col-md-6">
+                                        <table id="tblPBFOutsourcetask" class="table table-bordered">
+                                            <thead>
+                                                <tr>
+                                                    <th colspan="2" class="bg-primary">
+                                                       PBF Outsource Task List
+                                                    </th>
+                                                </tr>
+                                            </thead>
+                                            <tbody id="PBFOutsourcetaskTbody">
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                    </div>
+                                    @*-----------------End tblPBFOutsourcetask Table---------------*@
 
                                 </div>
                             </div>
@@ -609,6 +623,7 @@
     var GetAllFinalSelection = "@EmcureNPD.Web.Helpers.APIURLHelper.GetAllFinalSelection";
     var GetAllPackSize = "@EmcureNPD.Web.Helpers.APIURLHelper.GetAllPackSizeCommercial";
     const GetPBFOutsourcingTabDropDownData = "@EmcureNPD.Web.Helpers.APIURLHelper.GetPBFOutsourcingTabDropDownData";
+    const GetPBFWorkFlowTaskNamesurl = "@EmcureNPD.Web.Helpers.APIURLHelper.GetPBFWorkFlowTaskNames";
 
     var _PIDFID = "@UtilityHelper.Decreypt(Convert.ToString(Context.Request.Query["pidfid"]))";
     var _EncPIDFID = "@Convert.ToString(Context.Request.Query["pidfid"])";

@@ -164,6 +164,23 @@ namespace EmcureNPD.API.Controllers.Commercial
                 return _ObjectResponse.Create(false, (int)HttpStatusCode.InternalServerError, Convert.ToString(ex.StackTrace));
             }
         }
+        [HttpGet, Route("GetPBFWorkFlowTaskNames/{pbfWorkFlowId}")]
+        public async Task<IActionResult> GetPBFWorkFlowTaskNames(int pbfWorkFlowId)
+        {
+            try
+            {
+                var ddlList = await _pidfCommercialFormService.GetPBFWorkFlowTaskNames(pbfWorkFlowId);
+                if (ddlList != null)
+                    return _ObjectResponse.Create(ddlList, (int)HttpStatusCode.OK);
+                else
+                    return _ObjectResponse.Create(null, (int)HttpStatusCode.BadRequest, "No Records found");
+            }
+            catch (Exception ex)
+            {
+                await _ExceptionService.LogException(ex);
+                return _ObjectResponse.Create(false, (int)HttpStatusCode.InternalServerError, Convert.ToString(ex.StackTrace));
+            }
+        }
 
         //[HttpPost]
         //[Route("ApproveRejectIpdPidf")]

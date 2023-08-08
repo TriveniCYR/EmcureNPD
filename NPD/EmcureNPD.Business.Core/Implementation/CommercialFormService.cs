@@ -322,12 +322,25 @@ namespace EmcureNPD.Business.Core.Implementation
         {
             var listWorkFlow = await _masterWorkflowService.GetAll();
             var _objPBFList = await _masterPbfworkFlow.GetAllAsync();
-            var pbflistWorkFlow = _mapperFactory.GetList<MasterPbfworkFlow, MasterPbfworkflowTask>(_objPBFList);
+            var pbflistWorkFlow = _mapperFactory.GetList<MasterPbfworkFlow, MasterPbfworkFlowEntity>(_objPBFList);
             ArrayList arr = new ArrayList();
             arr.Add(listWorkFlow);
             arr.Add(pbflistWorkFlow);
             dynamic Dropdowndata = arr;
             return Dropdowndata;
         }
+        public async Task<dynamic> GetPBFWorkFlowTaskNames(int PBFWorkFlowID)
+        {
+            SqlParameter[] osqlParameter = {
+               new SqlParameter("@PBFWorkFlowID", PBFWorkFlowID),              
+            };
+
+            DataSet dsCommercial = await _repository.GetDataSetBySP("stp_npd_GetPBFOutsourceData", System.Data.CommandType.StoredProcedure, osqlParameter);
+
+            dynamic TaskObjects = new ExpandoObject();
+            TaskObjects = dsCommercial.Tables[0];
+            return TaskObjects;
+        }
+
     }
 }
