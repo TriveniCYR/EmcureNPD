@@ -371,8 +371,8 @@ namespace EmcureNPD.Web.Helpers
         public static string SavePBFAnalytical = "api/PBF/InsertUpdatePBFDetailsAnalytical";
         public static string GetPBFOutsourcingTabDropDownData = "api/CommercialPIDFForm/GetPBFOutsourcingTabDropDownData";
         public static string GetPBFWorkFlowTaskNames = "api/CommercialPIDFForm/GetPBFWorkFlowTaskNames";
-
-
+        public static string AddUpdatePBFoutsourceData = "api/CommercialPIDFForm/AddUpdatePBFoutsourceData";
+        
         public static string SavePBFClinical = "api/PBF/InsertUpdatePBFClinicalDetails";
         public static string GetPBFTabDetails = "api/PBF/PBFTabDetails";
         public static string GetTypeOfSubmission = "api/PBF/GetTypeOfSubmission";
@@ -440,8 +440,8 @@ namespace EmcureNPD.Web.Helpers
         public static string GetMedicalFormdata = "api/Medical/GetPIDFMedicalFormData";
         public static string GetCountryByBussinessUnitIds = "api/IPD/GetCountryByBussinessUnitIds"; 
         public static string GetPatentStrategyList = "api/IPD/GetPatentStrategyList";
-       
         
+
         #endregion IPD
 
         #region API

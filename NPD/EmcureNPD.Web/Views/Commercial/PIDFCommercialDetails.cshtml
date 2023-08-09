@@ -572,29 +572,59 @@
                                 </div>
                                 <div class="col-12">
                                     @*--------------Start--tblPBFOutsourcetask Table---------------*@
+                                    
                                     <div id="dvtblPBFOutsourcetask" class="row">
-                                       <div class="col-md-6">
-                                        <table id="tblPBFOutsourcetask" class="table table-bordered">
+                                        <div class="col-md-8">
+                                            <div class="card">
+                                                <div class="card-header bg-primary">
+                                                    <h3 class="card-title mb-0">
+
+                                                        <button type="button" class="btn btn-tool" data-card-widget="collapse">
+                                                            PBF Outsource 
+                                                        </button>
+
+                                                    </h3>
+                                                    <div class="card-tools">
+                                                        <button type="button" class="btn btn-tool" data-card-widget="collapse" title="Collapse">
+                                                            <i class="fas fa-minus"></i>
+                                                        </button>
+                                                    </div>
+                                                </div>
+                                                <div class="card-body">
+                                                      <table id="tblPBFOutsourcetask" class="table table-bordered">
                                             <thead>
-                                                <tr>
-                                                    <th colspan="2" class="bg-primary">
-                                                       PBF Outsource Task List
+                                                <tr class="bg-light">
+                                                     <th>
+                                                        Developement
+                                                       @*PBF Outsource Task List*@
+                                                    </th>
+                                                      <th>
+                                                          Cost
+                                                    </th>
+                                                    <th>
+                                                           Tentative TimeLine
+                                                    </th>
+                                                     <th>
+                                                           Action
                                                     </th>
                                                 </tr>
                                             </thead>
                                             <tbody id="PBFOutsourcetaskTbody">
                                             </tbody>
                                         </table>
-                                    </div>
+                                                </div>
+                                            </div>
+
+                                        </div>
                                     </div>
                                     @*-----------------End tblPBFOutsourcetask Table---------------*@
 
                                 </div>
                             </div>
                         </form>
-                        <div class="card-footer text-end mt-2">
-                            <button type="button" class="btn btn-success operationButton" value="Save" onClick="">@MasterLocalizer["Save"]</button>
-                            <a class="btn btn-danger" data-dismiss="modal">@SharedLocalizer["Cancel"]</a>
+                        <div class="text-end mt-2">
+                            <button type="button" onclick="SavePBFOutsourceData()" class="btn btn-success operationButton" value="Submit" onClick="">@MasterLocalizer["Save"]</button>
+                            <a class="btn btn-danger" onclick="CancelPopup()" data-dismiss="modal">@SharedLocalizer["Cancel"]</a>
                         </div>
                     </div>
 
@@ -624,6 +654,7 @@
     var GetAllPackSize = "@EmcureNPD.Web.Helpers.APIURLHelper.GetAllPackSizeCommercial";
     const GetPBFOutsourcingTabDropDownData = "@EmcureNPD.Web.Helpers.APIURLHelper.GetPBFOutsourcingTabDropDownData";
     const GetPBFWorkFlowTaskNamesurl = "@EmcureNPD.Web.Helpers.APIURLHelper.GetPBFWorkFlowTaskNames";
+    const AddUpdatePBFoutsourceDataUrl = "@EmcureNPD.Web.Helpers.APIURLHelper.AddUpdatePBFoutsourceData";
 
     var _PIDFID = "@UtilityHelper.Decreypt(Convert.ToString(Context.Request.Query["pidfid"]))";
     var _EncPIDFID = "@Convert.ToString(Context.Request.Query["pidfid"])";

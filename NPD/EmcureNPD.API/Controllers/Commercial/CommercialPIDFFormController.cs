@@ -253,7 +253,25 @@ namespace EmcureNPD.API.Controllers.Commercial
                 return _ObjectResponse.Create(false, (int)HttpStatusCode.InternalServerError, Convert.ToString(ex.StackTrace));
             }
         }
-
+        [HttpPost]
+        [Route("AddUpdatePBFoutsourceData")]
+        public async Task<IActionResult> AddUpdatePBFoutsourceData(PidfpbfoutsourceEntity entityPBFOutsource)
+        {
+            try
+            {
+                DBOperation oResponse = await _pidfCommercialFormService.AddUpdatePBFoutsourceData(entityPBFOutsource);
+                if (oResponse == DBOperation.Success)
+                    return _ObjectResponse.Create(true, (int)HttpStatusCode.OK, "PBF Outsource Details Submitted");
+                //return _ObjectResponse.Create(true, (Int32)HttpStatusCode.OK, (commercialpidfobj.PidfcommercialId> 0 ? "Updated Successfully" : "Inserted Successfully"));
+                else
+                    return _ObjectResponse.Create(false, (int)HttpStatusCode.BadRequest, oResponse == DBOperation.NotFound ? "Record not found" : "Bad request");
+            }
+            catch (Exception ex)
+            {
+                await _ExceptionService.LogException(ex);
+                return _ObjectResponse.Create(false, (int)HttpStatusCode.InternalServerError, Convert.ToString(ex.StackTrace));
+            }
+        }
         [HttpGet, Route("GetAllFinalSelection")]
         public async Task<IActionResult> GetAllFinalSelection()
         {
