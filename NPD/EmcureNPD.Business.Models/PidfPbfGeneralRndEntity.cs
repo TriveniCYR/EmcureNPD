@@ -41,7 +41,8 @@ namespace EmcureNPD.Business.Models
     }
     public class PidfPackSizeGeneralRanD
     {
-        public int PackSizeId { get; set; }
+        public int RowIndex { get; set; }
+		public int PackSizeId { get; set; }
         public string PackSizeName { get; set; }
         public int PIDFProductStrengthId { get; set; }
         public long PackSizeStabilityId { get; set; }
