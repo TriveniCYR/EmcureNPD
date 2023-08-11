@@ -74,7 +74,7 @@ function ValidateYearForm() {
     if (!status) {
         var controltobeFocus = ArrofInvalid[ArrofInvalid.length - 1];
         $('#' + controltobeFocus).focus();
-        toastr.error('Some fields are missing !');
+        toastr.error('Some fields are missing in Year data!');
     }
     return status;
 }
@@ -171,28 +171,19 @@ function ResetYearFormValues() {
 }
 
 $('#mainDivCommercial').find("#btnSubmit").click(function () {
-    let InterestedStatus = true; // ValidateIsInterested();
-    if (InterestedStatus && ValidateBU_Strength()) {
-        if (ArrMainCommercial.length > 0) {
-            if (ValidateYearDataExist()) {
-                $.extend(objMainForm, { 'SaveType': 'Sv' });
-                SaveCommertialPIDFForm();
-            }
-        } else {
-            toastr.error('No Data Added');
-        }
-    }
+    Commercial_PBF_Common_Save('Sv');
 });
 $('#mainDivCommercial').find("#btnSaveAsDraft").click(function () {
-    if (ValidateBU_Strength()) {
-        if (ArrMainCommercial.length > 0) {
-            $.extend(objMainForm, { 'SaveType': 'SvDrf' });
-            SaveCommertialPIDFForm();
-        }
-        else {
-            toastr.error('No Data Added');
-        }
-    }
+    Commercial_PBF_Common_Save('SvDrf');
+    //if (ValidateBU_Strength()) {
+    //    if (ArrMainCommercial.length > 0) {
+    //        $.extend(objMainForm, { 'SaveType': 'SvDrf' });
+    //        SaveCommertialPIDFForm();
+    //    }
+    //    else {
+    //        toastr.error('No Data Added in Commercial');
+    //    }
+    //}
 });
 $(document).on("change", "#mainDivCommercial .InvalidBox", function () {
     if ($(this).val() != '' && $(this).val() != 0) {
@@ -981,13 +972,11 @@ function IsPBFPageValid() {
         $('#valmsgddlProjectWorkflowId').text('');
     }
     if(!IsValid)
-        toastr.error('Some feilds missing values!'); 
+        toastr.error('Some feilds missing values in PBF!'); 
 
     return IsValid;
 }
-function SavePBFOutsourceData() {
-  //  IsPBFPageValid = true;
-    if (IsPBFPageValid() && ValidateTaskData()) {
+function SavePBFOutsourceData() {    
         var pbfworkflowId = $('#ddlPbfworkflowId').val();
         var _projectWorkFlowId = $('#ddlProjectWorkflowId').val();
         var PidfPbfOutsourceTask = getPBFTaskDataToSave();
@@ -999,7 +988,6 @@ function SavePBFOutsourceData() {
             'pidfpbfoutsourceTaskEntityList': PidfPbfOutsourceTask
         };
         ajaxServiceMethod($('#hdnBaseURL').val() + AddUpdatePBFoutsourceDataUrl, 'POST', AddUpdatePBFoutsourceDataSuccess, AddUpdatePBFoutsourceDataError, JSON.stringify(MainObj_PBFOutsourceSaveData));
-    }
 }
 function AddUpdatePBFoutsourceDataSuccess(data) {
     try {
@@ -1067,7 +1055,34 @@ function ValidateTaskData() {
         }
     });
     if(!isValidIPDForm)
-        toastr.error('Some Task are missing values !'); 
+        toastr.error('Some Task are missing values in PBF!'); 
 
     return isValidIPDForm;
+}
+
+function Commercial_PBF_Common_Save(saveType) {
+    var IsPBFValid = true;
+    var IsCommercialValid = false;
+    if ($('.PBFDetailsTab').is(':visible'))
+    {
+     IsPBFValid = (IsPBFPageValid() && ValidateTaskData())  
+    }
+
+    let InterestedStatus = true; // ValidateIsInterested();
+    if (InterestedStatus && ValidateBU_Strength()) {
+        if (ArrMainCommercial.length > 0) {
+            if (ValidateYearDataExist()) {
+                IsCommercialValid = true;
+            }
+        } else {
+            toastr.error('No Data Added in Commercial');
+        }
+    }
+
+    if (IsCommercialValid && IsPBFValid) {
+        SavePBFOutsourceData();
+        $.extend(objMainForm, { 'SaveType': saveType });
+        SaveCommertialPIDFForm();
+    }
+
 }
