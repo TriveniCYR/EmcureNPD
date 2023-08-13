@@ -16,6 +16,8 @@ namespace EmcureNPD.Business.Models
         public long Pidfid { get; set; }
         public int ProjectWorkflowId { get; set; }
         public int PbfworkflowId { get; set; }
+        public string SaveType { get; set; }
+        
         public List<PidfpbfoutsourceTaskEntity> pidfpbfoutsourceTaskEntityList { get; set; }
     }
 }

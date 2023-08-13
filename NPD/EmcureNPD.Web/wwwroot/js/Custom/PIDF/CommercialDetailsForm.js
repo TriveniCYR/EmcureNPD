@@ -8,7 +8,8 @@ var selectedStrength = 0;
 var EditIndex = -1;
 var MainRowEditIndex = -1;
 var PIDFCommercialMaster;
-
+var IsPageLoad = true;
+var IsTabClick = false;
 $(document).ready(function () {
     $('#mainDivCommercial').find('label[id^="valmsg"]').hide();
     IsViewModeCommercial();
@@ -169,31 +170,32 @@ function ResetYearFormValues() {
         }
     });
 }
-
-$('#mainDivCommercial').find("#btnSubmit").click(function () {
+function CommercialSubmitClick(saveType) {
     let InterestedStatus = true; // ValidateIsInterested();
     if (InterestedStatus && ValidateBU_Strength()) {
         if (ArrMainCommercial.length > 0) {
             if (ValidateYearDataExist()) {
-                $.extend(objMainForm, { 'SaveType': 'Sv' });
+                $.extend(objMainForm, { 'SaveType': saveType });
                 SaveCommertialPIDFForm();
             }
         } else {
             toastr.error('No Data Added');
         }
     }
-});
-$('#mainDivCommercial').find("#btnSaveAsDraft").click(function () {
+}
+function CommercialSaveAsDraftClickClick(saveType) {
+
     if (ValidateBU_Strength()) {
         if (ArrMainCommercial.length > 0) {
-            $.extend(objMainForm, { 'SaveType': 'SvDrf' });
+            $.extend(objMainForm, { 'SaveType': saveType });
             SaveCommertialPIDFForm();
         }
         else {
             toastr.error('No Data Added');
         }
     }
-});
+}
+
 $(document).on("change", "#mainDivCommercial .InvalidBox", function () {
     if ($(this).val() != '' && $(this).val() != 0) {
         $(this).removeClass("InvalidBox");
@@ -232,6 +234,7 @@ function SaveCommertialPIDFFormSuccess(data) {
         if (data._Success === true) {
             toastr.success(data._Message);
             IsShowCancel_Save_buttons(true);
+            if (!IsTabClick)
             window.location.href = "/PIDF/PIDFList?ScreenId=4";
         }
         else {
@@ -985,7 +988,7 @@ function IsPBFPageValid() {
 
     return IsValid;
 }
-function SavePBFOutsourceData() {
+function SavePBFOutsourceData(saveType) {
   //  IsPBFPageValid = true;
     if (IsPBFPageValid() && ValidateTaskData()) {
         var pbfworkflowId = $('#ddlPbfworkflowId').val();
@@ -993,6 +996,7 @@ function SavePBFOutsourceData() {
         var PidfPbfOutsourceTask = getPBFTaskDataToSave();
 
         var MainObj_PBFOutsourceSaveData = {
+            'SaveType': saveType,
             'Pidfid': _PIDFID,
             'ProjectWorkflowId': _projectWorkFlowId,
             'PbfWorkFlowId': pbfworkflowId,
@@ -1006,7 +1010,7 @@ function AddUpdatePBFoutsourceDataSuccess(data) {
        // $('#SavePIDFModel').modal('hide');
         if (data._Success === true) {
             toastr.success(data._Message);
-           // IsShowCancel_Save_buttons(true);
+            if (!IsTabClick)
             window.location.href = "/PIDF/PIDFList?ScreenId=4";
         }
         else {
@@ -1071,3 +1075,49 @@ function ValidateTaskData() {
 
     return isValidIPDForm;
 }
+//PBF Save
+$('#btnPBFCommercialSubmit').click(function () {
+    IsTabClick = false;
+    SavePBFOutsourceData('Sv');
+});
+$('#btnSaveAsDraftPBFCommercial').click(function () {
+    IsTabClick = false;
+    SavePBFOutsourceData('SvDrf');
+});
+$('#custom-tabs-BudgetApproval-PBF-tab').click(function () {//commercial Tab Click
+    IsTabClick = true;
+    SavePBFOutsourceData('TabClick'); 
+})
+// Commercial save
+$("#custom-tabs-BudgetApproval-Finance-tab").click(function () {
+    IsTabClick = true;
+    if (IsPageLoad) {
+        IsPageLoad = false;
+        SetPBFDDLValues();
+    }
+    CommercialSubmitClick('TabClick');
+});
+$('#mainDivCommercial').find("#btnSubmit").click(function () {
+    IsTabClick = false;
+    CommercialSubmitClick('Sv');
+});
+$('#mainDivCommercial').find("#btnSaveAsDraft").click(function () {
+    IsTabClick = false;
+    CommercialSaveAsDraftClickClick('SvDrf');
+});
+$(document).on("change", ".clstentative", function () {
+   var isValidTentativeDate = true;
+    var todaysDate = new Date();
+    var _originalExpiryDate = new Date($(this).val());
+    if (_originalExpiryDate < new Date(todaysDate.getFullYear(), todaysDate.getMonth(), todaysDate.getDate())) {
+        $(this).css("border-color", "red");
+        $(this).val('');
+        isValidTentativeDate = false;
+        toastr.error('Can not select Past date !')
+    }
+    else {
+        $(this).css("border-color", "");
+        isValidTentativeDate = true;
+    }
+});
+

@@ -154,6 +154,13 @@ namespace EmcureNPD.Business.Core.Implementation
                     }
                 }
             }
+            else
+            {
+                if (entitycommPIDF.SaveType != "TabClick")
+                {
+                    entitycommPIDF.SaveType = "SvDrf";
+                }
+            }
             foreach (var item in entitycommPIDF.PIDFArrMainCommercial)
             {
                 var listYear = new List<PidfCommercialYear>();
@@ -217,11 +224,12 @@ namespace EmcureNPD.Business.Core.Implementation
                     ModuleEnum.CommercialManagement, OldObjpidfCommercial, item, loggedInUserID);
                 }
             }
-
-            var _StatusID = (entitycommPIDF.SaveType == "Sv") ? Master_PIDFStatus.CommercialSubmitted : Master_PIDFStatus.CommercialInProgress;
-            await _auditLogService.UpdatePIDFStatusCommon(entitycommPIDF.Pidfid, (int)_StatusID, loggedInUserID);
-            await _notificationService.CreateNotification(entitycommPIDF.Pidfid, (int)_StatusID, string.Empty, string.Empty, loggedInUserID);
-
+            if (entitycommPIDF.SaveType != "TabClick")
+            {
+                var _StatusID = (entitycommPIDF.SaveType == "Sv") ? Master_PIDFStatus.CommercialSubmitted : Master_PIDFStatus.CommercialInProgress;
+                await _auditLogService.UpdatePIDFStatusCommon(entitycommPIDF.Pidfid, (int)_StatusID, loggedInUserID);
+                await _notificationService.CreateNotification(entitycommPIDF.Pidfid, (int)_StatusID, string.Empty, string.Empty, loggedInUserID);
+            }
             return DBOperation.Success;
         }
 
@@ -353,8 +361,11 @@ namespace EmcureNPD.Business.Core.Implementation
             var existingfPBFOutsourceData = _repositoryPidfPbfOutsource.Get(x => x.Pidfid == entityPBFOutsource.Pidfid);
             if(existingfPBFOutsourceData == null)
             {
-                // Add new 
-                    var pbfoutsoucedata = _mapperFactory.Get<PidfpbfoutsourceEntity, PidfPbfOutsource>(entityPBFOutsource);
+                // Add new
+                if (entityPBFOutsource.SaveType == "TabClick")
+                    entityPBFOutsource.SaveType = "SvDrf";
+
+                var pbfoutsoucedata = _mapperFactory.Get<PidfpbfoutsourceEntity, PidfPbfOutsource>(entityPBFOutsource);
 
                 pbfoutsoucedata.CreatedBy = CreatedByUser;
                 pbfoutsoucedata.CreatedDate = DateTime.Now;
@@ -380,7 +391,6 @@ namespace EmcureNPD.Business.Core.Implementation
             {
                 // Update Existing
                 var pbfoutsoucedata = _mapperFactory.Get<PidfpbfoutsourceEntity, PidfPbfOutsource>(entityPBFOutsource);
-
                 pbfoutsoucedata.ModifyBy = CreatedByUser;
                 pbfoutsoucedata.ModifyDate = DateTime.Now;
                 pbfoutsoucedata.PidfpbfoutsourceId = existingfPBFOutsourceData.PidfpbfoutsourceId;
@@ -405,6 +415,12 @@ namespace EmcureNPD.Business.Core.Implementation
                     }
                     await _unitOfWork.SaveChangesAsync();
                 }
+            }
+            if (entityPBFOutsource.SaveType != "TabClick")
+            {
+                var _StatusID = (entityPBFOutsource.SaveType == "Sv") ? Master_PIDFStatus.PBFSubmitted : Master_PIDFStatus.PBFInProgress;
+                await _auditLogService.UpdatePIDFStatusCommon(entityPBFOutsource.Pidfid, (int)_StatusID, CreatedByUser);
+                await _notificationService.CreateNotification(entityPBFOutsource.Pidfid, (int)_StatusID, string.Empty, string.Empty, CreatedByUser);
             }
             return DBOperation.Success;
         }

@@ -574,7 +574,7 @@
                                     @*--------------Start--tblPBFOutsourcetask Table---------------*@
                                     
                                     <div id="dvtblPBFOutsourcetask" class="row">
-                                        <div class="col-md-8">
+                                        <div class="col-md-12">
                                             <div class="card">
                                                 <div class="card-header bg-primary">
                                                     <h3 class="card-title mb-0">
@@ -594,7 +594,7 @@
                                                       <table id="tblPBFOutsourcetask" class="table table-bordered">
                                             <thead>
                                                 <tr class="bg-light">
-                                                     <th>
+                                                     <th style="width:60%">
                                                         Developement
                                                        @*PBF Outsource Task List*@
                                                     </th>
@@ -622,13 +622,22 @@
                                 </div>
                             </div>
                         </form>
-                        <div class="text-end mt-2">
-                            <button type="button" onclick="SavePBFOutsourceData()" class="btn btn-success operationButton" value="Submit" onClick="">@MasterLocalizer["Save"]</button>
-                            <a class="btn btn-danger" onclick="CancelPopup()" data-dismiss="modal">@SharedLocalizer["Cancel"]</a>
+                         <div class="row">
+                            <div class="col-12 text-end">
+                                <div class="form-group" id="dvMainButton">
+                                    <button type="button" id="btnPBFCommercialSubmit" class="btn btn-success me-3 outside-buttons operationButton">@SharedLocalizer["Submit"]</button>
+                                    @if (Convert.ToBoolean(Context.Request.Query["pbf"]) == false)
+                                    {
+                                        <button type="submit" id="btnSaveAsDraftPBFCommercial" class="btn btn-primary me-3 outside-buttons operationButton">@SharedLocalizer["SaveDraft"]</button>
+                                    }
+                                    @if (!Model._Partial)
+                                    {
+                                        <input class="btn btn-danger me-3 outside-buttons " value="Cancel" id="btnPBFCommercialCancel" type="button" title=@SharedLocalizer["Cancel"] onclick="CancelPopup()" />
+                                    }
+                                </div>
+                            </div>
                         </div>
                     </div>
-
-
                 </div>
             </div>
 
