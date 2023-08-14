@@ -242,9 +242,9 @@
                 <div class="form-group required">
                     <label class="control-label">In house</label> <span class="text-danger">*</span>
                     <input type="hidden" id="hdnInhouseDropdownId" value="@(true ? "1" : "2")" checked="@(Model.InHouses ? "checked" : "")" />
-                    <input type="checkbox" id="InHouses" name="InHouses" value="@(Model.InHouses)" style="display:none;" />
+                   @* <input type="checkbox" id="InHouses" name="InHouses" value="@(Model.InHouses)" style="display:none;" />*@
                     <select id="InhouseDropdownId" name="InhouseDropdownId" class="form-control readOnlyUpdate"></select>
-
+                    <input type="hidden" asp-for="InHouses" class="BindIDForInHouses" />
                 </div>
             </div>
 

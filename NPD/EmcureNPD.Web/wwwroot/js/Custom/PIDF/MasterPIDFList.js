@@ -215,7 +215,7 @@ function InitializePIDFList() {
                         html += '<a class="ml-1 large-font" style="color:' + (_enableView ? "#007bff" : "grey") + '" href="' + (_enableView ? _MedicalForm : "#") + '&IsView=1"><i class="fa fa-fw fa-eye mr-1"></i></a>';
                     }
                 } else if (_screenId == "4") {
-                    var _CommercialForm = '/Commercial/PIDFCommerciaLDetails?pidfid=' + row.encpidfid + '&bui=' + row.encbud + '&commercial=' + row.commercial;
+                    var _CommercialForm = '/Commercial/PIDFCommerciaLDetails?pidfid=' + row.encpidfid + '&bui=' + row.encbud + '&commercial=' + row.commercial + '&pbf=' + row.pbf;
                     var _enable = (row.pidfStatusID == 7 || row.pidfStatusID == 10 || row.pidfStatusID == 11 || row.pidfStatusID == 12 || row.pidfStatusID == 13 || row.pidfStatusID == 14 || row.pidfStatusID == 15 || row.pidfStatusID == 16 || row.pidfStatusID == 17);//|| row.pidfStatusID == 9
                     if (IsEditCommercial || IsAddCommercial) {
                         html += '<a class="large-font" style="color:' + (_enable ? "#007bff" : "grey") + '" href="' + (_enable ? _CommercialForm : "#") + '"><i class="fa fa-fw fa-edit mr-1"></i></a>';

@@ -293,7 +293,7 @@ function SaveIPDClick(type) {
 
 function addRowParent(j) {
     var table = getParentFormId().find('#parentBody');
-    var node = getParentFormId().find('#parentRow_0').clone(true);
+    var node = getParentFormId().find('#parentRow_'+j).clone(true);
     table.find('tr:last').after((node.length > 1 ? node[0] : node));
     table.find('tr:last').find("input").val("");
     IPDSetChildRowDeleteIcon();
@@ -454,7 +454,7 @@ function validatecontrols(control) {
 //-----------------patent Details API---------------------------------------
 function addRowParentAPI(j) {
     var table = getParentFormId().find('#parentBodyAPI');
-    var node = getParentFormId().find('#parentRowAPI_0').clone(true);
+    var node = getParentFormId().find('#parentRowAPI_'+j).clone(true);
     table.find('tr:last').after((node.length > 1 ? node[0] : node));
     table.find('tr:last').find("input").val("");
     IPDSetChildRowDeleteIconAPI();
