@@ -9,7 +9,6 @@ namespace EmcureNPD.Data.DataAccess.Entity
     {
         public Pidf()
         {
-            MasterNotifications = new HashSet<MasterNotification>();
             PidfApiCharters = new HashSet<PidfApiCharter>();
             PidfApiIpds = new HashSet<PidfApiIpd>();
             PidfApiMasters = new HashSet<PidfApiMaster>();
@@ -76,7 +75,6 @@ namespace EmcureNPD.Data.DataAccess.Entity
         public virtual MasterCountry Rfdcountry { get; set; }
         public virtual MasterPidfstatus Status { get; set; }
         public virtual MasterUnitofMeasurement UnitofMeasurement { get; set; }
-        public virtual ICollection<MasterNotification> MasterNotifications { get; set; }
         public virtual ICollection<PidfApiCharter> PidfApiCharters { get; set; }
         public virtual ICollection<PidfApiIpd> PidfApiIpds { get; set; }
         public virtual ICollection<PidfApiMaster> PidfApiMasters { get; set; }
