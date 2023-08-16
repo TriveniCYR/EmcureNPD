@@ -14,8 +14,7 @@ namespace EmcureNPD.Data.DataAccess.Entity
         public string NotificationDescription { get; set; }
         public DateTime CreatedDate { get; set; }
         public int CreatedBy { get; set; }
-
-        public virtual Pidf Pidf { get; set; }
-        public virtual MasterPidfstatus Status { get; set; }
+        public DateTime? SentDatetime { get; set; }
+        public bool IsEmailSent { get; set; }
     }
 }

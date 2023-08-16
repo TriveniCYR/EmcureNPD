@@ -12,7 +12,8 @@ namespace EmcureNPD.Business.Core.Interface
        // void SendReminderMail(List<SendReminderModel> sendReminderModel_list);
 
         Task<SendReminderModel> AutoUpdatePIDFStatus();
+		Task<EmailNotificationEntity> SendNotification();
 
-       // void AutoUpdatePIDFStatusMail(AutoUpdatePIDFStatusModel autoUpdatePIDFStatusModel);
-    }
+		// void AutoUpdatePIDFStatusMail(AutoUpdatePIDFStatusModel autoUpdatePIDFStatusModel);
+	}
 }

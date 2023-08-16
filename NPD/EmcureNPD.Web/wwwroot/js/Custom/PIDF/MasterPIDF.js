@@ -38,7 +38,8 @@ $(document).ready(function () {
    });
     $('#InhouseDropdownId').change(function (e) {
         var _selected = ($(this).val() == "1" ? true : false);
-        $('#InHouses').prop("checked", _selected).val(_selected);
+        //$('#InHouses').prop("checked", _selected).val(_selected);
+        $('.BindIDForInHouses').val(_selected);
     });
     TradeNameRequired_change();
     try {
@@ -171,7 +172,9 @@ function GetPIDFDropdownSuccess(data) {
                     $('#BusinessUnitId').val($('#hdnBusinessUnitId').val()).trigger("change");
                     $('#MarketExtenstionId').val($('#hdnMarketExtenstionId').val());
                     $('#Diaid').val($('#hdnDiaid').val());
-                    $('#InhouseDropdownId').val($('#hdnInhouseDropdownId').val()).trigger("change");
+
+                    var _Inhousevalue = ($('#InHouses').val() == 'True') ? 1 : 2;
+                    $('#InhouseDropdownId').val(_Inhousevalue);
 
                     $(".productStrengthUnit").each(function () {
                         $(this).val($(this).prev("#hdnProductStrengthUnit").val());

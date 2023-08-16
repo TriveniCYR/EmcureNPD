@@ -9,7 +9,6 @@ namespace EmcureNPD.Data.DataAccess.Entity
     {
         public MasterPidfstatus()
         {
-            MasterNotifications = new HashSet<MasterNotification>();
             PidfLastStatuses = new HashSet<Pidf>();
             PidfManagementApprovalStatusHistories = new HashSet<PidfManagementApprovalStatusHistory>();
             PidfStatuses = new HashSet<Pidf>();
@@ -28,7 +27,6 @@ namespace EmcureNPD.Data.DataAccess.Entity
         public int? ModuleId { get; set; }
         public string StatusTextColor { get; set; }
 
-        public virtual ICollection<MasterNotification> MasterNotifications { get; set; }
         public virtual ICollection<Pidf> PidfLastStatuses { get; set; }
         public virtual ICollection<PidfManagementApprovalStatusHistory> PidfManagementApprovalStatusHistories { get; set; }
         public virtual ICollection<Pidf> PidfStatuses { get; set; }

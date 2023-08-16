@@ -26,5 +26,6 @@ namespace EmcureNPD.Business.Core.Interface
         Task<List<MasterPackSizeViewModelEntity>> GetAllPackSize();
         Task<dynamic> GetPBFOutsourcingTabDropDownData();
         Task<dynamic> GetPBFWorkFlowTaskNames(int pbfWorkFlowid);
+        Task<DBOperation> AddUpdatePBFoutsourceData(PidfpbfoutsourceEntity entityPBFOutsource);
     }
 }

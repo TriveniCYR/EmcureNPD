@@ -232,32 +232,32 @@
                                         </div>
                                     </div>
 
-                                </div>
-                            </div>
-                            @* ---Rest all other Fields-----*@
-                            <div class="row">
-                                <div class="col-md-4">
-                                    <div class="form-group required">
-                                        @Html.LabelFor(model => model.Diaid, Master.DIAName, new { @class = "control-label" }) <span class="text-danger">*</span>
-                                        <input type="hidden" id="hdnDiaid" value="@Model.Diaid" />
-                                        <select id="Diaid" name="Diaid" class="form-control readOnlyUpdate customvalidateformcontrol" required></select>
-                                        @Html.ValidationMessageFor(model => model.Diaid, "", new { @class = "text-danger" })
-                                    </div>
-                                    <div class="form-group required" hidden>
-                                        @Html.LabelFor(model => model.PIDFNO, new { @class = "control-label" })
-                                        @Html.EditorFor(model => model.PIDFNO, new { htmlAttributes = new { @autocomplete = "off", @class = "form-control checkbox-checked", @placeholder = @MasterLocalizer["PIDFNO"] } })
-                                        @Html.ValidationMessageFor(model => model.PIDFNO, "", new { @class = "text-danger" })
-                                    </div>
-                                </div>
-                                <div class="col-md-4">
-                                    <div class="form-group required">
-                                        <label class="control-label">In house</label> <span class="text-danger">*</span>
-                                        <input type="hidden" id="hdnInhouseDropdownId" value="@(true ? "1" : "2")" checked="@(Model.InHouses ? "checked" : "")" />
-                                        <input type="checkbox" id="InHouses" name="InHouses" value="@(Model.InHouses)" style="display:none;" />
-                                        <select id="InhouseDropdownId" name="InhouseDropdownId" class="form-control readOnlyUpdate readonlyOtherBusinessUnit"></select>
-
-                                    </div>
-                                </div>
+            </div>
+        </div>
+       @* ---Rest all other Fields-----*@
+        <div class="row">
+            <div class="col-md-4">
+                <div class="form-group required">
+                    @Html.LabelFor(model => model.Diaid, Master.DIAName, new { @class = "control-label" }) <span class="text-danger">*</span>
+                    <input type="hidden" id="hdnDiaid" value="@Model.Diaid" />
+                    <select id="Diaid" name="Diaid" class="form-control readOnlyUpdate customvalidateformcontrol" required></select>
+                    @Html.ValidationMessageFor(model => model.Diaid, "", new { @class = "text-danger" })
+                </div>
+                <div class="form-group required" hidden>
+                    @Html.LabelFor(model => model.PIDFNO, new { @class = "control-label" })
+                    @Html.EditorFor(model => model.PIDFNO, new { htmlAttributes = new { @autocomplete = "off", @class = "form-control checkbox-checked", @placeholder = @MasterLocalizer["PIDFNO"] } })
+                    @Html.ValidationMessageFor(model => model.PIDFNO, "", new { @class = "text-danger" })
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="form-group required">
+                    <label class="control-label">In house</label> <span class="text-danger">*</span>
+                    <input type="hidden" id="hdnInhouseDropdownId" value="@(true ? "1" : "2")" checked="@(Model.InHouses ? "checked" : "")" />
+                   @* <input type="checkbox" id="InHouses" name="InHouses" value="@(Model.InHouses)" style="display:none;" />*@
+                    <select id="InhouseDropdownId" name="InhouseDropdownId" class="form-control readOnlyUpdate"></select>
+                    <input type="hidden" asp-for="InHouses" class="BindIDForInHouses" />
+                </div>
+            </div>
 
                                 <div class="col-md-4">
                                     <div class="form-group required">

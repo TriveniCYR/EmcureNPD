@@ -8,7 +8,9 @@ var selectedStrength = 0;
 var EditIndex = -1;
 var MainRowEditIndex = -1;
 var PIDFCommercialMaster;
-
+var IsPageLoad = true;
+var IsTabClick = false;
+var IsCommTabClick = false;
 $(document).ready(function () {
     $('#mainDivCommercial').find('label[id^="valmsg"]').hide();
     IsViewModeCommercial();
@@ -169,31 +171,32 @@ function ResetYearFormValues() {
         }
     });
 }
-
-$('#mainDivCommercial').find("#btnSubmit").click(function () {
+function CommercialSubmitClick(saveType) {
     let InterestedStatus = true; // ValidateIsInterested();
     if (InterestedStatus && ValidateBU_Strength()) {
         if (ArrMainCommercial.length > 0) {
             if (ValidateYearDataExist()) {
-                $.extend(objMainForm, { 'SaveType': 'Sv' });
+                $.extend(objMainForm, { 'SaveType': saveType });
                 SaveCommertialPIDFForm();
             }
         } else {
             toastr.error('No Data Added');
         }
     }
-});
-$('#mainDivCommercial').find("#btnSaveAsDraft").click(function () {
+}
+function CommercialSaveAsDraftClickClick(saveType) {
+
     if (ValidateBU_Strength()) {
         if (ArrMainCommercial.length > 0) {
-            $.extend(objMainForm, { 'SaveType': 'SvDrf' });
+            $.extend(objMainForm, { 'SaveType': saveType });
             SaveCommertialPIDFForm();
         }
         else {
             toastr.error('No Data Added');
         }
     }
-});
+}
+
 $(document).on("change", "#mainDivCommercial .InvalidBox", function () {
     if ($(this).val() != '' && $(this).val() != 0) {
         $(this).removeClass("InvalidBox");
@@ -230,9 +233,11 @@ function SaveCommertialPIDFFormSuccess(data) {
     try {
         $('#SavePIDFModel').modal('hide');
         if (data._Success === true) {
-            toastr.success(data._Message);
             IsShowCancel_Save_buttons(true);
-            window.location.href = "/PIDF/PIDFList?ScreenId=4";
+            if (!IsTabClick) {
+                toastr.success(data._Message);
+                window.location.href = "/PIDF/PIDFList?ScreenId=4";
+            }
         }
         else {
             toastr.error(data._Message);
@@ -304,8 +309,14 @@ function GetCommercialPIDFByBUSuccess(data) {
         PIDFCommercialMaster = data._object.PIDFCommercialMaster;
         setCommercialArray(data._object.Commercial, data._object.CommercialYear);
         Update_BUstregthPackTable(ArrMainCommercial);
+        UpdatePBFOutSourceData(data._object.PBFOutSourceData);
         // Update_IsInterested_Remark();
         SetCommercialDisableForOtherUserBU();
+        if (data._object.PIDF[0].inHouses)
+            $('.PBFDetailsTab').hide();
+        else
+            $('.PBFDetailsTab').show();
+
     } catch (e) {
         toastr.error('Get Commercial Error:' + e.message);
     }
@@ -844,6 +855,19 @@ function IsShowCancel_Save_buttons(flag) {
 }
 
 /*------PBF OutSourcing-----------------------------------------*/
+$("#custom-tabs-BudgetApproval-Finance-tab").click(function () {
+    SetPBFDDLValues();
+});
+function SetPBFDDLValues() {
+    if (pbfOutSourceData_Arr != null && pbfOutSourceData_Arr.length > 0) {
+        var _pbfworkflowId = pbfOutSourceData_Arr[0].pbfWorkflowId;
+        $('#ddlPbfworkflowId').val(_pbfworkflowId);
+
+        var _projectWorkFlowId = pbfOutSourceData_Arr[0].projectWorkflowId;
+        $('#ddlProjectWorkflowId').val(_projectWorkFlowId);
+    }
+}
+
 
 function GetPBFOutsourcingTabDDLdata() {
     ajaxServiceMethod($('#hdnBaseURL').val() + GetPBFOutsourcingTabDropDownData, 'GET', GetPBFOutsourcingTabDDLdataSuccess, GetPBFOutsourcingTabDDLdataError);
@@ -867,6 +891,7 @@ function Bind_ddlProjectWorkflowId(data) {
         $.each(data, function (index, object) {
             $('#ddlProjectWorkflowId').append($('<option>').text(object.workflowName).attr('value', object.workflowId));
         });
+        
     } catch (e) {
         toastr.error('Get ddlProjectWorkflow Error:' + e.message);
     }
@@ -877,26 +902,35 @@ function Bind_ddlPbfworkflowId(data) {
         $.each(data, function (index, object) {
             $('#ddlPbfworkflowId').append($('<option>').text(object.pbfworkFlowName).attr('value', object.pbfworkFlowId));
         });
+       
     } catch (e) {
         toastr.error('Get ddlPbfworkflow  Error:' + e.message);
     }
 }
 //--------------------------------------------
+var pbfOutSourceData_Arr = [];
 $('#ddlPbfworkflowId').change(function () {
     var id = $(this).val();
-    if(id != undefined || id!='')
-    GetPBFWorkFlowTaskNames(id);
-
+    if (id != undefined || id != '') {
+        var _Objpbfdata = $.grep(pbfOutSourceData_Arr, function (v) {
+            return v.pbfWorkflowId == parseInt(id);
+        });
+        if (_Objpbfdata.length > 0) {
+            AddTaskTo_tblPBFOutsourcetask(_Objpbfdata);
+        }
+        else {
+            GetPBFWorkFlowTaskNames(id);
+        }
+    }
 });
 function GetPBFWorkFlowTaskNames(_pbfWorkFlowid) {
     ajaxServiceMethod($('#hdnBaseURL').val() + GetPBFWorkFlowTaskNamesurl + "/" + _pbfWorkFlowid, 'GET', GetPBFWorkFlowTaskNamesSuccess, GetPBFWorkFlowTaskNamesError);
-
 }
 function GetPBFWorkFlowTaskNamesSuccess(data) {
     try {
         console.log(data);
-        if(data._object != null)
-        AddTaskTo_tblPBFOutsourcetask(data._object);
+        if (data._object != null)
+            AddTaskTo_tblPBFOutsourcetask(data._object);
     } catch (e) {
         toastr.error('Get PBF Outsourcing Error:' + e.message);
     }
@@ -907,13 +941,190 @@ function GetPBFWorkFlowTaskNamesError(x, y, z) {
 function AddTaskTo_tblPBFOutsourcetask(data) {
     var html = '';
     $.each(data, function (ind, item) {
-        html += '<tr>'
-        html += '<td>' + item.pbfWorkFlowTaskName + ' </td>'
-        html += '<td> <input type="text" class="form-control"/> </td>'
-        html += '</tr>'
-    });
-    if (html != '') {
+        var _cost = (item.cost == undefined) ? '' : item.cost
+        var _tentative = (item.tentative == undefined) ? '' : item.tentative
+        var classname = '';//(item.taskLevel == 1) ? 'fw-bold' : 'text-end';
 
-       $("#PBFOutsourcetaskTbody").append(html);
+        html += '<tr class="taskdataRow" id="RowTask_' + ind + '" >'
+        html += '<td> <input type="text" class="form-control clspbfWorkFlowTaskName ' + classname + ' " value="' + item.pbfWorkFlowTaskName + '" /> </td>'
+        html += '<td> <input type="number" class="form-control clscost"   value="' + _cost + '" /> </td>'
+        html += '<td> <input type="date" class="form-control clstentative" value="' + _tentative + '" /> </td>'
+
+        html += '<td> <i class="fa-solid fa-circle-plus nav-icon text-success" id="addIcon_' + ind + '" onclick="addRowParent_PBFOutsource(' + ind +')"></i> '
+
+        html += '<i  class="fa-solid fa-trash nav-icon text-red DeleteIconAPI" id="deleteIconAPI_' + ind + '" onclick="removeRowParent_PBFOutsource(' + ind +', this)"></i>'
+
+        html += '</td> </tr>'
+    });
+    //if (html != '') {
+    //   $("#PBFOutsourcetaskTbody").append(html);
+    //}
+    $("#PBFOutsourcetaskTbody").html(html);
+}
+
+function UpdatePBFOutSourceData(data) {
+ 
+    if (data != null && data.length > 0) {
+        pbfOutSourceData_Arr = data;
+        AddTaskTo_tblPBFOutsourcetask(data);
+    }    
+}
+function IsPBFPageValid() {
+    var IsValid = true;
+    if ($('#ddlPbfworkflowId').val() == "0") {
+        $('#valmsgddlPbfworkflowId').text('Required');
+        IsValid = false;
+    }
+    else {
+        $('#valmsgddlPbfworkflowId').text('');
+    }
+    if ($('#ddlProjectWorkflowId').val() == "0") {
+        $('#valmsgddlProjectWorkflowId').text('Required');
+        IsValid = false;
+    }
+    else {
+        $('#valmsgddlProjectWorkflowId').text('');
+    }
+    if(!IsValid)
+        toastr.error('Some feilds missing values!'); 
+
+    return IsValid;
+}
+function SavePBFOutsourceData(saveType) {
+  //  IsPBFPageValid = true;
+    if ((IsPBFPageValid() && ValidateTaskData()) && saveType=='SvDrf') {
+        var pbfworkflowId = $('#ddlPbfworkflowId').val();
+        var _projectWorkFlowId = $('#ddlProjectWorkflowId').val();
+        var PidfPbfOutsourceTask = getPBFTaskDataToSave();
+
+        var MainObj_PBFOutsourceSaveData = {
+            'SaveType': saveType,
+            'Pidfid': _PIDFID,
+            'ProjectWorkflowId': _projectWorkFlowId,
+            'PbfWorkFlowId': pbfworkflowId,
+            'pidfpbfoutsourceTaskEntityList': PidfPbfOutsourceTask
+        };
+        ajaxServiceMethod($('#hdnBaseURL').val() + AddUpdatePBFoutsourceDataUrl, 'POST', AddUpdatePBFoutsourceDataSuccess, AddUpdatePBFoutsourceDataError, JSON.stringify(MainObj_PBFOutsourceSaveData));
     }
 }
+function AddUpdatePBFoutsourceDataSuccess(data) {
+    try {
+       // $('#SavePIDFModel').modal('hide');
+        if (data._Success === true) {
+            
+            if (!IsTabClick) {
+                toastr.success(data._Message);
+                window.location.href = "/PIDF/PIDFList?ScreenId=4";
+            }
+        }
+        else {
+            toastr.error(data._Message);
+        }
+    } catch (e) {
+        toastr.error('Save PBfOutsource Error:' + e.message);
+    }
+}
+function AddUpdatePBFoutsourceDataError(x, y, z) {
+    toastr.error(ErrorMessage);
+}
+function getPBFTaskDataToSave() {
+   
+    var taskdataArr = [];
+    $("tr.taskdataRow").each(function () {   
+        var taskdataObj = {};
+        var pbfWorkFlowTaskName = $(this).find("input.clspbfWorkFlowTaskName").val();
+        var cost = $(this).find("input.clscost").val();
+        var tentative = $(this).find("input.clstentative").val();
+
+        taskdataObj = {
+            'PbfworkFlowTaskName': pbfWorkFlowTaskName,
+            'Cost': cost,
+            'Tentative': tentative
+        };
+        taskdataArr.push(taskdataObj);        
+    });
+    return taskdataArr;
+}
+function addRowParent_PBFOutsource(j) {
+    var table = $('#PBFOutsourcetaskTbody');
+    var node = $('#RowTask_' + j).clone(true);
+    table.find('tr:last').after((node.length > 1 ? node[0] : node));
+    table.find('tr:last').find("input").val("");
+    PBFOutsourceRowDeleteIcon();
+}
+function removeRowParent_PBFOutsource(j, element) {
+    $(element).closest("tr").remove();
+    PBFOutsourceRowDeleteIcon();
+} 
+function PBFOutsourceRowDeleteIcon() {
+    if ($('#tblPBFOutsourcetask tbody tr').length > 1) {
+        $('.DeleteIconAPI').show();
+    } else {
+        $('.DeleteIconAPI').hide();
+    }
+}
+function ValidateTaskData() {
+    isValidIPDForm = true; 
+    $('#tblPBFOutsourcetask input').each(function () {
+        if ($(this).val() == '') {
+            $(this).css("border-color", "red");
+            isValidIPDForm = false;
+        }
+        else {
+            $(this).css("border-color", "");
+        }
+    });
+    if(!isValidIPDForm)
+        toastr.error('Some Task are missing values !'); 
+
+    return isValidIPDForm;
+}
+//PBF Save
+$('#btnPBFCommercialSubmit').click(function () {
+    IsTabClick = false;
+    IsCommTabClick = false;
+    SavePBFOutsourceData('Sv');
+});
+$('#btnSaveAsDraftPBFCommercial').click(function () {
+    IsTabClick = false;
+    IsCommTabClick = false;
+    SavePBFOutsourceData('SvDrf');
+});
+$('#custom-tabs-BudgetApproval-PBF-tab').click(function () {//commercial Tab Click
+    IsTabClick = true;
+    SavePBFOutsourceData('TabClick'); 
+})
+// Commercial save
+$("#custom-tabs-BudgetApproval-Finance-tab").click(function () {
+    IsTabClick = true;
+    if (IsPageLoad) {
+        IsPageLoad = false;
+        SetPBFDDLValues();
+    }
+    IsCommTabClick = true;
+    CommercialSubmitClick('TabClick');
+});
+$('#mainDivCommercial').find("#btnSubmit").click(function () {
+    IsTabClick = false;
+    CommercialSubmitClick('Sv');
+});
+$('#mainDivCommercial').find("#btnSaveAsDraft").click(function () {
+    IsTabClick = false;
+    CommercialSaveAsDraftClickClick('SvDrf');
+});
+$(document).on("change", ".clstentative", function () {
+   var isValidTentativeDate = true;
+    var todaysDate = new Date();
+    var _originalExpiryDate = new Date($(this).val());
+    if (_originalExpiryDate < new Date(todaysDate.getFullYear(), todaysDate.getMonth(), todaysDate.getDate())) {
+        $(this).css("border-color", "red");
+        $(this).val('');
+        isValidTentativeDate = false;
+        toastr.error('Can not select Past date !')
+    }
+    else {
+        $(this).css("border-color", "");
+        isValidTentativeDate = true;
+    }
+});
+
