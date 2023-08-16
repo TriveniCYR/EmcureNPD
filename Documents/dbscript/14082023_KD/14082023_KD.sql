@@ -37,4 +37,22 @@ GO
 INSERT [dbo].[Master_PBFWorkflow_Task] ([PBfWorkFlowTaskId], [PBFWorkFlowTaskName], [PBfWorkFlowId], [TaskLevel], [ParentId], [IsActive], [CreatedBy], [CreatedDate], [ModifyBy], [ModifyDate]) VALUES (26, N'Launch Activities per country', 1, 1, 0, 1, 1, CAST(N'2023-08-10T10:32:21.673' AS DateTime), 1, CAST(N'2023-08-10T10:32:21.673' AS DateTime))
 GO
 SET IDENTITY_INSERT [dbo].[Master_PBFWorkflow_Task] OFF
+
+
 GO
+
+
+
+ --exec stp_npd_GetIPDPatentDetailsCountryList 5    
+CREATE proc [dbo].[stp_npd_GetCountryListByIsInterested](    
+@BUId int=0    
+)    
+as    
+begin    
+    
+Select DISTINCT A.CountryId, CountryName from Master_Country As A    
+Inner Join Master_RegionCountryMapping As B On A.CountryID = B.CountryId    
+Inner Join Master_BusinessUnitRegionMapping As C On B.RegionId = C.RegionId    
+Where C.BusinessUnitId = @BUId   AND A.IsActive =1    
+    
+  end 

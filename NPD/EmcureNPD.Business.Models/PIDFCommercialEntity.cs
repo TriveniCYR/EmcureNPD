@@ -17,6 +17,7 @@ namespace EmcureNPD.Business.Models
         public Boolean Interested { get; set; }
         public string Remark { get; set; }
         public int MainBusinessUnitId { get; set; }
+        public int MainCountryId { get; set; }
     }
 
 

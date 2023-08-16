@@ -14,6 +14,7 @@ namespace EmcureNPD.Data.DataAccess.Entity
         public string Remark { get; set; }
         public DateTime CreatedDate { get; set; }
         public int CreatedBy { get; set; }
+        public int? CountryId { get; set; }
 
         public virtual MasterBusinessUnit BusinessUnit { get; set; }
         public virtual Pidf Pidf { get; set; }

@@ -104,7 +104,8 @@ namespace EmcureNPD.Business.Core.Implementation
         private async Task<DBOperation> AddUpdate_PIDF_Commercial_Master(PIDFCommercialViewModel entitycommPIDF)
         {
             var loggedInUserID = _helper.GetLoggedInUser().UserId;
-            var dbObj = await _PidfCommercialMasterRepository.GetAsync(x => x.BusinessUnitId == entitycommPIDF.MainBusinessUnitId && x.Pidfid == entitycommPIDF.Pidfid);
+           
+            var dbObj = await _PidfCommercialMasterRepository.GetAsync(x => x.BusinessUnitId == entitycommPIDF.MainBusinessUnitId && x.Pidfid == entitycommPIDF.Pidfid && x.CountryId== entitycommPIDF.MainCountryId);
             if (dbObj != null)
             {
                 dbObj.Interested = entitycommPIDF.Interested;
@@ -115,6 +116,7 @@ namespace EmcureNPD.Business.Core.Implementation
             {
                 var NewObject = new PidfCommercialMaster();
                 NewObject.BusinessUnitId = entitycommPIDF.MainBusinessUnitId;
+                NewObject.CountryId = entitycommPIDF.MainCountryId;
                 NewObject.Pidfid = entitycommPIDF.Pidfid;
                 NewObject.Interested = entitycommPIDF.Interested;
                 NewObject.Remark = entitycommPIDF.Remark;
@@ -256,6 +258,7 @@ namespace EmcureNPD.Business.Core.Implementation
             DropdownObjects.FinalSelection = dsCommercial.Tables[8];
             DropdownObjects.PIDFCommercialMaster = dsCommercial.Tables[9];
             DropdownObjects.PBFOutSourceData = dsCommercial.Tables[10];
+            DropdownObjects.CountryList = dsCommercial.Tables[11];
             return DropdownObjects;
         }
 

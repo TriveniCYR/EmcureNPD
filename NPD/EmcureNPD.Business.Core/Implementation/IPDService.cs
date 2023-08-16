@@ -797,11 +797,12 @@ namespace EmcureNPD.Business.Core.Implementation
 
             return DropdownObjects;
         }
-        public async Task<dynamic> GetCountryByIsInterestedCountry(string BUId)
+        public async Task<dynamic> GetCountryByIsInterestedCountry(string BUId,string PidfId)
         {
             dynamic DropdownObjects = new ExpandoObject();
             SqlParameter[] osqlParameter = {
-                new SqlParameter("@BUId", BUId)
+                new SqlParameter("@BUId", BUId),
+                new SqlParameter("@PIDFID", PidfId)
             };
             DataSet dsDropdownOptions = await _repository.GetDataSetBySP("stp_npd_GetCountryListByIsInterested", System.Data.CommandType.StoredProcedure, osqlParameter);
 

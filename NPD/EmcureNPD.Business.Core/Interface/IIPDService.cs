@@ -29,7 +29,7 @@ namespace EmcureNPD.Business.Core.Interface
 
         Task<DBOperation> ApproveRejectIpdPidf(EntryApproveRej oApprRej);
         Task<dynamic> GetCountryByBussinessUnitIds(string BUId);
-        Task<dynamic> GetCountryByIsInterestedCountry(string BUId);
+        Task<dynamic> GetCountryByIsInterestedCountry(string BUId,string PidfId);
         Task<dynamic> GetPatentStrategy();
     }
 }
