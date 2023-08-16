@@ -10,6 +10,7 @@ var MainRowEditIndex = -1;
 var PIDFCommercialMaster;
 var IsPageLoad = true;
 var IsTabClick = false;
+var IsCommTabClick = false;
 $(document).ready(function () {
     $('#mainDivCommercial').find('label[id^="valmsg"]').hide();
     IsViewModeCommercial();
@@ -232,10 +233,11 @@ function SaveCommertialPIDFFormSuccess(data) {
     try {
         $('#SavePIDFModel').modal('hide');
         if (data._Success === true) {
-            toastr.success(data._Message);
             IsShowCancel_Save_buttons(true);
-            if (!IsTabClick)
-            window.location.href = "/PIDF/PIDFList?ScreenId=4";
+            if (!IsTabClick) {
+                toastr.success(data._Message);
+                window.location.href = "/PIDF/PIDFList?ScreenId=4";
+            }
         }
         else {
             toastr.error(data._Message);
@@ -990,7 +992,7 @@ function IsPBFPageValid() {
 }
 function SavePBFOutsourceData(saveType) {
   //  IsPBFPageValid = true;
-    if (IsPBFPageValid() && ValidateTaskData()) {
+    if ((IsPBFPageValid() && ValidateTaskData()) && saveType=='SvDrf') {
         var pbfworkflowId = $('#ddlPbfworkflowId').val();
         var _projectWorkFlowId = $('#ddlProjectWorkflowId').val();
         var PidfPbfOutsourceTask = getPBFTaskDataToSave();
@@ -1009,9 +1011,11 @@ function AddUpdatePBFoutsourceDataSuccess(data) {
     try {
        // $('#SavePIDFModel').modal('hide');
         if (data._Success === true) {
-            toastr.success(data._Message);
-            if (!IsTabClick)
-            window.location.href = "/PIDF/PIDFList?ScreenId=4";
+            
+            if (!IsTabClick) {
+                toastr.success(data._Message);
+                window.location.href = "/PIDF/PIDFList?ScreenId=4";
+            }
         }
         else {
             toastr.error(data._Message);
@@ -1078,10 +1082,12 @@ function ValidateTaskData() {
 //PBF Save
 $('#btnPBFCommercialSubmit').click(function () {
     IsTabClick = false;
+    IsCommTabClick = false;
     SavePBFOutsourceData('Sv');
 });
 $('#btnSaveAsDraftPBFCommercial').click(function () {
     IsTabClick = false;
+    IsCommTabClick = false;
     SavePBFOutsourceData('SvDrf');
 });
 $('#custom-tabs-BudgetApproval-PBF-tab').click(function () {//commercial Tab Click
@@ -1095,6 +1101,7 @@ $("#custom-tabs-BudgetApproval-Finance-tab").click(function () {
         IsPageLoad = false;
         SetPBFDDLValues();
     }
+    IsCommTabClick = true;
     CommercialSubmitClick('TabClick');
 });
 $('#mainDivCommercial').find("#btnSubmit").click(function () {
