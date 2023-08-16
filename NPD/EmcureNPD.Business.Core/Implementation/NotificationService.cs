@@ -183,7 +183,7 @@ namespace EmcureNPD.Business.Core.Implementation
 				if (dbresult.Tables[0] != null && dbresult.Tables[0].Rows.Count > 0)
 				{
 					UserList = dbresult.Tables[0].DataTableToList<EmailNotificationEntity>();
-					//foreach (var user in _BUObjects) {
+					
 					string commasepretedUserList = string.Empty;
 					List<EmailNotificationEntity> _UserLIst = UserList;
 					foreach (var u in _UserLIst)
@@ -192,7 +192,6 @@ namespace EmcureNPD.Business.Core.Implementation
 					}
 					_logMessage += "Fetch list of user to send notification { " + commasepretedUserList + "} \n";
 				SendNotificationMail(UserList, ref _logMessage);
-					//}
 				}
 			}
 			model.LogMessage = _logMessage;
@@ -207,7 +206,6 @@ namespace EmcureNPD.Business.Core.Implementation
 				{
 					EmailHelper email = new EmailHelper();
 					string strHtml = System.IO.File.ReadAllText(@"wwwroot\Uploads\HTMLTemplates\EmailNotification.html");
-					//sendNotificationModel.EmailAddress = "kamal.v@neosoftmail.com";
 					strHtml = strHtml.Replace("{PIDFNo}", sendNotificationModel.PidfNo);
 					strHtml = strHtml.Replace("{DateTime}", sendNotificationModel.CreatedDate.ToString());
 					strHtml = strHtml.Replace("{User}", sendNotificationModel.SendToName);

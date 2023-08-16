@@ -233,7 +233,34 @@ namespace EmcureNPD.Business.Core.Implementation
                 return data;
             }
         }
-        public async Task<DBOperation> AddUpdatePBFDetails(PBFFormEntity pbfEntity)
+		public async Task<CountyForBussinessUnitAndPIDF> GetCountyForBussinessUnitAndPIDF(long pidfId, int BUId)
+		{
+			var data = new CountyForBussinessUnitAndPIDF();
+			try
+			{
+				SqlParameter[] osqlParameter = {
+					   new SqlParameter("@PIDFId", pidfId),
+						new SqlParameter("@BussinessUnitId", BUId)
+				   };
+
+				var dbresult = await _pbfRepository.GetDataSetBySP("Proc_GetCountyForBussinessUnitAndPIDF", System.Data.CommandType.StoredProcedure, osqlParameter);
+				if (dbresult != null)
+				{
+					if (dbresult.Tables[0] != null && dbresult.Tables[0].Rows.Count > 0)
+					{
+
+						data.CountyForBussinessUnitAndPIDFList = dbresult.Tables[0].DataTableToList<CountyForBussinessUnitAndPIDF>();
+					}
+					
+				}
+				return data;
+			}
+			catch (Exception ex)
+			{
+				return data;
+			}
+		}
+		public async Task<DBOperation> AddUpdatePBFDetails(PBFFormEntity pbfEntity)
         {
             try
             {
@@ -324,7 +351,8 @@ namespace EmcureNPD.Business.Core.Implementation
             DropdownObjects.RNDExicipientPrototype = dsDropdownOptions.Tables[22];
             DropdownObjects.PidfPbfGeneralRnd = await GetPidfPbfGeneralRnd(PIDFId, pbfId, PbfRndDetailsId, BUId);
             DropdownObjects.PidfPbfGeneralPackSizeStability = await GetGeneralPackSizeStability(PIDFId, BUId);
-            return DropdownObjects;
+			DropdownObjects.GetCountyForBussinessUnitAndPIDF = await GetCountyForBussinessUnitAndPIDF(PIDFId, BUId);
+			return DropdownObjects;
         }
 
 

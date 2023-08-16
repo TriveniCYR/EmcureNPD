@@ -50,4 +50,10 @@ namespace EmcureNPD.Business.Models
 
 
     }
+    public class CountyForBussinessUnitAndPIDF
+    {
+		public int CountryId { get; set; }
+		public string CountryName { get; set; }
+        public List<CountyForBussinessUnitAndPIDF> CountyForBussinessUnitAndPIDFList { get; set; }
+	}
 }
