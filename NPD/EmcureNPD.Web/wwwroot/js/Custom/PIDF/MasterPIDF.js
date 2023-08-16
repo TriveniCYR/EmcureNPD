@@ -2,6 +2,8 @@
 var _mode = 0;
 var _PIDFId = 0;
 var isValidPIDFForm = true;
+var _PIDFBusinessUnitId;
+var _SelectedBusinessUnitPIDF;
 $(document).ready(function () {
     try {
         _PIDFId = parseInt($('#hdnPIDFId').val());
@@ -39,6 +41,14 @@ $(document).ready(function () {
         $('#InHouses').prop("checked", _selected).val(_selected);
     });
     TradeNameRequired_change();
+    try {
+        if (_PIDFId > 0 && ($('#frmPIDF').find("#StatusId").val() == "2")) {
+            _PIDFBusinessUnitId = $('#hdnBusinessUnitId').val();
+            fnGetActiveBusinessUnit();
+        }
+    } catch (e) {
+
+    }
 });
 
 $("#TradeNameRequired").change(TradeNameRequired_change);
@@ -378,4 +388,47 @@ function mandateDynamicControl() {
     });
 }
 
+
+function fnGetActiveBusinessUnit() {
+    ajaxServiceMethod($('#hdnBaseURL').val() + GetActiveBusinessUnit, 'GET', GetActiveBusinessUnitSuccess, GetActiveBusinessUnitError);
+}
+function GetActiveBusinessUnitSuccess(data) {
+    var businessUnitHTML = "";
+    var businessUnitPanel = "";
+    var _UserAccessBusinessUnit = $('#hdnUserBusinessUnits').val();
+    if (parseInt(getParameterByName("bui")) > 0) {
+        _SelectedBusinessUnitPIDF = parseInt(getParameterByName("bui"));
+    } else {
+        if (_UserAccessBusinessUnit != null && _UserAccessBusinessUnit != undefined && _UserAccessBusinessUnit != "") {
+            var _accessBusinessUnitArray = _UserAccessBusinessUnit.split(',');
+            if (_accessBusinessUnitArray.indexOf(_PIDFBusinessUnitId) != -1) {
+                _SelectedBusinessUnitPIDF = _PIDFBusinessUnitId;
+            } else {
+                _SelectedBusinessUnitPIDF = _accessBusinessUnitArray[0];
+            }
+        }
+    }
+    $.each(data._object, function (index, item) {
+        businessUnitHTML += '<li class="nav-item p-0">\
+            <a class="nav-link '+ (item.businessUnitId == _SelectedBusinessUnitPIDF ? "active" : "") + ' px-2" onclick="PIDFBUtabClick(' + _PIDFId + ', ' + item.businessUnitId + ')" data-toggle="pill" aria-selected="true" id="pidf-custom-tabs-two-' + item.businessUnitId + '-tab">' + item.businessUnitName + '</a></li>';
+/*        businessUnitPanel += '<div class="tab-pane ' + ((item.businessUnitId == _SelectedBusinessUnitPIDF ? "fade show active" : "")) + '" id="pidf-custom-tabs-' + item.businessUnitId + '" role="tabpanel" aria-labelledby="pidf-custom-tabs-two-' + item.businessUnitId + '-tab"></div>';*/
+    });
+    $('#pidf-custom-tabs-two-tab').html(businessUnitHTML);
+    if (_SelectedBusinessUnitPIDF != _PIDFBusinessUnitId) {
+        $("#frmPIDF").find('.readonlyOtherBusinessUnit').attr("disabled", "true");
+    }
+/*    $('#pidf-custom-tabs-two-tabContent').html(businessUnitPanel);*/
+}
+function GetActiveBusinessUnitError(x, y, z) {
+    toastr.error("Some error occurred while loading business unit");
+}
+
+function PIDFBUtabClick(pidfId, buId) {
+    if (_mode > 0) {
+        window.location.href = 'PIDF?pidfid=' + pidfId + '&bui=' + buId + '&IsView=' + _mode;
+    }
+    else {
+        window.location.href = 'PIDF?pidfid=' + pidfId + '&bui=' + buId;
+    }
+}
 
