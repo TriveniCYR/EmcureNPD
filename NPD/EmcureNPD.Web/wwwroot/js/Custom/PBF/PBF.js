@@ -1225,8 +1225,11 @@ function GetPBFTabDetailsSuccess(data) {
             // PBFBindStrength(data.PIDFPBFGeneralStrength);
             BindClinical(data.PBFClinicalEntity);
             BindAnalytical(data.PBFAnalyticalEntity, data.PBFAnalyticalCostEntity);
-            // BindRA();
-            //bindRaDropDowns();
+            if (IsRaEditable==false) {
+                BindNewRA(data.GetCountyForBussinessUnitAndPIDF.countyForBussinessUnitAndPIDFList, false);
+            }
+            //GetCountyByBussinessUnitId();
+           // bindRaDropDowns();
             $('#RNDBatchSizeId').append(_emptyOption);
             $(data.MasterBatchSize).each(function (index, item) {
                 $('#RNDBatchSizeId').append('<option value="' + item.batchSizeNumberId + '">' + item.batchSizeNumberName + '</option>');
@@ -1264,7 +1267,7 @@ function GetPBFTabDetailsSuccess(data) {
             //data.PidfPbfGeneralRnd
             BindPbfGeneralRnd(data.PidfPbfGeneralRnd);
             //PidfPbfGeneralPackSizeStability
-            //BindGeneralPackSizeStability(data.PidfPbfGeneralPackSizeStability);
+            BindGeneralPackSizeStability(data.PidfPbfGeneralPackSizeStability);
             //console.log(data.PidfPbfGeneralPackSizeStability)
             //**End Date Formating for get GetPIDF_PBF_General_RND*/
             $.each($('.AnalyticalTestTypeId'), function (index, item) {
@@ -3432,6 +3435,15 @@ function GetCountryByBusinessUnitSuccess(data) {
                 element.append('<option value="' + item.countryId + '">' + item.countryName + '</option>');
             });
         }
+        bindRaDropDowns();var element = $('#tableRA').find('.clsCountry');
+        element.find("option").remove();
+        var _emptyOption = '<option value="">-- Select --</option>';
+        element.append(_emptyOption);
+        if (data._object != null && data._object.length > 0) {            
+            $(data._object).each(function (index, item) {
+                element.append('<option value="' + item.countryId + '">' + item.countryName + '</option>');
+            });
+        }
         bindRaDropDowns();
     }
     catch (e) {
@@ -3465,53 +3477,84 @@ function GetTypeOfSubmissionSuccess(data) {
 function GetTypeOfSubmissionError(x, y, z) {
     toastr.error(ErrorMessage);
 }
-function BindRA(data = null) {
-    let tbody = $("#tableRABody");
-    IsRaEditable = false;
-    let tr = '';
-    if (data == null) {
-        tr += `<tr>
-             <td><input type="hidden" id="Pidfpbfraid0" class="ra" name="RaEntities[0].Pidfpbfraid" value="0"><select id="raCountryId0" name="RaEntities[0].CountryIdBuId" class="form-control readOnlyUpdate clsCountry valid" onchange="checkDuplicateRaCountry(0);"></select></td>
-             <td><input type="date" id="Pivotalbatchmanufactured0" name="RaEntities[0].PivotalBatchManufactured" class="form-control readOnlyUpdate  valid"></td>
-             <td><input type="date" id="LastdatafromRnD0" name="RaEntities[0].LastDataFromRnD" class="form-control readOnlyUpdate  valid"></td>
-             <td><input type="date" id="BEFinalReport0" name="RaEntities[0].BEFinalReport" class="form-control readOnlyUpdate  valid"></td>
-             <td><select  id="TypeOfSubmissionId0" name="RaEntities[0].TypeOfSubmissionId" class="form-control readOnlyUpdate valid clsTypeOfSubmission"></select></td>
-             <td><input type="date" id="DossierReadyDate0" name="RaEntities[0].DossierReadyDate" class="form-control readOnlyUpdate  valid"></td>
-             <td><input type="date" id="EarliestSubmissionDExcl0" name="RaEntities[0].EarliestSubmissionDExcl" class="form-control readOnlyUpdate  valid"></td>
-              <td><input type="date" id="EarliestLaunchDexcl0" name="RaEntities[0].EarliestLaunchDexcl" class="form-control readOnlyUpdate valid"></td>
-              <td> <input type="date" id="LasDateToRegulatory0" name="RaEntities[0].LasDateToRegulatory" class="form-control readOnlyUpdate valid"></td>
-             <td>  <i class="fa-solid fa-circle-plus nav-icon text-success operationButton" id="addIcon" onclick="addRowra(this);"></i> <i class="fa-solid fa-trash nav-icon text-red raDeleteIcon operationButton DeleteIcon" onclick="deleteRowra(this);" style="display: none;"></i>
-             </td>
-             </tr>`;
+function BindRA(data, IsEdit = false) {
+    try {
+        if (IsEdit) {
+            let tbody = $("#tableRABody");
+            let tr = '';
+            if (data != null) {
+
+                for (let e = 0; e < data.length; e++) {
+                    try {
+                        tr += `<tr>
+                               <td><input type="hidden" id="Pidfpbfraid${e}" class="ra" name="RaEntities[${e}].Pidfpbfraid" value="${data[e].pidfpbfraid}"><select id="raCountryId${e}" name="RaEntities[${e}].CountryIdBuId" value="${data[e].countryIdBuId}"  class="form-control readOnlyUpdate clsCountry  valid" onchange="checkDuplicateRaCountry(${e});"></select></td>
+                               <td><input type="date" id="Pivotalbatchmanufactured${e}" name="RaEntities[${e}].PivotalBatchManufactured" value="${data[e].pivotalBatchManufactured == null ?'': data[e].pivotalBatchManufactured.split('T')[0]}" class="form-control readOnlyUpdate  valid"></td>
+                               <td><input type="date" id="LastdatafromRnD${e}" name="RaEntities[${e}].LastDataFromRnD" value="${data[e].lastDataFromRnD == null ?'': data[e].lastDataFromRnD.split('T')[0]}" class="form-control readOnlyUpdate  valid"></td>
+                               <td><input type="date" id="BEFinalReport${e}" name="RaEntities[${e}].BEFinalReport" value="${data[e].befinalReport==null?'': data[e].befinalReport.split('T')[0]}" class="form-control readOnlyUpdate  valid"></td>
+                               
+                               <td><select  id="TypeOfSubmissionId${e}" name="RaEntities[${e}].TypeOfSubmissionId" class="form-control readOnlyUpdate clsTypeOfSubmission  valid" value="${data[e].typeOfSubmissionId}"></select></td>
+                               <td><input type="date" id="DossierReadyDate${e}" name="RaEntities[${e}].DossierReadyDate" value="${data[e].dossierReadyDate != null ? data[e].dossierReadyDate.split('T')[0] : ''}" class="form-control readOnlyUpdate  valid"></td>
+                               <td><input type="date" id="EarliestSubmissionDExcl${e}" name="RaEntities[${e}].EarliestSubmissionDExcl" value="${data[e].earliestSubmissionDexcl != null ? data[e].earliestSubmissionDexcl.split('T')[0] : ''}" class="form-control readOnlyUpdate  valid"></td>
+                                <td><input type="date" id="EarliestLaunchDexcl${e}" name="RaEntities[${e}].EarliestLaunchDexcl" value="${data[e].earliestLaunchDexcl == null ? '' : data[e].earliestLaunchDexcl.split('T')[0]}" class="form-control readOnlyUpdate  valid"></td>
+                                <td> <input type="date" id="LasDateToRegulatory${e}" name="RaEntities[${e}].LasDateToRegulatory" value="${data[e].lasDateToRegulatory == null ? '' : data[e].lasDateToRegulatory.split('T')[0]}" class="form-control readOnlyUpdate valid"></td>
+                               <td> <i class="fa-solid fa-circle-plus nav-icon text-success operationButton" id="addIcon" onclick="addRowra(this);"></i> <i class="fa-solid fa-trash nav-icon text-red raDeleteIcon operationButton DeleteIcon" onclick="deleteRowra(this);" style="display: none;"></i>
+                               </td>
+                               </tr>`;
+                    } catch (e) {
+                        //console.log(e);
+                    }
+                  
+                }
+
+
+            }
+            tbody.append(tr);
+            ShowHideRaDelete();
+            GetCountyByBussinessUnitId();
+            GetTypeOfSubmission();
+            data = null;
+        }
+    } catch (e) {
 
     }
-    else if (data != null) {
-        IsRaEditable = true;
-        for (let e = 0; e < data.length; e++) {
+   
+}
+function BindNewRA(data, IsEdit = false) {
+    if (IsEdit == false) {
+        let tbody = $("#tableRABody");
+        let tr = '';
+        for (var i = 0; i < data.length; i++) {
             tr += `<tr>
-             <td><input type="hidden" id="Pidfpbfraid${e}" class="ra" name="RaEntities[${e}].Pidfpbfraid" value="${data[e].pidfpbfraid}"><select id="raCountryId${e}" name="RaEntities[${e}].CountryIdBuId" value="${data[e].countryIdBuId}"  class="form-control readOnlyUpdate clsCountry  valid" onchange="checkDuplicateRaCountry(${e});"></select></td>
-             <td><input type="date" id="Pivotalbatchmanufactured${e}" name="RaEntities[${e}].PivotalBatchManufactured" value="${data[e].pivotalBatchManufactured.split('T')[0]}" class="form-control readOnlyUpdate  valid"></td>
-             <td><input type="date" id="LastdatafromRnD${e}" name="RaEntities[${e}].LastDataFromRnD" value="${data[e].lastDataFromRnD.split('T')[0]}" class="form-control readOnlyUpdate  valid"></td>
-             <td><input type="date" id="BEFinalReport${e}" name="RaEntities[${e}].BEFinalReport" value="${data[e].befinalReport.split('T')[0]}" class="form-control readOnlyUpdate  valid"></td>
-            
-             <td><select  id="TypeOfSubmissionId${e}" name="RaEntities[${e}].TypeOfSubmissionId" class="form-control readOnlyUpdate clsTypeOfSubmission  valid" value="${data[e].typeOfSubmissionId}"></select></td>
-             <td><input type="date" id="DossierReadyDate${e}" name="RaEntities[${e}].DossierReadyDate" value="${data[e].dossierReadyDate.split('T')[0]}" class="form-control readOnlyUpdate  valid"></td>
-             <td><input type="date" id="EarliestSubmissionDExcl${e}" name="RaEntities[${e}].EarliestSubmissionDExcl" value="${data[e].earliestSubmissionDexcl.split('T')[0]}" class="form-control readOnlyUpdate  valid"></td>
-              <td><input type="date" id="EarliestLaunchDexcl${e}" name="RaEntities[${e}].EarliestLaunchDexcl" value="${data[e].earliestLaunchDexcl == null ? '' : data[e].earliestLaunchDexcl.split('T')[0]}" class="form-control readOnlyUpdate  valid"></td>
-              <td> <input type="date" id="LasDateToRegulatory${e}" name="RaEntities[${e}].LasDateToRegulatory" value="${data[e].lasDateToRegulatory == null ? '' : data[e].lasDateToRegulatory.split('T')[0]}" class="form-control readOnlyUpdate valid"></td>
-             <td> <i class="fa-solid fa-circle-plus nav-icon text-success operationButton" id="addIcon" onclick="addRowra(this);"></i> <i class="fa-solid fa-trash nav-icon text-red raDeleteIcon operationButton DeleteIcon" onclick="deleteRowra(this);" style="display: none;"></i>
+             <td><input type="hidden" id="Pidfpbfraid0" class="ra" name="RaEntities[${i}].Pidfpbfraid" value="0"><select id="raCountryId${i}" name="RaEntities[${i}].CountryIdBuId" class="form-control readOnlyUpdate clsCountry valid" onchange="checkDuplicateRaCountry(${i});"></select></td>
+             <td><input type="date" id="Pivotalbatchmanufactured0" name="RaEntities[${i}].PivotalBatchManufactured" class="form-control readOnlyUpdate  valid"></td>
+             <td><input type="date" id="LastdatafromRnD0" name="RaEntities[${i}].LastDataFromRnD" class="form-control readOnlyUpdate  valid"></td>
+             <td><input type="date" id="BEFinalReport0" name="RaEntities[${i}].BEFinalReport" class="form-control readOnlyUpdate  valid"></td>
+             <td><select  id="TypeOfSubmissionId0" name="RaEntities[${i}].TypeOfSubmissionId" class="form-control readOnlyUpdate valid clsTypeOfSubmission"></select></td>
+             <td><input type="date" id="DossierReadyDate0" name="RaEntities[${i}].DossierReadyDate" class="form-control readOnlyUpdate  valid"></td>
+             <td><input type="date" id="EarliestSubmissionDExcl0" name="RaEntities[${i}].EarliestSubmissionDExcl" class="form-control readOnlyUpdate  valid"></td>
+              <td><input type="date" id="EarliestLaunchDexcl0" name="RaEntities[${i}].EarliestLaunchDexcl" class="form-control readOnlyUpdate valid"></td>
+              <td> <input type="date" id="LasDateToRegulatory0" name="RaEntities[${i}].LasDateToRegulatory" class="form-control readOnlyUpdate valid"></td>
+             <td>  <i class="fa-solid fa-circle-plus nav-icon text-success operationButton" id="addIcon" onclick="addRowra(this);"></i> <i class="fa-solid fa-trash nav-icon text-red raDeleteIcon operationButton DeleteIcon" onclick="deleteRowra(this);" style="display: none;"></i>
              </td>
              </tr>`;
         }
 
 
+        tbody.append(tr);
+        ShowHideRaDelete();
+       var element = $('#tableRA').find('.clsCountry');
+       element.find("option").remove();
+       var _emptyOption = '<option value="">-- Select --</option>';
+       element.append(_emptyOption);
+        for (var i = 0; i < data.length; i++) {
+              element.append('<option  value="' + data[i].countryId + '">' + data[i].countryName + '</option>');
+            $(`select#raCountryId${i}`).val(data[i].countryId);
+        }
+        GetTypeOfSubmission();
+        data = null;
     }
-    tbody.append(tr);
-    ShowHideRaDelete();
-    GetCountyByBussinessUnitId();
-    GetTypeOfSubmission();
-    data = null;
 }
+
 function GetRa(PidfId, PifdPbfId) {
     let buId = SelectedBUValue == 0 ? _selectBusinessUnit : SelectedBUValue;
     ajaxServiceMethod($('#hdnBaseURL').val() + GetRaurl + "/" + PidfId + "/" + PifdPbfId + "/" + buId, 'GET', GetRaSuccess, GetRaError);
@@ -3520,11 +3563,12 @@ function GetRaSuccess(response) {
     try {
         if (response.length > 0) {
             console.log(response);
-            BindRA(response);
+            IsRaEditable = true;
+            BindRA(response, true);
         }
-        else {
-            BindRA();
-        }
+        //else {
+        //    BindRA();
+        //}
     }
 
     catch (e) {
