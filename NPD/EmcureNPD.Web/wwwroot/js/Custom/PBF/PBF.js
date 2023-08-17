@@ -3457,6 +3457,7 @@ function GetTypeOfSubmissionSuccess(data) {
             });
         }
         bindRaDropDowns();
+        GetTypeOfSubmissionForRaTabSuccess(data);
     }
     catch (e) {
         toastr.error(e.message);
@@ -3464,6 +3465,27 @@ function GetTypeOfSubmissionSuccess(data) {
 }
 function GetTypeOfSubmissionError(x, y, z) {
     toastr.error(ErrorMessage);
+}
+function GetTypeOfSubmissionForRaTabSuccess(data) {
+    try {
+        var typeOfSubmissionTable = document.querySelector(".card-body.table-overflow table tbody");
+        typeOfSubmissionTable.innerHTML = ""; 
+
+        if (data != null && data.length > 0) {
+            data.forEach(function (item) {
+                var row = typeOfSubmissionTable.insertRow();
+                var submissionTypeCell = row.insertCell(0);
+                submissionTypeCell.innerText = item.typeOfSubmission            });
+        } else {
+            // Show a message if there is no data
+            var emptyRow = typeOfSubmissionTable.insertRow();
+            var emptyCell = emptyRow.insertCell(0);
+            emptyCell.colSpan = 2;
+            emptyCell.innerText = "No data available.";
+        }
+    } catch (e) {
+        toastr.error(e.message);
+    }
 }
 function BindRA(data = null) {
     let tbody = $("#tableRABody");
@@ -3510,6 +3532,7 @@ function BindRA(data = null) {
     ShowHideRaDelete();
     GetCountyByBussinessUnitId();
     GetTypeOfSubmission();
+    GetNationalApprovals();
     data = null;
 }
 function GetRa(PidfId, PifdPbfId) {
@@ -3614,7 +3637,6 @@ $("#NonStandardProduct").click(function () {
         $(this).val(false);
     }
 })
-
 function checkDuplicateRaCountry(id) {
 
     let countryId = [];
@@ -3651,3 +3673,35 @@ function checkDuplicateRaCountry(id) {
         }
     });
 }
+
+function GetNationalApprovals() {
+
+    ajaxServiceMethod($('#hdnBaseURL').val() + getNationApprovalsurl, 'GET', GetNationalApprovalsSuccess, GetNationalApprovalsError);
+}
+function GetNationalApprovalsSuccess(data) {
+    try {
+        var nationalApprovalTable = document.querySelectorAll(".card-body.table-overflow")[1].querySelector("table tbody");
+        nationalApprovalTable.innerHTML = ""; 
+
+        if (data != null && data.length > 0) {
+            data.forEach(function (item) {
+                var row = nationalApprovalTable.insertRow();
+                var nameCell = row.insertCell(0);
+                nameCell.innerText = item.nationApprovalName;
+            });
+        } else {
+            // Show a message if there is no data
+            var emptyRow = nationalApprovalTable.insertRow();
+            var emptyCell = emptyRow.insertCell(0);
+            emptyCell.colSpan = 2;
+            emptyCell.innerText = "No data available.";
+        }
+    } catch (e) {
+        toastr.error(e.message);
+    }
+}
+function GetNationalApprovalsError(x, y, z) {
+    toastr.error(ErrorMessage);
+}
+
+

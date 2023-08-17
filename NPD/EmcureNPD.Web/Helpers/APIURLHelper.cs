@@ -377,6 +377,7 @@ namespace EmcureNPD.Web.Helpers
         public static string GetPBFTabDetails = "api/PBF/PBFTabDetails";
         public static string GetTypeOfSubmission = "api/PBF/GetTypeOfSubmission";
         public static string GetRa = "api/PBF/GetRa";
+        public static string GetNationApprovals = "api/PBF/GetNationApprovals";
         #endregion PIDF
 
         #region MarketExtension

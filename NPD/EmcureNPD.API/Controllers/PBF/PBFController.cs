@@ -157,5 +157,19 @@ namespace EmcureNPD.API.Controllers.PBF
                 return _ObjectResponse.Create(null, (Int32)HttpStatusCode.BadRequest, "No Records found");
             }
         }
+
+        [HttpGet, Route("GetNationApprovals")]
+        public async Task<IActionResult> GetNationApprovals()
+        {
+            try
+            {
+                return _ObjectResponse.CreateData(await _PBFService.GetNationApprovals(), (Int32)HttpStatusCode.OK);
+            }
+            catch (Exception e)
+            {
+                await _ExceptionService.LogException(e);
+                return _ObjectResponse.Create(null, (Int32)HttpStatusCode.BadRequest, "No Records found");
+            }
+        }
     }
 }

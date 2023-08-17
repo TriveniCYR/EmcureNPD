@@ -59,6 +59,7 @@ namespace EmcureNPD.Business.Core.Implementation
 
         private IRepository<PidfPbfGeneralRnd> _repositoryPidfPbfGeneralRnd { get; set; }
         private IRepository<PidfPbfRnDPackSizeStability> _repositoryPidfPbfRnDPackSizeStability { get; set; }
+        private IRepository<MasterNationApproval> _masterNationApproval { get; set; }
         public PBFService(IUnitOfWork unitOfWork, IMapperFactory mapperFactory, INotificationService notificationService, IMasterAuditLogService auditLogService,
 
             IHelper helper, IExceptionService exceptionService, IConfiguration configuration)
@@ -98,6 +99,7 @@ namespace EmcureNPD.Business.Core.Implementation
             _masterTypeOfSubmission = _unitOfWork.GetRepository<MasterTypeOfSubmission>();
             _repositoryPidfPbfGeneralRnd = _unitOfWork.GetRepository<PidfPbfGeneralRnd>();
             _repositoryPidfPbfRnDPackSizeStability = _unitOfWork.GetRepository<PidfPbfRnDPackSizeStability>();
+            _masterNationApproval = _unitOfWork.GetRepository<MasterNationApproval>();
         }
 
         public async Task<dynamic> FillDropdown(int PIDFId)
@@ -343,7 +345,12 @@ namespace EmcureNPD.Business.Core.Implementation
             var dbObj = await _masterTypeOfSubmission.GetAllAsync();
             return _mapperFactory.GetList<MasterTypeOfSubmission, MasterTypeOfSubmissionEntity>(dbObj.ToList());
         }
-
+        public async Task<List<MasterNationApprovalEntity>> GetNationApprovals()
+        {
+            var dbObj = await _masterNationApproval.GetAllAsync();
+            return _mapperFactory.GetList<MasterNationApproval, MasterNationApprovalEntity>(dbObj.ToList());
+        }
+        
         #region Private Methods
 
         public async Task<long> SavePidfAndPBFCommanDetails(long pidfid, PBFFormEntity pbfentity)

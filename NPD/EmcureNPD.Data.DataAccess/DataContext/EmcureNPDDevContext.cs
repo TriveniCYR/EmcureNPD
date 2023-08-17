@@ -78,6 +78,7 @@ namespace EmcureNPD.Data.DataAccess.DataContext
         public virtual DbSet<MasterTestType> MasterTestTypes { get; set; }
         public virtual DbSet<MasterTransform> MasterTransforms { get; set; }
         public virtual DbSet<MasterTypeOfSubmission> MasterTypeOfSubmissions { get; set; }
+        public virtual DbSet<MasterNationApproval> MasterNationApprovals { get; set; }
         public virtual DbSet<MasterUnitofMeasurement> MasterUnitofMeasurements { get; set; }
         public virtual DbSet<MasterUser> MasterUsers { get; set; }
         public virtual DbSet<MasterUserBusinessUnitMapping> MasterUserBusinessUnitMappings { get; set; }
