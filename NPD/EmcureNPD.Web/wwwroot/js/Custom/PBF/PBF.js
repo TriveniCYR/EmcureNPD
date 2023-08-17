@@ -1158,14 +1158,15 @@ function BindGeneralPackSizeStability(data) {
     $("DvPackSizeStability").empty();
     let html = '<table id="tblPackSizeStability" class="table text-center tableTDHint"><thead class="bg-primary text-bold"><tr><td>PackSize Stability</td>';
     let td = '';
+    let packSizeTrIndex = 0;
     let isShowHeader = false
     let pidfProductStrengthId = [];
     if (data != null && data != undefined) {
         if (data.pidfPackSizeGeneralRanDList != null && data.pidfPackSizeGeneralRanDList.length > 0) {
             for (var i = 0; i < data.pidfPackSizeGeneralRanDList.length; i++) {
                 html += `<td> ${data.pidfPackSizeGeneralRanDList[i].packSizeName}<input type="hidden" name="PidfPbfRnDPackSizeStability[${i}].PackSizeId" value="${data.pidfPackSizeGeneralRanDList[i].packSizeId}"></td>`;
-                td += `<td id="td${i}"><input type="hidden" name="PidfPbfRnDPackSizeStability[${i}].PackSizeStabilityId" value="${data.pidfPackSizeGeneralRanDList[i].packSizeStabilityId}"><input type="text" class="form-control clsValue" id="txt${data.pidfPackSizeGeneralRanDList[i].pidfProductStrengthId}${i}" disabled="disabled"  data-val="${data.pidfPackSizeGeneralRanDList[i].pidfProductStrengthId}" name="PidfPbfRnDPackSizeStability[${i}].Value" value="${data.pidfPackSizeGeneralRanDList[i].value}"></td>`;
-                
+                td += `<td id="td${i}"><input type="hidden" name="PidfPbfRnDPackSizeStability[${i}].PackSizeStabilityId" value="${data.pidfPackSizeGeneralRanDList[i].packSizeStabilityId}"><input type="text" class="form-control clsValue"  disabled="disabled"  data-val="${data.pidfPackSizeGeneralRanDList[i].pidfProductStrengthId}" name="PidfPbfRnDPackSizeStability[${i}].Value" value="${data.pidfPackSizeGeneralRanDList[i].value}"></td>`;
+                packSizeTrIndex = j;
             }
             html += '</tr></thead>'
             isShowHeader = true
@@ -1173,6 +1174,7 @@ function BindGeneralPackSizeStability(data) {
         if (data.pidfProductStrengthGeneralRanDList != null) {
             for (var j = 0; j < data.pidfProductStrengthGeneralRanDList.length; j++) {
                 html += `<tr><td>${data.pidfProductStrengthGeneralRanDList[j].strength} ${data.pidfProductStrengthGeneralRanDList[j].unitofMeasurementName}<input type="hidden" name="PidfPbfRnDPackSizeStability[${j}].StrengthId" value="${data.pidfProductStrengthGeneralRanDList[j].strength}"></td>${td}</tr>`
+               
             }
         }
         html += '</table>';
@@ -1184,23 +1186,33 @@ function BindGeneralPackSizeStability(data) {
             }
         }
         if (data.pidfPackSizeGeneralRanDList != null) {
+            var distinct = []
             for (var i = 0; i < data.pidfPackSizeGeneralRanDList.length; i++) {
-                for (let x = 0; x < pidfProductStrengthId.length; x++) {
-                    if (pidfProductStrengthId[x] == data.pidfPackSizeGeneralRanDList[i].pidfProductStrengthId) {
-                        $("#txt" + pidfProductStrengthId[x] + i).prop('disabled', false);
-                        console.log("#txt" + pidfProductStrengthId[x] + i)
-                    }
-                    else {
-                        $("#txt" + pidfProductStrengthId[x] + i).prop('disabled', true);
-                    }
-                }
+                if (!distinct.includes(data.pidfPackSizeGeneralRanDList[i].pidfProductStrengthId)) {
+                    distinct.push(data.pidfPackSizeGeneralRanDList[i].pidfProductStrengthId)
+                 }
             }
-            $(".clsValue").each(function (index, value) {
-                if ($(this).prop('disabled')) {
-                    $(this).val("");
-                    $(this).attr("value","");
+            $(".clsValue").each(function(index){
+                for (let x = 0; x < pidfProductStrengthId.length; x++) {
+                    $(this).attr('id', pidfProductStrengthId[x]+""+x+""+index);
                 }
+                if (pidfProductStrengthId.includes(parseInt($(this).attr('data-val')))) {
+                    let Id = $(this).attr('id');
+                    $(`#${Id}`).prop('disabled', false);
+                    console.log($(this).attr('id'))
+                }
+                //else {
+                //    $(this).prop('disabled', true);
+                //}
             });
+           
+            //}
+            //$(".clsValue").each(function (index, value) {
+            //    if ($(this).prop('disabled')) {
+            //        $(this).val("");
+            //        $(this).attr("value","");
+            //    }
+            //});
     }
         pidfProductStrengthId = [];
         if (isShowHeader) {
