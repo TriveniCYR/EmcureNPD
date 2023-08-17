@@ -24,6 +24,8 @@ using Dapper;
 
 using static EmcureNPD.Utility.Enums.GeneralEnum;
 using System.Data;
+using Microsoft.AspNetCore.Http;
+using EmcureNPD.Utility.Enums;
 
 namespace EmcureNPD.Business.Core.Implementation
 {
@@ -160,7 +162,7 @@ namespace EmcureNPD.Business.Core.Implementation
                 //tableDependency.Start();
                 //_databaseSubscription.Changed += dbChangeNotification;
                ;
-				var task = Task.Run(() => SendNotification());
+				var task = Task.Run(() => SendNotification(objNotification.NotificationId));
 				//bool result = task.Result;
 				return DBOperation.Success;
             }
@@ -170,12 +172,15 @@ namespace EmcureNPD.Business.Core.Implementation
                 return DBOperation.Error;
             }
         }
-		public async Task<EmailNotificationEntity> SendNotification()
+		public async Task<EmailNotificationEntity> SendNotification(long NotificationId)
 		{
 			string _logMessage = string.Empty;
 			EmailNotificationEntity model = new EmailNotificationEntity();
 			string _logMessage_PIDFSubmittted = "\n";
-			var dbresult =  _masterUser.GetDataSetBySP("GetEmailNotification", System.Data.CommandType.StoredProcedure, null).Result;
+			SqlParameter[] osqlParameter = {
+				new SqlParameter("@NotificationId",NotificationId),
+			};
+			var dbresult =  _masterUser.GetDataSetBySP("GetEmailNotification", System.Data.CommandType.StoredProcedure, osqlParameter).Result;
 			dynamic UserList = new ExpandoObject();
 			if (dbresult != null)
 			{
@@ -200,6 +205,7 @@ namespace EmcureNPD.Business.Core.Implementation
 		}
 		public void SendNotificationMail(List<EmailNotificationEntity> sendNotificationModel_list, ref string _logMessage)
 		{
+            var landingUrl = configuration.GetSection("AllowedOrigins").Value.ToString(); //+ "/PIDF/PIDFList?ScreenId=" + (int)PIDFScreen.PBF;
 			foreach (var sendNotificationModel in sendNotificationModel_list)
 			{
 				try
@@ -211,7 +217,7 @@ namespace EmcureNPD.Business.Core.Implementation
 					strHtml = strHtml.Replace("{User}", sendNotificationModel.SendToName);
 					strHtml = strHtml.Replace("{PIDFStatus}", sendNotificationModel.PIDFStatus);
 					strHtml = strHtml.Replace("{UpdatedByUser}", sendNotificationModel.CreatedByName);
-					strHtml = strHtml.Replace("{Url}", "https://www.emcure.com/");
+					strHtml = strHtml.Replace("{Url}", landingUrl);
 					string str_subject = "PIDF : " + sendNotificationModel.PidfNo + " Updated";
 					email.SendMail(sendNotificationModel.EmailAddress, string.Empty, str_subject, strHtml, _MasterUserService.GetSMTPConfiguration());
 					_logMessage += " Email Sent to { " + sendNotificationModel.EmailAddress + " } on " + DateTime.Now.ToString() + "" + "\n";
