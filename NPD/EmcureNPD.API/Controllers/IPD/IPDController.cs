@@ -231,12 +231,12 @@ namespace EmcureNPD.API.Controllers.IPD
             }
         }
 
-        [HttpGet, Route("GetCountryByIsInterestedCountry/{BUId}")]
-        public async Task<IActionResult> GetCountryByIsInterestedCountry(string BUId)
+        [HttpGet, Route("GetCountryByIsInterestedCountry/{BUId}/{PidfId}")]
+        public async Task<IActionResult> GetCountryByIsInterestedCountry(string BUId, string PidfId)
         {
             try
             {
-                var oCountryList = await _IPDService.GetCountryByIsInterestedCountry(BUId);
+                var oCountryList = await _IPDService.GetCountryByIsInterestedCountry(BUId,PidfId);
                 if (oCountryList != null)
                     return _ObjectResponse.Create(oCountryList, (int)HttpStatusCode.OK);
                 else

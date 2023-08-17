@@ -2,7 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata;
 using EmcureNPD.Data.DataAccess.Entity;
-using EmcureNPD.Utility;
+
 #nullable disable
 
 namespace EmcureNPD.Data.DataAccess.DataContext
@@ -53,6 +53,7 @@ namespace EmcureNPD.Data.DataAccess.DataContext
         public virtual DbSet<MasterManufacturing> MasterManufacturings { get; set; }
         public virtual DbSet<MasterMarketExtenstion> MasterMarketExtenstions { get; set; }
         public virtual DbSet<MasterModule> MasterModules { get; set; }
+        public virtual DbSet<MasterNationApproval> MasterNationApprovals { get; set; }
         public virtual DbSet<MasterNotification> MasterNotifications { get; set; }
         public virtual DbSet<MasterNotificationUser> MasterNotificationUsers { get; set; }
         public virtual DbSet<MasterOral> MasterOrals { get; set; }
@@ -85,6 +86,7 @@ namespace EmcureNPD.Data.DataAccess.DataContext
         public virtual DbSet<MasterUserDepartmentMapping> MasterUserDepartmentMappings { get; set; }
         public virtual DbSet<MasterUserRegionMapping> MasterUserRegionMappings { get; set; }
         public virtual DbSet<MasterWishListType> MasterWishListTypes { get; set; }
+        public virtual DbSet<MasterWorkFlowTask> MasterWorkFlowTasks { get; set; }
         public virtual DbSet<MasterWorkflow> MasterWorkflows { get; set; }
         public virtual DbSet<Pidf> Pidfs { get; set; }
         public virtual DbSet<PidfApiCharter> PidfApiCharters { get; set; }
@@ -156,8 +158,8 @@ namespace EmcureNPD.Data.DataAccess.DataContext
             if (!optionsBuilder.IsConfigured)
             {
 #warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see http://go.microsoft.com/fwlink/?LinkId=723263.
-				optionsBuilder.UseSqlServer(DatabaseConnection.NPDDatabaseConnection);
-			}
+                optionsBuilder.UseSqlServer("Data Source=180.149.241.172;Initial Catalog=EmcureNPDDev;Persist Security Info=True;User ID=emcurenpddev_dbUser;pwd=emcure123!@#");
+            }
         }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
@@ -696,6 +698,24 @@ namespace EmcureNPD.Data.DataAccess.DataContext
                 entity.Property(e => e.ModifyDate).HasColumnType("datetime");
 
                 entity.Property(e => e.ModuleName).HasMaxLength(250);
+            });
+
+            modelBuilder.Entity<MasterNationApproval>(entity =>
+            {
+                entity.HasKey(e => e.NationApprovalId)
+                    .HasName("PK__Master_N__F813848F1CA8F1BF");
+
+                entity.ToTable("Master_NationApproval", "dbo");
+
+                entity.Property(e => e.CreatedDate)
+                    .HasColumnType("datetime")
+                    .HasDefaultValueSql("(getdate())");
+
+                entity.Property(e => e.NationApprovalName)
+                    .HasMaxLength(255)
+                    .IsUnicode(false);
+
+                entity.Property(e => e.UpdatedDate).HasColumnType("datetime");
             });
 
             modelBuilder.Entity<MasterNotification>(entity =>
@@ -1259,6 +1279,27 @@ namespace EmcureNPD.Data.DataAccess.DataContext
                 entity.Property(e => e.UpdatedOn).HasColumnType("datetime");
 
                 entity.Property(e => e.WishListTyp).HasMaxLength(50);
+            });
+
+            modelBuilder.Entity<MasterWorkFlowTask>(entity =>
+            {
+                entity.HasKey(e => e.TaskId)
+                    .HasName("PK__Master_W__7C6949B1C919D1D6");
+
+                entity.ToTable("Master_WorkFlowTasks", "dbo");
+
+                entity.Property(e => e.CreatedDate).HasColumnType("datetime");
+
+                entity.Property(e => e.IsActive).HasColumnName("isActive");
+
+                entity.Property(e => e.TaskName)
+                    .HasMaxLength(200)
+                    .IsUnicode(false);
+
+                entity.HasOne(d => d.Workflow)
+                    .WithMany(p => p.MasterWorkFlowTasks)
+                    .HasForeignKey(d => d.WorkflowId)
+                    .HasConstraintName("FK__Master_Wo__Workf__4066405D");
             });
 
             modelBuilder.Entity<MasterWorkflow>(entity =>

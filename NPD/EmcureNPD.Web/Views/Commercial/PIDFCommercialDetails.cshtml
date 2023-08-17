@@ -97,24 +97,20 @@
 
                                 </div>
                                 @*------------End----BU tabs--------------------------------*@
-                                @*   <div class="row">
-                                <div class="col-md-4">
-                                <div class="form-group required">
-                                @Html.LabelFor(model => model.Interested, "Interested", new { @class = "control-label" })
-                                <span class="text-danger">*</span>
-                                @Html.RadioButtonFor(model => model.Interested, true, new { @class="IsInterestedYes" }) @Html.LabelFor(model => model.Interested, "Yes")
-                                @Html.RadioButtonFor(model => model.Interested, false, new { @class="IsInterestedNo" }) @Html.Label("No")
-                                <br />
-                                <label id="valmsgInterested" class="text-danger"></label>
+                                @*---------------Start--Country---------------------*@
+
+                                <div class="card card-info card-outline-tabs m-0">
+                                    <div class="card-header p-0 border-bottom-0">
+                                        @*@if (Model.MasterStrengthEntities.Count() > 0 || Model.MasterStrengthEntities != null)
+                                        {
+                                        <input type="hidden" id="PIDFProductStrengthId" value="@Model.MasterStrengthEntities[0].PidfproductStrengthId" />
+                                        }*@
+                                        <ul class="nav nav-tabs row m-0 text-center" id="navCountryTabs">
+                                        </ul>
+                                    </div>
                                 </div>
-                                </div>
-                                <div class="col-md-8">
-                                <div class="form-group required">
-                                @Html.LabelFor(model => model.Remark, "Remark", new { @class = "control-label" })
-                                @Html.TextAreaFor(model => model.Remark, new { @class = "form-control RemarkText" })
-                                </div>
-                                </div>
-                                </div>*@
+                                <div class="clearfix">&nbsp;</div>
+                                @*-----------------End- of-Country---------------------*@
                                 @*-----------------Strength---------------------*@
 
                                 <div class="card card-maroon card-outline card-outline-tabs m-0">
@@ -664,6 +660,8 @@
     const GetPBFOutsourcingTabDropDownData = "@EmcureNPD.Web.Helpers.APIURLHelper.GetPBFOutsourcingTabDropDownData";
     const GetPBFWorkFlowTaskNamesurl = "@EmcureNPD.Web.Helpers.APIURLHelper.GetPBFWorkFlowTaskNames";
     const AddUpdatePBFoutsourceDataUrl = "@EmcureNPD.Web.Helpers.APIURLHelper.AddUpdatePBFoutsourceData";
+    const GetCountryListURL = "@EmcureNPD.Web.Helpers.APIURLHelper.GetCountryByIsInterestedCountry";
+
 
     var _PIDFID = "@UtilityHelper.Decreypt(Convert.ToString(Context.Request.Query["pidfid"]))";
     var _EncPIDFID = "@Convert.ToString(Context.Request.Query["pidfid"])";
