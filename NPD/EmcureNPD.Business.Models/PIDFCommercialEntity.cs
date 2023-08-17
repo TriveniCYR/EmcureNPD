@@ -17,6 +17,7 @@ namespace EmcureNPD.Business.Models
         public Boolean Interested { get; set; }
         public string Remark { get; set; }
         public int MainBusinessUnitId { get; set; }
+        public int MainCountryId { get; set; }
     }
 
 
@@ -25,6 +26,7 @@ namespace EmcureNPD.Business.Models
         public long PidfcommercialId { get; set; }
         public long Pidfid { get; set; }
         public int BusinessUnitId { get; set; }
+        public int CountryId { get; set; }
         public long PidfproductStrengthId { get; set; }
         public int IsView { get; set; }
         public string MarketSizeInUnit { get; set; }       

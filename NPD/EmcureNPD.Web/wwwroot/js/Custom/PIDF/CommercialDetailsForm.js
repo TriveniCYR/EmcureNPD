@@ -5,11 +5,14 @@ var objdropdownYearControls_array = ['PackagingTypeId', 'CurrencyId', 'FinalSele
 var ColumnObjUpcase = ['packagingTypeId', 'commercialBatchSize', 'priceDiscounting', 'totalApireq', 'apireq', 'suimsvolume', 'marketGrowth', 'marketSize', 'priceErosion', 'finalSelectionId'];
 var SelectedBUValue = 0;
 var selectedStrength = 0;
+var selectedCountry = 0
 var EditIndex = -1;
 var MainRowEditIndex = -1;
 var PIDFCommercialMaster;
 var IsPageLoad = true;
 var IsTabClick = false;
+var IsCommTabClick = false;
+var MainArrCountryList = [];
 $(document).ready(function () {
     $('#mainDivCommercial').find('label[id^="valmsg"]').hide();
     IsViewModeCommercial();
@@ -224,6 +227,7 @@ function SaveCommertialPIDFForm() {
     // $.extend(objMainForm, { 'Interested': $("#Interested").prop('checked') }); 
     $.extend(objMainForm, { 'Remark': $("#Remark").val() });
     $.extend(objMainForm, { 'MainBusinessUnitId': parseInt(SelectedBUValue) });
+    $.extend(objMainForm, { 'MainCountryId': selectedCountry });
     /* ---------------------------------*/
     $.extend(objMainForm, { 'PIDFArrMainCommercial': ArrMainCommercial });
     ajaxServiceMethod($('#hdnBaseURL').val() + SaveCommercialPIDF, 'POST', SaveCommertialPIDFFormSuccess, SaveCommertialPIDFFormError, JSON.stringify(objMainForm));
@@ -232,10 +236,11 @@ function SaveCommertialPIDFFormSuccess(data) {
     try {
         $('#SavePIDFModel').modal('hide');
         if (data._Success === true) {
-            toastr.success(data._Message);
             IsShowCancel_Save_buttons(true);
-            if (!IsTabClick)
-            window.location.href = "/PIDF/PIDFList?ScreenId=4";
+            if (!IsTabClick) {
+                toastr.success(data._Message);
+                window.location.href = "/PIDF/PIDFList?ScreenId=4";
+            }
         }
         else {
             toastr.error(data._Message);
@@ -253,6 +258,7 @@ function BUtabClick(BUVal, pidfidval) {
     SelectedBUValue = BUVal;
     ClearValidationForYearForm();
     ClearValidationForMainForm();
+    renderCountryTabList(BUVal);
     Update_BUstregthPackTable(ArrMainCommercial);
     // Update_IsInterested_Remark();
     SetCommercialDisableForOtherUserBU();
@@ -280,6 +286,11 @@ function Update_IsInterested_Remark() {
         }
     }
 }
+function CountrytabClick(countryVal, pidfidval) {
+    $('[id^="Countrytab_"]').removeClass('active');
+    $('#Countrytab_' + countryVal).addClass('active');
+    selectedCountry = countryVal;
+}
 function StrengthtabClick(strengthVal, pidfidval) {
     $('[id^="Strengthtab_"]').removeClass('active');
     $('#Strengthtab_' + strengthVal).addClass('active');
@@ -303,6 +314,8 @@ function GetCommercialPIDFByBUSuccess(data) {
         GetFSList(data._object.FinalSelection);
 
         renderBusinessUnit(data._object.BusinessUnit);
+        MainArrCountryList = data._object.CountryList;
+        renderCountryTabList(SelectedBUValue);
         renderPIDFStrength(data._object.PIDFStrength);
         PIDFCommercialMaster = data._object.PIDFCommercialMaster;
         setCommercialArray(data._object.Commercial, data._object.CommercialYear);
@@ -789,6 +802,37 @@ function renderPIDFStrength(pidfStrength) {
     selectedStrength = PIDFProductStrengthId;
     $('#Strengthtab_' + PIDFProductStrengthId).addClass('active');
 }
+//function GetCountryList(selectedBU) {
+//    ajaxServiceMethod($('#hdnBaseURL').val() + GetCountryListURL + "/" + selectedBU + "/" + _PIDFID, 'GET', GetCountryListSuccess, GetCountryListError);
+
+//}
+//function GetCountryListSuccess(data) {
+//    try {
+//        renderCountryTabList(data._object)
+//        // getParentFormId().find('.SelectCountryPD').val(arr).trigger('change');
+//    } catch (e) {
+//        toastr.error('Error:' + e.message);
+//    }
+//}
+//function GetCountryListError(x, y, z) {
+//    toastr.error(ErrorMessage);
+//}
+function renderCountryTabList(BuVal) {
+    $('#dvCommercialForm').find("#navCountryTabs").html('');
+    var html = "";
+    var _CountryListforSelectedBU = $.grep(MainArrCountryList, function (n, i) {
+        return n.businessUnitId == BuVal;
+    });
+    $.each(_CountryListforSelectedBU, function (index, item) {
+        html += '<li class="nav-item col-6 p-0 pt-1">\
+    <a class="nav-link" onClick="CountrytabClick('+ item.countryId + ',' + parseInt($("#PIDFId").val()) + ');" id="Countrytab_' + item.countryId + '">' + item.countryName + '</a></li>';
+    });
+    $('#dvCommercialForm').find("#navCountryTabs").append(html);
+
+    var _countryId = _CountryListforSelectedBU[0].countryId;
+    selectedCountry = _countryId;
+    $('#Countrytab_' + _countryId).addClass('active');
+}
 function setCommercialArray(Commercial, CommercialYear) {
     $.each(Commercial, function (index, item) {
         item.PidfCommercialYears = [];
@@ -990,7 +1034,7 @@ function IsPBFPageValid() {
 }
 function SavePBFOutsourceData(saveType) {
   //  IsPBFPageValid = true;
-    if (IsPBFPageValid() && ValidateTaskData()) {
+    if (saveType == 'SvDrf' || (IsPBFPageValid() && ValidateTaskData())) {
         var pbfworkflowId = $('#ddlPbfworkflowId').val();
         var _projectWorkFlowId = $('#ddlProjectWorkflowId').val();
         var PidfPbfOutsourceTask = getPBFTaskDataToSave();
@@ -1009,9 +1053,11 @@ function AddUpdatePBFoutsourceDataSuccess(data) {
     try {
        // $('#SavePIDFModel').modal('hide');
         if (data._Success === true) {
-            toastr.success(data._Message);
-            if (!IsTabClick)
-            window.location.href = "/PIDF/PIDFList?ScreenId=4";
+            
+            if (!IsTabClick) {
+                toastr.success(data._Message);
+                window.location.href = "/PIDF/PIDFList?ScreenId=4";
+            }
         }
         else {
             toastr.error(data._Message);
@@ -1078,10 +1124,12 @@ function ValidateTaskData() {
 //PBF Save
 $('#btnPBFCommercialSubmit').click(function () {
     IsTabClick = false;
+    IsCommTabClick = false;
     SavePBFOutsourceData('Sv');
 });
 $('#btnSaveAsDraftPBFCommercial').click(function () {
     IsTabClick = false;
+    IsCommTabClick = false;
     SavePBFOutsourceData('SvDrf');
 });
 $('#custom-tabs-BudgetApproval-PBF-tab').click(function () {//commercial Tab Click
@@ -1095,6 +1143,7 @@ $("#custom-tabs-BudgetApproval-Finance-tab").click(function () {
         IsPageLoad = false;
         SetPBFDDLValues();
     }
+    IsCommTabClick = true;
     CommercialSubmitClick('TabClick');
 });
 $('#mainDivCommercial').find("#btnSubmit").click(function () {

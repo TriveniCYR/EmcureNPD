@@ -8,7 +8,9 @@ var selectedStrength = 0;
 var EditIndex = -1;
 var MainRowEditIndex = -1;
 var PIDFCommercialMaster;
-
+var IsPageLoad = true;
+var IsTabClick = false;
+var IsCommTabClick = false;
 $(document).ready(function () {
     $('#mainDivCommercial').find('label[id^="valmsg"]').hide();
     IsViewModeCommercial();
@@ -74,7 +76,7 @@ function ValidateYearForm() {
     if (!status) {
         var controltobeFocus = ArrofInvalid[ArrofInvalid.length - 1];
         $('#' + controltobeFocus).focus();
-        toastr.error('Some fields are missing in Year data!');
+        toastr.error('Some fields are missing !');
     }
     return status;
 }
@@ -169,22 +171,32 @@ function ResetYearFormValues() {
         }
     });
 }
+function CommercialSubmitClick(saveType) {
+    let InterestedStatus = true; // ValidateIsInterested();
+    if (InterestedStatus && ValidateBU_Strength()) {
+        if (ArrMainCommercial.length > 0) {
+            if (ValidateYearDataExist()) {
+                $.extend(objMainForm, { 'SaveType': saveType });
+                SaveCommertialPIDFForm();
+            }
+        } else {
+            toastr.error('No Data Added');
+        }
+    }
+}
+function CommercialSaveAsDraftClickClick(saveType) {
 
-$('#mainDivCommercial').find("#btnSubmit").click(function () {
-    Commercial_PBF_Common_Save('Sv');
-});
-$('#mainDivCommercial').find("#btnSaveAsDraft").click(function () {
-    Commercial_PBF_Common_Save('SvDrf');
-    //if (ValidateBU_Strength()) {
-    //    if (ArrMainCommercial.length > 0) {
-    //        $.extend(objMainForm, { 'SaveType': 'SvDrf' });
-    //        SaveCommertialPIDFForm();
-    //    }
-    //    else {
-    //        toastr.error('No Data Added in Commercial');
-    //    }
-    //}
-});
+    if (ValidateBU_Strength()) {
+        if (ArrMainCommercial.length > 0) {
+            $.extend(objMainForm, { 'SaveType': saveType });
+            SaveCommertialPIDFForm();
+        }
+        else {
+            toastr.error('No Data Added');
+        }
+    }
+}
+
 $(document).on("change", "#mainDivCommercial .InvalidBox", function () {
     if ($(this).val() != '' && $(this).val() != 0) {
         $(this).removeClass("InvalidBox");
@@ -221,9 +233,11 @@ function SaveCommertialPIDFFormSuccess(data) {
     try {
         $('#SavePIDFModel').modal('hide');
         if (data._Success === true) {
-            toastr.success(data._Message);
             IsShowCancel_Save_buttons(true);
-            window.location.href = "/PIDF/PIDFList?ScreenId=4";
+            if (!IsTabClick) {
+                toastr.success(data._Message);
+                window.location.href = "/PIDF/PIDFList?ScreenId=4";
+            }
         }
         else {
             toastr.error(data._Message);
@@ -972,30 +986,36 @@ function IsPBFPageValid() {
         $('#valmsgddlProjectWorkflowId').text('');
     }
     if(!IsValid)
-        toastr.error('Some feilds missing values in PBF!'); 
+        toastr.error('Some feilds missing values!'); 
 
     return IsValid;
 }
-function SavePBFOutsourceData() {    
+function SavePBFOutsourceData(saveType) {
+  //  IsPBFPageValid = true;
+    if ((IsPBFPageValid() && ValidateTaskData()) && saveType=='SvDrf') {
         var pbfworkflowId = $('#ddlPbfworkflowId').val();
         var _projectWorkFlowId = $('#ddlProjectWorkflowId').val();
         var PidfPbfOutsourceTask = getPBFTaskDataToSave();
 
         var MainObj_PBFOutsourceSaveData = {
+            'SaveType': saveType,
             'Pidfid': _PIDFID,
             'ProjectWorkflowId': _projectWorkFlowId,
             'PbfWorkFlowId': pbfworkflowId,
             'pidfpbfoutsourceTaskEntityList': PidfPbfOutsourceTask
         };
         ajaxServiceMethod($('#hdnBaseURL').val() + AddUpdatePBFoutsourceDataUrl, 'POST', AddUpdatePBFoutsourceDataSuccess, AddUpdatePBFoutsourceDataError, JSON.stringify(MainObj_PBFOutsourceSaveData));
+    }
 }
 function AddUpdatePBFoutsourceDataSuccess(data) {
     try {
        // $('#SavePIDFModel').modal('hide');
         if (data._Success === true) {
-            toastr.success(data._Message);
-           // IsShowCancel_Save_buttons(true);
-            window.location.href = "/PIDF/PIDFList?ScreenId=4";
+            
+            if (!IsTabClick) {
+                toastr.success(data._Message);
+                window.location.href = "/PIDF/PIDFList?ScreenId=4";
+            }
         }
         else {
             toastr.error(data._Message);
@@ -1055,34 +1075,56 @@ function ValidateTaskData() {
         }
     });
     if(!isValidIPDForm)
-        toastr.error('Some Task are missing values in PBF!'); 
+        toastr.error('Some Task are missing values !'); 
 
     return isValidIPDForm;
 }
-
-function Commercial_PBF_Common_Save(saveType) {
-    var IsPBFValid = true;
-    var IsCommercialValid = false;
-    if ($('.PBFDetailsTab').is(':visible'))
-    {
-     IsPBFValid = (IsPBFPageValid() && ValidateTaskData())  
+//PBF Save
+$('#btnPBFCommercialSubmit').click(function () {
+    IsTabClick = false;
+    IsCommTabClick = false;
+    SavePBFOutsourceData('Sv');
+});
+$('#btnSaveAsDraftPBFCommercial').click(function () {
+    IsTabClick = false;
+    IsCommTabClick = false;
+    SavePBFOutsourceData('SvDrf');
+});
+$('#custom-tabs-BudgetApproval-PBF-tab').click(function () {//commercial Tab Click
+    IsTabClick = true;
+    SavePBFOutsourceData('TabClick'); 
+})
+// Commercial save
+$("#custom-tabs-BudgetApproval-Finance-tab").click(function () {
+    IsTabClick = true;
+    if (IsPageLoad) {
+        IsPageLoad = false;
+        SetPBFDDLValues();
     }
-
-    let InterestedStatus = true; // ValidateIsInterested();
-    if (InterestedStatus && ValidateBU_Strength()) {
-        if (ArrMainCommercial.length > 0) {
-            if (ValidateYearDataExist()) {
-                IsCommercialValid = true;
-            }
-        } else {
-            toastr.error('No Data Added in Commercial');
-        }
+    IsCommTabClick = true;
+    CommercialSubmitClick('TabClick');
+});
+$('#mainDivCommercial').find("#btnSubmit").click(function () {
+    IsTabClick = false;
+    CommercialSubmitClick('Sv');
+});
+$('#mainDivCommercial').find("#btnSaveAsDraft").click(function () {
+    IsTabClick = false;
+    CommercialSaveAsDraftClickClick('SvDrf');
+});
+$(document).on("change", ".clstentative", function () {
+   var isValidTentativeDate = true;
+    var todaysDate = new Date();
+    var _originalExpiryDate = new Date($(this).val());
+    if (_originalExpiryDate < new Date(todaysDate.getFullYear(), todaysDate.getMonth(), todaysDate.getDate())) {
+        $(this).css("border-color", "red");
+        $(this).val('');
+        isValidTentativeDate = false;
+        toastr.error('Can not select Past date !')
     }
-
-    if (IsCommercialValid && IsPBFValid) {
-        SavePBFOutsourceData();
-        $.extend(objMainForm, { 'SaveType': saveType });
-        SaveCommertialPIDFForm();
+    else {
+        $(this).css("border-color", "");
+        isValidTentativeDate = true;
     }
+});
 
-}

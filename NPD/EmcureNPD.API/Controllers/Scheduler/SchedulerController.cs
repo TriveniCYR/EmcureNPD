@@ -87,5 +87,33 @@ namespace EmcureNPD.API.Controllers.Scheduler
                 return _ObjectResponse.Create(false, (int)HttpStatusCode.InternalServerError, Convert.ToString(ex.StackTrace));
             }
         }
-    }
+		/// <summary>
+		/// Description - Send Notification
+		/// </summary>
+		/// <param name=""></param>
+		/// <returns></returns>
+		/// <response code="200">OK</response>
+		/// <response code="400">Bad Request</response>
+		/// <response code="401">Unauthorized</response>
+		/// <response code="403">Forbidden</response>
+		/// <response code="404">Not Found</response>
+		/// <response code="405">Method Not Allowed</response>
+		/// <response code="500">Internal Server</response>
+		[AllowAnonymous]
+		[HttpPost, Route("SendNotification")]
+		public async Task<IActionResult> SendNotification()
+		{
+			try
+			{
+				var returnobj = await _reminderService.SendNotification();
+				return _ObjectResponse.Create(returnobj, (int)HttpStatusCode.OK, returnobj.LogMessage);
+			}
+			catch (Exception ex)
+			{
+				await _ExceptionService.LogException(ex);
+				return _ObjectResponse.Create(false, (int)HttpStatusCode.InternalServerError, Convert.ToString(ex.StackTrace));
+			}
+		}
+
+	}
 }

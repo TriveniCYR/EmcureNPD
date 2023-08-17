@@ -173,8 +173,61 @@ namespace EmcureNPD.Business.Core.Implementation
                 }
             }
         }
-
-        public async Task<SendReminderModel> AutoUpdatePIDFStatus()
+		public async Task<EmailNotificationEntity> SendNotification()
+		{
+			string _logMessage = string.Empty;
+			EmailNotificationEntity model = new EmailNotificationEntity();
+			string _logMessage_PIDFSubmittted = "\n";
+			var dbresult = await _masterUser.GetDataSetBySP("GetEmailNotification", System.Data.CommandType.StoredProcedure, null);
+			dynamic UserList = new ExpandoObject();
+			if (dbresult != null)
+			{
+				
+				if (dbresult.Tables[0] != null && dbresult.Tables[0].Rows.Count > 0)
+				{
+					UserList = dbresult.Tables[0].DataTableToList<EmailNotificationEntity>();
+					//foreach (var user in _BUObjects) {
+					string commasepretedUserList = string.Empty;
+					List<EmailNotificationEntity> _UserLIst = UserList;
+					foreach (var u in _UserLIst)
+					{
+						commasepretedUserList += u.CreatedByName + ",";
+					}
+					_logMessage += "Fetch list of user to send notification { " + commasepretedUserList + "} \n";
+					SendNotificationMail(UserList, ref _logMessage);
+					//}
+				}
+			}
+			model.LogMessage = _logMessage;
+			model.LogMessage += _logMessage_PIDFSubmittted;
+			return model;
+		}
+		public void SendNotificationMail(List<EmailNotificationEntity> sendNotificationModel_list, ref string _logMessage)
+		{
+			foreach (var sendNotificationModel in sendNotificationModel_list)
+			{
+				try
+				{
+					EmailHelper email = new EmailHelper();
+					string strHtml = System.IO.File.ReadAllText(@"wwwroot\Uploads\HTMLTemplates\EmailNotification.html");
+                   // sendNotificationModel.EmailAddress = "pandey.kp.kamal@gmail.com";
+					strHtml = strHtml.Replace("{PIDFNo}", sendNotificationModel.PidfNo);
+					strHtml = strHtml.Replace("{DateTime}", sendNotificationModel.CreatedDate.ToString());
+					strHtml = strHtml.Replace("{User}", sendNotificationModel.SendToName);
+					strHtml = strHtml.Replace("{PIDFStatus}", sendNotificationModel.PIDFStatus);
+					strHtml = strHtml.Replace("{UpdatedByUser}", sendNotificationModel.CreatedByName);
+					strHtml = strHtml.Replace("{Url}", "https://www.emcure.com/");
+					string str_subject = "PIDF : " + sendNotificationModel.PidfNo + " Updated";
+					//email.SendMail(sendNotificationModel.EmailAddress, string.Empty, str_subject, strHtml, _MasterUserService.GetSMTPConfiguration());
+					_logMessage += " Email Sent to { " + sendNotificationModel.EmailAddress + " } on " + DateTime.Now.ToString() + "" + "\n";
+				}
+				catch (Exception ex)
+				{
+					_logMessage += "Email failed to sent {" + sendNotificationModel.EmailAddress + "} on " + DateTime.Now.ToString() + ex.InnerException.ToString() + "\n";
+				}
+			}
+		}
+		public async Task<SendReminderModel> AutoUpdatePIDFStatus()
         {
             var sentreminderModel = new SendReminderModel();
             string _logMessagePIDFreject = string.Empty;

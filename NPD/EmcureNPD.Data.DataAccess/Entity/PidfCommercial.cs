@@ -25,6 +25,7 @@ namespace EmcureNPD.Data.DataAccess.Entity
         public bool? IsDeleted { get; set; }
         public DateTime? DeletedDate { get; set; }
         public int PackSizeId { get; set; }
+        public int? CountryId { get; set; }
 
         public virtual MasterBusinessUnit BusinessUnit { get; set; }
         public virtual MasterPackSize PackSize { get; set; }
