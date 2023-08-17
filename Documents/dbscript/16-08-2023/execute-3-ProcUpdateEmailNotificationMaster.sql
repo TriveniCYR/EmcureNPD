@@ -1,4 +1,4 @@
-USE [EmcureNPDDev]
+
 GO
 
 /****** Object:  StoredProcedure [dbo].[ProcUpdateEmailNotificationMaster]    Script Date: 16-08-2023 15:38:56 ******/
