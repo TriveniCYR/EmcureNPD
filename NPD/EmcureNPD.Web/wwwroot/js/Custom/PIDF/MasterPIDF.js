@@ -27,7 +27,7 @@ $(document).ready(function () {
     }
     GetPIDFDropdown();
     SetChildRowDeleteIcon();
-    UpdateProductStrengthCountry();
+   // UpdateProductStrengthCountry();
     var uri = document.getElementById("PIDFID").value;
     var status = $('#dvPIDFContainer').find("#StatusId").val();
     if (uri > 0 & status != 1 & status != 2) {
@@ -128,7 +128,7 @@ function GetCountryByBusinessUnitSuccess(data) {
         $('#RFDCountryId').find('option').remove()
         if (data._object != null && data._object.length > 0) {
             if (_PIDFId == 0) {
-                GetProductStrengthCountryByBusinessUnitSuccess(data);
+              //  GetProductStrengthCountryByBusinessUnitSuccess(data);
             }
             var _emptyOption = '<option value="">-- Select --</option>';
             $('#RFDCountryId').append(_emptyOption);

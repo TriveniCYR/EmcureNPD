@@ -220,9 +220,9 @@ namespace EmcureNPD.Business.Core.Implementation
                         List<PidfproductStrengthCountryMapping> _objproductStrengthCountryMapping = new List<PidfproductStrengthCountryMapping>();
                         foreach (var item in productStrengthList)
                         {
-                            var productStrengthcountryMapp = _strengthCountryMapping.GetAllQuery().Where(x => x.PidfproductStrengthId == item.PidfproductStrengthId).ToList();
-                            foreach(var prostrcntrymap in productStrengthcountryMapp)
-                            _strengthCountryMapping.Remove(prostrcntrymap);
+                            //var productStrengthcountryMapp = _strengthCountryMapping.GetAllQuery().Where(x => x.PidfproductStrengthId == item.PidfproductStrengthId).ToList();
+                            //foreach(var prostrcntrymap in productStrengthcountryMapp)
+                            //_strengthCountryMapping.Remove(prostrcntrymap);
 
                             await _unitOfWork.SaveChangesAsync();
                             _pidfProductStrength.Remove(item);
@@ -305,23 +305,23 @@ namespace EmcureNPD.Business.Core.Implementation
                     List<PidfproductStrengthCountryMapping> _objproductStrengthCountryMapping = new List<PidfproductStrengthCountryMapping>();
                     foreach (var item in pidfProductStregthEntities)
                     {
-                        foreach(var _country in item.CountryId)
-                        {
-                            _objproductStrengthCountryMapping.Add(new PidfproductStrengthCountryMapping()
-                            {
-                                CountryId = _country,
-                                ModifyBy = loggedInUserId,
-                                ModifyDate = DateTime.Now
-                            });
-                            
-                        }
+                        //foreach(var _country in item.CountryId)
+                        //{
+                        //    _objproductStrengthCountryMapping.Add(new PidfproductStrengthCountryMapping()
+                        //    {
+                        //        CountryId = _country,
+                        //        ModifyBy = loggedInUserId,
+                        //        ModifyDate = DateTime.Now
+                        //    });
+
+                        //}
                         PidfproductStrength pidfProductStrength = new PidfproductStrength();
                         item.Pidfid = Pidfid;
                         item.ModifyDate = DateTime.Now;
                         item.ModifyBy = loggedInUserId;
                         pidfProductStrength = _mapperFactory.Get<PidfProductStregthEntity, PidfproductStrength>(item);
                         pidfProductStrength.BusinessUnitId = BusinessUnitId;
-                        pidfProductStrength.PidfproductStrengthCountryMappings = _objproductStrengthCountryMapping;
+                        //pidfProductStrength.PidfproductStrengthCountryMappings = _objproductStrengthCountryMapping;
                         _ProductStrengthList.Add(pidfProductStrength);
                     }
                     _pidfProductStrength.AddRangeAsync(_ProductStrengthList);
@@ -363,13 +363,13 @@ namespace EmcureNPD.Business.Core.Implementation
             data.IMSDataEntities = _mapperFactory.GetList<Pidfimsdatum, IMSDataEntity>(_pidfPidfimsdata.GetAllQuery().Where(x => x.Pidfid == ids).ToList());
            
             
-            foreach(var item in data.pidfProductStregthEntities)
-            {
-                var productStrengthcountryMapp = _strengthCountryMapping.GetAllQuery().Where(x => x.PidfproductStrengthId == item.PidfproductStrengthId).ToList();
+            //foreach(var item in data.pidfProductStregthEntities)
+            //{
+            //    var productStrengthcountryMapp = _strengthCountryMapping.GetAllQuery().Where(x => x.PidfproductStrengthId == item.PidfproductStrengthId).ToList();
 
-                var arrofCountryID = productStrengthcountryMapp.Select(x => x.CountryId.ToString()).ToArray();
-                item.CountryListArr = string.Join(",", arrofCountryID);
-            }
+            //    var arrofCountryID = productStrengthcountryMapp.Select(x => x.CountryId.ToString()).ToArray();
+            //    item.CountryListArr = string.Join(",", arrofCountryID);
+            //}
             return data;
         }
 

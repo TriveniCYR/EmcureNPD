@@ -148,7 +148,7 @@
                                                     <tr>
                                                         <th>@MasterLocalizer["Strength"] <span class="text-danger">*</span></th>
                                                         <th>@MasterLocalizer["Unit"] <span class="text-danger">*</span></th>
-                                                        <th>Country <span class="text-danger">*</span></th>
+                                                       @* <th>Country <span class="text-danger">*</span></th>*@
                                                         <th class="text-center">@SharedLocalizer["Action"]</th>
                                                     </tr>
                                                 </thead>
@@ -182,13 +182,7 @@
                                                                         </div>
                                                                     </div>
                                                                 </td>
-                                                                <td>
-                                                                    <div class="col-md">
-                                                                        <div class="form-group">                                                                         
-                                                                            @Html.DropDownListFor(model => model.pidfProductStregthEntities[j].CountryId, new List<SelectListItem> { }, new {@placeholder =@MasterLocalizer["CountryRegion"], @class = "form-control clsproductStrengthCountryId", @multiple = "multiple", @required = "required" })
-                                                                        </div>
-                                                                    </div>
-                                                                </td>
+                                                               
                                                                 <td>
                                                                     <div class="col-md">
                                                                         <div class="form-group">
@@ -218,14 +212,6 @@
                                                                             <div class="form-group required">
                                                                                 <input type="hidden" id="hdnProductStrengthUnit" value="@Model.pidfProductStregthEntities[i].UnitofMeasurementId" />
                                                                                 <select id="productStrengthUnit_0" name="pidfProductStregthEntities[@i].UnitofMeasurementId" class="form-control readOnlyUpdate productStrengthUnit" required></select>
-                                                                            </div>
-                                                                        </div>
-                                                                    </td>
-                                                                    <td>
-                                                                        <div class="col-md">
-                                                                            <div class="form-group">
-                                                                                <input type="hidden" id="hdnProductStrengthCountryId_@i" value="@Model.pidfProductStregthEntities[i].CountryListArr" />
-                                                                                @Html.DropDownListFor(model => model.pidfProductStregthEntities[i].CountryId, new List<SelectListItem> { }, new {@placeholder =@MasterLocalizer["CountryRegion"], @class = "form-control clsproductStrengthCountryId", @multiple = "multiple", @required = "required" })
                                                                             </div>
                                                                         </div>
                                                                     </td>
