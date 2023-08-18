@@ -24,6 +24,7 @@ namespace EmcureNPD.Business.Models
         //[Required(ErrorMessageResourceType = typeof(Validation), ErrorMessageResourceName = "Required")]
         //[Display(Name = "BusinessUnit", ResourceType = typeof(Master))]
         public int? BusinessUnitId { get; set; }
+        public int? TabBusinessUnitId { get; set; }
 
         //[Required(ErrorMessageResourceType = typeof(Validation), ErrorMessageResourceName = "Required")]
         [Display(Name = "MoleculeName", ResourceType = typeof(Master))]

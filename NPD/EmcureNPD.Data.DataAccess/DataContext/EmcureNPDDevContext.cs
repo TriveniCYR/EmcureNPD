@@ -146,6 +146,7 @@ namespace EmcureNPD.Data.DataAccess.DataContext
         public virtual DbSet<Pidfapidetail> Pidfapidetails { get; set; }
         public virtual DbSet<Pidfimsdatum> Pidfimsdata { get; set; }
         public virtual DbSet<PidfproductStrength> PidfproductStrengths { get; set; }
+        public virtual DbSet<PidfproductStrengthCountryMapping> PidfproductStrengthCountryMappings { get; set; }
         public virtual DbSet<PidfstatusHistory> PidfstatusHistories { get; set; }
         public virtual DbSet<ProjectTask> ProjectTasks { get; set; }
         public virtual DbSet<RoleModulePermission> RoleModulePermissions { get; set; }
@@ -3234,6 +3235,11 @@ namespace EmcureNPD.Data.DataAccess.DataContext
                     .HasForeignKey(d => d.ApisourcingId)
                     .HasConstraintName("FK_PIDFAPIDetails_Master_APISourcing");
 
+                entity.HasOne(d => d.BusinessUnit)
+                    .WithMany(p => p.Pidfapidetails)
+                    .HasForeignKey(d => d.BusinessUnitId)
+                    .HasConstraintName("FK_PIDFAPIDetails_Master_BussinessUnit");
+
                 entity.HasOne(d => d.Pidf)
                     .WithMany(p => p.Pidfapidetails)
                     .HasForeignKey(d => d.Pidfid)
@@ -3257,6 +3263,11 @@ namespace EmcureNPD.Data.DataAccess.DataContext
 
                 entity.Property(e => e.Pidfid).HasColumnName("PIDFId");
 
+                entity.HasOne(d => d.BusinessUnit)
+                    .WithMany(p => p.Pidfimsdata)
+                    .HasForeignKey(d => d.BusinessUnitId)
+                    .HasConstraintName("FK_PIDFIMSData_Master_BussinessUnit");
+
                 entity.HasOne(d => d.Pidf)
                     .WithMany(p => p.Pidfimsdata)
                     .HasForeignKey(d => d.Pidfid)
@@ -3276,6 +3287,11 @@ namespace EmcureNPD.Data.DataAccess.DataContext
 
                 entity.Property(e => e.Strength).HasMaxLength(100);
 
+                entity.HasOne(d => d.BusinessUnit)
+                    .WithMany(p => p.PidfproductStrengths)
+                    .HasForeignKey(d => d.BusinessUnitId)
+                    .HasConstraintName("FK_PIDFProductStrength_Master_BussinessUnit");
+
                 entity.HasOne(d => d.Pidf)
                     .WithMany(p => p.PidfproductStrengths)
                     .HasForeignKey(d => d.Pidfid)
@@ -3286,6 +3302,31 @@ namespace EmcureNPD.Data.DataAccess.DataContext
                     .WithMany(p => p.PidfproductStrengths)
                     .HasForeignKey(d => d.UnitofMeasurementId)
                     .HasConstraintName("FK_PIDFProductStrength_Master_UnitofMeasurement");
+            });
+
+            modelBuilder.Entity<PidfproductStrengthCountryMapping>(entity =>
+            {
+                entity.HasKey(e => e.PidfproductStrengthCountryId);
+
+                entity.ToTable("PIDFProductStrength_CountryMapping", "dbo");
+
+                entity.Property(e => e.PidfproductStrengthCountryId).HasColumnName("PIDFProductStrengthCountryId");
+
+                entity.Property(e => e.ModifyDate).HasColumnType("datetime");
+
+                entity.Property(e => e.PidfproductStrengthId).HasColumnName("PIDFProductStrengthId");
+
+                entity.HasOne(d => d.Country)
+                    .WithMany(p => p.PidfproductStrengthCountryMappings)
+                    .HasForeignKey(d => d.CountryId)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("FK_PIDFProductStrength_CountryMapping_Master_Country");
+
+                entity.HasOne(d => d.PidfproductStrength)
+                    .WithMany(p => p.PidfproductStrengthCountryMappings)
+                    .HasForeignKey(d => d.PidfproductStrengthId)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("FK_PIDFProductStrength_CountryMapping_PIDFProductStrength");
             });
 
             modelBuilder.Entity<PidfstatusHistory>(entity =>
