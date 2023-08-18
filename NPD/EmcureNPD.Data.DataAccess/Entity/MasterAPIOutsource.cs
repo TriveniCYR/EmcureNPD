@@ -1,14 +1,20 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+
+#nullable disable
 
 namespace EmcureNPD.Data.DataAccess.Entity
 {
-    public partial class MasterAPIOutsource
+    public partial class MasterApiOutsource
     {
-        public int APIOutsourceId { get; set; }
-        public string APIOutsourceName { get; set; }
+        public MasterApiOutsource()
+        {
+            PidfApiOutsourceData = new HashSet<PidfApiOutsourceDatum>();
+        }
+
+        public int ApioutsourceId { get; set; }
+        public string ApioutsourceName { get; set; }
+
+        public virtual ICollection<PidfApiOutsourceDatum> PidfApiOutsourceData { get; set; }
     }
 }
