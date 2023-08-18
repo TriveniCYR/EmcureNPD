@@ -35,6 +35,7 @@
     <input type="hidden" id="hdnPIDFId" value="@(Model.PIDFID)" />
     <input type="hidden" id="hdnIsView" value="@(Model.IsViewMode ? "1" : "0")" />
     <input type="hidden" id="hdnIsPartialPIDF" value="@(Model._Partial ? "1" : "0")" />
+    
     <div class="row">
         <div class="col-md-12">
             <div class="card card-primary card-tabs">
@@ -46,7 +47,7 @@
                 <div class="card-body">
                     <div class="tab-content" id="pidf-custom-tabs-two-tabContent">
                         <form id="frmPIDF" asp-action="PIDF" asp-route-PIDFId="@Model.PIDFID">
-
+                             <input type="hidden" asp-for="TabBusinessUnitId" />
                             <input type="hidden" asp-for="PIDFID" />
                             <input type="hidden" asp-for="SaveType" />
                             <input type="hidden" asp-for="LogInId" />
@@ -147,6 +148,7 @@
                                                     <tr>
                                                         <th>@MasterLocalizer["Strength"] <span class="text-danger">*</span></th>
                                                         <th>@MasterLocalizer["Unit"] <span class="text-danger">*</span></th>
+                                                       @* <th>Country <span class="text-danger">*</span></th>*@
                                                         <th class="text-center">@SharedLocalizer["Action"]</th>
                                                     </tr>
                                                 </thead>
@@ -180,6 +182,7 @@
                                                                         </div>
                                                                     </div>
                                                                 </td>
+                                                               
                                                                 <td>
                                                                     <div class="col-md">
                                                                         <div class="form-group">
@@ -232,32 +235,32 @@
                                         </div>
                                     </div>
 
-            </div>
-        </div>
-       @* ---Rest all other Fields-----*@
-        <div class="row">
-            <div class="col-md-4">
-                <div class="form-group required">
-                    @Html.LabelFor(model => model.Diaid, Master.DIAName, new { @class = "control-label" }) <span class="text-danger">*</span>
-                    <input type="hidden" id="hdnDiaid" value="@Model.Diaid" />
-                    <select id="Diaid" name="Diaid" class="form-control readOnlyUpdate customvalidateformcontrol" required></select>
-                    @Html.ValidationMessageFor(model => model.Diaid, "", new { @class = "text-danger" })
-                </div>
-                <div class="form-group required" hidden>
-                    @Html.LabelFor(model => model.PIDFNO, new { @class = "control-label" })
-                    @Html.EditorFor(model => model.PIDFNO, new { htmlAttributes = new { @autocomplete = "off", @class = "form-control checkbox-checked", @placeholder = @MasterLocalizer["PIDFNO"] } })
-                    @Html.ValidationMessageFor(model => model.PIDFNO, "", new { @class = "text-danger" })
-                </div>
-            </div>
-            <div class="col-md-4">
-                <div class="form-group required">
-                    <label class="control-label">In house</label> <span class="text-danger">*</span>
-                    <input type="hidden" id="hdnInhouseDropdownId" value="@(true ? "1" : "2")" checked="@(Model.InHouses ? "checked" : "")" />
-                   @* <input type="checkbox" id="InHouses" name="InHouses" value="@(Model.InHouses)" style="display:none;" />*@
-                    <select id="InhouseDropdownId" name="InhouseDropdownId" class="form-control readOnlyUpdate readonlyOtherBusinessUnit"></select>
-                    <input type="hidden" asp-for="InHouses" class="BindIDForInHouses" />
-                </div>
-            </div>
+                                </div>
+                            </div>
+                            @* ---Rest all other Fields-----*@
+                            <div class="row">
+                                <div class="col-md-4">
+                                    <div class="form-group required">
+                                        @Html.LabelFor(model => model.Diaid, Master.DIAName, new { @class = "control-label" }) <span class="text-danger">*</span>
+                                        <input type="hidden" id="hdnDiaid" value="@Model.Diaid" />
+                                        <select id="Diaid" name="Diaid" class="form-control readOnlyUpdate customvalidateformcontrol" required></select>
+                                        @Html.ValidationMessageFor(model => model.Diaid, "", new { @class = "text-danger" })
+                                    </div>
+                                    <div class="form-group required" hidden>
+                                        @Html.LabelFor(model => model.PIDFNO, new { @class = "control-label" })
+                                        @Html.EditorFor(model => model.PIDFNO, new { htmlAttributes = new { @autocomplete = "off", @class = "form-control checkbox-checked", @placeholder = @MasterLocalizer["PIDFNO"] } })
+                                        @Html.ValidationMessageFor(model => model.PIDFNO, "", new { @class = "text-danger" })
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="form-group required">
+                                        <label class="control-label">In house</label> <span class="text-danger">*</span>
+                                        <input type="hidden" id="hdnInhouseDropdownId" value="@(true ? "1" : "2")" checked="@(Model.InHouses ? "checked" : "")" />
+                                        @* <input type="checkbox" id="InHouses" name="InHouses" value="@(Model.InHouses)" style="display:none;" />*@
+                                        <select id="InhouseDropdownId" name="InhouseDropdownId" class="form-control readOnlyUpdate readonlyOtherBusinessUnit"></select>
+                                        <input type="hidden" asp-for="InHouses" class="BindIDForInHouses" />
+                                    </div>
+                                </div>
 
                                 <div class="col-md-4">
                                     <div class="form-group required">
@@ -758,7 +761,9 @@
 
 
 @*	@Html.Partial("_DataTablePartial")*@
-
+<link rel="stylesheet" href="~/AdminLTE/plugins/select2/css/select2.min.css" />
+<script type="text/javascript" src="~/AdminLTE/plugins/select2/js/select2.full.min.js"></script>
+<script type="text/javascript" src="~/js/Custom/SelectAllAdaptor.js?v=@jsVersion"></script>
 <script type="text/javascript" src="~/js/Custom/PIDF/MasterPIDF.js?v=@jsVersion"></script>
 <script>
 
@@ -779,10 +784,9 @@
     var AddLabel = "@SharedLocalizer["Add"]";
     var UpdateLabel = "@SharedLocalizer["Update"]";
     var errorCallBack = '@ViewBag.errormessage';
-    if (errorCallBack)
-    {
+    if (errorCallBack) {
         toastr.error(errorCallBack);
     }
 
-                    //#endregion
+                        //#endregion
 </script>

@@ -5,16 +5,18 @@ using System.Collections.Generic;
 
 namespace EmcureNPD.Data.DataAccess.Entity
 {
-    public partial class PidfApiInhouse
+    public partial class PidfApiOutsourceDatum
     {
-        public int PidfapiinhouseId { get; set; }
-        public int? ApiinhouseId { get; set; }
+        public int ApioutsourceDataId { get; set; }
+        public int? ApioutsourceId { get; set; }
         public long? Pidfid { get; set; }
         public string Primary { get; set; }
+        public string PotentialAlt1 { get; set; }
+        public string PotentialAlt2 { get; set; }
         public int? CreatedBy { get; set; }
         public DateTime? CreatedDate { get; set; }
 
-        public virtual MasterApiInhouse Apiinhouse { get; set; }
+        public virtual MasterApiOutsource Apioutsource { get; set; }
         public virtual Pidf Pidf { get; set; }
     }
 }

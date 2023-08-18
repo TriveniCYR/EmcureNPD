@@ -14,8 +14,10 @@ namespace EmcureNPD.Data.DataAccess.Entity
         public string Apivendor { get; set; }
         public DateTime ModifyDate { get; set; }
         public int ModifyBy { get; set; }
+        public int? BusinessUnitId { get; set; }
 
         public virtual MasterApisourcing Apisourcing { get; set; }
+        public virtual MasterBusinessUnit BusinessUnit { get; set; }
         public virtual Pidf Pidf { get; set; }
     }
 }

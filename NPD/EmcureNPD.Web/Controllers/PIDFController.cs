@@ -91,7 +91,7 @@ namespace EmcureNPD.Web.Controllers
                 else
                 {
                     HttpResponseMessage responseMessage;
-
+                   // string buid = HttpContext.Request.Query["bui"];
                     var data = GetPidfFormModel(PIDFId, out responseMessage);
 
                     data._Partial = _Partial;

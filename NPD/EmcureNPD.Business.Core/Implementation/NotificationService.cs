@@ -43,7 +43,8 @@ namespace EmcureNPD.Business.Core.Implementation
 		private IRepository<MasterUser> _masterUser { get; set; }
 		private IRepository<MasterNotification> _repository { get; set; }
         private IRepository<MasterNotificationUser> _repositoryNotificationUser { get; set; }
-        private readonly IHelper _helper;
+        private IRepository<MasterEmailLog> _masterEmailLog { get; set; }
+		private readonly IHelper _helper;
 		public NotificationService(IUnitOfWork unitOfWork, IMapperFactory mapperFactory, IStringLocalizer<Errors> stringLocalizerError,
                                  Microsoft.Extensions.Configuration.IConfiguration _configuration, IHelper helper, IExceptionService exceptionService, IMasterUserService MasterUserService)//, IDatabaseSubscription databaseSubscription
         {
@@ -56,6 +57,7 @@ namespace EmcureNPD.Business.Core.Implementation
             _ExceptionService = exceptionService;
             _MasterUserService= MasterUserService;
 			_masterUser = unitOfWork.GetRepository<MasterUser>();
+            _masterEmailLog = unitOfWork.GetRepository<MasterEmailLog>();
 			// _schedulerService = schedulerService;
 			//_databaseSubscription.Configure(DatabaseConnection.NPDDatabaseConnection);
 			//tableDependency = new SqlTableDependency<MasterNotification>(DatabaseConnection.NPDDatabaseConnection, "Master_Notification", null, null, null, null, DmlTriggerType.Insert);
@@ -161,7 +163,7 @@ namespace EmcureNPD.Business.Core.Implementation
                 //tableDependency.OnChanged += dbChangeNotification;
                 //tableDependency.Start();
                 //_databaseSubscription.Changed += dbChangeNotification;
-				var task = Task.Run(() => SendNotification(objNotification.NotificationId));
+				//var task = Task.Run(() => SendNotification(objNotification.NotificationId));
 				//bool result = task.Result;
 				return DBOperation.Success;
             }
@@ -195,14 +197,14 @@ namespace EmcureNPD.Business.Core.Implementation
 						commasepretedUserList += u.SendToName + ",";
 					}
 					_logMessage += "Fetch list of user to send notification { " + commasepretedUserList + "} \n";
-				SendNotificationMail(UserList, ref _logMessage);
+				SendNotificationMail(UserList, NotificationId, ref _logMessage);
 				}
 			}
 			model.LogMessage = _logMessage;
 			model.LogMessage += _logMessage_PIDFSubmittted;
 			return model;
 		}
-		public void SendNotificationMail(List<EmailNotificationEntity> sendNotificationModel_list, ref string _logMessage)
+		public void SendNotificationMail(List<EmailNotificationEntity> sendNotificationModel_list,long NotificationId, ref string _logMessage)
 		{
             var landingUrl = configuration.GetSection("AllowedOrigins").Value.ToString(); //+ "/PIDF/PIDFList?ScreenId=" + (int)PIDFScreen.PBF;
 			foreach (var sendNotificationModel in sendNotificationModel_list)
@@ -210,6 +212,7 @@ namespace EmcureNPD.Business.Core.Implementation
 				try
 				{
 					EmailHelper email = new EmailHelper();
+
 					string strHtml = System.IO.File.ReadAllText(@"wwwroot\Uploads\HTMLTemplates\EmailNotification.html");
 					strHtml = strHtml.Replace("{PIDFNo}", sendNotificationModel.PidfNo);
 					strHtml = strHtml.Replace("{DateTime}", sendNotificationModel.CreatedDate.ToString());
@@ -220,42 +223,61 @@ namespace EmcureNPD.Business.Core.Implementation
 					string str_subject = "PIDF : " + sendNotificationModel.PidfNo + " Updated";
 					email.SendMail(sendNotificationModel.EmailAddress, string.Empty, str_subject, strHtml, _MasterUserService.GetSMTPConfiguration());
 					_logMessage += " Email Sent to { " + sendNotificationModel.EmailAddress + " } on " + DateTime.Now.ToString() + "" + "\n";
-                    UpdateSentNotification(sendNotificationModel.NotificationId);
-                   
+                    MasterEmailLog objEmailslogs= new();
+                    objEmailslogs.ToEmailAddress = sendNotificationModel.EmailAddress;
+                    objEmailslogs.Subject = str_subject;
+                    objEmailslogs.SentSuccessfully = true;
+                    objEmailslogs.CreatedDate= DateTime.Now;
+                    NotificationLog(objEmailslogs);
 				}
 				catch (Exception ex)
 				{
 					_logMessage += "Email failed to sent {" + sendNotificationModel.EmailAddress + "} on " + DateTime.Now.ToString() + ex.InnerException.ToString() + "\n";
-					 
+					string str_subject = "PIDF : " + sendNotificationModel.PidfNo + " Updated";
+					MasterEmailLog objEmailslogs = new();
+					objEmailslogs.ToEmailAddress = sendNotificationModel.EmailAddress;
+					objEmailslogs.Subject = str_subject;
+					objEmailslogs.SentSuccessfully = false;
+					objEmailslogs.CreatedDate = DateTime.Now;
+					NotificationLog(objEmailslogs);
 				}
 				
 			}
-			
+			UpdateSentNotification(NotificationId);
 		}
 		public void  UpdateSentNotification(long NotificationId)
 		{
 			try
 			{
-				SqlConnection con = new SqlConnection(configuration.GetSection("ConnectionStrings:DefaultConnection").Value);
 				
-				var data = new DynamicParameters();
-				data.Add("@NotificationId", NotificationId);
-				data.Add("@Success", "", direction: ParameterDirection.Output);
-				int count =  con.Execute("ProcUpdateEmailNotificationMaster", data, commandType: CommandType.StoredProcedure);
-			//	if (count > 0 && data.Get<string>("Success").Trim() == "success")
-			//  {
-			//  	//return true;
-			//  }
-            //    else
-            //    {
-            //        //return false;
-            //    }
+				SqlParameter[] osqlParameter = {
+				new SqlParameter("@NotificationId",NotificationId),
+				new SqlParameter("@Success", ""),
+			};
+				var dbresult = _masterUser.GetDataSetBySP("ProcUpdateEmailNotificationMaster", System.Data.CommandType.StoredProcedure, osqlParameter).Result;
 			}
 			catch (Exception ex)
 			{
 
-				//return false;
 			}
+		}
+        public void NotificationLog(MasterEmailLog objEmailLog)
+        {
+			try{
+
+				SqlParameter[] osqlParameter = {
+				new SqlParameter("@EmailLogId",objEmailLog.EmailLogId),
+				new SqlParameter("@ToEmailAddress", objEmailLog.ToEmailAddress),
+				new SqlParameter("@Subject", objEmailLog.Subject),
+				new SqlParameter("@SentSuccessfully", objEmailLog.SentSuccessfully),
+			};
+				var dbresult = _masterUser.GetDataSetBySP("SaveUpdateEmailLogs", System.Data.CommandType.StoredProcedure, osqlParameter).Result;
+			}
+			catch (Exception ex)
+			{
+
+			}
+			
 		}
 		public async Task<DBOperation> UpdateNotification(long notificationId, string notificationTitle, string notificationDescription, int loggedinUserId)
         {

@@ -7,9 +7,14 @@ var _SelectedBusinessUnitPIDF;
 $(document).ready(function () {
     try {
         _PIDFId = parseInt($('#hdnPIDFId').val());
-        //_mode = $('#hdnIsView').val(); //parseInt($('#hdnPIDFId').val());
+        //_mode = $('#hdnIsView').val(); //parseInt($('#hdnPIDFId').val()); $('#hdnBusinessUnitId').val()
         _mode = getParameterByName("IsView");
-    } catch (e) {
+        if (getParameterByName("bui") == null)
+            $("#TabBusinessUnitId").val(parseInt($('#hdnBusinessUnitId').val()));
+        else
+        $("#TabBusinessUnitId").val(parseInt(getParameterByName("bui")));
+    }
+    catch (e) {
         _mode = getParameterByName("IsView");
         _PIDFId = parseInt(getParameterByName("PIDFId"));
     }
@@ -22,21 +27,26 @@ $(document).ready(function () {
     }
     GetPIDFDropdown();
     SetChildRowDeleteIcon();
-
+   // UpdateProductStrengthCountry();
     var uri = document.getElementById("PIDFID").value;
     var status = $('#dvPIDFContainer').find("#StatusId").val();
     if (uri > 0 & status != 1 & status != 2) {
         readOnlyForm();
     }
 
-   $('#BusinessUnitId').change(function (e) {
+    $('#BusinessUnitId').change(function (e) {
+        
        if ($(this).val() != "") {
            if (parseInt($(this).val()) > 0) {
+               if (_PIDFId == 0) {
+                   $("#TabBusinessUnitId").val(parseInt($(this).val()))
+               }
                ajaxServiceMethod($('#hdnBaseURL').val() + getCountryByBusinessUnitId + "/" + $(this).val(), 'GET', GetCountryByBusinessUnitSuccess, GetCountryByBusinessUnitError);
            }
        }
    });
-    $('#InhouseDropdownId').change(function (e) {
+
+$('#InhouseDropdownId').change(function (e) {
         var _selected = ($(this).val() == "1" ? true : false);
         //$('#InHouses').prop("checked", _selected).val(_selected);
         $('.BindIDForInHouses').val(_selected);
@@ -51,6 +61,38 @@ $(document).ready(function () {
 
     }
 });
+
+
+function UpdateProductStrengthCountry() {
+    var buid = $("#TabBusinessUnitId").val();
+    if (buid != "") {
+        if (parseInt(buid) > 0) {
+            ajaxServiceMethod($('#hdnBaseURL').val() + getCountryByBusinessUnitId + "/" + buid, 'GET', GetProductStrengthCountryByBusinessUnitSuccess, GetProductStrengthCountryByBusinessUnitError);
+        }
+    }
+}
+function GetProductStrengthCountryByBusinessUnitSuccess(data) {
+    try {
+            $('.clsproductStrengthCountryId').find('option').remove()
+            if (data._object != null && data._object.length > 0) {
+                $(data._object).each(function (index, item) {
+                    $('.clsproductStrengthCountryId').append($('<option>').text(item.countryName).attr('value', item.countryId));
+                });
+
+                $('.clsproductStrengthCountryId').select2({ dropdownAdapter: $.fn.select2.amd.require('select2/selectAllAdapter') });
+                if (_PIDFId > 0) {
+                   // $('.clsproductStrengthCountryId').prev()
+                   // $("#CountryId").val($("#hdnCountryId").val().split(',')).trigger('change');
+                }
+            }
+    }
+    catch (e) {
+        toastr.error(ErrorMessage);
+    }
+}
+function GetProductStrengthCountryByBusinessUnitError(x, y, z) {
+    toastr.error(ErrorMessage);
+}
 
 $("#TradeNameRequired").change(TradeNameRequired_change);
 
@@ -85,6 +127,9 @@ function GetCountryByBusinessUnitSuccess(data) {
     try {
         $('#RFDCountryId').find('option').remove()
         if (data._object != null && data._object.length > 0) {
+            if (_PIDFId == 0) {
+              //  GetProductStrengthCountryByBusinessUnitSuccess(data);
+            }
             var _emptyOption = '<option value="">-- Select --</option>';
             $('#RFDCountryId').append(_emptyOption);
             $(data._object).each(function (index, item) {
@@ -220,10 +265,15 @@ function SavePIDFFormError(x, y, z) {
 }
 
 function addRowProductStrength(j) {
+    var newIndex = j + 1;
     var table = $('#productStrengthBody');
     var node = $('#productStrengthRow_0').clone(true);
     table.find('tr:last').after(node);
     table.find('tr:last').find("input").val("");
+
+    table.find('tr:last .clsproductStrengthCountryId').attr('id', 'pidfProductStregthEntities_'+newIndex+'__CountryId')
+    table.find('tr:last .clsproductStrengthCountryId').attr('name', 'pidfProductStregthEntities['+newIndex+'].CountryId')
+
     SetChildRowDeleteIcon();
 }
 function deleteRowProductStrength(j, element) {

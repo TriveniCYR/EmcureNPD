@@ -13,6 +13,7 @@ namespace EmcureNPD.Data.DataAccess.Entity
             MasterRegionCountryMappings = new HashSet<MasterRegionCountryMapping>();
             MasterUserCountryMappings = new HashSet<MasterUserCountryMapping>();
             PidfIpdCountries = new HashSet<PidfIpdCountry>();
+            PidfproductStrengthCountryMappings = new HashSet<PidfproductStrengthCountryMapping>();
             Pidfs = new HashSet<Pidf>();
         }
 
@@ -30,6 +31,7 @@ namespace EmcureNPD.Data.DataAccess.Entity
         public virtual ICollection<MasterRegionCountryMapping> MasterRegionCountryMappings { get; set; }
         public virtual ICollection<MasterUserCountryMapping> MasterUserCountryMappings { get; set; }
         public virtual ICollection<PidfIpdCountry> PidfIpdCountries { get; set; }
+        public virtual ICollection<PidfproductStrengthCountryMapping> PidfproductStrengthCountryMappings { get; set; }
         public virtual ICollection<Pidf> Pidfs { get; set; }
     }
 }

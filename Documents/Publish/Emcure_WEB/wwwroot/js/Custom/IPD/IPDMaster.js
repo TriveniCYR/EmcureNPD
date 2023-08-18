@@ -216,7 +216,7 @@ function FillPatendDetailsDropDown_CountryId(controlClass,data) {
 }
 
 function GetCountryList_PatentDetailsFormulation() {
-    ajaxServiceMethod($('#hdnBaseURL').val() + GetCountryForPatentDetails + "/" + _selectBusinessUnit, 'GET', GetCountryList_PatentDetailsFormulationSuccess, GetCountryList_PatentDetailsFormulationError);
+    ajaxServiceMethod($('#hdnBaseURL').val() + GetCountryForPatentDetails + "/" + _selectBusinessUnit + "/" + _PIDFID, 'GET', GetCountryList_PatentDetailsFormulationSuccess, GetCountryList_PatentDetailsFormulationError);
     
 }
 function GetCountryList_PatentDetailsFormulationSuccess(data) {
