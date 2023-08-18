@@ -1,14 +1,20 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+
+#nullable disable
 
 namespace EmcureNPD.Data.DataAccess.Entity
 {
-    public partial class MasterAPIInhouse
+    public partial class MasterApiInhouse
     {
-        public int APIInhouseId { get; set; }
-        public string APIInhouseName { get; set; }
+        public MasterApiInhouse()
+        {
+            PidfApiInhouses = new HashSet<PidfApiInhouse>();
+        }
+
+        public int ApiinhouseId { get; set; }
+        public string ApiinhouseName { get; set; }
+
+        public virtual ICollection<PidfApiInhouse> PidfApiInhouses { get; set; }
     }
 }
