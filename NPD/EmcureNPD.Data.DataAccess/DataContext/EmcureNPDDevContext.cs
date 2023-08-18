@@ -2,6 +2,8 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata;
 using EmcureNPD.Data.DataAccess.Entity;
+using EmcureNPD.Utility;
+
 
 #nullable disable
 
@@ -26,6 +28,8 @@ namespace EmcureNPD.Data.DataAccess.DataContext
         public virtual DbSet<MasterApiCharterManhourEstimate> MasterApiCharterManhourEstimates { get; set; }
         public virtual DbSet<MasterApiCharterPrddepartment> MasterApiCharterPrddepartments { get; set; }
         public virtual DbSet<MasterApiCharterTimelineInMonth> MasterApiCharterTimelineInMonths { get; set; }
+        public virtual DbSet<MasterApiInhouse> MasterApiInhouses { get; set; }
+        public virtual DbSet<MasterApiOutsource> MasterApiOutsources { get; set; }
         public virtual DbSet<MasterApisourcing> MasterApisourcings { get; set; }
         public virtual DbSet<MasterAuditLog> MasterAuditLogs { get; set; }
         public virtual DbSet<MasterBatchSizeNumber> MasterBatchSizeNumbers { get; set; }
@@ -40,6 +44,7 @@ namespace EmcureNPD.Data.DataAccess.DataContext
         public virtual DbSet<MasterDium> MasterDia { get; set; }
         public virtual DbSet<MasterDosage> MasterDosages { get; set; }
         public virtual DbSet<MasterDosageForm> MasterDosageForms { get; set; }
+        public virtual DbSet<MasterEmailLog> MasterEmailLogs { get; set; }
         public virtual DbSet<MasterException> MasterExceptions { get; set; }
         public virtual DbSet<MasterExcipientRequirement> MasterExcipientRequirements { get; set; }
         public virtual DbSet<MasterExipient> MasterExipients { get; set; }
@@ -96,8 +101,10 @@ namespace EmcureNPD.Data.DataAccess.DataContext
         public virtual DbSet<PidfApiCharterManhourEstimate> PidfApiCharterManhourEstimates { get; set; }
         public virtual DbSet<PidfApiCharterPrddepartment> PidfApiCharterPrddepartments { get; set; }
         public virtual DbSet<PidfApiCharterTimelineInMonth> PidfApiCharterTimelineInMonths { get; set; }
+        public virtual DbSet<PidfApiInhouse> PidfApiInhouses { get; set; }
         public virtual DbSet<PidfApiIpd> PidfApiIpds { get; set; }
         public virtual DbSet<PidfApiMaster> PidfApiMasters { get; set; }
+        public virtual DbSet<PidfApiOutsourceDatum> PidfApiOutsourceData { get; set; }
         public virtual DbSet<PidfApiRnD> PidfApiRnDs { get; set; }
         public virtual DbSet<PidfCommercial> PidfCommercials { get; set; }
         public virtual DbSet<PidfCommercialMaster> PidfCommercialMasters { get; set; }
@@ -146,6 +153,7 @@ namespace EmcureNPD.Data.DataAccess.DataContext
         public virtual DbSet<Pidfapidetail> Pidfapidetails { get; set; }
         public virtual DbSet<Pidfimsdatum> Pidfimsdata { get; set; }
         public virtual DbSet<PidfproductStrength> PidfproductStrengths { get; set; }
+        public virtual DbSet<PidfproductStrengthCountryMapping> PidfproductStrengthCountryMappings { get; set; }
         public virtual DbSet<PidfstatusHistory> PidfstatusHistories { get; set; }
         public virtual DbSet<ProjectTask> ProjectTasks { get; set; }
         public virtual DbSet<RoleModulePermission> RoleModulePermissions { get; set; }
@@ -158,8 +166,8 @@ namespace EmcureNPD.Data.DataAccess.DataContext
             if (!optionsBuilder.IsConfigured)
             {
 #warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see http://go.microsoft.com/fwlink/?LinkId=723263.
-                optionsBuilder.UseSqlServer("Data Source=180.149.241.172;Initial Catalog=EmcureNPDDev;Persist Security Info=True;User ID=emcurenpddev_dbUser;pwd=emcure123!@#");
-            }
+				optionsBuilder.UseSqlServer(DatabaseConnection.NPDDatabaseConnection);
+			}
         }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
@@ -281,6 +289,36 @@ namespace EmcureNPD.Data.DataAccess.DataContext
                     .HasMaxLength(100);
 
                 entity.Property(e => e.NameValue).HasMaxLength(100);
+            });
+
+            modelBuilder.Entity<MasterApiInhouse>(entity =>
+            {
+                entity.HasKey(e => e.ApiinhouseId)
+                    .HasName("PK__Master_A__35911A6BB6E89F8C");
+
+                entity.ToTable("Master_API_Inhouse", "dbo");
+
+                entity.Property(e => e.ApiinhouseId).HasColumnName("APIInhouseId");
+
+                entity.Property(e => e.ApiinhouseName)
+                    .HasMaxLength(255)
+                    .IsUnicode(false)
+                    .HasColumnName("APIInhouseName");
+            });
+
+            modelBuilder.Entity<MasterApiOutsource>(entity =>
+            {
+                entity.HasKey(e => e.ApioutsourceId)
+                    .HasName("PK__Master_A__891B61835D1383FE");
+
+                entity.ToTable("Master_API_Outsource", "dbo");
+
+                entity.Property(e => e.ApioutsourceId).HasColumnName("APIOutsourceId");
+
+                entity.Property(e => e.ApioutsourceName)
+                    .HasMaxLength(255)
+                    .IsUnicode(false)
+                    .HasColumnName("APIOutsourceName");
             });
 
             modelBuilder.Entity<MasterApisourcing>(entity =>
@@ -514,6 +552,22 @@ namespace EmcureNPD.Data.DataAccess.DataContext
                 entity.Property(e => e.DosageFormName).HasMaxLength(100);
 
                 entity.Property(e => e.ModifyDate).HasColumnType("datetime");
+            });
+
+            modelBuilder.Entity<MasterEmailLog>(entity =>
+            {
+                entity.HasKey(e => e.EmailLogId)
+                    .HasName("PK__Master_E__E8CB41CCF4519698");
+
+                entity.ToTable("Master_EmailLog", "dbo");
+
+                entity.Property(e => e.CreatedDate)
+                    .HasColumnType("datetime")
+                    .HasDefaultValueSql("(getdate())");
+
+                entity.Property(e => e.Subject).HasMaxLength(1000);
+
+                entity.Property(e => e.ToEmailAddress).HasMaxLength(1000);
             });
 
             modelBuilder.Entity<MasterException>(entity =>
@@ -1596,6 +1650,33 @@ namespace EmcureNPD.Data.DataAccess.DataContext
                     .HasConstraintName("FK_PIDF_API_Charter_TimelineInMonths_PIDF_API_Charter");
             });
 
+            modelBuilder.Entity<PidfApiInhouse>(entity =>
+            {
+                entity.ToTable("PIDF_API_Inhouse", "dbo");
+
+                entity.Property(e => e.PidfapiinhouseId).HasColumnName("PIDFAPIInhouseId");
+
+                entity.Property(e => e.ApiinhouseId).HasColumnName("APIInhouseId");
+
+                entity.Property(e => e.CreatedDate).HasColumnType("datetime");
+
+                entity.Property(e => e.Pidfid).HasColumnName("PIDFId");
+
+                entity.Property(e => e.Primary)
+                    .HasMaxLength(255)
+                    .IsUnicode(false);
+
+                entity.HasOne(d => d.Apiinhouse)
+                    .WithMany(p => p.PidfApiInhouses)
+                    .HasForeignKey(d => d.ApiinhouseId)
+                    .HasConstraintName("FK__PIDF_API___APIIn__668BE945");
+
+                entity.HasOne(d => d.Pidf)
+                    .WithMany(p => p.PidfApiInhouses)
+                    .HasForeignKey(d => d.Pidfid)
+                    .HasConstraintName("FK__PIDF_API___PIDFI__67800D7E");
+            });
+
             modelBuilder.Entity<PidfApiIpd>(entity =>
             {
                 entity.ToTable("PIDF_API_IPD", "dbo");
@@ -1647,6 +1728,46 @@ namespace EmcureNPD.Data.DataAccess.DataContext
                     .HasForeignKey(d => d.Pidfid)
                     .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("FK_PIDF_API_Master_PIDF");
+            });
+
+            modelBuilder.Entity<PidfApiOutsourceDatum>(entity =>
+            {
+                entity.HasKey(e => e.ApioutsourceDataId)
+                    .HasName("PK__PIDF_API__994B5836112CF5A2");
+
+                entity.ToTable("PIDF_API_Outsource_Data", "dbo");
+
+                entity.Property(e => e.ApioutsourceDataId).HasColumnName("APIOutsourceDataId");
+
+                entity.Property(e => e.ApioutsourceId).HasColumnName("APIOutsourceId");
+
+                entity.Property(e => e.CreatedDate).HasColumnType("datetime");
+
+                entity.Property(e => e.Pidfid).HasColumnName("PIDFId");
+
+                entity.Property(e => e.PotentialAlt1)
+                    .HasMaxLength(255)
+                    .IsUnicode(false)
+                    .HasColumnName("Potential_Alt_1");
+
+                entity.Property(e => e.PotentialAlt2)
+                    .HasMaxLength(255)
+                    .IsUnicode(false)
+                    .HasColumnName("Potential_Alt_2");
+
+                entity.Property(e => e.Primary)
+                    .HasMaxLength(255)
+                    .IsUnicode(false);
+
+                entity.HasOne(d => d.Apioutsource)
+                    .WithMany(p => p.PidfApiOutsourceData)
+                    .HasForeignKey(d => d.ApioutsourceId)
+                    .HasConstraintName("FK__PIDF_API___APIOu__60D30FEF");
+
+                entity.HasOne(d => d.Pidf)
+                    .WithMany(p => p.PidfApiOutsourceData)
+                    .HasForeignKey(d => d.Pidfid)
+                    .HasConstraintName("FK__PIDF_API___PIDFI__61C73428");
             });
 
             modelBuilder.Entity<PidfApiRnD>(entity =>
@@ -3234,6 +3355,11 @@ namespace EmcureNPD.Data.DataAccess.DataContext
                     .HasForeignKey(d => d.ApisourcingId)
                     .HasConstraintName("FK_PIDFAPIDetails_Master_APISourcing");
 
+                entity.HasOne(d => d.BusinessUnit)
+                    .WithMany(p => p.Pidfapidetails)
+                    .HasForeignKey(d => d.BusinessUnitId)
+                    .HasConstraintName("FK_PIDFAPIDetails_Master_BussinessUnit");
+
                 entity.HasOne(d => d.Pidf)
                     .WithMany(p => p.Pidfapidetails)
                     .HasForeignKey(d => d.Pidfid)
@@ -3257,6 +3383,11 @@ namespace EmcureNPD.Data.DataAccess.DataContext
 
                 entity.Property(e => e.Pidfid).HasColumnName("PIDFId");
 
+                entity.HasOne(d => d.BusinessUnit)
+                    .WithMany(p => p.Pidfimsdata)
+                    .HasForeignKey(d => d.BusinessUnitId)
+                    .HasConstraintName("FK_PIDFIMSData_Master_BussinessUnit");
+
                 entity.HasOne(d => d.Pidf)
                     .WithMany(p => p.Pidfimsdata)
                     .HasForeignKey(d => d.Pidfid)
@@ -3276,6 +3407,11 @@ namespace EmcureNPD.Data.DataAccess.DataContext
 
                 entity.Property(e => e.Strength).HasMaxLength(100);
 
+                entity.HasOne(d => d.BusinessUnit)
+                    .WithMany(p => p.PidfproductStrengths)
+                    .HasForeignKey(d => d.BusinessUnitId)
+                    .HasConstraintName("FK_PIDFProductStrength_Master_BussinessUnit");
+
                 entity.HasOne(d => d.Pidf)
                     .WithMany(p => p.PidfproductStrengths)
                     .HasForeignKey(d => d.Pidfid)
@@ -3286,6 +3422,31 @@ namespace EmcureNPD.Data.DataAccess.DataContext
                     .WithMany(p => p.PidfproductStrengths)
                     .HasForeignKey(d => d.UnitofMeasurementId)
                     .HasConstraintName("FK_PIDFProductStrength_Master_UnitofMeasurement");
+            });
+
+            modelBuilder.Entity<PidfproductStrengthCountryMapping>(entity =>
+            {
+                entity.HasKey(e => e.PidfproductStrengthCountryId);
+
+                entity.ToTable("PIDFProductStrength_CountryMapping", "dbo");
+
+                entity.Property(e => e.PidfproductStrengthCountryId).HasColumnName("PIDFProductStrengthCountryId");
+
+                entity.Property(e => e.ModifyDate).HasColumnType("datetime");
+
+                entity.Property(e => e.PidfproductStrengthId).HasColumnName("PIDFProductStrengthId");
+
+                entity.HasOne(d => d.Country)
+                    .WithMany(p => p.PidfproductStrengthCountryMappings)
+                    .HasForeignKey(d => d.CountryId)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("FK_PIDFProductStrength_CountryMapping_Master_Country");
+
+                entity.HasOne(d => d.PidfproductStrength)
+                    .WithMany(p => p.PidfproductStrengthCountryMappings)
+                    .HasForeignKey(d => d.PidfproductStrengthId)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("FK_PIDFProductStrength_CountryMapping_PIDFProductStrength");
             });
 
             modelBuilder.Entity<PidfstatusHistory>(entity =>

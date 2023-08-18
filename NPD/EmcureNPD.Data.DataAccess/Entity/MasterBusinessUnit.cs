@@ -19,6 +19,9 @@ namespace EmcureNPD.Data.DataAccess.Entity
             PidfPbfGenerals = new HashSet<PidfPbfGeneral>();
             PidfPbfMarketMappings = new HashSet<PidfPbfMarketMapping>();
             PidfPbfRnDFillingExpenses = new HashSet<PidfPbfRnDFillingExpense>();
+            Pidfapidetails = new HashSet<Pidfapidetail>();
+            Pidfimsdata = new HashSet<Pidfimsdatum>();
+            PidfproductStrengths = new HashSet<PidfproductStrength>();
             Pidfs = new HashSet<Pidf>();
         }
 
@@ -43,6 +46,9 @@ namespace EmcureNPD.Data.DataAccess.Entity
         public virtual ICollection<PidfPbfGeneral> PidfPbfGenerals { get; set; }
         public virtual ICollection<PidfPbfMarketMapping> PidfPbfMarketMappings { get; set; }
         public virtual ICollection<PidfPbfRnDFillingExpense> PidfPbfRnDFillingExpenses { get; set; }
+        public virtual ICollection<Pidfapidetail> Pidfapidetails { get; set; }
+        public virtual ICollection<Pidfimsdatum> Pidfimsdata { get; set; }
+        public virtual ICollection<PidfproductStrength> PidfproductStrengths { get; set; }
         public virtual ICollection<Pidf> Pidfs { get; set; }
     }
 }

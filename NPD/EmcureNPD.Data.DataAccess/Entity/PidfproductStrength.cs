@@ -25,6 +25,7 @@ namespace EmcureNPD.Data.DataAccess.Entity
             PidfPbfRnDReferenceProductDetails = new HashSet<PidfPbfRnDReferenceProductDetail>();
             PidfPbfRnDToolingChangeparts = new HashSet<PidfPbfRnDToolingChangepart>();
             PidfPbfRndBatchSizes = new HashSet<PidfPbfRndBatchSize>();
+            PidfproductStrengthCountryMappings = new HashSet<PidfproductStrengthCountryMapping>();
         }
 
         public long PidfproductStrengthId { get; set; }
@@ -33,7 +34,9 @@ namespace EmcureNPD.Data.DataAccess.Entity
         public int? UnitofMeasurementId { get; set; }
         public DateTime ModifyDate { get; set; }
         public int ModifyBy { get; set; }
+        public int? BusinessUnitId { get; set; }
 
+        public virtual MasterBusinessUnit BusinessUnit { get; set; }
         public virtual Pidf Pidf { get; set; }
         public virtual MasterUnitofMeasurement UnitofMeasurement { get; set; }
         public virtual ICollection<PidfCommercial> PidfCommercials { get; set; }
@@ -52,5 +55,6 @@ namespace EmcureNPD.Data.DataAccess.Entity
         public virtual ICollection<PidfPbfRnDReferenceProductDetail> PidfPbfRnDReferenceProductDetails { get; set; }
         public virtual ICollection<PidfPbfRnDToolingChangepart> PidfPbfRnDToolingChangeparts { get; set; }
         public virtual ICollection<PidfPbfRndBatchSize> PidfPbfRndBatchSizes { get; set; }
+        public virtual ICollection<PidfproductStrengthCountryMapping> PidfproductStrengthCountryMappings { get; set; }
     }
 }
