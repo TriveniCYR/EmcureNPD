@@ -3481,6 +3481,7 @@ function GetTypeOfSubmissionSuccess(data) {
             });
         }
         bindRaDropDowns();
+        GetTypeOfSubmissionForRaTabSuccess(data);
     }
     catch (e) {
         toastr.error(e.message);
@@ -3488,6 +3489,27 @@ function GetTypeOfSubmissionSuccess(data) {
 }
 function GetTypeOfSubmissionError(x, y, z) {
     toastr.error(ErrorMessage);
+}
+function GetTypeOfSubmissionForRaTabSuccess(data) {
+    try {
+        var typeOfSubmissionTable = document.querySelector(".card-body.table-overflow table tbody");
+        typeOfSubmissionTable.innerHTML = ""; 
+
+        if (data != null && data.length > 0) {
+            data.forEach(function (item) {
+                var row = typeOfSubmissionTable.insertRow();
+                var submissionTypeCell = row.insertCell(0);
+                submissionTypeCell.innerText = item.typeOfSubmission            });
+        } else {
+            // Show a message if there is no data
+            var emptyRow = typeOfSubmissionTable.insertRow();
+            var emptyCell = emptyRow.insertCell(0);
+            emptyCell.colSpan = 2;
+            emptyCell.innerText = "No data available.";
+        }
+    } catch (e) {
+        toastr.error(e.message);
+    }
 }
 function BindRA(data, IsEdit = false) {
     try {
@@ -3500,9 +3522,9 @@ function BindRA(data, IsEdit = false) {
                     try {
                         tr += `<tr>
                                <td><input type="hidden" id="Pidfpbfraid${e}" class="ra" name="RaEntities[${e}].Pidfpbfraid" value="${data[e].pidfpbfraid}"><select id="raCountryId${e}" name="RaEntities[${e}].CountryIdBuId" value="${data[e].countryIdBuId}"  class="form-control readOnlyUpdate clsCountry  valid" onchange="checkDuplicateRaCountry(${e});"></select></td>
-                               <td><input type="date" id="Pivotalbatchmanufactured${e}" name="RaEntities[${e}].PivotalBatchManufactured" value="${data[e].pivotalBatchManufactured == null ?'': data[e].pivotalBatchManufactured.split('T')[0]}" class="form-control readOnlyUpdate  valid"></td>
-                               <td><input type="date" id="LastdatafromRnD${e}" name="RaEntities[${e}].LastDataFromRnD" value="${data[e].lastDataFromRnD == null ?'': data[e].lastDataFromRnD.split('T')[0]}" class="form-control readOnlyUpdate  valid"></td>
-                               <td><input type="date" id="BEFinalReport${e}" name="RaEntities[${e}].BEFinalReport" value="${data[e].befinalReport==null?'': data[e].befinalReport.split('T')[0]}" class="form-control readOnlyUpdate  valid"></td>
+                               <td><input type="date" id="Pivotalbatchmanufactured${e}" name="RaEntities[${e}].PivotalBatchManufactured" value="${data[e].pivotalBatchManufactured == null ? '' : data[e].pivotalBatchManufactured.split('T')[0]}" class="form-control readOnlyUpdate  valid"></td>
+                               <td><input type="date" id="LastdatafromRnD${e}" name="RaEntities[${e}].LastDataFromRnD" value="${data[e].lastDataFromRnD == null ? '' : data[e].lastDataFromRnD.split('T')[0]}" class="form-control readOnlyUpdate  valid"></td>
+                               <td><input type="date" id="BEFinalReport${e}" name="RaEntities[${e}].BEFinalReport" value="${data[e].befinalReport == null ? '' : data[e].befinalReport.split('T')[0]}" class="form-control readOnlyUpdate  valid"></td>
                                
                                <td><select  id="TypeOfSubmissionId${e}" name="RaEntities[${e}].TypeOfSubmissionId" class="form-control readOnlyUpdate clsTypeOfSubmission  valid" value="${data[e].typeOfSubmissionId}"></select></td>
                                <td><input type="date" id="DossierReadyDate${e}" name="RaEntities[${e}].DossierReadyDate" value="${data[e].dossierReadyDate != null ? data[e].dossierReadyDate.split('T')[0] : ''}" class="form-control readOnlyUpdate  valid"></td>
@@ -3515,21 +3537,19 @@ function BindRA(data, IsEdit = false) {
                     } catch (e) {
                         //console.log(e);
                     }
-                  
                 }
-
-
             }
             tbody.append(tr);
             ShowHideRaDelete();
             GetCountyByBussinessUnitId();
             GetTypeOfSubmission();
+            GetNationalApprovals();
             data = null;
         }
     } catch (e) {
 
     }
-   
+
 }
 function BindNewRA(data, IsEdit = false) {
     if (IsEdit == false) {
@@ -3554,12 +3574,12 @@ function BindNewRA(data, IsEdit = false) {
 
         tbody.append(tr);
         ShowHideRaDelete();
-       var element = $('#tableRA').find('.clsCountry');
-       element.find("option").remove();
-       var _emptyOption = '<option value="">-- Select --</option>';
-       element.append(_emptyOption);
+        var element = $('#tableRA').find('.clsCountry');
+        element.find("option").remove();
+        var _emptyOption = '<option value="">-- Select --</option>';
+        element.append(_emptyOption);
         for (var i = 0; i < data.length; i++) {
-              element.append('<option  value="' + data[i].countryId + '">' + data[i].countryName + '</option>');
+            element.append('<option  value="' + data[i].countryId + '">' + data[i].countryName + '</option>');
             $(`select#raCountryId${i}`).val(data[i].countryId);
         }
         GetTypeOfSubmission();
@@ -3670,7 +3690,6 @@ $("#NonStandardProduct").click(function () {
         $(this).val(false);
     }
 })
-
 function checkDuplicateRaCountry(id) {
 
     let countryId = [];
@@ -3707,3 +3726,35 @@ function checkDuplicateRaCountry(id) {
         }
     });
 }
+
+function GetNationalApprovals() {
+
+    ajaxServiceMethod($('#hdnBaseURL').val() + getNationApprovalsurl, 'GET', GetNationalApprovalsSuccess, GetNationalApprovalsError);
+}
+function GetNationalApprovalsSuccess(data) {
+    try {
+        var nationalApprovalTable = document.querySelectorAll(".card-body.table-overflow")[1].querySelector("table tbody");
+        nationalApprovalTable.innerHTML = ""; 
+
+        if (data != null && data.length > 0) {
+            data.forEach(function (item) {
+                var row = nationalApprovalTable.insertRow();
+                var nameCell = row.insertCell(0);
+                nameCell.innerText = item.nationApprovalName;
+            });
+        } else {
+            // Show a message if there is no data
+            var emptyRow = nationalApprovalTable.insertRow();
+            var emptyCell = emptyRow.insertCell(0);
+            emptyCell.colSpan = 2;
+            emptyCell.innerText = "No data available.";
+        }
+    } catch (e) {
+        toastr.error(e.message);
+    }
+}
+function GetNationalApprovalsError(x, y, z) {
+    toastr.error(ErrorMessage);
+}
+
+

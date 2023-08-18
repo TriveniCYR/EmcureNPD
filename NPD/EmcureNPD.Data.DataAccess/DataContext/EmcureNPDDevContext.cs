@@ -1157,6 +1157,19 @@ namespace EmcureNPD.Data.DataAccess.DataContext
 
                 entity.Property(e => e.UpdatedOn).HasColumnType("datetime");
             });
+            modelBuilder.Entity<MasterNationApproval>(entity =>
+            {
+                entity.HasKey(e => e.NationApprovalId);
+                entity.ToTable("Master_NationApproval", "dbo");
+
+                entity.Property(e => e.CreatedDate)
+                    .HasColumnType("datetime")
+                    .HasDefaultValueSql("(getdate())");
+
+                entity.Property(e => e.NationApprovalName).HasMaxLength(20);
+
+                entity.Property(e => e.UpdatedDate).HasColumnType("datetime");
+            });
 
             modelBuilder.Entity<MasterUnitofMeasurement>(entity =>
             {
