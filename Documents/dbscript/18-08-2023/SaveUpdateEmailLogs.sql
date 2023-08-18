@@ -1,8 +1,8 @@
-USE [EmcureNPDDev]
+
 GO
 
 /****** Object:  StoredProcedure [emcurenpddev_dbUser].[SaveUpdateEmailLogs]    Script Date: 18-08-2023 14:10:48 ******/
-DROP PROCEDURE [emcurenpddev_dbUser].[SaveUpdateEmailLogs]
+DROP PROCEDURE dbo.[SaveUpdateEmailLogs]
 GO
 
 /****** Object:  StoredProcedure [emcurenpddev_dbUser].[SaveUpdateEmailLogs]    Script Date: 18-08-2023 14:10:48 ******/

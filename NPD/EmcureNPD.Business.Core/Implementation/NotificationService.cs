@@ -163,7 +163,7 @@ namespace EmcureNPD.Business.Core.Implementation
                 //tableDependency.OnChanged += dbChangeNotification;
                 //tableDependency.Start();
                 //_databaseSubscription.Changed += dbChangeNotification;
-				var task = Task.Run(() => SendNotification(objNotification.NotificationId));
+				//var task = Task.Run(() => SendNotification(objNotification.NotificationId));
 				//bool result = task.Result;
 				return DBOperation.Success;
             }
