@@ -2,12 +2,19 @@
 var _mode = 0;
 var _PIDFId = 0;
 var isValidPIDFForm = true;
+var _PIDFBusinessUnitId;
+var _SelectedBusinessUnitPIDF;
 $(document).ready(function () {
     try {
         _PIDFId = parseInt($('#hdnPIDFId').val());
-        //_mode = $('#hdnIsView').val(); //parseInt($('#hdnPIDFId').val());
+        //_mode = $('#hdnIsView').val(); //parseInt($('#hdnPIDFId').val()); $('#hdnBusinessUnitId').val()
         _mode = getParameterByName("IsView");
-    } catch (e) {
+        if (getParameterByName("bui") == null)
+            $("#TabBusinessUnitId").val(parseInt($('#hdnBusinessUnitId').val()));
+        else
+        $("#TabBusinessUnitId").val(parseInt(getParameterByName("bui")));
+    }
+    catch (e) {
         _mode = getParameterByName("IsView");
         _PIDFId = parseInt(getParameterByName("PIDFId"));
     }
@@ -20,27 +27,72 @@ $(document).ready(function () {
     }
     GetPIDFDropdown();
     SetChildRowDeleteIcon();
-
+   // UpdateProductStrengthCountry();
     var uri = document.getElementById("PIDFID").value;
     var status = $('#dvPIDFContainer').find("#StatusId").val();
     if (uri > 0 & status != 1 & status != 2) {
         readOnlyForm();
     }
 
-   $('#BusinessUnitId').change(function (e) {
+    $('#BusinessUnitId').change(function (e) {
+        
        if ($(this).val() != "") {
            if (parseInt($(this).val()) > 0) {
+               if (_PIDFId == 0) {
+                   $("#TabBusinessUnitId").val(parseInt($(this).val()))
+               }
                ajaxServiceMethod($('#hdnBaseURL').val() + getCountryByBusinessUnitId + "/" + $(this).val(), 'GET', GetCountryByBusinessUnitSuccess, GetCountryByBusinessUnitError);
            }
        }
    });
-    $('#InhouseDropdownId').change(function (e) {
+
+$('#InhouseDropdownId').change(function (e) {
         var _selected = ($(this).val() == "1" ? true : false);
         //$('#InHouses').prop("checked", _selected).val(_selected);
         $('.BindIDForInHouses').val(_selected);
     });
     TradeNameRequired_change();
+    try {
+        if (_PIDFId > 0 && ($('#frmPIDF').find("#StatusId").val() == "2")) {
+            _PIDFBusinessUnitId = $('#hdnBusinessUnitId').val();
+            fnGetActiveBusinessUnit();
+        }
+    } catch (e) {
+
+    }
 });
+
+
+function UpdateProductStrengthCountry() {
+    var buid = $("#TabBusinessUnitId").val();
+    if (buid != "") {
+        if (parseInt(buid) > 0) {
+            ajaxServiceMethod($('#hdnBaseURL').val() + getCountryByBusinessUnitId + "/" + buid, 'GET', GetProductStrengthCountryByBusinessUnitSuccess, GetProductStrengthCountryByBusinessUnitError);
+        }
+    }
+}
+function GetProductStrengthCountryByBusinessUnitSuccess(data) {
+    try {
+            $('.clsproductStrengthCountryId').find('option').remove()
+            if (data._object != null && data._object.length > 0) {
+                $(data._object).each(function (index, item) {
+                    $('.clsproductStrengthCountryId').append($('<option>').text(item.countryName).attr('value', item.countryId));
+                });
+
+                $('.clsproductStrengthCountryId').select2({ dropdownAdapter: $.fn.select2.amd.require('select2/selectAllAdapter') });
+                if (_PIDFId > 0) {
+                   // $('.clsproductStrengthCountryId').prev()
+                   // $("#CountryId").val($("#hdnCountryId").val().split(',')).trigger('change');
+                }
+            }
+    }
+    catch (e) {
+        toastr.error(ErrorMessage);
+    }
+}
+function GetProductStrengthCountryByBusinessUnitError(x, y, z) {
+    toastr.error(ErrorMessage);
+}
 
 $("#TradeNameRequired").change(TradeNameRequired_change);
 
@@ -75,6 +127,9 @@ function GetCountryByBusinessUnitSuccess(data) {
     try {
         $('#RFDCountryId').find('option').remove()
         if (data._object != null && data._object.length > 0) {
+            if (_PIDFId == 0) {
+              //  GetProductStrengthCountryByBusinessUnitSuccess(data);
+            }
             var _emptyOption = '<option value="">-- Select --</option>';
             $('#RFDCountryId').append(_emptyOption);
             $(data._object).each(function (index, item) {
@@ -210,10 +265,15 @@ function SavePIDFFormError(x, y, z) {
 }
 
 function addRowProductStrength(j) {
+    var newIndex = j + 1;
     var table = $('#productStrengthBody');
     var node = $('#productStrengthRow_0').clone(true);
     table.find('tr:last').after(node);
     table.find('tr:last').find("input").val("");
+
+    table.find('tr:last .clsproductStrengthCountryId').attr('id', 'pidfProductStregthEntities_'+newIndex+'__CountryId')
+    table.find('tr:last .clsproductStrengthCountryId').attr('name', 'pidfProductStregthEntities['+newIndex+'].CountryId')
+
     SetChildRowDeleteIcon();
 }
 function deleteRowProductStrength(j, element) {
@@ -381,4 +441,47 @@ function mandateDynamicControl() {
     });
 }
 
+
+function fnGetActiveBusinessUnit() {
+    ajaxServiceMethod($('#hdnBaseURL').val() + GetActiveBusinessUnit, 'GET', GetActiveBusinessUnitSuccess, GetActiveBusinessUnitError);
+}
+function GetActiveBusinessUnitSuccess(data) {
+    var businessUnitHTML = "";
+    var businessUnitPanel = "";
+    var _UserAccessBusinessUnit = $('#hdnUserBusinessUnits').val();
+    if (parseInt(getParameterByName("bui")) > 0) {
+        _SelectedBusinessUnitPIDF = parseInt(getParameterByName("bui"));
+    } else {
+        if (_UserAccessBusinessUnit != null && _UserAccessBusinessUnit != undefined && _UserAccessBusinessUnit != "") {
+            var _accessBusinessUnitArray = _UserAccessBusinessUnit.split(',');
+            if (_accessBusinessUnitArray.indexOf(_PIDFBusinessUnitId) != -1) {
+                _SelectedBusinessUnitPIDF = _PIDFBusinessUnitId;
+            } else {
+                _SelectedBusinessUnitPIDF = _accessBusinessUnitArray[0];
+            }
+        }
+    }
+    $.each(data._object, function (index, item) {
+        businessUnitHTML += '<li class="nav-item p-0">\
+            <a class="nav-link '+ (item.businessUnitId == _SelectedBusinessUnitPIDF ? "active" : "") + ' px-2" onclick="PIDFBUtabClick(' + _PIDFId + ', ' + item.businessUnitId + ')" data-toggle="pill" aria-selected="true" id="pidf-custom-tabs-two-' + item.businessUnitId + '-tab">' + item.businessUnitName + '</a></li>';
+/*        businessUnitPanel += '<div class="tab-pane ' + ((item.businessUnitId == _SelectedBusinessUnitPIDF ? "fade show active" : "")) + '" id="pidf-custom-tabs-' + item.businessUnitId + '" role="tabpanel" aria-labelledby="pidf-custom-tabs-two-' + item.businessUnitId + '-tab"></div>';*/
+    });
+    $('#pidf-custom-tabs-two-tab').html(businessUnitHTML);
+    if (_SelectedBusinessUnitPIDF != _PIDFBusinessUnitId) {
+        $("#frmPIDF").find('.readonlyOtherBusinessUnit').attr("disabled", "true");
+    }
+/*    $('#pidf-custom-tabs-two-tabContent').html(businessUnitPanel);*/
+}
+function GetActiveBusinessUnitError(x, y, z) {
+    toastr.error("Some error occurred while loading business unit");
+}
+
+function PIDFBUtabClick(pidfId, buId) {
+    if (_mode > 0) {
+        window.location.href = 'PIDF?pidfid=' + pidfId + '&bui=' + buId + '&IsView=' + _mode;
+    }
+    else {
+        window.location.href = 'PIDF?pidfid=' + pidfId + '&bui=' + buId;
+    }
+}
 
