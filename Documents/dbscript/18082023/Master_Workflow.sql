@@ -1,0 +1,1 @@
+update Master_Workflow set IsActive = 0 where WorkflowId in (3,4,5,6)

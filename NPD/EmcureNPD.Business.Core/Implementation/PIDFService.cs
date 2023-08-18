@@ -438,8 +438,9 @@ namespace EmcureNPD.Business.Core.Implementation
 
                         await _unitOfWork.SaveChangesAsync();
                         await _notificationService.CreateNotification(objPidf.Pidfid, objPidf.StatusId, string.Empty, string.Empty, (int)objPidf.StatusUpdatedBy);
+                        await AddWorkflowtasks(objPidf.Pidfid, objPidf.BusinessUnitId, objPidf.CreatedBy);
                     }
-                }
+                                   }
                 //var isSuccess = await _auditLogService.CreateAuditLog<EntryApproveRej>(oApprRej.SaveType == "D" ? Utility.Audit.AuditActionType.Delete : Utility.Audit.AuditActionType.Update,
                 //   Utility.Enums.ModuleEnum.PIDF, oApprRej, oApprRej, 0);
 
@@ -449,6 +450,19 @@ namespace EmcureNPD.Business.Core.Implementation
             {
                 return DBOperation.NotFound;
             }
+        }
+
+        public async Task<dynamic> AddWorkflowtasks(long pidfId, int? businessUnit, int userId)
+        {
+            SqlParameter[] osqlParameter = {
+                new SqlParameter("@PIDFID", pidfId),
+                new SqlParameter("@BusinessUnit", businessUnit),
+                new SqlParameter("@UserId", userId)
+            };
+
+            var dbresult = await _repository.GetBySP("ProcAddWorkflowTasks", System.Data.CommandType.StoredProcedure, osqlParameter);
+            return dbresult;
+            
         }
 
         //This common Function for All PIDF List Screens for ButtonClick of  Approve/Reject/Delete
