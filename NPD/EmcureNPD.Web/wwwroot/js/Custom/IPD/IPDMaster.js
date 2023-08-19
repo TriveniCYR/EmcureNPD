@@ -384,6 +384,21 @@ function SetDisableForOtherUserBU(_selectBusinessUnit) {
     // var IsViewInMode = ($("#IsView").val() == '1')
     if (status == -1) {
         readOnlyIPDForm();
+       // HideFormForNotInterestedBU(true);
+    }
+    else {
+      //  HideFormForNotInterestedBU(false)
+    }
+}
+function HideFormForNotInterestedBU(flag) {
+    if (flag) {
+        $('#custom-tabs-two-tabContent').hide();
+        $('#dvNotInterestedBUNote').show();
+        $('#dvNotInterestedBUNoteHeading').text('hellp123');
+    }
+    else {
+        $('#custom-tabs-two-tabContent').show();
+        $('#dvNotInterestedBUNote').hide();
     }
 }
 
