@@ -306,7 +306,7 @@ namespace EmcureNPD.Business.Core.Implementation
         {
             Expression<Func<PidfIpd, bool>> expr = (buid == -1) ? u => u.Pidfid == pidfId : u => u.BusinessUnitId == buid && u.Pidfid == pidfId;
 
-            var dynamicObj = (DataTable) await GetCountryByBussinessUnitIds(buid.ToString()); // Business ID hardcoded to 1
+            var dynamicObj = (DataTable) await GetCountryByIsInterestedCountry(buid.ToString(), pidfId.ToString()); // Business ID hardcoded to 1
             List<MasterCountryEntity> CountryListForPatentDetails = dynamicObj.DataTableToList<MasterCountryEntity>();
             //data.pidf_IPD_PatentDetailsCountries = CountryListForPatentDetails;
             List<PIDF_IPD_PatentDetailsEntity> objPatentDetails = new();
