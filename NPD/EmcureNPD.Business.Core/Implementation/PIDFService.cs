@@ -361,8 +361,13 @@ namespace EmcureNPD.Business.Core.Implementation
             data.pidfApiDetailEntities = _mapperFactory.GetList<Pidfapidetail, PidfApiDetailEntity>(_pidfApiRepository.GetAllQuery().Where(x => x.Pidfid == ids).ToList());
             data.pidfProductStregthEntities = _mapperFactory.GetList<PidfproductStrength, PidfProductStregthEntity>(_pidfProductStrength.GetAllQuery().Where(x => x.Pidfid == ids).ToList());
             data.IMSDataEntities = _mapperFactory.GetList<Pidfimsdatum, IMSDataEntity>(_pidfPidfimsdata.GetAllQuery().Where(x => x.Pidfid == ids).ToList());
-           
-            
+            data.IsAllBUFilled = true; //Is all BU say Interested or Not Interested implementation of ENP-598
+
+            var Is15DaysOldPIDFCreated = _repository.Exists(x=>x.CreatedDate < DateTime.Now.AddDays(-15));
+            bool IsAllBussUnitFilled = true;
+            data.IsAllBUFilled = Is15DaysOldPIDFCreated || IsAllBussUnitFilled;
+
+
             //foreach(var item in data.pidfProductStregthEntities)
             //{
             //    var productStrengthcountryMapp = _strengthCountryMapping.GetAllQuery().Where(x => x.PidfproductStrengthId == item.PidfproductStrengthId).ToList();
