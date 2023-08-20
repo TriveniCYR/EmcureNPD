@@ -384,6 +384,24 @@ function SetDisableForOtherUserBU(_selectBusinessUnit) {
     // var IsViewInMode = ($("#IsView").val() == '1')
     if (status == -1) {
         readOnlyIPDForm();
+       // HideFormForNotInterestedBU(true);
+    }
+    else {
+      //  HideFormForNotInterestedBU(false)
+    }
+}
+function HideFormForNotInterestedBU(flag) {
+    var buid ='2'
+    if (flag) {
+        $('#custom-tabs-two-tabContent').hide();
+        $('#dvNotInterestedBUNote').show();
+
+       var BuName = $('#custom-tabs-two-tab').find('#custom-tabs-two-' + buid +'-tab').text()
+        $('#dvNotInterestedBUNoteHeading').text(BuName +' have not taken any action on this');
+    }
+    else {
+        $('#custom-tabs-two-tabContent').show();
+        $('#dvNotInterestedBUNote').hide();
     }
 }
 
@@ -498,4 +516,10 @@ function SetIPDChildRowsAPI() {
     });
 }
 
+
+var objIsNotInterstedBUs =
+    [
+        { BussinessUnitId: '2', DateTime: '2023-08-12', FullName: 'Nilesh' },
+        { BussinessUnitId: '3', DateTime: '2023-08-13', FullName: 'Kuldip' }
+    ]
 

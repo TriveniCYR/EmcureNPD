@@ -99,7 +99,7 @@ namespace EmcureNPD.Business.Models
 
         public string BusinessUnitName { get; set; }
         public string DosageFormName { get; set; }
-
+        public bool IsAllBUFilled { get; set; }
         public string SaveType { get; set; }
 		public int? LogInId { get; set; }
 		public List<PIDFEntity> PIDFEntities { get; set; }

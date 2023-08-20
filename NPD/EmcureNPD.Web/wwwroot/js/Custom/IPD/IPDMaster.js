@@ -391,10 +391,13 @@ function SetDisableForOtherUserBU(_selectBusinessUnit) {
     }
 }
 function HideFormForNotInterestedBU(flag) {
+    var buid ='2'
     if (flag) {
         $('#custom-tabs-two-tabContent').hide();
         $('#dvNotInterestedBUNote').show();
-        $('#dvNotInterestedBUNoteHeading').text('hellp123');
+
+       var BuName = $('#custom-tabs-two-tab').find('#custom-tabs-two-' + buid +'-tab').text()
+        $('#dvNotInterestedBUNoteHeading').text(BuName +' have not taken any action on this');
     }
     else {
         $('#custom-tabs-two-tabContent').show();
@@ -513,4 +516,10 @@ function SetIPDChildRowsAPI() {
     });
 }
 
+
+var objIsNotInterstedBUs =
+    [
+        { BussinessUnitId: '2', DateTime: '2023-08-12', FullName: 'Nilesh' },
+        { BussinessUnitId: '3', DateTime: '2023-08-13', FullName: 'Kuldip' }
+    ]
 
