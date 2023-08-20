@@ -4,7 +4,6 @@ using Microsoft.EntityFrameworkCore.Metadata;
 using EmcureNPD.Data.DataAccess.Entity;
 using EmcureNPD.Utility;
 
-
 #nullable disable
 
 namespace EmcureNPD.Data.DataAccess.DataContext
@@ -106,6 +105,9 @@ namespace EmcureNPD.Data.DataAccess.DataContext
         public virtual DbSet<PidfApiMaster> PidfApiMasters { get; set; }
         public virtual DbSet<PidfApiOutsourceDatum> PidfApiOutsourceData { get; set; }
         public virtual DbSet<PidfApiRnD> PidfApiRnDs { get; set; }
+        public virtual DbSet<PidfBusinessUnit> PidfBusinessUnits { get; set; }
+        public virtual DbSet<PidfBusinessUnitCountry> PidfBusinessUnitCountries { get; set; }
+        public virtual DbSet<PidfBusinessUnitInterested> PidfBusinessUnitInteresteds { get; set; }
         public virtual DbSet<PidfCommercial> PidfCommercials { get; set; }
         public virtual DbSet<PidfCommercialMaster> PidfCommercialMasters { get; set; }
         public virtual DbSet<PidfCommercialYear> PidfCommercialYears { get; set; }
@@ -166,8 +168,9 @@ namespace EmcureNPD.Data.DataAccess.DataContext
             if (!optionsBuilder.IsConfigured)
             {
 #warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see http://go.microsoft.com/fwlink/?LinkId=723263.
-				optionsBuilder.UseSqlServer(DatabaseConnection.NPDDatabaseConnection);
-			}
+                //optionsBuilder.UseSqlServer("Data Source=180.149.241.172;Initial Catalog=EmcureNPDDev;Persist Security Info=True;User ID=emcurenpddev_dbUser;pwd=emcure123!@#");
+                optionsBuilder.UseSqlServer(DatabaseConnection.NPDDatabaseConnection);
+            }
         }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
@@ -1157,19 +1160,6 @@ namespace EmcureNPD.Data.DataAccess.DataContext
 
                 entity.Property(e => e.UpdatedOn).HasColumnType("datetime");
             });
-            modelBuilder.Entity<MasterNationApproval>(entity =>
-            {
-                entity.HasKey(e => e.NationApprovalId);
-                entity.ToTable("Master_NationApproval", "dbo");
-
-                entity.Property(e => e.CreatedDate)
-                    .HasColumnType("datetime")
-                    .HasDefaultValueSql("(getdate())");
-
-                entity.Property(e => e.NationApprovalName).HasMaxLength(20);
-
-                entity.Property(e => e.UpdatedDate).HasColumnType("datetime");
-            });
 
             modelBuilder.Entity<MasterUnitofMeasurement>(entity =>
             {
@@ -1816,6 +1806,98 @@ namespace EmcureNPD.Data.DataAccess.DataContext
                 entity.Property(e => e.SponsorBusinessPartner).HasMaxLength(100);
 
                 entity.Property(e => e.Total).HasMaxLength(100);
+            });
+
+            modelBuilder.Entity<PidfBusinessUnit>(entity =>
+            {
+                entity.ToTable("PIDF_BusinessUnit", "dbo");
+
+                entity.Property(e => e.PidfbusinessUnitId).HasColumnName("PIDFBusinessUnitID");
+
+                entity.Property(e => e.ApprovedGenerics).HasMaxLength(100);
+
+                entity.Property(e => e.BrandName).HasMaxLength(100);
+
+                entity.Property(e => e.CreatedDate).HasColumnType("datetime");
+
+                entity.Property(e => e.Diaid).HasColumnName("DIAId");
+
+                entity.Property(e => e.LaunchedGenerics).HasMaxLength(100);
+
+                entity.Property(e => e.ModifyDate).HasColumnType("datetime");
+
+                entity.Property(e => e.Pidfid).HasColumnName("PIDFId");
+
+                entity.Property(e => e.Rfdapplicant)
+                    .HasMaxLength(100)
+                    .HasColumnName("RFDApplicant");
+
+                entity.Property(e => e.Rfdbrand)
+                    .HasMaxLength(100)
+                    .HasColumnName("RFDBrand");
+
+                entity.Property(e => e.RfdcommercialBatchSize)
+                    .HasMaxLength(100)
+                    .HasColumnName("RFDCommercialBatchSize");
+
+                entity.Property(e => e.RfdcountryId).HasColumnName("RFDCountryId");
+
+                entity.Property(e => e.Rfdindication)
+                    .HasMaxLength(100)
+                    .HasColumnName("RFDIndication");
+
+                entity.Property(e => e.RfdinitialRevenuePotential)
+                    .HasMaxLength(100)
+                    .HasColumnName("RFDInitialRevenuePotential");
+
+                entity.Property(e => e.Rfdinnovators)
+                    .HasMaxLength(100)
+                    .HasColumnName("RFDInnovators");
+
+                entity.Property(e => e.RfdpriceDiscounting)
+                    .HasMaxLength(100)
+                    .HasColumnName("RFDPriceDiscounting");
+
+                entity.Property(e => e.TradeNameDate).HasColumnType("datetime");
+            });
+
+            modelBuilder.Entity<PidfBusinessUnitCountry>(entity =>
+            {
+                entity.ToTable("PIDF_BusinessUnit_Country");
+
+                entity.Property(e => e.PidfbusinessUnitCountryId).HasColumnName("PIDFBusinessUnitCountryId");
+
+                entity.Property(e => e.Pidfid).HasColumnName("PIDFId");
+            });
+
+            modelBuilder.Entity<PidfBusinessUnitInterested>(entity =>
+            {
+                entity.HasKey(e => e.PidfbusinessUnitId);
+
+                entity.ToTable("PIDF_BusinessUnit_Interested");
+
+                entity.Property(e => e.PidfbusinessUnitId).HasColumnName("PIDFBusinessUnitId");
+
+                entity.Property(e => e.CreatedDate).HasColumnType("datetime");
+
+                entity.Property(e => e.Ipaddress)
+                    .HasMaxLength(20)
+                    .IsUnicode(false)
+                    .HasColumnName("IPAddress");
+
+                entity.Property(e => e.Pidfid).HasColumnName("PIDFId");
+
+                entity.HasOne(d => d.BusinessUnit)
+                    .WithMany(p => p.PidfBusinessUnitInteresteds)
+                    .HasForeignKey(d => d.BusinessUnitId)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("FK_PIDF_BusinessUnit_Interested_Master_BusinessUnit");
+
+                entity.HasOne(d => d.Pidf)
+                    .WithMany(p => p.PidfBusinessUnitInteresteds)
+                    .HasForeignKey(d => d.Pidfid)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("FK_PIDF_BusinessUnit_Interested_PIDF");
             });
 
             modelBuilder.Entity<PidfCommercial>(entity =>

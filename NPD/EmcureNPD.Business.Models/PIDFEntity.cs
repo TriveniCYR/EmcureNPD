@@ -107,5 +107,19 @@ namespace EmcureNPD.Business.Models
         public List<PidfProductStregthEntity> pidfProductStregthEntities { get; set; }
         public List<IMSDataEntity> IMSDataEntities { get; set; }
 
+        public PIDFInterested pidfInterested { get; set; }
+        public int[] InterestedCountries { get; set; }
+
+        public int SelectedBusinessUnitId { get; set; }
+
+        public string PIDFIsInterested { get; set; }
     }
+
+    public class PIDFInterested
+    {
+        public bool IsInterested { get; set; }
+        public DateTime CreatedDate { get; set; }
+        public string CreatedByName { get; set; }
+    }
+
 }

@@ -442,3 +442,29 @@ div#dvPBFContainer .form-control {
     margin: -11px !important;
     margin-top: -25px !important;
 }
+.pidfStrengthTable td {
+    width:30%;
+}
+.custom-radio {
+    width: 25px;
+    height: 25px;
+}
+.custom-radio-text {
+    display: inline-block;
+    vertical-align: super;
+    margin-left: 10px;
+    margin-right: 10px;
+}
+select[readonly].select2-hidden-accessible + .select2-container {
+    pointer-events: none;
+    touch-action: none;
+}
+
+    select[readonly].select2-hidden-accessible + .select2-container .select2-selection {
+        background: #eee;
+        box-shadow: none;
+    }
+
+    select[readonly].select2-hidden-accessible + .select2-container .select2-selection__arrow, select[readonly].select2-hidden-accessible + .select2-container .select2-selection__clear {
+        display: none;
+    }

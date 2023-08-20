@@ -6,6 +6,7 @@ using EmcureNPD.Data.DataAccess.Core.UnitOfWork;
 using EmcureNPD.Data.DataAccess.Entity;
 using EmcureNPD.Utility.Enums;
 using EmcureNPD.Utility.Utility;
+using Microsoft.Extensions.ObjectPool;
 using System;
 using System.Collections.Generic;
 using System.Data;
@@ -34,6 +35,13 @@ namespace EmcureNPD.Business.Core.Implementation
         private IRepository<PidfproductStrength> _pidfProductStrength { get; set; }
         private IRepository<Pidfimsdatum> _pidfPidfimsdata { get; set; }
         private IRepository<PidfproductStrengthCountryMapping> _strengthCountryMapping { get; set; }
+
+        private IRepository<PidfBusinessUnitInterested> _pidfBusinessUnitInterested { get; set; }
+        private IRepository<PidfBusinessUnit> _pidfBusinessUnit { get; set; }
+        private IRepository<PidfBusinessUnitCountry> _pidfBusinessUnitCountry { get; set; }
+        private IRepository<MasterUser> _user { get; set; }
+
+
         public PIDFService(IUnitOfWork unitOfWork, IMapperFactory mapperFactory,
             IPidfApiDetailsService pidfApiDetailsService, IPidfProductStrengthService pidfProductStrengthService,
              INotificationService notificationService,
@@ -50,6 +58,12 @@ namespace EmcureNPD.Business.Core.Implementation
             _pidfApiRepository = unitOfWork.GetRepository<Pidfapidetail>();
             _pidfProductStrength = unitOfWork.GetRepository<PidfproductStrength>();
             _strengthCountryMapping = unitOfWork.GetRepository<PidfproductStrengthCountryMapping>();
+
+            _pidfBusinessUnitInterested = unitOfWork.GetRepository<PidfBusinessUnitInterested>();
+            _pidfBusinessUnit = unitOfWork.GetRepository<PidfBusinessUnit>();
+            _pidfBusinessUnitCountry = unitOfWork.GetRepository<PidfBusinessUnitCountry>();
+            _user = unitOfWork.GetRepository<MasterUser>();
+
             _helper = helper;
             _ExceptionService = exceptionService;
         }
@@ -183,10 +197,9 @@ namespace EmcureNPD.Business.Core.Implementation
         }
 
         public async Task<DBOperation> AddUpdatePIDF(PIDFEntity entityPIDF)
-
         {
             Pidf objPIDF;
-            int? BusinessUnitIdForChildTable = entityPIDF.BusinessUnitId;
+            //int? BusinessUnitIdForChildTable = entityPIDF.BusinessUnitId;
             try
             {
                 var loggedInUserId = _helper.GetLoggedInUser().UserId;
@@ -196,48 +209,111 @@ namespace EmcureNPD.Business.Core.Implementation
                     objPIDF = await _repository.GetAsync(entityPIDF.PIDFID);
                     if (objPIDF != null)
                     {
-                        PIDFEntity _previousPIDFEntity = _mapperFactory.Get<Pidf, PIDFEntity>(objPIDF);
-
-                        objPIDF = _mapperFactory.Get<PIDFEntity, Pidf>(entityPIDF);
-                        BusinessUnitIdForChildTable = entityPIDF.TabBusinessUnitId; //  int.Parse(entityPIDF.TabBusinessUnitId==""?"0": entityPIDF.TabBusinessUnitId); //In case of Edit--> take TabBusinessUnitId
-                        objPIDF.ModifyBy = loggedInUserId;
-                        objPIDF.ModifyDate = DateTime.Now;
-                        objPIDF.StatusUpdatedBy = loggedInUserId;
-                        objPIDF.StatusUpdatedDate = DateTime.Now;
-
-                        _repository.UpdateAsync(objPIDF);
-
-                        await _unitOfWork.SaveChangesAsync();
-
-                        var apiDetailsList = _pidfApiRepository.GetAllQuery().Where(x => x.Pidfid == entityPIDF.PIDFID).ToList();
-                        foreach (var item in apiDetailsList)
+                        if (!string.IsNullOrEmpty(entityPIDF.PIDFIsInterested) && (entityPIDF.PIDFIsInterested == "1" || entityPIDF.PIDFIsInterested == "0"))
                         {
-                            _pidfApiRepository.Remove(item);
+
+                            var _objPIDFInterested = _pidfBusinessUnitInterested.GetAllQuery().Where(x => x.Pidfid == entityPIDF.PIDFID && x.BusinessUnitId == entityPIDF.SelectedBusinessUnitId).FirstOrDefault();
+
+                            if (_objPIDFInterested == null)
+                            {
+                                _objPIDFInterested = new PidfBusinessUnitInterested();
+                            }
+                            _objPIDFInterested.IsInterested = (entityPIDF.PIDFIsInterested == "1" ? true : false);
+                            _objPIDFInterested.CreatedDate = DateTime.Now;
+                            _objPIDFInterested.CreatedBy = loggedInUserId;
+
+                            if (_objPIDFInterested != null && _objPIDFInterested.Pidfid > 0)
+                            {                                
+                                _pidfBusinessUnitInterested.UpdateAsync(_objPIDFInterested);
+                            }
+                            else
+                            {
+                                _objPIDFInterested.Pidfid = entityPIDF.PIDFID;
+                                _objPIDFInterested.BusinessUnitId = entityPIDF.SelectedBusinessUnitId;
+                                _pidfBusinessUnitInterested.AddAsync(_objPIDFInterested);
+                            }
+                            await _unitOfWork.SaveChangesAsync();
+
+                            if (_objPIDFInterested.IsInterested)
+                            {
+                                var _objPIDFBusinessUnit = _pidfBusinessUnit.GetAllQuery().Where(x => x.Pidfid == entityPIDF.PIDFID && x.BusinessUnitId == entityPIDF.SelectedBusinessUnitId).FirstOrDefault();
+
+                                if (_objPIDFBusinessUnit != null && _objPIDFBusinessUnit.Pidfid > 0)
+                                {
+                                    _objPIDFBusinessUnit = _mapperFactory.Get<PIDFEntity, PidfBusinessUnit>(entityPIDF);
+
+                                    _objPIDFBusinessUnit.ModifyBy = loggedInUserId;
+                                    _objPIDFBusinessUnit.ModifyDate = DateTime.Now;
+                                    _pidfBusinessUnit.UpdateAsync(_objPIDFBusinessUnit);
+                                }
+                                else
+                                {
+                                    _objPIDFBusinessUnit = _mapperFactory.Get<PIDFEntity, PidfBusinessUnit>(entityPIDF);
+
+                                    _objPIDFBusinessUnit.CreatedBy = loggedInUserId;
+                                    _objPIDFBusinessUnit.CreatedDate = DateTime.Now;
+                                    _pidfBusinessUnit.AddAsync(_objPIDFBusinessUnit);
+                                }
+                                await _unitOfWork.SaveChangesAsync();
+                            }
                         }
-                        await _unitOfWork.SaveChangesAsync();
-
-                        var productStrengthList = _pidfProductStrength.GetAllQuery().Where(x => x.Pidfid == entityPIDF.PIDFID).ToList();
-                        List<PidfproductStrengthCountryMapping> _objproductStrengthCountryMapping = new List<PidfproductStrengthCountryMapping>();
-                        foreach (var item in productStrengthList)
+                        else
                         {
-                            //var productStrengthcountryMapp = _strengthCountryMapping.GetAllQuery().Where(x => x.PidfproductStrengthId == item.PidfproductStrengthId).ToList();
-                            //foreach(var prostrcntrymap in productStrengthcountryMapp)
-                            //_strengthCountryMapping.Remove(prostrcntrymap);
+                            PIDFEntity _previousPIDFEntity = _mapperFactory.Get<Pidf, PIDFEntity>(objPIDF);
+
+                            objPIDF = _mapperFactory.Get<PIDFEntity, Pidf>(entityPIDF);
+                            //BusinessUnitIdForChildTable = entityPIDF.TabBusinessUnitId; //  int.Parse(entityPIDF.TabBusinessUnitId==""?"0": entityPIDF.TabBusinessUnitId); //In case of Edit--> take TabBusinessUnitId
+                            objPIDF.ModifyBy = loggedInUserId;
+                            objPIDF.ModifyDate = DateTime.Now;
+                            objPIDF.StatusUpdatedBy = loggedInUserId;
+                            objPIDF.StatusUpdatedDate = DateTime.Now;
+
+                            _repository.UpdateAsync(objPIDF);
 
                             await _unitOfWork.SaveChangesAsync();
+
+                            var isSuccess = await _auditLogService.CreateAuditLog<PIDFEntity>(entityPIDF.PIDFID > 0 ? Utility.Audit.AuditActionType.Update : Utility.Audit.AuditActionType.Create,
+                                Utility.Enums.ModuleEnum.PIDF, _previousPIDFEntity, entityPIDF, Convert.ToInt32(objPIDF.Pidfid));
+                        }
+
+                        var apiDetailsList = _pidfApiRepository.GetAllQuery().Where(x => x.Pidfid == entityPIDF.PIDFID && x.BusinessUnitId == entityPIDF.SelectedBusinessUnitId).ToList();
+                        if (apiDetailsList != null && apiDetailsList.Count() > 0)
+                        {
+                            foreach (var item in apiDetailsList)
+                            {
+                                _pidfApiRepository.Remove(item);
+                            }
+                            await _unitOfWork.SaveChangesAsync();
+                        }
+                        
+
+                        var productStrengthList = _pidfProductStrength.GetAllQuery().Where(x => x.Pidfid == entityPIDF.PIDFID && x.BusinessUnitId == entityPIDF.SelectedBusinessUnitId).ToList();
+
+                        foreach (var item in productStrengthList)
+                        {
+                            var strengthCountryList = _strengthCountryMapping.GetAllQuery().Where(x => x.PidfproductStrengthId == item.PidfproductStrengthId).ToList();
+                            foreach (var x in strengthCountryList)
+                            {
+                                _strengthCountryMapping.Remove(x);
+                            }
+                        }
+                        await _unitOfWork.SaveChangesAsync();
+
+                        foreach (var item in productStrengthList)
+                        {
                             _pidfProductStrength.Remove(item);
                         }
-                        var imsDataList = _pidfPidfimsdata.GetAllQuery().Where(x => x.Pidfid == entityPIDF.PIDFID).ToList();
+                        await _unitOfWork.SaveChangesAsync();
+
+                        var imsDataList = _pidfPidfimsdata.GetAllQuery().Where(x => x.Pidfid == entityPIDF.PIDFID && x.BusinessUnitId == entityPIDF.SelectedBusinessUnitId).ToList();
                         foreach (var item in imsDataList)
                         {
                             _pidfPidfimsdata.Remove(item);
                         }
                         await _unitOfWork.SaveChangesAsync();
 
-                        await SaveChildDetails(objPIDF.Pidfid, loggedInUserId, entityPIDF.pidfApiDetailEntities, entityPIDF.pidfProductStregthEntities, entityPIDF.IMSDataEntities, BusinessUnitIdForChildTable);
+                        await SaveChildDetails(objPIDF.Pidfid, loggedInUserId, entityPIDF.pidfApiDetailEntities, entityPIDF.pidfProductStregthEntities, entityPIDF.IMSDataEntities, entityPIDF.SelectedBusinessUnitId);
 
-                        var isSuccess = await _auditLogService.CreateAuditLog<PIDFEntity>(entityPIDF.PIDFID > 0 ? Utility.Audit.AuditActionType.Update : Utility.Audit.AuditActionType.Create,
-                           Utility.Enums.ModuleEnum.PIDF, _previousPIDFEntity, entityPIDF, Convert.ToInt32(objPIDF.Pidfid));
                         await _notificationService.CreateNotification(objPIDF.Pidfid, entityPIDF.StatusId, string.Empty, string.Empty, loggedInUserId);
                         return DBOperation.Success;
                     }
@@ -250,7 +326,7 @@ namespace EmcureNPD.Business.Core.Implementation
                 {
                     var _LastPIDFId = _repository.GetAllQuery().OrderByDescending(x => x.Pidfid).Select(x => x.Pidfid).FirstOrDefault();
                     objPIDF = _mapperFactory.Get<PIDFEntity, Pidf>(entityPIDF);
-                    BusinessUnitIdForChildTable = entityPIDF.BusinessUnitId;
+                    //BusinessUnitIdForChildTable = entityPIDF.BusinessUnitId;
                     objPIDF.Pidfno = "PIDF-00" + (_LastPIDFId + 1);
                     objPIDF.IsActive = true;
                     objPIDF.CreatedBy = loggedInUserId;
@@ -264,7 +340,7 @@ namespace EmcureNPD.Business.Core.Implementation
 
                     await _unitOfWork.SaveChangesAsync();
 
-                    await SaveChildDetails(objPIDF.Pidfid, loggedInUserId, entityPIDF.pidfApiDetailEntities, entityPIDF.pidfProductStregthEntities,entityPIDF.IMSDataEntities, BusinessUnitIdForChildTable);
+                    await SaveChildDetails(objPIDF.Pidfid, loggedInUserId, entityPIDF.pidfApiDetailEntities, entityPIDF.pidfProductStregthEntities,entityPIDF.IMSDataEntities, entityPIDF.SelectedBusinessUnitId);
 
                     await _notificationService.CreateNotification(objPIDF.Pidfid, entityPIDF.StatusId, string.Empty, string.Empty, loggedInUserId);
 
@@ -302,32 +378,28 @@ namespace EmcureNPD.Business.Core.Implementation
                 if (pidfProductStregthEntities != null && pidfProductStregthEntities.Count() > 0)
                 {
                     List<PidfproductStrength> _ProductStrengthList = new List<PidfproductStrength>();
-                    List<PidfproductStrengthCountryMapping> _objproductStrengthCountryMapping = new List<PidfproductStrengthCountryMapping>();
                     foreach (var item in pidfProductStregthEntities)
                     {
-                        //foreach(var _country in item.CountryId)
-                        //{
-                        //    _objproductStrengthCountryMapping.Add(new PidfproductStrengthCountryMapping()
-                        //    {
-                        //        CountryId = _country,
-                        //        ModifyBy = loggedInUserId,
-                        //        ModifyDate = DateTime.Now
-                        //    });
-
-                        //}
                         PidfproductStrength pidfProductStrength = new PidfproductStrength();
                         item.Pidfid = Pidfid;
                         item.ModifyDate = DateTime.Now;
                         item.ModifyBy = loggedInUserId;
                         pidfProductStrength = _mapperFactory.Get<PidfProductStregthEntity, PidfproductStrength>(item);
                         pidfProductStrength.BusinessUnitId = BusinessUnitId;
-                        //pidfProductStrength.PidfproductStrengthCountryMappings = _objproductStrengthCountryMapping;
+
+                        // setup country against the pidf strength
+                        if (item.CountryId != null)
+                        {
+                            foreach (var x in item.CountryId)
+                            {
+                                pidfProductStrength.PidfproductStrengthCountryMappings.Add(new PidfproductStrengthCountryMapping { CountryId = x, ModifyBy = loggedInUserId, ModifyDate = DateTime.Now });
+                            }
+                        }
+
                         _ProductStrengthList.Add(pidfProductStrength);
                     }
                     _pidfProductStrength.AddRangeAsync(_ProductStrengthList);
                     await _unitOfWork.SaveChangesAsync();
-
-
                 }
                 if (IMSDataEntities != null && IMSDataEntities.Count() > 0)
                 {
@@ -354,22 +426,61 @@ namespace EmcureNPD.Business.Core.Implementation
             }
         }
 
-        public async Task<PIDFEntity> GetById(int id)
+        public async Task<PIDFEntity> GetById(int id, int BusinessUnitId)
         {
             var ids = Convert.ToInt64(id);
-            var data = _mapperFactory.Get<Pidf, PIDFEntity>(await _repository.GetAsync(ids));
-            data.pidfApiDetailEntities = _mapperFactory.GetList<Pidfapidetail, PidfApiDetailEntity>(_pidfApiRepository.GetAllQuery().Where(x => x.Pidfid == ids).ToList());
-            data.pidfProductStregthEntities = _mapperFactory.GetList<PidfproductStrength, PidfProductStregthEntity>(_pidfProductStrength.GetAllQuery().Where(x => x.Pidfid == ids).ToList());
-            data.IMSDataEntities = _mapperFactory.GetList<Pidfimsdatum, IMSDataEntity>(_pidfPidfimsdata.GetAllQuery().Where(x => x.Pidfid == ids).ToList());
-           
             
-            //foreach(var item in data.pidfProductStregthEntities)
-            //{
-            //    var productStrengthcountryMapp = _strengthCountryMapping.GetAllQuery().Where(x => x.PidfproductStrengthId == item.PidfproductStrengthId).ToList();
+            var data = _mapperFactory.Get<Pidf, PIDFEntity>(await _repository.GetAsync(ids));
 
-            //    var arrofCountryID = productStrengthcountryMapp.Select(x => x.CountryId.ToString()).ToArray();
-            //    item.CountryListArr = string.Join(",", arrofCountryID);
-            //}
+            if (BusinessUnitId > 0 && data.BusinessUnitId != BusinessUnitId)
+            {
+                var _objPIDFInterested = _pidfBusinessUnitInterested.GetAllQuery().Where(x => x.Pidfid == id && x.BusinessUnitId == BusinessUnitId).FirstOrDefault();
+
+                data.pidfInterested = new PIDFInterested();
+                if (_objPIDFInterested != null)
+                {
+                    data.pidfInterested.IsInterested = _objPIDFInterested.IsInterested;
+                    data.pidfInterested.CreatedDate = _objPIDFInterested.CreatedDate;
+                    data.pidfInterested.CreatedByName = _user.GetAllQuery().Where(x => x.UserId == _objPIDFInterested.CreatedBy).Select(x => x.FullName).FirstOrDefault();
+
+                    if (_objPIDFInterested.IsInterested)
+                    {
+                        data.InterestedCountries = _pidfBusinessUnitCountry.GetAllQuery().Where(x => x.Pidfid == id && x.BusinessUnitId == BusinessUnitId).Select(x => x.CountryId).ToArray();
+
+                        var _objPIDFBusinessUnit = _pidfBusinessUnit.GetAllQuery().Where(x => x.Pidfid == id && x.BusinessUnitId == BusinessUnitId).FirstOrDefault();
+
+                        if (_objPIDFBusinessUnit.PidfbusinessUnitId > 0)
+                        {
+                            data = _mapperFactory.Get<PidfBusinessUnit, PIDFEntity>(_objPIDFBusinessUnit);
+                        }
+                    }
+                    else
+                    {
+                        BusinessUnitId = Convert.ToInt32(data.BusinessUnitId);
+                    }
+                }
+                else
+                {
+                    BusinessUnitId = Convert.ToInt32(data.BusinessUnitId);
+                }
+            }
+
+            data.pidfApiDetailEntities = _mapperFactory.GetList<Pidfapidetail, PidfApiDetailEntity>(_pidfApiRepository.GetAllQuery().Where(x => x.Pidfid == ids && x.BusinessUnitId == BusinessUnitId).ToList());
+            
+            data.pidfProductStregthEntities = _mapperFactory.GetList<PidfproductStrength, PidfProductStregthEntity>(_pidfProductStrength.GetAllQuery().Where(x => x.Pidfid == ids && x.BusinessUnitId == BusinessUnitId).ToList());
+
+            if (data.pidfProductStregthEntities.Count() <= 0)
+            {
+                data.pidfProductStregthEntities.Add(new PidfProductStregthEntity { Pidfid = id, Strength = "" });
+            }
+           
+            data.IMSDataEntities = _mapperFactory.GetList<Pidfimsdatum, IMSDataEntity>(_pidfPidfimsdata.GetAllQuery().Where(x => x.Pidfid == ids && x.BusinessUnitId == BusinessUnitId).ToList());
+
+            for (int i = 0; i < data.pidfProductStregthEntities.Count; i++)
+            {
+                data.pidfProductStregthEntities[i].CountryId = _strengthCountryMapping.GetAllQuery().Where(x => x.PidfproductStrengthId == data.pidfProductStregthEntities[i].PidfproductStrengthId).Select(x=> x.CountryId).ToArray();
+            }
+
             return data;
         }
 

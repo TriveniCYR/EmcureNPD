@@ -155,12 +155,12 @@ namespace EmcureNPD.API.Controllers.Masters
         /// <response code="404">Not Found</response>
         /// <response code="405">Method Not Allowed</response>
         /// <response code="500">Internal Server</response>
-        [HttpGet, Route("GetPIDFById/{id}")]
-        public async Task<IActionResult> GetPIDFById([FromRoute] int id)
+        [HttpGet, Route("GetPIDFById/{id}/{bussnessId}")]
+        public async Task<IActionResult> GetPIDFById([FromRoute] int id, int bussnessId)
         {
             try
             {
-                var oPIDFEntity = await _PIDFService.GetById(id);
+                var oPIDFEntity = await _PIDFService.GetById(id, bussnessId);
                 if (oPIDFEntity != null && oPIDFEntity.PIDFID > 0)
                     return _ObjectResponse.Create(oPIDFEntity, (Int32)HttpStatusCode.OK);
                 else

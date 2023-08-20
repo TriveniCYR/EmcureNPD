@@ -14,6 +14,7 @@ namespace EmcureNPD.Data.DataAccess.Entity
             PidfApiIpds = new HashSet<PidfApiIpd>();
             PidfApiMasters = new HashSet<PidfApiMaster>();
             PidfApiOutsourceData = new HashSet<PidfApiOutsourceDatum>();
+            PidfBusinessUnitInteresteds = new HashSet<PidfBusinessUnitInterested>();
             PidfCommercialMasters = new HashSet<PidfCommercialMaster>();
             PidfCommercials = new HashSet<PidfCommercial>();
             PidfFinanceProjections = new HashSet<PidfFinanceProjection>();
@@ -82,6 +83,7 @@ namespace EmcureNPD.Data.DataAccess.Entity
         public virtual ICollection<PidfApiIpd> PidfApiIpds { get; set; }
         public virtual ICollection<PidfApiMaster> PidfApiMasters { get; set; }
         public virtual ICollection<PidfApiOutsourceDatum> PidfApiOutsourceData { get; set; }
+        public virtual ICollection<PidfBusinessUnitInterested> PidfBusinessUnitInteresteds { get; set; }
         public virtual ICollection<PidfCommercialMaster> PidfCommercialMasters { get; set; }
         public virtual ICollection<PidfCommercial> PidfCommercials { get; set; }
         public virtual ICollection<PidfFinanceProjection> PidfFinanceProjections { get; set; }

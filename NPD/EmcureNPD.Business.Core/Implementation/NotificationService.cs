@@ -149,12 +149,16 @@ namespace EmcureNPD.Business.Core.Implementation
                     CreatedDate = DateTime.Now,
                     CreatedBy = loggedinUserId,
                 };
+                
                 objNotification = _mapperFactory.Get<MasterNotificationEntity, MasterNotification>(notification);
+                
                 _repository.AddAsync(objNotification);
 
                 await _unitOfWork.SaveChangesAsync();
+                
                 if (objNotification.NotificationId == 0)
                     return DBOperation.Error;
+
                 //SqlDependency sqlDependency = new SqlDependency();
                 //sqlDependency.OnChange += new OnChangeEventHandler(dbChangeNotification);
 

@@ -52,21 +52,21 @@ namespace EmcureNPD.Web.Controllers
             return View();
         }
 
-        public IActionResult PIDF(int? PIDFId, bool _Partial = false, bool IsViewMode = false)
+        public IActionResult PIDF(int? PIDFId, int? bui, bool _Partial = false, bool IsViewMode = false)
         {
 
             PIDFEntity pidf;
           
             try
             {
-                string IsView = HttpContext.Request.Query["IsView"];
-                if (!IsViewMode && !(IsView =="1"))
-                {
-                    if (!_helper.IsAccessToPIDF((int)ModuleEnum.PIDF, PIDFId))
-                    {
-                         return RedirectToAction("PIDFList","PIDF", new { ScreenId = Convert.ToString((int)EmcureNPD.Utility.Enums.PIDFScreen.PIDF) });
-                    }
-                }
+                //string IsView = HttpContext.Request.Query["IsView"];
+                //if (!IsViewMode && !(IsView =="1"))
+                //{
+                //    if (!_helper.IsAccessToPIDF((int)ModuleEnum.PIDF, PIDFId))
+                //    {
+                //         return RedirectToAction("PIDFList","PIDF", new { ScreenId = Convert.ToString((int)EmcureNPD.Utility.Enums.PIDFScreen.PIDF) });
+                //    }
+                //}
 
 
                 int rolId = _helper.GetLoggedInRoleId();
@@ -92,13 +92,18 @@ namespace EmcureNPD.Web.Controllers
                 {
                     HttpResponseMessage responseMessage;
                    // string buid = HttpContext.Request.Query["bui"];
-                    var data = GetPidfFormModel(PIDFId, out responseMessage);
-
-                    data._Partial = _Partial;
-                    data.IsViewMode = IsViewMode;
+                    var data = GetPidfFormModel(PIDFId, bui, out responseMessage);
 
                     if (data != null)
                     {
+                        data._Partial = _Partial;
+                        data.IsViewMode = IsViewMode;
+
+                        if (bui != null && bui > 0)
+                        {
+                            data.SelectedBusinessUnitId = Convert.ToInt32(bui);
+                        }
+
                         data.LogInId = _helper.GetLoggedInUserId();
                         return View(data);
                     }
@@ -117,14 +122,14 @@ namespace EmcureNPD.Web.Controllers
         }
 
         [NonAction]
-        private PIDFEntity GetPidfFormModel(int? PIDFId, out HttpResponseMessage responseMessage)
+        private PIDFEntity GetPidfFormModel(int? PIDFId, int? BusinessUnitId, out HttpResponseMessage responseMessage)
         {
             try
             {
                 HttpContext.Request.Cookies.TryGetValue(UserHelper.EmcureNPDToken, out string token);
                 APIRepository objapi = new(_cofiguration);
 
-                responseMessage = objapi.APICommunication(APIURLHelper.GetPIDFById + "/" + PIDFId, HttpMethod.Get, token).Result;
+                responseMessage = objapi.APICommunication(APIURLHelper.GetPIDFById + "/" + PIDFId + "/" + (BusinessUnitId == null ? 0 : BusinessUnitId), HttpMethod.Get, token).Result;
 
                 if (responseMessage.IsSuccessStatusCode)
                 {
