@@ -34,6 +34,7 @@ function SetBU_Strength() {
 function IsViewModeCommercial() {
     if ($("#IsView").val() == '1') {
         SetCommercialFormReadonly();
+        SetPBFCommercialFormReadonly();
     }
 }
 function SetCommercialDivReadonly() {
@@ -984,11 +985,12 @@ function AddTaskTo_tblPBFOutsourcetask(data) {
     var html = '';
     $.each(data, function (ind, item) {
         var _cost = (item.cost == undefined) ? '' : item.cost
+        var _Taskname = (item.pbfWorkFlowTaskName == null) ? '' : item.pbfWorkFlowTaskName;
         var _tentative = (item.tentative == undefined) ? '' : item.tentative
         var classname = '';//(item.taskLevel == 1) ? 'fw-bold' : 'text-end';
 
         html += '<tr class="taskdataRow" id="RowTask_' + ind + '" >'
-        html += '<td> <input type="text" class="form-control clspbfWorkFlowTaskName ' + classname + ' " value="' + item.pbfWorkFlowTaskName + '" /> </td>'
+        html += '<td> <input type="text" class="form-control clspbfWorkFlowTaskName ' + classname + ' " value="' + _Taskname + '" /> </td>'
         html += '<td> <input type="number" class="form-control clscost"   value="' + _cost + '" /> </td>'
         html += '<td> <input type="date" class="form-control clstentative" value="' + _tentative + '" /> </td>'
 
@@ -1002,6 +1004,10 @@ function AddTaskTo_tblPBFOutsourcetask(data) {
     //   $("#PBFOutsourcetaskTbody").append(html);
     //}
     $("#PBFOutsourcetaskTbody").html(html);
+    PBFOutsourceRowDeleteIcon();
+    if ($("#IsView").val() == '1') {
+        SetPBFCommercialFormReadonly();
+    }
 }
 
 function UpdatePBFOutSourceData(data) {
@@ -1134,16 +1140,18 @@ $('#btnSaveAsDraftPBFCommercial').click(function () {
 });
 $('#custom-tabs-BudgetApproval-PBF-tab').click(function () {//commercial Tab Click
     IsTabClick = true;
+    if ($("#IsView").val() != '1')
     SavePBFOutsourceData('TabClick'); 
 })
 // Commercial save
-$("#custom-tabs-BudgetApproval-Finance-tab").click(function () {
+$("#custom-tabs-BudgetApproval-Finance-tab").click(function () { // PBF tab click
     IsTabClick = true;
     if (IsPageLoad) {
         IsPageLoad = false;
         SetPBFDDLValues();
     }
     IsCommTabClick = true;
+    if ($("#IsView").val() != '1') 
     CommercialSubmitClick('TabClick');
 });
 $('#mainDivCommercial').find("#btnSubmit").click(function () {
@@ -1169,4 +1177,9 @@ $(document).on("change", ".clstentative", function () {
         isValidTentativeDate = true;
     }
 });
+function SetPBFCommercialFormReadonly() {
+    $("#custom-tabs-PBFCommercial").find("input, submit, textarea,text, a, select").attr("disabled", "disabled");
+    $("#custom-tabs-PBFCommercial").find("#btnSaveAsDraftPBFCommercial,#btnPBFCommercialSubmit").hide();
+    $("#btnPBFCommercialCancel").removeAttr("disabled");
+}
 
