@@ -1,0 +1,14 @@
+UPDATE PIDFProductStrength
+SET PIDFProductStrength.BusinessUnitId = PIDF.BusinessUnitId
+FROM PIDFProductStrength
+Inner JOIN PIDF ON PIDF.PIDFID = PIDFProductStrength.PIDFID
+
+UPDATE PIDFAPIDetails
+SET PIDFAPIDetails.BusinessUnitId = PIDF.BusinessUnitId
+FROM PIDFAPIDetails
+Inner JOIN PIDF ON PIDF.PIDFID = PIDFAPIDetails.PIDFID
+
+UPDATE PIDFIMSData
+SET PIDFIMSData.BusinessUnitId = PIDF.BusinessUnitId
+FROM PIDFIMSData
+Inner JOIN PIDF ON PIDF.PIDFID = PIDFIMSData.PIDFID
