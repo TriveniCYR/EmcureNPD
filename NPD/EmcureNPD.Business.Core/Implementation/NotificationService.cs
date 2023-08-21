@@ -225,7 +225,7 @@ namespace EmcureNPD.Business.Core.Implementation
 					strHtml = strHtml.Replace("{UpdatedByUser}", sendNotificationModel.CreatedByName);
 					strHtml = strHtml.Replace("{Url}", landingUrl);
 					string str_subject = "PIDF : " + sendNotificationModel.PidfNo + " Updated";
-					email.SendMail(sendNotificationModel.EmailAddress, string.Empty, str_subject, strHtml, _MasterUserService.GetSMTPConfiguration());
+					//email.SendMail(sendNotificationModel.EmailAddress, string.Empty, str_subject, strHtml, _MasterUserService.GetSMTPConfiguration());
 					_logMessage += " Email Sent to { " + sendNotificationModel.EmailAddress + " } on " + DateTime.Now.ToString() + "" + "\n";
                     MasterEmailLog objEmailslogs= new();
                     objEmailslogs.ToEmailAddress = sendNotificationModel.EmailAddress;

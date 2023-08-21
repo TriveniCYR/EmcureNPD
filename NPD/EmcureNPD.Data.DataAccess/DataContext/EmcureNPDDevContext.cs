@@ -168,7 +168,6 @@ namespace EmcureNPD.Data.DataAccess.DataContext
             if (!optionsBuilder.IsConfigured)
             {
 #warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see http://go.microsoft.com/fwlink/?LinkId=723263.
-                //optionsBuilder.UseSqlServer("Data Source=180.149.241.172;Initial Catalog=EmcureNPDDev;Persist Security Info=True;User ID=emcurenpddev_dbUser;pwd=emcure123!@#");
                 optionsBuilder.UseSqlServer(DatabaseConnection.NPDDatabaseConnection);
             }
         }
@@ -1863,7 +1862,7 @@ namespace EmcureNPD.Data.DataAccess.DataContext
 
             modelBuilder.Entity<PidfBusinessUnitCountry>(entity =>
             {
-                entity.ToTable("PIDF_BusinessUnit_Country");
+                entity.ToTable("PIDF_BusinessUnit_Country", "dbo");
 
                 entity.Property(e => e.PidfbusinessUnitCountryId).HasColumnName("PIDFBusinessUnitCountryId");
 
@@ -1874,7 +1873,7 @@ namespace EmcureNPD.Data.DataAccess.DataContext
             {
                 entity.HasKey(e => e.PidfbusinessUnitId);
 
-                entity.ToTable("PIDF_BusinessUnit_Interested");
+                entity.ToTable("PIDF_BusinessUnit_Interested", "dbo");
 
                 entity.Property(e => e.PidfbusinessUnitId).HasColumnName("PIDFBusinessUnitId");
 

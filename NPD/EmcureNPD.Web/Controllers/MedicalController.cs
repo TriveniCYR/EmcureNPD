@@ -46,14 +46,14 @@ namespace EmcureNPD.Web.Controllers
             {
                 //string IsView = HttpContext.Request.Query["IsView"];
                 //if (!IsViewMode && !(IsView == "1"))
-                if (!(IsView == 1))
-                {
-                    string PIDFID = UtilityHelper.Decreypt(pidfid);
-                    if (!_helper.IsAccessToPIDF((int)ModuleEnum.Medical, int.Parse(PIDFID)))
-                    {
-                        return RedirectToAction("PIDFList", "PIDF", new { ScreenId = Convert.ToString((int)EmcureNPD.Utility.Enums.PIDFScreen.Medical) });
-                    }
-                }
+                //if (!(IsView == 1))
+                //{
+                //    string PIDFID = UtilityHelper.Decreypt(pidfid);
+                //    if (!_helper.IsAccessToPIDF((int)ModuleEnum.Medical, int.Parse(PIDFID)))
+                //    {
+                //        return RedirectToAction("PIDFList", "PIDF", new { ScreenId = Convert.ToString((int)EmcureNPD.Utility.Enums.PIDFScreen.Medical) });
+                //    }
+                //}
                 int rolId = _helper.GetLoggedInRoleId();
                 RolePermissionModel objPermssion = UtilityHelper.GetCntrActionAccess((int)ModulePermissionEnum.Medical, rolId);
                 if (objPermssion == null || (!objPermssion.View && IsView == 1))

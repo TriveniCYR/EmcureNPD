@@ -46,14 +46,14 @@ namespace EmcureNPD.Web.Controllers
             if (pidfid != "")
             {
                 string IsView = HttpContext.Request.Query["IsView"];
-                if (!(IsView == "1"))
-                {
-                    string PIDFID = UtilityHelper.Decreypt(pidfid);
-                    if (!_helper.IsAccessToPIDF((int)ModuleEnum.Finance, int.Parse(PIDFID)))
-                    {
-                        return RedirectToAction("PIDFList", "PIDF", new { ScreenId = Convert.ToString((int)EmcureNPD.Utility.Enums.PIDFScreen.Finance) });
-                    }
-                }
+                //if (!(IsView == "1"))
+                //{
+                //    string PIDFID = UtilityHelper.Decreypt(pidfid);
+                //    if (!_helper.IsAccessToPIDF((int)ModuleEnum.Finance, int.Parse(PIDFID)))
+                //    {
+                //        return RedirectToAction("PIDFList", "PIDF", new { ScreenId = Convert.ToString((int)EmcureNPD.Utility.Enums.PIDFScreen.Finance) });
+                //    }
+                //}
 
                 FinanceModel model = new FinanceModel();
                 HttpResponseMessage responseMessage = new HttpResponseMessage();

@@ -50,14 +50,14 @@ namespace EmcureNPD.Web.Controllers
             PIDFCommercialEntity oPIDForm = new();
             try
             {
-                if (!(IsView == 1))
-                {
-                    string PIDFID = UtilityHelper.Decreypt(pidfid);
-                    if (!_helper.IsAccessToPIDF((int)ModuleEnum.CommercialManagement, int.Parse(PIDFID)))
-                    {
-                        return RedirectToAction("PIDFList", "PIDF", new { ScreenId = Convert.ToString((int)EmcureNPD.Utility.Enums.PIDFScreen.Commercial) });
-                    }
-                }
+                //if (!(IsView == 1))
+                //{
+                //    string PIDFID = UtilityHelper.Decreypt(pidfid);
+                //    if (!_helper.IsAccessToPIDF((int)ModuleEnum.CommercialManagement, int.Parse(PIDFID)))
+                //    {
+                //        return RedirectToAction("PIDFList", "PIDF", new { ScreenId = Convert.ToString((int)EmcureNPD.Utility.Enums.PIDFScreen.Commercial) });
+                //    }
+                //}
                 int rolId = _helper.GetLoggedInRoleId();
                 RolePermissionModel objPermssion = UtilityHelper.GetCntrActionAccess((int)ModulePermissionEnum.Commercial, rolId);
                 if (!_Partial)
