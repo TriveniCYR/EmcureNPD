@@ -1279,7 +1279,7 @@ function GetPBFTabDetailsSuccess(data) {
             //data.PidfPbfGeneralRnd
             BindPbfGeneralRnd(data.PidfPbfGeneralRnd);
             //PidfPbfGeneralPackSizeStability
-            BindGeneralPackSizeStability(data.PidfPbfGeneralPackSizeStability);
+           // BindGeneralPackSizeStability(data.PidfPbfGeneralPackSizeStability);
             //console.log(data.PidfPbfGeneralPackSizeStability)
             //**End Date Formating for get GetPIDF_PBF_General_RND*/
             $.each($('.AnalyticalTestTypeId'), function (index, item) {
