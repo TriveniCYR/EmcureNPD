@@ -450,7 +450,7 @@ function SetChildRows() {
         $(this).find("td:eq(1) input").attr("name", "IMSDataEntities[" + index.toString() + "].Imsvolume");
     });
 
-    if ($('#dvPIDFContainer').find('#hdnSelectedBusinessUnitId').val() == "") {
+    if ($('#dvPIDFContainer').find('#hdnSelectedBusinessUnitId').val() == "0") {
         $('#dvPIDFContainer').find('#hdnSelectedBusinessUnitId').val($('#dvPIDFContainer').find('#BusinessUnitId').val());
     }
 }

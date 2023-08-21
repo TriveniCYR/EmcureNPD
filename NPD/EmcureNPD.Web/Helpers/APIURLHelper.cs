@@ -353,6 +353,7 @@ namespace EmcureNPD.Web.Helpers
         public static string GetAllPIDF = "api/PIDF/GetAllPIDFList";
         public static string SavePIDF = "api/PIDF/InsertUpdatePIDF";
         public static string GetPIDFById = "api/PIDF/GetPIDFById";
+        public static string GetPIDFById_BUID = "api/PIDF/GetPIDFById_BUID";
         public static string ApproveRejectPidf = "api/PIDF/ApproveRejectPidf";
         public static string ApproveRejectDeletePidf = "api/PIDF/ApproveRejectDeletePidf";
         public static string GetCommonPIDFList = "api/PIDF/GetCommonPIDFList";

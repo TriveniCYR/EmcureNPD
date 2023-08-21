@@ -129,7 +129,7 @@ namespace EmcureNPD.Web.Controllers
                 HttpContext.Request.Cookies.TryGetValue(UserHelper.EmcureNPDToken, out string token);
                 APIRepository objapi = new(_cofiguration);
 
-                responseMessage = objapi.APICommunication(APIURLHelper.GetPIDFById + "/" + PIDFId + "/" + (BusinessUnitId == null ? 0 : BusinessUnitId), HttpMethod.Get, token).Result;
+                responseMessage = objapi.APICommunication(APIURLHelper.GetPIDFById_BUID + "/" + PIDFId + "/" + (BusinessUnitId == null ? 0 : BusinessUnitId), HttpMethod.Get, token).Result;
 
                 if (responseMessage.IsSuccessStatusCode)
                 {

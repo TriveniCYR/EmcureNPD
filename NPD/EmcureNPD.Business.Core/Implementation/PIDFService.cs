@@ -425,8 +425,17 @@ namespace EmcureNPD.Business.Core.Implementation
                 return false;
             }
         }
+        public async Task<PIDFEntity> GetById(int id)
+        {
+            var ids = Convert.ToInt64(id);
+            var data = _mapperFactory.Get<Pidf, PIDFEntity>(await _repository.GetAsync(ids));
+            data.pidfApiDetailEntities = _mapperFactory.GetList<Pidfapidetail, PidfApiDetailEntity>(_pidfApiRepository.GetAllQuery().Where(x => x.Pidfid == ids).ToList());
+            data.pidfProductStregthEntities = _mapperFactory.GetList<PidfproductStrength, PidfProductStregthEntity>(_pidfProductStrength.GetAllQuery().Where(x => x.Pidfid == ids).ToList());
+            data.IMSDataEntities = _mapperFactory.GetList<Pidfimsdatum, IMSDataEntity>(_pidfPidfimsdata.GetAllQuery().Where(x => x.Pidfid == ids).ToList());
 
-        public async Task<PIDFEntity> GetById(int id, int BusinessUnitId)
+            return data;
+        }
+        public async Task<PIDFEntity> GetById_BUId(int id, int BusinessUnitId)
         {
             var ids = Convert.ToInt64(id);
             

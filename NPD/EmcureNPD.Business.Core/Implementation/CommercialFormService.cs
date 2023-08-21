@@ -134,7 +134,7 @@ namespace EmcureNPD.Business.Core.Implementation
             await AddUpdate_PIDF_Commercial_Master(entitycommPIDF);
 
             var AllObjofPidfId = _commercialrepository.GetAllQuery().Where(x => x.Pidfid == entitycommPIDF.Pidfid && x.IsDeleted == false).ToList();
-            if (AllObjofPidfId != null)
+            if (AllObjofPidfId != null && AllObjofPidfId.Count>0)
             {
                 foreach (var _obj in AllObjofPidfId)
                 {
@@ -158,7 +158,7 @@ namespace EmcureNPD.Business.Core.Implementation
             }
             else
             {
-                if (entitycommPIDF.SaveType != "TabClick")
+                if (entitycommPIDF.SaveType == "TabClick")
                 {
                     entitycommPIDF.SaveType = "SvDrf";
                 }
