@@ -185,7 +185,7 @@ function InitializePIDFList() {
             "data": null, className: 'notexport pidf-100 actionColumn', "title": "Action", "render": function (data, type, row, meta) {
                 var html = '';
                 if (_screenId == "1") {
-                    var _PIDFForm = '/PIDF/PIDF?PIDFId=' + row.pidfid;
+                    var _PIDFForm = '/PIDF/PIDF?PIDFId=' + row.pidfid + '&bui=' + row.businessUnitId;
                     var _enable = (row.pidfStatusID == 1 || row.pidfStatusID == 2);
                     if (IsEditPIDF) {
                         html += '<a class="large-font" style="color:' + (_enable ? "#007bff" : "grey") + '" href="' + (_enable ? _PIDFForm : "#") + '"><i class="fa fa-fw fa-edit mr-1"></i></a>';
