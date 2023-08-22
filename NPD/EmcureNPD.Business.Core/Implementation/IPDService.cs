@@ -127,19 +127,25 @@ namespace EmcureNPD.Business.Core.Implementation
 
                         foreach (var item in entityIPD.pidf_IPD_PatentDetailsEntities)
                         {
-                            PidfIpdPatentDetail pidf_ipd_PDetail;
-                            item.IPDID = objIPD.Ipdid;
-                            pidf_ipd_PDetail = _mapperFactory.Get<PIDF_IPD_PatentDetailsEntity, PidfIpdPatentDetail>(item);
-                            pidf_ipd_PDetail.PatentType = (short?)IPDPatenDetailsType.PatenDetailsForFormulation;
-                            _ipdParentRepository.AddAsync(pidf_ipd_PDetail);
+                            if (item.CountryId != null && item.PatentNumber != null && item.Type != null)
+                            {
+                                PidfIpdPatentDetail pidf_ipd_PDetail;
+                                item.IPDID = objIPD.Ipdid;
+                                pidf_ipd_PDetail = _mapperFactory.Get<PIDF_IPD_PatentDetailsEntity, PidfIpdPatentDetail>(item);
+                                pidf_ipd_PDetail.PatentType = (short?)IPDPatenDetailsType.PatenDetailsForFormulation;
+                                _ipdParentRepository.AddAsync(pidf_ipd_PDetail);
+                            }
                         }
                         foreach (var item in entityIPD.pidf_IPD_PatentDetailsEntitiesAPI)
                         {
-                            PidfIpdPatentDetail pidf_ipd_PDetail;
-                            item.IPDID = objIPD.Ipdid;
-                            pidf_ipd_PDetail = _mapperFactory.Get<PIDF_IPD_PatentDetailsEntity, PidfIpdPatentDetail>(item);
-                            pidf_ipd_PDetail.PatentType = (short?)IPDPatenDetailsType.PatientDetailsForAPI;
-                            _ipdParentRepository.AddAsync(pidf_ipd_PDetail);
+                            if (item.CountryId != null && item.PatentNumber != null && item.Type != null)
+                            {
+                                PidfIpdPatentDetail pidf_ipd_PDetail;
+                                item.IPDID = objIPD.Ipdid;
+                                pidf_ipd_PDetail = _mapperFactory.Get<PIDF_IPD_PatentDetailsEntity, PidfIpdPatentDetail>(item);
+                                pidf_ipd_PDetail.PatentType = (short?)IPDPatenDetailsType.PatientDetailsForAPI;
+                                _ipdParentRepository.AddAsync(pidf_ipd_PDetail);
+                            }
                         }
                         await _unitOfWork.SaveChangesAsync();
                     }

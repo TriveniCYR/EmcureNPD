@@ -135,6 +135,7 @@ namespace EmcureNPD.Web.Controllers
                 {
                     string jsonResponse = responseMessage.Content.ReadAsStringAsync().Result;
                     var data = JsonConvert.DeserializeObject<APIResponseEntity<PIDFEntity>>(jsonResponse);
+                    data._object.BussinessUnitByUserIDPIDF = _helper.GetAssignedBusinessUnit();
                     return data._object;
                 }
                 else
