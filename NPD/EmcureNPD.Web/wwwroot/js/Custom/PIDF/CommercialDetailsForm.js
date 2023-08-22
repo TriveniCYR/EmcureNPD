@@ -640,7 +640,7 @@ function Update_BUstregthPackTable(_objArrMainCommercial) {
         var deletebtn = '<a class="large-font text-danger deleteBtn operationButton" style="" title="Delete" data-keyboard="false" onclick="btnDeleteBUStrengthPack(' + i + ')"><i class="fa fa-fw fa-trash mr-1"></i> ' + '</a>';
 
         let addYearbtn = "";
-        if (object.PidfCommercialYears != null && object.PidfCommercialYears != undefined && object.PidfCommercialYears.length < 3) {
+        if (object.PidfCommercialYears != null && object.PidfCommercialYears != undefined && object.PidfCommercialYears.length < 5) {
             addYearbtn = '<a class="large-font addYearBtn operationButton" name="addYearBtn" style="" title="Add Year Details" onclick="OpenYearForm(' + i + ');return false;"><i class="fa fa-fw fa-plus mr-1"></i> ' + '</a>';
         }
 
