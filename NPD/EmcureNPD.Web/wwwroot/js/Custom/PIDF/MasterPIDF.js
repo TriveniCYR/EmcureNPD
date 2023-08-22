@@ -42,10 +42,13 @@ $(document).ready(function () {
     $('#BusinessUnitId').change(function (e) {
        if ($(this).val() != "") {
            if (parseInt($(this).val()) > 0) {
-               //if (_PIDFId == 0) {
-               //    $("#TabBusinessUnitId").val(parseInt($(this).val()))
-               //}
-               ajaxServiceMethod($('#hdnBaseURL').val() + getCountryByBusinessUnitId + "/" + $(this).val(), 'GET', GetCountryByBusinessUnitSuccess, GetCountryByBusinessUnitError);
+               var _businessUnitId = $(this).val();
+               if (_PIDFId > 0) {
+                   if (_SelectedBusinessUnitPIDF > 0) {
+                       _businessUnitId = _SelectedBusinessUnitPIDF
+                   }
+               }
+               ajaxServiceMethod($('#hdnBaseURL').val() + getCountryByBusinessUnitId + "/" + _businessUnitId, 'GET', GetCountryByBusinessUnitSuccess, GetCountryByBusinessUnitError);
            }
        }
    });
@@ -187,6 +190,11 @@ function GetCountryByBusinessUnitSuccess(data) {
                 if (_PIDFId > 0) {
                     $('#RFDCountryId').val($('#hdnRFDCountryId').val());
                 }
+
+                if ($('#RFDCountryId').val() == null || $('#RFDCountryId').val() == "") {
+                    $('#RFDCountryId').val(data._object[0].countryId).trigger("change");
+                }
+
             } catch (e) {
             }
 
@@ -205,8 +213,13 @@ function GetCountryByBusinessUnitSuccess(data) {
                     if ($(this).find("#hdnStrengthCountries").val() != "") {
                         $(this).find(".StrengthCountry").val($(this).find("#hdnStrengthCountries").val().split(",")).trigger("change");
                     }
+                    if ($(this).find(".StrengthCountry").val() == null || $(this).find(".StrengthCountry").val() == "") {
+                        $(this).find(".StrengthCountry").val(_allCountries).trigger("change");
+                    }
                 });
             }
+
+
         }
     }
     catch (e) {
@@ -504,7 +517,7 @@ function validateDynamicControldDetails() {
 
 function validatecontrols(control) {
     try {
-        if ($(control).val().trim() == '') {
+        if ($(control).val() == null || $(control).val().trim() == '') {
             $(control).css("border-color", "red");
             $(control).focus();
             isValidPIDFForm = false;
@@ -513,7 +526,7 @@ function validatecontrols(control) {
             $(control).css("border-color", "");
         }
     }
-    catch {
+    catch(e) {
         isValidPIDFForm = false;
     }
 }

@@ -176,6 +176,14 @@ namespace EmcureNPD.Web.Controllers
                 var data = JsonConvert.DeserializeObject<APIResponseEntity<dynamic>>(jsonResponse);
                 if (responseMessage.IsSuccessStatusCode)
                 {
+                    if (!string.IsNullOrEmpty(pIDFEntity.PIDFIsInterested) && (pIDFEntity.PIDFIsInterested == "1" || pIDFEntity.PIDFIsInterested == "0"))
+                    {
+                        // redirect to the same screen
+                    }
+                    else
+                    {
+
+                    }
                     TempData[EmcureNPD.Web.Helpers.UserHelper.SuccessMessage] = data._Message;
                     return RedirectToAction(nameof(PIDFList), new { ScreenId = (int)PIDFScreen.PIDF });
                 }
