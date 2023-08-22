@@ -162,8 +162,9 @@ namespace EmcureNPD.Business.Core.Implementation
                 {
                     entitycommPIDF.SaveType = "SvDrf";
                 }
-
-                foreach (var item in entitycommPIDF.PIDFArrMainCommercial)
+            }  
+             
+            foreach (var item in entitycommPIDF.PIDFArrMainCommercial)
                 {
                     var listYear = new List<PidfCommercialYear>();
                     int i = 1;
@@ -228,7 +229,6 @@ namespace EmcureNPD.Business.Core.Implementation
                     }
                 }
 
-            }
             if (entitycommPIDF.SaveType != "TabClick")
             {
                 var _StatusID = (entitycommPIDF.SaveType == "Sv") ? Master_PIDFStatus.CommercialSubmitted : Master_PIDFStatus.CommercialInProgress;
