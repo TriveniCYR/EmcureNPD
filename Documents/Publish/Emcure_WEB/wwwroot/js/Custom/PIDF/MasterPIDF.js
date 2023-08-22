@@ -70,8 +70,24 @@ $(document).ready(function () {
     }
 
     InitializeCountryStrength();
-
+    SetPIDFFormDisableForOtherUserBU();
 });
+
+function SetPIDFFormDisableForOtherUserBU() {
+    var _selectBusinessUnit = $('#dvPIDFContainer').find('#hdnSelectedBusinessUnitId').val();
+    if (_selectBusinessUnit != "0" || _selectBusinessUnit != "") {
+        var UserwiseBusinessUnit = $('#BusinessUnitsByUser_PIDF').val().split(',');
+        var BUval = _selectBusinessUnit.toString();
+        var status = UserwiseBusinessUnit.indexOf(BUval);
+        // var IsViewInMode = ($("#IsView").val() == '1')
+        if (status == -1) {
+            readOnlyForm(true);            
+            $('.pidfInterestedRadio').attr('readonly', true).attr('disabled', true);
+        }
+        else {
+        }
+    }
+}
 
 function InitializeCountryStrength() {
     try {
