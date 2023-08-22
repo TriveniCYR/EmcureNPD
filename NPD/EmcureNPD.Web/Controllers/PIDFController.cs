@@ -176,16 +176,16 @@ namespace EmcureNPD.Web.Controllers
                 var data = JsonConvert.DeserializeObject<APIResponseEntity<dynamic>>(jsonResponse);
                 if (responseMessage.IsSuccessStatusCode)
                 {
+                    TempData[EmcureNPD.Web.Helpers.UserHelper.SuccessMessage] = data._Message;
                     if (!string.IsNullOrEmpty(pIDFEntity.PIDFIsInterested) && (pIDFEntity.PIDFIsInterested == "1" || pIDFEntity.PIDFIsInterested == "0"))
                     {
                         // redirect to the same screen
+                        return RedirectToAction(nameof(PIDF), new { PIDFId = pIDFEntity.PIDFID, BusinessUnitId = pIDFEntity.SelectedBusinessUnitId });
                     }
                     else
                     {
-
+                        return RedirectToAction(nameof(PIDFList), new { ScreenId = (int)PIDFScreen.PIDF });
                     }
-                    TempData[EmcureNPD.Web.Helpers.UserHelper.SuccessMessage] = data._Message;
-                    return RedirectToAction(nameof(PIDFList), new { ScreenId = (int)PIDFScreen.PIDF });
                 }
                 else
                 {

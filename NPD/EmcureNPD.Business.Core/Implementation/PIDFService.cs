@@ -486,6 +486,17 @@ namespace EmcureNPD.Business.Core.Implementation
             
             var data = _mapperFactory.Get<Pidf, PIDFEntity>(await _repository.GetAsync(ids));
 
+            if (data != null)
+            {
+                if (data.BusinessUnitId != null && data.BusinessUnitId > 0)
+                {
+                    if (BusinessUnitId <= 0)
+                    {
+                        BusinessUnitId = Convert.ToInt32(data.BusinessUnitId);
+                    }
+                }
+            }
+
             if (BusinessUnitId > 0 && data.BusinessUnitId != BusinessUnitId)
             {
                 var _objPIDFInterested = _pidfBusinessUnitInterested.GetAllQuery().Where(x => x.Pidfid == id && x.BusinessUnitId == BusinessUnitId).FirstOrDefault();
