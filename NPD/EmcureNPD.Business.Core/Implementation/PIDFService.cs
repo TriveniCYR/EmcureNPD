@@ -241,7 +241,7 @@ namespace EmcureNPD.Business.Core.Implementation
                                 if (_objPIDFBusinessUnit != null && _objPIDFBusinessUnit.Pidfid > 0)
                                 {
                                     _objPIDFBusinessUnit = _mapperFactory.Get<PIDFEntity, PidfBusinessUnit>(entityPIDF);
-
+                                    _objPIDFBusinessUnit.BusinessUnitId = entityPIDF.SelectedBusinessUnitId;
                                     _objPIDFBusinessUnit.ModifyBy = loggedInUserId;
                                     _objPIDFBusinessUnit.ModifyDate = DateTime.Now;
                                     _pidfBusinessUnit.UpdateAsync(_objPIDFBusinessUnit);
@@ -249,8 +249,10 @@ namespace EmcureNPD.Business.Core.Implementation
                                 else
                                 {
                                     _objPIDFBusinessUnit = _mapperFactory.Get<PIDFEntity, PidfBusinessUnit>(entityPIDF);
-
+                                    _objPIDFBusinessUnit.BusinessUnitId = entityPIDF.SelectedBusinessUnitId;
                                     _objPIDFBusinessUnit.CreatedBy = loggedInUserId;
+                                    _objPIDFBusinessUnit.ModifyBy = entityPIDF.SelectedBusinessUnitId;
+                                    _objPIDFBusinessUnit.ModifyDate = DateTime.Now;
                                     _objPIDFBusinessUnit.CreatedDate = DateTime.Now;
                                     _pidfBusinessUnit.AddAsync(_objPIDFBusinessUnit);
                                 }
@@ -259,21 +261,64 @@ namespace EmcureNPD.Business.Core.Implementation
                         }
                         else
                         {
-                            PIDFEntity _previousPIDFEntity = _mapperFactory.Get<Pidf, PIDFEntity>(objPIDF);
+                            if (entityPIDF.BusinessUnitId != entityPIDF.SelectedBusinessUnitId)
+                            {
+                                var objPIDFBusinessUnit = _pidfBusinessUnit.GetAllQuery().Where(x => x.Pidfid == entityPIDF.PIDFID && x.BusinessUnitId == entityPIDF.SelectedBusinessUnitId).FirstOrDefault();
 
-                            objPIDF = _mapperFactory.Get<PIDFEntity, Pidf>(entityPIDF);
-                            //BusinessUnitIdForChildTable = entityPIDF.TabBusinessUnitId; //  int.Parse(entityPIDF.TabBusinessUnitId==""?"0": entityPIDF.TabBusinessUnitId); //In case of Edit--> take TabBusinessUnitId
-                            objPIDF.ModifyBy = loggedInUserId;
-                            objPIDF.ModifyDate = DateTime.Now;
-                            objPIDF.StatusUpdatedBy = loggedInUserId;
-                            objPIDF.StatusUpdatedDate = DateTime.Now;
+                                if (objPIDFBusinessUnit != null)
+                                {
 
-                            _repository.UpdateAsync(objPIDF);
+                                    objPIDFBusinessUnit.OralId = entityPIDF.OralId;
+                                    objPIDFBusinessUnit.UnitofMeasurementId = entityPIDF.UnitofMeasurementId;
+                                    objPIDFBusinessUnit.DosageFormId = entityPIDF.DosageFormId;
+                                    objPIDFBusinessUnit.PackagingTypeId = entityPIDF.PackagingTypeId;
+                                    objPIDFBusinessUnit.BrandName = entityPIDF.BrandName;
+                                    objPIDFBusinessUnit.ApprovedGenerics = entityPIDF.ApprovedGenerics;
+                                    objPIDFBusinessUnit.LaunchedGenerics = entityPIDF.LaunchedGenerics;
+                                    objPIDFBusinessUnit.Rfdbrand = entityPIDF.RFDBrand;
+                                    objPIDFBusinessUnit.Rfdapplicant = entityPIDF.RFDApplicant;
+                                    objPIDFBusinessUnit.RfdcountryId = entityPIDF.RFDCountryId;
+                                    objPIDFBusinessUnit.Rfdindication = entityPIDF.RFDIndication;
+                                    objPIDFBusinessUnit.Rfdinnovators = entityPIDF.RFDInnovators;
+                                    objPIDFBusinessUnit.RfdinitialRevenuePotential = entityPIDF.RFDInitialRevenuePotential;
+                                    objPIDFBusinessUnit.RfdpriceDiscounting = entityPIDF.RFDPriceDiscounting;
+                                    objPIDFBusinessUnit.RfdcommercialBatchSize = entityPIDF.RFDCommercialBatchSize;
+                                    objPIDFBusinessUnit.Diaid = entityPIDF.Diaid;
+                                    objPIDFBusinessUnit.MarketExtenstionId = entityPIDF.MarketExtenstionId;
+                                    objPIDFBusinessUnit.TradeNameDate = entityPIDF.TradeNameDate;
+                                    objPIDFBusinessUnit.TradeNameRequired = entityPIDF.TradeNameRequired;
 
-                            await _unitOfWork.SaveChangesAsync();
+                                    objPIDFBusinessUnit.ModifyBy = loggedInUserId;
+                                    objPIDFBusinessUnit.ModifyDate = DateTime.Now;
+                                    _pidfBusinessUnit.UpdateAsync(objPIDFBusinessUnit);
+                                }
+                                else
+                                {
+                                    objPIDFBusinessUnit = _mapperFactory.Get<PIDFEntity, PidfBusinessUnit>(entityPIDF);
 
-                            var isSuccess = await _auditLogService.CreateAuditLog<PIDFEntity>(entityPIDF.PIDFID > 0 ? Utility.Audit.AuditActionType.Update : Utility.Audit.AuditActionType.Create,
-                                Utility.Enums.ModuleEnum.PIDF, _previousPIDFEntity, entityPIDF, Convert.ToInt32(objPIDF.Pidfid));
+                                    objPIDFBusinessUnit.CreatedBy = loggedInUserId;
+                                    objPIDFBusinessUnit.CreatedDate = DateTime.Now;
+                                    _pidfBusinessUnit.AddAsync(objPIDFBusinessUnit);
+                                }
+                                await _unitOfWork.SaveChangesAsync();
+                            }
+                            else
+                            {
+                                PIDFEntity _previousPIDFEntity = _mapperFactory.Get<Pidf, PIDFEntity>(objPIDF);
+                                objPIDF = _mapperFactory.Get<PIDFEntity, Pidf>(entityPIDF);
+                                objPIDF.ModifyBy = loggedInUserId;
+                                objPIDF.ModifyDate = DateTime.Now;
+                                objPIDF.StatusUpdatedBy = loggedInUserId;
+                                objPIDF.StatusUpdatedDate = DateTime.Now;
+
+                                _repository.UpdateAsync(objPIDF);
+
+                                await _unitOfWork.SaveChangesAsync();
+
+                                var isSuccess = await _auditLogService.CreateAuditLog<PIDFEntity>(entityPIDF.PIDFID > 0 ? Utility.Audit.AuditActionType.Update : Utility.Audit.AuditActionType.Create,
+                                    Utility.Enums.ModuleEnum.PIDF, _previousPIDFEntity, entityPIDF, Convert.ToInt32(objPIDF.Pidfid));
+                            }
+
                         }
 
                         var apiDetailsList = _pidfApiRepository.GetAllQuery().Where(x => x.Pidfid == entityPIDF.PIDFID && x.BusinessUnitId == entityPIDF.SelectedBusinessUnitId).ToList();
@@ -458,9 +503,27 @@ namespace EmcureNPD.Business.Core.Implementation
 
                         var _objPIDFBusinessUnit = _pidfBusinessUnit.GetAllQuery().Where(x => x.Pidfid == id && x.BusinessUnitId == BusinessUnitId).FirstOrDefault();
 
-                        if (_objPIDFBusinessUnit.PidfbusinessUnitId > 0)
+                        if (_objPIDFBusinessUnit != null && _objPIDFBusinessUnit.PidfbusinessUnitId > 0)
                         {
-                            data = _mapperFactory.Get<PidfBusinessUnit, PIDFEntity>(_objPIDFBusinessUnit);
+                            data.OralId = _objPIDFBusinessUnit.OralId;
+                            data.UnitofMeasurementId = _objPIDFBusinessUnit.UnitofMeasurementId;
+                            data.DosageFormId = _objPIDFBusinessUnit.DosageFormId;
+                            data.PackagingTypeId = _objPIDFBusinessUnit.PackagingTypeId;
+                            data.BrandName = _objPIDFBusinessUnit.BrandName;
+                            data.ApprovedGenerics = _objPIDFBusinessUnit.ApprovedGenerics;
+                            data.LaunchedGenerics = _objPIDFBusinessUnit.LaunchedGenerics;
+                            data.RFDBrand = _objPIDFBusinessUnit.Rfdbrand;
+                            data.RFDApplicant = _objPIDFBusinessUnit.Rfdapplicant;
+                            data.RFDCountryId = _objPIDFBusinessUnit.RfdcountryId;
+                            data.RFDIndication = _objPIDFBusinessUnit.Rfdindication;
+                            data.RFDInnovators = _objPIDFBusinessUnit.Rfdinnovators;
+                            data.RFDInitialRevenuePotential = _objPIDFBusinessUnit.RfdinitialRevenuePotential;
+                            data.RFDPriceDiscounting = _objPIDFBusinessUnit.RfdpriceDiscounting;
+                            data.RFDCommercialBatchSize = _objPIDFBusinessUnit.RfdcommercialBatchSize;
+                            data.Diaid = _objPIDFBusinessUnit.Diaid;
+                            data.MarketExtenstionId = _objPIDFBusinessUnit.MarketExtenstionId;
+                            data.TradeNameDate = _objPIDFBusinessUnit.TradeNameDate;
+                            data.TradeNameRequired = (_objPIDFBusinessUnit.TradeNameRequired == null ? false : Convert.ToBoolean(_objPIDFBusinessUnit.TradeNameRequired));
                         }
                     }
                     else
@@ -492,6 +555,7 @@ namespace EmcureNPD.Business.Core.Implementation
 
             return data;
         }
+
 
         public async Task<List<PIDFEntity>> GetAll()
         {

@@ -71,6 +71,10 @@
                                                     if (!Model.pidfInterested.IsInterested && Model.pidfInterested.CreatedDate > DateTime.MinValue)
                                                     {
                                                         <h5 class="text-danger">Not Interested - By: @Model.pidfInterested.CreatedByName - Date: @Model.pidfInterested.CreatedDate.ToString("dd/MM/yyyy hh:mm")</h5>                    
+                                                    }else{
+                                                        if(Model.pidfInterested.CreatedDate > DateTime.MinValue){
+                                                        <h5 class="text-success">Interested - By: @Model.pidfInterested.CreatedByName - Date: @Model.pidfInterested.CreatedDate.ToString("dd/MM/yyyy hh:mm")</h5>
+                                                        }
                                                     }
                                                 }
                                     }
