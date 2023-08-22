@@ -180,7 +180,7 @@ namespace EmcureNPD.Web.Controllers
                     if (!string.IsNullOrEmpty(pIDFEntity.PIDFIsInterested) && (pIDFEntity.PIDFIsInterested == "1" || pIDFEntity.PIDFIsInterested == "0"))
                     {
                         // redirect to the same screen
-                        return RedirectToAction(nameof(PIDF), new { PIDFId = pIDFEntity.PIDFID, BusinessUnitId = pIDFEntity.SelectedBusinessUnitId });
+                        return RedirectToAction(nameof(PIDF), new { PIDFId = pIDFEntity.PIDFID, bui = pIDFEntity.SelectedBusinessUnitId });
                     }
                     else
                     {
