@@ -28,9 +28,9 @@ CREATE PROCEDURE [dbo].[stp_npd_GetPBFRADates]
 AS                        
 BEGIN                         
 	 SELECT 
-	 Cast(GetDate() as Date) As EarliestSubmissionDate, 
-	 Cast(GetDate() as Date) As EarliestLaunchDate, 
-	 Cast(GetDate() as Date) As LastDateToRegulatory
+	 Cast(DATEADD(month, 1,GetDate())  as Date)As EarliestSubmissionDate, 
+	 Cast(DATEADD(month, 2,GetDate()) as Date) As EarliestLaunchDate, 
+	 Cast(DATEADD(month, 3,GetDate()) as Date) As LastDateToRegulatory
 END 
 GO
 
