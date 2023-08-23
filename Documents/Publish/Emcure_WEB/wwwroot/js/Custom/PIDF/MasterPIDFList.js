@@ -474,6 +474,7 @@ function IsAPIInterested_AddButtonClick(){
     var fnresult = ValidateISInterestedAPIUserForm(IsInterested);
     IsInterested = fnresult[1];
     var IsValidForm = fnresult[0];
+    var notInterestedData = CollectNotInterestedData();
     if (IsValidForm) {
         var AssignedAPIUser = 0;        
         if (IsInterested) {
@@ -483,7 +484,8 @@ function IsAPIInterested_AddButtonClick(){
             'PIDFID': APISelectedPIDFID,
             'IsAPIIntrested': IsInterested,
             'ApiRemark': $('#API_Remark').val(),
-            'AssignedAPIUser': AssignedAPIUser
+            'AssignedAPIUser': AssignedAPIUser,
+            'NotInterestedDatas': notInterestedData
         });
         ajaxServiceMethod($('#hdnBaseURL').val() + SaveAPIInterestedUser, 'POST', SaveAPIInterestedUserSuccess, SaveAPIInterestedUserError, JSON.stringify(ObjAPIIsInterested));
     }
@@ -507,12 +509,13 @@ function SaveAPIInterestedUserError(x, y, z) {
     toastr.error(ErrorMessage);
 }
 function ShowAddAPIUserPopUp(pidfid) {
-    APISelectedPIDFID = pidfid;   
+    APISelectedPIDFID = pidfid;
     $('#dvAddAPIPopUpModel').modal('show');
     ResetIsAPIInterestedForm();
     $('#dvInterestedAPIUser').hide();
+    $('#dvNotInterestedAPIUser').hide(); // Initially hide the div for 'Not Interested'
 }
-function ValidateISInterestedAPIUserForm(IsInterested) {    
+function ValidateISInterestedAPIUserForm(IsInterested) {
     let IsValid = true;
     if ($('#IsAPIIntrestedYes').prop('checked')) {
         IsInterested = true;
@@ -541,17 +544,86 @@ function ValidateISInterestedAPIUserForm(IsInterested) {
     return [IsValid, IsInterested];
 }
 $("input[name='Interested']").change(function () {
-    if ($('#IsAPIIntrestedYes').prop('checked')) {
+    if ($(this).val() === "yes") {
         $('#dvInterestedAPIUser').show();
-    }
-    if ($('#IsAPIIntrestedNo').prop('checked')) {
+        $('#dvNotInterestedAPIUser').hide(); // Hide 'Not Interested' div
+    } else if ($(this).val() === "no") {
         $('#dvInterestedAPIUser').hide();
+        $('#dvNotInterestedAPIUser').show(); // Show 'Not Interested' div
+        GetMasterAPIOutsourcelabels();
     }
 });
 
 function ResetIsAPIInterestedForm() {
     $('#API_Remark').val('');
     $('#InterestedAPIUser').val(0);
-    $('#IsAPIIntrestedYes').prop('checked', false);
-    $('#IsAPIIntrestedNo').prop('checked', false);
+    $("input[name='Interested']").prop('checked', false); // Uncheck both radio buttons
+    $('#dvInterestedAPIUser').hide();
+    $('#dvNotInterestedAPIUser').hide(); // Hide 'Not Interested' div on form reset
 }
+
+function GetMasterAPIOutsourcelabels() {
+
+    ajaxServiceMethod($('#hdnBaseURL').val() + getMasterAPIOutsourcelabels, 'GET', GetMasterAPIOutsourcelabelsSuccess, GetMasterAPIOutsourcelabelsError);
+}
+function GetMasterAPIOutsourcelabelsSuccess(data) {
+    try {
+        var masterOutsourceLabelTable = document.querySelector(".table.table-striped.table-primary tbody");
+        masterOutsourceLabelTable.innerHTML = "";
+
+        if (data != null && data.length > 0) {
+            data.forEach(function (item) {
+                var row = masterOutsourceLabelTable.insertRow();
+                row.setAttribute("data-api-outsource-id", item.apiOutsourceId); // Add this line to associate apiOutsourceId with the row
+
+                var labelCell = row.insertCell(0);
+                labelCell.innerHTML = `<b>${item.apiOutsourceName}</b>`;
+
+                for (var i = 1; i <= 3; i++) {
+                    var inputCell = row.insertCell(i);
+                    inputCell.innerHTML = `<input type="text" class="form-control">`;
+                }
+            });
+        } else {
+            // Show a message if there is no data
+            var emptyRow = masterOutsourceLabelTable.insertRow();
+            var emptyCell = emptyRow.insertCell(0);
+            emptyCell.colSpan = 4;
+            emptyCell.innerText = "No data available.";
+        }
+    } catch (e) {
+        toastr.error(e.message);
+    }
+}
+function GetMasterAPIOutsourcelabelsError(x, y, z) {
+    toastr.error(ErrorMessage);
+}
+function CollectNotInterestedData() {
+    var notInterestedData = [];
+
+    // Loop through the table rows to collect data for each label
+    var rows = document.querySelectorAll(".table.table-striped.table-primary tbody tr");
+    rows.forEach(function (row) {
+        var labelCell = row.cells[0];
+        var apiOutsourceName = labelCell.querySelector("b").innerText;
+
+        var details = [];
+        for (var i = 1; i <= 3; i++) {
+            var inputCell = row.cells[i];
+            var inputValue = inputCell.querySelector("input").value;
+            var detailValue = inputValue === "" ? null : inputValue; 
+            details.push(detailValue);
+        }
+        var apiOutsourceId = row.getAttribute("data-api-outsource-id");
+        notInterestedData.push({
+            apiOutsourceId: apiOutsourceId,
+            apiOutsourceName: apiOutsourceName,
+            details: details
+        });
+    });
+
+    return notInterestedData;
+}
+
+
+

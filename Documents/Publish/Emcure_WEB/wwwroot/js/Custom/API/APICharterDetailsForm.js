@@ -13,6 +13,7 @@ $(document).ready(function () {
             toastr.error(SaveStatus);
     }
     HideSaveAsDraft();
+    GetAPICharterDataByPIDF(PidfId);
 });
 function HideSaveAsDraft() {
     if ($('#StatusId').val() == 15)    //[APIInProgress = 14,   APISubmitted = 15]
@@ -348,3 +349,43 @@ $("[id*='HeadwiseBudgetValue']").change(function () {
         $("#HeadwiseBudget_8__HeadwiseBudgetValue").val(sum);
     });
 });
+
+function GetAPICharterDataByPIDF(PidfId) {
+
+    ajaxServiceMethod($('#hdnBaseURL').val() + getAPICharterDataByPIDF + "/" + PidfId, 'GET', GetAPICharterDataByPIDFSuccess, GetAPICharterDataByPIDFError);
+}
+function GetAPICharterDataByPIDFSuccess(data) {
+    try {
+        var APICharterInhouseTable = document.querySelector("table.Inhousetable");
+        APICharterInhouseTable.innerHTML = "";
+        if (data._object.length > 0) {
+            var headerRow = APICharterInhouseTable.insertRow();
+            headerRow.classList.add("bg-primary");
+            var headerCell = headerRow.insertCell(0);
+            headerCell.colSpan = 2;
+            headerCell.innerHTML = "<b>API In-House</b>";
+           
+            data._object.forEach(function (item) {
+                var row = APICharterInhouseTable.insertRow();
+                var labelCell = row.insertCell(0);
+                labelCell.innerHTML = `<label class="control-label">${item.apiInhouseName}</label>`;
+                var inputCell = row.insertCell(1);
+                if (item.primary !== null) {
+                    inputCell.innerHTML = `<input type="text" class="form-control" readonly value="${item.primary}">`;
+                } else {
+                    inputCell.innerHTML = `<input type="text" class="form-control" readonly>`;
+                }
+            });
+            APICharterInhouseTable.style.display = "table";
+        } else {
+            APICharterInhouseTable.style.display = "none";
+        }
+
+    } catch (e) {
+        toastr.error(e.message);
+    }
+}
+
+function GetAPICharterDataByPIDFError(x, y, z) {
+    toastr.error(ErrorMessage);
+}

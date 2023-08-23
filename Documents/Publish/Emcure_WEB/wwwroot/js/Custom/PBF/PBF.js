@@ -3499,7 +3499,14 @@ function GetTypeOfSubmissionForRaTabSuccess(data) {
             data.forEach(function (item) {
                 var row = typeOfSubmissionTable.insertRow();
                 var submissionTypeCell = row.insertCell(0);
-                submissionTypeCell.innerText = item.typeOfSubmission            });
+                submissionTypeCell.innerText = item.typeOfSubmission
+                var nameCell = row.insertCell(1);
+                if (item.maxEOP !== null) {
+                    nameCell.innerText = `${item.minEOP}-${item.maxEOP} Months`;
+                } else {
+                    nameCell.innerText = `${item.minEOP} Months`;
+                }
+});
         } else {
             // Show a message if there is no data
             var emptyRow = typeOfSubmissionTable.insertRow();
@@ -3663,6 +3670,7 @@ function SetRaChildRow() {
         //$(this).find("td:eq(4) select").attr("id", "CountryId" + index.toString());
         $(this).find("td:eq(4) select").attr("name", "RaEntities[" + index.toString() + "].TypeOfSubmissionId");
         $(this).find("td:eq(4) select").attr("id", "TypeOfSubmissionId" + index.toString());
+        $(this).find("td:eq(4) select").attr(`onchange`, `GetPBFRACalculatedDate(${index})`);
 
         $(this).find("td:eq(5) input").attr("name", "RaEntities[" + index.toString() + "].DossierReadyDate");
         $(this).find("td:eq(5) input").attr("id", "DossierReadyDate" + index.toString());
@@ -3747,7 +3755,18 @@ function GetNationalApprovalsSuccess(data) {
             data.forEach(function (item) {
                 var row = nationalApprovalTable.insertRow();
                 var nameCell = row.insertCell(0);
-                nameCell.innerText = item.nationApprovalName;
+                var countryNames = [];
+                item.countryDetails.forEach(function (country) {
+                    countryNames.push(country.countryName);
+                });
+                nameCell.innerText = countryNames.join(", ");
+                var eopCell = row.insertCell(1);
+                var eopRange = `${item.minEOP}`;
+                if (item.maxEOP !== null) {
+                    eopRange += `-${item.maxEOP}`;
+                }
+                eopRange += ` ${item.minEOP > 1 || (item.maxEOP !== null && item.maxEOP > 1) ? 'Months' : 'Month'}`;
+                eopCell.innerText = eopRange;
             });
         } else {
             // Show a message if there is no data
@@ -3769,7 +3788,7 @@ function GetPBFRACalculatedDate(index) {
     let param = {
         PIDFId: _PIDFPBFId,
         BusinessUnitId: buId,
-        CountryId: $(`#raCountryId${index}`).val(),
+        CountryId: $(`#raCountryId${index}`).val() == '' ? 0 : $(`#raCountryId${index}`).val(),
         TypeOfSubmissionId: $(`#TypeOfSubmissionId${index}`).val(),
         DossierReadyDate: $(`#DossierReadyDate${index}`).val(),
         PivotalBatchManufactured: $(`#Pivotalbatchmanufactured${index}`).val(),
