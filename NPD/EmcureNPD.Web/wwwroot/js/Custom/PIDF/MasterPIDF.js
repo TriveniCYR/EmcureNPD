@@ -446,6 +446,8 @@ function readOnlyForm() {
 function removeDisableAttribute() {
     $('#dvPIDFContainer').find('input').removeAttr('disabled');
     $('#dvPIDFContainer').find('select').removeAttr('disabled');
+
+    $('#dvPIDFContainer').find('#BusinessUnitId').attr('disabled', true);
 }
 
 function SaveClick() {
@@ -581,6 +583,7 @@ function GetActiveBusinessUnitSuccess(data) {
     $('#pidf-custom-tabs-two-tab').html(businessUnitHTML);
     if (_SelectedBusinessUnitPIDF != _PIDFBusinessUnitId) {
         $("#frmPIDF").find('.readonlyOtherBusinessUnit').attr("readonly", "true");
+        $("#frmPIDF").find('#BusinessUnitId').attr("disabled", true);
     }
 /*    $('#pidf-custom-tabs-two-tabContent').html(businessUnitPanel);*/
 }
