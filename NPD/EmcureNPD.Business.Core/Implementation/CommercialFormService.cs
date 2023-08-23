@@ -343,7 +343,7 @@ namespace EmcureNPD.Business.Core.Implementation
             var _objPBFList = await _masterPbfworkFlow.GetAllAsync();
             var pbflistWorkFlow = _mapperFactory.GetList<MasterPbfworkFlow, MasterPbfworkFlowEntity>(_objPBFList);
             ArrayList arr = new ArrayList();
-            arr.Add(listWorkFlow);
+            arr.Add(listWorkFlow.Where(x=> x.IsActive == true));
             arr.Add(pbflistWorkFlow);
             dynamic Dropdowndata = arr;
             return Dropdowndata;

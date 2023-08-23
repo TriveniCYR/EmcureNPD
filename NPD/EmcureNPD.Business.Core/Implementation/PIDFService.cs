@@ -261,7 +261,7 @@ namespace EmcureNPD.Business.Core.Implementation
                         }
                         else
                         {
-                            if (entityPIDF.BusinessUnitId != entityPIDF.SelectedBusinessUnitId)
+                            if (objPIDF.BusinessUnitId != entityPIDF.SelectedBusinessUnitId)
                             {
                                 var objPIDFBusinessUnit = _pidfBusinessUnit.GetAllQuery().Where(x => x.Pidfid == entityPIDF.PIDFID && x.BusinessUnitId == entityPIDF.SelectedBusinessUnitId).FirstOrDefault();
 
