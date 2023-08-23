@@ -48,7 +48,8 @@ $(document).ready(function () {
         PBFreadOnlyForm();
     }
     GetPBFDropdown();
-
+    GetTypeOfSubmission();
+    GetNationalApprovals();
     $(document).on("change", ".calcRNDBatchSizesPrototypeFormulation, .calcRNDBatchSizesScaleUpbatch, .calcRNDBatchSizesExhibitBatch1, .calcRNDBatchSizesExhibitBatch2, .calcRNDBatchSizesExhibitBatch3", function () {
         ChangeAPIReq_OnChange_selectDosageFormula();
         $("input[class~='rndExicipientRsperkg']").trigger('change');
