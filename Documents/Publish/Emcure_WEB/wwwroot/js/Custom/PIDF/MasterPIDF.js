@@ -75,7 +75,7 @@ $(document).ready(function () {
 
 function SetPIDFFormDisableForOtherUserBU() {
     var _selectBusinessUnit = $('#dvPIDFContainer').find('#hdnSelectedBusinessUnitId').val();
-    if (_selectBusinessUnit != "0" || _selectBusinessUnit != "") {
+    if (_selectBusinessUnit != "0" && _selectBusinessUnit != "") {
         var UserwiseBusinessUnit = $('#BusinessUnitsByUser_PIDF').val().split(',');
         var BUval = _selectBusinessUnit.toString();
         var status = UserwiseBusinessUnit.indexOf(BUval);
