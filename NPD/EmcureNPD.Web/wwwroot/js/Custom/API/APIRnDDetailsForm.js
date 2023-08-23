@@ -152,8 +152,11 @@ function GetMasterAPIInhouselabelsSuccess(data) {
                 console.log(item);
                 var row = masterInhouseLabelTable.insertRow();
                 var labelCell = row.insertCell(0);
+                labelCell.classList.add("bg-light");
+                labelCell.style.width = "60px";
                 labelCell.innerHTML = `<b>${item.apiInhouseName}</b>`;
                 var inputCell = row.insertCell(1);
+                inputCell.style.width = "200px";
                 inputCell.innerHTML = `<input type="text" class="form-control" id="input_${item.apiInhouseId}" name="PIDFAPIInhouseEntities[${index}].Primary"> <input type="hidden" id="${item.apiInhouseId}"name="PIDFAPIInhouseEntities[${index}].ApiInhouseId" value="${item.apiInhouseId}">`;
 
             });
