@@ -129,12 +129,13 @@ namespace EmcureNPD.Web.Controllers
                 HttpContext.Request.Cookies.TryGetValue(UserHelper.EmcureNPDToken, out string token);
                 APIRepository objapi = new(_cofiguration);
 
-                responseMessage = objapi.APICommunication(APIURLHelper.GetPIDFById + "/" + PIDFId + "/" + (BusinessUnitId == null ? 0 : BusinessUnitId), HttpMethod.Get, token).Result;
+                responseMessage = objapi.APICommunication(APIURLHelper.GetPIDFById_BUID + "/" + PIDFId + "/" + (BusinessUnitId == null ? 0 : BusinessUnitId), HttpMethod.Get, token).Result;
 
                 if (responseMessage.IsSuccessStatusCode)
                 {
                     string jsonResponse = responseMessage.Content.ReadAsStringAsync().Result;
                     var data = JsonConvert.DeserializeObject<APIResponseEntity<PIDFEntity>>(jsonResponse);
+                    data._object.BussinessUnitByUserIDPIDF = _helper.GetAssignedBusinessUnit();
                     return data._object;
                 }
                 else
@@ -177,7 +178,15 @@ namespace EmcureNPD.Web.Controllers
                 if (responseMessage.IsSuccessStatusCode)
                 {
                     TempData[EmcureNPD.Web.Helpers.UserHelper.SuccessMessage] = data._Message;
-                    return RedirectToAction(nameof(PIDFList), new { ScreenId = (int)PIDFScreen.PIDF });
+                    if (!string.IsNullOrEmpty(pIDFEntity.PIDFIsInterested) && (pIDFEntity.PIDFIsInterested == "1" || pIDFEntity.PIDFIsInterested == "0"))
+                    {
+                        // redirect to the same screen
+                        return RedirectToAction(nameof(PIDF), new { PIDFId = pIDFEntity.PIDFID, bui = pIDFEntity.SelectedBusinessUnitId });
+                    }
+                    else
+                    {
+                        return RedirectToAction(nameof(PIDFList), new { ScreenId = (int)PIDFScreen.PIDF });
+                    }
                 }
                 else
                 {

@@ -7,6 +7,7 @@ using EmcureNPD.Data.DataAccess.Core.UnitOfWork;
 using EmcureNPD.Data.DataAccess.Entity;
 using EmcureNPD.Utility.Enums;
 using EmcureNPD.Utility.Utility;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using System;
 using System.Collections.Generic;
@@ -60,6 +61,8 @@ namespace EmcureNPD.Business.Core.Implementation
         private IRepository<PidfPbfGeneralRnd> _repositoryPidfPbfGeneralRnd { get; set; }
         private IRepository<PidfPbfRnDPackSizeStability> _repositoryPidfPbfRnDPackSizeStability { get; set; }
         private IRepository<MasterNationApproval> _masterNationApproval { get; set; }
+        private IRepository<MasterNationApprovalCountryMapping> _masterNationApprovalCountryMpping { get; set; }
+        private IRepository<MasterCountry> _masterCountry { get; set; }
         public PBFService(IUnitOfWork unitOfWork, IMapperFactory mapperFactory, INotificationService notificationService, IMasterAuditLogService auditLogService,
 
             IHelper helper, IExceptionService exceptionService, IConfiguration configuration)
@@ -100,6 +103,8 @@ namespace EmcureNPD.Business.Core.Implementation
             _repositoryPidfPbfGeneralRnd = _unitOfWork.GetRepository<PidfPbfGeneralRnd>();
             _repositoryPidfPbfRnDPackSizeStability = _unitOfWork.GetRepository<PidfPbfRnDPackSizeStability>();
             _masterNationApproval = _unitOfWork.GetRepository<MasterNationApproval>();
+            _masterNationApprovalCountryMpping = _unitOfWork.GetRepository<MasterNationApprovalCountryMapping>();
+            _masterCountry= _unitOfWork.GetRepository<MasterCountry>();
         }
 
         public async Task<dynamic> FillDropdown(int PIDFId)
@@ -375,8 +380,43 @@ namespace EmcureNPD.Business.Core.Implementation
         }
         public async Task<List<MasterNationApprovalEntity>> GetNationApprovals()
         {
-            var dbObj = await _masterNationApproval.GetAllAsync();
-            return _mapperFactory.GetList<MasterNationApproval, MasterNationApprovalEntity>(dbObj.ToList());
+            var MasterNationApprovaldbObj = await _masterNationApproval.GetAllAsync();
+            var MasterCountryMappingdbObj = await _masterNationApprovalCountryMpping.GetAllAsync();
+            var MasterCountrydbObj = await _masterCountry.GetAllAsync();
+            var query = from nationApproval in MasterNationApprovaldbObj
+                        join countryMapping in MasterCountryMappingdbObj
+                            on nationApproval.NationApprovalId equals countryMapping.NationApprovalId
+                        join country in MasterCountrydbObj
+                            on countryMapping.CountryId equals country.CountryId
+                        orderby nationApproval.NationApprovalId
+                        select new
+                        {
+                            nationApproval.NationApprovalId,
+                            nationApproval.MinEOP,
+                            nationApproval.MaxEOP,
+                            country.CountryId,
+                            country.CountryName
+                        };
+
+            var result = new List<MasterNationApprovalEntity>();
+            var groupedData = query.GroupBy(item => new { item.NationApprovalId, item.MinEOP, item.MaxEOP });
+
+            foreach (var group in groupedData)
+            {
+                var entity = new MasterNationApprovalEntity
+                {
+                    NationApprovalId = group.Key.NationApprovalId,
+                    MinEOP = group.Key.MinEOP,
+                    MaxEOP = group.Key.MaxEOP,
+                    CountryDetails = group.Select(item => new CountryDetails
+                    {
+                        CountryId = item.CountryId,
+                        CountryName = item.CountryName
+                    }).ToList()
+                };
+                result.Add(entity);
+            }
+            return result.ToList();
         }
         
         #region Private Methods
@@ -2775,7 +2815,35 @@ namespace EmcureNPD.Business.Core.Implementation
                 return false;
             }
         }
+        public async Task<dynamic> GetPBFRADates(RaCalculatedDates calculatedDates)
+        {
+            var loggedInUserId = _helper.GetLoggedInUser().UserId;
+           // var data = new RaCalculatedDates();
+            try
+            {
+                SqlParameter[] osqlParameter = {
+                      new SqlParameter("@PIDFId", calculatedDates.PIDFId),
+                      new SqlParameter("@BusinessUnitId", calculatedDates.BusinessUnitId),
+                      new SqlParameter("@UserId", loggedInUserId),
+                      new SqlParameter("@CountryId", calculatedDates.CountryId),
+                      new SqlParameter("@TypeOfSubmissionId", calculatedDates.TypeOfSubmissionId),
+                      new SqlParameter("@DossierReadyDate", calculatedDates.DossierReadyDate),
+                      new SqlParameter("@PivotalBatchManufactured", calculatedDates.PivotalBatchManufactured),
+                      new SqlParameter("@LastDataFromRnD", calculatedDates.LastDataFromRnD),
+                      new SqlParameter("@BEFinalReport", calculatedDates.BEFinalReport),
+                   };
 
+                var dbresult = await _pbfRepository.GetDataSetBySP("stp_npd_GetPBFRADates", System.Data.CommandType.StoredProcedure, osqlParameter);
+
+                return dbresult;
+            }
+            catch (Exception ex)
+            {
+                await _ExceptionService.LogException(ex);
+                return null;
+            }
+           
+        }
         #endregion Private Methods
     }
 }

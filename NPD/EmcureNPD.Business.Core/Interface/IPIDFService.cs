@@ -13,7 +13,8 @@ namespace EmcureNPD.Business.Core.Interface
 
         Task<DBOperation> AddUpdatePIDF(PIDFEntity entityPIDF);
 
-        Task<PIDFEntity> GetById(int id, int BusinessUnitId);
+        Task<PIDFEntity> GetById(int id);
+        Task<PIDFEntity> GetById_BUId(int id, int BusinessUnitId);
 
         Task<DBOperation> ApproveRejectDeletePidf(EntryApproveRej oApprRej);
 

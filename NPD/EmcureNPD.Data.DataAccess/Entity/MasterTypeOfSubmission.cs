@@ -13,5 +13,7 @@ namespace EmcureNPD.Data.DataAccess.Entity
         public DateTime? UpdatedOn { get; set; }
         public DateTime? DeletedOn { get; set; }
         public int? CreatedBy { get; set; }
+        public int? MinEOP { get; set; }
+        public int? MaxEOP { get; set; }
     }
 }

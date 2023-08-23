@@ -682,7 +682,7 @@
 
                                                 </div>
                                                 <hr/>
-                                                <div class="row">
+                                                <div class="row" style="display:none;">
                                                     <label class="control-label" id="lblPackSizeStability" style="display:none;">Pack Size Stabilitys</label>
                                                     <div id="DvPackSizeStability">
                                                     </div>
@@ -1237,6 +1237,7 @@
                                                         <thead>
                                                             <tr>
                                                                 <th>Type of Submission Name</th>
+                                                                <th>Timeline for EOP (Approx.)</th>
                                                             </tr>
                                                         </thead>
                                                         <tbody>
@@ -1265,7 +1266,8 @@
                                                     <table class="table table-bordered">
                                                         <thead>
                                                             <tr>
-                                                                <th>Nation Approval Name</th>
+                                                                <th>Country</th>
+                                                                <th>Post EOP MA Timeline (Approx.)</th>
                                                             </tr>
                                                         </thead>
                                                         <tbody>
@@ -1392,4 +1394,5 @@
     const getTypeOfSubmissionurl = "@EmcureNPD.Web.Helpers.APIURLHelper.GetTypeOfSubmission";
     const getNationApprovalsurl = "@EmcureNPD.Web.Helpers.APIURLHelper.GetNationApprovals";
     const GetRaurl = "@EmcureNPD.Web.Helpers.APIURLHelper.GetRa";
+    const GetPBFRACalculatedDateUrl = "@EmcureNPD.Web.Helpers.APIURLHelper.GetPBFRADates"
 </script>

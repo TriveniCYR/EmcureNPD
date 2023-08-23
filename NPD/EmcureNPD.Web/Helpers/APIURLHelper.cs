@@ -353,6 +353,7 @@ namespace EmcureNPD.Web.Helpers
         public static string GetAllPIDF = "api/PIDF/GetAllPIDFList";
         public static string SavePIDF = "api/PIDF/InsertUpdatePIDF";
         public static string GetPIDFById = "api/PIDF/GetPIDFById";
+        public static string GetPIDFById_BUID = "api/PIDF/GetPIDFById_BUID";
         public static string ApproveRejectPidf = "api/PIDF/ApproveRejectPidf";
         public static string ApproveRejectDeletePidf = "api/PIDF/ApproveRejectDeletePidf";
         public static string GetCommonPIDFList = "api/PIDF/GetCommonPIDFList";
@@ -378,6 +379,7 @@ namespace EmcureNPD.Web.Helpers
         public static string GetTypeOfSubmission = "api/PBF/GetTypeOfSubmission";
         public static string GetRa = "api/PBF/GetRa";
         public static string GetNationApprovals = "api/PBF/GetNationApprovals";
+        public static string GetPBFRADates = "api/PBF/GetPBFRADates";
         #endregion PIDF
 
         #region MarketExtension
@@ -455,7 +457,10 @@ namespace EmcureNPD.Web.Helpers
         public static string InsertUpdateAPICharter = "api/API/InsertUpdateAPICharter";
         public static string GetIPDByPIDF = "api/API/GetIPDByPIDF";
         public static string SaveAPIInterestedUser = "api/API/SaveAPIInterestedUser";
-
+        public static string SaveAPIInterestedUserData = "api/API/SaveAPIInterestedUserData";
+        public static string GetMasterAPIOutsourcelabels = "api/API/GetMasterAPIOutsourcelabels";
+        public static string GetMasterAPIInhouselabels = "api/API/GetMasterAPIInhouselabels";
+        public static string GetAPICharterDataByPIDF = "api/API/GetAPICharterDataByPIDF";
         #endregion API
 
         #region API List

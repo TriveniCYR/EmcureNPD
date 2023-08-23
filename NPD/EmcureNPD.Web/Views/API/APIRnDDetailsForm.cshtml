@@ -183,6 +183,27 @@
                         </div>
                     </div>
                 </div>
+                <div class="card card-outline card-primary">
+                    <div class="card-header bg-primary">
+                        <h3 class="card-title mb-0"><button type="button" class="btn btn-tool" data-card-widget="collapse">API In House</button></h3>
+                        <div class="card-tools">
+                            <button type="button" class="btn btn-tool" data-card-widget="collapse" title="Collapse">
+                                <i class="fas fa-minus"></i>
+                            </button>
+                        </div>
+                    </div>
+                    <div class="card-body" style="display: block;">
+                        <div style="overflow-x:auto;" class="scrollElement">
+                            <div class="form-group required">
+                                <table class="table table-bordered apiRnDTable">
+                                    <tbody>
+                                    </tbody>
+                                </table>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
 
                 @* ----------Start -IPEvalution-------------*@
                 <div class="card card-outline card-primary">
@@ -426,7 +447,8 @@
         var ErrorMessage = "@SharedLocalizer["Error"]";
         var GetAllMarketExtension = "@EmcureNPD.Web.Helpers.APIURLHelper.GetActiveBusinessUnit";
         var DBMarketID = "@Model.MarketID";
-
+        var getMasterAPIInhouselabels = "@EmcureNPD.Web.Helpers.APIURLHelper.GetMasterAPIInhouselabels";
+        var SaveAPIInterestedUserData = "@EmcureNPD.Web.Helpers.APIURLHelper.SaveAPIInterestedUserData";
         //--------start--------Accordian Data----------------
         var _PIDFID = "@UtilityHelper.Decreypt(Model.Pidfid)";
         var _EncPIDFID = "@(@Model.Pidfid)";

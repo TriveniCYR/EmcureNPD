@@ -29,7 +29,7 @@
                         <input type="hidden" asp-for="CountryIds" />
                         <input type="hidden" asp-for="SaveType" />
                         @Html.LabelFor(model => model.ProjectName, "Project Name", new { @class = "control-label" })
-                        @Html.EditorFor(model => model.ProjectName, new { htmlAttributes = new { @autocomplete = "off", @readonly = true, @class = "form-control checkbox-checked customvalidateformcontrol", @placeholder = @MasterLocalizer["Project Name"] } })
+                        @Html.EditorFor(model => model.ProjectName, new { htmlAttributes = new { @autocomplete = "off", @class = "form-control checkbox-checked customvalidateformcontrol", @placeholder = @MasterLocalizer["Project Name"] } })
                         @Html.ValidationMessageFor(model => model.ProjectName, "", new { @class = "text-danger" })
                     </div>
                 </div>

@@ -134,7 +134,7 @@ namespace EmcureNPD.Business.Core.Implementation
             await AddUpdate_PIDF_Commercial_Master(entitycommPIDF);
 
             var AllObjofPidfId = _commercialrepository.GetAllQuery().Where(x => x.Pidfid == entitycommPIDF.Pidfid && x.IsDeleted == false).ToList();
-            if (AllObjofPidfId != null)
+            if (AllObjofPidfId != null && AllObjofPidfId.Count>0)
             {
                 foreach (var _obj in AllObjofPidfId)
                 {
@@ -158,12 +158,13 @@ namespace EmcureNPD.Business.Core.Implementation
             }
             else
             {
-                if (entitycommPIDF.SaveType != "TabClick")
+                if (entitycommPIDF.SaveType == "TabClick")
                 {
                     entitycommPIDF.SaveType = "SvDrf";
                 }
-
-                foreach (var item in entitycommPIDF.PIDFArrMainCommercial)
+            }  
+             
+            foreach (var item in entitycommPIDF.PIDFArrMainCommercial)
                 {
                     var listYear = new List<PidfCommercialYear>();
                     int i = 1;
@@ -228,7 +229,6 @@ namespace EmcureNPD.Business.Core.Implementation
                     }
                 }
 
-            }
             if (entitycommPIDF.SaveType != "TabClick")
             {
                 var _StatusID = (entitycommPIDF.SaveType == "Sv") ? Master_PIDFStatus.CommercialSubmitted : Master_PIDFStatus.CommercialInProgress;

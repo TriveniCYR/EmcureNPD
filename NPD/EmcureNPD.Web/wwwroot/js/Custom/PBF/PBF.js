@@ -1279,7 +1279,7 @@ function GetPBFTabDetailsSuccess(data) {
             //data.PidfPbfGeneralRnd
             BindPbfGeneralRnd(data.PidfPbfGeneralRnd);
             //PidfPbfGeneralPackSizeStability
-            BindGeneralPackSizeStability(data.PidfPbfGeneralPackSizeStability);
+           // BindGeneralPackSizeStability(data.PidfPbfGeneralPackSizeStability);
             //console.log(data.PidfPbfGeneralPackSizeStability)
             //**End Date Formating for get GetPIDF_PBF_General_RND*/
             $.each($('.AnalyticalTestTypeId'), function (index, item) {
@@ -3499,7 +3499,14 @@ function GetTypeOfSubmissionForRaTabSuccess(data) {
             data.forEach(function (item) {
                 var row = typeOfSubmissionTable.insertRow();
                 var submissionTypeCell = row.insertCell(0);
-                submissionTypeCell.innerText = item.typeOfSubmission            });
+                submissionTypeCell.innerText = item.typeOfSubmission
+                var nameCell = row.insertCell(1);
+                if (item.maxEOP !== null) {
+                    nameCell.innerText = `${item.minEOP}-${item.maxEOP} Months`;
+                } else {
+                    nameCell.innerText = `${item.minEOP} Months`;
+                }
+});
         } else {
             // Show a message if there is no data
             var emptyRow = typeOfSubmissionTable.insertRow();
@@ -3526,7 +3533,7 @@ function BindRA(data, IsEdit = false) {
                                <td><input type="date" id="LastdatafromRnD${e}" name="RaEntities[${e}].LastDataFromRnD" value="${data[e].lastDataFromRnD == null ? '' : data[e].lastDataFromRnD.split('T')[0]}" class="form-control readOnlyUpdate  valid"></td>
                                <td><input type="date" id="BEFinalReport${e}" name="RaEntities[${e}].BEFinalReport" value="${data[e].befinalReport == null ? '' : data[e].befinalReport.split('T')[0]}" class="form-control readOnlyUpdate  valid"></td>
                                
-                               <td><select  id="TypeOfSubmissionId${e}" name="RaEntities[${e}].TypeOfSubmissionId" class="form-control readOnlyUpdate clsTypeOfSubmission  valid" value="${data[e].typeOfSubmissionId}"></select></td>
+                               <td><select  id="TypeOfSubmissionId${e}" name="RaEntities[${e}].TypeOfSubmissionId" class="form-control readOnlyUpdate clsTypeOfSubmission  valid" value="${data[e].typeOfSubmissionId}" onchange="GetPBFRACalculatedDate(${e})"></select></td>
                                <td><input type="date" id="DossierReadyDate${e}" name="RaEntities[${e}].DossierReadyDate" value="${data[e].dossierReadyDate != null ? data[e].dossierReadyDate.split('T')[0] : ''}" class="form-control readOnlyUpdate  valid"></td>
                                <td><input type="date" id="EarliestSubmissionDExcl${e}" name="RaEntities[${e}].EarliestSubmissionDExcl" value="${data[e].earliestSubmissionDexcl != null ? data[e].earliestSubmissionDexcl.split('T')[0] : ''}" class="form-control readOnlyUpdate  valid"></td>
                                 <td><input type="date" id="EarliestLaunchDexcl${e}" name="RaEntities[${e}].EarliestLaunchDexcl" value="${data[e].earliestLaunchDexcl == null ? '' : data[e].earliestLaunchDexcl.split('T')[0]}" class="form-control readOnlyUpdate  valid"></td>
@@ -3552,7 +3559,8 @@ function BindRA(data, IsEdit = false) {
 
 }
 function BindNewRA(data, IsEdit = false) {
-    if (IsEdit == false) {
+    if (IsEdit == false && data != null && data.length > 0) {
+
         let tbody = $("#tableRABody");
         let tr = '';
         for (var i = 0; i < data.length; i++) {
@@ -3561,7 +3569,7 @@ function BindNewRA(data, IsEdit = false) {
              <td><input type="date" id="Pivotalbatchmanufactured0" name="RaEntities[${i}].PivotalBatchManufactured" class="form-control readOnlyUpdate  valid"></td>
              <td><input type="date" id="LastdatafromRnD0" name="RaEntities[${i}].LastDataFromRnD" class="form-control readOnlyUpdate  valid"></td>
              <td><input type="date" id="BEFinalReport0" name="RaEntities[${i}].BEFinalReport" class="form-control readOnlyUpdate  valid"></td>
-             <td><select  id="TypeOfSubmissionId0" name="RaEntities[${i}].TypeOfSubmissionId" class="form-control readOnlyUpdate valid clsTypeOfSubmission"></select></td>
+             <td><select  id="TypeOfSubmissionId0" name="RaEntities[${i}].TypeOfSubmissionId" class="form-control readOnlyUpdate valid clsTypeOfSubmission" onchange="GetPBFRACalculatedDate(${i})"></select></td>
              <td><input type="date" id="DossierReadyDate0" name="RaEntities[${i}].DossierReadyDate" class="form-control readOnlyUpdate  valid"></td>
              <td><input type="date" id="EarliestSubmissionDExcl0" name="RaEntities[${i}].EarliestSubmissionDExcl" class="form-control readOnlyUpdate  valid"></td>
               <td><input type="date" id="EarliestLaunchDexcl0" name="RaEntities[${i}].EarliestLaunchDexcl" class="form-control readOnlyUpdate valid"></td>
@@ -3584,6 +3592,12 @@ function BindNewRA(data, IsEdit = false) {
         }
         GetTypeOfSubmission();
         data = null;
+    }
+    else {
+        let tbody = $("#tableRA");
+       // let masseges = '<span  style="color:red;">No Intrested Country found as per selected Bussiness Unit!</span>';
+        let tr = '<tfoot><tr><th></th><th></th><th></th><th></th><th style="color:red;">No Intrested Countries found as per selected Bussiness Unit</th><th></th><th></th><th></th><th></th><th></th></tr></tfoot>';
+        tbody.append(tr);
     }
 }
 
@@ -3656,6 +3670,7 @@ function SetRaChildRow() {
         //$(this).find("td:eq(4) select").attr("id", "CountryId" + index.toString());
         $(this).find("td:eq(4) select").attr("name", "RaEntities[" + index.toString() + "].TypeOfSubmissionId");
         $(this).find("td:eq(4) select").attr("id", "TypeOfSubmissionId" + index.toString());
+        $(this).find("td:eq(4) select").attr(`onchange`, `GetPBFRACalculatedDate(${index})`);
 
         $(this).find("td:eq(5) input").attr("name", "RaEntities[" + index.toString() + "].DossierReadyDate");
         $(this).find("td:eq(5) input").attr("id", "DossierReadyDate" + index.toString());
@@ -3740,7 +3755,18 @@ function GetNationalApprovalsSuccess(data) {
             data.forEach(function (item) {
                 var row = nationalApprovalTable.insertRow();
                 var nameCell = row.insertCell(0);
-                nameCell.innerText = item.nationApprovalName;
+                var countryNames = [];
+                item.countryDetails.forEach(function (country) {
+                    countryNames.push(country.countryName);
+                });
+                nameCell.innerText = countryNames.join(", ");
+                var eopCell = row.insertCell(1);
+                var eopRange = `${item.minEOP}`;
+                if (item.maxEOP !== null) {
+                    eopRange += `-${item.maxEOP}`;
+                }
+                eopRange += ` ${item.minEOP > 1 || (item.maxEOP !== null && item.maxEOP > 1) ? 'Months' : 'Month'}`;
+                eopCell.innerText = eopRange;
             });
         } else {
             // Show a message if there is no data
@@ -3756,5 +3782,28 @@ function GetNationalApprovalsSuccess(data) {
 function GetNationalApprovalsError(x, y, z) {
     toastr.error(ErrorMessage);
 }
-
-
+let selectedRaIndex = 0;
+function GetPBFRACalculatedDate(index) {
+    let buId = SelectedBUValue == 0 ? _selectBusinessUnit : SelectedBUValue;
+    let param = {
+        PIDFId: _PIDFPBFId,
+        BusinessUnitId: buId,
+        CountryId: $(`#raCountryId${index}`).val() == '' ? 0 : $(`#raCountryId${index}`).val(),
+        TypeOfSubmissionId: $(`#TypeOfSubmissionId${index}`).val(),
+        DossierReadyDate: $(`#DossierReadyDate${index}`).val(),
+        PivotalBatchManufactured: $(`#Pivotalbatchmanufactured${index}`).val(),
+        LastDataFromRnD: $(`#LastdatafromRnD${index}`).val(),
+        BEFinalReport: $(`#BEFinalReport${index}`).val()
+    }
+    selectedRaIndex = index;
+    ajaxServiceMethod($('#hdnBaseURL').val() + GetPBFRACalculatedDateUrl, 'POST', GetPBFRACalculatedDateSuccess, GetPBFRACalculatedDateError, JSON.stringify(param));
+}
+function GetPBFRACalculatedDateSuccess(data) {
+    console.log(data.table);
+    $(`#EarliestSubmissionDExcl${selectedRaIndex}`).val(data.table[0].earliestSubmissionDate == null ? '' : data.table[0].earliestSubmissionDate.split('T')[0])
+    $(`#EarliestLaunchDexcl${selectedRaIndex}`).val(data.table[0].earliestLaunchDate == null ? '' : data.table[0].earliestLaunchDate.split('T')[0])
+    $(`#LasDateToRegulatory${selectedRaIndex}`).val(data.table[0].lastDateToRegulatory == null ? '' : data.table[0].lastDateToRegulatory.split('T')[0])
+}
+function GetPBFRACalculatedDateError(x, y, z) {
+    toastr.error(ErrorMessage);
+}

@@ -155,12 +155,29 @@ namespace EmcureNPD.API.Controllers.Masters
         /// <response code="404">Not Found</response>
         /// <response code="405">Method Not Allowed</response>
         /// <response code="500">Internal Server</response>
-        [HttpGet, Route("GetPIDFById/{id}/{bussnessId}")]
-        public async Task<IActionResult> GetPIDFById([FromRoute] int id, int bussnessId)
+        [HttpGet, Route("GetPIDFById/{id}")]
+        public async Task<IActionResult> GetPIDFById([FromRoute] int id)
         {
             try
             {
-                var oPIDFEntity = await _PIDFService.GetById(id, bussnessId);
+                var oPIDFEntity = await _PIDFService.GetById(id);
+                if (oPIDFEntity != null && oPIDFEntity.PIDFID > 0)
+                    return _ObjectResponse.Create(oPIDFEntity, (Int32)HttpStatusCode.OK);
+                else
+                    return _ObjectResponse.Create(null, (Int32)HttpStatusCode.BadRequest, "Record not found");
+            }
+            catch (Exception ex)
+            {
+                await _ExceptionService.LogException(ex);
+                return _ObjectResponse.Create(false, (Int32)HttpStatusCode.InternalServerError, Convert.ToString(ex.StackTrace));
+            }
+        }
+        [HttpGet, Route("GetPIDFById_BUID/{id}/{bussnessId}")]
+        public async Task<IActionResult> GetPIDFById_BUID([FromRoute] int id, int bussnessId)
+        {
+            try
+            {
+                var oPIDFEntity = await _PIDFService.GetById_BUId(id,bussnessId);
                 if (oPIDFEntity != null && oPIDFEntity.PIDFID > 0)
                     return _ObjectResponse.Create(oPIDFEntity, (Int32)HttpStatusCode.OK);
                 else
