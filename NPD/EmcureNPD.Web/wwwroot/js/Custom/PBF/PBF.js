@@ -3663,6 +3663,7 @@ function SetRaChildRow() {
         //$(this).find("td:eq(4) select").attr("id", "CountryId" + index.toString());
         $(this).find("td:eq(4) select").attr("name", "RaEntities[" + index.toString() + "].TypeOfSubmissionId");
         $(this).find("td:eq(4) select").attr("id", "TypeOfSubmissionId" + index.toString());
+        $(this).find("td:eq(4) select").attr(`onchange`, `GetPBFRACalculatedDate(${index})`);
 
         $(this).find("td:eq(5) input").attr("name", "RaEntities[" + index.toString() + "].DossierReadyDate");
         $(this).find("td:eq(5) input").attr("id", "DossierReadyDate" + index.toString());
@@ -3769,7 +3770,7 @@ function GetPBFRACalculatedDate(index) {
     let param = {
         PIDFId: _PIDFPBFId,
         BusinessUnitId: buId,
-        CountryId: $(`#raCountryId${index}`).val(),
+        CountryId: $(`#raCountryId${index}`).val() == '' ? 0 : $(`#raCountryId${index}`).val(),
         TypeOfSubmissionId: $(`#TypeOfSubmissionId${index}`).val(),
         DossierReadyDate: $(`#DossierReadyDate${index}`).val(),
         PivotalBatchManufactured: $(`#Pivotalbatchmanufactured${index}`).val(),
