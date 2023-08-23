@@ -78,11 +78,12 @@ namespace EmcureNPD.Business.Models
         public bool TradeNameRequired { get; set; }
         public DateTime? TradeNameDate { get; set; }
         public bool IsActive { get; set; }
-  //      public DateTime CreatedDate { get; set; }
-  //      public int? CreatedBy { get; set; }
-  //      public DateTime? ModifyDate { get; set; }
-		//public int? ModifyBy { get; set; }
-		
+        //      public DateTime CreatedDate { get; set; }
+        //      public int? CreatedBy { get; set; }
+        //      public DateTime? ModifyDate { get; set; }
+        //public int? ModifyBy { get; set; }
+
+        public string BussinessUnitByUserIDPIDF { get; set; }
         public int StatusId { get; set; }
         
         public int? Diaid { get; set; }
