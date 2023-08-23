@@ -457,7 +457,10 @@ namespace EmcureNPD.Web.Helpers
         public static string InsertUpdateAPICharter = "api/API/InsertUpdateAPICharter";
         public static string GetIPDByPIDF = "api/API/GetIPDByPIDF";
         public static string SaveAPIInterestedUser = "api/API/SaveAPIInterestedUser";
-
+        public static string SaveAPIInterestedUserData = "api/API/SaveAPIInterestedUserData";
+        public static string GetMasterAPIOutsourcelabels = "api/API/GetMasterAPIOutsourcelabels";
+        public static string GetMasterAPIInhouselabels = "api/API/GetMasterAPIInhouselabels";
+        public static string GetAPICharterDataByPIDF = "api/API/GetAPICharterDataByPIDF";
         #endregion API
 
         #region API List

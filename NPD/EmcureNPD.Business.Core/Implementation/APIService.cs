@@ -39,7 +39,10 @@ namespace EmcureNPD.Business.Core.Implementation
         private IRepository<Pidf> _pidfrepository { get; set; }
         private readonly INotificationService _notificationService;
         private readonly IExceptionService _ExceptionService;
-
+        private IRepository<MasterApiOutsource> _masterAPIOutsource { get; set; }
+        private IRepository<PIDFAPIOutsourceData> _pIDFAPIOutsource { get; set; }
+        private IRepository<MasterApiInhouse> _masterAPIInhouse { get; set; }
+        private IRepository<PidfApiInhouse> _pIDFAPIInhouse { get; set; }
         public APIService(IUnitOfWork unitOfWork, IMapperFactory mapperFactory,
             Microsoft.Extensions.Configuration.IConfiguration configuration, IMasterProductTypeService masterProductTypeService,
              INotificationService notificationService,
@@ -54,6 +57,10 @@ namespace EmcureNPD.Business.Core.Implementation
             _pidf_API_Master_repository = _unitOfWork.GetRepository<PidfApiMaster>();
             _pidf_API_TimelineInMonth_repository = _unitOfWork.GetRepository<PidfApiCharterTimelineInMonth>();
             _masterProductTypeService = masterProductTypeService;
+            _masterAPIOutsource = _unitOfWork.GetRepository<MasterApiOutsource>();
+            _pIDFAPIOutsource = _unitOfWork.GetRepository<PIDFAPIOutsourceData>();
+            _masterAPIInhouse = _unitOfWork.GetRepository<MasterApiInhouse>();
+            _pIDFAPIInhouse = _unitOfWork.GetRepository<PidfApiInhouse>();
             _auditLogService = auditLogService;
             _configuration = configuration;
             _helper = helper;
@@ -402,6 +409,7 @@ namespace EmcureNPD.Business.Core.Implementation
         {
             //PIDFAPIIPDFormEntity _exsistingAPIRnD = new PIDFAPIIPDFormEntity();
             var loggedInUser = _helper.GetLoggedInUser();
+            await InsertAPIInterestedUserData(_oAPIRnD.PIDFAPIInhouseEntities, int.Parse(_oAPIRnD.Pidfid));
             if (_oAPIRnD.PIDFAPIRnDFormID > 0)
             {
                 var lastApiRnD = _pidf_API_RnD_repository.GetAllQuery().First(x => x.PidfApiRnDId == _oAPIRnD.PIDFAPIRnDFormID);
@@ -534,33 +542,142 @@ namespace EmcureNPD.Business.Core.Implementation
             await _notificationService.CreateNotification(long.Parse(_oAPICharter.Pidfid), (int)_StatusID, string.Empty, string.Empty, _oAPICharter.LoggedInUserId);
             return DBOperation.Success;
         }
-
         public async Task<DBOperation> AddUpdateAPIGroupLeader(APIInterestedUserEntity _oAPIAssignedUser, int _pidfid)
         {
-
-            var loggedInUserID = _helper.GetLoggedInUser().UserId;
-            var dbObj = await _pidf_API_Master_repository.GetAsync(x => x.Pidfid == _pidfid);
-            if (dbObj != null)
+            try
             {
-                dbObj.Interested = _oAPIAssignedUser.IsAPIIntrested;
-                dbObj.Remark = _oAPIAssignedUser.ApiRemark;
-                _pidf_API_Master_repository.UpdateAsync(dbObj);
+                var loggedInUserID = _helper.GetLoggedInUser().UserId;
+                var dbObj = await _pidf_API_Master_repository.GetAsync(x => x.Pidfid == _pidfid);
+                if (dbObj != null)
+                {
+                    dbObj.Interested = _oAPIAssignedUser.IsAPIIntrested;
+                    dbObj.Remark = _oAPIAssignedUser.ApiRemark;
+                    _pidf_API_Master_repository.UpdateAsync(dbObj);
+                }
+                else
+                {
+                    var NewObject = new PidfApiMaster();
+                    NewObject.Pidfid = _pidfid;
+                    NewObject.UserId = _oAPIAssignedUser.AssignedAPIUser;
+                    NewObject.Interested = _oAPIAssignedUser.IsAPIIntrested;
+                    NewObject.Remark = _oAPIAssignedUser.ApiRemark;
+                    NewObject.CreatedBy = loggedInUserID;
+                    NewObject.CreatedDate = DateTime.Now;
+                    _pidf_API_Master_repository.AddAsync(NewObject);
+                }
+
+                var outsourcedbObj = _pIDFAPIOutsource.GetAll().Where(x => x.PIDFId == _pidfid).ToList();//_pIDFAPIOutsource
+                if (_oAPIAssignedUser.IsAPIIntrested == false && outsourcedbObj.Count>0)
+                {
+                    foreach (var notInterestedData in _oAPIAssignedUser.NotInterestedDatas)
+                    {
+                        var updatedObject = new PIDFAPIOutsourceData
+                        {
+                            APIOutsourceDataId = outsourcedbObj.Where(x=>x.APIOutsourceId==notInterestedData.ApiOutsourceId).Select(x=>x.APIOutsourceDataId).FirstOrDefault(),
+                            APIOutsourceId = notInterestedData.ApiOutsourceId,
+                            PIDFId = _pidfid,
+                            Primary = notInterestedData.Details[0],
+                            Potential_Alt_1 = notInterestedData.Details[1],
+                            Potential_Alt_2 = notInterestedData.Details[2]
+                        };
+                        _pIDFAPIOutsource.UpdateAsync(updatedObject);
+                         _unitOfWork.SaveChanges();
+                    }
+                }
+                else
+                {
+                    foreach (var notInterestedData in _oAPIAssignedUser.NotInterestedDatas)
+                    {
+                        var newObject = new PIDFAPIOutsourceData();
+                        newObject.APIOutsourceId = notInterestedData.ApiOutsourceId;
+                        newObject.PIDFId = _pidfid;
+                        newObject.Primary = notInterestedData.Details[0];
+                        newObject.Potential_Alt_1 = notInterestedData.Details[1];
+                        newObject.Potential_Alt_2 = notInterestedData.Details[2];
+                        newObject.CreatedBy = loggedInUserID;
+                        newObject.CreatedDate = DateTime.Now;
+                        _pIDFAPIOutsource.AddAsync(newObject);
+                    }
+                }
+                await _unitOfWork.SaveChangesAsync();
+                return DBOperation.Success;
+            }
+            catch (Exception ex)
+            {
+
+                throw ex;
+            }
+          
+        }
+        public async Task<DBOperation> InsertAPIInterestedUserData(List<PIDFAPIInhouseRnDData> pIDFAPIInhouseEntity,int pidfId)
+        {
+            var loggedInUserID = _helper.GetLoggedInUser().UserId;
+            var inhousesourcedbObj = _pIDFAPIInhouse.GetAll().Where(x => x.Pidfid == pidfId).ToList();//_pIDFAPIOutsource
+            if (inhousesourcedbObj.Count>0)
+            {
+                foreach (var InterestedData in pIDFAPIInhouseEntity)
+                {
+                    var updatedObject = new PidfApiInhouse
+                    {
+                        PidfapiinhouseId = inhousesourcedbObj.Where(x => x.ApiinhouseId == InterestedData.ApiInhouseId).Select(x => x.PidfapiinhouseId).FirstOrDefault(),
+                        ApiinhouseId = InterestedData.ApiInhouseId,
+                        Pidfid = pidfId,
+                        Primary = InterestedData.Primary,
+                    };
+                    _pIDFAPIInhouse.UpdateAsync(updatedObject);
+                    _unitOfWork.SaveChanges();
+                }
             }
             else
             {
-                var NewObject = new PidfApiMaster();
-                NewObject.Pidfid = _pidfid;
-                NewObject.UserId = _oAPIAssignedUser.AssignedAPIUser;
-                NewObject.Interested = _oAPIAssignedUser.IsAPIIntrested;
-                NewObject.Remark = _oAPIAssignedUser.ApiRemark;
-                NewObject.CreatedBy = loggedInUserID;
-                NewObject.CreatedDate = DateTime.Now;
-                _pidf_API_Master_repository.AddAsync(NewObject);
+                foreach (var InterestedData in pIDFAPIInhouseEntity)
+                {
+                    var newObject = new PidfApiInhouse
+                    {
+                        ApiinhouseId = InterestedData.ApiInhouseId,
+                        Pidfid = pidfId,
+                        Primary = InterestedData.Primary,
+                        CreatedBy = loggedInUserID,
+                        CreatedDate = DateTime.Now
+                    };
+
+                    _pIDFAPIInhouse.AddAsync(newObject);
+                }
             }
             await _unitOfWork.SaveChangesAsync();
             return DBOperation.Success;
         }
-        
+        public async Task<List<MasterAPIOutsourceEntity>> GetAllMasterAPIOutsourcelabels()
+        {
+            var dbObj = await _masterAPIOutsource.GetAllAsync();
+            return _mapperFactory.GetList<MasterApiOutsource, MasterAPIOutsourceEntity>(dbObj.ToList());
+        }
+        public async Task<List<MasterAPIInhouseEntity>> GetAllMasterAPIInhouselabels()
+        {
+            var dbObj = await _masterAPIInhouse.GetAllAsync();
+            return _mapperFactory.GetList<MasterApiInhouse, MasterAPIInhouseEntity>(dbObj.ToList());
+        }
+        public async Task<List<PIDFAPIInhouseEntity>> GetAPICharterDataByPIDF(long pidfId)
+        {
+            var inhouselabellist = await _masterAPIInhouse.GetAllAsync();
+            var pidfInhouseList = await _pIDFAPIInhouse.GetAllAsync();
 
+            var joinedData = from p in pidfInhouseList
+                             join pi in inhouselabellist
+                             on p.ApiinhouseId equals pi.ApiinhouseId
+                             where p.Pidfid == pidfId // Filter based on pidfId
+                             select new PIDFAPIInhouseEntity()
+                             {
+                                 Primary = p.Primary,
+                                 PIDFAPIInhouseId = p.PidfapiinhouseId,
+                                 PIDFId = p.Pidfid,
+                                 CreatedDate = p.CreatedDate,
+                                 CreatedBy = p.CreatedBy,
+                                 ApiInhouseId = p.ApiinhouseId,
+                                 APIInhouseName = pi.ApiinhouseName
+                             };
+
+            return joinedData.ToList(); // Return the entire list of joined data
+        }
     }
 }

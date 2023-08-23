@@ -13,5 +13,13 @@ namespace EmcureNPD.Business.Models
         public bool IsAPIIntrested { get; set; }
         public string ApiRemark { get; set; }
         public int AssignedAPIUser { get; set; }
+        public List<NotInterestedData> NotInterestedDatas { get; set; }
     }
+    public class NotInterestedData
+    {
+        public int ApiOutsourceId { get; set; } 
+        public string ApiOutsourceName { get; set; }
+        public List<string> Details { get; set; } 
+    }
+
 }

@@ -1,12 +1,15 @@
 ﻿using EmcureNPD.API.Filters;
 using EmcureNPD.API.Helpers.Response;
+using EmcureNPD.Business.Core.Implementation;
 using EmcureNPD.Business.Core.Interface;
 using EmcureNPD.Business.Models;
+using EmcureNPD.Data.DataAccess.Entity;
 using EmcureNPD.Utility.Utility;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System;
+using System.Collections.Generic;
 using System.Net;
 using System.Threading.Tasks;
 using static EmcureNPD.Utility.Enums.GeneralEnum;
@@ -209,5 +212,52 @@ namespace EmcureNPD.API.Controllers.API
                 return _ObjectResponse.Create(false, (Int32)HttpStatusCode.InternalServerError, Convert.ToString(ex.StackTrace));
             }
         }
+
+        [HttpGet, Route("GetMasterAPIOutsourcelabels")]
+        public async Task<IActionResult> GetMasterAPIOutsourcelabels()
+        {
+            try
+            {
+                return _ObjectResponse.CreateData(await _APIService.GetAllMasterAPIOutsourcelabels(), (Int32)HttpStatusCode.OK);
+            }
+            catch (Exception e)
+            {
+                await _ExceptionService.LogException(e);
+                return _ObjectResponse.Create(null, (Int32)HttpStatusCode.BadRequest, "No Records found");
+            }
+        }
+        [HttpGet, Route("GetMasterAPIInhouselabels")]
+        public async Task<IActionResult> GetMasterAPIInhouselabels()
+        {
+            try
+            {
+                return _ObjectResponse.CreateData(await _APIService.GetAllMasterAPIInhouselabels(), (Int32)HttpStatusCode.OK);
+            }
+            catch (Exception e)
+            {
+                await _ExceptionService.LogException(e);
+                return _ObjectResponse.Create(null, (Int32)HttpStatusCode.BadRequest, "No Records found");
+            }
+        }
+
+        [HttpGet]
+        [Route("GetAPICharterDataByPIDF/{pidfId}")]
+        public async Task<IActionResult> GetAPICharterDataByPIDF([FromRoute] long pidfId)
+        {
+            try
+            {
+                var oPIDFEntity = await _APIService.GetAPICharterDataByPIDF(pidfId);
+                if (oPIDFEntity != null)
+                    return _ObjectResponse.Create(oPIDFEntity, (Int32)HttpStatusCode.OK);
+                else
+                    return _ObjectResponse.Create(null, (Int32)HttpStatusCode.BadRequest, "Record not found");
+            }
+            catch (Exception ex)
+            {
+                await _ExceptionService.LogException(ex);
+                return _ObjectResponse.Create(false, (Int32)HttpStatusCode.InternalServerError, Convert.ToString(ex.StackTrace));
+            }
+        }
+
     }
 }

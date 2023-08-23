@@ -37,6 +37,7 @@ namespace EmcureNPD.Business.Models
         public List<CapitalOtherExpenditure> CapitalOtherExpenditure { get; set; }
         public List<ManhourEstimates> ManhourEstimates { get; set; }
         public List<HeadwiseBudget> HeadwiseBudget { get; set; }
+        public List<PIDFAPIInhouseEntity> PIDFAPIInhouse { get; set; }
     }
 
     #region Child Table Class
@@ -97,9 +98,6 @@ namespace EmcureNPD.Business.Models
         public string Name { get; set; }
         public string HeadwiseBudgetValue { get; set; }
     }
-   
-   
-    
     public class CharterObject
     {
         public long PIDF_API_CharterId { get; set; }

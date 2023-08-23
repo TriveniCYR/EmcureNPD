@@ -1,4 +1,4 @@
-﻿    @using EmcureNPD.Utility.Enums;
+﻿@using EmcureNPD.Utility.Enums;
 @using EmcureNPD.Utility.Utility;
 @using Microsoft.AspNetCore.Http
 @using EmcureNPD.Web.Controllers
@@ -58,21 +58,21 @@
         {
             <h3>@MasterLocalizer["BudgetApproval"]</h3>
             ScreenModuleID = (int)ModulePermissionEnum.ManagementHOD;
-            
-        } 
+
+        }
         else if (Context.Request.Query["ScreenId"] == Convert.ToString((int)EmcureNPD.Utility.Enums.PIDFScreen.Project))
         {
             <h3>@SharedLocalizer["Project Management"]</h3>
             <div>
-                    <a class="btn btn-primary" href="@Url.Action("ProjectSummary","Project", new{ScreenId =Context.Request.Query["ScreenId"]})"><i class="fas fa-project-diagram mr-2"></i>Gantt Chart</a>
+                <a class="btn btn-primary" href="@Url.Action("ProjectSummary","Project", new{ScreenId =Context.Request.Query["ScreenId"]})"><i class="fas fa-project-diagram mr-2"></i>Gantt Chart</a>
             </div>
         }
-        
-            @if (Context.Request.Query["ScreenId"] == Convert.ToString((int)EmcureNPD.Utility.Enums.PIDFScreen.PIDF) || Context.Request.Query["ScreenId"] == Convert.ToString((int)EmcureNPD.Utility.Enums.PIDFScreen.IPD) || Context.Request.Query["ScreenId"] == Convert.ToString((int)EmcureNPD.Utility.Enums.PIDFScreen.Finance) || (Context.Request.Query["ScreenId"] == Convert.ToString((int)EmcureNPD.Utility.Enums.PIDFScreen.Management) && Ismanagement.Equals("True")))
-            {
-                bool IsAccessToLoggedInUser = UtilityHelper.GetAccess(Int32.Parse(Convert.ToString(ScreenModuleID)), Helper.GetLoggedInRoleId(), (int)PermissionEnum.Approve);
+
+        @if (Context.Request.Query["ScreenId"] == Convert.ToString((int)EmcureNPD.Utility.Enums.PIDFScreen.PIDF) || Context.Request.Query["ScreenId"] == Convert.ToString((int)EmcureNPD.Utility.Enums.PIDFScreen.IPD) || Context.Request.Query["ScreenId"] == Convert.ToString((int)EmcureNPD.Utility.Enums.PIDFScreen.Finance) || (Context.Request.Query["ScreenId"] == Convert.ToString((int)EmcureNPD.Utility.Enums.PIDFScreen.Management) && Ismanagement.Equals("True")))
+        {
+            bool IsAccessToLoggedInUser = UtilityHelper.GetAccess(Int32.Parse(Convert.ToString(ScreenModuleID)), Helper.GetLoggedInRoleId(), (int)PermissionEnum.Approve);
             <div>
-                @if(IsAccessToLoggedInUser)
+                @if (IsAccessToLoggedInUser)
                 {
                     <a class="btn btn-success" onClick="ApproveRejectPIDF('A', @(Context.Request.Query["ScreenId"]), '/PIDF/PIDFList?ScreenId=@(Context.Request.Query["ScreenId"])')"><i class="fa fa-check-circle mr-1"></i> @SharedLocalizer["Approve"]</a>
                     <a class="btn btn-danger" onClick="ApproveRejectPIDF('R', @(Context.Request.Query["ScreenId"]), '/PIDF/PIDFList?ScreenId=@(Context.Request.Query["ScreenId"])')"><i class="fa fa-ban mr-1"></i> @SharedLocalizer["Reject"]</a>
@@ -82,7 +82,7 @@
                     <a class="btn btn-primary" asp-action="PIDF"><i class="far fa-plus-square mr-1"></i> @SharedLocalizer["Add"]</a>
                 }
             </div>
-            }
+        }
     </div>
 </div>
 
@@ -90,36 +90,36 @@
     <span class="text-danger">Note: Below table is having horizontal scrollbar, Please scroll to view detailed column data.</span>
     <div>&nbsp;</div>
     <table id="PIDFTable" class="table table-hover">
-       @* <thead>
-            <tr class="text-center">
-                <th class="text-center" style="min-width:25px"></th>
-                <th class="text-center" style="min-width:25px"><input type="checkbox" class="custom-list-checkbox" id="chkAllPIDF" /></th>
-                <th style="min-width:90px">@MasterLocalizer["PIDF No"]</th>
-                <th style="min-width:110px">@MasterLocalizer["Project Name"]</th>
-                <th style="min-width:110px">@SharedLocalizer["Brand Name"]</th>
-                <th style="min-width:110px">@SharedLocalizer["Dosage Form"]</th>
-                <th style="min-width:110px">@SharedLocalizer["Business Unit"]</th>
-                <th style="min-width:110px">@SharedLocalizer["Oral Name"]</th>
-                <th style="min-width:80px">@SharedLocalizer["In House"]</th>
-                <th style="min-width:50px">@SharedLocalizer["IPD"]</th>
-                <th style="min-width:50px">@SharedLocalizer["Medical"]</th>
-                <th style="min-width:50px">@SharedLocalizer["Commercial"]</th>
-                <th style="min-width:50px">@SharedLocalizer["PBF"]</th>
-                <th style="min-width:50px">@SharedLocalizer["API"]</th>
-                <th style="min-width:50px">@SharedLocalizer["Finance"]</th>*@
-                @*                    <th style="min-width:50px">@SharedLocalizer["Management"]</th>*@
-                 @* <th style="min-width:140px">@SharedLocalizer["Market Extension"]</th>
-                <th style="min-width:140px">@SharedLocalizer["Product Packaging"]</th>
-                <th style="min-width:140px">@SharedLocalizer["Ref Product Brand"]</th>
-                <th style="min-width:100px">@SharedLocalizer["Applicant"]</th>
-                <th style="min-width:80px">@SharedLocalizer["Country"]</th>
-                <th style="min-width:80px">@SharedLocalizer["Indication"]</th>
-                <th style="min-width:120px">@SharedLocalizer["DIA /ANDA/ ANDS"]</th>
-                <th style="min-width:100px">@SharedLocalizer["Created By"]</th>
-                <th style="min-width:100px">@SharedLocalizer["Created Date"]</th>
-                <th style="min-width:150px">@SharedLocalizer["Status"]</th>
-                <th style="min-width:100px" class="text-center">@SharedLocalizer["Action"]</th>
-            </tr>
+        @* <thead>
+        <tr class="text-center">
+        <th class="text-center" style="min-width:25px"></th>
+        <th class="text-center" style="min-width:25px"><input type="checkbox" class="custom-list-checkbox" id="chkAllPIDF" /></th>
+        <th style="min-width:90px">@MasterLocalizer["PIDF No"]</th>
+        <th style="min-width:110px">@MasterLocalizer["Project Name"]</th>
+        <th style="min-width:110px">@SharedLocalizer["Brand Name"]</th>
+        <th style="min-width:110px">@SharedLocalizer["Dosage Form"]</th>
+        <th style="min-width:110px">@SharedLocalizer["Business Unit"]</th>
+        <th style="min-width:110px">@SharedLocalizer["Oral Name"]</th>
+        <th style="min-width:80px">@SharedLocalizer["In House"]</th>
+        <th style="min-width:50px">@SharedLocalizer["IPD"]</th>
+        <th style="min-width:50px">@SharedLocalizer["Medical"]</th>
+        <th style="min-width:50px">@SharedLocalizer["Commercial"]</th>
+        <th style="min-width:50px">@SharedLocalizer["PBF"]</th>
+        <th style="min-width:50px">@SharedLocalizer["API"]</th>
+        <th style="min-width:50px">@SharedLocalizer["Finance"]</th>*@
+        @*                    <th style="min-width:50px">@SharedLocalizer["Management"]</th>*@
+        @* <th style="min-width:140px">@SharedLocalizer["Market Extension"]</th>
+        <th style="min-width:140px">@SharedLocalizer["Product Packaging"]</th>
+        <th style="min-width:140px">@SharedLocalizer["Ref Product Brand"]</th>
+        <th style="min-width:100px">@SharedLocalizer["Applicant"]</th>
+        <th style="min-width:80px">@SharedLocalizer["Country"]</th>
+        <th style="min-width:80px">@SharedLocalizer["Indication"]</th>
+        <th style="min-width:120px">@SharedLocalizer["DIA /ANDA/ ANDS"]</th>
+        <th style="min-width:100px">@SharedLocalizer["Created By"]</th>
+        <th style="min-width:100px">@SharedLocalizer["Created Date"]</th>
+        <th style="min-width:150px">@SharedLocalizer["Status"]</th>
+        <th style="min-width:100px" class="text-center">@SharedLocalizer["Action"]</th>
+        </tr>
         </thead>*@
         <tbody class="text-center">
         </tbody>
@@ -127,7 +127,7 @@
 </div>
 
 <div id="dvAddAPIPopUpModel" class="modal themeModal " role="dialog">
-    <div class="modal-dialog">
+    <div class="modal-dialog modal-lg">
         <!-- Modal content-->
         <div class="modal-content">
             <div class="modal-header">
@@ -139,9 +139,9 @@
                     <div class="row">
                         <div class="col-md-12">
                             <div class="form-group required">
-                                 <span class="text-danger">*</span>
-                                <input type="radio" name="Interested" id="IsAPIIntrestedYes" /> <b>Interested </b> 
-                                <input type="radio" name="Interested" id="IsAPIIntrestedNo">   <b> Not Interested </b>
+                                <span class="text-danger">*</span>
+                                <input type="radio" name="Interested" id="IsAPIIntrestedYes" value="yes" /> <b>Interested </b>
+                                <input type="radio" name="Interested" id="IsAPIIntrestedNo" value="no" />   <b> Not Interested </b>
                             </div>
                             <label id="valmsgIsAPIIntrested" class="text-danger"></label>
                         </div>
@@ -149,6 +149,23 @@
                             <div class="form-group required">
                                 <lable class="control-label"><b>Remark</b>  </lable>
                                 <textarea id="API_Remark" maxlength="500" class="form-control"> </textarea>
+                            </div>
+                        </div>
+                        <div class="col-md-12" id="dvNotInterestedAPIUser">
+                            <div class="form-group required">
+                                <table class="table table-striped table-primary">
+                                    <thead>
+                                        <tr>
+                                            <th></th>
+                                            <th>Primary</th>
+                                            <th>Potential Alt.1</th>
+                                            <th>Potential Alt.2</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                    </tbody>
+                                </table>
+
                             </div>
                         </div>
                         <div class="col-md-12" id="dvInterestedAPIUser">
@@ -161,7 +178,7 @@
 
                             </div>
                         </div>
-                       
+
                     </div>
                 </form>
                 <div class="card-footer text-end mt-2">
@@ -189,6 +206,7 @@
         var ApproveRejectDeletePidf = "@EmcureNPD.Web.Helpers.APIURLHelper.ApproveRejectDeletePidf";
         var SaveAPIInterestedUser = "@EmcureNPD.Web.Helpers.APIURLHelper.SaveAPIInterestedUser";
         var GetUserForAPIInterestedURL = "@EmcureNPD.Web.Helpers.APIURLHelper.GetUserForAPIInterested";
+        var getMasterAPIOutsourcelabels = "@EmcureNPD.Web.Helpers.APIURLHelper.GetMasterAPIOutsourcelabels";
         // #endregion
         const currentUserId = "@CurrentUserId";
         //#region Static Messae Init
@@ -237,7 +255,7 @@
         var IsViewManagementHOD = '@UtilityHelper.GetAccess((int)ModulePermissionEnum.ManagementHOD, Helper.GetLoggedInRoleId(),(int)PermissionEnum.View)' == 'True'
 
         var IsViewAuditlogs = '@UtilityHelper.GetAccess((int)ModulePermissionEnum.Auditlogs, Helper.GetLoggedInRoleId(),(int)PermissionEnum.View)' == 'True'
-        
+
         var IsEditAPIIPD = '@UtilityHelper.GetAccess((int)ModulePermissionEnum.APIListManagement, Helper.GetLoggedInRoleId(),(int)PermissionEnum.Edit,(int)SubModulePermissionEnum.APIIPD)' == 'True'
         var IsEditAPIRnD = '@UtilityHelper.GetAccess((int)ModulePermissionEnum.APIListManagement, Helper.GetLoggedInRoleId(),(int)PermissionEnum.Edit,(int)SubModulePermissionEnum.APIRnD)' == 'True'
         var IsEditAPICharter = '@UtilityHelper.GetAccess((int)ModulePermissionEnum.APIListManagement, Helper.GetLoggedInRoleId(),(int)PermissionEnum.Edit,(int)SubModulePermissionEnum.APICharter)' == 'True'
@@ -250,7 +268,7 @@
         var IsViewAPIIPD = '@UtilityHelper.GetAccess((int)ModulePermissionEnum.APIListManagement, Helper.GetLoggedInRoleId(),(int)PermissionEnum.View,(int)SubModulePermissionEnum.APIIPD)' == 'True'
         var IsViewAPIRnD = '@UtilityHelper.GetAccess((int)ModulePermissionEnum.APIListManagement, Helper.GetLoggedInRoleId(),(int)PermissionEnum.View,(int)SubModulePermissionEnum.APIRnD)' == 'True'
         var IsViewAPICharter = '@UtilityHelper.GetAccess((int)ModulePermissionEnum.APIListManagement, Helper.GetLoggedInRoleId(),(int)PermissionEnum.View,(int)SubModulePermissionEnum.APICharter)' == 'True'
-       
+
 
         var IsEditPBFAnalytical = '@UtilityHelper.GetAccess((int)ModulePermissionEnum.PBF, Helper.GetLoggedInRoleId(),(int)PermissionEnum.Edit,(int)SubModulePermissionEnum.Analytical)' == 'True'
         var IsEditPBFRnD = '@UtilityHelper.GetAccess((int)ModulePermissionEnum.PBF, Helper.GetLoggedInRoleId(),(int)PermissionEnum.Edit,(int)SubModulePermissionEnum.RnD)' == 'True'
@@ -260,6 +278,6 @@
         var IsAddPBF = '@UtilityHelper.GetAccess((int)ModulePermissionEnum.PBF, Helper.GetLoggedInRoleId(),(int)PermissionEnum.Add)' == 'True'
         var IsEditPBF = '@UtilityHelper.GetAccess((int)ModulePermissionEnum.PBF, Helper.GetLoggedInRoleId(),(int)PermissionEnum.Edit)' == 'True'
 
-                        //#endregion
+                                //#endregion
     </script>
 }

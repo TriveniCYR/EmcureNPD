@@ -3499,7 +3499,14 @@ function GetTypeOfSubmissionForRaTabSuccess(data) {
             data.forEach(function (item) {
                 var row = typeOfSubmissionTable.insertRow();
                 var submissionTypeCell = row.insertCell(0);
-                submissionTypeCell.innerText = item.typeOfSubmission            });
+                submissionTypeCell.innerText = item.typeOfSubmission
+                var nameCell = row.insertCell(1);
+                if (item.maxEOP !== null) {
+                    nameCell.innerText = `${item.minEOP}-${item.maxEOP} Months`;
+                } else {
+                    nameCell.innerText = `${item.minEOP} Months`;
+                }
+});
         } else {
             // Show a message if there is no data
             var emptyRow = typeOfSubmissionTable.insertRow();
@@ -3748,7 +3755,18 @@ function GetNationalApprovalsSuccess(data) {
             data.forEach(function (item) {
                 var row = nationalApprovalTable.insertRow();
                 var nameCell = row.insertCell(0);
-                nameCell.innerText = item.nationApprovalName;
+                var countryNames = [];
+                item.countryDetails.forEach(function (country) {
+                    countryNames.push(country.countryName);
+                });
+                nameCell.innerText = countryNames.join(", ");
+                var eopCell = row.insertCell(1);
+                var eopRange = `${item.minEOP}`;
+                if (item.maxEOP !== null) {
+                    eopRange += `-${item.maxEOP}`;
+                }
+                eopRange += ` ${item.minEOP > 1 || (item.maxEOP !== null && item.maxEOP > 1) ? 'Months' : 'Month'}`;
+                eopCell.innerText = eopRange;
             });
         } else {
             // Show a message if there is no data

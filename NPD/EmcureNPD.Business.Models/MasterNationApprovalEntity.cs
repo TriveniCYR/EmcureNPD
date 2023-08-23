@@ -9,11 +9,15 @@ namespace EmcureNPD.Business.Models
     public  class MasterNationApprovalEntity
     {
         public int NationApprovalId { get; set; }
-        public string NationApprovalName { get; set; }
-        public DateTime CreatedDate { get; set; }
-        public int? CreatedBy { get; set; }
-        public DateTime? UpdatedDate { get; set; }
-        public int? UpdatedBy { get; set; }
-      
+        public int? MinEOP { get; set; }
+        public int? MaxEOP { get; set; }
+        public List<CountryDetails> CountryDetails { get; set; }
+
+    }
+
+    public class CountryDetails
+    {
+        public int CountryId { get; set; }  
+        public string CountryName { get; set; } 
     }
 }
