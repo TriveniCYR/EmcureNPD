@@ -7,6 +7,7 @@ using EmcureNPD.Data.DataAccess.Core.UnitOfWork;
 using EmcureNPD.Data.DataAccess.Entity;
 using EmcureNPD.Utility.Enums;
 using EmcureNPD.Utility.Utility;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using System;
 using System.Collections.Generic;
@@ -2775,7 +2776,35 @@ namespace EmcureNPD.Business.Core.Implementation
                 return false;
             }
         }
+        public async Task<dynamic> GetPBFRADates(RaCalculatedDates calculatedDates)
+        {
+            var loggedInUserId = _helper.GetLoggedInUser().UserId;
+           // var data = new RaCalculatedDates();
+            try
+            {
+                SqlParameter[] osqlParameter = {
+                      new SqlParameter("@PIDFId", calculatedDates.PIDFId),
+                      new SqlParameter("@BusinessUnitId", calculatedDates.BusinessUnitId),
+                      new SqlParameter("@UserId", loggedInUserId),
+                      new SqlParameter("@CountryId", calculatedDates.CountryId),
+                      new SqlParameter("@TypeOfSubmissionId", calculatedDates.TypeOfSubmissionId),
+                      new SqlParameter("@DossierReadyDate", calculatedDates.DossierReadyDate),
+                      new SqlParameter("@PivotalBatchManufactured", calculatedDates.PivotalBatchManufactured),
+                      new SqlParameter("@LastDataFromRnD", calculatedDates.LastDataFromRnD),
+                      new SqlParameter("@BEFinalReport", calculatedDates.BEFinalReport),
+                   };
 
+                var dbresult = await _pbfRepository.GetDataSetBySP("stp_npd_GetPBFRADates", System.Data.CommandType.StoredProcedure, osqlParameter);
+
+                return dbresult;
+            }
+            catch (Exception ex)
+            {
+                await _ExceptionService.LogException(ex);
+                return null;
+            }
+           
+        }
         #endregion Private Methods
     }
 }

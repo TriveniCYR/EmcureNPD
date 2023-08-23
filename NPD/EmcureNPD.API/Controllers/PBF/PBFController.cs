@@ -171,5 +171,19 @@ namespace EmcureNPD.API.Controllers.PBF
                 return _ObjectResponse.Create(null, (Int32)HttpStatusCode.BadRequest, "No Records found");
             }
         }
+        [HttpPost]
+        [Route("GetPBFRADates")]
+        public async Task<IActionResult> GetPBFRADates(RaCalculatedDates param)
+        {
+            try
+            {
+                return _ObjectResponse.CreateData(await _PBFService.GetPBFRADates(param), (Int32)HttpStatusCode.OK);
+            }
+            catch (Exception e)
+            {
+                await _ExceptionService.LogException(e);
+                return _ObjectResponse.Create(null, (Int32)HttpStatusCode.BadRequest, "No Records found");
+            }
+        }
     }
 }

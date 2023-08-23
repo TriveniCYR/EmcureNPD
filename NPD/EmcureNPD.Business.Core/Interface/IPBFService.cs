@@ -36,5 +36,6 @@ namespace EmcureNPD.Business.Core.Interface
         Task<List<PidfPbfRaEntity>> GetRa(int PidfId, int PifdPbfId, int BuId);
         Task<List<MasterTypeOfSubmissionEntity>> GetTypeOfSubmission();
         Task<List<MasterNationApprovalEntity>> GetNationApprovals();
+        Task<dynamic> GetPBFRADates(RaCalculatedDates calculatedDates);
     }
 }
