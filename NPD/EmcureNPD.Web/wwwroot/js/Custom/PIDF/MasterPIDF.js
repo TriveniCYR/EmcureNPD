@@ -17,6 +17,13 @@ $(document).ready(function () {
         _mode = getParameterByName("IsView");
         _PIDFId = parseInt(getParameterByName("PIDFId"));
     }
+    try {
+        if (parseInt(getParameterByName("bui")) > 0) {
+            _SelectedBusinessUnitPIDF = parseInt(getParameterByName("bui"));
+        }
+    } catch (e) {
+
+    }
 
     if (_mode == 1) {
         readOnlyForm();
