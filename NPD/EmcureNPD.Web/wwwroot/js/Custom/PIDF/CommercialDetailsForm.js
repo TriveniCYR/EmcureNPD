@@ -794,18 +794,21 @@ function renderBusinessUnit(businessUnit) {
 }
 function renderPIDFStrength(pidfStrength) {
     var html = "";
+    debugger;
     var _StrenthByBU = $.grep(pidfStrength, function (n, i) {
         return n.businessUnitId == SelectedBUValue
     });
-    $.each(_StrenthByBU, function (index, item) {
-        html += '<li class="nav-item col-6 p-0">\
+    if (_StrenthByBU != null && _StrenthByBU != undefined && _StrenthByBU.length > 0) {
+        $.each(_StrenthByBU, function (index, item) {
+            html += '<li class="nav-item col-6 p-0">\
     <a class="nav-link" onClick="StrengthtabClick('+ item.pidfProductStrengthId + ',' + parseInt($("#PIDFId").val()) + ');" id="Strengthtab_' + item.pidfProductStrengthId + '">' + item.strength + item.unitofMeasurementName + '</a></li>';
-    });
-    $('#dvCommercialForm').find("#ProductStrengthTabs").append(html);
+        });
+        $('#dvCommercialForm').find("#ProductStrengthTabs").append(html);
 
-    var PIDFProductStrengthId = _StrenthByBU[0].pidfProductStrengthId;
-    selectedStrength = PIDFProductStrengthId;
-    $('#Strengthtab_' + PIDFProductStrengthId).addClass('active');
+        var PIDFProductStrengthId = _StrenthByBU[0].pidfProductStrengthId;
+        selectedStrength = PIDFProductStrengthId;
+        $('#Strengthtab_' + PIDFProductStrengthId).addClass('active');
+    }    
 }
 //function GetCountryList(selectedBU) {
 //    ajaxServiceMethod($('#hdnBaseURL').val() + GetCountryListURL + "/" + selectedBU + "/" + _PIDFID, 'GET', GetCountryListSuccess, GetCountryListError);
