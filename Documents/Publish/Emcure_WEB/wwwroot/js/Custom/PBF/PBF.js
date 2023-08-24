@@ -3535,7 +3535,7 @@ function BindRA(data, IsEdit = false) {
                                <td><input type="date" id="BEFinalReport${e}" name="RaEntities[${e}].BEFinalReport" value="${data[e].befinalReport == null ? '' : data[e].befinalReport.split('T')[0]}" class="form-control readOnlyUpdate  valid"></td>
                                
                                <td><select  id="TypeOfSubmissionId${e}" name="RaEntities[${e}].TypeOfSubmissionId" class="form-control readOnlyUpdate clsTypeOfSubmission  valid" value="${data[e].typeOfSubmissionId}" onchange="GetPBFRACalculatedDate(${e})"></select></td>
-                               <td><input type="date" id="DossierReadyDate${e}" name="RaEntities[${e}].DossierReadyDate" value="${data[e].dossierReadyDate != null ? data[e].dossierReadyDate.split('T')[0] : ''}" class="form-control readOnlyUpdate  valid"></td>
+                               <td><input type="date" id="DossierReadyDate${e}" name="RaEntities[${e}].DossierReadyDate" value="${data[e].dossierReadyDate != null ? data[e].dossierReadyDate.split('T')[0] : ''}" class="form-control readOnlyUpdate  valid" onchange="GetPBFRACalculatedDate(${e})"></td>
                                <td><input type="date" id="EarliestSubmissionDExcl${e}" name="RaEntities[${e}].EarliestSubmissionDExcl" value="${data[e].earliestSubmissionDexcl != null ? data[e].earliestSubmissionDexcl.split('T')[0] : ''}" class="form-control readOnlyUpdate  valid"></td>
                                 <td><input type="date" id="EarliestLaunchDexcl${e}" name="RaEntities[${e}].EarliestLaunchDexcl" value="${data[e].earliestLaunchDexcl == null ? '' : data[e].earliestLaunchDexcl.split('T')[0]}" class="form-control readOnlyUpdate  valid"></td>
                                 <td> <input type="date" id="LasDateToRegulatory${e}" name="RaEntities[${e}].LasDateToRegulatory" value="${data[e].lasDateToRegulatory == null ? '' : data[e].lasDateToRegulatory.split('T')[0]}" class="form-control readOnlyUpdate valid"></td>
@@ -3675,6 +3675,7 @@ function SetRaChildRow() {
 
         $(this).find("td:eq(5) input").attr("name", "RaEntities[" + index.toString() + "].DossierReadyDate");
         $(this).find("td:eq(5) input").attr("id", "DossierReadyDate" + index.toString());
+        $(this).find("td:eq(5) input").attr(`onchange`, `GetPBFRACalculatedDate(${index})`);
 
         $(this).find("td:eq(6) input").attr("name", "RaEntities[" + index.toString() + "].EarliestSubmissionDExcl");
         $(this).find("td:eq(6) input").attr("id", "EarliestSubmissionDExcl" + index.toString());
@@ -3711,6 +3712,7 @@ function checkDuplicateRaCountry(id) {
     let countryId = [];
     var duplicate = false;
     $("#tableRABody tr").each(function (index, value) {
+        GetPBFRACalculatedDate(index);
         if ($('#tableRABody tr').length > 1) {
             countryId.push($(this).find("td:eq(0) option:selected").attr("name", "RaEntities[" + index.toString() + "].CountryIdBuId").val());
             var $current = $(this).find("td:eq(0) option:selected").attr("name", "RaEntities[" + index.toString() + "].CountryIdBuId").val();
@@ -3785,19 +3787,24 @@ function GetNationalApprovalsError(x, y, z) {
 }
 let selectedRaIndex = 0;
 function GetPBFRACalculatedDate(index) {
-    let buId = SelectedBUValue == 0 ? _selectBusinessUnit : SelectedBUValue;
-    let param = {
-        PIDFId: _PIDFPBFId,
-        BusinessUnitId: buId,
-        CountryId: $(`#raCountryId${index}`).val() == '' ? 0 : $(`#raCountryId${index}`).val(),
-        TypeOfSubmissionId: $(`#TypeOfSubmissionId${index}`).val(),
-        DossierReadyDate: $(`#DossierReadyDate${index}`).val(),
-        PivotalBatchManufactured: $(`#Pivotalbatchmanufactured${index}`).val(),
-        LastDataFromRnD: $(`#LastdatafromRnD${index}`).val(),
-        BEFinalReport: $(`#BEFinalReport${index}`).val()
+    if (($(`#TypeOfSubmissionId${index}`).val() != null && $(`#TypeOfSubmissionId${index}`).val() != undefined && $(`#TypeOfSubmissionId${index}`).val() != '')) { //||( $(`#raCountryId${index}`).val()!='')) {
+        let buId = SelectedBUValue == 0 ? _selectBusinessUnit : SelectedBUValue;
+        let param = {
+            PIDFId: _PIDFPBFId,
+            BusinessUnitId: buId,
+            CountryId: $(`#raCountryId${index}`).val() == '' ? 0 : $(`#raCountryId${index}`).val(),
+            TypeOfSubmissionId: $(`#TypeOfSubmissionId${index}`).val(),
+            DossierReadyDate: $(`#DossierReadyDate${index}`).val(),
+            PivotalBatchManufactured: $(`#Pivotalbatchmanufactured${index}`).val(),
+            LastDataFromRnD: $(`#LastdatafromRnD${index}`).val(),
+            BEFinalReport: $(`#BEFinalReport${index}`).val()
+        }
+        selectedRaIndex = index;
+        ajaxServiceMethod($('#hdnBaseURL').val() + GetPBFRACalculatedDateUrl, 'POST', GetPBFRACalculatedDateSuccess, GetPBFRACalculatedDateError, JSON.stringify(param));
     }
-    selectedRaIndex = index;
-    ajaxServiceMethod($('#hdnBaseURL').val() + GetPBFRACalculatedDateUrl, 'POST', GetPBFRACalculatedDateSuccess, GetPBFRACalculatedDateError, JSON.stringify(param));
+    //else {
+    //    toastr.error("Please Select Type Of Submission");
+    //}
 }
 function GetPBFRACalculatedDateSuccess(data) {
     console.log(data.table);
