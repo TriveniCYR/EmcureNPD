@@ -3787,13 +3787,13 @@ function GetNationalApprovalsError(x, y, z) {
 }
 let selectedRaIndex = 0;
 function GetPBFRACalculatedDate(index) {
-    if (($(`#TypeOfSubmissionId${index}`).val() != null && $(`#TypeOfSubmissionId${index}`).val() != undefined && $(`#TypeOfSubmissionId${index}`).val() != '')) { //||( $(`#raCountryId${index}`).val()!='')) {
+  //  if (($(`#TypeOfSubmissionId${index}`).val() != null && $(`#TypeOfSubmissionId${index}`).val() != undefined && $(`#TypeOfSubmissionId${index}`).val() != '')) { //||( $(`#raCountryId${index}`).val()!='')) {
         let buId = SelectedBUValue == 0 ? _selectBusinessUnit : SelectedBUValue;
         let param = {
             PIDFId: _PIDFPBFId,
             BusinessUnitId: buId,
             CountryId: $(`#raCountryId${index}`).val() == '' ? 0 : $(`#raCountryId${index}`).val(),
-            TypeOfSubmissionId: $(`#TypeOfSubmissionId${index}`).val(),
+            TypeOfSubmissionId: $(`#TypeOfSubmissionId${index}`).val() == '' ? 0 : $(`#TypeOfSubmissionId${index}`).val(),
             DossierReadyDate: $(`#DossierReadyDate${index}`).val(),
             PivotalBatchManufactured: $(`#Pivotalbatchmanufactured${index}`).val(),
             LastDataFromRnD: $(`#LastdatafromRnD${index}`).val(),
@@ -3801,7 +3801,7 @@ function GetPBFRACalculatedDate(index) {
         }
         selectedRaIndex = index;
         ajaxServiceMethod($('#hdnBaseURL').val() + GetPBFRACalculatedDateUrl, 'POST', GetPBFRACalculatedDateSuccess, GetPBFRACalculatedDateError, JSON.stringify(param));
-    }
+    //}
     //else {
     //    toastr.error("Please Select Type Of Submission");
     //}
