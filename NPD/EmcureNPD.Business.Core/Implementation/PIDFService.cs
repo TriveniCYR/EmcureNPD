@@ -94,6 +94,22 @@ namespace EmcureNPD.Business.Core.Implementation
             return DropdownObjects;
         }
 
+        public async Task<dynamic> GetIsInterestedByPIDFandBU(int PIDFID, int BussinesUnitId)
+        {
+            dynamic DropdownObjects = new ExpandoObject();
+
+            SqlParameter[] osqlParameter = {
+                new SqlParameter("@PIDFID", PIDFID),
+                 new SqlParameter("@BUID", BussinesUnitId)
+            };
+
+            DataSet dsDropdownOptions = await _repository.GetDataSetBySP("std_npd_GetIsInterestedByPIDFandBU", System.Data.CommandType.StoredProcedure, osqlParameter);
+
+            DropdownObjects.IsIntresetedStatusOfBU = dsDropdownOptions.Tables[0];
+           
+            return DropdownObjects;
+        }
+
         public async Task<List<MasterBusinessUnitEntity>> GetBusinessUNitByUserId(int userid)
         {
             SqlParameter[] osqlParameter = {
@@ -564,6 +580,13 @@ namespace EmcureNPD.Business.Core.Implementation
                 data.pidfProductStregthEntities[i].CountryId = _strengthCountryMapping.GetAllQuery().Where(x => x.PidfproductStrengthId == data.pidfProductStregthEntities[i].PidfproductStrengthId).Select(x=> x.CountryId).ToArray();
             }
 
+
+            SqlParameter[] osqlParameter = { new SqlParameter("@PIDFID", ids) };
+
+            DataSet dsDropdownOptions = await _repository.GetDataSetBySP("std_npd_GetIsAlloeToApprove", System.Data.CommandType.StoredProcedure, osqlParameter);
+
+            var result = Convert.ToBoolean(dsDropdownOptions.Tables[0].Rows[0][0].ToString());
+            data.IsAllowToApprove = result;
             return data;
         }
 

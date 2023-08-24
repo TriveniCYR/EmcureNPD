@@ -88,6 +88,7 @@ namespace EmcureNPD.Business.Models
         
         public int? Diaid { get; set; }
         
+        public bool IsAllowToApprove { get; set; }
         public int LastStatusId { get; set; }
 		public bool InHouses { get; set; }
 

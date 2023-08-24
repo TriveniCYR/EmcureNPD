@@ -54,7 +54,7 @@
                     <div class="tab-content" id="custom-tabs-two-tabContent">
                     </div>
                     <div id="dvNotInterestedBUNote">
-                        <label class="text-xl text-wrap w-100" id="dvNotInterestedBUNoteHeading"></label>
+                        <label class="text-lg text-wrap w-100" id="dvNotInterestedBUNoteHeading"></label>
                     </div>
                 </div>
             </div>
@@ -90,7 +90,8 @@
          var ApproveRejectDeletePidf = "@EmcureNPD.Web.Helpers.APIURLHelper.ApproveRejectDeletePidf";
     var GetCountryForPatentDetails = "@EmcureNPD.Web.Helpers.APIURLHelper.GetCountryByIsInterestedCountry"; 
     var GetPatentStrategyList = "@EmcureNPD.Web.Helpers.APIURLHelper.GetPatentStrategyList";
-          var _selectBusinessUnit = "@Model.BusinessUnitId";
+    var GetIsInterestedByPIDFandBUurl = "@EmcureNPD.Web.Helpers.APIURLHelper.GetIsInterestedByPIDFandBU";
+    var _selectBusinessUnit = "@Model.BusinessUnitId";
         var _PIDFID = "@Model.PIDFID";
         var _IPDPartialURL = "@Url.Action("IPDPartial", "IPD")";
         var _IPDSaveUpdateURL = "@Url.Action("IPD", "IPD")";

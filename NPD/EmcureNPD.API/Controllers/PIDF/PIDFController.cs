@@ -60,6 +60,19 @@ namespace EmcureNPD.API.Controllers.Masters
                 return _ObjectResponse.Create(null, (Int32)HttpStatusCode.BadRequest, "No Records found");
             }
         }
+        [HttpGet, Route("GetIsInterestedByPIDFandBU/{PIDFID}/{BuId}")]
+        public async Task<IActionResult> GetIsInterestedByPIDFandBU(int PIDFID,int BuId)
+        {
+            try
+            {
+                return _ObjectResponse.CreateData(await _PIDFService.GetIsInterestedByPIDFandBU(PIDFID, BuId), (Int32)HttpStatusCode.OK);
+            }
+            catch (Exception e)
+            {
+                await _ExceptionService.LogException(e);
+                return _ObjectResponse.Create(null, (Int32)HttpStatusCode.BadRequest, "No Records found");
+            }
+        }
 
         /// <summary>
         /// Description - To Get All PIDFList

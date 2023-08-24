@@ -443,7 +443,7 @@ namespace EmcureNPD.Web.Helpers
         public static string GetMedicalFormdata = "api/Medical/GetPIDFMedicalFormData";
         public static string GetCountryByIsInterestedCountry = "api/IPD/GetCountryByIsInterestedCountry"; 
         public static string GetPatentStrategyList = "api/IPD/GetPatentStrategyList";
-        
+        public static string GetIsInterestedByPIDFandBU = "api/PIDF/GetIsInterestedByPIDFandBU";
 
         #endregion IPD
 
