@@ -568,7 +568,7 @@ function GetMasterAPIOutsourcelabels() {
 }
 function GetMasterAPIOutsourcelabelsSuccess(data) {
     try {
-        var masterOutsourceLabelTable = document.querySelector(".table.table-striped.table-primary tbody");
+        var masterOutsourceLabelTable = document.querySelector(".table.table-striped.table-light tbody");
         masterOutsourceLabelTable.innerHTML = "";
 
         if (data != null && data.length > 0) {
@@ -577,8 +577,8 @@ function GetMasterAPIOutsourcelabelsSuccess(data) {
                 row.setAttribute("data-api-outsource-id", item.apiOutsourceId); // Add this line to associate apiOutsourceId with the row
 
                 var labelCell = row.insertCell(0);
+                labelCell.classList.add("bg-light");
                 labelCell.innerHTML = `<b>${item.apiOutsourceName}</b>`;
-
                 for (var i = 1; i <= 3; i++) {
                     var inputCell = row.insertCell(i);
                     inputCell.innerHTML = `<input type="text" class="form-control">`;

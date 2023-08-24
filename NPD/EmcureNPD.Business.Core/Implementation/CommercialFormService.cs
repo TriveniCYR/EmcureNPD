@@ -339,11 +339,12 @@ namespace EmcureNPD.Business.Core.Implementation
         ////////PBFOutsourcing Methods------------------------------------------
         public async Task<dynamic> GetPBFOutsourcingTabDropDownData()
         {
-            var listWorkFlow = await _masterWorkflowService.GetAll();
+            var objlistWorkFlow = await _masterWorkflowService.GetAll();
+           var  listWorkFlow = objlistWorkFlow.Where(x => x.IsActive == true).ToList();
             var _objPBFList = await _masterPbfworkFlow.GetAllAsync();
             var pbflistWorkFlow = _mapperFactory.GetList<MasterPbfworkFlow, MasterPbfworkFlowEntity>(_objPBFList);
             ArrayList arr = new ArrayList();
-            arr.Add(listWorkFlow.Where(x=> x.IsActive == true));
+            arr.Add(listWorkFlow);
             arr.Add(pbflistWorkFlow);
             dynamic Dropdowndata = arr;
             return Dropdowndata;

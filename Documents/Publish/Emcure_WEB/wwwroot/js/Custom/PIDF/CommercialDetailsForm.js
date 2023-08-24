@@ -195,6 +195,7 @@ function CommercialSaveAsDraftClickClick(saveType) {
             SaveCommertialPIDFForm();
         }
         else {
+            if (saveType !='TabClick')
             toastr.error('No Data Added');
         }
     }
@@ -793,13 +794,16 @@ function renderBusinessUnit(businessUnit) {
 }
 function renderPIDFStrength(pidfStrength) {
     var html = "";
-    $.each(pidfStrength, function (index, item) {
+    var _StrenthByBU = $.grep(pidfStrength, function (n, i) {
+        return n.businessUnitId == SelectedBUValue
+    });
+    $.each(_StrenthByBU, function (index, item) {
         html += '<li class="nav-item col-6 p-0">\
     <a class="nav-link" onClick="StrengthtabClick('+ item.pidfProductStrengthId + ',' + parseInt($("#PIDFId").val()) + ');" id="Strengthtab_' + item.pidfProductStrengthId + '">' + item.strength + item.unitofMeasurementName + '</a></li>';
     });
     $('#dvCommercialForm').find("#ProductStrengthTabs").append(html);
 
-    var PIDFProductStrengthId = pidfStrength[0].pidfProductStrengthId;
+    var PIDFProductStrengthId = _StrenthByBU[0].pidfProductStrengthId;
     selectedStrength = PIDFProductStrengthId;
     $('#Strengthtab_' + PIDFProductStrengthId).addClass('active');
 }
@@ -1040,7 +1044,7 @@ function IsPBFPageValid() {
 }
 function SavePBFOutsourceData(saveType) {
   //  IsPBFPageValid = true;
-    if (saveType == 'SvDrf' || (IsPBFPageValid() && ValidateTaskData())) {
+    if (saveType != 'Sv' || (IsPBFPageValid() && ValidateTaskData())) {
         var pbfworkflowId = $('#ddlPbfworkflowId').val();
         var _projectWorkFlowId = $('#ddlProjectWorkflowId').val();
         var PidfPbfOutsourceTask = getPBFTaskDataToSave();
@@ -1152,7 +1156,7 @@ $("#custom-tabs-BudgetApproval-Finance-tab").click(function () { // PBF tab clic
     }
     IsCommTabClick = true;
     if ($("#IsView").val() != '1') 
-    CommercialSubmitClick('TabClick');
+    CommercialSaveAsDraftClickClick('TabClick');
 });
 $('#mainDivCommercial').find("#btnSubmit").click(function () {
     IsTabClick = false;
