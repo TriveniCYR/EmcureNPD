@@ -195,6 +195,7 @@ function CommercialSaveAsDraftClickClick(saveType) {
             SaveCommertialPIDFForm();
         }
         else {
+            if (saveType !='TabClick')
             toastr.error('No Data Added');
         }
     }
@@ -1043,7 +1044,7 @@ function IsPBFPageValid() {
 }
 function SavePBFOutsourceData(saveType) {
   //  IsPBFPageValid = true;
-    if (saveType == 'SvDrf' || (IsPBFPageValid() && ValidateTaskData())) {
+    if (saveType != 'Sv' || (IsPBFPageValid() && ValidateTaskData())) {
         var pbfworkflowId = $('#ddlPbfworkflowId').val();
         var _projectWorkFlowId = $('#ddlProjectWorkflowId').val();
         var PidfPbfOutsourceTask = getPBFTaskDataToSave();
@@ -1155,7 +1156,7 @@ $("#custom-tabs-BudgetApproval-Finance-tab").click(function () { // PBF tab clic
     }
     IsCommTabClick = true;
     if ($("#IsView").val() != '1') 
-    CommercialSubmitClick('TabClick');
+    CommercialSaveAsDraftClickClick('TabClick');
 });
 $('#mainDivCommercial').find("#btnSubmit").click(function () {
     IsTabClick = false;
