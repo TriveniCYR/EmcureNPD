@@ -13,6 +13,8 @@ var IsPageLoad = true;
 var IsTabClick = false;
 var IsCommTabClick = false;
 var MainArrCountryList = [];
+var mainStrengthData = [];
+var IsNoStrengthforSelectedBU = false;
 $(document).ready(function () {
     $('#mainDivCommercial').find('label[id^="valmsg"]').hide();
     IsViewModeCommercial();
@@ -261,6 +263,7 @@ function BUtabClick(BUVal, pidfidval) {
     ClearValidationForYearForm();
     ClearValidationForMainForm();
     renderCountryTabList(BUVal);
+    renderPIDFStrength(mainStrengthData);
     Update_BUstregthPackTable(ArrMainCommercial);
     // Update_IsInterested_Remark();
     SetCommercialDisableForOtherUserBU();
@@ -319,6 +322,7 @@ function GetCommercialPIDFByBUSuccess(data) {
         MainArrCountryList = data._object.CountryList;
         renderCountryTabList(SelectedBUValue);
         renderPIDFStrength(data._object.PIDFStrength);
+        mainStrengthData = data._object.PIDFStrength;
         PIDFCommercialMaster = data._object.PIDFCommercialMaster;
         setCommercialArray(data._object.Commercial, data._object.CommercialYear);
         Update_BUstregthPackTable(ArrMainCommercial);
@@ -356,7 +360,7 @@ function SetCommercialDisableForOtherUserBU() {
     var UserwiseBusinessUnit = $('#BusinessUnitsByUser').val().split(',');
     var status = UserwiseBusinessUnit.indexOf(SelectedBUValue.toString());
     var IsViewInMode = ($("#IsView").val() == '1')
-    if (status == -1 || IsViewInMode) {
+    if (status == -1 || IsViewInMode || IsNoStrengthforSelectedBU) {
         SetCommercialFormReadonly();
     }
     else {
@@ -625,6 +629,7 @@ function BUstregthPack_AddButtonClick() {
 }
 function Update_BUstregthPackTable(_objArrMainCommercial) {
 
+
     _objArrMainCommercial = $.grep(_objArrMainCommercial, function (n, i) {
         return n.businessUnitId == SelectedBUValue && n.pidfProductStrengthId == selectedStrength;
     });
@@ -794,18 +799,33 @@ function renderBusinessUnit(businessUnit) {
 }
 function renderPIDFStrength(pidfStrength) {
     var html = "";
+    $('#dvCommercialForm').find("#ProductStrengthTabs").html(html);
     var _StrenthByBU = $.grep(pidfStrength, function (n, i) {
         return n.businessUnitId == SelectedBUValue
-    });
-    $.each(_StrenthByBU, function (index, item) {
-        html += '<li class="nav-item col-6 p-0">\
+    }); 
+    if (_StrenthByBU != null && _StrenthByBU != undefined && _StrenthByBU.length > 0) {
+        $.each(_StrenthByBU, function (index, item) {
+            html += '<li class="nav-item col-6 p-0">\
     <a class="nav-link" onClick="StrengthtabClick('+ item.pidfProductStrengthId + ',' + parseInt($("#PIDFId").val()) + ');" id="Strengthtab_' + item.pidfProductStrengthId + '">' + item.strength + item.unitofMeasurementName + '</a></li>';
-    });
-    $('#dvCommercialForm').find("#ProductStrengthTabs").append(html);
+        });
 
-    var PIDFProductStrengthId = _StrenthByBU[0].pidfProductStrengthId;
-    selectedStrength = PIDFProductStrengthId;
-    $('#Strengthtab_' + PIDFProductStrengthId).addClass('active');
+        $('#dvCommercialForm').find("#ProductStrengthTabs").html(html);
+
+        var PIDFProductStrengthId = _StrenthByBU[0].pidfProductStrengthId;
+        selectedStrength = PIDFProductStrengthId;
+        $('#Strengthtab_' + PIDFProductStrengthId).addClass('active');
+    }    
+
+    if (html == "") {
+        IsNoStrengthforSelectedBU = true;
+        SetCommercialFormReadonly();
+    }
+    else {
+        IsNoStrengthforSelectedBU = false;
+        $("#mainDivCommercial").find("input, button, submit, textarea, select").prop('disabled', false);
+        /*$("[id^='deleteIconAddyear']").show();*/
+        $('#mainDivCommercial').find('.operationButton').show();
+    }
 }
 //function GetCountryList(selectedBU) {
 //    ajaxServiceMethod($('#hdnBaseURL').val() + GetCountryListURL + "/" + selectedBU + "/" + _PIDFID, 'GET', GetCountryListSuccess, GetCountryListError);
