@@ -15,7 +15,6 @@
 @{
     ViewData["Title"] = @MasterLocalizer["APICharterDetails"];
     var PidfId = Context.Request.Query["Pidfid"];
-    var pidfId = long.Parse((UtilityHelper.Decreypt(Convert.ToString(PidfId))));
     string jsVersion = @Configuration.GetSection("StaticJS")["version"];
     bool IsEditAPICharter = UtilityHelper.GetAccess((int)ModulePermissionEnum.APIListManagement, Helper.GetLoggedInRoleId(), (int)PermissionEnum.Edit, (int)SubModulePermissionEnum.APICharter);
     bool IsAddAPICharter = UtilityHelper.GetAccess((int)ModulePermissionEnum.APIListManagement, Helper.GetLoggedInRoleId(), (int)PermissionEnum.Add, (int)SubModulePermissionEnum.APICharter);
@@ -370,12 +369,6 @@
                         }
                     </div>
                     @*--------End----HeadwiseBudget-------------*@
-                     <div class="col-md-4">
-                        <div class="col-md-12 row">
-                            <table class="table Inhousetable">
-                            </table>
-                        </div>
-                    </div>
                 </div>
                 <div class="row mt-3">
                     <div class="col-12 text-end">
@@ -409,9 +402,6 @@
         var SaveStatus = "@TempData["SaveStatus"]";
         var ErrorMessage = "@SharedLocalizer["Error"]";
         var GetAllMarketExtension = "@EmcureNPD.Web.Helpers.APIURLHelper.GetAllMarketExtension";
-        var getAPICharterDataByPIDF = "@EmcureNPD.Web.Helpers.APIURLHelper.GetAPICharterDataByPIDF";
-        //var PidfId = 160;
-        const PidfId = "@pidfId";
         document.addEventListener("DOMContentLoaded", function () {
             var tabList = [].slice.call(document.querySelectorAll("#mainDivCommercial a"));
             var tabs = $('#tabList');

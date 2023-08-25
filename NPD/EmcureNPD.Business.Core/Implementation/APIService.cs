@@ -238,6 +238,11 @@ namespace EmcureNPD.Business.Core.Implementation
                 _oCharterEntity.ManhourEstimates = dbresult.Tables[5].DataTableToList<ManhourEstimates>();
                 _oCharterEntity.HeadwiseBudget = dbresult.Tables[6].DataTableToList<HeadwiseBudget>();
                 _oCharterEntity.ManagmentTeams = dbresult.Tables[7].DataTableToList<ManagmentTeam>();
+              
+                if (Sp_Name == "stp_npd_GetPIDFAPICharterSummaryData")
+                {
+                    _oCharterEntity.PIDFAPIInhouse = dbresult.Tables[8].DataTableToList<PIDFAPIInhouse>();
+                }
             }
 
             if (dbresult.Tables[0] != null && dbresult.Tables[0].Rows.Count > 0)
@@ -254,6 +259,7 @@ namespace EmcureNPD.Business.Core.Implementation
                     _oCharterEntity.Market = _CharterObjects[0].Market;
                     _oCharterEntity.ProjectInitiationDate = _CharterObjects[0].ProjectInitiationDate;
                     _oCharterEntity.ProjectEndDate = _CharterObjects[0].ProjectEndDate;
+                  
                 }
             }
             Pidf objPidf = await _pidfrepository.GetAsync(pidfId);
@@ -284,6 +290,7 @@ namespace EmcureNPD.Business.Core.Implementation
                     _oCharterEntity.CapitalOtherExpenditure = dbresult.Tables[4].DataTableToList<CapitalOtherExpenditure>();
                     _oCharterEntity.ManhourEstimates = dbresult.Tables[5].DataTableToList<ManhourEstimates>();
                     _oCharterEntity.HeadwiseBudget = dbresult.Tables[6].DataTableToList<HeadwiseBudget>();
+                   
                 }
             }
 
