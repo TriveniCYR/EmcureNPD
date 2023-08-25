@@ -37,7 +37,7 @@ BEGIN
 --Declare @CountryId int = 94
 
 Declare @StabilityResultsSixMonth DateTime = (Select top 1 StabilityResultsSixMonth from PIDF_PBF_General_RND
-Where PidfId = 148)
+Where PidfId = @PIDFId)
 
 set @LastDataFromRnD  =  DateAdd(Month, 1, @StabilityResultsSixMonth)
 Declare @LastDateToRegulatory DateTime = @LastDataFromRnD
@@ -46,13 +46,13 @@ Declare @EarliestSubmissionDate DateTime = @DossierReadyDate
 Declare @EarliestLaunchDate DateTime = GetDate()
 
 Declare @TypeSubmissionEOP int = (Select Top 1 ISNULL(MaxEOP, MinEOP) From Master_TypeOfSubmission
-Where Id = 1)
+Where Id = @TypeOfSubmissionId)
 
 Set @EarliestLaunchDate = DateAdd(Month, IsNUll(@TypeSubmissionEOP, 0), @EarliestSubmissionDate)
 
 Declare @NationApprovalEOP int = (Select Top 1 ISNULL(MaxEOP, MinEOP) From Master_NationApproval As A
 Inner Join Master_NationApproval_CountryMapping As B On A.NationApprovalId = B.NationApprovalId
-Where B.CountryId = 94)
+Where B.CountryId = @CountryId)
 
 Set @EarliestLaunchDate = DateAdd(Month, @NationApprovalEOP, @EarliestLaunchDate)
 
