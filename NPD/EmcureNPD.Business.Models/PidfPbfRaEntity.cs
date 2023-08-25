@@ -40,6 +40,9 @@ namespace EmcureNPD.Business.Models
         public DateTime? PivotalBatchManufactured { get; set; }
         public DateTime? LastDataFromRnD { get; set; }
         public DateTime? BEFinalReport { get; set; }
-       // public List<RaCalculatedDates> RaCalculatedDatesList { get; set; }
+        public DateTime? StabilityResultsSixMonth { get; set; }
+        public DateTime? EndOfProcedureDate { get; set; }
+        public DateTime? CountryApprovalDate { get; set; }
+        // public List<RaCalculatedDates> RaCalculatedDatesList { get; set; }
     }
 }

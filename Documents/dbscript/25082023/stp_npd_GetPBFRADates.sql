@@ -1,11 +1,11 @@
 USE [EmcureNPDDev]
 GO
 
-/****** Object:  StoredProcedure [dbo].[stp_npd_GetPBFRADates]    Script Date: 25-08-2023 12:04:13 ******/
+/****** Object:  StoredProcedure [dbo].[stp_npd_GetPBFRADates]    Script Date: 25-08-2023 16:06:40 ******/
 DROP PROCEDURE [dbo].[stp_npd_GetPBFRADates]
 GO
 
-/****** Object:  StoredProcedure [dbo].[stp_npd_GetPBFRADates]    Script Date: 25-08-2023 12:04:13 ******/
+/****** Object:  StoredProcedure [dbo].[stp_npd_GetPBFRADates]    Script Date: 25-08-2023 16:06:40 ******/
 SET ANSI_NULLS ON
 GO
 
@@ -13,7 +13,8 @@ SET QUOTED_IDENTIFIER ON
 GO
 
 
---[dbo].[stp_npd_GetPBFRADates]     98,16,94,2,'20230807' 
+
+--[dbo].[stp_npd_GetPBFRADates]     148,2,94,2,'20230807' 
 CREATE PROCEDURE [dbo].[stp_npd_GetPBFRADates]    
 (              
 @PIDFId int,
@@ -24,7 +25,8 @@ CREATE PROCEDURE [dbo].[stp_npd_GetPBFRADates]
 @PivotalBatchManufactured datetime = null,
 @LastDataFromRnD datetime = null,
 @BEFinalReport datetime = null,
-@UserId INT = 0
+@UserId INT = 0,
+@SMStabilityResultsSixMonth datetime=null
 )                      
 AS                        
 BEGIN                         
@@ -38,27 +40,30 @@ BEGIN
 
 Declare @StabilityResultsSixMonth DateTime = (Select top 1 StabilityResultsSixMonth from PIDF_PBF_General_RND
 Where PidfId = @PIDFId)
-
+SET @StabilityResultsSixMonth = COALESCE(@StabilityResultsSixMonth, @SMStabilityResultsSixMonth, GETDATE())
 set @LastDataFromRnD  =  DateAdd(Month, 1, @StabilityResultsSixMonth)
 Declare @LastDateToRegulatory DateTime = @LastDataFromRnD
 set     @DossierReadyDate = DateAdd(Month, 2, @LastDataFromRnD)
 Declare @EarliestSubmissionDate DateTime = @DossierReadyDate
 Declare @EarliestLaunchDate DateTime = GetDate()
-
+Declare @EndOfProcedureDate DateTime = GetDate()
+Declare @CountryApprovalDate DateTime = GetDate()
 Declare @TypeSubmissionEOP int = (Select Top 1 ISNULL(MaxEOP, MinEOP) From Master_TypeOfSubmission
 Where Id = @TypeOfSubmissionId)
 
-Set @EarliestLaunchDate = DateAdd(Month, IsNUll(@TypeSubmissionEOP, 0), @EarliestSubmissionDate)
 
+Set @EndOfProcedureDate=DateAdd(Month, IsNUll(@TypeSubmissionEOP, 0), @DossierReadyDate)
 Declare @NationApprovalEOP int = (Select Top 1 ISNULL(MaxEOP, MinEOP) From Master_NationApproval As A
 Inner Join Master_NationApproval_CountryMapping As B On A.NationApprovalId = B.NationApprovalId
 Where B.CountryId = @CountryId)
 
-Set @EarliestLaunchDate = DateAdd(Month, @NationApprovalEOP, @EarliestLaunchDate)
-
+--Set @EarliestLaunchDate = DateAdd(Month, @NationApprovalEOP, @EarliestSubmissionDate)
+set @CountryApprovalDate=DateAdd(Month, @NationApprovalEOP, @EndOfProcedureDate)
+Set @EarliestLaunchDate = DateAdd(Month, IsNUll(@TypeSubmissionEOP, 0), @CountryApprovalDate)
 Select Cast(@LastDataFromRnD as Date)  LastDataFromRnD,  Cast(@LastDateToRegulatory as Date) LastDateToRegulatory
 , Cast(@DossierReadyDate as Date) DossierReadyDate, Cast(@EarliestSubmissionDate as Date) EarliestSubmissionDate
-, Cast(@EarliestLaunchDate as Date) EarliestLaunchDate
+, Cast( DateAdd(Month,4,@EarliestLaunchDate) as Date) EarliestLaunchDate,Cast(@EndOfProcedureDate as Date) EndOfProcedureDate
+,CAST(@CountryApprovalDate as Date) CountryApprovalDate
 END 
 GO
 

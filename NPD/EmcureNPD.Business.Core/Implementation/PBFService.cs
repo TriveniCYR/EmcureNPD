@@ -2831,6 +2831,7 @@ namespace EmcureNPD.Business.Core.Implementation
                       new SqlParameter("@PivotalBatchManufactured", calculatedDates.PivotalBatchManufactured),
                       new SqlParameter("@LastDataFromRnD", calculatedDates.LastDataFromRnD),
                       new SqlParameter("@BEFinalReport", calculatedDates.BEFinalReport),
+                      new SqlParameter("@SMStabilityResultsSixMonth",calculatedDates.StabilityResultsSixMonth)
                    };
 
                 var dbresult = await _pbfRepository.GetDataSetBySP("stp_npd_GetPBFRADates", System.Data.CommandType.StoredProcedure, osqlParameter);
