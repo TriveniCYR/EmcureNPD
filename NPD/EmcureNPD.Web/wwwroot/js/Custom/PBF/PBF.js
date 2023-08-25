@@ -3812,11 +3812,11 @@ function GetPBFRACalculatedDateSuccess(data) {
     //$(`#EarliestLaunchDexcl${selectedRaIndex}`).val(data.table[0].earliestLaunchDate == null ? '' : data.table[0].earliestLaunchDate.split('T')[0])
     //$(`#LasDateToRegulatory${selectedRaIndex}`).val($(`#LastdatafromRnD${selectedRaIndex}`).val())//data.table[0].lastDateToRegulatory == null ? '' : data.table[0].lastDateToRegulatory.split('T')[0])
     //$(`#EarliestSubmissionDExcl${selectedRaIndex}`).val($(`#DossierReadyDate${selectedRaIndex}`).val())
-    $(`#LastdatafromRnD${selectedRaIndex}`).val(data.table[0].lastDataFromRnD == null ? '' : data.table[0].lastDataFromRnD.split('T')[0])
-    $(`#LasDateToRegulatory${selectedRaIndex}`).val(data.table[0].lastDateToRegulatory == null ? '' : data.table[0].lastDateToRegulatory.split('T')[0])
-    $(`#DossierReadyDate${selectedRaIndex}`).val(data.table[0].dossierReadyDate == null ? '' : data.table[0].dossierReadyDate.split('T')[0])
-    $(`#EarliestSubmissionDExcl${selectedRaIndex}`).val(data.table[0].earliestSubmissionDate == null ? '' : data.table[0].earliestSubmissionDate.split('T')[0])
-    $(`#EarliestLaunchDexcl${selectedRaIndex}`).val(data.table[0].earliestLaunchDate == null ? '' : data.table[0].earliestLaunchDate.split('T')[0])
+    $(`#LastdatafromRnD${selectedRaIndex}`).val(data.table[0].lastDataFromRnD == null ? $(`#LastdatafromRnD${selectedRaIndex}`).val() : data.table[0].lastDataFromRnD.split('T')[0])
+    $(`#LasDateToRegulatory${selectedRaIndex}`).val(data.table[0].lastDateToRegulatory == null ? $(`#LasDateToRegulatory${selectedRaIndex}`).val() : data.table[0].lastDateToRegulatory.split('T')[0])
+    $(`#DossierReadyDate${selectedRaIndex}`).val(data.table[0].dossierReadyDate == null ? $(`#DossierReadyDate${selectedRaIndex}`).val() : data.table[0].dossierReadyDate.split('T')[0])
+    $(`#EarliestSubmissionDExcl${selectedRaIndex}`).val(data.table[0].earliestSubmissionDate == null ? $(`#EarliestSubmissionDExcl${selectedRaIndex}`).val() : data.table[0].earliestSubmissionDate.split('T')[0])
+    $(`#EarliestLaunchDexcl${selectedRaIndex}`).val(data.table[0].earliestLaunchDate == null ? $(`#EarliestLaunchDexcl${selectedRaIndex}`).val() : data.table[0].earliestLaunchDate.split('T')[0])
 }
 function GetPBFRACalculatedDateError(x, y, z) {
     toastr.error(ErrorMessage);
