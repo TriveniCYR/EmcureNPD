@@ -1,4 +1,4 @@
-USE [EmcureNPDDev]
+
 GO
 
 /****** Object:  StoredProcedure [dbo].[stp_npd_GetPBFRADates]    Script Date: 25-08-2023 16:06:40 ******/
