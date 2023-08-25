@@ -10,6 +10,7 @@ namespace EmcureNPD.Data.DataAccess.Entity
         public MasterCountry()
         {
             MasterCurrencyCountryMappings = new HashSet<MasterCurrencyCountryMapping>();
+            MasterNationApprovalCountryMappings = new HashSet<MasterNationApprovalCountryMapping>();
             MasterRegionCountryMappings = new HashSet<MasterRegionCountryMapping>();
             MasterUserCountryMappings = new HashSet<MasterUserCountryMapping>();
             PidfIpdCountries = new HashSet<PidfIpdCountry>();
@@ -28,6 +29,7 @@ namespace EmcureNPD.Data.DataAccess.Entity
         public string IsdcountryCode { get; set; }
 
         public virtual ICollection<MasterCurrencyCountryMapping> MasterCurrencyCountryMappings { get; set; }
+        public virtual ICollection<MasterNationApprovalCountryMapping> MasterNationApprovalCountryMappings { get; set; }
         public virtual ICollection<MasterRegionCountryMapping> MasterRegionCountryMappings { get; set; }
         public virtual ICollection<MasterUserCountryMapping> MasterUserCountryMappings { get; set; }
         public virtual ICollection<PidfIpdCountry> PidfIpdCountries { get; set; }

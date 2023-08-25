@@ -24,6 +24,8 @@ namespace EmcureNPD.Data.DataAccess.Entity
         public DateTime? UpdatedOn { get; set; }
         public DateTime? DeletedOn { get; set; }
         public int? CreatedBy { get; set; }
+        public DateTime? EndOfProcedureDate { get; set; }
+        public DateTime? CountryApprovalDate { get; set; }
 
         public virtual PidfPbf Pbf { get; set; }
         public virtual Pidf Pidf { get; set; }

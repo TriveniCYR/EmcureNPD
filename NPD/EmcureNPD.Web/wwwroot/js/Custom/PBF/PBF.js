@@ -3537,7 +3537,9 @@ function BindRA(data, IsEdit = false) {
                                <td><select  id="TypeOfSubmissionId${e}" name="RaEntities[${e}].TypeOfSubmissionId" class="form-control readOnlyUpdate clsTypeOfSubmission  valid" value="${data[e].typeOfSubmissionId}" onchange="GetPBFRACalculatedDate(${e})"></select></td>
                                <td><input type="date" id="DossierReadyDate${e}" name="RaEntities[${e}].DossierReadyDate" value="${data[e].dossierReadyDate != null ? data[e].dossierReadyDate.split('T')[0] : ''}" class="form-control readOnlyUpdate  valid" onchange="GetPBFRACalculatedDate(${e})"></td>
                                <td><input type="date" id="EarliestSubmissionDExcl${e}" name="RaEntities[${e}].EarliestSubmissionDExcl" value="${data[e].earliestSubmissionDexcl != null ? data[e].earliestSubmissionDexcl.split('T')[0] : ''}" class="form-control readOnlyUpdate  valid"></td>
-                                <td><input type="date" id="EarliestLaunchDexcl${e}" name="RaEntities[${e}].EarliestLaunchDexcl" value="${data[e].earliestLaunchDexcl == null ? '' : data[e].earliestLaunchDexcl.split('T')[0]}" class="form-control readOnlyUpdate  valid"></td>
+                               <td><input type="date" id="EndOfProcedureDate${e}" name="RaEntities[${e}].EndOfProcedureDate" value="${data[e].endOfProcedureDate != null ? data[e].endOfProcedureDate.split('T')[0] : ''}" class="form-control readOnlyUpdate  valid"></td>
+                               <td><input type="date" id="CountryApprovalDate${e}" name="RaEntities[${e}].CountryApprovalDate" value="${data[e].countryApprovalDate != null ? data[e].countryApprovalDate.split('T')[0] : ''}" class="form-control readOnlyUpdate  valid"></td>
+                               <td><input type="date" id="EarliestLaunchDexcl${e}" name="RaEntities[${e}].EarliestLaunchDexcl" value="${data[e].earliestLaunchDexcl == null ? '' : data[e].earliestLaunchDexcl.split('T')[0]}" class="form-control readOnlyUpdate  valid"></td>
                                 <td> <input type="date" id="LasDateToRegulatory${e}" name="RaEntities[${e}].LasDateToRegulatory" value="${data[e].lasDateToRegulatory == null ? '' : data[e].lasDateToRegulatory.split('T')[0]}" class="form-control readOnlyUpdate valid"></td>
                                <td> <i class="fa-solid fa-circle-plus nav-icon text-success operationButton" id="addIcon" onclick="addRowra(this);"></i> <i class="fa-solid fa-trash nav-icon text-red raDeleteIcon operationButton DeleteIcon" onclick="deleteRowra(this);" style="display: none;"></i>
                                </td>
@@ -3573,7 +3575,9 @@ function BindNewRA(data, IsEdit = false) {
              <td><select  id="TypeOfSubmissionId0" name="RaEntities[${i}].TypeOfSubmissionId" class="form-control readOnlyUpdate valid clsTypeOfSubmission" onchange="GetPBFRACalculatedDate(${i})"></select></td>
              <td><input type="date" id="DossierReadyDate0" name="RaEntities[${i}].DossierReadyDate" class="form-control readOnlyUpdate  valid"></td>
              <td><input type="date" id="EarliestSubmissionDExcl0" name="RaEntities[${i}].EarliestSubmissionDExcl" class="form-control readOnlyUpdate  valid"></td>
-              <td><input type="date" id="EarliestLaunchDexcl0" name="RaEntities[${i}].EarliestLaunchDexcl" class="form-control readOnlyUpdate valid"></td>
+             <td><input type="date" id="EndOfProcedureDate0" name="RaEntities[${i}].EndOfProcedureDate"  class="form-control readOnlyUpdate  valid"></td>
+                               <td><input type="date" id="CountryApprovalDate0" name="RaEntities[${i}].CountryApprovalDate"  class="form-control readOnlyUpdate  valid"></td>
+             <td><input type="date" id="EarliestLaunchDexcl0" name="RaEntities[${i}].EarliestLaunchDexcl" class="form-control readOnlyUpdate valid"></td>
               <td> <input type="date" id="LasDateToRegulatory0" name="RaEntities[${i}].LasDateToRegulatory" class="form-control readOnlyUpdate valid"></td>
              <td>  <i class="fa-solid fa-circle-plus nav-icon text-success operationButton" id="addIcon" onclick="addRowra(this);"></i> <i class="fa-solid fa-trash nav-icon text-red raDeleteIcon operationButton DeleteIcon" onclick="deleteRowra(this);" style="display: none;"></i>
              </td>
@@ -3679,11 +3683,18 @@ function SetRaChildRow() {
 
         $(this).find("td:eq(6) input").attr("name", "RaEntities[" + index.toString() + "].EarliestSubmissionDExcl");
         $(this).find("td:eq(6) input").attr("id", "EarliestSubmissionDExcl" + index.toString());
-        $(this).find("td:eq(7) input").attr("name", "RaEntities[" + index.toString() + "].EarliestLaunchDexcl");
-        $(this).find("td:eq(7) input").attr("id", "EarliestLaunchDexcl" + index.toString());
 
-        $(this).find("td:eq(8) input").attr("name", "RaEntities[" + index.toString() + "].LasDateToRegulatory");
-        $(this).find("td:eq(8) input").attr("id", "LasDateToRegulatory" + index.toString());
+        $(this).find("td:eq(7) input").attr("name", "RaEntities[" + index.toString() + "].EndOfProcedureDate");
+        $(this).find("td:eq(7) input").attr("id", "EndOfProcedureDate" + index.toString());
+
+        $(this).find("td:eq(8) input").attr("name", "RaEntities[" + index.toString() + "].CountryApprovalDate");
+        $(this).find("td:eq(8) input").attr("id", "CountryApprovalDate" + index.toString());
+
+        $(this).find("td:eq(9) input").attr("name", "RaEntities[" + index.toString() + "].EarliestLaunchDexcl");
+        $(this).find("td:eq(9) input").attr("id", "EarliestLaunchDexcl" + index.toString());
+
+        $(this).find("td:eq(10) input").attr("name", "RaEntities[" + index.toString() + "].LasDateToRegulatory");
+        $(this).find("td:eq(10) input").attr("id", "LasDateToRegulatory" + index.toString());
 
 
     });
@@ -3818,7 +3829,9 @@ function GetPBFRACalculatedDateSuccess(data) {
     $(`#LasDateToRegulatory${selectedRaIndex}`).val(data.table[0].lastDateToRegulatory == null ? $(`#LasDateToRegulatory${selectedRaIndex}`).val() : data.table[0].lastDateToRegulatory.split('T')[0])
     $(`#DossierReadyDate${selectedRaIndex}`).val(data.table[0].dossierReadyDate == null ? $(`#DossierReadyDate${selectedRaIndex}`).val() : data.table[0].dossierReadyDate.split('T')[0])
     $(`#EarliestSubmissionDExcl${selectedRaIndex}`).val(data.table[0].earliestSubmissionDate == null ? $(`#EarliestSubmissionDExcl${selectedRaIndex}`).val() : data.table[0].earliestSubmissionDate.split('T')[0])
-    $(`#EarliestLaunchDexcl${selectedRaIndex}`).val(data.table[0].earliestLaunchDate == null ? $(`#EarliestLaunchDexcl${selectedRaIndex}`).val() : data.table[0].earliestLaunchDate.split('T')[0])
+    $(`#EarliestLaunchDexcl${selectedRaIndex}`).val(data.table[0].earliestLaunchDate == null ? $(`#EarliestLaunchDexcl${selectedRaIndex}`).val() : data.table[0].earliestLaunchDate.split('T')[0]) 
+    $(`#EndOfProcedureDate${selectedRaIndex}`).val(data.table[0].endOfProcedureDate == null ? $(`#EndOfProcedureDate${selectedRaIndex}`).val() : data.table[0].endOfProcedureDate.split('T')[0])
+    $(`#CountryApprovalDate${selectedRaIndex}`).val(data.table[0].countryApprovalDate == null ? $(`#CountryApprovalDate${selectedRaIndex}`).val() : data.table[0].countryApprovalDate.split('T')[0])
 }
 function GetPBFRACalculatedDateError(x, y, z) {
     toastr.error(ErrorMessage);

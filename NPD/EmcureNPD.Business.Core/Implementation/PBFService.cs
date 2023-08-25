@@ -392,22 +392,22 @@ namespace EmcureNPD.Business.Core.Implementation
                         select new
                         {
                             nationApproval.NationApprovalId,
-                            nationApproval.MinEOP,
-                            nationApproval.MaxEOP,
+                            nationApproval.MinEop,
+                            nationApproval.MaxEop,
                             country.CountryId,
                             country.CountryName
                         };
 
             var result = new List<MasterNationApprovalEntity>();
-            var groupedData = query.GroupBy(item => new { item.NationApprovalId, item.MinEOP, item.MaxEOP });
+            var groupedData = query.GroupBy(item => new { item.NationApprovalId, item.MinEop, item.MaxEop });
 
             foreach (var group in groupedData)
             {
                 var entity = new MasterNationApprovalEntity
                 {
                     NationApprovalId = group.Key.NationApprovalId,
-                    MinEOP = group.Key.MinEOP,
-                    MaxEOP = group.Key.MaxEOP,
+                    MinEOP = group.Key.MinEop,
+                    MaxEOP = group.Key.MaxEop,
                     CountryDetails = group.Select(item => new CountryDetails
                     {
                         CountryId = item.CountryId,
@@ -2762,6 +2762,8 @@ namespace EmcureNPD.Business.Core.Implementation
                 recordsTable.Columns.Add("UpdatedOn", typeof(DateTime));
                 recordsTable.Columns.Add("DeletedOn", typeof(DateTime));
                 recordsTable.Columns.Add("CreatedBy", typeof(int));
+                recordsTable.Columns.Add("EndOfProcedureDate", typeof(DateTime));
+                recordsTable.Columns.Add("CountryApprovalDate", typeof(DateTime));
                 DataRow row;
                 foreach (var item in ls)
                 {
@@ -2786,6 +2788,8 @@ namespace EmcureNPD.Business.Core.Implementation
                         row["UpdatedOn"] = item.Pidfpbfraid > 0 ? DateTime.Now : DBNull.Value;
                         row["DeletedOn"] = item.Pidfpbfraid > 0 ? DateTime.Now : DBNull.Value;
                         row["CreatedBy"] = CreatedBy;
+                        row["EndOfProcedureDate"] = item.EndOfProcedureDate == null ? DBNull.Value : item.EndOfProcedureDate;
+                        row["CountryApprovalDate"] = item.CountryApprovalDate == null ? DBNull.Value : item.CountryApprovalDate;
                         recordsTable.Rows.Add(row);
                     }
                 }

@@ -15,6 +15,8 @@ namespace EmcureNPD.Data.DataAccess.Entity
         public int? WorkflowId { get; set; }
         public bool? Country { get; set; }
         public int? TaskLevel { get; set; }
+        public int? StartDateOffset { get; set; }
+        public int? EndDateOffset { get; set; }
 
         public virtual MasterWorkflow Workflow { get; set; }
     }
