@@ -704,7 +704,7 @@
                                                 {
                                                     <button type="submit" id="btnSaveDraftPIDF" class="btn btn-primary me-3 outside-buttons operationButton" onClick="return SaveDraftClick();">@SharedLocalizer["SaveDraft"]</button>
                                                 }
-                                                @if (Model.StatusId == (Int32)Master_PIDFStatus.PIDFSubmitted)
+                                            @if (Model.StatusId == (Int32)Master_PIDFStatus.PIDFSubmitted && Model.IsAllowToApprove)
                                                 {
                                                     <a style="@IsApproveAllow" class="btn btn-success me-3 outside-buttons operationButton" onClick="ApproveRejectClick('A', '@Model.PIDFID', @((int)EmcureNPD.Utility.Enums.PIDFScreen.PIDF), '/PIDF/PIDFList?ScreenId=@((int)EmcureNPD.Utility.Enums.PIDFScreen.PIDF)')"><i class="fa fa-check-circle mr-1"></i> @SharedLocalizer["Approve"]</a>
                                                     <a style="@IsApproveAllow" class="btn btn-danger me-3 outside-buttons operationButton" onClick="ApproveRejectClick('R', '@Model.PIDFID', @((int)EmcureNPD.Utility.Enums.PIDFScreen.PIDF), '/PIDF/PIDFList?ScreenId=@((int)EmcureNPD.Utility.Enums.PIDFScreen.PIDF)')"><i class="fa fa-ban mr-1"></i> @SharedLocalizer["Reject"]</a>

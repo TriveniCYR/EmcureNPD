@@ -25,5 +25,7 @@ namespace EmcureNPD.Business.Core.Interface
         Task<List<MasterCountryEntity>> GetCountryByUserId(int userid);
 
         Task<List<MasterBusinessUnitEntity>> GetBusinessUNitByUserId(int userid);
+
+        Task<dynamic> GetIsInterestedByPIDFandBU(int PIDFID, int BussinesUnitId);
     }
 }
