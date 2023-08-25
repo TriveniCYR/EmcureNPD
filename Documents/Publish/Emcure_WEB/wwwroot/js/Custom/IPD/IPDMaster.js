@@ -131,7 +131,7 @@ function LoadIPDForm(pidfId, BusinessUnitId) {
         $.get(_IPDPartialURL, { pidfid: pidfId, bui: BusinessUnitId }, function (content) {
             $("#custom-tabs-" + BusinessUnitId).html(content);
             $('#SelectedTabBusinessUnit').val(_selectBusinessUnit);
-            BussinesUnitStatusforIsInterested(pidfId, BusinessUnitId);
+           // BussinesUnitStatusforIsInterested(pidfId, BusinessUnitId);
             SetDisableForOtherUserBU(_selectBusinessUnit);
             GetCountryList_PatentDetailsFormulation();
             GetPatentStrategyDropdownList();
