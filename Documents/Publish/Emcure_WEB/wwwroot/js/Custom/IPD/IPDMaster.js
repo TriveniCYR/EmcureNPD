@@ -131,6 +131,7 @@ function LoadIPDForm(pidfId, BusinessUnitId) {
         $.get(_IPDPartialURL, { pidfid: pidfId, bui: BusinessUnitId }, function (content) {
             $("#custom-tabs-" + BusinessUnitId).html(content);
             $('#SelectedTabBusinessUnit').val(_selectBusinessUnit);
+            BussinesUnitStatusforIsInterested(pidfId, BusinessUnitId);
             SetDisableForOtherUserBU(_selectBusinessUnit);
             GetCountryList_PatentDetailsFormulation();
             GetPatentStrategyDropdownList();
@@ -390,18 +391,54 @@ function SetDisableForOtherUserBU(_selectBusinessUnit) {
       //  HideFormForNotInterestedBU(false)
     }
 }
-function HideFormForNotInterestedBU(flag) {
-    var buid ='2'
-    if (flag) {
-        $('#custom-tabs-two-tabContent').hide();
-        $('#dvNotInterestedBUNote').show();
 
-       var BuName = $('#custom-tabs-two-tab').find('#custom-tabs-two-' + buid +'-tab').text()
-        $('#dvNotInterestedBUNoteHeading').text(BuName +' have not taken any action on this');
+function BussinesUnitStatusforIsInterested(pidfid,buid) {
+    ajaxServiceMethod($('#hdnBaseURL').val() + GetIsInterestedByPIDFandBUurl+"/" + pidfid + "/" + buid, 'GET', BussinesUnitStatusforIsInterestedSuccess, BussinesUnitStatusforIsInterestedError);
+}
+
+function BussinesUnitStatusforIsInterestedSuccess(data) {
+    console.log(data._object);
+    if (data != null || data != undefined) {
+        if (data.IsIntresetedStatusOfBU.length > 0) {
+
+            var businessUnitName = data.IsIntresetedStatusOfBU[0].businessUnitName
+            var interestedDate = data.IsIntresetedStatusOfBU[0].interestedDate
+            var fullName = data.IsIntresetedStatusOfBU[0].fullName
+
+            if (data.IsIntresetedStatusOfBU[0].actionStatus == 1) {
+                $('#custom-tabs-two-tabContent').show();
+                $('#dvNotInterestedBUNote').hide();
+            }
+            else if (data.IsIntresetedStatusOfBU[0].actionStatus == 2) {
+                $('#custom-tabs-two-tabContent').hide();
+                $('#dvNotInterestedBUNote').show();
+
+                var msgstr = businessUnitName + ' have said not interested on ' + interestedDate + ' by ' + fullName;
+
+                $('#dvNotInterestedBUNoteHeading').text(msgstr);
+            }
+            else if (data.IsIntresetedStatusOfBU[0].actionStatus == 3) {
+                $('#custom-tabs-two-tabContent').hide();
+                $('#dvNotInterestedBUNote').show();
+
+                var msgstr = businessUnitName + ' have not taken any action on this'
+                $('#dvNotInterestedBUNoteHeading').text(msgstr);
+            }
+        }
+    }
+
+}
+function BussinesUnitStatusforIsInterestedError(x, y, z) {
+    toastr.error(ErrorMessage);
+}
+function HideFormForNotInterestedBU(flag) {
+    GetIsInterestedByPIDFandBUurl
+
+    if (flag) {
+       
     }
     else {
-        $('#custom-tabs-two-tabContent').show();
-        $('#dvNotInterestedBUNote').hide();
+      
     }
 }
 
