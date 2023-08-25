@@ -3809,9 +3809,14 @@ function GetPBFRACalculatedDate(index) {
 function GetPBFRACalculatedDateSuccess(data) {
     console.log(data.table);
     //$(`#EarliestSubmissionDExcl${selectedRaIndex}`).val(data.table[0].earliestSubmissionDate == null ? '' : data.table[0].earliestSubmissionDate.split('T')[0])
+    //$(`#EarliestLaunchDexcl${selectedRaIndex}`).val(data.table[0].earliestLaunchDate == null ? '' : data.table[0].earliestLaunchDate.split('T')[0])
+    //$(`#LasDateToRegulatory${selectedRaIndex}`).val($(`#LastdatafromRnD${selectedRaIndex}`).val())//data.table[0].lastDateToRegulatory == null ? '' : data.table[0].lastDateToRegulatory.split('T')[0])
+    //$(`#EarliestSubmissionDExcl${selectedRaIndex}`).val($(`#DossierReadyDate${selectedRaIndex}`).val())
+    $(`#LastdatafromRnD${selectedRaIndex}`).val(data.table[0].lastDataFromRnD == null ? '' : data.table[0].lastDataFromRnD.split('T')[0])
+    $(`#LasDateToRegulatory${selectedRaIndex}`).val(data.table[0].lastDateToRegulatory == null ? '' : data.table[0].lastDateToRegulatory.split('T')[0])
+    $(`#DossierReadyDate${selectedRaIndex}`).val(data.table[0].dossierReadyDate == null ? '' : data.table[0].dossierReadyDate.split('T')[0])
+    $(`#EarliestSubmissionDExcl${selectedRaIndex}`).val(data.table[0].earliestSubmissionDate == null ? '' : data.table[0].earliestSubmissionDate.split('T')[0])
     $(`#EarliestLaunchDexcl${selectedRaIndex}`).val(data.table[0].earliestLaunchDate == null ? '' : data.table[0].earliestLaunchDate.split('T')[0])
-    $(`#LasDateToRegulatory${selectedRaIndex}`).val($(`#LastdatafromRnD${selectedRaIndex}`).val())//data.table[0].lastDateToRegulatory == null ? '' : data.table[0].lastDateToRegulatory.split('T')[0])
-    $(`#EarliestSubmissionDExcl${selectedRaIndex}`).val($(`#DossierReadyDate${selectedRaIndex}`).val())
 }
 function GetPBFRACalculatedDateError(x, y, z) {
     toastr.error(ErrorMessage);
