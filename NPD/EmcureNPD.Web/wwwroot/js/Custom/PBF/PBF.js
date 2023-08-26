@@ -38,7 +38,7 @@ $(document).ready(function () {
         // _mode = $('#hdnIsView').val(); //parseInt($('#hdnPIDFId').val());
         _mode = getParameterByName("IsView");
         _pbf = getParameterByName("pbf");
-        
+        BussinesUnitInterestedPBF(_PIDFID, $("#BusinessUnitId").val(),'PBF');
     } catch (e) {
         _mode = getParameterByName("IsView");
         /* _PIDFId = parseInt(getParameterByName("pidfid"));*/
@@ -3834,5 +3834,48 @@ function GetPBFRACalculatedDateSuccess(data) {
     $(`#CountryApprovalDate${selectedRaIndex}`).val(data.table[0].countryApprovalDate == null ? $(`#CountryApprovalDate${selectedRaIndex}`).val() : data.table[0].countryApprovalDate.split('T')[0])
 }
 function GetPBFRACalculatedDateError(x, y, z) {
+    toastr.error(ErrorMessage);
+}
+var CurrentscreenId_PBF = '';
+function BussinesUnitInterestedPBF(pidfid, buid, screenId) {
+    CurrentscreenId_PBF = screenId;
+    ajaxServiceMethod($('#hdnBaseURL').val() + GetIsInterestedByPIDFandBUurlPBF + "/" + pidfid + "/" + buid, 'GET', BussinesUnitInterestedPBFSuccess, BussinesUnitInterestedPBFError);
+}
+function BussinesUnitInterestedPBFSuccess(data) {
+    var BUTabData_Div = '.clsContentUnderBUTab_' + CurrentscreenId_PBF;
+    var NonIntNote_Div = '#dvNotInterestedBUNote_' + CurrentscreenId_PBF;
+    var NonIntNote_HeadingNote = '#dvNotInterestedBUNoteHeading_' + CurrentscreenId_PBF;
+
+    if (data != null || data != undefined) {
+        if (data.IsIntresetedStatusOfBU.length > 0) {
+
+            var businessUnitName = data.IsIntresetedStatusOfBU[0].businessUnitName
+            var interestedDate = data.IsIntresetedStatusOfBU[0].interestedDate
+            var fullName = data.IsIntresetedStatusOfBU[0].fullName
+
+            if (data.IsIntresetedStatusOfBU[0].actionStatus == 1) {
+                $(BUTabData_Div).show();
+                $(NonIntNote_Div).hide();
+            }
+            else if (data.IsIntresetedStatusOfBU[0].actionStatus == 2) {
+                $(BUTabData_Div).hide();
+                $(NonIntNote_Div).show();
+
+                var msgstr = businessUnitName + ' have said not interested on ' + interestedDate + ' by ' + fullName;
+
+                $(NonIntNote_HeadingNote).text(msgstr);
+            }
+            else if (data.IsIntresetedStatusOfBU[0].actionStatus == 3) {
+                $(BUTabData_Div).hide();
+                $(NonIntNote_Div).show();
+
+                var msgstr = businessUnitName + ' have not taken any action on this'
+                $(NonIntNote_HeadingNote).text(msgstr);
+            }
+        }
+    }
+
+}
+function BussinesUnitInterestedPBFError(x, y, z) {
     toastr.error(ErrorMessage);
 }
