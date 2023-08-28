@@ -18,7 +18,7 @@
     <div class="container-fluid d-flex justify-content-between">
         <h3>Active Pharmaceutical Ingredient (Charter Detail Summary)</h3>
         <div>
-@*            <a class="btn btn-primary mr-3" id="btnExportToPdf_APICharter" title="ExportToPdf"><i class="fa fa-file-pdf-o" aria-hidden="true"></i></a>*@
+            @*            <a class="btn btn-primary mr-3" id="btnExportToPdf_APICharter" title="ExportToPdf"><i class="fa fa-file-pdf-o" aria-hidden="true"></i></a>*@
             <a class="btn btn-success mr-3" id="btnPrintPDF" title="Print"><i class="fa fa-file-pdf-o" aria-hidden="true"></i></a>
             <a class="btn btn-danger" id="btnBack" asp-action="PIDFList" asp-controller="PIDF"
                asp-route-ScreenId="@Convert.ToString((int)EmcureNPD.Utility.Enums.PIDFScreen.API)">@SharedLocalizer["Back"]</a>
@@ -48,7 +48,7 @@
                                 </td>
                                 <td>
                                     <span id="lblProjectName">
-                                    @Html.DisplayFor(model => model.ProjectName, new { @readonly = "readonly",  @class = "form-control"})
+                                        @Html.DisplayFor(model => model.ProjectName, new { @readonly = "readonly",  @class = "form-control"})
                                     </span>
                                 </td>
                             </tr>
@@ -151,7 +151,7 @@
                     </div>
                     @*--------------Finance Rates----------------------*@
                 </div>
-                 
+
                 <div class="row mt-3">
                     @*--------Start----AnalyticalDepartment-------------*@
                     <div class="col-md-12" id="dvAnalyticalDepartment">
@@ -370,7 +370,7 @@
                 <div class="row mt-3">
                     <div id="dvSpace"></div>
                     @*--------Start----HeadwiseBudget-------------*@
-                    <div class="col-md-8" id="dvHeadwiseBudget">
+                    <div class="col-md-7" id="dvHeadwiseBudget">
                         @if (Model.HeadwiseBudget != null)
                         {
                             <table class="table">
@@ -397,6 +397,37 @@
                             </table>
                         }
                     </div>
+                    @*------------APIInhouse--------------------------*@
+                    <div class="col-md-5">
+                        @if (Model.PIDFAPIInhouse != null)
+                        {
+                            <table class="table">
+                                <thead class="bg-primary">
+                                    <tr class="text-center">
+                                        <th colspan="2"><b>API InHouse</b></th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @for (int i = 0; i < Model.PIDFAPIInhouse.Count; i++)
+                                    {
+                                        <tr>
+                                            <td>
+                                                <input type="hidden" asp-for="@Model.PIDFAPIInhouse[i].Primary" />
+                                                <input type="hidden" asp-for="@Model.PIDFAPIInhouse[i].ApiInhouseName" />
+                                                <label class="control-label">@Model.PIDFAPIInhouse[i].ApiInhouseName </label>
+                                            </td>
+                                            <td width="50%">
+                                                @Html.DisplayFor(model => model.PIDFAPIInhouse[i].Primary, new {@readonly = "readonly", @class = "form-control", @placeholder="" })
+                                                <label class="text-danger" style="display:contents"></label>
+                                            </td>
+                                        </tr>
+                                    }
+                                </tbody>
+                            </table>
+                        }
+                    </div>
+
+                    @*--------------END APIInhouse----------------------*@
                     <div class="col-md-6"></div>
 
                     @*--------End----HeadwiseBudget-------------*@
@@ -423,40 +454,40 @@
     </div>
 </div>
 @section MyScripts {
-<script type="text/javascript" src="~/js/plugins/jspdf.debug.js"></script>
-<script type="text/javascript" src="~/js/html2canvas.js"></script>
-<script>
-    var SaveStatus = "@TempData["SaveStatus"]";
-    var ErrorMessage = "@SharedLocalizer["Error"]";
-    var GetAllMarketExtension = "@EmcureNPD.Web.Helpers.APIURLHelper.GetAllMarketExtension";
-    var _PIDFID = "@UtilityHelper.Decreypt(Convert.ToString(Context.Request.Query["pidfid"]))";
-    document.addEventListener("DOMContentLoaded", function () {
-        var tabList = [].slice.call(document.querySelectorAll("#mainDivCommercial a"));
-        var tabs = $('#tabList');
+    <script type="text/javascript" src="~/js/plugins/jspdf.debug.js"></script>
+    <script type="text/javascript" src="~/js/html2canvas.js"></script>
+    <script>
+        var SaveStatus = "@TempData["SaveStatus"]";
+        var ErrorMessage = "@SharedLocalizer["Error"]";
+        var GetAllMarketExtension = "@EmcureNPD.Web.Helpers.APIURLHelper.GetAllMarketExtension";
+        var _PIDFID = "@UtilityHelper.Decreypt(Convert.ToString(Context.Request.Query["pidfid"]))";
+        document.addEventListener("DOMContentLoaded", function () {
+            var tabList = [].slice.call(document.querySelectorAll("#mainDivCommercial a"));
+            var tabs = $('#tabList');
 
-        tabList.forEach(function (tab) {
-            var tabTrigger = new bootstrap.Tab(tab);
+            tabList.forEach(function (tab) {
+                var tabTrigger = new bootstrap.Tab(tab);
 
-            tab.addEventListener("click", function (event) {
-                event.preventDefault();
-                tabTrigger.show();
+                tab.addEventListener("click", function (event) {
+                    event.preventDefault();
+                    tabTrigger.show();
+                });
+                tabs.append('<div class="tab-pane fade" id="' + tab + '">');
+
             });
-            tabs.append('<div class="tab-pane fade" id="' + tab + '">');
-
         });
-    });
-    var errorCallBack = '@TempData[EmcureNPD.Web.Helpers.UserHelper.ErrorMessage]';
-    if (errorCallBack) {
-        toastr.error(errorCallBack);
-    }
-    var successCallBack = '@TempData[EmcureNPD.Web.Helpers.UserHelper.SuccessMessage]';
-    if (successCallBack) {
-        toastr.success(successCallBack);
-    }
+        var errorCallBack = '@TempData[EmcureNPD.Web.Helpers.UserHelper.ErrorMessage]';
+        if (errorCallBack) {
+            toastr.error(errorCallBack);
+        }
+        var successCallBack = '@TempData[EmcureNPD.Web.Helpers.UserHelper.SuccessMessage]';
+        if (successCallBack) {
+            toastr.success(successCallBack);
+        }
 
-    $(document).ready(function() {
-        $('#btnPrintPDF').click(function(){
-            var ProjectName = $("#lblProjectName").text();
+        $(document).ready(function () {
+            $('#btnPrintPDF').click(function () {
+                var ProjectName = $("#lblProjectName").text();
                 var tdate = new Date();
                 var dd = tdate.getDate(); //yields day
                 var MM = tdate.getMonth(); //yields month
@@ -467,8 +498,8 @@
                 var fileName = 'APICharterSummary_' + (ProjectName == null || ProjectName == undefined ? "" : ProjectName.toString().trim()) + '_' + currentDate;
 
                 printElement(fileName);
-        });
-            $('#btnExportToPdf_APICharter').click(function() {
+            });
+            $('#btnExportToPdf_APICharter').click(function () {
                 $('btnExportToPdf_APICharter').hide();
                 $('btnBack').hide();
                 var pidfid = $("#Pidfid").val();
@@ -498,8 +529,8 @@
                 $('btnExportToPdf_APICharter').show();
                 $('btnBack').show();
             });
-    });
-</script>
+        });
+    </script>
 
 }
 

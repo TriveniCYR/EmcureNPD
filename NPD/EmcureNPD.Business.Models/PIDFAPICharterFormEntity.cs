@@ -37,11 +37,15 @@ namespace EmcureNPD.Business.Models
         public List<CapitalOtherExpenditure> CapitalOtherExpenditure { get; set; }
         public List<ManhourEstimates> ManhourEstimates { get; set; }
         public List<HeadwiseBudget> HeadwiseBudget { get; set; }
-        public List<PIDFAPIInhouseEntity> PIDFAPIInhouse { get; set; }
+        public List<PIDFAPIInhouse> PIDFAPIInhouse { get; set; }
     }
 
     #region Child Table Class
-
+    public class PIDFAPIInhouse
+    {
+        public string ApiInhouseName { get; set; }
+        public string Primary { get; set; }
+    }
     public class ManagmentTeam
     {
         public string FullName { get; set; }

@@ -38,7 +38,7 @@ $(document).ready(function () {
         // _mode = $('#hdnIsView').val(); //parseInt($('#hdnPIDFId').val());
         _mode = getParameterByName("IsView");
         _pbf = getParameterByName("pbf");
-        
+        BussinesUnitInterestedPBF(_PIDFID, $("#BusinessUnitId").val(),'PBF');
     } catch (e) {
         _mode = getParameterByName("IsView");
         /* _PIDFId = parseInt(getParameterByName("pidfid"));*/
@@ -3838,3 +3838,18 @@ function GetPBFRACalculatedDateSuccess(data) {
 function GetPBFRACalculatedDateError(x, y, z) {
     toastr.error(ErrorMessage);
 }
+var CurrentscreenId_PBF = '';
+function BussinesUnitInterestedPBF(pidfid, buid, screenId) {
+    CurrentscreenId_PBF = screenId;
+    ajaxServiceMethod($('#hdnBaseURL').val() + GetIsInterestedByPIDFandBUurlPBF + "/" + pidfid + "/" + buid, 'GET', BussinesUnitInterestedPBFSuccess, BussinesUnitInterestedPBFError);
+}
+function BussinesUnitInterestedPBFSuccess(data) {
+    var BUTabData_Div = '.clsContentUnderBUTab_' + CurrentscreenId_PBF;
+    var NonIntNote_Div = '#dvNotInterestedBUNote_' + CurrentscreenId_PBF;
+    var NonIntNote_HeadingNote = '#dvNotInterestedBUNoteHeading_' + CurrentscreenId_PBF;
+    DispalyStatusOfBUByInterested(data,BUTabData_Div, NonIntNote_Div, NonIntNote_HeadingNote);
+}
+function BussinesUnitInterestedPBFError(x, y, z) {
+    toastr.error(ErrorMessage);
+}
+

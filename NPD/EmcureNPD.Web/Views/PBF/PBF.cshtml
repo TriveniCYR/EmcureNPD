@@ -253,7 +253,7 @@
                 </div>
 
             </div>
-
+            <div class="clsContentUnderBUTab_PBF">
             <div class="row">
                 <div class="col-12">
                     <div class="card">
@@ -1370,7 +1370,10 @@
                     </div>
                 </div>
             </div>
-
+            </div>
+            <div id="dvNotInterestedBUNote_PBF">
+                <label class="text-lg text-wrap w-100" id="dvNotInterestedBUNoteHeading_PBF"></label>
+            </div>
         </div>
     </form>
 </div>
@@ -1384,6 +1387,7 @@
     <script src="/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>*@
 
 <script>
+    var GetIsInterestedByPIDFandBUurlPBF = "@EmcureNPD.Web.Helpers.APIURLHelper.GetIsInterestedByPIDFandBU";
     var GetAllPBF = "@EmcureNPD.Web.Helpers.APIURLHelper.GetPBFDropdown";
     var getLineByPlantId = "@EmcureNPD.Web.Helpers.APIURLHelper.GetLineByPlantId";
     var UserWiseBUList = "@Model.BusinessUnitsByUser";

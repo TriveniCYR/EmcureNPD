@@ -77,7 +77,7 @@ $(document).ready(function () {
     //    }
     //});
     UpdateProjectionCommercial();   // Expiriestxtbox
-
+    
 
     $(".Expiriestxtbox").on('keydown', function (e) {
 
@@ -104,7 +104,7 @@ $(document).ready(function () {
 
 });
 function ExpiriesValueChange(ele, index) {
-   
+
     ele.value = (ele.value == undefined || ele.value == '') ? 0 : ele.value;
     Expiries_Yearwise_Data[index] = ele.value;
     RenderFinanceProjection();
@@ -114,8 +114,12 @@ function ExpiriesValueChange(ele, index) {
        // ExpiriestxtboxFocusId = '';
     }
 
+   if (index == 0) {
+        TabKeyPressed_controlID = 'ProjectionExpiries_0';
+    }
+   
     $(".Expiriestxtbox").on('keydown', function (e) {
-        var keyCode = e.keyCode || e.which;
+       var keyCode = e.keyCode || e.which;
         if (keyCode == 9) {
             TabKeyPressed_controlID = $(this).attr('id');
            // alert('Tab Pressed1');
@@ -138,7 +142,10 @@ function AnnualconfirmatoryValueChange(ele, index) {
        // AnnualConfirmatoryRtxtboxFocusId = '';
     }  
 
-    $(".AnnualConfirmatoryRtxtbox").on('keydown', function (e) {
+    if (index == 0) {
+        TabKeyPressed_controlAnnualConf = 'ProjectionAnnualConfirmatoryRelease_0';
+    }
+ $(".AnnualConfirmatoryRtxtbox").on('keydown', function (e) {
         var keyCode = e.keyCode || e.which;
         if (keyCode == 9) {
             TabKeyPressed_controlAnnualConf = $(this).attr('id');
