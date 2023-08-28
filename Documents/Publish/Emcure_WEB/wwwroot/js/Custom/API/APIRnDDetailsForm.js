@@ -21,7 +21,6 @@ $(document).ready(function () {
     getPIDFAccordion(_PIDFAccordionURL, _PIDFID, "dvPIDFAccrdion");
     getIPDAccordion(_IPDAccordionURL, _EncPIDFID, _PIDFBusinessUnitId, "dvIPDAccrdion");
     getCommercialAccordion(_CommercialAccordionURL, _EncPIDFID, _PIDFBusinessUnitId, "dvCommercialAccrdion");
-    GetMasterAPIInhouselabels();
 });
 
 function HideSaveAsDraft() {
@@ -138,39 +137,4 @@ function validateDynamicControldDetailsRND() {
         }
     });
     return IsValid
-}
-function GetMasterAPIInhouselabels() {
-    ajaxServiceMethod($('#hdnBaseURL').val() + getMasterAPIInhouselabels, 'GET', GetMasterAPIInhouselabelsSuccess, GetMasterAPIInhouselabelsError);
-}
-function GetMasterAPIInhouselabelsSuccess(data) {
-    try {
-        var masterInhouseLabelTable = document.querySelector(".table.table-bordered.apiRnDTable tbody");
-        masterInhouseLabelTable.innerHTML = "";
-
-        if (data != null && data.length > 0) {
-            data.forEach(function (item, index) {
-                console.log(item);
-                var row = masterInhouseLabelTable.insertRow();
-                var labelCell = row.insertCell(0);
-                labelCell.classList.add("bg-light");
-                labelCell.style.width = "60px";
-                labelCell.innerHTML = `<b>${item.apiInhouseName}</b>`;
-                var inputCell = row.insertCell(1);
-                inputCell.style.width = "200px";
-                inputCell.innerHTML = `<input type="text" class="form-control" id="input_${item.apiInhouseId}" name="PIDFAPIInhouseEntities[${index}].Primary"> <input type="hidden" id="${item.apiInhouseId}"name="PIDFAPIInhouseEntities[${index}].ApiInhouseId" value="${item.apiInhouseId}">`;
-
-            });
-        } else {
-            // Show a message if there is no data
-            var emptyRow = masterInhouseLabelTable.insertRow();
-            var emptyCell = emptyRow.insertCell(0);
-            emptyCell.colSpan = 4;
-            emptyCell.innerText = "No data available.";
-        }
-    } catch (e) {
-        toastr.error(e.message);
-    }
-}
-function GetMasterAPIInhouselabelsError(x, y, z) {
-    toastr.error(ErrorMessage);
 }

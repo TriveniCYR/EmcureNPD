@@ -38,7 +38,7 @@ $(document).ready(function () {
         // _mode = $('#hdnIsView').val(); //parseInt($('#hdnPIDFId').val());
         _mode = getParameterByName("IsView");
         _pbf = getParameterByName("pbf");
-        BussinesUnitInterestedPBF(_PIDFID, $("#BusinessUnitId").val(),'PBF');
+        //BussinesUnitInterestedPBF(_PIDFID, $("#BusinessUnitId").val(),'PBF');
     } catch (e) {
         _mode = getParameterByName("IsView");
         /* _PIDFId = parseInt(getParameterByName("pidfid"));*/
@@ -3706,9 +3706,7 @@ function bindRaDropDowns() {
             $(this).find(".clsCountry").val((_selectedValue == undefined ? "" : _selectedValue));
 
             var _selectedValueTypeOfSubmission = $(this).find(".clsTypeOfSubmission").attr("value");
-            if (_selectedValueTypeOfSubmission != null) {
                 $(this).find(".clsTypeOfSubmission").val((_selectedValueTypeOfSubmission == undefined || _selectedValueTypeOfSubmission == "null" ? "" : _selectedValueTypeOfSubmission));
-            }
         });
     }
 }

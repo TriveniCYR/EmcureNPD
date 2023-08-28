@@ -603,7 +603,7 @@ function CollectNotInterestedData() {
     var notInterestedData = [];
 
     // Loop through the table rows to collect data for each label
-    var rows = document.querySelectorAll(".table.table-striped.table-primary tbody tr");
+    var rows = document.querySelectorAll(".table.table-striped.table-light tbody tr");
     rows.forEach(function (row) {
         var labelCell = row.cells[0];
         var apiOutsourceName = labelCell.querySelector("b").innerText;
