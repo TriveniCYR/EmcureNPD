@@ -1,18 +1,4 @@
-USE [EmcureNPDDev]
-GO
 
-/****** Object:  StoredProcedure [dbo].[stp_npd_GetPBFRADates]    Script Date: 28-08-2023 10:45:54 ******/
-DROP PROCEDURE [dbo].[stp_npd_GetPBFRADates]
-GO
-
-/****** Object:  StoredProcedure [dbo].[stp_npd_GetPBFRADates]    Script Date: 28-08-2023 10:45:54 ******/
-SET ANSI_NULLS ON
-GO
-
-SET QUOTED_IDENTIFIER ON
-GO
-
-  
   
 --[dbo].[stp_npd_GetPBFRADates]     148,2,94,2,'20230807'   
 CREATE PROCEDURE [dbo].[stp_npd_GetPBFRADates]      
