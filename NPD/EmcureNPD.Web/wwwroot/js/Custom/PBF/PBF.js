@@ -3705,8 +3705,10 @@ function bindRaDropDowns() {
             var _selectedValue = $(this).find(".clsCountry").attr("value");
             $(this).find(".clsCountry").val((_selectedValue == undefined ? "" : _selectedValue));
 
-            _selectedValue = $(this).find(".clsTypeOfSubmission").attr("value");
-            $(this).find(".clsTypeOfSubmission").val((_selectedValue == undefined ? "" : _selectedValue));
+            var _selectedValueTypeOfSubmission = $(this).find(".clsTypeOfSubmission").attr("value");
+            if (_selectedValueTypeOfSubmission != null) {
+                $(this).find(".clsTypeOfSubmission").val((_selectedValueTypeOfSubmission == undefined || _selectedValueTypeOfSubmission == "null" ? "" : _selectedValueTypeOfSubmission));
+            }
         });
     }
 }
@@ -3804,7 +3806,7 @@ function GetPBFRACalculatedDate(index) {
             PIDFId: _PIDFID,
             BusinessUnitId: buId,
             CountryId: $(`#raCountryId${index}`).val() == '' ? 0 : $(`#raCountryId${index}`).val(),
-            TypeOfSubmissionId: $(`#TypeOfSubmissionId${index}`).val() == '' ? 0 : $(`#TypeOfSubmissionId${index}`).val(),
+            TypeOfSubmissionId: $(`#TypeOfSubmissionId${index}`).val() == '' || $(`#TypeOfSubmissionId${index}`).val() == 'null' ? 0 : $(`#TypeOfSubmissionId${index}`).val(),
             DossierReadyDate: $(`#DossierReadyDate${index}`).val(),
             PivotalBatchManufactured: $(`#Pivotalbatchmanufactured${index}`).val(),
             LastDataFromRnD: $(`#LastdatafromRnD${index}`).val(),

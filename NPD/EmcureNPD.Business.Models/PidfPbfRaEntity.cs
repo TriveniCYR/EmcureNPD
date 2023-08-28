@@ -37,7 +37,7 @@ namespace EmcureNPD.Business.Models
         public int PIDFId { get; set; }
         public int BusinessUnitId { get; set; }
         public int CountryId { get; set; }
-        public int TypeOfSubmissionId { get; set; }
+        public int? TypeOfSubmissionId { get; set; }
         public DateTime? DossierReadyDate { get; set; }
         public DateTime? PivotalBatchManufactured { get; set; }
         public DateTime? LastDataFromRnD { get; set; }
