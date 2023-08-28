@@ -157,6 +157,7 @@ function GetBatchSizeCostingTRValues() {
 
 function loadFinanceProjectionData(pidfid, encBUId,buid) {
     // _encBuid = encBUId;
+    //BussinesUnitInterestedFinance(pidfid, buid, 'Finance');
     GetManagmentApprovalBatchSizeCoating(pidfid, encBUId);
 }
 
