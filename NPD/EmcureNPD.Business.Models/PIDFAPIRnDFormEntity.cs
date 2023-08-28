@@ -29,7 +29,7 @@ namespace EmcureNPD.Business.Models
         public List<MasterCountryEntity> MasterCountries { get; set; }
         public List<PIDF_IPD_PatentDetailsEntity> IPD_PatentDetailsList { get; set; }
         public PIDFCommercialEntity _commercialFormEntity { get; set; }
-        public List<PIDFAPIInhouseRnDData> PIDFAPIInhouseEntities { get; set; }
+        public List<PIDFAPIInhouseEntity> PIDFAPIInhouseEntities { get; set; }
         public string IsModelValid { get; set; }
         /// <summary>
         /// //Formulation Quantity
@@ -46,9 +46,9 @@ namespace EmcureNPD.Business.Models
         public string APITargetRMC_CCPC { get; set; }
         
     }
-    public class PIDFAPIInhouseRnDData
-    {
-        public int ApiInhouseId { get; set; }
-        public string Primary { get; set; }
-    }
+    //public class PIDFAPIInhouseEntity
+    //{
+    //    public int ApiInhouseId { get; set; }
+    //    public string Primary { get; set; }
+    //}
 }

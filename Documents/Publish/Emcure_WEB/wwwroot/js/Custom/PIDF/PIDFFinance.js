@@ -959,7 +959,7 @@ $(el).focusout(function () {
 })()
 
 
-function loadFinanceProjectionData(pidfid, encBUId){
+function loadFinanceProjectionData(pidfid, encBUId, buid){
     _encBuid = encBUId;
     $('.PakeSize').trigger("change");
 }

@@ -26,9 +26,8 @@ namespace EmcureNPD.Business.Core.Interface
 
         Task<APIIPDEntity> GetIPDByPIDF(long pidfId);
         Task<DBOperation> AddUpdateAPIGroupLeader(APIInterestedUserEntity _oAPIAssignedUser, int _pidfid);
-        Task<DBOperation> InsertAPIInterestedUserData(List<PIDFAPIInhouseRnDData> pIDFAPIInhouseEntity, int _pidfid);
+        Task<DBOperation> InsertAPIInterestedUserData(List<PIDFAPIInhouseEntity> pIDFAPIInhouseEntity, int _pidfid);
         Task<List<MasterAPIOutsourceEntity>> GetAllMasterAPIOutsourcelabels();
-        Task<List<MasterAPIInhouseEntity>> GetAllMasterAPIInhouselabels();
         Task<List<PIDFAPIInhouseEntity>> GetAPICharterDataByPIDF(long pidfId);
     }
 }

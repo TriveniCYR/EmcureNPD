@@ -40,7 +40,7 @@ namespace EmcureNPD.Business.Core.Implementation
         private readonly INotificationService _notificationService;
         private readonly IExceptionService _ExceptionService;
         private IRepository<MasterApiOutsource> _masterAPIOutsource { get; set; }
-        private IRepository<PIDFAPIOutsourceData> _pIDFAPIOutsource { get; set; }
+        private IRepository<PidfApiOutsourceDatum> _pIDFAPIOutsource { get; set; }
         private IRepository<MasterApiInhouse> _masterAPIInhouse { get; set; }
         private IRepository<PidfApiInhouse> _pIDFAPIInhouse { get; set; }
         public APIService(IUnitOfWork unitOfWork, IMapperFactory mapperFactory,
@@ -58,7 +58,7 @@ namespace EmcureNPD.Business.Core.Implementation
             _pidf_API_TimelineInMonth_repository = _unitOfWork.GetRepository<PidfApiCharterTimelineInMonth>();
             _masterProductTypeService = masterProductTypeService;
             _masterAPIOutsource = _unitOfWork.GetRepository<MasterApiOutsource>();
-            _pIDFAPIOutsource = _unitOfWork.GetRepository<PIDFAPIOutsourceData>();
+            _pIDFAPIOutsource = _unitOfWork.GetRepository<PidfApiOutsourceDatum>();
             _masterAPIInhouse = _unitOfWork.GetRepository<MasterApiInhouse>();
             _pIDFAPIInhouse = _unitOfWork.GetRepository<PidfApiInhouse>();
             _auditLogService = auditLogService;
@@ -212,6 +212,7 @@ namespace EmcureNPD.Business.Core.Implementation
                     _oApiRnDData.ProductType = _objProductType.ProductTypeName;
             }
             _oApiRnDData.MasterCountries = _countryService.GetAll().Result.ToList();
+            _oApiRnDData.PIDFAPIInhouseEntities= await GetAPICharterDataByPIDF(pidfId);
             Pidf objPidf = await _pidfrepository.GetAsync(pidfId);
             _oApiRnDData.StatusId = objPidf.StatusId;
             return _oApiRnDData;
@@ -573,19 +574,19 @@ namespace EmcureNPD.Business.Core.Implementation
                     _pidf_API_Master_repository.AddAsync(NewObject);
                 }
 
-                var outsourcedbObj = _pIDFAPIOutsource.GetAll().Where(x => x.PIDFId == _pidfid).ToList();//_pIDFAPIOutsource
+                var outsourcedbObj = _pIDFAPIOutsource.GetAll().Where(x => x.Pidfid == _pidfid).ToList();//_pIDFAPIOutsource
                 if (_oAPIAssignedUser.IsAPIIntrested == false && outsourcedbObj.Count>0)
                 {
                     foreach (var notInterestedData in _oAPIAssignedUser.NotInterestedDatas)
                     {
-                        var updatedObject = new PIDFAPIOutsourceData
+                        var updatedObject = new PidfApiOutsourceDatum
                         {
-                            APIOutsourceDataId = outsourcedbObj.Where(x=>x.APIOutsourceId==notInterestedData.ApiOutsourceId).Select(x=>x.APIOutsourceDataId).FirstOrDefault(),
-                            APIOutsourceId = notInterestedData.ApiOutsourceId,
-                            PIDFId = _pidfid,
+                            ApioutsourceDataId = outsourcedbObj.Where(x=>x.ApioutsourceId==notInterestedData.ApiOutsourceId).Select(x=>x.ApioutsourceDataId).FirstOrDefault(),
+                            ApioutsourceId = notInterestedData.ApiOutsourceId,
+                            Pidfid = _pidfid,
                             Primary = notInterestedData.Details[0],
-                            Potential_Alt_1 = notInterestedData.Details[1],
-                            Potential_Alt_2 = notInterestedData.Details[2]
+                            PotentialAlt1 = notInterestedData.Details[1],
+                            PotentialAlt2 = notInterestedData.Details[2]
                         };
                         _pIDFAPIOutsource.UpdateAsync(updatedObject);
                          _unitOfWork.SaveChanges();
@@ -595,12 +596,12 @@ namespace EmcureNPD.Business.Core.Implementation
                 {
                     foreach (var notInterestedData in _oAPIAssignedUser.NotInterestedDatas)
                     {
-                        var newObject = new PIDFAPIOutsourceData();
-                        newObject.APIOutsourceId = notInterestedData.ApiOutsourceId;
-                        newObject.PIDFId = _pidfid;
+                        var newObject = new PidfApiOutsourceDatum();
+                        newObject.ApioutsourceId = notInterestedData.ApiOutsourceId;
+                        newObject.Pidfid = _pidfid;
                         newObject.Primary = notInterestedData.Details[0];
-                        newObject.Potential_Alt_1 = notInterestedData.Details[1];
-                        newObject.Potential_Alt_2 = notInterestedData.Details[2];
+                        newObject.PotentialAlt1 = notInterestedData.Details[1];
+                        newObject.PotentialAlt2 = notInterestedData.Details[2];
                         newObject.CreatedBy = loggedInUserID;
                         newObject.CreatedDate = DateTime.Now;
                         _pIDFAPIOutsource.AddAsync(newObject);
@@ -616,10 +617,10 @@ namespace EmcureNPD.Business.Core.Implementation
             }
           
         }
-        public async Task<DBOperation> InsertAPIInterestedUserData(List<PIDFAPIInhouseRnDData> pIDFAPIInhouseEntity,int pidfId)
+        public async Task<DBOperation> InsertAPIInterestedUserData(List<PIDFAPIInhouseEntity> pIDFAPIInhouseEntity,int pidfId)
         {
             var loggedInUserID = _helper.GetLoggedInUser().UserId;
-            var inhousesourcedbObj = _pIDFAPIInhouse.GetAll().Where(x => x.Pidfid == pidfId).ToList();//_pIDFAPIOutsource
+            var inhousesourcedbObj = _pIDFAPIInhouse.GetAll().Where(x => x.Pidfid == pidfId).ToList();
             if (inhousesourcedbObj.Count>0)
             {
                 foreach (var InterestedData in pIDFAPIInhouseEntity)
@@ -658,11 +659,6 @@ namespace EmcureNPD.Business.Core.Implementation
         {
             var dbObj = await _masterAPIOutsource.GetAllAsync();
             return _mapperFactory.GetList<MasterApiOutsource, MasterAPIOutsourceEntity>(dbObj.ToList());
-        }
-        public async Task<List<MasterAPIInhouseEntity>> GetAllMasterAPIInhouselabels()
-        {
-            var dbObj = await _masterAPIInhouse.GetAllAsync();
-            return _mapperFactory.GetList<MasterApiInhouse, MasterAPIInhouseEntity>(dbObj.ToList());
         }
         public async Task<List<PIDFAPIInhouseEntity>> GetAPICharterDataByPIDF(long pidfId)
         {
