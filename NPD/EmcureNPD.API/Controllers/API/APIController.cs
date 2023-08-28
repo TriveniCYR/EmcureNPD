@@ -226,20 +226,7 @@ namespace EmcureNPD.API.Controllers.API
                 return _ObjectResponse.Create(null, (Int32)HttpStatusCode.BadRequest, "No Records found");
             }
         }
-        [HttpGet, Route("GetMasterAPIInhouselabels")]
-        public async Task<IActionResult> GetMasterAPIInhouselabels()
-        {
-            try
-            {
-                return _ObjectResponse.CreateData(await _APIService.GetAllMasterAPIInhouselabels(), (Int32)HttpStatusCode.OK);
-            }
-            catch (Exception e)
-            {
-                await _ExceptionService.LogException(e);
-                return _ObjectResponse.Create(null, (Int32)HttpStatusCode.BadRequest, "No Records found");
-            }
-        }
-
+     
         [HttpGet]
         [Route("GetAPICharterDataByPIDF/{pidfId}")]
         public async Task<IActionResult> GetAPICharterDataByPIDF([FromRoute] long pidfId)
@@ -258,6 +245,7 @@ namespace EmcureNPD.API.Controllers.API
                 return _ObjectResponse.Create(false, (Int32)HttpStatusCode.InternalServerError, Convert.ToString(ex.StackTrace));
             }
         }
+
 
     }
 }
