@@ -193,13 +193,28 @@
                         </div>
                     </div>
                     <div class="card-body" style="display: block;">
-                        <div style="overflow-x:auto"; class="scrollElement">
+                        <div style="overflow-x:auto" ; class="scrollElement">
                             <div class="form-group required">
                                 <table class="table table-bordered apiRnDTable" style="width: 60%; height: 300px;">
                                     <tbody>
+                                        @for (var i = 0; i < Model.PIDFAPIInhouseEntities.Count; i++)
+                                        {
+                                            <tr>
+                                                <td>
+                                                   @* @Html.LabelFor(model => model.PIDFAPIInhouseEntities[i].APIInhouseName, new { @class = "control-label" })*@
+                                                    <label class="control-label">@Model.PIDFAPIInhouseEntities[i].APIInhouseName</label>
+                                                    <input type="hidden" asp-for="@Model.PIDFAPIInhouseEntities[i].APIInhouseName" />
+                                                    <input type="hidden" asp-for="@Model.PIDFAPIInhouseEntities[i].ApiInhouseId" />
+                                                </td>
+                                                <td>
+                                                    @Html.TextBoxFor(model => model.PIDFAPIInhouseEntities[i].Primary, new { @class = "form-control", @placeholder = Model.PIDFAPIInhouseEntities[i].APIInhouseName })
+                                                    <label class="text-danger" style="display: contents"></label>
+                                                </td>
+                                            </tr>
+                                        }
                                     </tbody>
-                                </table>
 
+                                </table>
                             </div>
                         </div>
                     </div>
@@ -447,8 +462,8 @@
         var ErrorMessage = "@SharedLocalizer["Error"]";
         var GetAllMarketExtension = "@EmcureNPD.Web.Helpers.APIURLHelper.GetActiveBusinessUnit";
         var DBMarketID = "@Model.MarketID";
-        var getMasterAPIInhouselabels = "@EmcureNPD.Web.Helpers.APIURLHelper.GetMasterAPIInhouselabels";
-        var SaveAPIInterestedUserData = "@EmcureNPD.Web.Helpers.APIURLHelper.SaveAPIInterestedUserData";
+        //var getMasterAPIInhouselabels = "@EmcureNPD.Web.Helpers.APIURLHelper.GetMasterAPIInhouselabels";
+        //var SaveAPIInterestedUserData = "@EmcureNPD.Web.Helpers.APIURLHelper.SaveAPIInterestedUserData";
         //--------start--------Accordian Data----------------
         var _PIDFID = "@UtilityHelper.Decreypt(Model.Pidfid)";
         var _EncPIDFID = "@(@Model.Pidfid)";
