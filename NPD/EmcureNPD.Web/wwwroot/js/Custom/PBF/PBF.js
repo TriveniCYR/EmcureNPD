@@ -3706,9 +3706,7 @@ function bindRaDropDowns() {
             $(this).find(".clsCountry").val((_selectedValue == undefined ? "" : _selectedValue));
 
             var _selectedValueTypeOfSubmission = $(this).find(".clsTypeOfSubmission").attr("value");
-            if (_selectedValueTypeOfSubmission != null) {
                 $(this).find(".clsTypeOfSubmission").val((_selectedValueTypeOfSubmission == undefined || _selectedValueTypeOfSubmission == "null" ? "" : _selectedValueTypeOfSubmission));
-            }
         });
     }
 }
