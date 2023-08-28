@@ -140,7 +140,7 @@ function LoadIPDForm(pidfId, BusinessUnitId) {
             Set_optionTextforAnyPatentstobeFiled();
         });
     }
-    BussinesUnitStatusforIsInterested_IPD(pidfId, BusinessUnitId, 'IPD');
+   // BussinesUnitStatusforIsInterested_IPD(pidfId, BusinessUnitId, 'IPD');
 }
 // #region Get Region List
 function GetRegionList() {
