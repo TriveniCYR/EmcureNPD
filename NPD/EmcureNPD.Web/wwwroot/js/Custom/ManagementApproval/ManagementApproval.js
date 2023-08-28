@@ -155,7 +155,7 @@ function GetBatchSizeCostingTRValues() {
     return Arr_FinanceTable_tr;
 }
 
-function loadFinanceProjectionData(pidfid, encBUId) {
+function loadFinanceProjectionData(pidfid, encBUId,buid) {
     // _encBuid = encBUId;
     GetManagmentApprovalBatchSizeCoating(pidfid, encBUId);
 }

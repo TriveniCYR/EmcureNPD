@@ -260,6 +260,7 @@ function BUtabClick(BUVal, pidfidval) {
     $('[id^="BUtab_"]').removeClass('active');
     $('#BUtab_' + BUVal).addClass('active');
     SelectedBUValue = BUVal;
+    BussinesUnitInterestedCommercial(pidfidval, SelectedBUValue, 'Commercial');
     ClearValidationForYearForm();
     ClearValidationForMainForm();
     renderCountryTabList(BUVal);
@@ -360,7 +361,7 @@ function SetCommercialDisableForOtherUserBU() {
     var UserwiseBusinessUnit = $('#BusinessUnitsByUser').val().split(',');
     var status = UserwiseBusinessUnit.indexOf(SelectedBUValue.toString());
     var IsViewInMode = ($("#IsView").val() == '1')
-    if (status == -1 || IsViewInMode || IsNoStrengthforSelectedBU) {
+    if (status == -1 || IsViewInMode || false) {
         SetCommercialFormReadonly();
     }
     else {
@@ -1206,4 +1207,19 @@ function SetPBFCommercialFormReadonly() {
     $("#custom-tabs-PBFCommercial").find("#btnSaveAsDraftPBFCommercial,#btnPBFCommercialSubmit").hide();
     $("#btnPBFCommercialCancel").removeAttr("disabled");
 }
+var CurrentscreenId_Commercial = '';
+function BussinesUnitInterestedCommercial(pidfid, buid, screenId) {
+    CurrentscreenId_Commercial = screenId;
+    ajaxServiceMethod($('#hdnBaseURL').val() + GetIsInterestedByPIDFandBUurlCommercial + "/" + pidfid + "/" + buid, 'GET', BussinesUnitInterestedCommercialSuccess, BussinesUnitInterestedCommercialError);
+}
+function BussinesUnitInterestedCommercialSuccess(data) {
+    var BUTabData_Div = '.clsContentUnderBUTab_' + CurrentscreenId_Commercial;
+    var NonIntNote_Div = '#dvNotInterestedBUNote_' + CurrentscreenId_Commercial;
+    var NonIntNote_HeadingNote = '#dvNotInterestedBUNoteHeading_' + CurrentscreenId_Commercial;
 
+    DispalyStatusOfBUByInterested(data, BUTabData_Div, NonIntNote_Div, NonIntNote_HeadingNote);
+
+}
+function BussinesUnitInterestedCommercialError(x, y, z) {
+    toastr.error(ErrorMessage);
+}
