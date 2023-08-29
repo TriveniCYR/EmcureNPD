@@ -399,7 +399,7 @@
                     </div>
                     @*------------APIInhouse--------------------------*@
                     <div class="col-md-5">
-                        @if (Model.PIDFAPIInhouse != null)
+                        @if (Model.PIDFAPIInhouse != null && Model.PIDFAPIInhouse.Count > 0)
                         {
                             <table class="table">
                                 <thead class="bg-primary">
@@ -414,11 +414,11 @@
                                             <td>
                                                 <input type="hidden" asp-for="@Model.PIDFAPIInhouse[i].Primary" />
                                                 <input type="hidden" asp-for="@Model.PIDFAPIInhouse[i].ApiInhouseName" />
-                                                <label class="control-label">@Model.PIDFAPIInhouse[i].ApiInhouseName </label>
+                                                <label class="control-label">@Model.PIDFAPIInhouse[i].ApiInhouseName</label>
                                             </td>
                                             <td width="50%">
-                                                @Html.DisplayFor(model => model.PIDFAPIInhouse[i].Primary, new {@readonly = "readonly", @class = "form-control", @placeholder="" })
-                                                <label class="text-danger" style="display:contents"></label>
+                                                @Html.DisplayFor(model => model.PIDFAPIInhouse[i].Primary, new { @readonly = "readonly", @class = "form-control", @placeholder = "" })
+                                                <label class="text-danger" style="display: contents"></label>
                                             </td>
                                         </tr>
                                     }
@@ -426,6 +426,7 @@
                             </table>
                         }
                     </div>
+
 
                     @*--------------END APIInhouse----------------------*@
                     <div class="col-md-6"></div>
