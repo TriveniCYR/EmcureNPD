@@ -3954,5 +3954,5 @@ function createTdp(data) {
     }
    
     $("#TdpDiv").append(html);
-    $(".clsContentUnderBUTab_PBF").show();
+    //$(".clsContentUnderBUTab_PBF").show();
 }
