@@ -582,7 +582,7 @@ function GetMasterAPIOutsourcelabelsSuccess(data) {
                 labelCell.innerHTML = `<b>${item.apiOutsourceName}</b>`;
                 for (var i = 1; i <= 3; i++) {
                     var inputCell = row.insertCell(i);
-                    inputCell.innerHTML = `<input type="text" class="form-control">`;
+                    inputCell.innerHTML = `<input type="text" class="form-control" placeholder="${item.apiOutsourceName}">`;
                 }
             });
         } else {
