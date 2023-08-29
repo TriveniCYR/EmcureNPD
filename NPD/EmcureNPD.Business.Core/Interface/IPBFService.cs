@@ -1,5 +1,6 @@
 ﻿using EmcureNPD.Business.Models;
 using EmcureNPD.Data.DataAccess.Entity;
+using Microsoft.AspNetCore.Http;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using static EmcureNPD.Utility.Enums.GeneralEnum;
@@ -37,5 +38,6 @@ namespace EmcureNPD.Business.Core.Interface
         Task<List<MasterTypeOfSubmissionEntity>> GetTypeOfSubmission();
         Task<List<MasterNationApprovalEntity>> GetNationApprovals();
         Task<dynamic> GetPBFRADates(RaCalculatedDates calculatedDates);
+        Task<dynamic> FileUpload(IFormFile files, string path, string uniqueFileName);
     }
 }

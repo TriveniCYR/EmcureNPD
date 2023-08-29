@@ -1,11 +1,15 @@
 ﻿using EmcureNPD.API.Filters;
 using EmcureNPD.API.Helpers.Response;
+using EmcureNPD.Business.Core.Implementation;
 using EmcureNPD.Business.Core.Interface;
 using EmcureNPD.Business.Core.ServiceImplementations;
 using EmcureNPD.Business.Models;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Primitives;
 using System;
+using System.IO;
 using System.Net;
 using System.Threading.Tasks;
 using static EmcureNPD.Utility.Enums.GeneralEnum;
@@ -87,12 +91,16 @@ namespace EmcureNPD.API.Controllers.PBF
 
         [HttpPost]
         [Route("InsertUpdatePBFDetails")]
-        public async Task<IActionResult> InsertUpdatePBFDetails(PBFFormEntity pbfEntity)
+        [Consumes("multipart/form-data")]
+        public async Task<IActionResult> InsertUpdatePBFDetails(PBFFormEntity pbfEntity, [FromForm] IFormFile  tdtfile)
         {
             try
             {
+                var files = tdtfile.FileName;
                 DBOperation oResponse = await _PBFService.AddUpdatePBFDetails(pbfEntity);
-                if (oResponse == DBOperation.Success)
+                var path = Path.Combine(_webHostEnvironment.WebRootPath, "Uploads\\PIDF\\TDT");
+                DBOperation oResponsetdt = await _PBFService.FileUpload(files: tdtfile, path: path, uniqueFileName: files);
+                if (oResponse == DBOperation.Success && oResponsetdt== DBOperation.Success)
                     return _ObjectResponse.Create(true, (Int32)HttpStatusCode.OK, (pbfEntity.Pidfpbfid > 0 ? "Updated Successfully" : "Inserted Successfully"));
                 else
                     return _ObjectResponse.Create(false, (Int32)HttpStatusCode.BadRequest, (oResponse == DBOperation.NotFound ? "Record not found" : "Bad request"));
