@@ -961,6 +961,7 @@ $(el).focusout(function () {
 
 function loadFinanceProjectionData(pidfid, encBUId, buid){
     _encBuid = encBUId;
+    //BussinesUnitInterestedFinance(pidfid, buid, 'Finance');
     $('.PakeSize').trigger("change");
 }
 function GetBatchSizeCostingTRValues() {

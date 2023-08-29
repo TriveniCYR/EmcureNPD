@@ -26,6 +26,8 @@ $(document).ready(function () {
     }
     //if(true)
     //$('.PBFDetailsTab').hide();
+  
+
 });
 
 function SetBU_Strength() {
@@ -361,7 +363,7 @@ function SetCommercialDisableForOtherUserBU() {
     var UserwiseBusinessUnit = $('#BusinessUnitsByUser').val().split(',');
     var status = UserwiseBusinessUnit.indexOf(SelectedBUValue.toString());
     var IsViewInMode = ($("#IsView").val() == '1')
-    if (status == -1 || IsViewInMode || false) {
+    if (status == -1 || IsViewInMode || IsNoStrengthforSelectedBU) {
         SetCommercialFormReadonly();
     }
     else {
@@ -1019,7 +1021,7 @@ function AddTaskTo_tblPBFOutsourcetask(data) {
         html += '<td> <input type="number" class="form-control clscost"   value="' + _cost + '" /> </td>'
         html += '<td> <input type="date" class="form-control clstentative" value="' + _tentative + '" /> </td>'
 
-        html += '<td> <i class="fa-solid fa-circle-plus nav-icon text-success" id="addIcon_' + ind + '" onclick="addRowParent_PBFOutsource(' + ind +')"></i> '
+        html += '<td class="clsAddDeleteIconPBFComm"> <i class="fa-solid fa-circle-plus nav-icon text-success AddIconAPI" id="addIcon_' + ind + '" onclick="addRowParent_PBFOutsource(' + ind +')"></i> '
 
         html += '<i  class="fa-solid fa-trash nav-icon text-red DeleteIconAPI" id="deleteIconAPI_' + ind + '" onclick="removeRowParent_PBFOutsource(' + ind +', this)"></i>'
 
@@ -1178,6 +1180,15 @@ $("#custom-tabs-BudgetApproval-Finance-tab").click(function () { // PBF tab clic
     IsCommTabClick = true;
     if ($("#IsView").val() != '1') 
     CommercialSaveAsDraftClickClick('TabClick');
+
+
+    var IsViewInMode = ($("#IsView").val() == '1');
+    if (IsViewInMode) {
+        $('.clsAddDeleteIconPBFComm').hide();
+    }
+    else {
+        $('.clsAddDeleteIconPBFComm').show();
+    }
 });
 $('#mainDivCommercial').find("#btnSubmit").click(function () {
     IsTabClick = false;
