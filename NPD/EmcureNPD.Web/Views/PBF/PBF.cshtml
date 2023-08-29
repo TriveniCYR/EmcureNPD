@@ -537,6 +537,67 @@
                                         </div>
                                     </div>
                                 </div>
+                                 @*  TDP*@
+                                <div class="col-12">
+                                    <div class="card">
+                                        <div class="card-header bg-primary">
+                                            <h3 class="card-title mb-0">
+                                                <button type="button" class="btn btn-tool" data-card-widget="collapse">
+                                                        TDP(Trade Dress Proposal)
+                                                </button>
+                                            </h3>
+                                            <div class="card-tools">
+                                                <button type="button" class="btn btn-tool" data-card-widget="collapse" title="Collapse">
+                                                    <i class="fas fa-minus" aria-hidden="true"></i>
+                                                </button>
+                                            </div>
+                                        </div>
+                                        <div class="card-body pbftables">
+                                            @*<div class="row">
+                                                 <div class="col-md-3">
+                                                <div class="clearfix bg-dark mb-2 pb-1 pt-1">Formulater Responsible Person:
+                                                            <input type="text" id="FormulaterResponsiblePerson" class="form-control" name="PbfGeneralTdpEntity.FormulaterResponsiblePerson" />
+                                                    </div>
+                                            </div>*@
+                                            <div class="row">
+                                                        <div class="col-md-3">
+                                                            <div class="form-group required">
+
+                                                            <label class="control-label" for="FormulaterResponsiblePerson">Formulater Responsible Person</label>
+                                                            <input type="text" id="FormulaterResponsiblePerson" class="form-control" name="PbfGeneralTdpEntity.FormulaterResponsiblePerson" placeholder="Formulater Responsible Person" />
+
+
+                                                            </div>
+                                                            </div>
+                                                    <div class="col-md-3">
+                                                        <div class="form-group required">
+                                                           
+                                                            @*<input type="hidden" id="TradeDressProposalId" name="PbfGeneralTdpEntity[0].TradeDressProposalId"/>*@
+                                                           @* @Html.LabelFor(model =>  model.PbfGeneralTdpEntity[0].Approch,"Approch", new { @class = "control-label" })
+                                                            @Html.TextBoxFor(model => model.PbfGeneralTdpEntity[0].Approch, new {@class = "form-control", @placeholder = "Approch" })*@
+                                                           <input type="hidden" id="TradeDressProposalId" name="PbfGeneralTdpEntity.TradeDressProposalId"  />
+                                                             @Html.LabelFor(model =>  model.PbfGeneralTdpEntity.Approch,"Approch", new { @class = "control-label" })
+                                                            @Html.TextBoxFor(model => model.PbfGeneralTdpEntity.Approch, new {@class = "form-control", @placeholder = "Approch" })
+                                                        </div>
+                                                    </div>
+                                                    </div>
+                                                    <div class="row">
+                                                         <div class="col-md-4" style="background-color:black;color:whitesmoke;font-size: 25px;font-weight: bold;">
+                                                            TDP
+                                                            </div>
+                                                     <div class="col-md-4" style="background-color:black;color:yellow;font-size: 25px;font-weight: bold;">
+                                                            Innovator
+                                                    </div>
+                                                    <div class="col-md-4" style="background-color:black;color:darkorange;font-size: 25px;font-weight: bold;">
+                                                                    Emcure
+                                                    </div>
+                                                    </div>
+                                                <div class="row" id="TdpDiv">
+                                                    
+                                                   </div>
+                                        </div>
+                                    </div>
+                                </div>
                                 @*  --------------R&D Detail-------------------------------------*@
                                 <div class="row">
                                     <div class="col-12">

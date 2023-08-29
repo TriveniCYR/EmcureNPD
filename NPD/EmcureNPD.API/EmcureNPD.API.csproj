@@ -33,5 +33,9 @@
     <ProjectReference Include="..\EmcureNPD.Utility\EmcureNPD.Utility.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="wwwroot\Uploads\PIDF\TDT\" />
+  </ItemGroup>
+
 </Project>
     

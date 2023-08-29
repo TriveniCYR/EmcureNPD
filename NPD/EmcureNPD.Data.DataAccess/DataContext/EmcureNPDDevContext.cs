@@ -3,7 +3,6 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata;
 using EmcureNPD.Data.DataAccess.Entity;
 using EmcureNPD.Utility;
-
 #nullable disable
 
 namespace EmcureNPD.Data.DataAccess.DataContext
@@ -93,6 +92,7 @@ namespace EmcureNPD.Data.DataAccess.DataContext
         public virtual DbSet<MasterWishListType> MasterWishListTypes { get; set; }
         public virtual DbSet<MasterWorkFlowTask> MasterWorkFlowTasks { get; set; }
         public virtual DbSet<MasterWorkflow> MasterWorkflows { get; set; }
+        public virtual DbSet<PbfGeneralTdp> PbfGeneralTdps { get; set; }
         public virtual DbSet<Pidf> Pidfs { get; set; }
         public virtual DbSet<PidfApiCharter> PidfApiCharters { get; set; }
         public virtual DbSet<PidfApiCharterAnalyticalDepartment> PidfApiCharterAnalyticalDepartments { get; set; }
@@ -1392,6 +1392,60 @@ namespace EmcureNPD.Data.DataAccess.DataContext
                 entity.Property(e => e.ModifyDate).HasColumnType("datetime");
 
                 entity.Property(e => e.WorkflowName).HasMaxLength(100);
+            });
+
+            modelBuilder.Entity<PbfGeneralTdp>(entity =>
+            {
+                entity.HasKey(e => e.TradeDressProposalId)
+                    .HasName("PK__pbf_gene__26222D7F3860C311");
+
+                entity.ToTable("pbf_general_TDP", "dbo");
+
+                entity.Property(e => e.Approch).IsUnicode(false);
+
+                entity.Property(e => e.Color)
+                    .HasMaxLength(20)
+                    .IsUnicode(false);
+
+                entity.Property(e => e.CreatedDate)
+                    .HasColumnType("datetime")
+                    .HasDefaultValueSql("(getdate())");
+
+                entity.Property(e => e.Description).IsUnicode(false);
+
+                entity.Property(e => e.Engraving)
+                    .HasMaxLength(200)
+                    .IsUnicode(false);
+
+                entity.Property(e => e.FormulaterResponsiblePerson).HasMaxLength(100);
+
+                entity.Property(e => e.IsEmcure).HasDefaultValueSql("((0))");
+
+                entity.Property(e => e.IsPrimaryPackaging).HasDefaultValueSql("((0))");
+
+                entity.Property(e => e.IsSecondryPackaging).HasDefaultValueSql("((0))");
+
+                entity.Property(e => e.Packaging).IsUnicode(false);
+
+                entity.Property(e => e.Pidfid).HasColumnName("PIDFID");
+
+                entity.Property(e => e.PidfpbfGeneralId).HasColumnName("PIDFPbfGeneralId");
+
+                entity.Property(e => e.PidfproductStrngthId).HasColumnName("PIDFProductStrngthId");
+
+                entity.Property(e => e.Shape)
+                    .HasMaxLength(200)
+                    .IsUnicode(false);
+
+                entity.Property(e => e.ShelfLife)
+                    .HasMaxLength(200)
+                    .IsUnicode(false)
+                    .HasColumnName("Shelf_Life");
+
+                entity.Property(e => e.StorageHandling)
+                    .HasMaxLength(200)
+                    .IsUnicode(false)
+                    .HasColumnName("Storage_Handling");
             });
 
             modelBuilder.Entity<Pidf>(entity =>
