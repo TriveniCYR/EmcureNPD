@@ -663,12 +663,13 @@ namespace EmcureNPD.Business.Core.Implementation
         public async Task<List<PIDFAPIInhouseEntity>> GetAPICharterDataByPIDF(long pidfId)
         {
             var inhouselabellist = await _masterAPIInhouse.GetAllAsync();
-            var pidfInhouseList = await _pIDFAPIInhouse.GetAllAsync();
-
+            var pidfInhouseList = _pIDFAPIInhouse.GetAllAsync().Result.Where(x => x.Pidfid == pidfId);
+            if (pidfInhouseList.Count() > 0)
+            {
             var joinedData = from p in pidfInhouseList
                              join pi in inhouselabellist
                              on p.ApiinhouseId equals pi.ApiinhouseId
-                             where p.Pidfid == pidfId // Filter based on pidfId
+
                              select new PIDFAPIInhouseEntity()
                              {
                                  Primary = p.Primary,
@@ -682,5 +683,19 @@ namespace EmcureNPD.Business.Core.Implementation
 
             return joinedData.ToList(); // Return the entire list of joined data
         }
+            else
+            {
+                var getData = from pi in inhouselabellist
+                                 select new PIDFAPIInhouseEntity()
+                                 {
+                                     ApiInhouseId = pi.ApiinhouseId,
+                                     APIInhouseName = pi.ApiinhouseName
+                                 };
+
+                return getData.ToList();
+            }
+        }
+
+       
     }
 }

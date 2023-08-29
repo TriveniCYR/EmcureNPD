@@ -489,31 +489,33 @@ function checkDuplicateLogin() {
     });
 }
 function DispalyStatusOfBUByInterested(data,BUTabData_Div, NonIntNote_Div, NonIntNote_HeadingNote) {
-    if (data != null || data != undefined) {
-        if (data.IsIntresetedStatusOfBU.length > 0) {
+    if (false) {
+        if (data != null || data != undefined) {
+            if (data.IsIntresetedStatusOfBU.length > 0) {
 
-            var businessUnitName = data.IsIntresetedStatusOfBU[0].businessUnitName
-            var interestedDate = data.IsIntresetedStatusOfBU[0].interestedDate
-            var fullName = data.IsIntresetedStatusOfBU[0].fullName
+                var businessUnitName = data.IsIntresetedStatusOfBU[0].businessUnitName
+                var interestedDate = data.IsIntresetedStatusOfBU[0].interestedDate
+                var fullName = data.IsIntresetedStatusOfBU[0].fullName
 
-            if (data.IsIntresetedStatusOfBU[0].actionStatus == 1) {
-                $(BUTabData_Div).show();
-                $(NonIntNote_Div).hide();
-            }
-            else if (data.IsIntresetedStatusOfBU[0].actionStatus == 2) {
-                $(BUTabData_Div).hide();
-                $(NonIntNote_Div).show();
+                if (data.IsIntresetedStatusOfBU[0].actionStatus == 1) {
+                    $(BUTabData_Div).show();
+                    $(NonIntNote_Div).hide();
+                }
+                else if (data.IsIntresetedStatusOfBU[0].actionStatus == 2) {
+                    $(BUTabData_Div).hide();
+                    $(NonIntNote_Div).show();
 
-                var msgstr = businessUnitName + ' have said not interested on ' + interestedDate + ' by ' + fullName;
+                    var msgstr = businessUnitName + ' have said not interested on ' + interestedDate + ' by ' + fullName;
 
-                $(NonIntNote_HeadingNote).text(msgstr);
-            }
-            else if (data.IsIntresetedStatusOfBU[0].actionStatus == 3) {
-                $(BUTabData_Div).hide();
-                $(NonIntNote_Div).show();
+                    $(NonIntNote_HeadingNote).text(msgstr);
+                }
+                else if (data.IsIntresetedStatusOfBU[0].actionStatus == 3) {
+                    $(BUTabData_Div).hide();
+                    $(NonIntNote_Div).show();
 
-                var msgstr = businessUnitName + ' have not taken any action on this'
-                $(NonIntNote_HeadingNote).text(msgstr);
+                    var msgstr = businessUnitName + ' have not taken any action on this'
+                    $(NonIntNote_HeadingNote).text(msgstr);
+                }
             }
         }
     }
