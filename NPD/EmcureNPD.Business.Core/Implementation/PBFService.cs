@@ -1286,31 +1286,35 @@ namespace EmcureNPD.Business.Core.Implementation
             {
                 
                 var loggedInUserId = _helper.GetLoggedInUser().UserId;
-                var objPbfGeneralTdp = _PbfGeneralTdp.GetAllQuery().
-                Where(x => x.TradeDressProposalId == pbfentity.PbfGeneralTdpEntity.TradeDressProposalId).FirstOrDefault();
-                if (objPbfGeneralTdp != null)
+                foreach (var item in pbfentity.PbfGeneralTdpEntity)
                 {
-                    objPbfGeneralTdp.Pidfid = pbfentity.Pidfid;
-                    objPbfGeneralTdp.Approch = pbfentity.PbfGeneralTdpEntity.Approch;
-                    objPbfGeneralTdp.PbfId = pbfentity.Pidfpbfid;
-                    objPbfGeneralTdp.PidfpbfGeneralId = pbfgeneralid;
-                    objPbfGeneralTdp.PidfproductStrngthId = pbfentity.PbfGeneralTdpEntity.PidfproductStrngthId;
-                    objPbfGeneralTdp.FormulaterResponsiblePerson = pbfentity.PbfGeneralTdpEntity.FormulaterResponsiblePerson;
-                    objPbfGeneralTdp.CreatedDate = DateTime.Now;
-                    objPbfGeneralTdp.CreatedBy = loggedInUserId;
-                    _PbfGeneralTdp.UpdateAsync(objPbfGeneralTdp);
-                }
-                else
-                {
-                    PbfGeneralTdp objPbfGeneralTdpAdd = new();
-                    objPbfGeneralTdpAdd.Pidfid = pbfentity.Pidfid;
-                    objPbfGeneralTdpAdd.Approch = pbfentity.PbfGeneralTdpEntity.Approch;
-                    objPbfGeneralTdpAdd.PbfId = pbfentity.Pidfpbfid;
-                    objPbfGeneralTdpAdd.PidfpbfGeneralId = pbfgeneralid;
-                    objPbfGeneralTdpAdd.PidfproductStrngthId = pbfentity.PbfGeneralTdpEntity.PidfproductStrngthId;
-                    objPbfGeneralTdpAdd.CreatedDate = DateTime.Now;
-                    objPbfGeneralTdpAdd.CreatedBy = loggedInUserId;
-                    _PbfGeneralTdp.AddAsync(objPbfGeneralTdpAdd);
+                    var objPbfGeneralTdp = _PbfGeneralTdp.GetAllQuery().
+              Where(x => x.TradeDressProposalId == item.TradeDressProposalId).FirstOrDefault();
+                    if (objPbfGeneralTdp != null)
+                    {
+                        objPbfGeneralTdp.Pidfid = pbfentity.Pidfid;
+                        objPbfGeneralTdp.Approch = item.Approch;
+                        objPbfGeneralTdp.PbfId = pbfentity.Pidfpbfid;
+                        objPbfGeneralTdp.PidfpbfGeneralId = pbfgeneralid;
+                        objPbfGeneralTdp.PidfproductStrngthId = item.PidfproductStrngthId;
+                        objPbfGeneralTdp.FormulaterResponsiblePerson = item.FormulaterResponsiblePerson;
+                        objPbfGeneralTdp.CreatedDate = DateTime.Now;
+                        objPbfGeneralTdp.CreatedBy = loggedInUserId;
+                        _PbfGeneralTdp.UpdateAsync(objPbfGeneralTdp);
+                    }
+                    else
+                    {
+                        PbfGeneralTdp objPbfGeneralTdpAdd = new();
+                        objPbfGeneralTdpAdd.Pidfid = pbfentity.Pidfid;
+                        objPbfGeneralTdpAdd.Approch = item.Approch;
+                        objPbfGeneralTdpAdd.PbfId = pbfentity.Pidfpbfid;
+                        objPbfGeneralTdpAdd.PidfpbfGeneralId = pbfgeneralid;
+                        objPbfGeneralTdpAdd.PidfproductStrngthId = item.PidfproductStrngthId;
+                        objPbfGeneralTdpAdd.CreatedDate = DateTime.Now;
+                        objPbfGeneralTdpAdd.CreatedBy = loggedInUserId;
+                        _PbfGeneralTdp.AddAsync(objPbfGeneralTdpAdd);
+                    }
+
                 }
 
                 await _unitOfWork.SaveChangesAsync();
@@ -2645,7 +2649,7 @@ namespace EmcureNPD.Business.Core.Implementation
                 //await SavePackSizeStability(pbfentity, pbfgeneralid);
                 #endregion
                 #region TDT
-                await SaveTDT(pbfentity, pbfgeneralid);
+                //await SaveTDT(pbfentity, pbfgeneralid);
                 #endregion
                 return pbfgeneralid;
             }
