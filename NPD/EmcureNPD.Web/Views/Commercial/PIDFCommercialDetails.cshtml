@@ -294,7 +294,7 @@
                                                                     <div class="form-group required">
                                                                         @Html.LabelFor(model => model.CommercialBatchSize,@MasterLocalizer["CommercialBatchSize"], new { @class = "control-label" })
                                                                         <span class="text-danger">*</span>
-                                                                        @Html.TextBoxFor(model => model.CommercialBatchSize, new { @autocomplete = "off", @class = "form-control checkbox-checked", @placeholder = @MasterLocalizer["CommercialBatchSize"] })
+                                                                        @Html.TextBoxFor(model => model.CommercialBatchSize, new { @type="number", @min="0",@autocomplete = "off", @class = "form-control checkbox-checked", @placeholder = @MasterLocalizer["CommercialBatchSize"] })
                                                                         @Html.ValidationMessageFor(model => model.CommercialBatchSize, "", new { @class = "text-danger" })
                                                                         <label id="valmsgCommercialBatchSize" class="text-danger"></label>
                                                                     </div>

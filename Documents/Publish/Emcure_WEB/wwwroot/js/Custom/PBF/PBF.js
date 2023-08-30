@@ -15,6 +15,7 @@ var isValidPBFForm = true;
 var PBFLinesArr = [];
 let IsRaEditable = false;
 var rndmasterdata_dbValueOf_lineId = 0;
+
 var arrRnDTabList = [   //custom-tabs-department-RnD-tab-
     'DosageFormulation',
     'APIRequirment',
@@ -38,7 +39,7 @@ $(document).ready(function () {
         // _mode = $('#hdnIsView').val(); //parseInt($('#hdnPIDFId').val());
         _mode = getParameterByName("IsView");
         _pbf = getParameterByName("pbf");
-        //BussinesUnitInterestedPBF(_PIDFID, $("#BusinessUnitId").val(),'PBF');
+        BussinesUnitInterestedPBF(_PIDFID, $("#BusinessUnitId").val(),'PBF');
     } catch (e) {
         _mode = getParameterByName("IsView");
         /* _PIDFId = parseInt(getParameterByName("pidfid"));*/
@@ -50,6 +51,7 @@ $(document).ready(function () {
     GetPBFDropdown();
     GetTypeOfSubmission();
     GetNationalApprovals();
+    //createTdp();
     $(document).on("change", ".calcRNDBatchSizesPrototypeFormulation, .calcRNDBatchSizesScaleUpbatch, .calcRNDBatchSizesExhibitBatch1, .calcRNDBatchSizesExhibitBatch2, .calcRNDBatchSizesExhibitBatch3", function () {
         ChangeAPIReq_OnChange_selectDosageFormula();
         $("input[class~='rndExicipientRsperkg']").trigger('change');
@@ -1175,7 +1177,7 @@ function BindGeneralPackSizeStability(data) {
         if (data.pidfProductStrengthGeneralRanDList != null) {
             for (var j = 0; j < data.pidfProductStrengthGeneralRanDList.length; j++) {
                 html += `<tr><td>${data.pidfProductStrengthGeneralRanDList[j].strength} ${data.pidfProductStrengthGeneralRanDList[j].unitofMeasurementName}<input type="hidden" name="PidfPbfRnDPackSizeStability[${j}].StrengthId" value="${data.pidfProductStrengthGeneralRanDList[j].strength}"></td>${td}</tr>`
-               
+                
             }
         }
         html += '</table>';
@@ -1184,6 +1186,8 @@ function BindGeneralPackSizeStability(data) {
         if (data.pidfProductStrengthGeneralRanDList != null) {
             for (var j = 0; j < data.pidfProductStrengthGeneralRanDList.length; j++) {
                 pidfProductStrengthId.push(data.pidfProductStrengthGeneralRanDList[j].pidfProductStrengthId);
+                
+
             }
         }
         if (data.pidfPackSizeGeneralRanDList != null) {
@@ -1222,7 +1226,7 @@ function BindGeneralPackSizeStability(data) {
         else {
           $("#DvPackSizeStability").hide();
         }
-}
+    }
 }
 function GetPBFTabDetails() {
     ajaxServiceMethod($('#hdnBaseURL').val() + GetPBFAllTabDetails + "/" + _PIDFID + "/" + _selectBusinessUnit + "/" + _PIDFPBFId + "/" + $("#PbfRndDetailsId").val(), 'GET', GetPBFTabDetailsSuccess, GetPBFTabDetailsError);
@@ -1280,7 +1284,8 @@ function GetPBFTabDetailsSuccess(data) {
             //data.PidfPbfGeneralRnd
             BindPbfGeneralRnd(data.PidfPbfGeneralRnd);
             //PidfPbfGeneralPackSizeStability
-           // BindGeneralPackSizeStability(data.PidfPbfGeneralPackSizeStability);
+            //BindGeneralPackSizeStability(data.PidfPbfGeneralPackSizeStability);
+            createTdp(data.GetStrengthForPBFTDP.pidfProductStrengthGeneralRanDList);
             //console.log(data.PidfPbfGeneralPackSizeStability)
             //**End Date Formating for get GetPIDF_PBF_General_RND*/
             $.each($('.AnalyticalTestTypeId'), function (index, item) {
@@ -3851,3 +3856,103 @@ function BussinesUnitInterestedPBFError(x, y, z) {
     toastr.error(ErrorMessage);
 }
 
+function createTdp(data) {
+    console.log(data);
+    $("#TdpDiv").empty();
+    let html = ``;
+    let strngthTdInovator = ``;
+    let strngthTdEmcure = ``;
+    let InovatorStrengthTextBox = ``;
+    let InovatorStrengthFile = ``;
+    let EmcureStrengthTextBox = ``;
+    let EmcureStrengthFile = ``;
+    if (data.length > 0) {
+        for (let j = 0; j < data.length; j++) {
+            strngthTdInovator += `<td class="bg-primary text-bold">${data[j].strength} ${data[j].unitofMeasurementName}</td>`
+            InovatorStrengthTextBox += `<td><input class="form-control" type="text"/></td>`
+            InovatorStrengthFile +=`<td><input class="form-control" type="file"></td>`
+        }
+        for (let j = 0; j < data.length; j++) {
+            strngthTdEmcure += `<td class="bg-primary text-bold">${data[j].strength} ${data[j].unitofMeasurementName}</td>`
+            EmcureStrengthTextBox += `<td><input class="form-control" type="text"/></td>`
+            EmcureStrengthFile += `<td><input class="form-control" type="file"></td>`
+        }
+    }
+        for (let i = 0; i < 2; i++) {
+        if (i == 0) {
+           
+            html += `<div class="col-md-6">
+              <table>
+              <tbody id="TdpTbody${i}""><table class="table">
+               <tr>
+                <td class="bg-primary text-bold">Strength</td>${strngthTdInovator}
+                </tr>
+                <tr>
+                <td>Description</td>${InovatorStrengthTextBox}
+                </tr>
+                 <tr>
+                <td>Shape</td>${InovatorStrengthTextBox}
+                </tr>
+                 <tr>
+                <td>Colour</td>${InovatorStrengthTextBox}
+                </tr>
+                <tr>
+                <td>Engraving</td>${InovatorStrengthTextBox}
+                </tr>
+                <tr>
+                <td>Packaging</td>${InovatorStrengthFile}
+                </tr>
+                <tr>
+                <td>Primary</td>${InovatorStrengthTextBox}
+                </tr>
+                <tr>
+                <td>Secondry</td>${InovatorStrengthTextBox}
+                </tr>
+                <tr>
+                <td>Self-Life</td>${InovatorStrengthTextBox}
+                </tr>
+                 <tr>
+                <td>Storage/Handling</td>${InovatorStrengthTextBox}
+                </tr>`;
+        }
+        if (i == 1) {
+            html += `<div class="col-md-6">
+              <table>
+              <tbody id="TdpTbody${i}""><table class="table">
+               <tr>
+                ${strngthTdEmcure}
+                </tr>
+                <tr>
+                ${EmcureStrengthTextBox}
+                </tr>
+                 <tr>
+                 ${EmcureStrengthTextBox}
+                </tr>
+                 <tr>
+                 ${EmcureStrengthTextBox}
+                </tr>
+                <tr>
+                 ${EmcureStrengthTextBox}
+                </tr>
+                <tr>
+                ${EmcureStrengthFile}
+                </tr>
+                <tr>
+                ${EmcureStrengthTextBox}
+                </tr>
+                <tr>
+                ${EmcureStrengthTextBox}
+                </tr>
+                <tr>
+                ${EmcureStrengthTextBox}
+                </tr>
+                <tr>
+                ${EmcureStrengthTextBox}
+                </tr>`;
+        }
+        html += `</table></tbody></table></div>`
+    }
+   
+    $("#TdpDiv").append(html);
+    //$(".clsContentUnderBUTab_PBF").show();
+}

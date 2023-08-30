@@ -2684,7 +2684,7 @@ namespace EmcureNPD.Business.Core.Implementation
                 //await SavePackSizeStability(pbfentity, pbfgeneralid);
                 #endregion
                 #region TDT
-                await SaveTDT(pbfentity, pbfgeneralid);
+                //await SaveTDT(pbfentity, pbfgeneralid);
                 #endregion
                 return pbfgeneralid;
             }
