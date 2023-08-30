@@ -142,8 +142,8 @@ namespace EmcureNPD.Business.Models
         public PidfPbfGeneralRndEntity PidfPbfGeneralRnd { get; set; }
         public List<PidfPbfRnDPackSizeStabilityEntity> PidfPbfRnDPackSizeStability { get; set; }
         public string BestudyResults { get; set; }
-        public PbfGeneralTdpEntity PbfGeneralTdpEntity { get; set; }
-        //public List<PbfGeneralTdpEntity> PbfGeneralTdpEntity { get; set; }
+       // public PbfGeneralTdpEntity PbfGeneralTdpEntity { get; set; }
+        public List<PbfGeneralTdpEntity> PbfGeneralTdpEntity { get; set; }
         #endregion
     }
     #region Clinical Classes 
