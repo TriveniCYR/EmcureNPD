@@ -389,6 +389,7 @@ namespace EmcureNPD.Business.Core.Implementation
             DropdownObjects.PidfPbfGeneralRnd = await GetPidfPbfGeneralRnd(PIDFId, pbfId, PbfRndDetailsId, BUId);
             DropdownObjects.PidfPbfGeneralPackSizeStability = await GetGeneralPackSizeStability(PIDFId, BUId);
             DropdownObjects.GetStrengthForPBFTDP = await GetStrengthForPBFTDP(PIDFId);
+            DropdownObjects.GetTDPList = await GetTDT(PIDFId);
             DropdownObjects.GetCountyForBussinessUnitAndPIDF = await GetCountyForBussinessUnitAndPIDF(PIDFId, BUId);
 			return DropdownObjects;
         }
@@ -1284,20 +1285,38 @@ namespace EmcureNPD.Business.Core.Implementation
         {
             try
             {
-                
+                int index = 0;
                 var loggedInUserId = _helper.GetLoggedInUser().UserId;
                 foreach (var item in pbfentity.PbfGeneralTdpEntity)
                 {
+                    var IsEmcure = index % 2 == 0 ? true : false;
                     var objPbfGeneralTdp = _PbfGeneralTdp.GetAllQuery().
               Where(x => x.TradeDressProposalId == item.TradeDressProposalId).FirstOrDefault();
+
+                    var objPbfGeneralTdpRemovableList = _PbfGeneralTdp.GetAllQuery().
+             Where(x => x.TradeDressProposalId == item.TradeDressProposalId).ToList();
                     if (objPbfGeneralTdp != null)
                     {
+                        //_PbfGeneralTdp.RemoveRange(objPbfGeneralTdpRemovableList);
+                        //   await _unitOfWork.SaveChangesAsync();
+
                         objPbfGeneralTdp.Pidfid = pbfentity.Pidfid;
-                        objPbfGeneralTdp.Approch = item.Approch;
+                        objPbfGeneralTdp.Approch = pbfentity.PbfGeneralTdpEntity[0].Approch;
                         objPbfGeneralTdp.PbfId = pbfentity.Pidfpbfid;
                         objPbfGeneralTdp.PidfpbfGeneralId = pbfgeneralid;
-                        objPbfGeneralTdp.PidfproductStrngthId = item.PidfproductStrngthId;
-                        objPbfGeneralTdp.FormulaterResponsiblePerson = item.FormulaterResponsiblePerson;
+                        objPbfGeneralTdp.PidfproductStrngthId = pbfentity.PbfGeneralTdpEntity[0].PidfproductStrngthId;
+                        objPbfGeneralTdp.FormulaterResponsiblePerson = pbfentity.PbfGeneralTdpEntity[0].FormulaterResponsiblePerson;
+
+                        objPbfGeneralTdp.Description = item.Description;
+                        objPbfGeneralTdp.Shape = item.Shape;
+                        objPbfGeneralTdp.Color = item.Color;
+                        objPbfGeneralTdp.Engraving = item.Engraving;
+                        objPbfGeneralTdp.Packaging = item.Packaging;
+                        objPbfGeneralTdp.ShelfLife = item.ShelfLife;
+                        objPbfGeneralTdp.StorageHandling = item.StorageHandling;
+                        objPbfGeneralTdp.IsPrimaryPackaging = item.IsPrimaryPackaging;
+                        objPbfGeneralTdp.IsSecondryPackaging = item.IsSecondryPackaging;
+                        objPbfGeneralTdp.IsEmcure = IsEmcure;
                         objPbfGeneralTdp.CreatedDate = DateTime.Now;
                         objPbfGeneralTdp.CreatedBy = loggedInUserId;
                         _PbfGeneralTdp.UpdateAsync(objPbfGeneralTdp);
@@ -1306,15 +1325,26 @@ namespace EmcureNPD.Business.Core.Implementation
                     {
                         PbfGeneralTdp objPbfGeneralTdpAdd = new();
                         objPbfGeneralTdpAdd.Pidfid = pbfentity.Pidfid;
-                        objPbfGeneralTdpAdd.Approch = item.Approch;
+                        objPbfGeneralTdpAdd.Approch = pbfentity.PbfGeneralTdpEntity[0].Approch;
                         objPbfGeneralTdpAdd.PbfId = pbfentity.Pidfpbfid;
                         objPbfGeneralTdpAdd.PidfpbfGeneralId = pbfgeneralid;
-                        objPbfGeneralTdpAdd.PidfproductStrngthId = item.PidfproductStrngthId;
+                        objPbfGeneralTdpAdd.PidfproductStrngthId = pbfentity.PbfGeneralTdpEntity[0].PidfproductStrngthId;
+                        objPbfGeneralTdpAdd.FormulaterResponsiblePerson = pbfentity.PbfGeneralTdpEntity[0].FormulaterResponsiblePerson;
+                        objPbfGeneralTdpAdd.Description = item.Description;
+                        objPbfGeneralTdpAdd.Shape = item.Shape;
+                        objPbfGeneralTdpAdd.Color = item.Color;
+                        objPbfGeneralTdpAdd.Engraving = item.Engraving;
+                        objPbfGeneralTdpAdd.Packaging = item.Packaging;
+                        objPbfGeneralTdpAdd.ShelfLife = item.ShelfLife;
+                        objPbfGeneralTdpAdd.StorageHandling = item.StorageHandling;
+                        objPbfGeneralTdpAdd.IsPrimaryPackaging = item.IsPrimaryPackaging;
+                        objPbfGeneralTdpAdd.IsSecondryPackaging = item.IsSecondryPackaging;
+                        objPbfGeneralTdpAdd.IsEmcure = IsEmcure;
                         objPbfGeneralTdpAdd.CreatedDate = DateTime.Now;
                         objPbfGeneralTdpAdd.CreatedBy = loggedInUserId;
                         _PbfGeneralTdp.AddAsync(objPbfGeneralTdpAdd);
                     }
-
+                    index++;
                 }
 
                 await _unitOfWork.SaveChangesAsync();
@@ -1325,6 +1355,11 @@ namespace EmcureNPD.Business.Core.Implementation
             }
             return pbfentity.Pidfpbfid;
 
+        }
+        private async Task<List<PbfGeneralTdpEntity>> GetTDT(long PIDFID)
+        {
+            var dbObj = await _PbfGeneralTdp.GetAllAsync(x => x.Pidfid == PIDFID);
+            return _mapperFactory.GetList<PbfGeneralTdp, PbfGeneralTdpEntity>(dbObj.OrderByDescending(x=>x.TradeDressProposalId).ToList());
         }
         public async Task<long> SavePidfAndPBFCommanDetailsnew(long pidfid, PBFFormEntity pbfentity)
         {
@@ -2649,7 +2684,7 @@ namespace EmcureNPD.Business.Core.Implementation
                 //await SavePackSizeStability(pbfentity, pbfgeneralid);
                 #endregion
                 #region TDT
-                //await SaveTDT(pbfentity, pbfgeneralid);
+                await SaveTDT(pbfentity, pbfgeneralid);
                 #endregion
                 return pbfgeneralid;
             }

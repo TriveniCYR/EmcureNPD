@@ -559,41 +559,73 @@
                                                             <input type="text" id="FormulaterResponsiblePerson" class="form-control" name="PbfGeneralTdpEntity.FormulaterResponsiblePerson" />
                                                     </div>
                                             </div>*@
-                                            <div class="row">
+                                            <div class="row" id>
                                                         <div class="col-md-3">
                                                             <div class="form-group required">
 
-                                                            <label class="control-label" for="FormulaterResponsiblePerson">Formulater Responsible Person</label>
-                                                            <input type="text" id="FormulaterResponsiblePerson" class="form-control" name="PbfGeneralTdpEntity.FormulaterResponsiblePerson" placeholder="Formulater Responsible Person" />
-
-
+                                                            @Html.LabelFor(model =>  model.PbfGeneralTdpEntity[0].FormulaterResponsiblePerson,"Formulater Responsible Person", new { @class = "control-label" })
+                                                            @Html.TextBoxFor(model => model.PbfGeneralTdpEntity[0].FormulaterResponsiblePerson, new {@class = "form-control", @placeholder = "Formulater Responsible Person",@id="FormulaterResponsiblePerson" })
                                                             </div>
                                                             </div>
                                                     <div class="col-md-3">
                                                         <div class="form-group required">
                                                            
-                                                            @*<input type="hidden" id="TradeDressProposalId" name="PbfGeneralTdpEntity[0].TradeDressProposalId"/>*@
-                                                           @* @Html.LabelFor(model =>  model.PbfGeneralTdpEntity[0].Approch,"Approch", new { @class = "control-label" })
-                                                            @Html.TextBoxFor(model => model.PbfGeneralTdpEntity[0].Approch, new {@class = "form-control", @placeholder = "Approch" })*@
-                                                           <input type="hidden" id="TradeDressProposalId" name="PbfGeneralTdpEntity.TradeDressProposalId"  />
-                                                             @Html.LabelFor(model =>  model.PbfGeneralTdpEntity.Approch,"Approch", new { @class = "control-label" })
-                                                            @Html.TextBoxFor(model => model.PbfGeneralTdpEntity.Approch, new {@class = "form-control", @placeholder = "Approch" })
+                                                            
+                                                           @Html.LabelFor(model =>  model.PbfGeneralTdpEntity[0].Approch,"Approch", new { @class = "control-label"  })
+                                                            @Html.TextBoxFor(model => model.PbfGeneralTdpEntity[0].Approch, new {@class = "form-control", @placeholder = "Approch" ,@id="Approch"})
+                                                         
                                                         </div>
                                                     </div>
                                                     </div>
-                                                    <div class="row">
+
+                                                    <div class="row" id="headerDiv">
                                                          <div class="col-md-4" style="background-color:black;color:whitesmoke;font-size: 25px;font-weight: bold;">
                                                             TDP
                                                             </div>
                                                      <div class="col-md-4" style="background-color:black;color:yellow;font-size: 25px;font-weight: bold;">
                                                             Innovator
+                                                            <input type="hidden" id="IsEmcure" name="PbfGeneralTdpEntity[0].IsEmcure" value="false"/>
                                                     </div>
                                                     <div class="col-md-4" style="background-color:black;color:darkorange;font-size: 25px;font-weight: bold;">
                                                                     Emcure
+                                                                    <input type="hidden" id="IsEmcure" name="PbfGeneralTdpEntity[0].IsEmcure" value="true"/>
                                                     </div>
                                                     </div>
                                                 <div class="row" id="TdpDiv">
-                                                    
+                                                    <table id="Tdptable" class="table table-bordered table-striped table-hover">
+
+                                                       <thead id="tdpThead" class="bg-primary text-bold">
+                                                           </thead>
+                                                        <tbody id="tbody">
+                                                            <tr id="tr1">
+                                                            <td>Description</td>
+                                                            </tr>
+                                                             <tr id="tr2">
+                                                            <td>Shape</td>
+                                                            </tr>
+                                                             <tr id="tr3">
+                                                            <td>Color</td>
+                                                            </tr>
+                                                             <tr id="tr4">
+                                                            <td>Engraving</td>
+                                                            </tr>
+                                                             <tr id="tr5">
+                                                            <td>Packaging</td>
+                                                            </tr>
+                                                             <tr id="tr6">
+                                                            <td>Primary</td>
+                                                            </tr>
+                                                             <tr id="tr7">
+                                                            <td>Secondry</td>
+                                                            </tr>
+                                                             <tr id="tr8">
+                                                            <td>Self-Life</td>
+                                                            </tr>
+                                                             <tr id="tr9">
+                                                        <td>Storage/Handling</td>
+                                                            </tr>
+                                                        </tbody>
+                                                    </table>
                                                    </div>
                                         </div>
                                     </div>
