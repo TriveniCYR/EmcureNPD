@@ -91,16 +91,12 @@ namespace EmcureNPD.API.Controllers.PBF
 
         [HttpPost]
         [Route("InsertUpdatePBFDetails")]
-        [Consumes("multipart/form-data")]
-        public async Task<IActionResult> InsertUpdatePBFDetails(PBFFormEntity pbfEntity, [FromForm] IFormFile  tdtfile)
+        public async Task<IActionResult> InsertUpdatePBFDetails(PBFFormEntity pbfEntity)
         {
             try
             {
-                var files = tdtfile.FileName;
                 DBOperation oResponse = await _PBFService.AddUpdatePBFDetails(pbfEntity);
-                var path = Path.Combine(_webHostEnvironment.WebRootPath, "Uploads\\PIDF\\TDT");
-                DBOperation oResponsetdt = await _PBFService.FileUpload(files: tdtfile, path: path, uniqueFileName: files);
-                if (oResponse == DBOperation.Success && oResponsetdt== DBOperation.Success)
+                if (oResponse == DBOperation.Success)
                     return _ObjectResponse.Create(true, (Int32)HttpStatusCode.OK, (pbfEntity.Pidfpbfid > 0 ? "Updated Successfully" : "Inserted Successfully"));
                 else
                     return _ObjectResponse.Create(false, (Int32)HttpStatusCode.BadRequest, (oResponse == DBOperation.NotFound ? "Record not found" : "Bad request"));
