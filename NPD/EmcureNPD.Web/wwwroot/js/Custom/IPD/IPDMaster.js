@@ -7,7 +7,7 @@ var isValidIPDForm = true;
 $(document).ready(function () {
     fnGetActiveBusinessUnit();
     GetRegionList();
-   
+
     try {
         _PIDFId = parseInt($('#hdnPIDFId').val());
         _IPDMode = $('#hdnIPDIsView').val(); //parseInt($('#hdnPIDFId').val());
@@ -17,8 +17,8 @@ $(document).ready(function () {
     if ($('#hdnIsPartial').val() != '1') {
         getPIDFAccordion(_PIDFAccordionURL, _PIDFID, "dvPIDFAccrdion");
     }
-   
-    $(document).on("change", "[id*='ExtensionExpiryDate']", function () {  
+
+    $(document).on("change", "[id*='ExtensionExpiryDate']", function () {
         var todaysDate = new Date();
         var _extensionExpiryDate = new Date($(this).val());
         var _originalExpiryDate = new Date($(this).closest('tr').find('.originalDate').val());
@@ -32,7 +32,7 @@ $(document).ready(function () {
             $(this).css("border-color", "red");
             $(this).val('');
             isValidIPDForm = false;
-            toastr.error(PastdateErrorMsg);  
+            toastr.error(PastdateErrorMsg);
         }
         else {
             $(this).css("border-color", "");
@@ -40,7 +40,7 @@ $(document).ready(function () {
     });
     $(document).on("change", "[id*='OriginalExpiryDate']", function () {
         var todaysDate = new Date();
-        var _originalExpiryDate  = new Date($(this).val());
+        var _originalExpiryDate = new Date($(this).val());
         var _extensionExpiryDate = new Date($(this).closest('tr').find('.extendedDate').val());
         if (_extensionExpiryDate <= _originalExpiryDate) {
             $(this).val('');
@@ -52,7 +52,7 @@ $(document).ready(function () {
             $(this).css("border-color", "red");
             $(this).val('');
             isValidIPDForm = false;
-            toastr.error(PastdateErrorMsg);            
+            toastr.error(PastdateErrorMsg);
         }
         else {
             $(this).css("border-color", "");
@@ -67,7 +67,7 @@ $(document).ready(function () {
         }
     });
 
-    $(document).on("change", ".SelectCountryPD", function () {       
+    $(document).on("change", ".SelectCountryPD", function () {
         if (!ValidateDuplicateCountryID(".SelectCountryPD"))
             $(this).val(undefined)
     });
@@ -76,9 +76,9 @@ $(document).ready(function () {
         if (!ValidateDuplicateCountryID(".SelectCountryPDAPI"))
             $(this).val(undefined)
     });
-    
+
 });
-function Set_optionTextforAnyPatentstobeFiled () {
+function Set_optionTextforAnyPatentstobeFiled() {
     $(".clsAnyPatentstobeFiled").each(function (ind, val) {
         val.options[0].text = '--Select--'
     });
@@ -92,16 +92,16 @@ function ValidateDuplicateCountryID(controlclass) {
         if (i == -1)
             arr.push(parseInt(this.value));
         else {
-            IsValid = false;            
+            IsValid = false;
         }
-        
+
     });
     if (IsValid) {
         var IsValid = true;
-    } else {        
+    } else {
         toastr.error("Duplicate Country not allowed", "Error:");
-    }       
-   
+    }
+
     return IsValid;
 }
 
@@ -114,26 +114,26 @@ function GetActiveBusinessUnitSuccess(data) {
     var businessUnitPanel = "";
     $.each(data._object, function (index, item) {
         businessUnitHTML += '<li class="nav-item p-0">\
-            <a class="nav-link '+ (item.businessUnitId == _selectBusinessUnit ? "active" : "") + ' px-2" href="#custom-tabs-' + item.businessUnitId + '" data-toggle="pill" aria-selected="true" onclick="LoadIPDForm(' + _PIDFID + ', ' + item.businessUnitId +')" id="custom-tabs-two-' + item.businessUnitId + '-tab">' + item.businessUnitName + '</a></li>';
+            <a class="nav-link '+ (item.businessUnitId == _selectBusinessUnit ? "active" : "") + ' px-2" href="#custom-tabs-' + item.businessUnitId + '" data-toggle="pill" aria-selected="true" onclick="LoadIPDForm(' + _PIDFID + ', ' + item.businessUnitId + ')" id="custom-tabs-two-' + item.businessUnitId + '-tab">' + item.businessUnitName + '</a></li>';
         businessUnitPanel += '<div class="tab-pane ' + ((item.businessUnitId == _selectBusinessUnit ? "fade show active" : "")) + '" id="custom-tabs-' + item.businessUnitId + '" role="tabpanel" aria-labelledby="custom-tabs-two-' + item.businessUnitId + '-tab"></div>';
     });
     $('#custom-tabs-two-tab').html(businessUnitHTML);
     $('#custom-tabs-two-tabContent').html(businessUnitPanel);
-   
+
     LoadIPDForm(_PIDFID, _selectBusinessUnit);
-    
+
 }
 function GetActiveBusinessUnitError(x, y, z) {
     toastr.error(ErrorMessage);
 }
-function LoadIPDForm(pidfId, BusinessUnitId) {  
+function LoadIPDForm(pidfId, BusinessUnitId) {
     _selectBusinessUnit = BusinessUnitId;
     if ($("#custom-tabs-" + BusinessUnitId).html() == "") {
         $.get(_IPDPartialURL, { pidfid: pidfId, bui: BusinessUnitId }, function (content) {
             $("#custom-tabs-" + BusinessUnitId).html(content);
             $('#SelectedTabBusinessUnit').val(_selectBusinessUnit);
             //Hide Form for Non Intrested Business Unit
-           
+
             SetDisableForOtherUserBU(_selectBusinessUnit);
             GetCountryList_PatentDetailsFormulation();
             GetPatentStrategyDropdownList();
@@ -204,7 +204,7 @@ function GetCountryListError(x, y, z) {
 
 // # Patent Details Formulation- Get Country List
 //'.SelectCountryPD'
-function FillPatendDetailsDropDown_CountryId(controlClass,data) {
+function FillPatendDetailsDropDown_CountryId(controlClass, data) {
     getParentFormId().find(controlClass).empty();
     getParentFormId().find(controlClass).each(function () {
         var selectControl = $(this);
@@ -220,13 +220,13 @@ function FillPatendDetailsDropDown_CountryId(controlClass,data) {
 
 function GetCountryList_PatentDetailsFormulation() {
     ajaxServiceMethod($('#hdnBaseURL').val() + GetCountryForPatentDetails + "/" + _selectBusinessUnit + "/" + _PIDFID, 'GET', GetCountryList_PatentDetailsFormulationSuccess, GetCountryList_PatentDetailsFormulationError);
-    
+
 }
 function GetCountryList_PatentDetailsFormulationSuccess(data) {
     try {
         FillPatendDetailsDropDown_CountryId('.SelectCountryPD', data);
         FillPatendDetailsDropDown_CountryId('.SelectCountryPDAPI', data);
-       // getParentFormId().find('.SelectCountryPD').val(arr).trigger('change');
+        // getParentFormId().find('.SelectCountryPD').val(arr).trigger('change');
     } catch (e) {
         toastr.error('Error:' + e.message);
     }
@@ -236,7 +236,7 @@ function GetCountryList_PatentDetailsFormulationError(x, y, z) {
 }
 //patent details Patent Strategy dropdown List
 
-function FillPatendDetailsDropDown_PatentStrategy(controllclass, data){
+function FillPatendDetailsDropDown_PatentStrategy(controllclass, data) {
     getParentFormId().find(controllclass).empty();
     getParentFormId().find(controllclass).each(function () {
         var selectControl = $(this);
@@ -273,7 +273,7 @@ function SaveIPDClick(type) {
     isValidIPDForm = true;
     $('.originalDate').trigger("change");
     $('.extendedDate').trigger("change");
-   
+
     if (type == 'Drf') {
         $('#fIPDForm_' + _selectBusinessUnit).validate().settings.ignore = "*";
 
@@ -291,12 +291,12 @@ function SaveIPDClick(type) {
     } else {
         return false;
     }
-    
+
 }
 
 function addRowParent(j) {
     var table = getParentFormId().find('#parentBody');
-    var node = getParentFormId().find('#parentRow_'+j).clone(true);
+    var node = getParentFormId().find('#parentRow_' + j).clone(true);
     table.find('tr:last').after((node.length > 1 ? node[0] : node));
     table.find('tr:last').find("input").val("");
     IPDSetChildRowDeleteIcon();
@@ -387,10 +387,10 @@ function SetDisableForOtherUserBU(_selectBusinessUnit) {
     // var IsViewInMode = ($("#IsView").val() == '1')
     if (status == -1) {
         readOnlyIPDForm();
-       // HideFormForNotInterestedBU(true);
+        // HideFormForNotInterestedBU(true);
     }
     else {
-      //  HideFormForNotInterestedBU(false)
+        //  HideFormForNotInterestedBU(false)
     }
 }
 
@@ -401,13 +401,13 @@ function readOnlyIPDFormForOtherBU(flag) {
     $('#dvIPDContainer').find('textarea').attr('readonly', flag).attr('disabled', flag);
     //$('button').attr('readonly', true).attr('disabled', true);
     $('#dvIPDContainer').find('select').attr('readonly', flag).attr('disabled', flag);
-    if(flag)
+    if (flag)
         $('#dvIPDContainer').find('.operationButton').hide();
     else
         $('#dvIPDContainer').find('.operationButton').show();
 }
 function checkRadioCheckOrNot() {
-    if ($(".IPDIsComment").is(":checked")) { $(".IPDCommentText").attr("readonly", false); $(".IPDCommentText").attr("disabled", false  ) }
+    if ($(".IPDIsComment").is(":checked")) { $(".IPDCommentText").attr("readonly", false); $(".IPDCommentText").attr("disabled", false) }
     else {
         $(".IPDCommentText").val("");
         $(".IPDCommentText").attr("disabled", true);
@@ -419,7 +419,7 @@ function checkRadioCheckOrNot() {
 
 function validatePatentDetails() {
     var flag = true;
-    $('#dvIPDContainer').find('.validateChildDetails').each(function () {     
+    $('#dvIPDContainer').find('.validateChildDetails').each(function () {
         if ($(this).val().trim() == '') {
             $(this).css("border-color", "red");
             $(this).focus();
@@ -428,9 +428,9 @@ function validatePatentDetails() {
         else {
             $(this).css("border-color", "");
         }
-    });  
+    });
     if (!flag) {
-        toastr.error("Some fields are missing values,Fill all Business Unit Tab details !");  
+        toastr.error("Some fields are missing values,Fill all Business Unit Tab details !");
     }
     return flag;
 }
@@ -446,7 +446,7 @@ function validateDynamicControldDetailsIPD() {
         }
     });
     return flag;
-   
+
 }
 function validatecontrols(control) {
     if ($(control).val().trim() == '') {
@@ -462,7 +462,7 @@ function validatecontrols(control) {
 //-----------------patent Details API---------------------------------------
 function addRowParentAPI(j) {
     var table = getParentFormId().find('#parentBodyAPI');
-    var node = getParentFormId().find('#parentRowAPI_'+j).clone(true);
+    var node = getParentFormId().find('#parentRowAPI_' + j).clone(true);
     table.find('tr:last').after((node.length > 1 ? node[0] : node));
     table.find('tr:last').find("input").val("");
     IPDSetChildRowDeleteIconAPI();
@@ -489,7 +489,7 @@ function SetIPDChildRowsAPI() {
         $(this).find("td:eq(6) input").attr("name", "pidf_IPD_PatentDetailsEntitiesAPI[" + index.toString() + "].Strategy");
 
 
-       // $(this).find("td:eq(6) select").attr("name", "pidf_IPD_PatentDetailsEntitiesAPI[" + index.toString() + "].CountryId");
+        // $(this).find("td:eq(6) select").attr("name", "pidf_IPD_PatentDetailsEntitiesAPI[" + index.toString() + "].CountryId");
         $(this).find("td:eq(7) select[id$=PatentStrategy]").attr("name", "pidf_IPD_PatentDetailsEntitiesAPI[" + index.toString() + "].PatentStrategy");
         $(this).find("td:eq(7) input[id$=PatentStrategyOther]").attr("name", "pidf_IPD_PatentDetailsEntitiesAPI[" + index.toString() + "].PatentStrategyOther");
         $(this).find("td:eq(8) input").attr("name", "pidf_IPD_PatentDetailsEntitiesAPI[" + index.toString() + "].BasicPatentExpiry");
@@ -523,6 +523,37 @@ function BussinesUnitStatusforIsInterested_IPDSuccess(data) {
     var NonIntNote_HeadingNote = '#dvNotInterestedBUNoteHeading_' + CurrentscreenId_IPD;
 
     DispalyStatusOfBUByInterested(data, BUTabData_Div, NonIntNote_Div, NonIntNote_HeadingNote);
+    var interested = true;
+
+    //if (!interested || data.IsIntresetedStatusOfBU[0].businessUnitName === "ROW") {
+    //    var pidftable = document.getElementById("PIDFtable");
+    //    if (pidftable) {
+    //        while (pidftable.rows.length > 0) {
+    //            pidftable.deleteRow(0);
+    //        }
+    //    }
+    //    var pidftable = document.getElementById("PIDFTableAPI");
+    //    if (pidftable) {
+    //        while (pidftable.rows.length > 0) {
+    //            pidftable.deleteRow(0);
+    //        }
+    //    }
+
+    //}
+
+    //other way
+    //var tablist = document.getElementById("tabList");
+    //if (tablist != null) {
+    //    var tabContainer = document.createElement("div");
+    //    var tabinnerhtml = tablist.innerHTML;
+    //    if (!interested || data.IsIntresetedStatusOfBU[0].businessUnitName === "ROW") {
+    //        tabContainer.innerHTML = tabinnerhtml; 
+    //        tablist.remove();
+    //    } else {
+    //        tablist.innerHTML = ""; 
+    //        tablist.appendChild(tabContainer); 
+    //    }
+    //}
 
 }
 function BussinesUnitStatusforIsInterested_IPDError(x, y, z) {
