@@ -489,6 +489,7 @@ function checkDuplicateLogin() {
     });
 }
 function DispalyStatusOfBUByInterested(data,BUTabData_Div, NonIntNote_Div, NonIntNote_HeadingNote) {
+    var IsINterestedBU = true;
     if (true) {
         if (data != null || data != undefined) {
             if (data.IsIntresetedStatusOfBU.length > 0) {
@@ -500,6 +501,7 @@ function DispalyStatusOfBUByInterested(data,BUTabData_Div, NonIntNote_Div, NonIn
                 if (data.IsIntresetedStatusOfBU[0].actionStatus == 1) {
                     $(BUTabData_Div).show();
                     $(NonIntNote_Div).hide();
+                    IsINterestedBU = true;;
                 }
                 else if (data.IsIntresetedStatusOfBU[0].actionStatus == 2) {
                     $(BUTabData_Div).hide();
@@ -508,6 +510,7 @@ function DispalyStatusOfBUByInterested(data,BUTabData_Div, NonIntNote_Div, NonIn
                     var msgstr = businessUnitName + ' have said not interested on ' + interestedDate + ' by ' + fullName;
 
                     $(NonIntNote_HeadingNote).text(msgstr);
+                    IsINterestedBU = false;
                 }
                 else if (data.IsIntresetedStatusOfBU[0].actionStatus == 3) {
                     $(BUTabData_Div).hide();
@@ -515,8 +518,10 @@ function DispalyStatusOfBUByInterested(data,BUTabData_Div, NonIntNote_Div, NonIn
 
                     var msgstr = businessUnitName + ' have not taken any action on this'
                     $(NonIntNote_HeadingNote).text(msgstr);
+                    IsINterestedBU = false;
                 }
             }
         }
     }
+    return IsINterestedBU;
 }

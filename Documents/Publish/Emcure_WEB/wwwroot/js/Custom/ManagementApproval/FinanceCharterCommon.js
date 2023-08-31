@@ -906,7 +906,11 @@ function BussinesUnitInterestedFinanceSuccess(data) {
     var NonIntNote_Div = '#dvNotInterestedBUNote_' + CurrentscreenId_Finance;
     var NonIntNote_HeadingNote = '#dvNotInterestedBUNoteHeading_' + CurrentscreenId_Finance;
 
-    DispalyStatusOfBUByInterested(data, BUTabData_Div, NonIntNote_Div, NonIntNote_HeadingNote);
+    var IsInterested = DispalyStatusOfBUByInterested(data, BUTabData_Div, NonIntNote_Div, NonIntNote_HeadingNote);
+    //if (!IsInterested)
+    //    $('#dvBudgetApprovingButtons').hide();
+    //else
+    //    $('#dvBudgetApprovingButtons').show();
 
 }
 function BussinesUnitInterestedFinanceError(x, y, z) {
