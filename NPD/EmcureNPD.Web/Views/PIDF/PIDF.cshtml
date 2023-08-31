@@ -506,7 +506,7 @@
                                                             <div class="form-group required">
                                                                 @Html.LabelFor(model => model.RFDCountryId, Master.Countrys , new { @class = "control-label" }) <span class="text-danger">*</span>
                                                                 <input type="hidden" id="hdnRFDCountryId" value="@Model.RFDCountryId" />
-                                                                <select id="RFDCountryId" name="RFDCountryId" class="form-control customvalidateformcontrol" required></select>
+                                                                <select id="RFDCountryId" name="RFDCountryId" class="form-control customvalidateformcontrol"></select>
                                                                 @Html.ValidationMessageFor(model => model.RFDCountryId, "", new { @class = "text-danger" })
                                                             </div>
                                                         </div>

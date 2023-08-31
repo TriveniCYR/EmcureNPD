@@ -127,19 +127,7 @@ function GetActiveBusinessUnitError(x, y, z) {
     toastr.error(ErrorMessage);
 }
 function LoadIPDForm(pidfId, BusinessUnitId) {
-    _selectBusinessUnit = BusinessUnitId;
-    if ($("#custom-tabs-" + BusinessUnitId).html() == "") {
-        $.get(_IPDPartialURL, { pidfid: pidfId, bui: BusinessUnitId }, function (content) {
-            $("#custom-tabs-" + BusinessUnitId).html(content);
-            $('#SelectedTabBusinessUnit').val(_selectBusinessUnit);
-            //Hide Form for Non Intrested Business Unit
-
-            SetDisableForOtherUserBU(_selectBusinessUnit);
-            GetCountryList_PatentDetailsFormulation();
-            GetPatentStrategyDropdownList();
-            Set_optionTextforAnyPatentstobeFiled();
-        });
-    }
+    _selectBusinessUnit = BusinessUnitId;   
     BussinesUnitInterestedIPD(pidfId, BusinessUnitId, 'IPD');
 }
 // #region Get Region List
@@ -506,55 +494,36 @@ function SetIPDChildRowsAPI() {
     });
 }
 
-
-var objIsNotInterstedBUs =
-    [
-        { BussinessUnitId: '2', DateTime: '2023-08-12', FullName: 'Nilesh' },
-        { BussinessUnitId: '3', DateTime: '2023-08-13', FullName: 'Kuldip' }
-    ]
 var CurrentscreenId_IPD = '';
-function BussinesUnitInterestedIPD(pidfid, buid, screenId) {
+function BussinesUnitInterestedIPD(pidfid, BusinessUnitId, screenId) {
     CurrentscreenId_IPD = screenId;
-    ajaxServiceMethod($('#hdnBaseURL').val() + GetIsInterestedByPIDFandBUurl + "/" + pidfid + "/" + buid, 'GET', BussinesUnitStatusforIsInterested_IPDSuccess, BussinesUnitStatusforIsInterested_IPDError);
+    ajaxServiceMethod($('#hdnBaseURL').val() + GetIsInterestedByPIDFandBUurl + "/" + pidfid + "/" + BusinessUnitId, 'GET', BussinesUnitStatusforIsInterested_IPDSuccess, BussinesUnitStatusforIsInterested_IPDError);
 }
 function BussinesUnitStatusforIsInterested_IPDSuccess(data) {
     var BUTabData_Div = '.clsContentUnderBUTab_' + CurrentscreenId_IPD;
     var NonIntNote_Div = '#dvNotInterestedBUNote_' + CurrentscreenId_IPD;
     var NonIntNote_HeadingNote = '#dvNotInterestedBUNoteHeading_' + CurrentscreenId_IPD;
 
-    DispalyStatusOfBUByInterested(data, BUTabData_Div, NonIntNote_Div, NonIntNote_HeadingNote);
-    var interested = true;
+    var interested = DispalyStatusOfBUByInterested(data, BUTabData_Div, NonIntNote_Div, NonIntNote_HeadingNote);
+    
+    if (interested) {
+        if ($("#custom-tabs-" + _selectBusinessUnit).html() == "") {
+            var pidfId = _PIDFID;
+            $.get(_IPDPartialURL, { pidfid: pidfId, bui: _selectBusinessUnit }, function (content) {
+                $("#custom-tabs-" + _selectBusinessUnit).html(content);
+                $('#SelectedTabBusinessUnit').val(_selectBusinessUnit);
+                //Hide Form for Non Intrested Business Unit
 
-    //if (!interested || data.IsIntresetedStatusOfBU[0].businessUnitName === "ROW") {
-    //    var pidftable = document.getElementById("PIDFtable");
-    //    if (pidftable) {
-    //        while (pidftable.rows.length > 0) {
-    //            pidftable.deleteRow(0);
-    //        }
-    //    }
-    //    var pidftable = document.getElementById("PIDFTableAPI");
-    //    if (pidftable) {
-    //        while (pidftable.rows.length > 0) {
-    //            pidftable.deleteRow(0);
-    //        }
-    //    }
-
-    //}
-
-    //other way
-    //var tablist = document.getElementById("tabList");
-    //if (tablist != null) {
-    //    var tabContainer = document.createElement("div");
-    //    var tabinnerhtml = tablist.innerHTML;
-    //    if (!interested || data.IsIntresetedStatusOfBU[0].businessUnitName === "ROW") {
-    //        tabContainer.innerHTML = tabinnerhtml; 
-    //        tablist.remove();
-    //    } else {
-    //        tablist.innerHTML = ""; 
-    //        tablist.appendChild(tabContainer); 
-    //    }
-    //}
-
+                SetDisableForOtherUserBU(_selectBusinessUnit);
+                GetCountryList_PatentDetailsFormulation();
+                GetPatentStrategyDropdownList();
+                Set_optionTextforAnyPatentstobeFiled();
+            });
+        }
+    }
+    else {
+     //  $('#parentBodyAPI').find("tr").remove();
+    }
 }
 function BussinesUnitStatusforIsInterested_IPDError(x, y, z) {
     toastr.error(ErrorMessage);

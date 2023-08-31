@@ -4,6 +4,7 @@ var _PIDFId = 0;
 var isValidPIDFForm = true;
 var _PIDFBusinessUnitId;
 var _SelectedBusinessUnitPIDF;
+var _IsInrestedRadioClick = false;
 $(document).ready(function () {
     try {
         _PIDFId = parseInt($('#hdnPIDFId').val());
@@ -167,8 +168,10 @@ $('input[type=radio][name=PIDFIsInterested]').change(function () {
             if (result) {
                 var status = $('#dvPIDFContainer').find("#StatusId").val()
                 if (status == "2") {
+                    _IsInrestedRadioClick = true;
                     $('#btnSubmitPIDF').click();
                 } else {
+                    _IsInrestedRadioClick = true;
                     $('#btnSaveDraftPIDF').click();
                 }
             } else {
@@ -460,6 +463,7 @@ function removeDisableAttribute() {
 function SaveClick() {
     $('#loading-wrapper').show();
     isValidPIDFForm = true;
+    if (!_IsInrestedRadioClick)
     validateDynamicControldDetails();
     $('#SaveType').val('submit');
     SetChildRows();
