@@ -835,6 +835,10 @@ $(document).ready(function () {
     $('#btnNextRnDTabSelectedValue').val(0); //custom-tabs-department-RnD-tab-
 });
 
+$('#custom-tabs-department-RA-tab').click(function () {
+    SetRaChildRow();
+});
+
 function convertFormToJSON() {
     const array = $('form').serializeArray();
     const json = {};
