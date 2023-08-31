@@ -458,6 +458,7 @@ function removeDisableAttribute() {
 }
 
 function SaveClick() {
+    $('#loading-wrapper').show();
     isValidPIDFForm = true;
     validateDynamicControldDetails();
     $('#SaveType').val('submit');
@@ -465,6 +466,7 @@ function SaveClick() {
     return isValidPIDFForm;
 }
 function SaveDraftClick() {
+    $('#loading-wrapper').show();
     isValidPIDFForm = true;
     mandateDynamicControl();
     $('#SaveType').val('draft');
