@@ -61,8 +61,8 @@ function InitializePIDFList() {
                 if (_screenId == "1" || _screenId == "2" || _screenId == "7" || _screenId == "8") {
                     var _flag = false;
                     if (_screenId == "1") {
-                      //if (row.pidfStatusID == 2 && row.isAllowApprove) {
-                        if (row.pidfStatusID == 2) {
+                      if (row.pidfStatusID == 2 && row.isAllowApprove) {
+                       // if (row.pidfStatusID == 2) {
                             _flag = true;
                         }
                         $("#DvApproveReject").show();

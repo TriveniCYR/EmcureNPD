@@ -61,8 +61,8 @@ function InitializePIDFList() {
                 if (_screenId == "1" || _screenId == "2" || _screenId == "7" || _screenId == "8") {
                     var _flag = false;
                     if (_screenId == "1") {
-                      //if (row.pidfStatusID == 2 && row.isAllowApprove) {
-                        if (row.pidfStatusID == 2) {
+                      if (row.pidfStatusID == 2 && row.isAllowApprove) {
+                       // if (row.pidfStatusID == 2) {
                             _flag = true;
                         }
                         $("#DvApproveReject").show();
@@ -582,7 +582,7 @@ function GetMasterAPIOutsourcelabelsSuccess(data) {
                 labelCell.innerHTML = `<b>${item.apiOutsourceName}</b>`;
                 for (var i = 1; i <= 3; i++) {
                     var inputCell = row.insertCell(i);
-                    inputCell.innerHTML = `<input type="text" class="form-control">`;
+                    inputCell.innerHTML = `<input type="text" class="form-control" placeholder="${item.apiOutsourceName}">`;
                 }
             });
         } else {

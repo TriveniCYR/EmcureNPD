@@ -78,7 +78,7 @@ namespace EmcureNPD.Business.Core.Implementation
                             strHtml = strHtml.Replace("{PIDFNumber}", pidf.PIDFNO);
                             strHtml = strHtml.Replace("{MoleculeName}", pidf.MoleculeName);
                             strHtml = strHtml.Replace("{BrandName}", pidf.MoleculeName);
-                            strHtml = strHtml.Replace("{BusinessUnitName}", pidf.MoleculeName);
+                            strHtml = strHtml.Replace("{BusinessUnit_Name}", pidf.MoleculeName);
                             strHtml = strHtml.Replace("{DosageFormName}", pidf.MoleculeName);
 
 
@@ -101,7 +101,7 @@ namespace EmcureNPD.Business.Core.Implementation
                             strHtml = strHtml.Replace("{IMSDatahList}", strIMSData);
 
                             Console.WriteLine(strHtml);
-                            string str_subject = "PIDF : " + pidf.PIDFNO + " - Molecule Name : " + pidf.MoleculeName + " Submitted";
+                            string str_subject = "PIDF : " + pidf.PIDFNO + " - Molecule Name : " + pidf.MoleculeName + " has been Submitted";
                             email.SendMail(User.EmailAddress, string.Empty, str_subject, strHtml, _MasterUserService.GetSMTPConfiguration());
                             _logMessage += " Email Sent to { " + User.EmailAddress + " } on " + DateTime.Now.ToString() + " for PIDFNO. :" + pidf.PIDFNO + "\n";
                         }

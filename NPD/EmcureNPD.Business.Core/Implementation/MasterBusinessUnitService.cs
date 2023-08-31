@@ -169,23 +169,15 @@ namespace EmcureNPD.Business.Core.ServiceImplementations
 
         public async Task<dynamic> GetCountryByBusinessUnitId(int BusinessUnitId)
         {
-            //var loggedInUserId = _helper.GetLoggedInUser().UserId;
+            var loggedInUserId = _helper.GetLoggedInUser().UserId;
 
-			//SqlParameter[] osqlParameter = {
-			//    new SqlParameter("@BusinessUnitId", BusinessUnitId),
-			//    new SqlParameter("@UserId", loggedInUserId)
-			//};
-			//var _businessUnit = await _repository.GetBySP("SP_GetCountryByBusinessUnit", CommandType.StoredProcedure, osqlParameter);
-			//return _businessUnit;
-			dynamic DropdownObjects = new ExpandoObject();
 			SqlParameter[] osqlParameter = {
-				new SqlParameter("@BUId", BusinessUnitId)
+			    new SqlParameter("@BusinessUnitId", BusinessUnitId),
+			    new SqlParameter("@UserId", loggedInUserId)
 			};
-			DataSet dsDropdownOptions = await _repository.GetDataSetBySP("stp_npd_GetIPDPatentDetailsCountryList", System.Data.CommandType.StoredProcedure, osqlParameter);
-
-			DropdownObjects = dsDropdownOptions.Tables[0];
-
-			return DropdownObjects;
+			var _businessUnit = await _repository.GetBySP("SP_GetCountryByBusinessUnit", CommandType.StoredProcedure, osqlParameter);
+			return _businessUnit;
+			
 		}
 
         public DataTable GetActiveBusinessUnit()

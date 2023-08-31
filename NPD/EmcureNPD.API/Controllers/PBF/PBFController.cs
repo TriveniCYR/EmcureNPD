@@ -1,11 +1,15 @@
 ﻿using EmcureNPD.API.Filters;
 using EmcureNPD.API.Helpers.Response;
+using EmcureNPD.Business.Core.Implementation;
 using EmcureNPD.Business.Core.Interface;
 using EmcureNPD.Business.Core.ServiceImplementations;
 using EmcureNPD.Business.Models;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Primitives;
 using System;
+using System.IO;
 using System.Net;
 using System.Threading.Tasks;
 using static EmcureNPD.Utility.Enums.GeneralEnum;
@@ -85,6 +89,28 @@ namespace EmcureNPD.API.Controllers.PBF
             }
         }
 
+        //[HttpPost]
+        //[Route("InsertUpdatePBFDetails")]
+        //[Consumes("multipart/form-data")]
+        //public async Task<IActionResult> InsertUpdatePBFDetails(PBFFormEntity pbfEntity, [FromForm] IFormFile  tdtfile)
+        //{
+        //    try
+        //    {
+        //        var files = tdtfile.FileName;
+        //        DBOperation oResponse = await _PBFService.AddUpdatePBFDetails(pbfEntity);
+        //        var path = Path.Combine(_webHostEnvironment.WebRootPath, "Uploads\\PIDF\\TDT");
+        //        DBOperation oResponsetdt = await _PBFService.FileUpload(files: tdtfile, path: path, uniqueFileName: files);
+        //        if (oResponse == DBOperation.Success && oResponsetdt== DBOperation.Success)
+        //            return _ObjectResponse.Create(true, (Int32)HttpStatusCode.OK, (pbfEntity.Pidfpbfid > 0 ? "Updated Successfully" : "Inserted Successfully"));
+        //        else
+        //            return _ObjectResponse.Create(false, (Int32)HttpStatusCode.BadRequest, (oResponse == DBOperation.NotFound ? "Record not found" : "Bad request"));
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        await _ExceptionService.LogException(ex);
+        //        return _ObjectResponse.Create(false, (Int32)HttpStatusCode.InternalServerError, Convert.ToString(ex.StackTrace));
+        //    }
+        //}
         [HttpPost]
         [Route("InsertUpdatePBFDetails")]
         public async Task<IActionResult> InsertUpdatePBFDetails(PBFFormEntity pbfEntity)

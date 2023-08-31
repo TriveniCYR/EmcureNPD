@@ -15,6 +15,7 @@ var isValidPBFForm = true;
 var PBFLinesArr = [];
 let IsRaEditable = false;
 var rndmasterdata_dbValueOf_lineId = 0;
+
 var arrRnDTabList = [   //custom-tabs-department-RnD-tab-
     'DosageFormulation',
     'APIRequirment',
@@ -38,7 +39,7 @@ $(document).ready(function () {
         // _mode = $('#hdnIsView').val(); //parseInt($('#hdnPIDFId').val());
         _mode = getParameterByName("IsView");
         _pbf = getParameterByName("pbf");
-        //BussinesUnitInterestedPBF(_PIDFID, $("#BusinessUnitId").val(),'PBF');
+        BussinesUnitInterestedPBF(_PIDFID, $("#BusinessUnitId").val(),'PBF');
     } catch (e) {
         _mode = getParameterByName("IsView");
         /* _PIDFId = parseInt(getParameterByName("pidfid"));*/
@@ -50,6 +51,7 @@ $(document).ready(function () {
     GetPBFDropdown();
     GetTypeOfSubmission();
     GetNationalApprovals();
+    //createTdp();
     $(document).on("change", ".calcRNDBatchSizesPrototypeFormulation, .calcRNDBatchSizesScaleUpbatch, .calcRNDBatchSizesExhibitBatch1, .calcRNDBatchSizesExhibitBatch2, .calcRNDBatchSizesExhibitBatch3", function () {
         $('#loading-wrapper').show();
         ChangeAPIReq_OnChange_selectDosageFormula();
@@ -1178,7 +1180,7 @@ function BindGeneralPackSizeStability(data) {
         if (data.pidfProductStrengthGeneralRanDList != null) {
             for (var j = 0; j < data.pidfProductStrengthGeneralRanDList.length; j++) {
                 html += `<tr><td>${data.pidfProductStrengthGeneralRanDList[j].strength} ${data.pidfProductStrengthGeneralRanDList[j].unitofMeasurementName}<input type="hidden" name="PidfPbfRnDPackSizeStability[${j}].StrengthId" value="${data.pidfProductStrengthGeneralRanDList[j].strength}"></td>${td}</tr>`
-               
+                
             }
         }
         html += '</table>';
@@ -1187,6 +1189,8 @@ function BindGeneralPackSizeStability(data) {
         if (data.pidfProductStrengthGeneralRanDList != null) {
             for (var j = 0; j < data.pidfProductStrengthGeneralRanDList.length; j++) {
                 pidfProductStrengthId.push(data.pidfProductStrengthGeneralRanDList[j].pidfProductStrengthId);
+                
+
             }
         }
         if (data.pidfPackSizeGeneralRanDList != null) {
@@ -1225,7 +1229,7 @@ function BindGeneralPackSizeStability(data) {
         else {
           $("#DvPackSizeStability").hide();
         }
-}
+    }
 }
 function GetPBFTabDetails() {
     ajaxServiceMethod($('#hdnBaseURL').val() + GetPBFAllTabDetails + "/" + _PIDFID + "/" + _selectBusinessUnit + "/" + _PIDFPBFId + "/" + $("#PbfRndDetailsId").val(), 'GET', GetPBFTabDetailsSuccess, GetPBFTabDetailsError);
@@ -1283,7 +1287,9 @@ function GetPBFTabDetailsSuccess(data) {
             //data.PidfPbfGeneralRnd
             BindPbfGeneralRnd(data.PidfPbfGeneralRnd);
             //PidfPbfGeneralPackSizeStability
-           // BindGeneralPackSizeStability(data.PidfPbfGeneralPackSizeStability);
+            //BindGeneralPackSizeStability(data.PidfPbfGeneralPackSizeStability);
+            createTdp(data.GetStrengthForPBFTDP.pidfProductStrengthGeneralRanDList);
+            GetTdpList(data.GetTDPList)
             //console.log(data.PidfPbfGeneralPackSizeStability)
             //**End Date Formating for get GetPIDF_PBF_General_RND*/
             $.each($('.AnalyticalTestTypeId'), function (index, item) {
@@ -3854,3 +3860,80 @@ function BussinesUnitInterestedPBFError(x, y, z) {
     toastr.error(ErrorMessage);
 }
 
+function createTdp(data) {
+    console.log(data);
+   // $("#TdpDiv").empty();
+    let html = ``;
+    let strngthTdInovator = `<tr id="headerRow"><th style="width: 10%;">Strenght</th>`;
+    
+    if (data.length > 0)
+        html += ``;
+    for (let j = 0; j < data.length; j++) {
+
+      /*for table header*/strngthTdInovator += `<th style="width: auto;">${data[j].strength} ${data[j].unitofMeasurementName}</th><th style="width: auto;">${data[j].strength} ${data[j].unitofMeasurementName}</th>`
+      /*for table body*/
+            for (let i = 0; i <=8; i++) {
+                if (i == 0) {
+                    $("#tr1").append(`<td><input type="hidden" name="PbfGeneralTdpEntity[${j.toString()}].PidfproductStrngthId" value="${data[j].pidfProductStrengthId}"><input class="form-control clsinput" id="Description${j.toString()}" name="PbfGeneralTdpEntity[${j.toString()}].Description" type="text"/></td><td><input type="hidden" name="PbfGeneralTdpEntity[${parseInt(j + 1).toString()}].PidfproductStrngthId" value="${data[j].pidfProductStrengthId}"><input class="form-control clsinput" id="Description${parseInt(j+1).toString()}" name="PbfGeneralTdpEntity[${parseInt(j+1).toString()}].Description" type="text"/></td>`)
+                }
+                if (i == 1) {
+                    $("#tr2").append(`<td><input type="hidden" id="TradeDressProposalId${j.toString()}" name="PbfGeneralTdpEntity[${j.toString()}].TradeDressProposalId"><input class="form-control clsinput" id="Shape${j.toString()}" name="PbfGeneralTdpEntity[${j.toString()}].Shape" type="text"/></td><td><input type="hidden" id="TradeDressProposalId${parseInt(j + 1).toString()}" name="PbfGeneralTdpEntity[${parseInt(j + 1).toString()}].TradeDressProposalId"><input class="form-control clsinput" id="Shape${parseInt(j+1).toString()}" name="PbfGeneralTdpEntity[${parseInt(j+1).toString()}].Shape" type="text"/></td>`)
+                }
+                if (i == 2) {
+                    $("#tr3").append(`<td><input class="form-control clsinput" id="Color${j.toString()}" name="PbfGeneralTdpEntity[${j.toString()}].Color" type="text"/></td><td><input class="form-control clsinput" id="Color${parseInt(j+1).toString()}" name="PbfGeneralTdpEntity[${parseInt(j+1).toString()}].Color" type="text"/></td>`)
+                }
+                if (i == 3) {
+                    $("#tr4").append(`<td><input class="form-control clsinput" id="Engraving${j.toString()}" name="PbfGeneralTdpEntity[${j.toString()}].Engraving" type="text"/></td><td><input class="form-control clsinput" id="Engraving${parseInt(j+1).toString()}" name="PbfGeneralTdpEntity[${parseInt(j+1).toString()}].Engraving" type="text"/></td>`)
+                }
+                if (i == 4) {
+                    $("#tr5").append(`<td><input class="form-control clsinput" id="Packaging${j.toString()}" name="PbfGeneralTdpEntity[${j.toString()}].Packaging" type="file"/></td><td><input class="form-control clsinput" id="Packaging${parseInt(j+1).toString()}" name="PbfGeneralTdpEntity[${parseInt(j+1).toString()}].Packaging" type="file"/></td>`)
+                }
+                if (i == 5) {
+                    $("#tr6").append(`<td><div class="form-check">
+                                          <input class="form-check-input" type="radio" name="PbfGeneralTdpEntity[${j.toString()}].IsPrimaryPackaging" id="a">
+                                         </div></td><td><div class="form-check">
+                                             <input class="form-check-input" type="radio" name="name="PbfGeneralTdpEntity[${parseInt(j+1).toString()}].IsPrimaryPackaging"" id="IsPrimaryPackaging">
+                                             <div></td>`)
+                }
+                if (i == 6) {
+                    $("#tr7").append(`<td><div class="form-check">
+                                          <input class="form-check-input" type="radio" name="PbfGeneralTdpEntity[${j.toString()}].IsSecondryPackaging" id="a">
+                                         </div></td><td><div class="form-check">
+                                             <input class="form-check-input" type="radio" name="name="PbfGeneralTdpEntity[${parseInt(j+1).toString()}].IsSecondryPackaging"" id="IsSecondryPackaging">
+                                             <div></td>`)
+                }
+                if (i == 7) {
+                    $("#tr8").append(`<td><input class="form-control clsinput" id="ShelfLife${j.toString()}" name="PbfGeneralTdpEntity[${j.toString()}].ShelfLife" type="text"/></td><td><input class="form-control clsinput" id="ShelfLife${parseInt(j+1).toString()}" name="PbfGeneralTdpEntity[${parseInt(j+1).toString()}].ShelfLife" type="text"/></td>`)
+                }
+                if (i == 8) {
+                    $("#tr9").append(`<td><input class="form-control clsinput" id="StorageHandling${j.toString()}" name="PbfGeneralTdpEntity[${j.toString()}].StorageHandling" type="text"/></td><td><input class="form-control clsinput" id="StorageHandling${parseInt(j+1).toString()}" name="PbfGeneralTdpEntity[${parseInt(j+1).toString()}].StorageHandling" type="text"/></td>`)
+                }
+            }
+    }
+    strngthTdInovator+=`</tr>`
+    $("#tdpThead").append(strngthTdInovator);
+    $("#HeaderDevision").width($("#headerRow").width())
+      
+    $("#headerDiv").width($("#headerRow").width())
+    $(".clsContentUnderBUTab_PBF").show();
+    
+}
+
+function GetTdpList(data) {
+    //console.log(data);
+    //let result = data.sort(function (a, b) {
+    //    return a - b;
+    //});
+    console.log(data);
+    for (let i = 0; i < data.length; i++) {
+        $(`#TradeDressProposalId${i}`).val(data[i].tradeDressProposalId)
+        $("#FormulaterResponsiblePerson").val(data[0].formulaterResponsiblePerson)
+        $("#Approch").val(data[0].approch)
+        $(`#Description${i}`).val(data[i].description);
+        $(`#Shape${i}`).val(data[i].shape);
+        $(`#Color${i}`).val(data[i].color);
+        $(`#Engraving${i}`).val(data[i].engraving);
+        $(`#ShelfLife${i}`).val(data[i].shelfLife);
+        $(`#StorageHandling${i}`).val(data[i].storageHandling);
+    }
+}

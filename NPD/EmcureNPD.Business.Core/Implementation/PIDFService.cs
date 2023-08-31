@@ -581,7 +581,7 @@ namespace EmcureNPD.Business.Core.Implementation
             }
 
 
-            SqlParameter[] osqlParameter = { new SqlParameter("@PIDFID", ids) };
+            SqlParameter[] osqlParameter = { new SqlParameter("@PIDFID", ids), new SqlParameter("@USERID", _helper.GetLoggedInUser().UserId) };
 
             DataSet dsDropdownOptions = await _repository.GetDataSetBySP("std_npd_GetIsAlloeToApprove", System.Data.CommandType.StoredProcedure, osqlParameter);
 

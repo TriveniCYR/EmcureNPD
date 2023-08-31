@@ -142,6 +142,8 @@ namespace EmcureNPD.Business.Models
         public PidfPbfGeneralRndEntity PidfPbfGeneralRnd { get; set; }
         public List<PidfPbfRnDPackSizeStabilityEntity> PidfPbfRnDPackSizeStability { get; set; }
         public string BestudyResults { get; set; }
+       // public PbfGeneralTdpEntity PbfGeneralTdpEntity { get; set; }
+        public List<PbfGeneralTdpEntity> PbfGeneralTdpEntity { get; set; }
         #endregion
     }
     #region Clinical Classes 
@@ -347,6 +349,30 @@ namespace EmcureNPD.Business.Models
         public double? AmvcumTotal { get; set; }
         public double? ExhibitCumTotal { get; set; }
         public double? FilingCumTotal { get; set; }
+    }
+    #endregion
+    #region TDT
+    public class PbfGeneralTdpEntity
+    {
+        public long TradeDressProposalId { get; set; }
+        public string Approch { get; set; }
+        public long? Pidfid { get; set; }
+        public long? PbfId { get; set; }
+        public long? PidfpbfGeneralId { get; set; }
+        public long? PidfproductStrngthId { get; set; }
+        public string Description { get; set; }
+        public string Shape { get; set; }
+        public string Color { get; set; }
+        public string Engraving { get; set; }
+        public string Packaging { get; set; }
+        public bool? IsPrimaryPackaging { get; set; }
+        public bool? IsSecondryPackaging { get; set; }
+        public string ShelfLife { get; set; }
+        public string StorageHandling { get; set; }
+        public bool? IsEmcure { get; set; }
+        public DateTime CreatedDate { get; set; }
+        public int? CreatedBy { get; set; }
+        public string FormulaterResponsiblePerson { get; set; }
     }
     #endregion
 }

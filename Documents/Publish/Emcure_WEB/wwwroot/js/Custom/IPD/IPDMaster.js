@@ -140,7 +140,7 @@ function LoadIPDForm(pidfId, BusinessUnitId) {
             Set_optionTextforAnyPatentstobeFiled();
         });
     }
-   // BussinesUnitStatusforIsInterested_IPD(pidfId, BusinessUnitId, 'IPD');
+   // BussinesUnitInterestedIPD(pidfId, BusinessUnitId, 'IPD');
 }
 // #region Get Region List
 function GetRegionList() {
@@ -513,7 +513,7 @@ var objIsNotInterstedBUs =
         { BussinessUnitId: '3', DateTime: '2023-08-13', FullName: 'Kuldip' }
     ]
 var CurrentscreenId_IPD = '';
-function BussinesUnitStatusforIsInterested_IPD(pidfid, buid, screenId) {
+function BussinesUnitInterestedIPD(pidfid, buid, screenId) {
     CurrentscreenId_IPD = screenId;
     ajaxServiceMethod($('#hdnBaseURL').val() + GetIsInterestedByPIDFandBUurl + "/" + pidfid + "/" + buid, 'GET', BussinesUnitStatusforIsInterested_IPDSuccess, BussinesUnitStatusforIsInterested_IPDError);
 }

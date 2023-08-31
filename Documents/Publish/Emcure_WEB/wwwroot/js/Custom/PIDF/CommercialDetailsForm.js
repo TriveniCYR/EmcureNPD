@@ -262,7 +262,7 @@ function BUtabClick(BUVal, pidfidval) {
     $('[id^="BUtab_"]').removeClass('active');
     $('#BUtab_' + BUVal).addClass('active');
     SelectedBUValue = BUVal;
-   // BussinesUnitInterestedCommercial(pidfidval, SelectedBUValue, 'Commercial');
+    BussinesUnitInterestedCommercial(pidfidval, SelectedBUValue, 'Commercial');
     ClearValidationForYearForm();
     ClearValidationForMainForm();
     renderCountryTabList(BUVal);

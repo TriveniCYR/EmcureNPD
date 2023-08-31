@@ -7,6 +7,7 @@ using EmcureNPD.Data.DataAccess.Core.UnitOfWork;
 using EmcureNPD.Data.DataAccess.Entity;
 using EmcureNPD.Utility.Enums;
 using EmcureNPD.Utility.Utility;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using System;
@@ -15,6 +16,7 @@ using System.Data;
 using System.Data.SqlClient;
 using System.Dynamic;
 using System.Globalization;
+using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using static EmcureNPD.Utility.Enums.GeneralEnum;
@@ -63,6 +65,7 @@ namespace EmcureNPD.Business.Core.Implementation
         private IRepository<MasterNationApproval> _masterNationApproval { get; set; }
         private IRepository<MasterNationApprovalCountryMapping> _masterNationApprovalCountryMpping { get; set; }
         private IRepository<MasterCountry> _masterCountry { get; set; }
+        private IRepository<PbfGeneralTdp> _PbfGeneralTdp { get; set; }
         public PBFService(IUnitOfWork unitOfWork, IMapperFactory mapperFactory, INotificationService notificationService, IMasterAuditLogService auditLogService,
 
             IHelper helper, IExceptionService exceptionService, IConfiguration configuration)
@@ -105,6 +108,7 @@ namespace EmcureNPD.Business.Core.Implementation
             _masterNationApproval = _unitOfWork.GetRepository<MasterNationApproval>();
             _masterNationApprovalCountryMpping = _unitOfWork.GetRepository<MasterNationApprovalCountryMapping>();
             _masterCountry= _unitOfWork.GetRepository<MasterCountry>();
+            _PbfGeneralTdp = _unitOfWork.GetRepository<PbfGeneralTdp>();
         }
 
         public async Task<dynamic> FillDropdown(int PIDFId)
@@ -240,17 +244,43 @@ namespace EmcureNPD.Business.Core.Implementation
                 return data;
             }
         }
-		public async Task<CountyForBussinessUnitAndPIDF> GetCountyForBussinessUnitAndPIDF(long pidfId, int BUId)
+        public async Task<PidfProductStrengthGeneralRanD> GetStrengthForPBFTDP(long pidfId)
+        {
+            var data = new PidfProductStrengthGeneralRanD();
+            try
+            {
+                SqlParameter[] osqlParameter = {
+                       new SqlParameter("@PIDFId", pidfId)
+                   };
+
+                var dbresult = await _pbfRepository.GetDataSetBySP("GetStrengthForPBF_TDP", System.Data.CommandType.StoredProcedure, osqlParameter);
+                if (dbresult != null)
+                {
+                    if (dbresult.Tables[0] != null && dbresult.Tables[0].Rows.Count > 0)
+                    {
+
+                        data.PidfProductStrengthGeneralRanDList = dbresult.Tables[0].DataTableToList<PidfProductStrengthGeneralRanD>();
+                    }
+                }
+                return data;
+            }
+            catch (Exception ex)
+            {
+                return data;
+            }
+        }
+
+        public async Task<CountyForBussinessUnitAndPIDF> GetCountyForBussinessUnitAndPIDF(long pidfId, int BUId)
 		{
 			var data = new CountyForBussinessUnitAndPIDF();
 			try
 			{
 				SqlParameter[] osqlParameter = {
-					   new SqlParameter("@PIDFId", pidfId),
-						new SqlParameter("@BussinessUnitId", BUId)
+					   new SqlParameter("@PIDFID", pidfId),
+						new SqlParameter("@BUId", BUId)
 				   };
 
-				var dbresult = await _pbfRepository.GetDataSetBySP("Proc_GetCountyForBussinessUnitAndPIDF", System.Data.CommandType.StoredProcedure, osqlParameter);
+				var dbresult = await _pbfRepository.GetDataSetBySP("stp_npd_GetCountryListByIsInterested", System.Data.CommandType.StoredProcedure, osqlParameter);
 				if (dbresult != null)
 				{
 					if (dbresult.Tables[0] != null && dbresult.Tables[0].Rows.Count > 0)
@@ -358,7 +388,9 @@ namespace EmcureNPD.Business.Core.Implementation
             DropdownObjects.RNDExicipientPrototype = dsDropdownOptions.Tables[22];
             DropdownObjects.PidfPbfGeneralRnd = await GetPidfPbfGeneralRnd(PIDFId, pbfId, PbfRndDetailsId, BUId);
             DropdownObjects.PidfPbfGeneralPackSizeStability = await GetGeneralPackSizeStability(PIDFId, BUId);
-			DropdownObjects.GetCountyForBussinessUnitAndPIDF = await GetCountyForBussinessUnitAndPIDF(PIDFId, BUId);
+            DropdownObjects.GetStrengthForPBFTDP = await GetStrengthForPBFTDP(PIDFId);
+            DropdownObjects.GetTDPList = await GetTDT(PIDFId);
+            DropdownObjects.GetCountyForBussinessUnitAndPIDF = await GetCountyForBussinessUnitAndPIDF(PIDFId, BUId);
 			return DropdownObjects;
         }
 
@@ -1248,6 +1280,86 @@ namespace EmcureNPD.Business.Core.Implementation
             }
             return pbfentity.Pidfpbfid;
 
+        }
+        private async Task<long> SaveTDT(PBFFormEntity pbfentity, long pbfgeneralid)
+        {
+            try
+            {
+                int index = 0;
+                var loggedInUserId = _helper.GetLoggedInUser().UserId;
+                foreach (var item in pbfentity.PbfGeneralTdpEntity)
+                {
+                    var IsEmcure = index % 2 == 0 ? true : false;
+                    var objPbfGeneralTdp = _PbfGeneralTdp.GetAllQuery().
+              Where(x => x.TradeDressProposalId == item.TradeDressProposalId).FirstOrDefault();
+
+                    var objPbfGeneralTdpRemovableList = _PbfGeneralTdp.GetAllQuery().
+             Where(x => x.TradeDressProposalId == item.TradeDressProposalId).ToList();
+                    if (objPbfGeneralTdp != null)
+                    {
+                        //_PbfGeneralTdp.RemoveRange(objPbfGeneralTdpRemovableList);
+                        //   await _unitOfWork.SaveChangesAsync();
+
+                        objPbfGeneralTdp.Pidfid = pbfentity.Pidfid;
+                        objPbfGeneralTdp.Approch = pbfentity.PbfGeneralTdpEntity[0].Approch;
+                        objPbfGeneralTdp.PbfId = pbfentity.Pidfpbfid;
+                        objPbfGeneralTdp.PidfpbfGeneralId = pbfgeneralid;
+                        objPbfGeneralTdp.PidfproductStrngthId = pbfentity.PbfGeneralTdpEntity[0].PidfproductStrngthId;
+                        objPbfGeneralTdp.FormulaterResponsiblePerson = pbfentity.PbfGeneralTdpEntity[0].FormulaterResponsiblePerson;
+
+                        objPbfGeneralTdp.Description = item.Description;
+                        objPbfGeneralTdp.Shape = item.Shape;
+                        objPbfGeneralTdp.Color = item.Color;
+                        objPbfGeneralTdp.Engraving = item.Engraving;
+                        objPbfGeneralTdp.Packaging = item.Packaging;
+                        objPbfGeneralTdp.ShelfLife = item.ShelfLife;
+                        objPbfGeneralTdp.StorageHandling = item.StorageHandling;
+                        objPbfGeneralTdp.IsPrimaryPackaging = item.IsPrimaryPackaging;
+                        objPbfGeneralTdp.IsSecondryPackaging = item.IsSecondryPackaging;
+                        objPbfGeneralTdp.IsEmcure = IsEmcure;
+                        objPbfGeneralTdp.CreatedDate = DateTime.Now;
+                        objPbfGeneralTdp.CreatedBy = loggedInUserId;
+                        _PbfGeneralTdp.UpdateAsync(objPbfGeneralTdp);
+                    }
+                    else
+                    {
+                        PbfGeneralTdp objPbfGeneralTdpAdd = new();
+                        objPbfGeneralTdpAdd.Pidfid = pbfentity.Pidfid;
+                        objPbfGeneralTdpAdd.Approch = pbfentity.PbfGeneralTdpEntity[0].Approch;
+                        objPbfGeneralTdpAdd.PbfId = pbfentity.Pidfpbfid;
+                        objPbfGeneralTdpAdd.PidfpbfGeneralId = pbfgeneralid;
+                        objPbfGeneralTdpAdd.PidfproductStrngthId = pbfentity.PbfGeneralTdpEntity[0].PidfproductStrngthId;
+                        objPbfGeneralTdpAdd.FormulaterResponsiblePerson = pbfentity.PbfGeneralTdpEntity[0].FormulaterResponsiblePerson;
+                        objPbfGeneralTdpAdd.Description = item.Description;
+                        objPbfGeneralTdpAdd.Shape = item.Shape;
+                        objPbfGeneralTdpAdd.Color = item.Color;
+                        objPbfGeneralTdpAdd.Engraving = item.Engraving;
+                        objPbfGeneralTdpAdd.Packaging = item.Packaging;
+                        objPbfGeneralTdpAdd.ShelfLife = item.ShelfLife;
+                        objPbfGeneralTdpAdd.StorageHandling = item.StorageHandling;
+                        objPbfGeneralTdpAdd.IsPrimaryPackaging = item.IsPrimaryPackaging;
+                        objPbfGeneralTdpAdd.IsSecondryPackaging = item.IsSecondryPackaging;
+                        objPbfGeneralTdpAdd.IsEmcure = IsEmcure;
+                        objPbfGeneralTdpAdd.CreatedDate = DateTime.Now;
+                        objPbfGeneralTdpAdd.CreatedBy = loggedInUserId;
+                        _PbfGeneralTdp.AddAsync(objPbfGeneralTdpAdd);
+                    }
+                    index++;
+                }
+
+                await _unitOfWork.SaveChangesAsync();
+            }
+            catch (Exception ex)
+            {
+                return 0;
+            }
+            return pbfentity.Pidfpbfid;
+
+        }
+        private async Task<List<PbfGeneralTdpEntity>> GetTDT(long PIDFID)
+        {
+            var dbObj = await _PbfGeneralTdp.GetAllAsync(x => x.Pidfid == PIDFID);
+            return _mapperFactory.GetList<PbfGeneralTdp, PbfGeneralTdpEntity>(dbObj.OrderByDescending(x=>x.TradeDressProposalId).ToList());
         }
         public async Task<long> SavePidfAndPBFCommanDetailsnew(long pidfid, PBFFormEntity pbfentity)
         {
@@ -2571,6 +2683,9 @@ namespace EmcureNPD.Business.Core.Implementation
                 #region Update PBF genegral PackSizeStability Details
                 //await SavePackSizeStability(pbfentity, pbfgeneralid);
                 #endregion
+                #region TDT
+                //await SaveTDT(pbfentity, pbfgeneralid);
+                #endregion
                 return pbfgeneralid;
             }
             catch (Exception ex)
@@ -2849,6 +2964,52 @@ namespace EmcureNPD.Business.Core.Implementation
             }
            
         }
+        public async Task <dynamic> FileUpload(IFormFile files, string path, string uniqueFileName)
+        {
+            if (files != null)
+            {
+                string uploadFolder = path;
+                if (!Directory.Exists(uploadFolder))
+                {
+                    Directory.CreateDirectory(uploadFolder);
+                }
+                var filePath = Path.Combine(uploadFolder, uniqueFileName);
+                using (var stream = new FileStream(filePath, FileMode.Create))
+                {
+                    await files.CopyToAsync(stream);
+                }
+            }
+            return 1;
+        }
+        //public string FileValidation(IFormFile file)
+        //{
+        //    PIDFMedicalViewModel fileUpload = new PIDFMedicalViewModel();
+        //    fileUpload.FileSize = Convert.ToInt32(_configuration.GetSection("FileUploadSettings").GetSection("MaxFileSizeMb").Value);
+        //    try
+        //    {
+        //        var supportedTypes = _configuration.GetSection("FileUploadSettings").GetSection("AllowedFileExtension").Value;
+        //        var fileTypes = supportedTypes.Split(',');
+        //        var fileExt = System.IO.Path.GetExtension(file.FileName).Substring(1);
+        //        if (!fileTypes.Contains(fileExt))
+        //        {
+        //            fileUpload.ErrorMessage = _configuration.GetSection("FileUploadSettings").GetSection("FileNotAllowedErrorMessage").Value;
+        //        }
+        //        else if (file.Length > (fileUpload.FileSize * 1024 * 1024))
+        //        {
+        //            fileUpload.ErrorMessage = _configuration.GetSection("FileUploadSettings").GetSection("FileSizeExceedErrorMessage").Value;
+        //        }
+        //        else
+        //        {
+        //            fileUpload.ErrorMessage = null;
+        //        }
+        //        return fileUpload.ErrorMessage;
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        fileUpload.ErrorMessage = "Upload Container Should Not Be Empty or Contact Admin";
+        //        return fileUpload.ErrorMessage;
+        //    }
+        //}
         #endregion Private Methods
     }
 }
