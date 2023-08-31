@@ -51,9 +51,11 @@ $(document).ready(function () {
     GetTypeOfSubmission();
     GetNationalApprovals();
     $(document).on("change", ".calcRNDBatchSizesPrototypeFormulation, .calcRNDBatchSizesScaleUpbatch, .calcRNDBatchSizesExhibitBatch1, .calcRNDBatchSizesExhibitBatch2, .calcRNDBatchSizesExhibitBatch3", function () {
+        $('#loading-wrapper').show();
         ChangeAPIReq_OnChange_selectDosageFormula();
         $("input[class~='rndExicipientRsperkg']").trigger('change');
         SetPhaseWiseBudget();
+        $('#loading-wrapper').hide();
     });
     $(document).on("change", ".AnalyticalTestTypeId", function () {
         var _selectedTestType = $(this).val();
@@ -346,9 +348,9 @@ $(document).ready(function () {
         var ExhibitBatch1 = _APIRows.find(".calcRNDApirequirementsExhibitBatch1").val();
         var ExhibitBatch2 = _APIRows.find(".calcRNDApirequirementsExhibitBatch2").val();
         var ExhibitBatch3 = _APIRows.find(".calcRNDApirequirementsExhibitBatch3").val();
-        var PrototypeCost = _APIRows.find(".calcRNDApirequirementsPrototypeCost").val();
-        var ScaleUpCost = _APIRows.find(".calcRNDApirequirementsScaleUpCost").val();
-        var ExhibitBatchCost = _APIRows.find(".calcRNDApirequirementsExhibitBatchCost").val();
+        //var PrototypeCost = _APIRows.find(".calcRNDApirequirementsPrototypeCost").val();
+        //var ScaleUpCost = _APIRows.find(".calcRNDApirequirementsScaleUpCost").val();
+        //var ExhibitBatchCost = _APIRows.find(".calcRNDApirequirementsExhibitBatchCost").val();
 
         var _Sum = 0;
         $.each($(this).parent().parent().find("input[type=number]"), function (index, item) {
@@ -552,6 +554,7 @@ $(document).ready(function () {
         ChangeAPIReq_OnChange_selectDosageFormula();
     });
     $(document).on("change", ".rndExicipientPrototype, .rndExicipientRsperkg, .rndExicipientQuantity, .rndExicipientStrengthValue", function () {
+        $('#loading-wrapper').show();
         var _ActivityTypeId = $(this).parent().parent().attr("data-activitytypeid");
 
         var batchvalue = $("#RNDBatchSizeId option:selected").text();
@@ -564,7 +567,7 @@ $(document).ready(function () {
             $('#spAPIRequirementMarketPrice').text("(Rs/kg)");
             $('.spnkg_mg').text("kg");
         }
-
+        
         $.each($('.exicipientActivity' + _ActivityTypeId), function (index, item) {
             var _TotalForStrength = 0;
             $.each(_strengthArray, function (i, t) {
@@ -578,7 +581,7 @@ $(document).ready(function () {
             var _rsPerKg = $(item).find(".rndExicipientRsperkg").val();
             $(item).find(".TotalStrength").val(formatNumber(((_rsPerKg == "" ? 0 : _rsPerKg) * _TotalForStrength)));
         });
-
+     
         var _TotalCostForAllStrength = 0;
         $.each(_strengthArray, function (i, t) {
             var _TotalCostForStrength = 0;
@@ -608,6 +611,7 @@ $(document).ready(function () {
         });
         $('.calcTotalCostExRow').find('.exicipientFinalTotal').val(formatNumber(_FinalEXCost));
         SetPhaseWiseBudget();
+        $('#loading-wrapper').hide();
     });
     /*Analytical Tab*/
     $(document).on("change", ".AnalyticalTestTypeId, .analyticalRsTest, .analyticalNumberOfTest, .analyticalStrengthValue", function () {
@@ -1126,7 +1130,6 @@ function BindReferenceProductDetails(data) {
     }
 }
 function BindPbfGeneralRnd(data) {
-    console.log(data)
     if (data.pbfRndDetailsId > 0) {
         $("#PidfPbfGeneralRnd_RndResponsiblePerson").val(data.rndResponsiblePerson);
         /*let dat = moment(data).format("DD MMM YYYY h:m");*/
