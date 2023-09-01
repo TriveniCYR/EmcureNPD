@@ -53,9 +53,11 @@ $(document).ready(function () {
     GetNationalApprovals();
     //createTdp();
     $(document).on("change", ".calcRNDBatchSizesPrototypeFormulation, .calcRNDBatchSizesScaleUpbatch, .calcRNDBatchSizesExhibitBatch1, .calcRNDBatchSizesExhibitBatch2, .calcRNDBatchSizesExhibitBatch3", function () {
+        $('#loading-wrapper').show();
         ChangeAPIReq_OnChange_selectDosageFormula();
         $("input[class~='rndExicipientRsperkg']").trigger('change');
         SetPhaseWiseBudget();
+        $('#loading-wrapper').hide();
     });
     $(document).on("change", ".AnalyticalTestTypeId", function () {
         var _selectedTestType = $(this).val();
@@ -348,9 +350,9 @@ $(document).ready(function () {
         var ExhibitBatch1 = _APIRows.find(".calcRNDApirequirementsExhibitBatch1").val();
         var ExhibitBatch2 = _APIRows.find(".calcRNDApirequirementsExhibitBatch2").val();
         var ExhibitBatch3 = _APIRows.find(".calcRNDApirequirementsExhibitBatch3").val();
-        var PrototypeCost = _APIRows.find(".calcRNDApirequirementsPrototypeCost").val();
-        var ScaleUpCost = _APIRows.find(".calcRNDApirequirementsScaleUpCost").val();
-        var ExhibitBatchCost = _APIRows.find(".calcRNDApirequirementsExhibitBatchCost").val();
+        //var PrototypeCost = _APIRows.find(".calcRNDApirequirementsPrototypeCost").val();
+        //var ScaleUpCost = _APIRows.find(".calcRNDApirequirementsScaleUpCost").val();
+        //var ExhibitBatchCost = _APIRows.find(".calcRNDApirequirementsExhibitBatchCost").val();
 
         var _Sum = 0;
         $.each($(this).parent().parent().find("input[type=number]"), function (index, item) {
@@ -554,6 +556,7 @@ $(document).ready(function () {
         ChangeAPIReq_OnChange_selectDosageFormula();
     });
     $(document).on("change", ".rndExicipientPrototype, .rndExicipientRsperkg, .rndExicipientQuantity, .rndExicipientStrengthValue", function () {
+        $('#loading-wrapper').show();
         var _ActivityTypeId = $(this).parent().parent().attr("data-activitytypeid");
 
         var batchvalue = $("#RNDBatchSizeId option:selected").text();
@@ -566,7 +569,7 @@ $(document).ready(function () {
             $('#spAPIRequirementMarketPrice').text("(Rs/kg)");
             $('.spnkg_mg').text("kg");
         }
-
+        
         $.each($('.exicipientActivity' + _ActivityTypeId), function (index, item) {
             var _TotalForStrength = 0;
             $.each(_strengthArray, function (i, t) {
@@ -580,7 +583,7 @@ $(document).ready(function () {
             var _rsPerKg = $(item).find(".rndExicipientRsperkg").val();
             $(item).find(".TotalStrength").val(formatNumber(((_rsPerKg == "" ? 0 : _rsPerKg) * _TotalForStrength)));
         });
-
+     
         var _TotalCostForAllStrength = 0;
         $.each(_strengthArray, function (i, t) {
             var _TotalCostForStrength = 0;
@@ -610,6 +613,7 @@ $(document).ready(function () {
         });
         $('.calcTotalCostExRow').find('.exicipientFinalTotal').val(formatNumber(_FinalEXCost));
         SetPhaseWiseBudget();
+        $('#loading-wrapper').hide();
     });
     /*Analytical Tab*/
     $(document).on("change", ".AnalyticalTestTypeId, .analyticalRsTest, .analyticalNumberOfTest, .analyticalStrengthValue", function () {
@@ -829,6 +833,10 @@ $(document).ready(function () {
     //    bindRaDropDowns();
     //});
     $('#btnNextRnDTabSelectedValue').val(0); //custom-tabs-department-RnD-tab-
+});
+
+$('#custom-tabs-department-RA-tab').click(function () {
+    SetRaChildRow();
 });
 
 function convertFormToJSON() {
@@ -1128,7 +1136,6 @@ function BindReferenceProductDetails(data) {
     }
 }
 function BindPbfGeneralRnd(data) {
-    console.log(data)
     if (data.pbfRndDetailsId > 0) {
         $("#PidfPbfGeneralRnd_RndResponsiblePerson").val(data.rndResponsiblePerson);
         /*let dat = moment(data).format("DD MMM YYYY h:m");*/
@@ -1286,6 +1293,7 @@ function GetPBFTabDetailsSuccess(data) {
             //PidfPbfGeneralPackSizeStability
             //BindGeneralPackSizeStability(data.PidfPbfGeneralPackSizeStability);
             createTdp(data.GetStrengthForPBFTDP.pidfProductStrengthGeneralRanDList);
+            GetTdpList(data.GetTDPList)
             //console.log(data.PidfPbfGeneralPackSizeStability)
             //**End Date Formating for get GetPIDF_PBF_General_RND*/
             $.each($('.AnalyticalTestTypeId'), function (index, item) {
@@ -3858,101 +3866,78 @@ function BussinesUnitInterestedPBFError(x, y, z) {
 
 function createTdp(data) {
     console.log(data);
-    $("#TdpDiv").empty();
+   // $("#TdpDiv").empty();
     let html = ``;
-    let strngthTdInovator = ``;
-    let strngthTdEmcure = ``;
-    let InovatorStrengthTextBox = ``;
-    let InovatorStrengthFile = ``;
-    let EmcureStrengthTextBox = ``;
-    let EmcureStrengthFile = ``;
-    if (data.length > 0) {
-        for (let j = 0; j < data.length; j++) {
-            strngthTdInovator += `<td class="bg-primary text-bold">${data[j].strength} ${data[j].unitofMeasurementName}</td>`
-            InovatorStrengthTextBox += `<td><input class="form-control" type="text"/></td>`
-            InovatorStrengthFile +=`<td><input class="form-control" type="file"></td>`
-        }
-        for (let j = 0; j < data.length; j++) {
-            strngthTdEmcure += `<td class="bg-primary text-bold">${data[j].strength} ${data[j].unitofMeasurementName}</td>`
-            EmcureStrengthTextBox += `<td><input class="form-control" type="text"/></td>`
-            EmcureStrengthFile += `<td><input class="form-control" type="file"></td>`
-        }
+    let strngthTdInovator = `<tr id="headerRow"><th style="width: 10%;">Strenght</th>`;
+    
+    if (data.length > 0)
+        html += ``;
+    for (let j = 0; j < data.length; j++) {
+
+      /*for table header*/strngthTdInovator += `<th style="width: auto;">${data[j].strength} ${data[j].unitofMeasurementName}</th><th style="width: auto;">${data[j].strength} ${data[j].unitofMeasurementName}</th>`
+      /*for table body*/
+            for (let i = 0; i <=8; i++) {
+                if (i == 0) {
+                    $("#tr1").append(`<td><input type="hidden" name="PbfGeneralTdpEntity[${j.toString()}].PidfproductStrngthId" value="${data[j].pidfProductStrengthId}"><input class="form-control clsinput" id="Description${j.toString()}" name="PbfGeneralTdpEntity[${j.toString()}].Description" type="text"/></td><td><input type="hidden" name="PbfGeneralTdpEntity[${parseInt(j + 1).toString()}].PidfproductStrngthId" value="${data[j].pidfProductStrengthId}"><input class="form-control clsinput" id="Description${parseInt(j+1).toString()}" name="PbfGeneralTdpEntity[${parseInt(j+1).toString()}].Description" type="text"/></td>`)
+                }
+                if (i == 1) {
+                    $("#tr2").append(`<td><input type="hidden" id="TradeDressProposalId${j.toString()}" name="PbfGeneralTdpEntity[${j.toString()}].TradeDressProposalId"><input class="form-control clsinput" id="Shape${j.toString()}" name="PbfGeneralTdpEntity[${j.toString()}].Shape" type="text"/></td><td><input type="hidden" id="TradeDressProposalId${parseInt(j + 1).toString()}" name="PbfGeneralTdpEntity[${parseInt(j + 1).toString()}].TradeDressProposalId"><input class="form-control clsinput" id="Shape${parseInt(j+1).toString()}" name="PbfGeneralTdpEntity[${parseInt(j+1).toString()}].Shape" type="text"/></td>`)
+                }
+                if (i == 2) {
+                    $("#tr3").append(`<td><input class="form-control clsinput" id="Color${j.toString()}" name="PbfGeneralTdpEntity[${j.toString()}].Color" type="text"/></td><td><input class="form-control clsinput" id="Color${parseInt(j+1).toString()}" name="PbfGeneralTdpEntity[${parseInt(j+1).toString()}].Color" type="text"/></td>`)
+                }
+                if (i == 3) {
+                    $("#tr4").append(`<td><input class="form-control clsinput" id="Engraving${j.toString()}" name="PbfGeneralTdpEntity[${j.toString()}].Engraving" type="text"/></td><td><input class="form-control clsinput" id="Engraving${parseInt(j+1).toString()}" name="PbfGeneralTdpEntity[${parseInt(j+1).toString()}].Engraving" type="text"/></td>`)
+                }
+                if (i == 4) {
+                    $("#tr5").append(`<td><input class="form-control clsinput" id="Packaging${j.toString()}" name="PbfGeneralTdpEntity[${j.toString()}].Packaging" type="file"/></td><td><input class="form-control clsinput" id="Packaging${parseInt(j+1).toString()}" name="PbfGeneralTdpEntity[${parseInt(j+1).toString()}].Packaging" type="file"/></td>`)
+                }
+                if (i == 5) {
+                    $("#tr6").append(`<td><div class="form-check">
+                                          <input class="form-check-input" type="radio" name="PbfGeneralTdpEntity[${j.toString()}].IsPrimaryPackaging" id="a">
+                                         </div></td><td><div class="form-check">
+                                             <input class="form-check-input" type="radio" name="name="PbfGeneralTdpEntity[${parseInt(j+1).toString()}].IsPrimaryPackaging"" id="IsPrimaryPackaging">
+                                             <div></td>`)
+                }
+                if (i == 6) {
+                    $("#tr7").append(`<td><div class="form-check">
+                                          <input class="form-check-input" type="radio" name="PbfGeneralTdpEntity[${j.toString()}].IsSecondryPackaging" id="a">
+                                         </div></td><td><div class="form-check">
+                                             <input class="form-check-input" type="radio" name="name="PbfGeneralTdpEntity[${parseInt(j+1).toString()}].IsSecondryPackaging"" id="IsSecondryPackaging">
+                                             <div></td>`)
+                }
+                if (i == 7) {
+                    $("#tr8").append(`<td><input class="form-control clsinput" id="ShelfLife${j.toString()}" name="PbfGeneralTdpEntity[${j.toString()}].ShelfLife" type="text"/></td><td><input class="form-control clsinput" id="ShelfLife${parseInt(j+1).toString()}" name="PbfGeneralTdpEntity[${parseInt(j+1).toString()}].ShelfLife" type="text"/></td>`)
+                }
+                if (i == 8) {
+                    $("#tr9").append(`<td><input class="form-control clsinput" id="StorageHandling${j.toString()}" name="PbfGeneralTdpEntity[${j.toString()}].StorageHandling" type="text"/></td><td><input class="form-control clsinput" id="StorageHandling${parseInt(j+1).toString()}" name="PbfGeneralTdpEntity[${parseInt(j+1).toString()}].StorageHandling" type="text"/></td>`)
+                }
+            }
     }
-        for (let i = 0; i < 2; i++) {
-        if (i == 0) {
-           
-            html += `<div class="col-md-6">
-              <table>
-              <tbody id="TdpTbody${i}""><table class="table">
-               <tr>
-                <td class="bg-primary text-bold">Strength</td>${strngthTdInovator}
-                </tr>
-                <tr>
-                <td>Description</td>${InovatorStrengthTextBox}
-                </tr>
-                 <tr>
-                <td>Shape</td>${InovatorStrengthTextBox}
-                </tr>
-                 <tr>
-                <td>Colour</td>${InovatorStrengthTextBox}
-                </tr>
-                <tr>
-                <td>Engraving</td>${InovatorStrengthTextBox}
-                </tr>
-                <tr>
-                <td>Packaging</td>${InovatorStrengthFile}
-                </tr>
-                <tr>
-                <td>Primary</td>${InovatorStrengthTextBox}
-                </tr>
-                <tr>
-                <td>Secondry</td>${InovatorStrengthTextBox}
-                </tr>
-                <tr>
-                <td>Self-Life</td>${InovatorStrengthTextBox}
-                </tr>
-                 <tr>
-                <td>Storage/Handling</td>${InovatorStrengthTextBox}
-                </tr>`;
-        }
-        if (i == 1) {
-            html += `<div class="col-md-6">
-              <table>
-              <tbody id="TdpTbody${i}""><table class="table">
-               <tr>
-                ${strngthTdEmcure}
-                </tr>
-                <tr>
-                ${EmcureStrengthTextBox}
-                </tr>
-                 <tr>
-                 ${EmcureStrengthTextBox}
-                </tr>
-                 <tr>
-                 ${EmcureStrengthTextBox}
-                </tr>
-                <tr>
-                 ${EmcureStrengthTextBox}
-                </tr>
-                <tr>
-                ${EmcureStrengthFile}
-                </tr>
-                <tr>
-                ${EmcureStrengthTextBox}
-                </tr>
-                <tr>
-                ${EmcureStrengthTextBox}
-                </tr>
-                <tr>
-                ${EmcureStrengthTextBox}
-                </tr>
-                <tr>
-                ${EmcureStrengthTextBox}
-                </tr>`;
-        }
-        html += `</table></tbody></table></div>`
+    strngthTdInovator+=`</tr>`
+    $("#tdpThead").append(strngthTdInovator);
+    $("#HeaderDevision").width($("#headerRow").width())
+      
+    $("#headerDiv").width($("#headerRow").width())
+    $(".clsContentUnderBUTab_PBF").show();
+    
+}
+
+function GetTdpList(data) {
+    //console.log(data);
+    //let result = data.sort(function (a, b) {
+    //    return a - b;
+    //});
+    console.log(data);
+    for (let i = 0; i < data.length; i++) {
+        $(`#TradeDressProposalId${i}`).val(data[i].tradeDressProposalId)
+        $("#FormulaterResponsiblePerson").val(data[0].formulaterResponsiblePerson)
+        $("#Approch").val(data[0].approch)
+        $(`#Description${i}`).val(data[i].description);
+        $(`#Shape${i}`).val(data[i].shape);
+        $(`#Color${i}`).val(data[i].color);
+        $(`#Engraving${i}`).val(data[i].engraving);
+        $(`#ShelfLife${i}`).val(data[i].shelfLife);
+        $(`#StorageHandling${i}`).val(data[i].storageHandling);
     }
-   
-    $("#TdpDiv").append(html);
-    //$(".clsContentUnderBUTab_PBF").show();
 }
