@@ -94,83 +94,86 @@
                  id="custom-tabs-PBF" role="tabpanel"
                  aria-labelledby="custom-tabs-BudgetApproval-PBF-tab">
                 <div class="container-fluid background-white-card budgetApprovalTabPBF">
-                   
-                        <div class="row" id="frmMA">
-                            <div class="col-12 mb-4">
-                                <table class="table table-bordered text-center m-0 levi-table">
-                                    <thead class="bg-primary">
-                                        <tr>
-                                            <th class="text-start" style="width:10%;">
-                                                Project name
-                                            </th>
-                                            <th class="text-start" style="width:90%;" colspan=@Model.lsProjectStrength.Count>
-                                                <span id="lblProjectName">
-                                                    @{
-                                                        if (Model.lsProjectName != null && Model.lsProjectName.Count() > 0)
-                                                        {
-                                                            @Model.lsProjectName[0].ProjectName
-                                                            ;
-                                                        }
+
+                    <div class="row" id="frmMA">
+                        <div class="col-12 mb-4">
+                            <table class="table table-bordered text-center m-0 levi-table">
+                                <thead class="bg-primary">
+                                    <tr>
+                                        <th class="text-start" style="width:10%;">
+                                            Project name
+                                        </th>
+                                        <th class="text-start" style="width:90%;" colspan=@Model.lsProjectStrength.Count>
+                                            <span id="lblProjectName">
+                                                @{
+                                                    if (Model.lsProjectName != null && Model.lsProjectName.Count() > 0)
+                                                    {
+                                                        @Model.lsProjectName[0].ProjectName
+                                                        ;
                                                     }
-                                                </span>
-                                            </th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-
-                                        <tr>
-                                            <td class="text-start">
-                                                Strength
-                                            </td>
-                                            @if (Model.lsProjectStrength.Count > 0)
-                                            {
-
-                                                @foreach (var item1 in Model.lsProjectStrength)
-                                                {
-                                                    <td class="text-start">
-                                                        <span id="lblStrength">
-                                                            @item1.Strength
-                                                        </span>
-                                                    </td>
                                                 }
-                                            }
-                                        </tr>
+                                            </span>
+                                        </th>
+                                    </tr>
+                                </thead>
+                                <tbody>
 
-                                        <tr>
-                                            <td class="text-start">
-                                                Projects Code
-                                            </td>
-                                            @if (Model.lsProjectStrength.Count > 0)
+                                    <tr>
+                                        <td class="text-start">
+                                            Strength
+                                        </td>
+                                        @if (Model.lsProjectStrength.Count > 0)
+                                        {
+
+                                            @foreach (var item1 in Model.lsProjectStrength)
                                             {
-                                                @foreach (var item1 in Model.lsProjectStrength)
-                                                {
-                                                    <td class="text-start">
-                                                        <span id="lblProjectCode">
-                                                            @* @item1.ProjectCode*@
-                                                        </span>
-                                                    </td>
-                                                }
+                                                <td class="text-start">
+                                                    <span id="lblStrength">
+                                                        @item1.Strength
+                                                    </span>
+                                                </td>
                                             }
-                                        </tr>
-                                        <tr>
-                                            <td class="text-start">
-                                                Imprinting Embossing Code
-                                            </td>
-                                            @if (Model.lsProjectStrength.Count > 0)
+                                        }
+                                    </tr>
+
+                                    <tr>
+                                        <td class="text-start">
+                                            Projects Code
+                                        </td>
+                                        @if (Model.lsProjectStrength.Count > 0)
+                                        {
+                                            @foreach (var item1 in Model.lsProjectStrength)
                                             {
-                                                @foreach (var item1 in Model.lsProjectStrength)
-                                                {
-                                                    <td class="text-start">
-                                                        <span id="lblImprintingEmbossingCode">
-                                                            @* @item1.ProjectCode*@
-                                                        </span>
-                                                    </td>
-                                                }
+                                                <td class="text-start">
+                                                    <span id="lblProjectCode">
+                                                        @* @item1.ProjectCode*@
+                                                    </span>
+                                                </td>
                                             }
-                                        </tr>
-                                    </tbody>
-                                </table>
-                            </div>
+                                        }
+                                    </tr>
+                                    <tr>
+                                        <td class="text-start">
+                                            Imprinting Embossing Code
+                                        </td>
+                                        @if (Model.lsProjectStrength.Count > 0)
+                                        {
+                                            @foreach (var item1 in Model.lsProjectStrength)
+                                            {
+                                                <td class="text-start">
+                                                    <span id="lblImprintingEmbossingCode">
+                                                        @* @item1.ProjectCode*@
+                                                    </span>
+                                                </td>
+                                            }
+                                        }
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                        @*add condition here*@
+                        @if (Model.lsProjectStrength.FirstOrDefault().IsInhouse == true)
+                        {
                             <div class="col-6 mb-4 d-flex flex-column">
                                 <table class="table table-bordered text-center head-wise-table mb-5">
                                     <thead class="bg-primary">
@@ -554,7 +557,7 @@
 
                                                     @if (!string.IsNullOrEmpty(@Model.lsProjectDetails[i].APISource))
                                                     {
-                                                    //var str = @Model.lsProjectDetails[i].APISource.Split(",");
+                                                        //var str = @Model.lsProjectDetails[i].APISource.Split(",");
                                                         //foreach (string api in str)
                                                         //{
                                                         //    <td>@api</td>
@@ -563,8 +566,8 @@
                                                     }
                                                     @*<td colspan="5">@Model.lsProjectDetails[i].APISource</td>*@
                                                     @* <td></td>
-                                            <td></td>
-                                            <td colspan="2"></td>*@
+                                        <td></td>
+                                        <td colspan="2"></td>*@
                                                 </tr>
                                                 <tr>
                                                     <td colspan="2">
@@ -572,8 +575,8 @@
                                                     </td>
                                                     <td colspan="8">@Model.lsProjectDetails[i].APICommercialQuantity</td>
                                                     @*  <td></td>
-                                            <td></td>
-                                            <td colspan="2"></td>*@
+                                        <td></td>
+                                        <td colspan="2"></td>*@
                                                 </tr>
                                                 <tr>
                                                     <td colspan="2">
@@ -587,8 +590,8 @@
                                                     </td>
                                                     <td colspan="5">@Model.lsProjectDetails[i].APIRequirement</td>
                                                     @*<td colspan="2">Levetiracetam Tablets</td>
-                                            <td></td>
-                                            <td colspan="2"></td>*@
+                                        <td></td>
+                                        <td colspan="2"></td>*@
                                                 </tr>
                                                 <tr>
                                                     <td colspan="2">
@@ -596,9 +599,9 @@
                                                     </td>
                                                     <td colspan="8">@Model.lsProjectDetails[i].Prototype</td>
                                                     @* <td>125</td>
-                                            <td></td>
-                                            <td></td>
-                                            <td colspan="2"></td>*@
+                                        <td></td>
+                                        <td></td>
+                                        <td colspan="2"></td>*@
                                                 </tr>
                                                 <tr>
                                                     <td colspan="2">
@@ -606,9 +609,9 @@
                                                     </td>
                                                     <td colspan="8">@Model.lsProjectDetails[i].ScaleUp</td>
                                                     @*<td>250</td>
-                                            <td></td>
-                                            <td></td>
-                                            <td colspan="2"></td>*@
+                                        <td></td>
+                                        <td></td>
+                                        <td colspan="2"></td>*@
                                                 </tr>
                                                 <tr>
                                                     <td colspan="2">
@@ -616,9 +619,9 @@
                                                     </td>
                                                     <td colspan="8">@Model.lsProjectDetails[i].Exhibit</td>
                                                     @* <td>775</td>
-                                            <td></td>
-                                            <td></td>
-                                            <td colspan="2"></td>*@
+                                        <td></td>
+                                        <td></td>
+                                        <td colspan="2"></td>*@
                                                 </tr>
                                             }
                                         }
@@ -637,7 +640,7 @@
                                         {
                                             for (int i = 0; i < Model.lsProjectDetails.Count; i++)
                                             {
-                                            //<tr>
+                                                //<tr>
                                                 //    <td colspan="2">
                                                 //        Pharmacoepial Standards on Quality
                                                 //    </td>
@@ -663,7 +666,7 @@
                                                             <span>@CurrencySymbol</span> @Math.Round(@ProjectBudget,2)
                                                         }
                                                         @{
-                    //FinalTotal += Convert.ToDouble(@Model.lsProjectDetails[i].ProjectBudget);
+                                                            //FinalTotal += Convert.ToDouble(@Model.lsProjectDetails[i].ProjectBudget);
                                                         }
                                                     </td>
                                                 </tr>
@@ -822,11 +825,84 @@
                                     }
                                 </p>
                             </div>
+                        }
+                        else
+                        {
+                            @*--------------Start--tblPBFOutsourcetask Table---------------*@
 
+                            <div id="dvtblPBFOutsourcetask" class="row">
+                                <div class="col-md-12">
+                                    <div class="card">
+                                        <div class="card-header bg-primary">
+                                            <h3 class="card-title mb-0">
 
-                        </div>
+                                                <button type="button" class="btn btn-tool" data-card-widget="collapse">
+                                                    PBF Outsource
+                                                </button>
 
-                    
+                                            </h3>
+                                            <div class="card-tools">
+                                                <button type="button" class="btn btn-tool" data-card-widget="collapse" title="Collapse">
+                                                    <i class="fas fa-minus"></i>
+                                                </button>
+                                            </div>
+                                        </div>
+                                        <div class="card-body">
+                                            <table id="tblPBFOutsourcetask" class="table table-bordered">
+                                                <thead>
+                                                    <tr class="bg-light">
+                                                        <th style="width:60%">
+                                                            Developement
+                                                        </th>
+                                                        <th>
+                                                            WorkFlow Name
+                                                        </th>
+                                                        <th>
+                                                            PBF WorkFlow Name
+                                                        </th>
+                                                        <th>
+                                                            Cost
+                                                        </th>
+                                                        <th>
+                                                            Tentative TimeLine
+                                                        </th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody id="PBFOutsourcetaskTbody">
+                                                    @if (Model.lsPBFDetails == null || !Model.lsPBFDetails.Any())
+                                                    {
+                                                        <tr>
+                                                            <td colspan="5"><center>No data available</center></td>
+                                                        </tr>
+                                                    }
+                                                    else
+                                                    {
+                                                        @foreach (var item in Model.lsPBFDetails)
+                                                        {
+                                                            <tr>
+                                                                <td>@item.pbfworkflowname</td>
+                                                                <td>@item.tentative</td>
+                                                                <td>@item.pbfworkflowtaskname</td>
+                                                                <td>@item.cost</td>
+                                                                <td>@item.workflowname</td>
+                                                            </tr>
+                                                        }
+                                                    }
+                                                </tbody>
+
+                                            </table>
+
+                                        </div>
+                                    </div>
+
+                                </div>
+                            </div>
+                            @*-----------------End tblPBFOutsourcetask Table---------------*@
+
+                        }
+
+                    </div>
+
                 </div>
             </div>
 
@@ -857,11 +933,11 @@
                                                 </div>
                                             </div>
                                         </div>
-                                    
+
                                         <div id="dvNotInterestedBUNote_Finance">
-									<label class="text-lg text-wrap w-100" id="dvNotInterestedBUNoteHeading_Finance"></label>
-								</div>
+                                            <label class="text-lg text-wrap w-100" id="dvNotInterestedBUNoteHeading_Finance"></label>
                                         </div>
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -874,37 +950,37 @@
 
 </div>
 <div class="clsContentUnderBUTab_Finance">
-<div class="col-12 d-flex flex-wrap mb-4" id="dvBudgetApprovingButtons">
-    @if (Model != null && Model.lsManager != null)
-    {
-        foreach (var item in Model.lsManager)
+    <div class="col-12 d-flex flex-wrap mb-4" id="dvBudgetApprovingButtons">
+        @if (Model != null && Model.lsManager != null)
         {
-            <div class="col-4 text-center mt-5">
-                @if (item.UserId == CurrentUserId && ((Int32)item.StatusId != (Int32)Master_PIDFStatus.ManagementApproved && (Int32)item.StatusId != (Int32)Master_PIDFStatus.ManagementRejected)) //CurrentUserId)1048
-                {
+            foreach (var item in Model.lsManager)
+            {
+                <div class="col-4 text-center mt-5">
+                    @if (item.UserId == CurrentUserId && ((Int32)item.StatusId != (Int32)Master_PIDFStatus.ManagementApproved && (Int32)item.StatusId != (Int32)Master_PIDFStatus.ManagementRejected)) //CurrentUserId)1048
+                    {
 
-                    <a style="@IsApproveAllow" class="btn btn-success operationButton" onClick="ApproveRejectClick('A', '@PidfNumber', @((int)EmcureNPD.Utility.Enums.PIDFScreen.Management), '/PIDF/PIDFList?ScreenId=@((int)EmcureNPD.Utility.Enums.PIDFScreen.Management)')"><i class="fa fa-check-circle mr-1"></i> @SharedLocalizer["Approve"]</a>
-                    <a style="@IsApproveAllow" class="btn btn-danger  operationButton" onClick="ApproveRejectClick('R', '@PidfNumber', @((int)EmcureNPD.Utility.Enums.PIDFScreen.Management), '/PIDF/PIDFList?ScreenId=@((int)EmcureNPD.Utility.Enums.PIDFScreen.Management)')"><i class="fa fa-ban mr-1"></i> @SharedLocalizer["Reject"]</a>
-                }
-                else if ((Int32)item.StatusId == (Int32)Master_PIDFStatus.ManagementApproved)
-                {
+                        <a style="@IsApproveAllow" class="btn btn-success operationButton" onClick="ApproveRejectClick('A', '@PidfNumber', @((int)EmcureNPD.Utility.Enums.PIDFScreen.Management), '/PIDF/PIDFList?ScreenId=@((int)EmcureNPD.Utility.Enums.PIDFScreen.Management)')"><i class="fa fa-check-circle mr-1"></i> @SharedLocalizer["Approve"]</a>
+                        <a style="@IsApproveAllow" class="btn btn-danger  operationButton" onClick="ApproveRejectClick('R', '@PidfNumber', @((int)EmcureNPD.Utility.Enums.PIDFScreen.Management), '/PIDF/PIDFList?ScreenId=@((int)EmcureNPD.Utility.Enums.PIDFScreen.Management)')"><i class="fa fa-ban mr-1"></i> @SharedLocalizer["Reject"]</a>
+                    }
+                    else if ((Int32)item.StatusId == (Int32)Master_PIDFStatus.ManagementApproved)
+                    {
 
-                    <div class="bg-success ApproveRejectText p-2 mb-1">Approved On: @item.CreatedDate.ToString("dd MMMM yyyy hh:mm")</div>
+                        <div class="bg-success ApproveRejectText p-2 mb-1">Approved On: @item.CreatedDate.ToString("dd MMMM yyyy hh:mm")</div>
 
-                }
-                else if ((Int32)item.StatusId == (Int32)Master_PIDFStatus.ManagementRejected)
-                {
+                    }
+                    else if ((Int32)item.StatusId == (Int32)Master_PIDFStatus.ManagementRejected)
+                    {
 
-                    <div class="bg-danger ApproveRejectText p-2 mb-1">Rejected On: @item.CreatedDate.ToString("dd MMMM yyyy hh:mm")</div>
+                        <div class="bg-danger ApproveRejectText p-2 mb-1">Rejected On: @item.CreatedDate.ToString("dd MMMM yyyy hh:mm")</div>
 
-                }
-                <h6 class="m-0 fw-bold">@item.ManagerName</h6>
-                <p class="m-0 fw-bold">@item.DesignationName</p>
-            </div>
+                    }
+                    <h6 class="m-0 fw-bold">@item.ManagerName</h6>
+                    <p class="m-0 fw-bold">@item.DesignationName</p>
+                </div>
 
+            }
         }
-    }
-</div>
+    </div>
 </div>
 @Html.Partial("_PIDFApproveReject")
 

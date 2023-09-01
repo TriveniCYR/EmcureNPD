@@ -15,6 +15,7 @@ namespace EmcureNPD.Business.Models
         public List<ProjectDetails> lsProjectDetails { get; set; }
         public List<CumulativePhaseWiseBudget> lsCumulativePhaseWiseBudget { get; set; }
         public List<AdditionalCost> lsAdditionalCost { get; set; }
+        public List<PBFDetails> lsPBFDetails { get; set; }
         public FinanceModel financeModel { get; set; }
         
     }
@@ -28,6 +29,7 @@ namespace EmcureNPD.Business.Models
     {
         public string Strength { get; set; }
         public string ProjectCode { get; set; }
+        public bool IsInhouse { get; set; }
     }
     public class Manager
     {
@@ -91,5 +93,13 @@ namespace EmcureNPD.Business.Models
         public float CapexMiscCost { get; set; }
         public float FillingCost { get; set; }
         public float Total { get; set; }
+    }
+    public class PBFDetails
+    {
+        public float cost { get; set; }
+        public string tentative { get; set; }
+        public string pbfworkflowtaskname { get; set; }
+        public string workflowname { get; set; }
+        public string pbfworkflowname { get; set; }
     }
 }

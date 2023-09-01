@@ -17,6 +17,8 @@ namespace EmcureNPD.Web.Models
         public List<ProjectDetailsView> table4 { get; set; }
         public List<CumulativePhaseWiseBudgetView> table5 { get; set; }
         public List<AdditionalCostView> table6 { get; set; }
+        public List<PBFDetailsView> table7 { get; set; }
+
     }
 
     public class Projects
@@ -30,6 +32,7 @@ namespace EmcureNPD.Web.Models
     {
         public string strength { get; set; }
         public string projectCode { get; set; }
+        public bool isInhouse { get; set; }
     }
 
     public class ManagerView
@@ -96,4 +99,13 @@ namespace EmcureNPD.Web.Models
         public float FillingCost { get; set; }
         public float Total { get; set; }
     }
+    public class PBFDetailsView
+    {
+        public float cost { get; set; }
+        public string tentative { get; set; }
+        public string pbfworkflowtaskname { get; set; }
+        public string workflowname { get; set; }
+        public string pbfworkflowname { get; set; }
+    }
+
 }

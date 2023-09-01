@@ -62,6 +62,7 @@ namespace EmcureNPD.Web.Controllers
                 List<ProjectDetails> ListProjectDetails = new List<ProjectDetails>();
                 List<CumulativePhaseWiseBudget> ListCumulativePhaseWiseBudget = new List<CumulativePhaseWiseBudget>();
                 List<AdditionalCost> ListAdditionalCost = new List<AdditionalCost>();
+                List<PBFDetails> ListPBFDetails=new List<PBFDetails>();
                 HttpResponseMessage responseMessage = new HttpResponseMessage();
                 HttpContext.Request.Cookies.TryGetValue(UserHelper.EmcureNPDToken, out string token);
                 APIRepository objapi = new(_cofiguration);
@@ -92,7 +93,8 @@ namespace EmcureNPD.Web.Controllers
                             ListprojectStrengths.Add(new ProjectStrength
                             {
                                 Strength = item.strength,
-                                ProjectCode = item.projectCode
+                                ProjectCode = item.projectCode,
+                                IsInhouse=item.isInhouse
                             });
                         }
                         model.lsProjectStrength = ListprojectStrengths;
@@ -190,7 +192,22 @@ namespace EmcureNPD.Web.Controllers
                         }
                         model.lsAdditionalCost = ListAdditionalCost;
                     }
-                   model.financeModel= PIDFFinance(pidfid.ToString(), buid.ToString());
+                    if (data.table7.Count > 0)
+                    {
+                        for (int i = 0; i < data.table7.Count; i++)
+                        {
+                            ListPBFDetails.Add(new PBFDetails
+                            {
+                                cost = data.table7[i].cost,
+                                workflowname = data.table7[i].tentative,
+                                pbfworkflowname = data.table7[i].pbfworkflowtaskname,
+                                tentative = data.table7[i].workflowname,
+                                pbfworkflowtaskname = data.table7[i].pbfworkflowname,
+                            });
+                        }
+                        model.lsPBFDetails = ListPBFDetails;
+                    }
+                    model.financeModel= PIDFFinance(pidfid.ToString(), buid.ToString());
                     return View(model);
                 }
             }
