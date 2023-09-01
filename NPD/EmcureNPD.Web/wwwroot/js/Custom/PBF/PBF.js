@@ -3583,7 +3583,7 @@ function BindNewRA(data, IsEdit = false) {
             tr += `<tr>
              <td><input type="hidden" id="Pidfpbfraid0" class="ra" name="RaEntities[${i}].Pidfpbfraid" value="0"><select id="raCountryId${i}" name="RaEntities[${i}].CountryIdBuId" class="form-control readOnlyUpdate clsCountry valid" onchange="checkDuplicateRaCountry(${i});"></select></td>
              <td><input type="date" id="Pivotalbatchmanufactured0" name="RaEntities[${i}].PivotalBatchManufactured" class="form-control readOnlyUpdate  valid"></td>
-             <td><input type="date" id="LastdatafromRnD0" name="RaEntities[${i}].LastDataFromRnD" class="form-control readOnlyUpdate  valid"></td>
+             <td><input type="date" id="LastdatafromRnD0" name="RaEntities[${i}].LastDataFromRnD" class="form-control readOnlyUpdate  valid" onchange="GetPBFRACalculatedDate(${i})"></td>
              <td><input type="date" id="BEFinalReport0" name="RaEntities[${i}].BEFinalReport" class="form-control readOnlyUpdate  valid"></td>
              <td><select  id="TypeOfSubmissionId0" name="RaEntities[${i}].TypeOfSubmissionId" class="form-control readOnlyUpdate valid clsTypeOfSubmission" onchange="GetPBFRACalculatedDate(${i})"></select></td>
              <td><input type="date" id="DossierReadyDate0" name="RaEntities[${i}].DossierReadyDate" class="form-control readOnlyUpdate  valid"></td>
