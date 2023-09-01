@@ -3863,7 +3863,7 @@ function createTdp(data) {
     let html = ``;
     let strngthTdInovator = `<tr id="headerRow"><th style="width: 10%;">Strenght</th>`;
     
-    if (data.length > 0)
+    if (data !=null && data.length > 0)
         html += ``;
     for (let j = 0; j < data.length; j++) {
 
@@ -3887,16 +3887,16 @@ function createTdp(data) {
                 }
                 if (i == 5) {
                     $("#tr6").append(`<td><div class="form-check">
-                                          <input class="form-check-input" type="radio" name="PbfGeneralTdpEntity[${j.toString()}].IsPrimaryPackaging" id="a">
+                                          <input class="form-check-input" type="radio" name="PbfGeneralTdpEntity[${j.toString()}].IsPrimaryPackaging" id="IsPrimaryPackaging">
                                          </div></td><td><div class="form-check">
-                                             <input class="form-check-input" type="radio" name="name="PbfGeneralTdpEntity[${parseInt(j+1).toString()}].IsPrimaryPackaging"" id="IsPrimaryPackaging">
+                                             <input class="form-check-input" type="radio" name="name="PbfGeneralTdpEntity[${parseInt(j+1).toString()}].IsPrimaryPackaging" id="IsPrimaryPackaging">
                                              <div></td>`)
                 }
                 if (i == 6) {
                     $("#tr7").append(`<td><div class="form-check">
-                                          <input class="form-check-input" type="radio" name="PbfGeneralTdpEntity[${j.toString()}].IsSecondryPackaging" id="a">
+                                          <input class="form-check-input" type="radio" name="PbfGeneralTdpEntity[${j.toString()}].IsSecondryPackaging" id="IsSecondryPackaging">
                                          </div></td><td><div class="form-check">
-                                             <input class="form-check-input" type="radio" name="name="PbfGeneralTdpEntity[${parseInt(j+1).toString()}].IsSecondryPackaging"" id="IsSecondryPackaging">
+                                             <input class="form-check-input" type="radio" name="name="PbfGeneralTdpEntity[${parseInt(j+1).toString()}].IsSecondryPackaging" id="IsSecondryPackaging">
                                              <div></td>`)
                 }
                 if (i == 7) {
