@@ -3919,7 +3919,7 @@ function createTdp(data) {
     $("#HeaderDevision").width($("#headerRow").width())
       
     $("#headerDiv").width($("#headerRow").width())
-    $(".clsContentUnderBUTab_PBF").show();
+    //$(".clsContentUnderBUTab_PBF").show();
     
 }
 
