@@ -138,7 +138,7 @@ namespace EmcureNPD.Business.Core.Implementation
             {
                 foreach (var _obj in AllObjofPidfId)
                 {
-                    var IsExist = entitycommPIDF.PIDFArrMainCommercial.Any(x => x.BusinessUnitId == _obj.BusinessUnitId
+                    var IsExist = entitycommPIDF.PIDFArrMainCommercial.Any(x => x.BusinessUnitId == _obj.BusinessUnitId && x.CountryId == _obj.CountryId  // Country Added
                             && x.PidfproductStrengthId == _obj.PidfproductStrengthId && x.PackSizeId == _obj.PackSizeId);
 
                     if (!IsExist) // if not IsExist then Delete
@@ -181,7 +181,7 @@ namespace EmcureNPD.Business.Core.Implementation
                     }
 
                     Expression<Func<PidfCommercial, bool>> expr = u => u.BusinessUnitId == item.BusinessUnitId && u.Pidfid == entitycommPIDF.Pidfid
-                    && u.PidfproductStrengthId == item.PidfproductStrengthId && //u.CountryId==item.CountryId &&
+                    && u.PidfproductStrengthId == item.PidfproductStrengthId && u.CountryId==item.CountryId &&  // Country Added
                     u.PackSizeId == item.PackSizeId && u.IsDeleted == false;
                     var objFetchData = await _commercialrepository.GetAsync(expr);
 
@@ -190,6 +190,7 @@ namespace EmcureNPD.Business.Core.Implementation
                         var NewCommPIDF = new PidfCommercial();
                         NewCommPIDF.Pidfid = item.Pidfid;
                         NewCommPIDF.BusinessUnitId = item.BusinessUnitId;
+                        NewCommPIDF.CountryId = item.CountryId;   // Country Added
                         NewCommPIDF.PidfproductStrengthId = item.PidfproductStrengthId;
                         NewCommPIDF.PackSizeId = item.PackSizeId;
                         NewCommPIDF.MarketSizeInUnit = item.MarketSizeInUnit;

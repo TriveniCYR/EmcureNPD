@@ -266,7 +266,7 @@ function BUtabClick(BUVal, pidfidval) {
     ClearValidationForYearForm();
     ClearValidationForMainForm();
     renderCountryTabList(BUVal);
-    renderPIDFStrength(mainStrengthData);
+   
     Update_BUstregthPackTable(ArrMainCommercial);
     // Update_IsInterested_Remark();
     SetCommercialDisableForOtherUserBU();
@@ -298,6 +298,8 @@ function CountrytabClick(countryVal, pidfidval) {
     $('[id^="Countrytab_"]').removeClass('active');
     $('#Countrytab_' + countryVal).addClass('active');
     selectedCountry = countryVal;
+
+    renderPIDFStrength(MainArrCountryList);
 }
 function StrengthtabClick(strengthVal, pidfidval) {
     $('[id^="Strengthtab_"]').removeClass('active');
@@ -324,7 +326,7 @@ function GetCommercialPIDFByBUSuccess(data) {
         renderBusinessUnit(data._object.BusinessUnit);
         MainArrCountryList = data._object.CountryList;
         renderCountryTabList(SelectedBUValue);
-        renderPIDFStrength(data._object.PIDFStrength);
+        renderPIDFStrength(MainArrCountryList);
         mainStrengthData = data._object.PIDFStrength;
         PIDFCommercialMaster = data._object.PIDFCommercialMaster;
         setCommercialArray(data._object.Commercial, data._object.CommercialYear);
@@ -550,6 +552,7 @@ function AddYearClick() { //SaveYearClick
 
         entityYear.businessUnitId = SelectedBUValue;
         entityYear.pidfId = parseInt($("#PIDFId").val());
+        entityYear.countryId = selectedCountry;
         entityYear.pidfProductStrengthId = selectedStrength;
         entityYear.packSizeId = ArrMainCommercial[MainRowEditIndex].packSizeId;
         entityYear.yearIndex = (EditIndex + 1);
@@ -600,6 +603,7 @@ function BUstregthPack_AddButtonClick() {
         //ent_BuStrPack['IndexofMaintable'] = IndexofMaintable;
         ent_BuStrPack['PidfCommercialYears'] = [];
         ent_BuStrPack['businessUnitId'] = SelectedBUValue;
+        ent_BuStrPack['countryId'] = selectedCountry;
         ent_BuStrPack['pidfProductStrengthId'] = selectedStrength;
         ent_BuStrPack['pidfId'] = parseInt($("#PIDFId").val());
 
@@ -804,7 +808,7 @@ function renderPIDFStrength(pidfStrength) {
     var html = "";
     $('#dvCommercialForm').find("#ProductStrengthTabs").html(html);
     var _StrenthByBU = $.grep(pidfStrength, function (n, i) {
-        return n.businessUnitId == SelectedBUValue
+        return n.countryId == selectedCountry && n.businessUnitId == SelectedBUValue
     }); 
     if (_StrenthByBU != null && _StrenthByBU != undefined && _StrenthByBU.length > 0) {
         $.each(_StrenthByBU, function (index, item) {
@@ -846,20 +850,25 @@ function renderPIDFStrength(pidfStrength) {
 //    toastr.error(ErrorMessage);
 //}
 function renderCountryTabList(BuVal) {
+    var arrofcountryid = [];
     $('#dvCommercialForm').find("#navCountryTabs").html('');
     var html = "";
     var _CountryListforSelectedBU = $.grep(MainArrCountryList, function (n, i) {
         return n.businessUnitId == BuVal;
     });
     $.each(_CountryListforSelectedBU, function (index, item) {
-        html += '<li class="nav-item col-6 p-0 pt-1">\
+        if (arrofcountryid.indexOf(item.countryId) == -1) {
+            arrofcountryid.push(item.countryId)
+            html += '<li class="nav-item col-6 p-0 pt-1">\
     <a class="nav-link" onClick="CountrytabClick('+ item.countryId + ',' + parseInt($("#PIDFId").val()) + ');" id="Countrytab_' + item.countryId + '">' + item.countryName + '</a></li>';
-    });
+        }
+        });
     $('#dvCommercialForm').find("#navCountryTabs").append(html);
 
     var _countryId = _CountryListforSelectedBU[0].countryId;
     selectedCountry = _countryId;
     $('#Countrytab_' + _countryId).addClass('active');
+    renderPIDFStrength(MainArrCountryList);
 }
 function setCommercialArray(Commercial, CommercialYear) {
     $.each(Commercial, function (index, item) {
