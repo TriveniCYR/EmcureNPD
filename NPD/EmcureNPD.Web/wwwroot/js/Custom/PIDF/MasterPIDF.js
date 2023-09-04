@@ -588,7 +588,7 @@ function GetActiveBusinessUnitSuccess(data) {
             }
         }
     }
-    $.each(data._object, function (index, item) {
+    $.each(data._object.result, function (index, item) {
         businessUnitHTML += '<li class="nav-item p-0">\
             <a class="nav-link '+ (item.businessUnitId == _SelectedBusinessUnitPIDF ? "active" : "") + ' px-2" onclick="PIDFBUtabClick(' + _PIDFId + ', ' + item.businessUnitId + ')" data-toggle="pill" aria-selected="true" id="pidf-custom-tabs-two-' + item.businessUnitId + '-tab">' + item.businessUnitName + '</a></li>';
 /*        businessUnitPanel += '<div class="tab-pane ' + ((item.businessUnitId == _SelectedBusinessUnitPIDF ? "fade show active" : "")) + '" id="pidf-custom-tabs-' + item.businessUnitId + '" role="tabpanel" aria-labelledby="pidf-custom-tabs-two-' + item.businessUnitId + '-tab"></div>';*/
