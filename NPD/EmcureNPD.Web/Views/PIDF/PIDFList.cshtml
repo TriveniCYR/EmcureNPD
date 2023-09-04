@@ -48,6 +48,14 @@
         else if (Context.Request.Query["ScreenId"] == Convert.ToString((int)EmcureNPD.Utility.Enums.PIDFScreen.PBF))
         {
             <h3>@SharedLocalizer["PBF"]</h3>
+            ScreenModuleID = (int)ModulePermissionEnum.PBF;
+            bool IsAccessToLoggedInUser = UtilityHelper.GetAccess(Int32.Parse(Convert.ToString(ScreenModuleID)), Helper.GetLoggedInRoleId(), (int)PermissionEnum.Approve);
+            <div>
+                @if (IsAccessToLoggedInUser)
+                {
+                <a class="btn btn-danger" onClick="ApproveRejectPIDF('R', @(Context.Request.Query["ScreenId"]), '/PIDF/PIDFList?ScreenId=@(Context.Request.Query["ScreenId"])')"><i class="fa fa-ban mr-1"></i> @SharedLocalizer["Reject"]</a>
+                }
+            </div>
         }
         else if (Context.Request.Query["ScreenId"] == Convert.ToString((int)EmcureNPD.Utility.Enums.PIDFScreen.Finance))
         {
@@ -81,6 +89,7 @@
                 {
                     <a class="btn btn-primary" asp-action="PIDF"><i class="far fa-plus-square mr-1"></i> @SharedLocalizer["Add"]</a>
                 }
+
             </div>
         }
     </div>
@@ -234,6 +243,8 @@
         var IsApproveIPD = '@UtilityHelper.GetAccess((int)ModulePermissionEnum.IPD, Helper.GetLoggedInRoleId(), (int)PermissionEnum.Approve)' == 'True'
         var IsViewIPD = '@UtilityHelper.GetAccess((int)ModulePermissionEnum.IPD, Helper.GetLoggedInRoleId(),(int)PermissionEnum.View)' == 'True'
 
+        var IsApprovePBF = '@UtilityHelper.GetAccess((int)ModulePermissionEnum.PBF, Helper.GetLoggedInRoleId(), (int)PermissionEnum.Approve)' == 'True'
+
         var IsEditFinance = '@UtilityHelper.GetAccess((int)ModulePermissionEnum.Finance, Helper.GetLoggedInRoleId(),(int)PermissionEnum.Edit)' == 'True'
         var IsAddFinance = '@UtilityHelper.GetAccess((int)ModulePermissionEnum.Finance, Helper.GetLoggedInRoleId(),(int)PermissionEnum.Add)' == 'True'
         var IsApproveFinance = '@UtilityHelper.GetAccess((int)ModulePermissionEnum.Finance, Helper.GetLoggedInRoleId(),(int)PermissionEnum.Approve)' == 'True'
@@ -278,6 +289,6 @@
         var IsAddPBF = '@UtilityHelper.GetAccess((int)ModulePermissionEnum.PBF, Helper.GetLoggedInRoleId(),(int)PermissionEnum.Add)' == 'True'
         var IsEditPBF = '@UtilityHelper.GetAccess((int)ModulePermissionEnum.PBF, Helper.GetLoggedInRoleId(),(int)PermissionEnum.Edit)' == 'True'
 
-                                //#endregion
+                                                //#endregion
     </script>
 }
