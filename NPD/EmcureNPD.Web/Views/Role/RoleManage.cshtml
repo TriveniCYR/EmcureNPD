@@ -115,7 +115,7 @@
                                         }
                                     </td>
                                     <td>
-                                        @if (@Model.MasterModules[i].ModuleId == (int)EmcureNPD.Utility.Enums.ModulePermissionEnum.PIDF || @Model.MasterModules[i].ModuleId == (int)EmcureNPD.Utility.Enums.ModulePermissionEnum.IPD || @Model.MasterModules[i].ModuleId == (int)EmcureNPD.Utility.Enums.ModulePermissionEnum.Finance || @Model.MasterModules[i].ModuleId == (int)EmcureNPD.Utility.Enums.ModulePermissionEnum.ManagementHOD)
+                                        @if (@Model.MasterModules[i].ModuleId == (int)EmcureNPD.Utility.Enums.ModulePermissionEnum.PIDF || @Model.MasterModules[i].ModuleId == (int)EmcureNPD.Utility.Enums.ModulePermissionEnum.PBF || @Model.MasterModules[i].ModuleId == (int)EmcureNPD.Utility.Enums.ModulePermissionEnum.IPD || @Model.MasterModules[i].ModuleId == (int)EmcureNPD.Utility.Enums.ModulePermissionEnum.Finance || @Model.MasterModules[i].ModuleId == (int)EmcureNPD.Utility.Enums.ModulePermissionEnum.ManagementHOD)
                                         {
                                             @Html.CheckBoxFor(model => Model.MasterModules[i].RoleModulePermission.Approve, new { @class = "checkbox-checked", @checked = "checked" })
                                         }
