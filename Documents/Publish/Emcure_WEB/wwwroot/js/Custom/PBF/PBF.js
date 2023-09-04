@@ -835,9 +835,9 @@ $(document).ready(function () {
     $('#btnNextRnDTabSelectedValue').val(0); //custom-tabs-department-RnD-tab-
 });
 
-$('#custom-tabs-department-RA-tab').click(function () {
-    SetRaChildRow();
-});
+//$('#custom-tabs-department-RA-tab').click(function () {
+//    SetRaChildRow();
+//});
 
 function convertFormToJSON() {
     const array = $('form').serializeArray();
@@ -1136,7 +1136,7 @@ function BindReferenceProductDetails(data) {
     }
 }
 function BindPbfGeneralRnd(data) {
-    if (data.pbfRndDetailsId > 0) {
+    if (data!=null && data.pbfRndDetailsId > 0) {
         $("#PidfPbfGeneralRnd_RndResponsiblePerson").val(data.rndResponsiblePerson);
         /*let dat = moment(data).format("DD MMM YYYY h:m");*/
         $("#PidfPbfGeneralRnd_TypeOfDevelopmentDate").val(data.typeOfDevelopmentDate == undefined ? '' : data.typeOfDevelopmentDate.split('T')[0])//moment(data.typeOfDevelopmentDate).format('DD MM YYYY'));
@@ -1258,7 +1258,7 @@ function GetPBFTabDetailsSuccess(data) {
             $(data.MasterBatchSize).each(function (index, item) {
                 $('#RNDBatchSizeId').append('<option value="' + item.batchSizeNumberId + '">' + item.batchSizeNumberName + '</option>');
             });
-            if (data.PBFRNDMasterEntity.length > 0) {
+            if (data!=null && data.PBFRNDMasterEntity.length > 0) {
                 if (data.PBFRNDMasterEntity[0].batchSizeId > 0) {
                     $('#RNDBatchSizeId').val(data.PBFRNDMasterEntity[0].batchSizeId == 0 ? "" : data.PBFRNDMasterEntity[0].batchSizeId);
                 }
@@ -1292,8 +1292,12 @@ function GetPBFTabDetailsSuccess(data) {
             BindPbfGeneralRnd(data.PidfPbfGeneralRnd);
             //PidfPbfGeneralPackSizeStability
             //BindGeneralPackSizeStability(data.PidfPbfGeneralPackSizeStability);
-            createTdp(data.GetStrengthForPBFTDP.pidfProductStrengthGeneralRanDList);
-            GetTdpList(data.GetTDPList)
+            if (data.GetStrengthForPBFTDP.pidfProductStrengthGeneralRanDList!=null) {
+                createTdp(data.GetStrengthForPBFTDP.pidfProductStrengthGeneralRanDList);
+            }
+            if (data.GetTDPList != null) {
+                GetTdpList(data.GetTDPList)
+            }
             //console.log(data.PidfPbfGeneralPackSizeStability)
             //**End Date Formating for get GetPIDF_PBF_General_RND*/
             $.each($('.AnalyticalTestTypeId'), function (index, item) {
@@ -3544,7 +3548,7 @@ function BindRA(data, IsEdit = false) {
                         tr += `<tr>
                                <td><input type="hidden" id="Pidfpbfraid${e}" class="ra" name="RaEntities[${e}].Pidfpbfraid" value="${data[e].pidfpbfraid}"><select id="raCountryId${e}" name="RaEntities[${e}].CountryIdBuId" value="${data[e].countryIdBuId}"  class="form-control readOnlyUpdate clsCountry  valid" onchange="checkDuplicateRaCountry(${e});"></select></td>
                                <td><input type="date" id="Pivotalbatchmanufactured${e}" name="RaEntities[${e}].PivotalBatchManufactured" value="${data[e].pivotalBatchManufactured == null ? '' : data[e].pivotalBatchManufactured.split('T')[0]}" class="form-control readOnlyUpdate  valid"></td>
-                               <td><input type="date" id="LastdatafromRnD${e}" name="RaEntities[${e}].LastDataFromRnD" value="${data[e].lastDataFromRnD == null ? '' : data[e].lastDataFromRnD.split('T')[0]}" class="form-control readOnlyUpdate  valid" onchange="GetPBFRACalculatedDate(${e})"></td>
+                               <td><input type="date" id="LastDataFromRnD${e}" name="RaEntities[${e}].LastDataFromRnD" value="${data[e].lastDataFromRnD == null ? '' : data[e].lastDataFromRnD.split('T')[0]}" class="form-control readOnlyUpdate  valid" onchange="GetPBFRACalculatedDate(${e})"></td>
                                <td><input type="date" id="BEFinalReport${e}" name="RaEntities[${e}].BEFinalReport" value="${data[e].befinalReport == null ? '' : data[e].befinalReport.split('T')[0]}" class="form-control readOnlyUpdate  valid"></td>
                                
                                <td><select  id="TypeOfSubmissionId${e}" name="RaEntities[${e}].TypeOfSubmissionId" class="form-control readOnlyUpdate clsTypeOfSubmission  valid" value="${data[e].typeOfSubmissionId}" onchange="GetPBFRACalculatedDate(${e})"></select></td>
@@ -3583,7 +3587,7 @@ function BindNewRA(data, IsEdit = false) {
             tr += `<tr>
              <td><input type="hidden" id="Pidfpbfraid0" class="ra" name="RaEntities[${i}].Pidfpbfraid" value="0"><select id="raCountryId${i}" name="RaEntities[${i}].CountryIdBuId" class="form-control readOnlyUpdate clsCountry valid" onchange="checkDuplicateRaCountry(${i});"></select></td>
              <td><input type="date" id="Pivotalbatchmanufactured0" name="RaEntities[${i}].PivotalBatchManufactured" class="form-control readOnlyUpdate  valid"></td>
-             <td><input type="date" id="LastdatafromRnD0" name="RaEntities[${i}].LastDataFromRnD" class="form-control readOnlyUpdate  valid"></td>
+             <td><input type="date" id="LastDataFromRnD0" name="RaEntities[${i}].LastDataFromRnD" class="form-control readOnlyUpdate  valid" onchange="GetPBFRACalculatedDate(${i})"></td>
              <td><input type="date" id="BEFinalReport0" name="RaEntities[${i}].BEFinalReport" class="form-control readOnlyUpdate  valid"></td>
              <td><select  id="TypeOfSubmissionId0" name="RaEntities[${i}].TypeOfSubmissionId" class="form-control readOnlyUpdate valid clsTypeOfSubmission" onchange="GetPBFRACalculatedDate(${i})"></select></td>
              <td><input type="date" id="DossierReadyDate0" name="RaEntities[${i}].DossierReadyDate" class="form-control readOnlyUpdate  valid"></td>
@@ -3617,6 +3621,7 @@ function BindNewRA(data, IsEdit = false) {
         let tr = '<tfoot><tr><th></th><th></th><th></th><th></th><th style="color:red;">No Intrested Countries found as per selected Bussiness Unit</th><th></th><th></th><th></th><th></th><th></th></tr></tfoot>';
         tbody.append(tr);
     }
+    SetRaChildRow();
 }
 
 function GetRa(PidfId, PifdPbfId) {
@@ -3692,7 +3697,7 @@ function SetRaChildRow() {
 
         $(this).find("td:eq(5) input").attr("name", "RaEntities[" + index.toString() + "].DossierReadyDate");
         $(this).find("td:eq(5) input").attr("id", "DossierReadyDate" + index.toString());
-        $(this).find("td:eq(5) input").attr(`onchange`, `GetPBFRACalculatedDate(${index})`);
+        //$(this).find("td:eq(5) input").attr(`onchange`, `GetPBFRACalculatedDate(${index})`);
 
         $(this).find("td:eq(6) input").attr("name", "RaEntities[" + index.toString() + "].EarliestSubmissionDExcl");
         $(this).find("td:eq(6) input").attr("id", "EarliestSubmissionDExcl" + index.toString());
@@ -3820,11 +3825,12 @@ function GetPBFRACalculatedDate(index) {
             TypeOfSubmissionId: $(`#TypeOfSubmissionId${index}`).val() == '' || $(`#TypeOfSubmissionId${index}`).val() == 'null' ? 0 : $(`#TypeOfSubmissionId${index}`).val(),
             DossierReadyDate: $(`#DossierReadyDate${index}`).val(),
             PivotalBatchManufactured: $(`#Pivotalbatchmanufactured${index}`).val(),
-            LastDataFromRnD: $(`#LastdatafromRnD${index}`).val(),
+            LastDataFromRnD: $(`#LastDataFromRnD${index}`).val(),
             BEFinalReport: $(`#BEFinalReport${index}`).val(),
             StabilityResultsSixMonth: $(`#PidfPbfGeneralRnd_StabilityResultsSixMonth`).val()
-
-        }
+            
+    }
+    console.log($(`#LastDataFromRnD${index}`).val())
         selectedRaIndex = index;
         ajaxServiceMethod($('#hdnBaseURL').val() + GetPBFRACalculatedDateUrl, 'POST', GetPBFRACalculatedDateSuccess, GetPBFRACalculatedDateError, JSON.stringify(param));
     //}
@@ -3838,7 +3844,7 @@ function GetPBFRACalculatedDateSuccess(data) {
     //$(`#EarliestLaunchDexcl${selectedRaIndex}`).val(data.table[0].earliestLaunchDate == null ? '' : data.table[0].earliestLaunchDate.split('T')[0])
     //$(`#LasDateToRegulatory${selectedRaIndex}`).val($(`#LastdatafromRnD${selectedRaIndex}`).val())//data.table[0].lastDateToRegulatory == null ? '' : data.table[0].lastDateToRegulatory.split('T')[0])
     //$(`#EarliestSubmissionDExcl${selectedRaIndex}`).val($(`#DossierReadyDate${selectedRaIndex}`).val())
-    $(`#LastdatafromRnD${selectedRaIndex}`).val(data.table[0].lastDataFromRnD == null ? $(`#LastdatafromRnD${selectedRaIndex}`).val() : data.table[0].lastDataFromRnD.split('T')[0])
+    $(`#LastDataFromRnD${selectedRaIndex}`).val(data.table[0].lastDataFromRnD == null ? $(`#LastDataFromRnD${selectedRaIndex}`).val() : data.table[0].lastDataFromRnD.split('T')[0])
     $(`#LasDateToRegulatory${selectedRaIndex}`).val(data.table[0].lastDateToRegulatory == null ? $(`#LasDateToRegulatory${selectedRaIndex}`).val() : data.table[0].lastDateToRegulatory.split('T')[0])
     $(`#DossierReadyDate${selectedRaIndex}`).val(data.table[0].dossierReadyDate == null ? $(`#DossierReadyDate${selectedRaIndex}`).val() : data.table[0].dossierReadyDate.split('T')[0])
     $(`#EarliestSubmissionDExcl${selectedRaIndex}`).val(data.table[0].earliestSubmissionDate == null ? $(`#EarliestSubmissionDExcl${selectedRaIndex}`).val() : data.table[0].earliestSubmissionDate.split('T')[0])
@@ -3870,7 +3876,7 @@ function createTdp(data) {
     let html = ``;
     let strngthTdInovator = `<tr id="headerRow"><th style="width: 10%;">Strenght</th>`;
     
-    if (data.length > 0)
+    if (data !=null && data.length > 0)
         html += ``;
     for (let j = 0; j < data.length; j++) {
 
@@ -3894,16 +3900,16 @@ function createTdp(data) {
                 }
                 if (i == 5) {
                     $("#tr6").append(`<td><div class="form-check">
-                                          <input class="form-check-input" type="radio" name="PbfGeneralTdpEntity[${j.toString()}].IsPrimaryPackaging" id="a">
+                                          <input class="form-check-input" type="radio" name="PbfGeneralTdpEntity[${j.toString()}].IsPrimaryPackaging" id="IsPrimaryPackaging">
                                          </div></td><td><div class="form-check">
-                                             <input class="form-check-input" type="radio" name="name="PbfGeneralTdpEntity[${parseInt(j+1).toString()}].IsPrimaryPackaging"" id="IsPrimaryPackaging">
+                                             <input class="form-check-input" type="radio" name="name="PbfGeneralTdpEntity[${parseInt(j+1).toString()}].IsPrimaryPackaging" id="IsPrimaryPackaging">
                                              <div></td>`)
                 }
                 if (i == 6) {
                     $("#tr7").append(`<td><div class="form-check">
-                                          <input class="form-check-input" type="radio" name="PbfGeneralTdpEntity[${j.toString()}].IsSecondryPackaging" id="a">
+                                          <input class="form-check-input" type="radio" name="PbfGeneralTdpEntity[${j.toString()}].IsSecondryPackaging" id="IsSecondryPackaging">
                                          </div></td><td><div class="form-check">
-                                             <input class="form-check-input" type="radio" name="name="PbfGeneralTdpEntity[${parseInt(j+1).toString()}].IsSecondryPackaging"" id="IsSecondryPackaging">
+                                             <input class="form-check-input" type="radio" name="name="PbfGeneralTdpEntity[${parseInt(j+1).toString()}].IsSecondryPackaging" id="IsSecondryPackaging">
                                              <div></td>`)
                 }
                 if (i == 7) {
@@ -3919,7 +3925,7 @@ function createTdp(data) {
     $("#HeaderDevision").width($("#headerRow").width())
       
     $("#headerDiv").width($("#headerRow").width())
-    $(".clsContentUnderBUTab_PBF").show();
+    //$(".clsContentUnderBUTab_PBF").show();
     
 }
 
