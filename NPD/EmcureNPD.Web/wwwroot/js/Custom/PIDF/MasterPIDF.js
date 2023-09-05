@@ -461,21 +461,23 @@ function removeDisableAttribute() {
 }
 
 function SaveClick() {
-    $('#loading-wrapper').show();
     isValidPIDFForm = true;
     if (!_IsInrestedRadioClick)
     validateDynamicControldDetails();
+    $('#loading-wrapper').show();
     $('#SaveType').val('submit');
     SetChildRows();
+    $('#loading-wrapper').hide();
     return isValidPIDFForm;
 }
 function SaveDraftClick() {
-    $('#loading-wrapper').show();
     isValidPIDFForm = true;
     mandateDynamicControl();
+    $('#loading-wrapper').show();
     $('#SaveType').val('draft');
     $("#frmPIDF").validate().settings.ignore = "*";
     SetChildRows();
+    $('#loading-wrapper').hide();
     return isValidPIDFForm;
 }
 function SetChildRows() {
