@@ -15,6 +15,7 @@ var isValidPBFForm = true;
 var PBFLinesArr = [];
 let IsRaEditable = false;
 var rndmasterdata_dbValueOf_lineId = 0;
+var GetCountryForInterestedCountry_PBF = 'api/IPD/GetCountryByIsInterestedCountry';
 
 var arrRnDTabList = [   //custom-tabs-department-RnD-tab-
     'DosageFormulation',
@@ -3452,7 +3453,8 @@ function validatecontrolsPBF(control) {
 //
 async function GetCountyByBussinessUnitId() {
     let id = SelectedBUValue == 0 ? _selectBusinessUnit : SelectedBUValue;
-    ajaxServiceMethod($('#hdnBaseURL').val() + getCountryByBusinessUnitIdurl + "/" + id, 'GET', GetCountryByBusinessUnitSuccess, GetCountryByBusinessUnitError);
+    ajaxServiceMethod($('#hdnBaseURL').val() + GetCountryForInterestedCountry_PBF + "/" + id + "/" + _PIDFID, 'GET', GetCountryByBusinessUnitSuccess, GetCountryByBusinessUnitError);
+    //ajaxServiceMethod($('#hdnBaseURL').val() + getCountryByBusinessUnitIdurl + "/" + id, 'GET', GetCountryByBusinessUnitSuccess, GetCountryByBusinessUnitError);
 }
 function GetCountryByBusinessUnitSuccess(data) {
     try {
