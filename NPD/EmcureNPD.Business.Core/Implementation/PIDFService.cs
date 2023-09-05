@@ -609,6 +609,8 @@ namespace EmcureNPD.Business.Core.Implementation
                         saveTId = (Int32)Master_PIDFStatus.PIDFRejected;
                     else if (oApprRej.ScreenId == Convert.ToString((Int32)PIDFScreen.IPD))
                         saveTId = (Int32)Master_PIDFStatus.IPDRejected;
+                    else if (oApprRej.ScreenId == Convert.ToString((Int32)PIDFScreen.PBF))
+                        saveTId = (Int32)Master_PIDFStatus.PBFRejected;
                     else if (oApprRej.ScreenId == Convert.ToString((Int32)PIDFScreen.Finance))
                         saveTId = (Int32)Master_PIDFStatus.FinanceRejected;
                     else if (oApprRej.ScreenId == Convert.ToString((Int32)PIDFScreen.Management))

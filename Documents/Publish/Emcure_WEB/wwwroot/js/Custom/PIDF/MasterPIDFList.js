@@ -23,13 +23,13 @@ $(document).ready(function () {
                     if ($(it).is(':checked')) {
                         $(it).click();
                     }
-                   
+
                 }
             });
         }
-        
+
     });
-    
+
 });
 
 function InitializePIDFList() {
@@ -58,11 +58,11 @@ function InitializePIDFList() {
             "title": "PIDF No",
             "data": null,
             'render': function (data, type, row, meta) {
-                if (_screenId == "1" || _screenId == "2" || _screenId == "7" || _screenId == "8") {
+                if (_screenId == "1" || _screenId == "2" || _screenId == "7" || _screenId == "8" || _screenId == "6") {
                     var _flag = false;
                     if (_screenId == "1") {
-                      if (row.pidfStatusID == 2 && row.isAllowApprove) {
-                       // if (row.pidfStatusID == 2) {
+                        if (row.pidfStatusID == 2 && row.isAllowApprove) {
+                            // if (row.pidfStatusID == 2) {
                             _flag = true;
                         }
                         $("#DvApproveReject").show();
@@ -70,7 +70,13 @@ function InitializePIDFList() {
                         if (row.pidfStatusID == 6 || (row.ipd && row.pidfStatusID == 9)) {
                             _flag = true;
                         }
-                    } else if (_screenId == "7") {
+                    }
+                    else if (_screenId == "6") {
+                        if (row.pidfStatusID == 13 || (row.pbf && row.pidfStatusID == 13)) {
+                            _flag = true;
+                        }
+                    }
+                    else if (_screenId == "7") {
                         if (((row.pidfStatusID == 10 || row.pidfStatusID == 11 || row.pidfStatusID == 12 || row.pidfStatusID == 13 || row.pidfStatusID == 14 || row.pidfStatusID == 15 || row.pidfStatusID == 16 || row.pidfStatusID == 17) && (row.finance))) {
                             _flag = true;
                         }
@@ -233,11 +239,11 @@ function InitializePIDFList() {
                         if (IsEditAPIIPD || IsViewAPIIPD || IsAddAPIIPD) { html += '<a class="large-font" title="IPD" style="color:' + (_enable ? "#007bff" : "grey") + '" onclick="ShowAddAPIUserPopUp(`' + row.encpidfid + '`)"><i class="fa fa-fw fa-plus mr-1"></i></a>'; }
                     }
                     else {
-                            if (IsEditAPIIPD || IsViewAPIIPD || IsAddAPIIPD) { html += '<a class="large-font" title="IPD" style="color:' + (_enable ? "#007bff" : "grey") + '" href="' + (_enable ? _APIForm + "APIIPDDetailsForm" + _APIQS : "#") + '"><i class="fa fa-fw fa-columns mr-1"></i></a>'; }
-                            if (IsEditAPIRnD || IsViewAPIRnD || IsAddAPIRnD) { html += '<a class="large-font" title="RnD" style="color:' + (_enable ? "#007bff" : "grey") + '" href="' + (_enable ? _APIForm + "APIRndDetailsForm" + _APIQS : "#") + '"><i class="fa fa-fw fa-flask mr-1"></i></a>'; }
-                            if (IsEditAPICharter || IsViewAPICharter || IsAddAPICharter) { html += '<a class="large-font" title="Charter" style="color:' + (_enable ? "#007bff" : "grey") + '" href="' + (_enable ? _APIForm + "APICharterDetailsForm" + _APIQS : "#") + '"><i class="fa fa-fw fa-map-marker mr-1"></i></a>'; }
-                            if (IsViewAPICharterSummary) { html += '<a class="large-font" title="Charter Summary" href="' + (_APIForm + "APICharterSummaryDetailsForm" + _APIQS) + '"><i class="fa fa-fw fa-chart-line mr-1"></i></a>'; }
-                        }
+                        if (IsEditAPIIPD || IsViewAPIIPD || IsAddAPIIPD) { html += '<a class="large-font" title="IPD" style="color:' + (_enable ? "#007bff" : "grey") + '" href="' + (_enable ? _APIForm + "APIIPDDetailsForm" + _APIQS : "#") + '"><i class="fa fa-fw fa-columns mr-1"></i></a>'; }
+                        if (IsEditAPIRnD || IsViewAPIRnD || IsAddAPIRnD) { html += '<a class="large-font" title="RnD" style="color:' + (_enable ? "#007bff" : "grey") + '" href="' + (_enable ? _APIForm + "APIRndDetailsForm" + _APIQS : "#") + '"><i class="fa fa-fw fa-flask mr-1"></i></a>'; }
+                        if (IsEditAPICharter || IsViewAPICharter || IsAddAPICharter) { html += '<a class="large-font" title="Charter" style="color:' + (_enable ? "#007bff" : "grey") + '" href="' + (_enable ? _APIForm + "APICharterDetailsForm" + _APIQS : "#") + '"><i class="fa fa-fw fa-map-marker mr-1"></i></a>'; }
+                        if (IsViewAPICharterSummary) { html += '<a class="large-font" title="Charter Summary" href="' + (_APIForm + "APICharterSummaryDetailsForm" + _APIQS) + '"><i class="fa fa-fw fa-chart-line mr-1"></i></a>'; }
+                    }
                 } else if (_screenId == "6") {
                     //var _PBFForm = '/PIDF/';
                     var _NewPBFForm = '/PBF/';
@@ -321,17 +327,17 @@ function InitializePIDFList() {
         $('#' + tableId).find('.actionColumn').css("right", "0px").css("position", "sticky").css("width", "100px");
     });
 
-    if (_screenId == "1" || _screenId == "2" || _screenId == "7" || _screenId == "8") {
+    if (_screenId == "1" || _screenId == "2" || _screenId == "7" || _screenId == "8" || _screenId == "6") {
         var head_item = dataTableInst.columns(1).header();
         $(head_item).html('<input type="checkbox" class="custom-list-checkbox" id="chkAllPIDF" />');
     }
     dataTableInst.on('draw', function () {
-       
+
         if ($('#chkAllPIDF').is(':checked')) {
             $('#chkAllPIDF').prop('checked', false);
             objApprRejList = [];
         }
-       
+
     });
     // Add event listener for opening and closing details
     $('#' + tableId + ' tbody').on('click', 'td.dt-control', function () {
@@ -381,7 +387,7 @@ function CustomizeChildContent(d) {
 
     return (
         '<table class="custom-table-child"><thead><tr><th>Strength</th><th>Unit</th></tr></thead><tbody>' + _psHTML + '</tbody></table><table class="custom-table-child"><thead><tr><th>Status</th><th>Remark</th><th>Date</th><th>By</th></tr></thead><tbody>' + _phHTML + '</tbody></table>'
-       // < table class="custom-table-child" ><thead><tr><th>API Name</th><th>Sourcing Name</th><th>Vendor</th></tr></thead><tbody>' + _paHTML + '</tbody></table >
+        // < table class="custom-table-child" ><thead><tr><th>API Name</th><th>Sourcing Name</th><th>Vendor</th></tr></thead><tbody>' + _paHTML + '</tbody></table >
     );
 }
 
@@ -453,23 +459,23 @@ function ApproveRejectPIDF(type, ScreenId, URL) {
 
 function GetUserForAPIInterested() {
     ajaxServiceMethod($('#hdnBaseURL').val() + GetUserForAPIInterestedURL, 'GET', GetUserForAPIInterestedSuccess, GetUserForAPIInterestedError);
-    }
+}
 function GetUserForAPIInterestedSuccess(data) {
     try {
         $('#InterestedAPIUser').append($('<option>').text('--Select--').attr('value', '0'));
-            if (data != null)
-                $(data._object).each(function (index, item) {
-                    $('#InterestedAPIUser').append($('<option>').text(item.fullName).attr('value', item.userId));
-                });
-        } catch (e) {
-            toastr.error('Error:' + e.message);
-        }
+        if (data != null)
+            $(data._object).each(function (index, item) {
+                $('#InterestedAPIUser').append($('<option>').text(item.fullName).attr('value', item.userId));
+            });
+    } catch (e) {
+        toastr.error('Error:' + e.message);
     }
+}
 function GetUserForAPIInterestedError(x, y, z) {
-        toastr.error(ErrorMessage);
+    toastr.error(ErrorMessage);
 }
 
-function IsAPIInterested_AddButtonClick(){
+function IsAPIInterested_AddButtonClick() {
     //APISelectedPIDFID
     var IsInterested = false;
     var fnresult = ValidateISInterestedAPIUserForm(IsInterested);
@@ -477,7 +483,7 @@ function IsAPIInterested_AddButtonClick(){
     var IsValidForm = fnresult[0];
     var notInterestedData = CollectNotInterestedData();
     if (IsValidForm) {
-        var AssignedAPIUser = 0;        
+        var AssignedAPIUser = 0;
         if (IsInterested) {
             AssignedAPIUser = $('#InterestedAPIUser').val();
         }
@@ -612,7 +618,7 @@ function CollectNotInterestedData() {
         for (var i = 1; i <= 3; i++) {
             var inputCell = row.cells[i];
             var inputValue = inputCell.querySelector("input").value;
-            var detailValue = inputValue === "" ? null : inputValue; 
+            var detailValue = inputValue === "" ? null : inputValue;
             details.push(detailValue);
         }
         var apiOutsourceId = row.getAttribute("data-api-outsource-id");

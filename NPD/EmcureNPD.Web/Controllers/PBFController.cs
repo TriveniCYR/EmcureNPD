@@ -509,7 +509,7 @@ namespace EmcureNPD.Web.Controllers
                 oPBForm = data._object;
                 oPBForm.Pidfid = Convert.ToInt64(pidfid);
                 oPBForm.BusinessUnitId = Convert.ToInt32(bussnessId);
-
+                oPBForm.StatusId= data._object.StatusId;
                 //oPBForm.BusinessUnitsByUser = GetUserWiseBusinessUnit(Convert.ToInt32(logUserId));
 
                 HttpResponseMessage responseMS = objapi.APICommunication(APIURLHelper.GetPIDFById + "/" + pidfid, HttpMethod.Get, token).Result;

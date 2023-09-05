@@ -23,7 +23,8 @@
         FinanceRejected = 19,
         ManagementApproved = 20,
         ManagementRejected = 21,
-        Completed = 22
+        Completed = 22,
+        PBFRejected =24
         //PIDFCreated = 1,
         //PIDFPendingApproval = 2,
         //PIDFApproved = 3,

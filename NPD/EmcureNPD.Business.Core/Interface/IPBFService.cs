@@ -12,7 +12,7 @@ namespace EmcureNPD.Business.Core.Interface
         //      Task<DBOperation> AddUpdatePBFDetailsAnalytical(PidfPbfFormEntity pbfEntity);
         //      Task<PidfPbfFormEntity> GetPbfFormDetailsAnalytical(long pidfId, int buid, int strengthid);
 
-        Task<dynamic> FillDropdown(int PIDFId);
+        Task<dynamic> FillDropdown(int PIDFId,int selectedbusinessunit);
 
         //Task<PidfPbfEntity> GetPbfFormData(long pidfId, int buid, int? strengthid);
         //Task<DBOperation> AddUpdatePBF(PidfPbfEntity pbfEntity);
