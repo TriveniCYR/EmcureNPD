@@ -111,7 +111,7 @@ namespace EmcureNPD.Business.Core.Implementation
             _PbfGeneralTdp = _unitOfWork.GetRepository<PbfGeneralTdp>();
         }
 
-        public async Task<dynamic> FillDropdown(int PIDFId)
+        public async Task<dynamic> FillDropdown(int PIDFId, int selectedbusinessunit)
         {
             dynamic DropdownObjects = new ExpandoObject();
 
@@ -119,6 +119,7 @@ namespace EmcureNPD.Business.Core.Implementation
 
             SqlParameter[] osqlParameter = {
                 new SqlParameter("@UserId", loggedInUserId),
+                new SqlParameter("@selectedbusinessunit", selectedbusinessunit),
                 new SqlParameter("@PIDFId", PIDFId)
             };
             DataSet dsDropdownOptions = await _repository.GetDataSetBySP("SP_Fill_ddl_PBF", System.Data.CommandType.StoredProcedure, osqlParameter);

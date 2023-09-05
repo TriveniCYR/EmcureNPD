@@ -56,12 +56,12 @@ namespace EmcureNPD.API.Controllers.PBF
         /// <response code="404">Not Found</response>
         /// <response code="405">Method Not Allowed</response>
         /// <response code="500">Internal Server</response>
-        [HttpGet, Route("FillDropdown/{PIDFId}")]
-        public async Task<IActionResult> FillDropdown(int PIDFId)
+        [HttpGet, Route("FillDropdown/{PIDFId}/{selectedbusinessunit}")]
+        public async Task<IActionResult> FillDropdown(int PIDFId,string selectedbusinessunit)
         {
             try
             {
-                return _ObjectResponse.CreateData(await _PBFService.FillDropdown(PIDFId), (Int32)HttpStatusCode.OK);
+                return _ObjectResponse.CreateData(await _PBFService.FillDropdown(PIDFId, int.Parse(selectedbusinessunit)), (Int32)HttpStatusCode.OK);
             }
             catch (Exception e)
             {
@@ -69,6 +69,9 @@ namespace EmcureNPD.API.Controllers.PBF
                 return _ObjectResponse.Create(null, (Int32)HttpStatusCode.BadRequest, "No Records found");
             }
         }
+
+
+    
 
         [HttpGet, Route("GetPbfFormDetails/{pidfId}/{bussnessId}/{strengthid}")]
         public async Task<IActionResult> GetPbfFormDetails([FromRoute] long pidfId, int bussnessId, int strengthid)

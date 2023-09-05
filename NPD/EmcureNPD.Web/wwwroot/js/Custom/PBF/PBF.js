@@ -926,7 +926,7 @@ $('#btnNextRnDTab').click(function () {
 //});
 
 function GetPBFDropdown() {
-    ajaxServiceMethod($('#hdnBaseURL').val() + GetAllPBF + "/" + _PIDFID, 'GET', GetPBFDropdownSuccess, GetPBFDropdownError);
+    ajaxServiceMethod($('#hdnBaseURL').val() + GetAllPBF + "/" + _PIDFID + "/" + _selectBusinessUnit, 'GET', GetPBFDropdownSuccess, GetPBFDropdownError);
 }
 function GetPBFDropdownSuccess(data) {
     try {
