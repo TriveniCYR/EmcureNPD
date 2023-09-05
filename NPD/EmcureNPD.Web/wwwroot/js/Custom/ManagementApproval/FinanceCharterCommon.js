@@ -881,7 +881,7 @@ function fnGetActiveBusinessUnit() {
 function GetActiveBusinessUnitSuccess(data) {
     var businessUnitHTML = "";
     var businessUnitPanel = "";
-    $.each(data._object, function (index, item) {
+    $.each(data._object.result, function (index, item) {
         let buClassName = item.businessUnitName.toLowerCase() === 'india' ? 'in' : item.businessUnitName.toLowerCase();
         businessUnitHTML += '<li class="nav-item p-0">\
             <a class="nav-link '+ (item.businessUnitId == _selectBusinessUnit ? "active" : "") + ' px-2" href="#custom-tabs-' + buClassName + '" data-toggle="pill" aria-selected="true" onclick="loadFinanceProjectionData(' + _selectedPidfId + ',\'' + item.encBusinessUnitId + '\',' + item.businessUnitId+')" id="custom-tabs-two-' + item.businessUnitId + '-tab">' + item.businessUnitName + '</a></li>';
