@@ -180,9 +180,20 @@ namespace EmcureNPD.Business.Core.ServiceImplementations
 			
 		}
 
-        public DataTable GetActiveBusinessUnit()
+        //public DataTable GetActiveBusinessUnit()
+        //{
+        //    return _repository.GetDataBySP("SP_GetActiveBusinessUnit");
+        //}
+
+        public async Task<dynamic> GetActiveBusinessUnit()
         {
-            return _repository.GetDataBySP("SP_GetActiveBusinessUnit");
+            var loggedInUserId = _helper.GetLoggedInUser().UserId;
+
+            SqlParameter[] osqlParameter = {
+                new SqlParameter("@Userid", loggedInUserId)
+            };
+            var _businessUnit = await _repository.GetBySP("SP_GetActiveBusinessUnitByUserid", System.Data.CommandType.StoredProcedure, osqlParameter);
+            return _businessUnit;
         }
         public List<MasterBusinessUnitEntity> GetActiveEncryptedBusinessUnit()
         {
