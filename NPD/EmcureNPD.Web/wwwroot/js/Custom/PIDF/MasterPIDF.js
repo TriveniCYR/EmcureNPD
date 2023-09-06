@@ -5,10 +5,12 @@ var isValidPIDFForm = true;
 var _PIDFBusinessUnitId;
 var _SelectedBusinessUnitPIDF;
 var _IsInrestedRadioClick = false;
+var mode_IsCountryAdd = true;
 $(document).ready(function () {
     try {
         _PIDFId = parseInt($('#hdnPIDFId').val());
         _mode = getParameterByName("IsView");
+        mode_IsCountryAdd = (getParameterByName("IsCountryAdd")=='1');
         //if (getParameterByName("bui") == null)
         //    $("#TabBusinessUnitId").val(parseInt($('#hdnBusinessUnitId').val()));
         //else
@@ -41,9 +43,9 @@ $(document).ready(function () {
 
     SetChildRowDeleteIcon();
 
-    var uri = document.getElementById("PIDFID").value;
+    var uri = document.getElementById("PIDFID").value;//document.getElementById("PIDFID").value;
     var status = $('#dvPIDFContainer').find("#StatusId").val();
-    if (uri > 0 & status != 1 & status != 2) {
+    if (uri > 0 & status != 1 & status != 2 & !mode_IsCountryAdd) {
         readOnlyForm();
     }
 
@@ -70,11 +72,12 @@ $(document).ready(function () {
     TradeNameRequired_change();
 
     try {
-        if (_PIDFId > 0 && ($('#frmPIDF').find("#StatusId").val() == "2")) {
+        if ((_PIDFId > 0 && ($('#frmPIDF').find("#StatusId").val() == "2"))) {
             _PIDFBusinessUnitId = $('#hdnBusinessUnitId').val();
             fnGetActiveBusinessUnit();
         }
     } catch (e) {
+        var ex = e;
     }
 
     InitializeCountryStrength();
