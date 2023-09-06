@@ -856,18 +856,20 @@ function renderCountryTabList(BuVal) {
     var _CountryListforSelectedBU = $.grep(MainArrCountryList, function (n, i) {
         return n.businessUnitId == BuVal;
     });
-    $.each(_CountryListforSelectedBU, function (index, item) {
-        if (arrofcountryid.indexOf(item.countryId) == -1) {
-            arrofcountryid.push(item.countryId)
-            html += '<li class="nav-item col-6 p-0 pt-1">\
+    if (_CountryListforSelectedBU != null && _CountryListforSelectedBU != undefined && _CountryListforSelectedBU.length > 0) {
+        $.each(_CountryListforSelectedBU, function (index, item) {
+            if (arrofcountryid.indexOf(item.countryId) == -1) {
+                arrofcountryid.push(item.countryId)
+                html += '<li class="nav-item col-6 p-0 pt-1">\
     <a class="nav-link" onClick="CountrytabClick('+ item.countryId + ',' + parseInt($("#PIDFId").val()) + ');" id="Countrytab_' + item.countryId + '">' + item.countryName + '</a></li>';
-        }
+            }
         });
-    $('#dvCommercialForm').find("#navCountryTabs").append(html);
+        $('#dvCommercialForm').find("#navCountryTabs").append(html);
 
-    var _countryId = (_CountryListforSelectedBU==undefined)? 0: _CountryListforSelectedBU[0].countryId;
-    selectedCountry = _countryId;
-    $('#Countrytab_' + _countryId).addClass('active');
+        var _countryId = (_CountryListforSelectedBU[0] == undefined) ? 0 : _CountryListforSelectedBU[0].countryId;
+        selectedCountry = _countryId;
+        $('#Countrytab_' + _countryId).addClass('active');
+    }
     renderPIDFStrength(MainArrCountryList);
 }
 function setCommercialArray(Commercial, CommercialYear) {
