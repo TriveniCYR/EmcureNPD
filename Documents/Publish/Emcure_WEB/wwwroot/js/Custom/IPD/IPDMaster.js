@@ -112,7 +112,7 @@ function fnGetActiveBusinessUnit() {
 function GetActiveBusinessUnitSuccess(data) {
     var businessUnitHTML = "";
     var businessUnitPanel = "";
-    $.each(data._object, function (index, item) {
+    $.each(data._object.result, function (index, item) {
         businessUnitHTML += '<li class="nav-item p-0">\
             <a class="nav-link '+ (item.businessUnitId == _selectBusinessUnit ? "active" : "") + ' px-2" href="#custom-tabs-' + item.businessUnitId + '" data-toggle="pill" aria-selected="true" onclick="LoadIPDForm(' + _PIDFID + ', ' + item.businessUnitId + ')" id="custom-tabs-two-' + item.businessUnitId + '-tab">' + item.businessUnitName + '</a></li>';
         businessUnitPanel += '<div class="tab-pane ' + ((item.businessUnitId == _selectBusinessUnit ? "fade show active" : "")) + '" id="custom-tabs-' + item.businessUnitId + '" role="tabpanel" aria-labelledby="custom-tabs-two-' + item.businessUnitId + '-tab"></div>';
