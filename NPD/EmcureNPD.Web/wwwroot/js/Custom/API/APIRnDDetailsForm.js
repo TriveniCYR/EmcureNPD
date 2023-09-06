@@ -35,7 +35,7 @@ function InitializeMarketDropdown() {
 }
 function GetMarketListSuccess(data) {
     try {
-        $.each(data._object, function (index, object) {
+        $.each(data._object.result, function (index, object) {
             $('#MarketID').append($('<option>').text(object.businessUnitName).attr('value', object.businessUnitId));
         });
 

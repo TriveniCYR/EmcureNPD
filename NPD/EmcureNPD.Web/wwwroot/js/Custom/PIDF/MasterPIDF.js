@@ -464,15 +464,22 @@ function removeDisableAttribute() {
 }
 
 function SaveClick() {
-    isValidPIDFForm = true;
-    if (!_IsInrestedRadioClick)
-    validateDynamicControldDetails();
-    $('#loading-wrapper').show();
-    $('#SaveType').val('submit');
-    SetChildRows();
-    $('#loading-wrapper').hide();
-    return isValidPIDFForm;
+    var isValidPIDFForm = true; 
+    if (!_IsInrestedRadioClick) {
+        isValidPIDFForm = validateDynamicControldDetails();
+    }
+    if (!isValidPIDFForm) {
+        $('#loading-wrapper').hide();
+    }
+    if (isValidPIDFForm) {
+        $('#loading-wrapper').show();
+        $('#SaveType').val('submit');
+        SetChildRows();
+    }
+    return isValidPIDFForm; 
 }
+
+
 function SaveDraftClick() {
     isValidPIDFForm = true;
     mandateDynamicControl();
@@ -523,47 +530,57 @@ function SetChildRowDeleteIcon() {
 }
 
 
-function validateDynamicControldDetails() {
-    isValidPIDFForm = true;
-    $('select[name$="UnitofMeasurementId"]').each(function () {
-        validatecontrols(this);
-    });
-    $('input[name$="Strength"]').each(function () {
-        validatecontrols(this);
-    });
-    $('input[name$="Imsvalue"]').each(function () {
-        validatecontrols(this);
-    });
-    $('input[name$="Imsvolume"]').each(function () {
-        validatecontrols(this);
-    });
-    $('select[name$="ApisourcingId"]').each(function () {
-        validatecontrols(this);
-    });
-    $('input[name$="Apivendor"]').each(function () {
-        validatecontrols(this);
-    });
-    $('input[name$="Apiname"]').each(function () {
-        validatecontrols(this);
-    });
-    $('.customvalidateformcontrol').each(function () {
-        validatecontrols(this);
-    });
-}
+//function validateDynamicControldDetails() {
+//    isValidPIDFForm = true;
+//    $('select[name$="UnitofMeasurementId"]').each(function () {
+//        validatecontrols(this);
+//    });
+//    $('input[name$="Strength"]').each(function () {
+//        validatecontrols(this);
+//    });
+//    $('input[name$="Imsvalue"]').each(function () {
+//        validatecontrols(this);
+//    });
+//    $('input[name$="Imsvolume"]').each(function () {
+//        validatecontrols(this);
+//    });
+//    $('select[name$="ApisourcingId"]').each(function () {
+//        validatecontrols(this);
+//    });
+//    $('input[name$="Apivendor"]').each(function () {
+//        validatecontrols(this);
+//    });
+//    $('input[name$="Apiname"]').each(function () {
+//        validatecontrols(this);
+//    });
+//    $('.customvalidateformcontrol').each(function () {
+//        validatecontrols(this);
+//    });
+    
+//}
 
+function validateDynamicControldDetails() {
+    var isValidPIDFForm = true; 
+    $('select[name$="UnitofMeasurementId"], input[name$="Strength"], input[name$="Imsvalue"], input[name$="Imsvolume"], select[name$="ApisourcingId"], input[name$="Apivendor"], input[name$="Apiname"], .customvalidateformcontrol').each(function () {
+        if (!validatecontrols(this)) {
+            isValidPIDFForm = false; 
+        }
+    });
+
+    return isValidPIDFForm;
+}
 function validatecontrols(control) {
     try {
-        if ($(control).val() == null || $(control).val().trim() == '') {
+        if ($(control).val() == null || $(control).val().trim() === '') {
             $(control).css("border-color", "red");
             $(control).focus();
-            isValidPIDFForm = false;
-        }
-        else {
+            return false;
+        } else {
             $(control).css("border-color", "");
+            return true;
         }
-    }
-    catch(e) {
-        isValidPIDFForm = false;
+    } catch (e) {
+        return false;
     }
 }
 function mandateDynamicControl() {
