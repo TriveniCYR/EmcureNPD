@@ -215,6 +215,7 @@ namespace EmcureNPD.Business.Core.Implementation
         public async Task<DBOperation> AddUpdatePIDF(PIDFEntity entityPIDF)
         {
             Pidf objPIDF;
+            bool IsApprvedPIDF = true;
             //int? BusinessUnitIdForChildTable = entityPIDF.BusinessUnitId;
             try
             {
@@ -320,13 +321,27 @@ namespace EmcureNPD.Business.Core.Implementation
                             }
                             else
                             {
+                                IsApprvedPIDF = _repository.Exists(x => x.Pidfid == entityPIDF.PIDFID && x.StatusId > (int)Master_PIDFStatus.PIDFSubmitted);
+                                var CurrentStatus = objPIDF.StatusId;
+                                var CurrentStatusDateTime = objPIDF.StatusUpdatedDate;
+                                var CurrentStatusUpdatedBy = objPIDF.StatusUpdatedBy;
+
                                 PIDFEntity _previousPIDFEntity = _mapperFactory.Get<Pidf, PIDFEntity>(objPIDF);
                                 objPIDF = _mapperFactory.Get<PIDFEntity, Pidf>(entityPIDF);
                                 objPIDF.ModifyBy = loggedInUserId;
                                 objPIDF.ModifyDate = DateTime.Now;
-                                objPIDF.StatusUpdatedBy = loggedInUserId;
-                                objPIDF.StatusUpdatedDate = DateTime.Now;
-
+                                
+                                if(IsApprvedPIDF)
+                                {
+                                    objPIDF.StatusId = CurrentStatus;
+                                    objPIDF.StatusUpdatedBy = CurrentStatusUpdatedBy;
+                                    objPIDF.StatusUpdatedDate = CurrentStatusDateTime;
+                                }
+                                else
+                                {
+                                    objPIDF.StatusUpdatedBy = loggedInUserId;
+                                    objPIDF.StatusUpdatedDate = DateTime.Now;
+                                }
                                 _repository.UpdateAsync(objPIDF);
 
                                 await _unitOfWork.SaveChangesAsync();
@@ -346,25 +361,29 @@ namespace EmcureNPD.Business.Core.Implementation
                             }
                             await _unitOfWork.SaveChangesAsync();
                         }
-                        
 
-                        var productStrengthList = _pidfProductStrength.GetAllQuery().Where(x => x.Pidfid == entityPIDF.PIDFID && x.BusinessUnitId == entityPIDF.SelectedBusinessUnitId).ToList();
-
-                        foreach (var item in productStrengthList)
+                        if (IsApprvedPIDF) // if PIDF is not apprved then only remove from ProductStrength child table
                         {
-                            var strengthCountryList = _strengthCountryMapping.GetAllQuery().Where(x => x.PidfproductStrengthId == item.PidfproductStrengthId).ToList();
-                            foreach (var x in strengthCountryList)
+
+                            var productStrengthList = _pidfProductStrength.GetAllQuery().Where(x => x.Pidfid == entityPIDF.PIDFID && x.BusinessUnitId == entityPIDF.SelectedBusinessUnitId).ToList();
+
+                            foreach (var item in productStrengthList)
                             {
-                                _strengthCountryMapping.Remove(x);
+                                var strengthCountryList = _strengthCountryMapping.GetAllQuery().Where(x => x.PidfproductStrengthId == item.PidfproductStrengthId).ToList();
+                                foreach (var x in strengthCountryList)
+                                {
+                                    _strengthCountryMapping.Remove(x);
+                                }
                             }
-                        }
-                        await _unitOfWork.SaveChangesAsync();
+                            await _unitOfWork.SaveChangesAsync();
 
-                        foreach (var item in productStrengthList)
-                        {
-                            _pidfProductStrength.Remove(item);
+                            foreach (var item in productStrengthList)
+                            {
+                                _pidfProductStrength.Remove(item);
+                            }
+                            await _unitOfWork.SaveChangesAsync();
+
                         }
-                        await _unitOfWork.SaveChangesAsync();
 
                         var imsDataList = _pidfPidfimsdata.GetAllQuery().Where(x => x.Pidfid == entityPIDF.PIDFID && x.BusinessUnitId == entityPIDF.SelectedBusinessUnitId).ToList();
                         foreach (var item in imsDataList)
@@ -502,7 +521,7 @@ namespace EmcureNPD.Business.Core.Implementation
             
             var data = _mapperFactory.Get<Pidf, PIDFEntity>(await _repository.GetAsync(ids));
 
-            if (data != null)
+            if (data != null)   
             {
                 if (data.BusinessUnitId != null && data.BusinessUnitId > 0)
                 {
