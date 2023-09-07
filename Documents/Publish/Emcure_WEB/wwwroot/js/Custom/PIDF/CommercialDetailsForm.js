@@ -249,14 +249,14 @@ function SaveCommertialPIDFFormSuccess(data) {
             }
         }
         else {
-            toastr.error(data._Message);
+            console.log(data._Message);
         }
     } catch (e) {
-        toastr.error('Save Commercial Error:' + e.message);
+        console.log('Save Commercial Error:' + e.message);
     }
 }
 function SaveCommertialPIDFFormError(x, y, z) {
-    toastr.error(ErrorMessage);
+    console.log(ErrorMessage);
 }
 function BUtabClick(BUVal, pidfidval) {
     $('[id^="BUtab_"]').removeClass('active');
@@ -340,11 +340,11 @@ function GetCommercialPIDFByBUSuccess(data) {
             $('.PBFDetailsTab').show();
 
     } catch (e) {
-        toastr.error('Get Commercial Error:' + e.message);
+        console.log('Get Commercial Error:' + e.message);
     }
 }
 function GetCommercialPIDFByBUError(x, y, z) {
-    toastr.error(ErrorMessage);
+    console.log(ErrorMessage);
 }
 function ResetMainFormForm() {
     $("#MarketSizeInUnit").val('');
@@ -856,18 +856,20 @@ function renderCountryTabList(BuVal) {
     var _CountryListforSelectedBU = $.grep(MainArrCountryList, function (n, i) {
         return n.businessUnitId == BuVal;
     });
-    $.each(_CountryListforSelectedBU, function (index, item) {
-        if (arrofcountryid.indexOf(item.countryId) == -1) {
-            arrofcountryid.push(item.countryId)
-            html += '<li class="nav-item col-6 p-0 pt-1">\
+    if (_CountryListforSelectedBU != null && _CountryListforSelectedBU != undefined && _CountryListforSelectedBU.length > 0) {
+        $.each(_CountryListforSelectedBU, function (index, item) {
+            if (arrofcountryid.indexOf(item.countryId) == -1) {
+                arrofcountryid.push(item.countryId)
+                html += '<li class="nav-item col-6 p-0 pt-1">\
     <a class="nav-link" onClick="CountrytabClick('+ item.countryId + ',' + parseInt($("#PIDFId").val()) + ');" id="Countrytab_' + item.countryId + '">' + item.countryName + '</a></li>';
-        }
+            }
         });
-    $('#dvCommercialForm').find("#navCountryTabs").append(html);
+        $('#dvCommercialForm').find("#navCountryTabs").append(html);
 
-    var _countryId = _CountryListforSelectedBU[0].countryId;
-    selectedCountry = _countryId;
-    $('#Countrytab_' + _countryId).addClass('active');
+        var _countryId = (_CountryListforSelectedBU[0] == undefined) ? 0 : _CountryListforSelectedBU[0].countryId;
+        selectedCountry = _countryId;
+        $('#Countrytab_' + _countryId).addClass('active');
+    }
     renderPIDFStrength(MainArrCountryList);
 }
 function setCommercialArray(Commercial, CommercialYear) {
@@ -889,7 +891,7 @@ function GetCurrencyList(data) {
             $('#CurrencyId').append($('<option>').text(object.currencyName).attr('value', object.currencyID));
         });
     } catch (e) {
-        toastr.error('Get Currency Error:' + e.message);
+        console.log('Get Currency Error:' + e.message);
     }
 }
 function GetProductTypeList(data) {
@@ -899,7 +901,7 @@ function GetProductTypeList(data) {
             $('#dvCommercialForm').find('#PackagingTypeId').append($('<option>').text(object.packagingTypeName).attr('value', object.packagingTypeId));
         });
     } catch (e) {
-        toastr.error('Get Product Type Error:' + e.message);
+        console.log('Get Product Type Error:' + e.message);
     }
 }
 function GetPackSize(data) {
@@ -909,7 +911,7 @@ function GetPackSize(data) {
             $('#PackSizeId').append($('<option>').text(object.packSizeName).attr('value', object.packSizeId));
         });
     } catch (e) {
-        toastr.error('Get Final Selection Error:' + e.message);
+        console.log('Get Final Selection Error:' + e.message);
     }
 }
 function GetFSList(data) {
@@ -919,7 +921,7 @@ function GetFSList(data) {
             $('#FinalSelectionId').append($('<option>').text(object.finalSelectionName).attr('value', object.finalSelectionId));
         });
     } catch (e) {
-        toastr.error('Get Final Selection Error:' + e.message);
+        console.log('Get Final Selection Error:' + e.message);
     }
 }
 
@@ -958,11 +960,11 @@ function GetPBFOutsourcingTabDDLdataSuccess(data) {
         Bind_ddlPbfworkflowId(data._object[1]);
 
     } catch (e) {
-        toastr.error('Get PBF Outsourcing Error:' + e.message);
+        console.log('Get PBF Outsourcing Error:' + e.message);
     }
 }
 function GetPBFOutsourcingTabDDLdataError(x, y, z) {
-    toastr.error(ErrorMessage);
+    console.log(ErrorMessage);
 }
 function Bind_ddlProjectWorkflowId(data) {
     try {
@@ -972,7 +974,7 @@ function Bind_ddlProjectWorkflowId(data) {
         });
         
     } catch (e) {
-        toastr.error('Get ddlProjectWorkflow Error:' + e.message);
+        console.log('Get ddlProjectWorkflow Error:' + e.message);
     }
 }
 function Bind_ddlPbfworkflowId(data) {
@@ -983,7 +985,7 @@ function Bind_ddlPbfworkflowId(data) {
         });
        
     } catch (e) {
-        toastr.error('Get ddlPbfworkflow  Error:' + e.message);
+        console.log('Get ddlPbfworkflow  Error:' + e.message);
     }
 }
 //--------------------------------------------
@@ -1007,15 +1009,15 @@ function GetPBFWorkFlowTaskNames(_pbfWorkFlowid) {
 }
 function GetPBFWorkFlowTaskNamesSuccess(data) {
     try {
-        console.log(data);
+        //console.log(data);
         if (data._object != null)
             AddTaskTo_tblPBFOutsourcetask(data._object);
     } catch (e) {
-        toastr.error('Get PBF Outsourcing Error:' + e.message);
+        console.log('Get PBF Outsourcing Error:' + e.message);
     }
 }
 function GetPBFWorkFlowTaskNamesError(x, y, z) {
-    toastr.error(ErrorMessage);
+    console.log(ErrorMessage);
 }
 function AddTaskTo_tblPBFOutsourcetask(data) {
     var html = '';
@@ -1105,11 +1107,11 @@ function AddUpdatePBFoutsourceDataSuccess(data) {
             toastr.error(data._Message);
         }
     } catch (e) {
-        toastr.error('Save PBfOutsource Error:' + e.message);
+        console.log('Save PBfOutsource Error:' + e.message);
     }
 }
 function AddUpdatePBFoutsourceDataError(x, y, z) {
-    toastr.error(ErrorMessage);
+    console.log(ErrorMessage);
 }
 function getPBFTaskDataToSave() {
    

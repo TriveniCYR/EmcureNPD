@@ -487,7 +487,6 @@ function SaveDraftClick() {
     $('#SaveType').val('draft');
     $("#frmPIDF").validate().settings.ignore = "*";
     SetChildRows();
-    $('#loading-wrapper').hide();
     return isValidPIDFForm;
 }
 function SetChildRows() {
