@@ -1,4 +1,4 @@
-﻿var SelectedBUValue = 0;
+﻿var SelectedBUValue_PBF = 0;
 var UserwiseBusinessUnit;
 var _PIDFPBFId = 0;
 var _mode = 0;
@@ -1457,11 +1457,11 @@ function SetPBFDisableForOtherUserBU() {
 //    $("#dvPBFContainer").find("input, button, submit, textarea, select,a,i").prop('disabled', true);
 //}
 function PBFBUtabClick(pidfidval, BUVal) {
-    SelectedBUValue = 0;
+    SelectedBUValue_PBF = 0;
     var i, tabcontent, butab;
-    SelectedBUValue = BUVal;
-    $("#BusinessUnitId").val(SelectedBUValue);
-    $("#PbfFormEntities_BusinessUnitId").val(SelectedBUValue);
+    SelectedBUValue_PBF = BUVal;
+    $("#BusinessUnitId").val(SelectedBUValue_PBF);
+    $("#PbfFormEntities_BusinessUnitId").val(SelectedBUValue_PBF);
     butab = document.getElementsByClassName("BUtab");
     for (i = 0; i < butab.length; i++) {
         butab[i].className = butab[i].className.replace(" active", "");
@@ -1480,12 +1480,12 @@ function SetPBFBU_Tab() {
         PIDFBusinessUnitId = $("#BusinessUnitId").val();
     else
         PIDFBusinessUnitId = $("#PIDFBusinessUnitId").val();
-    SelectedBUValue = PIDFBusinessUnitId;
+    SelectedBUValue_PBF = PIDFBusinessUnitId;
     $("#Pidfid").val(_PIDFID);
     var pidfId = $("#PIDFId").val();
     var BUAnchorId = '#BUtab_' + PIDFBusinessUnitId;
     $(BUAnchorId).addClass('active');
-    //window.location.href = 'PBFClinicalDetailsForm?pidfid=' + btoa(pidfId) + '&bui=' + btoa(SelectedBUValue) + '&strength=' + btoa(selectedStrength);
+    //window.location.href = 'PBFClinicalDetailsForm?pidfid=' + btoa(pidfId) + '&bui=' + btoa(SelectedBUValue_PBF) + '&strength=' + btoa(selectedStrength);
 }
 
 function PBFBindBusinessUnit(data) {
@@ -3451,23 +3451,16 @@ function validatecontrolsPBF(control) {
 
 //** For RA Tab **//
 //
-async function GetCountyByBussinessUnitId() {
-    let id = SelectedBUValue == 0 ? _selectBusinessUnit : SelectedBUValue;
+function GetCountyByBussinessUnitId() {
+    let id = SelectedBUValue_PBF == 0 ? _selectBusinessUnit : SelectedBUValue_PBF;
     ajaxServiceMethod($('#hdnBaseURL').val() + GetCountryForInterestedCountry_PBF + "/" + id + "/" + _PIDFID, 'GET', GetCountryByBusinessUnitSuccess, GetCountryByBusinessUnitError);
     //ajaxServiceMethod($('#hdnBaseURL').val() + getCountryByBusinessUnitIdurl + "/" + id, 'GET', GetCountryByBusinessUnitSuccess, GetCountryByBusinessUnitError);
 }
 function GetCountryByBusinessUnitSuccess(data) {
     try {
+        console.log('GetCountryByBusinessUnitSuccess');
+        console.log(data);
         var element = $('#tableRA').find('.clsCountry');
-        element.find("option").remove();
-        var _emptyOption = '<option value="">-- Select --</option>';
-        element.append(_emptyOption);
-        if (data._object != null && data._object.length > 0) {            
-            $(data._object).each(function (index, item) {
-                element.append('<option value="' + item.countryId + '">' + item.countryName + '</option>');
-            });
-        }
-        bindRaDropDowns();var element = $('#tableRA').find('.clsCountry');
         element.find("option").remove();
         var _emptyOption = '<option value="">-- Select --</option>';
         element.append(_emptyOption);
@@ -3627,7 +3620,7 @@ function BindNewRA(data, IsEdit = false) {
 }
 
 function GetRa(PidfId, PifdPbfId) {
-    let buId = SelectedBUValue == 0 ? _selectBusinessUnit : SelectedBUValue;
+    let buId = SelectedBUValue_PBF == 0 ? _selectBusinessUnit : SelectedBUValue_PBF;
     ajaxServiceMethod($('#hdnBaseURL').val() + GetRaurl + "/" + PidfId + "/" + PifdPbfId + "/" + buId, 'GET', GetRaSuccess, GetRaError);
 }
 function GetRaSuccess(response) {
@@ -3819,7 +3812,7 @@ function GetNationalApprovalsError(x, y, z) {
 let selectedRaIndex = 0;
 function GetPBFRACalculatedDate(index) {
   //  if (($(`#TypeOfSubmissionId${index}`).val() != null && $(`#TypeOfSubmissionId${index}`).val() != undefined && $(`#TypeOfSubmissionId${index}`).val() != '')) { //||( $(`#raCountryId${index}`).val()!='')) {
-        let buId = SelectedBUValue == 0 ? _selectBusinessUnit : SelectedBUValue;
+        let buId = SelectedBUValue_PBF == 0 ? _selectBusinessUnit : SelectedBUValue_PBF;
         let param = {
             PIDFId: _PIDFID,
             BusinessUnitId: buId,
