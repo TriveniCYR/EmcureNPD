@@ -3453,12 +3453,12 @@ function validatecontrolsPBF(control) {
 //
 function GetCountyByBussinessUnitId() {
     let id = SelectedBUValue_PBF == 0 ? _selectBusinessUnit : SelectedBUValue_PBF;
-    ajaxServiceMethod($('#hdnBaseURL').val() + GetCountryForInterestedCountry_PBF + "/" + id + "/" + _PIDFID, 'GET', GetCountryByBusinessUnitSuccess, GetCountryByBusinessUnitError);
+    ajaxServiceMethod($('#hdnBaseURL').val() + GetCountryForInterestedCountry_PBF + "/" + id + "/" + _PIDFID, 'GET', GetCountryByBusinessUnitSuccess_PBF, GetCountryByBusinessUnitError_PBF);
     //ajaxServiceMethod($('#hdnBaseURL').val() + getCountryByBusinessUnitIdurl + "/" + id, 'GET', GetCountryByBusinessUnitSuccess, GetCountryByBusinessUnitError);
 }
-function GetCountryByBusinessUnitSuccess(data) {
+function GetCountryByBusinessUnitSuccess_PBF(data) {
     try {
-        console.log('GetCountryByBusinessUnitSuccess');
+        console.log('GetCountryByBusinessUnitSuccess_PBF');
         console.log(data);
         var element = $('#tableRA').find('.clsCountry');
         element.find("option").remove();
@@ -3475,7 +3475,7 @@ function GetCountryByBusinessUnitSuccess(data) {
         //toastr.error(ErrorMessage);
     }
 }
-function GetCountryByBusinessUnitError(x, y, z) {
+function GetCountryByBusinessUnitError_PBF(x, y, z) {
     toastr.error(ErrorMessage);
 }
 async function GetTypeOfSubmission() {
@@ -3602,6 +3602,7 @@ function BindNewRA(data, IsEdit = false) {
         var element = $('#tableRA').find('.clsCountry');
         element.find("option").remove();
         var _emptyOption = '<option value="">-- Select --</option>';
+        console.log(data);
         element.append(_emptyOption);
         for (var i = 0; i < data.length; i++) {
             element.append('<option  value="' + data[i].countryId + '">' + data[i].countryName + '</option>');
@@ -3732,7 +3733,7 @@ $("#NonStandardProduct").click(function () {
     }
 })
 function checkDuplicateRaCountry(id) {
-
+   
     let countryId = [];
     var duplicate = false;
     $("#tableRABody tr").each(function (index, value) {
@@ -3767,6 +3768,7 @@ function checkDuplicateRaCountry(id) {
             }
         }
     });
+    GetPBFRACalculatedDate(id);
 }
 
 function GetNationalApprovals() {
