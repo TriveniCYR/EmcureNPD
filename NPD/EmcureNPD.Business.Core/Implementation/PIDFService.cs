@@ -321,7 +321,7 @@ namespace EmcureNPD.Business.Core.Implementation
                             }
                             else
                             {
-                                IsApprvedPIDF = _repository.Exists(x => x.Pidfid == entityPIDF.PIDFID && x.StatusId > (int)Master_PIDFStatus.PIDFSubmitted);
+                                IsApprvedPIDF = _repository.Exists(x => x.Pidfid == entityPIDF.PIDFID && x.StatusId >= (int)Master_PIDFStatus.PIDFApproved);
                                 var CurrentStatus = objPIDF.StatusId;
                                 var CurrentStatusDateTime = objPIDF.StatusUpdatedDate;
                                 var CurrentStatusUpdatedBy = objPIDF.StatusUpdatedBy;
