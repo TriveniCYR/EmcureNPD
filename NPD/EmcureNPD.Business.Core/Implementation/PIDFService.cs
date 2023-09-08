@@ -362,7 +362,7 @@ namespace EmcureNPD.Business.Core.Implementation
                             await _unitOfWork.SaveChangesAsync();
                         }
 
-                        if (IsApprvedPIDF) // if PIDF is not apprved then only remove from ProductStrength child table
+                        if (!IsApprvedPIDF) // if PIDF is not apprved then only remove from ProductStrength child table
                         {
 
                             var productStrengthList = _pidfProductStrength.GetAllQuery().Where(x => x.Pidfid == entityPIDF.PIDFID && x.BusinessUnitId == entityPIDF.SelectedBusinessUnitId).ToList();
