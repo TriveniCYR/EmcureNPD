@@ -566,6 +566,14 @@ namespace EmcureNPD.Web.Controllers
 
 				if (responseMessage.IsSuccessStatusCode)
                 {
+                    if (pbfEntity.PBFnextbutton)
+                    {
+                        // Determine the next tab index (for example, increment the current index)
+                        int nextTabIndex = pbfEntity.CurrentTabIndex+1;
+
+                        // Redirect to the same action with the updated tab index
+                        return RedirectToAction("PBF", new { pidfid = pbfEntity.EncPidfid,bui=pbfEntity.BusinessUnitName,pbf=false , currentTabIndex = nextTabIndex });//currentTabIndex = nextTabIndex
+                    }
                     TempData[EmcureNPD.Web.Helpers.UserHelper.SuccessMessage] = data._Message;
                     return RedirectToAction("PIDFList", "PIDF", new { screenId });
                 }
