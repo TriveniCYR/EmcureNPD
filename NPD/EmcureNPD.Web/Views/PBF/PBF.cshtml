@@ -1450,7 +1450,7 @@
                         <div class="form-group" id="dvMainButton">
 
                             <button type="submit" class="btn btn-success me-3 outside-buttons operationButton" id="save" onClick="SavePBFForm('Save')">@SharedLocalizer["Submit"]</button>
-                            @if (Model.StatusId == (Int32)Master_PIDFStatus.PBFInProgress || Model.StatusId == (Int32)Master_PIDFStatus.IPDApproved || Model.StatusId == (Int32)Master_PIDFStatus.CommercialSubmitted || Model.StatusId == (Int32)Master_PIDFStatus.APISubmitted || Model.StatusId == (Int32)Master_PIDFStatus.APIInProgress|| Model.StatusId == (Int32)Master_PIDFStatus.CommercialInProgress)
+                            @if (Model.StatusId == 0 || Model.StatusId == (Int32)Master_PIDFStatus.PBFInProgress || Model.StatusId == (Int32)Master_PIDFStatus.IPDApproved || Model.StatusId == (Int32)Master_PIDFStatus.CommercialSubmitted || Model.StatusId == (Int32)Master_PIDFStatus.APISubmitted || Model.StatusId == (Int32)Master_PIDFStatus.APIInProgress|| Model.StatusId == (Int32)Master_PIDFStatus.CommercialInProgress)
                             {
                                 <button type="submit" id="savedraft" class="btn btn-primary me-3 outside-buttons operationButton" onClick="SavePBFForm('Draft')">@SharedLocalizer["SaveDraft"]</button>
                             }
