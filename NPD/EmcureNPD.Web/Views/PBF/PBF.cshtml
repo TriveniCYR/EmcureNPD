@@ -19,6 +19,7 @@
     //string IsApproveAllow = (objPermssion.Approve) ? "" : "display: none";
     //string IsViewAllow = (objPermssion.View) ? "" : "display: none";
     var IsViewMode = Convert.ToString(Context.Request.Query["IsView"]);
+
 }
 
 <div id="dvPIDFAccrdion"></div>
@@ -40,6 +41,10 @@
         <input type="hidden" id="hdnPBFGeneralId" value="@(Model.PBFGeneralId)" />
         <input type="hidden" id="hdnPIDFPBFId" value="@(Model.Pidfpbfid)" />
         <input type="hidden" id="hdnPBFIsView" value="@(Context.Request.Query["IsView"] == "1" ? "1" : "0")" />
+        <input type="hidden" id="currentTabIndex" name="currentTabIndex" value="0" />
+        <input type="hidden" asp-for="BusinessUnitName" value="@(Context.Request.Query["bui"])" />
+        <input type="hidden" asp-for="EncPidfid" value="@(Context.Request.Query["pidfid"])" />
+
 
         <div class="container-fluid background-white-card">
             <div class="row">
@@ -983,7 +988,6 @@
                                                     <div class="card-body">
                                                         <div class="tab-content" id="custom-tabs-RNDdepartment-tabContent">
 
-
                                                             <div class="tab-pane fade show active"
                                                          id="custom-tabs-RnD-DosageFormulation" role="tabpanel"
                                                          aria-labelledby="custom-tabs-department-RnD-tab-DosageFormulation">
@@ -1001,13 +1005,12 @@
                                                                                 <table id="tablerndbatchsize" class="table text-center" style="width:100%">
                                                                                 </table>
                                                                             </div>
-                                                                            
+
                                                                         </div>
                                                                     </div>
 
                                                                 </div>
                                                             </div>
-
                                                             <div class="tab-pane fade show"
                                                          id="custom-tabs-RnD-APIRequirment" role="tabpanel"
                                                          aria-labelledby="custom-tabs-department-RnD-tab-APIRequirment">
@@ -1225,15 +1228,16 @@
                                                     </div>
                                                 </div>
 
-
                                             </div>
-
-                                            <div class="row">
-                                                <div class="col-12 text-end">
-                                                    <a class="btn btn-primary outside-buttons mt-2 d-none" id="btnNextRnDTab">Next</a>
-                                                    <input type="hidden" id="btnNextRnDTabSelectedValue" value="" />
+                                            @if (Model.StatusId != (Int32)Master_PIDFStatus.PBFSubmitted)
+                                            {
+                                                @Html.HiddenFor(model => model.PBFnextbutton, new { id = "btnNextRnDTabSelectedValue", name = "PBFnextbutton" })
+                                                <div class="row">
+                                                    <div class="col-12 text-end">
+                                                        <a class="btn btn-primary outside-buttons mt-2" id="btnNextRnDTab">Next</a>
+                                                    </div>
                                                 </div>
-                                            </div>
+                                            }
                                         </div>
                                     </div>
                                 }
@@ -1450,17 +1454,19 @@
                         <div class="form-group" id="dvMainButton">
 
                             <button type="submit" class="btn btn-success me-3 outside-buttons operationButton" id="save" onClick="SavePBFForm('Save')">@SharedLocalizer["Submit"]</button>
-                            @if (Model.StatusId == (Int32)Master_PIDFStatus.PBFInProgress || Model.StatusId == (Int32)Master_PIDFStatus.IPDApproved || Model.StatusId == (Int32)Master_PIDFStatus.CommercialSubmitted || Model.StatusId == (Int32)Master_PIDFStatus.APISubmitted || Model.StatusId == (Int32)Master_PIDFStatus.APIInProgress|| Model.StatusId == (Int32)Master_PIDFStatus.CommercialInProgress)
+                            @if (Model.StatusId == 0 || Model.StatusId == (Int32)Master_PIDFStatus.PBFInProgress || Model.StatusId == (Int32)Master_PIDFStatus.IPDApproved || Model.StatusId == (Int32)Master_PIDFStatus.CommercialSubmitted || Model.StatusId == (Int32)Master_PIDFStatus.APISubmitted || Model.StatusId == (Int32)Master_PIDFStatus.APIInProgress || Model.StatusId == (Int32)Master_PIDFStatus.CommercialInProgress)
                             {
                                 <button type="submit" id="savedraft" class="btn btn-primary me-3 outside-buttons operationButton" onClick="SavePBFForm('Draft')">@SharedLocalizer["SaveDraft"]</button>
                             }
                             @if (Model.StatusId == (Int32)Master_PIDFStatus.PBFSubmitted)
                             {
 
-                            <button type="submit" class="btn btn-danger me-3 outside-buttons operationButton" onClick="ApproveRejectClick('R', @Model.Pidfid, @((int)EmcureNPD.Utility.Enums.PIDFScreen.PBF), '/PIDF/PIDFList?ScreenId=@((int)EmcureNPD.Utility.Enums.PIDFScreen.PBF)');"><i class="fa fa-ban mr-1"></i>@SharedLocalizer["Reject"]</button>
+                                <button type="submit" class="btn btn-danger me-3 outside-buttons operationButton" onClick="ApproveRejectClick('R', @Model.Pidfid, @((int)EmcureNPD.Utility.Enums.PIDFScreen.PBF), '/PIDF/PIDFList?ScreenId=@((int)EmcureNPD.Utility.Enums.PIDFScreen.PBF)');"><i class="fa fa-ban mr-1"></i>@SharedLocalizer["Reject"]</button>
 
                             }
+
                             <a id="btnPBFCancel" class="btn btn-danger me-3 outside-buttons operationButton" onclick="CancelPopup()">@SharedLocalizer["Cancel"]</a>
+
                         </div>
                     </div>
                 </div>
@@ -1491,7 +1497,7 @@
     var _PIDFID = "@UtilityHelper.Decreypt(Convert.ToString(Context.Request.Query["pidfid"]))";
     var GetPBFAllTabDetails = "@EmcureNPD.Web.Helpers.APIURLHelper.GetPBFTabDetails";
     var ErrorMessage = "@SharedLocalizer["Error"]";
-
+    var _currenttabindex = "@Convert.ToInt32(Context.Request.Query["currentTabIndex"])";
     var _EncPIDFID = "@Convert.ToString(Context.Request.Query["pidfid"])";
     var _PIDFBusinessUnitId = "@Convert.ToString(Context.Request.Query["bui"])";
     var _PIDFAccordionURL = "@Url.Action("PIDF", "PIDF")";

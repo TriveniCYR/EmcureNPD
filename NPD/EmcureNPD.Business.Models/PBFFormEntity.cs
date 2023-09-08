@@ -106,6 +106,9 @@ namespace EmcureNPD.Business.Models
         public int StrengthId { get; set; }
         public string SaveType { get; set; }
         public string BusinessUnitsByUser { get; set; }
+        public bool PBFnextbutton { get; set; }
+        public int CurrentTabIndex { get; set; }
+        
 
         #region Tab Veriables 
         public List<GeneralStrengthEntity> GeneralStrengthEntities { get; set; }
@@ -144,6 +147,8 @@ namespace EmcureNPD.Business.Models
         public string BestudyResults { get; set; }
        // public PbfGeneralTdpEntity PbfGeneralTdpEntity { get; set; }
         public List<PbfGeneralTdpEntity> PbfGeneralTdpEntity { get; set; }
+        public string BusinessUnitName { get; set; }
+        public string EncPidfid { get; set; }
         #endregion
     }
     #region Clinical Classes 

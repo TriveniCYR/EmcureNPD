@@ -321,7 +321,7 @@ namespace EmcureNPD.Business.Core.Implementation
                             }
                             else
                             {
-                                IsApprvedPIDF = _repository.Exists(x => x.Pidfid == entityPIDF.PIDFID && x.StatusId > (int)Master_PIDFStatus.PIDFSubmitted);
+                                IsApprvedPIDF = _repository.Exists(x => x.Pidfid == entityPIDF.PIDFID && x.StatusId >= (int)Master_PIDFStatus.PIDFApproved);
                                 var CurrentStatus = objPIDF.StatusId;
                                 var CurrentStatusDateTime = objPIDF.StatusUpdatedDate;
                                 var CurrentStatusUpdatedBy = objPIDF.StatusUpdatedBy;
@@ -362,7 +362,7 @@ namespace EmcureNPD.Business.Core.Implementation
                             await _unitOfWork.SaveChangesAsync();
                         }
 
-                        if (IsApprvedPIDF) // if PIDF is not apprved then only remove from ProductStrength child table
+                        if (!IsApprvedPIDF) // if PIDF is not apprved then only remove from ProductStrength child table
                         {
 
                             var productStrengthList = _pidfProductStrength.GetAllQuery().Where(x => x.Pidfid == entityPIDF.PIDFID && x.BusinessUnitId == entityPIDF.SelectedBusinessUnitId).ToList();

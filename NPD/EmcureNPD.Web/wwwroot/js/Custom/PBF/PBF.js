@@ -53,6 +53,11 @@ $(document).ready(function () {
     GetTypeOfSubmission();
     GetNationalApprovals();
     //createTdp();
+    if (_currenttabindex != null) {
+        var currentIndex = parseInt(_currenttabindex);
+        var tabLink = $(".nav-tabs .nav-item.p-0.pbfRNDTab .nav-link").eq(currentIndex);
+        tabLink.tab("show");
+    }
     $(document).on("change", ".calcRNDBatchSizesPrototypeFormulation, .calcRNDBatchSizesScaleUpbatch, .calcRNDBatchSizesExhibitBatch1, .calcRNDBatchSizesExhibitBatch2, .calcRNDBatchSizesExhibitBatch3", function () {
         $('#loading-wrapper').show();
         ChangeAPIReq_OnChange_selectDosageFormula();
@@ -894,37 +899,20 @@ function PostPBFFormbyNextError(x, y, z) {
 $('#btnNextRnDTab').click(function () {
     var _SaveType = 'Draft';
     $('.pbftablesplantCost').show();
-    //if (_SaveType == 'Draft') {
-    //    $('#AddPBFForm').validate().settings.ignore = "*";
-
-    //} else {
-    //    validateDynamicControldDetailsPBF();
-    //}
-
-    //if ($("#AddPBFForm").valid()) {
-    //    //var abc = new Date();
-    //    //toastr.error(abc.toString());
-    //    $('#loading-wrapper').show();
-    //}
-    setlicense();
-    SetAnalyticalChildRows();
-    SetPhaseWiseBudget();
-    SetHeadWiseBudget();
-    SetRNDChildRows();
+    var btnNextRnDTabSelectedValue = $("#btnNextRnDTabSelectedValue");
+    btnNextRnDTabSelectedValue.val(btnNextRnDTabSelectedValue.val() === "true" ? "false" : "true");
+    var currentTab = $(".nav-tabs .nav-item.p-0.pbfRNDTab .nav-link.active");
+    var currentIndex = currentTab.parent().index();
+    $('#currentTabIndex').val(currentIndex);
     $('#AddPBFForm').find('#SaveType').val(_SaveType);
-
+    $('#savedraft').click();
     var NextTabIndex = parseInt($('#btnNextRnDTabSelectedValue').val()) + 1;
     var newxtTabId = '#custom-tabs-department-RnD-tab-' + arrRnDTabList[NextTabIndex];
     $('#btnNextRnDTabSelectedValue').val(NextTabIndex);
     $(newxtTabId).click();
-    PostPBFFormbyNext();
+    //PostPBFFormbyNext();
 });
-//$('[id^=custom-tabs-department-RnD-tab-]').click(function () {
-//    var tabid = $(this).attr('id');
-//    var arrtabid = tabid.split('-')[5];
-//    var indexOftab = arrRnDTabList.indexOf(arrtabid);
-//    $('#btnNextRnDTabSelectedValue').val(indexOftab);
-//});
+
 
 function GetPBFDropdown() {
     ajaxServiceMethod($('#hdnBaseURL').val() + GetAllPBF + "/" + _PIDFID + "/" + _selectBusinessUnit, 'GET', GetPBFDropdownSuccess, GetPBFDropdownError);
@@ -3926,6 +3914,12 @@ function createTdp(data) {
     
 }
 
+
+
+
+
+
+
 function GetTdpList(data) {
     //console.log(data);
     //let result = data.sort(function (a, b) {
@@ -3944,3 +3938,7 @@ function GetTdpList(data) {
         $(`#StorageHandling${i}`).val(data[i].storageHandling);
     }
 }
+
+
+
+
