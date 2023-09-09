@@ -116,7 +116,7 @@ function ValidateMainForm() {
 
     if (ArrMainCommercial != null && ArrMainCommercial != undefined && ArrMainCommercial.length > 0 && $('#hdnPackSizeMode').val() != "1") {
         var _PackSize = $.grep(ArrMainCommercial, function (n, i) {
-            return n.packSizeId == $('#PackSizeId option:selected').val() && n.businessUnitId == SelectedBUValue && n.pidfProductStrengthId == selectedStrength;
+            return n.packSizeId == $('#PackSizeId option:selected').val() && n.businessUnitId == SelectedBUValue && n.pidfProductStrengthId == selectedStrength && n.countryId == selectedCountry;
         });
         if (_PackSize != null && _PackSize != undefined && _PackSize.length > 0) {
             toastr.error('Pack size is already selected !');
@@ -638,7 +638,7 @@ function Update_BUstregthPackTable(_objArrMainCommercial) {
 
 
     _objArrMainCommercial = $.grep(_objArrMainCommercial, function (n, i) {
-        return n.businessUnitId == SelectedBUValue && n.pidfProductStrengthId == selectedStrength;
+        return n.businessUnitId == SelectedBUValue && n.pidfProductStrengthId == selectedStrength && n.countryId == selectedCountry ;
     });
 
     $("#tblMainCommercial #mainCommercialRows tr").remove();
@@ -708,7 +708,7 @@ function btnDeleteBUStrengthPack(packSizeId) {
         callback: function (result) {
             if (result) {
                 ArrMainCommercial = $.grep(ArrMainCommercial, function (n, i) {
-                    return n.packSizeId != packSizeId && n.businessUnitId == SelectedBUValue && n.pidfProductStrengthId == selectedStrength;
+                    return n.packSizeId != packSizeId && n.businessUnitId == SelectedBUValue && n.pidfProductStrengthId == selectedStrength && n.countryId == selectedCountry;
                 });
                 Update_BUstregthPackTable(ArrMainCommercial);
             }
@@ -821,6 +821,7 @@ function renderPIDFStrength(pidfStrength) {
         var PIDFProductStrengthId = _StrenthByBU[0].pidfProductStrengthId;
         selectedStrength = PIDFProductStrengthId;
         $('#Strengthtab_' + PIDFProductStrengthId).addClass('active');
+        StrengthtabClick(selectedStrength, _PIDFID);
     }    
 
     if (html == "") {
