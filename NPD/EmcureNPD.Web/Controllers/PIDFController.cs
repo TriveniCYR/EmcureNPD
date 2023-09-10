@@ -178,6 +178,11 @@ namespace EmcureNPD.Web.Controllers
                 if (responseMessage.IsSuccessStatusCode)
                 {
                     TempData[EmcureNPD.Web.Helpers.UserHelper.SuccessMessage] = data._Message;
+                    if (pIDFEntity.IsExtendCountry)
+                    {
+                        //redirect to Commercial
+                         return RedirectToAction(nameof(PIDFList), new { ScreenId = (int)PIDFScreen.PIDF });
+                    }
                     if (!string.IsNullOrEmpty(pIDFEntity.PIDFIsInterested) && (pIDFEntity.PIDFIsInterested == "1" || pIDFEntity.PIDFIsInterested == "0"))
                     {
                         // redirect to the same screen

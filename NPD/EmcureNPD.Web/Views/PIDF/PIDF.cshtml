@@ -94,6 +94,7 @@
                                 <input type="hidden" asp-for="PIDFID" />
                                 <input type="hidden" asp-for="SaveType" />
                                 <input type="hidden" asp-for="LogInId" />
+                                <input type="hidden" asp-for="IsExtendCountry" />
                                 <div class="row">
 
                                     <div class="col-md-3">
@@ -245,9 +246,10 @@
                                                                 for (int i = 0; i < Model.pidfProductStregthEntities.Count(); i++)
                                                                 {
                                                                     <tr id="productStrengthRow_0">
+                                                                       
                                                                         <td>
                                                                             <div class="col-md">
-                                                                                <div class="form-group required">
+                                                                                <div class="form-group required">                                                                                   
                                                                                     @Html.EditorFor(model => Model.pidfProductStregthEntities[i].Strength, new { htmlAttributes = new {@required="required",@type="number",@inputmode="decimal",@autocomplete = "off", @class = "txtclsStrngth form-control checkbox-checked", id = "pidfProductStregthEntities[" + i + "].Strength", @placeholder = @MasterLocalizer["Product Strength"] } })
                                                                                 </div>
                                                                             </div>
@@ -265,6 +267,7 @@
                                                                                 <div class="form-group required">
                                                                                     <select id="ddlStrengthCountry_0" name="pidfProductStregthEntities[@i].CountryId" class="form-control readOnlyUpdate StrengthCountry" multiple="multiple"></select>
                                                                                     <input type="hidden" id="hdnStrengthCountries" value="@(string.Join(",", Model.pidfProductStregthEntities[i].CountryId))" />
+                                                                                    @Html.HiddenFor(model => model.pidfProductStregthEntities[i].PidfproductStrengthId, new { @class = "clsPidfproductStrengthId"})
                                                                                 </div>
                                                                             </div>
                                                                         </td>

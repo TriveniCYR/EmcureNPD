@@ -215,11 +215,17 @@ namespace EmcureNPD.Business.Core.Implementation
         public async Task<DBOperation> AddUpdatePIDF(PIDFEntity entityPIDF)
         {
             Pidf objPIDF;
-            bool IsApprvedPIDF = true;
+            bool IsApprvedPIDF = false;
             //int? BusinessUnitIdForChildTable = entityPIDF.BusinessUnitId;
             try
             {
                 var loggedInUserId = _helper.GetLoggedInUser().UserId;
+                IsApprvedPIDF = _repository.Exists(x => x.Pidfid == entityPIDF.PIDFID && x.StatusId >= (int)Master_PIDFStatus.PIDFApproved);
+                if (IsApprvedPIDF)
+                {
+                    bool IsSuccess = await SaveProductStrength_ExtendedCountry(entityPIDF.PIDFID, loggedInUserId, entityPIDF.pidfProductStregthEntities, entityPIDF.SelectedBusinessUnitId);
+                    return DBOperation.Success;
+                }
 
                 if (entityPIDF.PIDFID > 0)
                 {
@@ -321,7 +327,7 @@ namespace EmcureNPD.Business.Core.Implementation
                             }
                             else
                             {
-                                IsApprvedPIDF = _repository.Exists(x => x.Pidfid == entityPIDF.PIDFID && x.StatusId >= (int)Master_PIDFStatus.PIDFApproved);
+                               
                                 var CurrentStatus = objPIDF.StatusId;
                                 var CurrentStatusDateTime = objPIDF.StatusUpdatedDate;
                                 var CurrentStatusUpdatedBy = objPIDF.StatusUpdatedBy;
@@ -431,6 +437,49 @@ namespace EmcureNPD.Business.Core.Implementation
             {
                 await _ExceptionService.LogException(ex);
                 return DBOperation.Error;
+            }
+        }
+
+        private async Task<bool> SaveProductStrength_ExtendedCountry(long Pidfid, int loggedInUserId, List<PidfProductStregthEntity> pidfProductStregthEntities, int? BusinessUnitId)
+        {
+            try
+            {
+                var ExistingObj = await _pidfProductStrength.GetAllAsync();
+                if (pidfProductStregthEntities != null && pidfProductStregthEntities.Count() > 0)
+                {
+                    List<PidfproductStrength> _ProductStrengthList = new List<PidfproductStrength>();
+                    foreach (var item in pidfProductStregthEntities)
+                    {
+                        if (!ExistingObj.Exists(x=>x.PidfproductStrengthId== item.PidfproductStrengthId))
+                        {
+                            PidfproductStrength pidfProductStrength = new PidfproductStrength();
+                            item.Pidfid = Pidfid;
+                            item.ModifyDate = DateTime.Now;
+                            item.ModifyBy = loggedInUserId;
+                            pidfProductStrength = _mapperFactory.Get<PidfProductStregthEntity, PidfproductStrength>(item);
+                            pidfProductStrength.BusinessUnitId = BusinessUnitId;
+
+                            // setup country against the pidf strength
+                            if (item.CountryId != null)
+                            {
+                                foreach (var x in item.CountryId)
+                                {
+                                    pidfProductStrength.PidfproductStrengthCountryMappings.Add(new PidfproductStrengthCountryMapping { CountryId = x, ModifyBy = loggedInUserId, ModifyDate = DateTime.Now });
+                                }
+                            }
+
+                            _ProductStrengthList.Add(pidfProductStrength);
+                        }
+                    }
+                    _pidfProductStrength.AddRangeAsync(_ProductStrengthList);
+                    await _unitOfWork.SaveChangesAsync();
+                }
+                return true;
+            }
+            catch (Exception ex)
+            {
+                await _ExceptionService.LogException(ex);
+                return false;
             }
         }
 

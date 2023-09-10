@@ -2858,6 +2858,19 @@ namespace EmcureNPD.Business.Core.Implementation
         {
             try
             {
+                // Remove Deleted RA Table Row from Database
+                var dbObj = await _pidfPbfRRepositiry.GetAllAsync(x => x.Pidfid == pidfId && x.BuId == BusinessUnitId);
+                foreach (var item in dbObj)
+                {
+                    bool IsExist = ls.Any(x => x.Pidfpbfraid == item.Pidfpbfraid);
+                    if (!IsExist)
+                    {
+                        _pidfPbfRRepositiry.Remove(item);
+                        await _unitOfWork.SaveChangesAsync();
+                    }
+                }
+
+
                 SqlConnection con = new SqlConnection(_configuration.GetSection("ConnectionStrings:DefaultConnection").Value);
                 int count = 0;
                 var recordsTable = new DataTable();

@@ -30,6 +30,10 @@ $(document).ready(function () {
 
 });
 
+function RedirectToPIDF() {
+    location.href = '/PIDF/PIDF?pidfid=' + _PIDFID + '&bui=' + SelectedBUValue + '&IsCountryAdd=1';
+}
+
 function SetBU_Strength() {
     var pidfId = $("#PIDFId").val();
     GetCommercialPIDFByBU(pidfId);

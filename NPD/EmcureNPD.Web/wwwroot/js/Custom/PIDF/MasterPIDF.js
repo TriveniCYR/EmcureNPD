@@ -48,13 +48,17 @@ $(document).ready(function () {
     if (uri > 0 & status != 1 & status != 2 & !mode_IsCountryAdd) {
         readOnlyForm();
     }
+    SetForIsExtendCountry(mode_IsCountryAdd);
 
     $('#BusinessUnitId').change(function (e) {
+
+        var CurrentStatus = ($('#frmPIDF').find("#StatusId").val() == undefined) ? 0 : $('#frmPIDF').find("#StatusId").val();
+
        if ($(this).val() != "") {
            if (parseInt($(this).val()) > 0) {
                var _businessUnitId = $(this).val();
                if (_PIDFId > 0) {
-                   if (_SelectedBusinessUnitPIDF > 0) {
+                   if (_SelectedBusinessUnitPIDF > 0 && parseInt(CurrentStatus)>1) {
                        _businessUnitId = _SelectedBusinessUnitPIDF
                    }
                }
@@ -83,7 +87,30 @@ $(document).ready(function () {
     InitializeCountryStrength();
     SetPIDFFormDisableForOtherUserBU();
 });
+function SetForIsExtendCountry(mode_IsCountryAdd) {
+    if (mode_IsCountryAdd) {
+        $('#IsExtendCountry').val(true);
+        readOnlyForm();
+        $('#productStrengthBody').find('select').removeAttr('disabled');
+        $('#productStrengthBody').find('select').removeAttr('readonly');
+        $('#productStrengthBody').find('input').removeAttr('disabled');
+        $('#productStrengthBody').find('input').removeAttr('readonly');
+        $('#productStrengthBody').find('input').removeAttr('readonly');
+        $('#productStrengthBody').find('.operationButton').removeAttr('style');
+        $('#btnSubmitPIDF').show();
 
+
+        if ($('#ProductStrengthTable tbody tr').length > 1) {
+            $('.strengthDeleteIcon').show();
+        } else {
+            $('.strengthDeleteIcon').hide();
+        }
+    }
+    else {
+        $('#IsExtendCountry').val(false);
+    }
+
+}
 function SetPIDFFormDisableForOtherUserBU() {
     var _selectBusinessUnit = $('#dvPIDFContainer').find('#hdnSelectedBusinessUnitId').val();
     if (_selectBusinessUnit != "0" && _selectBusinessUnit != "") {
@@ -456,6 +483,13 @@ function readOnlyForm() {
     $('#btnPIDFCancel').show();
     $('.pidfInterestedRadio').removeAttr("readonly").removeAttr("disabled");
 }
+
+function EnabledForm_PIDF() {
+    $('#dvPIDFContainer').find('input').removeAttr("readonly").removeAttr("disabled");
+    //$('button').attr('readonly', true).attr('disabled', true);
+    $('#dvPIDFContainer').find('select').removeAttr("readonly").removeAttr("disabled");
+}
+
 function removeDisableAttribute() {
     $('#dvPIDFContainer').find('input').removeAttr('disabled');
     $('#dvPIDFContainer').find('select').removeAttr('disabled');
@@ -474,8 +508,12 @@ function SaveClick() {
     if (isValidPIDFForm) {
         $('#loading-wrapper').show();
         $('#SaveType').val('submit');
-        SetChildRows();
+        SetChildRows();        
     }
+    if (mode_IsCountryAdd) {
+        EnabledForm_PIDF();
+    }
+
     return isValidPIDFForm; 
 }
 
@@ -499,6 +537,9 @@ function SetChildRows() {
         $(this).find("td:first input").attr("name", "pidfProductStregthEntities[" + index.toString() + "].Strength");
         $(this).find("td:eq(1) select").attr("name", "pidfProductStregthEntities[" + index.toString() + "].UnitofMeasurementId");
         $(this).find("td:eq(2) select").attr("name", "pidfProductStregthEntities[" + index.toString() + "].CountryId");
+
+        $(this).find("td:eq(2) .clsPidfproductStrengthId").attr("name", "pidfProductStregthEntities[" + index.toString() + "].PidfproductStrengthId");
+        
     });
     $.each($('#IMSDataTable tbody tr'), function (index, value) {
         $(this).find("td:first input").attr("name", "IMSDataEntities[" + index.toString() + "].Imsvalue");
