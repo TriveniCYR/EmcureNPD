@@ -53,6 +53,11 @@ $(document).ready(function () {
     GetTypeOfSubmission();
     GetNationalApprovals();
     //createTdp();
+    if (_currenttabindex != null) {
+        var currentIndex = parseInt(_currenttabindex);
+        var tabLink = $(".nav-tabs .nav-item.p-0.pbfRNDTab .nav-link").eq(currentIndex);
+        tabLink.tab("show");
+    }
     $(document).on("change", ".calcRNDBatchSizesPrototypeFormulation, .calcRNDBatchSizesScaleUpbatch, .calcRNDBatchSizesExhibitBatch1, .calcRNDBatchSizesExhibitBatch2, .calcRNDBatchSizesExhibitBatch3", function () {
         $('#loading-wrapper').show();
         ChangeAPIReq_OnChange_selectDosageFormula();
@@ -894,37 +899,20 @@ function PostPBFFormbyNextError(x, y, z) {
 $('#btnNextRnDTab').click(function () {
     var _SaveType = 'Draft';
     $('.pbftablesplantCost').show();
-    //if (_SaveType == 'Draft') {
-    //    $('#AddPBFForm').validate().settings.ignore = "*";
-
-    //} else {
-    //    validateDynamicControldDetailsPBF();
-    //}
-
-    //if ($("#AddPBFForm").valid()) {
-    //    //var abc = new Date();
-    //    //toastr.error(abc.toString());
-    //    $('#loading-wrapper').show();
-    //}
-    setlicense();
-    SetAnalyticalChildRows();
-    SetPhaseWiseBudget();
-    SetHeadWiseBudget();
-    SetRNDChildRows();
+    var btnNextRnDTabSelectedValue = $("#btnNextRnDTabSelectedValue");
+    btnNextRnDTabSelectedValue.val(btnNextRnDTabSelectedValue.val() === "true" ? "false" : "true");
+    var currentTab = $(".nav-tabs .nav-item.p-0.pbfRNDTab .nav-link.active");
+    var currentIndex = currentTab.parent().index();
+    $('#currentTabIndex').val(currentIndex);
     $('#AddPBFForm').find('#SaveType').val(_SaveType);
-
+    $('#savedraft').click();
     var NextTabIndex = parseInt($('#btnNextRnDTabSelectedValue').val()) + 1;
     var newxtTabId = '#custom-tabs-department-RnD-tab-' + arrRnDTabList[NextTabIndex];
     $('#btnNextRnDTabSelectedValue').val(NextTabIndex);
     $(newxtTabId).click();
-    PostPBFFormbyNext();
+    //PostPBFFormbyNext();
 });
-//$('[id^=custom-tabs-department-RnD-tab-]').click(function () {
-//    var tabid = $(this).attr('id');
-//    var arrtabid = tabid.split('-')[5];
-//    var indexOftab = arrRnDTabList.indexOf(arrtabid);
-//    $('#btnNextRnDTabSelectedValue').val(indexOftab);
-//});
+
 
 function GetPBFDropdown() {
     ajaxServiceMethod($('#hdnBaseURL').val() + GetAllPBF + "/" + _PIDFID + "/" + _selectBusinessUnit, 'GET', GetPBFDropdownSuccess, GetPBFDropdownError);
@@ -3453,12 +3441,12 @@ function validatecontrolsPBF(control) {
 //
 function GetCountyByBussinessUnitId() {
     let id = SelectedBUValue_PBF == 0 ? _selectBusinessUnit : SelectedBUValue_PBF;
-    ajaxServiceMethod($('#hdnBaseURL').val() + GetCountryForInterestedCountry_PBF + "/" + id + "/" + _PIDFID, 'GET', GetCountryByBusinessUnitSuccess, GetCountryByBusinessUnitError);
+    ajaxServiceMethod($('#hdnBaseURL').val() + GetCountryForInterestedCountry_PBF + "/" + id + "/" + _PIDFID, 'GET', GetCountryByBusinessUnitSuccess_PBF, GetCountryByBusinessUnitError_PBF);
     //ajaxServiceMethod($('#hdnBaseURL').val() + getCountryByBusinessUnitIdurl + "/" + id, 'GET', GetCountryByBusinessUnitSuccess, GetCountryByBusinessUnitError);
 }
-function GetCountryByBusinessUnitSuccess(data) {
+function GetCountryByBusinessUnitSuccess_PBF(data) {
     try {
-        console.log('GetCountryByBusinessUnitSuccess');
+        console.log('GetCountryByBusinessUnitSuccess_PBF');
         console.log(data);
         var element = $('#tableRA').find('.clsCountry');
         element.find("option").remove();
@@ -3475,7 +3463,7 @@ function GetCountryByBusinessUnitSuccess(data) {
         //toastr.error(ErrorMessage);
     }
 }
-function GetCountryByBusinessUnitError(x, y, z) {
+function GetCountryByBusinessUnitError_PBF(x, y, z) {
     toastr.error(ErrorMessage);
 }
 async function GetTypeOfSubmission() {
@@ -3602,6 +3590,7 @@ function BindNewRA(data, IsEdit = false) {
         var element = $('#tableRA').find('.clsCountry');
         element.find("option").remove();
         var _emptyOption = '<option value="">-- Select --</option>';
+        console.log(data);
         element.append(_emptyOption);
         for (var i = 0; i < data.length; i++) {
             element.append('<option  value="' + data[i].countryId + '">' + data[i].countryName + '</option>');
@@ -3732,7 +3721,7 @@ $("#NonStandardProduct").click(function () {
     }
 })
 function checkDuplicateRaCountry(id) {
-
+   
     let countryId = [];
     var duplicate = false;
     $("#tableRABody tr").each(function (index, value) {
@@ -3767,6 +3756,7 @@ function checkDuplicateRaCountry(id) {
             }
         }
     });
+    GetPBFRACalculatedDate(id);
 }
 
 function GetNationalApprovals() {
@@ -3924,6 +3914,12 @@ function createTdp(data) {
     
 }
 
+
+
+
+
+
+
 function GetTdpList(data) {
     //console.log(data);
     //let result = data.sort(function (a, b) {
@@ -3942,3 +3938,7 @@ function GetTdpList(data) {
         $(`#StorageHandling${i}`).val(data[i].storageHandling);
     }
 }
+
+
+
+
