@@ -455,7 +455,7 @@ namespace EmcureNPD.Business.Core.Implementation
                             PidfproductStrength pidfProductStrength = new PidfproductStrength();
                             item.Pidfid = Pidfid;
                             item.ModifyDate = DateTime.Now;
-                            item.ModifyBy = loggedInUserId;
+                            item.ModifyBy = loggedInUserId;                           
                             pidfProductStrength = _mapperFactory.Get<PidfProductStregthEntity, PidfproductStrength>(item);
                             pidfProductStrength.BusinessUnitId = BusinessUnitId;
 
@@ -513,6 +513,7 @@ namespace EmcureNPD.Business.Core.Implementation
                         item.Pidfid = Pidfid;
                         item.ModifyDate = DateTime.Now;
                         item.ModifyBy = loggedInUserId;
+                        item.PidfproductStrengthId = 0;
                         pidfProductStrength = _mapperFactory.Get<PidfProductStregthEntity, PidfproductStrength>(item);
                         pidfProductStrength.BusinessUnitId = BusinessUnitId;
 
