@@ -93,6 +93,7 @@ namespace EmcureNPD.Business.Models
 		public bool InHouses { get; set; }
         public bool IsPIDFApproved { get; set; }
         public bool IsExtendCountry { get; set; }
+        public string CommercialReturnURL { get; set; }
         public bool _Partial { get; set; }
         public bool IsViewMode { get; set; }
 

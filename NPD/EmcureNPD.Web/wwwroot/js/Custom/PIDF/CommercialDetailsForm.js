@@ -31,7 +31,9 @@ $(document).ready(function () {
 });
 
 function RedirectToPIDF() {
-    location.href = '/PIDF/PIDF?pidfid=' + _PIDFID + '&bui=' + SelectedBUValue + '&IsCountryAdd=1';
+    var arrurl = $(location).attr('href').split('?');
+    if (arrurl.length == 2)
+        location.href = '/PIDF/PIDF?pidfid=' + _PIDFID + '&bui=' + SelectedBUValue + '&IsCountryAdd=1&ReturnURL=' +arrurl[1];
 }
 
 function SetBU_Strength() {

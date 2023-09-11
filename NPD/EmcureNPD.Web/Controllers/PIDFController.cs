@@ -155,7 +155,11 @@ namespace EmcureNPD.Web.Controllers
         {
             try
             {
-               
+                string _encbuid = UtilityHelper.Encrypt(pIDFEntity.SelectedBusinessUnitId.ToString());
+                string _encpidfid = UtilityHelper.Encrypt(pIDFEntity.PIDFID.ToString());
+                var _queryparam = pIDFEntity.CommercialReturnURL;
+
+
                 if (pIDFEntity.SaveType == "submit")
                     pIDFEntity.StatusId = (Int32)Master_PIDFStatus.PIDFSubmitted;
                 else {
@@ -181,7 +185,11 @@ namespace EmcureNPD.Web.Controllers
                     if (pIDFEntity.IsExtendCountry)
                     {
                         //redirect to Commercial
-                         return RedirectToAction(nameof(PIDFList), new { ScreenId = (int)PIDFScreen.PIDF });
+                        string strurl = "/Commercial/PIDFCommerciaLDetails?pidfid=" + _encpidfid + "&bui=" + _encbuid + _queryparam;
+                        return Redirect(strurl);
+
+                        //return RedirectToAction( ("PIDFCommerciaLDetails", "Commercial", new { pidfid = (int)PIDFScreen.PIDF });
+
                     }
                     if (!string.IsNullOrEmpty(pIDFEntity.PIDFIsInterested) && (pIDFEntity.PIDFIsInterested == "1" || pIDFEntity.PIDFIsInterested == "0"))
                     {
