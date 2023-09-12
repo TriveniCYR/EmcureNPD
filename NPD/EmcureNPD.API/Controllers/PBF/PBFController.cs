@@ -214,5 +214,19 @@ namespace EmcureNPD.API.Controllers.PBF
                 return _ObjectResponse.Create(null, (Int32)HttpStatusCode.BadRequest, "No Records found");
             }
         }
+
+        [HttpGet, Route("GetAllPackSizeByCountry/{PIDFId}/{selectedbusinessunit}/{selectedCountry}")]
+        public async Task<IActionResult> GetAllPackSizeByCountry(int PIDFId, string selectedbusinessunit,int selectedCountry)
+        {
+            try
+            {
+                return _ObjectResponse.CreateData(await _PBFService.GetCountryWisePackSizeStabilityData(PIDFId, int.Parse(selectedbusinessunit), selectedCountry), (Int32)HttpStatusCode.OK);
+            }
+            catch (Exception e)
+            {
+                await _ExceptionService.LogException(e);
+                return _ObjectResponse.Create(null, (Int32)HttpStatusCode.BadRequest, "No Records found");
+            }
+        }
     }
 }

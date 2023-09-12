@@ -262,7 +262,15 @@
                     <ul class="nav nav-tabs text-center m-0" id="custom-tabs-two-tab" role="tablist"></ul>
                 </div>
 
+                <div class="card card-primary card-tabs">
+                    <div class="card-header p-0 pt-1">
+                        <ul class="nav nav-tabs row text-center m-0" id="navCountryTabs" role="tablist"></ul>
+                    </div>
+                </div>
             </div>
+
+
+            @*------------End----BU tabs--------------------------------*@
             <div class="clsContentUnderBUTab_PBF">
                 <div class="row">
                     <div class="col-12">
@@ -785,8 +793,8 @@
 
                                                     </div>
                                                     <hr />
-                                                    <div class="row" style="display:none;">
-                                                        <label class="control-label" id="lblPackSizeStability" style="display:none;">Pack Size Stabilitys</label>
+                                                    <div class="row">
+                                                        <label class="control-label" id="lblPackSizeStability">Pack Size Stability</label>
                                                         <div id="DvPackSizeStability">
                                                         </div>
                                                     </div>
@@ -1229,15 +1237,14 @@
                                                 </div>
 
                                             </div>
-                                            @if (Model.StatusId != (Int32)Master_PIDFStatus.PBFSubmitted)
-                                            {
+                                           
                                                 @Html.HiddenFor(model => model.PBFnextbutton, new { id = "btnNextRnDTabSelectedValue", name = "PBFnextbutton" })
                                                 <div class="row">
                                                     <div class="col-12 text-end">
                                                         <a class="btn btn-primary outside-buttons mt-2" id="btnNextRnDTab">Next</a>
                                                     </div>
                                                 </div>
-                                            }
+                                            
                                         </div>
                                     </div>
                                 }
@@ -1490,6 +1497,7 @@
 
 <script>
     var GetIsInterestedByPIDFandBUurlPBF = "@EmcureNPD.Web.Helpers.APIURLHelper.GetIsInterestedByPIDFandBU";
+    var GetCountryWisePackSizeStabilityData="@EmcureNPD.Web.Helpers.APIURLHelper.GetCountryWisePackSizeStabilityData";
     var GetAllPBF = "@EmcureNPD.Web.Helpers.APIURLHelper.GetPBFDropdown";
     var getLineByPlantId = "@EmcureNPD.Web.Helpers.APIURLHelper.GetLineByPlantId";
     var UserWiseBUList = "@Model.BusinessUnitsByUser";

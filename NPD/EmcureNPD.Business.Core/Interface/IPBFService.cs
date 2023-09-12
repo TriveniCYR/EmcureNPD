@@ -39,5 +39,6 @@ namespace EmcureNPD.Business.Core.Interface
         Task<List<MasterNationApprovalEntity>> GetNationApprovals();
         Task<dynamic> GetPBFRADates(RaCalculatedDates calculatedDates);
         Task<dynamic> FileUpload(IFormFile files, string path, string uniqueFileName);
+        Task<PidfProductStrengthGeneralRanD> GetCountryWisePackSizeStabilityData(long pidfId, int BUId, int countryid);
     }
 }
