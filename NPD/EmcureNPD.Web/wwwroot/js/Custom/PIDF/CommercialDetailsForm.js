@@ -729,7 +729,7 @@ function OpenYearForm(packSizeId, yearIndex) {
         $('#dvCommercialAddYear').modal('show');
         IsShowCancel_Save_buttons(false);
     }
-    MainRowEditIndex = ArrMainCommercial.findIndex((obj => obj.packSizeId == packSizeId && obj.businessUnitId == SelectedBUValue && obj.pidfProductStrengthId == selectedStrength));
+    MainRowEditIndex = ArrMainCommercial.findIndex((obj => obj.packSizeId == packSizeId && obj.businessUnitId == SelectedBUValue && obj.countryId==selectedCountry && obj.pidfProductStrengthId == selectedStrength));
     EditIndex = (yearIndex == null || yearIndex == undefined ? -1 : yearIndex);
 
     if ((yearIndex == null || yearIndex == undefined)) {
