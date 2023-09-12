@@ -714,7 +714,7 @@ function btnDeleteBUStrengthPack(packSizeId) {
         callback: function (result) {
             if (result) {
                 ArrMainCommercial = $.grep(ArrMainCommercial, function (n, i) {
-                    return n.packSizeId != packSizeId && n.businessUnitId == SelectedBUValue && n.pidfProductStrengthId == selectedStrength && n.countryId == selectedCountry;
+                    return n.packSizeId != packSizeId || n.businessUnitId != SelectedBUValue || n.pidfProductStrengthId != selectedStrength || n.countryId != selectedCountry;
                 });
                 Update_BUstregthPackTable(ArrMainCommercial);
             }
