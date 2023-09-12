@@ -535,8 +535,10 @@ function SaveClick() {
 
 function SaveDraftClick() {
     isValidPIDFForm = true;
-    mandateDynamicControl();
-    $('#loading-wrapper').show();
+    isValidPIDFForm = mandateDynamicControl();
+    if (isValidPIDFForm)
+        $('#loading-wrapper').show();
+   
     $('#SaveType').val('draft');
     $("#frmPIDF").validate().settings.ignore = "*";
     SetChildRows();
@@ -639,10 +641,11 @@ function validatecontrols(control) {
     }
 }
 function mandateDynamicControl() {
-    isValidPIDFForm = true;    
+    var isValidPIDFForm = true;    
     $('.mandatoryformcontrol').each(function () {
-        validatecontrols(this);
+        isValidPIDFForm = validatecontrols(this) && isValidPIDFForm;
     });
+    return isValidPIDFForm;
 }
 
 
