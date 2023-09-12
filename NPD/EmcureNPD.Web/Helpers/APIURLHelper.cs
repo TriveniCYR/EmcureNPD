@@ -380,6 +380,7 @@ namespace EmcureNPD.Web.Helpers
         public static string GetRa = "api/PBF/GetRa";
         public static string GetNationApprovals = "api/PBF/GetNationApprovals";
         public static string GetPBFRADates = "api/PBF/GetPBFRADates";
+        public static string GetCountryWisePackSizeStabilityData = "api/PBF/GetAllPackSizeByCountry";
         #endregion PIDF
 
         #region MarketExtension

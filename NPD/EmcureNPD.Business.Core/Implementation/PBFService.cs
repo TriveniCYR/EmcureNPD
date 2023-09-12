@@ -245,6 +245,39 @@ namespace EmcureNPD.Business.Core.Implementation
                 return data;
             }
         }
+
+        public async Task<PidfProductStrengthGeneralRanD> GetCountryWisePackSizeStabilityData(long pidfId, int BUId,int countryid)
+        {
+            var data = new PidfProductStrengthGeneralRanD();
+            try
+            {
+                SqlParameter[] osqlParameter = {
+                       new SqlParameter("@PIDFId", pidfId),
+                        new SqlParameter("@BUId", BUId),
+                         new SqlParameter("@CountryId", countryid),
+                   };
+
+                var dbresult = await _pbfRepository.GetDataSetBySP("GetCountryWisePackSizeStabilityData", System.Data.CommandType.StoredProcedure, osqlParameter);
+                if (dbresult != null)
+                {
+                    if (dbresult.Tables[0] != null && dbresult.Tables[0].Rows.Count > 0)
+                    {
+
+                        data.PidfProductStrengthGeneralRanDList = dbresult.Tables[0].DataTableToList<PidfProductStrengthGeneralRanD>();
+                    }
+                    if (dbresult.Tables[1] != null && dbresult.Tables[1].Rows.Count > 0)
+                    {
+                        data.PidfPackSizeGeneralRanDList = dbresult.Tables[1].DataTableToList<PidfPackSizeGeneralRanD>();
+
+                    }
+                }
+                return data;
+            }
+            catch (Exception ex)
+            {
+                return data;
+            }
+        }
         public async Task<PidfProductStrengthGeneralRanD> GetStrengthForPBFTDP(long pidfId)
         {
             var data = new PidfProductStrengthGeneralRanD();
@@ -279,7 +312,7 @@ namespace EmcureNPD.Business.Core.Implementation
 				SqlParameter[] osqlParameter = {
 					   new SqlParameter("@PIDFID", pidfId),
 						new SqlParameter("@BUId", BUId)
-				   };
+                   };
 
 				var dbresult = await _pbfRepository.GetDataSetBySP("stp_npd_GetCountryListByIsInterested", System.Data.CommandType.StoredProcedure, osqlParameter);
 				if (dbresult != null)
