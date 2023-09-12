@@ -86,10 +86,25 @@ $(document).ready(function () {
 
     InitializeCountryStrength();
     SetPIDFFormDisableForOtherUserBU();
+    SetDisableforNonInitiatorBU();
 });
+function SetDisableforNonInitiatorBU() {
+    if (_SelectedBusinessUnitPIDF != _PIDFBusinessUnitId) {
+        $('.readonlyOtherBusinessUnit').attr('readonly', true).attr('disabled', true);
+    }
+}
 function SetForIsExtendCountry(mode_IsCountryAdd) {
     if (mode_IsCountryAdd) {
         $('#IsExtendCountry').val(true);
+        var stringURL = '';
+        if (getParameterByName("commercial") != null)
+            stringURL += '&commercial=' + getParameterByName("commercial");
+
+        if (getParameterByName("pbf") != null)
+            stringURL += '&pbf=' + getParameterByName("pbf");
+
+
+        $('#CommercialReturnURL').val(stringURL);
         readOnlyForm();
         $('#productStrengthBody').find('select').removeAttr('disabled');
         $('#productStrengthBody').find('select').removeAttr('readonly');
@@ -510,7 +525,7 @@ function SaveClick() {
         $('#SaveType').val('submit');
         SetChildRows();        
     }
-    if (mode_IsCountryAdd) {
+    if (mode_IsCountryAdd || (_SelectedBusinessUnitPIDF != _PIDFBusinessUnitId)) {
         EnabledForm_PIDF();
     }
 
