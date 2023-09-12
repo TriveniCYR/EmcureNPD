@@ -89,7 +89,7 @@ $(document).ready(function () {
     SetDisableforNonInitiatorBU();
 });
 function SetDisableforNonInitiatorBU() {
-    if (_SelectedBusinessUnitPIDF != _PIDFBusinessUnitId) {
+    if ((_SelectedBusinessUnitPIDF != _PIDFBusinessUnitId) && (_PIDFBusinessUnitId !=undefined)) {
         $('.readonlyOtherBusinessUnit').attr('readonly', true).attr('disabled', true);
     }
 }

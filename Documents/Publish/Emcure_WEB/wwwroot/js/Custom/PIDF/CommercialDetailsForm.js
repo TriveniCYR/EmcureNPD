@@ -31,7 +31,9 @@ $(document).ready(function () {
 });
 
 function RedirectToPIDF() {
-    location.href = '/PIDF/PIDF?pidfid=' + _PIDFID + '&bui=' + SelectedBUValue + '&IsCountryAdd=1';
+    var arrurl = $(location).attr('href').split('?');
+    if (arrurl.length == 2)
+        location.href = '/PIDF/PIDF?pidfid=' + _PIDFID + '&bui=' + SelectedBUValue + '&IsCountryAdd=1&ReturnURL=' +arrurl[1];
 }
 
 function SetBU_Strength() {
@@ -712,7 +714,7 @@ function btnDeleteBUStrengthPack(packSizeId) {
         callback: function (result) {
             if (result) {
                 ArrMainCommercial = $.grep(ArrMainCommercial, function (n, i) {
-                    return n.packSizeId != packSizeId && n.businessUnitId == SelectedBUValue && n.pidfProductStrengthId == selectedStrength && n.countryId == selectedCountry;
+                    return n.packSizeId != packSizeId || n.businessUnitId != SelectedBUValue || n.pidfProductStrengthId != selectedStrength || n.countryId != selectedCountry;
                 });
                 Update_BUstregthPackTable(ArrMainCommercial);
             }
@@ -727,7 +729,7 @@ function OpenYearForm(packSizeId, yearIndex) {
         $('#dvCommercialAddYear').modal('show');
         IsShowCancel_Save_buttons(false);
     }
-    MainRowEditIndex = ArrMainCommercial.findIndex((obj => obj.packSizeId == packSizeId && obj.businessUnitId == SelectedBUValue && obj.pidfProductStrengthId == selectedStrength));
+    MainRowEditIndex = ArrMainCommercial.findIndex((obj => obj.packSizeId == packSizeId && obj.businessUnitId == SelectedBUValue && obj.countryId==selectedCountry && obj.pidfProductStrengthId == selectedStrength));
     EditIndex = (yearIndex == null || yearIndex == undefined ? -1 : yearIndex);
 
     if ((yearIndex == null || yearIndex == undefined)) {
