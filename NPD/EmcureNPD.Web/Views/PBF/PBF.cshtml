@@ -767,8 +767,8 @@
                                                         </div>
                                                         <div class="col-md-3">
                                                             <div class="form-group required">
-                                                                @Html.LabelFor(model =>  model.PidfPbfGeneralRnd.ApiOrderedDate,"API Ordered", new { @class = "control-label" })
-                                                                @Html.TextBoxFor(model => model.PidfPbfGeneralRnd.ApiOrderedDate, new {@class = "form-control", @placeholder = "Api Ordered",@type="Date"})
+                                                                @Html.LabelFor(model =>  model.PidfPbfGeneralRnd.ApiOrderedDate,"API Ordered", new { @class = "control-label" })<span class="text-danger">*</span>
+                                                                @Html.TextBoxFor(model => model.PidfPbfGeneralRnd.ApiOrderedDate, new {@class="form-control readOnlyUpdate customvalidateformcontrol", @placeholder = "Api Ordered",@type="Date",@required="required"})
                                                                 @Html.ValidationMessageFor(model =>model.PidfPbfGeneralRnd.ApiOrderedDate, "", new { @class = "text-danger" })
                                                             </div>
                                                         </div>
@@ -778,8 +778,8 @@
 
                                                         <div class="col-md-3">
                                                             <div class="form-group required">
-                                                                @Html.LabelFor(model =>  model.PidfPbfGeneralRnd.ApiReceivedDate,"API Received", new { @class = "control-label" })
-                                                                @Html.TextBoxFor(model => model.PidfPbfGeneralRnd.ApiReceivedDate, new {@class = "form-control", @placeholder = "Api Received",@type="Date"})
+                                                                @Html.LabelFor(model =>  model.PidfPbfGeneralRnd.ApiReceivedDate,"API Received", new { @class = "control-label" })<span class="text-danger">*</span>
+                                                                @Html.TextBoxFor(model => model.PidfPbfGeneralRnd.ApiReceivedDate, new {@class="form-control readOnlyUpdate customvalidateformcontrol", @placeholder = "Api Received",@type="Date",@required="required"})
                                                                 @Html.ValidationMessageFor(model =>model.PidfPbfGeneralRnd.ApiReceivedDate, "", new { @class = "text-danger" })
                                                             </div>
                                                         </div>
