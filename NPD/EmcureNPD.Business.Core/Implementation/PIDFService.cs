@@ -106,7 +106,7 @@ namespace EmcureNPD.Business.Core.Implementation
             DataSet dsDropdownOptions = await _repository.GetDataSetBySP("std_npd_GetIsInterestedByPIDFandBU", System.Data.CommandType.StoredProcedure, osqlParameter);
 
             DropdownObjects.IsIntresetedStatusOfBU = dsDropdownOptions.Tables[0];
-           
+
             return DropdownObjects;
         }
 
@@ -246,7 +246,7 @@ namespace EmcureNPD.Business.Core.Implementation
                             _objPIDFInterested.CreatedBy = loggedInUserId;
 
                             if (_objPIDFInterested != null && _objPIDFInterested.Pidfid > 0)
-                            {                                
+                            {
                                 _pidfBusinessUnitInterested.UpdateAsync(_objPIDFInterested);
                             }
                             else
@@ -327,7 +327,7 @@ namespace EmcureNPD.Business.Core.Implementation
                             }
                             else
                             {
-                               
+
                                 var CurrentStatus = objPIDF.StatusId;
                                 var CurrentStatusDateTime = objPIDF.StatusUpdatedDate;
                                 var CurrentStatusUpdatedBy = objPIDF.StatusUpdatedBy;
@@ -336,8 +336,8 @@ namespace EmcureNPD.Business.Core.Implementation
                                 objPIDF = _mapperFactory.Get<PIDFEntity, Pidf>(entityPIDF);
                                 objPIDF.ModifyBy = loggedInUserId;
                                 objPIDF.ModifyDate = DateTime.Now;
-                                
-                                if(IsApprvedPIDF)
+
+                                if (IsApprvedPIDF)
                                 {
                                     objPIDF.StatusId = CurrentStatus;
                                     objPIDF.StatusUpdatedBy = CurrentStatusUpdatedBy;
@@ -426,7 +426,7 @@ namespace EmcureNPD.Business.Core.Implementation
 
                     await _unitOfWork.SaveChangesAsync();
 
-                    await SaveChildDetails(objPIDF.Pidfid, loggedInUserId, entityPIDF.pidfApiDetailEntities, entityPIDF.pidfProductStregthEntities,entityPIDF.IMSDataEntities, entityPIDF.SelectedBusinessUnitId);
+                    await SaveChildDetails(objPIDF.Pidfid, loggedInUserId, entityPIDF.pidfApiDetailEntities, entityPIDF.pidfProductStregthEntities, entityPIDF.IMSDataEntities, entityPIDF.SelectedBusinessUnitId);
 
                     await _notificationService.CreateNotification(objPIDF.Pidfid, entityPIDF.StatusId, string.Empty, string.Empty, loggedInUserId);
 
@@ -450,7 +450,7 @@ namespace EmcureNPD.Business.Core.Implementation
                     List<PidfproductStrength> _ProductStrengthList = new List<PidfproductStrength>();
                     foreach (var item in pidfProductStregthEntities)
                     {
-                        if (!ExistingObj.Exists(x=>x.PidfproductStrengthId== item.PidfproductStrengthId))
+                        if (!ExistingObj.Exists(x => x.PidfproductStrengthId == item.PidfproductStrengthId))
                         {
                             PidfproductStrength pidfProductStrength = new PidfproductStrength();
                             item.Pidfid = Pidfid;
@@ -484,7 +484,7 @@ namespace EmcureNPD.Business.Core.Implementation
             }
         }
 
-        private async Task<bool> SaveChildDetails(long Pidfid, int loggedInUserId, List<PidfApiDetailEntity> pidfApiDetailEntities, List<PidfProductStregthEntity> pidfProductStregthEntities,List<IMSDataEntity> IMSDataEntities,int? BusinessUnitId)
+        private async Task<bool> SaveChildDetails(long Pidfid, int loggedInUserId, List<PidfApiDetailEntity> pidfApiDetailEntities, List<PidfProductStregthEntity> pidfProductStregthEntities, List<IMSDataEntity> IMSDataEntities, int? BusinessUnitId)
         {
             try
             {
@@ -569,10 +569,10 @@ namespace EmcureNPD.Business.Core.Implementation
         public async Task<PIDFEntity> GetById_BUId(int id, int BusinessUnitId)
         {
             var ids = Convert.ToInt64(id);
-            
+
             var data = _mapperFactory.Get<Pidf, PIDFEntity>(await _repository.GetAsync(ids));
 
-            if (data != null)   
+            if (data != null)
             {
                 if (data.BusinessUnitId != null && data.BusinessUnitId > 0)
                 {
@@ -635,19 +635,19 @@ namespace EmcureNPD.Business.Core.Implementation
             }
 
             data.pidfApiDetailEntities = _mapperFactory.GetList<Pidfapidetail, PidfApiDetailEntity>(_pidfApiRepository.GetAllQuery().Where(x => x.Pidfid == ids && x.BusinessUnitId == BusinessUnitId).ToList());
-            
+
             data.pidfProductStregthEntities = _mapperFactory.GetList<PidfproductStrength, PidfProductStregthEntity>(_pidfProductStrength.GetAllQuery().Where(x => x.Pidfid == ids && x.BusinessUnitId == BusinessUnitId).ToList());
 
             if (data.pidfProductStregthEntities.Count() <= 0)
             {
                 data.pidfProductStregthEntities.Add(new PidfProductStregthEntity { Pidfid = id, Strength = "" });
             }
-           
+
             data.IMSDataEntities = _mapperFactory.GetList<Pidfimsdatum, IMSDataEntity>(_pidfPidfimsdata.GetAllQuery().Where(x => x.Pidfid == ids && x.BusinessUnitId == BusinessUnitId).ToList());
 
             for (int i = 0; i < data.pidfProductStregthEntities.Count; i++)
             {
-                data.pidfProductStregthEntities[i].CountryId = _strengthCountryMapping.GetAllQuery().Where(x => x.PidfproductStrengthId == data.pidfProductStregthEntities[i].PidfproductStrengthId).Select(x=> x.CountryId).ToArray();
+                data.pidfProductStregthEntities[i].CountryId = _strengthCountryMapping.GetAllQuery().Where(x => x.PidfproductStrengthId == data.pidfProductStregthEntities[i].PidfproductStrengthId).Select(x => x.CountryId).ToArray();
             }
 
 
@@ -704,33 +704,36 @@ namespace EmcureNPD.Business.Core.Implementation
                         saveTId = (Int32)Master_PIDFStatus.PIDFApproved;
                 }
 
+                int pidf = 0; int by = 1;
                 for (int i = 0; i < oApprRej.PidfIds.Count; i++)
                 {
                     Pidf objPidf;
                     if (oApprRej.PidfIds[i].pidfId > 0)
-                    {
-                        objPidf = await _repository.GetAsync(oApprRej.PidfIds[i].pidfId);
-                        //if (oApprRej.SaveType == "D")
-                        //{
-                        //    objPidf.IsActive = false;
-                        //}
-                        //else
-                        //{
+                    { 
+                        objPidf = await _repository.GetAsync(pidf); 
                         objPidf.LastStatusId = objPidf.StatusId;
                         objPidf.StatusId = saveTId;
-                        objPidf.StatusRemark = oApprRej.Comment;
-                        //}
-
+                        objPidf.StatusRemark = oApprRej.Comment; 
                         objPidf.StatusUpdatedBy = _helper.GetLoggedInUser().UserId;
                         objPidf.StatusUpdatedDate = DateTime.Now;
 
-                        _repository.UpdateAsync(objPidf);
-
+                        _repository.UpdateAsync(objPidf);  
                         await _unitOfWork.SaveChangesAsync();
-                        await _notificationService.CreateNotification(objPidf.Pidfid, objPidf.StatusId, string.Empty, string.Empty, (int)objPidf.StatusUpdatedBy);
-                        await AddWorkflowtasks(objPidf.Pidfid, objPidf.BusinessUnitId, objPidf.CreatedBy);
+
+                        //Get current PDIF ID
+                        if (pidf == 0)
+                        {
+                            pidf = (int)oApprRej.PidfIds[i].pidfId;
+                            by = (int)objPidf.StatusUpdatedBy;
+                        }
+
+                        await _notificationService.CreateNotification(pidf, objPidf.StatusId, string.Empty, string.Empty, (int)objPidf.StatusUpdatedBy);
                     }
-                                   }
+                }
+
+                if (pidf != 0)
+                    await AddWorkflowtasks(pidf, by);
+
                 //var isSuccess = await _auditLogService.CreateAuditLog<EntryApproveRej>(oApprRej.SaveType == "D" ? Utility.Audit.AuditActionType.Delete : Utility.Audit.AuditActionType.Update,
                 //   Utility.Enums.ModuleEnum.PIDF, oApprRej, oApprRej, 0);
 
@@ -742,17 +745,18 @@ namespace EmcureNPD.Business.Core.Implementation
             }
         }
 
-        public async Task<dynamic> AddWorkflowtasks(long pidfId, int? businessUnit, int userId)
+        public async Task<dynamic> AddWorkflowtasks(long pidfId, int userId)
         {
-            SqlParameter[] osqlParameter = {
+            SqlParameter[] osqlParameter =
+            {
                 new SqlParameter("@PIDFID", pidfId),
-                new SqlParameter("@BusinessUnit", businessUnit),
+               // new SqlParameter("@BusinessUnit", businessUnit),
                 new SqlParameter("@UserId", userId)
             };
 
             var dbresult = await _repository.GetBySP("ProcAddWorkflowTasks", System.Data.CommandType.StoredProcedure, osqlParameter);
             return dbresult;
-            
+
         }
 
         //This common Function for All PIDF List Screens for ButtonClick of  Approve/Reject/Delete
