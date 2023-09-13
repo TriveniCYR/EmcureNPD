@@ -1209,7 +1209,7 @@ function GetPBFTabDetailsSuccess(data) {
             //data.PidfPbfGeneralRnd
             BindPbfGeneralRnd(data.PidfPbfGeneralRnd);
             //PidfPbfGeneralPackSizeStability
-            BindGeneralPackSizeStability(data.PidfPbfGeneralPackSizeStability);
+            //BindGeneralPackSizeStability(data.PidfPbfGeneralPackSizeStability);
             if (data.GetStrengthForPBFTDP.pidfProductStrengthGeneralRanDList!=null) {
                 createTdp(data.GetStrengthForPBFTDP.pidfProductStrengthGeneralRanDList);
             }
@@ -1440,16 +1440,12 @@ function PBFBindMasterCountry(data) {
 }
 
 $(document).ready(function () {
-    // Assuming this is where you define your event handler for dynamically generated tabs
     $(document).on('click', '[id^="Countrytab_"]', function () {
         var countryVal = parseInt($(this).attr('id').split('_')[1]);
         $('[id^="Countrytab_"]').removeClass('active');
         $(this).addClass('active');
         selectedCountry = countryVal;
         renderPackSize(selectedCountry, _selectBusinessUnit, parseInt($("#PIDFId").val()));
-
-        // Debugging: Log the clicked country's ID
-        console.log("Clicked country ID: " + countryVal);
     });
 });
 
