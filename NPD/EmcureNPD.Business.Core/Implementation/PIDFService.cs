@@ -731,8 +731,8 @@ namespace EmcureNPD.Business.Core.Implementation
                     }
                 }
 
-                if (pidf != 0)
-                    await AddWorkflowtasks(pidf, by);
+                //if (pidf != 0)
+                //    await AddWorkflowtasks(pidf, by);
 
                 //var isSuccess = await _auditLogService.CreateAuditLog<EntryApproveRej>(oApprRej.SaveType == "D" ? Utility.Audit.AuditActionType.Delete : Utility.Audit.AuditActionType.Update,
                 //   Utility.Enums.ModuleEnum.PIDF, oApprRej, oApprRej, 0);
