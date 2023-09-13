@@ -615,7 +615,7 @@ function validateDynamicControldDetails() {
 
         if (!isNaN(strengthValue) && strengthValues.includes(strengthValue)) {
             hasDuplicateStrength = true;
-            toastr.error("Strength Should be Unique");
+            toastr.error("Strength Should be Unique on business unit");
             return false;
         } else if (!isNaN(strengthValue)) {
             strengthValues.push(strengthValue);
