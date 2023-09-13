@@ -213,10 +213,23 @@
                                                                     <td>
                                                                         <div class="col-md">
                                                                             <div class="form-group required">
-                                                                                @Html.EditorFor(model => model.pidfProductStregthEntities[j].Strength, new { htmlAttributes = new {@required="required",@type="number",@inputmode="decimal", @autocomplete = "off", @class = "form-control checkbox-checked", id = "pidfProductStregthEntities[" + j + "].Strength", @placeholder = @MasterLocalizer["Product Strength"] } })
+                                                                                @Html.EditorFor(model => model.pidfProductStregthEntities[j].Strength, new
+                                                                    {
+                                                                    htmlAttributes = new
+                                                                    {
+                                                                    @required = "required",
+                                                                    @type = "number",
+                                                                    @inputmode = "decimal",
+                                                                    @autocomplete = "off",
+                                                                    @class = "form-control checkbox-checked",
+                                                                    id = "pidfProductStregthEntities[" + j + "].Strength",
+                                                                    @placeholder = @MasterLocalizer["Product Strength"]
+                                                                    }
+                                                                    })
                                                                             </div>
                                                                         </div>
                                                                     </td>
+
                                                                     <td>
                                                                         <div class="col-md">
                                                                             <div class="form-group required">
@@ -711,7 +724,8 @@
                                     <div class="col-12 text-end">
                                         <div class="form-group">
                                             <button type="submit" id="btnSubmitPIDF" class="btn btn-success me-3 outside-buttons operationButton" onClick="return SaveClick();">@SharedLocalizer["Submit"]</button>
-                                            @if (Model.StatusId == (Int32)Master_PIDFStatus.PIDFInProgress || Model.StatusId == 0)
+                                             
+                                             @if (Model.StatusId != (Int32)Master_PIDFStatus.PIDFApproved)
                                             {
                                                 <button type="submit" id="btnSaveDraftPIDF" class="btn btn-primary me-3 outside-buttons operationButton" onClick="return SaveDraftClick();">@SharedLocalizer["SaveDraft"]</button>
                                             }
