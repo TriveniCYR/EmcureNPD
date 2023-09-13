@@ -704,35 +704,33 @@ namespace EmcureNPD.Business.Core.Implementation
                         saveTId = (Int32)Master_PIDFStatus.PIDFApproved;
                 }
 
-                int pidf = 0; int by = 1;
+                long pidf = 0; int by = _helper.GetLoggedInUser().UserId;
                 for (int i = 0; i < oApprRej.PidfIds.Count; i++)
                 {
                     Pidf objPidf;
                     if (oApprRej.PidfIds[i].pidfId > 0)
-                    { 
-                        objPidf = await _repository.GetAsync(pidf); 
-                        objPidf.LastStatusId = objPidf.StatusId;
-                        objPidf.StatusId = saveTId;
-                        objPidf.StatusRemark = oApprRej.Comment; 
-                        objPidf.StatusUpdatedBy = _helper.GetLoggedInUser().UserId;
-                        objPidf.StatusUpdatedDate = DateTime.Now;
-
-                        _repository.UpdateAsync(objPidf);  
-                        await _unitOfWork.SaveChangesAsync();
-
+                    {
                         //Get current PDIF ID
                         if (pidf == 0)
                         {
-                            pidf = (int)oApprRej.PidfIds[i].pidfId;
-                            by = (int)objPidf.StatusUpdatedBy;
+                            pidf = oApprRej.PidfIds[i].pidfId;
                         }
+                        objPidf = await _repository.GetAsync(pidf);
+                        objPidf.LastStatusId = objPidf.StatusId;
+                        objPidf.StatusId = saveTId;
+                        objPidf.StatusRemark = oApprRej.Comment;
+                        objPidf.StatusUpdatedBy = _helper.GetLoggedInUser().UserId;
+                        objPidf.StatusUpdatedDate = DateTime.Now;
+
+                        _repository.UpdateAsync(objPidf);
+                        await _unitOfWork.SaveChangesAsync(); 
 
                         await _notificationService.CreateNotification(pidf, objPidf.StatusId, string.Empty, string.Empty, (int)objPidf.StatusUpdatedBy);
                     }
                 }
 
-                //if (pidf != 0)
-                //    await AddWorkflowtasks(pidf, by);
+                if (pidf != 0)
+                    await AddWorkflowtasks(pidf, by);
 
                 //var isSuccess = await _auditLogService.CreateAuditLog<EntryApproveRej>(oApprRej.SaveType == "D" ? Utility.Audit.AuditActionType.Delete : Utility.Audit.AuditActionType.Update,
                 //   Utility.Enums.ModuleEnum.PIDF, oApprRej, oApprRej, 0);
@@ -749,8 +747,7 @@ namespace EmcureNPD.Business.Core.Implementation
         {
             SqlParameter[] osqlParameter =
             {
-                new SqlParameter("@PIDFID", pidfId),
-               // new SqlParameter("@BusinessUnit", businessUnit),
+                new SqlParameter("@PIDFID", pidfId), 
                 new SqlParameter("@UserId", userId)
             };
 
