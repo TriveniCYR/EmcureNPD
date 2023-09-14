@@ -262,11 +262,11 @@
                     <ul class="nav nav-tabs text-center m-0" id="custom-tabs-two-tab" role="tablist"></ul>
                 </div>
 
-                <div class="card card-primary card-tabs">
-                    <div class="card-header p-0 pt-1">
-                        <ul class="nav nav-tabs row text-center m-0" id="navCountryTabs" role="tablist"></ul>
-                    </div>
+                @*<div class="card card-primary card-tabs">
+                <div class="card-header p-0 pt-1">
+                <ul class="nav nav-tabs row text-center m-0" id="navCountryTabs" role="tablist"></ul>
                 </div>
+                </div>*@
             </div>
 
 
@@ -767,8 +767,8 @@
                                                         </div>
                                                         <div class="col-md-3">
                                                             <div class="form-group required">
-                                                                @Html.LabelFor(model =>  model.PidfPbfGeneralRnd.ApiOrderedDate,"API Ordered", new { @class = "control-label" })
-                                                                @Html.TextBoxFor(model => model.PidfPbfGeneralRnd.ApiOrderedDate, new {@class = "form-control", @placeholder = "Api Ordered",@type="Date"})
+                                                                @Html.LabelFor(model =>  model.PidfPbfGeneralRnd.ApiOrderedDate,"API Ordered", new { @class = "control-label" })<span class="text-danger">*</span>
+                                                                @Html.TextBoxFor(model => model.PidfPbfGeneralRnd.ApiOrderedDate, new {@class="form-control readOnlyUpdate customvalidateformcontrol", @placeholder = "Api Ordered",@type="Date",@required="required"})
                                                                 @Html.ValidationMessageFor(model =>model.PidfPbfGeneralRnd.ApiOrderedDate, "", new { @class = "text-danger" })
                                                             </div>
                                                         </div>
@@ -778,8 +778,8 @@
 
                                                         <div class="col-md-3">
                                                             <div class="form-group required">
-                                                                @Html.LabelFor(model =>  model.PidfPbfGeneralRnd.ApiReceivedDate,"API Received", new { @class = "control-label" })
-                                                                @Html.TextBoxFor(model => model.PidfPbfGeneralRnd.ApiReceivedDate, new {@class = "form-control", @placeholder = "Api Received",@type="Date"})
+                                                                @Html.LabelFor(model =>  model.PidfPbfGeneralRnd.ApiReceivedDate,"API Received", new { @class = "control-label" })<span class="text-danger">*</span>
+                                                                @Html.TextBoxFor(model => model.PidfPbfGeneralRnd.ApiReceivedDate, new {@class="form-control readOnlyUpdate customvalidateformcontrol", @placeholder = "Api Received",@type="Date",@required="required"})
                                                                 @Html.ValidationMessageFor(model =>model.PidfPbfGeneralRnd.ApiReceivedDate, "", new { @class = "text-danger" })
                                                             </div>
                                                         </div>
@@ -793,9 +793,15 @@
 
                                                     </div>
                                                     <hr />
+                                                    <div class="card card-primary card-tabs" id="navCountryTabsdiv">
+                                                                <div class="card-header p-0 pt-1">
+                                                                    <ul class="nav nav-tabs row text-center m-0" id="navCountryTabs" role="tablist"></ul>
+                                                                </div>
+                                                            </div>
                                                     <div class="row">
                                                         <label class="control-label" id="lblPackSizeStability">Pack Size Stability</label>
                                                         <div id="DvPackSizeStability">
+                                                            
                                                         </div>
                                                     </div>
                                                 </div>
@@ -1237,14 +1243,14 @@
                                                 </div>
 
                                             </div>
-                                           
-                                                @Html.HiddenFor(model => model.PBFnextbutton, new { id = "btnNextRnDTabSelectedValue", name = "PBFnextbutton" })
-                                                <div class="row">
-                                                    <div class="col-12 text-end">
-                                                        <a class="btn btn-primary outside-buttons mt-2" id="btnNextRnDTab">Next</a>
-                                                    </div>
+
+                                            @Html.HiddenFor(model => model.PBFnextbutton, new { id = "btnNextRnDTabSelectedValue", name = "PBFnextbutton" })
+                                            <div class="row">
+                                                <div class="col-12 text-end">
+                                                    <a class="btn btn-primary outside-buttons mt-2" id="btnNextRnDTab">Next</a>
                                                 </div>
-                                            
+                                            </div>
+
                                         </div>
                                     </div>
                                 }
@@ -1497,7 +1503,7 @@
 
 <script>
     var GetIsInterestedByPIDFandBUurlPBF = "@EmcureNPD.Web.Helpers.APIURLHelper.GetIsInterestedByPIDFandBU";
-    var GetCountryWisePackSizeStabilityData="@EmcureNPD.Web.Helpers.APIURLHelper.GetCountryWisePackSizeStabilityData";
+    var GetCountryWisePackSizeStabilityData = "@EmcureNPD.Web.Helpers.APIURLHelper.GetCountryWisePackSizeStabilityData";
     var GetAllPBF = "@EmcureNPD.Web.Helpers.APIURLHelper.GetPBFDropdown";
     var getLineByPlantId = "@EmcureNPD.Web.Helpers.APIURLHelper.GetLineByPlantId";
     var UserWiseBUList = "@Model.BusinessUnitsByUser";
@@ -1517,4 +1523,5 @@
     const GetRaurl = "@EmcureNPD.Web.Helpers.APIURLHelper.GetRa";
     const GetPBFRACalculatedDateUrl = "@EmcureNPD.Web.Helpers.APIURLHelper.GetPBFRADates"
     var ApproveRejectDeletePidf = "@EmcureNPD.Web.Helpers.APIURLHelper.ApproveRejectDeletePidf";
+    var StatusId="@Model.StatusId";
 </script>

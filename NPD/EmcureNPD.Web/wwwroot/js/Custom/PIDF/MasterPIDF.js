@@ -76,7 +76,7 @@ $(document).ready(function () {
     TradeNameRequired_change();
 
     try {
-        if ((_PIDFId > 0 && ($('#frmPIDF').find("#StatusId").val() == "2"))) {
+        if ((_PIDFId > 0)) {
             _PIDFBusinessUnitId = $('#hdnBusinessUnitId').val();
             fnGetActiveBusinessUnit();
         }
@@ -550,13 +550,22 @@ function SetChildRows() {
         $(this).find("td:eq(1) select").attr("name", "pidfApiDetailEntities[" + index.toString() + "].ApisourcingId");
         $(this).find("td:eq(2) input").attr("name", "pidfApiDetailEntities[" + index.toString() + "].Apivendor");
     });
+    var strengthValues = []; // Array to store strength values
+
     $.each($('#ProductStrengthTable tbody tr'), function (index, value) {
-        $(this).find("td:first input").attr("name", "pidfProductStregthEntities[" + index.toString() + "].Strength");
+        var strengthInput = $(this).find("td:first input");
+        var strengthValue = parseFloat(strengthInput.val());
+        if (strengthValues.includes(strengthValue)) {
+            toastr.error("Duplicate strength value detected!");
+        } else {
+            strengthValues.push(strengthValue);
+            strengthInput.attr("name", "pidfProductStregthEntities[" + index.toString() + "].Strength");
+        }
+
+        // Update the name attributes for other fields as before
         $(this).find("td:eq(1) select").attr("name", "pidfProductStregthEntities[" + index.toString() + "].UnitofMeasurementId");
         $(this).find("td:eq(2) select").attr("name", "pidfProductStregthEntities[" + index.toString() + "].CountryId");
-
         $(this).find("td:eq(2) .clsPidfproductStrengthId").attr("name", "pidfProductStregthEntities[" + index.toString() + "].PidfproductStrengthId");
-        
     });
     $.each($('#IMSDataTable tbody tr'), function (index, value) {
         $(this).find("td:first input").attr("name", "IMSDataEntities[" + index.toString() + "].Imsvalue");
@@ -587,45 +596,41 @@ function SetChildRowDeleteIcon() {
 }
 
 
-//function validateDynamicControldDetails() {
-//    isValidPIDFForm = true;
-//    $('select[name$="UnitofMeasurementId"]').each(function () {
-//        validatecontrols(this);
-//    });
-//    $('input[name$="Strength"]').each(function () {
-//        validatecontrols(this);
-//    });
-//    $('input[name$="Imsvalue"]').each(function () {
-//        validatecontrols(this);
-//    });
-//    $('input[name$="Imsvolume"]').each(function () {
-//        validatecontrols(this);
-//    });
-//    $('select[name$="ApisourcingId"]').each(function () {
-//        validatecontrols(this);
-//    });
-//    $('input[name$="Apivendor"]').each(function () {
-//        validatecontrols(this);
-//    });
-//    $('input[name$="Apiname"]').each(function () {
-//        validatecontrols(this);
-//    });
-//    $('.customvalidateformcontrol').each(function () {
-//        validatecontrols(this);
-//    });
-    
-//}
 
 function validateDynamicControldDetails() {
-    var isValidPIDFForm = true; 
-    $('select[name$="UnitofMeasurementId"], input[name$="Strength"], input[name$="Imsvalue"], input[name$="Imsvolume"], select[name$="ApisourcingId"], input[name$="Apivendor"], input[name$="Apiname"], .customvalidateformcontrol').each(function () {
+    var isValidPIDFForm = true;
+    var strengthValues = [];
+
+    $('select[name$="UnitofMeasurementId"], input[name$="Imsvalue"], input[name$="Imsvolume"], select[name$="ApisourcingId"], input[name$="Apivendor"], input[name$="Apiname"], .customvalidateformcontrol').each(function () {
         if (!validatecontrols(this)) {
-            isValidPIDFForm = false; 
+            isValidPIDFForm = false;
         }
     });
 
+    // Check for duplicate strength values
+    var hasDuplicateStrength = false;
+    $('input[name$="Strength"]').each(function () {
+        var strengthInput = $(this);
+        var strengthValue = parseFloat(strengthInput.val());
+
+        if (!isNaN(strengthValue) && strengthValues.includes(strengthValue)) {
+            hasDuplicateStrength = true;
+            toastr.error("Strength Should be Unique on business unit");
+            return false;
+        } else if (!isNaN(strengthValue)) {
+            strengthValues.push(strengthValue);
+        }
+    });
+
+    // If there's a duplicate strength, set isValidPIDFForm to false
+    if (hasDuplicateStrength) {
+        isValidPIDFForm = false;
+    }
+
     return isValidPIDFForm;
 }
+
+
 function validatecontrols(control) {
     try {
         if ($(control).val() == null || $(control).val().trim() === '') {

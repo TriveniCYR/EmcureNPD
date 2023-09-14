@@ -1209,7 +1209,7 @@ function GetPBFTabDetailsSuccess(data) {
             //data.PidfPbfGeneralRnd
             BindPbfGeneralRnd(data.PidfPbfGeneralRnd);
             //PidfPbfGeneralPackSizeStability
-            BindGeneralPackSizeStability(data.PidfPbfGeneralPackSizeStability);
+            //BindGeneralPackSizeStability(data.PidfPbfGeneralPackSizeStability);
             if (data.GetStrengthForPBFTDP.pidfProductStrengthGeneralRanDList!=null) {
                 createTdp(data.GetStrengthForPBFTDP.pidfProductStrengthGeneralRanDList);
             }
@@ -1440,16 +1440,12 @@ function PBFBindMasterCountry(data) {
 }
 
 $(document).ready(function () {
-    // Assuming this is where you define your event handler for dynamically generated tabs
     $(document).on('click', '[id^="Countrytab_"]', function () {
         var countryVal = parseInt($(this).attr('id').split('_')[1]);
         $('[id^="Countrytab_"]').removeClass('active');
         $(this).addClass('active');
         selectedCountry = countryVal;
         renderPackSize(selectedCountry, _selectBusinessUnit, parseInt($("#PIDFId").val()));
-
-        // Debugging: Log the clicked country's ID
-        console.log("Clicked country ID: " + countryVal);
     });
 });
 
@@ -1460,64 +1456,56 @@ function renderPackSize(selectedCountry, _selectBusinessUnit, _PIDFID) {
 function BindGeneralPackSizeStability(data) {
     $("#DvPackSizeStability").empty();
     let html = '<table id="tblPackSizeStability" class="table text-center tableTDHint"><thead class="bg-primary text-bold"><tr><td>PackSize Stability</td>';
-    let td = '';
-    let packSizeTrIndex = 0;
-    let isShowHeader = false
-    let pidfProductStrengthId = [];
+    let packSizeHeaders = '';
+    let isShowHeader = false;
+    let pidfProductStrengthIds = [];
+
     if (data != null && data != undefined) {
         if (data.pidfPackSizeGeneralRanDList != null && data.pidfPackSizeGeneralRanDList.length > 0) {
             for (var i = 0; i < data.pidfPackSizeGeneralRanDList.length; i++) {
-                html += `<td> ${data.pidfPackSizeGeneralRanDList[i].packSizeName}<input type="hidden" name="PidfPbfRnDPackSizeStability[${i}].PackSizeId" value="${data.pidfPackSizeGeneralRanDList[i].packSizeId}"></td>`;
-                td += `<td id="td${i}"><input type="hidden" name="PidfPbfRnDPackSizeStability[${i}].PackSizeStabilityId" value="${data.pidfPackSizeGeneralRanDList[i].packSizeStabilityId}"><input type="text" class="form-control clsValue"  disabled="disabled"  data-val="${data.pidfPackSizeGeneralRanDList[i].pidfProductStrengthId}" name="PidfPbfRnDPackSizeStability[${i}].Value" value="${data.pidfPackSizeGeneralRanDList[i].value}"></td>`;
-                packSizeTrIndex = j;
+                packSizeHeaders += `<td> ${data.pidfPackSizeGeneralRanDList[i].packSizeName}<input type="hidden" name="PidfPbfRnDPackSizeStability[${i}].PackSizeId" value="${data.pidfPackSizeGeneralRanDList[i].packSizeId}"></td>`;
             }
-            html += '</tr></thead>'
-            isShowHeader = true
+            html += packSizeHeaders + '</tr></thead>';
+            isShowHeader = true;
         }
+
         if (data.pidfProductStrengthGeneralRanDList != null) {
             for (var j = 0; j < data.pidfProductStrengthGeneralRanDList.length; j++) {
-                html += `<tr><td>${data.pidfProductStrengthGeneralRanDList[j].strength} ${data.pidfProductStrengthGeneralRanDList[j].unitofMeasurementName}<input type="hidden" name="PidfPbfRnDPackSizeStability[${j}].StrengthId" value="${data.pidfProductStrengthGeneralRanDList[j].strength}"></td>${td}</tr>`
+                const strengthId = data.pidfProductStrengthGeneralRanDList[j].pidfProductStrengthId;
+                const strengthName = data.pidfProductStrengthGeneralRanDList[j].strength;
+                const unitName = data.pidfProductStrengthGeneralRanDList[j].unitofMeasurementName;
+                html += `<tr><td>${strengthName} ${unitName}<input type="hidden" name="PidfPbfRnDPackSizeStability[${j}].StrengthId" value="${strengthId}"></td>`;
+                for (var i = 0; i < data.pidfPackSizeGeneralRanDList.length; i++) {
+                    const packSizeId = data.pidfPackSizeGeneralRanDList[i].packSizeId;
+                    const strengthIdForPackSize = data.pidfPackSizeGeneralRanDList[i].pidfProductStrengthId;
+                    const inputFieldId = `input_${strengthId}_${packSizeId}`;
+                    const inputValue = data.pidfPackSizeGeneralRanDList[i].value;
+                    const isDisabled = strengthIdForPackSize !== strengthId ? 'disabled' : '';
 
+                    html += `<td><input type="text" class="form-control clsValue" id="${inputFieldId}" name="PidfPbfRnDPackSizeStability[${j}].Value" value="${inputValue}" ${isDisabled}></td>`;
+                }
+                html += '</tr>';
+                pidfProductStrengthIds.push(strengthId);
+                isShowHeadertwo = true;
             }
         }
+
         html += '</table>';
         $("#lblPackSizeStability").show();
         $("#DvPackSizeStability").append(html);
-        if (data.pidfProductStrengthGeneralRanDList != null) {
-            for (var j = 0; j < data.pidfProductStrengthGeneralRanDList.length; j++) {
-                pidfProductStrengthId.push(data.pidfProductStrengthGeneralRanDList[j].pidfProductStrengthId);
 
-
-            }
-        }
-        if (data.pidfPackSizeGeneralRanDList != null) {
-            var distinct = []
-            for (var i = 0; i < data.pidfPackSizeGeneralRanDList.length; i++) {
-                if (!distinct.includes(data.pidfPackSizeGeneralRanDList[i].pidfProductStrengthId)) {
-                    distinct.push(data.pidfPackSizeGeneralRanDList[i].pidfProductStrengthId)
-                }
-            }
-            $(".clsValue").each(function (index) {
-                for (let x = 0; x < pidfProductStrengthId.length; x++) {
-                    $(this).attr('id', pidfProductStrengthId[x] + "" + x + "" + index);
-                }
-                if (pidfProductStrengthId.includes(parseInt($(this).attr('data-val')))) {
-                    let Id = $(this).attr('id');
-                    $(`#${Id}`).prop('disabled', false);
-                    console.log($(this).attr('id'))
-                }
-            });
-        }
-        pidfProductStrengthId = [];
-        if (isShowHeader == true) {
+        if (isShowHeader || StatusId=='0') {
             $("#DvPackSizeStability").show();
-        }
-        else {
-            $("#DvPackSizeStability").hide();
+        } else {
+            $("#navCountryTabsdiv").hide();
             $("#lblPackSizeStability").hide();
+            $("#DvPackSizeStability").hide();
+           
         }
     }
 }
+
+
 function renderPackSizeError(x, y, z) {
     toastr.error(ErrorMessage);
 }
