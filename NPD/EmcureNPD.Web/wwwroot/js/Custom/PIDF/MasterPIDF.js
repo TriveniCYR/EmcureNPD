@@ -76,7 +76,7 @@ $(document).ready(function () {
     TradeNameRequired_change();
 
     try {
-        if ((_PIDFId > 0)) {
+        if ((_PIDFId > 0) && !mode_IsCountryAdd) {
             _PIDFBusinessUnitId = $('#hdnBusinessUnitId').val();
             fnGetActiveBusinessUnit();
         }
