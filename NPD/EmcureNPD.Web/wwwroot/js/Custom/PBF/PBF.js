@@ -1494,10 +1494,9 @@ function BindGeneralPackSizeStability(data) {
         $("#lblPackSizeStability").show();
         $("#DvPackSizeStability").append(html);
 
-        if (isShowHeader || StatusId=='0') {
+        if (isShowHeader) {
             $("#DvPackSizeStability").show();
         } else {
-            $("#navCountryTabsdiv").hide();
             $("#lblPackSizeStability").hide();
             $("#DvPackSizeStability").hide();
            
