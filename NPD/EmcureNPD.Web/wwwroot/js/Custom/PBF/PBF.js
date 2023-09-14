@@ -1486,6 +1486,7 @@ function BindGeneralPackSizeStability(data) {
                 }
                 html += '</tr>';
                 pidfProductStrengthIds.push(strengthId);
+                isShowHeadertwo = true;
             }
         }
 
@@ -1493,11 +1494,13 @@ function BindGeneralPackSizeStability(data) {
         $("#lblPackSizeStability").show();
         $("#DvPackSizeStability").append(html);
 
-        if (isShowHeader) {
+        if (isShowHeader || StatusId=='0') {
             $("#DvPackSizeStability").show();
         } else {
-            $("#DvPackSizeStability").hide();
+            $("#navCountryTabsdiv").hide();
             $("#lblPackSizeStability").hide();
+            $("#DvPackSizeStability").hide();
+           
         }
     }
 }
