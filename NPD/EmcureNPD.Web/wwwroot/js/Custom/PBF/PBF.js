@@ -1486,6 +1486,7 @@ function BindGeneralPackSizeStability(data) {
                 }
                 html += '</tr>';
                 pidfProductStrengthIds.push(strengthId);
+                isShowHeadertwo = true;
             }
         }
 
@@ -1496,8 +1497,9 @@ function BindGeneralPackSizeStability(data) {
         if (isShowHeader) {
             $("#DvPackSizeStability").show();
         } else {
-            $("#DvPackSizeStability").hide();
             $("#lblPackSizeStability").hide();
+            $("#DvPackSizeStability").hide();
+           
         }
     }
 }

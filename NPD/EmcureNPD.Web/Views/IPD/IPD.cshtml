@@ -42,6 +42,7 @@
     <input type="hidden" id="hdnIPDIsView" value="@(Context.Request.Query["IsView"] == "1" ? "1" : "0")" />
     <input type="hidden" id="BusinessUnitsByUser" value="@Model.BusinessUnitsByUser" />
     <input type="hidden" asp-for="SelectedTabBusinessUnit" />
+    <input type="hidden" asp-for="IsAlreadyIPDApproved" />
     <div class="row">
         <div class="col-md-12">
             <div class="card card-primary card-tabs">
@@ -63,7 +64,7 @@
     <div class="row">
         <div class="col-12 text-end">
             <div  class="form-group">
-                @if ((Model.StatusId == (Int32)Master_PIDFStatus.IPDSubmitted || Convert.ToBoolean(Context.Request.Query["ipd"])) && IsViewMode ==null)   
+                @if ((Model.StatusId == (Int32)Master_PIDFStatus.IPDSubmitted || Convert.ToBoolean(Context.Request.Query["ipd"])) && IsViewMode ==null && !Model.IsAlreadyIPDApproved)   
                 {
                     //if (Context.Request.Query["IsView"] != 1)
                     <button style="@IsApproveAllow" type="submit" class="btn btn-success me-3 outside-buttons operationButton" onClick="ApproveRejectClick('A', '@Model.PIDFID', @((int)EmcureNPD.Utility.Enums.PIDFScreen.IPD), '/PIDF/PIDFList?ScreenId=@((int)EmcureNPD.Utility.Enums.PIDFScreen.IPD)')"><i class="fa fa-check-circle mr-1"></i>@SharedLocalizer["Approve"]</button>
