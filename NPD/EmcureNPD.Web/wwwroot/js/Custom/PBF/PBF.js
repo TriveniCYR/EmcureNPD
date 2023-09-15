@@ -1453,6 +1453,9 @@ function renderPackSize(selectedCountry, _selectBusinessUnit, _PIDFID) {
     ajaxServiceMethod($('#hdnBaseURL').val() + GetCountryWisePackSizeStabilityData + "/" + _PIDFID + "/" + _selectBusinessUnit + "/" + selectedCountry, 'GET', BindGeneralPackSizeStability, renderPackSizeError);
 }
 
+
+var pidfPbfRnDPackSizeStabilityData = [];
+
 function BindGeneralPackSizeStability(data) {
     $("#DvPackSizeStability").empty();
     let html = '<table id="tblPackSizeStability" class="table text-center tableTDHint"><thead class="bg-primary text-bold"><tr><td>PackSize Stability</td>';
@@ -1463,30 +1466,60 @@ function BindGeneralPackSizeStability(data) {
     if (data != null && data != undefined) {
         if (data.pidfPackSizeGeneralRanDList != null && data.pidfPackSizeGeneralRanDList.length > 0) {
             for (var i = 0; i < data.pidfPackSizeGeneralRanDList.length; i++) {
-                packSizeHeaders += `<td> ${data.pidfPackSizeGeneralRanDList[i].packSizeName}<input type="hidden" name="PidfPbfRnDPackSizeStability[${i}].PackSizeId" value="${data.pidfPackSizeGeneralRanDList[i].packSizeId}"></td>`;
+                const packSizeId = data.pidfPackSizeGeneralRanDList[i].packSizeId;
+                const packSizeName = data.pidfPackSizeGeneralRanDList[i].packSizeName;
+                packSizeHeaders += `<td> ${packSizeName}</td>`;
             }
             html += packSizeHeaders + '</tr></thead>';
             isShowHeader = true;
         }
 
-        if (data.pidfProductStrengthGeneralRanDList != null) {
+        if (data.pidfProductStrengthGeneralRanDList != null && data.pidfProductStrengthGeneralRanDList.length > 0) {
             for (var j = 0; j < data.pidfProductStrengthGeneralRanDList.length; j++) {
                 const strengthId = data.pidfProductStrengthGeneralRanDList[j].pidfProductStrengthId;
                 const strengthName = data.pidfProductStrengthGeneralRanDList[j].strength;
                 const unitName = data.pidfProductStrengthGeneralRanDList[j].unitofMeasurementName;
-                html += `<tr><td>${strengthName} ${unitName}<input type="hidden" name="PidfPbfRnDPackSizeStability[${j}].StrengthId" value="${strengthId}"></td>`;
+                html += `<tr><td>${strengthName} ${unitName}<input type="hidden" name="PidfPbfRnDPackSizeStability[${j}].StrengthId" value="${strengthId}">`;
+
+       
+                var packSizeDataArray = [];
+
                 for (var i = 0; i < data.pidfPackSizeGeneralRanDList.length; i++) {
                     const packSizeId = data.pidfPackSizeGeneralRanDList[i].packSizeId;
-                    const strengthIdForPackSize = data.pidfPackSizeGeneralRanDList[i].pidfProductStrengthId;
-                    const inputFieldId = `input_${strengthId}_${packSizeId}`;
-                    const inputValue = data.pidfPackSizeGeneralRanDList[i].value;
-                    const isDisabled = strengthIdForPackSize !== strengthId ? 'disabled' : '';
+                    const packSizeName = data.pidfPackSizeGeneralRanDList[i].packSizeName;
 
-                    html += `<td><input type="text" class="form-control clsValue" id="${inputFieldId}" name="PidfPbfRnDPackSizeStability[${j}].Value" value="${inputValue}" ${isDisabled}></td>`;
+               
+                    var packSizeDataArray = [];
+
+                    for (var i = 0; i < data.pidfPackSizeGeneralRanDList.length; i++) {
+                        const packSizeId = data.pidfPackSizeGeneralRanDList[i].packSizeId;
+                        const inputFieldId = `input_${strengthId}_${packSizeId}_${j}`;
+                        const inputValue = data.pidfPackSizeGeneralRanDList[i].value;
+                        const isDisabled = '';
+                        const packSizeStabilityId = data.pidfPackSizeGeneralRanDList[i].packSizeStabilityId;
+                      
+                        var packSizeData = {
+                            StrengthId: strengthId,
+                            PackSizeId: packSizeId,
+                            PackSizeStabilityId: packSizeStabilityId, 
+                            Value: inputValue
+                        };
+
+                        packSizeDataArray.push(packSizeData);
+
+                        html += `<td>
+            <input type="hidden" name="PidfPbfRnDPackSizeStability[${j}].PackSizes[${i}].PackSizeId" value="${packSizeId}">
+            <input type="hidden" name="PidfPbfRnDPackSizeStability[${j}].PackSizes[${i}].PackSizeStabilityId" value="${packSizeStabilityId}">
+            <input type="text" class="form-control clsValue" id="${inputFieldId}" name="PidfPbfRnDPackSizeStability[${j}].PackSizes[${i}].Value" value="${inputValue}" ${isDisabled}>
+        </td>`;
+                    }
+                    html += '</tr>';
+                    pidfProductStrengthIds.push(strengthId);
+                    isShowHeaderTwo = true;
+
+                    pidfPbfRnDPackSizeStabilityData.push(packSizeDataArray);
                 }
-                html += '</tr>';
-                pidfProductStrengthIds.push(strengthId);
-                isShowHeadertwo = true;
+
             }
         }
 
@@ -1499,10 +1532,16 @@ function BindGeneralPackSizeStability(data) {
         } else {
             $("#lblPackSizeStability").hide();
             $("#DvPackSizeStability").hide();
-           
         }
     }
+
 }
+
+function getPidfPbfRnDPackSizeStabilityData() {
+    return JSON.stringify(pidfPbfRnDPackSizeStabilityData);
+}
+
+
 
 
 function renderPackSizeError(x, y, z) {

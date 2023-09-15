@@ -107,7 +107,7 @@ namespace EmcureNPD.Business.Core.Implementation
             _repositoryPidfPbfRnDPackSizeStability = _unitOfWork.GetRepository<PidfPbfRnDPackSizeStability>();
             _masterNationApproval = _unitOfWork.GetRepository<MasterNationApproval>();
             _masterNationApprovalCountryMpping = _unitOfWork.GetRepository<MasterNationApprovalCountryMapping>();
-            _masterCountry= _unitOfWork.GetRepository<MasterCountry>();
+            _masterCountry = _unitOfWork.GetRepository<MasterCountry>();
             _PbfGeneralTdp = _unitOfWork.GetRepository<PbfGeneralTdp>();
         }
 
@@ -246,7 +246,7 @@ namespace EmcureNPD.Business.Core.Implementation
             }
         }
 
-        public async Task<PidfProductStrengthGeneralRanD> GetCountryWisePackSizeStabilityData(long pidfId, int BUId,int countryid)
+        public async Task<PidfProductStrengthGeneralRanD> GetCountryWisePackSizeStabilityData(long pidfId, int BUId, int countryid)
         {
             var data = new PidfProductStrengthGeneralRanD();
             try
@@ -305,33 +305,33 @@ namespace EmcureNPD.Business.Core.Implementation
         }
 
         public async Task<CountyForBussinessUnitAndPIDF> GetCountyForBussinessUnitAndPIDF(long pidfId, int BUId)
-		{
-			var data = new CountyForBussinessUnitAndPIDF();
-			try
-			{
-				SqlParameter[] osqlParameter = {
-					   new SqlParameter("@PIDFID", pidfId),
-						new SqlParameter("@BUId", BUId)
+        {
+            var data = new CountyForBussinessUnitAndPIDF();
+            try
+            {
+                SqlParameter[] osqlParameter = {
+                       new SqlParameter("@PIDFID", pidfId),
+                        new SqlParameter("@BUId", BUId)
                    };
 
-				var dbresult = await _pbfRepository.GetDataSetBySP("stp_npd_GetCountryListByIsInterested", System.Data.CommandType.StoredProcedure, osqlParameter);
-				if (dbresult != null)
-				{
-					if (dbresult.Tables[0] != null && dbresult.Tables[0].Rows.Count > 0)
-					{
+                var dbresult = await _pbfRepository.GetDataSetBySP("stp_npd_GetCountryListByIsInterested", System.Data.CommandType.StoredProcedure, osqlParameter);
+                if (dbresult != null)
+                {
+                    if (dbresult.Tables[0] != null && dbresult.Tables[0].Rows.Count > 0)
+                    {
 
-						data.CountyForBussinessUnitAndPIDFList = dbresult.Tables[0].DataTableToList<CountyForBussinessUnitAndPIDF>();
-					}
-					
-				}
-				return data;
-			}
-			catch (Exception ex)
-			{
-				return data;
-			}
-		}
-		public async Task<DBOperation> AddUpdatePBFDetails(PBFFormEntity pbfEntity)
+                        data.CountyForBussinessUnitAndPIDFList = dbresult.Tables[0].DataTableToList<CountyForBussinessUnitAndPIDF>();
+                    }
+
+                }
+                return data;
+            }
+            catch (Exception ex)
+            {
+                return data;
+            }
+        }
+        public async Task<DBOperation> AddUpdatePBFDetails(PBFFormEntity pbfEntity)
         {
             try
             {
@@ -343,12 +343,16 @@ namespace EmcureNPD.Business.Core.Implementation
 
                 if (pbfgeneralid > 0)
                 {
+                   
                     // var isSuccess = await _auditLogService.CreateAuditLog<PBFFormEntity>(pbfEntity.Pidfpbfid > 0 ? Utility.Audit.AuditActionType.Update : Utility.Audit.AuditActionType.Create,
                     //Utility.Enums.ModuleEnum.PBF, pbfEntity, pbfEntity, Convert.ToInt32(pbfEntity.Pidfid));
                     await _unitOfWork.SaveChangesAsync();
                     var _StatusID = (pbfEntity.SaveType == "Save") ? Master_PIDFStatus.PBFSubmitted : Master_PIDFStatus.PBFInProgress;
-                    await _auditLogService.UpdatePIDFStatusCommon(pbfEntity.Pidfid, (int)_StatusID, loggedInUserId);
-                    await _notificationService.CreateNotification(pbfEntity.Pidfid, (int)_StatusID, string.Empty, string.Empty, loggedInUserId);
+                    if (pbfEntity.PBFnextbutton == false)
+                    {
+                        await _auditLogService.UpdatePIDFStatusCommon(pbfEntity.Pidfid, (int)_StatusID, loggedInUserId);
+                        await _notificationService.CreateNotification(pbfEntity.Pidfid, (int)_StatusID, string.Empty, string.Empty, loggedInUserId);
+                    }
                     return DBOperation.Success;
 
                 }
@@ -425,7 +429,7 @@ namespace EmcureNPD.Business.Core.Implementation
             DropdownObjects.GetStrengthForPBFTDP = await GetStrengthForPBFTDP(PIDFId);
             DropdownObjects.GetTDPList = await GetTDT(PIDFId);
             DropdownObjects.GetCountyForBussinessUnitAndPIDF = await GetCountyForBussinessUnitAndPIDF(PIDFId, BUId);
-			return DropdownObjects;
+            return DropdownObjects;
         }
 
 
@@ -484,7 +488,7 @@ namespace EmcureNPD.Business.Core.Implementation
             }
             return result.ToList();
         }
-        
+
         #region Private Methods
 
         public async Task<long> SavePidfAndPBFCommanDetails(long pidfid, PBFFormEntity pbfentity)
@@ -1267,42 +1271,51 @@ namespace EmcureNPD.Business.Core.Implementation
             return PidfPbfId;
 
         }
-        private async Task<long> SavePackSizeStability(PBFFormEntity pbfentity, long pbfgeneralid)
+        private async Task<long> SavePackSizeStability(List<PidfPbfRnDPackSizeStabilityEntity> pbfentities, long pbfgeneralid,long pidfid)
         {
             try
             {
-                var objPackSizeStability = new List<PidfPbfRnDPackSizeStability>();
                 var loggedInUserId = _helper.GetLoggedInUser().UserId;
-                var FinalpbfGeneralid = pbfentity.PBFGeneralId == 0 ? pbfgeneralid : pbfentity.PBFGeneralId;
 
-                foreach (var item in pbfentity.PidfPbfRnDPackSizeStability)
+                foreach (var pbfentity in pbfentities)
                 {
-                    var objPackSizeStabilityDetails = _repositoryPidfPbfRnDPackSizeStability.GetAllQuery().
-                Where(x => x.Pidfid == pbfentity.Pidfid && x.PbfgeneralId == FinalpbfGeneralid && x.PackSizeStabilityId == item.PackSizeStabilityId).FirstOrDefault();
-                    if (objPackSizeStabilityDetails != null && item.Value != null)
-                    {
-                        objPackSizeStabilityDetails.Pidfid = pbfentity.Pidfid;
-                        objPackSizeStabilityDetails.PbfgeneralId = FinalpbfGeneralid;
-                        objPackSizeStabilityDetails.StrengthId = item.StrengthId;
-                        objPackSizeStabilityDetails.PackSizeId = item.PackSizeId;
-                        objPackSizeStabilityDetails.Value = item.Value;
-                        objPackSizeStabilityDetails.CreatedOn = DateTime.Now;
-                        objPackSizeStabilityDetails.CreatedBy = loggedInUserId;
-                        _repositoryPidfPbfRnDPackSizeStability.UpdateAsync(objPackSizeStabilityDetails);
-                    }
+                    var FinalpbfGeneralid = pbfentity.PbfgeneralId == 0 ? pbfgeneralid : pbfentity.PbfgeneralId;
 
-                    else if (item.Value != null)
+                    foreach (var item in pbfentity.PackSizes)
                     {
+                        var objPackSizeStabilityDetails = _repositoryPidfPbfRnDPackSizeStability.GetAllQuery().
+               Where(x => x.Pidfid == pidfid && x.PbfgeneralId == FinalpbfGeneralid && x.PackSizeStabilityId==item.PackSizeStabilityId).FirstOrDefault();
 
-                        var objPidfPbfRnDPackSizeStability = new PidfPbfRnDPackSizeStability();
-                        objPidfPbfRnDPackSizeStability.Pidfid = pbfentity.Pidfid;
-                        objPidfPbfRnDPackSizeStability.PbfgeneralId = FinalpbfGeneralid;
-                        objPidfPbfRnDPackSizeStability.StrengthId = item.StrengthId;
-                        objPidfPbfRnDPackSizeStability.PackSizeId = item.PackSizeId;
-                        objPidfPbfRnDPackSizeStability.Value = item.Value;
-                        objPidfPbfRnDPackSizeStability.CreatedOn = DateTime.Now;
-                        objPidfPbfRnDPackSizeStability.CreatedBy = loggedInUserId;
-                        _repositoryPidfPbfRnDPackSizeStability.AddAsync(objPidfPbfRnDPackSizeStability);
+                        if (objPackSizeStabilityDetails != null && item.Value != null)
+                        {
+                           
+                            objPackSizeStabilityDetails.Pidfid = pidfid;
+                            objPackSizeStabilityDetails.PbfgeneralId = FinalpbfGeneralid;
+                            objPackSizeStabilityDetails.StrengthId = pbfentity.StrengthId;
+                            objPackSizeStabilityDetails.PackSizeId = item.PackSizeId;
+                            objPackSizeStabilityDetails.Value = item.Value;
+                            objPackSizeStabilityDetails.CreatedOn = DateTime.Now;
+                            objPackSizeStabilityDetails.CreatedBy = loggedInUserId;
+
+                            objPackSizeStabilityDetails.CreatedOn = DateTime.Now;
+                            objPackSizeStabilityDetails.CreatedBy = loggedInUserId;
+                        }
+                        else if (item.Value != null)
+                        {
+                           
+                            var newPackSizeStability = new PidfPbfRnDPackSizeStability
+                            {
+                                Pidfid = pidfid,
+                                PbfgeneralId = FinalpbfGeneralid,
+                                StrengthId = pbfentity.StrengthId,
+                                CreatedOn = DateTime.Now,
+                                CreatedBy = loggedInUserId,
+                                PackSizeId = item.PackSizeId,
+                                Value = item.Value
+                            };
+
+                            _repositoryPidfPbfRnDPackSizeStability.AddAsync(newPackSizeStability);
+                        }
                     }
                 }
 
@@ -1312,9 +1325,10 @@ namespace EmcureNPD.Business.Core.Implementation
             {
                 return 0;
             }
-            return pbfentity.Pidfpbfid;
-
+            return pbfentities.FirstOrDefault()?.Pidfid ?? 0;
         }
+
+
         private async Task<long> SaveTDT(PBFFormEntity pbfentity, long pbfgeneralid)
         {
             try
@@ -1393,7 +1407,7 @@ namespace EmcureNPD.Business.Core.Implementation
         private async Task<List<PbfGeneralTdpEntity>> GetTDT(long PIDFID)
         {
             var dbObj = await _PbfGeneralTdp.GetAllAsync(x => x.Pidfid == PIDFID);
-            return _mapperFactory.GetList<PbfGeneralTdp, PbfGeneralTdpEntity>(dbObj.OrderByDescending(x=>x.TradeDressProposalId).ToList());
+            return _mapperFactory.GetList<PbfGeneralTdp, PbfGeneralTdpEntity>(dbObj.OrderByDescending(x => x.TradeDressProposalId).ToList());
         }
         public async Task<long> SavePidfAndPBFCommanDetailsnew(long pidfid, PBFFormEntity pbfentity)
         {
@@ -2702,14 +2716,14 @@ namespace EmcureNPD.Business.Core.Implementation
                     await _unitOfWork.SaveChangesAsync();
                     pbfgeneralid = objPIDFGeneraladd.PbfgeneralId;
                 }
-
+                await SavePackSizeStability(pbfentity.PidfPbfRnDPackSizeStability, pbfentity.PBFGeneralId,pbfentity.Pidfid);
                 #endregion Section PBF General Add Update
                 #region Update PBF genegral R&D Details
 
                 var Pidfpbfid = await SaveGeneralRandDDetails(pbfentity);
                 #endregion
 
-                
+
                 #region RA Add Update
                 await AddUpdateRa(pbfentity.RaEntities, loggedInUserId, pbfentity.Pidfid, Pidfpbfid, pbfentity.BusinessUnitId);
                 #endregion
@@ -2984,7 +2998,7 @@ namespace EmcureNPD.Business.Core.Implementation
         public async Task<dynamic> GetPBFRADates(RaCalculatedDates calculatedDates)
         {
             var loggedInUserId = _helper.GetLoggedInUser().UserId;
-           // var data = new RaCalculatedDates();
+            // var data = new RaCalculatedDates();
             try
             {
                 SqlParameter[] osqlParameter = {
@@ -3009,9 +3023,9 @@ namespace EmcureNPD.Business.Core.Implementation
                 await _ExceptionService.LogException(ex);
                 return null;
             }
-           
+
         }
-        public async Task <dynamic> FileUpload(IFormFile files, string path, string uniqueFileName)
+        public async Task<dynamic> FileUpload(IFormFile files, string path, string uniqueFileName)
         {
             if (files != null)
             {
