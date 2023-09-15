@@ -1479,6 +1479,7 @@ function BindGeneralPackSizeStability(data) {
                 const strengthId = data.pidfProductStrengthGeneralRanDList[j].pidfProductStrengthId;
                 const strengthName = data.pidfProductStrengthGeneralRanDList[j].strength;
                 const unitName = data.pidfProductStrengthGeneralRanDList[j].unitofMeasurementName;
+
                 html += `<tr><td>${strengthName} ${unitName}<input type="hidden" name="PidfPbfRnDPackSizeStability[${j}].StrengthId" value="${strengthId}">`;
 
        
@@ -1495,7 +1496,8 @@ function BindGeneralPackSizeStability(data) {
                         const packSizeId = data.pidfPackSizeGeneralRanDList[i].packSizeId;
                         const inputFieldId = `input_${strengthId}_${packSizeId}_${j}`;
                         const inputValue = data.pidfPackSizeGeneralRanDList[i].value;
-                        const isDisabled = '';
+                        const strengthIdForPackSize = data.pidfPackSizeGeneralRanDList[i].pidfProductStrengthId;
+                        const isDisabled = strengthIdForPackSize !== strengthId ? 'disabled' : '';
                         const packSizeStabilityId = data.pidfPackSizeGeneralRanDList[i].packSizeStabilityId;
                       
                         var packSizeData = {
