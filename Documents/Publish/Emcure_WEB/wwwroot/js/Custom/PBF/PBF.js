@@ -1050,7 +1050,7 @@ function GetPBFDropdownSuccess(data) {
             }
             _strengthArray = data.PIDFStrengthEntity;
             PBFBindBusinessUnit(data.MasterBusinessUnit);
-
+            PBFBindMasterCountry(data.MasterCountry)
             GetPBFTabDetails();
             UserwiseBusinessUnit = UserWiseBUList.split(',');
             SetPBFBU_Tab();
@@ -1151,77 +1151,6 @@ function BindPbfGeneralRnd(data) {
         $("#PbfRndDetailsId").val(data.pbfRndDetailsId)
         $("#PidfPbfGeneralRnd_PidfId").val(data.pidfId)
         $("#PidfPbfGeneralRnd_PbfId").val(data.pbfId)
-    }
-}
-function BindGeneralPackSizeStability(data) {
-    $("DvPackSizeStability").empty();
-    let html = '<table id="tblPackSizeStability" class="table text-center tableTDHint"><thead class="bg-primary text-bold"><tr><td>PackSize Stability</td>';
-    let td = '';
-    let packSizeTrIndex = 0;
-    let isShowHeader = false
-    let pidfProductStrengthId = [];
-    if (data != null && data != undefined) {
-        if (data.pidfPackSizeGeneralRanDList != null && data.pidfPackSizeGeneralRanDList.length > 0) {
-            for (var i = 0; i < data.pidfPackSizeGeneralRanDList.length; i++) {
-                html += `<td> ${data.pidfPackSizeGeneralRanDList[i].packSizeName}<input type="hidden" name="PidfPbfRnDPackSizeStability[${i}].PackSizeId" value="${data.pidfPackSizeGeneralRanDList[i].packSizeId}"></td>`;
-                td += `<td id="td${i}"><input type="hidden" name="PidfPbfRnDPackSizeStability[${i}].PackSizeStabilityId" value="${data.pidfPackSizeGeneralRanDList[i].packSizeStabilityId}"><input type="text" class="form-control clsValue"  disabled="disabled"  data-val="${data.pidfPackSizeGeneralRanDList[i].pidfProductStrengthId}" name="PidfPbfRnDPackSizeStability[${i}].Value" value="${data.pidfPackSizeGeneralRanDList[i].value}"></td>`;
-                packSizeTrIndex = j;
-            }
-            html += '</tr></thead>'
-            isShowHeader = true
-        }
-        if (data.pidfProductStrengthGeneralRanDList != null) {
-            for (var j = 0; j < data.pidfProductStrengthGeneralRanDList.length; j++) {
-                html += `<tr><td>${data.pidfProductStrengthGeneralRanDList[j].strength} ${data.pidfProductStrengthGeneralRanDList[j].unitofMeasurementName}<input type="hidden" name="PidfPbfRnDPackSizeStability[${j}].StrengthId" value="${data.pidfProductStrengthGeneralRanDList[j].strength}"></td>${td}</tr>`
-                
-            }
-        }
-        html += '</table>';
-        $("#lblPackSizeStability").show();
-        $("#DvPackSizeStability").append(html);
-        if (data.pidfProductStrengthGeneralRanDList != null) {
-            for (var j = 0; j < data.pidfProductStrengthGeneralRanDList.length; j++) {
-                pidfProductStrengthId.push(data.pidfProductStrengthGeneralRanDList[j].pidfProductStrengthId);
-                
-
-            }
-        }
-        if (data.pidfPackSizeGeneralRanDList != null) {
-            var distinct = []
-            for (var i = 0; i < data.pidfPackSizeGeneralRanDList.length; i++) {
-                if (!distinct.includes(data.pidfPackSizeGeneralRanDList[i].pidfProductStrengthId)) {
-                    distinct.push(data.pidfPackSizeGeneralRanDList[i].pidfProductStrengthId)
-                 }
-            }
-            $(".clsValue").each(function(index){
-                for (let x = 0; x < pidfProductStrengthId.length; x++) {
-                    $(this).attr('id', pidfProductStrengthId[x]+""+x+""+index);
-                }
-                if (pidfProductStrengthId.includes(parseInt($(this).attr('data-val')))) {
-                    let Id = $(this).attr('id');
-                    $(`#${Id}`).prop('disabled', false);
-                    console.log($(this).attr('id'))
-                }
-                //else {
-                //    $(this).prop('disabled', true);
-                //}
-            });
-           
-            //}
-            //$(".clsValue").each(function (index, value) {
-            //    if ($(this).prop('disabled')) {
-            //        $(this).val("");
-            //        $(this).attr("value","");
-            //    }
-            //});
-    }
-        pidfProductStrengthId = [];
-        if (isShowHeader) {
-           $("#DvPackSizeStability").show();
-        }
-        else {
-          $("#DvPackSizeStability").hide();
-        }
     }
 }
 function GetPBFTabDetails() {
@@ -1485,6 +1414,140 @@ function PBFBindBusinessUnit(data) {
     });
     $('#dvPBFContainer').find('#custom-tabs-two-tab').html(businessUnitHTML);
 }
+
+function PBFBindMasterCountry(data) {
+    var arrofcountryid = [];
+    $('#dvPBFContainer').find('#navCountryTabs').html('');
+    var html = "";
+    var _CountryListforSelectedBU = $.grep(data, function (n, i) {
+        return n.businessUnitId == _selectBusinessUnit;
+    });
+    if (_CountryListforSelectedBU != null && _CountryListforSelectedBU != undefined && _CountryListforSelectedBU.length > 0) {
+        $.each(_CountryListforSelectedBU, function (index, item) {
+            if (arrofcountryid.indexOf(item.countryID) == -1) {
+                arrofcountryid.push(item.countryID)
+                html += '<li class="nav-item col-6 p-0 pt-1">\
+    <a class="nav-link" onClick="CountrytabClick('+ item.countryID + ',' + parseInt($("#PIDFId").val()) + ')" id="Countrytab_' + item.countryID + '">' + item.countryName + '</a></li>';
+            }
+        });
+        $('#dvPBFContainer').find("#navCountryTabs").append(html);
+
+        var _countryId = (_CountryListforSelectedBU[0] == undefined) ? 0 : _CountryListforSelectedBU[0].countryID;
+        selectedCountry = _countryId;
+        $('#Countrytab_' + _countryId).addClass('active');
+    }
+    renderPackSize(selectedCountry,_selectBusinessUnit,_PIDFID);
+}
+
+$(document).ready(function () {
+    $(document).on('click', '[id^="Countrytab_"]', function () {
+        var countryVal = parseInt($(this).attr('id').split('_')[1]);
+        $('[id^="Countrytab_"]').removeClass('active');
+        $(this).addClass('active');
+        selectedCountry = countryVal;
+        renderPackSize(selectedCountry, _selectBusinessUnit, parseInt($("#PIDFId").val()));
+    });
+});
+
+function renderPackSize(selectedCountry, _selectBusinessUnit, _PIDFID) {
+    ajaxServiceMethod($('#hdnBaseURL').val() + GetCountryWisePackSizeStabilityData + "/" + _PIDFID + "/" + _selectBusinessUnit + "/" + selectedCountry, 'GET', BindGeneralPackSizeStability, renderPackSizeError);
+}
+
+
+var pidfPbfRnDPackSizeStabilityData = [];
+
+function BindGeneralPackSizeStability(data) {
+    $("#DvPackSizeStability").empty();
+    let html = '<table id="tblPackSizeStability" class="table text-center tableTDHint"><thead class="bg-primary text-bold"><tr><td>PackSize Stability</td>';
+    let packSizeHeaders = '';
+    let isShowHeader = false;
+    let pidfProductStrengthIds = [];
+
+    if (data != null && data != undefined) {
+        if (data.pidfPackSizeGeneralRanDList != null && data.pidfPackSizeGeneralRanDList.length > 0) {
+            for (var i = 0; i < data.pidfPackSizeGeneralRanDList.length; i++) {
+                const packSizeId = data.pidfPackSizeGeneralRanDList[i].packSizeId;
+                const packSizeName = data.pidfPackSizeGeneralRanDList[i].packSizeName;
+                packSizeHeaders += `<td> ${packSizeName}</td>`;
+            }
+            html += packSizeHeaders + '</tr></thead>';
+            isShowHeader = true;
+        }
+
+        if (data.pidfProductStrengthGeneralRanDList != null && data.pidfProductStrengthGeneralRanDList.length > 0) {
+            for (var j = 0; j < data.pidfProductStrengthGeneralRanDList.length; j++) {
+                const strengthId = data.pidfProductStrengthGeneralRanDList[j].pidfProductStrengthId;
+                const strengthName = data.pidfProductStrengthGeneralRanDList[j].strength;
+                const unitName = data.pidfProductStrengthGeneralRanDList[j].unitofMeasurementName;
+                html += `<tr><td>${strengthName} ${unitName}<input type="hidden" name="PidfPbfRnDPackSizeStability[${j}].StrengthId" value="${strengthId}">`;
+
+       
+                var packSizeDataArray = [];
+
+                for (var i = 0; i < data.pidfPackSizeGeneralRanDList.length; i++) {
+                    const packSizeId = data.pidfPackSizeGeneralRanDList[i].packSizeId;
+                    const packSizeName = data.pidfPackSizeGeneralRanDList[i].packSizeName;
+
+               
+                    var packSizeDataArray = [];
+
+                    for (var i = 0; i < data.pidfPackSizeGeneralRanDList.length; i++) {
+                        const packSizeId = data.pidfPackSizeGeneralRanDList[i].packSizeId;
+                        const inputFieldId = `input_${strengthId}_${packSizeId}_${j}`;
+                        const inputValue = data.pidfPackSizeGeneralRanDList[i].value;
+                        const isDisabled = '';
+                        const packSizeStabilityId = data.pidfPackSizeGeneralRanDList[i].packSizeStabilityId;
+                      
+                        var packSizeData = {
+                            StrengthId: strengthId,
+                            PackSizeId: packSizeId,
+                            PackSizeStabilityId: packSizeStabilityId, 
+                            Value: inputValue
+                        };
+
+                        packSizeDataArray.push(packSizeData);
+
+                        html += `<td>
+            <input type="hidden" name="PidfPbfRnDPackSizeStability[${j}].PackSizes[${i}].PackSizeId" value="${packSizeId}">
+            <input type="hidden" name="PidfPbfRnDPackSizeStability[${j}].PackSizes[${i}].PackSizeStabilityId" value="${packSizeStabilityId}">
+            <input type="text" class="form-control clsValue" id="${inputFieldId}" name="PidfPbfRnDPackSizeStability[${j}].PackSizes[${i}].Value" value="${inputValue}" ${isDisabled}>
+        </td>`;
+                    }
+                    html += '</tr>';
+                    pidfProductStrengthIds.push(strengthId);
+                    isShowHeaderTwo = true;
+
+                    pidfPbfRnDPackSizeStabilityData.push(packSizeDataArray);
+                }
+
+            }
+        }
+
+        html += '</table>';
+        $("#lblPackSizeStability").show();
+        $("#DvPackSizeStability").append(html);
+
+        if (isShowHeader) {
+            $("#DvPackSizeStability").show();
+        } else {
+            $("#lblPackSizeStability").hide();
+            $("#DvPackSizeStability").hide();
+        }
+    }
+
+}
+
+function getPidfPbfRnDPackSizeStabilityData() {
+    return JSON.stringify(pidfPbfRnDPackSizeStabilityData);
+}
+
+
+
+
+function renderPackSizeError(x, y, z) {
+    toastr.error(ErrorMessage);
+}
+
 function PBFBindStrength(data) {
     var strengthHTML = '<thead class="bg-primary"><tr>';
     $.each(_strengthArray, function (index, item) {

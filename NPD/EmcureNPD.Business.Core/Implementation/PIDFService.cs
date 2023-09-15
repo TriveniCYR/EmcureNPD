@@ -745,15 +745,20 @@ namespace EmcureNPD.Business.Core.Implementation
 
         public async Task<dynamic> AddWorkflowtasks(long pidfId, int userId)
         {
-            SqlParameter[] osqlParameter =
+            try
             {
-                new SqlParameter("@PIDFID", pidfId), 
+                SqlParameter[] osqlParameter =
+                {
+                new SqlParameter("@PIDFID", pidfId),
                 new SqlParameter("@UserId", userId)
             };
 
-            var dbresult = await _repository.GetBySP("ProcAddWorkflowTasks", System.Data.CommandType.StoredProcedure, osqlParameter);
-            return dbresult;
-
+                var dbresult = await _repository.GetBySP("ProcAddWorkflowTasks", System.Data.CommandType.StoredProcedure, osqlParameter);
+                return dbresult;
+            }
+            catch(Exception ex){
+                return DBOperation.NotFound;
+            }
         }
 
         //This common Function for All PIDF List Screens for ButtonClick of  Approve/Reject/Delete
