@@ -710,6 +710,10 @@ function GetActiveBusinessUnitSuccess(data) {
         $("#frmPIDF").find('.readonlyOtherBusinessUnit').attr("readonly", "true");
         $("#frmPIDF").find('#BusinessUnitId').attr("disabled", true);
     }
+    if (!_UserAccessBusinessUnit.split(',').includes(_SelectedBusinessUnitPIDF.toString())) {
+        $("#frmPIDF").find('#IsPIDFInterested').attr("disabled", true);
+        $("#frmPIDF").find('#IsPIDFNotInterested').attr("disabled", true);
+    }
 /*    $('#pidf-custom-tabs-two-tabContent').html(businessUnitPanel);*/
 }
 function GetActiveBusinessUnitError(x, y, z) {
