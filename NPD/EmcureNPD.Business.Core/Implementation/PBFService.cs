@@ -343,6 +343,7 @@ namespace EmcureNPD.Business.Core.Implementation
 
                 if (pbfgeneralid > 0)
                 {
+                   
                     // var isSuccess = await _auditLogService.CreateAuditLog<PBFFormEntity>(pbfEntity.Pidfpbfid > 0 ? Utility.Audit.AuditActionType.Update : Utility.Audit.AuditActionType.Create,
                     //Utility.Enums.ModuleEnum.PBF, pbfEntity, pbfEntity, Convert.ToInt32(pbfEntity.Pidfid));
                     await _unitOfWork.SaveChangesAsync();
@@ -1270,42 +1271,51 @@ namespace EmcureNPD.Business.Core.Implementation
             return PidfPbfId;
 
         }
-        private async Task<long> SavePackSizeStability(PBFFormEntity pbfentity, long pbfgeneralid)
+        private async Task<long> SavePackSizeStability(List<PidfPbfRnDPackSizeStabilityEntity> pbfentities, long pbfgeneralid,long pidfid)
         {
             try
             {
-                var objPackSizeStability = new List<PidfPbfRnDPackSizeStability>();
                 var loggedInUserId = _helper.GetLoggedInUser().UserId;
-                var FinalpbfGeneralid = pbfentity.PBFGeneralId == 0 ? pbfgeneralid : pbfentity.PBFGeneralId;
 
-                foreach (var item in pbfentity.PidfPbfRnDPackSizeStability)
+                foreach (var pbfentity in pbfentities)
                 {
-                    var objPackSizeStabilityDetails = _repositoryPidfPbfRnDPackSizeStability.GetAllQuery().
-                Where(x => x.Pidfid == pbfentity.Pidfid && x.PbfgeneralId == FinalpbfGeneralid && x.PackSizeStabilityId == item.PackSizeStabilityId).FirstOrDefault();
-                    if (objPackSizeStabilityDetails != null && item.Value != null)
-                    {
-                        objPackSizeStabilityDetails.Pidfid = pbfentity.Pidfid;
-                        objPackSizeStabilityDetails.PbfgeneralId = FinalpbfGeneralid;
-                        objPackSizeStabilityDetails.StrengthId = item.StrengthId;
-                        objPackSizeStabilityDetails.PackSizeId = item.PackSizeId;
-                        objPackSizeStabilityDetails.Value = item.Value;
-                        objPackSizeStabilityDetails.CreatedOn = DateTime.Now;
-                        objPackSizeStabilityDetails.CreatedBy = loggedInUserId;
-                        _repositoryPidfPbfRnDPackSizeStability.UpdateAsync(objPackSizeStabilityDetails);
-                    }
+                    var FinalpbfGeneralid = pbfentity.PbfgeneralId == 0 ? pbfgeneralid : pbfentity.PbfgeneralId;
 
-                    else if (item.Value != null)
+                    foreach (var item in pbfentity.PackSizes)
                     {
+                        var objPackSizeStabilityDetails = _repositoryPidfPbfRnDPackSizeStability.GetAllQuery().
+               Where(x => x.Pidfid == pidfid && x.PbfgeneralId == FinalpbfGeneralid && x.PackSizeStabilityId==item.PackSizeStabilityId).FirstOrDefault();
 
-                        var objPidfPbfRnDPackSizeStability = new PidfPbfRnDPackSizeStability();
-                        objPidfPbfRnDPackSizeStability.Pidfid = pbfentity.Pidfid;
-                        objPidfPbfRnDPackSizeStability.PbfgeneralId = FinalpbfGeneralid;
-                        objPidfPbfRnDPackSizeStability.StrengthId = item.StrengthId;
-                        objPidfPbfRnDPackSizeStability.PackSizeId = item.PackSizeId;
-                        objPidfPbfRnDPackSizeStability.Value = item.Value;
-                        objPidfPbfRnDPackSizeStability.CreatedOn = DateTime.Now;
-                        objPidfPbfRnDPackSizeStability.CreatedBy = loggedInUserId;
-                        _repositoryPidfPbfRnDPackSizeStability.AddAsync(objPidfPbfRnDPackSizeStability);
+                        if (objPackSizeStabilityDetails != null && item.Value != null)
+                        {
+                           
+                            objPackSizeStabilityDetails.Pidfid = pidfid;
+                            objPackSizeStabilityDetails.PbfgeneralId = FinalpbfGeneralid;
+                            objPackSizeStabilityDetails.StrengthId = pbfentity.StrengthId;
+                            objPackSizeStabilityDetails.PackSizeId = item.PackSizeId;
+                            objPackSizeStabilityDetails.Value = item.Value;
+                            objPackSizeStabilityDetails.CreatedOn = DateTime.Now;
+                            objPackSizeStabilityDetails.CreatedBy = loggedInUserId;
+
+                            objPackSizeStabilityDetails.CreatedOn = DateTime.Now;
+                            objPackSizeStabilityDetails.CreatedBy = loggedInUserId;
+                        }
+                        else if (item.Value != null)
+                        {
+                           
+                            var newPackSizeStability = new PidfPbfRnDPackSizeStability
+                            {
+                                Pidfid = pidfid,
+                                PbfgeneralId = FinalpbfGeneralid,
+                                StrengthId = pbfentity.StrengthId,
+                                CreatedOn = DateTime.Now,
+                                CreatedBy = loggedInUserId,
+                                PackSizeId = item.PackSizeId,
+                                Value = item.Value
+                            };
+
+                            _repositoryPidfPbfRnDPackSizeStability.AddAsync(newPackSizeStability);
+                        }
                     }
                 }
 
@@ -1315,9 +1325,10 @@ namespace EmcureNPD.Business.Core.Implementation
             {
                 return 0;
             }
-            return pbfentity.Pidfpbfid;
-
+            return pbfentities.FirstOrDefault()?.Pidfid ?? 0;
         }
+
+
         private async Task<long> SaveTDT(PBFFormEntity pbfentity, long pbfgeneralid)
         {
             try
@@ -2705,7 +2716,7 @@ namespace EmcureNPD.Business.Core.Implementation
                     await _unitOfWork.SaveChangesAsync();
                     pbfgeneralid = objPIDFGeneraladd.PbfgeneralId;
                 }
-
+                await SavePackSizeStability(pbfentity.PidfPbfRnDPackSizeStability, pbfentity.PBFGeneralId,pbfentity.Pidfid);
                 #endregion Section PBF General Add Update
                 #region Update PBF genegral R&D Details
 
