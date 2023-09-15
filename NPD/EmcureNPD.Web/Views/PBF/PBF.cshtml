@@ -44,6 +44,7 @@
         <input type="hidden" id="currentTabIndex" name="currentTabIndex" value="0" />
         <input type="hidden" asp-for="BusinessUnitName" value="@(Context.Request.Query["bui"])" />
         <input type="hidden" asp-for="EncPidfid" value="@(Context.Request.Query["pidfid"])" />
+        <input type="hidden" id="selectedCountryInput" name="selectedCountry" value="">
 
 
         <div class="container-fluid background-white-card">
@@ -1466,11 +1467,13 @@
                     <div class="col-12 text-end">
                         <div class="form-group" id="dvMainButton">
                             <button type="submit" id="savedraft" class="btn btn-primary me-3 outside-buttons operationButton" onClick="SavePBFForm('Draft')" style="display: none;">@SharedLocalizer["SaveDraft"]</button>
-                              
+                               <button type="submit" class="btn btn-success me-3 outside-buttons operationButton" id="save" onClick="SavePBFForm('Save')">@SharedLocalizer["Submit"]</button>
+                                 
                             @if (Model.StatusId == (Int32)Master_PIDFStatus.PBFInProgress || Model.StatusId == (Int32)Master_PIDFStatus.IPDApproved || Model.StatusId==0)
                             {
                                 <button type="submit" class="btn btn-success me-3 outside-buttons operationButton" id="save" onClick="SavePBFForm('Save')">@SharedLocalizer["Submit"]</button>
-                                <button type="submit" id="savedraft" class="btn btn-primary me-3 outside-buttons operationButton" onClick="SavePBFForm('Draft')">@SharedLocalizer["SaveDraft"]</button>
+                                
+                               
                             }
                             @if (Model.StatusId == (Int32)Master_PIDFStatus.PBFSubmitted)
                             {

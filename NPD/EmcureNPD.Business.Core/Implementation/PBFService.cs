@@ -1271,7 +1271,7 @@ namespace EmcureNPD.Business.Core.Implementation
             return PidfPbfId;
 
         }
-        private async Task<long> SavePackSizeStability(List<PidfPbfRnDPackSizeStabilityEntity> pbfentities, long pbfgeneralid,long pidfid)
+        private async Task<long> SavePackSizeStability(List<PidfPbfRnDPackSizeStabilityEntity> pbfentities, long pbfgeneralid,long pidfid,int countryId)
         {
             try
             {
@@ -1284,7 +1284,7 @@ namespace EmcureNPD.Business.Core.Implementation
                     foreach (var item in pbfentity.PackSizes)
                     {
                         var objPackSizeStabilityDetails = _repositoryPidfPbfRnDPackSizeStability.GetAllQuery().
-               Where(x => x.Pidfid == pidfid && x.PbfgeneralId == FinalpbfGeneralid && x.PackSizeStabilityId==item.PackSizeStabilityId).FirstOrDefault();
+               Where(x => x.Pidfid == pidfid && x.PbfgeneralId == FinalpbfGeneralid && x.PackSizeStabilityId==item.PackSizeStabilityId && x.CountryId==countryId).FirstOrDefault();
 
                         if (objPackSizeStabilityDetails != null && item.Value != null)
                         {
@@ -1296,8 +1296,7 @@ namespace EmcureNPD.Business.Core.Implementation
                             objPackSizeStabilityDetails.Value = item.Value;
                             objPackSizeStabilityDetails.CreatedOn = DateTime.Now;
                             objPackSizeStabilityDetails.CreatedBy = loggedInUserId;
-
-                            objPackSizeStabilityDetails.CreatedOn = DateTime.Now;
+                            objPackSizeStabilityDetails.CountryId = countryId;                            objPackSizeStabilityDetails.CreatedOn = DateTime.Now;
                             objPackSizeStabilityDetails.CreatedBy = loggedInUserId;
                             _repositoryPidfPbfRnDPackSizeStability.UpdateAsync(objPackSizeStabilityDetails);
                         }
@@ -1312,7 +1311,8 @@ namespace EmcureNPD.Business.Core.Implementation
                                 CreatedOn = DateTime.Now,
                                 CreatedBy = loggedInUserId,
                                 PackSizeId = item.PackSizeId,
-                                Value = item.Value
+                                Value = item.Value,
+                                CountryId=countryId
                             };
 
                             _repositoryPidfPbfRnDPackSizeStability.AddAsync(newPackSizeStability);
@@ -2717,7 +2717,7 @@ namespace EmcureNPD.Business.Core.Implementation
                     await _unitOfWork.SaveChangesAsync();
                     pbfgeneralid = objPIDFGeneraladd.PbfgeneralId;
                 }
-                await SavePackSizeStability(pbfentity.PidfPbfRnDPackSizeStability, pbfentity.PBFGeneralId,pbfentity.Pidfid);
+                await SavePackSizeStability(pbfentity.PidfPbfRnDPackSizeStability, pbfentity.PBFGeneralId,pbfentity.Pidfid, pbfentity.selectedCountry);
                 #endregion Section PBF General Add Update
                 #region Update PBF genegral R&D Details
 
