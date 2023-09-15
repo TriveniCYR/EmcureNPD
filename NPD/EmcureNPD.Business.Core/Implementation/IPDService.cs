@@ -46,6 +46,7 @@ namespace EmcureNPD.Business.Core.Implementation
         private IRepository<MasterCountry> _countryrepository { get; set; }
         private IRepository<MasterPatentStrategy> _patentStrategyrepository { get; set; }
         private IRepository<MasterUserCountryMapping> _masterUserCountryMappingrepository { get; set; }
+        private IRepository<PidfstatusHistory> _pidfstatusHistoryRepository { get; set; }
         private readonly IHelper _helper;
 
         public IPDService(IUnitOfWork unitOfWork, IMapperFactory mapperFactory, IMasterBusinessUnitService businessUnitService,
@@ -75,6 +76,7 @@ namespace EmcureNPD.Business.Core.Implementation
             _countryrepository = _unitOfWork.GetRepository<MasterCountry>();
             _masterUserCountryMappingrepository = _unitOfWork.GetRepository<MasterUserCountryMapping>();
             _patentStrategyrepository = _unitOfWork.GetRepository<MasterPatentStrategy>();
+            _pidfstatusHistoryRepository = _unitOfWork.GetRepository<PidfstatusHistory>();
         }
 
         public async Task<IPDEntity> FillDropdown()
@@ -309,8 +311,12 @@ namespace EmcureNPD.Business.Core.Implementation
                     return DBOperation.Error;
             }
             var loggedInUser = _helper.GetLoggedInUser();
-            await _auditLogService.UpdatePIDFStatusCommon(entityIPD.PIDFID, (int)entityIPD.StatusId, _helper.GetLoggedInUser().UserId);
-            await _notificationService.CreateNotification(entityIPD.PIDFID, (int)entityIPD.StatusId, string.Empty, string.Empty, loggedInUser.UserId);
+            var IsAlreadyApproved = _pidfstatusHistoryRepository.Exists(x => x.Pidfid == entityIPD.PIDFID && x.StatusId == (int)Master_PIDFStatus.IPDApproved);
+            if (!IsAlreadyApproved)
+            {
+                await _auditLogService.UpdatePIDFStatusCommon(entityIPD.PIDFID, (int)entityIPD.StatusId, _helper.GetLoggedInUser().UserId);
+                await _notificationService.CreateNotification(entityIPD.PIDFID, (int)entityIPD.StatusId, string.Empty, string.Empty, loggedInUser.UserId);
+            }
             return DBOperation.Success;
         }
 
@@ -359,7 +365,9 @@ namespace EmcureNPD.Business.Core.Implementation
 
             Pidf objPidf = await _pidfrepository.GetAsync(pidfId);
             data.StatusId = objPidf.StatusId;
-            
+
+            var IsAlreadyApproved = _pidfstatusHistoryRepository.Exists(x => x.Pidfid == pidfId && x.StatusId == (int)Master_PIDFStatus.IPDApproved);
+            data.IsAlreadyIPDApproved = IsAlreadyApproved;
             return data;
         }
 
