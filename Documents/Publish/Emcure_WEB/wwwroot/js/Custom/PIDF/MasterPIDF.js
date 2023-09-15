@@ -76,7 +76,7 @@ $(document).ready(function () {
     TradeNameRequired_change();
 
     try {
-        if ((_PIDFId > 0 && ($('#frmPIDF').find("#StatusId").val() == "2"))) {
+        if ((_PIDFId > 0) && !mode_IsCountryAdd) {
             _PIDFBusinessUnitId = $('#hdnBusinessUnitId').val();
             fnGetActiveBusinessUnit();
         }
@@ -535,8 +535,10 @@ function SaveClick() {
 
 function SaveDraftClick() {
     isValidPIDFForm = true;
-    mandateDynamicControl();
-    $('#loading-wrapper').show();
+    isValidPIDFForm = mandateDynamicControl();
+    if (isValidPIDFForm)
+        $('#loading-wrapper').show();
+   
     $('#SaveType').val('draft');
     $("#frmPIDF").validate().settings.ignore = "*";
     SetChildRows();
@@ -554,7 +556,7 @@ function SetChildRows() {
         $(this).find("td:eq(2) select").attr("name", "pidfProductStregthEntities[" + index.toString() + "].CountryId");
 
         $(this).find("td:eq(2) .clsPidfproductStrengthId").attr("name", "pidfProductStregthEntities[" + index.toString() + "].PidfproductStrengthId");
-        
+
     });
     $.each($('#IMSDataTable tbody tr'), function (index, value) {
         $(this).find("td:first input").attr("name", "IMSDataEntities[" + index.toString() + "].Imsvalue");
@@ -585,45 +587,47 @@ function SetChildRowDeleteIcon() {
 }
 
 
-//function validateDynamicControldDetails() {
-//    isValidPIDFForm = true;
-//    $('select[name$="UnitofMeasurementId"]').each(function () {
-//        validatecontrols(this);
-//    });
-//    $('input[name$="Strength"]').each(function () {
-//        validatecontrols(this);
-//    });
-//    $('input[name$="Imsvalue"]').each(function () {
-//        validatecontrols(this);
-//    });
-//    $('input[name$="Imsvolume"]').each(function () {
-//        validatecontrols(this);
-//    });
-//    $('select[name$="ApisourcingId"]').each(function () {
-//        validatecontrols(this);
-//    });
-//    $('input[name$="Apivendor"]').each(function () {
-//        validatecontrols(this);
-//    });
-//    $('input[name$="Apiname"]').each(function () {
-//        validatecontrols(this);
-//    });
-//    $('.customvalidateformcontrol').each(function () {
-//        validatecontrols(this);
-//    });
-    
-//}
 
 function validateDynamicControldDetails() {
-    var isValidPIDFForm = true; 
-    $('select[name$="UnitofMeasurementId"], input[name$="Strength"], input[name$="Imsvalue"], input[name$="Imsvolume"], select[name$="ApisourcingId"], input[name$="Apivendor"], input[name$="Apiname"], .customvalidateformcontrol').each(function () {
+    var isValidPIDFForm = true;
+    var strengthValues = [];
+
+    $('select[name$="UnitofMeasurementId"], input[name$="Imsvalue"], input[name$="Imsvolume"], select[name$="ApisourcingId"], input[name$="Apivendor"], input[name$="Apiname"], .customvalidateformcontrol').each(function () {
         if (!validatecontrols(this)) {
-            isValidPIDFForm = false; 
+            isValidPIDFForm = false;
+        }
+    });
+    var hasDuplicateStrength = false;
+    var hasEmptyStrength = false;
+
+    $('input[name$="Strength"]').each(function () {
+        var strengthInput = $(this);
+        var strengthValue = parseFloat(strengthInput.val());
+
+        if (!isNaN(strengthValue)) {
+            if (strengthValues.includes(strengthValue)) {
+                hasDuplicateStrength = true;
+                toastr.error("Strength Should be Unique on business unit");
+                isValidPIDFForm = false;
+                return false;
+            } else {
+                strengthValues.push(strengthValue);
+            }
+        } else {
+            hasEmptyStrength = true;
         }
     });
 
+    if (hasEmptyStrength) {
+        toastr.error("Strength cannot be empty");
+        isValidPIDFForm = false;
+    }
+
     return isValidPIDFForm;
 }
+
+
+
 function validatecontrols(control) {
     try {
         if ($(control).val() == null || $(control).val().trim() === '') {
@@ -639,10 +643,39 @@ function validatecontrols(control) {
     }
 }
 function mandateDynamicControl() {
-    isValidPIDFForm = true;    
+    var isValidPIDFForm = true; 
+    var strengthValues = [];
     $('.mandatoryformcontrol').each(function () {
-        validatecontrols(this);
+        isValidPIDFForm = validatecontrols(this) && isValidPIDFForm;
     });
+  
+    var hasDuplicateStrength = false;
+    var hasEmptyStrength = false;
+
+    $('input[name$="Strength"]').each(function () {
+        var strengthInput = $(this);
+        var strengthValue = parseFloat(strengthInput.val());
+
+        if (!isNaN(strengthValue)) {
+            if (strengthValues.includes(strengthValue)) {
+                hasDuplicateStrength = true;
+                toastr.error("Strength Should be Unique on business unit");
+                isValidPIDFForm = false;
+                return false;
+            } else {
+                strengthValues.push(strengthValue);
+            }
+        } else {
+            hasEmptyStrength = true;
+        }
+    });
+
+    if (hasEmptyStrength) {
+        toastr.error("Strength cannot be empty");
+        isValidPIDFForm = false;
+    }
+
+    return isValidPIDFForm;
 }
 
 

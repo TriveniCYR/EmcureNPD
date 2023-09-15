@@ -552,22 +552,13 @@ function SetChildRows() {
         $(this).find("td:eq(1) select").attr("name", "pidfApiDetailEntities[" + index.toString() + "].ApisourcingId");
         $(this).find("td:eq(2) input").attr("name", "pidfApiDetailEntities[" + index.toString() + "].Apivendor");
     });
-    var strengthValues = []; // Array to store strength values
-
     $.each($('#ProductStrengthTable tbody tr'), function (index, value) {
-        var strengthInput = $(this).find("td:first input");
-        var strengthValue = parseFloat(strengthInput.val());
-        if (strengthValues.includes(strengthValue)) {
-            toastr.error("Duplicate strength value detected!");
-        } else {
-            strengthValues.push(strengthValue);
-            strengthInput.attr("name", "pidfProductStregthEntities[" + index.toString() + "].Strength");
-        }
-
-        // Update the name attributes for other fields as before
+        $(this).find("td:first input").attr("name", "pidfProductStregthEntities[" + index.toString() + "].Strength");
         $(this).find("td:eq(1) select").attr("name", "pidfProductStregthEntities[" + index.toString() + "].UnitofMeasurementId");
         $(this).find("td:eq(2) select").attr("name", "pidfProductStregthEntities[" + index.toString() + "].CountryId");
+
         $(this).find("td:eq(2) .clsPidfproductStrengthId").attr("name", "pidfProductStregthEntities[" + index.toString() + "].PidfproductStrengthId");
+
     });
     $.each($('#IMSDataTable tbody tr'), function (index, value) {
         $(this).find("td:first input").attr("name", "IMSDataEntities[" + index.toString() + "].Imsvalue");
@@ -608,29 +599,35 @@ function validateDynamicControldDetails() {
             isValidPIDFForm = false;
         }
     });
-
-    // Check for duplicate strength values
     var hasDuplicateStrength = false;
+    var hasEmptyStrength = false;
+
     $('input[name$="Strength"]').each(function () {
         var strengthInput = $(this);
         var strengthValue = parseFloat(strengthInput.val());
 
-        if (!isNaN(strengthValue) && strengthValues.includes(strengthValue)) {
-            hasDuplicateStrength = true;
-            toastr.error("Strength Should be Unique on business unit");
-            return false;
-        } else if (!isNaN(strengthValue)) {
-            strengthValues.push(strengthValue);
+        if (!isNaN(strengthValue)) {
+            if (strengthValues.includes(strengthValue)) {
+                hasDuplicateStrength = true;
+                toastr.error("Strength Should be Unique on business unit");
+                isValidPIDFForm = false;
+                return false;
+            } else {
+                strengthValues.push(strengthValue);
+            }
+        } else {
+            hasEmptyStrength = true;
         }
     });
 
-    // If there's a duplicate strength, set isValidPIDFForm to false
-    if (hasDuplicateStrength) {
+    if (hasEmptyStrength) {
+        toastr.error("Strength cannot be empty");
         isValidPIDFForm = false;
     }
 
     return isValidPIDFForm;
 }
+
 
 
 function validatecontrols(control) {
@@ -648,10 +645,38 @@ function validatecontrols(control) {
     }
 }
 function mandateDynamicControl() {
-    var isValidPIDFForm = true;    
+    var isValidPIDFForm = true; 
+    var strengthValues = [];
     $('.mandatoryformcontrol').each(function () {
         isValidPIDFForm = validatecontrols(this) && isValidPIDFForm;
     });
+  
+    var hasDuplicateStrength = false;
+    var hasEmptyStrength = false;
+
+    $('input[name$="Strength"]').each(function () {
+        var strengthInput = $(this);
+        var strengthValue = parseFloat(strengthInput.val());
+
+        if (!isNaN(strengthValue)) {
+            if (strengthValues.includes(strengthValue)) {
+                hasDuplicateStrength = true;
+                toastr.error("Strength Should be Unique on business unit");
+                isValidPIDFForm = false;
+                return false;
+            } else {
+                strengthValues.push(strengthValue);
+            }
+        } else {
+            hasEmptyStrength = true;
+        }
+    });
+
+    if (hasEmptyStrength) {
+        toastr.error("Strength cannot be empty");
+        isValidPIDFForm = false;
+    }
+
     return isValidPIDFForm;
 }
 
