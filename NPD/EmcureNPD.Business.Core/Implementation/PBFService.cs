@@ -1299,6 +1299,7 @@ namespace EmcureNPD.Business.Core.Implementation
 
                             objPackSizeStabilityDetails.CreatedOn = DateTime.Now;
                             objPackSizeStabilityDetails.CreatedBy = loggedInUserId;
+                            _repositoryPidfPbfRnDPackSizeStability.UpdateAsync(objPackSizeStabilityDetails);
                         }
                         else if (item.Value != null)
                         {
