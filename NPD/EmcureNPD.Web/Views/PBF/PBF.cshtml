@@ -1465,16 +1465,20 @@
 
                 <div class="row">
                     <div class="col-12 text-end">
-                        <div class="form-group" id="dvMainButton"> 
-                            @if (Model.StatusId == (Int32)Master_PIDFStatus.PBFInProgress || Model.StatusId == (Int32)Master_PIDFStatus.IPDApproved || Model.StatusId == 0)
+                        <div class="form-group" id="dvMainButton">
+                            @if ((Model.StatusId >= (Int32)Master_PIDFStatus.IPDApproved && Model.StatusId <= (Int32)Master_PIDFStatus.FinanceInProgres) || Model.StatusId == 0)
                             {
-                                <button type="submit" id="savedraft" class="btn btn-primary me-3 outside-buttons operationButton" onClick="SavePBFForm('Draft')">@SharedLocalizer["SaveDraft"]</button>
-                                <button type="submit" class="btn btn-success me-3 outside-buttons operationButton" id="save" onClick="SavePBFForm('Save')">@SharedLocalizer["Submit"]</button> 
+                                @if (Model.StatusId <= (Int32)Master_PIDFStatus.PBFInProgress)
+                                {
+                                    <button type="submit" id="savedraft" class="btn btn-primary me-3 outside-buttons operationButton" onClick="SavePBFForm('Draft')">@SharedLocalizer["SaveDraft"]</button>
+                                }
+                                <button type="submit" class="btn btn-success me-3 outside-buttons operationButton" id="save" onClick="SavePBFForm('Save')">@SharedLocalizer["Submit"]</button>
                             }
+
                             @if (Model.StatusId == (Int32)Master_PIDFStatus.PBFSubmitted)
                             {
                                 <button type="submit" class="btn btn-danger me-3 outside-buttons operationButton" onClick="ApproveRejectClick('R', @Model.Pidfid, @((int)EmcureNPD.Utility.Enums.PIDFScreen.PBF), '/PIDF/PIDFList?ScreenId=@((int)EmcureNPD.Utility.Enums.PIDFScreen.PBF)');"><i class="fa fa-ban mr-1"></i>@SharedLocalizer["Reject"]</button>
-                            } 
+                            }
                             <a id="btnPBFCancel" class="btn btn-danger me-3 outside-buttons operationButton" onclick="CancelPopup()">@SharedLocalizer["Cancel"]</a>
 
                         </div>
